@@ -7,17 +7,17 @@ UPX?=/usr/bin/upx
 
 default:
 
-xivoclient:
+xc:
 	${QMAKE} xivoclient/xivoclient.pro   -o xivoclient/Makefile
 	${LRELEASE} xivoclient/xivoclient_fr.ts
 	make -C xivoclient
 
-switchboard:
+sb:
 	${QMAKE} switchboard/switchboard.pro -o switchboard/Makefile
 	${LRELEASE} switchboard/switchboard_fr.ts
 	make -C switchboard
 
-all: xivoclient switchboard
+all: xc sb
 
 upx:
 	${UPX} */release/*.exe
