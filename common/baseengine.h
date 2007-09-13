@@ -148,6 +148,7 @@ public slots:
 	void askPeers();
 	void askCallerIds();
 	void setKeepaliveinterval(uint);	//!< set keep alive interval
+        void copyNumber(const QString &);
 private slots:
 	void identifyToTheServer();		//!< perform the first login step
 	void processLoginDialog();		//!< perform the following login steps
@@ -171,6 +172,7 @@ signals:
 	void availAllowChanged(bool);		//!< signal 
 	void newProfile(Popup *);		//!< signal emitted when a new profile has to be shown
 	void emitTextMessage(const QString &);	//! message to be displayed to the user.
+        void pasteToDialPanel(const QString &);
 
 	//! a call
 	void updateCall(const QString & channelme,

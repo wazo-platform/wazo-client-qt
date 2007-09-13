@@ -41,6 +41,7 @@ signals:
 	void searchDirectory(const QString &);
 	//! dial selected number
 	void emitDial(const QString &);
+	void copyNumber(const QString &);
 	//! transfer one of my call to this number
 	void transferCall(const QString &, const QString &);
 	//! originate a call
@@ -49,6 +50,7 @@ signals:
 	void updateMyCalls(const QStringList &, const QStringList &, const QStringList &);
 private slots:
 	void startSearch();
+        void itemClicked(QTableWidgetItem *);
 	void itemDoubleClicked(QTableWidgetItem *);
 	//void dialNumber();
 public slots:

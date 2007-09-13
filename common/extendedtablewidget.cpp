@@ -148,7 +148,7 @@ void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
 {
 	//qDebug() << "ExtendedTableWidget::dragMoveEvent()" << event->pos();
-	if(event->proposedAction() & (Qt::CopyAction|Qt::MoveAction))
+	if(event->proposedAction() & ( Qt::CopyAction | Qt::MoveAction ))
 		event->acceptProposedAction();
 	QTableWidgetItem * item = itemAt( event->pos() );
 	if(item)

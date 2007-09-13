@@ -1,5 +1,4 @@
-/*
-XIVO switchboard : 
+/* XIVO CTI clients
 Copyright (C) 2007  Proformatique
 
 This program is free software; you can redistribute it and/or
@@ -17,9 +16,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
-/* $Id$
-   $Date$
-*/
+/* $Revision$
+ * $Date$
+ */
 
 #include <QComboBox>
 #include <QDebug>
@@ -47,6 +46,8 @@ DialPanel::DialPanel(QWidget * parent)
 	m_lbl->setBuddy(m_input);
 	m_input->setStatusTip( tr("Input here the phone number to dial") );
 	m_input->setEditable( true );
+        m_input->setDuplicatesEnabled( false );
+        m_input->setInsertPolicy( QComboBox::InsertAlphabetically );
 	m_input->setMinimumContentsLength( 15 );
 	//m_input->setSizeAdjustPolicy( QComboBox::AdjustToContents );
 	m_input->setInsertPolicy( QComboBox::NoInsert );
@@ -71,10 +72,15 @@ DialPanel::DialPanel(QWidget * parent)
         vlayout->addStretch(1);
 }
 
-// void DialPanel::textEdited(const QString & text)
-// {
-//         qDebug() << "DialPanel::textEdited()" << text;
-// }
+void DialPanel::setNumberToDial(const QString & text)
+{
+        //qDebug() << "DialPanel::setNumberToDial()" << text;
+        // adds the item to the list
+        if (m_input->findText(text) == -1)
+                m_input->insertItem(0, text);
+        // displays it
+        m_input->lineEdit()->setText(text);
+}
 
 void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 {

@@ -20,11 +20,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  * $Date$
  */
 
+#include <QDebug>
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QLabel>
 #include <QMenu>
-#include <QDebug>
+#include <QMouseEvent>
 
 #include "logeltwidget.h"
 
@@ -81,6 +82,16 @@ LogEltWidget::LogEltWidget( const QString & peer, Direction d,
 	         this, SLOT(callBackPeer()) );
 }
 
+void LogEltWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+        callBackPeer();
+}
+
+void LogEltWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+        doNotCallBackPeer();
+}
+
 /*! \brief display context menu
  */
 void LogEltWidget::contextMenuEvent(QContextMenuEvent *event)
@@ -90,16 +101,30 @@ void LogEltWidget::contextMenuEvent(QContextMenuEvent *event)
 	contextMenu.exec(event->globalPos());
 }
 
-/*! \brief call the guy
+/*! \brief call the guy if dials is true, otherwise transmits the number in order to paste it
+ *     somewhere, for instance in the dial input widget
  */
 void LogEltWidget::callBackPeer()
 {
 	QStringList qsl1 = m_peer.split("<");
+        QString number = m_peer;
 	if (qsl1.size() > 1) {
 		QStringList qsl2 = qsl1[1].split(">");
-		emitDial(qsl2[0]);
-	} else {
-		emitDial(m_peer);
-	}
+                number = qsl2[0];
+        }
+
+        emitDial(number);
+}
+
+void LogEltWidget::doNotCallBackPeer()
+{
+	QStringList qsl1 = m_peer.split("<");
+        QString number = m_peer;
+	if (qsl1.size() > 1) {
+		QStringList qsl2 = qsl1[1].split(">");
+                number = qsl2[0];
+        }
+
+        copyNumber(number);
 }
 

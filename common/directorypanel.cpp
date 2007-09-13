@@ -57,6 +57,8 @@ DirectoryPanel::DirectoryPanel(QWidget * parent)
 	hlayout->addWidget( m_searchButton );
 	vlayout->addLayout( hlayout );
 	m_table = new ExtendedTableWidget( this );
+	connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
+	         this, SLOT(itemClicked(QTableWidgetItem *)) );
 	connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
 	         this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
 	connect( m_table, SIGNAL(emitDial(const QString &)),
@@ -68,6 +70,7 @@ DirectoryPanel::DirectoryPanel(QWidget * parent)
 	connect( m_table, SIGNAL(originateCall(const QString &, const QString &)),
 	         this, SIGNAL(originateCall(const QString &, const QString &)) );
 	vlayout->addWidget(m_table);
+
 	/*
 	QStringList labelList;
 	labelList << QString("Numero") << QString("Nom");
@@ -85,20 +88,31 @@ DirectoryPanel::DirectoryPanel(QWidget * parent)
 
 /*! \brief useless
  */
-void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
+void DirectoryPanel::itemClicked(QTableWidgetItem * item)
 {
-	qDebug() << item << item->text();
+	//qDebug() << item << item->text();
 	// check if the string is a number
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
 	if(re_number.exactMatch(item->text())) {
-                qDebug() << "dialing" << item->text();
+                //qDebug() << "preparing to dial" << item->text();
+                copyNumber(item->text());
+        }
+}
+
+void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
+{
+	//qDebug() << item << item->text();
+	// check if the string is a number
+	QRegExp re_number("\\+?[0-9\\s\\.]+");
+	if(re_number.exactMatch(item->text())) {
+                //qDebug() << "dialing" << item->text();
                 emitDial(item->text());
         }
 
  	if(item && item->text().contains("@")) {
                 QString mailAddr = item->text();
                 if(mailAddr.length() > 0) {
-                        qDebug() << "DirectoryPanel::itemDoubleClicked() : mail" << mailAddr;
+                        //qDebug() << "DirectoryPanel::itemDoubleClicked() : mail" << mailAddr;
                         QDesktopServices::openUrl(QUrl("mailto:" + mailAddr));
                 }
  	}
@@ -129,7 +143,7 @@ void DirectoryPanel::setSearchResponse(const QString & resp)
                                 for(x = 0; x < ncolumns; x++) {
                                         QString it = items[1+(1+y)*ncolumns+x];
                                         QTableWidgetItem * item = new QTableWidgetItem(it);
-                                        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
+                                        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
 
                                         QRegExp re_number("\\+?[0-9\\s\\.]+");
                                         if(it.contains("@"))

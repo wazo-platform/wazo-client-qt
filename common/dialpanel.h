@@ -43,6 +43,7 @@ protected:
 	void dropEvent(QDropEvent *);
 public slots:
 	void inputValidated();
+        void setNumberToDial(const QString &);
 signals:
 	void textEdited(const QString &);
 	void emitDial(const QString &);		//!< dial a number

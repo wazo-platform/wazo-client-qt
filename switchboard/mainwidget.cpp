@@ -212,6 +212,9 @@ void MainWidget::buildSplitters()
 	         m_dirpanel, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
 	connect( m_engine, SIGNAL(delogged()),
 	         m_dirpanel, SLOT(stop()) );
+        connect( m_dirpanel, SIGNAL(copyNumber(const QString &)),
+                 m_engine, SLOT(copyNumber(const QString &)) );
+        
 	connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
                                              const QString &, const QString &,
                                              const QString &, const QString &,
@@ -234,6 +237,8 @@ void MainWidget::buildSplitters()
 	         m_engine, SLOT(originateCall(const QString&, const QString&)) );
 	connect( m_dialpanel, SIGNAL(textEdited(const QString &)),
                  m_engine, SLOT(textEdited(const QString &)) );
+        connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
+                 m_dialpanel, SLOT(setNumberToDial(const QString &)) );
  	connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
                  statusBar(), SLOT(showMessage(const QString &)));
 }

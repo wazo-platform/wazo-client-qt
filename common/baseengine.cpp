@@ -1,5 +1,4 @@
-/*
-XIVO CTI Clients : Xivo Client + Switchboard
+/* XIVO CTI clients
 Copyright (C) 2007  Proformatique
 
 This program is free software; you can redistribute it and/or
@@ -18,8 +17,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
 /* $Revision$
-   $Date$
-*/
+ * $Date$
+ */
 
 #include <QBuffer>
 #include <QDebug>
@@ -456,6 +455,7 @@ void BaseEngine::processHistory(const QStringList & histlist)
 	}
 }
 
+
 /*! \brief called when the socket is first connected
  */
 void BaseEngine::socketConnected()
@@ -708,11 +708,11 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 QTime currentTime = QTime::currentTime();
                 QStringList message = listitems[1].split("::");
                 // message[0] : emitter name
-                if(message.size() == 2) {
-                        emitTextMessage(message[0] + tr(" said : ") + message[1]);
-                } else {
-                        emitTextMessage(tr("Unknown") + tr(" said : ") + listitems[1]);
-                }
+                if(m_is_a_switchboard)
+                        if(message.size() == 2)
+                                emitTextMessage(message[0] + tr(" said : ") + message[1]);
+                        else
+                                emitTextMessage(tr("Unknown") + tr(" said : ") + listitems[1]);
         } else if((listitems[0].toLower() == QString("featuresupdate")) && (listitems.size() == 2)) {
                 QStringList featuresupdate_list = listitems[1].split(";");
                 qDebug() << featuresupdate_list;
@@ -909,6 +909,13 @@ void BaseEngine::originateCall(const QString & src, const QString & dst)
         //		+ dstlist[0] + "/" + dstlist[1] + "/" + m_dialcontext + "/"
         //	+ dstlist[3] + "/" + dstlist[4] + "/" + dstlist[5];
 }
+
+
+void BaseEngine::copyNumber(const QString & dst)
+{
+        pasteToDialPanel(dst);
+}
+
 
 /*! \brief dial (originate with known src)
  */

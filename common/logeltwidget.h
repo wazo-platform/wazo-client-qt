@@ -28,6 +28,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QAction>
 #include <QContextMenuEvent>
 
+class QMouseEvent;
+
 /*! \brief Log element widget
  */
 class LogEltWidget : public QWidget
@@ -46,10 +48,14 @@ public:
 	Direction direction() const { return m_direction; };		//! get m_direction
 protected:
 	void contextMenuEvent(QContextMenuEvent *);
+        void mouseDoubleClickEvent(QMouseEvent *event);
+        void mouseReleaseEvent(QMouseEvent *event);
 private slots:
 	void callBackPeer();
+	void doNotCallBackPeer();
 signals:
 	void emitDial(const QString &);		//!< signal to dial back.
+        void copyNumber(const QString &);
 private:
 	QDateTime m_dateTime;	//!< date time of the call 
 	QString m_peer;			//!< phone number who called/was called

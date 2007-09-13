@@ -381,6 +381,9 @@ void MainWidget::engineStarted()
 				m_dial = new DialPanel();
 				connect( m_dial, SIGNAL(emitDial(const QString &)),
 					 m_engine, SLOT(dialExtension(const QString &)) );
+                                connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
+                                         m_dial, SLOT(setNumberToDial(const QString &)) );
+
 				m_mainlayout->addWidget(m_dial, 0);
 
 			} else if ((dc == QString("customerinfo")) && (m_engine->checkedCInfo())) {
@@ -473,6 +476,8 @@ void MainWidget::engineStarted()
 					 m_engine, SLOT(searchDirectory(const QString &)) );
 				connect( m_directory, SIGNAL(emitDial(const QString &)),
 					 m_engine, SLOT(dialFullChannel(const QString &)) );
+				connect( m_directory, SIGNAL(copyNumber(const QString &)),
+					 m_engine, SLOT(copyNumber(const QString &)) );
 				//connect( m_directory, SIGNAL(transferCall(const QString &, const QString &)),
 				//m_engine, SLOT(transferCall(const QString &, const QString &)) );
 				//connect( m_directory, SIGNAL(originateCall(const QString &, const QString &)),
