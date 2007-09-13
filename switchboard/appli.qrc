@@ -1,0 +1,39 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>../common/xivo.qss</file>
+	<file>switchboard_fr.qm</file>
+	<file>../images/xivoicon.png</file>
+	<file>../images/xivoicon-red.png</file>
+	<file>../images/xivoicon-green.png</file>
+	<file>../images/xivoicon-grey.png</file>
+	<file>../images/xivo-login.png</file>
+	<file>../images/sipphone.png</file>
+	<file>../images/phone-blue.png</file>
+	<file>../images/phone-green.png</file>
+	<file>../images/phone-grey.png</file>
+	<file>../images/phone-orange.png</file>
+	<file>../images/phone-red.png</file>
+	<file>../images/phone-yellow.png</file>
+	<file>../images/personal-blue.png</file>
+	<file>../images/personal-green.png</file>
+	<file>../images/personal-grey.png</file>
+	<file>../images/personal-orange.png</file>
+	<file>../images/personal-red.png</file>
+	<file>../images/personal-yellow.png</file>
+	<file>../images/red_down.png</file>
+	<file>../images/red_up.png</file>
+	<file>../images/green_down.png</file>
+	<file>../images/green_up.png</file>
+	<file>../images/cancel.png</file>
+	<file>../images/checkbox_checked.png</file>
+	<file>../images/checkbox_checked_hover.png</file>
+	<file>../images/checkbox_checked_pressed.png</file>
+	<file>../images/checkbox_unchecked.png</file>
+	<file>../images/checkbox_unchecked_hover.png</file>
+	<file>../images/checkbox_unchecked_pressed.png</file>
+	<file>../images/connected.png</file>
+	<file>../images/disconnected.png</file>
+	<file>../images/leftarrow.png</file>
+	<file>../images/rightarrow.png</file>
+</qresource>
+</RCC>

@@ -1,0 +1,78 @@
+/* XIVO switchboard
+Copyright (C) 2007  Proformatique
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+*/
+
+/* $Id$ */
+#ifndef __SWITCHBOARDWINDOW_H__
+#define __SWITCHBOARDWINDOW_H__
+#include <QWidget>
+#include <QList>
+#include "peerwidget.h"
+#include "peerslayout.h"
+#include "peeritem.h"
+
+class BaseEngine;
+class QGridLayout;
+class QMouseEvent;
+
+
+/*! \brief Widget displaying Peers
+ *
+ * This widget use a PeersLayout to display Peers in a grid.
+ */
+class SwitchBoardWindow : public QWidget
+{
+	Q_OBJECT
+public:
+	//! Constructor
+	SwitchBoardWindow( QWidget * parent = 0);
+	//! Destructor
+	virtual ~SwitchBoardWindow();
+	void setEngine(BaseEngine *);
+	int width() const;	//!< get width property
+	void setWidth(int);	//!< set width property
+	void saveSettings() const;
+	void savePositions() const;
+protected:
+/*         void mousePressEvent(QMouseEvent *);	//!< Catch mouse press events */
+/*         void mouseMoveEvent(QMouseEvent *); */
+	void dragEnterEvent(QDragEnterEvent *);
+	void dropEvent(QDropEvent *);
+public slots:
+	void updatePeer(const QString & ext,
+			const QString & name,
+			const QString & imavail,
+			const QString & sipstatus,
+			const QString & vmstatus,
+			const QString & queuestatus,
+			const QStringList & chanIds,
+			const QStringList & chanStates,
+			const QStringList & chanOthers);
+	void removePeer(const QString & ext);
+	void removePeers(void);
+private slots:
+	void removePeerFromLayout(const QString &);
+private:
+	//QGridLayout * m_layout;
+	PeersLayout * m_layout;	//!< Grid Layout for displaying peers
+	QList<Peer> m_peerlist;	//!< Peer list
+	BaseEngine * m_engine;	//!< engine to connect to peer widgets
+	int m_width;	//!< width property
+};
+
+#endif
+
