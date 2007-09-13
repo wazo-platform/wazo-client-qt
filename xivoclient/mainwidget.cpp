@@ -84,7 +84,9 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
                  this, SLOT(engineStopped()));
 	connect( m_engine, SIGNAL(newProfile(Popup *)),
 	         this, SLOT(showNewProfile(Popup *)) );
-	
+        connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
+                 statusBar(), SLOT(showMessage(const QString &)));
+
         // to be better defined
 	resize(500, 400);
 	restoreGeometry(settings.value("display/mainwingeometry").toByteArray());
