@@ -1,2 +1,1 @@
-IDI_ICON1        ICON  DISCARDABLE "../../xivoclient/gui/xivoicon.ico"
-
+IDI_ICON1        ICON  DISCARDABLE "../images/xivoicon.ico"
