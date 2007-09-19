@@ -103,7 +103,9 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
                  this, SLOT(engineStopped()));
 	connect( m_engine, SIGNAL(newProfile(Popup *)),
 	         this, SLOT(showNewProfile(Popup *)) );
-	
+        connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
+                 statusBar(), SLOT(showMessage(const QString &)));
+
 	restoreGeometry(settings.value("display/mainwingeometry").toByteArray());
 	
 	m_wid = new QWidget();
@@ -241,8 +243,6 @@ void MainWidget::buildSplitters()
                  m_engine, SLOT(textEdited(const QString &)) );
         connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
                  m_dialpanel, SLOT(setNumberToDial(const QString &)) );
- 	connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
-                 statusBar(), SLOT(showMessage(const QString &)));
 }
 
 void MainWidget::removeSplitters()

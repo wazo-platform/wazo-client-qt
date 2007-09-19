@@ -155,7 +155,6 @@ private slots:
 	void identifyToTheServer();		//!< perform the first login step
 	void processLoginDialog();		//!< perform the following login steps
 	void handleProfilePush();		//!< called when receiving a profile
-	void serverHostFound();			//!< called when the host name resolution succeded
 	void keepLoginAlive();			//!< Send a UDP datagram to keep session alive
 	void readKeepLoginAliveDatagrams();	//!< handle the responses to keep alive
 	void popupDestroyed(QObject *);		//!< know when a profile widget is destroyed *DEBUG*

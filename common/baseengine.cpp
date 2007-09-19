@@ -77,14 +77,16 @@ BaseEngine::BaseEngine(QObject * parent)
         */
 
 	// Socket for Login in UDP connections
+        m_loginsocket->setProperty("socket", "login_udp");
 	connect( m_loginsocket, SIGNAL(connected()),
-	         this, SLOT(identifyToTheServer()) );
+	         this, SLOT(socketConnected()) );
 	connect( m_loginsocket, SIGNAL(hostFound()),
-	         this, SLOT(serverHostFound()) );
+	         this, SLOT(socketHostFound()) );
         connect( m_loginsocket, SIGNAL(readyRead()),
 	         this, SLOT(processLoginDialog()) );
 
 	// Socket for TCP connections
+        m_sbsocket->setProperty("socket", "tcp_nat");
 	connect(m_sbsocket, SIGNAL(connected()),
 	        this, SLOT(socketConnected()));
 	connect(m_sbsocket, SIGNAL(disconnected()),
@@ -461,20 +463,25 @@ void BaseEngine::processHistory(const QStringList & histlist)
 void BaseEngine::socketConnected()
 {
 	qDebug() << "BaseEngine::socketConnected()";
-	stopTryAgainTimer();
-	/* do the login/identification ? */
-        setMyClientId();
-	m_pendingcommand = "login astid=" + m_asterisk + ";proto="
-                + m_protocol + ";userid=" + m_userid + ";";
-        if(m_checked_presence)
+        QString socname = this->sender()->property("socket").toString();
+        if(socname == "login_udp") {
+                identifyToTheServer();
+        } else if(socname == "tcp_nat") {
+                stopTryAgainTimer();
+                /* do the login/identification ? */
+                setMyClientId();
+                m_pendingcommand = "login astid=" + m_asterisk + ";proto="
+                        + m_protocol + ";userid=" + m_userid + ";";
+                if(m_checked_presence)
+                        m_pendingcommand += "state=" + m_availstate + ";";
+                else
+                        m_pendingcommand += "state=unknown;";
                 m_pendingcommand += "state=" + m_availstate + ";";
-        else
-                m_pendingcommand += "state=unknown;";
-        m_pendingcommand += "state=" + m_availstate + ";";
-        m_pendingcommand += "ident=" + m_clientid   + ";";
-        m_pendingcommand += "passwd=" + m_passwd + ";version=" + SVNVER;
-        // login <asterisk> <techno> <id>
-	sendTCPCommand();
+                m_pendingcommand += "ident=" + m_clientid   + ";";
+                m_pendingcommand += "passwd=" + m_passwd + ";version=" + SVNVER;
+                // login <asterisk> <techno> <id>
+                sendTCPCommand();
+        }
 }
 
 /*! \brief called when the socket is disconnected from the server
@@ -495,15 +502,8 @@ void BaseEngine::socketDisconnected()
  */
 void BaseEngine::socketHostFound()
 {
-	qDebug() << "BaseEngine::socketHostFound()" << m_sbsocket->peerAddress();
-}
-
-/*! \brief cat host found socket signal
- * This slot is connected to the hostFound() signal of the m_loginsocket
- */
-void BaseEngine::serverHostFound()
-{
-	qDebug() << "BaseEngine::serverHostFound()" << m_loginsocket->peerAddress();
+        QString socname = this->sender()->property("socket").toString();
+        qDebug() << "BaseEngine::socketHostFound()" << socname;
 }
 
 /*! \brief catch socket errors
