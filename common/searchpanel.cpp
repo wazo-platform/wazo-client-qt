@@ -52,11 +52,30 @@ SearchPanel::SearchPanel(QWidget * parent)
 	scrollarealayout->addLayout( m_peerlayout );
 	scrollarealayout->addStretch( 1 );
 	vlayout->addWidget(scrollarea);
+
+        m_phone_green  = QPixmap(":/images/phone-green.png");
+        m_phone_red    = QPixmap(":/images/phone-red.png");
+        m_phone_orange = QPixmap(":/images/phone-orange.png");
+        m_phone_yellow = QPixmap(":/images/phone-yellow.png");
+        m_phone_grey   = QPixmap(":/images/phone-grey.png");
+        m_phone_blue   = QPixmap(":/images/phone-blue.png");
+        m_person_green  = QPixmap(":/images/personal-green.png");
+        m_person_red    = QPixmap(":/images/personal-red.png");
+        m_person_orange = QPixmap(":/images/personal-orange.png");
+        m_person_yellow = QPixmap(":/images/personal-yellow.png");
+        m_person_grey   = QPixmap(":/images/personal-grey.png");
+        m_person_blue   = QPixmap(":/images/personal-blue.png");
+}
+
+SearchPanel::~SearchPanel()
+{
+        // qDebug() << "SearchPanel::~SearchPanel()";
+        removePeers();
 }
 
 void SearchPanel::setEngine(BaseEngine * engine)
 {
-        qDebug() << "SearchPanel::setEngine()";
+        // qDebug() << "SearchPanel::setEngine()";
 	m_engine = engine;
         askCallerIds();
 }
@@ -65,15 +84,76 @@ void SearchPanel::setEngine(BaseEngine * engine)
  */
 void SearchPanel::affTextChanged(const QString & text)
 {
-	int i;
-	//qDebug() << "affTextChanged" << text;
-	for(i = 0; i < m_peerlist.count(); i++)
-	{
-		if( m_peerlist[i].name().contains(text, Qt::CaseInsensitive) )
-			m_peerlist[i].getWidget()->show();
-		else
-			m_peerlist[i].getWidget()->hide();
-	}
+        QHashIterator<QString, Peer *> i(m_peerhash);
+	// qDebug() << "affTextChanged" << text;
+        int naff = 0;
+        while(i.hasNext()) {
+                i.next();
+                Peer * p = i.value();
+                PeerWidget * peerwidget = p->getWidget();
+                if( (text != "") && p->name().contains(text, Qt::CaseInsensitive) && (naff < 20) ) {
+                        if(peerwidget == NULL) {
+                                peerwidget = new PeerWidget(p->ext(),
+                                                            p->name(),
+                                                            &m_phone_green,
+                                                            &m_phone_red,
+                                                            &m_phone_orange,
+                                                            &m_phone_grey,
+                                                            &m_phone_yellow,
+                                                            &m_phone_blue,
+                                                            &m_person_green,
+                                                            &m_person_red,
+                                                            &m_person_orange,
+                                                            &m_person_grey,
+                                                            &m_person_yellow,
+                                                            &m_person_blue);
+                                peerwidget->setEngine(m_engine);
+                                p->setWidget(peerwidget);
+                                p->updateWidgetAppearance();
+
+                                m_peerlayout->addWidget( peerwidget );
+                                peerwidget->show();
+                                if(m_engine->isASwitchboard()) {
+                                        connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
+                                                 m_engine, SLOT(originateCall(const QString&, const QString&)) );
+                                        connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
+                                                 m_engine, SLOT(transferCall(const QString&, const QString&)) );
+                                        connect( peerwidget, SIGNAL(hangUpChan(const QString &)),
+                                                 m_engine, SLOT(hangUp(const QString &)) );
+                                        connect( peerwidget, SIGNAL(interceptChan(const QString &)),
+                                                 m_engine, SLOT(interceptCall(const QString &)) );
+                                        connect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
+                                                 peerwidget, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
+                                }
+                                connect( peerwidget, SIGNAL(emitDial(const QString &)),
+                                         m_engine, SLOT(dialFullChannel(const QString &)) );
+                        }
+                        naff ++;
+                } else {
+                        if ( m_peerlayout->indexOf( peerwidget ) > -1 ) {
+                                if(peerwidget != NULL) {
+                                        m_peerlayout->removeWidget( peerwidget );
+                                        peerwidget->hide();
+                                        if(m_engine->isASwitchboard()) {
+                                                disconnect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
+                                                            m_engine, SLOT(originateCall(const QString&, const QString&)) );
+                                                disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
+                                                            m_engine, SLOT(transferCall(const QString&, const QString&)) );
+                                                disconnect( peerwidget, SIGNAL(hangUpChan(const QString &)),
+                                                            m_engine, SLOT(hangUp(const QString &)) );
+                                                disconnect( peerwidget, SIGNAL(interceptChan(const QString &)),
+                                                            m_engine, SLOT(interceptCall(const QString &)) );
+                                                disconnect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
+                                                            peerwidget, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
+                                        }
+                                        disconnect( peerwidget, SIGNAL(emitDial(const QString &)),
+                                                    m_engine, SLOT(dialFullChannel(const QString &)) );
+                                        p->setWidget(NULL);
+                                        delete peerwidget;
+                                }
+                        }
+                }
+ 	}
 }
 
 /*! \brief update peer
@@ -88,80 +168,60 @@ void SearchPanel::updatePeer(const QString & ext,
 			     const QStringList & chanStates,
 			     const QStringList & chanOthers)
 {
-	int i;
-       	//qDebug() << "SearchPanel::updatePeer()" << ext << name << imavail << sipstatus << chanIds;
-	for(i = 0; i < m_peerlist.count(); i++)
-	{
-		if(ext == m_peerlist[i].ext())
-		{
-			m_peerlist[i].updateStatus(imavail, sipstatus, vmstatus, queuestatus);
-			m_peerlist[i].updateChans(chanIds, chanStates, chanOthers);
-			m_peerlist[i].updateName(name);
-			return;
-		}
-	}
+        if(m_peerhash.contains(ext)) {
+                Peer * myp = m_peerhash.value(ext);
+                myp->updateStatus(imavail, sipstatus, vmstatus, queuestatus);
+                myp->updateChans(chanIds, chanStates, chanOthers);
+                myp->updateName(name);
+                return;
+        }
+
         
         // if the name (i.e. full callerid info) has not been received yet, do not add as a peer
         if(name.isEmpty())
                 return;
         
-	Peer peer(ext, name);
-	PeerWidget * peerwidget = new PeerWidget(ext, name, this);
-	peerwidget->setEngine(m_engine);
-	if(m_engine->isASwitchboard()) {
-		connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
-			 m_engine, SLOT(originateCall(const QString&, const QString&)) );
-		connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
-			 m_engine, SLOT(transferCall(const QString&, const QString&)) );
-		connect( peerwidget, SIGNAL(hangUpChan(const QString &)),
-			 m_engine, SLOT(hangUp(const QString &)) );
-		connect( peerwidget, SIGNAL(interceptChan(const QString &)),
-			 m_engine, SLOT(interceptCall(const QString &)) );
-		connect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
-			 peerwidget, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
-	}
-	connect( peerwidget, SIGNAL(emitDial(const QString &)),
-	         m_engine, SLOT(dialFullChannel(const QString &)) );
-	m_peerlayout->addWidget( peerwidget );
-	if( !name.contains(m_input->text(), Qt::CaseInsensitive) )
-	{
-		peerwidget->hide();
-	}
-	peer.setWidget(peerwidget);
-	peer.updateStatus(imavail, sipstatus, vmstatus, queuestatus);
-	peer.updateChans(chanIds, chanStates, chanOthers);
-	m_peerlist << peer;
+	Peer * peer = new Peer(ext, name);
+	peer->updateStatus(imavail, sipstatus, vmstatus, queuestatus);
+	peer->updateChans(chanIds, chanStates, chanOthers);
+        m_peerhash.insert(ext, peer);
+
+        // the peerwidget is not set while its display is not needed, see affTextChanged()
 }
 
 /*! \brief remove on peer
  */
 void SearchPanel::removePeer(const QString & ext)
 {
-	int i;
-        //qDebug() << "SearchPanel::removePeer()" << ext;
-	for(i = 0; i < m_peerlist.size(); i++) {
-                //qDebug() << m_peerlist[i].ext();
-		if(m_peerlist[i].ext() == ext) {
-			PeerWidget * peerwidget = m_peerlist[i].getWidget();
-			m_peerlayout->removeWidget( peerwidget );
-			m_peerlist.removeAt(i);
-			peerwidget->deleteLater();
-			return;
-		}
-	}
+        if(m_peerhash.contains(ext)) {
+                Peer * myp = m_peerhash.value(ext);
+                PeerWidget * peerwidget = myp->getWidget();
+                if (m_peerlayout->indexOf( peerwidget ) > -1)
+                        m_peerlayout->removeWidget( peerwidget );
+                m_peerhash.remove(ext);
+                peerwidget->deleteLater();
+                return;
+        }
 }
 
 /*! \brief clear the widget
  */
 void SearchPanel::removePeers()
 {
-	int i;
-	//qDebug() << "SearchPanel::removePeers()";
-	for(i = 0; i < m_peerlist.size(); i++)
-	{
-		PeerWidget * peerwidget = m_peerlist[i].getWidget();
-		m_peerlayout->removeWidget( peerwidget );
-		peerwidget->deleteLater();
-	}
-	m_peerlist.clear();
+        // qDebug() << "SearchPanel::removePeers()";
+        QHashIterator<QString, Peer *> i(m_peerhash);
+        QTime qtime;
+        qtime.start();
+        while(i.hasNext()) {
+                i.next();
+                Peer * myp = i.value();
+                PeerWidget * peerwidget = myp->getWidget();
+                // qDebug() << "span" << m_peerlayout->indexOf( peerwidget );
+                if (m_peerlayout->indexOf( peerwidget ) > -1)
+                        m_peerlayout->removeWidget( peerwidget );
+                delete peerwidget;
+                //peerwidget->deleteLater();
+        }
+        // qDebug() << "SearchPanel::removePeers : time elapsed" << qtime.elapsed();
+        m_peerhash.clear();
 }

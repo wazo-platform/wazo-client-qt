@@ -90,6 +90,7 @@ public slots:
 	void updateDisplay();
 	void hupchan(const QString &);
 	void transftonumberchan(const QString &);
+	void parkcall(const QString &);
 	void reset();
 	void monitorPeer(const QString &, const QString &);
 protected:
@@ -100,6 +101,7 @@ private:
 signals:
 	void hangUp(const QString &);			//!< hang up a channel
         void transferToNumber(const QString &);	//!< transfers a channel to a number
+        void parkCall(const QString &);	//!< parks a channel
 	void changeTitle(const QString &);		//!< change Title
 	void monitoredPeerChanged(const QString &);	//!< send the name of the new monitored peer
 private:

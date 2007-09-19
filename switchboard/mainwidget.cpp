@@ -184,6 +184,8 @@ void MainWidget::buildSplitters()
 		 m_engine, SLOT(hangUp(const QString &)) );
 	connect( m_calls, SIGNAL(transferToNumber(const QString &)),
 		 m_engine, SLOT(transferToNumber(const QString &)) );
+	connect( m_calls, SIGNAL(parkCall(const QString &)),
+		 m_engine, SLOT(parkCall(const QString &)) );
 	connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
                                              const QString &, const QString &,
                                              const QString &, const QString &,

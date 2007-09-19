@@ -103,6 +103,11 @@ CallWidget::CallWidget(const QString & channelme,
 	m_transferToNumberAction->setStatusTip( tr("Transfer the channel to the dialed number") );
 	connect( m_transferToNumberAction, SIGNAL(triggered()),
 	         this, SLOT(transferToNumber()) );
+
+	m_parkCall = new QAction( tr("&Park the call"), this);
+	m_parkCall->setStatusTip( tr("Park this call") );
+	connect( m_parkCall, SIGNAL(triggered()),
+	         this, SLOT(parkCall()) );
 }
 
 /*! \brief Destructor
@@ -146,9 +151,9 @@ void CallWidget::updateWidget(const QString & action,
 	m_startTime = QDateTime::currentDateTime().addSecs(-time);
 	updateCallTimeLabel();
         if(direction == ">")
-                m_lbl_direction->setPixmap(QPixmap(":rightarrow.png"));
+                m_lbl_direction->setPixmap(QPixmap(":/images/rightarrow.png"));
         else
-                m_lbl_direction->setPixmap(QPixmap(":leftarrow.png"));
+                m_lbl_direction->setPixmap(QPixmap(":/images/leftarrow.png"));
 
 	//	m_lbl_channelpeer->setText(channelpeer);
 	m_lbl_exten->setText(exten);
@@ -158,26 +163,15 @@ void CallWidget::updateWidget(const QString & action,
  */
 void CallWidget::setActionPixmap(const QString & action)
 {
-#if 0
-	if(action == QString("Calling"))
-		m_square.fill( Qt::yellow );
-	else if(action == QString("Ringing"))
-		m_square.fill( Qt::cyan );
-	else if(action == QString("On the phone"))
-		m_square.fill( Qt::red );
-	else
-		m_square.fill( Qt::gray );
-	m_lbl_action->setPixmap( m_square );
-#endif
 	if(action == "Calling")
 		m_lbl_action->setPixmap( m_call_yellow );
 	else if(action == "Ringing")
 		m_lbl_action->setPixmap( m_call_blue );
-	else if(action == "On the phone")
+	else if((action == "On the phone") || (action == "Up"))
 		m_lbl_action->setPixmap( m_call_red );
 	else {
 		m_lbl_action->setPixmap( m_call_gray );
-		qDebug() << " *** WARNING *** action unknown for call" << action;
+		qDebug() << "CallWidget::setActionPixmap() : action unknown" << action;
 	}
 }
 
@@ -266,6 +260,14 @@ void CallWidget::transferToNumber()
         doTransferToNumber( m_channelme );
 }
 
+/*! \brief transfers the channel to a number
+ */
+void CallWidget::parkCall()
+{
+        qDebug() << "CallWidget::parkCall()" << m_channelme;
+        doParkCall( m_channelme );
+}
+
 /*! \brief open the context menu
  */
 void CallWidget::contextMenuEvent(QContextMenuEvent *event)
@@ -274,6 +276,7 @@ void CallWidget::contextMenuEvent(QContextMenuEvent *event)
 	m_contextMenu->addAction(m_hangUpAction);
         // m_transferToNumberAction only if there is something written
 	m_contextMenu->addAction(m_transferToNumberAction);
+	m_contextMenu->addAction(m_parkCall);
 	m_contextMenu->exec(event->globalPos());
 }
 

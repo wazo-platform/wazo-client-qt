@@ -36,8 +36,21 @@ class PeerWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	PeerWidget(const QString & id, const QString & name,
-	           QWidget * parent = 0/*, int size = 16*/);
+	PeerWidget(const QString & id,
+                   const QString & name,
+                   const QPixmap *,
+                   const QPixmap *,
+                   const QPixmap *,
+                   const QPixmap *,
+                   const QPixmap *,
+                   const QPixmap *,
+                   const QPixmap *,
+                   const QPixmap *,
+                   const QPixmap *,
+                   const QPixmap *,
+                   const QPixmap *,
+                   const QPixmap *);
+        //	           QWidget * parent = 0/*, int size = 16*/);
 	~PeerWidget();
 	void clearChanList();
 	void addChannel(const QString &, const QString &, const QString &);
@@ -104,19 +117,32 @@ private:
 	QList<PeerChannel *> m_mychannels;	//!< channels assiciated with ME
 
 	/* TODO : have the Pixmaps as static objects */
-	QPixmap m_phone_green;	//!< green phone icon
-	QPixmap m_phone_red;	//!< red phone icon
-	QPixmap m_phone_orange;	//!< orange phone icon
-	QPixmap m_phone_gray;	//!< gray phone icon
-	QPixmap m_phone_yellow;	//!< yellow phone icon
-	QPixmap m_phone_blue;	//!< blue phone icon
+/* 	QPixmap m_phone_green;	//!< green phone icon */
+/* 	QPixmap m_phone_red;	//!< red phone icon */
+/* 	QPixmap m_phone_orange;	//!< orange phone icon */
+/* 	QPixmap m_phone_gray;	//!< gray phone icon */
+/* 	QPixmap m_phone_yellow;	//!< yellow phone icon */
+/* 	QPixmap m_phone_blue;	//!< blue phone icon */
 
-	QPixmap m_person_green;	//!< green person icon
-	QPixmap m_person_red;	//!< red person icon
-	QPixmap m_person_orange;	//!< orange person icon
-	QPixmap m_person_gray;	//!< gray person icon
-	QPixmap m_person_yellow;	//!< yellow person icon
-	QPixmap m_person_blue;	//!< blue person icon
+/* 	QPixmap m_person_green;	//!< green person icon */
+/* 	QPixmap m_person_red;	//!< red person icon */
+/* 	QPixmap m_person_orange;	//!< orange person icon */
+/* 	QPixmap m_person_gray;	//!< gray person icon */
+/* 	QPixmap m_person_yellow;	//!< yellow person icon */
+/* 	QPixmap m_person_blue;	//!< blue person icon */
+	const QPixmap *m_phone_green;	//!< green phone icon
+	const QPixmap *m_phone_red;	//!< red phone icon
+	const QPixmap *m_phone_orange;	//!< orange phone icon
+	const QPixmap *m_phone_grey;	//!< grey phone icon
+	const QPixmap *m_phone_yellow;	//!< yellow phone icon
+	const QPixmap *m_phone_blue;	//!< blue phone icon
+
+	const QPixmap *m_person_green;	//!< green person icon
+	const QPixmap *m_person_red;	//!< red person icon
+	const QPixmap *m_person_orange;	//!< orange person icon
+	const QPixmap *m_person_grey;	//!< grey person icon
+	const QPixmap *m_person_yellow;	//!< yellow person icon
+	const QPixmap *m_person_blue;	//!< blue person icon
 };
 
 #endif

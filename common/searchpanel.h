@@ -22,12 +22,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #ifndef __SEARCHPANEL_H__
 #define __SEARCHPANEL_H__
-#include <QWidget>
+
 #include <QList>
+#include <QHash>
+#include <QWidget>
+
 #include "peeritem.h"
 
 class QVBoxLayout;
 class QLineEdit;
+
 class BaseEngine;
 
 /*! \brief search panel widget
@@ -37,6 +41,7 @@ class SearchPanel : public QWidget
 	Q_OBJECT
 public:
 	SearchPanel(QWidget * parent = 0);	//!< Constructor
+	~SearchPanel();	//!< Destructor
 	void setEngine(BaseEngine *);	//!< set m_engine
 public slots:
 	void affTextChanged(const QString &);
@@ -55,10 +60,21 @@ signals:
 	void askCallerIds();
 private:
 	BaseEngine * m_engine;	//!< engine object reference
-	QList<Peer> m_peerlist;	//!< Peer list
+	QHash<QString, Peer *> m_peerhash;	//!< Peer list
 	QVBoxLayout * m_peerlayout;	//!< layout object
 	QLineEdit * m_input;	//!< widget for search string input
+        QPixmap m_phone_green;
+        QPixmap m_phone_red;
+        QPixmap m_phone_orange;
+        QPixmap m_phone_grey;
+        QPixmap m_phone_yellow;
+        QPixmap m_phone_blue;
+        QPixmap m_person_green;
+        QPixmap m_person_red;
+        QPixmap m_person_orange;
+        QPixmap m_person_grey;
+        QPixmap m_person_yellow;
+        QPixmap m_person_blue;
 };
 
 #endif
-

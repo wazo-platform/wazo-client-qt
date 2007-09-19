@@ -108,7 +108,7 @@ void CallStackWidget::addCall(const QString & channelme,
 			      const QString & phonen)
 {
 	int found = 0;
-        //qDebug() << "CallStackWidget::addCall" << channelme << action << time << direction << channelpeer << exten;
+        // qDebug() << "CallStackWidget::addCall" << channelme << action << time << direction << channelpeer << exten;
 
 	for(int i = 0; i < m_calllist.count() ; i++) {
 		if(channelme == m_calllist[i].getChannelMe()) {
@@ -139,13 +139,22 @@ void CallStackWidget::hupchan(const QString & hangupchan)
  */
 void CallStackWidget::transftonumberchan(const QString & chan)
 {
+        // qDebug() << "CallStackWidget::transftonumberchan()" << chan;
 	transferToNumber(chan);
+}
+
+/*! \brief transfers the channel to a number
+ */
+void CallStackWidget::parkcall(const QString & chan)
+{
+        // qDebug() << "CallStackWidget::parkcall()" << chan;
+	parkCall(chan);
 }
 
 /*! \brief Reset the Widget */
 void CallStackWidget::reset()
 {
-	//qDebug() << "CallStackWidget::reset()";
+	// qDebug() << "CallStackWidget::reset()";
 	m_calllist.clear();
 	QString empty = "";
 	monitorPeer(empty, empty);
@@ -156,10 +165,10 @@ void CallStackWidget::reset()
  * and empty m_afflist */
 void CallStackWidget::emptyList()
 {
-	//qDebug() << "CallStackWidget::emptyList()";
+	// qDebug() << "CallStackWidget::emptyList()";
 	// cleaning the calling list displayed
 	for(int i = 0; i < m_afflist.count() ; i++) {
-		//qDebug() << " Removing" << m_afflist[i]->channel();
+		// qDebug() << " Removing" << m_afflist[i]->channel();
 		m_layout->removeWidget(m_afflist[i]);
 		//m_afflist[i]->deleteLater();
 		delete m_afflist[i];
@@ -187,14 +196,14 @@ void CallStackWidget::updateDisplay()
 	{
 		for(i = 0; i < m_calllist.count(); i++)
 		{
-			//qDebug() << "   " << j << m_afflist[j]->channel()
+			// qDebug() << "   " << j << m_afflist[j]->channel()
 			//         << i << m_calllist[i].getChannelMe();
 			if(m_afflist[j]->channel() == m_calllist[i].getChannelMe())
 				break;
 		}
 		if(i == m_calllist.count())
 		{
-			//qDebug() << " Removing " << m_afflist[j]->channel();
+			// qDebug() << " Removing " << m_afflist[j]->channel();
 			m_layout->removeWidget(m_afflist[j]);
 			//m_afflist.takeAt(j)->deleteLater();
 			delete m_afflist.takeAt(j);
@@ -230,6 +239,8 @@ void CallStackWidget::updateDisplay()
 			         this, SLOT(hupchan(const QString &)) );
 			connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),
 			         this, SLOT(transftonumberchan(const QString &)) );
+			connect( callwidget, SIGNAL(doParkCall(const QString &)),
+			         this, SLOT(parkcall(const QString &)) );
 			m_afflist.append(callwidget);
 			//m_layout->addWidget(callwidget, 0, Qt::AlignTop);
 			m_layout->insertWidget(m_layout->count() - 1, callwidget,

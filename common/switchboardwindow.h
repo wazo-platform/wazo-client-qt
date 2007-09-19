@@ -17,10 +17,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
 /* $Id$ */
+
 #ifndef __SWITCHBOARDWINDOW_H__
 #define __SWITCHBOARDWINDOW_H__
-#include <QWidget>
+
+#include <QHash>
 #include <QList>
+#include <QWidget>
+
 #include "peerwidget.h"
 #include "peerslayout.h"
 #include "peeritem.h"
@@ -68,10 +72,24 @@ private slots:
 	void removePeerFromLayout(const QString &);
 private:
 	//QGridLayout * m_layout;
-	PeersLayout * m_layout;	//!< Grid Layout for displaying peers
-	QList<Peer> m_peerlist;	//!< Peer list
+	PeersLayout * m_layout;			//!< Grid Layout for displaying peers
+	QList<Peer *> m_peerlist;		//!< Peer list
+	QHash<QString, Peer *> m_peerhash;	//!< Peer hash
+
 	BaseEngine * m_engine;	//!< engine to connect to peer widgets
 	int m_width;	//!< width property
+        QPixmap m_phone_green;
+        QPixmap m_phone_red;
+        QPixmap m_phone_orange;
+        QPixmap m_phone_grey;
+        QPixmap m_phone_yellow;
+        QPixmap m_phone_blue;
+        QPixmap m_person_green;
+        QPixmap m_person_red;
+        QPixmap m_person_orange;
+        QPixmap m_person_grey;
+        QPixmap m_person_yellow;
+        QPixmap m_person_blue;
 };
 
 #endif

@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "logeltwidget.h"
 #include "popup.h"
 
-const int REQUIRED_SERVER_VERSION = 1508;
+const int REQUIRED_SERVER_VERSION = 1538;
 
 /*! \brief Constructor.
  *
@@ -125,15 +125,15 @@ void BaseEngine::loadSettings()
 {
         //qDebug() << "BaseEngine::loadSettings()";
 	QSettings settings;
-	m_serverhost = settings.value("engine/serverhost").toString();
+	m_serverhost = settings.value("engine/serverhost", "192.168.0.254").toString();
 	m_loginport  = settings.value("engine/loginport", 5000).toUInt();
 	m_sbport     = settings.value("engine/serverport", 5003).toUInt();
 
-        m_checked_presence = settings.value("engine/fct_presence", false).toBool();
-        m_checked_cinfo    = settings.value("engine/fct_cinfo",    false).toBool();
+        m_checked_presence = settings.value("engine/fct_presence", true).toBool();
+        m_checked_cinfo    = settings.value("engine/fct_cinfo",    true).toBool();
 
-	m_asterisk   = settings.value("engine/asterisk").toString();
-	m_protocol   = settings.value("engine/protocol").toString();
+	m_asterisk   = settings.value("engine/asterisk", "xivo").toString();
+	m_protocol   = settings.value("engine/protocol", "sip").toString();
 	m_userid     = settings.value("engine/userid").toString();
 	m_passwd     = settings.value("engine/passwd").toString();
 
@@ -565,7 +565,7 @@ void BaseEngine::updatePeers(const QStringList & liststatus)
 
 	// liststatus[0] is a dummy field, only used for debug on the daemon side
 	// p/(asteriskid)/(context)/(protocol)/(phoneid)/(phonenum)
-	
+
 	if(liststatus.count() < nfields0)
 	{
 		// not valid
@@ -610,9 +610,9 @@ void BaseEngine::updatePeers(const QStringList & liststatus)
 		}
 	}
 
-	updatePeer(pname, m_callerids[pname],
-	           InstMessAvail, SIPPresStatus, VoiceMailStatus, QueueStatus,
-	           chanIds, chanStates, chanOthers);
+        updatePeer(pname, m_callerids[pname],
+                   InstMessAvail, SIPPresStatus, VoiceMailStatus, QueueStatus,
+                   chanIds, chanStates, chanOthers);
         if(m_is_a_switchboard)
                 if(   (m_userid == liststatus[3])
                       && (m_dialcontext == liststatus[5]))
@@ -633,13 +633,19 @@ void BaseEngine::updateCallerids(const QStringList & liststatus)
 bool BaseEngine::parseCommand(const QStringList & listitems)
 {
 	QSettings settings;
+        //        qDebug() << "BaseEngine::parseCommand listitems[0].toLower() =" << listitems[0].toLower();
         if(listitems[0].toLower() == "callerids") {
                 QStringList listpeers = listitems[1].split(";");
-                for(int i = 0 ; i < listpeers.size() - 1; i++) {
+                for(int i = 1 ; i < listpeers.size() - 1; i++) {
                         QStringList liststatus = listpeers[i].split(":");
                         updateCallerids(liststatus);
                 }
-                askPeers();
+                if(listpeers[0] == "0") {
+                        qDebug() << "number of callerids defined :" << m_callerids.size();
+                        askPeers();
+                } else {
+                        sendCommand("callerids " + listpeers[0]);
+                }
         } else if(listitems[0].toLower() == "history") {
                 processHistory(listitems[1].split(";"));
         } else if(listitems[0].toLower() == "directory-response") {
@@ -675,34 +681,38 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 }
         } else if(listitems[0].toLower() == QString("hints")) {
                 QStringList listpeers = listitems[1].split(";");
-                for(int i = 0 ; i < listpeers.size() - 1; i++) {
+                for(int i = 1 ; i < listpeers.size() - 1; i++) {
                         QStringList liststatus = listpeers[i].split(":");
                         updatePeers(liststatus);
                 }
 
-                callsUpdated();
+                if(listpeers[0] == "0") {
+                        callsUpdated();
 
-                QString myfullid   = "p/" + m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" + m_userid + "/" + m_extension;
-                QString myfullname = m_callerids[myfullid];
-                localUserDefined(myfullname);
+                        QString myfullid   = "p/" + m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" + m_userid + "/" + m_extension;
+                        QString myfullname = m_callerids[myfullid];
+                        localUserDefined(myfullname);
 
-                // Who do we monitor ?
-                // First look at the last monitored one
-                QString fullid_watched = settings.value("monitor/peer").toString();
+                        // Who do we monitor ?
+                        // First look at the last monitored one
+                        QString fullid_watched = settings.value("monitor/peer").toString();
 
-                // If there was nobody, let's watch ourselves.
-                if(fullid_watched.isEmpty())
-                        monitorPeer(myfullid, myfullname);
-                else {
-                        QString fullname_watched = m_callerids[fullid_watched];
-                        // If the CallerId value is empty, fallback to ourselves.
-                        if(fullname_watched.isEmpty())
+                        // If there was nobody, let's watch ourselves.
+                        if(fullid_watched.isEmpty())
                                 monitorPeer(myfullid, myfullname);
                         else {
-                                monitorPeer(fullid_watched, fullname_watched);
+                                QString fullname_watched = m_callerids[fullid_watched];
+                                // If the CallerId value is empty, fallback to ourselves.
+                                if(fullname_watched.isEmpty())
+                                        monitorPeer(myfullid, myfullname);
+                                else {
+                                        monitorPeer(fullid_watched, fullname_watched);
+                                }
                         }
+                        emitTextMessage(tr("Peers' status updated"));
+                } else {
+                        sendCommand("hints " + listpeers[0]);
                 }
-                emitTextMessage(tr("Peers' status updated"));
 
         } else if(listitems[0].toLower() == QString("message")) {
                 QTime currentTime = QTime::currentTime();
@@ -821,7 +831,8 @@ void BaseEngine::socketReadyRead()
 	//QByteArray data = m_sbsocket->readAll();
 
 	while(m_sbsocket->canReadLine()) {
-		QByteArray data  = m_sbsocket->readLine();
+		QByteArray data  = m_sbsocket->readAll();
+                // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
 		QString line     = QString::fromUtf8(data);
 		QStringList list = line.trimmed().split("=");
 
@@ -885,7 +896,6 @@ void BaseEngine::transferToNumber(const QString & chan)
                 transferCall(chan, m_numbertodial);
         }
 }
-
 
 /*! \brief send an originate command to the server
  */
@@ -952,6 +962,17 @@ void BaseEngine::transferCall(const QString & src, const QString & dst)
 	else
                 sendCommand("transfer " + src + " p/" + m_asterisk + "/"
                             + m_dialcontext + "/" + "/" + "/" + dst);
+}
+
+/*! \brief send a transfer call command to the server
+ */
+void BaseEngine::parkCall(const QString & src)
+{
+        QString parkedcalls_context = "parkedcalls";
+        QString parkedcalls_number  = "700";
+	qDebug() << "BaseEngine::parkCall()" << src;
+        sendCommand("transfer " + src + " p/" + m_asterisk + "/"
+                    + parkedcalls_context + "/" + "/" + "/" + parkedcalls_number);
 }
 
 /*! \brief intercept a call (a channel)

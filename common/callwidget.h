@@ -81,9 +81,11 @@ private:
 signals:
 	void doHangUp(const QString &);	//!< hang up the channel
 	void doTransferToNumber(const QString &);	//!< transfers the channel
+	void doParkCall(const QString &);	//!< parks the channel
 public slots:
 	void hangUp();
 	void transferToNumber();
+	void parkCall();
 private:
 	QPoint m_dragstartpos;	//!< used for drag
 	QString m_channelme;	//!< channel identifier
@@ -102,10 +104,8 @@ private:
 	QDateTime m_startTime;	//!< call start date/time
 	QAction * m_hangUpAction;	//!< Hang Up Action
         QAction * m_transferToNumberAction;	//!< Transfer to Number Action
+        QAction * m_parkCall;	//!< Park the Call Action
         QMenu * m_contextMenu;
 };
 
-
-
 #endif
-

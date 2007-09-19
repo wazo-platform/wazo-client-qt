@@ -32,6 +32,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 Peer::Peer(const QString & ext, const QString & name)
         : m_ext(ext), m_name(name)
 {
+        m_peerwidget = NULL;
+}
+
+Peer::Peer()
+{
+        m_peerwidget = NULL;
 }
 
 /*! \brief Copy constructor
@@ -52,52 +58,74 @@ void Peer::updateStatus(const QString & imavail,
 			const QString & vmstatus,
 			const QString & queuestatus)
 {
+        m_imavail     = imavail;
+        m_sipstatus   = sipstatus;
+        m_vmstatus    = vmstatus;
+        m_queuestatus = queuestatus;
+
+        if(m_peerwidget == NULL)
+                return;
+
+        updateWidgetAppearance();
+
+        return;
+}
+
+/*! \brief update status of the peer
+ *
+ * Change what is displayed according to new status values.
+ */
+void Peer::updateWidgetAppearance()
+{
+        if(m_peerwidget == NULL)
+                return;
+
 	QString display_imavail;
 	QString display_sipstatus;
 
 	//qDebug() << imavail << sipstatus;
-	if(imavail == "available") {
+	if(m_imavail == "available") {
 		m_peerwidget->setGreen(1);
 		display_imavail = PeerWidget::tr("Available");
-	} else if(imavail == "away") {
+	} else if(m_imavail == "away") {
 		m_peerwidget->setBlue(1);/*setDarkGreen(1);*/
 		display_imavail = PeerWidget::tr("Away");
-	} else if(imavail == "donotdisturb") {
+	} else if(m_imavail == "donotdisturb") {
 		m_peerwidget->setRed(1);
 		display_imavail = PeerWidget::tr("Do not disturb");
-	} else if(imavail == "berightback") {
+	} else if(m_imavail == "berightback") {
 		m_peerwidget->setOrange(1);
 		display_imavail = PeerWidget::tr("Be Right Back");
-	} else if(imavail == "outtolunch") {
+	} else if(m_imavail == "outtolunch") {
 		m_peerwidget->setYellow(1);
 		display_imavail = PeerWidget::tr("Out To Lunch");
-	} else if(imavail == "unknown") {
+	} else if(m_imavail == "unknown") {
 		m_peerwidget->setGray(1);
 		display_imavail = PeerWidget::tr("Unknown");
 	} else {
 		m_peerwidget->setGray(1);
-		display_imavail = imavail;
+		display_imavail = m_imavail;
 	}
 
 
-	if(sipstatus == "Ready") {
+	if(m_sipstatus == "Ready") {
 		m_peerwidget->setGreen(0);
 		display_sipstatus = PeerWidget::tr("Ready");
-	} else if(sipstatus == "Ringing") {
+	} else if(m_sipstatus == "Ringing") {
 		m_peerwidget->setBlue(0);/*setCyan(0);*/
 		display_sipstatus = PeerWidget::tr("Ringing");
-	} else if(sipstatus == "Calling") {
+	} else if(m_sipstatus == "Calling") {
 		m_peerwidget->setYellow(0);
 		display_sipstatus = PeerWidget::tr("Calling");
-	} else if((sipstatus == "On the phone") || (sipstatus == "Up")) {
+	} else if((m_sipstatus == "On the phone") || (m_sipstatus == "Up")) {
 		m_peerwidget->setRed(0);
 		display_sipstatus = PeerWidget::tr("On the phone");
-	} else if(sipstatus == "Not online") {
+	} else if(m_sipstatus == "Not online") {
 		m_peerwidget->setGray(0);
 		display_sipstatus = PeerWidget::tr("Not online");
 	} else {
 		m_peerwidget->setGray(0);
-		display_sipstatus = sipstatus;
+		display_sipstatus = m_sipstatus;
 	}
 
 
@@ -113,6 +141,7 @@ void Peer::updateStatus(const QString & imavail,
 	//    m_peerwidget->setToolTip(status);
 	//  else
 	//    m_peerwidget->setToolTip(status + "\n" + corrname);
+        return;
 }
 
 /*! \brief update channel list
@@ -127,8 +156,12 @@ void Peer::updateChans(const QStringList & chanIds,
 		qDebug() << "Peer::updateChans() : bad args";
 		return;
 	}
-	if(m_peerwidget)
-	{
+
+        m_chanIds    = chanIds;
+        m_chanStates = chanStates;
+        m_chanOthers = chanOthers;
+
+	if(m_peerwidget) {
 		m_peerwidget->clearChanList();
 		for(int i = 0; i < chanIds.size(); i++)
 		{
@@ -144,7 +177,8 @@ void Peer::updateName(const QString & newname)
 	if(newname != m_name)
 	{
 		m_name = newname;
-		m_peerwidget->setName(m_name);
+                if(m_peerwidget)
+                        m_peerwidget->setName(m_name);
 	}
 }
 

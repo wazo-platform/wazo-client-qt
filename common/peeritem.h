@@ -17,10 +17,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
 /* $Id$ */
+
 #ifndef __PEERITEM_H__
 #define __PEERITEM_H__
-#include <QString>
+
 #include <QObject>
+#include <QString>
+#include <QStringList>
 
 class PeerWidget;
 
@@ -32,6 +35,7 @@ public:
 	//Peer( const QString & ext, QObject * parent = 0 );
 	Peer( const QString & ext, const QString & name );
 	Peer( const Peer & peer);
+	Peer( );
 	//! get m_ext
 	const QString & ext() const { return m_ext; };
 	//! get m_name
@@ -41,6 +45,7 @@ public:
 	void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
 	//! get m_peerwidget
 	PeerWidget * getWidget() { return m_peerwidget; };
+        void updateWidgetAppearance();
 	void updateStatus(const QString & imavail,
 			  const QString & sipstatus,
 			  const QString & vmstatus,
@@ -53,6 +58,15 @@ private:
 	QString m_ext;		//!< Extension
 	QString m_name;		//!< Person name
 	PeerWidget * m_peerwidget;	//!< related PeerWidget
+
+        // Properties of each peer
+        QString m_imavail;
+        QString m_sipstatus;
+        QString m_vmstatus;
+        QString m_queuestatus;
+        QStringList m_chanIds;
+        QStringList m_chanStates;
+        QStringList m_chanOthers;
 };
 
 

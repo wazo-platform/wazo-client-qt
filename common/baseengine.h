@@ -130,6 +130,8 @@ public slots:
 	void searchDirectory(const QString &);
 	void requestHistory(const QString &, int);
         void transferToNumber(const QString &);
+        void parkCall(const QString &);
+
         void textEdited(const QString &);
 	void setAvailable();			//!< set user status as "available"
 	void setAway();				//!< set user status as "away"
