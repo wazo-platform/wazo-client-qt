@@ -46,6 +46,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "identitydisplay.h"
 #include "logwidget.h"
 #include "mainwidget.h"
+#include "parkingpanel.h"
 #include "popup.h"
 #include "searchpanel.h"
 #include "servicepanel.h"
@@ -140,16 +141,18 @@ void MainWidget::buildSplitters()
  	m_areaCalls->setWidget(m_calls);
 	m_svc_tabwidget = new QTabWidget(m_leftSplitter);
 	m_messages_widget = new DisplayMessagesPanel(m_svc_tabwidget);
-	m_svc_tabwidget->addTab(m_messages_widget, extraspace + tr("Messages") + extraspace);
+        m_parkingpanel = new ParkingPanel(m_svc_tabwidget);
+        m_svc_tabwidget->addTab(m_messages_widget, extraspace + tr("Messages") + extraspace);
+	m_svc_tabwidget->addTab(m_parkingpanel, extraspace + tr("Parking") + extraspace);
 	m_leftSplitter->restoreState(settings.value("display/leftSplitterSizes").toByteArray());
 
 	// Middle Splitter Definitions
         m_areaPeers = new QScrollArea(m_middleSplitter);
         m_areaPeers->setWidgetResizable(true);
- 	m_widget = new SwitchBoardWindow(m_areaPeers);
- 	m_widget->setEngine(m_engine);
-	m_engine->addRemovable(m_widget->metaObject());
- 	m_areaPeers->setWidget(m_widget);
+ 	m_sbwidget = new SwitchBoardWindow(m_areaPeers);
+ 	m_sbwidget->setEngine(m_engine);
+	m_engine->addRemovable(m_sbwidget->metaObject());
+ 	m_areaPeers->setWidget(m_sbwidget);
 	m_dirpanel = new DirectoryPanel(m_middleSplitter);
 	m_middleSplitter->restoreState(settings.value("display/middleSplitterSizes").toByteArray());
 
@@ -172,6 +175,14 @@ void MainWidget::buildSplitters()
 	         m_leftpanel->titleLabel(), SLOT(setText(const QString &)) );
 	connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
                  m_messages_widget, SLOT(addMessage(const QString &)));
+
+	connect( m_engine, SIGNAL(parkingEvent(const QString &, const QString &)),
+                 m_parkingpanel, SLOT(parkingEvent(const QString &, const QString &)));
+	connect( m_parkingpanel, SIGNAL(emitDial(const QString &)),
+	         m_engine, SLOT(dialExtension(const QString &)) );
+	connect( m_parkingpanel, SIGNAL(copyNumber(const QString &)),
+	         m_engine, SLOT(copyNumber(const QString &)) );
+
 	connect( m_engine, SIGNAL(updateCall(const QString &, const QString &, int, const QString &,
 					     const QString &, const QString &, const QString &)),
 		 m_calls, SLOT(addCall(const QString &, const QString &, int, const QString &,
@@ -193,15 +204,15 @@ void MainWidget::buildSplitters()
                                              const QString &, const QString &,
                                              const QStringList &, const QStringList &,
                                              const QStringList &)),
-	         m_widget, SLOT(updatePeer(const QString &, const QString &,
-					   const QString &, const QString &,
-					   const QString &, const QString &,
-					   const QStringList &, const QStringList &,
-					   const QStringList &)) );
+	         m_sbwidget, SLOT(updatePeer(const QString &, const QString &,
+                                             const QString &, const QString &,
+                                             const QString &, const QString &,
+                                             const QStringList &, const QStringList &,
+                                             const QStringList &)) );
 	connect( m_engine, SIGNAL(delogged()),
-	         m_widget, SLOT(removePeers()) );
+	         m_sbwidget, SLOT(removePeers()) );
 	connect( m_engine, SIGNAL(removePeer(const QString &)),
-	         m_widget, SLOT(removePeer(const QString &)) );
+	         m_sbwidget, SLOT(removePeer(const QString &)) );
 	connect( m_dirpanel, SIGNAL(searchDirectory(const QString &)),
 	         m_engine, SLOT(searchDirectory(const QString &)) );
 	connect( m_engine, SIGNAL(directoryResponse(const QString &)),
@@ -250,6 +261,7 @@ void MainWidget::removeSplitters()
 	QSettings settings;
         // Left Splitter Definitions
 	delete m_messages_widget;
+	delete m_parkingpanel;
 	delete m_svc_tabwidget;
         delete m_calls;
         delete m_areaCalls;
@@ -257,7 +269,7 @@ void MainWidget::removeSplitters()
 
 	// Middle Splitter Definitions
 	delete m_dirpanel;
- 	delete m_widget;
+ 	delete m_sbwidget;
         delete m_areaPeers;
 
         // Right Splitter Definitions

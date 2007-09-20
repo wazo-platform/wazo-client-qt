@@ -42,6 +42,7 @@ class DisplayMessagesPanel;
 class IdentityDisplay;
 class LeftPanel;
 class LogWidget;
+class ParkingPanel;
 class Popup;
 class SearchPanel;
 class ServicePanel;
@@ -80,7 +81,7 @@ private:
 	QSplitter * m_middleSplitter;	//!< vertical splitter in the middle
 	QSplitter * m_rightSplitter;	//!< Vertical splitter on the right
 	BaseEngine * m_engine;	//!< Engine
-	SwitchBoardWindow * m_widget;	//!< Widget to display peers
+	SwitchBoardWindow * m_sbwidget;	//!< Widget to display peers
 	QTabWidget * m_cinfo_tabwidget;	//!< Area to display profiles
 	QTabWidget * m_svc_tabwidget;	//!< Area to display messages, services and histories
 	ServicePanel * m_featureswidget;
@@ -88,6 +89,7 @@ private:
 	DirectoryPanel * m_dirpanel;
 	LogWidget * m_logwidget;
         LeftPanel * m_leftpanel;
+        ParkingPanel * m_parkingpanel;
         QScrollArea * m_areaCalls;
         QScrollArea * m_areaPeers;
         SearchPanel * m_searchpanel;

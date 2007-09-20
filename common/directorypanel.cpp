@@ -61,8 +61,6 @@ DirectoryPanel::DirectoryPanel(QWidget * parent)
 	         this, SLOT(itemClicked(QTableWidgetItem *)) );
 	connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
 	         this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-	connect( m_table, SIGNAL(emitDial(const QString &)),
-	         this, SIGNAL(emitDial(const QString &)) );
 	connect( this, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
 	         m_table, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
 	connect( m_table, SIGNAL(transferCall(const QString &, const QString &)),

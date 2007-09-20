@@ -20,38 +20,45 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  * $Date$
  */
 
-#ifndef __DISPLAYMESSAGES_H__
-#define __DISPLAYMESSAGES_H__
+#ifndef __PARKINGPANEL_H__
+#define __PARKINGPANEL_H__
 
 #include <QWidget>
 #include <QList>
 #include <QLabel>
-
 #include "peeritem.h"
 
 class QVBoxLayout;
 class QLineEdit;
 class QTableWidget;
+class QTableWidgetItem;
 
 /*! \brief Widget to display a list of messages
  *
  * dispays the messages in a table with timestamps.
  */
-class DisplayMessagesPanel : public QWidget
+class ParkingPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	DisplayMessagesPanel(QWidget * parent = 0);
+	ParkingPanel(QWidget * parent = 0);
+        ~ParkingPanel();
+protected:
+	void timerEvent(QTimerEvent *);		//!< receive timer events
 public slots:
-/* 	void affTextChanged(); */
-	void addMessage(const QString &);
-/* signals: */
-/* 	void emitDial(const QString &); */
+        void parkingEvent(const QString &, const QString &);
+private slots:
+	void itemClicked(QTableWidgetItem *);
+	void itemDoubleClicked(QTableWidgetItem *);
+signals:
+	void copyNumber(const QString &);
+	void emitDial(const QString &);
 private:
  	//QLabel * m_text;
 	//! Table
 	QTableWidget * m_table;
+        int m_timerid;
+        int m_deltasec;
 };
 
 #endif
-

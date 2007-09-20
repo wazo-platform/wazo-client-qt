@@ -146,7 +146,7 @@ void BaseEngine::loadSettings()
 
 	m_historysize = settings.value("engine/historysize", 8).toUInt();
 	m_tcpmode = settings.value("engine/tcpmode", false).toBool();
-        //	m_checked_lastconnwins = settings.value("engine/lastconnwins", false).toBool();
+        m_checked_lastconnwins = settings.value("engine/lastconnwins", false).toBool();
 
 	m_availstate = settings.value("engine/availstate", "available").toString();
 }
@@ -177,7 +177,7 @@ void BaseEngine::saveSettings()
 
 	settings.setValue("engine/historysize", m_historysize);
 	settings.setValue("engine/tcpmode", m_tcpmode);
-        //	settings.setValue("engine/lastconnwins", m_checked_lastconnwins);
+        settings.setValue("engine/lastconnwins", m_checked_lastconnwins);
 
 	settings.setValue("engine/availstate", m_availstate);
 }
@@ -478,7 +478,11 @@ void BaseEngine::socketConnected()
                         m_pendingcommand += "state=unknown;";
                 m_pendingcommand += "state=" + m_availstate + ";";
                 m_pendingcommand += "ident=" + m_clientid   + ";";
-                m_pendingcommand += "passwd=" + m_passwd + ";version=" + SVNVER;
+                m_pendingcommand += "passwd=" + m_passwd + ";version=" + SVNVER + ";";
+                if(m_checked_lastconnwins)
+                        m_pendingcommand += "lastconnwins=true";
+                else
+                        m_pendingcommand += "lastconnwins=false";
                 // login <asterisk> <techno> <id>
                 sendTCPCommand();
         }
@@ -741,6 +745,16 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         emitTextMessage(tr("Received Services Data for ") + m_monitored_asterisk + "/" + m_monitored_userid);
                 } else
                         emitTextMessage(tr("Could not retrieve the Services data."));
+
+        } else if((listitems[0].toLower() == QString("parkedcall")) && (listitems.size() == 2)) {
+                parkingEvent(listitems[0], listitems[1]);
+        } else if(listitems[0].toLower() == QString("unparkedcall")) {
+                parkingEvent(listitems[0], listitems[1]);
+        } else if(listitems[0].toLower() == QString("parkedcalltimeout")) {
+                parkingEvent(listitems[0], listitems[1]);
+        } else if(listitems[0].toLower() == QString("parkedcallgiveup")) {
+                parkingEvent(listitems[0], listitems[1]);
+
         } else if(listitems[0].toLower() == QString("featuresput")) {
                 qDebug() << "received ack from featuresput :" << listitems;
         } else if((listitems[0] != "") && (listitems[0] != "______"))
@@ -831,7 +845,7 @@ void BaseEngine::socketReadyRead()
 	//QByteArray data = m_sbsocket->readAll();
 
 	while(m_sbsocket->canReadLine()) {
-		QByteArray data  = m_sbsocket->readAll();
+		QByteArray data  = m_sbsocket->readLine();
                 // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
 		QString line     = QString::fromUtf8(data);
 		QStringList list = line.trimmed().split("=");
@@ -968,11 +982,9 @@ void BaseEngine::transferCall(const QString & src, const QString & dst)
  */
 void BaseEngine::parkCall(const QString & src)
 {
-        QString parkedcalls_context = "parkedcalls";
-        QString parkedcalls_number  = "700";
 	qDebug() << "BaseEngine::parkCall()" << src;
         sendCommand("transfer " + src + " p/" + m_asterisk + "/"
-                    + parkedcalls_context + "/" + "/" + "/" + parkedcalls_number);
+                    + m_dialcontext + "/" + "/" + "/special:parkthecall");
 }
 
 /*! \brief intercept a call (a channel)

@@ -174,6 +174,7 @@ signals:
 	void newProfile(Popup *);		//!< signal emitted when a new profile has to be shown
 	void emitTextMessage(const QString &);	//! message to be displayed to the user.
         void pasteToDialPanel(const QString &);
+        void parkingEvent(const QString &, const QString &);
 
 	//! a call
 	void updateCall(const QString & channelme,

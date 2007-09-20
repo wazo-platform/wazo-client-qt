@@ -41,7 +41,7 @@ DisplayMessagesPanel::DisplayMessagesPanel(QWidget * parent)
 {
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
 	vlayout->setMargin(0);
-	QLabel * lbl = new QLabel( tr("Messages :"), this );
+	// QLabel * lbl = new QLabel( tr("Messages :"), this );
 	m_table = new QTableWidget( this );
         m_table->setAlternatingRowColors(true);
         m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
@@ -52,7 +52,7 @@ DisplayMessagesPanel::DisplayMessagesPanel(QWidget * parent)
 	labels << tr("Message");
 	m_table->setHorizontalHeaderLabels(labels);
 
-	vlayout->addWidget( lbl, 0, Qt::AlignCenter );
+        //	vlayout->addWidget( lbl, 0, Qt::AlignCenter );
 	vlayout->addWidget( m_table, 0 );
 }
 
