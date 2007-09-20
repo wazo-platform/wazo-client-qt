@@ -63,6 +63,7 @@ ParkingPanel::ParkingPanel(QWidget * parent)
 
 	vlayout->addWidget( m_table, 0 );
         m_table->resizeColumnsToContents();
+        m_timerid = 0;
         m_deltasec = 2;
 }
 

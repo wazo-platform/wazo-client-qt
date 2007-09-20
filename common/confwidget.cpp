@@ -127,9 +127,11 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	gridlayout->addWidget(lblpasswd, line, 0);
 	gridlayout->addWidget(m_passwd, line++, 1);
 
-        m_lastconnwins = new QCheckBox(tr("The last connected one takes on the login"), this);
- 	m_lastconnwins->setCheckState(m_engine->lastconnwins() ? Qt::Checked : Qt::Unchecked);
-        // 	gridlayout->addWidget(m_lastconnwins, line++, 0, 1, 0);
+
+        QString lastconn = tr("The last connected one takes on the login");
+        //m_lastconnwins = new QCheckBox(tr("The last connected one takes on the login"), this);
+ 	//m_lastconnwins->setCheckState(m_engine->lastconnwins() ? Qt::Checked : Qt::Unchecked);
+        //gridlayout->addWidget(m_lastconnwins, line++, 0, 1, 0);
 
 	m_autoconnect = new QCheckBox(tr("Autoconnect at startup"), this);
 	m_autoconnect->setCheckState(m_engine->autoconnect()?Qt::Checked:Qt::Unchecked);
@@ -203,7 +205,7 @@ void ConfWidget::saveAndClose()
 
 	m_engine->setHistorySize(m_history_sbox->value());
 	m_engine->setTcpmode(m_tcpmode->checkState() == Qt::Checked);
-        m_engine->setLastConnWins(m_lastconnwins->checkState() == Qt::Checked);
+        // m_engine->setLastConnWins(m_lastconnwins->checkState() == Qt::Checked);
 	m_mainwindow->setTablimit(m_tablimit_sbox->value());
 
 	m_engine->saveSettings();
