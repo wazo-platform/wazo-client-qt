@@ -29,6 +29,8 @@ class QTableWidget;
 class QTableWidgetItem;
 
 class ExtendedLineEdit;
+class ExtendedTableWidget;
+class PeerChannel;
 
 /*! \brief Directory allowing search
  */
@@ -50,22 +52,25 @@ signals:
 	void transferCall(const QString &, const QString &);
 	//! originate a call
 	void originateCall(const QString &, const QString &);
-	//! signal to be redirected to view
-	void updateMyCalls(const QStringList &, const QStringList &, const QStringList &);
 private slots:
+	void dialNumber();
+        void sendMail();
 	void startSearch();
         void itemClicked(QTableWidgetItem *);
 	void itemDoubleClicked(QTableWidgetItem *);
-	//void dialNumber();
+	void transferChan(const QString &);
 public slots:
+        void contextMenuEvent(QContextMenuEvent *);
 	void setSearchResponse(const QString &);
 	void stop();
+	void updateMyCalls(const QStringList &, const QStringList &, const QStringList &);
 private:
 	ExtendedLineEdit * m_searchText;	//!< search text input
+	ExtendedTableWidget * m_table;		//!< table to display results
 	QPushButton * m_searchButton;	//!< button
-	QTableWidget * m_table;		//!< table to display results
-	QString m_numberToDial;		//!< used for dial action
+	QString m_numberToDial;		//!< used to store number to dial or to transfer to
+	QString m_mailAddr;		//!< used to store email address
+	QList<PeerChannel *> m_mychannels;	//!< "my channels" list for transfer menu
 };
 
 #endif
-

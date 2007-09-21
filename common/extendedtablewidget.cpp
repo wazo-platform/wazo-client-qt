@@ -53,80 +53,8 @@ ExtendedTableWidget::ExtendedTableWidget(int rows, int columns, QWidget * parent
  */
 void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
 {
-	qDebug() << "ExtendedTableWidget::contextMenuEvent()";
-	qDebug() << event->pos();
-	QTableWidgetItem * item = itemAt( event->pos() );
-	QRegExp re_number("\\+?[0-9\\s\\.]+");
-	if(item && re_number.exactMatch( item->text() )) {
-		m_numberToDial = item->text();
-		qDebug() << "preparing to dial :" << m_numberToDial;
-		QMenu contextMenu(this);
-		contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
-		if(!m_mychannels.empty()) {
-			QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
-			QListIterator<PeerChannel *> i(m_mychannels);
-			while(i.hasNext())
-			{
-				const PeerChannel * channel = i.next();
-				transferMenu->addAction(channel->otherPeer(),
-				                        channel, SLOT(transfer()));
-			}
-			contextMenu.addMenu(transferMenu);
-		}
-		contextMenu.exec( event->globalPos() );
-	}
-
- 	if(item && item->text().contains("@")) {
-                m_mailAddr = item->text();
-                qDebug() << "email addr detection :" << m_mailAddr;
- 		QMenu emailContextMenu(this);
-                emailContextMenu.addAction( tr("Send an E-mail"), this, SLOT(sendMail()) );
-                emailContextMenu.exec( event->globalPos() );
- 	}
-}
-
-/*! \brief dial the number (when context menu item is toggled)
- */
-void ExtendedTableWidget::dialNumber()
-{
-	if(m_numberToDial.length() > 0)
-	{
-		emitDial( m_numberToDial );
-	}
-}
-
-/*! \brief dial the number (when context menu item is toggled)
- */
-void ExtendedTableWidget::sendMail()
-{
-        if(m_mailAddr.length() > 0) {
-                qDebug() << "ExtendedTableWidget::sendMail()" << m_mailAddr;
-                QDesktopServices::openUrl(QUrl("mailto:" + m_mailAddr));
-        }
-}
-
-/*! \brief update call list for transfer
- */
-void ExtendedTableWidget::updateMyCalls(const QStringList & chanIds,
-                                        const QStringList & chanStates,
-                                        const QStringList & chanOthers)
-{
-	while(!m_mychannels.isEmpty())
-		delete m_mychannels.takeFirst();
-	for(int i = 0; i<chanIds.count(); i++)
-	{
-		PeerChannel * ch = new PeerChannel(chanIds[i], chanStates[i], chanOthers[i]);
-		connect(ch, SIGNAL(transferChan(const QString &)),
-		        this, SLOT(transferChan(const QString &)) );
-		m_mychannels << ch;
-	}
-}
-
-/*! \brief transfer channel to the number
- */
-void ExtendedTableWidget::transferChan(const QString & chan)
-{
-	transferCall(chan, m_numberToDial);
+        qDebug() << "ExtendedTableWidget::contextMenuEvent()" << event;
+        ContextMenuEvent(event);
 }
 
 /*! \brief filter drag events
@@ -147,7 +75,7 @@ void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
  */
 void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-	//qDebug() << "ExtendedTableWidget::dragMoveEvent()" << event->pos();
+	// qDebug() << "ExtendedTableWidget::dragMoveEvent()" << event->pos();
 	if(event->proposedAction() & ( Qt::CopyAction | Qt::MoveAction ))
 		event->acceptProposedAction();
 	QTableWidgetItem * item = itemAt( event->pos() );
@@ -174,15 +102,12 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
 	{
 		QString from = event->mimeData()->text();
 		if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
-                        qDebug() << "A" << from << item->text();
 			event->acceptProposedAction();
 			transferCall(from, item->text());
 		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
-                        qDebug() << "B" << from << item->text();
 			event->acceptProposedAction();
 			originateCall(from, item->text());
 		} else {
-                        qDebug() << "C" << from << item->text();
 			event->ignore();
                 }
 	}

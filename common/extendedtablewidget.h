@@ -24,8 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #define __EXTENDEDTABLEWIDGET_H__
 
 #include <QTableWidget>
-#include <QList>
-#include "peerchannel.h"
 
 class QContextMenuEvent;
 
@@ -38,25 +36,15 @@ public:
 	ExtendedTableWidget(QWidget * parent = 0);
 	ExtendedTableWidget(int rows, int columns, QWidget * parent = 0);
 protected:
-	void contextMenuEvent(QContextMenuEvent * event);
-	void dragEnterEvent(QDragEnterEvent *event);
-	void dragMoveEvent(QDragMoveEvent *event);
-	void dropEvent(QDropEvent *event);
+	void contextMenuEvent(QContextMenuEvent *);
+	void dragEnterEvent(QDragEnterEvent *);
+	void dragMoveEvent(QDragMoveEvent *);
+	void dropEvent(QDropEvent *);
 signals:
 	void emitDial(const QString & number);	//!< dial
 	void transferCall(const QString &, const QString &);	//!< transfer a call
 	void originateCall(const QString &, const QString &);	//!< originate a call
-public slots:
-	void updateMyCalls(const QStringList &, const QStringList &, const QStringList &);
-private slots:
-	void dialNumber();
-        void sendMail();
-	void transferChan(const QString &);
-private:
-	QString m_numberToDial;		//!< used to store number to dial or to transfer to
-	QString m_mailAddr;		//!< used to store email address
-	QList<PeerChannel *> m_mychannels;	//!< "my channels" list for transfer menu
+	void ContextMenuEvent(QContextMenuEvent *);
 };
 
 #endif
-

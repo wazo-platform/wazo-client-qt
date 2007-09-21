@@ -20,9 +20,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  * $Date$
  */
 
+#include <QContextMenuEvent>
 #include <QDebug>
 #include <QHeaderView>
 #include <QLabel>
+#include <QMenu>
 #include <QTableWidget>
 #include <QTime>
 #include <QTimerEvent>
@@ -65,11 +67,15 @@ ParkingPanel::ParkingPanel(QWidget * parent)
 	         this, SIGNAL(transferCall(const QString &, const QString &)) );
 	connect( m_table, SIGNAL(originateCall(const QString &, const QString &)),
 	         this, SIGNAL(originateCall(const QString &, const QString &)) );
+	connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
+	         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
 
 	vlayout->addWidget( m_table, 0 );
         m_table->resizeColumnsToContents();
         m_timerid = 0;
         m_deltasec = 2;
+        m_astid    = "";
+        m_placenum = "";
 }
 
 ParkingPanel::~ParkingPanel()
@@ -78,6 +84,10 @@ ParkingPanel::~ParkingPanel()
         delete m_table;
 }
 
+void ParkingPanel::setEngine(BaseEngine * engine)
+{
+	m_engine = engine;
+}
 
 /*! \brief add a message to the list
  *
@@ -143,20 +153,20 @@ void ParkingPanel::parkingEvent(const QString & eventkind, const QString & str)
 
 void ParkingPanel::itemClicked(QTableWidgetItem * item)
 {
-        int rown = m_table->row(item);
-        QString astid = m_table->item(rown, 0)->text();
-        QString placenum = m_table->item(rown, 1)->text();
-
-        copyNumber(m_table->item(rown, 1)->text());
+        int rown   = m_table->row(item);
+        m_astid    = m_table->item(rown, 0)->text();
+        m_placenum = m_table->item(rown, 1)->text();
+        if(m_astid == m_engine->serverast())
+                copyNumber(m_placenum);
 }
 
 void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
 {
-        int rown = m_table->row(item);
-        QString astid = m_table->item(rown, 0)->text();
-        QString placenum = m_table->item(rown, 1)->text();
-
-        emitDial(m_table->item(rown, 1)->text());
+        int rown   = m_table->row(item);
+        m_astid    = m_table->item(rown, 0)->text();
+        m_placenum = m_table->item(rown, 1)->text();
+        if(m_astid == m_engine->serverast())
+                emitDial(m_placenum);
 }
 
 void ParkingPanel::timerEvent(QTimerEvent * event)
@@ -171,3 +181,48 @@ void ParkingPanel::timerEvent(QTimerEvent * event)
                 }
 }
 
+void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
+{
+	QTableWidgetItem * item = m_table->itemAt( event->pos() );
+        if (item == NULL)
+                return;
+
+        int rown     = m_table->row(item);
+        m_astid      = m_table->item(rown, 0)->text();
+        m_placenum   = m_table->item(rown, 1)->text();
+        m_parkedpeer = m_table->item(rown, 3)->text();
+
+	QRegExp re_number("\\+?[0-9\\s\\.]+");
+	if(item && re_number.exactMatch(m_placenum) && (m_astid == m_engine->serverast())) {
+		QMenu contextMenu(this);
+		contextMenu.addAction( tr("&Dial") + " " + m_placenum + tr(" to unpark ") + m_parkedpeer,
+                                       this, SLOT(dialNumber()) );
+// 		contextMenu.addAction( tr("&Hangup") + " " + m_parkedpeer,
+//                                        this, SLOT(hangUp()) );
+		if(!m_mychannels.empty()) {
+			QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
+			QListIterator<PeerChannel *> i(m_mychannels);
+			while(i.hasNext()) {
+				const PeerChannel * channel = i.next();
+				transferMenu->addAction(channel->otherPeer(),
+				                        channel, SLOT(transfer()));
+			}
+			contextMenu.addMenu(transferMenu);
+		}
+		contextMenu.exec( event->globalPos() );
+	}
+}
+
+/*! \brief dial the number (when context menu item is toggled)
+ */
+void ParkingPanel::dialNumber()
+{
+	if((m_placenum.length() > 0) && (m_astid == m_engine->serverast()))
+                emitDial(m_placenum);
+}
+
+/*! \brief dial the number (when context menu item is toggled)
+ */
+void ParkingPanel::hangUp()
+{
+}

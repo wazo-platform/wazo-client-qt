@@ -46,6 +46,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "popup.h"
 #include "searchpanel.h"
 #include "servicepanel.h"
+#include "xivoconsts.h"
 
 const QString extraspace("  ");
 
@@ -380,7 +381,7 @@ void MainWidget::engineStarted()
 			} else if (dc == QString("dial")) {
 				m_dial = new DialPanel();
 				connect( m_dial, SIGNAL(emitDial(const QString &)),
-					 m_engine, SLOT(dialExtension(const QString &)) );
+					 m_engine, SLOT(dialFullChannel(const QString &)) );
                                 connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
                                          m_dial, SLOT(setNumberToDial(const QString &)) );
 
@@ -478,10 +479,6 @@ void MainWidget::engineStarted()
 					 m_engine, SLOT(dialFullChannel(const QString &)) );
 				connect( m_directory, SIGNAL(copyNumber(const QString &)),
 					 m_engine, SLOT(copyNumber(const QString &)) );
-				//connect( m_directory, SIGNAL(transferCall(const QString &, const QString &)),
-				//m_engine, SLOT(transferCall(const QString &, const QString &)) );
-				//connect( m_directory, SIGNAL(originateCall(const QString &, const QString &)),
-				//m_engine, SLOT(originateCall(const QString &, const QString &)) );
 				
 				connect( m_engine, SIGNAL(directoryResponse(const QString &)),
 					 m_directory, SLOT(setSearchResponse(const QString &)) );
@@ -661,7 +658,7 @@ void MainWidget::showNewProfile(Popup * popup)
 			m_cinfo_tabwidget->widget(0)->close();
 		}
                 connect( popup, SIGNAL(emitDial(const QString &)),
-                         m_engine, SLOT(dialExtension(const QString &)) );
+                         m_engine, SLOT(dialFullChannel(const QString &)) );
 		// show the window and give it the focus.
 		setVisible(true);
 		activateWindow();
@@ -755,8 +752,9 @@ void MainWidget::about()
 			      "<p>* see her/his buddies</p>"
 			      "<p>* originate a dial towards some number</p>") +
 			   "<p><b>" + tr("Version : ") + QString("</b>%1 (").arg(applicationVersion) +
-			   "<b>svn : " + QString("</b>%1 - %2)</p>").arg(SVNVER,
+			   "<b>svn : " + QString("</b>%1 - %2)</p>").arg(__current_client_version__,
                                                                          fetchlastone) +
+                           "(" + tr("Advised Server Version : ") + __required_server_version__ + ")" +
 			   "<hr><p>(C) 2007 <a href=http://www.proformatique.com><b>Proformatique</b></a></p>"
 			   "<p>67 rue Voltaire 92800 Puteaux FRANCE</p>"
 			   "<p><b>E-mail : </b><a href=mailto:technique@proformatique.com>technique@proformatique.com</p>"

@@ -51,6 +51,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "searchpanel.h"
 #include "servicepanel.h"
 #include "switchboardwindow.h"
+#include "xivoconsts.h"
 
 const QString extraspace("  ");
 
@@ -142,6 +143,7 @@ void MainWidget::buildSplitters()
 	m_svc_tabwidget = new QTabWidget(m_leftSplitter);
 	m_messages_widget = new DisplayMessagesPanel(m_svc_tabwidget);
         m_parkingpanel = new ParkingPanel(m_svc_tabwidget);
+        m_parkingpanel->setEngine(m_engine);
         m_svc_tabwidget->addTab(m_messages_widget, extraspace + tr("Messages") + extraspace);
 	m_svc_tabwidget->addTab(m_parkingpanel, extraspace + tr("Parking") + extraspace);
 	m_leftSplitter->restoreState(settings.value("display/leftSplitterSizes").toByteArray());
@@ -182,11 +184,11 @@ void MainWidget::buildSplitters()
 	connect( m_parkingpanel, SIGNAL(copyNumber(const QString &)),
 	         m_engine, SLOT(copyNumber(const QString &)) );
 	connect( m_parkingpanel, SIGNAL(emitDial(const QString &)),
-	         m_engine, SLOT(dialExtension(const QString &)) );
+	         m_engine, SLOT(dialFullChannel(const QString &)) );
 	connect( m_parkingpanel, SIGNAL(transferCall(const QString &, const QString &)),
 	         m_engine, SLOT(transferCall(const QString &, const QString &)) );
 	connect( m_parkingpanel, SIGNAL(originateCall(const QString &, const QString &)),
-	         m_engine, SLOT(originateCall(const QString &, const QString &)) );
+	         m_engine, SLOT(originateCallGoodAsterisk(const QString &, const QString &)) );
 
 	connect( m_engine, SIGNAL(updateCall(const QString &, const QString &, int, const QString &,
 					     const QString &, const QString &, const QString &)),
@@ -228,16 +230,15 @@ void MainWidget::buildSplitters()
         connect( m_dirpanel, SIGNAL(copyNumber(const QString &)),
                  m_engine, SLOT(copyNumber(const QString &)) );
 	connect( m_dirpanel, SIGNAL(emitDial(const QString &)),
-	         m_engine, SLOT(dialExtension(const QString &)) );
+	         m_engine, SLOT(dialFullChannel(const QString &)) );
 	connect( m_dirpanel, SIGNAL(transferCall(const QString &, const QString &)),
 	         m_engine, SLOT(transferCall(const QString &, const QString &)) );
 	connect( m_dirpanel, SIGNAL(originateCall(const QString &, const QString &)),
-	         m_engine, SLOT(originateCall(const QString &, const QString &)) );
+	         m_engine, SLOT(originateCallGoodAsterisk(const QString &, const QString &)) );
 	connect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
-	         m_dirpanel, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
+	         m_dirpanel, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
 	connect( m_engine, SIGNAL(delogged()),
 	         m_dirpanel, SLOT(stop()) );
-        
         
 	connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
                                              const QString &, const QString &,
@@ -256,9 +257,9 @@ void MainWidget::buildSplitters()
 	connect( m_engine, SIGNAL(removePeer(const QString &)),
 	         m_searchpanel, SLOT(removePeer(const QString &)) );
 	connect( m_dialpanel, SIGNAL(emitDial(const QString &)),
-	         m_engine, SLOT(dialExtension(const QString &)) );
+	         m_engine, SLOT(dialFullChannel(const QString &)) );
         connect( m_dialpanel, SIGNAL(originateCall(const QString&, const QString&)),
-	         m_engine, SLOT(originateCall(const QString&, const QString&)) );
+	         m_engine, SLOT(originateCallGoodAsterisk(const QString&, const QString&)) );
 	connect( m_dialpanel, SIGNAL(textEdited(const QString &)),
                  m_engine, SLOT(textEdited(const QString &)) );
         connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
@@ -622,7 +623,7 @@ void MainWidget::showNewProfile(Popup * popup)
 			m_cinfo_tabwidget->widget(0)->close();
 		}
                 connect( popup, SIGNAL(emitDial(const QString &)),
-                         m_engine, SLOT(dialExtension(const QString &)) );
+                         m_engine, SLOT(dialFullChannel(const QString &)) );
 		// show the window and give it the focus.
 		setVisible(true);
 		activateWindow();
@@ -658,8 +659,9 @@ void MainWidget::about()
 			   tr("<p>This application displays the status of the"
 			      " ongoing phone calls.</p>") +
 			   "<p><b>" + tr("Version : ") + QString("</b>%1 (").arg(applicationVersion) +
-			   "<b>svn : " + QString("</b>%1 - %2)</p>").arg(SVNVER,
+			   "<b>svn : " + QString("</b>%1 - %2)</p>").arg(__current_client_version__,
                                                                          fetchlastone) +
+                           "(" + tr("Advised Server Version : ") + __required_server_version__ + ")" +
 			   "<hr><p>(C) 2007 <a href=http://www.proformatique.com><b>Proformatique</b></a></p>"
 			   "<p>67 rue Voltaire 92800 Puteaux FRANCE</p>"
 			   "<p><b>E-mail : </b><a href=mailto:technique@proformatique.com>technique@proformatique.com</p>"

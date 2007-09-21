@@ -1,4 +1,4 @@
-/* XIVO switchboard
+/* XIVO CTI clients
 Copyright (C) 2007  Proformatique
 
 This program is free software; you can redistribute it and/or
@@ -16,14 +16,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
-/* $Id$ */
+/* $Revision$
+ * $Date$
+ */
+
 #ifndef __PEERWIDGET_H__
 #define __PEERWIDGET_H__
+
 #include <QWidget>
-#include <QPixmap>
 #include <QPoint>
 
+#include "peerchannel.h"
+
 class QLabel;
+class QPixmap;
 
 class BaseEngine;
 class PeerChannel;
@@ -117,19 +123,6 @@ private:
 	QList<PeerChannel *> m_mychannels;	//!< channels assiciated with ME
 
 	/* TODO : have the Pixmaps as static objects */
-/* 	QPixmap m_phone_green;	//!< green phone icon */
-/* 	QPixmap m_phone_red;	//!< red phone icon */
-/* 	QPixmap m_phone_orange;	//!< orange phone icon */
-/* 	QPixmap m_phone_gray;	//!< gray phone icon */
-/* 	QPixmap m_phone_yellow;	//!< yellow phone icon */
-/* 	QPixmap m_phone_blue;	//!< blue phone icon */
-
-/* 	QPixmap m_person_green;	//!< green person icon */
-/* 	QPixmap m_person_red;	//!< red person icon */
-/* 	QPixmap m_person_orange;	//!< orange person icon */
-/* 	QPixmap m_person_gray;	//!< gray person icon */
-/* 	QPixmap m_person_yellow;	//!< yellow person icon */
-/* 	QPixmap m_person_blue;	//!< blue person icon */
 	const QPixmap *m_phone_green;	//!< green phone icon
 	const QPixmap *m_phone_red;	//!< red phone icon
 	const QPixmap *m_phone_orange;	//!< orange phone icon

@@ -32,8 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "baseengine.h"
 #include "logeltwidget.h"
 #include "popup.h"
-
-const int REQUIRED_SERVER_VERSION = 1538;
+#include "xivoconsts.h"
 
 /*! \brief Constructor.
  *
@@ -478,7 +477,7 @@ void BaseEngine::socketConnected()
                         m_pendingcommand += "state=unknown;";
                 m_pendingcommand += "state=" + m_availstate + ";";
                 m_pendingcommand += "ident=" + m_clientid   + ";";
-                m_pendingcommand += "passwd=" + m_passwd + ";version=" + SVNVER + ";";
+                m_pendingcommand += "passwd=" + m_passwd + ";version=" + __current_client_version__ + ";";
                 if(m_checked_lastconnwins)
                         m_pendingcommand += "lastconnwins=true";
                 else
@@ -918,49 +917,45 @@ void BaseEngine::textEdited(const QString & text)
         m_numbertodial = text;
 }
 
+void BaseEngine::copyNumber(const QString & dst)
+{
+        pasteToDialPanel(dst);
+}
+
 /*! \brief send an originate command to the server
  */
 void BaseEngine::originateCall(const QString & src, const QString & dst)
 {
 	qDebug() << "BaseEngine::originateCall()" << src << dst;
 	QStringList dstlist = dst.split("/");
-	if(dstlist.size() > 5)
+	if(dstlist.size() >= 6)
                 sendCommand("originate " + src + " " + dst);
-	else
-                sendCommand("originate " + src + " p/" + m_asterisk + "/"
-                            + m_dialcontext + "/" + "/" + "/" + dst);
-
-        //		+ dstlist[0] + "/" + dstlist[1] + "/" + m_dialcontext + "/"
-        //	+ dstlist[3] + "/" + dstlist[4] + "/" + dstlist[5];
 }
 
-
-void BaseEngine::copyNumber(const QString & dst)
+/*! \brief send an originate command to the server
+ */
+void BaseEngine::originateCallGoodAsterisk(const QString & src, const QString & dst)
 {
-        pasteToDialPanel(dst);
+	qDebug() << "BaseEngine::originateCallGoodAsterisk()" << src << dst;
+	QStringList srclist = src.split("/");
+	QStringList dstlist = dst.split("/");
+        if((dstlist.size() == 1) && (srclist.size() >= 5))
+                sendCommand("originate " + src +
+                            " p/" + srclist[1] + "/" + srclist[2] + "///" + dst);
 }
 
-
-/*! \brief dial (originate with known src)
+/*! \brief originate from locally logged user to the full defined dst p////
+ *         (typ. when calling a peerwidget displayed)
  */
 void BaseEngine::dialFullChannel(const QString & dst)
 {
 	qDebug() << "BaseEngine::dialFullChannel()" << dst;
-        sendCommand("originate p/" +
-                    m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" +
-                    m_userid + "/" + m_extension +
-                    " " + dst);
-}
-
-/*! \brief dial (originate with known src)
- */
-void BaseEngine::dialExtension(const QString & dst)
-{
-	qDebug() << "BaseEngine::dialExtension()" << dst;
-        sendCommand("originate p/" +
-                    m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" + 
-                    m_userid + "/" + m_extension +
-                    " " + "p/" + m_asterisk + "/" + m_dialcontext + "/" + "/" + "/" + dst);
+	QStringList dstlist = dst.split("/");
+        QString src = "p/" + m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" + m_userid + "/" + m_extension;
+        if(dstlist.size() == 6)
+                originateCall(src, dst);
+        else if(dstlist.size() == 1)
+                originateCallGoodAsterisk(src, dst);
 }
 
 /*! \brief send a transfer call command to the server
@@ -983,8 +978,9 @@ void BaseEngine::transferCall(const QString & src, const QString & dst)
 void BaseEngine::parkCall(const QString & src)
 {
 	qDebug() << "BaseEngine::parkCall()" << src;
-        sendCommand("transfer " + src + " p/" + m_asterisk + "/"
-                    + m_dialcontext + "/" + "/" + "/special:parkthecall");
+        QStringList srclist = src.split("/");
+        sendCommand("transfer " + src + " p/" + srclist[1] + "/"
+                    + srclist[2] + "/" + "/" + "/special:parkthecall");
 }
 
 /*! \brief intercept a call (a channel)
@@ -1490,7 +1486,7 @@ void BaseEngine::identifyToTheServer()
 	qDebug() << "BaseEngine::identifyToTheServer()" << m_serveraddress;
         setMyClientId();
 	outline.append("LOGIN " + m_asterisk + "/" + m_protocol.toLower() + m_userid + \
-                       " " + m_clientid + " " + SVNVER);
+                       " " + m_clientid + " " + __current_client_version__);
 	qDebug() << "BaseEngine::identifyToTheServer()" << outline;
 	outline.append("\r\n");
 	m_loginsocket->write(outline.toAscii());

@@ -63,19 +63,46 @@ void Peer::updateStatus(const QString & imavail,
         m_vmstatus    = vmstatus;
         m_queuestatus = queuestatus;
 
-        if(m_peerwidget == NULL)
-                return;
+        if(m_peerwidget != NULL)
+                updateDisplayedStatus();
+}
 
-        updateWidgetAppearance();
+/*! \brief update channel list
+ */
+void Peer::updateChans(const QStringList & chanIds,
+                       const QStringList & chanStates,
+                       const QStringList & chanOthers)
+{
+	if( (chanIds.size() != chanStates.size())
+	   || (chanIds.size() != chanOthers.size()) )
+	{
+		qDebug() << "Peer::updateChans() : bad args";
+		return;
+	}
 
-        return;
+        m_chanIds    = chanIds;
+        m_chanStates = chanStates;
+        m_chanOthers = chanOthers;
+
+        if(m_peerwidget != NULL)
+                updateDisplayedChans();
+}
+
+/*! \brief update name if changed
+ */
+void Peer::updateName(const QString & newname)
+{
+	if(newname != m_name)
+		m_name = newname;
+        if(m_peerwidget != NULL)
+                updateDisplayedName();
 }
 
 /*! \brief update status of the peer
  *
  * Change what is displayed according to new status values.
  */
-void Peer::updateWidgetAppearance()
+void Peer::updateDisplayedStatus()
 {
         if(m_peerwidget == NULL)
                 return;
@@ -137,48 +164,29 @@ void Peer::updateWidgetAppearance()
 
 	m_peerwidget->setToolTip(fortooltip);
 
-	//  if(corrname == "")
-	//    m_peerwidget->setToolTip(status);
-	//  else
-	//    m_peerwidget->setToolTip(status + "\n" + corrname);
         return;
 }
 
 /*! \brief update channel list
  */
-void Peer::updateChans(const QStringList & chanIds,
-                       const QStringList & chanStates,
-                       const QStringList & chanOthers)
+void Peer::updateDisplayedChans()
 {
-	if( (chanIds.size() != chanStates.size())
-	   || (chanIds.size() != chanOthers.size()) )
-	{
-		qDebug() << "Peer::updateChans() : bad args";
-		return;
-	}
+	if(m_peerwidget == NULL)
+                return;
 
-        m_chanIds    = chanIds;
-        m_chanStates = chanStates;
-        m_chanOthers = chanOthers;
-
-	if(m_peerwidget) {
-		m_peerwidget->clearChanList();
-		for(int i = 0; i < chanIds.size(); i++)
-		{
-			m_peerwidget->addChannel(chanIds[i], chanStates[i], chanOthers[i]);
-		}
-	}
+        m_peerwidget->clearChanList();
+        for(int i = 0; i < m_chanIds.size(); i++)
+                m_peerwidget->addChannel(m_chanIds[i], m_chanStates[i], m_chanOthers[i]);
+        return;
 }
 
 /*! \brief update name if changed
  */
-void Peer::updateName(const QString & newname)
+void Peer::updateDisplayedName()
 {
-	if(newname != m_name)
-	{
-		m_name = newname;
-                if(m_peerwidget)
-                        m_peerwidget->setName(m_name);
-	}
-}
+	if(m_peerwidget == NULL)
+                return;
 
+        m_peerwidget->setName(m_name);
+        return;
+}

@@ -8,7 +8,7 @@
 
 COMMONDIR = ../common
 
-VERSION = $$system(touch mainwidget.cpp $${COMMONDIR}/baseengine.cpp && svn info -r HEAD .. | tail -3 | head -1 | sed "s/.*:.//")
+VERSION = $$system(touch $${COMMONDIR}/xivoconsts.h && svn info -r HEAD .. | tail -3 | head -1 | sed "s/.*:.//")
 VERSTR = '\\"$${VERSION}\\"'  # place quotes around the version string
 DEFINES += SVNVER=\"$${VERSTR}\" # create a VER macro containing the version string
 
@@ -21,12 +21,20 @@ CONFIG += static
 
 # Input
 HEADERS += mainwidget.h
-HEADERS += $${COMMONDIR}/popup.h $${COMMONDIR}/xmlhandler.h $${COMMONDIR}/remotepicwidget.h $${COMMONDIR}/urllabel.h
-HEADERS += $${COMMONDIR}/servicepanel.h $${COMMONDIR}/confwidget.h $${COMMONDIR}/identitydisplay.h
+HEADERS += $${COMMONDIR}/popup.h
+HEADERS += $${COMMONDIR}/xmlhandler.h
+HEADERS += $${COMMONDIR}/remotepicwidget.h
+HEADERS += $${COMMONDIR}/urllabel.h
+HEADERS += $${COMMONDIR}/servicepanel.h
+HEADERS += $${COMMONDIR}/confwidget.h
+HEADERS += $${COMMONDIR}/identitydisplay.h
 HEADERS += $${COMMONDIR}/baseengine.h
-HEADERS += $${COMMONDIR}/dialpanel.h      $${COMMONDIR}/logwidget.h           $${COMMONDIR}/logeltwidget.h
+HEADERS += $${COMMONDIR}/dialpanel.h
+HEADERS += $${COMMONDIR}/logwidget.h
+HEADERS += $${COMMONDIR}/logeltwidget.h
 HEADERS += $${COMMONDIR}/directorypanel.h $${COMMONDIR}/extendedtablewidget.h $${COMMONDIR}/peerchannel.h
 HEADERS += $${COMMONDIR}/peerwidget.h     $${COMMONDIR}/peeritem.h            $${COMMONDIR}/searchpanel.h
+HEADERS += $${COMMONDIR}/extendedlineedit.h
 
 SOURCES += mainwidget.cpp main.cpp
 SOURCES += $${COMMONDIR}/popup.cpp $${COMMONDIR}/xmlhandler.cpp $${COMMONDIR}/remotepicwidget.cpp $${COMMONDIR}/urllabel.cpp
@@ -34,6 +42,7 @@ SOURCES += $${COMMONDIR}/servicepanel.cpp $${COMMONDIR}/confwidget.cpp $${COMMON
 SOURCES += $${COMMONDIR}/baseengine.cpp
 SOURCES += $${COMMONDIR}/logwidget.cpp           $${COMMONDIR}/searchpanel.cpp  $${COMMONDIR}/peerwidget.cpp
 SOURCES += $${COMMONDIR}/dialpanel.cpp           $${COMMONDIR}/logeltwidget.cpp $${COMMONDIR}/directorypanel.cpp
+SOURCES += $${COMMONDIR}/extendedlineedit.cpp
 SOURCES += $${COMMONDIR}/extendedtablewidget.cpp $${COMMONDIR}/peerchannel.cpp  $${COMMONDIR}/peeritem.cpp
 
 QT += network

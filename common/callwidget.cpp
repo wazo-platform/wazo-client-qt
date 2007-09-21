@@ -114,7 +114,7 @@ CallWidget::CallWidget(const QString & channelme,
  */
 CallWidget::~CallWidget()
 {
-        qDebug() << "CallWidget::~CallWidget()";
+        // qDebug() << "CallWidget::~CallWidget()";
 }
 
 /*! \brief update time displayed in m_lbl_time

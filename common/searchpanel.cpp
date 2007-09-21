@@ -112,7 +112,9 @@ void SearchPanel::affTextChanged(const QString & text)
                                                             &m_person_blue);
                                 peerwidget->setEngine(m_engine);
                                 peeritem->setWidget(peerwidget);
-                                peeritem->updateWidgetAppearance();
+                                peeritem->updateDisplayedStatus();
+                                peeritem->updateDisplayedChans();
+                                peeritem->updateDisplayedName();
 
                                 m_peerlayout->addWidget( peerwidget );
                                 peerwidget->show();

@@ -214,13 +214,8 @@ void PeerWidget::removeFromPanel()
  */
 void PeerWidget::dial()
 {
-	//qDebug() << "PeerWidget::dial()" << m_id;
-	if(m_engine->isASwitchboard())
-		emitDial( m_id );
-	else {
-		QStringList peerinfo = m_id.split("/");
-		if (peerinfo.size() > 5) emitDial( peerinfo[5] );
-	}
+	qDebug() << "PeerWidget::dial()" << m_id;
+        emitDial( m_id );
 }
 
 /*! \brief mouse press. store position

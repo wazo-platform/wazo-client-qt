@@ -1,4 +1,4 @@
-/* XIVO switchboard
+/* XIVO CTI clients
 Copyright (C) 2007  Proformatique
 
 This program is free software; you can redistribute it and/or
@@ -16,7 +16,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
-/* $Id$ */
+/* $Revision$
+ * $Date$
+ */
 
 #ifndef __PEERITEM_H__
 #define __PEERITEM_H__
@@ -45,7 +47,7 @@ public:
 	void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
 	//! get m_peerwidget
 	PeerWidget * getWidget() { return m_peerwidget; };
-        void updateWidgetAppearance();
+
 	void updateStatus(const QString & imavail,
 			  const QString & sipstatus,
 			  const QString & vmstatus,
@@ -54,6 +56,10 @@ public:
 	                 const QStringList & chanStates,
 	                 const QStringList & chanOthers);
 	void updateName(const QString & newname);
+
+	void updateDisplayedStatus();
+	void updateDisplayedChans();
+	void updateDisplayedName();
 private:
 	QString m_ext;		//!< Extension
 	QString m_name;		//!< Person name
@@ -71,4 +77,3 @@ private:
 
 
 #endif
-

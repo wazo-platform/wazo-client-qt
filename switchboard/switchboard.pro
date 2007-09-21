@@ -8,7 +8,7 @@
 
 COMMONDIR = ../common
 
-VERSION = $$system(touch mainwidget.cpp $${COMMONDIR}/baseengine.cpp && svn info -r HEAD .. | tail -3 | head -1 | sed "s/.*:.//")
+VERSION = $$system(touch $${COMMONDIR}/xivoconsts.h && svn info -r HEAD .. | tail -3 | head -1 | sed "s/.*:.//")
 VERSTR = '\\"$${VERSION}\\"'  # place quotes around the version string
 DEFINES += SVNVER=\"$${VERSTR}\" # create a VER macro containing the version string
 

@@ -34,6 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "directorypanel.h"
 #include "extendedtablewidget.h"
 #include "extendedlineedit.h"
+#include "peerchannel.h"
 
 /*! \brief Constructor
  *
@@ -62,14 +63,16 @@ DirectoryPanel::DirectoryPanel(QWidget * parent)
 	         this, SLOT(itemClicked(QTableWidgetItem *)) );
 	connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
 	         this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-	connect( this, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
-	         m_table, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
 	connect( m_table, SIGNAL(transferCall(const QString &, const QString &)),
 	         this, SIGNAL(transferCall(const QString &, const QString &)) );
 	connect( m_table, SIGNAL(originateCall(const QString &, const QString &)),
 	         this, SIGNAL(originateCall(const QString &, const QString &)) );
+	connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
+	         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+
 	vlayout->addWidget(m_table);
         setAcceptDrops(true);
+        m_numberToDial = "";
 }
 
 
@@ -172,3 +175,78 @@ void DirectoryPanel::stop()
 	m_searchText->setText("");
 }
 
+void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
+{
+	QTableWidgetItem * item = m_table->itemAt( event->pos() );
+        if (item == NULL)
+                return;
+
+	QRegExp re_number("\\+?[0-9\\s\\.]+");
+	if(item && re_number.exactMatch( item->text() )) {
+		m_numberToDial = item->text();
+		qDebug() << "preparing to dial :" << m_numberToDial;
+		QMenu contextMenu(this);
+		contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
+ 		if(!m_mychannels.empty()) {
+			QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
+			QListIterator<PeerChannel *> i(m_mychannels);
+			while(i.hasNext()) {
+				const PeerChannel * channel = i.next();
+				transferMenu->addAction(channel->otherPeer(),
+				                        channel, SLOT(transfer()));
+			}
+			contextMenu.addMenu(transferMenu);
+		}
+		contextMenu.exec( event->globalPos() );
+	}
+
+ 	if(item && item->text().contains("@")) {
+                m_mailAddr = item->text();
+                qDebug() << "email addr detection :" << m_mailAddr;
+ 		QMenu emailContextMenu(this);
+                emailContextMenu.addAction( tr("Send an E-mail"), this, SLOT(sendMail()) );
+                emailContextMenu.exec( event->globalPos() );
+ 	}
+}
+
+/*! \brief dial the number (when context menu item is toggled)
+ */
+void DirectoryPanel::dialNumber()
+{
+	if(m_numberToDial.length() > 0)
+		emitDial( m_numberToDial );
+}
+
+/*! \brief dial the number (when context menu item is toggled)
+ */
+void DirectoryPanel::sendMail()
+{
+        if(m_mailAddr.length() > 0) {
+                qDebug() << "ExtendedTableWidget::sendMail()" << m_mailAddr;
+                QDesktopServices::openUrl(QUrl("mailto:" + m_mailAddr));
+        }
+}
+
+/*! \brief update call list for transfer
+ */
+void DirectoryPanel::updateMyCalls(const QStringList & chanIds,
+                                   const QStringList & chanStates,
+                                   const QStringList & chanOthers)
+{
+	while(!m_mychannels.isEmpty())
+		delete m_mychannels.takeFirst();
+	for(int i = 0; i<chanIds.count(); i++)
+	{
+		PeerChannel * ch = new PeerChannel(chanIds[i], chanStates[i], chanOthers[i]);
+		connect(ch, SIGNAL(transferChan(const QString &)),
+		        this, SLOT(transferChan(const QString &)) );
+		m_mychannels << ch;
+	}
+}
+
+/*! \brief transfer channel to the number
+ */
+void DirectoryPanel::transferChan(const QString & chan)
+{
+	transferCall(chan, m_numberToDial);
+}

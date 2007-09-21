@@ -25,15 +25,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #include <QWidget>
 #include <QList>
-#include <QLabel>
-#include "peeritem.h"
 
-class QVBoxLayout;
-class QLineEdit;
+class QContextMenuEvent;
 class QTableWidget;
 class QTableWidgetItem;
 
+class BaseEngine;
 class ExtendedTableWidget;
+class PeerChannel;
 
 /*! \brief Widget to display a list of messages
  *
@@ -45,11 +44,15 @@ class ParkingPanel : public QWidget
 public:
 	ParkingPanel(QWidget * parent = 0);
         ~ParkingPanel();
+        void setEngine(BaseEngine *);
 protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
 public slots:
         void parkingEvent(const QString &, const QString &);
+        void contextMenuEvent(QContextMenuEvent *);
 private slots:
+	void dialNumber();
+	void hangUp();
 	void itemClicked(QTableWidgetItem *);
 	void itemDoubleClicked(QTableWidgetItem *);
 signals:
@@ -58,11 +61,14 @@ signals:
 	void transferCall(const QString &, const QString &);
 	void originateCall(const QString &, const QString &);
 private:
- 	//QLabel * m_text;
-	//! Table
-	ExtendedTableWidget * m_table;
+	BaseEngine * m_engine;	//!< engine object reference
+	ExtendedTableWidget * m_table;	//! Table
         int m_timerid;
         int m_deltasec;
+	QString m_astid;	//!< asterisk id selected
+	QString m_placenum;	//!< number to call to retrieve the parked call
+	QString m_parkedpeer;	//!< parked peer
+	QList<PeerChannel *> m_mychannels;	//!< "my channels" list for transfer menu
 };
 
 #endif

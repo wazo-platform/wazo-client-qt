@@ -120,10 +120,9 @@ protected:
 public slots:
 	void start();				//!< start the connection process.
 	void stop();				//!< stop the engine
-	void originateCall(const QString &,
-                           const QString &);
+	void originateCall(const QString &, const QString &);
+	void originateCallGoodAsterisk(const QString &, const QString &);
 	void dialFullChannel(const QString &);
-	void dialExtension(const QString &);
 	void transferCall(const QString &,
                           const QString &);
 	void interceptCall(const QString &);
