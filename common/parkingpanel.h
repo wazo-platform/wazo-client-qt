@@ -33,6 +33,8 @@ class QLineEdit;
 class QTableWidget;
 class QTableWidgetItem;
 
+class ExtendedTableWidget;
+
 /*! \brief Widget to display a list of messages
  *
  * dispays the messages in a table with timestamps.
@@ -53,10 +55,12 @@ private slots:
 signals:
 	void copyNumber(const QString &);
 	void emitDial(const QString &);
+	void transferCall(const QString &, const QString &);
+	void originateCall(const QString &, const QString &);
 private:
  	//QLabel * m_text;
 	//! Table
-	QTableWidget * m_table;
+	ExtendedTableWidget * m_table;
         int m_timerid;
         int m_deltasec;
 };

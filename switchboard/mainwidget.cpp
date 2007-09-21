@@ -176,12 +176,17 @@ void MainWidget::buildSplitters()
 	connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
                  m_messages_widget, SLOT(addMessage(const QString &)));
 
+        /* Parking Signals */
 	connect( m_engine, SIGNAL(parkingEvent(const QString &, const QString &)),
                  m_parkingpanel, SLOT(parkingEvent(const QString &, const QString &)));
-	connect( m_parkingpanel, SIGNAL(emitDial(const QString &)),
-	         m_engine, SLOT(dialExtension(const QString &)) );
 	connect( m_parkingpanel, SIGNAL(copyNumber(const QString &)),
 	         m_engine, SLOT(copyNumber(const QString &)) );
+	connect( m_parkingpanel, SIGNAL(emitDial(const QString &)),
+	         m_engine, SLOT(dialExtension(const QString &)) );
+	connect( m_parkingpanel, SIGNAL(transferCall(const QString &, const QString &)),
+	         m_engine, SLOT(transferCall(const QString &, const QString &)) );
+	connect( m_parkingpanel, SIGNAL(originateCall(const QString &, const QString &)),
+	         m_engine, SLOT(originateCall(const QString &, const QString &)) );
 
 	connect( m_engine, SIGNAL(updateCall(const QString &, const QString &, int, const QString &,
 					     const QString &, const QString &, const QString &)),
@@ -213,10 +218,15 @@ void MainWidget::buildSplitters()
 	         m_sbwidget, SLOT(removePeers()) );
 	connect( m_engine, SIGNAL(removePeer(const QString &)),
 	         m_sbwidget, SLOT(removePeer(const QString &)) );
+
+        /* Directory Signals */
 	connect( m_dirpanel, SIGNAL(searchDirectory(const QString &)),
 	         m_engine, SLOT(searchDirectory(const QString &)) );
 	connect( m_engine, SIGNAL(directoryResponse(const QString &)),
 	         m_dirpanel, SLOT(setSearchResponse(const QString &)) );
+
+        connect( m_dirpanel, SIGNAL(copyNumber(const QString &)),
+                 m_engine, SLOT(copyNumber(const QString &)) );
 	connect( m_dirpanel, SIGNAL(emitDial(const QString &)),
 	         m_engine, SLOT(dialExtension(const QString &)) );
 	connect( m_dirpanel, SIGNAL(transferCall(const QString &, const QString &)),
@@ -227,8 +237,7 @@ void MainWidget::buildSplitters()
 	         m_dirpanel, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
 	connect( m_engine, SIGNAL(delogged()),
 	         m_dirpanel, SLOT(stop()) );
-        connect( m_dirpanel, SIGNAL(copyNumber(const QString &)),
-                 m_engine, SLOT(copyNumber(const QString &)) );
+        
         
 	connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
                                              const QString &, const QString &,

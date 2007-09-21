@@ -133,7 +133,7 @@ void ExtendedTableWidget::transferChan(const QString & chan)
  */
 void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-	//qDebug() << "ExtendedTableWidget::dragEnterEvent" << event->mimeData()->formats() << event->pos();
+	qDebug() << "ExtendedTableWidget::dragEnterEvent" << event->mimeData()->formats() << event->pos();
 	if(  event->mimeData()->hasFormat(PEER_MIMETYPE)
 	  || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
 	{
@@ -172,20 +172,19 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
 	QRegExp re("\\+?[0-9\\s\\.]+");
 	if(item && re.exactMatch( item->text() ))
 	{
-		qDebug() << item->text();
 		QString from = event->mimeData()->text();
-		if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE))
-		{
+		if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
+                        qDebug() << "A" << from << item->text();
 			event->acceptProposedAction();
 			transferCall(from, item->text());
-		}
-		else if(event->mimeData()->hasFormat(PEER_MIMETYPE))
-		{
+		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+                        qDebug() << "B" << from << item->text();
 			event->acceptProposedAction();
 			originateCall(from, item->text());
-		}
-		else
+		} else {
+                        qDebug() << "C" << from << item->text();
 			event->ignore();
+                }
 	}
 	else
 		event->ignore();

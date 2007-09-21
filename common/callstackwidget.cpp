@@ -259,7 +259,7 @@ void CallStackWidget::updateDisplay()
  */
 void CallStackWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-	qDebug() << event->mimeData()->formats();
+	qDebug() << "CallStackWidget::dragEnterEvent()" << event->mimeData()->formats();
 	if (event->mimeData()->hasFormat(PEER_MIMETYPE))
 	{
 		event->acceptProposedAction();

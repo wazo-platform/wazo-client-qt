@@ -17,15 +17,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
 /* $Id$ */
+
 #ifndef __DIRECTORYPANEL_H__
 #define __DIRECTORYPANEL_H__
 
 #include <QWidget>
 
-class QLineEdit;
+class QDropEvent;
 class QPushButton;
 class QTableWidget;
 class QTableWidgetItem;
+
+class ExtendedLineEdit;
 
 /*! \brief Directory allowing search
  */
@@ -36,6 +39,7 @@ public:
 	DirectoryPanel(QWidget * parent = 0);
 protected:
 	//void contextMenuEvent(QContextMenuEvent *);
+        void dropEvent(QDropEvent *);
 signals:
 	//! start a search
 	void searchDirectory(const QString &);
@@ -57,7 +61,7 @@ public slots:
 	void setSearchResponse(const QString &);
 	void stop();
 private:
-	QLineEdit * m_searchText;	//!< search text input
+	ExtendedLineEdit * m_searchText;	//!< search text input
 	QPushButton * m_searchButton;	//!< button
 	QTableWidget * m_table;		//!< table to display results
 	QString m_numberToDial;		//!< used for dial action

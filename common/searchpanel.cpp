@@ -22,13 +22,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QLineEdit>
 #include <QScrollArea>
 #include <QDebug>
 
 #include "searchpanel.h"
 #include "peerwidget.h"
 #include "baseengine.h"
+#include "extendedlineedit.h"
 
 SearchPanel::SearchPanel(QWidget * parent)
         : QWidget(parent)
@@ -37,7 +37,7 @@ SearchPanel::SearchPanel(QWidget * parent)
 	vlayout->setMargin(0);
 	QLabel * lbl = new QLabel( tr("N&ame or number to search :"), this );
 	vlayout->addWidget(lbl, 0, Qt::AlignCenter);
-	m_input = new QLineEdit( this );
+	m_input = new ExtendedLineEdit( this );
 	lbl->setBuddy(m_input);
 	connect( m_input, SIGNAL(textChanged(const QString &)),
 	         this, SLOT(affTextChanged(const QString &)) );
@@ -65,6 +65,8 @@ SearchPanel::SearchPanel(QWidget * parent)
         m_person_yellow = QPixmap(":/images/personal-yellow.png");
         m_person_grey   = QPixmap(":/images/personal-grey.png");
         m_person_blue   = QPixmap(":/images/personal-blue.png");
+        m_maxdisplay = 20;
+        m_searchpattern = "";
 }
 
 SearchPanel::~SearchPanel()
@@ -84,17 +86,18 @@ void SearchPanel::setEngine(BaseEngine * engine)
  */
 void SearchPanel::affTextChanged(const QString & text)
 {
+        m_searchpattern = text;
         QHashIterator<QString, Peer *> i(m_peerhash);
 	// qDebug() << "affTextChanged" << text;
         int naff = 0;
         while(i.hasNext()) {
                 i.next();
-                Peer * p = i.value();
-                PeerWidget * peerwidget = p->getWidget();
-                if( (text != "") && p->name().contains(text, Qt::CaseInsensitive) && (naff < 20) ) {
+                Peer * peeritem = i.value();
+                PeerWidget * peerwidget = peeritem->getWidget();
+                if( (m_searchpattern != "") && peeritem->name().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
                         if(peerwidget == NULL) {
-                                peerwidget = new PeerWidget(p->ext(),
-                                                            p->name(),
+                                peerwidget = new PeerWidget(peeritem->ext(),
+                                                            peeritem->name(),
                                                             &m_phone_green,
                                                             &m_phone_red,
                                                             &m_phone_orange,
@@ -108,8 +111,8 @@ void SearchPanel::affTextChanged(const QString & text)
                                                             &m_person_yellow,
                                                             &m_person_blue);
                                 peerwidget->setEngine(m_engine);
-                                p->setWidget(peerwidget);
-                                p->updateWidgetAppearance();
+                                peeritem->setWidget(peerwidget);
+                                peeritem->updateWidgetAppearance();
 
                                 m_peerlayout->addWidget( peerwidget );
                                 peerwidget->show();
@@ -148,7 +151,7 @@ void SearchPanel::affTextChanged(const QString & text)
                                         }
                                         disconnect( peerwidget, SIGNAL(emitDial(const QString &)),
                                                     m_engine, SLOT(dialFullChannel(const QString &)) );
-                                        p->setWidget(NULL);
+                                        peeritem->setWidget(NULL);
                                         delete peerwidget;
                                 }
                         }
@@ -169,10 +172,10 @@ void SearchPanel::updatePeer(const QString & ext,
 			     const QStringList & chanOthers)
 {
         if(m_peerhash.contains(ext)) {
-                Peer * myp = m_peerhash.value(ext);
-                myp->updateStatus(imavail, sipstatus, vmstatus, queuestatus);
-                myp->updateChans(chanIds, chanStates, chanOthers);
-                myp->updateName(name);
+                Peer * peeritem = m_peerhash.value(ext);
+                peeritem->updateStatus(imavail, sipstatus, vmstatus, queuestatus);
+                peeritem->updateChans(chanIds, chanStates, chanOthers);
+                peeritem->updateName(name);
                 return;
         }
 
@@ -186,6 +189,7 @@ void SearchPanel::updatePeer(const QString & ext,
 	peer->updateChans(chanIds, chanStates, chanOthers);
         m_peerhash.insert(ext, peer);
 
+        //        affTextChanged(m_searchpattern);
         // the peerwidget is not set while its display is not needed, see affTextChanged()
 }
 
@@ -194,8 +198,8 @@ void SearchPanel::updatePeer(const QString & ext,
 void SearchPanel::removePeer(const QString & ext)
 {
         if(m_peerhash.contains(ext)) {
-                Peer * myp = m_peerhash.value(ext);
-                PeerWidget * peerwidget = myp->getWidget();
+                Peer * peeritem = m_peerhash.value(ext);
+                PeerWidget * peerwidget = peeritem->getWidget();
                 if (m_peerlayout->indexOf( peerwidget ) > -1)
                         m_peerlayout->removeWidget( peerwidget );
                 m_peerhash.remove(ext);
@@ -214,8 +218,8 @@ void SearchPanel::removePeers()
         qtime.start();
         while(i.hasNext()) {
                 i.next();
-                Peer * myp = i.value();
-                PeerWidget * peerwidget = myp->getWidget();
+                Peer * peeritem = i.value();
+                PeerWidget * peerwidget = peeritem->getWidget();
                 // qDebug() << "span" << m_peerlayout->indexOf( peerwidget );
                 if (m_peerlayout->indexOf( peerwidget ) > -1)
                         m_peerlayout->removeWidget( peerwidget );

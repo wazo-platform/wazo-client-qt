@@ -110,10 +110,10 @@ void SwitchBoardWindow::updatePeer(const QString & ext,
 
 	// first search in the peerhash
         if(m_peerhash.contains(ext)) {
-                Peer * myp = m_peerhash.value(ext);
-                myp->updateStatus(imavail, sipstatus, vmstatus, queuestatus);
-                myp->updateChans(chanIds, chanStates, chanOthers);
-                myp->updateName(name);
+                Peer * peeritem = m_peerhash.value(ext);
+                peeritem->updateStatus(imavail, sipstatus, vmstatus, queuestatus);
+                peeritem->updateChans(chanIds, chanStates, chanOthers);
+                peeritem->updateName(name);
                 return;
         }
 
@@ -220,8 +220,8 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
 void SwitchBoardWindow::removePeer(const QString & ext)
 {
         if(m_peerhash.contains(ext)) {
-                Peer * myp = m_peerhash.value(ext);
-                PeerWidget * peerwidget = myp->getWidget();
+                Peer * peeritem = m_peerhash.value(ext);
+                PeerWidget * peerwidget = peeritem->getWidget();
                 m_layout->removeWidget( peerwidget );
                 m_peerhash.remove(ext);
                 peerwidget->deleteLater();
@@ -244,8 +244,8 @@ void SwitchBoardWindow::removePeers(void)
         qtime.start();
         while(peeriter.hasNext()) {
                 peeriter.next();
-                Peer * myp = peeriter.value();
-                PeerWidget * peerwidget = myp->getWidget();
+                Peer * peeritem = peeriter.value();
+                PeerWidget * peerwidget = peeritem->getWidget();
                 if(peerwidget != NULL) {
                         m_layout->removeWidget( peerwidget );
                         // this disconnect() step takes time, whether explicitly or implicitly,

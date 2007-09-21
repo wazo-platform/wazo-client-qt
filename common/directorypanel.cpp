@@ -23,8 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QContextMenuEvent>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QDropEvent>
 #include <QHBoxLayout>
-#include <QLineEdit>
 #include <QLabel>
 #include <QMenu>
 #include <QPushButton>
@@ -33,6 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #include "directorypanel.h"
 #include "extendedtablewidget.h"
+#include "extendedlineedit.h"
 
 /*! \brief Constructor
  *
@@ -46,7 +47,7 @@ DirectoryPanel::DirectoryPanel(QWidget * parent)
 	QLabel * titleLbl = new QLabel( tr("Di&rectory"), this );
 	vlayout->addWidget( titleLbl, 0, Qt::AlignCenter );
 	QHBoxLayout * hlayout = new QHBoxLayout();
-	m_searchText = new QLineEdit(this);
+	m_searchText = new ExtendedLineEdit(this);
 	titleLbl->setBuddy(m_searchText);
 	connect( m_searchText, SIGNAL(returnPressed()),
 	         this, SLOT(startSearch()) );
@@ -68,20 +69,13 @@ DirectoryPanel::DirectoryPanel(QWidget * parent)
 	connect( m_table, SIGNAL(originateCall(const QString &, const QString &)),
 	         this, SIGNAL(originateCall(const QString &, const QString &)) );
 	vlayout->addWidget(m_table);
+        setAcceptDrops(true);
+}
 
-	/*
-	QStringList labelList;
-	labelList << QString("Numero") << QString("Nom");
-	m_table->setColumnCount(2);
-	m_table->setRowCount(3);
-	m_table->setHorizontalHeaderLabels( labelList );
-	for(int y = 0; y < 3; y++)
-		for(int x = 0; x < 2; x++)
-		{
-			m_table->setItem( y, x, new QTableWidgetItem("-" + QString::number(x) + "," + QString::number(y)) );
-		}
-	qDebug() << m_table->columnCount();*/
-	//vlayout->addStretch( 1 );
+
+void DirectoryPanel::dropEvent(QDropEvent * event)
+{
+        qDebug() << "DirectoryPanel::dropEvent()" << event;
 }
 
 /*! \brief useless

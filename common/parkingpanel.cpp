@@ -32,6 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "peerwidget.h"
 #include "baseengine.h"
 #include "parkingpanel.h"
+#include "extendedtablewidget.h"
 
 /*! \brief Constructor
  *
@@ -42,7 +43,7 @@ ParkingPanel::ParkingPanel(QWidget * parent)
 {
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
 	vlayout->setMargin(0);
-	m_table = new QTableWidget( this );
+	m_table = new ExtendedTableWidget( this );
         qDebug() << m_table;
         m_table->setAlternatingRowColors(true);
         m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
@@ -60,6 +61,10 @@ ParkingPanel::ParkingPanel(QWidget * parent)
 	         this, SLOT(itemClicked(QTableWidgetItem *)) );
 	connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
 	         this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
+	connect( m_table, SIGNAL(transferCall(const QString &, const QString &)),
+	         this, SIGNAL(transferCall(const QString &, const QString &)) );
+	connect( m_table, SIGNAL(originateCall(const QString &, const QString &)),
+	         this, SIGNAL(originateCall(const QString &, const QString &)) );
 
 	vlayout->addWidget( m_table, 0 );
         m_table->resizeColumnsToContents();
@@ -72,6 +77,7 @@ ParkingPanel::~ParkingPanel()
         // qDebug() << "ParkingPanel::~ParkingPanel()";
         delete m_table;
 }
+
 
 /*! \brief add a message to the list
  *
@@ -100,7 +106,7 @@ void ParkingPanel::parkingEvent(const QString & eventkind, const QString & str)
                 QTableWidgetItem * item1 = new QTableWidgetItem( parkplacenum );
                 item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
                 m_table->setItem( 0, 1, item1 );
-                QTableWidgetItem * item2 = new QTableWidgetItem( seconds );
+                QTableWidgetItem * item2 = new QTableWidgetItem( seconds + " s" );
                 item2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
                 m_table->setItem( 0, 2, item2 );
                 QTableWidgetItem * item3 = new QTableWidgetItem( parkedpeer );
@@ -159,8 +165,8 @@ void ParkingPanel::timerEvent(QTimerEvent * event)
         if (timerId == m_timerid)
                 for(int i = 0; i < m_table->rowCount(); i++) {
                         QTableWidgetItem * item = m_table->item(i, 2);
-                        int leftsec = item->text().toInt() - m_deltasec;
-                        item->setText( QString::number(leftsec) );
+                        int leftsec = item->text().split(" ")[0].toInt() - m_deltasec;
+                        item->setText( QString::number(leftsec) + " s" );
                         m_table->setItem( i, 2, item );
                 }
 }

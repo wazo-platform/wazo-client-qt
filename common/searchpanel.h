@@ -30,9 +30,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "peeritem.h"
 
 class QVBoxLayout;
-class QLineEdit;
 
 class BaseEngine;
+class ExtendedLineEdit;
 
 /*! \brief search panel widget
  */
@@ -62,7 +62,7 @@ private:
 	BaseEngine * m_engine;	//!< engine object reference
 	QHash<QString, Peer *> m_peerhash;	//!< Peer list
 	QVBoxLayout * m_peerlayout;	//!< layout object
-	QLineEdit * m_input;	//!< widget for search string input
+	ExtendedLineEdit * m_input;	//!< widget for search string input
         QPixmap m_phone_green;
         QPixmap m_phone_red;
         QPixmap m_phone_orange;
@@ -75,6 +75,8 @@ private:
         QPixmap m_person_grey;
         QPixmap m_person_yellow;
         QPixmap m_person_blue;
+        int m_maxdisplay;	//!< max number of peers displayed on the search panel
+        QString m_searchpattern;
 };
 
 #endif

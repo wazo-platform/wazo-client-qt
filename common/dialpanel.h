@@ -16,16 +16,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
-/* $Id$ */
+/* $Revision$
+ * $Date$
+*/
+
 #ifndef __DIALPANEL_H__
 #define __DIALPANEL_H__
+
 #include <QObject>
 #include <QWidget>
 #include <QList>
 
 class QComboBox;
 class QLabel;
-class QLineEdit;
 class QMouseEvent;
 class QVBoxLayout;
 
@@ -49,7 +52,6 @@ signals:
 	void emitDial(const QString &);		//!< dial a number
 	void originateCall(const QString &, const QString &);   	//!< originates a number
 private:
-	//QLineEdit * m_input;
         QLabel * m_lbl;
 	QComboBox * m_input;	//!< input widget
 };

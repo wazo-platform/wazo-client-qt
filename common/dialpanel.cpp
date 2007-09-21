@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QRegExp>
 #include <QScrollArea>
 #include <QToolButton>
+
 #include "dialpanel.h"
 #include "xivoconsts.h"
 
@@ -40,8 +41,6 @@ DialPanel::DialPanel(QWidget * parent)
 	QHBoxLayout * vlayout = new QHBoxLayout(this);
 	vlayout->setMargin(0);
         m_lbl = new QLabel( tr("Enter &Number :"), this );
-	//m_lbl->setFrameStyle(QFrame::StyledPanel);
-	//m_input = new QLineEdit( this );
 	m_input = new QComboBox( this );
 	m_lbl->setBuddy(m_input);
 	m_input->setStatusTip( tr("Input here the phone number to dial") );
