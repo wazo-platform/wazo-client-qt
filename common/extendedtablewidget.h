@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QTableWidget>
 
 class QContextMenuEvent;
+class QMouseEvent;
 
 /*! \brief Table class inheriting QTableWidget with contextMenu added.
  */
@@ -40,6 +41,7 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *);
 	void dragMoveEvent(QDragMoveEvent *);
 	void dropEvent(QDropEvent *);
+        void mouseMoveEvent(QMouseEvent *);
 signals:
 	void emitDial(const QString & number);	//!< dial
 	void transferCall(const QString &, const QString &);	//!< transfer a call

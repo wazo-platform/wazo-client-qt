@@ -141,11 +141,11 @@ void MainWidget::buildSplitters()
 	m_calls = new CallStackWidget(m_areaCalls);
  	m_areaCalls->setWidget(m_calls);
 	m_svc_tabwidget = new QTabWidget(m_leftSplitter);
-	m_messages_widget = new DisplayMessagesPanel(m_svc_tabwidget);
         m_parkingpanel = new ParkingPanel(m_svc_tabwidget);
         m_parkingpanel->setEngine(m_engine);
-        m_svc_tabwidget->addTab(m_messages_widget, extraspace + tr("Messages") + extraspace);
 	m_svc_tabwidget->addTab(m_parkingpanel, extraspace + tr("Parking") + extraspace);
+	m_messages_widget = new DisplayMessagesPanel(m_svc_tabwidget);
+        m_svc_tabwidget->addTab(m_messages_widget, extraspace + tr("Messages") + extraspace);
 	m_leftSplitter->restoreState(settings.value("display/leftSplitterSizes").toByteArray());
 
 	// Middle Splitter Definitions
@@ -189,6 +189,8 @@ void MainWidget::buildSplitters()
 	         m_engine, SLOT(transferCall(const QString &, const QString &)) );
 	connect( m_parkingpanel, SIGNAL(originateCall(const QString &, const QString &)),
 	         m_engine, SLOT(originateCallGoodAsterisk(const QString &, const QString &)) );
+	connect( m_parkingpanel, SIGNAL(newParkEvent()),
+	         this, SLOT(newParkEvent()) );
 
 	connect( m_engine, SIGNAL(updateCall(const QString &, const QString &, int, const QString &,
 					     const QString &, const QString &, const QString &)),
@@ -264,6 +266,16 @@ void MainWidget::buildSplitters()
                  m_engine, SLOT(textEdited(const QString &)) );
         connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
                  m_dialpanel, SLOT(setNumberToDial(const QString &)) );
+}
+
+
+void MainWidget::newParkEvent()
+{
+        qDebug() << "MainWidget::newParkEvent()";
+
+        int index_parking = m_svc_tabwidget->indexOf(m_parkingpanel);
+        if(index_parking > -1)
+                m_svc_tabwidget->setCurrentIndex(index_parking);
 }
 
 void MainWidget::removeSplitters()

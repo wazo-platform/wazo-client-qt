@@ -60,6 +60,7 @@ signals:
 	void emitDial(const QString &);
 	void transferCall(const QString &, const QString &);
 	void originateCall(const QString &, const QString &);
+        void newParkEvent();
 private:
 	BaseEngine * m_engine;	//!< engine object reference
 	ExtendedTableWidget * m_table;	//! Table

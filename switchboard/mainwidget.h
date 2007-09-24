@@ -70,6 +70,7 @@ private slots:
 	void showNewProfile(Popup *);	//!< display a Profile widget
         void checksAvailState();
 	void about();
+        void newParkEvent();
 private:
         void createActions();
         void createMenus();
@@ -118,7 +119,6 @@ private:
 
 	QLabel * m_status;	//!< status indicator
 };
-
 
 
 /*! \brief Widget containing the CallStackWidget and a Title QLabel

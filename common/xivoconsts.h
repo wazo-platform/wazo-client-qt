@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #define CHANNEL_MIMETYPE	"XIVO_ASTERISK_CHANNEL"
 #define PEER_MIMETYPE		"XIVO_ASTERISK_PEER"
+#define NUMBER_MIMETYPE		"XIVO_ASTERISK_NUMBER"
 
 const int REQUIRED_SERVER_VERSION = 1538;
 const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);

@@ -303,8 +303,9 @@ void SwitchBoardWindow::setWidth(int width)
  */
 void SwitchBoardWindow::dragEnterEvent(QDragEnterEvent * event)
 {
-        qDebug() << "SwitchBoardWindow::dragEnterEvent()" << event->mimeData()->formats();
-	if(event->mimeData()->hasFormat(PEER_MIMETYPE))
+        // qDebug() << "SwitchBoardWindow::dragEnterEvent()" << event->mimeData()->formats();
+	if( event->mimeData()->hasFormat(PEER_MIMETYPE) ||
+            event->mimeData()->hasFormat(NUMBER_MIMETYPE) )
 		event->acceptProposedAction();
 }
 
@@ -318,7 +319,7 @@ void SwitchBoardWindow::dragEnterEvent(QDragEnterEvent * event)
 void SwitchBoardWindow::dropEvent(QDropEvent * event)
 {
 	QString ext = event->mimeData()->text();
-        qDebug() << "SwitchBoardWindow::dropEvent()" << event << ext;
+        // qDebug() << "SwitchBoardWindow::dropEvent()" << event << ext;
 	// qDebug() << "  " << event->pos() << m_layout->getPosInGrid(event->pos());
         bool isAlreadyThere = false;
 

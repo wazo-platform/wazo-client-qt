@@ -40,8 +40,7 @@ class DirectoryPanel : public QWidget
 public:
 	DirectoryPanel(QWidget * parent = 0);
 protected:
-	//void contextMenuEvent(QContextMenuEvent *);
-        void dropEvent(QDropEvent *);
+        void dropEvent ( QDropEvent * );
 signals:
 	//! start a search
 	void searchDirectory(const QString &);

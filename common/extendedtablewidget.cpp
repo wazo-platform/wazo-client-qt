@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QDesktopServices>
 #include <QHeaderView>
 #include <QMenu>
+#include <QMouseEvent>
 #include <QUrl>
 
 #include "extendedtablewidget.h"
@@ -53,20 +54,34 @@ ExtendedTableWidget::ExtendedTableWidget(int rows, int columns, QWidget * parent
  */
 void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
 {
-        qDebug() << "ExtendedTableWidget::contextMenuEvent()" << event;
+        // qDebug() << "ExtendedTableWidget::contextMenuEvent()" << event;
         ContextMenuEvent(event);
+}
+
+void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
+{
+        // qDebug() << "ExtendedTableWidget::mouseMoveEvent()" << event << event->pos();
+	QTableWidgetItem * item = itemAt( event->pos() );
+        if(item) {
+                QDrag *drag = new QDrag(this);
+                QMimeData *mimeData = new QMimeData;
+                mimeData->setText(item->text());
+                mimeData->setData(NUMBER_MIMETYPE, "");
+                drag->setMimeData(mimeData);
+                drag->start(Qt::CopyAction | Qt::MoveAction);
+        }
 }
 
 /*! \brief filter drag events
  */
 void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-	qDebug() << "ExtendedTableWidget::dragEnterEvent" << event->mimeData()->formats() << event->pos();
-	if(  event->mimeData()->hasFormat(PEER_MIMETYPE)
-	  || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
-	{
-		event->acceptProposedAction();
-	}
+	// qDebug() << "ExtendedTableWidget::dragEnterEvent" << event->mimeData()->formats() << event->pos();
+	if(  event->mimeData()->hasFormat(PEER_MIMETYPE) ||
+             event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
+             event->mimeData()->hasFormat(CHANNEL_MIMETYPE) ) {
+                event->acceptProposedAction();
+        }
 }
 
 /*! \brief filter drag move events

@@ -257,9 +257,9 @@ void CallStackWidget::updateDisplay()
 
 /*! \brief filter events based on the mimetype
  */
-void CallStackWidget::dragEnterEvent(QDragEnterEvent *event)
+void CallStackWidget::dragEnterEvent(QDragEnterEvent * event)
 {
-	qDebug() << "CallStackWidget::dragEnterEvent()" << event->mimeData()->formats();
+	// qDebug() << "CallStackWidget::dragEnterEvent()" << event->mimeData()->formats();
 	if (event->mimeData()->hasFormat(PEER_MIMETYPE))
 	{
 		event->acceptProposedAction();
@@ -291,7 +291,7 @@ void CallStackWidget::monitorPeer(const QString & monit_peer, const QString & na
  * check if the dropped "text" is a Peer "id"
  * and start to monitor it
  */
-void CallStackWidget::dropEvent(QDropEvent *event)
+void CallStackWidget::dropEvent(QDropEvent * event)
 {
 	if(!event->mimeData()->hasFormat(PEER_MIMETYPE))
 	{

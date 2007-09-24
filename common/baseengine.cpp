@@ -930,6 +930,8 @@ void BaseEngine::originateCall(const QString & src, const QString & dst)
 	QStringList dstlist = dst.split("/");
 	if(dstlist.size() >= 6)
                 sendCommand("originate " + src + " " + dst);
+        else if(dstlist.size() == 1)
+                originateCallGoodAsterisk(src, dst);
 }
 
 /*! \brief send an originate command to the server

@@ -250,7 +250,8 @@ void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 	mimeData->setData("name", m_name.toUtf8());
 	drag->setMimeData(mimeData);
 
-	/*Qt::DropAction dropAction = */drag->start(Qt::CopyAction | Qt::MoveAction);
+	/*Qt::DropAction dropAction = */
+        drag->start(Qt::CopyAction | Qt::MoveAction);
 	//qDebug() << "PeerWidget::mouseMoveEvent : dropAction=" << dropAction;
 }
 
@@ -273,9 +274,10 @@ void PeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
  */
 void PeerWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-	//qDebug() << "PeerWidget::dragEnterEvent()" << event->mimeData()->formats();
+        // qDebug() << "PeerWidget::dragEnterEvent()" << event->mimeData()->formats();
 	if(  event->mimeData()->hasFormat(PEER_MIMETYPE)
-	  || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
+             || event->mimeData()->hasFormat(NUMBER_MIMETYPE)
+             || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
 	{
 		if(event->proposedAction() & (Qt::CopyAction|Qt::MoveAction))
 			event->acceptProposedAction();
@@ -306,24 +308,21 @@ void PeerWidget::dropEvent(QDropEvent *event)
 {
 	QString from = event->mimeData()->text();
 	QString to = m_id;
-	qDebug() << "PeerWidget::dropEvent() :" << from << "on" << to;
-	qDebug() << " possibleActions=" << event->possibleActions();
-	qDebug() << " proposedAction=" << event->proposedAction();
-	switch(event->proposedAction())
-	{
+        // 	qDebug() << "PeerWidget::dropEvent() :" << from << "on" << to;
+        // 	qDebug() << " possibleActions=" << event->possibleActions();
+        // 	qDebug() << " proposedAction=" << event->proposedAction();
+	switch(event->proposedAction()) {
 	case Qt::CopyAction:
 		// transfer the call to the peer "to"
-	  	if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE))
-		//if(from.indexOf('c') == 0)         // 'c/' => channel
-		{
+	  	if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
 			event->acceptProposedAction();
 			transferCall(from, to);
-		}
-		else if(event->mimeData()->hasFormat(PEER_MIMETYPE))
-		//else if(from.indexOf('p') == 0)    // 'p/' => peer
-		{
+		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
 			event->acceptProposedAction();
 			originateCall(from, to);
+		} else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
+			event->acceptProposedAction();
+                        originateCall(to, from);
 		}
 		break;
 	case Qt::MoveAction:
