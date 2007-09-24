@@ -42,6 +42,7 @@ class QWidget;
 class QUrl;
 
 class ConfWidget;
+class FaxPanel;
 class IdentityDisplay;
 class LogWidget;
 class SearchPanel;
@@ -109,6 +110,7 @@ private:
         ConfWidget * m_conf;
         IdentityDisplay * m_infowidget;
 	SearchPanel * m_peerswidget;
+        FaxPanel * m_faxwidget;
 	ServicePanel * m_featureswidget;
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;

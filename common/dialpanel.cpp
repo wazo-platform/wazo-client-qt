@@ -73,7 +73,7 @@ DialPanel::DialPanel(QWidget * parent)
 
 void DialPanel::setNumberToDial(const QString & text)
 {
-        //qDebug() << "DialPanel::setNumberToDial()" << text;
+        // qDebug() << "DialPanel::setNumberToDial()" << text;
         // adds the item to the list
         if (m_input->findText(text) == -1)
                 m_input->insertItem(0, text);
@@ -83,7 +83,7 @@ void DialPanel::setNumberToDial(const QString & text)
 
 void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 {
-        qDebug() << "DialPanel::dragEnterEvent()" << event;
+        // qDebug() << "DialPanel::dragEnterEvent()" << event;
 	if(event->mimeData()->hasFormat(PEER_MIMETYPE))
                 event->acceptProposedAction();
 }

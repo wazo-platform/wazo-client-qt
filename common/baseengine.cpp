@@ -57,6 +57,7 @@ BaseEngine::BaseEngine(QObject * parent)
 	m_timer = -1;
 	m_sbsocket     = new QTcpSocket(this);
 	m_loginsocket  = new QTcpSocket(this);
+        m_faxsocket    = new QTcpSocket(this);
 	m_udpsocket    = new QUdpSocket(this);
 	m_listenserver = new QTcpServer(this);
 	loadSettings();
@@ -98,6 +99,12 @@ BaseEngine::BaseEngine(QObject * parent)
 	        this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
 	connect(m_sbsocket, SIGNAL(readyRead()),
                 this, SLOT(socketReadyRead()));
+
+        m_faxsocket->setProperty("socket", "fax");
+        connect( m_faxsocket, SIGNAL(connected()),
+                 this, SLOT(socketConnected()) );
+	connect( m_faxsocket, SIGNAL(hostFound()),
+	         this, SLOT(socketHostFound()) );
 
 	// init listen server for profile push
 	connect( m_listenserver, SIGNAL(newConnection()),
@@ -484,6 +491,15 @@ void BaseEngine::socketConnected()
                         m_pendingcommand += "lastconnwins=false";
                 // login <asterisk> <techno> <id>
                 sendTCPCommand();
+        } else if(socname == "fax") {
+                QFile * qf = new QFile(m_faxfilename);
+                qf->open(QIODevice::ReadOnly);
+                QByteArray qba = qf->readAll();
+                qf->close();
+                qDebug() << "file size is" << qba.size();
+                if(qba.size() > 0)
+                        m_faxsocket->write(qba);
+                m_faxsocket->close();
         }
 }
 
@@ -756,12 +772,20 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
         } else if(listitems[0].toLower() == QString("featuresput")) {
                 qDebug() << "received ack from featuresput :" << listitems;
+        } else if(listitems[0].toLower() == QString("faxsend")) {
+                quint16 port_fax = listitems[1].toInt();
+                m_faxsocket->connectToHost("127.0.0.1", port_fax);
         } else if((listitems[0] != "") && (listitems[0] != "______"))
                 qDebug() << "unknown command" << listitems[0];
 
         return true;
 }
 
+void BaseEngine::sendFaxCommand(const QString & filename, const QString & number)
+{
+        m_faxfilename = filename;
+        sendCommand("faxsend file:" + filename + " number:" + number);
+}
 
 void BaseEngine::popupError(const QString & errorid)
 {
@@ -812,16 +836,17 @@ void BaseEngine::popupError(const QString & errorid)
                 QStringList versionslist = errorid.split(":")[1].split(";");
                 if(versionslist.size() >= 2)
                         errormsg = tr("Your client version (%1) is too old for this server.\n"
-                                      "Please upgrade it to %2 at least.").arg(versionslist[0], versionslist[1]);
+                                      "Please upgrade it to %2 at least.").arg(__current_client_version__,
+                                                                               versionslist[1]);
                 else
                         errormsg = tr("Your client version (%1) is too old for this server.\n"
-                                      "Please upgrade it.").arg(versionslist[0]);
+                                      "Please upgrade it.").arg(__current_client_version__);
         }
         else if(errorid.startsWith("version_server:")) {
                 QStringList versionslist = errorid.split(":")[1].split(";");
                 if(versionslist.size() >= 2)
                         errormsg = tr("Your server version (%1) is too old for this client.\n"
-                                      "Please upgrade it to %2 at least.").arg(versionslist[0], versionslist[1]);
+                                      "Please upgrade it to %2 at least.").arg(versionslist[0], __current_client_version__);
                 else
                         errormsg = tr("Your server version (%1) is too old for this client.\n"
                                       "Please upgrade it.").arg(versionslist[0]);

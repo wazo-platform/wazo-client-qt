@@ -150,6 +150,7 @@ public slots:
 	void askCallerIds();
 	void setKeepaliveinterval(uint);	//!< set keep alive interval
         void copyNumber(const QString &);
+        void sendFaxCommand(const QString &, const QString &);
 private slots:
 	void identifyToTheServer();		//!< perform the first login step
 	void processLoginDialog();		//!< perform the following login steps
@@ -281,6 +282,7 @@ private:
 	QHostAddress m_serveraddress;	//!< Resolved address of the login server
 	QTcpSocket * m_sbsocket;	//!< TCP socket to connect to the server (SB mode)
 	QTcpSocket * m_loginsocket;	//!< TCP socket to login to the server
+	QTcpSocket * m_faxsocket;	//!< TCP socket to send fax data to the server
 	QUdpSocket * m_udpsocket;      	//!< UDP socket used for keep alive
 	QTcpServer * m_listenserver;	//!< TCP server listening for profiles
 	ushort m_listenport;		//!< Port where we are listening for profiles
@@ -290,6 +292,7 @@ private:
 	int m_pendingkeepalivemsg;	//!< number of keepalivemsg sent without response
 	QString m_pendingcommand;	//!< command to be sent to the server.
         QString m_numbertodial;		//!< Number dialed in
+        QString m_faxfilename;
 
         QString m_monitored_context;	//!< Context of the Monitored Phone (on SB, or one's own on XC)
         QString m_monitored_userid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)

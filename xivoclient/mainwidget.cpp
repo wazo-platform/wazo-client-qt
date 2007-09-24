@@ -41,6 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "dialpanel.h"
 #include "directorypanel.h"
 #include "identitydisplay.h"
+#include "faxpanel.h"
 #include "logwidget.h"
 #include "mainwidget.h"
 #include "popup.h"
@@ -351,8 +352,9 @@ void MainWidget::engineStarted()
 {
 	setForceTabs(false);
         QSettings settings;
-	QStringList display_capas = QString("customerinfo,features,history,directory,peers,dial,presence").split(",");
+	QStringList display_capas = QString("customerinfo,features,history,directory,peers,dial,presence,fax").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
+        allowed_capas << "fax";
         qDebug() << "MainWidget::setConnected()" << m_engine->checkedPresence() << m_engine->checkedCInfo();
 
         m_mainlayout->removeWidget(m_xivobg);
@@ -386,6 +388,12 @@ void MainWidget::engineStarted()
                                          m_dial, SLOT(setNumberToDial(const QString &)) );
 
 				m_mainlayout->addWidget(m_dial, 0);
+
+			} else if (dc == QString("fax")) {
+				m_faxwidget = new FaxPanel();
+                                connect( m_faxwidget, SIGNAL(faxSend(const QString &, const QString &)),
+                                         m_engine, SLOT(sendFaxCommand(const QString &, const QString &)) );
+				m_main_tabwidget->addTab(m_faxwidget, extraspace + tr("&Fax") + extraspace);
 
 			} else if ((dc == QString("customerinfo")) && (m_engine->checkedCInfo())) {
 				m_cinfo_tabwidget = new QTabWidget();
@@ -533,8 +541,9 @@ void MainWidget::engineStarted()
 void MainWidget::engineStopped()
 {
         QSettings settings;
-	QStringList display_capas = QString("customerinfo,features,history,directory,peers,dial,presence").split(",");
+	QStringList display_capas = QString("customerinfo,features,history,directory,peers,dial,presence,fax").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
+        allowed_capas << "fax";
 
         if (m_main_tabwidget->currentIndex() > -1)
                 settings.setValue("display/lastfocusedtab", m_main_tabwidget->currentIndex());
@@ -555,6 +564,13 @@ void MainWidget::engineStopped()
                                         qDebug() << "removing" << dc << index_customerinfo;
                                         m_main_tabwidget->removeTab(index_customerinfo);
                                         delete m_cinfo_tabwidget;
+                                }
+			} else if (dc == QString("fax")) {
+                                int index_fax = m_main_tabwidget->indexOf(m_faxwidget);
+                                if (index_fax > -1) {
+                                        qDebug() << "removing" << dc << index_fax;
+                                        m_main_tabwidget->removeTab(index_fax);
+                                        delete m_faxwidget;
                                 }
 			} else if (dc == QString("peers")) {
                                 int index_peers = m_main_tabwidget->indexOf(m_peerswidget);
