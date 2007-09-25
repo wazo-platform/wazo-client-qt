@@ -43,6 +43,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
                        MainWidget * parent)
         : QDialog(parent), m_engine(engine)
 {
+        qDebug() << "ConfWidget::ConfWidget()" << parent;
 	m_mainwindow = parent;
 	int line = 0;
 	setModal(true);
@@ -134,7 +135,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
         //gridlayout->addWidget(m_lastconnwins, line++, 0, 1, 0);
 
 	m_autoconnect = new QCheckBox(tr("Autoconnect at startup"), this);
-	m_autoconnect->setCheckState(m_engine->autoconnect()?Qt::Checked:Qt::Unchecked);
+	m_autoconnect->setCheckState(m_engine->autoconnect() ? Qt::Checked : Qt::Unchecked);
 	gridlayout->addWidget(m_autoconnect, line++, 0, 1, 0);
 
 	m_trytoreconnect = new QCheckBox(tr("Try to reconnect") + "\n" + \

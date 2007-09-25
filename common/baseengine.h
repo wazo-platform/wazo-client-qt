@@ -150,7 +150,7 @@ public slots:
 	void askCallerIds();
 	void setKeepaliveinterval(uint);	//!< set keep alive interval
         void copyNumber(const QString &);
-        void sendFaxCommand(const QString &, const QString &);
+        void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
 private slots:
 	void identifyToTheServer();		//!< perform the first login step
 	void processLoginDialog();		//!< perform the following login steps
@@ -292,7 +292,10 @@ private:
 	int m_pendingkeepalivemsg;	//!< number of keepalivemsg sent without response
 	QString m_pendingcommand;	//!< command to be sent to the server.
         QString m_numbertodial;		//!< Number dialed in
-        QString m_faxfilename;
+
+        QString m_faxid;
+        QByteArray * m_faxdata;
+        int m_faxsize;
 
         QString m_monitored_context;	//!< Context of the Monitored Phone (on SB, or one's own on XC)
         QString m_monitored_userid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)

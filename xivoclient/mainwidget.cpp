@@ -352,7 +352,7 @@ void MainWidget::engineStarted()
 {
 	setForceTabs(false);
         QSettings settings;
-	QStringList display_capas = QString("customerinfo,features,history,directory,peers,dial,presence,fax").split(",");
+	QStringList display_capas = QString("customerinfo,features,history,directory,peers,fax,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
         allowed_capas << "fax";
         qDebug() << "MainWidget::setConnected()" << m_engine->checkedPresence() << m_engine->checkedCInfo();
@@ -390,9 +390,9 @@ void MainWidget::engineStarted()
 				m_mainlayout->addWidget(m_dial, 0);
 
 			} else if (dc == QString("fax")) {
-				m_faxwidget = new FaxPanel();
-                                connect( m_faxwidget, SIGNAL(faxSend(const QString &, const QString &)),
-                                         m_engine, SLOT(sendFaxCommand(const QString &, const QString &)) );
+				m_faxwidget = new FaxPanel(this);
+                                connect( m_faxwidget, SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
+                                         m_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
 				m_main_tabwidget->addTab(m_faxwidget, extraspace + tr("&Fax") + extraspace);
 
 			} else if ((dc == QString("customerinfo")) && (m_engine->checkedCInfo())) {
@@ -541,7 +541,7 @@ void MainWidget::engineStarted()
 void MainWidget::engineStopped()
 {
         QSettings settings;
-	QStringList display_capas = QString("customerinfo,features,history,directory,peers,dial,presence,fax").split(",");
+	QStringList display_capas = QString("customerinfo,features,history,directory,peers,fax,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
         allowed_capas << "fax";
 

@@ -492,14 +492,15 @@ void BaseEngine::socketConnected()
                 // login <asterisk> <techno> <id>
                 sendTCPCommand();
         } else if(socname == "fax") {
-                QFile * qf = new QFile(m_faxfilename);
-                qf->open(QIODevice::ReadOnly);
-                QByteArray qba = qf->readAll();
-                qf->close();
-                qDebug() << "file size is" << qba.size();
-                if(qba.size() > 0)
-                        m_faxsocket->write(qba);
+                if(m_faxsize > 0) {
+                        QString stp = m_faxid + "\n";
+                        m_faxsocket->write(stp.toAscii(), stp.size());
+                        m_faxsocket->write(* m_faxdata);
+                }
                 m_faxsocket->close();
+                m_faxsize = 0;
+                m_faxid = "";
+                delete m_faxdata;
         }
 }
 
@@ -774,17 +775,30 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 qDebug() << "received ack from featuresput :" << listitems;
         } else if(listitems[0].toLower() == QString("faxsend")) {
                 quint16 port_fax = listitems[1].toInt();
-                m_faxsocket->connectToHost("127.0.0.1", port_fax);
+                m_faxsocket->connectToHost(m_serverhost, port_fax);
         } else if((listitems[0] != "") && (listitems[0] != "______"))
                 qDebug() << "unknown command" << listitems[0];
 
         return true;
 }
 
-void BaseEngine::sendFaxCommand(const QString & filename, const QString & number)
+void BaseEngine::sendFaxCommand(const QString & filename, const QString & number,
+                                Qt::CheckState hide)
 {
-        m_faxfilename = filename;
-        sendCommand("faxsend file:" + filename + " number:" + number);
+        QFile * qf = new QFile(filename);
+        qf->open(QIODevice::ReadOnly);
+        m_faxdata = new QByteArray();
+        m_faxdata->append(qf->readAll());
+        qf->close();
+        m_faxsize = m_faxdata->size();
+        if(m_faxdata->size() > 0) {
+                m_faxid = "size=" + QString::number(m_faxsize) +
+                        " number=" + number +
+                        " hide=" + QString::number(hide) +
+                        " astid=" + m_asterisk +
+                        " context=" + m_dialcontext;
+                sendCommand("faxsend " + m_faxid);
+        }
 }
 
 void BaseEngine::popupError(const QString & errorid)

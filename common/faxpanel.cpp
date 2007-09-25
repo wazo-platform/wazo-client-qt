@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
 #include <QDebug>
-#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGroupBox>
@@ -31,13 +30,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QLineEdit>
 #include <QLabel>
 #include <QPushButton>
+#include <QSettings>
 
 #include "faxpanel.h"
+#include "dirdialog.h"
 
 FaxPanel::FaxPanel(QWidget * parent)
-        : QWidget(parent)
+        : QWidget(parent), m_mainwindow(parent)
 {
-        qDebug() << "FaxPanel::FaxPanel()";
+        QSettings settings;
+        qDebug() << "FaxPanel::FaxPanel()" << parent;
+        Qt::CheckState previous_hide = (Qt::CheckState) settings.value("faxhistory/hidenumber", 0).toInt();
+
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
 
         //
@@ -48,6 +52,8 @@ FaxPanel::FaxPanel(QWidget * parent)
 	QLabel * lbluncond = new QLabel(tr("Fax Number"), this);
 	m_destination = new QLineEdit(this);
         QPushButton * directory = new QPushButton( tr("Directory"), this);
+        connect(directory, SIGNAL(clicked()),
+                this, SLOT(dirLookup()));
         hbox1->addWidget(lbluncond);
 	hbox1->addWidget(m_destination);
         hbox1->addWidget(directory);
@@ -58,7 +64,7 @@ FaxPanel::FaxPanel(QWidget * parent)
 	groupBox2->setAlignment( Qt::AlignLeft );
 	QHBoxLayout * hbox2 = new QHBoxLayout( groupBox2 );
 
-        m_openFileNameLabel = new QLineEdit("/tmp", this);
+        m_openFileNameLabel = new QLineEdit("", this);
         QPushButton * openFileNamesButton = new QPushButton( tr("Browse"), this);
         connect(openFileNamesButton, SIGNAL(clicked()),
                 this, SLOT(setOpenFileName()));
@@ -70,9 +76,10 @@ FaxPanel::FaxPanel(QWidget * parent)
 	groupBox3->setAlignment( Qt::AlignLeft );
 	QHBoxLayout * hbox3 = new QHBoxLayout( groupBox3 );
 
-        QCheckBox * maskornot = new QCheckBox(tr("Hide Number"), this);
+        m_maskornot = new QCheckBox(tr("Hide Number"), this);
+        m_maskornot->setCheckState(previous_hide);
  	hbox3->addStretch(1);
- 	hbox3->addWidget(maskornot);
+ 	hbox3->addWidget(m_maskornot);
  	hbox3->addStretch(1);
 
         //
@@ -96,6 +103,11 @@ FaxPanel::FaxPanel(QWidget * parent)
 }
 
 
+FaxPanel::~FaxPanel()
+{
+        // qDebug() << "FaxPanel::~FaxPanel()";
+}
+
 void FaxPanel::setOpenFileName()
 {
         QFileDialog::Options options;
@@ -105,7 +117,6 @@ void FaxPanel::setOpenFileName()
         QString fileName = QFileDialog::getOpenFileName(this,
                                                         tr("Open Fax File"),
                                                         m_openFileNameLabel->text(),
-                                                        //tr("All Files (*)"),
                                                         tr("PDF Files (*.pdf);;TIFF Files (*.tif, *.tiff);;Both (*.pdf, *.tif, *.tiff);;All Files (*)"),
                                                         &selectedFilter,
                                                         options);
@@ -116,9 +127,23 @@ void FaxPanel::setOpenFileName()
 
 void FaxPanel::sendFax()
 {
-        qDebug() << "FaxPanel::sendFax()"
-                 << m_openFileNameLabel->text()
-                 << m_destination->text();
-        if (! m_openFileNameLabel->text().isEmpty())
-                faxSend(m_openFileNameLabel->text(), m_destination->text());
+        QSettings settings;
+	settings.setValue("faxhistory/hidenumber", m_maskornot->checkState());
+
+        if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
+                qDebug() << "FaxPanel::sendFax()"
+                         << m_openFileNameLabel->text()
+                         << m_destination->text()
+                         << m_maskornot->checkState();
+                faxSend(m_openFileNameLabel->text(),
+                        m_destination->text(),
+                        m_maskornot->checkState());
+        }
+}
+
+void FaxPanel::dirLookup()
+{
+        qDebug() << "FaxPanel::dirLookup()";
+        //        DirDialog * dirw = new DirDialog(m_mainwindow);
+        //        dirw->exec();
 }
