@@ -38,7 +38,6 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
 {
         QSettings settings;
 	restoreGeometry(settings.value("faxhistory/geometry").toByteArray());
-	setModal(true);
 	// the object will be destroyed when closed
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Directory"));
@@ -57,7 +56,8 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
                 this, SLOT(saveAndClose()));
 	connect(m_btnbox, SIGNAL(rejected()),
                 this, SLOT(close()));
-	m_btnbox->button(QDialogButtonBox::Ok)->setDefault(true);
+        m_btnbox->button(QDialogButtonBox::Cancel)->setDefault(false);
+        m_btnbox->button(QDialogButtonBox::Ok)->setDefault(false);
 
 	vlayout->addWidget(m_directory);
 	vlayout->addWidget(m_btnbox);
@@ -85,5 +85,6 @@ void DirDialog::copyNumber(const QString & number)
 void DirDialog::saveAndClose()
 {
         m_retfaxnumber = m_faxnumber;
-        close();
+        if(m_retfaxnumber.size() > 0)
+                close();
 }

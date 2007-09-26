@@ -479,7 +479,7 @@ void MainWidget::engineStarted()
 				//
 				m_engine->askFeatures("peer/to/define");
 			} else if (dc == QString("directory")) {
-				m_directory = new DirectoryPanel();
+				m_directory = new DirectoryPanel(this);
 
 				connect( m_directory, SIGNAL(searchDirectory(const QString &)),
 					 m_engine, SLOT(searchDirectory(const QString &)) );
@@ -490,14 +490,10 @@ void MainWidget::engineStarted()
 				
 				connect( m_engine, SIGNAL(directoryResponse(const QString &)),
 					 m_directory, SLOT(setSearchResponse(const QString &)) );
-				//connect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
-				//m_directory, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
-				//connect( m_engine, SIGNAL(stopped()),
-				//m_directory, SLOT(stop()) );
-				
-				//			m_mainlayout->addWidget(m_directory, 0);
-				m_main_tabwidget->addTab(m_directory, extraspace + tr("&Directory") + extraspace);
-				
+
+                                m_main_tabwidget->addTab(m_directory, extraspace + tr("&Directory") + extraspace);
+                                m_directory->myfocus();
+
 			} else if (dc == QString("history")) {
 				m_history = new LogWidget(m_engine, this);
                                 qDebug() << "MainWidget::setConnected()" << m_engine->phoneNum();

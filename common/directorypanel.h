@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QWidget>
 
 class QDropEvent;
+class QFocusEvent;
 class QPushButton;
 class QTableWidget;
 class QTableWidgetItem;
@@ -39,8 +40,10 @@ class DirectoryPanel : public QWidget
 	Q_OBJECT
 public:
 	DirectoryPanel(QWidget * parent = 0);
+        void myfocus();
 protected:
-        void dropEvent ( QDropEvent * );
+        void dropEvent(QDropEvent *);
+        void focusInEvent(QFocusEvent *);
 signals:
 	//! start a search
 	void searchDirectory(const QString &);

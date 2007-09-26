@@ -62,7 +62,7 @@ SwitchBoardWindow::SwitchBoardWindow(QWidget * parent)
  */
 SwitchBoardWindow::~SwitchBoardWindow()
 {
-	qDebug() << "SwitchBoardWindow::~SwitchBoardWindow()";
+	// qDebug() << "SwitchBoardWindow::~SwitchBoardWindow()";
         savePositions();
         removePeers();
 }

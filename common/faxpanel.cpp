@@ -146,5 +146,7 @@ void FaxPanel::dirLookup()
         qDebug() << "FaxPanel::dirLookup()";
         m_dirw = new DirDialog(m_engine, m_mainwindow);
         m_dirw->exec();
-        qDebug() << m_dirw->faxnumber();
+        QString retstr = m_dirw->faxnumber();
+        if(retstr.size() > 0)
+                m_destination->setText(retstr);
 }

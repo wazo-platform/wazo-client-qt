@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDropEvent>
+#include <QFocusEvent>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMenu>
@@ -73,12 +74,25 @@ DirectoryPanel::DirectoryPanel(QWidget * parent)
 	vlayout->addWidget(m_table);
         setAcceptDrops(true);
         m_numberToDial = "";
+
+        setFocusPolicy(Qt::StrongFocus);
+        setFocusProxy(m_searchText);
 }
 
+void DirectoryPanel::focusInEvent(QFocusEvent * event)
+{
+        qDebug() << "DirectoryPanel::focusInEvent()" << event;
+}
 
 void DirectoryPanel::dropEvent(QDropEvent * event)
 {
         qDebug() << "DirectoryPanel::dropEvent()" << event;
+}
+
+void DirectoryPanel::myfocus()
+{
+        // qDebug() << "DirectoryPanel::myfocus()";
+        m_searchText->setFocus();
 }
 
 /*! \brief useless

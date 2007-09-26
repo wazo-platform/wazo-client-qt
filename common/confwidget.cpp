@@ -41,12 +41,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 ConfWidget::ConfWidget(BaseEngine * engine,
                        MainWidget * parent)
-        : QDialog(parent), m_engine(engine)
+        : QDialog(parent), m_engine(engine), m_mainwindow(parent)
 {
-        qDebug() << "ConfWidget::ConfWidget()" << parent;
-	m_mainwindow = parent;
 	int line = 0;
-	setModal(true);
 	// the object will be destroyed when closed
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Configuration"));
