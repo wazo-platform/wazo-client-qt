@@ -20,48 +20,70 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
    $Date$
 */
 
-#include <QCheckBox>
-#include <QComboBox>
 #include <QDebug>
 #include <QDialogButtonBox>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
-#include <QPushButton>
-#include <QSpinBox>
+#include <QSettings>
 #include <QVBoxLayout>
 
 #include "dirdialog.h"
-#include "mainwidget.h"
 #include "directorypanel.h"
+#include "mainwidget.h"
 
 /*! \brief constructor
  */
-DirDialog::DirDialog(QWidget * parent)
-        : QDialog(parent)
+DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
+        : QDialog(parent), m_engine(engine)
 {
-	int line = 0;
+        QSettings settings;
+	restoreGeometry(settings.value("faxhistory/geometry").toByteArray());
 	setModal(true);
 	// the object will be destroyed when closed
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Directory"));
 
-        DirectoryPanel * directory = new DirectoryPanel(this);
+	QVBoxLayout * vlayout = new QVBoxLayout(this);
+        m_directory = new DirectoryPanel(this);
+        connect( m_directory, SIGNAL(searchDirectory(const QString &)),
+                 m_engine, SLOT(searchDirectory(const QString &)) );
+        connect( m_engine, SIGNAL(directoryResponse(const QString &)),
+                 m_directory, SLOT(setSearchResponse(const QString &)) );
+        connect( m_directory, SIGNAL(copyNumber(const QString &)),
+                 this, SLOT(copyNumber(const QString &)) );
 
+	m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+	connect(m_btnbox, SIGNAL(accepted()),
+                this, SLOT(saveAndClose()));
+	connect(m_btnbox, SIGNAL(rejected()),
+                this, SLOT(close()));
+	m_btnbox->button(QDialogButtonBox::Ok)->setDefault(true);
 
-// 	vlayout->addLayout(gridlayout);
-//         vlayout->addStretch(1);
-// 	vlayout->addWidget(m_btnbox);
+	vlayout->addWidget(m_directory);
+	vlayout->addWidget(m_btnbox);
+
+        m_faxnumber = "";
+        m_retfaxnumber = "";
 }
 
-/*!
- * This slot saves the configuration (which is stored in displayed
- * widgets) to the BaseEngine object
- * and also to the main window object and then call close()
- */
+DirDialog::~DirDialog()
+{
+        QSettings settings;
+	settings.setValue("faxhistory/geometry", saveGeometry() );
+}
+
+const QString & DirDialog::faxnumber() const
+{
+	return m_retfaxnumber;
+}
+
+void DirDialog::copyNumber(const QString & number)
+{
+        m_faxnumber = number;
+}
+
 void DirDialog::saveAndClose()
 {
+        m_retfaxnumber = m_faxnumber;
         close();
 }

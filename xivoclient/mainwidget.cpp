@@ -390,7 +390,7 @@ void MainWidget::engineStarted()
 				m_mainlayout->addWidget(m_dial, 0);
 
 			} else if (dc == QString("fax")) {
-				m_faxwidget = new FaxPanel(this);
+				m_faxwidget = new FaxPanel(m_engine, this);
                                 connect( m_faxwidget, SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
                                          m_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
 				m_main_tabwidget->addTab(m_faxwidget, extraspace + tr("&Fax") + extraspace);

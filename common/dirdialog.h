@@ -31,6 +31,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 class QDialogButtonBox;
 
+class BaseEngine;
+class DirectoryPanel;
+
 //class MainWidget;
 
 /*! \brief Configuration Window
@@ -51,33 +54,18 @@ public:
 	 * \param engine	related BaseEngine object where parameters will be modified
 	 * \param parent	parent QWidget
 	 */
-	DirDialog(QWidget *);
-	//DirDialog(BaseEngine *engine, QWidget *parent = 0);
+	DirDialog(BaseEngine *, QWidget *);
+        ~DirDialog();
+        const QString & faxnumber() const;
 private slots:
 	//! Save the configuration to the BaseEngine object and close
 	void saveAndClose();
+        void copyNumber(const QString &);
 private:
-	QLineEdit * m_serverhost;	//!< IP/hostname of the server
-	QLineEdit * m_sbport;		//!< server port (switchboard)
-	QLineEdit * m_loginport;	//!< port of the server
-
-	QCheckBox * m_autoconnect;	//!< Auto connect checkbox
-	QCheckBox * m_trytoreconnect;	//!< "Try to reconnect" Checkbox
-	QSpinBox  * m_tryinterval_sbox;	//!< "Try to reconnect" interval
-	QSpinBox  * m_kainterval_sbox;	//!< Keep alive interval
-
-	QLineEdit * m_asterisk;		//!< id name of the Asterisk server
-	QComboBox * m_protocombo;	//!< Protocol SIP/IAX
-	QLineEdit * m_userid;		//!< user login
-	QLineEdit * m_passwd;		//!< user password
-
-	QSpinBox  * m_history_sbox;	//!< History size
-	QSpinBox  * m_tablimit_sbox;	//!< Maximum number of tabs
-	QCheckBox * m_tcpmode;		//!< Use outgoing TCP connection
-	QCheckBox * m_lastconnwins;	//!< The last connected user wins => disconnects the other
-	QCheckBox * m_presence;		//!< connect to presence server checkbox
-	QCheckBox * m_cinfo;		//!< customer info checkbox
-
+        BaseEngine * m_engine;
+        DirectoryPanel * m_directory;
         QDialogButtonBox * m_btnbox;	//!< Buttons box
+        QString m_faxnumber;
+        QString m_retfaxnumber;
 };
 #endif

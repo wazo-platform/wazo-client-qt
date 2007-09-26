@@ -23,20 +23,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #include <QDebug>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QFileDialog>
-#include <QLineEdit>
 #include <QLabel>
+#include <QLineEdit>
 #include <QPushButton>
 #include <QSettings>
+#include <QVBoxLayout>
 
 #include "faxpanel.h"
 #include "dirdialog.h"
 
-FaxPanel::FaxPanel(QWidget * parent)
-        : QWidget(parent), m_mainwindow(parent)
+FaxPanel::FaxPanel(BaseEngine * engine, QWidget * parent)
+        : QWidget(parent), m_mainwindow(parent), m_engine(engine)
 {
         QSettings settings;
         qDebug() << "FaxPanel::FaxPanel()" << parent;
@@ -144,6 +144,7 @@ void FaxPanel::sendFax()
 void FaxPanel::dirLookup()
 {
         qDebug() << "FaxPanel::dirLookup()";
-        //        DirDialog * dirw = new DirDialog(m_mainwindow);
-        //        dirw->exec();
+        m_dirw = new DirDialog(m_engine, m_mainwindow);
+        m_dirw->exec();
+        qDebug() << m_dirw->faxnumber();
 }

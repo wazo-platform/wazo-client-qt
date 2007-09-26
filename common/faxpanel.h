@@ -9,13 +9,15 @@ class QCheckBox;
 class QLabel;
 class QLineEdit;
 
+class BaseEngine;
+class DirDialog;
 class MainWidget;
 
 class FaxPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	FaxPanel(QWidget * parent = 0);
+	FaxPanel(BaseEngine *, QWidget * parent = 0);
         ~FaxPanel();
 signals:
         void faxSend(const QString &, const QString &, Qt::CheckState);
@@ -28,6 +30,8 @@ private:
         QLineEdit * m_openFileNameLabel;
 	QLineEdit * m_destination;
         QCheckBox * m_maskornot;
+        BaseEngine * m_engine;
+        DirDialog * m_dirw;
 };
 
 #endif
