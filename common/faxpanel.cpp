@@ -39,7 +39,7 @@ FaxPanel::FaxPanel(BaseEngine * engine, QWidget * parent)
         : QWidget(parent), m_mainwindow(parent), m_engine(engine)
 {
         QSettings settings;
-        qDebug() << "FaxPanel::FaxPanel()" << parent;
+        // qDebug() << "FaxPanel::FaxPanel()" << parent;
         Qt::CheckState previous_hide = (Qt::CheckState) settings.value("faxhistory/hidenumber", 0).toInt();
 
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -143,10 +143,12 @@ void FaxPanel::sendFax()
 
 void FaxPanel::dirLookup()
 {
-        qDebug() << "FaxPanel::dirLookup()";
+        // qDebug() << "FaxPanel::dirLookup()";
         m_dirw = new DirDialog(m_engine, m_mainwindow);
         m_dirw->exec();
+        // qDebug() << "FaxPanel::dirLookup() DirDialog exec'ed";
         QString retstr = m_dirw->faxnumber();
         if(retstr.size() > 0)
                 m_destination->setText(retstr);
+        delete m_dirw;
 }

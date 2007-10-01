@@ -39,7 +39,6 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
         QSettings settings;
 	restoreGeometry(settings.value("faxhistory/geometry").toByteArray());
 	// the object will be destroyed when closed
-	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Directory"));
 
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -68,6 +67,7 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
 
 DirDialog::~DirDialog()
 {
+        // qDebug() << "DirDialog::~DirDialog()";
         QSettings settings;
 	settings.setValue("faxhistory/geometry", saveGeometry() );
 }
