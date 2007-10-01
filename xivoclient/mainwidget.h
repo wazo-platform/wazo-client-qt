@@ -36,6 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "directorypanel.h"
 
 class QActionGroup;
+class QDateTime;
 class QSystemTrayIcon;
 class QTabWidget;
 class QWidget;
@@ -114,6 +115,7 @@ private:
 	ServicePanel * m_featureswidget;
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;
+        QDateTime m_launchDateTime;
 
 	int m_tablimit;		//!< Maximum number of tabs in m_cinfo_tabwidget
 	int m_cinfo_index;

@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #include <QAction>
 #include <QApplication>
+#include <QDateTime>
 #include <QDebug>
 #include <QHideEvent>
 #include <QLabel>
@@ -101,6 +102,7 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
         m_mainlayout->addWidget(m_xivobg, 1, Qt::AlignHCenter | Qt::AlignVCenter);
 	setCentralWidget(m_wid);
 	m_tablimit = settings.value("display/tablimit", 5).toInt();
+        m_launchDateTime = QDateTime::currentDateTime();
 
         //        m_xivobg2 = new QLabel();
         //        m_xivobg2->setPixmap(QPixmap(":/xivo-client.png"));
@@ -354,7 +356,6 @@ void MainWidget::engineStarted()
         QSettings settings;
 	QStringList display_capas = QString("customerinfo,features,history,directory,peers,fax,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
-        allowed_capas << "fax";
         qDebug() << "MainWidget::setConnected()" << m_engine->checkedPresence() << m_engine->checkedCInfo();
 
         m_mainlayout->removeWidget(m_xivobg);
@@ -539,7 +540,6 @@ void MainWidget::engineStopped()
         QSettings settings;
 	QStringList display_capas = QString("customerinfo,features,history,directory,peers,fax,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
-        allowed_capas << "fax";
 
         if (m_main_tabwidget->currentIndex() > -1)
                 settings.setValue("display/lastfocusedtab", m_main_tabwidget->currentIndex());
@@ -766,7 +766,8 @@ void MainWidget::about()
 			   "<p><b>" + tr("Version : ") + QString("</b>%1 (").arg(applicationVersion) +
 			   "<b>svn : " + QString("</b>%1 - %2)</p>").arg(__current_client_version__,
                                                                          fetchlastone) +
-                           "(" + tr("Advised Server Version : ") + __required_server_version__ + ")" +
+                           "<p>(" + tr("Advised Server Version : ") + __required_server_version__ + ")</p>" +
+                           "<p>(" + tr("Application Launched on : ") + m_launchDateTime.toString() + ")</p>" +
 			   "<hr><p>(C) 2007 <a href=http://www.proformatique.com><b>Proformatique</b></a></p>"
 			   "<p>67 rue Voltaire 92800 Puteaux FRANCE</p>"
 			   "<p><b>E-mail : </b><a href=mailto:technique@proformatique.com>technique@proformatique.com</p>"
