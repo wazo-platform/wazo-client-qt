@@ -571,13 +571,10 @@ void BaseEngine::socketStateChanged(QAbstractSocket::SocketState socketState)
 	}
 }
 
-/*! \brief update Peers 
- *
- * update peers and calls
- */
-void BaseEngine::updatePeers(const QStringList & liststatus)
+
+void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 {
-	const int nfields0 = 11; // 0th order size (per-phone/line informations)
+	const int nfields0 = 14; // 0th order size (per-phone/line informations)
 	const int nfields1 = 6;  // 1st order size (per-channel informations)
 	QStringList chanIds;
 	QStringList chanStates;
@@ -586,22 +583,24 @@ void BaseEngine::updatePeers(const QStringList & liststatus)
 	// liststatus[0] is a dummy field, only used for debug on the daemon side
 	// p/(asteriskid)/(context)/(protocol)/(phoneid)/(phonenum)
 
-	if(liststatus.count() < nfields0)
-	{
-		// not valid
+	if(liststatus.count() < nfields0) { // not valid
 		qDebug() << "Bad data from the server :" << liststatus;
 		return;
 	}
 
 	//<who>:<asterisk_id>:<tech(SIP/IAX/...)>:<phoneid>:<numero>:<contexte>:<dispo>:<etat SIP/XML>:<etat VM>:<etat Queues>: <nombre de liaisons>:
+        QString astid   = liststatus[1];
 	QString context = liststatus[5];
-	QString pname   = "p/" + liststatus[1] + "/" + context + "/"
+
+	QString pname   = "p/" + astid + "/" + context + "/"
 		+ liststatus[2].toLower() + "/" + liststatus[3] + "/" + liststatus[4];
 	QString InstMessAvail   = liststatus[6];
 	QString SIPPresStatus   = liststatus[7];
 	QString VoiceMailStatus = liststatus[8];
 	QString QueueStatus     = liststatus[9];
-	int nchans = liststatus[10].toInt();
+	m_callerids[pname]      = liststatus[10];
+
+	int nchans = liststatus[nfields0 - 1].toInt();
 	if(liststatus.size() == nfields0 + nfields1 * nchans) {
 		for(int i = 0; i < nchans; i++) {
 			//  <channel>:<etat du channel>:<nb de secondes dans cet etat>:<to/from>:<channel en liaison>:<numero en liaison>
@@ -609,20 +608,21 @@ void BaseEngine::updatePeers(const QStringList & liststatus)
 			QString displayedNum;
 			
 			SIPPresStatus = liststatus[refn + 1];
-			chanIds << ("c/" + liststatus[1] + "/" + context + "/" + liststatus[refn]);
+			chanIds << ("c/" + astid + "/" + context + "/" + liststatus[refn]);
 			chanStates << liststatus[refn + 1];
-			if((liststatus[refn + 5] == "") ||
-			   (liststatus[refn + 5] == "<Unknown>") ||
-			   (liststatus[refn + 5] == "<unknown>") ||
-			   (liststatus[refn + 5] == "anonymous") ||
-			   (liststatus[refn + 5] == "(null)"))
+                        QString peerid = liststatus[refn + 5];
+			if((peerid == "") ||
+			   (peerid == "<Unknown>") ||
+			   (peerid == "<unknown>") ||
+			   (peerid == "anonymous") ||
+			   (peerid == "(null)"))
 				displayedNum = tr("Unknown Number");
 			else
-				displayedNum = liststatus[refn + 5];
+				displayedNum = peerid;
 
 			chanOthers << displayedNum;
                         if(m_is_a_switchboard)
-                                updateCall("c/" + liststatus[1] + "/" + context + "/" + liststatus[refn],
+                                updateCall("c/" + astid + "/" + context + "/" + liststatus[refn],
                                            liststatus[refn + 1],
                                            liststatus[refn + 2].toInt(), liststatus[refn + 3],
                                            liststatus[refn + 4], displayedNum,
@@ -639,71 +639,33 @@ void BaseEngine::updatePeers(const QStringList & liststatus)
                         updateMyCalls(chanIds, chanStates, chanOthers);
 }
 
-/*! \brief update a caller id 
- */
-void BaseEngine::updateCallerids(const QStringList & liststatus)
+
+void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 {
-	QString pname = "p/" + liststatus[1] + "/" + liststatus[5] + "/"
+	const int nfields0 = 10; // 0th order size (per-phone/line informations)
+	if(liststatus.count() < nfields0) { // not valid
+		qDebug() << "Bad data from the server :" << liststatus;
+		return;
+	}
+
+        QString astid   = liststatus[1];
+	QString context = liststatus[5];
+	QString pname   = "p/" + astid + "/" + context + "/"
 		+ liststatus[2].toLower() + "/" + liststatus[3] + "/" + liststatus[4];
-	QString pcid = liststatus[6];
-	// liststatus[7] => group informations
-	m_callerids[pname] = pcid;
+        removePeer(pname);
+        m_callerids.remove(pname);
 }
+
 
 bool BaseEngine::parseCommand(const QStringList & listitems)
 {
 	QSettings settings;
-        //        qDebug() << "BaseEngine::parseCommand listitems[0].toLower() =" << listitems[0].toLower();
-        if(listitems[0].toLower() == "callerids") {
+        // qDebug() << "BaseEngine::parseCommand listitems[0].toLower() =" << listitems[0].toLower() << listitems.size();
+        if((listitems[0].toLower() == QString("phones-list")) && (listitems.size() == 2)) {
                 QStringList listpeers = listitems[1].split(";");
                 for(int i = 1 ; i < listpeers.size() - 1; i++) {
                         QStringList liststatus = listpeers[i].split(":");
-                        updateCallerids(liststatus);
-                }
-                if(listpeers[0] == "0") {
-                        qDebug() << "number of callerids defined :" << m_callerids.size();
-                        askPeers();
-                } else {
-                        sendCommand("callerids " + listpeers[0]);
-                }
-        } else if(listitems[0].toLower() == "history") {
-                processHistory(listitems[1].split(";"));
-        } else if(listitems[0].toLower() == "directory-response") {
-                directoryResponse(listitems[1]);
-        } else if(listitems[0].toLower() == QString("update")) {
-                QStringList liststatus = listitems[1].split(":");
-                updatePeers(liststatus);
-                callsUpdated();
-        } else if(listitems[0].toLower() == QString("peeradd")) {
-                QStringList listpeers = listitems[1].split(";");
-                for(int i = 0 ; i < listpeers.size(); i++) {
-                        QStringList liststatus = listpeers[i].split(":");
-                        if(liststatus.size() > 13) {
-                                QStringList listcids = liststatus;
-                                listcids[6] = liststatus[11];
-                                listcids[7] = liststatus[12];
-                                listcids[8] = liststatus[13];
-                                // remove [> 8] elements ?
-                                updateCallerids(listcids);
-                        }
-                        updatePeers(liststatus);
-                }
-        } else if(listitems[0].toLower() == QString("peerremove")) {
-                QStringList listpeers = listitems[1].split(";");
-                for(int i = 0 ; i < listpeers.size(); i++) {
-                        QStringList liststatus = listpeers[i].split(":");
-                        if(liststatus.size() > 9) {
-                                QString toremove = "p/" + liststatus[1] + "/" + \
-                                        liststatus[5] + "/" + liststatus[2] + "/" + \
-                                        liststatus[3] + "/" + liststatus[4];
-                                removePeer(toremove);
-                        }
-                }
-        } else if(listitems[0].toLower() == QString("hints")) {
-                QStringList listpeers = listitems[1].split(";");
-                for(int i = 1 ; i < listpeers.size() - 1; i++) {
-                        QStringList liststatus = listpeers[i].split(":");
-                        updatePeers(liststatus);
+                        updatePeerAndCallerid(liststatus);
                 }
 
                 if(listpeers[0] == "0") {
@@ -729,11 +691,57 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                                         monitorPeer(fullid_watched, fullname_watched);
                                 }
                         }
-                        emitTextMessage(tr("Peers' status updated"));
+                        emitTextMessage(tr("Received status for %1 phones").arg(m_callerids.size()));
                 } else {
-                        sendCommand("hints " + listpeers[0]);
+                        sendCommand("phones-list " + listpeers[0]);
+                }
+        } else if((listitems[0].toLower() == QString("phones-update")) && (listitems.size() == 2)) {
+                QStringList liststatus = listitems[1].split(":");
+                updatePeerAndCallerid(liststatus);
+                callsUpdated();
+
+        } else if((listitems[0].toLower() == QString("phones-add")) && (listitems.size() == 2)) {
+                QStringList listpeers = listitems[1].split(";");
+                for(int i = 1 ; i < listpeers.size() - 1; i++) {
+                        QStringList liststatus = listpeers[i].split(":");
+                        updatePeerAndCallerid(liststatus);
                 }
 
+                if(listpeers[0] == "0") {
+                        qDebug() << "phones-add completed";
+                } else {
+                        sendCommand("phones-add " + listpeers[0]);
+                }
+
+        } else if((listitems[0].toLower() == QString("phones-del")) && (listitems.size() == 2)) {
+                QStringList listpeers = listitems[1].split(";");
+                for(int i = 1 ; i < listpeers.size() - 1; i++) {
+                        QStringList liststatus = listpeers[i].split(":");
+                        removePeerAndCallerid(liststatus);
+                }
+
+                if(listpeers[0] == "0") {
+                        qDebug() << "phones-del completed";
+                } else {
+                        sendCommand("phones-del " + listpeers[0]);
+                }
+
+        } else if((listitems[0].toLower() == QString("phones-signal-deloradd")) && (listitems.size() == 2)) {
+                QStringList listpeers = listitems[1].split(";");
+                qDebug() << listpeers;
+                emitTextMessage(tr("New phone list on %1 : - %2 + %3 = %4 total").arg(listpeers[0],
+                                                                                      listpeers[1],
+                                                                                      listpeers[2],
+                                                                                      listpeers[3]));
+                if(listpeers[1].toInt() > 0)
+                        sendCommand("phones-del");
+                if(listpeers[2].toInt() > 0)
+                        sendCommand("phones-add");
+
+        } else if(listitems[0].toLower() == "history") {
+                processHistory(listitems[1].split(";"));
+        } else if(listitems[0].toLower() == "directory-response") {
+                directoryResponse(listitems[1]);
         } else if(listitems[0].toLower() == QString("message")) {
                 QTime currentTime = QTime::currentTime();
                 QStringList message = listitems[1].split("::");
@@ -1420,15 +1428,10 @@ void BaseEngine::askFeatures(const QString & peer)
         sendCommand("featuresget " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid);
 }
 
-void BaseEngine::askPeers()
-{
-        sendCommand("hints");
-}
-
 void BaseEngine::askCallerIds()
 {
         qDebug() << "BaseEngine::askCallerIds()";
-	sendCommand("callerids");
+	sendCommand("phones-list");
 }
 
 void BaseEngine::setAutoconnect(bool b)

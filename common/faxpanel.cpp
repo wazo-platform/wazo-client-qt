@@ -87,11 +87,11 @@ FaxPanel::FaxPanel(BaseEngine * engine, QWidget * parent)
 	groupBox4->setAlignment( Qt::AlignLeft );
 	QHBoxLayout * hbox4 = new QHBoxLayout( groupBox4 );
 
-        QPushButton * sendButton = new QPushButton( tr("Send"), this);
-        connect(sendButton, SIGNAL(clicked()),
+        m_sendButton = new QPushButton( tr("Send"), this);
+        connect(m_sendButton, SIGNAL(clicked()),
                 this, SLOT(sendFax()));
  	hbox4->addStretch(1);
- 	hbox4->addWidget(sendButton);
+ 	hbox4->addWidget(m_sendButton);
  	hbox4->addStretch(1);
 
         vlayout->addWidget(groupBox1);
@@ -131,10 +131,11 @@ void FaxPanel::sendFax()
 	settings.setValue("faxhistory/hidenumber", m_maskornot->checkState());
 
         if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
-                qDebug() << "FaxPanel::sendFax()"
-                         << m_openFileNameLabel->text()
-                         << m_destination->text()
-                         << m_maskornot->checkState();
+                // qDebug() << "FaxPanel::sendFax()"
+                // << m_openFileNameLabel->text()
+                // << m_destination->text()
+                // << m_maskornot->checkState();
+                // m_sendButton->setEnabled(false);
                 faxSend(m_openFileNameLabel->text(),
                         m_destination->text(),
                         m_maskornot->checkState());

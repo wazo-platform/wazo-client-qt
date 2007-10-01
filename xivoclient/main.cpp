@@ -71,7 +71,10 @@ int main(int argc, char * * argv)
         app.setStyleSheet(qssStr);
 
 	QTranslator qtTranslator;
-	qtTranslator.load(QString(":/xivoclient_") + locale);
+        QString forcelocale = settings.value("display/forcelocale", "").toString();
+        if(forcelocale.size() > 0)
+                locale = forcelocale;
+        qtTranslator.load(QString(":/xivoclient_") + locale);
 	app.installTranslator(&qtTranslator);
         app.setQuitOnLastWindowClosed(false);
 

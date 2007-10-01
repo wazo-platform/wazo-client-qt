@@ -219,6 +219,8 @@ void PeersLayout::setItemPosition(int i, QPoint pos)
  */
 QPoint PeersLayout::getItemPosition(int i) const
 {
-	return m_listPos[i];
+        QPoint reply = QPoint(-1, -1);
+	if(i >= 0 && i < m_listPos.size())
+                reply = m_listPos[i];
+        return reply;
 }
-

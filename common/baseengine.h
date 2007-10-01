@@ -146,7 +146,6 @@ public slots:
 	void featurePutForwardOnBusy(bool, const QString &);
 	void featurePutForwardOnUnavailable(bool, const QString &);
 	void askFeatures(const QString &);
-	void askPeers();
 	void askCallerIds();
 	void setKeepaliveinterval(uint);	//!< set keep alive interval
         void copyNumber(const QString &);
@@ -159,7 +158,8 @@ private slots:
 	void readKeepLoginAliveDatagrams();	//!< handle the responses to keep alive
 	void popupDestroyed(QObject *);		//!< know when a profile widget is destroyed *DEBUG*
 	void profileToBeShown(Popup *);		//!< a new profile must be displayed
-	void updatePeers(const QStringList &);
+        void updatePeerAndCallerid(const QStringList &);
+        void removePeerAndCallerid(const QStringList &);
 	void socketConnected();
 	void socketDisconnected();
 	void socketHostFound();
@@ -227,7 +227,6 @@ private:
 	void processHistory(const QStringList &);
 	void initFeatureFields(const QString &,
 			       const QString &);
-	void updateCallerids(const QStringList &);
 	void connectSocket();
 	void sendTCPCommand();
         void sendCommand(const QString &);

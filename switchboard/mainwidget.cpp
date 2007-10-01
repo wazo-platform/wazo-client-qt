@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QAction>
 #include <QApplication>
 #include <QCloseEvent>
+#include <QDateTime>
 #include <QDebug>
 #include <QLabel>
 #include <QLineEdit>
@@ -117,6 +118,7 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
         m_mainlayout->addWidget(m_xivobg, 0, Qt::AlignHCenter | Qt::AlignVCenter);
 	setCentralWidget(m_wid);
 	m_tablimit = settings.value("display/tablimit", 5).toInt();
+        m_launchDateTime = QDateTime::currentDateTime();
 }
 
 void MainWidget::buildSplitters()
@@ -673,7 +675,8 @@ void MainWidget::about()
 			   "<p><b>" + tr("Version : ") + QString("</b>%1 (").arg(applicationVersion) +
 			   "<b>svn : " + QString("</b>%1 - %2)</p>").arg(__current_client_version__,
                                                                          fetchlastone) +
-                           "(" + tr("Advised Server Version : ") + __required_server_version__ + ")" +
+                           "<p>(" + tr("Advised Server Version : ") + __required_server_version__ + ")</p>" +
+                           "<p>(" + tr("Application Launched on : ") + m_launchDateTime.toString() + ")</p>" +
 			   "<hr><p>(C) 2007 <a href=http://www.proformatique.com><b>Proformatique</b></a></p>"
 			   "<p>67 rue Voltaire 92800 Puteaux FRANCE</p>"
 			   "<p><b>E-mail : </b><a href=mailto:technique@proformatique.com>technique@proformatique.com</p>"

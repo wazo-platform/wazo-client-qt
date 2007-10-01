@@ -8,6 +8,7 @@
 class QCheckBox;
 class QLabel;
 class QLineEdit;
+class QPushButton;
 
 class BaseEngine;
 class DirDialog;
@@ -30,6 +31,7 @@ private:
         QLineEdit * m_openFileNameLabel;
 	QLineEdit * m_destination;
         QCheckBox * m_maskornot;
+        QPushButton * m_sendButton;
         BaseEngine * m_engine;
         DirDialog * m_dirw;
 };

@@ -173,6 +173,7 @@ void SearchPanel::updatePeer(const QString & ext,
 			     const QStringList & chanStates,
 			     const QStringList & chanOthers)
 {
+        // qDebug() << "SearchPanel::updatePeer()";
         if(m_peerhash.contains(ext)) {
                 Peer * peeritem = m_peerhash.value(ext);
                 peeritem->updateStatus(imavail, sipstatus, vmstatus, queuestatus);
@@ -199,13 +200,14 @@ void SearchPanel::updatePeer(const QString & ext,
  */
 void SearchPanel::removePeer(const QString & ext)
 {
+        // qDebug() << "SearchPanel::removePeer()" << ext;
         if(m_peerhash.contains(ext)) {
                 Peer * peeritem = m_peerhash.value(ext);
                 PeerWidget * peerwidget = peeritem->getWidget();
                 if (m_peerlayout->indexOf( peerwidget ) > -1)
                         m_peerlayout->removeWidget( peerwidget );
                 m_peerhash.remove(ext);
-                peerwidget->deleteLater();
+                delete peerwidget; // peerwidget->deleteLater();
                 return;
         }
 }

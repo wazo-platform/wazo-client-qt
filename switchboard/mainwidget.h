@@ -16,19 +16,24 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
-/* $Id$ */
+/* $Revision$
+ * $Date$
+*/
+
 #ifndef __MAINWIDGET_H__
 #define __MAINWIDGET_H__
 
-#include <QWidget>
+#include <QDateTime>
 #include <QMainWindow>
 #include <QSplitter>
 #include <QSystemTrayIcon>
 #include <QTabWidget>
+#include <QWidget>
 
 class QAction;
 class QActionGroup;
 class QCloseEvent;
+class QDateTime;
 class QLabel;
 class QScrollArea;
 class QVBoxLayout;
@@ -116,8 +121,9 @@ private:
 	QAction * m_avact_dnd;		//!< "Do not disturb" action
 	QAction * m_avact_otl;		//!< "out to lunch" action
 	QAction * m_avact_away;		//!< "away" action
-
 	QLabel * m_status;	//!< status indicator
+
+        QDateTime m_launchDateTime;
 };
 
 

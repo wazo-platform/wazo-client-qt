@@ -58,7 +58,10 @@ int main(int argc, char * * argv)
         }
         app.setStyleSheet(qssStr);
 
-	QTranslator qtTranslator;
+        QTranslator qtTranslator;
+        QString forcelocale = settings.value("display/forcelocale", "").toString();
+        if(forcelocale.size() > 0)
+                locale = forcelocale;
 	qtTranslator.load(QString(":/switchboard_") + locale);
 	app.installTranslator(&qtTranslator);
 

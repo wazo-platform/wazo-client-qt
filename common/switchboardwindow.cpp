@@ -221,12 +221,13 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
  */
 void SwitchBoardWindow::removePeer(const QString & ext)
 {
+        // qDebug() << "SwitchBoardWindow::removePeer()" << ext;
         if(m_peerhash.contains(ext)) {
                 Peer * peeritem = m_peerhash.value(ext);
                 PeerWidget * peerwidget = peeritem->getWidget();
                 m_layout->removeWidget( peerwidget );
                 m_peerhash.remove(ext);
-                peerwidget->deleteLater();
+                delete peerwidget; //peerwidget->deleteLater();
                 return;
         }
 }
@@ -240,7 +241,7 @@ void SwitchBoardWindow::removePeer(const QString & ext)
  */
 void SwitchBoardWindow::removePeers(void)
 {
-        qDebug() << "SwitchBoardWindow::removePeers()";
+        // qDebug() << "SwitchBoardWindow::removePeers()";
         QHashIterator<QString, Peer *> peeriter(m_peerhash);
         QTime qtime;
         qtime.start();
