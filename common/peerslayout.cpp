@@ -109,7 +109,7 @@ void PeersLayout::addItem(QLayoutItem * item)
 
 /*! \brief set geometry of contained layout items
  */
-void PeersLayout::setGeometry(const QRect & r)
+void PeersLayout::setGeometry(const QRect &/* r*/)
 {
 	//qDebug() << "PeersLayout::setGeometry" << r;
 	QSize itemSize = maxItemSize();

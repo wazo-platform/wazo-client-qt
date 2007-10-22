@@ -53,11 +53,13 @@ bool XmlHandler::startElement( const QString & /*namespaceURI*/,
 		m_infoType = atts.value("type");
 		m_infoName = atts.value("name");
 		m_infoValue = "";
+		m_infoDispValue = "";
 	}
 	else if( localName == "message" )
 	{
 		m_isParsingInfo = true;
 		m_infoValue = "";
+		m_infoDispValue = "";
 	}
 	else
 	{
@@ -96,7 +98,12 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
 			if(m_popup)
 				m_popup->addInfoPicture( m_infoName, m_infoValue );
 		}
-		else if( m_infoType == "phone" )
+		else if( m_infoType == QString("urlx") )
+		{
+			if(m_popup)
+				m_popup->addInfoLinkX( m_infoName, m_infoValue, m_infoDispValue );
+		}
+		else if( m_infoType == QString("phone") )
 		{
 			if(m_popup) {
                                 if(re_number.exactMatch(m_infoValue))
@@ -126,6 +133,7 @@ bool XmlHandler::characters( const QString & ch )
 	if(m_isParsingInfo)
 	{
 		m_infoValue.append(ch);
+		m_infoDispValue.append(ch);
 	}
 	return true;
 }

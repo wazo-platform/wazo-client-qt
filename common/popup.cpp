@@ -20,12 +20,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  * $Date$
  */
 
+#include <QComboBox>
+#include <QDateTime>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QHttp>
 #include <QIcon>
 #include <QLabel>
+#include <QLineEdit>
 #include <QPixmap>
 #include <QPushButton>
+#include <QUiLoader>
 #include <QUrl>
 #include <QVariant>
 
@@ -41,12 +46,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  * \param sessionid		sessionid to check incoming connection to
  * \param parent		parent widget
  */
-Popup::Popup(QIODevice *inputstream, const QString & sessionid, QWidget *parent)
-        : QWidget(parent), m_inputstream(inputstream),
-          m_xmlInputSource(inputstream), m_handler(this),
-          m_sessionid(sessionid)
+Popup::Popup(QIODevice * inputstream,
+             const bool & sheetui,
+             QWidget * parent)
+        : QWidget(parent),
+          m_inputstream(inputstream),
+          m_xmlInputSource(inputstream),
+          m_handler(this),
+          m_sheetui(sheetui)
 {
-	qDebug() << "Popup(" << inputstream << ")";
+	QDateTime currentDateTime = QDateTime::currentDateTime();
+	QString currentDateTimeStr = currentDateTime.toString(Qt::LocalDate);
+	qDebug() << "Popup::Popup()" << inputstream;
+
 	setAttribute(Qt::WA_DeleteOnClose);
 	m_reader.setContentHandler(&m_handler);
 	m_reader.setErrorHandler(&m_handler);
@@ -63,22 +75,33 @@ Popup::Popup(QIODevice *inputstream, const QString & sessionid, QWidget *parent)
 	QLabel * title = new QLabel(tr("Incoming call"), this);
 	title->setAlignment(Qt::AlignHCenter);
 	m_vlayout->addWidget(title);
-	bool display_buttons = true;
-	if(display_buttons)
-	{
-		QHBoxLayout * hlayout = new QHBoxLayout();
-		QPushButton * btn1 = new QPushButton(tr("&Answer"), this);
-		btn1->setEnabled(false);
-		hlayout->addWidget(btn1);
-		QPushButton * btn2 = new QPushButton(tr("Di&smiss"), this);
-		btn2->setEnabled(false);
-		hlayout->addWidget(btn2);
-		QPushButton * btn3 = new QPushButton(tr("&Close"), this);
-		connect( btn3, SIGNAL(clicked()), this, SLOT(close()) );
-		hlayout->addWidget(btn3);
 
-		m_vlayout->addLayout(hlayout);
-	}
+        QUiLoader loader;
+        if(sheetui) {
+                m_sheetui_widget = loader.load(inputstream, this);
+        } else {
+                QFile file(":/common/defaultform.ui");
+                file.open(QFile::ReadOnly);
+                m_sheetui_widget = loader.load(&file, this);
+                file.close();
+        }
+
+        m_vlayout->addWidget(m_sheetui_widget, 0, 0);
+
+        QPushButton * closebutton = m_sheetui_widget->findChild<QPushButton *>("close");
+        QPushButton * savebutton  = m_sheetui_widget->findChild<QPushButton *>("save");
+        if(closebutton)
+                connect( closebutton, SIGNAL(clicked()), this, SLOT(close()) );
+        if(savebutton)
+                connect( savebutton, SIGNAL(clicked()), this, SLOT(saveandclose()) );
+
+        QLineEdit   * datetime    = m_sheetui_widget->findChild<QLineEdit *>("datetime");
+        QLineEdit   * year        = m_sheetui_widget->findChild<QLineEdit *>("year");
+        if(datetime)
+                datetime->setText(currentDateTimeStr);
+        if(year)
+                year->setText(currentDateTime.toString("yyyy"));
+
 	setWindowIcon(QIcon(":/images/xivoicon.png"));
         QDesktopServices::setUrlHandler(QString("dial"), this, "dispurl");
 }
@@ -88,6 +111,21 @@ void Popup::dispurl(const QUrl &url)
         // qDebug() << "Popup::dispurl()" << url;
         QString numbertodial = url.toString().mid(5);
         emitDial(numbertodial);
+}
+
+void Popup::saveandclose()
+{
+        qDebug() << "Popup::saveandclose()";
+        QStringList qsl;
+
+        QList<QLineEdit *> lineedits = m_sheetui_widget->findChildren<QLineEdit *>(QRegExp("XIVOFORM-"));
+        for(int i = 0; i < lineedits.count(); i++) {
+                qsl.append(lineedits[i]->objectName() + ":" + lineedits[i]->text());
+        }
+
+        save(qsl.join(";"));
+
+        close();
 }
 
 void Popup::addInfoText(const QString & name, const QString & value)
@@ -138,22 +176,35 @@ void Popup::addInfoLink(const QString & name, const QString & value)
 	m_vlayout->addLayout(hlayout);
 }
 
+void Popup::addInfoLinkX(const QString & name, const QString & value, const QString & dispvalue)
+{
+        qDebug() << "Popup::addInfoLinkX()" << value << dispvalue;
+	QLabel * lblname = new QLabel(name, this);
+        QPushButton * lblvalue = new QPushButton(dispvalue, this);
+        // lblvalue->setObjectName("phonenumber");
+        lblvalue->setProperty("urlx", value);
+        connect( lblvalue, SIGNAL(clicked()),
+                 this, SLOT(httpGetNoreply()) );
+        QHBoxLayout * hlayout = new QHBoxLayout();
+        hlayout->addWidget(lblname);
+        hlayout->addWidget(lblvalue);
+        m_vlayout->addLayout(hlayout);
+}
+
 void Popup::addInfoPicture(const QString & name, const QString & value)
 {
 	QUrl url(value);
         qDebug() << "Popup::addInfoPicture()" << value << url.scheme();
 	//QUrl url = QUrl::fromEncoded(value);
 	// TODO: faire un widget special qui bouffe des Images HTTP ?
-	if((url.scheme() != QString("http")) && (url.scheme() != QString("https")))
-	{
+	if((url.scheme() != QString("http")) &&
+           (url.scheme() != QString("https"))) {
 		QLabel *lbl = new QLabel( name, this );
 		QPixmap *face = new QPixmap( value );
 		// TODO: connect a signal to close() ?
 		lbl->setPixmap( *face );
 		m_vlayout->addWidget( lbl, 0, Qt::AlignCenter );
-	}
-	else
-	{
+	} else {
 		RemotePicWidget * pic = new RemotePicWidget( name, value, this );
 		m_vlayout->addWidget( pic, 0, Qt::AlignCenter );
 	}
@@ -165,15 +216,16 @@ void Popup::streamNewData()
 	bool b = false;
 	qDebug() << "Popup::streamNewData()";
 	qDebug() << m_inputstream->bytesAvailable() << "bytes available";
-	if(m_parsingStarted)
-	{
-		b = m_reader.parseContinue();
-	}
-	else
-	{
-		b = m_reader.parse(&m_xmlInputSource, true);
-		m_parsingStarted = b;
-	}
+        if(m_sheetui == false)
+                if(m_parsingStarted)
+                        b = m_reader.parseContinue();
+                else {
+                        b = m_reader.parse(&m_xmlInputSource, true);
+                        m_parsingStarted = b;
+                }
+        else
+                finishAndShow();
+                
 	qDebug() << "parse returned" << b;
 }
 
@@ -182,6 +234,16 @@ void Popup::dialThisNumber()
         QString numbertodial = this->sender()->property("number").toString();
         qDebug() << "Popup::dialThisNumber()" << numbertodial;
         emitDial(numbertodial);
+}
+
+void Popup::httpGetNoreply()
+{
+        QString urlx = this->sender()->property("urlx").toString();
+        qDebug() << "Popup::httpGetNoreply()" << urlx;
+        QUrl url = QUrl(urlx);
+        QHttp * http = new QHttp();
+        http->setHost(url.host(), url.port());
+        http->get(url.path());
 }
 
 void Popup::streamAboutToClose()
@@ -208,6 +270,7 @@ void Popup::socketError(QAbstractSocket::SocketError err)
 void Popup::finishAndShow()
 {
 	qDebug() << "Popup::finishAndShow()";
+        m_vlayout->addStretch();
 	//dumpObjectInfo();
 	//dumpObjectTree();
 	// ...

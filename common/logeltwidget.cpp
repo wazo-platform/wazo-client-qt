@@ -82,12 +82,12 @@ LogEltWidget::LogEltWidget( const QString & peer, Direction d,
 	         this, SLOT(callBackPeer()) );
 }
 
-void LogEltWidget::mouseDoubleClickEvent(QMouseEvent *event)
+void LogEltWidget::mouseDoubleClickEvent(QMouseEvent */* event*/)
 {
         callBackPeer();
 }
 
-void LogEltWidget::mouseReleaseEvent(QMouseEvent *event)
+void LogEltWidget::mouseReleaseEvent(QMouseEvent */* event*/)
 {
         doNotCallBackPeer();
 }

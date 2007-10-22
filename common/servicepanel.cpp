@@ -20,73 +20,77 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  * $Date$
  */
 
-#include <QGridLayout>
-#include <QVBoxLayout>
 #include <QCheckBox>
-#include <QLineEdit>
-#include <QLabel>
 #include <QDebug>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QVBoxLayout>
 
 #include "servicepanel.h"
 
 ServicePanel::ServicePanel(QWidget * parent)
         : QWidget(parent)
 {
-        //qDebug() << "ServicePanel::ServicePanel()";
-	int line = 0;
-	QGridLayout * gridlayout = new QGridLayout();
-        //	layout->setContentsMargins(30, 0, 30, 0);
-        //	layout->setSpacing(0);
-	gridlayout->setMargin(0);
-	gridlayout->setSpacing(0);
+        // qDebug() << "ServicePanel::ServicePanel()";
 
+	QGroupBox * groupBox1 = new QGroupBox( tr("Services") );
+	groupBox1->setAlignment( Qt::AlignLeft );
+	QGridLayout * gridlayout1 = new QGridLayout(groupBox1);
+
+	int line = 0;
 	m_voicemail = new QCheckBox(tr("Voice &Mail"), this);
         m_voicemail->setObjectName("service");
-	gridlayout->addWidget(m_voicemail, line++, 0, 1, 0);
+	gridlayout1->addWidget(m_voicemail, line++, 0, 1, 0);
 	m_callrecording = new QCheckBox(tr("Call &Recording"), this);
         m_callrecording->setObjectName("service");
-	gridlayout->addWidget(m_callrecording, line++, 0, 1, 0);
+	gridlayout1->addWidget(m_callrecording, line++, 0, 1, 0);
 	m_callfiltering = new QCheckBox(tr("Call &Filtering"), this);
         m_callfiltering->setObjectName("service");
-	gridlayout->addWidget(m_callfiltering, line++, 0, 1, 0);
+	gridlayout1->addWidget(m_callfiltering, line++, 0, 1, 0);
 	m_dnd = new QCheckBox(tr("Do Not &Disturb"), this);
         m_dnd->setObjectName("service");
-	gridlayout->addWidget(m_dnd, line++, 0, 1, 0);
+	gridlayout1->addWidget(m_dnd, line++, 0, 1, 0);
+
+	QGroupBox * groupBox2 = new QGroupBox( tr("Call Forwards") );
+	groupBox2->setAlignment( Qt::AlignLeft );
+	QGridLayout * gridlayout2 = new QGridLayout(groupBox2);
 
 	m_uncondforward = new QCheckBox(tr("&Unconditional Forward"), this);
         m_uncondforward->setObjectName("service");
-	gridlayout->addWidget(m_uncondforward, line++, 0, 1, 0);
+	gridlayout2->addWidget(m_uncondforward, line++, 0, 1, 0);
 	QLabel * lbluncond = new QLabel(tr("Destination"), this);
-	gridlayout->addWidget(lbluncond, line, 0);
+	gridlayout2->addWidget(lbluncond, line, 0);
 	m_uncondforwarddest = new QLineEdit(this);
 	m_uncondforward->setEnabled(false);
-	gridlayout->addWidget(m_uncondforwarddest, line++, 1);
+	gridlayout2->addWidget(m_uncondforwarddest, line++, 1);
         lbluncond->setObjectName("service");
 
 	m_forwardonbusy = new QCheckBox(tr("Forward on &Busy"), this);
         m_forwardonbusy->setObjectName("service");
-	gridlayout->addWidget(m_forwardonbusy, line++, 0, 1, 0);
+	gridlayout2->addWidget(m_forwardonbusy, line++, 0, 1, 0);
 	QLabel * lblonbusy = new QLabel(tr("Destination"), this);
-	gridlayout->addWidget(lblonbusy, line, 0);
+	gridlayout2->addWidget(lblonbusy, line, 0);
 	m_forwardonbusydest = new QLineEdit(this);
 	m_forwardonbusy->setEnabled(false);
-	gridlayout->addWidget(m_forwardonbusydest, line++, 1);
+	gridlayout2->addWidget(m_forwardonbusydest, line++, 1);
         lblonbusy->setObjectName("service");
 
 	m_forwardonunavailable = new QCheckBox(tr("Forward on &No Reply"), this);
         m_forwardonunavailable->setObjectName("service");
-	gridlayout->addWidget(m_forwardonunavailable, line++, 0, 1, 0);
+	gridlayout2->addWidget(m_forwardonunavailable, line++, 0, 1, 0);
 	QLabel * lblonunavailable = new QLabel(tr("Destination"), this);
-	gridlayout->addWidget(lblonunavailable, line, 0);
+	gridlayout2->addWidget(lblonunavailable, line, 0);
 	m_forwardonunavailabledest = new QLineEdit(this);
 	m_forwardonunavailable->setEnabled(false);
-	gridlayout->addWidget(m_forwardonunavailabledest, line++, 1);
+	gridlayout2->addWidget(m_forwardonunavailabledest, line++, 1);
         lblonunavailable->setObjectName("service");
 
         QVBoxLayout * vlayout = new QVBoxLayout(this);
-        vlayout->addLayout(gridlayout);
+        vlayout->addWidget(groupBox1);
+        vlayout->addWidget(groupBox2);
         vlayout->addStretch(1);
-        vlayout->setSpacing(0);
 
         Reset();
 	connect(m_uncondforwarddest, SIGNAL(textEdited(const QString &)),

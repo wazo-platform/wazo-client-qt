@@ -95,15 +95,13 @@ void DirectoryPanel::myfocus()
         m_searchText->setFocus();
 }
 
-/*! \brief useless
- */
 void DirectoryPanel::itemClicked(QTableWidgetItem * item)
 {
 	//qDebug() << item << item->text();
 	// check if the string is a number
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
 	if(re_number.exactMatch(item->text())) {
-                //qDebug() << "preparing to dial" << item->text();
+                // qDebug() << "DirectoryPanel::itemClicked()" << "preparing to dial" << item->text();
                 copyNumber(item->text());
         }
 }
@@ -198,7 +196,7 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
 	if(item && re_number.exactMatch( item->text() )) {
 		m_numberToDial = item->text();
-		qDebug() << "preparing to dial :" << m_numberToDial;
+                // qDebug() << "DirectoryPanel::contextMenuEvent()" << "preparing to dial" << m_numberToDial;
 		QMenu contextMenu(this);
 		contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
  		if(!m_mychannels.empty()) {

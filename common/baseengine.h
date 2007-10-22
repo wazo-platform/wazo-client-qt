@@ -147,9 +147,11 @@ public slots:
 	void featurePutForwardOnUnavailable(bool, const QString &);
 	void askFeatures(const QString &);
 	void askCallerIds();
+        void addToDataBase(const QString &);
 	void setKeepaliveinterval(uint);	//!< set keep alive interval
         void copyNumber(const QString &);
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
+	void readProfile();
 private slots:
 	void identifyToTheServer();		//!< perform the first login step
 	void processLoginDialog();		//!< perform the following login steps
@@ -175,6 +177,7 @@ signals:
 	void emitTextMessage(const QString &);	//! message to be displayed to the user.
         void pasteToDialPanel(const QString &);
         void parkingEvent(const QString &, const QString &);
+        void ackFax(const QString &);
 
 	//! a call
 	void updateCall(const QString & channelme,
@@ -282,6 +285,7 @@ private:
 	QTcpSocket * m_sbsocket;	//!< TCP socket to connect to the server (SB mode)
 	QTcpSocket * m_loginsocket;	//!< TCP socket to login to the server
 	QTcpSocket * m_faxsocket;	//!< TCP socket to send fax data to the server
+	QTcpSocket * m_connection;	//!< TCP socket set from TCP server listening for profiles
 	QUdpSocket * m_udpsocket;      	//!< UDP socket used for keep alive
 	QTcpServer * m_listenserver;	//!< TCP server listening for profiles
 	ushort m_listenport;		//!< Port where we are listening for profiles

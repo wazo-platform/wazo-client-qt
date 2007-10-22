@@ -31,6 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QSettings>
+#include <QShowEvent>
 #include <QStatusBar>
 #include <QSystemTrayIcon>
 #include <QTabWidget>
@@ -301,9 +302,11 @@ void MainWidget::showConfDialog()
  * of the MainWidget on a simple left click. */
 void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-	qDebug() << "MainWidget::systrayActivated() reason=" << reason
-	         << "visible=" << isVisible() << " hidden=" << isHidden()
-	         << "active=" << isActiveWindow();
+	qDebug() << "MainWidget::systrayActivated()"
+                 << "reason =" << reason
+	         << "isVisible =" << isVisible()
+                 << "isHidden =" << isHidden()
+	         << "isActiveWindow =" << isActiveWindow();
 	// QSystemTrayIcon::DoubleClick
 	// QSystemTrayIcon::Trigger
 	if (reason == QSystemTrayIcon::Trigger)
@@ -394,6 +397,8 @@ void MainWidget::engineStarted()
 				m_faxwidget = new FaxPanel(m_engine, this);
                                 connect( m_faxwidget, SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
                                          m_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
+                                connect( m_engine, SIGNAL(ackFax(const QString &)),
+                                         m_faxwidget, SLOT(popupMsg(const QString &)) );
 				m_main_tabwidget->addTab(m_faxwidget, extraspace + tr("&Fax") + extraspace);
 
 			} else if ((dc == QString("customerinfo")) && (m_engine->checkedCInfo())) {
@@ -682,23 +687,43 @@ void MainWidget::showNewProfile(Popup * popup)
 	}
 }
 
+
+void MainWidget::showEvent(QShowEvent */* event*/)
+{
+// 	qDebug() << "MainWidget::showEvent()"
+//                  << "spontaneous =" << event->spontaneous()
+// 	         << "isMinimized =" << isMinimized()
+//                  << "isVisible ="   << isVisible()
+//                  << "isHidden =" << isHidden()
+// 	         << "isActiveWindow =" << isActiveWindow();
+}
+
+
 void MainWidget::hideEvent(QHideEvent *event)
 {
 	// called when minimized
 	//qDebug() << "MainWidget::hideEvent(" << event << ")";
 	// if systray available
-	qDebug() << "MainWidget::hideEvent : spontaneous="
-	         << event->spontaneous() << " isMinimized()="
-			 << isMinimized();
-	//if (event->spontaneous())
-	//	event->ignore();
-	//else
+// 	qDebug() << "MainWidget::hideEvent()"
+//                  << "spontaneous =" << event->spontaneous()
+// 	         << "isMinimized =" << isMinimized()
+//                  << "isVisible ="   << isVisible()
+//                  << "isHidden =" << isHidden()
+// 	         << "isActiveWindow =" << isActiveWindow();
+
+	if (event->spontaneous())
+		event->ignore();
+	else
 		event->accept();
-#ifndef Q_WS_MAC
-	if ( QSystemTrayIcon::isSystemTrayAvailable() )
-		setVisible(false);
-#endif
+
+        // #ifndef Q_WS_MAC
+        //  	if ( QSystemTrayIcon::isSystemTrayAvailable() ) {
+        //                 qDebug() << "MainWidget::hideEvent() setVisible(false)";
+        //  		setVisible(false);
+        //         }
+        // #endif
 }
+
 
 /*! \brief Catch the Close event
  *
@@ -708,15 +733,22 @@ void MainWidget::hideEvent(QHideEvent *event)
  */
 void MainWidget::closeEvent(QCloseEvent *event)
 {
-	qDebug() << "MainWidget::closeEvent()";
-	//event->accept();
-#ifndef Q_WS_MAC
-	if ( QSystemTrayIcon::isSystemTrayAvailable() )
-		setVisible( false );
-	else
+// 	qDebug() << "MainWidget::closeEvent()"
+//                  << "spontaneous =" << event->spontaneous()
+// 	         << "isMinimized =" << isMinimized()
+//                  << "isVisible ="   << isVisible()
+//                  << "isHidden =" << isHidden()
+// 	         << "isActiveWindow =" << isActiveWindow();
+
+#ifdef Q_WS_MAC
+        showMinimized();
+#else
+        if ( QSystemTrayIcon::isSystemTrayAvailable() )
+                setVisible( false );
+        else
+                showMinimized();
 #endif
-		showMinimized();
-	event->ignore();
+ 	event->ignore();
 }
 
 #if 0
@@ -742,7 +774,7 @@ void MainWidget::dispurl(const QUrl &url)
  */
 void MainWidget::about()
 {
-	QString applicationVersion("0.1");
+	QString applicationVersion(XIVOVER);
         QString fetchlastone = "<a href=http://www.xivo.fr/download/xivo_cti_client/"
 #if defined(Q_WS_X11)
                 "linux"
@@ -752,6 +784,8 @@ void MainWidget::about()
                 "macos"
 #endif
                 ">" + tr("last one") + "</a>";
+
+        // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
 
         QMessageBox::about(this,
                            tr("About XIVO Client"),

@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QFileDialog>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QSettings>
 #include <QVBoxLayout>
@@ -49,15 +50,17 @@ FaxPanel::FaxPanel(BaseEngine * engine, QWidget * parent)
 	groupBox1->setAlignment( Qt::AlignLeft );
 	QHBoxLayout * hbox1 = new QHBoxLayout( groupBox1 );
 
-	QLabel * lbluncond = new QLabel(tr("Fax Number"), this);
+	QLabel * lblfax = new QLabel(tr("Fax Number"), this);
 	m_destination = new QLineEdit(this);
         QPushButton * directory = new QPushButton( tr("Directory"), this);
         connect(directory, SIGNAL(clicked()),
                 this, SLOT(dirLookup()));
-        hbox1->addWidget(lbluncond);
+        connect(m_destination, SIGNAL(textChanged(const QString &)),
+                this, SLOT(destNumberChanged(const QString &)));
+        hbox1->addWidget(lblfax);
 	hbox1->addWidget(m_destination);
         hbox1->addWidget(directory);
-        lbluncond->setObjectName("fax");
+        lblfax->setObjectName("fax");
 
         //
 	QGroupBox * groupBox2 = new QGroupBox( tr("2. Choose File to Send") );
@@ -65,6 +68,8 @@ FaxPanel::FaxPanel(BaseEngine * engine, QWidget * parent)
 	QHBoxLayout * hbox2 = new QHBoxLayout( groupBox2 );
 
         m_openFileNameLabel = new QLineEdit("", this);
+        connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
+                this, SLOT(fileNameChanged(const QString &)));
         QPushButton * openFileNamesButton = new QPushButton( tr("Browse"), this);
         connect(openFileNamesButton, SIGNAL(clicked()),
                 this, SLOT(setOpenFileName()));
@@ -88,6 +93,7 @@ FaxPanel::FaxPanel(BaseEngine * engine, QWidget * parent)
 	QHBoxLayout * hbox4 = new QHBoxLayout( groupBox4 );
 
         m_sendButton = new QPushButton( tr("Send"), this);
+        m_sendButton->setEnabled(false);
         connect(m_sendButton, SIGNAL(clicked()),
                 this, SLOT(sendFax()));
  	hbox4->addStretch(1);
@@ -108,6 +114,26 @@ FaxPanel::~FaxPanel()
         // qDebug() << "FaxPanel::~FaxPanel()";
 }
 
+void FaxPanel::destNumberChanged(const QString &/* ext*/)
+{
+        // qDebug() << "FaxPanel::destNumberChanged()" << ext;
+        if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
+                m_sendButton->setEnabled(true);
+        } else {
+                m_sendButton->setEnabled(false);
+        }
+}
+
+void FaxPanel::fileNameChanged(const QString &/* ext*/)
+{
+        // qDebug() << "FaxPanel::fileNameChanged()" << ext;
+        if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
+                m_sendButton->setEnabled(true);
+        } else {
+                m_sendButton->setEnabled(false);
+        }
+}
+
 void FaxPanel::setOpenFileName()
 {
         QFileDialog::Options options;
@@ -117,7 +143,7 @@ void FaxPanel::setOpenFileName()
         QString fileName = QFileDialog::getOpenFileName(this,
                                                         tr("Open Fax File"),
                                                         m_openFileNameLabel->text(),
-                                                        tr("PDF Files (*.pdf);;TIFF Files (*.tif, *.tiff);;Both (*.pdf, *.tif, *.tiff);;All Files (*)"),
+                                                        tr("PDF Files (*.pdf);;TIFF Files (*.tif *.tiff);;Both (*.pdf *.tif *.tiff);;All Files (*)"),
                                                         &selectedFilter,
                                                         options);
         if (!fileName.isEmpty())
@@ -136,8 +162,12 @@ void FaxPanel::sendFax()
                 // << m_destination->text()
                 // << m_maskornot->checkState();
                 // m_sendButton->setEnabled(false);
-                faxSend(m_openFileNameLabel->text(),
-                        m_destination->text(),
+                m_dest_string = m_destination->text();
+                m_file_string = m_openFileNameLabel->text();
+                m_destination->setText("");
+                m_openFileNameLabel->setText("");
+                faxSend(m_file_string,
+                        m_dest_string,
                         m_maskornot->checkState());
         }
 }
@@ -152,4 +182,23 @@ void FaxPanel::dirLookup()
         if(retstr.size() > 0)
                 m_destination->setText(retstr);
         delete m_dirw;
+}
+
+void FaxPanel::popupMsg(const QString & msg)
+{
+        QStringList rep = msg.split(";");
+        // qDebug() << msg << rep;
+        if(rep[0] == "ok") {
+                QMessageBox::information(NULL, "XIVO CTI (Fax)", tr("Your Fax (file %1)\n"
+                                                                    "was successfully sent to %2.").arg(m_file_string,
+                                                                                                        m_dest_string));
+        } else {
+                QMessageBox::warning(NULL, "XIVO CTI (Fax)", tr("Your Fax (file %1)\n"
+                                                                "was NOT sent to %2.\n"
+                                                                "Reason given : %3.").arg(m_file_string,
+                                                                                          m_dest_string,
+                                                                                          rep[1]));
+                m_destination->setText(m_dest_string);
+                m_openFileNameLabel->setText(m_file_string);
+        }
 }

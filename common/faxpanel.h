@@ -26,6 +26,9 @@ public slots:
         void setOpenFileName();
         void sendFax();
         void dirLookup();
+        void popupMsg(const QString &);
+        void destNumberChanged(const QString &);
+        void fileNameChanged(const QString &);
 private:
 	QWidget * m_mainwindow;	//!< MainWidget where some parameters are commited to
         QLineEdit * m_openFileNameLabel;
@@ -34,6 +37,9 @@ private:
         QPushButton * m_sendButton;
         BaseEngine * m_engine;
         DirDialog * m_dirw;
+
+        QString m_dest_string;
+        QString m_file_string;
 };
 
 #endif

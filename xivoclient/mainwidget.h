@@ -80,6 +80,7 @@ private slots:
 	void affTextChanged();
         void checksAvailState();
 protected:
+	void showEvent(QShowEvent *event);	//!< Catch show events
 	void hideEvent(QHideEvent *event);	//!< Catch hide events
 	void closeEvent(QCloseEvent *event);
 	//void changeEvent(QEvent *event);

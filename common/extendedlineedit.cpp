@@ -36,7 +36,7 @@ ExtendedLineEdit::ExtendedLineEdit(QWidget * parent)
 
 /*! \brief receive drop event
  */
-void ExtendedLineEdit::dropEvent(QDropEvent *event)
+void ExtendedLineEdit::dropEvent(QDropEvent */* event*/)
 {
 	// qDebug() << "ExtendedLineEdit::dropEvent()" << event->mimeData()->text() << event->pos();
 }

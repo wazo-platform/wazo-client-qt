@@ -390,7 +390,12 @@ void SwitchBoardWindow::savePositions() const
         qDebug() << "SwitchBoardWindow::savePositions()";
 	QSettings settings;
 	for(int i = 0; i < m_peerlist.size(); i++) {
-		settings.setValue("layout/" + m_peerlist[i]->ext(),
-		                  m_layout->getItemPosition(i));
+                QPoint pos = m_layout->getItemPosition(i);
+                qDebug() << m_peerlist[i]->ext() << pos;
+                if(pos == QPoint(-1, -1))
+                        settings.remove("layout/" + m_peerlist[i]->ext());
+                else
+                        settings.setValue("layout/" + m_peerlist[i]->ext(),
+                                          m_layout->getItemPosition(i));
 	}
 }

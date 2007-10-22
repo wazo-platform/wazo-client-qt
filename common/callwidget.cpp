@@ -42,7 +42,7 @@ CallWidget::CallWidget(const QString & channelme,
 		       const QString & action,
 		       int time,
 		       const QString & direction,
-		       const QString & channelpeer,
+		       const QString &/* channelpeer*/,
 		       const QString & exten,
                        QWidget * parent)
         : QWidget(parent), m_square(16,16),
@@ -130,7 +130,7 @@ void CallWidget::updateCallTimeLabel()
  *
  * update the time displayed.
  */
-void CallWidget::timerEvent( QTimerEvent * event )
+void CallWidget::timerEvent(QTimerEvent */* event*/)
 {
 	// event->timerId();
 	updateCallTimeLabel();
@@ -141,7 +141,7 @@ void CallWidget::timerEvent( QTimerEvent * event )
 void CallWidget::updateWidget(const QString & action,
 			      int time,
 			      const QString & direction,
-			      const QString & channelpeer,
+			      const QString &/* channelpeer*/,
 			      const QString & exten)
 {
 	//	qDebug() << this << "updateWidget";

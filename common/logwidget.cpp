@@ -178,7 +178,7 @@ void LogWidget::setPeerToDisplay(const QString & peer)
 
 /*! \brief timer event : ask for update
  */
-void LogWidget::timerEvent(QTimerEvent * event)
+void LogWidget::timerEvent(QTimerEvent */* event*/)
 {
         // qDebug() << "LogWidget::timerEvent() id=" << event->timerId();
 	if(m_peer.size() > 0)

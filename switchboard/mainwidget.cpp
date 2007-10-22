@@ -656,7 +656,7 @@ void MainWidget::showNewProfile(Popup * popup)
  */
 void MainWidget::about()
 {
-	QString applicationVersion("0.1");
+	QString applicationVersion(XIVOVER);
         QString fetchlastone = "<a href=http://www.xivo.fr/download/xivo_cti_client/"
 #if defined(Q_WS_X11)
                 "linux"

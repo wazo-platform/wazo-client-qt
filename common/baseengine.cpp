@@ -87,22 +87,24 @@ BaseEngine::BaseEngine(QObject * parent)
 
 	// Socket for TCP connections
         m_sbsocket->setProperty("socket", "tcp_nat");
-	connect(m_sbsocket, SIGNAL(connected()),
-	        this, SLOT(socketConnected()));
-	connect(m_sbsocket, SIGNAL(disconnected()),
-	        this, SLOT(socketDisconnected()));
-	connect(m_sbsocket, SIGNAL(hostFound()),
-                this, SLOT(socketHostFound()));
-	connect(m_sbsocket, SIGNAL(error(QAbstractSocket::SocketError)),
-	        this, SLOT(socketError(QAbstractSocket::SocketError)));
-	connect(m_sbsocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
-	        this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
-	connect(m_sbsocket, SIGNAL(readyRead()),
-                this, SLOT(socketReadyRead()));
+	connect( m_sbsocket, SIGNAL(connected()),
+                 this, SLOT(socketConnected()));
+	connect( m_sbsocket, SIGNAL(disconnected()),
+                 this, SLOT(socketDisconnected()));
+	connect( m_sbsocket, SIGNAL(hostFound()),
+                 this, SLOT(socketHostFound()));
+	connect( m_sbsocket, SIGNAL(error(QAbstractSocket::SocketError)),
+                 this, SLOT(socketError(QAbstractSocket::SocketError)));
+	connect( m_sbsocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
+                 this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
+	connect( m_sbsocket, SIGNAL(readyRead()),
+                 this, SLOT(socketReadyRead()));
 
         m_faxsocket->setProperty("socket", "fax");
         connect( m_faxsocket, SIGNAL(connected()),
                  this, SLOT(socketConnected()) );
+	connect( m_faxsocket, SIGNAL(disconnected()),
+                 this, SLOT(socketDisconnected()));
 	connect( m_faxsocket, SIGNAL(hostFound()),
 	         this, SLOT(socketHostFound()) );
 
@@ -241,9 +243,9 @@ void BaseEngine::initListenSocket()
 	qDebug() << "BaseEngine::initListenSocket()";
 	if (!m_listenserver->listen())
 	{
-		QMessageBox::critical(NULL, tr("Critical error"),
-		                            tr("Unable to start the server: %1.")
-		                            .arg(m_listenserver->errorString()));
+		QMessageBox::critical(NULL, tr("XIVO CTI Critical error"),
+                                      tr("Unable to start the server: %1.")
+                                      .arg(m_listenserver->errorString()));
                 m_listenserver->close();
 		return;
 	}
@@ -468,8 +470,8 @@ void BaseEngine::processHistory(const QStringList & histlist)
  */
 void BaseEngine::socketConnected()
 {
-	qDebug() << "BaseEngine::socketConnected()";
         QString socname = this->sender()->property("socket").toString();
+	qDebug() << "BaseEngine::socketConnected()" << socname;
         if(socname == "login_udp") {
                 identifyToTheServer();
         } else if(socname == "tcp_nat") {
@@ -508,12 +510,15 @@ void BaseEngine::socketConnected()
  */
 void BaseEngine::socketDisconnected()
 {
-	qDebug() << "BaseEngine::socketDisconnected()";
-        setState(ENotLogged); // calls delogged();
-	emitTextMessage(tr("Connection lost with XIVO Daemon"));
-	startTryAgainTimer();
-	//removePeers();
-	//connectSocket();
+        QString socname = this->sender()->property("socket").toString();
+	qDebug() << "BaseEngine::socketDisconnected()" << socname;
+        if(socname == "tcp_nat") {
+                setState(ENotLogged); // calls delogged();
+                emitTextMessage(tr("Connection lost with XIVO Daemon"));
+                startTryAgainTimer();
+                //removePeers();
+                //connectSocket();
+        }
 }
 
 /*! \brief cat host found socket signal
@@ -784,6 +789,8 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
         } else if(listitems[0].toLower() == QString("faxsend")) {
                 quint16 port_fax = listitems[1].toInt();
                 m_faxsocket->connectToHost(m_serverhost, port_fax);
+        } else if(listitems[0].toLower() == QString("faxsent")) {
+                ackFax(listitems[1]);
         } else if((listitems[0] != "") && (listitems[0] != "______"))
                 qDebug() << "unknown command" << listitems[0];
 
@@ -806,7 +813,8 @@ void BaseEngine::sendFaxCommand(const QString & filename, const QString & number
                         " astid=" + m_asterisk +
                         " context=" + m_dialcontext;
                 sendCommand("faxsend " + m_faxid);
-        }
+        } else
+                ackFax("ko;file");
 }
 
 void BaseEngine::popupError(const QString & errorid)
@@ -877,7 +885,7 @@ void BaseEngine::popupError(const QString & errorid)
         // logs a message before sending any popup that would block
         emitTextMessage(tr("Error") + " : " + errormsg);
         if(! m_trytoreconnect)
-                QMessageBox::critical(NULL, tr("Error"), errormsg);
+                QMessageBox::critical(NULL, tr("XIVO CTI Error"), errormsg);
 }
 
 
@@ -896,21 +904,26 @@ void BaseEngine::socketReadyRead()
 		QString line     = QString::fromUtf8(data);
 		QStringList list = line.trimmed().split("=");
 
-		if(line.startsWith("<?xml")) {
+		if(line.startsWith("<?xml") || line.startsWith("<ui version=")) {
                         // we get here when receiving a customer info in tcp mode
-                        qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line;
-                        QBuffer * inputstream = new QBuffer(this);
+                        qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
 
+                        QBuffer * inputstream = new QBuffer(this);
                         inputstream->open(QIODevice::ReadWrite);
-                        qDebug() << "BaseEngine::socketReadyRead()" << inputstream->openMode();
                         inputstream->write(line.toUtf8());
                         inputstream->close();
-
-                        Popup * popup = new Popup(inputstream, "aaa");
+                        // Get Data and Popup the profile if ok
+                        bool qtui = false;
+                        if(line.startsWith("<ui version="))
+                                qtui = true;
+                        Popup * popup = new Popup(inputstream, qtui);
                         connect( popup, SIGNAL(destroyed(QObject *)),
                                  this, SLOT(popupDestroyed(QObject *)) );
+                        connect( popup, SIGNAL(save(const QString &)),
+                                 this, SLOT(addToDataBase(const QString &)) );
                         connect( popup, SIGNAL(wantsToBeShown(Popup *)),
                                  this, SLOT(profileToBeShown(Popup *)) );
+
                 } else if (list.size() == 2) {
                         if(list[0].toLower() == "loginok") {
 				QStringList params = list[1].split(";");
@@ -1434,6 +1447,12 @@ void BaseEngine::askCallerIds()
 	sendCommand("phones-list");
 }
 
+void BaseEngine::addToDataBase(const QString & dbdetails)
+{
+        qDebug() << "BaseEngine::addToDataBase()" << dbdetails;
+        sendCommand("database " + dbdetails);
+}
+
 void BaseEngine::setAutoconnect(bool b)
 {
 	m_autoconnect = b;
@@ -1549,15 +1568,6 @@ void BaseEngine::processLoginDialog()
 	char buffer[256];
 	int len;
 	qDebug() << "BaseEngine::processLoginDialog()";
-// 	if(m_tcpmode && (m_state == ELogged)) {
-// 		Popup * popup = new Popup(m_loginsocket, m_sessionid);
-// 		connect( popup, SIGNAL(destroyed(QObject *)),
-// 		         this, SLOT(popupDestroyed(QObject *)) );
-// 		connect( popup, SIGNAL(wantsToBeShown(Popup *)),
-// 			 this, SLOT(profileToBeShown(Popup *)) );
-// 		popup->streamNewData();
-// 		return;
-// 	}
 	if(!m_loginsocket->canReadLine())
 	{
 		qDebug() << "no line ready to be read";
@@ -1666,23 +1676,43 @@ void BaseEngine::processLoginDialog()
 void BaseEngine::handleProfilePush()
 {
 	qDebug() << "BaseEngine::handleProfilePush()";
-	QTcpSocket * connection = m_listenserver->nextPendingConnection();
-	connect( connection, SIGNAL(disconnected()),
-	         connection, SLOT(deleteLater()));
-
-	// signals sur la socket : connected() disconnected()
+	m_connection = m_listenserver->nextPendingConnection();
+	connect( m_connection, SIGNAL(disconnected()),
+	         m_connection, SLOT(deleteLater()) );
+	connect( m_connection, SIGNAL(readyRead()),
+	         this, SLOT(readProfile()) );
+	// signals on the socket : connected() disconnected()
 	// error() hostFound() stateChanged()
 	// iodevice : readyRead() aboutToClose() bytesWritten()
-
-	qDebug() << connection->peerAddress().toString() << connection->peerPort();
-
-	// Get Data and Popup the profile if ok
-	Popup * popup = new Popup(connection, m_sessionid);
-	connect( popup, SIGNAL(destroyed(QObject *)),
-	         this, SLOT(popupDestroyed(QObject *)) );
-	connect( popup, SIGNAL(wantsToBeShown(Popup *)),
-	         this, SLOT(profileToBeShown(Popup *)) );
 }
+
+void BaseEngine::readProfile()
+{
+	qDebug() << "BaseEngine::readProfile()" << m_connection->peerAddress().toString() << m_connection->peerPort();
+	while(m_connection->canReadLine()) {
+		QByteArray data = m_connection->readLine();
+		QString line = QString::fromUtf8(data);
+
+		if(line.startsWith("<?xml") || line.startsWith("<ui version=")) {
+                        QBuffer * inputstream = new QBuffer(this);
+                        inputstream->open(QIODevice::ReadWrite);
+                        inputstream->write(line.toUtf8());
+                        inputstream->close();
+                        // Get Data and Popup the profile if ok
+                        bool qtui = false;
+                        if(line.startsWith("<ui version="))
+                                qtui = true;
+                        Popup * popup = new Popup(inputstream, qtui);
+                        connect( popup, SIGNAL(destroyed(QObject *)),
+                                 this, SLOT(popupDestroyed(QObject *)) );
+                        connect( popup, SIGNAL(save(const QString &)),
+                                 this, SLOT(addToDataBase(const QString &)) );
+                        connect( popup, SIGNAL(wantsToBeShown(Popup *)),
+                                 this, SLOT(profileToBeShown(Popup *)) );
+                }
+        }
+}
+
 
 void BaseEngine::popupDestroyed(QObject * obj)
 {

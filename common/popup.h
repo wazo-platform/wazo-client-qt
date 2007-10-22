@@ -29,6 +29,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QTcpSocket>
 #include "xmlhandler.h"
 
+class QComboBox;
+class QLineEdit;
 class QUrl;
 
 /*! \brief Profile popup widget
@@ -39,11 +41,14 @@ class Popup: public QWidget
 	Q_OBJECT
 public:
 	//! Construct from a QIODevice used to read XML input
-	Popup(QIODevice *inputstream, const QString & sessionid, QWidget *parent=0);
+	Popup(QIODevice *inputstream,
+              const bool & sheetui,
+              QWidget * parent = 0);
 	//! Add a Text field (name, value)
 	void addInfoText(const QString & name, const QString & value);
 	//! Add a url field
 	void addInfoLink(const QString & name, const QString & value);
+	void addInfoLinkX(const QString & name, const QString & value, const QString & dispvalue);
 	//! Add a Picture
 	void addInfoPicture(const QString & name, const QString & value);
 	//! Add a Phone number
@@ -59,6 +64,7 @@ public:
 signals:
 	void wantsToBeShown(Popup *);	//!< sent when the widget want to show itself
 	void emitDial(const QString &);	//!< sent when the widget wants to dial
+        void save(const QString &);
 public slots:
 	void streamNewData();		//!< new input data is available
 	void streamAboutToClose();	//!< catch aboutToClose() signal from the socket
@@ -66,6 +72,8 @@ public slots:
 	void socketError(QAbstractSocket::SocketError err);	//!< socket error handling
         void dialThisNumber();
         void dispurl(const QUrl &);
+        void httpGetNoreply();
+        void saveandclose();
 protected:
 	void closeEvent(QCloseEvent *event);	//!< catch close event
 private:
@@ -80,11 +88,9 @@ private:
 	bool m_parsingStarted;		//! Is the XML already started or not ?
 	//! layout for the widget : vertical box
 	QVBoxLayout * m_vlayout;
-	//! Session id with the server in order to check the incoming message
-	QString m_sessionid;
-	//! Message property
-	QString m_message;
+	QString m_message;	//! Message property
+        bool m_sheetui;
+        QWidget * m_sheetui_widget;
 };
 
 #endif
-
