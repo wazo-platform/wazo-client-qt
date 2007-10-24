@@ -114,7 +114,7 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
 	m_wid = new QWidget();
 	m_mainlayout = new QVBoxLayout(m_wid);
         m_xivobg = new QLabel();
-        m_xivobg->setPixmap(QPixmap(":/images/xivo-login.png"));
+        m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
         m_mainlayout->addWidget(m_xivobg, 0, Qt::AlignHCenter | Qt::AlignVCenter);
 	setCentralWidget(m_wid);
 	m_tablimit = settings.value("display/tablimit", 5).toInt();
@@ -498,6 +498,10 @@ void MainWidget::engineStarted()
                                          m_featureswidget, SLOT(Connect()) );
                                 connect( m_engine, SIGNAL(resetFeatures()),
                                          m_featureswidget, SLOT(Reset()) );
+                                connect( m_engine, SIGNAL(featurePutIsKO()),
+                                         m_featureswidget, SLOT(getRecordedStatus()) );
+                                connect( m_engine, SIGNAL(featurePutIsOK()),
+                                         m_featureswidget, SLOT(setRecordedStatus()) );
 
                                 connect( m_featureswidget, SIGNAL(voiceMailToggled(bool)),
                                          m_engine, SLOT(featurePutVoiceMail(bool)) );
@@ -600,7 +604,7 @@ void MainWidget::engineStopped()
  	m_wid = new QWidget();
  	m_mainlayout = new QVBoxLayout(m_wid);
         m_xivobg = new QLabel();
-        m_xivobg->setPixmap(QPixmap(":/images/xivo-login.png"));
+        m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
         m_mainlayout->addWidget(m_xivobg, 0, Qt::AlignHCenter | Qt::AlignVCenter);
  	setCentralWidget(m_wid);
 

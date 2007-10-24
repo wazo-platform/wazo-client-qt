@@ -35,6 +35,7 @@ ServicePanel::ServicePanel(QWidget * parent)
 {
         // qDebug() << "ServicePanel::ServicePanel()";
 
+        m_status = new ServiceStatus();
 	QGroupBox * groupBox1 = new QGroupBox( tr("Services") );
 	groupBox1->setAlignment( Qt::AlignLeft );
 	QGridLayout * gridlayout1 = new QGridLayout(groupBox1);
@@ -100,7 +101,6 @@ ServicePanel::ServicePanel(QWidget * parent)
 	connect(m_forwardonunavailabledest, SIGNAL(textEdited(const QString &)),
 		this, SLOT(toggleOnUnavailIfAllowed(const QString &)));
         Connect();
-
 }
 
 void ServicePanel::Connect()
@@ -224,29 +224,37 @@ void ServicePanel::forwardOnUnavailableToggled(bool b)
 	forwardOnUnavailableChanged(b, m_forwardonunavailabledest->text());
 }
 
+
+// The following actions are entered in when the status is received from the server (init or update)
+
 void ServicePanel::setVoiceMail(bool b)
 {
+        m_status->setVoiceMail(b);
 	m_voicemail->setChecked(b);
 }
 
 void ServicePanel::setCallRecording(bool b)
 {
+        m_status->setCallRecording(b);
 	m_callrecording->setChecked(b);
 }
 
 void ServicePanel::setCallFiltering(bool b)
 {
+        m_status->setCallFiltering(b);
 	m_callfiltering->setChecked(b);
 }
 
 void ServicePanel::setDnd(bool b)
 {
+        m_status->setDnd(b);
 	m_dnd->setChecked(b);
 }
 
 
 void ServicePanel::setUncondForward(bool b, const QString & dest)
 {
+        m_status->setUncondForward(b, dest);
 	m_uncondforwarddest->setText(dest);
 	m_uncondforward->setChecked(b);
         m_uncondforward->setEnabled(dest.size() > 0);
@@ -254,11 +262,13 @@ void ServicePanel::setUncondForward(bool b, const QString & dest)
 
 void ServicePanel::setUncondForward(bool b)
 {
+        m_status->setUncondForward(b);
 	m_uncondforward->setChecked(b);
 }
 
 void ServicePanel::setUncondForward(const QString & dest)
 {
+        m_status->setUncondForward(dest);
 	m_uncondforwarddest->setText(dest);
         m_uncondforward->setEnabled(dest.size() > 0);
 }
@@ -266,6 +276,7 @@ void ServicePanel::setUncondForward(const QString & dest)
 
 void ServicePanel::setForwardOnBusy(bool b, const QString & dest)
 {
+        m_status->setForwardOnBusy(b, dest);
 	m_forwardonbusydest->setText(dest);
 	m_forwardonbusy->setChecked(b);
 	m_forwardonbusy->setEnabled(dest.size() > 0);
@@ -273,17 +284,20 @@ void ServicePanel::setForwardOnBusy(bool b, const QString & dest)
 
 void ServicePanel::setForwardOnBusy(bool b)
 {
+        m_status->setForwardOnBusy(b);
 	m_forwardonbusy->setChecked(b);
 }
 
 void ServicePanel::setForwardOnBusy(const QString & dest)
 {
+        m_status->setForwardOnBusy(dest);
 	m_forwardonbusydest->setText(dest);
 	m_forwardonbusy->setEnabled(dest.size() > 0);
 }
 
 void ServicePanel::setForwardOnUnavailable(bool b, const QString & dest)
 {
+        m_status->setForwardOnUnavailable(b, dest);
 	m_forwardonunavailabledest->setText(dest);
 	m_forwardonunavailable->setChecked(b);
 	m_forwardonunavailable->setEnabled(dest.size() > 0);
@@ -291,14 +305,18 @@ void ServicePanel::setForwardOnUnavailable(bool b, const QString & dest)
 
 void ServicePanel::setForwardOnUnavailable(bool b)
 {
+        m_status->setForwardOnUnavailable(b);
 	m_forwardonunavailable->setChecked(b);
 }
 
 void ServicePanel::setForwardOnUnavailable(const QString & dest)
 {
+        m_status->setForwardOnUnavailable(dest);
 	m_forwardonunavailabledest->setText(dest);
 	m_forwardonunavailable->setEnabled(dest.size() > 0);
 }
+
+
 
 /*! \brief change the monitored peer
  */
@@ -309,4 +327,126 @@ void ServicePanel::setPeerToDisplay(const QString & peer)
 	if(m_peer.size() > 0) {
 		askFeatures(m_peer);
 	}
+}
+
+void ServicePanel::setRecordedStatus()
+{
+        // qDebug() << "ServicePanel::setRecordedStatus()";
+        m_status->m_voicemail = m_voicemail->isChecked();
+        m_status->m_callrecording = m_callrecording->isChecked();
+        m_status->m_callfiltering = m_callfiltering->isChecked();
+        m_status->m_dnd = m_dnd->isChecked();
+
+        m_status->m_uncondforward = m_uncondforward->isChecked();
+        m_status->m_forwardonbusy = m_forwardonbusy->isChecked();
+        m_status->m_forwardonunavailable = m_forwardonunavailable->isChecked();
+}
+
+void ServicePanel::getRecordedStatus()
+{
+        // qDebug() << "ServicePanel::getRecordedStatus()";
+	m_voicemail->setChecked(m_status->m_voicemail);
+	m_callrecording->setChecked(m_status->m_callrecording);
+	m_callfiltering->setChecked(m_status->m_callfiltering);
+	m_dnd->setChecked(m_status->m_dnd);
+
+	m_uncondforwarddest->setText(m_status->m_uncondforwarddest);
+	m_uncondforward->setChecked(m_status->m_uncondforward);
+	m_forwardonbusydest->setText(m_status->m_forwardonbusydest);
+	m_forwardonbusy->setChecked(m_status->m_forwardonbusy);
+	m_forwardonunavailabledest->setText(m_status->m_forwardonunavailabledest);
+	m_forwardonunavailable->setChecked(m_status->m_forwardonunavailable);
+}
+
+
+////////////////////////////////////////////////:::
+
+ServiceStatus::ServiceStatus()
+{
+        m_voicemail = false;
+        m_callrecording = false;
+        m_callfiltering = false;
+        m_dnd = false;
+        m_uncondforward = false;
+        m_uncondforwarddest = "";
+        m_forwardonbusy = false;
+        m_forwardonbusydest = "";
+        m_forwardonunavailable = false;
+        m_forwardonunavailabledest = "";
+}
+
+void ServiceStatus::setVoiceMail(bool b)
+{
+	m_voicemail = b;
+}
+
+void ServiceStatus::setCallRecording(bool b)
+{
+	m_callrecording = b;
+}
+
+void ServiceStatus::setCallFiltering(bool b)
+{
+	m_callfiltering = b;
+}
+
+void ServiceStatus::setDnd(bool b)
+{
+	m_dnd = b;
+}
+
+void ServiceStatus::setUncondForward(bool b, const QString & dest)
+{
+        m_uncondforward = b;
+        m_uncondforwarddest = dest;
+}
+
+void ServiceStatus::setUncondForward(bool b)
+{
+        m_uncondforward = b;
+}
+
+void ServiceStatus::setUncondForward(const QString & dest)
+{
+        m_uncondforwarddest = dest;
+}
+
+void ServiceStatus::setForwardOnBusy(bool b, const QString & dest)
+{
+        m_forwardonbusy = b;
+        m_forwardonbusydest = dest;
+}
+
+void ServiceStatus::setForwardOnBusy(bool b)
+{
+        m_forwardonbusy = b;
+}
+
+void ServiceStatus::setForwardOnBusy(const QString & dest)
+{
+        m_forwardonbusydest = dest;
+}
+
+void ServiceStatus::setForwardOnUnavailable(bool b, const QString & dest)
+{
+        m_forwardonunavailable = b;
+        m_forwardonunavailabledest = dest;
+}
+
+void ServiceStatus::setForwardOnUnavailable(bool b)
+{
+        m_forwardonunavailable = b;
+}
+
+void ServiceStatus::setForwardOnUnavailable(const QString & dest)
+{
+        m_forwardonunavailabledest = dest;
+}
+
+void ServiceStatus::display()
+{
+        qDebug() << m_voicemail << m_callrecording << m_callfiltering << m_dnd << "/"
+                 << m_uncondforward << m_uncondforwarddest
+                 << m_forwardonbusy << m_forwardonbusydest
+                 << m_forwardonunavailable << m_forwardonunavailabledest;
 }

@@ -785,7 +785,11 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 parkingEvent(listitems[0], listitems[1]);
 
         } else if(listitems[0].toLower() == QString("featuresput")) {
-                qDebug() << "received ack from featuresput :" << listitems;
+                QString ret = listitems[1].split(";")[0];
+                if(ret == "OK")
+                        featurePutIsOK();
+                else
+                        featurePutIsKO();
         } else if(listitems[0].toLower() == QString("faxsend")) {
                 quint16 port_fax = listitems[1].toInt();
                 m_faxsocket->connectToHost(m_serverhost, port_fax);
@@ -1450,7 +1454,8 @@ void BaseEngine::askCallerIds()
 void BaseEngine::addToDataBase(const QString & dbdetails)
 {
         qDebug() << "BaseEngine::addToDataBase()" << dbdetails;
-        sendCommand("database " + dbdetails);
+        if (dbdetails.size() > 0)
+                sendCommand("database " + dbdetails);
 }
 
 void BaseEngine::setAutoconnect(bool b)

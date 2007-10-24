@@ -178,6 +178,8 @@ signals:
         void pasteToDialPanel(const QString &);
         void parkingEvent(const QString &, const QString &);
         void ackFax(const QString &);
+        void featurePutIsKO();
+        void featurePutIsOK();
 
 	//! a call
 	void updateCall(const QString & channelme,

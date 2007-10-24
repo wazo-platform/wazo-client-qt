@@ -98,7 +98,7 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
 	m_wid = new QWidget();
 	m_mainlayout = new QVBoxLayout(m_wid);
         m_xivobg = new QLabel();
-        m_xivobg->setPixmap(QPixmap(":/images/xivo-login.png"));
+        m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
         m_xivobg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         m_mainlayout->addWidget(m_xivobg, 1, Qt::AlignHCenter | Qt::AlignVCenter);
 	setCentralWidget(m_wid);
@@ -435,6 +435,10 @@ void MainWidget::engineStarted()
                                          m_featureswidget, SLOT(Connect()) );
                                 connect( m_engine, SIGNAL(resetFeatures()),
                                          m_featureswidget, SLOT(Reset()) );
+                                connect( m_engine, SIGNAL(featurePutIsKO()),
+                                         m_featureswidget, SLOT(getRecordedStatus()) );
+                                connect( m_engine, SIGNAL(featurePutIsOK()),
+                                         m_featureswidget, SLOT(setRecordedStatus()) );
 
 				connect( m_featureswidget, SIGNAL(voiceMailToggled(bool)),
 				         m_engine, SLOT(featurePutVoiceMail(bool)) );
@@ -622,7 +626,7 @@ void MainWidget::engineStopped()
         delete m_main_tabwidget;
 
         m_xivobg = new QLabel();
-        m_xivobg->setPixmap(QPixmap(":/images/xivo-login.png"));
+        m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
         m_mainlayout->addWidget(m_xivobg, 0, Qt::AlignHCenter | Qt::AlignVCenter);
 
 	if (m_systrayIcon)

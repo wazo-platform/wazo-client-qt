@@ -8,6 +8,8 @@
 class QCheckBox;
 class QLineEdit;
 
+class ServiceStatus;
+
 class ServicePanel : public QWidget
 {
 	Q_OBJECT
@@ -40,6 +42,8 @@ public slots:
         void Connect();
         void DisConnect();
         void Reset();
+	void getRecordedStatus();
+	void setRecordedStatus();
 private slots:
 	void uncondForwardToggled(bool);
 	void forwardOnBusyToggled(bool);
@@ -48,6 +52,7 @@ private slots:
 	void toggleOnBusyIfAllowed(const QString &);
 	void toggleOnUnavailIfAllowed(const QString &);
 private:
+        ServiceStatus * m_status;
         QString m_peer;
 	QCheckBox * m_voicemail;
 	QCheckBox * m_callrecording;
@@ -61,5 +66,37 @@ private:
 	QLineEdit * m_forwardonunavailabledest;
 };
 
-#endif
 
+class ServiceStatus
+{
+ public:
+        ServiceStatus();
+	bool    m_voicemail;
+	bool    m_callrecording;
+	bool    m_callfiltering;
+	bool    m_dnd;
+	bool    m_uncondforward;
+	QString m_uncondforwarddest;
+	bool    m_forwardonbusy;
+	QString m_forwardonbusydest;
+	bool    m_forwardonunavailable;
+	QString m_forwardonunavailabledest;
+ public:
+	void setVoiceMail(bool);
+	void setCallRecording(bool);
+	void setCallFiltering(bool);
+	void setDnd(bool);
+	void setUncondForward(bool, const QString &);
+	void setUncondForward(bool);
+	void setUncondForward(const QString &);
+	void setForwardOnBusy(bool, const QString &);
+	void setForwardOnBusy(bool);
+	void setForwardOnBusy(const QString &);
+	void setForwardOnUnavailable(bool, const QString &);
+	void setForwardOnUnavailable(bool);
+	void setForwardOnUnavailable(const QString &);
+
+	void display();
+};
+
+#endif

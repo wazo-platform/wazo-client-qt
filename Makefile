@@ -5,6 +5,9 @@
 QMAKE?=qmake
 LRELEASE?=lrelease
 
+# Tool to build executables 
+MAKENSIS=C:\Program Files\NSIS\makensis.exe
+
 default:
 
 xc:
@@ -21,6 +24,10 @@ all: xc sb
 
 upx:
 	upx */release/*.exe
+
+nsis:
+	${MAKENSIS} switchboard.nsi
+	${MAKENSIS} xivoclient.nsi
 
 allwin: all upx
 

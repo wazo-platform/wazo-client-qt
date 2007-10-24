@@ -57,6 +57,7 @@ int main(int argc, char * * argv)
                 qssFile.close();
         }
         app.setStyleSheet(qssStr);
+        app.setWindowIcon(QIcon(":/images/xivoicon.png"));
 
         QTranslator qtTranslator;
         QString forcelocale = settings.value("display/forcelocale", "").toString();
