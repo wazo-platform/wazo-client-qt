@@ -53,13 +53,11 @@ bool XmlHandler::startElement( const QString & /*namespaceURI*/,
 		m_infoType = atts.value("type");
 		m_infoName = atts.value("name");
 		m_infoValue = "";
-		m_infoDispValue = "";
 	}
 	else if( localName == "message" )
 	{
 		m_isParsingInfo = true;
 		m_infoValue = "";
-		m_infoDispValue = "";
 	}
 	else
 	{
@@ -100,8 +98,13 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
 		}
 		else if( m_infoType == QString("urlx") )
 		{
-			if(m_popup)
-				m_popup->addInfoLinkX( m_infoName, m_infoValue, m_infoDispValue );
+			if(m_popup) {
+                                QStringList qsl = m_infoValue.split("@");
+                                if(qsl.size() == 2)
+                                        m_popup->addInfoLinkX( m_infoName, qsl[0], qsl[1] );
+                                else
+                                        m_popup->addInfoLinkX( m_infoName, m_infoValue, m_infoValue );
+                        }
 		}
 		else if( m_infoType == QString("phone") )
 		{
@@ -131,10 +134,7 @@ bool XmlHandler::characters( const QString & ch )
 {
 	//qDebug() << "chars=" << ch;
 	if(m_isParsingInfo)
-	{
 		m_infoValue.append(ch);
-		m_infoDispValue.append(ch);
-	}
 	return true;
 }
 

@@ -178,7 +178,7 @@ void Popup::addInfoLink(const QString & name, const QString & value)
 
 void Popup::addInfoLinkX(const QString & name, const QString & value, const QString & dispvalue)
 {
-        qDebug() << "Popup::addInfoLinkX()" << value << dispvalue;
+        qDebug() << "Popup::addInfoLinkX()" << name << value << dispvalue;
 	QLabel * lblname = new QLabel(name, this);
         QPushButton * lblvalue = new QPushButton(dispvalue, this);
         // lblvalue->setObjectName("phonenumber");

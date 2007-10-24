@@ -63,7 +63,6 @@ private:
 	QString m_infoType;		//!< type attribute of the current \<info\> element
 	QString m_infoName;		//!< name attribute of the current \<info\> element
 	QString m_infoValue;	//!< character value of the current \<info\> element
-	QString m_infoDispValue;
 };
 
 #endif

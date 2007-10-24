@@ -773,7 +773,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                                         initFeatureFields(features_list[i], features_list[i+1]);
                         emitTextMessage(tr("Received Services Data for ") + m_monitored_asterisk + "/" + m_monitored_userid);
                 } else
-                        emitTextMessage(tr("Could not retrieve the Services data."));
+                        emitTextMessage(tr("Could not retrieve the Services data.") + " " + tr("Maybe Asterisk is down."));
 
         } else if((listitems[0].toLower() == QString("parkedcall")) && (listitems.size() == 2)) {
                 parkingEvent(listitems[0], listitems[1]);
@@ -786,10 +786,13 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
         } else if(listitems[0].toLower() == QString("featuresput")) {
                 QString ret = listitems[1].split(";")[0];
-                if(ret == "OK")
+                if(ret == "OK") {
                         featurePutIsOK();
-                else
+                        emitTextMessage("");
+                } else {
                         featurePutIsKO();
+                        emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
+                }
         } else if(listitems[0].toLower() == QString("faxsend")) {
                 quint16 port_fax = listitems[1].toInt();
                 m_faxsocket->connectToHost(m_serverhost, port_fax);
