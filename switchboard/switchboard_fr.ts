@@ -14,7 +14,7 @@
         <translation>Identifiant Asterisk &lt;%1&gt; inconnu du Serveur.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1362"/>
+        <location filename="../common/baseengine.cpp" line="1368"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
@@ -39,7 +39,7 @@
         <translation>Impossible de rapatrier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="893"/>
+        <location filename="../common/baseengine.cpp" line="896"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -49,12 +49,12 @@
         <translation>Hôte non trouvé</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="866"/>
+        <location filename="../common/baseengine.cpp" line="869"/>
         <source>Max number (%1) of XIVO Clients already reached.</source>
         <translation>Le nombre maximal (%1) de XIVO Clients est déjà connecté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="870"/>
+        <location filename="../common/baseengine.cpp" line="873"/>
         <source>Max number (%1) of XIVO Switchboards already reached.</source>
         <translation>Le nombre maximal (%1) de XIVO Switchboards est déjà connecté.</translation>
     </message>
@@ -67,6 +67,11 @@
         <location filename="../common/baseengine.cpp" line="737"/>
         <source>New phone list on %1 : - %2 + %3 = %4 total</source>
         <translation>Nouvelle liste de postes sur %1 : - %2 + %3 = %4 au total</translation>
+    </message>
+    <message>
+        <location filename="../common/baseengine.cpp" line="865"/>
+        <source>No capability allowed.</source>
+        <translation>Aucune capacité autorisée.</translation>
     </message>
     <message>
         <location filename="../common/baseengine.cpp" line="774"/>
@@ -136,7 +141,7 @@ Peut-être un problème de version ?</translation>
         <translation>XIVO CTI Erreur Critique</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="895"/>
+        <location filename="../common/baseengine.cpp" line="898"/>
         <source>XIVO CTI Error</source>
         <translation>XIVO CTI Erreur</translation>
     </message>
@@ -156,14 +161,14 @@ Peut-être un problème de version ?</translation>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="876"/>
+        <location filename="../common/baseengine.cpp" line="879"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="880"/>
+        <location filename="../common/baseengine.cpp" line="883"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
@@ -175,14 +180,14 @@ Merci de mettre à jour votre client.</translation>
         <translation>Votre identifiant &lt;%1,%2&gt; n&apos;est pas connu sur l&apos;Asterisk &lt;%3&gt;.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="886"/>
+        <location filename="../common/baseengine.cpp" line="889"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="889"/>
+        <location filename="../common/baseengine.cpp" line="892"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.

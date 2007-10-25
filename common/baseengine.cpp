@@ -861,6 +861,9 @@ void BaseEngine::popupError(const QString & errorid)
         else if(errorid.toLower() == "already_connected")
                 errormsg = tr("You are already connected.");
 
+        else if(errorid.toLower() == "no_capability")
+                errormsg = tr("No capability allowed.");
+
         else if(errorid.startsWith("xcusers:")) {
                 QStringList userslist = errorid.split(":")[1].split(";");
                 errormsg = tr("Max number (%1) of XIVO Clients already reached.").arg(userslist[0]);
@@ -947,10 +950,13 @@ void BaseEngine::socketReadyRead()
                                 m_capabilities   = params_list["capas"].split(",");
                                 m_version_server = params_list["version"].toInt();
                                 m_forced_state   = params_list["state"];
-
+                                
                                 if(m_version_server < REQUIRED_SERVER_VERSION) {
                                         stop();
                                         popupError("version_server:" + QString::number(m_version_server) + ";" + QString::number(REQUIRED_SERVER_VERSION));
+                                } else if((m_capabilities.size() == 1) && (m_capabilities[0].size() == 0)) {
+                                        stop();
+                                        popupError("no_capability");
                                 } else {
                                         setState(ELogged); // calls logged()
                                         setAvailState(m_forced_state, true);
@@ -1640,6 +1646,11 @@ void BaseEngine::processLoginDialog()
                 if(m_version_server < REQUIRED_SERVER_VERSION) {
                         stop();
                         popupError("version_server:" + QString::number(m_version_server) + ";" + QString::number(REQUIRED_SERVER_VERSION));
+                        return;
+                }
+                if((m_capabilities.size() == 1) && (m_capabilities[0].size() == 0)) {
+                        stop();
+                        popupError("no_capability");
                         return;
                 }
                 setState(ELogged);
