@@ -1,8 +1,8 @@
 # $Revision$
 # $Date$
 
-Name "XIVO Switchboard"
-OutFile "switchboard_setup.exe"
+Name "XIVO Client"
+OutFile "xivoclient_setup.exe"
 
 InstallDir "$PROGRAMFILES\XIVO"
 
@@ -15,7 +15,8 @@ File "C:\MinGW\bin\mingwm10.dll"
 File "C:\WINDOWS\system32\libeay32.dll"
 File "C:\WINDOWS\system32\ssleay32.dll"
 File "C:\WINDOWS\system32\msvcr71.dll"
-File "switchboard\release\switchboard.exe"
+File "GPL_V2.txt"
+File "..\xivoclient\release\xivoclient.exe"
  
 SectionEnd
 
@@ -23,8 +24,8 @@ SectionEnd
 Section "Shortcuts"
 
 SetOutPath "$SMPROGRAMS\XIVO"
-# CreateShortCut "$SMPROGRAMS\XIVO\switchboard.lnk" "$INSTDIR\switchboard.exe"
-CreateShortCut "$DESKTOP\switchboard.lnk" "$INSTDIR\switchboard.exe"
+# CreateShortCut "$SMPROGRAMS\XIVO\xivoclient.lnk" "$INSTDIR\xivoclient.exe"
+CreateShortCut "$DESKTOP\xivoclient.lnk" "$INSTDIR\xivoclient.exe"
 
 MessageBox MB_OK "Installation terminée"
 

@@ -26,8 +26,8 @@ upx:
 	upx */release/*.exe
 
 nsis:
-	${MAKENSIS} switchboard.nsi
-	${MAKENSIS} xivoclient.nsi
+	${MAKENSIS} delivery/switchboard.nsi
+	${MAKENSIS} delivery/xivoclient.nsi
 
 allwin: all upx
 
