@@ -949,6 +949,7 @@ void BaseEngine::socketReadyRead()
                                 m_extension      = params_list["phonenum"];
                                 m_capabilities   = params_list["capas"].split(",");
                                 m_version_server = params_list["version"].toInt();
+                                m_xivover_server = params_list["xivoversion"];
                                 m_forced_state   = params_list["state"];
                                 
                                 if(m_version_server < REQUIRED_SERVER_VERSION) {
@@ -1639,6 +1640,7 @@ void BaseEngine::processLoginDialog()
                         m_extension      = params_list["phonenum"];
                         m_capabilities   = params_list["capas"].split(",");
                         m_version_server = params_list["version"].toInt();
+                        m_xivover_server = params_list["xivoversion"];
                         m_forced_state   = params_list["state"];
                 }
 
@@ -1711,7 +1713,6 @@ void BaseEngine::readProfile()
 	while(m_connection->canReadLine()) {
 		QByteArray data = m_connection->readLine();
 		QString line = QString::fromUtf8(data);
-
 		if(line.startsWith("<?xml") || line.startsWith("<ui version=")) {
                         QBuffer * inputstream = new QBuffer(this);
                         inputstream->open(QIODevice::ReadWrite);

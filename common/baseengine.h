@@ -276,6 +276,7 @@ private:
 	QString m_forced_state;		//!< Forced state sent by the server
 	QHash<QString, QString> m_callerids;	//!< List of caller Ids
 	int m_version_server;		//!< Version issued by the server after a successful login
+        QString m_xivover_server;	//!< Server's XIVO version
         QString m_fullname;		//!< Full Name
 
 	// Status variables

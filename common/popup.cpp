@@ -220,7 +220,7 @@ void Popup::streamNewData()
                 if(m_parsingStarted)
                         b = m_reader.parseContinue();
                 else {
-                        b = m_reader.parse(&m_xmlInputSource, true);
+                        b = m_reader.parse(&m_xmlInputSource, false);
                         m_parsingStarted = b;
                 }
         else
