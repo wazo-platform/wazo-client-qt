@@ -675,6 +675,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
                 if(listpeers[0] == "0") {
                         callsUpdated();
+                        peersReceived();
 
                         QString myfullid   = "p/" + m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" + m_userid + "/" + m_extension;
                         QString myfullname = m_callerids[myfullid];

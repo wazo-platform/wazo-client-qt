@@ -193,6 +193,7 @@ signals:
 	void updateMyCalls(const QStringList &, const QStringList &, const QStringList &);
 	//! call list is updated
 	void callsUpdated();
+	void peersReceived();
 	//! the server requested a peer remove
 	void removePeer(const QString &);
 	//! we want to monitor a given peer (not the one given by the mouse's drag&drop).

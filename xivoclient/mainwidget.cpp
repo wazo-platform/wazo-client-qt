@@ -420,6 +420,8 @@ void MainWidget::engineStarted()
 									const QString &, const QString &,
 									const QStringList &, const QStringList &,
 									const QStringList &)) );
+				connect( m_engine, SIGNAL(peersReceived()),
+					 m_peerswidget, SLOT(callsUpdated()) );
 				connect( m_peerswidget, SIGNAL(askCallerIds()),
 					 m_engine, SLOT(askCallerIds()) );
 

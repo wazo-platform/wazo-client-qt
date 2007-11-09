@@ -49,6 +49,7 @@ SearchPanel::SearchPanel(QWidget * parent)
 	scrollarea->setWidget(widget);
 	QVBoxLayout * scrollarealayout = new QVBoxLayout(widget);
 	m_peerlayout = new QVBoxLayout();
+	m_qsl = new QStringList();
 	scrollarealayout->addLayout( m_peerlayout );
 	scrollarealayout->addStretch( 1 );
 	vlayout->addWidget(scrollarea);
@@ -84,6 +85,14 @@ void SearchPanel::setEngine(BaseEngine * engine)
 
 /*! \brief apply the search
  */
+void SearchPanel::callsUpdated()
+{
+        affTextChanged("");
+}
+
+
+/*! \brief apply the search
+ */
 void SearchPanel::affTextChanged(const QString & text)
 {
         m_searchpattern = text;
@@ -94,7 +103,7 @@ void SearchPanel::affTextChanged(const QString & text)
                 i.next();
                 Peer * peeritem = i.value();
                 PeerWidget * peerwidget = peeritem->getWidget();
-                if( (m_searchpattern != "") && peeritem->name().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
+                if( peeritem->name().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
                         if(peerwidget == NULL) {
                                 peerwidget = new PeerWidget(peeritem->ext(),
                                                             peeritem->name(),
@@ -116,7 +125,10 @@ void SearchPanel::affTextChanged(const QString & text)
                                 peeritem->updateDisplayedChans();
                                 peeritem->updateDisplayedName();
 
-                                m_peerlayout->addWidget( peerwidget );
+                                m_qsl->append(peeritem->name());
+                                m_qsl->sort();
+                                int idof = m_qsl->indexOf(peeritem->name());
+                                m_peerlayout->insertWidget(idof, peerwidget);
                                 peerwidget->show();
                                 if(m_engine->isASwitchboard()) {
                                         connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
@@ -137,6 +149,7 @@ void SearchPanel::affTextChanged(const QString & text)
                 } else {
                         if ( m_peerlayout->indexOf( peerwidget ) > -1 ) {
                                 if(peerwidget != NULL) {
+                                        m_qsl->removeAll(peeritem->name());
                                         m_peerlayout->removeWidget( peerwidget );
                                         peerwidget->hide();
                                         if(m_engine->isASwitchboard()) {
@@ -192,7 +205,6 @@ void SearchPanel::updatePeer(const QString & ext,
 	peer->updateChans(chanIds, chanStates, chanOthers);
         m_peerhash.insert(ext, peer);
 
-        //        affTextChanged(m_searchpattern);
         // the peerwidget is not set while its display is not needed, see affTextChanged()
 }
 
