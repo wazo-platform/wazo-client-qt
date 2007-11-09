@@ -52,7 +52,7 @@ ParkingPanel::ParkingPanel(QWidget * parent)
 	m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
 	m_table->setColumnCount( 5 );
 	QStringList labels;
-	labels << "Asterisk";
+	labels << tr("XIVO Id");
 	labels << tr("Number");
 	labels << tr("Time");
 	labels << tr("Parked");

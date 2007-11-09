@@ -9,12 +9,7 @@
         <translation> a dit : </translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="831"/>
-        <source>Asterisk Id &lt;%1&gt; unknown by the Server.</source>
-        <translation>Identifiant Asterisk &lt;%1&gt; inconnu du Serveur.</translation>
-    </message>
-    <message>
-        <location filename="../common/baseengine.cpp" line="1368"/>
+        <location filename="../common/baseengine.cpp" line="1372"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
@@ -39,7 +34,7 @@
         <translation>Impossible de rapatrier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="896"/>
+        <location filename="../common/baseengine.cpp" line="899"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -49,12 +44,12 @@
         <translation>Hôte non trouvé</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="869"/>
+        <location filename="../common/baseengine.cpp" line="872"/>
         <source>Max number (%1) of XIVO Clients already reached.</source>
         <translation>Le nombre maximal (%1) de XIVO Clients est déjà connecté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="873"/>
+        <location filename="../common/baseengine.cpp" line="876"/>
         <source>Max number (%1) of XIVO Switchboards already reached.</source>
         <translation>Le nombre maximal (%1) de XIVO Switchboards est déjà connecté.</translation>
     </message>
@@ -69,7 +64,7 @@
         <translation>Nouvelle liste de postes sur %1 : - %2 + %3 = %4 au total</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="865"/>
+        <location filename="../common/baseengine.cpp" line="868"/>
         <source>No capability allowed.</source>
         <translation>Aucune capacité autorisée.</translation>
     </message>
@@ -87,6 +82,11 @@
         <location filename="../common/baseengine.cpp" line="829"/>
         <source>Server has sent an Error.</source>
         <translation>Le serveur a renvoyé une Erreur.</translation>
+    </message>
+    <message>
+        <location filename="../common/baseengine.cpp" line="831"/>
+        <source>The XIVO Id &lt;%1&gt; is unknown by the XIVO CTI Server.</source>
+        <translation>L&apos;identifiant XIVO &lt;%1&gt; est inconnu du Serveur CTI XIVO.</translation>
     </message>
     <message>
         <location filename="../common/baseengine.cpp" line="838"/>
@@ -141,7 +141,7 @@ Peut-être un problème de version ?</translation>
         <translation>XIVO CTI Erreur Critique</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="898"/>
+        <location filename="../common/baseengine.cpp" line="901"/>
         <source>XIVO CTI Error</source>
         <translation>XIVO CTI Erreur</translation>
     </message>
@@ -161,33 +161,38 @@ Peut-être un problème de version ?</translation>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="879"/>
+        <location filename="../common/baseengine.cpp" line="882"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="883"/>
+        <location filename="../common/baseengine.cpp" line="886"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="841"/>
-        <source>Your registration name &lt;%1,%2&gt; is not known on Asterisk Id &lt;%3&gt;.</source>
-        <translation>Votre identifiant &lt;%1,%2&gt; n&apos;est pas connu sur l&apos;Asterisk &lt;%3&gt;.</translation>
+        <location filename="../common/baseengine.cpp" line="865"/>
+        <source>Your phone &lt;%1,%2&gt; has not been provisioned on XIVO Id &lt;%3&gt;.</source>
+        <translation>Votre téléphone &lt;%1,%2&gt; n&apos;a pas été provisionné sur le XIVO &lt;%3&gt;.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="889"/>
+        <location filename="../common/baseengine.cpp" line="841"/>
+        <source>Your registration name &lt;%1,%2&gt; is not known on XIVO Id &lt;%3&gt;.</source>
+        <translation>Votre nom d&apos;enregistrement &lt;%1,%2&gt; n&apos;est pas connu sur le XIVO &lt;%3&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../common/baseengine.cpp" line="892"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="892"/>
+        <location filename="../common/baseengine.cpp" line="895"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
@@ -201,11 +206,6 @@ Merci de mettre à jour votre serveur.</translation>
 </context>
 <context>
     <name>ConfWidget</name>
-    <message>
-        <location filename="../common/confwidget.cpp" line="101"/>
-        <source>Asterisk Id Name</source>
-        <translation>Nom de l&apos;Asterisk</translation>
-    </message>
     <message>
         <location filename="../common/confwidget.cpp" line="134"/>
         <source>Autoconnect at startup</source>
@@ -300,6 +300,11 @@ Merci de mettre à jour votre serveur.</translation>
         <location filename="../common/confwidget.cpp" line="64"/>
         <source>UDP Login Port</source>
         <translation>Port de Login UDP</translation>
+    </message>
+    <message>
+        <location filename="../common/confwidget.cpp" line="101"/>
+        <source>XIVO Id</source>
+        <translation>Identifiant XIVO</translation>
     </message>
 </context>
 <context>

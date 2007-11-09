@@ -139,8 +139,8 @@ void BaseEngine::loadSettings()
 	m_loginport  = settings.value("engine/loginport", 5000).toUInt();
 	m_sbport     = settings.value("engine/serverport", 5003).toUInt();
 
-        m_checked_presence = settings.value("engine/fct_presence", true).toBool();
-        m_checked_cinfo    = settings.value("engine/fct_cinfo",    true).toBool();
+        m_checked_presence = settings.value("engine/fct_presence", false).toBool();
+        m_checked_cinfo    = settings.value("engine/fct_cinfo",    false).toBool();
 
 	m_asterisk   = settings.value("engine/asterisk", "xivo").toString();
 	m_protocol   = settings.value("engine/protocol", "sip").toString();
@@ -828,7 +828,7 @@ void BaseEngine::popupError(const QString & errorid)
 {
         QString errormsg = QString(tr("Server has sent an Error."));
         if(errorid.toLower() == "asterisk_name")
-                errormsg = tr("Asterisk Id <%1> unknown by the Server.").arg(m_asterisk);
+                errormsg = tr("The XIVO Id <%1> is unknown by the XIVO CTI Server.").arg(m_asterisk);
 
         else if(errorid.toLower() == "connection_refused")
                 errormsg = tr("You are not allowed to connect to the Server.");
@@ -838,7 +838,7 @@ void BaseEngine::popupError(const QString & errorid)
                               "Maybe a version issue ?");
 
         else if(errorid.toLower() == "user_not_found")
-                errormsg = tr("Your registration name <%1,%2> is not known on Asterisk Id <%3>.").arg(m_protocol, m_userid, m_asterisk);
+                errormsg = tr("Your registration name <%1,%2> is not known on XIVO Id <%3>.").arg(m_protocol, m_userid, m_asterisk);
 
         else if(errorid.toLower() == "session_expired")
                 errormsg = tr("Your session has expired.");
@@ -860,6 +860,9 @@ void BaseEngine::popupError(const QString & errorid)
 
         else if(errorid.toLower() == "already_connected")
                 errormsg = tr("You are already connected.");
+
+        else if(errorid.toLower() == "uninit_phone")
+                errormsg = tr("Your phone <%1,%2> has not been provisioned on XIVO Id <%3>.").arg(m_protocol, m_userid, m_asterisk);
 
         else if(errorid.toLower() == "no_capability")
                 errormsg = tr("No capability allowed.");

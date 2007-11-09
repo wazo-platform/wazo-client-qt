@@ -464,6 +464,7 @@ void MainWidget::engineStarted()
         QSettings settings;
 	QStringList display_capas = QString("customerinfo,features,history,directory,peers,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
+        settings.setValue("display/capas", allowed_capas.join(","));
 
         buildSplitters();
 

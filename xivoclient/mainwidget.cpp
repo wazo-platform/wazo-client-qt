@@ -359,7 +359,7 @@ void MainWidget::engineStarted()
         QSettings settings;
 	QStringList display_capas = QString("customerinfo,features,history,directory,peers,fax,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
-        qDebug() << "MainWidget::setConnected()" << m_engine->checkedPresence() << m_engine->checkedCInfo();
+        settings.setValue("display/capas", allowed_capas.join(","));
 
         m_mainlayout->removeWidget(m_xivobg);
         delete m_xivobg;

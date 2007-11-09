@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSettings>
 #include <QSpinBox>
 #include <QVBoxLayout>
 
@@ -44,6 +45,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
         : QDialog(parent), m_engine(engine), m_mainwindow(parent)
 {
 	int line = 0;
+	QSettings settings;
 	// the object will be destroyed when closed
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Configuration"));
@@ -80,17 +82,22 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	connect( m_tcpmode,   SIGNAL(toggled(bool)),
 	         m_sbport,    SLOT(setEnabled(bool)) );
 
+	QStringList qsl = settings.value("display/capas", "").toString().split(",");
         // Box for Enabled Functions Definition
 	QGroupBox * groupBox = new QGroupBox( tr("Functions") );
 	groupBox->setAlignment( Qt::AlignHCenter );
 	QVBoxLayout * vbox = new QVBoxLayout( groupBox );
 
-	m_presence = new QCheckBox(tr("Presence reporting"));
-	m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
-	m_cinfo = new QCheckBox(tr("Customer Info"));
-	m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
-	vbox->addWidget( m_presence );
-	vbox->addWidget( m_cinfo );
+        if(qsl.contains("presence")) {
+                m_presence = new QCheckBox(tr("Presence reporting"));
+                m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
+                vbox->addWidget( m_presence );
+        }
+        if(qsl.contains("customerinfo")) {
+                m_cinfo = new QCheckBox(tr("Customer Info"));
+                m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
+                vbox->addWidget( m_cinfo );
+        }
 	gridlayout->addWidget(groupBox, line++, 0, 1, 0);
 
         // Box for Connexion Definition
@@ -98,7 +105,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
         //	groupBox_conn->setAlignment( Qt::AlignHCenter );
         //	QVBoxLayout * vbox_conn = new QVBoxLayout( groupBox_conn );
 
-	QLabel * lblasterisk = new QLabel(tr("Asterisk Id Name"), this);
+	QLabel * lblasterisk = new QLabel(tr("XIVO Id"), this);
 	m_asterisk = new QLineEdit(m_engine->serverast(), this);
 	gridlayout->addWidget(lblasterisk, line, 0);
 	gridlayout->addWidget(m_asterisk, line++, 1);
@@ -198,8 +205,10 @@ void ConfWidget::saveAndClose()
 	m_engine->setTrytoreconnectinterval(m_tryinterval_sbox->value()*1000);
 	m_engine->setKeepaliveinterval(m_kainterval_sbox->value()*1000);
 
-	m_engine->setCheckedPresence(m_presence->checkState() == Qt::Checked);
-	m_engine->setCheckedCInfo(m_cinfo->checkState() == Qt::Checked);
+        if(m_presence)
+                m_engine->setCheckedPresence(m_presence->checkState() == Qt::Checked);
+        if(m_cinfo)
+                m_engine->setCheckedCInfo(m_cinfo->checkState() == Qt::Checked);
 
 	m_engine->setHistorySize(m_history_sbox->value());
 	m_engine->setTcpmode(m_tcpmode->checkState() == Qt::Checked);
