@@ -82,23 +82,27 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	connect( m_tcpmode,   SIGNAL(toggled(bool)),
 	         m_sbport,    SLOT(setEnabled(bool)) );
 
-	QStringList qsl = settings.value("display/capas", "").toString().split(",");
-        // Box for Enabled Functions Definition
-	QGroupBox * groupBox = new QGroupBox( tr("Functions") );
-	groupBox->setAlignment( Qt::AlignHCenter );
-	QVBoxLayout * vbox = new QVBoxLayout( groupBox );
+        QStringList qsl = settings.value("display/capas", "").toString().split(",");
+        if(qsl.contains("presence") || qsl.contains("customerinfo")) {
+                // Box for Enabled Functions Definition
+                QGroupBox * groupBox = new QGroupBox( tr("Functions") );
+                groupBox->setAlignment( Qt::AlignHCenter );
+                QVBoxLayout * vbox = new QVBoxLayout( groupBox );
 
-        if(qsl.contains("presence")) {
-                m_presence = new QCheckBox(tr("Presence reporting"));
-                m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
-                vbox->addWidget( m_presence );
+                if(qsl.contains("presence")) {
+                        m_presence = new QCheckBox(tr("Presence reporting"));
+                        m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
+                        vbox->addWidget( m_presence );
+                }
+
+                if(qsl.contains("customerinfo")) {
+                        m_cinfo = new QCheckBox(tr("Customer Info"));
+                        m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
+                        vbox->addWidget( m_cinfo );
+                }
+
+                gridlayout->addWidget(groupBox, line++, 0, 1, 0);
         }
-        if(qsl.contains("customerinfo")) {
-                m_cinfo = new QCheckBox(tr("Customer Info"));
-                m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
-                vbox->addWidget( m_cinfo );
-        }
-	gridlayout->addWidget(groupBox, line++, 0, 1, 0);
 
         // Box for Connexion Definition
         //	QGroupBox * groupBox_conn = new QGroupBox( tr("Identification"), this );

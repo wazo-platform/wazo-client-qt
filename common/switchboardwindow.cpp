@@ -149,6 +149,8 @@ void SwitchBoardWindow::updatePeer(const QString & ext,
                          m_engine, SLOT(originateCall(const QString&, const QString&)) );
                 connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                          m_engine, SLOT(transferCall(const QString&, const QString&)) );
+                connect( peerwidget, SIGNAL(atxferCall(const QString&, const QString&)),
+                         m_engine, SLOT(atxferCall(const QString&, const QString&)) );
                 connect( peerwidget, SIGNAL(hangUpChan(const QString &)),
                          m_engine, SLOT(hangUp(const QString &)) );
                 connect( peerwidget, SIGNAL(emitDial(const QString &)),
@@ -192,6 +194,8 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
                                     m_engine, SLOT(originateCall(const QString&, const QString&)) );
                         disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                                     m_engine, SLOT(transferCall(const QString&, const QString&)) );
+                        disconnect( peerwidget, SIGNAL(atxferCall(const QString&, const QString&)),
+                                    m_engine, SLOT(atxferCall(const QString&, const QString&)) );
                         disconnect( peerwidget, SIGNAL(hangUpChan(const QString &)),
                                     m_engine, SLOT(hangUp(const QString &)) );
                         disconnect( peerwidget, SIGNAL(emitDial(const QString &)),
@@ -257,6 +261,8 @@ void SwitchBoardWindow::removePeers(void)
                                     m_engine, SLOT(originateCall(const QString&, const QString&)) );
                         disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                                     m_engine, SLOT(transferCall(const QString&, const QString&)) );
+                        disconnect( peerwidget, SIGNAL(atxferCall(const QString&, const QString&)),
+                                    m_engine, SLOT(atxferCall(const QString&, const QString&)) );
                         disconnect( peerwidget, SIGNAL(hangUpChan(const QString &)),
                                     m_engine, SLOT(hangUp(const QString &)) );
                         disconnect( peerwidget, SIGNAL(emitDial(const QString &)),
@@ -362,6 +368,8 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
                          m_engine, SLOT(originateCall(const QString&, const QString&)) );
                 connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                          m_engine, SLOT(transferCall(const QString&, const QString&)) );
+                connect( peerwidget, SIGNAL(atxferCall(const QString&, const QString&)),
+                         m_engine, SLOT(atxferCall(const QString&, const QString&)) );
                 connect( peerwidget, SIGNAL(hangUpChan(const QString &)),
                          m_engine, SLOT(hangUp(const QString &)) );
                 connect( peerwidget, SIGNAL(emitDial(const QString &)),

@@ -123,8 +123,8 @@ public slots:
 	void originateCall(const QString &, const QString &);
 	void originateCallGoodAsterisk(const QString &, const QString &);
 	void dialFullChannel(const QString &);
-	void transferCall(const QString &,
-                          const QString &);
+	void transferCall(const QString &, const QString &);
+        void atxferCall(const QString &, const QString &);
 	void interceptCall(const QString &);
 	void searchDirectory(const QString &);
 	void requestHistory(const QString &, int);

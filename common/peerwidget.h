@@ -75,6 +75,8 @@ signals:
 	void originateCall(const QString &, const QString &);
 	//! transfer signal
 	void transferCall(const QString &, const QString &);
+	//! atxfer signal
+	void atxferCall(const QString &, const QString &);
 	//! intercept signal
 	void interceptChan(const QString &);
 	//! hang up signal

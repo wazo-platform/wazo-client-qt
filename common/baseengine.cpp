@@ -1053,6 +1053,21 @@ void BaseEngine::transferCall(const QString & src, const QString & dst)
                             + m_dialcontext + "/" + "/" + "/" + dst);
 }
 
+/*! \brief send an attended transfer call command to the server
+ */
+void BaseEngine::atxferCall(const QString & src, const QString & dst)
+{
+	qDebug() << "BaseEngine::atxferCall()" << src << dst;
+	QStringList dstlist = dst.split("/");
+	if(dstlist.size() >= 6)
+                sendCommand("atxfer " + src + " "
+                            + dstlist[0] + "/" + dstlist[1] + "/" + m_dialcontext + "/"
+                            + dstlist[3] + "/" + dstlist[4] + "/" + dstlist[5]);
+	else
+                sendCommand("atxfer " + src + " p/" + m_asterisk + "/"
+                            + m_dialcontext + "/" + "/" + "/" + dst);
+}
+
 /*! \brief send a transfer call command to the server
  */
 void BaseEngine::parkCall(const QString & src)

@@ -311,12 +311,16 @@ void PeerWidget::dropEvent(QDropEvent *event)
         // 	qDebug() << "PeerWidget::dropEvent() :" << from << "on" << to;
         // 	qDebug() << " possibleActions=" << event->possibleActions();
         // 	qDebug() << " proposedAction=" << event->proposedAction();
+        // qDebug() << "mouse & keyboard" << event->mouseButtons() << event->keyboardModifiers();
 	switch(event->proposedAction()) {
 	case Qt::CopyAction:
 		// transfer the call to the peer "to"
 	  	if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
 			event->acceptProposedAction();
-			transferCall(from, to);
+                        if(event->keyboardModifiers() & Qt::Key_Shift)
+                                atxferCall(from, to);
+                        else
+                                transferCall(from, to);
 		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
 			event->acceptProposedAction();
 			originateCall(from, to);
