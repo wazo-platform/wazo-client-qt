@@ -254,6 +254,8 @@ void MainWidget::buildSplitters()
                                                 const QString &, const QString &,
                                                 const QStringList &, const QStringList &,
                                                 const QStringList &)) );
+        connect( m_engine, SIGNAL(peersReceived()),
+                 m_searchpanel, SLOT(callsUpdated()) );
         connect( m_searchpanel, SIGNAL(askCallerIds()),
                  m_engine, SLOT(askCallerIds()) );
 	connect( m_engine, SIGNAL(delogged()),

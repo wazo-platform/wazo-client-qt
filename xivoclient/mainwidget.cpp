@@ -407,25 +407,25 @@ void MainWidget::engineStarted()
 				m_main_tabwidget->addTab(m_cinfo_tabwidget, extraspace + tr("&Sheets") + extraspace);
 
 			} else if (dc == QString("peers")) {
-				m_peerswidget = new SearchPanel();
-				m_main_tabwidget->addTab(m_peerswidget, extraspace + tr("&Contacts") + extraspace);
+				m_searchpanel = new SearchPanel();
+				m_main_tabwidget->addTab(m_searchpanel, extraspace + tr("&Contacts") + extraspace);
 
 				connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
 								     const QString &, const QString &,
 								     const QString &, const QString &,
 								     const QStringList &, const QStringList &,
 								     const QStringList &)),
-					 m_peerswidget, SLOT(updatePeer(const QString &, const QString &,
+					 m_searchpanel, SLOT(updatePeer(const QString &, const QString &,
 									const QString &, const QString &,
 									const QString &, const QString &,
 									const QStringList &, const QStringList &,
 									const QStringList &)) );
 				connect( m_engine, SIGNAL(peersReceived()),
-					 m_peerswidget, SLOT(callsUpdated()) );
-				connect( m_peerswidget, SIGNAL(askCallerIds()),
+					 m_searchpanel, SLOT(callsUpdated()) );
+				connect( m_searchpanel, SIGNAL(askCallerIds()),
 					 m_engine, SLOT(askCallerIds()) );
 
-				m_peerswidget->setEngine(m_engine);
+				m_searchpanel->setEngine(m_engine);
 
 			} else if (dc == QString("features")) {
 				m_featureswidget = new ServicePanel();
@@ -580,12 +580,12 @@ void MainWidget::engineStopped()
                                         delete m_faxwidget;
                                 }
 			} else if (dc == QString("peers")) {
-                                int index_peers = m_main_tabwidget->indexOf(m_peerswidget);
+                                int index_peers = m_main_tabwidget->indexOf(m_searchpanel);
                                 if (index_peers > -1) {
                                         qDebug() << "removing" << dc << index_peers;
-                                        m_peerswidget->removePeers();
+                                        m_searchpanel->removePeers();
                                         m_main_tabwidget->removeTab(index_peers);
-                                        delete m_peerswidget;
+                                        delete m_searchpanel;
                                 }
 			} else if (dc == QString("features")) {
                                 int index_features = m_main_tabwidget->indexOf(m_featureswidget);

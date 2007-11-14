@@ -66,7 +66,7 @@ SearchPanel::SearchPanel(QWidget * parent)
         m_person_yellow = QPixmap(":/images/personal-yellow.png");
         m_person_grey   = QPixmap(":/images/personal-grey.png");
         m_person_blue   = QPixmap(":/images/personal-blue.png");
-        m_maxdisplay = 20;
+        m_maxdisplay = 15;
         m_searchpattern = "";
 }
 
