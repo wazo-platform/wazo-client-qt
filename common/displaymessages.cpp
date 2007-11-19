@@ -63,14 +63,16 @@ DisplayMessagesPanel::DisplayMessagesPanel(QWidget * parent)
 void DisplayMessagesPanel::addMessage(const QString & str)
 {
 	//qDebug() << "DisplayMessagesPanel::addMessage()" << str;
-	QTime time = QTime::currentTime();
-	m_table->insertRow( 0 );
-	QTableWidgetItem * item1 = new QTableWidgetItem( time.toString( Qt::ISODate ) );
-	item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-	m_table->setItem( 0, 0, item1 );
-	QTableWidgetItem * item2 = new QTableWidgetItem( str );
-	item2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-	m_table->setItem( 0, 1, item2 );
-	m_table->resizeColumnsToContents();
+        if(str.size() > 0) {
+                QTime time = QTime::currentTime();
+                m_table->insertRow( 0 );
+                QTableWidgetItem * item1 = new QTableWidgetItem( time.toString( Qt::ISODate ) );
+                item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
+                m_table->setItem( 0, 0, item1 );
+                QTableWidgetItem * item2 = new QTableWidgetItem( str );
+                item2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
+                m_table->setItem( 0, 1, item2 );
+                m_table->resizeColumnsToContents();
+        }
 }
 

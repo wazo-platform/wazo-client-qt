@@ -1237,32 +1237,21 @@ bool BaseEngine::trytoreconnect() const
 void BaseEngine::initFeatureFields(const QString & field, const QString & value)
 {
         //        qDebug() << field << value;
-	if(field == "enablevoicemail")
-		voiceMailChanged(value == "1");
-	else if(field == "enablednd")
-		dndChanged(value == "1");
+        bool isenabled = (value.split(":")[0] == "1");
+	if((field == "enablevoicemail") || (field == "vm"))
+		voiceMailChanged(isenabled);
+	else if((field == "enablednd") || (field == "dnd"))
+		dndChanged(isenabled);
 	else if(field == "callfilter")
-		callFilteringChanged(value == "1");
+		callFilteringChanged(isenabled);
 	else if(field == "callrecord")
-		callRecordingChanged(value == "1");
+		callRecordingChanged(isenabled);
 	else if(field == "unc")
-		uncondForwardUpdated(value.split(":")[0] == "1", value.split(":")[1]);
-	else if(field == "FWD/Unc/Status")
-		uncondForwardUpdated(value == "1");
-	else if(field == "FWD/Unc/Number")
-		uncondForwardUpdated(value);
+		uncondForwardUpdated(isenabled, value.split(":")[1]);
 	else if(field == "busy")
-		forwardOnBusyUpdated(value.split(":")[0] == "1", value.split(":")[1]);
-	else if(field == "FWD/Busy/Status")
-		forwardOnBusyUpdated(value == "1");
-	else if(field == "FWD/Busy/Number")
-		forwardOnBusyUpdated(value);
+		forwardOnBusyUpdated(isenabled, value.split(":")[1]);
 	else if(field == "rna")
-		forwardOnUnavailableUpdated(value.split(":")[0] == "1", value.split(":")[1]);
-	else if(field == "FWD/RNA/Status")
-		forwardOnUnavailableUpdated(value == "1");
-	else if(field == "FWD/RNA/Number")
-		forwardOnUnavailableUpdated(value);
+		forwardOnUnavailableUpdated(isenabled, value.split(":")[1]);
 }
 
 /*!
