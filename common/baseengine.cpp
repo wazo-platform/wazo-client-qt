@@ -799,7 +799,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 m_faxsocket->connectToHost(m_serverhost, port_fax);
         } else if(listitems[0].toLower() == QString("faxsent")) {
                 ackFax(listitems[1]);
-        } else if((listitems[0] != "") && (listitems[0] != "______"))
+        } else if((listitems[0] != "") && (listitems[0] != "______") && (listitems[0] != "phones-noupdate"))
                 qDebug() << "unknown command" << listitems[0];
 
         return true;
@@ -1237,27 +1237,27 @@ bool BaseEngine::trytoreconnect() const
 void BaseEngine::initFeatureFields(const QString & field, const QString & value)
 {
         //        qDebug() << field << value;
-	if(field == "VM")
+	if(field == "enablevoicemail")
 		voiceMailChanged(value == "1");
-	else if(field == "DND")
+	else if(field == "enablednd")
 		dndChanged(value == "1");
-	else if(field == "Screen")
+	else if(field == "callfilter")
 		callFilteringChanged(value == "1");
-	else if(field == "Record")
+	else if(field == "callrecord")
 		callRecordingChanged(value == "1");
-	else if(field == "FWD/Unc")
+	else if(field == "unc")
 		uncondForwardUpdated(value.split(":")[0] == "1", value.split(":")[1]);
 	else if(field == "FWD/Unc/Status")
 		uncondForwardUpdated(value == "1");
 	else if(field == "FWD/Unc/Number")
 		uncondForwardUpdated(value);
-	else if(field == "FWD/Busy")
+	else if(field == "busy")
 		forwardOnBusyUpdated(value.split(":")[0] == "1", value.split(":")[1]);
 	else if(field == "FWD/Busy/Status")
 		forwardOnBusyUpdated(value == "1");
 	else if(field == "FWD/Busy/Number")
 		forwardOnBusyUpdated(value);
-	else if(field == "FWD/RNA")
+	else if(field == "rna")
 		forwardOnUnavailableUpdated(value.split(":")[0] == "1", value.split(":")[1]);
 	else if(field == "FWD/RNA/Status")
 		forwardOnUnavailableUpdated(value == "1");
@@ -1423,40 +1423,40 @@ bool BaseEngine::isRemovable(const QMetaObject * metaobject)
 
 void BaseEngine::featurePutVoiceMail(bool b)
 {
-        sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " VM " + QString(b ? "1" : "0"));
+        sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " enablevoicemail " + QString(b ? "1" : "0"));
 }
 
 void BaseEngine::featurePutCallRecording(bool b)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " Record " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " callrecord " + QString(b ? "1" : "0"));
 }
 
 void BaseEngine::featurePutCallFiltering(bool b)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " Screen " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " callfilter " + QString(b ? "1" : "0"));
 }
 
 void BaseEngine::featurePutDnd(bool b)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " DND " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " enablednd " + QString(b ? "1" : "0"));
 }
 
 void BaseEngine::featurePutForwardOnUnavailable(bool b, const QString & dst)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " FWD/RNA/Status " + QString(b ? "1" : "0"));
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " FWD/RNA/Number " + dst);
+	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " enablerna " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " destrna " + dst);
 }
 
 void BaseEngine::featurePutForwardOnBusy(bool b, const QString & dst)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " FWD/Busy/Status " + QString(b ? "1" : "0"));
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " FWD/Busy/Number " + dst);
+	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " enablebusy " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " destbusy " + dst);
 }
 
 void BaseEngine::featurePutUncondForward(bool b, const QString & dst)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " FWD/Unc/Status " + QString(b ? "1" : "0"));
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " FWD/Unc/Number " + dst);
+	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " enableunc " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " destunc " + dst);
 }
 
 void BaseEngine::askFeatures(const QString & peer)
