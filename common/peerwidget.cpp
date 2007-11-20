@@ -222,7 +222,7 @@ void PeerWidget::dial()
  */
 void PeerWidget::mousePressEvent(QMouseEvent *event)
 {
-	//qDebug() << "PeerWidget::mousePressEvent(QMouseEvent *event)";
+        // qDebug() << "PeerWidget::mousePressEvent()" << event;
 	if (event->button() == Qt::LeftButton)
 		m_dragstartpos = event->pos();
 	//else if (event->button() == Qt::RightButton)
@@ -255,18 +255,12 @@ void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 	//qDebug() << "PeerWidget::mouseMoveEvent : dropAction=" << dropAction;
 }
 
-#if 0
 void PeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-	qDebug() << "mouseDoubleClickEvent" << event;
-	//	m_engine->hangUp(m_textlbl->text());
-
+	// qDebug() << "mouseDoubleClickEvent" << event;
 	if(event->button() == Qt::LeftButton)
-	{
-		//qDebug() << m_textlbl->text();
-	}
+                dial();
 }
-#endif
 
 /*! \brief  
  *

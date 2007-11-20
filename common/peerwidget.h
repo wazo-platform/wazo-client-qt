@@ -65,7 +65,7 @@ public:
 protected:
 	void mouseMoveEvent(QMouseEvent * event);
 	void mousePressEvent(QMouseEvent * event);
-//	void mouseDoubleClickEvent(QMouseEvent * event);
+        void mouseDoubleClickEvent(QMouseEvent * event);
 	void dragEnterEvent(QDragEnterEvent * event);
 	void dragMoveEvent(QDragMoveEvent * event);
 	void dropEvent(QDropEvent * event);
