@@ -7,6 +7,8 @@ LRELEASE?=lrelease
 
 # Tool to build executables 
 MAKENSIS=C:\Program Files\NSIS\makensis.exe
+XIVOVER:=$(shell cat ../VERSION)
+SVNVER:=$(shell svn info | sed -n "/Last.Changed.Rev/s/.* //p")
 
 default:
 
@@ -28,6 +30,8 @@ upx:
 nsis:
 	${MAKENSIS} delivery/switchboard.nsi
 	${MAKENSIS} delivery/xivoclient.nsi
+	mv delivery/switchboard-setup.exe switchboard-setup-${XIVOVER}-${SVNVER}-win32.exe
+	mv delivery/xivoclient-setup.exe xivoclient-setup-${XIVOVER}-${SVNVER}-win32.exe
 
-allwin: all upx
+allwin: all upx nsis
 

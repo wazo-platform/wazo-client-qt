@@ -5,7 +5,7 @@
 #
 
 Name "XIVO Client"
-OutFile "xivoclient_setup.exe"
+OutFile "xivoclient-setup.exe"
 InstallDir "$PROGRAMFILES\XIVO"
 LicenseText "XIVO Client est distribué sous licence GPL."
 # ComponentText "(Choix des composants / sections)"

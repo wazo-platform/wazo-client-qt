@@ -5,7 +5,7 @@
 #
 
 Name "XIVO Switchboard"
-OutFile "switchboard_setup.exe"
+OutFile "switchboard-setup.exe"
 InstallDir "$PROGRAMFILES\XIVO"
 LicenseText "XIVO Switchboard est distribué sous licence GPL."
 # ComponentText "(Choix des composants / sections)"
