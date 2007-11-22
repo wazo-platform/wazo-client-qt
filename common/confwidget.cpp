@@ -42,7 +42,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 ConfWidget::ConfWidget(BaseEngine * engine,
                        MainWidget * parent)
-        : QDialog(parent), m_engine(engine), m_mainwindow(parent)
+        : QDialog(parent), m_engine(engine), m_mainwindow(parent),
+          m_presence(NULL), m_cinfo(NULL)
 {
 	int line = 0;
 	QSettings settings;
@@ -53,6 +54,14 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
 	/* grid layout for the editable values */
 	QGridLayout * gridlayout = new QGridLayout();
+
+        //      QStringList childgroups = settings.childGroups();
+        // 	QLabel * lblprofile = new QLabel(tr("Profile"), this);
+        // 	QComboBox * profile = new QComboBox(this);
+        // 	profile->addItem(QString(tr("Default")));
+        //      profile->setCurrentIndex(0);
+        // 	gridlayout->addWidget(lblprofile, line, 0);
+        // 	gridlayout->addWidget(profile, line++, 1);
 
 	QLabel * lblhost = new QLabel(tr("Server Host"), this);
 	m_serverhost = new QLineEdit(m_engine->serverip(), this);

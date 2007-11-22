@@ -135,28 +135,30 @@ void BaseEngine::loadSettings()
 {
         //qDebug() << "BaseEngine::loadSettings()";
 	QSettings settings;
-	m_serverhost = settings.value("engine/serverhost", "192.168.0.254").toString();
-	m_loginport  = settings.value("engine/loginport", 5000).toUInt();
-	m_sbport     = settings.value("engine/serverport", 5003).toUInt();
+        settings.beginGroup("engine");
+	m_serverhost = settings.value("serverhost", "192.168.0.254").toString();
+	m_loginport  = settings.value("loginport", 5000).toUInt();
+	m_sbport     = settings.value("serverport", 5003).toUInt();
 
-        m_checked_presence = settings.value("engine/fct_presence", false).toBool();
-        m_checked_cinfo    = settings.value("engine/fct_cinfo",    false).toBool();
+        m_checked_presence = settings.value("fct_presence", false).toBool();
+        m_checked_cinfo    = settings.value("fct_cinfo",    false).toBool();
 
-	m_asterisk   = settings.value("engine/asterisk", "xivo").toString();
-	m_protocol   = settings.value("engine/protocol", "sip").toString();
-	m_userid     = settings.value("engine/userid").toString();
-	m_passwd     = settings.value("engine/passwd").toString();
+	m_asterisk   = settings.value("asterisk", "xivo").toString();
+	m_protocol   = settings.value("protocol", "sip").toString();
+	m_userid     = settings.value("userid").toString();
+	m_passwd     = settings.value("passwd").toString();
 
-	m_autoconnect = settings.value("engine/autoconnect", false).toBool();
-	m_trytoreconnect = settings.value("engine/trytoreconnect", false).toBool();
-	m_trytoreconnectinterval = settings.value("engine/trytoreconnectinterval", 20*1000).toUInt();
-	m_keepaliveinterval = settings.value("engine/keepaliveinterval", 20*1000).toUInt();
+	m_autoconnect = settings.value("autoconnect", false).toBool();
+	m_trytoreconnect = settings.value("trytoreconnect", false).toBool();
+	m_trytoreconnectinterval = settings.value("trytoreconnectinterval", 20*1000).toUInt();
+	m_keepaliveinterval = settings.value("keepaliveinterval", 20*1000).toUInt();
 
-	m_historysize = settings.value("engine/historysize", 8).toUInt();
-	m_tcpmode = settings.value("engine/tcpmode", false).toBool();
-        m_checked_lastconnwins = settings.value("engine/lastconnwins", false).toBool();
+	m_historysize = settings.value("historysize", 8).toUInt();
+	m_tcpmode = settings.value("tcpmode", false).toBool();
+        m_checked_lastconnwins = settings.value("lastconnwins", false).toBool();
 
-	m_availstate = settings.value("engine/availstate", "available").toString();
+	m_availstate = settings.value("availstate", "available").toString();
+        settings.endGroup();
 }
 
 /*!
@@ -166,28 +168,30 @@ void BaseEngine::saveSettings()
 {
         //qDebug() << "BaseEngine::saveSettings()";
 	QSettings settings;
-	settings.setValue("engine/serverhost", m_serverhost);
-	settings.setValue("engine/loginport",  m_loginport);
-	settings.setValue("engine/serverport", m_sbport);
+        settings.beginGroup("engine");
+	settings.setValue("serverhost", m_serverhost);
+	settings.setValue("loginport",  m_loginport);
+	settings.setValue("serverport", m_sbport);
 
-	settings.setValue("engine/fct_presence", m_checked_presence);
-	settings.setValue("engine/fct_cinfo",    m_checked_cinfo);
+	settings.setValue("fct_presence", m_checked_presence);
+	settings.setValue("fct_cinfo",    m_checked_cinfo);
 
-	settings.setValue("engine/asterisk",   m_asterisk);
-	settings.setValue("engine/protocol",   m_protocol);
-	settings.setValue("engine/userid",     m_userid);
-	settings.setValue("engine/passwd",     m_passwd);
+	settings.setValue("asterisk",   m_asterisk);
+	settings.setValue("protocol",   m_protocol);
+	settings.setValue("userid",     m_userid);
+	settings.setValue("passwd",     m_passwd);
 
-	settings.setValue("engine/autoconnect", m_autoconnect);
-	settings.setValue("engine/trytoreconnect", m_trytoreconnect);
-	settings.setValue("engine/trytoreconnectinterval", m_trytoreconnectinterval);
-	settings.setValue("engine/keepaliveinterval", m_keepaliveinterval);
+	settings.setValue("autoconnect", m_autoconnect);
+	settings.setValue("trytoreconnect", m_trytoreconnect);
+	settings.setValue("trytoreconnectinterval", m_trytoreconnectinterval);
+	settings.setValue("keepaliveinterval", m_keepaliveinterval);
 
-	settings.setValue("engine/historysize", m_historysize);
-	settings.setValue("engine/tcpmode", m_tcpmode);
-        settings.setValue("engine/lastconnwins", m_checked_lastconnwins);
+	settings.setValue("historysize", m_historysize);
+	settings.setValue("tcpmode", m_tcpmode);
+        settings.setValue("lastconnwins", m_checked_lastconnwins);
 
-	settings.setValue("engine/availstate", m_availstate);
+	settings.setValue("availstate", m_availstate);
+        settings.endGroup();
 }
 
 /*!
