@@ -80,10 +80,11 @@ private slots:
 	void affTextChanged();
         void checksAvailState();
 protected:
-	void showEvent(QShowEvent *event);	//!< Catch show events
-	void hideEvent(QHideEvent *event);	//!< Catch hide events
-	void closeEvent(QCloseEvent *event);
-	//void changeEvent(QEvent *event);
+	void showEvent(QShowEvent *);	//!< Catch show events
+	void hideEvent(QHideEvent *);	//!< Catch hide events
+	void closeEvent(QCloseEvent *);
+	void changeEvent(QEvent *);
+	// bool event(QEvent *);
 private:
 	void createActions();	//!< Create Actions (for menus)
 	void createMenus();		//!< Create Menus
@@ -123,7 +124,8 @@ private:
 	// actions :
 	QAction * m_cfgact;		//!< Configuration Action
 	QAction * m_quitact;		//!< Quit Action
-	QAction * m_systrayact;		//!< "Go to systray" action
+	QAction * m_systraymin;		//!< "Go to systray" action
+	QAction * m_systraymax;		//!< "Go to systray" action
 	QAction * m_connectact;		//!< "Connect" Action
 	QAction * m_disconnectact;	//!< "Disconnect" Action
 	QActionGroup * m_availgrp;	//!< group For Availability Actions

@@ -137,11 +137,21 @@ void MainWidget::createActions()
 	connect( m_quitact, SIGNAL(triggered()),
 		 qApp, SLOT(quit()) );
 
-	m_systrayact = new QAction(tr("To S&ystray"), this);
-	m_systrayact->setStatusTip(tr("Go to the system tray"));
-	connect( m_systrayact, SIGNAL(triggered()),
+	m_systraymin = new QAction(tr("To S&ystray"), this);
+	m_systraymin->setStatusTip(tr("Enter the system tray"));
+	connect( m_systraymin, SIGNAL(triggered()),
 		 this, SLOT(hide()) );
-	m_systrayact->setEnabled( QSystemTrayIcon::isSystemTrayAvailable() );
+	m_systraymin->setEnabled( QSystemTrayIcon::isSystemTrayAvailable() );
+
+	m_systraymax = new QAction(tr("&Show window"), this);
+	m_systraymax->setStatusTip(tr("Leave the system tray"));
+	connect( m_systraymax, SIGNAL(triggered()),
+		 this, SLOT(showNormal()) );
+	connect( m_systraymax, SIGNAL(triggered()),
+		 this, SLOT(show()) );
+	connect( m_systraymax, SIGNAL(triggered()),
+		 this, SLOT(raise()) );
+	m_systraymax->setEnabled( QSystemTrayIcon::isSystemTrayAvailable() );
 
 	m_connectact = new QAction(tr("&Connect"), this);
 	m_connectact->setStatusTip(tr("Connect to the server"));
@@ -210,7 +220,7 @@ void MainWidget::createMenus()
 {
 	QMenu * filemenu = menuBar()->addMenu("&XIVO Client");
 	filemenu->addAction( m_cfgact );
-	filemenu->addAction( m_systrayact );
+	filemenu->addAction( m_systraymin );
 	filemenu->addSeparator();
 	filemenu->addAction( m_connectact );
 	filemenu->addAction( m_disconnectact );
@@ -260,6 +270,7 @@ void MainWidget::setTablimit(int tablimit)
 void MainWidget::createSystrayIcon()
 {
 	m_systrayIcon = new QSystemTrayIcon(m_icongrey, this);
+        m_systrayIcon->setToolTip("XIVO Client");
 	QMenu * menu = new QMenu(QString("SystrayMenu"), this);
         menu->addAction(m_cfgact);
         menu->addSeparator();
@@ -268,6 +279,10 @@ void MainWidget::createSystrayIcon()
 	menu->addAction(m_connectact);
 	menu->addAction(m_disconnectact);
 	menu->addSeparator();
+#ifdef Q_WS_MAC
+	menu->addAction(m_systraymax);
+	menu->addSeparator();
+#endif
 	menu->addAction(m_quitact);
 	m_systrayIcon->setContextMenu( menu );
 	m_systrayIcon->show();
@@ -278,8 +293,8 @@ void MainWidget::createSystrayIcon()
 	connect( m_systrayIcon, SIGNAL(messageClicked()),
 	         this, SLOT(systrayMsgClicked()) );
 // QSystemTrayIcon::ActivationReason
-	//qDebug() << "QSystemTrayIcon::supportsMessages() = "
-	//         << QSystemTrayIcon::supportsMessages();
+	// qDebug() << "QSystemTrayIcon::supportsMessages() = "
+	//          << QSystemTrayIcon::supportsMessages();
 }
 
 // === SLOTS implementations ===
@@ -302,37 +317,33 @@ void MainWidget::showConfDialog()
  * of the MainWidget on a simple left click. */
 void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-	qDebug() << "MainWidget::systrayActivated()"
-                 << "reason =" << reason
-	         << "isVisible =" << isVisible()
-                 << "isHidden =" << isHidden()
-	         << "isActiveWindow =" << isActiveWindow();
+	// qDebug() << "MainWidget::systrayActivated()"
+        // << "reason =" << reason
+        // << "isMinimized =" << isMinimized()
+        // << "isVisible =" << isVisible()
+        // << "isActiveWindow =" << isActiveWindow();
 	// QSystemTrayIcon::DoubleClick
 	// QSystemTrayIcon::Trigger
-	if (reason == QSystemTrayIcon::Trigger)
-	{
-		if ( isVisible() && !isActiveWindow() )
-		{
-			showNormal();
+	if (reason == QSystemTrayIcon::Trigger) {
+#ifdef Q_WS_MAC
+                // try to reduce potential problems under MacOS X
+                if ( isVisible() )
+                        setVisible(false);
+#else
+		if ( isVisible() && !isActiveWindow() ) {
+                        showNormal();
 			activateWindow();
 			raise();
-		}
-		else
-		{
-#ifdef Q_WS_MAC
-			// try to reduce potential problems under MacOS X
-			setVisible(true);
-#else
+                } else {
 			// Toggle visibility
 			setVisible(!isVisible());
-#endif
-			if ( isVisible() )
-			{
+			if ( isVisible() ) {
 				showNormal();
 				activateWindow();
 				raise();
 			}
 		}
+#endif
 	}
 }
 
@@ -342,7 +353,7 @@ void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
  */
 void MainWidget::systrayMsgClicked()
 {
-	qDebug() << "MainWidget::systrayMsgClicked()";
+	// qDebug() << "MainWidget::systrayMsgClicked()";
 	setVisible(true);
 	activateWindow();
 	raise();
@@ -649,7 +660,7 @@ void MainWidget::setForceTabs(bool force)
 
 void MainWidget::savePositions() const
 {
-	qDebug() << "MainWidget::savePositions()";
+	// qDebug() << "MainWidget::savePositions()";
         QSettings settings;
         settings.setValue("display/mainwingeometry", saveGeometry());
 }
@@ -694,33 +705,37 @@ void MainWidget::showNewProfile(Popup * popup)
 }
 
 
-void MainWidget::showEvent(QShowEvent */* event*/)
+void MainWidget::showEvent(QShowEvent *event)
 {
-// 	qDebug() << "MainWidget::showEvent()"
-//                  << "spontaneous =" << event->spontaneous()
-// 	         << "isMinimized =" << isMinimized()
-//                  << "isVisible ="   << isVisible()
-//                  << "isHidden =" << isHidden()
-// 	         << "isActiveWindow =" << isActiveWindow();
+        // qDebug() << "MainWidget::showEvent()";
+        event->accept();
+        // << "spontaneous =" << event->spontaneous()
+        // << "isMinimized =" << isMinimized()
+        // << "isVisible ="   << isVisible()
+        // << "isActiveWindow =" << isActiveWindow();
 }
 
 
 void MainWidget::hideEvent(QHideEvent *event)
 {
 	// called when minimized
-	//qDebug() << "MainWidget::hideEvent(" << event << ")";
 	// if systray available
-// 	qDebug() << "MainWidget::hideEvent()"
-//                  << "spontaneous =" << event->spontaneous()
-// 	         << "isMinimized =" << isMinimized()
-//                  << "isVisible ="   << isVisible()
-//                  << "isHidden =" << isHidden()
-// 	         << "isActiveWindow =" << isActiveWindow();
+        // qDebug() << "MainWidget::hideEvent()";
+        // << "spontaneous =" << event->spontaneous()
+        // << "isMinimized =" << isMinimized()
+        // << "isVisible ="   << isVisible()
+        // << "isActiveWindow =" << isActiveWindow();
 
+#ifdef Q_WS_MAC
+	if (event->spontaneous())
+		event->ignore();
+        setVisible(false);
+#else
 	if (event->spontaneous())
 		event->ignore();
 	else
 		event->accept();
+#endif
 
         // #ifndef Q_WS_MAC
         //  	if ( QSystemTrayIcon::isSystemTrayAvailable() ) {
@@ -739,15 +754,14 @@ void MainWidget::hideEvent(QHideEvent *event)
  */
 void MainWidget::closeEvent(QCloseEvent *event)
 {
-// 	qDebug() << "MainWidget::closeEvent()"
-//                  << "spontaneous =" << event->spontaneous()
-// 	         << "isMinimized =" << isMinimized()
-//                  << "isVisible ="   << isVisible()
-//                  << "isHidden =" << isHidden()
-// 	         << "isActiveWindow =" << isActiveWindow();
+	// qDebug() << "MainWidget::closeEvent()"
+        // << "spontaneous =" << event->spontaneous()
+        // << "isMinimized =" << isMinimized()
+        // << "isVisible ="   << isVisible()
+        // << "isActiveWindow =" << isActiveWindow();
 
 #ifdef Q_WS_MAC
-        showMinimized();
+        setVisible(false);
 #else
         if ( QSystemTrayIcon::isSystemTrayAvailable() )
                 setVisible( false );
@@ -757,13 +771,23 @@ void MainWidget::closeEvent(QCloseEvent *event)
  	event->ignore();
 }
 
-#if 0
-void MainWidget::changeEvent(QEvent *event)
+void MainWidget::changeEvent(QEvent * /* event */)
 {
-	qDebug() << "MainWidget::changeEvent() eventtype=" << event->type();
+	// qDebug() << "MainWidget::changeEvent() eventtype=" << event->type();
 	//if (event->type() == 105)
 	//	event->accept();
 		//event->ignore();
+}
+
+#if 0
+bool MainWidget::event(QEvent *event)
+{
+	qDebug() << "MainWidget::event() eventtype=" << event->type();
+        event->accept();
+	//if (event->type() == 105)
+	//	event->accept();
+		//event->ignore();
+        return true;
 }
 #endif
 
