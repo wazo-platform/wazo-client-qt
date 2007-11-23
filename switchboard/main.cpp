@@ -47,9 +47,12 @@ int main(int argc, char * * argv)
 	QCoreApplication::setOrganizationDomain("xivo.fr");
 	QCoreApplication::setApplicationName("XIVO_Switchboard");
 	QApplication app(argc, argv);
-	QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
+        QSettings * settings = new QSettings(QSettings::IniFormat,
+                                             QSettings::UserScope,
+                                             QCoreApplication::organizationName(),
+                                             QCoreApplication::applicationName());
 
-        QString qsskind = settings.value("display/qss", "none").toString();
+        QString qsskind = settings->value("display/qss", "none").toString();
         QFile qssFile(":/common/" + qsskind + ".qss");
         QString qssStr;
         if(qssFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -60,22 +63,20 @@ int main(int argc, char * * argv)
         app.setWindowIcon(QIcon(":/images/xivoicon.png"));
 
         QTranslator qtTranslator;
-        QString forcelocale = settings.value("display/forcelocale", "").toString();
+        QString forcelocale = settings->value("display/forcelocale", "").toString();
         if(forcelocale.size() > 0)
                 locale = forcelocale;
 	qtTranslator.load(QString(":/switchboard_") + locale);
 	app.installTranslator(&qtTranslator);
 
+        BaseEngine * engine = new BaseEngine(settings);
+	engine->setIsASwitchboard(true);
 
-	BaseEngine engine;
-        engine.setIsASwitchboard(true);
-
-	MainWidget main(&engine);
+	MainWidget main(engine);
 	main.show();
 	//main.dumpObjectTree();
-	QObject::connect( &app, SIGNAL(lastWindowClosed()),
-                          &engine, SLOT(stop()) );
+        QObject::connect( &app, SIGNAL(lastWindowClosed()),
+                          engine, SLOT(stop()) );
 	//engine.startTimer(1000);
-	return app.exec();
+        return app.exec();
 }
-

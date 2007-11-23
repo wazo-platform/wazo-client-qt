@@ -21,7 +21,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
 #include <QBuffer>
-#include <QCoreApplication>
 #include <QDebug>
 #include <QMessageBox>
 #include <QSettings>
@@ -45,7 +44,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  * the TCP listening socket.
  * It also connects signals with the right slots.
  */
-BaseEngine::BaseEngine(QObject * parent)
+BaseEngine::BaseEngine(QSettings * settings,
+                       QObject * parent)
         : QObject(parent),
 	  m_serverhost(""), m_loginport(0), m_sbport(0),
           m_asterisk(""), m_protocol(""), m_userid(""), m_passwd(""),
@@ -61,6 +61,7 @@ BaseEngine::BaseEngine(QObject * parent)
         m_faxsocket    = new QTcpSocket(this);
 	m_udpsocket    = new QUdpSocket(this);
 	m_listenserver = new QTcpServer(this);
+        m_settings = settings;
 	loadSettings();
 	deleteRemovables();
 
@@ -140,17 +141,13 @@ QSettings * BaseEngine::getSettings()
 void BaseEngine::loadSettings()
 {
         //qDebug() << "BaseEngine::loadSettings()";
-        m_settings = new QSettings(QSettings::IniFormat,
-                                   QSettings::UserScope,
-                                   QCoreApplication::organizationName(),
-                                   QCoreApplication::applicationName());
         m_settings->beginGroup("engine");
 	m_serverhost = m_settings->value("serverhost", "192.168.0.254").toString();
 	m_loginport  = m_settings->value("loginport", 5000).toUInt();
 	m_sbport     = m_settings->value("serverport", 5003).toUInt();
 
-        m_checked_presence = m_settings->value("fct_presence", false).toBool();
-        m_checked_cinfo    = m_settings->value("fct_cinfo",    false).toBool();
+        m_checked_presence = m_settings->value("fct_presence", true).toBool();
+        m_checked_cinfo    = m_settings->value("fct_cinfo",    true).toBool();
 
 	m_asterisk   = m_settings->value("asterisk", "xivo").toString();
 	m_protocol   = m_settings->value("protocol", "sip").toString();

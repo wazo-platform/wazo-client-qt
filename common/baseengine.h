@@ -27,14 +27,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 // QT includes.
 #include <QHash>
 #include <QObject>
+#include <QSettings>
 #include <QStringList>
 #include <QTcpSocket>
 #include <QTcpServer>
 #include <QTime>
 #include <QTimer>
 #include <QUdpSocket>
-
-class QSettings;
 
 class Popup;
 
@@ -49,7 +48,7 @@ public:
 	//! Enum for BaseEngine state logged/not logged
 	typedef enum {ENotLogged, ELogged } EngineState;
 	//! Constructor
-	BaseEngine(QObject * parent = 0);
+	BaseEngine(QSettings *, QObject * parent = 0);
 	//! Destructor
 	~BaseEngine();
 
