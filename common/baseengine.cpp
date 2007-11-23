@@ -160,6 +160,7 @@ void BaseEngine::loadSettings()
 	m_keepaliveinterval = m_settings->value("keepaliveinterval", 20*1000).toUInt();
 
 	m_historysize = m_settings->value("historysize", 8).toUInt();
+	m_contactssize = m_settings->value("contactssize", 15).toUInt();
 	m_tcpmode = m_settings->value("tcpmode", false).toBool();
         m_checked_lastconnwins = m_settings->value("lastconnwins", false).toBool();
 
@@ -192,6 +193,7 @@ void BaseEngine::saveSettings()
 	m_settings->setValue("keepaliveinterval", m_keepaliveinterval);
 
 	m_settings->setValue("historysize", m_historysize);
+	m_settings->setValue("contactssize", m_contactssize);
 	m_settings->setValue("tcpmode", m_tcpmode);
         m_settings->setValue("lastconnwins", m_checked_lastconnwins);
 
@@ -1339,9 +1341,19 @@ void BaseEngine::setHistorySize(uint size)
 	m_historysize = size;
 }
 
-uint BaseEngine::historysize() const
+uint BaseEngine::historySize() const
 {
 	return m_historysize;
+}
+
+void BaseEngine::setContactsSize(uint size)
+{
+	m_contactssize = size;
+}
+
+uint BaseEngine::contactsSize() const
+{
+	return m_contactssize;
 }
 
 uint BaseEngine::trytoreconnectinterval() const

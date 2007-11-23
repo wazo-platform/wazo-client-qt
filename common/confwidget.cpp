@@ -170,8 +170,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	m_kainterval_sbox->setValue(m_engine->keepaliveinterval() / 1000);
 	gridlayout->addWidget(m_kainterval_sbox, line++, 1);
 
-	QLabel * lbltablimit = new QLabel(tr("Tab limit"), this);
-	gridlayout->addWidget(lbltablimit, line, 0);
+	gridlayout->addWidget(new QLabel(tr("Tab limit"), this), line, 0);
 	m_tablimit_sbox = new QSpinBox(this);
 	m_tablimit_sbox->setRange(0, 99);
 	m_tablimit_sbox->setValue(m_mainwindow->tablimit());
@@ -180,8 +179,14 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	gridlayout->addWidget(new QLabel(tr("History size"), this), line, 0);
 	m_history_sbox = new QSpinBox(this);
 	m_history_sbox->setRange(1, 20);
-	m_history_sbox->setValue(m_engine->historysize());
+	m_history_sbox->setValue(m_engine->historySize());
 	gridlayout->addWidget(m_history_sbox, line++, 1);
+
+	gridlayout->addWidget(new QLabel(tr("Contacts' size"), this), line, 0);
+	m_contacts_sbox = new QSpinBox(this);
+	m_contacts_sbox->setRange(1, 50);
+	m_contacts_sbox->setValue(m_engine->contactsSize());
+	gridlayout->addWidget(m_contacts_sbox, line++, 1);
 
 	m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
 	connect(m_btnbox, SIGNAL(accepted()),
@@ -223,6 +228,7 @@ void ConfWidget::saveAndClose()
                 m_engine->setCheckedCInfo(m_cinfo->checkState() == Qt::Checked);
 
 	m_engine->setHistorySize(m_history_sbox->value());
+	m_engine->setContactsSize(m_contacts_sbox->value());
 	m_engine->setTcpmode(m_tcpmode->checkState() == Qt::Checked);
         // m_engine->setLastConnWins(m_lastconnwins->checkState() == Qt::Checked);
 	m_mainwindow->setTablimit(m_tablimit_sbox->value());

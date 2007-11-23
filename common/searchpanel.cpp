@@ -80,6 +80,7 @@ void SearchPanel::setEngine(BaseEngine * engine)
 {
         // qDebug() << "SearchPanel::setEngine()";
 	m_engine = engine;
+        m_maxdisplay = m_engine->contactsSize();
         askCallerIds();
 }
 

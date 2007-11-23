@@ -82,8 +82,10 @@ public:
 	void setTrytoreconnect(bool);		//!< set try to reconnect flag
 	uint trytoreconnectinterval() const;	//!< try to reconnect interval
 	void setTrytoreconnectinterval(uint);	//!< set try to reconnect interval
-	uint historysize() const;		//!< history size
+	uint historySize() const;		//!< history size
 	void setHistorySize(uint size);		//!< set history size
+	uint contactsSize() const;		//!< contacts size
+	void setContactsSize(uint size);	//!< set contacts size
 
 	void saveSettings();			//!< save server settings
 
@@ -263,6 +265,7 @@ private:
 	uint m_keepaliveinterval;	//!< Keep alive interval (in msec)
 
 	int m_historysize;
+	int m_contactssize;
 	bool m_enabled_presence;      	//!< presence is enabled
 	bool m_enabled_cinfo;      	//!< customer info is enabled
 	bool m_checked_presence;      	//!< presence is checked
