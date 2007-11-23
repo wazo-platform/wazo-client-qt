@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
 #include <QBuffer>
+#include <QCoreApplication>
 #include <QDebug>
 #include <QMessageBox>
 #include <QSettings>
@@ -127,6 +128,11 @@ BaseEngine::~BaseEngine()
         qDebug() << "BaseEngine::~BaseEngine()";
 }
 
+QSettings * BaseEngine::getSettings()
+{
+        return m_settings;
+}
+
 /*!
  * Load Settings from the registery/configuration file
  * Use default values when settings are not found.
@@ -134,31 +140,34 @@ BaseEngine::~BaseEngine()
 void BaseEngine::loadSettings()
 {
         //qDebug() << "BaseEngine::loadSettings()";
-	QSettings settings;
-        settings.beginGroup("engine");
-	m_serverhost = settings.value("serverhost", "192.168.0.254").toString();
-	m_loginport  = settings.value("loginport", 5000).toUInt();
-	m_sbport     = settings.value("serverport", 5003).toUInt();
+        m_settings = new QSettings(QSettings::IniFormat,
+                                   QSettings::UserScope,
+                                   QCoreApplication::organizationName(),
+                                   QCoreApplication::applicationName());
+        m_settings->beginGroup("engine");
+	m_serverhost = m_settings->value("serverhost", "192.168.0.254").toString();
+	m_loginport  = m_settings->value("loginport", 5000).toUInt();
+	m_sbport     = m_settings->value("serverport", 5003).toUInt();
 
-        m_checked_presence = settings.value("fct_presence", false).toBool();
-        m_checked_cinfo    = settings.value("fct_cinfo",    false).toBool();
+        m_checked_presence = m_settings->value("fct_presence", false).toBool();
+        m_checked_cinfo    = m_settings->value("fct_cinfo",    false).toBool();
 
-	m_asterisk   = settings.value("asterisk", "xivo").toString();
-	m_protocol   = settings.value("protocol", "sip").toString();
-	m_userid     = settings.value("userid").toString();
-	m_passwd     = settings.value("passwd").toString();
+	m_asterisk   = m_settings->value("asterisk", "xivo").toString();
+	m_protocol   = m_settings->value("protocol", "sip").toString();
+	m_userid     = m_settings->value("userid").toString();
+	m_passwd     = m_settings->value("passwd").toString();
 
-	m_autoconnect = settings.value("autoconnect", false).toBool();
-	m_trytoreconnect = settings.value("trytoreconnect", false).toBool();
-	m_trytoreconnectinterval = settings.value("trytoreconnectinterval", 20*1000).toUInt();
-	m_keepaliveinterval = settings.value("keepaliveinterval", 20*1000).toUInt();
+	m_autoconnect = m_settings->value("autoconnect", false).toBool();
+	m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
+	m_trytoreconnectinterval = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
+	m_keepaliveinterval = m_settings->value("keepaliveinterval", 20*1000).toUInt();
 
-	m_historysize = settings.value("historysize", 8).toUInt();
-	m_tcpmode = settings.value("tcpmode", false).toBool();
-        m_checked_lastconnwins = settings.value("lastconnwins", false).toBool();
+	m_historysize = m_settings->value("historysize", 8).toUInt();
+	m_tcpmode = m_settings->value("tcpmode", false).toBool();
+        m_checked_lastconnwins = m_settings->value("lastconnwins", false).toBool();
 
-	m_availstate = settings.value("availstate", "available").toString();
-        settings.endGroup();
+	m_availstate = m_settings->value("availstate", "available").toString();
+        m_settings->endGroup();
 }
 
 /*!
@@ -167,31 +176,30 @@ void BaseEngine::loadSettings()
 void BaseEngine::saveSettings()
 {
         //qDebug() << "BaseEngine::saveSettings()";
-	QSettings settings;
-        settings.beginGroup("engine");
-	settings.setValue("serverhost", m_serverhost);
-	settings.setValue("loginport",  m_loginport);
-	settings.setValue("serverport", m_sbport);
+        m_settings->beginGroup("engine");
+	m_settings->setValue("serverhost", m_serverhost);
+	m_settings->setValue("loginport",  m_loginport);
+	m_settings->setValue("serverport", m_sbport);
 
-	settings.setValue("fct_presence", m_checked_presence);
-	settings.setValue("fct_cinfo",    m_checked_cinfo);
+	m_settings->setValue("fct_presence", m_checked_presence);
+	m_settings->setValue("fct_cinfo",    m_checked_cinfo);
 
-	settings.setValue("asterisk",   m_asterisk);
-	settings.setValue("protocol",   m_protocol);
-	settings.setValue("userid",     m_userid);
-	settings.setValue("passwd",     m_passwd);
+	m_settings->setValue("asterisk",   m_asterisk);
+	m_settings->setValue("protocol",   m_protocol);
+	m_settings->setValue("userid",     m_userid);
+	m_settings->setValue("passwd",     m_passwd);
 
-	settings.setValue("autoconnect", m_autoconnect);
-	settings.setValue("trytoreconnect", m_trytoreconnect);
-	settings.setValue("trytoreconnectinterval", m_trytoreconnectinterval);
-	settings.setValue("keepaliveinterval", m_keepaliveinterval);
+	m_settings->setValue("autoconnect", m_autoconnect);
+	m_settings->setValue("trytoreconnect", m_trytoreconnect);
+	m_settings->setValue("trytoreconnectinterval", m_trytoreconnectinterval);
+	m_settings->setValue("keepaliveinterval", m_keepaliveinterval);
 
-	settings.setValue("historysize", m_historysize);
-	settings.setValue("tcpmode", m_tcpmode);
-        settings.setValue("lastconnwins", m_checked_lastconnwins);
+	m_settings->setValue("historysize", m_historysize);
+	m_settings->setValue("tcpmode", m_tcpmode);
+        m_settings->setValue("lastconnwins", m_checked_lastconnwins);
 
-	settings.setValue("availstate", m_availstate);
-        settings.endGroup();
+	m_settings->setValue("availstate", m_availstate);
+        m_settings->endGroup();
 }
 
 /*!
@@ -363,9 +371,8 @@ const QStringList & BaseEngine::getCapabilities() const
 void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
 {
 	if(m_availstate != newstate) {
-		QSettings settings;
 		m_availstate = newstate;
-		settings.setValue("engine/availstate", m_availstate);
+		m_settings->setValue("engine/availstate", m_availstate);
                 if (comesFromServer)
                         changesAvailChecks();
                 keepLoginAlive();
@@ -487,8 +494,7 @@ void BaseEngine::socketConnected()
                 if(m_checked_presence)
                         m_pendingcommand += "state=" + m_availstate + ";";
                 else
-                        m_pendingcommand += "state=unknown;";
-                m_pendingcommand += "state=" + m_availstate + ";";
+                        m_pendingcommand += "state=" + __nopresence__ + ";";
                 m_pendingcommand += "ident=" + m_clientid   + ";";
                 m_pendingcommand += "passwd=" + m_passwd + ";version=" + __current_client_version__ + ";";
                 if(m_checked_lastconnwins)
@@ -668,7 +674,6 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 
 bool BaseEngine::parseCommand(const QStringList & listitems)
 {
-	QSettings settings;
         // qDebug() << "BaseEngine::parseCommand listitems[0].toLower() =" << listitems[0].toLower() << listitems.size();
         if((listitems[0].toLower() == QString("phones-list")) && (listitems.size() == 2)) {
                 QStringList listpeers = listitems[1].split(";");
@@ -687,7 +692,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
                         // Who do we monitor ?
                         // First look at the last monitored one
-                        QString fullid_watched = settings.value("monitor/peer").toString();
+                        QString fullid_watched = m_settings->value("monitor/peer").toString();
 
                         // If there was nobody, let's watch ourselves.
                         if(fullid_watched.isEmpty())
@@ -1630,7 +1635,7 @@ void BaseEngine::processLoginDialog()
                 if(m_checked_presence)
                         outline.append(m_availstate);
                 else
-                        outline.append("unknown");
+                        outline.append(__nopresence__);
 	}
 	else if(readLine.startsWith("OK SESSIONID"))
 	{
@@ -1789,7 +1794,7 @@ void BaseEngine::keepLoginAlive()
                         if(m_checked_presence && m_enabled_presence)
                                 outline.append(m_availstate);
                         else
-                                outline.append("unknown");
+                                outline.append(__nopresence__);
                         qDebug() << "BaseEngine::keepLoginAlive()" << outline;
                         outline.append("\r\n");
                         m_udpsocket->writeDatagram( outline.toAscii(),

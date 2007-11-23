@@ -64,7 +64,7 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
           m_engine(engine), m_systrayIcon(0),
           m_icon(":/images/xivoicon.png"), m_icongrey(":/images/xivoicon-grey.png")
 {
-	QSettings settings;
+        m_settings = m_engine->getSettings();
 	QPixmap redsquare(":/images/disconnected.png");
 	statusBar();	// This creates the status bar.
 	m_status = new QLabel();
@@ -93,7 +93,7 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
 
         // to be better defined
 	resize(500, 400);
-	restoreGeometry(settings.value("display/mainwingeometry").toByteArray());
+	restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
 	
 	m_wid = new QWidget();
 	m_mainlayout = new QVBoxLayout(m_wid);
@@ -102,7 +102,7 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
         m_xivobg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         m_mainlayout->addWidget(m_xivobg, 1, Qt::AlignHCenter | Qt::AlignVCenter);
 	setCentralWidget(m_wid);
-	m_tablimit = settings.value("display/tablimit", 5).toInt();
+	m_tablimit = m_settings->value("display/tablimit", 5).toInt();
         m_launchDateTime = QDateTime::currentDateTime();
 
         //        m_xivobg2 = new QLabel();
@@ -113,6 +113,7 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
 MainWidget::~MainWidget()
 {
         savePositions();
+        delete m_settings;
 }
 
 void MainWidget::affTextChanged()
@@ -257,9 +258,8 @@ int MainWidget::tablimit() const
  */
 void MainWidget::setTablimit(int tablimit)
 {
-	QSettings settings;
 	m_tablimit = tablimit;
-	settings.setValue("display/tablimit", m_tablimit);
+	m_settings->setValue("display/tablimit", m_tablimit);
 }
 
 /*! \brief create and show the system tray icon
@@ -367,10 +367,9 @@ void MainWidget::systrayMsgClicked()
 void MainWidget::engineStarted()
 {
 	setForceTabs(false);
-        QSettings settings;
 	QStringList display_capas = QString("customerinfo,features,history,directory,peers,fax,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
-        settings.setValue("display/capas", allowed_capas.join(","));
+        m_settings->setValue("display/capas", allowed_capas.join(","));
 
         m_mainlayout->removeWidget(m_xivobg);
         delete m_xivobg;
@@ -536,8 +535,8 @@ void MainWidget::engineStarted()
 		}
 	}
 
-        qDebug() << "display/lastfocusedtab =" << settings.value("display/lastfocusedtab");
-        m_main_tabwidget->setCurrentIndex(settings.value("display/lastfocusedtab").toInt());
+        qDebug() << "display/lastfocusedtab =" << m_settings->value("display/lastfocusedtab");
+        m_main_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
 
 	m_cinfo_index = m_main_tabwidget->indexOf(m_cinfo_tabwidget);
 	qDebug() << "the index of customer-info widget is" << m_cinfo_index;
@@ -559,12 +558,11 @@ void MainWidget::engineStarted()
  */
 void MainWidget::engineStopped()
 {
-        QSettings settings;
 	QStringList display_capas = QString("customerinfo,features,history,directory,peers,fax,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
 
         if (m_main_tabwidget->currentIndex() > -1)
-                settings.setValue("display/lastfocusedtab", m_main_tabwidget->currentIndex());
+                m_settings->setValue("display/lastfocusedtab", m_main_tabwidget->currentIndex());
 
 	for(int j = 0; j < display_capas.size(); j++) {
 	        QString dc = display_capas[j];
@@ -661,8 +659,7 @@ void MainWidget::setForceTabs(bool force)
 void MainWidget::savePositions() const
 {
 	// qDebug() << "MainWidget::savePositions()";
-        QSettings settings;
-        settings.setValue("display/mainwingeometry", saveGeometry());
+        m_settings->setValue("display/mainwingeometry", saveGeometry());
 }
 
 /*!

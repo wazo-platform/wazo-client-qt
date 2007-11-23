@@ -1,5 +1,5 @@
 /*
-XIVO CTI Clients : Xivo Client + Switchboard
+XIVO CTI Clients
 Copyright (C) 2007  Proformatique
 
 This program is free software; you can redistribute it and/or
@@ -34,9 +34,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QTimer>
 #include <QUdpSocket>
 
+class QSettings;
+
 class Popup;
 
-/*! \brief Class which handles connection with the Xivo CTI server
+/*! \brief Class which handles connection with the XIVO CTI server
  *   + Profile popup engine
  *  The engine object contains all the code to
  *  handle network connection and requests */
@@ -51,6 +53,7 @@ public:
 	//! Destructor
 	~BaseEngine();
 
+        QSettings * getSettings();
 	void loadSettings();			//!< load server settings
 	// setter/getter for properties
 	//! set address used to connect to the server
@@ -307,7 +310,8 @@ private:
         QString m_monitored_context;	//!< Context of the Monitored Phone (on SB, or one's own on XC)
         QString m_monitored_userid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)
         QString m_monitored_asterisk;	//!< Asterisk Id of the Monitored Phone (on SB, or one's own on XC)
+
+        QSettings * m_settings;
 };
 
 #endif
-

@@ -20,10 +20,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  * $Date$
  */
 
-#include <QVBoxLayout>
-#include <QDragEnterEvent>
 #include <QDebug>
+#include <QDragEnterEvent>
 #include <QSettings>
+#include <QVBoxLayout>
 
 #include "callstackwidget.h"
 #include "callwidget.h"
@@ -86,8 +86,8 @@ void Call::updateCall(const QString & action,
 
 /*! \brief Constructor
  */
-CallStackWidget::CallStackWidget(QWidget * parent)
-        : QWidget(parent)
+CallStackWidget::CallStackWidget(QWidget * parent, BaseEngine * engine)
+        : QWidget(parent), m_engine(engine)
 {
 	m_layout = new QVBoxLayout(this);
 	//m_layout->setMargin();
@@ -273,7 +273,6 @@ void CallStackWidget::dragEnterEvent(QDragEnterEvent * event)
  */
 void CallStackWidget::monitorPeer(const QString & monit_peer, const QString & name)
 {
-	QSettings settings;
 	emptyList();
 	m_monitoredPeer = monit_peer;
 	monitoredPeerChanged(m_monitoredPeer);
@@ -283,7 +282,7 @@ void CallStackWidget::monitorPeer(const QString & monit_peer, const QString & na
 		changeTitle("");
 	updateDisplay();
 	if(monit_peer.size() > 0)
-		settings.setValue("monitor/peer", monit_peer);
+		m_engine->getSettings()->setValue("monitor/peer", monit_peer);
 }
 
 /*! \brief receive drop Events.

@@ -47,9 +47,6 @@ public:
 	//! Destructor
 	virtual ~SwitchBoardWindow();
 	void setEngine(BaseEngine *);
-	int width() const;	//!< get width property
-	void setWidth(int);	//!< set width property
-	void saveSettings() const;
 	void savePositions() const;
 protected:
 /*         void mousePressEvent(QMouseEvent *);	//!< Catch mouse press events */
@@ -77,7 +74,6 @@ private:
 	QHash<QString, Peer *> m_peerhash;	//!< Peer hash
 
 	BaseEngine * m_engine;	//!< engine to connect to peer widgets
-	int m_width;	//!< width property
         QPixmap m_phone_green;
         QPixmap m_phone_red;
         QPixmap m_phone_orange;

@@ -39,9 +39,7 @@ SwitchBoardWindow::SwitchBoardWindow(QWidget * parent)
 	: QWidget(parent), m_engine(0)
 {
 	m_layout = new PeersLayout(this);
-	QSettings settings;
         setObjectName("scroller"); // in order for the style settings to be set accordingly
-	m_width = settings.value("display/width", 5).toInt();
 	setAcceptDrops(true);
         m_phone_green  = QPixmap(":/images/phone-green.png");
         m_phone_red    = QPixmap(":/images/phone-red.png");
@@ -65,14 +63,6 @@ SwitchBoardWindow::~SwitchBoardWindow()
 	// qDebug() << "SwitchBoardWindow::~SwitchBoardWindow()";
         savePositions();
         removePeers();
-}
-
-/*! \brief Save settings
- */
-void SwitchBoardWindow::saveSettings() const
-{
-	QSettings settings;
-	settings.setValue("display/width", m_width);
 }
 
 /*! \brief setter for m_engine
@@ -106,8 +96,6 @@ void SwitchBoardWindow::updatePeer(const QString & ext,
 				   const QStringList & chanStates,
 				   const QStringList & chanOthers)
 {
-	QSettings settings;
-
 	// first search in the peerhash
         if(m_peerhash.contains(ext)) {
                 Peer * peeritem = m_peerhash.value(ext);
@@ -128,7 +116,7 @@ void SwitchBoardWindow::updatePeer(const QString & ext,
         m_peerhash.insert(ext, peeritem);
 
 	// if not found in the peerhash, create a new Peer
-	QPoint pos = settings.value("layout/" + ext, QPoint(-1, -1) ).toPoint();
+	QPoint pos = m_engine->getSettings()->value("layout/" + ext, QPoint(-1, -1) ).toPoint();
 	if(pos.x() >= 0) {
                 PeerWidget * peerwidget = new PeerWidget(ext,
                                                          name,
@@ -281,16 +269,6 @@ void SwitchBoardWindow::removePeers(void)
         // qDebug() << "SwitchBoardWindow::removePeers : time elapsed" << qtime.elapsed();
 }
 
-int SwitchBoardWindow::width() const
-{
-	return m_width;
-}
-
-void SwitchBoardWindow::setWidth(int width)
-{
-	m_width = width;
-}
-
 // void SwitchBoardWindow::mouseMoveEvent(QMouseEvent * event)
 // {
 // 	qDebug() << "SwitchBoardWindow::mouseMoveEvent()" << event;
@@ -396,14 +374,14 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
 void SwitchBoardWindow::savePositions() const
 {
         qDebug() << "SwitchBoardWindow::savePositions()";
-	QSettings settings;
+	QSettings * settings = m_engine->getSettings();
 	for(int i = 0; i < m_peerlist.size(); i++) {
                 QPoint pos = m_layout->getItemPosition(i);
-                qDebug() << m_peerlist[i]->ext() << pos;
+                // qDebug() << m_peerlist[i]->ext() << pos;
                 if(pos == QPoint(-1, -1))
-                        settings.remove("layout/" + m_peerlist[i]->ext());
+                        settings->remove("layout/" + m_peerlist[i]->ext());
                 else
-                        settings.setValue("layout/" + m_peerlist[i]->ext(),
+                        settings->setValue("layout/" + m_peerlist[i]->ext(),
                                           m_layout->getItemPosition(i));
 	}
 }

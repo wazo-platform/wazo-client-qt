@@ -46,7 +46,6 @@ ConfWidget::ConfWidget(BaseEngine * engine,
           m_presence(NULL), m_cinfo(NULL)
 {
 	int line = 0;
-	QSettings settings;
 	// the object will be destroyed when closed
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Configuration"));
@@ -55,7 +54,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	/* grid layout for the editable values */
 	QGridLayout * gridlayout = new QGridLayout();
 
-        //      QStringList childgroups = settings.childGroups();
+        //      QStringList childgroups = m_engine->getSettings()->childGroups();
         // 	QLabel * lblprofile = new QLabel(tr("Profile"), this);
         // 	QComboBox * profile = new QComboBox(this);
         // 	profile->addItem(QString(tr("Default")));
@@ -91,7 +90,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	connect( m_tcpmode,   SIGNAL(toggled(bool)),
 	         m_sbport,    SLOT(setEnabled(bool)) );
 
-        QStringList qsl = settings.value("display/capas", "").toString().split(",");
+        QStringList qsl = m_engine->getSettings()->value("display/capas", "").toString().split(",");
         if(qsl.contains("presence") || qsl.contains("customerinfo")) {
                 // Box for Enabled Functions Definition
                 QGroupBox * groupBox = new QGroupBox( tr("Functions") );

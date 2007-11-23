@@ -36,8 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
         : QDialog(parent), m_engine(engine)
 {
-        QSettings settings;
-	restoreGeometry(settings.value("faxhistory/geometry").toByteArray());
+	restoreGeometry(m_engine->getSettings()->value("faxhistory/geometry").toByteArray());
 	// the object will be destroyed when closed
 	setWindowTitle(tr("Directory"));
 
@@ -70,8 +69,7 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
 DirDialog::~DirDialog()
 {
         // qDebug() << "DirDialog::~DirDialog()";
-        QSettings settings;
-	settings.setValue("faxhistory/geometry", saveGeometry() );
+	m_engine->getSettings()->setValue("faxhistory/geometry", saveGeometry() );
 }
 
 const QString & DirDialog::faxnumber() const

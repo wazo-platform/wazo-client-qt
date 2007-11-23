@@ -54,12 +54,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 int main(int argc, char * * argv)
 {
 	QString locale = QLocale::system().name();
-//	QApplication::setStyle(new XivoClientStyle());
-	QCoreApplication::setOrganizationName("Xivo");
+//	QApplication::setStyle(new XIVOClientStyle());
+	QCoreApplication::setOrganizationName("XIVO");
 	QCoreApplication::setOrganizationDomain("xivo.fr");
-	QCoreApplication::setApplicationName("XivoClient");
+	QCoreApplication::setApplicationName("XIVO_Client");
 	QApplication app(argc, argv);
-        QSettings settings;
+	QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
 
         QString qsskind = settings.value("display/qss", "none").toString();
         QFile qssFile(":/common/" + qsskind + ".qss");

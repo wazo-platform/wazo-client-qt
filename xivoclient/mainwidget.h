@@ -138,7 +138,7 @@ private:
 	QAction * m_avact_dnd;		//!< "Do not disturb" action
 
 	QLabel * m_status;	//!< status indicator
+        QSettings * m_settings;
 };
 
 #endif
-

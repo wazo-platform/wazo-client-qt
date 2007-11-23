@@ -30,5 +30,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 const int REQUIRED_SERVER_VERSION = 2025;
 const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
 const QString __current_client_version__  = SVNVER;
+const QString __nopresence__ = "nopresence";
 
 #endif

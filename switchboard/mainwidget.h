@@ -25,9 +25,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #include <QDateTime>
 #include <QMainWindow>
+#include <QSettings>
 #include <QSplitter>
 #include <QSystemTrayIcon>
-#include <QTabWidget>
 #include <QWidget>
 
 class QAction;
@@ -36,6 +36,7 @@ class QCloseEvent;
 class QDateTime;
 class QLabel;
 class QScrollArea;
+class QTabWidget;
 class QVBoxLayout;
 
 class BaseEngine;
@@ -124,6 +125,7 @@ private:
 	QLabel * m_status;	//!< status indicator
 
         QDateTime m_launchDateTime;
+        QSettings * m_settings;
 };
 
 

@@ -33,15 +33,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <QSettings>
 #include <QVBoxLayout>
 
-#include "faxpanel.h"
+#include "baseengine.h"
 #include "dirdialog.h"
+#include "faxpanel.h"
 
 FaxPanel::FaxPanel(BaseEngine * engine, QWidget * parent)
         : QWidget(parent), m_mainwindow(parent), m_engine(engine)
 {
-        QSettings settings;
         // qDebug() << "FaxPanel::FaxPanel()" << parent;
-        Qt::CheckState previous_hide = (Qt::CheckState) settings.value("faxhistory/hidenumber", 0).toInt();
+        Qt::CheckState previous_hide = (Qt::CheckState) m_engine->getSettings()->value("faxhistory/hidenumber", 0).toInt();
 
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
 
@@ -153,9 +153,7 @@ void FaxPanel::setOpenFileName()
 
 void FaxPanel::sendFax()
 {
-        QSettings settings;
-	settings.setValue("faxhistory/hidenumber", m_maskornot->checkState());
-
+	m_engine->getSettings()->setValue("faxhistory/hidenumber", m_maskornot->checkState());
         if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
                 // qDebug() << "FaxPanel::sendFax()"
                 // << m_openFileNameLabel->text()

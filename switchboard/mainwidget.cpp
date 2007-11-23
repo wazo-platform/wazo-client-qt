@@ -87,7 +87,7 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
         : QMainWindow(parent),
           m_engine(engine)
 {
-	QSettings settings;
+        m_settings = m_engine->getSettings();
 	QPixmap redsquare(":/images/disconnected.png");
 	statusBar();	// This creates the status bar.
 	m_status = new QLabel();
@@ -109,21 +109,20 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
         connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
                  statusBar(), SLOT(showMessage(const QString &)));
 
-	restoreGeometry(settings.value("display/mainwingeometry").toByteArray());
-	
+	restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
+
 	m_wid = new QWidget();
 	m_mainlayout = new QVBoxLayout(m_wid);
         m_xivobg = new QLabel();
         m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
         m_mainlayout->addWidget(m_xivobg, 0, Qt::AlignHCenter | Qt::AlignVCenter);
 	setCentralWidget(m_wid);
-	m_tablimit = settings.value("display/tablimit", 5).toInt();
+	m_tablimit = m_settings->value("display/tablimit", 5).toInt();
         m_launchDateTime = QDateTime::currentDateTime();
 }
 
 void MainWidget::buildSplitters()
 {
-	QSettings settings;
         m_infowidget = new IdentityDisplay(this);
 	m_splitter = new QSplitter(this);
 
@@ -140,7 +139,7 @@ void MainWidget::buildSplitters()
         m_areaCalls = new QScrollArea(m_leftSplitter);
 	m_areaCalls->setWidgetResizable(true);
         m_leftpanel = new LeftPanel(m_areaCalls, m_leftSplitter);
-	m_calls = new CallStackWidget(m_areaCalls);
+	m_calls = new CallStackWidget(m_areaCalls, m_engine);
  	m_areaCalls->setWidget(m_calls);
 	m_svc_tabwidget = new QTabWidget(m_leftSplitter);
         m_parkingpanel = new ParkingPanel(m_svc_tabwidget);
@@ -148,7 +147,7 @@ void MainWidget::buildSplitters()
 	m_svc_tabwidget->addTab(m_parkingpanel, extraspace + tr("Parking") + extraspace);
 	m_messages_widget = new DisplayMessagesPanel(m_svc_tabwidget);
         m_svc_tabwidget->addTab(m_messages_widget, extraspace + tr("Messages") + extraspace);
-	m_leftSplitter->restoreState(settings.value("display/leftSplitterSizes").toByteArray());
+	m_leftSplitter->restoreState(m_settings->value("display/leftSplitterSizes").toByteArray());
 
 	// Middle Splitter Definitions
         m_areaPeers = new QScrollArea(m_middleSplitter);
@@ -158,7 +157,7 @@ void MainWidget::buildSplitters()
 	m_engine->addRemovable(m_sbwidget->metaObject());
  	m_areaPeers->setWidget(m_sbwidget);
 	m_dirpanel = new DirectoryPanel(m_middleSplitter);
-	m_middleSplitter->restoreState(settings.value("display/middleSplitterSizes").toByteArray());
+	m_middleSplitter->restoreState(m_settings->value("display/middleSplitterSizes").toByteArray());
 
         // Right Splitter Definitions
         m_searchpanel = new SearchPanel(m_rightSplitter);
@@ -166,12 +165,12 @@ void MainWidget::buildSplitters()
 	m_cinfo_tabwidget = new QTabWidget(m_rightSplitter);
         m_cinfo_tabwidget->setObjectName("cinfo");
         m_dialpanel = new DialPanel(m_rightSplitter);
-	m_rightSplitter->restoreState(settings.value("display/rightSplitterSizes").toByteArray());
+	m_rightSplitter->restoreState(m_settings->value("display/rightSplitterSizes").toByteArray());
 
         //	setCentralWidget(m_splitter);
 
 	// restore splitter settings
-        m_splitter->restoreState(settings.value("display/splitterSizes").toByteArray());
+        m_splitter->restoreState(m_settings->value("display/splitterSizes").toByteArray());
 
         connect( m_engine, SIGNAL(localUserDefined(const QString &)),
                  m_infowidget, SLOT(setUser(const QString &)));
@@ -284,7 +283,6 @@ void MainWidget::newParkEvent()
 
 void MainWidget::removeSplitters()
 {
-	QSettings settings;
         // Left Splitter Definitions
 	delete m_messages_widget;
 	delete m_parkingpanel;
@@ -317,9 +315,9 @@ void MainWidget::removeSplitters()
  */
 MainWidget::~MainWidget()
 {
-        //        qDebug() << "MainWidget::~MainWidget()";
-	QSettings settings;
-	settings.setValue("display/mainwingeometry", saveGeometry());
+        // qDebug() << "MainWidget::~MainWidget()";
+	m_settings->setValue("display/mainwingeometry", saveGeometry());
+        delete m_settings;
 }
 
 void MainWidget::createActions()
@@ -440,9 +438,8 @@ int MainWidget::tablimit() const
  */
 void MainWidget::setTablimit(int tablimit)
 {
-	QSettings settings;
 	m_tablimit = tablimit;
-	settings.setValue("display/tablimit", m_tablimit);
+	m_settings->setValue("display/tablimit", m_tablimit);
 }
 
 /*! \brief show the Configuration Dialog
@@ -463,10 +460,9 @@ void MainWidget::showConfDialog()
  */
 void MainWidget::engineStarted()
 {
-        QSettings settings;
 	QStringList display_capas = QString("customerinfo,features,history,directory,peers,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
-        settings.setValue("display/capas", allowed_capas.join(","));
+        m_settings->setValue("display/capas", allowed_capas.join(","));
 
         buildSplitters();
 
@@ -574,14 +570,13 @@ void MainWidget::engineStarted()
  */
 void MainWidget::engineStopped()
 {
-        QSettings settings;
 	QStringList display_capas = QString("customerinfo,features,history,directory,peers,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
 
-	settings.setValue("display/splitterSizes", m_splitter->saveState());
-	settings.setValue("display/leftSplitterSizes", m_leftSplitter->saveState());
-	settings.setValue("display/middleSplitterSizes", m_middleSplitter->saveState());
-	settings.setValue("display/rightSplitterSizes", m_rightSplitter->saveState());
+	m_settings->setValue("display/splitterSizes", m_splitter->saveState());
+	m_settings->setValue("display/leftSplitterSizes", m_leftSplitter->saveState());
+	m_settings->setValue("display/middleSplitterSizes", m_middleSplitter->saveState());
+	m_settings->setValue("display/rightSplitterSizes", m_rightSplitter->saveState());
 
 	for(int j = 0; j < display_capas.size(); j++) {
 		QString dc = display_capas[j];

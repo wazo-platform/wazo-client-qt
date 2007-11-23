@@ -16,17 +16,25 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
-/* $Id$ */
+/* $Revision$
+ * $Date$
+ */
+
 #ifndef __CALLSTACKWIDGET_H__
 #define __CALLSTACKWIDGET_H__
+
 #include <QObject>
 #include <QList>
 #include <QWidget>
 #include <QString>
 #include <QDateTime>
+
+#include "baseengine.h"
 #include "callwidget.h"
 
 class QVBoxLayout;
+
+class BaseEngine;
 
 /*! \brief Object storing call parametters
  */
@@ -76,7 +84,8 @@ class CallStackWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	CallStackWidget(QWidget * parent = 0);	//!< Constructor
+	CallStackWidget(QWidget *,
+                        BaseEngine *);	//!< Constructor
 public slots:
 	//! Add a call to the list to be displayed
 	void addCall(const QString & channelme,
@@ -109,7 +118,7 @@ private:
 	QList<Call> m_calllist;	//!< list of Call Objects
 	QList<CallWidget *> m_afflist;	//!< List of CallWidget Widgets
 	QString m_monitoredPeer;	//!< Peer monitored
+        BaseEngine * m_engine;
 };
 
 #endif
-

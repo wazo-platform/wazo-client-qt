@@ -43,11 +43,11 @@ int main(int argc, char * * argv)
 {
 	QString locale = QLocale::system().name();
 //	QApplication::setStyle(new SwitchboardStyle());
-	QCoreApplication::setOrganizationName("Xivo");
+	QCoreApplication::setOrganizationName("XIVO");
 	QCoreApplication::setOrganizationDomain("xivo.fr");
-	QCoreApplication::setApplicationName("XivoSwitchBoard");
+	QCoreApplication::setApplicationName("XIVO_Switchboard");
 	QApplication app(argc, argv);
-        QSettings settings;
+	QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
 
         QString qsskind = settings.value("display/qss", "none").toString();
         QFile qssFile(":/common/" + qsskind + ".qss");
