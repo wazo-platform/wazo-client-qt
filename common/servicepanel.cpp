@@ -30,115 +30,150 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #include "servicepanel.h"
 
-ServicePanel::ServicePanel(QWidget * parent)
-        : QWidget(parent)
+ServicePanel::ServicePanel(const QStringList & capafeatures,
+                           QWidget * parent)
+        : QWidget(parent), m_capas(capafeatures)
 {
-        // qDebug() << "ServicePanel::ServicePanel()";
+        // qDebug() << "ServicePanel::ServicePanel()" << m_capas;
 
+	int line = 0;
         m_status = new ServiceStatus();
+
 	QGroupBox * groupBox1 = new QGroupBox( tr("Services") );
 	groupBox1->setAlignment( Qt::AlignLeft );
 	QGridLayout * gridlayout1 = new QGridLayout(groupBox1);
 
-	int line = 0;
-	m_voicemail = new QCheckBox(tr("Voice &Mail"), this);
-        m_voicemail->setObjectName("service");
-	gridlayout1->addWidget(m_voicemail, line++, 0, 1, 0);
-	m_callrecording = new QCheckBox(tr("Call &Recording"), this);
-        m_callrecording->setObjectName("service");
-	gridlayout1->addWidget(m_callrecording, line++, 0, 1, 0);
-	m_callfiltering = new QCheckBox(tr("Call &Filtering"), this);
-        m_callfiltering->setObjectName("service");
-	gridlayout1->addWidget(m_callfiltering, line++, 0, 1, 0);
-	m_dnd = new QCheckBox(tr("Do Not &Disturb"), this);
-        m_dnd->setObjectName("service");
-	gridlayout1->addWidget(m_dnd, line++, 0, 1, 0);
+        if(m_capas.contains("enablevm")) {
+                m_voicemail = new QCheckBox(tr("Voice &Mail"), this);
+                m_voicemail->setObjectName("service");
+                gridlayout1->addWidget(m_voicemail, line++, 0, 1, 0);
+        }
+        if(m_capas.contains("incallrec")) {
+                m_callrecording = new QCheckBox(tr("Call &Recording"), this);
+                m_callrecording->setObjectName("service");
+                gridlayout1->addWidget(m_callrecording, line++, 0, 1, 0);
+        }
+        if(m_capas.contains("incallfilter")) {
+                m_callfiltering = new QCheckBox(tr("Call &Filtering"), this);
+                m_callfiltering->setObjectName("service");
+                gridlayout1->addWidget(m_callfiltering, line++, 0, 1, 0);
+        }
+        if(m_capas.contains("enablednd")) {
+                m_dnd = new QCheckBox(tr("Do Not &Disturb"), this);
+                m_dnd->setObjectName("service");
+                gridlayout1->addWidget(m_dnd, line++, 0, 1, 0);
+        }
 
 	QGroupBox * groupBox2 = new QGroupBox( tr("Call Forwards") );
 	groupBox2->setAlignment( Qt::AlignLeft );
 	QGridLayout * gridlayout2 = new QGridLayout(groupBox2);
 
-	m_uncondforward = new QCheckBox(tr("&Unconditional Forward"), this);
-        m_uncondforward->setObjectName("service");
-	gridlayout2->addWidget(m_uncondforward, line++, 0, 1, 0);
-	QLabel * lbluncond = new QLabel(tr("Destination"), this);
-	gridlayout2->addWidget(lbluncond, line, 0);
-	m_uncondforwarddest = new QLineEdit(this);
-	m_uncondforward->setEnabled(false);
-	gridlayout2->addWidget(m_uncondforwarddest, line++, 1);
-        lbluncond->setObjectName("service");
+        if(m_capas.contains("fwdrna")) {
+                m_forwardonunavailable = new QCheckBox(tr("Forward on &No Reply"), this);
+                m_forwardonunavailable->setObjectName("service");
+                gridlayout2->addWidget(m_forwardonunavailable, line++, 0, 1, 0);
+                QLabel * lblonunavailable = new QLabel(tr("Destination"), this);
+                gridlayout2->addWidget(lblonunavailable, line, 0);
+                m_forwardonunavailabledest = new QLineEdit(this);
+                m_forwardonunavailable->setEnabled(false);
+                gridlayout2->addWidget(m_forwardonunavailabledest, line++, 1);
+                lblonunavailable->setObjectName("service");
+        }
 
-	m_forwardonbusy = new QCheckBox(tr("Forward on &Busy"), this);
-        m_forwardonbusy->setObjectName("service");
-	gridlayout2->addWidget(m_forwardonbusy, line++, 0, 1, 0);
-	QLabel * lblonbusy = new QLabel(tr("Destination"), this);
-	gridlayout2->addWidget(lblonbusy, line, 0);
-	m_forwardonbusydest = new QLineEdit(this);
-	m_forwardonbusy->setEnabled(false);
-	gridlayout2->addWidget(m_forwardonbusydest, line++, 1);
-        lblonbusy->setObjectName("service");
+        if(m_capas.contains("fwdbusy")) {
+                m_forwardonbusy = new QCheckBox(tr("Forward on &Busy"), this);
+                m_forwardonbusy->setObjectName("service");
+                gridlayout2->addWidget(m_forwardonbusy, line++, 0, 1, 0);
+                QLabel * lblonbusy = new QLabel(tr("Destination"), this);
+                gridlayout2->addWidget(lblonbusy, line, 0);
+                m_forwardonbusydest = new QLineEdit(this);
+                m_forwardonbusy->setEnabled(false);
+                gridlayout2->addWidget(m_forwardonbusydest, line++, 1);
+                lblonbusy->setObjectName("service");
+        }
 
-	m_forwardonunavailable = new QCheckBox(tr("Forward on &No Reply"), this);
-        m_forwardonunavailable->setObjectName("service");
-	gridlayout2->addWidget(m_forwardonunavailable, line++, 0, 1, 0);
-	QLabel * lblonunavailable = new QLabel(tr("Destination"), this);
-	gridlayout2->addWidget(lblonunavailable, line, 0);
-	m_forwardonunavailabledest = new QLineEdit(this);
-	m_forwardonunavailable->setEnabled(false);
-	gridlayout2->addWidget(m_forwardonunavailabledest, line++, 1);
-        lblonunavailable->setObjectName("service");
+        if(m_capas.contains("fwdunc")) {
+                m_uncondforward = new QCheckBox(tr("&Unconditional Forward"), this);
+                m_uncondforward->setObjectName("service");
+                gridlayout2->addWidget(m_uncondforward, line++, 0, 1, 0);
+                QLabel * lbluncond = new QLabel(tr("Destination"), this);
+                gridlayout2->addWidget(lbluncond, line, 0);
+                m_uncondforwarddest = new QLineEdit(this);
+                m_uncondforward->setEnabled(false);
+                gridlayout2->addWidget(m_uncondforwarddest, line++, 1);
+                lbluncond->setObjectName("service");
+        }
 
         QVBoxLayout * vlayout = new QVBoxLayout(this);
-        vlayout->addWidget(groupBox1);
-        vlayout->addWidget(groupBox2);
+        if(m_capas.contains("enablevm") || m_capas.contains("incallrec") || m_capas.contains("incallfilter") || m_capas.contains("enablednd"))
+                vlayout->addWidget(groupBox1);
+        if(m_capas.contains("fwdrna") || m_capas.contains("fwdbusy") || m_capas.contains("fwdunc"))
+                vlayout->addWidget(groupBox2);
         vlayout->addStretch(1);
 
         Reset();
-	connect(m_uncondforwarddest, SIGNAL(textEdited(const QString &)),
-		this, SLOT(toggleUncondIfAllowed(const QString &)));
-	connect(m_forwardonbusydest, SIGNAL(textEdited(const QString &)),
-		this, SLOT(toggleOnBusyIfAllowed(const QString &)));
-	connect(m_forwardonunavailabledest, SIGNAL(textEdited(const QString &)),
-		this, SLOT(toggleOnUnavailIfAllowed(const QString &)));
+        if(m_capas.contains("fwdunc"))
+                connect(m_uncondforwarddest, SIGNAL(textEdited(const QString &)),
+                        this, SLOT(toggleUncondIfAllowed(const QString &)));
+        if(m_capas.contains("fwdbusy"))
+                connect(m_forwardonbusydest, SIGNAL(textEdited(const QString &)),
+                        this, SLOT(toggleOnBusyIfAllowed(const QString &)));
+        if(m_capas.contains("fwdrna"))
+                connect(m_forwardonunavailabledest, SIGNAL(textEdited(const QString &)),
+                        this, SLOT(toggleOnUnavailIfAllowed(const QString &)));
         Connect();
 }
 
 void ServicePanel::Connect()
 {
         //qDebug() << "ServicePanel::Connect()";
-	connect(m_voicemail, SIGNAL(clicked(bool)),
-	        this, SIGNAL(voiceMailToggled(bool)));
-	connect(m_callrecording, SIGNAL(clicked(bool)),
-	        this, SIGNAL(callRecordingToggled(bool)));
-	connect(m_callfiltering, SIGNAL(clicked(bool)),
-	        this, SIGNAL(callFilteringToggled(bool)));
-	connect(m_dnd, SIGNAL(clicked(bool)),
-	        this, SIGNAL(dndToggled(bool)));
-	connect(m_uncondforward, SIGNAL(clicked(bool)),
-	        this, SLOT(uncondForwardToggled(bool)));
-	connect(m_forwardonbusy, SIGNAL(clicked(bool)),
-	        this, SLOT(forwardOnBusyToggled(bool)));
-	connect(m_forwardonunavailable, SIGNAL(clicked(bool)),
-	        this, SLOT(forwardOnUnavailableToggled(bool)));
+        if(m_capas.contains("enablevm"))
+                connect(m_voicemail, SIGNAL(clicked(bool)),
+                        this, SIGNAL(voiceMailToggled(bool)));
+        if(m_capas.contains("incallrec"))
+                connect(m_callrecording, SIGNAL(clicked(bool)),
+                        this, SIGNAL(callRecordingToggled(bool)));
+        if(m_capas.contains("incallfilter"))
+                connect(m_callfiltering, SIGNAL(clicked(bool)),
+                        this, SIGNAL(callFilteringToggled(bool)));
+        if(m_capas.contains("enablednd"))
+                connect(m_dnd, SIGNAL(clicked(bool)),
+                        this, SIGNAL(dndToggled(bool)));
+        if(m_capas.contains("fwdunc"))
+                connect(m_uncondforward, SIGNAL(clicked(bool)),
+                        this, SLOT(uncondForwardToggled(bool)));
+        if(m_capas.contains("fwdbusy"))
+                connect(m_forwardonbusy, SIGNAL(clicked(bool)),
+                        this, SLOT(forwardOnBusyToggled(bool)));
+        if(m_capas.contains("fwdrna"))
+                connect(m_forwardonunavailable, SIGNAL(clicked(bool)),
+                        this, SLOT(forwardOnUnavailableToggled(bool)));
 }
 
 void ServicePanel::DisConnect()
 {
         //qDebug() << "ServicePanel::DisConnect()";
-	disconnect(m_voicemail, SIGNAL(clicked(bool)),
-                   this, SIGNAL(voiceMailToggled(bool)));
-	disconnect(m_callrecording, SIGNAL(clicked(bool)),
-                   this, SIGNAL(callRecordingToggled(bool)));
-	disconnect(m_callfiltering, SIGNAL(clicked(bool)),
-                   this, SIGNAL(callFilteringToggled(bool)));
-	disconnect(m_dnd, SIGNAL(clicked(bool)),
-                   this, SIGNAL(dndToggled(bool)));
-	disconnect(m_uncondforward, SIGNAL(clicked(bool)),
-                   this, SLOT(uncondForwardToggled(bool)));
-	disconnect(m_forwardonbusy, SIGNAL(clicked(bool)),
-                   this, SLOT(forwardOnBusyToggled(bool)));
-	disconnect(m_forwardonunavailable, SIGNAL(clicked(bool)),
-                   this, SLOT(forwardOnUnavailableToggled(bool)));
+        if(m_capas.contains("enablevm"))
+                disconnect(m_voicemail, SIGNAL(clicked(bool)),
+                           this, SIGNAL(voiceMailToggled(bool)));
+        if(m_capas.contains("incallrec"))
+                disconnect(m_callrecording, SIGNAL(clicked(bool)),
+                           this, SIGNAL(callRecordingToggled(bool)));
+        if(m_capas.contains("incallfilter"))
+                disconnect(m_callfiltering, SIGNAL(clicked(bool)),
+                           this, SIGNAL(callFilteringToggled(bool)));
+        if(m_capas.contains("enablednd"))
+                disconnect(m_dnd, SIGNAL(clicked(bool)),
+                           this, SIGNAL(dndToggled(bool)));
+        if(m_capas.contains("fwdunc"))
+                disconnect(m_uncondforward, SIGNAL(clicked(bool)),
+                           this, SLOT(uncondForwardToggled(bool)));
+        if(m_capas.contains("fwdbusy"))
+                disconnect(m_forwardonbusy, SIGNAL(clicked(bool)),
+                           this, SLOT(forwardOnBusyToggled(bool)));
+        if(m_capas.contains("fwdrna"))
+                disconnect(m_forwardonunavailable, SIGNAL(clicked(bool)),
+                           this, SLOT(forwardOnUnavailableToggled(bool)));
 
 // 	disconnect(m_uncondforwarddest, SIGNAL(textEdited(const QString &)),
 //                    this, SLOT(toggleUncondIfAllowed(const QString &)));
@@ -151,17 +186,27 @@ void ServicePanel::DisConnect()
 void ServicePanel::Reset()
 {
         //qDebug() << "ServicePanel::Reset()";
-	m_voicemail->setChecked(false);
-	m_callrecording->setChecked(false);
-	m_callfiltering->setChecked(false);
-	m_dnd->setChecked(false);
+        if(m_capas.contains("enablevm"))
+                m_voicemail->setChecked(false);
+        if(m_capas.contains("incallrec"))
+                m_callrecording->setChecked(false);
+        if(m_capas.contains("incallfilter"))
+                m_callfiltering->setChecked(false);
+        if(m_capas.contains("enablednd"))
+                m_dnd->setChecked(false);
 
-	m_uncondforward->setChecked(false);
-        m_uncondforwarddest->setText("");
-	m_forwardonbusy->setChecked(false);
-        m_forwardonbusydest->setText("");
-	m_forwardonunavailable->setChecked(false);
-        m_forwardonunavailabledest->setText("");
+        if(m_capas.contains("fwdunc")) {
+                m_uncondforward->setChecked(false);
+                m_uncondforwarddest->setText("");
+        }
+        if(m_capas.contains("fwdbusy")) {
+                m_forwardonbusy->setChecked(false);
+                m_forwardonbusydest->setText("");
+        }
+        if(m_capas.contains("fwdrna")) {
+                m_forwardonunavailable->setChecked(false);
+                m_forwardonunavailabledest->setText("");
+        }
 }
 
 void ServicePanel::toggleUncondIfAllowed(const QString & text)
@@ -230,90 +275,113 @@ void ServicePanel::forwardOnUnavailableToggled(bool b)
 void ServicePanel::setVoiceMail(bool b)
 {
         m_status->setVoiceMail(b);
-	m_voicemail->setChecked(b);
+        if(m_capas.contains("enablevm"))
+                m_voicemail->setChecked(b);
 }
 
 void ServicePanel::setCallRecording(bool b)
 {
         m_status->setCallRecording(b);
-	m_callrecording->setChecked(b);
+        if(m_capas.contains("incallrec"))
+                m_callrecording->setChecked(b);
 }
 
 void ServicePanel::setCallFiltering(bool b)
 {
         m_status->setCallFiltering(b);
-	m_callfiltering->setChecked(b);
+        if(m_capas.contains("incallfilter"))
+                m_callfiltering->setChecked(b);
 }
 
 void ServicePanel::setDnd(bool b)
 {
-        m_status->setDnd(b);
-	m_dnd->setChecked(b);
+        if(m_capas.contains("enablednd")) {
+                m_status->setDnd(b);
+                m_dnd->setChecked(b);
+        }
 }
 
 
 void ServicePanel::setUncondForward(bool b, const QString & dest)
 {
-        m_status->setUncondForward(b, dest);
-	m_uncondforwarddest->setText(dest);
-	m_uncondforward->setChecked(b);
-        m_uncondforward->setEnabled(dest.size() > 0);
+        if(m_capas.contains("fwdunc")) {
+                m_status->setUncondForward(b, dest);
+                m_uncondforwarddest->setText(dest);
+                m_uncondforward->setChecked(b);
+                m_uncondforward->setEnabled(dest.size() > 0);
+        }
 }
 
 void ServicePanel::setUncondForward(bool b)
 {
-        m_status->setUncondForward(b);
-	m_uncondforward->setChecked(b);
+        if(m_capas.contains("fwdunc")) {
+                m_status->setUncondForward(b);
+                m_uncondforward->setChecked(b);
+        }
 }
 
 void ServicePanel::setUncondForward(const QString & dest)
 {
-        m_status->setUncondForward(dest);
-	m_uncondforwarddest->setText(dest);
-        m_uncondforward->setEnabled(dest.size() > 0);
+        if(m_capas.contains("fwdunc")) {
+                m_status->setUncondForward(dest);
+                m_uncondforwarddest->setText(dest);
+                m_uncondforward->setEnabled(dest.size() > 0);
+        }
 }
 
 
 void ServicePanel::setForwardOnBusy(bool b, const QString & dest)
 {
-        m_status->setForwardOnBusy(b, dest);
-	m_forwardonbusydest->setText(dest);
-	m_forwardonbusy->setChecked(b);
-	m_forwardonbusy->setEnabled(dest.size() > 0);
+        if(m_capas.contains("fwdbusy")) {
+                m_status->setForwardOnBusy(b, dest);
+                m_forwardonbusydest->setText(dest);
+                m_forwardonbusy->setChecked(b);
+                m_forwardonbusy->setEnabled(dest.size() > 0);
+        }
 }
 
 void ServicePanel::setForwardOnBusy(bool b)
 {
-        m_status->setForwardOnBusy(b);
-	m_forwardonbusy->setChecked(b);
+        if(m_capas.contains("fwdbusy")) {
+                m_status->setForwardOnBusy(b);
+                m_forwardonbusy->setChecked(b);
+        }
 }
 
 void ServicePanel::setForwardOnBusy(const QString & dest)
 {
-        m_status->setForwardOnBusy(dest);
-	m_forwardonbusydest->setText(dest);
-	m_forwardonbusy->setEnabled(dest.size() > 0);
+        if(m_capas.contains("fwdbusy")) {
+                m_status->setForwardOnBusy(dest);
+                m_forwardonbusydest->setText(dest);
+                m_forwardonbusy->setEnabled(dest.size() > 0);
+        }
 }
 
 void ServicePanel::setForwardOnUnavailable(bool b, const QString & dest)
 {
-        m_status->setForwardOnUnavailable(b, dest);
-	m_forwardonunavailabledest->setText(dest);
-	m_forwardonunavailable->setChecked(b);
-	m_forwardonunavailable->setEnabled(dest.size() > 0);
+        if(m_capas.contains("fwdrna")) {
+                m_status->setForwardOnUnavailable(b, dest);
+                m_forwardonunavailabledest->setText(dest);
+                m_forwardonunavailable->setChecked(b);
+                m_forwardonunavailable->setEnabled(dest.size() > 0);
+        }
 }
 
 void ServicePanel::setForwardOnUnavailable(bool b)
 {
-        m_status->setForwardOnUnavailable(b);
-	m_forwardonunavailable->setChecked(b);
+        if(m_capas.contains("fwdrna")) {
+                m_status->setForwardOnUnavailable(b);
+                m_forwardonunavailable->setChecked(b);
+        }
 }
 
 void ServicePanel::setForwardOnUnavailable(const QString & dest)
 {
-        m_status->setForwardOnUnavailable(dest);
-	m_forwardonunavailabledest->setText(dest);
-	m_forwardonunavailable->setEnabled(dest.size() > 0);
+        if(m_capas.contains("fwdrna")) {
+                m_status->setForwardOnUnavailable(dest);
+                m_forwardonunavailabledest->setText(dest);
+                m_forwardonunavailable->setEnabled(dest.size() > 0);
+        }
 }
 
 
@@ -332,30 +400,47 @@ void ServicePanel::setPeerToDisplay(const QString & peer)
 void ServicePanel::setRecordedStatus()
 {
         // qDebug() << "ServicePanel::setRecordedStatus()";
-        m_status->m_voicemail = m_voicemail->isChecked();
-        m_status->m_callrecording = m_callrecording->isChecked();
-        m_status->m_callfiltering = m_callfiltering->isChecked();
-        m_status->m_dnd = m_dnd->isChecked();
+        if(m_capas.contains("enablevm"))
+                m_status->m_voicemail = m_voicemail->isChecked();
+        if(m_capas.contains("incallrec"))
+                m_status->m_callrecording = m_callrecording->isChecked();
+        if(m_capas.contains("incallfilter"))
+                m_status->m_callfiltering = m_callfiltering->isChecked();
+        if(m_capas.contains("enablednd"))
+                m_status->m_dnd = m_dnd->isChecked();
 
-        m_status->m_uncondforward = m_uncondforward->isChecked();
-        m_status->m_forwardonbusy = m_forwardonbusy->isChecked();
-        m_status->m_forwardonunavailable = m_forwardonunavailable->isChecked();
+        if(m_capas.contains("fwdunc"))
+                m_status->m_uncondforward = m_uncondforward->isChecked();
+        if(m_capas.contains("fwdbusy"))
+                m_status->m_forwardonbusy = m_forwardonbusy->isChecked();
+        if(m_capas.contains("fwdrna"))
+                m_status->m_forwardonunavailable = m_forwardonunavailable->isChecked();
 }
 
 void ServicePanel::getRecordedStatus()
 {
         // qDebug() << "ServicePanel::getRecordedStatus()";
-	m_voicemail->setChecked(m_status->m_voicemail);
-	m_callrecording->setChecked(m_status->m_callrecording);
-	m_callfiltering->setChecked(m_status->m_callfiltering);
-	m_dnd->setChecked(m_status->m_dnd);
+        if(m_capas.contains("enablevm"))
+                m_voicemail->setChecked(m_status->m_voicemail);
+        if(m_capas.contains("incallrec"))
+                m_callrecording->setChecked(m_status->m_callrecording);
+        if(m_capas.contains("incallfilter"))
+                m_callfiltering->setChecked(m_status->m_callfiltering);
+        if(m_capas.contains("enablednd"))
+                m_dnd->setChecked(m_status->m_dnd);
 
-	m_uncondforwarddest->setText(m_status->m_uncondforwarddest);
-	m_uncondforward->setChecked(m_status->m_uncondforward);
-	m_forwardonbusydest->setText(m_status->m_forwardonbusydest);
-	m_forwardonbusy->setChecked(m_status->m_forwardonbusy);
-	m_forwardonunavailabledest->setText(m_status->m_forwardonunavailabledest);
-	m_forwardonunavailable->setChecked(m_status->m_forwardonunavailable);
+        if(m_capas.contains("fwdunc")) {
+                m_uncondforwarddest->setText(m_status->m_uncondforwarddest);
+                m_uncondforward->setChecked(m_status->m_uncondforward);
+        }
+        if(m_capas.contains("fwdbusy")) {
+                m_forwardonbusydest->setText(m_status->m_forwardonbusydest);
+                m_forwardonbusy->setChecked(m_status->m_forwardonbusy);
+        }
+        if(m_capas.contains("fwdrna")) {
+                m_forwardonunavailabledest->setText(m_status->m_forwardonunavailabledest);
+                m_forwardonunavailable->setChecked(m_status->m_forwardonunavailable);
+        }
 }
 
 

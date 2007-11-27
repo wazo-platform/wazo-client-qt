@@ -483,7 +483,7 @@ void MainWidget::engineStarted()
                                          m_logwidget, SLOT(setPeerToDisplay(const QString &)) );
                         } else if (dc == QString("features")) {
 
-                                m_featureswidget = new ServicePanel(m_svc_tabwidget);
+                                m_featureswidget = new ServicePanel(m_engine->getCapaFeatures(), m_svc_tabwidget);
                                 m_svc_tabwidget->insertTab(0, m_featureswidget, extraspace + tr("Services") + extraspace);
 
                                 connect( m_featureswidget, SIGNAL(askFeatures(const QString &)),

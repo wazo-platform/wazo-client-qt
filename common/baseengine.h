@@ -119,6 +119,7 @@ public:
 	void setTcpmode(bool b);		//!< set tcp mode flag
 	void setLastConnWins(bool b);		//!< last connected user wins
 	const QStringList & getCapabilities() const;	//!< returns capabilities
+        const QStringList & getCapaFeatures() const;	//!< returns features capabilities
 protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
 public slots:
@@ -277,6 +278,7 @@ private:
 	QString m_extension;		//!< extension for "my phone"
 	QString m_dialcontext;		//!< Context of the phone, as returned by the xivo_daemon server
 	QStringList m_capabilities;	//!< List of capabilities issued by the server after a successful login
+	QStringList m_capafeatures;	//!< List of capabilities issued by the server for the features
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier
 	QString m_forced_state;		//!< Forced state sent by the server

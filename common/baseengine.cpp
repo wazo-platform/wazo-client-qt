@@ -358,6 +358,11 @@ const QStringList & BaseEngine::getCapabilities() const
         return m_capabilities;
 }
 
+const QStringList & BaseEngine::getCapaFeatures() const
+{
+        return m_capafeatures;
+}
+
 /*!
  * sets the availability state and call keepLoginAlive() if needed
  *
@@ -963,6 +968,7 @@ void BaseEngine::socketReadyRead()
                                 m_version_server = params_list["version"].toInt();
                                 m_xivover_server = params_list["xivoversion"];
                                 m_forced_state   = params_list["state"];
+                                m_capafeatures   = params_list["capas_features"].split(",");
                                 
                                 if(m_version_server < REQUIRED_SERVER_VERSION) {
                                         stop();
@@ -1606,7 +1612,7 @@ void BaseEngine::identifyToTheServer()
  */
 void BaseEngine::processLoginDialog()
 {
-	char buffer[256];
+	char buffer[1024];
 	int len;
 	qDebug() << "BaseEngine::processLoginDialog()";
 	if(!m_loginsocket->canReadLine())
@@ -1668,6 +1674,7 @@ void BaseEngine::processLoginDialog()
                         m_version_server = params_list["version"].toInt();
                         m_xivover_server = params_list["xivoversion"];
                         m_forced_state   = params_list["state"];
+                        m_capafeatures   = params_list["capas_features"].split(",");
                 }
 
                 m_loginsocket->close();

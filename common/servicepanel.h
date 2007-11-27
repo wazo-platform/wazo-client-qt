@@ -14,7 +14,8 @@ class ServicePanel : public QWidget
 {
 	Q_OBJECT
 public:
-	ServicePanel(QWidget * parent = 0);
+	ServicePanel(const QStringList &,
+                     QWidget * parent = 0);
 signals:
 	void voiceMailToggled(bool);
 	void callRecordingToggled(bool);
@@ -54,7 +55,8 @@ private slots:
 private:
         ServiceStatus * m_status;
         QString m_peer;
-	QCheckBox * m_voicemail;
+        QStringList m_capas;
+        QCheckBox * m_voicemail;
 	QCheckBox * m_callrecording;
 	QCheckBox * m_callfiltering;
 	QCheckBox * m_dnd;

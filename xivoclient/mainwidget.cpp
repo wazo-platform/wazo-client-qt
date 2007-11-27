@@ -438,7 +438,7 @@ void MainWidget::engineStarted()
 				m_searchpanel->setEngine(m_engine);
 
 			} else if (dc == QString("features")) {
-				m_featureswidget = new ServicePanel();
+				m_featureswidget = new ServicePanel(m_engine->getCapaFeatures());
 				m_main_tabwidget->addTab(m_featureswidget, extraspace + tr("S&ervices") + extraspace);
 
                                 connect( m_engine, SIGNAL(disconnectFeatures()),
