@@ -23,12 +23,33 @@ File "C:\WINDOWS\system32\ssleay32.dll"
 File "C:\WINDOWS\system32\msvcr71.dll"
 File "GPL_V2.txt"
 File "..\switchboard\release\switchboard.exe"
+WriteUninstaller "$INSTDIR\uninstall-switchboard.exe"
 SectionEnd
 
 # Shortcuts
 Section "Shortcuts"
-# SetOutPath "$SMPROGRAMS\XIVO"
-# CreateShortCut "$SMPROGRAMS\XIVO\switchboard.lnk" "$INSTDIR\switchboard.exe"
+SetOutPath "$SMPROGRAMS\XIVO"
+CreateShortCut "$SMPROGRAMS\XIVO\switchboard.lnk" "$INSTDIR\switchboard.exe"
+CreateShortCut "$SMPROGRAMS\XIVO\Désinstaller switchboard.lnk" "$INSTDIR\uninstall-switchboard.exe"
 CreateShortCut "$DESKTOP\switchboard.lnk" "$INSTDIR\switchboard.exe"
 MessageBox MB_OK "Installation terminée."
+SectionEnd
+
+# Uninstall
+Section "Uninstall"
+Delete "$INSTDIR\GPL_V2.txt"
+Delete "$INSTDIR\mingwm10.dll"
+Delete "$INSTDIR\libeay32.dll"
+Delete "$INSTDIR\ssleay32.dll"
+Delete "$INSTDIR\msvcr71.dll"
+Delete "$INSTDIR\switchboard.exe"
+Delete "$INSTDIR\uninstall-switchboard.exe"
+RmDir "$INSTDIR"
+
+Delete "$DESKTOP\switchboard.lnk"
+
+Delete "$SMPROGRAMS\XIVO\switchboard.lnk"
+Delete "$SMPROGRAMS\XIVO\Désinstaller switchboard.lnk"
+RmDir "$SMPROGRAMS\XIVO"
+
 SectionEnd

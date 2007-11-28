@@ -23,15 +23,15 @@ File "C:\WINDOWS\system32\ssleay32.dll"
 File "C:\WINDOWS\system32\msvcr71.dll"
 File "GPL_V2.txt"
 File "..\xivoclient\release\xivoclient.exe"
-WriteUninstaller "$INSTDIR\uninstall.exe"
+WriteUninstaller "$INSTDIR\uninstall-xivoclient.exe"
 SectionEnd
 
 # Shortcuts
 Section "Shortcuts"
 SetOutPath "$SMPROGRAMS\XIVO"
-CreateShortCut "$SMPROGRAMS\XIVO\xivoclient.lnk" "$INSTDIR\xivoclient.exe"
-CreateShortCut "$SMPROGRAMS\XIVO\Désinstaller xivoclient.lnk" "$INSTDIR\uninstall.exe"
-CreateShortCut "$DESKTOP\xivoclient.lnk" "$INSTDIR\xivoclient.exe"
+CreateShortCut "$SMPROGRAMS\XIVO\xivoclient.lnk"  "$INSTDIR\xivoclient.exe"
+CreateShortCut "$SMPROGRAMS\XIVO\Désinstaller xivoclient.lnk"  "$INSTDIR\uninstall-xivoclient.exe"
+CreateShortCut "$DESKTOP\xivoclient.lnk"  "$INSTDIR\xivoclient.exe"
 MessageBox MB_OK "Installation terminée."
 SectionEnd
 
@@ -43,7 +43,7 @@ Delete "$INSTDIR\libeay32.dll"
 Delete "$INSTDIR\ssleay32.dll"
 Delete "$INSTDIR\msvcr71.dll"
 Delete "$INSTDIR\xivoclient.exe"
-Delete "$INSTDIR\uninstall.exe"
+Delete "$INSTDIR\uninstall-xivoclient.exe"
 RmDir "$INSTDIR"
 
 Delete "$DESKTOP\xivoclient.lnk"
