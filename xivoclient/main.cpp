@@ -86,7 +86,6 @@ int main(int argc, char * * argv)
 	engine->setIsASwitchboard(false);
 
 	MainWidget main(engine);
-	main.show();
 	//main.dumpObjectTree();
         QObject::connect( &app, SIGNAL(lastWindowClosed()),
                           engine, SLOT(stop()) );

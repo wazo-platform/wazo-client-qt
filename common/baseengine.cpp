@@ -141,6 +141,8 @@ QSettings * BaseEngine::getSettings()
 void BaseEngine::loadSettings()
 {
         //qDebug() << "BaseEngine::loadSettings()";
+	m_systrayed = m_settings->value("display/systrayed", false).toBool();
+
         m_settings->beginGroup("engine");
 	m_serverhost = m_settings->value("serverhost", "192.168.0.254").toString();
 	m_loginport  = m_settings->value("loginport", 5000).toUInt();
@@ -174,6 +176,8 @@ void BaseEngine::loadSettings()
 void BaseEngine::saveSettings()
 {
         //qDebug() << "BaseEngine::saveSettings()";
+	m_settings->setValue("display/systrayed", m_systrayed);
+
         m_settings->beginGroup("engine");
 	m_settings->setValue("serverhost", m_serverhost);
 	m_settings->setValue("loginport",  m_loginport);
@@ -1498,6 +1502,16 @@ void BaseEngine::addToDataBase(const QString & dbdetails)
         qDebug() << "BaseEngine::addToDataBase()" << dbdetails;
         if (dbdetails.size() > 0)
                 sendCommand("database " + dbdetails);
+}
+
+void BaseEngine::setSystrayed(bool b)
+{
+	m_systrayed = b;
+}
+
+bool BaseEngine::systrayed() const
+{
+	return m_systrayed;
 }
 
 void BaseEngine::setAutoconnect(bool b)

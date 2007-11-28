@@ -86,6 +86,8 @@ public:
 	void setHistorySize(uint size);		//!< set history size
 	uint contactsSize() const;		//!< contacts size
 	void setContactsSize(uint size);	//!< set contacts size
+	bool systrayed() const;			//!< systrayed flag
+	void setSystrayed(bool);		//!< set systrayed flag
 
 	void saveSettings();			//!< save server settings
 
@@ -262,6 +264,7 @@ private:
 
 	bool m_autoconnect;		//!< Autoconnect to server at startup
 	bool m_trytoreconnect;		//!< "try to reconnect" flag
+	bool m_systrayed;		//!< "systrayed at startup" flag
 	uint m_trytoreconnectinterval;	//!< Try to reconnect interval (in msec)
 	uint m_keepaliveinterval;	//!< Keep alive interval (in msec)
 

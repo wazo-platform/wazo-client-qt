@@ -66,8 +66,9 @@ private:
 	QLineEdit * m_sbport;		//!< server port (switchboard)
 	QLineEdit * m_loginport;	//!< port of the server
 
-	QCheckBox * m_autoconnect;	//!< Auto connect checkbox
+	QCheckBox * m_autoconnect;	//!< "Auto connect" checkbox
 	QCheckBox * m_trytoreconnect;	//!< "Try to reconnect" Checkbox
+	QCheckBox * m_systrayed;	//!< "Systray at startup" Checkbox
 	QSpinBox  * m_tryinterval_sbox;	//!< "Try to reconnect" interval
 	QSpinBox  * m_kainterval_sbox;	//!< Keep alive interval
 

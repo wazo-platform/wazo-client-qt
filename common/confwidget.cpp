@@ -188,6 +188,12 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	m_contacts_sbox->setValue(m_engine->contactsSize());
 	gridlayout->addWidget(m_contacts_sbox, line++, 1);
 
+        if(m_engine->isASwitchboard() == false) {
+                m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
+                m_systrayed->setCheckState(m_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
+                gridlayout->addWidget(m_systrayed, line++, 0, 1, 0);
+        }
+
 	m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
 	connect(m_btnbox, SIGNAL(accepted()),
                 this, SLOT(saveAndClose()));
@@ -229,6 +235,8 @@ void ConfWidget::saveAndClose()
 
 	m_engine->setHistorySize(m_history_sbox->value());
 	m_engine->setContactsSize(m_contacts_sbox->value());
+        if(m_engine->isASwitchboard() == false)
+                m_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
 	m_engine->setTcpmode(m_tcpmode->checkState() == Qt::Checked);
         // m_engine->setLastConnWins(m_lastconnwins->checkState() == Qt::Checked);
 	m_mainwindow->setTablimit(m_tablimit_sbox->value());

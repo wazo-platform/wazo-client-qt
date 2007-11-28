@@ -105,6 +105,8 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
 	m_tablimit = m_settings->value("display/tablimit", 5).toInt();
         m_launchDateTime = QDateTime::currentDateTime();
 
+        if(m_engine->systrayed() == false)
+                this->show();
         //        m_xivobg2 = new QLabel();
         //        m_xivobg2->setPixmap(QPixmap(":/xivo-client.png"));
         //        m_mainlayout->addWidget(m_xivobg2, 0, Qt::AlignHCenter | Qt::AlignVCenter);
