@@ -37,8 +37,9 @@ nsis:
 all-win32: all upx nsis
 
 # export UPXRUN=/Users/proformatique/upx-3.01-src/src/upx.out
-all-macos: all
-	${UPXRUN} */*.app/Contents/MacOS/*
-	cp xivoclient/xivoclient.app/Contents/MacOS/xivoclient xivoclient-${XIVOVER}-${SVNVER}-macos
-	cp switchboard/switchboard.app/Contents/MacOS/switchboard switchboard-${XIVOVER}-${SVNVER}-macos
+all-macos: all all-macos-xivoclient all-macos-switchboard
+
+all-macos-%:
+	${UPXRUN} $*/$*.app/Contents/MacOS/$*
+	hdiutil create $*-${XIVOVER}-${SVNVER}.dmg -srcfolder $*/$*.app -format UDBZ
 
