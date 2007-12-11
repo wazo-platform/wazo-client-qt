@@ -22,6 +22,8 @@ File "C:\WINDOWS\system32\libeay32.dll"
 File "C:\WINDOWS\system32\ssleay32.dll"
 File "C:\WINDOWS\system32\msvcr71.dll"
 File "GPL_V2.txt"
+File "OpenSSL.LICENCE.txt"
+File "Qt.GPL.Exception.txt"
 File "..\xivoclient\release\xivoclient.exe"
 WriteUninstaller "$INSTDIR\uninstall-xivoclient.exe"
 SectionEnd
@@ -38,6 +40,8 @@ SectionEnd
 # Uninstall
 Section "Uninstall"
 Delete "$INSTDIR\GPL_V2.txt"
+Delete "$INSTDIR\OpenSSL.LICENCE.txt"
+Delete "$INSTDIR\Qt.GPL.Exception.txt"
 Delete "$INSTDIR\mingwm10.dll"
 Delete "$INSTDIR\libeay32.dll"
 Delete "$INSTDIR\ssleay32.dll"
