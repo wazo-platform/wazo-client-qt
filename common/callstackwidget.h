@@ -1,4 +1,4 @@
-/* XIVO switchboard
+/* XIVO CTI clients
 Copyright (C) 2007  Proformatique
 
 This program is free software; you can redistribute it and/or

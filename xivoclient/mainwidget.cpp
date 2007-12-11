@@ -1,5 +1,4 @@
-/*
-XIVO customer information client : popup profile for incoming calls
+/* XIVO CTI Client
 Copyright (C) 2007  Proformatique
 
 This program is free software; you can redistribute it and/or
