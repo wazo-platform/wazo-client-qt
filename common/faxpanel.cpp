@@ -191,8 +191,7 @@ void FaxPanel::popupMsg(const QString & msg)
                                                                                                         m_dest_string));
         } else if (rep[0] == "queued") {
                 QMessageBox::information(NULL, "XIVO CTI (Fax)", tr("Your Fax (file %1)\n"
-                                                                    "was successfully queued and will be sent soon.").arg(m_file_string,
-                                                                                                                          m_dest_string));
+                                                                    "was successfully queued and will be sent soon.").arg(m_file_string));
         } else {
                 QMessageBox::warning(NULL, "XIVO CTI (Fax)", tr("Your Fax (file %1)\n"
                                                                 "was NOT sent to %2.\n"
