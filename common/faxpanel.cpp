@@ -142,7 +142,7 @@ void FaxPanel::setOpenFileName()
         QString fileName = QFileDialog::getOpenFileName(this,
                                                         tr("Open Fax File"),
                                                         m_openFileNameLabel->text(),
-                                                        tr("PDF Files (*.pdf);;TIFF Files (*.tif *.tiff);;Both (*.pdf *.tif *.tiff);;All Files (*)"),
+                                                        tr("PDF Files (*.pdf);;All Files (*)"),
                                                         &selectedFilter,
                                                         options);
         if (!fileName.isEmpty())
