@@ -379,62 +379,69 @@ Merci de mettre à jour votre serveur.</translation>
 <context>
     <name>FaxPanel</name>
     <message>
-        <location filename="../common/faxpanel.cpp" line="49"/>
+        <location filename="../common/faxpanel.cpp" line="48"/>
         <source>1. Choose Destination Number</source>
         <translation>1. Choisir le Numéro Destination</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="66"/>
+        <location filename="../common/faxpanel.cpp" line="65"/>
         <source>2. Choose File to Send</source>
         <translation>2. Choisir le Fichier à Envoyer</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="80"/>
+        <location filename="../common/faxpanel.cpp" line="79"/>
         <source>3. Hide the Number ?</source>
         <translation>3. Cacher le Numéro ?</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="91"/>
+        <location filename="../common/faxpanel.cpp" line="90"/>
         <source>4. Send your File</source>
         <translation>4. Envoyer le Fichier</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="73"/>
+        <location filename="../common/faxpanel.cpp" line="72"/>
         <source>Browse</source>
         <translation>Parcourir</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="55"/>
+        <location filename="../common/faxpanel.cpp" line="54"/>
         <source>Directory</source>
         <translation>Répertoire</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="53"/>
+        <location filename="../common/faxpanel.cpp" line="52"/>
         <source>Fax Number</source>
         <translation>Numéro de Fax</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="84"/>
+        <location filename="../common/faxpanel.cpp" line="83"/>
         <source>Hide Number</source>
         <translation>Cacher le Numéro</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="144"/>
+        <location filename="../common/faxpanel.cpp" line="143"/>
         <source>Open Fax File</source>
         <translation>Ouvrir le Fichier Fax</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="146"/>
-        <source>PDF Files (*.pdf);;TIFF Files (*.tif *.tiff);;Both (*.pdf *.tif *.tiff);;All Files (*)</source>
-        <translation>Fichiers PDF (*.pdf);;Fichiers TIFF (*.tif *.tiff);;Divers (*.pdf *.tif *.tiff);;Tous les Fichiers (*)</translation>
+        <location filename="../common/faxpanel.cpp" line="145"/>
+        <source>PDF Files (*.pdf);;All Files (*)</source>
+        <translation>Fichiers PDF (*.pdf);;Tous les Fichiers (*)</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="95"/>
+        <location filename="../common/faxpanel.cpp" line="94"/>
         <source>Send</source>
         <translation>Envoyer</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="196"/>
+        <location filename="../common/faxpanel.cpp" line="198"/>
+        <source>Your Fax (file %1)
+is being processed and will be sent soon.</source>
+        <translation>Votre Fax (ficher %1)
+est en cours de traitement et sera bientôt envoyé.</translation>
+    </message>
+    <message>
+        <location filename="../common/faxpanel.cpp" line="201"/>
         <source>Your Fax (file %1)
 was NOT sent to %2.
 Reason given : %3.</source>
@@ -443,7 +450,7 @@ n&apos;a PAS été envoyé à %2.
 Raison donnée : %3.</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="191"/>
+        <location filename="../common/faxpanel.cpp" line="195"/>
         <source>Your Fax (file %1)
 was successfully sent to %2.</source>
         <translation>Votre Fax (ficher %1)
@@ -489,197 +496,197 @@ a été envoyé à %2.</translation>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="mainwidget.cpp" line="829"/>
+        <location filename="mainwidget.cpp" line="828"/>
         <source>&lt;p&gt;This application allows a given phone user to :&lt;/p&gt;&lt;p&gt;* receive customer informations related to incoming calls&lt;/p&gt;&lt;p&gt;* manage her/his voicemail and transfers&lt;/p&gt;&lt;p&gt;* know her/his calls history&lt;/p&gt;&lt;p&gt;* access the phones and addresses&apos; directory&lt;/p&gt;&lt;p&gt;* see her/his buddies&lt;/p&gt;&lt;p&gt;* originate a dial towards some number&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cette application permet à un utilisateur de téléphone de :&lt;/p&gt;&lt;p&gt;* recevoir des fiches à propos de ses appels entrants&lt;/p&gt;&lt;p&gt;* gérer sa messagerie vocale et ses renvois&lt;/p&gt;&lt;p&gt;* connaître son historique d&apos;appels&lt;/p&gt;&lt;p&gt;* consulter le répertoire téléphonique&lt;/p&gt;&lt;p&gt;* voir ses collègues&lt;/p&gt;&lt;p&gt;* composer un numéro&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="241"/>
+        <location filename="mainwidget.cpp" line="240"/>
         <source>About &amp;Qt</source>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="820"/>
+        <location filename="mainwidget.cpp" line="819"/>
         <source>About XIVO Client</source>
         <translation>A propos de XIVO Client</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="240"/>
+        <location filename="mainwidget.cpp" line="239"/>
         <source>&amp;About XIVO Client</source>
         <translation>&amp;A propos du Client XIVO</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="832"/>
+        <location filename="mainwidget.cpp" line="831"/>
         <source>Advised Server Version : </source>
         <translation>Version Conseillée du Serveur : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="833"/>
+        <location filename="mainwidget.cpp" line="832"/>
         <source>Application Launched on : </source>
         <translation>Application Lancée le : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="838"/>
+        <location filename="mainwidget.cpp" line="837"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="233"/>
+        <location filename="mainwidget.cpp" line="232"/>
         <source>&amp;Availability</source>
         <translation>&amp;Disponibilité</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="176"/>
+        <location filename="mainwidget.cpp" line="175"/>
         <source>&amp;Available</source>
         <translation>&amp;Disponible</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="181"/>
+        <location filename="mainwidget.cpp" line="180"/>
         <source>A&amp;way</source>
         <translation>&amp;Occupé</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="186"/>
+        <location filename="mainwidget.cpp" line="185"/>
         <source>&amp;Be Right Back</source>
         <translation>&amp;Bientôt De Retour</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="137"/>
+        <location filename="mainwidget.cpp" line="136"/>
         <source>Close the application</source>
         <translation>Fermer l&apos;application</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="131"/>
+        <location filename="mainwidget.cpp" line="130"/>
         <source>Confi&amp;gure</source>
         <translation>Confi&amp;gurer</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="132"/>
+        <location filename="mainwidget.cpp" line="131"/>
         <source>Configure account and connection options</source>
         <translation>Configurer votre compte et vos options de connexion</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="159"/>
+        <location filename="mainwidget.cpp" line="158"/>
         <source>&amp;Connect</source>
         <translation>&amp;Connecter</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="160"/>
+        <location filename="mainwidget.cpp" line="159"/>
         <source>Connect to the server</source>
         <translation>Se connecter au serveur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="548"/>
+        <location filename="mainwidget.cpp" line="547"/>
         <source>Connected</source>
         <translation>Connecté</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="423"/>
+        <location filename="mainwidget.cpp" line="422"/>
         <source>&amp;Contacts</source>
         <translation>&amp;Contacts</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="518"/>
+        <location filename="mainwidget.cpp" line="517"/>
         <source>&amp;Directory</source>
         <translation>&amp;Répertoire</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="164"/>
+        <location filename="mainwidget.cpp" line="163"/>
         <source>&amp;Disconnect</source>
         <translation>&amp;Déconnecter</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="165"/>
+        <location filename="mainwidget.cpp" line="164"/>
         <source>Disconnect from the server</source>
         <translation>Se déconnecter du serveur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="648"/>
+        <location filename="mainwidget.cpp" line="647"/>
         <source>Disconnected</source>
         <translation>Déconnecté</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="196"/>
+        <location filename="mainwidget.cpp" line="195"/>
         <source>&amp;Do not disturb</source>
         <translation>&amp;Ne Pas Déranger</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="144"/>
+        <location filename="mainwidget.cpp" line="143"/>
         <source>Enter the system tray</source>
         <translation>Minimiser l&apos;application dans la zone de notification système</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="414"/>
+        <location filename="mainwidget.cpp" line="413"/>
         <source>&amp;Fax</source>
         <translation>&amp;Fax</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="239"/>
+        <location filename="mainwidget.cpp" line="238"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="535"/>
+        <location filename="mainwidget.cpp" line="534"/>
         <source>&amp;History</source>
         <translation>&amp;Historique</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="677"/>
+        <location filename="mainwidget.cpp" line="676"/>
         <source>Incoming call</source>
         <translation>Appel entrant</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="150"/>
+        <location filename="mainwidget.cpp" line="149"/>
         <source>Leave the system tray</source>
         <translation>Sortir l&apos;application de la zone de notification système</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="839"/>
+        <location filename="mainwidget.cpp" line="838"/>
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="397"/>
+        <location filename="mainwidget.cpp" line="396"/>
         <source>&amp;Messages</source>
         <translation>&amp;Messages</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="191"/>
+        <location filename="mainwidget.cpp" line="190"/>
         <source>&amp;Out To Lunch</source>
         <translation>&amp;Parti Déjeuner</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="136"/>
+        <location filename="mainwidget.cpp" line="135"/>
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="444"/>
+        <location filename="mainwidget.cpp" line="443"/>
         <source>S&amp;ervices</source>
         <translation>&amp;Services</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="419"/>
+        <location filename="mainwidget.cpp" line="418"/>
         <source>&amp;Sheets</source>
         <translation>F&amp;iches</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="149"/>
+        <location filename="mainwidget.cpp" line="148"/>
         <source>&amp;Show window</source>
         <translation>&amp;Afficher la fenêtre</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="143"/>
+        <location filename="mainwidget.cpp" line="142"/>
         <source>To S&amp;ystray</source>
         <translation>&amp;Minimiser</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="829"/>
+        <location filename="mainwidget.cpp" line="828"/>
         <source>Version : </source>
         <translation>Version : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="815"/>
+        <location filename="mainwidget.cpp" line="814"/>
         <source>last one</source>
         <translation>dernière</translation>
     </message>

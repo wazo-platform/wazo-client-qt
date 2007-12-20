@@ -184,21 +184,27 @@ void FaxPanel::dirLookup()
 void FaxPanel::popupMsg(const QString & msg)
 {
         QStringList rep = msg.split(";");
+        static QMessageBox msgbox;
+        QMessageBox::Icon icon;
+        QString title, text;
+
         // qDebug() << msg << rep;
+
         if(rep[0] == "ok") {
-                QMessageBox::information(NULL, "XIVO CTI (Fax)", tr("Your Fax (file %1)\n"
-                                                                    "was successfully sent to %2.").arg(m_file_string,
-                                                                                                        m_dest_string));
+                icon = QMessageBox::Information;
+                text = tr("Your Fax (file %1)\nwas successfully sent to %2.").arg(m_file_string, m_dest_string);
         } else if (rep[0] == "queued") {
-                QMessageBox::information(NULL, "XIVO CTI (Fax)", tr("Your Fax (file %1)\n"
-                                                                    "was successfully queued and will be sent soon.").arg(m_file_string));
+                icon = QMessageBox::Information;
+                text = tr("Your Fax (file %1)\nis being processed and will be sent soon.").arg(m_file_string);
         } else {
-                QMessageBox::warning(NULL, "XIVO CTI (Fax)", tr("Your Fax (file %1)\n"
-                                                                "was NOT sent to %2.\n"
-                                                                "Reason given : %3.").arg(m_file_string,
-                                                                                          m_dest_string,
-                                                                                          rep[1]));
+                icon = QMessageBox::Critical;
+                text = tr("Your Fax (file %1)\nwas NOT sent to %2.\nReason given : %3.").arg(m_file_string, m_dest_string, rep[1]);
                 m_destination->setText(m_dest_string);
                 m_openFileNameLabel->setText(m_file_string);
         }
+
+        msgbox.setWindowTitle("XIVO CTI (Fax)");
+        msgbox.setIcon(icon);
+        msgbox.setText(text);
+        msgbox.show();
 }
