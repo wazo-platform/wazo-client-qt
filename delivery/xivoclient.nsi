@@ -7,7 +7,7 @@
 Name "XIVO Client"
 OutFile "xivoclient-setup.exe"
 InstallDir "$PROGRAMFILES\XIVO"
-LicenseText "XIVO Client est distribué sous licence GPL."
+LicenseText "XIVO Client est distribué sous licence GNU General Public License v2 avec une exception spéciale vous autorisant à le lier à OpenSSL, sous certaines conditions."
 # ComponentText "(Choix des composants / sections)"
 # DirText "(Choix du répertoire d'installation)"
 
