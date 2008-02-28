@@ -20,10 +20,11 @@ SetOutPath $INSTDIR
 File "C:\MinGW\bin\mingwm10.dll"
 File "C:\cygwin\home\winbuild\openssl-0.9.8g\libeay32.dll"
 File "C:\cygwin\home\winbuild\openssl-0.9.8g\ssleay32.dll"
-File "LICENSE-Switchboard"
+File "LICENSE"
 File "GPL_V2.txt"
 File "OpenSSL.LICENSE.txt"
 File "Qt.GPL.Exception.txt"
+File "Qt.GPL.Exception.Addendum.txt"
 File "..\switchboard\release\switchboard.exe"
 WriteUninstaller "$INSTDIR\uninstall-switchboard.exe"
 SectionEnd

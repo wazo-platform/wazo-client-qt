@@ -20,7 +20,7 @@ SetOutPath $INSTDIR
 File "C:\MinGW\bin\mingwm10.dll"
 File "C:\cygwin\home\winbuild\openssl-0.9.8g\libeay32.dll"
 File "C:\cygwin\home\winbuild\openssl-0.9.8g\ssleay32.dll"
-File "LICENSE-Client"
+File "LICENSE"
 File "GPL_V2.txt"
 File "OpenSSL.LICENSE.txt"
 File "Qt.GPL.Exception.txt"
