@@ -1,0 +1,48 @@
+XIVO Switchboard
+Copyright (C) 2007, 2008  Proformatique
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License version 2 as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License version 2 for more details.
+
+You should have received a copy of the GNU General Public License
+version 2 along with this program; if not, see
+<http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
+
+Linking XIVO Switchboard statically or dynamically with other modules
+is making a combined work based on XIVO Switchboard. Thus, the terms
+and conditions of the GNU General Public License version 2 cover the
+whole combination.
+
+In addition, as a special exception, the copyright holders of
+XIVO Switchboard give you permission to combine XIVO Switchboard with
+free software programs or libraries that are released under the
+GNU Library General Public License version 2.0 or GNU Lesser General
+Public License version 2.1 and with code included in the standard
+release of OpenSSL under a version of the OpenSSL license (with
+original SSLeay license) which is identical to the one that was
+published in year 2003, or modified versions of such code, with
+unchanged license. You may copy and distribute such a system following
+the terms of the GNU GPL version 2 for XIVO Switchboard and the
+licenses of the other code concerned, provided that you include the
+source code of that other code when and as the GNU GPL version 2
+requires distribution of source code.
+
+A complete copy of the GNU General Public License version 2 is
+available in file GPL_V2.txt.
+
+This software is or can be linked with the QT library, which is
+licensed under the GNU General Public License version 2 with additional
+rights granted beyond the GPL given by the Trolltech GPL Exception
+version 1.1, which is available in file Qt.GPL.Exception.txt, completed
+by file Qt.GPL.Exception.Addendum.txt
+
+This software is or can be linked with the OpenSSL library, which is
+licensed under the OpenSSL license (with original SSLeay license) as
+published in year 2003. This license is identical to the one available
+in file OpenSSL.LICENSE.txt
