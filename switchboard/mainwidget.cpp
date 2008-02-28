@@ -677,11 +677,12 @@ void MainWidget::about()
                                                                          fetchlastone) +
                            "<p>(" + tr("Advised Server Version : ") + __required_server_version__ + ")</p>" +
                            "<p>(" + tr("Application Launched on : ") + m_launchDateTime.toString() + ")</p>" +
-			   "<hr><p>(C) 2007 <a href=http://www.proformatique.com><b>Proformatique</b></a></p>"
+			   "<hr><p>Copyright (C) 2007, 2008  <a href=http://www.proformatique.com><b>Proformatique</b></a></p>"
 			   "<p>67 rue Voltaire 92800 Puteaux FRANCE</p>"
 			   "<p><b>E-mail : </b><a href=mailto:technique@proformatique.com>technique@proformatique.com</p>"
 			   "<p>(+33 / 0) 1.41.38.99.60</p>" +
 			   "<p><b>" + tr("Authors : ") + "</b>Thomas Bernard, Corentin Le Gall</p>" +
 			   "<hr><p><b>" + tr("License : ") + "</b>" +
-			   "<a href=http://www.gnu.org/licenses/gpl-2.0.txt>GNU General Public Licence v.2</a></p>");
+			   "<a href=http://www.gnu.org/licenses/gpl-2.0.txt>GNU General Public License v2</a></p>"
+			   "<p>" + tr("with a special exception allowing you to link it with OpenSSL, under some conditions") + "</p>");
 }
