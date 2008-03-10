@@ -7,7 +7,7 @@ LRELEASE?=lrelease
 UPXRUN?=upx
 
 # Tool to build executables 
-MAKENSIS=C:\Program Files\NSIS\makensis.exe
+MAKENSIS=/cygdrive/c/Program\ Files/NSIS/makensis.exe
 XIVOVER:=$(shell cat ../VERSION)
 SVNVER:=$(shell svn info | sed -n "/Last.Changed.Rev/s/.* //p")
 
@@ -16,12 +16,12 @@ default:
 xc:
 	${QMAKE} xivoclient/xivoclient.pro   -o xivoclient/Makefile
 	${LRELEASE} xivoclient/xivoclient_fr.ts
-	cd xivoclient && make
+	cd xivoclient && make -f Makefile.Release
 
 sb:
 	${QMAKE} switchboard/switchboard.pro -o switchboard/Makefile
 	${LRELEASE} switchboard/switchboard_fr.ts
-	cd switchboard && make
+	cd switchboard && make -f Makefile.Release
 
 all: xc sb
 
