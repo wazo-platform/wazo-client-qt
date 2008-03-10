@@ -11,7 +11,7 @@ LicenseText "XIVO Switchboard est distribué sous licence GNU General Public Lice
 # ComponentText "(Choix des composants / sections)"
 # DirText "(Choix du répertoire d'installation)"
 
-LicenseData "GPL_V2.txt"
+LicenseData "LICENSE"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\French.nlf"
 
 # Installation of executables
