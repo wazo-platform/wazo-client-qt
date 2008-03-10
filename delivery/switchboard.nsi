@@ -19,7 +19,7 @@ Section "Prog"
 SetOutPath $INSTDIR
 File "C:\MinGW\bin\mingwm10.dll"
 File "C:\cygwin\home\winbuild\openssl-0.9.8g\cryptoeay32-0.9.8.dll"
-File "C:\cygwin\home\winbuild\openssl-0.9.8g\ssleay-0.9.8.dll"
+File "C:\cygwin\home\winbuild\openssl-0.9.8g\ssleay32-0.9.8.dll"
 File "LICENSE"
 File "GPL_V2.txt"
 File "OpenSSL.LICENSE.txt"
