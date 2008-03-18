@@ -33,6 +33,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="hangup" >
+       <property name="text" >
+        <string>Raccrocher</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="close" >
        <property name="text" >
         <string>&amp;Fermer</string>

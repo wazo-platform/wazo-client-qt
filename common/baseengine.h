@@ -53,6 +53,8 @@
 #include <QTimer>
 #include <QUdpSocket>
 
+#include "userinfo.h"
+
 class Popup;
 
 /*! \brief Class which handles connection with the XIVO CTI server
@@ -87,6 +89,12 @@ public:
 	void setProtocol(const QString &);     	//!< see protocol()
 	const QString & userId() const;		//!< userid to identify to the server
 	void setUserId(const QString &);       	//!< see userid()
+	const QString & agentId() const;	//!< agentid to identify to the server
+	void setAgentId(const QString &);       //!< see agentid()
+	const QString & phonenumber() const;	//!< agent's phone number
+	void setPhonenumber(const QString &);	//!< see phonenumber()
+	const int loginkind() const;		//!< loginkind to identify to the server
+	void setLoginKind(const int);		//!< see loginkind()
 	const QString & password() const;	//!< password to identify to the sever
 	void setPassword(const QString &);	//!< see password()
 
@@ -177,6 +185,7 @@ public slots:
         void copyNumber(const QString &);
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
 	void readProfile();
+        void agentAction(const QString &);
 private slots:
 	void identifyToTheServer();		//!< perform the first login step
 	void processLoginDialog();		//!< perform the following login steps
@@ -236,6 +245,8 @@ signals:
         void connectFeatures();
         void resetFeatures();
         void localUserDefined(const QString &);
+        void newUserStatus(const QString &);
+        void newQueueList(const QString &);
 	void voiceMailChanged(bool);
 	void callRecordingChanged(bool);
 	void callFilteringChanged(bool);
@@ -263,6 +274,7 @@ private:
         void sendCommand(const QString &);
         bool parseCommand(const QStringList &);
         void popupError(const QString &);
+        void DisplayFiche(const QString &, bool);
 
 	// Class Members
 
@@ -275,9 +287,13 @@ private:
 	quint16 m_loginport;		//!< TCP port (UDP port for keep alive is +1)
 	quint16 m_sbport;		//!< port to connect to server
 
+        // UserInfo * m_userinfo;
 	QString m_asterisk;		//!< Host to the login server
 	QString m_protocol;		//!< User Protocol's login
 	QString m_userid;		//!< User Id
+	QString m_agentid;		//!< Agent Id
+	QString m_phonenumber;		//!< Agent's phone
+	int m_loginkind;		//!< Login Kind
 	QString m_passwd;		//!< User password for account
 
 	bool m_autoconnect;		//!< Autoconnect to server at startup
@@ -332,11 +348,13 @@ private:
         QByteArray * m_faxdata;
         int m_faxsize;
 
-        QString m_monitored_context;	//!< Context of the Monitored Phone (on SB, or one's own on XC)
         QString m_monitored_userid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)
+        QString m_monitored_agentid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)
+        QString m_monitored_context;	//!< Context of the Monitored Phone (on SB, or one's own on XC)
         QString m_monitored_asterisk;	//!< Asterisk Id of the Monitored Phone (on SB, or one's own on XC)
 
         QSettings * m_settings;
+
 };
 
 #endif

@@ -49,7 +49,7 @@
  */
 PeerChannel::PeerChannel(const QString &id, const QString &state,
                          const QString &otherPeer, QObject *parent)
-: QObject(parent), m_id(id), m_state(state), m_otherPeer(otherPeer)
+        : QObject(parent), m_id(id), m_state(state), m_otherPeer(otherPeer)
 {
 }
 

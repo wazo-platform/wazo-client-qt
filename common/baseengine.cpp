@@ -67,7 +67,7 @@ BaseEngine::BaseEngine(QSettings * settings,
                        QObject * parent)
         : QObject(parent),
 	  m_serverhost(""), m_loginport(0), m_sbport(0),
-          m_asterisk(""), m_protocol(""), m_userid(""), m_passwd(""),
+          m_asterisk(""), m_protocol(""), m_userid(""), m_phonenumber(""), m_passwd(""),
           m_checked_presence(false), m_checked_cinfo(false),
           m_sessionid(""), m_state(ENotLogged),
 	  m_listenport(0), m_pendingkeepalivemsg(0)
@@ -96,6 +96,8 @@ BaseEngine::BaseEngine(QSettings * settings,
            void bytesWritten ( qint64 bytes )
            void readyRead ()
         */
+
+        // m_userinfo = new UserInfo();
 
 	// Socket for Login in UDP connections
         m_loginsocket->setProperty("socket", "login_udp");
@@ -162,6 +164,14 @@ void BaseEngine::loadSettings()
         //qDebug() << "BaseEngine::loadSettings()";
 	m_systrayed = m_settings->value("display/systrayed", false).toBool();
 
+//         QStringList usergroups = m_settings->childGroups();
+//         for(int i = 0 ; i < usergroups.size(); i++) {
+//                 QString groupname = usergroups[i];
+//                 if (groupname.startsWith("engine")) {
+//                         qDebug() << "valid engine name =" << groupname;
+//                 }
+//         }
+
         m_settings->beginGroup("engine");
 	m_serverhost = m_settings->value("serverhost", "192.168.0.254").toString();
 	m_loginport  = m_settings->value("loginport", 5000).toUInt();
@@ -170,10 +180,13 @@ void BaseEngine::loadSettings()
         m_checked_presence = m_settings->value("fct_presence", true).toBool();
         m_checked_cinfo    = m_settings->value("fct_cinfo",    true).toBool();
 
-	m_asterisk   = m_settings->value("asterisk", "xivo").toString();
-	m_protocol   = m_settings->value("protocol", "sip").toString();
 	m_userid     = m_settings->value("userid").toString();
 	m_passwd     = m_settings->value("passwd").toString();
+	m_loginkind  = m_settings->value("loginkind", 0).toUInt();
+	m_asterisk   = m_settings->value("asterisk", "xivo").toString();
+	m_protocol   = m_settings->value("protocol", "sip").toString();
+	m_agentid    = m_settings->value("agentid").toString();
+	m_phonenumber = m_settings->value("phonenumber").toString();
 
 	m_autoconnect = m_settings->value("autoconnect", false).toBool();
 	m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
@@ -197,6 +210,7 @@ void BaseEngine::saveSettings()
         //qDebug() << "BaseEngine::saveSettings()";
 	m_settings->setValue("display/systrayed", m_systrayed);
 
+        // m_settings->beginGroup("engine." + m_userid);
         m_settings->beginGroup("engine");
 	m_settings->setValue("serverhost", m_serverhost);
 	m_settings->setValue("loginport",  m_loginport);
@@ -208,6 +222,9 @@ void BaseEngine::saveSettings()
 	m_settings->setValue("asterisk",   m_asterisk);
 	m_settings->setValue("protocol",   m_protocol);
 	m_settings->setValue("userid",     m_userid);
+	m_settings->setValue("agentid",    m_agentid);
+	m_settings->setValue("phonenumber", m_phonenumber);
+	m_settings->setValue("loginkind",  m_loginkind);
 	m_settings->setValue("passwd",     m_passwd);
 
 	m_settings->setValue("autoconnect", m_autoconnect);
@@ -516,8 +533,14 @@ void BaseEngine::socketConnected()
                 stopTryAgainTimer();
                 /* do the login/identification ? */
                 setMyClientId();
-                m_pendingcommand = "login astid=" + m_asterisk + ";proto="
-                        + m_protocol + ";userid=" + m_userid + ";";
+                m_pendingcommand = "login astid=" + m_asterisk + ";proto=" + m_protocol
+                        + ";userid=" + m_userid
+                        + ";";
+                if(m_loginkind > 0)
+                        m_pendingcommand += "loginkind=agent;agentid=" + m_agentid + ";phonenumber=" + m_phonenumber + ";";
+                else
+                        m_pendingcommand += "loginkind=user;";
+                
                 if(m_checked_presence)
                         m_pendingcommand += "state=" + m_availstate + ";";
                 else
@@ -699,6 +722,23 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 }
 
 
+void BaseEngine::DisplayFiche(const QString & fichecontent, bool qtui)
+{
+        QBuffer * inputstream = new QBuffer(this);
+        inputstream->open(QIODevice::ReadWrite);
+        inputstream->write(fichecontent.toUtf8());
+        inputstream->close();
+        // Get Data and Popup the profile if ok
+        Popup * popup = new Popup(inputstream, qtui);
+        connect( popup, SIGNAL(destroyed(QObject *)),
+                 this, SLOT(popupDestroyed(QObject *)) );
+        connect( popup, SIGNAL(save(const QString &)),
+                 this, SLOT(addToDataBase(const QString &)) );
+        connect( popup, SIGNAL(wantsToBeShown(Popup *)),
+                 this, SLOT(profileToBeShown(Popup *)) );
+}
+
+
 bool BaseEngine::parseCommand(const QStringList & listitems)
 {
         // qDebug() << "BaseEngine::parseCommand listitems[0].toLower() =" << listitems[0].toLower() << listitems.size();
@@ -715,6 +755,9 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
                         QString myfullid   = "p/" + m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" + m_userid + "/" + m_extension;
                         QString myfullname = m_callerids[myfullid];
+
+                        qDebug() << "BaseEngine::parseCommand" << myfullname << myfullid;
+
                         localUserDefined(myfullname);
 
                         // Who do we monitor ?
@@ -734,6 +777,8 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                                 }
                         }
                         emitTextMessage(tr("Received status for %1 phones").arg(m_callerids.size()));
+                        sendCommand("queues-list " + m_asterisk);
+                        sendCommand("agents-status " + m_asterisk + " " + m_agentid);
                 } else {
                         sendCommand("phones-list " + listpeers[0]);
                 }
@@ -821,6 +866,17 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
         } else if(listitems[0].toLower() == QString("parkedcallgiveup")) {
                 parkingEvent(listitems[0], listitems[1]);
 
+        } else if(listitems[0].toLower() == QString("queues-list")) {
+                newQueueList(listitems[1]);
+
+        } else if(listitems[0].toLower() == QString("agentupdate")) {
+                QStringList newstatuses = listitems[1].split(";");
+                QString command = newstatuses[0];
+                QString agentnum = newstatuses[1];
+
+                if (agentnum == m_agentid)
+                        newUserStatus(listitems[1]);
+
         } else if(listitems[0].toLower() == QString("featuresput")) {
                 QString ret = listitems[1].split(";")[0];
                 if(ret == "OK") {
@@ -839,6 +895,11 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 qDebug() << "unknown command" << listitems[0];
 
         return true;
+}
+
+void BaseEngine::agentAction(const QString & action)
+{
+        sendCommand("agent " + action);
 }
 
 void BaseEngine::sendFaxCommand(const QString & filename, const QString & number,
@@ -912,6 +973,9 @@ void BaseEngine::popupError(const QString & errorid)
                 QStringList userslist = errorid.split(":")[1].split(";");
                 errormsg = tr("Max number (%1) of XIVO Switchboards already reached.").arg(userslist[0]);
         }
+        else if(errorid.startsWith("missing:")) {
+                errormsg = tr("Missing Argument(s)");
+        }
         else if(errorid.startsWith("version_client:")) {
                 QStringList versionslist = errorid.split(":")[1].split(";");
                 if(versionslist.size() >= 2)
@@ -957,22 +1021,10 @@ void BaseEngine::socketReadyRead()
 		if(line.startsWith("<?xml") || line.startsWith("<ui version=")) {
                         // we get here when receiving a customer info in tcp mode
                         qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
-
-                        QBuffer * inputstream = new QBuffer(this);
-                        inputstream->open(QIODevice::ReadWrite);
-                        inputstream->write(line.toUtf8());
-                        inputstream->close();
-                        // Get Data and Popup the profile if ok
                         bool qtui = false;
                         if(line.startsWith("<ui version="))
                                 qtui = true;
-                        Popup * popup = new Popup(inputstream, qtui);
-                        connect( popup, SIGNAL(destroyed(QObject *)),
-                                 this, SLOT(popupDestroyed(QObject *)) );
-                        connect( popup, SIGNAL(save(const QString &)),
-                                 this, SLOT(addToDataBase(const QString &)) );
-                        connect( popup, SIGNAL(wantsToBeShown(Popup *)),
-                                 this, SLOT(profileToBeShown(Popup *)) );
+                        DisplayFiche(line, qtui);
 
                 } else if (list.size() == 2) {
                         if(list[0].toLower() == "loginok") {
@@ -1219,6 +1271,36 @@ const QString & BaseEngine::userId() const
 void BaseEngine::setUserId(const QString & userid)
 {
 	m_userid = userid;
+}
+
+const QString & BaseEngine::agentId() const
+{
+	return m_agentid;
+}
+
+void BaseEngine::setAgentId(const QString & agentid)
+{
+	m_agentid = agentid;
+}
+
+const QString & BaseEngine::phonenumber() const
+{
+	return m_phonenumber;
+}
+
+void BaseEngine::setPhonenumber(const QString & phonenumber)
+{
+	m_phonenumber = phonenumber;
+}
+
+const int BaseEngine::loginkind() const
+{
+	return m_loginkind;
+}
+
+void BaseEngine::setLoginKind(const int loginkind)
+{
+	m_loginkind = loginkind;
 }
 
 const QString & BaseEngine::protocol() const
@@ -1780,21 +1862,10 @@ void BaseEngine::readProfile()
 		QByteArray data = m_connection->readLine();
 		QString line = QString::fromUtf8(data);
 		if(line.startsWith("<?xml") || line.startsWith("<ui version=")) {
-                        QBuffer * inputstream = new QBuffer(this);
-                        inputstream->open(QIODevice::ReadWrite);
-                        inputstream->write(line.toUtf8());
-                        inputstream->close();
-                        // Get Data and Popup the profile if ok
                         bool qtui = false;
                         if(line.startsWith("<ui version="))
                                 qtui = true;
-                        Popup * popup = new Popup(inputstream, qtui);
-                        connect( popup, SIGNAL(destroyed(QObject *)),
-                                 this, SLOT(popupDestroyed(QObject *)) );
-                        connect( popup, SIGNAL(save(const QString &)),
-                                 this, SLOT(addToDataBase(const QString &)) );
-                        connect( popup, SIGNAL(wantsToBeShown(Popup *)),
-                                 this, SLOT(profileToBeShown(Popup *)) );
+                        DisplayFiche(line, qtui);
                 }
         }
 }

@@ -158,6 +158,7 @@ void FaxPanel::setOpenFileName()
         /*        if (!native->isChecked())*/
         options |= QFileDialog::DontUseNativeDialog;
         QString selectedFilter;
+        // see setLocale() (non-static function) to set the appropriate locale
         QString fileName = QFileDialog::getOpenFileName(this,
                                                         tr("Open Fax File"),
                                                         m_openFileNameLabel->text(),

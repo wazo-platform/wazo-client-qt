@@ -129,6 +129,7 @@ private:
 	BaseEngine * m_engine;  //!< Base Engine reference
 	QLabel * m_statelbl;	//!< Peer state display (ringing, online, ...)
 	QLabel * m_availlbl;	//!< Peer state display from XIVO CTI Client
+	QLabel * m_agentlbl;
 	QLabel * m_voicelbl;
 	QLabel * m_fwdlbl;
 	QLabel * m_textlbl;		//!< text label : to display peer name

@@ -109,6 +109,11 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	connect( m_tcpmode,   SIGNAL(toggled(bool)),
 	         m_sbport,    SLOT(setEnabled(bool)) );
 
+        QFrame * qhline0 = new QFrame(this);
+        qhline0->setFrameShape(QFrame::HLine);
+        qhline0->setLineWidth(2);
+        gridlayout->addWidget(qhline0, line++, 0, 1, 0);
+
         QStringList qsl = m_engine->getSettings()->value("display/capas", "").toString().split(",");
         if(qsl.contains("presence") || qsl.contains("customerinfo")) {
                 // Box for Enabled Functions Definition
@@ -131,15 +136,53 @@ ConfWidget::ConfWidget(BaseEngine * engine,
                 gridlayout->addWidget(groupBox, line++, 0, 1, 0);
         }
 
-        // Box for Connexion Definition
+        // Box for Connection Definition
         //	QGroupBox * groupBox_conn = new QGroupBox( tr("Identification"), this );
         //	groupBox_conn->setAlignment( Qt::AlignHCenter );
         //	QVBoxLayout * vbox_conn = new QVBoxLayout( groupBox_conn );
 
-	QLabel * lblasterisk = new QLabel(tr("XIVO Id"), this);
+        QFrame * qhline1 = new QFrame(this);
+        qhline1->setFrameShape(QFrame::HLine);
+        qhline1->setLineWidth(2);
+        gridlayout->addWidget(qhline1, line++, 0, 1, 0);
+
+	m_lblulogin = new QLabel(tr("User Login"), this);
+	m_userid = new QLineEdit(m_engine->userId(), this);
+	gridlayout->addWidget(m_lblulogin, line, 0);
+	gridlayout->addWidget(m_userid, line++, 1);
+
+	m_lblpasswd = new QLabel(tr("Password"), this);
+	m_passwd = new QLineEdit(m_engine->password(), this);
+	m_passwd->setEchoMode(QLineEdit::Password);
+	gridlayout->addWidget(m_lblpasswd, line, 0);
+	gridlayout->addWidget(m_passwd, line++, 1);
+
+        QLabel * lblloginkind = new QLabel(tr("Login as Agent"), this);
+	m_loginkind = new QCheckBox(this);
+	m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
+ 	gridlayout->addWidget(lblloginkind, line, 0);
+	gridlayout->addWidget(m_loginkind, line++, 1);
+
+	connect( m_loginkind, SIGNAL(stateChanged(int)),
+	         this, SLOT(loginKindChanged(int)) );
+
+        QFrame * qhline3 = new QFrame(this);
+        qhline3->setFrameShape(QFrame::HLine);
+        gridlayout->addWidget(qhline3, line++, 0, 1, 0);
+
+        m_lblasterisk = new QLabel(tr("XIVO Id"), this);
 	m_asterisk = new QLineEdit(m_engine->serverast(), this);
-	gridlayout->addWidget(lblasterisk, line, 0);
-	gridlayout->addWidget(m_asterisk, line++, 1);
+        gridlayout->addWidget(m_lblasterisk, line, 0);
+        gridlayout->addWidget(m_asterisk, line++, 1);
+
+        QFrame * qhline4 = new QFrame(this);
+        qhline4->setFrameShape(QFrame::HLine);
+        gridlayout->addWidget(qhline4, line++, 0, 1, 0);
+
+	m_lblphone = new QLabel(tr("Phone Number"), this);
+        m_phonenumber = new QLineEdit(m_engine->phonenumber(), this);
+        gridlayout->addWidget(m_lblphone, line, 0);
+        gridlayout->addWidget(m_phonenumber, line++, 1);
 
 	QLabel * lblproto = new QLabel(tr("Protocol"), this);
 	m_protocombo = new QComboBox(this);
@@ -152,17 +195,22 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	gridlayout->addWidget(lblproto, line, 0);
 	gridlayout->addWidget(m_protocombo, line++, 1);
 
-	QLabel * lbllogin = new QLabel(tr("Login"), this);
-	m_userid = new QLineEdit(m_engine->userId(), this);
-	gridlayout->addWidget(lbllogin, line, 0);
-	gridlayout->addWidget(m_userid, line++, 1);
 
-	QLabel * lblpasswd = new QLabel(tr("Password"), this);
-	m_passwd = new QLineEdit(m_engine->password(), this);
-	m_passwd->setEchoMode(QLineEdit::Password);
-	gridlayout->addWidget(lblpasswd, line, 0);
-	gridlayout->addWidget(m_passwd, line++, 1);
+        QFrame * qhline5 = new QFrame(this);
+        qhline5->setFrameShape(QFrame::HLine);
+        gridlayout->addWidget(qhline5, line++, 0, 1, 0);
 
+	m_lblalogin = new QLabel(tr("Agent Id"), this);
+	m_agentid = new QLineEdit(m_engine->agentId(), this);
+	gridlayout->addWidget(m_lblalogin, line, 0);
+	gridlayout->addWidget(m_agentid, line++, 1);
+
+        this->loginKindChanged(m_loginkind->checkState());
+
+        QFrame * qhline2 = new QFrame(this);
+        qhline2->setFrameShape(QFrame::HLine);
+        qhline2->setLineWidth(2);
+        gridlayout->addWidget(qhline2, line++, 0, 1, 0);
 
         QString lastconn = tr("The last connected one takes on the login");
         //m_lastconnwins = new QCheckBox(tr("The last connected one takes on the login"), this);
@@ -225,6 +273,19 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	vlayout->addWidget(m_btnbox);
 }
 
+
+void ConfWidget::loginKindChanged(int index)
+{
+        if(index == 0) {
+                m_lblalogin->hide();
+                m_agentid->hide();
+        } else {
+                m_lblalogin->show();
+                m_agentid->show();
+        }
+}
+
+
 /*!
  * This slot saves the configuration (which is stored in displayed
  * widgets) to the BaseEngine object
@@ -239,7 +300,12 @@ void ConfWidget::saveAndClose()
 
 	m_engine->setServerAst(m_asterisk->text());
 	m_engine->setProtocol(m_protocombo->currentText().toLower());
+        m_engine->setLoginKind(m_loginkind->checkState());
+
 	m_engine->setUserId(m_userid->text());
+	m_engine->setAgentId(m_agentid->text());
+	m_engine->setPhonenumber(m_phonenumber->text());
+
 	m_engine->setPassword(m_passwd->text());
 
 	m_engine->setAutoconnect(m_autoconnect->checkState() == Qt::Checked);

@@ -398,6 +398,12 @@ void MainWidget::engineStarted()
                 m_infowidget = new IdentityDisplay();
                 connect( m_engine, SIGNAL(localUserDefined(const QString &)),
                          m_infowidget, SLOT(setUser(const QString &)));
+                connect( m_engine, SIGNAL(newUserStatus(const QString &)),
+                         m_infowidget, SLOT(setStatus(const QString &)));
+                connect( m_engine, SIGNAL(newQueueList(const QString &)),
+                         m_infowidget, SLOT(setQueueList(const QString &)));
+                connect( m_infowidget, SIGNAL(agentAction(const QString &)),
+                         m_engine, SLOT(agentAction(const QString &)));
                 m_mainlayout->addWidget(m_infowidget, 0);
         }
 
@@ -690,8 +696,7 @@ void MainWidget::showNewProfile(Popup * popup)
 {
 	QTime currentTime = QTime::currentTime();
 	QString currentTimeStr = currentTime.toString("hh:mm:ss");
-	if (m_systrayIcon)
-	{
+	if (m_systrayIcon && popup->tinyPopup()) {
 		m_systrayIcon->showMessage(tr("Incoming call"),
 		                           currentTimeStr + "\n"
 					   + popup->message() );
@@ -710,6 +715,8 @@ void MainWidget::showNewProfile(Popup * popup)
 		}
                 connect( popup, SIGNAL(emitDial(const QString &)),
                          m_engine, SLOT(dialFullChannel(const QString &)) );
+                connect( popup, SIGNAL(hangUp(const QString &)),
+                         m_engine, SLOT(hangUp(const QString &)) );
 		// show the window and give it the focus.
 		setVisible(true);
 		activateWindow();

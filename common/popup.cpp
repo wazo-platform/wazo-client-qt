@@ -72,6 +72,7 @@ Popup::Popup(QIODevice * inputstream,
           m_inputstream(inputstream),
           m_xmlInputSource(inputstream),
           m_handler(this),
+          m_tinypopup(true),
           m_sheetui(sheetui)
 {
 	QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -107,8 +108,11 @@ Popup::Popup(QIODevice * inputstream,
 
         m_vlayout->addWidget(m_sheetui_widget, 0, 0);
 
+        QPushButton * hupbutton   = m_sheetui_widget->findChild<QPushButton *>("hangup");
         QPushButton * closebutton = m_sheetui_widget->findChild<QPushButton *>("close");
         QPushButton * savebutton  = m_sheetui_widget->findChild<QPushButton *>("save");
+        if(hupbutton)
+                connect( hupbutton, SIGNAL(clicked()), this, SLOT(hangup()) );
         if(closebutton)
                 connect( closebutton, SIGNAL(clicked()), this, SLOT(close()) );
         if(savebutton)
@@ -130,6 +134,12 @@ void Popup::dispurl(const QUrl &url)
         // qDebug() << "Popup::dispurl()" << url;
         QString numbertodial = url.toString().mid(5);
         emitDial(numbertodial);
+}
+
+void Popup::hangup()
+{
+        qDebug() << "Popup::hangup()" << m_channel;
+        hangUp("p/xivo/default/" + m_channel);
 }
 
 void Popup::saveandclose()
@@ -157,6 +167,16 @@ void Popup::addInfoText(const QString & name, const QString & value)
 	hlayout->addWidget(lblname);
 	hlayout->addWidget(lblvalue);
 	m_vlayout->addLayout(hlayout);
+}
+
+void Popup::addInfoInternal(const QString & name, const QString & value)
+{
+        if(name == "channel")
+                m_channel = value;
+        else if(name == "nopopup")
+                m_tinypopup = false;
+        else
+                qDebug() << "internal" << name << value;
 }
 
 void Popup::addInfoPhone(const QString & name, const QString & value)
@@ -310,4 +330,9 @@ void Popup::setMessage(const QString & message)
 const QString & Popup::message() const
 {
 	return m_message;
+}
+
+bool Popup::tinyPopup()
+{
+        return m_tinypopup;
 }

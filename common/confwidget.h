@@ -49,6 +49,7 @@
 #include <QSpinBox>
 
 class QDialogButtonBox;
+class QLabel;
 
 class BaseEngine;
 class MainWidget;
@@ -77,6 +78,7 @@ public:
 private slots:
 	//! Save the configuration to the BaseEngine object and close
 	void saveAndClose();
+        void loginKindChanged(int);
 private:
 	BaseEngine * m_engine;		//!< BaseEngine object parameters are commited to
 	MainWidget * m_mainwindow;	//!< MainWidget where some parameters are commited to
@@ -93,8 +95,17 @@ private:
 
 	QLineEdit * m_asterisk;		//!< id name of the Asterisk server
 	QComboBox * m_protocombo;	//!< Protocol SIP/IAX
+	QCheckBox * m_loginkind;	//!< login kind (user or agent)
 	QLineEdit * m_userid;		//!< user login
+	QLineEdit * m_agentid;		//!< agent login
+	QLineEdit * m_phonenumber;	//!< agent's phone number
 	QLineEdit * m_passwd;		//!< user password
+
+        QLabel * m_lblasterisk;
+        QLabel * m_lblalogin;
+        QLabel * m_lblulogin;
+        QLabel * m_lblpasswd;
+        QLabel * m_lblphone;
 
 	QSpinBox  * m_history_sbox;	//!< History size
 	QSpinBox  * m_contacts_sbox;	//!< Displayed contacts' size

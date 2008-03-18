@@ -65,13 +65,14 @@ public:
 	Popup(QIODevice *inputstream,
               const bool & sheetui,
               QWidget * parent = 0);
+        void addInfoInternal(const QString &, const QString &);
 	//! Add a Text field (name, value)
-	void addInfoText(const QString & name, const QString & value);
+	void addInfoText(const QString &, const QString &);
 	//! Add a url field
-	void addInfoLink(const QString & name, const QString & value);
-	void addInfoLinkX(const QString & name, const QString & value, const QString & dispvalue);
+	void addInfoLink(const QString &, const QString &);
+	void addInfoLinkX(const QString &, const QString &, const QString &);
 	//! Add a Picture
-	void addInfoPicture(const QString & name, const QString & value);
+	void addInfoPicture(const QString &, const QString &);
 	//! Add a Phone number
 	void addInfoPhone(const QString & name, const QString & value);
 	//! Add a Phone number
@@ -82,9 +83,11 @@ public:
 	const QString & message() const;
 	//! finalize the Construction of the window and show it
 	void finishAndShow();
+	bool tinyPopup();
 signals:
 	void wantsToBeShown(Popup *);	//!< sent when the widget want to show itself
 	void emitDial(const QString &);	//!< sent when the widget wants to dial
+        void hangUp(const QString &);	//!< hanging up a channel ...
         void save(const QString &);
 public slots:
 	void streamNewData();		//!< new input data is available
@@ -95,6 +98,7 @@ public slots:
         void dispurl(const QUrl &);
         void httpGetNoreply();
         void saveandclose();
+        void hangup();
 protected:
 	void closeEvent(QCloseEvent *event);	//!< catch close event
 private:
@@ -110,6 +114,8 @@ private:
 	//! layout for the widget : vertical box
 	QVBoxLayout * m_vlayout;
 	QString m_message;	//! Message property
+        QString m_channel;
+        bool m_tinypopup;
         bool m_sheetui;
         QWidget * m_sheetui_widget;
 };

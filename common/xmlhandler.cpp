@@ -115,6 +115,11 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
 			if(m_popup)
 				m_popup->addInfoPicture( m_infoName, m_infoValue );
 		}
+		else if( m_infoType == QString("internal") )
+		{
+			if(m_popup)
+				m_popup->addInfoInternal( m_infoName, m_infoValue );
+		}
 		else if( m_infoType == QString("urlx") )
 		{
 			if(m_popup) {

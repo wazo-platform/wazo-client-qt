@@ -44,6 +44,7 @@ HEADERS += $${COMMONDIR}/remotepicwidget.h
 HEADERS += $${COMMONDIR}/searchpanel.h
 HEADERS += $${COMMONDIR}/servicepanel.h
 HEADERS += $${COMMONDIR}/urllabel.h
+HEADERS += $${COMMONDIR}/userinfo.h
 HEADERS += $${COMMONDIR}/xivoconsts.h
 HEADERS += $${COMMONDIR}/xmlhandler.h
 
@@ -68,6 +69,7 @@ SOURCES += $${COMMONDIR}/remotepicwidget.cpp
 SOURCES += $${COMMONDIR}/searchpanel.cpp
 SOURCES += $${COMMONDIR}/servicepanel.cpp
 SOURCES += $${COMMONDIR}/urllabel.cpp
+SOURCES += $${COMMONDIR}/userinfo.cpp
 SOURCES += $${COMMONDIR}/xmlhandler.cpp
 
 QT += network

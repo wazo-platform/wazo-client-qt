@@ -35,64 +35,20 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision$
- * $Date$
+/* $Revision: 2576 $
+ * $Date: 2008-03-10 13:56:18 +0100 (Mon, 10 Mar 2008) $
  */
 
-#ifndef __IDENTITYDISPLAY_H__
-#define __IDENTITYDISPLAY_H__
+#ifndef __USERINFO_H__
+#define __USERINFO_H__
 
-#include <QHash>
-#include <QLabel>
-#include <QList>
-#include <QObject>
-#include <QWidget>
-
-class QComboBox;
-class QPushButton;
-
-/*! \brief Identity Display
- */
-class IdentityDisplay : public QWidget
+class UserInfo
 {
-	Q_OBJECT
 public:
-	IdentityDisplay(QWidget * parent = 0);
-protected:
-public slots:
-	void setUser(const QString &);
-	void setQueueList(const QString &);
-	void setStatus(const QString &);
-        void doAgentAction();
-        void doQueueAction();
-        void doQueueJoinAll();
-        void doQueueLeaveAll();
-        void idxChanged(const QString &);
+	UserInfo();
+        ~UserInfo();
 private:
-        QLabel * m_user;
-        QLabel * m_agent;
-        QPushButton * m_agentaction;
-        QPushButton * m_queueaction;
-        QPushButton * m_queuejoinall;
-        QPushButton * m_queueleaveall;
-        QComboBox * m_queuelist;
-        QHash<QString, int> m_queuesindexes;
-        QHash<QString, bool> m_queuesstatuses;
-
-        bool m_agentstatus;
-signals:
-        void agentAction(const QString &);
-};
-
-
-class SizeableLabel : public QLabel
-{
-        Q_OBJECT
-public:
-        SizeableLabel(const QString &text, const QSize &size, QWidget *parent = 0);
-        QSize sizeHint() const;
-private:
-        QSize m_size;
+        QString m_asterisk;
 };
 
 #endif
