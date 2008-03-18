@@ -37,9 +37,12 @@ nsis:
 all-win32: all upx nsis
 
 # export UPXRUN=/Users/proformatique/upx-3.01-src/src/upx.out
-all-macos: all all-macos-xivoclient all-macos-switchboard
+all-macos: all-macos-xivoclient all-macos-switchboard
 
 all-macos-%:
+	${QMAKE} $*/$*.pro -o $*/Makefile
+	${LRELEASE} $*/$*_fr.ts
+	cd $* && make
 	${UPXRUN} $*/$*.app/Contents/MacOS/$*
 	hdiutil create $*-${XIVOVER}-${SVNVER}.dmg -srcfolder $*/$*.app -format UDBZ
 
