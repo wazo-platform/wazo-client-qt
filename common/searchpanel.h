@@ -48,6 +48,7 @@
 
 #include "peeritem.h"
 
+class QGridLayout;
 class QVBoxLayout;
 
 class BaseEngine;
@@ -81,8 +82,7 @@ signals:
 private:
 	BaseEngine * m_engine;	//!< engine object reference
 	QHash<QString, Peer *> m_peerhash;	//!< Peer list
-	QVBoxLayout * m_peerlayout;	//!< layout object
-        QStringList * m_qsl;
+	QGridLayout * m_peerlayout;	//!< layout object
 	ExtendedLineEdit * m_input;	//!< widget for search string input
         QPixmap m_phone_green;
         QPixmap m_phone_red;

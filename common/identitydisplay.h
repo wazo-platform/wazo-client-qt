@@ -49,6 +49,7 @@
 #include <QWidget>
 
 class QComboBox;
+class QProgressBar;
 class QPushButton;
 
 /*! \brief Identity Display
@@ -76,8 +77,10 @@ private:
         QPushButton * m_queuejoinall;
         QPushButton * m_queueleaveall;
         QComboBox * m_queuelist;
+        QProgressBar * m_queuebusy;
         QHash<QString, int> m_queuesindexes;
         QHash<QString, bool> m_queuesstatuses;
+        QHash<QString, QString> m_queuesbusyness;
 
         bool m_agentstatus;
 signals:

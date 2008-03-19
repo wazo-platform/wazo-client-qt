@@ -46,6 +46,7 @@
 #include <QLineEdit>
 #include <QMouseEvent>
 #include <QSizePolicy>
+#include <QProgressBar>
 #include <QPushButton>
 #include <QRegExp>
 #include <QScrollArea>
@@ -75,6 +76,10 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
         m_queueaction = new QPushButton(tr("Leave"), this);
         m_queueaction->setIconSize(QSize(16, 16));
 
+        m_queuebusy = new QProgressBar(this);
+        m_queuebusy->setRange(0, 5);
+        // m_queuebusy->setFormat("%v");
+        m_queuebusy->setTextVisible(false);
         m_queuelist = new QComboBox(this);
 
         connect(m_queuelist, SIGNAL(currentIndexChanged(const QString &)),
@@ -88,13 +93,14 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
         connect(m_queuejoinall, SIGNAL(clicked()),
                 this, SLOT(doQueueJoinAll()));
 
-	glayout->addWidget( m_user, 0, 0, 1, 6, Qt::AlignCenter );
+	glayout->addWidget( m_user, 0, 0, 1, 7, Qt::AlignCenter );
 	glayout->addWidget( m_agent, 1, 0, Qt::AlignCenter );
 	glayout->addWidget( m_agentaction, 1, 1, Qt::AlignCenter );
 	glayout->addWidget( m_queueaction, 1, 2, Qt::AlignCenter );
 	glayout->addWidget( m_queuelist, 1, 3, Qt::AlignCenter );
-	glayout->addWidget( m_queuejoinall, 1, 4, Qt::AlignCenter );
-	glayout->addWidget( m_queueleaveall, 1, 5, Qt::AlignCenter );
+	glayout->addWidget( m_queuebusy, 1, 4, Qt::AlignCenter );
+	glayout->addWidget( m_queuejoinall, 1, 5, Qt::AlignCenter );
+	glayout->addWidget( m_queueleaveall, 1, 6, Qt::AlignCenter );
 
         m_agent->hide();
         m_agentaction->hide();
@@ -103,6 +109,7 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
         m_queuelist->hide();
         m_queueleaveall->hide();
         m_queuejoinall->hide();
+        m_queuebusy->hide();
 
 // 	glayout->setColumnStretch( 0, 1 );
 // 	glayout->setRowStretch( 0, 1 );
@@ -130,12 +137,14 @@ void IdentityDisplay::setQueueList(const QString & qlist)
                 m_queuelist->addItem(queues[i]);
                 m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
                 m_queuesindexes[queues[i]] = i;
+                m_queuesbusyness[queues[i]] = "0";
         }
         if((queues.size() > 0) && (m_agentstatus)) {
                 m_queueaction->show();
                 m_queuelist->show();
                 m_queueleaveall->show();
                 m_queuejoinall->show();
+                m_queuebusy->show();
         }
 }
 
@@ -158,6 +167,7 @@ void IdentityDisplay::setStatus(const QString & status)
                                 m_queuelist->show();
                                 m_queueleaveall->show();
                                 m_queuejoinall->show();
+                                m_queuebusy->show();
                         }
                 } else if (command == "logout") {
                         m_agent->show();
@@ -169,6 +179,7 @@ void IdentityDisplay::setStatus(const QString & status)
                         m_queuelist->hide();
                         m_queueleaveall->hide();
                         m_queuejoinall->hide();
+                        m_queuebusy->hide();
                 } else if (command == "joinqueue") {
                         int idx = m_queuesindexes[arg];
                         m_queuelist->setItemIcon(idx, QIcon(":/images/button_ok.png"));
@@ -185,7 +196,7 @@ void IdentityDisplay::setStatus(const QString & status)
         } else if (newstatuses.size() == 4) {
                 QString command = newstatuses[0];
                 if (command == "queuememberstatus") {
-                        qDebug() << newstatuses;
+                        // qDebug() << newstatuses;
                         QString agentnum = newstatuses[1];
                         QString status = newstatuses[2];
                         if(status == "1") {
@@ -193,6 +204,12 @@ void IdentityDisplay::setStatus(const QString & status)
                         } else if(status == "3") {
                                 m_agent->setText("Agent " + agentnum + " (called)");
                         }
+                } else if (command == "queuechannels") {
+                        QString queuename = newstatuses[2];
+                        QString busyness = newstatuses[3];
+                        m_queuesbusyness[queuename] = busyness;
+                        if(queuename == m_queuelist->currentText())
+                                m_queuebusy->setValue(busyness.toInt());
                 }
         }
 
@@ -247,6 +264,7 @@ void IdentityDisplay::idxChanged(const QString & newidx)
                 m_queueaction->setText(tr("Join"));
                 m_queueaction->setIcon(QIcon(":/images/add.png"));
         }
+        m_queuebusy->setValue(m_queuesbusyness[newidx].toInt());
 }
 
 SizeableLabel::SizeableLabel(const QString &text, const QSize &size, QWidget *parent)

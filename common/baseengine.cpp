@@ -194,7 +194,7 @@ void BaseEngine::loadSettings()
 	m_keepaliveinterval = m_settings->value("keepaliveinterval", 20*1000).toUInt();
 
 	m_historysize = m_settings->value("historysize", 8).toUInt();
-	m_contactssize = m_settings->value("contactssize", 15).toUInt();
+	m_contactssize = m_settings->value("contactssize", 45).toUInt();
 	m_tcpmode = m_settings->value("tcpmode", false).toBool();
         m_checked_lastconnwins = m_settings->value("lastconnwins", false).toBool();
 
@@ -876,6 +876,9 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
                 if (agentnum == m_agentid)
                         newUserStatus(listitems[1]);
+                if (command == "queuechannels") {
+                        newUserStatus(listitems[1]);
+                }
 
         } else if(listitems[0].toLower() == QString("featuresput")) {
                 QString ret = listitems[1].split(";")[0];

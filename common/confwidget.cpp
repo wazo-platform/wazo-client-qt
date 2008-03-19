@@ -70,37 +70,44 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	setWindowTitle(tr("Configuration"));
 
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
-	/* grid layout for the editable values */
-	QGridLayout * gridlayout = new QGridLayout();
+	QTabWidget * tabwidget = new QTabWidget();
+        
+        //
+        // Connection Tab
+        //
+        
+	QGridLayout * gridlayout1 = new QGridLayout();
+        QWidget * widget_connection = new QWidget();
+        widget_connection->setLayout(gridlayout1);
 
         //      QStringList childgroups = m_engine->getSettings()->childGroups();
         // 	QLabel * lblprofile = new QLabel(tr("Profile"), this);
         // 	QComboBox * profile = new QComboBox(this);
         // 	profile->addItem(QString(tr("Default")));
         //      profile->setCurrentIndex(0);
-        // 	gridlayout->addWidget(lblprofile, line, 0);
-        // 	gridlayout->addWidget(profile, line++, 1);
+        // 	gridlayout1->addWidget(lblprofile, line, 0);
+        // 	gridlayout1->addWidget(profile, line++, 1);
 
 	QLabel * lblhost = new QLabel(tr("Server Host"), this);
 	m_serverhost = new QLineEdit(m_engine->serverip(), this);
-	gridlayout->addWidget(lblhost, line, 0);
-	gridlayout->addWidget(m_serverhost, line++, 1);
+	gridlayout1->addWidget(lblhost, line, 0);
+	gridlayout1->addWidget(m_serverhost, line++, 1);
 
 	m_tcpmode = new QCheckBox(tr("TCP Mode (for NAT traversal)"), this);
 	m_tcpmode->setCheckState(m_engine->tcpmode() ? Qt::Checked : Qt::Unchecked);
-	gridlayout->addWidget(m_tcpmode, line++, 0, 1, 0);
+	gridlayout1->addWidget(m_tcpmode, line++, 0, 1, 0);
         
 	QLabel * lbllport = new QLabel(tr("UDP Login Port"), this);
 	m_loginport = new QLineEdit(QString::number(m_engine->loginPort()), this);
 	m_loginport->setInputMask("99999");
-	gridlayout->addWidget(lbllport, line, 0);
-	gridlayout->addWidget(m_loginport, line++, 1);
+	gridlayout1->addWidget(lbllport, line, 0);
+	gridlayout1->addWidget(m_loginport, line++, 1);
 
         QLabel * lblsbport = new QLabel(tr("TCP Login Port"), this);
         m_sbport = new QLineEdit( QString::number(m_engine->sbPort()), this);
         m_sbport->setInputMask("99999");
-        gridlayout->addWidget(lblsbport, line, 0);
-        gridlayout->addWidget(m_sbport, line++, 1);
+        gridlayout1->addWidget(lblsbport, line, 0);
+        gridlayout1->addWidget(m_sbport, line++, 1);
 
         m_loginport->setDisabled(m_tcpmode->checkState() == Qt::Checked);
         m_sbport->setEnabled(m_tcpmode->checkState() == Qt::Checked);
@@ -109,80 +116,81 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	connect( m_tcpmode,   SIGNAL(toggled(bool)),
 	         m_sbport,    SLOT(setEnabled(bool)) );
 
-        QFrame * qhline0 = new QFrame(this);
-        qhline0->setFrameShape(QFrame::HLine);
-        qhline0->setLineWidth(2);
-        gridlayout->addWidget(qhline0, line++, 0, 1, 0);
+ 	gridlayout1->setRowStretch( line, 1 );
+        
+        //
+        // Functions Tab
+        //
+        
+        QVBoxLayout * vbox = new QVBoxLayout();
+        QWidget * widget_functions = new QWidget();
+        widget_functions->setLayout(vbox);
 
         QStringList qsl = m_engine->getSettings()->value("display/capas", "").toString().split(",");
-        if(qsl.contains("presence") || qsl.contains("customerinfo")) {
-                // Box for Enabled Functions Definition
-                QGroupBox * groupBox = new QGroupBox( tr("Functions") );
-                groupBox->setAlignment( Qt::AlignHCenter );
-                QVBoxLayout * vbox = new QVBoxLayout( groupBox );
-
-                if(qsl.contains("presence")) {
-                        m_presence = new QCheckBox(tr("Presence reporting"));
-                        m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
-                        vbox->addWidget( m_presence );
-                }
-
-                if(qsl.contains("customerinfo")) {
-                        m_cinfo = new QCheckBox(tr("Customer Info"));
-                        m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
-                        vbox->addWidget( m_cinfo );
-                }
-
-                gridlayout->addWidget(groupBox, line++, 0, 1, 0);
+        if(qsl.contains("presence")) {
+                m_presence = new QCheckBox(tr("Presence reporting"));
+                m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
+                vbox->addWidget( m_presence );
         }
+
+        if(qsl.contains("customerinfo")) {
+                m_cinfo = new QCheckBox(tr("Customer Info"));
+                m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
+                vbox->addWidget( m_cinfo );
+        }
+ 	vbox->addStretch(1);
 
         // Box for Connection Definition
         //	QGroupBox * groupBox_conn = new QGroupBox( tr("Identification"), this );
         //	groupBox_conn->setAlignment( Qt::AlignHCenter );
         //	QVBoxLayout * vbox_conn = new QVBoxLayout( groupBox_conn );
 
-        QFrame * qhline1 = new QFrame(this);
-        qhline1->setFrameShape(QFrame::HLine);
-        qhline1->setLineWidth(2);
-        gridlayout->addWidget(qhline1, line++, 0, 1, 0);
+        
+        //
+        // User Account's Tab
+        //
+        
+	QGridLayout * gridlayout3 = new QGridLayout();
+        QWidget * widget_user = new QWidget();
+        widget_user->setLayout(gridlayout3);
 
 	m_lblulogin = new QLabel(tr("User Login"), this);
 	m_userid = new QLineEdit(m_engine->userId(), this);
-	gridlayout->addWidget(m_lblulogin, line, 0);
-	gridlayout->addWidget(m_userid, line++, 1);
+	gridlayout3->addWidget(m_lblulogin, line, 0);
+	gridlayout3->addWidget(m_userid, line++, 1);
 
 	m_lblpasswd = new QLabel(tr("Password"), this);
 	m_passwd = new QLineEdit(m_engine->password(), this);
 	m_passwd->setEchoMode(QLineEdit::Password);
-	gridlayout->addWidget(m_lblpasswd, line, 0);
-	gridlayout->addWidget(m_passwd, line++, 1);
+	gridlayout3->addWidget(m_lblpasswd, line, 0);
+	gridlayout3->addWidget(m_passwd, line++, 1);
 
         QLabel * lblloginkind = new QLabel(tr("Login as Agent"), this);
 	m_loginkind = new QCheckBox(this);
 	m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
- 	gridlayout->addWidget(lblloginkind, line, 0);
-	gridlayout->addWidget(m_loginkind, line++, 1);
+ 	gridlayout3->addWidget(lblloginkind, line, 0);
+	gridlayout3->addWidget(m_loginkind, line++, 1);
 
 	connect( m_loginkind, SIGNAL(stateChanged(int)),
 	         this, SLOT(loginKindChanged(int)) );
 
         QFrame * qhline3 = new QFrame(this);
         qhline3->setFrameShape(QFrame::HLine);
-        gridlayout->addWidget(qhline3, line++, 0, 1, 0);
+        gridlayout3->addWidget(qhline3, line++, 0, 1, 0);
 
         m_lblasterisk = new QLabel(tr("XIVO Id"), this);
 	m_asterisk = new QLineEdit(m_engine->serverast(), this);
-        gridlayout->addWidget(m_lblasterisk, line, 0);
-        gridlayout->addWidget(m_asterisk, line++, 1);
+        gridlayout3->addWidget(m_lblasterisk, line, 0);
+        gridlayout3->addWidget(m_asterisk, line++, 1);
 
         QFrame * qhline4 = new QFrame(this);
         qhline4->setFrameShape(QFrame::HLine);
-        gridlayout->addWidget(qhline4, line++, 0, 1, 0);
+        gridlayout3->addWidget(qhline4, line++, 0, 1, 0);
 
 	m_lblphone = new QLabel(tr("Phone Number"), this);
         m_phonenumber = new QLineEdit(m_engine->phonenumber(), this);
-        gridlayout->addWidget(m_lblphone, line, 0);
-        gridlayout->addWidget(m_phonenumber, line++, 1);
+        gridlayout3->addWidget(m_lblphone, line, 0);
+        gridlayout3->addWidget(m_phonenumber, line++, 1);
 
 	QLabel * lblproto = new QLabel(tr("Protocol"), this);
 	m_protocombo = new QComboBox(this);
@@ -192,74 +200,81 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 		m_protocombo->setCurrentIndex(0);
 	else
 		m_protocombo->setCurrentIndex(1);
-	gridlayout->addWidget(lblproto, line, 0);
-	gridlayout->addWidget(m_protocombo, line++, 1);
+	gridlayout3->addWidget(lblproto, line, 0);
+	gridlayout3->addWidget(m_protocombo, line++, 1);
 
 
         QFrame * qhline5 = new QFrame(this);
         qhline5->setFrameShape(QFrame::HLine);
-        gridlayout->addWidget(qhline5, line++, 0, 1, 0);
+        gridlayout3->addWidget(qhline5, line++, 0, 1, 0);
 
 	m_lblalogin = new QLabel(tr("Agent Id"), this);
 	m_agentid = new QLineEdit(m_engine->agentId(), this);
-	gridlayout->addWidget(m_lblalogin, line, 0);
-	gridlayout->addWidget(m_agentid, line++, 1);
+	gridlayout3->addWidget(m_lblalogin, line, 0);
+	gridlayout3->addWidget(m_agentid, line++, 1);
 
         this->loginKindChanged(m_loginkind->checkState());
 
-        QFrame * qhline2 = new QFrame(this);
-        qhline2->setFrameShape(QFrame::HLine);
-        qhline2->setLineWidth(2);
-        gridlayout->addWidget(qhline2, line++, 0, 1, 0);
+ 	gridlayout3->setRowStretch( line, 1 );
+
+        //
+        // GUI Settings
+        //
+
+	QGridLayout * gridlayout4 = new QGridLayout();
+        QWidget * widget_gui = new QWidget();
+        widget_gui->setLayout(gridlayout4);
 
         QString lastconn = tr("The last connected one takes on the login");
         //m_lastconnwins = new QCheckBox(tr("The last connected one takes on the login"), this);
  	//m_lastconnwins->setCheckState(m_engine->lastconnwins() ? Qt::Checked : Qt::Unchecked);
-        //gridlayout->addWidget(m_lastconnwins, line++, 0, 1, 0);
+        //gridlayout4->addWidget(m_lastconnwins, line++, 0, 1, 0);
 
 	m_autoconnect = new QCheckBox(tr("Autoconnect at startup"), this);
 	m_autoconnect->setCheckState(m_engine->autoconnect() ? Qt::Checked : Qt::Unchecked);
-	gridlayout->addWidget(m_autoconnect, line++, 0, 1, 0);
+	gridlayout4->addWidget(m_autoconnect, line++, 0, 1, 0);
 
 	m_trytoreconnect = new QCheckBox(tr("Try to reconnect") + "\n" + \
                                          tr("Checking this box disables the Error Popups"), this);
 	m_trytoreconnect->setCheckState(m_engine->trytoreconnect() ? Qt::Checked : Qt::Unchecked);
-	gridlayout->addWidget(m_trytoreconnect, line++, 0, 1, 0);
-	gridlayout->addWidget(new QLabel(tr("Try to reconnect interval"), this), line, 0);
+	gridlayout4->addWidget(m_trytoreconnect, line++, 0, 1, 0);
+	gridlayout4->addWidget(new QLabel(tr("Try to reconnect interval"), this), line, 0);
 	m_tryinterval_sbox = new QSpinBox(this);
 	m_tryinterval_sbox->setRange(1, 120);
 	m_tryinterval_sbox->setValue(m_engine->trytoreconnectinterval() / 1000);
-	gridlayout->addWidget(m_tryinterval_sbox, line++, 1);
+	gridlayout4->addWidget(m_tryinterval_sbox, line++, 1);
 
-	gridlayout->addWidget(new QLabel(tr("Keep alive interval"), this), line, 0);
+	gridlayout4->addWidget(new QLabel(tr("Keep alive interval"), this), line, 0);
 	m_kainterval_sbox = new QSpinBox(this);
 	m_kainterval_sbox->setRange(1, 120);
 	m_kainterval_sbox->setValue(m_engine->keepaliveinterval() / 1000);
-	gridlayout->addWidget(m_kainterval_sbox, line++, 1);
+	gridlayout4->addWidget(m_kainterval_sbox, line++, 1);
 
-	gridlayout->addWidget(new QLabel(tr("Tab limit"), this), line, 0);
+	gridlayout4->addWidget(new QLabel(tr("Tab limit"), this), line, 0);
 	m_tablimit_sbox = new QSpinBox(this);
 	m_tablimit_sbox->setRange(0, 99);
 	m_tablimit_sbox->setValue(m_mainwindow->tablimit());
-	gridlayout->addWidget(m_tablimit_sbox, line++, 1);
+	gridlayout4->addWidget(m_tablimit_sbox, line++, 1);
 
-	gridlayout->addWidget(new QLabel(tr("History size"), this), line, 0);
+	gridlayout4->addWidget(new QLabel(tr("History size"), this), line, 0);
 	m_history_sbox = new QSpinBox(this);
 	m_history_sbox->setRange(1, 20);
 	m_history_sbox->setValue(m_engine->historySize());
-	gridlayout->addWidget(m_history_sbox, line++, 1);
+	gridlayout4->addWidget(m_history_sbox, line++, 1);
 
-	gridlayout->addWidget(new QLabel(tr("Contacts' size"), this), line, 0);
+	gridlayout4->addWidget(new QLabel(tr("Contacts' size"), this), line, 0);
 	m_contacts_sbox = new QSpinBox(this);
 	m_contacts_sbox->setRange(1, 50);
 	m_contacts_sbox->setValue(m_engine->contactsSize());
-	gridlayout->addWidget(m_contacts_sbox, line++, 1);
+	gridlayout4->addWidget(m_contacts_sbox, line++, 1);
 
         if(m_engine->isASwitchboard() == false) {
                 m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
                 m_systrayed->setCheckState(m_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
-                gridlayout->addWidget(m_systrayed, line++, 0, 1, 0);
+                gridlayout4->addWidget(m_systrayed, line++, 0, 1, 0);
         }
+
+ 	gridlayout4->setRowStretch( line, 1 );
 
 	m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
 	connect(m_btnbox, SIGNAL(accepted()),
@@ -268,8 +283,12 @@ ConfWidget::ConfWidget(BaseEngine * engine,
                 this, SLOT(close()));
 	m_btnbox->button(QDialogButtonBox::Ok)->setDefault(true);
 
-	vlayout->addLayout(gridlayout);
-        vlayout->addStretch(1);
+        tabwidget->addTab(widget_connection, tr("Connection"));
+        tabwidget->addTab(widget_user, tr("Users"));
+        tabwidget->addTab(widget_functions, tr("Functions"));
+        tabwidget->addTab(widget_gui, tr("GUI Settings"));
+
+	vlayout->addWidget(tabwidget);
 	vlayout->addWidget(m_btnbox);
 }
 

@@ -86,6 +86,10 @@ PeerWidget::PeerWidget(const QString & id,
 
 	//qDebug() << "PeerWidget::PeerWidget()" << id;
 	//	QHBoxLayout * layout = new QHBoxLayout(this);
+        QFrame * qvline = new QFrame(this);
+        qvline->setFrameShape(QFrame::VLine);
+        qvline->setLineWidth(2);
+
 	QGridLayout * layout = new QGridLayout(this);
 	layout->setSpacing(2);
 	layout->setMargin(2);
@@ -98,16 +102,9 @@ PeerWidget::PeerWidget(const QString & id,
 	m_statelbl->setPixmap( *m_phone_grey );
 	m_availlbl->setPixmap( *m_person_grey );
         m_agentlbl->setPixmap( *m_phone_grey );
-        m_voicelbl->setPixmap( *m_person_grey );
-        m_fwdlbl->setPixmap( *m_phone_grey );
+        //         m_voicelbl->setPixmap( *m_person_grey );
+        //         m_fwdlbl->setPixmap( *m_phone_grey );
 
-	layout->addWidget( m_statelbl, 0, 0, Qt::AlignLeft );
-	layout->addWidget( m_availlbl, 0, 1, Qt::AlignLeft );
-	layout->addWidget( m_agentlbl, 1, 2, Qt::AlignLeft );
-	/*
-	  layout->addWidget( m_voicelbl, 1, 0, Qt::AlignLeft );
-	  layout->addWidget( m_fwdlbl,   1, 1, Qt::AlignLeft );
-	*/
 	m_textlbl = new QLabel(m_name.isEmpty() ? tr("(No callerid yet)") : m_name,
                                this);
         if(m_name.isEmpty())
@@ -115,10 +112,15 @@ PeerWidget::PeerWidget(const QString & id,
 	// set TextInteraction Flags so the mouse clicks are not catched by the
 	// QLabel widget
 	m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
-	layout->addWidget( m_textlbl, 0, 2, Qt::AlignLeft );
-	layout->setColumnStretch(0, 0);
-	layout->setColumnStretch(1, 0);
-	layout->setColumnStretch(2, 1);
+        layout->addWidget( qvline, 0, 0, 2, 1 );
+	layout->addWidget( m_textlbl, 0, 2, 1, 6, Qt::AlignLeft );
+	layout->addWidget( m_statelbl, 1, 2, Qt::AlignLeft );
+	layout->addWidget( m_availlbl, 1, 3, Qt::AlignLeft );
+	layout->addWidget( m_agentlbl, 1, 4, Qt::AlignLeft );
+        //         layout->addWidget( m_voicelbl, 1, 5, Qt::AlignLeft );
+        //         layout->addWidget( m_fwdlbl,   1, 6, Qt::AlignLeft );
+	layout->setColumnStretch(8, 1);
+
 	// to be able to receive drop
 	setAcceptDrops(true);
 	m_removeAction = new QAction( tr("&Remove"), this);

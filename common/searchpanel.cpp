@@ -67,8 +67,7 @@ SearchPanel::SearchPanel(QWidget * parent)
         widget->setObjectName("scroller");
 	scrollarea->setWidget(widget);
 	QVBoxLayout * scrollarealayout = new QVBoxLayout(widget);
-	m_peerlayout = new QVBoxLayout();
-	m_qsl = new QStringList();
+	m_peerlayout = new QGridLayout();
 	scrollarealayout->addLayout( m_peerlayout );
 	scrollarealayout->addStretch( 1 );
 	vlayout->addWidget(scrollarea);
@@ -118,11 +117,43 @@ void SearchPanel::affTextChanged(const QString & text)
         m_searchpattern = text;
         QHashIterator<QString, Peer *> i(m_peerhash);
 	// qDebug() << "affTextChanged" << text;
-        int naff = 0;
+
         while(i.hasNext()) {
                 i.next();
                 Peer * peeritem = i.value();
                 PeerWidget * peerwidget = peeritem->getWidget();
+
+                if ( m_peerlayout->indexOf( peerwidget ) > -1 ) {
+                        if(peerwidget != NULL) {
+                                m_peerlayout->removeWidget( peerwidget );
+                                peerwidget->hide();
+                                if(m_engine->isASwitchboard()) {
+                                        disconnect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
+                                                    m_engine, SLOT(originateCall(const QString&, const QString&)) );
+                                        disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
+                                                    m_engine, SLOT(transferCall(const QString&, const QString&)) );
+                                        disconnect( peerwidget, SIGNAL(hangUpChan(const QString &)),
+                                                    m_engine, SLOT(hangUp(const QString &)) );
+                                        disconnect( peerwidget, SIGNAL(interceptChan(const QString &)),
+                                                    m_engine, SLOT(interceptCall(const QString &)) );
+                                        disconnect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
+                                                    peerwidget, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
+                                }
+                                disconnect( peerwidget, SIGNAL(emitDial(const QString &)),
+                                            m_engine, SLOT(dialFullChannel(const QString &)) );
+                                peeritem->setWidget(NULL);
+                                delete peerwidget;
+                        }
+                }
+        }
+
+        int naff = 0;
+        i.toFront();
+        while(i.hasNext()) {
+                i.next();
+                Peer * peeritem = i.value();
+                PeerWidget * peerwidget = peeritem->getWidget();
+
                 if( peeritem->name().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
                         if(peerwidget == NULL) {
                                 peerwidget = new PeerWidget(peeritem->ext(),
@@ -145,10 +176,8 @@ void SearchPanel::affTextChanged(const QString & text)
                                 peeritem->updateDisplayedChans();
                                 peeritem->updateDisplayedName();
 
-                                m_qsl->append(peeritem->name());
-                                m_qsl->sort();
-                                int idof = m_qsl->indexOf(peeritem->name());
-                                m_peerlayout->insertWidget(idof, peerwidget);
+                                m_peerlayout->addWidget(peerwidget, naff / 3, naff % 3);
+                                naff ++;
                                 peerwidget->show();
                                 if(m_engine->isASwitchboard()) {
                                         connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
@@ -164,31 +193,6 @@ void SearchPanel::affTextChanged(const QString & text)
                                 }
                                 connect( peerwidget, SIGNAL(emitDial(const QString &)),
                                          m_engine, SLOT(dialFullChannel(const QString &)) );
-                        }
-                        naff ++;
-                } else {
-                        if ( m_peerlayout->indexOf( peerwidget ) > -1 ) {
-                                if(peerwidget != NULL) {
-                                        m_qsl->removeAll(peeritem->name());
-                                        m_peerlayout->removeWidget( peerwidget );
-                                        peerwidget->hide();
-                                        if(m_engine->isASwitchboard()) {
-                                                disconnect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
-                                                            m_engine, SLOT(originateCall(const QString&, const QString&)) );
-                                                disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
-                                                            m_engine, SLOT(transferCall(const QString&, const QString&)) );
-                                                disconnect( peerwidget, SIGNAL(hangUpChan(const QString &)),
-                                                            m_engine, SLOT(hangUp(const QString &)) );
-                                                disconnect( peerwidget, SIGNAL(interceptChan(const QString &)),
-                                                            m_engine, SLOT(interceptCall(const QString &)) );
-                                                disconnect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
-                                                            peerwidget, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
-                                        }
-                                        disconnect( peerwidget, SIGNAL(emitDial(const QString &)),
-                                                    m_engine, SLOT(dialFullChannel(const QString &)) );
-                                        peeritem->setWidget(NULL);
-                                        delete peerwidget;
-                                }
                         }
                 }
  	}
