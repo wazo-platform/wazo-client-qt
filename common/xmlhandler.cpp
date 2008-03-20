@@ -110,6 +110,11 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
 			if(m_popup)
 				m_popup->addInfoLink( m_infoName, m_infoValue );
 		}
+		else if( m_infoType == QString("urlauto") )
+		{
+			if(m_popup)
+				m_popup->addInfoLinkAuto( m_infoName, m_infoValue );
+		}
 		else if( m_infoType == QString("picture") )
 		{
 			if(m_popup)

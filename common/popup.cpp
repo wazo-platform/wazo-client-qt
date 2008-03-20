@@ -215,6 +215,12 @@ void Popup::addInfoLink(const QString & name, const QString & value)
 	m_vlayout->addLayout(hlayout);
 }
 
+void Popup::addInfoLinkAuto(const QString & name, const QString & value)
+{
+        qDebug() << "Popup::addInfoLinkAuto()" << name << value;
+        QDesktopServices::openUrl(QUrl(value));
+}
+
 void Popup::addInfoLinkX(const QString & name, const QString & value, const QString & dispvalue)
 {
         qDebug() << "Popup::addInfoLinkX()" << name << value << dispvalue;

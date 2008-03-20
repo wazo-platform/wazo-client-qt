@@ -71,6 +71,7 @@ public:
 	//! Add a url field
 	void addInfoLink(const QString &, const QString &);
 	void addInfoLinkX(const QString &, const QString &, const QString &);
+        void addInfoLinkAuto(const QString &, const QString &);
 	//! Add a Picture
 	void addInfoPicture(const QString &, const QString &);
 	//! Add a Phone number
