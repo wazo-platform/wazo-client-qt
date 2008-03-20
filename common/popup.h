@@ -63,7 +63,8 @@ class Popup: public QWidget
 public:
 	//! Construct from a QIODevice used to read XML input
 	Popup(QIODevice *inputstream,
-              const bool & sheetui,
+              const bool &,
+              const bool &,
               QWidget * parent = 0);
         void addInfoInternal(const QString &, const QString &);
 	//! Add a Text field (name, value)
@@ -117,6 +118,7 @@ private:
 	QString m_message;	//! Message property
         QString m_channel;
         bool m_tinypopup;
+        bool m_urlautoallow;
         bool m_sheetui;
         QWidget * m_sheetui_widget;
 };

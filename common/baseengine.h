@@ -133,6 +133,8 @@ public:
 	bool checkedPresence();			//! get m_checked_presence
 	void setCheckedCInfo(bool b);		//! set m_checked_cinfo
 	bool checkedCInfo();			//! get m_checked_cinfo
+	void setCheckedAutoUrl(bool b);		//! set m_checked_autourl
+	bool checkedAutoUrl();			//! get m_checked_autourl
 	void setEnabledPresence(bool b);	//! set m_enabled_presence
 	bool enabledPresence();			//! get m_enabled_presence
 	void setEnabledCInfo(bool b);		//! set m_enabled_cinfo
@@ -309,6 +311,7 @@ private:
 	bool m_checked_presence;      	//!< presence is checked
 	bool m_checked_cinfo;      	//!< customer info is checked
 	bool m_checked_lastconnwins;   	//!< the last connected account "wins"
+	bool m_checked_autourl;   	//!< allow automatic url display
 	bool m_tcpmode;			//!< use a unique outgoing TCP connection for everything
 
 	// Replies given by the server

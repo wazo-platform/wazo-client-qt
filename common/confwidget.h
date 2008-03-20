@@ -114,6 +114,7 @@ private:
 	QCheckBox * m_lastconnwins;	//!< The last connected user wins => disconnects the other
 	QCheckBox * m_presence;		//!< connect to presence server checkbox
 	QCheckBox * m_cinfo;		//!< customer info checkbox
+	QCheckBox * m_autourl;		//!< auto url allow checkbox
 
         QDialogButtonBox * m_btnbox;	//!< Buttons box
 };

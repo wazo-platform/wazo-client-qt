@@ -67,12 +67,14 @@
  */
 Popup::Popup(QIODevice * inputstream,
              const bool & sheetui,
+             const bool & urlautoallow,
              QWidget * parent)
         : QWidget(parent),
           m_inputstream(inputstream),
           m_xmlInputSource(inputstream),
           m_handler(this),
           m_tinypopup(true),
+          m_urlautoallow(urlautoallow),
           m_sheetui(sheetui)
 {
 	QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -217,8 +219,9 @@ void Popup::addInfoLink(const QString & name, const QString & value)
 
 void Popup::addInfoLinkAuto(const QString & name, const QString & value)
 {
-        qDebug() << "Popup::addInfoLinkAuto()" << name << value;
-        QDesktopServices::openUrl(QUrl(value));
+        qDebug() << "Popup::addInfoLinkAuto()" << name << value << m_urlautoallow;
+        if(m_urlautoallow)
+                QDesktopServices::openUrl(QUrl(value));
 }
 
 void Popup::addInfoLinkX(const QString & name, const QString & value, const QString & dispvalue)

@@ -138,6 +138,11 @@ ConfWidget::ConfWidget(BaseEngine * engine,
                 m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
                 vbox->addWidget( m_cinfo );
         }
+
+        m_autourl = new QCheckBox(tr("Allow the Automatic Opening of URLs"));
+        m_autourl->setCheckState(m_engine->checkedAutoUrl() ? Qt::Checked : Qt::Unchecked);
+        vbox->addWidget( m_autourl );
+
  	vbox->addStretch(1);
 
         // Box for Connection Definition
@@ -336,6 +341,7 @@ void ConfWidget::saveAndClose()
                 m_engine->setCheckedPresence(m_presence->checkState() == Qt::Checked);
         if(m_cinfo)
                 m_engine->setCheckedCInfo(m_cinfo->checkState() == Qt::Checked);
+        m_engine->setCheckedAutoUrl(m_autourl->checkState() == Qt::Checked);
 
 	m_engine->setHistorySize(m_history_sbox->value());
 	m_engine->setContactsSize(m_contacts_sbox->value());

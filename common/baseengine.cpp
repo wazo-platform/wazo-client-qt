@@ -179,6 +179,7 @@ void BaseEngine::loadSettings()
 
         m_checked_presence = m_settings->value("fct_presence", true).toBool();
         m_checked_cinfo    = m_settings->value("fct_cinfo",    true).toBool();
+        m_checked_autourl  = m_settings->value("fct_autourl",  true).toBool();
 
 	m_userid     = m_settings->value("userid").toString();
 	m_passwd     = m_settings->value("passwd").toString();
@@ -218,6 +219,7 @@ void BaseEngine::saveSettings()
 
 	m_settings->setValue("fct_presence", m_checked_presence);
 	m_settings->setValue("fct_cinfo",    m_checked_cinfo);
+	m_settings->setValue("fct_autourl",  m_checked_autourl);
 
 	m_settings->setValue("asterisk",   m_asterisk);
 	m_settings->setValue("protocol",   m_protocol);
@@ -273,6 +275,21 @@ void BaseEngine::setCheckedCInfo(bool b) {
  */
 bool BaseEngine::checkedCInfo() {
         return m_checked_cinfo;
+}
+
+/*!
+ *
+ */
+void BaseEngine::setCheckedAutoUrl(bool b) {
+	if(b != m_checked_autourl)
+		m_checked_autourl = b;
+}
+
+/*!
+ *
+ */
+bool BaseEngine::checkedAutoUrl() {
+        return m_checked_autourl;
 }
 
 /*!
@@ -729,7 +746,7 @@ void BaseEngine::DisplayFiche(const QString & fichecontent, bool qtui)
         inputstream->write(fichecontent.toUtf8());
         inputstream->close();
         // Get Data and Popup the profile if ok
-        Popup * popup = new Popup(inputstream, qtui);
+        Popup * popup = new Popup(inputstream, qtui, m_checked_autourl);
         connect( popup, SIGNAL(destroyed(QObject *)),
                  this, SLOT(popupDestroyed(QObject *)) );
         connect( popup, SIGNAL(save(const QString &)),
