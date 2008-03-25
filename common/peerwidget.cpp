@@ -101,7 +101,7 @@ PeerWidget::PeerWidget(const QString & id,
 
 	m_statelbl->setPixmap( *m_phone_grey );
 	m_availlbl->setPixmap( *m_person_grey );
-        m_agentlbl->setPixmap( *m_phone_grey );
+        m_agentlbl->setPixmap(QPixmap(":/images/agent-blue.png"));
         //         m_voicelbl->setPixmap( *m_person_grey );
         //         m_fwdlbl->setPixmap( *m_phone_grey );
 
@@ -114,8 +114,8 @@ PeerWidget::PeerWidget(const QString & id,
 	m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
         layout->addWidget( qvline, 0, 0, 2, 1 );
 	layout->addWidget( m_textlbl, 0, 2, 1, 6, Qt::AlignLeft );
-	layout->addWidget( m_statelbl, 1, 2, Qt::AlignLeft );
-	layout->addWidget( m_availlbl, 1, 3, Qt::AlignLeft );
+	layout->addWidget( m_availlbl, 1, 2, Qt::AlignLeft );
+	layout->addWidget( m_statelbl, 1, 3, Qt::AlignLeft );
 	layout->addWidget( m_agentlbl, 1, 4, Qt::AlignLeft );
         //         layout->addWidget( m_voicelbl, 1, 5, Qt::AlignLeft );
         //         layout->addWidget( m_fwdlbl,   1, 6, Qt::AlignLeft );

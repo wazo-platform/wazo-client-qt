@@ -130,21 +130,23 @@ void IdentityDisplay::setUser(const QString & user)
 void IdentityDisplay::setQueueList(const QString & qlist)
 {
         QStringList qsl = qlist.split(";");
-        QStringList queues = qsl[1].split(",");
-        queues.sort();
-        qDebug() << "queues" << queues;
-        for(int i = 0 ; i < queues.size(); i++) {
-                m_queuelist->addItem(queues[i]);
-                m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
-                m_queuesindexes[queues[i]] = i;
-                m_queuesbusyness[queues[i]] = "0";
-        }
-        if((queues.size() > 0) && (m_agentstatus)) {
-                m_queueaction->show();
-                m_queuelist->show();
-                m_queueleaveall->show();
-                m_queuejoinall->show();
-                m_queuebusy->show();
+        if(qsl[1].size() > 0) {
+                QStringList queues = qsl[1].split(",");
+                queues.sort();
+                qDebug() << "queues" << queues;
+                for(int i = 0 ; i < queues.size(); i++) {
+                        m_queuelist->addItem(queues[i]);
+                        m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
+                        m_queuesindexes[queues[i]] = i;
+                        m_queuesbusyness[queues[i]] = "0";
+                }
+                if((queues.size() > 0) && (m_agentstatus)) {
+                        m_queueaction->show();
+                        m_queuelist->show();
+                        m_queueleaveall->show();
+                        m_queuejoinall->show();
+                        m_queuebusy->show();
+                }
         }
 }
 
@@ -163,6 +165,7 @@ void IdentityDisplay::setStatus(const QString & status)
                         m_agentaction->setText(arg);
                         m_agentstatus = true;
                         if(m_queuesindexes.size() > 0) {
+                                qDebug() << "m_queuesindexes.size() > 0" << m_queuesindexes;
                                 m_queueaction->show();
                                 m_queuelist->show();
                                 m_queueleaveall->show();
@@ -181,17 +184,21 @@ void IdentityDisplay::setStatus(const QString & status)
                         m_queuejoinall->hide();
                         m_queuebusy->hide();
                 } else if (command == "joinqueue") {
-                        int idx = m_queuesindexes[arg];
-                        m_queuelist->setItemIcon(idx, QIcon(":/images/button_ok.png"));
-                        m_queuesstatuses[arg] = true;
-                        if(arg == m_queuelist->currentText())
-                                idxChanged(arg);
+                        if (m_queuesindexes.contains(arg)) {
+                                int idx = m_queuesindexes[arg];
+                                m_queuelist->setItemIcon(idx, QIcon(":/images/button_ok.png"));
+                                m_queuesstatuses[arg] = true;
+                                if(arg == m_queuelist->currentText())
+                                        idxChanged(arg);
+                        }
                 } else if (command == "leavequeue") {
-                        int idx = m_queuesindexes[arg];
-                        m_queuelist->setItemIcon(idx, QIcon(":/images/cancel.png"));
-                        m_queuesstatuses[arg] = false;
-                        if(arg == m_queuelist->currentText())
-                                idxChanged(arg);
+                        if (m_queuesindexes.contains(arg)) {
+                                int idx = m_queuesindexes[arg];
+                                m_queuelist->setItemIcon(idx, QIcon(":/images/cancel.png"));
+                                m_queuesstatuses[arg] = false;
+                                if(arg == m_queuelist->currentText())
+                                        idxChanged(arg);
+                        }
                 }
         } else if (newstatuses.size() == 4) {
                 QString command = newstatuses[0];
