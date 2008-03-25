@@ -121,16 +121,28 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
         m_xivobg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         m_lab1 = new QLabel(tr("Login"));
         m_lab2 = new QLabel(tr("Password"));
+        m_lab3 = new QLabel(tr("Phone Number"));
+        m_lab4 = new QLabel(tr("Agent Id"));
         m_qlab1 = new QLineEdit(m_settings->value("engine/userid").toString());
         m_qlab2 = new QLineEdit("");
+        m_qlab3 = new QLineEdit("");
+        m_qlab4 = new QLineEdit("");
         m_ack = new QPushButton("OK");
         connect( m_qlab1, SIGNAL(returnPressed()),
 	         this, SLOT(config_and_start()) );
+        connect( m_qlab1, SIGNAL(textChanged(const QString &)),
+	         this, SLOT(logintextChanged(const QString &)) );
         connect( m_qlab2, SIGNAL(returnPressed()),
+	         this, SLOT(config_and_start()) );
+        connect( m_qlab3, SIGNAL(returnPressed()),
+	         this, SLOT(config_and_start()) );
+        connect( m_qlab4, SIGNAL(returnPressed()),
 	         this, SLOT(config_and_start()) );
 	connect( m_ack, SIGNAL(pressed()),
 		 this, SLOT(config_and_start()) );
 	m_qlab2->setEchoMode(QLineEdit::Password);
+        m_qhline = new QFrame(this);
+        m_qhline->setFrameShape(QFrame::HLine);
         showLogin();
 
 	setCentralWidget(m_wid);
@@ -150,28 +162,48 @@ MainWidget::~MainWidget()
 
 void MainWidget::config_and_start()
 {
-        m_engine->config_and_start(m_qlab1->text(), m_qlab2->text());
+        m_engine->config_and_start(m_qlab1->text(),
+                                   m_qlab2->text(),
+                                   m_qlab3->text(),
+                                   m_qlab4->text());
 }
 
+void MainWidget::logintextChanged(const QString & logintext)
+{
+        m_qlab3->setText(logintext);
+        m_qlab4->setText(logintext);
+}
 
 void MainWidget::showLogin()
 {
         m_xivobg->show();
         m_lab1->show();
         m_lab2->show();
+        m_lab3->show();
+        m_lab4->show();
         m_qlab1->show();
         m_qlab2->show();
+        m_qlab3->show();
+        m_qlab4->show();
         m_ack->show();
+        m_qhline->show();
+
         m_gridlayout->setRowStretch(0, 1);
         m_gridlayout->setColumnStretch(0, 1);
+        m_gridlayout->setColumnStretch(2, 1);
+        m_gridlayout->setRowStretch(7, 1);
+
         m_gridlayout->addWidget(m_xivobg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
         m_gridlayout->addWidget(m_lab1, 2, 0, Qt::AlignRight);
         m_gridlayout->addWidget(m_qlab1, 2, 1);
         m_gridlayout->addWidget(m_lab2, 3, 0, Qt::AlignRight);
         m_gridlayout->addWidget(m_qlab2, 3, 1);
+        m_gridlayout->addWidget(m_qhline, 4, 0, 1, 3);
+        m_gridlayout->addWidget(m_lab3, 5, 0, Qt::AlignRight);
+        m_gridlayout->addWidget(m_qlab3, 5, 1);
+        m_gridlayout->addWidget(m_lab4, 6, 0, Qt::AlignRight);
+        m_gridlayout->addWidget(m_qlab4, 6, 1);
         m_gridlayout->addWidget(m_ack, 3, 2, Qt::AlignLeft);
-        m_gridlayout->setColumnStretch(2, 1);
-        m_gridlayout->setRowStretch(4, 1);
 }
 
 void MainWidget::hideLogin()
@@ -179,18 +211,30 @@ void MainWidget::hideLogin()
         m_xivobg->hide();
         m_lab1->hide();
         m_lab2->hide();
+        m_lab3->hide();
+        m_lab4->hide();
         m_qlab1->hide();
         m_qlab2->hide();
+        m_qlab3->hide();
+        m_qlab4->hide();
         m_ack->hide();
+        m_qhline->hide();
+
         m_gridlayout->setRowStretch(0, 0);
         m_gridlayout->setColumnStretch(0, 0);
         m_gridlayout->setColumnStretch(2, 0);
-        m_gridlayout->setRowStretch(4, 0);
+        m_gridlayout->setRowStretch(7, 0);
+
         m_gridlayout->removeWidget(m_ack);
         m_gridlayout->removeWidget(m_lab1);
         m_gridlayout->removeWidget(m_lab2);
+        m_gridlayout->removeWidget(m_lab3);
+        m_gridlayout->removeWidget(m_lab4);
+        m_gridlayout->removeWidget(m_qhline);
         m_gridlayout->removeWidget(m_qlab1);
         m_gridlayout->removeWidget(m_qlab2);
+        m_gridlayout->removeWidget(m_qlab3);
+        m_gridlayout->removeWidget(m_qlab4);
         m_gridlayout->removeWidget(m_xivobg);
 }
 

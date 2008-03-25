@@ -101,6 +101,7 @@ private slots:
 	void affTextChanged();
         void checksAvailState();
         void config_and_start();
+        void logintextChanged(const QString &);
 protected:
 	void showEvent(QShowEvent *);	//!< Catch show events
 	void hideEvent(QHideEvent *);	//!< Catch hide events
@@ -154,9 +155,14 @@ private:
 	QGridLayout * m_gridlayout;
         QLabel * m_lab1;
         QLabel * m_lab2;
+        QLabel * m_lab3;
+        QLabel * m_lab4;
         QLineEdit * m_qlab1;
         QLineEdit * m_qlab2;
+        QLineEdit * m_qlab3;
+        QLineEdit * m_qlab4;
         QPushButton * m_ack;
+        QFrame * m_qhline;
 
 	QMenu * m_avail;		//!< Availability submenu
 	QAction * m_avact_avail;	//!< Available Action

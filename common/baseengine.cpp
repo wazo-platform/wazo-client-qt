@@ -322,12 +322,20 @@ void BaseEngine::initListenSocket()
 }
 
 
-void BaseEngine::config_and_start(const QString & login, const QString & pass)
+void BaseEngine::config_and_start(const QString & login,
+                                  const QString & pass,
+                                  const QString & phonenum,
+                                  const QString & agentid)
 {
         m_userid = login;
-        m_phonenumber = login;
-        m_agentid = login;
         m_passwd = pass;
+        if ((phonenum.size() == 0) && (agentid.size() == 0)) {
+                m_phonenumber = login;
+                m_agentid = login;
+        } else {
+                m_phonenumber = phonenum;
+                m_agentid = agentid;
+        }
         saveSettings();
         start();
 }
