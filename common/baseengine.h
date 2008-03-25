@@ -150,6 +150,7 @@ public:
 	void setLastConnWins(bool b);		//!< last connected user wins
 	const QStringList & getCapabilities() const;	//!< returns capabilities
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
+        void config_and_start(const QString &, const QString &);
 protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
 public slots:

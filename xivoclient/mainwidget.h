@@ -90,6 +90,8 @@ public slots:
         void dispurl(const QUrl &url);
 private slots:
 	void showConfDialog();
+	void showLogin();
+	void hideLogin();
 	void engineStopped();
 	void engineStarted();
 	void systrayActivated(QSystemTrayIcon::ActivationReason);
@@ -98,6 +100,7 @@ private slots:
 	void about();
 	void affTextChanged();
         void checksAvailState();
+        void config_and_start();
 protected:
 	void showEvent(QShowEvent *);	//!< Catch show events
 	void hideEvent(QHideEvent *);	//!< Catch hide events
@@ -121,7 +124,6 @@ private:
 	QWidget * m_wid;	//!< Main widget
 	QTabWidget * m_cinfo_tabwidget;	//!< Area to display profiles
 	QTabWidget * m_main_tabwidget;	//!< Area to display function tabs
-	QVBoxLayout * m_mainlayout;    //!< Panel of widgets
 	QLabel * m_messagetosendlabel;    //!< Label for message for switchboards
 	QLineEdit * m_messagetosend;    //!< Message to send to the connected switchboards
 	DialPanel * m_dial;
@@ -148,6 +150,13 @@ private:
 	QAction * m_connectact;		//!< "Connect" Action
 	QAction * m_disconnectact;	//!< "Disconnect" Action
 	QActionGroup * m_availgrp;	//!< group For Availability Actions
+
+	QGridLayout * m_gridlayout;
+        QLabel * m_lab1;
+        QLabel * m_lab2;
+        QLineEdit * m_qlab1;
+        QLineEdit * m_qlab2;
+        QPushButton * m_ack;
 
 	QMenu * m_avail;		//!< Availability submenu
 	QAction * m_avact_avail;	//!< Available Action

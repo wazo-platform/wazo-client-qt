@@ -114,26 +114,84 @@ MainWidget::MainWidget(BaseEngine * engine, QWidget * parent)
 	restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
 	
 	m_wid = new QWidget();
-	m_mainlayout = new QVBoxLayout(m_wid);
+	m_gridlayout = new QGridLayout(m_wid);
+
         m_xivobg = new QLabel();
         m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
         m_xivobg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        m_mainlayout->addWidget(m_xivobg, 1, Qt::AlignHCenter | Qt::AlignVCenter);
+        m_lab1 = new QLabel(tr("Login"));
+        m_lab2 = new QLabel(tr("Password"));
+        m_qlab1 = new QLineEdit(m_settings->value("engine/userid").toString());
+        m_qlab2 = new QLineEdit("");
+        m_ack = new QPushButton("OK");
+        connect( m_qlab1, SIGNAL(returnPressed()),
+	         this, SLOT(config_and_start()) );
+        connect( m_qlab2, SIGNAL(returnPressed()),
+	         this, SLOT(config_and_start()) );
+	connect( m_ack, SIGNAL(pressed()),
+		 this, SLOT(config_and_start()) );
+	m_qlab2->setEchoMode(QLineEdit::Password);
+        showLogin();
+
 	setCentralWidget(m_wid);
 	m_tablimit = m_settings->value("display/tablimit", 5).toInt();
         m_launchDateTime = QDateTime::currentDateTime();
 
         if(m_engine->systrayed() == false)
                 this->show();
-        //        m_xivobg2 = new QLabel();
-        //        m_xivobg2->setPixmap(QPixmap(":/xivo-client.png"));
-        //        m_mainlayout->addWidget(m_xivobg2, 0, Qt::AlignHCenter | Qt::AlignVCenter);
 }
 
 MainWidget::~MainWidget()
 {
         savePositions();
         delete m_settings;
+}
+
+
+void MainWidget::config_and_start()
+{
+        m_engine->config_and_start(m_qlab1->text(), m_qlab2->text());
+}
+
+
+void MainWidget::showLogin()
+{
+        m_xivobg->show();
+        m_lab1->show();
+        m_lab2->show();
+        m_qlab1->show();
+        m_qlab2->show();
+        m_ack->show();
+        m_gridlayout->setRowStretch(0, 1);
+        m_gridlayout->setColumnStretch(0, 1);
+        m_gridlayout->addWidget(m_xivobg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
+        m_gridlayout->addWidget(m_lab1, 2, 0, Qt::AlignRight);
+        m_gridlayout->addWidget(m_qlab1, 2, 1);
+        m_gridlayout->addWidget(m_lab2, 3, 0, Qt::AlignRight);
+        m_gridlayout->addWidget(m_qlab2, 3, 1);
+        m_gridlayout->addWidget(m_ack, 3, 2, Qt::AlignLeft);
+        m_gridlayout->setColumnStretch(2, 1);
+        m_gridlayout->setRowStretch(4, 1);
+}
+
+void MainWidget::hideLogin()
+{
+        m_xivobg->hide();
+        m_lab1->hide();
+        m_lab2->hide();
+        m_qlab1->hide();
+        m_qlab2->hide();
+        m_ack->hide();
+        m_gridlayout->setRowStretch(0, 0);
+        m_gridlayout->setColumnStretch(0, 0);
+        m_gridlayout->setColumnStretch(2, 0);
+        m_gridlayout->setRowStretch(4, 0);
+        m_gridlayout->removeWidget(m_ack);
+        m_gridlayout->removeWidget(m_lab1);
+        m_gridlayout->removeWidget(m_lab2);
+        m_gridlayout->removeWidget(m_qlab1);
+        m_gridlayout->removeWidget(m_qlab2);
+        m_gridlayout->removeWidget(m_xivobg);
 }
 
 void MainWidget::affTextChanged()
@@ -391,8 +449,7 @@ void MainWidget::engineStarted()
 	QStringList allowed_capas = m_engine->getCapabilities();
         m_settings->setValue("display/capas", allowed_capas.join(","));
 
-        m_mainlayout->removeWidget(m_xivobg);
-        delete m_xivobg;
+        hideLogin();
 
         if (m_forcetabs || allowed_capas.contains("peers")) {
                 m_infowidget = new IdentityDisplay();
@@ -404,11 +461,11 @@ void MainWidget::engineStarted()
                          m_infowidget, SLOT(setQueueList(const QString &)));
                 connect( m_infowidget, SIGNAL(agentAction(const QString &)),
                          m_engine, SLOT(agentAction(const QString &)));
-                m_mainlayout->addWidget(m_infowidget, 0);
+                m_gridlayout->addWidget(m_infowidget, 0, 0);
         }
 
 	m_main_tabwidget = new QTabWidget();
-        m_mainlayout->addWidget(m_main_tabwidget, 1);
+        m_gridlayout->addWidget(m_main_tabwidget, 1, 0);
 
 	for(int j = 0; j < display_capas.size(); j++) {
 		QString dc = display_capas[j];
@@ -427,7 +484,7 @@ void MainWidget::engineStarted()
                                 connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
                                          m_dial, SLOT(setNumberToDial(const QString &)) );
 
-				m_mainlayout->addWidget(m_dial, 0);
+				m_gridlayout->addWidget(m_dial, 2, 0);
 
 			} else if (dc == QString("fax")) {
 				m_faxwidget = new FaxPanel(m_engine, this);
@@ -555,7 +612,6 @@ void MainWidget::engineStarted()
 					 m_engine, SLOT(requestHistory(const QString &, int)) );
 				connect( m_engine, SIGNAL(updateLogEntry(const QDateTime &, int, const QString &, int)),
 					 m_history, SLOT(addLogEntry(const QDateTime &, int, const QString &, int)) );
-				//			m_mainlayout->addWidget(m_history, 0);
 				m_main_tabwidget->addTab(m_history, extraspace + tr("&History") + extraspace);
 			}
 		}
@@ -644,10 +700,10 @@ void MainWidget::engineStopped()
                                         delete m_history;
                                 }
 			} else if (dc == QString("dial")) {
-                                int index_dial = m_mainlayout->indexOf(m_dial);
+                                int index_dial = m_gridlayout->indexOf(m_dial);
                                 if (index_dial > -1) {
                                         qDebug() << "removing" << dc << index_dial;
-                                        m_mainlayout->removeWidget(m_dial);
+                                        m_gridlayout->removeWidget(m_dial);
                                         delete m_dial;
                                 }
 			}
@@ -655,16 +711,14 @@ void MainWidget::engineStopped()
 	}
         
         if (m_forcetabs || allowed_capas.contains("peers")) {
-                m_mainlayout->removeWidget(m_infowidget);
+                m_gridlayout->removeWidget(m_infowidget);
                 delete m_infowidget;
         }
 
-        m_mainlayout->removeWidget(m_main_tabwidget);
+        m_gridlayout->removeWidget(m_main_tabwidget);
         delete m_main_tabwidget;
 
-        m_xivobg = new QLabel();
-        m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
-        m_mainlayout->addWidget(m_xivobg, 0, Qt::AlignHCenter | Qt::AlignVCenter);
+        showLogin();
 
 	if (m_systrayIcon)
 		m_systrayIcon->setIcon(m_icongrey);

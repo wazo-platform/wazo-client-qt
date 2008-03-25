@@ -321,6 +321,18 @@ void BaseEngine::initListenSocket()
 	qDebug() << "BaseEngine::initListenSocket()" << m_listenport;
 }
 
+
+void BaseEngine::config_and_start(const QString & login, const QString & pass)
+{
+        m_userid = login;
+        m_phonenumber = login;
+        m_agentid = login;
+        m_passwd = pass;
+        saveSettings();
+        start();
+}
+
+
 /*! \brief Starts the connection to the server
  * This method starts the login process by connection
  * to the server.
