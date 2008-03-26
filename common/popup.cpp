@@ -224,6 +224,8 @@ void Popup::addInfoLinkAuto(const QString & name, const QString & value)
         qDebug() << "Popup::addInfoLinkAuto()" << name << value << m_urlautoallow;
         if(m_urlautoallow) {
 #ifdef Q_WS_WIN
+//                 QSettings settings("HKEY_CLASSES_ROOT\\HTTP\\shell\\open\\command", QSettings::NativeFormat);
+//                 QString command = settings.value(".").toString();
                 QUrl url(value);
                 QFileInfo browserFileInfo("C:\\Program Files\\Internet Explorer\\iexplore.exe");
                 QProcess::startDetached(browserFileInfo.absoluteFilePath(), QStringList() << "-new" << url.toEncoded());

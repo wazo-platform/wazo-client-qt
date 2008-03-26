@@ -83,6 +83,7 @@ private:
         QHash<QString, QString> m_queuesbusyness;
 
         bool m_agentstatus;
+        bool m_queuechangeallow;
 signals:
         void agentAction(const QString &);
 };

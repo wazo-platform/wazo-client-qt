@@ -56,7 +56,7 @@
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(QWidget * parent)
-        : QWidget(parent), m_agentstatus(false)
+        : QWidget(parent), m_agentstatus(false), m_queuechangeallow(false)
 {
 	QGridLayout * glayout = new QGridLayout(this);
 	// glayout->setMargin(0);
@@ -130,10 +130,11 @@ void IdentityDisplay::setUser(const QString & user)
 void IdentityDisplay::setQueueList(const QString & qlist)
 {
         QStringList qsl = qlist.split(";");
-        if(qsl[1].size() > 0) {
-                QStringList queues = qsl[1].split(",");
+        if(qsl[1] == "1")
+                m_queuechangeallow = true;
+        if(qsl[2].size() > 0) {
+                QStringList queues = qsl[2].split(",");
                 queues.sort();
-                qDebug() << "queues" << queues;
                 for(int i = 0 ; i < queues.size(); i++) {
                         m_queuelist->addItem(queues[i]);
                         m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
@@ -141,10 +142,12 @@ void IdentityDisplay::setQueueList(const QString & qlist)
                         m_queuesbusyness[queues[i]] = "0";
                 }
                 if((queues.size() > 0) && (m_agentstatus)) {
-                        m_queueaction->show();
+                        if(m_queuechangeallow) {
+                                m_queueaction->show();
+                                m_queuejoinall->show();
+                                m_queueleaveall->show();
+                        }
                         m_queuelist->show();
-                        m_queueleaveall->show();
-                        m_queuejoinall->show();
                         m_queuebusy->show();
                 }
         }
@@ -165,11 +168,12 @@ void IdentityDisplay::setStatus(const QString & status)
                         m_agentaction->setText(arg);
                         m_agentstatus = true;
                         if(m_queuesindexes.size() > 0) {
-                                qDebug() << "m_queuesindexes.size() > 0" << m_queuesindexes;
-                                m_queueaction->show();
+                                if(m_queuechangeallow) {
+                                        m_queueaction->show();
+                                        m_queueleaveall->show();
+                                        m_queuejoinall->show();
+                                }
                                 m_queuelist->show();
-                                m_queueleaveall->show();
-                                m_queuejoinall->show();
                                 m_queuebusy->show();
                         }
                 } else if (command == "logout") {

@@ -42,6 +42,7 @@
 #ifndef __PEERWIDGET_H__
 #define __PEERWIDGET_H__
 
+#include <QHash>
 #include <QWidget>
 #include <QPoint>
 
@@ -63,18 +64,9 @@ class PeerWidget : public QWidget
 public:
 	PeerWidget(const QString & id,
                    const QString & name,
-                   const QPixmap *,
-                   const QPixmap *,
-                   const QPixmap *,
-                   const QPixmap *,
-                   const QPixmap *,
-                   const QPixmap *,
-                   const QPixmap *,
-                   const QPixmap *,
-                   const QPixmap *,
-                   const QPixmap *,
-                   const QPixmap *,
-                   const QPixmap *);
+                   const QHash<QString, QPixmap> &,
+                   const QHash<QString, QPixmap> &,
+                   const QHash<QString, QPixmap> &);
         //	           QWidget * parent = 0/*, int size = 16*/);
 	~PeerWidget();
 	void clearChanList();
@@ -145,20 +137,9 @@ private:
 	QList<PeerChannel *> m_mychannels;	//!< channels assiciated with ME
 
 	/* TODO : have the Pixmaps as static objects */
-	const QPixmap *m_phone_green;	//!< green phone icon
-	const QPixmap *m_phone_red;	//!< red phone icon
-	const QPixmap *m_phone_orange;	//!< orange phone icon
-	const QPixmap *m_phone_grey;	//!< grey phone icon
-	const QPixmap *m_phone_yellow;	//!< yellow phone icon
-	const QPixmap *m_phone_blue;	//!< blue phone icon
-
-	const QPixmap *m_person_green;	//!< green person icon
-	const QPixmap *m_person_red;	//!< red person icon
-	const QPixmap *m_person_orange;	//!< orange person icon
-	const QPixmap *m_person_grey;	//!< grey person icon
-	const QPixmap *m_person_yellow;	//!< yellow person icon
-	const QPixmap *m_person_blue;	//!< blue person icon
+	QHash<QString, QPixmap> m_phones;	//!< phone icons
+	QHash<QString, QPixmap> m_persons;	//!< person icons
+	QHash<QString, QPixmap> m_agents;	//!< agent icons
 };
 
 #endif
-

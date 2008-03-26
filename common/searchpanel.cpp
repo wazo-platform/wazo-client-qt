@@ -72,18 +72,27 @@ SearchPanel::SearchPanel(QWidget * parent)
 	scrollarealayout->addStretch( 1 );
 	vlayout->addWidget(scrollarea);
 
-        m_phone_green  = QPixmap(":/images/phone-green.png");
-        m_phone_red    = QPixmap(":/images/phone-red.png");
-        m_phone_orange = QPixmap(":/images/phone-orange.png");
-        m_phone_yellow = QPixmap(":/images/phone-yellow.png");
-        m_phone_grey   = QPixmap(":/images/phone-grey.png");
-        m_phone_blue   = QPixmap(":/images/phone-blue.png");
-        m_person_green  = QPixmap(":/images/personal-green.png");
-        m_person_red    = QPixmap(":/images/personal-red.png");
-        m_person_orange = QPixmap(":/images/personal-orange.png");
-        m_person_yellow = QPixmap(":/images/personal-yellow.png");
-        m_person_grey   = QPixmap(":/images/personal-grey.png");
-        m_person_blue   = QPixmap(":/images/personal-blue.png");
+        m_persons["red"] = QPixmap(":/images/personal-red.png");
+        m_persons["blue"] = QPixmap(":/images/personal-blue.png");
+        m_persons["green"] = QPixmap(":/images/personal-green.png");
+        m_persons["grey"] = QPixmap(":/images/personal-grey.png");
+        m_persons["orange"] = QPixmap(":/images/personal-orange.png");
+        m_persons["yellow"] = QPixmap(":/images/personal-yellow.png");
+
+        m_phones["red"] = QPixmap(":/images/phone-red.png");
+        m_phones["blue"] = QPixmap(":/images/phone-blue.png");
+        m_phones["green"] = QPixmap(":/images/phone-green.png");
+        m_phones["grey"] = QPixmap(":/images/phone-grey.png");
+        m_phones["orange"] = QPixmap(":/images/phone-orange.png");
+        m_phones["yellow"] = QPixmap(":/images/phone-yellow.png");
+
+        m_agents["red"] = QPixmap(":/images/agent-red.png");
+        m_agents["blue"] = QPixmap(":/images/agent-blue.png");
+        m_agents["green"] = QPixmap(":/images/agent-green.png");
+        m_agents["grey"] = QPixmap(":/images/agent-grey.png");
+        m_agents["orange"] = QPixmap(":/images/agent-orange.png");
+        m_agents["yellow"] = QPixmap(":/images/agent-yellow.png");
+
         m_maxdisplay = 15;
         m_searchpattern = "";
 }
@@ -158,18 +167,9 @@ void SearchPanel::affTextChanged(const QString & text)
                         if(peerwidget == NULL) {
                                 peerwidget = new PeerWidget(peeritem->ext(),
                                                             peeritem->name(),
-                                                            &m_phone_green,
-                                                            &m_phone_red,
-                                                            &m_phone_orange,
-                                                            &m_phone_grey,
-                                                            &m_phone_yellow,
-                                                            &m_phone_blue,
-                                                            &m_person_green,
-                                                            &m_person_red,
-                                                            &m_person_orange,
-                                                            &m_person_grey,
-                                                            &m_person_yellow,
-                                                            &m_person_blue);
+                                                            m_persons,
+                                                            m_phones,
+                                                            m_agents);
                                 peerwidget->setEngine(m_engine);
                                 peeritem->setWidget(peerwidget);
                                 peeritem->updateDisplayedStatus();

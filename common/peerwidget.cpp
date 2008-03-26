@@ -41,6 +41,7 @@
 
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include <QHash>
 #include <QLabel>
 #include <QPixmap>
 #include <QMouseEvent>
@@ -57,33 +58,11 @@
  */
 PeerWidget::PeerWidget(const QString & id,
                        const QString & name,
-                       const QPixmap * phone_green,
-                       const QPixmap * phone_red,
-                       const QPixmap * phone_orange,
-                       const QPixmap * phone_grey,
-                       const QPixmap * phone_yellow,
-                       const QPixmap * phone_blue,
-                       const QPixmap * person_green,
-                       const QPixmap * person_red,
-                       const QPixmap * person_orange,
-                       const QPixmap * person_grey,
-                       const QPixmap * person_yellow,
-                       const QPixmap * person_blue)
-	: m_id(id), m_name(name)
+                       const QHash<QString, QPixmap> & persons,
+                       const QHash<QString, QPixmap> & phones,
+                       const QHash<QString, QPixmap> & agents)
+	: m_id(id), m_name(name), m_phones(phones), m_persons(persons), m_agents(agents)
 {
-        m_phone_green   = phone_green;
-        m_phone_red     = phone_red;
-        m_phone_orange  = phone_orange;
-        m_phone_grey    = phone_grey;
-        m_phone_yellow  = phone_yellow;
-        m_phone_blue    = phone_blue;
-        m_person_green  = person_green;
-        m_person_red    = person_red;
-        m_person_orange = person_orange;
-        m_person_grey   = person_grey;
-        m_person_yellow = person_yellow;
-        m_person_blue   = person_blue;
-
 	//qDebug() << "PeerWidget::PeerWidget()" << id;
 	//	QHBoxLayout * layout = new QHBoxLayout(this);
         QFrame * qvline = new QFrame(this);
@@ -99,11 +78,11 @@ PeerWidget::PeerWidget(const QString & id,
         m_voicelbl = new QLabel();
         m_fwdlbl   = new QLabel();
 
-	m_statelbl->setPixmap( *m_phone_grey );
-	m_availlbl->setPixmap( *m_person_grey );
-        m_agentlbl->setPixmap(QPixmap(":/images/agent-blue.png"));
-        //         m_voicelbl->setPixmap( *m_person_grey );
-        //         m_fwdlbl->setPixmap( *m_phone_grey );
+	m_statelbl->setPixmap( m_phones["grey"] );
+	m_availlbl->setPixmap( m_persons["grey"] );
+        m_agentlbl->setPixmap( m_agents["grey"] );
+        //         m_voicelbl->setPixmap(  );
+        //         m_fwdlbl->setPixmap(  );
 
 	m_textlbl = new QLabel(m_name.isEmpty() ? tr("(No callerid yet)") : m_name,
                                this);
@@ -145,66 +124,66 @@ void PeerWidget::setRed(int n)
 {
 	//m_square.fill( Qt::red );
 	if(n == 0)
-                m_statelbl->setPixmap( *m_phone_red/*m_square*/ );
+                m_statelbl->setPixmap(m_phones["red"]);
 	else if(n == 1)
-                m_availlbl->setPixmap( *m_person_red/*m_square*/ );
+                m_availlbl->setPixmap(m_persons["red"]);
 	else if(n == 2)
-                m_agentlbl->setPixmap( *m_phone_red/*m_square*/ );
+                m_agentlbl->setPixmap(m_agents["red"]);
 }
 
 void PeerWidget::setGreen(int n)
 {
 	//m_square.fill( Qt::green );
 	if(n == 0)
-                m_statelbl->setPixmap( *m_phone_green/*m_square*/ );
+                m_statelbl->setPixmap(m_phones["green"]);
 	else if(n == 1)
-                m_availlbl->setPixmap( *m_person_green/*m_square*/ );
+                m_availlbl->setPixmap(m_persons["green"]);
 	else if(n == 2)
-                m_agentlbl->setPixmap( *m_phone_green/*m_square*/ );
+                m_agentlbl->setPixmap(m_agents["green"]);
 }
 
 void PeerWidget::setGray(int n)
 {
 	//m_square.fill( Qt::gray );
 	if(n == 0)
-                m_statelbl->setPixmap( *m_phone_grey/*m_square*/ );
+                m_statelbl->setPixmap(m_phones["grey"]);
 	else if(n == 1)
-                m_availlbl->setPixmap( *m_person_grey/*m_square*/ );
+                m_availlbl->setPixmap(m_persons["grey"]);
 	else if(n == 2)
-                m_agentlbl->setPixmap( *m_phone_grey/*m_square*/ );
+                m_agentlbl->setPixmap(m_agents["grey"]);
 }
 
 void PeerWidget::setBlue(int n)
 {
 	//m_square.fill( Qt::blue );
 	if(n == 0)
-                m_statelbl->setPixmap( *m_phone_blue/*m_square*/ );
+                m_statelbl->setPixmap(m_phones["blue"]);
 	else if(n == 1)
-                m_availlbl->setPixmap( *m_person_blue/*m_square*/ );
+                m_availlbl->setPixmap(m_persons["blue"]);
 	else if(n == 2)
-                m_agentlbl->setPixmap( *m_phone_blue/*m_square*/ );
+                m_agentlbl->setPixmap(m_agents["blue"]);
 }
 
 void PeerWidget::setYellow(int n)
 {
 	//m_square.fill( Qt::yellow );
 	if(n == 0)
-                m_statelbl->setPixmap( *m_phone_yellow/*m_square*/ );
+                m_statelbl->setPixmap(m_phones["yellow"]);
 	else if(n == 1)
-                m_availlbl->setPixmap( *m_person_yellow/*m_square*/ );
+                m_availlbl->setPixmap(m_persons["yellow"]);
 	else if(n == 2)
-                m_agentlbl->setPixmap( *m_phone_yellow/*m_square*/ );
+                m_agentlbl->setPixmap(m_agents["yellow"]);
 }
 
 void PeerWidget::setOrange(int n)
 {
 	//m_square.fill( QColor(255,127,0) );
 	if(n == 0)
-                m_statelbl->setPixmap( *m_phone_orange/*m_square*/ );
+                m_statelbl->setPixmap(m_phones["orange"]);
 	else if(n == 1)
-                m_availlbl->setPixmap( *m_person_orange/*m_square*/ );
+                m_availlbl->setPixmap(m_persons["orange"]);
 	else if(n == 2)
-                m_agentlbl->setPixmap( *m_phone_orange/*m_square*/ );
+                m_agentlbl->setPixmap(m_agents["orange"]);
 }
 
 

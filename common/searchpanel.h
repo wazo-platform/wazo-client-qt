@@ -84,18 +84,9 @@ private:
 	QHash<QString, Peer *> m_peerhash;	//!< Peer list
 	QGridLayout * m_peerlayout;	//!< layout object
 	ExtendedLineEdit * m_input;	//!< widget for search string input
-        QPixmap m_phone_green;
-        QPixmap m_phone_red;
-        QPixmap m_phone_orange;
-        QPixmap m_phone_grey;
-        QPixmap m_phone_yellow;
-        QPixmap m_phone_blue;
-        QPixmap m_person_green;
-        QPixmap m_person_red;
-        QPixmap m_person_orange;
-        QPixmap m_person_grey;
-        QPixmap m_person_yellow;
-        QPixmap m_person_blue;
+	QHash<QString, QPixmap> m_persons;
+	QHash<QString, QPixmap> m_phones;
+	QHash<QString, QPixmap> m_agents;
         int m_maxdisplay;	//!< max number of peers displayed on the search panel
         QString m_searchpattern;
 };

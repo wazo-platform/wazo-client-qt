@@ -176,23 +176,6 @@ void MainWidget::logintextChanged(const QString & logintext)
 
 void MainWidget::showLogin()
 {
-        m_xivobg->show();
-        m_lab1->show();
-        m_lab2->show();
-        m_lab3->show();
-        m_lab4->show();
-        m_qlab1->show();
-        m_qlab2->show();
-        m_qlab3->show();
-        m_qlab4->show();
-        m_ack->show();
-        m_qhline->show();
-
-        m_gridlayout->setRowStretch(0, 1);
-        m_gridlayout->setColumnStretch(0, 1);
-        m_gridlayout->setColumnStretch(2, 1);
-        m_gridlayout->setRowStretch(7, 1);
-
         m_gridlayout->addWidget(m_xivobg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
         m_gridlayout->addWidget(m_lab1, 2, 0, Qt::AlignRight);
         m_gridlayout->addWidget(m_qlab1, 2, 1);
@@ -204,6 +187,25 @@ void MainWidget::showLogin()
         m_gridlayout->addWidget(m_lab4, 6, 0, Qt::AlignRight);
         m_gridlayout->addWidget(m_qlab4, 6, 1);
         m_gridlayout->addWidget(m_ack, 3, 2, Qt::AlignLeft);
+
+        m_gridlayout->setRowStretch(0, 1);
+        m_gridlayout->setColumnStretch(0, 1);
+        m_gridlayout->setColumnStretch(2, 1);
+        m_gridlayout->setRowStretch(7, 1);
+
+        // show widgets after they have been put in the layout, in order for
+        // temporary windows not to be opened
+        m_xivobg->show();
+        m_lab1->show();
+        m_lab2->show();
+        m_lab3->show();
+        m_lab4->show();
+        m_qlab1->show();
+        m_qlab2->show();
+        m_qlab3->show();
+        m_qlab4->show();
+        m_ack->show();
+        m_qhline->show();
 }
 
 void MainWidget::hideLogin()
