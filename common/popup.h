@@ -88,7 +88,7 @@ public:
 	bool tinyPopup();
 signals:
 	void wantsToBeShown(Popup *);	//!< sent when the widget want to show itself
-	void emitDial(const QString &);	//!< sent when the widget wants to dial
+	void emitDial(const QString &, bool);	//!< sent when the widget wants to dial
         void hangUp(const QString &);	//!< hanging up a channel ...
         void save(const QString &);
 public slots:

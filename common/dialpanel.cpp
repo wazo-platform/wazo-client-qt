@@ -154,7 +154,7 @@ void DialPanel::inputValidated()
                 ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
                 if(ext.length() == 0)	// do nothing if the string is empty
                         return;
-                emitDial( ext );
+                emitDial(ext, false);
                 m_input->insertItem(0, ext); // ajout à l'historique
                 // supprimer les occurences les plus anciennes du meme numero
                 for(int i=1; i<m_input->count(); ) {
@@ -167,4 +167,3 @@ void DialPanel::inputValidated()
                 m_input->clearEditText();
         }
 }
-

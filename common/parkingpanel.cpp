@@ -185,7 +185,7 @@ void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
         m_astid    = m_table->item(rown, 0)->text();
         m_placenum = m_table->item(rown, 1)->text();
         if(m_astid == m_engine->serverast())
-                emitDial(m_placenum);
+                emitDial(m_placenum, false);
 }
 
 void ParkingPanel::timerEvent(QTimerEvent * event)
@@ -237,7 +237,7 @@ void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
 void ParkingPanel::dialNumber()
 {
 	if((m_placenum.length() > 0) && (m_astid == m_engine->serverast()))
-                emitDial(m_placenum);
+                emitDial(m_placenum, false);
 }
 
 /*! \brief dial the number (when context menu item is toggled)

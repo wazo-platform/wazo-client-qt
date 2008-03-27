@@ -76,7 +76,7 @@ private slots:
 	void itemDoubleClicked(QTableWidgetItem *);
 signals:
 	void copyNumber(const QString &);
-	void emitDial(const QString &);
+	void emitDial(const QString &, bool);
 	void transferCall(const QString &, const QString &);
 	void originateCall(const QString &, const QString &);
         void newParkEvent();

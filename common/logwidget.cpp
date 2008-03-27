@@ -145,8 +145,8 @@ void LogWidget::addElement(const QString & peer, LogEltWidget::Direction d,
 		}
 	}
 	LogEltWidget * logelt = new LogEltWidget(peer, d, dt, duration, this);
-	connect( logelt, SIGNAL(emitDial(const QString &)),
-	         m_engine, SLOT(dialFullChannel(const QString &)) );
+	connect( logelt, SIGNAL(emitDial(const QString &, dial)),
+	         m_engine, SLOT(dialFullChannel(const QString &, dial)) );
         connect( logelt, SIGNAL(copyNumber(const QString &)),
                  m_engine, SLOT(copyNumber(const QString &)) );
 	m_layout->insertWidget(index, logelt);

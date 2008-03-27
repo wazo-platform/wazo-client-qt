@@ -53,6 +53,7 @@ class QPixmap;
 
 class BaseEngine;
 class PeerChannel;
+class ExtendedLabel;
 
 /*! \brief Widget to display a Peer status
  *
@@ -73,13 +74,14 @@ public:
 	void addChannel(const QString &, const QString &, const QString &);
 	void setName(const QString &);
 	void setEngine(BaseEngine *);
+        void setAgentToolTip(const QString &);
 protected:
-	void mouseMoveEvent(QMouseEvent * event);
-	void mousePressEvent(QMouseEvent * event);
-        void mouseDoubleClickEvent(QMouseEvent * event);
-	void dragEnterEvent(QDragEnterEvent * event);
-	void dragMoveEvent(QDragMoveEvent * event);
-	void dropEvent(QDropEvent * event);
+	void mouseMoveEvent(QMouseEvent *);
+	void mousePressEvent(QMouseEvent *);
+        void mouseDoubleClickEvent(QMouseEvent *);
+	void dragEnterEvent(QDragEnterEvent *);
+	void dragMoveEvent(QDragMoveEvent *);
+	void dropEvent(QDropEvent *);
 	void contextMenuEvent(QContextMenuEvent *);
 signals:
 	//! originate signal
@@ -93,7 +95,7 @@ signals:
 	//! hang up signal
 	void hangUpChan(const QString &);
 	//! dial/call signal
-	void emitDial(const QString &);
+	void emitDial(const QString &, bool);
 	//! hide the widget in the channel
 	void doRemoveFromPanel(const QString &);
 public slots:
@@ -116,12 +118,14 @@ public slots:
 private slots:
 	void transferChan(const QString &);
 	void removeFromPanel();
+        void mouseDoubleClickEventAgent(QMouseEvent *);
 	void dial();
+	void dialAgent();
 private:
 	BaseEngine * m_engine;  //!< Base Engine reference
 	QLabel * m_statelbl;	//!< Peer state display (ringing, online, ...)
 	QLabel * m_availlbl;	//!< Peer state display from XIVO CTI Client
-	QLabel * m_agentlbl;
+	ExtendedLabel * m_agentlbl;
 	QLabel * m_voicelbl;
 	QLabel * m_fwdlbl;
 	QLabel * m_textlbl;		//!< text label : to display peer name

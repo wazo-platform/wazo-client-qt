@@ -50,6 +50,7 @@
 #include <QDebug>
 
 #include "baseengine.h"
+#include "extendedlabel.h"
 #include "peerchannel.h"
 #include "peerwidget.h"
 #include "xivoconsts.h"
@@ -74,7 +75,7 @@ PeerWidget::PeerWidget(const QString & id,
 	layout->setMargin(2);
 	m_statelbl = new QLabel();
 	m_availlbl = new QLabel();
-        m_agentlbl = new QLabel();
+        m_agentlbl = new ExtendedLabel();
         m_voicelbl = new QLabel();
         m_fwdlbl   = new QLabel();
 
@@ -99,6 +100,9 @@ PeerWidget::PeerWidget(const QString & id,
         //         layout->addWidget( m_voicelbl, 1, 5, Qt::AlignLeft );
         //         layout->addWidget( m_fwdlbl,   1, 6, Qt::AlignLeft );
 	layout->setColumnStretch(8, 1);
+
+        connect( m_agentlbl, SIGNAL(dial(QMouseEvent *)),
+                 this, SLOT(mouseDoubleClickEventAgent(QMouseEvent *)) );
 
 	// to be able to receive drop
 	setAcceptDrops(true);
@@ -186,9 +190,10 @@ void PeerWidget::setOrange(int n)
                 m_agentlbl->setPixmap(m_agents["orange"]);
 }
 
-
-
-
+void PeerWidget::setAgentToolTip(const QString & tooltip)
+{
+        m_agentlbl->setToolTip(tooltip);
+}
 
 /*! \brief hid this widget from the panel
  */
@@ -203,7 +208,15 @@ void PeerWidget::removeFromPanel()
 void PeerWidget::dial()
 {
 	qDebug() << "PeerWidget::dial()" << m_id;
-        emitDial( m_id );
+        emitDial(m_id, false);
+}
+
+/*! \brief call this peer
+ */
+void PeerWidget::dialAgent()
+{
+	qDebug() << "PeerWidget::dialAgent()" << m_id;
+        emitDial(m_id, true);
 }
 
 /*! \brief mouse press. store position
@@ -243,11 +256,18 @@ void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 	//qDebug() << "PeerWidget::mouseMoveEvent : dropAction=" << dropAction;
 }
 
-void PeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
+void PeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 {
-	// qDebug() << "mouseDoubleClickEvent" << event;
-	if(event->button() == Qt::LeftButton)
+        // qDebug() << "PeerWidget::mouseDoubleClickEvent" << event;
+        if(event->button() == Qt::LeftButton)
                 dial();
+}
+
+void PeerWidget::mouseDoubleClickEventAgent(QMouseEvent * event)
+{
+        // qDebug() << "PeerWidget::mouseDoubleClickEventAgent" << event;
+        if(event->button() == Qt::LeftButton)
+                dialAgent();
 }
 
 /*! \brief  

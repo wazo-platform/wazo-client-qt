@@ -132,7 +132,7 @@ void LogEltWidget::callBackPeer()
                 number = qsl2[0];
         }
 
-        emitDial(number);
+        emitDial(number, false);
 }
 
 void LogEltWidget::doNotCallBackPeer()

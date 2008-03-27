@@ -159,7 +159,7 @@ public slots:
 	void stop();				//!< stop the engine
 	void originateCall(const QString &, const QString &);
 	void originateCallGoodAsterisk(const QString &, const QString &);
-	void dialFullChannel(const QString &);
+	void dialFullChannel(const QString &, bool);
 	void transferCall(const QString &, const QString &);
         void atxferCall(const QString &, const QString &);
 	void interceptCall(const QString &);
@@ -198,6 +198,7 @@ private slots:
 	void readKeepLoginAliveDatagrams();	//!< handle the responses to keep alive
 	void popupDestroyed(QObject *);		//!< know when a profile widget is destroyed *DEBUG*
 	void profileToBeShown(Popup *);		//!< a new profile must be displayed
+        void updateAgent(const QStringList &);
         void updatePeerAndCallerid(const QStringList &);
         void removePeerAndCallerid(const QStringList &);
 	void socketConnected();
@@ -241,6 +242,7 @@ signals:
 	                const QString &, const QString &,
 	                const QString &, const QString &,
 	                const QStringList &, const QStringList &, const QStringList &);
+	void updatePeerAgent(const QString &, const QString &);
 	//! a log entry has to be updated.
 	void updateLogEntry(const QDateTime &, int, const QString &, int);
 	//! the directory search response has been received.

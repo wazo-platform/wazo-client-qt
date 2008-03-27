@@ -65,16 +65,18 @@ public:
 	void setEngine(BaseEngine *);	//!< set m_engine
 public slots:
 	void affTextChanged(const QString &);
-	void updatePeer(const QString & ext,
-	                const QString & name,
-			const QString & imavail,
-			const QString & sipstatus,
-			const QString & vmstatus,
-			const QString & queuestatus,
-			const QStringList & chanIds,
-			const QStringList & chanStates,
-			const QStringList & chanOthers);
-	void removePeer(const QString & ext);
+	void updatePeer(const QString &,
+	                const QString &,
+			const QString &,
+			const QString &,
+			const QString &,
+			const QString &,
+			const QStringList &,
+			const QStringList &,
+			const QStringList &);
+	void updatePeerAgent(const QString &,
+                             const QString &);
+	void removePeer(const QString &);
 	void removePeers();
         void callsUpdated();
 signals:

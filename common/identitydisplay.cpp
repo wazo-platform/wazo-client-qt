@@ -207,14 +207,9 @@ void IdentityDisplay::setStatus(const QString & status)
         } else if (newstatuses.size() == 4) {
                 QString command = newstatuses[0];
                 if (command == "queuememberstatus") {
-                        // qDebug() << newstatuses;
+                        qDebug() << newstatuses;
                         QString agentnum = newstatuses[1];
                         QString status = newstatuses[2];
-                        if(status == "1") {
-                                m_agent->setText("Agent " + agentnum);
-                        } else if(status == "3") {
-                                m_agent->setText("Agent " + agentnum + " (called)");
-                        }
                 } else if (command == "queuechannels") {
                         QString queuename = newstatuses[2];
                         QString busyness = newstatuses[3];

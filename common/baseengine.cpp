@@ -686,7 +686,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 	// p/(asteriskid)/(context)/(protocol)/(phoneid)/(phonenum)
 
 	if(liststatus.count() < nfields0) { // not valid
-		qDebug() << "Bad data from the server :" << liststatus;
+		qDebug() << "Bad data from the server (not enough arguments) :" << liststatus;
 		return;
 	}
 
@@ -699,7 +699,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 	QString InstMessAvail   = liststatus[6];
 	QString SIPPresStatus   = liststatus[7];
 	QString VoiceMailStatus = liststatus[8];
-	QString QueueStatus     = liststatus[9];
+        QString AgentStatus     = liststatus[9];
 	m_callerids[pname]      = liststatus[10];
 
 	int nchans = liststatus[nfields0 - 1].toInt();
@@ -733,12 +733,31 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 	}
 
         updatePeer(pname, m_callerids[pname],
-                   InstMessAvail, SIPPresStatus, VoiceMailStatus, QueueStatus,
+                   InstMessAvail, SIPPresStatus, VoiceMailStatus, AgentStatus,
                    chanIds, chanStates, chanOthers);
         if(m_is_a_switchboard)
                 if(   (m_userid == liststatus[3])
                       && (m_dialcontext == liststatus[5]))
                         updateMyCalls(chanIds, chanStates, chanOthers);
+}
+
+
+void BaseEngine::updateAgent(const QStringList & liststatus)
+{
+	const int nfields0 = 7;
+	if(liststatus.count() < nfields0) { // not valid
+		qDebug() << "Bad data from the server (not enough arguments) :" << liststatus;
+		return;
+	}
+
+        QString astid   = liststatus[1];
+	QString context = liststatus[5];
+
+	QString pname   = "p/" + astid + "/" + context + "/"
+		+ liststatus[2].toLower() + "/" + liststatus[3] + "/" + liststatus[4];
+	QString AgentStatus = liststatus[6];
+
+        updatePeerAgent(pname, AgentStatus);
 }
 
 
@@ -823,6 +842,10 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 QStringList liststatus = listitems[1].split(":");
                 updatePeerAndCallerid(liststatus);
                 callsUpdated();
+
+        } else if(listitems[0].toLower() == QString("agentupdate_all")) {
+                QStringList liststatus = listitems[1].split(":");
+                updateAgent(liststatus);
 
         } else if((listitems[0].toLower() == QString("phones-add")) && (listitems.size() == 2)) {
                 QStringList listpeers = listitems[1].split(";");
@@ -1156,13 +1179,19 @@ void BaseEngine::originateCallGoodAsterisk(const QString & src, const QString & 
 /*! \brief originate from locally logged user to the full defined dst p////
  *         (typ. when calling a peerwidget displayed)
  */
-void BaseEngine::dialFullChannel(const QString & dst)
+void BaseEngine::dialFullChannel(const QString & dst, bool dialanagent)
 {
-	qDebug() << "BaseEngine::dialFullChannel()" << dst;
+	qDebug() << "BaseEngine::dialFullChannel()" << dst << dialanagent;
 	QStringList dstlist = dst.split("/");
         QString src = "p/" + m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" + m_userid + "/" + m_extension;
-        if(dstlist.size() == 6)
-                originateCall(src, dst);
+        if(dstlist.size() == 6) {
+                if (dialanagent) {
+                        QString adst = dst;
+                        adst.replace(0, 2, "a/");
+                        originateCall(src, adst);
+                } else
+                        originateCall(src, dst);
+        }
         else if(dstlist.size() == 1)
                 originateCallGoodAsterisk(src, dst);
 }

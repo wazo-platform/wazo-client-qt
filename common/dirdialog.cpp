@@ -67,8 +67,8 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
                  m_directory, SLOT(setSearchResponse(const QString &)) );
         connect( m_directory, SIGNAL(copyNumber(const QString &)),
                  this, SLOT(copyNumber(const QString &)) );
-        connect( m_directory, SIGNAL(emitDial(const QString &)),
-                 this, SLOT(copyNumberAndQuit(const QString &)) );
+        connect( m_directory, SIGNAL(emitDial(const QString &, bool)),
+                 this, SLOT(copyNumberAndQuit(const QString &, bool)) );
 
 	m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
 	connect(m_btnbox, SIGNAL(accepted()),
@@ -101,7 +101,7 @@ void DirDialog::copyNumber(const QString & number)
         m_faxnumber = number;
 }
 
-void DirDialog::copyNumberAndQuit(const QString & number)
+void DirDialog::copyNumberAndQuit(const QString & number, bool)
 {
         m_faxnumber = number;
         saveAndClose();

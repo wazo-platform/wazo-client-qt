@@ -75,13 +75,21 @@ Peer::Peer(const Peer & peer)
 void Peer::updateStatus(const QString & imavail,
 			const QString & sipstatus,
 			const QString & vmstatus,
-			const QString & queuestatus)
+			const QString & agentstatus)
 {
         m_imavail     = imavail;
         m_sipstatus   = sipstatus;
         m_vmstatus    = vmstatus;
-        m_queuestatus = queuestatus;
+        m_agentstatus = agentstatus;
 
+        if(m_peerwidget != NULL) {
+                updateDisplayedStatus();
+        }
+}
+
+void Peer::updateAgentStatus(const QString & agentstatus)
+{
+        m_agentstatus = agentstatus;
         if(m_peerwidget != NULL)
                 updateDisplayedStatus();
 }
@@ -174,6 +182,19 @@ void Peer::updateDisplayedStatus()
 		display_sipstatus = m_sipstatus;
 	}
 
+        QStringList qsl = m_agentstatus.split("/");
+        if (qsl.size() == 3) {
+                if(qsl[1] == "1") {
+                        m_peerwidget->setAgentToolTip("Agent : " + qsl[0]);
+                        m_peerwidget->setGreen(2);
+                } else if(qsl[1] == "3") {
+                        m_peerwidget->setAgentToolTip("Agent : " + qsl[0]);
+                        m_peerwidget->setRed(2);
+                } else {
+                        m_peerwidget->setAgentToolTip("");
+                        m_peerwidget->setGray(2);
+                }
+        }
 
 	QString fortooltip = PeerWidget::tr("SIP Presence : ") + display_sipstatus + "\n"
 		+ PeerWidget::tr("Availability : ") + display_imavail;

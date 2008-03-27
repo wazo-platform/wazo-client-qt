@@ -39,47 +39,17 @@
  * $Date$
  */
 
-#ifndef __LOGELTWIDGET_H__
-#define __LOGELTWIDGET_H__
+#include <QDebug>
 
-#include <QWidget>
-#include <QDateTime>
-#include <QAction>
-#include <QContextMenuEvent>
+#include "extendedlabel.h"
 
-class QMouseEvent;
-
-/*! \brief Log element widget
- */
-class LogEltWidget : public QWidget
+ExtendedLabel::ExtendedLabel(const QString &text, QWidget *parent)
+        : QLabel(parent)
 {
-	Q_OBJECT
-public:
-	//! Call direction (out or in)
-	typedef enum { OutCall = 1, InCall = 2 } Direction;
-	LogEltWidget( const QString & peer,
-	              Direction d,
-                      const QDateTime & dt,
-                      int duration,
-                      QWidget * parent = 0 );
-	const QDateTime & dateTime() const { return m_dateTime; };	//! get m_dateTime
-	const QString & peer() const { return m_peer; };		//! get m_peer
-	Direction direction() const { return m_direction; };		//! get m_direction
-protected:
-	void contextMenuEvent(QContextMenuEvent *);
-        void mouseDoubleClickEvent(QMouseEvent *event);
-        void mouseReleaseEvent(QMouseEvent *event);
-private slots:
-	void callBackPeer();
-	void doNotCallBackPeer();
-signals:
-	void emitDial(const QString &, bool);		//!< signal to dial back.
-        void copyNumber(const QString &);
-private:
-	QDateTime m_dateTime;	//!< date time of the call 
-	QString m_peer;			//!< phone number who called/was called
-	Direction m_direction;	//!< call direction (In/out)
-	QAction * m_dialAction;	//!< dial action
-};
+        setText(text);
+}
 
-#endif
+void ExtendedLabel::mouseDoubleClickEvent(QMouseEvent *event)
+{
+        dial(event);
+}

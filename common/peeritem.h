@@ -54,8 +54,8 @@ class Peer// : public QObject
 {
 public:
 	//Peer( const QString & ext, QObject * parent = 0 );
-	Peer( const QString & ext, const QString & name );
-	Peer( const Peer & peer);
+	Peer( const QString &, const QString & );
+	Peer( const Peer & );
 	Peer( );
 	//! get m_ext
 	const QString & ext() const { return m_ext; };
@@ -67,32 +67,33 @@ public:
 	//! get m_peerwidget
 	PeerWidget * getWidget() { return m_peerwidget; };
 
-	void updateStatus(const QString & imavail,
-			  const QString & sipstatus,
-			  const QString & vmstatus,
-			  const QString & queuestatus);
-	void updateChans(const QStringList & chanIds,
-	                 const QStringList & chanStates,
-	                 const QStringList & chanOthers);
-	void updateName(const QString & newname);
+	void updateStatus(const QString &,
+			  const QString &,
+			  const QString &,
+			  const QString &);
+	void updateAgentStatus(const QString &);
+	void updateChans(const QStringList &,
+	                 const QStringList &,
+	                 const QStringList &);
+	void updateName(const QString &);
 
 	void updateDisplayedStatus();
 	void updateDisplayedChans();
 	void updateDisplayedName();
 private:
 	QString m_ext;		//!< Extension
-	QString m_name;		//!< Person name
 	PeerWidget * m_peerwidget;	//!< related PeerWidget
 
         // Properties of each peer
+	QString m_name;		//!< Person name
         QString m_imavail;
         QString m_sipstatus;
         QString m_vmstatus;
-        QString m_queuestatus;
+        QString m_agentstatus;
+        QString m_pausestatus;
         QStringList m_chanIds;
         QStringList m_chanStates;
         QStringList m_chanOthers;
 };
-
 
 #endif

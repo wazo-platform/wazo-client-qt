@@ -80,7 +80,7 @@ private slots:
 	//! Save the configuration to the BaseEngine object and close
 	void saveAndClose();
         void copyNumber(const QString &);
-        void copyNumberAndQuit(const QString &);
+        void copyNumberAndQuit(const QString &, bool);
 private:
         BaseEngine * m_engine;
         DirectoryPanel * m_directory;

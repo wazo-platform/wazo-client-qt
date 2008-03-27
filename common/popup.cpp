@@ -137,7 +137,7 @@ void Popup::dispurl(const QUrl &url)
 {
         // qDebug() << "Popup::dispurl()" << url;
         QString numbertodial = url.toString().mid(5);
-        emitDial(numbertodial);
+        emitDial(numbertodial, false);
 }
 
 void Popup::hangup()
@@ -292,7 +292,7 @@ void Popup::dialThisNumber()
 {
         QString numbertodial = this->sender()->property("number").toString();
         qDebug() << "Popup::dialThisNumber()" << numbertodial;
-        emitDial(numbertodial);
+        emitDial(numbertodial, false);
 }
 
 void Popup::httpGetNoreply()

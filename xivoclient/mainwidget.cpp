@@ -525,8 +525,8 @@ void MainWidget::engineStarted()
 
 			} else if (dc == QString("dial")) {
 				m_dial = new DialPanel();
-				connect( m_dial, SIGNAL(emitDial(const QString &)),
-					 m_engine, SLOT(dialFullChannel(const QString &)) );
+				connect( m_dial, SIGNAL(emitDial(const QString &, bool)),
+					 m_engine, SLOT(dialFullChannel(const QString &, bool)) );
                                 connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
                                          m_dial, SLOT(setNumberToDial(const QString &)) );
 
@@ -559,6 +559,8 @@ void MainWidget::engineStarted()
 									const QString &, const QString &,
 									const QStringList &, const QStringList &,
 									const QStringList &)) );
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
+					 m_searchpanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
 				connect( m_engine, SIGNAL(peersReceived()),
 					 m_searchpanel, SLOT(callsUpdated()) );
 				connect( m_searchpanel, SIGNAL(askCallerIds()),
@@ -634,8 +636,8 @@ void MainWidget::engineStarted()
 
 				connect( m_directory, SIGNAL(searchDirectory(const QString &)),
 					 m_engine, SLOT(searchDirectory(const QString &)) );
-				connect( m_directory, SIGNAL(emitDial(const QString &)),
-					 m_engine, SLOT(dialFullChannel(const QString &)) );
+				connect( m_directory, SIGNAL(emitDial(const QString &, bool)),
+					 m_engine, SLOT(dialFullChannel(const QString &, bool)) );
 				connect( m_directory, SIGNAL(copyNumber(const QString &)),
 					 m_engine, SLOT(copyNumber(const QString &)) );
 				
@@ -813,8 +815,8 @@ void MainWidget::showNewProfile(Popup * popup)
 			// close the first widget
 			m_cinfo_tabwidget->widget(0)->close();
 		}
-                connect( popup, SIGNAL(emitDial(const QString &)),
-                         m_engine, SLOT(dialFullChannel(const QString &)) );
+                connect( popup, SIGNAL(emitDial(const QString &, bool)),
+                         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
                 connect( popup, SIGNAL(hangUp(const QString &)),
                          m_engine, SLOT(hangUp(const QString &)) );
 		// show the window and give it the focus.
