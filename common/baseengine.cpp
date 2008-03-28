@@ -1260,6 +1260,16 @@ void BaseEngine::hangUp(const QString & channel)
 	sendCommand("hangup " + channel);
 }
 
+/*! \brief pick up a channel
+ *
+ * send a pick up command to the server
+ */
+void BaseEngine::pickUp(const QString & channel)
+{
+	qDebug() << "BaseEngine::pickUp()" << channel;
+	sendCommand("pickup " + channel);
+}
+
 /*! \brief send the directory search command to the server
  *
  * \sa directoryResponse()

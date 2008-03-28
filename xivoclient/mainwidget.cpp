@@ -819,6 +819,8 @@ void MainWidget::showNewProfile(Popup * popup)
                          m_engine, SLOT(dialFullChannel(const QString &, bool)) );
                 connect( popup, SIGNAL(hangUp(const QString &)),
                          m_engine, SLOT(hangUp(const QString &)) );
+                connect( popup, SIGNAL(pickUp(const QString &)),
+                         m_engine, SLOT(pickUp(const QString &)) );
 		// show the window and give it the focus.
 		setVisible(true);
 		activateWindow();

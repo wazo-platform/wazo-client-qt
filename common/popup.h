@@ -90,6 +90,7 @@ signals:
 	void wantsToBeShown(Popup *);	//!< sent when the widget want to show itself
 	void emitDial(const QString &, bool);	//!< sent when the widget wants to dial
         void hangUp(const QString &);	//!< hanging up a channel ...
+        void pickUp(const QString &);	//!< picking up a channel ...
         void save(const QString &);
 public slots:
 	void streamNewData();		//!< new input data is available
@@ -101,6 +102,7 @@ public slots:
         void httpGetNoreply();
         void saveandclose();
         void hangup();
+        void answer();
 protected:
 	void closeEvent(QCloseEvent *event);	//!< catch close event
 private:
@@ -117,6 +119,7 @@ private:
 	QVBoxLayout * m_vlayout;
 	QString m_message;	//! Message property
         QString m_channel;
+        QString m_called;
         bool m_tinypopup;
         bool m_urlautoallow;
         bool m_sheetui;

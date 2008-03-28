@@ -13,10 +13,7 @@
    <item>
     <layout class="QHBoxLayout" >
      <item>
-      <widget class="QPushButton" name="pushButton_5" >
-       <property name="enabled" >
-        <bool>false</bool>
-       </property>
+      <widget class="QPushButton" name="answer" >
        <property name="text" >
         <string>Répo&amp;ndre</string>
        </property>

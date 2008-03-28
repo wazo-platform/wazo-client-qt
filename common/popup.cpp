@@ -112,15 +112,18 @@ Popup::Popup(QIODevice * inputstream,
 
         m_vlayout->addWidget(m_sheetui_widget, 0, 0);
 
-        QPushButton * hupbutton   = m_sheetui_widget->findChild<QPushButton *>("hangup");
-        QPushButton * closebutton = m_sheetui_widget->findChild<QPushButton *>("close");
-        QPushButton * savebutton  = m_sheetui_widget->findChild<QPushButton *>("save");
+        QPushButton * hupbutton     = m_sheetui_widget->findChild<QPushButton *>("hangup");
+        QPushButton * closebutton   = m_sheetui_widget->findChild<QPushButton *>("close");
+        QPushButton * savebutton    = m_sheetui_widget->findChild<QPushButton *>("save");
+        QPushButton * answerbutton  = m_sheetui_widget->findChild<QPushButton *>("answer");
         if(hupbutton)
                 connect( hupbutton, SIGNAL(clicked()), this, SLOT(hangup()) );
         if(closebutton)
                 connect( closebutton, SIGNAL(clicked()), this, SLOT(close()) );
         if(savebutton)
                 connect( savebutton, SIGNAL(clicked()), this, SLOT(saveandclose()) );
+        if(answerbutton)
+                connect( answerbutton, SIGNAL(clicked()), this, SLOT(answer()) );
 
         QLineEdit   * datetime    = m_sheetui_widget->findChild<QLineEdit *>("datetime");
         QLineEdit   * year        = m_sheetui_widget->findChild<QLineEdit *>("year");
@@ -144,6 +147,12 @@ void Popup::hangup()
 {
         qDebug() << "Popup::hangup()" << m_channel;
         hangUp("p/xivo/default/" + m_channel);
+}
+
+void Popup::answer()
+{
+        qDebug() << "Popup::answer()" << m_called;
+        pickUp("p/xivo/default/" + m_called);
 }
 
 void Popup::saveandclose()
@@ -179,6 +188,8 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
                 m_channel = value;
         else if(name == "nopopup")
                 m_tinypopup = false;
+        else if(name == "called")
+                m_called = value;
         else
                 qDebug() << "internal" << name << value;
 }
