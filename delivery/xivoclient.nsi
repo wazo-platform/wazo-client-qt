@@ -7,6 +7,7 @@
 Name "XIVO Client"
 OutFile "xivoclient-setup.exe"
 InstallDir "$PROGRAMFILES\XIVO"
+InstallDirRegKey HKLM "Software\XIVO\xivoclient" "Install_Dir" 
 LicenseText "XIVO Client est distribué sous licence GNU General Public License v2 avec une exception spéciale vous autorisant à le lier à OpenSSL, sous certaines conditions."
 # ComponentText "(Choix des composants / sections)"
 # DirText "(Choix du répertoire d'installation)"
@@ -26,6 +27,11 @@ File "OpenSSL.LICENSE.txt"
 File "Qt.GPL.Exception.txt"
 File "Qt.GPL.Exception.Addendum.txt"
 File "..\xivoclient\release\xivoclient.exe"
+WriteRegStr HKLM "Software\XIVO\xivoclient" "Install_Dir" "$INSTDIR" 
+WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "DisplayName" "XIVO Client"
+WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "UninstallString" '"$INSTDIR\uninstall-xivoclient.exe"'
+WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "NoModify" 1
+WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "NoRepair" 1
 WriteUninstaller "$INSTDIR\uninstall-xivoclient.exe"
 SectionEnd
 
@@ -40,6 +46,7 @@ SectionEnd
 
 # Uninstall
 Section "Uninstall"
+IfFileExists "$INSTDIR\switchboard.exe" OnlyUninstallXC
 Delete "$INSTDIR\GPL_V2.txt"
 Delete "$INSTDIR\OpenSSL.LICENSE.txt"
 Delete "$INSTDIR\Qt.GPL.Exception.txt"
@@ -48,8 +55,11 @@ Delete "$INSTDIR\LICENSE"
 Delete "$INSTDIR\mingwm10.dll"
 Delete "$INSTDIR\cryptoeay32-0.9.8.dll"
 Delete "$INSTDIR\ssleay32-0.9.8.dll"
+OnlyUninstallXC:
 Delete "$INSTDIR\xivoclient.exe"
 Delete "$INSTDIR\uninstall-xivoclient.exe"
+DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient"
+DeleteRegKey HKLM "Software\XIVO\xivoclient"
 RmDir "$INSTDIR"
 
 Delete "$DESKTOP\xivoclient.lnk"
