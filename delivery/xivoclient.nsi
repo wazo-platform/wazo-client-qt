@@ -27,7 +27,8 @@ File "OpenSSL.LICENSE.txt"
 File "Qt.GPL.Exception.txt"
 File "Qt.GPL.Exception.Addendum.txt"
 File "..\xivoclient\release\xivoclient.exe"
-WriteRegStr HKLM "Software\XIVO\xivoclient" "Install_Dir" "$INSTDIR" 
+# Write keys in Registry in order for the applications to appear in Add/Remove Programs
+WriteRegStr HKLM "Software\XIVO\xivoclient" "Install_Dir" "$INSTDIR"
 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "DisplayName" "XIVO Client"
 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "UninstallString" '"$INSTDIR\uninstall-xivoclient.exe"'
 WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "NoModify" 1
@@ -46,6 +47,7 @@ SectionEnd
 
 # Uninstall
 Section "Uninstall"
+# Do not remove the common CTI files if switchboard is installed
 IfFileExists "$INSTDIR\switchboard.exe" OnlyUninstallXC
 Delete "$INSTDIR\GPL_V2.txt"
 Delete "$INSTDIR\OpenSSL.LICENSE.txt"
