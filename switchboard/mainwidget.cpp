@@ -1,4 +1,4 @@
-/* XIVO CTI switchboard
+/* XIVO CTI Switchboard
  * Copyright (C) 2007, 2008  Proformatique
  *
  * This program is free software; you can redistribute it and/or modify
@@ -63,6 +63,7 @@
 #include "directorypanel.h"
 #include "displaymessages.h"
 #include "identitydisplay.h"
+#include "faxpanel.h"
 #include "logwidget.h"
 #include "mainwidget.h"
 #include "parkingpanel.h"
@@ -202,8 +203,8 @@ void MainWidget::buildSplitters()
                  m_parkingpanel, SLOT(parkingEvent(const QString &, const QString &)));
 	connect( m_parkingpanel, SIGNAL(copyNumber(const QString &)),
 	         m_engine, SLOT(copyNumber(const QString &)) );
-	connect( m_parkingpanel, SIGNAL(emitDial(const QString &)),
-	         m_engine, SLOT(dialFullChannel(const QString &)) );
+	connect( m_parkingpanel, SIGNAL(emitDial(const QString &, bool)),
+	         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
 	connect( m_parkingpanel, SIGNAL(transferCall(const QString &, const QString &)),
 	         m_engine, SLOT(transferCall(const QString &, const QString &)) );
 	connect( m_parkingpanel, SIGNAL(originateCall(const QString &, const QString &)),
@@ -250,8 +251,8 @@ void MainWidget::buildSplitters()
 
         connect( m_dirpanel, SIGNAL(copyNumber(const QString &)),
                  m_engine, SLOT(copyNumber(const QString &)) );
-	connect( m_dirpanel, SIGNAL(emitDial(const QString &)),
-	         m_engine, SLOT(dialFullChannel(const QString &)) );
+	connect( m_dirpanel, SIGNAL(emitDial(const QString &, bool)),
+	         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
 	connect( m_dirpanel, SIGNAL(transferCall(const QString &, const QString &)),
 	         m_engine, SLOT(transferCall(const QString &, const QString &)) );
 	connect( m_dirpanel, SIGNAL(originateCall(const QString &, const QString &)),
@@ -279,8 +280,8 @@ void MainWidget::buildSplitters()
 	         m_searchpanel, SLOT(removePeers()) );
 	connect( m_engine, SIGNAL(removePeer(const QString &)),
 	         m_searchpanel, SLOT(removePeer(const QString &)) );
-	connect( m_dialpanel, SIGNAL(emitDial(const QString &)),
-	         m_engine, SLOT(dialFullChannel(const QString &)) );
+	connect( m_dialpanel, SIGNAL(emitDial(const QString &, bool)),
+	         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
         connect( m_dialpanel, SIGNAL(originateCall(const QString&, const QString&)),
 	         m_engine, SLOT(originateCallGoodAsterisk(const QString&, const QString&)) );
 	connect( m_dialpanel, SIGNAL(textEdited(const QString &)),
@@ -478,7 +479,7 @@ void MainWidget::showConfDialog()
  */
 void MainWidget::engineStarted()
 {
-	QStringList display_capas = QString("customerinfo,features,history,directory,peers,dial,presence").split(",");
+	QStringList display_capas = QString("customerinfo,features,history,directory,peers,fax,dial,presence").split(",");
 	QStringList allowed_capas = m_engine->getCapabilities();
         m_settings->setValue("display/capas", allowed_capas.join(","));
 
@@ -499,6 +500,15 @@ void MainWidget::engineStarted()
                                          m_logwidget, SLOT(clear()) );
                                 connect( m_calls, SIGNAL(monitoredPeerChanged(const QString &)),
                                          m_logwidget, SLOT(setPeerToDisplay(const QString &)) );
+                        } else if (dc == QString("fax")) {
+				m_faxwidget = new FaxPanel(m_engine, m_svc_tabwidget);
+				m_svc_tabwidget->addTab(m_faxwidget, extraspace + tr("&Fax") + extraspace);
+
+                                connect( m_faxwidget, SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
+                                         m_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
+                                connect( m_engine, SIGNAL(ackFax(const QString &)),
+                                         m_faxwidget, SLOT(popupMsg(const QString &)) );
+
                         } else if (dc == QString("features")) {
 
                                 m_featureswidget = new ServicePanel(m_engine->getCapaFeatures(), m_svc_tabwidget);
@@ -656,8 +666,8 @@ void MainWidget::showNewProfile(Popup * popup)
 			// close the first widget
 			m_cinfo_tabwidget->widget(0)->close();
 		}
-                connect( popup, SIGNAL(emitDial(const QString &)),
-                         m_engine, SLOT(dialFullChannel(const QString &)) );
+                connect( popup, SIGNAL(emitDial(const QString &, bool)),
+                         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
 		// show the window and give it the focus.
 		setVisible(true);
 		activateWindow();

@@ -43,6 +43,7 @@
 #include <QDialogButtonBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QPushButton>
 #include <QSettings>
 #include <QVBoxLayout>
 

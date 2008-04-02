@@ -64,6 +64,7 @@ class ConfWidget;
 class DialPanel;
 class DirectoryPanel;
 class DisplayMessagesPanel;
+class FaxPanel;
 class IdentityDisplay;
 class LeftPanel;
 class LogWidget;
@@ -115,6 +116,7 @@ private:
 	DirectoryPanel * m_dirpanel;
 	LogWidget * m_logwidget;
         LeftPanel * m_leftpanel;
+        FaxPanel * m_faxwidget;
         ParkingPanel * m_parkingpanel;
         QScrollArea * m_areaCalls;
         QScrollArea * m_areaPeers;

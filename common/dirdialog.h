@@ -48,9 +48,10 @@
 #include <QLineEdit>
 #include <QSpinBox>
 
+#include "baseengine.h"
+
 class QDialogButtonBox;
 
-class BaseEngine;
 class DirectoryPanel;
 
 //class MainWidget;
