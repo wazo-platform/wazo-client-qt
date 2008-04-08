@@ -51,6 +51,7 @@
 #include <QPixmap>
 #include <QProcess>
 #include <QPushButton>
+#include <QSettings>
 #include <QUiLoader>
 #include <QUrl>
 #include <QVariant>
@@ -235,11 +236,17 @@ void Popup::addInfoLinkAuto(const QString & name, const QString & value)
         qDebug() << "Popup::addInfoLinkAuto()" << name << value << m_urlautoallow;
         if(m_urlautoallow) {
 #ifdef Q_WS_WIN
-//                 QSettings settings("HKEY_CLASSES_ROOT\\HTTP\\shell\\open\\command", QSettings::NativeFormat);
-//                 QString command = settings.value(".").toString();
+                QSettings settings("HKEY_CLASSES_ROOT\\HTTP\\shell\\open\\command", QSettings::NativeFormat);
+                QString command = settings.value(".").toString();
+		QRegExp rx("\"(.+)\"");
+		if (rx.indexIn(command) != -1)
+			command = rx.capturedTexts()[1];
                 QUrl url(value);
-                QFileInfo browserFileInfo("C:\\Program Files\\Internet Explorer\\iexplore.exe");
-                QProcess::startDetached(browserFileInfo.absoluteFilePath(), QStringList() << "-new" << url.toEncoded());
+                QFileInfo browserFileInfo(command);
+		if (browserFileInfo.fileName() == "iexplore.exe")
+	                QProcess::startDetached(browserFileInfo.absoluteFilePath(), QStringList() << "-new" << url.toEncoded());
+		else
+			QDesktopServices::openUrl(url);
 #else
                 QDesktopServices::openUrl(QUrl(value));
 #endif
