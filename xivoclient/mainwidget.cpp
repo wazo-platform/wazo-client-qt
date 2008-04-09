@@ -907,6 +907,18 @@ void MainWidget::changeEvent(QEvent * /* event */)
 		//event->ignore();
 }
 
+void MainWidget::keyPressEvent(QKeyEvent * event)
+{
+        if((event->key() >= Qt::Key_F1) && (event->key() <= Qt::Key_F12))
+                qDebug() << "MainWidget::keyPressEvent F<n>" << (event->key() - Qt::Key_F1 + 1);
+        else if(event->key() == Qt::Key_Up)
+                qDebug() << "MainWidget::keyPressEvent Up";
+        else if(event->key() <= Qt::Key_Down)
+                qDebug() << "MainWidget::keyPressEvent Down";
+        // m_engine->pickUp("p/xivo/default/103");
+}
+
+
 #if 0
 bool MainWidget::event(QEvent *event)
 {

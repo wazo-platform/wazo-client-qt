@@ -35,30 +35,53 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 2576 $
- * $Date: 2008-03-10 13:56:18 +0100 (Mon, 10 Mar 2008) $
+/* $Revision: 2702 $
+ * $Date: 2008-03-27 16:15:21 +0100 (jeu, 27 mar 2008) $
  */
 
 #include <QDebug>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QPushButton>
 
-#include "userinfo.h"
+#include "statuspanel.h"
+#include "xivoconsts.h"
 
-UserInfo::UserInfo()
-        : m_fullname("")
+/*! \brief Constructor
+ */
+StatusPanel::StatusPanel(QWidget * parent)
+        : QWidget(parent), m_id("")
 {
+	QVBoxLayout * vlayout = new QVBoxLayout(this);
+	vlayout->setMargin(0);
+        m_lbl = new QLabel( "", this );
+        m_status = new QLabel( "", this );
+        m_action = new QPushButton(  "action", this );
+        m_status->show();
+        m_action->hide();
+        vlayout->addStretch(1);
+	vlayout->addWidget( m_lbl, 0, Qt::AlignCenter );
+	vlayout->addWidget( m_status, 0, Qt::AlignCenter );
+	vlayout->addWidget( m_action, 0, Qt::AlignCenter );
+        vlayout->addStretch(1);
 }
 
-
-UserInfo::~UserInfo()
+void StatusPanel::setUserInfo(const QString & id, const UserInfo & ui)
 {
+        qDebug() << "StatusPanel::setUserInfo()" << ui.fullname();
+        m_lbl->setText(ui.fullname());
+        m_id = id;
 }
 
-void UserInfo::setFullName(const QString & fullname)
+void StatusPanel::updatePeer(const QString & a, const QString & b,
+                             const QString & c, const QString & d,
+                             const QString & e, const QString & f,
+                             const QStringList & g, const QStringList & h,
+                             const QStringList & i)
 {
-        m_fullname = fullname;
-}
-
-const QString & UserInfo::fullname() const
-{
-        return m_fullname;
+        if (a == m_id) {
+                qDebug() << "StatusPanel::updatePeer()" << i;
+                m_status->setText(d);
+                m_action->show();
+        }
 }

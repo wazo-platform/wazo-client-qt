@@ -47,8 +47,11 @@ class UserInfo
 public:
 	UserInfo();
         ~UserInfo();
+        void setFullName(const QString &);
+        const QString & fullname() const;
 private:
         QString m_asterisk;
+        QString m_fullname;
 };
 
 #endif

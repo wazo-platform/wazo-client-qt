@@ -56,6 +56,7 @@
 
 class QActionGroup;
 class QDateTime;
+class QKeyEvent;
 class QSystemTrayIcon;
 class QTabWidget;
 class QWidget;
@@ -107,7 +108,8 @@ protected:
 	void hideEvent(QHideEvent *);	//!< Catch hide events
 	void closeEvent(QCloseEvent *);
 	void changeEvent(QEvent *);
-	// bool event(QEvent *);
+	void keyPressEvent(QKeyEvent *);
+        // bool event(QEvent *);
 private:
 	void createActions();	//!< Create Actions (for menus)
 	void createMenus();		//!< Create Menus

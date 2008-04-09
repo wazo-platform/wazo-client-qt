@@ -104,7 +104,7 @@ public slots:
         void hangup();
         void answer();
 protected:
-	void closeEvent(QCloseEvent *event);	//!< catch close event
+	void closeEvent(QCloseEvent *);	//!< catch close event
 private:
 	QIODevice * m_inputstream;	//!< input stream where the XML is read from
 	/* the following properties are for XML parsing */

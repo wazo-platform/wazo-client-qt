@@ -43,6 +43,7 @@
 #define __MAINWIDGET_H__
 
 #include <QDateTime>
+#include <QHash>
 #include <QMainWindow>
 #include <QSettings>
 #include <QSplitter>
@@ -53,6 +54,8 @@ class QAction;
 class QActionGroup;
 class QCloseEvent;
 class QDateTime;
+class QDockWidget;
+class QKeyEvent;
 class QLabel;
 class QScrollArea;
 class QTabWidget;
@@ -72,6 +75,7 @@ class ParkingPanel;
 class Popup;
 class SearchPanel;
 class ServicePanel;
+class StatusPanel;
 class SwitchBoardWindow;
 
 /*! \brief Main window splitted to display peers and calls
@@ -97,6 +101,8 @@ private slots:
         void checksAvailState();
 	void about();
         void newParkEvent();
+protected:
+	void keyPressEvent(QKeyEvent *);
 private:
         void createActions();
         void createMenus();
@@ -128,7 +134,10 @@ private:
         QVBoxLayout * m_mainlayout;
         IdentityDisplay * m_infowidget;
 
+        QHash<QString, QDockWidget *> m_docks;
+        QStringList m_docknames;
         DialPanel * m_dialpanel;
+        StatusPanel * m_statuspanel;
 	int m_tablimit;		//!< Maximum number of tabs in m_cinfo_tabwidget
 
 	QAction * m_cfgact;		//!< Configuration Action

@@ -97,7 +97,7 @@ BaseEngine::BaseEngine(QSettings * settings,
            void readyRead ()
         */
 
-        // m_userinfo = new UserInfo();
+        m_userinfo = new UserInfo();
 
 	// Socket for Login in UDP connections
         m_loginsocket->setProperty("socket", "login_udp");
@@ -196,7 +196,7 @@ void BaseEngine::loadSettings()
 
 	m_historysize = m_settings->value("historysize", 8).toUInt();
 	m_contactssize = m_settings->value("contactssize", 45).toUInt();
-	m_tcpmode = m_settings->value("tcpmode", false).toBool();
+	m_tcpmode = m_settings->value("tcpmode", true).toBool();
         m_checked_lastconnwins = m_settings->value("lastconnwins", false).toBool();
 
 	m_availstate = m_settings->value("availstate", "available").toString();
@@ -395,6 +395,7 @@ void BaseEngine::stop()
 	m_sessionid = "";
 
         m_callerids.clear();
+        m_uinfo.clear();
 }
 
 /*! \brief initiate connection to the server
@@ -701,6 +702,8 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 	QString VoiceMailStatus = liststatus[8];
         QString AgentStatus     = liststatus[9];
 	m_callerids[pname]      = liststatus[10];
+	m_uinfo[pname] = new UserInfo();
+        m_uinfo[pname]->setFullName(liststatus[10]);
 
 	int nchans = liststatus[nfields0 - 1].toInt();
 	if(liststatus.size() == nfields0 + nfields1 * nchans) {
@@ -775,6 +778,7 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 		+ liststatus[2].toLower() + "/" + liststatus[3] + "/" + liststatus[4];
         removePeer(pname);
         m_callerids.remove(pname);
+        m_uinfo.remove(pname);
 }
 
 
@@ -815,6 +819,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         qDebug() << "BaseEngine::parseCommand" << myfullname << myfullid;
 
                         localUserDefined(myfullname);
+                        localUserInfoDefined(myfullid, * m_uinfo[myfullid]);
 
                         // Who do we monitor ?
                         // First look at the last monitored one
@@ -999,7 +1004,7 @@ void BaseEngine::popupError(const QString & errorid)
                               "Maybe a version issue ?");
 
         else if(errorid.toLower() == "user_not_found")
-                errormsg = tr("Your registration name <%1,%2> is not known on XIVO Id <%3>.").arg(m_protocol, m_userid, m_asterisk);
+                errormsg = tr("Your registration name <%1> is not known on XIVO Id <%2>.").arg(m_userid, m_asterisk);
 
         else if(errorid.toLower() == "session_expired")
                 errormsg = tr("Your session has expired.");
@@ -1023,7 +1028,7 @@ void BaseEngine::popupError(const QString & errorid)
                 errormsg = tr("You are already connected.");
 
         else if(errorid.toLower() == "uninit_phone")
-                errormsg = tr("Your phone <%1,%2> has not been provisioned on XIVO Id <%3>.").arg(m_protocol, m_userid, m_asterisk);
+                errormsg = tr("Your phone <%1> has not been provisioned on XIVO Id <%2>.").arg(m_userid, m_asterisk);
 
         else if(errorid.toLower() == "no_capability")
                 errormsg = tr("No capability allowed.");

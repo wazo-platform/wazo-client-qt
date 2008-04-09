@@ -355,6 +355,7 @@ void Popup::finishAndShow()
 	wantsToBeShown( this );
 }
 
+
 void Popup::closeEvent(QCloseEvent * event)
 {
 	qDebug() << "Popup::closeEvent(" << event << ")";

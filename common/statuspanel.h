@@ -35,30 +35,41 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 2576 $
- * $Date: 2008-03-10 13:56:18 +0100 (Mon, 10 Mar 2008) $
+/* $Revision: 2702 $
+ * $Date: 2008-03-27 16:15:21 +0100 (jeu, 27 mar 2008) $
  */
 
-#include <QDebug>
+#ifndef __STATUSPANEL_H__
+#define __STATUSPANEL_H__
+
+#include <QObject>
+#include <QWidget>
+#include <QList>
 
 #include "userinfo.h"
 
-UserInfo::UserInfo()
-        : m_fullname("")
-{
-}
+class QLabel;
+class QPushButton;
 
-
-UserInfo::~UserInfo()
+/*! \brief Simple widget to enter a number and dial it
+ */
+class StatusPanel : public QWidget
 {
-}
+	Q_OBJECT
+public:
+	StatusPanel(QWidget * parent = 0);
+public slots:
+        void setUserInfo(const QString &, const UserInfo &);
+        void updatePeer(const QString &, const QString &,
+                        const QString &, const QString &,
+                        const QString &, const QString &,
+                        const QStringList &, const QStringList &,
+                        const QStringList &);
+private:
+        QString m_id;
+        QLabel * m_lbl;
+        QLabel * m_status;
+        QPushButton * m_action;
+};
 
-void UserInfo::setFullName(const QString & fullname)
-{
-        m_fullname = fullname;
-}
-
-const QString & UserInfo::fullname() const
-{
-        return m_fullname;
-}
+#endif

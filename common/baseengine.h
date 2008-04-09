@@ -190,6 +190,7 @@ public slots:
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
 	void readProfile();
         void agentAction(const QString &);
+	void pickUp(const QString &);
 private slots:
 	void identifyToTheServer();		//!< perform the first login step
 	void processLoginDialog();		//!< perform the following login steps
@@ -208,7 +209,6 @@ private slots:
 	void socketStateChanged(QAbstractSocket::SocketState);
 	void socketReadyRead();
 	void hangUp(const QString &);
-	void pickUp(const QString &);
 signals:
 	void logged();				//!< signal emitted when the state becomes ELogged
 	void delogged();			//!< signal emitted when the state becomes ENotLogged
@@ -252,6 +252,7 @@ signals:
         void connectFeatures();
         void resetFeatures();
         void localUserDefined(const QString &);
+        void localUserInfoDefined(const QString &, const UserInfo &);
         void newUserStatus(const QString &);
         void newQueueList(const QString &);
 	void voiceMailChanged(bool);
@@ -294,7 +295,7 @@ private:
 	quint16 m_loginport;		//!< TCP port (UDP port for keep alive is +1)
 	quint16 m_sbport;		//!< port to connect to server
 
-        // UserInfo * m_userinfo;
+        UserInfo * m_userinfo;
 	QString m_asterisk;		//!< Host to the login server
 	QString m_protocol;		//!< User Protocol's login
 	QString m_userid;		//!< User Id
@@ -328,6 +329,7 @@ private:
 	QString m_clientid;		//!< Client Identifier
 	QString m_forced_state;		//!< Forced state sent by the server
 	QHash<QString, QString> m_callerids;	//!< List of caller Ids
+        QHash<QString, UserInfo *> m_uinfo;
 	int m_version_server;		//!< Version issued by the server after a successful login
         QString m_xivover_server;	//!< Server's XIVO version
         QString m_fullname;		//!< Full Name
