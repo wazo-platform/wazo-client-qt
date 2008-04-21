@@ -99,7 +99,7 @@ void RemotePicWidget::startHttpRequest(const QString & urlstr)
         m_http->ignoreSslErrors();
 	m_httpGetId = m_http->get(url.path(), m_tempFile);
 	// qDebug() << "httpGetId =" << m_httpGetId;
-	// faut envoyer les données sur un fichier temporaire ?
+	// do we need to send data towards a temporary file ?
 	// QTemporaryFile().open() et filename() apres.
 }
 

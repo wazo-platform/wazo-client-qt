@@ -394,7 +394,6 @@ void BaseEngine::stop()
 	setState(ENotLogged);
 	m_sessionid = "";
 
-        m_callerids.clear();
         m_uinfo.clear();
 }
 
@@ -701,7 +700,6 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 	QString SIPPresStatus   = liststatus[7];
 	QString VoiceMailStatus = liststatus[8];
         QString AgentStatus     = liststatus[9];
-	m_callerids[pname]      = liststatus[10];
 	m_uinfo[pname] = new UserInfo();
         m_uinfo[pname]->setFullName(liststatus[10]);
 
@@ -716,6 +714,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 			chanIds << ("c/" + astid + "/" + context + "/" + liststatus[refn]);
 			chanStates << liststatus[refn + 1];
                         QString peerid = liststatus[refn + 5];
+
 			if((peerid == "") ||
 			   (peerid == "<Unknown>") ||
 			   (peerid == "<unknown>") ||
@@ -735,7 +734,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 		}
 	}
 
-        updatePeer(pname, m_callerids[pname],
+        updatePeer(pname, m_uinfo[pname]->fullname(),
                    InstMessAvail, SIPPresStatus, VoiceMailStatus, AgentStatus,
                    chanIds, chanStates, chanOthers);
         if(m_is_a_switchboard)
@@ -777,7 +776,6 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 	QString pname   = "p/" + astid + "/" + context + "/"
 		+ liststatus[2].toLower() + "/" + liststatus[3] + "/" + liststatus[4];
         removePeer(pname);
-        m_callerids.remove(pname);
         m_uinfo.remove(pname);
 }
 
@@ -814,7 +812,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         peersReceived();
 
                         QString myfullid   = "p/" + m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" + m_userid + "/" + m_extension;
-                        QString myfullname = m_callerids[myfullid];
+                        QString myfullname = m_uinfo[myfullid]->fullname();
 
                         qDebug() << "BaseEngine::parseCommand" << myfullname << myfullid;
 
@@ -829,7 +827,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         if(fullid_watched.isEmpty())
                                 monitorPeer(myfullid, myfullname);
                         else {
-                                QString fullname_watched = m_callerids[fullid_watched];
+                                QString fullname_watched = m_uinfo[fullid_watched]->fullname();
                                 // If the CallerId value is empty, fallback to ourselves.
                                 if(fullname_watched.isEmpty())
                                         monitorPeer(myfullid, myfullname);
@@ -837,7 +835,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                                         monitorPeer(fullid_watched, fullname_watched);
                                 }
                         }
-                        emitTextMessage(tr("Received status for %1 phones").arg(m_callerids.size()));
+                        emitTextMessage(tr("Received status for %1 phones").arg(m_uinfo.size()));
                         sendCommand("queues-list " + m_asterisk);
                         sendCommand("agents-status " + m_asterisk + " " + m_agentid);
                 } else {

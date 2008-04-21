@@ -42,51 +42,74 @@
 #ifndef __MAINWIDGET_H__
 #define __MAINWIDGET_H__
 
+#include <QDateTime>
+#include <QHash>
 #include <QLabel>
-#include <QVBoxLayout>
-#include <QPushButton>
-#include <QSystemTrayIcon>
-#include <QMainWindow>
 #include <QLineEdit>
+#include <QMainWindow>
+#include <QPushButton>
+#include <QSettings>
+#include <QSplitter>
+#include <QSystemTrayIcon>
+#include <QVBoxLayout>
+#include <QWidget>
 
 #include "baseengine.h"
 #include "dialpanel.h"
 #include "logwidget.h"
 #include "directorypanel.h"
+#include "videopanel.h"
 
+class QAction;
 class QActionGroup;
+class QCloseEvent;
 class QDateTime;
+class QDockWidget;
+class QEvent;
 class QKeyEvent;
+class QLabel;
+class QScrollArea;
 class QSystemTrayIcon;
 class QTabWidget;
+class QVBoxLayout;
 class QWidget;
 class QUrl;
 
+class BaseEngine;
+class CallStackWidget;
 class ConfWidget;
+class DialPanel;
+class DirectoryPanel;
+class DisplayMessagesPanel;
 class FaxPanel;
 class IdentityDisplay;
+class LeftPanel;
 class LogWidget;
+class ParkingPanel;
+class Popup;
 class SearchPanel;
 class ServicePanel;
+class StatusPanel;
+class SwitchBoardWindow;
 
 /*! \brief Main window class
- *
- * This widget contains buttons enabling the user
- * to popup the config window, to quit and to start
- * the login process.
  */
-class MainWidget: public QMainWindow
+class MainWidget : public QMainWindow
 {
 	Q_OBJECT
 public:
 	//! Constructor
-	MainWidget(BaseEngine *, QWidget * parent=0);
+	MainWidget(BaseEngine *,
+                   const QString &,
+                   const QString &,
+                   QWidget * parent=0);
 	//! Destructor
-        ~MainWidget();
+        virtual ~MainWidget();
 
 	int tablimit() const;	//!< getter for m_tablimit
 	void setTablimit(int);	//!< setter for m_tablimit
 	void setForceTabs(bool);//!< setter for m_forcetabs
+	void setAppearance(const QString &);	//!< dock options
 public slots:
         void dispurl(const QUrl &url);
 private slots:
@@ -95,14 +118,17 @@ private slots:
 	void hideLogin();
 	void engineStopped();
 	void engineStarted();
-	void systrayActivated(QSystemTrayIcon::ActivationReason);
-	void systrayMsgClicked();
+        void systrayActivated(QSystemTrayIcon::ActivationReason);
+        void systrayMsgClicked();
 	void showNewProfile(Popup *);	//!< display a Profile widget
-	void about();
-	void affTextChanged();
         void checksAvailState();
+	void about();
+        void newParkEvent();
+	void affTextChanged();
         void config_and_start();
         void logintextChanged(const QString &);
+signals:
+        void functionKeyPressed(int);
 protected:
 	void showEvent(QShowEvent *);	//!< Catch show events
 	void hideEvent(QHideEvent *);	//!< Catch hide events
@@ -116,43 +142,63 @@ private:
 	void createSystrayIcon();	//!< Create the systray Icon and its menu
         void savePositions() const;
 
-	BaseEngine * m_engine;			//!< pointer to the BaseEngine used
-	//QPushButton * m_btnstart;	//!< Start Button
+	BaseEngine * m_engine;	//!< Engine
 	QSystemTrayIcon * m_systrayIcon;	//!< System Tray Icon
-	//QIcon m_iconred;	//!< Icon object with red indicator
-	//QIcon m_icongreen;	//!< Icon object with green indicator
 	QIcon m_icon;		//!< Icon Object
 	QIcon m_icongrey;	//!< greyed Icon Object
-
 	QWidget * m_wid;	//!< Main widget
+
+	SwitchBoardWindow * m_sbwidget;	//!< Widget to display peers
 	QTabWidget * m_cinfo_tabwidget;	//!< Area to display profiles
-	QTabWidget * m_main_tabwidget;	//!< Area to display function tabs
+	QTabWidget * m_svc_tabwidget;	//!< Area to display messages, services and histories
+        LeftPanel * m_leftpanel;
+        QScrollArea * m_areaCalls;
+        QScrollArea * m_areaPeers;
+	CallStackWidget * m_calls;
 	QLabel * m_messagetosendlabel;    //!< Label for message for switchboards
 	QLineEdit * m_messagetosend;    //!< Message to send to the connected switchboards
-	DialPanel * m_dial;
-	DirectoryPanel * m_directory;
-        QLabel * m_xivobg;
-	//        QLabel * m_xivobg2;
-	LogWidget * m_history;
+        QVBoxLayout * m_mainlayout;
+
         ConfWidget * m_conf;
-        IdentityDisplay * m_infowidget;
-	SearchPanel * m_searchpanel;
+        QLabel * m_xivobg;
+
+	DirectoryPanel * m_dirpanel;
+        DisplayMessagesPanel * m_messages_widget;
         FaxPanel * m_faxwidget;
+	LogWidget * m_historypanel;
+        ParkingPanel * m_parkingpanel;
+	SearchPanel * m_searchpanel;
 	ServicePanel * m_featureswidget;
+        StatusPanel * m_statuspanel;
+        IdentityDisplay * m_infowidget;
+        PlayerWidget * m_videopanel;
+
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;
-        QDateTime m_launchDateTime;
-
-	int m_tablimit;		//!< Maximum number of tabs in m_cinfo_tabwidget
 	int m_cinfo_index;
+
+        QString m_appliname;
+        QStringList m_dockoptions;
+        bool m_withsystray;
+        bool m_loginfirst;
+        bool m_switchboard;
+        bool m_normalmenus;
+
+        QHash<QString, QDockWidget *> m_docks;
+        QStringList m_display_capas;
+        QStringList m_docknames;
+        QStringList m_gridnames;
+        DialPanel * m_dialpanel;
+	int m_tablimit;		//!< Maximum number of tabs in m_cinfo_tabwidget
+
 	// actions :
 	QAction * m_cfgact;		//!< Configuration Action
 	QAction * m_quitact;		//!< Quit Action
-	QAction * m_systraymin;		//!< "Go to systray" action
-	QAction * m_systraymax;		//!< "Go to systray" action
 	QAction * m_connectact;		//!< "Connect" Action
 	QAction * m_disconnectact;	//!< "Disconnect" Action
-	QActionGroup * m_availgrp;	//!< group For Availability Actions
+	QAction * m_systraymin;		//!< "Go to systray" action
+	QAction * m_systraymax;		//!< "Go to systray" action
+	QActionGroup * m_availgrp;	//!< Availability action group
 
 	QGridLayout * m_gridlayout;
         QLabel * m_lab1;
@@ -167,14 +213,28 @@ private:
         QFrame * m_qhline;
 
 	QMenu * m_avail;		//!< Availability submenu
-	QAction * m_avact_avail;	//!< Available Action
-	QAction * m_avact_away;		//!< Away Action
-	QAction * m_avact_brb;		//!< "Be Right Back" Action
-	QAction * m_avact_otl;		//!< "Out To Lunch" Action
+	QAction * m_avact_avail;	//!< "Available" action
+	QAction * m_avact_brb;		//!< "Be right back" action
 	QAction * m_avact_dnd;		//!< "Do not disturb" action
-
+	QAction * m_avact_otl;		//!< "out to lunch" action
+	QAction * m_avact_away;		//!< "away" action
 	QLabel * m_status;	//!< status indicator
+
+        QDateTime m_launchDateTime;
         QSettings * m_settings;
 };
+
+
+/*! \brief Widget containing the CallStackWidget and a Title QLabel
+ */
+class LeftPanel : public QWidget
+{
+public:
+	LeftPanel(QWidget *, QWidget * parent = 0);	//!< Constructor
+	QLabel * titleLabel();	//!< getter for m_titleLabel
+private:
+	QLabel * m_titleLabel;	//!< Title label property
+};
+
 
 #endif

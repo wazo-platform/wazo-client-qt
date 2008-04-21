@@ -1,4 +1,4 @@
-/* XIVO CTI Client
+/* XIVO CTI Clients
  * Copyright (C) 2007, 2008  Proformatique
  *
  * This program is free software; you can redistribute it and/or modify
@@ -49,33 +49,29 @@
 #include "baseengine.h"
 #include "mainwidget.h"
 
-/*! \mainpage Profile Popup
- *
- * \section intro_sec Introduction
- *
- * This Qt program is designed to run quietly in the background
- * waiting for incoming connections from the server.
- * When a profile is received, it is displayed.
- *
- * \sa main
- */
-
 /*! \fn main
  *
  * \brief program entry point
  *
- * Set some static Qt parametters for using QSettings,
- * instanciate a MainWidget window and a BaseEngine object.
+ * Set some static Qt parameters for using QSettings,
+ * instantiate a MainWidget window and a BaseEngine object.
  *
  * \sa MainWidget, BaseEngine
  */
-int main(int argc, char * * argv)
+int main(int argc, char ** argv)
 {
 	QString locale = QLocale::system().name();
-//	QApplication::setStyle(new XIVOClientStyle());
+        QString applaunch = argv[0];
+        QString appoptions = "";
+        if(argc > 1)
+                appoptions = argv[1];
+        // QApplication::setStyle(new XIVOCTIStyle());
 	QCoreApplication::setOrganizationName("XIVO");
 	QCoreApplication::setOrganizationDomain("xivo.fr");
-	QCoreApplication::setApplicationName("XIVO_Client");
+        if(applaunch.contains("xivoclient"))
+                QCoreApplication::setApplicationName("XIVO_Client");
+        else
+                QCoreApplication::setApplicationName("XIVO_Switchboard");
 	QApplication app(argc, argv);
         QSettings * settings = new QSettings(QSettings::IniFormat,
                                              QSettings::UserScope,
@@ -97,13 +93,24 @@ int main(int argc, char * * argv)
         if(forcelocale.size() > 0)
                 locale = forcelocale;
         qtTranslator.load(QString(":/xivoclient_") + locale);
-	app.installTranslator(&qtTranslator);
-        app.setQuitOnLastWindowClosed(false);
+        if(applaunch.contains("xivoclient"))
+                app.setQuitOnLastWindowClosed(false);
+        app.installTranslator(&qtTranslator);
 
-	BaseEngine * engine = new BaseEngine(settings);
-	engine->setIsASwitchboard(false);
+        BaseEngine * engine = new BaseEngine(settings);
 
-	MainWidget main(engine);
+        QString appname = "";
+        if(applaunch.contains("xivoclient")) {
+                engine->setIsASwitchboard(false);
+                appname = "Client";
+                appoptions = "services:grid,dial:grid,peers:grid,history:grid,directory:grid,customerinfo:grid";
+        } else {
+                engine->setIsASwitchboard(true);
+                appname = "Switchboard";
+                appoptions = "services:dock:m,dial:dock:m,peers:dock:m,history,directory:dock:m,customerinfo:dock:m,po:dock:mf,parking:grid,messages:grid,switchboard:dock:mc";
+        }
+        MainWidget main(engine, appname, appoptions);
+
 	//main.dumpObjectTree();
         QObject::connect( &app, SIGNAL(lastWindowClosed()),
                           engine, SLOT(stop()) );

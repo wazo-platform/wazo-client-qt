@@ -328,8 +328,7 @@ private:
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier
 	QString m_forced_state;		//!< Forced state sent by the server
-	QHash<QString, QString> m_callerids;	//!< List of caller Ids
-        QHash<QString, UserInfo *> m_uinfo;
+        QHash<QString, UserInfo *> m_uinfo;	//!< List of User Informations
 	int m_version_server;		//!< Version issued by the server after a successful login
         QString m_xivover_server;	//!< Server's XIVO version
         QString m_fullname;		//!< Full Name

@@ -42,5 +42,7 @@
 	<file>../images/checkbox_unchecked_pressed.png</file>
 	<file>../images/connected.png</file>
 	<file>../images/disconnected.png</file>
+	<file>../images/leftarrow.png</file>
+	<file>../images/rightarrow.png</file>
 </qresource>
 </RCC>

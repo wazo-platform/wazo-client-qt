@@ -383,7 +383,7 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
  */
 void SwitchBoardWindow::savePositions() const
 {
-        qDebug() << "SwitchBoardWindow::savePositions()";
+        // qDebug() << "SwitchBoardWindow::savePositions()";
 	QSettings * settings = m_engine->getSettings();
 	for(int i = 0; i < m_peerlist.size(); i++) {
                 QPoint pos = m_layout->getItemPosition(i);

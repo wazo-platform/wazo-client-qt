@@ -1,4 +1,4 @@
-/* XIVO CTI clients
+/* XIVO CTI Clients
  * Copyright (C) 2007, 2008  Proformatique
  *
  * This program is free software; you can redistribute it and/or modify
@@ -35,64 +35,58 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 2702 $
- * $Date: 2008-03-27 16:15:21 +0100 (jeu, 27 mar 2008) $
+/* $Revision$
+ * $Date$
  */
 
-#ifndef __STATUSPANEL_H__
-#define __STATUSPANEL_H__
+#ifndef __VIDEOPLAYERWIDGET_H__
+#define __VIDEOPLAYERWIDGET_H__
 
-#include <QHash>
-#include <QList>
-#include <QObject>
+#include <QApplication>
+#include <QProcess>
+#include <QVBoxLayout>
+#include <QLayoutItem>
 #include <QWidget>
+#include <QPaintEvent>
+#include <QPainter>
+#include <QColor>
+#include <QRect>
+#include <QLinearGradient>
+#include <QSizePolicy>
+#include <QPushButton>
+#include <QTextEdit>
+#include <QSlider>
+#include <QCloseEvent>
+#include <QTimer>
 
-#include "userinfo.h"
-
-class QFrame;
-class QGridLayout;
-class QLabel;
-class QLineEdit;
-class QPushButton;
-
-/*! \brief Simple widget to enter a number and dial it
- */
-class StatusPanel : public QWidget
+class PlayerWidget: public QWidget
 {
 	Q_OBJECT
 public:
-	StatusPanel(QWidget * parent = 0);
-        enum Line {Ready, Ringing, Hangup, Wait, Transfer, WTransfer, Online};
-public slots:
-        void setUserInfo(const QString &, const UserInfo &);
-        void updatePeer(const QString &, const QString &,
-                        const QString &, const QString &,
-                        const QString &, const QString &,
-                        const QStringList &, const QStringList &,
-                        const QStringList &);
-        void functionKeyPressed(int);
-signals:
-        void pickUp(const QString &);	//!< picking up a channel ...
+	PlayerWidget(QWidget * parent = 0);
+protected:
+	virtual void closeEvent(QCloseEvent *);
 private:
-        void newCall(const QString &);
-        void transfer();
-        void changeCurrentChannel(const QString &, const QString &);
+	bool startMPlayer();
+	bool stopMPlayer();
 
-        QGridLayout * m_glayout;
-        QString m_id;
-        QLabel * m_lbl;
-
-        QHash<QString, QFrame *> m_vlinesl;
-        QHash<QString, QFrame *> m_vlinesr;
-        QHash<QString, QLabel *> m_statuses;
-        QHash<QString, QHash<QString, QPushButton *> > m_actions;
-        QHash<QString, QLineEdit *> m_tnums;
-        QHash<QString, Line> m_linestatuses;
-
-        QString m_currentchannel;
-        int m_linenum;
-        QStringList m_actionnames;
-        QStringList m_callchannels;
+private slots:
+	void catchOutput();
+	void pollCurrentTime();
+	// Dirige la timeline
+	void timeLineChanged(int);
+	// Play/stop
+	void switchPlayState();
+	void mplayerEnded(int, QProcess::ExitStatus);
+private:
+	QPushButton *controller;
+	QWidget *renderTarget;
+	QProcess *mplayerProcess;
+	bool isPlaying;
+	QSlider *timeLine;
+	QTimer *poller;
+	QTextEdit *log;
+        QString m_movie_url;
 };
 
-#endif
+#endif /* __VIDEOPLAYERWIDGET_H__ */

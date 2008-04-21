@@ -118,8 +118,8 @@ void DialPanel::dropEvent(QDropEvent * event)
                 if(ext.length() == 0)	// do nothing if the string is empty
                         return;
                 originateCall(originator, m_input->lineEdit()->text());
-                m_input->insertItem(0, ext); // ajout à l'historique
-                // supprimer les occurences les plus anciennes du meme numero
+                m_input->insertItem(0, ext); // add to history
+                // remove the older items related to the same number
                 for(int i=1; i<m_input->count(); ) {
                         if(ext == m_input->itemText(i)) {
                                 m_input->removeItem(i);
@@ -155,8 +155,8 @@ void DialPanel::inputValidated()
                 if(ext.length() == 0)	// do nothing if the string is empty
                         return;
                 emitDial(ext, false);
-                m_input->insertItem(0, ext); // ajout à l'historique
-                // supprimer les occurences les plus anciennes du meme numero
+                m_input->insertItem(0, ext); // add to history
+                // remove the older items related to the same number
                 for(int i=1; i<m_input->count(); ) {
                         if(ext == m_input->itemText(i)) {
                                 m_input->removeItem(i);

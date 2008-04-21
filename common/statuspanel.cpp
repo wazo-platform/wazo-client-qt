@@ -40,8 +40,9 @@
  */
 
 #include <QDebug>
-#include <QVBoxLayout>
+#include <QGridLayout>
 #include <QLabel>
+#include <QLineEdit>
 #include <QPushButton>
 
 #include "statuspanel.h"
@@ -52,18 +53,48 @@
 StatusPanel::StatusPanel(QWidget * parent)
         : QWidget(parent), m_id("")
 {
-	QVBoxLayout * vlayout = new QVBoxLayout(this);
-	vlayout->setMargin(0);
+	m_glayout = new QGridLayout(this);
         m_lbl = new QLabel( "", this );
-        m_status = new QLabel( "", this );
-        m_action = new QPushButton(  "action", this );
-        m_status->show();
-        m_action->hide();
-        vlayout->addStretch(1);
-	vlayout->addWidget( m_lbl, 0, Qt::AlignCenter );
-	vlayout->addWidget( m_status, 0, Qt::AlignCenter );
-	vlayout->addWidget( m_action, 0, Qt::AlignCenter );
-        vlayout->addStretch(1);
+        m_linenum = 0;
+
+        m_actionnames = (QStringList() << "Answer" << "Refuse" << "Transfer");
+	m_glayout->addWidget( m_lbl, 0, 0, 1, 7, Qt::AlignHCenter | Qt::AlignVCenter );
+        m_glayout->setRowStretch(100, 1);
+}
+
+void StatusPanel::newCall(const QString & chan)
+{
+        m_vlinesl[chan] = new QFrame(this);
+        m_vlinesr[chan] = new QFrame(this);
+        m_statuses[chan] = new QLabel("none", this);
+        m_tnums[chan] = new QLineEdit("", this);
+        m_linenum ++;
+
+        m_vlinesl[chan]->setFrameShape(QFrame::VLine);
+        m_vlinesl[chan]->setLineWidth(1);
+        m_vlinesr[chan]->setFrameShape(QFrame::VLine);
+        m_vlinesr[chan]->setLineWidth(1);
+        m_tnums[chan]->hide();
+
+        changeCurrentChannel(m_currentchannel, chan);
+        m_currentchannel = chan;
+
+        // m_actions << new QHash<QString, QPushButton *>;
+        QHash<QString, QPushButton *> k;
+        foreach (QString actionname, m_actionnames) {
+                k[actionname] = new QPushButton(actionname, this);
+                k[actionname]->hide();
+        }
+        m_actions[chan] = k;
+
+        int colnum  = 1;
+        m_glayout->addWidget( m_vlinesl[chan], m_linenum, 0, Qt::AlignLeft );
+	m_glayout->addWidget( m_statuses[chan], m_linenum, colnum++, Qt::AlignHCenter );
+        foreach (QString actionname, m_actionnames) {
+                m_glayout->addWidget( m_actions[chan][actionname], m_linenum, colnum++, Qt::AlignHCenter );
+        }
+	m_glayout->addWidget( m_tnums[chan],   m_linenum, colnum++, Qt::AlignHCenter );
+        m_glayout->addWidget( m_vlinesr[chan], m_linenum, 7 - 1, Qt::AlignRight );
 }
 
 void StatusPanel::setUserInfo(const QString & id, const UserInfo & ui)
@@ -73,15 +104,158 @@ void StatusPanel::setUserInfo(const QString & id, const UserInfo & ui)
         m_id = id;
 }
 
-void StatusPanel::updatePeer(const QString & a, const QString & b,
-                             const QString & c, const QString & d,
-                             const QString & e, const QString & f,
+void StatusPanel::transfer()
+{
+        qDebug() << "Transfer";
+        if(m_callchannels.contains(m_currentchannel)) {
+                if(m_linestatuses[m_currentchannel] == WTransfer) {
+                        m_tnums[m_currentchannel]->hide();
+                        m_statuses[m_currentchannel]->setFocus();
+                        m_linestatuses[m_currentchannel] = Online;
+                } else {
+                        m_tnums[m_currentchannel]->show();
+                        m_tnums[m_currentchannel]->setFocus();
+                        m_linestatuses[m_currentchannel] = WTransfer;
+                }
+        }
+}
+
+void StatusPanel::functionKeyPressed(int keynum)
+{
+        if(m_callchannels.contains(m_currentchannel)) {
+                Line linestatus = m_linestatuses[m_currentchannel];
+                if(linestatus == Ringing) {
+                        if(keynum == Qt::Key_F1) {
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F1 when Ringing : Answer";
+                                pickUp("p/xivo/default/103");
+                        }
+                        else if(keynum == Qt::Key_F2)
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F2 when Ringing : Refuse";
+                        else if(keynum == Qt::Key_F3) {
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when Ringing : Transfer";
+                                transfer();
+                        }
+                } else if(linestatus == Online) {
+                        if(keynum == Qt::Key_F2)
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F2 when Online : Hangup";
+                        else if(keynum == Qt::Key_F3) {
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when Online : Transfer";
+                                transfer();
+                        } else if(keynum == Qt::Key_F4)
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F4 when Online : Wait";
+                } else if(linestatus == Wait) {
+                        if(keynum == Qt::Key_F1)
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F1 when Wait : Take back";
+                } else if(linestatus == WTransfer) {
+                        if(keynum == Qt::Key_F3) {
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when WTransfer : Transfer Cancel";
+                                transfer();
+                        }
+                }
+                
+                if(keynum == Qt::Key_Up) {
+                        int ci = m_callchannels.indexOf(m_currentchannel);
+                        if(ci == 0)
+                                ci = 0; // ci = m_callchannels.size() - 1;
+                        else
+                                ci = ci - 1;
+                        changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
+                        m_currentchannel = m_callchannels[ci];
+                } else if(keynum == Qt::Key_Down) {
+                        int ci = m_callchannels.indexOf(m_currentchannel);
+                        if(ci == m_callchannels.size() - 1)
+                                ci = m_callchannels.size() - 1; // ci = 0;
+                        else
+                                ci = ci + 1;
+                        changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
+                        m_currentchannel = m_callchannels[ci];
+                }
+        }
+}
+
+void StatusPanel::changeCurrentChannel(const QString & before, const QString & after)
+{
+        // qDebug() << "StatusPanel::changeCurrentChannel" << before << after;
+        if(before != after) {
+                if(m_vlinesl.contains(before) && m_vlinesr.contains(before)) {
+                        m_vlinesl[before]->setLineWidth(1);
+                        m_vlinesr[before]->setLineWidth(1);
+                }
+                if(m_vlinesl.contains(after) && m_vlinesr.contains(after)) {
+                        m_vlinesl[after]->setLineWidth(3);
+                        m_vlinesr[after]->setLineWidth(3);
+                }
+        }
+}
+
+void StatusPanel::updatePeer(const QString & a, const QString &,
+                             const QString &, const QString &,
+                             const QString &, const QString &,
                              const QStringList & g, const QStringList & h,
                              const QStringList & i)
 {
         if (a == m_id) {
-                qDebug() << "StatusPanel::updatePeer()" << i;
-                m_status->setText(d);
-                m_action->show();
+                qDebug() << "StatusPanel::updatePeer()" << g << h << i;
+                foreach (QString callchannel, g) {
+                        int index = g.indexOf(callchannel);
+                        const QString d = h[index];
+                        const QString num = i[index];
+                        if(d == "Ringing") {
+                                if(m_callchannels.contains(callchannel) == false) {
+                                        newCall(callchannel);
+                                        m_linestatuses[callchannel] = Ringing;
+                                        m_callchannels << callchannel;
+                                        m_statuses[callchannel]->setText(d + num);
+                                        foreach (QString actionname, m_actionnames)
+                                                m_actions[callchannel][actionname]->show();
+                                        m_statuses[callchannel]->show();
+                                }
+                        } else if(d == "On the phone") {
+                                if(m_callchannels.contains(callchannel) == true) {
+                                        m_linestatuses[callchannel] = Online;
+                                        m_statuses[callchannel]->setText(d + num);
+                                        foreach (QString actionname, m_actionnames)
+                                                m_actions[callchannel][actionname]->show();
+                                        m_statuses[callchannel]->show();
+                                }
+                        } else if(d == "Hangup") {
+                                if(m_callchannels.contains(callchannel) == true) {
+                                        m_linestatuses[callchannel] = Ready;
+                                        m_statuses[callchannel]->hide();
+                                        foreach (QString actionname, m_actionnames)
+                                                m_actions[callchannel][actionname]->hide();
+
+                                        delete m_vlinesl[callchannel];
+                                        delete m_vlinesr[callchannel];
+                                        delete m_statuses[callchannel];
+                                        delete m_tnums[callchannel];
+                                        m_vlinesl.remove(callchannel);
+                                        m_vlinesr.remove(callchannel);
+                                        m_statuses.remove(callchannel);
+                                        m_linestatuses.remove(callchannel);
+                                        m_tnums.remove(callchannel);
+
+                                        if(m_currentchannel == callchannel) {
+                                                if(m_callchannels.size() > 1) {
+                                                        int ci = m_callchannels.indexOf(m_currentchannel);
+                                                        if(ci == m_callchannels.size() - 1)
+                                                                ci --;
+                                                        changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
+                                                        m_currentchannel = m_callchannels[ci];
+                                                } else
+                                                        m_currentchannel = "";
+                                        }
+                                        m_callchannels.removeAll(callchannel);
+                                }
+                        } else {
+                                if(m_callchannels.contains(callchannel) == true) {
+                                        m_linestatuses[callchannel] = Ready;
+                                        m_statuses[callchannel]->setText(d + num);
+                                        foreach (QString actionname, m_actionnames)
+                                                m_actions[callchannel][actionname]->hide();
+                                        m_tnums[callchannel]->hide();
+                                }
+                        }
+                }
         }
 }
