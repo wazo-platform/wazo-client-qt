@@ -603,7 +603,7 @@ void MainWidget::systrayMsgClicked()
  */
 void MainWidget::engineStarted()
 {
-	setForceTabs(false);
+	setForceTabs(true);
 	QStringList allowed_capas = m_engine->getCapabilities();
         m_settings->setValue("display/capas", allowed_capas.join(","));
 

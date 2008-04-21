@@ -107,7 +107,7 @@ int main(int argc, char ** argv)
         } else {
                 engine->setIsASwitchboard(true);
                 appname = "Switchboard";
-                appoptions = "services:dock:m,dial:dock:m,peers:dock:m,history,directory:dock:m,customerinfo:dock:m,po:dock:mf,parking:grid,messages:grid,switchboard:dock:mc";
+                appoptions = "services:dock:m,dial:dock:m,peers:dock:m,history,directory:dock:m,customerinfo:dock:m,po:dock:mfc,parking:grid,messages:grid,switchboard:dock:mc";
         }
         MainWidget main(engine, appname, appoptions);
 
