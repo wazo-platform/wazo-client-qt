@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 2702 $
- * $Date: 2008-03-27 16:15:21 +0100 (jeu, 27 mar 2008) $
+/* $Revision$
+ * $Date$
  */
 
 #ifndef __STATUSPANEL_H__

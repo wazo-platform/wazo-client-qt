@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 2702 $
- * $Date: 2008-03-27 16:15:21 +0100 (jeu, 27 mar 2008) $
+/* $Revision$
+ * $Date$
  */
 
 #include <QDebug>
@@ -57,8 +57,8 @@ StatusPanel::StatusPanel(QWidget * parent)
         m_lbl = new QLabel( "", this );
         m_linenum = 0;
 
-        m_actionnames = (QStringList() << "Answer" << "Refuse" << "Transfer");
-	m_glayout->addWidget( m_lbl, 0, 0, 1, 7, Qt::AlignHCenter | Qt::AlignVCenter );
+        m_actionnames = (QStringList() << "Fa" << "Fb" << "Fc");
+	m_glayout->addWidget( m_lbl, 0, 0, 1, m_actionnames.size() + 4, Qt::AlignHCenter | Qt::AlignVCenter );
         m_glayout->setRowStretch(100, 1);
 }
 
@@ -79,12 +79,14 @@ void StatusPanel::newCall(const QString & chan)
         changeCurrentChannel(m_currentchannel, chan);
         m_currentchannel = chan;
 
-        // m_actions << new QHash<QString, QPushButton *>;
         QHash<QString, QPushButton *> k;
         foreach (QString actionname, m_actionnames) {
-                k[actionname] = new QPushButton(actionname, this);
+                k[actionname] = new QPushButton("", this);
                 k[actionname]->hide();
         }
+        k["Fa"]->setText("Answer (F1)");
+        k["Fb"]->setText("Refuse (F2)");
+        k["Fc"]->setText("D. Transfer (F3)");
         m_actions[chan] = k;
 
         int colnum  = 1;
@@ -94,7 +96,7 @@ void StatusPanel::newCall(const QString & chan)
                 m_glayout->addWidget( m_actions[chan][actionname], m_linenum, colnum++, Qt::AlignHCenter );
         }
 	m_glayout->addWidget( m_tnums[chan],   m_linenum, colnum++, Qt::AlignHCenter );
-        m_glayout->addWidget( m_vlinesr[chan], m_linenum, 7 - 1, Qt::AlignRight );
+        m_glayout->addWidget( m_vlinesr[chan], m_linenum, m_actionnames.size() + 3, Qt::AlignRight );
 }
 
 void StatusPanel::setUserInfo(const QString & id, const UserInfo & ui)
@@ -108,13 +110,14 @@ void StatusPanel::setUserInfo(const QString & id, const UserInfo & ui)
 
 void StatusPanel::dtransfer()
 {
-        qDebug() << "Direct Transfer";
         if(m_callchannels.contains(m_currentchannel)) {
-                qDebug() << m_peerchan[m_currentchannel];
+                qDebug() << "Direct   Transfer" << m_peerchan[m_currentchannel];
                 if(m_linestatuses[m_currentchannel] == WDTransfer) {
                         m_tnums[m_currentchannel]->hide();
                         m_statuses[m_currentchannel]->setFocus();
                         m_linestatuses[m_currentchannel] = Online;
+                        disconnect( m_tnums[m_currentchannel], SIGNAL(returnPressed()),
+                                    this, SLOT(xferPressed()) );
                 } else {
                         m_tnums[m_currentchannel]->show();
                         m_tnums[m_currentchannel]->setFocus();
@@ -128,13 +131,14 @@ void StatusPanel::dtransfer()
 
 void StatusPanel::itransfer()
 {
-        qDebug() << "Indirect Transfer";
         if(m_callchannels.contains(m_currentchannel)) {
-                qDebug() << m_peerchan[m_currentchannel];
+                qDebug() << "Indirect Transfer" << m_peerchan[m_currentchannel];
                 if(m_linestatuses[m_currentchannel] == WITransfer) {
                         m_tnums[m_currentchannel]->hide();
                         m_statuses[m_currentchannel]->setFocus();
                         m_linestatuses[m_currentchannel] = Online;
+                        disconnect( m_tnums[m_currentchannel], SIGNAL(returnPressed()),
+                                    this, SLOT(xferPressed()) );
                 } else {
                         m_tnums[m_currentchannel]->show();
                         m_tnums[m_currentchannel]->setFocus();
@@ -163,26 +167,24 @@ void StatusPanel::functionKeyPressed(int keynum)
                 Line linestatus = m_linestatuses[m_currentchannel];
                 if(linestatus == Ringing) {
                         if(keynum == Qt::Key_F1) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F1 when Ringing : Answer";
                                 pickUp("p/xivo/default/" + m_id.split("/")[4]);
+                                m_actions[m_currentchannel]["Fa"]->setText("Hangup (F2)");
+                                m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
+                                m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
                         }
-                        else if(keynum == Qt::Key_F2) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F2 when Ringing : Refuse";
+                        else if(keynum == Qt::Key_F2)
                                 simpleHangUp("c/xivo/default/" + m_peerchan[m_currentchannel]);
-                        }
-                        else if(keynum == Qt::Key_F3) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when Ringing : Transfer";
+                        else if(keynum == Qt::Key_F3)
                                 dtransfer();
-                        }
                 } else if(linestatus == Online) {
                         if(keynum == Qt::Key_F2) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F2 when Online : Hangup";
+                                simpleHangUp("c/xivo/default/" + m_peerchan[m_currentchannel]);
                         } else if(keynum == Qt::Key_F3) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when Online : Direct Transfer";
                                 dtransfer();
+                                m_actions[m_currentchannel]["Fb"]->setText("(# + Return)");
                         } else if(keynum == Qt::Key_F4) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F4 when Online : Indirect Transfer / Call";
                                 itransfer();
+                                m_actions[m_currentchannel]["Fc"]->setText("(# + Return)");
                         } else if(keynum == Qt::Key_F6)
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F6 when Online : Wait";
                 } else if(linestatus == Wait) {
@@ -190,13 +192,33 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F1 when Wait : Take back";
                 } else if(linestatus == WDTransfer) {
                         if(keynum == Qt::Key_F3) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when WDTransfer : Transfer Cancel";
-                                dtransfer();
+                                dtransfer(); // cancel D. Transfer request
+                                m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
+                                m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
+                        } else if(keynum == Qt::Key_F4) {
+                                itransfer();
+                                m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
+                                m_actions[m_currentchannel]["Fc"]->setText("(# + Return)");
+                        } else if(keynum == Qt::Key_F2) {
+                                simpleHangUp("c/xivo/default/" + m_peerchan[m_currentchannel]);
+                        } else if(keynum == Qt::Key_F1) {
+                                // only when not picked up yet
+                                pickUp("p/xivo/default/" + m_id.split("/")[4]);
+                                m_actions[m_currentchannel]["Fa"]->setText("Hangup (F2)");
+                                m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
+                                m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
                         }
                 } else if(linestatus == WITransfer) {
                         if(keynum == Qt::Key_F3) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when WITransfer : Transfer Cancel";
-                                itransfer();
+                                dtransfer();
+                                m_actions[m_currentchannel]["Fb"]->setText("(# + Return)");
+                                m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
+                        } else if(keynum == Qt::Key_F4) {
+                                itransfer(); // cancel I. Transfer request
+                                m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
+                                m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
+                        } else if(keynum == Qt::Key_F2) {
+                                simpleHangUp("c/xivo/default/" + m_peerchan[m_currentchannel]);
                         } else if(keynum == Qt::Key_F5) {
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F5 when Online : Indirect Transfer / Hangup";
                                 simpleHangUp(m_currentchannel);
