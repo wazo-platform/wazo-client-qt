@@ -103,11 +103,14 @@ int main(int argc, char ** argv)
         if(applaunch.contains("xivoclient")) {
                 engine->setIsASwitchboard(false);
                 appname = "Client";
-                // appoptions = "services:grid,dial:grid,peers:tab,history:tab,directory:tab,customerinfo:tab,fax:tab,features:tab"
+                if(appoptions.size() == 0)
+                        appoptions = "services:grid,dial:grid,peers:tab,history:tab,directory:tab,customerinfo:tab,fax:tab,features:tab";
         } else {
                 engine->setIsASwitchboard(true);
                 appname = "Switchboard";
-                // appoptions = "services:dock:m,dial:dock:m,peers:dock:m,history,directory:dock:m,customerinfo:dock:m,po:dock:mfc,parking:tab,messages:tab,switchboard:dock:mc";
+                if(appoptions.size() == 0)
+                        appoptions = "services:dock:m,dial:dock:m,peers:dock:m,history,directory:dock:m,"
+                                "customerinfo:dock:m,po:dock:mfc,parking:tab,messages:tab,switchboard:dock:mc";
         }
         MainWidget main(engine, appname, appoptions);
 
