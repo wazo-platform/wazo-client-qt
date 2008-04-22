@@ -122,7 +122,8 @@ void SwitchBoardWindow::updatePeer(const QString & ext,
                                    const QString & agentstatus,
 				   const QStringList & chanIds,
 				   const QStringList & chanStates,
-				   const QStringList & chanOthers)
+				   const QStringList & chanOthers,
+                                   const QStringList &)
 {
 	// first search in the peerhash
         if(m_peerhash.contains(ext)) {

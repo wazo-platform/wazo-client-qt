@@ -65,15 +65,11 @@ public:
 	void setEngine(BaseEngine *);	//!< set m_engine
 public slots:
 	void affTextChanged(const QString &);
-	void updatePeer(const QString &,
-	                const QString &,
-			const QString &,
-			const QString &,
-			const QString &,
-			const QString &,
-			const QStringList &,
-			const QStringList &,
-			const QStringList &);
+	void updatePeer(const QString &, const QString &,
+			const QString &, const QString &,
+			const QString &, const QString &,
+			const QStringList &, const QStringList &,
+			const QStringList &, const QStringList &);
 	void updatePeerAgent(const QString &,
                              const QString &);
 	void removePeer(const QString &);

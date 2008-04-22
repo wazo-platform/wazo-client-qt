@@ -135,6 +135,8 @@ protected:
 	void closeEvent(QCloseEvent *);
 	void changeEvent(QEvent *);
 	void keyPressEvent(QKeyEvent *);
+        void addPanel(const QString &, const QString &, QWidget *);
+        void removePanel(const QString &, QWidget *);
         // bool event(QEvent *);
 private:
 	void createActions();	//!< Create Actions (for menus)
@@ -178,16 +180,19 @@ private:
 	int m_cinfo_index;
 
         QString m_appliname;
-        QStringList m_dockoptions;
+        QHash<QString, QString> m_dockoptions;
+        QStringList m_docknames;
+        QStringList m_gridnames;
+        QStringList m_tabnames;
+
         bool m_withsystray;
         bool m_loginfirst;
         bool m_switchboard;
         bool m_normalmenus;
 
+
         QHash<QString, QDockWidget *> m_docks;
         QStringList m_display_capas;
-        QStringList m_docknames;
-        QStringList m_gridnames;
         DialPanel * m_dialpanel;
 	int m_tablimit;		//!< Maximum number of tabs in m_cinfo_tabwidget
 

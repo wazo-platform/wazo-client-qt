@@ -75,15 +75,11 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *);
 	void dropEvent(QDropEvent *);
 public slots:
-	void updatePeer(const QString &,
-			const QString &,
-			const QString &,
-			const QString &,
-			const QString &,
-			const QString &,
-			const QStringList &,
-			const QStringList &,
-			const QStringList &);
+	void updatePeer(const QString &, const QString &,
+			const QString &, const QString &,
+			const QString &, const QString &,
+			const QStringList &, const QStringList &,
+			const QStringList &, const QStringList &);
 	void removePeer(const QString & ext);
 	void removePeers(void);
 private slots:

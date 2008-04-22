@@ -209,6 +209,7 @@ private slots:
 	void socketStateChanged(QAbstractSocket::SocketState);
 	void socketReadyRead();
 	void hangUp(const QString &);
+	void simpleHangUp(const QString &);
 signals:
 	void logged();				//!< signal emitted when the state becomes ELogged
 	void delogged();			//!< signal emitted when the state becomes ENotLogged
@@ -242,7 +243,8 @@ signals:
 	void updatePeer(const QString &, const QString &,
 	                const QString &, const QString &,
 	                const QString &, const QString &,
-	                const QStringList &, const QStringList &, const QStringList &);
+	                const QStringList &, const QStringList &,
+                        const QStringList &, const QStringList &);
 	void updatePeerAgent(const QString &, const QString &);
 	//! a log entry has to be updated.
 	void updateLogEntry(const QDateTime &, int, const QString &, int);

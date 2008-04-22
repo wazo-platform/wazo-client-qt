@@ -104,21 +104,58 @@ void StatusPanel::setUserInfo(const QString & id, const UserInfo & ui)
         m_id = id;
 }
 
-void StatusPanel::transfer()
+//m_engine, SLOT(transferCall(const QString&, const QString&)) );
+
+void StatusPanel::dtransfer()
 {
-        qDebug() << "Transfer";
+        qDebug() << "Direct Transfer";
         if(m_callchannels.contains(m_currentchannel)) {
-                if(m_linestatuses[m_currentchannel] == WTransfer) {
+                qDebug() << m_peerchan[m_currentchannel];
+                if(m_linestatuses[m_currentchannel] == WDTransfer) {
                         m_tnums[m_currentchannel]->hide();
                         m_statuses[m_currentchannel]->setFocus();
                         m_linestatuses[m_currentchannel] = Online;
                 } else {
                         m_tnums[m_currentchannel]->show();
                         m_tnums[m_currentchannel]->setFocus();
-                        m_linestatuses[m_currentchannel] = WTransfer;
+                        m_linestatuses[m_currentchannel] = WDTransfer;
+                        connect( m_tnums[m_currentchannel], SIGNAL(returnPressed()),
+                                 this, SLOT(xferPressed()) );
+                        
                 }
         }
 }
+
+void StatusPanel::itransfer()
+{
+        qDebug() << "Indirect Transfer";
+        if(m_callchannels.contains(m_currentchannel)) {
+                qDebug() << m_peerchan[m_currentchannel];
+                if(m_linestatuses[m_currentchannel] == WITransfer) {
+                        m_tnums[m_currentchannel]->hide();
+                        m_statuses[m_currentchannel]->setFocus();
+                        m_linestatuses[m_currentchannel] = Online;
+                } else {
+                        m_tnums[m_currentchannel]->show();
+                        m_tnums[m_currentchannel]->setFocus();
+                        m_linestatuses[m_currentchannel] = WITransfer;
+                        connect( m_tnums[m_currentchannel], SIGNAL(returnPressed()),
+                                 this, SLOT(xferPressed()) );
+                        
+                }
+        }
+}
+
+
+void StatusPanel::xferPressed()
+{
+        QString num = m_tnums[m_currentchannel]->text();
+        if(m_linestatuses[m_currentchannel] == WDTransfer)
+                transferCall(m_currentchannel, "p/xivo/default/sip/" + num + "/" + num);
+        else if(m_linestatuses[m_currentchannel] == WITransfer)
+                atxferCall("c/xivo/default/" + m_peerchan[m_currentchannel], "p/xivo/default/sip/" + num + "/" + num);
+}
+
 
 void StatusPanel::functionKeyPressed(int keynum)
 {
@@ -127,29 +164,42 @@ void StatusPanel::functionKeyPressed(int keynum)
                 if(linestatus == Ringing) {
                         if(keynum == Qt::Key_F1) {
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F1 when Ringing : Answer";
-                                pickUp("p/xivo/default/103");
+                                pickUp("p/xivo/default/" + m_id.split("/")[4]);
                         }
-                        else if(keynum == Qt::Key_F2)
+                        else if(keynum == Qt::Key_F2) {
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F2 when Ringing : Refuse";
+                                simpleHangUp("c/xivo/default/" + m_peerchan[m_currentchannel]);
+                        }
                         else if(keynum == Qt::Key_F3) {
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F3 when Ringing : Transfer";
-                                transfer();
+                                dtransfer();
                         }
                 } else if(linestatus == Online) {
-                        if(keynum == Qt::Key_F2)
+                        if(keynum == Qt::Key_F2) {
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F2 when Online : Hangup";
-                        else if(keynum == Qt::Key_F3) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when Online : Transfer";
-                                transfer();
-                        } else if(keynum == Qt::Key_F4)
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F4 when Online : Wait";
+                        } else if(keynum == Qt::Key_F3) {
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when Online : Direct Transfer";
+                                dtransfer();
+                        } else if(keynum == Qt::Key_F4) {
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F4 when Online : Indirect Transfer / Call";
+                                itransfer();
+                        } else if(keynum == Qt::Key_F6)
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F6 when Online : Wait";
                 } else if(linestatus == Wait) {
                         if(keynum == Qt::Key_F1)
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F1 when Wait : Take back";
-                } else if(linestatus == WTransfer) {
+                } else if(linestatus == WDTransfer) {
                         if(keynum == Qt::Key_F3) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when WTransfer : Transfer Cancel";
-                                transfer();
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when WDTransfer : Transfer Cancel";
+                                dtransfer();
+                        }
+                } else if(linestatus == WITransfer) {
+                        if(keynum == Qt::Key_F3) {
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F3 when WITransfer : Transfer Cancel";
+                                itransfer();
+                        } else if(keynum == Qt::Key_F5) {
+                                qDebug() << "StatusPanel::functionKeyPressed" << "F5 when Online : Indirect Transfer / Hangup";
+                                simpleHangUp(m_currentchannel);
                         }
                 }
                 
@@ -192,33 +242,37 @@ void StatusPanel::updatePeer(const QString & a, const QString &,
                              const QString &, const QString &,
                              const QString &, const QString &,
                              const QStringList & g, const QStringList & h,
-                             const QStringList & i)
+                             const QStringList & i, const QStringList & j)
 {
         if (a == m_id) {
-                qDebug() << "StatusPanel::updatePeer()" << g << h << i;
+                // qDebug() << "StatusPanel::updatePeer()" << a << g << h << i << j;
                 foreach (QString callchannel, g) {
                         int index = g.indexOf(callchannel);
-                        const QString d = h[index];
+                        const QString status = h[index];
                         const QString num = i[index];
-                        if(d == "Ringing") {
+                        const QString peerchan = j[index];
+                        qDebug() << status << num << peerchan;
+                        if(status == "Ringing") {
                                 if(m_callchannels.contains(callchannel) == false) {
                                         newCall(callchannel);
                                         m_linestatuses[callchannel] = Ringing;
+                                        m_peerchan[callchannel] = peerchan;
                                         m_callchannels << callchannel;
-                                        m_statuses[callchannel]->setText(d + num);
+                                        m_statuses[callchannel]->setText(status + num);
                                         foreach (QString actionname, m_actionnames)
                                                 m_actions[callchannel][actionname]->show();
                                         m_statuses[callchannel]->show();
                                 }
-                        } else if(d == "On the phone") {
+                        } else if(status == "On the phone") {
                                 if(m_callchannels.contains(callchannel) == true) {
                                         m_linestatuses[callchannel] = Online;
-                                        m_statuses[callchannel]->setText(d + num);
+                                        m_peerchan[callchannel] = peerchan;
+                                        m_statuses[callchannel]->setText(status + num);
                                         foreach (QString actionname, m_actionnames)
                                                 m_actions[callchannel][actionname]->show();
                                         m_statuses[callchannel]->show();
                                 }
-                        } else if(d == "Hangup") {
+                        } else if(status == "Hangup") {
                                 if(m_callchannels.contains(callchannel) == true) {
                                         m_linestatuses[callchannel] = Ready;
                                         m_statuses[callchannel]->hide();
@@ -250,7 +304,7 @@ void StatusPanel::updatePeer(const QString & a, const QString &,
                         } else {
                                 if(m_callchannels.contains(callchannel) == true) {
                                         m_linestatuses[callchannel] = Ready;
-                                        m_statuses[callchannel]->setText(d + num);
+                                        m_statuses[callchannel]->setText(status + num);
                                         foreach (QString actionname, m_actionnames)
                                                 m_actions[callchannel][actionname]->hide();
                                         m_tnums[callchannel]->hide();

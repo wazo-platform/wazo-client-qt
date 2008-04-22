@@ -208,7 +208,8 @@ void SearchPanel::updatePeer(const QString & ext,
 			     const QString & agentstatus,
 			     const QStringList & chanIds,
 			     const QStringList & chanStates,
-			     const QStringList & chanOthers)
+			     const QStringList & chanOthers,
+                             const QStringList &)
 {
         // qDebug() << "SearchPanel::updatePeer()";
         if(m_peerhash.contains(ext)) {

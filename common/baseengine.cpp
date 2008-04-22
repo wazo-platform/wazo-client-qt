@@ -681,6 +681,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 	QStringList chanIds;
 	QStringList chanStates;
 	QStringList chanOthers;
+	QStringList chanPeers;
 
 	// liststatus[0] is a dummy field, only used for debug on the daemon side
 	// p/(asteriskid)/(context)/(protocol)/(phoneid)/(phonenum)
@@ -713,6 +714,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 			SIPPresStatus = liststatus[refn + 1];
 			chanIds << ("c/" + astid + "/" + context + "/" + liststatus[refn]);
 			chanStates << liststatus[refn + 1];
+			chanPeers << liststatus[refn + 4];
                         QString peerid = liststatus[refn + 5];
 
 			if((peerid == "") ||
@@ -725,18 +727,17 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 				displayedNum = peerid;
 
 			chanOthers << displayedNum;
-                        if(m_is_a_switchboard)
-                                updateCall("c/" + astid + "/" + context + "/" + liststatus[refn],
-                                           liststatus[refn + 1],
-                                           liststatus[refn + 2].toInt(), liststatus[refn + 3],
-                                           liststatus[refn + 4], displayedNum,
-                                           pname);
+                        updateCall("c/" + astid + "/" + context + "/" + liststatus[refn],
+                                   liststatus[refn + 1],
+                                   liststatus[refn + 2].toInt(), liststatus[refn + 3],
+                                   liststatus[refn + 4], displayedNum,
+                                   pname);
 		}
 	}
 
         updatePeer(pname, m_uinfo[pname]->fullname(),
                    InstMessAvail, SIPPresStatus, VoiceMailStatus, AgentStatus,
-                   chanIds, chanStates, chanOthers);
+                   chanIds, chanStates, chanOthers, chanPeers);
         if(m_is_a_switchboard)
                 if(   (m_userid == liststatus[3])
                       && (m_dialcontext == liststatus[5]))
@@ -1261,6 +1262,16 @@ void BaseEngine::hangUp(const QString & channel)
 {
 	qDebug() << "BaseEngine::hangUp()" << channel;
 	sendCommand("hangup " + channel);
+}
+
+/*! \brief hang up a channel
+ *
+ * send a hang up command to the server
+ */
+void BaseEngine::simpleHangUp(const QString & channel)
+{
+	qDebug() << "BaseEngine::simpleHangUp()" << channel;
+	sendCommand("simplehangup " + channel);
 }
 
 /*! \brief pick up a channel

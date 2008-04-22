@@ -62,20 +62,25 @@ class StatusPanel : public QWidget
 	Q_OBJECT
 public:
 	StatusPanel(QWidget * parent = 0);
-        enum Line {Ready, Ringing, Hangup, Wait, Transfer, WTransfer, Online};
+        enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
 public slots:
         void setUserInfo(const QString &, const UserInfo &);
         void updatePeer(const QString &, const QString &,
                         const QString &, const QString &,
                         const QString &, const QString &,
                         const QStringList &, const QStringList &,
-                        const QStringList &);
+                        const QStringList &, const QStringList &);
         void functionKeyPressed(int);
+        void xferPressed();
 signals:
+        void simpleHangUp(const QString &);	//!< hanging up a channel ...
         void pickUp(const QString &);	//!< picking up a channel ...
+	void transferCall(const QString &, const QString &);
+	void atxferCall(const QString &, const QString &);
 private:
         void newCall(const QString &);
-        void transfer();
+        void dtransfer();
+        void itransfer();
         void changeCurrentChannel(const QString &, const QString &);
 
         QGridLayout * m_glayout;
@@ -88,6 +93,7 @@ private:
         QHash<QString, QHash<QString, QPushButton *> > m_actions;
         QHash<QString, QLineEdit *> m_tnums;
         QHash<QString, Line> m_linestatuses;
+        QHash<QString, QString> m_peerchan;
 
         QString m_currentchannel;
         int m_linenum;
