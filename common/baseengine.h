@@ -258,6 +258,7 @@ signals:
         void setAgentStatus(const QString &);
         void setQueueStatus(const QString &);
         void newQueueList(const QString &);
+        void newAgentList(const QString &);
 	void voiceMailChanged(bool);
 	void callRecordingChanged(bool);
 	void callFilteringChanged(bool);

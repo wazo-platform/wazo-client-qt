@@ -75,6 +75,7 @@ class QVBoxLayout;
 class QWidget;
 class QUrl;
 
+class AgentsPanel;
 class BaseEngine;
 class CallStackWidget;
 class ConfWidget;
@@ -177,6 +178,7 @@ private:
         IdentityDisplay * m_infowidget;
         PlayerWidget * m_videopanel;
         QueuesPanel * m_queuespanel;
+        AgentsPanel * m_agentspanel;
 
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;

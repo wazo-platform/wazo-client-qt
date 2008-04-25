@@ -25,6 +25,7 @@ CONFIG += x86 ppc
 
 # Input
 HEADERS += mainwidget.h
+HEADERS += $${COMMONDIR}/agentspanel.h
 HEADERS += $${COMMONDIR}/astchannel.h
 HEADERS += $${COMMONDIR}/baseengine.h
 HEADERS += $${COMMONDIR}/callstackwidget.h
@@ -61,6 +62,7 @@ HEADERS += $${COMMONDIR}/xmlhandler.h
 
 SOURCES += main.cpp
 SOURCES += mainwidget.cpp
+SOURCES += $${COMMONDIR}/agentspanel.cpp
 SOURCES += $${COMMONDIR}/astchannel.cpp
 SOURCES += $${COMMONDIR}/baseengine.cpp
 SOURCES += $${COMMONDIR}/callstackwidget.cpp

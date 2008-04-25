@@ -840,6 +840,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         }
                         emitTextMessage(tr("Received status for %1 phones").arg(m_uinfo.size()));
                         sendCommand("queues-list " + m_asterisk);
+                        sendCommand("agents-list " + m_asterisk);
                         sendCommand("agents-status " + m_asterisk + " " + m_agentid);
                 } else {
                         sendCommand("phones-list " + listpeers[0]);
@@ -931,6 +932,9 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
         } else if(listitems[0].toLower() == QString("queues-list")) {
                 newQueueList(listitems[1]);
+
+        } else if(listitems[0].toLower() == QString("agents-list")) {
+                newAgentList(listitems[1]);
 
         } else if(listitems[0].toLower() == QString("update-agents")) {
                 QStringList liststatus = listitems[1].split(":");

@@ -59,6 +59,7 @@
 #include <QTime>
 #include <QVBoxLayout>
 
+#include "agentspanel.h"
 #include "baseengine.h"
 #include "callstackwidget.h"
 #include "confwidget.h"
@@ -218,7 +219,7 @@ MainWidget::MainWidget(BaseEngine * engine,
 	m_display_capas = (QStringList() << "customerinfo" << "features" << "history"
                            << "directory" << "search" << "fax" << "dial" << "presence"
                            << "video" << "operator" << "parking" << "calls" << "switchboard"
-                           << "messages" << "identity" << "queues");
+                           << "messages" << "identity" << "queues" << "agents");
         setAppearance(app_xlets);
 }
 
@@ -609,9 +610,13 @@ void MainWidget::systrayMsgClicked()
 void MainWidget::addPanel(const QString & name, const QString & title, QWidget * widget)
 {
         if(m_docknames.contains(name)) {
+                qDebug() << "MainWidget::addPanel()" << m_docknames;
                 addDockWidget(Qt::BottomDockWidgetArea, m_docks[name]);
+                qDebug() << "a";
                 m_docks[name]->setWidget(widget);
+                qDebug() << "b";
                 m_docks[name]->show();
+                qDebug() << "c";
         } else if(m_gridnames.contains(name)) {
                 qDebug() << "MainWidget::addPanel()" << m_dockoptions[name];
                 m_gridlayout->addWidget(widget, m_dockoptions[name].toInt(), 0);
@@ -676,6 +681,15 @@ void MainWidget::engineStarted()
                                          m_infowidget, SLOT(setQueueList(const QString &)));
                                 connect( m_infowidget, SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
+
+			} else if (dc == QString("agents")) {
+                                qDebug() << "a";
+                                m_agentspanel = new AgentsPanel();
+                                qDebug() << "b";
+                                addPanel("agents", tr("Agents"), m_agentspanel);
+                                qDebug() << "c";
+                                connect( m_engine, SIGNAL(newAgentList(const QString &)),
+                                         m_agentspanel, SLOT(setAgentList(const QString &)));
 
 			} else if (dc == QString("queues")) {
                                 m_queuespanel = new QueuesPanel();
@@ -1068,6 +1082,8 @@ void MainWidget::engineStopped()
                                 removePanel("identity", m_infowidget);
 			} else if (dc == QString("queues")) {
                                 removePanel("queues", m_queuespanel);
+			} else if (dc == QString("agents")) {
+                                removePanel("agents", m_agentspanel);
                         }
                 }
         }

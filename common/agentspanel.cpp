@@ -45,11 +45,11 @@
 #include <QProgressBar>
 #include <QScrollArea>
 
-#include "queuespanel.h"
+#include "agentspanel.h"
 
 /*! \brief Constructor
  */
-QueuesPanel::QueuesPanel(QWidget * parent)
+AgentsPanel::AgentsPanel(QWidget * parent)
         : QWidget(parent)
 {
 	QVBoxLayout * layout = new QVBoxLayout(this);
@@ -65,32 +65,32 @@ QueuesPanel::QueuesPanel(QWidget * parent)
  	m_gridlayout->setRowStretch( 10000, 1 );
 }
 
-void QueuesPanel::setQueueList(const QString & qlist)
+void AgentsPanel::setAgentList(const QString & qlist)
 {
-        qDebug() << "QueuesPanel::setQueueList()" << qlist;
+        qDebug() << "AgentsPanel::setQueueList()" << qlist;
         QStringList qsl = qlist.split(";");
-        if(qsl[2].size() > 0) {
-                QStringList queues = qsl[2].split(",");
-                queues.sort();
-                for(int i = 0 ; i < queues.size(); i++) {
-                        if(! m_queuelabels.keys().contains(queues[i])) {
-                                m_queuelabels[queues[i]] = new QLabel(queues[i]);
-                                m_queuebusies[queues[i]] = new QProgressBar(this);
-                                m_gridlayout->addWidget( m_queuelabels[queues[i]], i, 0, Qt::AlignLeft );
-                                m_gridlayout->addWidget( m_queuebusies[queues[i]], i, 1, Qt::AlignCenter );
+        if(qsl[1].size() > 0) {
+                QStringList agents = qsl[1].split(",");
+                agents.sort();
+                for(int i = 0 ; i < agents.size(); i++) {
+                        if(! m_queuelabels.keys().contains(agents[i])) {
+                                m_queuelabels[agents[i]] = new QLabel(agents[i]);
+                                m_queuebusies[agents[i]] = new QProgressBar(this);
+                                m_gridlayout->addWidget( m_queuelabels[agents[i]], i, 0, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_queuebusies[agents[i]], i, 1, Qt::AlignCenter );
                                 
-                                m_queuebusies[queues[i]]->setFormat("%v");
-                                m_queuebusies[queues[i]]->setRange(0, m_maxbusy + 1);
-                                m_queuebusies[queues[i]]->setValue(0);
+                                m_queuebusies[agents[i]]->setFormat("%v");
+                                m_queuebusies[agents[i]]->setRange(0, m_maxbusy + 1);
+                                m_queuebusies[agents[i]]->setValue(0);
                         }
                 }
         }
 }
 
-void QueuesPanel::setQueueStatus(const QString & status)
+void AgentsPanel::setAgentStatus(const QString & status)
 {
         QStringList newstatuses = status.split("/");
-        qDebug() << "QueuesPanel::setQueueStatus()" << newstatuses;
+        qDebug() << "AgentsPanel::setAgentstatus()" << newstatuses;
         if (newstatuses.size() == 4) {
                 QString command = newstatuses[0];
                 int maxbusy = 0;
