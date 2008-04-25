@@ -94,6 +94,7 @@ private:
         QStringList m_chanIds;
         QStringList m_chanStates;
         QStringList m_chanOthers;
+        QStringList m_queuelist;
 };
 
 #endif

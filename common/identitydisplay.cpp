@@ -127,8 +127,10 @@ void IdentityDisplay::setUser(const QString & user)
         // qDebug() << "IdentityDisplay::IdentityDisplay() : label" << m_user->geometry() << m_user->sizeHint();
 }
 
+
 void IdentityDisplay::setQueueList(const QString & qlist)
 {
+        qDebug() << "IdentityDisplay::setQueueList()" << qlist;
         QStringList qsl = qlist.split(";");
         if(qsl[1] == "1")
                 m_queuechangeallow = true;
@@ -136,10 +138,12 @@ void IdentityDisplay::setQueueList(const QString & qlist)
                 QStringList queues = qsl[2].split(",");
                 queues.sort();
                 for(int i = 0 ; i < queues.size(); i++) {
-                        m_queuelist->addItem(queues[i]);
-                        m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
-                        m_queuesindexes[queues[i]] = i;
-                        m_queuesbusyness[queues[i]] = "0";
+                        if(m_queuelist->findText(queues[i]) == -1) {
+                                m_queuelist->addItem(queues[i]);
+                                m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
+                                m_queuesindexes[queues[i]] = i;
+                                m_queuesbusyness[queues[i]] = "0";
+                        }
                 }
                 if((queues.size() > 0) && (m_agentstatus)) {
                         if(m_queuechangeallow) {
@@ -153,15 +157,17 @@ void IdentityDisplay::setQueueList(const QString & qlist)
         }
 }
 
-void IdentityDisplay::setStatus(const QString & status)
+void IdentityDisplay::setAgentStatus(const QString & status)
 {
-        QStringList newstatuses = status.split(";");
-        if (newstatuses.size() == 3) {
+        QStringList newstatuses = status.split("/");
+        if (newstatuses.size() >= 4) {
                 QString command = newstatuses[0];
-                QString agentnum = newstatuses[1];
-                QString arg = newstatuses[2];
+                QString astid = newstatuses[1];
+                QString agentnum = newstatuses[2];
+                QString arg = newstatuses[3];
                 m_agent->setText("Agent " + agentnum);
-                if (command == "login") {
+
+                if (command == "agentlogin") {
                         m_agent->show();
                         m_agentaction->show();
                         m_agentaction->setIcon(QIcon(":/images/button_ok.png"));
@@ -176,7 +182,7 @@ void IdentityDisplay::setStatus(const QString & status)
                                 m_queuelist->show();
                                 m_queuebusy->show();
                         }
-                } else if (command == "logout") {
+                } else if (command == "agentlogout") {
                         m_agent->show();
                         m_agentaction->show();
                         m_agentaction->setIcon(QIcon(":/images/cancel.png"));
@@ -203,14 +209,23 @@ void IdentityDisplay::setStatus(const QString & status)
                                 if(arg == m_queuelist->currentText())
                                         idxChanged(arg);
                         }
-                }
-        } else if (newstatuses.size() == 4) {
+                } else if (command == "queuememberstatus") {
+                        if (newstatuses.size() == 6) {
+                                qDebug() << "IdentityDisplay::setAgentStatus()" << newstatuses;
+                        }
+                } else
+                        qDebug() << "IdentityDisplay::setAgentStatus()" << newstatuses;
+        }
+}
+
+void IdentityDisplay::setQueueStatus(const QString & status)
+{
+        QStringList newstatuses = status.split("/");
+        qDebug() << "IdentityDisplay::setQueueStatus()" << newstatuses;
+        if (newstatuses.size() == 4) {
                 QString command = newstatuses[0];
-                if (command == "queuememberstatus") {
-                        qDebug() << newstatuses;
-                        QString agentnum = newstatuses[1];
-                        QString status = newstatuses[2];
-                } else if (command == "queuechannels") {
+                if (command == "queuechannels") {
+                        QString astid = newstatuses[1];
                         QString queuename = newstatuses[2];
                         QString busyness = newstatuses[3];
                         m_queuesbusyness[queuename] = busyness;
@@ -218,7 +233,6 @@ void IdentityDisplay::setStatus(const QString & status)
                                 m_queuebusy->setValue(busyness.toInt());
                 }
         }
-
 }
 
 void IdentityDisplay::doAgentAction()

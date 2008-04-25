@@ -185,8 +185,13 @@ void StatusPanel::functionKeyPressed(int keynum)
                         } else if(keynum == Qt::Key_F4) {
                                 itransfer();
                                 m_actions[m_currentchannel]["Fc"]->setText("(# + Return)");
-                        } else if(keynum == Qt::Key_F6)
+                        } else if(keynum == Qt::Key_F6) {
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F6 when Online : Wait";
+                        } else if(keynum == Qt::Key_F7) {
+                                transferCall(m_currentchannel, "700");
+                        } else if(keynum == Qt::Key_F8) {
+                                // transferCall(m_currentchannel, "p/xivo/default/sip/" + num + "/" + num);
+                        }
                 } else if(linestatus == Wait) {
                         if(keynum == Qt::Key_F1)
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F1 when Wait : Take back";
@@ -220,8 +225,9 @@ void StatusPanel::functionKeyPressed(int keynum)
                         } else if(keynum == Qt::Key_F2) {
                                 simpleHangUp("c/xivo/default/" + m_peerchan[m_currentchannel]);
                         } else if(keynum == Qt::Key_F5) {
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F5 when Online : Indirect Transfer / Hangup";
                                 simpleHangUp(m_currentchannel);
+                        } else if(keynum == Qt::Key_F6) {
+                                simpleHangUp("c/xivo/default/" + m_tferchannel);
                         }
                 }
                 
@@ -333,5 +339,9 @@ void StatusPanel::updatePeer(const QString & a, const QString &,
                                 }
                         }
                 }
+        } else {
+                // qDebug() << "StatusPanel::updatePeer() not me" << a << g << h << i << j;
+                if(j.size() > 0)
+                        m_tferchannel = j[0];
         }
 }

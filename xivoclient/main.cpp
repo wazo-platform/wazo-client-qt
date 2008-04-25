@@ -62,9 +62,12 @@ int main(int argc, char ** argv)
 {
 	QString locale = QLocale::system().name();
         QString applaunch = argv[0];
-        QString appoptions = "";
+        QString app_funcs = "";
+        QString app_xlets = "";
         if(argc > 1)
-                appoptions = argv[1];
+                app_funcs = argv[1];
+        if(argc > 2)
+                app_xlets = argv[2];
         // QApplication::setStyle(new XIVOCTIStyle());
 	QCoreApplication::setOrganizationName("XIVO");
 	QCoreApplication::setOrganizationDomain("xivo.fr");
@@ -101,18 +104,22 @@ int main(int argc, char ** argv)
 
         QString appname = "";
         if(applaunch.contains("xivoclient")) {
-                engine->setIsASwitchboard(false);
                 appname = "Client";
-                if(appoptions.size() == 0)
-                        appoptions = "services:grid,dial:grid,peers:tab,history:tab,directory:tab,customerinfo:tab,fax:tab,features:tab";
+                if(app_xlets.size() == 0)
+                        app_xlets = "services:grid,dial:grid:2,search:tab,history:tab,directory:tab,customerinfo:tab,fax:tab,features:tab,identity:grid:0";
+                if(app_funcs.size() == 0)
+                        app_funcs = "client";
         } else {
-                engine->setIsASwitchboard(true);
                 appname = "Switchboard";
-                if(appoptions.size() == 0)
-                        appoptions = "services:dock:m,dial:dock:m,peers:dock:m,history,directory:dock:m,"
-                                "customerinfo:dock:m,po:dock:mfc,parking:tab,messages:tab,switchboard:dock:mc";
+                if(app_xlets.size() == 0)
+//                         app_xlets = "services:dock:m,dial:dock:m,search:dock:m,history,directory:dock:m,"
+//                                 "customerinfo:dock:m,operator:dock:mfc,parking:tab,messages:tab,switchboard:dock:mc,identity:grid:0";
+                        app_xlets = "services:dock:m,dial:dock:m,search:dock:m,queues:dock:m,"
+                                "customerinfo:dock:m,operator:dock:mfc,switchboard:dock:mc,identity:grid:0";
+                if(app_funcs.size() == 0)
+                        app_funcs = "switchboard";
         }
-        MainWidget main(engine, appname, appoptions);
+        MainWidget main(engine, appname, app_funcs, app_xlets);
 
 	//main.dumpObjectTree();
         QObject::connect( &app, SIGNAL(lastWindowClosed()),

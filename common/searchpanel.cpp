@@ -236,12 +236,11 @@ void SearchPanel::updatePeer(const QString & ext,
 void SearchPanel::updatePeerAgent(const QString & ext,
                                   const QString & agentstatus)
 {
-        // qDebug() << "SearchPanel::updatePeer()";
+        // qDebug() << "SearchPanel::updatePeerAgent()";
         if(m_peerhash.contains(ext)) {
                 Peer * peeritem = m_peerhash.value(ext);
                 peeritem->updateAgentStatus(agentstatus);
         }
-        
         return;
 }
 

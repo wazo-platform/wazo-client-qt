@@ -687,7 +687,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 	// p/(asteriskid)/(context)/(protocol)/(phoneid)/(phonenum)
 
 	if(liststatus.count() < nfields0) { // not valid
-		qDebug() << "Bad data from the server (not enough arguments) :" << liststatus;
+		qDebug() << "BaseEngine::updatePeerAndCallerid() : Bad data from the server (not enough arguments) :" << liststatus;
 		return;
 	}
 
@@ -735,11 +735,13 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 		}
 	}
 
+        if(AgentStatus.size() > 0)
+                qDebug() << "BaseEngine::updatePeerAndCallerid() / agentstatus =" << AgentStatus;
         updatePeer(pname, m_uinfo[pname]->fullname(),
                    InstMessAvail, SIPPresStatus, VoiceMailStatus, AgentStatus,
                    chanIds, chanStates, chanOthers, chanPeers);
         if(m_is_a_switchboard)
-                if(   (m_userid == liststatus[3])
+                if( (m_userid == liststatus[3])
                       && (m_dialcontext == liststatus[5]))
                         updateMyCalls(chanIds, chanStates, chanOthers);
 }
@@ -749,7 +751,7 @@ void BaseEngine::updateAgent(const QStringList & liststatus)
 {
 	const int nfields0 = 7;
 	if(liststatus.count() < nfields0) { // not valid
-		qDebug() << "Bad data from the server (not enough arguments) :" << liststatus;
+		qDebug() << "BaseEngine::updateAgent() : Bad data from the server (not enough arguments) :" << liststatus;
 		return;
 	}
 
@@ -768,7 +770,7 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 {
 	const int nfields0 = 10; // 0th order size (per-phone/line informations)
 	if(liststatus.count() < nfields0) { // not valid
-		qDebug() << "Bad data from the server :" << liststatus;
+		qDebug() << "BaseEngine::removePeerAndCallerid() : Bad data from the server :" << liststatus;
 		return;
 	}
 
@@ -844,12 +846,9 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 }
         } else if((listitems[0].toLower() == QString("phones-update")) && (listitems.size() == 2)) {
                 QStringList liststatus = listitems[1].split(":");
+                // qDebug() << liststatus;
                 updatePeerAndCallerid(liststatus);
                 callsUpdated();
-
-        } else if(listitems[0].toLower() == QString("agentupdate_all")) {
-                QStringList liststatus = listitems[1].split(":");
-                updateAgent(liststatus);
 
         } else if((listitems[0].toLower() == QString("phones-add")) && (listitems.size() == 2)) {
                 QStringList listpeers = listitems[1].split(";");
@@ -933,16 +932,20 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
         } else if(listitems[0].toLower() == QString("queues-list")) {
                 newQueueList(listitems[1]);
 
-        } else if(listitems[0].toLower() == QString("agentupdate")) {
-                QStringList newstatuses = listitems[1].split(";");
-                QString command = newstatuses[0];
-                QString agentnum = newstatuses[1];
-
-                if (agentnum == m_agentid)
-                        newUserStatus(listitems[1]);
-                if (command == "queuechannels") {
-                        newUserStatus(listitems[1]);
+        } else if(listitems[0].toLower() == QString("update-agents")) {
+                QStringList liststatus = listitems[1].split(":");
+                if(liststatus.size() > 6) {
+                        QStringList newstatuses = liststatus[6].split("/");
+                        QString agentnum = newstatuses[2];
+                        
+                        updateAgent(liststatus);
+                        if (agentnum == m_agentid) {
+                                setAgentStatus(liststatus[6]);
+                        }
                 }
+
+        } else if(listitems[0].toLower() == QString("update-queues")) {
+                setQueueStatus(listitems[1]);
 
         } else if(listitems[0].toLower() == QString("featuresput")) {
                 QString ret = listitems[1].split(";")[0];

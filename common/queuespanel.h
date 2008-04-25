@@ -39,63 +39,36 @@
  * $Date$
  */
 
-#ifndef __SWITCHBOARDWINDOW_H__
-#define __SWITCHBOARDWINDOW_H__
+#ifndef __QUEUESPANEL_H__
+#define __QUEUESPANEL_H__
 
 #include <QHash>
 #include <QList>
+#include <QObject>
 #include <QWidget>
 
-#include "peerwidget.h"
-#include "peerslayout.h"
-#include "peeritem.h"
-
-class BaseEngine;
 class QGridLayout;
-class QMouseEvent;
+class QLabel;
+class QProgressBar;
 
-
-/*! \brief Widget displaying Peers
- *
- * This widget use a PeersLayout to display Peers in a grid.
+/*! \brief Identity Display
  */
-class SwitchBoardWindow : public QWidget
+class QueuesPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	//! Constructor
-	SwitchBoardWindow( QWidget * parent = 0);
-	//! Destructor
-	virtual ~SwitchBoardWindow();
-	void setEngine(BaseEngine *);
-	void savePositions() const;
+	QueuesPanel(QWidget * parent = 0);
 protected:
-/*         void mousePressEvent(QMouseEvent *);	//!< Catch mouse press events */
-/*         void mouseMoveEvent(QMouseEvent *); */
-	void dragEnterEvent(QDragEnterEvent *);
-	void dropEvent(QDropEvent *);
 public slots:
-	void updatePeer(const QString &, const QString &,
-			const QString &, const QString &,
-			const QString &, const QString &,
-			const QStringList &, const QStringList &,
-			const QStringList &, const QStringList &);
-        void updatePeerAgent(const QString &,
-                             const QString &);
-	void removePeer(const QString &);
-	void removePeers(void);
-private slots:
-	void removePeerFromLayout(const QString &);
+	void setQueueList(const QString &);
+        void setQueueStatus(const QString &);
 private:
-	//QGridLayout * m_layout;
-	PeersLayout * m_layout;			//!< Grid Layout for displaying peers
-	QList<Peer *> m_peerlist;		//!< Peer list
-	QHash<QString, Peer *> m_peerhash;	//!< Peer hash
+        QGridLayout * m_gridlayout;
 
-	BaseEngine * m_engine;	//!< engine to connect to peer widgets
-	QHash<QString, QPixmap> m_persons;
-	QHash<QString, QPixmap> m_phones;
-	QHash<QString, QPixmap> m_agents;
+        QHash<QString, QLabel *> m_queuelabels;
+        QHash<QString, QProgressBar *> m_queuebusies;
+
+        int m_maxbusy;
 };
 
-#endif
+#endif /* __QUEUESPANEL_H__ */

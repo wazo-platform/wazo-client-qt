@@ -71,6 +71,7 @@
 #include "mainwidget.h"
 #include "parkingpanel.h"
 #include "popup.h"
+#include "queuespanel.h"
 #include "searchpanel.h"
 #include "servicepanel.h"
 #include "statuspanel.h"
@@ -107,18 +108,23 @@ QLabel * LeftPanel::titleLabel()
 //        : QMainWindow(parent, Qt::FramelessWindowHint),
 MainWidget::MainWidget(BaseEngine * engine,
                        const QString & pname,
-                       const QString & displayoptions,
+                       const QString & app_funcs,
+                       const QString & app_xlets,
                        QWidget * parent)
         : QMainWindow(parent),
           m_engine(engine), m_systrayIcon(0),
           m_icon(":/images/xivoicon.png"), m_icongrey(":/images/xivoicon-grey.png")
 {
         m_appliname = pname;
-        m_switchboard = m_engine->isASwitchboard();
-        if(m_switchboard) {
+        qDebug() << app_funcs;
+        if(app_funcs == "switchboard") {
+                m_engine->setIsASwitchboard(true);
+                m_switchboard = true;
                 m_withsystray = false;
                 m_loginfirst = false;
         } else {
+                m_engine->setIsASwitchboard(false);
+                m_switchboard = false;
                 m_withsystray = true;
                 m_loginfirst = true;
         }
@@ -210,10 +216,10 @@ MainWidget::MainWidget(BaseEngine * engine,
                 this->show();
 
 	m_display_capas = (QStringList() << "customerinfo" << "features" << "history"
-                           << "directory" << "peers" << "fax" << "dial" << "presence"
-                           << "video" << "po" << "parking" << "calls" << "switchboard"
-                           << "messages" << "instantmessaging");
-        setAppearance(displayoptions);
+                           << "directory" << "search" << "fax" << "dial" << "presence"
+                           << "video" << "operator" << "parking" << "calls" << "switchboard"
+                           << "messages" << "identity" << "queues");
+        setAppearance(app_xlets);
 }
 
 
@@ -234,7 +240,7 @@ void MainWidget::setAppearance(const QString & options)
         if (options.size() > 0)
                 dockoptions = options.split(",");
 
-        qDebug() << options;
+        qDebug() << "MainWidget::setAppearance()" << options;
         foreach (QString dname, dockoptions) {
                 if(dname.size() > 0) {
                         QStringList dopt = dname.split(":");
@@ -608,7 +614,7 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
                 m_docks[name]->show();
         } else if(m_gridnames.contains(name)) {
                 qDebug() << "MainWidget::addPanel()" << m_dockoptions[name];
-                m_gridlayout->addWidget(widget, 2, 0);
+                m_gridlayout->addWidget(widget, m_dockoptions[name].toInt(), 0);
         } else if(m_tabnames.contains(name))
                 m_svc_tabwidget->addTab(widget, extraspace + title + extraspace);
 }
@@ -621,24 +627,11 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
  */
 void MainWidget::engineStarted()
 {
-	setForceTabs(true);
+	setForceTabs(false);
 	QStringList allowed_capas = m_engine->getCapabilities();
         m_settings->setValue("display/capas", allowed_capas.join(","));
 
         hideLogin();
-
-        if (m_forcetabs || allowed_capas.contains("peers")) {
-                m_infowidget = new IdentityDisplay();
-                connect( m_engine, SIGNAL(localUserDefined(const QString &)),
-                         m_infowidget, SLOT(setUser(const QString &)));
-                connect( m_engine, SIGNAL(newUserStatus(const QString &)),
-                         m_infowidget, SLOT(setStatus(const QString &)));
-                connect( m_engine, SIGNAL(newQueueList(const QString &)),
-                         m_infowidget, SLOT(setQueueList(const QString &)));
-                connect( m_infowidget, SIGNAL(agentAction(const QString &)),
-                         m_engine, SLOT(agentAction(const QString &)));
-                m_gridlayout->addWidget(m_infowidget, 0, 0);
-        }
 
         m_svc_tabwidget = new QTabWidget(this);
         
@@ -653,7 +646,7 @@ void MainWidget::engineStarted()
 
         for(int j = 0; j < m_display_capas.size(); j++) {
 		QString dc = m_display_capas[j];
-		if (m_forcetabs || allowed_capas.contains(dc)) {
+		if (m_forcetabs || allowed_capas.contains("xlet-" + dc)) {
                         if (dc == QString("history")) {
                                 m_historypanel = new LogWidget(m_engine, this);
                                 addPanel("history", tr("History"), m_historypanel);
@@ -670,6 +663,28 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(requestHistory(const QString &, int)) );
                                 connect( m_engine, SIGNAL(delogged()),
                                          m_historypanel, SLOT(clear()) );
+			} else if (dc == QString("identity")) {
+                                m_infowidget = new IdentityDisplay();
+                                addPanel("identity", tr("Identity"), m_infowidget);
+                                connect( m_engine, SIGNAL(localUserDefined(const QString &)),
+                                         m_infowidget, SLOT(setUser(const QString &)));
+                                connect( m_engine, SIGNAL(setAgentStatus(const QString &)),
+                                         m_infowidget, SLOT(setAgentStatus(const QString &)));
+                                connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
+                                         m_infowidget, SLOT(setQueueStatus(const QString &)));
+                                connect( m_engine, SIGNAL(newQueueList(const QString &)),
+                                         m_infowidget, SLOT(setQueueList(const QString &)));
+                                connect( m_infowidget, SIGNAL(agentAction(const QString &)),
+                                         m_engine, SLOT(agentAction(const QString &)));
+
+			} else if (dc == QString("queues")) {
+                                m_queuespanel = new QueuesPanel();
+                                addPanel("queues", tr("Queues"), m_queuespanel);
+                                connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
+                                         m_queuespanel, SLOT(setQueueStatus(const QString &)));
+                                connect( m_engine, SIGNAL(newQueueList(const QString &)),
+                                         m_queuespanel, SLOT(setQueueList(const QString &)));
+
 			} else if (dc == QString("dial")) {
 				m_dialpanel = new DialPanel();
                                 addPanel("dial", tr("Dial"), m_dialpanel);
@@ -688,9 +703,9 @@ void MainWidget::engineStarted()
                                 m_videopanel = new PlayerWidget(this);
                                 addPanel("video", tr("Video"), m_videopanel);
 
-                        } else if (dc == QString("po")) {
+                        } else if (dc == QString("operator")) {
                                 m_statuspanel = new StatusPanel(this);
-                                addPanel("po", tr("Operator"), m_statuspanel);
+                                addPanel("operator", tr("Operator"), m_statuspanel);
 
                                 connect( m_statuspanel, SIGNAL(pickUp(const QString &)),
                                          m_engine, SLOT(pickUp(const QString &)) );
@@ -772,6 +787,8 @@ void MainWidget::engineStarted()
                                                                      const QString &, const QString &,
                                                                      const QStringList &, const QStringList &,
                                                                      const QStringList &, const QStringList &)) );
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
+					 m_sbwidget, SLOT(updatePeerAgent(const QString &, const QString &)) );
                                 connect( m_engine, SIGNAL(delogged()),
                                          m_sbwidget, SLOT(removePeers()) );
                                 connect( m_engine, SIGNAL(removePeer(const QString &)),
@@ -808,9 +825,9 @@ void MainWidget::engineStarted()
                                 m_cinfo_tabwidget->setObjectName("cinfo");
                                 addPanel("customerinfo", tr("&Sheets"), m_cinfo_tabwidget);
 
-			} else if (dc == QString("peers")) {
+			} else if (dc == QString("search")) {
 				m_searchpanel = new SearchPanel();
-                                addPanel("peers", tr("&Contacts"), m_searchpanel);
+                                addPanel("search", tr("&Contacts"), m_searchpanel);
                                 
 				connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
 								     const QString &, const QString &,
@@ -999,7 +1016,7 @@ void MainWidget::engineStopped()
 
 	for(int j = 0; j < m_display_capas.size(); j++) {
                 QString dc = m_display_capas[j];
-                if (m_forcetabs || allowed_capas.contains(dc)) {
+                if (m_forcetabs || allowed_capas.contains("xlet-" + dc)) {
                         if (dc == QString("features")) {
                                 removePanel("features", m_featureswidget);
 			} else if (dc == QString("customerinfo")) {
@@ -1033,29 +1050,30 @@ void MainWidget::engineStopped()
                                 removePanel("instantmessaging", m_messagetosend);
                         } else if (dc == QString("video")) {
                                 removePanel("video", m_videopanel);
-                        } else if (dc == QString("po")) {
-                                removePanel("po", m_statuspanel);
+                        } else if (dc == QString("operator")) {
+                                removePanel("operator", m_statuspanel);
                         } else if (dc == QString("messages")) {
                                 removePanel("messages", m_messages_widget);
 			} else if (dc == QString("parking")) {
                                 removePanel("parking", m_parkingpanel);
 			} else if (dc == QString("history")) {
                                 removePanel("history", m_historypanel);
-			} else if (dc == QString("peers")) {
-                                m_searchpanel->removePeers();
-                                removePanel("peers", m_searchpanel);
+			} else if (dc == QString("search")) {
+                                removePanel("search", m_searchpanel);
 			} else if (dc == QString("fax")) {
                                 removePanel("fax", m_faxwidget);
 			} else if (dc == QString("dial")) {
                                 removePanel("dial", m_dialpanel);
+			} else if (dc == QString("identity")) {
+                                removePanel("identity", m_infowidget);
+			} else if (dc == QString("queues")) {
+                                removePanel("queues", m_queuespanel);
                         }
                 }
         }
         
         foreach (QString dname, m_docknames)
                 m_docks[dname]->hide();
-
-
 
         if(m_docknames.contains("services")) {
                 m_docks["services"]->hide();
@@ -1064,11 +1082,6 @@ void MainWidget::engineStopped()
         if(m_gridnames.contains("services"))
                 m_gridlayout->removeWidget(m_svc_tabwidget);
         delete m_svc_tabwidget;
-
-        if (m_forcetabs || allowed_capas.contains("peers")) {
-                m_gridlayout->removeWidget(m_infowidget);
-                delete m_infowidget;
-        }
 
         showLogin();
         
@@ -1138,7 +1151,7 @@ void MainWidget::showNewProfile(Popup * popup)
 
 void MainWidget::showEvent(QShowEvent *event)
 {
-        qDebug() << "MainWidget::showEvent()";
+        // qDebug() << "MainWidget::showEvent()";
         event->accept();
         // << "spontaneous =" << event->spontaneous()
         // << "isMinimized =" << isMinimized()
@@ -1164,7 +1177,7 @@ void MainWidget::hideEvent(QHideEvent *event)
 {
 	// called when minimized
 	// if systray available
-        qDebug() << "MainWidget::hideEvent()";
+        // qDebug() << "MainWidget::hideEvent()";
         // << "spontaneous =" << event->spontaneous()
         // << "isMinimized =" << isMinimized()
         // << "isVisible ="   << isVisible()
@@ -1197,7 +1210,7 @@ void MainWidget::hideEvent(QHideEvent *event)
  */
 void MainWidget::closeEvent(QCloseEvent *event)
 {
-        qDebug() << "MainWidget::closeEvent()";
+        // qDebug() << "MainWidget::closeEvent()";
         // << "spontaneous =" << event->spontaneous()
         // << "isMinimized =" << isMinimized()
         // << "isVisible ="   << isVisible()
@@ -1218,7 +1231,7 @@ void MainWidget::closeEvent(QCloseEvent *event)
 
 void MainWidget::changeEvent(QEvent * /* event */)
 {
-        qDebug() << "MainWidget::changeEvent()";
+        // qDebug() << "MainWidget::changeEvent()";
         //qDebug() << "MainWidget::changeEvent() eventtype=" << event->type();
 	//if (event->type() == 105)
 	//	event->accept();

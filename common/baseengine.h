@@ -255,7 +255,8 @@ signals:
         void resetFeatures();
         void localUserDefined(const QString &);
         void localUserInfoDefined(const QString &, const UserInfo &);
-        void newUserStatus(const QString &);
+        void setAgentStatus(const QString &);
+        void setQueueStatus(const QString &);
         void newQueueList(const QString &);
 	void voiceMailChanged(bool);
 	void callRecordingChanged(bool);

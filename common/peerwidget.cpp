@@ -190,9 +190,18 @@ void PeerWidget::setOrange(int n)
                 m_agentlbl->setPixmap(m_agents["orange"]);
 }
 
-void PeerWidget::setAgentToolTip(const QString & tooltip)
+void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & queues)
 {
-        m_agentlbl->setToolTip(tooltip);
+        if(agentnum == "")
+                m_agentlbl->setToolTip("");
+        else {
+                if(queues.size() == 0)
+                        m_agentlbl->setToolTip("Agent : " + agentnum + "\n0 Queue");
+                else if (queues.size() == 1)
+                        m_agentlbl->setToolTip("Agent : " + agentnum + "\n1 Queue : " + queues[0]);
+                else
+                        m_agentlbl->setToolTip("Agent : " + agentnum + "\n" + QString::number(queues.size()) + " Queues : " + queues.join(","));
+        }
 }
 
 /*! \brief hid this widget from the panel

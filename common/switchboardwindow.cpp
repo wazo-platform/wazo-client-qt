@@ -179,6 +179,18 @@ void SwitchBoardWindow::updatePeer(const QString & ext,
 }
 
 
+void SwitchBoardWindow::updatePeerAgent(const QString & ext,
+                                        const QString & agentstatus)
+{
+        // qDebug() << "SwitchBoardWindow::updatePeerAgent()";
+        if(m_peerhash.contains(ext)) {
+                Peer * peeritem = m_peerhash.value(ext);
+                peeritem->updateAgentStatus(agentstatus);
+        }
+        return;
+}
+
+
 /*! \brief remove the peer from the layout
  *
  * the peer with extension is moved to position (-1, -1) so it

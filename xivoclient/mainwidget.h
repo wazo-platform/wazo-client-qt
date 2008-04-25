@@ -87,6 +87,7 @@ class LeftPanel;
 class LogWidget;
 class ParkingPanel;
 class Popup;
+class QueuesPanel;
 class SearchPanel;
 class ServicePanel;
 class StatusPanel;
@@ -100,6 +101,7 @@ class MainWidget : public QMainWindow
 public:
 	//! Constructor
 	MainWidget(BaseEngine *,
+                   const QString &,
                    const QString &,
                    const QString &,
                    QWidget * parent=0);
@@ -174,6 +176,7 @@ private:
         StatusPanel * m_statuspanel;
         IdentityDisplay * m_infowidget;
         PlayerWidget * m_videopanel;
+        QueuesPanel * m_queuespanel;
 
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;

@@ -99,6 +99,7 @@ private:
         int m_linenum;
         QStringList m_actionnames;
         QStringList m_callchannels;
+        QString m_tferchannel;
 };
 
 #endif

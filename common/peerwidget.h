@@ -74,7 +74,7 @@ public:
 	void addChannel(const QString &, const QString &, const QString &);
 	void setName(const QString &);
 	void setEngine(BaseEngine *);
-        void setAgentToolTip(const QString &);
+        void setAgentToolTip(const QString &, const QStringList &);
 protected:
 	void mouseMoveEvent(QMouseEvent *);
 	void mousePressEvent(QMouseEvent *);

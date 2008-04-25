@@ -63,7 +63,8 @@ protected:
 public slots:
 	void setUser(const QString &);
 	void setQueueList(const QString &);
-	void setStatus(const QString &);
+	void setAgentStatus(const QString &);
+	void setQueueStatus(const QString &);
         void doAgentAction();
         void doQueueAction();
         void doQueueJoinAll();

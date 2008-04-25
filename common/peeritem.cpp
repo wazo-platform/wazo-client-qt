@@ -89,6 +89,7 @@ void Peer::updateStatus(const QString & imavail,
 
 void Peer::updateAgentStatus(const QString & agentstatus)
 {
+        // qDebug() << "Peer::updateAgentStatus()" << agentstatus;
         m_agentstatus = agentstatus;
         if(m_peerwidget != NULL)
                 updateDisplayedStatus();
@@ -182,17 +183,69 @@ void Peer::updateDisplayedStatus()
 		display_sipstatus = m_sipstatus;
 	}
 
-        QStringList qsl = m_agentstatus.split("/");
-        if (qsl.size() == 3) {
-                if(qsl[1] == "1") {
-                        m_peerwidget->setAgentToolTip("Agent : " + qsl[0]);
-                        m_peerwidget->setGreen(2);
-                } else if(qsl[1] == "3") {
-                        m_peerwidget->setAgentToolTip("Agent : " + qsl[0]);
-                        m_peerwidget->setRed(2);
+        if(m_agentstatus.size() > 0) {
+                QStringList qsl = m_agentstatus.split("/");
+                // Peer::updateDisplayedStatus() ("agentlogout", "xivo", "6103", "103")
+                // Peer::updateDisplayedStatus() ("queuememberstatus", "6103", "qcb_00000", "5", "0")
+                if (qsl.size() >= 4) {
+                        if(qsl[0] == "agentlogin") {
+                                QString astid = qsl[1];
+                                QString agentnum = qsl[2];
+                                m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+                                m_peerwidget->setGreen(2);
+                        } else if(qsl[0] == "agentlogout") {
+                                QString astid = qsl[1];
+                                QString agentnum = qsl[2];
+                                m_peerwidget->setAgentToolTip("", m_queuelist);
+                                m_peerwidget->setGray(2);
+                        } else if(qsl[0] == "joinqueue") {
+                                QString astid = qsl[1];
+                                QString agentnum = qsl[2];
+                                if(! m_queuelist.contains(qsl[3]))
+                                        m_queuelist.append(qsl[3]);
+                                m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+                        } else if(qsl[0] == "leavequeue") {
+                                QString astid = qsl[1];
+                                QString agentnum = qsl[2];
+                                if(m_queuelist.contains(qsl[3]))
+                                        m_queuelist.removeAll(qsl[3]);
+                                m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+                        } else if(qsl[0] == "queuememberstatus") {
+                                QString astid = qsl[1];
+                                QString agentnum = qsl[2];
+                                if(qsl[4] == "1") {
+                                        m_peerwidget->setGreen(2);
+                                } else if(qsl[4] == "3") {
+                                        m_peerwidget->setBlue(2);
+                                } else if(qsl[4] == "5") {
+                                        m_peerwidget->setGray(2);
+                                } else {
+                                        m_peerwidget->setYellow(2);
+                                }
+                                m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+                        } else if(qsl[0] == "agentstatus") {
+                                QString astid = qsl[1];
+                                QString agentnum = qsl[2];
+                                if(qsl[4].size() > 0)
+                                        m_queuelist = qsl[4].split(",");
+                                else
+                                        m_queuelist = QStringList();
+                                if (qsl[3] == "0") {
+                                        m_peerwidget->setAgentToolTip("", m_queuelist);
+                                        m_peerwidget->setGray(2);
+                                } else {
+                                        m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+                                        m_peerwidget->setGreen(2);
+                                }
+
+                                // ("agentstatus", "xivo", "6102", "0", "qcb_00003,qcb_00000")
+                        } else {
+                                qDebug() << "UNKNOWN in updateDisplayedStatus()" << qsl;
+                                // m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+                                // m_peerwidget->setBlue(2);
+                        }
                 } else {
-                        m_peerwidget->setAgentToolTip("");
-                        m_peerwidget->setGray(2);
+                        qDebug() << "Peer::updateDisplayedStatus() / size < 4" << qsl;
                 }
         }
 
