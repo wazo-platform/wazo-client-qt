@@ -76,9 +76,11 @@ class QWidget;
 class QUrl;
 
 class AgentsPanel;
+class AgentdetailsPanel;
 class BaseEngine;
 class CallStackWidget;
 class ConfWidget;
+class DatetimePanel;
 class DialPanel;
 class DirectoryPanel;
 class DisplayMessagesPanel;
@@ -89,6 +91,7 @@ class LogWidget;
 class ParkingPanel;
 class Popup;
 class QueuesPanel;
+class QueuedetailsPanel;
 class SearchPanel;
 class ServicePanel;
 class StatusPanel;
@@ -102,6 +105,7 @@ class MainWidget : public QMainWindow
 public:
 	//! Constructor
 	MainWidget(BaseEngine *,
+                   const QString &,
                    const QString &,
                    const QString &,
                    const QString &,
@@ -178,7 +182,10 @@ private:
         IdentityDisplay * m_infowidget;
         PlayerWidget * m_videopanel;
         QueuesPanel * m_queuespanel;
+        QueuedetailsPanel * m_queuedetailspanel;
         AgentsPanel * m_agentspanel;
+        AgentdetailsPanel * m_agentdetailspanel;
+        DatetimePanel * m_datetimepanel;
 
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;

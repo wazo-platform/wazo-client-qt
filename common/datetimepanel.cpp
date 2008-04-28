@@ -39,48 +39,24 @@
  * $Date$
  */
 
-#ifndef __AGENTSPANEL_H__
-#define __AGENTSPANEL_H__
+#include <QDateTime>
+#include <QDebug>
+#include <QGridLayout>
+#include <QLabel>
 
-#include <QHash>
-#include <QList>
-#include <QObject>
-#include <QWidget>
+#include "datetimepanel.h"
 
-class QGridLayout;
-class QLabel;
-class QPushButton;
-class QScrollArea;
-class QVBoxLayout;
-
-/*! \brief Identity Display
+/*! \brief Constructor
  */
-class AgentsPanel : public QWidget
+DatetimePanel::DatetimePanel(QWidget * parent)
+        : QWidget(parent)
 {
-	Q_OBJECT
-public:
-	AgentsPanel(QWidget * parent = 0);
-	~AgentsPanel();
-signals:
-        void changeWatchedAgent(const QString &);
-public slots:
-	void setAgentList(const QString &);
-        void setAgentStatus(const QString &);
-private slots:
-        void agentClicked();
-private:
-        QGridLayout * m_gridlayout;
-	QVBoxLayout * m_layout;
-        QScrollArea * m_scrollarea;
-	QWidget * m_widget;
-
-        QHash<QString, QPushButton *> m_agentlabels;
-        QHash<QString, QPushButton *> m_agent_a;
-        QHash<QString, QPushButton *> m_agent_b;
-        QHash<QString, QPushButton *> m_agent_c;
-        QHash<QString, QPushButton *> m_agent_d;
-
-        int m_maxbusy;
-};
-
-#endif /* __AGENTSPANEL_H__ */
+        m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocalDate));
+	m_gridlayout = new QGridLayout(this);
+        
+ 	m_gridlayout->addWidget( m_datetime, 1, 1, Qt::AlignCenter);
+ 	m_gridlayout->setColumnStretch( 0, 1 );
+ 	m_gridlayout->setColumnStretch( 2, 1 );
+ 	m_gridlayout->setRowStretch( 0, 1 );
+ 	m_gridlayout->setRowStretch( 2, 1 );
+}

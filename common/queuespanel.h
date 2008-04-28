@@ -50,6 +50,7 @@
 class QGridLayout;
 class QLabel;
 class QProgressBar;
+class QPushButton;
 
 /*! \brief Identity Display
  */
@@ -58,14 +59,19 @@ class QueuesPanel : public QWidget
 	Q_OBJECT
 public:
 	QueuesPanel(QWidget * parent = 0);
+	~QueuesPanel();
 protected:
+signals:
+        void changeWatchedQueue(const QString &);
 public slots:
 	void setQueueList(const QString &);
         void setQueueStatus(const QString &);
+private slots:
+        void queueClicked();
 private:
         QGridLayout * m_gridlayout;
 
-        QHash<QString, QLabel *> m_queuelabels;
+        QHash<QString, QPushButton *> m_queuelabels;
         QHash<QString, QProgressBar *> m_queuebusies;
 
         int m_maxbusy;

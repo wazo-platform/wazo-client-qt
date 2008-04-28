@@ -152,6 +152,7 @@ public:
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
         void config_and_start(const QString &, const QString &,
                               const QString &, const QString &);
+        void setOSInfos(const QString &);
 protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
 public slots:
@@ -191,6 +192,10 @@ public slots:
 	void readProfile();
         void agentAction(const QString &);
 	void pickUp(const QString &);
+
+        void monitoredPeerChanged(const QString &);
+        void changeWatchedAgentSlot(const QString &);
+        void changeWatchedQueueSlot(const QString &);
 private slots:
 	void identifyToTheServer();		//!< perform the first login step
 	void processLoginDialog();		//!< perform the following login steps
@@ -221,6 +226,7 @@ signals:
         void ackFax(const QString &);
         void featurePutIsKO();
         void featurePutIsOK();
+        void setPeerToDisplay(const QString &);
 
 	//! a call
 	void updateCall(const QString & channelme,
@@ -273,6 +279,8 @@ signals:
 	void forwardOnUnavailableUpdated(bool);
 	void forwardOnUnavailableUpdated(const QString &);
         void changesAvailChecks();
+        void changeWatchedAgentSignal(const QStringList &);
+        void changeWatchedQueueSignal(const QStringList &);
 private:
 	void initListenSocket();	//!< initialize the socket listening to profile
 	void stopKeepAliveTimer();	//!< Stop the keep alive timer if running
@@ -356,6 +364,7 @@ private:
 	int m_pendingkeepalivemsg;	//!< number of keepalivemsg sent without response
 	QString m_pendingcommand;	//!< command to be sent to the server.
         QString m_numbertodial;		//!< Number dialed in
+        QString m_osname;		//!< OS informations
 
         QString m_faxid;
         QByteArray * m_faxdata;

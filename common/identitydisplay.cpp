@@ -169,9 +169,9 @@ void IdentityDisplay::setAgentStatus(const QString & status)
 
                 if (command == "agentlogin") {
                         m_agent->show();
-                        m_agentaction->show();
                         m_agentaction->setIcon(QIcon(":/images/button_ok.png"));
                         m_agentaction->setText(arg);
+                        m_agentaction->show();
                         m_agentstatus = true;
                         if(m_queuesindexes.size() > 0) {
                                 if(m_queuechangeallow) {

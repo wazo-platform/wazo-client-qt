@@ -42,8 +42,10 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QLabel>
+#include <QPushButton>
 #include <QProgressBar>
 #include <QScrollArea>
+#include <QVariant>
 
 #include "queuespanel.h"
 
@@ -62,19 +64,27 @@ QueuesPanel::QueuesPanel(QWidget * parent)
 
         m_maxbusy = 0;
  	m_gridlayout->setColumnStretch( 2, 1 );
- 	m_gridlayout->setRowStretch( 10000, 1 );
+ 	m_gridlayout->setRowStretch( 100, 1 );
+}
+
+QueuesPanel::~QueuesPanel()
+{
+        // qDebug() << "QueuesPanel::~QueuesPanel()";
 }
 
 void QueuesPanel::setQueueList(const QString & qlist)
 {
-        qDebug() << "QueuesPanel::setQueueList()" << qlist;
+        // qDebug() << "QueuesPanel::setQueueList()" << qlist;
         QStringList qsl = qlist.split(";");
         if(qsl[2].size() > 0) {
                 QStringList queues = qsl[2].split(",");
                 queues.sort();
                 for(int i = 0 ; i < queues.size(); i++) {
                         if(! m_queuelabels.keys().contains(queues[i])) {
-                                m_queuelabels[queues[i]] = new QLabel(queues[i]);
+                                m_queuelabels[queues[i]] = new QPushButton(queues[i], this);
+                                m_queuelabels[queues[i]]->setProperty("queueid", queues[i]);
+                                connect( m_queuelabels[queues[i]], SIGNAL(clicked()),
+                                         this, SLOT(queueClicked()));
                                 m_queuebusies[queues[i]] = new QProgressBar(this);
                                 m_gridlayout->addWidget( m_queuelabels[queues[i]], i, 0, Qt::AlignLeft );
                                 m_gridlayout->addWidget( m_queuebusies[queues[i]], i, 1, Qt::AlignCenter );
@@ -87,10 +97,18 @@ void QueuesPanel::setQueueList(const QString & qlist)
         }
 }
 
+void QueuesPanel::queueClicked()
+{
+        // qDebug() << "QueuesPanel::queueClicked()" << this->sender()->property("queueid");
+        QString queueid = this->sender()->property("queueid").toString();
+        changeWatchedQueue(queueid);
+}
+
+
 void QueuesPanel::setQueueStatus(const QString & status)
 {
         QStringList newstatuses = status.split("/");
-        qDebug() << "QueuesPanel::setQueueStatus()" << newstatuses;
+        // qDebug() << "QueuesPanel::setQueueStatus()" << newstatuses;
         if (newstatuses.size() == 4) {
                 QString command = newstatuses[0];
                 int maxbusy = 0;

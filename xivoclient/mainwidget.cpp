@@ -60,9 +60,11 @@
 #include <QVBoxLayout>
 
 #include "agentspanel.h"
+#include "agentdetailspanel.h"
 #include "baseengine.h"
 #include "callstackwidget.h"
 #include "confwidget.h"
+#include "datetimepanel.h"
 #include "dialpanel.h"
 #include "directorypanel.h"
 #include "displaymessages.h"
@@ -73,6 +75,7 @@
 #include "parkingpanel.h"
 #include "popup.h"
 #include "queuespanel.h"
+#include "queuedetailspanel.h"
 #include "searchpanel.h"
 #include "servicepanel.h"
 #include "statuspanel.h"
@@ -109,6 +112,7 @@ QLabel * LeftPanel::titleLabel()
 //        : QMainWindow(parent, Qt::FramelessWindowHint),
 MainWidget::MainWidget(BaseEngine * engine,
                        const QString & pname,
+                       const QString & osname,
                        const QString & app_funcs,
                        const QString & app_xlets,
                        QWidget * parent)
@@ -118,6 +122,7 @@ MainWidget::MainWidget(BaseEngine * engine,
 {
         m_appliname = pname;
         qDebug() << app_funcs;
+        m_engine->setOSInfos(osname);
         if(app_funcs == "switchboard") {
                 m_engine->setIsASwitchboard(true);
                 m_switchboard = true;
@@ -216,10 +221,10 @@ MainWidget::MainWidget(BaseEngine * engine,
         if((m_withsystray && (m_engine->systrayed() == false)) || (! m_withsystray))
                 this->show();
 
-	m_display_capas = (QStringList() << "customerinfo" << "features" << "history"
+	m_display_capas = (QStringList() << "customerinfo" << "features" << "history" << "datetime"
                            << "directory" << "search" << "fax" << "dial" << "presence"
                            << "video" << "operator" << "parking" << "calls" << "switchboard"
-                           << "messages" << "identity" << "queues" << "agents");
+                           << "messages" << "identity" << "agents" << "agentdetails" << "queues" << "queuedetails");
         setAppearance(app_xlets);
 }
 
@@ -264,21 +269,6 @@ void MainWidget::setAppearance(const QString & options)
         qDebug() << "dock : " << m_docknames;
         qDebug() << "grid : " << m_gridnames;
         qDebug() << "tab  : " << m_tabnames;
-
-        foreach (QString dname, m_docknames) {
-                QDockWidget::DockWidgetFeatures features = QDockWidget::NoDockWidgetFeatures;
-                if(m_dockoptions[dname].contains("f"))
-                        features |= QDockWidget::DockWidgetFloatable;
-                if(m_dockoptions[dname].contains("m"))
-                        features |= QDockWidget::DockWidgetMovable;
-                if(m_dockoptions[dname].contains("c"))
-                        features |= QDockWidget::DockWidgetClosable;
-                m_docks[dname] = new QDockWidget(dname);
-                m_docks[dname]->setFeatures(features);
-                m_docks[dname]->setAllowedAreas(Qt::BottomDockWidgetArea); // restrain the area to Bottom region
-                m_docks[dname]->setObjectName(dname); // compulsory to allow a proper state's saving
-                m_docks[dname]->hide();
-        }
 }
 
 void MainWidget::config_and_start()
@@ -611,12 +601,21 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
 {
         if(m_docknames.contains(name)) {
                 qDebug() << "MainWidget::addPanel()" << m_docknames;
+
+                QDockWidget::DockWidgetFeatures features = QDockWidget::NoDockWidgetFeatures;
+                if(m_dockoptions[name].contains("f"))
+                        features |= QDockWidget::DockWidgetFloatable;
+                if(m_dockoptions[name].contains("m"))
+                        features |= QDockWidget::DockWidgetMovable;
+                if(m_dockoptions[name].contains("c"))
+                        features |= QDockWidget::DockWidgetClosable;
+                m_docks[name] = new QDockWidget(title);
+                m_docks[name]->setFeatures(features);
+                m_docks[name]->setAllowedAreas(Qt::BottomDockWidgetArea); // restrain the area to Bottom region
+                m_docks[name]->setObjectName(name); // compulsory to allow a proper state's saving
                 addDockWidget(Qt::BottomDockWidgetArea, m_docks[name]);
-                qDebug() << "a";
                 m_docks[name]->setWidget(widget);
-                qDebug() << "b";
-                m_docks[name]->show();
-                qDebug() << "c";
+                m_docks[name]->hide();
         } else if(m_gridnames.contains(name)) {
                 qDebug() << "MainWidget::addPanel()" << m_dockoptions[name];
                 m_gridlayout->addWidget(widget, m_dockoptions[name].toInt(), 0);
@@ -632,7 +631,7 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
  */
 void MainWidget::engineStarted()
 {
-	setForceTabs(false);
+	setForceTabs(true);
 	QStringList allowed_capas = m_engine->getCapabilities();
         m_settings->setValue("display/capas", allowed_capas.join(","));
 
@@ -641,9 +640,7 @@ void MainWidget::engineStarted()
         m_svc_tabwidget = new QTabWidget(this);
         
         if(m_docknames.contains("services")) {
-                addDockWidget(Qt::BottomDockWidgetArea, m_docks["services"]);
-                m_docks["services"]->setWidget(m_svc_tabwidget);
-                m_docks["services"]->show();
+                addPanel("services", tr("&Services"), m_svc_tabwidget);
         }
         if(m_gridnames.contains("services")) {
                 m_gridlayout->addWidget(m_svc_tabwidget, 1, 0);
@@ -668,9 +665,12 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(requestHistory(const QString &, int)) );
                                 connect( m_engine, SIGNAL(delogged()),
                                          m_historypanel, SLOT(clear()) );
+                                connect( m_engine, SIGNAL(setPeerToDisplay(const QString &)),
+                                         m_historypanel, SLOT(setPeerToDisplay(const QString &)) );
+
 			} else if (dc == QString("identity")) {
                                 m_infowidget = new IdentityDisplay();
-                                addPanel("identity", tr("Identity"), m_infowidget);
+                                addPanel("identity", tr("&Identity"), m_infowidget);
                                 connect( m_engine, SIGNAL(localUserDefined(const QString &)),
                                          m_infowidget, SLOT(setUser(const QString &)));
                                 connect( m_engine, SIGNAL(setAgentStatus(const QString &)),
@@ -683,21 +683,42 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(agentAction(const QString &)));
 
 			} else if (dc == QString("agents")) {
-                                qDebug() << "a";
                                 m_agentspanel = new AgentsPanel();
-                                qDebug() << "b";
-                                addPanel("agents", tr("Agents"), m_agentspanel);
-                                qDebug() << "c";
+                                addPanel("agents", tr("Agents' List"), m_agentspanel);
                                 connect( m_engine, SIGNAL(newAgentList(const QString &)),
                                          m_agentspanel, SLOT(setAgentList(const QString &)));
+                                connect( m_agentspanel, SIGNAL(changeWatchedAgent(const QString &)),
+                                         m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
+
+			} else if (dc == QString("agentdetails")) {
+                                m_agentdetailspanel = new AgentdetailsPanel();
+                                addPanel("agentdetails", tr("Agent Details"), m_agentdetailspanel);
+                                connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QStringList &)),
+                                         m_agentdetailspanel, SLOT(newAgent(const QStringList &)));
+                                connect( m_agentdetailspanel, SIGNAL(changeWatchedQueue(const QString &)),
+                                         m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 
 			} else if (dc == QString("queues")) {
                                 m_queuespanel = new QueuesPanel();
-                                addPanel("queues", tr("Queues"), m_queuespanel);
+                                addPanel("queues", tr("Queues' List"), m_queuespanel);
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
                                          m_queuespanel, SLOT(setQueueStatus(const QString &)));
                                 connect( m_engine, SIGNAL(newQueueList(const QString &)),
                                          m_queuespanel, SLOT(setQueueList(const QString &)));
+                                connect( m_queuespanel, SIGNAL(changeWatchedQueue(const QString &)),
+                                         m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
+
+			} else if (dc == QString("queuedetails")) {
+                                m_queuedetailspanel = new QueuedetailsPanel();
+                                addPanel("queuedetails", tr("Queue Details"), m_queuedetailspanel);
+                                connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QStringList &)),
+                                         m_queuedetailspanel, SLOT(newQueue(const QStringList &)));
+                                connect( m_queuedetailspanel, SIGNAL(changeWatchedAgent(const QString &)),
+                                         m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
+
+			} else if (dc == QString("datetime")) {
+				m_datetimepanel = new DatetimePanel();
+                                addPanel("datetime", tr("Date and Time"), m_datetimepanel);
 
 			} else if (dc == QString("dial")) {
 				m_dialpanel = new DialPanel();
@@ -761,9 +782,7 @@ void MainWidget::engineStarted()
                                 connect( m_calls, SIGNAL(changeTitle(const QString &)),
                                          m_leftpanel->titleLabel(), SLOT(setText(const QString &)) );
                                 connect( m_calls, SIGNAL(monitoredPeerChanged(const QString &)),
-                                         m_historypanel, SLOT(setPeerToDisplay(const QString &)) );
-                                connect( m_calls, SIGNAL(monitoredPeerChanged(const QString &)),
-                                         m_featureswidget, SLOT(setPeerToDisplay(const QString &)) );
+                                         m_engine, SLOT(monitoredPeerChanged(const QString &)) );
                                 if(m_switchboard) {
                                         connect( m_engine, SIGNAL(updateCall(const QString &, const QString &, int, const QString &,
                                                                              const QString &, const QString &, const QString &)),
@@ -827,7 +846,7 @@ void MainWidget::engineStarted()
                                          this, SLOT(newParkEvent()) );
                         } else if (dc == QString("fax")) {
 				m_faxwidget = new FaxPanel(m_engine, this);
-                                addPanel("fax", tr("&Fax"), m_faxwidget);
+                                addPanel("fax", tr("Fax"), m_faxwidget);
                                 
                                 connect( m_faxwidget, SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
                                          m_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
@@ -837,11 +856,11 @@ void MainWidget::engineStarted()
 			} else if ((dc == QString("customerinfo")) && (m_engine->checkedCInfo())) {
                                 m_cinfo_tabwidget = new QTabWidget();
                                 m_cinfo_tabwidget->setObjectName("cinfo");
-                                addPanel("customerinfo", tr("&Sheets"), m_cinfo_tabwidget);
+                                addPanel("customerinfo", tr("Sheets"), m_cinfo_tabwidget);
 
 			} else if (dc == QString("search")) {
 				m_searchpanel = new SearchPanel();
-                                addPanel("search", tr("&Contacts"), m_searchpanel);
+                                addPanel("search", tr("Contacts"), m_searchpanel);
                                 
 				connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
 								     const QString &, const QString &,
@@ -870,10 +889,11 @@ void MainWidget::engineStarted()
                                 m_featureswidget = new ServicePanel(m_engine->getCapaFeatures());
                                 addPanel("features", tr("Services"), m_featureswidget);
                                 
-                                if(m_switchboard) {
-                                        connect( m_featureswidget, SIGNAL(askFeatures(const QString &)),
-                                                 m_engine, SLOT(askFeatures(const QString &)) );
-                                }
+                                connect( m_featureswidget, SIGNAL(askFeatures(const QString &)),
+                                         m_engine, SLOT(askFeatures(const QString &)) );
+                                connect( m_engine, SIGNAL(setPeerToDisplay(const QString &)),
+                                         m_featureswidget, SLOT(setPeerToDisplay(const QString &)) );
+
                                 connect( m_engine, SIGNAL(disconnectFeatures()),
                                          m_featureswidget, SLOT(DisConnect()) );
                                 connect( m_engine, SIGNAL(connectFeatures()),
@@ -934,7 +954,7 @@ void MainWidget::engineStarted()
                                 m_engine->askFeatures("peer/to/define");
 			} else if (dc == QString("directory")) {
 				m_dirpanel = new DirectoryPanel(this);
-                                addPanel("directory", tr("&Directory"), m_dirpanel);
+                                addPanel("directory", tr("Directory"), m_dirpanel);
                                 m_dirpanel->myfocus();
 
 				connect( m_dirpanel, SIGNAL(searchDirectory(const QString &)),
@@ -959,7 +979,7 @@ void MainWidget::engineStarted()
                                 }
 			} else if (dc == QString("instantmessaging")) {
                                 m_messagetosend = new QLineEdit();
-                                addPanel("instantmessaging", tr("&Messages"), m_messagetosend);
+                                addPanel("instantmessaging", tr("Messages"), m_messagetosend);
                                 
                                 connect( m_messagetosend, SIGNAL(returnPressed()),
                                          this, SLOT(affTextChanged()) );
@@ -974,9 +994,12 @@ void MainWidget::engineStarted()
                 m_svc_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
         }
         
+        foreach (QString dname, m_docknames) {
+                m_docks[dname]->show();
+        }
 	// restore settings, especially for Docks' positions
         restoreState(m_settings->value("display/mainwindowstate").toByteArray());
-        
+
         if(m_tabnames.contains("customerinfo")) {
                 m_cinfo_index = m_svc_tabwidget->indexOf(m_cinfo_tabwidget);
                 qDebug() << "the index of customer-info widget is" << m_cinfo_index;
@@ -999,8 +1022,10 @@ void MainWidget::engineStarted()
 void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
         if(m_docknames.contains(name)) {
-                m_docks[name]->hide();
                 removeDockWidget(m_docks[name]);
+                delete widget;
+                delete m_docks[name]; // seems to "delete widget", also
+                m_docks.remove(name);
         }
         if(m_tabnames.contains(name)) {
                 int thisindex = m_svc_tabwidget->indexOf(widget);
@@ -1008,11 +1033,12 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
                         qDebug() << "removing" << name << thisindex;
                         m_svc_tabwidget->removeTab(thisindex);
                 }
+                delete widget;
         }
         if(m_gridnames.contains(name)) {
                 m_gridlayout->removeWidget(widget);
+                delete widget;
         }
-        delete widget;
 }
 
 /*!
@@ -1025,8 +1051,15 @@ void MainWidget::engineStopped()
 	QStringList allowed_capas = m_engine->getCapabilities();
 
         m_settings->setValue("display/mainwindowstate", saveState());
-        if (m_svc_tabwidget->currentIndex() > -1)
+        if (m_svc_tabwidget->currentIndex() > -1) {
+                // qDebug() << m_svc_tabwidget->currentIndex();
                 m_settings->setValue("display/lastfocusedtab", m_svc_tabwidget->currentIndex());
+                // qDebug() << m_svc_tabwidget->tabText(m_svc_tabwidget->currentIndex());
+        }
+
+        foreach (QString dname, m_docknames) {
+                m_docks[dname]->hide();
+        }
 
 	for(int j = 0; j < m_display_capas.size(); j++) {
                 QString dc = m_display_capas[j];
@@ -1034,23 +1067,9 @@ void MainWidget::engineStopped()
                         if (dc == QString("features")) {
                                 removePanel("features", m_featureswidget);
 			} else if (dc == QString("customerinfo")) {
-                                if(m_docknames.contains(dc)) {
-                                        m_docks[dc]->hide();
-                                        removeDockWidget(m_docks[dc]);
-                                        m_cinfo_tabwidget->clear();
-                                        delete m_cinfo_tabwidget;
-                                }
-                                if(m_tabnames.contains(dc)) {
-                                        int index_customerinfo = m_svc_tabwidget->indexOf(m_cinfo_tabwidget);
-                                        if (index_customerinfo > -1) {
-                                                qDebug() << "removing" << dc << index_customerinfo;
-                                                m_svc_tabwidget->removeTab(index_customerinfo);
-                                                m_cinfo_tabwidget->clear();
-                                                delete m_cinfo_tabwidget;
-                                        }
-                                }
+                                removePanel("customerinfo", m_cinfo_tabwidget);
                         } else if (dc == QString("calls")) {
-                                removePanel("switchboard", m_leftpanel);
+                                removePanel("calls", m_leftpanel);
                                 //delete m_calls;
                                 //delete m_areaCalls;
                                 //delete m_leftpanel;
@@ -1082,22 +1101,25 @@ void MainWidget::engineStopped()
                                 removePanel("identity", m_infowidget);
 			} else if (dc == QString("queues")) {
                                 removePanel("queues", m_queuespanel);
+			} else if (dc == QString("queuedetails")) {
+                                removePanel("queuedetails", m_queuedetailspanel);
 			} else if (dc == QString("agents")) {
                                 removePanel("agents", m_agentspanel);
+			} else if (dc == QString("agentdetails")) {
+                                removePanel("agentdetails", m_agentdetailspanel);
+			} else if (dc == QString("datetime")) {
+                                removePanel("datetime", m_datetimepanel);
                         }
                 }
         }
         
-        foreach (QString dname, m_docknames)
-                m_docks[dname]->hide();
-
         if(m_docknames.contains("services")) {
-                m_docks["services"]->hide();
-                removeDockWidget(m_docks["services"]);
+                removePanel("services", m_svc_tabwidget);
         }
-        if(m_gridnames.contains("services"))
+        if(m_gridnames.contains("services")) {
                 m_gridlayout->removeWidget(m_svc_tabwidget);
-        delete m_svc_tabwidget;
+                delete m_svc_tabwidget;
+        }
 
         showLogin();
         

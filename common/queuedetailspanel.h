@@ -39,8 +39,8 @@
  * $Date$
  */
 
-#ifndef __AGENTSPANEL_H__
-#define __AGENTSPANEL_H__
+#ifndef __QUEUEDETAILSPANEL_H__
+#define __QUEUEDETAILSPANEL_H__
 
 #include <QHash>
 #include <QList>
@@ -55,17 +55,17 @@ class QVBoxLayout;
 
 /*! \brief Identity Display
  */
-class AgentsPanel : public QWidget
+class QueuedetailsPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	AgentsPanel(QWidget * parent = 0);
-	~AgentsPanel();
+	QueuedetailsPanel(QWidget * parent = 0);
+	~QueuedetailsPanel();
 signals:
         void changeWatchedAgent(const QString &);
+protected:
 public slots:
-	void setAgentList(const QString &);
-        void setAgentStatus(const QString &);
+	void newQueue(const QStringList &);
 private slots:
         void agentClicked();
 private:
@@ -74,13 +74,10 @@ private:
         QScrollArea * m_scrollarea;
 	QWidget * m_widget;
 
+        QLabel * m_label;
         QHash<QString, QPushButton *> m_agentlabels;
-        QHash<QString, QPushButton *> m_agent_a;
-        QHash<QString, QPushButton *> m_agent_b;
-        QHash<QString, QPushButton *> m_agent_c;
-        QHash<QString, QPushButton *> m_agent_d;
-
+        QHash<QString, QLabel *> m_agentstatus;
         int m_maxbusy;
 };
 
-#endif /* __AGENTSPANEL_H__ */
+#endif /* __QUEUEDETAILSPANEL_H__ */

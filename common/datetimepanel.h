@@ -39,48 +39,29 @@
  * $Date$
  */
 
-#ifndef __AGENTSPANEL_H__
-#define __AGENTSPANEL_H__
+#ifndef __DATETIMEPANEL_H__
+#define __DATETIMEPANEL_H__
 
-#include <QHash>
-#include <QList>
 #include <QObject>
 #include <QWidget>
 
 class QGridLayout;
 class QLabel;
-class QPushButton;
-class QScrollArea;
-class QVBoxLayout;
+class QProgressBar;
 
 /*! \brief Identity Display
  */
-class AgentsPanel : public QWidget
+class DatetimePanel : public QWidget
 {
 	Q_OBJECT
 public:
-	AgentsPanel(QWidget * parent = 0);
-	~AgentsPanel();
-signals:
-        void changeWatchedAgent(const QString &);
+	DatetimePanel(QWidget * parent = 0);
+protected:
 public slots:
-	void setAgentList(const QString &);
-        void setAgentStatus(const QString &);
-private slots:
-        void agentClicked();
 private:
         QGridLayout * m_gridlayout;
-	QVBoxLayout * m_layout;
-        QScrollArea * m_scrollarea;
-	QWidget * m_widget;
-
-        QHash<QString, QPushButton *> m_agentlabels;
-        QHash<QString, QPushButton *> m_agent_a;
-        QHash<QString, QPushButton *> m_agent_b;
-        QHash<QString, QPushButton *> m_agent_c;
-        QHash<QString, QPushButton *> m_agent_d;
-
+        QLabel * m_datetime;
         int m_maxbusy;
 };
 
-#endif /* __AGENTSPANEL_H__ */
+#endif /* __DATETIMEPANEL_H__ */

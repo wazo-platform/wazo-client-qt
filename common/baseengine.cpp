@@ -558,6 +558,12 @@ void BaseEngine::processHistory(const QStringList & histlist)
 }
 
 
+void BaseEngine::monitoredPeerChanged(const QString & peerinfo)
+{
+        setPeerToDisplay(peerinfo);
+}
+
+
 /*! \brief called when the socket is first connected
  */
 void BaseEngine::socketConnected()
@@ -935,6 +941,16 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
         } else if(listitems[0].toLower() == QString("agents-list")) {
                 newAgentList(listitems[1]);
+
+        } else if(listitems[0].toLower() == QString("agent-status")) {
+                qDebug() << listitems;
+                QStringList liststatus = listitems[1].split(";");
+                changeWatchedAgentSignal(liststatus);
+
+        } else if(listitems[0].toLower() == QString("queue-status")) {
+                qDebug() << listitems;
+                QStringList liststatus = listitems[1].split(";");
+                changeWatchedQueueSignal(liststatus);
 
         } else if(listitems[0].toLower() == QString("update-agents")) {
                 QStringList liststatus = listitems[1].split(":");
@@ -1779,8 +1795,27 @@ void BaseEngine::setState(EngineState state)
 	}
 }
 
+void BaseEngine::changeWatchedAgentSlot(const QString & agentid)
+{
+        // qDebug() << "BaseEngine::changeWatchedAgentSlot()" << agentid;
+        sendCommand("agent-status " + m_asterisk + " " + agentid);
+        // changeWatchedAgentSignal(agentid);
+}
+
+void BaseEngine::changeWatchedQueueSlot(const QString & queueid)
+{
+        // qDebug() << "BaseEngine::changeWatchedQueueSlot()" << queueid;
+        sendCommand("queue-status " + m_asterisk + " " + queueid);
+        // changeWatchedQueueSignal(queueid);
+}
+
+void BaseEngine::setOSInfos(const QString & osname)
+{
+        m_osname = osname;
+}
+
 /*!
- * Builds a string defining who is the client (SB or XC @ (X11, WIN, MAC))
+ * Builds a string defining who is the client (SB or XC @ osname)
 */
 void BaseEngine::setMyClientId()
 {
@@ -1789,16 +1824,7 @@ void BaseEngine::setMyClientId()
                 whatami = QString("SB");
         else
                 whatami = QString("XC");
-
-#if defined(Q_WS_X11)
-        m_clientid = QString(whatami + "@X11");
-#elif defined(Q_WS_WIN)
-        m_clientid = QString(whatami + "@WIN");
-#elif defined(Q_WS_MAC)
-        m_clientid = QString(whatami + "@MAC");
-#else
-        m_clientid = QString(whatami + "@unknown");
-#endif
+        m_clientid = whatami + "@" + m_osname;
 }
 
 /*!

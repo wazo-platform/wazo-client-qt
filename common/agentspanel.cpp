@@ -42,8 +42,9 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QLabel>
-#include <QProgressBar>
+#include <QPushButton>
 #include <QScrollArea>
+#include <QVariant>
 
 #include "agentspanel.h"
 
@@ -52,40 +53,69 @@
 AgentsPanel::AgentsPanel(QWidget * parent)
         : QWidget(parent)
 {
-	QVBoxLayout * layout = new QVBoxLayout(this);
-        QScrollArea * scrollarea = new QScrollArea(this);
-	QWidget * widget = new QWidget(this);
-	scrollarea->setWidget(widget);
-	m_gridlayout = new QGridLayout(widget);
-        scrollarea->setWidgetResizable(true);
-	layout->addWidget(scrollarea);
+	m_layout = new QVBoxLayout(this);
+        m_scrollarea = new QScrollArea(this);
+	m_widget = new QWidget(this);
+	m_scrollarea->setWidget(m_widget);
+	m_gridlayout = new QGridLayout(m_widget);
+        m_scrollarea->setWidgetResizable(true);
+	m_layout->addWidget(m_scrollarea);
 
         m_maxbusy = 0;
- 	m_gridlayout->setColumnStretch( 2, 1 );
- 	m_gridlayout->setRowStretch( 10000, 1 );
+        m_gridlayout->setColumnStretch( 5, 1 );
+        m_gridlayout->setRowStretch( 100, 1 );
+}
+
+AgentsPanel::~AgentsPanel()
+{
+        qDebug() << "AgentsPanel::~AgentsPanel()";
 }
 
 void AgentsPanel::setAgentList(const QString & qlist)
 {
         qDebug() << "AgentsPanel::setQueueList()" << qlist;
+        QPixmap * m_square = new QPixmap(8, 8);
         QStringList qsl = qlist.split(";");
         if(qsl[1].size() > 0) {
                 QStringList agents = qsl[1].split(",");
                 agents.sort();
                 for(int i = 0 ; i < agents.size(); i++) {
-                        if(! m_queuelabels.keys().contains(agents[i])) {
-                                m_queuelabels[agents[i]] = new QLabel(agents[i]);
-                                m_queuebusies[agents[i]] = new QProgressBar(this);
-                                m_gridlayout->addWidget( m_queuelabels[agents[i]], i, 0, Qt::AlignLeft );
-                                m_gridlayout->addWidget( m_queuebusies[agents[i]], i, 1, Qt::AlignCenter );
-                                
-                                m_queuebusies[agents[i]]->setFormat("%v");
-                                m_queuebusies[agents[i]]->setRange(0, m_maxbusy + 1);
-                                m_queuebusies[agents[i]]->setValue(0);
+                        if(! m_agentlabels.keys().contains(agents[i])) {
+                                m_square->fill(QColor(rand() % 256, rand() % 256, rand() % 256));
+                                m_agentlabels[agents[i]] = new QPushButton(agents[i], this);
+                                m_agentlabels[agents[i]]->setProperty("agentid", agents[i]);
+                                connect( m_agentlabels[agents[i]], SIGNAL(clicked()),
+                                         this, SLOT(agentClicked()));
+                                m_agent_a[agents[i]] = new QPushButton(this);
+                                m_agent_b[agents[i]] = new QPushButton(this);
+                                m_agent_c[agents[i]] = new QPushButton(this);
+                                m_agent_d[agents[i]] = new QPushButton(this);
+                                m_agent_a[agents[i]]->setIconSize(QSize(8, 8));
+                                m_agent_b[agents[i]]->setIconSize(QSize(8, 8));
+                                m_agent_c[agents[i]]->setIconSize(QSize(8, 8));
+                                m_agent_d[agents[i]]->setIconSize(QSize(8, 8));
+                                m_agent_a[agents[i]]->setIcon(QIcon(QPixmap(* m_square)));
+                                m_agent_b[agents[i]]->setIcon(QIcon(QPixmap(* m_square)));
+                                m_agent_c[agents[i]]->setIcon(QIcon(QPixmap(* m_square)));
+                                m_agent_d[agents[i]]->setIcon(QIcon(QPixmap(* m_square)));
+                                m_gridlayout->addWidget( m_agentlabels[agents[i]], i, 0, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_agent_a[agents[i]], i, 1, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_b[agents[i]], i, 2, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_c[agents[i]], i, 3, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_d[agents[i]], i, 4, Qt::AlignCenter );
                         }
                 }
         }
 }
+
+
+void AgentsPanel::agentClicked()
+{
+        // qDebug() << "AgentsPanel::agentClicked()" << this->sender()->property("agentid");
+        QString agentid = this->sender()->property("agentid").toString();
+        changeWatchedAgent(agentid);
+}
+
 
 void AgentsPanel::setAgentStatus(const QString & status)
 {
@@ -98,20 +128,6 @@ void AgentsPanel::setAgentStatus(const QString & status)
                         QString astid = newstatuses[1];
                         QString queuename = newstatuses[2];
                         QString busyness = newstatuses[3];
-                        m_queuebusies[queuename]->setValue(busyness.toInt());
-                        foreach (QProgressBar * qpb, m_queuebusies)
-                                if(maxbusy < qpb->value())
-                                        maxbusy = qpb->value();
-                        if(maxbusy != m_maxbusy) {
-                                m_maxbusy = maxbusy;
-                                qDebug() << "maxbusy" << m_maxbusy;
-                                foreach (QProgressBar * qpb, m_queuebusies) {
-                                        qpb->setRange(0, m_maxbusy + 1);
-                                        int value = qpb->value();
-                                        qpb->setValue(0); // trick in order to refresh
-                                        qpb->setValue(value);
-                                }
-                        }
                 }
         }
 }

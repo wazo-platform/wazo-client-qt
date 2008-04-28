@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 2576 $
- * $Date: 2008-03-10 13:56:18 +0100 (Mon, 10 Mar 2008) $
+/* $Revision$
+ * $Date$
  */
 
 #ifndef __USERINFO_H__

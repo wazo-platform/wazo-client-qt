@@ -44,6 +44,7 @@
 #include <QLocale>
 #include <QSettings>
 #include <QSplashScreen>
+#include <QSysInfo>
 #include <QTranslator>
 
 #include "baseengine.h"
@@ -111,15 +112,35 @@ int main(int argc, char ** argv)
                         app_funcs = "client";
         } else {
                 appname = "Switchboard";
-                if(app_xlets.size() == 0)
-//                         app_xlets = "services:dock:m,dial:dock:m,search:dock:m,history,directory:dock:m,"
-//                                 "customerinfo:dock:m,operator:dock:mfc,parking:tab,messages:tab,switchboard:dock:mc,identity:grid:0";
-                        app_xlets = "services:dock:m,dial:dock:m,search:dock:m,queues:dock:m,"
-                                "customerinfo:dock:m,operator:dock:mfc,switchboard:dock:mc,identity:grid:0,agents:dock:m";
+                if(app_xlets.size() == 0) {
+                        // app_xlets = "services:dock:m,dial:dock:m,search:dock:m,history,directory:dock:m,"
+                        // "customerinfo:dock:m,operator:dock:mfc,parking:tab,messages:tab,switchboard:dock:mc,identity:grid:0";
+                        app_xlets = "dial:dock:m,search:dock:m,queues:dock:m,datetime:dock:mfc,calls:dock:m,"
+                                "history:dock:m,switchboard:dock:mc,identity:grid:0,agents:dock:m";
+                        app_xlets = "queues:dock:m,queuedetails:dock:mc,agents:dock:m,agentdetails:dock:mc,identity:grid:0";
+                }
                 if(app_funcs.size() == 0)
                         app_funcs = "switchboard";
         }
-        MainWidget main(engine, appname, app_funcs, app_xlets);
+
+        QString info_osname;
+        QString info_endianness;
+        if(QSysInfo::ByteOrder == 0)
+                info_endianness = "BE";
+        else
+                info_endianness = "LE";
+#if defined(Q_WS_X11)
+        info_osname = "X11-" + info_endianness;
+#elif defined(Q_WS_WIN)
+        info_osname = "WIN-" + info_endianness + "-0x" + QString::number(QSysInfo::WindowsVersion, 16).toUpper();
+#elif defined(Q_WS_MAC)
+        info_osname = "MAC-" + info_endianness + "-0x" + QString::number(QSysInfo::MacintoshVersion, 16).toUpper();
+#else
+        info_osname = "unknown-" + info_endianness;
+#endif
+        qDebug() << info_osname;
+
+        MainWidget main(engine, appname, info_osname, app_funcs, app_xlets);
 
 	//main.dumpObjectTree();
         QObject::connect( &app, SIGNAL(lastWindowClosed()),

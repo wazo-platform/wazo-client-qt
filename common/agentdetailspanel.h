@@ -39,8 +39,8 @@
  * $Date$
  */
 
-#ifndef __AGENTSPANEL_H__
-#define __AGENTSPANEL_H__
+#ifndef __AGENTDETAILSPANEL_H__
+#define __AGENTDETAILSPANEL_H__
 
 #include <QHash>
 #include <QList>
@@ -55,32 +55,29 @@ class QVBoxLayout;
 
 /*! \brief Identity Display
  */
-class AgentsPanel : public QWidget
+class AgentdetailsPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	AgentsPanel(QWidget * parent = 0);
-	~AgentsPanel();
+	AgentdetailsPanel(QWidget * parent = 0);
+	~AgentdetailsPanel();
 signals:
-        void changeWatchedAgent(const QString &);
+        void changeWatchedQueue(const QString &);
 public slots:
-	void setAgentList(const QString &);
-        void setAgentStatus(const QString &);
+	void newAgent(const QStringList &);
 private slots:
-        void agentClicked();
+        void queueClicked();
 private:
         QGridLayout * m_gridlayout;
 	QVBoxLayout * m_layout;
         QScrollArea * m_scrollarea;
 	QWidget * m_widget;
 
-        QHash<QString, QPushButton *> m_agentlabels;
-        QHash<QString, QPushButton *> m_agent_a;
-        QHash<QString, QPushButton *> m_agent_b;
-        QHash<QString, QPushButton *> m_agent_c;
-        QHash<QString, QPushButton *> m_agent_d;
-
+        QLabel * m_agentname;
+        QLabel * m_agentstatus;
+        QHash<QString, QPushButton *> m_queuelabels;
+        QHash<QString, QLabel *> m_queuestatus;
         int m_maxbusy;
 };
 
-#endif /* __AGENTSPANEL_H__ */
+#endif /* __AGENTDETAILSPANEL_H__ */
