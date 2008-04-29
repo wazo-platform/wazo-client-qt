@@ -61,8 +61,19 @@ AgentsPanel::AgentsPanel(QWidget * parent)
         m_scrollarea->setWidgetResizable(true);
 	m_layout->addWidget(m_scrollarea);
 
+        m_title1 = new QLabel(tr("Agent"), this);
+        m_title2 = new QLabel(tr("Busy"), this);
+        m_title3 = new QLabel(tr("Logged"), this);
+        m_title4 = new QLabel(tr("Joined queues"), this);
+        m_title5 = new QLabel(tr("Paused"), this);
+
         m_maxbusy = 0;
-        m_gridlayout->setColumnStretch( 5, 1 );
+        m_gridlayout->addWidget(m_title1, 0, 0, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title2, 0, 1, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title3, 0, 2, 1, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title4, 0, 4, 1, 3, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title5, 0, 7, 1, 3, Qt::AlignCenter );
+        m_gridlayout->setColumnStretch( 15, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
 }
 
@@ -71,38 +82,80 @@ AgentsPanel::~AgentsPanel()
         qDebug() << "AgentsPanel::~AgentsPanel()";
 }
 
-void AgentsPanel::setAgentList(const QString & qlist)
+void AgentsPanel::setAgentList(const QString & alist)
 {
-        qDebug() << "AgentsPanel::setQueueList()" << qlist;
+        qDebug() << "AgentsPanel::setAgentList()" << alist;
         QPixmap * m_square = new QPixmap(8, 8);
-        QStringList qsl = qlist.split(";");
-        if(qsl[1].size() > 0) {
-                QStringList agents = qsl[1].split(",");
+        QStringList asl = alist.split(";");
+        if(asl[1].size() > 0) {
+                QStringList agents = asl[1].split(",");
                 agents.sort();
                 for(int i = 0 ; i < agents.size(); i++) {
-                        if(! m_agentlabels.keys().contains(agents[i])) {
-                                m_square->fill(QColor(rand() % 256, rand() % 256, rand() % 256));
-                                m_agentlabels[agents[i]] = new QPushButton(agents[i], this);
-                                m_agentlabels[agents[i]]->setProperty("agentid", agents[i]);
-                                connect( m_agentlabels[agents[i]], SIGNAL(clicked()),
+                        QStringList ags = agents[i].split(":");
+                        qDebug() << ags;
+                        if(! m_agentlabels.keys().contains(ags[0])) {
+                                m_agentlabels[ags[0]] = new QPushButton(ags[0], this);
+                                m_agentlabels[ags[0]]->setProperty("agentid", ags[0]);
+                                connect( m_agentlabels[ags[0]], SIGNAL(clicked()),
                                          this, SLOT(agentClicked()));
-                                m_agent_a[agents[i]] = new QPushButton(this);
-                                m_agent_b[agents[i]] = new QPushButton(this);
-                                m_agent_c[agents[i]] = new QPushButton(this);
-                                m_agent_d[agents[i]] = new QPushButton(this);
-                                m_agent_a[agents[i]]->setIconSize(QSize(8, 8));
-                                m_agent_b[agents[i]]->setIconSize(QSize(8, 8));
-                                m_agent_c[agents[i]]->setIconSize(QSize(8, 8));
-                                m_agent_d[agents[i]]->setIconSize(QSize(8, 8));
-                                m_agent_a[agents[i]]->setIcon(QIcon(QPixmap(* m_square)));
-                                m_agent_b[agents[i]]->setIcon(QIcon(QPixmap(* m_square)));
-                                m_agent_c[agents[i]]->setIcon(QIcon(QPixmap(* m_square)));
-                                m_agent_d[agents[i]]->setIcon(QIcon(QPixmap(* m_square)));
-                                m_gridlayout->addWidget( m_agentlabels[agents[i]], i, 0, Qt::AlignLeft );
-                                m_gridlayout->addWidget( m_agent_a[agents[i]], i, 1, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_agent_b[agents[i]], i, 2, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_agent_c[agents[i]], i, 3, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_agent_d[agents[i]], i, 4, Qt::AlignCenter );
+
+                                m_agent_busy[ags[0]] = new QLabel(this);
+                                m_agent_logged_status[ags[0]] = new QLabel(this);
+                                m_agent_logged_action[ags[0]] = new QPushButton(this);
+                                m_agent_joined_number[ags[0]] = new QLabel(this);
+                                m_agent_joined_status[ags[0]] = new QLabel(this);
+                                m_agent_joined_action[ags[0]] = new QPushButton(this);
+                                m_agent_paused_number[ags[0]] = new QLabel(this);
+                                m_agent_paused_status[ags[0]] = new QLabel(this);
+                                m_agent_paused_action[ags[0]] = new QPushButton(this);
+
+                                m_agent_logged_action[ags[0]]->setIconSize(QSize(8, 8));
+                                m_agent_joined_action[ags[0]]->setIconSize(QSize(8, 8));
+                                m_agent_paused_action[ags[0]]->setIconSize(QSize(8, 8));
+
+
+                                if(ags[1] == "1") {
+                                        m_square->fill(Qt::green);
+                                        m_agent_logged_action[ags[0]]->setIcon(QIcon(":/images/cancel.png"));
+                                } else {
+                                        m_square->fill(Qt::red);
+                                        m_agent_logged_action[ags[0]]->setIcon(QIcon(":/images/button_ok.png"));
+                                }
+                                m_agent_logged_status[ags[0]]->setPixmap(QPixmap(* m_square));
+
+
+                                if(ags[2].toInt() > 0) {
+                                        m_square->fill(Qt::green);
+                                        m_agent_joined_action[ags[0]]->setIcon(QIcon(":/images/cancel.png"));
+                                } else {
+                                        m_square->fill(Qt::red);
+                                        m_agent_joined_action[ags[0]]->setIcon(QIcon(":/images/button_ok.png"));
+                                }
+                                m_agent_joined_number[ags[0]]->setText(ags[2]);
+                                m_agent_joined_status[ags[0]]->setPixmap(QPixmap(* m_square));
+
+
+                                if(ags[3].toInt() > 0) {
+                                        m_square->fill(Qt::green);
+                                        m_agent_paused_action[ags[0]]->setIcon(QIcon(":/images/cancel.png"));
+                                } else {
+                                        m_square->fill(Qt::red);
+                                        m_agent_paused_action[ags[0]]->setIcon(QIcon(":/images/button_ok.png"));
+                                }
+                                m_agent_paused_number[ags[0]]->setText(ags[3]);
+                                m_agent_paused_status[ags[0]]->setPixmap(QPixmap(* m_square));
+
+
+                                m_gridlayout->addWidget( m_agentlabels[ags[0]], i + 1, 0, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_busy[ags[0]], i + 1, 1, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_logged_status[ags[0]], i + 1, 2, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_logged_action[ags[0]], i + 1, 3, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_agent_joined_number[ags[0]], i + 1, 4, Qt::AlignRight );
+                                m_gridlayout->addWidget( m_agent_joined_status[ags[0]], i + 1, 5, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_joined_action[ags[0]], i + 1, 6, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_agent_paused_number[ags[0]], i + 1, 7, Qt::AlignRight );
+                                m_gridlayout->addWidget( m_agent_paused_status[ags[0]], i + 1, 8, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_paused_action[ags[0]], i + 1, 9, Qt::AlignLeft );
                         }
                 }
         }
@@ -123,7 +176,6 @@ void AgentsPanel::setAgentStatus(const QString & status)
         qDebug() << "AgentsPanel::setAgentstatus()" << newstatuses;
         if (newstatuses.size() == 4) {
                 QString command = newstatuses[0];
-                int maxbusy = 0;
                 if (command == "queuechannels") {
                         QString astid = newstatuses[1];
                         QString queuename = newstatuses[2];

@@ -67,7 +67,7 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_gridlayout->setColumnStretch( 5, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_agentname, 0, 0);
-        m_gridlayout->addWidget(m_agentstatus, 0, 1);
+        m_gridlayout->addWidget(m_agentstatus, 0, 1, 1, 2);
 }
 
 AgentdetailsPanel::~AgentdetailsPanel()
@@ -79,34 +79,53 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
 {
         // qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
         m_agentname->setText("<b>" + agentstatus[1] + "</b>");
+
+
+        QHashIterator<QString, QPushButton *> i(m_queuelabels);
+        while (i.hasNext()) {
+                i.next();
+                delete i.value();
+        }
+        QHashIterator<QString, QLabel *> j(m_queuestatus);
+        while (j.hasNext()) {
+                j.next();
+                delete j.value();
+        }
+        m_queuelabels.clear();
+        m_queuestatus.clear();
+
+
         if(agentstatus.size() == 5) {
                 if(agentstatus[2] == "0")
-                        m_agentstatus->setText("off");
+                        m_agentstatus->setText("logged off");
                 else
-                        m_agentstatus->setText("on");
-                QStringList queues;
-                if(agentstatus[3].size() > 0)
-                        queues << agentstatus[3].split(",");
-                if(agentstatus[4].size() > 0)
-                        queues << agentstatus[4].split(",");
-                queues.sort();
+                        m_agentstatus->setText("logged on phone number <b>" + agentstatus[2] + "</b>");
 
-                for(int i = 0 ; i < queues.size(); i++) {
-                        if(m_queuelabels.contains(queues[i])) {
-                                delete m_queuelabels[queues[i]];
-                                delete m_queuestatus[queues[i]];
-                        }
-                        m_queuelabels[queues[i]] = new QPushButton(queues[i], this);
-                        m_queuelabels[queues[i]]->setProperty("queueid", queues[i]);
-                        connect( m_queuelabels[queues[i]], SIGNAL(clicked()),
+                QStringList queuesstats;
+                if(agentstatus[3].size() > 0)
+                        queuesstats << agentstatus[3].split(",");
+//                 if(agentstatus[4].size() > 0)
+//                         queuesstats << agentstatus[4].split(",");
+                queuesstats.sort();
+
+                for(int i = 0 ; i < queuesstats.size(); i++) {
+                        QString queue = queuesstats[i].split(":")[0];
+                        m_queuelabels[queue] = new QPushButton(queue, this);
+                        m_queuelabels[queue]->setProperty("queueid", queue);
+                        connect( m_queuelabels[queue], SIGNAL(clicked()),
                                  this, SLOT(queueClicked()));
-                        m_queuestatus[queues[i]] = new QLabel(this);
-                        if(agentstatus[3].split(",").contains(queues[i]))
-                                m_queuestatus[queues[i]]->setText("on");
-                        if(agentstatus[4].split(",").contains(queues[i]))
-                                m_queuestatus[queues[i]]->setText("off");
-                        m_gridlayout->addWidget( m_queuelabels[queues[i]], i + 1, 1, Qt::AlignLeft );
-                        m_gridlayout->addWidget( m_queuestatus[queues[i]], i + 1, 2, Qt::AlignLeft );
+                        m_queuestatus[queue] = new QLabel(this);
+
+                        if(agentstatus[4].split(",").contains(queue))
+                                m_queuestatus[queue]->setText("off");
+                        else if(agentstatus[3].split(",").contains(queuesstats[i])) {
+                                if(queuesstats[i].split(":")[1] == "0")
+                                        m_queuestatus[queue]->setText("unpaused");
+                                else
+                                        m_queuestatus[queue]->setText("paused");
+                        }
+                        m_gridlayout->addWidget( m_queuelabels[queue], i + 1, 1, Qt::AlignLeft );
+                        m_gridlayout->addWidget( m_queuestatus[queue], i + 1, 2, Qt::AlignLeft );
                 }
         }
 }

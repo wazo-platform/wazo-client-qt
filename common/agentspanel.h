@@ -75,10 +75,22 @@ private:
 	QWidget * m_widget;
 
         QHash<QString, QPushButton *> m_agentlabels;
-        QHash<QString, QPushButton *> m_agent_a;
-        QHash<QString, QPushButton *> m_agent_b;
-        QHash<QString, QPushButton *> m_agent_c;
-        QHash<QString, QPushButton *> m_agent_d;
+
+        QHash<QString, QLabel *>      m_agent_busy;
+        QHash<QString, QLabel *>      m_agent_logged_status;
+        QHash<QString, QPushButton *> m_agent_logged_action;
+        QHash<QString, QLabel *>      m_agent_joined_number;
+        QHash<QString, QLabel *>      m_agent_joined_status;
+        QHash<QString, QPushButton *> m_agent_joined_action;
+        QHash<QString, QLabel *>      m_agent_paused_number;
+        QHash<QString, QLabel *>      m_agent_paused_status;
+        QHash<QString, QPushButton *> m_agent_paused_action;
+
+        QLabel * m_title1;
+        QLabel * m_title2;
+        QLabel * m_title3;
+        QLabel * m_title4;
+        QLabel * m_title5;
 
         int m_maxbusy;
 };
