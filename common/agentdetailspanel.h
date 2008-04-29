@@ -65,6 +65,7 @@ signals:
         void changeWatchedQueue(const QString &);
 public slots:
 	void newAgent(const QStringList &);
+        void updatePeerAgent(const QString &, const QString &);
 private slots:
         void queueClicked();
 private:
@@ -73,10 +74,18 @@ private:
         QScrollArea * m_scrollarea;
 	QWidget * m_widget;
 
+        QString m_agent;
         QLabel * m_agentname;
         QLabel * m_agentstatus;
+        QLabel * m_agentlegend_joined;
+        QLabel * m_agentlegend_paused;
         QHash<QString, QPushButton *> m_queuelabels;
-        QHash<QString, QLabel *> m_queuestatus;
+        // QHash<QString, QLabel *> m_queuestatus;
+        QHash<QString, QPushButton *> m_queue_join_action;
+        QHash<QString, QPushButton *> m_queue_pause_action;
+        QHash<QString, QLabel *> m_queue_join_status;
+        QHash<QString, QLabel *> m_queue_pause_status;
+        
         int m_maxbusy;
 };
 

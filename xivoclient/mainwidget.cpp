@@ -689,6 +689,10 @@ void MainWidget::engineStarted()
                                          m_agentspanel, SLOT(setAgentList(const QString &)));
                                 connect( m_agentspanel, SIGNAL(changeWatchedAgent(const QString &)),
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
+					 m_agentspanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
+                                connect( m_agentspanel, SIGNAL(agentAction(const QString &)),
+                                         m_engine, SLOT(agentAction(const QString &)));
 
 			} else if (dc == QString("agentdetails")) {
                                 m_agentdetailspanel = new AgentdetailsPanel();
@@ -697,6 +701,8 @@ void MainWidget::engineStarted()
                                          m_agentdetailspanel, SLOT(newAgent(const QStringList &)));
                                 connect( m_agentdetailspanel, SIGNAL(changeWatchedQueue(const QString &)),
                                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
+					 m_agentdetailspanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
 
 			} else if (dc == QString("queues")) {
                                 m_queuespanel = new QueuesPanel();
@@ -707,6 +713,8 @@ void MainWidget::engineStarted()
                                          m_queuespanel, SLOT(setQueueList(const QString &)));
                                 connect( m_queuespanel, SIGNAL(changeWatchedQueue(const QString &)),
                                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
+					 m_queuespanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
 
 			} else if (dc == QString("queuedetails")) {
                                 m_queuedetailspanel = new QueuedetailsPanel();
@@ -715,6 +723,8 @@ void MainWidget::engineStarted()
                                          m_queuedetailspanel, SLOT(newQueue(const QStringList &)));
                                 connect( m_queuedetailspanel, SIGNAL(changeWatchedAgent(const QString &)),
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
+					 m_queuedetailspanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
 
 			} else if (dc == QString("datetime")) {
 				m_datetimepanel = new DatetimePanel();

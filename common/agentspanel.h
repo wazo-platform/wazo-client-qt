@@ -47,6 +47,7 @@
 #include <QObject>
 #include <QWidget>
 
+class QFrame;
 class QGridLayout;
 class QLabel;
 class QPushButton;
@@ -63,9 +64,11 @@ public:
 	~AgentsPanel();
 signals:
         void changeWatchedAgent(const QString &);
+        void agentAction(const QString &);
 public slots:
 	void setAgentList(const QString &);
         void setAgentStatus(const QString &);
+        void updatePeerAgent(const QString &, const QString &);
 private slots:
         void agentClicked();
 private:
@@ -86,11 +89,16 @@ private:
         QHash<QString, QLabel *>      m_agent_paused_status;
         QHash<QString, QPushButton *> m_agent_paused_action;
 
+        QHash<QString, QStringList> m_agent_joined_list;
+        QHash<QString, QStringList> m_agent_paused_list;
+
         QLabel * m_title1;
         QLabel * m_title2;
         QLabel * m_title3;
         QLabel * m_title4;
         QLabel * m_title5;
+
+        QFrame * m_vline1;
 
         int m_maxbusy;
 };

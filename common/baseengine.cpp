@@ -768,6 +768,7 @@ void BaseEngine::updateAgent(const QStringList & liststatus)
 		+ liststatus[2].toLower() + "/" + liststatus[3] + "/" + liststatus[4];
 	QString AgentStatus = liststatus[6];
 
+        qDebug() << pname << AgentStatus;
         updatePeerAgent(pname, AgentStatus);
 }
 
@@ -821,12 +822,15 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         peersReceived();
 
                         QString myfullid   = "p/" + m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" + m_userid + "/" + m_extension;
-                        QString myfullname = m_uinfo[myfullid]->fullname();
+                        
+                        QString myfullname = "No One";
+                        if(m_uinfo.contains(myfullid)) {
+                                myfullname = m_uinfo[myfullid]->fullname();
+                                localUserInfoDefined(myfullid, * m_uinfo[myfullid]);
+                        }
 
                         qDebug() << "BaseEngine::parseCommand" << myfullname << myfullid;
-
                         localUserDefined(myfullname);
-                        localUserInfoDefined(myfullid, * m_uinfo[myfullid]);
 
                         // Who do we monitor ?
                         // First look at the last monitored one

@@ -73,6 +73,10 @@ QueuedetailsPanel::~QueuedetailsPanel()
         // qDebug() << "QueuedetailsPanel::~QueuedetailsPanel()";
 }
 
+void QueuedetailsPanel::updatePeerAgent(const QString & pname, const QString & agentstatus)
+{
+}
+
 void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
 {
         qDebug() << "QueuedetailsPanel::newQueue()" << queuestatus;
@@ -102,7 +106,7 @@ void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
                         m_agentlabels[agents[i]]->setProperty("agentid", agents[i]);
                         connect( m_agentlabels[agents[i]], SIGNAL(clicked()),
                                  this, SLOT(agentClicked()));
-                        m_agentstatus[agents[i]] = new QLabel("any", this);
+                        m_agentstatus[agents[i]] = new QLabel("", this);
                         m_gridlayout->addWidget( m_agentlabels[agents[i]], i + 1, 1, Qt::AlignLeft );
                         m_gridlayout->addWidget( m_agentstatus[agents[i]], i + 1, 2, Qt::AlignLeft );
                 }

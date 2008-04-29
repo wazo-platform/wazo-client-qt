@@ -122,7 +122,7 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
  */
 void IdentityDisplay::setUser(const QString & user)
 {
-        qDebug() << user;
+        // qDebug() << user;
         m_user->setText(user);
         // qDebug() << "IdentityDisplay::IdentityDisplay() : label" << m_user->geometry() << m_user->sizeHint();
 }
@@ -130,7 +130,7 @@ void IdentityDisplay::setUser(const QString & user)
 
 void IdentityDisplay::setQueueList(const QString & qlist)
 {
-        qDebug() << "IdentityDisplay::setQueueList()" << qlist;
+        // qDebug() << "IdentityDisplay::setQueueList()" << qlist;
         QStringList qsl = qlist.split(";");
         if(qsl[1] == "1")
                 m_queuechangeallow = true;
@@ -211,7 +211,7 @@ void IdentityDisplay::setAgentStatus(const QString & status)
                         }
                 } else if (command == "queuememberstatus") {
                         if (newstatuses.size() == 6) {
-                                qDebug() << "IdentityDisplay::setAgentStatus()" << newstatuses;
+                                // qDebug() << "IdentityDisplay::setAgentStatus()" << newstatuses;
                         }
                 } else
                         qDebug() << "IdentityDisplay::setAgentStatus()" << newstatuses;
@@ -221,7 +221,7 @@ void IdentityDisplay::setAgentStatus(const QString & status)
 void IdentityDisplay::setQueueStatus(const QString & status)
 {
         QStringList newstatuses = status.split("/");
-        qDebug() << "IdentityDisplay::setQueueStatus()" << newstatuses;
+        // qDebug() << "IdentityDisplay::setQueueStatus()" << newstatuses;
         if (newstatuses.size() == 4) {
                 QString command = newstatuses[0];
                 if (command == "queuechannels") {
