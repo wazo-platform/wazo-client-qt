@@ -63,6 +63,7 @@ public:
 	~AgentdetailsPanel();
 signals:
         void changeWatchedQueue(const QString &);
+        void agentAction(const QString &);
 public slots:
 	void newAgent(const QStringList &);
         void updatePeerAgent(const QString &, const QString &);

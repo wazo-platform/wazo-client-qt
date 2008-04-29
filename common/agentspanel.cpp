@@ -85,7 +85,7 @@ AgentsPanel::~AgentsPanel()
 
 void AgentsPanel::updatePeerAgent(const QString & pname, const QString & agentstatus)
 {
-        qDebug() << "AgentsPanel::updatePeerAgent()" << pname << agentstatus;
+        // qDebug() << "AgentsPanel::updatePeerAgent()" << pname << agentstatus;
         QStringList params = agentstatus.split("/");
         QString command = params[0];
         if(command == "queuememberstatus") {
@@ -271,7 +271,7 @@ void AgentsPanel::agentClicked()
                 changeWatchedAgent(agentid);
         else if(action == "loginoff") {
                 QString prop = m_agent_logged_status[agentid]->property("logged").toString();
-                qDebug() << "loginoff" << agentid << prop;
+                // qDebug() << "loginoff" << agentid << prop;
                 if(prop == "y")
                         agentAction("logout " + agentid);
                 else
@@ -283,7 +283,7 @@ void AgentsPanel::agentClicked()
 void AgentsPanel::setAgentStatus(const QString & status)
 {
         QStringList newstatuses = status.split("/");
-        qDebug() << "AgentsPanel::setAgentstatus()" << newstatuses;
+        // qDebug() << "AgentsPanel::setAgentstatus()" << newstatuses;
         if (newstatuses.size() == 4) {
                 QString command = newstatuses[0];
                 if (command == "queuechannels") {

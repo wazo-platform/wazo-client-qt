@@ -84,7 +84,7 @@ AgentdetailsPanel::~AgentdetailsPanel()
 
 void AgentdetailsPanel::updatePeerAgent(const QString & pname, const QString & agentstatus)
 {
-        qDebug() << "AgentdetailsPanel::updatePeerAgent()" << pname << agentstatus;
+        // qDebug() << "AgentdetailsPanel::updatePeerAgent()" << pname << agentstatus;
         QStringList params = agentstatus.split("/");
         QString command = params[0];
         if(command == "agentlogin") {
@@ -104,6 +104,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString & pname, const QString & a
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::green);
                                 m_queue_join_status[qname]->setPixmap(* square);
+                                m_queue_join_status[qname]->setProperty("joined", "y");
                                 m_queue_join_action[qname]->setIcon(QIcon(":/images/cancel.png"));
 
                                 square->fill(Qt::gray);
@@ -122,6 +123,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString & pname, const QString & a
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::gray);
                                 m_queue_join_status[qname]->setPixmap(* square);
+                                m_queue_join_status[qname]->setProperty("joined", "n");
                                 m_queue_join_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
                                 m_queue_pause_status[qname]->hide();
                                 m_queue_pause_action[qname]->hide();
@@ -132,7 +134,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString & pname, const QString & a
 
 void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
 {
-        qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
+        // qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
         m_agent = agentstatus[1];
         m_agentname->setText("<b>" + agentstatus[1] + "</b>");
 
@@ -189,13 +191,21 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                         QString queue = queuesstats[i].split(":")[0];
                         m_queuelabels[queue] = new QPushButton(queue, this);
                         m_queuelabels[queue]->setProperty("queueid", queue);
+                        m_queuelabels[queue]->setProperty("action", "changequeue");
                         connect( m_queuelabels[queue], SIGNAL(clicked()),
                                  this, SLOT(queueClicked()));
 
                         m_queue_join_status[queue] = new QLabel(this);
                         m_queue_join_action[queue] = new QPushButton(this);
+                        m_queue_join_action[queue]->setProperty("queueid", queue);
+                        m_queue_join_action[queue]->setProperty("agentid", m_agent);
+                        m_queue_join_action[queue]->setProperty("action", "leavejoin");
+                        connect( m_queue_join_action[queue], SIGNAL(clicked()),
+                                 this, SLOT(queueClicked()));
+
                         m_queue_pause_status[queue] = new QLabel(this);
                         m_queue_pause_action[queue] = new QPushButton(this);
+
                         m_queue_join_action[queue]->setIconSize(QSize(8, 8));
                         m_queue_pause_action[queue]->setIconSize(QSize(8, 8));
 
@@ -203,6 +213,7 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::gray);
                                 m_queue_join_status[queue]->setPixmap(* square);
+                                m_queue_join_status[queue]->setProperty("joined", "n");
                                 m_queue_join_action[queue]->setIcon(QIcon(":/images/button_ok.png"));
                                 m_queue_pause_status[queue]->hide();
                                 m_queue_pause_action[queue]->hide();
@@ -210,6 +221,7 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::green);
                                 m_queue_join_status[queue]->setPixmap(* square);
+                                m_queue_join_status[queue]->setProperty("joined", "y");
                                 m_queue_join_action[queue]->setIcon(QIcon(":/images/cancel.png"));
                                 if(queuesstats[i].split(":")[1] == "0") {
                                         square->fill(Qt::green);
@@ -236,5 +248,14 @@ void AgentdetailsPanel::queueClicked()
 {
         // qDebug() << "AgentdetailsPanel::queueClicked()" << this->sender()->property("queueid");
         QString queueid = this->sender()->property("queueid").toString();
-        changeWatchedQueue(queueid);
+        QString action = this->sender()->property("action").toString();
+        if(action == "changequeue")
+                changeWatchedQueue(queueid);
+        else {
+                QString prop = m_queue_join_status[queueid]->property("joined").toString();
+                if(prop == "y")
+                        agentAction("leave " + queueid + " " + m_agent);
+                else
+                        agentAction("join " + queueid + " " + m_agent);
+        }
 }
