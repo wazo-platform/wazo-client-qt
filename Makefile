@@ -25,7 +25,7 @@ help:
 	@echo
 
 # LINUX targets
-all-linux: linux-xivoclient linux-switchboard
+all-linux: linux-xivoclient
 
 linux-%:
 	cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts && make
@@ -36,7 +36,7 @@ linux-%:
 # WIN32 targets
 MAKENSIS=/cygdrive/c/Program\ Files/NSIS/makensis.exe
 
-all-win32: win32-xivoclient win32-switchboard
+all-win32: win32-xivoclient
 
 win32-%:
 	cd $* && ${QMAKE} $*.pro && ${LRELEASE} $*_fr.ts && make -f Makefile.Release
@@ -49,7 +49,7 @@ win32-%:
 # MACOS targets
 # export UPXRUN=/Users/proformatique/upx-3.01-src/src/upx.out
 
-all-macos: macos-xivoclient macos-switchboard
+all-macos: macos-xivoclient
 
 macos-%:
 	${QMAKE} $*/$*.pro -o $*/Makefile

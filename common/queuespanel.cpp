@@ -120,18 +120,20 @@ void QueuesPanel::setQueueStatus(const QString & status)
                         QString astid = newstatuses[1];
                         QString queuename = newstatuses[2];
                         QString busyness = newstatuses[3];
-                        m_queuebusies[queuename]->setValue(busyness.toInt());
-                        foreach (QProgressBar * qpb, m_queuebusies)
-                                if(maxbusy < qpb->value())
-                                        maxbusy = qpb->value();
-                        if(maxbusy != m_maxbusy) {
-                                m_maxbusy = maxbusy;
-                                qDebug() << "maxbusy" << m_maxbusy;
-                                foreach (QProgressBar * qpb, m_queuebusies) {
-                                        qpb->setRange(0, m_maxbusy + 1);
-                                        int value = qpb->value();
-                                        qpb->setValue(0); // trick in order to refresh
-                                        qpb->setValue(value);
+                        if(m_queuebusies.contains(queuename)) {
+                                m_queuebusies[queuename]->setValue(busyness.toInt());
+                                foreach (QProgressBar * qpb, m_queuebusies)
+                                        if(maxbusy < qpb->value())
+                                                maxbusy = qpb->value();
+                                if(maxbusy != m_maxbusy) {
+                                        m_maxbusy = maxbusy;
+                                        qDebug() << "maxbusy" << m_maxbusy;
+                                        foreach (QProgressBar * qpb, m_queuebusies) {
+                                                qpb->setRange(0, m_maxbusy + 1);
+                                                int value = qpb->value();
+                                                qpb->setValue(0); // trick in order to refresh
+                                                qpb->setValue(value);
+                                        }
                                 }
                         }
                 }

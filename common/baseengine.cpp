@@ -840,7 +840,9 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         if(fullid_watched.isEmpty())
                                 monitorPeer(myfullid, myfullname);
                         else {
-                                QString fullname_watched = m_uinfo[fullid_watched]->fullname();
+                                QString fullname_watched = "NoOne";
+                                if(m_uinfo.contains(fullid_watched))
+                                        fullname_watched = m_uinfo[fullid_watched]->fullname();
                                 // If the CallerId value is empty, fallback to ourselves.
                                 if(fullname_watched.isEmpty())
                                         monitorPeer(myfullid, myfullname);
