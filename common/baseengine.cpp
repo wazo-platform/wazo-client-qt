@@ -743,6 +743,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 
         if(AgentStatus.size() > 0)
                 qDebug() << "BaseEngine::updatePeerAndCallerid() / agentstatus =" << AgentStatus;
+        updateAgentPresence(liststatus[3], InstMessAvail);
         updatePeer(pname, m_uinfo[pname]->fullname(),
                    InstMessAvail, SIPPresStatus, VoiceMailStatus, AgentStatus,
                    chanIds, chanStates, chanOthers, chanPeers);
@@ -1717,6 +1718,7 @@ void BaseEngine::askFeatures(const QString & peer)
 void BaseEngine::askCallerIds()
 {
         qDebug() << "BaseEngine::askCallerIds()";
+        sendCommand("agents-list " + m_asterisk);
 	sendCommand("phones-list");
 }
 

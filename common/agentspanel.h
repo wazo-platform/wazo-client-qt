@@ -69,6 +69,7 @@ public slots:
 	void setAgentList(const QString &);
         void setAgentStatus(const QString &);
         void updatePeerAgent(const QString &, const QString &);
+        void updateAgentPresence(const QString &, const QString &);
 private slots:
         void agentClicked();
 private:
@@ -84,7 +85,6 @@ private:
         QHash<QString, QPushButton *> m_agent_logged_action;
         QHash<QString, QLabel *>      m_agent_joined_number;
         QHash<QString, QLabel *>      m_agent_joined_status;
-        QHash<QString, QPushButton *> m_agent_joined_action;
         QHash<QString, QLabel *>      m_agent_paused_number;
         QHash<QString, QLabel *>      m_agent_paused_status;
         QHash<QString, QPushButton *> m_agent_paused_action;

@@ -409,7 +409,7 @@ void ServicePanel::setForwardOnUnavailable(const QString & dest)
  */
 void ServicePanel::setPeerToDisplay(const QString & peer)
 {
-        qDebug() << "ServicePanel::setPeerToDisplay()" << peer;
+        // qDebug() << "ServicePanel::setPeerToDisplay()" << peer;
 	m_peer = peer;
 	if(m_peer.size() > 0) {
 		askFeatures(m_peer);

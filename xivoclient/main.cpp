@@ -117,7 +117,7 @@ int main(int argc, char ** argv)
                         // "customerinfo:dock:m,operator:dock:mfc,parking:tab,messages:tab,switchboard:dock:mc,identity:grid:0";
                         app_xlets = "dial:dock:m,search:dock:m,queues:dock:m,datetime:dock:mfc,calls:dock:m,"
                                 "history:dock:m,switchboard:dock:mc,identity:grid:0,agents:dock:m";
-                        app_xlets = "switchboard:dock:mc,queues:dock:m,queuedetails:dock:mc,agents:dock:m,agentdetails:dock:mc,identity:grid:0";
+                        app_xlets = "queues:dock:m,queuedetails:dock:mc,agents:dock:m,agentdetails:dock:mc,identity:grid:0";
                 }
                 if(app_funcs.size() == 0)
                         app_funcs = "switchboard";

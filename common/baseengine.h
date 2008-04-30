@@ -281,6 +281,7 @@ signals:
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QStringList &);
         void changeWatchedQueueSignal(const QStringList &);
+        void updateAgentPresence(const QString &, const QString &);
 private:
 	void initListenSocket();	//!< initialize the socket listening to profile
 	void stopKeepAliveTimer();	//!< Stop the keep alive timer if running

@@ -63,7 +63,7 @@ AgentsPanel::AgentsPanel(QWidget * parent)
 	m_layout->addWidget(m_scrollarea);
 
         m_title1 = new QLabel(tr("Agent"), this);
-        m_title2 = new QLabel(tr("Busy"), this);
+        m_title2 = new QLabel(tr("Present"), this);
         m_title3 = new QLabel(tr("Logged"), this);
         m_title4 = new QLabel(tr("Joined queues"), this);
         m_title5 = new QLabel(tr("UnPaused"), this);
@@ -83,14 +83,29 @@ AgentsPanel::~AgentsPanel()
         // qDebug() << "AgentsPanel::~AgentsPanel()";
 }
 
-void AgentsPanel::updatePeerAgent(const QString & pname, const QString & agentstatus)
+void AgentsPanel::updateAgentPresence(const QString & agentname, const QString & presence)
+{
+        // qDebug() << "AgentsPanel::updateAgentPresence" << agentname << presence;
+        // QString agname = QString::number(agentname.toInt() + 6000);
+        QString agname = agentname;
+        if(m_agent_busy.contains(agname)) {
+                QPixmap * m_square = new QPixmap(12, 12);
+                if(presence == "available")
+                        m_square->fill(Qt::green);
+                else
+                        m_square->fill(Qt::gray);
+                m_agent_busy[agname]->setPixmap(QPixmap(* m_square));
+        }
+}
+
+void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
 {
         // qDebug() << "AgentsPanel::updatePeerAgent()" << pname << agentstatus;
         QStringList params = agentstatus.split("/");
         QString command = params[0];
         if(command == "queuememberstatus") {
                 QString agname = params[2];
-                if(m_agentlabels.keys().contains(agname)) {
+                if(m_agentlabels.contains(agname)) {
                         QString qname = params[3];
                         QString status = params[4];
                         if(status == "1") {

@@ -138,11 +138,16 @@ void IdentityDisplay::setQueueList(const QString & qlist)
                 QStringList queues = qsl[2].split(",");
                 queues.sort();
                 for(int i = 0 ; i < queues.size(); i++) {
-                        if(m_queuelist->findText(queues[i]) == -1) {
-                                m_queuelist->addItem(queues[i]);
+                        QStringList qparams = queues[i].split(":");
+                        QString qname = qparams[0];
+                        if(m_queuelist->findText(qname) == -1) {
+                                m_queuelist->addItem(qname);
                                 m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
-                                m_queuesindexes[queues[i]] = i;
-                                m_queuesbusyness[queues[i]] = "0";
+                                m_queuesindexes[qname] = i;
+                                if(qparams.size() > 1)
+                                        m_queuesbusyness[qname] = qparams[1];
+                                else
+                                        m_queuesbusyness[qname] = "0";
                         }
                 }
                 if((queues.size() > 0) && (m_agentstatus)) {

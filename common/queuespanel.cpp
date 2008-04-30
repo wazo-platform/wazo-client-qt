@@ -72,7 +72,7 @@ QueuesPanel::~QueuesPanel()
         // qDebug() << "QueuesPanel::~QueuesPanel()";
 }
 
-void QueuesPanel::updatePeerAgent(const QString & pname, const QString & agentstatus)
+void QueuesPanel::updatePeerAgent(const QString &, const QString &)
 {
 }
 
@@ -84,18 +84,23 @@ void QueuesPanel::setQueueList(const QString & qlist)
                 QStringList queues = qsl[2].split(",");
                 queues.sort();
                 for(int i = 0 ; i < queues.size(); i++) {
-                        if(! m_queuelabels.keys().contains(queues[i])) {
-                                m_queuelabels[queues[i]] = new QPushButton(queues[i], this);
-                                m_queuelabels[queues[i]]->setProperty("queueid", queues[i]);
-                                connect( m_queuelabels[queues[i]], SIGNAL(clicked()),
+                        QStringList qparams = queues[i].split(":");
+                        QString queuename = qparams[0];
+                        if(! m_queuelabels.contains(queuename)) {
+                                m_queuelabels[queuename] = new QPushButton(queuename, this);
+                                m_queuelabels[queuename]->setProperty("queueid", queuename);
+                                connect( m_queuelabels[queuename], SIGNAL(clicked()),
                                          this, SLOT(queueClicked()));
-                                m_queuebusies[queues[i]] = new QProgressBar(this);
-                                m_gridlayout->addWidget( m_queuelabels[queues[i]], i, 0, Qt::AlignLeft );
-                                m_gridlayout->addWidget( m_queuebusies[queues[i]], i, 1, Qt::AlignCenter );
+                                m_queuebusies[queuename] = new QProgressBar(this);
+                                m_gridlayout->addWidget( m_queuelabels[queuename], i, 0, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_queuebusies[queuename], i, 1, Qt::AlignCenter );
                                 
-                                m_queuebusies[queues[i]]->setFormat("%v");
-                                m_queuebusies[queues[i]]->setRange(0, m_maxbusy + 1);
-                                m_queuebusies[queues[i]]->setValue(0);
+                                m_queuebusies[queuename]->setFormat("%v");
+                                m_queuebusies[queuename]->setRange(0, m_maxbusy + 1);
+                                if(qparams.size() > 1)
+                                        m_queuebusies[queuename]->setValue(qparams[1].toInt());
+                                else
+                                        m_queuebusies[queuename]->setValue(0);
                         }
                 }
         }

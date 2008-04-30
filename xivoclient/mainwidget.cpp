@@ -691,6 +691,8 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
 					 m_agentspanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
+				connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QString &)),
+					 m_agentspanel, SLOT(updateAgentPresence(const QString &, const QString &)) );
                                 connect( m_agentspanel, SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
 
