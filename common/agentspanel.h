@@ -78,8 +78,8 @@ private:
         QScrollArea * m_scrollarea;
 	QWidget * m_widget;
 
-        QHash<QString, QPushButton *> m_agentlabels;
-
+        QHash<QString, QLabel *>      m_agent_labels;
+        QHash<QString, QPushButton *> m_agent_more;
         QHash<QString, QLabel *>      m_agent_busy;
         QHash<QString, QLabel *>      m_agent_presence;
         QHash<QString, QLabel *>      m_agent_logged_status;

@@ -128,7 +128,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString & pname, const QString & a
 
 void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
 {
-        // qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
+        //  qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
         m_agent = agentstatus[1];
         m_agentname->setText("<b>" + agentstatus[1] + "</b>");
 

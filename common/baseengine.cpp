@@ -870,12 +870,12 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 if(liststatus.size() > 6) {
                         QStringList newstatuses = liststatus[6].split("/");
                         QString agentnum = newstatuses[2];
-                        
                         updateAgent(liststatus);
                         if (agentnum == m_agentid) {
                                 setAgentStatus(liststatus[6]);
                         }
                 }
+
 
         } else if(listitems[0].toLower() == QString("update-queues")) {
                 setQueueStatus(listitems[1]);
