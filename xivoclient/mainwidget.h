@@ -157,21 +157,19 @@ private:
 	QIcon m_icongrey;	//!< greyed Icon Object
 	QWidget * m_wid;	//!< Main widget
 
-	SwitchBoardWindow * m_sbwidget;	//!< Widget to display peers
 	QTabWidget * m_cinfo_tabwidget;	//!< Area to display profiles
 	QTabWidget * m_svc_tabwidget;	//!< Area to display messages, services and histories
         LeftPanel * m_leftpanel;
         QScrollArea * m_areaCalls;
-        QScrollArea * m_areaPeers;
 	CallStackWidget * m_calls;
-	QLabel * m_messagetosendlabel;    //!< Label for message for switchboards
 	QLineEdit * m_messagetosend;    //!< Message to send to the connected switchboards
-        QVBoxLayout * m_mainlayout;
 
         QLabel * m_xivobg;
 
         ConfWidget * m_conf;
 
+        // Widgets for Xlets
+	SwitchBoardWindow * m_sbwidget;	//!< Widget to display peers
 	DirectoryPanel * m_dirpanel;
         DisplayMessagesPanel * m_messages_widget;
         FaxPanel * m_faxwidget;

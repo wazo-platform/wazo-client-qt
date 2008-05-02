@@ -840,13 +840,11 @@ void MainWidget::engineStarted()
                                 m_sbwidget = new SwitchBoardWindow(this);
                                 m_sbwidget->setEngine(m_engine);
                                 m_engine->addRemovable(m_sbwidget->metaObject());
+                                QScrollArea * sa_sb = new QScrollArea(this);
+                                sa_sb->setWidget(m_sbwidget);
+                                sa_sb->setWidgetResizable(true);
+                                addPanel("switchboard", tr("Switchboard"), sa_sb);
 
-                                m_areaPeers = new QScrollArea(this);
-                                m_areaPeers->setWidget(m_sbwidget);
-                                m_areaPeers->setWidgetResizable(true);
-
-                                addPanel("switchboard", tr("Switchboard"), m_areaPeers);
-                                
                                 connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
                                                                      const QString &, const QString &,
                                                                      const QString &, const QString &,
@@ -1115,9 +1113,7 @@ void MainWidget::engineStopped()
                                 //delete m_areaCalls;
                                 //delete m_leftpanel;
                         } else if (dc == QString("switchboard")) {
-                                removePanel("switchboard", m_areaPeers);
-                                //delete m_sbwidget;
-                                //delete m_areaPeers;
+                                removePanel("switchboard", m_sbwidget);
 			} else if (dc == QString("directory")) {
                                 removePanel("directory", m_dirpanel);
                         } else if (dc == QString("instantmessaging")) {

@@ -248,8 +248,8 @@ void AgentdetailsPanel::queueClicked()
         else {
                 QString prop = m_queue_join_status[queueid]->property("joined").toString();
                 if(prop == "y")
-                        agentAction("leave " + queueid + " " + m_agent);
+                        agentAction("leave " + queueid + " xivo " + m_agent);
                 else
-                        agentAction("join " + queueid + " " + m_agent);
+                        agentAction("join " + queueid + " xivo " + m_agent);
         }
 }
