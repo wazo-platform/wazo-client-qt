@@ -85,7 +85,6 @@ private:
 
 	QLineEdit * m_serverhost;	//!< IP/hostname of the server
 	QLineEdit * m_sbport;		//!< server port (switchboard)
-	QLineEdit * m_loginport;	//!< port of the server
 
 	QCheckBox * m_autoconnect;	//!< "Auto connect" checkbox
 	QCheckBox * m_trytoreconnect;	//!< "Try to reconnect" Checkbox
@@ -110,7 +109,6 @@ private:
 	QSpinBox  * m_history_sbox;	//!< History size
 	QSpinBox  * m_contacts_sbox;	//!< Displayed contacts' size
 	QSpinBox  * m_tablimit_sbox;	//!< Maximum number of tabs
-	QCheckBox * m_tcpmode;		//!< Use outgoing TCP connection
 	QCheckBox * m_lastconnwins;	//!< The last connected user wins => disconnects the other
 	QCheckBox * m_presence;		//!< connect to presence server checkbox
 	QCheckBox * m_cinfo;		//!< customer info checkbox

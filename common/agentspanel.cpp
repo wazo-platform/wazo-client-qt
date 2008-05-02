@@ -54,26 +54,22 @@
 AgentsPanel::AgentsPanel(QWidget * parent)
         : QWidget(parent)
 {
-	m_layout = new QVBoxLayout(this);
-        m_scrollarea = new QScrollArea(this);
-	m_widget = new QWidget(this);
-	m_scrollarea->setWidget(m_widget);
-	m_gridlayout = new QGridLayout(m_widget);
-        m_scrollarea->setWidgetResizable(true);
-	m_layout->addWidget(m_scrollarea);
-
+	m_gridlayout = new QGridLayout(this);
+        
         m_title1 = new QLabel(tr("Agent"), this);
-        m_title2 = new QLabel(tr("Present"), this);
-        m_title3 = new QLabel(tr("Logged"), this);
-        m_title4 = new QLabel(tr("Joined queues"), this);
-        m_title5 = new QLabel(tr("UnPaused"), this);
+        m_title2 = new QLabel(tr("Busy"), this);
+        m_title3 = new QLabel(tr("Present"), this);
+        m_title4 = new QLabel(tr("Logged"), this);
+        m_title5 = new QLabel(tr("Joined queues"), this);
+        m_title6 = new QLabel(tr("UnPaused"), this);
 
         m_maxbusy = 0;
         m_gridlayout->addWidget(m_title1, 0, 0, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title2, 0, 1, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title3, 0, 3, 1, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title4, 0, 6, 1, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title5, 0, 10, 1, 3, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title3, 0, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title4, 0, 4, 1, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title5, 0, 7, 1, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title6, 0, 11, 1, 3, Qt::AlignCenter );
         m_gridlayout->setColumnStretch( 15, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
 }
@@ -88,19 +84,19 @@ void AgentsPanel::updateAgentPresence(const QString & agentname, const QString &
         // qDebug() << "AgentsPanel::updateAgentPresence" << agentname << presence;
         // QString agname = QString::number(agentname.toInt() + 6000);
         QString agname = agentname;
-        if(m_agent_busy.contains(agname)) {
+        if(m_agent_presence.contains(agname)) {
                 QPixmap * m_square = new QPixmap(12, 12);
                 if(presence == "available")
                         m_square->fill(Qt::green);
                 else
                         m_square->fill(Qt::gray);
-                m_agent_busy[agname]->setPixmap(QPixmap(* m_square));
+                m_agent_presence[agname]->setPixmap(QPixmap(* m_square));
         }
 }
 
 void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
 {
-        // qDebug() << "AgentsPanel::updatePeerAgent()" << pname << agentstatus;
+        // qDebug() << "AgentsPanel::updatePeerAgent()" << agentstatus;
         QStringList params = agentstatus.split("/");
         QString command = params[0];
         if(command == "queuememberstatus") {
@@ -114,12 +110,16 @@ void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
                                 m_agent_logged_status[agname]->setPixmap(QPixmap(* m_square));
                                 m_agent_logged_status[agname]->setProperty("logged", "y");
                                 m_agent_logged_action[agname]->setIcon(QIcon(":/images/cancel.png"));
-                        } else {
+                        } else if(status == "5") {
                                 QPixmap * m_square = new QPixmap(12, 12);
                                 m_square->fill(Qt::red);
                                 m_agent_logged_status[agname]->setPixmap(QPixmap(* m_square));
                                 m_agent_logged_status[agname]->setProperty("logged", "n");
                                 m_agent_logged_action[agname]->setIcon(QIcon(":/images/button_ok.png"));
+                        } else if(status == "3") {
+                                qDebug() << "AgentsPanel::updatePeerAgent()" << agentstatus;
+                        } else {
+                                qDebug() << "AgentsPanel::updatePeerAgent()" << agentstatus;
                         }
                 }
         } else if(command == "joinqueue") {
@@ -132,7 +132,6 @@ void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
                                 m_agent_joined_list[agname].append(qname);
                                 m_agent_joined_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()));
                                 m_agent_joined_status[agname]->setPixmap(QPixmap(* m_square));
-
                         }
                 }
         } else if(command == "leavequeue") {
@@ -184,7 +183,13 @@ void AgentsPanel::setAgentList(const QString & alist)
 
                 for(int i = 0 ; i < agents.size(); i++) {
                         QStringList ags = agents[i].split(":");
-                        if(! m_agentlabels.keys().contains(ags[0])) {
+                        QString agnum = ags[0];
+                        QString agstatus = ags[1];
+                        QString agfullname = ags[2];
+                        QString agqjoined = ags[3];
+                        QString agqunjoined = ags[4];
+
+                        if(! m_agentlabels.keys().contains(agnum)) {
                                 QFrame * qvline1 = new QFrame(this);
                                 qvline1->setFrameShape(QFrame::VLine);
                                 qvline1->setLineWidth(1);
@@ -195,82 +200,85 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 qvline3->setFrameShape(QFrame::VLine);
                                 qvline3->setLineWidth(1);
 
-                                m_agentlabels[ags[0]] = new QPushButton(ags[0], this);
-                                m_agentlabels[ags[0]]->setProperty("agentid", ags[0]);
-                                m_agentlabels[ags[0]]->setProperty("action", "changeagent");
-                                connect( m_agentlabels[ags[0]], SIGNAL(clicked()),
+                                m_agentlabels[agnum] = new QPushButton(agfullname + " (" + agnum + ")", this);
+                                m_agentlabels[agnum]->setProperty("agentid", agnum);
+                                m_agentlabels[agnum]->setProperty("action", "changeagent");
+                                connect( m_agentlabels[agnum], SIGNAL(clicked()),
                                          this, SLOT(agentClicked()));
 
-                                m_agent_busy[ags[0]] = new QLabel(this);
-                                m_agent_logged_status[ags[0]] = new QLabel(this);
-                                m_agent_logged_action[ags[0]] = new QPushButton(this);
-                                m_agent_logged_action[ags[0]]->setProperty("agentid", ags[0]);
-                                m_agent_logged_action[ags[0]]->setProperty("action", "loginoff");
-                                connect( m_agent_logged_action[ags[0]], SIGNAL(clicked()),
+                                m_agent_busy[agnum] = new QLabel(this);
+                                m_agent_presence[agnum] = new QLabel(this);
+                                m_agent_logged_status[agnum] = new QLabel(this);
+                                m_agent_logged_action[agnum] = new QPushButton(this);
+                                m_agent_logged_action[agnum]->setProperty("agentid", agnum);
+                                m_agent_logged_action[agnum]->setProperty("action", "loginoff");
+                                connect( m_agent_logged_action[agnum], SIGNAL(clicked()),
                                          this, SLOT(agentClicked()));
 
-                                m_agent_joined_number[ags[0]] = new QLabel(this);
-                                m_agent_joined_status[ags[0]] = new QLabel(this);
-                                m_agent_paused_number[ags[0]] = new QLabel(this);
-                                m_agent_paused_status[ags[0]] = new QLabel(this);
-                                m_agent_paused_action[ags[0]] = new QPushButton(this);
+                                m_agent_joined_number[agnum] = new QLabel(this);
+                                m_agent_joined_status[agnum] = new QLabel(this);
+                                m_agent_paused_number[agnum] = new QLabel(this);
+                                m_agent_paused_status[agnum] = new QLabel(this);
+                                m_agent_paused_action[agnum] = new QPushButton(this);
 
-                                m_agent_logged_action[ags[0]]->setIconSize(QSize(8, 8));
-                                m_agent_paused_action[ags[0]]->setIconSize(QSize(8, 8));
+                                m_agent_logged_action[agnum]->setIconSize(QSize(8, 8));
+                                m_agent_paused_action[agnum]->setIconSize(QSize(8, 8));
 
                                 m_square->fill(Qt::gray);
-                                m_agent_busy[ags[0]]->setPixmap(QPixmap(* m_square));
+                                m_agent_busy[agnum]->setPixmap(QPixmap(* m_square));
+                                m_agent_presence[agnum]->setPixmap(QPixmap(* m_square));
 
-                                if(ags[1] == "1") {
+                                if(agstatus == "1") {
                                         m_square->fill(Qt::green);
-                                        m_agent_logged_action[ags[0]]->setIcon(QIcon(":/images/cancel.png"));
-                                        m_agent_logged_status[ags[0]]->setProperty("logged", "y");
+                                        m_agent_logged_action[agnum]->setIcon(QIcon(":/images/cancel.png"));
+                                        m_agent_logged_status[agnum]->setProperty("logged", "y");
                                 } else {
                                         m_square->fill(Qt::red);
-                                        m_agent_logged_action[ags[0]]->setIcon(QIcon(":/images/button_ok.png"));
-                                        m_agent_logged_status[ags[0]]->setProperty("logged", "n");
+                                        m_agent_logged_action[agnum]->setIcon(QIcon(":/images/button_ok.png"));
+                                        m_agent_logged_status[agnum]->setProperty("logged", "n");
                                 }
-                                m_agent_logged_status[ags[0]]->setPixmap(QPixmap(* m_square));
+                                m_agent_logged_status[agnum]->setPixmap(QPixmap(* m_square));
 
 
-                                if(ags[2].size() > 0)
-                                        m_agent_joined_list[ags[0]] = ags[2].split(",");
-                                int njoined = m_agent_joined_list[ags[0]].size();
+                                if(agqjoined.size() > 0)
+                                        m_agent_joined_list[agnum] = agqjoined.split(",");
+                                int njoined = m_agent_joined_list[agnum].size();
                                 if(njoined > 0) {
                                         m_square->fill(Qt::green);
                                 } else {
                                         m_square->fill(Qt::gray);
                                 }
-                                m_agent_joined_number[ags[0]]->setText(QString::number(njoined));
-                                m_agent_joined_status[ags[0]]->setPixmap(QPixmap(* m_square));
+                                m_agent_joined_number[agnum]->setText(QString::number(njoined));
+                                m_agent_joined_status[agnum]->setPixmap(QPixmap(* m_square));
 
 
-                                if(ags[3].size() > 0)
-                                        m_agent_paused_list[ags[0]] = ags[3].split(",");
-                                int nunpaused = m_agent_paused_list[ags[0]].size();
+                                if(agqunjoined.size() > 0)
+                                        m_agent_paused_list[agnum] = agqunjoined.split(",");
+                                int nunpaused = m_agent_paused_list[agnum].size();
                                 if(nunpaused > 0) {
                                         m_square->fill(Qt::green);
-                                        m_agent_paused_action[ags[0]]->setIcon(QIcon(":/images/cancel.png"));
+                                        m_agent_paused_action[agnum]->setIcon(QIcon(":/images/cancel.png"));
                                 } else {
                                         m_square->fill(Qt::red);
-                                        m_agent_paused_action[ags[0]]->setIcon(QIcon(":/images/button_ok.png"));
+                                        m_agent_paused_action[agnum]->setIcon(QIcon(":/images/button_ok.png"));
                                 }
-                                m_agent_paused_number[ags[0]]->setText(QString::number(nunpaused));
-                                m_agent_paused_status[ags[0]]->setPixmap(QPixmap(* m_square));
+                                m_agent_paused_number[agnum]->setText(QString::number(nunpaused));
+                                m_agent_paused_status[agnum]->setPixmap(QPixmap(* m_square));
 
 
-                                m_gridlayout->addWidget( m_agentlabels[ags[0]], i + 1, 0, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_agent_busy[ags[0]], i + 1, 1, Qt::AlignCenter );
-                                m_gridlayout->addWidget( qvline1, i + 1, 2, Qt::AlignLeft );
-                                m_gridlayout->addWidget( m_agent_logged_status[ags[0]], i + 1, 3, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_agent_logged_action[ags[0]], i + 1, 4, Qt::AlignLeft );
-                                m_gridlayout->addWidget( qvline2, i + 1, 5, Qt::AlignLeft );
-                                m_gridlayout->addWidget( m_agent_joined_number[ags[0]], i + 1, 6, Qt::AlignRight );
-                                m_gridlayout->addWidget( m_agent_joined_status[ags[0]], i + 1, 7, Qt::AlignCenter );
-                                m_gridlayout->addWidget( qvline3, i + 1, 9, Qt::AlignLeft );
-                                m_gridlayout->addWidget( m_agent_paused_number[ags[0]], i + 1, 10, Qt::AlignRight );
-                                m_gridlayout->addWidget( m_agent_paused_status[ags[0]], i + 1, 11, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_agent_paused_action[ags[0]], i + 1, 12, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_agentlabels[agnum], i + 1, 0, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_busy[agnum], i + 1, 1, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_presence[agnum], i + 1, 2, Qt::AlignCenter );
+                                m_gridlayout->addWidget( qvline1, i + 1, 3, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_agent_logged_status[agnum], i + 1, 4, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_logged_action[agnum], i + 1, 5, Qt::AlignLeft );
+                                m_gridlayout->addWidget( qvline2, i + 1, 6, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_agent_joined_number[agnum], i + 1, 7, Qt::AlignRight );
+                                m_gridlayout->addWidget( m_agent_joined_status[agnum], i + 1, 8, Qt::AlignCenter );
+                                m_gridlayout->addWidget( qvline3, i + 1, 10, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_agent_paused_number[agnum], i + 1, 11, Qt::AlignRight );
+                                m_gridlayout->addWidget( m_agent_paused_status[agnum], i + 1, 12, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_paused_action[agnum], i + 1, 13, Qt::AlignLeft );
                         }
                 }
         }
@@ -288,9 +296,9 @@ void AgentsPanel::agentClicked()
                 QString prop = m_agent_logged_status[agentid]->property("logged").toString();
                 // qDebug() << "loginoff" << agentid << prop;
                 if(prop == "y")
-                        agentAction("logout " + agentid);
+                        agentAction("logout xivo " + agentid);
                 else
-                        agentAction("login " + agentid);
+                        agentAction("login xivo " + agentid);
         }
 }
 

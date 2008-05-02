@@ -93,28 +93,12 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	gridlayout1->addWidget(lblhost, line, 0);
 	gridlayout1->addWidget(m_serverhost, line++, 1);
 
-	m_tcpmode = new QCheckBox(tr("TCP Mode (for NAT traversal)"), this);
-	m_tcpmode->setCheckState(m_engine->tcpmode() ? Qt::Checked : Qt::Unchecked);
-	gridlayout1->addWidget(m_tcpmode, line++, 0, 1, 0);
-        
-	QLabel * lbllport = new QLabel(tr("UDP Login Port"), this);
-	m_loginport = new QLineEdit(QString::number(m_engine->loginPort()), this);
-	m_loginport->setInputMask("99999");
-	gridlayout1->addWidget(lbllport, line, 0);
-	gridlayout1->addWidget(m_loginport, line++, 1);
-
-        QLabel * lblsbport = new QLabel(tr("TCP Login Port"), this);
+        QLabel * lblsbport = new QLabel(tr("Login Port"), this);
         m_sbport = new QLineEdit( QString::number(m_engine->sbPort()), this);
         m_sbport->setInputMask("99999");
         gridlayout1->addWidget(lblsbport, line, 0);
         gridlayout1->addWidget(m_sbport, line++, 1);
-
-        m_loginport->setDisabled(m_tcpmode->checkState() == Qt::Checked);
-        m_sbport->setEnabled(m_tcpmode->checkState() == Qt::Checked);
-	connect( m_tcpmode,   SIGNAL(toggled(bool)),
-	         m_loginport, SLOT(setDisabled(bool)) );
-	connect( m_tcpmode,   SIGNAL(toggled(bool)),
-	         m_sbport,    SLOT(setEnabled(bool)) );
+        m_sbport->setEnabled(true);
 
  	gridlayout1->setRowStretch( line, 1 );
         
@@ -320,7 +304,6 @@ void ConfWidget::saveAndClose()
         qDebug() << "ConfWidget::saveAndClose()";
         m_engine->setAddress(m_serverhost->text(), m_sbport->text().toUShort());
 	m_engine->setServerip(m_serverhost->text());
-	m_engine->setLoginPort(m_loginport->text().toUShort());
 
 	m_engine->setServerAst(m_asterisk->text());
 	m_engine->setProtocol(m_protocombo->currentText().toLower());
@@ -347,7 +330,6 @@ void ConfWidget::saveAndClose()
 	m_engine->setContactsSize(m_contacts_sbox->value());
         if(m_engine->isASwitchboard() == false)
                 m_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
-	m_engine->setTcpmode(m_tcpmode->checkState() == Qt::Checked);
         // m_engine->setLastConnWins(m_lastconnwins->checkState() == Qt::Checked);
 	m_mainwindow->setTablimit(m_tablimit_sbox->value());
 

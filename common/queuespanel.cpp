@@ -54,13 +54,7 @@
 QueuesPanel::QueuesPanel(QWidget * parent)
         : QWidget(parent)
 {
-	QVBoxLayout * layout = new QVBoxLayout(this);
-        QScrollArea * scrollarea = new QScrollArea(this);
-	QWidget * widget = new QWidget(this);
-	scrollarea->setWidget(widget);
-	m_gridlayout = new QGridLayout(widget);
-        scrollarea->setWidgetResizable(true);
-	layout->addWidget(scrollarea);
+	m_gridlayout = new QGridLayout(this);
 
         m_maxbusy = 0;
  	m_gridlayout->setColumnStretch( 2, 1 );

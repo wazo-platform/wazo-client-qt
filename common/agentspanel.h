@@ -81,6 +81,7 @@ private:
         QHash<QString, QPushButton *> m_agentlabels;
 
         QHash<QString, QLabel *>      m_agent_busy;
+        QHash<QString, QLabel *>      m_agent_presence;
         QHash<QString, QLabel *>      m_agent_logged_status;
         QHash<QString, QPushButton *> m_agent_logged_action;
         QHash<QString, QLabel *>      m_agent_joined_number;
@@ -97,8 +98,7 @@ private:
         QLabel * m_title3;
         QLabel * m_title4;
         QLabel * m_title5;
-
-        QFrame * m_vline1;
+        QLabel * m_title6;
 
         int m_maxbusy;
 };

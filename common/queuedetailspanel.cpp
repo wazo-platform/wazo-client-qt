@@ -53,13 +53,7 @@
 QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
         : QWidget(parent)
 {
-	m_layout = new QVBoxLayout(this);
-        m_scrollarea = new QScrollArea(this);
-	m_widget = new QWidget(this);
-	m_scrollarea->setWidget(m_widget);
-	m_gridlayout = new QGridLayout(m_widget);
-        m_scrollarea->setWidgetResizable(true);
-	m_layout->addWidget(m_scrollarea);
+	m_gridlayout = new QGridLayout(this);
 
         m_label = new QLabel("", this);
         m_maxbusy = 0;
@@ -73,8 +67,9 @@ QueuedetailsPanel::~QueuedetailsPanel()
         // qDebug() << "QueuedetailsPanel::~QueuedetailsPanel()";
 }
 
-void QueuedetailsPanel::updatePeerAgent(const QString & pname, const QString & agentstatus)
+void QueuedetailsPanel::updatePeerAgent(const QString &, const QString &)
 {
+        // qDebug() << "QueuedetailsPanel::updatePeerAgent()";
 }
 
 void QueuedetailsPanel::newQueue(const QStringList & queuestatus)

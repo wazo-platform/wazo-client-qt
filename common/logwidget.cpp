@@ -174,10 +174,12 @@ void LogWidget::clear()
 /*! \brief add an entry
  */
 void LogWidget::addLogEntry(const QDateTime & dt, int duration,
-                            const QString & peer, int d)
+                            const QString & peer, const QString & direction)
 {
+        LogEltWidget::Direction d;
+        d = (direction == "IN") ? LogEltWidget::InCall : LogEltWidget::OutCall;
 	// TODO: manage the list !
-	addElement(peer, (LogEltWidget::Direction)d, dt, duration);
+	addElement(peer, d, dt, duration);
 }
 
 /*! \brief change the monitored peer

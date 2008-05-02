@@ -168,8 +168,9 @@ private:
 	QLineEdit * m_messagetosend;    //!< Message to send to the connected switchboards
         QVBoxLayout * m_mainlayout;
 
-        ConfWidget * m_conf;
         QLabel * m_xivobg;
+
+        ConfWidget * m_conf;
 
 	DirectoryPanel * m_dirpanel;
         DisplayMessagesPanel * m_messages_widget;
@@ -186,6 +187,7 @@ private:
         AgentsPanel * m_agentspanel;
         AgentdetailsPanel * m_agentdetailspanel;
         DatetimePanel * m_datetimepanel;
+        DialPanel * m_dialpanel;
 
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;
@@ -196,6 +198,7 @@ private:
         QStringList m_docknames;
         QStringList m_gridnames;
         QStringList m_tabnames;
+        QStringList m_allnames;
 
         bool m_withsystray;
         bool m_loginfirst;
@@ -205,7 +208,6 @@ private:
 
         QHash<QString, QDockWidget *> m_docks;
         QStringList m_display_capas;
-        DialPanel * m_dialpanel;
 	int m_tablimit;		//!< Maximum number of tabs in m_cinfo_tabwidget
 
 	// actions :

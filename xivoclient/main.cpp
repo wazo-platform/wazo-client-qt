@@ -63,19 +63,11 @@ int main(int argc, char ** argv)
 {
 	QString locale = QLocale::system().name();
         QString applaunch = argv[0];
-        QString app_funcs = "";
-        QString app_xlets = "";
-        if(argc > 1)
-                app_funcs = argv[1];
-        if(argc > 2)
-                app_xlets = argv[2];
+        
         // QApplication::setStyle(new XIVOCTIStyle());
 	QCoreApplication::setOrganizationName("XIVO");
 	QCoreApplication::setOrganizationDomain("xivo.fr");
-        if(applaunch.contains("xivoclient"))
-                QCoreApplication::setApplicationName("XIVO_Client");
-        else
-                QCoreApplication::setApplicationName("XIVO_Switchboard");
+        QCoreApplication::setApplicationName("XIVO_Client");
 	QApplication app(argc, argv);
         QSettings * settings = new QSettings(QSettings::IniFormat,
                                              QSettings::UserScope,
@@ -102,26 +94,32 @@ int main(int argc, char ** argv)
         app.installTranslator(&qtTranslator);
 
         BaseEngine * engine = new BaseEngine(settings);
+        
+        QHash<QString, QStringList> appdefs;
+        appdefs["xivoclient"] << "Client" << "services:grid,dial:grid:2,search:tab,"
+                "history:tab,directory:tab,customerinfo:tab,fax:tab,"
+                "features:tab,identity:grid:0" << "client";
+        appdefs["operator1"] << "Operator" << "dial:dock:m,search:dock:m,queues:dock:m,"
+                "datetime:dock:mfc,calls:dock:m,history:dock:m,switchboard:dock:mc,"
+                "identity:grid:0,agents:dock:m" << "switchboard";
+        appdefs["operator2"] << "Operator" << "services:dock:m,dial:dock:m,search:dock:m,"
+                "history,directory:dock:m,customerinfo:dock:m,operator:dock:mfc,parking:tab,"
+                "messages:tab,switchboard:dock:mc,identity:grid:0" << "switchboard";
+        appdefs["switchboard"] << "Switchboard" << "queues:dock:m,queuedetails:dock:mc,"
+                "agents:dock:m,agentdetails:dock:mc,identity:grid:0" << "switchboard";
+        appdefs["full"] << "Full" << "" << "client";
+        appdefs["empty"] << "Empty" << "" << "client";
+        appdefs["random"] << "Random" << "parking:tab" << "client";
+        
+        QString fieldname = "empty";
+        if(applaunch.contains("xivoclient"))
+                fieldname = "xivoclient";
+        else if(applaunch.contains("switchboard"))
+                fieldname = "switchboard";
 
-        QString appname = "";
-        if(applaunch.contains("xivoclient")) {
-                appname = "Client";
-                if(app_xlets.size() == 0)
-                        app_xlets = "services:grid,dial:grid:2,search:tab,history:tab,directory:tab,customerinfo:tab,fax:tab,features:tab,identity:grid:0";
-                if(app_funcs.size() == 0)
-                        app_funcs = "client";
-        } else {
-                appname = "Switchboard";
-                if(app_xlets.size() == 0) {
-                        // app_xlets = "services:dock:m,dial:dock:m,search:dock:m,history,directory:dock:m,"
-                        // "customerinfo:dock:m,operator:dock:mfc,parking:tab,messages:tab,switchboard:dock:mc,identity:grid:0";
-                        app_xlets = "dial:dock:m,search:dock:m,queues:dock:m,datetime:dock:mfc,calls:dock:m,"
-                                "history:dock:m,switchboard:dock:mc,identity:grid:0,agents:dock:m";
-                        app_xlets = "queues:dock:m,queuedetails:dock:mc,agents:dock:m,agentdetails:dock:mc,identity:grid:0";
-                }
-                if(app_funcs.size() == 0)
-                        app_funcs = "switchboard";
-        }
+        QString appname = appdefs[fieldname][0];
+        QString app_xlets = appdefs[fieldname][1];
+        QString app_funcs = appdefs[fieldname][2];
 
         QString info_osname;
         QString info_endianness;

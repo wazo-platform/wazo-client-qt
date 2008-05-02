@@ -48,7 +48,6 @@
 #include <QSettings>
 #include <QStringList>
 #include <QTcpSocket>
-#include <QTcpServer>
 #include <QTime>
 #include <QTimer>
 #include <QUdpSocket>
@@ -145,8 +144,6 @@ public:
 
 	uint keepaliveinterval() const;		//!< keep alive interval
 	bool lastconnwins() const;		//!< last connected one wins
-	bool tcpmode() const;			//!< get tcp mode flag
-	void setTcpmode(bool b);		//!< set tcp mode flag
 	void setLastConnWins(bool b);		//!< last connected user wins
 	const QStringList & getCapabilities() const;	//!< returns capabilities
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
@@ -175,7 +172,6 @@ public slots:
 	void setBeRightBack();			//!< set user status as "be right back"
 	void setOutToLunch();			//!< set user status as "out to lunch"
 	void setDoNotDisturb();			//!< set user status as "do not disturb"
-	void sendUDPCommand(const QString &);
 	void featurePutVoiceMail(bool);
 	void featurePutCallRecording(bool);
 	void featurePutCallFiltering(bool);
@@ -189,7 +185,6 @@ public slots:
 	void setKeepaliveinterval(uint);	//!< set keep alive interval
         void copyNumber(const QString &);
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
-	void readProfile();
         void agentAction(const QString &);
 	void pickUp(const QString &);
 
@@ -197,11 +192,7 @@ public slots:
         void changeWatchedAgentSlot(const QString &);
         void changeWatchedQueueSlot(const QString &);
 private slots:
-	void identifyToTheServer();		//!< perform the first login step
-	void processLoginDialog();		//!< perform the following login steps
-	void handleProfilePush();		//!< called when receiving a profile
 	void keepLoginAlive();			//!< Send a UDP datagram to keep session alive
-	void readKeepLoginAliveDatagrams();	//!< handle the responses to keep alive
 	void popupDestroyed(QObject *);		//!< know when a profile widget is destroyed *DEBUG*
 	void profileToBeShown(Popup *);		//!< a new profile must be displayed
         void updateAgent(const QStringList &);
@@ -253,7 +244,7 @@ signals:
                         const QStringList &, const QStringList &);
 	void updatePeerAgent(const QString &, const QString &);
 	//! a log entry has to be updated.
-	void updateLogEntry(const QDateTime &, int, const QString &, int);
+	void updateLogEntry(const QDateTime &, int, const QString &, const QString &);
 	//! the directory search response has been received.
 	void directoryResponse(const QString &);
         void disconnectFeatures();
@@ -283,7 +274,6 @@ signals:
         void changeWatchedQueueSignal(const QStringList &);
         void updateAgentPresence(const QString &, const QString &);
 private:
-	void initListenSocket();	//!< initialize the socket listening to profile
 	void stopKeepAliveTimer();	//!< Stop the keep alive timer if running
 	void startTryAgainTimer();	//!< Start the "try to reconnect" timer
 	void stopTryAgainTimer();	//!< Stop the "try to reconnect" timer
@@ -331,7 +321,6 @@ private:
 	bool m_checked_cinfo;      	//!< customer info is checked
 	bool m_checked_lastconnwins;   	//!< the last connected account "wins"
 	bool m_checked_autourl;   	//!< allow automatic url display
-	bool m_tcpmode;			//!< use a unique outgoing TCP connection for everything
 
 	// Replies given by the server
 	QString m_extension;		//!< extension for "my phone"
@@ -353,11 +342,8 @@ private:
 	// Internal management
 	QHostAddress m_serveraddress;	//!< Resolved address of the login server
 	QTcpSocket * m_sbsocket;	//!< TCP socket to connect to the server (SB mode)
-	QTcpSocket * m_loginsocket;	//!< TCP socket to login to the server
 	QTcpSocket * m_faxsocket;	//!< TCP socket to send fax data to the server
 	QTcpSocket * m_connection;	//!< TCP socket set from TCP server listening for profiles
-	QUdpSocket * m_udpsocket;      	//!< UDP socket used for keep alive
-	QTcpServer * m_listenserver;	//!< TCP server listening for profiles
 	ushort m_listenport;		//!< Port where we are listening for profiles
 	int m_timer;			//!< timer id
 	int m_ka_timerid;		//!< timer id for keep alive
