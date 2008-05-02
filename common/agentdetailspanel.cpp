@@ -76,9 +76,9 @@ AgentdetailsPanel::~AgentdetailsPanel()
         // qDebug() << "AgentdetailsPanel::~AgentdetailsPanel()";
 }
 
-void AgentdetailsPanel::updatePeerAgent(const QString & pname, const QString & agentstatus)
+void AgentdetailsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
 {
-        // qDebug() << "AgentdetailsPanel::updatePeerAgent()" << pname << agentstatus;
+        // qDebug() << "AgentdetailsPanel::updatePeerAgent()" << agentstatus;
         QStringList params = agentstatus.split("/");
         QString command = params[0];
         if(command == "agentlogin") {
