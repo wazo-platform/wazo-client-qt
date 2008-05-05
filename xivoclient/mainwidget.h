@@ -158,7 +158,7 @@ private:
 	QWidget * m_wid;	//!< Main widget
 
 	QTabWidget * m_cinfo_tabwidget;	//!< Area to display profiles
-	QTabWidget * m_svc_tabwidget;	//!< Area to display messages, services and histories
+	QTabWidget * m_tabwidget;	//!< Area to display messages, services and histories
         LeftPanel * m_leftpanel;
         QScrollArea * m_areaCalls;
 	CallStackWidget * m_calls;

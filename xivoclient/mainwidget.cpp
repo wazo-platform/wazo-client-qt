@@ -621,7 +621,7 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
                 qDebug() << "MainWidget::addPanel() grid : " << m_dockoptions[name];
                 m_gridlayout->addWidget(widget, m_dockoptions[name].toInt(), 0);
         } else if(m_tabnames.contains(name))
-                m_svc_tabwidget->addTab(widget, extraspace + title + extraspace);
+                m_tabwidget->addTab(widget, extraspace + title + extraspace);
 }
 
 
@@ -638,13 +638,13 @@ void MainWidget::engineStarted()
 
         hideLogin();
 
-        m_svc_tabwidget = new QTabWidget(this);
+        m_tabwidget = new QTabWidget(this);
         
         if(m_docknames.contains("services")) {
-                addPanel("services", tr("&Services"), m_svc_tabwidget);
+                addPanel("services", tr("&Services"), m_tabwidget);
         }
         if(m_gridnames.contains("services")) {
-                m_gridlayout->addWidget(m_svc_tabwidget, 1, 0);
+                m_gridlayout->addWidget(m_tabwidget, 1, 0);
         }
 
         for(int j = 0; j < m_display_capas.size(); j++) {
@@ -1025,10 +1025,10 @@ void MainWidget::engineStarted()
         }
         
         if(m_switchboard)
-                m_svc_tabwidget->setCurrentIndex(0);
+                m_tabwidget->setCurrentIndex(0);
         else {
                 qDebug() << "display/lastfocusedtab =" << m_settings->value("display/lastfocusedtab");
-                m_svc_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
+                m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
         }
         
         foreach (QString dname, m_docknames)
@@ -1039,7 +1039,7 @@ void MainWidget::engineStarted()
         restoreState(m_settings->value("display/mainwindowstate").toByteArray());
 
         if(m_tabnames.contains("customerinfo")) {
-                m_cinfo_index = m_svc_tabwidget->indexOf(m_cinfo_tabwidget);
+                m_cinfo_index = m_tabwidget->indexOf(m_cinfo_tabwidget);
                 qDebug() << "the index of customer-info widget is" << m_cinfo_index;
         }
 
@@ -1066,10 +1066,10 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
                 m_docks.remove(name);
         }
         if(m_tabnames.contains(name)) {
-                int thisindex = m_svc_tabwidget->indexOf(widget);
+                int thisindex = m_tabwidget->indexOf(widget);
                 if (thisindex > -1) {
                         qDebug() << "removing" << name << thisindex;
-                        m_svc_tabwidget->removeTab(thisindex);
+                        m_tabwidget->removeTab(thisindex);
                 }
                 delete widget;
         }
@@ -1089,10 +1089,10 @@ void MainWidget::engineStopped()
 	QStringList allowed_capas = m_engine->getCapabilities();
 
         m_settings->setValue("display/mainwindowstate", saveState());
-        if (m_svc_tabwidget->currentIndex() > -1) {
-                // qDebug() << m_svc_tabwidget->currentIndex();
-                m_settings->setValue("display/lastfocusedtab", m_svc_tabwidget->currentIndex());
-                // qDebug() << m_svc_tabwidget->tabText(m_svc_tabwidget->currentIndex());
+        if (m_tabwidget->currentIndex() > -1) {
+                // qDebug() << m_tabwidget->currentIndex();
+                m_settings->setValue("display/lastfocusedtab", m_tabwidget->currentIndex());
+                // qDebug() << m_tabwidget->tabText(m_tabwidget->currentIndex());
         }
 
         foreach (QString dname, m_docknames)
@@ -1151,11 +1151,11 @@ void MainWidget::engineStopped()
         }
         
         if(m_docknames.contains("services")) {
-                removePanel("services", m_svc_tabwidget);
+                removePanel("services", m_tabwidget);
         }
         if(m_gridnames.contains("services")) {
-                m_gridlayout->removeWidget(m_svc_tabwidget);
-                delete m_svc_tabwidget;
+                m_gridlayout->removeWidget(m_tabwidget);
+                delete m_tabwidget;
         }
 
         showLogin();
@@ -1204,7 +1204,7 @@ void MainWidget::showNewProfile(Popup * popup)
 		m_cinfo_tabwidget->setCurrentIndex(index);
                 if(m_tabnames.contains("customerinfo"))
                         if (m_cinfo_index > -1)
-                                m_svc_tabwidget->setCurrentIndex(m_cinfo_index);
+                                m_tabwidget->setCurrentIndex(m_cinfo_index);
 		if (index >= m_tablimit) {
 			// close the first widget
 			m_cinfo_tabwidget->widget(0)->close();
@@ -1243,9 +1243,9 @@ void MainWidget::newParkEvent()
 {
         qDebug() << "MainWidget::newParkEvent()";
 
-        int index_parking = m_svc_tabwidget->indexOf(m_parkingpanel);
+        int index_parking = m_tabwidget->indexOf(m_parkingpanel);
         if(index_parking > -1)
-                m_svc_tabwidget->setCurrentIndex(index_parking);
+                m_tabwidget->setCurrentIndex(index_parking);
 }
 
 void MainWidget::hideEvent(QHideEvent *event)

@@ -60,7 +60,6 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_agentstatus = new QLabel("", this);
         m_agentlegend_joined = new QLabel(tr("Joined"), this);
         m_agentlegend_paused = new QLabel(tr("Unpaused"), this);
-        m_maxbusy = 0;
         m_gridlayout->setColumnStretch( 8, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_agentname, 0, 0);

@@ -63,7 +63,6 @@ AgentsPanel::AgentsPanel(QWidget * parent)
         m_title5 = new QLabel(tr("Joined queues"), this);
         m_title6 = new QLabel(tr("UnPaused"), this);
 
-        m_maxbusy = 0;
         m_gridlayout->addWidget(m_title1, 0, 0, 1, 2, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title2, 0, 2, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title3, 0, 3, Qt::AlignCenter );

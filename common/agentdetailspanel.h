@@ -86,8 +86,6 @@ private:
         QHash<QString, QPushButton *> m_queue_pause_action;
         QHash<QString, QLabel *> m_queue_join_status;
         QHash<QString, QLabel *> m_queue_pause_status;
-        
-        int m_maxbusy;
 };
 
 #endif /* __AGENTDETAILSPANEL_H__ */

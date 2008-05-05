@@ -99,8 +99,6 @@ private:
         QLabel * m_title4;
         QLabel * m_title5;
         QLabel * m_title6;
-
-        int m_maxbusy;
 };
 
 #endif /* __AGENTSPANEL_H__ */
