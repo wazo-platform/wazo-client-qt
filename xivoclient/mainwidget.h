@@ -203,9 +203,7 @@ private:
         bool m_switchboard;
         bool m_normalmenus;
 
-
         QHash<QString, QDockWidget *> m_docks;
-        QStringList m_display_capas;
 	int m_tablimit;		//!< Maximum number of tabs in m_cinfo_tabwidget
 
 	// actions :

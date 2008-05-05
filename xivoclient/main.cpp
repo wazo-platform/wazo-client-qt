@@ -96,13 +96,13 @@ int main(int argc, char ** argv)
         BaseEngine * engine = new BaseEngine(settings);
         
         QHash<QString, QStringList> appdefs;
-        appdefs["xivoclient"] << "Client" << "services:grid,dial:grid:2,search:tab,"
+        appdefs["xivoclient"] << "Client" << "tabber:grid,dial:grid:2,search:tab,"
                 "history:tab,directory:tab,customerinfo:tab,fax:tab,"
                 "features:tab,identity:grid:0" << "client";
         appdefs["operator1"] << "Operator" << "dial:dock:m,search:dock:m,queues:dock:m,"
                 "datetime:dock:mfc,calls:dock:m,history:dock:m,switchboard:dock:mc,"
                 "identity:grid:0,agents:dock:m" << "switchboard";
-        appdefs["operator2"] << "Operator" << "services:dock:m,dial:dock:m,search:dock:m,"
+        appdefs["operator2"] << "Operator" << "tabber:dock:m,dial:dock:m,search:dock:m,"
                 "history,directory:dock:m,customerinfo:dock:m,operator:dock:mfc,parking:tab,"
                 "messages:tab,switchboard:dock:mc,identity:grid:0" << "switchboard";
         appdefs["switchboard"] << "Switchboard" << "queues:dock:m,queuedetails:dock:mc,"

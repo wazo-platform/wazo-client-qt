@@ -219,10 +219,6 @@ MainWidget::MainWidget(BaseEngine * engine,
         if((m_withsystray && (m_engine->systrayed() == false)) || (! m_withsystray))
                 this->show();
 
-	m_display_capas = (QStringList() << "customerinfo" << "features" << "history" << "datetime"
-                           << "directory" << "search" << "fax" << "dial" << "presence"
-                           << "video" << "operator" << "parking" << "calls" << "switchboard"
-                           << "messages" << "identity" << "agents" << "agentdetails" << "queues" << "queuedetails");
         setAppearance(app_xlets);
 }
 
@@ -640,15 +636,15 @@ void MainWidget::engineStarted()
 
         m_tabwidget = new QTabWidget(this);
         
-        if(m_docknames.contains("services")) {
-                addPanel("services", tr("&Services"), m_tabwidget);
+        if(m_docknames.contains("tabber")) {
+                addPanel("tabber", tr("Tabs"), m_tabwidget);
         }
-        if(m_gridnames.contains("services")) {
+        if(m_gridnames.contains("tabber")) {
                 m_gridlayout->addWidget(m_tabwidget, 1, 0);
         }
 
-        for(int j = 0; j < m_display_capas.size(); j++) {
-		QString dc = m_display_capas[j];
+        for(int j = 0; j < XletList.size(); j++) {
+		QString dc = XletList[j];
  		if (m_forcetabs || (allowed_capas.contains("xlet-" + dc) &&
                                     (m_allnames.contains(dc)))) {
                         if (dc == QString("history")) {
@@ -1099,8 +1095,8 @@ void MainWidget::engineStopped()
                 if(allowed_capas.contains("xlet-" + dname))
                         m_docks[dname]->hide();
 
-	for(int j = 0; j < m_display_capas.size(); j++) {
-                QString dc = m_display_capas[j];
+	for(int j = 0; j < XletList.size(); j++) {
+                QString dc = XletList[j];
  		if (m_forcetabs || (allowed_capas.contains("xlet-" + dc) &&
                                     (m_allnames.contains(dc)))) {
                         if (dc == QString("features")) {
@@ -1150,10 +1146,10 @@ void MainWidget::engineStopped()
                 }
         }
         
-        if(m_docknames.contains("services")) {
-                removePanel("services", m_tabwidget);
+        if(m_docknames.contains("tabber")) {
+                removePanel("tabber", m_tabwidget);
         }
-        if(m_gridnames.contains("services")) {
+        if(m_gridnames.contains("tabber")) {
                 m_gridlayout->removeWidget(m_tabwidget);
                 delete m_tabwidget;
         }
