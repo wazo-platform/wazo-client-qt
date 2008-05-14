@@ -167,16 +167,18 @@ void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
                         m_agent_logged_status[agname]->setProperty("logged", "n");
                         m_agent_logged_action[agname]->setIcon(QIcon(":/images/button_ok.png"));
                 }
-        } else if(command == "agentlink") {
+        } else if((command == "agentlink") || (command == "phonelink")) {
                 QString agname = params[2];
                 QPixmap * m_square = new QPixmap(12, 12);
                 m_square->fill(Qt::green);
-                m_agent_busy[agname]->setPixmap(QPixmap(* m_square));
-        } else if(command == "agentunlink") {
+                if(m_agent_busy.contains(agname))
+                        m_agent_busy[agname]->setPixmap(QPixmap(* m_square));
+        } else if((command == "agentunlink") || (command == "phoneunlink")) {
                 QString agname = params[2];
                 QPixmap * m_square = new QPixmap(12, 12);
                 m_square->fill(Qt::gray);
-                m_agent_busy[agname]->setPixmap(QPixmap(* m_square));
+                if(m_agent_busy.contains(agname))
+                        m_agent_busy[agname]->setPixmap(QPixmap(* m_square));
         }
 }
 
