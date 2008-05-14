@@ -273,7 +273,7 @@ void StatusPanel::updatePeer(const QString & a, const QString &,
                              const QStringList & i, const QStringList & j)
 {
         if (a == m_id) {
-                // qDebug() << "StatusPanel::updatePeer()" << a << g << h << i << j;
+                qDebug() << "StatusPanel::updatePeer()" << m_id << a << g << h << i << j;
                 foreach (QString callchannel, g) {
                         int index = g.indexOf(callchannel);
                         const QString status = h[index];

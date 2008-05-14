@@ -48,20 +48,20 @@
 
 class PeerWidget;
 
-/*! \brief Peer object, linking to a PeerWidget
+/*! \brief PeerItem object, linking to a PeerWidget
  */
-class Peer// : public QObject
+class PeerItem// : public QObject
 {
 public:
-	//Peer( const QString & ext, QObject * parent = 0 );
-	Peer( const QString &, const QString & );
-	Peer( const Peer & );
-	Peer( );
+	//PeerItem( const QString & ext, QObject * parent = 0 );
+	PeerItem( const QString &, const QString & );
+	PeerItem( const PeerItem & );
+	PeerItem( );
 	//! get m_ext
 	const QString & ext() const { return m_ext; };
 	//! get m_name
 	const QString & name() const { return m_name; };
-//	Peer & operator=(const Peer & peer);
+//	PeerItem & operator=(const PeerItem & peer);
 	//! set m_peerwidget
 	void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
 	//! get m_peerwidget

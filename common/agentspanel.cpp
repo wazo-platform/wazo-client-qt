@@ -78,18 +78,19 @@ AgentsPanel::~AgentsPanel()
         // qDebug() << "AgentsPanel::~AgentsPanel()";
 }
 
-void AgentsPanel::updateAgentPresence(const QString & agentname, const QString & presence)
+void AgentsPanel::updateAgentPresence(const QStringList & agentnames, const QString & presence)
 {
         // qDebug() << "AgentsPanel::updateAgentPresence" << agentname << presence;
-        // QString agname = QString::number(agentname.toInt() + 6000);
-        QString agname = agentname;
-        if(m_agent_presence.contains(agname)) {
-                QPixmap * m_square = new QPixmap(12, 12);
-                if(presence == "available")
-                        m_square->fill(Qt::green);
-                else
-                        m_square->fill(Qt::gray);
-                m_agent_presence[agname]->setPixmap(QPixmap(* m_square));
+        if(agentnames.size() > 0) {
+                QString agname = agentnames[0];
+                if(m_agent_presence.contains(agname)) {
+                        QPixmap * m_square = new QPixmap(12, 12);
+                        if(presence == "available")
+                                m_square->fill(Qt::green);
+                        else
+                                m_square->fill(Qt::gray);
+                        m_agent_presence[agname]->setPixmap(QPixmap(* m_square));
+                }
         }
 }
 

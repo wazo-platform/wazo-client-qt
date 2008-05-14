@@ -154,7 +154,7 @@ MainWidget::MainWidget(BaseEngine * engine,
         if(m_normalmenus) {
                 createActions();
                 createMenus();
-                if ( QSystemTrayIcon::isSystemTrayAvailable() )
+                if ( m_withsystray && QSystemTrayIcon::isSystemTrayAvailable() )
                         createSystrayIcon();
         }
 
@@ -529,7 +529,7 @@ void MainWidget::createSystrayIcon()
 	         this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)) );
 	connect( m_systrayIcon, SIGNAL(messageClicked()),
 	         this, SLOT(systrayMsgClicked()) );
-// QSystemTrayIcon::ActivationReason
+        // QSystemTrayIcon::ActivationReason
 	// qDebug() << "QSystemTrayIcon::supportsMessages() = "
 	//          << QSystemTrayIcon::supportsMessages();
 }
@@ -600,12 +600,12 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
                 qDebug() << "MainWidget::addPanel() dock : " << name;
 
                 QDockWidget::DockWidgetFeatures features = QDockWidget::NoDockWidgetFeatures;
+                if(m_dockoptions[name].contains("c"))
+                        features |= QDockWidget::DockWidgetClosable;
                 if(m_dockoptions[name].contains("f"))
                         features |= QDockWidget::DockWidgetFloatable;
                 if(m_dockoptions[name].contains("m"))
                         features |= QDockWidget::DockWidgetMovable;
-                if(m_dockoptions[name].contains("c"))
-                        features |= QDockWidget::DockWidgetClosable;
                 m_docks[name] = new QDockWidget(title);
                 m_docks[name]->setFeatures(features);
                 m_docks[name]->setAllowedAreas(Qt::BottomDockWidgetArea); // restrain the area to Bottom region
@@ -671,10 +671,10 @@ void MainWidget::engineStarted()
 			} else if (dc == QString("identity")) {
                                 m_infowidget = new IdentityDisplay();
                                 addPanel("identity", tr("&Identity"), m_infowidget);
-                                connect( m_engine, SIGNAL(localUserDefined(const QString &)),
-                                         m_infowidget, SLOT(setUser(const QString &)));
-                                connect( m_engine, SIGNAL(setAgentStatus(const QString &)),
-                                         m_infowidget, SLOT(setAgentStatus(const QString &)));
+                                connect( m_engine, SIGNAL(localUserInfoDefined(const QString &, const UserInfo &)),
+                                         m_infowidget, SLOT(setUserInfo(const QString &, const UserInfo &)));
+                                connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
+                                         m_infowidget, SLOT(updatePeerAgent(const QString &, const QString &)));
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
                                          m_infowidget, SLOT(setQueueStatus(const QString &)));
                                 connect( m_engine, SIGNAL(newQueueList(const QString &)),
@@ -695,8 +695,8 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
 					 m_agentspanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
-				connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QString &)),
-					 m_agentspanel, SLOT(updateAgentPresence(const QString &, const QString &)) );
+				connect( m_engine, SIGNAL(updateAgentPresence(const QStringList &, const QString &)),
+					 m_agentspanel, SLOT(updateAgentPresence(const QStringList &, const QString &)) );
                                 connect( m_agentspanel, SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
 

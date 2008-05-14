@@ -43,9 +43,10 @@
 
 #include "userinfo.h"
 
-UserInfo::UserInfo()
+UserInfo::UserInfo(const QString & userid)
         : m_fullname("")
 {
+        m_userid = userid;
 }
 
 
@@ -58,7 +59,59 @@ void UserInfo::setFullName(const QString & fullname)
         m_fullname = fullname;
 }
 
+void UserInfo::setPhone(const QString & astid,
+                        const QString & context,
+                        const QString & phonenum)
+{
+        m_astid.clear();
+        m_context.clear();
+        m_phonenum.clear();
+
+        m_astid << astid;
+        m_context << context;
+        m_phonenum << phonenum;
+}
+
+void UserInfo::setAgent(const QString & astid,
+                        const QString & agentnum)
+{
+        m_astid_agent.clear();
+        m_agentnum.clear();
+
+        m_astid_agent << astid;
+        m_agentnum << agentnum;
+}
+
+bool UserInfo::hasPhone(const QString & astid,
+                        const QString & context,
+                        const QString & phonenum)
+{
+        if(m_astid.contains(astid) && m_context.contains(context) && m_phonenum.contains(phonenum))
+                return true;
+        else
+                return false;
+}
+
+bool UserInfo::hasAgent(const QString & astid,
+                        const QString & agentnum)
+{
+        if(m_astid_agent.contains(astid) && m_agentnum.contains(agentnum))
+                return true;
+        else
+                return false;
+}
+
 const QString & UserInfo::fullname() const
 {
         return m_fullname;
+}
+
+const QString & UserInfo::userid() const
+{
+        return m_userid;
+}
+
+const QStringList & UserInfo::agentids() const
+{
+        return m_agentnum;
 }

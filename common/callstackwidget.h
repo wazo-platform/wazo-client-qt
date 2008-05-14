@@ -61,11 +61,11 @@ class Call// : public QObject
 {
 public:
 	//Peer( const QString & ext, QObject * parent = 0 );
-	Call( const QString & channelme);
-	Call( const QString & channelme, const QString & action, int time,
-	      const QString & direction, const QString & channelpeer,
-	      const QString & exten, const QString & phonen);
-	Call( const Call & call);
+	Call( const QString &);
+	Call( const QString &, const QString &, int,
+	      const QString &, const QString &,
+	      const QString &, const QString &);
+	Call( const Call &);
 	//! get m_phonen
 	const QString & getPhone() const {return m_phonen;};
 	//! get m_channelme
@@ -82,11 +82,11 @@ public:
 	const QString & getChannelPeer() const {return m_channelpeer;};
 	//! get m_exten
 	const QString & getExten() const {return m_exten;};
-	void updateCall(const QString & action,
-			int time,
-			const QString & direction,
-			const QString & channelpeer,
-			const QString & exten);
+	void updateCall(const QString &,
+			int,
+			const QString &,
+			const QString &,
+                        const QString &);
 private:
 	QString m_channelme;	//!< "my" channel 
 	QString m_action;		//!< action

@@ -127,7 +127,7 @@ void SwitchBoardWindow::updatePeer(const QString & ext,
 {
 	// first search in the peerhash
         if(m_peerhash.contains(ext)) {
-                Peer * peeritem = m_peerhash.value(ext);
+                PeerItem * peeritem = m_peerhash.value(ext);
                 peeritem->updateStatus(imavail, sipstatus, vmstatus, agentstatus);
                 peeritem->updateChans(chanIds, chanStates, chanOthers);
                 peeritem->updateName(name);
@@ -138,13 +138,13 @@ void SwitchBoardWindow::updatePeer(const QString & ext,
         if(name.isEmpty())
                 return;
         
-	Peer * peeritem = new Peer(ext, name);
+	PeerItem * peeritem = new PeerItem(ext, name);
         peeritem->updateStatus(imavail, sipstatus,
                                vmstatus, agentstatus);
         peeritem->updateChans(chanIds, chanStates, chanOthers);
         m_peerhash.insert(ext, peeritem);
 
-	// if not found in the peerhash, create a new Peer
+	// if not found in the peerhash, create a new PeerItem
 	QPoint pos = m_engine->getSettings()->value("layout/" + ext, QPoint(-1, -1) ).toPoint();
 	if(pos.x() >= 0) {
                 PeerWidget * peerwidget = new PeerWidget(ext,
@@ -184,7 +184,7 @@ void SwitchBoardWindow::updatePeerAgent(const QString & ext,
 {
         // qDebug() << "SwitchBoardWindow::updatePeerAgent()";
         if(m_peerhash.contains(ext)) {
-                Peer * peeritem = m_peerhash.value(ext);
+                PeerItem * peeritem = m_peerhash.value(ext);
                 peeritem->updateAgentStatus(agentstatus);
         }
         return;
@@ -204,7 +204,7 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
 		if(ext == m_peerlist[i]->ext()) {
                         m_layout->setItemPosition(i, QPoint(-1, -1));
 			savePositions();
-                        Peer * peeritem = m_peerhash[ext];
+                        PeerItem * peeritem = m_peerhash[ext];
                         QString name = peeritem->name();
                         PeerWidget * peerwidget = peeritem->getWidget();
                         m_layout->removeWidget( peerwidget );
@@ -235,7 +235,7 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
 }
 
 
-/*! \brief remove a Peer
+/*! \brief remove a PeerItem
  *
  * Find the peer with extension ext and remove it from the list
  * and the widget.
@@ -247,7 +247,7 @@ void SwitchBoardWindow::removePeer(const QString & ext)
 {
         // qDebug() << "SwitchBoardWindow::removePeer()" << ext;
         if(m_peerhash.contains(ext)) {
-                Peer * peeritem = m_peerhash.value(ext);
+                PeerItem * peeritem = m_peerhash.value(ext);
                 PeerWidget * peerwidget = peeritem->getWidget();
                 m_layout->removeWidget( peerwidget );
                 m_peerhash.remove(ext);
@@ -266,12 +266,12 @@ void SwitchBoardWindow::removePeer(const QString & ext)
 void SwitchBoardWindow::removePeers(void)
 {
         // qDebug() << "SwitchBoardWindow::removePeers()";
-        QHashIterator<QString, Peer *> peeriter(m_peerhash);
+        QHashIterator<QString, PeerItem *> peeriter(m_peerhash);
         QTime qtime;
         qtime.start();
         while(peeriter.hasNext()) {
                 peeriter.next();
-                Peer * peeritem = peeriter.value();
+                PeerItem * peeritem = peeriter.value();
                 PeerWidget * peerwidget = peeritem->getWidget();
                 if(peerwidget != NULL) {
                         m_layout->removeWidget( peerwidget );
@@ -351,7 +351,7 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
 	}
         
         if((! isAlreadyThere) && m_peerhash.contains(ext)) {
-                Peer * peeritem = m_peerhash[ext];
+                PeerItem * peeritem = m_peerhash[ext];
                 QString name = peeritem->name();
                 //                PeerWidget * peerwidget = peeritem->getWidget();
                 PeerWidget * peerwidget = new PeerWidget(ext,

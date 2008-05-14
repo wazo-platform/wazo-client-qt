@@ -65,7 +65,7 @@ BaseEngine::BaseEngine(QSettings * settings,
                        QObject * parent)
         : QObject(parent),
 	  m_serverhost(""), m_loginport(0), m_sbport(0),
-          m_asterisk(""), m_protocol(""), m_userid(""), m_phonenumber(""), m_passwd(""),
+          m_asterisk(""), m_company("businessany"), m_protocol(""), m_userid(""), m_phonenumber(""), m_passwd(""),
           m_checked_presence(false), m_checked_cinfo(false),
           m_sessionid(""), m_state(ENotLogged),
           m_pendingkeepalivemsg(0)
@@ -91,8 +91,6 @@ BaseEngine::BaseEngine(QSettings * settings,
            void bytesWritten ( qint64 bytes )
            void readyRead ()
         */
-
-        m_userinfo = new UserInfo();
 
 	// Socket for TCP connections
         m_sbsocket->setProperty("socket", "tcp_nat");
@@ -330,7 +328,7 @@ void BaseEngine::stop()
 	setState(ENotLogged);
 	m_sessionid = "";
 
-        m_uinfo.clear();
+        m_users.clear();
 }
 
 /*! \brief initiate connection to the server
@@ -577,6 +575,25 @@ void BaseEngine::socketStateChanged(QAbstractSocket::SocketState socketState)
 }
 
 
+UserInfo * BaseEngine::findUserFromPhone(const QString & astid,
+                                         const QString & context,
+                                         const QString & phonenum)
+{
+        foreach(UserInfo * uinfo, m_users)
+                if(uinfo->hasPhone(astid, context, phonenum))
+                        return uinfo;
+        return NULL;
+}
+
+UserInfo * BaseEngine::findUserFromAgent(const QString & astid,
+                                         const QString & agentnum)
+{
+        foreach(UserInfo * uinfo, m_users)
+                if(uinfo->hasAgent(astid, agentnum))
+                        return uinfo;
+        return NULL;
+}
+
 void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 {
 	const int nfields0 = 14; // 0th order size (per-phone/line informations)
@@ -597,15 +614,14 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 	//<who>:<asterisk_id>:<tech(SIP/IAX/...)>:<phoneid>:<numero>:<contexte>:<dispo>:<etat SIP/XML>:<etat VM>:<etat Queues>: <nombre de liaisons>:
         QString astid   = liststatus[1];
 	QString context = liststatus[5];
+	QString phonenum = liststatus[4];
 
-	QString pname   = "p/" + astid + "/" + context + "/"
-		+ liststatus[2].toLower() + "/" + liststatus[3] + "/" + liststatus[4];
+        UserInfo * ui = findUserFromPhone(astid, context, phonenum);
+
 	QString InstMessAvail   = liststatus[6];
 	QString SIPPresStatus   = liststatus[7];
 	QString VoiceMailStatus = liststatus[8];
         QString AgentStatus     = liststatus[9];
-	m_uinfo[pname] = new UserInfo();
-        m_uinfo[pname]->setFullName(liststatus[10]);
 
 	int nchans = liststatus[nfields0 - 1].toInt();
 	if(liststatus.size() == nfields0 + nfields1 * nchans) {
@@ -630,44 +646,25 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 				displayedNum = peerid;
 
 			chanOthers << displayedNum;
-                        updateCall("c/" + astid + "/" + context + "/" + liststatus[refn],
-                                   liststatus[refn + 1],
-                                   liststatus[refn + 2].toInt(), liststatus[refn + 3],
-                                   liststatus[refn + 4], displayedNum,
-                                   pname);
+                        if(ui)
+                                updateCall("c/" + astid + "/" + context + "/" + liststatus[refn],
+                                           liststatus[refn + 1],
+                                           liststatus[refn + 2].toInt(), liststatus[refn + 3],
+                                           liststatus[refn + 4], displayedNum,
+                                           ui->userid());
 		}
 	}
 
-        if(AgentStatus.size() > 0)
-                qDebug() << "BaseEngine::updatePeerAndCallerid() / agentstatus =" << AgentStatus;
-        updateAgentPresence(liststatus[3], InstMessAvail);
-        updatePeer(pname, m_uinfo[pname]->fullname(),
-                   InstMessAvail, SIPPresStatus, VoiceMailStatus, AgentStatus,
-                   chanIds, chanStates, chanOthers, chanPeers);
-        if(m_is_a_switchboard)
-                if( (m_userid == liststatus[3])
-                      && (m_dialcontext == liststatus[5]))
-                        updateMyCalls(chanIds, chanStates, chanOthers);
-}
+        if(ui) {
+                updateAgentPresence(ui->agentids(), InstMessAvail);
+                updatePeer(ui->userid(), ui->fullname(),
+                           InstMessAvail, SIPPresStatus, VoiceMailStatus, AgentStatus,
+                           chanIds, chanStates, chanOthers, chanPeers);
+        }
 
-
-void BaseEngine::updateAgent(const QStringList & liststatus)
-{
-	const int nfields0 = 7;
-	if(liststatus.count() < nfields0) { // not valid
-		qDebug() << "BaseEngine::updateAgent() : Bad data from the server (not enough arguments) :" << liststatus;
-		return;
-	}
-
-        QString astid   = liststatus[1];
-	QString context = liststatus[5];
-
-	QString pname   = "p/" + astid + "/" + context + "/"
-		+ liststatus[2].toLower() + "/" + liststatus[3] + "/" + liststatus[4];
-	QString AgentStatus = liststatus[6];
-
-        // qDebug() << "BaseEngine::updateAgent()" << pname << AgentStatus;
-        updatePeerAgent(pname, AgentStatus);
+        // used mainly for transfer on directory numbers
+        if( (m_userid == liststatus[3]) && (m_dialcontext == liststatus[5]))
+                updateMyCalls(chanIds, chanStates, chanOthers);
 }
 
 
@@ -681,12 +678,33 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 
         QString astid   = liststatus[1];
 	QString context = liststatus[5];
-	QString pname   = "p/" + astid + "/" + context + "/"
-		+ liststatus[2].toLower() + "/" + liststatus[3] + "/" + liststatus[4];
-        removePeer(pname);
-        m_uinfo.remove(pname);
+	QString phonenum = liststatus[4];
+        UserInfo * ui = findUserFromPhone(astid, context, phonenum);
+        if(ui) {
+                removePeer(ui->userid());
+                m_users.remove(ui->userid());
+        }
 }
 
+
+void BaseEngine::popupDestroyed(QObject * obj)
+{
+	qDebug() << "BaseEngine::popupDestroyed()" << obj;
+	//obj->dumpObjectTree();
+}
+
+void BaseEngine::addToDataBase(const QString & dbdetails)
+{
+        qDebug() << "BaseEngine::addToDataBase()" << dbdetails;
+        if (dbdetails.size() > 0)
+                sendCommand("database " + dbdetails);
+}
+
+void BaseEngine::profileToBeShown(Popup * popup)
+{
+        qDebug() << "BaseEngine::profileToBeShown()";
+	newProfile( popup );
+}
 
 void BaseEngine::DisplayFiche(const QString & fichecontent, bool qtui)
 {
@@ -705,6 +723,7 @@ void BaseEngine::DisplayFiche(const QString & fichecontent, bool qtui)
 }
 
 
+
 bool BaseEngine::parseCommand(const QStringList & listitems)
 {
         // qDebug() << "BaseEngine::parseCommand listitems[0].toLower() =" << listitems[0].toLower() << listitems.size();
@@ -719,36 +738,35 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         callsUpdated();
                         peersReceived();
 
-                        QString myfullid   = "p/" + m_asterisk + "/" + m_dialcontext + "/" + m_protocol + "/" + m_userid + "/" + m_extension;
-                        
-                        QString myfullname = "No One";
-                        if(m_uinfo.contains(myfullid)) {
-                                myfullname = m_uinfo[myfullid]->fullname();
-                                localUserInfoDefined(myfullid, * m_uinfo[myfullid]);
+                        // Who am I ?
+                        QString fullid_mine = m_company + "/" + m_userid;
+                        QString fullname_mine = "No One";
+                        if(m_users.contains(fullid_mine)) {
+                                fullname_mine = m_users[fullid_mine]->fullname();
+                                localUserInfoDefined(fullid_mine, * m_users[fullid_mine]);
                         }
-
-                        qDebug() << "BaseEngine::parseCommand" << myfullname << myfullid;
-                        localUserDefined(myfullname);
 
                         // Who do we monitor ?
                         // First look at the last monitored one
                         QString fullid_watched = m_settings->value("monitor/peer").toString();
-
+                        QString fullname_watched = "";
                         // If there was nobody, let's watch ourselves.
-                        if(fullid_watched.isEmpty())
-                                monitorPeer(myfullid, myfullname);
-                        else {
-                                QString fullname_watched = "NoOne";
-                                if(m_uinfo.contains(fullid_watched))
-                                        fullname_watched = m_uinfo[fullid_watched]->fullname();
+                        if(fullid_watched.isEmpty()) {
+                                fullid_watched = fullid_mine;
+                                fullname_watched = fullname_mine;
+                        } else {
+                                if(m_users.contains(fullid_watched))
+                                        fullname_watched = m_users[fullid_watched]->fullname();
                                 // If the CallerId value is empty, fallback to ourselves.
-                                if(fullname_watched.isEmpty())
-                                        monitorPeer(myfullid, myfullname);
-                                else {
-                                        monitorPeer(fullid_watched, fullname_watched);
+                                if(fullname_watched.isEmpty()) {
+                                        fullid_watched = fullid_mine;
+                                        fullname_watched = fullname_mine;
                                 }
                         }
-                        emitTextMessage(tr("Received status for %1 phones").arg(m_uinfo.size()));
+
+                        monitorPeer(fullid_watched, fullname_watched);
+
+                        emitTextMessage(tr("Received status for %1 phones").arg(m_users.size()));
                         sendCommand("queues-list");
                         sendCommand("agents-list");
                         sendCommand("agents-status " + m_asterisk + " " + m_agentid);
@@ -774,13 +792,19 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         sendCommand("phones-add " + listpeers[0]);
                 }
 
-//         } else if((listitems[0] == QString("users-list")) && (listitems.size() == 2)) {
-//                 QStringList listpeers = listitems[1].split(";");
-//                 for(int i = 1 ; i < listpeers.size() ; i += 6) {
-//                         qDebug() << listpeers[i];
-//                         UserInfo * userinfo = new UserInfo();
-//                 }
-                
+        } else if((listitems[0] == QString("users-list")) && (listitems.size() == 2)) {
+                QStringList listpeers = listitems[1].split(";");
+                for(int i = 1 ; i < listpeers.size() ; i += 9) {
+                        qDebug() << listpeers[i] << listpeers[i+1] << listpeers[i+2]
+                                 << listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
+                                 << listpeers[i+6] << listpeers[i+7] << listpeers[i+8];
+                        QString iduser = listpeers[i+1] + "/" + listpeers[i];
+                        m_users[iduser] = new UserInfo(iduser);
+                        m_users[iduser]->setFullName(listpeers[i+2]);
+                        m_users[iduser]->setPhone(listpeers[i+5], listpeers[i+6], listpeers[i+7]);
+                        m_users[iduser]->setAgent(listpeers[i+5], listpeers[i+7]);
+                }
+
 //         } else if((listitems[0] == QString("users-change")) && (listitems.size() == 2)) {
                 
         } else if((listitems[0].toLower() == QString("phones-del")) && (listitems.size() == 2)) {
@@ -858,6 +882,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
         } else if(listitems[0].toLower() == QString("agent-status")) {
                 qDebug() << listitems;
                 QStringList liststatus = listitems[1].split(";");
+                // if status = "for me" => update me
                 changeWatchedAgentSignal(liststatus);
 
         } else if(listitems[0].toLower() == QString("queue-status")) {
@@ -867,15 +892,17 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
         } else if(listitems[0].toLower() == QString("update-agents")) {
                 QStringList liststatus = listitems[1].split(":");
-                if(liststatus.size() > 6) {
-                        QStringList newstatuses = liststatus[6].split("/");
+                if(liststatus.size() > 1) {
+                        QStringList newstatuses = liststatus[1].split("/");
+                        qDebug() << newstatuses;
+                        QString astid = newstatuses[1];
                         QString agentnum = newstatuses[2];
-                        updateAgent(liststatus);
-                        if (agentnum == m_agentid) {
-                                setAgentStatus(liststatus[6]);
-                        }
+                        UserInfo * ui = findUserFromAgent(astid, agentnum);
+                        if(ui)
+                                updatePeerAgent(ui->userid(), liststatus[1]);
+                        else // (useful ?) in order to transfer the replies to unmatched agents
+                                updatePeerAgent("", liststatus[1]);
                 }
-
 
         } else if(listitems[0].toLower() == QString("update-queues")) {
                 setQueueStatus(listitems[1]);
@@ -1575,16 +1602,9 @@ void BaseEngine::askFeatures(const QString & peer)
 void BaseEngine::askCallerIds()
 {
         qDebug() << "BaseEngine::askCallerIds()";
-	// sendCommand("users-list");
+        sendCommand("users-list");
         sendCommand("agents-list");
 	sendCommand("phones-list");
-}
-
-void BaseEngine::addToDataBase(const QString & dbdetails)
-{
-        qDebug() << "BaseEngine::addToDataBase()" << dbdetails;
-        if (dbdetails.size() > 0)
-                sendCommand("database " + dbdetails);
 }
 
 void BaseEngine::setSystrayed(bool b)
@@ -1693,18 +1713,6 @@ void BaseEngine::setMyClientId()
         m_clientid = whatami + "@" + m_osname;
 }
 
-void BaseEngine::popupDestroyed(QObject * obj)
-{
-	qDebug() << "BaseEngine::popupDestroyed()" << obj;
-	//obj->dumpObjectTree();
-}
-
-void BaseEngine::profileToBeShown(Popup * popup)
-{
-        qDebug() << "BaseEngine::profileToBeShown()";
-	newProfile( popup );
-}
-
 /*!
  * Send a keep alive message to the login server.
  * The message is sent in a datagram through m_udpsocket
@@ -1714,8 +1722,7 @@ void BaseEngine::keepLoginAlive()
 	//qDebug() << "BaseEngine::keepLoginAlive()";
 	// got to disconnected state if more than xx keepalive messages
 	// have been left without response.
-	if(m_pendingkeepalivemsg > 1)
-	{
+	if(m_pendingkeepalivemsg > 1) {
 		qDebug() << "m_pendingkeepalivemsg" << m_pendingkeepalivemsg << "=> 0";
 		stopKeepAliveTimer();
 		setState(ENotLogged);

@@ -124,12 +124,12 @@ void SearchPanel::callsUpdated()
 void SearchPanel::affTextChanged(const QString & text)
 {
         m_searchpattern = text;
-        QHashIterator<QString, Peer *> i(m_peerhash);
+        QHashIterator<QString, PeerItem *> i(m_peerhash);
 	// qDebug() << "affTextChanged" << text;
 
         while(i.hasNext()) {
                 i.next();
-                Peer * peeritem = i.value();
+                PeerItem * peeritem = i.value();
                 PeerWidget * peerwidget = peeritem->getWidget();
 
                 if ( m_peerlayout->indexOf( peerwidget ) > -1 ) {
@@ -160,7 +160,7 @@ void SearchPanel::affTextChanged(const QString & text)
         i.toFront();
         while(i.hasNext()) {
                 i.next();
-                Peer * peeritem = i.value();
+                PeerItem * peeritem = i.value();
                 PeerWidget * peerwidget = peeritem->getWidget();
 
                 if( peeritem->name().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
@@ -213,7 +213,7 @@ void SearchPanel::updatePeer(const QString & ext,
 {
         // qDebug() << "SearchPanel::updatePeer()";
         if(m_peerhash.contains(ext)) {
-                Peer * peeritem = m_peerhash.value(ext);
+                PeerItem * peeritem = m_peerhash.value(ext);
                 peeritem->updateStatus(imavail, sipstatus, vmstatus, agentstatus);
                 peeritem->updateChans(chanIds, chanStates, chanOthers);
                 peeritem->updateName(name);
@@ -225,7 +225,7 @@ void SearchPanel::updatePeer(const QString & ext,
         if(name.isEmpty())
                 return;
         
-	Peer * peer = new Peer(ext, name);
+	PeerItem * peer = new PeerItem(ext, name);
 	peer->updateStatus(imavail, sipstatus, vmstatus, agentstatus);
 	peer->updateChans(chanIds, chanStates, chanOthers);
         m_peerhash.insert(ext, peer);
@@ -238,7 +238,7 @@ void SearchPanel::updatePeerAgent(const QString & ext,
 {
         // qDebug() << "SearchPanel::updatePeerAgent()";
         if(m_peerhash.contains(ext)) {
-                Peer * peeritem = m_peerhash.value(ext);
+                PeerItem * peeritem = m_peerhash.value(ext);
                 peeritem->updateAgentStatus(agentstatus);
         }
         return;
@@ -250,7 +250,7 @@ void SearchPanel::removePeer(const QString & ext)
 {
         // qDebug() << "SearchPanel::removePeer()" << ext;
         if(m_peerhash.contains(ext)) {
-                Peer * peeritem = m_peerhash.value(ext);
+                PeerItem * peeritem = m_peerhash.value(ext);
                 PeerWidget * peerwidget = peeritem->getWidget();
                 if (m_peerlayout->indexOf( peerwidget ) > -1)
                         m_peerlayout->removeWidget( peerwidget );
@@ -265,12 +265,12 @@ void SearchPanel::removePeer(const QString & ext)
 void SearchPanel::removePeers()
 {
         // qDebug() << "SearchPanel::removePeers()";
-        QHashIterator<QString, Peer *> i(m_peerhash);
-        QTime qtime;
-        qtime.start();
+        QHashIterator<QString, PeerItem *> i(m_peerhash);
+        //         QTime qtime;
+        //         qtime.start();
         while(i.hasNext()) {
                 i.next();
-                Peer * peeritem = i.value();
+                PeerItem * peeritem = i.value();
                 PeerWidget * peerwidget = peeritem->getWidget();
                 // qDebug() << "span" << m_peerlayout->indexOf( peerwidget );
                 if (m_peerlayout->indexOf( peerwidget ) > -1)

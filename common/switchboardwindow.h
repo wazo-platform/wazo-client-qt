@@ -55,9 +55,9 @@ class QGridLayout;
 class QMouseEvent;
 
 
-/*! \brief Widget displaying Peers
+/*! \brief Widget displaying PeerItems
  *
- * This widget use a PeersLayout to display Peers in a grid.
+ * This widget use a PeersLayout to display PeerItems in a grid.
  */
 class SwitchBoardWindow : public QWidget
 {
@@ -89,8 +89,8 @@ private slots:
 private:
 	//QGridLayout * m_layout;
 	PeersLayout * m_layout;			//!< Grid Layout for displaying peers
-	QList<Peer *> m_peerlist;		//!< Peer list
-	QHash<QString, Peer *> m_peerhash;	//!< Peer hash
+	QList<PeerItem *> m_peerlist;		//!< PeerItem list
+	QHash<QString, PeerItem *> m_peerhash;	//!< PeerItem hash
 
 	BaseEngine * m_engine;	//!< engine to connect to peer widgets
 	QHash<QString, QPixmap> m_persons;

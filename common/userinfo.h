@@ -42,15 +42,35 @@
 #ifndef __USERINFO_H__
 #define __USERINFO_H__
 
+#include <QStringList>
+
 class UserInfo
 {
 public:
-	UserInfo();
+	UserInfo(const QString &);
         ~UserInfo();
         void setFullName(const QString &);
+        void setPhone(const QString &,
+                      const QString &,
+                      const QString &);
+        void setAgent(const QString &,
+                      const QString &);
+        bool hasPhone(const QString &,
+                      const QString &,
+                      const QString &);
+        bool hasAgent(const QString &,
+                      const QString &);
         const QString & fullname() const;
+        const QString & userid() const;
+        const QStringList & agentids() const;
 private:
-        QString m_asterisk;
+        QStringList m_astid;
+        QStringList m_astid_agent;
+        QStringList m_context;
+        QStringList m_phonenum;
+        QStringList m_agentnum;
+
+        QString m_userid;
         QString m_fullname;
 };
 

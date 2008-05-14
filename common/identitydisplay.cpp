@@ -52,6 +52,7 @@
 #include <QScrollArea>
 
 #include "identitydisplay.h"
+#include "userinfo.h"
 
 /*! \brief Constructor
  */
@@ -115,16 +116,11 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
 // 	glayout->setRowStretch( 0, 1 );
 }
 
-
-/*! \brief the input was validated
- *
- * check the input and call emitDial() if ok.
- */
-void IdentityDisplay::setUser(const QString & user)
+void IdentityDisplay::setUserInfo(const QString & iid, const UserInfo & ui)
 {
-        // qDebug() << user;
-        m_user->setText(user);
-        // qDebug() << "IdentityDisplay::IdentityDisplay() : label" << m_user->geometry() << m_user->sizeHint();
+        qDebug() << "IdentityDisplay::setUserInfo()" << iid << ui.fullname();
+        m_userid = iid;
+        m_user->setText(ui.fullname());
 }
 
 
@@ -162,8 +158,10 @@ void IdentityDisplay::setQueueList(const QString & qlist)
         }
 }
 
-void IdentityDisplay::setAgentStatus(const QString & status)
+void IdentityDisplay::updatePeerAgent(const QString & userid, const QString & status)
 {
+        if(userid != m_userid)
+                return;
         QStringList newstatuses = status.split("/");
         if (newstatuses.size() >= 4) {
                 QString command = newstatuses[0];

@@ -48,20 +48,20 @@
  *
  * just sets the properties m_ext and m_name.
  */
-Peer::Peer(const QString & ext, const QString & name)
+PeerItem::PeerItem(const QString & ext, const QString & name)
         : m_ext(ext), m_name(name)
 {
         m_peerwidget = NULL;
 }
 
-Peer::Peer()
+PeerItem::PeerItem()
 {
         m_peerwidget = NULL;
 }
 
 /*! \brief Copy constructor
  */
-Peer::Peer(const Peer & peer)
+PeerItem::PeerItem(const PeerItem & peer)
 {
 	m_ext = peer.m_ext;
 	m_name = peer.m_name;
@@ -72,10 +72,10 @@ Peer::Peer(const Peer & peer)
  *
  * Change what is displayed according to new status values.
  */
-void Peer::updateStatus(const QString & imavail,
-			const QString & sipstatus,
-			const QString & vmstatus,
-			const QString & agentstatus)
+void PeerItem::updateStatus(const QString & imavail,
+                            const QString & sipstatus,
+                            const QString & vmstatus,
+                            const QString & agentstatus)
 {
         m_imavail     = imavail;
         m_sipstatus   = sipstatus;
@@ -87,9 +87,9 @@ void Peer::updateStatus(const QString & imavail,
         }
 }
 
-void Peer::updateAgentStatus(const QString & agentstatus)
+void PeerItem::updateAgentStatus(const QString & agentstatus)
 {
-        // qDebug() << "Peer::updateAgentStatus()" << agentstatus;
+        // qDebug() << "PeerItem::updateAgentStatus()" << agentstatus;
         m_agentstatus = agentstatus;
         if(m_peerwidget != NULL)
                 updateDisplayedStatus();
@@ -97,14 +97,13 @@ void Peer::updateAgentStatus(const QString & agentstatus)
 
 /*! \brief update channel list
  */
-void Peer::updateChans(const QStringList & chanIds,
-                       const QStringList & chanStates,
-                       const QStringList & chanOthers)
+void PeerItem::updateChans(const QStringList & chanIds,
+                           const QStringList & chanStates,
+                           const QStringList & chanOthers)
 {
 	if( (chanIds.size() != chanStates.size())
-	   || (chanIds.size() != chanOthers.size()) )
-	{
-		qDebug() << "Peer::updateChans() : bad args";
+            || (chanIds.size() != chanOthers.size()) ) {
+		qDebug() << "PeerItem::updateChans() : bad args";
 		return;
 	}
 
@@ -118,7 +117,7 @@ void Peer::updateChans(const QStringList & chanIds,
 
 /*! \brief update name if changed
  */
-void Peer::updateName(const QString & newname)
+void PeerItem::updateName(const QString & newname)
 {
 	if(newname != m_name)
 		m_name = newname;
@@ -130,7 +129,7 @@ void Peer::updateName(const QString & newname)
  *
  * Change what is displayed according to new status values.
  */
-void Peer::updateDisplayedStatus()
+void PeerItem::updateDisplayedStatus()
 {
         if(m_peerwidget == NULL)
                 return;
@@ -185,8 +184,8 @@ void Peer::updateDisplayedStatus()
 
         if(m_agentstatus.size() > 0) {
                 QStringList qsl = m_agentstatus.split("/");
-                // Peer::updateDisplayedStatus() ("agentlogout", "xivo", "6103", "103")
-                // Peer::updateDisplayedStatus() ("queuememberstatus", "6103", "qcb_00000", "5", "0")
+                // PeerItem::updateDisplayedStatus() ("agentlogout", "xivo", "6103", "103")
+                // PeerItem::updateDisplayedStatus() ("queuememberstatus", "6103", "qcb_00000", "5", "0")
                 if (qsl.size() >= 4) {
                         if(qsl[0] == "agentlogin") {
                                 QString astid = qsl[1];
@@ -245,7 +244,7 @@ void Peer::updateDisplayedStatus()
                                 // m_peerwidget->setBlue(2);
                         }
                 } else {
-                        qDebug() << "Peer::updateDisplayedStatus() / size < 4" << qsl;
+                        qDebug() << "PeerItem::updateDisplayedStatus() / size < 4" << qsl;
                 }
         }
 
@@ -262,7 +261,7 @@ void Peer::updateDisplayedStatus()
 
 /*! \brief update channel list
  */
-void Peer::updateDisplayedChans()
+void PeerItem::updateDisplayedChans()
 {
 	if(m_peerwidget == NULL)
                 return;
@@ -275,7 +274,7 @@ void Peer::updateDisplayedChans()
 
 /*! \brief update name if changed
  */
-void Peer::updateDisplayedName()
+void PeerItem::updateDisplayedName()
 {
 	if(m_peerwidget == NULL)
                 return;

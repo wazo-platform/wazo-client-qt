@@ -150,6 +150,11 @@ public:
         void config_and_start(const QString &, const QString &,
                               const QString &, const QString &);
         void setOSInfos(const QString &);
+        UserInfo * findUserFromPhone(const QString &,
+                                     const QString &,
+                                     const QString &);
+        UserInfo * findUserFromAgent(const QString &,
+                                     const QString &);
 protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
 public slots:
@@ -195,7 +200,6 @@ private slots:
 	void keepLoginAlive();			//!< Send a UDP datagram to keep session alive
 	void popupDestroyed(QObject *);		//!< know when a profile widget is destroyed *DEBUG*
 	void profileToBeShown(Popup *);		//!< a new profile must be displayed
-        void updateAgent(const QStringList &);
         void updatePeerAndCallerid(const QStringList &);
         void removePeerAndCallerid(const QStringList &);
 	void socketConnected();
@@ -251,9 +255,7 @@ signals:
         void disconnectFeatures();
         void connectFeatures();
         void resetFeatures();
-        void localUserDefined(const QString &);
         void localUserInfoDefined(const QString &, const UserInfo &);
-        void setAgentStatus(const QString &);
         void setQueueStatus(const QString &);
         void newQueueList(const QString &);
         void newAgentList(const QString &);
@@ -273,7 +275,7 @@ signals:
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QStringList &);
         void changeWatchedQueueSignal(const QStringList &);
-        void updateAgentPresence(const QString &, const QString &);
+        void updateAgentPresence(const QStringList &, const QString &);
 private:
 	void stopKeepAliveTimer();	//!< Stop the keep alive timer if running
 	void startTryAgainTimer();	//!< Start the "try to reconnect" timer
@@ -299,8 +301,8 @@ private:
 	quint16 m_loginport;		//!< TCP port (UDP port for keep alive is +1)
 	quint16 m_sbport;		//!< port to connect to server
 
-        UserInfo * m_userinfo;
 	QString m_asterisk;		//!< Host to the login server
+        QString m_company;
 	QString m_protocol;		//!< User Protocol's login
 	QString m_userid;		//!< User Id
 	QString m_agentid;		//!< Agent Id
@@ -331,7 +333,7 @@ private:
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier
 	QString m_forced_state;		//!< Forced state sent by the server
-        QHash<QString, UserInfo *> m_uinfo;	//!< List of User Informations
+        QHash<QString, UserInfo *> m_users;	//!< List of User Informations
 	int m_version_server;		//!< Version issued by the server after a successful login
         QString m_xivover_server;	//!< Server's XIVO version
         QString m_fullname;		//!< Full Name

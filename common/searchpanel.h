@@ -79,7 +79,7 @@ signals:
 	void askCallerIds();
 private:
 	BaseEngine * m_engine;	//!< engine object reference
-	QHash<QString, Peer *> m_peerhash;	//!< Peer list
+	QHash<QString, PeerItem *> m_peerhash;	//!< PeerItem list
 	QGridLayout * m_peerlayout;	//!< layout object
 	ExtendedLineEdit * m_input;	//!< widget for search string input
 	QHash<QString, QPixmap> m_persons;
