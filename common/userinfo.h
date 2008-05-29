@@ -42,6 +42,7 @@
 #ifndef __USERINFO_H__
 #define __USERINFO_H__
 
+#include <QHash>
 #include <QStringList>
 
 class UserInfo
@@ -50,25 +51,32 @@ public:
 	UserInfo(const QString &);
         ~UserInfo();
         void setFullName(const QString &);
-        void setPhone(const QString &,
-                      const QString &,
-                      const QString &);
-        void setAgent(const QString &,
-                      const QString &);
+        void setNumber(const QString &);
+        void setPhones(const QString &,
+                       const QString &,
+                       const QString &);
+        void setAgent(const QString &);
         bool hasPhone(const QString &,
                       const QString &,
                       const QString &);
         bool hasAgent(const QString &,
                       const QString &);
+        const QString & phonenum() const;
         const QString & fullname() const;
         const QString & userid() const;
-        const QStringList & agentids() const;
+        const QString & agentid() const;
+        const QString & astid() const;
+        const QStringList & termlist() const;
+        const QHash<QString, QString> & termstatus() const;
+        void updatePhoneStatus(const QString &,
+                               const QString &);
 private:
-        QStringList m_astid;
-        QStringList m_astid_agent;
-        QStringList m_context;
-        QStringList m_phonenum;
-        QStringList m_agentnum;
+        QString m_astid;
+        QString m_context;
+        QString m_phonenum;
+        QStringList m_termlist;
+        QString m_agentnum;
+        QHash<QString, QString> m_termstatus;
 
         QString m_userid;
         QString m_fullname;

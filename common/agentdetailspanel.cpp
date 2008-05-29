@@ -128,6 +128,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &, const QString & agentst
 void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
 {
         //  qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
+        m_astid = agentstatus[0];
         m_agent = agentstatus[1];
         m_agentname->setText("<b>" + agentstatus[1] + "</b>");
 
@@ -247,8 +248,8 @@ void AgentdetailsPanel::queueClicked()
         else {
                 QString prop = m_queue_join_status[queueid]->property("joined").toString();
                 if(prop == "y")
-                        agentAction("leave " + queueid + " xivo " + m_agent);
+                        agentAction("leave " + queueid + " " + m_astid + " " + m_agent);
                 else
-                        agentAction("join " + queueid + " xivo " + m_agent);
+                        agentAction("join " + queueid + " " + m_astid + " " + m_agent);
         }
 }

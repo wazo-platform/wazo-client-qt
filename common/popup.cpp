@@ -60,6 +60,7 @@
 #include "xmlhandler.h"
 #include "remotepicwidget.h"
 #include "urllabel.h"
+#include "userinfo.h"
 
 /*!
  * This constructor init all XML objects and connect signals
@@ -71,10 +72,12 @@
 Popup::Popup(QIODevice * inputstream,
              const bool & sheetui,
              const bool & urlautoallow,
+             const UserInfo * ui,
              QWidget * parent)
         : QWidget(parent),
           m_inputstream(inputstream),
           m_xmlInputSource(inputstream),
+          m_ui(ui),
           m_handler(this),
           m_tinypopup(true),
           m_urlautoallow(urlautoallow),
@@ -141,19 +144,19 @@ void Popup::dispurl(const QUrl &url)
 {
         // qDebug() << "Popup::dispurl()" << url;
         QString numbertodial = url.toString().mid(5);
-        emitDial(numbertodial, false);
+        originateCall("user:special:me", "ext:" + numbertodial);
 }
 
 void Popup::hangup()
 {
         qDebug() << "Popup::hangup()" << m_channel;
-        hangUp("p/xivo/default/" + m_channel);
+        hangUp(m_ui, m_channel);
 }
 
 void Popup::answer()
 {
         qDebug() << "Popup::answer()" << m_called;
-        pickUp("p/xivo/default/" + m_called);
+        pickUp(m_ui, m_called);
 }
 
 void Popup::saveandclose()
@@ -310,7 +313,7 @@ void Popup::dialThisNumber()
 {
         QString numbertodial = this->sender()->property("number").toString();
         qDebug() << "Popup::dialThisNumber()" << numbertodial;
-        emitDial(numbertodial, false);
+        originateCall("user:special:me", "ext:" + numbertodial);
 }
 
 void Popup::httpGetNoreply()

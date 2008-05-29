@@ -78,7 +78,6 @@ public:
 private slots:
 	//! Save the configuration to the BaseEngine object and close
 	void saveAndClose();
-        void loginKindChanged(int);
 private:
 	BaseEngine * m_engine;		//!< BaseEngine object parameters are commited to
 	MainWidget * m_mainwindow;	//!< MainWidget where some parameters are commited to
@@ -92,22 +91,21 @@ private:
 	QSpinBox  * m_tryinterval_sbox;	//!< "Try to reconnect" interval
 	QSpinBox  * m_kainterval_sbox;	//!< Keep alive interval
 
-	QLineEdit * m_asterisk;		//!< id name of the Asterisk server
-	QComboBox * m_protocombo;	//!< Protocol SIP/IAX
-	QCheckBox * m_loginkind;	//!< login kind (user or agent)
-	QLineEdit * m_userid;		//!< user login
-	QLineEdit * m_agentid;		//!< agent login
-	QLineEdit * m_phonenumber;	//!< agent's phone number
+	QLineEdit * m_company;		//!< name of the company
 	QLineEdit * m_passwd;		//!< user password
+	QCheckBox * m_keeppass;		//!< keep password ?
+	QLineEdit * m_userid;		//!< user login
+	QCheckBox * m_loginkind;	//!< login kind (user or agent)
+	QLineEdit * m_phonenumber;	//!< agent's phone number
 
-        QLabel * m_lblasterisk;
-        QLabel * m_lblalogin;
         QLabel * m_lblulogin;
+        QLabel * m_lblcompany;
         QLabel * m_lblpasswd;
         QLabel * m_lblphone;
 
 	QSpinBox  * m_history_sbox;	//!< History size
-	QSpinBox  * m_contacts_sbox;	//!< Displayed contacts' size
+	QSpinBox  * m_contactssize_sbox;	//!< Displayed contacts' size
+	QSpinBox  * m_contactswidth_sbox;	//!< Displayed contacts' width
 	QSpinBox  * m_tablimit_sbox;	//!< Maximum number of tabs
 	QCheckBox * m_lastconnwins;	//!< The last connected user wins => disconnects the other
 	QCheckBox * m_presence;		//!< connect to presence server checkbox

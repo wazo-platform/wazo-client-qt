@@ -132,7 +132,7 @@ void LogEltWidget::callBackPeer()
                 number = qsl2[0];
         }
 
-        emitDial(number, false);
+        originateCall("user:special:me", "ext:" + number);
 }
 
 void LogEltWidget::doNotCallBackPeer()
@@ -146,4 +146,3 @@ void LogEltWidget::doNotCallBackPeer()
 
         copyNumber(number);
 }
-

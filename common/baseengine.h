@@ -82,18 +82,16 @@ public:
 	const quint16 loginPort() const;	//!< TCP port for connection to server
 	void setLoginPort(const quint16 &);	//!< see loginPort()
 
-	const QString & serverast() const;	//!< id Name of the Asterisk server
-	void setServerAst(const QString &);	//!< see serverast()
-	const QString & protocol() const;      	//!< protocol of the user to identify to the server
-	void setProtocol(const QString &);     	//!< see protocol()
+	const QString & company() const;	//!< name of the user's company
+	void setCompany(const QString &);	//!< see company()
 	const QString & userId() const;		//!< userid to identify to the server
 	void setUserId(const QString &);       	//!< see userid()
-	const QString & agentId() const;	//!< agentid to identify to the server
-	void setAgentId(const QString &);       //!< see agentid()
 	const QString & phonenumber() const;	//!< agent's phone number
 	void setPhonenumber(const QString &);	//!< see phonenumber()
 	const int loginkind() const;		//!< loginkind to identify to the server
 	void setLoginKind(const int);		//!< see loginkind()
+	const int keeppass() const;		//!< keeppass to identify to the server
+	void setKeepPass(const int);		//!< see keeppass()
 	const QString & password() const;	//!< password to identify to the sever
 	void setPassword(const QString &);	//!< see password()
 
@@ -109,6 +107,8 @@ public:
 	void setTrytoreconnectinterval(uint);	//!< set try to reconnect interval
 	uint historySize() const;		//!< history size
 	void setHistorySize(uint size);		//!< set history size
+	uint contactsColumns() const;		//!< contacts columns
+	void setContactsColumns(uint columns);	//!< set contacts colmuns
 	uint contactsSize() const;		//!< contacts size
 	void setContactsSize(uint size);	//!< set contacts size
 	bool systrayed() const;			//!< systrayed flag
@@ -147,10 +147,11 @@ public:
 	void setLastConnWins(bool b);		//!< last connected user wins
 	const QStringList & getCapabilities() const;	//!< returns capabilities
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
-        void config_and_start(const QString &, const QString &,
+        void config_and_start(const QString &,
                               const QString &, const QString &);
         void setOSInfos(const QString &);
         UserInfo * findUserFromPhone(const QString &,
+                                     const QString &,
                                      const QString &,
                                      const QString &);
         UserInfo * findUserFromAgent(const QString &,
@@ -161,8 +162,6 @@ public slots:
 	void start();				//!< start the connection process.
 	void stop();				//!< stop the engine
 	void originateCall(const QString &, const QString &);
-	void originateCallGoodAsterisk(const QString &, const QString &);
-	void dialFullChannel(const QString &, bool);
 	void transferCall(const QString &, const QString &);
         void atxferCall(const QString &, const QString &);
 	void interceptCall(const QString &);
@@ -191,7 +190,7 @@ public slots:
         void copyNumber(const QString &);
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
         void agentAction(const QString &);
-	void pickUp(const QString &);
+	void pickUp(const UserInfo *, const QString &);
 
         void monitoredPeerChanged(const QString &);
         void changeWatchedAgentSlot(const QString &);
@@ -209,7 +208,7 @@ private slots:
 	void socketStateChanged(QAbstractSocket::SocketState);
 	void socketReadyRead();
 	void hangUp(const QString &);
-	void simpleHangUp(const QString &);
+	void simpleHangUp(const UserInfo *, const QString &);
 signals:
 	void logged();				//!< signal emitted when the state becomes ELogged
 	void delogged();			//!< signal emitted when the state becomes ENotLogged
@@ -241,11 +240,11 @@ signals:
 	//! we want to monitor a given peer (not the one given by the mouse's drag&drop).
 	void monitorPeer(const QString &, const QString &);
 	//! update informations about a peer
-	void updatePeer(const QString &, const QString &,
-	                const QString &, const QString &,
-	                const QString &, const QString &,
+	void updatePeer(const UserInfo *,
+	                const QString &,
 	                const QStringList &, const QStringList &,
                         const QStringList &, const QStringList &);
+        void newUser(const UserInfo *);
 	void updatePeerAgent(const QString &, const QString &);
 	void updateOnlineAgent(const QStringList &);
 	//! a log entry has to be updated.
@@ -255,7 +254,7 @@ signals:
         void disconnectFeatures();
         void connectFeatures();
         void resetFeatures();
-        void localUserInfoDefined(const QString &, const UserInfo &);
+        void localUserInfoDefined(const UserInfo *);
         void setQueueStatus(const QString &);
         void newQueueList(const QString &);
         void newAgentList(const QString &);
@@ -275,7 +274,7 @@ signals:
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QStringList &);
         void changeWatchedQueueSignal(const QStringList &);
-        void updateAgentPresence(const QStringList &, const QString &);
+        void updateAgentPresence(const QString &, const QString &);
 private:
 	void stopKeepAliveTimer();	//!< Stop the keep alive timer if running
 	void startTryAgainTimer();	//!< Start the "try to reconnect" timer
@@ -308,6 +307,7 @@ private:
 	QString m_agentid;		//!< Agent Id
 	QString m_phonenumber;		//!< Agent's phone
 	int m_loginkind;		//!< Login Kind
+	int m_keeppass;			//!< Login Kind
 	QString m_passwd;		//!< User password for account
 
 	bool m_autoconnect;		//!< Autoconnect to server at startup
@@ -318,6 +318,7 @@ private:
 
 	int m_historysize;
 	int m_contactssize;
+	int m_contactscolumns;
 	bool m_enabled_presence;      	//!< presence is enabled
 	bool m_enabled_cinfo;      	//!< customer info is enabled
 	bool m_checked_presence;      	//!< presence is checked

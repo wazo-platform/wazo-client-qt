@@ -54,6 +54,7 @@ class QPixmap;
 class BaseEngine;
 class PeerChannel;
 class ExtendedLabel;
+class UserInfo;
 
 /*! \brief Widget to display a Peer status
  *
@@ -63,8 +64,7 @@ class PeerWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	PeerWidget(const QString & id,
-                   const QString & name,
+	PeerWidget(const UserInfo *,
                    const QHash<QString, QPixmap> &,
                    const QHash<QString, QPixmap> &,
                    const QHash<QString, QPixmap> &);
@@ -94,36 +94,21 @@ signals:
 	void interceptChan(const QString &);
 	//! hang up signal
 	void hangUpChan(const QString &);
-	//! dial/call signal
-	void emitDial(const QString &, bool);
 	//! hide the widget in the channel
 	void doRemoveFromPanel(const QString &);
 public slots:
-	//! set phone or person icon in blue
-	void setBlue(int n);
-	//void setCyan(int n);
-	//! set phone or person icon in gray
-	void setGray(int n);
-	//! set phone or person icon in green
-	void setGreen(int n);
-	//! set phone or person icon in orange
-	void setOrange(int n);
-	//! set phone or person icon in red
-	void setRed(int n);
-	//! set phone or person icon in yellow
-	void setYellow(int n);
-	//void setBlack(int n);
-	//void setDarkGreen(int n);
-	void updateMyCalls(const QStringList &, const QStringList &, const QStringList &);
+	void setColor(const QString &, const QString &);	//! sets a kind of icon in a given color
+	void updateMyCalls(const QStringList &,
+                           const QStringList &,
+                           const QStringList &);
 private slots:
 	void transferChan(const QString &);
 	void removeFromPanel();
         void mouseDoubleClickEventAgent(QMouseEvent *);
 	void dial();
-	void dialAgent();
 private:
 	BaseEngine * m_engine;  //!< Base Engine reference
-	QLabel * m_statelbl;	//!< Peer state display (ringing, online, ...)
+	QHash<QString, QLabel *> m_lblphones;	//!< phone labels
 	QLabel * m_availlbl;	//!< Peer state display from XIVO CTI Client
 	ExtendedLabel * m_agentlbl;
 	QLabel * m_voicelbl;
@@ -133,6 +118,7 @@ private:
 	QPoint m_dragstartpos;	//!< drag start position
 	QString m_id;	//!< peer id : asterisk/protocol/extension
 	QString m_name;	//!< caller id to display : usualy the NAME of the person
+        const UserInfo * m_ui;
 
 	QAction * m_removeAction;	//!< action to remove this peer from the window
 	QAction * m_dialAction;		//!< action to dial this number

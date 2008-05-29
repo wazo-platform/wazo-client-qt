@@ -44,6 +44,7 @@
 #include <QLocale>
 #include <QSettings>
 #include <QSplashScreen>
+#include <QStyle>
 #include <QSysInfo>
 #include <QTranslator>
 
@@ -69,6 +70,7 @@ int main(int argc, char ** argv)
 	QCoreApplication::setOrganizationDomain("xivo.fr");
         QCoreApplication::setApplicationName("XIVO_Client");
 	QApplication app(argc, argv);
+        qDebug() << "style" << app.style();
         QSettings * settings = new QSettings(QSettings::IniFormat,
                                              QSettings::UserScope,
                                              QCoreApplication::organizationName(),
@@ -107,6 +109,7 @@ int main(int argc, char ** argv)
                 "messages:tab,switchboard:dock:mc,identity:grid:0" << "switchboard";
         appdefs["switchboard"] << "Switchboard" << "queues:dock:m,queuedetails:dock:mc,"
                 "agents:dock:m,agentdetails:dock:mc,identity:grid:0" << "switchboard";
+        // appdefs["switchboard"] = appdefs["operator1"];
         appdefs["full"] << "Full" << "" << "client";
         appdefs["empty"] << "Empty" << "" << "client";
         appdefs["random"] << "Random" << "parking:tab" << "client";

@@ -54,6 +54,8 @@ class QPushButton;
 class QScrollArea;
 class QVBoxLayout;
 
+class UserInfo;
+
 /*! \brief Identity Display
  */
 class AgentsPanel : public QWidget
@@ -66,10 +68,11 @@ signals:
         void changeWatchedAgent(const QString &);
         void agentAction(const QString &);
 public slots:
+        void setUserInfo(const UserInfo *);
 	void setAgentList(const QString &);
         void setAgentStatus(const QString &);
         void updatePeerAgent(const QString &, const QString &);
-        void updateAgentPresence(const QStringList &, const QString &);
+        void updateAgentPresence(const QString &, const QString &);
 private slots:
         void agentClicked();
 private:
@@ -77,6 +80,7 @@ private:
 	QVBoxLayout * m_layout;
         QScrollArea * m_scrollarea;
 	QWidget * m_widget;
+        const UserInfo * m_userinfo;
 
         QHash<QString, QLabel *>      m_agent_labels;
         QHash<QString, QPushButton *> m_agent_more;

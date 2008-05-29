@@ -48,6 +48,7 @@
 #include <QVariant>
 
 #include "agentspanel.h"
+#include "userinfo.h"
 
 /*! \brief Constructor
  */
@@ -55,7 +56,7 @@ AgentsPanel::AgentsPanel(QWidget * parent)
         : QWidget(parent)
 {
 	m_gridlayout = new QGridLayout(this);
-        
+
         m_title1 = new QLabel(tr("Agent"), this);
         m_title2 = new QLabel(tr("On Line"), this);
         m_title3 = new QLabel(tr("Present"), this);
@@ -78,18 +79,22 @@ AgentsPanel::~AgentsPanel()
         // qDebug() << "AgentsPanel::~AgentsPanel()";
 }
 
-void AgentsPanel::updateAgentPresence(const QStringList & agentnames, const QString & presence)
+void AgentsPanel::setUserInfo(const UserInfo * ui)
+{
+        m_userinfo = ui;
+}
+
+void AgentsPanel::updateAgentPresence(const QString & agentname, const QString & presence)
 {
         // qDebug() << "AgentsPanel::updateAgentPresence" << agentname << presence;
-        if(agentnames.size() > 0) {
-                QString agname = agentnames[0];
-                if(m_agent_presence.contains(agname)) {
+        if(agentname.size() > 0) {
+                if(m_agent_presence.contains(agentname)) {
                         QPixmap * m_square = new QPixmap(12, 12);
                         if(presence == "available")
                                 m_square->fill(Qt::green);
                         else
                                 m_square->fill(Qt::gray);
-                        m_agent_presence[agname]->setPixmap(QPixmap(* m_square));
+                        m_agent_presence[agentname]->setPixmap(QPixmap(* m_square));
                 }
         }
 }
@@ -313,9 +318,9 @@ void AgentsPanel::agentClicked()
                 QString prop = m_agent_logged_status[agentid]->property("logged").toString();
                 // qDebug() << "loginoff" << agentid << prop;
                 if(prop == "y")
-                        agentAction("logout xivo " + agentid);
+                        agentAction("logout " + m_userinfo->astid() + " " + agentid);
                 else
-                        agentAction("login xivo " + agentid);
+                        agentAction("login " + m_userinfo->astid() + " " + agentid);
         }
 }
 

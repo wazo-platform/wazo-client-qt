@@ -132,8 +132,7 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
 	qDebug() << "ExtendedTableWidget::dropEvent()" << event->mimeData()->text() << event->pos();
 	QTableWidgetItem * item = itemAt( event->pos() );
 	QRegExp re("\\+?[0-9\\s\\.]+");
-	if(item && re.exactMatch( item->text() ))
-	{
+	if(item && re.exactMatch( item->text() )) {
 		QString from = event->mimeData()->text();
 		if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
 			event->acceptProposedAction();
@@ -148,4 +147,3 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
 	else
 		event->ignore();
 }
-

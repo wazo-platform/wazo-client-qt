@@ -132,7 +132,7 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
 	if(re_number.exactMatch(item->text())) {
                 //qDebug() << "dialing" << item->text();
-                emitDial(item->text(), false);
+                originateCall("user:special:me", "ext:" + item->text());
         }
 
  	if(item && item->text().contains("@")) {
@@ -245,7 +245,7 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
 void DirectoryPanel::dialNumber()
 {
 	if(m_numberToDial.length() > 0)
-		emitDial(m_numberToDial, false);
+		originateCall("user:special:me", "ext:" + m_numberToDial);
 }
 
 /*! \brief dial the number (when context menu item is toggled)

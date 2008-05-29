@@ -52,6 +52,7 @@ class QTableWidgetItem;
 class BaseEngine;
 class ExtendedTableWidget;
 class PeerChannel;
+class UserInfo;
 
 /*! \brief Widget to display a list of messages
  *
@@ -63,10 +64,10 @@ class ParkingPanel : public QWidget
 public:
 	ParkingPanel(QWidget * parent = 0);
         ~ParkingPanel();
-        void setEngine(BaseEngine *);
 protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
 public slots:
+        void setUserInfo(const UserInfo *);
         void parkingEvent(const QString &, const QString &);
         void contextMenuEvent(QContextMenuEvent *);
 private slots:
@@ -76,13 +77,12 @@ private slots:
 	void itemDoubleClicked(QTableWidgetItem *);
 signals:
 	void copyNumber(const QString &);
-	void emitDial(const QString &, bool);
 	void transferCall(const QString &, const QString &);
 	void originateCall(const QString &, const QString &);
         void newParkEvent();
 private:
-	BaseEngine * m_engine;	//!< engine object reference
 	ExtendedTableWidget * m_table;	//! Table
+        const UserInfo * m_userinfo;
         int m_timerid;
         int m_deltasec;
 	QString m_astid;	//!< asterisk id selected

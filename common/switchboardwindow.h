@@ -50,10 +50,11 @@
 #include "peerslayout.h"
 #include "peeritem.h"
 
-class BaseEngine;
 class QGridLayout;
 class QMouseEvent;
 
+class BaseEngine;
+class UserInfo;
 
 /*! \brief Widget displaying PeerItems
  *
@@ -75,9 +76,8 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *);
 	void dropEvent(QDropEvent *);
 public slots:
-	void updatePeer(const QString &, const QString &,
-			const QString &, const QString &,
-			const QString &, const QString &,
+	void updatePeer(const UserInfo *,
+			const QString &,
 			const QStringList &, const QStringList &,
 			const QStringList &, const QStringList &);
         void updatePeerAgent(const QString &,

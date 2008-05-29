@@ -68,8 +68,6 @@ protected:
 signals:
 	//! start a search
 	void searchDirectory(const QString &);
-	//! dial selected number
-	void emitDial(const QString &, bool);
 	void copyNumber(const QString &);
 	//! transfer one of my call to this number
 	void transferCall(const QString &, const QString &);

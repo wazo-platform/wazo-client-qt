@@ -47,6 +47,7 @@
 #include <QStringList>
 
 class PeerWidget;
+class UserInfo;
 
 /*! \brief PeerItem object, linking to a PeerWidget
  */
@@ -54,23 +55,21 @@ class PeerItem// : public QObject
 {
 public:
 	//PeerItem( const QString & ext, QObject * parent = 0 );
-	PeerItem( const QString &, const QString & );
+	PeerItem( const UserInfo * );
 	PeerItem( const PeerItem & );
 	PeerItem( );
 	//! get m_ext
 	const QString & ext() const { return m_ext; };
 	//! get m_name
-	const QString & name() const { return m_name; };
+	const QString & name();
+	const UserInfo * userinfo();
 //	PeerItem & operator=(const PeerItem & peer);
 	//! set m_peerwidget
 	void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
 	//! get m_peerwidget
 	PeerWidget * getWidget() { return m_peerwidget; };
 
-	void updateStatus(const QString &,
-			  const QString &,
-			  const QString &,
-			  const QString &);
+	void updateStatus(const QString &);
 	void updateAgentStatus(const QString &);
 	void updateChans(const QStringList &,
 	                 const QStringList &,
@@ -85,6 +84,7 @@ private:
 	PeerWidget * m_peerwidget;	//!< related PeerWidget
 
         // Properties of each peer
+        const UserInfo * m_ui;
 	QString m_name;		//!< Person name
         QString m_imavail;
         QString m_sipstatus;

@@ -43,14 +43,15 @@
 
 #include "peeritem.h"
 #include "peerwidget.h"
+#include "userinfo.h"
 
 /*! \brief Constructor
- *
- * just sets the properties m_ext and m_name.
  */
-PeerItem::PeerItem(const QString & ext, const QString & name)
-        : m_ext(ext), m_name(name)
+PeerItem::PeerItem(const UserInfo * ui)
+        : m_ui(ui)
 {
+        m_ext = ui->userid();
+        m_name = ui->fullname();
         m_peerwidget = NULL;
 }
 
@@ -72,19 +73,11 @@ PeerItem::PeerItem(const PeerItem & peer)
  *
  * Change what is displayed according to new status values.
  */
-void PeerItem::updateStatus(const QString & imavail,
-                            const QString & sipstatus,
-                            const QString & vmstatus,
-                            const QString & agentstatus)
+void PeerItem::updateStatus(const QString & sipstatus)
 {
-        m_imavail     = imavail;
         m_sipstatus   = sipstatus;
-        m_vmstatus    = vmstatus;
-        m_agentstatus = agentstatus;
-
-        if(m_peerwidget != NULL) {
+        if(m_peerwidget != NULL)
                 updateDisplayedStatus();
-        }
 }
 
 void PeerItem::updateAgentStatus(const QString & agentstatus)
@@ -139,48 +132,50 @@ void PeerItem::updateDisplayedStatus()
 
 	//qDebug() << imavail << sipstatus;
 	if(m_imavail == "available") {
-		m_peerwidget->setGreen(1);
+		m_peerwidget->setColor("presence", "green");
 		display_imavail = PeerWidget::tr("Available");
 	} else if(m_imavail == "away") {
-		m_peerwidget->setBlue(1);/*setDarkGreen(1);*/
+		m_peerwidget->setColor("presence", "blue");
 		display_imavail = PeerWidget::tr("Away");
 	} else if(m_imavail == "donotdisturb") {
-		m_peerwidget->setRed(1);
+		m_peerwidget->setColor("presence", "red");
 		display_imavail = PeerWidget::tr("Do not disturb");
 	} else if(m_imavail == "berightback") {
-		m_peerwidget->setOrange(1);
+		m_peerwidget->setColor("presence", "orange");
 		display_imavail = PeerWidget::tr("Be Right Back");
 	} else if(m_imavail == "outtolunch") {
-		m_peerwidget->setYellow(1);
+		m_peerwidget->setColor("presence", "yellow");
 		display_imavail = PeerWidget::tr("Out To Lunch");
 	} else if(m_imavail == "unknown") {
-		m_peerwidget->setGray(1);
+		m_peerwidget->setColor("presence", "grey");
 		display_imavail = PeerWidget::tr("Unknown");
 	} else {
-		m_peerwidget->setGray(1);
+		m_peerwidget->setColor("presence", "grey");
 		display_imavail = m_imavail;
 	}
 
-
-	if(m_sipstatus == "Ready") {
-		m_peerwidget->setGreen(0);
-		display_sipstatus = PeerWidget::tr("Ready");
-	} else if(m_sipstatus == "Ringing") {
-		m_peerwidget->setBlue(0);/*setCyan(0);*/
-		display_sipstatus = PeerWidget::tr("Ringing");
-	} else if(m_sipstatus == "Calling") {
-		m_peerwidget->setYellow(0);
-		display_sipstatus = PeerWidget::tr("Calling");
-	} else if((m_sipstatus == "On the phone") || (m_sipstatus == "Up")) {
-		m_peerwidget->setRed(0);
-		display_sipstatus = PeerWidget::tr("On the phone");
-	} else if(m_sipstatus == "Not online") {
-		m_peerwidget->setGray(0);
-		display_sipstatus = PeerWidget::tr("Not online");
-	} else {
-		m_peerwidget->setGray(0);
-		display_sipstatus = m_sipstatus;
-	}
+        foreach(QString term, m_ui->termlist()) {
+                QString termstatus = m_ui->termstatus()[term];
+                if(termstatus == "Ready") {
+                        m_peerwidget->setColor(term, "green");
+                        display_sipstatus = PeerWidget::tr("Ready");
+                } else if(termstatus == "Ringing") {
+                        m_peerwidget->setColor(term, "blue");
+                        display_sipstatus = PeerWidget::tr("Ringing");
+                } else if(termstatus == "Calling") {
+                        m_peerwidget->setColor(term, "yellow");
+                        display_sipstatus = PeerWidget::tr("Calling");
+                } else if((termstatus == "On the phone") || (termstatus == "Up")) {
+                        m_peerwidget->setColor(term, "red");
+                        display_sipstatus = PeerWidget::tr("On the phone");
+                } else if(termstatus == "Not online") {
+                        m_peerwidget->setColor(term, "grey");
+                        display_sipstatus = PeerWidget::tr("Not online");
+                } else {
+                        m_peerwidget->setColor(term, "grey");
+                        display_sipstatus = termstatus;
+                }
+        }
 
         if(m_agentstatus.size() > 0) {
                 QStringList qsl = m_agentstatus.split("/");
@@ -191,12 +186,12 @@ void PeerItem::updateDisplayedStatus()
                                 QString astid = qsl[1];
                                 QString agentnum = qsl[2];
                                 m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-                                m_peerwidget->setGreen(2);
+                                m_peerwidget->setColor("agent", "green");
                         } else if(qsl[0] == "agentlogout") {
                                 QString astid = qsl[1];
                                 QString agentnum = qsl[2];
                                 m_peerwidget->setAgentToolTip("", m_queuelist);
-                                m_peerwidget->setGray(2);
+                                m_peerwidget->setColor("agent", "grey");
                         } else if(qsl[0] == "joinqueue") {
                                 QString astid = qsl[1];
                                 QString agentnum = qsl[2];
@@ -213,13 +208,13 @@ void PeerItem::updateDisplayedStatus()
                                 QString astid = qsl[1];
                                 QString agentnum = qsl[2];
                                 if(qsl[4] == "1") {
-                                        m_peerwidget->setGreen(2);
+                                        m_peerwidget->setColor("agent", "green");
                                 } else if(qsl[4] == "3") {
-                                        m_peerwidget->setBlue(2);
+                                        m_peerwidget->setColor("agent", "blue");
                                 } else if(qsl[4] == "5") {
-                                        m_peerwidget->setGray(2);
+                                        m_peerwidget->setColor("agent", "grey");
                                 } else {
-                                        m_peerwidget->setYellow(2);
+                                        m_peerwidget->setColor("agent", "yellow");
                                 }
                                 m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
                         } else if(qsl[0] == "agentstatus") {
@@ -231,17 +226,17 @@ void PeerItem::updateDisplayedStatus()
                                         m_queuelist = QStringList();
                                 if (qsl[3] == "0") {
                                         m_peerwidget->setAgentToolTip("", m_queuelist);
-                                        m_peerwidget->setGray(2);
+                                        m_peerwidget->setColor("agent", "grey");
                                 } else {
                                         m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-                                        m_peerwidget->setGreen(2);
+                                        m_peerwidget->setColor("agent", "green");
                                 }
 
                                 // ("agentstatus", "xivo", "6102", "0", "qcb_00003,qcb_00000")
                         } else {
                                 qDebug() << "UNKNOWN in updateDisplayedStatus()" << qsl;
                                 // m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-                                // m_peerwidget->setBlue(2);
+                                // m_peerwidget->setBlue("agent");
                         }
                 } else {
                         qDebug() << "PeerItem::updateDisplayedStatus() / size < 4" << qsl;
@@ -281,4 +276,14 @@ void PeerItem::updateDisplayedName()
 
         m_peerwidget->setName(m_name);
         return;
+}
+
+const QString & PeerItem::name()
+{
+        return m_name;
+}
+
+const UserInfo * PeerItem::userinfo()
+{
+        return m_ui;
 }

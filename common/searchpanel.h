@@ -53,6 +53,7 @@ class QVBoxLayout;
 
 class BaseEngine;
 class ExtendedLineEdit;
+class UserInfo;
 
 /*! \brief search panel widget
  */
@@ -65,9 +66,8 @@ public:
 	void setEngine(BaseEngine *);	//!< set m_engine
 public slots:
 	void affTextChanged(const QString &);
-	void updatePeer(const QString &, const QString &,
-			const QString &, const QString &,
-			const QString &, const QString &,
+	void updatePeer(const UserInfo *,
+			const QString &,
 			const QStringList &, const QStringList &,
 			const QStringList &, const QStringList &);
 	void updatePeerAgent(const QString &,
@@ -75,6 +75,7 @@ public slots:
 	void removePeer(const QString &);
 	void removePeers();
         void callsUpdated();
+        void newUser(const UserInfo *);
 signals:
 	void askCallerIds();
 private:
@@ -86,6 +87,7 @@ private:
 	QHash<QString, QPixmap> m_phones;
 	QHash<QString, QPixmap> m_agents;
         int m_maxdisplay;	//!< max number of peers displayed on the search panel
+        int m_ncolumns;
         QString m_searchpattern;
 };
 

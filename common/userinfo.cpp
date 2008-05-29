@@ -59,34 +59,41 @@ void UserInfo::setFullName(const QString & fullname)
         m_fullname = fullname;
 }
 
-void UserInfo::setPhone(const QString & astid,
-                        const QString & context,
-                        const QString & phonenum)
+void UserInfo::setNumber(const QString & phonenum)
 {
-        m_astid.clear();
-        m_context.clear();
-        m_phonenum.clear();
-
-        m_astid << astid;
-        m_context << context;
-        m_phonenum << phonenum;
+        m_phonenum = phonenum;
 }
 
-void UserInfo::setAgent(const QString & astid,
-                        const QString & agentnum)
+void UserInfo::setPhones(const QString & astid,
+                         const QString & context,
+                         const QString & termlist)
 {
-        m_astid_agent.clear();
-        m_agentnum.clear();
+        m_astid = astid;
+        m_context = context;
+        m_termlist.clear();
 
-        m_astid_agent << astid;
-        m_agentnum << agentnum;
+        if(termlist.size() > 0)
+                m_termlist = termlist.split(",");
+        foreach(QString term, m_termlist)
+                m_termstatus[term] = "unknown";
+}
+
+void UserInfo::setAgent(const QString & agentnum)
+{
+        m_agentnum = agentnum;
+}
+
+void UserInfo::updatePhoneStatus(const QString & term,
+                                 const QString & status)
+{
+        m_termstatus[term] = status;
 }
 
 bool UserInfo::hasPhone(const QString & astid,
                         const QString & context,
-                        const QString & phonenum)
+                        const QString & term)
 {
-        if(m_astid.contains(astid) && m_context.contains(context) && m_phonenum.contains(phonenum))
+        if((m_astid == astid) && (m_context == context) && m_termlist.contains(term))
                 return true;
         else
                 return false;
@@ -95,15 +102,21 @@ bool UserInfo::hasPhone(const QString & astid,
 bool UserInfo::hasAgent(const QString & astid,
                         const QString & agentnum)
 {
-        if(m_astid_agent.contains(astid) && m_agentnum.contains(agentnum))
+        if((m_astid == astid) && m_agentnum == agentnum)
                 return true;
         else
                 return false;
 }
 
+
 const QString & UserInfo::fullname() const
 {
         return m_fullname;
+}
+
+const QString & UserInfo::phonenum() const
+{
+        return m_phonenum;
 }
 
 const QString & UserInfo::userid() const
@@ -111,7 +124,22 @@ const QString & UserInfo::userid() const
         return m_userid;
 }
 
-const QStringList & UserInfo::agentids() const
+const QString & UserInfo::agentid() const
 {
         return m_agentnum;
+}
+
+const QString & UserInfo::astid() const
+{
+        return m_astid;
+}
+
+const QStringList & UserInfo::termlist() const
+{
+        return m_termlist;
+}
+
+const QHash<QString, QString> & UserInfo::termstatus() const
+{
+        return m_termstatus;
 }

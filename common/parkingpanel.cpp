@@ -49,11 +49,12 @@
 #include <QTimerEvent>
 #include <QVBoxLayout>
 
-#include "searchpanel.h"
-#include "peerwidget.h"
 #include "baseengine.h"
-#include "parkingpanel.h"
 #include "extendedtablewidget.h"
+#include "parkingpanel.h"
+#include "peerwidget.h"
+#include "searchpanel.h"
+#include "userinfo.h"
 
 /*! \brief Constructor
  *
@@ -103,9 +104,9 @@ ParkingPanel::~ParkingPanel()
         delete m_table;
 }
 
-void ParkingPanel::setEngine(BaseEngine * engine)
+void ParkingPanel::setUserInfo(const UserInfo * ui)
 {
-	m_engine = engine;
+	m_userinfo = ui;
 }
 
 /*! \brief add a message to the list
@@ -175,7 +176,7 @@ void ParkingPanel::itemClicked(QTableWidgetItem * item)
         int rown   = m_table->row(item);
         m_astid    = m_table->item(rown, 0)->text();
         m_placenum = m_table->item(rown, 1)->text();
-        if(m_astid == m_engine->serverast())
+        if(m_astid == m_userinfo->astid())
                 copyNumber(m_placenum);
 }
 
@@ -184,8 +185,8 @@ void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
         int rown   = m_table->row(item);
         m_astid    = m_table->item(rown, 0)->text();
         m_placenum = m_table->item(rown, 1)->text();
-        if(m_astid == m_engine->serverast())
-                emitDial(m_placenum, false);
+        if(m_astid == m_userinfo->astid())
+                originateCall("user:special:me", "ext:" + m_placenum);
 }
 
 void ParkingPanel::timerEvent(QTimerEvent * event)
@@ -212,7 +213,7 @@ void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
         m_parkedpeer = m_table->item(rown, 3)->text();
 
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
-	if(item && re_number.exactMatch(m_placenum) && (m_astid == m_engine->serverast())) {
+	if(item && re_number.exactMatch(m_placenum) && (m_astid == m_userinfo->astid())) {
 		QMenu contextMenu(this);
 		contextMenu.addAction( tr("&Dial") + " " + m_placenum + tr(" to unpark ") + m_parkedpeer,
                                        this, SLOT(dialNumber()) );
@@ -236,8 +237,8 @@ void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
  */
 void ParkingPanel::dialNumber()
 {
-	if((m_placenum.length() > 0) && (m_astid == m_engine->serverast()))
-                emitDial(m_placenum, false);
+	if((m_placenum.length() > 0) && (m_astid == m_userinfo->astid()))
+                originateCall("user:special:me", "ext:" + m_placenum);
 }
 
 /*! \brief dial the number (when context menu item is toggled)

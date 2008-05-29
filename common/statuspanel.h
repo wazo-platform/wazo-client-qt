@@ -55,6 +55,8 @@ class QLabel;
 class QLineEdit;
 class QPushButton;
 
+class UserInfo;
+
 /*! \brief Simple widget to enter a number and dial it
  */
 class StatusPanel : public QWidget
@@ -64,19 +66,18 @@ public:
 	StatusPanel(QWidget * parent = 0);
         enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
 public slots:
-        void setUserInfo(const QString &, const UserInfo &);
-        void updatePeer(const QString &, const QString &,
-                        const QString &, const QString &,
-                        const QString &, const QString &,
+        void setUserInfo(const UserInfo *);
+        void updatePeer(const UserInfo *,
+                        const QString &,
                         const QStringList &, const QStringList &,
                         const QStringList &, const QStringList &);
         void functionKeyPressed(int);
         void xferPressed();
 signals:
-        void simpleHangUp(const QString &);	//!< hanging up a channel ...
-        void pickUp(const QString &);	//!< picking up a channel ...
-	void transferCall(const QString &, const QString &);
-	void atxferCall(const QString &, const QString &);
+        void simpleHangUp(const UserInfo *, const QString &);	//!< hanging up a channel ...
+        void pickUp(const UserInfo *, const QString &);	//!< picking up a channel ...
+	void transferCall(const UserInfo *, const QString &, const QString &);
+	void atxferCall(const UserInfo *, const QString &, const QString &);
 private:
         void newCall(const QString &);
         void dtransfer();
@@ -84,7 +85,7 @@ private:
         void changeCurrentChannel(const QString &, const QString &);
 
         QGridLayout * m_glayout;
-        QString m_id;
+        const UserInfo * m_ui;
         QLabel * m_lbl;
 
         QHash<QString, QFrame *> m_vlinesl;

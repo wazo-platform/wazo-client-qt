@@ -52,6 +52,7 @@
 #include "peerwidget.h"
 #include "peerslayout.h"
 #include "switchboardwindow.h"
+#include "userinfo.h"
 #include "xivoconsts.h"
 
 SwitchBoardWindow::SwitchBoardWindow(QWidget * parent)
@@ -61,26 +62,12 @@ SwitchBoardWindow::SwitchBoardWindow(QWidget * parent)
         setObjectName("scroller"); // in order for the style settings to be set accordingly
 	setAcceptDrops(true);
 
-        m_persons["red"] = QPixmap(":/images/personal-red.png");
-        m_persons["blue"] = QPixmap(":/images/personal-blue.png");
-        m_persons["green"] = QPixmap(":/images/personal-green.png");
-        m_persons["grey"] = QPixmap(":/images/personal-grey.png");
-        m_persons["orange"] = QPixmap(":/images/personal-orange.png");
-        m_persons["yellow"] = QPixmap(":/images/personal-yellow.png");
-
-        m_phones["red"] = QPixmap(":/images/phone-red.png");
-        m_phones["blue"] = QPixmap(":/images/phone-blue.png");
-        m_phones["green"] = QPixmap(":/images/phone-green.png");
-        m_phones["grey"] = QPixmap(":/images/phone-grey.png");
-        m_phones["orange"] = QPixmap(":/images/phone-orange.png");
-        m_phones["yellow"] = QPixmap(":/images/phone-yellow.png");
-
-        m_agents["red"] = QPixmap(":/images/agent-red.png");
-        m_agents["blue"] = QPixmap(":/images/agent-blue.png");
-        m_agents["green"] = QPixmap(":/images/agent-green.png");
-        m_agents["grey"] = QPixmap(":/images/agent-grey.png");
-        m_agents["orange"] = QPixmap(":/images/agent-orange.png");
-        m_agents["yellow"] = QPixmap(":/images/agent-yellow.png");
+        QStringList colors = (QStringList() << "red" << "blue" << "green" << "grey" << "orange" << "yellow");
+        foreach(QString color, colors) {
+                m_persons[color] = QPixmap(":/images/personal-" + color + ".png");
+                m_phones[color] = QPixmap(":/images/phone-" + color + ".png");
+                m_agents[color] = QPixmap(":/images/agent-" + color + ".png");
+        }
 }
 
 /*!
@@ -105,7 +92,7 @@ void SwitchBoardWindow::setEngine(BaseEngine * engine)
 
 /*! \brief update or add a peer
  *
- * The peer with the ext extension is updated or added
+ * Th peer with the ext extension is updated or added
  * to the list if it is not present.
  * The placement of the PeerWidget is restored from the settings.
  * 
@@ -114,21 +101,19 @@ void SwitchBoardWindow::setEngine(BaseEngine * engine)
  *
  * \sa removePeer
  */
-void SwitchBoardWindow::updatePeer(const QString & ext,
-                                   const QString & name,
-                                   const QString & imavail,
+void SwitchBoardWindow::updatePeer(const UserInfo * ui,
                                    const QString & sipstatus,
-                                   const QString & vmstatus,
-                                   const QString & agentstatus,
 				   const QStringList & chanIds,
 				   const QStringList & chanStates,
 				   const QStringList & chanOthers,
                                    const QStringList &)
 {
+        QString ext = ui->userid();
+        QString name = ui->fullname();
 	// first search in the peerhash
         if(m_peerhash.contains(ext)) {
                 PeerItem * peeritem = m_peerhash.value(ext);
-                peeritem->updateStatus(imavail, sipstatus, vmstatus, agentstatus);
+                peeritem->updateStatus(sipstatus);
                 peeritem->updateChans(chanIds, chanStates, chanOthers);
                 peeritem->updateName(name);
                 return;
@@ -138,17 +123,15 @@ void SwitchBoardWindow::updatePeer(const QString & ext,
         if(name.isEmpty())
                 return;
         
-	PeerItem * peeritem = new PeerItem(ext, name);
-        peeritem->updateStatus(imavail, sipstatus,
-                               vmstatus, agentstatus);
+	PeerItem * peeritem = new PeerItem(ui);
+        peeritem->updateStatus(sipstatus);
         peeritem->updateChans(chanIds, chanStates, chanOthers);
         m_peerhash.insert(ext, peeritem);
 
 	// if not found in the peerhash, create a new PeerItem
 	QPoint pos = m_engine->getSettings()->value("layout/" + ext, QPoint(-1, -1) ).toPoint();
 	if(pos.x() >= 0) {
-                PeerWidget * peerwidget = new PeerWidget(ext,
-                                                         name,
+                PeerWidget * peerwidget = new PeerWidget(ui,
                                                          m_persons,
                                                          m_phones,
                                                          m_agents);
@@ -161,8 +144,6 @@ void SwitchBoardWindow::updatePeer(const QString & ext,
                          m_engine, SLOT(atxferCall(const QString&, const QString&)) );
                 connect( peerwidget, SIGNAL(hangUpChan(const QString &)),
                          m_engine, SLOT(hangUp(const QString &)) );
-                connect( peerwidget, SIGNAL(emitDial(const QString &, bool)),
-                         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
                 connect( peerwidget, SIGNAL(interceptChan(const QString &)),
                          m_engine, SLOT(interceptCall(const QString &)) );
                 connect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
@@ -205,7 +186,6 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
                         m_layout->setItemPosition(i, QPoint(-1, -1));
 			savePositions();
                         PeerItem * peeritem = m_peerhash[ext];
-                        QString name = peeritem->name();
                         PeerWidget * peerwidget = peeritem->getWidget();
                         m_layout->removeWidget( peerwidget );
                         // this disconnect() step takes time, whether explicitly or implicitly,
@@ -218,8 +198,6 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
                                     m_engine, SLOT(atxferCall(const QString&, const QString&)) );
                         disconnect( peerwidget, SIGNAL(hangUpChan(const QString &)),
                                     m_engine, SLOT(hangUp(const QString &)) );
-                        disconnect( peerwidget, SIGNAL(emitDial(const QString &, bool)),
-                                    m_engine, SLOT(dialFullChannel(const QString &, bool)) );
                         disconnect( peerwidget, SIGNAL(interceptChan(const QString &)),
                                     m_engine, SLOT(interceptCall(const QString &)) );
                         disconnect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
@@ -285,8 +263,6 @@ void SwitchBoardWindow::removePeers(void)
                                     m_engine, SLOT(atxferCall(const QString&, const QString&)) );
                         disconnect( peerwidget, SIGNAL(hangUpChan(const QString &)),
                                     m_engine, SLOT(hangUp(const QString &)) );
-                        disconnect( peerwidget, SIGNAL(emitDial(const QString &, bool)),
-                                    m_engine, SLOT(dialFullChannel(const QString &, bool)) );
                         disconnect( peerwidget, SIGNAL(interceptChan(const QString &)),
                                     m_engine, SLOT(interceptCall(const QString &)) );
                         disconnect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
@@ -352,10 +328,8 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
         
         if((! isAlreadyThere) && m_peerhash.contains(ext)) {
                 PeerItem * peeritem = m_peerhash[ext];
-                QString name = peeritem->name();
                 //                PeerWidget * peerwidget = peeritem->getWidget();
-                PeerWidget * peerwidget = new PeerWidget(ext,
-                                                         name,
+                PeerWidget * peerwidget = new PeerWidget(peeritem->userinfo(),
                                                          m_persons,
                                                          m_phones,
                                                          m_agents);
@@ -373,8 +347,6 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
                          m_engine, SLOT(atxferCall(const QString&, const QString&)) );
                 connect( peerwidget, SIGNAL(hangUpChan(const QString &)),
                          m_engine, SLOT(hangUp(const QString &)) );
-                connect( peerwidget, SIGNAL(emitDial(const QString &, bool)),
-                         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
                 connect( peerwidget, SIGNAL(interceptChan(const QString &)),
                          m_engine, SLOT(interceptCall(const QString &)) );
                 connect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),

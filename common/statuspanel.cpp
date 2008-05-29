@@ -46,12 +46,13 @@
 #include <QPushButton>
 
 #include "statuspanel.h"
+#include "userinfo.h"
 #include "xivoconsts.h"
 
 /*! \brief Constructor
  */
 StatusPanel::StatusPanel(QWidget * parent)
-        : QWidget(parent), m_id("")
+        : QWidget(parent)
 {
 	m_glayout = new QGridLayout(this);
         m_lbl = new QLabel( "", this );
@@ -99,11 +100,10 @@ void StatusPanel::newCall(const QString & chan)
         m_glayout->addWidget( m_vlinesr[chan], m_linenum, m_actionnames.size() + 3, Qt::AlignRight );
 }
 
-void StatusPanel::setUserInfo(const QString & id, const UserInfo & ui)
+void StatusPanel::setUserInfo(const UserInfo * ui)
 {
-        qDebug() << "StatusPanel::setUserInfo()" << ui.fullname();
-        m_lbl->setText(ui.fullname());
-        m_id = id;
+        m_ui = ui;
+        m_lbl->setText(ui->fullname());
 }
 
 //m_engine, SLOT(transferCall(const QString&, const QString&)) );
@@ -145,7 +145,6 @@ void StatusPanel::itransfer()
                         m_linestatuses[m_currentchannel] = WITransfer;
                         connect( m_tnums[m_currentchannel], SIGNAL(returnPressed()),
                                  this, SLOT(xferPressed()) );
-                        
                 }
         }
 }
@@ -155,9 +154,9 @@ void StatusPanel::xferPressed()
 {
         QString num = m_tnums[m_currentchannel]->text();
         if(m_linestatuses[m_currentchannel] == WDTransfer)
-                transferCall(m_currentchannel, "p/xivo/default/sip/" + num + "/" + num);
+                transferCall(m_ui, m_currentchannel, num);
         else if(m_linestatuses[m_currentchannel] == WITransfer)
-                atxferCall("c/xivo/default/" + m_peerchan[m_currentchannel], "p/xivo/default/sip/" + num + "/" + num);
+                atxferCall(m_ui, m_peerchan[m_currentchannel], num);
 }
 
 
@@ -167,18 +166,18 @@ void StatusPanel::functionKeyPressed(int keynum)
                 Line linestatus = m_linestatuses[m_currentchannel];
                 if(linestatus == Ringing) {
                         if(keynum == Qt::Key_F1) {
-                                pickUp("p/xivo/default/" + m_id.split("/")[4]);
+                                pickUp(m_ui, m_ui->userid().split("/")[4]);
                                 m_actions[m_currentchannel]["Fa"]->setText("Hangup (F2)");
                                 m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
                                 m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
                         }
                         else if(keynum == Qt::Key_F2)
-                                simpleHangUp("c/xivo/default/" + m_peerchan[m_currentchannel]);
+                                simpleHangUp(m_ui, m_peerchan[m_currentchannel]);
                         else if(keynum == Qt::Key_F3)
                                 dtransfer();
                 } else if(linestatus == Online) {
                         if(keynum == Qt::Key_F2) {
-                                simpleHangUp("c/xivo/default/" + m_peerchan[m_currentchannel]);
+                                simpleHangUp(m_ui, m_peerchan[m_currentchannel]);
                         } else if(keynum == Qt::Key_F3) {
                                 dtransfer();
                                 m_actions[m_currentchannel]["Fb"]->setText("(# + Return)");
@@ -188,9 +187,9 @@ void StatusPanel::functionKeyPressed(int keynum)
                         } else if(keynum == Qt::Key_F6) {
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F6 when Online : Wait";
                         } else if(keynum == Qt::Key_F7) {
-                                transferCall(m_currentchannel, "700");
+                                transferCall(m_ui, m_currentchannel, "700");
                         } else if(keynum == Qt::Key_F8) {
-                                // transferCall(m_currentchannel, "p/xivo/default/sip/" + num + "/" + num);
+                                // transferCall(m_ui, m_currentchannel, num);
                         }
                 } else if(linestatus == Wait) {
                         if(keynum == Qt::Key_F1)
@@ -205,10 +204,10 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
                                 m_actions[m_currentchannel]["Fc"]->setText("(# + Return)");
                         } else if(keynum == Qt::Key_F2) {
-                                simpleHangUp("c/xivo/default/" + m_peerchan[m_currentchannel]);
+                                simpleHangUp(m_ui, m_peerchan[m_currentchannel]);
                         } else if(keynum == Qt::Key_F1) {
                                 // only when not picked up yet
-                                pickUp("p/xivo/default/" + m_id.split("/")[4]);
+                                pickUp(m_ui, m_ui->userid().split("/")[4]);
                                 m_actions[m_currentchannel]["Fa"]->setText("Hangup (F2)");
                                 m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
                                 m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
@@ -223,11 +222,11 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
                                 m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
                         } else if(keynum == Qt::Key_F2) {
-                                simpleHangUp("c/xivo/default/" + m_peerchan[m_currentchannel]);
+                                simpleHangUp(m_ui, m_peerchan[m_currentchannel]);
                         } else if(keynum == Qt::Key_F5) {
-                                simpleHangUp(m_currentchannel);
+                                simpleHangUp(m_ui, m_currentchannel);
                         } else if(keynum == Qt::Key_F6) {
-                                simpleHangUp("c/xivo/default/" + m_tferchannel);
+                                simpleHangUp(m_ui, m_tferchannel);
                         }
                 }
                 
@@ -266,14 +265,14 @@ void StatusPanel::changeCurrentChannel(const QString & before, const QString & a
         }
 }
 
-void StatusPanel::updatePeer(const QString & a, const QString &,
-                             const QString &, const QString &,
-                             const QString &, const QString &,
+void StatusPanel::updatePeer(const UserInfo * ui,
+                             const QString &,
                              const QStringList & g, const QStringList & h,
                              const QStringList & i, const QStringList & j)
 {
-        if (a == m_id) {
-                qDebug() << "StatusPanel::updatePeer()" << m_id << a << g << h << i << j;
+        // QString name = ui->fullname();
+        if (ui->userid() == m_ui->userid()) {
+                qDebug() << "StatusPanel::updatePeer()" << ui->userid() << g << h << i << j;
                 foreach (QString callchannel, g) {
                         int index = g.indexOf(callchannel);
                         const QString status = h[index];

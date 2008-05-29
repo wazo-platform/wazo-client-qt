@@ -68,8 +68,7 @@ public slots:
         void setNumberToDial(const QString &);
 signals:
 	void textEdited(const QString &);
-	void emitDial(const QString &, bool);	//!< dial a number
-	void originateCall(const QString &, const QString &);   	//!< originates a number
+	void originateCall(const QString &, const QString &);   //!< originates a number
 private:
         QLabel * m_lbl;
 	QComboBox * m_input;	//!< input widget

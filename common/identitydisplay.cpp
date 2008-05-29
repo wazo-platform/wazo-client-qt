@@ -116,11 +116,10 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
 // 	glayout->setRowStretch( 0, 1 );
 }
 
-void IdentityDisplay::setUserInfo(const QString & iid, const UserInfo & ui)
+void IdentityDisplay::setUserInfo(const UserInfo * ui)
 {
-        qDebug() << "IdentityDisplay::setUserInfo()" << iid << ui.fullname();
-        m_userid = iid;
-        m_user->setText(ui.fullname());
+        m_user->setText(ui->fullname());
+        m_ui = ui;
 }
 
 
@@ -160,7 +159,7 @@ void IdentityDisplay::setQueueList(const QString & qlist)
 
 void IdentityDisplay::updatePeerAgent(const QString & userid, const QString & status)
 {
-        if(userid != m_userid)
+        if(userid != m_ui->userid())
                 return;
         QStringList newstatuses = status.split("/");
         if (newstatuses.size() >= 4) {
@@ -240,11 +239,10 @@ void IdentityDisplay::setQueueStatus(const QString & status)
 
 void IdentityDisplay::doAgentAction()
 {
-        if(m_agentstatus) {
+        if(m_agentstatus)
                 agentAction("logout");
-        } else {
+        else
                 agentAction("login");
-        }
 }
 
 void IdentityDisplay::doQueueAction()

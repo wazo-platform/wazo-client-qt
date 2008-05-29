@@ -181,11 +181,9 @@ MainWidget::MainWidget(BaseEngine * engine,
                 m_lab1 = new QLabel(tr("Login"));
                 m_lab2 = new QLabel(tr("Password"));
                 m_lab3 = new QLabel(tr("Phone Number"));
-                m_lab4 = new QLabel(tr("Agent Id"));
                 m_qlab1 = new QLineEdit(m_settings->value("engine/userid").toString());
                 m_qlab2 = new QLineEdit("");
                 m_qlab3 = new QLineEdit("");
-                m_qlab4 = new QLineEdit("");
                 m_ack = new QPushButton("");
                 if(m_normalmenus) {
                         m_ack->setText("OK");
@@ -200,8 +198,6 @@ MainWidget::MainWidget(BaseEngine * engine,
                 connect( m_qlab2, SIGNAL(returnPressed()),
                          this, SLOT(config_and_start()) );
                 connect( m_qlab3, SIGNAL(returnPressed()),
-                         this, SLOT(config_and_start()) );
-                connect( m_qlab4, SIGNAL(returnPressed()),
                          this, SLOT(config_and_start()) );
                 connect( m_ack, SIGNAL(pressed()),
                          this, SLOT(config_and_start()) );
@@ -272,14 +268,12 @@ void MainWidget::config_and_start()
 {
         m_engine->config_and_start(m_qlab1->text(),
                                    m_qlab2->text(),
-                                   m_qlab3->text(),
-                                   m_qlab4->text());
+                                   m_qlab3->text());
 }
 
 void MainWidget::logintextChanged(const QString & logintext)
 {
         m_qlab3->setText(logintext);
-        m_qlab4->setText(logintext);
 }
 
 void MainWidget::showLogin()
@@ -294,23 +288,21 @@ void MainWidget::showLogin()
                 m_gridlayout->addWidget(m_qlab1, 2, 1);
                 m_gridlayout->addWidget(m_lab2, 3, 0, Qt::AlignRight);
                 m_gridlayout->addWidget(m_qlab2, 3, 1);
+                m_gridlayout->addWidget(m_ack, 3, 2, Qt::AlignLeft);
+
                 m_gridlayout->addWidget(m_qhline, 4, 0, 1, 3);
+
                 m_gridlayout->addWidget(m_lab3, 5, 0, Qt::AlignRight);
                 m_gridlayout->addWidget(m_qlab3, 5, 1);
-                m_gridlayout->addWidget(m_lab4, 6, 0, Qt::AlignRight);
-                m_gridlayout->addWidget(m_qlab4, 6, 1);
-                m_gridlayout->addWidget(m_ack, 3, 2, Qt::AlignLeft);
                 
                 // show widgets after they have been put in the layout, in order for
                 // temporary windows not to be opened
                 m_lab1->show();
                 m_lab2->show();
                 m_lab3->show();
-                m_lab4->show();
                 m_qlab1->show();
                 m_qlab2->show();
                 m_qlab3->show();
-                m_qlab4->show();
                 m_ack->show();
                 m_qhline->show();
         }
@@ -328,11 +320,9 @@ void MainWidget::hideLogin()
                 m_lab1->hide();
                 m_lab2->hide();
                 m_lab3->hide();
-                m_lab4->hide();
                 m_qlab1->hide();
                 m_qlab2->hide();
                 m_qlab3->hide();
-                m_qlab4->hide();
                 m_ack->hide();
                 m_qhline->hide();
                 
@@ -340,12 +330,10 @@ void MainWidget::hideLogin()
                 m_gridlayout->removeWidget(m_lab1);
                 m_gridlayout->removeWidget(m_lab2);
                 m_gridlayout->removeWidget(m_lab3);
-                m_gridlayout->removeWidget(m_lab4);
                 m_gridlayout->removeWidget(m_qhline);
                 m_gridlayout->removeWidget(m_qlab1);
                 m_gridlayout->removeWidget(m_qlab2);
                 m_gridlayout->removeWidget(m_qlab3);
-                m_gridlayout->removeWidget(m_qlab4);
         }
         m_gridlayout->removeWidget(m_xivobg);
 }
@@ -650,13 +638,6 @@ void MainWidget::engineStarted()
                         if (dc == QString("history")) {
                                 m_historypanel = new LogWidget(m_engine, this);
                                 addPanel("history", tr("History"), m_historypanel);
-                                if(! m_switchboard)
-                                        m_historypanel->setPeerToDisplay("p/" +
-                                                                         m_engine->serverast() + "/" +
-                                                                         m_engine->dialContext() +  "/" +
-                                                                         m_engine->protocol() + "/" +
-                                                                         m_engine->userId() + "/" +
-                                                                         m_engine->phoneNum());
                                 connect( m_engine, SIGNAL(updateLogEntry(const QDateTime &, int,
                                                                          const QString &, const QString &)),
                                          m_historypanel, SLOT(addLogEntry(const QDateTime &, int,
@@ -671,8 +652,8 @@ void MainWidget::engineStarted()
 			} else if (dc == QString("identity")) {
                                 m_infowidget = new IdentityDisplay();
                                 addPanel("identity", tr("&Identity"), m_infowidget);
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const QString &, const UserInfo &)),
-                                         m_infowidget, SLOT(setUserInfo(const QString &, const UserInfo &)));
+                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                                         m_infowidget, SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
                                          m_infowidget, SLOT(updatePeerAgent(const QString &, const QString &)));
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
@@ -689,14 +670,16 @@ void MainWidget::engineStarted()
                                 sa_ag->setWidgetResizable(true);
 
                                 addPanel("agents", tr("Agents' List"), sa_ag);
+                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                                         m_agentspanel, SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(newAgentList(const QString &)),
                                          m_agentspanel, SLOT(setAgentList(const QString &)));
                                 connect( m_agentspanel, SIGNAL(changeWatchedAgent(const QString &)),
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
 					 m_agentspanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
-				connect( m_engine, SIGNAL(updateAgentPresence(const QStringList &, const QString &)),
-					 m_agentspanel, SLOT(updateAgentPresence(const QStringList &, const QString &)) );
+				connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QString &)),
+					 m_agentspanel, SLOT(updateAgentPresence(const QString &, const QString &)) );
                                 connect( m_agentspanel, SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
 
@@ -754,13 +737,11 @@ void MainWidget::engineStarted()
 				m_dialpanel = new DialPanel();
                                 addPanel("dial", tr("Dial"), m_dialpanel);
 
-				connect( m_dialpanel, SIGNAL(emitDial(const QString &, bool)),
-					 m_engine, SLOT(dialFullChannel(const QString &, bool)) );
+                                connect( m_dialpanel, SIGNAL(originateCall(const QString&, const QString&)),
+                                         m_engine, SLOT(originateCall(const QString&, const QString&)) );
                                 connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
                                          m_dialpanel, SLOT(setNumberToDial(const QString &)) );
                                 if(m_switchboard) {
-                                        connect( m_dialpanel, SIGNAL(originateCall(const QString&, const QString&)),
-                                                 m_engine, SLOT(originateCallGoodAsterisk(const QString&, const QString&)) );
                                         connect( m_dialpanel, SIGNAL(textEdited(const QString &)),
                                                  m_engine, SLOT(textEdited(const QString &)) );
                                 }
@@ -772,27 +753,25 @@ void MainWidget::engineStarted()
                                 m_statuspanel = new StatusPanel(this);
                                 addPanel("operator", tr("Operator"), m_statuspanel);
 
-                                connect( m_statuspanel, SIGNAL(pickUp(const QString &)),
-                                         m_engine, SLOT(pickUp(const QString &)) );
-                                connect( m_statuspanel, SIGNAL(transferCall(const QString&, const QString&)),
-                                         m_engine, SLOT(transferCall(const QString&, const QString&)) );
-                                connect( m_statuspanel, SIGNAL(atxferCall(const QString&, const QString&)),
-                                         m_engine, SLOT(atxferCall(const QString&, const QString&)) );
-                                connect( m_statuspanel, SIGNAL(simpleHangUp(const QString &)),
-                                         m_engine, SLOT(simpleHangUp(const QString &)) );
+                                connect( m_statuspanel, SIGNAL(pickUp(const UserInfo *, const QString &)),
+                                         m_engine, SLOT(pickUp(const UserInfo *, const QString &)) );
+                                connect( m_statuspanel, SIGNAL(transferCall(const UserInfo *, const QString&, const QString&)),
+                                         m_engine, SLOT(transferCall(const UserInfo *, const QString&, const QString&)) );
+                                connect( m_statuspanel, SIGNAL(atxferCall(const UserInfo *, const QString&, const QString&)),
+                                         m_engine, SLOT(atxferCall(const UserInfo *, const QString&, const QString&)) );
+                                connect( m_statuspanel, SIGNAL(simpleHangUp(const UserInfo *, const QString &)),
+                                         m_engine, SLOT(simpleHangUp(const UserInfo *, const QString &)) );
 
                                 connect( this, SIGNAL(functionKeyPressed(int)),
                                          m_statuspanel, SLOT(functionKeyPressed(int)));
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const QString &, const UserInfo &)),
-                                         m_statuspanel, SLOT(setUserInfo(const QString &, const UserInfo &)));
-                                connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
-                                                                     const QString &, const QString &,
-                                                                     const QString &, const QString &,
+                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                                         m_statuspanel, SLOT(setUserInfo(const UserInfo *)));
+                                connect( m_engine, SIGNAL(updatePeer(const UserInfo *,
+                                                                     const QString &,
                                                                      const QStringList &, const QStringList &,
                                                                      const QStringList &, const QStringList &)),
-                                         m_statuspanel, SLOT(updatePeer(const QString &, const QString &,
-                                                                        const QString &, const QString &,
-                                                                        const QString &, const QString &,
+                                         m_statuspanel, SLOT(updatePeer(const UserInfo *,
+                                                                        const QString &,
                                                                         const QStringList &, const QStringList &,
                                                                         const QStringList &, const QStringList &)) );
                         } else if (dc == QString("messages")) {
@@ -840,15 +819,13 @@ void MainWidget::engineStarted()
                                 sa_sb->setWidget(m_sbwidget);
                                 sa_sb->setWidgetResizable(true);
                                 addPanel("switchboard", tr("Switchboard"), sa_sb);
-
-                                connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
-                                                                     const QString &, const QString &,
-                                                                     const QString &, const QString &,
+                                
+                                connect( m_engine, SIGNAL(updatePeer(const UserInfo *,
+                                                                     const QString &,
                                                                      const QStringList &, const QStringList &,
                                                                      const QStringList &, const QStringList &)),
-                                         m_sbwidget, SLOT(updatePeer(const QString &, const QString &,
-                                                                     const QString &, const QString &,
-                                                                     const QString &, const QString &,
+                                         m_sbwidget, SLOT(updatePeer(const UserInfo *,
+                                                                     const QString &,
                                                                      const QStringList &, const QStringList &,
                                                                      const QStringList &, const QStringList &)) );
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
@@ -859,20 +836,19 @@ void MainWidget::engineStarted()
                                          m_sbwidget, SLOT(removePeer(const QString &)) );
                         } else if (dc == QString("parking")) {
                                 m_parkingpanel = new ParkingPanel();
-                                m_parkingpanel->setEngine(m_engine);
                                 addPanel("parking", tr("Parking"), m_parkingpanel);
                                 
                                 /* Parking Signals */
+                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                                         m_parkingpanel, SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(parkingEvent(const QString &, const QString &)),
                                          m_parkingpanel, SLOT(parkingEvent(const QString &, const QString &)));
                                 connect( m_parkingpanel, SIGNAL(copyNumber(const QString &)),
                                          m_engine, SLOT(copyNumber(const QString &)) );
-                                connect( m_parkingpanel, SIGNAL(emitDial(const QString &, bool)),
-                                         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
-                                connect( m_parkingpanel, SIGNAL(transferCall(const QString &, const QString &)),
-                                         m_engine, SLOT(transferCall(const QString &, const QString &)) );
+                                connect( m_parkingpanel, SIGNAL(transferCall(const UserInfo *, const QString &, const QString &)),
+                                         m_engine, SLOT(transferCall(const UserInfo *, const QString &, const QString &)) );
                                 connect( m_parkingpanel, SIGNAL(originateCall(const QString &, const QString &)),
-                                         m_engine, SLOT(originateCallGoodAsterisk(const QString &, const QString &)) );
+                                         m_engine, SLOT(originateCall(const QString &, const QString &)) );
                                 connect( m_parkingpanel, SIGNAL(newParkEvent()),
                                          this, SLOT(newParkEvent()) );
                         } else if (dc == QString("fax")) {
@@ -895,16 +871,16 @@ void MainWidget::engineStarted()
 				m_searchpanel = new SearchPanel();
                                 addPanel("search", tr("Contacts"), m_searchpanel);
                                 
-				connect( m_engine, SIGNAL(updatePeer(const QString &, const QString &,
-								     const QString &, const QString &,
-								     const QString &, const QString &,
+				connect( m_engine, SIGNAL(updatePeer(const UserInfo *,
+								     const QString &,
 								     const QStringList &, const QStringList &,
 								     const QStringList &, const QStringList &)),
-					 m_searchpanel, SLOT(updatePeer(const QString &, const QString &,
-									const QString &, const QString &,
-									const QString &, const QString &,
+					 m_searchpanel, SLOT(updatePeer(const UserInfo *,
+									const QString &,
 									const QStringList &, const QStringList &,
 									const QStringList &, const QStringList &)) );
+                                connect( m_engine, SIGNAL(newUser(const UserInfo *)),
+                                         m_searchpanel, SLOT(newUser(const UserInfo *)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
 					 m_searchpanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
 				connect( m_engine, SIGNAL(peersReceived()),
@@ -994,15 +970,13 @@ void MainWidget::engineStarted()
 					 m_engine, SLOT(searchDirectory(const QString &)) );
 				connect( m_engine, SIGNAL(directoryResponse(const QString &)),
 					 m_dirpanel, SLOT(setSearchResponse(const QString &)) );
-				connect( m_dirpanel, SIGNAL(emitDial(const QString &, bool)),
-					 m_engine, SLOT(dialFullChannel(const QString &, bool)) );
 				connect( m_dirpanel, SIGNAL(copyNumber(const QString &)),
 					 m_engine, SLOT(copyNumber(const QString &)) );
+                                connect( m_dirpanel, SIGNAL(originateCall(const QString &, const QString &)),
+                                         m_engine, SLOT(originateCall(const QString &, const QString &)) );
                                 if(m_switchboard) {
-                                        connect( m_dirpanel, SIGNAL(transferCall(const QString &, const QString &)),
-                                                 m_engine, SLOT(transferCall(const QString &, const QString &)) );
-                                        connect( m_dirpanel, SIGNAL(originateCall(const QString &, const QString &)),
-                                                 m_engine, SLOT(originateCallGoodAsterisk(const QString &, const QString &)) );
+                                        connect( m_dirpanel, SIGNAL(transferCall(const UserInfo *, const QString &, const QString &)),
+                                                 m_engine, SLOT(transferCall(const UserInfo *, const QString &, const QString &)) );
                                         connect( m_engine, SIGNAL(updateMyCalls(const QStringList &,
                                                                                 const QStringList &, const QStringList &)),
                                                  m_dirpanel, SLOT(updateMyCalls(const QStringList &,
@@ -1156,7 +1130,7 @@ void MainWidget::engineStopped()
 
         showLogin();
         
-        if (m_withsystray && m_systrayIcon)
+        if(m_withsystray && m_systrayIcon)
                 m_systrayIcon->setIcon(m_icongrey);
         
         if(m_normalmenus) {
@@ -1205,12 +1179,12 @@ void MainWidget::showNewProfile(Popup * popup)
 			// close the first widget
 			m_cinfo_tabwidget->widget(0)->close();
 		}
-                connect( popup, SIGNAL(emitDial(const QString &, bool)),
-                         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
+                connect( popup, SIGNAL(originateCall(const QString &, const QString &)),
+                         m_engine, SLOT(originateCall(const QString &, const QString &)) );
                 connect( popup, SIGNAL(hangUp(const QString &)),
                          m_engine, SLOT(hangUp(const QString &)) );
-                connect( popup, SIGNAL(pickUp(const QString &)),
-                         m_engine, SLOT(pickUp(const QString &)) );
+                connect( popup, SIGNAL(pickUp(const UserInfo *, const QString &)),
+                         m_engine, SLOT(pickUp(const UserInfo *, const QString &)) );
 		// show the window and give it the focus.
 		setVisible(true);
 		activateWindow();
@@ -1286,7 +1260,7 @@ void MainWidget::closeEvent(QCloseEvent *event)
         // << "isMinimized =" << isMinimized()
         // << "isVisible ="   << isVisible()
         // << "isActiveWindow =" << isActiveWindow();
-        if(! m_withsystray)
+        if(m_withsystray == false)
                 return;
 
 #ifdef Q_WS_MAC

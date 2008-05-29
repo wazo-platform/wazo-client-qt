@@ -57,13 +57,15 @@
 
 /*! \brief Constructor
  */
-PeerWidget::PeerWidget(const QString & id,
-                       const QString & name,
+PeerWidget::PeerWidget(const UserInfo * ui,
                        const QHash<QString, QPixmap> & persons,
                        const QHash<QString, QPixmap> & phones,
                        const QHash<QString, QPixmap> & agents)
-	: m_id(id), m_name(name), m_phones(phones), m_persons(persons), m_agents(agents)
+	: m_phones(phones), m_persons(persons), m_agents(agents)
 {
+        m_ui = ui;
+        m_id = ui->userid();
+        m_name = ui->fullname();
 	//qDebug() << "PeerWidget::PeerWidget()" << id;
 	//	QHBoxLayout * layout = new QHBoxLayout(this);
         QFrame * qvline = new QFrame(this);
@@ -73,15 +75,27 @@ PeerWidget::PeerWidget(const QString & id,
 	QGridLayout * layout = new QGridLayout(this);
 	layout->setSpacing(2);
 	layout->setMargin(2);
-	m_statelbl = new QLabel();
+
+        int n = 0;
+        foreach (QString termname, ui->termlist()) {
+                m_lblphones[termname] = new ExtendedLabel();
+                m_lblphones[termname]->setPixmap( m_phones["grey"] );
+                m_lblphones[termname]->setToolTip( termname );
+                m_lblphones[termname]->setProperty("kind", "term");
+                connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
+                         this, SLOT(mouseDoubleClickEventAgent(QMouseEvent *)) );
+                layout->addWidget( m_lblphones[termname], 1, 4 + n, Qt::AlignLeft );
+                n++;
+        }
+
 	m_availlbl = new QLabel();
         m_agentlbl = new ExtendedLabel();
         m_voicelbl = new QLabel();
         m_fwdlbl   = new QLabel();
 
-	m_statelbl->setPixmap( m_phones["grey"] );
 	m_availlbl->setPixmap( m_persons["grey"] );
         m_agentlbl->setPixmap( m_agents["grey"] );
+        m_agentlbl->setProperty("kind", "agent");
         //         m_voicelbl->setPixmap(  );
         //         m_fwdlbl->setPixmap(  );
 
@@ -95,11 +109,10 @@ PeerWidget::PeerWidget(const QString & id,
         layout->addWidget( qvline, 0, 0, 2, 1 );
 	layout->addWidget( m_textlbl, 0, 2, 1, 6, Qt::AlignLeft );
 	layout->addWidget( m_availlbl, 1, 2, Qt::AlignLeft );
-	layout->addWidget( m_statelbl, 1, 3, Qt::AlignLeft );
-	layout->addWidget( m_agentlbl, 1, 4, Qt::AlignLeft );
+	layout->addWidget( m_agentlbl, 1, 3, Qt::AlignLeft );
         //         layout->addWidget( m_voicelbl, 1, 5, Qt::AlignLeft );
         //         layout->addWidget( m_fwdlbl,   1, 6, Qt::AlignLeft );
-	layout->setColumnStretch(8, 1);
+	layout->setColumnStretch(20, 1);
 
         connect( m_agentlbl, SIGNAL(dial(QMouseEvent *)),
                  this, SLOT(mouseDoubleClickEventAgent(QMouseEvent *)) );
@@ -124,70 +137,16 @@ PeerWidget::~PeerWidget()
         clearChanList();
 }
 
-void PeerWidget::setRed(int n)
-{
-	//m_square.fill( Qt::red );
-	if(n == 0)
-                m_statelbl->setPixmap(m_phones["red"]);
-	else if(n == 1)
-                m_availlbl->setPixmap(m_persons["red"]);
-	else if(n == 2)
-                m_agentlbl->setPixmap(m_agents["red"]);
-}
-
-void PeerWidget::setGreen(int n)
-{
-	//m_square.fill( Qt::green );
-	if(n == 0)
-                m_statelbl->setPixmap(m_phones["green"]);
-	else if(n == 1)
-                m_availlbl->setPixmap(m_persons["green"]);
-	else if(n == 2)
-                m_agentlbl->setPixmap(m_agents["green"]);
-}
-
-void PeerWidget::setGray(int n)
-{
-	//m_square.fill( Qt::gray );
-	if(n == 0)
-                m_statelbl->setPixmap(m_phones["grey"]);
-	else if(n == 1)
-                m_availlbl->setPixmap(m_persons["grey"]);
-	else if(n == 2)
-                m_agentlbl->setPixmap(m_agents["grey"]);
-}
-
-void PeerWidget::setBlue(int n)
+// blue, yellow, orange, grey, green, red
+void PeerWidget::setColor(const QString & kind, const QString & color)
 {
 	//m_square.fill( Qt::blue );
-	if(n == 0)
-                m_statelbl->setPixmap(m_phones["blue"]);
-	else if(n == 1)
-                m_availlbl->setPixmap(m_persons["blue"]);
-	else if(n == 2)
-                m_agentlbl->setPixmap(m_agents["blue"]);
-}
-
-void PeerWidget::setYellow(int n)
-{
-	//m_square.fill( Qt::yellow );
-	if(n == 0)
-                m_statelbl->setPixmap(m_phones["yellow"]);
-	else if(n == 1)
-                m_availlbl->setPixmap(m_persons["yellow"]);
-	else if(n == 2)
-                m_agentlbl->setPixmap(m_agents["yellow"]);
-}
-
-void PeerWidget::setOrange(int n)
-{
-	//m_square.fill( QColor(255,127,0) );
-	if(n == 0)
-                m_statelbl->setPixmap(m_phones["orange"]);
-	else if(n == 1)
-                m_availlbl->setPixmap(m_persons["orange"]);
-	else if(n == 2)
-                m_agentlbl->setPixmap(m_agents["orange"]);
+	if(kind == "presence")
+                m_availlbl->setPixmap(m_persons[color]);
+	else if(kind == "agent")
+                m_agentlbl->setPixmap(m_agents[color]);
+        else if(m_lblphones.contains(kind))
+                m_lblphones[kind]->setPixmap(m_phones[color]);
 }
 
 void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & queues)
@@ -204,7 +163,7 @@ void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & q
         }
 }
 
-/*! \brief hid this widget from the panel
+/*! \brief hide this widget from the panel
  */
 void PeerWidget::removeFromPanel()
 {
@@ -217,15 +176,7 @@ void PeerWidget::removeFromPanel()
 void PeerWidget::dial()
 {
 	qDebug() << "PeerWidget::dial()" << m_id;
-        emitDial(m_id, false);
-}
-
-/*! \brief call this peer
- */
-void PeerWidget::dialAgent()
-{
-	qDebug() << "PeerWidget::dialAgent()" << m_id;
-        emitDial(m_id, true);
+        originateCall("user:special:me", "user:" + m_id);
 }
 
 /*! \brief mouse press. store position
@@ -254,9 +205,10 @@ void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 	//qDebug() << "PeerWidget::mouseMoveEvent() startDrag";
 	QDrag *drag = new QDrag(this);
 	QMimeData *mimeData = new QMimeData;
-	qDebug() << "PeerWidget::mouseMoveEvent()" << m_id;
-	mimeData->setText(m_id/*m_textlbl->text()*/);
+	qDebug() << "PeerWidget::mouseMoveEvent()" << m_id << m_ui->phonenum();
+	mimeData->setText(m_ui->phonenum());
 	mimeData->setData(PEER_MIMETYPE, m_id.toAscii());
+	mimeData->setData("userid", m_id.toAscii());
 	mimeData->setData("name", m_name.toUtf8());
 	drag->setMimeData(mimeData);
 
@@ -275,8 +227,10 @@ void PeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 void PeerWidget::mouseDoubleClickEventAgent(QMouseEvent * event)
 {
         // qDebug() << "PeerWidget::mouseDoubleClickEventAgent" << event;
+        QString propkind = this->sender()->property("kind").toString();
+        // qDebug() << "PeerWidget::mouseDoubleClickEventAgent" << propkind;
         if(event->button() == Qt::LeftButton)
-                dialAgent();
+                dial();
 }
 
 /*! \brief  
@@ -317,8 +271,9 @@ void PeerWidget::dragMoveEvent(QDragMoveEvent *event)
  */
 void PeerWidget::dropEvent(QDropEvent *event)
 {
-	QString from = event->mimeData()->text();
+	QString from = QString::fromAscii(event->mimeData()->data("userid"));
 	QString to = m_id;
+        qDebug() << event << event->mimeData();
         // 	qDebug() << "PeerWidget::dropEvent() :" << from << "on" << to;
         // 	qDebug() << " possibleActions=" << event->possibleActions();
         // 	qDebug() << " proposedAction=" << event->proposedAction();
@@ -341,7 +296,7 @@ void PeerWidget::dropEvent(QDropEvent *event)
                         transferCall(from, to);
 		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
 			event->acceptProposedAction();
-			originateCall(from, to);
+			originateCall("user:" + from, "user:" + to);
 		} else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
 			event->acceptProposedAction();
                         originateCall(to, from);

@@ -75,6 +75,7 @@ private:
         QScrollArea * m_scrollarea;
 	QWidget * m_widget;
 
+        QString m_astid;
         QString m_agent;
         QLabel * m_agentname;
         QLabel * m_agentstatus;

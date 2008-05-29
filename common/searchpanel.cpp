@@ -48,6 +48,7 @@
 #include "peerwidget.h"
 #include "baseengine.h"
 #include "extendedlineedit.h"
+#include "userinfo.h"
 
 SearchPanel::SearchPanel(QWidget * parent)
         : QWidget(parent)
@@ -72,28 +73,15 @@ SearchPanel::SearchPanel(QWidget * parent)
 	scrollarealayout->addStretch( 1 );
 	vlayout->addWidget(scrollarea);
 
-        m_persons["red"] = QPixmap(":/images/personal-red.png");
-        m_persons["blue"] = QPixmap(":/images/personal-blue.png");
-        m_persons["green"] = QPixmap(":/images/personal-green.png");
-        m_persons["grey"] = QPixmap(":/images/personal-grey.png");
-        m_persons["orange"] = QPixmap(":/images/personal-orange.png");
-        m_persons["yellow"] = QPixmap(":/images/personal-yellow.png");
-
-        m_phones["red"] = QPixmap(":/images/phone-red.png");
-        m_phones["blue"] = QPixmap(":/images/phone-blue.png");
-        m_phones["green"] = QPixmap(":/images/phone-green.png");
-        m_phones["grey"] = QPixmap(":/images/phone-grey.png");
-        m_phones["orange"] = QPixmap(":/images/phone-orange.png");
-        m_phones["yellow"] = QPixmap(":/images/phone-yellow.png");
-
-        m_agents["red"] = QPixmap(":/images/agent-red.png");
-        m_agents["blue"] = QPixmap(":/images/agent-blue.png");
-        m_agents["green"] = QPixmap(":/images/agent-green.png");
-        m_agents["grey"] = QPixmap(":/images/agent-grey.png");
-        m_agents["orange"] = QPixmap(":/images/agent-orange.png");
-        m_agents["yellow"] = QPixmap(":/images/agent-yellow.png");
+        QStringList colors = (QStringList() << "red" << "blue" << "green" << "grey" << "orange" << "yellow");
+        foreach(QString color, colors) {
+                m_persons[color] = QPixmap(":/images/personal-" + color + ".png");
+                m_phones[color] = QPixmap(":/images/phone-" + color + ".png");
+                m_agents[color] = QPixmap(":/images/agent-" + color + ".png");
+        }
 
         m_maxdisplay = 15;
+        m_ncolumns = 4;
         m_searchpattern = "";
 }
 
@@ -108,6 +96,7 @@ void SearchPanel::setEngine(BaseEngine * engine)
         qDebug() << "SearchPanel::setEngine()";
 	m_engine = engine;
         m_maxdisplay = m_engine->contactsSize();
+        m_ncolumns = m_engine->contactsColumns();
         askCallerIds();
 }
 
@@ -137,8 +126,6 @@ void SearchPanel::affTextChanged(const QString & text)
                                 m_peerlayout->removeWidget( peerwidget );
                                 peerwidget->hide();
                                 if(m_engine->isASwitchboard()) {
-                                        disconnect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
-                                                    m_engine, SLOT(originateCall(const QString&, const QString&)) );
                                         disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                                                     m_engine, SLOT(transferCall(const QString&, const QString&)) );
                                         disconnect( peerwidget, SIGNAL(hangUpChan(const QString &)),
@@ -148,8 +135,8 @@ void SearchPanel::affTextChanged(const QString & text)
                                         disconnect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
                                                     peerwidget, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
                                 }
-                                disconnect( peerwidget, SIGNAL(emitDial(const QString &, bool)),
-                                            m_engine, SLOT(dialFullChannel(const QString &, bool)) );
+                                disconnect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
+                                            m_engine, SLOT(originateCall(const QString&, const QString&)) );
                                 peeritem->setWidget(NULL);
                                 delete peerwidget;
                         }
@@ -165,8 +152,7 @@ void SearchPanel::affTextChanged(const QString & text)
 
                 if( peeritem->name().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
                         if(peerwidget == NULL) {
-                                peerwidget = new PeerWidget(peeritem->ext(),
-                                                            peeritem->name(),
+                                peerwidget = new PeerWidget(peeritem->userinfo(),
                                                             m_persons,
                                                             m_phones,
                                                             m_agents);
@@ -176,12 +162,10 @@ void SearchPanel::affTextChanged(const QString & text)
                                 peeritem->updateDisplayedChans();
                                 peeritem->updateDisplayedName();
 
-                                m_peerlayout->addWidget(peerwidget, naff / 4, naff % 4);
+                                m_peerlayout->addWidget(peerwidget, naff / m_ncolumns, naff % m_ncolumns);
                                 naff ++;
                                 peerwidget->show();
                                 if(m_engine->isASwitchboard()) {
-                                        connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
-                                                 m_engine, SLOT(originateCall(const QString&, const QString&)) );
                                         connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                                                  m_engine, SLOT(transferCall(const QString&, const QString&)) );
                                         connect( peerwidget, SIGNAL(hangUpChan(const QString &)),
@@ -191,8 +175,8 @@ void SearchPanel::affTextChanged(const QString & text)
                                         connect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
                                                  peerwidget, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
                                 }
-                                connect( peerwidget, SIGNAL(emitDial(const QString &, bool)),
-                                         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
+                                connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
+                                         m_engine, SLOT(originateCall(const QString&, const QString&)) );
                         }
                 }
  	}
@@ -200,37 +184,41 @@ void SearchPanel::affTextChanged(const QString & text)
 
 /*! \brief update peer
  */
-void SearchPanel::updatePeer(const QString & ext,
-                             const QString & name,
-			     const QString & imavail,
+void SearchPanel::updatePeer(const UserInfo * ui,
 			     const QString & sipstatus,
-			     const QString & vmstatus,
-			     const QString & agentstatus,
 			     const QStringList & chanIds,
 			     const QStringList & chanStates,
 			     const QStringList & chanOthers,
                              const QStringList &)
 {
+        QString ext = ui->userid();
+        QString name = ui->fullname();
         // qDebug() << "SearchPanel::updatePeer()";
         if(m_peerhash.contains(ext)) {
                 PeerItem * peeritem = m_peerhash.value(ext);
-                peeritem->updateStatus(imavail, sipstatus, vmstatus, agentstatus);
+                peeritem->updateStatus(sipstatus);
                 peeritem->updateChans(chanIds, chanStates, chanOthers);
                 peeritem->updateName(name);
                 return;
         }
 
-        
         // if the name (i.e. full callerid info) has not been received yet, do not add as a peer
         if(name.isEmpty())
                 return;
-        
-	PeerItem * peer = new PeerItem(ext, name);
-	peer->updateStatus(imavail, sipstatus, vmstatus, agentstatus);
-	peer->updateChans(chanIds, chanStates, chanOthers);
-        m_peerhash.insert(ext, peer);
+
+	PeerItem * peeritem = new PeerItem(ui);
+	peeritem->updateStatus(sipstatus);
+	peeritem->updateChans(chanIds, chanStates, chanOthers);
+        m_peerhash.insert(ext, peeritem);
 
         // the peerwidget is not set while its display is not needed, see affTextChanged()
+}
+
+void SearchPanel::newUser(const UserInfo * ui)
+{
+        qDebug() << ui;
+        PeerItem * peeritem = new PeerItem(ui);
+        m_peerhash.insert(ui->userid(), peeritem);
 }
 
 void SearchPanel::updatePeerAgent(const QString & ext,

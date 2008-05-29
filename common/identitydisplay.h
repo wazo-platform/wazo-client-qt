@@ -63,7 +63,7 @@ public:
 	IdentityDisplay(QWidget * parent = 0);
 protected:
 public slots:
-        void setUserInfo(const QString &, const UserInfo &);
+        void setUserInfo(const UserInfo *);
 	void setQueueList(const QString &);
 	void updatePeerAgent(const QString &, const QString &);
 	void setQueueStatus(const QString &);
@@ -85,7 +85,7 @@ private:
         QHash<QString, bool> m_queuesstatuses;
         QHash<QString, QString> m_queuesbusyness;
 
-        QString m_userid;
+        const UserInfo * m_ui;
         bool m_agentstatus;
         bool m_queuechangeallow;
 signals:

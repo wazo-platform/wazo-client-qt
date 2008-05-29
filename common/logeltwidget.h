@@ -73,7 +73,7 @@ private slots:
 	void callBackPeer();
 	void doNotCallBackPeer();
 signals:
-	void emitDial(const QString &, bool);		//!< signal to dial back.
+	void originateCall(const QString &, const QString &);		//!< signal to dial back.
         void copyNumber(const QString &);
 private:
 	QDateTime m_dateTime;	//!< date time of the call 

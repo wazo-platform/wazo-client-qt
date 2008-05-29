@@ -110,14 +110,15 @@ void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 void DialPanel::dropEvent(QDropEvent * event)
 {
 	QString ext;
-	QString originator = event->mimeData()->text();
+	QString originator = QString::fromAscii(event->mimeData()->data("userid"));
 	if(m_input->lineEdit()) {
                 qDebug() << "DialPanel::dropEvent()" << event << originator << m_input->lineEdit()->text();
                 ext = m_input->lineEdit()->text();
                 ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
                 if(ext.length() == 0)	// do nothing if the string is empty
                         return;
-                originateCall(originator, m_input->lineEdit()->text());
+                originateCall("user:" + originator,
+                              "ext:" + m_input->lineEdit()->text());
                 m_input->insertItem(0, ext); // add to history
                 // remove the older items related to the same number
                 for(int i=1; i<m_input->count(); ) {
@@ -143,18 +144,17 @@ void DialPanel::dropEvent(QDropEvent * event)
 
 /*! \brief the input was validated
  *
- * check the input and call emitDial() if ok.
+ * check the input and call originateCall() if ok.
  */
 void DialPanel::inputValidated()
 {
 	QString ext;
-	if(m_input->lineEdit())
-	{
+	if(m_input->lineEdit()) {
 		ext = m_input->lineEdit()->text();
                 ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
                 if(ext.length() == 0)	// do nothing if the string is empty
                         return;
-                emitDial(ext, false);
+                originateCall("user:special:me", "ext:" + ext);
                 m_input->insertItem(0, ext); // add to history
                 // remove the older items related to the same number
                 for(int i=1; i<m_input->count(); ) {

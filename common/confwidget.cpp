@@ -106,28 +106,47 @@ ConfWidget::ConfWidget(BaseEngine * engine,
         // Functions Tab
         //
         
-        QVBoxLayout * vbox = new QVBoxLayout();
+	QGridLayout * gridlayout2 = new QGridLayout();
         QWidget * widget_functions = new QWidget();
-        widget_functions->setLayout(vbox);
+        widget_functions->setLayout(gridlayout2);
+        line = 0;
 
         QStringList qsl = m_engine->getSettings()->value("display/capas", "").toString().split(",");
         if(qsl.contains("presence")) {
                 m_presence = new QCheckBox(tr("Presence reporting"));
                 m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
-                vbox->addWidget( m_presence );
+                gridlayout2->addWidget( m_presence, line++, 1 );
         }
 
         if(qsl.contains("customerinfo")) {
                 m_cinfo = new QCheckBox(tr("Customer Info"));
                 m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
-                vbox->addWidget( m_cinfo );
+                gridlayout2->addWidget( m_cinfo, line++, 1 );
         }
 
         m_autourl = new QCheckBox(tr("Allow the Automatic Opening of URLs"));
         m_autourl->setCheckState(m_engine->checkedAutoUrl() ? Qt::Checked : Qt::Unchecked);
-        vbox->addWidget( m_autourl );
+        gridlayout2->addWidget( m_autourl, line++, 0, 1, 2 );
 
- 	vbox->addStretch(1);
+	gridlayout2->addWidget(new QLabel(tr("History size"), this), line, 0);
+	m_history_sbox = new QSpinBox(this);
+	m_history_sbox->setRange(1, 20);
+	m_history_sbox->setValue(m_engine->historySize());
+	gridlayout2->addWidget(m_history_sbox, line++, 1);
+
+	gridlayout2->addWidget(new QLabel(tr("Contacts' max number"), this), line, 0);
+	m_contactssize_sbox = new QSpinBox(this);
+	m_contactssize_sbox->setRange(1, 50);
+	m_contactssize_sbox->setValue(m_engine->contactsSize());
+	gridlayout2->addWidget(m_contactssize_sbox, line++, 1);
+
+	gridlayout2->addWidget(new QLabel(tr("Contacts' width"), this), line, 0);
+	m_contactswidth_sbox = new QSpinBox(this);
+	m_contactswidth_sbox->setRange(1, 5);
+	m_contactswidth_sbox->setValue(m_engine->contactsColumns());
+	gridlayout2->addWidget(m_contactswidth_sbox, line++, 1);
+
+ 	gridlayout2->setRowStretch( line, 1 );
 
         // Box for Connection Definition
         //	QGroupBox * groupBox_conn = new QGroupBox( tr("Identification"), this );
@@ -142,6 +161,12 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	QGridLayout * gridlayout3 = new QGridLayout();
         QWidget * widget_user = new QWidget();
         widget_user->setLayout(gridlayout3);
+        line = 0;
+
+        m_lblcompany = new QLabel(tr("Company"), this);
+	m_company = new QLineEdit(m_engine->company(), this);
+        gridlayout3->addWidget(m_lblcompany, line, 0);
+        gridlayout3->addWidget(m_company, line++, 1);
 
 	m_lblulogin = new QLabel(tr("User Login"), this);
 	m_userid = new QLineEdit(m_engine->userId(), this);
@@ -154,55 +179,22 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	gridlayout3->addWidget(m_lblpasswd, line, 0);
 	gridlayout3->addWidget(m_passwd, line++, 1);
 
-        QLabel * lblloginkind = new QLabel(tr("Login as Agent"), this);
-	m_loginkind = new QCheckBox(this);
-	m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
- 	gridlayout3->addWidget(lblloginkind, line, 0);
-	gridlayout3->addWidget(m_loginkind, line++, 1);
-
-	connect( m_loginkind, SIGNAL(stateChanged(int)),
-	         this, SLOT(loginKindChanged(int)) );
+	m_keeppass = new QCheckBox(tr("Keep Password"));
+	m_keeppass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
+	gridlayout3->addWidget(m_keeppass, line++, 0, 1, 2);
 
         QFrame * qhline3 = new QFrame(this);
         qhline3->setFrameShape(QFrame::HLine);
         gridlayout3->addWidget(qhline3, line++, 0, 1, 0);
 
-        m_lblasterisk = new QLabel(tr("XIVO Id"), this);
-	m_asterisk = new QLineEdit(m_engine->serverast(), this);
-        gridlayout3->addWidget(m_lblasterisk, line, 0);
-        gridlayout3->addWidget(m_asterisk, line++, 1);
-
-        QFrame * qhline4 = new QFrame(this);
-        qhline4->setFrameShape(QFrame::HLine);
-        gridlayout3->addWidget(qhline4, line++, 0, 1, 0);
-
+	m_loginkind = new QCheckBox(tr("Login as Agent"));
+	m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
+	gridlayout3->addWidget(m_loginkind, line++, 0, 1, 2);
+        
 	m_lblphone = new QLabel(tr("Phone Number"), this);
         m_phonenumber = new QLineEdit(m_engine->phonenumber(), this);
         gridlayout3->addWidget(m_lblphone, line, 0);
         gridlayout3->addWidget(m_phonenumber, line++, 1);
-
-	QLabel * lblproto = new QLabel(tr("Protocol"), this);
-	m_protocombo = new QComboBox(this);
-	m_protocombo->addItem(QString("SIP"));
-	m_protocombo->addItem(QString("IAX"));
-	if(m_engine->protocol().toLower() == QString("sip"))
-		m_protocombo->setCurrentIndex(0);
-	else
-		m_protocombo->setCurrentIndex(1);
-	gridlayout3->addWidget(lblproto, line, 0);
-	gridlayout3->addWidget(m_protocombo, line++, 1);
-
-
-        QFrame * qhline5 = new QFrame(this);
-        qhline5->setFrameShape(QFrame::HLine);
-        gridlayout3->addWidget(qhline5, line++, 0, 1, 0);
-
-	m_lblalogin = new QLabel(tr("Agent Id"), this);
-	m_agentid = new QLineEdit(m_engine->agentId(), this);
-	gridlayout3->addWidget(m_lblalogin, line, 0);
-	gridlayout3->addWidget(m_agentid, line++, 1);
-
-        this->loginKindChanged(m_loginkind->checkState());
 
  	gridlayout3->setRowStretch( line, 1 );
 
@@ -213,6 +205,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	QGridLayout * gridlayout4 = new QGridLayout();
         QWidget * widget_gui = new QWidget();
         widget_gui->setLayout(gridlayout4);
+        line = 0;
 
         QString lastconn = tr("The last connected one takes on the login");
         //m_lastconnwins = new QCheckBox(tr("The last connected one takes on the login"), this);
@@ -239,23 +232,15 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	m_kainterval_sbox->setValue(m_engine->keepaliveinterval() / 1000);
 	gridlayout4->addWidget(m_kainterval_sbox, line++, 1);
 
+        QFrame * qhline5 = new QFrame(this);
+        qhline5->setFrameShape(QFrame::HLine);
+        gridlayout4->addWidget(qhline5, line++, 0, 1, 0);
+
 	gridlayout4->addWidget(new QLabel(tr("Tab limit"), this), line, 0);
 	m_tablimit_sbox = new QSpinBox(this);
 	m_tablimit_sbox->setRange(0, 99);
 	m_tablimit_sbox->setValue(m_mainwindow->tablimit());
 	gridlayout4->addWidget(m_tablimit_sbox, line++, 1);
-
-	gridlayout4->addWidget(new QLabel(tr("History size"), this), line, 0);
-	m_history_sbox = new QSpinBox(this);
-	m_history_sbox->setRange(1, 20);
-	m_history_sbox->setValue(m_engine->historySize());
-	gridlayout4->addWidget(m_history_sbox, line++, 1);
-
-	gridlayout4->addWidget(new QLabel(tr("Contacts' size"), this), line, 0);
-	m_contacts_sbox = new QSpinBox(this);
-	m_contacts_sbox->setRange(1, 50);
-	m_contacts_sbox->setValue(m_engine->contactsSize());
-	gridlayout4->addWidget(m_contacts_sbox, line++, 1);
 
         if(m_engine->isASwitchboard() == false) {
                 m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
@@ -272,25 +257,13 @@ ConfWidget::ConfWidget(BaseEngine * engine,
                 this, SLOT(close()));
 	m_btnbox->button(QDialogButtonBox::Ok)->setDefault(true);
 
+        tabwidget->addTab(widget_user, tr("Account(s)"));
         tabwidget->addTab(widget_connection, tr("Connection"));
-        tabwidget->addTab(widget_user, tr("Users"));
         tabwidget->addTab(widget_functions, tr("Functions"));
         tabwidget->addTab(widget_gui, tr("GUI Settings"));
 
 	vlayout->addWidget(tabwidget);
 	vlayout->addWidget(m_btnbox);
-}
-
-
-void ConfWidget::loginKindChanged(int index)
-{
-        if(index == 0) {
-                m_lblalogin->hide();
-                m_agentid->hide();
-        } else {
-                m_lblalogin->show();
-                m_agentid->show();
-        }
 }
 
 
@@ -305,12 +278,11 @@ void ConfWidget::saveAndClose()
         m_engine->setAddress(m_serverhost->text(), m_sbport->text().toUShort());
 	m_engine->setServerip(m_serverhost->text());
 
-	m_engine->setServerAst(m_asterisk->text());
-	m_engine->setProtocol(m_protocombo->currentText().toLower());
+	m_engine->setCompany(m_company->text());
         m_engine->setLoginKind(m_loginkind->checkState());
+        m_engine->setKeepPass(m_keeppass->checkState());
 
 	m_engine->setUserId(m_userid->text());
-	m_engine->setAgentId(m_agentid->text());
 	m_engine->setPhonenumber(m_phonenumber->text());
 
 	m_engine->setPassword(m_passwd->text());
@@ -327,7 +299,8 @@ void ConfWidget::saveAndClose()
         m_engine->setCheckedAutoUrl(m_autourl->checkState() == Qt::Checked);
 
 	m_engine->setHistorySize(m_history_sbox->value());
-	m_engine->setContactsSize(m_contacts_sbox->value());
+	m_engine->setContactsSize(m_contactssize_sbox->value());
+	m_engine->setContactsColumns(m_contactswidth_sbox->value());
         if(m_engine->isASwitchboard() == false)
                 m_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
         // m_engine->setLastConnWins(m_lastconnwins->checkState() == Qt::Checked);
