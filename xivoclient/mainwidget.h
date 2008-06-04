@@ -106,9 +106,6 @@ public:
 	//! Constructor
 	MainWidget(BaseEngine *,
                    const QString &,
-                   const QString &,
-                   const QString &,
-                   const QString &,
                    QWidget * parent=0);
 	//! Destructor
         virtual ~MainWidget();
@@ -117,6 +114,7 @@ public:
 	void setTablimit(int);	//!< setter for m_tablimit
 	void setForceTabs(bool);//!< setter for m_forcetabs
 	void setAppearance(const QString &);	//!< dock options
+	void clearAppearance();
 public slots:
         void dispurl(const QUrl &url);
 private slots:
@@ -150,6 +148,7 @@ private:
 	void createMenus();		//!< Create Menus
 	void createSystrayIcon();	//!< Create the systray Icon and its menu
         void savePositions() const;
+        void updateAppliName();
 
 	BaseEngine * m_engine;	//!< Engine
 	QSystemTrayIcon * m_systrayIcon;	//!< System Tray Icon
@@ -200,7 +199,6 @@ private:
 
         bool m_withsystray;
         bool m_loginfirst;
-        bool m_switchboard;
         bool m_normalmenus;
 
         QHash<QString, QDockWidget *> m_docks;
@@ -232,6 +230,9 @@ private:
 	QAction * m_avact_otl;		//!< "out to lunch" action
 	QAction * m_avact_away;		//!< "away" action
 	QLabel * m_status;	//!< status indicator
+
+        QMenu * m_filemenu;
+        QMenu * m_helpmenu;
 
         QDateTime m_launchDateTime;
         QSettings * m_settings;

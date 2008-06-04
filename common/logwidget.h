@@ -46,8 +46,10 @@
 #include "logeltwidget.h"
 
 class QVBoxLayout;
-class BaseEngine;
 class QRadioButton;
+
+class BaseEngine;
+class UserInfo;
 
 /*! \brief Call Log display widget
  */
@@ -67,6 +69,7 @@ public slots:
 	void addLogEntry(const QDateTime & dt, int,
                          const QString &, const QString &);
 	void setPeerToDisplay(const QString &);
+        void setUserInfo(const UserInfo * ui);
 private slots:
 	void modeChanged(bool);
 signals:
@@ -80,7 +83,7 @@ private:
 	QRadioButton * m_radioOut;		//!< "Out" radio button
 	QRadioButton * m_radioIn;		//!< "In" radio button
 	QRadioButton * m_radioMissed;	//!< "Missed" radio button
+        const UserInfo * m_userinfo_owner;
 };
 
 #endif
-

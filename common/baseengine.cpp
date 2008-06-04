@@ -65,7 +65,7 @@ BaseEngine::BaseEngine(QSettings * settings,
                        QObject * parent)
         : QObject(parent),
 	  m_serverhost(""), m_loginport(0), m_sbport(0),
-          m_asterisk(""), m_company(""), m_protocol(""), m_userid(""), m_phonenumber(""), m_passwd(""),
+          m_company(""), m_protocol(""), m_userid(""), m_phonenumber(""), m_passwd(""),
           m_checked_presence(false), m_checked_cinfo(false),
           m_sessionid(""), m_state(ENotLogged),
           m_pendingkeepalivemsg(0)
@@ -164,7 +164,6 @@ void BaseEngine::loadSettings()
 	m_keeppass    = m_settings->value("keeppass", 0).toUInt();
 	m_phonenumber = m_settings->value("phonenumber").toString();
         m_protocol = "sip";
-        m_asterisk = "xivo";
 
 	m_autoconnect = m_settings->value("autoconnect", false).toBool();
 	m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
@@ -350,6 +349,16 @@ const QStringList & BaseEngine::getCapabilities() const
         return m_capabilities;
 }
 
+const QString & BaseEngine::getCapaDisplay() const
+{
+        return m_capadisplay;
+}
+
+const QString & BaseEngine::getCapaApplication() const
+{
+        return m_capaappli;
+}
+
 const QStringList & BaseEngine::getCapaFeatures() const
 {
         return m_capafeatures;
@@ -404,6 +413,11 @@ void BaseEngine::setOutToLunch()
 void BaseEngine::setDoNotDisturb()
 {
 	setAvailState("donotdisturb", false);
+}
+
+bool BaseEngine::hasFunction(const QString & func)
+{
+        return m_capabilities.contains("func-" + func);
 }
 
 /*! \brief send a command to the server 
@@ -837,11 +851,10 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 QTime currentTime = QTime::currentTime();
                 QStringList message = listitems[1].split("::");
                 // message[0] : emitter name
-                if(m_is_a_switchboard)
-                        if(message.size() == 2)
-                                emitTextMessage(message[0] + tr(" said : ") + message[1]);
-                        else
-                                emitTextMessage(tr("Unknown") + tr(" said : ") + listitems[1]);
+                if(message.size() == 2)
+                        emitTextMessage(message[0] + tr(" said : ") + message[1]);
+                else
+                        emitTextMessage(tr("Unknown") + tr(" said : ") + listitems[1]);
         } else if((listitems[0].toLower() == QString("featuresupdate")) && (listitems.size() == 2)) {
                 QStringList featuresupdate_list = listitems[1].split(";");
                 qDebug() << featuresupdate_list;
@@ -874,6 +887,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 newQueueList(listitems[1]);
 
         } else if(listitems[0].toLower() == QString("agents-list")) {
+                qDebug() << listitems;
                 newAgentList(listitems[1]);
 
         } else if(listitems[0].toLower() == QString("agent-status")) {
@@ -1063,14 +1077,17 @@ void BaseEngine::socketReadyRead()
                                         if(params_couple.size() == 2)
                                                 params_list[params_couple[0]] = params_couple[1];
                                 }
-                                qDebug() << params_list;
                                 m_dialcontext    = params_list["context"];
                                 m_extension      = params_list["phonenum"];
                                 m_capabilities   = params_list["capas"].split(",");
+                                m_capadisplay    = params_list["capadisp"].replace("-", ":");
+                                m_capaappli      = params_list["capaappli"];
                                 m_version_server = params_list["version"].toInt();
                                 m_xivover_server = params_list["xivoversion"];
                                 m_forced_state   = params_list["state"];
                                 m_capafeatures   = params_list["capas_features"].split(",");
+                                
+                                qDebug() << m_capadisplay << m_capaappli;
                                 
                                 if(m_version_server < REQUIRED_SERVER_VERSION) {
                                         stop();
@@ -1479,16 +1496,6 @@ void BaseEngine::timerEvent(QTimerEvent * event)
 	}
 }
 
-void BaseEngine::setIsASwitchboard(bool b)
-{
-	m_is_a_switchboard = b;
-}
-
-bool BaseEngine::isASwitchboard()
-{
-	return m_is_a_switchboard;
-}
-
 void BaseEngine::deleteRemovables()
 {
 	m_removable.clear();
@@ -1567,8 +1574,7 @@ void BaseEngine::askCallerIds()
         sendCommand("agents-list");
 	sendCommand("phones-list");
         sendCommand("queues-list");
-        // sendCommand("agents-list");
-        sendCommand("agents-status " + m_asterisk);
+        sendCommand("agents-status");
 }
 
 void BaseEngine::setSystrayed(bool b)
@@ -1632,7 +1638,7 @@ void BaseEngine::setState(EngineState state)
 	if(state != m_state) {
 		m_state = state;
 		if(state == ELogged) {
-                        m_enabled_presence = m_capabilities.contains("presence");
+                        m_enabled_presence = m_capabilities.contains("func-presence");
 			stopTryAgainTimer();
 			if(m_checked_presence && m_enabled_presence)
                                 availAllowChanged(true);
@@ -1647,15 +1653,17 @@ void BaseEngine::setState(EngineState state)
 
 void BaseEngine::changeWatchedAgentSlot(const QString & agentid)
 {
-        // qDebug() << "BaseEngine::changeWatchedAgentSlot()" << agentid;
-        sendCommand("agent-status " + m_asterisk + " " + agentid);
+        qDebug() << "BaseEngine::changeWatchedAgentSlot()" << agentid;
+        QString astid = m_users[m_company + "/" + m_userid]->astid();
+        sendCommand("agent-status " + astid + " " + agentid);
         // changeWatchedAgentSignal(agentid);
 }
 
 void BaseEngine::changeWatchedQueueSlot(const QString & queueid)
 {
-        // qDebug() << "BaseEngine::changeWatchedQueueSlot()" << queueid;
-        sendCommand("queue-status " + m_asterisk + " " + queueid);
+        qDebug() << "BaseEngine::changeWatchedQueueSlot()" << queueid;
+        QString astid = m_users[m_company + "/" + m_userid]->astid();
+        sendCommand("queue-status " + astid + " " + queueid);
         // changeWatchedQueueSignal(queueid);
 }
 
@@ -1669,12 +1677,7 @@ void BaseEngine::setOSInfos(const QString & osname)
 */
 void BaseEngine::setMyClientId()
 {
-        QString whatami;
-        if(m_is_a_switchboard)
-                whatami = QString("SB");
-        else
-                whatami = QString("XC");
-        m_clientid = whatami + "@" + m_osname;
+        m_clientid = "undef@" + m_osname;
 }
 
 /*!

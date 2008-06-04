@@ -111,29 +111,16 @@ QLabel * LeftPanel::titleLabel()
  */
 //        : QMainWindow(parent, Qt::FramelessWindowHint),
 MainWidget::MainWidget(BaseEngine * engine,
-                       const QString & pname,
                        const QString & osname,
-                       const QString & app_funcs,
-                       const QString & app_xlets,
                        QWidget * parent)
         : QMainWindow(parent),
           m_engine(engine), m_systrayIcon(0),
           m_icon(":/images/xivoicon.png"), m_icongrey(":/images/xivoicon-grey.png")
 {
-        m_appliname = pname;
-        qDebug() << app_funcs;
+        m_appliname = "Clients";
         m_engine->setOSInfos(osname);
-        if(app_funcs == "switchboard") {
-                m_engine->setIsASwitchboard(true);
-                m_switchboard = true;
-                m_withsystray = false;
-                m_loginfirst = false;
-        } else {
-                m_engine->setIsASwitchboard(false);
-                m_switchboard = false;
-                m_withsystray = true;
-                m_loginfirst = true;
-        }
+        m_withsystray = true;
+        m_loginfirst = true;
         m_normalmenus = true;
 
         m_settings = m_engine->getSettings();
@@ -167,8 +154,7 @@ MainWidget::MainWidget(BaseEngine * engine,
                          statusBar(), SLOT(showMessage(const QString &)));
         
         // to be better defined
-        if(! m_switchboard)
-                resize(500, 400);
+        // resize(500, 400);
         restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
 	m_wid = new QWidget();
 	m_gridlayout = new QGridLayout(m_wid);
@@ -214,8 +200,6 @@ MainWidget::MainWidget(BaseEngine * engine,
 
         if((m_withsystray && (m_engine->systrayed() == false)) || (! m_withsystray))
                 this->show();
-
-        setAppearance(app_xlets);
 }
 
 
@@ -262,6 +246,14 @@ void MainWidget::setAppearance(const QString & options)
         qDebug() << "grid : " << m_gridnames;
         qDebug() << "tab  : " << m_tabnames;
         qDebug() << "all  : " << m_allnames;
+}
+
+void MainWidget::clearAppearance()
+{
+        m_docknames.clear();
+        m_gridnames.clear();
+        m_tabnames.clear();
+        m_allnames.clear();
 }
 
 void MainWidget::config_and_start()
@@ -443,15 +435,15 @@ void MainWidget::checksAvailState()
 
 void MainWidget::createMenus()
 {
-	QMenu * filemenu = menuBar()->addMenu("&XIVO " + m_appliname);
-	filemenu->addAction( m_cfgact );
+	m_filemenu = menuBar()->addMenu("&XIVO " + m_appliname);
+	m_filemenu->addAction( m_cfgact );
         if(m_withsystray)
-                filemenu->addAction( m_systraymin );
-	filemenu->addSeparator();
-	filemenu->addAction( m_connectact );
-	filemenu->addAction( m_disconnectact );
-	filemenu->addSeparator();
-	filemenu->addAction( m_quitact );
+                m_filemenu->addAction( m_systraymin );
+	m_filemenu->addSeparator();
+	m_filemenu->addAction( m_connectact );
+	m_filemenu->addAction( m_disconnectact );
+	m_filemenu->addSeparator();
+	m_filemenu->addAction( m_quitact );
 
 	m_avail = menuBar()->addMenu(tr("&Availability"));
 	m_avail->addActions( m_availgrp->actions() );
@@ -459,9 +451,17 @@ void MainWidget::createMenus()
 	connect( m_engine, SIGNAL(availAllowChanged(bool)),
 	         m_avail, SLOT(setEnabled(bool)) );
 
-	QMenu * helpmenu = menuBar()->addMenu(tr("&Help"));
-	helpmenu->addAction(tr("&About XIVO %1").arg(m_appliname), this, SLOT(about()));
-	helpmenu->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
+	m_helpmenu = menuBar()->addMenu(tr("&Help"));
+	m_helpmenu->addAction(tr("&About XIVO %1").arg(m_appliname), this, SLOT(about()));
+	m_helpmenu->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
+}
+
+void MainWidget::updateAppliName()
+{
+	setWindowTitle("XIVO " + m_appliname);
+        if(m_withsystray && m_systrayIcon)
+                m_systrayIcon->setToolTip("XIVO " + m_appliname);
+	m_filemenu->setTitle("&XIVO " + m_appliname);
 }
 
 /*!
@@ -619,6 +619,10 @@ void MainWidget::engineStarted()
 	setForceTabs(false);
 	QStringList allowed_capas = m_engine->getCapabilities();
         m_settings->setValue("display/capas", allowed_capas.join(","));
+        setAppearance(m_engine->getCapaDisplay());
+
+        m_appliname = m_engine->getCapaApplication();
+        updateAppliName();
 
         hideLogin();
 
@@ -648,6 +652,8 @@ void MainWidget::engineStarted()
                                          m_historypanel, SLOT(clear()) );
                                 connect( m_engine, SIGNAL(setPeerToDisplay(const QString &)),
                                          m_historypanel, SLOT(setPeerToDisplay(const QString &)) );
+                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                                         m_historypanel, SLOT(setUserInfo(const UserInfo *)));
 
 			} else if (dc == QString("identity")) {
                                 m_infowidget = new IdentityDisplay();
@@ -741,10 +747,8 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(originateCall(const QString&, const QString&)) );
                                 connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
                                          m_dialpanel, SLOT(setNumberToDial(const QString &)) );
-                                if(m_switchboard) {
-                                        connect( m_dialpanel, SIGNAL(textEdited(const QString &)),
-                                                 m_engine, SLOT(textEdited(const QString &)) );
-                                }
+                                connect( m_dialpanel, SIGNAL(textEdited(const QString &)),
+                                         m_engine, SLOT(textEdited(const QString &)) );
                         } else if (dc == QString("video")) {
                                 m_videopanel = new PlayerWidget(this);
                                 addPanel("video", tr("Video"), m_videopanel);
@@ -792,12 +796,10 @@ void MainWidget::engineStarted()
                                          m_leftpanel->titleLabel(), SLOT(setText(const QString &)) );
                                 connect( m_calls, SIGNAL(monitoredPeerChanged(const QString &)),
                                          m_engine, SLOT(monitoredPeerChanged(const QString &)) );
-                                if(m_switchboard) {
-                                        connect( m_engine, SIGNAL(updateCall(const QString &, const QString &, int, const QString &,
-                                                                             const QString &, const QString &, const QString &)),
-                                                 m_calls, SLOT(addCall(const QString &, const QString &, int, const QString &,
-                                                                       const QString &, const QString &, const QString &)) );
-                                }
+                                connect( m_engine, SIGNAL(updateCall(const QString &, const QString &, int, const QString &,
+                                                                     const QString &, const QString &, const QString &)),
+                                         m_calls, SLOT(addCall(const QString &, const QString &, int, const QString &,
+                                                               const QString &, const QString &, const QString &)) );
                                 connect( m_engine, SIGNAL(callsUpdated()),
                                          m_calls, SLOT(updateDisplay()) );
                                 connect( m_engine, SIGNAL(delogged()),
@@ -887,12 +889,11 @@ void MainWidget::engineStarted()
 					 m_searchpanel, SLOT(callsUpdated()) );
 				connect( m_searchpanel, SIGNAL(askCallerIds()),
 					 m_engine, SLOT(askCallerIds()) );
-                                if(m_switchboard) {
-                                        connect( m_engine, SIGNAL(delogged()),
-                                                 m_searchpanel, SLOT(removePeers()) );
-                                        connect( m_engine, SIGNAL(removePeer(const QString &)),
-                                                 m_searchpanel, SLOT(removePeer(const QString &)) );
-                                }
+                                connect( m_engine, SIGNAL(delogged()),
+                                         m_searchpanel, SLOT(removePeers()) );
+                                connect( m_engine, SIGNAL(removePeer(const QString &)),
+                                         m_searchpanel, SLOT(removePeer(const QString &)) );
+
 				m_searchpanel->setEngine(m_engine);
                         } else if (dc == QString("features")) {
                                 m_featureswidget = new ServicePanel(m_engine->getCapaFeatures());
@@ -974,16 +975,14 @@ void MainWidget::engineStarted()
 					 m_engine, SLOT(copyNumber(const QString &)) );
                                 connect( m_dirpanel, SIGNAL(originateCall(const QString &, const QString &)),
                                          m_engine, SLOT(originateCall(const QString &, const QString &)) );
-                                if(m_switchboard) {
-                                        connect( m_dirpanel, SIGNAL(transferCall(const UserInfo *, const QString &, const QString &)),
-                                                 m_engine, SLOT(transferCall(const UserInfo *, const QString &, const QString &)) );
-                                        connect( m_engine, SIGNAL(updateMyCalls(const QStringList &,
-                                                                                const QStringList &, const QStringList &)),
-                                                 m_dirpanel, SLOT(updateMyCalls(const QStringList &,
-                                                                                const QStringList &, const QStringList &)) );
-                                        connect( m_engine, SIGNAL(delogged()),
-                                                 m_dirpanel, SLOT(stop()) );
-                                }
+                                connect( m_dirpanel, SIGNAL(transferCall(const UserInfo *, const QString &, const QString &)),
+                                         m_engine, SLOT(transferCall(const UserInfo *, const QString &, const QString &)) );
+                                connect( m_engine, SIGNAL(updateMyCalls(const QStringList &,
+                                                                        const QStringList &, const QStringList &)),
+                                         m_dirpanel, SLOT(updateMyCalls(const QStringList &,
+                                                                        const QStringList &, const QStringList &)) );
+                                connect( m_engine, SIGNAL(delogged()),
+                                         m_dirpanel, SLOT(stop()) );
 			} else if (dc == QString("instantmessaging")) {
                                 m_messagetosend = new QLineEdit();
                                 addPanel("instantmessaging", tr("Messages"), m_messagetosend);
@@ -994,7 +993,7 @@ void MainWidget::engineStarted()
                 }
         }
         
-        if(m_switchboard)
+        if(m_engine->hasFunction("switchboard"))
                 m_tabwidget->setCurrentIndex(0);
         else {
                 qDebug() << "display/lastfocusedtab =" << m_settings->value("display/lastfocusedtab");
@@ -1141,6 +1140,10 @@ void MainWidget::engineStopped()
                 QPixmap redsquare(":/images/disconnected.png");
                 m_status->setPixmap(redsquare);
         }
+
+        clearAppearance();
+        m_appliname = "Clients";
+        updateAppliName();
 }
 
 void MainWidget::setForceTabs(bool force)

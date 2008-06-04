@@ -104,7 +104,7 @@ public slots:
 private slots:
 	void transferChan(const QString &);
 	void removeFromPanel();
-        void mouseDoubleClickEventAgent(QMouseEvent *);
+        void mouseDoubleClickEventLocal(QMouseEvent *);
 	void dial();
 private:
 	BaseEngine * m_engine;  //!< Base Engine reference

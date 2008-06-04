@@ -76,46 +76,57 @@ PeerWidget::PeerWidget(const UserInfo * ui,
 	layout->setSpacing(2);
 	layout->setMargin(2);
 
-        int n = 0;
-        foreach (QString termname, ui->termlist()) {
-                m_lblphones[termname] = new ExtendedLabel();
-                m_lblphones[termname]->setPixmap( m_phones["grey"] );
-                m_lblphones[termname]->setToolTip( termname );
-                m_lblphones[termname]->setProperty("kind", "term");
-                connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
-                         this, SLOT(mouseDoubleClickEventAgent(QMouseEvent *)) );
-                layout->addWidget( m_lblphones[termname], 1, 4 + n, Qt::AlignLeft );
-                n++;
-        }
 
-	m_availlbl = new QLabel();
-        m_agentlbl = new ExtendedLabel();
+
+        // QLabels definitions
+        if(m_name.isEmpty())
+                qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_name is empty for :" << m_id;
+	m_textlbl = new QLabel(m_name.isEmpty() ? tr("(No callerid yet)") : m_name,
+                               this);
+	// set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
+	m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
+	m_availlbl = new ExtendedLabel();
+        m_availlbl->setPixmap(m_persons["grey"]);
+        m_availlbl->setProperty("kind", "person");
+        connect( m_availlbl, SIGNAL(dial(QMouseEvent *)),
+                 this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         m_voicelbl = new QLabel();
         m_fwdlbl   = new QLabel();
 
-	m_availlbl->setPixmap( m_persons["grey"] );
-        m_agentlbl->setPixmap( m_agents["grey"] );
-        m_agentlbl->setProperty("kind", "agent");
-        //         m_voicelbl->setPixmap(  );
-        //         m_fwdlbl->setPixmap(  );
+        foreach (QString termname, ui->termlist()) {
+                m_lblphones[termname] = new ExtendedLabel();
+                m_lblphones[termname]->setPixmap(m_phones["grey"]);
+                m_lblphones[termname]->setToolTip(termname);
+                m_lblphones[termname]->setProperty("kind", "term");
+                connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
+                         this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
+        }
 
-	m_textlbl = new QLabel(m_name.isEmpty() ? tr("(No callerid yet)") : m_name,
-                               this);
-        if(m_name.isEmpty())
-                qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_name is empty for :" << m_id;
-	// set TextInteraction Flags so the mouse clicks are not catched by the
-	// QLabel widget
-	m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
+        if(ui->agentid().size() > 0) {
+                m_agentlbl = new ExtendedLabel();
+                m_agentlbl->setPixmap(m_agents["grey"]);
+                m_agentlbl->setToolTip("Agent : " + ui->agentid());
+                m_agentlbl->setProperty("kind", "agent");
+                connect( m_agentlbl, SIGNAL(dial(QMouseEvent *)),
+                         this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
+        }
+
+
+        // Put the Labels into layouts
         layout->addWidget( qvline, 0, 0, 2, 1 );
 	layout->addWidget( m_textlbl, 0, 2, 1, 6, Qt::AlignLeft );
 	layout->addWidget( m_availlbl, 1, 2, Qt::AlignLeft );
-	layout->addWidget( m_agentlbl, 1, 3, Qt::AlignLeft );
-        //         layout->addWidget( m_voicelbl, 1, 5, Qt::AlignLeft );
-        //         layout->addWidget( m_fwdlbl,   1, 6, Qt::AlignLeft );
+        int n = 3;
+        foreach (QString termname, ui->termlist()) {
+                layout->addWidget( m_lblphones[termname], 1, n, Qt::AlignLeft );
+                n++;
+        }
+        if(ui->agentid().size() > 0) {
+                layout->addWidget( m_agentlbl, 1, n, Qt::AlignLeft );
+                n++;
+        }
 	layout->setColumnStretch(20, 1);
 
-        connect( m_agentlbl, SIGNAL(dial(QMouseEvent *)),
-                 this, SLOT(mouseDoubleClickEventAgent(QMouseEvent *)) );
 
 	// to be able to receive drop
 	setAcceptDrops(true);
@@ -175,7 +186,7 @@ void PeerWidget::removeFromPanel()
  */
 void PeerWidget::dial()
 {
-	qDebug() << "PeerWidget::dial()" << m_id;
+	qDebug() << "PeerWidget::dial()" << m_id << this->sender();
         originateCall("user:special:me", "user:" + m_id);
 }
 
@@ -194,7 +205,7 @@ void PeerWidget::mousePressEvent(QMouseEvent *event)
  */
 void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if (!m_engine->isASwitchboard())
+	if (!m_engine->hasFunction("switchboard"))
 		return;
 	if (!(event->buttons() & Qt::LeftButton))
 		return;
@@ -219,16 +230,15 @@ void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 
 void PeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 {
-        // qDebug() << "PeerWidget::mouseDoubleClickEvent" << event;
+        qDebug() << "PeerWidget::mouseDoubleClickEvent" << event;
         if(event->button() == Qt::LeftButton)
                 dial();
 }
 
-void PeerWidget::mouseDoubleClickEventAgent(QMouseEvent * event)
+void PeerWidget::mouseDoubleClickEventLocal(QMouseEvent * event)
 {
-        // qDebug() << "PeerWidget::mouseDoubleClickEventAgent" << event;
         QString propkind = this->sender()->property("kind").toString();
-        // qDebug() << "PeerWidget::mouseDoubleClickEventAgent" << propkind;
+        qDebug() << "PeerWidget::mouseDoubleClickEventLocal" << event << propkind;
         if(event->button() == Qt::LeftButton)
                 dial();
 }
@@ -325,7 +335,7 @@ void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
 {
 	QMenu contextMenu(this);
 	contextMenu.addAction(m_dialAction);
-	if(m_engine->isASwitchboard()) {
+	if(m_engine->hasFunction("switchboard")) {
 		// add remove action only if we are in the central widget.
 		if(parentWidget() && m_engine->isRemovable(parentWidget()->metaObject()))
 			contextMenu.addAction(m_removeAction);

@@ -116,8 +116,6 @@ public:
 
 	void saveSettings();			//!< save server settings
 
-	void setIsASwitchboard(bool);
-	bool isASwitchboard();
 	void deleteRemovables();
 	void addRemovable(const QMetaObject *);
 	bool isRemovable(const QMetaObject *);
@@ -139,6 +137,7 @@ public:
 	void setEnabledCInfo(bool b);		//! set m_enabled_cinfo
 	bool enabledCInfo();			//! get m_enabled_cinfo
 
+        bool hasFunction(const QString &);
 	void setMyClientId();			//! set m_clientid
         const QString & fullName() const;	//!< returns full name of the logged-in user
 
@@ -147,6 +146,8 @@ public:
 	void setLastConnWins(bool b);		//!< last connected user wins
 	const QStringList & getCapabilities() const;	//!< returns capabilities
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
+        const QString     & getCapaDisplay() const;
+        const QString     & getCapaApplication() const;
         void config_and_start(const QString &,
                               const QString &, const QString &);
         void setOSInfos(const QString &);
@@ -293,7 +294,6 @@ private:
 
 	// GUI client capabilities
 	QList<const QMetaObject *> m_removable;
-	bool m_is_a_switchboard;
 
 	// Parameters given by the User at Login time
 	QString m_serverhost;		//!< Host to the login server
@@ -331,6 +331,8 @@ private:
 	QString m_dialcontext;		//!< Context of the phone, as returned by the xivo_daemon server
 	QStringList m_capabilities;	//!< List of capabilities issued by the server after a successful login
 	QStringList m_capafeatures;	//!< List of capabilities issued by the server for the features
+	QString m_capaappli;	//!< Application name to be displayed
+	QString m_capadisplay;	//!< List of display capabilities issued by the server after a successful login
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier
 	QString m_forced_state;		//!< Forced state sent by the server

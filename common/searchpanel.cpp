@@ -125,7 +125,7 @@ void SearchPanel::affTextChanged(const QString & text)
                         if(peerwidget != NULL) {
                                 m_peerlayout->removeWidget( peerwidget );
                                 peerwidget->hide();
-                                if(m_engine->isASwitchboard()) {
+                                if(m_engine->hasFunction("switchboard")) {
                                         disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                                                     m_engine, SLOT(transferCall(const QString&, const QString&)) );
                                         disconnect( peerwidget, SIGNAL(hangUpChan(const QString &)),
@@ -165,7 +165,7 @@ void SearchPanel::affTextChanged(const QString & text)
                                 m_peerlayout->addWidget(peerwidget, naff / m_ncolumns, naff % m_ncolumns);
                                 naff ++;
                                 peerwidget->show();
-                                if(m_engine->isASwitchboard()) {
+                                if(m_engine->hasFunction("switchboard")) {
                                         connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                                                  m_engine, SLOT(transferCall(const QString&, const QString&)) );
                                         connect( peerwidget, SIGNAL(hangUpChan(const QString &)),
@@ -216,7 +216,6 @@ void SearchPanel::updatePeer(const UserInfo * ui,
 
 void SearchPanel::newUser(const UserInfo * ui)
 {
-        qDebug() << ui;
         PeerItem * peeritem = new PeerItem(ui);
         m_peerhash.insert(ui->userid(), peeritem);
 }

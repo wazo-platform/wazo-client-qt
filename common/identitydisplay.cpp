@@ -125,40 +125,44 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
 
 void IdentityDisplay::setQueueList(const QString & qlist)
 {
-        // qDebug() << "IdentityDisplay::setQueueList()" << qlist;
+        qDebug() << "IdentityDisplay::setQueueList()" << qlist;
         QStringList qsl = qlist.split(";");
         if(qsl[1] == "1")
                 m_queuechangeallow = true;
         if(qsl[2].size() > 0) {
-                QStringList queues = qsl[2].split(",");
-                queues.sort();
-                for(int i = 0 ; i < queues.size(); i++) {
-                        QStringList qparams = queues[i].split(":");
-                        QString qname = qparams[0];
-                        if(m_queuelist->findText(qname) == -1) {
-                                m_queuelist->addItem(qname);
-                                m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
-                                m_queuesindexes[qname] = i;
-                                if(qparams.size() > 1)
-                                        m_queuesbusyness[qname] = qparams[1];
-                                else
-                                        m_queuesbusyness[qname] = "0";
+                QString astid = qsl[0];
+                if(astid == m_ui->astid()) {
+                        QStringList queues = qsl[2].split(",");
+                        queues.sort();
+                        for(int i = 0 ; i < queues.size(); i++) {
+                                QStringList qparams = queues[i].split(":");
+                                QString qname = qparams[0];
+                                if(m_queuelist->findText(qname) == -1) {
+                                        m_queuelist->addItem(qname);
+                                        m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
+                                        m_queuesindexes[qname] = i;
+                                        if(qparams.size() > 1)
+                                                m_queuesbusyness[qname] = qparams[1];
+                                        else
+                                                m_queuesbusyness[qname] = "0";
+                                }
                         }
-                }
-                if((queues.size() > 0) && (m_agentstatus)) {
-                        if(m_queuechangeallow) {
-                                m_queueaction->show();
-                                m_queuejoinall->show();
-                                m_queueleaveall->show();
+                        if((queues.size() > 0) && (m_agentstatus)) {
+                                if(m_queuechangeallow) {
+                                        m_queueaction->show();
+                                        m_queuejoinall->show();
+                                        m_queueleaveall->show();
+                                }
+                                m_queuelist->show();
+                                m_queuebusy->show();
                         }
-                        m_queuelist->show();
-                        m_queuebusy->show();
                 }
         }
 }
 
 void IdentityDisplay::updatePeerAgent(const QString & userid, const QString & status)
 {
+        qDebug() << "IdentityDisplay::updatePeerAgent" << userid << status;
         if(userid != m_ui->userid())
                 return;
         QStringList newstatuses = status.split("/");
@@ -223,7 +227,7 @@ void IdentityDisplay::updatePeerAgent(const QString & userid, const QString & st
 void IdentityDisplay::setQueueStatus(const QString & status)
 {
         QStringList newstatuses = status.split("/");
-        // qDebug() << "IdentityDisplay::setQueueStatus()" << newstatuses;
+        qDebug() << "IdentityDisplay::setQueueStatus()" << newstatuses;
         if (newstatuses.size() == 4) {
                 QString command = newstatuses[0];
                 if (command == "queuechannels") {

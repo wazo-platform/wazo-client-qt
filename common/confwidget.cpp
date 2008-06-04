@@ -241,12 +241,10 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	m_tablimit_sbox->setRange(0, 99);
 	m_tablimit_sbox->setValue(m_mainwindow->tablimit());
 	gridlayout4->addWidget(m_tablimit_sbox, line++, 1);
-
-        if(m_engine->isASwitchboard() == false) {
-                m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
-                m_systrayed->setCheckState(m_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
-                gridlayout4->addWidget(m_systrayed, line++, 0, 1, 0);
-        }
+        
+        m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
+        m_systrayed->setCheckState(m_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
+        gridlayout4->addWidget(m_systrayed, line++, 0, 1, 0);
 
  	gridlayout4->setRowStretch( line, 1 );
 
@@ -301,8 +299,7 @@ void ConfWidget::saveAndClose()
 	m_engine->setHistorySize(m_history_sbox->value());
 	m_engine->setContactsSize(m_contactssize_sbox->value());
 	m_engine->setContactsColumns(m_contactswidth_sbox->value());
-        if(m_engine->isASwitchboard() == false)
-                m_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
+        m_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
         // m_engine->setLastConnWins(m_lastconnwins->checkState() == Qt::Checked);
 	m_mainwindow->setTablimit(m_tablimit_sbox->value());
 

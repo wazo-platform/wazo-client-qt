@@ -52,6 +52,7 @@
 #include "baseengine.h"
 #include "logeltwidget.h"
 #include "logwidget.h"
+#include "userinfo.h"
 
 /*! \brief Constructor
  *
@@ -171,6 +172,11 @@ void LogWidget::clear()
 	//m_layout->addStretch(1);
 }
 
+void LogWidget::setUserInfo(const UserInfo * ui)
+{
+        m_userinfo_owner = ui;
+}
+
 /*! \brief add an entry
  */
 void LogWidget::addLogEntry(const QDateTime & dt, int duration,
@@ -186,11 +192,10 @@ void LogWidget::addLogEntry(const QDateTime & dt, int duration,
  */
 void LogWidget::setPeerToDisplay(const QString & peer)
 {
-	// qDebug() << "LogWidget::setPeerToDisplay()" << peer;
+        qDebug() << "LogWidget::setPeerToDisplay()" << peer;
 	clear();
 	m_peer = peer;
-	if(m_peer.size() > 0)
-	{
+	if(m_peer.size() > 0) {
 		askHistory(m_peer, mode());
 		if(m_timer < 0)
 			m_timer = startTimer(3000);
@@ -199,9 +204,9 @@ void LogWidget::setPeerToDisplay(const QString & peer)
 
 /*! \brief timer event : ask for update
  */
-void LogWidget::timerEvent(QTimerEvent */* event*/)
+void LogWidget::timerEvent(QTimerEvent * event)
 {
-        // qDebug() << "LogWidget::timerEvent() id=" << event->timerId();
+        qDebug() << "LogWidget::timerEvent() id=" << event->timerId();
 	if(m_peer.size() > 0)
 		askHistory(m_peer, mode());
 }
