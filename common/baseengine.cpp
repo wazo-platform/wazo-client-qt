@@ -963,9 +963,7 @@ void BaseEngine::sendFaxCommand(const QString & filename, const QString & number
         if(m_faxdata->size() > 0) {
                 m_faxid = "size=" + QString::number(m_faxsize) +
                         " number=" + number +
-                        " hide=" + QString::number(hide) +
-                        " astid=" + m_asterisk +
-                        " context=" + m_dialcontext;
+                        " hide=" + QString::number(hide);
                 sendCommand("faxsend " + m_faxid);
         } else
                 ackFax("ko;file");
