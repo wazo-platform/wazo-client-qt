@@ -448,9 +448,7 @@ void BaseEngine::sendCommand(const QString & command)
  */
 void BaseEngine::processHistory(const QStringList & histlist)
 {
-	int i;
-	for(i=0; i+6<=histlist.size(); i+=6)
-	{
+	for(int i=0; i + 7 <= histlist.size(); i += 7) {
 		// DateTime; CallerID; duration; Status?; peer; IN/OUT
 		//qDebug() << histlist[i+0] << histlist[i+1]
 		//         << histlist[i+2] << histlist[i+3]
@@ -459,8 +457,9 @@ void BaseEngine::processHistory(const QStringList & histlist)
 		int duration = histlist[i+2].toInt();
 		QString peer = histlist[i+4];
                 QString direction = histlist[i+5];
+                QString techdef = histlist[i+6];
 		//qDebug() << dt << callerid << duration << peer << direction;
-		updateLogEntry(dt, duration, peer, direction);
+		updateLogEntry(dt, duration, peer, direction, techdef);
 	}
 }
 
@@ -793,28 +792,28 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         localUserInfoDefined(m_users[fullid_mine]);
                 }
 
-                        // Who do we monitor ?
-                        // First look at the last monitored one
-                        QString fullid_watched = m_settings->value("monitor/peer").toString();
-                        QString fullname_watched = "";
-                        // If there was nobody, let's watch ourselves.
-                        if(fullid_watched.isEmpty()) {
+                setPeerToDisplay(fullid_mine);
+
+                // Who do we monitor ?
+                // First look at the last monitored one
+                QString fullid_watched = m_settings->value("monitor/peer").toString();
+                QString fullname_watched = "";
+                // If there was nobody, let's watch ourselves.
+                if(fullid_watched.isEmpty()) {
+                        fullid_watched = fullid_mine;
+                        fullname_watched = fullname_mine;
+                } else {
+                        if(m_users.contains(fullid_watched))
+                                fullname_watched = m_users[fullid_watched]->fullname();
+                        // If the CallerId value is empty, fallback to ourselves.
+                        if(fullname_watched.isEmpty()) {
                                 fullid_watched = fullid_mine;
                                 fullname_watched = fullname_mine;
-                        } else {
-                                if(m_users.contains(fullid_watched))
-                                        fullname_watched = m_users[fullid_watched]->fullname();
-                                // If the CallerId value is empty, fallback to ourselves.
-                                if(fullname_watched.isEmpty()) {
-                                        fullid_watched = fullid_mine;
-                                        fullname_watched = fullname_mine;
-                                }
                         }
-
-                        monitorPeer(fullid_watched, fullname_watched);
-
-                        emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
-
+                }
+                
+                monitorPeer(fullid_watched, fullname_watched);
+                emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
 
 //         } else if((listitems[0] == QString("users-change")) && (listitems.size() == 2)) {
                 
@@ -1242,7 +1241,7 @@ void BaseEngine::requestHistory(const QString & peer, int mode)
 	 * mode = 1 : In calls
 	 * mode = 2 : Missed calls */
 	if(mode >= 0) {
-                qDebug() << "BaseEngine::requestHistory()" << peer;
+                // qDebug() << "BaseEngine::requestHistory()" << peer;
                 sendCommand("history " + peer + " " + QString::number(m_historysize) + " " + QString::number(mode));
         }
 }
@@ -1651,19 +1650,17 @@ void BaseEngine::setState(EngineState state)
 	}
 }
 
-void BaseEngine::changeWatchedAgentSlot(const QString & agentid)
+void BaseEngine::changeWatchedAgentSlot(const QString & astagentid)
 {
-        qDebug() << "BaseEngine::changeWatchedAgentSlot()" << agentid;
-        QString astid = m_users[m_company + "/" + m_userid]->astid();
-        sendCommand("agent-status " + astid + " " + agentid);
+        qDebug() << "BaseEngine::changeWatchedAgentSlot()" << astagentid;
+        sendCommand("agent-status " + astagentid);
         // changeWatchedAgentSignal(agentid);
 }
 
-void BaseEngine::changeWatchedQueueSlot(const QString & queueid)
+void BaseEngine::changeWatchedQueueSlot(const QString & astqueueid)
 {
-        qDebug() << "BaseEngine::changeWatchedQueueSlot()" << queueid;
-        QString astid = m_users[m_company + "/" + m_userid]->astid();
-        sendCommand("queue-status " + astid + " " + queueid);
+        qDebug() << "BaseEngine::changeWatchedQueueSlot()" << astqueueid;
+        sendCommand("queue-status " + astqueueid);
         // changeWatchedQueueSignal(queueid);
 }
 

@@ -75,6 +75,7 @@ void QueuesPanel::setQueueList(const QString & qlist)
         // qDebug() << "QueuesPanel::setQueueList()" << qlist;
         QStringList qsl = qlist.split(";");
         if(qsl[2].size() > 0) {
+                QString astid = qsl[0];
                 QStringList queues = qsl[2].split(",");
                 queues.sort();
                 for(int i = 0 ; i < queues.size(); i++) {
@@ -82,12 +83,14 @@ void QueuesPanel::setQueueList(const QString & qlist)
                         QString queuename = qparams[0];
                         if(! m_queuelabels.contains(queuename)) {
                                 m_queuelabels[queuename] = new QPushButton(queuename, this);
+                                m_queuelabels[queuename]->setProperty("astid", astid);
                                 m_queuelabels[queuename]->setProperty("queueid", queuename);
                                 connect( m_queuelabels[queuename], SIGNAL(clicked()),
                                          this, SLOT(queueClicked()));
                                 m_queuebusies[queuename] = new QProgressBar(this);
-                                m_gridlayout->addWidget( m_queuelabels[queuename], i, 0, Qt::AlignLeft );
-                                m_gridlayout->addWidget( m_queuebusies[queuename], i, 1, Qt::AlignCenter );
+                                int linenum = m_queuelabels.size();
+                                m_gridlayout->addWidget( m_queuelabels[queuename], linenum, 0, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_queuebusies[queuename], linenum, 1, Qt::AlignCenter );
                                 
                                 m_queuebusies[queuename]->setFormat("%v");
                                 m_queuebusies[queuename]->setRange(0, m_maxbusy + 1);
@@ -103,8 +106,9 @@ void QueuesPanel::setQueueList(const QString & qlist)
 void QueuesPanel::queueClicked()
 {
         // qDebug() << "QueuesPanel::queueClicked()" << this->sender()->property("queueid");
+        QString astid = this->sender()->property("astid").toString();
         QString queueid = this->sender()->property("queueid").toString();
-        changeWatchedQueue(queueid);
+        changeWatchedQueue(astid + " " + queueid);
 }
 
 

@@ -90,6 +90,7 @@ void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
         m_agentstatus.clear();
 
         if(queuestatus.size() > 2) {
+                QString astid = queuestatus[0];
                 QStringList agents;
                 for(int i = 2 ; i < queuestatus.size(); i++)
                         if(queuestatus[i].size() > 0)
@@ -98,6 +99,7 @@ void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
 
                 for(int i = 0 ; i < agents.size(); i++) {
                         m_agentlabels[agents[i]] = new QPushButton(agents[i], this);
+                        m_agentlabels[agents[i]]->setProperty("astid", astid);
                         m_agentlabels[agents[i]]->setProperty("agentid", agents[i]);
                         connect( m_agentlabels[agents[i]], SIGNAL(clicked()),
                                  this, SLOT(agentClicked()));
@@ -111,6 +113,7 @@ void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
 void QueuedetailsPanel::agentClicked()
 {
         qDebug() << "AgentsPanel::agentClicked()" << this->sender()->property("agentid");
+        QString astid = this->sender()->property("astid").toString();
         QString agentid = this->sender()->property("agentid").toString();
-        changeWatchedAgent(agentid);
+        changeWatchedAgent(astid + " " + agentid);
 }

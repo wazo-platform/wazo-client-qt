@@ -190,7 +190,9 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	m_loginkind = new QCheckBox(tr("Login as Agent"));
 	m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
 	gridlayout3->addWidget(m_loginkind, line++, 0, 1, 2);
-        
+        connect( m_loginkind, SIGNAL(stateChanged(int)),
+	         this, SLOT(loginKindChanged(int)) );
+
 	m_lblphone = new QLabel(tr("Phone Number"), this);
         m_phonenumber = new QLineEdit(m_engine->phonenumber(), this);
         gridlayout3->addWidget(m_lblphone, line, 0);
@@ -264,6 +266,16 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	vlayout->addWidget(m_btnbox);
 }
 
+void ConfWidget::loginKindChanged(int index)
+{
+        if(index == 0) {
+                m_lblphone->hide();
+                m_phonenumber->hide();
+        } else {
+                m_lblphone->show();
+                m_phonenumber->show();
+        }
+}
 
 /*!
  * This slot saves the configuration (which is stored in displayed

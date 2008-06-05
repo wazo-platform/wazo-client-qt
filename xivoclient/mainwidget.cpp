@@ -643,9 +643,9 @@ void MainWidget::engineStarted()
                                 m_historypanel = new LogWidget(m_engine, this);
                                 addPanel("history", tr("History"), m_historypanel);
                                 connect( m_engine, SIGNAL(updateLogEntry(const QDateTime &, int,
-                                                                         const QString &, const QString &)),
+                                                                         const QString &, const QString &, const QString &)),
                                          m_historypanel, SLOT(addLogEntry(const QDateTime &, int,
-                                                                          const QString &, const QString &)) );
+                                                                          const QString &, const QString &, const QString &)) );
                                 connect( m_historypanel, SIGNAL(askHistory(const QString &, int)),
                                          m_engine, SLOT(requestHistory(const QString &, int)) );
                                 connect( m_engine, SIGNAL(delogged()),

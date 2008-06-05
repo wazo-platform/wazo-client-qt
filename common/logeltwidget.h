@@ -57,18 +57,19 @@ class LogEltWidget : public QWidget
 public:
 	//! Call direction (out or in)
 	typedef enum { OutCall = 1, InCall = 2 } Direction;
-	LogEltWidget( const QString & peer,
-	              Direction d,
-                      const QDateTime & dt,
-                      int duration,
-                      QWidget * parent = 0 );
+	LogEltWidget(const QString &,
+                     Direction,
+                     const QDateTime &,
+                     int,
+                     const QString &,
+                     QWidget * parent = 0 );
 	const QDateTime & dateTime() const { return m_dateTime; };	//! get m_dateTime
 	const QString & peer() const { return m_peer; };		//! get m_peer
 	Direction direction() const { return m_direction; };		//! get m_direction
 protected:
 	void contextMenuEvent(QContextMenuEvent *);
-        void mouseDoubleClickEvent(QMouseEvent *event);
-        void mouseReleaseEvent(QMouseEvent *event);
+        void mouseDoubleClickEvent(QMouseEvent *);
+        void mouseReleaseEvent(QMouseEvent *);
 private slots:
 	void callBackPeer();
 	void doNotCallBackPeer();

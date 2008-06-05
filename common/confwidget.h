@@ -75,9 +75,12 @@ public:
 	ConfWidget(BaseEngine *,
                    MainWidget *);
 	//ConfWidget(BaseEngine *engine, QWidget *parent = 0);
+
 private slots:
 	//! Save the configuration to the BaseEngine object and close
 	void saveAndClose();
+        void loginKindChanged(int);
+
 private:
 	BaseEngine * m_engine;		//!< BaseEngine object parameters are commited to
 	MainWidget * m_mainwindow;	//!< MainWidget where some parameters are commited to

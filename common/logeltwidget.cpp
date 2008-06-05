@@ -52,9 +52,10 @@
  *
  * init everything and construct the sub widgets.
  */
-LogEltWidget::LogEltWidget( const QString & peer, Direction d,
-                            const QDateTime & dt, int duration,
-                            QWidget * parent )
+LogEltWidget::LogEltWidget(const QString & peer, Direction d,
+                           const QDateTime & dt, int duration,
+                           const QString & termin,
+                           QWidget * parent)
         : QWidget(parent), m_dateTime(dt), m_peer(peer), m_direction(d)
 {
 //	qDebug() << "  LogEltWidget::LogEltWidget()" << peer << d << dt << duration << parent;
@@ -72,6 +73,9 @@ LogEltWidget::LogEltWidget( const QString & peer, Direction d,
 	lbldt->setFont(QFont("helvetica", 10, QFont::Light));
 	lbldt->setMargin(0);
 	glayout->addWidget(lbldt, 1, 0);
+
+	QLabel * lbltermin = new QLabel("(" + termin + ")");
+	glayout->addWidget(lbltermin, 0, 2);
 
 	QLabel * lblduration = new QLabel( this );
 	int min = duration / 60;
@@ -93,7 +97,8 @@ LogEltWidget::LogEltWidget( const QString & peer, Direction d,
 	glayout->setSpacing(0);
 	glayout->setColumnStretch(0, 0);
 	glayout->setColumnStretch(1, 0);
-	glayout->setColumnStretch(2, 1);
+	glayout->setColumnStretch(2, 0);
+	glayout->setColumnStretch(3, 1);
 
 	m_dialAction = new QAction( tr("&Call back"), this );
 	m_dialAction->setStatusTip( tr("Call back the correspondent") );

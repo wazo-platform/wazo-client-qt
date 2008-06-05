@@ -123,18 +123,15 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
  * \sa addLogEntry
  */
 void LogWidget::addElement(const QString & peer, LogEltWidget::Direction d,
-                           const QDateTime & dt, int duration)
+                           const QDateTime & dt, int duration, const QString & termin)
 {
 	//qDebug() << "LogWidget::addElement()" << peer << d << dt << duration;
 	int i, index = 0;
-	for(i = 0; i < m_layout->count(); i++)
-	{
+	for(i = 0; i < m_layout->count(); i++) {
 		QWidget * widget = m_layout->itemAt( i )->widget();
-		if(widget)
-		{
+		if(widget) {
 			LogEltWidget * logelt = qobject_cast<LogEltWidget *>(widget);
-			if(logelt)
-			{
+			if(logelt) {
 				if(dt == logelt->dateTime()
 				   && peer == logelt->peer()
 				   && d == logelt->direction())
@@ -145,9 +142,9 @@ void LogWidget::addElement(const QString & peer, LogEltWidget::Direction d,
 			}
 		}
 	}
-	LogEltWidget * logelt = new LogEltWidget(peer, d, dt, duration, this);
-	connect( logelt, SIGNAL(emitDial(const QString &, bool)),
-	         m_engine, SLOT(dialFullChannel(const QString &, bool)) );
+	LogEltWidget * logelt = new LogEltWidget(peer, d, dt, duration, termin, this);
+	connect( logelt, SIGNAL(originateCall(const QString &, const QString &)),
+	         m_engine, SLOT(originateCall(const QString &, const QString &)) );
         connect( logelt, SIGNAL(copyNumber(const QString &)),
                  m_engine, SLOT(copyNumber(const QString &)) );
 	m_layout->insertWidget(index, logelt);
@@ -180,12 +177,12 @@ void LogWidget::setUserInfo(const UserInfo * ui)
 /*! \brief add an entry
  */
 void LogWidget::addLogEntry(const QDateTime & dt, int duration,
-                            const QString & peer, const QString & direction)
+                            const QString & peer, const QString & direction, const QString & termin)
 {
         LogEltWidget::Direction d;
         d = (direction == "IN") ? LogEltWidget::InCall : LogEltWidget::OutCall;
 	// TODO: manage the list !
-	addElement(peer, d, dt, duration);
+	addElement(peer, d, dt, duration, termin);
 }
 
 /*! \brief change the monitored peer
@@ -198,7 +195,7 @@ void LogWidget::setPeerToDisplay(const QString & peer)
 	if(m_peer.size() > 0) {
 		askHistory(m_peer, mode());
 		if(m_timer < 0)
-			m_timer = startTimer(3000);
+			m_timer = startTimer(10000);
 	}
 }
 
@@ -231,11 +228,9 @@ int LogWidget::mode()
  */
 void LogWidget::modeChanged(bool b)
 {
-	// qDebug() << "LogWidget::modeChanged()" << b << mode();
-	if(b && m_peer.size() > 0)
-	{
+        // qDebug() << "LogWidget::modeChanged()" << b << mode();
+	if(b && m_peer.size() > 0) {
 		clear();
 		askHistory(m_peer, mode());
 	}
 }
-

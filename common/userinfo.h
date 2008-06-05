@@ -76,6 +76,7 @@ private:
         QString m_phonenum;
         QStringList m_termlist;
         QString m_agentnum;
+        QString m_agentphonenum;
         QHash<QString, QString> m_termstatus;
 
         QString m_userid;

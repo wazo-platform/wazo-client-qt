@@ -249,7 +249,7 @@ signals:
 	void updatePeerAgent(const QString &, const QString &);
 	void updateOnlineAgent(const QStringList &);
 	//! a log entry has to be updated.
-	void updateLogEntry(const QDateTime &, int, const QString &, const QString &);
+	void updateLogEntry(const QDateTime &, int, const QString &, const QString &, const QString &);
 	//! the directory search response has been received.
 	void directoryResponse(const QString &);
         void disconnectFeatures();
