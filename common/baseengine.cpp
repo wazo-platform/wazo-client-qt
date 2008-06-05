@@ -466,6 +466,7 @@ void BaseEngine::processHistory(const QStringList & histlist)
 
 void BaseEngine::monitoredPeerChanged(const QString & peerinfo)
 {
+        m_monitored_userid = peerinfo;
         setPeerToDisplay(peerinfo);
 }
 
@@ -632,7 +633,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 
         UserInfo * ui = findUserFromPhone(astid, context, tech, phoneid);
         if(ui) {
-                qDebug() << liststatus;
+                // qDebug() << liststatus;
                 ui->updatePhoneStatus(tech + "/" + phoneid, hintstatus);
         }
 
@@ -772,9 +773,9 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
         } else if((listitems[0] == QString("users-list")) && (listitems.size() == 2)) {
                 QStringList listpeers = listitems[1].split(";");
                 for(int i = 1 ; i < listpeers.size() ; i += 9) {
-                        qDebug() << listpeers[i] << listpeers[i+1] << listpeers[i+2]
-                                 << listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
-                                 << listpeers[i+6] << listpeers[i+7] << listpeers[i+8];
+                        //                         qDebug() << listpeers[i] << listpeers[i+1] << listpeers[i+2]
+                        //                                  << listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
+                        //                                  << listpeers[i+6] << listpeers[i+7] << listpeers[i+8];
                         QString iduser = listpeers[i+1] + "/" + listpeers[i];
                         m_users[iduser] = new UserInfo(iduser);
                         m_users[iduser]->setFullName(listpeers[i+2]);
@@ -786,6 +787,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 }
 
                 QString fullid_mine = m_company + "/" + m_userid;
+                m_monitored_userid = fullid_mine;
                 QString fullname_mine = "No One";
                 if(m_users.contains(fullid_mine)) {
                         fullname_mine = m_users[fullid_mine]->fullname();
@@ -854,25 +856,41 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         emitTextMessage(message[0] + tr(" said : ") + message[1]);
                 else
                         emitTextMessage(tr("Unknown") + tr(" said : ") + listitems[1]);
+                
         } else if((listitems[0].toLower() == QString("featuresupdate")) && (listitems.size() == 2)) {
                 QStringList featuresupdate_list = listitems[1].split(";");
                 qDebug() << featuresupdate_list;
                 if(featuresupdate_list.size() == 5)
-                        if((m_monitored_asterisk == featuresupdate_list[0]) &&
-                           (m_monitored_context  == featuresupdate_list[1]) &&
-                           (m_monitored_userid   == featuresupdate_list[2]))
-                                initFeatureFields(featuresupdate_list[3], featuresupdate_list[4]);
+                        if(m_monitored_userid   == featuresupdate_list[0])
+                                initFeatureFields(featuresupdate_list[1], featuresupdate_list[2]);
         } else if((listitems[0].toLower() == QString("featuresget")) && (listitems.size() == 2)) {
-                if(listitems[1] != "KO") {
-                        QStringList features_list = listitems[1].split(";");
-                        resetFeatures();
-                        if(features_list.size() > 1)
-                                for(int i=0; i<features_list.size()-1; i+=2)
-                                        initFeatureFields(features_list[i], features_list[i+1]);
-                        emitTextMessage(tr("Received Services Data for ") + m_monitored_asterisk + "/" + m_monitored_userid);
-                } else
-                        emitTextMessage(tr("Could not retrieve the Services data.") + " " + tr("Maybe Asterisk is down."));
-
+                QStringList features_list = listitems[1].split(";");
+                if(features_list.size() > 2) {
+                        QString id = features_list[0];
+                        if(id == m_monitored_userid) {
+                                resetFeatures();
+                                if(features_list.size() > 2)
+                                        for(int i = 1 ; i < features_list.size() - 1; i += 2)
+                                                initFeatureFields(features_list[i], features_list[i+1]);
+                                emitTextMessage(tr("Received Services Data for ") + m_monitored_userid);
+                        }
+                }
+        } else if(listitems[0].toLower() == QString("featuresput")) {
+                QStringList features_list = listitems[1].split(";");
+                if(features_list.size() > 1) {
+                        QString id = features_list[0];
+                        if(id == m_monitored_userid) {
+                                QString ret = features_list[1];
+                                if(ret == "OK") {
+                                        featurePutIsOK();
+                                        emitTextMessage("");
+                                } else {
+                                        featurePutIsKO();
+                                        emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
+                                }
+                        }
+                }
+                
         } else if((listitems[0].toLower() == QString("parkedcall")) && (listitems.size() == 2)) {
                 parkingEvent(listitems[0], listitems[1]);
         } else if(listitems[0].toLower() == QString("unparkedcall")) {
@@ -917,15 +935,6 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
         } else if(listitems[0].toLower() == QString("update-queues")) {
                 setQueueStatus(listitems[1]);
 
-        } else if(listitems[0].toLower() == QString("featuresput")) {
-                QString ret = listitems[1].split(";")[0];
-                if(ret == "OK") {
-                        featurePutIsOK();
-                        emitTextMessage("");
-                } else {
-                        featurePutIsKO();
-                        emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
-                }
         } else if(listitems[0].toLower() == QString("faxsend")) {
                 quint16 port_fax = listitems[1].toInt();
                 m_faxsocket->connectToHost(m_serverhost, port_fax);
@@ -1515,55 +1524,49 @@ bool BaseEngine::isRemovable(const QMetaObject * metaobject)
 
 void BaseEngine::featurePutVoiceMail(bool b)
 {
-        sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " enablevoicemail " + QString(b ? "1" : "0"));
+        sendCommand("featuresput " + m_monitored_userid + " enablevoicemail " + QString(b ? "1" : "0"));
 }
 
 void BaseEngine::featurePutCallRecording(bool b)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " callrecord " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_userid + " callrecord " + QString(b ? "1" : "0"));
 }
 
 void BaseEngine::featurePutCallFiltering(bool b)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " callfilter " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_userid + " callfilter " + QString(b ? "1" : "0"));
 }
 
 void BaseEngine::featurePutDnd(bool b)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " enablednd " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_userid + " enablednd " + QString(b ? "1" : "0"));
 }
 
 void BaseEngine::featurePutForwardOnUnavailable(bool b, const QString & dst)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " enablerna " + QString(b ? "1" : "0"));
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " destrna " + dst);
+	sendCommand("featuresput " + m_monitored_userid + " enablerna " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_userid + " destrna " + dst);
 }
 
 void BaseEngine::featurePutForwardOnBusy(bool b, const QString & dst)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " enablebusy " + QString(b ? "1" : "0"));
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " destbusy " + dst);
+	sendCommand("featuresput " + m_monitored_userid + " enablebusy " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_userid + " destbusy " + dst);
 }
 
 void BaseEngine::featurePutUncondForward(bool b, const QString & dst)
 {
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " enableunc " + QString(b ? "1" : "0"));
-	sendCommand("featuresput " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid + " destunc " + dst);
+	sendCommand("featuresput " + m_monitored_userid + " enableunc " + QString(b ? "1" : "0"));
+	sendCommand("featuresput " + m_monitored_userid + " destunc " + dst);
 }
 
-void BaseEngine::askFeatures(const QString & peer)
+void BaseEngine::askFeatures()
 {
-        qDebug() << "BaseEngine::askFeatures()" << peer << m_asterisk << m_dialcontext << m_userid;
-        m_monitored_asterisk = m_asterisk;
-        m_monitored_context  = m_dialcontext;
-        m_monitored_userid   = m_userid;
-        QStringList peerp = peer.split("/");
-        if(peerp.size() == 6) {
-                m_monitored_asterisk = peerp[1];
-                m_monitored_context  = peerp[2];
-                m_monitored_userid   = peerp[5];
-        }
-        sendCommand("featuresget " + m_monitored_asterisk + " " + m_monitored_context + " " + m_monitored_userid);
+        qDebug() << "BaseEngine::askFeatures()" << m_monitored_userid;
+        QString featurestoget = "user:special:me";
+        if(m_monitored_userid.size() > 0)
+                featurestoget = m_monitored_userid;
+        sendCommand("featuresget " + featurestoget);
 }
 
 void BaseEngine::askCallerIds()

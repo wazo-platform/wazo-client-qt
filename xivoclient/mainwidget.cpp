@@ -899,8 +899,8 @@ void MainWidget::engineStarted()
                                 m_featureswidget = new ServicePanel(m_engine->getCapaFeatures());
                                 addPanel("features", tr("Services"), m_featureswidget);
                                 
-                                connect( m_featureswidget, SIGNAL(askFeatures(const QString &)),
-                                         m_engine, SLOT(askFeatures(const QString &)) );
+                                connect( m_featureswidget, SIGNAL(askFeatures()),
+                                         m_engine, SLOT(askFeatures()) );
                                 connect( m_engine, SIGNAL(setPeerToDisplay(const QString &)),
                                          m_featureswidget, SLOT(setPeerToDisplay(const QString &)) );
 
@@ -961,7 +961,7 @@ void MainWidget::engineStarted()
                                          m_featureswidget, SLOT(setForwardOnUnavailable(bool)) );
                                 connect( m_engine, SIGNAL(forwardOnUnavailableUpdated(const QString &)),
                                          m_featureswidget, SLOT(setForwardOnUnavailable(const QString &)) );
-                                m_engine->askFeatures("peer/to/define");
+
 			} else if (dc == QString("directory")) {
 				m_dirpanel = new DirectoryPanel(this);
                                 addPanel("directory", tr("Directory"), m_dirpanel);

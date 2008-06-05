@@ -54,6 +54,8 @@ ServicePanel::ServicePanel(const QStringList & capafeatures,
         : QWidget(parent), m_capas(capafeatures)
 {
         // qDebug() << "ServicePanel::ServicePanel()" << m_capas;
+        m_capas << "enablevm" << "incallrec" << "incallfilter" << "enablednd"
+                << "fwdrna" << "fwdbusy" << "fwdunc";
 
 	int line = 0;
         m_status = new ServiceStatus();
@@ -411,9 +413,7 @@ void ServicePanel::setPeerToDisplay(const QString & peer)
 {
         // qDebug() << "ServicePanel::setPeerToDisplay()" << peer;
 	m_peer = peer;
-	if(m_peer.size() > 0) {
-		askFeatures(m_peer);
-	}
+        askFeatures();
 }
 
 void ServicePanel::setRecordedStatus()

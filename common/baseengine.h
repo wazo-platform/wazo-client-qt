@@ -184,7 +184,7 @@ public slots:
 	void featurePutUncondForward(bool, const QString &);
 	void featurePutForwardOnBusy(bool, const QString &);
 	void featurePutForwardOnUnavailable(bool, const QString &);
-	void askFeatures(const QString &);
+	void askFeatures();
 	void askCallerIds();
         void addToDataBase(const QString &);
 	void setKeepaliveinterval(uint);	//!< set keep alive interval
@@ -364,12 +364,7 @@ private:
         int m_faxsize;
 
         QString m_monitored_userid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)
-        QString m_monitored_agentid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)
-        QString m_monitored_context;	//!< Context of the Monitored Phone (on SB, or one's own on XC)
-        QString m_monitored_asterisk;	//!< Asterisk Id of the Monitored Phone (on SB, or one's own on XC)
-
         QSettings * m_settings;
-
 };
 
 #endif

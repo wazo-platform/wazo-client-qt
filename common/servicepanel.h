@@ -63,7 +63,7 @@ signals:
 	void uncondForwardChanged(bool, const QString &);
 	void forwardOnBusyChanged(bool, const QString &);
 	void forwardOnUnavailableChanged(bool, const QString &);
-	void askFeatures(const QString &); //!< need features to be updated !
+	void askFeatures(); //!< need features to be updated !
 public slots:
 	void setVoiceMail(bool);
 	void setCallRecording(bool);
