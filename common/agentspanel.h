@@ -92,7 +92,6 @@ private:
         QHash<QString, QLabel *>      m_agent_joined_status;
         QHash<QString, QLabel *>      m_agent_paused_number;
         QHash<QString, QLabel *>      m_agent_paused_status;
-        QHash<QString, QPushButton *> m_agent_paused_action;
 
         QHash<QString, QStringList> m_agent_joined_list;
         QHash<QString, QStringList> m_agent_paused_list;

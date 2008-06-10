@@ -69,8 +69,8 @@ AgentsPanel::AgentsPanel(QWidget * parent)
         m_gridlayout->addWidget(m_title3, 0, 3, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title4, 0, 5, 1, 2, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title5, 0, 8, 1, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title6, 0, 12, 1, 3, Qt::AlignCenter );
-        m_gridlayout->setColumnStretch( 15, 1 );
+        m_gridlayout->addWidget(m_title6, 0, 12, 1, 2, Qt::AlignCenter );
+        m_gridlayout->setColumnStretch( 14, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
 }
 
@@ -130,7 +130,7 @@ void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
         } else if(command == "joinqueue") {
                 QString astid = params[1];
                 QString agname = params[2];
-                if(m_agent_labels.contains(agname)) {
+                if((params.size() == 5) && m_agent_labels.contains(agname)) {
                         QString qname = params[3];
                         if(! m_agent_joined_list[agname].contains(qname)) {
                                 QPixmap * m_square = new QPixmap(12, 12);
@@ -138,6 +138,28 @@ void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
                                 m_agent_joined_list[agname].append(qname);
                                 m_agent_joined_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()));
                                 m_agent_joined_status[agname]->setPixmap(QPixmap(* m_square));
+
+                                QString pstatus = params[4];
+                                if(pstatus == "0") {
+                                        if(! m_agent_paused_list[agname].contains(qname)) {
+                                                QPixmap * m_square = new QPixmap(12, 12);
+                                                m_square->fill(Qt::green);
+                                                m_agent_paused_list[agname].append(qname);
+                                                m_agent_paused_number[agname]->setText(QString::number(m_agent_paused_list[agname].size()));
+                                                m_agent_paused_status[agname]->setPixmap(QPixmap(* m_square));
+                                        }
+                                } else {
+                                        if(m_agent_paused_list[agname].contains(qname)) {
+                                                QPixmap * m_square = new QPixmap(12, 12);
+                                                m_agent_paused_list[agname].removeAll(qname);
+                                                m_agent_paused_number[agname]->setText(QString::number(m_agent_paused_list[agname].size()));
+                                                if(m_agent_paused_list[agname].size() > 0)
+                                                        m_square->fill(Qt::green);
+                                                else
+                                                        m_square->fill(Qt::gray);
+                                                m_agent_paused_status[agname]->setPixmap(QPixmap(* m_square));
+                                        }
+                                }
                         }
                 }
         } else if(command == "leavequeue") {
@@ -154,6 +176,35 @@ void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
                                 else
                                         m_square->fill(Qt::gray);
                                 m_agent_joined_status[agname]->setPixmap(QPixmap(* m_square));
+                        }
+                }
+        } else if(command == "unpaused") {
+                QString astid = params[1];
+                QString agname = params[2];
+                if(m_agent_labels.contains(agname)) {
+                        QString qname = params[3];
+                        if(! m_agent_paused_list[agname].contains(qname)) {
+                                QPixmap * m_square = new QPixmap(12, 12);
+                                m_square->fill(Qt::green);
+                                m_agent_paused_list[agname].append(qname);
+                                m_agent_paused_number[agname]->setText(QString::number(m_agent_paused_list[agname].size()));
+                                m_agent_paused_status[agname]->setPixmap(QPixmap(* m_square));
+                        }
+                }
+        } else if(command == "paused") {
+                QString astid = params[1];
+                QString agname = params[2];
+                if(m_agent_labels.contains(agname)) {
+                        QString qname = params[3];
+                        if(m_agent_paused_list[agname].contains(qname)) {
+                                QPixmap * m_square = new QPixmap(12, 12);
+                                m_agent_paused_list[agname].removeAll(qname);
+                                m_agent_paused_number[agname]->setText(QString::number(m_agent_paused_list[agname].size()));
+                                if(m_agent_paused_list[agname].size() > 0)
+                                        m_square->fill(Qt::green);
+                                else
+                                        m_square->fill(Qt::gray);
+                                m_agent_paused_status[agname]->setPixmap(QPixmap(* m_square));
                         }
                 }
         } else if(command == "agentlogin") {
@@ -246,12 +297,10 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 m_agent_joined_status[agnum] = new QLabel(this);
                                 m_agent_paused_number[agnum] = new QLabel(this);
                                 m_agent_paused_status[agnum] = new QLabel(this);
-                                m_agent_paused_action[agnum] = new QPushButton(this);
 
                                 m_agent_more[agnum]->setIconSize(QSize(10, 10));
                                 m_agent_more[agnum]->setIcon(QIcon(":/images/rightarrow.png"));
                                 m_agent_logged_action[agnum]->setIconSize(QSize(8, 8));
-                                m_agent_paused_action[agnum]->setIconSize(QSize(8, 8));
                                 
                                 m_square->fill(Qt::gray);
                                 m_agent_busy[agnum]->setPixmap(QPixmap(* m_square));
@@ -284,13 +333,10 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 if(agqunjoined.size() > 0)
                                         m_agent_paused_list[agnum] = agqunjoined.split(",");
                                 int nunpaused = m_agent_paused_list[agnum].size();
-                                if(nunpaused > 0) {
+                                if(nunpaused > 0)
                                         m_square->fill(Qt::green);
-                                        m_agent_paused_action[agnum]->setIcon(QIcon(":/images/cancel.png"));
-                                } else {
-                                        m_square->fill(Qt::red);
-                                        m_agent_paused_action[agnum]->setIcon(QIcon(":/images/button_ok.png"));
-                                }
+                                else
+                                        m_square->fill(Qt::gray);
                                 m_agent_paused_number[agnum]->setText(QString::number(nunpaused));
                                 m_agent_paused_status[agnum]->setPixmap(QPixmap(* m_square));
 
@@ -310,7 +356,6 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 m_gridlayout->addWidget( qvline3, linenum, colnum++, Qt::AlignLeft );
                                 m_gridlayout->addWidget( m_agent_paused_number[agnum], linenum, colnum++, Qt::AlignRight );
                                 m_gridlayout->addWidget( m_agent_paused_status[agnum], linenum, colnum++, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_agent_paused_action[agnum], linenum, colnum++, Qt::AlignLeft );
                         }
                 }
         }

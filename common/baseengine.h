@@ -298,7 +298,7 @@ private:
 	// Parameters given by the User at Login time
 	QString m_serverhost;		//!< Host to the login server
 	quint16 m_loginport;		//!< TCP port (UDP port for keep alive is +1)
-	quint16 m_sbport;		//!< port to connect to server
+	quint16 m_ctiport;		//!< port to connect to server
 
 	QString m_asterisk;		//!< Host to the login server
         QString m_company;

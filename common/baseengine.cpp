@@ -64,7 +64,7 @@
 BaseEngine::BaseEngine(QSettings * settings,
                        QObject * parent)
         : QObject(parent),
-	  m_serverhost(""), m_loginport(0), m_sbport(0),
+	  m_serverhost(""), m_loginport(0), m_ctiport(0),
           m_company(""), m_protocol(""), m_userid(""), m_phonenumber(""), m_passwd(""),
           m_checked_presence(false), m_checked_cinfo(false),
           m_sessionid(""), m_state(ENotLogged),
@@ -114,6 +114,10 @@ BaseEngine::BaseEngine(QSettings * settings,
                  this, SLOT(socketDisconnected()));
 	connect( m_faxsocket, SIGNAL(hostFound()),
 	         this, SLOT(socketHostFound()) );
+	connect( m_faxsocket, SIGNAL(error(QAbstractSocket::SocketError)),
+                 this, SLOT(socketError(QAbstractSocket::SocketError)));
+	connect( m_faxsocket, SIGNAL(readyRead()),
+                 this, SLOT(socketReadyRead()));
 
 	if(m_autoconnect)
 		start();
@@ -151,7 +155,7 @@ void BaseEngine::loadSettings()
         m_settings->beginGroup("engine");
 	m_serverhost = m_settings->value("serverhost", "192.168.0.254").toString();
 	m_loginport  = m_settings->value("loginport", 5000).toUInt();
-	m_sbport     = m_settings->value("serverport", 5003).toUInt();
+	m_ctiport    = m_settings->value("serverport", 5003).toUInt();
 
         m_checked_presence = m_settings->value("fct_presence", true).toBool();
         m_checked_cinfo    = m_settings->value("fct_cinfo",    true).toBool();
@@ -191,7 +195,7 @@ void BaseEngine::saveSettings()
         m_settings->beginGroup("engine");
 	m_settings->setValue("serverhost", m_serverhost);
 	m_settings->setValue("loginport",  m_loginport);
-	m_settings->setValue("serverport", m_sbport);
+	m_settings->setValue("serverport", m_ctiport);
 
 	m_settings->setValue("fct_presence", m_checked_presence);
 	m_settings->setValue("fct_cinfo",    m_checked_cinfo);
@@ -330,8 +334,8 @@ void BaseEngine::stop()
  */
 void BaseEngine::connectSocket()
 {
-        qDebug() << "BaseEngine::connectSocket()" << m_serverhost << m_sbport;
-        m_sbsocket->connectToHost(m_serverhost, m_sbport);
+        qDebug() << "BaseEngine::connectSocket()" << m_serverhost << m_ctiport;
+        m_sbsocket->connectToHost(m_serverhost, m_ctiport);
 }
 
 bool BaseEngine::lastconnwins() const
@@ -475,9 +479,9 @@ void BaseEngine::monitoredPeerChanged(const QString & peerinfo)
  */
 void BaseEngine::socketConnected()
 {
-        QString socname = this->sender()->property("socket").toString();
-	qDebug() << "BaseEngine::socketConnected()" << socname;
-        if(socname == "tcp_nat") {
+        QString socketname = this->sender()->property("socket").toString();
+	qDebug() << "BaseEngine::socketConnected()" << socketname;
+        if(socketname == "tcp_nat") {
                 stopTryAgainTimer();
                 /* do the login/identification ? */
                 setMyClientId();
@@ -502,16 +506,9 @@ void BaseEngine::socketConnected()
                         m_pendingcommand += "lastconnwins=false";
                 // login <asterisk> <techno> <id>
                 sendTCPCommand();
-        } else if(socname == "fax") {
-                if(m_faxsize > 0) {
-                        QString stp = m_faxid + "\n";
-                        m_faxsocket->write(stp.toAscii(), stp.size());
-                        m_faxsocket->write(* m_faxdata);
-                }
-                m_faxsocket->close();
-                m_faxsize = 0;
-                m_faxid = "";
-                delete m_faxdata;
+        } else if(socketname == "fax") {
+                QString stp = "faxdata " + m_faxid + "\r\n";
+                m_faxsocket->write(stp.toAscii());
         }
 }
 
@@ -519,9 +516,9 @@ void BaseEngine::socketConnected()
  */
 void BaseEngine::socketDisconnected()
 {
-        QString socname = this->sender()->property("socket").toString();
-	qDebug() << "BaseEngine::socketDisconnected()" << socname;
-        if(socname == "tcp_nat") {
+        QString socketname = this->sender()->property("socket").toString();
+	qDebug() << "BaseEngine::socketDisconnected()" << socketname;
+        if(socketname == "tcp_nat") {
                 setState(ENotLogged); // calls delogged();
                 emitTextMessage(tr("Connection lost with XIVO Daemon"));
                 startTryAgainTimer();
@@ -536,14 +533,16 @@ void BaseEngine::socketDisconnected()
  */
 void BaseEngine::socketHostFound()
 {
-        QString socname = this->sender()->property("socket").toString();
-        qDebug() << "BaseEngine::socketHostFound()" << socname;
+        QString socketname = this->sender()->property("socket").toString();
+        qDebug() << "BaseEngine::socketHostFound()" << socketname;
 }
 
 /*! \brief catch socket errors
  */
 void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
 {
+        QString socketname = this->sender()->property("socket").toString();
+        qDebug() << "BaseEngine::socketError()" << socketname;
 	switch(socketError) {
 	case QAbstractSocket::ConnectionRefusedError:
 		emitTextMessage(tr("Connection refused"));
@@ -922,7 +921,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 QStringList liststatus = listitems[1].split(":");
                 if(liststatus.size() > 1) {
                         QStringList newstatuses = liststatus[1].split("/");
-                        qDebug() << newstatuses;
+                        // qDebug() << "update-agents" << newstatuses;
                         QString astid = newstatuses[1];
                         QString agentnum = newstatuses[2];
                         UserInfo * ui = findUserFromAgent(astid, agentnum);
@@ -936,8 +935,8 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 setQueueStatus(listitems[1]);
 
         } else if(listitems[0].toLower() == QString("faxsend")) {
-                quint16 port_fax = listitems[1].toInt();
-                m_faxsocket->connectToHost(m_serverhost, port_fax);
+                m_faxid = listitems[1];
+                m_faxsocket->connectToHost(m_serverhost, m_ctiport);
         } else if(listitems[0].toLower() == QString("faxsent")) {
                 ackFax(listitems[1]);
         } else if((listitems[0] != "") && (listitems[0] != "______") && (listitems[0] != "phones-noupdate"))
@@ -960,12 +959,11 @@ void BaseEngine::sendFaxCommand(const QString & filename, const QString & number
         m_faxdata->append(qf->readAll());
         qf->close();
         m_faxsize = m_faxdata->size();
-        if(m_faxdata->size() > 0) {
-                m_faxid = "size=" + QString::number(m_faxsize) +
-                        " number=" + number +
-                        " hide=" + QString::number(hide);
-                sendCommand("faxsend " + m_faxid);
-        } else
+        if(m_faxdata->size() > 0)
+                sendCommand("faxsend size=" + QString::number(m_faxsize) +
+                            " number=" + number +
+                            " hide=" + QString::number(hide));
+        else
                 ackFax("ko;file");
 }
 
@@ -1057,9 +1055,9 @@ void BaseEngine::popupError(const QString & errorid)
 void BaseEngine::socketReadyRead()
 {
         //qDebug() << "BaseEngine::socketReadyRead()";
-	//QByteArray data = m_sbsocket->readAll();
+        QString socketname = this->sender()->property("socket").toString();
 
-	while(m_sbsocket->canReadLine()) {
+        if(socketname == "tcp_nat") while(m_sbsocket->canReadLine()) {
 		QByteArray data  = m_sbsocket->readLine();
                 // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
 		QString line     = QString::fromUtf8(data);
@@ -1114,6 +1112,18 @@ void BaseEngine::socketReadyRead()
                                 parseCommand(list);
                 }
 	}
+        if(socketname == "fax") {
+                while(m_faxsocket->canReadLine()) {
+                        QByteArray data = m_faxsocket->readLine();
+                        qDebug() << "got fax ack" << QString::fromUtf8(data).trimmed().split("=");
+                }
+                if(m_faxsize > 0)
+                        m_faxsocket->write(* m_faxdata);
+                m_faxsocket->close();
+                m_faxsize = 0;
+                m_faxid = "";
+                delete m_faxdata;
+        }
 }
 
 /*! \brief transfers to the typed number
@@ -1262,7 +1272,7 @@ void BaseEngine::setAddress(const QString & host, quint16 port)
 {
         qDebug() << "BaseEngine::setAddress()" << port;
 	m_serverhost = host;
-	m_sbport = port;
+	m_ctiport = port;
 }
 
 /*! \brief get server IP address */
@@ -1274,7 +1284,7 @@ const QString & BaseEngine::serverip() const
 /*! \brief get server port */
 const quint16 BaseEngine::sbPort() const
 {
-	return m_sbport;
+	return m_ctiport;
 }
 
 const QString & BaseEngine::company() const

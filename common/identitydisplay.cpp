@@ -162,7 +162,7 @@ void IdentityDisplay::setQueueList(const QString & qlist)
 
 void IdentityDisplay::updatePeerAgent(const QString & userid, const QString & status)
 {
-        //qDebug() << "IdentityDisplay::updatePeerAgent" << userid << status;
+        // qDebug() << "IdentityDisplay::updatePeerAgent" << userid << status << m_ui;
         if(userid != m_ui->userid())
                 return;
         QStringList newstatuses = status.split("/");
