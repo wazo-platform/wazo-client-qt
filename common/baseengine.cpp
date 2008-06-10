@@ -669,7 +669,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 	}
 
         if(ui) {
-                // updateAgentPresence(ui->agentid(), InstMessAvail);
+                updateAgentPresence(ui->agentid(), "available");
                 updatePeer(ui, hintstatus,
                            chanIds, chanStates, chanOthers, chanPeers);
         }

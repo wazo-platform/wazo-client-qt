@@ -233,20 +233,22 @@ void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
                 QPixmap * m_square = new QPixmap(12, 12);
                 m_square->fill(Qt::green);
                 if(m_agent_busy.contains(agname))
-                        m_agent_busy[agname]->setPixmap(QPixmap(* m_square));
+                        if(astid == m_agent_busy[agname]->property("astid").toString())
+                                m_agent_busy[agname]->setPixmap(QPixmap(* m_square));
         } else if((command == "agentunlink") || (command == "phoneunlink")) {
                 QString astid = params[1];
                 QString agname = params[2];
                 QPixmap * m_square = new QPixmap(12, 12);
                 m_square->fill(Qt::gray);
                 if(m_agent_busy.contains(agname))
-                        m_agent_busy[agname]->setPixmap(QPixmap(* m_square));
+                        if(astid == m_agent_busy[agname]->property("astid").toString())
+                                m_agent_busy[agname]->setPixmap(QPixmap(* m_square));
         }
 }
 
 void AgentsPanel::setAgentList(const QString & alist)
 {
-        qDebug() << "AgentsPanel::setAgentList()" << alist;
+        // qDebug() << "AgentsPanel::setAgentList()" << alist;
         QPixmap * m_square = new QPixmap(12, 12);
         QStringList asl = alist.split(";");
         if(asl.size() > 1) {
@@ -284,6 +286,7 @@ void AgentsPanel::setAgentList(const QString & alist)
                                          this, SLOT(agentClicked()));
 
                                 m_agent_busy[agnum] = new QLabel(this);
+                                m_agent_busy[agnum]->setProperty("astid", astid);
                                 m_agent_presence[agnum] = new QLabel(this);
                                 m_agent_logged_status[agnum] = new QLabel(this);
                                 m_agent_logged_action[agnum] = new QPushButton(this);
