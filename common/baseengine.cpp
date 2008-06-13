@@ -203,7 +203,10 @@ void BaseEngine::saveSettings()
 
 	m_settings->setValue("userid",     m_userid);
 	m_settings->setValue("company",    m_company);
-	m_settings->setValue("passwd",     m_passwd);
+        if(m_keeppass > 0)
+                m_settings->setValue("passwd", m_passwd);
+        else
+                m_settings->remove("passwd");
 	m_settings->setValue("loginkind",  m_loginkind);
 	m_settings->setValue("keeppass",   m_keeppass);
 	m_settings->setValue("phonenumber", m_phonenumber);

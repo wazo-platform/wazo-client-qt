@@ -121,37 +121,32 @@ MainWidget::MainWidget(BaseEngine * engine,
         m_engine->setOSInfos(osname);
         m_withsystray = true;
         m_loginfirst = true;
-        m_normalmenus = true;
 
         m_settings = m_engine->getSettings();
 	QPixmap redsquare(":/images/disconnected.png");
-        if(m_normalmenus) {
-                statusBar();	// This creates the status bar.
-                m_status = new QLabel();
-                m_status->setPixmap(redsquare);
-                statusBar()->addPermanentWidget(m_status);
-                statusBar()->clearMessage();
-        }
+        statusBar();	// This creates the status bar.
+        m_status = new QLabel();
+        m_status->setPixmap(redsquare);
+        statusBar()->addPermanentWidget(m_status);
+        statusBar()->clearMessage();
+
 	setWindowIcon(QIcon(":/images/xivoicon.png"));
 	setWindowTitle("XIVO " + m_appliname);
         setDockOptions(QMainWindow::AllowNestedDocks);
 	//setWindowFlags(Qt::Dialog);
 	//layout->setSizeConstraint(QLayout::SetFixedSize);	// remove minimize and maximize button
 
-        if(m_normalmenus) {
-                createActions();
-                createMenus();
-                if ( m_withsystray && QSystemTrayIcon::isSystemTrayAvailable() )
-                        createSystrayIcon();
-        }
+        createActions();
+        createMenus();
+        if ( m_withsystray && QSystemTrayIcon::isSystemTrayAvailable() )
+                createSystrayIcon();
 
 	connect( m_engine, SIGNAL(logged()),
 	         this, SLOT(engineStarted()));
 	connect( m_engine, SIGNAL(delogged()),
                  this, SLOT(engineStopped()));
-        if(m_normalmenus)
-                connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
-                         statusBar(), SLOT(showMessage(const QString &)));
+        connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
+                 statusBar(), SLOT(showMessage(const QString &)));
         
         // to be better defined
         // resize(500, 400);
@@ -166,17 +161,14 @@ MainWidget::MainWidget(BaseEngine * engine,
         if(m_loginfirst) {
                 m_lab1 = new QLabel(tr("Login"));
                 m_lab2 = new QLabel(tr("Password"));
-                m_lab3 = new QLabel(tr("Phone Number"));
-                m_qlab1 = new QLineEdit(m_settings->value("engine/userid").toString());
-                m_qlab2 = new QLineEdit("");
-                m_qlab3 = new QLineEdit("");
-                m_ack = new QPushButton("");
-                if(m_normalmenus) {
-                        m_ack->setText("OK");
-                } else {
-                        m_ack->setIconSize(QSize(80, 80));
-                        m_ack->setIcon(QIcon(":/images/button_ok.png"));
-                }
+                m_lab3 = new QLabel(tr("Phone"));
+                m_qlab1 = new QLineEdit();
+                m_qlab2 = new QLineEdit();
+                m_qlab3 = new QLineEdit();
+                m_ack = new QPushButton("OK");
+                m_kpass = new QCheckBox(tr("Keep Password"));
+                m_loginkind = new QCheckBox(tr("Login as Agent"));
+
                 connect( m_qlab1, SIGNAL(returnPressed()),
                          this, SLOT(config_and_start()) );
                 connect( m_qlab1, SIGNAL(textChanged(const QString &)),
@@ -187,9 +179,9 @@ MainWidget::MainWidget(BaseEngine * engine,
                          this, SLOT(config_and_start()) );
                 connect( m_ack, SIGNAL(pressed()),
                          this, SLOT(config_and_start()) );
+                connect( m_loginkind, SIGNAL(stateChanged(int)),
+                         this, SLOT(loginKindChanged(int)) );
                 m_qlab2->setEchoMode(QLineEdit::Password);
-                m_qhline = new QFrame(this);
-                m_qhline->setFrameShape(QFrame::HLine);
         }
         showLogin();
 
@@ -258,6 +250,7 @@ void MainWidget::clearAppearance()
 
 void MainWidget::config_and_start()
 {
+        m_engine->setKeepPass(m_kpass->checkState());
         m_engine->config_and_start(m_qlab1->text(),
                                    m_qlab2->text(),
                                    m_qlab3->text());
@@ -268,25 +261,44 @@ void MainWidget::logintextChanged(const QString & logintext)
         m_qlab3->setText(logintext);
 }
 
+void MainWidget::loginKindChanged(int index)
+{
+        m_engine->setLoginKind(index);
+        if(index == 0) {
+                m_lab3->hide();
+                m_qlab3->hide();
+        } else {
+                m_lab3->show();
+                m_qlab3->show();
+        }
+}
+
 void MainWidget::showLogin()
 {
         m_gridlayout->addWidget(m_xivobg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
         m_gridlayout->setRowStretch(0, 1);
         m_gridlayout->setColumnStretch(0, 1);
         m_gridlayout->setColumnStretch(2, 1);
-        m_gridlayout->setRowStretch(7, 1);
+        m_gridlayout->setRowStretch(6, 1);
         if(m_loginfirst) {
+                m_qlab1->setText(m_engine->userId());
+                m_qlab2->setText(m_engine->password());
+                m_qlab3->setText(m_engine->phonenumber());
+                m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
+                m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
+
                 m_gridlayout->addWidget(m_lab1, 2, 0, Qt::AlignRight);
                 m_gridlayout->addWidget(m_qlab1, 2, 1);
+                m_gridlayout->addWidget(m_ack, 2, 2, Qt::AlignLeft);
+
                 m_gridlayout->addWidget(m_lab2, 3, 0, Qt::AlignRight);
                 m_gridlayout->addWidget(m_qlab2, 3, 1);
-                m_gridlayout->addWidget(m_ack, 3, 2, Qt::AlignLeft);
+                m_gridlayout->addWidget(m_kpass, 3, 2);
 
-                m_gridlayout->addWidget(m_qhline, 4, 0, 1, 3);
+                m_gridlayout->addWidget(m_lab3, 4, 0, Qt::AlignRight);
+                m_gridlayout->addWidget(m_qlab3, 4, 1);
+                m_gridlayout->addWidget(m_loginkind, 4, 2);
 
-                m_gridlayout->addWidget(m_lab3, 5, 0, Qt::AlignRight);
-                m_gridlayout->addWidget(m_qlab3, 5, 1);
-                
                 // show widgets after they have been put in the layout, in order for
                 // temporary windows not to be opened
                 m_lab1->show();
@@ -296,7 +308,8 @@ void MainWidget::showLogin()
                 m_qlab2->show();
                 m_qlab3->show();
                 m_ack->show();
-                m_qhline->show();
+                m_kpass->show();
+                m_loginkind->show();
         }
         m_xivobg->show();
 }
@@ -307,7 +320,7 @@ void MainWidget::hideLogin()
         m_gridlayout->setRowStretch(0, 0);
         m_gridlayout->setColumnStretch(0, 0);
         m_gridlayout->setColumnStretch(2, 0);
-        m_gridlayout->setRowStretch(7, 0);
+        m_gridlayout->setRowStretch(6, 0);
         if(m_loginfirst) {
                 m_lab1->hide();
                 m_lab2->hide();
@@ -316,16 +329,18 @@ void MainWidget::hideLogin()
                 m_qlab2->hide();
                 m_qlab3->hide();
                 m_ack->hide();
-                m_qhline->hide();
-                
+                m_kpass->hide();
+                m_loginkind->hide();
+
                 m_gridlayout->removeWidget(m_ack);
                 m_gridlayout->removeWidget(m_lab1);
                 m_gridlayout->removeWidget(m_lab2);
                 m_gridlayout->removeWidget(m_lab3);
-                m_gridlayout->removeWidget(m_qhline);
                 m_gridlayout->removeWidget(m_qlab1);
                 m_gridlayout->removeWidget(m_qlab2);
                 m_gridlayout->removeWidget(m_qlab3);
+                m_gridlayout->removeWidget(m_kpass);
+                m_gridlayout->removeWidget(m_loginkind);
         }
         m_gridlayout->removeWidget(m_xivobg);
 }
@@ -1015,14 +1030,12 @@ void MainWidget::engineStarted()
         if(m_withsystray && m_systrayIcon)
                 m_systrayIcon->setIcon(m_icon);
 
-        if(m_normalmenus) {
-                statusBar()->showMessage(tr("Connected"));
-                m_connectact->setEnabled(false);
-                m_disconnectact->setEnabled(true);
-                // set status icon to green
-                QPixmap greensquare(":/images/connected.png");
-                m_status->setPixmap(greensquare);
-        }
+        statusBar()->showMessage(tr("Connected"));
+        m_connectact->setEnabled(false);
+        m_disconnectact->setEnabled(true);
+        // set status icon to green
+        QPixmap greensquare(":/images/connected.png");
+        m_status->setPixmap(greensquare);
 }
 
 
@@ -1132,14 +1145,12 @@ void MainWidget::engineStopped()
         if(m_withsystray && m_systrayIcon)
                 m_systrayIcon->setIcon(m_icongrey);
         
-        if(m_normalmenus) {
-                statusBar()->showMessage(tr("Disconnected"));
-                m_connectact->setEnabled(true);
-                m_disconnectact->setEnabled(false);
-                // set status icon to red
-                QPixmap redsquare(":/images/disconnected.png");
-                m_status->setPixmap(redsquare);
-        }
+        statusBar()->showMessage(tr("Disconnected"));
+        m_connectact->setEnabled(true);
+        m_disconnectact->setEnabled(false);
+        // set status icon to red
+        QPixmap redsquare(":/images/disconnected.png");
+        m_status->setPixmap(redsquare);
 
         clearAppearance();
         m_appliname = "Clients";

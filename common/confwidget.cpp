@@ -192,11 +192,13 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	gridlayout3->addWidget(m_loginkind, line++, 0, 1, 2);
         connect( m_loginkind, SIGNAL(stateChanged(int)),
 	         this, SLOT(loginKindChanged(int)) );
-
+        
 	m_lblphone = new QLabel(tr("Phone Number"), this);
         m_phonenumber = new QLineEdit(m_engine->phonenumber(), this);
         gridlayout3->addWidget(m_lblphone, line, 0);
         gridlayout3->addWidget(m_phonenumber, line++, 1);
+
+        loginKindChanged(m_loginkind->checkState());
 
  	gridlayout3->setRowStretch( line, 1 );
 

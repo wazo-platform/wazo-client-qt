@@ -42,6 +42,7 @@
 #ifndef __MAINWIDGET_H__
 #define __MAINWIDGET_H__
 
+#include <QCheckBox>
 #include <QDateTime>
 #include <QHash>
 #include <QLabel>
@@ -132,6 +133,7 @@ private slots:
 	void affTextChanged();
         void config_and_start();
         void logintextChanged(const QString &);
+        void loginKindChanged(int);
 signals:
         void functionKeyPressed(int);
 protected:
@@ -199,7 +201,6 @@ private:
 
         bool m_withsystray;
         bool m_loginfirst;
-        bool m_normalmenus;
 
         QHash<QString, QDockWidget *> m_docks;
 	int m_tablimit;		//!< Maximum number of tabs in m_cinfo_tabwidget
@@ -221,7 +222,8 @@ private:
         QLineEdit * m_qlab2;
         QLineEdit * m_qlab3;
         QPushButton * m_ack;
-        QFrame * m_qhline;
+        QCheckBox * m_kpass;
+        QCheckBox * m_loginkind;
 
 	QMenu * m_avail;		//!< Availability submenu
 	QAction * m_avact_avail;	//!< "Available" action
