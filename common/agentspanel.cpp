@@ -87,7 +87,7 @@ void AgentsPanel::setUserInfo(const UserInfo * ui)
 void AgentsPanel::updateAgentPresence(const QString & agentname, const QString & presence)
 {
         // qDebug() << "AgentsPanel::updateAgentPresence" << agentname << presence;
-        if(agentname.size() > 0) {
+        if(agentname.size() > 0)
                 if(m_agent_presence.contains(agentname)) {
                         QPixmap * m_square = new QPixmap(12, 12);
                         if(presence == "available")
@@ -96,13 +96,16 @@ void AgentsPanel::updateAgentPresence(const QString & agentname, const QString &
                                 m_square->fill(Qt::gray);
                         m_agent_presence[agentname]->setPixmap(QPixmap(* m_square));
                 }
-        }
 }
 
-void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
+void AgentsPanel::updatePeerAgent(const QString &,
+                                  const QString & what,
+                                  const QString & status)
 {
-        // qDebug() << "AgentsPanel::updatePeerAgent()" << agentstatus;
-        QStringList params = agentstatus.split("/");
+        if(what != "agentstatus")
+                return;
+        // qDebug() << "AgentsPanel::updatePeerAgent()" << status;
+        QStringList params = status.split("/");
         QString command = params[0];
         if(command == "queuememberstatus") {
                 QString agname = params[2];
@@ -122,9 +125,9 @@ void AgentsPanel::updatePeerAgent(const QString &, const QString & agentstatus)
                                 m_agent_logged_status[agname]->setProperty("logged", "n");
                                 m_agent_logged_action[agname]->setIcon(QIcon(":/images/button_ok.png"));
                         } else if(status == "3") {
-                                qDebug() << "AgentsPanel::updatePeerAgent()" << agentstatus;
+                                qDebug() << "AgentsPanel::updatePeerAgent()" << status;
                         } else {
-                                qDebug() << "AgentsPanel::updatePeerAgent()" << agentstatus;
+                                qDebug() << "AgentsPanel::updatePeerAgent()" << status;
                         }
                 }
         } else if(command == "joinqueue") {

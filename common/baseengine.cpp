@@ -382,13 +382,13 @@ const QStringList & BaseEngine::getCapaFeatures() const
  */
 void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
 {
+        // qDebug() << "BaseEngine::setAvailState" << newstate << comesFromServer;
 	if(m_availstate != newstate) {
 		m_availstate = newstate;
 		m_settings->setValue("engine/availstate", m_availstate);
                 if (comesFromServer)
                         changesAvailChecks();
                 keepLoginAlive();
-                sendCommand("availstate " + m_availstate);
 	}
 }
 
@@ -671,11 +671,9 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 		}
 	}
 
-        if(ui) {
-                updateAgentPresence(ui->agentid(), "available");
+        if(ui)
                 updatePeer(ui, hintstatus,
                            chanIds, chanStates, chanOthers, chanPeers);
-        }
 
         // used mainly for transfer on directory numbers
         if( (m_asterisk == astid) && (m_userid == liststatus[3]) && (m_dialcontext == context))
@@ -774,18 +772,23 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
         } else if((listitems[0] == QString("users-list")) && (listitems.size() == 2)) {
                 QStringList listpeers = listitems[1].split(";");
-                for(int i = 1 ; i < listpeers.size() ; i += 9) {
-                        //                         qDebug() << listpeers[i] << listpeers[i+1] << listpeers[i+2]
-                        //                                  << listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
-                        //                                  << listpeers[i+6] << listpeers[i+7] << listpeers[i+8];
+                for(int i = 1 ; i < listpeers.size() ; i += 10) {
+                        //qDebug() << "users-list" << listpeers[i] << listpeers[i+1] << listpeers[i+2]
+                        //<< listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
+                        //<< listpeers[i+6] << listpeers[i+7] << listpeers[i+8] << listpeers[i+9];
                         QString iduser = listpeers[i+1] + "/" + listpeers[i];
-                        m_users[iduser] = new UserInfo(iduser);
-                        m_users[iduser]->setFullName(listpeers[i+2]);
-                        m_users[iduser]->setNumber(listpeers[i+6]);
-                        m_users[iduser]->setPhones(listpeers[i+4], listpeers[i+5], listpeers[i+7]);
-                        m_users[iduser]->setAgent(listpeers[i+8]);
-
-                        newUser(m_users[iduser]);
+                        if(! m_users.contains(iduser)) {
+                                m_users[iduser] = new UserInfo(iduser);
+                                m_users[iduser]->setFullName(listpeers[i+2]);
+                                newUser(m_users[iduser]);
+                        }
+                        QString imstatus = listpeers[i+3];
+                        m_users[iduser]->setAvailState(imstatus);
+                        m_users[iduser]->setNumber(listpeers[i+7]);
+                        m_users[iduser]->setPhones(listpeers[i+5], listpeers[i+6], listpeers[i+8]);
+                        m_users[iduser]->setAgent(listpeers[i+9]);
+                        updatePeerAgent(iduser, "imstatus", imstatus);
+                        updateAgentPresence(m_users[iduser]->agentid(), imstatus);
                 }
 
                 QString fullid_mine = m_company + "/" + m_userid;
@@ -906,7 +909,6 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 newQueueList(listitems[1]);
 
         } else if(listitems[0].toLower() == QString("agents-list")) {
-                qDebug() << listitems;
                 newAgentList(listitems[1]);
 
         } else if(listitems[0].toLower() == QString("agent-status")) {
@@ -924,14 +926,13 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 QStringList liststatus = listitems[1].split(":");
                 if(liststatus.size() > 1) {
                         QStringList newstatuses = liststatus[1].split("/");
-                        // qDebug() << "update-agents" << newstatuses;
                         QString astid = newstatuses[1];
                         QString agentnum = newstatuses[2];
                         UserInfo * ui = findUserFromAgent(astid, agentnum);
                         if(ui)
-                                updatePeerAgent(ui->userid(), liststatus[1]);
+                                updatePeerAgent(ui->userid(), "agentstatus", liststatus[1]);
                         else // (useful ?) in order to transfer the replies to unmatched agents
-                                updatePeerAgent("", liststatus[1]);
+                                updatePeerAgent("", "agentstatus", liststatus[1]);
                 }
 
         } else if(listitems[0].toLower() == QString("update-queues")) {
@@ -940,8 +941,20 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
         } else if(listitems[0].toLower() == QString("faxsend")) {
                 m_faxid = listitems[1];
                 m_faxsocket->connectToHost(m_serverhost, m_ctiport);
+
         } else if(listitems[0].toLower() == QString("faxsent")) {
                 ackFax(listitems[1]);
+
+        } else if(listitems[0].toLower() == QString("presence")) {
+                QStringList presencestatus = listitems[1].split(";");
+                QString id = presencestatus[0] + "/" + presencestatus[1];
+                //qDebug() << presencestatus << m_users.size();
+                if(m_users.contains(id)) {
+                        m_users[id]->setAvailState(presencestatus[2]);
+                        updatePeerAgent(id, "imstatus", presencestatus[2]);
+                        updateAgentPresence(m_users[id]->agentid(), presencestatus[2]);
+                }
+
         } else if((listitems[0] != "") && (listitems[0] != "______") && (listitems[0] != "phones-noupdate"))
                 qDebug() << "unknown command" << listitems[0];
 
@@ -1094,7 +1107,9 @@ void BaseEngine::socketReadyRead()
                                 m_forced_state   = params_list["state"];
                                 m_capafeatures   = params_list["capas_features"].split(",");
                                 
-                                qDebug() << m_capadisplay << m_capaappli;
+                                qDebug() << "m_capadisplay" << m_capadisplay;
+                                qDebug() << "m_capaappli" << m_capaappli;
+                                qDebug() << "m_capabilities" << m_capabilities;
                                 
                                 if(m_version_server < REQUIRED_SERVER_VERSION) {
                                         stop();
@@ -1588,6 +1603,7 @@ void BaseEngine::askCallerIds()
 	sendCommand("phones-list");
         sendCommand("queues-list");
         sendCommand("agents-status");
+        sendCommand("users-list");
 }
 
 void BaseEngine::setSystrayed(bool b)
@@ -1651,7 +1667,7 @@ void BaseEngine::setState(EngineState state)
 	if(state != m_state) {
 		m_state = state;
 		if(state == ELogged) {
-                        m_enabled_presence = m_capabilities.contains("func-presence");
+                        m_enabled_presence = hasFunction("presence");
 			stopTryAgainTimer();
 			if(m_checked_presence && m_enabled_presence)
                                 availAllowChanged(true);

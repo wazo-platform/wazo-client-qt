@@ -160,14 +160,19 @@ void SwitchBoardWindow::updatePeer(const UserInfo * ui,
 }
 
 
-void SwitchBoardWindow::updatePeerAgent(const QString & ext,
-                                        const QString & agentstatus)
+void SwitchBoardWindow::updatePeerAgent(const QString & id,
+                                        const QString & what,
+                                        const QString & status)
 {
         // qDebug() << "SwitchBoardWindow::updatePeerAgent()";
-        if(m_peerhash.contains(ext)) {
-                PeerItem * peeritem = m_peerhash.value(ext);
-                peeritem->updateAgentStatus(agentstatus);
-        }
+        if(m_peerhash.contains(id))
+                if(what == "agentstatus") {
+                        PeerItem * peeritem = m_peerhash.value(id);
+                        peeritem->updateAgentStatus(status);
+                } else if(what == "imstatus") {
+                        PeerItem * peeritem = m_peerhash.value(id);
+                        peeritem->updateIMStatus(status);
+                }
         return;
 }
 

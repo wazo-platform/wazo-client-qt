@@ -66,7 +66,9 @@ signals:
         void agentAction(const QString &);
 public slots:
 	void newAgent(const QStringList &);
-        void updatePeerAgent(const QString &, const QString &);
+        void updatePeerAgent(const QString &,
+                             const QString &,
+                             const QString &);
 private slots:
         void queueClicked();
 private:

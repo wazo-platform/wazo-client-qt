@@ -71,7 +71,9 @@ public slots:
         void setUserInfo(const UserInfo *);
 	void setAgentList(const QString &);
         void setAgentStatus(const QString &);
-        void updatePeerAgent(const QString &, const QString &);
+        void updatePeerAgent(const QString &,
+                             const QString &,
+                             const QString &);
         void updateAgentPresence(const QString &, const QString &);
 private slots:
         void agentClicked();

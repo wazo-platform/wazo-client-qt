@@ -80,6 +80,13 @@ void PeerItem::updateStatus(const QString & sipstatus)
                 updateDisplayedStatus();
 }
 
+void PeerItem::updateIMStatus(const QString & imavail)
+{
+        m_imavail   = imavail;
+        if(m_peerwidget != NULL)
+                updateDisplayedStatus();
+}
+
 void PeerItem::updateAgentStatus(const QString & agentstatus)
 {
         // qDebug() << "PeerItem::updateAgentStatus()" << agentstatus;

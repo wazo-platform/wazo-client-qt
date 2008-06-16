@@ -70,6 +70,7 @@ public:
 	PeerWidget * getWidget() { return m_peerwidget; };
 
 	void updateStatus(const QString &);
+        void updateIMStatus(const QString &);
 	void updateAgentStatus(const QString &);
 	void updateChans(const QStringList &,
 	                 const QStringList &,

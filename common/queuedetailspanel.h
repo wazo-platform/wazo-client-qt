@@ -66,7 +66,9 @@ signals:
 protected:
 public slots:
 	void newQueue(const QStringList &);
-        void updatePeerAgent(const QString &, const QString &);
+        void updatePeerAgent(const QString &,
+                             const QString &,
+                             const QString &);
 private slots:
         void agentClicked();
 private:

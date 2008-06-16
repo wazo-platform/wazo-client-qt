@@ -57,7 +57,7 @@
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(QWidget * parent)
-        : QWidget(parent), m_agentstatus(false), m_queuechangeallow(false)
+        : QWidget(parent), m_ui(NULL), m_agentstatus(false), m_queuechangeallow(false)
 {
 	QGridLayout * glayout = new QGridLayout(this);
 	// glayout->setMargin(0);
@@ -122,10 +122,11 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_ui = ui;
 }
 
-
 void IdentityDisplay::setQueueList(const QString & qlist)
 {
         qDebug() << "IdentityDisplay::setQueueList()" << qlist;
+        if(m_ui == NULL)
+                return;
         QStringList qsl = qlist.split(";");
         if(qsl[1] == "1")
                 m_queuechangeallow = true;
@@ -160,10 +161,16 @@ void IdentityDisplay::setQueueList(const QString & qlist)
         }
 }
 
-void IdentityDisplay::updatePeerAgent(const QString & userid, const QString & status)
+void IdentityDisplay::updatePeerAgent(const QString & userid,
+                                      const QString & what,
+                                      const QString & status)
 {
         // qDebug() << "IdentityDisplay::updatePeerAgent" << userid << status << m_ui;
+        if(m_ui == NULL)
+                return;
         if(userid != m_ui->userid())
+                return;
+        if(what != "agentstatus")
                 return;
         QStringList newstatuses = status.split("/");
         if (newstatuses.size() >= 4) {

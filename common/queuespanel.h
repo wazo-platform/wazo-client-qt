@@ -66,7 +66,9 @@ signals:
 public slots:
 	void setQueueList(const QString &);
         void setQueueStatus(const QString &);
-        void updatePeerAgent(const QString &, const QString &);
+        void updatePeerAgent(const QString &,
+                             const QString &,
+                             const QString &);
 private slots:
         void queueClicked();
 private:

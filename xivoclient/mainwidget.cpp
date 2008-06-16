@@ -675,8 +675,8 @@ void MainWidget::engineStarted()
                                 addPanel("identity", tr("&Identity"), m_infowidget);
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_infowidget, SLOT(setUserInfo(const UserInfo *)));
-                                connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
-                                         m_infowidget, SLOT(updatePeerAgent(const QString &, const QString &)));
+                                connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QString &)),
+                                         m_infowidget, SLOT(updatePeerAgent(const QString &, const QString &, const QString &)));
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
                                          m_infowidget, SLOT(setQueueStatus(const QString &)));
                                 connect( m_engine, SIGNAL(newQueueList(const QString &)),
@@ -697,8 +697,8 @@ void MainWidget::engineStarted()
                                          m_agentspanel, SLOT(setAgentList(const QString &)));
                                 connect( m_agentspanel, SIGNAL(changeWatchedAgent(const QString &)),
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
-				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
-					 m_agentspanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QString &)),
+					 m_agentspanel, SLOT(updatePeerAgent(const QString &, const QString &, const QString &)) );
 				connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QString &)),
 					 m_agentspanel, SLOT(updateAgentPresence(const QString &, const QString &)) );
                                 connect( m_agentspanel, SIGNAL(agentAction(const QString &)),
@@ -715,8 +715,8 @@ void MainWidget::engineStarted()
                                          m_agentdetailspanel, SLOT(newAgent(const QStringList &)));
                                 connect( m_agentdetailspanel, SIGNAL(changeWatchedQueue(const QString &)),
                                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
-				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
-					 m_agentdetailspanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QString &)),
+					 m_agentdetailspanel, SLOT(updatePeerAgent(const QString &, const QString &, const QString &)) );
                                 connect( m_agentdetailspanel, SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
 
@@ -733,8 +733,8 @@ void MainWidget::engineStarted()
                                          m_queuespanel, SLOT(setQueueList(const QString &)));
                                 connect( m_queuespanel, SIGNAL(changeWatchedQueue(const QString &)),
                                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
-				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
-					 m_queuespanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QString &)),
+					 m_queuespanel, SLOT(updatePeerAgent(const QString &, const QString &, const QString &)) );
 
 			} else if (dc == QString("queuedetails")) {
                                 m_queuedetailspanel = new QueuedetailsPanel();
@@ -747,8 +747,8 @@ void MainWidget::engineStarted()
                                          m_queuedetailspanel, SLOT(newQueue(const QStringList &)));
                                 connect( m_queuedetailspanel, SIGNAL(changeWatchedAgent(const QString &)),
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
-				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
-					 m_queuedetailspanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QString &)),
+					 m_queuedetailspanel, SLOT(updatePeerAgent(const QString &, const QString &, const QString &)) );
 
 			} else if (dc == QString("datetime")) {
 				m_datetimepanel = new DatetimePanel();
@@ -845,8 +845,8 @@ void MainWidget::engineStarted()
                                                                      const QString &,
                                                                      const QStringList &, const QStringList &,
                                                                      const QStringList &, const QStringList &)) );
-				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
-					 m_sbwidget, SLOT(updatePeerAgent(const QString &, const QString &)) );
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QString &)),
+					 m_sbwidget, SLOT(updatePeerAgent(const QString &, const QString &, const QString &)) );
                                 connect( m_engine, SIGNAL(delogged()),
                                          m_sbwidget, SLOT(removePeers()) );
                                 connect( m_engine, SIGNAL(removePeer(const QString &)),
@@ -898,8 +898,8 @@ void MainWidget::engineStarted()
 									const QStringList &, const QStringList &)) );
                                 connect( m_engine, SIGNAL(newUser(const UserInfo *)),
                                          m_searchpanel, SLOT(newUser(const UserInfo *)));
-				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &)),
-					 m_searchpanel, SLOT(updatePeerAgent(const QString &, const QString &)) );
+				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QString &)),
+					 m_searchpanel, SLOT(updatePeerAgent(const QString &, const QString &, const QString &)) );
 				connect( m_engine, SIGNAL(peersReceived()),
 					 m_searchpanel, SLOT(callsUpdated()) );
 				connect( m_searchpanel, SIGNAL(askCallerIds()),

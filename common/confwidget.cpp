@@ -62,7 +62,7 @@
 ConfWidget::ConfWidget(BaseEngine * engine,
                        MainWidget * parent)
         : QDialog(parent), m_engine(engine), m_mainwindow(parent),
-          m_presence(NULL), m_cinfo(NULL)
+          m_presence(NULL), m_cinfo(NULL), m_autourl(NULL), m_history_sbox(NULL)
 {
 	int line = 0;
 	// the object will be destroyed when closed
@@ -112,27 +112,29 @@ ConfWidget::ConfWidget(BaseEngine * engine,
         line = 0;
 
         QStringList qsl = m_engine->getSettings()->value("display/capas", "").toString().split(",");
-        if(qsl.contains("presence")) {
+        if(qsl.contains("func-presence")) {
                 m_presence = new QCheckBox(tr("Presence reporting"));
                 m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
                 gridlayout2->addWidget( m_presence, line++, 1 );
         }
 
-        if(qsl.contains("customerinfo")) {
+        if(qsl.contains("xlet-customerinfo")) {
                 m_cinfo = new QCheckBox(tr("Customer Info"));
                 m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
                 gridlayout2->addWidget( m_cinfo, line++, 1 );
+                
+                m_autourl = new QCheckBox(tr("Allow the Automatic Opening of URLs"));
+                m_autourl->setCheckState(m_engine->checkedAutoUrl() ? Qt::Checked : Qt::Unchecked);
+                gridlayout2->addWidget( m_autourl, line++, 0, 1, 2 );
         }
 
-        m_autourl = new QCheckBox(tr("Allow the Automatic Opening of URLs"));
-        m_autourl->setCheckState(m_engine->checkedAutoUrl() ? Qt::Checked : Qt::Unchecked);
-        gridlayout2->addWidget( m_autourl, line++, 0, 1, 2 );
-
-	gridlayout2->addWidget(new QLabel(tr("History size"), this), line, 0);
-	m_history_sbox = new QSpinBox(this);
-	m_history_sbox->setRange(1, 20);
-	m_history_sbox->setValue(m_engine->historySize());
-	gridlayout2->addWidget(m_history_sbox, line++, 1);
+        if(qsl.contains("xlet-history")) {
+                gridlayout2->addWidget(new QLabel(tr("History size"), this), line, 0);
+                m_history_sbox = new QSpinBox(this);
+                m_history_sbox->setRange(1, 20);
+                m_history_sbox->setValue(m_engine->historySize());
+                gridlayout2->addWidget(m_history_sbox, line++, 1);
+        }
 
 	gridlayout2->addWidget(new QLabel(tr("Contacts' max number"), this), line, 0);
 	m_contactssize_sbox = new QSpinBox(this);
@@ -308,9 +310,11 @@ void ConfWidget::saveAndClose()
                 m_engine->setCheckedPresence(m_presence->checkState() == Qt::Checked);
         if(m_cinfo)
                 m_engine->setCheckedCInfo(m_cinfo->checkState() == Qt::Checked);
-        m_engine->setCheckedAutoUrl(m_autourl->checkState() == Qt::Checked);
+        if(m_autourl)
+                m_engine->setCheckedAutoUrl(m_autourl->checkState() == Qt::Checked);
+        if(m_history_sbox)
+                m_engine->setHistorySize(m_history_sbox->value());
 
-	m_engine->setHistorySize(m_history_sbox->value());
 	m_engine->setContactsSize(m_contactssize_sbox->value());
 	m_engine->setContactsColumns(m_contactswidth_sbox->value());
         m_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);

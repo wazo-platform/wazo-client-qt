@@ -66,7 +66,7 @@ QueuesPanel::~QueuesPanel()
         // qDebug() << "QueuesPanel::~QueuesPanel()";
 }
 
-void QueuesPanel::updatePeerAgent(const QString &, const QString &)
+void QueuesPanel::updatePeerAgent(const QString &, const QString &, const QString &)
 {
 }
 

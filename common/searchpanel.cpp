@@ -220,14 +220,19 @@ void SearchPanel::newUser(const UserInfo * ui)
         m_peerhash.insert(ui->userid(), peeritem);
 }
 
-void SearchPanel::updatePeerAgent(const QString & ext,
-                                  const QString & agentstatus)
+void SearchPanel::updatePeerAgent(const QString & id,
+                                  const QString & what,
+                                  const QString & status)
 {
         // qDebug() << "SearchPanel::updatePeerAgent()";
-        if(m_peerhash.contains(ext)) {
-                PeerItem * peeritem = m_peerhash.value(ext);
-                peeritem->updateAgentStatus(agentstatus);
-        }
+        if(m_peerhash.contains(id))
+                if(what == "agentstatus") {
+                        PeerItem * peeritem = m_peerhash.value(id);
+                        peeritem->updateAgentStatus(status);
+                } else if(what == "imstatus") {
+                        PeerItem * peeritem = m_peerhash.value(id);
+                        peeritem->updateIMStatus(status);
+                }
         return;
 }
 

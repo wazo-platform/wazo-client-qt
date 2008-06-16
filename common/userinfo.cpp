@@ -78,6 +78,11 @@ void UserInfo::setPhones(const QString & astid,
                 m_termstatus[term] = "unknown";
 }
 
+void UserInfo::setAvailState(const QString & availstate)
+{
+        m_availstate = availstate;
+}
+
 void UserInfo::setAgent(const QString & agentnum)
 {
         m_agentnum = agentnum;
@@ -132,6 +137,11 @@ const QString & UserInfo::agentid() const
 const QString & UserInfo::astid() const
 {
         return m_astid;
+}
+
+const QString & UserInfo::availstate() const
+{
+        return m_availstate;
 }
 
 const QStringList & UserInfo::termlist() const

@@ -50,6 +50,7 @@ class UserInfo
 public:
 	UserInfo(const QString &);
         ~UserInfo();
+        void setAvailState(const QString &);
         void setFullName(const QString &);
         void setNumber(const QString &);
         void setPhones(const QString &,
@@ -66,11 +67,17 @@ public:
         const QString & userid() const;
         const QString & agentid() const;
         const QString & astid() const;
+        const QString & availstate() const;
         const QStringList & termlist() const;
         const QHash<QString, QString> & termstatus() const;
         void updatePhoneStatus(const QString &,
                                const QString &);
 private:
+        QString m_userid;
+        QString m_fullname;
+
+        QString m_availstate;
+
         QString m_astid;
         QString m_context;
         QString m_phonenum;
@@ -78,9 +85,6 @@ private:
         QString m_agentnum;
         QString m_agentphonenum;
         QHash<QString, QString> m_termstatus;
-
-        QString m_userid;
-        QString m_fullname;
 };
 
 #endif

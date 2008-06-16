@@ -77,7 +77,6 @@ PeerWidget::PeerWidget(const UserInfo * ui,
 	layout->setMargin(2);
 
 
-
         // QLabels definitions
         if(m_name.isEmpty())
                 qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_name is empty for :" << m_id;
