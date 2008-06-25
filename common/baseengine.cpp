@@ -157,9 +157,9 @@ void BaseEngine::loadSettings()
 	m_loginport  = m_settings->value("loginport", 5000).toUInt();
 	m_ctiport    = m_settings->value("serverport", 5003).toUInt();
 
-        m_checked_presence = m_settings->value("fct_presence", true).toBool();
-        m_checked_cinfo    = m_settings->value("fct_cinfo",    true).toBool();
-        m_checked_autourl  = m_settings->value("fct_autourl",  true).toBool();
+        m_checked_presence = m_settings->value("fct_presence", false).toBool();
+        m_checked_cinfo    = m_settings->value("fct_cinfo",    false).toBool();
+        m_checked_autourl  = m_settings->value("fct_autourl",  false).toBool();
 
 	m_userid      = m_settings->value("userid").toString();
 	m_company     = m_settings->value("company").toString();
@@ -839,11 +839,11 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
         } else if((listitems[0].toLower() == QString("phones-signal-deloradd")) && (listitems.size() == 2)) {
                 QStringList listpeers = listitems[1].split(";");
-                qDebug() << listpeers;
-//                 emitTextMessage(tr("New phone list on %1 : - %2 + %3 = %4 total").arg(listpeers[0],
-//                                                                                       listpeers[1],
-//                                                                                       listpeers[2],
-//                                                                                       listpeers[3]));
+                // qDebug() << "phones-signal-deloradd" << listpeers;
+                //emitTextMessage(tr("New phone list on %1 : - %2 + %3 = %4 total").arg(listpeers[0],
+                //listpeers[1],
+                //listpeers[2],
+                //listpeers[3]));
                 if(listpeers[1].toInt() > 0)
                         sendCommand("phones-del");
                 if(listpeers[2].toInt() > 0)
@@ -912,15 +912,14 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 newAgentList(listitems[1]);
 
         } else if(listitems[0].toLower() == QString("agent-status")) {
-                qDebug() << listitems;
                 QStringList liststatus = listitems[1].split(";");
-                // if status = "for me" => update me
-                changeWatchedAgentSignal(liststatus);
+                if((liststatus[0] == m_agent_watched_astid) && (liststatus[1] == m_agent_watched_agentid))
+                        changeWatchedAgentSignal(liststatus);
 
         } else if(listitems[0].toLower() == QString("queue-status")) {
-                qDebug() << listitems;
                 QStringList liststatus = listitems[1].split(";");
-                changeWatchedQueueSignal(liststatus);
+                if((liststatus[0] == m_queue_watched_astid) && (liststatus[1] == m_queue_watched_queueid))
+                        changeWatchedQueueSignal(liststatus);
 
         } else if(listitems[0].toLower() == QString("update-agents")) {
                 QStringList liststatus = listitems[1].split(":");
@@ -1081,6 +1080,7 @@ void BaseEngine::socketReadyRead()
 
 		if(line.startsWith("<?xml") || line.startsWith("<ui version=")) {
                         // we get here when receiving a customer info in tcp mode
+                        qDebug() << m_checked_cinfo;
                         qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
                         bool qtui = false;
                         if(line.startsWith("<ui version="))
@@ -1110,6 +1110,18 @@ void BaseEngine::socketReadyRead()
                                 qDebug() << "m_capadisplay" << m_capadisplay;
                                 qDebug() << "m_capaappli" << m_capaappli;
                                 qDebug() << "m_capabilities" << m_capabilities;
+                                
+                                // XXXX m_capabilities => config file
+                                if(! hasFunction("presence")) {
+                                        m_checked_presence = false;
+                                        m_settings->remove("engine/fct_presence");
+                                }
+                                if(! hasFunction("customerinfo")) {
+                                        m_checked_cinfo = false;
+                                        m_settings->remove("engine/fct_cinfo");
+                                        m_checked_autourl = false;
+                                        m_settings->remove("engine/fct_autourl");
+                                }
                                 
                                 if(m_version_server < REQUIRED_SERVER_VERSION) {
                                         stop();
@@ -1517,7 +1529,7 @@ void BaseEngine::setTrytoreconnectinterval(uint i)
 void BaseEngine::timerEvent(QTimerEvent * event)
 {
 	int timerId = event->timerId();
-        //qDebug() << "BaseEngine::timerEvent() timerId=" << timerId << m_ka_timerid << m_try_timerid;
+        qDebug() << "BaseEngine::timerEvent() timerId=" << timerId << m_ka_timerid << m_try_timerid;
 	if(timerId == m_ka_timerid) {
                 keepLoginAlive();
                 event->accept();
@@ -1683,15 +1695,17 @@ void BaseEngine::setState(EngineState state)
 void BaseEngine::changeWatchedAgentSlot(const QString & astagentid)
 {
         qDebug() << "BaseEngine::changeWatchedAgentSlot()" << astagentid;
+        m_agent_watched_astid = astagentid.split(" ")[0];
+        m_agent_watched_agentid = astagentid.split(" ")[1];
         sendCommand("agent-status " + astagentid);
-        // changeWatchedAgentSignal(agentid);
 }
 
 void BaseEngine::changeWatchedQueueSlot(const QString & astqueueid)
 {
         qDebug() << "BaseEngine::changeWatchedQueueSlot()" << astqueueid;
+        m_queue_watched_astid = astqueueid.split(" ")[0];
+        m_queue_watched_queueid = astqueueid.split(" ")[1];
         sendCommand("queue-status " + astqueueid);
-        // changeWatchedQueueSignal(queueid);
 }
 
 void BaseEngine::setOSInfos(const QString & osname)

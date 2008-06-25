@@ -90,6 +90,7 @@ private:
         const UserInfo * m_ui;
         bool m_agentstatus;
         bool m_queuechangeallow;
+        int m_maxqueues;
 signals:
         void agentAction(const QString &);
 };

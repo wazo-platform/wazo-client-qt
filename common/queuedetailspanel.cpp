@@ -56,10 +56,16 @@ QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
 	m_gridlayout = new QGridLayout(this);
 
         m_label = new QLabel("", this);
+        m_queuelegend_agentid = new QLabel(tr("Agent Id"), this);
+        m_queuelegend_status = new QLabel(tr("Status"), this);
         m_maxbusy = 0;
         m_gridlayout->setColumnStretch( 5, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_label, 0, 0);
+        m_gridlayout->addWidget(m_queuelegend_agentid, 1, 0);
+        m_gridlayout->addWidget(m_queuelegend_status, 1, 1);
+        m_queuelegend_agentid->hide();
+        m_queuelegend_status->hide();
 }
 
 QueuedetailsPanel::~QueuedetailsPanel()
@@ -67,15 +73,42 @@ QueuedetailsPanel::~QueuedetailsPanel()
         // qDebug() << "QueuedetailsPanel::~QueuedetailsPanel()";
 }
 
-void QueuedetailsPanel::updatePeerAgent(const QString &, const QString &, const QString &)
+void QueuedetailsPanel::updatePeerAgent(const QString &,
+                                        const QString & what,
+                                        const QString & status)
 {
-        // qDebug() << "QueuedetailsPanel::updatePeerAgent()";
+        if(what != "agentstatus")
+                return;
+        // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << status;
+        QStringList params = status.split("/");
+        QString command = params[0];
+        if(command == "joinqueue") {
+                QString astid = params[1];
+                QString agname = params[2];
+                QString qname = params[3];
+                if((astid == m_astid) && (qname == m_queueid)) {
+                        if(! m_agentlist.contains(agname)) {
+                                m_agentlist.append(agname);
+                                m_agentlist.sort();
+                                update();
+                        }
+                }
+        } else if(command == "leavequeue") {
+                QString astid = params[1];
+                QString agname = params[2];
+                QString qname = params[3];
+                if((astid == m_astid) && (qname == m_queueid))
+                        if(m_agentlist.contains(agname)) {
+                                m_agentlist.removeAll(agname);
+                                m_agentlist.sort();
+                                update();
+                        }
+        }
 }
 
-void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
+void QueuedetailsPanel::update()
 {
-        qDebug() << "QueuedetailsPanel::newQueue()" << queuestatus;
-        m_label->setText("<b>" + queuestatus[1] + "</b>");
+        // qDebug() << "QueuedetailsPanel::update()";
         QHashIterator<QString, QPushButton *> i(m_agentlabels);
         while (i.hasNext()) {
                 i.next();
@@ -89,31 +122,47 @@ void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
         m_agentlabels.clear();
         m_agentstatus.clear();
 
-        if(queuestatus.size() > 2) {
-                QString astid = queuestatus[0];
-                QStringList agents;
-                for(int i = 2 ; i < queuestatus.size(); i++)
-                        if(queuestatus[i].size() > 0)
-                                agents << queuestatus[i].split(",")[0];
-                agents.sort();
+        for(int i = 0 ; i < m_agentlist.size(); i++) {
+                m_agentlabels[m_agentlist[i]] = new QPushButton(m_agentlist[i], this);
+                m_agentlabels[m_agentlist[i]]->setProperty("agentid", m_agentlist[i]);
+                connect( m_agentlabels[m_agentlist[i]], SIGNAL(clicked()),
+                         this, SLOT(agentClicked()));
+                m_agentstatus[m_agentlist[i]] = new QLabel("", this);
+                m_gridlayout->addWidget( m_agentlabels[m_agentlist[i]], i + 2, 0, Qt::AlignLeft );
+                m_gridlayout->addWidget( m_agentstatus[m_agentlist[i]], i + 2, 1, Qt::AlignLeft );
+        }
+}
 
-                for(int i = 0 ; i < agents.size(); i++) {
-                        m_agentlabels[agents[i]] = new QPushButton(agents[i], this);
-                        m_agentlabels[agents[i]]->setProperty("astid", astid);
-                        m_agentlabels[agents[i]]->setProperty("agentid", agents[i]);
-                        connect( m_agentlabels[agents[i]], SIGNAL(clicked()),
-                                 this, SLOT(agentClicked()));
-                        m_agentstatus[agents[i]] = new QLabel("", this);
-                        m_gridlayout->addWidget( m_agentlabels[agents[i]], i + 1, 1, Qt::AlignLeft );
-                        m_gridlayout->addWidget( m_agentstatus[agents[i]], i + 1, 2, Qt::AlignLeft );
-                }
+void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
+{
+        qDebug() << "QueuedetailsPanel::newQueue()" << queuestatus;
+
+        QStringList prevlist = m_agentlist;
+        if(queuestatus.size() > 2) {
+                int nagents = queuestatus[2].toInt();
+                m_queuelegend_agentid->show();
+                m_queuelegend_status->show();
+                m_agentlist.clear();
+                for(int i = 3 ; i < 3 + nagents; i++)
+                        if(queuestatus[i].size() > 0)
+                                m_agentlist << queuestatus[i].split(",")[0];
+                m_agentlist.sort();
+        }
+
+        if ((m_astid == queuestatus[0]) && (m_queueid == queuestatus[1])) {
+                if (prevlist != m_agentlist)
+                        update();
+        } else {
+                m_astid = queuestatus[0];
+                m_queueid = queuestatus[1];
+                m_label->setText("<b>" + m_queueid + "</b> " + tr("on") + " <b>" + m_astid + "</b>");
+                update();
         }
 }
 
 void QueuedetailsPanel::agentClicked()
 {
-        qDebug() << "AgentsPanel::agentClicked()" << this->sender()->property("agentid");
-        QString astid = this->sender()->property("astid").toString();
+        // qDebug() << "QueuedetailsPanel::agentClicked()" << this->sender()->property("agentid");
         QString agentid = this->sender()->property("agentid").toString();
-        changeWatchedAgent(astid + " " + agentid);
+        changeWatchedAgent(m_astid + " " + agentid);
 }

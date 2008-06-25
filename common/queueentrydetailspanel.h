@@ -35,25 +35,53 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision$
- * $Date$
+/* $Revision: 3294 $
+ * $Date: 2008-06-16 18:05:27 +0200 (lun, 16 jun 2008) $
  */
 
-#ifndef __XIVOCONSTS_H__
-#define __XIVOCONSTS_H__
+#ifndef __QUEUEENTRYDETAILSPANEL_H__
+#define __QUEUEENTRYDETAILSPANEL_H__
 
-#define CHANNEL_MIMETYPE	"XIVO_ASTERISK_CHANNEL"
-#define PEER_MIMETYPE		"XIVO_ASTERISK_PEER"
-#define NUMBER_MIMETYPE		"XIVO_ASTERISK_NUMBER"
+#include <QHash>
+#include <QList>
+#include <QObject>
+#include <QWidget>
 
-const int REQUIRED_SERVER_VERSION = 2025;
-const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
-const QString __current_client_version__  = SVNVER;
-const QString __xivo_version__  = "0.4";
-const QString __nopresence__ = "nopresence";
-const QStringList XletList = (QStringList() << "customerinfo" << "features" << "history"
-                              << "directory" << "search" << "fax" << "dial"
-                              << "operator" << "parking" << "calls" << "switchboard"
-                              << "messages" << "identity"
-                              << "agents" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
-#endif
+class QGridLayout;
+class QLabel;
+class QScrollArea;
+class QVBoxLayout;
+
+/*! \brief Identity Display
+ */
+class QueueentrydetailsPanel : public QWidget
+{
+	Q_OBJECT
+public:
+	QueueentrydetailsPanel(QWidget * parent = 0);
+	~QueueentrydetailsPanel();
+signals:
+        void changeWatchedAgent(const QString &);
+protected:
+public slots:
+	void newQueue(const QStringList &);
+        void updatePeerAgent(const QString &,
+                             const QString &,
+                             const QString &);
+private slots:
+        void agentClicked();
+private:
+        QGridLayout * m_gridlayout;
+	QVBoxLayout * m_layout;
+        QScrollArea * m_scrollarea;
+	QWidget * m_widget;
+
+        QString m_astid;
+        QString m_queueid;
+        QLabel * m_label;
+        QHash<QString, QLabel *> m_entrypos;
+        QHash<QString, QLabel *> m_entrytime;
+        int m_maxbusy;
+};
+
+#endif /* __QUEUEENTRYDETAILSPANEL_H__ */

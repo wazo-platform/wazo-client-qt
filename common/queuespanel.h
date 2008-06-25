@@ -43,6 +43,7 @@
 #define __QUEUESPANEL_H__
 
 #include <QHash>
+#include <QLabel>
 #include <QList>
 #include <QObject>
 #include <QWidget>
@@ -61,6 +62,7 @@ public:
 	QueuesPanel(QWidget * parent = 0);
 	~QueuesPanel();
 protected:
+        void update();
 signals:
         void changeWatchedQueue(const QString &);
 public slots:
@@ -76,6 +78,7 @@ private:
 
         QHash<QString, QPushButton *> m_queuelabels;
         QHash<QString, QProgressBar *> m_queuebusies;
+        QHash<QString, QLabel *> m_queueinfos;
 
         int m_maxbusy;
 };

@@ -72,14 +72,21 @@ public slots:
 private slots:
         void agentClicked();
 private:
+        void update();
+
         QGridLayout * m_gridlayout;
 	QVBoxLayout * m_layout;
         QScrollArea * m_scrollarea;
 	QWidget * m_widget;
 
+        QString m_astid;
+        QString m_queueid;
+        QLabel * m_queuelegend_agentid;
+        QLabel * m_queuelegend_status;
         QLabel * m_label;
         QHash<QString, QPushButton *> m_agentlabels;
         QHash<QString, QLabel *> m_agentstatus;
+        QStringList m_agentlist;
         int m_maxbusy;
 };
 

@@ -361,6 +361,11 @@ private:
         QString m_numbertodial;		//!< Number dialed in
         QString m_osname;		//!< OS informations
 
+        QString m_agent_watched_astid;
+        QString m_agent_watched_agentid;
+        QString m_queue_watched_astid;
+        QString m_queue_watched_queueid;
+
         QString m_faxid;
         QByteArray * m_faxdata;
         int m_faxsize;

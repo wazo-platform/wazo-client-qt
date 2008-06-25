@@ -93,6 +93,7 @@ class ParkingPanel;
 class Popup;
 class QueuesPanel;
 class QueuedetailsPanel;
+class QueueentrydetailsPanel;
 class SearchPanel;
 class ServicePanel;
 class StatusPanel;
@@ -183,6 +184,7 @@ private:
         PlayerWidget * m_videopanel;
         QueuesPanel * m_queuespanel;
         QueuedetailsPanel * m_queuedetailspanel;
+        QueueentrydetailsPanel * m_queueentrydetailspanel;
         AgentsPanel * m_agentspanel;
         AgentdetailsPanel * m_agentdetailspanel;
         DatetimePanel * m_datetimepanel;

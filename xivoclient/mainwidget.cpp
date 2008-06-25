@@ -76,6 +76,7 @@
 #include "popup.h"
 #include "queuespanel.h"
 #include "queuedetailspanel.h"
+#include "queueentrydetailspanel.h"
 #include "searchpanel.h"
 #include "servicepanel.h"
 #include "statuspanel.h"
@@ -742,13 +743,23 @@ void MainWidget::engineStarted()
                                 sa_qd->setWidget(m_queuedetailspanel);
                                 sa_qd->setWidgetResizable(true);
 
-                                addPanel("queuedetails", tr("Queue Details"), sa_qd);
+                                addPanel("queuedetails", tr("Agents of a Queue"), sa_qd);
                                 connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QStringList &)),
                                          m_queuedetailspanel, SLOT(newQueue(const QStringList &)));
                                 connect( m_queuedetailspanel, SIGNAL(changeWatchedAgent(const QString &)),
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QString &)),
 					 m_queuedetailspanel, SLOT(updatePeerAgent(const QString &, const QString &, const QString &)) );
+
+			} else if (dc == QString("queueentrydetails")) {
+                                m_queueentrydetailspanel = new QueueentrydetailsPanel();
+                                QScrollArea * sa_qd = new QScrollArea(this);
+                                sa_qd->setWidget(m_queueentrydetailspanel);
+                                sa_qd->setWidgetResizable(true);
+
+                                addPanel("queueentrydetails", tr("Calls of a Queue"), sa_qd);
+                                connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QStringList &)),
+                                         m_queueentrydetailspanel, SLOT(newQueue(const QStringList &)));
 
 			} else if (dc == QString("datetime")) {
 				m_datetimepanel = new DatetimePanel();
@@ -1122,6 +1133,8 @@ void MainWidget::engineStopped()
                                 removePanel("queues", m_queuespanel);
 			} else if (dc == QString("queuedetails")) {
                                 removePanel("queuedetails", m_queuedetailspanel);
+			} else if (dc == QString("queueentrydetails")) {
+                                removePanel("queueentrydetails", m_queueentrydetailspanel);
 			} else if (dc == QString("agents")) {
                                 removePanel("agents", m_agentspanel);
 			} else if (dc == QString("agentdetails")) {

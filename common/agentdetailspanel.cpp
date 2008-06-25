@@ -58,14 +58,17 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_agent = "";
         m_agentname = new QLabel("", this);
         m_agentstatus = new QLabel("", this);
+        m_agentlegend_qname = new QLabel(tr("Queue Name"), this);
         m_agentlegend_joined = new QLabel(tr("Joined"), this);
         m_agentlegend_paused = new QLabel(tr("UnPaused"), this);
         m_gridlayout->setColumnStretch( 8, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_agentname, 0, 0);
         m_gridlayout->addWidget(m_agentstatus, 0, 1, 1, 7);
-        m_gridlayout->addWidget(m_agentlegend_joined, 1, 2, 1, 3);
-        m_gridlayout->addWidget(m_agentlegend_paused, 1, 5, 1, 3);
+        m_gridlayout->addWidget(m_agentlegend_qname, 1, 0, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentlegend_joined, 1, 1, 1, 3, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentlegend_paused, 1, 4, 1, 3, Qt::AlignCenter);
+        m_agentlegend_qname->hide();
         m_agentlegend_joined->hide();
         m_agentlegend_paused->hide();
 }
@@ -86,11 +89,11 @@ void AgentdetailsPanel::updatePeerAgent(const QString &, const QString & what, c
                 QString agname = params[2];
                 QString phonenum = params[3];
                 if(m_agent == agname)
-                        m_agentstatus->setText("logged on phone number <b>" + phonenum + "</b>");
+                        m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
         } else if(command == "agentlogout") {
                 QString agname = params[2];
                 if(m_agent == agname)
-                        m_agentstatus->setText("logged off");
+                        m_agentstatus->setText(tr("logged off"));
         } else if(command == "joinqueue") {
                 QString agname = params[2];
                 if(m_agent == agname) {
@@ -158,6 +161,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &, const QString & what, c
                         }
                 }
         } else {
+                // queuememberstatus
                 qDebug() << "AgentdetailsPanel::updatePeerAgent()" << agentstatus;
         }
 }
@@ -167,7 +171,7 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
         // qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
         m_astid = agentstatus[0];
         m_agent = agentstatus[1];
-        m_agentname->setText("<b>" + agentstatus[1] + "</b>");
+        m_agentname->setText("<b>" + m_agent + "</b> " + tr("on") + " <b>" + m_astid + "</b>");
 
         QHashIterator<QString, QPushButton *> i(m_queuelabels);
         while (i.hasNext()) {
@@ -203,10 +207,11 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
 
         if(agentstatus.size() == 5) {
                 if(agentstatus[2] == "0")
-                        m_agentstatus->setText("logged off");
+                        m_agentstatus->setText(tr("logged off"));
                 else
-                        m_agentstatus->setText("logged on phone number <b>" + agentstatus[2] + "</b>");
+                        m_agentstatus->setText(tr("logged on phone number") + " <b>" + agentstatus[2] + "</b>");
 
+                m_agentlegend_qname->show();
                 m_agentlegend_joined->show();
                 m_agentlegend_paused->show();
 
@@ -275,11 +280,11 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                                 m_queue_pause_status[queueid]->show();
                                 m_queue_pause_action[queueid]->show();
                         }
-                        m_gridlayout->addWidget( m_queuelabels[queueid], i + 2, 1, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_join_status[queueid], i + 2, 2, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_join_action[queueid], i + 2, 3, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_pause_status[queueid], i + 2, 5, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_pause_action[queueid], i + 2, 6, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queuelabels[queueid], i + 2, 0, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_join_status[queueid], i + 2, 1, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_join_action[queueid], i + 2, 2, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_pause_status[queueid], i + 2, 4, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_pause_action[queueid], i + 2, 5, Qt::AlignCenter );
                 }
         }
 }

@@ -49,6 +49,8 @@
 
 #include "queuespanel.h"
 
+const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 100px; height: 15px}";
+
 /*! \brief Constructor
  */
 QueuesPanel::QueuesPanel(QWidget * parent)
@@ -57,7 +59,7 @@ QueuesPanel::QueuesPanel(QWidget * parent)
 	m_gridlayout = new QGridLayout(this);
 
         m_maxbusy = 0;
- 	m_gridlayout->setColumnStretch( 2, 1 );
+ 	m_gridlayout->setColumnStretch( 3, 1 );
  	m_gridlayout->setRowStretch( 100, 1 );
 }
 
@@ -80,6 +82,10 @@ void QueuesPanel::setQueueList(const QString & qlist)
                 queues.sort();
                 for(int i = 0 ; i < queues.size(); i++) {
                         QStringList qparams = queues[i].split(":");
+                        QHash <QString, QString> infos;
+                        QString ncalls = "0";
+                        for(int j = 1 ; j < qparams.size(); j += 2)
+                                infos[qparams[j]] = qparams[j+1];
                         QString queuename = qparams[0];
                         if(! m_queuelabels.contains(queuename)) {
                                 m_queuelabels[queuename] = new QPushButton(queuename, this);
@@ -88,18 +94,53 @@ void QueuesPanel::setQueueList(const QString & qlist)
                                 connect( m_queuelabels[queuename], SIGNAL(clicked()),
                                          this, SLOT(queueClicked()));
                                 m_queuebusies[queuename] = new QProgressBar(this);
+                                m_queuebusies[queuename]->setProperty("queueid", queuename);
+                                m_queuebusies[queuename]->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
+                                m_queuebusies[queuename]->setFormat("%v");
+                                m_queueinfos[queuename] = new QLabel();
                                 int linenum = m_queuelabels.size();
                                 m_gridlayout->addWidget( m_queuelabels[queuename], linenum, 0, Qt::AlignLeft );
                                 m_gridlayout->addWidget( m_queuebusies[queuename], linenum, 1, Qt::AlignCenter );
-                                
-                                m_queuebusies[queuename]->setFormat("%v");
-                                m_queuebusies[queuename]->setRange(0, m_maxbusy + 1);
-                                if(qparams.size() > 1)
-                                        m_queuebusies[queuename]->setValue(qparams[1].toInt());
-                                else
-                                        m_queuebusies[queuename]->setValue(0);
+                                m_gridlayout->addWidget( m_queueinfos[queuename],  linenum, 2, Qt::AlignLeft );
                         }
+
+                        m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
+                        m_queueinfos[queuename]->setText("SP=" + infos["ServicelevelPerf"] +
+                                                         " Ab=" + infos["Abandoned"] +
+                                                         " Mx=" + infos["Max"] +
+                                                         " Cm=" + infos["Completed"] +
+                                                         " SL=" + infos["ServiceLevel"] +
+                                                         " Wt=" + infos["Weight"] +
+                                                         " HT=" + infos["Holdtime"]);
                 }
+                update();
+        }
+}
+
+void QueuesPanel::update()
+{
+        m_maxbusy = 0;
+        foreach (QProgressBar * qpb, m_queuebusies) {
+                int val = qpb->property("value").toInt();
+                if(val > m_maxbusy)
+                        m_maxbusy = val;
+        }
+        qDebug() << "QueuesPanel::update() maxbusy =" << m_maxbusy;
+        
+        foreach (QProgressBar * qpb, m_queuebusies) {
+                QString qname = qpb->property("queueid").toString();
+                int val = qpb->property("value").toInt();
+                qpb->setRange(0, m_maxbusy + 1);
+                // qpb->setValue(0); // trick in order to refresh
+                qpb->setValue(val);
+                int mul = 0;
+                if(m_maxbusy > 0)
+                        mul = (100 / m_maxbusy);
+                QString vv = "ff";
+                if(val > 0)
+                        vv = QString("%1").arg(100 - val * mul, 2, 16, QChar('0'));
+                qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ff"
+                                   + vv + vv + ";}");
         }
 }
 
@@ -114,31 +155,20 @@ void QueuesPanel::queueClicked()
 
 void QueuesPanel::setQueueStatus(const QString & status)
 {
-        QStringList newstatuses = status.split("/");
+        QStringList newstatuses = status.split(";");
         // qDebug() << "QueuesPanel::setQueueStatus()" << newstatuses;
-        if (newstatuses.size() == 4) {
+        if (newstatuses.size() >= 4) {
                 QString command = newstatuses[0];
-                int maxbusy = 0;
                 if (command == "queuechannels") {
                         QString astid = newstatuses[1];
                         QString queuename = newstatuses[2];
                         QString busyness = newstatuses[3];
                         if(m_queuebusies.contains(queuename)) {
-                                m_queuebusies[queuename]->setValue(busyness.toInt());
-                                foreach (QProgressBar * qpb, m_queuebusies)
-                                        if(maxbusy < qpb->value())
-                                                maxbusy = qpb->value();
-                                if(maxbusy != m_maxbusy) {
-                                        m_maxbusy = maxbusy;
-                                        qDebug() << "maxbusy" << m_maxbusy;
-                                        foreach (QProgressBar * qpb, m_queuebusies) {
-                                                qpb->setRange(0, m_maxbusy + 1);
-                                                int value = qpb->value();
-                                                qpb->setValue(0); // trick in order to refresh
-                                                qpb->setValue(value);
-                                        }
-                                }
+                                m_queuebusies[queuename]->setProperty("value", busyness);
+                                update();
                         }
+                } else if (command == "queueentry") {
+                        qDebug() << "QueuesPanel::setQueueStatus()" << status;
                 }
         }
 }

@@ -125,9 +125,9 @@ void AgentsPanel::updatePeerAgent(const QString &,
                                 m_agent_logged_status[agname]->setProperty("logged", "n");
                                 m_agent_logged_action[agname]->setIcon(QIcon(":/images/button_ok.png"));
                         } else if(status == "3") {
-                                qDebug() << "AgentsPanel::updatePeerAgent()" << status;
+                                qDebug() << "AgentsPanel::updatePeerAgent()" << what << status;
                         } else {
-                                qDebug() << "AgentsPanel::updatePeerAgent()" << status;
+                                qDebug() << "AgentsPanel::updatePeerAgent()" << what << status;
                         }
                 }
         } else if(command == "joinqueue") {

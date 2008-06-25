@@ -54,10 +54,12 @@
 #include "identitydisplay.h"
 #include "userinfo.h"
 
+const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 50px; height: 15px}";
+
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(QWidget * parent)
-        : QWidget(parent), m_ui(NULL), m_agentstatus(false), m_queuechangeallow(false)
+        : QWidget(parent), m_ui(NULL), m_agentstatus(false), m_queuechangeallow(false), m_maxqueues(5)
 {
 	QGridLayout * glayout = new QGridLayout(this);
 	// glayout->setMargin(0);
@@ -78,9 +80,9 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
         m_queueaction->setIconSize(QSize(16, 16));
 
         m_queuebusy = new QProgressBar(this);
-        m_queuebusy->setRange(0, 5);
-        // m_queuebusy->setFormat("%v");
-        m_queuebusy->setTextVisible(false);
+        m_queuebusy->setRange(0, m_maxqueues + 1);
+        m_queuebusy->setFormat("%v");
+        m_queuebusy->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
         m_queuelist = new QComboBox(this);
 
         connect(m_queuelist, SIGNAL(currentIndexChanged(const QString &)),
@@ -233,17 +235,21 @@ void IdentityDisplay::updatePeerAgent(const QString & userid,
 
 void IdentityDisplay::setQueueStatus(const QString & status)
 {
-        QStringList newstatuses = status.split("/");
+        QStringList newstatuses = status.split(";");
         qDebug() << "IdentityDisplay::setQueueStatus()" << newstatuses;
-        if (newstatuses.size() == 4) {
+        if (newstatuses.size() >= 4) {
                 QString command = newstatuses[0];
                 if (command == "queuechannels") {
                         QString astid = newstatuses[1];
                         QString queuename = newstatuses[2];
                         QString busyness = newstatuses[3];
                         m_queuesbusyness[queuename] = busyness;
-                        if(queuename == m_queuelist->currentText())
+                        if(queuename == m_queuelist->currentText()) {
+                                m_queuebusy->setRange(0, m_maxqueues + 1);
                                 m_queuebusy->setValue(busyness.toInt());
+                        }
+                } else if (command == "queueentry") {
+                        qDebug() << "IdentityDisplay::setQueueStatus()" << status;
                 }
         }
 }
@@ -289,6 +295,7 @@ void IdentityDisplay::doQueueJoinAll()
 
 void IdentityDisplay::idxChanged(const QString & newidx)
 {
+        qDebug() << "IdentityDisplay::idxChanged";
         if (m_queuesstatuses[newidx]) {
                 m_queueaction->setText(tr("Leave"));
                 m_queueaction->setIcon(QIcon(":/images/cancel.png"));
@@ -296,6 +303,7 @@ void IdentityDisplay::idxChanged(const QString & newidx)
                 m_queueaction->setText(tr("Join"));
                 m_queueaction->setIcon(QIcon(":/images/add.png"));
         }
+        m_queuebusy->setRange(0, m_maxqueues + 1);
         m_queuebusy->setValue(m_queuesbusyness[newidx].toInt());
 }
 
