@@ -43,6 +43,7 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QLabel>
+#include <QTimerEvent>
 
 #include "datetimepanel.h"
 
@@ -51,7 +52,7 @@
 DatetimePanel::DatetimePanel(QWidget * parent)
         : QWidget(parent)
 {
-        m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocalDate));
+        m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocaleDate));
 	m_gridlayout = new QGridLayout(this);
         
  	m_gridlayout->addWidget( m_datetime, 1, 1, Qt::AlignCenter);
@@ -59,4 +60,14 @@ DatetimePanel::DatetimePanel(QWidget * parent)
  	m_gridlayout->setColumnStretch( 2, 1 );
  	m_gridlayout->setRowStretch( 0, 1 );
  	m_gridlayout->setRowStretch( 2, 1 );
+
+        m_timer = startTimer(1000);
+}
+
+void DatetimePanel::timerEvent(QTimerEvent * event)
+{
+	int timerId = event->timerId();
+        if(timerId == m_timer)
+                m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
+        // qDebug() << "DatetimePanel::timerEvent() timerId=" << timerId << m_timer;
 }

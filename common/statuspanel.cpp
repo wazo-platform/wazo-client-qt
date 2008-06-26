@@ -44,6 +44,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QVariant>
 
 #include "statuspanel.h"
 #include "userinfo.h"
@@ -84,10 +85,17 @@ void StatusPanel::newCall(const QString & chan)
         foreach (QString actionname, m_actionnames) {
                 k[actionname] = new QPushButton("", this);
                 k[actionname]->hide();
+                k[actionname]->setProperty("channel", chan);
+                connect( k[actionname], SIGNAL(clicked()),
+                         this, SLOT(clicked()) );
         }
         k["Fa"]->setText("Answer (F1)");
+        k["Fa"]->setProperty("function", 1);
         k["Fb"]->setText("Refuse (F2)");
+        k["Fb"]->setProperty("function", 2);
         k["Fc"]->setText("D. Transfer (F3)");
+        k["Fc"]->setProperty("function", 3);
+
         m_actions[chan] = k;
 
         int colnum  = 1;
@@ -98,6 +106,15 @@ void StatusPanel::newCall(const QString & chan)
         }
 	m_glayout->addWidget( m_tnums[chan],   m_linenum, colnum++, Qt::AlignHCenter );
         m_glayout->addWidget( m_vlinesr[chan], m_linenum, m_actionnames.size() + 3, Qt::AlignRight );
+}
+
+void StatusPanel::clicked()
+{
+        QString channel = this->sender()->property("channel").toString();
+        int function = this->sender()->property("function").toInt();
+        qDebug() << "StatusPanel::clicked()" << channel << function;
+        m_currentchannel = channel;
+        functionKeyPressed(Qt::Key_F1 + function - 1);
 }
 
 void StatusPanel::setUserInfo(const UserInfo * ui)
@@ -124,7 +141,6 @@ void StatusPanel::dtransfer()
                         m_linestatuses[m_currentchannel] = WDTransfer;
                         connect( m_tnums[m_currentchannel], SIGNAL(returnPressed()),
                                  this, SLOT(xferPressed()) );
-                        
                 }
         }
 }
@@ -162,14 +178,18 @@ void StatusPanel::xferPressed()
 
 void StatusPanel::functionKeyPressed(int keynum)
 {
+        qDebug() << "StatusPanel::functionKeyPressed" << keynum;
         if(m_callchannels.contains(m_currentchannel)) {
                 Line linestatus = m_linestatuses[m_currentchannel];
                 if(linestatus == Ringing) {
                         if(keynum == Qt::Key_F1) {
-                                pickUp(m_ui, m_ui->userid().split("/")[4]);
+                                pickUp(m_ui);
                                 m_actions[m_currentchannel]["Fa"]->setText("Hangup (F2)");
                                 m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
                                 m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
+                                m_actions[m_currentchannel]["Fa"]->setProperty("function", 2);
+                                m_actions[m_currentchannel]["Fb"]->setProperty("function", 3);
+                                m_actions[m_currentchannel]["Fc"]->setProperty("function", 4);
                         }
                         else if(keynum == Qt::Key_F2)
                                 simpleHangUp(m_ui, m_peerchan[m_currentchannel]);
@@ -207,7 +227,7 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 simpleHangUp(m_ui, m_peerchan[m_currentchannel]);
                         } else if(keynum == Qt::Key_F1) {
                                 // only when not picked up yet
-                                pickUp(m_ui, m_ui->userid().split("/")[4]);
+                                pickUp(m_ui);
                                 m_actions[m_currentchannel]["Fa"]->setText("Hangup (F2)");
                                 m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
                                 m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
@@ -271,6 +291,7 @@ void StatusPanel::updatePeer(const UserInfo * ui,
                              const QStringList & i, const QStringList & j)
 {
         // QString name = ui->fullname();
+        qDebug() << "StatusPanel::updatePeer()" << ui->userid() << g << h << i << j;
         if (ui->userid() == m_ui->userid()) {
                 qDebug() << "StatusPanel::updatePeer()" << ui->userid() << g << h << i << j;
                 foreach (QString callchannel, g) {

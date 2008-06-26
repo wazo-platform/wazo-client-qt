@@ -73,9 +73,10 @@ public slots:
                         const QStringList &, const QStringList &);
         void functionKeyPressed(int);
         void xferPressed();
+        void clicked();
 signals:
         void simpleHangUp(const UserInfo *, const QString &);	//!< hanging up a channel ...
-        void pickUp(const UserInfo *, const QString &);	//!< picking up a channel ...
+        void pickUp(const UserInfo *);	//!< picking up a channel ...
 	void transferCall(const UserInfo *, const QString &, const QString &);
 	void atxferCall(const UserInfo *, const QString &, const QString &);
 private:

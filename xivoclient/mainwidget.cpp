@@ -304,13 +304,12 @@ void MainWidget::showLogin()
                 // temporary windows not to be opened
                 m_lab1->show();
                 m_lab2->show();
-                m_lab3->show();
                 m_qlab1->show();
                 m_qlab2->show();
-                m_qlab3->show();
                 m_ack->show();
                 m_kpass->show();
                 m_loginkind->show();
+                loginKindChanged(m_loginkind->checkState());
         }
         m_xivobg->show();
 }
@@ -783,8 +782,8 @@ void MainWidget::engineStarted()
                                 m_statuspanel = new StatusPanel(this);
                                 addPanel("operator", tr("Operator"), m_statuspanel);
 
-                                connect( m_statuspanel, SIGNAL(pickUp(const UserInfo *, const QString &)),
-                                         m_engine, SLOT(pickUp(const UserInfo *, const QString &)) );
+                                connect( m_statuspanel, SIGNAL(pickUp(const UserInfo *)),
+                                         m_engine, SLOT(pickUp(const UserInfo *)) );
                                 connect( m_statuspanel, SIGNAL(transferCall(const UserInfo *, const QString&, const QString&)),
                                          m_engine, SLOT(transferCall(const UserInfo *, const QString&, const QString&)) );
                                 connect( m_statuspanel, SIGNAL(atxferCall(const UserInfo *, const QString&, const QString&)),

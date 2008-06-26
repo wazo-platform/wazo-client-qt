@@ -610,7 +610,7 @@ UserInfo * BaseEngine::findUserFromAgent(const QString & astid,
 
 void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 {
-	const int nfields0 = 7; // 0th order size (per-phone/line informations)
+	const int nfields0 = 8; // 0th order size (per-phone/line informations)
 	const int nfields1 = 6;  // 1st order size (per-channel informations)
 	QStringList chanIds;
 	QStringList chanStates;
@@ -1264,10 +1264,10 @@ void BaseEngine::simpleHangUp(const UserInfo * ui, const QString & channel)
  *
  * send a pick up command to the server
  */
-void BaseEngine::pickUp(const UserInfo * ui, const QString & channel)
+void BaseEngine::pickUp(const UserInfo * ui)
 {
-	qDebug() << "BaseEngine::pickUp()" << ui << channel;
-	sendCommand("pickup " + channel);
+	qDebug() << "BaseEngine::pickUp()" << ui;
+	sendCommand("pickup " + ui->astid() + "/" + ui->phonenum());
 }
 
 /*! \brief send the directory search command to the server

@@ -191,7 +191,7 @@ public slots:
         void copyNumber(const QString &);
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
         void agentAction(const QString &);
-	void pickUp(const UserInfo *, const QString &);
+	void pickUp(const UserInfo *);
 
         void monitoredPeerChanged(const QString &);
         void changeWatchedAgentSlot(const QString &);

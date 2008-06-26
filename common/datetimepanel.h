@@ -48,6 +48,7 @@
 class QGridLayout;
 class QLabel;
 class QProgressBar;
+class QTimerEvent;
 
 /*! \brief Identity Display
  */
@@ -57,11 +58,11 @@ class DatetimePanel : public QWidget
 public:
 	DatetimePanel(QWidget * parent = 0);
 protected:
-public slots:
+	void timerEvent(QTimerEvent *);		//!< receive timer events
 private:
         QGridLayout * m_gridlayout;
         QLabel * m_datetime;
-        int m_maxbusy;
+        int m_timer;
 };
 
 #endif /* __DATETIMEPANEL_H__ */
