@@ -115,7 +115,7 @@ public:
 	int tablimit() const;	//!< getter for m_tablimit
 	void setTablimit(int);	//!< setter for m_tablimit
 	void setForceTabs(bool);//!< setter for m_forcetabs
-	void setAppearance(const QString &);	//!< dock options
+	void setAppearance(const QStringList &);	//!< dock options
 	void clearAppearance();
 public slots:
         void dispurl(const QUrl &url);

@@ -146,7 +146,7 @@ public:
 	void setLastConnWins(bool b);		//!< last connected user wins
 	const QStringList & getCapabilities() const;	//!< returns capabilities
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
-        const QString     & getCapaDisplay() const;
+        const QStringList & getCapaXlets() const;
         const QString     & getCapaApplication() const;
         void config_and_start(const QString &,
                               const QString &, const QString &);
@@ -331,10 +331,10 @@ private:
 	// Replies given by the server
 	QString m_extension;		//!< extension for "my phone"
 	QString m_dialcontext;		//!< Context of the phone, as returned by the xivo_daemon server
-	QStringList m_capabilities;	//!< List of capabilities issued by the server after a successful login
+	QStringList m_capafuncs;	//!< List of func capabilities issued by the server after a successful login
+	QStringList m_capaxlets;	//!< List of xlet capabilities issued by the server after a successful login
 	QStringList m_capafeatures;	//!< List of capabilities issued by the server for the features
-	QString m_capaappli;	//!< Application name to be displayed
-	QString m_capadisplay;	//!< List of display capabilities issued by the server after a successful login
+	QString m_appliname;	//!< Application name to be displayed
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier
 	QString m_forced_state;		//!< Forced state sent by the server

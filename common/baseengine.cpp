@@ -351,24 +351,19 @@ void BaseEngine::setLastConnWins(bool b)
         m_checked_lastconnwins = b;
 }
 
-const QStringList & BaseEngine::getCapabilities() const
+const QStringList & BaseEngine::getCapaXlets() const
 {
-        return m_capabilities;
-}
-
-const QString & BaseEngine::getCapaDisplay() const
-{
-        return m_capadisplay;
-}
-
-const QString & BaseEngine::getCapaApplication() const
-{
-        return m_capaappli;
+        return m_capaxlets;
 }
 
 const QStringList & BaseEngine::getCapaFeatures() const
 {
         return m_capafeatures;
+}
+
+const QString & BaseEngine::getCapaApplication() const
+{
+        return m_appliname;
 }
 
 /*!
@@ -422,9 +417,9 @@ void BaseEngine::setDoNotDisturb()
 	setAvailState("donotdisturb", false);
 }
 
-bool BaseEngine::hasFunction(const QString & func)
+bool BaseEngine::hasFunction(const QString & funcname)
 {
-        return m_capabilities.contains("func-" + func);
+        return m_capafuncs.contains(funcname);
 }
 
 /*! \brief send a command to the server 
@@ -1099,19 +1094,20 @@ void BaseEngine::socketReadyRead()
                                 }
                                 m_dialcontext    = params_list["context"];
                                 m_extension      = params_list["phonenum"];
-                                m_capabilities   = params_list["capas"].split(",");
-                                m_capadisplay    = params_list["capadisp"].replace("-", ":");
-                                m_capaappli      = params_list["capaappli"];
+                                m_capafuncs      = params_list["capafuncs"].split(",");
+                                m_capaxlets      = params_list["capaxlets"].replace("-", ":").split(",");
+                                m_capafeatures   = params_list["capas_features"].split(",");
+                                m_appliname      = params_list["appliname"];
                                 m_version_server = params_list["version"].toInt();
                                 m_xivover_server = params_list["xivoversion"];
                                 m_forced_state   = params_list["state"];
-                                m_capafeatures   = params_list["capas_features"].split(",");
                                 
-                                qDebug() << "m_capadisplay" << m_capadisplay;
-                                qDebug() << "m_capaappli" << m_capaappli;
-                                qDebug() << "m_capabilities" << m_capabilities;
-                                
-                                // XXXX m_capabilities => config file
+                                qDebug() << "clientXlets" << XletList;
+                                qDebug() << "m_capaxlets" << m_capaxlets;
+                                qDebug() << "m_capafuncs" << m_capafuncs;
+                                qDebug() << "m_appliname" << m_appliname;
+
+                                // XXXX m_capafuncs => config file
                                 if(! hasFunction("presence")) {
                                         m_checked_presence = false;
                                         m_settings->remove("engine/fct_presence");
@@ -1126,7 +1122,7 @@ void BaseEngine::socketReadyRead()
                                 if(m_version_server < REQUIRED_SERVER_VERSION) {
                                         stop();
                                         popupError("version_server:" + QString::number(m_version_server) + ";" + QString::number(REQUIRED_SERVER_VERSION));
-                                } else if((m_capabilities.size() == 1) && (m_capabilities[0].size() == 0)) {
+                                } else if((m_capafuncs.size() == 1) && (m_capafuncs[0].size() == 0)) {
                                         stop();
                                         popupError("no_capability");
                                 } else {

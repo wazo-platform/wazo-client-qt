@@ -116,7 +116,8 @@ MainWidget::MainWidget(BaseEngine * engine,
                        QWidget * parent)
         : QMainWindow(parent),
           m_engine(engine), m_systrayIcon(0),
-          m_icon(":/images/xivoicon.png"), m_icongrey(":/images/xivoicon-grey.png")
+          m_icon(":/images/xivoicon.png"), m_icongrey(":/images/xivoicon-grey.png"),
+          m_cinfo_tabwidget(NULL)
 {
         m_appliname = "Clients";
         m_engine->setOSInfos(osname);
@@ -207,13 +208,9 @@ MainWidget::~MainWidget()
         delete m_settings;
 }
 
-void MainWidget::setAppearance(const QString & options)
+void MainWidget::setAppearance(const QStringList & dockoptions)
 {
-        QStringList dockoptions;
-        if (options.size() > 0)
-                dockoptions = options.split(",");
-
-        qDebug() << "MainWidget::setAppearance()" << options;
+        qDebug() << "MainWidget::setAppearance()" << dockoptions;
         foreach (QString dname, dockoptions) {
                 if(dname.size() > 0) {
                         QStringList dopt = dname.split(":");
@@ -554,7 +551,8 @@ void MainWidget::showConfDialog()
  * of the MainWidget on a simple left click. */
 void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-	// qDebug() << "MainWidget::systrayActivated()"
+        qDebug() << "MainWidget::systrayActivated()";
+        m_engine->originateCall("user:special:me", "user:special:intercept");
         // << "reason =" << reason
         // << "isMinimized =" << isMinimized()
         // << "isVisible =" << isVisible()
@@ -590,7 +588,7 @@ void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
  */
 void MainWidget::systrayMsgClicked()
 {
-	// qDebug() << "MainWidget::systrayMsgClicked()";
+        qDebug() << "MainWidget::systrayMsgClicked()";
 	setVisible(true);
 	activateWindow();
 	raise();
@@ -632,9 +630,7 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
 void MainWidget::engineStarted()
 {
 	setForceTabs(false);
-	QStringList allowed_capas = m_engine->getCapabilities();
-        m_settings->setValue("display/capas", allowed_capas.join(","));
-        setAppearance(m_engine->getCapaDisplay());
+        setAppearance(m_engine->getCapaXlets());
 
         m_appliname = m_engine->getCapaApplication();
         updateAppliName();
@@ -652,8 +648,7 @@ void MainWidget::engineStarted()
 
         for(int j = 0; j < XletList.size(); j++) {
 		QString dc = XletList[j];
- 		if (m_forcetabs || (allowed_capas.contains("xlet-" + dc) &&
-                                    (m_allnames.contains(dc)))) {
+ 		if (m_forcetabs || m_allnames.contains(dc)) {
                         if (dc == QString("history")) {
                                 m_historypanel = new LogWidget(m_engine, this);
                                 addPanel("history", tr("History"), m_historypanel);
@@ -1026,8 +1021,7 @@ void MainWidget::engineStarted()
         }
         
         foreach (QString dname, m_docknames)
-                if(allowed_capas.contains("xlet-" + dname))
-                        m_docks[dname]->show();
+                m_docks[dname]->show();
 
 	// restore settings, especially for Docks' positions
         restoreState(m_settings->value("display/mainwindowstate").toByteArray());
@@ -1078,8 +1072,7 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
  */
 void MainWidget::engineStopped()
 {
-	QStringList allowed_capas = m_engine->getCapabilities();
-
+        qDebug() << "MainWidget::engineStopped()";
         m_settings->setValue("display/mainwindowstate", saveState());
         if (m_tabwidget->currentIndex() > -1) {
                 // qDebug() << m_tabwidget->currentIndex();
@@ -1088,13 +1081,11 @@ void MainWidget::engineStopped()
         }
 
         foreach (QString dname, m_docknames)
-                if(allowed_capas.contains("xlet-" + dname))
-                        m_docks[dname]->hide();
+                m_docks[dname]->hide();
 
 	for(int j = 0; j < XletList.size(); j++) {
                 QString dc = XletList[j];
- 		if (m_forcetabs || (allowed_capas.contains("xlet-" + dc) &&
-                                    (m_allnames.contains(dc)))) {
+ 		if (m_forcetabs || m_allnames.contains(dc)) {
                         if (dc == QString("features")) {
                                 removePanel("features", m_featureswidget);
 			} else if (dc == QString("customerinfo")) {
