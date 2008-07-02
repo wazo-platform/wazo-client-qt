@@ -901,7 +901,10 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 parkingEvent(listitems[0], listitems[1]);
 
         } else if(listitems[0].toLower() == QString("queues-list")) {
-                newQueueList(listitems[1]);
+                if(hasFunction("nojoinleave"))
+                        newQueueList(false, listitems[1]);
+                else
+                        newQueueList(true, listitems[1]);
 
         } else if(listitems[0].toLower() == QString("agents-list")) {
                 newAgentList(listitems[1]);

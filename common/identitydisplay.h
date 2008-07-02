@@ -64,7 +64,7 @@ public:
 protected:
 public slots:
         void setUserInfo(const UserInfo *);
-	void setQueueList(const QString &);
+	void setQueueList(bool, const QString &);
 	void updatePeerAgent(const QString &,
                              const QString &,
                              const QString &);

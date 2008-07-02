@@ -259,7 +259,7 @@ signals:
         void resetFeatures();
         void localUserInfoDefined(const UserInfo *);
         void setQueueStatus(const QString &);
-        void newQueueList(const QString &);
+        void newQueueList(bool, const QString &);
         void newAgentList(const QString &);
 	void voiceMailChanged(bool);
 	void callRecordingChanged(bool);

@@ -649,6 +649,7 @@ void MainWidget::engineStarted()
         for(int j = 0; j < XletList.size(); j++) {
 		QString dc = XletList[j];
  		if (m_forcetabs || m_allnames.contains(dc)) {
+                        bool withscrollbar = m_dockoptions[dc].contains("s");
                         if (dc == QString("history")) {
                                 m_historypanel = new LogWidget(m_engine, this);
                                 addPanel("history", tr("History"), m_historypanel);
@@ -674,18 +675,21 @@ void MainWidget::engineStarted()
                                          m_infowidget, SLOT(updatePeerAgent(const QString &, const QString &, const QString &)));
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
                                          m_infowidget, SLOT(setQueueStatus(const QString &)));
-                                connect( m_engine, SIGNAL(newQueueList(const QString &)),
-                                         m_infowidget, SLOT(setQueueList(const QString &)));
+                                connect( m_engine, SIGNAL(newQueueList(bool, const QString &)),
+                                         m_infowidget, SLOT(setQueueList(bool, const QString &)));
                                 connect( m_infowidget, SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
 
 			} else if (dc == QString("agents")) {
                                 m_agentspanel = new AgentsPanel();
-                                QScrollArea * sa_ag = new QScrollArea(this);
-                                sa_ag->setWidget(m_agentspanel);
-                                sa_ag->setWidgetResizable(true);
-
-                                addPanel("agents", tr("Agents' List"), sa_ag);
+                                if (withscrollbar) {
+                                        QScrollArea * sa_ag = new QScrollArea(this);
+                                        sa_ag->setWidget(m_agentspanel);
+                                        sa_ag->setWidgetResizable(true);
+                                        addPanel("agents", tr("Agents' List"), sa_ag);
+                                } else
+                                        addPanel("agents", tr("Agents' List"), m_agentspanel);
+                                
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_agentspanel, SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(newAgentList(const QString &)),
@@ -701,11 +705,14 @@ void MainWidget::engineStarted()
 
 			} else if (dc == QString("agentdetails")) {
                                 m_agentdetailspanel = new AgentdetailsPanel();
-                                QScrollArea * sa_ad = new QScrollArea(this);
-                                sa_ad->setWidget(m_agentdetailspanel);
-                                sa_ad->setWidgetResizable(true);
-
-                                addPanel("agentdetails", tr("Agent Details"), sa_ad);
+                                if (withscrollbar) {
+                                        QScrollArea * sa_ad = new QScrollArea(this);
+                                        sa_ad->setWidget(m_agentdetailspanel);
+                                        sa_ad->setWidgetResizable(true);
+                                        addPanel("agentdetails", tr("Agent Details"), sa_ad);
+                                } else
+                                        addPanel("agentdetails", tr("Agent Details"), m_agentdetailspanel);
+                                
                                 connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QStringList &)),
                                          m_agentdetailspanel, SLOT(newAgent(const QStringList &)));
                                 connect( m_agentdetailspanel, SIGNAL(changeWatchedQueue(const QString &)),
@@ -717,15 +724,18 @@ void MainWidget::engineStarted()
 
 			} else if (dc == QString("queues")) {
                                 m_queuespanel = new QueuesPanel();
-                                QScrollArea * sa_qu = new QScrollArea(this);
-                                sa_qu->setWidget(m_queuespanel);
-                                sa_qu->setWidgetResizable(true);
-
-                                addPanel("queues", tr("Queues' List"), sa_qu);
+                                if (withscrollbar) {
+                                        QScrollArea * sa_qu = new QScrollArea(this);
+                                        sa_qu->setWidget(m_queuespanel);
+                                        sa_qu->setWidgetResizable(true);
+                                        addPanel("queues", tr("Queues' List"), sa_qu);
+                                } else
+                                        addPanel("queues", tr("Queues' List"), m_queuespanel);
+                                
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
                                          m_queuespanel, SLOT(setQueueStatus(const QString &)));
-                                connect( m_engine, SIGNAL(newQueueList(const QString &)),
-                                         m_queuespanel, SLOT(setQueueList(const QString &)));
+                                connect( m_engine, SIGNAL(newQueueList(bool, const QString &)),
+                                         m_queuespanel, SLOT(setQueueList(bool, const QString &)));
                                 connect( m_queuespanel, SIGNAL(changeWatchedQueue(const QString &)),
                                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QString &)),
@@ -733,11 +743,14 @@ void MainWidget::engineStarted()
 
 			} else if (dc == QString("queuedetails")) {
                                 m_queuedetailspanel = new QueuedetailsPanel();
-                                QScrollArea * sa_qd = new QScrollArea(this);
-                                sa_qd->setWidget(m_queuedetailspanel);
-                                sa_qd->setWidgetResizable(true);
-
-                                addPanel("queuedetails", tr("Agents of a Queue"), sa_qd);
+                                if (withscrollbar) {
+                                        QScrollArea * sa_qd = new QScrollArea(this);
+                                        sa_qd->setWidget(m_queuedetailspanel);
+                                        sa_qd->setWidgetResizable(true);
+                                        addPanel("queuedetails", tr("Agents of a Queue"), sa_qd);
+                                } else
+                                        addPanel("queuedetails", tr("Agents of a Queue"), m_queuedetailspanel);
+                                
                                 connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QStringList &)),
                                          m_queuedetailspanel, SLOT(newQueue(const QStringList &)));
                                 connect( m_queuedetailspanel, SIGNAL(changeWatchedAgent(const QString &)),
@@ -747,11 +760,14 @@ void MainWidget::engineStarted()
 
 			} else if (dc == QString("queueentrydetails")) {
                                 m_queueentrydetailspanel = new QueueentrydetailsPanel();
-                                QScrollArea * sa_qd = new QScrollArea(this);
-                                sa_qd->setWidget(m_queueentrydetailspanel);
-                                sa_qd->setWidgetResizable(true);
-
-                                addPanel("queueentrydetails", tr("Calls of a Queue"), sa_qd);
+                                if (withscrollbar) {
+                                        QScrollArea * sa_qd = new QScrollArea(this);
+                                        sa_qd->setWidget(m_queueentrydetailspanel);
+                                        sa_qd->setWidgetResizable(true);
+                                        addPanel("queueentrydetails", tr("Calls of a Queue"), sa_qd);
+                                } else
+                                        addPanel("queueentrydetails", tr("Calls of a Queue"), m_queueentrydetailspanel);
+                                
                                 connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QStringList &)),
                                          m_queueentrydetailspanel, SLOT(newQueue(const QStringList &)));
 

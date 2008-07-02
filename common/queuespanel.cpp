@@ -72,13 +72,13 @@ void QueuesPanel::updatePeerAgent(const QString &, const QString &, const QStrin
 {
 }
 
-void QueuesPanel::setQueueList(const QString & qlist)
+void QueuesPanel::setQueueList(bool, const QString & qlist)
 {
         // qDebug() << "QueuesPanel::setQueueList()" << qlist;
         QStringList qsl = qlist.split(";");
-        if(qsl[2].size() > 0) {
+        if((qsl.size() > 1) && (qsl[1].size() > 0)) {
                 QString astid = qsl[0];
-                QStringList queues = qsl[2].split(",");
+                QStringList queues = qsl[1].split(",");
                 queues.sort();
                 for(int i = 0 ; i < queues.size(); i++) {
                         QStringList qparams = queues[i].split(":");

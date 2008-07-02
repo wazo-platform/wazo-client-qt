@@ -59,7 +59,7 @@ const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(QWidget * parent)
-        : QWidget(parent), m_ui(NULL), m_agentstatus(false), m_queuechangeallow(false), m_maxqueues(5)
+        : QWidget(parent), m_ui(NULL), m_agentstatus(false), m_queuechangeallow(true), m_maxqueues(5)
 {
 	QGridLayout * glayout = new QGridLayout(this);
 	// glayout->setMargin(0);
@@ -124,18 +124,17 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_ui = ui;
 }
 
-void IdentityDisplay::setQueueList(const QString & qlist)
+void IdentityDisplay::setQueueList(bool changeallow, const QString & qlist)
 {
+        m_queuechangeallow = changeallow;
         qDebug() << "IdentityDisplay::setQueueList()" << qlist;
         if(m_ui == NULL)
                 return;
         QStringList qsl = qlist.split(";");
-        if(qsl[1] == "1")
-                m_queuechangeallow = true;
-        if(qsl[2].size() > 0) {
+        if((qsl.size() > 1) && (qsl[1].size() > 0)) {
                 QString astid = qsl[0];
                 if(astid == m_ui->astid()) {
-                        QStringList queues = qsl[2].split(",");
+                        QStringList queues = qsl[1].split(",");
                         queues.sort();
                         for(int i = 0 ; i < queues.size(); i++) {
                                 QStringList qparams = queues[i].split(":");
