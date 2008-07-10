@@ -109,6 +109,8 @@ public:
 	void setHistorySize(uint size);		//!< set history size
 	uint contactsColumns() const;		//!< contacts columns
 	void setContactsColumns(uint columns);	//!< set contacts colmuns
+        void setQueueLevel(const QString &, uint);
+        uint queueLevel(const QString &) const;
 	uint contactsSize() const;		//!< contacts size
 	void setContactsSize(uint size);	//!< set contacts size
 	bool systrayed() const;			//!< systrayed flag
@@ -321,6 +323,7 @@ private:
 	int m_historysize;
 	int m_contactssize;
 	int m_contactscolumns;
+        QHash<QString, int> m_queuelevels;
 	bool m_enabled_presence;      	//!< presence is enabled
 	bool m_enabled_cinfo;      	//!< customer info is enabled
 	bool m_checked_presence;      	//!< presence is checked

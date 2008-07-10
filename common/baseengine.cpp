@@ -1497,6 +1497,16 @@ uint BaseEngine::contactsColumns() const
 	return m_contactscolumns;
 }
 
+void BaseEngine::setQueueLevel(const QString & field, uint value)
+{
+	m_queuelevels[field] = value;
+}
+
+uint BaseEngine::queueLevel(const QString & field) const
+{
+	return m_queuelevels[field];
+}
+
 uint BaseEngine::trytoreconnectinterval() const
 {
 	return m_trytoreconnectinterval;

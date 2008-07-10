@@ -101,6 +101,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
         m_sbport->setEnabled(true);
 
  	gridlayout1->setRowStretch( line, 1 );
+ 	gridlayout1->setColumnStretch( 2, 1 );
         
         //
         // Functions Tab
@@ -110,32 +111,26 @@ ConfWidget::ConfWidget(BaseEngine * engine,
         QWidget * widget_functions = new QWidget();
         widget_functions->setLayout(gridlayout2);
         line = 0;
+        int width = 4;
 
-        QStringList qsl = m_engine->getSettings()->value("display/capas", "").toString().split(",");
-        if(qsl.contains("func-presence")) {
-                m_presence = new QCheckBox(tr("Presence reporting"));
-                m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
-                gridlayout2->addWidget( m_presence, line++, 1 );
-        }
-
-        if(qsl.contains("xlet-customerinfo")) {
-                m_cinfo = new QCheckBox(tr("Customer Info"));
-                m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
-                gridlayout2->addWidget( m_cinfo, line++, 1 );
-                
-                m_autourl = new QCheckBox(tr("Allow the Automatic Opening of URLs"));
-                m_autourl->setCheckState(m_engine->checkedAutoUrl() ? Qt::Checked : Qt::Unchecked);
-                gridlayout2->addWidget( m_autourl, line++, 0, 1, 2 );
-        }
-
-        if(qsl.contains("xlet-history")) {
-                gridlayout2->addWidget(new QLabel(tr("History size"), this), line, 0);
-                m_history_sbox = new QSpinBox(this);
-                m_history_sbox->setRange(1, 20);
-                m_history_sbox->setValue(m_engine->historySize());
-                gridlayout2->addWidget(m_history_sbox, line++, 1);
-        }
-
+        m_presence = new QCheckBox(tr("Presence reporting"));
+        m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
+        gridlayout2->addWidget( m_presence, line++, 0, 1, width );
+        
+        m_cinfo = new QCheckBox(tr("Customer Info"));
+        m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
+        gridlayout2->addWidget( m_cinfo, line++, 0, 1, width );
+        
+        m_autourl = new QCheckBox(tr("Allow the Automatic Opening of URLs"));
+        m_autourl->setCheckState(m_engine->checkedAutoUrl() ? Qt::Checked : Qt::Unchecked);
+        gridlayout2->addWidget( m_autourl, line++, 0, 1, width );
+        
+        gridlayout2->addWidget(new QLabel(tr("History size"), this), line, 0);
+        m_history_sbox = new QSpinBox(this);
+        m_history_sbox->setRange(1, 20);
+        m_history_sbox->setValue(m_engine->historySize());
+        gridlayout2->addWidget(m_history_sbox, line++, 1);
+        
 	gridlayout2->addWidget(new QLabel(tr("Contacts' max number"), this), line, 0);
 	m_contactssize_sbox = new QSpinBox(this);
 	m_contactssize_sbox->setRange(1, 50);
@@ -148,7 +143,23 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	m_contactswidth_sbox->setValue(m_engine->contactsColumns());
 	gridlayout2->addWidget(m_contactswidth_sbox, line++, 1);
 
+	gridlayout2->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
+        m_queuelevels["green"] = new QSpinBox(this);
+	m_queuelevels["green"]->setRange(1, 100);
+	m_queuelevels["green"]->setValue(m_engine->queueLevel("green"));
+	gridlayout2->addWidget(m_queuelevels["green"], line, 1);
+        m_queuelevels["orange"] = new QSpinBox(this);
+	m_queuelevels["orange"]->setRange(1, 100);
+	m_queuelevels["orange"]->setValue(m_engine->queueLevel("orange"));
+	gridlayout2->addWidget(m_queuelevels["orange"], line, 2);
+        m_queuelevels["red"] = new QSpinBox(this);
+	m_queuelevels["red"]->setRange(1, 100);
+	m_queuelevels["red"]->setValue(m_engine->queueLevel("red"));
+	gridlayout2->addWidget(m_queuelevels["red"], line, 3);
+        line++;
+        
  	gridlayout2->setRowStretch( line, 1 );
+ 	gridlayout2->setColumnStretch( width, 1 );
 
         // Box for Connection Definition
         //	QGroupBox * groupBox_conn = new QGroupBox( tr("Identification"), this );
@@ -187,7 +198,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 
         QFrame * qhline3 = new QFrame(this);
         qhline3->setFrameShape(QFrame::HLine);
-        gridlayout3->addWidget(qhline3, line++, 0, 1, 0);
+        gridlayout3->addWidget(qhline3, line++, 0, 1, 2);
 
 	m_loginkind = new QCheckBox(tr("Login as Agent"));
 	m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
@@ -203,6 +214,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
         loginKindChanged(m_loginkind->checkState());
 
  	gridlayout3->setRowStretch( line, 1 );
+ 	gridlayout3->setColumnStretch( 2, 1 );
 
         //
         // GUI Settings
@@ -220,12 +232,12 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 
 	m_autoconnect = new QCheckBox(tr("Autoconnect at startup"), this);
 	m_autoconnect->setCheckState(m_engine->autoconnect() ? Qt::Checked : Qt::Unchecked);
-	gridlayout4->addWidget(m_autoconnect, line++, 0, 1, 0);
+	gridlayout4->addWidget(m_autoconnect, line++, 0, 1, 2);
 
 	m_trytoreconnect = new QCheckBox(tr("Try to reconnect") + "\n" + \
                                          tr("Checking this box disables the Error Popups"), this);
 	m_trytoreconnect->setCheckState(m_engine->trytoreconnect() ? Qt::Checked : Qt::Unchecked);
-	gridlayout4->addWidget(m_trytoreconnect, line++, 0, 1, 0);
+	gridlayout4->addWidget(m_trytoreconnect, line++, 0, 1, 2);
 	gridlayout4->addWidget(new QLabel(tr("Try to reconnect interval"), this), line, 0);
 	m_tryinterval_sbox = new QSpinBox(this);
 	m_tryinterval_sbox->setRange(1, 120);
@@ -240,7 +252,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 
         QFrame * qhline5 = new QFrame(this);
         qhline5->setFrameShape(QFrame::HLine);
-        gridlayout4->addWidget(qhline5, line++, 0, 1, 0);
+        gridlayout4->addWidget(qhline5, line++, 0, 1, 2);
 
 	gridlayout4->addWidget(new QLabel(tr("Tab limit"), this), line, 0);
 	m_tablimit_sbox = new QSpinBox(this);
@@ -250,9 +262,10 @@ ConfWidget::ConfWidget(BaseEngine * engine,
         
         m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
         m_systrayed->setCheckState(m_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
-        gridlayout4->addWidget(m_systrayed, line++, 0, 1, 0);
+        gridlayout4->addWidget(m_systrayed, line++, 0, 1, 2);
 
  	gridlayout4->setRowStretch( line, 1 );
+ 	gridlayout4->setColumnStretch( 2, 1 );
 
 	m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
 	connect(m_btnbox, SIGNAL(accepted()),
@@ -318,6 +331,9 @@ void ConfWidget::saveAndClose()
 	m_engine->setContactsSize(m_contactssize_sbox->value());
 	m_engine->setContactsColumns(m_contactswidth_sbox->value());
         m_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
+        m_engine->setQueueLevel("green", m_queuelevels["green"]->value());
+        m_engine->setQueueLevel("orange", m_queuelevels["orange"]->value());
+        m_engine->setQueueLevel("red", m_queuelevels["red"]->value());
         // m_engine->setLastConnWins(m_lastconnwins->checkState() == Qt::Checked);
 	m_mainwindow->setTablimit(m_tablimit_sbox->value());
 

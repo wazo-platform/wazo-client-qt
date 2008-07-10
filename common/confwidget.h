@@ -45,6 +45,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDialog>
+#include <QHash>
 #include <QLineEdit>
 #include <QSpinBox>
 
@@ -110,6 +111,8 @@ private:
 	QCheckBox * m_cinfo;		//!< customer info checkbox
 	QCheckBox * m_autourl;		//!< auto url allow checkbox
 	QSpinBox  * m_history_sbox;	//!< History size
+
+        QHash<QString, QSpinBox *> m_queuelevels;
 
 	QSpinBox  * m_contactssize_sbox;	//!< Displayed contacts' size
 	QSpinBox  * m_contactswidth_sbox;	//!< Displayed contacts' width

@@ -185,13 +185,11 @@ MainWidget::MainWidget(BaseEngine * engine,
                          this, SLOT(loginKindChanged(int)) );
                 m_qlab2->setEchoMode(QLineEdit::Password);
         }
-        showLogin();
-
-	setCentralWidget(m_wid);
-
 	m_tablimit = m_settings->value("display/tablimit", 5).toInt();
         m_launchDateTime = QDateTime::currentDateTime();
 
+	setCentralWidget(m_wid);
+        showLogin();
         if((m_withsystray && (m_engine->systrayed() == false)) || (! m_withsystray))
                 this->show();
 }
@@ -279,12 +277,6 @@ void MainWidget::showLogin()
         m_gridlayout->setColumnStretch(2, 1);
         m_gridlayout->setRowStretch(6, 1);
         if(m_loginfirst) {
-                m_qlab1->setText(m_engine->userId());
-                m_qlab2->setText(m_engine->password());
-                m_qlab3->setText(m_engine->phonenumber());
-                m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
-                m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
-
                 m_gridlayout->addWidget(m_lab1, 2, 0, Qt::AlignRight);
                 m_gridlayout->addWidget(m_qlab1, 2, 1);
                 m_gridlayout->addWidget(m_ack, 2, 2, Qt::AlignLeft);
@@ -307,6 +299,12 @@ void MainWidget::showLogin()
                 m_kpass->show();
                 m_loginkind->show();
                 loginKindChanged(m_loginkind->checkState());
+
+                m_qlab1->setText(m_engine->userId());
+                m_qlab2->setText(m_engine->password());
+                m_qlab3->setText(m_engine->phonenumber());
+                m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
+                m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
         }
         m_xivobg->show();
 }
@@ -671,6 +669,14 @@ void MainWidget::engineStarted()
                                 addPanel("identity", tr("&Identity"), m_infowidget);
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_infowidget, SLOT(setUserInfo(const UserInfo *)));
+				connect( m_engine, SIGNAL(updatePeer(const UserInfo *,
+								     const QString &,
+								     const QStringList &, const QStringList &,
+								     const QStringList &, const QStringList &)),
+					 m_infowidget, SLOT(updatePeer(const UserInfo *,
+									const QString &,
+									const QStringList &, const QStringList &,
+									const QStringList &, const QStringList &)) );
                                 connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QString &)),
                                          m_infowidget, SLOT(updatePeerAgent(const QString &, const QString &, const QString &)));
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),

@@ -65,6 +65,10 @@ protected:
 public slots:
         void setUserInfo(const UserInfo *);
 	void setQueueList(bool, const QString &);
+	void updatePeer(const UserInfo *,
+			const QString &,
+			const QStringList &, const QStringList &,
+			const QStringList &, const QStringList &);
 	void updatePeerAgent(const QString &,
                              const QString &,
                              const QString &);
@@ -76,7 +80,15 @@ public slots:
         void idxChanged(const QString &);
 private:
         QLabel * m_user;
+        QLabel * m_info1;
+        QLabel * m_info2;
+        QLabel * m_info3;
+        QLabel * m_info4;
+        QLabel * m_info5;
+        QLabel * m_info6;
+        QLabel * m_info7;
         QLabel * m_agent;
+        QFrame * m_qf;
         QPushButton * m_agentaction;
         QPushButton * m_queueaction;
         QPushButton * m_queuejoinall;

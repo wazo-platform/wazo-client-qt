@@ -1,0 +1,14 @@
+# $Revision$
+# $Date$
+# Copyright (C) 2008, Proformatique
+
+XiVO 0.4
+	- [dirs] support for any http:// requests (EBP, local file)
+	- [dirs] support for multiple directory formats
+	- [dirs] ability to always add a prefix to numbers
+	- [queues] agents and queues management by agents
+	- [queues] agents and queues supervision
+	- [accounts] user-oriented accounts instead of phone-oriented accounts
+	- [display] xlets
+
+XiVO 0.3

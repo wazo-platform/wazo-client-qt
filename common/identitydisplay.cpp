@@ -67,6 +67,18 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
         m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         m_user->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
+        m_info1 = new QLabel(this);
+        m_info2 = new QLabel(this);
+        m_info3 = new QLabel(this);
+        m_info4 = new QLabel(this);
+        m_info5 = new QLabel(this);
+        m_info6 = new QLabel(this);
+        m_info7 = new QLabel(this);
+
+        m_qf = new QFrame(this);
+        m_qf->setFrameShape(QFrame::HLine);
+        m_qf->setLineWidth(2);
+
         m_agent = new QLabel("", this);
         m_agentaction = new QPushButton(tr("Logout"), this);
         m_agentaction->setIconSize(QSize(16, 16));
@@ -96,14 +108,29 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
         connect(m_queuejoinall, SIGNAL(clicked()),
                 this, SLOT(doQueueJoinAll()));
 
-	glayout->addWidget( m_user, 0, 0, 1, 7, Qt::AlignCenter );
-	glayout->addWidget( m_agent, 1, 0, Qt::AlignCenter );
-	glayout->addWidget( m_agentaction, 1, 1, Qt::AlignCenter );
-	glayout->addWidget( m_queueaction, 1, 2, Qt::AlignCenter );
-	glayout->addWidget( m_queuelist, 1, 3, Qt::AlignCenter );
-	glayout->addWidget( m_queuebusy, 1, 4, Qt::AlignCenter );
-	glayout->addWidget( m_queuejoinall, 1, 5, Qt::AlignCenter );
-	glayout->addWidget( m_queueleaveall, 1, 6, Qt::AlignCenter );
+
+        int idline = 0;
+	glayout->addWidget( m_user, idline, 0, 1, 7, Qt::AlignCenter );
+        idline ++;
+	glayout->addWidget( m_info1, idline, 0, Qt::AlignCenter );
+	glayout->addWidget( m_info2, idline, 1, Qt::AlignCenter );
+	glayout->addWidget( m_info3, idline, 2, Qt::AlignCenter );
+	glayout->addWidget( m_info4, idline, 3, Qt::AlignCenter );
+	glayout->addWidget( m_info5, idline, 4, Qt::AlignCenter );
+	glayout->addWidget( m_info6, idline, 5, Qt::AlignCenter );
+	glayout->addWidget( m_info7, idline, 6, Qt::AlignCenter );
+        idline ++;
+	glayout->addWidget( m_qf, idline, 0, 1, 7, 0 );
+        idline ++;
+	glayout->addWidget( m_agent, idline, 0, Qt::AlignCenter );
+	glayout->addWidget( m_agentaction, idline, 1, Qt::AlignCenter );
+	glayout->addWidget( m_queueaction, idline, 2, Qt::AlignCenter );
+	glayout->addWidget( m_queuelist, idline, 3, Qt::AlignCenter );
+	glayout->addWidget( m_queuebusy, idline, 4, Qt::AlignCenter );
+	glayout->addWidget( m_queuejoinall, idline, 5, Qt::AlignCenter );
+	glayout->addWidget( m_queueleaveall, idline, 6, Qt::AlignCenter );
+        idline ++;
+        // glayout->setRowStretch( idline, 1 );
 
         m_agent->hide();
         m_agentaction->hide();
@@ -114,8 +141,9 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
         m_queuejoinall->hide();
         m_queuebusy->hide();
 
-// 	glayout->setColumnStretch( 0, 1 );
-// 	glayout->setRowStretch( 0, 1 );
+        m_qf->hide();
+
+        // 	glayout->setColumnStretch( 0, 1 );
 }
 
 void IdentityDisplay::setUserInfo(const UserInfo * ui)
@@ -162,11 +190,28 @@ void IdentityDisplay::setQueueList(bool changeallow, const QString & qlist)
         }
 }
 
+void IdentityDisplay::updatePeer(const UserInfo * ui,
+                                 const QString & sipstatus,
+                                 const QStringList & chanIds,
+                                 const QStringList & chanStates,
+                                 const QStringList & chanOthers,
+                                 const QStringList & x)
+{
+        if(m_ui == NULL)
+                return;
+        if(ui != m_ui)
+                return;
+        qDebug() << "IdentityDisplay::updatePeer()" << ui->astid() << ui->userid() << ui->fullname();
+        qDebug() << sipstatus << chanIds << chanStates << chanOthers << x;
+        // QString ext = ui->userid();
+        // QString name = ui->fullname();
+}
+
 void IdentityDisplay::updatePeerAgent(const QString & userid,
                                       const QString & what,
                                       const QString & status)
 {
-        // qDebug() << "IdentityDisplay::updatePeerAgent" << userid << status << m_ui;
+        qDebug() << "IdentityDisplay::updatePeerAgent" << userid << status << m_ui;
         if(m_ui == NULL)
                 return;
         if(userid != m_ui->userid())
@@ -183,9 +228,10 @@ void IdentityDisplay::updatePeerAgent(const QString & userid,
 
                 if (command == "agentlogin") {
                         m_agent->show();
+                        m_qf->show();
+                        m_agentaction->show();
                         m_agentaction->setIcon(QIcon(":/images/button_ok.png"));
                         m_agentaction->setText(arg);
-                        m_agentaction->show();
                         m_agentstatus = true;
                         if(m_queuesindexes.size() > 0) {
                                 if(m_queuechangeallow) {
@@ -198,6 +244,7 @@ void IdentityDisplay::updatePeerAgent(const QString & userid,
                         }
                 } else if (command == "agentlogout") {
                         m_agent->show();
+                        m_qf->show();
                         m_agentaction->show();
                         m_agentaction->setIcon(QIcon(":/images/cancel.png"));
                         m_agentaction->setText(arg);
