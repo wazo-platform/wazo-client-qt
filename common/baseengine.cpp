@@ -179,6 +179,10 @@ void BaseEngine::loadSettings()
 	m_contactscolumns = m_settings->value("contactscolumns", 2).toUInt();
         m_checked_lastconnwins = m_settings->value("lastconnwins", false).toBool();
 
+	m_queuelevels["green"] = m_settings->value("queuelevel-green", 5).toUInt();
+	m_queuelevels["orange"] = m_settings->value("queuelevel-orange", 10).toUInt();
+	m_queuelevels["red"] = m_settings->value("queuelevel-red", 15).toUInt();
+        
 	m_availstate = m_settings->value("availstate", "available").toString();
         m_settings->endGroup();
 }
@@ -220,6 +224,10 @@ void BaseEngine::saveSettings()
 	m_settings->setValue("contactssize", m_contactssize);
 	m_settings->setValue("contactscolumns", m_contactscolumns);
         m_settings->setValue("lastconnwins", m_checked_lastconnwins);
+
+	m_settings->setValue("queuelevel-green", m_queuelevels["green"]);
+	m_settings->setValue("queuelevel-orange", m_queuelevels["orange"]);
+	m_settings->setValue("queuelevel-red", m_queuelevels["red"]);
 
 	m_settings->setValue("availstate", m_availstate);
         m_settings->endGroup();
@@ -1311,7 +1319,7 @@ const QString & BaseEngine::serverip() const
 }
 
 /*! \brief get server port */
-const quint16 BaseEngine::sbPort() const
+const quint16 & BaseEngine::sbPort() const
 {
 	return m_ctiport;
 }
@@ -1331,7 +1339,7 @@ void BaseEngine::setCompany(const QString & companyname)
 	m_company = companyname;
 }
 
-const quint16 BaseEngine::loginPort() const
+const quint16 & BaseEngine::loginPort() const
 {
 	return m_loginport;
 }
@@ -1361,7 +1369,7 @@ void BaseEngine::setPhonenumber(const QString & phonenumber)
 	m_phonenumber = phonenumber;
 }
 
-const int BaseEngine::loginkind() const
+const int & BaseEngine::loginkind() const
 {
 	return m_loginkind;
 }
@@ -1371,7 +1379,7 @@ void BaseEngine::setLoginKind(const int loginkind)
 	m_loginkind = loginkind;
 }
 
-const int BaseEngine::keeppass() const
+const int & BaseEngine::keeppass() const
 {
 	return m_keeppass;
 }
@@ -1671,7 +1679,7 @@ void BaseEngine::setKeepaliveinterval(uint i)
 	}
 }
 
-const BaseEngine::EngineState BaseEngine::state() const
+const BaseEngine::EngineState & BaseEngine::state() const
 {
 	return m_state;
 }

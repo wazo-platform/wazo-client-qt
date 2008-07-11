@@ -70,7 +70,7 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	setWindowTitle(tr("Configuration"));
 
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
-	QTabWidget * tabwidget = new QTabWidget();
+	m_tabwidget = new QTabWidget();
         
         //
         // Connection Tab
@@ -145,15 +145,15 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 
 	gridlayout2->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
         m_queuelevels["green"] = new QSpinBox(this);
-	m_queuelevels["green"]->setRange(1, 100);
+	m_queuelevels["green"]->setRange(0, 100);
 	m_queuelevels["green"]->setValue(m_engine->queueLevel("green"));
 	gridlayout2->addWidget(m_queuelevels["green"], line, 1);
         m_queuelevels["orange"] = new QSpinBox(this);
-	m_queuelevels["orange"]->setRange(1, 100);
+	m_queuelevels["orange"]->setRange(0, 100);
 	m_queuelevels["orange"]->setValue(m_engine->queueLevel("orange"));
 	gridlayout2->addWidget(m_queuelevels["orange"], line, 2);
         m_queuelevels["red"] = new QSpinBox(this);
-	m_queuelevels["red"]->setRange(1, 100);
+	m_queuelevels["red"]->setRange(0, 100);
 	m_queuelevels["red"]->setValue(m_engine->queueLevel("red"));
 	gridlayout2->addWidget(m_queuelevels["red"], line, 3);
         line++;
@@ -274,13 +274,20 @@ ConfWidget::ConfWidget(BaseEngine * engine,
                 this, SLOT(close()));
 	m_btnbox->button(QDialogButtonBox::Ok)->setDefault(true);
 
-        tabwidget->addTab(widget_user, tr("Account(s)"));
-        tabwidget->addTab(widget_connection, tr("Connection"));
-        tabwidget->addTab(widget_functions, tr("Functions"));
-        tabwidget->addTab(widget_gui, tr("GUI Settings"));
+        m_tabwidget->addTab(widget_user, tr("Account"));
+        m_tabwidget->addTab(widget_connection, tr("Connection"));
+        m_tabwidget->addTab(widget_functions, tr("Functions"));
+        m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
 
-	vlayout->addWidget(tabwidget);
+	m_tabwidget->setCurrentIndex(m_engine->getSettings()->value("display/configtab", 0).toInt());
+
+	vlayout->addWidget(m_tabwidget);
 	vlayout->addWidget(m_btnbox);
+}
+
+ConfWidget::~ConfWidget()
+{
+	m_engine->getSettings()->setValue("display/configtab", m_tabwidget->currentIndex());
 }
 
 void ConfWidget::loginKindChanged(int index)

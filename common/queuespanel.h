@@ -53,6 +53,8 @@ class QLabel;
 class QProgressBar;
 class QPushButton;
 
+class BaseEngine;
+
 /*! \brief Identity Display
  */
 class QueuesPanel : public QWidget
@@ -61,6 +63,7 @@ class QueuesPanel : public QWidget
 public:
 	QueuesPanel(QWidget * parent = 0);
 	~QueuesPanel();
+        void setEngine(BaseEngine *);
 protected:
         void update();
 signals:
@@ -80,7 +83,9 @@ private:
         QHash<QString, QProgressBar *> m_queuebusies;
         QHash<QString, QLabel *> m_queueinfos;
 
-        int m_maxbusy;
+        BaseEngine * m_engine;
+
+        quint32 m_maxbusy;
 };
 
 #endif /* __QUEUESPANEL_H__ */

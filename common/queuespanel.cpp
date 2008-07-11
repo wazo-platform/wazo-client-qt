@@ -47,6 +47,7 @@
 #include <QScrollArea>
 #include <QVariant>
 
+#include "baseengine.h"
 #include "queuespanel.h"
 
 const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 100px; height: 15px}";
@@ -66,6 +67,11 @@ QueuesPanel::QueuesPanel(QWidget * parent)
 QueuesPanel::~QueuesPanel()
 {
         // qDebug() << "QueuesPanel::~QueuesPanel()";
+}
+
+void QueuesPanel::setEngine(BaseEngine * engine)
+{
+	m_engine = engine;
 }
 
 void QueuesPanel::updatePeerAgent(const QString &, const QString &, const QString &)
@@ -121,7 +127,7 @@ void QueuesPanel::update()
 {
         m_maxbusy = 0;
         foreach (QProgressBar * qpb, m_queuebusies) {
-                int val = qpb->property("value").toInt();
+                quint32 val = qpb->property("value").toUInt();
                 if(val > m_maxbusy)
                         m_maxbusy = val;
         }
@@ -129,18 +135,17 @@ void QueuesPanel::update()
         
         foreach (QProgressBar * qpb, m_queuebusies) {
                 QString qname = qpb->property("queueid").toString();
-                int val = qpb->property("value").toInt();
+                unsigned int val = qpb->property("value").toUInt();
                 qpb->setRange(0, m_maxbusy + 1);
                 // qpb->setValue(0); // trick in order to refresh
                 qpb->setValue(val);
-                int mul = 0;
-                if(m_maxbusy > 0)
-                        mul = (100 / m_maxbusy);
-                QString vv = "ff";
-                if(val > 0)
-                        vv = QString("%1").arg(100 - val * mul, 2, 16, QChar('0'));
-                qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ff"
-                                   + vv + vv + ";}");
+
+                if(val <= m_engine->queueLevel("green"))
+                        qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #00ff00;}");
+                else if(val <= m_engine->queueLevel("orange"))
+                        qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #0000ff;}");
+                else
+                        qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ff0000;}");
         }
 }
 

@@ -77,9 +77,9 @@ public:
 	//! set address used to connect to the server
 	void setAddress(const QString &, quint16);
 	void setServerip(const QString &);	//!< see serverip()
-	const quint16 sbPort() const;
+	const quint16 & sbPort() const;
 	const QString & serverip() const;	//!< Host of the login server
-	const quint16 loginPort() const;	//!< TCP port for connection to server
+	const quint16 & loginPort() const;	//!< TCP port for connection to server
 	void setLoginPort(const quint16 &);	//!< see loginPort()
 
 	const QString & company() const;	//!< name of the user's company
@@ -88,9 +88,9 @@ public:
 	void setUserId(const QString &);       	//!< see userid()
 	const QString & phonenumber() const;	//!< agent's phone number
 	void setPhonenumber(const QString &);	//!< see phonenumber()
-	const int loginkind() const;		//!< loginkind to identify to the server
+	const int & loginkind() const;		//!< loginkind to identify to the server
 	void setLoginKind(const int);		//!< see loginkind()
-	const int keeppass() const;		//!< keeppass to identify to the server
+	const int & keeppass() const;		//!< keeppass to identify to the server
 	void setKeepPass(const int);		//!< see keeppass()
 	const QString & password() const;	//!< password to identify to the sever
 	void setPassword(const QString &);	//!< see password()
@@ -123,7 +123,7 @@ public:
 	bool isRemovable(const QMetaObject *);
 	void sendMessage(const QString &);      //!< Sends an instant message
         
-	const EngineState state() const;	//!< Engine state (Logged/Not Logged)
+	const EngineState & state() const;	//!< Engine state (Logged/Not Logged)
 	void setState(EngineState state);	//!< see state()
 
 	const QString & getAvailState() const;	//!< returns availability status

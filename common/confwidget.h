@@ -42,15 +42,16 @@
 #ifndef __CONFWIDGET_H__
 #define __CONFWIDGET_H__
 
-#include <QCheckBox>
-#include <QComboBox>
 #include <QDialog>
 #include <QHash>
-#include <QLineEdit>
-#include <QSpinBox>
 
+class QCheckBox;
+class QComboBox;
 class QDialogButtonBox;
 class QLabel;
+class QLineEdit;
+class QSpinBox;
+class QTabWidget;
 
 class BaseEngine;
 class MainWidget;
@@ -75,7 +76,7 @@ public:
 	 */
 	ConfWidget(BaseEngine *,
                    MainWidget *);
-	//ConfWidget(BaseEngine *engine, QWidget *parent = 0);
+	~ConfWidget();
 
 private slots:
 	//! Save the configuration to the BaseEngine object and close
@@ -120,5 +121,6 @@ private:
 	QCheckBox * m_lastconnwins;	//!< The last connected user wins => disconnects the other
 
         QDialogButtonBox * m_btnbox;	//!< Buttons box
+        QTabWidget * m_tabwidget;
 };
 #endif

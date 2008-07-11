@@ -730,6 +730,7 @@ void MainWidget::engineStarted()
 
 			} else if (dc == QString("queues")) {
                                 m_queuespanel = new QueuesPanel();
+				m_queuespanel->setEngine(m_engine);
                                 if (withscrollbar) {
                                         QScrollArea * sa_qu = new QScrollArea(this);
                                         sa_qu->setWidget(m_queuespanel);
