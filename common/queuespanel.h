@@ -81,11 +81,21 @@ private:
 
         QHash<QString, QPushButton *> m_queuelabels;
         QHash<QString, QProgressBar *> m_queuebusies;
+        QHash<QString, QLabel *> m_queueinfos_a;
+        QHash<QString, QLabel *> m_queueinfos_b;
+        QHash<QString, QLabel *> m_queueinfos_c;
         QHash<QString, QLabel *> m_queueinfos;
 
         BaseEngine * m_engine;
 
         quint32 m_maxbusy;
+
+        QLabel * m_title1;
+        QLabel * m_title2;
+        QLabel * m_title_infos_a;
+        QLabel * m_title_infos_b;
+        QLabel * m_title_infos_c;
+        QLabel * m_title_infos;
 };
 
 #endif /* __QUEUESPANEL_H__ */

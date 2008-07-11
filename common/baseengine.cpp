@@ -628,6 +628,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 		qDebug() << "BaseEngine::updatePeerAndCallerid() : Bad data from the server (not enough arguments) :" << liststatus;
 		return;
 	}
+        // BaseEngine::updatePeerAndCallerid() : Bad data from the server (not enough arguments) : ("ful", "xivo-obelisk", "default", "SIP", "100", "Unavailable", "0")
 
 	//<who>:<asterisk_id>:<tech(SIP/IAX/...)>:<phoneid>:<numero>:<contexte>:<dispo>:<etat SIP/XML>:<etat VM>:<etat Queues>: <nombre de liaisons>:
         QString astid    = liststatus[1];
@@ -750,7 +751,6 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         QStringList liststatus = listpeers[i].split(":");
                         updatePeerAndCallerid(liststatus);
                 }
-
                 callsUpdated();
                 peersReceived();
 
@@ -773,9 +773,23 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         sendCommand("phones-add " + listpeers[0]);
                 }
 
+        } else if((listitems[0] == QString("users-list-update")) && (listitems.size() == 2)) {
+                QStringList userupdate = listitems[1].split(";");
+                if(userupdate.size() > 2) {
+                        QString iduser = userupdate[0] + "/" + userupdate[1];
+                        QString fullid_mine = m_company + "/" + m_userid;
+                        if(m_users.contains(iduser) && (iduser == fullid_mine)) {
+                                QString action = userupdate[2];
+                                if((action == "mwi") && (userupdate.size() > 5)) {
+                                        m_users[iduser]->setMWI(userupdate[3], userupdate[4], userupdate[5]);
+                                        localUserInfoDefined(m_users[fullid_mine]);
+                                }
+                        }
+                }
+                
         } else if((listitems[0] == QString("users-list")) && (listitems.size() == 2)) {
                 QStringList listpeers = listitems[1].split(";");
-                for(int i = 1 ; i < listpeers.size() ; i += 10) {
+                for(int i = 1 ; i < listpeers.size() ; i += 13) {
                         //qDebug() << "users-list" << listpeers[i] << listpeers[i+1] << listpeers[i+2]
                         //<< listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
                         //<< listpeers[i+6] << listpeers[i+7] << listpeers[i+8] << listpeers[i+9];
@@ -790,6 +804,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         m_users[iduser]->setNumber(listpeers[i+7]);
                         m_users[iduser]->setPhones(listpeers[i+5], listpeers[i+6], listpeers[i+8]);
                         m_users[iduser]->setAgent(listpeers[i+9]);
+                        m_users[iduser]->setMWI(listpeers[i+10], listpeers[i+11], listpeers[i+12]);
                         updatePeerAgent(iduser, "imstatus", imstatus);
                         updateAgentPresence(m_users[iduser]->agentid(), imstatus);
                 }
