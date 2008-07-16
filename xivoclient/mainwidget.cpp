@@ -152,7 +152,6 @@ MainWidget::MainWidget(BaseEngine * engine,
                  statusBar(), SLOT(showMessage(const QString &)));
         
         m_clipboard = QApplication::clipboard();
-        qDebug() << m_clipboard->text() << m_clipboard->text(QClipboard::Selection);
         connect(m_clipboard, SIGNAL(selectionChanged()),
                 this, SLOT(clipselection()));
         connect(m_clipboard, SIGNAL(dataChanged()),
@@ -216,15 +215,22 @@ MainWidget::~MainWidget()
 
 void MainWidget::clipselection()
 {
-        qDebug() << "BaseEngine::clipselection()" << m_clipboard->text(QClipboard::Selection);
-        statusBar()->showMessage("selected : " + m_clipboard->text(QClipboard::Selection));
-
+        // X11 : when a pattern is selected on (seemingly) any KDE(QT) application on Linux
+        // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)
+        
+        // qDebug() << "BaseEngine::clipselection()" << m_clipboard->text(QClipboard::Selection);
+        // statusBar()->showMessage("selected : " + m_clipboard->text(QClipboard::Selection));
 }
 
 void MainWidget::clipdata()
 {
-        qDebug() << "BaseEngine::clipdata()" << m_clipboard->text();
-        statusBar()->showMessage("data : " + m_clipboard->text(QClipboard::Selection));
+        // WIN : we fall here in any Ctrl-C/Ctrl-X/"copy"/... action
+        // X11 : same actions, on (seemingly) any KDE(QT) application
+        // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)
+        // X11 (non-KDE) : however, the xclipboard application seems to be able to catch such signals ...
+        
+        // qDebug() << "BaseEngine::clipdata()" << m_clipboard->text(QClipboard::Clipboard);
+        // statusBar()->showMessage("data : " + m_clipboard->text(QClipboard::Clipboard));
 }
 
 void MainWidget::setAppearance(const QStringList & dockoptions)
