@@ -171,8 +171,7 @@ void StatusPanel::xferPressed()
         if(m_linestatuses[m_currentchannel] == WDTransfer)
                 transferCall("chan:special:me:" + m_peerchan[m_currentchannel], "ext:" + num);
         else if(m_linestatuses[m_currentchannel] == WITransfer)
-                // atxferCall("chan:special:me:" + m_currentchannel.split("/")[3] + "/" + m_currentchannel.split("/")[4], "ext:" + num);
-                atxferCall("chan:special:me:" + m_peerchan[m_currentchannel], "ext:" + num);
+                atxferCall("chan:special:me:" + m_currentchannel.split("/")[3] + "/" + m_currentchannel.split("/")[4], "ext:" + num);
 }
 
 

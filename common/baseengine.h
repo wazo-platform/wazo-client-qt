@@ -52,7 +52,6 @@
 
 #include "userinfo.h"
 
-class QClipboard;
 class QTimerEvent;
 class QTcpSocket;
 
@@ -377,7 +376,6 @@ private:
 
         QString m_monitored_userid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)
         QSettings * m_settings;
-        QClipboard * m_clipboard;
 };
 
 #endif

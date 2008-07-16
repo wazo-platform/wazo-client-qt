@@ -63,6 +63,7 @@
 
 class QAction;
 class QActionGroup;
+class QClipboard;
 class QCloseEvent;
 class QDateTime;
 class QDockWidget;
@@ -120,6 +121,8 @@ public:
 public slots:
         void dispurl(const QUrl &url);
 private slots:
+        void clipselection();
+        void clipdata();
 	void showConfDialog();
 	void showLogin();
 	void hideLogin();
@@ -241,6 +244,8 @@ private:
 
         QDateTime m_launchDateTime;
         QSettings * m_settings;
+
+        QClipboard * m_clipboard;
 };
 
 

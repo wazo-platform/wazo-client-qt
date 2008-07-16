@@ -41,6 +41,7 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QClipboard>
 #include <QCloseEvent>
 #include <QDateTime>
 #include <QDebug>
@@ -150,6 +151,13 @@ MainWidget::MainWidget(BaseEngine * engine,
         connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
                  statusBar(), SLOT(showMessage(const QString &)));
         
+        m_clipboard = QApplication::clipboard();
+        qDebug() << m_clipboard->text() << m_clipboard->text(QClipboard::Selection);
+        connect(m_clipboard, SIGNAL(selectionChanged()),
+                this, SLOT(clipselection()));
+        connect(m_clipboard, SIGNAL(dataChanged()),
+                this, SLOT(clipdata()));
+        
         // to be better defined
         // resize(500, 400);
         restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
@@ -204,6 +212,19 @@ MainWidget::~MainWidget()
         // qDebug() << "MainWidget::~MainWidget()";
         savePositions();
         delete m_settings;
+}
+
+void MainWidget::clipselection()
+{
+        qDebug() << "BaseEngine::clipselection()" << m_clipboard->text(QClipboard::Selection);
+        statusBar()->showMessage("selected : " + m_clipboard->text(QClipboard::Selection));
+
+}
+
+void MainWidget::clipdata()
+{
+        qDebug() << "BaseEngine::clipdata()" << m_clipboard->text();
+        statusBar()->showMessage("data : " + m_clipboard->text(QClipboard::Selection));
 }
 
 void MainWidget::setAppearance(const QStringList & dockoptions)

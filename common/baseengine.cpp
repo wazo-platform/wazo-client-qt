@@ -39,7 +39,6 @@
  * $Date$
  */
 
-#include <QApplication>
 #include <QBuffer>
 #include <QClipboard>
 #include <QDebug>
@@ -120,9 +119,6 @@ BaseEngine::BaseEngine(QSettings * settings,
                  this, SLOT(socketError(QAbstractSocket::SocketError)));
 	connect( m_faxsocket, SIGNAL(readyRead()),
                  this, SLOT(socketReadyRead()));
-        
-        m_clipboard = QApplication::clipboard();
-        qDebug() << m_clipboard->text();
         
 	if(m_autoconnect)
 		start();
