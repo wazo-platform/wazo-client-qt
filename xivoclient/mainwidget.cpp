@@ -550,7 +550,6 @@ void MainWidget::showConfDialog()
 void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
         qDebug() << "MainWidget::systrayActivated()";
-        m_engine->originateCall("user:special:me", "user:special:intercept");
         // << "reason =" << reason
         // << "isMinimized =" << isMinimized()
         // << "isVisible =" << isVisible()
@@ -619,6 +618,22 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
                 m_tabwidget->addTab(widget, extraspace + title + extraspace);
 }
 
+
+void MainWidget::connectDials(QWidget * widget)
+{
+        connect( widget, SIGNAL(pickUp(const UserInfo *)),
+                 m_engine, SLOT(pickUp(const UserInfo *)) );
+        connect( widget, SIGNAL(originateCall(const QString &, const QString &)),
+                 m_engine, SLOT(originateCall(const QString &, const QString &)) );
+        connect( widget, SIGNAL(transferCall(const QString &, const QString &)),
+                 m_engine, SLOT(transferCall(const QString &, const QString &)) );
+        connect( widget, SIGNAL(atxferCall(const QString &, const QString &)),
+                 m_engine, SLOT(atxferCall(const QString &, const QString &)) );
+        connect( widget, SIGNAL(simpleHangUp(const QString &)),
+                 m_engine, SLOT(simpleHangUp(const QString &)) );
+        connect( widget, SIGNAL(hangUp(const QString &)),
+                 m_engine, SLOT(hangUp(const QString &)) );
+}
 
 /*!
  * enables the "Disconnect" action and disables the "Connect" Action.
@@ -786,8 +801,7 @@ void MainWidget::engineStarted()
 				m_dialpanel = new DialPanel();
                                 addPanel("dial", tr("Dial"), m_dialpanel);
 
-                                connect( m_dialpanel, SIGNAL(originateCall(const QString&, const QString&)),
-                                         m_engine, SLOT(originateCall(const QString&, const QString&)) );
+                                connectDials(m_dialpanel);
                                 connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
                                          m_dialpanel, SLOT(setNumberToDial(const QString &)) );
                                 connect( m_dialpanel, SIGNAL(textEdited(const QString &)),
@@ -800,15 +814,7 @@ void MainWidget::engineStarted()
                                 m_statuspanel = new StatusPanel(this);
                                 addPanel("operator", tr("Operator"), m_statuspanel);
 
-                                connect( m_statuspanel, SIGNAL(pickUp(const UserInfo *)),
-                                         m_engine, SLOT(pickUp(const UserInfo *)) );
-                                connect( m_statuspanel, SIGNAL(transferCall(const UserInfo *, const QString&, const QString&)),
-                                         m_engine, SLOT(transferCall(const UserInfo *, const QString&, const QString&)) );
-                                connect( m_statuspanel, SIGNAL(atxferCall(const UserInfo *, const QString&, const QString&)),
-                                         m_engine, SLOT(atxferCall(const UserInfo *, const QString&, const QString&)) );
-                                connect( m_statuspanel, SIGNAL(simpleHangUp(const UserInfo *, const QString &)),
-                                         m_engine, SLOT(simpleHangUp(const UserInfo *, const QString &)) );
-
+                                connectDials(m_statuspanel);
                                 connect( this, SIGNAL(functionKeyPressed(int)),
                                          m_statuspanel, SLOT(functionKeyPressed(int)));
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
@@ -835,6 +841,7 @@ void MainWidget::engineStarted()
                                 m_areaCalls->setWidget(m_calls);
                                 addPanel("calls", tr("Calls"), m_leftpanel);
                                 
+                                connectDials(m_calls);
                                 connect( m_calls, SIGNAL(changeTitle(const QString &)),
                                          m_leftpanel->titleLabel(), SLOT(setText(const QString &)) );
                                 connect( m_calls, SIGNAL(monitoredPeerChanged(const QString &)),
@@ -849,8 +856,6 @@ void MainWidget::engineStarted()
                                          m_calls, SLOT(reset()) );
                                 connect( m_engine, SIGNAL(monitorPeer(const QString &, const QString &)),
                                          m_calls, SLOT(monitorPeer(const QString &, const QString &)) );
-                                connect( m_calls, SIGNAL(hangUp(const QString &)),
-                                         m_engine, SLOT(hangUp(const QString &)) );
                                 connect( m_calls, SIGNAL(transferToNumber(const QString &)),
                                          m_engine, SLOT(transferToNumber(const QString &)) );
                                 connect( m_calls, SIGNAL(parkCall(const QString &)),
@@ -890,12 +895,9 @@ void MainWidget::engineStarted()
                                          m_parkingpanel, SLOT(parkingEvent(const QString &, const QString &)));
                                 connect( m_parkingpanel, SIGNAL(copyNumber(const QString &)),
                                          m_engine, SLOT(copyNumber(const QString &)) );
-                                connect( m_parkingpanel, SIGNAL(transferCall(const UserInfo *, const QString &, const QString &)),
-                                         m_engine, SLOT(transferCall(const UserInfo *, const QString &, const QString &)) );
-                                connect( m_parkingpanel, SIGNAL(originateCall(const QString &, const QString &)),
-                                         m_engine, SLOT(originateCall(const QString &, const QString &)) );
                                 connect( m_parkingpanel, SIGNAL(newParkEvent()),
                                          this, SLOT(newParkEvent()) );
+                                connectDials(m_parkingpanel);
                         } else if (dc == QString("fax")) {
 				m_faxwidget = new FaxPanel(m_engine, this);
                                 addPanel("fax", tr("Fax"), m_faxwidget);
@@ -1010,16 +1012,13 @@ void MainWidget::engineStarted()
                                 addPanel("directory", tr("Directory"), m_dirpanel);
                                 m_dirpanel->myfocus();
 
+                                connectDials(m_dirpanel);
 				connect( m_dirpanel, SIGNAL(searchDirectory(const QString &)),
 					 m_engine, SLOT(searchDirectory(const QString &)) );
 				connect( m_engine, SIGNAL(directoryResponse(const QString &)),
 					 m_dirpanel, SLOT(setSearchResponse(const QString &)) );
 				connect( m_dirpanel, SIGNAL(copyNumber(const QString &)),
 					 m_engine, SLOT(copyNumber(const QString &)) );
-                                connect( m_dirpanel, SIGNAL(originateCall(const QString &, const QString &)),
-                                         m_engine, SLOT(originateCall(const QString &, const QString &)) );
-                                connect( m_dirpanel, SIGNAL(transferCall(const UserInfo *, const QString &, const QString &)),
-                                         m_engine, SLOT(transferCall(const UserInfo *, const QString &, const QString &)) );
                                 connect( m_engine, SIGNAL(updateMyCalls(const QStringList &,
                                                                         const QStringList &, const QStringList &)),
                                          m_dirpanel, SLOT(updateMyCalls(const QStringList &,
@@ -1219,12 +1218,7 @@ void MainWidget::showNewProfile(Popup * popup)
 			// close the first widget
 			m_cinfo_tabwidget->widget(0)->close();
 		}
-                connect( popup, SIGNAL(originateCall(const QString &, const QString &)),
-                         m_engine, SLOT(originateCall(const QString &, const QString &)) );
-                connect( popup, SIGNAL(hangUp(const QString &)),
-                         m_engine, SLOT(hangUp(const QString &)) );
-                connect( popup, SIGNAL(pickUp(const UserInfo *, const QString &)),
-                         m_engine, SLOT(pickUp(const UserInfo *, const QString &)) );
+                connectDials(popup);
 		// show the window and give it the focus.
 		setVisible(true);
 		activateWindow();

@@ -46,6 +46,7 @@
 #include <QPoint>
 #include <QPushButton>
 #include <QSettings>
+#include <QTime>
 #include <QToolTip>
 
 #include "baseengine.h"

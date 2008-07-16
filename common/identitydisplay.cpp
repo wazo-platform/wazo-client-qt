@@ -149,7 +149,7 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
 void IdentityDisplay::setUserInfo(const UserInfo * ui)
 {
         m_user->setText(ui->fullname());
-        m_info1->setText("<b>" + ui->phonenum() + "</b> on <b>" + ui->astid() + "</b>");
+        m_info1->setText("<b>" + ui->phonenum() + "</b> " + tr("on") + " <b>" + ui->astid() + "</b>");
         m_info2->setText(ui->availstate());
         m_info3->setText("MWI: " + ui->mwi());
         m_ui = ui;

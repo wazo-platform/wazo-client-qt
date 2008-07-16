@@ -39,7 +39,9 @@
  * $Date$
  */
 
+#include <QApplication>
 #include <QBuffer>
+#include <QClipboard>
 #include <QDebug>
 #include <QMessageBox>
 #include <QSettings>
@@ -118,7 +120,10 @@ BaseEngine::BaseEngine(QSettings * settings,
                  this, SLOT(socketError(QAbstractSocket::SocketError)));
 	connect( m_faxsocket, SIGNAL(readyRead()),
                  this, SLOT(socketReadyRead()));
-
+        
+        m_clipboard = QApplication::clipboard();
+        qDebug() << m_clipboard->text();
+        
 	if(m_autoconnect)
 		start();
 }
@@ -1213,14 +1218,7 @@ void BaseEngine::originateCall(const QString & src, const QString & dst)
 void BaseEngine::transferCall(const QString & src, const QString & dst)
 {
 	qDebug() << "BaseEngine::transferCall()" << src << dst;
-	QStringList dstlist = dst.split("/");
-	if(dstlist.size() >= 6)
-                sendCommand("transfer " + src + " "
-                            + dstlist[0] + "/" + dstlist[1] + "/" + m_dialcontext + "/"
-                            + dstlist[3] + "/" + dstlist[4] + "/" + dstlist[5]);
-	else
-                sendCommand("transfer " + src + " p/" + m_asterisk + "/"
-                            + m_dialcontext + "/" + "/" + "/" + dst);
+        sendCommand("transfer " + src + " " + dst);
 }
 
 /*! \brief send an attended transfer call command to the server
@@ -1228,14 +1226,7 @@ void BaseEngine::transferCall(const QString & src, const QString & dst)
 void BaseEngine::atxferCall(const QString & src, const QString & dst)
 {
 	qDebug() << "BaseEngine::atxferCall()" << src << dst;
-	QStringList dstlist = dst.split("/");
-	if(dstlist.size() >= 6)
-                sendCommand("atxfer " + src + " "
-                            + dstlist[0] + "/" + dstlist[1] + "/" + m_dialcontext + "/"
-                            + dstlist[3] + "/" + dstlist[4] + "/" + dstlist[5]);
-	else
-                sendCommand("atxfer " + src + " p/" + m_asterisk + "/"
-                            + m_dialcontext + "/" + "/" + "/" + dst);
+        sendCommand("atxfer " + src + " " + dst);
 }
 
 /*! \brief send a transfer call command to the server
@@ -1276,9 +1267,9 @@ void BaseEngine::hangUp(const QString & channel)
  *
  * send a hang up command to the server
  */
-void BaseEngine::simpleHangUp(const UserInfo * ui, const QString & channel)
+void BaseEngine::simpleHangUp(const QString & channel)
 {
-	qDebug() << "BaseEngine::simpleHangUp()" << ui << channel;
+	qDebug() << "BaseEngine::simpleHangUp()" << channel;
 	sendCommand("simplehangup " + channel);
 }
 
@@ -1571,6 +1562,8 @@ void BaseEngine::timerEvent(QTimerEvent * event)
 		event->accept();
 	} else {
 		event->ignore();
+                qDebug() << "BaseEngine::timerEvent() ghost timer" << timerId << "will be stopped";
+                killTimer(timerId);
 	}
 }
 

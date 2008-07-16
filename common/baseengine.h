@@ -43,16 +43,18 @@
 #define __BASEENGINE_H__
 
 // QT includes.
+#include <QAbstractSocket>
 #include <QHash>
+#include <QHostAddress>
 #include <QObject>
 #include <QSettings>
 #include <QStringList>
-#include <QTcpSocket>
-#include <QTime>
-#include <QTimer>
-#include <QUdpSocket>
 
 #include "userinfo.h"
+
+class QClipboard;
+class QTimerEvent;
+class QTcpSocket;
 
 class Popup;
 
@@ -211,7 +213,7 @@ private slots:
 	void socketStateChanged(QAbstractSocket::SocketState);
 	void socketReadyRead();
 	void hangUp(const QString &);
-	void simpleHangUp(const UserInfo *, const QString &);
+	void simpleHangUp(const QString &);
 signals:
 	void logged();				//!< signal emitted when the state becomes ELogged
 	void delogged();			//!< signal emitted when the state becomes ENotLogged
@@ -375,6 +377,7 @@ private:
 
         QString m_monitored_userid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)
         QSettings * m_settings;
+        QClipboard * m_clipboard;
 };
 
 #endif

@@ -145,6 +145,7 @@ protected:
 	void keyPressEvent(QKeyEvent *);
         void addPanel(const QString &, const QString &, QWidget *);
         void removePanel(const QString &, QWidget *);
+        void connectDials(QWidget *);
         // bool event(QEvent *);
 private:
 	void createActions();	//!< Create Actions (for menus)

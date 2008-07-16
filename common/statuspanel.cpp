@@ -123,8 +123,6 @@ void StatusPanel::setUserInfo(const UserInfo * ui)
         m_lbl->setText(ui->fullname());
 }
 
-//m_engine, SLOT(transferCall(const QString&, const QString&)) );
-
 void StatusPanel::dtransfer()
 {
         if(m_callchannels.contains(m_currentchannel)) {
@@ -169,10 +167,12 @@ void StatusPanel::itransfer()
 void StatusPanel::xferPressed()
 {
         QString num = m_tnums[m_currentchannel]->text();
+        qDebug() << "StatusPanel::xferPressed()" << m_currentchannel << m_peerchan[m_currentchannel] << m_linestatuses[m_currentchannel] << num;
         if(m_linestatuses[m_currentchannel] == WDTransfer)
-                transferCall(m_ui, m_currentchannel, num);
+                transferCall("chan:special:me:" + m_peerchan[m_currentchannel], "ext:" + num);
         else if(m_linestatuses[m_currentchannel] == WITransfer)
-                atxferCall(m_ui, m_peerchan[m_currentchannel], num);
+                // atxferCall("chan:special:me:" + m_currentchannel.split("/")[3] + "/" + m_currentchannel.split("/")[4], "ext:" + num);
+                atxferCall("chan:special:me:" + m_peerchan[m_currentchannel], "ext:" + num);
 }
 
 
@@ -192,12 +192,12 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 m_actions[m_currentchannel]["Fc"]->setProperty("function", 4);
                         }
                         else if(keynum == Qt::Key_F2)
-                                simpleHangUp(m_ui, m_peerchan[m_currentchannel]);
+                                simpleHangUp(m_peerchan[m_currentchannel]);
                         else if(keynum == Qt::Key_F3)
                                 dtransfer();
                 } else if(linestatus == Online) {
                         if(keynum == Qt::Key_F2) {
-                                simpleHangUp(m_ui, m_peerchan[m_currentchannel]);
+                                hangUp(m_peerchan[m_currentchannel]);
                         } else if(keynum == Qt::Key_F3) {
                                 dtransfer();
                                 m_actions[m_currentchannel]["Fb"]->setText("(# + Return)");
@@ -207,9 +207,9 @@ void StatusPanel::functionKeyPressed(int keynum)
                         } else if(keynum == Qt::Key_F6) {
                                 qDebug() << "StatusPanel::functionKeyPressed" << "F6 when Online : Wait";
                         } else if(keynum == Qt::Key_F7) {
-                                transferCall(m_ui, m_currentchannel, "700");
+                                transferCall(m_currentchannel, "700");
                         } else if(keynum == Qt::Key_F8) {
-                                // transferCall(m_ui, m_currentchannel, num);
+                                // transferCall(m_currentchannel, num);
                         }
                 } else if(linestatus == Wait) {
                         if(keynum == Qt::Key_F1)
@@ -224,7 +224,7 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
                                 m_actions[m_currentchannel]["Fc"]->setText("(# + Return)");
                         } else if(keynum == Qt::Key_F2) {
-                                simpleHangUp(m_ui, m_peerchan[m_currentchannel]);
+                                simpleHangUp(m_peerchan[m_currentchannel]);
                         } else if(keynum == Qt::Key_F1) {
                                 // only when not picked up yet
                                 pickUp(m_ui);
@@ -242,11 +242,11 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 m_actions[m_currentchannel]["Fb"]->setText("D. Transfer (F3)");
                                 m_actions[m_currentchannel]["Fc"]->setText("I. Transfer (F4)");
                         } else if(keynum == Qt::Key_F2) {
-                                simpleHangUp(m_ui, m_peerchan[m_currentchannel]);
+                                simpleHangUp(m_peerchan[m_currentchannel]);
                         } else if(keynum == Qt::Key_F5) {
-                                simpleHangUp(m_ui, m_currentchannel);
+                                simpleHangUp(m_currentchannel);
                         } else if(keynum == Qt::Key_F6) {
-                                simpleHangUp(m_ui, m_tferchannel);
+                                simpleHangUp(m_tferchannel);
                         }
                 }
                 
