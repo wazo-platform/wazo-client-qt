@@ -76,6 +76,7 @@ QueuesPanel::QueuesPanel(QWidget * parent)
 
  	m_gridlayout->setColumnStretch( 6, 1 );
  	m_gridlayout->setRowStretch( 100, 1 );
+        m_gridlayout->setVerticalSpacing(0);
 }
 
 QueuesPanel::~QueuesPanel()

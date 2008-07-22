@@ -68,6 +68,7 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_gridlayout->addWidget(m_agentlegend_qname, 1, 0, Qt::AlignCenter);
         m_gridlayout->addWidget(m_agentlegend_joined, 1, 1, 1, 3, Qt::AlignCenter);
         m_gridlayout->addWidget(m_agentlegend_paused, 1, 4, 1, 3, Qt::AlignCenter);
+        m_gridlayout->setVerticalSpacing(0);
         m_agentlegend_qname->hide();
         m_agentlegend_joined->hide();
         m_agentlegend_paused->hide();

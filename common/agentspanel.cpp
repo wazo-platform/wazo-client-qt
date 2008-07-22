@@ -63,15 +63,16 @@ AgentsPanel::AgentsPanel(QWidget * parent)
         m_title4 = new QLabel(tr("Logged"), this);
         m_title5 = new QLabel(tr("Joined queues"), this);
         m_title6 = new QLabel(tr("UnPaused"), this);
-
+        
         m_gridlayout->addWidget(m_title1, 0, 0, 1, 2, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title2, 0, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title3, 0, 3, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title4, 0, 5, 1, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title5, 0, 8, 1, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title3, 0, 4, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title4, 0, 6, 1, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title5, 0, 9, 1, 2, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title6, 0, 12, 1, 2, Qt::AlignCenter );
         m_gridlayout->setColumnStretch( 14, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
+        m_gridlayout->setVerticalSpacing(0);
 }
 
 AgentsPanel::~AgentsPanel()
@@ -279,6 +280,9 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 QFrame * qvline3 = new QFrame(this);
                                 qvline3->setFrameShape(QFrame::VLine);
                                 qvline3->setLineWidth(1);
+                                QFrame * qvline4 = new QFrame(this);
+                                qvline4->setFrameShape(QFrame::VLine);
+                                qvline4->setLineWidth(1);
 
                                 m_agent_labels[agnum] = new QLabel(agfullname + " (" + agnum + ")", this);
                                 m_agent_more[agnum] = new QPushButton(this);
@@ -351,15 +355,15 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 m_gridlayout->addWidget( m_agent_labels[agnum], linenum, colnum++, Qt::AlignLeft );
                                 m_gridlayout->addWidget( m_agent_more[agnum], linenum, colnum++, Qt::AlignCenter );
                                 m_gridlayout->addWidget( m_agent_busy[agnum], linenum, colnum++, Qt::AlignCenter );
+                                m_gridlayout->addWidget( qvline1, linenum, colnum++, Qt::AlignHCenter );
                                 m_gridlayout->addWidget( m_agent_presence[agnum], linenum, colnum++, Qt::AlignCenter );
-                                m_gridlayout->addWidget( qvline1, linenum, colnum++, Qt::AlignLeft );
+                                m_gridlayout->addWidget( qvline2, linenum, colnum++, Qt::AlignHCenter );
                                 m_gridlayout->addWidget( m_agent_logged_status[agnum], linenum, colnum++, Qt::AlignCenter );
                                 m_gridlayout->addWidget( m_agent_logged_action[agnum], linenum, colnum++, Qt::AlignLeft );
-                                m_gridlayout->addWidget( qvline2, linenum, colnum++, Qt::AlignLeft );
+                                m_gridlayout->addWidget( qvline3, linenum, colnum++, Qt::AlignHCenter );
                                 m_gridlayout->addWidget( m_agent_joined_number[agnum], linenum, colnum++, Qt::AlignRight );
                                 m_gridlayout->addWidget( m_agent_joined_status[agnum], linenum, colnum++, Qt::AlignCenter );
-                                colnum++;
-                                m_gridlayout->addWidget( qvline3, linenum, colnum++, Qt::AlignLeft );
+                                m_gridlayout->addWidget( qvline4, linenum, colnum++, Qt::AlignHCenter );
                                 m_gridlayout->addWidget( m_agent_paused_number[agnum], linenum, colnum++, Qt::AlignRight );
                                 m_gridlayout->addWidget( m_agent_paused_status[agnum], linenum, colnum++, Qt::AlignCenter );
                         }
