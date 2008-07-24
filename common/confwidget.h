@@ -78,6 +78,8 @@ public:
                    MainWidget *);
 	~ConfWidget();
 
+signals:
+        void confUpdated();
 private slots:
 	//! Save the configuration to the BaseEngine object and close
 	void saveAndClose();

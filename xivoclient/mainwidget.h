@@ -138,6 +138,7 @@ private slots:
         void config_and_start();
         void logintextChanged(const QString &);
         void loginKindChanged(int);
+        void confUpdated();
 signals:
         void functionKeyPressed(int);
 protected:

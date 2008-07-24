@@ -566,7 +566,19 @@ void MainWidget::createSystrayIcon()
 void MainWidget::showConfDialog()
 {
         m_conf = new ConfWidget(m_engine, this);
+	connect( m_conf, SIGNAL(confUpdated()),
+	         this, SLOT(confUpdated()));
 	m_conf->exec();
+}
+
+void MainWidget::confUpdated()
+{
+        qDebug() << "MainWidget::confUpdated";
+        m_qlab1->setText(m_engine->userId());
+        m_qlab2->setText(m_engine->password());
+        m_qlab3->setText(m_engine->phonenumber());
+        m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
+        m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
 }
 
 /*! \brief process clicks to the systray icon

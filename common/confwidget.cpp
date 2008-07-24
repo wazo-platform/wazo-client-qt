@@ -345,5 +345,6 @@ void ConfWidget::saveAndClose()
 	m_mainwindow->setTablimit(m_tablimit_sbox->value());
 
 	m_engine->saveSettings();
+        confUpdated();
         close();
 }
