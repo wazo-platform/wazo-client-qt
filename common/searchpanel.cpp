@@ -222,16 +222,16 @@ void SearchPanel::newUser(const UserInfo * ui)
 
 void SearchPanel::updatePeerAgent(const QString & id,
                                   const QString & what,
-                                  const QString & status)
+                                  const QStringList & statuslist)
 {
         // qDebug() << "SearchPanel::updatePeerAgent()";
         if(m_peerhash.contains(id)) {
                 if(what == "agentstatus") {
                         PeerItem * peeritem = m_peerhash.value(id);
-                        peeritem->updateAgentStatus(status);
+                        peeritem->updateAgentStatus(statuslist);
                 } else if(what == "imstatus") {
                         PeerItem * peeritem = m_peerhash.value(id);
-                        peeritem->updateIMStatus(status);
+                        peeritem->updateIMStatus(statuslist[0]);
                 }
         }
         return;

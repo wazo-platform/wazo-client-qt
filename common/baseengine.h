@@ -251,7 +251,7 @@ signals:
         void newUser(const UserInfo *);
 	void updatePeerAgent(const QString &,
                              const QString &,
-                             const QString &);
+                             const QStringList &);
 	void updateOnlineAgent(const QStringList &);
 	//! a log entry has to be updated.
 	void updateLogEntry(const QDateTime &, int, const QString &, const QString &, const QString &);

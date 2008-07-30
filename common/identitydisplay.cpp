@@ -155,6 +155,76 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_ui = ui;
 }
 
+void IdentityDisplay::setAgentList(const QString & alist)
+{
+        // qDebug() << "IdentityDisplay::setAgentList()" << alist;
+        QStringList asl = alist.split(";");
+        if(asl.size() > 1) {
+                QStringList agents;
+                QString astid = asl[0];
+                if(astid == m_ui->astid()) {
+                        for(int i = 1 ; i < asl.size(); i++) {
+                                QStringList ags = asl[i].split(":");
+                                QString agnum = ags[0];
+                                if(agnum == m_ui->agentid()) {
+                                        QString agstatus = ags[1];
+                                        QString agfullname = ags[2];
+                                        QString phonenum = ags[3];
+                                        QStringList agq = ags[4].split(",");
+                                        qDebug() << "IdentityDisplay::setAgentList" << astid << agnum << agstatus
+                                                 << agfullname << phonenum;
+                                        
+                                        m_agent->setText("Agent " + agnum);
+                                        m_agent->show();
+                                        m_qf->show();
+                                        m_agentaction->show();
+                                        m_agentaction->setText(phonenum);
+                                        
+                                        if(agstatus == "0") {
+                                                m_agentaction->setIcon(QIcon(":/images/cancel.png"));
+                                                m_agentstatus = false;
+                                                m_queueaction->hide();
+                                                m_queuelist->hide();
+                                                m_queueleaveall->hide();
+                                                m_queuejoinall->hide();
+                                                m_queuebusy->hide();
+                                        } else if(agstatus == "1") {
+                                                m_agentaction->setIcon(QIcon(":/images/button_ok.png"));
+                                                m_agentstatus = true;
+                                                if(m_queuesindexes.size() > 0) {
+                                                        if(m_queuechangeallow) {
+                                                                m_queueaction->show();
+                                                                m_queueleaveall->show();
+                                                                m_queuejoinall->show();
+                                                        }
+                                                        m_queuelist->show();
+                                                        m_queuebusy->show();
+                                                }
+                                        }
+                                        
+                                        foreach (QString agqprops, agq) {
+                                                QStringList agqprops_split = agqprops.split("-");
+                                                qDebug() << "IdentityDisplay::setAgentList" << agqprops_split;
+                                                QString queuename = agqprops_split[0];
+                                                if (m_queuesindexes.contains(queuename)) {
+                                                        int idx = m_queuesindexes[queuename];
+                                                        if (agqprops_split.size() > 1) {
+                                                                m_queuelist->setItemIcon(idx, QIcon(":/images/button_ok.png"));
+                                                                m_queuesstatuses[queuename] = true;
+                                                        } else {
+                                                                m_queuelist->setItemIcon(idx, QIcon(":/images/cancel.png"));
+                                                                m_queuesstatuses[queuename] = false;
+                                                        }
+                                                        if(queuename == m_queuelist->currentText())
+                                                                idxChanged(queuename);
+                                                }
+                                        }
+                                }
+                        }
+                }
+        }
+}
+
 void IdentityDisplay::setQueueList(bool changeallow, const QString & qlist)
 {
         m_queuechangeallow = changeallow;
@@ -212,16 +282,15 @@ void IdentityDisplay::updatePeer(const UserInfo * ui,
 
 void IdentityDisplay::updatePeerAgent(const QString & userid,
                                       const QString & what,
-                                      const QString & status)
+                                      const QStringList & newstatuses)
 {
-        qDebug() << "IdentityDisplay::updatePeerAgent" << userid << status << m_ui;
         if(m_ui == NULL)
                 return;
         if(userid != m_ui->userid())
                 return;
         if(what != "agentstatus")
                 return;
-        QStringList newstatuses = status.split("/");
+        // qDebug() << "IdentityDisplay::updatePeerAgent" << userid << what << newstatuses;
         if (newstatuses.size() >= 4) {
                 QString command = newstatuses[0];
                 QString astid = newstatuses[1];
@@ -344,7 +413,7 @@ void IdentityDisplay::doQueueJoinAll()
 
 void IdentityDisplay::idxChanged(const QString & newidx)
 {
-        qDebug() << "IdentityDisplay::idxChanged";
+        qDebug() << "IdentityDisplay::idxChanged" << newidx;
         if (m_queuesstatuses[newidx]) {
                 m_queueaction->setText(tr("Leave"));
                 m_queueaction->setIcon(QIcon(":/images/cancel.png"));

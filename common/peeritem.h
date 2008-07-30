@@ -71,7 +71,7 @@ public:
 
 	void updateStatus(const QString &);
         void updateIMStatus(const QString &);
-	void updateAgentStatus(const QString &);
+	void updateAgentStatus(const QStringList &);
 	void updateChans(const QStringList &,
 	                 const QStringList &,
 	                 const QStringList &);
@@ -90,7 +90,7 @@ private:
         QString m_imavail;
         QString m_sipstatus;
         QString m_vmstatus;
-        QString m_agentstatus;
+        QStringList m_agentstatus;
         QString m_pausestatus;
         QStringList m_chanIds;
         QStringList m_chanStates;

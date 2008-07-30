@@ -89,13 +89,15 @@ void QueuesPanel::setEngine(BaseEngine * engine)
 	m_engine = engine;
 }
 
-void QueuesPanel::updatePeerAgent(const QString &, const QString &, const QString &)
+void QueuesPanel::updatePeerAgent(const QString &,
+                                  const QString &,
+                                  const QStringList &)
 {
 }
 
 void QueuesPanel::setQueueList(bool, const QString & qlist)
 {
-        // qDebug() << "QueuesPanel::setQueueList()" << qlist;
+        qDebug() << "QueuesPanel::setQueueList()" << qlist;
         QStringList qsl = qlist.split(";");
         if((qsl.size() > 1) && (qsl[1].size() > 0)) {
                 QString astid = qsl[0];
@@ -105,8 +107,9 @@ void QueuesPanel::setQueueList(bool, const QString & qlist)
                         QStringList qparams = queues[i].split(":");
                         QHash <QString, QString> infos;
                         QString ncalls = "0";
-                        for(int j = 1 ; j < qparams.size(); j += 2)
-                                infos[qparams[j]] = qparams[j+1];
+                        infos["Calls"] = "0";
+                        for(int j = 1 ; j < (qparams.size() - 1) / 2; j ++)
+                                infos[qparams[j * 2 - 1]] = qparams[j * 2];
                         QString queuename = qparams[0];
                         if(! m_queuelabels.contains(queuename)) {
                                 m_queuelabels[queuename] = new QPushButton(queuename, this);
@@ -125,10 +128,10 @@ void QueuesPanel::setQueueList(bool, const QString & qlist)
                                 int linenum = m_queuelabels.size();
                                 m_gridlayout->addWidget( m_queuelabels[queuename], linenum + 1, 0, Qt::AlignLeft );
                                 m_gridlayout->addWidget( m_queuebusies[queuename], linenum + 1, 1, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_queueinfos_a[queuename],  linenum + 1, 2, Qt::AlignRight );
-                                m_gridlayout->addWidget( m_queueinfos_b[queuename],  linenum + 1, 3, Qt::AlignRight );
-                                m_gridlayout->addWidget( m_queueinfos_c[queuename],  linenum + 1, 4, Qt::AlignRight );
-                                m_gridlayout->addWidget( m_queueinfos[queuename],  linenum + 1, 5, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_queueinfos_a[queuename], linenum + 1, 2, Qt::AlignRight );
+                                m_gridlayout->addWidget( m_queueinfos_b[queuename], linenum + 1, 3, Qt::AlignRight );
+                                m_gridlayout->addWidget( m_queueinfos_c[queuename], linenum + 1, 4, Qt::AlignRight );
+                                m_gridlayout->addWidget( m_queueinfos[queuename], linenum + 1, 5, Qt::AlignLeft );
                         }
 
                         m_queuebusies[queuename]->setProperty("value", infos["Calls"]);

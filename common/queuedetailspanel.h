@@ -68,7 +68,7 @@ public slots:
 	void newQueue(const QStringList &);
         void updatePeerAgent(const QString &,
                              const QString &,
-                             const QString &);
+                             const QStringList &);
 private slots:
         void agentClicked();
 private:

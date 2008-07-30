@@ -64,6 +64,7 @@ public:
 protected:
 public slots:
         void setUserInfo(const UserInfo *);
+        void setAgentList(const QString &);
 	void setQueueList(bool, const QString &);
 	void updatePeer(const UserInfo *,
 			const QString &,
@@ -71,7 +72,7 @@ public slots:
 			const QStringList &, const QStringList &);
 	void updatePeerAgent(const QString &,
                              const QString &,
-                             const QString &);
+                             const QStringList &);
 	void setQueueStatus(const QString &);
         void doAgentAction();
         void doQueueAction();

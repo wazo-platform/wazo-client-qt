@@ -72,7 +72,7 @@ public slots:
 			const QStringList &, const QStringList &);
 	void updatePeerAgent(const QString &,
                              const QString &,
-                             const QString &);
+                             const QStringList &);
 	void removePeer(const QString &);
 	void removePeers();
         void callsUpdated();

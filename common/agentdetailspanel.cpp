@@ -79,25 +79,26 @@ AgentdetailsPanel::~AgentdetailsPanel()
         // qDebug() << "AgentdetailsPanel::~AgentdetailsPanel()";
 }
 
-void AgentdetailsPanel::updatePeerAgent(const QString &, const QString & what, const QString & agentstatus)
+void AgentdetailsPanel::updatePeerAgent(const QString &,
+                                        const QString & what,
+                                        const QStringList & params)
 {
         if(what != "agentstatus")
                 return;
-        // qDebug() << "AgentdetailsPanel::updatePeerAgent()" << agentstatus;
-        QStringList params = agentstatus.split("/");
+        // qDebug() << "AgentdetailsPanel::updatePeerAgent()" << params << m_astid << m_agent;
         QString command = params[0];
+        QString astid = params[1];
+        QString agname = params[2];
+
         if(command == "agentlogin") {
-                QString agname = params[2];
                 QString phonenum = params[3];
-                if(m_agent == agname)
+                if((m_agent == agname) && (m_astid == astid))
                         m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
         } else if(command == "agentlogout") {
-                QString agname = params[2];
-                if(m_agent == agname)
+                if((m_agent == agname) && (m_astid == astid))
                         m_agentstatus->setText(tr("logged off"));
         } else if(command == "joinqueue") {
-                QString agname = params[2];
-                if(m_agent == agname) {
+                if((m_agent == agname) && (m_astid == astid)) {
                         QString qname = params[3];
                         if(m_queuelabels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
@@ -123,8 +124,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &, const QString & what, c
                         }
                 }
         } else if(command == "leavequeue") {
-                QString agname = params[2];
-                if(m_agent == agname) {
+                if((m_agent == agname) && (m_astid == astid)) {
                         QString qname = params[3];
                         if(m_queuelabels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
@@ -138,8 +138,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &, const QString & what, c
                         }
                 }
         } else if(command == "paused") {
-                QString agname = params[2];
-                if(m_agent == agname) {
+                if((m_agent == agname) && (m_astid == astid)) {
                         QString qname = params[3];
                         if(m_queuelabels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
@@ -150,8 +149,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &, const QString & what, c
                         }
                 }
         } else if(command == "unpaused") {
-                QString agname = params[2];
-                if(m_agent == agname) {
+                if((m_agent == agname) && (m_astid == astid)) {
                         QString qname = params[3];
                         if(m_queuelabels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
@@ -161,18 +159,57 @@ void AgentdetailsPanel::updatePeerAgent(const QString &, const QString & what, c
                                 m_queue_pause_action[qname]->setIcon(QIcon(":/images/cancel.png"));
                         }
                 }
+        } else if(command == "queuememberstatus") {
+                if((m_agent == agname) && (m_astid == astid)) {
+                        QString qname = params[3];
+                        if(m_queuelabels.contains(qname)) {
+                                QString jstatus = params[4];
+                                QString pstatus = params[5];
+
+                                QPixmap * square = new QPixmap(12, 12);
+                                if (jstatus == "1") {
+                                        square->fill(Qt::green);
+                                        m_queue_join_status[qname]->setPixmap(* square);
+                                        m_queue_join_status[qname]->setProperty("joined", "y");
+                                        m_queue_join_action[qname]->setIcon(QIcon(":/images/cancel.png"));
+                                        
+                                        if(pstatus == "1") {
+                                                square->fill(Qt::gray);
+                                                m_queue_pause_status[qname]->setPixmap(* square);
+                                                m_queue_pause_status[qname]->setProperty("paused", "y");
+                                                m_queue_pause_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
+                                        } else {
+                                                square->fill(Qt::green);
+                                                m_queue_pause_status[qname]->setPixmap(* square);
+                                                m_queue_pause_status[qname]->setProperty("paused", "n");
+                                                m_queue_pause_action[qname]->setIcon(QIcon(":/images/cancel.png"));
+                                        }
+                                        m_queue_pause_status[qname]->show();
+                                        m_queue_pause_action[qname]->show();
+                                } else if (jstatus == "5") {
+                                        square->fill(Qt::gray);
+                                        m_queue_join_status[qname]->setPixmap(* square);
+                                        m_queue_join_status[qname]->setProperty("joined", "n");
+                                        m_queue_join_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
+                                        
+                                        m_queue_pause_status[qname]->hide();
+                                        m_queue_pause_action[qname]->hide();
+                                }
+                        }
+                }
         } else {
                 // queuememberstatus
-                qDebug() << "AgentdetailsPanel::updatePeerAgent()" << agentstatus;
+                qDebug() << "AgentdetailsPanel::updatePeerAgent()" << params;
         }
 }
 
 void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
 {
-        // qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
+        qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
         m_astid = agentstatus[0];
         m_agent = agentstatus[1];
-        m_agentname->setText("<b>" + m_agent + "</b> " + tr("on") + " <b>" + m_astid + "</b>");
+        QString longname = agentstatus[3];
+        m_agentname->setText("<b>" + m_agent + "</b> (" + longname + ") " + tr("on") + " <b>" + m_astid + "</b>");
 
         QHashIterator<QString, QPushButton *> i(m_queuelabels);
         while (i.hasNext()) {
@@ -206,25 +243,33 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
         m_queue_pause_action.clear();
         // m_queuestatus.clear();
 
-        if(agentstatus.size() == 5) {
-                if(agentstatus[2] == "0")
-                        m_agentstatus->setText(tr("logged off"));
+        if(agentstatus.size() == 6) {
+                QString lstatus = agentstatus[2];
+                QString phonenum = agentstatus[4];
+                QString queues = agentstatus[5];
+                
+                if(lstatus == "0")
+                        m_agentstatus->setText(tr("logged off") + " <b>" + phonenum + "</b>");
                 else
-                        m_agentstatus->setText(tr("logged on phone number") + " <b>" + agentstatus[2] + "</b>");
+                        m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
 
                 m_agentlegend_qname->show();
                 m_agentlegend_joined->show();
                 m_agentlegend_paused->show();
 
                 QStringList queuesstats;
-                if(agentstatus[3].size() > 0)
-                        queuesstats << agentstatus[3].split(",");
-                if(agentstatus[4].size() > 0)
-                        queuesstats << agentstatus[4].split(",");
+                if(queues.size() > 0)
+                        queuesstats = queues.split(",");
                 queuesstats.sort();
 
                 for(int i = 0 ; i < queuesstats.size(); i++) {
-                        QString queueid = queuesstats[i].split(":")[0];
+                        QString queueid = queuesstats[i].split("-")[0];
+                        QString pstatus = "";
+                        QString sstatus = "";
+                        if(queuesstats[i].split("-").size() > 2) {
+                                pstatus = queuesstats[i].split("-")[1];
+                                sstatus = queuesstats[i].split("-")[2];
+                        }
                         m_queuelabels[queueid] = new QPushButton(queueid, this);
                         m_queuelabels[queueid]->setProperty("astid", m_astid);
                         m_queuelabels[queueid]->setProperty("queueid", queueid);
@@ -253,7 +298,7 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                         m_queue_join_action[queueid]->setIconSize(QSize(8, 8));
                         m_queue_pause_action[queueid]->setIconSize(QSize(8, 8));
 
-                        if(agentstatus[4].split(",").contains(queueid)) {
+                        if (pstatus == "") {
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::gray);
                                 m_queue_join_status[queueid]->setPixmap(* square);
@@ -261,13 +306,13 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                                 m_queue_join_action[queueid]->setIcon(QIcon(":/images/button_ok.png"));
                                 m_queue_pause_status[queueid]->hide();
                                 m_queue_pause_action[queueid]->hide();
-                        } else if(agentstatus[3].split(",").contains(queuesstats[i])) {
+                        } else {
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::green);
                                 m_queue_join_status[queueid]->setPixmap(* square);
                                 m_queue_join_status[queueid]->setProperty("joined", "y");
                                 m_queue_join_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
-                                if(queuesstats[i].split(":")[1] == "0") {
+                                if(pstatus == "0") {
                                         square->fill(Qt::green);
                                         m_queue_pause_status[queueid]->setPixmap(* square);
                                         m_queue_pause_status[queueid]->setProperty("paused", "n");

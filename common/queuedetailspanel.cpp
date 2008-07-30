@@ -75,17 +75,17 @@ QueuedetailsPanel::~QueuedetailsPanel()
 
 void QueuedetailsPanel::updatePeerAgent(const QString &,
                                         const QString & what,
-                                        const QString & status)
+                                        const QStringList & params)
 {
         if(what != "agentstatus")
                 return;
-        // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << status;
-        QStringList params = status.split("/");
+        // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
         QString command = params[0];
+        QString astid = params[1];
+        QString agname = params[2];
+        QString qname = params[3];
+
         if(command == "joinqueue") {
-                QString astid = params[1];
-                QString agname = params[2];
-                QString qname = params[3];
                 if((astid == m_astid) && (qname == m_queueid)) {
                         if(! m_agentlist.contains(agname)) {
                                 m_agentlist.append(agname);
@@ -94,15 +94,14 @@ void QueuedetailsPanel::updatePeerAgent(const QString &,
                         }
                 }
         } else if(command == "leavequeue") {
-                QString astid = params[1];
-                QString agname = params[2];
-                QString qname = params[3];
                 if((astid == m_astid) && (qname == m_queueid))
                         if(m_agentlist.contains(agname)) {
                                 m_agentlist.removeAll(agname);
                                 m_agentlist.sort();
                                 update();
                         }
+        } else {
+                qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
         }
 }
 
@@ -144,8 +143,13 @@ void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
                 m_queuelegend_status->show();
                 m_agentlist.clear();
                 for(int i = 3 ; i < 3 + nagents; i++)
-                        if(queuestatus[i].size() > 0)
-                                m_agentlist << queuestatus[i].split(",")[0];
+                        if(queuestatus[i].size() > 0) {
+                                QString agname = queuestatus[i].split(",")[0];
+                                if(agname.startsWith("Agent/"))
+                                        m_agentlist << agname.mid(6);
+                                else
+                                        m_agentlist << agname;
+                        }
                 m_agentlist.sort();
         }
 

@@ -806,7 +806,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         m_users[iduser]->setPhones(listpeers[i+5], listpeers[i+6], listpeers[i+8]);
                         m_users[iduser]->setAgent(listpeers[i+9]);
                         m_users[iduser]->setMWI(listpeers[i+10], listpeers[i+11], listpeers[i+12]);
-                        updatePeerAgent(iduser, "imstatus", imstatus);
+                        updatePeerAgent(iduser, "imstatus", imstatus.split("/"));
                         updateAgentPresence(m_users[iduser]->agentid(), imstatus);
                 }
 
@@ -944,16 +944,21 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         changeWatchedQueueSignal(liststatus);
 
         } else if(listitems[0].toLower() == QString("update-agents")) {
-                QStringList liststatus = listitems[1].split(":");
-                if(liststatus.size() > 1) {
-                        QStringList newstatuses = liststatus[1].split("/");
-                        QString astid = newstatuses[1];
-                        QString agentnum = newstatuses[2];
-                        UserInfo * ui = findUserFromAgent(astid, agentnum);
-                        if(ui)
-                                updatePeerAgent(ui->userid(), "agentstatus", liststatus[1]);
-                        else // (useful ?) in order to transfer the replies to unmatched agents
-                                updatePeerAgent("", "agentstatus", liststatus[1]);
+                QStringList liststatus = listitems[1].split(";");
+                qDebug() << "update-agents" << liststatus;
+                if(liststatus.size() > 2) {
+                        QString astid = liststatus[1];
+                        QString agentid = liststatus[2];
+                        if (agentid.startsWith("Agent/")) {
+                                QString agentnum = agentid.mid(6);
+                                liststatus[2] = agentnum;
+                                UserInfo * ui = findUserFromAgent(astid, agentnum);
+                                if(ui)
+                                        updatePeerAgent(ui->userid(), "agentstatus", liststatus);
+                                else // (useful ?) in order to transfer the replies to unmatched agents
+                                        updatePeerAgent("", "agentstatus", liststatus);
+                        } else
+                                qDebug() << "update-agents agentnum" << agentid;
                 }
 
         } else if(listitems[0].toLower() == QString("update-queues")) {
@@ -972,7 +977,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 //qDebug() << presencestatus << m_users.size();
                 if(m_users.contains(id)) {
                         m_users[id]->setAvailState(presencestatus[2]);
-                        updatePeerAgent(id, "imstatus", presencestatus[2]);
+                        updatePeerAgent(id, "imstatus", presencestatus[2].split("/"));
                         updateAgentPresence(m_users[id]->agentid(), presencestatus[2]);
                 }
 
@@ -1548,7 +1553,7 @@ void BaseEngine::setTrytoreconnectinterval(uint i)
 void BaseEngine::timerEvent(QTimerEvent * event)
 {
 	int timerId = event->timerId();
-        qDebug() << "BaseEngine::timerEvent() timerId=" << timerId << m_ka_timerid << m_try_timerid;
+        // qDebug() << "BaseEngine::timerEvent() timerId's" << timerId << m_ka_timerid << m_try_timerid;
 	if(timerId == m_ka_timerid) {
                 keepLoginAlive();
                 event->accept();
@@ -1632,9 +1637,9 @@ void BaseEngine::askCallerIds()
 {
         qDebug() << "BaseEngine::askCallerIds()";
         sendCommand("users-list");
+        sendCommand("queues-list");
         sendCommand("agents-list");
 	sendCommand("phones-list");
-        sendCommand("queues-list");
         sendCommand("agents-status");
         sendCommand("users-list");
 }
