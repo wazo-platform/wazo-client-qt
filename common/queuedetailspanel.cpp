@@ -79,13 +79,15 @@ void QueuedetailsPanel::updatePeerAgent(const QString &,
 {
         if(what != "agentstatus")
                 return;
+        if(params.size() < 3)
+                return;
         // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
         QString command = params[0];
         QString astid = params[1];
         QString agname = params[2];
-        QString qname = params[3];
-
+        
         if(command == "joinqueue") {
+                QString qname = params[3];
                 if((astid == m_astid) && (qname == m_queueid)) {
                         if(! m_agentlist.contains(agname)) {
                                 m_agentlist.append(agname);
@@ -94,12 +96,21 @@ void QueuedetailsPanel::updatePeerAgent(const QString &,
                         }
                 }
         } else if(command == "leavequeue") {
+                QString qname = params[3];
                 if((astid == m_astid) && (qname == m_queueid))
                         if(m_agentlist.contains(agname)) {
                                 m_agentlist.removeAll(agname);
                                 m_agentlist.sort();
                                 update();
                         }
+        } else if(command == "queuememberstatus") {
+                QString qname = params[3];
+                if((astid == m_astid) && (qname == m_queueid)) {
+                        if(m_agentlist.contains(agname))
+                                qDebug() << "qms c" << params;
+                        else
+                                qDebug() << "qms n" << params;
+                }
         } else {
                 qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
         }

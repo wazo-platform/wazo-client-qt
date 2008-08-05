@@ -147,7 +147,7 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
 	}
 	else if( localName == "message" )
 	{
-		qDebug() << m_infoValue;
+		qDebug() << "XmlHandler::endElement()" << m_infoValue;
 		if(m_popup)
 			m_popup->setMessage( m_infoValue );
 	}

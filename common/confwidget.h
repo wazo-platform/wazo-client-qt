@@ -99,7 +99,7 @@ private:
 	QSpinBox  * m_kainterval_sbox;	//!< Keep alive interval
 
 	QLineEdit * m_company;		//!< name of the company
-	QLineEdit * m_passwd;		//!< user password
+	QLineEdit * m_password;		//!< user password
 	QCheckBox * m_keeppass;		//!< keep password ?
 	QLineEdit * m_userid;		//!< user login
 	QCheckBox * m_loginkind;	//!< login kind (user or agent)
@@ -107,7 +107,7 @@ private:
 
         QLabel * m_lblulogin;
         QLabel * m_lblcompany;
-        QLabel * m_lblpasswd;
+        QLabel * m_lblpassword;
         QLabel * m_lblphone;
 
 	QCheckBox * m_presence;		//!< connect to presence server checkbox

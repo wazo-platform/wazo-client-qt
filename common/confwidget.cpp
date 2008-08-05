@@ -186,11 +186,11 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	gridlayout3->addWidget(m_lblulogin, line, 0);
 	gridlayout3->addWidget(m_userid, line++, 1);
 
-	m_lblpasswd = new QLabel(tr("Password"), this);
-	m_passwd = new QLineEdit(m_engine->password(), this);
-	m_passwd->setEchoMode(QLineEdit::Password);
-	gridlayout3->addWidget(m_lblpasswd, line, 0);
-	gridlayout3->addWidget(m_passwd, line++, 1);
+	m_lblpassword = new QLabel(tr("Password"), this);
+	m_password = new QLineEdit(m_engine->password(), this);
+	m_password->setEchoMode(QLineEdit::Password);
+	gridlayout3->addWidget(m_lblpassword, line, 0);
+	gridlayout3->addWidget(m_password, line++, 1);
 
 	m_keeppass = new QCheckBox(tr("Keep Password"));
 	m_keeppass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
@@ -319,7 +319,7 @@ void ConfWidget::saveAndClose()
 	m_engine->setUserId(m_userid->text());
 	m_engine->setPhonenumber(m_phonenumber->text());
 
-	m_engine->setPassword(m_passwd->text());
+	m_engine->setPassword(m_password->text());
 
 	m_engine->setAutoconnect(m_autoconnect->checkState() == Qt::Checked);
 	m_engine->setTrytoreconnect(m_trytoreconnect->checkState() == Qt::Checked);

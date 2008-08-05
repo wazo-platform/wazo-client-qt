@@ -96,10 +96,6 @@ public:
 	const QString & password() const;	//!< password to identify to the sever
 	void setPassword(const QString &);	//!< see password()
 
-	const QString & phoneNum() const;	//! get m_extension
-	const QString & dialContext() const;	//! get m_dialcontext
-	void setDialContext(const QString &);	//! set m_dialcontext
-
 	bool autoconnect() const;		//!< auto connect flag
 	void setAutoconnect(bool);		//!< set auto connect flag
 	bool trytoreconnect() const;		//!< try to reconnect flag
@@ -313,7 +309,7 @@ private:
 	QString m_phonenumber;		//!< Agent's phone
 	int m_loginkind;		//!< Login Kind
 	int m_keeppass;			//!< Login Kind
-	QString m_passwd;		//!< User password for account
+	QString m_password;		//!< User password for account
 
 	bool m_autoconnect;		//!< Autoconnect to server at startup
 	bool m_trytoreconnect;		//!< "try to reconnect" flag
@@ -333,12 +329,10 @@ private:
 	bool m_checked_autourl;   	//!< allow automatic url display
 
 	// Replies given by the server
-	QString m_extension;		//!< extension for "my phone"
-	QString m_dialcontext;		//!< Context of the phone, as returned by the xivo_daemon server
 	QStringList m_capafuncs;	//!< List of func capabilities issued by the server after a successful login
 	QStringList m_capaxlets;	//!< List of xlet capabilities issued by the server after a successful login
 	QStringList m_capafeatures;	//!< List of capabilities issued by the server for the features
-	QString m_appliname;	//!< Application name to be displayed
+	QString m_appliname;		//!< Application name to be displayed
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier
 	QString m_forced_state;		//!< Forced state sent by the server

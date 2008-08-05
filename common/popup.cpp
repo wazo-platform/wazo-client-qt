@@ -195,7 +195,7 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
         else if(name == "called")
                 m_called = value;
         else
-                qDebug() << "internal" << name << value;
+                qDebug() << "Popup::addInfoInternal() internal" << name << value;
 }
 
 void Popup::addInfoPhone(const QString & name, const QString & value)
@@ -294,8 +294,7 @@ void Popup::addInfoPicture(const QString & name, const QString & value)
 void Popup::streamNewData()
 {
 	bool b = false;
-	qDebug() << "Popup::streamNewData()";
-	qDebug() << m_inputstream->bytesAvailable() << "bytes available";
+	qDebug() << "Popup::streamNewData()" << m_inputstream->bytesAvailable() << "bytes available";
         if(m_sheetui == false)
                 if(m_parsingStarted)
                         b = m_reader.parseContinue();
@@ -306,7 +305,7 @@ void Popup::streamNewData()
         else
                 finishAndShow();
                 
-	qDebug() << "parse returned" << b;
+	qDebug() << "Popup::streamNewData() parse returned" << b;
 }
 
 void Popup::dialThisNumber()

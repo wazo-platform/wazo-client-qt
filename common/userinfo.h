@@ -71,6 +71,7 @@ public:
         const QString & userid() const;
         const QString & agentid() const;
         const QString & astid() const;
+        const QString & context() const;
         const QString & availstate() const;
         const QStringList & termlist() const;
         const QHash<QString, QString> & termstatus() const;

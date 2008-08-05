@@ -41,6 +41,7 @@
 
 #include <QBuffer>
 #include <QClipboard>
+#include <QCryptographicHash>
 #include <QDebug>
 #include <QMessageBox>
 #include <QSettings>
@@ -66,7 +67,7 @@ BaseEngine::BaseEngine(QSettings * settings,
                        QObject * parent)
         : QObject(parent),
 	  m_serverhost(""), m_loginport(0), m_ctiport(0),
-          m_company(""), m_protocol(""), m_userid(""), m_phonenumber(""), m_passwd(""),
+          m_company(""), m_protocol(""), m_userid(""), m_phonenumber(""), m_password(""),
           m_checked_presence(false), m_checked_cinfo(false),
           m_sessionid(""), m_state(ENotLogged),
           m_pendingkeepalivemsg(0)
@@ -164,7 +165,7 @@ void BaseEngine::loadSettings()
 
 	m_userid      = m_settings->value("userid").toString();
 	m_company     = m_settings->value("company").toString();
-	m_passwd      = m_settings->value("passwd").toString();
+	m_password    = m_settings->value("password").toString();
 	m_loginkind   = m_settings->value("loginkind", 0).toUInt();
 	m_keeppass    = m_settings->value("keeppass", 0).toUInt();
 	m_phonenumber = m_settings->value("phonenumber").toString();
@@ -209,9 +210,9 @@ void BaseEngine::saveSettings()
 	m_settings->setValue("userid",     m_userid);
 	m_settings->setValue("company",    m_company);
         if(m_keeppass > 0)
-                m_settings->setValue("passwd", m_passwd);
+                m_settings->setValue("password", m_password);
         else
-                m_settings->remove("passwd");
+                m_settings->remove("password");
 	m_settings->setValue("loginkind",  m_loginkind);
 	m_settings->setValue("keeppass",   m_keeppass);
 	m_settings->setValue("phonenumber", m_phonenumber);
@@ -303,7 +304,7 @@ void BaseEngine::config_and_start(const QString & login,
                                   const QString & phonenum)
 {
         m_userid = login;
-        m_passwd = pass;
+        m_password = pass;
         // if phonenum's size is 0, no login as agent
         m_phonenumber = phonenum;
         saveSettings();
@@ -492,25 +493,10 @@ void BaseEngine::socketConnected()
                 stopTryAgainTimer();
                 /* do the login/identification ? */
                 setMyClientId();
-                m_pendingcommand = "login userid=" + m_userid + ";company=" + m_company + ";";
-
-                if(m_loginkind > 0)
-                        m_pendingcommand += "loginkind=agent;phonenumber=" + m_phonenumber + ";";
-                else
-                        m_pendingcommand += "loginkind=user;";
-                
-                if(m_checked_presence)
-                        m_pendingcommand += "state=" + m_availstate + ";";
-                else
-                        m_pendingcommand += "state=" + __nopresence__ + ";";
+                m_pendingcommand = "login_id userid=" + m_userid + ";company=" + m_company + ";";
                 m_pendingcommand += "ident="       + m_clientid                 + ";";
-                m_pendingcommand += "passwd="      + m_passwd                   + ";";
                 m_pendingcommand += "version="     + __current_client_version__ + ";";
                 m_pendingcommand += "xivoversion=" + __xivo_version__           + ";";
-                if(m_checked_lastconnwins)
-                        m_pendingcommand += "lastconnwins=true";
-                else
-                        m_pendingcommand += "lastconnwins=false";
                 // login <asterisk> <techno> <id>
                 sendTCPCommand();
         } else if(socketname == "fax") {
@@ -681,7 +667,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
                            chanIds, chanStates, chanOthers, chanPeers);
 
         // used mainly for transfer on directory numbers
-        if( (m_asterisk == astid) && (m_userid == liststatus[3]) && (m_dialcontext == context))
+        if((m_asterisk == astid) && (m_userid == liststatus[3]))  //  && (m_dialcontext == context))
                 updateMyCalls(chanIds, chanStates, chanOthers);
 }
 
@@ -1028,7 +1014,7 @@ void BaseEngine::popupError(const QString & errorid)
         else if(errorid.toLower() == "session_expired")
                 errormsg = tr("Your session has expired.");
 
-        else if(errorid.toLower() == "login_passwd")
+        else if(errorid.toLower() == "login_password")
                 errormsg = tr("You entered a wrong login / password.");
 
         else if(errorid.toLower() == "no_keepalive_from_server")
@@ -1115,7 +1101,7 @@ void BaseEngine::socketReadyRead()
                         DisplayFiche(line, qtui);
 
                 } else if (list.size() == 2) {
-                        if(list[0].toLower() == "loginok") {
+                        if(list[0].toLower() == "login_id_ok") {
 				QStringList params = list[1].split(";");
                                 m_version_server = -1;
                                 QHash<QString, QString> params_list;
@@ -1124,14 +1110,58 @@ void BaseEngine::socketReadyRead()
                                         if(params_couple.size() == 2)
                                                 params_list[params_couple[0]] = params_couple[1];
                                 }
-                                m_dialcontext    = params_list["context"];
-                                m_extension      = params_list["phonenum"];
+                                m_version_server = params_list["version"].toInt();
+                                m_xivover_server = params_list["xivoversion"];
+                                
+                                if(m_version_server < REQUIRED_SERVER_VERSION) {
+                                        stop();
+                                        popupError("version_server:" + QString::number(m_version_server) + ";" + QString::number(REQUIRED_SERVER_VERSION));
+                                } else {
+                                        QString tohash = params_list["sessionid"] + ":" + m_password;
+                                        QCryptographicHash hidepass(QCryptographicHash::Sha1);
+                                        QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
+                                        m_pendingcommand = "login_pass hashedpassword=" + res;
+                                        sendTCPCommand();
+                                }
+
+                        } else if(list[0].toLower() == "login_pass_ok") {
+                                QStringList params = list[1].split(";");
+                                QHash<QString, QString> params_list;
+                                for(int i = 0 ; i < params.size(); i++) {
+                                        QStringList params_couple = params[i].split(":");
+                                        if(params_couple.size() == 2)
+                                                params_list[params_couple[0]] = params_couple[1];
+                                }
+                                
+                                m_pendingcommand = "login_capas capaid=";
+                                m_pendingcommand += params_list["capalist"].split(",")[0] + ";";
+                                if(m_loginkind > 0)
+                                        m_pendingcommand += "loginkind=agent;phonenumber=" + m_phonenumber + ";";
+                                else
+                                        m_pendingcommand += "loginkind=user;";
+                                if(m_checked_presence)
+                                        m_pendingcommand += "state=" + m_availstate + ";";
+                                else
+                                        m_pendingcommand += "state=" + __nopresence__ + ";";
+                                if(m_checked_lastconnwins)
+                                        m_pendingcommand += "lastconnwins=true";
+                                else
+                                        m_pendingcommand += "lastconnwins=false";
+                                sendTCPCommand();
+
+                        } else if(list[0].toLower() == "login_capas_ok") {
+				QStringList params = list[1].split(";");
+                                QHash<QString, QString> params_list;
+                                for(int i = 0 ; i < params.size(); i++) {
+                                        QStringList params_couple = params[i].split(":");
+                                        if(params_couple.size() == 2)
+                                                params_list[params_couple[0]] = params_couple[1];
+                                }
+                                
                                 m_capafuncs      = params_list["capafuncs"].split(",");
                                 m_capaxlets      = params_list["capaxlets"].replace("-", ":").split(",");
                                 m_capafeatures   = params_list["capas_features"].split(",");
                                 m_appliname      = params_list["appliname"];
-                                m_version_server = params_list["version"].toInt();
-                                m_xivover_server = params_list["xivoversion"];
                                 m_forced_state   = params_list["state"];
                                 
                                 qDebug() << "clientXlets" << XletList;
@@ -1151,10 +1181,7 @@ void BaseEngine::socketReadyRead()
                                         m_settings->remove("engine/fct_autourl");
                                 }
                                 
-                                if(m_version_server < REQUIRED_SERVER_VERSION) {
-                                        stop();
-                                        popupError("version_server:" + QString::number(m_version_server) + ";" + QString::number(REQUIRED_SERVER_VERSION));
-                                } else if((m_capafuncs.size() == 1) && (m_capafuncs[0].size() == 0)) {
+                                if((m_capafuncs.size() == 1) && (m_capafuncs[0].size() == 0)) {
                                         stop();
                                         popupError("no_capability");
                                 } else {
@@ -1248,10 +1275,11 @@ void BaseEngine::parkCall(const QString & src)
  */
 void BaseEngine::interceptCall(const QString & src)
 {
+        QString fullid_mine = m_company + "/" + m_userid;
 	qDebug() << "BaseEngine::interceptCall()" << src;
         sendCommand("transfer " + src + " p/"
-                    + m_asterisk + "/" + m_dialcontext + "/"
-                    + m_protocol + "/" + "/" + m_extension);
+                    + m_asterisk + "/" + m_users[fullid_mine]->context() + "/"
+                    + m_protocol + "/" + "/" + m_users[fullid_mine]->phonenum());
 }
 
 /*! \brief hang up a channel
@@ -1398,32 +1426,17 @@ void BaseEngine::setKeepPass(const int keeppass)
 
 const QString & BaseEngine::password() const
 {
-	return m_passwd;
+	return m_password;
 }
 
-void BaseEngine::setPassword(const QString & passwd)
+void BaseEngine::setPassword(const QString & password)
 {
-	m_passwd = passwd;
-}
-
-const QString & BaseEngine::phoneNum() const
-{
-	return m_extension;
-}
-
-const QString & BaseEngine::dialContext() const
-{
-	return m_dialcontext;
+	m_password = password;
 }
 
 const QString & BaseEngine::fullName() const
 {
 	return m_fullname;
-}
-
-void BaseEngine::setDialContext(const QString & dialcontext)
-{
-	m_dialcontext = dialcontext;
 }
 
 void BaseEngine::setTrytoreconnect(bool b)
@@ -1640,7 +1653,6 @@ void BaseEngine::askCallerIds()
         sendCommand("queues-list");
         sendCommand("agents-list");
 	sendCommand("phones-list");
-        sendCommand("agents-status");
         sendCommand("users-list");
 }
 

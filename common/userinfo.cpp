@@ -149,6 +149,11 @@ const QString & UserInfo::astid() const
         return m_astid;
 }
 
+const QString & UserInfo::context() const
+{
+        return m_context;
+}
+
 const QString & UserInfo::availstate() const
 {
         return m_availstate;
