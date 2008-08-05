@@ -21,7 +21,7 @@ QTableWidget {selection-background-color: #05aefd;
                 border-radius: 10px;
                 alternate-background-color: #fbb638
                 }
-ConfWidget  {background: #fbb638}
+ConfigWidget  {background: #fbb638}
 QLabel#service {font: bold; padding: 3px 20px 3px 0px}
 QCheckBox#service {font: bold; padding: 3px 2px 3px 2px}
 QGroupBox {border: 0px; margin-top: 1ex}

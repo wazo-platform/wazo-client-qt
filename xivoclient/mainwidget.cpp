@@ -64,7 +64,8 @@
 #include "agentdetailspanel.h"
 #include "baseengine.h"
 #include "callstackwidget.h"
-#include "confwidget.h"
+#include "conferencepanel.h"
+#include "configwidget.h"
 #include "datetimepanel.h"
 #include "dialpanel.h"
 #include "directorypanel.h"
@@ -561,11 +562,11 @@ void MainWidget::createSystrayIcon()
 
 /*! \brief show the Configuration Dialog
  *
- * create and execute a new ConfWidget
+ * create and execute a new ConfigWidget
  */
 void MainWidget::showConfDialog()
 {
-        m_conf = new ConfWidget(m_engine, this);
+        m_conf = new ConfigWidget(m_engine, this);
 	connect( m_conf, SIGNAL(confUpdated()),
 	         this, SLOT(confUpdated()));
 	m_conf->exec();
@@ -784,6 +785,10 @@ void MainWidget::engineStarted()
 					 m_agentdetailspanel, SLOT(updatePeerAgent(const QString &, const QString &, const QStringList &)) );
                                 connect( m_agentdetailspanel, SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
+
+			} else if (dc == QString("conference")) {
+                                m_conferencepanel = new ConferencePanel();
+                                addPanel("conference", tr("Conference"), m_conferencepanel);
 
 			} else if (dc == QString("queues")) {
                                 m_queuespanel = new QueuesPanel();
@@ -1195,6 +1200,8 @@ void MainWidget::engineStopped()
                                 removePanel("agentdetails", m_agentdetailspanel);
 			} else if (dc == QString("datetime")) {
                                 removePanel("datetime", m_datetimepanel);
+			} else if (dc == QString("conference")) {
+                                removePanel("conference", m_conferencepanel);
                         }
                 }
         }

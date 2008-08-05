@@ -53,13 +53,13 @@
 #include <QSpinBox>
 #include <QVBoxLayout>
 
-#include "confwidget.h"
+#include "configwidget.h"
 #include "mainwidget.h"
 #include "baseengine.h"
 
 /*! \brief constructor
  */
-ConfWidget::ConfWidget(BaseEngine * engine,
+ConfigWidget::ConfigWidget(BaseEngine * engine,
                        MainWidget * parent)
         : QDialog(parent), m_engine(engine), m_mainwindow(parent),
           m_presence(NULL), m_cinfo(NULL), m_autourl(NULL), m_history_sbox(NULL)
@@ -285,12 +285,12 @@ ConfWidget::ConfWidget(BaseEngine * engine,
 	vlayout->addWidget(m_btnbox);
 }
 
-ConfWidget::~ConfWidget()
+ConfigWidget::~ConfigWidget()
 {
 	m_engine->getSettings()->setValue("display/configtab", m_tabwidget->currentIndex());
 }
 
-void ConfWidget::loginKindChanged(int index)
+void ConfigWidget::loginKindChanged(int index)
 {
         if(index == 0) {
                 m_lblphone->hide();
@@ -306,9 +306,9 @@ void ConfWidget::loginKindChanged(int index)
  * widgets) to the BaseEngine object
  * and also to the main window object and then call close()
  */
-void ConfWidget::saveAndClose()
+void ConfigWidget::saveAndClose()
 {
-        qDebug() << "ConfWidget::saveAndClose()";
+        qDebug() << "ConfigWidget::saveAndClose()";
         m_engine->setAddress(m_serverhost->text(), m_sbport->text().toUShort());
 	m_engine->setServerip(m_serverhost->text());
 

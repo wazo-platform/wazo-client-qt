@@ -81,7 +81,8 @@ class AgentsPanel;
 class AgentdetailsPanel;
 class BaseEngine;
 class CallStackWidget;
-class ConfWidget;
+class ConferencePanel;
+class ConfigWidget;
 class DatetimePanel;
 class DialPanel;
 class DirectoryPanel;
@@ -173,7 +174,7 @@ private:
 
         QLabel * m_xivobg;
 
-        ConfWidget * m_conf;
+        ConfigWidget * m_conf;
 
         // Widgets for Xlets
 	SwitchBoardWindow * m_sbwidget;	//!< Widget to display peers
@@ -194,6 +195,7 @@ private:
         AgentdetailsPanel * m_agentdetailspanel;
         DatetimePanel * m_datetimepanel;
         DialPanel * m_dialpanel;
+        ConferencePanel * m_conferencepanel;
 
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;

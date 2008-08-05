@@ -39,21 +39,73 @@
  * $Date$
  */
 
-#ifndef __XIVOCONSTS_H__
-#define __XIVOCONSTS_H__
+#ifndef __CONFERENCEPANEL_H__
+#define __CONFERENCEPANEL_H__
 
-#define CHANNEL_MIMETYPE	"XIVO_ASTERISK_CHANNEL"
-#define PEER_MIMETYPE		"XIVO_ASTERISK_PEER"
-#define NUMBER_MIMETYPE		"XIVO_ASTERISK_NUMBER"
+#include <QHash>
+#include <QLabel>
+#include <QList>
+#include <QObject>
+#include <QWidget>
 
-const int REQUIRED_SERVER_VERSION = 2025;
-const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
-const QString __current_client_version__  = SVNVER;
-const QString __xivo_version__  = "0.4";
-const QString __nopresence__ = "nopresence";
-const QStringList XletList = (QStringList() << "customerinfo" << "features" << "history"
-                              << "directory" << "search" << "fax" << "dial"
-                              << "operator" << "parking" << "calls" << "switchboard"
-                              << "messages" << "identity" << "datetime" << "tabber" << "conference"
-                              << "agents" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
+class QComboBox;
+class QProgressBar;
+class QPushButton;
+
+class UserInfo;
+
+/*! \brief Identity Display
+ */
+class ConferencePanel : public QWidget
+{
+	Q_OBJECT
+public:
+	ConferencePanel(QWidget * parent = 0);
+protected:
+public slots:
+        void setUserInfo(const UserInfo *);
+        void setAgentList(const QString &);
+	void setQueueList(bool, const QString &);
+	void updatePeer(const UserInfo *,
+			const QString &,
+			const QStringList &, const QStringList &,
+			const QStringList &, const QStringList &);
+	void updatePeerAgent(const QString &,
+                             const QString &,
+                             const QStringList &);
+	void setQueueStatus(const QString &);
+        void doAgentAction();
+        void doQueueAction();
+        void doQueueJoinAll();
+        void doQueueLeaveAll();
+        void idxChanged(const QString &);
+private:
+        QLabel * m_user;
+        QLabel * m_info1;
+        QLabel * m_info2;
+        QLabel * m_info3;
+        QLabel * m_info4;
+        QLabel * m_info5;
+        QLabel * m_info6;
+        QLabel * m_info7;
+        QLabel * m_agent;
+        QFrame * m_qf;
+        QPushButton * m_agentaction;
+        QPushButton * m_queueaction;
+        QPushButton * m_queuejoinall;
+        QPushButton * m_queueleaveall;
+        QComboBox * m_queuelist;
+        QProgressBar * m_queuebusy;
+        QHash<QString, int> m_queuesindexes;
+        QHash<QString, bool> m_queuesstatuses;
+        QHash<QString, QString> m_queuesbusyness;
+
+        const UserInfo * m_ui;
+        bool m_agentstatus;
+        bool m_queuechangeallow;
+        int m_maxqueues;
+signals:
+        void agentAction(const QString &);
+};
+
 #endif

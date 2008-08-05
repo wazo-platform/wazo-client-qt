@@ -39,8 +39,8 @@
  * $Date$
  */
 
-#ifndef __CONFWIDGET_H__
-#define __CONFWIDGET_H__
+#ifndef __CONFIGWIDGET_H__
+#define __CONFIGWIDGET_H__
 
 #include <QDialog>
 #include <QHash>
@@ -61,8 +61,8 @@ class MainWidget;
  * This Widget enables the user to edit the connection
  * parameters to the identification server */
 /* could be a QDialog instead of QWidget */
-//class ConfWidget: public QWidget
-class ConfWidget: public QDialog
+//class ConfigWidget: public QWidget
+class ConfigWidget: public QDialog
 {
 	Q_OBJECT
 public:
@@ -74,9 +74,9 @@ public:
 	 * \param engine	related BaseEngine object where parameters will be modified
 	 * \param parent	parent QWidget
 	 */
-	ConfWidget(BaseEngine *,
+	ConfigWidget(BaseEngine *,
                    MainWidget *);
-	~ConfWidget();
+	~ConfigWidget();
 
 signals:
         void confUpdated();
