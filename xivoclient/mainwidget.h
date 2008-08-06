@@ -83,6 +83,7 @@ class BaseEngine;
 class CallStackWidget;
 class ConferencePanel;
 class ConfigWidget;
+class CustomerInfoPanel;
 class DatetimePanel;
 class DialPanel;
 class DirectoryPanel;
@@ -92,7 +93,6 @@ class IdentityDisplay;
 class LeftPanel;
 class LogWidget;
 class ParkingPanel;
-class Popup;
 class QueuesPanel;
 class QueuedetailsPanel;
 class QueueentrydetailsPanel;
@@ -121,6 +121,7 @@ public:
 	void clearAppearance();
 public slots:
         void dispurl(const QUrl &url);
+        void customerInfoPopup();
 private slots:
         void clipselection();
         void clipdata();
@@ -131,7 +132,6 @@ private slots:
 	void engineStarted();
         void systrayActivated(QSystemTrayIcon::ActivationReason);
         void systrayMsgClicked();
-	void showNewProfile(Popup *);	//!< display a Profile widget
         void checksAvailState();
 	void about();
         void newParkEvent();
@@ -165,7 +165,6 @@ private:
 	QIcon m_icongrey;	//!< greyed Icon Object
 	QWidget * m_wid;	//!< Main widget
 
-	QTabWidget * m_cinfo_tabwidget;	//!< Area to display profiles
 	QTabWidget * m_tabwidget;	//!< Area to display messages, services and histories
         LeftPanel * m_leftpanel;
         QScrollArea * m_areaCalls;
@@ -196,6 +195,7 @@ private:
         DatetimePanel * m_datetimepanel;
         DialPanel * m_dialpanel;
         ConferencePanel * m_conferencepanel;
+        CustomerInfoPanel * m_customerinfopanel;
 
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;

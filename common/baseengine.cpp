@@ -39,10 +39,10 @@
  * $Date$
  */
 
-#include <QBuffer>
 #include <QClipboard>
 #include <QCryptographicHash>
 #include <QDebug>
+#include <QFile>
 #include <QMessageBox>
 #include <QSettings>
 #include <QTcpSocket>
@@ -50,7 +50,6 @@
 #include <QTimerEvent>
 
 #include "baseengine.h"
-#include "popup.h"
 #include "xivoconsts.h"
 
 /*! \brief Constructor.
@@ -691,44 +690,6 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
         }
 }
 
-
-void BaseEngine::popupDestroyed(QObject * obj)
-{
-	qDebug() << "BaseEngine::popupDestroyed()" << obj;
-	//obj->dumpObjectTree();
-}
-
-void BaseEngine::addToDataBase(const QString & dbdetails)
-{
-        qDebug() << "BaseEngine::addToDataBase()" << dbdetails;
-        if (dbdetails.size() > 0)
-                sendCommand("database " + dbdetails);
-}
-
-void BaseEngine::profileToBeShown(Popup * popup)
-{
-        qDebug() << "BaseEngine::profileToBeShown()";
-	newProfile( popup );
-}
-
-void BaseEngine::DisplayFiche(const QString & fichecontent, bool qtui)
-{
-        QBuffer * inputstream = new QBuffer(this);
-        inputstream->open(QIODevice::ReadWrite);
-        inputstream->write(fichecontent.toUtf8());
-        inputstream->close();
-        // Get Data and Popup the profile if ok
-        Popup * popup = new Popup(inputstream, qtui, m_checked_autourl, m_users[m_company + "/" + m_userid]);
-        connect( popup, SIGNAL(destroyed(QObject *)),
-                 this, SLOT(popupDestroyed(QObject *)) );
-        connect( popup, SIGNAL(save(const QString &)),
-                 this, SLOT(addToDataBase(const QString &)) );
-        connect( popup, SIGNAL(wantsToBeShown(Popup *)),
-                 this, SLOT(profileToBeShown(Popup *)) );
-}
-
-
-
 bool BaseEngine::parseCommand(const QStringList & listitems)
 {
         // qDebug() << "BaseEngine::parseCommand listitems[0].toLower() =" << listitems[0].toLower() << listitems.size();
@@ -1098,8 +1059,9 @@ void BaseEngine::socketReadyRead()
                         bool qtui = false;
                         if(line.startsWith("<ui version="))
                                 qtui = true;
-                        DisplayFiche(line, qtui);
-
+                        displayFiche(line, qtui,
+                                     m_checked_autourl,
+                                     m_users[m_company + "/" + m_userid]);
                 } else if (list.size() == 2) {
                         if(list[0].toLower() == "login_id_ok") {
 				QStringList params = list[1].split(";");
@@ -1134,7 +1096,13 @@ void BaseEngine::socketReadyRead()
                                 }
                                 
                                 m_pendingcommand = "login_capas capaid=";
-                                m_pendingcommand += params_list["capalist"].split(",")[0] + ";";
+                                QStringList capas = params_list["capalist"].split(",");
+                                if (capas.size() == 1) {
+                                        m_pendingcommand += capas[0] + ";";
+                                } else {
+                                        m_pendingcommand += capas[capas.size() - 1] + ";";
+                                }
+
                                 if(m_loginkind > 0)
                                         m_pendingcommand += "loginkind=agent;phonenumber=" + m_phonenumber + ";";
                                 else

@@ -55,8 +55,6 @@
 class QTimerEvent;
 class QTcpSocket;
 
-class Popup;
-
 /*! \brief Class which handles connection with the XIVO CTI server
  *   + Profile popup engine
  *  The engine object contains all the code to
@@ -185,7 +183,6 @@ public slots:
 	void featurePutForwardOnUnavailable(bool, const QString &);
 	void askFeatures();
 	void askCallerIds();
-        void addToDataBase(const QString &);
 	void setKeepaliveinterval(uint);	//!< set keep alive interval
         void copyNumber(const QString &);
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
@@ -197,8 +194,6 @@ public slots:
         void changeWatchedQueueSlot(const QString &);
 private slots:
 	void keepLoginAlive();			//!< Send a UDP datagram to keep session alive
-	void popupDestroyed(QObject *);		//!< know when a profile widget is destroyed *DEBUG*
-	void profileToBeShown(Popup *);		//!< a new profile must be displayed
         void updatePeerAndCallerid(const QStringList &);
         void removePeerAndCallerid(const QStringList &);
 	void socketConnected();
@@ -213,7 +208,6 @@ signals:
 	void logged();				//!< signal emitted when the state becomes ELogged
 	void delogged();			//!< signal emitted when the state becomes ENotLogged
 	void availAllowChanged(bool);		//!< signal 
-	void newProfile(Popup *);		//!< signal emitted when a new profile has to be shown
 	void emitTextMessage(const QString &);	//! message to be displayed to the user.
         void pasteToDialPanel(const QString &);
         void parkingEvent(const QString &, const QString &);
@@ -277,6 +271,9 @@ signals:
         void changeWatchedAgentSignal(const QStringList &);
         void changeWatchedQueueSignal(const QStringList &);
         void updateAgentPresence(const QString &, const QString &);
+        void displayFiche(const QString &,
+                          bool, bool,
+                          const UserInfo *);
 private:
 	void stopKeepAliveTimer();	//!< Stop the keep alive timer if running
 	void startTryAgainTimer();	//!< Start the "try to reconnect" timer
@@ -289,7 +286,6 @@ private:
         void sendCommand(const QString &);
         bool parseCommand(const QStringList &);
         void popupError(const QString &);
-        void DisplayFiche(const QString &, bool);
 
 	// Class Members
 

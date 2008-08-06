@@ -66,6 +66,7 @@
 #include "callstackwidget.h"
 #include "conferencepanel.h"
 #include "configwidget.h"
+#include "customerinfopanel.h"
 #include "datetimepanel.h"
 #include "dialpanel.h"
 #include "directorypanel.h"
@@ -118,8 +119,7 @@ MainWidget::MainWidget(BaseEngine * engine,
                        QWidget * parent)
         : QMainWindow(parent),
           m_engine(engine), m_systrayIcon(0),
-          m_icon(":/images/xivoicon.png"), m_icongrey(":/images/xivoicon-grey.png"),
-          m_cinfo_tabwidget(NULL)
+          m_icon(":/images/xivoicon.png"), m_icongrey(":/images/xivoicon-grey.png")
 {
         m_appliname = "Clients";
         m_engine->setOSInfos(osname);
@@ -955,11 +955,12 @@ void MainWidget::engineStarted()
                                          m_faxwidget, SLOT(popupMsg(const QString &)) );
                                 
 			} else if ((dc == QString("customerinfo")) && (m_engine->checkedCInfo())) {
-                                m_cinfo_tabwidget = new QTabWidget();
-                                m_cinfo_tabwidget->setObjectName("cinfo");
-                                addPanel("customerinfo", tr("Sheets"), m_cinfo_tabwidget);
-                                connect( m_engine, SIGNAL(newProfile(Popup *)),
-                                         this, SLOT(showNewProfile(Popup *)) );
+                                m_customerinfopanel = new CustomerInfoPanel();
+                                addPanel("customerinfo", tr("Sheets"), m_customerinfopanel);
+                                connect( m_engine, SIGNAL(displayFiche(const QString &, bool, bool, const UserInfo *)),
+                                         m_customerinfopanel, SLOT(displayFiche(const QString &, bool, bool, const UserInfo *)) );
+                                connect( m_customerinfopanel, SIGNAL(newPopup()),
+                                         this, SLOT(customerInfoPopup()) );
 
 			} else if (dc == QString("search")) {
 				m_searchpanel = new SearchPanel();
@@ -1096,7 +1097,7 @@ void MainWidget::engineStarted()
         restoreState(m_settings->value("display/mainwindowstate").toByteArray());
 
         if(m_tabnames.contains("customerinfo")) {
-                m_cinfo_index = m_tabwidget->indexOf(m_cinfo_tabwidget);
+                m_cinfo_index = m_tabwidget->indexOf(m_customerinfopanel);
                 qDebug() << "the index of customer-info widget is" << m_cinfo_index;
         }
 
@@ -1157,8 +1158,8 @@ void MainWidget::engineStopped()
  		if (m_forcetabs || m_allnames.contains(dc)) {
                         if (dc == QString("features")) {
                                 removePanel("features", m_featureswidget);
-			} else if (dc == QString("customerinfo")) {
-                                removePanel("customerinfo", m_cinfo_tabwidget);
+			} else if ((dc == QString("customerinfo")) && (m_engine->checkedCInfo())) {
+                                removePanel("customerinfo", m_customerinfopanel);
                         } else if (dc == QString("calls")) {
                                 removePanel("calls", m_leftpanel);
                                 //delete m_calls;
@@ -1242,41 +1243,6 @@ void MainWidget::savePositions() const
         m_settings->setValue("display/mainwingeometry", saveGeometry());
 }
 
-/*!
- * Display the new profile in the tabbed area
- * and show a message with the systray icon
- */
-void MainWidget::showNewProfile(Popup * popup)
-{
-	QTime currentTime = QTime::currentTime();
-	QString currentTimeStr = currentTime.toString("hh:mm:ss");
-        if(m_withsystray)
-                if (m_systrayIcon && popup->tinyPopup()) {
-                        m_systrayIcon->showMessage(tr("Incoming call"),
-                                                   currentTimeStr + "\n"
-                                                   + popup->message() );
-                }
-	if (m_cinfo_tabwidget) {
-		int index = m_cinfo_tabwidget->addTab(popup, extraspace + currentTimeStr + extraspace);
-		qDebug() << "added tab" << index;
-		m_cinfo_tabwidget->setCurrentIndex(index);
-                if(m_tabnames.contains("customerinfo"))
-                        if (m_cinfo_index > -1)
-                                m_tabwidget->setCurrentIndex(m_cinfo_index);
-		if (index >= m_tablimit) {
-			// close the first widget
-			m_cinfo_tabwidget->widget(0)->close();
-		}
-                connectDials(popup);
-		// show the window and give it the focus.
-		setVisible(true);
-		activateWindow();
-		raise();
-        } else {
-		popup->show();
-	}
-}
-
 void MainWidget::showEvent(QShowEvent *event)
 {
         // qDebug() << "MainWidget::showEvent()";
@@ -1290,6 +1256,29 @@ void MainWidget::showEvent(QShowEvent *event)
 void MainWidget::dispurl(const QUrl &url)
 {
         qDebug() << "MainWidget::dispurl()" << url;
+}
+
+void MainWidget::customerInfoPopup()
+{
+        qDebug() << "MainWidget::customerInfoPopup()";
+        QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
+        
+        // systray popup
+        // to be customisable (yes or no)
+        if(m_withsystray && m_systrayIcon) {
+                m_systrayIcon->showMessage(tr("Call"),
+                                           currentTimeStr + "\nhello");
+        }
+        
+        // focus on the customerinfo tab
+        if(m_tabnames.contains("customerinfo"))
+                if (m_cinfo_index > -1)
+                        m_tabwidget->setCurrentIndex(m_cinfo_index);
+        
+        // to be customisable, if the user wants the window to popup
+        setVisible(true);
+        activateWindow();
+        raise();
 }
 
 void MainWidget::newParkEvent()
