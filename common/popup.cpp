@@ -94,10 +94,10 @@ Popup::Popup(QIODevice * inputstream,
 	         this, SLOT(streamNewData()) );
 	connect( inputstream, SIGNAL(aboutToClose()),
 	         this, SLOT(streamAboutToClose()) );
-	connect( inputstream, SIGNAL(disconnected()),
-	         this, SLOT(socketDisconnected()) );
-	connect( inputstream, SIGNAL(error(QAbstractSocket::SocketError)),
-	         this, SLOT(socketError(QAbstractSocket::SocketError)));
+        // 	connect( inputstream, SIGNAL(disconnected()),
+        // 	         this, SLOT(socketDisconnected()) );
+        // 	connect( inputstream, SIGNAL(error(QAbstractSocket::SocketError)),
+        // 	         this, SLOT(socketError(QAbstractSocket::SocketError)));
 	m_parsingStarted = false;
 	m_vlayout = new QVBoxLayout(this);
 	QLabel * title = new QLabel(tr("Incoming call"), this);

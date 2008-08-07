@@ -57,24 +57,23 @@ PeerChannel::PeerChannel(const QString & id, const QString & state,
  */
 void PeerChannel::intercept()
 {
-	//qDebug() << "PeerChanne::intercept()" << m_id;
+ 	// qDebug() << "PeerChanne::intercept()" << m_id;
 	// emit a signal to be sent to the engine.
 	interceptChan( m_id );
 }
 
 /*! \brief hang up the channel
  */
-void PeerChannel::hangUp()
+void PeerChannel::hangup()
 {
-	//qDebug() << "PeerChannel::hangUp()" << m_id;
-	hangUpChan( m_id );
+	// qDebug() << "PeerChannel::hangup()" << m_id;
+	hangupChan( m_id );
 }
 
 /*! \brief transfer this channel
  */
 void PeerChannel::transfer()
 {
-	//qDebug() << "PeerChannel::transfer()" << m_id;
+	// qDebug() << "PeerChannel::transfer()" << m_id;
 	transferChan( m_id );
 }
-

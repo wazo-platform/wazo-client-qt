@@ -64,11 +64,9 @@ class SwitchBoardWindow : public QWidget
 {
 	Q_OBJECT
 public:
-	//! Constructor
-	SwitchBoardWindow( QWidget * parent = 0);
-	//! Destructor
-	virtual ~SwitchBoardWindow();
-	void setEngine(BaseEngine *);
+	SwitchBoardWindow( QWidget * parent = 0);	//! Constructor
+        ~SwitchBoardWindow();	//! Destructor
+	void setEngine(BaseEngine *);	//!< set m_engine
 	void savePositions() const;
 protected:
 /*         void mousePressEvent(QMouseEvent *);	//!< Catch mouse press events */
@@ -76,24 +74,24 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *);
 	void dropEvent(QDropEvent *);
 public slots:
-	void updatePeer(const UserInfo *,
+	void updatePeer(UserInfo *,
 			const QString &,
 			const QStringList &, const QStringList &,
 			const QStringList &, const QStringList &);
+        void newUser(UserInfo *);
         void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);
 	void removePeer(const QString &);
-	void removePeers(void);
+	void removePeers();
 private slots:
 	void removePeerFromLayout(const QString &);
 private:
+	BaseEngine * m_engine;	//!< engine to connect to peer widgets
+	QHash<QString, PeerItem *> m_peerhash;	//!< PeerItem hash
+	QList<PeerItem *> m_peerlist;		//!< PeerItem list
 	//QGridLayout * m_layout;
 	PeersLayout * m_layout;			//!< Grid Layout for displaying peers
-	QList<PeerItem *> m_peerlist;		//!< PeerItem list
-	QHash<QString, PeerItem *> m_peerhash;	//!< PeerItem hash
-
-	BaseEngine * m_engine;	//!< engine to connect to peer widgets
 	QHash<QString, QPixmap> m_persons;
 	QHash<QString, QPixmap> m_phones;
 	QHash<QString, QPixmap> m_agents;

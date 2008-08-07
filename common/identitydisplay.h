@@ -52,6 +52,7 @@ class QComboBox;
 class QProgressBar;
 class QPushButton;
 
+class BaseEngine;
 class UserInfo;
 
 /*! \brief Identity Display
@@ -61,12 +62,12 @@ class IdentityDisplay : public QWidget
 	Q_OBJECT
 public:
 	IdentityDisplay(QWidget * parent = 0);
-protected:
+        void setEngine(BaseEngine *);
 public slots:
         void setUserInfo(const UserInfo *);
         void setAgentList(const QString &);
 	void setQueueList(bool, const QString &);
-	void updatePeer(const UserInfo *,
+	void updatePeer(UserInfo *,
 			const QString &,
 			const QStringList &, const QStringList &,
 			const QStringList &, const QStringList &);
@@ -80,6 +81,7 @@ public slots:
         void doQueueLeaveAll();
         void idxChanged(const QString &);
 private:
+        BaseEngine * m_engine;
         QLabel * m_user;
         QLabel * m_info1;
         QLabel * m_info2;

@@ -60,8 +60,8 @@
 /*! \brief constructor
  */
 ConfigWidget::ConfigWidget(BaseEngine * engine,
-                       MainWidget * parent)
-        : QDialog(parent), m_engine(engine), m_mainwindow(parent),
+                           MainWidget * parent)
+        : QDialog(parent), m_engine(engine),
           m_presence(NULL), m_cinfo(NULL), m_autourl(NULL), m_history_sbox(NULL)
 {
 	int line = 0;
@@ -257,7 +257,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 	gridlayout4->addWidget(new QLabel(tr("Tab limit"), this), line, 0);
 	m_tablimit_sbox = new QSpinBox(this);
 	m_tablimit_sbox->setRange(0, 99);
-	m_tablimit_sbox->setValue(m_mainwindow->tablimit());
+	m_tablimit_sbox->setValue(m_engine->tablimit());
 	gridlayout4->addWidget(m_tablimit_sbox, line++, 1);
         
         m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
@@ -318,6 +318,7 @@ void ConfigWidget::saveAndClose()
 
 	m_engine->setUserId(m_userid->text());
 	m_engine->setPhonenumber(m_phonenumber->text());
+	m_engine->setFullId();
 
 	m_engine->setPassword(m_password->text());
 
@@ -342,7 +343,7 @@ void ConfigWidget::saveAndClose()
         m_engine->setQueueLevel("orange", m_queuelevels["orange"]->value());
         m_engine->setQueueLevel("red", m_queuelevels["red"]->value());
         // m_engine->setLastConnWins(m_lastconnwins->checkState() == Qt::Checked);
-	m_mainwindow->setTablimit(m_tablimit_sbox->value());
+	m_engine->setTablimit(m_tablimit_sbox->value());
 
 	m_engine->saveSettings();
         confUpdated();

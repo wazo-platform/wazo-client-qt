@@ -47,6 +47,7 @@
 
 class QTabWidget;
 
+class BaseEngine;
 class Popup;
 class UserInfo;
 
@@ -55,16 +56,18 @@ class CustomerInfoPanel : public QWidget
 	Q_OBJECT
 public:
 	CustomerInfoPanel(QWidget * parent = 0);
+        void setEngine(BaseEngine *);
 signals:
         void newPopup();
 public slots:
+        void setUserInfo(const UserInfo *);
         void showNewProfile(Popup *);
         void popupDestroyed(QObject * obj);
         void addToDataBase(const QString &);
-        void displayFiche(const QString &,
-                          bool, bool,
-                          const UserInfo *);
+        void displayFiche(const QString &, bool);
 private:
+        BaseEngine * m_engine;
+        const UserInfo * m_ui;
         QTabWidget * m_tabs;
 };
 

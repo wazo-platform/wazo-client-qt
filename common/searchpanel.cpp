@@ -93,7 +93,6 @@ SearchPanel::~SearchPanel()
 
 void SearchPanel::setEngine(BaseEngine * engine)
 {
-        qDebug() << "SearchPanel::setEngine()";
 	m_engine = engine;
         m_maxdisplay = m_engine->contactsSize();
         m_ncolumns = m_engine->contactsColumns();
@@ -128,12 +127,18 @@ void SearchPanel::affTextChanged(const QString & text)
                                 if(m_engine->hasFunction("switchboard")) {
                                         disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                                                     m_engine, SLOT(transferCall(const QString&, const QString&)) );
-                                        disconnect( peerwidget, SIGNAL(hangUpChan(const QString &)),
-                                                    m_engine, SLOT(hangUp(const QString &)) );
-                                        disconnect( peerwidget, SIGNAL(interceptChan(const QString &)),
-                                                    m_engine, SLOT(interceptCall(const QString &)) );
-                                        disconnect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
-                                                    peerwidget, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
+                                        disconnect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
+                                                    m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
+                                        disconnect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
+                                                    m_engine, SLOT(interceptCall(const UserInfo *, const QString &)) );
+                                        disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
+                                                                                const QString &,
+                                                                                const QStringList &, const QStringList &,
+                                                                                const QStringList &, const QStringList &)),
+                                                    peerwidget, SLOT(updatePeer(UserInfo *,
+                                                                                const QString &,
+                                                                                const QStringList &, const QStringList &,
+                                                                                const QStringList &, const QStringList &)) );
                                 }
                                 disconnect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
                                             m_engine, SLOT(originateCall(const QString&, const QString&)) );
@@ -150,7 +155,7 @@ void SearchPanel::affTextChanged(const QString & text)
                 PeerItem * peeritem = i.value();
                 PeerWidget * peerwidget = peeritem->getWidget();
 
-                if( peeritem->name().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
+                if( peeritem->userinfo()->fullname().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
                         if(peerwidget == NULL) {
                                 peerwidget = new PeerWidget(peeritem->userinfo(),
                                                             m_persons,
@@ -168,12 +173,18 @@ void SearchPanel::affTextChanged(const QString & text)
                                 if(m_engine->hasFunction("switchboard")) {
                                         connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                                                  m_engine, SLOT(transferCall(const QString&, const QString&)) );
-                                        connect( peerwidget, SIGNAL(hangUpChan(const QString &)),
-                                                 m_engine, SLOT(hangUp(const QString &)) );
-                                        connect( peerwidget, SIGNAL(interceptChan(const QString &)),
-                                                 m_engine, SLOT(interceptCall(const QString &)) );
-                                        connect( m_engine, SIGNAL(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)),
-                                                 peerwidget, SLOT(updateMyCalls(const QStringList &, const QStringList &, const QStringList &)) );
+                                        connect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
+                                                 m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
+                                        connect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
+                                                 m_engine, SLOT(interceptCall(const UserInfo *, const QString &)) );
+                                        connect( m_engine, SIGNAL(updatePeer(UserInfo *,
+                                                                             const QString &,
+                                                                             const QStringList &, const QStringList &,
+                                                                             const QStringList &, const QStringList &)),
+                                                 peerwidget, SLOT(updatePeer(UserInfo *,
+                                                                             const QString &,
+                                                                             const QStringList &, const QStringList &,
+                                                                             const QStringList &, const QStringList &)) );
                                 }
                                 connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
                                          m_engine, SLOT(originateCall(const QString&, const QString&)) );
@@ -184,40 +195,41 @@ void SearchPanel::affTextChanged(const QString & text)
 
 /*! \brief update peer
  */
-void SearchPanel::updatePeer(const UserInfo * ui,
+void SearchPanel::updatePeer(UserInfo * ui,
 			     const QString & sipstatus,
 			     const QStringList & chanIds,
 			     const QStringList & chanStates,
 			     const QStringList & chanOthers,
                              const QStringList &)
 {
-        QString ext = ui->userid();
-        QString name = ui->fullname();
-        // qDebug() << "SearchPanel::updatePeer()";
-        if(m_peerhash.contains(ext)) {
-                PeerItem * peeritem = m_peerhash.value(ext);
+        QString userid = ui->userid();
+        // qDebug() << "SearchPanel::updatePeer()" << userid;
+        if(m_peerhash.contains(userid)) {
+                PeerItem * peeritem = m_peerhash.value(userid);
                 peeritem->updateStatus(sipstatus);
                 peeritem->updateChans(chanIds, chanStates, chanOthers);
-                peeritem->updateName(name);
+                peeritem->updateName(ui->fullname());
                 return;
         }
 
         // if the name (i.e. full callerid info) has not been received yet, do not add as a peer
-        if(name.isEmpty())
+        if(ui->fullname().isEmpty())
                 return;
 
 	PeerItem * peeritem = new PeerItem(ui);
 	peeritem->updateStatus(sipstatus);
 	peeritem->updateChans(chanIds, chanStates, chanOthers);
-        m_peerhash.insert(ext, peeritem);
+        m_peerhash.insert(userid, peeritem);
 
         // the peerwidget is not set while its display is not needed, see affTextChanged()
 }
 
-void SearchPanel::newUser(const UserInfo * ui)
+void SearchPanel::newUser(UserInfo * ui)
 {
+        QString userid = ui->userid();
+        // qDebug() << "SearchPanel::newUser()" << userid;
         PeerItem * peeritem = new PeerItem(ui);
-        m_peerhash.insert(ui->userid(), peeritem);
+        m_peerhash.insert(userid, peeritem);
 }
 
 void SearchPanel::updatePeerAgent(const QString & id,

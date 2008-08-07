@@ -87,8 +87,7 @@ private slots:
 
 private:
 	BaseEngine * m_engine;		//!< BaseEngine object parameters are commited to
-	MainWidget * m_mainwindow;	//!< MainWidget where some parameters are commited to
-
+        
 	QLineEdit * m_serverhost;	//!< IP/hostname of the server
 	QLineEdit * m_sbport;		//!< server port (switchboard)
 

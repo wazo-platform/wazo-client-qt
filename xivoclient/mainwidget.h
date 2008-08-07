@@ -114,8 +114,6 @@ public:
 	//! Destructor
         virtual ~MainWidget();
 
-	int tablimit() const;	//!< getter for m_tablimit
-	void setTablimit(int);	//!< setter for m_tablimit
 	void setForceTabs(bool);//!< setter for m_forcetabs
 	void setAppearance(const QStringList &);	//!< dock options
 	void clearAppearance();
@@ -173,7 +171,7 @@ private:
 
         QLabel * m_xivobg;
 
-        ConfigWidget * m_conf;
+        ConfigWidget * m_config;
 
         // Widgets for Xlets
 	SwitchBoardWindow * m_sbwidget;	//!< Widget to display peers
@@ -212,7 +210,6 @@ private:
         bool m_loginfirst;
 
         QHash<QString, QDockWidget *> m_docks;
-	int m_tablimit;		//!< Maximum number of tabs in m_cinfo_tabwidget
 
 	// actions :
 	QAction * m_cfgact;		//!< Configuration Action

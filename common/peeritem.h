@@ -55,20 +55,16 @@ class PeerItem// : public QObject
 {
 public:
 	//PeerItem( const QString & ext, QObject * parent = 0 );
-	PeerItem( const UserInfo * );
+	PeerItem( UserInfo * );
 	PeerItem( const PeerItem & );
 	PeerItem( );
-	//! get m_ext
-	const QString & ext() const { return m_ext; };
-	//! get m_name
-	const QString & name();
-	const UserInfo * userinfo();
-//	PeerItem & operator=(const PeerItem & peer);
+        UserInfo * userinfo();
+        // PeerItem & operator=(const PeerItem & peer);
 	//! set m_peerwidget
 	void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
 	//! get m_peerwidget
 	PeerWidget * getWidget() { return m_peerwidget; };
-
+        
 	void updateStatus(const QString &);
         void updateIMStatus(const QString &);
 	void updateAgentStatus(const QStringList &);
@@ -81,12 +77,11 @@ public:
 	void updateDisplayedChans();
 	void updateDisplayedName();
 private:
-	QString m_ext;		//!< Extension
 	PeerWidget * m_peerwidget;	//!< related PeerWidget
 
         // Properties of each peer
-        const UserInfo * m_ui;
-	QString m_name;		//!< Person name
+        UserInfo * m_ui;
+	// QString m_name;		//!< Person name
         QString m_imavail;
         QString m_sipstatus;
         QString m_vmstatus;

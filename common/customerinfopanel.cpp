@@ -46,8 +46,10 @@
 #include <QTabWidget>
 #include <QTime>
 
+#include "baseengine.h"
 #include "customerinfopanel.h"
 #include "popup.h"
+#include "userinfo.h"
 
 CustomerInfoPanel::CustomerInfoPanel(QWidget * parent)
         : QWidget(parent)
@@ -57,8 +59,18 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget * parent)
         // QLabel * ql = new QLabel("help");
         m_tabs = new QTabWidget(this);
         glayout->addWidget( m_tabs, 0, 0 );
-//         glayout->setRowStretch(0, 1);
-//         glayout->setColumnStretch(0, 1);
+        glayout->setRowStretch(0, 1);
+        glayout->setColumnStretch(0, 1);
+}
+
+void CustomerInfoPanel::setEngine(BaseEngine * engine)
+{
+	m_engine = engine;
+}
+
+void CustomerInfoPanel::setUserInfo(const UserInfo * ui)
+{
+        m_ui = ui;
 }
 
 /*!
@@ -72,15 +84,15 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
         int index = m_tabs->addTab(popup, currentTimeStr);
         qDebug() << "added tab" << index;
         m_tabs->setCurrentIndex(index);
-
+        
+        if (index >= m_engine->tablimit())
+                // close the first widget
+                m_tabs->widget(0)->close();
+        
         // tells the main widget that a new popup has arrived here
         // args : message title, message data
         newPopup();
         
-        // 		if (index >= m_tablimit) {
-        // 			// close the first widget
-        // 			m_cinfo_tabwidget->widget(0)->close();
-        // 		}
         //         connectDials(popup);
 }
 
@@ -96,16 +108,14 @@ void CustomerInfoPanel::addToDataBase(const QString & dbdetails)
         // sendCommand("database " + dbdetails);
 }
 
-void CustomerInfoPanel::displayFiche(const QString & fichecontent,
-                                     bool qtui, bool autourl,
-                                     const UserInfo * ui)
+void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
 {
         QBuffer * inputstream = new QBuffer(this);
         inputstream->open(QIODevice::ReadWrite);
         inputstream->write(fichecontent.toUtf8());
         inputstream->close();
         // Get Data and Popup the profile if ok
-        Popup * popup = new Popup(inputstream, qtui, autourl, ui);
+        Popup * popup = new Popup(inputstream, qtui, m_engine->checkedAutoUrl(), m_ui);
         connect( popup, SIGNAL(destroyed(QObject *)),
                  this, SLOT(popupDestroyed(QObject *)) );
         connect( popup, SIGNAL(save(const QString &)),

@@ -51,6 +51,7 @@
 #include <QRegExp>
 #include <QScrollArea>
 
+#include "baseengine.h"
 #include "identitydisplay.h"
 #include "userinfo.h"
 
@@ -146,18 +147,26 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
         // 	glayout->setColumnStretch( 0, 1 );
 }
 
+void IdentityDisplay::setEngine(BaseEngine * engine)
+{
+	m_engine = engine;
+}
+
 void IdentityDisplay::setUserInfo(const UserInfo * ui)
 {
-        m_user->setText(ui->fullname());
-        m_info1->setText("<b>" + ui->phonenum() + "</b> " + tr("on") + " <b>" + ui->astid() + "</b>");
-        m_info2->setText(ui->availstate());
-        m_info3->setText("MWI: " + ui->mwi());
         m_ui = ui;
+
+        m_user->setText(m_ui->fullname());
+        m_info1->setText("<b>" + m_ui->phonenum() + "</b> " + tr("on") + " <b>" + m_ui->astid() + "</b>");
+        m_info2->setText(m_ui->availstate());
+        m_info3->setText("MWI: " + m_ui->mwi());
 }
 
 void IdentityDisplay::setAgentList(const QString & alist)
 {
-        // qDebug() << "IdentityDisplay::setAgentList()" << alist;
+        // qDebug() << "IdentityDisplay::setAgentList()" << m_engine->loginkind() << alist;
+        if (m_engine->loginkind() == 0)
+                return;
         QStringList asl = alist.split(";");
         if(asl.size() > 1) {
                 QStringList agents;
@@ -227,6 +236,8 @@ void IdentityDisplay::setAgentList(const QString & alist)
 
 void IdentityDisplay::setQueueList(bool changeallow, const QString & qlist)
 {
+        if (m_engine->loginkind() == 0)
+                return;
         m_queuechangeallow = changeallow;
         qDebug() << "IdentityDisplay::setQueueList()" << qlist;
         if(m_ui == NULL)
@@ -263,7 +274,7 @@ void IdentityDisplay::setQueueList(bool changeallow, const QString & qlist)
         }
 }
 
-void IdentityDisplay::updatePeer(const UserInfo * ui,
+void IdentityDisplay::updatePeer(UserInfo * ui,
                                  const QString & sipstatus,
                                  const QStringList & chanIds,
                                  const QStringList & chanStates,
@@ -284,6 +295,8 @@ void IdentityDisplay::updatePeerAgent(const QString & userid,
                                       const QString & what,
                                       const QStringList & newstatuses)
 {
+        if (m_engine->loginkind() == 0)
+                return;
         if(m_ui == NULL)
                 return;
         if(userid != m_ui->userid())

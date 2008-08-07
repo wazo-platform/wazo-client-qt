@@ -58,17 +58,16 @@ public:
 	const QString & otherPeer() const { return m_otherPeer; };
 public slots:
 	void intercept();
-	void hangUp();
+	void hangup();
 	void transfer();
 signals:
 	void interceptChan(const QString &);	//!< intercept
-	void hangUpChan(const QString &);		//!< hang up
-	void transferChan(const QString &);		//!< transfer
+	void hangupChan(const QString &);	//!< hang up
+	void transferChan(const QString &);	//!< transfer
 private:
-	QString m_id;			//!< Identification string of the channel
-	QString m_state;		//!< State of the channel
+	QString m_id;		//!< Identification string of the channel
+	QString m_state;	//!< State of the channel
 	QString m_otherPeer;	//!< other side of the channel
 };
 
 #endif
-

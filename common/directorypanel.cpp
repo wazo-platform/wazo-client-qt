@@ -55,6 +55,7 @@
 #include "extendedtablewidget.h"
 #include "extendedlineedit.h"
 #include "peerchannel.h"
+#include "userinfo.h"
 
 /*! \brief Constructor
  *
@@ -260,9 +261,12 @@ void DirectoryPanel::sendMail()
 
 /*! \brief update call list for transfer
  */
-void DirectoryPanel::updateMyCalls(const QStringList & chanIds,
-                                   const QStringList & chanStates,
-                                   const QStringList & chanOthers)
+void DirectoryPanel::updatePeer(UserInfo *,
+                                const QString &,
+                                const QStringList & chanIds,
+                                const QStringList & chanStates,
+                                const QStringList & chanOthers,
+                                const QStringList &)
 {
 	while(!m_mychannels.isEmpty())
 		delete m_mychannels.takeFirst();

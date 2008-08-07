@@ -57,15 +57,13 @@
 
 /*! \brief Constructor
  */
-PeerWidget::PeerWidget(const UserInfo * ui,
+PeerWidget::PeerWidget(UserInfo * ui,
                        const QHash<QString, QPixmap> & persons,
                        const QHash<QString, QPixmap> & phones,
                        const QHash<QString, QPixmap> & agents)
 	: m_phones(phones), m_persons(persons), m_agents(agents)
 {
         m_ui = ui;
-        m_id = ui->userid();
-        m_name = ui->fullname();
 	//qDebug() << "PeerWidget::PeerWidget()" << id;
 	//	QHBoxLayout * layout = new QHBoxLayout(this);
         QFrame * qvline = new QFrame(this);
@@ -78,9 +76,9 @@ PeerWidget::PeerWidget(const UserInfo * ui,
 
 
         // QLabels definitions
-        if(m_name.isEmpty())
-                qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_name is empty for :" << m_id;
-	m_textlbl = new QLabel(m_name.isEmpty() ? tr("(No callerid yet)") : m_name,
+        if(m_ui->fullname().isEmpty())
+                qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_ui->fullname() is empty for :" << m_ui->userid();
+	m_textlbl = new QLabel(m_ui->fullname().isEmpty() ? tr("(No callerid yet)") : m_ui->fullname(),
                                this);
 	// set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
 	m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
@@ -177,16 +175,16 @@ void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & q
  */
 void PeerWidget::removeFromPanel()
 {
-//	qDebug() << "PeerWidget::removeFromPanel()" << m_id;
-	doRemoveFromPanel( m_id );
+//	qDebug() << "PeerWidget::removeFromPanel()" << m_ui->userid();
+	doRemoveFromPanel( m_ui->userid() );
 }
 
 /*! \brief call this peer
  */
 void PeerWidget::dial()
 {
-	qDebug() << "PeerWidget::dial()" << m_id << this->sender();
-        originateCall("user:special:me", "user:" + m_id);
+	qDebug() << "PeerWidget::dial()" << m_ui->userid() << this->sender();
+        originateCall("user:special:me", "user:" + m_ui->userid());
 }
 
 /*! \brief mouse press. store position
@@ -215,11 +213,11 @@ void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 	//qDebug() << "PeerWidget::mouseMoveEvent() startDrag";
 	QDrag *drag = new QDrag(this);
 	QMimeData *mimeData = new QMimeData;
-	qDebug() << "PeerWidget::mouseMoveEvent()" << m_id << m_ui->phonenum();
+	qDebug() << "PeerWidget::mouseMoveEvent()" << m_ui->userid() << m_ui->phonenum();
 	mimeData->setText(m_ui->phonenum());
-	mimeData->setData(PEER_MIMETYPE, m_id.toAscii());
-	mimeData->setData("userid", m_id.toAscii());
-	mimeData->setData("name", m_name.toUtf8());
+	mimeData->setData(PEER_MIMETYPE, m_ui->userid().toAscii());
+	mimeData->setData("userid", m_ui->userid().toAscii());
+	mimeData->setData("name", m_ui->fullname().toUtf8());
 	drag->setMimeData(mimeData);
 
 	/*Qt::DropAction dropAction = */
@@ -281,7 +279,7 @@ void PeerWidget::dragMoveEvent(QDragMoveEvent *event)
 void PeerWidget::dropEvent(QDropEvent *event)
 {
 	QString from = QString::fromAscii(event->mimeData()->data("userid"));
-	QString to = m_id;
+	QString to = m_ui->userid();
         qDebug() << event << event->mimeData();
         // 	qDebug() << "PeerWidget::dropEvent() :" << from << "on" << to;
         // 	qDebug() << " possibleActions=" << event->possibleActions();
@@ -290,11 +288,11 @@ void PeerWidget::dropEvent(QDropEvent *event)
         qDebug() << "PeerWidget::dropEvent()" << event->keyboardModifiers() << event->mimeData() << event->proposedAction();
 
         if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
-                qDebug() << "CHANNEL_MIMETYPE";
+                qDebug() << "PeerWidget::dropEvent()" << "CHANNEL_MIMETYPE";
         } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
-                qDebug() << "PEER_MIMETYPE";
+                qDebug() << "PeerWidget::dropEvent()" << "PEER_MIMETYPE";
         } else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
-                qDebug() << "NUMBER_MIMETYPE";
+                qDebug() << "PeerWidget::dropEvent()" << "NUMBER_MIMETYPE";
         }
 
 	switch(event->proposedAction()) {
@@ -325,7 +323,17 @@ void PeerWidget::dropEvent(QDropEvent *event)
  */
 void PeerWidget::transferChan(const QString & chan)
 {
-	transferCall(chan, m_id);
+	transferCall(chan, m_ui->userid());
+}
+
+void PeerWidget::hangupChan(const QString & chan)
+{
+	hangupCall(m_ui, chan);
+}
+
+void PeerWidget::interceptChan(const QString & chan)
+{
+        interceptCall(m_ui, chan);
 }
 
 /*! \brief display context menu
@@ -347,7 +355,7 @@ void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
 				interceptMenu->addAction(channel->otherPeer(),
 							 channel, SLOT(intercept()));
 				hangupMenu->addAction(channel->otherPeer(),
-						      channel, SLOT(hangUp()));
+						      channel, SLOT(hangup()));
 			}
 			contextMenu.addMenu(interceptMenu);
 			contextMenu.addMenu(hangupMenu);
@@ -383,22 +391,27 @@ void PeerWidget::addChannel(const QString & id, const QString & state, const QSt
 {
 	PeerChannel * ch = new PeerChannel(id, state, otherPeer, this);
 	connect(ch, SIGNAL(interceptChan(const QString &)),
-	        this, SIGNAL(interceptChan(const QString &)));
-	connect(ch, SIGNAL(hangUpChan(const QString &)),
-	        this, SIGNAL(hangUpChan(const QString &)));
+	        this, SLOT(interceptChan(const QString &)));
+	connect(ch, SIGNAL(hangupChan(const QString &)),
+	        this, SLOT(hangupChan(const QString &)));
 	m_channels << ch;
 }
 
 /*! \brief update calls of "ME" (for transfer context menu)
  */
-void PeerWidget::updateMyCalls(const QStringList & chanIds,
-                               const QStringList & chanStates,
-			       const QStringList & chanOthers)
+void PeerWidget::updatePeer(UserInfo * ui,
+                            const QString &,
+                            const QStringList & chanIds,
+                            const QStringList & chanStates,
+                            const QStringList & chanOthers,
+                            const QStringList &)
 {
+        if(ui != m_ui)
+                return;
+        // qDebug() << m_ui << m_ui->userid();
 	while(!m_mychannels.isEmpty())
 		delete m_mychannels.takeFirst();
-	for(int i = 0; i<chanIds.count(); i++)
-	{
+	for(int i = 0; i < chanIds.count(); i++) {
 		PeerChannel * ch = new PeerChannel(chanIds[i], chanStates[i], chanOthers[i]);
 		connect(ch, SIGNAL(transferChan(const QString &)),
 		        this, SLOT(transferChan(const QString &)) );
@@ -410,8 +423,8 @@ void PeerWidget::updateMyCalls(const QStringList & chanIds,
  */
 void PeerWidget::setName(const QString & name)
 {
-	m_name = name;
-	m_textlbl->setText(m_name);
+	m_ui->setFullName(name);
+	m_textlbl->setText(m_ui->fullname());
 }
 
 /*! \brief setter for m_engine

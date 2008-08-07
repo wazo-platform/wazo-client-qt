@@ -49,8 +49,10 @@
 #include <QScrollArea>
 #include <QToolButton>
 
+#include "baseengine.h"
 #include "dialpanel.h"
-#include "xivoconsts.h"
+#include "userinfo.h"
+#include "xivoconsts.h" // for PEER_MIMETYPE
 
 /*! \brief Constructor
  */
@@ -88,6 +90,16 @@ DialPanel::DialPanel(QWidget * parent)
 	vlayout->addWidget( m_input, 0, Qt::AlignCenter );
 	vlayout->addWidget( dialButton, 0, Qt::AlignCenter );
         vlayout->addStretch(1);
+}
+
+void DialPanel::setEngine(BaseEngine * engine)
+{
+	m_engine = engine;
+}
+
+void DialPanel::setUserInfo(const UserInfo * ui)
+{
+        m_ui = ui;
 }
 
 void DialPanel::setNumberToDial(const QString & text)

@@ -47,11 +47,9 @@
 
 /*! \brief Constructor
  */
-PeerItem::PeerItem(const UserInfo * ui)
+PeerItem::PeerItem(UserInfo * ui)
         : m_ui(ui)
 {
-        m_ext = ui->userid();
-        m_name = ui->fullname();
         m_peerwidget = NULL;
 }
 
@@ -64,8 +62,7 @@ PeerItem::PeerItem()
  */
 PeerItem::PeerItem(const PeerItem & peer)
 {
-	m_ext = peer.m_ext;
-	m_name = peer.m_name;
+	m_ui = peer.m_ui;
 	m_peerwidget = peer.m_peerwidget;
 }
 
@@ -119,8 +116,8 @@ void PeerItem::updateChans(const QStringList & chanIds,
  */
 void PeerItem::updateName(const QString & newname)
 {
-	if(newname != m_name)
-		m_name = newname;
+	if(newname != m_ui->fullname())
+		m_ui->setFullName(newname);
         if(m_peerwidget != NULL)
                 updateDisplayedName();
 }
@@ -234,8 +231,8 @@ void PeerItem::updateDisplayedStatus()
                         // m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
                         // m_peerwidget->setBlue("agent");
                 }
-        } else {
-                qDebug() << "PeerItem::updateDisplayedStatus() / size < 4" << m_agentstatus;
+        } else if(m_agentstatus.size() > 0) {
+                qDebug() << "PeerItem::updateDisplayedStatus() / 0 < size <= 4" << m_agentstatus;
         }
 
 	QString fortooltip = PeerWidget::tr("SIP Presence : ") + display_sipstatus + "\n"
@@ -269,16 +266,11 @@ void PeerItem::updateDisplayedName()
 	if(m_peerwidget == NULL)
                 return;
 
-        m_peerwidget->setName(m_name);
+        m_peerwidget->setName(m_ui->fullname());
         return;
 }
 
-const QString & PeerItem::name()
-{
-        return m_name;
-}
-
-const UserInfo * PeerItem::userinfo()
+UserInfo * PeerItem::userinfo()
 {
         return m_ui;
 }

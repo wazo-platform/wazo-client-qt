@@ -42,8 +42,8 @@
 #ifndef __SEARCHPANEL_H__
 #define __SEARCHPANEL_H__
 
-#include <QList>
 #include <QHash>
+#include <QList>
 #include <QWidget>
 
 #include "peeritem.h"
@@ -66,27 +66,28 @@ public:
 	void setEngine(BaseEngine *);	//!< set m_engine
 public slots:
 	void affTextChanged(const QString &);
-	void updatePeer(const UserInfo *,
+	void updatePeer(UserInfo *,
 			const QString &,
 			const QStringList &, const QStringList &,
 			const QStringList &, const QStringList &);
+        void newUser(UserInfo *);
 	void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);
 	void removePeer(const QString &);
 	void removePeers();
         void callsUpdated();
-        void newUser(const UserInfo *);
 signals:
 	void askCallerIds();
 private:
-	BaseEngine * m_engine;	//!< engine object reference
-	QHash<QString, PeerItem *> m_peerhash;	//!< PeerItem list
+	BaseEngine * m_engine;	//!< engine to connect to peer widgets
+	QHash<QString, PeerItem *> m_peerhash;	//!< PeerItem hash
 	QGridLayout * m_peerlayout;	//!< layout object
 	ExtendedLineEdit * m_input;	//!< widget for search string input
 	QHash<QString, QPixmap> m_persons;
 	QHash<QString, QPixmap> m_phones;
 	QHash<QString, QPixmap> m_agents;
+        
         int m_maxdisplay;	//!< max number of peers displayed on the search panel
         int m_ncolumns;
         QString m_searchpattern;

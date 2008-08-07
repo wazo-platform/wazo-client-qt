@@ -53,6 +53,7 @@ class QTableWidgetItem;
 class ExtendedLineEdit;
 class ExtendedTableWidget;
 class PeerChannel;
+class UserInfo;
 
 /*! \brief Directory allowing search
  */
@@ -84,7 +85,10 @@ public slots:
         void contextMenuEvent(QContextMenuEvent *);
 	void setSearchResponse(const QString &);
 	void stop();
-	void updateMyCalls(const QStringList &, const QStringList &, const QStringList &);
+	void updatePeer(UserInfo *,
+			const QString &,
+			const QStringList &, const QStringList &,
+			const QStringList &, const QStringList &);
 private:
 	ExtendedLineEdit * m_searchText;	//!< search text input
 	ExtendedTableWidget * m_table;		//!< table to display results

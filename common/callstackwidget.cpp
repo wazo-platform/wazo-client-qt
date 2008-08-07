@@ -46,6 +46,7 @@
 
 #include "callstackwidget.h"
 #include "callwidget.h"
+#include "userinfo.h"
 #include "xivoconsts.h"
 
 /*! \brief Constructor
@@ -118,14 +119,15 @@ CallStackWidget::CallStackWidget(QWidget * parent, BaseEngine * engine)
 
 /*! \brief add a call to the list
  */
-void CallStackWidget::addCall(const QString & channelme,
+void CallStackWidget::addCall(UserInfo * ui,
+                              const QString & channelme,
                               const QString & action,
 			      int time,
 			      const QString & direction,
 			      const QString & channelpeer,
-			      const QString & exten,
-			      const QString & phonen)
+			      const QString & exten)
 {
+        QString phonen = ui->userid();
 	int found = 0;
         // qDebug() << "CallStackWidget::addCall" << channelme << action << time << direction << channelpeer << exten;
 

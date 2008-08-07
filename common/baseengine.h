@@ -81,6 +81,7 @@ public:
 	const quint16 & loginPort() const;	//!< TCP port for connection to server
 	void setLoginPort(const quint16 &);	//!< see loginPort()
 
+	void setFullId();
 	const QString & company() const;	//!< name of the user's company
 	void setCompany(const QString &);	//!< see company()
 	const QString & userId() const;		//!< userid to identify to the server
@@ -123,20 +124,21 @@ public:
 
 	const QString & getAvailState() const;	//!< returns availability status
 	void setAvailState(const QString &, bool);	//! set m_availstate
-	void setCheckedPresence(bool b);	//! set m_checked_presence
-	bool checkedPresence();			//! get m_checked_presence
-	void setCheckedCInfo(bool b);		//! set m_checked_cinfo
-	bool checkedCInfo();			//! get m_checked_cinfo
-	void setCheckedAutoUrl(bool b);		//! set m_checked_autourl
-	bool checkedAutoUrl();			//! get m_checked_autourl
-	void setEnabledPresence(bool b);	//! set m_enabled_presence
-	bool enabledPresence();			//! get m_enabled_presence
-	void setEnabledCInfo(bool b);		//! set m_enabled_cinfo
-	bool enabledCInfo();			//! get m_enabled_cinfo
+	void setCheckedPresence(bool b);	//!< set m_checked_presence
+	bool checkedPresence();			//!< get m_checked_presence
+	void setCheckedCInfo(bool b);		//!< set m_checked_cinfo
+	bool checkedCInfo();			//!< get m_checked_cinfo
+	void setCheckedAutoUrl(bool b);		//!< set m_checked_autourl
+	bool checkedAutoUrl();			//!< get m_checked_autourl
+	void setEnabledPresence(bool b);	//!< set m_enabled_presence
+	bool enabledPresence();			//!< get m_enabled_presence
+	void setEnabledCInfo(bool b);		//!< set m_enabled_cinfo
+	bool enabledCInfo();			//!< get m_enabled_cinfo
+	int tablimit() const;			//!< get m_tablimit
+	void setTablimit(int);			//!< set m_tablimit
 
         bool hasFunction(const QString &);
 	void setMyClientId();			//! set m_clientid
-        const QString & fullName() const;	//!< returns full name of the logged-in user
 
 	uint keepaliveinterval() const;		//!< keep alive interval
 	bool lastconnwins() const;		//!< last connected one wins
@@ -162,12 +164,15 @@ public slots:
 	void originateCall(const QString &, const QString &);
 	void transferCall(const QString &, const QString &);
         void atxferCall(const QString &, const QString &);
-	void interceptCall(const QString &);
-	void searchDirectory(const QString &);
-	void requestHistory(const QString &, int);
+	void interceptCall(const UserInfo *, const QString &);
         void transferToNumber(const QString &);
         void parkCall(const QString &);
-
+	void hangupCall(const UserInfo *, const QString &);
+	void simplehangupCall(const UserInfo *, const QString &);
+        
+	void searchDirectory(const QString &);
+	void requestHistory(const QString &, int);
+        
         void textEdited(const QString &);
 	void setAvailable();			//!< set user status as "available"
 	void setAway();				//!< set user status as "away"
@@ -202,8 +207,6 @@ private slots:
 	void socketError(QAbstractSocket::SocketError);
 	void socketStateChanged(QAbstractSocket::SocketState);
 	void socketReadyRead();
-	void hangUp(const QString &);
-	void simpleHangUp(const QString &);
 signals:
 	void logged();				//!< signal emitted when the state becomes ELogged
 	void delogged();			//!< signal emitted when the state becomes ENotLogged
@@ -217,15 +220,13 @@ signals:
         void setPeerToDisplay(const QString &);
 
 	//! a call
-	void updateCall(const QString & channelme,
-			const QString & action,
-			int time,
-			const QString & direction,
-			const QString & channelpeer,
-			const QString & exten,
-			const QString & phone);
-	//! "my" calls are updated
-	void updateMyCalls(const QStringList &, const QStringList &, const QStringList &);
+	void updateCall(UserInfo *,
+                        const QString &,
+                        const QString &,
+                        int,
+                        const QString &,
+                        const QString &,
+                        const QString &);
 	//! call list is updated
 	void callsUpdated();
 	void peersReceived();
@@ -234,11 +235,11 @@ signals:
 	//! we want to monitor a given peer (not the one given by the mouse's drag&drop).
 	void monitorPeer(const QString &, const QString &);
 	//! update informations about a peer
-	void updatePeer(const UserInfo *,
+	void updatePeer(UserInfo *,
 	                const QString &,
 	                const QStringList &, const QStringList &,
                         const QStringList &, const QStringList &);
-        void newUser(const UserInfo *);
+        void newUser(UserInfo *);
 	void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);
@@ -271,9 +272,7 @@ signals:
         void changeWatchedAgentSignal(const QStringList &);
         void changeWatchedQueueSignal(const QStringList &);
         void updateAgentPresence(const QString &, const QString &);
-        void displayFiche(const QString &,
-                          bool, bool,
-                          const UserInfo *);
+        void displayFiche(const QString &, bool);
 private:
 	void stopKeepAliveTimer();	//!< Stop the keep alive timer if running
 	void startTryAgainTimer();	//!< Start the "try to reconnect" timer
@@ -297,15 +296,14 @@ private:
 	quint16 m_loginport;		//!< TCP port (UDP port for keep alive is +1)
 	quint16 m_ctiport;		//!< port to connect to server
 
-	QString m_asterisk;		//!< Host to the login server
-        QString m_company;
-	QString m_protocol;		//!< User Protocol's login
 	QString m_userid;		//!< User Id
+        QString m_company;
+	QString m_password;		//!< User password for account
 	QString m_agentid;		//!< Agent Id
 	QString m_phonenumber;		//!< Agent's phone
 	int m_loginkind;		//!< Login Kind
-	int m_keeppass;			//!< Login Kind
-	QString m_password;		//!< User password for account
+	int m_keeppass;			//!< Keep password ?
+	QString m_fullid;		//!< Full Id (userid + company)
 
 	bool m_autoconnect;		//!< Autoconnect to server at startup
 	bool m_trytoreconnect;		//!< "try to reconnect" flag
@@ -323,6 +321,7 @@ private:
 	bool m_checked_cinfo;      	//!< customer info is checked
 	bool m_checked_lastconnwins;   	//!< the last connected account "wins"
 	bool m_checked_autourl;   	//!< allow automatic url display
+        int m_tablimit;
 
 	// Replies given by the server
 	QStringList m_capafuncs;	//!< List of func capabilities issued by the server after a successful login
@@ -335,8 +334,7 @@ private:
         QHash<QString, UserInfo *> m_users;	//!< List of User Informations
 	int m_version_server;		//!< Version issued by the server after a successful login
         QString m_xivover_server;	//!< Server's XIVO version
-        QString m_fullname;		//!< Full Name
-
+        
 	// Status variables
 	EngineState m_state;		//!< State of the engine (Logged/Not Logged)
 	QString m_availstate;		//!< Availability state to send to the server

@@ -64,7 +64,7 @@ class PeerWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	PeerWidget(const UserInfo *,
+	PeerWidget(UserInfo *,
                    const QHash<QString, QPixmap> &,
                    const QHash<QString, QPixmap> &,
                    const QHash<QString, QPixmap> &);
@@ -84,31 +84,33 @@ protected:
 	void dropEvent(QDropEvent *);
 	void contextMenuEvent(QContextMenuEvent *);
 signals:
-	//! originate signal
-	void originateCall(const QString &, const QString &);
-	//! transfer signal
-	void transferCall(const QString &, const QString &);
-	//! atxfer signal
-	void atxferCall(const QString &, const QString &);
-	//! intercept signal
-	void interceptChan(const QString &);
-	//! hang up signal
-	void hangUpChan(const QString &);
+	void originateCall(const QString &, const QString &);	//! originate signal
+	void transferCall(const QString &, const QString &);	//! transfer signal
+	void atxferCall(const QString &, const QString &);	//! atxfer signal
+        
+	void interceptCall(const UserInfo *, const QString &);	//! intercept signal
+	void hangupCall(const UserInfo *, const QString &);	//! hang up signal
 	//! hide the widget in the channel
 	void doRemoveFromPanel(const QString &);
 public slots:
 	void setColor(const QString &, const QString &);	//! sets a kind of icon in a given color
-	void updateMyCalls(const QStringList &,
-                           const QStringList &,
-                           const QStringList &);
+	void updatePeer(UserInfo *,
+			const QString &,
+			const QStringList &, const QStringList &,
+			const QStringList &, const QStringList &);
 private slots:
 	void transferChan(const QString &);
+	void hangupChan(const QString &);
+	void interceptChan(const QString &);
 	void removeFromPanel();
         void mouseDoubleClickEventLocal(QMouseEvent *);
 	void dial();
 private:
 	BaseEngine * m_engine;  //!< Base Engine reference
+        UserInfo * m_ui;
+        
 	QHash<QString, QLabel *> m_lblphones;	//!< phone labels
+        
 	QLabel * m_availlbl;	//!< Peer state display from XIVO CTI Client
 	ExtendedLabel * m_agentlbl;
 	QLabel * m_voicelbl;
@@ -116,16 +118,13 @@ private:
 	QLabel * m_textlbl;		//!< text label : to display peer name
 	//QPixmap m_square;		//!< pixmap used to display the states
 	QPoint m_dragstartpos;	//!< drag start position
-	QString m_id;	//!< peer id : asterisk/protocol/extension
-	QString m_name;	//!< caller id to display : usualy the NAME of the person
-        const UserInfo * m_ui;
-
+        
 	QAction * m_removeAction;	//!< action to remove this peer from the window
 	QAction * m_dialAction;		//!< action to dial this number
 	
 	QList<PeerChannel *> m_channels;	//!< channels associated with THIS peer
-	QList<PeerChannel *> m_mychannels;	//!< channels assiciated with ME
-
+	QList<PeerChannel *> m_mychannels;	//!< channels associated with ME
+        
 	/* TODO : have the Pixmaps as static objects */
 	QHash<QString, QPixmap> m_phones;	//!< phone icons
 	QHash<QString, QPixmap> m_persons;	//!< person icons

@@ -54,6 +54,7 @@
 class QVBoxLayout;
 
 class BaseEngine;
+class UserInfo;
 
 /*! \brief Object storing call parametters
  */
@@ -107,14 +108,14 @@ public:
                         BaseEngine *);	//!< Constructor
 public slots:
 	//! Add a call to the list to be displayed
-	void addCall(const QString & channelme,
-		     const QString & action,
-		     int time,
-		     const QString & direction,
-		     const QString & channelpeer,
-		     const QString & exten,
-		     const QString & phonen);
-//	void showCalls(const QString & tomonitor, const QString & callerid);
+	void addCall(UserInfo *,
+                     const QString &,
+		     const QString &,
+		     int,
+		     const QString &,
+		     const QString &,
+		     const QString &);
+        //	void showCalls(const QString & tomonitor, const QString & callerid);
 	void updateDisplay();
 	void hupchan(const QString &);
 	void transftonumberchan(const QString &);
