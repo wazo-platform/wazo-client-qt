@@ -94,20 +94,9 @@ void PeerItem::updateAgentStatus(const QStringList & agentstatus)
 
 /*! \brief update channel list
  */
-void PeerItem::updateChans(const QStringList & chanIds,
-                           const QStringList & chanStates,
-                           const QStringList & chanOthers)
+void PeerItem::updateChans(const QHash<QString, QStringList> & chanlist)
 {
-	if( (chanIds.size() != chanStates.size())
-            || (chanIds.size() != chanOthers.size()) ) {
-		qDebug() << "PeerItem::updateChans() : bad args";
-		return;
-	}
-
-        m_chanIds    = chanIds;
-        m_chanStates = chanStates;
-        m_chanOthers = chanOthers;
-
+        m_chanlist = chanlist;
         if(m_peerwidget != NULL)
                 updateDisplayedChans();
 }
@@ -254,8 +243,11 @@ void PeerItem::updateDisplayedChans()
                 return;
 
         m_peerwidget->clearChanList();
-        for(int i = 0; i < m_chanIds.size(); i++)
-                m_peerwidget->addChannel(m_chanIds[i], m_chanStates[i], m_chanOthers[i]);
+        QHashIterator<QString, QStringList> ccallchannel(m_chanlist);
+        while (ccallchannel.hasNext()) {
+                ccallchannel.next();
+                m_peerwidget->addChannel(ccallchannel.key(), ccallchannel.value()[0], ccallchannel.value()[4]);
+        }
         return;
 }
 

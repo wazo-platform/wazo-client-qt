@@ -42,6 +42,7 @@
 #ifndef __PEERITEM_H__
 #define __PEERITEM_H__
 
+#include <QHash>
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -68,9 +69,7 @@ public:
 	void updateStatus(const QString &);
         void updateIMStatus(const QString &);
 	void updateAgentStatus(const QStringList &);
-	void updateChans(const QStringList &,
-	                 const QStringList &,
-	                 const QStringList &);
+        void updateChans(const QHash<QString, QStringList> &);
 	void updateName(const QString &);
 
 	void updateDisplayedStatus();
@@ -87,9 +86,7 @@ private:
         QString m_vmstatus;
         QStringList m_agentstatus;
         QString m_pausestatus;
-        QStringList m_chanIds;
-        QStringList m_chanStates;
-        QStringList m_chanOthers;
+        QHash<QString, QStringList> m_chanlist;
         QStringList m_queuelist;
 };
 

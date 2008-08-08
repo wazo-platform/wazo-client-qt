@@ -67,10 +67,9 @@ public:
         enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
 public slots:
         void setUserInfo(const UserInfo *);
-        void updatePeer(const UserInfo *,
+        void updatePeer(UserInfo *,
                         const QString &,
-                        const QStringList &, const QStringList &,
-                        const QStringList &, const QStringList &);
+                        const QHash<QString, QStringList> &);
         void functionKeyPressed(int);
         void xferPressed();
         void clicked();

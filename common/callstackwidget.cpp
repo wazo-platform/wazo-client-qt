@@ -58,34 +58,34 @@ Call::Call(const QString & channelme)
 
 /*! \brief Constructor
  */
-Call::Call(const QString & channelme,
+Call::Call(UserInfo * ui,
+           const QString & channelme,
 	   const QString & action,
 	   int time,
 	   const QString & direction,
 	   const QString & channelpeer,
-	   const QString & exten,
-	   const QString & phonen)
+	   const QString & exten)
 {
+        m_ui          = ui;
 	m_channelme   = channelme;
 	m_action      = action;
 	m_startTime   = QDateTime::currentDateTime().addSecs(-time);
 	m_direction   = direction;
 	m_channelpeer = channelpeer;
 	m_exten       = exten;
-	m_phonen      = phonen;
 }
 
 /*! \brief Copy constructor */
 Call::Call(const Call & call)
 //: QObject(call.parent())
 {
+        m_ui          = call.m_ui;
 	m_channelme   = call.m_channelme;
 	m_action      = call.m_action;
 	m_startTime   = call.m_startTime;
 	m_direction   = call.m_direction;
 	m_channelpeer = call.m_channelpeer;
 	m_exten       = call.m_exten;
-	m_phonen      = call.m_phonen;
 }
 
 /*! \brief update object properties
@@ -103,11 +103,36 @@ void Call::updateCall(const QString & action,
 	m_exten       = exten;
 }
 
+//! get m_phonen
+const QString & Call::getUserId() const
+{
+        return m_ui->userid();
+}
+
+//! get m_channelme
+const QString & Call::getChannelMe() const
+{
+        return m_channelme;
+}
+
+//! get m_action
+const QString & Call::getAction() const
+{
+        return m_action;
+}
+
+
+
+
+
+
+
+
 
 /*! \brief Constructor
  */
-CallStackWidget::CallStackWidget(QWidget * parent, BaseEngine * engine)
-        : QWidget(parent), m_engine(engine)
+CallStackWidget::CallStackWidget(QWidget * parent)
+        : QWidget(parent)
 {
 	m_layout = new QVBoxLayout(this);
 	//m_layout->setMargin();
@@ -115,6 +140,25 @@ CallStackWidget::CallStackWidget(QWidget * parent, BaseEngine * engine)
         setObjectName("scroller");
 	setAcceptDrops(true);
 	m_layout->addStretch(1);
+}
+
+void CallStackWidget::updatePeer(UserInfo * ui,
+                                 const QString &,
+                                 const QHash<QString, QStringList> & chanlist)
+{
+        // qDebug() << "CallStackWidget::updatePeer()" << m_calllist.size() << chanlist;
+        QHashIterator<QString, QStringList> ccallchannel(chanlist);
+        while (ccallchannel.hasNext()) {
+                ccallchannel.next();
+                QStringList value = ccallchannel.value();
+                addCall(ui,
+                        ccallchannel.key(),
+                        value[0],
+                        value[1].toInt(),
+                        value[2],
+                        value[3],
+                        value[4]);
+        }
 }
 
 /*! \brief add a call to the list
@@ -127,10 +171,9 @@ void CallStackWidget::addCall(UserInfo * ui,
 			      const QString & channelpeer,
 			      const QString & exten)
 {
-        QString phonen = ui->userid();
 	int found = 0;
         // qDebug() << "CallStackWidget::addCall" << channelme << action << time << direction << channelpeer << exten;
-
+        
 	for(int i = 0; i < m_calllist.count() ; i++) {
 		if(channelme == m_calllist[i].getChannelMe()) {
 			found = 1;
@@ -142,9 +185,9 @@ void CallStackWidget::addCall(UserInfo * ui,
 			}
 		}
 	}
-
+        
 	if((found == 0) && (action != QString("Hangup"))) {
-		Call call(channelme, action, time, direction, channelpeer, exten, phonen);
+		Call call(ui, channelme, action, time, direction, channelpeer, exten);
 		m_calllist.append(call);
 	}
 }
@@ -177,8 +220,7 @@ void CallStackWidget::reset()
 {
 	// qDebug() << "CallStackWidget::reset()";
 	m_calllist.clear();
-	QString empty = "";
-	monitorPeer(empty, empty);
+	// monitorPeer(NULL);
 }
 
 /*!
@@ -206,12 +248,12 @@ void CallStackWidget::updateDisplay()
 {
 	int i, j;
 	CallWidget * callwidget = NULL;
-	//	qDebug() << "CallStackWidget::updateDisplay()"
-	//	         << m_afflist.count() << m_calllist.count();
+        // qDebug() << "CallStackWidget::updateDisplay()"
+        // << m_afflist.count() << m_calllist.count();
 	// building the new calling list
-	//CallWidget * callwidget = new CallWidget(callerid, this);
-	//m_layout->addWidget(callwidget, 0, Qt::AlignTop);
-	//m_afflist.append(callwidget);
+	// CallWidget * callwidget = new CallWidget(callerid, this);
+	// m_layout->addWidget(callwidget, 0, Qt::AlignTop);
+	// m_afflist.append(callwidget);
 	
 	for(j = m_afflist.count() - 1; j>= 0; j--)
 	{
@@ -232,13 +274,11 @@ void CallStackWidget::updateDisplay()
 	}
 
 	for(i = 0; i < m_calllist.count() ; i++) {
-		if(m_monitoredPeer == m_calllist[i].getPhone()) {
+		if(m_monitored_userid == m_calllist[i].getUserId()) {
 			Call c = m_calllist[i];
-			for(j = 0; j < m_afflist.count(); j++)
-			{
+			for(j = 0; j < m_afflist.count(); j++) {
 				// qDebug() << j << m_afflist[j]->channel();
-				if(m_afflist[j]->channel() == c.getChannelMe())
-				{
+				if(m_afflist[j]->channel() == c.getChannelMe()) {
 					m_afflist[j]->updateWidget( c.getAction(),
 					                            c.getTime(),
 								    c.getDirection(),
@@ -247,25 +287,24 @@ void CallStackWidget::updateDisplay()
 					break;
 				}
 			}
-			if(j == m_afflist.count())
-			{
-			callwidget = new CallWidget(c.getChannelMe(),
-								 c.getAction(),
-								 c.getTime(),
-								 c.getDirection(),
-								 c.getChannelPeer(),
-								 c.getExten(),
-								 this);
-			connect( callwidget, SIGNAL(doHangUp(const QString &)),
-			         this, SLOT(hupchan(const QString &)) );
-			connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),
-			         this, SLOT(transftonumberchan(const QString &)) );
-			connect( callwidget, SIGNAL(doParkCall(const QString &)),
-			         this, SLOT(parkcall(const QString &)) );
-			m_afflist.append(callwidget);
-			//m_layout->addWidget(callwidget, 0, Qt::AlignTop);
-			m_layout->insertWidget(m_layout->count() - 1, callwidget,
-			                       0, Qt::AlignTop);
+			if(j == m_afflist.count()) {
+                                callwidget = new CallWidget(c.getChannelMe(),
+                                                            c.getAction(),
+                                                            c.getTime(),
+                                                            c.getDirection(),
+                                                            c.getChannelPeer(),
+                                                            c.getExten(),
+                                                            this);
+                                connect( callwidget, SIGNAL(doHangUp(const QString &)),
+                                         this, SLOT(hupchan(const QString &)) );
+                                connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),
+                                         this, SLOT(transftonumberchan(const QString &)) );
+                                connect( callwidget, SIGNAL(doParkCall(const QString &)),
+                                         this, SLOT(parkcall(const QString &)) );
+                                m_afflist.append(callwidget);
+                                //m_layout->addWidget(callwidget, 0, Qt::AlignTop);
+                                m_layout->insertWidget(m_layout->count() - 1, callwidget,
+                                                       0, Qt::AlignTop);
 			}
 		}
 	}
@@ -292,18 +331,12 @@ void CallStackWidget::dragEnterEvent(QDragEnterEvent * event)
  * can be called from reset(), dropEvent(), or at the beginning
  * of a session
  */
-void CallStackWidget::monitorPeer(const QString & monit_peer, const QString & name)
+void CallStackWidget::monitorPeer(UserInfo * ui)
 {
 	emptyList();
-	m_monitoredPeer = monit_peer;
-	monitoredPeerChanged(m_monitoredPeer);
-	if(name.size() > 0)
-		changeTitle(tr("Monitoring : ") + name);
-        else
-		changeTitle("");
+	m_monitored_userid = ui->userid();
+        changeTitle(tr("Monitoring : ") + ui->fullname());
 	updateDisplay();
-	if(monit_peer.size() > 0)
-		m_engine->getSettings()->setValue("monitor/peer", monit_peer);
 }
 
 /*! \brief receive drop Events.
@@ -313,14 +346,10 @@ void CallStackWidget::monitorPeer(const QString & monit_peer, const QString & na
  */
 void CallStackWidget::dropEvent(QDropEvent * event)
 {
-	if(!event->mimeData()->hasFormat(PEER_MIMETYPE))
-	{
+	if(!event->mimeData()->hasFormat(PEER_MIMETYPE)) {
 		event->ignore();
 		return;
 	}
-	QString text = event->mimeData()->text();
-	QString name = QString::fromUtf8(event->mimeData()->data("name"));
-	monitorPeer(text, name);
+	monitorPeerRequest(event->mimeData()->data("userid"));
 	event->acceptProposedAction();
 }
-

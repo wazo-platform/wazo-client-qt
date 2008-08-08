@@ -74,10 +74,9 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *);
 	void dropEvent(QDropEvent *);
 public slots:
-	void updatePeer(UserInfo *,
-			const QString &,
-			const QStringList &, const QStringList &,
-			const QStringList &, const QStringList &);
+        void updatePeer(UserInfo *,
+                        const QString &,
+                        const QHash<QString, QStringList> &);
         void newUser(UserInfo *);
         void updatePeerAgent(const QString &,
                              const QString &,

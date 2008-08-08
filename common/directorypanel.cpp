@@ -51,6 +51,7 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
+#include "baseengine.h"
 #include "directorypanel.h"
 #include "extendedtablewidget.h"
 #include "extendedlineedit.h"
@@ -97,6 +98,11 @@ DirectoryPanel::DirectoryPanel(QWidget * parent)
 
         setFocusPolicy(Qt::StrongFocus);
         setFocusProxy(m_searchText);
+}
+
+void DirectoryPanel::setEngine(BaseEngine * engine)
+{
+	m_engine = engine;
 }
 
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
@@ -261,22 +267,21 @@ void DirectoryPanel::sendMail()
 
 /*! \brief update call list for transfer
  */
-void DirectoryPanel::updatePeer(UserInfo *,
+void DirectoryPanel::updatePeer(UserInfo * /*ui*/,
                                 const QString &,
-                                const QStringList & chanIds,
-                                const QStringList & chanStates,
-                                const QStringList & chanOthers,
-                                const QStringList &)
+                                const QHash<QString, QStringList> & chanlist)
 {
 	while(!m_mychannels.isEmpty())
 		delete m_mychannels.takeFirst();
-	for(int i = 0; i<chanIds.count(); i++)
-	{
-		PeerChannel * ch = new PeerChannel(chanIds[i], chanStates[i], chanOthers[i]);
+
+        QHashIterator<QString, QStringList> ccallchannel(chanlist);
+        while (ccallchannel.hasNext()) {
+                ccallchannel.next();
+		PeerChannel * ch = new PeerChannel(ccallchannel.key(), ccallchannel.value()[0], ccallchannel.value()[4]);
 		connect(ch, SIGNAL(transferChan(const QString &)),
 		        this, SLOT(transferChan(const QString &)) );
 		m_mychannels << ch;
-	}
+        }
 }
 
 /*! \brief transfer channel to the number

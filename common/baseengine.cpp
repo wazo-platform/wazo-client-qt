@@ -466,13 +466,14 @@ void BaseEngine::processHistory(const QStringList & histlist)
 	}
 }
 
-
-void BaseEngine::monitoredPeerChanged(const QString & peerinfo)
+void BaseEngine::monitorPeerRequest(const QString & userid)
 {
-        m_monitored_userid = peerinfo;
-        setPeerToDisplay(peerinfo);
+        if(m_users.contains(userid)) {
+                m_monitored_userid = userid;
+                monitorPeer(m_users[userid]);
+                m_settings->setValue("monitor/userid", userid);
+        }
 }
-
 
 /*! \brief called when the socket is first connected
  */
@@ -592,10 +593,6 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 {
 	const int nfields0 = 8; // 0th order size (per-phone/line informations)
 	const int nfields1 = 6;  // 1st order size (per-channel informations)
-	QStringList chanIds;
-	QStringList chanStates;
-	QStringList chanOthers;
-	QStringList chanPeers;
 
 	// liststatus[0] is a dummy field, only used for debug on the daemon side
 	// p/(asteriskid)/(context)/(protocol)/(phoneid)/(phonenum)
@@ -619,46 +616,29 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
                 // qDebug() << liststatus;
                 ui->updatePhoneStatus(tech + "/" + phoneid, hintstatus);
         }
-
+        
+        QHash<QString, QStringList> channs;
+        
 	int nchans = liststatus[nfields0 - 1].toInt();
 	if(liststatus.size() == nfields0 + nfields1 * nchans) {
 		for(int i = 0; i < nchans; i++) {
 			//  <channel>:<etat du channel>:<nb de secondes dans cet etat>:<to/from>:<channel en liaison>:<numero en liaison>
-			int refn = nfields0 + nfields1 * i;
-			QString displayedNum;
-
 			// "SIP/103-08248b38" "On the phone" "0" ">" "SIP/103-0827c0b8" "103"
-			hintstatus = liststatus[refn + 1];
+			int refn = nfields0 + nfields1 * i;
                         
-			chanIds << liststatus[refn];
-			chanStates << liststatus[refn + 1];
-			chanPeers << liststatus[refn + 4];
-                        QString peerid = liststatus[refn + 5];
-
-			if((peerid == "") ||
-			   (peerid == "<Unknown>") ||
-			   (peerid == "<unknown>") ||
-			   (peerid == "anonymous") ||
-			   (peerid == "(null)"))
-				displayedNum = tr("Unknown Number");
-			else
-				displayedNum = peerid;
-
-			chanOthers << displayedNum;
-                        if(ui)
-                                updateCall(ui,
-                                           liststatus[refn],
-                                           liststatus[refn + 1],
-                                           liststatus[refn + 2].toInt(),
-                                           liststatus[refn + 3],
-                                           liststatus[refn + 4],
-                                           displayedNum);
+                        channs[liststatus[refn]] = (QStringList()
+                                                    << liststatus[refn + 1]
+                                                    << liststatus[refn + 2]
+                                                    << liststatus[refn + 3]
+                                                    << liststatus[refn + 4]
+                                                    << liststatus[refn + 5]);
+                        
+			hintstatus = liststatus[refn + 1];
 		}
 	}
-
+        
         if(ui)
-                updatePeer(ui, hintstatus,
-                           chanIds, chanStates, chanOthers, chanPeers);
+                updatePeer(ui, hintstatus, channs);
 }
 
 void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
@@ -758,11 +738,9 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         localUserInfoDefined(m_users[m_fullid]);
                 }
                 
-                setPeerToDisplay(m_fullid);
-
                 // Who do we monitor ?
                 // First look at the last monitored one
-                QString fullid_watched = m_settings->value("monitor/peer").toString();
+                QString fullid_watched = m_settings->value("monitor/userid").toString();
                 QString fullname_watched = "";
                 // If there was nobody, let's watch ourselves.
                 if(fullid_watched.isEmpty()) {
@@ -778,7 +756,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         }
                 }
                 
-                monitorPeer(fullid_watched, fullname_watched);
+                monitorPeerRequest(fullid_watched);
                 emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
 
 //         } else if((command_to_match == QString("users-change")) && (listitems.size() == 2)) {
@@ -827,7 +805,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 QStringList featuresupdate_list = listitems[1].split(";");
                 qDebug() << featuresupdate_list;
                 if(featuresupdate_list.size() == 5)
-                        if(m_monitored_userid   == featuresupdate_list[0])
+                        if(m_monitored_userid == featuresupdate_list[0])
                                 initFeatureFields(featuresupdate_list[1], featuresupdate_list[2]);
         } else if((command_to_match == QString("featuresget")) && (listitems.size() == 2)) {
                 QStringList features_list = listitems[1].split(";");
@@ -1233,7 +1211,7 @@ void BaseEngine::parkCall(const QString & src)
  */
 void BaseEngine::interceptCall(const UserInfo * ui, const QString & channel)
 {
-	qDebug() << "BaseEngine::interceptCall()" << channel;
+	qDebug() << "BaseEngine::interceptCall()" << ui << channel;
         sendCommand("transfer " + channel + " user:special:me");
 }
 
@@ -1243,7 +1221,7 @@ void BaseEngine::interceptCall(const UserInfo * ui, const QString & channel)
  */
 void BaseEngine::hangupCall(const UserInfo * ui, const QString & channel)
 {
-	qDebug() << "BaseEngine::hangupCall()" << channel;
+	qDebug() << "BaseEngine::hangupCall()" << ui << channel;
 	sendCommand("hangup " + ui->astid() + " " + channel);
 }
 

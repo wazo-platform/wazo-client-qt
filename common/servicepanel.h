@@ -48,6 +48,7 @@ class QCheckBox;
 class QLineEdit;
 
 class ServiceStatus;
+class UserInfo;
 
 class ServicePanel : public QWidget
 {
@@ -78,7 +79,7 @@ public slots:
 	void setForwardOnUnavailable(bool, const QString &);
 	void setForwardOnUnavailable(bool);
 	void setForwardOnUnavailable(const QString &);
-        void setPeerToDisplay(const QString &);
+        void monitorPeer(UserInfo *);
         void Connect();
         void DisConnect();
         void Reset();
@@ -93,7 +94,6 @@ private slots:
 	void toggleOnUnavailIfAllowed(const QString &);
 private:
         ServiceStatus * m_status;
-        QString m_peer;
         QStringList m_capas;
         QCheckBox * m_voicemail;
 	QCheckBox * m_callrecording;

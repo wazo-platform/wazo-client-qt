@@ -66,10 +66,9 @@ public:
 	void setEngine(BaseEngine *);	//!< set m_engine
 public slots:
 	void affTextChanged(const QString &);
-	void updatePeer(UserInfo *,
-			const QString &,
-			const QStringList &, const QStringList &,
-			const QStringList &, const QStringList &);
+        void updatePeer(UserInfo *,
+                        const QString &,
+                        const QHash<QString, QStringList> &);
         void newUser(UserInfo *);
 	void updatePeerAgent(const QString &,
                              const QString &,

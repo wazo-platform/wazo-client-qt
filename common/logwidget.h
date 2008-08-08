@@ -71,7 +71,7 @@ public slots:
 	void clear();
 	void addLogEntry(const QDateTime &, int,
                          const QString &, const QString &, const QString &);
-	void setPeerToDisplay(const QString &);
+	void monitorPeer(UserInfo *);
         void setUserInfo(const UserInfo *);
 private slots:
 	void modeChanged(bool);

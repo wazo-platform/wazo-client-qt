@@ -276,17 +276,13 @@ void IdentityDisplay::setQueueList(bool changeallow, const QString & qlist)
 
 void IdentityDisplay::updatePeer(UserInfo * ui,
                                  const QString & sipstatus,
-                                 const QStringList & chanIds,
-                                 const QStringList & chanStates,
-                                 const QStringList & chanOthers,
-                                 const QStringList & x)
+                                 const QHash<QString, QStringList> & chanlist)
 {
         if(m_ui == NULL)
                 return;
         if(ui != m_ui)
                 return;
-        qDebug() << "IdentityDisplay::updatePeer()" << ui->astid() << ui->userid() << ui->fullname();
-        qDebug() << sipstatus << chanIds << chanStates << chanOthers << x;
+        qDebug() << "IdentityDisplay::updatePeer()" << ui->astid() << ui->userid() << ui->fullname() << sipstatus << chanlist;
         // QString ext = ui->userid();
         // QString name = ui->fullname();
 }

@@ -194,7 +194,7 @@ public slots:
         void agentAction(const QString &);
 	void pickUp(const UserInfo *);
 
-        void monitoredPeerChanged(const QString &);
+        void monitorPeerRequest(const QString &);
         void changeWatchedAgentSlot(const QString &);
         void changeWatchedQueueSlot(const QString &);
 private slots:
@@ -217,7 +217,7 @@ signals:
         void ackFax(const QString &);
         void featurePutIsKO();
         void featurePutIsOK();
-        void setPeerToDisplay(const QString &);
+        void monitorPeer(UserInfo *);
 
 	//! a call
 	void updateCall(UserInfo *,
@@ -232,13 +232,10 @@ signals:
 	void peersReceived();
 	//! the server requested a peer remove
 	void removePeer(const QString &);
-	//! we want to monitor a given peer (not the one given by the mouse's drag&drop).
-	void monitorPeer(const QString &, const QString &);
 	//! update informations about a peer
 	void updatePeer(UserInfo *,
 	                const QString &,
-	                const QStringList &, const QStringList &,
-                        const QStringList &, const QStringList &);
+                        const QHash<QString, QStringList> &);
         void newUser(UserInfo *);
 	void updatePeerAgent(const QString &,
                              const QString &,

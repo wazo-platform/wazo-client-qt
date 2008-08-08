@@ -48,6 +48,7 @@
 #include <QVBoxLayout>
 
 #include "servicepanel.h"
+#include "userinfo.h"
 
 ServicePanel::ServicePanel(const QStringList & capafeatures,
                            QWidget * parent)
@@ -409,10 +410,9 @@ void ServicePanel::setForwardOnUnavailable(const QString & dest)
 
 /*! \brief change the monitored peer
  */
-void ServicePanel::setPeerToDisplay(const QString & peer)
+void ServicePanel::monitorPeer(UserInfo * /*ui*/)
 {
-        // qDebug() << "ServicePanel::setPeerToDisplay()" << peer;
-	m_peer = peer;
+        // qDebug() << "ServicePanel::monitorPeer()" << peer;
         askFeatures();
 }
 

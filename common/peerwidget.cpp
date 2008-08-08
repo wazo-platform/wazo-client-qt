@@ -401,22 +401,22 @@ void PeerWidget::addChannel(const QString & id, const QString & state, const QSt
  */
 void PeerWidget::updatePeer(UserInfo * ui,
                             const QString &,
-                            const QStringList & chanIds,
-                            const QStringList & chanStates,
-                            const QStringList & chanOthers,
-                            const QStringList &)
+                            const QHash<QString, QStringList> & chanlist)
 {
         if(ui != m_ui)
                 return;
         // qDebug() << m_ui << m_ui->userid();
 	while(!m_mychannels.isEmpty())
 		delete m_mychannels.takeFirst();
-	for(int i = 0; i < chanIds.count(); i++) {
-		PeerChannel * ch = new PeerChannel(chanIds[i], chanStates[i], chanOthers[i]);
+        
+        QHashIterator<QString, QStringList> ccallchannel(chanlist);
+        while (ccallchannel.hasNext()) {
+                ccallchannel.next();
+		PeerChannel * ch = new PeerChannel(ccallchannel.key(), ccallchannel.value()[0], ccallchannel.value()[4]);
 		connect(ch, SIGNAL(transferChan(const QString &)),
 		        this, SLOT(transferChan(const QString &)) );
 		m_mychannels << ch;
-	}
+        }
 }
 
 /*! \brief change displayed name

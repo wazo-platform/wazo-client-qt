@@ -48,12 +48,10 @@
 #include <QString>
 #include <QDateTime>
 
-#include "baseengine.h"
 #include "callwidget.h"
 
 class QVBoxLayout;
 
-class BaseEngine;
 class UserInfo;
 
 /*! \brief Object storing call parametters
@@ -62,17 +60,16 @@ class Call// : public QObject
 {
 public:
 	//Peer( const QString & ext, QObject * parent = 0 );
-	Call( const QString &);
-	Call( const QString &, const QString &, int,
-	      const QString &, const QString &,
-	      const QString &, const QString &);
-	Call( const Call &);
-	//! get m_phonen
-	const QString & getPhone() const {return m_phonen;};
-	//! get m_channelme
-	const QString & getChannelMe() const {return m_channelme;};
-	//! get m_action
-	const QString & getAction() const {return m_action;};
+	Call(const QString &);
+	Call(UserInfo *,
+             const QString &, const QString &, int,
+             const QString &, const QString &,
+             const QString &);
+	Call(const Call &);
+	const QString & getUserId() const;	//! get m_phonen
+	const QString & getChannelMe() const;	//! get m_channelme
+	const QString & getAction() const;	//! get m_action
+        
 	//! get duration of the channel
 	int getTime() const {
 		return m_startTime.secsTo(QDateTime::currentDateTime());
@@ -89,13 +86,13 @@ public:
 			const QString &,
                         const QString &);
 private:
+        UserInfo * m_ui;
 	QString m_channelme;	//!< "my" channel 
 	QString m_action;		//!< action
 	QDateTime m_startTime;	//!< channel start time
 	QString m_direction;	//!< chan direction
 	QString m_channelpeer;	//!< linked channel
 	QString m_exten;		//!< extension
-	QString m_phonen;		//!< phone number
 };
 
 /*! \brief Widget displaying the current open channels for a phone line.
@@ -104,11 +101,13 @@ class CallStackWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	CallStackWidget(QWidget *,
-                        BaseEngine *);	//!< Constructor
+	CallStackWidget(QWidget *);	//!< Constructor
 public slots:
 	//! Add a call to the list to be displayed
-	void addCall(UserInfo *,
+        void updatePeer(UserInfo *,
+                        const QString &,
+                        const QHash<QString, QStringList> &);
+        void addCall(UserInfo *,
                      const QString &,
 		     const QString &,
 		     int,
@@ -121,7 +120,7 @@ public slots:
 	void transftonumberchan(const QString &);
 	void parkcall(const QString &);
 	void reset();
-	void monitorPeer(const QString &, const QString &);
+	void monitorPeer(UserInfo *);
 protected:
 	void dragEnterEvent(QDragEnterEvent *event);
 	void dropEvent(QDropEvent *event);
@@ -132,13 +131,12 @@ signals:
         void transferToNumber(const QString &);	//!< transfers a channel to a number
         void parkCall(const QString &);	//!< parks a channel
 	void changeTitle(const QString &);		//!< change Title
-	void monitoredPeerChanged(const QString &);	//!< send the name of the new monitored peer
+	void monitorPeerRequest(const QString &);	//!< send the userid of the new monitored peer
 private:
 	QVBoxLayout * m_layout;	//!< Vertical Layout used
 	QList<Call> m_calllist;	//!< list of Call Objects
 	QList<CallWidget *> m_afflist;	//!< List of CallWidget Widgets
-	QString m_monitoredPeer;	//!< Peer monitored
-        BaseEngine * m_engine;
+	QString m_monitored_userid;	//!< Peer monitored
 };
 
 #endif

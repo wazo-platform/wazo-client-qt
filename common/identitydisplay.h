@@ -67,10 +67,9 @@ public slots:
         void setUserInfo(const UserInfo *);
         void setAgentList(const QString &);
 	void setQueueList(bool, const QString &);
-	void updatePeer(UserInfo *,
-			const QString &,
-			const QStringList &, const QStringList &,
-			const QStringList &, const QStringList &);
+        void updatePeer(UserInfo *,
+                        const QString &,
+                        const QHash<QString, QStringList> &);
 	void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);

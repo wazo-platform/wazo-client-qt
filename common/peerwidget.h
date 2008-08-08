@@ -94,10 +94,9 @@ signals:
 	void doRemoveFromPanel(const QString &);
 public slots:
 	void setColor(const QString &, const QString &);	//! sets a kind of icon in a given color
-	void updatePeer(UserInfo *,
-			const QString &,
-			const QStringList &, const QStringList &,
-			const QStringList &, const QStringList &);
+        void updatePeer(UserInfo *,
+                        const QString &,
+                        const QHash<QString, QStringList> &);
 private slots:
 	void transferChan(const QString &);
 	void hangupChan(const QString &);

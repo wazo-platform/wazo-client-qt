@@ -267,7 +267,7 @@ void CallWidget::mouseDoubleClickEvent(QMouseEvent *event)
  */
 void CallWidget::hangUp()
 {
-	//qDebug() << "CallWidget::hangUp()";
+	qDebug() << "CallWidget::hangUp()" << m_channelme;
 	doHangUp( m_channelme );
 }
 
@@ -275,7 +275,7 @@ void CallWidget::hangUp()
  */
 void CallWidget::transferToNumber()
 {
-        //qDebug() << "CallWidget::transferToNumber()" << m_channelme;
+        qDebug() << "CallWidget::transferToNumber()" << m_channelme;
         doTransferToNumber( m_channelme );
 }
 

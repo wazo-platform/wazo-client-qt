@@ -187,11 +187,11 @@ void LogWidget::addLogEntry(const QDateTime & dt, int duration,
 
 /*! \brief change the monitored peer
  */
-void LogWidget::setPeerToDisplay(const QString & peer)
+void LogWidget::monitorPeer(UserInfo * ui)
 {
-        qDebug() << "LogWidget::setPeerToDisplay()" << peer;
+        qDebug() << "LogWidget::monitorPeer()" << ui->userid();
 	clear();
-	m_peer = peer;
+	m_peer = ui->userid();
 	if(m_peer.size() > 0) {
 		askHistory(m_peer, mode());
 		if(m_timer < 0)

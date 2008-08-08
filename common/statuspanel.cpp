@@ -284,21 +284,21 @@ void StatusPanel::changeCurrentChannel(const QString & before, const QString & a
         }
 }
 
-void StatusPanel::updatePeer(const UserInfo * ui,
+void StatusPanel::updatePeer(UserInfo * ui,
                              const QString &,
-                             const QStringList & g, const QStringList & h,
-                             const QStringList & i, const QStringList & j)
+                             const QHash<QString, QStringList> & chanlist)
 {
-        // QString name = ui->fullname();
-        qDebug() << "StatusPanel::updatePeer()" << ui->userid() << g << h << i << j;
-        if (ui->userid() == m_ui->userid()) {
-                qDebug() << "StatusPanel::updatePeer()" << ui->userid() << g << h << i << j;
-                foreach (QString callchannel, g) {
-                        int index = g.indexOf(callchannel);
-                        const QString status = h[index];
-                        const QString num = i[index];
-                        const QString peerchan = j[index];
-                        qDebug() << status << num << peerchan;
+        // qDebug() << "StatusPanel::updatePeer()" << ui->userid() << chanlist;
+        if (ui == m_ui) {
+                QHashIterator<QString, QStringList> ccallchannel(chanlist);
+                while (ccallchannel.hasNext()) {
+                        ccallchannel.next();
+                        qDebug() << ccallchannel.key() << ": " << ccallchannel.value();
+                        const QString callchannel = ccallchannel.key();
+                        const QString status = ccallchannel.value()[0];
+                        const QString peerchan = ccallchannel.value()[3];
+                        const QString num = ccallchannel.value()[4];
+                        
                         if(status == "Ringing") {
                                 if(m_callchannels.contains(callchannel) == false) {
                                         newCall(callchannel);
@@ -359,8 +359,9 @@ void StatusPanel::updatePeer(const UserInfo * ui,
                         }
                 }
         } else {
-                // qDebug() << "StatusPanel::updatePeer() not me" << a << g << h << i << j;
-                if(j.size() > 0)
-                        m_tferchannel = j[0];
+                if(chanlist.size() > 0)
+                        qDebug() << "StatusPanel::updatePeer() not me" << chanlist;
+                // if(j.size() > 0)
+                // m_tferchannel = j[0];
         }
 }
