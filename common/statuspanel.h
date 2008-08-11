@@ -44,6 +44,7 @@
 
 #include <QHash>
 #include <QList>
+#include <QMap>
 #include <QObject>
 #include <QWidget>
 
@@ -74,12 +75,14 @@ public slots:
         void xferPressed();
         void clicked();
 signals:
-        void hangUp(const QString &);	//!< hanging up a channel ...
-        void simpleHangUp(const QString &);	//!< hanging up a channel ...
+        void hangupCall(const UserInfo *, const QString &);	//!< hanging up a channel ...
+        void simplehangupCall(const UserInfo *, const QString &);	//!< hanging up a channel ...
+        void originateCall(const QString &, const QString &);
         void pickUp(const UserInfo *);	//!< picking up a channel ...
 	void transferCall(const QString &, const QString &);
 	void atxferCall(const QString &, const QString &);
 private:
+        void updateLine(const QString &, const QStringList &);
         void newCall(const QString &);
         void dtransfer();
         void itransfer();
@@ -88,7 +91,7 @@ private:
         QGridLayout * m_glayout;
         const UserInfo * m_ui;
         QLabel * m_lbl;
-
+        
         QHash<QString, QFrame *> m_vlinesl;
         QHash<QString, QFrame *> m_vlinesr;
         QHash<QString, QLabel *> m_statuses;
@@ -96,10 +99,11 @@ private:
         QHash<QString, QLineEdit *> m_tnums;
         QHash<QString, Line> m_linestatuses;
         QHash<QString, QString> m_peerchan;
-
+        
+        QMap<int, QStringList> m_actionkey;
+        
         QString m_currentchannel;
         int m_linenum;
-        QStringList m_actionnames;
         QStringList m_callchannels;
         QString m_tferchannel;
 };

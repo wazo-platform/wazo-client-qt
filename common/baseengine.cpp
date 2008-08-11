@@ -195,6 +195,10 @@ void BaseEngine::loadSettings()
 void BaseEngine::saveSettings()
 {
         //qDebug() << "BaseEngine::saveSettings()";
+        // information
+	m_settings->setValue("version/xivo", __xivo_version__);
+	m_settings->setValue("version/svn", __current_client_version__);
+
 	m_settings->setValue("display/systrayed", m_systrayed);
         m_settings->setValue("display/tablimit", m_tablimit);
 
@@ -667,9 +671,10 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 return true;
         
         QString command_to_match = listitems[0].toLower();
+        QString command_args = listitems[1];
         
-        if((command_to_match == QString("phones-list")) && (listitems.size() == 2)) {
-                QStringList listpeers = listitems[1].split(";");
+        if(command_to_match == "phones-list") {
+                QStringList listpeers = command_args.split(";");
                 for(int i = 1 ; i < listpeers.size() - 1; i++) {
                         QStringList liststatus = listpeers[i].split(":");
                         updatePeerAndCallerid(liststatus);
@@ -677,14 +682,14 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 callsUpdated();
                 peersReceived();
 
-        } else if((command_to_match == QString("phones-update")) && (listitems.size() == 2)) {
-                QStringList liststatus = listitems[1].split(":");
+        } else if(command_to_match == "phones-update") {
+                QStringList liststatus = command_args.split(":");
                 // qDebug() << liststatus;
                 updatePeerAndCallerid(liststatus);
                 callsUpdated();
 
-        } else if((command_to_match == QString("phones-add")) && (listitems.size() == 2)) {
-                QStringList listpeers = listitems[1].split(";");
+        } else if(command_to_match == "phones-add") {
+                QStringList listpeers = command_args.split(";");
                 for(int i = 1 ; i < listpeers.size() - 1; i++) {
                         QStringList liststatus = listpeers[i].split(":");
                         updatePeerAndCallerid(liststatus);
@@ -696,8 +701,8 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         sendCommand("phones-add " + listpeers[0]);
                 }
 
-        } else if((command_to_match == QString("users-list-update")) && (listitems.size() == 2)) {
-                QStringList userupdate = listitems[1].split(";");
+        } else if(command_to_match == "users-list-update") {
+                QStringList userupdate = command_args.split(";");
                 if(userupdate.size() > 2) {
                         QString iduser = userupdate[0] + "/" + userupdate[1];
                         if(m_users.contains(iduser) && (iduser == m_fullid)) {
@@ -709,8 +714,8 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         }
                 }
                 
-        } else if((command_to_match == QString("users-list")) && (listitems.size() == 2)) {
-                QStringList listpeers = listitems[1].split(";");
+        } else if(command_to_match == "users-list") {
+                QStringList listpeers = command_args.split(";");
                 for(int i = 1 ; i < listpeers.size() ; i += 13) {
                         //qDebug() << "users-list" << listpeers[i] << listpeers[i+1] << listpeers[i+2]
                         //<< listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
@@ -759,10 +764,10 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 monitorPeerRequest(fullid_watched);
                 emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
 
-//         } else if((command_to_match == QString("users-change")) && (listitems.size() == 2)) {
+//         } else if((command_to_match == "users-change")) {
                 
-        } else if((command_to_match == QString("phones-del")) && (listitems.size() == 2)) {
-                QStringList listpeers = listitems[1].split(";");
+        } else if(command_to_match == "phones-del") {
+                QStringList listpeers = command_args.split(";");
                 for(int i = 1 ; i < listpeers.size() - 1; i++) {
                         QStringList liststatus = listpeers[i].split(":");
                         removePeerAndCallerid(liststatus);
@@ -774,8 +779,8 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         sendCommand("phones-del " + listpeers[0]);
                 }
 
-        } else if((command_to_match == QString("phones-signal-deloradd")) && (listitems.size() == 2)) {
-                QStringList listpeers = listitems[1].split(";");
+        } else if(command_to_match == "phones-signal-deloradd") {
+                QStringList listpeers = command_args.split(";");
                 // qDebug() << "phones-signal-deloradd" << listpeers;
                 //emitTextMessage(tr("New phone list on %1 : - %2 + %3 = %4 total").arg(listpeers[0],
                 //listpeers[1],
@@ -788,27 +793,27 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
         } else if(command_to_match == "history") {
                 QCryptographicHash histohash(QCryptographicHash::Sha1);
-                QByteArray res = histohash.hash(listitems[1].toAscii(), QCryptographicHash::Sha1).toHex();
-                processHistory(listitems[1].split(";"));
+                QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
+                processHistory(command_args.split(";"));
         } else if(command_to_match == "directory-response") {
-                directoryResponse(listitems[1]);
-        } else if(command_to_match == QString("message")) {
+                directoryResponse(command_args);
+        } else if(command_to_match == "message") {
                 QTime currentTime = QTime::currentTime();
-                QStringList message = listitems[1].split("::");
+                QStringList message = command_args.split("::");
                 // message[0] : emitter name
                 if(message.size() == 2)
                         emitTextMessage(message[0] + tr(" said : ") + message[1]);
                 else
-                        emitTextMessage(tr("Unknown") + tr(" said : ") + listitems[1]);
+                        emitTextMessage(tr("Unknown") + tr(" said : ") + command_args);
                 
-        } else if((command_to_match == QString("featuresupdate")) && (listitems.size() == 2)) {
-                QStringList featuresupdate_list = listitems[1].split(";");
+        } else if(command_to_match == "featuresupdate") {
+                QStringList featuresupdate_list = command_args.split(";");
                 qDebug() << featuresupdate_list;
                 if(featuresupdate_list.size() == 5)
                         if(m_monitored_userid == featuresupdate_list[0])
                                 initFeatureFields(featuresupdate_list[1], featuresupdate_list[2]);
-        } else if((command_to_match == QString("featuresget")) && (listitems.size() == 2)) {
-                QStringList features_list = listitems[1].split(";");
+        } else if(command_to_match == "featuresget") {
+                QStringList features_list = command_args.split(";");
                 if(features_list.size() > 2) {
                         QString id = features_list[0];
                         if(id == m_monitored_userid) {
@@ -819,8 +824,8 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                                 emitTextMessage(tr("Received Services Data for ") + m_monitored_userid);
                         }
                 }
-        } else if(command_to_match == QString("featuresput")) {
-                QStringList features_list = listitems[1].split(";");
+        } else if(command_to_match == "featuresput") {
+                QStringList features_list = command_args.split(";");
                 if(features_list.size() > 1) {
                         QString id = features_list[0];
                         if(id == m_monitored_userid) {
@@ -835,37 +840,37 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         }
                 }
                 
-        } else if((command_to_match == QString("parkedcall")) && (listitems.size() == 2)) {
-                parkingEvent(command_to_match, listitems[1]);
-        } else if(command_to_match == QString("unparkedcall")) {
-                parkingEvent(command_to_match, listitems[1]);
-        } else if(command_to_match == QString("parkedcalltimeout")) {
-                parkingEvent(command_to_match, listitems[1]);
-        } else if(command_to_match == QString("parkedcallgiveup")) {
-                parkingEvent(command_to_match, listitems[1]);
+        } else if(command_to_match == "parkedcall") {
+                parkingEvent(command_to_match, command_args);
+        } else if(command_to_match == "unparkedcall") {
+                parkingEvent(command_to_match, command_args);
+        } else if(command_to_match == "parkedcalltimeout") {
+                parkingEvent(command_to_match, command_args);
+        } else if(command_to_match == "parkedcallgiveup") {
+                parkingEvent(command_to_match, command_args);
 
-        } else if(command_to_match == QString("queues-list")) {
+        } else if(command_to_match == "queues-list") {
                 if(hasFunction("nojoinleave"))
-                        newQueueList(false, listitems[1]);
+                        newQueueList(false, command_args);
                 else
-                        newQueueList(true, listitems[1]);
+                        newQueueList(true, command_args);
 
-        } else if(command_to_match == QString("agents-list")) {
-                newAgentList(listitems[1]);
+        } else if(command_to_match == "agents-list") {
+                newAgentList(command_args);
 
-        } else if(command_to_match == QString("agent-status")) {
-                QStringList liststatus = listitems[1].split(";");
+        } else if(command_to_match == "agent-status") {
+                QStringList liststatus = command_args.split(";");
                 if((liststatus[0] == m_agent_watched_astid) && (liststatus[1] == m_agent_watched_agentid))
                         changeWatchedAgentSignal(liststatus);
 
-        } else if(command_to_match == QString("queue-status")) {
-                QStringList liststatus = listitems[1].split(";");
+        } else if(command_to_match == "queue-status") {
+                QStringList liststatus = command_args.split(";");
                 if((liststatus[0] == m_queue_watched_astid) && (liststatus[1] == m_queue_watched_queueid))
                         changeWatchedQueueSignal(liststatus);
 
-        } else if(command_to_match == QString("update-agents")) {
-                QStringList liststatus = listitems[1].split(";");
-                qDebug() << "update-agents" << liststatus;
+        } else if(command_to_match == "update-agents") {
+                QStringList liststatus = command_args.split(";");
+                // qDebug() << "update-agents" << liststatus;
                 if(liststatus.size() > 2) {
                         QString astid = liststatus[1];
                         QString agentid = liststatus[2];
@@ -881,27 +886,31 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                                 qDebug() << "update-agents agentnum" << agentid;
                 }
 
-        } else if(command_to_match == QString("update-queues")) {
-                setQueueStatus(listitems[1]);
+        } else if(command_to_match == "update-queues") {
+                setQueueStatus(command_args);
 
-        } else if(command_to_match == QString("faxsend")) {
-                m_faxid = listitems[1];
+        } else if(command_to_match == "faxsend") {
+                m_faxid = command_args;
                 m_faxsocket->connectToHost(m_serverhost, m_ctiport);
 
-        } else if(command_to_match == QString("faxsent")) {
-                ackFax(listitems[1]);
+        } else if(command_to_match == "faxsent") {
+                ackFax(command_args);
 
-        } else if(command_to_match == QString("presence")) {
-                QStringList presencestatus = listitems[1].split(";");
+        } else if(command_to_match == "presence") {
+                QStringList presencestatus = command_args.split(";");
                 QString id = presencestatus[0] + "/" + presencestatus[1];
                 //qDebug() << presencestatus << m_users.size();
                 if(m_users.contains(id)) {
                         m_users[id]->setAvailState(presencestatus[2]);
                         updatePeerAgent(id, "imstatus", presencestatus[2].split("/"));
                         updateAgentPresence(m_users[id]->agentid(), presencestatus[2]);
+                        if (id == m_fullid)
+                                localUserInfoDefined(m_users[m_fullid]);
                 }
 
-        } else if((command_to_match != "") && (command_to_match != "______") && (command_to_match != "phones-noupdate"))
+        } else if ( (command_to_match != "") &&
+                    (command_to_match != "______") &&
+                    (command_to_match != "phones-noupdate") )
                 qDebug() << "unknown command" << command_to_match;
 
         return true;
@@ -960,8 +969,10 @@ void BaseEngine::popupError(const QString & errorid)
         else if(errorid.toLower() == "server_reloaded")
                 errormsg = tr("The server has just been reloaded.");
 
-        else if(errorid.toLower() == "already_connected")
-                errormsg = tr("You are already connected.");
+        else if(errorid.startsWith("already_connected:")) {
+                QStringList ipinfo = errorid.split(":");
+                errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1], ipinfo[2]);
+        }
 
         else if(errorid.toLower() == "uninit_phone")
                 errormsg = tr("Your phone <%1> has not been provisioned on XIVO.").arg(m_userid);
