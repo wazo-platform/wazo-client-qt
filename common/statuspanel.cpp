@@ -109,8 +109,6 @@ void StatusPanel::newCall(const QString & chan)
         }
         
         m_actions[chan] = k;
-        
-        updateLine(chan, (QStringList() << "answer" << "hangup" << "dtransfer"));
 }
 
 void StatusPanel::updateLine(const QString & chan, const QStringList & allowed)
@@ -315,7 +313,7 @@ void StatusPanel::updatePeer(UserInfo * ui,
                 QHashIterator<QString, QStringList> ccallchannel(chanlist);
                 while (ccallchannel.hasNext()) {
                         ccallchannel.next();
-                        qDebug() << ccallchannel.key() << ": " << ccallchannel.value();
+                        // qDebug() << ccallchannel.key() << ": " << ccallchannel.value();
                         const QString callchannel = ccallchannel.key();
                         const QString status = ccallchannel.value()[0];
                         const QString peerchan = ccallchannel.value()[3];
@@ -324,20 +322,24 @@ void StatusPanel::updatePeer(UserInfo * ui,
                         if(status == "Ringing") {
                                 if(m_callchannels.contains(callchannel) == false) {
                                         newCall(callchannel);
+                                        m_callchannels << callchannel;
+                                        
                                         m_linestatuses[callchannel] = Ringing;
                                         m_peerchan[callchannel] = peerchan;
-                                        m_callchannels << callchannel;
+                                        updateLine(callchannel, (QStringList() << "answer" << "hangup" << "dtransfer"));
                                         m_statuses[callchannel]->setText(num + " " + tr("Ringing"));
                                         m_statuses[callchannel]->show();
                                 }
                         } else if(status == "On the phone") {
-                                if(m_callchannels.contains(callchannel) == true) {
-                                        m_linestatuses[callchannel] = Online;
-                                        m_peerchan[callchannel] = peerchan;
-                                        updateLine(callchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
-                                        m_statuses[callchannel]->setText(tr("Link") + " " + num);
-                                        m_statuses[callchannel]->show();
+                                if(m_callchannels.contains(callchannel) == false) {
+                                        newCall(callchannel);
+                                        m_callchannels << callchannel;
                                 }
+                                m_linestatuses[callchannel] = Online;
+                                m_peerchan[callchannel] = peerchan;
+                                updateLine(callchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
+                                m_statuses[callchannel]->setText(tr("Link") + " " + num);
+                                m_statuses[callchannel]->show();
                         } else if(status == "Hangup") {
                                 if(m_callchannels.contains(callchannel) == true) {
                                         m_linestatuses[callchannel] = Ready;
@@ -366,6 +368,7 @@ void StatusPanel::updatePeer(UserInfo * ui,
                                         m_callchannels.removeAll(callchannel);
                                 }
                         } else {
+                                qDebug() << status << ccallchannel.key() << ccallchannel.value();
                                 if(m_callchannels.contains(callchannel) == true) {
                                         m_linestatuses[callchannel] = Ready;
                                         m_statuses[callchannel]->setText(status + " " + num);

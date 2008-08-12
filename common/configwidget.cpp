@@ -112,7 +112,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         widget_functions->setLayout(gridlayout2);
         line = 0;
         int width = 4;
-
+        
         m_presence = new QCheckBox(tr("Presence reporting"));
         m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
         gridlayout2->addWidget( m_presence, line++, 0, 1, width );
@@ -121,7 +121,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
         gridlayout2->addWidget( m_cinfo, line++, 0, 1, width );
         
-        m_autourl = new QCheckBox(tr("Allow the Automatic Opening of URLs"));
+        m_autourl = new QCheckBox(tr("Allow the Automatic Opening of URL's"));
         m_autourl->setCheckState(m_engine->checkedAutoUrl() ? Qt::Checked : Qt::Unchecked);
         gridlayout2->addWidget( m_autourl, line++, 0, 1, width );
         
@@ -136,13 +136,13 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 	m_contactssize_sbox->setRange(1, 50);
 	m_contactssize_sbox->setValue(m_engine->contactsSize());
 	gridlayout2->addWidget(m_contactssize_sbox, line++, 1);
-
+        
 	gridlayout2->addWidget(new QLabel(tr("Contacts' width"), this), line, 0);
 	m_contactswidth_sbox = new QSpinBox(this);
 	m_contactswidth_sbox->setRange(1, 5);
 	m_contactswidth_sbox->setValue(m_engine->contactsColumns());
 	gridlayout2->addWidget(m_contactswidth_sbox, line++, 1);
-
+        
 	gridlayout2->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
         m_queuelevels["green"] = new QSpinBox(this);
 	m_queuelevels["green"]->setRange(0, 100);

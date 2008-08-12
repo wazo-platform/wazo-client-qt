@@ -328,8 +328,8 @@ Merci de mettre à jour votre serveur.</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="124"/>
-        <source>Allow the Automatic Opening of URLs</source>
-        <translation>Ouverture automatique d&apos;URLs autorisée</translation>
+        <source>Allow the Automatic Opening of URL&apos;s</source>
+        <translation>Ouverture Automatique d&apos;URL Autorisée</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="233"/>
@@ -404,7 +404,7 @@ Merci de mettre à jour votre serveur.</translation>
     <message>
         <location filename="../common/configwidget.cpp" line="203"/>
         <source>Login as Agent</source>
-        <translation>Login en tant qu&apos;Agent</translation>
+        <translation>Se connecter en tant qu&apos;Agent</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="189"/>
@@ -914,7 +914,7 @@ a été envoyé à %2.</translation>
     <message>
         <location filename="mainwidget.cpp" line="180"/>
         <source>Login as Agent</source>
-        <translation>Login en tant qu&apos;Agent</translation>
+        <translation>Se connecter en tant qu&apos;Agent</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="1066"/>
@@ -1319,7 +1319,7 @@ a été envoyé à %2.</translation>
         <translation>Transfert Indirect</translation>
     </message>
     <message>
-        <location filename="../common/statuspanel.cpp" line="338"/>
+        <location filename="../common/statuspanel.cpp" line="341"/>
         <source>Link</source>
         <translation>Etabli</translation>
     </message>
