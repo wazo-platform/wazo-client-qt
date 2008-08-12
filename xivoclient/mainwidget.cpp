@@ -1402,5 +1402,5 @@ void MainWidget::about()
 			   "<p><b>" + tr("Authors : ") + "</b>Thomas Bernard, Corentin Le Gall</p>" +
 			   "<hr><p><b>" + tr("License : ") + "</b>" +
 			   "<a href=http://www.gnu.org/licenses/gpl-2.0.txt>GNU General Public License v2</a></p>"
-			   "<p>" + tr("with a special exception allowing you to link it with OpenSSL, under some conditions") + "</p>");
+			   "<p>" + tr("with a special exception allowing you to link it with OpenSSL, under some conditions.") + "</p>");
 }

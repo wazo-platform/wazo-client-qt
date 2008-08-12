@@ -160,7 +160,10 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_info1->setText("<b>" + m_ui->phonenum() + "</b> " + tr("on") + " <b>" + m_ui->astid() + "</b>");
         m_info2->setText(m_ui->availstate());
         QStringList vm = m_ui->mwi().split("-");
-        m_info3->setText(tr("Voicemail") + "\n" + vm[0] + " waiting " + vm[1] + " old " + vm[2] + " new");
+        m_info3->setText(tr("Voicemail") + "\n" +
+                         vm[0] + " " + tr("waiting") + " " +
+                         vm[1] + " " + tr("old") + " " +
+                         vm[2] + " " + tr("new"));
 }
 
 void IdentityDisplay::setAgentList(const QString & alist)
