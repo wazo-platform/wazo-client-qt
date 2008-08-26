@@ -611,8 +611,7 @@ void MainWidget::systrayMsgClicked()
 void MainWidget::addPanel(const QString & name, const QString & title, QWidget * widget)
 {
         if(m_docknames.contains(name)) {
-                qDebug() << "MainWidget::addPanel() dock : " << name;
-
+                qDebug() << "MainWidget::addPanel() (dock)" << name << m_dockoptions[name];
                 QDockWidget::DockWidgetFeatures features = QDockWidget::NoDockWidgetFeatures;
                 if(m_dockoptions[name].contains("c"))
                         features |= QDockWidget::DockWidgetClosable;
@@ -628,10 +627,15 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
                 m_docks[name]->setWidget(widget);
                 m_docks[name]->hide();
         } else if(m_gridnames.contains(name)) {
-                qDebug() << "MainWidget::addPanel() grid : " << m_dockoptions[name];
+                qDebug() << "MainWidget::addPanel() (grid)" << name << m_dockoptions[name];
                 m_gridlayout->addWidget(widget, m_dockoptions[name].toInt(), 0);
-        } else if(m_tabnames.contains(name))
-                m_tabwidget->addTab(widget, extraspace + title + extraspace);
+        } else if(m_tabnames.contains(name)) {
+                qDebug() << "MainWidget::addPanel() (tab) " << name << m_dockoptions[name] << m_tabwidget->count();
+                if(m_dockoptions[name].size() > 0) 
+                        m_tabwidget->insertTab(m_dockoptions[name].toInt(), widget, extraspace + title + extraspace);
+                else
+                        m_tabwidget->addTab(widget, extraspace + title + extraspace);
+        }
 }
 
 
@@ -764,6 +768,13 @@ void MainWidget::engineStarted()
 			} else if (dc == QString("conference")) {
                                 m_conferencepanel = new ConferencePanel();
                                 addPanel("conference", tr("Conference"), m_conferencepanel);
+
+                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                                         m_conferencepanel, SLOT(setUserInfo(const UserInfo *)));
+                                connect( m_engine, SIGNAL(meetmeEvent(const QStringList &)),
+                                         m_conferencepanel, SLOT(meetmeEvent(const QStringList &)));
+                                connect( m_conferencepanel, SIGNAL(meetmeAction(const QString &)),
+                                         m_engine, SLOT(meetmeAction(const QString &)));
 
 			} else if (dc == QString("queues")) {
                                 m_queuespanel = new QueuesPanel();

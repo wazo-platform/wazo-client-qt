@@ -791,12 +791,17 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                 if(listpeers[2].toInt() > 0)
                         sendCommand("phones-add");
 
+        } else if(command_to_match == "meetme") {
+                meetmeEvent(command_args.split(";"));
+
         } else if(command_to_match == "history") {
                 QCryptographicHash histohash(QCryptographicHash::Sha1);
                 QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
                 processHistory(command_args.split(";"));
+
         } else if(command_to_match == "directory-response") {
                 directoryResponse(command_args);
+
         } else if(command_to_match == "message") {
                 QTime currentTime = QTime::currentTime();
                 QStringList message = command_args.split("::");
@@ -919,6 +924,11 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 void BaseEngine::agentAction(const QString & action)
 {
         sendCommand("agent " + action);
+}
+
+void BaseEngine::meetmeAction(const QString & action)
+{
+        sendCommand("meetme " + action);
 }
 
 void BaseEngine::sendFaxCommand(const QString & filename, const QString & number,

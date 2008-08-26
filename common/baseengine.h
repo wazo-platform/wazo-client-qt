@@ -192,6 +192,7 @@ public slots:
         void copyNumber(const QString &);
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
         void agentAction(const QString &);
+        void meetmeAction(const QString &);
 	void pickUp(const UserInfo *);
 
         void monitorPeerRequest(const QString &);
@@ -218,6 +219,7 @@ signals:
         void featurePutIsKO();
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
+        void meetmeEvent(const QStringList &);
 
 	//! a call
 	void updateCall(UserInfo *,

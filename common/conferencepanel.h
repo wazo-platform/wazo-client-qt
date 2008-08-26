@@ -49,6 +49,7 @@
 #include <QWidget>
 
 class QComboBox;
+class QGridLayout;
 class QProgressBar;
 class QPushButton;
 
@@ -64,48 +65,16 @@ public:
 protected:
 public slots:
         void setUserInfo(const UserInfo *);
-        void setAgentList(const QString &);
-	void setQueueList(bool, const QString &);
-	void updatePeer(const UserInfo *,
-			const QString &,
-			const QStringList &, const QStringList &,
-			const QStringList &, const QStringList &);
-	void updatePeerAgent(const QString &,
-                             const QString &,
-                             const QStringList &);
-	void setQueueStatus(const QString &);
-        void doAgentAction();
-        void doQueueAction();
-        void doQueueJoinAll();
-        void doQueueLeaveAll();
-        void idxChanged(const QString &);
+        void meetmeEvent(const QStringList &);
+        void doMeetMeAction();
 private:
-        QLabel * m_user;
-        QLabel * m_info1;
-        QLabel * m_info2;
-        QLabel * m_info3;
-        QLabel * m_info4;
-        QLabel * m_info5;
-        QLabel * m_info6;
-        QLabel * m_info7;
-        QLabel * m_agent;
-        QFrame * m_qf;
-        QPushButton * m_agentaction;
-        QPushButton * m_queueaction;
-        QPushButton * m_queuejoinall;
-        QPushButton * m_queueleaveall;
-        QComboBox * m_queuelist;
-        QProgressBar * m_queuebusy;
-        QHash<QString, int> m_queuesindexes;
-        QHash<QString, bool> m_queuesstatuses;
-        QHash<QString, QString> m_queuesbusyness;
-
+        QHash<QString, QLabel *> m_infos;
+        QHash<QString, QPushButton *> m_actions;
+        QGridLayout * m_glayout;
         const UserInfo * m_ui;
-        bool m_agentstatus;
-        bool m_queuechangeallow;
-        int m_maxqueues;
+        int m_idline;
 signals:
-        void agentAction(const QString &);
+        void meetmeAction(const QString &);
 };
 
 #endif
