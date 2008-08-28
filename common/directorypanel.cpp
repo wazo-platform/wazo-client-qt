@@ -159,7 +159,7 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 void DirectoryPanel::setSearchResponse(const QString & resp)
 {
 	int i, x, y;
-	//qDebug() << "setSearchResponse()" << resp;
+	//qDebug() << "DirectoryPanel::setSearchResponse()" << resp;
 	QStringList items = resp.split(";");
 	int ncolumns = items[0].toInt();
 	if(ncolumns > 0) {

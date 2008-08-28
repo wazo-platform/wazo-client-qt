@@ -697,14 +697,14 @@ a été envoyé à %2.</translation>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="492"/>
-        <source>&amp;About XIVO %1</source>
-        <translation>A propos de &amp;XIVO %1</translation>
-    </message>
-    <message>
         <location filename="mainwidget.cpp" line="1398"/>
         <source>About XIVO %1</source>
         <translation>A propos de XIVO %1</translation>
+    </message>
+    <message>
+        <location filename="mainwidget.cpp" line="492"/>
+        <source>&amp;About XIVO %1</source>
+        <translation>A propos de &amp;XIVO %1</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="1407"/>
@@ -1191,8 +1191,8 @@ a été envoyé à %2.</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="68"/>
-        <source>HoldTime</source>
-        <translation>Temps d&apos;Attente</translation>
+        <source>HoldTime (s)</source>
+        <translation>Temps d&apos;Attente (s)</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="69"/>

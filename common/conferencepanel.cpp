@@ -75,7 +75,7 @@ void ConferencePanel::setUserInfo(const UserInfo * ui)
 
 void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
 {
-        qDebug() << "ConferencePanel::meetmeEvent()" << meetmelist;
+        // qDebug() << "ConferencePanel::meetmeEvent()" << meetmelist;
         QString eventname = meetmelist[0];
         QString astid = meetmelist[1];
         QString roomnum = meetmelist[2];
@@ -93,6 +93,7 @@ void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
                 m_actions[ref]->setProperty("astid", astid);
                 m_actions[ref]->setProperty("room", roomnum);
                 m_actions[ref]->setProperty("usernum", which);
+                m_actions[ref]->setProperty("reference", ref);
                 m_actions[ref]->setProperty("channel", channel);
                 connect(m_actions[ref], SIGNAL(clicked()),
                         this, SLOT(doMeetMeAction()));
@@ -107,17 +108,14 @@ void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
                 if(m_actions.contains(ref))
                         delete m_actions[ref];
         }
-//         if(busy > 0)
-//                 m_info->setText("<b>" + roomnum + "</b> on <b>" + astid + "</b> (" + QString::number(busy) + ")");
-//         else
-//                 m_info->setText("");
 }
 
 void ConferencePanel::doMeetMeAction()
 {
-        qDebug() << "ConferencePanel::doMeetMeAction()";
+        // qDebug() << "ConferencePanel::doMeetMeAction()";
         meetmeAction("kick " + this->sender()->property("astid").toString() +
                      " " + this->sender()->property("room").toString() +
                      " " + this->sender()->property("usernum").toString() +
                      " " + this->sender()->property("channel").toString());
+        m_actions[this->sender()->property("reference").toString()]->setIconSize(QSize(8, 8));
 }

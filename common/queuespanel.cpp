@@ -65,7 +65,7 @@ QueuesPanel::QueuesPanel(QWidget * parent)
         m_title2 = new QLabel(tr("Busy"), this);
         m_title_infos_a = new QLabel(tr("Completed"), this);
         m_title_infos_b = new QLabel(tr("Abandoned"), this);
-        m_title_infos_c = new QLabel(tr("HoldTime"), this);
+        m_title_infos_c = new QLabel(tr("HoldTime (s)"), this);
         m_title_infos = new QLabel(tr("Other Stats"), this);
         m_gridlayout->addWidget( m_title1, 0, 0, Qt::AlignCenter );
         m_gridlayout->addWidget( m_title2, 0, 1, Qt::AlignCenter );
