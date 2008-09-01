@@ -296,6 +296,8 @@ private:
 	quint16 m_ctiport;		//!< port to connect to server
 
 	QString m_userid;		//!< User Id
+	QString m_useridopt;		//!< User Id Option (kind of login)
+	QString m_useridwithopt;	//!< User Id Option (kind of login)
         QString m_company;
 	QString m_password;		//!< User password for account
 	QString m_agentid;		//!< Agent Id

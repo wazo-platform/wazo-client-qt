@@ -66,7 +66,7 @@ BaseEngine::BaseEngine(QSettings * settings,
                        QObject * parent)
         : QObject(parent),
 	  m_serverhost(""), m_loginport(0), m_ctiport(0),
-          m_userid(""), m_company(""), m_password(""), m_phonenumber(""),
+          m_userid(""), m_useridopt(""), m_company(""), m_password(""), m_phonenumber(""),
           m_checked_presence(false), m_checked_cinfo(false),
           m_sessionid(""), m_state(ENotLogged),
           m_pendingkeepalivemsg(0)
@@ -164,6 +164,11 @@ void BaseEngine::loadSettings()
         m_checked_autourl  = m_settings->value("fct_autourl",  false).toBool();
 
 	m_userid      = m_settings->value("userid").toString();
+	m_useridopt   = m_settings->value("useridopt").toString();
+        if(m_useridopt.size() > 0)
+                m_useridwithopt = m_userid + "%" + m_useridopt;
+        else
+                m_useridwithopt = m_userid;
 	m_company     = m_settings->value("company").toString();
 	m_password    = m_settings->value("password").toString();
 	m_loginkind   = m_settings->value("loginkind", 0).toUInt();
@@ -213,6 +218,7 @@ void BaseEngine::saveSettings()
 	m_settings->setValue("fct_autourl",  m_checked_autourl);
 
 	m_settings->setValue("userid",     m_userid);
+	m_settings->setValue("useridopt",  m_useridopt);
 	m_settings->setValue("company",    m_company);
         if(m_keeppass > 0)
                 m_settings->setValue("password", m_password);
@@ -297,7 +303,7 @@ void BaseEngine::config_and_start(const QString & login,
                                   const QString & pass,
                                   const QString & phonenum)
 {
-        m_userid = login;
+        setUserId(login);
         setFullId();
         m_password = pass;
         // if phonenum's size is 0, no login as agent
@@ -1086,10 +1092,16 @@ void BaseEngine::socketReadyRead()
                                 
                                 m_pendingcommand = "login_capas capaid=";
                                 QStringList capas = params_list["capalist"].split(",");
-                                if (capas.size() == 1) {
+                                if (capas.size() == 1)
                                         m_pendingcommand += capas[0] + ";";
-                                } else {
-                                        m_pendingcommand += capas[capas.size() - 1] + ";";
+                                else {
+                                        if(m_useridopt.size() > 0) {
+                                                if(capas.contains(m_useridopt)) {
+                                                        m_pendingcommand += m_useridopt + ";";
+                                                }
+                                        } else {
+                                                m_pendingcommand += capas[0] + ";";
+                                        }
                                 }
 
                                 if(m_loginkind > 0)
@@ -1340,12 +1352,21 @@ void BaseEngine::setLoginPort(const quint16 & port)
 
 const QString & BaseEngine::userId() const
 {
-	return m_userid;
+        if(m_useridopt.size() > 0)
+                return m_useridwithopt;
+        else
+                return m_userid;
 }
 
 void BaseEngine::setUserId(const QString & userid)
 {
-	m_userid = userid;
+        QStringList useridsplit = userid.split("%");
+	m_userid = useridsplit[0];
+        m_useridwithopt = userid;
+        if(useridsplit.size() > 1)
+                m_useridopt = useridsplit[1];
+        else
+                m_useridopt = "";
 }
 
 void BaseEngine::setFullId()
