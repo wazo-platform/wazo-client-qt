@@ -79,7 +79,8 @@ Popup::Popup(QIODevice * inputstream,
           m_xmlInputSource(inputstream),
           m_ui(ui),
           m_handler(this),
-          m_tinypopup(true),
+          m_systraypopup(true),
+          m_focus(true),
           m_urlautoallow(urlautoallow),
           m_sheetui(sheetui)
 {
@@ -190,8 +191,10 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
 {
         if(name == "channel")
                 m_channel = value;
-        else if(name == "nopopup")
-                m_tinypopup = false;
+        else if(name == "nosystraypopup")
+                m_systraypopup = false;
+        else if(name == "nofocus")
+                m_focus = false;
         else if(name == "called")
                 m_called = value;
         else
@@ -363,17 +366,33 @@ void Popup::closeEvent(QCloseEvent * event)
 	qDebug() << "Popup::closeEvent(" << event << ")";
 }
 
-void Popup::setMessage(const QString & message)
+void Popup::setMessage(const QString & order, const QString & message)
 {
-	m_message = message;
+	m_message[order] = message;
 }
 
-const QString & Popup::message() const
+const QHash<QString, QString> & Popup::message() const
 {
 	return m_message;
 }
 
-bool Popup::tinyPopup()
+void Popup::setMessageTitle(const QString & messagetitle)
 {
-        return m_tinypopup;
+	m_messagetitle = messagetitle;
+        m_message.clear();
+}
+
+const QString & Popup::messagetitle() const
+{
+	return m_messagetitle;
+}
+
+bool Popup::systraypopup()
+{
+        return m_systraypopup;
+}
+
+bool Popup::focus()
+{
+        return m_focus;
 }

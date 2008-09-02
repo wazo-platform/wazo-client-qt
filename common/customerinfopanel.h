@@ -42,6 +42,7 @@
 #ifndef __CUSTOMERINFOPANEL_H__
 #define __CUSTOMERINFOPANEL_H__
 
+#include <QHash>
 #include <QObject>
 #include <QWidget>
 
@@ -58,7 +59,9 @@ public:
 	CustomerInfoPanel(QWidget * parent = 0);
         void setEngine(BaseEngine *);
 signals:
-        void newPopup();
+        void newPopup(const QString &,
+                      const QHash<QString, QString> &,
+                      const QString &);
 public slots:
         void setUserInfo(const UserInfo *);
         void showNewProfile(Popup *);

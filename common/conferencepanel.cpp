@@ -64,8 +64,12 @@ ConferencePanel::ConferencePanel(QWidget * parent)
         qDebug() << "ConferencePanel::ConferencePanel()";
 	m_glayout = new QGridLayout(this);
         m_idline = 0;
-	// glayout->setMargin(0);
-        // glayout->setColumnStretch( 0, 1 );
+        QLabel * title = new QLabel(tr("Conferences and their Members"));
+        m_glayout->addWidget( title, m_idline, 0, Qt::AlignLeft );
+        m_idline ++;
+        m_glayout->setRowStretch( m_idline, 1 );
+	// m_glayout->setMargin(0);
+        // m_glayout->setColumnStretch( 0, 1 );
 }
 
 void ConferencePanel::setUserInfo(const UserInfo * ui)
@@ -97,8 +101,8 @@ void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
                 m_actions[ref]->setProperty("channel", channel);
                 connect(m_actions[ref], SIGNAL(clicked()),
                         this, SLOT(doMeetMeAction()));
-                m_glayout->addWidget( m_infos[ref], m_idline, 0, Qt::AlignCenter );
-                m_glayout->addWidget( m_actions[ref], m_idline, 1, Qt::AlignCenter );
+                m_glayout->addWidget( m_infos[ref], m_idline, 0, Qt::AlignLeft );
+                m_glayout->addWidget( m_actions[ref], m_idline, 1, Qt::AlignLeft );
                 m_glayout->setRowStretch( m_idline, 0 );
                 m_idline ++;
                 m_glayout->setRowStretch( m_idline, 1 );

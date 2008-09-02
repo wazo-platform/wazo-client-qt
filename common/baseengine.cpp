@@ -1296,7 +1296,7 @@ void BaseEngine::requestHistory(const QString & peer, int mode)
 	 * mode = 1 : In calls
 	 * mode = 2 : Missed calls */
 	if(mode >= 0) {
-                // qDebug() << "BaseEngine::requestHistory()" << peer;
+                qDebug() << "BaseEngine::requestHistory()" << peer;
                 sendCommand("history " + peer + " " + QString::number(m_historysize) + " " + QString::number(mode));
         }
 }

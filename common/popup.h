@@ -42,10 +42,11 @@
 #ifndef __POPUP_H__
 #define __POPUP_H__
 
-#include <QWidget>
+#include <QHash>
 #include <QIODevice>
 #include <QVBoxLayout>
 #include <QTcpSocket>
+#include <QWidget>
 #include "xmlhandler.h"
 
 class QComboBox;
@@ -83,12 +84,17 @@ public:
 	//! Add a Phone number
 	void addInfoPhoneURL(const QString &, const QString &);
 	//! getter for the message
-	void setMessage(const QString &);
+	void setMessage(const QString &, const QString &);
 	//! access to the message
-	const QString & message() const;
+	const QHash<QString, QString> & message() const;
+	//! getter for the message
+	void setMessageTitle(const QString &);
+	//! access to the message
+	const QString & messagetitle() const;
 	//! finalize the Construction of the window and show it
 	void finishAndShow();
-	bool tinyPopup();
+	bool systraypopup();
+	bool focus();
 signals:
 	void wantsToBeShown(Popup *);	//!< sent when the widget want to show itself
 	void originateCall(const QString &, const QString &);	//!< sent when the widget wants to dial
@@ -121,10 +127,12 @@ private:
 	bool m_parsingStarted;		//! Is the XML already started or not ?
 	//! layout for the widget : vertical box
 	QVBoxLayout * m_vlayout;
-	QString m_message;	//! Message property
+	QHash<QString, QString> m_message;	//! Message property
+	QString m_messagetitle;	//! Message title
         QString m_channel;
         QString m_called;
-        bool m_tinypopup;
+        bool m_systraypopup;
+        bool m_focus;
         bool m_urlautoallow;
         bool m_sheetui;
         QWidget * m_sheetui_widget;

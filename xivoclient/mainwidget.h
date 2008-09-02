@@ -119,7 +119,9 @@ public:
 	void clearAppearance();
 public slots:
         void dispurl(const QUrl &url);
-        void customerInfoPopup();
+        void customerInfoPopup(const QString &,
+                               const QHash<QString, QString> &,
+                               const QString &);
 private slots:
         void clipselection();
         void clipdata();

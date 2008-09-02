@@ -89,9 +89,13 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
                 // close the first widget
                 m_tabs->widget(0)->close();
         
+        QString opt = "p"; // = "p"
         // tells the main widget that a new popup has arrived here
-        // args : message title, message data
-        newPopup();
+        if(popup->systraypopup())
+                opt += "s";
+        if(popup->focus())
+                opt += "f";
+        newPopup(popup->messagetitle(), popup->message(), opt);
         
         //         connectDials(popup);
 }

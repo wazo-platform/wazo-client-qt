@@ -64,7 +64,7 @@ DialPanel::DialPanel(QWidget * parent)
         m_lbl = new QLabel( tr("Enter &Number :"), this );
 	m_input = new QComboBox( this );
 	m_lbl->setBuddy(m_input);
-	m_input->setStatusTip( tr("Input here the phone number to dial") );
+	m_input->setToolTip( tr("Input here the phone number to dial") );
 	m_input->setEditable( true );
         m_input->setDuplicatesEnabled( false );
         m_input->setInsertPolicy( QComboBox::InsertAlphabetically );

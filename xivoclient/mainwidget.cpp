@@ -139,6 +139,7 @@ MainWidget::MainWidget(BaseEngine * engine,
         setDockOptions(QMainWindow::AllowNestedDocks);
 	//setWindowFlags(Qt::Dialog);
 	//layout->setSizeConstraint(QLayout::SetFixedSize);	// remove minimize and maximize button
+        setAnimated(false);
 
         createActions();
         createMenus();
@@ -956,8 +957,8 @@ void MainWidget::engineStarted()
                                          m_customerinfopanel, SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(displayFiche(const QString &, bool)),
                                          m_customerinfopanel, SLOT(displayFiche(const QString &, bool)) );
-                                connect( m_customerinfopanel, SIGNAL(newPopup()),
-                                         this, SLOT(customerInfoPopup()) );
+                                connect( m_customerinfopanel, SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
+                                         this, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)) );
 
 			} else if (dc == QString("search")) {
 				m_searchpanel = new SearchPanel();
@@ -1252,27 +1253,34 @@ void MainWidget::dispurl(const QUrl &url)
         qDebug() << "MainWidget::dispurl()" << url;
 }
 
-void MainWidget::customerInfoPopup()
+void MainWidget::customerInfoPopup(const QString & msgtitle,
+                                   const QHash<QString, QString> & msgs,
+                                   const QString & options)
 {
         qDebug() << "MainWidget::customerInfoPopup()";
-        QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
-        
         // systray popup
         // to be customisable (yes or no)
-        if(m_withsystray && m_systrayIcon) {
-                m_systrayIcon->showMessage(tr("Call"),
-                                           currentTimeStr + "\nhello");
+        if(m_withsystray && m_systrayIcon && options.contains("s")) {
+                QStringList todisp;
+                QStringList orders = msgs.keys();
+                orders.sort();
+                foreach(QString order, orders) {
+                        todisp.append(msgs[order]);
+                }
+                m_systrayIcon->showMessage(msgtitle, todisp.join("\n"));
         }
         
         // focus on the customerinfo tab
-        if(m_tabnames.contains("customerinfo"))
+        if(m_tabnames.contains("customerinfo") && options.contains("f"))
                 if (m_cinfo_index > -1)
                         m_tabwidget->setCurrentIndex(m_cinfo_index);
         
         // to be customisable, if the user wants the window to popup
-        setVisible(true);
-        activateWindow();
-        raise();
+        if(options.contains("p")) {
+                setVisible(true);
+                activateWindow();
+                raise();
+        }
 }
 
 void MainWidget::newParkEvent()
