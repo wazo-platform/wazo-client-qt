@@ -78,6 +78,12 @@ bool XmlHandler::startElement( const QString & /*namespaceURI*/,
 		m_infoName  = "";
 		m_infoType  = atts.value("type");
 		m_infoValue = "";
+	} else if( localName == "action_info" ) {
+		m_isParsingInfo = true;
+		m_infoOrder = atts.value("order");
+		m_infoName  = atts.value("name");
+		m_infoType  = atts.value("type");
+		m_infoValue = "";
 	} else if( localName == "internal" ) {
 		m_isParsingInfo = true;
                 m_infoOrder = "";
@@ -99,21 +105,17 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
                              const QString & localName,
                              const QString & /*qName*/)
 {
-	// qDebug() << "XmlHandler::endElement()" << localName;
+        // qDebug() << "XmlHandler::endElement()" << localName << m_infoOrder << m_infoType << m_infoName << m_infoValue;
 	m_isParsingInfo = false;
         QRegExp re_number("\\+?[0-9\\s\\.]+");
         if(m_popup == NULL)
                 return true;
         
 	if( localName == "sheet_info" ) {
-		// qDebug() << "XmlHandler::endElement()" << m_infoType << m_infoName << m_infoValue;
-
 		if( m_infoType == "text" ) {
                         m_popup->addInfoText( m_infoName, m_infoValue );
                 } else if( m_infoType == "url" ) {
                         m_popup->addInfoLink( m_infoName, m_infoValue );
-		} else if( m_infoType == "urlauto" ) {
-                        m_popup->addInfoLinkAuto( m_infoName, m_infoValue );
                 } else if( m_infoType == "picture" ) {
                         m_popup->addInfoPicture( m_infoName, m_infoValue );
                 } else if( m_infoType == "urlx" ) {
@@ -130,11 +132,14 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
                 }
                 
 	} else if( localName == "systray_info" ) {
-                qDebug() << "XmlHandler::endElement()" << localName << m_infoOrder << m_infoType << m_infoValue;
                 if ( m_infoType == "title" )
                         m_popup->setMessageTitle( m_infoValue );
                 else if ( m_infoType == "body" )
                         m_popup->setMessage( m_infoOrder, m_infoValue );
+                
+	} else if( localName == "action_info" ) {
+                if ( m_infoType == "urlauto" )
+                        m_popup->addInfoLinkAuto( m_infoName, m_infoValue );
                 
 	} else if( localName == "internal" ) {
                 m_popup->addInfoInternal( m_infoName, m_infoValue );
