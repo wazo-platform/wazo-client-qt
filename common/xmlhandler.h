@@ -83,10 +83,10 @@ private:
 private:
 	Popup * m_popup;		//!< pointer to the Popup object to fill with data
 	bool m_isParsingInfo;	//!< parsing state : true if we are currently parsing a \<info\> element
+	QString m_infoOrder;		//!< type attribute of the current \<info\> element
 	QString m_infoType;		//!< type attribute of the current \<info\> element
 	QString m_infoName;		//!< name attribute of the current \<info\> element
 	QString m_infoValue;	//!< character value of the current \<info\> element
 };
 
 #endif
-

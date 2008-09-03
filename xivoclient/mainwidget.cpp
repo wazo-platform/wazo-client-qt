@@ -1260,7 +1260,7 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
         qDebug() << "MainWidget::customerInfoPopup()";
         // systray popup
         // to be customisable (yes or no)
-        if(m_withsystray && m_systrayIcon && options.contains("s")) {
+        if(m_withsystray && m_systrayIcon && options.contains("s") && (msgtitle.size() > 0)) {
                 QStringList todisp;
                 QStringList orders = msgs.keys();
                 orders.sort();

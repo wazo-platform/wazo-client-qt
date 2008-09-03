@@ -66,20 +66,23 @@ bool XmlHandler::startElement( const QString & /*namespaceURI*/,
                                const QXmlAttributes & atts )
 {
         // qDebug() << "XmlHandler::startElement()" << localName;
-	if( localName == "info" ) {
+	if( localName == "sheet_info" ) {
 		m_isParsingInfo = true;
-		m_infoType = atts.value("type");
-		m_infoName = atts.value("name");
+		m_infoOrder = atts.value("order");
+		m_infoName  = atts.value("name");
+		m_infoType  = atts.value("type");
 		m_infoValue = "";
-	} else if( localName == "message" ) {
+	} else if( localName == "systray_info" ) {
 		m_isParsingInfo = true;
-		m_infoType = atts.value("type");
-		m_infoName = atts.value("name");
+		m_infoOrder = atts.value("order");
+		m_infoName  = "";
+		m_infoType  = atts.value("type");
 		m_infoValue = "";
 	} else if( localName == "internal" ) {
 		m_isParsingInfo = true;
-		m_infoType = atts.value("type");
-		m_infoName = atts.value("name");
+                m_infoOrder = "";
+		m_infoName  = atts.value("name");
+		m_infoType  = atts.value("type");
 		m_infoValue = "";
 	} else {
 		m_isParsingInfo = false;
@@ -102,36 +105,36 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
         if(m_popup == NULL)
                 return true;
         
-	if( localName == "info" ) {
+	if( localName == "sheet_info" ) {
 		// qDebug() << "XmlHandler::endElement()" << m_infoType << m_infoName << m_infoValue;
 
-		if( m_infoType == QString("text") ) {
+		if( m_infoType == "text" ) {
                         m_popup->addInfoText( m_infoName, m_infoValue );
-                } else if( m_infoType == QString("url") ) {
+                } else if( m_infoType == "url" ) {
                         m_popup->addInfoLink( m_infoName, m_infoValue );
-		} else if( m_infoType == QString("urlauto") ) {
+		} else if( m_infoType == "urlauto" ) {
                         m_popup->addInfoLinkAuto( m_infoName, m_infoValue );
-                } else if( m_infoType == QString("picture") ) {
+                } else if( m_infoType == "picture" ) {
                         m_popup->addInfoPicture( m_infoName, m_infoValue );
-                } else if( m_infoType == QString("urlx") ) {
+                } else if( m_infoType == "urlx" ) {
                         QStringList qsl = m_infoValue.split("@");
                         if(qsl.size() == 2)
                                 m_popup->addInfoLinkX( m_infoName, qsl[0], qsl[1] );
                         else
                                 m_popup->addInfoLinkX( m_infoName, m_infoValue, m_infoValue );
-                } else if( m_infoType == QString("phone") ) {
+                } else if( m_infoType == "phone" ) {
                         if(re_number.exactMatch(m_infoValue))
                                 m_popup->addInfoPhoneURL( m_infoName, m_infoValue );
                         else
                                 m_popup->addInfoText( m_infoName, m_infoValue );
                 }
-
-	} else if( localName == "message" ) {
-                qDebug() << "XmlHandler::endElement()" << localName << m_infoType << m_infoName << m_infoValue;
+                
+	} else if( localName == "systray_info" ) {
+                qDebug() << "XmlHandler::endElement()" << localName << m_infoOrder << m_infoType << m_infoValue;
                 if ( m_infoType == "title" )
                         m_popup->setMessageTitle( m_infoValue );
                 else if ( m_infoType == "body" )
-                        m_popup->setMessage( m_infoName, m_infoValue );
+                        m_popup->setMessage( m_infoOrder, m_infoValue );
                 
 	} else if( localName == "internal" ) {
                 m_popup->addInfoInternal( m_infoName, m_infoValue );
