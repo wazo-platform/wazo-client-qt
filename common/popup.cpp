@@ -379,7 +379,6 @@ const QHash<QString, QString> & Popup::message() const
 void Popup::setMessageTitle(const QString & messagetitle)
 {
 	m_messagetitle = messagetitle;
-        m_message.clear();
 }
 
 const QString & Popup::messagetitle() const
