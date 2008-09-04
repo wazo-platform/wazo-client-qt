@@ -79,6 +79,7 @@ Popup::Popup(QIODevice * inputstream,
           m_xmlInputSource(inputstream),
           m_ui(ui),
           m_handler(this),
+          m_sheetpopup(false),
           m_systraypopup(true),
           m_focus(true),
           m_urlautoallow(urlautoallow),
@@ -101,9 +102,9 @@ Popup::Popup(QIODevice * inputstream,
         // 	         this, SLOT(socketError(QAbstractSocket::SocketError)));
 	m_parsingStarted = false;
 	m_vlayout = new QVBoxLayout(this);
-	QLabel * title = new QLabel(tr("Incoming call"), this);
-	title->setAlignment(Qt::AlignHCenter);
-	m_vlayout->addWidget(title);
+        m_title = new QLabel(this);
+	m_title->setAlignment(Qt::AlignHCenter);
+	m_vlayout->addWidget(m_title);
 
         QUiLoader loader;
         if(sheetui) {
@@ -173,6 +174,11 @@ void Popup::saveandclose()
         save(qsl.join(";"));
 
         close();
+}
+
+void Popup::setTitle(const QString & title)
+{
+        m_title->setText(title);
 }
 
 void Popup::addInfoText(const QString & name, const QString & value)
@@ -389,6 +395,16 @@ const QString & Popup::messagetitle() const
 bool Popup::systraypopup()
 {
         return m_systraypopup;
+}
+
+void Popup::setSheetPopup(const bool & sheetpopup)
+{
+	m_sheetpopup = sheetpopup;
+}
+
+bool Popup::sheetpopup()
+{
+        return m_sheetpopup;
 }
 
 bool Popup::focus()

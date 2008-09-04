@@ -79,22 +79,26 @@ void CustomerInfoPanel::setUserInfo(const UserInfo * ui)
  */
 void CustomerInfoPanel::showNewProfile(Popup * popup)
 {
-	QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
-
-        int index = m_tabs->addTab(popup, currentTimeStr);
-        qDebug() << "added tab" << index;
-        m_tabs->setCurrentIndex(index);
-        
-        if (index >= m_engine->tablimit())
-                // close the first widget
-                m_tabs->widget(0)->close();
-        
         QString opt = "";
+        
+        if(popup->sheetpopup()) {
+                QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
+                int index = m_tabs->addTab(popup, currentTimeStr);
+                qDebug() << "added tab" << index;
+                m_tabs->setCurrentIndex(index);
+                
+                if (index >= m_engine->tablimit())
+                        // close the first widget
+                        m_tabs->widget(0)->close();
+                
+                // no need to focus if there is no sheet popup
+                if(popup->focus())
+                        opt += "fp";
+        }
+        
         // tells the main widget that a new popup has arrived here
         if(popup->systraypopup())
                 opt += "s";
-        if(popup->focus())
-                opt += "fp";
         newPopup(popup->messagetitle(), popup->message(), opt);
         
         //         connectDials(popup);

@@ -112,8 +112,12 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
                 return true;
         
 	if( localName == "sheet_info" ) {
+                m_popup->setSheetPopup( true );
 		if( m_infoType == "text" ) {
-                        m_popup->addInfoText( m_infoName, m_infoValue );
+                        if(m_infoName == "")
+                                m_popup->setTitle( m_infoValue );
+                        else
+                                m_popup->addInfoText( m_infoName, m_infoValue );
                 } else if( m_infoType == "url" ) {
                         m_popup->addInfoLink( m_infoName, m_infoValue );
                 } else if( m_infoType == "picture" ) {

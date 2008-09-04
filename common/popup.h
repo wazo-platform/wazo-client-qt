@@ -50,6 +50,7 @@
 #include "xmlhandler.h"
 
 class QComboBox;
+class QLabel;
 class QLineEdit;
 class QUrl;
 class QXmlInputSource;
@@ -93,8 +94,11 @@ public:
 	const QString & messagetitle() const;
 	//! finalize the Construction of the window and show it
 	void finishAndShow();
+        void setSheetPopup(const bool &);
+	bool sheetpopup();
 	bool systraypopup();
 	bool focus();
+        void setTitle(const QString &);
 signals:
 	void wantsToBeShown(Popup *);	//!< sent when the widget want to show itself
 	void originateCall(const QString &, const QString &);	//!< sent when the widget wants to dial
@@ -129,8 +133,10 @@ private:
 	QVBoxLayout * m_vlayout;
 	QHash<QString, QString> m_message;	//! Message property
 	QString m_messagetitle;	//! Message title
+	QLabel * m_title;	//! Sheet Title
         QString m_channel;
         QString m_called;
+        bool m_sheetpopup;
         bool m_systraypopup;
         bool m_focus;
         bool m_urlautoallow;
