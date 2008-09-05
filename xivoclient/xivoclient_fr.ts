@@ -145,31 +145,31 @@
         <translation>Le serveur a renvoyé une Erreur.</translation>
     </message>
     <message>
+        <location filename="../common/baseengine.cpp" line="977"/>
+        <source>The XIVO daemon on %1 did not reply to the last keepalive.</source>
+        <translation>Le daemon XIVO sur %1 n&apos;a pas répondu au dernier keepalive.</translation>
+    </message>
+    <message>
+        <location filename="../common/baseengine.cpp" line="986"/>
+        <source>The XIVO daemon on %1 has just been reloaded.</source>
+        <translation>Le daemon XIVO sur %1 vient d&apos;être rechargé.</translation>
+    </message>
+    <message>
+        <location filename="../common/baseengine.cpp" line="983"/>
+        <source>The XIVO daemon on %1 has just been stopped.</source>
+        <translation>Le daemon XIVO sur %1 vient d&apos;être arrêté.</translation>
+    </message>
+    <message>
+        <location filename="../common/baseengine.cpp" line="980"/>
+        <source>The XIVO daemon on %1 has just closed the connection.</source>
+        <translation>Le daemon XIVO sur %1 vient de fermer la connexion.</translation>
+    </message>
+    <message>
         <location filename="../common/baseengine.cpp" line="965"/>
         <source>The number of arguments sent is incorrect.
 Maybe a version issue ?</source>
         <translation>Le nombre d&apos;arguments envoyés est incorrect.
 Peut-être un problème de version ?</translation>
-    </message>
-    <message>
-        <location filename="../common/baseengine.cpp" line="977"/>
-        <source>The server did not reply to the last keepalive.</source>
-        <translation>Le serveur n&apos;a pas répondu au dernier keepalive.</translation>
-    </message>
-    <message>
-        <location filename="../common/baseengine.cpp" line="986"/>
-        <source>The server has just been reloaded.</source>
-        <translation>Le serveur vient d&apos;être rechargé.</translation>
-    </message>
-    <message>
-        <location filename="../common/baseengine.cpp" line="983"/>
-        <source>The server has just been stopped.</source>
-        <translation>Le serveur vient d&apos;être arrêté.</translation>
-    </message>
-    <message>
-        <location filename="../common/baseengine.cpp" line="980"/>
-        <source>The server has just closed the connection.</source>
-        <translation>Le serveur vient de fermer la connexion.</translation>
     </message>
     <message>
         <location filename="../common/baseengine.cpp" line="818"/>
@@ -193,8 +193,8 @@ Peut-être un problème de version ?</translation>
     </message>
     <message>
         <location filename="../common/baseengine.cpp" line="961"/>
-        <source>You are not allowed to connect to the Server.</source>
-        <translation>Vous n&apos;êtes pas autorisé à vous connecter au Serveur.</translation>
+        <source>You are not allowed to connect to the XIVO daemon on %1.</source>
+        <translation>Vous n&apos;êtes pas autorisé à vous connecter au daemon XIVO sur %1.</translation>
     </message>
     <message>
         <location filename="../common/baseengine.cpp" line="974"/>
@@ -702,14 +702,14 @@ a été envoyé à %2.</translation>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1406"/>
-        <source>About XIVO %1</source>
-        <translation>A propos de XIVO %1</translation>
-    </message>
-    <message>
         <location filename="mainwidget.cpp" line="493"/>
         <source>&amp;About XIVO %1</source>
         <translation>A propos de &amp;XIVO %1</translation>
+    </message>
+    <message>
+        <location filename="mainwidget.cpp" line="1406"/>
+        <source>About XIVO %1</source>
+        <translation>A propos de XIVO %1</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="1415"/>
@@ -1136,14 +1136,6 @@ a été envoyé à %2.</translation>
         <location filename="../common/peeritem.cpp" line="144"/>
         <source>Unknown</source>
         <translation>Inconnue</translation>
-    </message>
-</context>
-<context>
-    <name>Popup</name>
-    <message>
-        <location filename="../common/popup.cpp" line="104"/>
-        <source>Incoming call</source>
-        <translation>Appel entrant</translation>
     </message>
 </context>
 <context>

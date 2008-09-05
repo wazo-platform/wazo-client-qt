@@ -96,6 +96,7 @@ public:
 	void finishAndShow();
         void setSheetPopup(const bool &);
 	bool sheetpopup();
+	const QString & sessionid() const;
 	bool systraypopup();
 	bool focus();
         void setTitle(const QString &);
@@ -134,6 +135,7 @@ private:
 	QHash<QString, QString> m_message;	//! Message property
 	QString m_messagetitle;	//! Message title
 	QLabel * m_title;	//! Sheet Title
+        QString m_sessionid;
         QString m_channel;
         QString m_called;
         bool m_sheetpopup;

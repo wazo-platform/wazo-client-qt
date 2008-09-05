@@ -80,7 +80,7 @@ void CustomerInfoPanel::setUserInfo(const UserInfo * ui)
 void CustomerInfoPanel::showNewProfile(Popup * popup)
 {
         QString opt = "";
-        
+        qDebug() << "CustomerInfoPanel::showNewProfile" << popup->sessionid();
         if(popup->sheetpopup()) {
                 QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
                 int index = m_tabs->addTab(popup, currentTimeStr);

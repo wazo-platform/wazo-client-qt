@@ -958,7 +958,7 @@ void BaseEngine::popupError(const QString & errorid)
 {
         QString errormsg = QString(tr("Server has sent an Error."));
         if(errorid.toLower() == "connection_refused")
-                errormsg = tr("You are not allowed to connect to the Server.");
+                errormsg = tr("You are not allowed to connect to the XIVO daemon on %1.").arg(m_serverhost);
 
         else if(errorid.toLower() == "number_of_arguments")
                 errormsg = tr("The number of arguments sent is incorrect.\n"
@@ -974,16 +974,16 @@ void BaseEngine::popupError(const QString & errorid)
                 errormsg = tr("You entered a wrong login / password.");
 
         else if(errorid.toLower() == "no_keepalive_from_server")
-                errormsg = tr("The server did not reply to the last keepalive.");
+                errormsg = tr("The XIVO daemon on %1 did not reply to the last keepalive.").arg(m_serverhost);
 
         else if(errorid.toLower() == "connection_closed")
-                errormsg = tr("The server has just closed the connection.");
+                errormsg = tr("The XIVO daemon on %1 has just closed the connection.").arg(m_serverhost);
 
         else if(errorid.toLower() == "server_stopped")
-                errormsg = tr("The server has just been stopped.");
+                errormsg = tr("The XIVO daemon on %1 has just been stopped.").arg(m_serverhost);
 
         else if(errorid.toLower() == "server_reloaded")
-                errormsg = tr("The server has just been reloaded.");
+                errormsg = tr("The XIVO daemon on %1 has just been reloaded.").arg(m_serverhost);
 
         else if(errorid.startsWith("already_connected:")) {
                 QStringList ipinfo = errorid.split(":");
