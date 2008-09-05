@@ -203,9 +203,10 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
                 m_focus = false;
         else if(name == "called")
                 m_called = value;
-        else if(name == "sessionid")
+        else if(name == "sessionid") {
                 m_sessionid = value;
-        else
+                setProperty("sessionid", m_sessionid);
+        } else
                 qDebug() << "Popup::addInfoInternal() internal" << name << value;
 }
 

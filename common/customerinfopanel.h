@@ -43,8 +43,11 @@
 #define __CUSTOMERINFOPANEL_H__
 
 #include <QHash>
+#include <QList>
 #include <QObject>
 #include <QWidget>
+
+#include "popup.h"
 
 class QTabWidget;
 
@@ -72,6 +75,7 @@ private:
         BaseEngine * m_engine;
         const UserInfo * m_ui;
         QTabWidget * m_tabs;
+        QList<Popup *> m_popups;
 };
 
 #endif /* __CUSTOMERINFOPANEL_H__ */

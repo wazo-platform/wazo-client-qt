@@ -80,16 +80,26 @@ void CustomerInfoPanel::setUserInfo(const UserInfo * ui)
 void CustomerInfoPanel::showNewProfile(Popup * popup)
 {
         QString opt = "";
-        qDebug() << "CustomerInfoPanel::showNewProfile" << popup->sessionid();
+        qDebug() << "CustomerInfoPanel::showNewProfile()" << popup->sessionid();
         if(popup->sheetpopup()) {
-                QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
-                int index = m_tabs->addTab(popup, currentTimeStr);
-                qDebug() << "added tab" << index;
-                m_tabs->setCurrentIndex(index);
-                
-                if (index >= m_engine->tablimit())
-                        // close the first widget
-                        m_tabs->widget(0)->close();
+                Popup * already_popup = NULL;
+                foreach(Popup * mpopup, m_popups)
+                        if(mpopup->sessionid() == popup->sessionid()) {
+                                already_popup = mpopup;
+                                break;
+                        }
+                if(already_popup) {
+                        qDebug() << "found a match";
+                } else {
+                        QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
+                        int index = m_tabs->addTab(popup, currentTimeStr);
+                        qDebug() << "CustomerInfoPanel::showNewProfile() : added tab" << index;
+                        m_popups.append(popup);
+                        m_tabs->setCurrentIndex(index);
+                        if (index >= m_engine->tablimit())
+                                // close the first widget
+                                m_tabs->widget(0)->close();
+                }
                 
                 // no need to focus if there is no sheet popup
                 if(popup->focus())
@@ -106,7 +116,10 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
 
 void CustomerInfoPanel::popupDestroyed(QObject * obj)
 {
-	qDebug() << "CustomerInfoPanel::popupDestroyed()" << obj;
+	qDebug() << "CustomerInfoPanel::popupDestroyed()" << obj->property("sessionid");
+        foreach(Popup * mpopup, m_popups)
+                if(mpopup->sessionid() == obj->property("sessionid"))
+                        m_popups.removeAll(mpopup);
 }
 
 void CustomerInfoPanel::addToDataBase(const QString & dbdetails)
