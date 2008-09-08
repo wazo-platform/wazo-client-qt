@@ -98,7 +98,7 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
                         m_tabs->setCurrentIndex(index);
                         if (index >= m_engine->tablimit())
                                 // close the first widget
-                                m_tabs->widget(0)->close();
+                                m_tabs->removeTab(0);
                 }
                 
                 // no need to focus if there is no sheet popup
