@@ -332,14 +332,14 @@ void BaseEngine::start()
  */
 void BaseEngine::stop()
 {
-	qDebug() << "BaseEngine::stop()" << this->sender()->property("stopper").toString();
+	qDebug() << "BaseEngine::stop()" << this->sender() << this->sender()->property("stopper").toString();
 	m_sbsocket->disconnectFromHost();
         
 	stopKeepAliveTimer();
 	stopTryAgainTimer();
 	setState(ENotLogged);
 	m_sessionid = "";
-
+        
         m_users.clear();
 }
 
@@ -1050,8 +1050,7 @@ void BaseEngine::socketReadyRead()
 
 		if(line.startsWith("<?xml") || line.startsWith("<ui version=")) {
                         // we get here when receiving a customer info in tcp mode
-                        qDebug() << m_checked_cinfo;
-                        qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
+                        qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size() << m_checked_cinfo;
                         bool qtui = false;
                         if(line.startsWith("<ui version="))
                                 qtui = true;

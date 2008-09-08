@@ -115,8 +115,14 @@ int main(int argc, char ** argv)
         
 	//main.dumpObjectTree();
         app.setProperty("stopper", "lastwindow");
-        QObject::connect( &app, SIGNAL(lastWindowClosed()),
-                          engine, SLOT(stop()) );
+        
+        // setting this connection breeds the following behaviour :
+        //  * exit of config window when systray-only => disconnects from server
+        // there seemed to be a case when this was useful however ...
+        //    we let this commented until a relevant use case is met again
+        // QObject::connect( &app, SIGNAL(lastWindowClosed()),
+        // engine, SLOT(stop()) );
+        
 	//engine.startTimer(1000);
         return app.exec();
 }

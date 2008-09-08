@@ -20,10 +20,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_7" >
-       <property name="enabled" >
-        <bool>false</bool>
-       </property>
+      <widget class="QPushButton" name="refuse" >
        <property name="text" >
         <string>Ref&amp;user</string>
        </property>

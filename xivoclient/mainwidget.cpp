@@ -568,11 +568,11 @@ void MainWidget::confUpdated()
  * of the MainWidget on a simple left click. */
 void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-        qDebug() << "MainWidget::systrayActivated()";
-        // << "reason =" << reason
-        // << "isMinimized =" << isMinimized()
-        // << "isVisible =" << isVisible()
-        // << "isActiveWindow =" << isActiveWindow();
+        qDebug() << "MainWidget::systrayActivated()"
+                 << "reason =" << reason
+                 << "isMinimized =" << isMinimized()
+                 << "isVisible =" << isVisible()
+                 << "isActiveWindow =" << isActiveWindow();
 	// QSystemTrayIcon::DoubleClick
 	// QSystemTrayIcon::Trigger
 	if (reason == QSystemTrayIcon::Trigger) {

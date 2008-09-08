@@ -107,50 +107,17 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
 {
         // qDebug() << "XmlHandler::endElement()" << localName << m_infoOrder << m_infoType << m_infoName << m_infoValue;
 	m_isParsingInfo = false;
-        QRegExp re_number("\\+?[0-9\\s\\.]+");
         if(m_popup == NULL)
                 return true;
         
-	if( localName == "sheet_info" ) {
-                m_popup->setSheetPopup( true );
-		if( m_infoType == "text" ) {
-                        if(m_infoName == "")
-                                m_popup->setTitle( m_infoValue );
-                        else
-                                m_popup->addInfoText( m_infoName, m_infoValue );
-                } else if( m_infoType == "url" ) {
-                        m_popup->addInfoLink( m_infoName, m_infoValue );
-                } else if( m_infoType == "picture" ) {
-                        m_popup->addInfoPicture( m_infoName, m_infoValue );
-                } else if( m_infoType == "urlx" ) {
-                        QStringList qsl = m_infoValue.split("@");
-                        if(qsl.size() == 2)
-                                m_popup->addInfoLinkX( m_infoName, qsl[0], qsl[1] );
-                        else
-                                m_popup->addInfoLinkX( m_infoName, m_infoValue, m_infoValue );
-                } else if( m_infoType == "phone" ) {
-                        if(re_number.exactMatch(m_infoValue))
-                                m_popup->addInfoPhoneURL( m_infoName, m_infoValue );
-                        else
-                                m_popup->addInfoText( m_infoName, m_infoValue );
-                }
-                
-	} else if( localName == "systray_info" ) {
-                if ( m_infoType == "title" )
-                        m_popup->setMessageTitle( m_infoValue );
-                else if ( m_infoType == "body" )
-                        m_popup->setMessage( m_infoOrder, m_infoValue );
-                
-	} else if( localName == "action_info" ) {
-                if ( m_infoType == "urlauto" )
-                        m_popup->addInfoLinkAuto( m_infoName, m_infoValue );
-                
-	} else if( localName == "internal" ) {
-                m_popup->addInfoInternal( m_infoName, m_infoValue );
-                
-	} else if( localName == "profile" ) {
+	if( (localName == "sheet_info") ||
+            (localName == "systray_info") ||
+            (localName == "action_info" ) ||
+            (localName == "internal") )
+                m_popup->addAnyInfo(localName, m_infoOrder, m_infoType, m_infoName, m_infoValue);
+        else if( localName == "profile" )
                 m_popup->finishAndShow();
-	}
+        
 	return true;
 }
 

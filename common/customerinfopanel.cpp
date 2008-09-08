@@ -89,7 +89,8 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
                                 break;
                         }
                 if(already_popup) {
-                        qDebug() << "found a match";
+                        qDebug() << "CustomerInfoPanel::showNewProfile()" << "found a match for" << popup->sessionid();
+                        already_popup->update(popup->sheetlines());
                 } else {
                         QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
                         int index = m_tabs->addTab(popup, currentTimeStr);
@@ -136,7 +137,8 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
         inputstream->write(fichecontent.toUtf8());
         inputstream->close();
         // Get Data and Popup the profile if ok
-        Popup * popup = new Popup(inputstream, qtui, m_engine->checkedAutoUrl(), m_ui);
+        Popup * popup = new Popup(m_engine->checkedAutoUrl(), m_ui);
+        popup->feed(inputstream, qtui);
         connect( popup, SIGNAL(destroyed(QObject *)),
                  this, SLOT(popupDestroyed(QObject *)) );
         connect( popup, SIGNAL(save(const QString &)),
