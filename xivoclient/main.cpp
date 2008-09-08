@@ -114,6 +114,7 @@ int main(int argc, char ** argv)
         MainWidget main(engine, info_osname);
         
 	//main.dumpObjectTree();
+        app.setProperty("stopper", "lastwindow");
         QObject::connect( &app, SIGNAL(lastWindowClosed()),
                           engine, SLOT(stop()) );
 	//engine.startTimer(1000);

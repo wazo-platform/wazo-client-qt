@@ -384,6 +384,7 @@ void MainWidget::createActions()
 		 this, SLOT(showConfDialog()) );
 
 	m_quitact = new QAction(tr("&Quit"), this);
+        m_quitact->setProperty("stopper", "quit");
 	m_quitact->setStatusTip(tr("Close the application"));
 	connect( m_quitact, SIGNAL(triggered()),
 		 m_engine, SLOT(stop()) );
@@ -414,6 +415,7 @@ void MainWidget::createActions()
 		 m_engine, SLOT(start()) );
 
 	m_disconnectact = new QAction(tr("&Disconnect"), this);
+        m_disconnectact->setProperty("stopper", "disconnect");
 	m_disconnectact->setStatusTip(tr("Disconnect from the server"));
 	connect( m_disconnectact, SIGNAL(triggered()),
 		 m_engine, SLOT(stop()) );

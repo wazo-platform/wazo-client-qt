@@ -122,6 +122,9 @@ Popup::Popup(QIODevice * inputstream,
         QPushButton * closebutton   = m_sheetui_widget->findChild<QPushButton *>("close");
         QPushButton * savebutton    = m_sheetui_widget->findChild<QPushButton *>("save");
         QPushButton * answerbutton  = m_sheetui_widget->findChild<QPushButton *>("answer");
+        QLineEdit   * datetime    = m_sheetui_widget->findChild<QLineEdit *>("datetime");
+        QLineEdit   * year        = m_sheetui_widget->findChild<QLineEdit *>("year");
+        
         if(hupbutton)
                 connect( hupbutton, SIGNAL(clicked()), this, SLOT(hangup()) );
         if(closebutton)
@@ -130,9 +133,6 @@ Popup::Popup(QIODevice * inputstream,
                 connect( savebutton, SIGNAL(clicked()), this, SLOT(saveandclose()) );
         if(answerbutton)
                 connect( answerbutton, SIGNAL(clicked()), this, SLOT(answer()) );
-
-        QLineEdit   * datetime    = m_sheetui_widget->findChild<QLineEdit *>("datetime");
-        QLineEdit   * year        = m_sheetui_widget->findChild<QLineEdit *>("year");
         if(datetime)
                 datetime->setText(currentDateTimeStr);
         if(year)

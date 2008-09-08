@@ -332,10 +332,9 @@ void BaseEngine::start()
  */
 void BaseEngine::stop()
 {
-	qDebug() << "BaseEngine::stop()";
-
+	qDebug() << "BaseEngine::stop()" << this->sender()->property("stopper").toString();
 	m_sbsocket->disconnectFromHost();
-
+        
 	stopKeepAliveTimer();
 	stopTryAgainTimer();
 	setState(ENotLogged);
