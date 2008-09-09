@@ -43,18 +43,10 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QLabel>
-#include <QLineEdit>
-#include <QMouseEvent>
-#include <QSizePolicy>
-#include <QProgressBar>
 #include <QPushButton>
-#include <QRegExp>
-#include <QScrollArea>
 
 #include "conferencepanel.h"
 #include "userinfo.h"
-
-const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 50px; height: 15px}";
 
 /*! \brief Constructor
  */

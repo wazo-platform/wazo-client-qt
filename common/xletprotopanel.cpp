@@ -39,49 +39,31 @@
  * $Date$
  */
 
-#ifndef __QUEUEENTRYDETAILSPANEL_H__
-#define __QUEUEENTRYDETAILSPANEL_H__
+#include <QDebug>
+#include <QLabel>
+#include <QGridLayout>
 
-#include <QHash>
-#include <QList>
-#include <QObject>
-#include <QWidget>
+#include "xletprotopanel.h"
+#include "userinfo.h"
 
-class QGridLayout;
-class QLabel;
-class QScrollArea;
-class QVBoxLayout;
-
-/*! \brief Identity Display
+/*! \brief Constructor
  */
-class QueueentrydetailsPanel : public QWidget
+XletprotoPanel::XletprotoPanel(QWidget * parent)
+        : QWidget(parent), m_ui(NULL)
 {
-	Q_OBJECT
-public:
-	QueueentrydetailsPanel(QWidget * parent = 0);
-	~QueueentrydetailsPanel();
-signals:
-        void changeWatchedAgent(const QString &);
-protected:
-public slots:
-	void newQueue(const QStringList &);
-        void updatePeerAgent(const QString &,
-                             const QString &,
-                             const QString &);
-private slots:
-        void agentClicked();
-private:
-        QGridLayout * m_gridlayout;
-	QVBoxLayout * m_layout;
-        QScrollArea * m_scrollarea;
-	QWidget * m_widget;
+        qDebug() << "XletprotoPanel::XletprotoPanel()";
+	
+        // replace by whatever you need
+        QGridLayout * glayout = new QGridLayout(this);
+        QLabel * title = new QLabel(tr("Xlet Example"));
+        glayout->addWidget( title, 0, 0, Qt::AlignCenter );
+        glayout->setRowStretch( 0, 1 );
+        glayout->setColumnStretch( 0, 1 );
+        //
+}
 
-        QString m_astid;
-        QString m_queueid;
-        QLabel * m_label;
-        QHash<QString, QLabel *> m_entrypos;
-        QHash<QString, QLabel *> m_entrytime;
-        int m_maxbusy;
-};
-
-#endif /* __QUEUEENTRYDETAILSPANEL_H__ */
+void XletprotoPanel::setUserInfo(const UserInfo * ui)
+{
+        m_ui = ui;
+        qDebug() << "XletprotoPanel::setUserInfo" << m_ui->fullname();
+}

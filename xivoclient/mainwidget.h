@@ -100,6 +100,7 @@ class SearchPanel;
 class ServicePanel;
 class StatusPanel;
 class SwitchBoardWindow;
+class XletprotoPanel;
 
 /*! \brief Main window class
  */
@@ -196,6 +197,7 @@ private:
         DialPanel * m_dialpanel;
         ConferencePanel * m_conferencepanel;
         CustomerInfoPanel * m_customerinfopanel;
+        XletprotoPanel * m_xletprotopanel;
 
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;

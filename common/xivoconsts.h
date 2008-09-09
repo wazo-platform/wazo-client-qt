@@ -54,6 +54,6 @@ const QString __nopresence__ = "nopresence";
 const QStringList XletList = (QStringList() << "customerinfo" << "features" << "history"
                               << "directory" << "search" << "fax" << "dial"
                               << "operator" << "parking" << "calls" << "switchboard"
-                              << "messages" << "identity" << "datetime" << "tabber" << "conference"
+                              << "messages" << "identity" << "datetime" << "tabber" << "conference" << "xletproto"
                               << "agents" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
 #endif

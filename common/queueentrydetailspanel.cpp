@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 3294 $
- * $Date: 2008-06-16 18:05:27 +0200 (lun, 16 jun 2008) $
+/* $Revision$
+ * $Date$
  */
 
 #include <QDebug>

@@ -85,6 +85,7 @@
 #include "statuspanel.h"
 #include "switchboardwindow.h"
 #include "videopanel.h"
+#include "xletprotopanel.h"
 #include "xivoconsts.h"
 
 const QString extraspace("  ");
@@ -815,7 +816,7 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
 					 m_queuedetailspanel, SLOT(updatePeerAgent(const QString &, const QString &, const QStringList &)) );
-
+                                
 			} else if (dc == QString("queueentrydetails")) {
                                 m_queueentrydetailspanel = new QueueentrydetailsPanel();
                                 if (withscrollbar) {
@@ -828,7 +829,7 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QStringList &)),
                                          m_queueentrydetailspanel, SLOT(newQueue(const QStringList &)));
-
+                                
 			} else if (dc == QString("datetime")) {
 				m_datetimepanel = new DatetimePanel();
                                 addPanel("datetime", tr("Date and Time"), m_datetimepanel);
@@ -1081,6 +1082,12 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_messagetosend, SIGNAL(returnPressed()),
                                          this, SLOT(affTextChanged()) );
+                                
+                        } else if (dc == QString("xletproto")) {
+                                m_xletprotopanel = new XletprotoPanel();
+                                addPanel("xletproto", tr("Xlet Prototype"), m_xletprotopanel);
+                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                                         m_xletprotopanel, SLOT(setUserInfo(const UserInfo *)));
                         }
                 }
         }
@@ -1200,6 +1207,8 @@ void MainWidget::engineStopped()
                                 removePanel("datetime", m_datetimepanel);
 			} else if (dc == QString("conference")) {
                                 removePanel("conference", m_conferencepanel);
+                        } else if (dc == QString("xletproto")) {
+                                removePanel("xletproto", m_xletprotopanel);
                         }
                 }
         }

@@ -39,49 +39,25 @@
  * $Date$
  */
 
-#ifndef __QUEUEENTRYDETAILSPANEL_H__
-#define __QUEUEENTRYDETAILSPANEL_H__
+#ifndef __XLETPROTOPANEL_H__
+#define __XLETPROTOPANEL_H__
 
-#include <QHash>
-#include <QList>
 #include <QObject>
 #include <QWidget>
 
-class QGridLayout;
-class QLabel;
-class QScrollArea;
-class QVBoxLayout;
+class UserInfo;
 
-/*! \brief Identity Display
+/*! \brief Xletproto Panel
  */
-class QueueentrydetailsPanel : public QWidget
+class XletprotoPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	QueueentrydetailsPanel(QWidget * parent = 0);
-	~QueueentrydetailsPanel();
-signals:
-        void changeWatchedAgent(const QString &);
-protected:
+	XletprotoPanel(QWidget * parent = 0);
 public slots:
-	void newQueue(const QStringList &);
-        void updatePeerAgent(const QString &,
-                             const QString &,
-                             const QString &);
-private slots:
-        void agentClicked();
+        void setUserInfo(const UserInfo *);
 private:
-        QGridLayout * m_gridlayout;
-	QVBoxLayout * m_layout;
-        QScrollArea * m_scrollarea;
-	QWidget * m_widget;
-
-        QString m_astid;
-        QString m_queueid;
-        QLabel * m_label;
-        QHash<QString, QLabel *> m_entrypos;
-        QHash<QString, QLabel *> m_entrytime;
-        int m_maxbusy;
+        const UserInfo * m_ui;
 };
 
-#endif /* __QUEUEENTRYDETAILSPANEL_H__ */
+#endif /* __XLETPROTOPANEL_H__ */
