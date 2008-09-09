@@ -63,6 +63,10 @@
 #include "urllabel.h"
 #include "userinfo.h"
 
+QStringList formbuttonnames = (QStringList()
+                               << "refuse" << "hangup" << "close" << "save" << "answer"
+                               << "callok" << "callko");
+
 /*!
  * This constructor inits all XML objects and connect signals
  * to slots.
@@ -118,37 +122,22 @@ void Popup::feed(QIODevice * inputstream,
         QUiLoader loader;
         if(sheetui) {
                 m_sheetui_widget = loader.load(m_inputstream, this);
-        } else {
-                QFile file(":/common/form_default.ui");
-                file.open(QFile::ReadOnly);
-                m_sheetui_widget = loader.load(&file, this);
-                file.close();
+                m_vlayout->insertWidget(m_vlayout->count() - 1, m_sheetui_widget, 0, 0);
+                foreach(QString formbuttonname, formbuttonnames) {
+                        m_form_buttons[formbuttonname] = m_sheetui_widget->findChild<QPushButton *>(formbuttonname);
+                        if(m_form_buttons[formbuttonname]) {
+                                m_form_buttons[formbuttonname]->setProperty("buttonname", formbuttonname);
+                                connect( m_form_buttons[formbuttonname], SIGNAL(clicked()),
+                                         this, SLOT(actionFromForm()) );
+                        }
+                }
+                QLineEdit   * datetime    = m_sheetui_widget->findChild<QLineEdit *>("datetime");
+                QLineEdit   * year        = m_sheetui_widget->findChild<QLineEdit *>("year");
+                if(datetime)
+                        datetime->setText(currentDateTimeStr);
+                if(year)
+                        year->setText(currentDateTime.toString("yyyy"));
         }
-
-        m_vlayout->insertWidget(m_vlayout->count() - 1, m_sheetui_widget, 0, 0);
-
-        m_refbutton    = m_sheetui_widget->findChild<QPushButton *>("refuse");
-        m_hupbutton    = m_sheetui_widget->findChild<QPushButton *>("hangup");
-        m_closebutton  = m_sheetui_widget->findChild<QPushButton *>("close");
-        m_savebutton   = m_sheetui_widget->findChild<QPushButton *>("save");
-        m_answerbutton = m_sheetui_widget->findChild<QPushButton *>("answer");
-        QLineEdit   * datetime    = m_sheetui_widget->findChild<QLineEdit *>("datetime");
-        QLineEdit   * year        = m_sheetui_widget->findChild<QLineEdit *>("year");
-        
-        if(m_refbutton)
-                connect( m_refbutton, SIGNAL(clicked()), this, SLOT(refuse()) );
-        if(m_hupbutton)
-                connect( m_hupbutton, SIGNAL(clicked()), this, SLOT(hangup()) );
-        if(m_closebutton)
-                connect( m_closebutton, SIGNAL(clicked()), this, SLOT(close()) );
-        if(m_savebutton)
-                connect( m_savebutton, SIGNAL(clicked()), this, SLOT(saveandclose()) );
-        if(m_answerbutton)
-                connect( m_answerbutton, SIGNAL(clicked()), this, SLOT(answer()) );
-        if(datetime)
-                datetime->setText(currentDateTimeStr);
-        if(year)
-                year->setText(currentDateTime.toString("yyyy"));
         
 	setWindowIcon(QIcon(":/images/xivoicon.png"));
         QDesktopServices::setUrlHandler(QString("dial"), this, "dispurl");
@@ -161,21 +150,22 @@ void Popup::dispurl(const QUrl &url)
         originateCall("user:special:me", "ext:" + numbertodial);
 }
 
-void Popup::refuse()
+void Popup::actionFromForm()
 {
-        // qDebug() << "Popup::refuse()" << m_channel;
-}
-
-void Popup::hangup()
-{
-        // qDebug() << "Popup::hangup()" << m_channel;
-        hangUp(m_ui, m_channel);
-}
-
-void Popup::answer()
-{
-        // qDebug() << "Popup::answer()" << m_called;
-        pickUp(m_ui, m_called);
+        QString buttonname = this->sender()->property("buttonname").toString();
+        qDebug() << "Popup::actionFromForm()" << buttonname << m_channel;
+        if(buttonname == "hangup")
+                hangUp(m_ui, m_channel);
+        else if(buttonname == "answer")
+                pickUp(m_ui, m_channel);
+        else if(buttonname == "save")
+                saveandclose();
+        else if(buttonname == "close")
+                close();
+        else if(buttonname == "callok")
+                qDebug() << "callok";
+        else if(buttonname == "callko")
+                qDebug() << "callko";
 }
 
 void Popup::saveandclose()
@@ -252,7 +242,6 @@ void Popup::setTitle(const QString & title)
 void Popup::addInfoForm(const QString & name, const QString & value)
 {
         qDebug() << "Popup::addInfoForm()" << name << value;
-	QLabel * lblname = new QLabel(name, this);
         QUiLoader loader;
         QFile file(value);
         file.open(QFile::ReadOnly);
@@ -260,6 +249,18 @@ void Popup::addInfoForm(const QString & name, const QString & value)
         file.close();
 	QHBoxLayout * hlayout = new QHBoxLayout();
 	hlayout->addWidget(form);
+
+        foreach(QString formbuttonname, formbuttonnames) {
+                if(! m_form_buttons[formbuttonname]) {
+                        m_form_buttons[formbuttonname] = form->findChild<QPushButton *>(formbuttonname);
+                        if(m_form_buttons[formbuttonname]) {
+                                m_form_buttons[formbuttonname]->setProperty("buttonname", formbuttonname);
+                                connect( m_form_buttons[formbuttonname], SIGNAL(clicked()),
+                                         this, SLOT(actionFromForm()) );
+                        }
+                }
+        }
+
 	m_vlayout->insertLayout(m_vlayout->count() - 1, hlayout);
 }
 
@@ -278,7 +279,7 @@ void Popup::addInfoText(const QString & name, const QString & value)
 
 void Popup::addInfoInternal(const QString & name, const QString & value)
 {
-        // qDebug() << "Popup::addInfoInternal()" << value;
+        // qDebug() << "Popup::addInfoInternal()" << name << value;
         if(name == "channel")
                 m_channel = value;
         else if(name == "nosystraypopup")
@@ -291,22 +292,24 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
                 m_sessionid = value;
                 setProperty("sessionid", m_sessionid);
         } else if(name == "kind") {
+                // the form buttons should have been defined when arriving here
+                // ('kind' definition at the end of the sheet on server-side)
                 if(value == "agi") {
-                        if(m_hupbutton)
-                                m_hupbutton->setEnabled(false);
+                        if(m_form_buttons["hangup"])
+                                m_form_buttons["hangup"]->setEnabled(false);
                 } else if(value == "link") {
-                        if(m_refbutton)
-                                m_refbutton->setEnabled(false);
-                        if(m_hupbutton)
-                                m_hupbutton->setEnabled(true);
-                        if(m_answerbutton)
-                                m_answerbutton->setEnabled(false);
+                        if(m_form_buttons["refuse"])
+                                m_form_buttons["refuse"]->setEnabled(false);
+                        if(m_form_buttons["hangup"])
+                                m_form_buttons["hangup"]->setEnabled(true);
+                        if(m_form_buttons["answer"])
+                                m_form_buttons["answer"]->setEnabled(false);
                 } else if(value == "unlink") {
-                        if(m_hupbutton)
-                                m_hupbutton->setEnabled(false);
+                        if(m_form_buttons["hangup"])
+                                m_form_buttons["hangup"]->setEnabled(false);
                 }
         } else
-                qDebug() << "Popup::addInfoInternal() internal" << name << value;
+                qDebug() << "Popup::addInfoInternal() : undefined internal" << name << value;
 }
 
 void Popup::addInfoPhone(const QString & name, const QString & value)

@@ -123,13 +123,12 @@ public slots:
         void dialThisNumber();
         void dispurl(const QUrl &);
         void httpGetNoreply();
-        void saveandclose();
-        void hangup();
-        void answer();
-        void refuse();
+        void actionFromForm();
 protected:
 	void closeEvent(QCloseEvent *);	//!< catch close event
 private:
+        void saveandclose();
+        
 	QIODevice * m_inputstream;	//!< input stream where the XML is read from
 	/* the following properties are for XML parsing */
 	//! QXmlInputSource constructed from m_inputstream
@@ -156,11 +155,7 @@ private:
         bool m_sheetui;
         QWidget * m_sheetui_widget;
         QList<QStringList> m_sheetlines;
-        QPushButton * m_refbutton;
-        QPushButton * m_hupbutton;
-        QPushButton * m_closebutton;
-        QPushButton * m_savebutton;
-        QPushButton * m_answerbutton;
+        QHash<QString, QPushButton *> m_form_buttons;
 };
 
 #endif
