@@ -119,7 +119,7 @@ void Popup::feed(QIODevice * inputstream,
         if(sheetui) {
                 m_sheetui_widget = loader.load(m_inputstream, this);
         } else {
-                QFile file(":/common/defaultform.ui");
+                QFile file(":/common/form_default.ui");
                 file.open(QFile::ReadOnly);
                 m_sheetui_widget = loader.load(&file, this);
                 file.close();
@@ -224,6 +224,8 @@ void Popup::addAnyInfo(const QString & localName,
                                 addInfoPhoneURL( infoName, infoValue );
                         else
                                 addInfoText( infoName, infoValue );
+                } else if( infoType == "form" ) {
+                        addInfoForm( infoName, infoValue );
                 }
                 
 	} else if( localName == "systray_info" ) {
@@ -245,6 +247,20 @@ void Popup::setTitle(const QString & title)
 {
         // qDebug() << "Popup::setTitle()" << title;
         m_title->setText(title);
+}
+
+void Popup::addInfoForm(const QString & name, const QString & value)
+{
+        qDebug() << "Popup::addInfoForm()" << name << value;
+	QLabel * lblname = new QLabel(name, this);
+        QUiLoader loader;
+        QFile file(value);
+        file.open(QFile::ReadOnly);
+        QWidget * form = loader.load(&file, this);
+        file.close();
+	QHBoxLayout * hlayout = new QHBoxLayout();
+	hlayout->addWidget(form);
+	m_vlayout->insertLayout(m_vlayout->count() - 1, hlayout);
 }
 
 void Popup::addInfoText(const QString & name, const QString & value)

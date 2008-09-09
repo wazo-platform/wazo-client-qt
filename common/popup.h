@@ -101,6 +101,7 @@ public:
 	bool focus();
         void setTitle(const QString &);
         
+        void addInfoForm(const QString &, const QString &);
         void addAnyInfo(const QString &,
                         const QString &,
                         const QString &,
