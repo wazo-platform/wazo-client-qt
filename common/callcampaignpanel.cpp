@@ -39,21 +39,31 @@
  * $Date$
  */
 
-#ifndef __XIVOCONSTS_H__
-#define __XIVOCONSTS_H__
+#include <QDebug>
+#include <QLabel>
+#include <QGridLayout>
 
-#define CHANNEL_MIMETYPE	"XIVO_ASTERISK_CHANNEL"
-#define PEER_MIMETYPE		"XIVO_ASTERISK_PEER"
-#define NUMBER_MIMETYPE		"XIVO_ASTERISK_NUMBER"
+#include "callcampaignpanel.h"
+#include "userinfo.h"
 
-const int REQUIRED_SERVER_VERSION = 3706;
-const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
-const QString __current_client_version__  = SVNVER;
-const QString __xivo_version__  = "0.4";
-const QString __nopresence__ = "nopresence";
-const QStringList XletList = (QStringList() << "customerinfo" << "features" << "history"
-                              << "directory" << "search" << "fax" << "dial"
-                              << "operator" << "parking" << "calls" << "switchboard"
-                              << "messages" << "identity" << "datetime" << "tabber" << "conference" << "xletproto" << "callcampaign" << "mylocaldir"
-                              << "agents" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
-#endif
+/*! \brief Constructor
+ */
+CallCampaignPanel::CallCampaignPanel(QWidget * parent)
+        : QWidget(parent), m_ui(NULL)
+{
+        qDebug() << "CallCampaignPanel::CallCampaignPanel()";
+	
+        // replace by whatever you need
+        QGridLayout * glayout = new QGridLayout(this);
+        QLabel * title = new QLabel(tr("CallCampaign"));
+        glayout->addWidget( title, 0, 0, Qt::AlignCenter );
+        glayout->setRowStretch( 0, 1 );
+        glayout->setColumnStretch( 0, 1 );
+        //
+}
+
+void CallCampaignPanel::setUserInfo(const UserInfo * ui)
+{
+        m_ui = ui;
+        qDebug() << "CallCampaignPanel::setUserInfo()" << m_ui->fullname();
+}

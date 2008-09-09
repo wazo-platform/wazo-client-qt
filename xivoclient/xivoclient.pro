@@ -65,6 +65,8 @@ HEADERS += $${COMMONDIR}/userinfo.h
 HEADERS += $${COMMONDIR}/videopanel.h
 HEADERS += $${COMMONDIR}/xivoconsts.h
 HEADERS += $${COMMONDIR}/xletprotopanel.h
+HEADERS += $${COMMONDIR}/callcampaignpanel.h
+HEADERS += $${COMMONDIR}/mylocaldirpanel.h
 HEADERS += $${COMMONDIR}/xmlhandler.h
 
 SOURCES += main.cpp
@@ -108,6 +110,8 @@ SOURCES += $${COMMONDIR}/urllabel.cpp
 SOURCES += $${COMMONDIR}/userinfo.cpp
 SOURCES += $${COMMONDIR}/videopanel.cpp
 SOURCES += $${COMMONDIR}/xletprotopanel.cpp
+SOURCES += $${COMMONDIR}/callcampaignpanel.cpp
+SOURCES += $${COMMONDIR}/mylocaldirpanel.cpp
 SOURCES += $${COMMONDIR}/xmlhandler.cpp
 
 QT += network

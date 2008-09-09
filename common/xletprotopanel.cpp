@@ -65,5 +65,5 @@ XletprotoPanel::XletprotoPanel(QWidget * parent)
 void XletprotoPanel::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;
-        qDebug() << "XletprotoPanel::setUserInfo" << m_ui->fullname();
+        qDebug() << "XletprotoPanel::setUserInfo()" << m_ui->fullname();
 }
