@@ -114,10 +114,10 @@ void Popup::feed(QIODevice * inputstream,
         // 	         this, SLOT(socketError(QAbstractSocket::SocketError)));
 	m_parsingStarted = false;
 	m_vlayout = new QVBoxLayout(this);
-        m_vlayout->addStretch();
         m_title = new QLabel(this);
 	m_title->setAlignment(Qt::AlignHCenter);
-	m_vlayout->insertWidget(m_vlayout->count() - 1, m_title);
+	m_vlayout->addWidget(m_title);
+        m_vlayout->addStretch();
 
         QUiLoader loader;
         if(sheetui) {
@@ -192,31 +192,55 @@ void Popup::addAnyInfo(const QString & localName,
         QStringList z  = (QStringList() << localName << infoOrder << infoType << infoName << infoValue);
         m_sheetlines.append(z);
 	if( localName == "sheet_info" ) {
+                int where = 0;
+                if(m_orders.contains(infoOrder)) {
+                        // removes the layout and widgets there
+                        where = m_orders.indexOf(infoOrder) + 1;
+                        QLayoutItem * qli = m_vlayout->itemAt(where);
+                        if(qli->layout()) {
+                                QLayoutItem * child;
+                                while ((child = qli->layout()->takeAt(0)) != 0) {
+                                        if(child->widget())
+                                                delete child->widget();
+                                        delete child;
+                                }
+                                delete qli->layout();
+                        }
+                        if(qli->widget())
+                                delete qli->widget();
+                        m_vlayout->removeItem(qli);
+                } else {
+                        m_orders.append(infoOrder);
+                        m_orders.sort();
+                        where = m_orders.indexOf(infoOrder) + 1;
+                }
                 setSheetPopup( true );
 		if( infoType == "text" ) {
-                        if(infoName == "")
+                        if(infoName == "") {
                                 setTitle( infoValue );
-                        else
-                                addInfoText( infoName, infoValue );
+                                m_orders.removeAll(infoOrder);
+                        } else
+                                addInfoText( where, infoName, infoValue );
                 } else if( infoType == "url" ) {
-                        addInfoLink( infoName, infoValue );
+                        addInfoLink( where, infoName, infoValue );
                 } else if( infoType == "picture" ) {
-                        addInfoPicture( infoName, infoValue );
+                        addInfoPicture( where, infoName, infoValue );
                 } else if( infoType == "urlx" ) {
                         QStringList qsl = infoValue.split("@");
                         if(qsl.size() == 2)
-                                addInfoLinkX( infoName, qsl[0], qsl[1] );
+                                addInfoLinkX( where, infoName, qsl[0], qsl[1] );
                         else
-                                addInfoLinkX( infoName, infoValue, infoValue );
+                                addInfoLinkX( where, infoName, infoValue, infoValue );
                 } else if( infoType == "phone" ) {
                         QRegExp re_number("\\+?[0-9\\s\\.]+");
                         if(re_number.exactMatch(infoValue))
-                                addInfoPhoneURL( infoName, infoValue );
+                                addInfoPhoneURL( where, infoName, infoValue );
                         else
-                                addInfoText( infoName, infoValue );
+                                addInfoText( where, infoName, infoValue );
                 } else if( infoType == "form" ) {
-                        addInfoForm( infoName, infoValue );
-                }
+                        addInfoForm( where, infoName, infoValue );
+                } else
+                        m_orders.removeAll(infoOrder);
                 
 	} else if( localName == "systray_info" ) {
                 if ( infoType == "title" )
@@ -239,7 +263,7 @@ void Popup::setTitle(const QString & title)
         m_title->setText(title);
 }
 
-void Popup::addInfoForm(const QString & name, const QString & value)
+void Popup::addInfoForm(int where, const QString & name, const QString & value)
 {
         qDebug() << "Popup::addInfoForm()" << name << value;
         QUiLoader loader;
@@ -247,9 +271,7 @@ void Popup::addInfoForm(const QString & name, const QString & value)
         file.open(QFile::ReadOnly);
         QWidget * form = loader.load(&file, this);
         file.close();
-	QHBoxLayout * hlayout = new QHBoxLayout();
-	hlayout->addWidget(form);
-
+        
         foreach(QString formbuttonname, formbuttonnames) {
                 if(! m_form_buttons[formbuttonname]) {
                         m_form_buttons[formbuttonname] = form->findChild<QPushButton *>(formbuttonname);
@@ -261,10 +283,10 @@ void Popup::addInfoForm(const QString & name, const QString & value)
                 }
         }
 
-	m_vlayout->insertLayout(m_vlayout->count() - 1, hlayout);
+	m_vlayout->insertWidget(where, form);
 }
 
-void Popup::addInfoText(const QString & name, const QString & value)
+void Popup::addInfoText(int where, const QString & name, const QString & value)
 {
         // qDebug() << "Popup::addInfoText()" << value;
 	QLabel * lblname = new QLabel(name, this);
@@ -274,7 +296,7 @@ void Popup::addInfoText(const QString & name, const QString & value)
 	QHBoxLayout * hlayout = new QHBoxLayout();
 	hlayout->addWidget(lblname);
 	hlayout->addWidget(lblvalue);
-	m_vlayout->insertLayout(m_vlayout->count() - 1, hlayout);
+	m_vlayout->insertLayout(where, hlayout);
 }
 
 void Popup::addInfoInternal(const QString & name, const QString & value)
@@ -312,7 +334,7 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
                 qDebug() << "Popup::addInfoInternal() : undefined internal" << name << value;
 }
 
-void Popup::addInfoPhone(const QString & name, const QString & value)
+void Popup::addInfoPhone(int where, const QString & name, const QString & value)
 {
         // qDebug() << "Popup::addInfoPhone()" << value;
 	QLabel * lblname = new QLabel(name, this);
@@ -324,7 +346,7 @@ void Popup::addInfoPhone(const QString & name, const QString & value)
         QHBoxLayout * hlayout = new QHBoxLayout();
         hlayout->addWidget(lblname);
         hlayout->addWidget(lblvalue);
-        m_vlayout->insertLayout(m_vlayout->count() - 1, hlayout);
+        m_vlayout->insertLayout(where, hlayout);
 }
 
 QList<QStringList> & Popup::sheetlines()
@@ -342,7 +364,7 @@ void Popup::update(QList<QStringList> & newsheetlines)
         }
 }
 
-void Popup::addInfoPhoneURL(const QString & name, const QString & value)
+void Popup::addInfoPhoneURL(int where, const QString & name, const QString & value)
 {
         // qDebug() << "Popup::addInfoPhoneURL()" << value;
 	QLabel * lblname = new QLabel(name, this);
@@ -350,10 +372,10 @@ void Popup::addInfoPhoneURL(const QString & name, const QString & value)
 	QHBoxLayout * hlayout = new QHBoxLayout();
 	hlayout->addWidget(lblname);
 	hlayout->addWidget(lblvalue);
-	m_vlayout->insertLayout(m_vlayout->count() - 1, hlayout);
+	m_vlayout->insertLayout(where, hlayout);
 }
 
-void Popup::addInfoLink(const QString & name, const QString & value)
+void Popup::addInfoLink(int where, const QString & name, const QString & value)
 {
         // qDebug() << "Popup::addInfoLink()" << value;
 	QLabel * lblname = new QLabel(name, this);
@@ -361,7 +383,7 @@ void Popup::addInfoLink(const QString & name, const QString & value)
 	QHBoxLayout * hlayout = new QHBoxLayout();
 	hlayout->addWidget(lblname);
 	hlayout->addWidget(lblvalue);
-	m_vlayout->insertLayout(m_vlayout->count() - 1, hlayout);
+	m_vlayout->insertLayout(where, hlayout);
 }
 
 void Popup::addInfoLinkAuto(const QString &, const QString & value)
@@ -386,7 +408,7 @@ void Popup::addInfoLinkAuto(const QString &, const QString & value)
         }
 }
 
-void Popup::addInfoLinkX(const QString & name, const QString & value, const QString & dispvalue)
+void Popup::addInfoLinkX(int where, const QString & name, const QString & value, const QString & dispvalue)
 {
         // qDebug() << "Popup::addInfoLinkX()" << name << value << dispvalue;
 	QLabel * lblname = new QLabel(name, this);
@@ -398,10 +420,10 @@ void Popup::addInfoLinkX(const QString & name, const QString & value, const QStr
         QHBoxLayout * hlayout = new QHBoxLayout();
         hlayout->addWidget(lblname);
         hlayout->addWidget(lblvalue);
-        m_vlayout->insertLayout(m_vlayout->count() - 1, hlayout);
+        m_vlayout->insertLayout(where, hlayout);
 }
 
-void Popup::addInfoPicture(const QString & name, const QString & value)
+void Popup::addInfoPicture(int where, const QString & name, const QString & value)
 {
 	QUrl url(value);
         // qDebug() << "Popup::addInfoPicture()" << value << url.scheme();
@@ -413,10 +435,10 @@ void Popup::addInfoPicture(const QString & name, const QString & value)
 		QPixmap *face = new QPixmap( value );
 		// TODO: connect a signal to close() ?
 		lbl->setPixmap( *face );
-		m_vlayout->insertWidget( m_vlayout->count() - 1, lbl, 0, Qt::AlignCenter );
+		m_vlayout->insertWidget(where, lbl, 0, Qt::AlignCenter);
 	} else {
 		RemotePicWidget * pic = new RemotePicWidget( name, value, this );
-		m_vlayout->insertWidget( m_vlayout->count() - 1, pic, 0, Qt::AlignCenter );
+		m_vlayout->insertWidget(where, pic, 0, Qt::AlignCenter);
 	}
 }
 

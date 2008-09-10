@@ -73,17 +73,17 @@ public:
         void feed(QIODevice *, const bool &);
         void addInfoInternal(const QString &, const QString &);
 	//! Add a Text field (name, value)
-	void addInfoText(const QString &, const QString &);
+	void addInfoText(int, const QString &, const QString &);
 	//! Add a url field
-	void addInfoLink(const QString &, const QString &);
-	void addInfoLinkX(const QString &, const QString &, const QString &);
+	void addInfoLink(int, const QString &, const QString &);
+	void addInfoLinkX(int, const QString &, const QString &, const QString &);
         void addInfoLinkAuto(const QString &, const QString &);
 	//! Add a Picture
-	void addInfoPicture(const QString &, const QString &);
+	void addInfoPicture(int, const QString &, const QString &);
 	//! Add a Phone number
-	void addInfoPhone(const QString &, const QString &);
+	void addInfoPhone(int, const QString &, const QString &);
 	//! Add a Phone number
-	void addInfoPhoneURL(const QString &, const QString &);
+	void addInfoPhoneURL(int, const QString &, const QString &);
 	//! getter for the message
 	void setMessage(const QString &, const QString &);
 	//! access to the message
@@ -101,7 +101,7 @@ public:
 	bool focus();
         void setTitle(const QString &);
         
-        void addInfoForm(const QString &, const QString &);
+        void addInfoForm(int, const QString &, const QString &);
         void addAnyInfo(const QString &,
                         const QString &,
                         const QString &,
@@ -154,6 +154,7 @@ private:
         bool m_toupdate;
         bool m_sheetui;
         QWidget * m_sheetui_widget;
+        QStringList m_orders;
         QList<QStringList> m_sheetlines;
         QHash<QString, QPushButton *> m_form_buttons;
 };
