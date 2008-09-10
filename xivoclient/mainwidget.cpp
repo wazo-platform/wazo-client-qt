@@ -1081,13 +1081,13 @@ void MainWidget::engineStarted()
                                 
                         } else if (dc == QString("callcampaign")) {
                                 m_xlet[dc] = new CallCampaignPanel();
-                                addPanel("callcampaign", tr("Call Campaign"), m_xlet[dc]);
+                                addPanel("callcampaign", tr("Call Campaigns"), m_xlet[dc]);
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 
                         } else if (dc == QString("mylocaldir")) {
                                 m_xlet[dc] = new MyLocalDirPanel();
-                                addPanel("mylocaldir", tr("My Local Directory"), m_xlet[dc]);
+                                addPanel("mylocaldir", tr("Personal Directory"), m_xlet[dc]);
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 

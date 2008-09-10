@@ -55,7 +55,7 @@ CallCampaignPanel::CallCampaignPanel(QWidget * parent)
 	
         // replace by whatever you need
         QGridLayout * glayout = new QGridLayout(this);
-        QLabel * title = new QLabel(tr("CallCampaign"));
+        QLabel * title = new QLabel();
         glayout->addWidget( title, 0, 0, Qt::AlignCenter );
         glayout->setRowStretch( 0, 1 );
         glayout->setColumnStretch( 0, 1 );
