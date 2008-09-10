@@ -60,8 +60,7 @@ class DialPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	DialPanel(QWidget * parent = 0);
-        void setEngine(BaseEngine *);
+	DialPanel(BaseEngine *, QWidget * parent = 0);
 protected:
         /*void mouseMoveEvent(QMouseEvent *);	//!< Catch mouse press events */
         /*void mousePressEvent(QMouseEvent *); */

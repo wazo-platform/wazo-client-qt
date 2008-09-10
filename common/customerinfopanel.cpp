@@ -51,8 +51,9 @@
 #include "popup.h"
 #include "userinfo.h"
 
-CustomerInfoPanel::CustomerInfoPanel(QWidget * parent)
-        : QWidget(parent)
+CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine, QWidget * parent)
+        : QWidget(parent),
+          m_engine(engine)
 {
         qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
         QGridLayout * glayout = new QGridLayout(this);
@@ -61,11 +62,6 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget * parent)
         glayout->addWidget( m_tabs, 0, 0 );
         glayout->setRowStretch(0, 1);
         glayout->setColumnStretch(0, 1);
-}
-
-void CustomerInfoPanel::setEngine(BaseEngine * engine)
-{
-	m_engine = engine;
 }
 
 void CustomerInfoPanel::setUserInfo(const UserInfo * ui)

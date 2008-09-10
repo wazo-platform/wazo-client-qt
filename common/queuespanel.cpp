@@ -54,8 +54,9 @@ const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 
 
 /*! \brief Constructor
  */
-QueuesPanel::QueuesPanel(QWidget * parent)
-        : QWidget(parent)
+QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
+        : QWidget(parent),
+          m_engine(engine)
 {
 	m_gridlayout = new QGridLayout(this);
 

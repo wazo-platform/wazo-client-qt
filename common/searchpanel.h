@@ -61,9 +61,8 @@ class SearchPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	SearchPanel(QWidget * parent = 0);	//!< Constructor
+	SearchPanel(BaseEngine *, QWidget * parent = 0);	//!< Constructor
 	~SearchPanel();	//!< Destructor
-	void setEngine(BaseEngine *);	//!< set m_engine
 public slots:
 	void affTextChanged(const QString &);
         void updatePeer(UserInfo *,

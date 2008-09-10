@@ -50,9 +50,15 @@
 #include "extendedlineedit.h"
 #include "userinfo.h"
 
-SearchPanel::SearchPanel(QWidget * parent)
-        : QWidget(parent)
+SearchPanel::SearchPanel(BaseEngine * engine, QWidget * parent)
+        : QWidget(parent),
+          m_engine(engine)
 {
+	m_engine = engine;
+        m_maxdisplay = m_engine->contactsSize();
+        m_ncolumns = m_engine->contactsColumns();
+        // m_engine->askCallerIds();
+
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
 	vlayout->setMargin(0);
 	QLabel * lbl = new QLabel( tr("N&ame or number to search :"), this );
@@ -79,9 +85,7 @@ SearchPanel::SearchPanel(QWidget * parent)
                 m_phones[color] = QPixmap(":/images/phone-" + color + ".png");
                 m_agents[color] = QPixmap(":/images/agent-" + color + ".png");
         }
-
-        m_maxdisplay = 15;
-        m_ncolumns = 4;
+        
         m_searchpattern = "";
 }
 
@@ -89,14 +93,6 @@ SearchPanel::~SearchPanel()
 {
         // qDebug() << "SearchPanel::~SearchPanel()";
         removePeers();
-}
-
-void SearchPanel::setEngine(BaseEngine * engine)
-{
-	m_engine = engine;
-        m_maxdisplay = m_engine->contactsSize();
-        m_ncolumns = m_engine->contactsColumns();
-        askCallerIds();
 }
 
 /*! \brief apply the search

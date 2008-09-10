@@ -56,10 +56,7 @@
 #include <QWidget>
 
 #include "baseengine.h"
-#include "dialpanel.h"
-#include "logwidget.h"
 #include "directorypanel.h"
-#include "videopanel.h"
 
 class QAction;
 class QActionGroup;
@@ -77,30 +74,12 @@ class QVBoxLayout;
 class QWidget;
 class QUrl;
 
-class AgentsPanel;
-class AgentdetailsPanel;
 class BaseEngine;
 class CallStackWidget;
-class ConferencePanel;
 class ConfigWidget;
-class CustomerInfoPanel;
-class DatetimePanel;
-class DialPanel;
 class DirectoryPanel;
-class DisplayMessagesPanel;
-class FaxPanel;
-class IdentityDisplay;
 class LeftPanel;
-class LogWidget;
-class ParkingPanel;
-class QueuesPanel;
-class QueuedetailsPanel;
-class QueueentrydetailsPanel;
-class SearchPanel;
-class ServicePanel;
-class StatusPanel;
 class SwitchBoardWindow;
-class XletprotoPanel;
 
 /*! \brief Main window class
  */
@@ -166,38 +145,17 @@ private:
 	QIcon m_icongrey;	//!< greyed Icon Object
 	QWidget * m_wid;	//!< Main widget
 
+        // Widgets for Xlets
 	QTabWidget * m_tabwidget;	//!< Area to display messages, services and histories
         LeftPanel * m_leftpanel;
         QScrollArea * m_areaCalls;
 	CallStackWidget * m_calls;
-	QLineEdit * m_messagetosend;    //!< Message to send to the connected switchboards
+	DirectoryPanel * m_dirpanel;
+        QHash<QString, QWidget *> m_xlet;
 
         QLabel * m_xivobg;
 
         ConfigWidget * m_config;
-
-        // Widgets for Xlets
-	SwitchBoardWindow * m_sbwidget;	//!< Widget to display peers
-	DirectoryPanel * m_dirpanel;
-        DisplayMessagesPanel * m_messages_widget;
-        FaxPanel * m_faxwidget;
-	LogWidget * m_historypanel;
-        ParkingPanel * m_parkingpanel;
-	SearchPanel * m_searchpanel;
-	ServicePanel * m_featureswidget;
-        StatusPanel * m_statuspanel;
-        IdentityDisplay * m_infowidget;
-        PlayerWidget * m_videopanel;
-        QueuesPanel * m_queuespanel;
-        QueuedetailsPanel * m_queuedetailspanel;
-        QueueentrydetailsPanel * m_queueentrydetailspanel;
-        AgentsPanel * m_agentspanel;
-        AgentdetailsPanel * m_agentdetailspanel;
-        DatetimePanel * m_datetimepanel;
-        DialPanel * m_dialpanel;
-        ConferencePanel * m_conferencepanel;
-        CustomerInfoPanel * m_customerinfopanel;
-        XletprotoPanel * m_xletprotopanel;
 
 	bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
 	bool m_presence;

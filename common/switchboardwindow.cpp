@@ -56,8 +56,8 @@
 #include "userinfo.h"
 #include "xivoconsts.h"
 
-SwitchBoardWindow::SwitchBoardWindow(QWidget * parent)
-	: QWidget(parent), m_engine(0)
+SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine, QWidget * parent)
+	: QWidget(parent), m_engine(engine)
 {
 	m_layout = new PeersLayout(this);
         setObjectName("scroller"); // in order for the style settings to be set accordingly
@@ -79,16 +79,6 @@ SwitchBoardWindow::~SwitchBoardWindow()
 	// qDebug() << "SwitchBoardWindow::~SwitchBoardWindow()";
         savePositions();
         removePeers();
-}
-
-/*! \brief setter for m_engine
- *
- * set BaseEngine object to be used to connect to
- * peer object slot/signals.
- */
-void SwitchBoardWindow::setEngine(BaseEngine * engine)
-{
-	m_engine = engine;
 }
 
 /*! \brief update or add a peer

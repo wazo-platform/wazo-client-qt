@@ -59,8 +59,10 @@ const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 
 
 /*! \brief Constructor
  */
-IdentityDisplay::IdentityDisplay(QWidget * parent)
-        : QWidget(parent), m_ui(NULL), m_agentstatus(false), m_queuechangeallow(true), m_maxqueues(5)
+IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
+        : QWidget(parent),
+          m_engine(engine),
+          m_ui(NULL), m_agentstatus(false), m_queuechangeallow(true), m_maxqueues(5)
 {
 	QGridLayout * glayout = new QGridLayout(this);
 	// glayout->setMargin(0);
@@ -145,11 +147,6 @@ IdentityDisplay::IdentityDisplay(QWidget * parent)
         m_qf->hide();
 
         // 	glayout->setColumnStretch( 0, 1 );
-}
-
-void IdentityDisplay::setEngine(BaseEngine * engine)
-{
-	m_engine = engine;
 }
 
 void IdentityDisplay::setUserInfo(const UserInfo * ui)

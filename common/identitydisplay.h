@@ -61,8 +61,8 @@ class IdentityDisplay : public QWidget
 {
 	Q_OBJECT
 public:
-	IdentityDisplay(QWidget * parent = 0);
-        void setEngine(BaseEngine *);
+	IdentityDisplay(BaseEngine *,
+                        QWidget * parent = 0);
 public slots:
         void setUserInfo(const UserInfo *);
         void setAgentList(const QString &);

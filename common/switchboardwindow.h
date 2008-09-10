@@ -64,9 +64,8 @@ class SwitchBoardWindow : public QWidget
 {
 	Q_OBJECT
 public:
-	SwitchBoardWindow( QWidget * parent = 0);	//! Constructor
+	SwitchBoardWindow(BaseEngine *, QWidget * parent = 0);	//! Constructor
         ~SwitchBoardWindow();	//! Destructor
-	void setEngine(BaseEngine *);	//!< set m_engine
 	void savePositions() const;
 protected:
 /*         void mousePressEvent(QMouseEvent *);	//!< Catch mouse press events */

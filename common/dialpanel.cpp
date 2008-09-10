@@ -56,8 +56,8 @@
 
 /*! \brief Constructor
  */
-DialPanel::DialPanel(QWidget * parent)
-        : QWidget(parent)
+DialPanel::DialPanel(BaseEngine * engine, QWidget * parent)
+        : QWidget(parent), m_engine(engine)
 {
 	QHBoxLayout * vlayout = new QHBoxLayout(this);
 	vlayout->setMargin(0);
@@ -90,11 +90,6 @@ DialPanel::DialPanel(QWidget * parent)
 	vlayout->addWidget( m_input, 0, Qt::AlignCenter );
 	vlayout->addWidget( dialButton, 0, Qt::AlignCenter );
         vlayout->addStretch(1);
-}
-
-void DialPanel::setEngine(BaseEngine * engine)
-{
-	m_engine = engine;
 }
 
 void DialPanel::setUserInfo(const UserInfo * ui)

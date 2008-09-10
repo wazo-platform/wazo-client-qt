@@ -59,8 +59,7 @@ class CustomerInfoPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	CustomerInfoPanel(QWidget * parent = 0);
-        void setEngine(BaseEngine *);
+	CustomerInfoPanel(BaseEngine *, QWidget * parent = 0);
 signals:
         void newPopup(const QString &,
                       const QHash<QString, QString> &,
