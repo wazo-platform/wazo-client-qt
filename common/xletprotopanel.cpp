@@ -43,13 +43,14 @@
 #include <QLabel>
 #include <QGridLayout>
 
+#include "baseengine.h"
 #include "xletprotopanel.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
  */
-XletprotoPanel::XletprotoPanel(QWidget * parent)
-        : QWidget(parent), m_ui(NULL)
+XletprotoPanel::XletprotoPanel(BaseEngine * engine, QWidget * parent)
+        : QWidget(parent), m_engine(engine), m_ui(NULL)
 {
         qDebug() << "XletprotoPanel::XletprotoPanel()";
 	

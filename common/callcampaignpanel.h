@@ -45,6 +45,8 @@
 #include <QObject>
 #include <QWidget>
 
+class QLineEdit;
+
 class UserInfo;
 
 /*! \brief CallCampaign Panel
@@ -56,8 +58,11 @@ public:
 	CallCampaignPanel(QWidget * parent = 0);
 public slots:
         void setUserInfo(const UserInfo *);
+        void setOpenFileName();
+        void fileNameChanged(const QString &);
 private:
         const UserInfo * m_ui;
+        QLineEdit * m_openFileNameLabel;
 };
 
 #endif /* __CALLCAMPAIGNPANEL_H__ */

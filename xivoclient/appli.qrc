@@ -5,6 +5,7 @@
 	<file>../common/form_okko.ui</file>
 	<file>../common/form_telmes.ui</file>
 	<file>xivoclient_fr.qm</file>
+	<file>qt_fr.qm</file>
 	<file>../images/xivoicon.png</file>
 	<file>../images/xivoicon-red.png</file>
 	<file>../images/xivoicon-green.png</file>

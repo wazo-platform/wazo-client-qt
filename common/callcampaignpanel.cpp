@@ -40,8 +40,11 @@
  */
 
 #include <QDebug>
+#include <QFileDialog>
+#include <QHBoxLayout>
 #include <QLabel>
-#include <QGridLayout>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include "callcampaignpanel.h"
 #include "userinfo.h"
@@ -52,18 +55,47 @@ CallCampaignPanel::CallCampaignPanel(QWidget * parent)
         : QWidget(parent), m_ui(NULL)
 {
         qDebug() << "CallCampaignPanel::CallCampaignPanel()";
-	
-        // replace by whatever you need
-        QGridLayout * glayout = new QGridLayout(this);
-        QLabel * title = new QLabel();
-        glayout->addWidget( title, 0, 0, Qt::AlignCenter );
-        glayout->setRowStretch( 0, 1 );
-        glayout->setColumnStretch( 0, 1 );
-        //
+        
+	QHBoxLayout * hlayout = new QHBoxLayout(this);
+        m_openFileNameLabel = new QLineEdit("", this);
+        connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
+                this, SLOT(fileNameChanged(const QString &)));
+        QPushButton * openFileNamesButton = new QPushButton( tr("Browse"), this);
+        connect(openFileNamesButton, SIGNAL(clicked()),
+                this, SLOT(setOpenFileName()));
+        hlayout->addWidget(m_openFileNameLabel);
+        hlayout->addWidget(openFileNamesButton);
 }
 
 void CallCampaignPanel::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;
         qDebug() << "CallCampaignPanel::setUserInfo()" << m_ui->fullname();
+}
+
+void CallCampaignPanel::setOpenFileName()
+{
+        qDebug() << "CallCampaignPanel::setOpenFileName()";
+        QFileDialog::Options options;
+        /*        if (!native->isChecked())*/
+        options |= QFileDialog::DontUseNativeDialog;
+        QString selectedFilter;
+        QString fileName = QFileDialog::getOpenFileName(this,
+                                                        tr("Open Fax File"),
+                                                        m_openFileNameLabel->text(),
+                                                        tr("CSV Files (*.csv);;All Files (*)"),
+                                                        &selectedFilter,
+                                                        options);
+        if (!fileName.isEmpty())
+                m_openFileNameLabel->setText(fileName);
+}
+
+void CallCampaignPanel::fileNameChanged(const QString &)
+{
+        qDebug() << "FaxPanel::fileNameChanged()";
+//         if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
+//                 m_sendButton->setEnabled(true);
+//         } else {
+//                 m_sendButton->setEnabled(false);
+//         }
 }

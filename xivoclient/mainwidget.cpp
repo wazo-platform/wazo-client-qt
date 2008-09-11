@@ -1086,13 +1086,13 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 
                         } else if (dc == QString("mylocaldir")) {
-                                m_xlet[dc] = new MyLocalDirPanel();
+                                m_xlet[dc] = new MyLocalDirPanel(m_engine);
                                 addPanel("mylocaldir", tr("Personal Directory"), m_xlet[dc]);
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 
                         } else if (dc == QString("xletproto")) {
-                                m_xlet[dc] = new XletprotoPanel();
+                                m_xlet[dc] = new XletprotoPanel(m_engine);
                                 addPanel("xletproto", tr("Xlet Prototype"), m_xlet[dc]);
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
@@ -1247,7 +1247,10 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
                 foreach(QString order, orders) {
                         todisp.append(msgs[order]);
                 }
-                m_systrayIcon->showMessage(msgtitle, todisp.join("\n"));
+                m_systrayIcon->showMessage(msgtitle,
+                                           todisp.join("\n"),
+                                           QSystemTrayIcon::Information,
+                                           5000);
         }
         
         // focus on the customerinfo tab

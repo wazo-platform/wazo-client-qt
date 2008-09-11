@@ -45,6 +45,9 @@
 #include <QObject>
 #include <QWidget>
 
+class QLineEdit;
+
+class BaseEngine;
 class UserInfo;
 
 /*! \brief MyLocalDir Panel
@@ -53,11 +56,20 @@ class MyLocalDirPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	MyLocalDirPanel(QWidget * parent = 0);
+	MyLocalDirPanel(BaseEngine *, QWidget * parent = 0);
 public slots:
         void setUserInfo(const UserInfo *);
+        void returnPressed();
 private:
+        void getDir();
+        void saveNew(const QStringList &);
+        
+        BaseEngine * m_engine;
         const UserInfo * m_ui;
+        
+        QLineEdit * m_who;
+        QLineEdit * m_number;
+        QList<QStringList> m_localdir;
 };
 
 #endif /* __MYLOCALDIRPANEL_H__ */

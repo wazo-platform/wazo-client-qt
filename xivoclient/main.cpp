@@ -84,14 +84,17 @@ int main(int argc, char ** argv)
         app.setStyleSheet(qssStr);
         app.setWindowIcon(QIcon(":/images/xivoicon.png"));
 
-        QTranslator qtTranslator;
+        QTranslator qtTranslator_xivo, qtTranslator_qt;
         QString forcelocale = settings->value("display/forcelocale", "").toString();
         if(forcelocale.size() > 0)
                 locale = forcelocale;
-        qtTranslator.load(QString(":/xivoclient_") + locale);
+        qtTranslator_xivo.load(QString(":/xivoclient_") + locale);
+        qtTranslator_qt.load(QString(":/qt_") + locale);
+        // QLibraryInfo::location(QLibraryInfo::TranslationsPath)
+        app.installTranslator(&qtTranslator_xivo);
+        app.installTranslator(&qtTranslator_qt);
         app.setQuitOnLastWindowClosed(false);
-        app.installTranslator(&qtTranslator);
-
+        
         BaseEngine * engine = new BaseEngine(settings);
         
         QString info_osname;
@@ -109,7 +112,7 @@ int main(int argc, char ** argv)
 #else
         info_osname = "unknown-" + info_endianness;
 #endif
-        qDebug() << info_osname;
+        qDebug() << "main()" << info_osname << locale;
 
         MainWidget main(engine, info_osname);
         

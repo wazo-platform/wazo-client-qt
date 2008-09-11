@@ -45,6 +45,7 @@
 #include <QObject>
 #include <QWidget>
 
+class BaseEngine;
 class UserInfo;
 
 /*! \brief Xletproto Panel
@@ -53,10 +54,11 @@ class XletprotoPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	XletprotoPanel(QWidget * parent = 0);
+	XletprotoPanel(BaseEngine * engine, QWidget * parent = 0);
 public slots:
         void setUserInfo(const UserInfo *);
 private:
+        BaseEngine * m_engine;
         const UserInfo * m_ui;
 };
 
