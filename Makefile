@@ -29,7 +29,7 @@ all-linux: linux-xivoclient
 
 linux-%:
 	make -C $* distclean || true
-	cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts && make
+	cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts qt_fr.ts && make
 	strip $*/$* || true
 	${UPXRUN} $*/$* || true
 
