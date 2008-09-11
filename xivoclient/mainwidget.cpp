@@ -1084,7 +1084,11 @@ void MainWidget::engineStarted()
                                 addPanel("callcampaign", tr("Call Campaigns"), m_xlet[dc]);
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
-                                
+                                connect( m_xlet[dc], SIGNAL(requestFileList()),
+                                         m_engine, SLOT(requestFileList()));
+                                connect( m_engine, SIGNAL(requestFileListResult(const QStringList &)),
+                                         m_xlet[dc], SLOT(requestFileListResult(const QStringList &)));
+
                         } else if (dc == QString("mylocaldir")) {
                                 m_xlet[dc] = new MyLocalDirPanel(m_engine);
                                 addPanel("mylocaldir", tr("Personal Directory"), m_xlet[dc]);

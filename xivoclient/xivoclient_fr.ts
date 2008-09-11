@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
+<defaultcodec></defaultcodec>
 <context>
     <name>AgentdetailsPanel</name>
     <message>
@@ -69,12 +70,12 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="../common/baseengine.cpp" line="817"/>
+        <location filename="../common/baseengine.cpp" line="820"/>
         <source> said : </source>
         <translation> a dit : </translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1547"/>
+        <location filename="../common/baseengine.cpp" line="1555"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
@@ -89,12 +90,12 @@
         <translation>Connexion refusée</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="848"/>
+        <location filename="../common/baseengine.cpp" line="851"/>
         <source>Could not modify the Services data.</source>
         <translation>Impossible de modifier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1030"/>
+        <location filename="../common/baseengine.cpp" line="1038"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -104,32 +105,32 @@
         <translation>Hôte non trouvé</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1000"/>
+        <location filename="../common/baseengine.cpp" line="1008"/>
         <source>Max number (%1) of XIVO Clients already reached.</source>
         <translation>Le nombre maximal (%1) de XIVO Clients est déjà connecté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1004"/>
+        <location filename="../common/baseengine.cpp" line="1012"/>
         <source>Max number (%1) of XIVO Switchboards already reached.</source>
         <translation>Le nombre maximal (%1) de XIVO Switchboards est déjà connecté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="848"/>
+        <location filename="../common/baseengine.cpp" line="851"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Asterisk est peut-être arrêté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1007"/>
+        <location filename="../common/baseengine.cpp" line="1015"/>
         <source>Missing Argument(s)</source>
         <translation>Argument(s) manquant(s)</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="996"/>
+        <location filename="../common/baseengine.cpp" line="1004"/>
         <source>No capability allowed.</source>
         <translation>Aucune capacité autorisée.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="834"/>
+        <location filename="../common/baseengine.cpp" line="837"/>
         <source>Received Services Data for </source>
         <translation>Reçu les Informations de Services pour </translation>
     </message>
@@ -139,39 +140,39 @@
         <translation>Statut reçu pour %1 utilisateurs</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="958"/>
+        <location filename="../common/baseengine.cpp" line="966"/>
         <source>Server has sent an Error.</source>
         <translation>Le serveur a renvoyé une Erreur.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="976"/>
+        <location filename="../common/baseengine.cpp" line="984"/>
         <source>The XIVO daemon on %1 did not reply to the last keepalive.</source>
         <translation>Le daemon XIVO sur %1 n&apos;a pas répondu au dernier keepalive.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="985"/>
+        <location filename="../common/baseengine.cpp" line="993"/>
         <source>The XIVO daemon on %1 has just been reloaded.</source>
         <translation>Le daemon XIVO sur %1 vient d&apos;être rechargé.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="982"/>
+        <location filename="../common/baseengine.cpp" line="990"/>
         <source>The XIVO daemon on %1 has just been stopped.</source>
         <translation>Le daemon XIVO sur %1 vient d&apos;être arrêté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="979"/>
+        <location filename="../common/baseengine.cpp" line="987"/>
         <source>The XIVO daemon on %1 has just closed the connection.</source>
         <translation>Le daemon XIVO sur %1 vient de fermer la connexion.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="964"/>
+        <location filename="../common/baseengine.cpp" line="972"/>
         <source>The number of arguments sent is incorrect.
 Maybe a version issue ?</source>
         <translation>Le nombre d&apos;arguments envoyés est incorrect.
 Peut-être un problème de version ?</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="817"/>
+        <location filename="../common/baseengine.cpp" line="820"/>
         <source>Unknown</source>
         <translation>Inconnue</translation>
     </message>
@@ -181,65 +182,65 @@ Peut-être un problème de version ?</translation>
         <translation>Erreur de réseau</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1032"/>
+        <location filename="../common/baseengine.cpp" line="1040"/>
         <source>XIVO CTI Error</source>
         <translation>XIVO CTI Erreur</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="989"/>
+        <location filename="../common/baseengine.cpp" line="997"/>
         <source>You are already connected from %1:%2.</source>
         <translation>Vous êtes déjà connecté depuis %1:%2.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="960"/>
+        <location filename="../common/baseengine.cpp" line="968"/>
         <source>You are not allowed to connect to the XIVO daemon on %1.</source>
         <translation>Vous n&apos;êtes pas autorisé à vous connecter au daemon XIVO sur %1.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="973"/>
+        <location filename="../common/baseengine.cpp" line="981"/>
         <source>You entered a wrong login / password.</source>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1013"/>
+        <location filename="../common/baseengine.cpp" line="1021"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1017"/>
+        <location filename="../common/baseengine.cpp" line="1025"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="993"/>
+        <location filename="../common/baseengine.cpp" line="1001"/>
         <source>Your phone &lt;%1&gt; has not been provisioned on XIVO.</source>
         <translation>Votre téléphone &lt;%1&gt; n&apos;a pas été provisionné sur le XIVO.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="967"/>
+        <location filename="../common/baseengine.cpp" line="975"/>
         <source>Your registration name &lt;%1@%2&gt; is not known.</source>
         <translation>Votre nom &lt;%1@%2&gt; est inconnu.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1023"/>
+        <location filename="../common/baseengine.cpp" line="1031"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1026"/>
+        <location filename="../common/baseengine.cpp" line="1034"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="970"/>
+        <location filename="../common/baseengine.cpp" line="978"/>
         <source>Your session has expired.</source>
         <translation>Votre session a expiré.</translation>
     </message>
@@ -247,19 +248,34 @@ Merci de mettre à jour votre serveur.</translation>
 <context>
     <name>CallCampaignPanel</name>
     <message>
-        <location filename="../common/callcampaignpanel.cpp" line="63"/>
+        <location filename="../common/callcampaignpanel.cpp" line="69"/>
         <source>Browse</source>
         <translation>Parcourir</translation>
     </message>
     <message>
-        <location filename="../common/callcampaignpanel.cpp" line="86"/>
+        <location filename="../common/callcampaignpanel.cpp" line="107"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
-        <translation>FichiersFichiers CSV (*.csv);;Tous les Fichiers (*)</translation>
+        <translation>Fichiers CSV (*.csv);;Tous les Fichiers (*)</translation>
     </message>
     <message>
-        <location filename="../common/callcampaignpanel.cpp" line="84"/>
+        <location filename="../common/callcampaignpanel.cpp" line="65"/>
+        <source>File to load</source>
+        <translation>Fichier à charger</translation>
+    </message>
+    <message>
+        <location filename="../common/callcampaignpanel.cpp" line="72"/>
+        <source>Load</source>
+        <translation>Charger</translation>
+    </message>
+    <message>
+        <location filename="../common/callcampaignpanel.cpp" line="105"/>
         <source>Open PhoneList File</source>
         <translation>Ouvrir la Liste de Téléphones</translation>
+    </message>
+    <message>
+        <location filename="../common/callcampaignpanel.cpp" line="75"/>
+        <source>Server</source>
+        <translation>Serveur</translation>
     </message>
 </context>
 <context>
@@ -709,7 +725,7 @@ a été envoyé à %2.</translation>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="mainwidget.cpp" line="1395"/>
+        <location filename="mainwidget.cpp" line="1399"/>
         <source>&lt;p&gt;The XIVO CTI applications, once connected to the proper server, complete the XIVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>&lt;p&gt; Les applications CTI XIVO, une fois connectées au serveur adéquat, complètent le système téléphonique XIVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
@@ -719,17 +735,17 @@ a été envoyé à %2.</translation>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1389"/>
-        <source>About XIVO %1</source>
-        <translation>A propos de XIVO %1</translation>
-    </message>
-    <message>
         <location filename="mainwidget.cpp" line="498"/>
         <source>&amp;About XIVO %1</source>
         <translation>A propos de &amp;XIVO %1</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1398"/>
+        <location filename="mainwidget.cpp" line="1393"/>
+        <source>About XIVO %1</source>
+        <translation>A propos de XIVO %1</translation>
+    </message>
+    <message>
+        <location filename="mainwidget.cpp" line="1402"/>
         <source>Advised Server Version : </source>
         <translation>Version Conseillée du Serveur : </translation>
     </message>
@@ -749,12 +765,12 @@ a été envoyé à %2.</translation>
         <translation>Liste des Agents</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1399"/>
+        <location filename="mainwidget.cpp" line="1403"/>
         <source>Application Launched on : </source>
         <translation>Application Lancée le : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1404"/>
+        <location filename="mainwidget.cpp" line="1408"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
@@ -824,7 +840,7 @@ a été envoyé à %2.</translation>
         <translation>Se connecter au serveur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1119"/>
+        <location filename="mainwidget.cpp" line="1123"/>
         <source>Connected</source>
         <translation>Connecté</translation>
     </message>
@@ -859,7 +875,7 @@ a été envoyé à %2.</translation>
         <translation>Se déconnecter du serveur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1198"/>
+        <location filename="mainwidget.cpp" line="1202"/>
         <source>Disconnected</source>
         <translation>Déconnecté</translation>
     </message>
@@ -904,7 +920,7 @@ a été envoyé à %2.</translation>
         <translation>Sortir l&apos;application de la zone de notification système</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1405"/>
+        <location filename="mainwidget.cpp" line="1409"/>
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
@@ -944,7 +960,7 @@ a été envoyé à %2.</translation>
         <translation>Mot de passe</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1090"/>
+        <location filename="mainwidget.cpp" line="1094"/>
         <source>Personal Directory</source>
         <translation>Répertoire Personnel</translation>
     </message>
@@ -994,7 +1010,7 @@ a été envoyé à %2.</translation>
         <translation>&amp;Minimiser</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1395"/>
+        <location filename="mainwidget.cpp" line="1399"/>
         <source>Version : </source>
         <translation>Version : </translation>
     </message>
@@ -1004,17 +1020,17 @@ a été envoyé à %2.</translation>
         <translation>Vidéo</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1096"/>
+        <location filename="mainwidget.cpp" line="1100"/>
         <source>Xlet Prototype</source>
         <translation>Prototype de Xlet</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1385"/>
+        <location filename="mainwidget.cpp" line="1389"/>
         <source>last one</source>
         <translation>dernière</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1407"/>
+        <location filename="mainwidget.cpp" line="1411"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>avec une exception particulière vous permettant de le lier avec OpenSSL, sous certaines conditions.</translation>
     </message>

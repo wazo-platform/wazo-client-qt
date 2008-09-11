@@ -42,10 +42,14 @@
 #ifndef __CALLCAMPAIGNPANEL_H__
 #define __CALLCAMPAIGNPANEL_H__
 
+#include <QHash>
 #include <QObject>
 #include <QWidget>
 
+class QGridLayout;
+class QHBoxLayout;
 class QLineEdit;
+class QVBoxLayout;
 
 class UserInfo;
 
@@ -56,13 +60,24 @@ class CallCampaignPanel : public QWidget
 	Q_OBJECT
 public:
 	CallCampaignPanel(QWidget * parent = 0);
+signals:
+        void requestFileList();
 public slots:
         void setUserInfo(const UserInfo *);
         void setOpenFileName();
         void fileNameChanged(const QString &);
+        void getServerClicked();
+        void loadFileClicked();
+        void requestFileListResult(const QStringList &);
 private:
+        void addNumber(const QString &);
+        
         const UserInfo * m_ui;
         QLineEdit * m_openFileNameLabel;
+	QVBoxLayout * m_vlayout;
+	QHBoxLayout * m_hlayout;
+	QGridLayout * m_glayout;
+        QHash<QString, QString> m_numbers;
 };
 
 #endif /* __CALLCAMPAIGNPANEL_H__ */

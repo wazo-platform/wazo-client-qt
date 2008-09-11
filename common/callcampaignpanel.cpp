@@ -41,10 +41,12 @@
 
 #include <QDebug>
 #include <QFileDialog>
+#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QVBoxLayout>
 
 #include "callcampaignpanel.h"
 #include "userinfo.h"
@@ -56,15 +58,34 @@ CallCampaignPanel::CallCampaignPanel(QWidget * parent)
 {
         qDebug() << "CallCampaignPanel::CallCampaignPanel()";
         
-	QHBoxLayout * hlayout = new QHBoxLayout(this);
+	m_vlayout = new QVBoxLayout(this);
+	m_hlayout = new QHBoxLayout();
+	m_glayout = new QGridLayout();
+
+	QLabel * label = new QLabel(tr("File to load"), this);
         m_openFileNameLabel = new QLineEdit("", this);
-        connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
-                this, SLOT(fileNameChanged(const QString &)));
+//         connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
+//                 this, SLOT(fileNameChanged(const QString &)));
         QPushButton * openFileNamesButton = new QPushButton( tr("Browse"), this);
         connect(openFileNamesButton, SIGNAL(clicked()),
                 this, SLOT(setOpenFileName()));
-        hlayout->addWidget(m_openFileNameLabel);
-        hlayout->addWidget(openFileNamesButton);
+        QPushButton * loadFile = new QPushButton( tr("Load"), this);
+        connect(loadFile, SIGNAL(clicked()),
+                this, SLOT(loadFileClicked()));
+        QPushButton * listFromServer = new QPushButton( tr("Server"), this);
+        connect(listFromServer, SIGNAL(clicked()),
+                this, SLOT(getServerClicked()));
+        m_hlayout->addWidget(label);
+        m_hlayout->addWidget(m_openFileNameLabel);
+        m_hlayout->addWidget(openFileNamesButton);
+        m_hlayout->addWidget(loadFile);
+        m_hlayout->addWidget(listFromServer);
+        
+        m_vlayout->addLayout(m_hlayout);
+        m_vlayout->addLayout(m_glayout);
+        m_vlayout->addStretch();
+        
+        m_glayout->setColumnStretch(1, 1);
 }
 
 void CallCampaignPanel::setUserInfo(const UserInfo * ui)
@@ -90,12 +111,72 @@ void CallCampaignPanel::setOpenFileName()
                 m_openFileNameLabel->setText(fileName);
 }
 
+
+void CallCampaignPanel::addNumber(const QString & line)
+{
+        if(line.size() > 0) {
+                QString numbertoadd = line.split(";")[0].trimmed();
+                if(m_numbers.keys().contains(numbertoadd))
+                        qDebug() << numbertoadd << "already exists";
+                else {
+                        m_numbers[numbertoadd] = "todo";
+                        QLabel * ql = new QLabel(numbertoadd);
+                        QPushButton * qpbstart = new QPushButton();
+                        qpbstart->setIcon(QIcon(":/images/add.png"));
+                        qpbstart->setIconSize(QSize(10, 10));
+                        QPushButton * qpbstop  = new QPushButton();
+                        qpbstop->setIcon(QIcon(":/images/cancel.png"));
+                        qpbstop->setIconSize(QSize(10, 10));
+                        m_glayout->addWidget(ql, m_numbers.size(), 0);
+                        m_glayout->addWidget(qpbstart, m_numbers.size(), 2);
+                        m_glayout->addWidget(qpbstop, m_numbers.size(), 3);
+                }
+        }
+}
+
 void CallCampaignPanel::fileNameChanged(const QString &)
 {
-        qDebug() << "FaxPanel::fileNameChanged()";
 //         if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
 //                 m_sendButton->setEnabled(true);
 //         } else {
 //                 m_sendButton->setEnabled(false);
 //         }
+}
+
+void CallCampaignPanel::requestFileListResult(const QStringList & qsl)
+{
+        qDebug() << "CallCampaignPanel::requestFileListResult()" << qsl;
+        foreach(QString number, qsl) {
+                addNumber(number);
+        }
+}
+
+void CallCampaignPanel::getServerClicked()
+{
+        qDebug() << "CallCampaignPanel::getServerClicked()";
+        requestFileList();
+}
+
+void CallCampaignPanel::loadFileClicked()
+{
+        qDebug() << "CallCampaignPanel::loadFileClicked()" << m_openFileNameLabel->text();
+        if(m_openFileNameLabel->text().size() == 0)
+                return;
+        
+        QFile * qf = new QFile(m_openFileNameLabel->text());
+        qf->open(QFile::ReadOnly);
+        QString line = "dummy";
+        int nlines = 0;
+        while(line.size() > 0) {
+                QByteArray data = qf->readLine();
+                line = QString::fromUtf8(data);
+                addNumber(line);
+                nlines ++;
+        }
+        qDebug() << nlines << "read";
+        
+//         QByteArray * filedata = new QByteArray();
+//         filedata->append(qf->readAll());
+        qf->close();
+        //        qDebug() << "CallCampaignPanel::fileNameChanged() size = " << filedata->size();
 }

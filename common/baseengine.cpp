@@ -799,6 +799,9 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
         } else if(command_to_match == "meetme") {
                 meetmeEvent(command_args.split(";"));
 
+        } else if(command_to_match == "calllist") {
+                requestFileListResult(command_args.split(";"));
+                
         } else if(command_to_match == "history") {
                 QCryptographicHash histohash(QCryptographicHash::Sha1);
                 QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
@@ -934,6 +937,11 @@ void BaseEngine::agentAction(const QString & action)
 void BaseEngine::meetmeAction(const QString & action)
 {
         sendCommand("meetme " + action);
+}
+
+void BaseEngine::requestFileList()
+{
+        sendCommand("calllist-fetch");
 }
 
 void BaseEngine::sendFaxCommand(const QString & filename, const QString & number,
