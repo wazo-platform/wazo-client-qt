@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
-<defaultcodec></defaultcodec>
 <context>
     <name>AgentdetailsPanel</name>
     <message>
@@ -243,6 +242,24 @@ Merci de mettre à jour votre serveur.</translation>
         <location filename="../common/baseengine.cpp" line="970"/>
         <source>Your session has expired.</source>
         <translation>Votre session a expiré.</translation>
+    </message>
+</context>
+<context>
+    <name>CallCampaignPanel</name>
+    <message>
+        <location filename="../common/callcampaignpanel.cpp" line="63"/>
+        <source>Browse</source>
+        <translation>Parcourir</translation>
+    </message>
+    <message>
+        <location filename="../common/callcampaignpanel.cpp" line="86"/>
+        <source>CSV Files (*.csv);;All Files (*)</source>
+        <translation>FichiersFichiers CSV (*.csv);;Tous les Fichiers (*)</translation>
+    </message>
+    <message>
+        <location filename="../common/callcampaignpanel.cpp" line="84"/>
+        <source>Open PhoneList File</source>
+        <translation>Ouvrir la Liste de Téléphones</translation>
     </message>
 </context>
 <context>
@@ -692,7 +709,7 @@ a été envoyé à %2.</translation>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="mainwidget.cpp" line="1392"/>
+        <location filename="mainwidget.cpp" line="1395"/>
         <source>&lt;p&gt;The XIVO CTI applications, once connected to the proper server, complete the XIVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>&lt;p&gt; Les applications CTI XIVO, une fois connectées au serveur adéquat, complètent le système téléphonique XIVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
@@ -702,17 +719,17 @@ a été envoyé à %2.</translation>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
+        <location filename="mainwidget.cpp" line="1389"/>
+        <source>About XIVO %1</source>
+        <translation>A propos de XIVO %1</translation>
+    </message>
+    <message>
         <location filename="mainwidget.cpp" line="498"/>
         <source>&amp;About XIVO %1</source>
         <translation>A propos de &amp;XIVO %1</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1386"/>
-        <source>About XIVO %1</source>
-        <translation>A propos de XIVO %1</translation>
-    </message>
-    <message>
-        <location filename="mainwidget.cpp" line="1395"/>
+        <location filename="mainwidget.cpp" line="1398"/>
         <source>Advised Server Version : </source>
         <translation>Version Conseillée du Serveur : </translation>
     </message>
@@ -732,12 +749,12 @@ a été envoyé à %2.</translation>
         <translation>Liste des Agents</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1396"/>
+        <location filename="mainwidget.cpp" line="1399"/>
         <source>Application Launched on : </source>
         <translation>Application Lancée le : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1401"/>
+        <location filename="mainwidget.cpp" line="1404"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
@@ -887,7 +904,7 @@ a été envoyé à %2.</translation>
         <translation>Sortir l&apos;application de la zone de notification système</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1402"/>
+        <location filename="mainwidget.cpp" line="1405"/>
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
@@ -977,7 +994,7 @@ a été envoyé à %2.</translation>
         <translation>&amp;Minimiser</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1392"/>
+        <location filename="mainwidget.cpp" line="1395"/>
         <source>Version : </source>
         <translation>Version : </translation>
     </message>
@@ -992,14 +1009,22 @@ a été envoyé à %2.</translation>
         <translation>Prototype de Xlet</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1382"/>
+        <location filename="mainwidget.cpp" line="1385"/>
         <source>last one</source>
         <translation>dernière</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1404"/>
+        <location filename="mainwidget.cpp" line="1407"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>avec une exception particulière vous permettant de le lier avec OpenSSL, sous certaines conditions.</translation>
+    </message>
+</context>
+<context>
+    <name>MyLocalDirPanel</name>
+    <message>
+        <location filename="../common/mylocaldirpanel.cpp" line="62"/>
+        <source>New Entry</source>
+        <translation>Nouvelle Entrée</translation>
     </message>
 </context>
 <context>
@@ -1324,7 +1349,7 @@ a été envoyé à %2.</translation>
 <context>
     <name>XletprotoPanel</name>
     <message>
-        <location filename="../common/xletprotopanel.cpp" line="58"/>
+        <location filename="../common/xletprotopanel.cpp" line="59"/>
         <source>Xlet Example</source>
         <translation>Exemple de Xlet</translation>
     </message>

@@ -81,7 +81,7 @@ void CallCampaignPanel::setOpenFileName()
         options |= QFileDialog::DontUseNativeDialog;
         QString selectedFilter;
         QString fileName = QFileDialog::getOpenFileName(this,
-                                                        tr("Open Fax File"),
+                                                        tr("Open PhoneList File"),
                                                         m_openFileNameLabel->text(),
                                                         tr("CSV Files (*.csv);;All Files (*)"),
                                                         &selectedFilter,
