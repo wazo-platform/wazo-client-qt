@@ -193,7 +193,7 @@ public slots:
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
         void agentAction(const QString &);
         void meetmeAction(const QString &);
-        void requestFileList();
+        void requestFileList(const QString &);
 	void pickUp(const UserInfo *);
 
         void monitorPeerRequest(const QString &);

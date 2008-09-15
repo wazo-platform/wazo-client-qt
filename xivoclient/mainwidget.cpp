@@ -110,7 +110,6 @@ QLabel * LeftPanel::titleLabel()
 	return m_titleLabel;
 }
 
-
 /*! \brief Constructor
  *
  * Construct the Widget with all subwidgets.
@@ -1084,8 +1083,8 @@ void MainWidget::engineStarted()
                                 addPanel("callcampaign", tr("Call Campaigns"), m_xlet[dc]);
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
-                                connect( m_xlet[dc], SIGNAL(requestFileList()),
-                                         m_engine, SLOT(requestFileList()));
+                                connect( m_xlet[dc], SIGNAL(requestFileList(const QString &)),
+                                         m_engine, SLOT(requestFileList(const QString &)));
                                 connect( m_engine, SIGNAL(requestFileListResult(const QStringList &)),
                                          m_xlet[dc], SLOT(requestFileListResult(const QStringList &)));
 

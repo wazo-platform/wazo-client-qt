@@ -799,7 +799,7 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
         } else if(command_to_match == "meetme") {
                 meetmeEvent(command_args.split(";"));
 
-        } else if(command_to_match == "calllist") {
+        } else if(command_to_match == "callcampaign") {
                 requestFileListResult(command_args.split(";"));
                 
         } else if(command_to_match == "history") {
@@ -939,9 +939,9 @@ void BaseEngine::meetmeAction(const QString & action)
         sendCommand("meetme " + action);
 }
 
-void BaseEngine::requestFileList()
+void BaseEngine::requestFileList(const QString & action)
 {
-        sendCommand("calllist-fetch");
+        sendCommand("callcampaign " + action);
 }
 
 void BaseEngine::sendFaxCommand(const QString & filename, const QString & number,

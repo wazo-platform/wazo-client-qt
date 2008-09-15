@@ -79,7 +79,7 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
 void MyLocalDirPanel::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;
-        qDebug() << "MyLocalDirPanel::setUserInfo()" << m_ui->fullname();
+        // qDebug() << "MyLocalDirPanel::setUserInfo()" << m_ui->fullname();
 }
 
 void MyLocalDirPanel::returnPressed()

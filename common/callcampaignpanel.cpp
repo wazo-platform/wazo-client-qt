@@ -59,10 +59,11 @@ CallCampaignPanel::CallCampaignPanel(QWidget * parent)
         qDebug() << "CallCampaignPanel::CallCampaignPanel()";
         
 	m_vlayout = new QVBoxLayout(this);
-	m_hlayout = new QHBoxLayout();
+	m_hlayout1 = new QHBoxLayout();
+	m_hlayout2 = new QHBoxLayout();
 	m_glayout = new QGridLayout();
 
-	QLabel * label = new QLabel(tr("File to load"), this);
+	QLabel * label1 = new QLabel(tr("File to load"), this);
         m_openFileNameLabel = new QLineEdit("", this);
 //         connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
 //                 this, SLOT(fileNameChanged(const QString &)));
@@ -72,26 +73,44 @@ CallCampaignPanel::CallCampaignPanel(QWidget * parent)
         QPushButton * loadFile = new QPushButton( tr("Load"), this);
         connect(loadFile, SIGNAL(clicked()),
                 this, SLOT(loadFileClicked()));
-        QPushButton * listFromServer = new QPushButton( tr("Server"), this);
-        connect(listFromServer, SIGNAL(clicked()),
-                this, SLOT(getServerClicked()));
-        m_hlayout->addWidget(label);
-        m_hlayout->addWidget(m_openFileNameLabel);
-        m_hlayout->addWidget(openFileNamesButton);
-        m_hlayout->addWidget(loadFile);
-        m_hlayout->addWidget(listFromServer);
+
+	QLabel * label2 = new QLabel(tr("Server"), this);
+        QPushButton * getCallsButton = new QPushButton( tr("Get"), this);
+        QPushButton * startCallsButton = new QPushButton( tr("Start"), this);
+        QPushButton * stopCallsButton = new QPushButton( tr("Stop"), this);
+        QPushButton * clearCallsButton = new QPushButton( tr("Clear"), this);
+        connect(getCallsButton, SIGNAL(clicked()),
+                this, SLOT(getCalls()));
+        connect(startCallsButton, SIGNAL(clicked()),
+                this, SLOT(startCalls()));
+        connect(stopCallsButton, SIGNAL(clicked()),
+                this, SLOT(stopCalls()));
+        connect(clearCallsButton, SIGNAL(clicked()),
+                this, SLOT(clearCalls()));
         
-        m_vlayout->addLayout(m_hlayout);
+        m_hlayout1->addWidget(label1);
+        m_hlayout1->addWidget(m_openFileNameLabel);
+        m_hlayout1->addWidget(openFileNamesButton);
+        m_hlayout1->addWidget(loadFile);
+        
+        m_hlayout2->addWidget(label2);
+        m_hlayout2->addWidget(getCallsButton);
+        m_hlayout2->addWidget(startCallsButton);
+        m_hlayout2->addWidget(stopCallsButton);
+        m_hlayout2->addWidget(clearCallsButton);
+        
+        m_vlayout->addLayout(m_hlayout1);
+        m_vlayout->addLayout(m_hlayout2);
         m_vlayout->addLayout(m_glayout);
         m_vlayout->addStretch();
         
-        m_glayout->setColumnStretch(1, 1);
+        m_glayout->setColumnStretch(2, 1);
 }
 
 void CallCampaignPanel::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;
-        qDebug() << "CallCampaignPanel::setUserInfo()" << m_ui->fullname();
+        // qDebug() << "CallCampaignPanel::setUserInfo()" << m_ui->fullname();
 }
 
 void CallCampaignPanel::setOpenFileName()
@@ -116,20 +135,15 @@ void CallCampaignPanel::addNumber(const QString & line)
 {
         if(line.size() > 0) {
                 QString numbertoadd = line.split(";")[0].trimmed();
-                if(m_numbers.keys().contains(numbertoadd))
-                        qDebug() << numbertoadd << "already exists";
-                else {
-                        m_numbers[numbertoadd] = "todo";
-                        QLabel * ql = new QLabel(numbertoadd);
-                        QPushButton * qpbstart = new QPushButton();
-                        qpbstart->setIcon(QIcon(":/images/add.png"));
-                        qpbstart->setIconSize(QSize(10, 10));
-                        QPushButton * qpbstop  = new QPushButton();
-                        qpbstop->setIcon(QIcon(":/images/cancel.png"));
-                        qpbstop->setIconSize(QSize(10, 10));
-                        m_glayout->addWidget(ql, m_numbers.size(), 0);
-                        m_glayout->addWidget(qpbstart, m_numbers.size(), 2);
-                        m_glayout->addWidget(qpbstop, m_numbers.size(), 3);
+                if(! m_numbers.keys().contains(numbertoadd)) {
+                        m_numbers[numbertoadd] = "new";
+                        m_numlabel[numbertoadd] = new QLabel(numbertoadd);
+                        m_qpbstart[numbertoadd] = new QPushButton();
+                        m_qpbstart[numbertoadd]->setIcon(QIcon(":/images/bookmark.png"));
+                        m_qpbstart[numbertoadd]->setIconSize(QSize(16, 16));
+                        int nlines = m_glayout->rowCount();
+                        m_glayout->addWidget(m_numlabel[numbertoadd], nlines, 0);
+                        m_glayout->addWidget(m_qpbstart[numbertoadd], nlines, 1);
                 }
         }
 }
@@ -145,16 +159,89 @@ void CallCampaignPanel::fileNameChanged(const QString &)
 
 void CallCampaignPanel::requestFileListResult(const QStringList & qsl)
 {
-        qDebug() << "CallCampaignPanel::requestFileListResult()" << qsl;
-        foreach(QString number, qsl) {
-                addNumber(number);
+        // qDebug() << "CallCampaignPanel::requestFileListResult()" << qsl;
+        QString action = qsl[0];
+        if(action == "fetchlist") {
+                foreach(QString number, qsl[1].split(":"))
+                        addNumber(number);
+        } else if(action == "callstarted") {
+                QString number = qsl[1];
+                m_qpbstart[number]->setIcon(QIcon(":/images/reload.png"));
+                m_numbers[number] = "ongoing";
+        } else if(action == "callstopped") {
+                QString number = qsl[1];
+                m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
+                m_numbers[number] = "stopped";
+        } else if(action == "callnext") {
+                QString number = qsl[1];
+                m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
+                m_numbers[number] = "stopped";
+                checkStatuses();
         }
 }
 
-void CallCampaignPanel::getServerClicked()
+void CallCampaignPanel::checkStatuses()
 {
-        qDebug() << "CallCampaignPanel::getServerClicked()";
-        requestFileList();
+        QString toexec;
+        QStringList keys = m_numbers.keys();
+        keys.sort();
+        foreach(QString key, keys) {
+                if(m_numbers[key] == "ongoing") {
+                        break;
+                } else if(m_numbers[key] == "new") {
+                        toexec = key;
+                        break;
+                }
+        }
+        if(toexec.size() > 0) {
+                qDebug() << "CallCampaignPanel::checkStatuses()" << toexec;
+                requestFileList("startcall " + toexec);
+        }
+}
+
+void CallCampaignPanel::getCalls()
+{
+        // qDebug() << "CallCampaignPanel::getCalls()";
+        requestFileList("fetchlist");
+}
+
+void CallCampaignPanel::startCalls()
+{
+        // qDebug() << "CallCampaignPanel::startCalls()";
+        checkStatuses();
+        // requestFileList("fetchlist");
+}
+
+void CallCampaignPanel::stopCalls()
+{
+        // qDebug() << "CallCampaignPanel::stopCalls()";
+        QString toexec;
+        QStringList keys = m_numbers.keys();
+        keys.sort();
+        foreach(QString key, keys) {
+                if(m_numbers[key] == "ongoing") {
+                        toexec = key;
+                        break;
+                }
+        }
+        if(toexec.size() > 0) {
+                requestFileList("stopcall " + toexec);
+        }
+}
+
+void CallCampaignPanel::clearCalls()
+{
+        // qDebug() << "CallCampaignPanel::clearCalls()";
+        QStringList keys = m_numbers.keys();
+        foreach(QString key, m_numbers.keys()) {
+                if(m_numbers[key] == "stopped") {
+                        m_numbers.remove(key);
+                        delete m_qpbstart[key];
+                        m_qpbstart.remove(key);
+                        delete m_numlabel[key];
+                        m_numlabel.remove(key);
+                }
+        }
 }
 
 void CallCampaignPanel::loadFileClicked()

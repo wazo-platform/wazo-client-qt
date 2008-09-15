@@ -48,7 +48,9 @@
 
 class QGridLayout;
 class QHBoxLayout;
+class QLabel;
 class QLineEdit;
+class QPushButton;
 class QVBoxLayout;
 
 class UserInfo;
@@ -61,23 +63,30 @@ class CallCampaignPanel : public QWidget
 public:
 	CallCampaignPanel(QWidget * parent = 0);
 signals:
-        void requestFileList();
+        void requestFileList(const QString &);
 public slots:
         void setUserInfo(const UserInfo *);
         void setOpenFileName();
         void fileNameChanged(const QString &);
-        void getServerClicked();
+        void getCalls();
+        void startCalls();
+        void stopCalls();
+        void clearCalls();
         void loadFileClicked();
         void requestFileListResult(const QStringList &);
 private:
         void addNumber(const QString &);
+        void checkStatuses();
         
         const UserInfo * m_ui;
         QLineEdit * m_openFileNameLabel;
 	QVBoxLayout * m_vlayout;
-	QHBoxLayout * m_hlayout;
+	QHBoxLayout * m_hlayout1;
+	QHBoxLayout * m_hlayout2;
 	QGridLayout * m_glayout;
         QHash<QString, QString> m_numbers;
+        QHash<QString, QLabel *> m_numlabel;
+        QHash<QString, QPushButton *> m_qpbstart;
 };
 
 #endif /* __CALLCAMPAIGNPANEL_H__ */

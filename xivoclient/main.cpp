@@ -112,7 +112,7 @@ int main(int argc, char ** argv)
 #else
         info_osname = "unknown-" + info_endianness;
 #endif
-        qDebug() << "main()" << info_osname << locale;
+        qDebug() << "main() osname=" << info_osname << "locale=" << locale;
 
         MainWidget main(engine, info_osname);
         
