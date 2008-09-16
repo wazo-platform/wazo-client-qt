@@ -5,8 +5,7 @@
 #
 
 COMMONDIR = ../common
-# JSON_MJSON_DIR = ../json_mjson
-# JSON_JAULA_DIR = ../json_jaula
+JSON_MJSON_DIR = ../json_mjson
 
 _XIVOVER_ = '0.4'
 _SVNVER_ = '1'
@@ -21,7 +20,7 @@ DEFINES += SVNVER=\"$${SVNVER}\"
 TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
-INCLUDEPATH += . $${COMMONDIR}
+INCLUDEPATH += . $${COMMONDIR} $${JSON_MJSON_DIR}
 CONFIG -= debug
 CONFIG += static
 CONFIG += uitools
@@ -29,10 +28,10 @@ CONFIG += x86 ppc
 
 # Input
 HEADERS += mainwidget.h $${COMMONDIR}/*.h
-# HEADERS += $${JSON_MJSON_DIR}/json.h
+HEADERS += $${JSON_MJSON_DIR}/json.h
 
 SOURCES += main.cpp mainwidget.cpp $${COMMONDIR}/*.cpp
-# SOURCES += $${JSON_MJSON_DIR}/json.c
+SOURCES += $${JSON_MJSON_DIR}/json.c
 
 QT += network
 QT += xml

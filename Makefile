@@ -36,6 +36,7 @@ all-linux:
 
 linux-%:
 	@echo versions ${_XIVOVER_}-${_SVNVER_}
+	make -C $* distclean || true
 	cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts qt_fr.ts && make
 	strip $*/$* || true
 	${UPXRUN} $*/$* || true
