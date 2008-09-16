@@ -51,6 +51,7 @@
 
 #include "baseengine.h"
 #include "xivoconsts.h"
+#include "servercommand.h"
 
 /*! \brief Constructor.
  *
@@ -798,15 +799,12 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
 
         } else if(command_to_match == "meetme") {
                 meetmeEvent(command_args.split(";"));
-
-        } else if(command_to_match == "callcampaign") {
-                requestFileListResult(command_args.split(";"));
                 
         } else if(command_to_match == "history") {
                 QCryptographicHash histohash(QCryptographicHash::Sha1);
                 QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
                 processHistory(command_args.split(";"));
-
+                
         } else if(command_to_match == "directory-response") {
                 directoryResponse(command_args);
 
@@ -1040,7 +1038,6 @@ void BaseEngine::popupError(const QString & errorid)
                 QMessageBox::critical(NULL, tr("XIVO CTI Error"), errormsg);
 }
 
-
 /*! \brief called when data are ready to be read on the socket.
  *
  * Read and process the data from the server.
@@ -1170,6 +1167,15 @@ void BaseEngine::socketReadyRead()
                                 popupError(list[1]);
 			} else
                                 parseCommand(list);
+                } else {
+                        ServerCommand * sc = new ServerCommand(line.trimmed());
+                        if(sc->getString("direction") == "client") {
+                                if(sc->getString("class") == "callcampaign") {
+                                        QStringList tosend = sc->getStringList("list");
+                                        tosend.insert(0, sc->getString("command"));
+                                        requestFileListResult(tosend);
+                                }
+                        }
                 }
 	}
         if(socketname == "fax") {

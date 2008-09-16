@@ -39,21 +39,29 @@
  * $Date$
  */
 
-#ifndef __XIVOCONSTS_H__
-#define __XIVOCONSTS_H__
+#ifndef __SERVERCOMMAND_H__
+#define __SERVERCOMMAND_H__
 
-#define CHANNEL_MIMETYPE	"XIVO_ASTERISK_CHANNEL"
-#define PEER_MIMETYPE		"XIVO_ASTERISK_PEER"
-#define NUMBER_MIMETYPE		"XIVO_ASTERISK_NUMBER"
+#include "json.h"
 
-const int REQUIRED_SERVER_VERSION = 3706;
-const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
-const QString __current_client_version__  = SVNVER;
-const QString __xivo_version__  = "0.4";
-const QString __nopresence__ = "nopresence";
-const QStringList XletList = (QStringList() << "customerinfo" << "features" << "history"
-                              << "directory" << "search" << "fax" << "dial"
-                              << "operator" << "parking" << "calls" << "switchboard"
-                              << "messages" << "identity" << "datetime" << "tabber" << "conference" << "xletproto" << "servercommand" << "callcampaign" << "mylocaldir"
-                              << "agents" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
-#endif
+class QString;
+class QStringList;
+
+/*! \brief ServerCommand
+ */
+class ServerCommand
+{
+public:
+	ServerCommand(const QString &);
+	~ServerCommand();
+        void display();
+        QString getString(const QString &);
+        QStringList getStringList(const QString &);
+private:
+        void recurse(json_t *, int);
+        QString m_command;
+        QString m_direction;
+        json_t * m_jsonroot;
+};
+
+#endif /* __SERVERCOMMAND_H__ */

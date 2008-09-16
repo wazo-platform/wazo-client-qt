@@ -156,8 +156,6 @@ public:
                                      const QString &);
         UserInfo * findUserFromAgent(const QString &,
                                      const QString &);
-protected:
-	void timerEvent(QTimerEvent *);		//!< receive timer events
 public slots:
 	void start();				//!< start the connection process.
 	void stop();				//!< stop the engine
@@ -221,7 +219,7 @@ signals:
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
         void meetmeEvent(const QStringList &);
-        void requestFileListResult(const QStringList &);
+        void requestFileListResult(QStringList &);
         
 	//! a call
 	void updateCall(UserInfo *,
@@ -274,6 +272,8 @@ signals:
         void changeWatchedQueueSignal(const QStringList &);
         void updateAgentPresence(const QString &, const QString &);
         void displayFiche(const QString &, bool);
+protected:
+	void timerEvent(QTimerEvent *);		//!< receive timer events
 private:
 	void stopKeepAliveTimer();	//!< Stop the keep alive timer if running
 	void startTryAgainTimer();	//!< Start the "try to reconnect" timer
@@ -286,12 +286,12 @@ private:
         void sendCommand(const QString &);
         bool parseCommand(const QStringList &);
         void popupError(const QString &);
-
+        
 	// Class Members
-
+        
 	// GUI client capabilities
 	QList<const QMetaObject *> m_removable;
-
+        
 	// Parameters given by the User at Login time
 	QString m_serverhost;		//!< Host to the login server
 	quint16 m_loginport;		//!< TCP port (UDP port for keep alive is +1)

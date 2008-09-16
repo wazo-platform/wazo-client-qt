@@ -157,23 +157,23 @@ void CallCampaignPanel::fileNameChanged(const QString &)
 //         }
 }
 
-void CallCampaignPanel::requestFileListResult(const QStringList & qsl)
+void CallCampaignPanel::requestFileListResult(QStringList & qsl)
 {
-        // qDebug() << "CallCampaignPanel::requestFileListResult()" << qsl;
-        QString action = qsl[0];
+        qDebug() << "CallCampaignPanel::requestFileListResult()" << qsl;
+        QString action = qsl.takeFirst();
         if(action == "fetchlist") {
-                foreach(QString number, qsl[1].split(":"))
+                foreach(QString number, qsl)
                         addNumber(number);
         } else if(action == "callstarted") {
-                QString number = qsl[1];
+                QString number = qsl[0];
                 m_qpbstart[number]->setIcon(QIcon(":/images/reload.png"));
                 m_numbers[number] = "ongoing";
         } else if(action == "callstopped") {
-                QString number = qsl[1];
+                QString number = qsl[0];
                 m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
                 m_numbers[number] = "stopped";
         } else if(action == "callnext") {
-                QString number = qsl[1];
+                QString number = qsl[0];
                 m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
                 m_numbers[number] = "stopped";
                 checkStatuses();
