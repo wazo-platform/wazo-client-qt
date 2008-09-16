@@ -49,7 +49,7 @@ all-win32:
 # to be executed under a bash/cygwin-like terminal
 versions-%:
 	@svn up
-	@make -C $* distclean || true
+	@touch common/xivoconsts.h $*/mainwidget.cpp
 	@echo versions ${_XIVOVER_}-${_SVNVER_}
 	@rm -f $*/versions.pro
 	@echo -n "_SVNVER_ = '" >> $*/versions.pro
