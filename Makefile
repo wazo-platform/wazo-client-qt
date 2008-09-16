@@ -53,7 +53,7 @@ versions-%:
 	@echo versions ${_XIVOVER_}-${_SVNVER_}
 	@rm -f $*/versions.pro
 	@echo -n "_SVNVER_ = '" >> $*/versions.pro
-	@svn info | grep "Last Changed Rev" | sed "s/.*: //" | tr -d '\n' >> $*/versions.pro
+	@LANG=C svn info | grep "Last Changed Rev" | sed "s/.*: //" | tr -d '\n' >> $*/versions.pro
 	@echo "'" >> $*/versions.pro
 	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
 
