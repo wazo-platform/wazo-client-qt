@@ -5,7 +5,7 @@
 #
 
 Name "XIVO Client"
-OutFile "xivoclient-setup.exe"
+OutFile "xivoclient-setup-win32.exe"
 InstallDir "$PROGRAMFILES\XIVO"
 InstallDirRegKey HKLM "Software\XIVO\xivoclient" "Install_Dir" 
 LicenseText "XIVO Client est distribué sous licence GNU General Public License v2 avec une exception spéciale vous autorisant à le lier à OpenSSL, sous certaines conditions."
@@ -19,8 +19,8 @@ LoadLanguageFile "${NSISDIR}\Contrib\Language files\French.nlf"
 Section "Prog"
 SetOutPath $INSTDIR
 File "C:\MinGW\bin\mingwm10.dll"
-File "C:\cygwin\home\winbuild\openssl-0.9.8g\cryptoeay32-0.9.8.dll"
-File "C:\cygwin\home\winbuild\openssl-0.9.8g\ssleay32-0.9.8.dll"
+File "C:\cygwin\home\Administrateur\xivo-trunk\openssl-0.9.8g-mingw\openssl-0.9.8g\cryptoeay32-0.9.8.dll"
+File "C:\cygwin\home\Administrateur\xivo-trunk\openssl-0.9.8g-mingw\openssl-0.9.8g\ssleay32-0.9.8.dll"
 File "LICENSE"
 File "GPL_V2.txt"
 File "OpenSSL.LICENSE.txt"

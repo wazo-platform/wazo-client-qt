@@ -5,9 +5,12 @@ QMAKE?=qmake
 LRELEASE?=lrelease
 UPXRUN?=upx
 
-# Version definitions
-XIVOVER:=$(shell cat ../VERSION)
-SVNVER:=$(shell svn info | sed -n "/Last.Changed.Rev/s/.* //p")
+# WIN32 targets only
+MAKENSIS=/cygdrive/c/Program\ Files/NSIS/makensis.exe
+UPXWIN=/cygdrive/c/upx303w/upx.exe
+
+# Versions Definitions
+-include versions.mak
 
 default: help
 
@@ -25,26 +28,42 @@ help:
 	@echo
 
 # LINUX targets
-all-linux: linux-xivoclient
+# kind of dirtier than "all-linux: versions-xivoclient linux-xivoclient"
+# but allows the 'include versions.mak' to be reloaded once it has been set
+all-linux:
+	@make versions-xivoclient
+	@make linux-xivoclient
 
 linux-%:
-	make -C $* distclean || true
+	@echo versions ${_XIVOVER_}-${_SVNVER_}
 	cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts qt_fr.ts && make
 	strip $*/$* || true
 	${UPXRUN} $*/$* || true
 
+all-win32:
+	@echo "          make versions-xivoclient  (under Cygwin)"
+	@echo "          make win32-xivoclient     (under Qt prompt)"
+	@echo "          make win32pack-xivoclient (under Cygwin)"
 
-# WIN32 targets
-MAKENSIS=/cygdrive/c/Program\ Files/NSIS/makensis.exe
+# to be executed under a bash/cygwin-like terminal
+versions-%:
+	@svn up
+	@touch common/xivoconsts.h
+	@rm -f $*/versions.pro
+	@echo -n "_SVNVER_ = '" >> $*/versions.pro
+	@svn info | grep "Last Changed Rev" | sed "s/.*: //" | tr -d '\n' >> $*/versions.pro
+	@echo "'" >> $*/versions.pro
+	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
 
-all-win32: win32-xivoclient
-
+# to be executed under a mingw/dos-like terminal
 win32-%:
 	cd $* && ${QMAKE} $*.pro && ${LRELEASE} $*_fr.ts && make -f Makefile.Release
-	${UPXRUN} $*/release/$*.exe
-	${MAKENSIS} delivery/$*.nsi
-	cp delivery/$*-setup.exe $*-setup-${XIVOVER}-${SVNVER}-win32.exe
 
+# to be executed under a bash/cygwin-like terminal
+win32pack-%:
+	@${UPXWIN} $*/release/$*.exe
+	@${MAKENSIS} delivery/$*.nsi
+	@mv delivery/$*-setup-win32.exe $*-setup-${_XIVOVER_}-${_SVNVER_}-win32.exe
 
 
 # MACOS targets

@@ -8,13 +8,15 @@ COMMONDIR = ../common
 # JSON_MJSON_DIR = ../json_mjson
 # JSON_JAULA_DIR = ../json_jaula
 
-SVNVER_  = $$system(touch $${COMMONDIR}/xivoconsts.h mainwidget.cpp && svn info .. | tail -3 | head -1 | sed "s/.*:.//")
-SVNVER   = '\\"$${SVNVER_}\\"'          # place quotes around the version string
-XIVOVER_ = $$system(cat ../../VERSION)
-XIVOVER  = '\\"$${XIVOVER_}\\"'         # place quotes around the version string
-
-DEFINES += SVNVER=\"$${SVNVER}\"    # create a VER macro containing the version string
+_XIVOVER_ = '0.4'
+_SVNVER_ = '1'
+include(versions.pro)
+XIVOVER = '\\"$${_XIVOVER_}\\"'
+SVNVER  = '\\"$${_SVNVER_}\\"'
+message('XIVO version:' $${XIVOVER})
+message(' svn version:' $${SVNVER})
 DEFINES += XIVOVER=\"$${XIVOVER}\"
+DEFINES += SVNVER=\"$${SVNVER}\"
 
 TEMPLATE = app
 TARGET = 
