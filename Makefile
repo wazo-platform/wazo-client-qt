@@ -36,10 +36,10 @@ all-linux:
 
 linux-%:
 	@echo versions ${_XIVOVER_}-${_SVNVER_}
-	make -C $* distclean || true
-	cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts qt_fr.ts && make
-	strip $*/$* || true
-	${UPXRUN} $*/$* || true
+	@make -C $* distclean || true
+	@cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts qt_fr.ts && make
+	@strip $*/$* || true
+	@${UPXRUN} $*/$* || true
 
 all-win32:
 	@echo "          make versions-xivoclient  (under Cygwin)"
@@ -49,7 +49,8 @@ all-win32:
 # to be executed under a bash/cygwin-like terminal
 versions-%:
 	@svn up
-	@touch common/xivoconsts.h
+	@make -C $* distclean || true
+	@echo versions ${_XIVOVER_}-${_SVNVER_}
 	@rm -f $*/versions.pro
 	@echo -n "_SVNVER_ = '" >> $*/versions.pro
 	@svn info | grep "Last Changed Rev" | sed "s/.*: //" | tr -d '\n' >> $*/versions.pro
@@ -58,7 +59,7 @@ versions-%:
 
 # to be executed under a mingw/dos-like terminal
 win32-%:
-	cd $* && ${QMAKE} $*.pro && ${LRELEASE} $*_fr.ts && make -f Makefile.Release
+	@cd $* && ${QMAKE} $*.pro && ${LRELEASE} $*_fr.ts && make -f Makefile.Release
 
 # to be executed under a bash/cygwin-like terminal
 win32pack-%:
