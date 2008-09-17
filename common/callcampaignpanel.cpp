@@ -49,6 +49,7 @@
 #include <QVBoxLayout>
 
 #include "callcampaignpanel.h"
+#include "servercommand.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -157,23 +158,24 @@ void CallCampaignPanel::fileNameChanged(const QString &)
 //         }
 }
 
-void CallCampaignPanel::requestFileListResult(QStringList & qsl)
+void CallCampaignPanel::requestFileListResult(const QString & qsl)
 {
         qDebug() << "CallCampaignPanel::requestFileListResult()" << qsl;
-        QString action = qsl.takeFirst();
+        ServerCommand * sc = new ServerCommand(qsl);
+        QString action = sc->getString("command");
         if(action == "fetchlist") {
-                foreach(QString number, qsl)
+                foreach(QString number, sc->getStringList("list"))
                         addNumber(number);
         } else if(action == "callstarted") {
-                QString number = qsl[0];
+                QString number = sc->getString("number");
                 m_qpbstart[number]->setIcon(QIcon(":/images/reload.png"));
                 m_numbers[number] = "ongoing";
         } else if(action == "callstopped") {
-                QString number = qsl[0];
+                QString number = sc->getString("number");
                 m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
                 m_numbers[number] = "stopped";
         } else if(action == "callnext") {
-                QString number = qsl[0];
+                QString number = sc->getString("number");
                 m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
                 m_numbers[number] = "stopped";
                 checkStatuses();

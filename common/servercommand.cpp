@@ -112,3 +112,18 @@ QStringList ServerCommand::getStringList(const QString & tlabel)
         }
         return b;
 }
+
+QString ServerCommand::find(const QString & tlabel)
+{
+        QString r;
+        char * text = NULL;
+        if(m_jsonroot) {
+                json_t * v = json_find_first_label(m_jsonroot, (char *) qPrintable(tlabel));
+                if ((v != NULL) && (v->child != NULL)) {
+                        json_error ret = json_tree_to_string (v->child, &text);
+                        if (ret == JSON_OK)
+                                r = text;
+                }
+        }
+        return r;
+}

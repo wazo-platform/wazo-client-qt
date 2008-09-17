@@ -1171,9 +1171,8 @@ void BaseEngine::socketReadyRead()
                         ServerCommand * sc = new ServerCommand(line.trimmed());
                         if(sc->getString("direction") == "client") {
                                 if(sc->getString("class") == "callcampaign") {
-                                        QStringList tosend = sc->getStringList("list");
-                                        tosend.insert(0, sc->getString("command"));
-                                        requestFileListResult(tosend);
+                                        QString payload = sc->find("payload");
+                                        requestFileListResult(payload);
                                 }
                         }
                 }

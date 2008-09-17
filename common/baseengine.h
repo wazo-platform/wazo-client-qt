@@ -219,7 +219,7 @@ signals:
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
         void meetmeEvent(const QStringList &);
-        void requestFileListResult(QStringList &);
+        void requestFileListResult(const QString &);
         
 	//! a call
 	void updateCall(UserInfo *,

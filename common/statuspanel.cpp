@@ -308,7 +308,7 @@ void StatusPanel::updatePeer(UserInfo * ui,
                              const QString &,
                              const QHash<QString, QStringList> & chanlist)
 {
-        // qDebug() << "StatusPanel::updatePeer()" << ui->userid() << chanlist;
+        qDebug() << "StatusPanel::updatePeer()" << ui->userid() << chanlist;
         if (ui == m_ui) {
                 QHashIterator<QString, QStringList> ccallchannel(chanlist);
                 while (ccallchannel.hasNext()) {

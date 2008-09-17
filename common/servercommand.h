@@ -57,6 +57,7 @@ public:
         void display();
         QString getString(const QString &);
         QStringList getStringList(const QString &);
+        QString find(const QString &);
 private:
         void recurse(json_t *, int);
         QString m_command;

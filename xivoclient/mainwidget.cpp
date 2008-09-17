@@ -1085,8 +1085,8 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_xlet[dc], SIGNAL(requestFileList(const QString &)),
                                          m_engine, SLOT(requestFileList(const QString &)));
-                                connect( m_engine, SIGNAL(requestFileListResult(QStringList &)),
-                                         m_xlet[dc], SLOT(requestFileListResult(QStringList &)));
+                                connect( m_engine, SIGNAL(requestFileListResult(const QString &)),
+                                         m_xlet[dc], SLOT(requestFileListResult(const QString &)));
 
                         } else if (dc == QString("mylocaldir")) {
                                 m_xlet[dc] = new MyLocalDirPanel(m_engine);

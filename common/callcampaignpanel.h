@@ -73,7 +73,7 @@ public slots:
         void stopCalls();
         void clearCalls();
         void loadFileClicked();
-        void requestFileListResult(QStringList &);
+        void requestFileListResult(const QString &);
 private:
         void addNumber(const QString &);
         void checkStatuses();
