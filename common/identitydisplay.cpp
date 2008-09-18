@@ -53,6 +53,7 @@
 
 #include "baseengine.h"
 #include "identitydisplay.h"
+#include "servercommand.h"
 #include "userinfo.h"
 
 const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 50px; height: 15px}";
@@ -168,67 +169,69 @@ void IdentityDisplay::setAgentList(const QString & alist)
         // qDebug() << "IdentityDisplay::setAgentList()" << m_engine->loginkind() << alist;
         if (m_engine->loginkind() == 0)
                 return;
-        QStringList asl = alist.split(";");
-        if(asl.size() > 1) {
-                QStringList agents;
-                QString astid = asl[0];
-                if(astid == m_ui->astid()) {
-                        for(int i = 1 ; i < asl.size(); i++) {
-                                QStringList ags = asl[i].split(":");
-                                QString agnum = ags[0];
-                                if(agnum == m_ui->agentid()) {
-                                        QString agstatus = ags[1];
-                                        QString agfullname = ags[2];
-                                        QString phonenum = ags[3];
-                                        QStringList agq = ags[4].split(",");
-                                        qDebug() << "IdentityDisplay::setAgentList" << astid << agnum << agstatus
-                                                 << agfullname << phonenum;
-                                        
-                                        m_agent->setText("Agent " + agnum);
-                                        m_agent->show();
-                                        m_qf->show();
-                                        m_agentaction->show();
-                                        m_agentaction->setText(phonenum);
-                                        
-                                        if(agstatus == "0") {
-                                                m_agentaction->setIcon(QIcon(":/images/cancel.png"));
-                                                m_agentstatus = false;
-                                                m_queueaction->hide();
-                                                m_queuelist->hide();
-                                                m_queueleaveall->hide();
-                                                m_queuejoinall->hide();
-                                                m_queuebusy->hide();
-                                        } else if(agstatus == "1") {
-                                                m_agentaction->setIcon(QIcon(":/images/button_ok.png"));
-                                                m_agentstatus = true;
-                                                if(m_queuesindexes.size() > 0) {
-                                                        if(m_queuechangeallow) {
-                                                                m_queueaction->show();
-                                                                m_queueleaveall->show();
-                                                                m_queuejoinall->show();
-                                                        }
-                                                        m_queuelist->show();
-                                                        m_queuebusy->show();
-                                                }
+        
+        ServerCommand * sc = new ServerCommand(alist);
+        QString astid = sc->getString("astid");
+        if (astid != m_ui->astid())
+                return;
+        QStringList agents = sc->getStringList("list");
+        if (agents.size() == 0)
+                return;
+        
+        for(int i = 0 ; i < agents.size(); i++) {
+                QStringList ags = agents[i].split(":");
+                QString agnum = ags[0];
+                if(agnum == m_ui->agentid()) {
+                        QString agstatus = ags[1];
+                        QString agfullname = ags[2];
+                        QString phonenum = ags[3];
+                        QStringList agq = ags[4].split(",");
+                        qDebug() << "IdentityDisplay::setAgentList" << astid << agnum << agstatus
+                                 << agfullname << phonenum;
+                        
+                        m_agent->setText("Agent " + agnum);
+                        m_agent->show();
+                        m_qf->show();
+                        m_agentaction->show();
+                        m_agentaction->setText(phonenum);
+                        
+                        if(agstatus == "0") {
+                                m_agentaction->setIcon(QIcon(":/images/cancel.png"));
+                                m_agentstatus = false;
+                                m_queueaction->hide();
+                                m_queuelist->hide();
+                                m_queueleaveall->hide();
+                                m_queuejoinall->hide();
+                                m_queuebusy->hide();
+                        } else if(agstatus == "1") {
+                                m_agentaction->setIcon(QIcon(":/images/button_ok.png"));
+                                m_agentstatus = true;
+                                if(m_queuesindexes.size() > 0) {
+                                        if(m_queuechangeallow) {
+                                                m_queueaction->show();
+                                                m_queueleaveall->show();
+                                                m_queuejoinall->show();
                                         }
-                                        
-                                        foreach (QString agqprops, agq) {
-                                                QStringList agqprops_split = agqprops.split("-");
-                                                qDebug() << "IdentityDisplay::setAgentList" << agqprops_split;
-                                                QString queuename = agqprops_split[0];
-                                                if (m_queuesindexes.contains(queuename)) {
-                                                        int idx = m_queuesindexes[queuename];
-                                                        if (agqprops_split.size() > 1) {
-                                                                m_queuelist->setItemIcon(idx, QIcon(":/images/button_ok.png"));
-                                                                m_queuesstatuses[queuename] = true;
-                                                        } else {
-                                                                m_queuelist->setItemIcon(idx, QIcon(":/images/cancel.png"));
-                                                                m_queuesstatuses[queuename] = false;
-                                                        }
-                                                        if(queuename == m_queuelist->currentText())
-                                                                idxChanged(queuename);
-                                                }
+                                        m_queuelist->show();
+                                        m_queuebusy->show();
+                                }
+                        }
+                        
+                        foreach (QString agqprops, agq) {
+                                QStringList agqprops_split = agqprops.split("-");
+                                qDebug() << "IdentityDisplay::setAgentList" << agqprops_split;
+                                QString queuename = agqprops_split[0];
+                                if (m_queuesindexes.contains(queuename)) {
+                                        int idx = m_queuesindexes[queuename];
+                                        if (agqprops_split.size() > 1) {
+                                                m_queuelist->setItemIcon(idx, QIcon(":/images/button_ok.png"));
+                                                m_queuesstatuses[queuename] = true;
+                                        } else {
+                                                m_queuelist->setItemIcon(idx, QIcon(":/images/cancel.png"));
+                                                m_queuesstatuses[queuename] = false;
                                         }
+                                        if(queuename == m_queuelist->currentText())
+                                                idxChanged(queuename);
                                 }
                         }
                 }
@@ -240,38 +243,39 @@ void IdentityDisplay::setQueueList(bool changeallow, const QString & qlist)
         if (m_engine->loginkind() == 0)
                 return;
         m_queuechangeallow = changeallow;
-        qDebug() << "IdentityDisplay::setQueueList()" << qlist;
+        // qDebug() << "IdentityDisplay::setQueueList()" << qlist;
         if(m_ui == NULL)
                 return;
-        QStringList qsl = qlist.split(";");
-        if((qsl.size() > 1) && (qsl[1].size() > 0)) {
-                QString astid = qsl[0];
-                if(astid == m_ui->astid()) {
-                        QStringList queues = qsl[1].split(",");
-                        queues.sort();
-                        for(int i = 0 ; i < queues.size(); i++) {
-                                QStringList qparams = queues[i].split(":");
-                                QString qname = qparams[0];
-                                if(m_queuelist->findText(qname) == -1) {
-                                        m_queuelist->addItem(qname);
-                                        m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
-                                        m_queuesindexes[qname] = i;
-                                        if(qparams.size() > 1)
-                                                m_queuesbusyness[qname] = qparams[1];
-                                        else
-                                                m_queuesbusyness[qname] = "0";
-                                }
-                        }
-                        if((queues.size() > 0) && (m_agentstatus)) {
-                                if(m_queuechangeallow) {
-                                        m_queueaction->show();
-                                        m_queuejoinall->show();
-                                        m_queueleaveall->show();
-                                }
-                                m_queuelist->show();
-                                m_queuebusy->show();
-                        }
+        ServerCommand * sc = new ServerCommand(qlist);
+        QString astid = sc->getString("astid");
+        if (astid != m_ui->astid())
+                return;
+        QStringList queues  = sc->getStringList("queuestats");
+        if (queues.size() == 0)
+                return;
+        queues.sort();
+        
+        for(int i = 0 ; i < queues.size(); i++) {
+                QStringList qparams = queues[i].split(":");
+                QString qname = qparams[0];
+                if(m_queuelist->findText(qname) == -1) {
+                        m_queuelist->addItem(qname);
+                        m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
+                        m_queuesindexes[qname] = i;
+                        if(qparams.size() > 1)
+                                m_queuesbusyness[qname] = qparams[1];
+                        else
+                                m_queuesbusyness[qname] = "0";
                 }
+        }
+        if((queues.size() > 0) && (m_agentstatus)) {
+                if(m_queuechangeallow) {
+                        m_queueaction->show();
+                        m_queuejoinall->show();
+                        m_queueleaveall->show();
+                }
+                m_queuelist->show();
+                m_queuebusy->show();
         }
 }
 

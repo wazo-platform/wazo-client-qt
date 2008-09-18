@@ -461,16 +461,17 @@ void BaseEngine::sendCommand(const QString & command)
  */
 void BaseEngine::processHistory(const QStringList & histlist)
 {
-	for(int i=0; i + 7 <= histlist.size(); i += 7) {
+        foreach (QString hist, histlist) {
+                QStringList histline = hist.split(";");
 		// DateTime; CallerID; duration; Status?; peer; IN/OUT
 		//qDebug() << histlist[i+0] << histlist[i+1]
 		//         << histlist[i+2] << histlist[i+3]
 		//         << histlist[i+4] << histlist[i+5];
-		QDateTime dt = QDateTime::fromString(histlist[i+0], Qt::ISODate);
-		int duration = histlist[i+2].toInt();
-		QString peer = histlist[i+4];
-                QString direction = histlist[i+5];
-                QString techdef = histlist[i+6];
+		QDateTime dt = QDateTime::fromString(histline[0], Qt::ISODate);
+		int duration = histline[2].toInt();
+		QString peer = histline[4];
+                QString direction = histline[5];
+                QString techdef = histline[6];
 		//qDebug() << dt << callerid << duration << peer << direction;
 		updateLogEntry(dt, duration, peer, direction, techdef);
 	}
@@ -800,11 +801,6 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
         } else if(command_to_match == "meetme") {
                 meetmeEvent(command_args.split(";"));
                 
-        } else if(command_to_match == "history") {
-                QCryptographicHash histohash(QCryptographicHash::Sha1);
-                QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
-                processHistory(command_args.split(";"));
-                
         } else if(command_to_match == "directory-response") {
                 directoryResponse(command_args);
 
@@ -851,51 +847,10 @@ bool BaseEngine::parseCommand(const QStringList & listitems)
                         }
                 }
                 
-        } else if(command_to_match == "parkedcall") {
-                parkingEvent(command_to_match, command_args);
-        } else if(command_to_match == "unparkedcall") {
-                parkingEvent(command_to_match, command_args);
-        } else if(command_to_match == "parkedcalltimeout") {
-                parkingEvent(command_to_match, command_args);
-        } else if(command_to_match == "parkedcallgiveup") {
-                parkingEvent(command_to_match, command_args);
-
-        } else if(command_to_match == "queues-list") {
-                if(hasFunction("nojoinleave"))
-                        newQueueList(false, command_args);
-                else
-                        newQueueList(true, command_args);
-
-        } else if(command_to_match == "agents-list") {
-                newAgentList(command_args);
-
-        } else if(command_to_match == "agent-status") {
-                QStringList liststatus = command_args.split(";");
-                if((liststatus[0] == m_agent_watched_astid) && (liststatus[1] == m_agent_watched_agentid))
-                        changeWatchedAgentSignal(liststatus);
-
         } else if(command_to_match == "queue-status") {
                 QStringList liststatus = command_args.split(";");
                 if((liststatus[0] == m_queue_watched_astid) && (liststatus[1] == m_queue_watched_queueid))
                         changeWatchedQueueSignal(liststatus);
-
-        } else if(command_to_match == "update-agents") {
-                QStringList liststatus = command_args.split(";");
-                // qDebug() << "update-agents" << liststatus;
-                if(liststatus.size() > 2) {
-                        QString astid = liststatus[1];
-                        QString agentid = liststatus[2];
-                        if (agentid.startsWith("Agent/")) {
-                                QString agentnum = agentid.mid(6);
-                                liststatus[2] = agentnum;
-                                UserInfo * ui = findUserFromAgent(astid, agentnum);
-                                if(ui)
-                                        updatePeerAgent(ui->userid(), "agentstatus", liststatus);
-                                else // (useful ?) in order to transfer the replies to unmatched agents
-                                        updatePeerAgent("", "agentstatus", liststatus);
-                        } else
-                                qDebug() << "update-agents agentnum" << agentid;
-                }
 
         } else if(command_to_match == "update-queues") {
                 setQueueStatus(command_args);
@@ -1170,9 +1125,50 @@ void BaseEngine::socketReadyRead()
                 } else {
                         ServerCommand * sc = new ServerCommand(line.trimmed());
                         if(sc->getString("direction") == "client") {
-                                if(sc->getString("class") == "callcampaign") {
+                                QString thisclass = sc->getString("class");
+                                if (thisclass == "callcampaign") {
                                         QString payload = sc->find("payload");
                                         requestFileListResult(payload);
+                                } else if (thisclass == "update-agents") {
+                                        QStringList liststatus = sc->getStringList("payload");
+                                        if(liststatus.size() > 2) {
+                                                QString astid = liststatus[1];
+                                                QString agentid = liststatus[2];
+                                                if (agentid.startsWith("Agent/")) {
+                                                        QString agentnum = agentid.mid(6);
+                                                        liststatus[2] = agentnum;
+                                                        UserInfo * ui = findUserFromAgent(astid, agentnum);
+                                                        if(ui)
+                                                                updatePeerAgent(ui->userid(), "agentstatus", liststatus);
+                                                        else // (useful ?) in order to transfer the replies to unmatched agents
+                                                                updatePeerAgent("", "agentstatus", liststatus);
+                                                } else
+                                                        qDebug() << "update-agents agentnum" << agentid;
+                                        }
+                                } else if (thisclass == "parkcall") {
+                                        parkingEvent(sc->find("payload"));
+                                        
+                                } else if (thisclass == "queues-list") {
+                                        if(hasFunction("nojoinleave"))
+                                                newQueueList(false, sc->find("payload"));
+                                        else
+                                                newQueueList(true, sc->find("payload"));
+                                        
+                                } else if (thisclass == "agents-list") {
+                                        newAgentList(sc->find("payload"));
+                                        
+                                } else if (thisclass == "agent-status") {
+                                        QStringList liststatus = sc->getStringList("payload");
+                                        if((liststatus[0] == m_agent_watched_astid) && (liststatus[1] == m_agent_watched_agentid))
+                                                changeWatchedAgentSignal(liststatus);
+                                        
+                                } else if (thisclass == "history") {
+                                        // QCryptographicHash histohash(QCryptographicHash::Sha1);
+                                        // QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
+                                        processHistory(sc->getStringList("payload"));
+                                        
+                                } else {
+                                        qDebug() << "unknown" << thisclass;
                                 }
                         }
                 }
@@ -1307,7 +1303,7 @@ void BaseEngine::requestHistory(const QString & peer, int mode)
 	 * mode = 1 : In calls
 	 * mode = 2 : Missed calls */
 	if(mode >= 0) {
-                qDebug() << "BaseEngine::requestHistory()" << peer;
+                // qDebug() << "BaseEngine::requestHistory()" << peer;
                 sendCommand("history " + peer + " " + QString::number(m_historysize) + " " + QString::number(mode));
         }
 }
@@ -1718,7 +1714,7 @@ void BaseEngine::setState(EngineState state)
 
 void BaseEngine::changeWatchedAgentSlot(const QString & astagentid)
 {
-        qDebug() << "BaseEngine::changeWatchedAgentSlot()" << astagentid;
+        // qDebug() << "BaseEngine::changeWatchedAgentSlot()" << astagentid;
         m_agent_watched_astid = astagentid.split(" ")[0];
         m_agent_watched_agentid = astagentid.split(" ")[1];
         sendCommand("agent-status " + astagentid);

@@ -68,7 +68,7 @@ protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
 public slots:
         void setUserInfo(const UserInfo *);
-        void parkingEvent(const QString &, const QString &);
+        void parkingEvent(const QString &);
         void contextMenuEvent(QContextMenuEvent *);
 private slots:
 	void dialNumber();

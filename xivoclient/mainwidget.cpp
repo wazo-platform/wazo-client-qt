@@ -932,8 +932,8 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
-                                connect( m_engine, SIGNAL(parkingEvent(const QString &, const QString &)),
-                                         m_xlet[dc], SLOT(parkingEvent(const QString &, const QString &)));
+                                connect( m_engine, SIGNAL(parkingEvent(const QString &)),
+                                         m_xlet[dc], SLOT(parkingEvent(const QString &)));
                                 connect( m_xlet[dc], SIGNAL(copyNumber(const QString &)),
                                          m_engine, SLOT(copyNumber(const QString &)) );
                                 connect( m_xlet[dc], SIGNAL(newParkEvent()),

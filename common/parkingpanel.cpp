@@ -54,6 +54,7 @@
 #include "parkingpanel.h"
 #include "peerwidget.h"
 #include "searchpanel.h"
+#include "servercommand.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -113,11 +114,13 @@ void ParkingPanel::setUserInfo(const UserInfo * ui)
  *
  * add a new message.
  */
-void ParkingPanel::parkingEvent(const QString & eventkind, const QString & str)
+void ParkingPanel::parkingEvent(const QString & subcommand)
 {
-        QStringList newpark = str.split(";");
         QString astid, parkplacenum, seconds, parkedpeer, parkedby;
-	// QTime time = QTime::currentTime();
+        ServerCommand * sc = new ServerCommand(subcommand);
+        QString eventkind = sc->getString("status");
+        QStringList newpark = sc->getStringList("args");
+        // QTime time = QTime::currentTime();
 
         if(newpark.size() == 5) {
                 astid        = newpark[0];

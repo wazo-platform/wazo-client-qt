@@ -48,6 +48,7 @@
 #include <QVariant>
 
 #include "agentspanel.h"
+#include "servercommand.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -252,15 +253,16 @@ void AgentsPanel::updatePeerAgent(const QString &,
 void AgentsPanel::setAgentList(const QString & alist)
 {
         // qDebug() << "AgentsPanel::setAgentList()" << alist;
+        ServerCommand * sc = new ServerCommand(alist);
+        QString astid = sc->getString("astid");
+        QStringList asl = sc->getStringList("list");
+        QStringList agents;
+        for(int i = 1 ; i < asl.size(); i++)
+                agents << asl[i];
+        agents.sort();
+        
         QPixmap * m_square = new QPixmap(12, 12);
-        QStringList asl = alist.split(";");
-        if(asl.size() > 1) {
-                QStringList agents;
-                QString astid = asl[0];
-                for(int i = 1 ; i < asl.size(); i++)
-                        agents << asl[i];
-                agents.sort();
-
+        if(agents.size() > 0) {
                 for(int i = 0 ; i < agents.size(); i++) {
                         QStringList ags = agents[i].split(":");
                         QString agnum = ags[0];

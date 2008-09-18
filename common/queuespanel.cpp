@@ -49,6 +49,7 @@
 
 #include "baseengine.h"
 #include "queuespanel.h"
+#include "servercommand.h"
 
 const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 100px; height: 15px}";
 
@@ -98,11 +99,12 @@ void QueuesPanel::updatePeerAgent(const QString &,
 
 void QueuesPanel::setQueueList(bool, const QString & qlist)
 {
-        qDebug() << "QueuesPanel::setQueueList()" << qlist;
-        QStringList qsl = qlist.split(";");
-        if((qsl.size() > 1) && (qsl[1].size() > 0)) {
-                QString astid = qsl[0];
-                QStringList queues = qsl[1].split(",");
+        // qDebug() << "QueuesPanel::setQueueList()" << qlist;
+        ServerCommand * sc = new ServerCommand(qlist);
+        QString astid = sc->getString("astid");
+        QStringList queues = sc->getStringList("queuestats");
+        
+        if(queues.size() > 0) {
                 queues.sort();
                 for(int i = 0 ; i < queues.size(); i++) {
                         QStringList qparams = queues[i].split(":");

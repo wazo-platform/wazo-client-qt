@@ -205,7 +205,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
 
 void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
 {
-        qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
+        // qDebug() << "AgentdetailsPanel::newAgent()" << agentstatus;
         m_astid = agentstatus[0];
         m_agent = agentstatus[1];
         QString longname = agentstatus[3];
