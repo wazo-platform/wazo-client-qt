@@ -53,6 +53,7 @@ class ServerCommand
 {
 public:
 	ServerCommand(const QString &);
+        ServerCommand(const QStringList &);
 	~ServerCommand();
         void display();
         QString getString(const QString &);

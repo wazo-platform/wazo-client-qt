@@ -51,8 +51,26 @@ ServerCommand::ServerCommand(const QString & vv)
         : m_jsonroot(NULL)
 {
         json_error ret = json_parse_document (&m_jsonroot, (char *) qPrintable(vv));
-        // qDebug() << "ServerCommand::ServerCommand()" << vv << ret;
-        
+        if (ret != JSON_OK)
+                qDebug() << "ServerCommand::ServerCommand()" << vv << ret;
+}
+
+ServerCommand::ServerCommand(const QStringList &)
+{
+//         json_t * array = json_new_array();
+//         foreach(QString v, vv) {
+//                 json_t * val  = json_new_string ((char *) qPrintable(v));
+//                 json_t * node = json_new_value (JSON_STRING);
+//                 json_insert_child (node, val);
+//                 json_insert_child (array, node);
+//         }
+
+//         char * text = NULL;
+//         json_error ret = json_tree_to_string (array, &text);
+//         if (ret == JSON_OK)
+//                 qDebug() << "ServerCommand::ServerCommand()" << text;
+//         else
+//                 qDebug() << "ServerCommand::ServerCommand()" << "KO";
 }
 
 ServerCommand::~ServerCommand()
@@ -125,5 +143,7 @@ QString ServerCommand::find(const QString & tlabel)
                                 r = text;
                 }
         }
+        if(text)
+                free(text);
         return r;
 }
