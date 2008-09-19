@@ -46,7 +46,7 @@
 #define PEER_MIMETYPE		"XIVO_ASTERISK_PEER"
 #define NUMBER_MIMETYPE		"XIVO_ASTERISK_NUMBER"
 
-const int REQUIRED_SERVER_VERSION = 3706;
+const int REQUIRED_SERVER_VERSION = 4141;
 const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
 const QString __current_client_version__  = SVNVER;
 const QString __xivo_version__  = "0.4";

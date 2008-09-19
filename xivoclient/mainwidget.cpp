@@ -241,7 +241,7 @@ void MainWidget::setAppearance(const QStringList & dockoptions)
         qDebug() << "MainWidget::setAppearance()" << dockoptions;
         foreach (QString dname, dockoptions) {
                 if(dname.size() > 0) {
-                        QStringList dopt = dname.split(":");
+                        QStringList dopt = dname.split("-");
                         QString wname = dopt[0];
                         m_allnames.append(wname);
                         m_dockoptions[wname] = "";

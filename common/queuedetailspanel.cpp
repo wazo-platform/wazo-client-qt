@@ -145,7 +145,7 @@ void QueuedetailsPanel::update()
 
 void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
 {
-        qDebug() << "QueuedetailsPanel::newQueue()" << queuestatus;
+        // qDebug() << "QueuedetailsPanel::newQueue()" << queuestatus;
 
         QStringList prevlist = m_agentlist;
         if(queuestatus.size() > 2) {

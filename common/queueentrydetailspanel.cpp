@@ -73,7 +73,7 @@ void QueueentrydetailsPanel::updatePeerAgent(const QString &, const QString &, c
 
 void QueueentrydetailsPanel::newQueue(const QStringList & queuestatus)
 {
-        qDebug() << "QueueentrydetailsPanel::newQueue()" << queuestatus;
+        // qDebug() << "QueueentrydetailsPanel::newQueue()" << queuestatus;
         m_astid = queuestatus[0];
         m_queueid = queuestatus[1];
         m_label->setText("<b>" + m_queueid + "</b> " + tr("on") + " <b>" + m_astid + "</b>");
@@ -95,7 +95,6 @@ void QueueentrydetailsPanel::newQueue(const QStringList & queuestatus)
                 int nagents = queuestatus[2].toInt();
                 int nentries = queuestatus[nagents + 3].toInt();
                 QString astid = queuestatus[0];
-                QStringList entries;
                 for(int i = nagents + 4 ; i < nagents + 4 + nentries; i++)
                         if(queuestatus[i].size() > 0) {
                                 QString entryname = queuestatus[i].split(",")[0];

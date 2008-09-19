@@ -284,7 +284,7 @@ private:
 	void connectSocket();
 	void sendTCPCommand();
         void sendCommand(const QString &);
-        bool parseCommand(const QStringList &);
+        bool parseCommand(const QString &);
         void popupError(const QString &);
         
 	// Class Members
