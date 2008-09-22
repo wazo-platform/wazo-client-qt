@@ -64,7 +64,7 @@ win32-%:
 
 # to be executed under a bash/cygwin-like terminal
 win32pack-%:
-	@${UPXWIN} $*/release/$*.exe
+	@${UPXWIN} $*/release/$*.exe || true
 	@${MAKENSIS} delivery/$*.nsi
 	@mv delivery/$*-setup-win32.exe $*-setup-${_XIVOVER_}-${_SVNVER_}-win32.exe
 

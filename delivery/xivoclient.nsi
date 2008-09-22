@@ -4,6 +4,8 @@
 # NullSoft Installation System
 #
 
+!define ODPATH "C:\cygwin\home\Administrateur\xivo-trunk\openssl-0.9.8g-mingw\openssl-0.9.8g"
+!define REG_UNINST "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient"
 Name "XIVO Client"
 OutFile "xivoclient-setup-win32.exe"
 InstallDir "$PROGRAMFILES\XIVO"
@@ -19,8 +21,8 @@ LoadLanguageFile "${NSISDIR}\Contrib\Language files\French.nlf"
 Section "Prog"
 SetOutPath $INSTDIR
 File "C:\MinGW\bin\mingwm10.dll"
-File "C:\cygwin\home\Administrateur\xivo-trunk\openssl-0.9.8g-mingw\openssl-0.9.8g\cryptoeay32-0.9.8.dll"
-File "C:\cygwin\home\Administrateur\xivo-trunk\openssl-0.9.8g-mingw\openssl-0.9.8g\ssleay32-0.9.8.dll"
+File "${ODPATH}\cryptoeay32-0.9.8.dll" 
+File "${ODPATH}\ssleay32-0.9.8.dll"
 File "LICENSE"
 File "GPL_V2.txt"
 File "OpenSSL.LICENSE.txt"
@@ -29,10 +31,10 @@ File "Qt.GPL.Exception.Addendum.txt"
 File "..\xivoclient\release\xivoclient.exe"
 # Write keys in Registry in order for the applications to appear in Add/Remove Programs
 WriteRegStr HKLM "Software\XIVO\xivoclient" "Install_Dir" "$INSTDIR"
-WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "DisplayName" "XIVO Client"
-WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "UninstallString" '"$INSTDIR\uninstall-xivoclient.exe"'
-WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "NoModify" 1
-WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient" "NoRepair" 1
+WriteRegStr HKLM ${REG_UNINST} "DisplayName" "XIVO Client"
+WriteRegStr HKLM ${REG_UNINST} "UninstallString" '"$INSTDIR\uninstall-xivoclient.exe"'
+WriteRegDWORD HKLM ${REG_UNINST} "NoModify" 1
+WriteRegDWORD HKLM ${REG_UNINST} "NoRepair" 1
 WriteUninstaller "$INSTDIR\uninstall-xivoclient.exe"
 SectionEnd
 
@@ -60,7 +62,7 @@ Delete "$INSTDIR\ssleay32-0.9.8.dll"
 OnlyUninstallXC:
 Delete "$INSTDIR\xivoclient.exe"
 Delete "$INSTDIR\uninstall-xivoclient.exe"
-DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient"
+DeleteRegKey HKLM ${REG_UNINST} 
 DeleteRegKey HKLM "Software\XIVO\xivoclient"
 RmDir "$INSTDIR"
 
