@@ -44,7 +44,6 @@
 #include <QStringList>
 
 #include "servercommand.h"
-#include "xivoconsts.h"
 
 /*! \brief Constructor
  */
@@ -71,9 +70,9 @@ ServerCommand::~ServerCommand()
                 json_free_value (&m_jsonroot);
 }
 
-void ServerCommand::addString(const QString & tlabel,
-                              const QString & newlab,
-                              const QString & newval)
+void ServerCommand::addString(const QString & newlab,
+                              const QString & newval,
+                              const QString & tlabel)
 {
         if(m_jsonroot) {
                 json_t * v = json_find_first_label(m_jsonroot, (char *) qPrintable(tlabel));
@@ -86,9 +85,9 @@ void ServerCommand::addString(const QString & tlabel,
         }
 }
 
-void ServerCommand::addStringList(const QString & tlabel,
-                                  const QString & newlab,
-                                  const QStringList & newvals)
+void ServerCommand::addStringList(const QString & newlab,
+                                  const QStringList & newvals,
+                                  const QString & tlabel)
 {
         if(m_jsonroot) {
                 json_t * v = json_find_first_label(m_jsonroot, (char *) qPrintable(tlabel));

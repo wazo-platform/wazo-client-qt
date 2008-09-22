@@ -282,7 +282,6 @@ private:
 	void initFeatureFields(const QString &,
 			       const QString &);
 	void connectSocket();
-	void sendTCPCommand();
         void sendCommand(const QString &);
         bool parseCommand(const QString &);
         void popupError(const QString &);
@@ -352,7 +351,6 @@ private:
 	int m_ka_timerid;		//!< timer id for keep alive
 	int m_try_timerid;		//!< timer id for try to reconnect
 	int m_pendingkeepalivemsg;	//!< number of keepalivemsg sent without response
-	QString m_pendingcommand;	//!< command to be sent to the server.
         QString m_numbertodial;		//!< Number dialed in
         QString m_osname;		//!< OS informations
 

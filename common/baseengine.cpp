@@ -433,23 +433,10 @@ bool BaseEngine::hasFunction(const QString & funcname)
         return m_capafuncs.contains(funcname);
 }
 
-/*! \brief send a command to the server 
- * The m_pendingcommand is sent on the socket.
- *
- * \sa m_pendingcommand
- */
-void BaseEngine::sendTCPCommand()
-{
-        // qDebug() << "BaseEngine::sendTCPCommand()" << m_pendingcommand;
-	m_sbsocket->write((m_pendingcommand + "\r\n").toAscii());
-}
-
 void BaseEngine::sendCommand(const QString & command)
 {
-        if(m_sbsocket->state() == QAbstractSocket::ConnectedState) {
-                m_pendingcommand = command;
-                sendTCPCommand();
-        }
+        if(m_sbsocket->state() == QAbstractSocket::ConnectedState)
+                m_sbsocket->write((command + "\r\n").toAscii());
 }
 
 /*! \brief parse history command response
@@ -496,11 +483,16 @@ void BaseEngine::socketConnected()
                 stopTryAgainTimer();
                 /* do the login/identification */
                 setMyClientId();
-                m_pendingcommand = "login_id userid=" + m_userid + ";company=" + m_company + ";";
-                m_pendingcommand += "ident="       + m_clientid                 + ";";
-                m_pendingcommand += "version="     + __current_client_version__ + ";";
-                m_pendingcommand += "xivoversion=" + __xivo_version__           + ";";
-                sendTCPCommand();
+                ServerCommand * sc = new ServerCommand();
+                sc->addString("class", "login_id");
+                sc->addString("direction", "xivoserver");
+                sc->addString("userid", m_userid);
+                sc->addString("company", m_company);
+                sc->addString("ident", m_clientid);
+                sc->addString("version", __current_client_version__);
+                sc->addString("xivoversion", __xivo_version__);
+                sendCommand(sc->find());
+                
         } else if(socketname == "fax") {
                 QString stp = "faxdata " + m_faxid + "\r\n";
                 m_faxsocket->write(stp.toAscii());
@@ -922,7 +914,11 @@ bool BaseEngine::parseCommand(const QString & line)
                                 QString tohash = sc->getString("sessionid") + ":" + m_password;
                                 QCryptographicHash hidepass(QCryptographicHash::Sha1);
                                 QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
-                                sendCommand("login_pass hashedpassword=" + res);
+                                ServerCommand * sc2 = new ServerCommand();
+                                sc2->addString("class", "login_pass");
+                                sc2->addString("direction", "xivoserver");
+                                sc2->addString("hashedpassword", res);
+                                sendCommand(sc2->find());
                         }
                         
                 } else if (thisclass == "loginko") {
@@ -932,32 +928,35 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "login_pass_ok") {
                         
                         QStringList capas = sc->getString("capalist").split(",");
-                        m_pendingcommand = "login_capas capaid=";
+                        ServerCommand * sc2 = new ServerCommand();
+                        sc2->addString("class", "login_capas");
+                        sc2->addString("direction", "xivoserver");
                         if (capas.size() == 1)
-                                m_pendingcommand += capas[0] + ";";
+                                sc2->addString("capaid", capas[0]);
                         else {
                                 if(m_useridopt.size() > 0) {
-                                        if(capas.contains(m_useridopt)) {
-                                                m_pendingcommand += m_useridopt + ";";
-                                        }
-                                } else {
-                                        m_pendingcommand += capas[0] + ";";
-                                }
+                                        if(capas.contains(m_useridopt))
+                                                sc2->addString("capaid", m_useridopt);
+                                        else
+                                                sc2->addString("capaid", capas[0]);
+                                } else
+                                        sc2->addString("capaid", capas[0]);
                         }
                         
-                        if(m_loginkind > 0)
-                                m_pendingcommand += "loginkind=agent;phonenumber=" + m_phonenumber + ";";
-                        else
-                                m_pendingcommand += "loginkind=user;";
+                        if(m_loginkind > 0) {
+                                sc2->addString("loginkind", "agent");
+                                sc2->addString("phonenumber", m_phonenumber);
+                        } else
+                                sc2->addString("loginkind", "user");
                         if(m_checked_presence)
-                                m_pendingcommand += "state=" + m_availstate + ";";
+                                sc2->addString("state", m_availstate);
                         else
-                                m_pendingcommand += "state=" + __nopresence__ + ";";
+                                sc2->addString("state", __nopresence__);
                         if(m_checked_lastconnwins)
-                                m_pendingcommand += "lastconnwins=true";
+                                sc2->addString("lastconnwins", "true");
                         else
-                                m_pendingcommand += "lastconnwins=false";
-                        sendTCPCommand();
+                                sc2->addString("lastconnwins", "false");
+                        sendCommand(sc2->find());
 
                 } else if (thisclass == "login_capas_ok") {
                         
@@ -1006,28 +1005,28 @@ void BaseEngine::agentAction(const QString & action)
 {
         // qDebug() << "BaseEngine::agentAction" << action;
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "agent");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addStringList(XIVO_COMMAND_ROOT, "command", action.split(" "));
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "agent");
+        sc->addString("direction", "xivoserver");
+        sc->addStringList("command", action.split(" "));
+        sendCommand(sc->find());
 }
 
 void BaseEngine::meetmeAction(const QString & action)
 {
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "meetme");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addStringList(XIVO_COMMAND_ROOT, "command", action.split(" "));
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "meetme");
+        sc->addString("direction", "xivoserver");
+        sc->addStringList("command", action.split(" "));
+        sendCommand(sc->find());
 }
 
 void BaseEngine::requestFileList(const QString & action)
 {
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "callcampaign");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addStringList(XIVO_COMMAND_ROOT, "command", action.split(" "));
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "callcampaign");
+        sc->addString("direction", "xivoserver");
+        sc->addStringList("command", action.split(" "));
+        sendCommand(sc->find());
 }
 
 void BaseEngine::sendFaxCommand(const QString & filename, const QString & number,
@@ -1041,12 +1040,12 @@ void BaseEngine::sendFaxCommand(const QString & filename, const QString & number
         m_faxsize = m_faxdata->size();
         if(m_faxdata->size() > 0) {
                 ServerCommand * sc = new ServerCommand();
-                sc->addString(XIVO_COMMAND_ROOT, "class", "faxsend");
-                sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-                sc->addString(XIVO_COMMAND_ROOT, "size", QString::number(m_faxsize));
-                sc->addString(XIVO_COMMAND_ROOT, "number", number);
-                sc->addString(XIVO_COMMAND_ROOT, "hide", QString::number(hide));
-                sendCommand(sc->find(XIVO_COMMAND_ROOT));
+                sc->addString("class", "faxsend");
+                sc->addString("direction", "xivoserver");
+                sc->addString("size", QString::number(m_faxsize));
+                sc->addString("number", number);
+                sc->addString("hide", QString::number(hide));
+                sendCommand(sc->find());
         } else
                 ackFax("ko;file");
 }
@@ -1196,11 +1195,11 @@ void BaseEngine::originateCall(const QString & src, const QString & dst)
 {
 	// qDebug() << "BaseEngine::originateCall()" << src << dst;
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "originate");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "source", src);
-        sc->addString(XIVO_COMMAND_ROOT, "destination", dst);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "originate");
+        sc->addString("direction", "xivoserver");
+        sc->addString("source", src);
+        sc->addString("destination", dst);
+        sendCommand(sc->find());
 }
 
 /*! \brief send a transfer call command to the server
@@ -1209,11 +1208,11 @@ void BaseEngine::transferCall(const QString & src, const QString & dst)
 {
 	// qDebug() << "BaseEngine::transferCall()" << src << dst;
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "transfer");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "source", src);
-        sc->addString(XIVO_COMMAND_ROOT, "destination", dst);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "transfer");
+        sc->addString("direction", "xivoserver");
+        sc->addString("source", src);
+        sc->addString("destination", dst);
+        sendCommand(sc->find());
 }
 
 /*! \brief send an attended transfer call command to the server
@@ -1222,11 +1221,11 @@ void BaseEngine::atxferCall(const QString & src, const QString & dst)
 {
 	// qDebug() << "BaseEngine::atxferCall()" << src << dst;
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "atxfer");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "source", src);
-        sc->addString(XIVO_COMMAND_ROOT, "destination", dst);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "atxfer");
+        sc->addString("direction", "xivoserver");
+        sc->addString("source", src);
+        sc->addString("destination", dst);
+        sendCommand(sc->find());
 }
 
 /*! \brief send a transfer call command to the server
@@ -1236,12 +1235,12 @@ void BaseEngine::parkCall(const QString & src)
 	// qDebug() << "BaseEngine::parkCall()" << src;
         QStringList srclist = src.split("/");
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "transfer");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "source", src);
-        sc->addString(XIVO_COMMAND_ROOT, "destination",
+        sc->addString("class", "transfer");
+        sc->addString("direction", "xivoserver");
+        sc->addString("source", src);
+        sc->addString("destination",
                       "p/" + srclist[1] + "/" + srclist[2] + "///special:parkthecall");
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sendCommand(sc->find());
 }
 
 /*! \brief intercept a call (a channel)
@@ -1254,11 +1253,11 @@ void BaseEngine::interceptCall(const UserInfo *, const QString & channel)
 {
 	// qDebug() << "BaseEngine::interceptCall()" << ui << channel;
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "transfer");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "source", channel);
-        sc->addString(XIVO_COMMAND_ROOT, "destination", "user:special:me");
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "transfer");
+        sc->addString("direction", "xivoserver");
+        sc->addString("source", channel);
+        sc->addString("destination", "user:special:me");
+        sendCommand(sc->find());
 }
 
 /*! \brief hang up a channel
@@ -1269,11 +1268,11 @@ void BaseEngine::hangupCall(const UserInfo * ui, const QString & channel)
 {
 	// qDebug() << "BaseEngine::hangupCall()" << ui << channel;
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "hangup");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "astid", ui->astid());
-        sc->addString(XIVO_COMMAND_ROOT, "channel", channel);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "hangup");
+        sc->addString("direction", "xivoserver");
+        sc->addString("astid", ui->astid());
+        sc->addString("channel", channel);
+        sendCommand(sc->find());
 }
 
 /*! \brief hang up a channel
@@ -1284,11 +1283,11 @@ void BaseEngine::simplehangupCall(const UserInfo * ui, const QString & channel)
 {
 	// qDebug() << "BaseEngine::simplehangupCall()" << channel;
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "simplehangup");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "astid", ui->astid());
-        sc->addString(XIVO_COMMAND_ROOT, "channel", channel);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "simplehangup");
+        sc->addString("direction", "xivoserver");
+        sc->addString("astid", ui->astid());
+        sc->addString("channel", channel);
+        sendCommand(sc->find());
 }
 
 /*! \brief pick up a channel
@@ -1299,11 +1298,11 @@ void BaseEngine::pickUp(const UserInfo * ui)
 {
 	// qDebug() << "BaseEngine::pickUp()" << ui;
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "pickup");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "astid", ui->astid());
-        sc->addString(XIVO_COMMAND_ROOT, "phonenum", ui->phonenum());
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "pickup");
+        sc->addString("direction", "xivoserver");
+        sc->addString("astid", ui->astid());
+        sc->addString("phonenum", ui->phonenum());
+        sendCommand(sc->find());
 }
 
 /*! \brief send the directory search command to the server
@@ -1314,10 +1313,10 @@ void BaseEngine::searchDirectory(const QString & text)
 {
         // qDebug() << "BaseEngine::searchDirectory()" << text;
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "directory-search");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "pattern", text);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "directory-search");
+        sc->addString("direction", "xivoserver");
+        sc->addString("pattern", text);
+        sendCommand(sc->find());
 }
 
 /*! \brief ask history for an extension 
@@ -1330,12 +1329,12 @@ void BaseEngine::requestHistory(const QString & peer, int mode)
 	if(mode >= 0) {
                 // qDebug() << "BaseEngine::requestHistory()" << peer;
                 ServerCommand * sc = new ServerCommand();
-                sc->addString(XIVO_COMMAND_ROOT, "class", "history");
-                sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-                sc->addString(XIVO_COMMAND_ROOT, "peer", peer);
-                sc->addString(XIVO_COMMAND_ROOT, "size", QString::number(m_historysize));
-                sc->addString(XIVO_COMMAND_ROOT, "mode", QString::number(mode));
-                sendCommand(sc->find(XIVO_COMMAND_ROOT));
+                sc->addString("class", "history");
+                sc->addString("direction", "xivoserver");
+                sc->addString("peer", peer);
+                sc->addString("size", QString::number(m_historysize));
+                sc->addString("mode", QString::number(mode));
+                sendCommand(sc->find());
         }
 }
 
@@ -1613,81 +1612,81 @@ bool BaseEngine::isRemovable(const QMetaObject * metaobject)
 void BaseEngine::featurePutVoiceMail(bool b)
 {
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "featuresput");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "userid", m_monitored_userid);
-        sc->addString(XIVO_COMMAND_ROOT, "function", "enablevoicemail");
-        sc->addString(XIVO_COMMAND_ROOT, "value", QString(b ? "1" : "0"));
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "featuresput");
+        sc->addString("direction", "xivoserver");
+        sc->addString("userid", m_monitored_userid);
+        sc->addString("function", "enablevoicemail");
+        sc->addString("value", QString(b ? "1" : "0"));
+        sendCommand(sc->find());
 }
 
 void BaseEngine::featurePutCallRecording(bool b)
 {
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "featuresput");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "userid", m_monitored_userid);
-        sc->addString(XIVO_COMMAND_ROOT, "function", "callrecord");
-        sc->addString(XIVO_COMMAND_ROOT, "value", QString(b ? "1" : "0"));
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "featuresput");
+        sc->addString("direction", "xivoserver");
+        sc->addString("userid", m_monitored_userid);
+        sc->addString("function", "callrecord");
+        sc->addString("value", QString(b ? "1" : "0"));
+        sendCommand(sc->find());
 }
 
 void BaseEngine::featurePutCallFiltering(bool b)
 {
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "featuresput");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "userid", m_monitored_userid);
-        sc->addString(XIVO_COMMAND_ROOT, "function", "callfilter");
-        sc->addString(XIVO_COMMAND_ROOT, "value", QString(b ? "1" : "0"));
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "featuresput");
+        sc->addString("direction", "xivoserver");
+        sc->addString("userid", m_monitored_userid);
+        sc->addString("function", "callfilter");
+        sc->addString("value", QString(b ? "1" : "0"));
+        sendCommand(sc->find());
 }
 
 void BaseEngine::featurePutDnd(bool b)
 {
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "featuresput");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "userid", m_monitored_userid);
-        sc->addString(XIVO_COMMAND_ROOT, "function", "enablednd");
-        sc->addString(XIVO_COMMAND_ROOT, "value", QString(b ? "1" : "0"));
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "featuresput");
+        sc->addString("direction", "xivoserver");
+        sc->addString("userid", m_monitored_userid);
+        sc->addString("function", "enablednd");
+        sc->addString("value", QString(b ? "1" : "0"));
+        sendCommand(sc->find());
 }
 
 void BaseEngine::featurePutForwardOnUnavailable(bool b, const QString & dst)
 {
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "featuresput");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "userid", m_monitored_userid);
-        sc->addString(XIVO_COMMAND_ROOT, "function", "enablerna");
-        sc->addString(XIVO_COMMAND_ROOT, "value", QString(b ? "1" : "0"));
-        sc->addString(XIVO_COMMAND_ROOT, "destination", dst);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "featuresput");
+        sc->addString("direction", "xivoserver");
+        sc->addString("userid", m_monitored_userid);
+        sc->addString("function", "enablerna");
+        sc->addString("value", QString(b ? "1" : "0"));
+        sc->addString("destination", dst);
+        sendCommand(sc->find());
 }
 
 void BaseEngine::featurePutForwardOnBusy(bool b, const QString & dst)
 {
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "featuresput");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "userid", m_monitored_userid);
-        sc->addString(XIVO_COMMAND_ROOT, "function", "enablebusy");
-        sc->addString(XIVO_COMMAND_ROOT, "value", QString(b ? "1" : "0"));
-        sc->addString(XIVO_COMMAND_ROOT, "destination", dst);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "featuresput");
+        sc->addString("direction", "xivoserver");
+        sc->addString("userid", m_monitored_userid);
+        sc->addString("function", "enablebusy");
+        sc->addString("value", QString(b ? "1" : "0"));
+        sc->addString("destination", dst);
+        sendCommand(sc->find());
 }
 
 void BaseEngine::featurePutUncondForward(bool b, const QString & dst)
 {
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "featuresput");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "userid", m_monitored_userid);
-        sc->addString(XIVO_COMMAND_ROOT, "function", "enableunc");
-        sc->addString(XIVO_COMMAND_ROOT, "value", QString(b ? "1" : "0"));
-        sc->addString(XIVO_COMMAND_ROOT, "destination", dst);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "featuresput");
+        sc->addString("direction", "xivoserver");
+        sc->addString("userid", m_monitored_userid);
+        sc->addString("function", "enableunc");
+        sc->addString("value", QString(b ? "1" : "0"));
+        sc->addString("destination", dst);
+        sendCommand(sc->find());
 }
 
 void BaseEngine::askFeatures()
@@ -1697,33 +1696,33 @@ void BaseEngine::askFeatures()
         if(m_monitored_userid.size() > 0)
                 featurestoget = m_monitored_userid;
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "featuresget");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "userid", featurestoget);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "featuresget");
+        sc->addString("direction", "xivoserver");
+        sc->addString("userid", featurestoget);
+        sendCommand(sc->find());
 }
 
 void BaseEngine::askCallerIds()
 {
         qDebug() << "BaseEngine::askCallerIds()";
         ServerCommand * sc1 = new ServerCommand();
-        sc1->addString(XIVO_COMMAND_ROOT, "class", "users-list");
-        sc1->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
+        sc1->addString("class", "users-list");
+        sc1->addString("direction", "xivoserver");
         ServerCommand * sc2 = new ServerCommand();
-        sc2->addString(XIVO_COMMAND_ROOT, "class", "phones-list");
-        sc2->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
+        sc2->addString("class", "phones-list");
+        sc2->addString("direction", "xivoserver");
         ServerCommand * sc3 = new ServerCommand();
-        sc3->addString(XIVO_COMMAND_ROOT, "class", "queues-list");
-        sc3->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
+        sc3->addString("class", "queues-list");
+        sc3->addString("direction", "xivoserver");
         ServerCommand * sc4 = new ServerCommand();
-        sc4->addString(XIVO_COMMAND_ROOT, "class", "agents-list");
-        sc4->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
+        sc4->addString("class", "agents-list");
+        sc4->addString("direction", "xivoserver");
         
-        sendCommand(sc1->find(XIVO_COMMAND_ROOT));
-        sendCommand(sc3->find(XIVO_COMMAND_ROOT));
-        sendCommand(sc4->find(XIVO_COMMAND_ROOT));
-        sendCommand(sc2->find(XIVO_COMMAND_ROOT));
-        sendCommand(sc1->find(XIVO_COMMAND_ROOT));
+        sendCommand(sc1->find());
+        sendCommand(sc3->find());
+        sendCommand(sc4->find());
+        sendCommand(sc2->find());
+        sendCommand(sc1->find());
 }
 
 void BaseEngine::setSystrayed(bool b)
@@ -1806,11 +1805,11 @@ void BaseEngine::changeWatchedAgentSlot(const QString & astagentid)
         m_agent_watched_astid = astagentid.split(" ")[0];
         m_agent_watched_agentid = astagentid.split(" ")[1];
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "agent-status");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "astid", m_agent_watched_astid);
-        sc->addString(XIVO_COMMAND_ROOT, "agentid", m_agent_watched_agentid);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "agent-status");
+        sc->addString("direction", "xivoserver");
+        sc->addString("astid", m_agent_watched_astid);
+        sc->addString("agentid", m_agent_watched_agentid);
+        sendCommand(sc->find());
 }
 
 void BaseEngine::changeWatchedQueueSlot(const QString & astqueueid)
@@ -1819,11 +1818,11 @@ void BaseEngine::changeWatchedQueueSlot(const QString & astqueueid)
         m_queue_watched_astid = astqueueid.split(" ")[0];
         m_queue_watched_queueid = astqueueid.split(" ")[1];
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "queue-status");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "astid", m_queue_watched_astid);
-        sc->addString(XIVO_COMMAND_ROOT, "queuename", m_queue_watched_queueid);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "queue-status");
+        sc->addString("direction", "xivoserver");
+        sc->addString("astid", m_queue_watched_astid);
+        sc->addString("queuename", m_queue_watched_queueid);
+        sendCommand(sc->find());
 }
 
 void BaseEngine::setOSInfos(const QString & osname)
@@ -1859,10 +1858,10 @@ void BaseEngine::keepLoginAlive()
 	}
 
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "availstate");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "availstate", m_availstate);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "availstate");
+        sc->addString("direction", "xivoserver");
+        sc->addString("availstate", m_availstate);
+        sendCommand(sc->find());
 }
 
 /*!
@@ -1872,8 +1871,8 @@ void BaseEngine::keepLoginAlive()
 void BaseEngine::sendMessage(const QString & message)
 {
         ServerCommand * sc = new ServerCommand();
-        sc->addString(XIVO_COMMAND_ROOT, "class", "message");
-        sc->addString(XIVO_COMMAND_ROOT, "direction", "xivoserver");
-        sc->addString(XIVO_COMMAND_ROOT, "message", message);
-        sendCommand(sc->find(XIVO_COMMAND_ROOT));
+        sc->addString("class", "message");
+        sc->addString("direction", "xivoserver");
+        sc->addString("message", message);
+        sendCommand(sc->find());
 }

@@ -43,6 +43,7 @@
 #define __SERVERCOMMAND_H__
 
 #include "json.h"
+#include "xivoconsts.h"
 
 class QString;
 class QStringList;
@@ -58,13 +59,13 @@ public:
         void display();
         void addString(const QString &,
                        const QString &,
-                       const QString &);
+                       const QString & tlabel = XIVO_COMMAND_ROOT);
         void addStringList(const QString &,
-                           const QString &,
-                           const QStringList &);
+                           const QStringList &,
+                           const QString & tlabel = XIVO_COMMAND_ROOT);
         QString getString(const QString &);
         QStringList getStringList(const QString &);
-        QString find(const QString &);
+        QString find(const QString & tlabel = XIVO_COMMAND_ROOT);
 private:
         void recurse(json_t *, int);
         QString m_command;
