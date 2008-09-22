@@ -55,28 +55,54 @@ ServerCommand::ServerCommand(const QString & vv)
                 qDebug() << "ServerCommand::ServerCommand()" << vv << ret;
 }
 
-ServerCommand::ServerCommand(const QStringList &)
+ServerCommand::ServerCommand()
 {
-//         json_t * array = json_new_array();
-//         foreach(QString v, vv) {
-//                 json_t * val  = json_new_string ((char *) qPrintable(v));
-//                 json_t * node = json_new_value (JSON_STRING);
-//                 json_insert_child (node, val);
-//                 json_insert_child (array, node);
-//         }
-
-//         char * text = NULL;
-//         json_error ret = json_tree_to_string (array, &text);
-//         if (ret == JSON_OK)
-//                 qDebug() << "ServerCommand::ServerCommand()" << text;
-//         else
-//                 qDebug() << "ServerCommand::ServerCommand()" << "KO";
+        m_jsonroot = json_new_object();
+        json_t * label = json_new_string("root");
+        json_t * entry = json_new_object();
+        json_insert_child (label, entry);
+        json_insert_child (m_jsonroot, label);
 }
 
 ServerCommand::~ServerCommand()
 {
         if(m_jsonroot)
                 json_free_value (&m_jsonroot);
+}
+
+void ServerCommand::addString(const QString & tlabel,
+                              const QString & newlab,
+                              const QString & newval)
+{
+        if(m_jsonroot) {
+                json_t * v = json_find_first_label(m_jsonroot, (char *) qPrintable(tlabel));
+                if ((v != NULL) && (v->child != NULL)) {
+                        json_t * label = json_new_string((char *) qPrintable(newlab));
+                        json_t * value = json_new_string((char *) qPrintable(newval));
+                        json_insert_child(label, value);
+                        json_insert_child(v->child, label);
+                }
+        }
+}
+
+void ServerCommand::addStringList(const QString & tlabel,
+                                  const QString & newlab,
+                                  const QStringList & newvals)
+{
+        if(m_jsonroot) {
+                json_t * v = json_find_first_label(m_jsonroot, (char *) qPrintable(tlabel));
+                if ((v != NULL) && (v->child != NULL)) {
+                        json_t * label = json_new_string((char *) qPrintable(newlab));
+                        json_t * array = json_new_array();
+                        json_insert_child(v->child, label);
+                        json_insert_child(label, array);
+                        
+                        foreach(QString newval, newvals) {
+                                json_t * value = json_new_string((char *) qPrintable(newval));
+                                json_insert_child(array, value);
+                        }
+                }
+        }
 }
 
 void ServerCommand::display()

@@ -52,10 +52,16 @@ class QStringList;
 class ServerCommand
 {
 public:
+	ServerCommand();
 	ServerCommand(const QString &);
-        ServerCommand(const QStringList &);
 	~ServerCommand();
         void display();
+        void addString(const QString &,
+                       const QString &,
+                       const QString &);
+        void addStringList(const QString &,
+                           const QString &,
+                           const QStringList &);
         QString getString(const QString &);
         QStringList getStringList(const QString &);
         QString find(const QString &);

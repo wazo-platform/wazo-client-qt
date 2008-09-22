@@ -1006,18 +1006,29 @@ bool BaseEngine::parseCommand(const QString & line)
 void BaseEngine::agentAction(const QString & action)
 {
         // qDebug() << "BaseEngine::agentAction" << action;
-        sendCommand("{\"class\":\"agent\",\"direction\":\"xivoserver\",\"command\":\"" + action + "\"}");
-        // ServerCommand * ssc = new ServerCommand(action.split(" "));
+        ServerCommand * ssc = new ServerCommand();
+        ssc->addString("root", "class", "agent");
+        ssc->addString("root", "direction", "xivoserver");
+        ssc->addStringList("root", "command", action.split(" "));
+        sendCommand(ssc->find("root"));
 }
 
 void BaseEngine::meetmeAction(const QString & action)
 {
-        sendCommand("{\"class\":\"meetme\",\"direction\":\"xivoserver\",\"command\":\"" + action + "\"}");
+        ServerCommand * ssc = new ServerCommand();
+        ssc->addString("root", "class", "meetme");
+        ssc->addString("root", "direction", "xivoserver");
+        ssc->addStringList("root", "command", action.split(" "));
+        sendCommand(ssc->find("root"));
 }
 
 void BaseEngine::requestFileList(const QString & action)
 {
-        sendCommand("{\"class\":\"callcampaign\",\"direction\":\"xivoserver\",\"command\":\"" + action + "\"}");
+        ServerCommand * ssc = new ServerCommand();
+        ssc->addString("root", "class", "callcampaign");
+        ssc->addString("root", "direction", "xivoserver");
+        ssc->addStringList("root", "command", action.split(" "));
+        sendCommand(ssc->find("root"));
 }
 
 void BaseEngine::sendFaxCommand(const QString & filename, const QString & number,
