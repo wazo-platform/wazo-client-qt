@@ -4,6 +4,7 @@
 QMAKE?=qmake
 LRELEASE?=lrelease
 UPXRUN?=upx
+ECHO?=/bin/echo
 
 # WIN32 targets only
 MAKENSIS=/cygdrive/c/Program\ Files/NSIS/makensis.exe
@@ -52,14 +53,14 @@ versions-%:
 	@touch common/xivoconsts.h $*/mainwidget.cpp
 	@echo versions ${_XIVOVER_}-${_SVNVER_}
 	@rm -f $*/versions.pro
-	@echo -n "_SVNVER_ = '" >> $*/versions.pro
+	@${ECHO} -n "_SVNVER_ = '" >> $*/versions.pro
 	@LANG=C svn info | grep "Last Changed Rev" | sed "s/.*: //" | tr -d '\n' >> $*/versions.pro
 	@echo "'" >> $*/versions.pro
 	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
 
 # to be executed under a mingw/dos-like terminal
 win32-%:
-	@cd $* && ${QMAKE} $*.pro && ${LRELEASE} $*_fr.ts && make -f Makefile.Release
+	@cd $* && ${QMAKE} $*.pro && ${LRELEASE} $*_fr.ts qt_fr.ts && make -f Makefile.Release
 
 # to be executed under a bash/cygwin-like terminal
 win32pack-%:
@@ -75,10 +76,10 @@ all-macos: macos-xivoclient
 
 macos-%:
 	${QMAKE} $*/$*.pro -o $*/Makefile
-	${LRELEASE} $*/$*_fr.ts
+	${LRELEASE} $*/$*_fr.ts $*/qt_fr.ts
 	cd $* && make
 	${UPXRUN} $*/$*.app/Contents/MacOS/$*
-	hdiutil create $*-${XIVOVER}-${SVNVER}.dmg -srcfolder $*/$*.app -format UDBZ
+	hdiutil create $*-${_XIVOVER_}-${_SVNVER_}.dmg -srcfolder $*/$*.app -format UDBZ
 
 
 
