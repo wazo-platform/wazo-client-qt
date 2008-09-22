@@ -87,14 +87,15 @@ win32pack-%:
 # MACOS targets
 # export UPXRUN=/Users/proformatique/upx-3.01-src/src/upx.out
 
-all-macos: macos-xivoclient
+all-macos:
+	@make versions-xivoclient
+	@make macos-xivoclient
 
 macos-%:
-	${QMAKE} $*/$*.pro -o $*/Makefile
-	${LRELEASE} $*/$*_fr.ts $*/qt_fr.ts
-	cd $* && make
-	${UPXRUN} $*/$*.app/Contents/MacOS/$*
-	hdiutil create $*-${_XIVOVER_}-${_SVNVER_}.dmg -srcfolder $*/$*.app -format UDBZ
+	@cd $* && ${QMAKE} $*.pro -o Makefile && ${LRELEASE} $*_fr.ts qt_fr.ts && make
+	@strip $*/$*.app/Contents/MacOS/$*
+	@${UPXRUN} $*/$*.app/Contents/MacOS/$*
+	@hdiutil create $*-${_XIVOVER_}-${_SVNVER_}.dmg -srcfolder $*/$*.app -format UDBZ
 
 
 
