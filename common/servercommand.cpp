@@ -44,6 +44,7 @@
 #include <QStringList>
 
 #include "servercommand.h"
+#include "xivoconsts.h"
 
 /*! \brief Constructor
  */
@@ -58,7 +59,7 @@ ServerCommand::ServerCommand(const QString & vv)
 ServerCommand::ServerCommand()
 {
         m_jsonroot = json_new_object();
-        json_t * label = json_new_string("root");
+        json_t * label = json_new_string(XIVO_COMMAND_ROOT);
         json_t * entry = json_new_object();
         json_insert_child (label, entry);
         json_insert_child (m_jsonroot, label);

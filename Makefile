@@ -12,6 +12,7 @@ UPXWIN=/cygdrive/c/upx303w/upx.exe
 
 # Versions Definitions
 -include versions.mak
+-include uname.mak
 
 default: help
 
@@ -26,19 +27,29 @@ help:
 	@echo " -- to build Mac OS X binaries (Universal Binary applications + .dmg packages) :"
 	@echo "          make all-macos "
 	@echo "Thanks."
-	@echo
+	@${ECHO} -n "_UNAME_ = " > uname.mak
+	@uname -s | sed "s/Linux/linux/;s/CYGWIN.*/win32/;s/Darwin/macos/" >> uname.mak
+
+all:
+	@echo "Will compile for target ${_UNAME_} : all-${_UNAME_}"
+	@make all-${_UNAME_}
 
 # LINUX targets
 # kind of dirtier than "all-linux: versions-xivoclient linux-xivoclient"
 # but allows the 'include versions.mak' to be reloaded once it has been set
 all-linux:
 	@make versions-xivoclient
+	@make clean-xivoclient
 	@make linux-xivoclient
+	@make stripandpack-xivoclient
+
+clean-%:
+	@make -C $* distclean || true
 
 linux-%:
-	@echo versions ${_XIVOVER_}-${_SVNVER_}
-	@make -C $* distclean || true
 	@cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts qt_fr.ts && make
+
+stripandpack-%:
 	@strip $*/$* || true
 	@${UPXRUN} $*/$* || true
 
@@ -49,14 +60,18 @@ all-win32:
 
 # to be executed under a bash/cygwin-like terminal
 versions-%:
+	@${ECHO} -n "version (before update) : " && make -s displayversions
 	@svn up
 	@touch common/xivoconsts.h $*/mainwidget.cpp
-	@echo versions ${_XIVOVER_}-${_SVNVER_}
 	@rm -f $*/versions.pro
 	@${ECHO} -n "_SVNVER_ = '" >> $*/versions.pro
 	@LANG=C svn info | grep "Last Changed Rev" | sed "s/.*: //" | tr -d '\n' >> $*/versions.pro
-	@echo "'" >> $*/versions.pro
+	@${ECHO} "'" >> $*/versions.pro
 	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
+	@${ECHO} -n "version (after update) : " && make -s displayversions
+
+displayversions:
+	@${ECHO} ${_XIVOVER_}-${_SVNVER_}
 
 # to be executed under a mingw/dos-like terminal
 win32-%:
