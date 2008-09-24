@@ -177,8 +177,8 @@ void OutlookPanel::refresh_table() {
 void OutlookPanel::setEngine(BaseEngine * engine)
 {
         m_engine = engine;
-        m_callprefix = engine->getCallPrefix();
-        m_calllength = engine->getCallLength();
+        m_callprefix = ""; // engine->getCallPrefix();
+        m_calllength = 100; // engine->getCallLength();
 }
 
 void OutlookPanel::focusInEvent(QFocusEvent * event)

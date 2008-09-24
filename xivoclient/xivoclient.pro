@@ -6,6 +6,7 @@
 
 COMMONDIR = ../common
 JSON_MJSON_DIR = ../json_mjson
+OUTLOOK_DIR = ../3rdparty_outlook
 
 _XIVOVER_ = 0.4
 _SVNVER_ = 1
@@ -20,7 +21,11 @@ DEFINES += SVNVER=\"$${SVNVER}\"
 TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
-INCLUDEPATH += . $${COMMONDIR} $${JSON_MJSON_DIR}
+win32 {
+	INCLUDEPATH += . $${COMMONDIR} $${JSON_MJSON_DIR} $${OUTLOOK_DIR}
+} else {
+	INCLUDEPATH += . $${COMMONDIR} $${JSON_MJSON_DIR}
+}
 CONFIG -= debug
 CONFIG += static
 CONFIG += uitools
@@ -36,8 +41,8 @@ SOURCES += $${JSON_MJSON_DIR}/json.c
 win32 {
         DEFINES += USE_OUTLOOK=1
         LIBS += -lole32 -loleaut32 -luuid
-        HEADERS += ../3rdparty_outlook/*.h
-        SOURCES += ../3rdparty_outlook/*.cpp
+        HEADERS += $${OUTLOOK_DIR}/*.h
+        SOURCES += $${OUTLOOK_DIR}/*.cpp
 }
 
 QT += network

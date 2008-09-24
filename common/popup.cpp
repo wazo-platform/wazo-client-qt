@@ -540,11 +540,11 @@ void Popup::setMessage(const QString & order, const QString & message)
 {
 #ifdef USE_OUTLOOK
 	// hack
-	QStringList message_parts = QString(message).split(" ");
+	QStringList message_parts = message.split(" ");
 	if ( message_parts.count() > 1 ) {
 		m_pOLContact=OLFindContact(message_parts[1]);
 		if ( m_pOLContact ) {
-			m_message=m_pOLContact->m_properties.value("FullName") + ' ' + message_parts[1];
+			m_message[order]=m_pOLContact->m_properties.value("FullName") + ' ' + message_parts[1];
 			return ;
 		}
 	}

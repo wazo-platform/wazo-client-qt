@@ -54,9 +54,12 @@ stripandpack-%:
 	@${UPXRUN} $*/$* || true
 
 all-win32:
-	@echo "          make versions-xivoclient  (under Cygwin)"
-	@echo "          make win32-xivoclient     (under Qt prompt)"
-	@echo "          make win32pack-xivoclient (under Cygwin)"
+	@make -s versions-xivoclient
+	@echo "   (under Qt prompt) :"
+	@pwd | sed "s#/#\\\\#g;s#^#      cd C:\\\\cygwin#"
+	@echo "      make win32-xivoclient"
+	@echo "   (back here under Cygwin) :"
+	@echo "      make win32pack-xivoclient"
 
 # to be executed under a bash/cygwin-like terminal
 versions-%:
