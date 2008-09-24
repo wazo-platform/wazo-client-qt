@@ -21,11 +21,8 @@ DEFINES += SVNVER=\"$${SVNVER}\"
 TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
-win32 {
-	INCLUDEPATH += . $${COMMONDIR} $${JSON_MJSON_DIR} $${OUTLOOK_DIR}
-} else {
-	INCLUDEPATH += . $${COMMONDIR} $${JSON_MJSON_DIR}
-}
+INCLUDEPATH += . $${COMMONDIR} $${JSON_MJSON_DIR}
+
 CONFIG -= debug
 CONFIG += static
 CONFIG += uitools
@@ -39,6 +36,7 @@ SOURCES += main.cpp mainwidget.cpp $${COMMONDIR}/*.cpp
 SOURCES += $${JSON_MJSON_DIR}/json.c
 
 win32 {
+	INCLUDEPATH += $${OUTLOOK_DIR}
         DEFINES += USE_OUTLOOK=1
         LIBS += -lole32 -loleaut32 -luuid
         HEADERS += $${OUTLOOK_DIR}/*.h
