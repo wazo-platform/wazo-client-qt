@@ -1068,7 +1068,7 @@ void MainWidget::engineStarted()
 			} else if ((dc == QString("outlook")) ) {
                                 m_outlook = new OutlookPanel(this);
 				m_outlook->setEngine(m_engine);
-                                addPanel("outlook", tr("Outlook"), m_dirpanel);
+                                addPanel("outlook", tr("Outlook"), m_outlook);
                                 m_outlook->myfocus();
                                 
 				connect( m_outlook, SIGNAL(searchOutlook(const QString &)),

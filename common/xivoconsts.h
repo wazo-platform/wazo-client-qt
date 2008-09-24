@@ -56,5 +56,8 @@ const QStringList XletList = (QStringList() << "customerinfo" << "features" << "
                               << "directory" << "search" << "fax" << "dial"
                               << "operator" << "parking" << "calls" << "switchboard"
                               << "messages" << "identity" << "datetime" << "tabber" << "conference" << "xletproto" << "servercommand" << "callcampaign" << "mylocaldir"
+#ifdef USE_OUTLOOK
+                              << "outlook"
+#endif /* USE_OUTLOOK */
                               << "agents" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
-#endif
+#endif /* __XIVOCONSTS_H__ */
