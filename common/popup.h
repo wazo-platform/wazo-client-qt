@@ -58,6 +58,9 @@ class QXmlInputSource;
 class QXmlSimpleReader;
 
 class UserInfo;
+#ifdef USE_OUTLOOK
+class COLContact;
+#endif
 
 /*! \brief Profile popup widget
  *
@@ -157,6 +160,9 @@ private:
         QStringList m_orders;
         QList<QStringList> m_sheetlines;
         QHash<QString, QPushButton *> m_form_buttons;
+#ifdef USE_OUTLOOK
+	COLContact * m_pOLContact;
+#endif
 };
 
 #endif

@@ -80,6 +80,9 @@ class ConfigWidget;
 class DirectoryPanel;
 class LeftPanel;
 class SwitchBoardWindow;
+#ifdef USE_OUTLOOK
+class OutlookPanel;
+#endif
 
 /*! \brief Main window class
  */
@@ -151,6 +154,9 @@ private:
         QScrollArea * m_areaCalls;
 	CallStackWidget * m_calls;
 	DirectoryPanel * m_dirpanel;
+#ifdef USE_OUTLOOK
+        OutlookPanel * m_outlook;
+#endif
         QHash<QString, QWidget *> m_xlet;
 
         QLabel * m_xivobg;
@@ -194,11 +200,7 @@ private:
         QCheckBox * m_loginkind;
 
 	QMenu * m_avail;		//!< Availability submenu
-	QAction * m_avact_avail;	//!< "Available" action
-	QAction * m_avact_brb;		//!< "Be right back" action
-	QAction * m_avact_dnd;		//!< "Do not disturb" action
-	QAction * m_avact_otl;		//!< "out to lunch" action
-	QAction * m_avact_away;		//!< "away" action
+	QHash<QString, QAction *> m_avact;	//!< Actions
 	QLabel * m_status;	//!< status indicator
 
         QMenu * m_filemenu;

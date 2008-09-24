@@ -75,6 +75,7 @@ QTabBar::tab {background: qlineargradient(y1: 0.45, y2: 0.55, stop: 0 #fbb638, s
 QTabBar::tab:selected, QTabBar::tab:hover {background: qlineargradient(y1: 0.45, y2: 0.55, stop: 0 #3bc0ff, stop: 1.0 #05aefd)}
 
 QTabWidget#cinfo > * {background: white; border: 2px solid #05aefd ; border-radius: 10px}
+QTabWidget#outlook > * {background: white; border: 2px solid #05aefd ; border-radius: 10px}
 
 /*
  * Radio Buttons in History

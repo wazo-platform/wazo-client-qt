@@ -157,6 +157,26 @@ QStringList ServerCommand::getStringList(const QString & tlabel)
         return b;
 }
 
+QHash<QString, QString> ServerCommand::getStringHash(const QString & tlabel)
+{
+        QHash<QString, QString> b;
+        if(m_jsonroot) {
+                json_t * v = json_find_first_label(m_jsonroot, (char *) qPrintable(tlabel));
+                if ((v != NULL) && (v->child != NULL))
+                        if(v->child->type == JSON_OBJECT) {
+                                json_t * node = v->child->child;
+                                while(node != NULL) {
+                                        if((node->type == JSON_STRING) &&
+                                           (node->child != NULL) &&
+                                           (node->child->type == JSON_STRING))
+                                                b[node->text] = node->child->text;
+                                        node = node->next;
+                                }
+                        }
+        }
+        return b;
+}
+
 QString ServerCommand::find(const QString & tlabel)
 {
         QString r;
@@ -166,6 +186,7 @@ QString ServerCommand::find(const QString & tlabel)
                 if ((v != NULL) && (v->child != NULL)) {
                         json_error ret = json_tree_to_string (v->child, &text);
                         if (ret == JSON_OK)
+                                // r = QString::fromUtf8(text);
                                 r = text;
                 }
         }

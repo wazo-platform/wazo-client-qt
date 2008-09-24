@@ -64,9 +64,8 @@ versions-%:
 	@svn up
 	@touch common/xivoconsts.h $*/mainwidget.cpp
 	@rm -f $*/versions.pro
-	@${ECHO} -n "_SVNVER_ = '" >> $*/versions.pro
-	@LANG=C svn info | grep "Last Changed Rev" | sed "s/.*: //" | tr -d '\n' >> $*/versions.pro
-	@${ECHO} "'" >> $*/versions.pro
+	@${ECHO} -n "_SVNVER_ = " >> $*/versions.pro
+	@LANG=C svn info | sed -n "/Last Changed Rev/s/.*: //p" >> $*/versions.pro
 	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
 	@${ECHO} -n "version (after update) : " && make -s displayversions
 

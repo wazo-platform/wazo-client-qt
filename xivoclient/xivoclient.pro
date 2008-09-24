@@ -7,8 +7,8 @@
 COMMONDIR = ../common
 JSON_MJSON_DIR = ../json_mjson
 
-_XIVOVER_ = '0.4'
-_SVNVER_ = '1'
+_XIVOVER_ = 0.4
+_SVNVER_ = 1
 include(versions.pro)
 XIVOVER = '\\"$${_XIVOVER_}\\"'
 SVNVER  = '\\"$${_SVNVER_}\\"'
@@ -32,6 +32,13 @@ HEADERS += $${JSON_MJSON_DIR}/json.h
 
 SOURCES += main.cpp mainwidget.cpp $${COMMONDIR}/*.cpp
 SOURCES += $${JSON_MJSON_DIR}/json.c
+
+win32 {
+        DEFINES += USE_OUTLOOK=1
+        LIBS += -lole32 -loleaut32 -luuid
+        HEADERS += ../3rdparty_outlook/*.h
+        SOURCES += ../3rdparty_outlook/*.cpp
+}
 
 QT += network
 QT += xml

@@ -367,6 +367,11 @@ const QStringList & BaseEngine::getCapaXlets() const
         return m_capaxlets;
 }
 
+const QHash<QString, QString> & BaseEngine::getCapaPresence() const
+{
+        return m_capapresence;
+}
+
 const QStringList & BaseEngine::getCapaFeatures() const
 {
         return m_capafeatures;
@@ -379,12 +384,6 @@ const QString & BaseEngine::getCapaApplication() const
 
 /*!
  * sets the availability state and call keepLoginAlive() if needed
- *
- * \sa setAvailable()
- * \sa setAway()
- * \sa setBeRightBack()
- * \sa setOutToLunch()
- * \sa setDoNotDisturb()
  */
 void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
 {
@@ -403,29 +402,10 @@ const QString & BaseEngine::getAvailState() const
         return m_availstate;
 }
 
-void BaseEngine::setAvailable()
+void BaseEngine::setAvailability()
 {
-	setAvailState("available", false);
-}
-
-void BaseEngine::setAway()
-{
-	setAvailState("away", false);
-}
-
-void BaseEngine::setBeRightBack()
-{
-	setAvailState("berightback", false);
-}
-
-void BaseEngine::setOutToLunch()
-{
-	setAvailState("outtolunch", false);
-}
-
-void BaseEngine::setDoNotDisturb()
-{
-	setAvailState("donotdisturb", false);
+        QString availstate = this->sender()->property("availstate").toString();
+	setAvailState(availstate, false);
 }
 
 bool BaseEngine::hasFunction(const QString & funcname)
@@ -962,6 +942,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                         m_capafuncs = sc->getString("capafuncs").split(",");
                         m_capaxlets = sc->getStringList("capaxlets");
+                        m_capapresence = sc->getStringHash("capapresence");
                         // m_capafeatures = sc->getStringList("capas_features");
                         m_appliname = sc->getString("appliname");
                         m_forced_state = sc->getString("state");

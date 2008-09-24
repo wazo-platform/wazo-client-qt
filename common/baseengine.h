@@ -146,6 +146,7 @@ public:
 	const QStringList & getCapabilities() const;	//!< returns capabilities
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
         const QStringList & getCapaXlets() const;
+        const QHash<QString, QString> & getCapaPresence() const;
         const QString     & getCapaApplication() const;
         void config_and_start(const QString &,
                               const QString &, const QString &);
@@ -172,11 +173,7 @@ public slots:
 	void requestHistory(const QString &, int);
         
         void textEdited(const QString &);
-	void setAvailable();			//!< set user status as "available"
-	void setAway();				//!< set user status as "away"
-	void setBeRightBack();			//!< set user status as "be right back"
-	void setOutToLunch();			//!< set user status as "out to lunch"
-	void setDoNotDisturb();			//!< set user status as "do not disturb"
+	void setAvailability();			//!< set user status from menu
 	void featurePutVoiceMail(bool);
 	void featurePutCallRecording(bool);
 	void featurePutCallFiltering(bool);
@@ -329,6 +326,7 @@ private:
 	QStringList m_capafuncs;	//!< List of func capabilities issued by the server after a successful login
 	QStringList m_capaxlets;	//!< List of xlet capabilities issued by the server after a successful login
 	QStringList m_capafeatures;	//!< List of capabilities issued by the server for the features
+	QHash<QString, QString> m_capapresence;	//!< List of capabilities issued by the server for the presence statuses
 	QString m_appliname;		//!< Application name to be displayed
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier

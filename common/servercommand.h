@@ -63,8 +63,11 @@ public:
         void addStringList(const QString &,
                            const QStringList &,
                            const QString & tlabel = XIVO_COMMAND_ROOT);
+        
         QString getString(const QString &);
         QStringList getStringList(const QString &);
+        QHash<QString, QString> getStringHash(const QString &);
+        
         QString find(const QString & tlabel = XIVO_COMMAND_ROOT);
 private:
         void recurse(json_t *, int);

@@ -62,6 +62,9 @@
 #include "remotepicwidget.h"
 #include "urllabel.h"
 #include "userinfo.h"
+#ifdef USE_OUTLOOK
+#include "outlook_com.h"
+#endif
 
 QStringList formbuttonnames = (QStringList()
                                << "refuse" << "hangup" << "close" << "save" << "answer"
@@ -85,6 +88,9 @@ Popup::Popup(const bool & urlautoallow,
           m_urlautoallow(urlautoallow),
           m_toupdate(false)
 {
+#ifdef USE_OUTLOOK
+	m_pOLContact=NULL;
+#endif
         // qDebug() << "Popup::Popup()";
 }
 
@@ -288,9 +294,25 @@ void Popup::addInfoForm(int where, const QString & name, const QString & value)
 
 void Popup::addInfoText(int where, const QString & name, const QString & value)
 {
+	QString strValue(value);
+#ifdef USE_OUTLOOK
+	// hack
+	if ( m_pOLContact && (value == QString("Inconnu") || value == QString("<b>Inconnu</b>")) ) {
+		if ( name == QString("Nom") ) {
+			QString strLastName=m_pOLContact->m_properties.value("LastName");
+			if ( ! strLastName.isEmpty() )
+				strValue=strLastName;
+		}
+		else if ( name == QString("Prénom") ) {
+			QString strFirstName=m_pOLContact->m_properties.value("FirstName");
+			if ( ! strFirstName.isEmpty() )
+				strValue=strFirstName;
+		}
+	}
+#endif
         // qDebug() << "Popup::addInfoText()" << value;
 	QLabel * lblname = new QLabel(name, this);
-	QLabel * lblvalue = new QLabel(value, this);
+	QLabel * lblvalue = new QLabel(strValue, this);
 	lblvalue->setTextInteractionFlags( Qt::TextSelectableByMouse
 	                                  | Qt::TextSelectableByKeyboard );
 	QHBoxLayout * hlayout = new QHBoxLayout();
@@ -516,6 +538,18 @@ void Popup::closeEvent(QCloseEvent * event)
 
 void Popup::setMessage(const QString & order, const QString & message)
 {
+#ifdef USE_OUTLOOK
+	// hack
+	QStringList message_parts = QString(message).split(" ");
+	if ( message_parts.count() > 1 ) {
+		m_pOLContact=OLFindContact(message_parts[1]);
+		if ( m_pOLContact ) {
+			m_message=m_pOLContact->m_properties.value("FullName") + ' ' + message_parts[1];
+			return ;
+		}
+	}
+	m_pOLContact=NULL;
+#endif
 	m_message[order] = message;
 }
 

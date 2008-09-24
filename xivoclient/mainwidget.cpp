@@ -89,6 +89,9 @@
 #include "videopanel.h"
 #include "xletprotopanel.h"
 #include "xivoconsts.h"
+#ifdef USE_OUTLOOK
+#include "outlookpanel.h"
+#endif /* USE_OUTLOOK */
 
 const QString extraspace("  ");
 
@@ -428,32 +431,6 @@ void MainWidget::createActions()
 	// Availability actions :
 	m_availgrp = new QActionGroup( this );
 	m_availgrp->setExclusive(true);
-
-	m_avact_avail = new QAction( tr("&Available"), this );
-	m_avact_avail->setCheckable(true);
-	connect( m_avact_avail, SIGNAL(triggered()),
-	         m_engine, SLOT(setAvailable()) );
-	m_availgrp->addAction( m_avact_avail );
-	m_avact_away = new QAction( tr("A&way"), this );
-	m_avact_away->setCheckable(true);
-	connect( m_avact_away, SIGNAL(triggered()),
-	         m_engine, SLOT(setAway()) );
-	m_availgrp->addAction( m_avact_away );
-	m_avact_brb = new QAction( tr("&Be Right Back"), this );
-	m_avact_brb->setCheckable(true);
-	connect( m_avact_brb, SIGNAL(triggered()),
-	         m_engine, SLOT(setBeRightBack()) );
-	m_availgrp->addAction( m_avact_brb );
-	m_avact_otl = new QAction( tr("&Out To Lunch"), this );
-	m_avact_otl->setCheckable(true);
-	connect( m_avact_otl, SIGNAL(triggered()),
-	         m_engine, SLOT(setOutToLunch()) );
-	m_availgrp->addAction( m_avact_otl );
-	m_avact_dnd = new QAction( tr("&Do not disturb"), this );
-	m_avact_dnd->setCheckable(true);
-	connect( m_avact_dnd, SIGNAL(triggered()),
-	         m_engine, SLOT(setDoNotDisturb()) );
-	m_availgrp->addAction( m_avact_dnd );
         
         connect( m_engine, SIGNAL(changesAvailChecks()),
                  this, SLOT(checksAvailState()) );
@@ -463,16 +440,8 @@ void MainWidget::createActions()
 
 void MainWidget::checksAvailState()
 {
-	if (m_engine->getAvailState() == QString("berightback"))
-		m_avact_brb->setChecked( true );
-	else if (m_engine->getAvailState() == QString("donotdisturb"))
-		m_avact_dnd->setChecked( true );
-	else if (m_engine->getAvailState() == QString("away"))
-		m_avact_away->setChecked( true );
-	else if (m_engine->getAvailState() == QString("outtolunch"))
-		m_avact_otl->setChecked( true );
-	else
-		m_avact_avail->setChecked( true );
+        if(m_avact.contains(m_engine->getAvailState()))
+                m_avact[m_engine->getAvailState()]->setChecked( true );
 }
 
 void MainWidget::createMenus()
@@ -488,7 +457,7 @@ void MainWidget::createMenus()
 	m_filemenu->addAction( m_quitact );
 
 	m_avail = menuBar()->addMenu(tr("&Availability"));
-	m_avail->addActions( m_availgrp->actions() );
+	// m_avail->addActions( m_availgrp->actions() );
 	m_avail->setEnabled( false );
 	connect( m_engine, SIGNAL(availAllowChanged(bool)),
 	         m_avail, SLOT(setEnabled(bool)) );
@@ -671,6 +640,30 @@ void MainWidget::engineStarted()
         setAppearance(m_engine->getCapaXlets());
 
         m_appliname = m_engine->getCapaApplication();
+
+        QHashIterator<QString, QString> capapres(m_engine->getCapaPresence());
+        while (capapres.hasNext()) {
+                capapres.next();
+                QString avstate = capapres.key();
+                QStringList avail_infos = capapres.value().split("-");
+                QString kind = avail_infos[0];
+                QString name = avail_infos[2];
+                if(! m_avact.contains(avstate)) {
+                        m_avact[avstate] = new QAction(name, this);
+                        m_avact[avstate]->setCheckable(true);
+                        m_avact[avstate]->setProperty("availstate", avstate);
+                        if(kind == "user") {
+                                m_avact[avstate]->setEnabled(true);
+                                connect( m_avact[avstate], SIGNAL(triggered()),
+                                         m_engine, SLOT(setAvailability()) );
+                        } else {
+                                m_avact[avstate]->setEnabled(false);
+                        }
+                        m_availgrp->addAction( m_avact[avstate] );
+                }
+        }
+        m_avail->addActions( m_availgrp->actions() );
+
         updateAppliName();
 
         hideLogin();
@@ -1054,7 +1047,7 @@ void MainWidget::engineStarted()
 				m_dirpanel->setEngine(m_engine);
                                 addPanel("directory", tr("Directory"), m_dirpanel);
                                 m_dirpanel->myfocus();
-
+                                
                                 connectDials(m_dirpanel);
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                      const QString &,
@@ -1071,6 +1064,23 @@ void MainWidget::engineStarted()
                                 connect( m_engine, SIGNAL(delogged()),
                                          m_dirpanel, SLOT(stop()) );
                                 
+#ifdef USE_OUTLOOK
+			} else if ((dc == QString("outlook")) ) {
+                                m_outlook = new OutlookPanel(this);
+				m_outlook->setEngine(m_engine);
+                                addPanel("outlook", tr("Outlook"), m_dirpanel);
+                                m_outlook->myfocus();
+                                
+				connect( m_outlook, SIGNAL(searchOutlook(const QString &)),
+					 m_engine, SLOT(searchOutlook(const QString &)) );
+				connect( m_outlook, SIGNAL(emitDial(const QString &)),
+					 m_engine, SLOT(dialFullChannel(const QString &)) );
+				connect( m_outlook, SIGNAL(copyNumber(const QString &)),
+					 m_engine, SLOT(copyNumber(const QString &)) );
+				connect( m_engine, SIGNAL(outlookResponse(const QString &)),
+					 m_outlook, SLOT(setSearchResponse(const QString &)) );
+#endif /* USE_OUTLOOK */
+
 			} else if (dc == QString("instantmessaging")) {
                                 m_xlet[dc] = new QLineEdit();
                                 addPanel("instantmessaging", tr("Messages"), m_xlet[dc]);
@@ -1167,7 +1177,24 @@ void MainWidget::engineStopped()
 
         foreach (QString dname, m_docknames)
                 m_docks[dname]->hide();
-
+        
+        QHashIterator<QString, QString> capapres(m_engine->getCapaPresence());
+        while (capapres.hasNext()) {
+                capapres.next();
+                QString avstate = capapres.key();
+                QStringList avail_infos = capapres.value().split("-");
+                QString kind = avail_infos[0];
+                QString name = avail_infos[2];
+                if(m_avact.contains(avstate)) {
+                        disconnect( m_avact[avstate], SIGNAL(triggered()),
+                                    m_engine, SLOT(setAvailability()) );
+                        m_availgrp->removeAction( m_avact[avstate] );
+                        delete m_avact[avstate];
+                }
+        }
+        m_avact.clear();
+        m_avail->clear();
+        
 	for(int j = 0; j < XletList.size(); j++) {
                 QString dc = XletList[j];
  		if (m_forcetabs || m_allnames.contains(dc)) {
@@ -1180,6 +1207,10 @@ void MainWidget::engineStopped()
                                 //delete m_leftpanel;
 			} else if (dc == QString("directory")) {
                                 removePanel("directory", m_dirpanel);
+#ifdef USE_OUTLOOK
+			} else if (dc == QString("outlook")) {
+                                removePanel("outlook", m_outlook);
+#endif /* USE_OUTLOOK */
                         } else
                                 removePanel(dc, m_xlet[dc]);
                 }
