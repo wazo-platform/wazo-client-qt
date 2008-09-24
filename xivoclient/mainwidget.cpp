@@ -246,6 +246,8 @@ void MainWidget::setAppearance(const QStringList & dockoptions)
                 if(dname.size() > 0) {
                         QStringList dopt = dname.split("-");
                         QString wname = dopt[0];
+                        if((wname == "customerinfo") && (! m_engine->checkedCInfo()))
+                                continue;
                         m_allnames.append(wname);
                         m_dockoptions[wname] = "";
                         if(dopt.size() > 1) {
@@ -919,6 +921,7 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(removePeers()) );
                                 connect( m_engine, SIGNAL(removePeer(const QString &)),
                                          m_xlet[dc], SLOT(removePeer(const QString &)) );
+                                
                         } else if (dc == QString("parking")) {
                                 m_xlet[dc] = new ParkingPanel();
                                 addPanel(dc, tr("Parking"), m_xlet[dc]);
@@ -932,6 +935,7 @@ void MainWidget::engineStarted()
                                 connect( m_xlet[dc], SIGNAL(newParkEvent()),
                                          this, SLOT(newParkEvent()) );
                                 connectDials(m_xlet[dc]);
+                                
                         } else if (dc == QString("fax")) {
 				m_xlet[dc] = new FaxPanel(m_engine, this);
                                 addPanel("fax", tr("Fax"), m_xlet[dc]);
@@ -941,7 +945,7 @@ void MainWidget::engineStarted()
                                 connect( m_engine, SIGNAL(ackFax(const QString &)),
                                          m_xlet[dc], SLOT(popupMsg(const QString &)) );
                                 
-			} else if ((dc == QString("customerinfo")) && (m_engine->checkedCInfo())) {
+			} else if ((dc == QString("customerinfo")) && m_engine->checkedCInfo()) {
                                 m_xlet[dc] = new CustomerInfoPanel(m_engine);
                                 addPanel("customerinfo", tr("Sheets"), m_xlet[dc]);
                                 
@@ -1041,7 +1045,7 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setForwardOnUnavailable(bool)) );
                                 connect( m_engine, SIGNAL(forwardOnUnavailableUpdated(const QString &)),
                                          m_xlet[dc], SLOT(setForwardOnUnavailable(const QString &)) );
-
+                                
 			} else if (dc == QString("directory")) {
 				m_dirpanel = new DirectoryPanel(this);
 				m_dirpanel->setEngine(m_engine);
@@ -1113,15 +1117,16 @@ void MainWidget::engineStarted()
                 }
         }
         
+        qDebug() << "MainWidget::engineStarted() : the xlets have been created";
         m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
         
         foreach (QString dname, m_docknames)
                 m_docks[dname]->show();
-
+        
 	// restore settings, especially for Docks' positions
         restoreState(m_settings->value("display/mainwindowstate").toByteArray());
 
-        if(m_tabnames.contains("customerinfo")) {
+        if(m_tabnames.contains("customerinfo") && m_engine->checkedCInfo()) {
                 m_cinfo_index = m_tabwidget->indexOf(m_xlet["customerinfo"]);
                 qDebug() << "the index of customer-info widget is" << m_cinfo_index;
         }
@@ -1198,7 +1203,7 @@ void MainWidget::engineStopped()
 	for(int j = 0; j < XletList.size(); j++) {
                 QString dc = XletList[j];
  		if (m_forcetabs || m_allnames.contains(dc)) {
-                        if ((dc == QString("customerinfo")) && (m_engine->checkedCInfo())) {
+                        if ((dc == QString("customerinfo")) && m_engine->checkedCInfo()) {
                                 removePanel(dc, m_xlet[dc]);
                         } else if (dc == QString("calls")) {
                                 removePanel("calls", m_leftpanel);
@@ -1288,7 +1293,7 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
         }
         
         // focus on the customerinfo tab
-        if(m_tabnames.contains("customerinfo") && options.contains("f"))
+        if(m_tabnames.contains("customerinfo") && m_engine->checkedCInfo() && options.contains("f"))
                 if (m_cinfo_index > -1)
                         m_tabwidget->setCurrentIndex(m_cinfo_index);
         
