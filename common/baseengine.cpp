@@ -655,6 +655,16 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "parkcall") {
                         parkingEvent(sc->find("payload"));
                         
+                } else if (thisclass == "sheet") {
+                        QString payload;
+                        if(sc->getString("compressed").size() > 0) {
+                                payload = qUncompress(QByteArray::fromBase64(sc->find("payload").toAscii()));
+                        } else {
+                                payload = sc->find("payload");
+                        }
+                        // will eventually call the XML parser
+                        displayFiche(payload, false);
+                        
                 } else if (thisclass == "queues") {
                         QString function = sc->getString("function");
                         if(function == "sendlist")
@@ -1158,16 +1168,13 @@ void BaseEngine::socketReadyRead()
                 // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
 		QString line     = QString::fromUtf8(data);
                 
-		if(line.startsWith("<?xml") || line.startsWith("<ui version=")) {
-                        // we get here when receiving a customer info in tcp mode
+		if(line.startsWith("<ui version=")) {
+                        // we get here when receiving a sheet as a Qt4 .ui form
                         qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size() << m_checked_cinfo;
-                        bool qtui = false;
-                        if(line.startsWith("<ui version="))
-                                qtui = true;
-                        displayFiche(line, qtui);
+                        displayFiche(line, true);
                 } else
                         parseCommand(line);
-	}
+        }
         if(socketname == "fax") {
                 while(m_faxsocket->canReadLine()) {
                         QByteArray data = m_faxsocket->readLine();

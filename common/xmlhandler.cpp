@@ -152,7 +152,6 @@ bool XmlHandler::error( const QXmlParseException & exception )
 
 bool XmlHandler::fatalError( const QXmlParseException & exception )
 {
-	qDebug() << "XmlHandler::fatalError() " << exception.message();
+	qDebug() << "XmlHandler::fatalError() " << exception.message() << exception.columnNumber() << exception.lineNumber();
 	return true;
 }
-
