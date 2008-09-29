@@ -217,7 +217,8 @@ signals:
         void monitorPeer(UserInfo *);
         void meetmeEvent(const QStringList &);
         void requestFileListResult(const QString &);
-        
+        void updatePresence(const QString &);
+
 	//! a call
 	void updateCall(UserInfo *,
                         const QString &,

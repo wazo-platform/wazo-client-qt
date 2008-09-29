@@ -509,7 +509,7 @@ void BaseEngine::socketHostFound()
 void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
 {
         QString socketname = this->sender()->property("socket").toString();
-        qDebug() << "BaseEngine::socketError()" << socketname;
+        qDebug() << "BaseEngine::socketError()" << socketError << socketname;
 	switch(socketError) {
 	case QAbstractSocket::ConnectionRefusedError:
 		emitTextMessage(tr("Connection refused"));
@@ -526,10 +526,10 @@ void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
 		emitTextMessage(tr("Host not found"));
 		break;
 	case QAbstractSocket::UnknownSocketError:
-		emitTextMessage(tr("Unknown socket error"));
+                popupError("socket_error:" + QString::number(socketError));
 		break;
 	default:
-                qDebug() << "BaseEngine::socketError()" << socketError;
+                popupError("socket_error:" + QString::number(socketError));
 		break;
 	}
 }
@@ -652,33 +652,51 @@ bool BaseEngine::parseCommand(const QString & line)
                 if (thisclass == "callcampaign") {
                         QString payload = sc->find("payload");
                         requestFileListResult(payload);
-                } else if (thisclass == "update-agents") {
-                        QStringList liststatus = sc->getStringList("payload");
-                        if(liststatus.size() > 2) {
-                                QString astid = liststatus[1];
-                                QString agentid = liststatus[2];
-                                if (agentid.startsWith("Agent/")) {
-                                        QString agentnum = agentid.mid(6);
-                                        liststatus[2] = agentnum;
-                                        UserInfo * ui = findUserFromAgent(astid, agentnum);
-                                        if(ui)
-                                                updatePeerAgent(ui->userid(), "agentstatus", liststatus);
-                                        else // (useful ?) in order to transfer the replies to unmatched agents
-                                                updatePeerAgent("", "agentstatus", liststatus);
-                                } else
-                                        qDebug() << "update-agents agentnum" << agentid;
-                        }
                 } else if (thisclass == "parkcall") {
                         parkingEvent(sc->find("payload"));
                         
-                } else if (thisclass == "queues-list") {
-                        if(hasFunction("nojoinleave"))
-                                newQueueList(false, sc->find("payload"));
-                        else
-                                newQueueList(true, sc->find("payload"));
+                } else if (thisclass == "queues") {
+                        QString function = sc->getString("function");
+                        if(function == "sendlist")
+                                foreach(QString payload, sc->getSubList("payload"))
+                                        if(hasFunction("nojoinleave"))
+                                                newQueueList(false, payload);
+                                        else
+                                                newQueueList(true, payload);
+                        else if(function == "update") {
+                                setQueueStatus(sc->getString("payload"));
+                        } else if(function == "del") {
+                                qDebug() << thisclass << "del" << sc->getString("astid") << sc->getStringList("deltalist");
+                        } else if(function == "add") {
+                                qDebug() << thisclass << "add" << sc->getString("astid") << sc->getStringList("deltalist");
+                        }
                         
-                } else if (thisclass == "agents-list") {
-                        newAgentList(sc->find("payload"));
+                } else if (thisclass == "agents") {
+                        QString function = sc->getString("function");
+                        if(function == "sendlist") {
+                                foreach(QString payload, sc->getSubList("payload"))
+                                        newAgentList(payload);
+                        } else if(function == "update") {
+                                QStringList liststatus = sc->getStringList("payload");
+                                if(liststatus.size() > 2) {
+                                        QString astid = liststatus[1];
+                                        QString agentid = liststatus[2];
+                                        if (agentid.startsWith("Agent/")) {
+                                                QString agentnum = agentid.mid(6);
+                                                liststatus[2] = agentnum;
+                                                UserInfo * ui = findUserFromAgent(astid, agentnum);
+                                                if(ui)
+                                                        updatePeerAgent(ui->userid(), "agentstatus", liststatus);
+                                                else // (useful ?) in order to transfer the replies to unmatched agents
+                                                        updatePeerAgent("", "agentstatus", liststatus);
+                                        } else
+                                                qDebug() << "update-agents agentnum" << agentid;
+                                }
+                        } else if(function == "del") {
+                                qDebug() << thisclass << "del" << sc->getString("astid") << sc->getStringList("deltalist");
+                        } else if(function == "add") {
+                                qDebug() << thisclass << "add" << sc->getString("astid") << sc->getStringList("deltalist");
+                        }
                         
                 } else if (thisclass == "agent-status") {
                         QStringList liststatus = sc->getStringList("payload");
@@ -698,11 +716,11 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "meetme") {
                         meetmeEvent(sc->getStringList("payload"));
                         
+                } else if (thisclass == "serverdown") {
+                        qDebug() << thisclass << sc->getString("mode");
+                        
                 } else if (thisclass == "directory") {
                         directoryResponse(sc->getString("payload"));
-                        
-                } else if (thisclass == "update-queues") {
-                        setQueueStatus(sc->getString("payload"));
                         
                 } else if (thisclass == "faxsend") {
                         m_faxid = sc->getString("payload");
@@ -712,76 +730,80 @@ bool BaseEngine::parseCommand(const QString & line)
                         ackFax(sc->getString("payload"));
                         
                 } else if (thisclass == "presence") {
-                        QStringList presencestatus = sc->getStringList("payload");
-                        QString id = presencestatus[0] + "/" + presencestatus[1];
+                        QString id = sc->getString("company") + "/" + sc->getString("userid");
                         //qDebug() << presencestatus << m_users.size();
                         if(m_users.contains(id)) {
-                                m_users[id]->setAvailState(presencestatus[2]);
-                                updatePeerAgent(id, "imstatus", presencestatus[2].split("/"));
-                                updateAgentPresence(m_users[id]->agentid(), presencestatus[2]);
-                                if (id == m_fullid)
+                                QString presencestatus = sc->getString("status");
+                                m_users[id]->setAvailState(presencestatus);
+                                updatePeerAgent(id, "imstatus", presencestatus.split("/"));
+                                updateAgentPresence(m_users[id]->agentid(), presencestatus);
+                                if (id == m_fullid) {
+                                        updatePresence(sc->find("allowed"));
                                         localUserInfoDefined(m_users[m_fullid]);
-                        }
-                        
-                } else if (thisclass == "users-list") {
-                        QStringList listpeers = sc->getStringList("payload");
-                        for(int i = 0 ; i < listpeers.size() ; i += 13) {
-                                //qDebug() << "users-list" << listpeers[i] << listpeers[i+1] << listpeers[i+2]
-                                //<< listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
-                                //<< listpeers[i+6] << listpeers[i+7] << listpeers[i+8] << listpeers[i+9];
-                                QString iduser = listpeers[i+1] + "/" + listpeers[i];
-                                if(! m_users.contains(iduser)) {
-                                        m_users[iduser] = new UserInfo(iduser);
-                                        m_users[iduser]->setFullName(listpeers[i+2]);
-                                        newUser(m_users[iduser]);
                                 }
-                                QString imstatus = listpeers[i+3];
-                                m_users[iduser]->setAvailState(imstatus);
-                                m_users[iduser]->setNumber(listpeers[i+7]);
-                                m_users[iduser]->setPhones(listpeers[i+5], listpeers[i+6], listpeers[i+8]);
-                                m_users[iduser]->setAgent(listpeers[i+9]);
-                                m_users[iduser]->setMWI(listpeers[i+10], listpeers[i+11], listpeers[i+12]);
-                                updatePeerAgent(iduser, "imstatus", imstatus.split("/"));
-                                updateAgentPresence(m_users[iduser]->agentid(), imstatus);
                         }
                         
-                        m_monitored_userid = m_fullid;
-                        QString fullname_mine = "No One";
-                        if(m_users.contains(m_fullid)) {
-                                fullname_mine = m_users[m_fullid]->fullname();
-                                localUserInfoDefined(m_users[m_fullid]);
-                        }
+                } else if (thisclass == "users") {
+                        QString function = sc->getString("function");
+                        if (function == "sendlist") {
+                                QStringList listpeers = sc->getStringList("payload");
+                                for(int i = 0 ; i < listpeers.size() ; i += 13) {
+                                        // qDebug() << "users-list" << listpeers[i] << listpeers[i+1] << listpeers[i+2]
+                                        //<< listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
+                                        //<< listpeers[i+6] << listpeers[i+7] << listpeers[i+8] << listpeers[i+9];
+                                        QString iduser = listpeers[i+1] + "/" + listpeers[i];
+                                        if(! m_users.contains(iduser)) {
+                                                m_users[iduser] = new UserInfo(iduser);
+                                                m_users[iduser]->setFullName(listpeers[i+2]);
+                                                newUser(m_users[iduser]);
+                                        }
+                                        QString imstatus = listpeers[i+3];
+                                        m_users[iduser]->setAvailState(imstatus);
+                                        m_users[iduser]->setNumber(listpeers[i+7]);
+                                        m_users[iduser]->setPhones(listpeers[i+5], listpeers[i+6], listpeers[i+8]);
+                                        m_users[iduser]->setAgent(listpeers[i+9]);
+                                        m_users[iduser]->setMWI(listpeers[i+10], listpeers[i+11], listpeers[i+12]);
+                                        updatePeerAgent(iduser, "imstatus", imstatus.split("/"));
+                                        updateAgentPresence(m_users[iduser]->agentid(), imstatus);
+                                }
                         
-                        // Who do we monitor ?
-                        // First look at the last monitored one
-                        QString fullid_watched = m_settings->value("monitor/userid").toString();
-                        QString fullname_watched = "";
-                        // If there was nobody, let's watch ourselves.
-                        if(fullid_watched.isEmpty()) {
-                                fullid_watched = m_fullid;
-                                fullname_watched = fullname_mine;
-                        } else {
-                                if(m_users.contains(fullid_watched))
-                                        fullname_watched = m_users[fullid_watched]->fullname();
-                                // If the CallerId value is empty, fallback to ourselves.
-                                if(fullname_watched.isEmpty()) {
+                                m_monitored_userid = m_fullid;
+                                QString fullname_mine = "No One";
+                                if(m_users.contains(m_fullid)) {
+                                        fullname_mine = m_users[m_fullid]->fullname();
+                                        localUserInfoDefined(m_users[m_fullid]);
+                                }
+                        
+                                // Who do we monitor ?
+                                // First look at the last monitored one
+                                QString fullid_watched = m_settings->value("monitor/userid").toString();
+                                QString fullname_watched = "";
+                                // If there was nobody, let's watch ourselves.
+                                if(fullid_watched.isEmpty()) {
                                         fullid_watched = m_fullid;
                                         fullname_watched = fullname_mine;
+                                } else {
+                                        if(m_users.contains(fullid_watched))
+                                                fullname_watched = m_users[fullid_watched]->fullname();
+                                        // If the CallerId value is empty, fallback to ourselves.
+                                        if(fullname_watched.isEmpty()) {
+                                                fullid_watched = m_fullid;
+                                                fullname_watched = fullname_mine;
+                                        }
                                 }
-                        }
                         
-                        monitorPeerRequest(fullid_watched);
-                        emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
-                        
-                } else if (thisclass == "users-list-update") {
-                        QStringList userupdate = sc->getStringList("payload");
-                        if(userupdate.size() > 2) {
-                                QString iduser = userupdate[0] + "/" + userupdate[1];
-                                if(m_users.contains(iduser) && (iduser == m_fullid)) {
-                                        QString action = userupdate[2];
-                                        if((action == "mwi") && (userupdate.size() > 5)) {
-                                                m_users[iduser]->setMWI(userupdate[3], userupdate[4], userupdate[5]);
-                                                localUserInfoDefined(m_users[m_fullid]);
+                                monitorPeerRequest(fullid_watched);
+                                emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
+                        } else if (function == "update") {
+                                QStringList userupdate = sc->getStringList("payload");
+                                if(userupdate.size() > 2) {
+                                        QString iduser = userupdate[0] + "/" + userupdate[1];
+                                        if(m_users.contains(iduser) && (iduser == m_fullid)) {
+                                                QString action = userupdate[2];
+                                                if((action == "mwi") && (userupdate.size() > 5)) {
+                                                        m_users[iduser]->setMWI(userupdate[3], userupdate[4], userupdate[5]);
+                                                        localUserInfoDefined(m_users[m_fullid]);
+                                                }
                                         }
                                 }
                         }
@@ -834,18 +856,25 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "phones") {
                         QString function = sc->getString("function");
-                        if (function == "list") {
-                                QStringList listpeers = sc->getStringList("payload");
-                                for(int i = 1 ; i < listpeers.size() - 1; i++) {
-                                        QStringList liststatus = listpeers[i].split(":");
-                                        updatePeerAndCallerid(liststatus);
+                        if (function == "sendlist") {
+                                QHashIterator<QString, QString> listpeers(sc->getSubHash("payload"));
+                                while (listpeers.hasNext()) {
+                                        listpeers.next();
+                                        QString astid = listpeers.key();
+                                        ServerCommand * ssc = new ServerCommand(listpeers.value());
+                                        foreach(QString phonestatus, ssc->getSubList("")) {
+                                                ServerCommand * ssc2 = new ServerCommand(phonestatus);
+                                                qDebug() << astid << ssc2->getStringList("statusbase") << ssc2->getStringList("statusextended");
+                                                // updatePeerAndCallerid(liststatus);
+                                        }
                                 }
                                 callsUpdated();
                                 peersReceived();
                         } else if (function == "update") {
-                                QStringList liststatus = sc->getStringList("payload");
-                                qDebug() << liststatus;
-                                updatePeerAndCallerid(liststatus);
+                                QStringList statusbase = sc->getStringList("statusbase");
+                                QStringList statusextended = sc->getSubList("statusextended");
+                                qDebug() << statusbase << statusextended;
+                                // updatePeerAndCallerid(liststatus);
                                 callsUpdated();
                         } else if (function == "add") {
                                 QStringList listpeers = sc->getStringList("payload");
@@ -1055,13 +1084,18 @@ void BaseEngine::popupError(const QString & errorid)
 
         else if(errorid.toLower() == "connection_closed")
                 errormsg = tr("The XIVO daemon on %1 has just closed the connection.").arg(m_serverhost);
-
+        
+        else if(errorid.startsWith("socket_error:")) {
+                QStringList ipinfo = errorid.split(":");
+                errormsg = tr("Socket Error number %1.").arg(ipinfo[1]);
+        }
+        
         else if(errorid.toLower() == "server_stopped")
                 errormsg = tr("The XIVO daemon on %1 has just been stopped.").arg(m_serverhost);
-
+        
         else if(errorid.toLower() == "server_reloaded")
                 errormsg = tr("The XIVO daemon on %1 has just been reloaded.").arg(m_serverhost);
-
+        
         else if(errorid.startsWith("already_connected:")) {
                 QStringList ipinfo = errorid.split(":");
                 errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1], ipinfo[2]);
@@ -1481,9 +1515,7 @@ void BaseEngine::stopTryAgainTimer()
 void BaseEngine::startTryAgainTimer()
 {
 	if( m_try_timerid == 0 && m_trytoreconnect )
-	{
 		m_try_timerid = startTimer(m_trytoreconnectinterval);
-	}
 }
 
 void BaseEngine::setHistorySize(uint size)
@@ -1687,16 +1719,20 @@ void BaseEngine::askCallerIds()
 {
         qDebug() << "BaseEngine::askCallerIds()";
         ServerCommand * sc1 = new ServerCommand();
-        sc1->addString("class", "users-list");
+        sc1->addString("class", "users");
+        sc1->addString("function", "getlist");
         sc1->addString("direction", "xivoserver");
         ServerCommand * sc2 = new ServerCommand();
-        sc2->addString("class", "phones-list");
+        sc2->addString("class", "phones");
+        sc2->addString("function", "getlist");
         sc2->addString("direction", "xivoserver");
         ServerCommand * sc3 = new ServerCommand();
-        sc3->addString("class", "queues-list");
+        sc3->addString("class", "queues");
+        sc3->addString("function", "getlist");
         sc3->addString("direction", "xivoserver");
         ServerCommand * sc4 = new ServerCommand();
-        sc4->addString("class", "agents-list");
+        sc4->addString("class", "agents");
+        sc4->addString("function", "getlist");
         sc4->addString("direction", "xivoserver");
         
         sendCommand(sc1->find());

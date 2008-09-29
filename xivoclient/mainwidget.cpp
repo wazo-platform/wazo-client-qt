@@ -83,6 +83,7 @@
 #include "queuedetailspanel.h"
 #include "queueentrydetailspanel.h"
 #include "searchpanel.h"
+#include "servercommand.h"
 #include "servicepanel.h"
 #include "statuspanel.h"
 #include "switchboardwindow.h"
@@ -631,6 +632,63 @@ void MainWidget::connectDials(QWidget * widget)
                  m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
 }
 
+void MainWidget::initPresence()
+{
+        QHashIterator<QString, QString> capapres(m_engine->getCapaPresence());
+        while (capapres.hasNext()) {
+                capapres.next();
+                QString avstate = capapres.key();
+                QString name = capapres.value();
+                if(! m_avact.contains(avstate)) {
+                        m_avact[avstate] = new QAction(name, this);
+                        m_avact[avstate]->setCheckable(false);
+                        m_avact[avstate]->setProperty("availstate", avstate);
+                        m_avact[avstate]->setEnabled(false);
+                        connect( m_avact[avstate], SIGNAL(triggered()),
+                                 m_engine, SLOT(setAvailability()) );
+                        m_availgrp->addAction( m_avact[avstate] );
+                }
+        }
+        m_avail->addActions( m_availgrp->actions() );
+}
+
+void MainWidget::updatePresence(const QString & allowed)
+{
+        ServerCommand * sc = new ServerCommand(allowed);
+        QHashIterator<QString, QString> capapres(sc->getStringHash(""));
+        while (capapres.hasNext()) {
+                capapres.next();
+                QString avstate = capapres.key();
+                QString allow = capapres.value();
+                if(m_avact.contains(avstate))
+                        if(allow == "u") {
+                                m_avact[avstate]->setCheckable(true);
+                                m_avact[avstate]->setEnabled(true);
+                        } else {
+                                m_avact[avstate]->setCheckable(false);
+                                m_avact[avstate]->setEnabled(false);
+                        }
+        }
+}
+
+void MainWidget::clearPresence()
+{
+        QHashIterator<QString, QString> capapres(m_engine->getCapaPresence());
+        while (capapres.hasNext()) {
+                capapres.next();
+                QString avstate = capapres.key();
+                QString name = capapres.value();
+                if(m_avact.contains(avstate)) {
+                        disconnect( m_avact[avstate], SIGNAL(triggered()),
+                                    m_engine, SLOT(setAvailability()) );
+                        m_availgrp->removeAction( m_avact[avstate] );
+                        delete m_avact[avstate];
+                }
+        }
+        m_avact.clear();
+        m_avail->clear();
+}
+
 /*!
  * enables the "Disconnect" action and disables the "Connect" Action.
  * sets the Green indicator
@@ -640,34 +698,13 @@ void MainWidget::engineStarted()
 {
 	setForceTabs(false);
         setAppearance(m_engine->getCapaXlets());
-
+        
         m_appliname = m_engine->getCapaApplication();
-
-        QHashIterator<QString, QString> capapres(m_engine->getCapaPresence());
-        while (capapres.hasNext()) {
-                capapres.next();
-                QString avstate = capapres.key();
-                QStringList avail_infos = capapres.value().split("-");
-                QString kind = avail_infos[0];
-                QString name = avail_infos[2];
-                if(! m_avact.contains(avstate)) {
-                        m_avact[avstate] = new QAction(name, this);
-                        m_avact[avstate]->setCheckable(true);
-                        m_avact[avstate]->setProperty("availstate", avstate);
-                        if(kind == "user") {
-                                m_avact[avstate]->setEnabled(true);
-                                connect( m_avact[avstate], SIGNAL(triggered()),
-                                         m_engine, SLOT(setAvailability()) );
-                        } else {
-                                m_avact[avstate]->setEnabled(false);
-                        }
-                        m_availgrp->addAction( m_avact[avstate] );
-                }
-        }
-        m_avail->addActions( m_availgrp->actions() );
-
+        
+        initPresence();
+        connect( m_engine, SIGNAL(updatePresence(const QString &)),
+                 this, SLOT(updatePresence(const QString &)) );
         updateAppliName();
-
         hideLogin();
 
         m_tabwidget = new QTabWidget(this);
@@ -1179,26 +1216,10 @@ void MainWidget::engineStopped()
                 m_settings->setValue("display/lastfocusedtab", m_tabwidget->currentIndex());
                 // qDebug() << m_tabwidget->tabText(m_tabwidget->currentIndex());
         }
-
+        
         foreach (QString dname, m_docknames)
                 m_docks[dname]->hide();
-        
-        QHashIterator<QString, QString> capapres(m_engine->getCapaPresence());
-        while (capapres.hasNext()) {
-                capapres.next();
-                QString avstate = capapres.key();
-                QStringList avail_infos = capapres.value().split("-");
-                QString kind = avail_infos[0];
-                QString name = avail_infos[2];
-                if(m_avact.contains(avstate)) {
-                        disconnect( m_avact[avstate], SIGNAL(triggered()),
-                                    m_engine, SLOT(setAvailability()) );
-                        m_availgrp->removeAction( m_avact[avstate] );
-                        delete m_avact[avstate];
-                }
-        }
-        m_avact.clear();
-        m_avail->clear();
+        clearPresence();
         
 	for(int j = 0; j < XletList.size(); j++) {
                 QString dc = XletList[j];

@@ -66,7 +66,9 @@ public:
         
         QString getString(const QString &);
         QStringList getStringList(const QString &);
+        QStringList getSubList(const QString &);
         QHash<QString, QString> getStringHash(const QString &);
+        QHash<QString, QString> getSubHash(const QString &);
         
         QString find(const QString & tlabel = XIVO_COMMAND_ROOT);
 private:
