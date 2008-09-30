@@ -660,7 +660,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         if(sc->getString("compressed").size() > 0) {
                                 payload = qUncompress(QByteArray::fromBase64(sc->find("payload").toAscii()));
                         } else {
-                                payload = sc->find("payload");
+                                payload = QByteArray::fromBase64(sc->find("payload").toAscii());
                         }
                         // will eventually call the XML parser
                         displayFiche(payload, false);
