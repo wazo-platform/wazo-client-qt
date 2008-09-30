@@ -201,24 +201,23 @@ void FaxPanel::dirLookup()
         delete m_dirw;
 }
 
-void FaxPanel::popupMsg(const QString & msg)
+void FaxPanel::popupMsg(const QString & status, const QString & reason)
 {
-        QStringList rep = msg.split(";");
         static QMessageBox msgbox;
         QMessageBox::Icon icon;
         QString title, text;
 
-        // qDebug() << msg << rep;
+        qDebug() << "FaxPanel::popupMsg" << status << reason;
 
-        if(rep[0] == "ok") {
+        if(status == "ok") {
                 icon = QMessageBox::Information;
                 text = tr("Your Fax (file %1)\nwas successfully sent to %2.").arg(m_file_string, m_dest_string);
-        } else if (rep[0] == "queued") {
+        } else if (status == "queued") {
                 icon = QMessageBox::Information;
                 text = tr("Your Fax (file %1)\nis being processed and will be sent soon.").arg(m_file_string);
         } else {
                 icon = QMessageBox::Critical;
-                text = tr("Your Fax (file %1)\nwas NOT sent to %2.\nReason given : %3.").arg(m_file_string, m_dest_string, rep[1]);
+                text = tr("Your Fax (file %1)\nwas NOT sent to %2.\nReason given : %3.").arg(m_file_string, m_dest_string, reason);
                 m_destination->setText(m_dest_string);
                 m_openFileNameLabel->setText(m_file_string);
         }

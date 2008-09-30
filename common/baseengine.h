@@ -211,7 +211,7 @@ signals:
 	void emitTextMessage(const QString &);	//! message to be displayed to the user.
         void pasteToDialPanel(const QString &);
         void parkingEvent(const QString &);
-        void ackFax(const QString &);
+        void ackFax(const QString &, const QString &);
         void featurePutIsKO();
         void featurePutIsOK();
         void monitorPeer(UserInfo *);

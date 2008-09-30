@@ -416,7 +416,7 @@ bool BaseEngine::hasFunction(const QString & funcname)
 void BaseEngine::sendCommand(const QString & command)
 {
         if(m_sbsocket->state() == QAbstractSocket::ConnectedState)
-                m_sbsocket->write((command + "\r\n").toAscii());
+                m_sbsocket->write((command + "\n").toAscii());
 }
 
 /*! \brief parse history command response
@@ -474,8 +474,12 @@ void BaseEngine::socketConnected()
                 sendCommand(sc->find());
                 
         } else if(socketname == "fax") {
-                QString stp = "faxdata " + m_faxid + "\r\n";
-                m_faxsocket->write(stp.toAscii());
+                ServerCommand * sc = new ServerCommand();
+                sc->addString("class", "faxdata");
+                sc->addString("direction", "xivoserver");
+                sc->addString("faxid", m_faxid);
+                if(m_faxsocket->state() == QAbstractSocket::ConnectedState)
+                        m_faxsocket->write((sc->find() + "\n").toAscii());
         }
 }
 
@@ -737,8 +741,8 @@ bool BaseEngine::parseCommand(const QString & line)
                         m_faxid = sc->getString("payload");
                         m_faxsocket->connectToHost(m_serverhost, m_ctiport);
                         
-                } else if (thisclass == "faxsent") {
-                        ackFax(sc->getString("payload"));
+                } else if (thisclass == "faxprogress") {
+                        ackFax(sc->getString("status"), sc->getString("reason"));
                         
                 } else if (thisclass == "presence") {
                         QString id = sc->getString("company") + "/" + sc->getString("userid");
@@ -1068,7 +1072,7 @@ void BaseEngine::sendFaxCommand(const QString & filename, const QString & number
                 sc->addString("hide", QString::number(hide));
                 sendCommand(sc->find());
         } else
-                ackFax("ko;file");
+                ackFax("ko", "file");
 }
 
 void BaseEngine::popupError(const QString & errorid)
@@ -1164,29 +1168,36 @@ void BaseEngine::socketReadyRead()
         //qDebug() << "BaseEngine::socketReadyRead()";
         QString socketname = this->sender()->property("socket").toString();
 
-        if(socketname == "tcp_nat") while(m_sbsocket->canReadLine()) {
-		QByteArray data  = m_sbsocket->readLine();
-                // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
-		QString line     = QString::fromUtf8(data);
-                
-		if(line.startsWith("<ui version=")) {
-                        // we get here when receiving a sheet as a Qt4 .ui form
-                        qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size() << m_checked_cinfo;
-                        displayFiche(line, true);
-                } else
-                        parseCommand(line);
-        }
+        if(socketname == "tcp_nat")
+                while(m_sbsocket->canReadLine()) {
+                        QByteArray data  = m_sbsocket->readLine();
+                        // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
+                        QString line = QString::fromUtf8(data);
+                        
+                        if(line.startsWith("<ui version=")) {
+                                // we get here when receiving a sheet as a Qt4 .ui form
+                                qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size() << m_checked_cinfo;
+                                displayFiche(line, true);
+                        } else
+                                parseCommand(line);
+                }
+
         if(socketname == "fax") {
                 while(m_faxsocket->canReadLine()) {
                         QByteArray data = m_faxsocket->readLine();
-                        qDebug() << "got fax ack" << QString::fromUtf8(data).trimmed().split("=");
+                        QString line = QString::fromUtf8(data);
+
+                        ServerCommand * sc = new ServerCommand(line.trimmed());
+                        if(sc->getString("class") == "fileref") {
+                                qDebug() << "sending fax contents" << sc->getString("faxid");
+                                if(m_faxsize > 0)
+                                        m_faxsocket->write(* m_faxdata);
+                                m_faxsocket->close();
+                                m_faxsize = 0;
+                                m_faxid = "";
+                                delete m_faxdata;
+                        }
                 }
-                if(m_faxsize > 0)
-                        m_faxsocket->write(* m_faxdata);
-                m_faxsocket->close();
-                m_faxsize = 0;
-                m_faxid = "";
-                delete m_faxdata;
         }
 }
 

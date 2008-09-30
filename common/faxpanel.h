@@ -65,7 +65,7 @@ public slots:
         void setOpenFileName();
         void sendFax();
         void dirLookup();
-        void popupMsg(const QString &);
+        void popupMsg(const QString &, const QString &);
         void destNumberChanged(const QString &);
         void fileNameChanged(const QString &);
 private:

@@ -979,8 +979,8 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_xlet[dc], SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
                                          m_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
-                                connect( m_engine, SIGNAL(ackFax(const QString &)),
-                                         m_xlet[dc], SLOT(popupMsg(const QString &)) );
+                                connect( m_engine, SIGNAL(ackFax(const QString &, const QString &)),
+                                         m_xlet[dc], SLOT(popupMsg(const QString &, const QString &)) );
                                 
 			} else if ((dc == QString("customerinfo")) && m_engine->checkedCInfo()) {
                                 m_xlet[dc] = new CustomerInfoPanel(m_engine);

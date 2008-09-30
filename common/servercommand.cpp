@@ -52,7 +52,7 @@ ServerCommand::ServerCommand(const QString & vv)
 {
         json_error ret = json_parse_document (&m_jsonroot, (char *) qPrintable(vv));
         if (ret != JSON_OK)
-                qDebug() << "ServerCommand::ServerCommand()" << vv << ret;
+                qDebug() << "ServerCommand::ServerCommand() : error" << ret << "failure to parse :" << vv;
 }
 
 ServerCommand::ServerCommand()
