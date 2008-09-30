@@ -657,10 +657,11 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "sheet") {
                         QString payload;
+                        QByteArray qba = QByteArray::fromBase64(sc->find("payload").toAscii());
                         if(sc->getString("compressed").size() > 0) {
-                                payload = qUncompress(QByteArray::fromBase64(sc->find("payload").toAscii()));
+                                payload = QString::fromUtf8(qUncompress(qba));
                         } else {
-                                payload = QByteArray::fromBase64(sc->find("payload").toAscii());
+                                payload = QString::fromUtf8(qba);
                         }
                         // will eventually call the XML parser
                         displayFiche(payload, false);
