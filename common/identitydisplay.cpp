@@ -159,7 +159,7 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_info2->setText(m_ui->availstate());
         QStringList vm = m_ui->mwi().split("-");
         m_info3->setText(tr("Voicemail") + "\n" +
-                         vm[0] + " " + tr("waiting") + " " +
+                         // vm[0] + " " + tr("waiting") + " " +
                          vm[1] + " " + tr("old") + " " +
                          vm[2] + " " + tr("new"));
 }

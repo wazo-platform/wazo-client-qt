@@ -93,7 +93,8 @@ PeerWidget::PeerWidget(UserInfo * ui,
         foreach (QString termname, ui->termlist()) {
                 m_lblphones[termname] = new ExtendedLabel();
                 m_lblphones[termname]->setPixmap(m_phones["grey"]);
-                m_lblphones[termname]->setToolTip(termname);
+                QString exten = termname.split(".")[3];
+                m_lblphones[termname]->setToolTip(tr("Phone ") + exten);
                 m_lblphones[termname]->setProperty("kind", "term");
                 connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
                          this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
@@ -102,7 +103,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
         if(ui->agentid().size() > 0) {
                 m_agentlbl = new ExtendedLabel();
                 m_agentlbl->setPixmap(m_agents["grey"]);
-                m_agentlbl->setToolTip("Agent : " + ui->agentid());
+                m_agentlbl->setToolTip(tr("Agent ") + ui->agentid());
                 m_agentlbl->setProperty("kind", "agent");
                 connect( m_agentlbl, SIGNAL(dial(QMouseEvent *)),
                          this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
@@ -163,11 +164,11 @@ void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & q
                 m_agentlbl->setToolTip("");
         else {
                 if(queues.size() == 0)
-                        m_agentlbl->setToolTip("Agent : " + agentnum + "\n0 Queue");
+                        m_agentlbl->setToolTip(tr("Agent ") + agentnum + "\n0 Queue");
                 else if (queues.size() == 1)
-                        m_agentlbl->setToolTip("Agent : " + agentnum + "\n1 Queue : " + queues[0]);
+                        m_agentlbl->setToolTip(tr("Agent ") + agentnum + "\n1 Queue " + queues[0]);
                 else
-                        m_agentlbl->setToolTip("Agent : " + agentnum + "\n" + QString::number(queues.size()) + " Queues : " + queues.join(","));
+                        m_agentlbl->setToolTip(tr("Agent ") + agentnum + "\n" + QString::number(queues.size()) + " Queues " + queues.join(","));
         }
 }
 

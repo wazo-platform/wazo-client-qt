@@ -758,6 +758,10 @@ bool BaseEngine::parseCommand(const QString & line)
                                 }
                         }
                         
+                } else if (thisclass == "call") {
+                        qDebug() << thisclass << sc->find("caller");
+                        qDebug() << thisclass << sc->find("called");
+                        
                 } else if (thisclass == "users") {
                         QString function = sc->getString("function");
                         if (function == "sendlist") {
@@ -781,7 +785,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                         updatePeerAgent(iduser, "imstatus", imstatus.split("/"));
                                         updateAgentPresence(m_users[iduser]->agentid(), imstatus);
                                 }
-                        
+                                
                                 m_monitored_userid = m_fullid;
                                 QString fullname_mine = "No One";
                                 if(m_users.contains(m_fullid)) {
@@ -810,13 +814,14 @@ bool BaseEngine::parseCommand(const QString & line)
                                 monitorPeerRequest(fullid_watched);
                                 emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
                         } else if (function == "update") {
-                                QStringList userupdate = sc->getStringList("payload");
-                                if(userupdate.size() > 2) {
+                                QStringList userupdate = sc->getStringList("user");
+                                if(userupdate.size() == 2) {
                                         QString iduser = userupdate[0] + "/" + userupdate[1];
                                         if(m_users.contains(iduser) && (iduser == m_fullid)) {
-                                                QString action = userupdate[2];
-                                                if((action == "mwi") && (userupdate.size() > 5)) {
-                                                        m_users[iduser]->setMWI(userupdate[3], userupdate[4], userupdate[5]);
+                                                QString subclass = sc->getString("subclass");
+                                                if(subclass == "mwi") {
+                                                        QStringList payload = sc->getStringList("payload");
+                                                        m_users[iduser]->setMWI(payload[0], payload[1], payload[2]);
                                                         localUserInfoDefined(m_users[m_fullid]);
                                                 }
                                         }
