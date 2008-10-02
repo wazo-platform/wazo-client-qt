@@ -255,10 +255,7 @@ void AgentsPanel::setAgentList(const QString & alist)
         // qDebug() << "AgentsPanel::setAgentList()" << alist;
         ServerCommand * sc = new ServerCommand(alist);
         QString astid = sc->getString("astid");
-        QStringList asl = sc->getStringList("list");
-        QStringList agents;
-        for(int i = 1 ; i < asl.size(); i++)
-                agents << asl[i];
+        QStringList agents = sc->getStringList("list");
         agents.sort();
         
         QPixmap * m_square = new QPixmap(12, 12);
