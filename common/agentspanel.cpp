@@ -47,8 +47,9 @@
 #include <QScrollArea>
 #include <QVariant>
 
+#include "JsonToVariant.h"
+
 #include "agentspanel.h"
-#include "servercommand.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -253,9 +254,10 @@ void AgentsPanel::updatePeerAgent(const QString &,
 void AgentsPanel::setAgentList(const QString & alist)
 {
         // qDebug() << "AgentsPanel::setAgentList()" << alist;
-        ServerCommand * sc = new ServerCommand(alist);
-        QString astid = sc->getString("astid");
-        QStringList agents = sc->getStringList("list");
+        JsonQt::JsonToVariant parser;
+        QVariant data = parser.parse(alist);
+        QString astid = data.toMap()["astid"].toString();
+        QStringList agents = data.toMap()["list"].toStringList();
         agents.sort();
         
         QPixmap * m_square = new QPixmap(12, 12);
