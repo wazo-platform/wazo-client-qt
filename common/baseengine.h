@@ -343,7 +343,7 @@ private:
 	// Internal management
 	QHostAddress m_serveraddress;	//!< Resolved address of the login server
 	QTcpSocket * m_sbsocket;	//!< TCP socket to connect to the server (SB mode)
-	QTcpSocket * m_faxsocket;	//!< TCP socket to send fax data to the server
+	QTcpSocket * m_filesocket;	//!< TCP socket to send fax data to the server
 	QTcpSocket * m_connection;	//!< TCP socket set from TCP server listening for profiles
 	ushort m_listenport;		//!< Port where we are listening for profiles
 	int m_timer;			//!< timer id
@@ -358,8 +358,9 @@ private:
         QString m_queue_watched_astid;
         QString m_queue_watched_queueid;
 
-        QString m_faxid;
-        QByteArray * m_faxdata;
+        QString m_fileid;
+        QString m_filedir;
+        QByteArray * m_filedata;
         int m_faxsize;
 
         QString m_monitored_userid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)

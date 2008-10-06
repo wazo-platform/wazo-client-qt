@@ -60,19 +60,23 @@ AgentsPanel::AgentsPanel(QWidget * parent)
 	m_gridlayout = new QGridLayout(this);
 
         m_title1 = new QLabel(tr("Agent"), this);
-        m_title2 = new QLabel(tr("On Line"), this);
-        m_title3 = new QLabel(tr("Present"), this);
-        m_title4 = new QLabel(tr("Logged"), this);
-        m_title5 = new QLabel(tr("Joined queues"), this);
-        m_title6 = new QLabel(tr("UnPaused"), this);
+        m_title2 = new QLabel(tr("Record"), this);
+        m_title3 = new QLabel(tr("Listen"), this);
+        m_title4 = new QLabel(tr("On Line"), this);
+        m_title5 = new QLabel(tr("Present"), this);
+        m_title6 = new QLabel(tr("Logged"), this);
+        m_title7 = new QLabel(tr("Joined queues"), this);
+        m_title8 = new QLabel(tr("UnPaused"), this);
         
         m_gridlayout->addWidget(m_title1, 0, 0, 1, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title2, 0, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title3, 0, 4, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title4, 0, 6, 1, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title5, 0, 9, 1, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title6, 0, 12, 1, 2, Qt::AlignCenter );
-        m_gridlayout->setColumnStretch( 14, 1 );
+        m_gridlayout->addWidget(m_title2, 0, 2, 1, 1, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title3, 0, 3, 1, 1, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title4, 0, 4, 1, 1, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title5, 0, 6, 1, 1, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title6, 0, 8, 1, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title7, 0, 11, 1, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title8, 0, 14, 1, 2, Qt::AlignCenter );
+        m_gridlayout->setColumnStretch( 16, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->setVerticalSpacing(0);
 }
@@ -283,7 +287,7 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 QFrame * qvline4 = new QFrame(this);
                                 qvline4->setFrameShape(QFrame::VLine);
                                 qvline4->setLineWidth(1);
-
+                                
                                 m_agent_labels[agnum] = new QLabel(agfullname + " (" + agnum + ")", this);
                                 m_agent_more[agnum] = new QPushButton(this);
                                 m_agent_more[agnum]->setProperty("astid", astid);
@@ -291,7 +295,21 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 m_agent_more[agnum]->setProperty("action", "changeagent");
                                 connect( m_agent_more[agnum], SIGNAL(clicked()),
                                          this, SLOT(agentClicked()));
-
+                                
+                                m_agent_record[agnum] = new QPushButton(this);
+                                m_agent_record[agnum]->setProperty("astid", astid);
+                                m_agent_record[agnum]->setProperty("agentid", agnum);
+                                m_agent_record[agnum]->setProperty("action", "record");
+                                connect( m_agent_record[agnum], SIGNAL(clicked()),
+                                         this, SLOT(agentClicked()));
+                                
+                                m_agent_listen[agnum] = new QPushButton(this);
+                                m_agent_listen[agnum]->setProperty("astid", astid);
+                                m_agent_listen[agnum]->setProperty("agentid", agnum);
+                                m_agent_listen[agnum]->setProperty("action", "listen");
+                                connect( m_agent_listen[agnum], SIGNAL(clicked()),
+                                         this, SLOT(agentClicked()));
+                                
                                 m_agent_busy[agnum] = new QLabel(this);
                                 m_agent_busy[agnum]->setProperty("astid", astid);
                                 m_agent_presence[agnum] = new QLabel(this);
@@ -302,14 +320,18 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 m_agent_logged_action[agnum]->setProperty("action", "loginoff");
                                 connect( m_agent_logged_action[agnum], SIGNAL(clicked()),
                                          this, SLOT(agentClicked()));
-
+                                
                                 m_agent_joined_number[agnum] = new QLabel(this);
                                 m_agent_joined_status[agnum] = new QLabel(this);
                                 m_agent_paused_number[agnum] = new QLabel(this);
                                 m_agent_paused_status[agnum] = new QLabel(this);
-
+                                
                                 m_agent_more[agnum]->setIconSize(QSize(10, 10));
                                 m_agent_more[agnum]->setIcon(QIcon(":/images/rightarrow.png"));
+                                m_agent_record[agnum]->setIconSize(QSize(10, 10));
+                                m_agent_record[agnum]->setIcon(QIcon(":/images/player_stop.png"));
+                                m_agent_listen[agnum]->setIconSize(QSize(10, 10));
+                                m_agent_listen[agnum]->setIcon(QIcon(":/images/player_play.png"));
                                 m_agent_logged_action[agnum]->setIconSize(QSize(8, 8));
                                 
                                 m_square->fill(Qt::gray);
@@ -364,6 +386,8 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 int linenum = m_agent_labels.size();
                                 m_gridlayout->addWidget( m_agent_labels[agnum], linenum, colnum++, Qt::AlignLeft );
                                 m_gridlayout->addWidget( m_agent_more[agnum], linenum, colnum++, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_record[agnum], linenum, colnum++, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_agent_listen[agnum], linenum, colnum++, Qt::AlignCenter );
                                 m_gridlayout->addWidget( m_agent_busy[agnum], linenum, colnum++, Qt::AlignCenter );
                                 m_gridlayout->addWidget( qvline1, linenum, colnum++, Qt::AlignHCenter );
                                 m_gridlayout->addWidget( m_agent_presence[agnum], linenum, colnum++, Qt::AlignCenter );
@@ -397,6 +421,10 @@ void AgentsPanel::agentClicked()
                         agentAction("logout " + astid + " " + agentid);
                 else
                         agentAction("login " + astid + " " + agentid);
+        } else if(action == "record") {
+                agentAction("record " + astid + " " + agentid);
+        } else if(action == "listen") {
+                agentAction("listen " + astid + " " + agentid);
         }
 }
 

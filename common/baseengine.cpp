@@ -75,8 +75,8 @@ BaseEngine::BaseEngine(QSettings * settings,
 	m_ka_timerid = 0;
 	m_try_timerid = 0;
 	m_timer = -1;
-	m_sbsocket     = new QTcpSocket(this);
-        m_faxsocket    = new QTcpSocket(this);
+	m_sbsocket   = new QTcpSocket(this);
+        m_filesocket = new QTcpSocket(this);
         m_settings = settings;
 	loadSettings();
 	deleteRemovables();
@@ -95,7 +95,7 @@ BaseEngine::BaseEngine(QSettings * settings,
         */
 
 	// Socket for TCP connections
-        m_sbsocket->setProperty("socket", "tcp_nat");
+        m_sbsocket->setProperty("socket", "cticommands");
 	connect( m_sbsocket, SIGNAL(connected()),
                  this, SLOT(socketConnected()));
 	connect( m_sbsocket, SIGNAL(disconnected()),
@@ -109,16 +109,16 @@ BaseEngine::BaseEngine(QSettings * settings,
 	connect( m_sbsocket, SIGNAL(readyRead()),
                  this, SLOT(socketReadyRead()));
         
-        m_faxsocket->setProperty("socket", "fax");
-        connect( m_faxsocket, SIGNAL(connected()),
+        m_filesocket->setProperty("socket", "filetransfers");
+        connect( m_filesocket, SIGNAL(connected()),
                  this, SLOT(socketConnected()) );
-	connect( m_faxsocket, SIGNAL(disconnected()),
+	connect( m_filesocket, SIGNAL(disconnected()),
                  this, SLOT(socketDisconnected()));
-	connect( m_faxsocket, SIGNAL(hostFound()),
+	connect( m_filesocket, SIGNAL(hostFound()),
 	         this, SLOT(socketHostFound()) );
-	connect( m_faxsocket, SIGNAL(error(QAbstractSocket::SocketError)),
+	connect( m_filesocket, SIGNAL(error(QAbstractSocket::SocketError)),
                  this, SLOT(socketError(QAbstractSocket::SocketError)));
-	connect( m_faxsocket, SIGNAL(readyRead()),
+	connect( m_filesocket, SIGNAL(readyRead()),
                  this, SLOT(socketReadyRead()));
         
 	if(m_autoconnect)
@@ -459,7 +459,7 @@ void BaseEngine::socketConnected()
 {
         QString socketname = this->sender()->property("socket").toString();
 	qDebug() << "BaseEngine::socketConnected()" << socketname;
-        if(socketname == "tcp_nat") {
+        if(socketname == "cticommands") {
                 stopTryAgainTimer();
                 /* do the login/identification */
                 setMyClientId();
@@ -473,13 +473,14 @@ void BaseEngine::socketConnected()
                 sc->addString("xivoversion", __xivo_version__);
                 sendCommand(sc->find());
                 
-        } else if(socketname == "fax") {
+        } else if(socketname == "filetransfers") {
                 ServerCommand * sc = new ServerCommand();
-                sc->addString("class", "faxdata");
+                sc->addString("class", "filetransfer");
                 sc->addString("direction", "xivoserver");
-                sc->addString("faxid", m_faxid);
-                if(m_faxsocket->state() == QAbstractSocket::ConnectedState)
-                        m_faxsocket->write((sc->find() + "\n").toAscii());
+                sc->addString("tdirection", m_filedir);
+                sc->addString("fileid", m_fileid);
+                if(m_filesocket->state() == QAbstractSocket::ConnectedState)
+                        m_filesocket->write((sc->find() + "\n").toAscii());
         }
 }
 
@@ -489,7 +490,7 @@ void BaseEngine::socketDisconnected()
 {
         QString socketname = this->sender()->property("socket").toString();
 	qDebug() << "BaseEngine::socketDisconnected()" << socketname;
-        if(socketname == "tcp_nat") {
+        if(socketname == "cticommands") {
                 setState(ENotLogged); // calls delogged();
                 emitTextMessage(tr("Connection lost with XIVO Daemon"));
                 startTryAgainTimer();
@@ -738,8 +739,10 @@ bool BaseEngine::parseCommand(const QString & line)
                         directoryResponse(sc->getString("payload"));
                         
                 } else if (thisclass == "faxsend") {
-                        m_faxid = sc->getString("payload");
-                        m_faxsocket->connectToHost(m_serverhost, m_ctiport);
+                        m_filedir = sc->getString("tdirection");
+                        m_fileid = sc->getString("fileid");
+                        m_filesocket->connectToHost(m_serverhost, m_ctiport);
+                        qDebug() << m_filedir << m_fileid;
                         
                 } else if (thisclass == "faxprogress") {
                         ackFax(sc->getString("status"), sc->getString("reason"));
@@ -1064,11 +1067,11 @@ void BaseEngine::sendFaxCommand(const QString & filename, const QString & number
 {
         QFile * qf = new QFile(filename);
         qf->open(QIODevice::ReadOnly);
-        m_faxdata = new QByteArray();
-        m_faxdata->append(qf->readAll());
+        m_filedata = new QByteArray();
+        m_filedata->append(qf->readAll());
         qf->close();
-        m_faxsize = m_faxdata->size();
-        if(m_faxdata->size() > 0) {
+        m_faxsize = m_filedata->size();
+        if(m_filedata->size() > 0) {
                 ServerCommand * sc = new ServerCommand();
                 sc->addString("class", "faxsend");
                 sc->addString("direction", "xivoserver");
@@ -1173,7 +1176,7 @@ void BaseEngine::socketReadyRead()
         //qDebug() << "BaseEngine::socketReadyRead()";
         QString socketname = this->sender()->property("socket").toString();
 
-        if(socketname == "tcp_nat")
+        if(socketname == "cticommands")
                 while(m_sbsocket->canReadLine()) {
                         QByteArray data  = m_sbsocket->readLine();
                         // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
@@ -1187,20 +1190,25 @@ void BaseEngine::socketReadyRead()
                                 parseCommand(line);
                 }
 
-        if(socketname == "fax") {
-                while(m_faxsocket->canReadLine()) {
-                        QByteArray data = m_faxsocket->readLine();
+        if(socketname == "filetransfers") {
+                while(m_filesocket->canReadLine()) {
+                        QByteArray data = m_filesocket->readLine();
                         QString line = QString::fromUtf8(data);
-
                         ServerCommand * sc = new ServerCommand(line.trimmed());
+                        
                         if(sc->getString("class") == "fileref") {
-                                qDebug() << "sending fax contents" << sc->getString("faxid");
-                                if(m_faxsize > 0)
-                                        m_faxsocket->write(* m_faxdata);
-                                m_faxsocket->close();
+                                if(m_filedir == "download") {
+                                        qDebug() << sc->getString("filename");
+                                        qDebug() << sc->getString("payload").size();
+                                } else {
+                                        qDebug() << "sending fax contents" << sc->getString("fileid");
+                                        if(m_faxsize > 0)
+                                                m_filesocket->write(* m_filedata);
+                                }
+                                m_filesocket->close();
                                 m_faxsize = 0;
-                                m_faxid = "";
-                                delete m_faxdata;
+                                m_fileid = "";
+                                delete m_filedata;
                         }
                 }
         }
