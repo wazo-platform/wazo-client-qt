@@ -186,7 +186,7 @@ namespace JsonQt
 		// Ending quotation marks
 		consume('"');
 
-		return data;
+		return QString::fromUtf8(data.toAscii());
 	}
 
 	QString JsonToVariant::parseChars()
