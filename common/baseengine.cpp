@@ -49,6 +49,8 @@
 #include <QTime>
 #include <QTimerEvent>
 
+#include "JsonToVariant.h"
+
 #include "baseengine.h"
 #include "xivoconsts.h"
 #include "servercommand.h"
@@ -367,7 +369,7 @@ const QStringList & BaseEngine::getCapaXlets() const
         return m_capaxlets;
 }
 
-const QHash<QString, QString> & BaseEngine::getCapaPresence() const
+const QMap<QString, QVariant> & BaseEngine::getCapaPresence() const
 {
         return m_capapresence;
 }
@@ -650,10 +652,14 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 
 bool BaseEngine::parseCommand(const QString & line)
 {
+        JsonQt::JsonToVariant parser;
+        QVariant data = parser.parse(line.trimmed());
+        QString direction = data.toMap()["direction"].toString();
+        
         ServerCommand * sc = new ServerCommand(line.trimmed());
         
-        if(sc->getString("direction") == "client") {
-                QString thisclass = sc->getString("class");
+        if(direction == "client") {
+                QString thisclass = data.toMap()["class"].toString();
                 if (thisclass == "callcampaign") {
                         QString payload = sc->find("payload");
                         requestFileListResult(payload);
@@ -958,8 +964,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         popupError(sc->getString("errorstring"));
                         
                 } else if (thisclass == "login_pass_ok") {
-                        
-                        QStringList capas = sc->getString("capalist").split(",");
+                        QStringList capas = data.toMap()["capalist"].toString().split(",");
                         ServerCommand * sc2 = new ServerCommand();
                         sc2->addString("class", "login_capas");
                         sc2->addString("direction", "xivoserver");
@@ -991,14 +996,13 @@ bool BaseEngine::parseCommand(const QString & line)
                         sendCommand(sc2->find());
 
                 } else if (thisclass == "login_capas_ok") {
-                        
-                        m_capafuncs = sc->getString("capafuncs").split(",");
-                        m_capaxlets = sc->getStringList("capaxlets");
-                        m_capapresence = sc->getStringHash("capapresence");
+                        m_capafuncs = data.toMap()["capafuncs"].toString().split(",");
+                        m_capaxlets = data.toMap()["capaxlets"].toStringList();
+                        m_capapresence = data.toMap()["capapresence"].toMap();
                         // m_capafeatures = sc->getStringList("capas_features");
-                        m_appliname = sc->getString("appliname");
-                        m_forced_state = sc->getString("state");
-
+                        m_appliname = data.toMap()["appliname"].toString();
+                        m_forced_state = data.toMap()["state"].toString();
+                        
                         qDebug() << "clientXlets" << XletList;
                         qDebug() << "m_capaxlets" << m_capaxlets;
                         qDebug() << "m_capafuncs" << m_capafuncs;
@@ -1212,6 +1216,16 @@ void BaseEngine::socketReadyRead()
                         }
                 }
         }
+}
+
+void BaseEngine::actionFromFiche(const QStringList & infos)
+{
+        qDebug() << "BaseEngine::actionFromFiche" << infos;
+        ServerCommand * sc = new ServerCommand();
+        sc->addString("class", "actionfiche");
+        sc->addString("direction", "xivoserver");
+        sc->addStringList("buttonaction", infos);
+        sendCommand(sc->find());
 }
 
 /*! \brief transfers to the typed number

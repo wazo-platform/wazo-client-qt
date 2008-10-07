@@ -634,11 +634,11 @@ void MainWidget::connectDials(QWidget * widget)
 
 void MainWidget::initPresence()
 {
-        QHashIterator<QString, QString> capapres(m_engine->getCapaPresence());
+        QMapIterator<QString, QVariant> capapres(m_engine->getCapaPresence());
         while (capapres.hasNext()) {
                 capapres.next();
                 QString avstate = capapres.key();
-                QString name = capapres.value();
+                QString name = capapres.value().toString();
                 if(! m_avact.contains(avstate)) {
                         m_avact[avstate] = new QAction(name, this);
                         m_avact[avstate]->setCheckable(false);
@@ -673,11 +673,10 @@ void MainWidget::updatePresence(const QString & allowed)
 
 void MainWidget::clearPresence()
 {
-        QHashIterator<QString, QString> capapres(m_engine->getCapaPresence());
+        QMapIterator<QString, QVariant> capapres(m_engine->getCapaPresence());
         while (capapres.hasNext()) {
                 capapres.next();
                 QString avstate = capapres.key();
-                QString name = capapres.value();
                 if(m_avact.contains(avstate)) {
                         disconnect( m_avact[avstate], SIGNAL(triggered()),
                                     m_engine, SLOT(setAvailability()) );
@@ -992,6 +991,8 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(displayFiche(const QString &, bool)) );
                                 connect( m_xlet[dc], SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
                                          this, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)) );
+                                connect( m_xlet[dc], SIGNAL(actionFromFiche(const QStringList &)),
+                                         m_engine, SLOT(actionFromFiche(const QStringList &)) );
 
 			} else if (dc == QString("search")) {
 				m_xlet[dc] = new SearchPanel(m_engine);

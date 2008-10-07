@@ -26,6 +26,20 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="XIVO_CALL_STATUS-3" >
+       <property name="text" >
+        <string>Appel X</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="XIVO_CALL_STATUS-4" >
+       <property name="text" >
+        <string>Appel Y</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>

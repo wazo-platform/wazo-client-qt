@@ -91,15 +91,17 @@ PeerWidget::PeerWidget(UserInfo * ui,
         m_fwdlbl   = new QLabel();
 
         foreach (QString termname, ui->termlist()) {
-                m_lblphones[termname] = new ExtendedLabel();
-                m_lblphones[termname]->setPixmap(m_phones["grey"]);
-                QString exten = termname.split(".")[3];
-                m_lblphones[termname]->setToolTip(tr("Phone ") + exten);
-                m_lblphones[termname]->setProperty("kind", "term");
-                connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
-                         this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
+                QStringList terms = termname.split(".");
+                if(terms.size() > 3) {
+                        m_lblphones[termname] = new ExtendedLabel();
+                        m_lblphones[termname]->setPixmap(m_phones["grey"]);
+                        m_lblphones[termname]->setToolTip(tr("Phone ") + terms[3]);
+                        m_lblphones[termname]->setProperty("kind", "term");
+                        connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
+                                 this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
+                }
         }
-
+        
         if(ui->agentid().size() > 0) {
                 m_agentlbl = new ExtendedLabel();
                 m_agentlbl->setPixmap(m_agents["grey"]);
@@ -108,8 +110,8 @@ PeerWidget::PeerWidget(UserInfo * ui,
                 connect( m_agentlbl, SIGNAL(dial(QMouseEvent *)),
                          this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         }
-
-
+        
+        
         // Put the Labels into layouts
         layout->addWidget( qvline, 0, 0, 2, 1 );
 	layout->addWidget( m_textlbl, 0, 2, 1, 6, Qt::AlignLeft );

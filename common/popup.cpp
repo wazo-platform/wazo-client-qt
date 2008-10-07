@@ -67,8 +67,8 @@
 #endif
 
 QStringList formbuttonnames = (QStringList()
-                               << "refuse" << "hangup" << "close" << "save" << "answer"
-                               << "callok" << "callko");
+                               << "refuse" << "hangup" << "answer"
+                               << "close" << "save");
 
 /*!
  * This constructor inits all XML objects and connect signals
@@ -137,6 +137,9 @@ void Popup::feed(QIODevice * inputstream,
                                          this, SLOT(actionFromForm()) );
                         }
                 }
+                QRegExp re_status("^XIVO_CALL_STATUS-");
+                qDebug() << "Popup::feed() found" << m_sheetui_widget->findChildren<QPushButton *>(re_status);
+                
                 QLineEdit   * datetime    = m_sheetui_widget->findChild<QLineEdit *>("datetime");
                 QLineEdit   * year        = m_sheetui_widget->findChild<QLineEdit *>("year");
                 if(datetime)
@@ -159,19 +162,13 @@ void Popup::dispurl(const QUrl &url)
 void Popup::actionFromForm()
 {
         QString buttonname = this->sender()->property("buttonname").toString();
-        qDebug() << "Popup::actionFromForm()" << buttonname << m_channel;
-        if(buttonname == "hangup")
-                hangUp(m_ui, m_channel);
-        else if(buttonname == "answer")
-                pickUp(m_ui, m_channel);
+        // qDebug() << "Popup::actionFromForm()" << buttonname << m_channel;
+        if(buttonname == "close")
+                close();
         else if(buttonname == "save")
                 saveandclose();
-        else if(buttonname == "close")
-                close();
-        else if(buttonname == "callok")
-                qDebug() << "callok";
-        else if(buttonname == "callko")
-                qDebug() << "callko";
+        else if((buttonname == "hangup") || (buttonname == "answer") || (buttonname.startsWith("XIVO_CALL_STATUS-")))
+                actionFromPopup(buttonname);
 }
 
 void Popup::saveandclose()
@@ -179,7 +176,7 @@ void Popup::saveandclose()
         // qDebug() << "Popup::saveandclose()";
         QStringList qsl;
 
-        QList<QLineEdit *> lineedits = m_sheetui_widget->findChildren<QLineEdit *>(QRegExp("XIVOFORM-"));
+        QList<QLineEdit *> lineedits = m_sheetui_widget->findChildren<QLineEdit *>(QRegExp("^XIVOFORM-"));
         for(int i = 0; i < lineedits.count(); i++) {
                 qsl.append(lineedits[i]->objectName() + ":" + lineedits[i]->text());
         }
@@ -288,7 +285,15 @@ void Popup::addInfoForm(int where, const QString & name, const QString & value)
                         }
                 }
         }
-
+        QRegExp re_callstatus("^XIVO_CALL_STATUS-");
+        foreach(QPushButton * callstatusbutton, form->findChildren<QPushButton *>(re_callstatus)) {
+                QString formbuttonname = callstatusbutton->objectName();
+                m_form_buttons[formbuttonname] = callstatusbutton;
+                m_form_buttons[formbuttonname]->setProperty("buttonname", formbuttonname);
+                connect( m_form_buttons[formbuttonname], SIGNAL(clicked()),
+                         this, SLOT(actionFromForm()) );
+        }
+        
 	m_vlayout->insertWidget(where, form);
 }
 
@@ -581,6 +586,11 @@ void Popup::setSheetPopup(const bool & sheetpopup)
 const QString & Popup::sessionid() const
 {
         return m_sessionid;
+}
+
+const QString & Popup::channel() const
+{
+        return m_channel;
 }
 
 bool Popup::sheetpopup()

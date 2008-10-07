@@ -60,8 +60,8 @@ AgentsPanel::AgentsPanel(QWidget * parent)
 	m_gridlayout = new QGridLayout(this);
 
         m_title1 = new QLabel(tr("Agent"), this);
-        m_title2 = new QLabel(tr("Record"), this);
-        m_title3 = new QLabel(tr("Listen"), this);
+        // m_title2 = new QLabel(tr("Record"), this);
+        // m_title3 = new QLabel(tr("Listen"), this);
         m_title4 = new QLabel(tr("On Line"), this);
         m_title5 = new QLabel(tr("Present"), this);
         m_title6 = new QLabel(tr("Logged"), this);
@@ -69,8 +69,8 @@ AgentsPanel::AgentsPanel(QWidget * parent)
         m_title8 = new QLabel(tr("UnPaused"), this);
         
         m_gridlayout->addWidget(m_title1, 0, 0, 1, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title2, 0, 2, 1, 1, Qt::AlignCenter );
-        m_gridlayout->addWidget(m_title3, 0, 3, 1, 1, Qt::AlignCenter );
+        // m_gridlayout->addWidget(m_title2, 0, 2, 1, 1, Qt::AlignCenter );
+        // m_gridlayout->addWidget(m_title3, 0, 3, 1, 1, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title4, 0, 4, 1, 1, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title5, 0, 6, 1, 1, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title6, 0, 8, 1, 2, Qt::AlignCenter );
@@ -306,7 +306,7 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 m_agent_listen[agnum] = new QPushButton(this);
                                 m_agent_listen[agnum]->setProperty("astid", astid);
                                 m_agent_listen[agnum]->setProperty("agentid", agnum);
-                                m_agent_listen[agnum]->setProperty("action", "listen");
+                                m_agent_listen[agnum]->setProperty("action", "getfile");
                                 connect( m_agent_listen[agnum], SIGNAL(clicked()),
                                          this, SLOT(agentClicked()));
                                 
@@ -425,6 +425,8 @@ void AgentsPanel::agentClicked()
                 agentAction("record " + astid + " " + agentid);
         } else if(action == "listen") {
                 agentAction("listen " + astid + " " + agentid);
+        } else if(action == "getfile") {
+                agentAction("getfile " + astid + " " + agentid);
         }
 }
 

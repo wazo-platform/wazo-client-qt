@@ -3,6 +3,7 @@
 	<file>../common/xivo.qss</file>
 	<file>../common/form_default.ui</file>
 	<file>../common/form_okko.ui</file>
+	<file>../common/form_qcm.ui</file>
 	<file>../common/form_telmes.ui</file>
 	<file>xivoclient_fr.qm</file>
 	<file>qt_fr.qm</file>

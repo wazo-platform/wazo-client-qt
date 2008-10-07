@@ -64,12 +64,14 @@ signals:
         void newPopup(const QString &,
                       const QHash<QString, QString> &,
                       const QString &);
+        void actionFromFiche(const QStringList &);
 public slots:
         void setUserInfo(const UserInfo *);
         void showNewProfile(Popup *);
         void popupDestroyed(QObject * obj);
         void addToDataBase(const QString &);
         void displayFiche(const QString &, bool);
+        void actionFromPopup(const QString &);
 private:
         BaseEngine * m_engine;
         const UserInfo * m_ui;

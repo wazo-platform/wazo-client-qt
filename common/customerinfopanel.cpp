@@ -137,8 +137,27 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
         popup->feed(inputstream, qtui);
         connect( popup, SIGNAL(destroyed(QObject *)),
                  this, SLOT(popupDestroyed(QObject *)) );
-        connect( popup, SIGNAL(save(const QString &)),
-                 this, SLOT(addToDataBase(const QString &)) );
         connect( popup, SIGNAL(wantsToBeShown(Popup *)),
                  this, SLOT(showNewProfile(Popup *)) );
+        connect( popup, SIGNAL(save(const QString &)),
+                 this, SLOT(addToDataBase(const QString &)) );
+        connect( popup, SIGNAL(actionFromPopup(const QString &)),
+                 this, SLOT(actionFromPopup(const QString &)) );
+}
+
+void CustomerInfoPanel::actionFromPopup(const QString & buttonname)
+{
+        QString sessionid = this->sender()->property("sessionid").toString();
+        Popup * thispopup = NULL;
+        foreach(Popup * mpopup, m_popups)
+                if(mpopup->sessionid() == sessionid) {
+                        thispopup = mpopup;
+                        break;
+                }
+        if(thispopup) {
+                QStringList qsl;
+                qsl << buttonname
+                    << thispopup->sessionid() << thispopup->channel();
+                actionFromFiche(qsl);
+        }
 }

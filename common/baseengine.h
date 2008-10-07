@@ -46,6 +46,7 @@
 #include <QAbstractSocket>
 #include <QHash>
 #include <QHostAddress>
+#include <QMap>
 #include <QObject>
 #include <QSettings>
 #include <QStringList>
@@ -146,7 +147,7 @@ public:
 	const QStringList & getCapabilities() const;	//!< returns capabilities
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
         const QStringList & getCapaXlets() const;
-        const QHash<QString, QString> & getCapaPresence() const;
+        const QMap<QString, QVariant> & getCapaPresence() const;
         const QString     & getCapaApplication() const;
         void config_and_start(const QString &,
                               const QString &, const QString &);
@@ -204,6 +205,7 @@ private slots:
 	void socketError(QAbstractSocket::SocketError);
 	void socketStateChanged(QAbstractSocket::SocketState);
 	void socketReadyRead();
+        void actionFromFiche(const QStringList &);
 signals:
 	void logged();				//!< signal emitted when the state becomes ELogged
 	void delogged();			//!< signal emitted when the state becomes ENotLogged
@@ -327,7 +329,7 @@ private:
 	QStringList m_capafuncs;	//!< List of func capabilities issued by the server after a successful login
 	QStringList m_capaxlets;	//!< List of xlet capabilities issued by the server after a successful login
 	QStringList m_capafeatures;	//!< List of capabilities issued by the server for the features
-	QHash<QString, QString> m_capapresence;	//!< List of capabilities issued by the server for the presence statuses
+	QMap<QString, QVariant> m_capapresence;	//!< List of capabilities issued by the server for the presence statuses
 	QString m_appliname;		//!< Application name to be displayed
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier

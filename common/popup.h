@@ -100,6 +100,7 @@ public:
         void setSheetPopup(const bool &);
 	bool sheetpopup();
 	const QString & sessionid() const;
+	const QString & channel() const;
 	bool systraypopup();
 	bool focus();
         void setTitle(const QString &);
@@ -115,8 +116,7 @@ public:
 signals:
 	void wantsToBeShown(Popup *);	//!< sent when the widget want to show itself
 	void originateCall(const QString &, const QString &);	//!< sent when the widget wants to dial
-        void hangUp(const UserInfo *, const QString &);	//!< hanging up a channel ...
-        void pickUp(const UserInfo *, const QString &);	//!< picking up a channel ...
+        void actionFromPopup(const QString &);
         void save(const QString &);
 public slots:
 	void streamNewData();		//!< new input data is available
