@@ -633,60 +633,67 @@ void MainWidget::connectDials(QWidget * widget)
                  m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
 }
 
-void MainWidget::initPresence()
+void MainWidget::updatePresence(const QMap<QString, QVariant> & presence)
 {
-        QMapIterator<QString, QVariant> capapres(m_engine->getCapaPresence());
-        while (capapres.hasNext()) {
-                capapres.next();
-                QString avstate = capapres.key();
-                QString name = capapres.value().toString();
-                if(! m_avact.contains(avstate)) {
-                        m_avact[avstate] = new QAction(name, this);
-                        m_avact[avstate]->setCheckable(false);
-                        m_avact[avstate]->setProperty("availstate", avstate);
-                        m_avact[avstate]->setEnabled(false);
-                        connect( m_avact[avstate], SIGNAL(triggered()),
-                                 m_engine, SLOT(setAvailability()) );
-                        m_availgrp->addAction( m_avact[avstate] );
+        // qDebug() << "MainWidget::updatePresence()" << presence;
+        if(presence.contains("names")) {
+                QMapIterator<QString, QVariant> capapres(presence["names"].toMap());
+                while (capapres.hasNext()) {
+                        capapres.next();
+                        QString avstate = capapres.key();
+                        QString name = capapres.value().toString();
+                        if(! m_avact.contains(avstate)) {
+                                m_avact[avstate] = new QAction(name, this);
+                                m_avact[avstate]->setCheckable(false);
+                                m_avact[avstate]->setProperty("availstate", avstate);
+                                m_avact[avstate]->setEnabled(false);
+                                connect( m_avact[avstate], SIGNAL(triggered()),
+                                         m_engine, SLOT(setAvailability()) );
+                                m_availgrp->addAction( m_avact[avstate] );
+                        }
+                }
+                m_avail->addActions( m_availgrp->actions() );
+        }
+        if(presence.contains("allowed")) {
+                QMapIterator<QString, QVariant> capapres(presence["allowed"].toMap());
+                while (capapres.hasNext()) {
+                        capapres.next();
+                        QString avstate = capapres.key();
+                        QString allow = capapres.value().toString();
+                        if(m_avact.contains(avstate)) {
+                                if(allow == "u") {
+                                        m_avact[avstate]->setCheckable(true);
+                                        m_avact[avstate]->setEnabled(true);
+                                } else {
+                                        m_avact[avstate]->setCheckable(false);
+                                        m_avact[avstate]->setEnabled(false);
+                                }
+                        }
                 }
         }
-        m_avail->addActions( m_availgrp->actions() );
-}
-
-void MainWidget::updatePresence(const QString & allowed)
-{
-        ServerCommand * sc = new ServerCommand(allowed);
-        QHashIterator<QString, QString> capapres(sc->getStringHash(""));
-        while (capapres.hasNext()) {
-                capapres.next();
-                QString avstate = capapres.key();
-                QString allow = capapres.value();
-                if(m_avact.contains(avstate))
-                        if(allow == "u") {
-                                m_avact[avstate]->setCheckable(true);
-                                m_avact[avstate]->setEnabled(true);
-                        } else {
-                                m_avact[avstate]->setCheckable(false);
-                                m_avact[avstate]->setEnabled(false);
-                        }
+        if(presence.contains("state")) {
+                m_engine->setAvailState(presence["state"].toString(), true);
         }
 }
 
 void MainWidget::clearPresence()
 {
-        QMapIterator<QString, QVariant> capapres(m_engine->getCapaPresence());
-        while (capapres.hasNext()) {
-                capapres.next();
-                QString avstate = capapres.key();
-                if(m_avact.contains(avstate)) {
-                        disconnect( m_avact[avstate], SIGNAL(triggered()),
-                                    m_engine, SLOT(setAvailability()) );
-                        m_availgrp->removeAction( m_avact[avstate] );
-                        delete m_avact[avstate];
+        QMap<QString, QVariant> presence = m_engine->getCapaPresence();
+        if(presence.contains("names")) {
+                QMapIterator<QString, QVariant> capapres(presence["names"].toMap());
+                while (capapres.hasNext()) {
+                        capapres.next();
+                        QString avstate = capapres.key();
+                        if(m_avact.contains(avstate)) {
+                                disconnect( m_avact[avstate], SIGNAL(triggered()),
+                                            m_engine, SLOT(setAvailability()) );
+                                m_availgrp->removeAction( m_avact[avstate] );
+                                delete m_avact[avstate];
+                        }
                 }
+                m_avact.clear();
+                m_avail->clear();
         }
-        m_avact.clear();
-        m_avail->clear();
 }
 
 /*!
@@ -701,12 +708,11 @@ void MainWidget::engineStarted()
         
         m_appliname = m_engine->getCapaApplication();
         
-        initPresence();
-        connect( m_engine, SIGNAL(updatePresence(const QString &)),
-                 this, SLOT(updatePresence(const QString &)) );
+        connect( m_engine, SIGNAL(updatePresence(const QMap<QString, QVariant> &)),
+                 this, SLOT(updatePresence(const QMap<QString, QVariant> &)) );
         updateAppliName();
         hideLogin();
-
+        
         m_tabwidget = new QTabWidget(this);
         
         if(m_docknames.contains("tabber")) {
@@ -751,6 +757,8 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(updatePeerAgent(const QString &, const QString &, const QStringList &)));
                                 connect( m_engine, SIGNAL(newAgentList(const QString &)),
                                          m_xlet[dc], SLOT(setAgentList(const QString &)));
+                                connect( m_engine, SIGNAL(updatePresence(const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(updatePresence(const QMap<QString, QVariant> &)) );
                                 
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
                                          m_xlet[dc], SLOT(setQueueStatus(const QString &)));

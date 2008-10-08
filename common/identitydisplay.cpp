@@ -72,7 +72,8 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         m_user->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
         m_info1 = new QLabel(this);
-        m_info2 = new QLabel(this);
+        m_presence = new QComboBox(this);
+        m_presence->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         m_info3 = new QLabel(this);
         m_info4 = new QLabel(this);
         m_info5 = new QLabel(this);
@@ -100,6 +101,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         m_queuebusy->setFormat("%v");
         m_queuebusy->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
         m_queuelist = new QComboBox(this);
+        m_queuelist->setSizeAdjustPolicy(QComboBox::AdjustToContents);
 
         connect(m_queuelist, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
@@ -112,12 +114,11 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         connect(m_queuejoinall, SIGNAL(clicked()),
                 this, SLOT(doQueueJoinAll()));
 
-
         int idline = 0;
 	glayout->addWidget( m_user, idline, 0, 1, 7, Qt::AlignCenter );
         idline ++;
 	glayout->addWidget( m_info1, idline, 0, Qt::AlignCenter );
-	glayout->addWidget( m_info2, idline, 1, Qt::AlignCenter );
+	glayout->addWidget( m_presence, idline, 1, Qt::AlignCenter );
 	glayout->addWidget( m_info3, idline, 2, Qt::AlignCenter );
 	glayout->addWidget( m_info4, idline, 3, Qt::AlignCenter );
 	glayout->addWidget( m_info5, idline, 4, Qt::AlignCenter );
@@ -135,7 +136,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
 	glayout->addWidget( m_queueleaveall, idline, 6, Qt::AlignCenter );
         idline ++;
         // glayout->setRowStretch( idline, 1 );
-
+        
         m_agent->hide();
         m_agentaction->hide();
 
@@ -150,13 +151,59 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         // 	glayout->setColumnStretch( 0, 1 );
 }
 
+
+void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
+{
+        // qDebug() << "IdentityDisplay::updatePresence()" << presence;
+        m_presence->hide();
+        if(presence.contains("names")) {
+                QMapIterator<QString, QVariant> capapres(presence["names"].toMap());
+                while (capapres.hasNext()) {
+                        capapres.next();
+                        QString avstate = capapres.key();
+                        QString name = capapres.value().toString();
+                        if(m_presence->findText(name) == -1) {
+                                m_presence->addItem(name);
+                                m_presence_names[avstate] = name;
+                        }
+                }
+        }
+        if(presence.contains("allowed")) {
+                QMapIterator<QString, QVariant> capapres(presence["allowed"].toMap());
+                while (capapres.hasNext()) {
+                        capapres.next();
+                        QString avstate = capapres.key();
+                        QString allow = capapres.value().toString();
+                        if(m_presence_names.contains(avstate)) {
+                                QString name = m_presence_names[avstate];
+                                int idx = m_presence->findText(name);
+                                if(idx != -1) {
+                                        if(allow == "d")
+                                                m_presence->removeItem(idx);
+                                }
+                        }
+                }
+        }
+        if(presence.contains("state")) {
+                QString avstate = presence["state"].toString();
+                if(m_presence_names.contains(avstate)) {
+                        QString name = m_presence_names[avstate];
+                        qDebug() << avstate << name;
+                        int idx = m_presence->findText(name);
+                        m_presence->setCurrentIndex(idx);
+                }
+        }
+        m_presence->show();
+}
+
+
 void IdentityDisplay::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;
 
         m_user->setText(m_ui->fullname());
         m_info1->setText("<b>" + m_ui->phonenum() + "</b> " + tr("on") + " <b>" + m_ui->astid() + "</b>");
-        m_info2->setText(m_ui->availstate());
+        // m_presence->setText(m_ui->availstate());
         QStringList vm = m_ui->mwi().split("-");
         m_info3->setText(tr("Voicemail") + "\n" +
                          // vm[0] + " " + tr("waiting") + " " +

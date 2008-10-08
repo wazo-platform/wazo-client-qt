@@ -123,7 +123,7 @@ private slots:
         void logintextChanged(const QString &);
         void loginKindChanged(int);
         void confUpdated();
-        void updatePresence(const QString &);
+        void updatePresence(const QMap<QString, QVariant> &);
 signals:
         void functionKeyPressed(int);
 protected:
@@ -142,7 +142,6 @@ private:
 	void createSystrayIcon();	//!< Create the systray Icon and its menu
         void savePositions() const;
         void updateAppliName();
-        void initPresence();
         void clearPresence();
 
 	BaseEngine * m_engine;	//!< Engine

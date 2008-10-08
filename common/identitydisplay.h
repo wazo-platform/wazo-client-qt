@@ -79,16 +79,17 @@ public slots:
         void doQueueJoinAll();
         void doQueueLeaveAll();
         void idxChanged(const QString &);
+        void updatePresence(const QMap<QString, QVariant> &);
 private:
         BaseEngine * m_engine;
         QLabel * m_user;
         QLabel * m_info1;
-        QLabel * m_info2;
         QLabel * m_info3;
         QLabel * m_info4;
         QLabel * m_info5;
         QLabel * m_info6;
         QLabel * m_info7;
+        QComboBox * m_presence;
         QLabel * m_agent;
         QFrame * m_qf;
         QPushButton * m_agentaction;
@@ -100,7 +101,8 @@ private:
         QHash<QString, int> m_queuesindexes;
         QHash<QString, bool> m_queuesstatuses;
         QHash<QString, QString> m_queuesbusyness;
-
+        
+        QHash<QString, QString> m_presence_names;
         const UserInfo * m_ui;
         bool m_agentstatus;
         bool m_queuechangeallow;

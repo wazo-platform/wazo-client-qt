@@ -148,6 +148,7 @@ public:
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
         const QStringList & getCapaXlets() const;
         const QMap<QString, QVariant> & getCapaPresence() const;
+        void updateCapaPresence(const QMap<QString, QVariant> &);
         const QString     & getCapaApplication() const;
         void config_and_start(const QString &,
                               const QString &, const QString &);
@@ -219,8 +220,8 @@ signals:
         void monitorPeer(UserInfo *);
         void meetmeEvent(const QStringList &);
         void requestFileListResult(const QString &);
-        void updatePresence(const QString &);
-
+        void updatePresence(const QMap<QString, QVariant> &);
+        
 	//! a call
 	void updateCall(UserInfo *,
                         const QString &,

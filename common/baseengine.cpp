@@ -374,6 +374,13 @@ const QMap<QString, QVariant> & BaseEngine::getCapaPresence() const
         return m_capapresence;
 }
 
+void BaseEngine::updateCapaPresence(const QMap<QString, QVariant> & presence)
+{
+        foreach(QString field, presence.keys())
+                if(presence.contains(field))
+                        m_capapresence[field] = presence[field];
+}
+
 const QStringList & BaseEngine::getCapaFeatures() const
 {
         return m_capafeatures;
@@ -741,6 +748,9 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "serverdown") {
                         qDebug() << thisclass << sc->getString("mode");
                         
+                } else if (thisclass == "disconn") {
+                        qDebug() << thisclass;
+                        
                 } else if (thisclass == "directory") {
                         directoryResponse(sc->getString("payload"));
                         
@@ -754,15 +764,16 @@ bool BaseEngine::parseCommand(const QString & line)
                         ackFax(sc->getString("status"), sc->getString("reason"));
                         
                 } else if (thisclass == "presence") {
-                        QString id = sc->getString("company") + "/" + sc->getString("userid");
+                        QString id = data.toMap()["company"].toString() + "/" + data.toMap()["userid"].toString();
                         //qDebug() << presencestatus << m_users.size();
                         if(m_users.contains(id)) {
-                                QString presencestatus = sc->getString("status");
+                                QString presencestatus = data.toMap()["capapresence"].toMap()["state"].toString();
                                 m_users[id]->setAvailState(presencestatus);
                                 updatePeerAgent(id, "imstatus", presencestatus.split("/"));
                                 updateAgentPresence(m_users[id]->agentid(), presencestatus);
                                 if (id == m_fullid) {
-                                        updatePresence(sc->find("allowed"));
+                                        updateCapaPresence(data.toMap()["capapresence"].toMap());
+                                        updatePresence(m_capapresence);
                                         localUserInfoDefined(m_users[m_fullid]);
                                 }
                         }
@@ -801,7 +812,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                         fullname_mine = m_users[m_fullid]->fullname();
                                         localUserInfoDefined(m_users[m_fullid]);
                                 }
-                        
+                                
                                 // Who do we monitor ?
                                 // First look at the last monitored one
                                 QString fullid_watched = m_settings->value("monitor/userid").toString();
@@ -998,10 +1009,10 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "login_capas_ok") {
                         m_capafuncs = data.toMap()["capafuncs"].toString().split(",");
                         m_capaxlets = data.toMap()["capaxlets"].toStringList();
-                        m_capapresence = data.toMap()["capapresence"].toMap();
-                        // m_capafeatures = sc->getStringList("capas_features");
                         m_appliname = data.toMap()["appliname"].toString();
-                        m_forced_state = data.toMap()["state"].toString();
+                        updateCapaPresence(data.toMap()["capapresence"].toMap());
+                        m_forced_state = data.toMap()["capapresence"].toMap()["state"].toString();
+                        // m_capafeatures = sc->getStringList("capas_features");
                         
                         qDebug() << "clientXlets" << XletList;
                         qDebug() << "m_capaxlets" << m_capaxlets;
@@ -1855,6 +1866,7 @@ void BaseEngine::setState(EngineState state)
 			if(m_checked_presence && m_enabled_presence)
                                 availAllowChanged(true);
 			logged();
+                        updatePresence(m_capapresence);
 		} else if(state == ENotLogged) {
                         m_enabled_presence = false;
 			availAllowChanged(false);
