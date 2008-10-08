@@ -188,8 +188,8 @@ MainWidget::MainWidget(BaseEngine * engine,
 
                 connect( m_qlab1, SIGNAL(returnPressed()),
                          this, SLOT(config_and_start()) );
-                connect( m_qlab1, SIGNAL(textChanged(const QString &)),
-                         this, SLOT(logintextChanged(const QString &)) );
+                // connect( m_qlab1, SIGNAL(textChanged(const QString &)),
+                // this, SLOT(logintextChanged(const QString &)) );
                 connect( m_qlab2, SIGNAL(returnPressed()),
                          this, SLOT(config_and_start()) );
                 connect( m_qlab3, SIGNAL(returnPressed()),
@@ -334,13 +334,14 @@ void MainWidget::showLogin()
                 m_ack->show();
                 m_kpass->show();
                 m_loginkind->show();
-                loginKindChanged(m_loginkind->checkState());
-
+                
                 m_qlab1->setText(m_engine->userId());
                 m_qlab2->setText(m_engine->password());
                 m_qlab3->setText(m_engine->phonenumber());
                 m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
                 m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
+                
+                loginKindChanged(m_loginkind->checkState());
         }
         m_xivobg->show();
 }

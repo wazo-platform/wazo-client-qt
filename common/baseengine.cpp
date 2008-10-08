@@ -1066,7 +1066,8 @@ void BaseEngine::requestFileList(const QString & action)
         sendCommand(sc->find());
 }
 
-void BaseEngine::sendFaxCommand(const QString & filename, const QString & number,
+void BaseEngine::sendFaxCommand(const QString & filename,
+                                const QString & number,
                                 Qt::CheckState hide)
 {
         QFile * qf = new QFile(filename);
