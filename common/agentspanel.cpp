@@ -310,6 +310,8 @@ void AgentsPanel::setAgentList(const QString & alist)
                                 connect( m_agent_listen[agnum], SIGNAL(clicked()),
                                          this, SLOT(agentClicked()));
                                 
+                                // spy
+                                
                                 m_agent_busy[agnum] = new QLabel(this);
                                 m_agent_busy[agnum]->setProperty("astid", astid);
                                 m_agent_presence[agnum] = new QLabel(this);

@@ -60,23 +60,30 @@ QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
           m_engine(engine)
 {
 	m_gridlayout = new QGridLayout(this);
-
+        m_statlegends["Completed"] = tr("Completed");
+        m_statlegends["Abandoned"] = tr("Abandoned");
+        m_statlegends["Holdtime"] = tr("Holdtime (s)");
+        m_statlegends["ServicelevelPerf"] = tr("ServicelevelPerf");
+        m_statlegends["ServiceLevel"] = tr("ServiceLevel");
+        m_statlegends["Max"] = tr("Max");
+        m_statlegends["Weight"] = tr("Weight");
+        m_statitems = (QStringList()
+                       << "Completed" << "Abandoned"
+                       << "Holdtime" << "ServicelevelPerf"
+                       << "ServiceLevel" << "Max" << "Weight");
         m_maxbusy = 0;
-
+        
         m_title1 = new QLabel(tr("Queue"), this);
         m_title2 = new QLabel(tr("Busy"), this);
-        m_title_infos_a = new QLabel(tr("Completed"), this);
-        m_title_infos_b = new QLabel(tr("Abandoned"), this);
-        m_title_infos_c = new QLabel(tr("HoldTime (s)"), this);
-        m_title_infos = new QLabel(tr("Other Stats"), this);
+        foreach(QString statitem, m_statitems)
+                m_title_infos[statitem] = new QLabel(m_statlegends[statitem], this);
+
         m_gridlayout->addWidget( m_title1, 0, 0, Qt::AlignCenter );
         m_gridlayout->addWidget( m_title2, 0, 1, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_title_infos_a, 0, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_title_infos_b, 0, 3, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_title_infos_c, 0, 4, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_title_infos, 0, 5, Qt::AlignCenter );
+        foreach(QString statitem, m_statitems)
+                m_gridlayout->addWidget( m_title_infos[statitem], 0, 2 + m_statitems.indexOf(statitem), Qt::AlignCenter );
 
- 	m_gridlayout->setColumnStretch( 6, 1 );
+ 	m_gridlayout->setColumnStretch( 2 + m_statitems.size(), 1 );
  	m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->setVerticalSpacing(0);
 }
@@ -124,27 +131,21 @@ void QueuesPanel::setQueueList(bool, const QString & qlist)
                                 m_queuebusies[queuename]->setProperty("queueid", queuename);
                                 m_queuebusies[queuename]->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
                                 m_queuebusies[queuename]->setFormat("%v");
-                                m_queueinfos_a[queuename] = new QLabel();
-                                m_queueinfos_b[queuename] = new QLabel();
-                                m_queueinfos_c[queuename] = new QLabel();
-                                m_queueinfos[queuename] = new QLabel();
+                                foreach(QString statitem, m_statitems)
+                                        m_queueinfos[queuename][statitem] = new QLabel();
                                 int linenum = m_queuelabels.size();
                                 m_gridlayout->addWidget( m_queuelabels[queuename], linenum + 1, 0, Qt::AlignLeft );
                                 m_gridlayout->addWidget( m_queuebusies[queuename], linenum + 1, 1, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_queueinfos_a[queuename], linenum + 1, 2, Qt::AlignRight );
-                                m_gridlayout->addWidget( m_queueinfos_b[queuename], linenum + 1, 3, Qt::AlignRight );
-                                m_gridlayout->addWidget( m_queueinfos_c[queuename], linenum + 1, 4, Qt::AlignRight );
-                                m_gridlayout->addWidget( m_queueinfos[queuename], linenum + 1, 5, Qt::AlignLeft );
-                        }
 
+                                foreach(QString statitem, m_statitems)
+                                        m_gridlayout->addWidget( m_queueinfos[queuename][statitem],
+                                                                 linenum + 1,
+                                                                 2 + m_statitems.indexOf(statitem),
+                                                                 Qt::AlignRight );
+                        }
                         m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
-                        m_queueinfos_a[queuename]->setText(infos["Completed"]);
-                        m_queueinfos_b[queuename]->setText(infos["Abandoned"]);
-                        m_queueinfos_c[queuename]->setText(infos["Holdtime"]);
-                        m_queueinfos[queuename]->setText("SP=" + infos["ServicelevelPerf"] +
-                                                         " Mx=" + infos["Max"] +
-                                                         " SL=" + infos["ServiceLevel"] +
-                                                         " Wt=" + infos["Weight"]);
+                        foreach(QString statitem, m_statitems)
+                                m_queueinfos[queuename][statitem]->setText(infos[statitem]);
                 }
                 update();
         }
