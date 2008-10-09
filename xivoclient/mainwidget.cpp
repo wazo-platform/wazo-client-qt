@@ -222,22 +222,26 @@ MainWidget::~MainWidget()
 
 void MainWidget::clipselection()
 {
-        // X11 : when a pattern is selected on (seemingly) any KDE(QT) application on Linux
-        // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)
-        
         // qDebug() << "BaseEngine::clipselection()" << m_clipboard->text(QClipboard::Selection);
         // statusBar()->showMessage("selected : " + m_clipboard->text(QClipboard::Selection));
+        
+        pasteToDialPanel(m_clipboard->text(QClipboard::Selection));
+        
+        // X11 : when a pattern is selected on (seemingly) any KDE(QT) application on Linux
+        // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)
 }
 
 void MainWidget::clipdata()
 {
+        // qDebug() << "BaseEngine::clipdata()" << m_clipboard->text(QClipboard::Clipboard);
+        // statusBar()->showMessage("data : " + m_clipboard->text(QClipboard::Clipboard));
+        
+        pasteToDialPanel(m_clipboard->text(QClipboard::Clipboard));
+        
         // WIN : we fall here in any Ctrl-C/Ctrl-X/"copy"/... action
         // X11 : same actions, on (seemingly) any KDE(QT) application
         // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)
         // X11 (non-KDE) : however, the xclipboard application seems to be able to catch such signals ...
-        
-        // qDebug() << "BaseEngine::clipdata()" << m_clipboard->text(QClipboard::Clipboard);
-        // statusBar()->showMessage("data : " + m_clipboard->text(QClipboard::Clipboard));
 }
 
 void MainWidget::setAppearance(const QStringList & dockoptions)
@@ -875,6 +879,8 @@ void MainWidget::engineStarted()
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connectDials(m_xlet[dc]);
+                                connect( this, SIGNAL(pasteToDialPanel(const QString &)),
+                                         m_xlet[dc], SLOT(setNumberToDial(const QString &)) );
                                 connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
                                          m_xlet[dc], SLOT(setNumberToDial(const QString &)) );
                                 connect( m_xlet[dc], SIGNAL(textEdited(const QString &)),

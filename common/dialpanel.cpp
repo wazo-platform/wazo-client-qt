@@ -101,10 +101,12 @@ void DialPanel::setNumberToDial(const QString & text)
 {
         // qDebug() << "DialPanel::setNumberToDial()" << text;
         // adds the item to the list
-        if (m_input->findText(text) == -1)
-                m_input->insertItem(0, text);
+        QString texttodisplay = text;
+        texttodisplay.replace(QRegExp("\\D"), "");
+        if (m_input->findText(texttodisplay) == -1)
+                m_input->insertItem(0, texttodisplay);
         // displays it
-        m_input->lineEdit()->setText(text);
+        m_input->lineEdit()->setText(texttodisplay);
 }
 
 void DialPanel::dragEnterEvent(QDragEnterEvent * event)

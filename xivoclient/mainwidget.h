@@ -126,6 +126,7 @@ private slots:
         void updatePresence(const QMap<QString, QVariant> &);
 signals:
         void functionKeyPressed(int);
+        void pasteToDialPanel(const QString &);
 protected:
 	void showEvent(QShowEvent *);	//!< Catch show events
 	void hideEvent(QHideEvent *);	//!< Catch hide events
