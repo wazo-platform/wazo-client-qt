@@ -659,15 +659,10 @@ void MainWidget::updatePresence(const QMap<QString, QVariant> & presence)
                 while (capapres.hasNext()) {
                         capapres.next();
                         QString avstate = capapres.key();
-                        QString allow = capapres.value().toString();
+                        bool allow = capapres.value().toBool();
                         if(m_avact.contains(avstate)) {
-                                if(allow == "u") {
-                                        m_avact[avstate]->setCheckable(true);
-                                        m_avact[avstate]->setEnabled(true);
-                                } else {
-                                        m_avact[avstate]->setCheckable(false);
-                                        m_avact[avstate]->setEnabled(false);
-                                }
+                                m_avact[avstate]->setCheckable(allow);
+                                m_avact[avstate]->setEnabled(allow);
                         }
                 }
         }

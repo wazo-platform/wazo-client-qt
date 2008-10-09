@@ -74,6 +74,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         m_info1 = new QLabel(this);
         m_presence = new QComboBox(this);
         m_presence->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        m_presence->setProperty("function", "presence");
         m_info3 = new QLabel(this);
         m_info4 = new QLabel(this);
         m_info5 = new QLabel(this);
@@ -102,8 +103,11 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         m_queuebusy->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
         m_queuelist = new QComboBox(this);
         m_queuelist->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        m_queuelist->setProperty("function", "queuelist");
 
         connect(m_queuelist, SIGNAL(currentIndexChanged(const QString &)),
+                this, SLOT(idxChanged(const QString &)));
+        connect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
         connect(m_agentaction, SIGNAL(clicked()),
                 this, SLOT(doAgentAction()));
@@ -173,12 +177,12 @@ void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
                 while (capapres.hasNext()) {
                         capapres.next();
                         QString avstate = capapres.key();
-                        QString allow = capapres.value().toString();
+                        bool allow = capapres.value().toBool();
                         if(m_presence_names.contains(avstate)) {
                                 QString name = m_presence_names[avstate];
                                 int idx = m_presence->findText(name);
                                 if(idx != -1) {
-                                        if(allow == "d")
+                                        if(! allow)
                                                 m_presence->removeItem(idx);
                                 }
                         }
@@ -474,16 +478,21 @@ void IdentityDisplay::doQueueJoinAll()
 
 void IdentityDisplay::idxChanged(const QString & newidx)
 {
-        qDebug() << "IdentityDisplay::idxChanged" << newidx;
-        if (m_queuesstatuses[newidx]) {
-                m_queueaction->setText(tr("Leave"));
-                m_queueaction->setIcon(QIcon(":/images/cancel.png"));
-        } else {
-                m_queueaction->setText(tr("Join"));
-                m_queueaction->setIcon(QIcon(":/images/add.png"));
+        // qDebug() << "IdentityDisplay::idxChanged" << newidx;
+        QString function = sender()->property("function").toString();
+        if(function == "queuelist") {
+                if (m_queuesstatuses[newidx]) {
+                        m_queueaction->setText(tr("Leave"));
+                        m_queueaction->setIcon(QIcon(":/images/cancel.png"));
+                } else {
+                        m_queueaction->setText(tr("Join"));
+                        m_queueaction->setIcon(QIcon(":/images/add.png"));
+                }
+                m_queuebusy->setRange(0, m_maxqueues + 1);
+                m_queuebusy->setValue(m_queuesbusyness[newidx].toInt());
+        } else if(function == "presence") {
+                qDebug() << "IdentityDisplay::idxChanged()" << function << newidx;
         }
-        m_queuebusy->setRange(0, m_maxqueues + 1);
-        m_queuebusy->setValue(m_queuesbusyness[newidx].toInt());
 }
 
 SizeableLabel::SizeableLabel(const QString &text, const QSize &size, QWidget *parent)
