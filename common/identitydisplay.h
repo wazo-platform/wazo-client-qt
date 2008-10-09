@@ -109,6 +109,7 @@ private:
         int m_maxqueues;
 signals:
         void agentAction(const QString &);
+        void setAvailState(const QString &, bool);
 };
 
 

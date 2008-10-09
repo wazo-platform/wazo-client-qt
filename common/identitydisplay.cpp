@@ -160,6 +160,8 @@ void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
 {
         // qDebug() << "IdentityDisplay::updatePresence()" << presence;
         m_presence->hide();
+        disconnect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
+                   this, SLOT(idxChanged(const QString &)));
         if(presence.contains("names")) {
                 QMapIterator<QString, QVariant> capapres(presence["names"].toMap());
                 while (capapres.hasNext()) {
@@ -192,11 +194,12 @@ void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
                 QString avstate = presence["state"].toString();
                 if(m_presence_names.contains(avstate)) {
                         QString name = m_presence_names[avstate];
-                        qDebug() << avstate << name;
                         int idx = m_presence->findText(name);
                         m_presence->setCurrentIndex(idx);
                 }
         }
+        connect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
+                this, SLOT(idxChanged(const QString &)));
         m_presence->show();
 }
 
@@ -491,7 +494,10 @@ void IdentityDisplay::idxChanged(const QString & newidx)
                 m_queuebusy->setRange(0, m_maxqueues + 1);
                 m_queuebusy->setValue(m_queuesbusyness[newidx].toInt());
         } else if(function == "presence") {
-                qDebug() << "IdentityDisplay::idxChanged()" << function << newidx;
+                foreach(QString avstate, m_presence_names.keys())
+                        if(m_presence_names[avstate] == newidx)
+                                // qDebug() << "IdentityDisplay::idxChanged()" << function << newidx << avstate;
+                                setAvailState(avstate, true);
         }
 }
 

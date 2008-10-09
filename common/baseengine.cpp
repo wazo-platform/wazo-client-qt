@@ -1920,7 +1920,7 @@ void BaseEngine::setMyClientId()
  */ 
 void BaseEngine::keepLoginAlive()
 {
-	//qDebug() << "BaseEngine::keepLoginAlive()";
+	// qDebug() << "BaseEngine::keepLoginAlive()" << m_availstate;
 	// got to disconnected state if more than xx keepalive messages
 	// have been left without response.
 	if(m_pendingkeepalivemsg > 1) {

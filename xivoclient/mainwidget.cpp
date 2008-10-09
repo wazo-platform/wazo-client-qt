@@ -758,7 +758,9 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setAgentList(const QString &)));
                                 connect( m_engine, SIGNAL(updatePresence(const QMap<QString, QVariant> &)),
                                          m_xlet[dc], SLOT(updatePresence(const QMap<QString, QVariant> &)) );
-                                
+                                connect( m_xlet[dc], SIGNAL(setAvailState(const QString &, bool)),
+                                         m_engine, SLOT(setAvailState(const QString &, bool)) );
+
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
                                          m_xlet[dc], SLOT(setQueueStatus(const QString &)));
                                 connect( m_engine, SIGNAL(newQueueList(bool, const QString &)),

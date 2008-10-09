@@ -124,7 +124,6 @@ public:
 	void setState(EngineState state);	//!< see state()
 
 	const QString & getAvailState() const;	//!< returns availability status
-	void setAvailState(const QString &, bool);	//! set m_availstate
 	void setCheckedPresence(bool b);	//!< set m_checked_presence
 	bool checkedPresence();			//!< get m_checked_presence
 	void setCheckedCInfo(bool b);		//!< set m_checked_cinfo
@@ -162,6 +161,7 @@ public:
 public slots:
 	void start();				//!< start the connection process.
 	void stop();				//!< stop the engine
+	void setAvailState(const QString &, bool);	//! set m_availstate
 	void originateCall(const QString &, const QString &);
 	void transferCall(const QString &, const QString &);
         void atxferCall(const QString &, const QString &);
