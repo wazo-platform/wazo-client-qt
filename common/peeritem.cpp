@@ -170,7 +170,7 @@ void PeerItem::updateDisplayedStatus()
                 }
         }
 
-        if(m_agentstatus.size() > 4) {
+        if(m_agentstatus.size() >= 4) {
                 // PeerItem::updateDisplayedStatus() ("agentlogout", "xivo", "6103", "103")
                 // PeerItem::updateDisplayedStatus() ("queuememberstatus", "6103", "qcb_00000", "5", "0")
                 QString astid = m_agentstatus[1];
@@ -221,7 +221,7 @@ void PeerItem::updateDisplayedStatus()
                         // m_peerwidget->setBlue("agent");
                 }
         } else if(m_agentstatus.size() > 0) {
-                qDebug() << "PeerItem::updateDisplayedStatus() / 0 < size <= 4" << m_agentstatus;
+                qDebug() << "PeerItem::updateDisplayedStatus() / 0 < size < 4" << m_agentstatus;
         }
 
 	QString fortooltip = PeerWidget::tr("SIP Presence : ") + display_sipstatus + "\n"

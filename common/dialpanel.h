@@ -69,6 +69,7 @@ protected:
 public slots:
         void setUserInfo(const UserInfo *);
 	void inputValidated();
+        void clearlist();
         void setNumberToDial(const QString &);
 signals:
 	void textEdited(const QString &);

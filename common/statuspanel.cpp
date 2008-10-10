@@ -139,8 +139,8 @@ void StatusPanel::updateLine(const QString & chan, const QStringList & allowed)
 
 void StatusPanel::clicked()
 {
-        QString channel = this->sender()->property("channel").toString();
-        int function = this->sender()->property("function").toInt();
+        QString channel = sender()->property("channel").toString();
+        int function = sender()->property("function").toInt();
         qDebug() << "StatusPanel::clicked()" << channel << function;
         m_currentchannel = channel;
         functionKeyPressed(function);

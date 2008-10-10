@@ -109,9 +109,9 @@ void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
 void ConferencePanel::doMeetMeAction()
 {
         // qDebug() << "ConferencePanel::doMeetMeAction()";
-        meetmeAction("kick " + this->sender()->property("astid").toString() +
-                     " " + this->sender()->property("room").toString() +
-                     " " + this->sender()->property("usernum").toString() +
-                     " " + this->sender()->property("channel").toString());
-        m_actions[this->sender()->property("reference").toString()]->setIconSize(QSize(8, 8));
+        meetmeAction("kick " + sender()->property("astid").toString() +
+                     " " + sender()->property("room").toString() +
+                     " " + sender()->property("usernum").toString() +
+                     " " + sender()->property("channel").toString());
+        m_actions[sender()->property("reference").toString()]->setIconSize(QSize(8, 8));
 }

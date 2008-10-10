@@ -45,9 +45,9 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMouseEvent>
+#include <QPushButton>
 #include <QRegExp>
 #include <QScrollArea>
-#include <QToolButton>
 
 #include "baseengine.h"
 #include "dialpanel.h"
@@ -75,17 +75,24 @@ DialPanel::DialPanel(BaseEngine * engine, QWidget * parent)
 	         this, SLOT(inputValidated()) );
 	connect( m_input, SIGNAL(editTextChanged(const QString &)),
 	         this, SIGNAL(textEdited(const QString &)) );
-        QPixmap pm = QPixmap(":/images/sipphone.png");
-        QToolButton * dialButton = new QToolButton(this);
-        dialButton->setIcon(pm);
-        dialButton->setIconSize(pm.size());
-
+        
+        QPixmap pmphone = QPixmap(":/images/sipphone.png");
+        QPushButton * dialButton = new QPushButton(this);
+        // dialButton->setStyleSheet("QPushButton {border: 0px}");
+        dialButton->setIcon(pmphone);
+        dialButton->setIconSize(pmphone.size());
 	connect( dialButton, SIGNAL(clicked()),
 	         this, SLOT(inputValidated()) );
+        
+        // QPushButton * clearButton = new QPushButton(this);
+        // clearButton->setIcon(QIcon(":/images/cancel.png"));
+	// connect( clearButton, SIGNAL(clicked()),
+        // this, SLOT(clearlist()) );
 
         setAcceptDrops(true);
 
         vlayout->addStretch(1);
+	// vlayout->addWidget( clearButton, 0, Qt::AlignCenter );
 	vlayout->addWidget( m_lbl, 0, Qt::AlignCenter );
 	vlayout->addWidget( m_input, 0, Qt::AlignCenter );
 	vlayout->addWidget( dialButton, 0, Qt::AlignCenter );
@@ -101,13 +108,11 @@ void DialPanel::setNumberToDial(const QString & text)
 {
         // qDebug() << "DialPanel::setNumberToDial()" << text;
         // adds the item to the list
-        QString texttodisplay = text;
-        texttodisplay.remove(QRegExp("\\D"));
-        if(texttodisplay.size() > 0) {
-                if (m_input->findText(texttodisplay) == -1)
-                        m_input->insertItem(0, texttodisplay);
+        if((text.size() > 0) && (! text.contains(QRegExp("\\D")))) {
+                if (m_input->findText(text) == -1)
+                        m_input->insertItem(0, text);
                 // displays it
-                m_input->lineEdit()->setText(texttodisplay);
+                m_input->lineEdit()->setText(text);
         }
 }
 
@@ -177,4 +182,9 @@ void DialPanel::inputValidated()
                 }
                 m_input->clearEditText();
         }
+}
+
+void DialPanel::clearlist()
+{
+        m_input->clear();
 }

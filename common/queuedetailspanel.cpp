@@ -177,7 +177,7 @@ void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
 
 void QueuedetailsPanel::agentClicked()
 {
-        // qDebug() << "QueuedetailsPanel::agentClicked()" << this->sender()->property("agentid");
-        QString agentid = this->sender()->property("agentid").toString();
+        // qDebug() << "QueuedetailsPanel::agentClicked()" << sender()->property("agentid");
+        QString agentid = sender()->property("agentid").toString();
         changeWatchedAgent(m_astid + " " + agentid);
 }

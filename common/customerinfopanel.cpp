@@ -147,7 +147,7 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
 
 void CustomerInfoPanel::actionFromPopup(const QString & buttonname)
 {
-        QString sessionid = this->sender()->property("sessionid").toString();
+        QString sessionid = sender()->property("sessionid").toString();
         Popup * thispopup = NULL;
         foreach(Popup * mpopup, m_popups)
                 if(mpopup->sessionid() == sessionid) {

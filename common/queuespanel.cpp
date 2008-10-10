@@ -179,9 +179,9 @@ void QueuesPanel::update()
 
 void QueuesPanel::queueClicked()
 {
-        // qDebug() << "QueuesPanel::queueClicked()" << this->sender()->property("queueid");
-        QString astid = this->sender()->property("astid").toString();
-        QString queueid = this->sender()->property("queueid").toString();
+        // qDebug() << "QueuesPanel::queueClicked()" << sender()->property("queueid");
+        QString astid = sender()->property("astid").toString();
+        QString queueid = sender()->property("queueid").toString();
         changeWatchedQueue(astid + " " + queueid);
 }
 

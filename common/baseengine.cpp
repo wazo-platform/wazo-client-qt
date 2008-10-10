@@ -335,7 +335,7 @@ void BaseEngine::start()
  */
 void BaseEngine::stop()
 {
-	qDebug() << "BaseEngine::stop()" << this->sender() << this->sender()->property("stopper").toString();
+	qDebug() << "BaseEngine::stop()" << sender() << sender()->property("stopper").toString();
 	m_sbsocket->disconnectFromHost();
         
 	stopKeepAliveTimer();
@@ -413,7 +413,7 @@ const QString & BaseEngine::getAvailState() const
 
 void BaseEngine::setAvailability()
 {
-        QString availstate = this->sender()->property("availstate").toString();
+        QString availstate = sender()->property("availstate").toString();
 	setAvailState(availstate, false);
 }
 
@@ -466,7 +466,7 @@ void BaseEngine::monitorPeerRequest(const QString & userid)
  */
 void BaseEngine::socketConnected()
 {
-        QString socketname = this->sender()->property("socket").toString();
+        QString socketname = sender()->property("socket").toString();
 	qDebug() << "BaseEngine::socketConnected()" << socketname;
         if(socketname == "cticommands") {
                 stopTryAgainTimer();
@@ -497,7 +497,7 @@ void BaseEngine::socketConnected()
  */
 void BaseEngine::socketDisconnected()
 {
-        QString socketname = this->sender()->property("socket").toString();
+        QString socketname = sender()->property("socket").toString();
 	qDebug() << "BaseEngine::socketDisconnected()" << socketname;
         if(socketname == "cticommands") {
                 setState(ENotLogged); // calls delogged();
@@ -514,7 +514,7 @@ void BaseEngine::socketDisconnected()
  */
 void BaseEngine::socketHostFound()
 {
-        QString socketname = this->sender()->property("socket").toString();
+        QString socketname = sender()->property("socket").toString();
         qDebug() << "BaseEngine::socketHostFound()" << socketname;
 }
 
@@ -522,7 +522,7 @@ void BaseEngine::socketHostFound()
  */
 void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
 {
-        QString socketname = this->sender()->property("socket").toString();
+        QString socketname = sender()->property("socket").toString();
         qDebug() << "BaseEngine::socketError()" << socketError << socketname;
 	switch(socketError) {
 	case QAbstractSocket::ConnectionRefusedError:
@@ -779,8 +779,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         }
                         
                 } else if (thisclass == "call") {
-                        qDebug() << thisclass << sc->find("caller");
-                        qDebug() << thisclass << sc->find("called");
+                        qDebug() << thisclass << "caller =" << sc->find("caller") << "called =" << sc->find("called");
                         
                 } else if (thisclass == "users") {
                         QString function = sc->getString("function");
@@ -1190,7 +1189,7 @@ void BaseEngine::popupError(const QString & errorid)
 void BaseEngine::socketReadyRead()
 {
         //qDebug() << "BaseEngine::socketReadyRead()";
-        QString socketname = this->sender()->property("socket").toString();
+        QString socketname = sender()->property("socket").toString();
 
         if(socketname == "cticommands")
                 while(m_sbsocket->canReadLine()) {

@@ -337,15 +337,15 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
 
 void AgentdetailsPanel::queueClicked()
 {
-        // qDebug() << "AgentdetailsPanel::queueClicked()" << this->sender()->property("queueid");
-        QString astid = this->sender()->property("astid").toString();
-        QString queueid = this->sender()->property("queueid").toString();
-        QString action = this->sender()->property("action").toString();
+        // qDebug() << "AgentdetailsPanel::queueClicked()" << sender()->property("queueid");
+        QString astid   = sender()->property("astid").toString();
+        QString queueid = sender()->property("queueid").toString();
+        QString action  = sender()->property("action").toString();
 
         if(action == "changequeue")
                 changeWatchedQueue(astid + " " + queueid);
         else if(action == "leavejoin") {
-                QString agentid = this->sender()->property("agentid").toString();
+                QString agentid = sender()->property("agentid").toString();
                 QString jprop = m_queue_join_status[queueid]->property("joined").toString();
                 if(jprop == "y")
                         agentAction("leave " + queueid + " " + astid + " " + agentid);
@@ -358,7 +358,7 @@ void AgentdetailsPanel::queueClicked()
                                 agentAction("join " + queueid + " " + astid + " " + agentid + " unpause");
                 }
         } else if(action == "pause") {
-                QString agentid = this->sender()->property("agentid").toString();
+                QString agentid = sender()->property("agentid").toString();
                 QString pprop = m_queue_pause_status[queueid]->property("paused").toString();
                 if(pprop == "y")
                         agentAction("unpause " + queueid + " " + astid + " " + agentid);

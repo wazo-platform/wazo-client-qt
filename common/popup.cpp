@@ -161,7 +161,7 @@ void Popup::dispurl(const QUrl &url)
 
 void Popup::actionFromForm()
 {
-        QString buttonname = this->sender()->property("buttonname").toString();
+        QString buttonname = sender()->property("buttonname").toString();
         // qDebug() << "Popup::actionFromForm()" << buttonname << m_channel;
         if(buttonname == "close")
                 close();
@@ -489,14 +489,14 @@ void Popup::streamNewData()
 
 void Popup::dialThisNumber()
 {
-        QString numbertodial = this->sender()->property("number").toString();
+        QString numbertodial = sender()->property("number").toString();
         // qDebug() << "Popup::dialThisNumber()" << numbertodial;
         originateCall("user:special:me", "ext:" + numbertodial);
 }
 
 void Popup::httpGetNoreply()
 {
-        QString urlx = this->sender()->property("urlx").toString();
+        QString urlx = sender()->property("urlx").toString();
         qDebug() << "Popup::httpGetNoreply()" << urlx;
         QUrl url = QUrl(urlx);
         QHttp * http = new QHttp();
@@ -538,7 +538,7 @@ void Popup::finishAndShow()
 
 void Popup::closeEvent(QCloseEvent * event)
 {
-	qDebug() << "Popup::closeEvent(" << event << ")" << this->sender();
+	qDebug() << "Popup::closeEvent(" << event << ")" << sender();
 }
 
 void Popup::setMessage(const QString & order, const QString & message)

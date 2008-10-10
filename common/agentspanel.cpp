@@ -410,10 +410,10 @@ void AgentsPanel::setAgentList(const QString & alist)
 
 void AgentsPanel::agentClicked()
 {
-        // qDebug() << "AgentsPanel::agentClicked()" << this->sender()->property("agentid");
-        QString astid = this->sender()->property("astid").toString();
-        QString agentid = this->sender()->property("agentid").toString();
-        QString action = this->sender()->property("action").toString();
+        // qDebug() << "AgentsPanel::agentClicked()" << sender()->property("agentid");
+        QString astid   = sender()->property("astid").toString();
+        QString agentid = sender()->property("agentid").toString();
+        QString action  = sender()->property("action").toString();
         if(action == "changeagent")
                 changeWatchedAgent(astid + " " + agentid);
         else if(action == "loginoff") {

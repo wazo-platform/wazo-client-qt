@@ -186,7 +186,7 @@ void PeerWidget::removeFromPanel()
  */
 void PeerWidget::dial()
 {
-	qDebug() << "PeerWidget::dial()" << m_ui->userid() << this->sender();
+	qDebug() << "PeerWidget::dial()" << m_ui->userid() << sender();
         originateCall("user:special:me", "user:" + m_ui->userid());
 }
 
@@ -237,7 +237,7 @@ void PeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 
 void PeerWidget::mouseDoubleClickEventLocal(QMouseEvent * event)
 {
-        QString propkind = this->sender()->property("kind").toString();
+        QString propkind = sender()->property("kind").toString();
         qDebug() << "PeerWidget::mouseDoubleClickEventLocal" << event << propkind;
         if(event->button() == Qt::LeftButton)
                 dial();
