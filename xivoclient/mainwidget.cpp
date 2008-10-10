@@ -1049,52 +1049,15 @@ void MainWidget::engineStarted()
                                 connect( m_engine, SIGNAL(featurePutIsOK()),
                                          m_xlet[dc], SLOT(setRecordedStatus()) );
                                 
-                                connect( m_xlet[dc], SIGNAL(voiceMailToggled(bool)),
-                                         m_engine, SLOT(featurePutVoiceMail(bool)) );
-                                connect( m_engine, SIGNAL(voiceMailChanged(bool)),
-                                         m_xlet[dc], SLOT(setVoiceMail(bool)) );
+                                connect( m_xlet[dc], SIGNAL(chkoptChanged(const QString &, bool)),
+                                         m_engine, SLOT(featurePutOpt(const QString &, bool)) );
                                 
-                                connect( m_xlet[dc], SIGNAL(callRecordingToggled(bool)),
-                                         m_engine, SLOT(featurePutCallRecording(bool)) );
-                                connect( m_engine, SIGNAL(callRecordingChanged(bool)),
-                                         m_xlet[dc], SLOT(setCallRecording(bool)) );
-                                
-                                connect( m_xlet[dc], SIGNAL(callFilteringToggled(bool)),
-                                         m_engine, SLOT(featurePutCallFiltering(bool)) );
-                                connect( m_engine, SIGNAL(callFilteringChanged(bool)),
-                                         m_xlet[dc], SLOT(setCallFiltering(bool)) );
-                                
-                                connect( m_xlet[dc], SIGNAL(dndToggled(bool)),
-                                         m_engine, SLOT(featurePutDnd(bool)) );
-                                connect( m_engine, SIGNAL(dndChanged(bool)),
-                                         m_xlet[dc], SLOT(setDnd(bool)) );
-                                
-                                connect( m_xlet[dc], SIGNAL(uncondForwardChanged(bool, const QString &)),
-                                         m_engine, SLOT(featurePutUncondForward(bool, const QString &)) );
-                                connect( m_engine, SIGNAL(uncondForwardUpdated(bool, const QString &)),
-                                         m_xlet[dc], SLOT(setUncondForward(bool, const QString &)) );
-                                connect( m_engine, SIGNAL(uncondForwardUpdated(bool)),
-                                         m_xlet[dc], SLOT(setUncondForward(bool)) );
-                                connect( m_engine, SIGNAL(uncondForwardUpdated(const QString &)),
-                                         m_xlet[dc], SLOT(setUncondForward(const QString &)) );
-                                
-                                connect( m_xlet[dc], SIGNAL(forwardOnBusyChanged(bool, const QString &)),
-                                         m_engine, SLOT(featurePutForwardOnBusy(bool, const QString &)) );
-                                connect( m_engine, SIGNAL(forwardOnBusyUpdated(bool, const QString &)),
-                                         m_xlet[dc], SLOT(setForwardOnBusy(bool, const QString &)) );
-                                connect( m_engine, SIGNAL(forwardOnBusyUpdated(bool)),
-                                         m_xlet[dc], SLOT(setForwardOnBusy(bool)) );
-                                connect( m_engine, SIGNAL(forwardOnBusyUpdated(const QString &)),
-                                         m_xlet[dc], SLOT(setForwardOnBusy(const QString &)) );
-                                
-                                connect( m_xlet[dc], SIGNAL(forwardOnUnavailableChanged(bool, const QString &)),
-                                         m_engine, SLOT(featurePutForwardOnUnavailable(bool, const QString &)) );
-                                connect( m_engine, SIGNAL(forwardOnUnavailableUpdated(bool, const QString &)),
-                                         m_xlet[dc], SLOT(setForwardOnUnavailable(bool, const QString &)) );
-                                connect( m_engine, SIGNAL(forwardOnUnavailableUpdated(bool)),
-                                         m_xlet[dc], SLOT(setForwardOnUnavailable(bool)) );
-                                connect( m_engine, SIGNAL(forwardOnUnavailableUpdated(const QString &)),
-                                         m_xlet[dc], SLOT(setForwardOnUnavailable(const QString &)) );
+                                connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
+                                         m_xlet[dc], SLOT(setOpt(const QString &, bool)) );                                
+                                connect( m_xlet[dc], SIGNAL(forwardChanged(const QString &, bool, const QString &)),
+                                         m_engine, SLOT(featurePutForward(const QString &, bool, const QString &)) );
+                                connect( m_engine, SIGNAL(forwardUpdated(const QString &, bool, const QString &)),
+                                         m_xlet[dc], SLOT(setForward(const QString &, bool, const QString &)) );
                                 
 			} else if (dc == QString("directory")) {
 				m_dirpanel = new DirectoryPanel(this);

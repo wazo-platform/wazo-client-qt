@@ -176,13 +176,8 @@ public slots:
         
         void textEdited(const QString &);
 	void setAvailability();			//!< set user status from menu
-	void featurePutVoiceMail(bool);
-	void featurePutCallRecording(bool);
-	void featurePutCallFiltering(bool);
-	void featurePutDnd(bool);
-	void featurePutUncondForward(bool, const QString &);
-	void featurePutForwardOnBusy(bool, const QString &);
-	void featurePutForwardOnUnavailable(bool, const QString &);
+	void featurePutOpt(const QString &, bool);
+	void featurePutForward(const QString &, bool, const QString &);
 	void askFeatures();
 	void askCallerIds();
 	void setKeepaliveinterval(uint);	//!< set keep alive interval
@@ -255,19 +250,8 @@ signals:
         void setQueueStatus(const QString &);
         void newQueueList(bool, const QString &);
         void newAgentList(const QString &);
-	void voiceMailChanged(bool);
-	void callRecordingChanged(bool);
-	void callFilteringChanged(bool);
-	void dndChanged(bool);
-	void uncondForwardUpdated(bool, const QString &);
-	void uncondForwardUpdated(bool);
-	void uncondForwardUpdated(const QString &);
-	void forwardOnBusyUpdated(bool, const QString &);
-	void forwardOnBusyUpdated(bool);
-	void forwardOnBusyUpdated(const QString &);
-	void forwardOnUnavailableUpdated(bool, const QString &);
-	void forwardOnUnavailableUpdated(bool);
-	void forwardOnUnavailableUpdated(const QString &);
+	void optChanged(const QString &, bool);
+	void forwardUpdated(const QString &, bool, const QString &);
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QStringList &);
         void changeWatchedQueueSignal(const QStringList &);

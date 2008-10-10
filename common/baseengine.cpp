@@ -1539,19 +1539,15 @@ void BaseEngine::initFeatureFields(const QString & field, const QString & value)
         //        qDebug() << field << value;
         bool isenabled = (value.split(":")[0] == "1");
 	if((field == "enablevoicemail") || (field == "vm"))
-		voiceMailChanged(isenabled);
+		optChanged("enablevm", isenabled);
 	else if((field == "enablednd") || (field == "dnd"))
-		dndChanged(isenabled);
+		optChanged("enablednd", isenabled);
 	else if(field == "callfilter")
-		callFilteringChanged(isenabled);
+		optChanged("incallfilter", isenabled);
 	else if(field == "callrecord")
-		callRecordingChanged(isenabled);
-	else if(field == "unc")
-		uncondForwardUpdated(isenabled, value.split(":")[1]);
-	else if(field == "busy")
-		forwardOnBusyUpdated(isenabled, value.split(":")[1]);
-	else if(field == "rna")
-		forwardOnUnavailableUpdated(isenabled, value.split(":")[1]);
+		optChanged("incallrec", isenabled);
+	else if((field == "unc") || (field == "busy") || (field == "rna"))
+		forwardUpdated(field, isenabled, value.split(":")[1]);
 }
 
 void BaseEngine::stopKeepAliveTimer()
@@ -1680,81 +1676,36 @@ bool BaseEngine::isRemovable(const QMetaObject * metaobject)
 	return false;
 }
 
-void BaseEngine::featurePutVoiceMail(bool b)
+void BaseEngine::featurePutOpt(const QString & capa, bool b)
 {
         ServerCommand * sc = new ServerCommand();
         sc->addString("class", "featuresput");
         sc->addString("direction", "xivoserver");
         sc->addString("userid", m_monitored_userid);
-        sc->addString("function", "enablevoicemail");
+        if(capa == "enablevm")
+                sc->addString("function", "enablevoicemail");
+        else if(capa == "incallrec")
+                sc->addString("function", "callrecord");
+        else if(capa == "incallfilter")
+                sc->addString("function", "callfilter");
+        else if(capa == "enablednd")
+                sc->addString("function", "enablednd");
         sc->addString("value", QString(b ? "1" : "0"));
         sendCommand(sc->find());
 }
 
-void BaseEngine::featurePutCallRecording(bool b)
+void BaseEngine::featurePutForward(const QString & capa, bool b, const QString & dst)
 {
         ServerCommand * sc = new ServerCommand();
         sc->addString("class", "featuresput");
         sc->addString("direction", "xivoserver");
         sc->addString("userid", m_monitored_userid);
-        sc->addString("function", "callrecord");
-        sc->addString("value", QString(b ? "1" : "0"));
-        sendCommand(sc->find());
-}
-
-void BaseEngine::featurePutCallFiltering(bool b)
-{
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "featuresput");
-        sc->addString("direction", "xivoserver");
-        sc->addString("userid", m_monitored_userid);
-        sc->addString("function", "callfilter");
-        sc->addString("value", QString(b ? "1" : "0"));
-        sendCommand(sc->find());
-}
-
-void BaseEngine::featurePutDnd(bool b)
-{
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "featuresput");
-        sc->addString("direction", "xivoserver");
-        sc->addString("userid", m_monitored_userid);
-        sc->addString("function", "enablednd");
-        sc->addString("value", QString(b ? "1" : "0"));
-        sendCommand(sc->find());
-}
-
-void BaseEngine::featurePutForwardOnUnavailable(bool b, const QString & dst)
-{
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "featuresput");
-        sc->addString("direction", "xivoserver");
-        sc->addString("userid", m_monitored_userid);
-        sc->addString("function", "enablerna");
-        sc->addString("value", QString(b ? "1" : "0"));
-        sc->addString("destination", dst);
-        sendCommand(sc->find());
-}
-
-void BaseEngine::featurePutForwardOnBusy(bool b, const QString & dst)
-{
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "featuresput");
-        sc->addString("direction", "xivoserver");
-        sc->addString("userid", m_monitored_userid);
-        sc->addString("function", "enablebusy");
-        sc->addString("value", QString(b ? "1" : "0"));
-        sc->addString("destination", dst);
-        sendCommand(sc->find());
-}
-
-void BaseEngine::featurePutUncondForward(bool b, const QString & dst)
-{
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "featuresput");
-        sc->addString("direction", "xivoserver");
-        sc->addString("userid", m_monitored_userid);
-        sc->addString("function", "enableunc");
+        if(capa == "fwdunc")
+                sc->addString("function", "enableunc");
+        else if(capa == "fwdbusy")
+                sc->addString("function", "enablebusy");
+        else if(capa == "fwdrna")
+                sc->addString("function", "enablerna");
         sc->addString("value", QString(b ? "1" : "0"));
         sc->addString("destination", dst);
         sendCommand(sc->find());
