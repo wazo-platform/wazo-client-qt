@@ -61,7 +61,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
                        const QHash<QString, QPixmap> & persons,
                        const QHash<QString, QPixmap> & phones,
                        const QHash<QString, QPixmap> & agents)
-	: m_phones(phones), m_persons(persons), m_agents(agents)
+	: m_agentlbl(NULL), m_phones(phones), m_persons(persons), m_agents(agents)
 {
         m_ui = ui;
 	//qDebug() << "PeerWidget::PeerWidget()" << id;
@@ -154,7 +154,7 @@ void PeerWidget::setColor(const QString & kind, const QString & color)
 	//m_square.fill( Qt::blue );
 	if(kind == "presence")
                 m_availlbl->setPixmap(m_persons[color]);
-	else if(kind == "agent")
+	else if((kind == "agent") && (m_agentlbl))
                 m_agentlbl->setPixmap(m_agents[color]);
         else if(m_lblphones.contains(kind))
                 m_lblphones[kind]->setPixmap(m_phones[color]);
@@ -162,6 +162,8 @@ void PeerWidget::setColor(const QString & kind, const QString & color)
 
 void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & queues)
 {
+        if(! m_agentlbl)
+                return;
         if(agentnum == "")
                 m_agentlbl->setToolTip("");
         else {
@@ -178,7 +180,7 @@ void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & q
  */
 void PeerWidget::removeFromPanel()
 {
-//	qDebug() << "PeerWidget::removeFromPanel()" << m_ui->userid();
+        // qDebug() << "PeerWidget::removeFromPanel()" << m_ui->userid();
 	doRemoveFromPanel( m_ui->userid() );
 }
 
