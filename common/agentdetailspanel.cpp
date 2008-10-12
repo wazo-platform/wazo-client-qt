@@ -261,7 +261,8 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                 if(queues.size() > 0)
                         queuesstats = queues.split(",");
                 queuesstats.sort();
-
+                
+                int queuewidth = 0;
                 for(int i = 0 ; i < queuesstats.size(); i++) {
                         QString queueid = queuesstats[i].split("-")[0];
                         QString pstatus = "";
@@ -276,7 +277,9 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                         m_queuelabels[queueid]->setProperty("action", "changequeue");
                         connect( m_queuelabels[queueid], SIGNAL(clicked()),
                                  this, SLOT(queueClicked()));
-
+                        if(m_queuelabels[queueid]->sizeHint().width() > queuewidth)
+                                queuewidth = m_queuelabels[queueid]->sizeHint().width();
+                        
                         m_queue_join_status[queueid] = new QLabel(this);
                         m_queue_join_action[queueid] = new QPushButton(this);
                         m_queue_join_action[queueid]->setProperty("astid", m_astid);
@@ -332,6 +335,9 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                         m_gridlayout->addWidget( m_queue_pause_status[queueid], i + 2, 4, Qt::AlignCenter );
                         m_gridlayout->addWidget( m_queue_pause_action[queueid], i + 2, 5, Qt::AlignCenter );
                 }
+                
+                foreach(QString queueid, m_queuelabels.keys())
+                        m_queuelabels[queueid]->setMinimumWidth(queuewidth);
         }
 }
 

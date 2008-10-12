@@ -88,7 +88,8 @@ private:
         BaseEngine * m_engine;
 
         quint32 m_maxbusy;
-
+        int m_queuewidth;
+        
         QLabel * m_title1;
         QLabel * m_title2;
         QHash<QString, QLabel *> m_title_infos;

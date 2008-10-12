@@ -56,13 +56,14 @@
 #include "configwidget.h"
 #include "mainwidget.h"
 #include "baseengine.h"
+#include "xivoconsts.h"
 
 /*! \brief constructor
  */
 ConfigWidget::ConfigWidget(BaseEngine * engine,
                            MainWidget * parent)
         : QDialog(parent), m_engine(engine),
-          m_presence(NULL), m_cinfo(NULL), m_autourl(NULL), m_history_sbox(NULL)
+          m_history_sbox(NULL)
 {
 	int line = 0;
 	// the object will be destroyed when closed
@@ -113,17 +114,16 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         line = 0;
         int width = 4;
         
-        m_presence = new QCheckBox(tr("Presence reporting"));
-        m_presence->setCheckState(m_engine->checkedPresence() ? Qt::Checked : Qt::Unchecked);
-        gridlayout2->addWidget( m_presence, line++, 0, 1, width );
+        QHash<QString, QString> func_legend;
+        func_legend["presence"] = tr("Presence reporting");
+        func_legend["customerinfo"] = tr("Customer Info");
+        func_legend["autourl"] = tr("Allow the Automatic Opening of URL's");
         
-        m_cinfo = new QCheckBox(tr("Customer Info"));
-        m_cinfo->setCheckState(m_engine->checkedCInfo() ? Qt::Checked : Qt::Unchecked);
-        gridlayout2->addWidget( m_cinfo, line++, 0, 1, width );
-        
-        m_autourl = new QCheckBox(tr("Allow the Automatic Opening of URL's"));
-        m_autourl->setCheckState(m_engine->checkedAutoUrl() ? Qt::Checked : Qt::Unchecked);
-        gridlayout2->addWidget( m_autourl, line++, 0, 1, width );
+        foreach(QString function, CheckFunctions) {
+                m_function[function] = new QCheckBox(func_legend[function]);
+                m_function[function]->setCheckState(m_engine->checkedFunction(function) ? Qt::Checked : Qt::Unchecked);
+                gridlayout2->addWidget( m_function[function], line++, 0, 1, width );
+        }
         
         gridlayout2->addWidget(new QLabel(tr("History size"), this), line, 0);
         m_history_sbox = new QSpinBox(this);
@@ -327,12 +327,8 @@ void ConfigWidget::saveAndClose()
 	m_engine->setTrytoreconnectinterval(m_tryinterval_sbox->value()*1000);
 	m_engine->setKeepaliveinterval(m_kainterval_sbox->value()*1000);
 
-        if(m_presence)
-                m_engine->setCheckedPresence(m_presence->checkState() == Qt::Checked);
-        if(m_cinfo)
-                m_engine->setCheckedCInfo(m_cinfo->checkState() == Qt::Checked);
-        if(m_autourl)
-                m_engine->setCheckedAutoUrl(m_autourl->checkState() == Qt::Checked);
+        foreach(QString function, CheckFunctions)
+                m_engine->setCheckedFunction(function, m_function[function]->checkState() == Qt::Checked);
         if(m_history_sbox)
                 m_engine->setHistorySize(m_history_sbox->value());
 

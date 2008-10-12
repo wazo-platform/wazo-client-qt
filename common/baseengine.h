@@ -124,12 +124,8 @@ public:
 	void setState(EngineState state);	//!< see state()
 
 	const QString & getAvailState() const;	//!< returns availability status
-	void setCheckedPresence(bool b);	//!< set m_checked_presence
-	bool checkedPresence();			//!< get m_checked_presence
-	void setCheckedCInfo(bool b);		//!< set m_checked_cinfo
-	bool checkedCInfo();			//!< get m_checked_cinfo
-	void setCheckedAutoUrl(bool b);		//!< set m_checked_autourl
-	bool checkedAutoUrl();			//!< get m_checked_autourl
+	void setCheckedFunction(const QString &, bool b);	//!< set m_checked_function
+	bool checkedFunction(const QString &);			//!< get m_checked_function
 	void setEnabledPresence(bool b);	//!< set m_enabled_presence
 	bool enabledPresence();			//!< get m_enabled_presence
 	void setEnabledCInfo(bool b);		//!< set m_enabled_cinfo
@@ -304,10 +300,8 @@ private:
         QHash<QString, int> m_queuelevels;
 	bool m_enabled_presence;      	//!< presence is enabled
 	bool m_enabled_cinfo;      	//!< customer info is enabled
-	bool m_checked_presence;      	//!< presence is checked
-	bool m_checked_cinfo;      	//!< customer info is checked
+	QHash<QString, bool> m_checked_function;      	//!< function checked
 	bool m_checked_lastconnwins;   	//!< the last connected account "wins"
-	bool m_checked_autourl;   	//!< allow automatic url display
         int m_tablimit;
 
 	// Replies given by the server

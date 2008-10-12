@@ -133,7 +133,7 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
         inputstream->write(fichecontent.toUtf8());
         inputstream->close();
         // Get Data and Popup the profile if ok
-        Popup * popup = new Popup(m_engine->checkedAutoUrl(), m_ui);
+        Popup * popup = new Popup(m_engine->checkedFunction("autourl"), m_ui);
         popup->feed(inputstream, qtui);
         connect( popup, SIGNAL(destroyed(QObject *)),
                  this, SLOT(popupDestroyed(QObject *)) );

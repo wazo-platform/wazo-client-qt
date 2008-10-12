@@ -132,6 +132,7 @@ void QueuedetailsPanel::update()
         m_agentlabels.clear();
         m_agentstatus.clear();
 
+        int agentwidth = 0;
         for(int i = 0 ; i < m_agentlist.size(); i++) {
                 m_agentlabels[m_agentlist[i]] = new QPushButton(m_agentlist[i], this);
                 m_agentlabels[m_agentlist[i]]->setProperty("agentid", m_agentlist[i]);
@@ -140,13 +141,17 @@ void QueuedetailsPanel::update()
                 m_agentstatus[m_agentlist[i]] = new QLabel("", this);
                 m_gridlayout->addWidget( m_agentlabels[m_agentlist[i]], i + 2, 0, Qt::AlignLeft );
                 m_gridlayout->addWidget( m_agentstatus[m_agentlist[i]], i + 2, 1, Qt::AlignLeft );
+                if(m_agentlabels[m_agentlist[i]]->sizeHint().width() > agentwidth)
+                        agentwidth = m_agentlabels[m_agentlist[i]]->sizeHint().width();
         }
+
+        foreach(QString agentname, m_agentlabels.keys())
+                m_agentlabels[agentname]->setMinimumWidth(agentwidth);
 }
 
 void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
 {
         // qDebug() << "QueuedetailsPanel::newQueue()" << queuestatus;
-
         QStringList prevlist = m_agentlist;
         if(queuestatus.size() > 2) {
                 int nagents = queuestatus[2].toInt();

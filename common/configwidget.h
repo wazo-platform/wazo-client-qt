@@ -109,9 +109,7 @@ private:
         QLabel * m_lblpassword;
         QLabel * m_lblphone;
 
-	QCheckBox * m_presence;		//!< connect to presence server checkbox
-	QCheckBox * m_cinfo;		//!< customer info checkbox
-	QCheckBox * m_autourl;		//!< auto url allow checkbox
+	QHash<QString, QCheckBox *> m_function;	//!< connect to functions checkboxes
 	QSpinBox  * m_history_sbox;	//!< History size
 
         QHash<QString, QSpinBox *> m_queuelevels;

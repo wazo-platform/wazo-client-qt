@@ -72,6 +72,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
                        << "Holdtime" << "ServicelevelPerf"
                        << "ServiceLevel" << "Max" << "Weight");
         m_maxbusy = 0;
+        m_queuewidth = 0;
         
         m_title1 = new QLabel(tr("Queue"), this);
         m_title2 = new QLabel(tr("Busy"), this);
@@ -134,7 +135,7 @@ void QueuesPanel::setQueueList(bool, const QString & qlist)
                                 foreach(QString statitem, m_statitems)
                                         m_queueinfos[queuename][statitem] = new QLabel();
                                 int linenum = m_queuelabels.size();
-                                m_gridlayout->addWidget( m_queuelabels[queuename], linenum + 1, 0, Qt::AlignLeft );
+                                m_gridlayout->addWidget( m_queuelabels[queuename], linenum + 1, 0, Qt::AlignCenter );
                                 m_gridlayout->addWidget( m_queuebusies[queuename], linenum + 1, 1, Qt::AlignCenter );
 
                                 foreach(QString statitem, m_statitems)
@@ -142,6 +143,8 @@ void QueuesPanel::setQueueList(bool, const QString & qlist)
                                                                  linenum + 1,
                                                                  2 + m_statitems.indexOf(statitem),
                                                                  Qt::AlignRight );
+                                if(m_queuelabels[queuename]->sizeHint().width() > m_queuewidth)
+                                        m_queuewidth = m_queuelabels[queuename]->sizeHint().width();
                         }
                         m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
                         foreach(QString statitem, m_statitems)
@@ -175,6 +178,9 @@ void QueuesPanel::update()
                 else
                         qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ff0000;}");
         }
+        
+        foreach(QString queuename, m_queuelabels.keys())
+                m_queuelabels[queuename]->setMinimumWidth(m_queuewidth);
 }
 
 void QueuesPanel::queueClicked()
@@ -184,7 +190,6 @@ void QueuesPanel::queueClicked()
         QString queueid = sender()->property("queueid").toString();
         changeWatchedQueue(astid + " " + queueid);
 }
-
 
 void QueuesPanel::setQueueStatus(const QString & status)
 {
