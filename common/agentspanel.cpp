@@ -292,22 +292,6 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                                 connect( m_agent_more[agnum], SIGNAL(clicked()),
                                          this, SLOT(agentClicked()));
                                 
-                                m_agent_record[agnum] = new QPushButton(this);
-                                m_agent_record[agnum]->setProperty("astid", astid);
-                                m_agent_record[agnum]->setProperty("agentid", agnum);
-                                m_agent_record[agnum]->setProperty("action", "record");
-                                connect( m_agent_record[agnum], SIGNAL(clicked()),
-                                         this, SLOT(agentClicked()));
-                                
-                                m_agent_listen[agnum] = new QPushButton(this);
-                                m_agent_listen[agnum]->setProperty("astid", astid);
-                                m_agent_listen[agnum]->setProperty("agentid", agnum);
-                                m_agent_listen[agnum]->setProperty("action", "getfile");
-                                connect( m_agent_listen[agnum], SIGNAL(clicked()),
-                                         this, SLOT(agentClicked()));
-                                
-                                // spy
-                                
                                 m_agent_busy[agnum] = new QLabel(this);
                                 m_agent_busy[agnum]->setProperty("astid", astid);
                                 m_agent_presence[agnum] = new QLabel(this);
@@ -326,10 +310,6 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                                 
                                 m_agent_more[agnum]->setIconSize(QSize(10, 10));
                                 m_agent_more[agnum]->setIcon(QIcon(":/images/rightarrow.png"));
-                                m_agent_record[agnum]->setIconSize(QSize(10, 10));
-                                m_agent_record[agnum]->setIcon(QIcon(":/images/player_stop.png"));
-                                m_agent_listen[agnum]->setIconSize(QSize(10, 10));
-                                m_agent_listen[agnum]->setIcon(QIcon(":/images/player_play.png"));
                                 m_agent_logged_action[agnum]->setIconSize(QSize(8, 8));
                                 
                                 m_square->fill(Qt::gray);
@@ -384,8 +364,7 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                                 int linenum = m_agent_labels.size();
                                 m_gridlayout->addWidget( m_agent_labels[agnum], linenum, colnum++, Qt::AlignLeft );
                                 m_gridlayout->addWidget( m_agent_more[agnum], linenum, colnum++, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_agent_record[agnum], linenum, colnum++, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_agent_listen[agnum], linenum, colnum++, Qt::AlignCenter );
+                                colnum += 2;
                                 m_gridlayout->addWidget( m_agent_busy[agnum], linenum, colnum++, Qt::AlignCenter );
                                 m_gridlayout->addWidget( qvline1, linenum, colnum++, Qt::AlignHCenter );
                                 m_gridlayout->addWidget( m_agent_presence[agnum], linenum, colnum++, Qt::AlignCenter );

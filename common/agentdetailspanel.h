@@ -71,6 +71,7 @@ public slots:
                              const QStringList &);
 private slots:
         void queueClicked();
+        void actionClicked();
 private:
         QGridLayout * m_gridlayout;
 	QVBoxLayout * m_layout;
@@ -84,6 +85,9 @@ private:
         QLabel * m_agentlegend_qname;
         QLabel * m_agentlegend_joined;
         QLabel * m_agentlegend_paused;
+        QPushButton * m_button_record;
+        QPushButton * m_button_listen;
+        QPushButton * m_button_spy;
         QHash<QString, QPushButton *> m_queuelabels;
         QHash<QString, QPushButton *> m_queue_join_action;
         QHash<QString, QPushButton *> m_queue_pause_action;

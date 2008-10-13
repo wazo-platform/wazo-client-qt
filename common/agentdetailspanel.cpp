@@ -61,17 +61,41 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_agentlegend_qname = new QLabel(tr("Queue Name"), this);
         m_agentlegend_joined = new QLabel(tr("Joined"), this);
         m_agentlegend_paused = new QLabel(tr("UnPaused"), this);
+        m_button_record = new QPushButton(tr("Record"));
+        m_button_listen = new QPushButton(tr("Listen"));
+        m_button_spy = new QPushButton(tr("Spy"));
+        
         m_gridlayout->setColumnStretch( 8, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
-        m_gridlayout->addWidget(m_agentname, 0, 0);
-        m_gridlayout->addWidget(m_agentstatus, 0, 1, 1, 7);
-        m_gridlayout->addWidget(m_agentlegend_qname, 1, 0, Qt::AlignCenter);
-        m_gridlayout->addWidget(m_agentlegend_joined, 1, 1, 1, 3, Qt::AlignCenter);
-        m_gridlayout->addWidget(m_agentlegend_paused, 1, 4, 1, 3, Qt::AlignCenter);
+        int linenum = 0;
+        m_gridlayout->addWidget(m_agentname, linenum, 0);
+        m_gridlayout->addWidget(m_agentstatus, linenum, 1, 1, 7);
+        linenum ++;
+        m_gridlayout->addWidget(m_button_record, linenum ++, 0, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_button_listen, linenum ++, 0, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_button_spy, linenum ++, 0, Qt::AlignCenter);
+        
+        m_gridlayout->addWidget(m_agentlegend_qname, linenum, 0, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentlegend_joined, linenum, 1, 1, 3, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentlegend_paused, linenum, 4, 1, 3, Qt::AlignCenter);
         m_gridlayout->setVerticalSpacing(0);
+        
+        m_button_record->hide();
+        m_button_listen->hide();
+        m_button_spy->hide();
         m_agentlegend_qname->hide();
         m_agentlegend_joined->hide();
         m_agentlegend_paused->hide();
+        
+        m_button_record->setProperty("function", "record");
+        m_button_listen->setProperty("function", "listen");
+        m_button_spy->setProperty("function", "spy");
+        connect( m_button_record, SIGNAL(clicked()),
+                 this, SLOT(actionClicked()));
+        connect( m_button_listen, SIGNAL(clicked()),
+                 this, SLOT(actionClicked()));
+        connect( m_button_spy, SIGNAL(clicked()),
+                 this, SLOT(actionClicked()));
 }
 
 AgentdetailsPanel::~AgentdetailsPanel()
@@ -252,11 +276,14 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                         m_agentstatus->setText(tr("logged off") + " <b>" + phonenum + "</b>");
                 else
                         m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
-
+                
                 m_agentlegend_qname->show();
                 m_agentlegend_joined->show();
                 m_agentlegend_paused->show();
-
+                m_button_record->show();
+                m_button_listen->show();
+                m_button_spy->show();
+                
                 QStringList queuesstats;
                 if(queues.size() > 0)
                         queuesstats = queues.split(",");
@@ -329,11 +356,12 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                                 m_queue_pause_status[queueid]->show();
                                 m_queue_pause_action[queueid]->show();
                         }
-                        m_gridlayout->addWidget( m_queuelabels[queueid], i + 2, 0, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_join_status[queueid], i + 2, 1, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_join_action[queueid], i + 2, 2, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_pause_status[queueid], i + 2, 4, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_pause_action[queueid], i + 2, 5, Qt::AlignCenter );
+                        int deltaagents = 5;
+                        m_gridlayout->addWidget( m_queuelabels[queueid], i + deltaagents, 0, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_join_status[queueid], i + deltaagents, 1, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_join_action[queueid], i + deltaagents, 2, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_pause_status[queueid], i + deltaagents, 4, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_pause_action[queueid], i + deltaagents, 5, Qt::AlignCenter );
                 }
                 
                 foreach(QString queueid, m_queuelabels.keys())
@@ -372,4 +400,9 @@ void AgentdetailsPanel::queueClicked()
                         agentAction("pause " + queueid + " " + astid + " " + agentid);
         } else
                 qDebug() << "AgentdetailsPanel::queueClicked() : unknown action" << action;
+}
+
+void AgentdetailsPanel::actionClicked()
+{
+        qDebug() << "AgentdetailsPanel::actionClicked()" << sender()->property("function").toString() << m_astid << m_agent;
 }
