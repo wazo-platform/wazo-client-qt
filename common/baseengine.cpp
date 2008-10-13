@@ -404,7 +404,10 @@ void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
                 if (comesFromServer)
                         changesAvailChecks();
                 keepLoginAlive();
-	}
+	} else {
+                if (comesFromServer)
+                        changesAvailChecks();
+        }
 }
 
 const QString & BaseEngine::getAvailState() const
