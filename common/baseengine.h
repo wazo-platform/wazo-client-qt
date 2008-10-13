@@ -53,8 +53,10 @@
 
 #include "userinfo.h"
 
-class QTimerEvent;
+class QFile;
+class QSocketNotifier;
 class QTcpSocket;
+class QTimerEvent;
 
 /*! \brief Class which handles connection with the XIVO CTI server
  *   + Profile popup engine
@@ -198,6 +200,7 @@ private slots:
 	void socketStateChanged(QAbstractSocket::SocketState);
 	void socketReadyRead();
         void actionFromFiche(const QStringList &);
+        void readInputEvent(int);
 signals:
 	void logged();				//!< signal emitted when the state becomes ELogged
 	void delogged();			//!< signal emitted when the state becomes ENotLogged
@@ -346,6 +349,8 @@ private:
 
         QString m_monitored_userid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)
         QSettings * m_settings;
+        QFile * m_eventdevice;
+        QSocketNotifier * m_notifier;
 };
 
 #endif

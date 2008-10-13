@@ -45,6 +45,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QSettings>
+#include <QSocketNotifier>
 #include <QTcpSocket>
 #include <QTime>
 #include <QTimerEvent>
@@ -94,7 +95,13 @@ BaseEngine::BaseEngine(QSettings * settings,
            void bytesWritten ( qint64 bytes )
            void readyRead ()
         */
-
+        
+//         m_eventdevice = new QFile("/dev/input/event1");
+//         m_eventdevice->open(QIODevice::ReadOnly);
+//         m_notifier = new QSocketNotifier(m_eventdevice->handle(), QSocketNotifier::Read, this);
+//         connect(m_notifier, SIGNAL(activated(int)),
+//                 this, SLOT(readInputEvent(int)));
+        
 	// Socket for TCP connections
         m_sbsocket->setProperty("socket", "cticommands");
 	connect( m_sbsocket, SIGNAL(connected()),
@@ -126,6 +133,14 @@ BaseEngine::BaseEngine(QSettings * settings,
         
 	if(m_autoconnect)
 		start();
+}
+
+void BaseEngine::readInputEvent(int) {
+        // qDebug() << "BaseEngine::readInputEvent()" << r;
+        if(m_eventdevice->isReadable()) {
+                QByteArray qba = m_eventdevice->read(1024);
+                qDebug() << "BaseEngine::readInputEvent()" << qba.size();
+        }
 }
 
 /*! \brief Destructor
