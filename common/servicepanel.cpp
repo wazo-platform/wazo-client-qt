@@ -127,7 +127,7 @@ void ServicePanel::Connect()
         foreach(QString capa, chkcapas)
                 if(m_capas.contains(capa))
                         connect(m_chkopt[capa], SIGNAL(clicked(bool)),
-                                this, SIGNAL(chkoptToggled(bool)));
+                                this, SLOT(chkoptToggled(bool)));
         foreach(QString capa, fwdcapas)
                 if(m_capas.contains(capa))
                         connect(m_forward[capa], SIGNAL(clicked(bool)),
@@ -140,7 +140,7 @@ void ServicePanel::DisConnect()
         foreach(QString capa, chkcapas)
                 if(m_capas.contains(capa))
                         disconnect(m_chkopt[capa], SIGNAL(clicked(bool)),
-                                   this, SIGNAL(chkoptToggled(bool)));
+                                   this, SLOT(chkoptToggled(bool)));
         foreach(QString capa, fwdcapas)
                 if(m_capas.contains(capa))
                         disconnect(m_forward[capa], SIGNAL(clicked(bool)),

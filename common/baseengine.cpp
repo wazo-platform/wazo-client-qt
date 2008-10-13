@@ -696,9 +696,9 @@ bool BaseEngine::parseCommand(const QString & line)
                         else if(function == "update") {
                                 setQueueStatus(datamap["payload"].toString());
                         } else if(function == "del") {
-                                qDebug() << thisclass << "del" << sc->getString("astid") << sc->getStringList("deltalist");
+                                qDebug() << thisclass << "del" << datamap["astid"].toString() << datamap["astid"].toStringList();
                         } else if(function == "add") {
-                                qDebug() << thisclass << "add" << sc->getString("astid") << sc->getStringList("deltalist");
+                                qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["astid"].toStringList();
                         }
                         
                 } else if (thisclass == "agents") {
@@ -723,9 +723,9 @@ bool BaseEngine::parseCommand(const QString & line)
                                                 qDebug() << "update-agents agentnum" << agentid;
                                 }
                         } else if(function == "del") {
-                                qDebug() << thisclass << "del" << sc->getString("astid") << sc->getStringList("deltalist");
+                                qDebug() << thisclass << "del" << datamap["astid"].toString() << datamap["astid"].toStringList();
                         } else if(function == "add") {
-                                qDebug() << thisclass << "add" << sc->getString("astid") << sc->getStringList("deltalist");
+                                qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["astid"].toStringList();
                         }
                         
                 } else if (thisclass == "agent-status") {
@@ -839,7 +839,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                 if(userupdate.size() == 2) {
                                         QString iduser = userupdate[0] + "/" + userupdate[1];
                                         if(m_users.contains(iduser) && (iduser == m_fullid)) {
-                                                QString subclass = sc->getString("subclass");
+                                                QString subclass = datamap["subclass"].toString();
                                                 if(subclass == "mwi") {
                                                         QStringList payload = datamap["payload"].toStringList();
                                                         m_users[iduser]->setMWI(payload[0], payload[1], payload[2]);
@@ -858,7 +858,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                 emitTextMessage(tr("Unknown") + tr(" said : ") + message[0]);
                         
                 } else if (thisclass == "features") {
-                        QString function = sc->getString("function");
+                        QString function = datamap["function"].toString();
                         if (function == "update") {
                                 QStringList featuresupdate_list = datamap["payload"].toStringList();
                                 if(featuresupdate_list.size() == 5)
@@ -954,14 +954,14 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "login_id_ok") {
                         
-                        m_version_server = sc->getString("version").toInt();
-                        m_xivover_server = sc->getString("xivoversion");
+                        m_version_server = datamap["version"].toInt();
+                        m_xivover_server = datamap["xivoversion"].toString();
                         
                         if(m_version_server < REQUIRED_SERVER_VERSION) {
                                 stop();
                                 popupError("version_server:" + QString::number(m_version_server) + ";" + QString::number(REQUIRED_SERVER_VERSION));
                         } else {
-                                QString tohash = sc->getString("sessionid") + ":" + m_password;
+                                QString tohash = datamap["sessionid"].toString() + ":" + m_password;
                                 QCryptographicHash hidepass(QCryptographicHash::Sha1);
                                 QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
                                 ServerCommand * sc2 = new ServerCommand();
@@ -973,7 +973,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "loginko") {
                         stop();
-                        popupError(sc->getString("errorstring"));
+                        popupError(datamap["errorstring"].toString());
                         
                 } else if (thisclass == "login_pass_ok") {
                         QStringList capas = datamap["capalist"].toString().split(",");

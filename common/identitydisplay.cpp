@@ -160,6 +160,9 @@ void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
 {
         // qDebug() << "IdentityDisplay::updatePresence()" << presence;
         m_presence->hide();
+        if(! m_engine->checkedFunction("presence"))
+                return;
+        
         disconnect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
                    this, SLOT(idxChanged(const QString &)));
         if(presence.contains("names")) {
