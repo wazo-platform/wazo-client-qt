@@ -687,12 +687,13 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "queues") {
                         QString function = datamap["function"].toString();
-                        if(function == "sendlist")
-                                foreach(QString payload, sc->getSubList("payload"))
+                        if(function == "sendlist") {
+                                foreach(QVariant qv, datamap["payload"].toList())
                                         if(hasFunction("nojoinleave"))
-                                                newQueueList(false, payload);
+                                                newQueueList(false, qv.toMap());
                                         else
-                                                newQueueList(true, payload);
+                                                newQueueList(true, qv.toMap());
+                        }
                         else if(function == "update") {
                                 setQueueStatus(datamap["payload"].toString());
                         } else if(function == "del") {
@@ -704,8 +705,8 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "agents") {
                         QString function = datamap["function"].toString();
                         if(function == "sendlist") {
-                                foreach(QString payload, sc->getSubList("payload"))
-                                        newAgentList(payload);
+                                foreach(QVariant qv, datamap["payload"].toList())
+                                        newAgentList(qv.toMap());
                         } else if(function == "update") {
                                 QStringList liststatus = datamap["payload"].toStringList();
                                 if(liststatus.size() > 2) {
@@ -913,8 +914,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                 peersReceived();
                         } else if (function == "update") {
                                 QStringList statusbase = datamap["statusbase"].toStringList();
-                                QStringList statusextended = sc->getSubList("statusextended");
-                                qDebug() << statusbase << statusextended;
+                                qDebug() << statusbase << datamap["statusextended"].toList();
                                 // updatePeerAndCallerid(liststatus);
                                 callsUpdated();
                         } else if (function == "add") {
@@ -1013,7 +1013,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         m_appliname = datamap["appliname"].toString();
                         updateCapaPresence(datamap["capapresence"].toMap());
                         m_forced_state = datamap["capapresence"].toMap()["state"].toString();
-                        // m_capafeatures = sc->getStringList("capas_features");
+                        // m_capafeatures = datamap["capas_features"].toStringList();
                         
                         qDebug() << "clientXlets" << XletList;
                         qDebug() << "m_capaxlets" << m_capaxlets;

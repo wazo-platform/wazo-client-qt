@@ -105,12 +105,11 @@ void QueuesPanel::updatePeerAgent(const QString &,
 {
 }
 
-void QueuesPanel::setQueueList(bool, const QString & qlist)
+void QueuesPanel::setQueueList(bool, const QMap<QString, QVariant> & qlist)
 {
         // qDebug() << "QueuesPanel::setQueueList()" << qlist;
-        ServerCommand * sc = new ServerCommand(qlist);
-        QString astid = sc->getString("astid");
-        QStringList queues = sc->getStringList("queuestats");
+        QString astid = qlist["astid"].toString();
+        QStringList queues = qlist["queuestats"].toStringList();
         
         if(queues.size() > 0) {
                 queues.sort();

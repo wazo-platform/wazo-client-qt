@@ -69,7 +69,7 @@ signals:
         void agentAction(const QString &);
 public slots:
         void setUserInfo(const UserInfo *);
-	void setAgentList(const QString &);
+        void setAgentList(const QMap<QString, QVariant> &);
         void setAgentStatus(const QString &);
         void updatePeerAgent(const QString &,
                              const QString &,

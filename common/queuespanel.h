@@ -69,7 +69,7 @@ protected:
 signals:
         void changeWatchedQueue(const QString &);
 public slots:
-	void setQueueList(bool, const QString &);
+	void setQueueList(bool, const QMap<QString, QVariant> &);
         void setQueueStatus(const QString &);
         void updatePeerAgent(const QString &,
                              const QString &,

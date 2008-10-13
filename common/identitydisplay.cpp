@@ -53,7 +53,6 @@
 
 #include "baseengine.h"
 #include "identitydisplay.h"
-#include "servercommand.h"
 #include "userinfo.h"
 
 const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 50px; height: 15px}";
@@ -221,17 +220,15 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
                          vm[2] + " " + tr("new"));
 }
 
-void IdentityDisplay::setAgentList(const QString & alist)
+void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)
 {
         // qDebug() << "IdentityDisplay::setAgentList()" << m_engine->loginkind() << alist;
         if (m_engine->loginkind() == 0)
                 return;
-        
-        ServerCommand * sc = new ServerCommand(alist);
-        QString astid = sc->getString("astid");
+        QString astid = alist["astid"].toString();
         if (astid != m_ui->astid())
                 return;
-        QStringList agents = sc->getStringList("list");
+        QStringList agents = alist["list"].toStringList();
         if (agents.size() == 0)
                 return;
         
@@ -295,7 +292,7 @@ void IdentityDisplay::setAgentList(const QString & alist)
         }
 }
 
-void IdentityDisplay::setQueueList(bool changeallow, const QString & qlist)
+void IdentityDisplay::setQueueList(bool changeallow, const QMap<QString, QVariant> & qlist)
 {
         if (m_engine->loginkind() == 0)
                 return;
@@ -303,11 +300,10 @@ void IdentityDisplay::setQueueList(bool changeallow, const QString & qlist)
         // qDebug() << "IdentityDisplay::setQueueList()" << qlist;
         if(m_ui == NULL)
                 return;
-        ServerCommand * sc = new ServerCommand(qlist);
-        QString astid = sc->getString("astid");
+        QString astid = qlist["astid"].toString();
         if (astid != m_ui->astid())
                 return;
-        QStringList queues  = sc->getStringList("queuestats");
+        QStringList queues = qlist["queuestats"].toStringList();
         if (queues.size() == 0)
                 return;
         queues.sort();

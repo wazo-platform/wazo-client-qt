@@ -65,8 +65,8 @@ public:
                         QWidget * parent = 0);
 public slots:
         void setUserInfo(const UserInfo *);
-        void setAgentList(const QString &);
-	void setQueueList(bool, const QString &);
+        void setAgentList(const QMap<QString, QVariant> &);
+	void setQueueList(bool, const QMap<QString, QVariant> &);
         void updatePeer(UserInfo *,
                         const QString &,
                         const QHash<QString, QStringList> &);

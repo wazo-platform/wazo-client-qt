@@ -754,8 +754,8 @@ void MainWidget::engineStarted()
                                                                      const QHash<QString, QStringList> &)) );
                                 connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
                                          m_xlet[dc], SLOT(updatePeerAgent(const QString &, const QString &, const QStringList &)));
-                                connect( m_engine, SIGNAL(newAgentList(const QString &)),
-                                         m_xlet[dc], SLOT(setAgentList(const QString &)));
+                                connect( m_engine, SIGNAL(newAgentList(const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(setAgentList(const QMap<QString, QVariant> &)));
                                 connect( m_engine, SIGNAL(updatePresence(const QMap<QString, QVariant> &)),
                                          m_xlet[dc], SLOT(updatePresence(const QMap<QString, QVariant> &)) );
                                 connect( m_xlet[dc], SIGNAL(setAvailState(const QString &, bool)),
@@ -763,8 +763,8 @@ void MainWidget::engineStarted()
 
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
                                          m_xlet[dc], SLOT(setQueueStatus(const QString &)));
-                                connect( m_engine, SIGNAL(newQueueList(bool, const QString &)),
-                                         m_xlet[dc], SLOT(setQueueList(bool, const QString &)));
+                                connect( m_engine, SIGNAL(newQueueList(bool, const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(setQueueList(bool, const QMap<QString, QVariant> &)));
                                 connect( m_xlet[dc], SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
 
@@ -780,8 +780,8 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
-                                connect( m_engine, SIGNAL(newAgentList(const QString &)),
-                                         m_xlet[dc], SLOT(setAgentList(const QString &)));
+                                connect( m_engine, SIGNAL(newAgentList(const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(setAgentList(const QMap<QString, QVariant> &)));
                                 connect( m_xlet[dc], SIGNAL(changeWatchedAgent(const QString &)),
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
@@ -833,8 +833,8 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
                                          m_xlet[dc], SLOT(setQueueStatus(const QString &)));
-                                connect( m_engine, SIGNAL(newQueueList(bool, const QString &)),
-                                         m_xlet[dc], SLOT(setQueueList(bool, const QString &)));
+                                connect( m_engine, SIGNAL(newQueueList(bool, const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(setQueueList(bool, const QMap<QString, QVariant> &)));
                                 connect( m_xlet[dc], SIGNAL(changeWatchedQueue(const QString &)),
                                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
