@@ -398,12 +398,6 @@ void AgentsPanel::agentClicked()
                         agentAction("logout " + astid + " " + agentid);
                 else
                         agentAction("login " + astid + " " + agentid);
-        } else if(action == "record") {
-                agentAction("record " + astid + " " + agentid);
-        } else if(action == "listen") {
-                agentAction("listen " + astid + " " + agentid);
-        } else if(action == "getfile") {
-                agentAction("getfile " + astid + " " + agentid);
         }
 }
 

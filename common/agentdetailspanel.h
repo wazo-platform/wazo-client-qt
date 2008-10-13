@@ -77,6 +77,7 @@ private:
 	QVBoxLayout * m_layout;
         QScrollArea * m_scrollarea;
 	QWidget * m_widget;
+        int m_linenum;
 
         QString m_astid;
         QString m_agent;
@@ -85,9 +86,8 @@ private:
         QLabel * m_agentlegend_qname;
         QLabel * m_agentlegend_joined;
         QLabel * m_agentlegend_paused;
-        QPushButton * m_button_record;
-        QPushButton * m_button_listen;
-        QPushButton * m_button_spy;
+        QHash<QString, QString> m_actionlegends;
+        QHash<QString, QPushButton *> m_action;
         QHash<QString, QPushButton *> m_queuelabels;
         QHash<QString, QPushButton *> m_queue_join_action;
         QHash<QString, QPushButton *> m_queue_pause_action;

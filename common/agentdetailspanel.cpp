@@ -53,6 +53,7 @@
 AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         : QWidget(parent)
 {
+        m_linenum = 0;
 	m_gridlayout = new QGridLayout(this);
 
         m_agent = "";
@@ -61,41 +62,38 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_agentlegend_qname = new QLabel(tr("Queue Name"), this);
         m_agentlegend_joined = new QLabel(tr("Joined"), this);
         m_agentlegend_paused = new QLabel(tr("UnPaused"), this);
-        m_button_record = new QPushButton(tr("Record"));
-        m_button_listen = new QPushButton(tr("Listen"));
-        m_button_spy = new QPushButton(tr("Spy"));
         
+        m_actionlegends["record"] = tr("Record");
+        m_actionlegends["listen"] = tr("Listen");
+        m_actionlegends["spy"] = tr("Spy");
+        m_actionlegends["getfile"] = tr("Get File");
+        
+        foreach(QString function, m_actionlegends.keys())
+                m_action[function] = new QPushButton(m_actionlegends[function]);
         m_gridlayout->setColumnStretch( 8, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
-        int linenum = 0;
-        m_gridlayout->addWidget(m_agentname, linenum, 0);
-        m_gridlayout->addWidget(m_agentstatus, linenum, 1, 1, 7);
-        linenum ++;
-        m_gridlayout->addWidget(m_button_record, linenum ++, 0, Qt::AlignCenter);
-        m_gridlayout->addWidget(m_button_listen, linenum ++, 0, Qt::AlignCenter);
-        m_gridlayout->addWidget(m_button_spy, linenum ++, 0, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentname, m_linenum, 0);
+        m_gridlayout->addWidget(m_agentstatus, m_linenum, 1, 1, 7);
+        m_linenum ++;
+        foreach(QString function, m_actionlegends.keys())
+                m_gridlayout->addWidget(m_action[function], m_linenum ++, 0, Qt::AlignCenter);
         
-        m_gridlayout->addWidget(m_agentlegend_qname, linenum, 0, Qt::AlignCenter);
-        m_gridlayout->addWidget(m_agentlegend_joined, linenum, 1, 1, 3, Qt::AlignCenter);
-        m_gridlayout->addWidget(m_agentlegend_paused, linenum, 4, 1, 3, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentlegend_qname, m_linenum, 0, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentlegend_joined, m_linenum, 1, 1, 3, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentlegend_paused, m_linenum, 4, 1, 3, Qt::AlignCenter);
+        m_linenum ++;
+        
         m_gridlayout->setVerticalSpacing(0);
-        
-        m_button_record->hide();
-        m_button_listen->hide();
-        m_button_spy->hide();
         m_agentlegend_qname->hide();
         m_agentlegend_joined->hide();
         m_agentlegend_paused->hide();
         
-        m_button_record->setProperty("function", "record");
-        m_button_listen->setProperty("function", "listen");
-        m_button_spy->setProperty("function", "spy");
-        connect( m_button_record, SIGNAL(clicked()),
-                 this, SLOT(actionClicked()));
-        connect( m_button_listen, SIGNAL(clicked()),
-                 this, SLOT(actionClicked()));
-        connect( m_button_spy, SIGNAL(clicked()),
-                 this, SLOT(actionClicked()));
+        foreach(QString function, m_actionlegends.keys()) {
+                m_action[function]->hide();
+                m_action[function]->setProperty("function", function);
+                connect( m_action[function], SIGNAL(clicked()),
+                         this, SLOT(actionClicked()));
+        }
 }
 
 AgentdetailsPanel::~AgentdetailsPanel()
@@ -280,9 +278,8 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                 m_agentlegend_qname->show();
                 m_agentlegend_joined->show();
                 m_agentlegend_paused->show();
-                m_button_record->show();
-                m_button_listen->show();
-                m_button_spy->show();
+                foreach(QString function, m_actionlegends.keys())
+                        m_action[function]->show();
                 
                 QStringList queuesstats;
                 if(queues.size() > 0)
@@ -356,12 +353,11 @@ void AgentdetailsPanel::newAgent(const QStringList & agentstatus)
                                 m_queue_pause_status[queueid]->show();
                                 m_queue_pause_action[queueid]->show();
                         }
-                        int deltaagents = 5;
-                        m_gridlayout->addWidget( m_queuelabels[queueid], i + deltaagents, 0, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_join_status[queueid], i + deltaagents, 1, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_join_action[queueid], i + deltaagents, 2, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_pause_status[queueid], i + deltaagents, 4, Qt::AlignCenter );
-                        m_gridlayout->addWidget( m_queue_pause_action[queueid], i + deltaagents, 5, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queuelabels[queueid], i + m_linenum, 0, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_join_status[queueid], i + m_linenum, 1, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_join_action[queueid], i + m_linenum, 2, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_pause_status[queueid], i + m_linenum, 4, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queue_pause_action[queueid], i + m_linenum, 5, Qt::AlignCenter );
                 }
                 
                 foreach(QString queueid, m_queuelabels.keys())
@@ -404,5 +400,16 @@ void AgentdetailsPanel::queueClicked()
 
 void AgentdetailsPanel::actionClicked()
 {
-        qDebug() << "AgentdetailsPanel::actionClicked()" << sender()->property("function").toString() << m_astid << m_agent;
+        // qDebug() << "AgentdetailsPanel::actionClicked()" << sender()->property("function").toString() << m_astid << m_agent;
+        QString function = sender()->property("function").toString();
+        if(function == "record")
+                agentAction("record " + m_astid + " " + m_agent);
+        else if(function == "listen")
+                agentAction("listen " + m_astid + " " + m_agent);
+        else if(function == "spy")
+                agentAction("spy " + m_astid + " " + m_agent);
+        else if(function == "getfile")
+                agentAction("getfile " + m_astid + " " + m_agent);
+        else if(function == "getfilelist")
+                agentAction("getfilelist " + m_astid + " " + m_agent);
 }
