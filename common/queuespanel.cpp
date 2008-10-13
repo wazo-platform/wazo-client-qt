@@ -105,6 +105,27 @@ void QueuesPanel::updatePeerAgent(const QString &,
 {
 }
 
+void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues)
+{
+        qDebug() << "QueuesPanel::removeQueues" << astid << queues;
+        foreach(QString queuename, queues) {
+                if(m_queuelabels.contains(queuename)) {
+                        m_gridlayout->removeWidget( m_queuelabels[queuename] );
+                        m_gridlayout->removeWidget( m_queuebusies[queuename] );
+                        delete m_queuelabels[queuename];
+                        delete m_queuebusies[queuename];
+                        m_queuelabels.remove(queuename);
+                        m_queuebusies.remove(queuename);
+                        foreach(QString statitem, m_statitems) {
+                                m_gridlayout->removeWidget( m_queueinfos[queuename][statitem] );
+                                delete m_queueinfos[queuename][statitem];
+                                m_queueinfos[queuename].remove(statitem);
+                        }
+                        m_queueinfos.remove(queuename);
+                }
+        }
+}
+
 void QueuesPanel::setQueueList(bool, const QMap<QString, QVariant> & qlist)
 {
         // qDebug() << "QueuesPanel::setQueueList()" << qlist;
@@ -113,8 +134,9 @@ void QueuesPanel::setQueueList(bool, const QMap<QString, QVariant> & qlist)
         
         if(queues.size() > 0) {
                 queues.sort();
-                for(int i = 0 ; i < queues.size(); i++) {
-                        QStringList qparams = queues[i].split(":");
+                foreach(QString queueargs, queues) {
+                        // for(int i = 0 ; i < queues.size(); i++) {
+                        QStringList qparams = queueargs.split(":");
                         QHash <QString, QString> infos;
                         QString ncalls = "0";
                         infos["Calls"] = "0";
@@ -134,12 +156,11 @@ void QueuesPanel::setQueueList(bool, const QMap<QString, QVariant> & qlist)
                                 foreach(QString statitem, m_statitems)
                                         m_queueinfos[queuename][statitem] = new QLabel();
                                 int linenum = m_queuelabels.size();
-                                m_gridlayout->addWidget( m_queuelabels[queuename], linenum + 1, 0, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_queuebusies[queuename], linenum + 1, 1, Qt::AlignCenter );
-
+                                m_gridlayout->addWidget( m_queuelabels[queuename], linenum, 0, Qt::AlignCenter );
+                                m_gridlayout->addWidget( m_queuebusies[queuename], linenum, 1, Qt::AlignCenter );
                                 foreach(QString statitem, m_statitems)
                                         m_gridlayout->addWidget( m_queueinfos[queuename][statitem],
-                                                                 linenum + 1,
+                                                                 linenum,
                                                                  2 + m_statitems.indexOf(statitem),
                                                                  Qt::AlignRight );
                                 if(m_queuelabels[queuename]->sizeHint().width() > m_queuewidth)

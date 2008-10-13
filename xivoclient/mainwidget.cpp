@@ -835,6 +835,8 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setQueueStatus(const QString &)));
                                 connect( m_engine, SIGNAL(newQueueList(bool, const QMap<QString, QVariant> &)),
                                          m_xlet[dc], SLOT(setQueueList(bool, const QMap<QString, QVariant> &)));
+                                connect( m_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
+                                         m_xlet[dc], SLOT(removeQueues(const QString &, const QStringList &)));
                                 connect( m_xlet[dc], SIGNAL(changeWatchedQueue(const QString &)),
                                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),

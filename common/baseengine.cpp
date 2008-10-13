@@ -691,18 +691,25 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "queues") {
                         QString function = datamap["function"].toString();
                         if(function == "sendlist") {
-                                foreach(QVariant qv, datamap["payload"].toList())
+                                foreach(QVariant qv, datamap["payload"].toList()) {
+                                        qDebug() << qv.toMap();
                                         if(hasFunction("nojoinleave"))
                                                 newQueueList(false, qv.toMap());
                                         else
                                                 newQueueList(true, qv.toMap());
+                                }
                         }
                         else if(function == "update") {
                                 setQueueStatus(datamap["payload"].toString());
                         } else if(function == "del") {
-                                qDebug() << thisclass << "del" << datamap["astid"].toString() << datamap["astid"].toStringList();
+                                removeQueues(datamap["astid"].toString(), datamap["deltalist"].toStringList());
                         } else if(function == "add") {
-                                qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["astid"].toStringList();
+                                ServerCommand * sc2 = new ServerCommand();
+                                sc2->addString("class", "queues");
+                                sc2->addString("function", "getlist");
+                                sc2->addString("direction", "xivoserver");
+                                sendCommand(sc2->find());
+                                // qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["deltalist"].toStringList();
                         }
                         
                 } else if (thisclass == "agents") {
@@ -727,9 +734,9 @@ bool BaseEngine::parseCommand(const QString & line)
                                                 qDebug() << "update-agents agentnum" << agentid;
                                 }
                         } else if(function == "del") {
-                                qDebug() << thisclass << "del" << datamap["astid"].toString() << datamap["astid"].toStringList();
+                                qDebug() << thisclass << "del" << datamap["astid"].toString() << datamap["deltalist"].toStringList();
                         } else if(function == "add") {
-                                qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["astid"].toStringList();
+                                qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["deltalist"].toStringList();
                         }
                         
                 } else if (thisclass == "agent-status") {
@@ -1022,7 +1029,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         qDebug() << "m_capaxlets" << m_capaxlets;
                         qDebug() << "m_capafuncs" << m_capafuncs;
                         qDebug() << "m_appliname" << m_appliname;
-
+                        
                         // XXXX m_capafuncs => config file
                         foreach(QString function, CheckFunctions)
                                 if(! hasFunction(function)) {
