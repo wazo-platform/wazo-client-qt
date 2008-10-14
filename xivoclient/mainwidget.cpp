@@ -815,8 +815,8 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(saveToFile()));
                                 connect( m_xlet[dc], SIGNAL(setFileName(const QString &)),
                                          m_engine, SLOT(saveToFile(const QString &)));
-                                connect( m_engine, SIGNAL(statusRecord(const QString &)),
-                                         m_xlet[dc], SLOT(statusRecord(const QString &)));
+                                connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &)),
+                                         m_xlet[dc], SLOT(statusRecord(const QString &, const QString &)));
                                 
 			} else if (dc == QString("conference")) {
                                 m_xlet[dc] = new ConferencePanel();

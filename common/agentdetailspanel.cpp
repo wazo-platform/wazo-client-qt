@@ -445,7 +445,7 @@ void AgentdetailsPanel::serverFileList(const QStringList & qsl)
 
 void AgentdetailsPanel::statusRecord(const QString & agentnum, const QString & status)
 {
-        qDebug() << "AgentdetailsPanel::statusRecord()" << status;
+        // qDebug() << "AgentdetailsPanel::statusRecord()" << agentnum << m_agent << status;
         if(agentnum == m_agent) {
                 if(status == "started") {
                         m_action["record"]->setText(tr("Stop Record"));
