@@ -97,13 +97,17 @@ void QueueentrydetailsPanel::newQueue(const QStringList & queuestatus)
                 QString astid = queuestatus[0];
                 for(int i = nagents + 4 ; i < nagents + 4 + nentries; i++)
                         if(queuestatus[i].size() > 0) {
-                                QString entryname = queuestatus[i].split(",")[0];
-                                QString entrypos = queuestatus[i].split(",")[1];
-                                QString entrytime = queuestatus[i].split(",")[2];
-                                m_entrypos[entryname] = new QLabel(entryname + " :: " + entrypos, this);
-                                m_entrytime[entryname] = new QLabel(entrytime, this);
-                                m_gridlayout->addWidget( m_entrypos[entryname], i + 1, 1, Qt::AlignLeft );
-                                m_gridlayout->addWidget( m_entrytime[entryname], i + 1, 2, Qt::AlignLeft );
+                                QStringList entryinfos = queuestatus[i].split(",");
+                                if(entryinfos.size() > 4) {
+                                        // QString entryname = entryinfos[0];
+                                        QString entryname = entryinfos[4] + " <" + entryinfos[3] + ">";
+                                        QString entrypos = entryinfos[1];
+                                        QString entrytime = entryinfos[2];
+                                        m_entrypos[entryname] = new QLabel(entryname + " :: " + entrypos, this);
+                                        m_entrytime[entryname] = new QLabel(entrytime, this);
+                                        m_gridlayout->addWidget( m_entrypos[entryname], i + 1, 1, Qt::AlignLeft );
+                                        m_gridlayout->addWidget( m_entrytime[entryname], i + 1, 2, Qt::AlignLeft );
+                                }
                         }
         }
 }

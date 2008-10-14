@@ -107,7 +107,7 @@ void QueuesPanel::updatePeerAgent(const QString &,
 
 void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues)
 {
-        qDebug() << "QueuesPanel::removeQueues" << astid << queues;
+        // qDebug() << "QueuesPanel::removeQueues" << astid << queues;
         foreach(QString queuename, queues) {
                 if(m_queuelabels.contains(queuename)) {
                         m_gridlayout->removeWidget( m_queuelabels[queuename] );
@@ -182,7 +182,7 @@ void QueuesPanel::update()
                 if(val > m_maxbusy)
                         m_maxbusy = val;
         }
-        qDebug() << "QueuesPanel::update() maxbusy =" << m_maxbusy;
+        // qDebug() << "QueuesPanel::update() maxbusy =" << m_maxbusy;
         
         foreach (QProgressBar * qpb, m_queuebusies) {
                 QString qname = qpb->property("queueid").toString();
