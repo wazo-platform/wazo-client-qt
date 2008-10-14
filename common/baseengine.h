@@ -215,6 +215,7 @@ signals:
         void meetmeEvent(const QStringList &);
         void requestFileListResult(const QString &);
         void updatePresence(const QMap<QString, QVariant> &);
+        void serverFileList(const QStringList &);
         
 	//! a call
 	void updateCall(UserInfo *,

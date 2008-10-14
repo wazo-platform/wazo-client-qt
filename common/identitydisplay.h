@@ -74,6 +74,7 @@ public slots:
                              const QString &,
                              const QStringList &);
 	void setQueueStatus(const QString &);
+        void doRecord();
         void doAgentAction();
         void doQueueAction();
         void doQueueJoinAll();
@@ -88,8 +89,8 @@ private:
         QLabel * m_info4;
         QLabel * m_info5;
         QLabel * m_info6;
-        QLabel * m_info7;
         QComboBox * m_presence;
+        QPushButton * m_record;
         QLabel * m_agent;
         QFrame * m_qf;
         QPushButton * m_agentaction;

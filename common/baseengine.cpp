@@ -776,6 +776,9 @@ bool BaseEngine::parseCommand(const QString & line)
                         ackFax(datamap["status"].toString(),
                                datamap["reason"].toString());
                         
+                } else if (thisclass == "filelist") {
+                        serverFileList(datamap["filelist"].toStringList());
+                        
                 } else if (thisclass == "presence") {
                         QString id = datamap["company"].toString() + "/" + datamap["userid"].toString();
                         //qDebug() << presencestatus << m_users.size();
@@ -1214,14 +1217,15 @@ void BaseEngine::socketReadyRead()
                 while(m_filesocket->canReadLine()) {
                         QByteArray data = m_filesocket->readLine();
                         QString line = QString::fromUtf8(data);
-                        ServerCommand * sc = new ServerCommand(line.trimmed());
-                        
-                        if(sc->getString("class") == "fileref") {
+                        JsonQt::JsonToVariant parser;
+                        QVariant jsondata = parser.parse(line.trimmed());
+                        QMap<QString, QVariant> datamap = jsondata.toMap();
+                        if(datamap["class"].toString() == "fileref") {
                                 if(m_filedir == "download") {
-                                        qDebug() << sc->getString("filename");
-                                        qDebug() << sc->getString("payload").size();
+                                        QByteArray qba = QByteArray::fromBase64(datamap["payload"].toByteArray());
+                                        qDebug() << datamap["filename"].toString() << qba.size();
                                 } else {
-                                        qDebug() << "sending fax contents" << sc->getString("fileid");
+                                        qDebug() << "sending fax contents" << datamap["fileid"].toString();
                                         if(m_faxsize > 0)
                                                 m_filesocket->write(* m_filedata);
                                         delete m_filedata;

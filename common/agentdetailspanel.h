@@ -47,6 +47,7 @@
 #include <QObject>
 #include <QWidget>
 
+class QContextMenuEvent;
 class QGridLayout;
 class QLabel;
 class QPushButton;
@@ -72,6 +73,9 @@ public slots:
 private slots:
         void queueClicked();
         void actionClicked();
+        void serverFileList(const QStringList &);
+        void contextMenuEvent(QContextMenuEvent *);
+        void getFile();
 private:
         QGridLayout * m_gridlayout;
 	QVBoxLayout * m_layout;
@@ -93,6 +97,8 @@ private:
         QHash<QString, QPushButton *> m_queue_pause_action;
         QHash<QString, QLabel *> m_queue_join_status;
         QHash<QString, QLabel *> m_queue_pause_status;
+        
+        QPoint m_eventpoint;
 };
 
 #endif /* __AGENTDETAILSPANEL_H__ */

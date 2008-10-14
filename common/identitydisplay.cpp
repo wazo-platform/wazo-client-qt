@@ -78,7 +78,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         m_info4 = new QLabel(this);
         m_info5 = new QLabel(this);
         m_info6 = new QLabel(this);
-        m_info7 = new QLabel(this);
+        m_record = new QPushButton(tr("Record"), this);
 
         m_qf = new QFrame(this);
         m_qf->setFrameShape(QFrame::HLine);
@@ -108,6 +108,8 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
                 this, SLOT(idxChanged(const QString &)));
         connect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
+        connect(m_record, SIGNAL(clicked()),
+                this, SLOT(doRecord()));
         connect(m_agentaction, SIGNAL(clicked()),
                 this, SLOT(doAgentAction()));
         connect(m_queueaction, SIGNAL(clicked()),
@@ -126,7 +128,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
 	glayout->addWidget( m_info4, idline, 3, Qt::AlignCenter );
 	glayout->addWidget( m_info5, idline, 4, Qt::AlignCenter );
 	glayout->addWidget( m_info6, idline, 5, Qt::AlignCenter );
-	glayout->addWidget( m_info7, idline, 6, Qt::AlignCenter );
+	glayout->addWidget( m_record, idline, 6, Qt::AlignCenter );
         idline ++;
 	glayout->addWidget( m_qf, idline, 0, 1, 7, 0 );
         idline ++;
@@ -437,6 +439,12 @@ void IdentityDisplay::setQueueStatus(const QString & status)
                         qDebug() << "IdentityDisplay::setQueueStatus()" << status;
                 }
         }
+}
+
+void IdentityDisplay::doRecord()
+{
+        // qDebug() << "IdentityDisplay::doRecord()";
+        agentAction("record " + m_ui->astid() + " " + m_ui->agentid());
 }
 
 void IdentityDisplay::doAgentAction()

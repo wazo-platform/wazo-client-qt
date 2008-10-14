@@ -40,8 +40,10 @@
  */
 
 #include <QDebug>
+#include <QContextMenuEvent>
 #include <QGridLayout>
 #include <QLabel>
+#include <QMenu>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QVariant>
@@ -65,18 +67,24 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         
         m_actionlegends["record"] = tr("Record");
         m_actionlegends["listen"] = tr("Listen");
-        m_actionlegends["spy"] = tr("Spy");
         m_actionlegends["getfile"] = tr("Get File");
-        
-        foreach(QString function, m_actionlegends.keys())
+
+        int queuewidth = 0;
+        foreach(QString function, m_actionlegends.keys()) {
                 m_action[function] = new QPushButton(m_actionlegends[function]);
+                if(m_action[function]->sizeHint().width() > queuewidth)
+                        queuewidth = m_action[function]->sizeHint().width();
+        }
         m_gridlayout->setColumnStretch( 8, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_agentname, m_linenum, 0);
         m_gridlayout->addWidget(m_agentstatus, m_linenum, 1, 1, 7);
         m_linenum ++;
-        foreach(QString function, m_actionlegends.keys())
+        
+        foreach(QString function, m_actionlegends.keys()) {
+                m_action[function]->setMinimumWidth(queuewidth);
                 m_gridlayout->addWidget(m_action[function], m_linenum ++, 0, Qt::AlignCenter);
+        }
         
         m_gridlayout->addWidget(m_agentlegend_qname, m_linenum, 0, Qt::AlignCenter);
         m_gridlayout->addWidget(m_agentlegend_joined, m_linenum, 1, 1, 3, Qt::AlignCenter);
@@ -87,7 +95,10 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_agentlegend_qname->hide();
         m_agentlegend_joined->hide();
         m_agentlegend_paused->hide();
-        
+
+        connect( m_action["getfile"], SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
+	         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+
         foreach(QString function, m_actionlegends.keys()) {
                 m_action[function]->hide();
                 m_action[function]->setProperty("function", function);
@@ -406,10 +417,32 @@ void AgentdetailsPanel::actionClicked()
                 agentAction("record " + m_astid + " " + m_agent);
         else if(function == "listen")
                 agentAction("listen " + m_astid + " " + m_agent);
-        else if(function == "spy")
-                agentAction("spy " + m_astid + " " + m_agent);
-        else if(function == "getfile")
-                agentAction("getfile " + m_astid + " " + m_agent);
-        else if(function == "getfilelist")
-                agentAction("getfilelist " + m_astid + " " + m_agent);
+}
+
+void AgentdetailsPanel::contextMenuEvent(QContextMenuEvent * event)
+{
+        // qDebug() << "AgentdetailsPanel::contextMenuEvent()" << event;
+        m_eventpoint = event->globalPos();
+        agentAction("getfilelist " + m_astid + " " + m_agent);
+}
+
+void AgentdetailsPanel::serverFileList(const QStringList & qsl)
+{
+        // qDebug() << "AgentdetailsPanel::serverFileList()" << qsl;
+        QMenu contextMenu(this);
+        foreach(QString filename, qsl) {
+                QAction * action = new QAction(filename, this);
+                action->setProperty("filename", filename);
+                connect( action, SIGNAL(triggered()),
+                         this, SLOT(getFile()) );
+                contextMenu.addAction(action);
+        }
+        contextMenu.exec( m_eventpoint );
+}
+
+void AgentdetailsPanel::getFile()
+{
+        qDebug() << "AgentdetailsPanel::getFile()";
+        QString filename = sender()->property("filename").toString();
+        agentAction("getfile " + m_astid + " " + m_agent + " " + filename);
 }

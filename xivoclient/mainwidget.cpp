@@ -809,6 +809,8 @@ void MainWidget::engineStarted()
 					 m_xlet[dc], SLOT(updatePeerAgent(const QString &, const QString &, const QStringList &)) );
                                 connect( m_xlet[dc], SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
+                                connect( m_engine, SIGNAL(serverFileList(const QStringList &)),
+                                         m_xlet[dc], SLOT(serverFileList(const QStringList &)));
 
 			} else if (dc == QString("conference")) {
                                 m_xlet[dc] = new ConferencePanel();
