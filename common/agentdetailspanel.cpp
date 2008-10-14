@@ -416,6 +416,8 @@ void AgentdetailsPanel::actionClicked()
         QString function = sender()->property("function").toString();
         if(function == "record")
                 agentAction("record " + m_astid + " " + m_agent);
+        else if(function == "stoprecord")
+                agentAction("stoprecord " + m_astid + " " + m_agent);
         else if(function == "listen")
                 agentAction("listen " + m_astid + " " + m_agent);
 }
@@ -441,16 +443,30 @@ void AgentdetailsPanel::serverFileList(const QStringList & qsl)
         contextMenu.exec( m_eventpoint );
 }
 
+void AgentdetailsPanel::statusRecord(const QString & agentnum, const QString & status)
+{
+        qDebug() << "AgentdetailsPanel::statusRecord()" << status;
+        if(agentnum == m_agent) {
+                if(status == "started") {
+                        m_action["record"]->setText(tr("Stop Record"));
+                        m_action["record"]->setProperty("function", "stoprecord");
+                } else if(status == "stopped") {
+                        m_action["record"]->setText(tr("Record"));
+                        m_action["record"]->setProperty("function", "record");
+                }
+        }
+}
+
 void AgentdetailsPanel::getFile()
 {
-        qDebug() << "AgentdetailsPanel::getFile()";
+        // qDebug() << "AgentdetailsPanel::getFile()";
         QString filename = sender()->property("filename").toString();
         agentAction("getfile " + m_astid + " " + m_agent + " " + filename);
 }
 
 void AgentdetailsPanel::saveToFile()
 {
-        qDebug() << "AgentdetailsPanel::saveToFile()";
+        // qDebug() << "AgentdetailsPanel::saveToFile()";
         QFileDialog::Options options;
         options |= QFileDialog::DontUseNativeDialog;
         QString selectedFilter;

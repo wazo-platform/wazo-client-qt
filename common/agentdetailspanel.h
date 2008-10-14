@@ -72,6 +72,7 @@ public slots:
                              const QString &,
                              const QStringList &);
         void saveToFile();
+        void statusRecord(const QString &, const QString &);
 private slots:
         void queueClicked();
         void actionClicked();

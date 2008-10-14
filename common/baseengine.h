@@ -218,6 +218,7 @@ signals:
         void updatePresence(const QMap<QString, QVariant> &);
         void serverFileList(const QStringList &);
         void fileReceived();
+        void statusRecord(const QString &, const QString &);
         
 	//! a call
 	void updateCall(UserInfo *,

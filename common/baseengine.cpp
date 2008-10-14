@@ -739,6 +739,9 @@ bool BaseEngine::parseCommand(const QString & line)
                                 qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["deltalist"].toStringList();
                         }
                         
+                } else if (thisclass == "agentrecord") {
+                        statusRecord(datamap["agentnum"].toString(), datamap["status"].toString());
+                        
                 } else if (thisclass == "agent-status") {
                         QStringList liststatus = datamap["payload"].toStringList();
                         if((liststatus.size() > 1) && (liststatus[0] == m_agent_watched_astid) && (liststatus[1] == m_agent_watched_agentid))
