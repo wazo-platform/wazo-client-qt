@@ -767,7 +767,9 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setQueueList(bool, const QMap<QString, QVariant> &)));
                                 connect( m_xlet[dc], SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
-
+                                connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &)),
+                                         m_xlet[dc], SLOT(statusRecord(const QString &, const QString &)));
+                                
 			} else if (dc == QString("agents")) {
                                 m_xlet[dc] = new AgentsPanel();
                                 if (withscrollbar) {

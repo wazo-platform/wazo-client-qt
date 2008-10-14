@@ -81,6 +81,7 @@ public slots:
         void doQueueLeaveAll();
         void idxChanged(const QString &);
         void updatePresence(const QMap<QString, QVariant> &);
+        void statusRecord(const QString &, const QString &);
 private:
         BaseEngine * m_engine;
         QLabel * m_user;

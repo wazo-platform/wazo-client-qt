@@ -79,7 +79,8 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         m_info5 = new QLabel(this);
         m_info6 = new QLabel(this);
         m_record = new QPushButton(tr("Record"), this);
-
+        m_record->setProperty("function", "record");
+        
         m_qf = new QFrame(this);
         m_qf->setFrameShape(QFrame::HLine);
         m_qf->setLineWidth(2);
@@ -156,6 +157,20 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         // 	glayout->setColumnStretch( 0, 1 );
 }
 
+
+void IdentityDisplay::statusRecord(const QString & agentnum, const QString & status)
+{
+        // qDebug() << "IdentityDisplay::statusRecord()" << agentnum << m_agent << status;
+        if(agentnum == m_ui->agentid()) {
+                if(status == "started") {
+                        m_record->setText(tr("Stop Record"));
+                        m_record->setProperty("function", "stoprecord");
+                } else if(status == "stopped") {
+                        m_record->setText(tr("Record"));
+                        m_record->setProperty("function", "record");
+                }
+        }
+}
 
 void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
 {
@@ -444,7 +459,10 @@ void IdentityDisplay::setQueueStatus(const QString & status)
 void IdentityDisplay::doRecord()
 {
         // qDebug() << "IdentityDisplay::doRecord()";
-        agentAction("record " + m_ui->astid() + " " + m_ui->agentid());
+        if(sender()->property("function").toString() == "record")
+                agentAction("record " + m_ui->astid() + " " + m_ui->agentid());
+        else if(sender()->property("function").toString() == "stoprecord")
+                agentAction("stoprecord " + m_ui->astid() + " " + m_ui->agentid());
 }
 
 void IdentityDisplay::doAgentAction()
