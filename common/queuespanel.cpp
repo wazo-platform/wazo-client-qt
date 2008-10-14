@@ -140,7 +140,7 @@ void QueuesPanel::setQueueList(bool, const QMap<QString, QVariant> & qlist)
                         QHash <QString, QString> infos;
                         QString ncalls = "0";
                         infos["Calls"] = "0";
-                        for(int j = 1 ; j < (qparams.size() - 1) / 2; j ++)
+                        for(int j = 1 ; j < (qparams.size() + 1) / 2; j ++)
                                 infos[qparams[j * 2 - 1]] = qparams[j * 2];
                         QString queuename = qparams[0];
                         if(! m_queuelabels.contains(queuename)) {
