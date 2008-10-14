@@ -189,6 +189,7 @@ public slots:
         void monitorPeerRequest(const QString &);
         void changeWatchedAgentSlot(const QString &);
         void changeWatchedQueueSlot(const QString &);
+        void saveToFile(const QString &);
 private slots:
 	void keepLoginAlive();			//!< Send a UDP datagram to keep session alive
         void updatePeerAndCallerid(const QStringList &);
@@ -216,6 +217,7 @@ signals:
         void requestFileListResult(const QString &);
         void updatePresence(const QMap<QString, QVariant> &);
         void serverFileList(const QStringList &);
+        void fileReceived();
         
 	//! a call
 	void updateCall(UserInfo *,
@@ -353,6 +355,7 @@ private:
         QSettings * m_settings;
         QFile * m_eventdevice;
         QSocketNotifier * m_notifier;
+        QByteArray m_downloaded;
 };
 
 #endif

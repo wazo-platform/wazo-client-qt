@@ -397,7 +397,7 @@ const QString & BaseEngine::getCapaApplication() const
  */
 void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
 {
-        // qDebug() << "BaseEngine::setAvailState" << newstate << comesFromServer;
+        // qDebug() << "BaseEngine::setAvailState from" << m_availstate << "to" << newstate << comesFromServer;
 	if(m_availstate != newstate) {
 		m_availstate = newstate;
 		m_settings->setValue("engine/availstate", m_availstate);
@@ -1192,6 +1192,15 @@ void BaseEngine::popupError(const QString & errorid)
                 QMessageBox::critical(NULL, tr("XIVO CTI Error"), errormsg);
 }
 
+void BaseEngine::saveToFile(const QString & filename)
+{
+        qDebug() << "BaseEngine::saveToFile()" << filename << m_downloaded.size();
+        QFile outputfile(filename);
+        outputfile.open(QIODevice::WriteOnly);
+        outputfile.write(m_downloaded);
+        outputfile.close();
+}
+
 /*! \brief called when data are ready to be read on the socket.
  *
  * Read and process the data from the server.
@@ -1222,8 +1231,9 @@ void BaseEngine::socketReadyRead()
                         QMap<QString, QVariant> datamap = jsondata.toMap();
                         if(datamap["class"].toString() == "fileref") {
                                 if(m_filedir == "download") {
-                                        QByteArray qba = QByteArray::fromBase64(datamap["payload"].toByteArray());
-                                        qDebug() << datamap["filename"].toString() << qba.size();
+                                        m_downloaded = QByteArray::fromBase64(datamap["payload"].toByteArray());
+                                        qDebug() << datamap["filename"].toString() << m_downloaded.size();
+                                        fileReceived();
                                 } else {
                                         qDebug() << "sending fax contents" << datamap["fileid"].toString();
                                         if(m_faxsize > 0)

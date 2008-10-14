@@ -41,6 +41,7 @@
 
 #include <QDebug>
 #include <QContextMenuEvent>
+#include <QFileDialog>
 #include <QGridLayout>
 #include <QLabel>
 #include <QMenu>
@@ -445,4 +446,20 @@ void AgentdetailsPanel::getFile()
         qDebug() << "AgentdetailsPanel::getFile()";
         QString filename = sender()->property("filename").toString();
         agentAction("getfile " + m_astid + " " + m_agent + " " + filename);
+}
+
+void AgentdetailsPanel::saveToFile()
+{
+        qDebug() << "AgentdetailsPanel::saveToFile()";
+        QFileDialog::Options options;
+        options |= QFileDialog::DontUseNativeDialog;
+        QString selectedFilter;
+        QString fileName = QFileDialog::getSaveFileName(this,
+                                                        tr("Save Sound File"),
+                                                        "",
+                                                        tr("All Files (*)"),
+                                                        &selectedFilter,
+                                                        options);
+        if (!fileName.isEmpty())
+                setFileName(fileName);
 }

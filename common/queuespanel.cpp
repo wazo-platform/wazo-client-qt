@@ -105,7 +105,7 @@ void QueuesPanel::updatePeerAgent(const QString &,
 {
 }
 
-void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues)
+void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
 {
         // qDebug() << "QueuesPanel::removeQueues" << astid << queues;
         foreach(QString queuename, queues) {

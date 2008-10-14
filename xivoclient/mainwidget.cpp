@@ -811,6 +811,10 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(agentAction(const QString &)));
                                 connect( m_engine, SIGNAL(serverFileList(const QStringList &)),
                                          m_xlet[dc], SLOT(serverFileList(const QStringList &)));
+                                connect( m_engine, SIGNAL(fileReceived()),
+                                         m_xlet[dc], SLOT(saveToFile()));
+                                connect( m_xlet[dc], SIGNAL(setFileName(const QString &)),
+                                         m_engine, SLOT(saveToFile(const QString &)));
 
 			} else if (dc == QString("conference")) {
                                 m_xlet[dc] = new ConferencePanel();

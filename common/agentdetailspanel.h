@@ -65,11 +65,13 @@ public:
 signals:
         void changeWatchedQueue(const QString &);
         void agentAction(const QString &);
+        void setFileName(const QString &);
 public slots:
 	void newAgent(const QStringList &);
         void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);
+        void saveToFile();
 private slots:
         void queueClicked();
         void actionClicked();
