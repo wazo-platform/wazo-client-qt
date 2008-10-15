@@ -750,9 +750,11 @@ bool BaseEngine::parseCommand(const QString & line)
                                                          datamap["payload"].toMap());
                         
                 } else if (thisclass == "queue-status") {
-                        QStringList liststatus = datamap["payload"].toStringList();
-                        if((liststatus.size() > 1) && (liststatus[0] == m_queue_watched_astid) && (liststatus[1] == m_queue_watched_queueid))
-                                changeWatchedQueueSignal(liststatus);
+                        if((datamap["astid"].toString() == m_queue_watched_astid) &&
+                           (datamap["queuename"].toString() == m_queue_watched_queueid))
+                                changeWatchedQueueSignal(m_queue_watched_astid,
+                                                         m_queue_watched_queueid,
+                                                         datamap["payload"].toMap());
                         
                 } else if (thisclass == "history") {
                         // QCryptographicHash histohash(QCryptographicHash::Sha1);

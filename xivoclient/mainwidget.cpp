@@ -862,8 +862,8 @@ void MainWidget::engineStarted()
                                 } else
                                         addPanel("queuedetails", tr("Agents of a Queue"), m_xlet[dc]);
                                 
-                                connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QStringList &)),
-                                         m_xlet[dc], SLOT(newQueue(const QStringList &)));
+                                connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &, const QString &, const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(newQueue(const QString &, const QString &, const QMap<QString, QVariant> &)));
                                 connect( m_xlet[dc], SIGNAL(changeWatchedAgent(const QString &)),
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
@@ -879,8 +879,8 @@ void MainWidget::engineStarted()
                                 } else
                                         addPanel(dc, tr("Calls of a Queue"), m_xlet[dc]);
                                 
-                                connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QStringList &)),
-                                         m_xlet[dc], SLOT(newQueue(const QStringList &)));
+                                connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &, const QString &, const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(newQueue(const QString &, const QString &, const QMap<QString, QVariant> &)));
                                 
 			} else if (dc == QString("datetime")) {
 				m_xlet[dc] = new DatetimePanel();

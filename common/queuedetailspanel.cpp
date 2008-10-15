@@ -58,14 +58,17 @@ QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
         m_label = new QLabel("", this);
         m_queuelegend_agentid = new QLabel(tr("Agent Id"), this);
         m_queuelegend_status = new QLabel(tr("Status"), this);
+        m_queuelegend_callstaken = new QLabel(tr("Calls Taken"), this);
         m_maxbusy = 0;
         m_gridlayout->setColumnStretch( 5, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_label, 0, 0);
         m_gridlayout->addWidget(m_queuelegend_agentid, 1, 0);
         m_gridlayout->addWidget(m_queuelegend_status, 1, 1);
+        m_gridlayout->addWidget(m_queuelegend_callstaken, 1, 2);
         m_queuelegend_agentid->hide();
         m_queuelegend_status->hide();
+        m_queuelegend_callstaken->hide();
 }
 
 QueuedetailsPanel::~QueuedetailsPanel()
@@ -149,32 +152,31 @@ void QueuedetailsPanel::update()
                 m_agentlabels[agentname]->setMinimumWidth(agentwidth);
 }
 
-void QueuedetailsPanel::newQueue(const QStringList & queuestatus)
+void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid, const QMap<QString, QVariant> & queuestatus)
 {
-        // qDebug() << "QueuedetailsPanel::newQueue()" << queuestatus;
+        // qDebug() << "QueuedetailsPanel::newQueue()" << astid << queueid << queuestatus;
         QStringList prevlist = m_agentlist;
-        if(queuestatus.size() > 2) {
-                int nagents = queuestatus[2].toInt();
-                m_queuelegend_agentid->show();
-                m_queuelegend_status->show();
-                m_agentlist.clear();
-                for(int i = 3 ; i < 3 + nagents; i++)
-                        if(queuestatus[i].size() > 0) {
-                                QString agname = queuestatus[i].split(",")[0];
-                                if(agname.startsWith("Agent/"))
-                                        m_agentlist << agname.mid(6);
-                                else
-                                        m_agentlist << agname;
-                        }
-                m_agentlist.sort();
+        m_queuelegend_agentid->show();
+        m_queuelegend_status->show();
+        m_queuelegend_callstaken->show();
+        m_agentlist.clear();
+        foreach(QString agname, queuestatus["agents"].toMap().keys()) {
+                //                 qDebug() << agname
+                //                          << queuestatus["agents"].toMap()[agname].toMap()["Status"].toString()
+                //                          << queuestatus["agents"].toMap()[agname].toMap()["CallsTaken"].toString();
+                if(agname.startsWith("Agent/"))
+                        m_agentlist << agname.mid(6);
+                else
+                        m_agentlist << agname;
         }
-
-        if ((m_astid == queuestatus[0]) && (m_queueid == queuestatus[1])) {
+        m_agentlist.sort();
+        
+        if ((m_astid == astid) && (m_queueid == queueid)) {
                 if (prevlist != m_agentlist)
                         update();
         } else {
-                m_astid = queuestatus[0];
-                m_queueid = queuestatus[1];
+                m_astid = astid;
+                m_queueid = queueid;
                 m_label->setText("<b>" + m_queueid + "</b> " + tr("on") + " <b>" + m_astid + "</b>");
                 update();
         }

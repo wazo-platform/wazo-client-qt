@@ -65,7 +65,7 @@ signals:
         void changeWatchedAgent(const QString &);
 protected:
 public slots:
-	void newQueue(const QStringList &);
+	void newQueue(const QString &, const QString &, const QMap<QString, QVariant> &);
         void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);
@@ -83,6 +83,7 @@ private:
         QString m_queueid;
         QLabel * m_queuelegend_agentid;
         QLabel * m_queuelegend_status;
+        QLabel * m_queuelegend_callstaken;
         QLabel * m_label;
         QHash<QString, QPushButton *> m_agentlabels;
         QHash<QString, QLabel *> m_agentstatus;

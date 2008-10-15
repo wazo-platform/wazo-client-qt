@@ -71,11 +71,11 @@ void QueueentrydetailsPanel::updatePeerAgent(const QString &, const QString &, c
         // qDebug() << "QueueentrydetailsPanel::updatePeerAgent()";
 }
 
-void QueueentrydetailsPanel::newQueue(const QStringList & queuestatus)
+void QueueentrydetailsPanel::newQueue(const QString & astid, const QString & queueid, const QMap<QString, QVariant> & queuestatus)
 {
-        // qDebug() << "QueueentrydetailsPanel::newQueue()" << queuestatus;
-        m_astid = queuestatus[0];
-        m_queueid = queuestatus[1];
+        // qDebug() << "QueueentrydetailsPanel::newQueue()" << astid << queueid << queuestatus;
+        m_astid = astid;
+        m_queueid = queueid;
         m_label->setText("<b>" + m_queueid + "</b> " + tr("on") + " <b>" + m_astid + "</b>");
 
         QHashIterator<QString, QLabel *> i(m_entrypos);
@@ -90,25 +90,22 @@ void QueueentrydetailsPanel::newQueue(const QStringList & queuestatus)
         }
         m_entrypos.clear();
         m_entrytime.clear();
-
-        if(queuestatus.size() > 2) {
-                int nagents = queuestatus[2].toInt();
-                int nentries = queuestatus[nagents + 3].toInt();
-                QString astid = queuestatus[0];
-                for(int i = nagents + 4 ; i < nagents + 4 + nentries; i++)
-                        if(queuestatus[i].size() > 0) {
-                                QStringList entryinfos = queuestatus[i].split(",");
-                                if(entryinfos.size() > 4) {
-                                        // QString entryname = entryinfos[0];
-                                        QString entryname = entryinfos[4] + " <" + entryinfos[3] + ">";
-                                        QString entrypos = entryinfos[1];
-                                        QString entrytime = entryinfos[2];
-                                        m_entrypos[entryname] = new QLabel(entryname + " :: " + entrypos, this);
-                                        m_entrytime[entryname] = new QLabel(entrytime, this);
-                                        m_gridlayout->addWidget( m_entrypos[entryname], i + 1, 1, Qt::AlignLeft );
-                                        m_gridlayout->addWidget( m_entrytime[entryname], i + 1, 2, Qt::AlignLeft );
-                                }
-                        }
+        
+        int k = 0;
+        foreach(QString channel, queuestatus["entries"].toMap().keys()) {
+                QStringList entryinfos = queuestatus["entries"].toMap()[channel].toStringList();
+                // qDebug() << channel << entryinfos;
+                if(entryinfos.size() > 3) {
+                        // QString entryname = entryinfos[0];
+                        QString entryname = entryinfos[3] + " <" + entryinfos[2] + ">";
+                        QString entrypos = entryinfos[0];
+                        QString entrytime = entryinfos[1];
+                        m_entrypos[entryname] = new QLabel(entryname + " :: " + entrypos, this);
+                        m_entrytime[entryname] = new QLabel(entrytime, this);
+                        m_gridlayout->addWidget( m_entrypos[entryname], k + 1, 0, Qt::AlignLeft );
+                        m_gridlayout->addWidget( m_entrytime[entryname], k + 1, 1, Qt::AlignLeft );
+                        k ++;
+                }
         }
 }
 
