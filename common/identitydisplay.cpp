@@ -245,20 +245,16 @@ void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)
         QString astid = alist["astid"].toString();
         if (astid != m_ui->astid())
                 return;
-        QStringList agents = alist["list"].toStringList();
-        if (agents.size() == 0)
-                return;
         
-        for(int i = 0 ; i < agents.size(); i++) {
-                QStringList ags = agents[i].split(":");
-                QString agnum = ags[0];
+        QStringList agentids = alist["newlist"].toMap().keys();
+        agentids.sort();
+        foreach(QString agnum, agentids) {
                 if(agnum == m_ui->agentid()) {
-                        QString agstatus = ags[1];
-                        QString agfullname = ags[2];
-                        QString phonenum = ags[3];
-                        QStringList agq = ags[4].split(",");
-                        qDebug() << "IdentityDisplay::setAgentList" << astid << agnum << agstatus
-                                 << agfullname << phonenum;
+                        QVariant properties = alist["newlist"].toMap()[agnum].toMap()["properties"];
+                        QStringList agqjoined = alist["newlist"].toMap()[agnum].toMap()["queues"].toStringList();
+                        QString agstatus = properties.toMap()["status"].toString();
+                        QString agfullname = properties.toMap()["name"].toString();
+                        QString phonenum = properties.toMap()["phonenum"].toString();
                         
                         m_agent->setText("Agent " + agnum);
                         m_agent->show();
@@ -266,7 +262,7 @@ void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)
                         m_agentaction->show();
                         m_agentaction->setText(phonenum);
                         
-                        if(agstatus == "0") {
+                        if(agstatus == "AGENT_LOGGEDOFF") {
                                 m_agentaction->setIcon(QIcon(":/images/cancel.png"));
                                 m_agentstatus = false;
                                 m_queueaction->hide();
@@ -274,7 +270,7 @@ void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)
                                 m_queueleaveall->hide();
                                 m_queuejoinall->hide();
                                 m_queuebusy->hide();
-                        } else if(agstatus == "1") {
+                        } else if(agstatus == "AGENT_IDLE") {
                                 m_agentaction->setIcon(QIcon(":/images/button_ok.png"));
                                 m_agentstatus = true;
                                 if(m_queuesindexes.size() > 0) {
@@ -288,7 +284,7 @@ void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)
                                 }
                         }
                         
-                        foreach (QString agqprops, agq) {
+                        foreach (QString agqprops, agqjoined) {
                                 QStringList agqprops_split = agqprops.split("-");
                                 qDebug() << "IdentityDisplay::setAgentList" << agqprops_split;
                                 QString queuename = agqprops_split[0];

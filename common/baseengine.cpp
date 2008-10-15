@@ -743,9 +743,11 @@ bool BaseEngine::parseCommand(const QString & line)
                         statusRecord(datamap["agentnum"].toString(), datamap["status"].toString());
                         
                 } else if (thisclass == "agent-status") {
-                        QStringList liststatus = datamap["payload"].toStringList();
-                        if((liststatus.size() > 1) && (liststatus[0] == m_agent_watched_astid) && (liststatus[1] == m_agent_watched_agentid))
-                                changeWatchedAgentSignal(liststatus);
+                        if((datamap["astid"].toString() == m_agent_watched_astid) &&
+                           (datamap["agentnum"].toString() == m_agent_watched_agentid))
+                                changeWatchedAgentSignal(m_agent_watched_astid,
+                                                         m_agent_watched_agentid,
+                                                         datamap["payload"].toMap());
                         
                 } else if (thisclass == "queue-status") {
                         QStringList liststatus = datamap["payload"].toStringList();

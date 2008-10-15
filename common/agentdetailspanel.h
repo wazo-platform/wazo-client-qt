@@ -67,7 +67,7 @@ signals:
         void agentAction(const QString &);
         void setFileName(const QString &);
 public slots:
-	void newAgent(const QStringList &);
+        void newAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
         void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);

@@ -257,7 +257,7 @@ signals:
 	void optChanged(const QString &, bool);
 	void forwardUpdated(const QString &, bool, const QString &);
         void changesAvailChecks();
-        void changeWatchedAgentSignal(const QStringList &);
+        void changeWatchedAgentSignal(const QString &, const QString &, const QMap<QString, QVariant> &);
         void changeWatchedQueueSignal(const QStringList &);
         void updateAgentPresence(const QString &, const QString &);
         void displayFiche(const QString &, bool);

@@ -803,8 +803,8 @@ void MainWidget::engineStarted()
                                 } else
                                         addPanel("agentdetails", tr("Agent Details"), m_xlet[dc]);
                                 
-                                connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QStringList &)),
-                                         m_xlet[dc], SLOT(newAgent(const QStringList &)));
+                                connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QString &, const QString &, const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(newAgent(const QString &, const QString &, const QMap<QString, QVariant> &)));
                                 connect( m_xlet[dc], SIGNAL(changeWatchedQueue(const QString &)),
                                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
