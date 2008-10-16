@@ -1011,11 +1011,18 @@ bool BaseEngine::parseCommand(const QString & line)
                                         sc2->addString("capaid", capas[0]);
                         }
                         
-                        if(m_loginkind > 0) {
+                        switch(m_loginkind) {
+                        case 0:
+                                sc2->addString("loginkind", "user");
+                                break;
+                        case 2:
+                                sc2->addString("agentlogin", "now");
+                        case 1:
                                 sc2->addString("loginkind", "agent");
                                 sc2->addString("phonenumber", m_phonenumber);
-                        } else
-                                sc2->addString("loginkind", "user");
+                                break;
+                        }
+                        
                         if(m_checked_function["presence"])
                                 sc2->addString("state", m_availstate);
                         else

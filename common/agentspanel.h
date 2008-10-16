@@ -94,10 +94,10 @@ private:
         QHash<QString, QLabel *>      m_agent_joined_status;
         QHash<QString, QLabel *>      m_agent_paused_number;
         QHash<QString, QLabel *>      m_agent_paused_status;
-
+        
         QHash<QString, QStringList> m_agent_joined_list;
         QHash<QString, QStringList> m_agent_paused_list;
-
+        
         QLabel * m_title1;
         QLabel * m_title2;
         QLabel * m_title3;

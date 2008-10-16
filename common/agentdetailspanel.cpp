@@ -51,6 +51,8 @@
 
 #include "agentdetailspanel.h"
 
+QColor Orange = QColor(255, 128, 0);
+
 /*! \brief Constructor
  */
 AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
@@ -62,14 +64,16 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_agent = "";
         m_agentname = new QLabel("", this);
         m_agentstatus = new QLabel("", this);
-        m_agentlegend_qname = new QLabel(tr("Queue Name"), this);
+        m_agentlegend_qname = new QLabel(tr("Queue"), this);
         m_agentlegend_joined = new QLabel(tr("Joined"), this);
-        m_agentlegend_paused = new QLabel(tr("UnPaused"), this);
+        m_agentlegend_paused = new QLabel(tr("Paused"), this);
+        m_agentlegend_njoined = new QLabel("0", this);
+        m_agentlegend_npaused = new QLabel("0", this);
         
         m_actionlegends["record"] = tr("Record");
         m_actionlegends["listen"] = tr("Listen");
         m_actionlegends["getfile"] = tr("Get File");
-
+        
         int queuewidth = 0;
         foreach (QString function, m_actionlegends.keys()) {
                 m_action[function] = new QPushButton(m_actionlegends[function]);
@@ -87,15 +91,20 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
                 m_gridlayout->addWidget(m_action[function], m_linenum ++, 0, Qt::AlignCenter);
         }
         
-        m_gridlayout->addWidget(m_agentlegend_qname, m_linenum, 0, Qt::AlignCenter);
-        m_gridlayout->addWidget(m_agentlegend_joined, m_linenum, 1, 1, 3, Qt::AlignCenter);
-        m_gridlayout->addWidget(m_agentlegend_paused, m_linenum, 4, 1, 3, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentlegend_qname, m_linenum, 0, Qt::AlignLeft);
+        m_gridlayout->addWidget(m_agentlegend_joined, m_linenum, 2, 1, 3, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentlegend_paused, m_linenum, 5, 1, 3, Qt::AlignCenter);
+        m_linenum ++;
+        m_gridlayout->addWidget(m_agentlegend_njoined, m_linenum, 2, 1, 3, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_agentlegend_npaused, m_linenum, 5, 1, 3, Qt::AlignCenter);
         m_linenum ++;
         
         m_gridlayout->setVerticalSpacing(0);
         m_agentlegend_qname->hide();
         m_agentlegend_joined->hide();
         m_agentlegend_paused->hide();
+        m_agentlegend_njoined->hide();
+        m_agentlegend_npaused->hide();
         
         foreach (QString function, m_actionlegends.keys()) {
                 m_action[function]->hide();
@@ -131,7 +140,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
         } else if(command == "joinqueue") {
                 if((m_agent == agname) && (m_astid == astid)) {
                         QString qname = params[3];
-                        if(m_queuelabels.contains(qname)) {
+                        if(m_queue_labels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::green);
                                 m_queue_join_status[qname]->setPixmap(* square);
@@ -140,7 +149,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
 
                                 QString pstatus = params[4];
                                 if(pstatus == "1") {
-                                        square->fill(Qt::gray);
+                                        square->fill(Orange);
                                         m_queue_pause_status[qname]->setPixmap(* square);
                                         m_queue_pause_status[qname]->setProperty("paused", "y");
                                         m_queue_pause_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
@@ -157,7 +166,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
         } else if(command == "leavequeue") {
                 if((m_agent == agname) && (m_astid == astid)) {
                         QString qname = params[3];
-                        if(m_queuelabels.contains(qname)) {
+                        if(m_queue_labels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::gray);
                                 m_queue_join_status[qname]->setPixmap(* square);
@@ -171,9 +180,9 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
         } else if(command == "paused") {
                 if((m_agent == agname) && (m_astid == astid)) {
                         QString qname = params[3];
-                        if(m_queuelabels.contains(qname)) {
+                        if(m_queue_labels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
-                                square->fill(Qt::gray);
+                                square->fill(Orange);
                                 m_queue_pause_status[qname]->setPixmap(* square);
                                 m_queue_pause_status[qname]->setProperty("paused", "y");
                                 m_queue_pause_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
@@ -182,7 +191,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
         } else if(command == "unpaused") {
                 if((m_agent == agname) && (m_astid == astid)) {
                         QString qname = params[3];
-                        if(m_queuelabels.contains(qname)) {
+                        if(m_queue_labels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::green);
                                 m_queue_pause_status[qname]->setPixmap(* square);
@@ -193,7 +202,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
         } else if(command == "queuememberstatus") {
                 if((m_agent == agname) && (m_astid == astid)) {
                         QString qname = params[3];
-                        if(m_queuelabels.contains(qname)) {
+                        if(m_queue_labels.contains(qname)) {
                                 QString jstatus = params[4];
                                 QString pstatus = params[5];
 
@@ -205,7 +214,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                         m_queue_join_action[qname]->setIcon(QIcon(":/images/cancel.png"));
                                         
                                         if(pstatus == "1") {
-                                                square->fill(Qt::gray);
+                                                square->fill(Orange);
                                                 m_queue_pause_status[qname]->setPixmap(* square);
                                                 m_queue_pause_status[qname]->setProperty("paused", "y");
                                                 m_queue_pause_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
@@ -247,10 +256,15 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
 
         m_agentname->setText("<b>" + m_agent + "</b> (" + longname + ") " + tr("on") + " <b>" + m_astid + "</b>");
         
-        QHashIterator<QString, QPushButton *> i(m_queuelabels);
+        QHashIterator<QString, QLabel *> i(m_queue_labels);
         while (i.hasNext()) {
                 i.next();
                 delete i.value();
+        }
+        QHashIterator<QString, QPushButton *> i2(m_queue_more);
+        while (i2.hasNext()) {
+                i2.next();
+                delete i2.value();
         }
         QHashIterator<QString, QLabel *> j(m_queue_join_status);
         while (j.hasNext()) {
@@ -272,7 +286,8 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                 m.next();
                 delete m.value();
         }
-        m_queuelabels.clear();
+        m_queue_labels.clear();
+        m_queue_more.clear();
         m_queue_join_status.clear();
         m_queue_join_action.clear();
         m_queue_pause_status.clear();
@@ -287,10 +302,11 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         m_agentlegend_qname->show();
         m_agentlegend_joined->show();
         m_agentlegend_paused->show();
+        m_agentlegend_njoined->show();
+        m_agentlegend_npaused->show();
         foreach (QString function, m_actionlegends.keys())
                 m_action[function]->show();
         
-        int queuewidth = 0;
         int ii = 0;
         foreach (QVariant qv, queuesstats) {
                 QStringList queueinfos = qv.toStringList();
@@ -302,15 +318,17 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                         pstatus = queueinfos[1];
                         sstatus = queueinfos[2];
                 }
-                m_queuelabels[queueid] = new QPushButton(queueid, this);
-                m_queuelabels[queueid]->setProperty("astid", m_astid);
-                m_queuelabels[queueid]->setProperty("queueid", queueid);
-                m_queuelabels[queueid]->setProperty("action", "changequeue");
-                connect( m_queuelabels[queueid], SIGNAL(clicked()),
+                m_queue_labels[queueid] = new QLabel(queueid, this);
+                
+                m_queue_more[queueid] = new QPushButton(this);
+                m_queue_more[queueid]->setProperty("astid", m_astid);
+                m_queue_more[queueid]->setProperty("queueid", queueid);
+                m_queue_more[queueid]->setProperty("action", "changequeue");
+                connect( m_queue_more[queueid], SIGNAL(clicked()),
                          this, SLOT(queueClicked()));
-                if(m_queuelabels[queueid]->sizeHint().width() > queuewidth)
-                        queuewidth = m_queuelabels[queueid]->sizeHint().width();
-                        
+                m_queue_more[queueid]->setIconSize(QSize(10, 10));
+                m_queue_more[queueid]->setIcon(QIcon(":/images/add.png"));
+
                 m_queue_join_status[queueid] = new QLabel(this);
                 m_queue_join_action[queueid] = new QPushButton(this);
                 m_queue_join_action[queueid]->setProperty("astid", m_astid);
@@ -352,7 +370,7 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                                 m_queue_pause_status[queueid]->setProperty("paused", "n");
                                 m_queue_pause_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
                         } else {
-                                square->fill(Qt::gray);
+                                square->fill(Orange);
                                 m_queue_pause_status[queueid]->setPixmap(* square);
                                 m_queue_pause_status[queueid]->setProperty("paused", "y");
                                 m_queue_pause_action[queueid]->setIcon(QIcon(":/images/button_ok.png"));
@@ -360,16 +378,14 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                         m_queue_pause_status[queueid]->show();
                         m_queue_pause_action[queueid]->show();
                 }
-                m_gridlayout->addWidget( m_queuelabels[queueid], ii + m_linenum, 0, Qt::AlignCenter );
-                m_gridlayout->addWidget( m_queue_join_status[queueid], ii + m_linenum, 1, Qt::AlignCenter );
-                m_gridlayout->addWidget( m_queue_join_action[queueid], ii + m_linenum, 2, Qt::AlignCenter );
-                m_gridlayout->addWidget( m_queue_pause_status[queueid], ii + m_linenum, 4, Qt::AlignCenter );
-                m_gridlayout->addWidget( m_queue_pause_action[queueid], ii + m_linenum, 5, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queue_labels[queueid], ii + m_linenum, 0, Qt::AlignLeft );
+                m_gridlayout->addWidget( m_queue_more[queueid], ii + m_linenum, 1, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queue_join_status[queueid], ii + m_linenum, 2, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queue_join_action[queueid], ii + m_linenum, 3, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queue_pause_status[queueid], ii + m_linenum, 5, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queue_pause_action[queueid], ii + m_linenum, 6, Qt::AlignCenter );
                 ii ++;
         }
-                
-        foreach (QString queueid, m_queuelabels.keys())
-                m_queuelabels[queueid]->setMinimumWidth(queuewidth);
 }
 
 void AgentdetailsPanel::queueClicked()

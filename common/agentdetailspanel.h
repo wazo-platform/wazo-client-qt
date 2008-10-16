@@ -93,9 +93,13 @@ private:
         QLabel * m_agentlegend_qname;
         QLabel * m_agentlegend_joined;
         QLabel * m_agentlegend_paused;
+        QLabel * m_agentlegend_njoined;
+        QLabel * m_agentlegend_npaused;
         QHash<QString, QString> m_actionlegends;
         QHash<QString, QPushButton *> m_action;
-        QHash<QString, QPushButton *> m_queuelabels;
+        
+        QHash<QString, QLabel *> m_queue_labels;
+        QHash<QString, QPushButton *> m_queue_more;
         QHash<QString, QPushButton *> m_queue_join_action;
         QHash<QString, QPushButton *> m_queue_pause_action;
         QHash<QString, QLabel *> m_queue_join_status;

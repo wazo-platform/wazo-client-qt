@@ -101,7 +101,7 @@ private:
 	QLineEdit * m_password;		//!< user password
 	QCheckBox * m_keeppass;		//!< keep password ?
 	QLineEdit * m_userid;		//!< user login
-	QCheckBox * m_loginkind;	//!< login kind (user or agent)
+	QComboBox * m_loginkind;	//!< login kind (user or agent)
 	QLineEdit * m_phonenumber;	//!< agent's phone number
 
         QLabel * m_lblulogin;

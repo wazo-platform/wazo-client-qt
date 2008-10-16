@@ -43,6 +43,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QCloseEvent>
+#include <QComboBox>
 #include <QDateTime>
 #include <QDebug>
 #include <QDockWidget>
@@ -184,8 +185,11 @@ MainWidget::MainWidget(BaseEngine * engine,
                 m_qlab3 = new QLineEdit();
                 m_ack = new QPushButton("OK");
                 m_kpass = new QCheckBox(tr("Keep Password"));
-                m_loginkind = new QCheckBox(tr("Login as Agent"));
-
+                m_loginkind = new QComboBox(this);
+                m_loginkind->addItem(QString(tr("No Agent")));
+                m_loginkind->addItem(QString(tr("Agent (unlogged)")));
+                m_loginkind->addItem(QString(tr("Agent (logged)")));
+                
                 connect( m_qlab1, SIGNAL(returnPressed()),
                          this, SLOT(config_and_start()) );
                 // connect( m_qlab1, SIGNAL(textChanged(const QString &)),
@@ -196,7 +200,7 @@ MainWidget::MainWidget(BaseEngine * engine,
                          this, SLOT(config_and_start()) );
                 connect( m_ack, SIGNAL(pressed()),
                          this, SLOT(config_and_start()) );
-                connect( m_loginkind, SIGNAL(stateChanged(int)),
+                connect( m_loginkind, SIGNAL(currentIndexChanged(int)),
                          this, SLOT(loginKindChanged(int)) );
                 m_qlab2->setEchoMode(QLineEdit::Password);
         }
@@ -320,15 +324,15 @@ void MainWidget::showLogin()
                 m_gridlayout->addWidget(m_lab1, 2, 0, Qt::AlignRight);
                 m_gridlayout->addWidget(m_qlab1, 2, 1);
                 m_gridlayout->addWidget(m_ack, 2, 2, Qt::AlignLeft);
-
+                
                 m_gridlayout->addWidget(m_lab2, 3, 0, Qt::AlignRight);
                 m_gridlayout->addWidget(m_qlab2, 3, 1);
-                m_gridlayout->addWidget(m_kpass, 3, 2);
-
+                m_gridlayout->addWidget(m_kpass, 3, 2, Qt::AlignLeft);
+                
                 m_gridlayout->addWidget(m_lab3, 4, 0, Qt::AlignRight);
                 m_gridlayout->addWidget(m_qlab3, 4, 1);
-                m_gridlayout->addWidget(m_loginkind, 4, 2);
-
+                m_gridlayout->addWidget(m_loginkind, 4, 2, Qt::AlignLeft);
+                
                 // show widgets after they have been put in the layout, in order for
                 // temporary windows not to be opened
                 m_lab1->show();
@@ -343,9 +347,9 @@ void MainWidget::showLogin()
                 m_qlab2->setText(m_engine->password());
                 m_qlab3->setText(m_engine->phonenumber());
                 m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
-                m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
+                m_loginkind->setCurrentIndex(m_engine->loginkind());
                 
-                loginKindChanged(m_loginkind->checkState());
+                loginKindChanged(m_loginkind->currentIndex());
         }
         m_xivobg->show();
 }
@@ -537,7 +541,7 @@ void MainWidget::confUpdated()
         m_qlab2->setText(m_engine->password());
         m_qlab3->setText(m_engine->phonenumber());
         m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
-        m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
+        m_loginkind->setCurrentIndex(m_engine->loginkind());
 }
 
 /*! \brief process clicks to the systray icon

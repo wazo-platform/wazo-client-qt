@@ -62,6 +62,7 @@ class QAction;
 class QActionGroup;
 class QClipboard;
 class QCloseEvent;
+class QComboBox;
 class QDateTime;
 class QDockWidget;
 class QEvent;
@@ -200,7 +201,7 @@ private:
         QLineEdit * m_qlab3;
         QPushButton * m_ack;
         QCheckBox * m_kpass;
-        QCheckBox * m_loginkind;
+        QComboBox * m_loginkind;
 
 	QMenu * m_avail;		//!< Availability submenu
 	QHash<QString, QAction *> m_avact;	//!< Actions

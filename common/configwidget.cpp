@@ -199,11 +199,14 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         QFrame * qhline3 = new QFrame(this);
         qhline3->setFrameShape(QFrame::HLine);
         gridlayout3->addWidget(qhline3, line++, 0, 1, 2);
-
-	m_loginkind = new QCheckBox(tr("Login as Agent"));
-	m_loginkind->setCheckState((m_engine->loginkind() == 2) ? Qt::Checked : Qt::Unchecked);
+        
+        m_loginkind = new QComboBox(this);
+        m_loginkind->addItem(QString(tr("No Agent")));
+        m_loginkind->addItem(QString(tr("Agent (unlogged)")));
+        m_loginkind->addItem(QString(tr("Agent (logged)")));
+        m_loginkind->setCurrentIndex(m_engine->loginkind());
 	gridlayout3->addWidget(m_loginkind, line++, 0, 1, 2);
-        connect( m_loginkind, SIGNAL(stateChanged(int)),
+        connect( m_loginkind, SIGNAL(currentIndexChanged(int)),
 	         this, SLOT(loginKindChanged(int)) );
         
 	m_lblphone = new QLabel(tr("Phone Number"), this);
@@ -211,7 +214,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         gridlayout3->addWidget(m_lblphone, line, 0);
         gridlayout3->addWidget(m_phonenumber, line++, 1);
 
-        loginKindChanged(m_loginkind->checkState());
+        loginKindChanged(m_loginkind->currentIndex());
 
  	gridlayout3->setRowStretch( line, 1 );
  	gridlayout3->setColumnStretch( 2, 1 );
@@ -292,6 +295,7 @@ ConfigWidget::~ConfigWidget()
 
 void ConfigWidget::loginKindChanged(int index)
 {
+        qDebug() << "ConfigWidget::loginKindChanged()" << index;
         if(index == 0) {
                 m_lblphone->hide();
                 m_phonenumber->hide();
@@ -313,7 +317,7 @@ void ConfigWidget::saveAndClose()
 	m_engine->setServerip(m_serverhost->text());
 
 	m_engine->setCompany(m_company->text());
-        m_engine->setLoginKind(m_loginkind->checkState());
+        m_engine->setLoginKind(m_loginkind->currentIndex());
         m_engine->setKeepPass(m_keeppass->checkState());
 
 	m_engine->setUserId(m_userid->text());
