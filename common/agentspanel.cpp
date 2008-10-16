@@ -260,13 +260,13 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
         QString astid = alist["astid"].toString();
         QStringList agentids = alist["newlist"].toMap().keys();
         agentids.sort();
-        foreach(QString agnum, agentids) {
+        foreach (QString agnum, agentids) {
                 QVariant properties = alist["newlist"].toMap()[agnum].toMap()["properties"];
-                QStringList agqjoined = alist["newlist"].toMap()[agnum].toMap()["queues"].toStringList();
+                QVariantList agqjoined = alist["newlist"].toMap()[agnum].toMap()["queues"].toList();
                 QString agstatus = properties.toMap()["status"].toString();
                 QString agfullname = properties.toMap()["name"].toString();
                 QString phonenum = properties.toMap()["phonenum"].toString();
-                qDebug() << "AgentsPanel::setAgentList" << agnum << agstatus << agfullname << phonenum << agqjoined;
+                // qDebug() << "AgentsPanel::setAgentList" << agnum << agstatus << agfullname << phonenum;
                 
                 if(! m_agent_labels.contains(agnum)) {
                         QFrame * qvline1 = new QFrame(this);
@@ -327,16 +327,16 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                         }
                         m_agent_logged_status[agnum]->setPixmap(QPixmap(* m_square));
                         
-                        foreach (QString agqprops, agqjoined) {
-                                QStringList agqprops_split = agqprops.split("-");
-                                if(agqprops_split.size() > 2) {
-                                        QString qname = agqprops_split[0];
-                                        QString pstatus = agqprops_split[1];
-                                        QString xstatus = agqprops_split[2];
+                        foreach (QVariant qv, agqjoined) {
+                                QStringList agqprops = qv.toStringList();
+                                if(agqprops.size() > 2) {
+                                        QString qname = agqprops[0];
+                                        QString pstatus = agqprops[1];
+                                        QString xstatus = agqprops[2];
                                         m_agent_joined_list[agnum] << qname;
                                         if(pstatus == "0")
                                                 m_agent_paused_list[agnum] << qname;
-                                        // } else if(agqprops_split.size() == 1) {
+                                        // } else if(agqprops.size() == 1) {
                                 }
                         }
                         int njoined = m_agent_joined_list[agnum].size();

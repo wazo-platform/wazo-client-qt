@@ -248,10 +248,10 @@ void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)
         
         QStringList agentids = alist["newlist"].toMap().keys();
         agentids.sort();
-        foreach(QString agnum, agentids) {
+        foreach (QString agnum, agentids) {
                 if(agnum == m_ui->agentid()) {
                         QVariant properties = alist["newlist"].toMap()[agnum].toMap()["properties"];
-                        QStringList agqjoined = alist["newlist"].toMap()[agnum].toMap()["queues"].toStringList();
+                        QVariantList agqjoined = alist["newlist"].toMap()[agnum].toMap()["queues"].toList();
                         QString agstatus = properties.toMap()["status"].toString();
                         QString agfullname = properties.toMap()["name"].toString();
                         QString phonenum = properties.toMap()["phonenum"].toString();
@@ -284,13 +284,13 @@ void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)
                                 }
                         }
                         
-                        foreach (QString agqprops, agqjoined) {
-                                QStringList agqprops_split = agqprops.split("-");
-                                qDebug() << "IdentityDisplay::setAgentList" << agqprops_split;
-                                QString queuename = agqprops_split[0];
+                        foreach (QVariant qv, agqjoined) {
+                                QStringList agqprops = qv.toStringList();
+                                qDebug() << "IdentityDisplay::setAgentList" << agqprops;
+                                QString queuename = agqprops[0];
                                 if (m_queuesindexes.contains(queuename)) {
                                         int idx = m_queuesindexes[queuename];
-                                        if (agqprops_split.size() > 1) {
+                                        if (agqprops.size() > 1) {
                                                 m_queuelist->setItemIcon(idx, QIcon(":/images/button_ok.png"));
                                                 m_queuesstatuses[queuename] = true;
                                         } else {
@@ -316,7 +316,7 @@ void IdentityDisplay::setQueueList(bool changeallow, const QMap<QString, QVarian
         QString astid = qlist["astid"].toString();
         if (astid != m_ui->astid())
                 return;
-        QStringList queues = qlist["queuestats"].toStringList();
+        QStringList queues = qlist["queuestats"].toMap().keys();
         if (queues.size() == 0)
                 return;
         queues.sort();
@@ -515,7 +515,7 @@ void IdentityDisplay::idxChanged(const QString & newidx)
                 m_queuebusy->setRange(0, m_maxqueues + 1);
                 m_queuebusy->setValue(m_queuesbusyness[newidx].toInt());
         } else if(function == "presence") {
-                foreach(QString avstate, m_presence_names.keys())
+                foreach (QString avstate, m_presence_names.keys())
                         if(m_presence_names[avstate] == newidx)
                                 // qDebug() << "IdentityDisplay::idxChanged()" << function << newidx << avstate;
                                 setAvailState(avstate, true);

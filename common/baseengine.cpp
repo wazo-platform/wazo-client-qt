@@ -209,7 +209,7 @@ void BaseEngine::loadSettings()
         m_settings->endGroup();
         
         m_settings->beginGroup("user-functions");
-        foreach(QString function, CheckFunctions)
+        foreach (QString function, CheckFunctions)
                 m_checked_function[function] = m_settings->value(function, false).toBool();
         m_settings->endGroup();
 }
@@ -262,7 +262,7 @@ void BaseEngine::saveSettings()
         m_settings->endGroup();
         
         m_settings->beginGroup("user-functions");
-        foreach(QString function, CheckFunctions)
+        foreach (QString function, CheckFunctions)
                 m_settings->setValue(function, m_checked_function[function]);
         m_settings->endGroup();
 }
@@ -377,7 +377,7 @@ const QMap<QString, QVariant> & BaseEngine::getCapaPresence() const
 
 void BaseEngine::updateCapaPresence(const QMap<QString, QVariant> & presence)
 {
-        foreach(QString field, presence.keys())
+        foreach (QString field, presence.keys())
                 if(presence.contains(field))
                         m_capapresence[field] = presence[field];
 }
@@ -574,7 +574,7 @@ UserInfo * BaseEngine::findUserFromPhone(const QString & astid,
                                          const QString & tech,
                                          const QString & phonenum)
 {
-        foreach(UserInfo * uinfo, m_users)
+        foreach (UserInfo * uinfo, m_users)
                 if(uinfo->hasPhone(astid, context, tech + "/" + phonenum))
                         return uinfo;
         return NULL;
@@ -583,7 +583,7 @@ UserInfo * BaseEngine::findUserFromPhone(const QString & astid,
 UserInfo * BaseEngine::findUserFromAgent(const QString & astid,
                                          const QString & agentnum)
 {
-        foreach(UserInfo * uinfo, m_users)
+        foreach (UserInfo * uinfo, m_users)
                 if(uinfo->hasAgent(astid, agentnum))
                         return uinfo;
         return NULL;
@@ -691,8 +691,7 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "queues") {
                         QString function = datamap["function"].toString();
                         if(function == "sendlist") {
-                                foreach(QVariant qv, datamap["payload"].toList()) {
-                                        qDebug() << qv.toMap();
+                                foreach (QVariant qv, datamap["payload"].toList()) {
                                         if(hasFunction("nojoinleave"))
                                                 newQueueList(false, qv.toMap());
                                         else
@@ -715,7 +714,7 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "agents") {
                         QString function = datamap["function"].toString();
                         if(function == "sendlist") {
-                                foreach(QVariant qv, datamap["payload"].toList())
+                                foreach (QVariant qv, datamap["payload"].toList())
                                         newAgentList(qv.toMap());
                         } else if(function == "update") {
                                 QStringList liststatus = datamap["payload"].toStringList();
@@ -924,7 +923,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                         listpeers.next();
                                         QString astid = listpeers.key();
                                         ServerCommand * ssc = new ServerCommand(listpeers.value());
-                                        foreach(QString phonestatus, ssc->getSubList("")) {
+                                        foreach (QString phonestatus, ssc->getSubList("")) {
                                                 ServerCommand * ssc2 = new ServerCommand(phonestatus);
                                                 qDebug() << astid << ssc2->getStringList("statusbase") << ssc2->getStringList("statusextended");
                                                 // updatePeerAndCallerid(liststatus);
@@ -1041,7 +1040,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         qDebug() << "m_appliname" << m_appliname;
                         
                         // XXXX m_capafuncs => config file
-                        foreach(QString function, CheckFunctions)
+                        foreach (QString function, CheckFunctions)
                                 if(! hasFunction(function)) {
                                         m_checked_function[function] = false;
                                         m_settings->remove("functions/" + function);

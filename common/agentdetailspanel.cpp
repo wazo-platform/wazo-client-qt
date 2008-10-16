@@ -71,7 +71,7 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_actionlegends["getfile"] = tr("Get File");
 
         int queuewidth = 0;
-        foreach(QString function, m_actionlegends.keys()) {
+        foreach (QString function, m_actionlegends.keys()) {
                 m_action[function] = new QPushButton(m_actionlegends[function]);
                 if(m_action[function]->sizeHint().width() > queuewidth)
                         queuewidth = m_action[function]->sizeHint().width();
@@ -82,7 +82,7 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_gridlayout->addWidget(m_agentstatus, m_linenum, 1, 1, 7);
         m_linenum ++;
         
-        foreach(QString function, m_actionlegends.keys()) {
+        foreach (QString function, m_actionlegends.keys()) {
                 m_action[function]->setMinimumWidth(queuewidth);
                 m_gridlayout->addWidget(m_action[function], m_linenum ++, 0, Qt::AlignCenter);
         }
@@ -97,7 +97,7 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_agentlegend_joined->hide();
         m_agentlegend_paused->hide();
         
-        foreach(QString function, m_actionlegends.keys()) {
+        foreach (QString function, m_actionlegends.keys()) {
                 m_action[function]->hide();
                 m_action[function]->setProperty("function", function);
                 connect( m_action[function], SIGNAL(clicked()),
@@ -239,7 +239,7 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         // qDebug() << "AgentdetailsPanel::newAgent()" << astid << agentid << agentstatus;
         m_astid = astid;
         m_agent = agentid;
-        QStringList queuesstats = agentstatus["queues"].toStringList();
+        QVariantList queuesstats = agentstatus["queues"].toList();
         QVariant properties = agentstatus["properties"];
         QString longname = properties.toMap()["name"].toString();
         QString lstatus = properties.toMap()["status"].toString();
@@ -287,19 +287,20 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         m_agentlegend_qname->show();
         m_agentlegend_joined->show();
         m_agentlegend_paused->show();
-        foreach(QString function, m_actionlegends.keys())
+        foreach (QString function, m_actionlegends.keys())
                 m_action[function]->show();
-                
-        queuesstats.sort();
-                
+        
         int queuewidth = 0;
-        for(int i = 0 ; i < queuesstats.size(); i++) {
-                QString queueid = queuesstats[i].split("-")[0];
+        int ii = 0;
+        foreach (QVariant qv, queuesstats) {
+                QStringList queueinfos = qv.toStringList();
+                // for(int i = 0 ; i < queuesstats.size(); i++) {
+                QString queueid = queueinfos[0];
                 QString pstatus = "";
                 QString sstatus = "";
-                if(queuesstats[i].split("-").size() > 2) {
-                        pstatus = queuesstats[i].split("-")[1];
-                        sstatus = queuesstats[i].split("-")[2];
+                if(queueinfos.size() > 2) {
+                        pstatus = queueinfos[1];
+                        sstatus = queueinfos[2];
                 }
                 m_queuelabels[queueid] = new QPushButton(queueid, this);
                 m_queuelabels[queueid]->setProperty("astid", m_astid);
@@ -359,14 +360,15 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                         m_queue_pause_status[queueid]->show();
                         m_queue_pause_action[queueid]->show();
                 }
-                m_gridlayout->addWidget( m_queuelabels[queueid], i + m_linenum, 0, Qt::AlignCenter );
-                m_gridlayout->addWidget( m_queue_join_status[queueid], i + m_linenum, 1, Qt::AlignCenter );
-                m_gridlayout->addWidget( m_queue_join_action[queueid], i + m_linenum, 2, Qt::AlignCenter );
-                m_gridlayout->addWidget( m_queue_pause_status[queueid], i + m_linenum, 4, Qt::AlignCenter );
-                m_gridlayout->addWidget( m_queue_pause_action[queueid], i + m_linenum, 5, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queuelabels[queueid], ii + m_linenum, 0, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queue_join_status[queueid], ii + m_linenum, 1, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queue_join_action[queueid], ii + m_linenum, 2, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queue_pause_status[queueid], ii + m_linenum, 4, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queue_pause_action[queueid], ii + m_linenum, 5, Qt::AlignCenter );
+                ii ++;
         }
                 
-        foreach(QString queueid, m_queuelabels.keys())
+        foreach (QString queueid, m_queuelabels.keys())
                 m_queuelabels[queueid]->setMinimumWidth(queuewidth);
 }
 
@@ -426,7 +428,7 @@ void AgentdetailsPanel::serverFileList(const QStringList & qsl)
 {
         // qDebug() << "AgentdetailsPanel::serverFileList()" << qsl;
         QMenu contextMenu(this);
-        foreach(QString filename, qsl) {
+        foreach (QString filename, qsl) {
                 QAction * action = new QAction(filename, this);
                 action->setProperty("filename", filename);
                 connect( action, SIGNAL(triggered()),

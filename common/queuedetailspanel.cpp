@@ -161,9 +161,9 @@ void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid,
         m_queuelegend_callstaken->show();
         m_agentlist.clear();
         foreach(QString agname, queuestatus["agents"].toMap().keys()) {
-                //                 qDebug() << agname
-                //                          << queuestatus["agents"].toMap()[agname].toMap()["Status"].toString()
-                //                          << queuestatus["agents"].toMap()[agname].toMap()["CallsTaken"].toString();
+                // qDebug() << agname
+                // << queuestatus["agents"].toMap()[agname].toMap()["Status"].toString()
+                // << queuestatus["agents"].toMap()[agname].toMap()["CallsTaken"].toString();
                 if(agname.startsWith("Agent/"))
                         m_agentlist << agname.mid(6);
                 else

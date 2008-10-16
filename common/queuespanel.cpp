@@ -76,12 +76,12 @@ QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
         
         m_title1 = new QLabel(tr("Queue"), this);
         m_title2 = new QLabel(tr("Busy"), this);
-        foreach(QString statitem, m_statitems)
+        foreach (QString statitem, m_statitems)
                 m_title_infos[statitem] = new QLabel(m_statlegends[statitem], this);
 
         m_gridlayout->addWidget( m_title1, 0, 0, Qt::AlignCenter );
         m_gridlayout->addWidget( m_title2, 0, 1, Qt::AlignCenter );
-        foreach(QString statitem, m_statitems)
+        foreach (QString statitem, m_statitems)
                 m_gridlayout->addWidget( m_title_infos[statitem], 0, 2 + m_statitems.indexOf(statitem), Qt::AlignCenter );
 
  	m_gridlayout->setColumnStretch( 2 + m_statitems.size(), 1 );
@@ -108,7 +108,7 @@ void QueuesPanel::updatePeerAgent(const QString &,
 void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
 {
         // qDebug() << "QueuesPanel::removeQueues" << astid << queues;
-        foreach(QString queuename, queues) {
+        foreach (QString queuename, queues) {
                 if(m_queuelabels.contains(queuename)) {
                         m_gridlayout->removeWidget( m_queuelabels[queuename] );
                         m_gridlayout->removeWidget( m_queuebusies[queuename] );
@@ -116,7 +116,7 @@ void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
                         delete m_queuebusies[queuename];
                         m_queuelabels.remove(queuename);
                         m_queuebusies.remove(queuename);
-                        foreach(QString statitem, m_statitems) {
+                        foreach (QString statitem, m_statitems) {
                                 m_gridlayout->removeWidget( m_queueinfos[queuename][statitem] );
                                 delete m_queueinfos[queuename][statitem];
                                 m_queueinfos[queuename].remove(statitem);
@@ -130,48 +130,43 @@ void QueuesPanel::setQueueList(bool, const QMap<QString, QVariant> & qlist)
 {
         // qDebug() << "QueuesPanel::setQueueList()" << qlist;
         QString astid = qlist["astid"].toString();
-        QStringList queues = qlist["queuestats"].toStringList();
-        
-        if(queues.size() > 0) {
-                queues.sort();
-                foreach(QString queueargs, queues) {
-                        // for(int i = 0 ; i < queues.size(); i++) {
-                        QStringList qparams = queueargs.split(":");
-                        QHash <QString, QString> infos;
-                        QString ncalls = "0";
-                        infos["Calls"] = "0";
-                        for(int j = 1 ; j < (qparams.size() + 1) / 2; j ++)
-                                infos[qparams[j * 2 - 1]] = qparams[j * 2];
-                        QString queuename = qparams[0];
-                        if(! m_queuelabels.contains(queuename)) {
-                                m_queuelabels[queuename] = new QPushButton(queuename, this);
-                                m_queuelabels[queuename]->setProperty("astid", astid);
-                                m_queuelabels[queuename]->setProperty("queueid", queuename);
-                                connect( m_queuelabels[queuename], SIGNAL(clicked()),
-                                         this, SLOT(queueClicked()));
-                                m_queuebusies[queuename] = new QProgressBar(this);
-                                m_queuebusies[queuename]->setProperty("queueid", queuename);
-                                m_queuebusies[queuename]->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
-                                m_queuebusies[queuename]->setFormat("%v");
-                                foreach(QString statitem, m_statitems)
-                                        m_queueinfos[queuename][statitem] = new QLabel();
-                                int linenum = m_queuelabels.size();
-                                m_gridlayout->addWidget( m_queuelabels[queuename], linenum, 0, Qt::AlignCenter );
-                                m_gridlayout->addWidget( m_queuebusies[queuename], linenum, 1, Qt::AlignCenter );
-                                foreach(QString statitem, m_statitems)
-                                        m_gridlayout->addWidget( m_queueinfos[queuename][statitem],
-                                                                 linenum,
-                                                                 2 + m_statitems.indexOf(statitem),
-                                                                 Qt::AlignRight );
-                                if(m_queuelabels[queuename]->sizeHint().width() > m_queuewidth)
-                                        m_queuewidth = m_queuelabels[queuename]->sizeHint().width();
-                        }
-                        m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
-                        foreach(QString statitem, m_statitems)
-                                m_queueinfos[queuename][statitem]->setText(infos[statitem]);
+        QMap<QString, QVariant> queuestats = qlist["queuestats"].toMap();
+        foreach (QString queuename, queuestats.keys()) {
+                QMap<QString, QVariant> queuestatcontents = queuestats[queuename].toMap();
+                QHash <QString, QString> infos;
+                QString ncalls = "0";
+                infos["Calls"] = "0";
+                foreach (QString statname, queuestatcontents.keys()) {
+                        infos[statname] = queuestatcontents[statname].toString();
                 }
-                update();
+                if(! m_queuelabels.contains(queuename)) {
+                        m_queuelabels[queuename] = new QPushButton(queuename, this);
+                        m_queuelabels[queuename]->setProperty("astid", astid);
+                        m_queuelabels[queuename]->setProperty("queueid", queuename);
+                        connect( m_queuelabels[queuename], SIGNAL(clicked()),
+                                 this, SLOT(queueClicked()));
+                        m_queuebusies[queuename] = new QProgressBar(this);
+                        m_queuebusies[queuename]->setProperty("queueid", queuename);
+                        m_queuebusies[queuename]->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
+                        m_queuebusies[queuename]->setFormat("%v");
+                        foreach (QString statitem, m_statitems)
+                                m_queueinfos[queuename][statitem] = new QLabel();
+                        int linenum = m_queuelabels.size();
+                        m_gridlayout->addWidget( m_queuelabels[queuename], linenum, 0, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_queuebusies[queuename], linenum, 1, Qt::AlignCenter );
+                        foreach (QString statitem, m_statitems)
+                                m_gridlayout->addWidget( m_queueinfos[queuename][statitem],
+                                                         linenum,
+                                                         2 + m_statitems.indexOf(statitem),
+                                                         Qt::AlignRight );
+                        if(m_queuelabels[queuename]->sizeHint().width() > m_queuewidth)
+                                m_queuewidth = m_queuelabels[queuename]->sizeHint().width();
+                }
+                m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
+                foreach (QString statitem, m_statitems)
+                        m_queueinfos[queuename][statitem]->setText(infos[statitem]);
         }
+        update();
 }
 
 void QueuesPanel::update()
@@ -199,7 +194,7 @@ void QueuesPanel::update()
                         qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ff0000;}");
         }
         
-        foreach(QString queuename, m_queuelabels.keys())
+        foreach (QString queuename, m_queuelabels.keys())
                 m_queuelabels[queuename]->setMinimumWidth(m_queuewidth);
 }
 
