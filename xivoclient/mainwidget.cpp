@@ -165,6 +165,7 @@ MainWidget::MainWidget(BaseEngine * engine,
                 this, SLOT(clipselection()));
         connect(m_clipboard, SIGNAL(dataChanged()),
                 this, SLOT(clipdata()));
+        m_clipboard->setText("", QClipboard::Selection); // see comment in MainWidget::clipselection()
         
         // to be better defined
         // resize(500, 400);
@@ -229,10 +230,15 @@ void MainWidget::clipselection()
         // qDebug() << "BaseEngine::clipselection()" << m_clipboard->text(QClipboard::Selection);
         // statusBar()->showMessage("selected : " + m_clipboard->text(QClipboard::Selection));
         
-        pasteToDialPanel(m_clipboard->text(QClipboard::Selection));
+        QString selected = m_clipboard->text(QClipboard::Selection);
+        pasteToDialPanel(selected);
         
         // X11 : when a pattern is selected on (seemingly) any KDE(QT) application on Linux
         // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)
+        
+        // X11 (non-KDE) : force a selection to be owned, so that the next not-owned one will be catched
+        if(selected.size() > 0) // avoid infinite loop, however
+                m_clipboard->setText("", QClipboard::Selection);
 }
 
 void MainWidget::clipdata()
@@ -350,6 +356,7 @@ void MainWidget::showLogin()
                 m_loginkind->setCurrentIndex(m_engine->loginkind());
                 
                 loginKindChanged(m_loginkind->currentIndex());
+                m_qlab1->setFocus();
         }
         m_xivobg->show();
 }
