@@ -237,8 +237,13 @@ void MainWidget::clipselection()
         // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)
         
         // X11 (non-KDE) : force a selection to be owned, so that the next not-owned one will be catched
-        if(selected.size() > 0) // avoid infinite loop, however
-                m_clipboard->setText("", QClipboard::Selection);
+        // if(selected.size() > 0) // avoid infinite loop, however
+        // m_clipboard->setText("", QClipboard::Selection);
+        
+        // might be boring anyway, since the selected texts disappear at once wherever you are
+        // the following does not fix it :
+        // if((selected.size() > 0) && (! m_clipboard->ownsSelection()))
+        // m_clipboard->setText(selected, QClipboard::Selection);
 }
 
 void MainWidget::clipdata()

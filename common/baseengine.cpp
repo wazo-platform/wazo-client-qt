@@ -698,12 +698,8 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "queues") {
                         QString function = datamap["function"].toString();
                         if(function == "sendlist") {
-                                foreach (QVariant qv, datamap["payload"].toList()) {
-                                        if(hasFunction("nojoinleave"))
-                                                newQueueList(false, qv.toMap());
-                                        else
-                                                newQueueList(true, qv.toMap());
-                                }
+                                foreach (QVariant qv, datamap["payload"].toList())
+                                        newQueueList(! hasFunction("nojoinleave"), qv.toMap());
                         }
                         else if(function == "update") {
                                 setQueueStatus(datamap["payload"].toStringList());

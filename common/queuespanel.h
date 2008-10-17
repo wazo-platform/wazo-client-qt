@@ -66,6 +66,8 @@ public:
         void setEngine(BaseEngine *);
 protected:
         void update();
+private:
+        void addQueue(const QString &, const QString &, bool);
 signals:
         void changeWatchedQueue(const QString &);
 public slots:
