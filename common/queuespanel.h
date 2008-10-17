@@ -71,7 +71,7 @@ signals:
 public slots:
         void removeQueues(const QString &, const QStringList &);
 	void setQueueList(bool, const QMap<QString, QVariant> &);
-        void setQueueStatus(const QString &);
+        void setQueueStatus(const QStringList &);
         void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);

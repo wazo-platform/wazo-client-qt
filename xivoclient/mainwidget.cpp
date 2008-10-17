@@ -772,8 +772,8 @@ void MainWidget::engineStarted()
                                 connect( m_xlet[dc], SIGNAL(setAvailState(const QString &, bool)),
                                          m_engine, SLOT(setAvailState(const QString &, bool)) );
 
-                                connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
-                                         m_xlet[dc], SLOT(setQueueStatus(const QString &)));
+                                connect( m_engine, SIGNAL(setQueueStatus(const QStringList &)),
+                                         m_xlet[dc], SLOT(setQueueStatus(const QStringList &)));
                                 connect( m_engine, SIGNAL(newQueueList(bool, const QMap<QString, QVariant> &)),
                                          m_xlet[dc], SLOT(setQueueList(bool, const QMap<QString, QVariant> &)));
                                 connect( m_xlet[dc], SIGNAL(agentAction(const QString &)),
@@ -852,8 +852,8 @@ void MainWidget::engineStarted()
                                 } else
                                         addPanel("queues", tr("Queues' List"), m_xlet[dc]);
                                 
-                                connect( m_engine, SIGNAL(setQueueStatus(const QString &)),
-                                         m_xlet[dc], SLOT(setQueueStatus(const QString &)));
+                                connect( m_engine, SIGNAL(setQueueStatus(const QStringList &)),
+                                         m_xlet[dc], SLOT(setQueueStatus(const QStringList &)));
                                 connect( m_engine, SIGNAL(newQueueList(bool, const QMap<QString, QVariant> &)),
                                          m_xlet[dc], SLOT(setQueueList(bool, const QMap<QString, QVariant> &)));
                                 connect( m_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),

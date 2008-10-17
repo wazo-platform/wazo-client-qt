@@ -70,7 +70,6 @@ DialPanel::DialPanel(BaseEngine * engine, QWidget * parent)
         m_input->setInsertPolicy( QComboBox::InsertAlphabetically );
 	m_input->setMinimumContentsLength( 15 );
 	//m_input->setSizeAdjustPolicy( QComboBox::AdjustToContents );
-	m_input->setInsertPolicy( QComboBox::NoInsert );
 	connect( m_input->lineEdit(), SIGNAL(returnPressed()),
 	         this, SLOT(inputValidated()) );
 	connect( m_input, SIGNAL(editTextChanged(const QString &)),

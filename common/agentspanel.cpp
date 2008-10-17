@@ -61,7 +61,7 @@ AgentsPanel::AgentsPanel(QWidget * parent)
         // m_title2 = new QLabel(tr("Record"), this);
         // m_title3 = new QLabel(tr("Listen"), this);
         m_title4 = new QLabel(tr("On Line"), this);
-        m_title5 = new QLabel(tr("Present"), this);
+        m_title5 = new QLabel(tr("Presence"), this);
         m_title6 = new QLabel(tr("Logged"), this);
         m_title7 = new QLabel(tr("Joined queues"), this);
         m_title8 = new QLabel(tr("UnPaused"), this);
@@ -266,7 +266,7 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                 QString agstatus = properties.toMap()["status"].toString();
                 QString agfullname = properties.toMap()["name"].toString();
                 QString phonenum = properties.toMap()["phonenum"].toString();
-                // qDebug() << "AgentsPanel::setAgentList" << agnum << agstatus << agfullname << phonenum;
+                qDebug() << "AgentsPanel::setAgentList" << agnum << agstatus << agfullname << phonenum;
                 
                 if(! m_agent_labels.contains(agnum)) {
                         QFrame * qvline1 = new QFrame(this);
@@ -281,7 +281,7 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                         QFrame * qvline4 = new QFrame(this);
                         qvline4->setFrameShape(QFrame::VLine);
                         qvline4->setLineWidth(1);
-                                
+                        
                         m_agent_labels[agnum] = new QLabel(agfullname + " (" + agnum + ")", this);
                         m_agent_more[agnum] = new QPushButton(this);
                         m_agent_more[agnum]->setProperty("astid", astid);

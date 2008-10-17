@@ -206,22 +206,16 @@ void QueuesPanel::queueClicked()
         changeWatchedQueue(astid + " " + queueid);
 }
 
-void QueuesPanel::setQueueStatus(const QString & status)
+void QueuesPanel::setQueueStatus(const QStringList & newstatuses)
 {
-        QStringList newstatuses = status.split(";");
         // qDebug() << "QueuesPanel::setQueueStatus()" << newstatuses;
-        if (newstatuses.size() >= 4) {
-                QString command = newstatuses[0];
-                if (command == "queuechannels") {
-                        QString astid = newstatuses[1];
-                        QString queuename = newstatuses[2];
-                        QString busyness = newstatuses[3];
-                        if(m_queuebusies.contains(queuename)) {
-                                m_queuebusies[queuename]->setProperty("value", busyness);
-                                update();
-                        }
-                } else if (command == "queueentry") {
-                        qDebug() << "QueuesPanel::setQueueStatus()" << status;
+        if (newstatuses.size() >= 3) {
+                QString astid = newstatuses[0];
+                QString queuename = newstatuses[1];
+                QString busyness = newstatuses[2];
+                if(m_queuebusies.contains(queuename)) {
+                        m_queuebusies[queuename]->setProperty("value", busyness);
+                        update();
                 }
         }
 }

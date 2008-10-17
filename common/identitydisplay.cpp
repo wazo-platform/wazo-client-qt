@@ -431,23 +431,17 @@ void IdentityDisplay::updatePeerAgent(const QString & userid,
         }
 }
 
-void IdentityDisplay::setQueueStatus(const QString & status)
+void IdentityDisplay::setQueueStatus(const QStringList & newstatuses)
 {
-        QStringList newstatuses = status.split(";");
         qDebug() << "IdentityDisplay::setQueueStatus()" << newstatuses;
-        if (newstatuses.size() >= 4) {
-                QString command = newstatuses[0];
-                if (command == "queuechannels") {
-                        QString astid = newstatuses[1];
-                        QString queuename = newstatuses[2];
-                        QString busyness = newstatuses[3];
-                        m_queuesbusyness[queuename] = busyness;
-                        if(queuename == m_queuelist->currentText()) {
-                                m_queuebusy->setRange(0, m_maxqueues + 1);
-                                m_queuebusy->setValue(busyness.toInt());
-                        }
-                } else if (command == "queueentry") {
-                        qDebug() << "IdentityDisplay::setQueueStatus()" << status;
+        if (newstatuses.size() >= 3) {
+                QString astid = newstatuses[0];
+                QString queuename = newstatuses[1];
+                QString busyness = newstatuses[2];
+                m_queuesbusyness[queuename] = busyness;
+                if(queuename == m_queuelist->currentText()) {
+                        m_queuebusy->setRange(0, m_maxqueues + 1);
+                        m_queuebusy->setValue(busyness.toInt());
                 }
         }
 }
