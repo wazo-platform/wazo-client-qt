@@ -82,6 +82,7 @@ public slots:
         void idxChanged(const QString &);
         void updatePresence(const QMap<QString, QVariant> &);
         void statusRecord(const QString &, const QString &);
+        void updateStats(const QMap<QString, QVariant> &);
 private:
         BaseEngine * m_engine;
         QLabel * m_user;

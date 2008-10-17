@@ -780,6 +780,8 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(agentAction(const QString &)));
                                 connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &)),
                                          m_xlet[dc], SLOT(statusRecord(const QString &, const QString &)));
+                                connect( m_engine, SIGNAL(updateStats(const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(updateStats(const QMap<QString, QVariant> &)));
                                 
 			} else if (dc == QString("agents")) {
                                 m_xlet[dc] = new AgentsPanel();

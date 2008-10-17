@@ -76,15 +76,15 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         m_presence->setProperty("function", "presence");
         m_info3 = new QLabel(this);
         m_info4 = new QLabel(this);
-        m_info5 = new QLabel(this);
-        m_info6 = new QLabel(this);
+        m_info5 = new QLabel("0", this);
+        m_info6 = new QLabel("0", this);
         m_record = new QPushButton(tr("Record"), this);
         m_record->setProperty("function", "record");
         
         m_qf = new QFrame(this);
         m_qf->setFrameShape(QFrame::HLine);
         m_qf->setLineWidth(2);
-
+        
         m_agent = new QLabel("", this);
         m_agentaction = new QPushButton(tr("Logout"), this);
         m_agentaction->setIconSize(QSize(16, 16));
@@ -170,6 +170,16 @@ void IdentityDisplay::statusRecord(const QString & agentnum, const QString & sta
                         m_record->setProperty("function", "record");
                 }
         }
+}
+
+void IdentityDisplay::updateStats(const QMap<QString, QVariant> & stats)
+{
+        qDebug() << "IdentityDisplay::updateStats()" << stats;
+        QString what = stats["what"].toString();
+        if(what == "queuejoined")
+                m_info5->setText(stats["value"].toString());
+        if(what == "calllinked")
+                m_info6->setText(stats["value"].toString());
 }
 
 void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)

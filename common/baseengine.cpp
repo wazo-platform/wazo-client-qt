@@ -871,6 +871,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "statistics") {
                         qDebug() << "received" << thisclass << datamap["what"].toString() << datamap["value"].toInt();
+                        updateStats(datamap);
                         
                 } else if (thisclass == "message") {
                         QStringList message = datamap["payload"].toStringList();
