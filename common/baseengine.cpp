@@ -663,7 +663,14 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 bool BaseEngine::parseCommand(const QString & line)
 {
         JsonQt::JsonToVariant parser;
-        QVariant data = parser.parse(line.trimmed());
+        QVariant data;
+        try {
+                data = parser.parse(line.trimmed());
+        }
+        catch(JsonQt::ParseException) {
+                qDebug() << "BaseEngine::parseCommand() exception catched for" << line.trimmed();
+                return false;
+        }
         QMap<QString, QVariant> datamap = data.toMap();
         QString direction = datamap["direction"].toString();
         

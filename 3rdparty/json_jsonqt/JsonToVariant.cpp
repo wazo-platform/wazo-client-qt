@@ -21,6 +21,7 @@ namespace JsonQt
 {
 	QVariantMap JsonToVariant::parse(const QString& json) throw(ParseException)
 	{
+                m_sym = 0;
 		// Store the start and end of the string
 		m_next = json.constBegin();
 		m_end = json.constEnd();
@@ -487,10 +488,12 @@ namespace JsonQt
 	QString JsonToVariant::remaining()
 	{
 		QString data;
-
-		QString::ConstIterator it = m_sym;
-		while(it != m_end) data += *it++;
-
+                
+                if(m_sym) {
+                        QString::ConstIterator it = m_sym;
+                        while(it != m_end) data += *it++;
+                }
+                
 		return data;
 	}
 
