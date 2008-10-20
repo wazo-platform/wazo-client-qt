@@ -388,10 +388,14 @@ void BaseEngine::updateCapaPresence(const QMap<QString, QVariant> & presence)
                                 m_presencecolors[avstate] = Qt::red;
                         else if(color == "blue")
                                 m_presencecolors[avstate] = Qt::blue;
-                        else if(color == "orange")
-                                m_presencecolors[avstate] = QColor(255, 128, 0);
                         else if(color == "green")
                                 m_presencecolors[avstate] = Qt::green;
+                        else if(color == "black")
+                                m_presencecolors[avstate] = Qt::black;
+                        else if(color == "yellow")
+                                m_presencecolors[avstate] = Qt::yellow;
+                        else if(color == "orange")
+                                m_presencecolors[avstate] = QColor(255, 128, 0);
                         else
                                 m_presencecolors[avstate] = Qt::gray;
                 }

@@ -89,7 +89,7 @@ void AgentsPanel::setUserInfo(const UserInfo * ui)
         m_userinfo = ui;
 }
 
-void AgentsPanel::updateAgentPresence(const QString & agentname, const QString & presence, const QColor & color)
+void AgentsPanel::updateAgentPresence(const QString & agentname, const QString &, const QColor & color)
 {
         // qDebug() << "AgentsPanel::updateAgentPresence" << agentname << presence << color;
         if(agentname.size() > 0)

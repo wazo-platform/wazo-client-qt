@@ -164,8 +164,12 @@ void IdentityDisplay::updateStats(const QMap<QString, QVariant> & stats)
 
 void IdentityDisplay::updateCounter(const QStringList & qsl)
 {
-        m_info5->setText(qsl[0]);
-        m_info6->setText(qsl[1]);
+        if(qsl.size() > 1) {
+                int navail = qsl[0].toInt();
+                int nunavail = qsl[1].toInt();
+                int ntot = navail + nunavail;
+                m_info5->setText(qsl[0] + " " + tr("available") + " + " + qsl[1] + " " + tr("unavailable") + " = " + QString::number(ntot) + " " + tr("total"));
+        }
 }
 
 void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
