@@ -403,6 +403,7 @@ void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
 		m_settings->setValue("engine/availstate", m_availstate);
                 if (comesFromServer)
                         changesAvailChecks();
+                changeState();
                 keepLoginAlive();
 	} else {
                 if (comesFromServer)
@@ -1922,6 +1923,14 @@ void BaseEngine::keepLoginAlive()
 		return;
 	}
 
+        ServerCommand * sc = new ServerCommand();
+        sc->addString("class", "keepalive");
+        sc->addString("direction", "xivoserver");
+        sendCommand(sc->find());
+}
+
+void BaseEngine::changeState()
+{
         ServerCommand * sc = new ServerCommand();
         sc->addString("class", "availstate");
         sc->addString("direction", "xivoserver");

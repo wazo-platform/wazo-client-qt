@@ -191,7 +191,8 @@ public slots:
         void changeWatchedQueueSlot(const QString &);
         void saveToFile(const QString &);
 private slots:
-	void keepLoginAlive();			//!< Send a UDP datagram to keep session alive
+	void keepLoginAlive(); //!< Keep session alive
+	void changeState(); //!< Change the presence status
         void updatePeerAndCallerid(const QStringList &);
         void removePeerAndCallerid(const QStringList &);
 	void socketConnected();
