@@ -497,7 +497,6 @@ void IdentityDisplay::idxChanged(const QString & newidx)
         } else if(function == "presence") {
                 foreach (QString avstate, m_presence_names.keys())
                         if(m_presence_names[avstate] == newidx)
-                                // qDebug() << "IdentityDisplay::idxChanged()" << function << newidx << avstate;
                                 setAvailState(avstate, true);
         }
 }

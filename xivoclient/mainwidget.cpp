@@ -801,8 +801,8 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
 					 m_xlet[dc], SLOT(updatePeerAgent(const QString &, const QString &, const QStringList &)) );
-				connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QString &)),
-					 m_xlet[dc], SLOT(updateAgentPresence(const QString &, const QString &)) );
+				connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QString &, const QColor &)),
+					 m_xlet[dc], SLOT(updateAgentPresence(const QString &, const QString &, const QColor &)) );
                                 connect( m_xlet[dc], SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
 

@@ -380,6 +380,21 @@ void BaseEngine::updateCapaPresence(const QMap<QString, QVariant> & presence)
         foreach (QString field, presence.keys())
                 if(presence.contains(field))
                         m_capapresence[field] = presence[field];
+        
+        if(m_capapresence.contains("names"))
+                foreach (QString avstate, m_capapresence["names"].toMap().keys()) {
+                        QString color = m_capapresence["names"].toMap()[avstate].toMap()["color"].toString();
+                        if(color == "red")
+                                m_presencecolors[avstate] = Qt::red;
+                        else if(color == "blue")
+                                m_presencecolors[avstate] = Qt::blue;
+                        else if(color == "orange")
+                                m_presencecolors[avstate] = QColor(255, 128, 0);
+                        else if(color == "green")
+                                m_presencecolors[avstate] = Qt::green;
+                        else
+                                m_presencecolors[avstate] = Qt::gray;
+                }
 }
 
 const QStringList & BaseEngine::getCapaFeatures() const
@@ -796,7 +811,10 @@ bool BaseEngine::parseCommand(const QString & line)
                                 QString presencestatus = datamap["capapresence"].toMap()["state"].toString();
                                 m_users[id]->setAvailState(presencestatus);
                                 updatePeerAgent(id, "imstatus", presencestatus.split("/"));
-                                updateAgentPresence(m_users[id]->agentid(), presencestatus);
+                                if(m_presencecolors.contains(presencestatus))
+                                        updateAgentPresence(m_users[id]->agentid(), presencestatus, m_presencecolors[presencestatus]);
+                                else
+                                        updateAgentPresence(m_users[id]->agentid(), presencestatus, Qt::gray);
                                 if (id == m_fullid) {
                                         updateCapaPresence(datamap["capapresence"].toMap());
                                         updatePresence(m_capapresence);
@@ -829,7 +847,10 @@ bool BaseEngine::parseCommand(const QString & line)
                                         m_users[iduser]->setAgent(listpeers[i+9]);
                                         m_users[iduser]->setMWI(listpeers[i+10], listpeers[i+11], listpeers[i+12]);
                                         updatePeerAgent(iduser, "imstatus", imstatus.split("/"));
-                                        updateAgentPresence(m_users[iduser]->agentid(), imstatus);
+                                        if(m_presencecolors.contains(imstatus))
+                                                updateAgentPresence(m_users[iduser]->agentid(), imstatus, m_presencecolors[imstatus]);
+                                        else
+                                                updateAgentPresence(m_users[iduser]->agentid(), imstatus, Qt::gray);
                                 }
                                 
                                 m_monitored_userid = m_fullid;
