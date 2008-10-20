@@ -74,15 +74,14 @@ public slots:
                              const QString &,
                              const QStringList &);
 	void setQueueStatus(const QStringList &);
-        void doRecord();
         void doAgentAction();
         void doQueueAction();
         void doQueueJoinAll();
         void doQueueLeaveAll();
         void idxChanged(const QString &);
         void updatePresence(const QMap<QString, QVariant> &);
-        void statusRecord(const QString &, const QString &);
         void updateStats(const QMap<QString, QVariant> &);
+        void updateCounter(const QStringList &);
 private:
         BaseEngine * m_engine;
         QLabel * m_user;
@@ -92,7 +91,6 @@ private:
         QLabel * m_info5;
         QLabel * m_info6;
         QComboBox * m_presence;
-        QPushButton * m_record;
         QLabel * m_agent;
         QFrame * m_qf;
         QPushButton * m_agentaction;

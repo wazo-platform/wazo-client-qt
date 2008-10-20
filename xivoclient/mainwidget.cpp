@@ -657,11 +657,8 @@ void MainWidget::updatePresence(const QMap<QString, QVariant> & presence)
 {
         // qDebug() << "MainWidget::updatePresence()" << presence;
         if(presence.contains("names")) {
-                QMapIterator<QString, QVariant> capapres(presence["names"].toMap());
-                while (capapres.hasNext()) {
-                        capapres.next();
-                        QString avstate = capapres.key();
-                        QString name = capapres.value().toString();
+                foreach (QString avstate, presence["names"].toMap().keys()) {
+                        QString name = presence["names"].toMap()[avstate].toMap()["longname"].toString();
                         if(! m_avact.contains(avstate)) {
                                 m_avact[avstate] = new QAction(name, this);
                                 m_avact[avstate]->setCheckable(false);
@@ -783,10 +780,8 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setQueueList(bool, const QMap<QString, QVariant> &)));
                                 connect( m_xlet[dc], SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
-                                connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &)),
-                                         m_xlet[dc], SLOT(statusRecord(const QString &, const QString &)));
-                                connect( m_engine, SIGNAL(updateStats(const QMap<QString, QVariant> &)),
-                                         m_xlet[dc], SLOT(updateStats(const QMap<QString, QVariant> &)));
+                                connect( m_engine, SIGNAL(updateCounter(const QStringList &)),
+                                         m_xlet[dc], SLOT(updateCounter(const QStringList &)));
                                 
 			} else if (dc == QString("agents")) {
                                 m_xlet[dc] = new AgentsPanel();
@@ -1310,9 +1305,8 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
                 QStringList todisp;
                 QStringList orders = msgs.keys();
                 orders.sort();
-                foreach(QString order, orders) {
+                foreach (QString order, orders)
                         todisp.append(msgs[order]);
-                }
                 m_systrayIcon->showMessage(msgtitle,
                                            todisp.join("\n"),
                                            QSystemTrayIcon::Information,

@@ -70,26 +70,22 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_agentlegend_njoined = new QLabel("0", this);
         m_agentlegend_npaused = new QLabel("0", this);
         
+        m_actionlegends["alogin"] = tr("Login");
         m_actionlegends["record"] = tr("Record");
         m_actionlegends["listen"] = tr("Listen");
-        m_actionlegends["getfile"] = tr("Get File");
         
-        int queuewidth = 0;
-        foreach (QString function, m_actionlegends.keys()) {
+        foreach (QString function, m_actionlegends.keys())
                 m_action[function] = new QPushButton(m_actionlegends[function]);
-                if(m_action[function]->sizeHint().width() > queuewidth)
-                        queuewidth = m_action[function]->sizeHint().width();
-        }
-        m_gridlayout->setColumnStretch( 8, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_agentname, m_linenum, 0);
         m_gridlayout->addWidget(m_agentstatus, m_linenum, 1, 1, 7);
         m_linenum ++;
         
+        int colnum = 8;
         foreach (QString function, m_actionlegends.keys()) {
-                m_action[function]->setMinimumWidth(queuewidth);
-                m_gridlayout->addWidget(m_action[function], m_linenum ++, 0, Qt::AlignCenter);
+                m_gridlayout->addWidget(m_action[function], 0, colnum ++, Qt::AlignCenter);
         }
+        m_gridlayout->setColumnStretch( colnum, 1 );
         
         m_gridlayout->addWidget(m_agentlegend_qname, m_linenum, 0, Qt::AlignLeft);
         m_gridlayout->addWidget(m_agentlegend_joined, m_linenum, 2, 1, 3, Qt::AlignCenter);
@@ -431,6 +427,8 @@ void AgentdetailsPanel::actionClicked()
                 agentAction("stoprecord " + m_astid + " " + m_agent);
         else if(function == "listen")
                 agentAction("listen " + m_astid + " " + m_agent);
+        else if(function == "alogin")
+                agentAction("logout " + m_astid + " " + m_agent);
 }
 
 void AgentdetailsPanel::contextMenuEvent(QContextMenuEvent * event)

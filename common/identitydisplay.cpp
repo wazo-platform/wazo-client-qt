@@ -76,10 +76,8 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         m_presence->setProperty("function", "presence");
         m_info3 = new QLabel(this);
         m_info4 = new QLabel(this);
-        m_info5 = new QLabel("0", this);
-        m_info6 = new QLabel("0", this);
-        m_record = new QPushButton(tr("Record"), this);
-        m_record->setProperty("function", "record");
+        m_info5 = new QLabel(this);
+        m_info6 = new QLabel(this);
         
         m_qf = new QFrame(this);
         m_qf->setFrameShape(QFrame::HLine);
@@ -109,8 +107,6 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
                 this, SLOT(idxChanged(const QString &)));
         connect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
-        connect(m_record, SIGNAL(clicked()),
-                this, SLOT(doRecord()));
         connect(m_agentaction, SIGNAL(clicked()),
                 this, SLOT(doAgentAction()));
         connect(m_queueaction, SIGNAL(clicked()),
@@ -129,7 +125,6 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
 	glayout->addWidget( m_info4, idline, 3, Qt::AlignCenter );
 	glayout->addWidget( m_info5, idline, 4, Qt::AlignCenter );
 	glayout->addWidget( m_info6, idline, 5, Qt::AlignCenter );
-	glayout->addWidget( m_record, idline, 6, Qt::AlignCenter );
         idline ++;
 	glayout->addWidget( m_qf, idline, 0, 1, 7, 0 );
         idline ++;
@@ -157,29 +152,20 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         // 	glayout->setColumnStretch( 0, 1 );
 }
 
-
-void IdentityDisplay::statusRecord(const QString & agentnum, const QString & status)
-{
-        // qDebug() << "IdentityDisplay::statusRecord()" << agentnum << m_agent << status;
-        if(agentnum == m_ui->agentid()) {
-                if(status == "started") {
-                        m_record->setText(tr("Stop Record"));
-                        m_record->setProperty("function", "stoprecord");
-                } else if(status == "stopped") {
-                        m_record->setText(tr("Record"));
-                        m_record->setProperty("function", "record");
-                }
-        }
-}
-
 void IdentityDisplay::updateStats(const QMap<QString, QVariant> & stats)
 {
         qDebug() << "IdentityDisplay::updateStats()" << stats;
-        QString what = stats["what"].toString();
-        if(what == "queuejoined")
-                m_info5->setText(stats["value"].toString());
-        if(what == "calllinked")
-                m_info6->setText(stats["value"].toString());
+//         QString what = stats["what"].toString();
+//         if(what == "queuejoined")
+//                 m_info5->setText(stats["value"].toString());
+//         if(what == "calllinked")
+//                 m_info6->setText(stats["value"].toString());
+}
+
+void IdentityDisplay::updateCounter(const QStringList & qsl)
+{
+        m_info5->setText(qsl[0]);
+        m_info6->setText(qsl[1]);
 }
 
 void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
@@ -192,11 +178,8 @@ void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
         disconnect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
                    this, SLOT(idxChanged(const QString &)));
         if(presence.contains("names")) {
-                QMapIterator<QString, QVariant> capapres(presence["names"].toMap());
-                while (capapres.hasNext()) {
-                        capapres.next();
-                        QString avstate = capapres.key();
-                        QString name = capapres.value().toString();
+                foreach (QString avstate, presence["names"].toMap().keys()) {
+                        QString name = presence["names"].toMap()[avstate].toMap()["longname"].toString();
                         if(m_presence->findText(name) == -1) {
                                 m_presence->addItem(name);
                                 m_presence_names[avstate] = name;
@@ -253,11 +236,13 @@ void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)
         if (m_engine->loginkind() == 0)
                 return;
         QString astid = alist["astid"].toString();
+        qDebug() << "IdentityDisplay::setAgentList" << m_ui->agentid() << astid << m_ui->astid();
         if (astid != m_ui->astid())
                 return;
         
         QStringList agentids = alist["newlist"].toMap().keys();
         agentids.sort();
+        qDebug() << "IdentityDisplay::setAgentList" << agentids;
         foreach (QString agnum, agentids) {
                 if(agnum == m_ui->agentid()) {
                         QVariant properties = alist["newlist"].toMap()[agnum].toMap()["properties"];
@@ -454,15 +439,6 @@ void IdentityDisplay::setQueueStatus(const QStringList & newstatuses)
                         m_queuebusy->setValue(busyness.toInt());
                 }
         }
-}
-
-void IdentityDisplay::doRecord()
-{
-        // qDebug() << "IdentityDisplay::doRecord()";
-        if(sender()->property("function").toString() == "record")
-                agentAction("record " + m_ui->astid() + " " + m_ui->agentid());
-        else if(sender()->property("function").toString() == "stoprecord")
-                agentAction("stoprecord " + m_ui->astid() + " " + m_ui->agentid());
 }
 
 void IdentityDisplay::doAgentAction()

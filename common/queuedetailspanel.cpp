@@ -56,16 +56,17 @@ QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
 	m_gridlayout = new QGridLayout(this);
 
         m_label = new QLabel("", this);
-        m_queuelegend_agentid = new QLabel(tr("Agent Id"), this);
+        m_queuelegend_agentid = new QLabel(tr("Agent"), this);
         m_queuelegend_status = new QLabel(tr("Status"), this);
         m_queuelegend_callstaken = new QLabel(tr("Calls Taken"), this);
         m_maxbusy = 0;
-        m_gridlayout->setColumnStretch( 5, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_label, 0, 0);
         m_gridlayout->addWidget(m_queuelegend_agentid, 1, 0);
-        m_gridlayout->addWidget(m_queuelegend_status, 1, 1);
-        m_gridlayout->addWidget(m_queuelegend_callstaken, 1, 2);
+        m_gridlayout->addWidget(m_queuelegend_status, 1, 2);
+        m_gridlayout->addWidget(m_queuelegend_callstaken, 1, 4);
+        m_gridlayout->setColumnStretch( 5, 1 );
+        m_gridlayout->setVerticalSpacing(0);
         m_queuelegend_agentid->hide();
         m_queuelegend_status->hide();
         m_queuelegend_callstaken->hide();
@@ -122,34 +123,44 @@ void QueuedetailsPanel::updatePeerAgent(const QString &,
 void QueuedetailsPanel::update()
 {
         // qDebug() << "QueuedetailsPanel::update()";
-        QHashIterator<QString, QPushButton *> i(m_agentlabels);
+        QHashIterator<QString, QLabel *> i(m_agentlabels);
         while (i.hasNext()) {
                 i.next();
                 delete i.value();
         }
-        QHashIterator<QString, QLabel *> j(m_agentstatus);
+        QHashIterator<QString, QPushButton *> j(m_agentmore);
         while (j.hasNext()) {
                 j.next();
                 delete j.value();
         }
+        QHashIterator<QString, QLabel *> k(m_agentstatus);
+        while (k.hasNext()) {
+                k.next();
+                delete k.value();
+        }
         m_agentlabels.clear();
+        m_agentmore.clear();
         m_agentstatus.clear();
 
-        int agentwidth = 0;
         for(int i = 0 ; i < m_agentlist.size(); i++) {
-                m_agentlabels[m_agentlist[i]] = new QPushButton(m_agentlist[i], this);
-                m_agentlabels[m_agentlist[i]]->setProperty("agentid", m_agentlist[i]);
-                connect( m_agentlabels[m_agentlist[i]], SIGNAL(clicked()),
+                m_agentlabels[m_agentlist[i]] = new QLabel(m_agentlist[i], this);
+                m_agentmore[m_agentlist[i]] = new QPushButton(this);
+                m_agentmore[m_agentlist[i]]->setProperty("agentid", m_agentlist[i]);
+                m_agentmore[m_agentlist[i]]->setIconSize(QSize(10, 10));
+                m_agentmore[m_agentlist[i]]->setIcon(QIcon(":/images/add.png"));
+                connect( m_agentmore[m_agentlist[i]], SIGNAL(clicked()),
                          this, SLOT(agentClicked()));
                 m_agentstatus[m_agentlist[i]] = new QLabel("", this);
+                
+                QFrame * qvline = new QFrame(this);
+                qvline->setFrameShape(QFrame::VLine);
+                qvline->setLineWidth(1);
+                
                 m_gridlayout->addWidget( m_agentlabels[m_agentlist[i]], i + 2, 0, Qt::AlignLeft );
-                m_gridlayout->addWidget( m_agentstatus[m_agentlist[i]], i + 2, 1, Qt::AlignLeft );
-                if(m_agentlabels[m_agentlist[i]]->sizeHint().width() > agentwidth)
-                        agentwidth = m_agentlabels[m_agentlist[i]]->sizeHint().width();
+                m_gridlayout->addWidget( m_agentmore[m_agentlist[i]], i + 2, 1, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_agentstatus[m_agentlist[i]], i + 2, 2, Qt::AlignLeft );
+                m_gridlayout->addWidget( qvline, i + 2, 3, Qt::AlignHCenter );
         }
-
-        foreach(QString agentname, m_agentlabels.keys())
-                m_agentlabels[agentname]->setMinimumWidth(agentwidth);
 }
 
 void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid, const QMap<QString, QVariant> & queuestatus)
@@ -164,6 +175,7 @@ void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid,
                 // qDebug() << agname
                 // << queuestatus["agents"].toMap()[agname].toMap()["Status"].toString()
                 // << queuestatus["agents"].toMap()[agname].toMap()["CallsTaken"].toString();
+                // << queuestatus["agents"].toMap()[agname].toMap()["Paused"].toString();
                 if(agname.startsWith("Agent/"))
                         m_agentlist << agname.mid(6);
                 else

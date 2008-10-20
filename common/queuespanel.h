@@ -84,14 +84,14 @@ private:
         QStringList m_statitems;
         QHash<QString, QString> m_statlegends;
 
-        QHash<QString, QPushButton *> m_queuelabels;
+        QHash<QString, QLabel *> m_queuelabels;
+        QHash<QString, QPushButton *> m_queuemore;
         QHash<QString, QProgressBar *> m_queuebusies;
         QHash<QString, QHash<QString, QLabel *> > m_queueinfos;
 
         BaseEngine * m_engine;
 
         quint32 m_maxbusy;
-        int m_queuewidth;
         
         QLabel * m_title1;
         QLabel * m_title2;
