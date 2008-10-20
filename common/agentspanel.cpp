@@ -58,8 +58,8 @@ AgentsPanel::AgentsPanel(QWidget * parent)
 	m_gridlayout = new QGridLayout(this);
 
         m_title1 = new QLabel(tr("Agent"), this);
-        // m_title2 = new QLabel(tr("Record"), this);
-        // m_title3 = new QLabel(tr("Listen"), this);
+        m_title2 = new QLabel(tr("Record"), this);
+        m_title3 = new QLabel(tr("Listen"), this);
         m_title4 = new QLabel(tr("On Line"), this);
         m_title5 = new QLabel(tr("Presence"), this);
         m_title6 = new QLabel(tr("Logged"), this);
@@ -67,8 +67,8 @@ AgentsPanel::AgentsPanel(QWidget * parent)
         m_title8 = new QLabel(tr("Paused\nqueues"), this);
         
         m_gridlayout->addWidget(m_title1, 0, 0, 1, 2, Qt::AlignLeft );
-        // m_gridlayout->addWidget(m_title2, 0, 2, 1, 1, Qt::AlignCenter );
-        // m_gridlayout->addWidget(m_title3, 0, 3, 1, 1, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title2, 0, 2, 1, 1, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title3, 0, 3, 1, 1, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title4, 0, 4, 1, 1, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title5, 0, 6, 1, 1, Qt::AlignCenter );
         m_gridlayout->addWidget(m_title6, 0, 8, 1, 2, Qt::AlignCenter );
@@ -149,13 +149,15 @@ void AgentsPanel::updatePeerAgent(const QString &,
                                                 QPixmap * m_square = new QPixmap(12, 12);
                                                 m_square->fill(Qt::green);
                                                 m_agent_paused_list[agname].append(qname);
-                                                m_agent_paused_number[agname]->setText(QString::number(m_agent_paused_list[agname].size()));
+                                                m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
+                                                                                                       - m_agent_paused_list[agname].size()));
                                                 // m_agent_paused_status[agname]->setPixmap(QPixmap(* m_square));
                                         }
                                 } else {
                                         if(m_agent_paused_list[agname].contains(qname)) {
                                                 m_agent_paused_list[agname].removeAll(qname);
-                                                m_agent_paused_number[agname]->setText(QString::number(m_agent_paused_list[agname].size()));
+                                                m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
+                                                                                                       - m_agent_paused_list[agname].size()));
                                         }
                                 }
                         }
@@ -177,7 +179,8 @@ void AgentsPanel::updatePeerAgent(const QString &,
                         QString qname = params[3];
                         if(! m_agent_paused_list[agname].contains(qname)) {
                                 m_agent_paused_list[agname].append(qname);
-                                m_agent_paused_number[agname]->setText(QString::number(m_agent_paused_list[agname].size()));
+                                m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
+                                                                                       - m_agent_paused_list[agname].size()));
                         }
                 }
         } else if(command == "paused") {
@@ -187,7 +190,8 @@ void AgentsPanel::updatePeerAgent(const QString &,
                         QString qname = params[3];
                         if(m_agent_paused_list[agname].contains(qname)) {
                                 m_agent_paused_list[agname].removeAll(qname);
-                                m_agent_paused_number[agname]->setText(QString::number(m_agent_paused_list[agname].size()));
+                                m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
+                                                                                       - m_agent_paused_list[agname].size()));
                         }
                 }
         } else if(command == "agentlogin") {
@@ -265,7 +269,21 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                         m_agent_more[agnum]->setProperty("action", "changeagent");
                         connect( m_agent_more[agnum], SIGNAL(clicked()),
                                  this, SLOT(agentClicked()));
-                                
+                        
+                        m_agent_record[agnum] = new QPushButton(this);
+                        m_agent_record[agnum]->setProperty("astid", astid);
+                        m_agent_record[agnum]->setProperty("agentid", agnum);
+                        m_agent_record[agnum]->setProperty("action", "record");
+                        connect( m_agent_record[agnum], SIGNAL(clicked()),
+                                 this, SLOT(agentClicked()));
+                        
+                        m_agent_listen[agnum] = new QPushButton(this);
+                        m_agent_listen[agnum]->setProperty("astid", astid);
+                        m_agent_listen[agnum]->setProperty("agentid", agnum);
+                        m_agent_listen[agnum]->setProperty("action", "getfile");
+                        connect( m_agent_listen[agnum], SIGNAL(clicked()),
+                                 this, SLOT(agentClicked()));
+                        
                         m_agent_busy[agnum] = new QLabel(this);
                         m_agent_busy[agnum]->setProperty("astid", astid);
                         m_agent_presence[agnum] = new QLabel(this);
@@ -284,6 +302,10 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                         
                         m_agent_more[agnum]->setIconSize(QSize(10, 10));
                         m_agent_more[agnum]->setIcon(QIcon(":/images/add.png"));
+                        m_agent_record[agnum]->setIconSize(QSize(10, 10));
+                        m_agent_record[agnum]->setIcon(QIcon(":/images/player_stop.png"));
+                        m_agent_listen[agnum]->setIconSize(QSize(10, 10));
+                        m_agent_listen[agnum]->setIcon(QIcon(":/images/player_play.png"));
                         m_agent_logged_action[agnum]->setIconSize(QSize(8, 8));
                         
                         m_square->fill(Qt::gray);
@@ -319,13 +341,14 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                         m_agent_joined_number[agnum]->setText(QString::number(njoined));
 
                         int nunpaused = m_agent_paused_list[agnum].size();
-                        m_agent_paused_number[agnum]->setText(QString::number(nunpaused));
+                        m_agent_paused_number[agnum]->setText(QString::number(njoined - nunpaused));
 
                         int colnum = 0;
                         int linenum = m_agent_labels.size();
                         m_gridlayout->addWidget( m_agent_labels[agnum], linenum, colnum++, Qt::AlignLeft );
                         m_gridlayout->addWidget( m_agent_more[agnum], linenum, colnum++, Qt::AlignCenter );
-                        colnum += 2;
+                        m_gridlayout->addWidget( m_agent_record[agnum], linenum, colnum++, Qt::AlignCenter );
+                        m_gridlayout->addWidget( m_agent_listen[agnum], linenum, colnum++, Qt::AlignCenter );
                         m_gridlayout->addWidget( m_agent_busy[agnum], linenum, colnum++, Qt::AlignCenter );
                         m_gridlayout->addWidget( qvline1, linenum, colnum++, Qt::AlignHCenter );
                         m_gridlayout->addWidget( m_agent_presence[agnum], linenum, colnum++, Qt::AlignCenter );

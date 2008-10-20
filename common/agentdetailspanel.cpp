@@ -72,7 +72,6 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         
         m_actionlegends["alogin"] = tr("Login");
         m_actionlegends["record"] = tr("Record");
-        m_actionlegends["listen"] = tr("Listen");
         
         foreach (QString function, m_actionlegends.keys())
                 m_action[function] = new QPushButton(m_actionlegends[function]);
@@ -81,11 +80,13 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_gridlayout->addWidget(m_agentstatus, m_linenum, 1, 1, 7);
         m_linenum ++;
         
-        int colnum = 8;
+        int colnum = 0;
         foreach (QString function, m_actionlegends.keys()) {
-                m_gridlayout->addWidget(m_action[function], 0, colnum ++, Qt::AlignCenter);
+                m_gridlayout->addWidget(m_action[function], m_linenum, 2 + 3 * colnum, 1, 3, Qt::AlignCenter);
+                colnum ++;
         }
-        m_gridlayout->setColumnStretch( colnum, 1 );
+        m_gridlayout->setColumnStretch( 8, 1 );
+        m_linenum ++;
         
         m_gridlayout->addWidget(m_agentlegend_qname, m_linenum, 0, Qt::AlignLeft);
         m_gridlayout->addWidget(m_agentlegend_joined, m_linenum, 2, 1, 3, Qt::AlignCenter);
@@ -128,11 +129,17 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
 
         if(command == "agentlogin") {
                 QString phonenum = params[3];
-                if((m_agent == agname) && (m_astid == astid))
+                if((m_agent == agname) && (m_astid == astid)) {
                         m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
+                        m_action["alogin"]->setProperty("function", "alogout");
+                        m_action["alogin"]->setText(tr("Logout"));
+                }
         } else if(command == "agentlogout") {
-                if((m_agent == agname) && (m_astid == astid))
+                if((m_agent == agname) && (m_astid == astid)) {
                         m_agentstatus->setText(tr("logged off"));
+                        m_action["alogin"]->setProperty("function", "alogin");
+                        m_action["alogin"]->setText(tr("Login"));
+                }
         } else if(command == "joinqueue") {
                 if((m_agent == agname) && (m_astid == astid)) {
                         QString qname = params[3];
@@ -290,11 +297,16 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         m_queue_pause_action.clear();
         // m_queuestatus.clear();
         
-        if(lstatus == "AGENT_LOGGEDOFF")
+        if(lstatus == "AGENT_LOGGEDOFF") {
                 m_agentstatus->setText(tr("logged off") + " <b>" + phonenum + "</b>");
-        else if(lstatus == "AGENT_IDLE")
+                m_action["alogin"]->setProperty("function", "alogin");
+                m_action["alogin"]->setText(tr("Login"));
+        } else if(lstatus == "AGENT_IDLE") {
                 m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
-                
+                m_action["alogin"]->setProperty("function", "alogout");
+                m_action["alogin"]->setText(tr("Logout"));
+        }
+        
         m_agentlegend_qname->show();
         m_agentlegend_joined->show();
         m_agentlegend_paused->show();
@@ -428,6 +440,8 @@ void AgentdetailsPanel::actionClicked()
         else if(function == "listen")
                 agentAction("listen " + m_astid + " " + m_agent);
         else if(function == "alogin")
+                agentAction("login " + m_astid + " " + m_agent);
+        else if(function == "alogout")
                 agentAction("logout " + m_astid + " " + m_agent);
 }
 

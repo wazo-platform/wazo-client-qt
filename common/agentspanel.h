@@ -86,6 +86,8 @@ private:
 
         QHash<QString, QLabel *>      m_agent_labels;
         QHash<QString, QPushButton *> m_agent_more;
+        QHash<QString, QPushButton *> m_agent_record;
+        QHash<QString, QPushButton *> m_agent_listen;
         QHash<QString, QLabel *>      m_agent_busy;
         QHash<QString, QLabel *>      m_agent_presence;
         QHash<QString, QLabel *>      m_agent_logged_status;

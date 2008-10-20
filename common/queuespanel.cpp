@@ -69,6 +69,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
         m_statlegends["Weight"] = tr("Weight");
         m_statlegends["Xivo-Join"] = tr("Joined");
         m_statlegends["Xivo-Link"] = tr("Linked");
+        m_statlegends["Xivo-Rate"] = tr("Pickup rate");
         //         m_statitems = (QStringList()
         //                        << "Completed" << "Abandoned"
         //                        << "Holdtime" //  << "ServicelevelPerf"
