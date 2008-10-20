@@ -280,7 +280,7 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                         m_agent_listen[agnum] = new QPushButton(this);
                         m_agent_listen[agnum]->setProperty("astid", astid);
                         m_agent_listen[agnum]->setProperty("agentid", agnum);
-                        m_agent_listen[agnum]->setProperty("action", "getfile");
+                        m_agent_listen[agnum]->setProperty("action", "listen");
                         connect( m_agent_listen[agnum], SIGNAL(clicked()),
                                  this, SLOT(agentClicked()));
                         
@@ -383,6 +383,16 @@ void AgentsPanel::agentClicked()
                         agentAction("logout " + astid + " " + agentid);
                 else
                         agentAction("login " + astid + " " + agentid);
+        } else if(action == "listen") {
+                agentAction("listen " + astid + " " + agentid);
+        } else if(action == "record") {
+                agentAction("record " + astid + " " + agentid);
+                m_agent_record[agentid]->setProperty("action", "stoprecord");
+                m_agent_record[agentid]->setStyleSheet("QPushButton {background: #fbb638}");
+        } else if(action == "stoprecord") {
+                agentAction("stoprecord " + astid + " " + agentid);
+                m_agent_record[agentid]->setProperty("action", "record");
+                m_agent_record[agentid]->setStyleSheet("");
         }
 }
 

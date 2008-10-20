@@ -437,8 +437,6 @@ void AgentdetailsPanel::actionClicked()
                 agentAction("record " + m_astid + " " + m_agent);
         else if(function == "stoprecord")
                 agentAction("stoprecord " + m_astid + " " + m_agent);
-        else if(function == "listen")
-                agentAction("listen " + m_astid + " " + m_agent);
         else if(function == "alogin")
                 agentAction("login " + m_astid + " " + m_agent);
         else if(function == "alogout")
