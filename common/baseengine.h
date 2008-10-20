@@ -344,6 +344,7 @@ private:
 	int m_pendingkeepalivemsg;	//!< number of keepalivemsg sent without response
         QString m_numbertodial;		//!< Number dialed in
         QString m_osname;		//!< OS informations
+        QStringList m_counters;
 
         QString m_agent_watched_astid;
         QString m_agent_watched_agentid;

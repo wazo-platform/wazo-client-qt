@@ -152,18 +152,9 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         // 	glayout->setColumnStretch( 0, 1 );
 }
 
-void IdentityDisplay::updateStats(const QMap<QString, QVariant> & stats)
-{
-        qDebug() << "IdentityDisplay::updateStats()" << stats;
-//         QString what = stats["what"].toString();
-//         if(what == "queuejoined")
-//                 m_info5->setText(stats["value"].toString());
-//         if(what == "calllinked")
-//                 m_info6->setText(stats["value"].toString());
-}
-
 void IdentityDisplay::updateCounter(const QStringList & qsl)
 {
+        // qDebug() << "IdentityDisplay::updateCounter()" << qsl;
         if(qsl.size() > 1) {
                 int navail = qsl[0].toInt();
                 int nunavail = qsl[1].toInt();
@@ -222,6 +213,7 @@ void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
 
 void IdentityDisplay::setUserInfo(const UserInfo * ui)
 {
+        // qDebug() << "IdentityDisplay::setUserInfo()";
         m_ui = ui;
 
         m_user->setText(m_ui->fullname());
@@ -432,7 +424,7 @@ void IdentityDisplay::updatePeerAgent(const QString & userid,
 
 void IdentityDisplay::setQueueStatus(const QStringList & newstatuses)
 {
-        qDebug() << "IdentityDisplay::setQueueStatus()" << newstatuses;
+        // qDebug() << "IdentityDisplay::setQueueStatus()" << newstatuses;
         if (newstatuses.size() >= 3) {
                 QString astid = newstatuses[0];
                 QString queuename = newstatuses[1];

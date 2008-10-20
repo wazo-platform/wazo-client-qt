@@ -80,7 +80,6 @@ public slots:
         void doQueueLeaveAll();
         void idxChanged(const QString &);
         void updatePresence(const QMap<QString, QVariant> &);
-        void updateStats(const QMap<QString, QVariant> &);
         void updateCounter(const QStringList &);
 private:
         BaseEngine * m_engine;

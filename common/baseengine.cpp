@@ -822,7 +822,8 @@ bool BaseEngine::parseCommand(const QString & line)
                                 if (id == m_fullid) {
                                         updateCapaPresence(datamap["capapresence"].toMap());
                                         updatePresence(m_capapresence);
-                                        updateCounter(datamap["presencecounter"].toStringList());
+                                        m_counters = datamap["presencecounter"].toStringList();
+                                        updateCounter(m_counters);
                                         localUserInfoDefined(m_users[m_fullid]);
                                 }
                         }
@@ -862,6 +863,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                 if(m_users.contains(m_fullid)) {
                                         fullname_mine = m_users[m_fullid]->fullname();
                                         localUserInfoDefined(m_users[m_fullid]);
+                                        updateCounter(m_counters);
                                 }
                                 
                                 // Who do we monitor ?
@@ -1069,12 +1071,14 @@ bool BaseEngine::parseCommand(const QString & line)
                         m_appliname = datamap["appliname"].toString();
                         updateCapaPresence(datamap["capapresence"].toMap());
                         m_forced_state = datamap["capapresence"].toMap()["state"].toString();
+                        m_counters = datamap["presencecounter"].toStringList();
                         // m_capafeatures = datamap["capas_features"].toStringList();
                         
                         qDebug() << "clientXlets" << XletList;
                         qDebug() << "m_capaxlets" << m_capaxlets;
                         qDebug() << "m_capafuncs" << m_capafuncs;
                         qDebug() << "m_appliname" << m_appliname;
+                        qDebug() << "m_counters"  << m_counters;
                         
                         // XXXX m_capafuncs => config file
                         foreach (QString function, CheckFunctions)
@@ -1787,7 +1791,7 @@ void BaseEngine::askFeatures()
 
 void BaseEngine::askCallerIds()
 {
-        qDebug() << "BaseEngine::askCallerIds()";
+        // qDebug() << "BaseEngine::askCallerIds()";
         ServerCommand * sc1 = new ServerCommand();
         sc1->addString("class", "users");
         sc1->addString("function", "getlist");
