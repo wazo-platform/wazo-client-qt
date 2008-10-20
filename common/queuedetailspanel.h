@@ -62,7 +62,7 @@ public:
 	QueuedetailsPanel(QWidget * parent = 0);
 	~QueuedetailsPanel();
 signals:
-        void changeWatchedAgent(const QString &);
+        void changeWatchedAgent(const QString &, bool);
 protected:
 public slots:
 	void newQueue(const QString &, const QString &, const QMap<QString, QVariant> &);

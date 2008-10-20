@@ -187,7 +187,7 @@ public slots:
 	void pickUp(const UserInfo *);
 
         void monitorPeerRequest(const QString &);
-        void changeWatchedAgentSlot(const QString &);
+        void changeWatchedAgentSlot(const QString &, bool);
         void changeWatchedQueueSlot(const QString &);
         void saveToFile(const QString &);
 private slots:

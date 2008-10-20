@@ -1887,21 +1887,26 @@ void BaseEngine::setState(EngineState state)
                         m_enabled_presence = false;
 			availAllowChanged(false);
 			delogged();
+                        // reset some variables when disconnecting
+                        m_agent_watched_astid = "";
+                        m_agent_watched_agentid = "";
 		}
 	}
 }
 
-void BaseEngine::changeWatchedAgentSlot(const QString & astagentid)
+void BaseEngine::changeWatchedAgentSlot(const QString & astagentid, bool force)
 {
         // qDebug() << "BaseEngine::changeWatchedAgentSlot()" << astagentid;
-        m_agent_watched_astid = astagentid.split(" ")[0];
-        m_agent_watched_agentid = astagentid.split(" ")[1];
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "agent-status");
-        sc->addString("direction", "xivoserver");
-        sc->addString("astid", m_agent_watched_astid);
-        sc->addString("agentid", m_agent_watched_agentid);
-        sendCommand(sc->find());
+        if(force || ((m_agent_watched_astid.size() == 0) && (m_agent_watched_agentid.size() == 0))) {
+                m_agent_watched_astid = astagentid.split(" ")[0];
+                m_agent_watched_agentid = astagentid.split(" ")[1];
+                ServerCommand * sc = new ServerCommand();
+                sc->addString("class", "agent-status");
+                sc->addString("direction", "xivoserver");
+                sc->addString("astid", m_agent_watched_astid);
+                sc->addString("agentid", m_agent_watched_agentid);
+                sendCommand(sc->find());
+        }
 }
 
 void BaseEngine::changeWatchedQueueSlot(const QString & astqueueid)

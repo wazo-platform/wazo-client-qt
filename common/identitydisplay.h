@@ -110,6 +110,7 @@ private:
 signals:
         void agentAction(const QString &);
         void setAvailState(const QString &, bool);
+        void changeWatchedAgent(const QString &, bool);
 };
 
 

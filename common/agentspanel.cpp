@@ -375,7 +375,7 @@ void AgentsPanel::agentClicked()
         QString agentid = sender()->property("agentid").toString();
         QString action  = sender()->property("action").toString();
         if(action == "changeagent")
-                changeWatchedAgent(astid + " " + agentid);
+                changeWatchedAgent(astid + " " + agentid, true);
         else if(action == "loginoff") {
                 QString prop = m_agent_logged_status[agentid]->property("logged").toString();
                 // qDebug() << "AgentsPanel::agentClicked()" << "loginoff" << astid << agentid << prop;

@@ -224,6 +224,9 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
                          // vm[0] + " " + tr("waiting") + " " +
                          vm[1] + " " + tr("old") + " " +
                          vm[2] + " " + tr("new"));
+        
+        // changes the "watched agent" only if no one else has done it before
+        changeWatchedAgent(m_ui->astid() + " " + m_ui->agentid(), false);
 }
 
 void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)

@@ -65,7 +65,7 @@ public:
 	AgentsPanel(QWidget * parent = 0);
 	~AgentsPanel();
 signals:
-        void changeWatchedAgent(const QString &);
+        void changeWatchedAgent(const QString &, bool);
         void agentAction(const QString &);
 public slots:
         void setUserInfo(const UserInfo *);
