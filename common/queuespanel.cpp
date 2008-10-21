@@ -71,6 +71,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
         m_statlegends["Xivo-Join"] = tr("Joined");
         m_statlegends["Xivo-Link"] = tr("Linked");
         m_statlegends["Xivo-Rate"] = tr("Pickup rate");
+        m_statlegends["Xivo-Chat"] = tr("Conversation");
         //         m_statitems = (QStringList()
         //                        << "Completed" << "Abandoned"
         //                        << "Holdtime" //  << "ServicelevelPerf"
@@ -78,7 +79,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
         //                        << "ServiceLevel" << "Max" << "Weight");
         m_statitems = (QStringList()
                        //  << "ServicelevelPerf"
-                       << "Xivo-Join" << "Xivo-Link"
+                       << "Xivo-Join" << "Xivo-Link" << "Xivo-Chat"
                        << "Holdtime");
         m_maxbusy = 0;
         
