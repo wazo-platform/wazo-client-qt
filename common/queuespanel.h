@@ -48,6 +48,7 @@
 #include <QObject>
 #include <QWidget>
 
+class QCheckBox;
 class QGridLayout;
 class QLabel;
 class QProgressBar;
@@ -79,6 +80,7 @@ public slots:
                              const QStringList &);
 private slots:
         void queueClicked();
+        void checkBoxStateChanged(int);
 private:
         QGridLayout * m_gridlayout;
         QStringList m_statitems;
@@ -93,8 +95,11 @@ private:
 
         quint32 m_maxbusy;
         
-        QLabel * m_title1;
-        QLabel * m_title2;
+        QLabel * m_busytitle;
+        QLabel * m_qtitle;
+        QLabel * m_vqtitle;
+        QCheckBox * m_qcbox;
+        QCheckBox * m_vqcbox;
         QHash<QString, QLabel *> m_title_infos;
 };
 

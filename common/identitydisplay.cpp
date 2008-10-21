@@ -159,7 +159,7 @@ void IdentityDisplay::updateCounter(const QStringList & qsl)
                 int navail = qsl[0].toInt();
                 int nunavail = qsl[1].toInt();
                 int ntot = navail + nunavail;
-                m_info5->setText(qsl[0] + " " + tr("available") + " + " + qsl[1] + " " + tr("unavailable") + " = " + QString::number(ntot) + " " + tr("total"));
+                m_info5->setText(qsl[0] + " " + tr("available") + "\n" + qsl[1] + " " + tr("unavailable") + "\n" + QString::number(ntot) + " " + tr("connected"));
         }
 }
 

@@ -39,6 +39,7 @@
  * $Date$
  */
 
+#include <QCheckBox>
 #include <QDebug>
 #include <QGridLayout>
 #include <QLabel>
@@ -76,17 +77,32 @@ QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
         //                        << "Xivo-Join" << "Xivo-Link"
         //                        << "ServiceLevel" << "Max" << "Weight");
         m_statitems = (QStringList()
-                       << "Holdtime" //  << "ServicelevelPerf"
-                       << "Xivo-Join" << "Xivo-Link");
+                       //  << "ServicelevelPerf"
+                       << "Xivo-Join" << "Xivo-Link"
+                       << "Holdtime");
         m_maxbusy = 0;
         
-        m_title1 = new QLabel(tr("Queue"), this);
-        m_title2 = new QLabel(tr("Busy"), this);
+        m_busytitle = new QLabel(tr("Busy"), this);
+        m_qtitle = new QLabel(tr("Queues"), this);
+        m_qcbox  = new QCheckBox(this);
+        m_qcbox->setCheckState(Qt::Checked);
+        m_vqtitle = new QLabel(tr("Virtual Queues"), this);
+        m_vqcbox  = new QCheckBox(this);
+        m_vqcbox->setCheckState(Qt::Checked);
+        
+        connect( m_qcbox, SIGNAL(stateChanged(int)),
+                 this, SLOT(checkBoxStateChanged(int)));
+        connect( m_vqcbox, SIGNAL(stateChanged(int)),
+                 this, SLOT(checkBoxStateChanged(int)));
+        
         foreach (QString statitem, m_statitems)
                 m_title_infos[statitem] = new QLabel(m_statlegends[statitem], this);
-
-        m_gridlayout->addWidget( m_title1, 0, 0, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_title2, 0, 2, Qt::AlignCenter );
+        
+        m_gridlayout->addWidget( m_busytitle, 0, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_qtitle, 1, 0, Qt::AlignLeft );
+        m_gridlayout->addWidget( m_vqtitle, 50, 0, Qt::AlignLeft );
+        m_gridlayout->addWidget( m_qcbox, 1, 1, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_vqcbox, 50, 1, Qt::AlignCenter );
         foreach (QString statitem, m_statitems)
                 m_gridlayout->addWidget( m_title_infos[statitem],
                                          0,
@@ -101,6 +117,11 @@ QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
 QueuesPanel::~QueuesPanel()
 {
         // qDebug() << "QueuesPanel::~QueuesPanel()";
+}
+
+void QueuesPanel::checkBoxStateChanged(int state)
+{
+        qDebug() << "QueuesPanel::checkBoxStateChanged" << state;
 }
 
 void QueuesPanel::setEngine(BaseEngine * engine)
@@ -140,6 +161,9 @@ void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
 
 void QueuesPanel::addQueue(const QString & astid, const QString & queuename, bool isvirtual)
 {
+        int delta = 1;
+        if(isvirtual)
+                delta = 50;
         m_queuelabels[queuename] = new QLabel(queuename, this);
         m_queuemore[queuename] = new QPushButton(this);
         m_queuemore[queuename]->setProperty("astid", astid);
@@ -156,12 +180,12 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
         foreach (QString statitem, m_statitems)
                 m_queueinfos[queuename][statitem] = new QLabel();
         int linenum = m_queuelabels.size();
-        m_gridlayout->addWidget( m_queuelabels[queuename], linenum, 0, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_queuemore[queuename], linenum, 1, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_queuebusies[queuename], linenum, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_queuelabels[queuename], delta + linenum, 0, Qt::AlignLeft );
+        m_gridlayout->addWidget( m_queuemore[queuename], delta + linenum, 1, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_queuebusies[queuename], delta + linenum, 2, Qt::AlignCenter );
         foreach (QString statitem, m_statitems)
                 m_gridlayout->addWidget( m_queueinfos[queuename][statitem],
-                                         linenum,
+                                         delta + linenum,
                                          3 + m_statitems.indexOf(statitem),
                                          Qt::AlignRight );
 }
@@ -193,13 +217,15 @@ void QueuesPanel::setQueueList(bool, const QMap<QString, QVariant> & qlist)
                         foreach (QString statitem, m_statitems) {
                                 int value = 0;
                                 foreach (QString truequeue, truequeues)
-                                        value += m_queueinfos[truequeue][statitem]->text().toInt();
+                                        if(m_queueinfos.contains(truequeue))
+                                                value += m_queueinfos[truequeue][statitem]->text().toInt();
                                 infos[statitem] = QString::number(value);
                         }
                         
                         int value = 0;
                         foreach (QString truequeue, truequeues)
-                                value += m_queuebusies[truequeue]->property("value").toInt();
+                                if(m_queuebusies.contains(truequeue))
+                                        value += m_queuebusies[truequeue]->property("value").toInt();
                         infos["Calls"] = QString::number(value);
                         
                         if(! m_queuelabels.contains(vqueuename)) {
