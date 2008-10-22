@@ -86,9 +86,11 @@ QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
         m_busytitle = new QLabel(tr("Busy"), this);
         m_qtitle = new QLabel(tr("Queues"), this);
         m_qcbox  = new QCheckBox(this);
+        m_qcbox->setObjectName("queues");
         m_qcbox->setCheckState(Qt::Checked);
         m_vqtitle = new QLabel(tr("Virtual Queues"), this);
         m_vqcbox  = new QCheckBox(this);
+        m_vqcbox->setObjectName("vqueues");
         m_vqcbox->setCheckState(Qt::Checked);
         
         connect( m_qcbox, SIGNAL(stateChanged(int)),
@@ -122,7 +124,26 @@ QueuesPanel::~QueuesPanel()
 
 void QueuesPanel::checkBoxStateChanged(int state)
 {
-        qDebug() << "QueuesPanel::checkBoxStateChanged()" << state;
+        bool isvirtual_req = (sender()->objectName() == "vqueues");
+        // qDebug() << "QueuesPanel::checkBoxStateChanged()" << isvirtual_req << state;
+        foreach(QString qname, m_queuelabels.keys()) {
+                bool isvirtual = m_queuelabels[qname]->property("virtual").toBool();
+                if(isvirtual_req == isvirtual) {
+                        if(state) {
+                                m_queuelabels[qname]->show();
+                                m_queuemore[qname]->show();
+                                m_queuebusies[qname]->show();
+                                foreach (QString statitem, m_statitems)
+                                        m_queueinfos[qname][statitem]->show();
+                        } else {
+                                m_queuelabels[qname]->hide();
+                                m_queuemore[qname]->hide();
+                                m_queuebusies[qname]->hide();
+                                foreach (QString statitem, m_statitems)
+                                        m_queueinfos[qname][statitem]->hide();
+                        }
+                }
+        }
 }
 
 void QueuesPanel::setEngine(BaseEngine * engine)
@@ -166,6 +187,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
         if(isvirtual)
                 delta = 50;
         m_queuelabels[queuename] = new QLabel(queuename, this);
+        m_queuelabels[queuename]->setProperty("virtual", isvirtual);
         m_queuemore[queuename] = new QPushButton(this);
         m_queuemore[queuename]->setProperty("astid", astid);
         m_queuemore[queuename]->setProperty("queueid", queuename);
