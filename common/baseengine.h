@@ -95,6 +95,8 @@ public:
 	void setLoginKind(const int);		//!< see loginkind()
 	const int & keeppass() const;		//!< keeppass to identify to the server
 	void setKeepPass(const int);		//!< see keeppass()
+	const int & showagselect() const;	//!< showagselect to identify to the server
+	void setShowAgentSelect(const int);	//!< see showagselect()
 	const QString & password() const;	//!< password to identify to the sever
 	void setPassword(const QString &);	//!< see password()
 
@@ -297,6 +299,7 @@ private:
 	QString m_phonenumber;		//!< Agent's phone
 	int m_loginkind;		//!< Login Kind
 	int m_keeppass;			//!< Keep password ?
+	int m_showagselect;		//!< Show agent selection ?
 	QString m_fullid;		//!< Full Id (userid + company)
 
 	bool m_autoconnect;		//!< Autoconnect to server at startup

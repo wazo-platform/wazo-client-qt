@@ -319,8 +319,15 @@ void MainWidget::loginKindChanged(int index)
                 m_lab3->hide();
                 m_qlab3->hide();
         } else {
-                m_lab3->show();
-                m_qlab3->show();
+                if(m_engine->showagselect()) {
+                        m_lab3->show();
+                        m_qlab3->show();
+                        m_loginkind->show();
+                } else {
+                        m_lab3->hide();
+                        m_qlab3->hide();
+                        m_loginkind->hide();
+                }
         }
 }
 
@@ -548,12 +555,21 @@ void MainWidget::showConfDialog()
 
 void MainWidget::confUpdated()
 {
-        qDebug() << "MainWidget::confUpdated";
+        // qDebug() << "MainWidget::confUpdated()";
         m_qlab1->setText(m_engine->userId());
         m_qlab2->setText(m_engine->password());
         m_qlab3->setText(m_engine->phonenumber());
         m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
         m_loginkind->setCurrentIndex(m_engine->loginkind());
+        if(m_engine->showagselect()) {
+                m_lab3->show();
+                m_qlab3->show();
+                m_loginkind->show();
+        } else {
+                m_lab3->hide();
+                m_qlab3->hide();
+                m_loginkind->hide();
+        }
 }
 
 /*! \brief process clicks to the systray icon

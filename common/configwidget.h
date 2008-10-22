@@ -100,6 +100,7 @@ private:
 	QLineEdit * m_company;		//!< name of the company
 	QLineEdit * m_password;		//!< user password
 	QCheckBox * m_keeppass;		//!< keep password ?
+	QCheckBox * m_showagselect;	//!< show agent select on main window ?
 	QLineEdit * m_userid;		//!< user login
 	QComboBox * m_loginkind;	//!< login kind (user or agent)
 	QLineEdit * m_phonenumber;	//!< agent's phone number

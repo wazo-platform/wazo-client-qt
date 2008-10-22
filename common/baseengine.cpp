@@ -188,6 +188,7 @@ void BaseEngine::loadSettings()
 	m_password    = m_settings->value("password").toString();
 	m_loginkind   = m_settings->value("loginkind", 0).toUInt();
 	m_keeppass    = m_settings->value("keeppass", 0).toUInt();
+	m_showagselect = m_settings->value("showagselect", 0).toUInt();
 	m_phonenumber = m_settings->value("phonenumber").toString();
         setFullId();
 
@@ -242,6 +243,7 @@ void BaseEngine::saveSettings()
                 m_settings->remove("password");
 	m_settings->setValue("loginkind",  m_loginkind);
 	m_settings->setValue("keeppass",   m_keeppass);
+	m_settings->setValue("showagselect", m_showagselect);
 	m_settings->setValue("phonenumber", m_phonenumber);
 
 	m_settings->setValue("autoconnect", m_autoconnect);
@@ -1027,7 +1029,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         popupError(datamap["errorstring"].toString());
                         
                 } else if (thisclass == "login_pass_ok") {
-                        QStringList capas = datamap["capalist"].toString().split(",");
+                        QStringList capas = datamap["capalist"].toStringList();
                         ServerCommand * sc2 = new ServerCommand();
                         sc2->addString("class", "login_capas");
                         sc2->addString("direction", "xivoserver");
@@ -1066,7 +1068,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         sendCommand(sc2->find());
 
                 } else if (thisclass == "login_capas_ok") {
-                        m_capafuncs = datamap["capafuncs"].toString().split(",");
+                        m_capafuncs = datamap["capafuncs"].toStringList();
                         m_capaxlets = datamap["capaxlets"].toStringList();
                         m_appliname = datamap["appliname"].toString();
                         updateCapaPresence(datamap["capapresence"].toMap());
@@ -1567,6 +1569,16 @@ const int & BaseEngine::loginkind() const
 void BaseEngine::setLoginKind(const int loginkind)
 {
 	m_loginkind = loginkind;
+}
+
+const int & BaseEngine::showagselect() const
+{
+	return m_showagselect;
+}
+
+void BaseEngine::setShowAgentSelect(const int showagselect)
+{
+	m_showagselect = showagselect;
 }
 
 const int & BaseEngine::keeppass() const

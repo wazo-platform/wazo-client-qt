@@ -47,7 +47,7 @@
 #define NUMBER_MIMETYPE   "XIVO_ASTERISK_NUMBER"
 #define XIVO_COMMAND_ROOT "XIVO_COMMAND_ROOT"
 
-const int REQUIRED_SERVER_VERSION = 4141;
+const int REQUIRED_SERVER_VERSION = 4440;
 const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
 const QString __current_client_version__  = SVNVER;
 const QString __xivo_version__  = "0.4";

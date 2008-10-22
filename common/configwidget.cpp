@@ -185,7 +185,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 	m_userid = new QLineEdit(m_engine->userId(), this);
 	gridlayout3->addWidget(m_lblulogin, line, 0);
 	gridlayout3->addWidget(m_userid, line++, 1);
-
+        
 	m_lblpassword = new QLabel(tr("Password"), this);
 	m_password = new QLineEdit(m_engine->password(), this);
 	m_password->setEchoMode(QLineEdit::Password);
@@ -195,7 +195,11 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 	m_keeppass = new QCheckBox(tr("Keep Password"));
 	m_keeppass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
 	gridlayout3->addWidget(m_keeppass, line++, 0, 1, 2);
-
+        
+	m_showagselect = new QCheckBox(tr("Show the Agent options (like the\nones beneath) on first window"));
+	m_showagselect->setCheckState((m_engine->showagselect() == 2) ? Qt::Checked : Qt::Unchecked);
+	gridlayout3->addWidget(m_showagselect, line++, 0, 1, 2);
+        
         QFrame * qhline3 = new QFrame(this);
         qhline3->setFrameShape(QFrame::HLine);
         gridlayout3->addWidget(qhline3, line++, 0, 1, 2);
@@ -295,7 +299,7 @@ ConfigWidget::~ConfigWidget()
 
 void ConfigWidget::loginKindChanged(int index)
 {
-        qDebug() << "ConfigWidget::loginKindChanged()" << index;
+        // qDebug() << "ConfigWidget::loginKindChanged()" << index;
         if(index == 0) {
                 m_lblphone->hide();
                 m_phonenumber->hide();
@@ -312,13 +316,14 @@ void ConfigWidget::loginKindChanged(int index)
  */
 void ConfigWidget::saveAndClose()
 {
-        qDebug() << "ConfigWidget::saveAndClose()";
+        // qDebug() << "ConfigWidget::saveAndClose()";
         m_engine->setAddress(m_serverhost->text(), m_sbport->text().toUShort());
 	m_engine->setServerip(m_serverhost->text());
 
 	m_engine->setCompany(m_company->text());
         m_engine->setLoginKind(m_loginkind->currentIndex());
         m_engine->setKeepPass(m_keeppass->checkState());
+        m_engine->setShowAgentSelect(m_showagselect->checkState());
 
 	m_engine->setUserId(m_userid->text());
 	m_engine->setPhonenumber(m_phonenumber->text());
