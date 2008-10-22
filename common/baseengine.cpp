@@ -821,10 +821,10 @@ bool BaseEngine::parseCommand(const QString & line)
                                         updateAgentPresence(m_users[id]->agentid(), presencestatus, m_presencecolors[presencestatus]);
                                 else
                                         updateAgentPresence(m_users[id]->agentid(), presencestatus, Qt::gray);
+                                m_counters = datamap["presencecounter"].toStringList();
+                                updateCounter(m_counters);
                                 if (id == m_fullid) {
                                         updateCapaPresence(datamap["capapresence"].toMap());
-                                        updatePresence(m_capapresence);
-                                        m_counters = datamap["presencecounter"].toStringList();
                                         updateCounter(m_counters);
                                         localUserInfoDefined(m_users[m_fullid]);
                                 }
