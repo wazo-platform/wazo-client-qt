@@ -70,11 +70,16 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_agentlegend_njoined = new QLabel("0", this);
         m_agentlegend_npaused = new QLabel("0", this);
         
-        m_actionlegends["alogin"] = tr("Login");
-        m_actionlegends["record"] = tr("Record");
+        m_actionlegends["alogin"] = new QLabel(tr("Login"), this);
+        m_actionlegends["record"] = new QLabel(tr("Record"), this);
         
         foreach (QString function, m_actionlegends.keys())
-                m_action[function] = new QPushButton(m_actionlegends[function]);
+                m_action[function] = new QPushButton(this);
+        m_action["record"]->setIconSize(QSize(10, 10));
+        m_action["record"]->setIcon(QIcon(":/images/player_stop.png"));
+        m_action["alogin"]->setIconSize(QSize(10, 10));
+        m_action["alogin"]->setIcon(QIcon(":/images/button_ok.png"));
+        
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_agentname, m_linenum, 0);
         m_gridlayout->addWidget(m_agentstatus, m_linenum, 1, 1, 7);
@@ -82,7 +87,8 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         
         int colnum = 0;
         foreach (QString function, m_actionlegends.keys()) {
-                m_gridlayout->addWidget(m_action[function], m_linenum, 2 + 3 * colnum, 1, 3, Qt::AlignCenter);
+                m_gridlayout->addWidget(m_actionlegends[function], m_linenum, 2 + 3 * colnum, 1, 1, Qt::AlignCenter);
+                m_gridlayout->addWidget(m_action[function], m_linenum, 3 + 3 * colnum, 1, 2, Qt::AlignCenter);
                 colnum ++;
         }
         m_gridlayout->setColumnStretch( 8, 1 );
@@ -131,14 +137,16 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                 QString phonenum = params[3];
                 if((m_agent == agname) && (m_astid == astid)) {
                         m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
+                        m_action["alogin"]->setIcon(QIcon(":/images/cancel.png"));
                         m_action["alogin"]->setProperty("function", "alogout");
-                        m_action["alogin"]->setText(tr("Logout"));
+                        m_actionlegends["alogin"]->setText(tr("Logout"));
                 }
         } else if(command == "agentlogout") {
                 if((m_agent == agname) && (m_astid == astid)) {
                         m_agentstatus->setText(tr("logged off"));
+                        m_action["alogin"]->setIcon(QIcon(":/images/button_ok.png"));
                         m_action["alogin"]->setProperty("function", "alogin");
-                        m_action["alogin"]->setText(tr("Login"));
+                        m_actionlegends["alogin"]->setText(tr("Login"));
                 }
         } else if(command == "joinqueue") {
                 if((m_agent == agname) && (m_astid == astid)) {
@@ -300,11 +308,13 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         if(lstatus == "AGENT_LOGGEDOFF") {
                 m_agentstatus->setText(tr("logged off") + " <b>" + phonenum + "</b>");
                 m_action["alogin"]->setProperty("function", "alogin");
-                m_action["alogin"]->setText(tr("Login"));
+                m_action["alogin"]->setIcon(QIcon(":/images/button_ok.png"));
+                m_actionlegends["alogin"]->setText(tr("Login"));
         } else if(lstatus == "AGENT_IDLE") {
                 m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
                 m_action["alogin"]->setProperty("function", "alogout");
-                m_action["alogin"]->setText(tr("Logout"));
+                m_action["alogin"]->setIcon(QIcon(":/images/cancel.png"));
+                m_actionlegends["alogin"]->setText(tr("Logout"));
         }
         
         m_agentlegend_qname->show();
@@ -469,10 +479,10 @@ void AgentdetailsPanel::statusRecord(const QString & agentnum, const QString & s
         // qDebug() << "AgentdetailsPanel::statusRecord()" << agentnum << m_agent << status;
         if(agentnum == m_agent) {
                 if(status == "started") {
-                        m_action["record"]->setText(tr("Stop Record"));
+                        m_actionlegends["record"]->setText(tr("Stop Record"));
                         m_action["record"]->setProperty("function", "stoprecord");
                 } else if(status == "stopped") {
-                        m_action["record"]->setText(tr("Record"));
+                        m_actionlegends["record"]->setText(tr("Record"));
                         m_action["record"]->setProperty("function", "record");
                 }
         }

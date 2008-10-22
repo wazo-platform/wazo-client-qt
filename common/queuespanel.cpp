@@ -122,7 +122,7 @@ QueuesPanel::~QueuesPanel()
 
 void QueuesPanel::checkBoxStateChanged(int state)
 {
-        qDebug() << "QueuesPanel::checkBoxStateChanged" << state;
+        qDebug() << "QueuesPanel::checkBoxStateChanged()" << state;
 }
 
 void QueuesPanel::setEngine(BaseEngine * engine)

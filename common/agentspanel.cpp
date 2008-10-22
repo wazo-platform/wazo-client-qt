@@ -385,6 +385,7 @@ void AgentsPanel::agentClicked()
                         agentAction("login " + astid + " " + agentid);
         } else if(action == "listen") {
                 agentAction("listen " + astid + " " + agentid);
+                m_agent_listen[agentid]->setStyleSheet("QPushButton {background: #fbb638}");
         } else if(action == "record") {
                 agentAction("record " + astid + " " + agentid);
                 m_agent_record[agentid]->setProperty("action", "stoprecord");
