@@ -79,7 +79,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine, QWidget * parent)
         //                        << "ServiceLevel" << "Max" << "Weight");
         m_statitems = (QStringList()
                        //  << "ServicelevelPerf"
-                       << "Xivo-Join" << "Xivo-Link" << "Xivo-Chat"
+                       << "Xivo-Join" << "Xivo-Link" << "Xivo-Chat" << "Xivo-Rate"
                        << "Holdtime");
         m_maxbusy = 0;
         

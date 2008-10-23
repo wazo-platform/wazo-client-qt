@@ -93,19 +93,16 @@ void QueueentrydetailsPanel::newQueue(const QString & astid, const QString & que
         
         int k = 0;
         foreach(QString channel, queuestatus["entries"].toMap().keys()) {
-                QStringList entryinfos = queuestatus["entries"].toMap()[channel].toStringList();
-                // qDebug() << channel << entryinfos;
-                if(entryinfos.size() > 3) {
-                        // QString entryname = entryinfos[0];
-                        QString entryname = entryinfos[3] + " <" + entryinfos[2] + ">";
-                        QString entrypos = entryinfos[0];
-                        QString entrytime = entryinfos[1];
-                        m_entrypos[entryname] = new QLabel(entryname + " :: " + entrypos, this);
-                        m_entrytime[entryname] = new QLabel(entrytime, this);
-                        m_gridlayout->addWidget( m_entrypos[entryname], k + 1, 0, Qt::AlignLeft );
-                        m_gridlayout->addWidget( m_entrytime[entryname], k + 1, 1, Qt::AlignLeft );
-                        k ++;
-                }
+                QMap<QString, QVariant> entryinfos = queuestatus["entries"].toMap()[channel].toMap();
+                qDebug() << channel << entryinfos;
+                QString entryname = entryinfos["calleridname"].toString() + " <" + entryinfos["calleridnum"].toString() + ">";
+                QString entrypos = entryinfos["position"].toString();
+                QString entrytime = entryinfos["wait"].toString();
+                m_entrypos[entryname] = new QLabel(entryname + " :: " + entrypos, this);
+                m_entrytime[entryname] = new QLabel(entrytime, this);
+                m_gridlayout->addWidget( m_entrypos[entryname], k + 1, 0, Qt::AlignLeft );
+                m_gridlayout->addWidget( m_entrytime[entryname], k + 1, 1, Qt::AlignLeft );
+                k ++;
         }
 }
 
