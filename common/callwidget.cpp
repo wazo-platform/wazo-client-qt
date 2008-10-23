@@ -109,7 +109,7 @@ CallWidget::CallWidget(const QString & channelme,
 
 	// for caller id information
 	QLabel * dummy = new QLabel("", this);
-	dummy->setFont(QFont("times", 10, QFont::Light, TRUE));
+	dummy->setFont(QFont("times", 10, QFont::Light, true));
 	gridlayout->addWidget(dummy, 1, 2);
 	//setAcceptDrops(true);
 	

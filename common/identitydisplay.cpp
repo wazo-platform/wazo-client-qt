@@ -77,6 +77,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         m_info3 = new QLabel(this);
         m_info4 = new QLabel(this);
         m_info5 = new QLabel(this);
+        m_info5->setFont(QFont("helvetica", 24, QFont::Bold));
         m_info6 = new QLabel(this);
         
         m_qf = new QFrame(this);
@@ -159,7 +160,8 @@ void IdentityDisplay::updateCounter(const QStringList & qsl)
                 int navail = qsl[0].toInt();
                 int nunavail = qsl[1].toInt();
                 int ntot = navail + nunavail;
-                m_info5->setText(qsl[0] + " " + tr("available") + "\n" + qsl[1] + " " + tr("unavailable") + "\n" + QString::number(ntot) + " " + tr("connected"));
+                // m_info5->setText(qsl[0] + " " + tr("available") + "\n" + qsl[1] + " " + tr("unavailable") + "\n" + QString::number(ntot) + " " + tr("connected"));
+                m_info5->setText(qsl[0] + "/" + QString::number(ntot));
         }
 }
 
