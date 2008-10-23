@@ -812,9 +812,10 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "presence") {
                         QString id = datamap["company"].toString() + "/" + datamap["userid"].toString();
-                        //qDebug() << presencestatus << m_users.size();
+                        // qDebug() << thisclass << m_users.size() << id;
                         if(m_users.contains(id)) {
                                 QString presencestatus = datamap["capapresence"].toMap()["state"].toString();
+                                // qDebug() << thisclass << presencestatus;
                                 m_users[id]->setAvailState(presencestatus);
                                 updatePeerAgent(id, "imstatus", presencestatus.split("/"));
                                 if(m_presencecolors.contains(presencestatus))
@@ -825,6 +826,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                 updateCounter(m_counters);
                                 if (id == m_fullid) {
                                         updateCapaPresence(datamap["capapresence"].toMap());
+                                        updatePresence(m_capapresence);
                                         updateCounter(m_counters);
                                         localUserInfoDefined(m_users[m_fullid]);
                                 }
