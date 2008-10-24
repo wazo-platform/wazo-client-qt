@@ -800,8 +800,8 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setQueueList(bool, const QMap<QString, QVariant> &)));
                                 connect( m_xlet[dc], SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)));
-                                connect( m_engine, SIGNAL(updateCounter(const QStringList &)),
-                                         m_xlet[dc], SLOT(updateCounter(const QStringList &)));
+                                connect( m_engine, SIGNAL(updateCounter(const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(updateCounter(const QMap<QString, QVariant> &)));
                                 
 			} else if (dc == QString("agents")) {
                                 m_xlet[dc] = new AgentsPanel(m_optionsmap);
@@ -870,6 +870,8 @@ void MainWidget::engineStarted()
                                 } else
                                         addPanel("queues", tr("Queues' List"), m_xlet[dc]);
                                 
+                                connect( m_engine, SIGNAL(updateCounter(const QMap<QString, QVariant> &)),
+                                         m_xlet[dc], SLOT(updateCounter(const QMap<QString, QVariant> &)));
                                 connect( m_engine, SIGNAL(setQueueStatus(const QStringList &)),
                                          m_xlet[dc], SLOT(setQueueStatus(const QStringList &)));
                                 connect( m_engine, SIGNAL(newQueueList(bool, const QMap<QString, QVariant> &)),

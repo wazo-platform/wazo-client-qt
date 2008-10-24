@@ -220,7 +220,7 @@ signals:
         void meetmeEvent(const QStringList &);
         void requestFileListResult(const QString &);
         void updatePresence(const QMap<QString, QVariant> &);
-        void updateCounter(const QStringList &);
+        void updateCounter(const QMap<QString, QVariant> &);
         void serverFileList(const QStringList &);
         void fileReceived();
         void statusRecord(const QString &, const QString &);
@@ -350,7 +350,7 @@ private:
 	int m_pendingkeepalivemsg;	//!< number of keepalivemsg sent without response
         QString m_numbertodial;		//!< Number dialed in
         QString m_osname;		//!< OS informations
-        QStringList m_counters;
+        QMap<QString, QVariant> m_counters;
 
         QString m_agent_watched_astid;
         QString m_agent_watched_agentid;

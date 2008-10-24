@@ -830,12 +830,11 @@ bool BaseEngine::parseCommand(const QString & line)
                                         updateAgentPresence(m_users[id]->agentid(), presencestatus, m_presencecolors[presencestatus]);
                                 else
                                         updateAgentPresence(m_users[id]->agentid(), presencestatus, Qt::gray);
-                                m_counters = datamap["presencecounter"].toStringList();
+                                m_counters = datamap["presencecounter"].toMap();
                                 updateCounter(m_counters);
                                 if (id == m_fullid) {
                                         updateCapaPresence(datamap["capapresence"].toMap());
                                         updatePresence(m_capapresence);
-                                        updateCounter(m_counters);
                                         localUserInfoDefined(m_users[m_fullid]);
                                 }
                         }
@@ -1083,7 +1082,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         m_appliname = datamap["appliname"].toString();
                         updateCapaPresence(datamap["capapresence"].toMap());
                         m_forced_state = datamap["capapresence"].toMap()["state"].toString();
-                        m_counters = datamap["presencecounter"].toStringList();
+                        m_counters = datamap["presencecounter"].toMap();
                         m_guioptions = datamap["guisettings"].toMap();
                         // m_capafeatures = datamap["capas_features"].toStringList();
                         

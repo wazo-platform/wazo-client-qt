@@ -84,13 +84,14 @@ public slots:
         void updatePresence(const QMap<QString, QVariant> &);
         void updateCounter(const QStringList &);
 private:
+        void showAgentProps();
+        void hideAgentProps();
+        
         BaseEngine * m_engine;
         QLabel * m_user;
-        QLabel * m_info1;
-        QLabel * m_info3;
-        QLabel * m_info4;
-        QLabel * m_info5;
-        QLabel * m_info6;
+        QLabel * m_phonenum;
+        QLabel * m_statuslabel;
+        QLabel * m_connlabel;
         QComboBox * m_presence;
         QLabel * m_agent;
         QFrame * m_qf;
