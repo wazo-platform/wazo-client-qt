@@ -52,11 +52,19 @@
 
 /*! \brief Constructor
  */
-AgentsPanel::AgentsPanel(QWidget * parent)
+AgentsPanel::AgentsPanel(const QMap<QString, QVariant> & optionmap,
+                         QWidget * parent)
         : QWidget(parent)
 {
+        m_gui_font = QFont("sans serif", 9);
+        m_gui_buttonsize = 10;
+        if(optionmap.contains("fontname") && optionmap.contains("fontsize"))
+                m_gui_font = QFont(optionmap["fontname"].toString(),
+                                   optionmap["fontsize"].toInt());
+        if(optionmap.contains("iconsize"))
+                m_gui_buttonsize = optionmap["iconsize"].toInt();
+        
 	m_gridlayout = new QGridLayout(this);
-
         m_title1 = new QLabel(tr("Agent"), this);
         m_title2 = new QLabel(tr("Record"), this);
         m_title3 = new QLabel(tr("Listen"), this);
@@ -77,6 +85,16 @@ AgentsPanel::AgentsPanel(QWidget * parent)
         m_gridlayout->setColumnStretch( 16, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->setVerticalSpacing(0);
+        
+        // setFont(m_gui_font);
+        m_title1->setFont(m_gui_font);
+        m_title2->setFont(m_gui_font);
+        m_title3->setFont(m_gui_font);
+        m_title4->setFont(m_gui_font);
+        m_title5->setFont(m_gui_font);
+        m_title6->setFont(m_gui_font);
+        m_title7->setFont(m_gui_font);
+        m_title8->setFont(m_gui_font);
 }
 
 AgentsPanel::~AgentsPanel()
@@ -94,7 +112,7 @@ void AgentsPanel::updateAgentPresence(const QString & agentname, const QString &
         // qDebug() << "AgentsPanel::updateAgentPresence" << agentname << presence << color;
         if(agentname.size() > 0)
                 if(m_agent_presence.contains(agentname)) {
-                        QPixmap * m_square = new QPixmap(12, 12);
+                        QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                         m_square->fill(color);
                         m_agent_presence[agentname]->setPixmap(QPixmap(* m_square));
                 }
@@ -114,13 +132,13 @@ void AgentsPanel::updatePeerAgent(const QString &,
                         QString qname = params[3];
                         QString status = params[4];
                         if(status == "1") {
-                                QPixmap * m_square = new QPixmap(12, 12);
+                                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                                 m_square->fill(Qt::green);
                                 m_agent_logged_status[agname]->setPixmap(QPixmap(* m_square));
                                 m_agent_logged_status[agname]->setProperty("logged", "y");
                                 m_agent_logged_action[agname]->setIcon(QIcon(":/images/cancel.png"));
                         } else if(status == "5") {
-                                QPixmap * m_square = new QPixmap(12, 12);
+                                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                                 m_square->fill(Qt::red);
                                 m_agent_logged_status[agname]->setPixmap(QPixmap(* m_square));
                                 m_agent_logged_status[agname]->setProperty("logged", "n");
@@ -137,7 +155,7 @@ void AgentsPanel::updatePeerAgent(const QString &,
                 if((params.size() == 5) && m_agent_labels.contains(agname)) {
                         QString qname = params[3];
                         if(! m_agent_joined_list[agname].contains(qname)) {
-                                QPixmap * m_square = new QPixmap(12, 12);
+                                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                                 m_square->fill(Qt::green);
                                 m_agent_joined_list[agname].append(qname);
                                 m_agent_joined_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()));
@@ -146,7 +164,7 @@ void AgentsPanel::updatePeerAgent(const QString &,
                                 QString pstatus = params[4];
                                 if(pstatus == "0") {
                                         if(! m_agent_paused_list[agname].contains(qname)) {
-                                                QPixmap * m_square = new QPixmap(12, 12);
+                                                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                                                 m_square->fill(Qt::green);
                                                 m_agent_paused_list[agname].append(qname);
                                                 m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
@@ -198,7 +216,7 @@ void AgentsPanel::updatePeerAgent(const QString &,
                 QString astid = params[1];
                 QString agname = params[2];
                 if(m_agent_labels.contains(agname)) {
-                        QPixmap * m_square = new QPixmap(12, 12);
+                        QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                         m_square->fill(Qt::green);
                         m_agent_logged_status[agname]->setPixmap(QPixmap(* m_square));
                         m_agent_logged_status[agname]->setProperty("logged", "y");
@@ -208,7 +226,7 @@ void AgentsPanel::updatePeerAgent(const QString &,
                 QString astid = params[1];
                 QString agname = params[2];
                 if(m_agent_labels.contains(agname)) {
-                        QPixmap * m_square = new QPixmap(12, 12);
+                        QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                         m_square->fill(Qt::red);
                         m_agent_logged_status[agname]->setPixmap(QPixmap(* m_square));
                         m_agent_logged_status[agname]->setProperty("logged", "n");
@@ -217,7 +235,7 @@ void AgentsPanel::updatePeerAgent(const QString &,
         } else if((command == "agentlink") || (command == "phonelink")) {
                 QString astid = params[1];
                 QString agname = params[2];
-                QPixmap * m_square = new QPixmap(12, 12);
+                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                 m_square->fill(Qt::green);
                 if(m_agent_busy.contains(agname))
                         if(astid == m_agent_busy[agname]->property("astid").toString())
@@ -225,7 +243,7 @@ void AgentsPanel::updatePeerAgent(const QString &,
         } else if((command == "agentunlink") || (command == "phoneunlink")) {
                 QString astid = params[1];
                 QString agname = params[2];
-                QPixmap * m_square = new QPixmap(12, 12);
+                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                 m_square->fill(Qt::gray);
                 if(m_agent_busy.contains(agname))
                         if(astid == m_agent_busy[agname]->property("astid").toString())
@@ -236,7 +254,7 @@ void AgentsPanel::updatePeerAgent(const QString &,
 void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
 {
         // qDebug() << "AgentsPanel::setAgentList()" << alist;
-        QPixmap * m_square = new QPixmap(12, 12);
+        QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
         QString astid = alist["astid"].toString();
         QStringList agentids = alist["newlist"].toMap().keys();
         agentids.sort();
@@ -300,13 +318,13 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                         m_agent_paused_number[agnum] = new QLabel(this);
                         // m_agent_paused_status[agnum] = new QLabel(this);
                         
-                        m_agent_more[agnum]->setIconSize(QSize(10, 10));
+                        m_agent_more[agnum]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
                         m_agent_more[agnum]->setIcon(QIcon(":/images/add.png"));
-                        m_agent_record[agnum]->setIconSize(QSize(10, 10));
+                        m_agent_record[agnum]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
                         m_agent_record[agnum]->setIcon(QIcon(":/images/player_stop.png"));
-                        m_agent_listen[agnum]->setIconSize(QSize(10, 10));
+                        m_agent_listen[agnum]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
                         m_agent_listen[agnum]->setIcon(QIcon(":/images/player_play.png"));
-                        m_agent_logged_action[agnum]->setIconSize(QSize(8, 8));
+                        m_agent_logged_action[agnum]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
                         
                         m_square->fill(Qt::gray);
                         m_agent_busy[agnum]->setPixmap(QPixmap(* m_square));

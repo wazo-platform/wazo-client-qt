@@ -62,7 +62,9 @@ class QueuesPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	QueuesPanel(BaseEngine *, QWidget * parent = 0);
+	QueuesPanel(BaseEngine *,
+                    const QMap<QString, QVariant> &,
+                    QWidget * parent = 0);
 	~QueuesPanel();
         void setEngine(BaseEngine *);
 protected:
@@ -72,6 +74,7 @@ private:
 signals:
         void changeWatchedQueue(const QString &);
 public slots:
+        void setGuiOptions(const QMap<QString, QVariant> &);
         void removeQueues(const QString &, const QStringList &);
 	void setQueueList(bool, const QMap<QString, QVariant> &);
         void setQueueStatus(const QStringList &);
@@ -82,6 +85,11 @@ private slots:
         void queueClicked();
         void checkBoxStateChanged(int);
 private:
+        QFont m_gui_font;
+        quint32 m_gui_buttonsize;
+        bool m_gui_showvqueues;
+        bool m_gui_showqueuenames;
+        
         QGridLayout * m_gridlayout;
         QStringList m_statitems;
         QHash<QString, QString> m_statlegends;

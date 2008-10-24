@@ -214,6 +214,7 @@ private:
         QSettings * m_settings;
 
         QClipboard * m_clipboard;
+        QMap<QString, QVariant> m_optionsmap;
 };
 
 

@@ -61,6 +61,8 @@
 #include <QTime>
 #include <QVBoxLayout>
 
+#include "JsonToVariant.h"
+
 #include "agentspanel.h"
 #include "agentdetailspanel.h"
 #include "baseengine.h"
@@ -176,7 +178,25 @@ MainWidget::MainWidget(BaseEngine * engine,
         m_xivobg = new QLabel();
         m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
         m_xivobg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-
+        
+        QFile optionFile("json.ini");
+        QString optionStr;
+        if(optionFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                optionStr = optionFile.readAll();
+                optionFile.close();
+        }
+        JsonQt::JsonToVariant parser;
+        QVariant data;
+        if(optionStr.size() > 0) {
+                try {
+                        data = parser.parse(optionStr);
+                }
+                catch(JsonQt::ParseException) {
+                        qDebug() << "BaseEngine::parseCommand() exception catched for" << optionStr;
+                }
+        }
+        m_optionsmap = data.toMap();
+        
         if(m_loginfirst) {
                 m_lab1 = new QLabel(tr("Login"));
                 m_lab2 = new QLabel(tr("Password"));
@@ -650,6 +670,8 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
                 else
                         m_tabwidget->addTab(widget, extraspace + title + extraspace);
         }
+        connect( m_engine, SIGNAL(setGuiOptions(const QMap<QString, QVariant> &)),
+                 m_xlet[name], SLOT(setGuiOptions(const QMap<QString, QVariant> &)));
 }
 
 
@@ -771,8 +793,9 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
 
 			} else if (dc == QString("identity")) {
-                                m_xlet[dc] = new IdentityDisplay(m_engine);
+                                m_xlet[dc] = new IdentityDisplay(m_engine, m_optionsmap);
                                 addPanel("identity", tr("&Identity"), m_xlet[dc]);
+                                
                                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                                          m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
@@ -802,7 +825,7 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(updateCounter(const QStringList &)));
                                 
 			} else if (dc == QString("agents")) {
-                                m_xlet[dc] = new AgentsPanel();
+                                m_xlet[dc] = new AgentsPanel(m_optionsmap);
                                 if (withscrollbar) {
                                         QScrollArea * sa_ag = new QScrollArea(this);
                                         sa_ag->setWidget(m_xlet[dc]);
@@ -863,7 +886,7 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(meetmeAction(const QString &)));
 
 			} else if (dc == QString("queues")) {
-                                m_xlet[dc] = new QueuesPanel(m_engine);
+                                m_xlet[dc] = new QueuesPanel(m_engine, m_optionsmap);
                                 if (withscrollbar) {
                                         QScrollArea * sa_qu = new QScrollArea(this);
                                         sa_qu->setWidget(m_xlet[dc]);
@@ -1201,6 +1224,8 @@ void MainWidget::engineStarted()
 
 void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
+        disconnect( m_engine, SIGNAL(setGuiOptions(const QMap<QString, QVariant> &)),
+                    m_xlet[name], SLOT(setGuiOptions(const QMap<QString, QVariant> &)));
         if(m_docknames.contains(name)) {
                 removeDockWidget(m_docks[name]);
                 delete widget;

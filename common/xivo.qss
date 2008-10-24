@@ -124,4 +124,4 @@ QLabel#logpeername {color: black; background: lightskyblue1; border-radius: 5px;
 /*
  * Label for the Logged on User
  */
-SizeableLabel {color: white ; background: #fbb638 ; border: 3px solid #f38402; border-radius: 5px; font-size: 20px}
+QLabel#fullname {color: white ; background: #fbb638 ; border: 3px solid #f38402; border-radius: 5px; font-size: 20px}

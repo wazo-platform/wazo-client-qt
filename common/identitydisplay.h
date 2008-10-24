@@ -62,8 +62,10 @@ class IdentityDisplay : public QWidget
 	Q_OBJECT
 public:
 	IdentityDisplay(BaseEngine *,
+                        const QMap<QString, QVariant> &,
                         QWidget * parent = 0);
 public slots:
+        void setGuiOptions(const QMap<QString, QVariant> &);
         void setUserInfo(const UserInfo *);
         void setAgentList(const QMap<QString, QVariant> &);
 	void setQueueList(bool, const QMap<QString, QVariant> &);
@@ -107,21 +109,13 @@ private:
         bool m_agentstatus;
         bool m_queuechangeallow;
         int m_maxqueues;
+        
+        QFont m_gui_font;
+        quint32 m_gui_buttonsize;
 signals:
         void agentAction(const QString &);
         void setAvailState(const QString &, bool);
         void changeWatchedAgent(const QString &, bool);
-};
-
-
-class SizeableLabel : public QLabel
-{
-        Q_OBJECT
-public:
-        SizeableLabel(const QString &text, const QSize &size, QWidget *parent = 0);
-        QSize sizeHint() const;
-private:
-        QSize m_size;
 };
 
 #endif

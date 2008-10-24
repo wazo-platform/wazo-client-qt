@@ -59,17 +59,23 @@ const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 
 
 /*! \brief Constructor
  */
-IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
+IdentityDisplay::IdentityDisplay(BaseEngine * engine,
+                                 const QMap<QString, QVariant> & optionmap,
+                                 QWidget * parent)
         : QWidget(parent),
           m_engine(engine),
           m_ui(NULL), m_agentstatus(false), m_queuechangeallow(true), m_maxqueues(5)
 {
+        m_gui_font = QFont("sans serif", 9);
+        m_gui_buttonsize = 16;
+        
 	QGridLayout * glayout = new QGridLayout(this);
 	// glayout->setMargin(0);
-        m_user = new SizeableLabel( "", QSize(3000, 40), this );
+        m_user = new QLabel(this);
+        m_user->setObjectName("fullname");
         m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         m_user->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-
+        
         m_info1 = new QLabel(this);
         m_presence = new QComboBox(this);
         m_presence->setSizeAdjustPolicy(QComboBox::AdjustToContents);
@@ -77,7 +83,6 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         m_info3 = new QLabel(this);
         m_info4 = new QLabel(this);
         m_info5 = new QLabel(this);
-        m_info5->setFont(QFont("helvetica", 24, QFont::Bold));
         m_info6 = new QLabel(this);
         
         m_qf = new QFrame(this);
@@ -86,15 +91,11 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
         
         m_agent = new QLabel("", this);
         m_agentaction = new QPushButton(tr("Logout"), this);
-        m_agentaction->setIconSize(QSize(16, 16));
         m_queueleaveall = new QPushButton(tr("Leave All"), this);
         m_queueleaveall->setIcon(QIcon(":/images/cancel.png"));
-        m_queueleaveall->setIconSize(QSize(16, 16));
         m_queuejoinall = new QPushButton(tr("Join All"), this);
         m_queuejoinall->setIcon(QIcon(":/images/add.png"));
-        m_queuejoinall->setIconSize(QSize(16, 16));
         m_queueaction = new QPushButton(tr("Leave"), this);
-        m_queueaction->setIconSize(QSize(16, 16));
 
         m_queuebusy = new QProgressBar(this);
         m_queuebusy->setRange(0, m_maxqueues + 1);
@@ -116,7 +117,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
                 this, SLOT(doQueueLeaveAll()));
         connect(m_queuejoinall, SIGNAL(clicked()),
                 this, SLOT(doQueueJoinAll()));
-
+        
         int idline = 0;
 	glayout->addWidget( m_user, idline, 0, 1, 7, Qt::AlignCenter );
         idline ++;
@@ -137,7 +138,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
 	glayout->addWidget( m_queuejoinall, idline, 5, Qt::AlignCenter );
 	glayout->addWidget( m_queueleaveall, idline, 6, Qt::AlignCenter );
         idline ++;
-        // glayout->setRowStretch( idline, 1 );
+        glayout->setRowStretch( 5, 1 );
         
         m_agent->hide();
         m_agentaction->hide();
@@ -150,7 +151,37 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine, QWidget * parent)
 
         m_qf->hide();
 
+        setGuiOptions(optionmap);
         // 	glayout->setColumnStretch( 0, 1 );
+}
+
+void IdentityDisplay::setGuiOptions(const QMap<QString, QVariant> & optionmap)
+{
+        // qDebug() << "IdentityDisplay::setGuiOptions()" << optionmap;
+        if(optionmap.contains("fontname") && optionmap.contains("fontsize"))
+                m_gui_font = QFont(optionmap["fontname"].toString(),
+                                   optionmap["fontsize"].toInt());
+        if(optionmap.contains("iconsize"))
+                m_gui_buttonsize = optionmap["iconsize"].toInt();
+        
+        // setFont(m_gui_font);
+        m_user->setFont(m_gui_font);
+        m_info1->setFont(m_gui_font);
+        m_presence->setFont(m_gui_font);
+        m_info5->setFont(m_gui_font);
+        m_agent->setFont(m_gui_font);
+        m_agentaction->setFont(m_gui_font);
+        m_queueleaveall->setFont(m_gui_font);
+        m_queuejoinall->setFont(m_gui_font);
+        m_queueaction->setFont(m_gui_font);
+        m_queuebusy->setFont(m_gui_font);
+        m_queuelist->setFont(m_gui_font);
+        
+        m_agentaction->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
+        m_queueleaveall->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
+        m_queuejoinall->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
+        m_queueaction->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
+        m_queuelist->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
 }
 
 void IdentityDisplay::updateCounter(const QStringList & qsl)
@@ -219,6 +250,8 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_ui = ui;
 
         m_user->setText(m_ui->fullname());
+        m_user->setMinimumSize(m_user->sizeHint().width() * 4,
+                               m_user->sizeHint().height() * 2);
         m_info1->setText("<b>" + m_ui->phonenum() + "</b> " + tr("on") + " <b>" + m_ui->astid() + "</b>");
         // m_presence->setText(m_ui->availstate());
         QStringList vm = m_ui->mwi().split("-");
@@ -500,18 +533,4 @@ void IdentityDisplay::idxChanged(const QString & newidx)
                         if(m_presence_names[avstate] == newidx)
                                 setAvailState(avstate, true);
         }
-}
-
-SizeableLabel::SizeableLabel(const QString &text, const QSize &size, QWidget *parent)
-        : QLabel(parent)
-{
-        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        setText(text);
-        m_size = size;
-}
-
-QSize SizeableLabel::sizeHint() const
-{
-        //        QSize size = QLabel::sizeHint();
-        return m_size;
 }

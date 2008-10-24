@@ -62,7 +62,8 @@ class AgentsPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	AgentsPanel(QWidget * parent = 0);
+	AgentsPanel(const QMap<QString, QVariant> &,
+                    QWidget * parent = 0);
 	~AgentsPanel();
 signals:
         void changeWatchedAgent(const QString &, bool);
@@ -78,6 +79,9 @@ public slots:
 private slots:
         void agentClicked();
 private:
+        QFont m_gui_font;
+        quint32 m_gui_buttonsize;
+        
         QGridLayout * m_gridlayout;
 	QVBoxLayout * m_layout;
         QScrollArea * m_scrollarea;

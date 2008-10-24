@@ -785,6 +785,9 @@ bool BaseEngine::parseCommand(const QString & line)
                         // QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
                         processHistory(datamap["payload"].toStringList());
                         
+                } else if (thisclass == "setguioptions") {
+                        setGuiOptions(datamap["payload"].toMap());
+                        
                 } else if (thisclass == "meetme") {
                         meetmeEvent(datamap["payload"].toStringList());
                         
@@ -1822,12 +1825,17 @@ void BaseEngine::askCallerIds()
         sc4->addString("class", "agents");
         sc4->addString("function", "getlist");
         sc4->addString("direction", "xivoserver");
+        // ServerCommand * sc5 = new ServerCommand();
+        // sc5->addString("class", "setguioptions");
+        // sc5->addString("direction", "xivoserver");
         
         sendCommand(sc1->find());
         sendCommand(sc3->find());
         sendCommand(sc4->find());
         sendCommand(sc2->find());
         sendCommand(sc1->find());
+        
+        // sendCommand(sc5->find());
 }
 
 void BaseEngine::setSystrayed(bool b)
