@@ -54,6 +54,8 @@ class QPushButton;
 class QScrollArea;
 class QVBoxLayout;
 
+class UserInfo;
+
 /*! \brief Identity Display
  */
 class AgentdetailsPanel : public QWidget
@@ -67,6 +69,8 @@ signals:
         void agentAction(const QString &);
         void setFileName(const QString &);
 public slots:
+        void setGuiOptions(const QMap<QString, QVariant> &);
+        void setUserInfo(const UserInfo *);
         void newAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
         void updatePeerAgent(const QString &,
                              const QString &,

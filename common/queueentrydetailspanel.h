@@ -52,6 +52,8 @@ class QLabel;
 class QScrollArea;
 class QVBoxLayout;
 
+class UserInfo;
+
 /*! \brief Identity Display
  */
 class QueueentrydetailsPanel : public QWidget
@@ -64,6 +66,8 @@ signals:
         void changeWatchedAgent(const QString &);
 protected:
 public slots:
+        void setGuiOptions(const QMap<QString, QVariant> &);
+        void setUserInfo(const UserInfo *);
 	void newQueue(const QString &, const QString &, const QMap<QString, QVariant> &);
         void updatePeerAgent(const QString &,
                              const QString &,

@@ -463,10 +463,10 @@ namespace JsonQt
 		switch(peekNext().toAscii())
 		{
 			case 't':
-				consume(QString("true"));
+				consume(QString(" true"));
 				return true;
 			case 'f':
-				consume(QString("false"));
+				consume(QString(" false"));
 				return false;
 			default:
 				consume(false);
@@ -481,7 +481,7 @@ namespace JsonQt
 		 * 	null
 		 */
 
-		consume(QString("null"));
+		consume(QString(" null"));
 		return QVariant();
 	}
 

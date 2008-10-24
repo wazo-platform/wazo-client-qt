@@ -64,6 +64,14 @@ ConferencePanel::ConferencePanel(QWidget * parent)
         // m_glayout->setColumnStretch( 0, 1 );
 }
 
+ConferencePanel::~ConferencePanel()
+{
+}
+
+void ConferencePanel::setGuiOptions(const QMap<QString, QVariant> &)
+{
+}
+
 void ConferencePanel::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;

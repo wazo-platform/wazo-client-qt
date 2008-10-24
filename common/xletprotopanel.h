@@ -55,8 +55,10 @@ class XletprotoPanel : public QWidget
 	Q_OBJECT
 public:
 	XletprotoPanel(BaseEngine * engine, QWidget * parent = 0);
+	~XletprotoPanel();
 public slots:
         void setUserInfo(const UserInfo *);
+        void setGuiOptions(const QMap<QString, QVariant> &);
 private:
         BaseEngine * m_engine;
         const UserInfo * m_ui;

@@ -147,6 +147,7 @@ public:
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
         const QStringList & getCapaXlets() const;
         const QMap<QString, QVariant> & getCapaPresence() const;
+        const QMap<QString, QVariant> & getGuiOptions() const;
         void updateCapaPresence(const QMap<QString, QVariant> &);
         const QString     & getCapaApplication() const;
         void config_and_start(const QString &,
@@ -324,6 +325,7 @@ private:
 	QStringList m_capaxlets;	//!< List of xlet capabilities issued by the server after a successful login
 	QStringList m_capafeatures;	//!< List of capabilities issued by the server for the features
 	QMap<QString, QVariant> m_capapresence;	//!< List of capabilities issued by the server for the presence statuses
+	QMap<QString, QVariant> m_guioptions;	//!< List of GUI options
 	QString m_appliname;		//!< Application name to be displayed
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier

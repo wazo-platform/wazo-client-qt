@@ -168,6 +168,10 @@ void QueuesPanel::setGuiOptions(const QMap<QString, QVariant> & optionmap)
                 m_vqtitle->hide();
 }
 
+void QueuesPanel::setUserInfo(const UserInfo *)
+{
+}
+
 void QueuesPanel::checkBoxStateChanged(int state)
 {
         bool isvirtual_req = (sender()->objectName() == "vqueues");

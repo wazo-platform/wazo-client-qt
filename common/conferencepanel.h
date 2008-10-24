@@ -62,11 +62,13 @@ class ConferencePanel : public QWidget
 	Q_OBJECT
 public:
 	ConferencePanel(QWidget * parent = 0);
+	~ConferencePanel();
 protected:
 public slots:
         void setUserInfo(const UserInfo *);
         void meetmeEvent(const QStringList &);
         void doMeetMeAction();
+        void setGuiOptions(const QMap<QString, QVariant> &);
 private:
         QHash<QString, QLabel *> m_infos;
         QHash<QString, QPushButton *> m_actions;

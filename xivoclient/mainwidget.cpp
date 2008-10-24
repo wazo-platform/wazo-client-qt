@@ -61,8 +61,6 @@
 #include <QTime>
 #include <QVBoxLayout>
 
-#include "JsonToVariant.h"
-
 #include "agentspanel.h"
 #include "agentdetailspanel.h"
 #include "baseengine.h"
@@ -178,24 +176,6 @@ MainWidget::MainWidget(BaseEngine * engine,
         m_xivobg = new QLabel();
         m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
         m_xivobg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        
-        QFile optionFile("json.ini");
-        QString optionStr;
-        if(optionFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                optionStr = optionFile.readAll();
-                optionFile.close();
-        }
-        JsonQt::JsonToVariant parser;
-        QVariant data;
-        if(optionStr.size() > 0) {
-                try {
-                        data = parser.parse(optionStr);
-                }
-                catch(JsonQt::ParseException) {
-                        qDebug() << "BaseEngine::parseCommand() exception catched for" << optionStr;
-                }
-        }
-        m_optionsmap = data.toMap();
         
         if(m_loginfirst) {
                 m_lab1 = new QLabel(tr("Login"));
@@ -672,6 +652,8 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
         }
         connect( m_engine, SIGNAL(setGuiOptions(const QMap<QString, QVariant> &)),
                  m_xlet[name], SLOT(setGuiOptions(const QMap<QString, QVariant> &)));
+        connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                 m_xlet[name], SLOT(setUserInfo(const UserInfo *)));
 }
 
 
@@ -757,6 +739,7 @@ void MainWidget::engineStarted()
         setAppearance(m_engine->getCapaXlets());
         
         m_appliname = m_engine->getCapaApplication();
+        m_optionsmap = m_engine->getGuiOptions();
         
         connect( m_engine, SIGNAL(updatePresence(const QMap<QString, QVariant> &)),
                  this, SLOT(updatePresence(const QMap<QString, QVariant> &)) );
@@ -789,15 +772,11 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(clear()) );
                                 connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
                                          m_xlet[dc], SLOT(monitorPeer(UserInfo *)) );
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
-
+                                
 			} else if (dc == QString("identity")) {
                                 m_xlet[dc] = new IdentityDisplay(m_engine, m_optionsmap);
                                 addPanel("identity", tr("&Identity"), m_xlet[dc]);
                                 
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                      const QString &,
                                                                      const QHash<QString, QStringList> &)),
@@ -834,8 +813,6 @@ void MainWidget::engineStarted()
                                 } else
                                         addPanel("agents", tr("Agents' List"), m_xlet[dc]);
                                 
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(newAgentList(const QMap<QString, QVariant> &)),
                                          m_xlet[dc], SLOT(setAgentList(const QMap<QString, QVariant> &)));
                                 connect( m_xlet[dc], SIGNAL(changeWatchedAgent(const QString &, bool)),
@@ -878,8 +855,6 @@ void MainWidget::engineStarted()
                                 m_xlet[dc] = new ConferencePanel();
                                 addPanel(dc, tr("Conference"), m_xlet[dc]);
 
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(meetmeEvent(const QStringList &)),
                                          m_xlet[dc], SLOT(meetmeEvent(const QStringList &)));
                                 connect( m_xlet[dc], SIGNAL(meetmeAction(const QString &)),
@@ -944,8 +919,6 @@ void MainWidget::engineStarted()
 				m_xlet[dc] = new DialPanel(m_engine);
                                 addPanel("dial", tr("Dial"), m_xlet[dc]);
 
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connectDials(m_xlet[dc]);
                                 connect( this, SIGNAL(pasteToDialPanel(const QString &)),
                                          m_xlet[dc], SLOT(setNumberToDial(const QString &)) );
@@ -962,8 +935,6 @@ void MainWidget::engineStarted()
                                 m_xlet[dc] = new StatusPanel(this);
                                 addPanel("operator", tr("Operator"), m_xlet[dc]);
 
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connectDials(m_xlet[dc]);
                                 connect( this, SIGNAL(functionKeyPressed(int)),
                                          m_xlet[dc], SLOT(functionKeyPressed(int)));
@@ -1040,8 +1011,6 @@ void MainWidget::engineStarted()
                                 m_xlet[dc] = new ParkingPanel();
                                 addPanel(dc, tr("Parking"), m_xlet[dc]);
                                 
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(parkingEvent(const QString &)),
                                          m_xlet[dc], SLOT(parkingEvent(const QString &)));
                                 connect( m_xlet[dc], SIGNAL(copyNumber(const QString &)),
@@ -1063,8 +1032,6 @@ void MainWidget::engineStarted()
                                 m_xlet[dc] = new CustomerInfoPanel(m_engine);
                                 addPanel("customerinfo", tr("Sheets"), m_xlet[dc]);
                                 
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_engine, SIGNAL(displayFiche(const QString &, bool)),
                                          m_xlet[dc], SLOT(displayFiche(const QString &, bool)) );
                                 connect( m_xlet[dc], SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
@@ -1174,8 +1141,6 @@ void MainWidget::engineStarted()
                         } else if (dc == QString("callcampaign")) {
                                 m_xlet[dc] = new CallCampaignPanel();
                                 addPanel("callcampaign", tr("Call Campaigns"), m_xlet[dc]);
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 connect( m_xlet[dc], SIGNAL(requestFileList(const QString &)),
                                          m_engine, SLOT(requestFileList(const QString &)));
                                 connect( m_engine, SIGNAL(requestFileListResult(const QString &)),
@@ -1184,14 +1149,10 @@ void MainWidget::engineStarted()
                         } else if (dc == QString("mylocaldir")) {
                                 m_xlet[dc] = new MyLocalDirPanel(m_engine);
                                 addPanel("mylocaldir", tr("Personal Directory"), m_xlet[dc]);
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                                 
                         } else if (dc == QString("xletproto")) {
                                 m_xlet[dc] = new XletprotoPanel(m_engine);
                                 addPanel("xletproto", tr("Xlet Prototype"), m_xlet[dc]);
-                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                                         m_xlet[dc], SLOT(setUserInfo(const UserInfo *)));
                         }
                 }
         }
@@ -1226,6 +1187,8 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
         disconnect( m_engine, SIGNAL(setGuiOptions(const QMap<QString, QVariant> &)),
                     m_xlet[name], SLOT(setGuiOptions(const QMap<QString, QVariant> &)));
+        disconnect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                    m_xlet[name], SLOT(setUserInfo(const UserInfo *)));
         if(m_docknames.contains(name)) {
                 removeDockWidget(m_docks[name]);
                 delete widget;

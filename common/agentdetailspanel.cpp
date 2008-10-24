@@ -122,6 +122,14 @@ AgentdetailsPanel::~AgentdetailsPanel()
         // qDebug() << "AgentdetailsPanel::~AgentdetailsPanel()";
 }
 
+void AgentdetailsPanel::setGuiOptions(const QMap<QString, QVariant> &)
+{
+}
+
+void AgentdetailsPanel::setUserInfo(const UserInfo *)
+{
+}
+
 void AgentdetailsPanel::updatePeerAgent(const QString &,
                                         const QString & what,
                                         const QStringList & params)

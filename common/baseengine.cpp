@@ -377,6 +377,11 @@ const QMap<QString, QVariant> & BaseEngine::getCapaPresence() const
         return m_capapresence;
 }
 
+const QMap<QString, QVariant> & BaseEngine::getGuiOptions() const
+{
+        return m_guioptions;
+}
+
 void BaseEngine::updateCapaPresence(const QMap<QString, QVariant> & presence)
 {
         foreach (QString field, presence.keys())
@@ -785,7 +790,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         // QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
                         processHistory(datamap["payload"].toStringList());
                         
-                } else if (thisclass == "setguioptions") {
+                } else if (thisclass == "getguisettings") {
                         setGuiOptions(datamap["payload"].toMap());
                         
                 } else if (thisclass == "meetme") {
@@ -1079,6 +1084,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         updateCapaPresence(datamap["capapresence"].toMap());
                         m_forced_state = datamap["capapresence"].toMap()["state"].toString();
                         m_counters = datamap["presencecounter"].toStringList();
+                        m_guioptions = datamap["guisettings"].toMap();
                         // m_capafeatures = datamap["capas_features"].toStringList();
                         
                         qDebug() << "clientXlets" << XletList;
@@ -1826,7 +1832,7 @@ void BaseEngine::askCallerIds()
         sc4->addString("function", "getlist");
         sc4->addString("direction", "xivoserver");
         // ServerCommand * sc5 = new ServerCommand();
-        // sc5->addString("class", "setguioptions");
+        // sc5->addString("class", "getguisettings");
         // sc5->addString("direction", "xivoserver");
         
         sendCommand(sc1->find());

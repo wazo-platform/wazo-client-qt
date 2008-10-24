@@ -66,6 +66,14 @@ QueueentrydetailsPanel::~QueueentrydetailsPanel()
         // qDebug() << "QueueentrydetailsPanel::~QueueentrydetailsPanel()";
 }
 
+void QueueentrydetailsPanel::setGuiOptions(const QMap<QString, QVariant> &)
+{
+}
+
+void QueueentrydetailsPanel::setUserInfo(const UserInfo *)
+{
+}
+
 void QueueentrydetailsPanel::updatePeerAgent(const QString &, const QString &, const QString &)
 {
         // qDebug() << "QueueentrydetailsPanel::updatePeerAgent()";

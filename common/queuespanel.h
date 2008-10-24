@@ -55,6 +55,7 @@ class QProgressBar;
 class QPushButton;
 
 class BaseEngine;
+class UserInfo;
 
 /*! \brief Identity Display
  */
@@ -75,6 +76,7 @@ signals:
         void changeWatchedQueue(const QString &);
 public slots:
         void setGuiOptions(const QMap<QString, QVariant> &);
+        void setUserInfo(const UserInfo *);
         void removeQueues(const QString &, const QStringList &);
 	void setQueueList(bool, const QMap<QString, QVariant> &);
         void setQueueStatus(const QStringList &);

@@ -63,6 +63,14 @@ XletprotoPanel::XletprotoPanel(BaseEngine * engine, QWidget * parent)
         //
 }
 
+XletprotoPanel::~XletprotoPanel()
+{
+}
+
+void XletprotoPanel::setGuiOptions(const QMap<QString, QVariant> &)
+{
+}
+
 void XletprotoPanel::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;

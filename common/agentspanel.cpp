@@ -58,11 +58,6 @@ AgentsPanel::AgentsPanel(const QMap<QString, QVariant> & optionmap,
 {
         m_gui_font = QFont("sans serif", 9);
         m_gui_buttonsize = 10;
-        if(optionmap.contains("fontname") && optionmap.contains("fontsize"))
-                m_gui_font = QFont(optionmap["fontname"].toString(),
-                                   optionmap["fontsize"].toInt());
-        if(optionmap.contains("iconsize"))
-                m_gui_buttonsize = optionmap["iconsize"].toInt();
         
 	m_gridlayout = new QGridLayout(this);
         m_title1 = new QLabel(tr("Agent"), this);
@@ -86,6 +81,22 @@ AgentsPanel::AgentsPanel(const QMap<QString, QVariant> & optionmap,
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->setVerticalSpacing(0);
         
+        setGuiOptions(optionmap);
+}
+
+AgentsPanel::~AgentsPanel()
+{
+        // qDebug() << "AgentsPanel::~AgentsPanel()";
+}
+
+void AgentsPanel::setGuiOptions(const QMap<QString, QVariant> & optionmap)
+{
+        if(optionmap.contains("fontname") && optionmap.contains("fontsize"))
+                m_gui_font = QFont(optionmap["fontname"].toString(),
+                                   optionmap["fontsize"].toInt());
+        if(optionmap.contains("iconsize"))
+                m_gui_buttonsize = optionmap["iconsize"].toInt();
+        
         // setFont(m_gui_font);
         m_title1->setFont(m_gui_font);
         m_title2->setFont(m_gui_font);
@@ -95,11 +106,6 @@ AgentsPanel::AgentsPanel(const QMap<QString, QVariant> & optionmap,
         m_title6->setFont(m_gui_font);
         m_title7->setFont(m_gui_font);
         m_title8->setFont(m_gui_font);
-}
-
-AgentsPanel::~AgentsPanel()
-{
-        // qDebug() << "AgentsPanel::~AgentsPanel()";
 }
 
 void AgentsPanel::setUserInfo(const UserInfo * ui)

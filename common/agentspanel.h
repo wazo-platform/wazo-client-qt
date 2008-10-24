@@ -76,6 +76,7 @@ public slots:
                              const QString &,
                              const QStringList &);
         void updateAgentPresence(const QString &, const QString &, const QColor &);
+        void setGuiOptions(const QMap<QString, QVariant> &);
 private slots:
         void agentClicked();
 private:
