@@ -101,13 +101,9 @@ private:
         QHash<QString, QPushButton *> m_queuemore;
         QHash<QString, QProgressBar *> m_queuebusies;
         QHash<QString, QHash<QString, QLabel *> > m_queueinfos;
-        QHash<QString, QLabel *> m_people_conn;
-        QHash<QString, QLabel *> m_people_avail;
-        QLabel * m_people_conn_legend;
-        QLabel * m_people_avail_legend;
         
         BaseEngine * m_engine;
-
+        
         quint32 m_maxbusy;
         
         QLabel * m_busytitle;

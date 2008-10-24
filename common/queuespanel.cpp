@@ -67,6 +67,10 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
         m_gui_showvqueues = true;
         m_gui_showqueuenames = true;
         
+        bool is_supervisor = false;
+        if(optionmap.contains("supervisor"))
+                is_supervisor = optionmap["supervisor"].toBool();
+        
 	m_gridlayout = new QGridLayout(this);
         m_statlegends["Completed"] = tr("Completed");
         m_statlegends["Abandoned"] = tr("Abandoned");
@@ -75,6 +79,8 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
         m_statlegends["ServiceLevel"] = tr("ServiceLevel");
         m_statlegends["Max"] = tr("Max");
         m_statlegends["Weight"] = tr("Weight");
+        m_statlegends["Xivo-Conn"] = tr("Connected");
+        m_statlegends["Xivo-Avail"] = tr("Available");
         m_statlegends["Xivo-Join"] = tr("Joined");
         m_statlegends["Xivo-Link"] = tr("Linked");
         m_statlegends["Xivo-Lost"] = tr("Lost");
@@ -85,10 +91,14 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
         //                        << "Holdtime" //  << "ServicelevelPerf"
         //                        << "Xivo-Join" << "Xivo-Link"
         //                        << "ServiceLevel" << "Max" << "Weight");
-        m_statitems = (QStringList()
-                       //  << "ServicelevelPerf"
-                       << "Xivo-Join" << "Xivo-Link" << "Xivo-Lost" << "Xivo-Rate" << "Xivo-Chat"
-                       << "Holdtime");
+        if(is_supervisor)
+                m_statitems = (QStringList()
+                               << "Xivo-Conn" << "Xivo-Avail"
+                               << "Xivo-Rate"
+                               << "Xivo-Join" << "Xivo-Link" << "Xivo-Lost" << "Xivo-Chat"
+                               << "Holdtime");
+        else
+                m_statitems = (QStringList() << "Xivo-Conn" << "Xivo-Avail" << "Xivo-Rate");
         m_maxbusy = 0;
         
         m_qtitle = new QLabel(tr("Queues"), this);
@@ -108,30 +118,20 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
 
         foreach (QString statitem, m_statitems)
                 m_title_infos[statitem] = new QLabel(m_statlegends[statitem], this);
-        m_people_conn_legend = new QLabel(tr("Connected"), this);
-        m_people_avail_legend = new QLabel(tr("Available"), this);
         
-        m_gridlayout->addWidget( m_busytitle, 0, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_qtitle, 1, 0, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_qcbox, 1, 1, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_vqtitle, 50, 0, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_vqcbox, 50, 1, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_qtitle, 1, 1, Qt::AlignLeft );
+        m_gridlayout->addWidget( m_qcbox, 1, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_vqtitle, 50, 1, Qt::AlignLeft );
+        m_gridlayout->addWidget( m_vqcbox, 50, 2, Qt::AlignCenter );
         
+        m_gridlayout->addWidget( m_busytitle, 0, 3, Qt::AlignCenter );
         foreach (QString statitem, m_statitems)
                 m_gridlayout->addWidget( m_title_infos[statitem],
                                          0,
-                                         3 + m_statitems.indexOf(statitem),
+                                         m_statitems.indexOf(statitem) + 4,
                                          Qt::AlignCenter );
-        m_gridlayout->addWidget( m_people_conn_legend,
-                                 0,
-                                 3 + m_statitems.size(),
-                                 Qt::AlignCenter );
-        m_gridlayout->addWidget( m_people_avail_legend,
-                                 0,
-                                 4 + m_statitems.size(),
-                                 Qt::AlignCenter );
-        
- 	m_gridlayout->setColumnStretch( 5 + m_statitems.size(), 1 );
+//  	m_gridlayout->setColumnStretch( 0, 1 );
+//  	m_gridlayout->setColumnStretch( m_statitems.size() + 6, 1 );
  	m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->setVerticalSpacing(0);
         
@@ -160,8 +160,6 @@ void QueuesPanel::setGuiOptions(const QMap<QString, QVariant> & optionmap)
         m_vqtitle->setFont(m_gui_font);
         foreach (QString statitem, m_statitems)
                 m_title_infos[statitem]->setFont(m_gui_font);
-        m_people_conn_legend->setFont(m_gui_font);
-        m_people_avail_legend->setFont(m_gui_font);
         
         if(m_gui_showqueuenames)
                 m_qtitle->show();
@@ -187,10 +185,12 @@ void QueuesPanel::setUserInfo(const UserInfo *)
 void QueuesPanel::updateCounter(const QMap<QString, QVariant> & counters)
 {
         int ntot = counters["connected"].toInt();
-        foreach (QString queuename, m_people_conn.keys()) {
+        foreach (QString queuename, counters["byqueue"].toMap().keys()) {
                 int navail = counters["byqueue"].toMap()[queuename].toInt();
-                m_people_conn[queuename]->setText(QString::number(ntot));
-                m_people_avail[queuename]->setText(QString::number(navail));
+                if(m_queueinfos.contains(queuename)) {
+                        m_queueinfos[queuename]["Xivo-Conn"]->setText(QString::number(ntot));
+                        m_queueinfos[queuename]["Xivo-Avail"]->setText(QString::number(navail));
+                }
         }
 }
 
@@ -269,11 +269,6 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
         m_queuemore[queuename]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
         m_queuemore[queuename]->setIcon(QIcon(":/images/add.png"));
         
-        m_people_conn[queuename] = new QLabel("0", this);
-        m_people_conn[queuename]->setFont(m_gui_font);
-        m_people_avail[queuename] = new QLabel("0", this);
-        m_people_avail[queuename]->setFont(m_gui_font);
-
         if(m_gui_showqueuenames) {
                 m_queuelabels[queuename]->show();
                 m_queuemore[queuename]->show();
@@ -294,22 +289,14 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
                 m_queueinfos[queuename][statitem]->setFont(m_gui_font);
         }
         int linenum = m_queuelabels.size();
-        m_gridlayout->addWidget( m_queuelabels[queuename], delta + linenum, 0, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_queuemore[queuename], delta + linenum, 1, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_queuebusies[queuename], delta + linenum, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_queuelabels[queuename], delta + linenum, 1, Qt::AlignLeft );
+        m_gridlayout->addWidget( m_queuemore[queuename], delta + linenum, 2, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_queuebusies[queuename], delta + linenum, 3, Qt::AlignCenter );
         foreach (QString statitem, m_statitems)
                 m_gridlayout->addWidget( m_queueinfos[queuename][statitem],
                                          delta + linenum,
-                                         3 + m_statitems.indexOf(statitem),
-                                         Qt::AlignRight );
-        m_gridlayout->addWidget( m_people_conn[queuename],
-                                 delta + linenum,
-                                 3 + m_statitems.size(),
-                                 Qt::AlignRight );
-        m_gridlayout->addWidget( m_people_avail[queuename],
-                                 delta + linenum,
-                                 4 + m_statitems.size(),
-                                 Qt::AlignRight );
+                                         m_statitems.indexOf(statitem) + 4,
+                                         Qt::AlignCenter );
 }
 
 void QueuesPanel::setQueueList(bool, const QMap<QString, QVariant> & qlist)
