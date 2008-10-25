@@ -167,8 +167,12 @@ void Popup::actionFromForm()
                 close();
         else if(buttonname == "save")
                 saveandclose();
-        else if((buttonname == "hangup") || (buttonname == "answer") || (buttonname.startsWith("XIVO_CALL_STATUS-")))
+        else if((buttonname == "hangup") || (buttonname == "answer"))
                 actionFromPopup(buttonname);
+        else if(buttonname.startsWith("XIVO_CALL_STATUS-")) {
+                actionFromPopup(buttonname);
+                close();
+        }
 }
 
 void Popup::saveandclose()
