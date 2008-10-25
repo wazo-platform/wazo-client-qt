@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>186</width>
-    <height>46</height>
+    <width>500</width>
+    <height>66</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
@@ -15,28 +15,37 @@
      <item>
       <widget class="QPushButton" name="XIVO_CALL_STATUS-1" >
        <property name="text" >
-        <string>Appel OK</string>
+        <string>Partenaire</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="XIVO_CALL_STATUS-2" >
        <property name="text" >
-        <string>Appel KO</string>
+        <string>Client</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="XIVO_CALL_STATUS-3" >
        <property name="text" >
-        <string>Appel X</string>
+        <string>Prospect
+Infos</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="XIVO_CALL_STATUS-4" >
        <property name="text" >
-        <string>Appel Y</string>
+        <string>Prospect
+Accueil</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="XIVO_CALL_STATUS-5" >
+       <property name="text" >
+        <string>Hors Cible</string>
        </property>
       </widget>
      </item>
