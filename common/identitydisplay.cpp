@@ -107,8 +107,9 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
                 this, SLOT(idxChanged(const QString &)));
         connect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
-        connect(m_agentaction, SIGNAL(clicked()),
-                this, SLOT(doAgentAction()));
+        if(optionmap["logagent"].toBool())
+                connect(m_agentaction, SIGNAL(clicked()),
+                        this, SLOT(doAgentAction()));
         connect(m_queueaction, SIGNAL(clicked()),
                 this, SLOT(doQueueAction()));
         connect(m_queueleaveall, SIGNAL(clicked()),
