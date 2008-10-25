@@ -185,12 +185,14 @@ void QueuesPanel::setUserInfo(const UserInfo *)
 void QueuesPanel::updateCounter(const QMap<QString, QVariant> & counters)
 {
         int ntot = counters["connected"].toInt();
-        foreach (QString queuename, counters["byqueue"].toMap().keys()) {
-                int navail = counters["byqueue"].toMap()[queuename].toInt();
-                if(m_queueinfos.contains(queuename)) {
+        foreach (QString queuename, m_queueinfos.keys()) {
+                int navail = 0;
+                if(counters["byqueue"].toMap().contains(queuename))
+                        navail = counters["byqueue"].toMap()[queuename].toInt();
+                if(m_queueinfos[queuename].contains("Xivo-Conn"))
                         m_queueinfos[queuename]["Xivo-Conn"]->setText(QString::number(ntot));
+                if(m_queueinfos[queuename].contains("Xivo-Avail"))
                         m_queueinfos[queuename]["Xivo-Avail"]->setText(QString::number(navail));
-                }
         }
 }
 
