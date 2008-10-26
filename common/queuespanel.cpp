@@ -319,7 +319,8 @@ void QueuesPanel::setQueueList(bool, const QMap<QString, QVariant> & qlist)
                 }
                 m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
                 foreach (QString statitem, m_statitems)
-                        m_queueinfos[queuename][statitem]->setText(infos[statitem]);
+                        if(infos.contains(statitem))
+                                m_queueinfos[queuename][statitem]->setText(infos[statitem]);
         }
         if(m_gui_showvqueues)
                 foreach (QString vqueuename, vqueues.keys()) {
