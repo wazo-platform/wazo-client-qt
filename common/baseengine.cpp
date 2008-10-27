@@ -39,7 +39,6 @@
  * $Date$
  */
 
-#include <QClipboard>
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QFile>

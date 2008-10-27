@@ -39,6 +39,7 @@
  * $Date$
  */
 
+#include <QBuffer>
 #include <QComboBox>
 #include <QCloseEvent>
 #include <QDateTime>
@@ -270,14 +271,29 @@ void Popup::setTitle(const QString & title)
         m_title->setText(title);
 }
 
+void Popup::addDefForm(const QString & name, const QString & value)
+{
+        qDebug() << "Popup::addDefForm()" << name << value;
+        m_remoteforms[name] = value;
+}
+
 void Popup::addInfoForm(int where, const QString & name, const QString & value)
 {
         qDebug() << "Popup::addInfoForm()" << name << value;
         QUiLoader loader;
-        QFile file(value);
-        file.open(QFile::ReadOnly);
-        QWidget * form = loader.load(&file, this);
-        file.close();
+        QWidget * form;
+        if(m_remoteforms.contains(value)) {
+                QBuffer * inputstream = new QBuffer(this);
+                inputstream->open(QIODevice::ReadWrite);
+                inputstream->write(m_remoteforms[value].toUtf8());
+                inputstream->close();
+                form = loader.load(inputstream, this);
+        } else {
+                QFile file(value);
+                file.open(QFile::ReadOnly);
+                form = loader.load(&file, this);
+                file.close();
+        }
         
         foreach(QString formbuttonname, formbuttonnames) {
                 if(! m_form_buttons[formbuttonname]) {

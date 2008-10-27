@@ -270,7 +270,8 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                 QString agstatus = properties.toMap()["status"].toString();
                 QString agfullname = properties.toMap()["name"].toString();
                 QString phonenum = properties.toMap()["phonenum"].toString();
-                qDebug() << "AgentsPanel::setAgentList" << agnum << agstatus << agfullname << phonenum;
+                bool link = properties.toMap()["link"].toBool();
+                qDebug() << "AgentsPanel::setAgentList" << agnum << agstatus << agfullname << phonenum << link;
                 
                 if(! m_agent_labels.contains(agnum)) {
                         QFrame * qvline1 = new QFrame(this);
@@ -332,8 +333,12 @@ void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
                         m_agent_listen[agnum]->setIcon(QIcon(":/images/player_play.png"));
                         m_agent_logged_action[agnum]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
                         
-                        m_square->fill(Qt::gray);
+                        if(link)
+                                m_square->fill(Qt::green);
+                        else
+                                m_square->fill(Qt::gray);
                         m_agent_busy[agnum]->setPixmap(QPixmap(* m_square));
+                        m_square->fill(Qt::gray);
                         m_agent_presence[agnum]->setPixmap(QPixmap(* m_square));
                         
                         if(agstatus == "AGENT_IDLE") {

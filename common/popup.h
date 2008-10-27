@@ -111,6 +111,7 @@ public:
                         const QString &,
                         const QString &,
                         const QString &);
+        void addDefForm(const QString &, const QString &);
         void update(QList<QStringList> &);
         QList<QStringList> & sheetlines();
 signals:
@@ -160,6 +161,7 @@ private:
         QStringList m_orders;
         QList<QStringList> m_sheetlines;
         QHash<QString, QPushButton *> m_form_buttons;
+        QHash<QString, QString> m_remoteforms;
 #ifdef USE_OUTLOOK
 	COLContact * m_pOLContact;
 #endif

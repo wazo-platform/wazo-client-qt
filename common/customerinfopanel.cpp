@@ -64,6 +64,14 @@ CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine, QWidget * parent)
         glayout->setColumnStretch(0, 1);
 }
 
+CustomerInfoPanel::~CustomerInfoPanel()
+{
+}
+
+void CustomerInfoPanel::setGuiOptions(const QMap<QString, QVariant> &)
+{
+}
+
 void CustomerInfoPanel::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;

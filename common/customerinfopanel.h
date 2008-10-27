@@ -60,12 +60,14 @@ class CustomerInfoPanel : public QWidget
 	Q_OBJECT
 public:
 	CustomerInfoPanel(BaseEngine *, QWidget * parent = 0);
+        ~CustomerInfoPanel();
 signals:
         void newPopup(const QString &,
                       const QHash<QString, QString> &,
                       const QString &);
         void actionFromFiche(const QStringList &);
 public slots:
+        void setGuiOptions(const QMap<QString, QVariant> &);
         void setUserInfo(const UserInfo *);
         void showNewProfile(Popup *);
         void popupDestroyed(QObject * obj);

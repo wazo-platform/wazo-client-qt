@@ -65,7 +65,7 @@ bool XmlHandler::startElement( const QString & /*namespaceURI*/,
                                const QString & /*qName*/,
                                const QXmlAttributes & atts )
 {
-        // qDebug() << "XmlHandler::startElement()" << localName;
+        // qDebug() << "XmlHandler::startElement()" << localName << namespaceURI << qName;
 	if( localName == "sheet_info" ) {
 		m_isParsingInfo = true;
 		m_infoOrder = atts.value("order");
@@ -83,6 +83,10 @@ bool XmlHandler::startElement( const QString & /*namespaceURI*/,
 		m_infoOrder = atts.value("order");
 		m_infoName  = atts.value("name");
 		m_infoType  = atts.value("type");
+		m_infoValue = "";
+	} else if( localName == "sheet_qtui" ) {
+                m_isParsingInfo = true;
+		m_infoName  = atts.value("name");
 		m_infoValue = "";
 	} else if( localName == "internal" ) {
 		m_isParsingInfo = true;
@@ -115,6 +119,8 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
             (localName == "action_info" ) ||
             (localName == "internal") )
                 m_popup->addAnyInfo(localName, m_infoOrder, m_infoType, m_infoName, m_infoValue);
+        else if( localName == "sheet_qtui" )
+                m_popup->addDefForm(m_infoName, m_infoValue);
         else if( localName == "profile" )
                 m_popup->finishAndShow();
         
