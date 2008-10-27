@@ -246,7 +246,7 @@ void Popup::addAnyInfo(const QString & localName,
                         else
                                 addInfoText( where, infoName, infoValue );
                 } else if( infoType == "form" ) {
-                        addInfoForm( where, infoName, infoValue );
+                        addInfoForm( where, infoValue );
                 } else
                         m_orders.removeAll(infoOrder);
                 
@@ -273,13 +273,13 @@ void Popup::setTitle(const QString & title)
 
 void Popup::addDefForm(const QString & name, const QString & value)
 {
-        qDebug() << "Popup::addDefForm()" << name << value;
+        // qDebug() << "Popup::addDefForm()" << name << value;
         m_remoteforms[name] = value;
 }
 
-void Popup::addInfoForm(int where, const QString & name, const QString & value)
+void Popup::addInfoForm(int where, const QString & value)
 {
-        qDebug() << "Popup::addInfoForm()" << name << value;
+        // qDebug() << "Popup::addInfoForm()" << value;
         QUiLoader loader;
         QWidget * form;
         if(m_remoteforms.contains(value)) {

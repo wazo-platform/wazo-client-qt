@@ -105,7 +105,6 @@ public:
 	bool focus();
         void setTitle(const QString &);
         
-        void addInfoForm(int, const QString &, const QString &);
         void addAnyInfo(const QString &,
                         const QString &,
                         const QString &,
@@ -131,6 +130,7 @@ public slots:
 protected:
 	void closeEvent(QCloseEvent *);	//!< catch close event
 private:
+        void addInfoForm(int, const QString &);
         void saveandclose();
         
 	QIODevice * m_inputstream;	//!< input stream where the XML is read from

@@ -14,6 +14,12 @@
     <layout class="QHBoxLayout" >
      <item>
       <widget class="QPushButton" name="XIVO_CALL_STATUS-1" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="MinimumExpanding" hsizetype="Minimum" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text" >
         <string>Partenaire</string>
        </property>
@@ -21,13 +27,28 @@
      </item>
      <item>
       <widget class="QPushButton" name="XIVO_CALL_STATUS-2" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="MinimumExpanding" hsizetype="Minimum" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text" >
         <string>Client</string>
+       </property>
+       <property name="checked" >
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="XIVO_CALL_STATUS-3" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="MinimumExpanding" hsizetype="Minimum" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text" >
         <string>Prospect
 Infos</string>
@@ -36,6 +57,12 @@ Infos</string>
      </item>
      <item>
       <widget class="QPushButton" name="XIVO_CALL_STATUS-4" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="MinimumExpanding" hsizetype="Minimum" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text" >
         <string>Prospect
 Accueil</string>
@@ -44,6 +71,12 @@ Accueil</string>
      </item>
      <item>
       <widget class="QPushButton" name="XIVO_CALL_STATUS-5" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="MinimumExpanding" hsizetype="Minimum" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text" >
         <string>Hors Cible</string>
        </property>
