@@ -67,7 +67,7 @@ XletprotoPanel::~XletprotoPanel()
 {
 }
 
-void XletprotoPanel::setGuiOptions(const QMap<QString, QVariant> &)
+void XletprotoPanel::setGuiOptions(const QVariant &)
 {
 }
 

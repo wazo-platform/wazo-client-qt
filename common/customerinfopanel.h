@@ -67,7 +67,7 @@ signals:
                       const QString &);
         void actionFromFiche(const QStringList &);
 public slots:
-        void setGuiOptions(const QMap<QString, QVariant> &);
+        void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
         void showNewProfile(Popup *);
         void popupDestroyed(QObject * obj);

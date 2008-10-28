@@ -52,7 +52,7 @@
 
 /*! \brief Constructor
  */
-AgentsPanel::AgentsPanel(const QMap<QString, QVariant> & optionmap,
+AgentsPanel::AgentsPanel(const QVariant & optionmap,
                          QWidget * parent)
         : QWidget(parent)
 {
@@ -89,13 +89,13 @@ AgentsPanel::~AgentsPanel()
         // qDebug() << "AgentsPanel::~AgentsPanel()";
 }
 
-void AgentsPanel::setGuiOptions(const QMap<QString, QVariant> & optionmap)
+void AgentsPanel::setGuiOptions(const QVariant & optionmap)
 {
-        if(optionmap.contains("fontname") && optionmap.contains("fontsize"))
-                m_gui_font = QFont(optionmap["fontname"].toString(),
-                                   optionmap["fontsize"].toInt());
-        if(optionmap.contains("iconsize"))
-                m_gui_buttonsize = optionmap["iconsize"].toInt();
+        if(optionmap.toMap().contains("fontname") && optionmap.toMap().contains("fontsize"))
+                m_gui_font = QFont(optionmap.toMap()["fontname"].toString(),
+                                   optionmap.toMap()["fontsize"].toInt());
+        if(optionmap.toMap().contains("iconsize"))
+                m_gui_buttonsize = optionmap.toMap()["iconsize"].toInt();
         
         // setFont(m_gui_font);
         m_title1->setFont(m_gui_font);
@@ -257,16 +257,17 @@ void AgentsPanel::updatePeerAgent(const QString &,
         }
 }
 
-void AgentsPanel::setAgentList(const QMap<QString, QVariant> & alist)
+void AgentsPanel::setAgentList(const QVariant & alist)
 {
         // qDebug() << "AgentsPanel::setAgentList()" << alist;
         QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-        QString astid = alist["astid"].toString();
-        QStringList agentids = alist["newlist"].toMap().keys();
+        QVariantMap alistmap = alist.toMap();
+        QString astid = alistmap["astid"].toString();
+        QStringList agentids = alistmap["newlist"].toMap().keys();
         agentids.sort();
         foreach (QString agnum, agentids) {
-                QVariant properties = alist["newlist"].toMap()[agnum].toMap()["properties"];
-                QVariantList agqjoined = alist["newlist"].toMap()[agnum].toMap()["queues"].toList();
+                QVariant properties = alistmap["newlist"].toMap()[agnum].toMap()["properties"];
+                QVariantList agqjoined = alistmap["newlist"].toMap()[agnum].toMap()["queues"].toList();
                 QString agstatus = properties.toMap()["status"].toString();
                 QString agfullname = properties.toMap()["name"].toString();
                 QString phonenum = properties.toMap()["phonenum"].toString();

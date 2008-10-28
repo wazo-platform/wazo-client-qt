@@ -45,6 +45,7 @@
 #include <QHash>
 #include <QList>
 #include <QObject>
+#include <QVariant>
 #include <QWidget>
 
 class QContextMenuEvent;
@@ -69,9 +70,9 @@ signals:
         void agentAction(const QString &);
         void setFileName(const QString &);
 public slots:
-        void setGuiOptions(const QMap<QString, QVariant> &);
+        void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-        void newAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
+        void newAgent(const QString &, const QString &, const QVariant &);
         void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);

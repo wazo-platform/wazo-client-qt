@@ -58,6 +58,8 @@
 #include "baseengine.h"
 #include "xivoconsts.h"
 
+QStringList queuelevel_colors = (QStringList() << "green" << "orange" << "red");
+
 /*! \brief constructor
  */
 ConfigWidget::ConfigWidget(BaseEngine * engine,
@@ -143,19 +145,15 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 	m_contactswidth_sbox->setValue(m_engine->contactsColumns());
 	gridlayout2->addWidget(m_contactswidth_sbox, line++, 1);
         
+        QVariant opts = m_engine->getGuiOptions("user");
 	gridlayout2->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
-        m_queuelevels["green"] = new QSpinBox(this);
-	m_queuelevels["green"]->setRange(0, 100);
-	m_queuelevels["green"]->setValue(m_engine->queueLevel("green"));
-	gridlayout2->addWidget(m_queuelevels["green"], line, 1);
-        m_queuelevels["orange"] = new QSpinBox(this);
-	m_queuelevels["orange"]->setRange(0, 100);
-	m_queuelevels["orange"]->setValue(m_engine->queueLevel("orange"));
-	gridlayout2->addWidget(m_queuelevels["orange"], line, 2);
-        m_queuelevels["red"] = new QSpinBox(this);
-	m_queuelevels["red"]->setRange(0, 100);
-	m_queuelevels["red"]->setValue(m_engine->queueLevel("red"));
-	gridlayout2->addWidget(m_queuelevels["red"], line, 3);
+        int ncol = 1;
+        foreach(QString color, queuelevel_colors) {
+                m_queuelevels[color] = new QSpinBox(this);
+                m_queuelevels[color]->setRange(0, 100);
+                m_queuelevels[color]->setValue(opts.toMap()["queuelevels"].toMap()[color].toUInt());
+                gridlayout2->addWidget(m_queuelevels[color], line, ncol ++);
+        }
         line++;
         
  	gridlayout2->setRowStretch( line, 1 );
@@ -344,12 +342,15 @@ void ConfigWidget::saveAndClose()
 	m_engine->setContactsSize(m_contactssize_sbox->value());
 	m_engine->setContactsColumns(m_contactswidth_sbox->value());
         m_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
-        m_engine->setQueueLevel("green", m_queuelevels["green"]->value());
-        m_engine->setQueueLevel("orange", m_queuelevels["orange"]->value());
-        m_engine->setQueueLevel("red", m_queuelevels["red"]->value());
-        // m_engine->setLastConnWins(m_lastconnwins->checkState() == Qt::Checked);
-	m_engine->setTablimit(m_tablimit_sbox->value());
 
+        QVariantMap opts;
+        QVariantMap qvm;
+        foreach(QString color, queuelevel_colors)
+                qvm[color] = QVariant(m_queuelevels[color]->value());
+        opts["queuelevels"] = qvm;
+        m_engine->setGuiOption("user", opts);
+	m_engine->setTablimit(m_tablimit_sbox->value());
+        
 	m_engine->saveSettings();
         confUpdated();
         close();

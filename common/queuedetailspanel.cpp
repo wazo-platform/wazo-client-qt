@@ -77,7 +77,7 @@ QueuedetailsPanel::~QueuedetailsPanel()
         // qDebug() << "QueuedetailsPanel::~QueuedetailsPanel()";
 }
 
-void QueuedetailsPanel::setGuiOptions(const QMap<QString, QVariant> &)
+void QueuedetailsPanel::setGuiOptions(const QVariant &)
 {
 }
 
@@ -171,7 +171,7 @@ void QueuedetailsPanel::update()
         }
 }
 
-void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid, const QMap<QString, QVariant> & queuestatus)
+void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid, const QVariant & queuestatus)
 {
         // qDebug() << "QueuedetailsPanel::newQueue()" << astid << queueid << queuestatus;
         QStringList prevlist = m_agentlist;
@@ -179,7 +179,8 @@ void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid,
         m_queuelegend_status->show();
         m_queuelegend_callstaken->show();
         m_agentlist.clear();
-        foreach(QString agname, queuestatus["agents"].toMap().keys()) {
+        QVariantMap queuestatusmap = queuestatus.toMap();
+        foreach(QString agname, queuestatusmap["agents"].toMap().keys()) {
                 // qDebug() << agname
                 // << queuestatus["agents"].toMap()[agname].toMap()["Status"].toString()
                 // << queuestatus["agents"].toMap()[agname].toMap()["CallsTaken"].toString();

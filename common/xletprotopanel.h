@@ -58,7 +58,7 @@ public:
 	~XletprotoPanel();
 public slots:
         void setUserInfo(const UserInfo *);
-        void setGuiOptions(const QMap<QString, QVariant> &);
+        void setGuiOptions(const QVariant &);
 private:
         BaseEngine * m_engine;
         const UserInfo * m_ui;

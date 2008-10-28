@@ -60,7 +60,7 @@ const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(BaseEngine * engine,
-                                 const QMap<QString, QVariant> & optionmap,
+                                 const QVariant & optionmap,
                                  QWidget * parent)
         : QWidget(parent),
           m_engine(engine),
@@ -107,7 +107,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
                 this, SLOT(idxChanged(const QString &)));
         connect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
-        if(optionmap["logagent"].toBool())
+        if(optionmap.toMap()["logagent"].toBool())
                 connect(m_agentaction, SIGNAL(clicked()),
                         this, SLOT(doAgentAction()));
         connect(m_queueaction, SIGNAL(clicked()),
@@ -149,14 +149,14 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
         // 	glayout->setColumnStretch( 0, 1 );
 }
 
-void IdentityDisplay::setGuiOptions(const QMap<QString, QVariant> & optionmap)
+void IdentityDisplay::setGuiOptions(const QVariant & optionmap)
 {
         // qDebug() << "IdentityDisplay::setGuiOptions()" << optionmap;
-        if(optionmap.contains("fontname") && optionmap.contains("fontsize"))
-                m_gui_font = QFont(optionmap["fontname"].toString(),
-                                   optionmap["fontsize"].toInt());
-        if(optionmap.contains("iconsize"))
-                m_gui_buttonsize = optionmap["iconsize"].toInt();
+        if(optionmap.toMap().contains("fontname") && optionmap.toMap().contains("fontsize"))
+                m_gui_font = QFont(optionmap.toMap()["fontname"].toString(),
+                                   optionmap.toMap()["fontsize"].toInt());
+        if(optionmap.toMap().contains("iconsize"))
+                m_gui_buttonsize = optionmap.toMap()["iconsize"].toInt();
         
         // setFont(m_gui_font);
         m_user->setFont(m_gui_font);
@@ -179,19 +179,7 @@ void IdentityDisplay::setGuiOptions(const QMap<QString, QVariant> & optionmap)
         m_queuelist->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
 }
 
-void IdentityDisplay::updateCounter(const QStringList &)
-{
-        // qDebug() << "IdentityDisplay::updateCounter()" << qsl;
-//         if(qsl.size() > 1) {
-//                 int navail = qsl[0].toInt();
-//                 int nunavail = qsl[1].toInt();
-//                 int ntot = navail + nunavail;
-//                 // m_info5->setText(qsl[0] + " " + tr("available") + "\n" + qsl[1] + " " + tr("unavailable") + "\n" + QString::number(ntot) + " " + tr("connected"));
-//                 m_info5->setText(qsl[0] + "/" + QString::number(ntot));
-//         }
-}
-
-void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
+void IdentityDisplay::updatePresence(const QVariant & presence)
 {
         // qDebug() << "IdentityDisplay::updatePresence()" << presence;
         m_presence->hide();
@@ -200,17 +188,18 @@ void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
         
         disconnect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
                    this, SLOT(idxChanged(const QString &)));
-        if(presence.contains("names")) {
-                foreach (QString avstate, presence["names"].toMap().keys()) {
-                        QString name = presence["names"].toMap()[avstate].toMap()["longname"].toString();
+        QVariantMap presencemap = presence.toMap();
+        if(presencemap.contains("names")) {
+                foreach (QString avstate, presencemap["names"].toMap().keys()) {
+                        QString name = presencemap["names"].toMap()[avstate].toMap()["longname"].toString();
                         if(m_presence->findText(name) == -1) {
                                 m_presence->addItem(name);
                                 m_presence_names[avstate] = name;
                         }
                 }
         }
-        if(presence.contains("allowed")) {
-                QMapIterator<QString, QVariant> capapres(presence["allowed"].toMap());
+        if(presencemap.contains("allowed")) {
+                QMapIterator<QString, QVariant> capapres(presencemap["allowed"].toMap());
                 while (capapres.hasNext()) {
                         capapres.next();
                         QString avstate = capapres.key();
@@ -225,8 +214,8 @@ void IdentityDisplay::updatePresence(const QMap<QString, QVariant> & presence)
                         }
                 }
         }
-        if(presence.contains("state")) {
-                QString avstate = presence["state"].toString();
+        if(presencemap.contains("state")) {
+                QString avstate = presencemap["state"].toString();
                 if(m_presence_names.contains(avstate)) {
                         QString name = m_presence_names[avstate];
                         int idx = m_presence->findText(name);
@@ -260,23 +249,24 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         changeWatchedAgent(m_ui->astid() + " " + m_ui->agentid(), false);
 }
 
-void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)
+void IdentityDisplay::setAgentList(const QVariant & alist)
 {
         // qDebug() << "IdentityDisplay::setAgentList()" << m_engine->loginkind() << alist;
         if (m_engine->loginkind() == 0)
                 return;
-        QString astid = alist["astid"].toString();
+        QVariantMap alistmap = alist.toMap();
+        QString astid = alistmap["astid"].toString();
         qDebug() << "IdentityDisplay::setAgentList" << m_ui->agentid() << astid << m_ui->astid();
         if (astid != m_ui->astid())
                 return;
         
-        QStringList agentids = alist["newlist"].toMap().keys();
+        QStringList agentids = alistmap["newlist"].toMap().keys();
         agentids.sort();
         qDebug() << "IdentityDisplay::setAgentList" << agentids;
         foreach (QString agnum, agentids) {
                 if(agnum == m_ui->agentid()) {
-                        QVariant properties = alist["newlist"].toMap()[agnum].toMap()["properties"];
-                        QVariantList agqjoined = alist["newlist"].toMap()[agnum].toMap()["queues"].toList();
+                        QVariant properties = alistmap["newlist"].toMap()[agnum].toMap()["properties"];
+                        QVariantList agqjoined = alistmap["newlist"].toMap()[agnum].toMap()["queues"].toList();
                         QString agstatus = properties.toMap()["status"].toString();
                         QString agfullname = properties.toMap()["name"].toString();
                         QString phonenum = properties.toMap()["phonenum"].toString();
@@ -328,7 +318,7 @@ void IdentityDisplay::setAgentList(const QMap<QString, QVariant> & alist)
         }
 }
 
-void IdentityDisplay::setQueueList(bool changeallow, const QMap<QString, QVariant> & qlist)
+void IdentityDisplay::setQueueList(bool changeallow, const QVariant & qlist)
 {
         if (m_engine->loginkind() == 0)
                 return;
@@ -336,10 +326,11 @@ void IdentityDisplay::setQueueList(bool changeallow, const QMap<QString, QVarian
         // qDebug() << "IdentityDisplay::setQueueList()" << qlist;
         if(m_ui == NULL)
                 return;
-        QString astid = qlist["astid"].toString();
+        QVariantMap qlistmap = qlist.toMap();
+        QString astid = qlistmap["astid"].toString();
         if (astid != m_ui->astid())
                 return;
-        QStringList queues = qlist["queuestats"].toMap().keys();
+        QStringList queues = qlistmap["queuestats"].toMap().keys();
         if (queues.size() == 0)
                 return;
         queues.sort();

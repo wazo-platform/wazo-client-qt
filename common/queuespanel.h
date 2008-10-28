@@ -46,6 +46,7 @@
 #include <QLabel>
 #include <QList>
 #include <QObject>
+#include <QVariant>
 #include <QWidget>
 
 class QCheckBox;
@@ -54,7 +55,6 @@ class QLabel;
 class QProgressBar;
 class QPushButton;
 
-class BaseEngine;
 class UserInfo;
 
 /*! \brief Identity Display
@@ -63,11 +63,9 @@ class QueuesPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	QueuesPanel(BaseEngine *,
-                    const QMap<QString, QVariant> &,
+	QueuesPanel(const QVariant &,
                     QWidget * parent = 0);
 	~QueuesPanel();
-        void setEngine(BaseEngine *);
 protected:
         void update();
 private:
@@ -75,11 +73,11 @@ private:
 signals:
         void changeWatchedQueue(const QString &);
 public slots:
-        void setGuiOptions(const QMap<QString, QVariant> &);
+        void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-        void updateCounter(const QMap<QString, QVariant> &);
+        void updateCounter(const QVariant &);
         void removeQueues(const QString &, const QStringList &);
-	void setQueueList(bool, const QMap<QString, QVariant> &);
+	void setQueueList(bool, const QVariant &);
         void setQueueStatus(const QStringList &);
         void updatePeerAgent(const QString &,
                              const QString &,
@@ -96,13 +94,11 @@ private:
         QGridLayout * m_gridlayout;
         QStringList m_statitems;
         QHash<QString, QString> m_statlegends;
-
+        
         QHash<QString, QLabel *> m_queuelabels;
         QHash<QString, QPushButton *> m_queuemore;
         QHash<QString, QProgressBar *> m_queuebusies;
         QHash<QString, QHash<QString, QLabel *> > m_queueinfos;
-        
-        BaseEngine * m_engine;
         
         quint32 m_maxbusy;
         
@@ -112,6 +108,7 @@ private:
         QCheckBox * m_qcbox;
         QCheckBox * m_vqcbox;
         QHash<QString, QLabel *> m_title_infos;
+        QVariant m_options;
 };
 
 #endif /* __QUEUESPANEL_H__ */

@@ -45,6 +45,7 @@
 #include <QHash>
 #include <QList>
 #include <QObject>
+#include <QVariant>
 #include <QWidget>
 
 class QFrame;
@@ -62,21 +63,21 @@ class AgentsPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	AgentsPanel(const QMap<QString, QVariant> &,
+	AgentsPanel(const QVariant &,
                     QWidget * parent = 0);
 	~AgentsPanel();
 signals:
         void changeWatchedAgent(const QString &, bool);
         void agentAction(const QString &);
 public slots:
+        void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-        void setAgentList(const QMap<QString, QVariant> &);
+        void setAgentList(const QVariant &);
         void setAgentStatus(const QString &);
         void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);
         void updateAgentPresence(const QString &, const QString &, const QColor &);
-        void setGuiOptions(const QMap<QString, QVariant> &);
 private slots:
         void agentClicked();
 private:

@@ -124,7 +124,7 @@ private slots:
         void logintextChanged(const QString &);
         void loginKindChanged(int);
         void confUpdated();
-        void updatePresence(const QMap<QString, QVariant> &);
+        void updatePresence(const QVariant &);
 signals:
         void functionKeyPressed(int);
         void pasteToDialPanel(const QString &);
@@ -214,7 +214,7 @@ private:
         QSettings * m_settings;
 
         QClipboard * m_clipboard;
-        QMap<QString, QVariant> m_optionsmap;
+        QVariant m_options;
 };
 
 

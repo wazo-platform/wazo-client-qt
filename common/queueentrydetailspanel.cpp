@@ -66,7 +66,7 @@ QueueentrydetailsPanel::~QueueentrydetailsPanel()
         // qDebug() << "QueueentrydetailsPanel::~QueueentrydetailsPanel()";
 }
 
-void QueueentrydetailsPanel::setGuiOptions(const QMap<QString, QVariant> &)
+void QueueentrydetailsPanel::setGuiOptions(const QVariant &)
 {
 }
 
@@ -79,7 +79,7 @@ void QueueentrydetailsPanel::updatePeerAgent(const QString &, const QString &, c
         // qDebug() << "QueueentrydetailsPanel::updatePeerAgent()";
 }
 
-void QueueentrydetailsPanel::newQueue(const QString & astid, const QString & queueid, const QMap<QString, QVariant> & queuestatus)
+void QueueentrydetailsPanel::newQueue(const QString & astid, const QString & queueid, const QVariant & queuestatus)
 {
         // qDebug() << "QueueentrydetailsPanel::newQueue()" << astid << queueid << queuestatus;
         m_astid = astid;
@@ -100,8 +100,9 @@ void QueueentrydetailsPanel::newQueue(const QString & astid, const QString & que
         m_entrytime.clear();
         
         int k = 0;
-        foreach(QString channel, queuestatus["entries"].toMap().keys()) {
-                QMap<QString, QVariant> entryinfos = queuestatus["entries"].toMap()[channel].toMap();
+        QVariantMap queuestatusmap = queuestatus.toMap();
+        foreach(QString channel, queuestatusmap["entries"].toMap().keys()) {
+                QVariantMap entryinfos = queuestatusmap["entries"].toMap()[channel].toMap();
                 qDebug() << channel << entryinfos;
                 QString entryname = entryinfos["calleridname"].toString() + " <" + entryinfos["calleridnum"].toString() + ">";
                 QString entrypos = entryinfos["position"].toString();

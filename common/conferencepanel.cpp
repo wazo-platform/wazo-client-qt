@@ -68,7 +68,7 @@ ConferencePanel::~ConferencePanel()
 {
 }
 
-void ConferencePanel::setGuiOptions(const QMap<QString, QVariant> &)
+void ConferencePanel::setGuiOptions(const QVariant &)
 {
 }
 

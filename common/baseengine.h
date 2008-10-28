@@ -46,7 +46,6 @@
 #include <QAbstractSocket>
 #include <QHash>
 #include <QHostAddress>
-#include <QMap>
 #include <QObject>
 #include <QSettings>
 #include <QStringList>
@@ -110,8 +109,6 @@ public:
 	void setHistorySize(uint size);		//!< set history size
 	uint contactsColumns() const;		//!< contacts columns
 	void setContactsColumns(uint columns);	//!< set contacts colmuns
-        void setQueueLevel(const QString &, uint);
-        uint queueLevel(const QString &) const;
 	uint contactsSize() const;		//!< contacts size
 	void setContactsSize(uint size);	//!< set contacts size
 	bool systrayed() const;			//!< systrayed flag
@@ -146,9 +143,9 @@ public:
 	const QStringList & getCapabilities() const;	//!< returns capabilities
         const QStringList & getCapaFeatures() const;	//!< returns features capabilities
         const QStringList & getCapaXlets() const;
-        const QMap<QString, QVariant> & getCapaPresence() const;
-        const QMap<QString, QVariant> & getGuiOptions() const;
-        void updateCapaPresence(const QMap<QString, QVariant> &);
+        const QVariantMap & getCapaPresence() const;
+        const QVariant getGuiOptions(const QString &) const;
+        void updateCapaPresence(const QVariant &);
         const QString     & getCapaApplication() const;
         void config_and_start(const QString &,
                               const QString &, const QString &);
@@ -159,6 +156,7 @@ public:
                                      const QString &);
         UserInfo * findUserFromAgent(const QString &,
                                      const QString &);
+        void setGuiOption(const QString &, const QVariant &);
 public slots:
 	void start();				//!< start the connection process.
 	void stop();				//!< stop the engine
@@ -219,13 +217,12 @@ signals:
         void monitorPeer(UserInfo *);
         void meetmeEvent(const QStringList &);
         void requestFileListResult(const QString &);
-        void updatePresence(const QMap<QString, QVariant> &);
-        void updateCounter(const QMap<QString, QVariant> &);
+        void updatePresence(const QVariant &);
+        void updateCounter(const QVariant &);
         void serverFileList(const QStringList &);
         void fileReceived();
         void statusRecord(const QString &, const QString &);
-        void updateStats(const QMap<QString, QVariant> &);
-        void setGuiOptions(const QMap<QString, QVariant> &);
+        void setGuiOptions(const QVariant &);
         
 	//! a call
 	void updateCall(UserInfo *,
@@ -259,13 +256,13 @@ signals:
         void localUserInfoDefined(const UserInfo *);
         void setQueueStatus(const QStringList &);
         void removeQueues(const QString &, const QStringList &);
-        void newQueueList(bool, const QMap<QString, QVariant> &);
-        void newAgentList(const QMap<QString, QVariant> &);
+        void newQueueList(bool, const QVariant &);
+        void newAgentList(const QVariant &);
 	void optChanged(const QString &, bool);
 	void forwardUpdated(const QString &, bool, const QString &);
         void changesAvailChecks();
-        void changeWatchedAgentSignal(const QString &, const QString &, const QMap<QString, QVariant> &);
-        void changeWatchedQueueSignal(const QString &, const QString &, const QMap<QString, QVariant> &);
+        void changeWatchedAgentSignal(const QString &, const QString &, const QVariant &);
+        void changeWatchedQueueSignal(const QString &, const QString &, const QVariant &);
         void updateAgentPresence(const QString &, const QString &, const QColor &);
         void displayFiche(const QString &, bool);
 protected:
@@ -313,7 +310,6 @@ private:
 	int m_historysize;
 	int m_contactssize;
 	int m_contactscolumns;
-        QHash<QString, int> m_queuelevels;
 	bool m_enabled_presence;      	//!< presence is enabled
 	bool m_enabled_cinfo;      	//!< customer info is enabled
 	QHash<QString, bool> m_checked_function;      	//!< function checked
@@ -324,8 +320,8 @@ private:
 	QStringList m_capafuncs;	//!< List of func capabilities issued by the server after a successful login
 	QStringList m_capaxlets;	//!< List of xlet capabilities issued by the server after a successful login
 	QStringList m_capafeatures;	//!< List of capabilities issued by the server for the features
-	QMap<QString, QVariant> m_capapresence;	//!< List of capabilities issued by the server for the presence statuses
-	QMap<QString, QVariant> m_guioptions;	//!< List of GUI options
+	QVariantMap m_capapresence;	//!< List of capabilities issued by the server for the presence statuses
+	QVariantMap m_guioptions;	//!< List of GUI options
 	QString m_appliname;		//!< Application name to be displayed
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier
@@ -350,7 +346,7 @@ private:
 	int m_pendingkeepalivemsg;	//!< number of keepalivemsg sent without response
         QString m_numbertodial;		//!< Number dialed in
         QString m_osname;		//!< OS informations
-        QMap<QString, QVariant> m_counters;
+        QVariant m_counters;
 
         QString m_agent_watched_astid;
         QString m_agent_watched_agentid;

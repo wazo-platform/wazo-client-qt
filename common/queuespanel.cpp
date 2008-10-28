@@ -48,28 +48,25 @@
 #include <QScrollArea>
 #include <QVariant>
 
-#include "baseengine.h"
 #include "queuespanel.h"
-#include "servercommand.h"
 
 const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 100px; height: 15px}";
 
 /*! \brief Constructor
  */
-QueuesPanel::QueuesPanel(BaseEngine * engine,
-                         const QMap<QString, QVariant> & optionmap,
+QueuesPanel::QueuesPanel(const QVariant & options,
                          QWidget * parent)
-        : QWidget(parent),
-          m_engine(engine)
+        : QWidget(parent)
 {
+        // qDebug() << "QueuesPanel::QueuesPanel()" << options;
         m_gui_font = QFont("sans serif", 9);
         m_gui_buttonsize = 10;
         m_gui_showvqueues = true;
         m_gui_showqueuenames = true;
         
         bool is_supervisor = false;
-        if(optionmap.contains("supervisor"))
-                is_supervisor = optionmap["supervisor"].toBool();
+        if(options.toMap().contains("supervisor"))
+                is_supervisor = options.toMap()["supervisor"].toBool();
         
 	m_gridlayout = new QGridLayout(this);
         m_statlegends["Completed"] = tr("Completed");
@@ -135,7 +132,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
  	m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->setVerticalSpacing(0);
         
-        setGuiOptions(optionmap);
+        setGuiOptions(options);
 }
 
 QueuesPanel::~QueuesPanel()
@@ -143,17 +140,19 @@ QueuesPanel::~QueuesPanel()
         // qDebug() << "QueuesPanel::~QueuesPanel()";
 }
 
-void QueuesPanel::setGuiOptions(const QMap<QString, QVariant> & optionmap)
+void QueuesPanel::setGuiOptions(const QVariant & options)
 {
-        if(optionmap.contains("fontname") && optionmap.contains("fontsize"))
-                m_gui_font = QFont(optionmap["fontname"].toString(),
-                                   optionmap["fontsize"].toInt());
-        if(optionmap.contains("iconsize"))
-                m_gui_buttonsize = optionmap["iconsize"].toInt();
-        if(optionmap.contains("queues-showvqueues"))
-                m_gui_showvqueues = optionmap["queues-showvqueues"].toBool();
-        if(optionmap.contains("queues-showqueuenames"))
-                m_gui_showqueuenames = optionmap["queues-showqueuenames"].toBool();
+        m_options = options;
+        
+        if(m_options.toMap().contains("fontname") && m_options.toMap().contains("fontsize"))
+                m_gui_font = QFont(m_options.toMap()["fontname"].toString(),
+                                   m_options.toMap()["fontsize"].toInt());
+        if(m_options.toMap().contains("iconsize"))
+                m_gui_buttonsize = m_options.toMap()["iconsize"].toInt();
+        if(m_options.toMap().contains("queues-showvqueues"))
+                m_gui_showvqueues = m_options.toMap()["queues-showvqueues"].toBool();
+        if(m_options.toMap().contains("queues-showqueuenames"))
+                m_gui_showqueuenames = m_options.toMap()["queues-showqueuenames"].toBool();
         
         m_busytitle->setFont(m_gui_font);
         m_qtitle->setFont(m_gui_font);
@@ -182,13 +181,14 @@ void QueuesPanel::setUserInfo(const UserInfo *)
 {
 }
 
-void QueuesPanel::updateCounter(const QMap<QString, QVariant> & counters)
+void QueuesPanel::updateCounter(const QVariant & counters)
 {
-        int ntot = counters["connected"].toInt();
+        QVariantMap countersmap = counters.toMap();
+        int ntot = countersmap["connected"].toInt();
         foreach (QString queuename, m_queueinfos.keys()) {
                 int navail = 0;
-                if(counters["byqueue"].toMap().contains(queuename))
-                        navail = counters["byqueue"].toMap()[queuename].toInt();
+                if(countersmap["byqueue"].toMap().contains(queuename))
+                        navail = countersmap["byqueue"].toMap()[queuename].toInt();
                 if(m_queueinfos[queuename].contains("Xivo-Conn"))
                         m_queueinfos[queuename]["Xivo-Conn"]->setText(QString::number(ntot));
                 if(m_queueinfos[queuename].contains("Xivo-Avail"))
@@ -220,11 +220,6 @@ void QueuesPanel::checkBoxStateChanged(int state)
                         }
                 }
         }
-}
-
-void QueuesPanel::setEngine(BaseEngine * engine)
-{
-	m_engine = engine;
 }
 
 void QueuesPanel::updatePeerAgent(const QString &,
@@ -301,14 +296,15 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
                                          Qt::AlignCenter );
 }
 
-void QueuesPanel::setQueueList(bool, const QMap<QString, QVariant> & qlist)
+void QueuesPanel::setQueueList(bool, const QVariant & qlist)
 {
         // qDebug() << "QueuesPanel::setQueueList()" << qlist;
-        QString astid = qlist["astid"].toString();
-        QMap<QString, QVariant> queuestats = qlist["queuestats"].toMap();
-        QMap<QString, QVariant> vqueues = qlist["vqueues"].toMap();
+        QVariantMap qlistmap = qlist.toMap();
+        QString astid = qlistmap["astid"].toString();
+        QVariantMap queuestats = qlistmap["queuestats"].toMap();
+        QVariantMap vqueues = qlistmap["vqueues"].toMap();
         foreach (QString queuename, queuestats.keys()) {
-                QMap<QString, QVariant> queuestatcontents = queuestats[queuename].toMap();
+                QVariantMap queuestatcontents = queuestats[queuename].toMap();
                 QHash <QString, QString> infos;
                 infos["Calls"] = "0";
                 foreach (QString statname, queuestatcontents.keys()) {
@@ -362,16 +358,18 @@ void QueuesPanel::update()
         }
         // qDebug() << "QueuesPanel::update() maxbusy =" << m_maxbusy;
         
+        quint32 greenlevel = m_options.toMap()["queuelevels"].toMap()["green"].toUInt();
+        quint32 orangelevel = m_options.toMap()["queuelevels"].toMap()["orange"].toUInt();
         foreach (QProgressBar * qpb, m_queuebusies) {
                 QString qname = qpb->property("queueid").toString();
-                unsigned int val = qpb->property("value").toUInt();
+                quint32 val = qpb->property("value").toUInt();
                 qpb->setRange(0, m_maxbusy + 1);
                 // qpb->setValue(0); // trick in order to refresh
                 qpb->setValue(val);
-
-                if(val <= m_engine->queueLevel("green"))
+                
+                if(val <= greenlevel)
                         qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #00ff00;}");
-                else if(val <= m_engine->queueLevel("orange"))
+                else if(val <= orangelevel)
                         qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #0000ff;}");
                 else
                         qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ff0000;}");

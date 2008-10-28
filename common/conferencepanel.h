@@ -68,7 +68,7 @@ public slots:
         void setUserInfo(const UserInfo *);
         void meetmeEvent(const QStringList &);
         void doMeetMeAction();
-        void setGuiOptions(const QMap<QString, QVariant> &);
+        void setGuiOptions(const QVariant &);
 private:
         QHash<QString, QLabel *> m_infos;
         QHash<QString, QPushButton *> m_actions;

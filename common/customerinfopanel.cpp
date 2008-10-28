@@ -68,7 +68,7 @@ CustomerInfoPanel::~CustomerInfoPanel()
 {
 }
 
-void CustomerInfoPanel::setGuiOptions(const QMap<QString, QVariant> &)
+void CustomerInfoPanel::setGuiOptions(const QVariant &)
 {
 }
 

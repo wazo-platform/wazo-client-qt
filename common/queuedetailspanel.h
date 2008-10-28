@@ -45,6 +45,7 @@
 #include <QHash>
 #include <QList>
 #include <QObject>
+#include <QVariant>
 #include <QWidget>
 
 class QGridLayout;
@@ -67,9 +68,9 @@ signals:
         void changeWatchedAgent(const QString &, bool);
 protected:
 public slots:
-        void setGuiOptions(const QMap<QString, QVariant> &);
+        void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-	void newQueue(const QString &, const QString &, const QMap<QString, QVariant> &);
+	void newQueue(const QString &, const QString &, const QVariant &);
         void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);

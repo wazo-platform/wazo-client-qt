@@ -46,6 +46,7 @@
 #include <QLabel>
 #include <QList>
 #include <QObject>
+#include <QVariant>
 #include <QWidget>
 
 class QComboBox;
@@ -62,13 +63,13 @@ class IdentityDisplay : public QWidget
 	Q_OBJECT
 public:
 	IdentityDisplay(BaseEngine *,
-                        const QMap<QString, QVariant> &,
+                        const QVariant &,
                         QWidget * parent = 0);
 public slots:
-        void setGuiOptions(const QMap<QString, QVariant> &);
+        void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-        void setAgentList(const QMap<QString, QVariant> &);
-	void setQueueList(bool, const QMap<QString, QVariant> &);
+        void setAgentList(const QVariant &);
+	void setQueueList(bool, const QVariant &);
         void updatePeer(UserInfo *,
                         const QString &,
                         const QHash<QString, QStringList> &);
@@ -81,8 +82,7 @@ public slots:
         void doQueueJoinAll();
         void doQueueLeaveAll();
         void idxChanged(const QString &);
-        void updatePresence(const QMap<QString, QVariant> &);
-        void updateCounter(const QStringList &);
+        void updatePresence(const QVariant &);
 private:
         void showAgentProps();
         void hideAgentProps();

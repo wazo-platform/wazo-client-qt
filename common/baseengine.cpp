@@ -183,12 +183,12 @@ void BaseEngine::loadSettings()
                 m_useridwithopt = m_userid + "%" + m_useridopt;
         else
                 m_useridwithopt = m_userid;
-	m_company     = m_settings->value("company").toString();
-	m_password    = m_settings->value("password").toString();
-	m_loginkind   = m_settings->value("loginkind", 0).toUInt();
-	m_keeppass    = m_settings->value("keeppass", 0).toUInt();
+	m_company      = m_settings->value("company").toString();
+	m_password     = m_settings->value("password").toString();
+	m_loginkind    = m_settings->value("loginkind", 0).toUInt();
+	m_keeppass     = m_settings->value("keeppass", 0).toUInt();
 	m_showagselect = m_settings->value("showagselect", 0).toUInt();
-	m_phonenumber = m_settings->value("phonenumber").toString();
+	m_phonenumber  = m_settings->value("phonenumber").toString();
         setFullId();
 
 	m_autoconnect = m_settings->value("autoconnect", false).toBool();
@@ -203,9 +203,7 @@ void BaseEngine::loadSettings()
 	m_historysize = m_settings->value("historysize", 8).toUInt();
 	m_contactssize = m_settings->value("contactssize", 45).toUInt();
 	m_contactscolumns = m_settings->value("contactscolumns", 2).toUInt();
-	m_queuelevels["green"] = m_settings->value("queuelevel-green", 5).toUInt();
-	m_queuelevels["orange"] = m_settings->value("queuelevel-orange", 10).toUInt();
-	m_queuelevels["red"] = m_settings->value("queuelevel-red", 15).toUInt();
+        m_guioptions["user"] = m_settings->value("guisettings");
         m_settings->endGroup();
         
         m_settings->beginGroup("user-functions");
@@ -257,9 +255,7 @@ void BaseEngine::saveSettings()
 	m_settings->setValue("historysize", m_historysize);
 	m_settings->setValue("contactssize", m_contactssize);
 	m_settings->setValue("contactscolumns", m_contactscolumns);
-	m_settings->setValue("queuelevel-green", m_queuelevels["green"]);
-	m_settings->setValue("queuelevel-orange", m_queuelevels["orange"]);
-	m_settings->setValue("queuelevel-red", m_queuelevels["red"]);
+	m_settings->setValue("guisettings", m_guioptions["user"]);
         m_settings->endGroup();
         
         m_settings->beginGroup("user-functions");
@@ -371,21 +367,27 @@ const QStringList & BaseEngine::getCapaXlets() const
         return m_capaxlets;
 }
 
-const QMap<QString, QVariant> & BaseEngine::getCapaPresence() const
+const QVariantMap & BaseEngine::getCapaPresence() const
 {
         return m_capapresence;
 }
 
-const QMap<QString, QVariant> & BaseEngine::getGuiOptions() const
+const QVariant BaseEngine::getGuiOptions(const QString & arg) const
 {
-        return m_guioptions;
+        return m_guioptions[arg];
 }
 
-void BaseEngine::updateCapaPresence(const QMap<QString, QVariant> & presence)
+void BaseEngine::setGuiOption(const QString & arg, const QVariant & opt)
 {
-        foreach (QString field, presence.keys())
-                if(presence.contains(field))
-                        m_capapresence[field] = presence[field];
+        m_guioptions[arg] = opt;
+}
+
+void BaseEngine::updateCapaPresence(const QVariant & presence)
+{
+        QVariantMap presencemap = presence.toMap();
+        foreach (QString field, presencemap.keys())
+                if(presencemap.contains(field))
+                        m_capapresence[field] = presencemap[field];
         
         if(m_capapresence.contains("names"))
                 foreach (QString avstate, m_capapresence["names"].toMap().keys()) {
@@ -697,7 +699,7 @@ bool BaseEngine::parseCommand(const QString & line)
                 qDebug() << "BaseEngine::parseCommand() exception catched for" << line.trimmed();
                 return false;
         }
-        QMap<QString, QVariant> datamap = data.toMap();
+        QVariantMap datamap = data.toMap();
         QString direction = datamap["direction"].toString();
         
         ServerCommand * sc = new ServerCommand(line.trimmed());
@@ -725,7 +727,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         QString function = datamap["function"].toString();
                         if(function == "sendlist") {
                                 foreach (QVariant qv, datamap["payload"].toList())
-                                        newQueueList(! hasFunction("nojoinleave"), qv.toMap());
+                                        newQueueList(! hasFunction("nojoinleave"), qv);
                         }
                         else if(function == "update") {
                                 setQueueStatus(datamap["payload"].toStringList());
@@ -744,7 +746,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         QString function = datamap["function"].toString();
                         if(function == "sendlist") {
                                 foreach (QVariant qv, datamap["payload"].toList())
-                                        newAgentList(qv.toMap());
+                                        newAgentList(qv);
                         } else if(function == "update") {
                                 QStringList liststatus = datamap["payload"].toStringList();
                                 if(liststatus.size() > 2) {
@@ -775,14 +777,14 @@ bool BaseEngine::parseCommand(const QString & line)
                            (datamap["agentnum"].toString() == m_agent_watched_agentid))
                                 changeWatchedAgentSignal(m_agent_watched_astid,
                                                          m_agent_watched_agentid,
-                                                         datamap["payload"].toMap());
+                                                         datamap["payload"]);
                         
                 } else if (thisclass == "queue-status") {
                         if((datamap["astid"].toString() == m_queue_watched_astid) &&
                            (datamap["queuename"].toString() == m_queue_watched_queueid))
                                 changeWatchedQueueSignal(m_queue_watched_astid,
                                                          m_queue_watched_queueid,
-                                                         datamap["payload"].toMap());
+                                                         datamap["payload"]);
                         
                 } else if (thisclass == "history") {
                         // QCryptographicHash histohash(QCryptographicHash::Sha1);
@@ -790,7 +792,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         processHistory(datamap["payload"].toStringList());
                         
                 } else if (thisclass == "getguisettings") {
-                        setGuiOptions(datamap["payload"].toMap());
+                        setGuiOptions(datamap["payload"]);
                         
                 } else if (thisclass == "meetme") {
                         meetmeEvent(datamap["payload"].toStringList());
@@ -829,10 +831,10 @@ bool BaseEngine::parseCommand(const QString & line)
                                         updateAgentPresence(m_users[id]->agentid(), presencestatus, m_presencecolors[presencestatus]);
                                 else
                                         updateAgentPresence(m_users[id]->agentid(), presencestatus, Qt::gray);
-                                m_counters = datamap["presencecounter"].toMap();
+                                m_counters = datamap["presencecounter"];
                                 updateCounter(m_counters);
                                 if (id == m_fullid) {
-                                        updateCapaPresence(datamap["capapresence"].toMap());
+                                        updateCapaPresence(datamap["capapresence"]);
                                         updatePresence(m_capapresence);
                                         localUserInfoDefined(m_users[m_fullid]);
                                 }
@@ -1079,10 +1081,10 @@ bool BaseEngine::parseCommand(const QString & line)
                         m_capafuncs = datamap["capafuncs"].toStringList();
                         m_capaxlets = datamap["capaxlets"].toStringList();
                         m_appliname = datamap["appliname"].toString();
-                        updateCapaPresence(datamap["capapresence"].toMap());
+                        updateCapaPresence(datamap["capapresence"]);
                         m_forced_state = datamap["capapresence"].toMap()["state"].toString();
-                        m_counters = datamap["presencecounter"].toMap();
-                        m_guioptions = datamap["guisettings"].toMap();
+                        m_counters = datamap["presencecounter"];
+                        m_guioptions["server"] = datamap["guisettings"];
                         // m_capafeatures = datamap["capas_features"].toStringList();
                         
                         qDebug() << "clientXlets" << XletList;
@@ -1286,14 +1288,14 @@ void BaseEngine::socketReadyRead()
                         QString line = QString::fromUtf8(data);
                         JsonQt::JsonToVariant parser;
                         QVariant jsondata = parser.parse(line.trimmed());
-                        QMap<QString, QVariant> datamap = jsondata.toMap();
-                        if(datamap["class"].toString() == "fileref") {
+                        QVariantMap jsondatamap = jsondata.toMap();
+                        if(jsondatamap["class"].toString() == "fileref") {
                                 if(m_filedir == "download") {
-                                        m_downloaded = QByteArray::fromBase64(datamap["payload"].toByteArray());
-                                        qDebug() << datamap["filename"].toString() << m_downloaded.size();
+                                        m_downloaded = QByteArray::fromBase64(jsondatamap["payload"].toByteArray());
+                                        qDebug() << jsondatamap["filename"].toString() << m_downloaded.size();
                                         fileReceived();
                                 } else {
-                                        qDebug() << "sending fax contents" << datamap["fileid"].toString();
+                                        qDebug() << "sending fax contents" << jsondatamap["fileid"].toString();
                                         if(m_faxsize > 0)
                                                 m_filesocket->write(* m_filedata);
                                         delete m_filedata;
@@ -1686,16 +1688,6 @@ void BaseEngine::setContactsColumns(uint columns)
 uint BaseEngine::contactsColumns() const
 {
 	return m_contactscolumns;
-}
-
-void BaseEngine::setQueueLevel(const QString & field, uint value)
-{
-	m_queuelevels[field] = value;
-}
-
-uint BaseEngine::queueLevel(const QString & field) const
-{
-	return m_queuelevels[field];
 }
 
 uint BaseEngine::trytoreconnectinterval() const

@@ -122,7 +122,7 @@ AgentdetailsPanel::~AgentdetailsPanel()
         // qDebug() << "AgentdetailsPanel::~AgentdetailsPanel()";
 }
 
-void AgentdetailsPanel::setGuiOptions(const QMap<QString, QVariant> &)
+void AgentdetailsPanel::setGuiOptions(const QVariant &)
 {
 }
 
@@ -262,13 +262,14 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
         }
 }
 
-void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid, const QMap<QString, QVariant> & agentstatus)
+void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid, const QVariant & agentstatus)
 {
         // qDebug() << "AgentdetailsPanel::newAgent()" << astid << agentid << agentstatus;
         m_astid = astid;
         m_agent = agentid;
-        QVariantList queuesstats = agentstatus["queues"].toList();
-        QVariant properties = agentstatus["properties"];
+        QVariantMap agentstatusmap = agentstatus.toMap();
+        QVariantList queuesstats = agentstatusmap["queues"].toList();
+        QVariant properties = agentstatusmap["properties"];
         QString longname = properties.toMap()["name"].toString();
         QString lstatus = properties.toMap()["status"].toString();
         QString phonenum = properties.toMap()["phonenum"].toString();
