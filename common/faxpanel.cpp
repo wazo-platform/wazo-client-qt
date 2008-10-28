@@ -138,6 +138,10 @@ void FaxPanel::setGuiOptions(const QVariant &)
 {
 }
 
+void FaxPanel::setUserInfo(const UserInfo *)
+{
+}
+
 void FaxPanel::destNumberChanged(const QString &/* ext*/)
 {
         // qDebug() << "FaxPanel::destNumberChanged()" << ext;

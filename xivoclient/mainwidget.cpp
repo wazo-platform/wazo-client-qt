@@ -765,7 +765,7 @@ void MainWidget::engineStarted()
  		if (m_forcetabs || m_allnames.contains(dc)) {
                         bool withscrollbar = m_dockoptions[dc].contains("s");
                         if (dc == "history") {
-                                m_xlet[dc] = new LogWidget(m_engine, this);
+                                m_xlet[dc] = new LogWidget(m_engine, m_options, this);
                                 addPanel("history", tr("History"), m_xlet[dc]);
                                 connect( m_engine, SIGNAL(updateLogEntry(const QDateTime &, int,
                                                                          const QString &, const QString &, const QString &)),
@@ -939,7 +939,7 @@ void MainWidget::engineStarted()
                         } else if (dc == QString("operator")) {
                                 m_xlet[dc] = new StatusPanel(this);
                                 addPanel("operator", tr("Operator"), m_xlet[dc]);
-
+                                
                                 connectDials(m_xlet[dc]);
                                 connect( this, SIGNAL(functionKeyPressed(int)),
                                          m_xlet[dc], SLOT(functionKeyPressed(int)));
@@ -1034,7 +1034,7 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(popupMsg(const QString &, const QString &)) );
                                 
 			} else if ((dc == "customerinfo") && m_engine->checkedFunction(dc)) {
-                                m_xlet[dc] = new CustomerInfoPanel(m_engine, m_options);
+                                m_xlet[dc] = new CustomerInfoPanel(m_options);
                                 addPanel("customerinfo", tr("Sheets"), m_xlet[dc]);
                                 
                                 connect( m_engine, SIGNAL(displayFiche(const QString &, bool)),
@@ -1098,7 +1098,7 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setForward(const QString &, bool, const QString &)) );
                                 
 			} else if (dc == QString("directory")) {
-                                m_xlet[dc] = new DirectoryPanel();
+                                m_xlet[dc] = new DirectoryPanel(m_options);
                                 addPanel("directory", tr("Directory"), m_xlet[dc]);
                                 m_xlet[dc]->setFocus();
                                 

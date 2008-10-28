@@ -64,6 +64,7 @@ signals:
 	void askFeatures(); //!< need features to be updated !
 public slots:
         void setGuiOptions(const QVariant &);
+        void setUserInfo(const UserInfo *);
 	void setOpt(const QString &, bool);
 	void setForward(const QString &, bool, const QString &);
         void monitorPeer(UserInfo *);

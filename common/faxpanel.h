@@ -52,6 +52,7 @@ class QPushButton;
 class BaseEngine;
 class DirDialog;
 class MainWidget;
+class UserInfo;
 
 class FaxPanel : public QWidget
 {
@@ -63,6 +64,7 @@ signals:
         void faxSend(const QString &, const QString &, Qt::CheckState);
 public slots:
         void setGuiOptions(const QVariant &);
+        void setUserInfo(const UserInfo *);
         void setOpenFileName();
         void sendFax();
         void dirLookup();

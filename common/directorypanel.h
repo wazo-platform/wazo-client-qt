@@ -61,7 +61,7 @@ class DirectoryPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	DirectoryPanel(QWidget * parent = 0);
+	DirectoryPanel(const QVariant &, QWidget * parent = 0);
 	~DirectoryPanel();
 protected:
         void dropEvent(QDropEvent *);
@@ -83,6 +83,7 @@ private slots:
 	void transferChan(const QString &);
 public slots:
         void setGuiOptions(const QVariant &);
+        void setUserInfo(const UserInfo *);
         void contextMenuEvent(QContextMenuEvent *);
 	void setSearchResponse(const QString &);
 	void stop();

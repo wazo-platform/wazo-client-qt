@@ -111,10 +111,12 @@ private:
         QLabel * m_lblphone;
 
 	QHash<QString, QCheckBox *> m_function;	//!< connect to functions checkboxes
+        QCheckBox * m_autourl_allowed;
 	QSpinBox  * m_history_sbox;	//!< History size
-
+        
         QHash<QString, QSpinBox *> m_queuelevels;
-
+        QHash<QString, QString> m_func_legend;
+        
 	QSpinBox  * m_contactssize_sbox;	//!< Displayed contacts' size
 	QSpinBox  * m_contactswidth_sbox;	//!< Displayed contacts' width
 	QSpinBox  * m_tablimit_sbox;	//!< Maximum number of tabs

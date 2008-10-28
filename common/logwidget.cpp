@@ -58,7 +58,7 @@
  *
  * build layout and child widgets.
  */
-LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
+LogWidget::LogWidget(BaseEngine * engine, const QVariant &, QWidget * parent)
 	: QWidget(parent), m_engine(engine), m_timer(-1)
 {
 	QVBoxLayout * layout = new QVBoxLayout(this);
@@ -116,6 +116,10 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
 	m_layout->setSpacing(0);
 	m_layout->addStretch(0);
 	layout->addWidget( scrollArea );
+}
+
+void LogWidget::setGuiOptions(const QVariant &)
+{
 }
 
 /*! \brief add an entry

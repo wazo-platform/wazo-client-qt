@@ -51,7 +51,6 @@
 
 class QTabWidget;
 
-class BaseEngine;
 class Popup;
 class UserInfo;
 
@@ -59,8 +58,7 @@ class CustomerInfoPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	CustomerInfoPanel(BaseEngine *,
-                          const QVariant &,
+	CustomerInfoPanel(const QVariant &,
                           QWidget * parent = 0);
         ~CustomerInfoPanel();
 signals:
@@ -77,11 +75,11 @@ public slots:
         void displayFiche(const QString &, bool);
         void actionFromPopup(const QString &);
 private:
-        BaseEngine * m_engine;
         const UserInfo * m_ui;
         QTabWidget * m_tabs;
         QList<Popup *> m_popups;
         quint32 m_tablimit;
+        bool m_autourl_allowed;
 };
 
 #endif /* __CUSTOMERINFOPANEL_H__ */

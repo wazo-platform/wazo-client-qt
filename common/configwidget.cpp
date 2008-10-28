@@ -75,6 +75,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
 	m_tabwidget = new QTabWidget();
         
+        QVariant opts = m_engine->getGuiOptions("user");
         //
         // Connection Tab
         //
@@ -119,7 +120,6 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         QHash<QString, QString> func_legend;
         func_legend["presence"] = tr("Presence reporting");
         func_legend["customerinfo"] = tr("Customer Info");
-        func_legend["autourl"] = tr("Allow the Automatic Opening of URL's");
         
         foreach(QString function, CheckFunctions) {
                 m_function[function] = new QCheckBox(func_legend[function]);
@@ -127,13 +127,16 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
                 gridlayout2->addWidget( m_function[function], line++, 0, 1, width );
         }
         
+        m_autourl_allowed = new QCheckBox(tr("Allow the Automatic Opening of URL's"));
+        m_autourl_allowed->setCheckState(opts.toMap()["autourl_allowed"].toUInt() == 2 ? Qt::Checked : Qt::Unchecked);
+        gridlayout2->addWidget( m_autourl_allowed, line++, 0, 1, width );
+        
         gridlayout2->addWidget(new QLabel(tr("History size"), this), line, 0);
         m_history_sbox = new QSpinBox(this);
         m_history_sbox->setRange(1, 20);
         m_history_sbox->setValue(m_engine->historySize());
         gridlayout2->addWidget(m_history_sbox, line++, 1);
         
-        QVariant opts = m_engine->getGuiOptions("user");
 	gridlayout2->addWidget(new QLabel(tr("Contacts' max number"), this), line, 0);
 	m_contactssize_sbox = new QSpinBox(this);
 	m_contactssize_sbox->setRange(1, 50);
@@ -349,6 +352,7 @@ void ConfigWidget::saveAndClose()
         opts["contacts-max"] = m_contactssize_sbox->value();
         opts["contacts-width"] = m_contactswidth_sbox->value();
         opts["sheet-tablimit"] = m_tablimit_sbox->value();
+        opts["autourl_allowed"] = m_autourl_allowed->checkState();
         m_engine->setGuiOption("user", opts);
         
 	m_engine->saveSettings();

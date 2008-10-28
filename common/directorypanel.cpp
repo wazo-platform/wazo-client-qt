@@ -61,7 +61,7 @@
  *
  *  Build layout and child widgets, connect signals/slots.
  */
-DirectoryPanel::DirectoryPanel(QWidget * parent)
+DirectoryPanel::DirectoryPanel(const QVariant &, QWidget * parent)
         : QWidget(parent)
 {
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -104,6 +104,10 @@ DirectoryPanel::~DirectoryPanel()
 }
 
 void DirectoryPanel::setGuiOptions(const QVariant &)
+{
+}
+
+void DirectoryPanel::setUserInfo(const UserInfo *)
 {
 }
 

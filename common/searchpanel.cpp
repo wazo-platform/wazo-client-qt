@@ -101,6 +101,10 @@ void SearchPanel::setGuiOptions(const QVariant &)
 {
 }
 
+void SearchPanel::setUserInfo(const UserInfo *)
+{
+}
+
 /*! \brief apply the search
  */
 void SearchPanel::callsUpdated()

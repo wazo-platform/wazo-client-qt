@@ -45,17 +45,15 @@
 #include <QGridLayout>
 #include <QTabWidget>
 #include <QTime>
+#include <QVariant>
 
-#include "baseengine.h"
 #include "customerinfopanel.h"
 #include "popup.h"
 #include "userinfo.h"
 
-CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
-                                     const QVariant & options,
+CustomerInfoPanel::CustomerInfoPanel(const QVariant & options,
                                      QWidget * parent)
-        : QWidget(parent),
-          m_engine(engine)
+        : QWidget(parent)
 {
         // qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
         QGridLayout * glayout = new QGridLayout(this);
@@ -65,6 +63,7 @@ CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
         glayout->setRowStretch(0, 1);
         glayout->setColumnStretch(0, 1);
         m_tablimit = options.toMap()["sheet-tablimit"].toUInt();
+        m_autourl_allowed = options.toMap()["autourl_allowed"].toBool();
 }
 
 CustomerInfoPanel::~CustomerInfoPanel()
@@ -100,7 +99,7 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
                         already_popup->update(popup->sheetlines());
                 } else {
                         QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
-                        int index = m_tabs->addTab(popup, currentTimeStr);
+                        quint32 index = m_tabs->addTab(popup, currentTimeStr);
                         qDebug() << "CustomerInfoPanel::showNewProfile() : added tab" << index;
                         m_popups.append(popup);
                         m_tabs->setCurrentIndex(index);
@@ -144,7 +143,7 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
         inputstream->write(fichecontent.toUtf8());
         inputstream->close();
         // Get Data and Popup the profile if ok
-        Popup * popup = new Popup(m_engine->checkedFunction("autourl"), m_ui);
+        Popup * popup = new Popup(m_autourl_allowed, m_ui);
         popup->feed(inputstream, qtui);
         connect( popup, SIGNAL(destroyed(QObject *)),
                  this, SLOT(popupDestroyed(QObject *)) );

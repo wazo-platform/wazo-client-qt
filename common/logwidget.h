@@ -57,7 +57,7 @@ class LogWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	LogWidget(BaseEngine * engine, QWidget * parent = 0);
+	LogWidget(BaseEngine * engine, const QVariant &, QWidget * parent = 0);
 	void addElement(const QString &,
                         LogEltWidget::Direction,
 	                const QDateTime &,
@@ -68,11 +68,12 @@ protected:
 private:
 	int mode();
 public slots:
+        void setGuiOptions(const QVariant &);
+        void setUserInfo(const UserInfo *);
 	void clear();
 	void addLogEntry(const QDateTime &, int,
                          const QString &, const QString &, const QString &);
 	void monitorPeer(UserInfo *);
-        void setUserInfo(const UserInfo *);
 private slots:
 	void modeChanged(bool);
 signals:

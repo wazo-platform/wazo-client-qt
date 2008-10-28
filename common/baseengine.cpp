@@ -199,7 +199,21 @@ void BaseEngine::loadSettings()
         
         m_settings->beginGroup("user-gui");
 	m_historysize = m_settings->value("historysize", 8).toUInt();
-        m_guioptions["user"] = m_settings->value("guisettings");
+        
+        QString defaultguioptions = "{\"contacts-max\":30,"
+                "\"contacts-width\":4,"
+                "\"sheet-tablimit\":4,"
+                "\"autourl_allowed\":0,"
+                "\"queuelevels\":{\"green\":0,\"orange\":4,\"red\":12}}";
+        JsonQt::JsonToVariant parser;
+        QVariant data;
+        try {
+                data = parser.parse(defaultguioptions);
+        }
+        catch(JsonQt::ParseException) {
+                qDebug() << "BaseEngine::parseCommand() exception catched for" << defaultguioptions;
+        }
+        m_guioptions["user"] = m_settings->value("guisettings", data);
         m_settings->endGroup();
         
         m_settings->beginGroup("user-functions");

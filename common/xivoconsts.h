@@ -60,6 +60,6 @@ const QStringList XletList = (QStringList() << "customerinfo" << "features" << "
                               << "outlook"
 #endif /* USE_OUTLOOK */
                               << "agents" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
-const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo" << "autourl");
+const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
 
 #endif /* __XIVOCONSTS_H__ */

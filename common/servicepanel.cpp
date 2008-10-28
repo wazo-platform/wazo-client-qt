@@ -129,6 +129,10 @@ void ServicePanel::setGuiOptions(const QVariant &)
 {
 }
 
+void ServicePanel::setUserInfo(const UserInfo *)
+{
+}
+
 void ServicePanel::Connect()
 {
         //qDebug() << "ServicePanel::Connect()";
