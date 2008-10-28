@@ -157,10 +157,6 @@ private:
         LeftPanel * m_leftpanel;
         QScrollArea * m_areaCalls;
 	CallStackWidget * m_calls;
-	DirectoryPanel * m_dirpanel;
-#ifdef USE_OUTLOOK
-        OutlookPanel * m_outlook;
-#endif
         QHash<QString, QWidget *> m_xlet;
 
         QLabel * m_xivobg;

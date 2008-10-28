@@ -135,7 +135,10 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
 // 	glayout->addWidget( m_queuebusy, idline, 4, Qt::AlignCenter );
 	// glayout->addWidget( m_queuejoinall, idline, 5, Qt::AlignCenter );
 	// glayout->addWidget( m_queueleaveall, idline, 6, Qt::AlignCenter );
-        glayout->setRowStretch( idline, 1 );
+        
+        // although it might be convenient in some cases (prevent some expansions),
+        // in the basic xivoclient/grid case, it fills too much room without no resizing available
+        // glayout->setRowStretch( idline, 1 );
         
         hideAgentProps();
         

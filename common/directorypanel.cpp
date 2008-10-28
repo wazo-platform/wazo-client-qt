@@ -51,7 +51,6 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-#include "baseengine.h"
 #include "directorypanel.h"
 #include "extendedtablewidget.h"
 #include "extendedlineedit.h"
@@ -100,9 +99,12 @@ DirectoryPanel::DirectoryPanel(QWidget * parent)
         setFocusProxy(m_searchText);
 }
 
-void DirectoryPanel::setEngine(BaseEngine * engine)
+DirectoryPanel::~DirectoryPanel()
 {
-	m_engine = engine;
+}
+
+void DirectoryPanel::setGuiOptions(const QVariant &)
+{
 }
 
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
@@ -113,12 +115,6 @@ void DirectoryPanel::focusInEvent(QFocusEvent * event)
 void DirectoryPanel::dropEvent(QDropEvent * event)
 {
         qDebug() << "DirectoryPanel::dropEvent()" << event;
-}
-
-void DirectoryPanel::myfocus()
-{
-        // qDebug() << "DirectoryPanel::myfocus()";
-        m_searchText->setFocus();
 }
 
 void DirectoryPanel::itemClicked(QTableWidgetItem * item)

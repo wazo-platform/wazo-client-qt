@@ -1097,42 +1097,40 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(setForward(const QString &, bool, const QString &)) );
                                 
 			} else if (dc == QString("directory")) {
-				m_dirpanel = new DirectoryPanel(this);
-				m_dirpanel->setEngine(m_engine);
-                                addPanel("directory", tr("Directory"), m_dirpanel);
-                                m_dirpanel->myfocus();
+                                m_xlet[dc] = new DirectoryPanel();
+                                addPanel("directory", tr("Directory"), m_xlet[dc]);
+                                m_xlet[dc]->setFocus();
                                 
-                                connectDials(m_dirpanel);
+                                connectDials(m_xlet[dc]);
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                      const QString &,
                                                                      const QHash<QString, QStringList> &)),
-                                         m_dirpanel, SLOT(updatePeer(UserInfo *,
+                                         m_xlet[dc], SLOT(updatePeer(UserInfo *,
                                                                      const QString &,
                                                                      const QHash<QString, QStringList> &)) );
-				connect( m_dirpanel, SIGNAL(searchDirectory(const QString &)),
+				connect( m_xlet[dc], SIGNAL(searchDirectory(const QString &)),
 					 m_engine, SLOT(searchDirectory(const QString &)) );
 				connect( m_engine, SIGNAL(directoryResponse(const QString &)),
-					 m_dirpanel, SLOT(setSearchResponse(const QString &)) );
-				connect( m_dirpanel, SIGNAL(copyNumber(const QString &)),
+					 m_xlet[dc], SLOT(setSearchResponse(const QString &)) );
+				connect( m_xlet[dc], SIGNAL(copyNumber(const QString &)),
 					 m_engine, SLOT(copyNumber(const QString &)) );
                                 connect( m_engine, SIGNAL(delogged()),
-                                         m_dirpanel, SLOT(stop()) );
+                                         m_xlet[dc], SLOT(stop()) );
                                 
 #ifdef USE_OUTLOOK
 			} else if ((dc == QString("outlook")) ) {
-                                m_outlook = new OutlookPanel(this);
-				m_outlook->setEngine(m_engine);
-                                addPanel("outlook", tr("Outlook"), m_outlook);
-                                m_outlook->myfocus();
+                                m_xlet[dc] = new OutlookPanel(this);
+                                addPanel("outlook", tr("Outlook"), m_xlet[dc]);
+                                m_xlet[dc]->setFocus();
                                 
-				connect( m_outlook, SIGNAL(searchOutlook(const QString &)),
+				connect( m_xlet[dc], SIGNAL(searchOutlook(const QString &)),
 					 m_engine, SLOT(searchOutlook(const QString &)) );
-				connect( m_outlook, SIGNAL(emitDial(const QString &)),
+				connect( m_xlet[dc], SIGNAL(emitDial(const QString &)),
 					 m_engine, SLOT(dialFullChannel(const QString &)) );
-				connect( m_outlook, SIGNAL(copyNumber(const QString &)),
+				connect( m_xlet[dc], SIGNAL(copyNumber(const QString &)),
 					 m_engine, SLOT(copyNumber(const QString &)) );
 				connect( m_engine, SIGNAL(outlookResponse(const QString &)),
-					 m_outlook, SLOT(setSearchResponse(const QString &)) );
+					 m_xlet[dc], SLOT(setSearchResponse(const QString &)) );
 #endif /* USE_OUTLOOK */
 
 			} else if (dc == QString("instantmessaging")) {
@@ -1242,12 +1240,6 @@ void MainWidget::engineStopped()
                                 //delete m_calls;
                                 //delete m_areaCalls;
                                 //delete m_leftpanel;
-			} else if (dc == "directory") {
-                                removePanel("directory", m_dirpanel);
-#ifdef USE_OUTLOOK
-			} else if (dc == "outlook") {
-                                removePanel("outlook", m_outlook);
-#endif /* USE_OUTLOOK */
                         } else
                                 removePanel(dc, m_xlet[dc]);
                 }

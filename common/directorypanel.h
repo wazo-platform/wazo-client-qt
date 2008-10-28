@@ -50,7 +50,6 @@ class QPushButton;
 class QTableWidget;
 class QTableWidgetItem;
 
-class BaseEngine;
 class ExtendedLineEdit;
 class ExtendedTableWidget;
 class PeerChannel;
@@ -63,8 +62,7 @@ class DirectoryPanel : public QWidget
 	Q_OBJECT
 public:
 	DirectoryPanel(QWidget * parent = 0);
-        void myfocus();
-        void setEngine(BaseEngine *);
+	~DirectoryPanel();
 protected:
         void dropEvent(QDropEvent *);
         void focusInEvent(QFocusEvent *);
@@ -84,6 +82,7 @@ private slots:
 	void itemDoubleClicked(QTableWidgetItem *);
 	void transferChan(const QString &);
 public slots:
+        void setGuiOptions(const QVariant &);
         void contextMenuEvent(QContextMenuEvent *);
 	void setSearchResponse(const QString &);
 	void stop();
@@ -91,7 +90,6 @@ public slots:
                         const QString &,
                         const QHash<QString, QStringList> &);
 private:
-        BaseEngine * m_engine;
 	ExtendedLineEdit * m_searchText;	//!< search text input
 	ExtendedTableWidget * m_table;		//!< table to display results
 	QPushButton * m_searchButton;	//!< button

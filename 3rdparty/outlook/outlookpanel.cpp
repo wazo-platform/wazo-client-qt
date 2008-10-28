@@ -53,7 +53,6 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-#include "baseengine.h"
 #include "outlookpanel.h"
 #include "extendedtablewidget.h"
 #include "extendedlineedit.h"
@@ -114,6 +113,9 @@ OutlookPanel::OutlookPanel(QWidget * parent)
 	m_table->sortByColumn(0, Qt::AscendingOrder);
 
 	refresh_table();
+
+        m_callprefix = ""; // engine->getCallPrefix();
+        m_calllength = 100; // engine->getCallLength();
 }
 
 class QTableWidgetItemExt : public QTableWidgetItem {
@@ -174,13 +176,6 @@ void OutlookPanel::refresh_table() {
 	m_table->setSortingEnabled(true);
 }
 
-void OutlookPanel::setEngine(BaseEngine * engine)
-{
-        m_engine = engine;
-        m_callprefix = ""; // engine->getCallPrefix();
-        m_calllength = 100; // engine->getCallLength();
-}
-
 void OutlookPanel::focusInEvent(QFocusEvent * event)
 {
         qDebug() << "OutlookPanel::focusInEvent()" << event;
@@ -189,12 +184,6 @@ void OutlookPanel::focusInEvent(QFocusEvent * event)
 void OutlookPanel::dropEvent(QDropEvent * event)
 {
         qDebug() << "OutlookPanel::dropEvent()" << event;
-}
-
-void OutlookPanel::myfocus()
-{
-        // qDebug() << "OutlookPanel::myfocus()";
-        m_searchText->setFocus();
 }
 
 void OutlookPanel::itemClicked(QTableWidgetItem * item)

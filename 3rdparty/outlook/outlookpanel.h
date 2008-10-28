@@ -54,7 +54,6 @@ class QPushButton;
 class QTableWidget;
 class QTableWidgetItem;
 
-class BaseEngine;
 class ExtendedLineEdit;
 class ExtendedTableWidget;
 class PeerChannel;
@@ -75,8 +74,6 @@ class OutlookPanel : public QWidget
 	Q_OBJECT
 public:
 	OutlookPanel(QWidget * parent = 0);
-        void myfocus();
-        void setEngine(BaseEngine *);
 protected:
         void dropEvent(QDropEvent *);
         void focusInEvent(QFocusEvent *);
@@ -112,13 +109,11 @@ private:
 	QList<PeerChannel *> m_mychannels;	//!< "my channels" list for transfer menu
         int m_calllength;
         QString m_callprefix;
-        BaseEngine * m_engine;
-
+        
 	QList<COLCol*> m_cols;
 private:
 	void doColumnsMenu(QContextMenuEvent * event);
 	void refresh_table();
-
 };
 
 #endif // USE_OUTLOOK
