@@ -51,17 +51,20 @@
 #include "popup.h"
 #include "userinfo.h"
 
-CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine, QWidget * parent)
+CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
+                                     const QVariant & options,
+                                     QWidget * parent)
         : QWidget(parent),
           m_engine(engine)
 {
-        qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
+        // qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
         QGridLayout * glayout = new QGridLayout(this);
         // QLabel * ql = new QLabel("help");
         m_tabs = new QTabWidget(this);
         glayout->addWidget( m_tabs, 0, 0 );
         glayout->setRowStretch(0, 1);
         glayout->setColumnStretch(0, 1);
+        m_tablimit = options.toMap()["sheet-tablimit"].toUInt();
 }
 
 CustomerInfoPanel::~CustomerInfoPanel()
@@ -101,7 +104,7 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
                         qDebug() << "CustomerInfoPanel::showNewProfile() : added tab" << index;
                         m_popups.append(popup);
                         m_tabs->setCurrentIndex(index);
-                        if (index >= m_engine->tablimit())
+                        if (index >= m_tablimit)
                                 // close the first widget
                                 m_tabs->removeTab(0);
                 }

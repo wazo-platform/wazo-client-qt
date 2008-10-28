@@ -55,13 +55,15 @@ class ServicePanel : public QWidget
 {
 	Q_OBJECT
 public:
-	ServicePanel(const QStringList &,
+	ServicePanel(const QVariant &,
                      QWidget * parent = 0);
+        ~ServicePanel();
 signals:
 	void chkoptChanged(const QString &, bool);
 	void forwardChanged(const QString &, bool, const QString &);
 	void askFeatures(); //!< need features to be updated !
 public slots:
+        void setGuiOptions(const QVariant &);
 	void setOpt(const QString &, bool);
 	void setForward(const QString &, bool, const QString &);
         void monitorPeer(UserInfo *);

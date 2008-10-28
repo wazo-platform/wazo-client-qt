@@ -54,9 +54,9 @@
 const QStringList fwdcapas = (QStringList() << "fwdrna" << "fwdbusy" << "fwdunc");
 const QStringList chkcapas = (QStringList() << "enablevm" << "incallrec" << "incallfilter" << "enablednd");
 
-ServicePanel::ServicePanel(const QStringList & capafeatures,
+ServicePanel::ServicePanel(const QVariant &,
                            QWidget * parent)
-        : QWidget(parent), m_capas(capafeatures)
+        : QWidget(parent)
 {
         m_capalegend["enablevm"]     = tr("Voice &Mail");
         m_capalegend["incallrec"]    = tr("Call &Recording");
@@ -119,6 +119,14 @@ ServicePanel::ServicePanel(const QStringList & capafeatures,
                                 this, SLOT(toggleIfAllowed(const QString &)));
                 }
         Connect();
+}
+
+ServicePanel::~ServicePanel()
+{
+}
+
+void ServicePanel::setGuiOptions(const QVariant &)
+{
 }
 
 void ServicePanel::Connect()

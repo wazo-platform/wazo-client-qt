@@ -107,10 +107,6 @@ public:
 	void setTrytoreconnectinterval(uint);	//!< set try to reconnect interval
 	uint historySize() const;		//!< history size
 	void setHistorySize(uint size);		//!< set history size
-	uint contactsColumns() const;		//!< contacts columns
-	void setContactsColumns(uint columns);	//!< set contacts colmuns
-	uint contactsSize() const;		//!< contacts size
-	void setContactsSize(uint size);	//!< set contacts size
 	bool systrayed() const;			//!< systrayed flag
 	void setSystrayed(bool);		//!< set systrayed flag
 
@@ -131,9 +127,7 @@ public:
 	bool enabledPresence();			//!< get m_enabled_presence
 	void setEnabledCInfo(bool b);		//!< set m_enabled_cinfo
 	bool enabledCInfo();			//!< get m_enabled_cinfo
-	int tablimit() const;			//!< get m_tablimit
-	void setTablimit(int);			//!< set m_tablimit
-
+        
         bool hasFunction(const QString &);
 	void setMyClientId();			//! set m_clientid
 
@@ -141,7 +135,6 @@ public:
 	bool lastconnwins() const;		//!< last connected one wins
 	void setLastConnWins(bool b);		//!< last connected user wins
 	const QStringList & getCapabilities() const;	//!< returns capabilities
-        const QStringList & getCapaFeatures() const;	//!< returns features capabilities
         const QStringList & getCapaXlets() const;
         const QVariantMap & getCapaPresence() const;
         const QVariant getGuiOptions(const QString &) const;
@@ -286,9 +279,8 @@ private:
         
 	// Parameters given by the User at Login time
 	QString m_serverhost;		//!< Host to the login server
-	quint16 m_loginport;		//!< TCP port (UDP port for keep alive is +1)
-	quint16 m_ctiport;		//!< port to connect to server
-
+	quint16 m_ctiport;		//!< TCP port to connect to server
+        
 	QString m_userid;		//!< User Id
 	QString m_useridopt;		//!< User Id Option (kind of login)
 	QString m_useridwithopt;	//!< User Id Option (kind of login)
@@ -306,20 +298,16 @@ private:
 	bool m_systrayed;		//!< "systrayed at startup" flag
 	uint m_trytoreconnectinterval;	//!< Try to reconnect interval (in msec)
 	uint m_keepaliveinterval;	//!< Keep alive interval (in msec)
-
+        
 	int m_historysize;
-	int m_contactssize;
-	int m_contactscolumns;
 	bool m_enabled_presence;      	//!< presence is enabled
 	bool m_enabled_cinfo;      	//!< customer info is enabled
 	QHash<QString, bool> m_checked_function;      	//!< function checked
 	bool m_checked_lastconnwins;   	//!< the last connected account "wins"
-        int m_tablimit;
-
+        
 	// Replies given by the server
 	QStringList m_capafuncs;	//!< List of func capabilities issued by the server after a successful login
 	QStringList m_capaxlets;	//!< List of xlet capabilities issued by the server after a successful login
-	QStringList m_capafeatures;	//!< List of capabilities issued by the server for the features
 	QVariantMap m_capapresence;	//!< List of capabilities issued by the server for the presence statuses
 	QVariantMap m_guioptions;	//!< List of GUI options
 	QString m_appliname;		//!< Application name to be displayed

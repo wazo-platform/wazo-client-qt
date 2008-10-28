@@ -60,7 +60,7 @@ const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(BaseEngine * engine,
-                                 const QVariant & optionmap,
+                                 const QVariant & options,
                                  QWidget * parent)
         : QWidget(parent),
           m_engine(engine),
@@ -107,7 +107,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
                 this, SLOT(idxChanged(const QString &)));
         connect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
-        if(optionmap.toMap()["logagent"].toBool())
+        if(options.toMap()["logagent"].toBool())
                 connect(m_agentaction, SIGNAL(clicked()),
                         this, SLOT(doAgentAction()));
         connect(m_queueaction, SIGNAL(clicked()),
@@ -148,18 +148,18 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
         m_queuejoinall->hide();
         m_queuebusy->hide();
         
-        setGuiOptions(optionmap);
+        setGuiOptions(options);
         // 	glayout->setColumnStretch( 0, 1 );
 }
 
-void IdentityDisplay::setGuiOptions(const QVariant & optionmap)
+void IdentityDisplay::setGuiOptions(const QVariant & options)
 {
-        // qDebug() << "IdentityDisplay::setGuiOptions()" << optionmap;
-        if(optionmap.toMap().contains("fontname") && optionmap.toMap().contains("fontsize"))
-                m_gui_font = QFont(optionmap.toMap()["fontname"].toString(),
-                                   optionmap.toMap()["fontsize"].toInt());
-        if(optionmap.toMap().contains("iconsize"))
-                m_gui_buttonsize = optionmap.toMap()["iconsize"].toInt();
+        // qDebug() << "IdentityDisplay::setGuiOptions()" << options;
+        if(options.toMap().contains("fontname") && options.toMap().contains("fontsize"))
+                m_gui_font = QFont(options.toMap()["fontname"].toString(),
+                                   options.toMap()["fontsize"].toInt());
+        if(options.toMap().contains("iconsize"))
+                m_gui_buttonsize = options.toMap()["iconsize"].toInt();
         
         // setFont(m_gui_font);
         m_user->setFont(m_gui_font);

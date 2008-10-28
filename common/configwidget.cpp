@@ -97,12 +97,12 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 	gridlayout1->addWidget(m_serverhost, line++, 1);
 
         QLabel * lblsbport = new QLabel(tr("Login Port"), this);
-        m_sbport = new QLineEdit( QString::number(m_engine->sbPort()), this);
-        m_sbport->setInputMask("99999");
+        m_ctiport = new QSpinBox(this);
+        m_ctiport->setRange(1, 65535);
+        m_ctiport->setValue(m_engine->sbPort());
         gridlayout1->addWidget(lblsbport, line, 0);
-        gridlayout1->addWidget(m_sbport, line++, 1);
-        m_sbport->setEnabled(true);
-
+        gridlayout1->addWidget(m_ctiport, line++, 1);
+        
  	gridlayout1->setRowStretch( line, 1 );
  	gridlayout1->setColumnStretch( 2, 1 );
         
@@ -133,19 +133,19 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         m_history_sbox->setValue(m_engine->historySize());
         gridlayout2->addWidget(m_history_sbox, line++, 1);
         
+        QVariant opts = m_engine->getGuiOptions("user");
 	gridlayout2->addWidget(new QLabel(tr("Contacts' max number"), this), line, 0);
 	m_contactssize_sbox = new QSpinBox(this);
 	m_contactssize_sbox->setRange(1, 50);
-	m_contactssize_sbox->setValue(m_engine->contactsSize());
+	m_contactssize_sbox->setValue(opts.toMap()["contacts-max"].toUInt());
 	gridlayout2->addWidget(m_contactssize_sbox, line++, 1);
         
 	gridlayout2->addWidget(new QLabel(tr("Contacts' width"), this), line, 0);
 	m_contactswidth_sbox = new QSpinBox(this);
 	m_contactswidth_sbox->setRange(1, 5);
-	m_contactswidth_sbox->setValue(m_engine->contactsColumns());
+	m_contactswidth_sbox->setValue(opts.toMap()["contacts-width"].toUInt());
 	gridlayout2->addWidget(m_contactswidth_sbox, line++, 1);
         
-        QVariant opts = m_engine->getGuiOptions("user");
 	gridlayout2->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
         int ncol = 1;
         foreach(QString color, queuelevel_colors) {
@@ -262,7 +262,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 	gridlayout4->addWidget(new QLabel(tr("Tab limit"), this), line, 0);
 	m_tablimit_sbox = new QSpinBox(this);
 	m_tablimit_sbox->setRange(0, 99);
-	m_tablimit_sbox->setValue(m_engine->tablimit());
+	m_tablimit_sbox->setValue(opts.toMap()["sheet-tablimit"].toUInt());
 	gridlayout4->addWidget(m_tablimit_sbox, line++, 1);
         
         m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
@@ -315,7 +315,7 @@ void ConfigWidget::loginKindChanged(int index)
 void ConfigWidget::saveAndClose()
 {
         // qDebug() << "ConfigWidget::saveAndClose()";
-        m_engine->setAddress(m_serverhost->text(), m_sbport->text().toUShort());
+        m_engine->setAddress(m_serverhost->text(), m_ctiport->value());
 	m_engine->setServerip(m_serverhost->text());
 
 	m_engine->setCompany(m_company->text());
@@ -338,18 +338,18 @@ void ConfigWidget::saveAndClose()
                 m_engine->setCheckedFunction(function, m_function[function]->checkState() == Qt::Checked);
         if(m_history_sbox)
                 m_engine->setHistorySize(m_history_sbox->value());
-
-	m_engine->setContactsSize(m_contactssize_sbox->value());
-	m_engine->setContactsColumns(m_contactswidth_sbox->value());
+        
         m_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
-
+        
         QVariantMap opts;
         QVariantMap qvm;
         foreach(QString color, queuelevel_colors)
                 qvm[color] = QVariant(m_queuelevels[color]->value());
         opts["queuelevels"] = qvm;
+        opts["contacts-max"] = m_contactssize_sbox->value();
+        opts["contacts-width"] = m_contactswidth_sbox->value();
+        opts["sheet-tablimit"] = m_tablimit_sbox->value();
         m_engine->setGuiOption("user", opts);
-	m_engine->setTablimit(m_tablimit_sbox->value());
         
 	m_engine->saveSettings();
         confUpdated();

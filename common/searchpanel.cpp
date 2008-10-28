@@ -50,13 +50,15 @@
 #include "extendedlineedit.h"
 #include "userinfo.h"
 
-SearchPanel::SearchPanel(BaseEngine * engine, QWidget * parent)
+SearchPanel::SearchPanel(BaseEngine * engine,
+                         const QVariant & options,
+                         QWidget * parent)
         : QWidget(parent),
           m_engine(engine)
 {
 	m_engine = engine;
-        m_maxdisplay = m_engine->contactsSize();
-        m_ncolumns = m_engine->contactsColumns();
+        m_maxdisplay = options.toMap()["contacts-max"].toUInt();
+        m_ncolumns = options.toMap()["contacts-width"].toUInt();
         // m_engine->askCallerIds();
 
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -93,6 +95,10 @@ SearchPanel::~SearchPanel()
 {
         // qDebug() << "SearchPanel::~SearchPanel()";
         removePeers();
+}
+
+void SearchPanel::setGuiOptions(const QVariant &)
+{
 }
 
 /*! \brief apply the search

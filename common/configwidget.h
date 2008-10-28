@@ -89,7 +89,7 @@ private:
 	BaseEngine * m_engine;		//!< BaseEngine object parameters are commited to
         
 	QLineEdit * m_serverhost;	//!< IP/hostname of the server
-	QLineEdit * m_sbport;		//!< server port (switchboard)
+	QSpinBox  * m_ctiport;		//!< server port (switchboard)
 
 	QCheckBox * m_autoconnect;	//!< "Auto connect" checkbox
 	QCheckBox * m_trytoreconnect;	//!< "Try to reconnect" Checkbox

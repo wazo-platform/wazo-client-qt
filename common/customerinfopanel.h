@@ -59,7 +59,9 @@ class CustomerInfoPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	CustomerInfoPanel(BaseEngine *, QWidget * parent = 0);
+	CustomerInfoPanel(BaseEngine *,
+                          const QVariant &,
+                          QWidget * parent = 0);
         ~CustomerInfoPanel();
 signals:
         void newPopup(const QString &,
@@ -79,6 +81,7 @@ private:
         const UserInfo * m_ui;
         QTabWidget * m_tabs;
         QList<Popup *> m_popups;
+        quint32 m_tablimit;
 };
 
 #endif /* __CUSTOMERINFOPANEL_H__ */

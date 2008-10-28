@@ -55,7 +55,9 @@
 #include "dirdialog.h"
 #include "faxpanel.h"
 
-FaxPanel::FaxPanel(BaseEngine * engine, QWidget * parent)
+FaxPanel::FaxPanel(BaseEngine * engine,
+                   const QVariant &,
+                   QWidget * parent)
         : QWidget(parent), m_mainwindow(parent), m_engine(engine)
 {
         // qDebug() << "FaxPanel::FaxPanel()" << parent;
@@ -79,7 +81,7 @@ FaxPanel::FaxPanel(BaseEngine * engine, QWidget * parent)
 	hbox1->addWidget(m_destination);
         hbox1->addWidget(directory);
         lblfax->setObjectName("fax");
-
+        
         //
 	QGroupBox * groupBox2 = new QGroupBox( tr("2. Choose File to Send") );
 	groupBox2->setAlignment( Qt::AlignLeft );
@@ -130,6 +132,10 @@ FaxPanel::FaxPanel(BaseEngine * engine, QWidget * parent)
 FaxPanel::~FaxPanel()
 {
         // qDebug() << "FaxPanel::~FaxPanel()";
+}
+
+void FaxPanel::setGuiOptions(const QVariant &)
+{
 }
 
 void FaxPanel::destNumberChanged(const QString &/* ext*/)

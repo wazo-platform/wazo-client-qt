@@ -650,6 +650,7 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
                 else
                         m_tabwidget->addTab(widget, extraspace + title + extraspace);
         }
+        qDebug() << "adding" << name << title;
         connect( m_engine, SIGNAL(setGuiOptions(const QVariant &)),
                  m_xlet[name], SLOT(setGuiOptions(const QVariant &)));
         connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
@@ -920,7 +921,7 @@ void MainWidget::engineStarted()
                                 addPanel(dc, tr("Date and Time"), m_xlet[dc]);
 
 			} else if (dc == QString("dial")) {
-				m_xlet[dc] = new DialPanel(m_engine);
+				m_xlet[dc] = new DialPanel(m_options);
                                 addPanel("dial", tr("Dial"), m_xlet[dc]);
 
                                 connectDials(m_xlet[dc]);
@@ -1024,7 +1025,7 @@ void MainWidget::engineStarted()
                                 connectDials(m_xlet[dc]);
                                 
                         } else if (dc == QString("fax")) {
-				m_xlet[dc] = new FaxPanel(m_engine, this);
+				m_xlet[dc] = new FaxPanel(m_engine, m_options, this);
                                 addPanel("fax", tr("Fax"), m_xlet[dc]);
                                 
                                 connect( m_xlet[dc], SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
@@ -1033,7 +1034,7 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(popupMsg(const QString &, const QString &)) );
                                 
 			} else if ((dc == "customerinfo") && m_engine->checkedFunction(dc)) {
-                                m_xlet[dc] = new CustomerInfoPanel(m_engine);
+                                m_xlet[dc] = new CustomerInfoPanel(m_engine, m_options);
                                 addPanel("customerinfo", tr("Sheets"), m_xlet[dc]);
                                 
                                 connect( m_engine, SIGNAL(displayFiche(const QString &, bool)),
@@ -1044,7 +1045,7 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(actionFromFiche(const QStringList &)) );
 
 			} else if (dc == QString("search")) {
-				m_xlet[dc] = new SearchPanel(m_engine);
+				m_xlet[dc] = new SearchPanel(m_engine, m_options);
                                 addPanel(dc, tr("Contacts"), m_xlet[dc]);
                                 
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
@@ -1067,7 +1068,7 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(removePeer(const QString &)) );
                                 
                         } else if (dc == QString("features")) {
-                                m_xlet[dc] = new ServicePanel(m_engine->getCapaFeatures());
+                                m_xlet[dc] = new ServicePanel(m_options);
                                 addPanel("features", tr("Services"), m_xlet[dc]);
                                 
                                 connect( m_xlet[dc], SIGNAL(askFeatures()),

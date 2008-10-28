@@ -49,15 +49,15 @@
 #include <QRegExp>
 #include <QScrollArea>
 
-#include "baseengine.h"
 #include "dialpanel.h"
 #include "userinfo.h"
 #include "xivoconsts.h" // for PEER_MIMETYPE
 
 /*! \brief Constructor
  */
-DialPanel::DialPanel(BaseEngine * engine, QWidget * parent)
-        : QWidget(parent), m_engine(engine)
+DialPanel::DialPanel(const QVariant &,
+                     QWidget * parent)
+        : QWidget(parent)
 {
 	QHBoxLayout * vlayout = new QHBoxLayout(this);
 	vlayout->setMargin(0);
@@ -96,6 +96,14 @@ DialPanel::DialPanel(BaseEngine * engine, QWidget * parent)
 	vlayout->addWidget( m_input, 0, Qt::AlignCenter );
 	vlayout->addWidget( dialButton, 0, Qt::AlignCenter );
         vlayout->addStretch(1);
+}
+
+DialPanel::~DialPanel()
+{
+}
+
+void DialPanel::setGuiOptions(const QVariant &)
+{
 }
 
 void DialPanel::setUserInfo(const UserInfo * ui)

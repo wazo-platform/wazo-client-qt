@@ -68,7 +68,7 @@
 BaseEngine::BaseEngine(QSettings * settings,
                        QObject * parent)
         : QObject(parent),
-	  m_serverhost(""), m_loginport(0), m_ctiport(0),
+	  m_serverhost(""), m_ctiport(0),
           m_userid(""), m_useridopt(""), m_company(""), m_password(""), m_phonenumber(""),
           m_sessionid(""), m_state(ENotLogged),
           m_pendingkeepalivemsg(0)
@@ -162,19 +162,17 @@ void BaseEngine::loadSettings()
 {
         //qDebug() << "BaseEngine::loadSettings()";
 	m_systrayed = m_settings->value("display/systrayed", false).toBool();
-	m_tablimit = m_settings->value("display/tablimit", 5).toInt();
-
-//         QStringList usergroups = m_settings->childGroups();
-//         for(int i = 0 ; i < usergroups.size(); i++) {
-//                 QString groupname = usergroups[i];
-//                 if (groupname.startsWith("engine")) {
-//                         qDebug() << "valid engine name =" << groupname;
-//                 }
-//         }
-
+        
+        // QStringList usergroups = m_settings->childGroups();
+        // for(int i = 0 ; i < usergroups.size(); i++) {
+        // QString groupname = usergroups[i];
+        // if (groupname.startsWith("engine")) {
+        // qDebug() << "valid engine name =" << groupname;
+        // }
+        // }
+        
         m_settings->beginGroup("engine");
 	m_serverhost = m_settings->value("serverhost", "192.168.0.254").toString();
-	m_loginport  = m_settings->value("loginport", 5000).toUInt();
 	m_ctiport    = m_settings->value("serverport", 5003).toUInt();
 
 	m_userid      = m_settings->value("userid").toString();
@@ -201,8 +199,6 @@ void BaseEngine::loadSettings()
         
         m_settings->beginGroup("user-gui");
 	m_historysize = m_settings->value("historysize", 8).toUInt();
-	m_contactssize = m_settings->value("contactssize", 45).toUInt();
-	m_contactscolumns = m_settings->value("contactscolumns", 2).toUInt();
         m_guioptions["user"] = m_settings->value("guisettings");
         m_settings->endGroup();
         
@@ -223,12 +219,10 @@ void BaseEngine::saveSettings()
 	m_settings->setValue("version/svn", __current_client_version__);
 
 	m_settings->setValue("display/systrayed", m_systrayed);
-        m_settings->setValue("display/tablimit", m_tablimit);
-
+        
         // m_settings->beginGroup("engine." + m_userid);
         m_settings->beginGroup("engine");
 	m_settings->setValue("serverhost", m_serverhost);
-	m_settings->setValue("loginport",  m_loginport);
 	m_settings->setValue("serverport", m_ctiport);
 
 	m_settings->setValue("userid",     m_userid);
@@ -253,8 +247,6 @@ void BaseEngine::saveSettings()
         
         m_settings->beginGroup("user-gui");
 	m_settings->setValue("historysize", m_historysize);
-	m_settings->setValue("contactssize", m_contactssize);
-	m_settings->setValue("contactscolumns", m_contactscolumns);
 	m_settings->setValue("guisettings", m_guioptions["user"]);
         m_settings->endGroup();
         
@@ -289,17 +281,6 @@ bool BaseEngine::enabledCInfo() {
         return m_enabled_cinfo;
 }
 
-void BaseEngine::setTablimit(int tablimit)
-{
-	m_tablimit = tablimit;
-}
-
-int BaseEngine::tablimit() const
-{
-	return m_tablimit;
-}
-
-
 void BaseEngine::config_and_start(const QString & login,
                                   const QString & pass,
                                   const QString & phonenum)
@@ -320,7 +301,7 @@ void BaseEngine::config_and_start(const QString & login,
  */
 void BaseEngine::start()
 {
-	qDebug() << "BaseEngine::start()" << m_serverhost << m_loginport << m_checked_function;
+	qDebug() << "BaseEngine::start()" << m_serverhost << m_checked_function;
 
 	// (In case the TCP sockets were attempting to connect ...) aborts them first
 	m_sbsocket->abort();
@@ -407,11 +388,6 @@ void BaseEngine::updateCapaPresence(const QVariant & presence)
                         else
                                 m_presencecolors[avstate] = Qt::gray;
                 }
-}
-
-const QStringList & BaseEngine::getCapaFeatures() const
-{
-        return m_capafeatures;
 }
 
 const QString & BaseEngine::getCapaApplication() const
@@ -1085,7 +1061,6 @@ bool BaseEngine::parseCommand(const QString & line)
                         m_forced_state = datamap["capapresence"].toMap()["state"].toString();
                         m_counters = datamap["presencecounter"];
                         m_guioptions["server"] = datamap["guisettings"];
-                        // m_capafeatures = datamap["capas_features"].toStringList();
                         
                         qDebug() << "clientXlets" << XletList;
                         qDebug() << "m_capaxlets" << m_capaxlets;
@@ -1528,16 +1503,6 @@ void BaseEngine::setCompany(const QString & companyname)
 	m_company = companyname;
 }
 
-const quint16 & BaseEngine::loginPort() const
-{
-	return m_loginport;
-}
-
-void BaseEngine::setLoginPort(const quint16 & port)
-{
-	m_loginport = port;
-}
-
 const QString & BaseEngine::userId() const
 {
         if(m_useridopt.size() > 0)
@@ -1668,26 +1633,6 @@ void BaseEngine::setHistorySize(uint size)
 uint BaseEngine::historySize() const
 {
 	return m_historysize;
-}
-
-void BaseEngine::setContactsSize(uint size)
-{
-	m_contactssize = size;
-}
-
-uint BaseEngine::contactsSize() const
-{
-	return m_contactssize;
-}
-
-void BaseEngine::setContactsColumns(uint columns)
-{
-	m_contactscolumns = columns;
-}
-
-uint BaseEngine::contactsColumns() const
-{
-	return m_contactscolumns;
 }
 
 uint BaseEngine::trytoreconnectinterval() const

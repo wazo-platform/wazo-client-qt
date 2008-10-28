@@ -57,11 +57,12 @@ class FaxPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	FaxPanel(BaseEngine *, QWidget * parent = 0);
+	FaxPanel(BaseEngine *, const QVariant &, QWidget * parent = 0);
         ~FaxPanel();
 signals:
         void faxSend(const QString &, const QString &, Qt::CheckState);
 public slots:
+        void setGuiOptions(const QVariant &);
         void setOpenFileName();
         void sendFax();
         void dirLookup();
