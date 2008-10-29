@@ -53,7 +53,6 @@
 #include "extendedtablewidget.h"
 #include "parkingpanel.h"
 #include "peerwidget.h"
-#include "searchpanel.h"
 #include "servercommand.h"
 #include "userinfo.h"
 

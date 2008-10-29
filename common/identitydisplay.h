@@ -53,7 +53,6 @@ class QComboBox;
 class QProgressBar;
 class QPushButton;
 
-class BaseEngine;
 class UserInfo;
 
 /*! \brief Identity Display
@@ -62,8 +61,7 @@ class IdentityDisplay : public QWidget
 {
 	Q_OBJECT
 public:
-	IdentityDisplay(BaseEngine *,
-                        const QVariant &,
+	IdentityDisplay(const QVariant &,
                         QWidget * parent = 0);
 public slots:
         void setGuiOptions(const QVariant &);
@@ -87,7 +85,6 @@ private:
         void showAgentProps();
         void hideAgentProps();
         
-        BaseEngine * m_engine;
         QLabel * m_user;
         QLabel * m_phonenum;
         QLabel * m_statuslabel;
@@ -113,6 +110,8 @@ private:
         
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
+        quint32 m_loginkind;
+        QStringList m_functions;
 signals:
         void agentAction(const QString &);
         void setAvailState(const QString &, bool);

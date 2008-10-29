@@ -163,14 +163,6 @@ void BaseEngine::loadSettings()
         //qDebug() << "BaseEngine::loadSettings()";
 	m_systrayed = m_settings->value("display/systrayed", false).toBool();
         
-        // QStringList usergroups = m_settings->childGroups();
-        // for(int i = 0 ; i < usergroups.size(); i++) {
-        // QString groupname = usergroups[i];
-        // if (groupname.startsWith("engine")) {
-        // qDebug() << "valid engine name =" << groupname;
-        // }
-        // }
-        
         m_settings->beginGroup("engine");
 	m_serverhost = m_settings->value("serverhost", "192.168.0.254").toString();
 	m_ctiport    = m_settings->value("serverport", 5003).toUInt();
@@ -183,7 +175,6 @@ void BaseEngine::loadSettings()
                 m_useridwithopt = m_userid;
 	m_company      = m_settings->value("company").toString();
 	m_password     = m_settings->value("password").toString();
-	m_loginkind    = m_settings->value("loginkind", 0).toUInt();
 	m_keeppass     = m_settings->value("keeppass", 0).toUInt();
 	m_showagselect = m_settings->value("showagselect", 0).toUInt();
 	m_phonenumber  = m_settings->value("phonenumber").toString();
@@ -203,6 +194,7 @@ void BaseEngine::loadSettings()
         QString defaultguioptions = "{\"contacts-max\":30,"
                 "\"contacts-width\":4,"
                 "\"sheet-tablimit\":4,"
+                "\"loginkind\":0,"
                 "\"autourl_allowed\":0,"
                 "\"queuelevels\":{\"green\":0,\"orange\":4,\"red\":12}}";
         JsonQt::JsonToVariant parser;
@@ -214,6 +206,7 @@ void BaseEngine::loadSettings()
                 qDebug() << "BaseEngine::parseCommand() exception catched for" << defaultguioptions;
         }
         m_guioptions["user"] = m_settings->value("guisettings", data);
+        m_loginkind = m_guioptions["user"].toMap()["loginkind"].toInt();
         m_settings->endGroup();
         
         m_settings->beginGroup("user-functions");
@@ -246,7 +239,6 @@ void BaseEngine::saveSettings()
                 m_settings->setValue("password", m_password);
         else
                 m_settings->remove("password");
-	m_settings->setValue("loginkind",  m_loginkind);
 	m_settings->setValue("keeppass",   m_keeppass);
 	m_settings->setValue("showagselect", m_showagselect);
 	m_settings->setValue("phonenumber", m_phonenumber);
@@ -261,6 +253,7 @@ void BaseEngine::saveSettings()
         
         m_settings->beginGroup("user-gui");
 	m_settings->setValue("historysize", m_historysize);
+        
 	m_settings->setValue("guisettings", m_guioptions["user"]);
         m_settings->endGroup();
         
@@ -1074,7 +1067,10 @@ bool BaseEngine::parseCommand(const QString & line)
                         updateCapaPresence(datamap["capapresence"]);
                         m_forced_state = datamap["capapresence"].toMap()["state"].toString();
                         m_counters = datamap["presencecounter"];
-                        m_guioptions["server"] = datamap["guisettings"];
+                        m_guioptions["server_gui"] = datamap["guisettings"];
+                        QVariantMap tmp;
+                        tmp["functions"] = datamap["capafuncs"];
+                        m_guioptions["server_funcs"] = tmp;
                         
                         qDebug() << "clientXlets" << XletList;
                         qDebug() << "m_capaxlets" << m_capaxlets;
@@ -1086,10 +1082,9 @@ bool BaseEngine::parseCommand(const QString & line)
                         foreach (QString function, CheckFunctions)
                                 if(! hasFunction(function)) {
                                         m_checked_function[function] = false;
-                                        m_settings->remove("functions/" + function);
                                 }
                         
-                        if((m_capafuncs.size() == 1) && (m_capafuncs[0].size() == 0)) {
+                        if(m_capafuncs.size() == 0) {
                                 stop();
                                 popupError("no_capability");
                         } else {
@@ -1558,7 +1553,12 @@ const int & BaseEngine::loginkind() const
 
 void BaseEngine::setLoginKind(const int loginkind)
 {
-	m_loginkind = loginkind;
+        if(loginkind != m_loginkind) {
+                m_loginkind = loginkind;
+                QVariantMap tmpqvm = m_guioptions["user"].toMap();
+                tmpqvm["loginkind"] = m_loginkind;
+                m_guioptions["user"] = tmpqvm;
+        }
 }
 
 const int & BaseEngine::showagselect() const

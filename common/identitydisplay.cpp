@@ -51,7 +51,6 @@
 #include <QRegExp>
 #include <QScrollArea>
 
-#include "baseengine.h"
 #include "identitydisplay.h"
 #include "userinfo.h"
 
@@ -59,11 +58,9 @@ const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 
 
 /*! \brief Constructor
  */
-IdentityDisplay::IdentityDisplay(BaseEngine * engine,
-                                 const QVariant & options,
+IdentityDisplay::IdentityDisplay(const QVariant & options,
                                  QWidget * parent)
         : QWidget(parent),
-          m_engine(engine),
           m_ui(NULL), m_agentstatus(false), m_queuechangeallow(true), m_maxqueues(5)
 {
         m_gui_font = QFont("sans serif", 9);
@@ -161,6 +158,9 @@ void IdentityDisplay::setGuiOptions(const QVariant & options)
         if(options.toMap().contains("iconsize"))
                 m_gui_buttonsize = options.toMap()["iconsize"].toInt();
         
+        m_loginkind = options.toMap()["loginkind"].toUInt();
+        m_functions = options.toMap()["functions"].toStringList();
+        
         // setFont(m_gui_font);
         m_user->setFont(m_gui_font);
         m_phonenum->setFont(m_gui_font);
@@ -186,7 +186,7 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
 {
         // qDebug() << "IdentityDisplay::updatePresence()" << presence;
         m_presence->hide();
-        if(! m_engine->checkedFunction("presence"))
+        if(! m_functions.contains("presence"))
                 return;
         
         disconnect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
@@ -254,8 +254,8 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
 
 void IdentityDisplay::setAgentList(const QVariant & alist)
 {
-        // qDebug() << "IdentityDisplay::setAgentList()" << m_engine->loginkind() << alist;
-        if (m_engine->loginkind() == 0)
+        // qDebug() << "IdentityDisplay::setAgentList()" << m_loginkind << alist;
+        if (m_loginkind == 0)
                 return;
         QVariantMap alistmap = alist.toMap();
         QString astid = alistmap["astid"].toString();
@@ -323,7 +323,7 @@ void IdentityDisplay::setAgentList(const QVariant & alist)
 
 void IdentityDisplay::setQueueList(bool changeallow, const QVariant & qlist)
 {
-        if (m_engine->loginkind() == 0)
+        if (m_loginkind == 0)
                 return;
         m_queuechangeallow = changeallow;
         // qDebug() << "IdentityDisplay::setQueueList()" << qlist;
@@ -394,7 +394,7 @@ void IdentityDisplay::updatePeerAgent(const QString & userid,
                                       const QString & what,
                                       const QStringList & newstatuses)
 {
-        if (m_engine->loginkind() == 0)
+        if (m_loginkind == 0)
                 return;
         if(m_ui == NULL)
                 return;

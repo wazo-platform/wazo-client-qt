@@ -59,6 +59,7 @@ SearchPanel::SearchPanel(BaseEngine * engine,
 	m_engine = engine;
         m_maxdisplay = options.toMap()["contacts-max"].toUInt();
         m_ncolumns = options.toMap()["contacts-width"].toUInt();
+        m_functions = options.toMap()["functions"].toStringList();
         // m_engine->askCallerIds();
 
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -130,7 +131,7 @@ void SearchPanel::affTextChanged(const QString & text)
                         if(peerwidget != NULL) {
                                 m_peerlayout->removeWidget( peerwidget );
                                 peerwidget->hide();
-                                if(m_engine->hasFunction("switchboard")) {
+                                if(m_functions.contains("switchboard")) {
                                         disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                                                     m_engine, SLOT(transferCall(const QString&, const QString&)) );
                                         disconnect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
@@ -174,7 +175,7 @@ void SearchPanel::affTextChanged(const QString & text)
                                 m_peerlayout->addWidget(peerwidget, naff / m_ncolumns, naff % m_ncolumns);
                                 naff ++;
                                 peerwidget->show();
-                                if(m_engine->hasFunction("switchboard")) {
+                                if(m_functions.contains("switchboard")) {
                                         connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
                                                  m_engine, SLOT(transferCall(const QString&, const QString&)) );
                                         connect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),

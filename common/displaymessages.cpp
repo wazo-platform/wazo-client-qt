@@ -46,7 +46,6 @@
 #include <QTime>
 #include <QVBoxLayout>
 
-#include "searchpanel.h"
 #include "peerwidget.h"
 #include "displaymessages.h"
 #include "baseengine.h"

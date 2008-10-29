@@ -93,6 +93,7 @@ private:
         int m_maxdisplay;	//!< max number of peers displayed on the search panel
         int m_ncolumns;
         QString m_searchpattern;
+        QStringList m_functions;
 };
 
 #endif

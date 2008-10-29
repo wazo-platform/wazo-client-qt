@@ -314,6 +314,7 @@ void MainWidget::logintextChanged(const QString & logintext)
 
 void MainWidget::loginKindChanged(int index)
 {
+        // qDebug() << "MainWidget::loginKindChanged()" << index;
         m_engine->setLoginKind(index);
         if(index == 0) {
                 m_lab3->hide();
@@ -742,7 +743,8 @@ void MainWidget::engineStarted()
         
         m_appliname = m_engine->getCapaApplication();
         QVariantMap opt_map;
-        opt_map.unite(m_engine->getGuiOptions("server").toMap());
+        opt_map.unite(m_engine->getGuiOptions("server_funcs").toMap());
+        opt_map.unite(m_engine->getGuiOptions("server_gui").toMap());
         opt_map.unite(m_engine->getGuiOptions("user").toMap());
         m_options = QVariant(opt_map);
         
@@ -779,7 +781,7 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(monitorPeer(UserInfo *)) );
                                 
 			} else if (dc == QString("identity")) {
-                                m_xlet[dc] = new IdentityDisplay(m_engine, m_options);
+                                m_xlet[dc] = new IdentityDisplay(m_options);
                                 addPanel("identity", tr("&Identity"), m_xlet[dc]);
                                 
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,

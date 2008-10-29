@@ -209,7 +209,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         m_loginkind->addItem(QString(tr("No Agent")));
         m_loginkind->addItem(QString(tr("Agent (unlogged)")));
         m_loginkind->addItem(QString(tr("Agent (logged)")));
-        m_loginkind->setCurrentIndex(m_engine->loginkind());
+        m_loginkind->setCurrentIndex(opts.toMap()["loginkind"].toUInt());
 	gridlayout3->addWidget(m_loginkind, line++, 0, 1, 2);
         connect( m_loginkind, SIGNAL(currentIndexChanged(int)),
 	         this, SLOT(loginKindChanged(int)) );
@@ -322,7 +322,6 @@ void ConfigWidget::saveAndClose()
 	m_engine->setServerip(m_serverhost->text());
 
 	m_engine->setCompany(m_company->text());
-        m_engine->setLoginKind(m_loginkind->currentIndex());
         m_engine->setKeepPass(m_keeppass->checkState());
         m_engine->setShowAgentSelect(m_showagselect->checkState());
 
@@ -349,6 +348,9 @@ void ConfigWidget::saveAndClose()
         foreach(QString color, queuelevel_colors)
                 qvm[color] = QVariant(m_queuelevels[color]->value());
         opts["queuelevels"] = qvm;
+        
+        opts["loginkind"] = m_loginkind->currentIndex();
+        
         opts["contacts-max"] = m_contactssize_sbox->value();
         opts["contacts-width"] = m_contactswidth_sbox->value();
         opts["sheet-tablimit"] = m_tablimit_sbox->value();

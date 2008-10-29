@@ -90,8 +90,8 @@ public:
 	void setUserId(const QString &);       	//!< see userid()
 	const QString & phonenumber() const;	//!< agent's phone number
 	void setPhonenumber(const QString &);	//!< see phonenumber()
-	const int & loginkind() const;		//!< loginkind to identify to the server
-	void setLoginKind(const int);		//!< see loginkind()
+	const int & loginkind() const;	       	//!< loginkind to identify to the server
+	void setLoginKind(const int);	       	//!< see loginkind()
 	const int & keeppass() const;		//!< keeppass to identify to the server
 	void setKeepPass(const int);		//!< see keeppass()
 	const int & showagselect() const;	//!< showagselect to identify to the server
