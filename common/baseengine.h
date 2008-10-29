@@ -82,7 +82,7 @@ public:
 	const QString & serverip() const;	//!< Host of the login server
 	const quint16 & loginPort() const;	//!< TCP port for connection to server
 	void setLoginPort(const quint16 &);	//!< see loginPort()
-
+        
 	void setFullId();
 	const QString & company() const;	//!< name of the user's company
 	void setCompany(const QString &);	//!< see company()
@@ -98,7 +98,7 @@ public:
 	void setShowAgentSelect(const int);	//!< see showagselect()
 	const QString & password() const;	//!< password to identify to the sever
 	void setPassword(const QString &);	//!< see password()
-
+        
 	bool autoconnect() const;		//!< auto connect flag
 	void setAutoconnect(bool);		//!< set auto connect flag
 	bool trytoreconnect() const;		//!< try to reconnect flag
@@ -128,9 +128,8 @@ public:
 	void setEnabledCInfo(bool b);		//!< set m_enabled_cinfo
 	bool enabledCInfo();			//!< get m_enabled_cinfo
         
-        bool hasFunction(const QString &);
 	void setMyClientId();			//! set m_clientid
-
+        
 	uint keepaliveinterval() const;		//!< keep alive interval
 	bool lastconnwins() const;		//!< last connected one wins
 	void setLastConnWins(bool b);		//!< last connected user wins
@@ -203,13 +202,13 @@ signals:
 	void availAllowChanged(bool);		//!< signal 
 	void emitTextMessage(const QString &);	//! message to be displayed to the user.
         void pasteToDialPanel(const QString &);
-        void parkingEvent(const QString &);
+        void parkingEvent(const QVariant &);
         void ackFax(const QString &, const QString &);
         void featurePutIsKO();
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
         void meetmeEvent(const QStringList &);
-        void requestFileListResult(const QString &);
+        void requestFileListResult(const QVariant &);
         void updatePresence(const QVariant &);
         void updateCounter(const QVariant &);
         void serverFileList(const QStringList &);

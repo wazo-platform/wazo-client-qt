@@ -44,16 +44,15 @@
 
 #include <QHash>
 #include <QList>
+#include <QVariant>
 #include <QWidget>
-
-#include "peerwidget.h"
-#include "peerslayout.h"
-#include "peeritem.h"
 
 class QGridLayout;
 class QMouseEvent;
 
 class BaseEngine;
+class PeerItem;
+class PeersLayout;
 class UserInfo;
 
 /*! \brief Widget displaying PeerItems
@@ -64,7 +63,9 @@ class SwitchBoardWindow : public QWidget
 {
 	Q_OBJECT
 public:
-	SwitchBoardWindow(BaseEngine *, QWidget * parent = 0);	//! Constructor
+	SwitchBoardWindow(BaseEngine *,
+                          const QVariant &,
+                          QWidget * parent = 0);
         ~SwitchBoardWindow();	//! Destructor
 	void savePositions() const;
 protected:
@@ -73,6 +74,8 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *);
 	void dropEvent(QDropEvent *);
 public slots:
+        void setGuiOptions(const QVariant &);
+        void setUserInfo(const UserInfo *);
         void updatePeer(UserInfo *,
                         const QString &,
                         const QHash<QString, QStringList> &);
@@ -93,6 +96,7 @@ private:
 	QHash<QString, QPixmap> m_persons;
 	QHash<QString, QPixmap> m_phones;
 	QHash<QString, QPixmap> m_agents;
+        QVariant m_options;
 };
 
 #endif

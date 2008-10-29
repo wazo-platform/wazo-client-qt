@@ -49,11 +49,9 @@
 #include <QTimerEvent>
 #include <QVBoxLayout>
 
-#include "baseengine.h"
 #include "extendedtablewidget.h"
 #include "parkingpanel.h"
-#include "peerwidget.h"
-#include "servercommand.h"
+#include "peerchannel.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -113,12 +111,11 @@ void ParkingPanel::setUserInfo(const UserInfo * ui)
  *
  * add a new message.
  */
-void ParkingPanel::parkingEvent(const QString & subcommand)
+void ParkingPanel::parkingEvent(const QVariant & subcommand)
 {
         QString astid, parkplacenum, seconds, parkedpeer, parkedby;
-        ServerCommand * sc = new ServerCommand(subcommand);
-        QString eventkind = sc->getString("status");
-        QStringList newpark = sc->getStringList("args");
+        QString eventkind = subcommand.toMap()["status"].toString();
+        QStringList newpark = subcommand.toMap()["args"].toStringList();
         // QTime time = QTime::currentTime();
 
         if(newpark.size() == 5) {

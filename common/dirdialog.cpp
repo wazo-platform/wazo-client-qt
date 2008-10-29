@@ -49,7 +49,6 @@
 
 #include "dirdialog.h"
 #include "directorypanel.h"
-#include "mainwidget.h"
 
 /*! \brief constructor
  */

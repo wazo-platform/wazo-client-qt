@@ -57,6 +57,7 @@ SearchPanel::SearchPanel(BaseEngine * engine,
           m_engine(engine)
 {
 	m_engine = engine;
+        m_options = options;
         m_maxdisplay = options.toMap()["contacts-max"].toUInt();
         m_ncolumns = options.toMap()["contacts-width"].toUInt();
         m_functions = options.toMap()["functions"].toStringList();
@@ -163,6 +164,7 @@ void SearchPanel::affTextChanged(const QString & text)
                 if( peeritem->userinfo()->fullname().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
                         if(peerwidget == NULL) {
                                 peerwidget = new PeerWidget(peeritem->userinfo(),
+                                                            m_options,
                                                             m_persons,
                                                             m_phones,
                                                             m_agents);

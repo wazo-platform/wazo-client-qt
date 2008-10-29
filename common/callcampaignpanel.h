@@ -44,6 +44,7 @@
 
 #include <QHash>
 #include <QObject>
+#include <QVariant>
 #include <QWidget>
 
 class QGridLayout;
@@ -73,7 +74,7 @@ public slots:
         void stopCalls();
         void clearCalls();
         void loadFileClicked();
-        void requestFileListResult(const QString &);
+        void requestFileListResult(const QVariant &);
 private:
         void addNumber(const QString &);
         void checkStatuses();

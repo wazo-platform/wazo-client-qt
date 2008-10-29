@@ -370,7 +370,7 @@ void QueuesPanel::update()
                 if(val <= greenlevel)
                         qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #00ff00;}");
                 else if(val <= orangelevel)
-                        qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #0000ff;}");
+                        qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #f38402;}");
                 else
                         qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ff0000;}");
         }

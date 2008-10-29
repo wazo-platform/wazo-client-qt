@@ -58,12 +58,14 @@
 /*! \brief Constructor
  */
 PeerWidget::PeerWidget(UserInfo * ui,
+                       const QVariant & options,
                        const QHash<QString, QPixmap> & persons,
                        const QHash<QString, QPixmap> & phones,
                        const QHash<QString, QPixmap> & agents)
 	: m_agentlbl(NULL), m_phones(phones), m_persons(persons), m_agents(agents)
 {
         m_ui = ui;
+        m_functions = options.toMap()["functions"].toStringList();
 	//qDebug() << "PeerWidget::PeerWidget()" << id;
 	//	QHBoxLayout * layout = new QHBoxLayout(this);
         QFrame * qvline = new QFrame(this);
@@ -207,7 +209,7 @@ void PeerWidget::mousePressEvent(QMouseEvent *event)
  */
 void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if (!m_engine->hasFunction("switchboard"))
+	if (! m_functions.contains("switchboard"))
 		return;
 	if (!(event->buttons() & Qt::LeftButton))
 		return;
@@ -347,7 +349,7 @@ void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
 {
 	QMenu contextMenu(this);
 	contextMenu.addAction(m_dialAction);
-	if(m_engine->hasFunction("switchboard")) {
+	if (m_functions.contains("switchboard")) {
 		// add remove action only if we are in the central widget.
 		if(parentWidget() && m_engine->isRemovable(parentWidget()->metaObject()))
 			contextMenu.addAction(m_removeAction);

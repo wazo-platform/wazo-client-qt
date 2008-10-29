@@ -43,10 +43,7 @@
 #define __DISPLAYMESSAGES_H__
 
 #include <QWidget>
-#include <QList>
 #include <QLabel>
-
-#include "peeritem.h"
 
 class QVBoxLayout;
 class QLineEdit;
@@ -73,4 +70,3 @@ private:
 };
 
 #endif
-

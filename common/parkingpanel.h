@@ -42,8 +42,9 @@
 #ifndef __PARKINGPANEL_H__
 #define __PARKINGPANEL_H__
 
-#include <QWidget>
 #include <QList>
+#include <QVariant>
+#include <QWidget>
 
 class QContextMenuEvent;
 class QTableWidget;
@@ -68,7 +69,7 @@ protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
 public slots:
         void setUserInfo(const UserInfo *);
-        void parkingEvent(const QString &);
+        void parkingEvent(const QVariant &);
         void contextMenuEvent(QContextMenuEvent *);
 private slots:
 	void dialNumber();

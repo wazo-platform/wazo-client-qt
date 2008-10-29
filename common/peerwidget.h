@@ -65,6 +65,7 @@ class PeerWidget : public QWidget
 	Q_OBJECT
 public:
 	PeerWidget(UserInfo *,
+                   const QVariant &,
                    const QHash<QString, QPixmap> &,
                    const QHash<QString, QPixmap> &,
                    const QHash<QString, QPixmap> &);
@@ -128,6 +129,7 @@ private:
 	QHash<QString, QPixmap> m_phones;	//!< phone icons
 	QHash<QString, QPixmap> m_persons;	//!< person icons
 	QHash<QString, QPixmap> m_agents;	//!< agent icons
+        QStringList m_functions;
 };
 
 #endif

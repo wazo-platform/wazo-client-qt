@@ -859,7 +859,7 @@ void MainWidget::engineStarted()
 			} else if (dc == QString("conference")) {
                                 m_xlet[dc] = new ConferencePanel();
                                 addPanel(dc, tr("Conference"), m_xlet[dc]);
-
+                                
                                 connect( m_engine, SIGNAL(meetmeEvent(const QStringList &)),
                                          m_xlet[dc], SLOT(meetmeEvent(const QStringList &)));
                                 connect( m_xlet[dc], SIGNAL(meetmeAction(const QString &)),
@@ -992,7 +992,7 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(parkCall(const QString &)) );
                                 
                         } else if (dc == QString("switchboard")) {
-                                m_xlet[dc] = new SwitchBoardWindow(m_engine, this);
+                                m_xlet[dc] = new SwitchBoardWindow(m_engine, m_options, this);
                                 m_engine->addRemovable(m_xlet[dc]->metaObject());
                                 QScrollArea * sa_sb = new QScrollArea(this);
                                 sa_sb->setWidget(m_xlet[dc]);
@@ -1018,8 +1018,8 @@ void MainWidget::engineStarted()
                                 m_xlet[dc] = new ParkingPanel();
                                 addPanel(dc, tr("Parking"), m_xlet[dc]);
                                 
-                                connect( m_engine, SIGNAL(parkingEvent(const QString &)),
-                                         m_xlet[dc], SLOT(parkingEvent(const QString &)));
+                                connect( m_engine, SIGNAL(parkingEvent(const QVariant &)),
+                                         m_xlet[dc], SLOT(parkingEvent(const QVariant &)));
                                 connect( m_xlet[dc], SIGNAL(copyNumber(const QString &)),
                                          m_engine, SLOT(copyNumber(const QString &)) );
                                 connect( m_xlet[dc], SIGNAL(newParkEvent()),
@@ -1148,8 +1148,8 @@ void MainWidget::engineStarted()
                                 addPanel("callcampaign", tr("Call Campaigns"), m_xlet[dc]);
                                 connect( m_xlet[dc], SIGNAL(requestFileList(const QString &)),
                                          m_engine, SLOT(requestFileList(const QString &)));
-                                connect( m_engine, SIGNAL(requestFileListResult(const QString &)),
-                                         m_xlet[dc], SLOT(requestFileListResult(const QString &)));
+                                connect( m_engine, SIGNAL(requestFileListResult(const QVariant &)),
+                                         m_xlet[dc], SLOT(requestFileListResult(const QVariant &)));
 
                         } else if (dc == QString("mylocaldir")) {
                                 m_xlet[dc] = new MyLocalDirPanel(m_engine);

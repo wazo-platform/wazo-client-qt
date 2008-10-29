@@ -139,13 +139,13 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         
 	gridlayout2->addWidget(new QLabel(tr("Contacts' max number"), this), line, 0);
 	m_contactssize_sbox = new QSpinBox(this);
-	m_contactssize_sbox->setRange(1, 50);
+	m_contactssize_sbox->setRange(1, 500);
 	m_contactssize_sbox->setValue(opts.toMap()["contacts-max"].toUInt());
 	gridlayout2->addWidget(m_contactssize_sbox, line++, 1);
         
 	gridlayout2->addWidget(new QLabel(tr("Contacts' width"), this), line, 0);
 	m_contactswidth_sbox = new QSpinBox(this);
-	m_contactswidth_sbox->setRange(1, 5);
+	m_contactswidth_sbox->setRange(1, 10);
 	m_contactswidth_sbox->setValue(opts.toMap()["contacts-width"].toUInt());
 	gridlayout2->addWidget(m_contactswidth_sbox, line++, 1);
         

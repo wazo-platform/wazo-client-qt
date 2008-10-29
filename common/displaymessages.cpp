@@ -46,9 +46,7 @@
 #include <QTime>
 #include <QVBoxLayout>
 
-#include "peerwidget.h"
 #include "displaymessages.h"
-#include "baseengine.h"
 
 /*! \brief Constructor
  *
@@ -93,4 +91,3 @@ void DisplayMessagesPanel::addMessage(const QString & str)
                 m_table->resizeColumnsToContents();
         }
 }
-

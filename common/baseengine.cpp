@@ -432,11 +432,6 @@ void BaseEngine::setAvailability()
 	setAvailState(availstate, false);
 }
 
-bool BaseEngine::hasFunction(const QString & funcname)
-{
-        return m_capafuncs.contains(funcname);
-}
-
 void BaseEngine::sendCommand(const QString & command)
 {
         if(m_sbsocket->state() == QAbstractSocket::ConnectedState)
@@ -685,19 +680,17 @@ bool BaseEngine::parseCommand(const QString & line)
         QVariantMap datamap = data.toMap();
         QString direction = datamap["direction"].toString();
         
-        ServerCommand * sc = new ServerCommand(line.trimmed());
-        
         if(direction == "client") {
                 QString thisclass = datamap["class"].toString();
                 if (thisclass == "callcampaign") {
-                        QString payload = sc->find("payload");
-                        requestFileListResult(payload);
+                        requestFileListResult(datamap["payload"]);
+                        
                 } else if (thisclass == "parkcall") {
-                        parkingEvent(sc->find("payload"));
+                        parkingEvent(datamap["payload"]);
                         
                 } else if (thisclass == "sheet") {
                         QString payload;
-                        QByteArray qba = QByteArray::fromBase64(sc->find("payload").toAscii());
+                        QByteArray qba = QByteArray::fromBase64(datamap["payload"].toString().toAscii());
                         if(datamap["compressed"].toString().size() > 0) {
                                 payload = QString::fromUtf8(qUncompress(qba));
                         } else {
@@ -710,7 +703,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         QString function = datamap["function"].toString();
                         if(function == "sendlist") {
                                 foreach (QVariant qv, datamap["payload"].toList())
-                                        newQueueList(! hasFunction("nojoinleave"), qv);
+                                        newQueueList(! m_capafuncs.contains("nojoinleave"), qv);
                         }
                         else if(function == "update") {
                                 setQueueStatus(datamap["payload"].toStringList());
@@ -824,7 +817,9 @@ bool BaseEngine::parseCommand(const QString & line)
                         }
                         
                 } else if (thisclass == "call") {
-                        qDebug() << thisclass << "caller =" << sc->find("caller") << "called =" << sc->find("called");
+                        qDebug() << thisclass
+                                 << "caller =" << datamap["caller"].toMap()
+                                 << "called =" << datamap["called"].toMap();
                         
                 } else if (thisclass == "users") {
                         QString function = datamap["function"].toString();
@@ -945,16 +940,12 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "phones") {
                         QString function = datamap["function"].toString();
                         if (function == "sendlist") {
-                                QHashIterator<QString, QString> listpeers(sc->getSubHash("payload"));
-                                while (listpeers.hasNext()) {
-                                        listpeers.next();
-                                        QString astid = listpeers.key();
-                                        ServerCommand * ssc = new ServerCommand(listpeers.value());
-                                        foreach (QString phonestatus, ssc->getSubList("")) {
-                                                ServerCommand * ssc2 = new ServerCommand(phonestatus);
-                                                qDebug() << astid << ssc2->getStringList("statusbase") << ssc2->getStringList("statusextended");
-                                                // updatePeerAndCallerid(liststatus);
-                                        }
+                                foreach(QString astid, datamap["payload"].toMap().keys()) {
+                                        QVariant values = datamap["payload"].toMap()[astid];
+                                        foreach(QVariant qv, values.toList())
+                                                qDebug() << "phones" << astid
+                                                         << qv.toMap()["statusbase"].toStringList()
+                                                         << qv.toMap()["statusextended"].toList();
                                 }
                                 callsUpdated();
                                 peersReceived();
@@ -1080,7 +1071,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                         // XXXX m_capafuncs => config file
                         foreach (QString function, CheckFunctions)
-                                if(! hasFunction(function)) {
+                                if(! m_capafuncs.contains(function)) {
                                         m_checked_function[function] = false;
                                 }
                         
@@ -1854,7 +1845,7 @@ void BaseEngine::setState(EngineState state)
 	if(state != m_state) {
 		m_state = state;
 		if(state == ELogged) {
-                        m_enabled_presence = hasFunction("presence");
+                        m_enabled_presence = m_capafuncs.contains("presence");
 			stopTryAgainTimer();
 			if(m_checked_function["presence"] && m_enabled_presence)
                                 availAllowChanged(true);

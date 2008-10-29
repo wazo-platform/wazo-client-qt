@@ -52,14 +52,18 @@
 #include "baseengine.h"
 #include "peerwidget.h"
 #include "peerslayout.h"
+#include "peeritem.h"
 #include "switchboardwindow.h"
 #include "userinfo.h"
 #include "xivoconsts.h"
 
-SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine, QWidget * parent)
+SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine,
+                                     const QVariant & options,
+                                     QWidget * parent)
 	: QWidget(parent), m_engine(engine)
 {
 	m_layout = new PeersLayout(this);
+        m_options = options;
         setObjectName("scroller"); // in order for the style settings to be set accordingly
 	setAcceptDrops(true);
 
@@ -79,6 +83,14 @@ SwitchBoardWindow::~SwitchBoardWindow()
 	// qDebug() << "SwitchBoardWindow::~SwitchBoardWindow()";
         savePositions();
         removePeers();
+}
+
+void SwitchBoardWindow::setGuiOptions(const QVariant &)
+{
+}
+
+void SwitchBoardWindow::setUserInfo(const UserInfo *)
+{
 }
 
 /*! \brief update or add a peer
@@ -120,6 +132,7 @@ void SwitchBoardWindow::updatePeer(UserInfo * ui,
 	QPoint pos = m_engine->getSettings()->value("layout/" + userid, QPoint(-1, -1) ).toPoint();
 	if(pos.x() >= 0) {
                 PeerWidget * peerwidget = new PeerWidget(ui,
+                                                         m_options,
                                                          m_persons,
                                                          m_phones,
                                                          m_agents);
@@ -345,6 +358,7 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
                 PeerItem * peeritem = m_peerhash[userid];
                 // PeerWidget * peerwidget = peeritem->getWidget();
                 PeerWidget * peerwidget = new PeerWidget(peeritem->userinfo(),
+                                                         m_options,
                                                          m_persons,
                                                          m_phones,
                                                          m_agents);

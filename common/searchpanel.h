@@ -44,6 +44,7 @@
 
 #include <QHash>
 #include <QList>
+#include <QVariant>
 #include <QWidget>
 
 #include "peeritem.h"
@@ -63,7 +64,7 @@ class SearchPanel : public QWidget
 public:
 	SearchPanel(BaseEngine *,
                     const QVariant &,
-                    QWidget * parent = 0);	//!< Constructor
+                    QWidget * parent = 0);
 	~SearchPanel();	//!< Destructor
 public slots:
         void setGuiOptions(const QVariant &);
@@ -94,6 +95,7 @@ private:
         int m_ncolumns;
         QString m_searchpattern;
         QStringList m_functions;
+        QVariant m_options;
 };
 
 #endif
