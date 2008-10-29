@@ -64,7 +64,7 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
         m_agent = "";
         m_agentname = new QLabel("", this);
         m_agentstatus = new QLabel("", this);
-        m_agentlegend_qname = new QLabel(tr("Queue"), this);
+        m_agentlegend_qname = new QLabel(tr("Queues"), this);
         m_agentlegend_joined = new QLabel(tr("Joined"), this);
         m_agentlegend_paused = new QLabel(tr("Paused"), this);
         m_agentlegend_njoined = new QLabel("0", this);
@@ -163,19 +163,19 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::green);
                                 m_queue_join_status[qname]->setPixmap(* square);
-                                m_queue_join_status[qname]->setProperty("joined", "y");
+                                m_queue_join_status[qname]->setProperty("joined", true);
                                 m_queue_join_action[qname]->setIcon(QIcon(":/images/cancel.png"));
 
                                 QString pstatus = params[4];
                                 if(pstatus == "1") {
                                         square->fill(Orange);
                                         m_queue_pause_status[qname]->setPixmap(* square);
-                                        m_queue_pause_status[qname]->setProperty("paused", "y");
+                                        m_queue_pause_status[qname]->setProperty("paused", true);
                                         m_queue_pause_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
                                 } else {
                                         square->fill(Qt::green);
                                         m_queue_pause_status[qname]->setPixmap(* square);
-                                        m_queue_pause_status[qname]->setProperty("paused", "n");
+                                        m_queue_pause_status[qname]->setProperty("paused", false);
                                         m_queue_pause_action[qname]->setIcon(QIcon(":/images/cancel.png"));
                                 }
                                 m_queue_pause_status[qname]->show();
@@ -189,7 +189,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::gray);
                                 m_queue_join_status[qname]->setPixmap(* square);
-                                m_queue_join_status[qname]->setProperty("joined", "n");
+                                m_queue_join_status[qname]->setProperty("joined", false);
                                 m_queue_join_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
 
                                 m_queue_pause_status[qname]->hide();
@@ -203,7 +203,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Orange);
                                 m_queue_pause_status[qname]->setPixmap(* square);
-                                m_queue_pause_status[qname]->setProperty("paused", "y");
+                                m_queue_pause_status[qname]->setProperty("paused", true);
                                 m_queue_pause_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
                         }
                 }
@@ -214,7 +214,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::green);
                                 m_queue_pause_status[qname]->setPixmap(* square);
-                                m_queue_pause_status[qname]->setProperty("paused", "n");
+                                m_queue_pause_status[qname]->setProperty("paused", false);
                                 m_queue_pause_action[qname]->setIcon(QIcon(":/images/cancel.png"));
                         }
                 }
@@ -229,18 +229,18 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 if (jstatus == "1") {
                                         square->fill(Qt::green);
                                         m_queue_join_status[qname]->setPixmap(* square);
-                                        m_queue_join_status[qname]->setProperty("joined", "y");
+                                        m_queue_join_status[qname]->setProperty("joined", true);
                                         m_queue_join_action[qname]->setIcon(QIcon(":/images/cancel.png"));
                                         
                                         if(pstatus == "1") {
                                                 square->fill(Orange);
                                                 m_queue_pause_status[qname]->setPixmap(* square);
-                                                m_queue_pause_status[qname]->setProperty("paused", "y");
+                                                m_queue_pause_status[qname]->setProperty("paused", true);
                                                 m_queue_pause_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
                                         } else {
                                                 square->fill(Qt::green);
                                                 m_queue_pause_status[qname]->setPixmap(* square);
-                                                m_queue_pause_status[qname]->setProperty("paused", "n");
+                                                m_queue_pause_status[qname]->setProperty("paused", false);
                                                 m_queue_pause_action[qname]->setIcon(QIcon(":/images/cancel.png"));
                                         }
                                         m_queue_pause_status[qname]->show();
@@ -248,7 +248,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 } else if (jstatus == "5") {
                                         square->fill(Qt::gray);
                                         m_queue_join_status[qname]->setPixmap(* square);
-                                        m_queue_join_status[qname]->setProperty("joined", "n");
+                                        m_queue_join_status[qname]->setProperty("joined", false);
                                         m_queue_join_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
                                         
                                         m_queue_pause_status[qname]->hide();
@@ -260,6 +260,22 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                 // queuememberstatus
                 qDebug() << "AgentdetailsPanel::updatePeerAgent()" << params;
         }
+
+        summaryCount();
+}
+
+void AgentdetailsPanel::summaryCount()
+{
+        int njoined = 0;
+        int npaused = 0;
+        foreach(QString qname, m_queue_join_status.keys())
+                if(m_queue_join_status[qname]->property("joined").toBool()) {
+                        njoined ++;
+                        if(m_queue_pause_status[qname]->property("paused").toBool())
+                                npaused ++;
+                }
+        m_agentlegend_njoined->setText(QString::number(njoined));
+        m_agentlegend_npaused->setText(QString::number(npaused));
 }
 
 void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid, const QVariant & agentstatus)
@@ -381,7 +397,7 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                         QPixmap * square = new QPixmap(12, 12);
                         square->fill(Qt::gray);
                         m_queue_join_status[queueid]->setPixmap(* square);
-                        m_queue_join_status[queueid]->setProperty("joined", "n");
+                        m_queue_join_status[queueid]->setProperty("joined", false);
                         m_queue_join_action[queueid]->setIcon(QIcon(":/images/button_ok.png"));
                         m_queue_pause_status[queueid]->hide();
                         m_queue_pause_action[queueid]->hide();
@@ -389,17 +405,17 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                         QPixmap * square = new QPixmap(12, 12);
                         square->fill(Qt::green);
                         m_queue_join_status[queueid]->setPixmap(* square);
-                        m_queue_join_status[queueid]->setProperty("joined", "y");
+                        m_queue_join_status[queueid]->setProperty("joined", true);
                         m_queue_join_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
                         if(pstatus == "0") {
                                 square->fill(Qt::green);
                                 m_queue_pause_status[queueid]->setPixmap(* square);
-                                m_queue_pause_status[queueid]->setProperty("paused", "n");
+                                m_queue_pause_status[queueid]->setProperty("paused", false);
                                 m_queue_pause_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
                         } else {
                                 square->fill(Orange);
                                 m_queue_pause_status[queueid]->setPixmap(* square);
-                                m_queue_pause_status[queueid]->setProperty("paused", "y");
+                                m_queue_pause_status[queueid]->setProperty("paused", true);
                                 m_queue_pause_action[queueid]->setIcon(QIcon(":/images/button_ok.png"));
                         }
                         m_queue_pause_status[queueid]->show();
@@ -413,6 +429,7 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                 m_gridlayout->addWidget( m_queue_pause_action[queueid], ii + m_linenum, 6, Qt::AlignCenter );
                 ii ++;
         }
+        summaryCount();
 }
 
 void AgentdetailsPanel::queueClicked()
@@ -426,21 +443,18 @@ void AgentdetailsPanel::queueClicked()
                 changeWatchedQueue(astid + " " + queueid);
         else if(action == "leavejoin") {
                 QString agentid = sender()->property("agentid").toString();
-                QString jprop = m_queue_join_status[queueid]->property("joined").toString();
-                if(jprop == "y")
+                if(m_queue_join_status[queueid]->property("joined").toBool())
                         agentAction("leave " + queueid + " " + astid + " " + agentid);
                 else {
-                        QString pprop = m_queue_pause_status[queueid]->property("paused").toString();
                         // join the queue in the previously recorded paused status
-                        if(pprop == "y")
+                        if(m_queue_pause_status[queueid]->property("paused").toBool())
                                 agentAction("join " + queueid + " " + astid + " " + agentid + " pause");
                         else
                                 agentAction("join " + queueid + " " + astid + " " + agentid + " unpause");
                 }
         } else if(action == "pause") {
                 QString agentid = sender()->property("agentid").toString();
-                QString pprop = m_queue_pause_status[queueid]->property("paused").toString();
-                if(pprop == "y")
+                if(m_queue_pause_status[queueid]->property("paused").toBool())
                         agentAction("unpause " + queueid + " " + astid + " " + agentid);
                 else
                         agentAction("pause " + queueid + " " + astid + " " + agentid);

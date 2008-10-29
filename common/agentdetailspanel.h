@@ -85,6 +85,7 @@ private slots:
         void contextMenuEvent(QContextMenuEvent *);
         void getFile();
 private:
+        void summaryCount();
         QGridLayout * m_gridlayout;
 	QVBoxLayout * m_layout;
         QScrollArea * m_scrollarea;
