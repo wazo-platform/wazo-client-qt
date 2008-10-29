@@ -54,8 +54,6 @@
 #include "identitydisplay.h"
 #include "userinfo.h"
 
-const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 50px; height: 15px}";
-
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(const QVariant & options,
@@ -74,38 +72,34 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         m_user->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         
         m_phonenum = new QLabel(this);
-        m_presence = new QComboBox(this);
-        m_presence->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-        m_presence->setProperty("function", "presence");
-        m_statuslabel = new QLabel(tr("Status"), this);
-        m_connlabel = new QLabel(tr("Connection"), this);
+        m_presencelabel = new QLabel(tr("Status"), this);
+        m_presencevalue = new QComboBox(this);
+        m_presencevalue->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        m_presencevalue->setProperty("function", "presence");
         
         m_qf = new QFrame(this);
         m_qf->setFrameShape(QFrame::HLine);
         m_qf->setLineWidth(2);
         
         m_agent = new QLabel("", this);
-        m_agentaction = new QPushButton(tr("Logout"), this);
+        m_agentstatus_label = new QLabel(tr("Connection"), this);
+        m_agentstatus_value = new QPushButton(tr("Logout"), this);
         m_queueleaveall = new QPushButton(tr("Leave All"), this);
         m_queueleaveall->setIcon(QIcon(":/images/cancel.png"));
         m_queuejoinall = new QPushButton(tr("Join All"), this);
         m_queuejoinall->setIcon(QIcon(":/images/add.png"));
         m_queueaction = new QPushButton(tr("Leave"), this);
 
-        m_queuebusy = new QProgressBar(this);
-        m_queuebusy->setRange(0, m_maxqueues + 1);
-        m_queuebusy->setFormat("%v");
-        m_queuebusy->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
         m_queuelist = new QComboBox(this);
         m_queuelist->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         m_queuelist->setProperty("function", "queuelist");
 
         connect(m_queuelist, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
-        connect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
+        connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
         if(options.toMap()["logagent"].toBool())
-                connect(m_agentaction, SIGNAL(clicked()),
+                connect(m_agentstatus_value, SIGNAL(clicked()),
                         this, SLOT(doAgentAction()));
         connect(m_queueaction, SIGNAL(clicked()),
                 this, SLOT(doQueueAction()));
@@ -119,17 +113,16 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
 	glayout->addWidget( m_agent, idline, 2, 1, 2, Qt::AlignCenter );
 	glayout->addWidget( m_phonenum, idline, 4, Qt::AlignCenter );
         idline ++;
-	glayout->addWidget( m_statuslabel, idline, 0, Qt::AlignRight );
-	glayout->addWidget( m_presence, idline, 1, Qt::AlignLeft );
-        glayout->addWidget( m_connlabel, idline, 2, Qt::AlignRight );
-	glayout->addWidget( m_agentaction, idline, 3, Qt::AlignLeft );
+	glayout->addWidget( m_presencelabel, idline, 0, Qt::AlignRight );
+	glayout->addWidget( m_presencevalue, idline, 1, Qt::AlignLeft );
+        glayout->addWidget( m_agentstatus_label, idline, 2, Qt::AlignRight );
+	glayout->addWidget( m_agentstatus_value, idline, 3, Qt::AlignLeft );
         idline ++;
 	// glayout->addWidget( m_qf, idline, 0, 1, 7, 0 );
 	// glayout->addWidget( m_agent, idline, 0, Qt::AlignCenter );
-	// glayout->addWidget( m_agentaction, idline, 1, Qt::AlignCenter );
-// 	glayout->addWidget( m_queueaction, idline, 2, Qt::AlignCenter );
-// 	glayout->addWidget( m_queuelist, idline, 3, Qt::AlignCenter );
-// 	glayout->addWidget( m_queuebusy, idline, 4, Qt::AlignCenter );
+        // glayout->addWidget( m_queueaction, idline, 4, Qt::AlignCenter );
+	// glayout->addWidget( m_agentstatus_value, idline, 1, Qt::AlignCenter );
+        // glayout->addWidget( m_queuelist, idline, 3, Qt::AlignCenter );
 	// glayout->addWidget( m_queuejoinall, idline, 5, Qt::AlignCenter );
 	// glayout->addWidget( m_queueleaveall, idline, 6, Qt::AlignCenter );
         
@@ -143,7 +136,6 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         m_queuelist->hide();
         m_queueleaveall->hide();
         m_queuejoinall->hide();
-        m_queuebusy->hide();
         
         setGuiOptions(options);
         // 	glayout->setColumnStretch( 0, 1 );
@@ -164,18 +156,17 @@ void IdentityDisplay::setGuiOptions(const QVariant & options)
         // setFont(m_gui_font);
         m_user->setFont(m_gui_font);
         m_phonenum->setFont(m_gui_font);
-        m_presence->setFont(m_gui_font);
-        m_statuslabel->setFont(m_gui_font);
-        m_connlabel->setFont(m_gui_font);
+        m_presencevalue->setFont(m_gui_font);
+        m_presencelabel->setFont(m_gui_font);
         m_agent->setFont(m_gui_font);
-        m_agentaction->setFont(m_gui_font);
+        m_agentstatus_label->setFont(m_gui_font);
+        m_agentstatus_value->setFont(m_gui_font);
         m_queueleaveall->setFont(m_gui_font);
         m_queuejoinall->setFont(m_gui_font);
         m_queueaction->setFont(m_gui_font);
-        m_queuebusy->setFont(m_gui_font);
         m_queuelist->setFont(m_gui_font);
         
-        m_agentaction->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
+        m_agentstatus_value->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
         m_queueleaveall->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
         m_queuejoinall->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
         m_queueaction->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
@@ -185,18 +176,19 @@ void IdentityDisplay::setGuiOptions(const QVariant & options)
 void IdentityDisplay::updatePresence(const QVariant & presence)
 {
         // qDebug() << "IdentityDisplay::updatePresence()" << presence;
-        m_presence->hide();
+        m_presencelabel->hide();
+        m_presencevalue->hide();
         if(! m_functions.contains("presence"))
                 return;
         
-        disconnect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
+        disconnect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
                    this, SLOT(idxChanged(const QString &)));
         QVariantMap presencemap = presence.toMap();
         if(presencemap.contains("names")) {
                 foreach (QString avstate, presencemap["names"].toMap().keys()) {
                         QString name = presencemap["names"].toMap()[avstate].toMap()["longname"].toString();
-                        if(m_presence->findText(name) == -1) {
-                                m_presence->addItem(name);
+                        if(m_presencevalue->findText(name) == -1) {
+                                m_presencevalue->addItem(name);
                                 m_presence_names[avstate] = name;
                         }
                 }
@@ -209,10 +201,10 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
                         bool allow = capapres.value().toBool();
                         if(m_presence_names.contains(avstate)) {
                                 QString name = m_presence_names[avstate];
-                                int idx = m_presence->findText(name);
+                                int idx = m_presencevalue->findText(name);
                                 if(idx != -1) {
                                         if(! allow)
-                                                m_presence->removeItem(idx);
+                                                m_presencevalue->removeItem(idx);
                                 }
                         }
                 }
@@ -221,13 +213,14 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
                 QString avstate = presencemap["state"].toString();
                 if(m_presence_names.contains(avstate)) {
                         QString name = m_presence_names[avstate];
-                        int idx = m_presence->findText(name);
-                        m_presence->setCurrentIndex(idx);
+                        int idx = m_presencevalue->findText(name);
+                        m_presencevalue->setCurrentIndex(idx);
                 }
         }
-        connect(m_presence, SIGNAL(currentIndexChanged(const QString &)),
+        connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
-        m_presence->show();
+        m_presencelabel->show();
+        m_presencevalue->show();
 }
 
 
@@ -241,7 +234,7 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
 //                                m_user->sizeHint().height() * 2);
         m_phonenum->setText(m_ui->phonenum());
         // + tr("on") + " <b>" + m_ui->astid() + "</b>");
-        // m_presence->setText(m_ui->availstate());
+        // m_presencevalue->setText(m_ui->availstate());
         QStringList vm = m_ui->mwi().split("-");
 //         m_voicemail->setText(tr("Voicemail") + "\n" +
 //                              // vm[0] + " " + tr("waiting") + " " +
@@ -275,29 +268,27 @@ void IdentityDisplay::setAgentList(const QVariant & alist)
                         QString phonenum = properties.toMap()["phonenum"].toString();
                         
                         m_agent->setText("Agent " + agnum);
-                        m_agentaction->setText(phonenum);
+                        m_agentstatus_value->setText(phonenum);
                         showAgentProps();
                         
                         if(agstatus == "AGENT_LOGGEDOFF") {
-                                m_agentaction->setIcon(QIcon(":/images/cancel.png"));
+                                m_agentstatus_value->setIcon(QIcon(":/images/cancel.png"));
                                 m_agentstatus = false;
                                 m_queueaction->hide();
                                 m_queuelist->hide();
                                 m_queueleaveall->hide();
                                 m_queuejoinall->hide();
-                                m_queuebusy->hide();
                         } else if(agstatus == "AGENT_IDLE") {
-                                m_agentaction->setIcon(QIcon(":/images/button_ok.png"));
+                                m_agentstatus_value->setIcon(QIcon(":/images/button_ok.png"));
                                 m_agentstatus = true;
-                                if(m_queuesindexes.size() > 0) {
-                                        if(m_queuechangeallow) {
-                                                m_queueaction->show();
-                                                m_queueleaveall->show();
-                                                m_queuejoinall->show();
-                                        }
-                                        // m_queuelist->show();
-                                        // m_queuebusy->show();
-                                }
+//                                 if(m_queuesindexes.size() > 0) {
+//                                         if(m_queuechangeallow) {
+//                                                 m_queueaction->show();
+//                                                 m_queueleaveall->show();
+//                                                 m_queuejoinall->show();
+//                                         }
+//                                         // m_queuelist->show();
+//                                 }
                         }
                         
                         foreach (QVariant qv, agqjoined) {
@@ -345,21 +336,16 @@ void IdentityDisplay::setQueueList(bool changeallow, const QVariant & qlist)
                         m_queuelist->addItem(qname);
                         m_queuelist->setItemIcon(i, QIcon(":/images/cancel.png"));
                         m_queuesindexes[qname] = i;
-                        if(qparams.size() > 1)
-                                m_queuesbusyness[qname] = qparams[1];
-                        else
-                                m_queuesbusyness[qname] = "0";
                 }
         }
-        if((queues.size() > 0) && (m_agentstatus)) {
-                if(m_queuechangeallow) {
-                        m_queueaction->show();
-                        m_queuejoinall->show();
-                        m_queueleaveall->show();
-                }
-                // m_queuelist->show();
-                // m_queuebusy->show();
-        }
+//         if((queues.size() > 0) && (m_agentstatus)) {
+//                 if(m_queuechangeallow) {
+//                         m_queueaction->show();
+//                         m_queuejoinall->show();
+//                         m_queueleaveall->show();
+//                 }
+//                 // m_queuelist->show();
+//         }
 }
 
 void IdentityDisplay::updatePeer(UserInfo * ui,
@@ -380,14 +366,16 @@ void IdentityDisplay::showAgentProps()
 {
         m_agent->show();
         // m_qf->show();
-        m_agentaction->show();
+        m_agentstatus_label->show();
+        m_agentstatus_value->show();
 }
 
 void IdentityDisplay::hideAgentProps()
 {
         m_agent->hide();
         m_qf->hide();
-        m_agentaction->hide();
+        m_agentstatus_label->hide();
+        m_agentstatus_value->hide();
 }
 
 void IdentityDisplay::updatePeerAgent(const QString & userid,
@@ -412,28 +400,26 @@ void IdentityDisplay::updatePeerAgent(const QString & userid,
 
                 if (command == "agentlogin") {
                         showAgentProps();
-                        m_agentaction->setIcon(QIcon(":/images/button_ok.png"));
-                        m_agentaction->setText(arg);
+                        m_agentstatus_value->setIcon(QIcon(":/images/button_ok.png"));
+                        m_agentstatus_value->setText(arg);
                         m_agentstatus = true;
-                        if(m_queuesindexes.size() > 0) {
-                                if(m_queuechangeallow) {
-                                        m_queueaction->show();
-                                        m_queueleaveall->show();
-                                        m_queuejoinall->show();
-                                }
-                                // m_queuelist->show();
-                                // m_queuebusy->show();
-                        }
+//                         if(m_queuesindexes.size() > 0) {
+//                                 if(m_queuechangeallow) {
+//                                         m_queueaction->show();
+//                                         m_queueleaveall->show();
+//                                         m_queuejoinall->show();
+//                                 }
+//                                 // m_queuelist->show();
+//                         }
                 } else if (command == "agentlogout") {
                         showAgentProps();
-                        m_agentaction->setIcon(QIcon(":/images/cancel.png"));
-                        m_agentaction->setText(arg);
+                        m_agentstatus_value->setIcon(QIcon(":/images/cancel.png"));
+                        m_agentstatus_value->setText(arg);
                         m_agentstatus = false;
                         m_queueaction->hide();
                         m_queuelist->hide();
                         m_queueleaveall->hide();
                         m_queuejoinall->hide();
-                        m_queuebusy->hide();
                 } else if (command == "joinqueue") {
                         if (m_queuesindexes.contains(arg)) {
                                 int idx = m_queuesindexes[arg];
@@ -456,21 +442,6 @@ void IdentityDisplay::updatePeerAgent(const QString & userid,
                         }
                 } else
                         qDebug() << "IdentityDisplay::setAgentStatus()" << newstatuses;
-        }
-}
-
-void IdentityDisplay::setQueueStatus(const QStringList & newstatuses)
-{
-        // qDebug() << "IdentityDisplay::setQueueStatus()" << newstatuses;
-        if (newstatuses.size() >= 3) {
-                QString astid = newstatuses[0];
-                QString queuename = newstatuses[1];
-                QString busyness = newstatuses[2];
-                m_queuesbusyness[queuename] = busyness;
-                if(queuename == m_queuelist->currentText()) {
-                        m_queuebusy->setRange(0, m_maxqueues + 1);
-                        m_queuebusy->setValue(busyness.toInt());
-                }
         }
 }
 
@@ -525,8 +496,6 @@ void IdentityDisplay::idxChanged(const QString & newidx)
                         m_queueaction->setText(tr("Join"));
                         m_queueaction->setIcon(QIcon(":/images/add.png"));
                 }
-                m_queuebusy->setRange(0, m_maxqueues + 1);
-                m_queuebusy->setValue(m_queuesbusyness[newidx].toInt());
         } else if(function == "presence") {
                 foreach (QString avstate, m_presence_names.keys())
                         if(m_presence_names[avstate] == newidx)

@@ -74,7 +74,6 @@ public slots:
 	void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);
-	void setQueueStatus(const QStringList &);
         void doAgentAction();
         void doQueueAction();
         void doQueueJoinAll();
@@ -87,17 +86,16 @@ private:
         
         QLabel * m_user;
         QLabel * m_phonenum;
-        QLabel * m_statuslabel;
-        QLabel * m_connlabel;
-        QComboBox * m_presence;
+        QLabel * m_presencelabel;
+        QComboBox * m_presencevalue;
         QLabel * m_agent;
         QFrame * m_qf;
-        QPushButton * m_agentaction;
+        QLabel * m_agentstatus_label;
+        QPushButton * m_agentstatus_value;
         QPushButton * m_queueaction;
         QPushButton * m_queuejoinall;
         QPushButton * m_queueleaveall;
         QComboBox * m_queuelist;
-        QProgressBar * m_queuebusy;
         QHash<QString, int> m_queuesindexes;
         QHash<QString, bool> m_queuesstatuses;
         QHash<QString, QString> m_queuesbusyness;

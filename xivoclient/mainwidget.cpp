@@ -801,8 +801,6 @@ void MainWidget::engineStarted()
                                 connect( m_xlet[dc], SIGNAL(changeWatchedAgent(const QString &, bool)),
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)));
                                 
-                                connect( m_engine, SIGNAL(setQueueStatus(const QStringList &)),
-                                         m_xlet[dc], SLOT(setQueueStatus(const QStringList &)));
                                 connect( m_engine, SIGNAL(newQueueList(bool, const QVariant &)),
                                          m_xlet[dc], SLOT(setQueueList(bool, const QVariant &)));
                                 connect( m_xlet[dc], SIGNAL(agentAction(const QString &)),
