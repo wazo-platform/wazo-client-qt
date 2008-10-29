@@ -76,7 +76,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
 	layout->setSpacing(2);
 	layout->setMargin(2);
 
-
+        int fsize = 20;
         // QLabels definitions
         if(m_ui->fullname().isEmpty())
                 qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_ui->fullname() is empty for :" << m_ui->userid();
@@ -85,8 +85,11 @@ PeerWidget::PeerWidget(UserInfo * ui,
 	// set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
 	m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
 	m_availlbl = new ExtendedLabel();
-        m_availlbl->setPixmap(m_persons["grey"]);
+        m_availlbl->setAlignment(Qt::AlignCenter);
+        m_availlbl->setMinimumSize(fsize, fsize);
+        m_availlbl->setObjectName("onlyme");
         m_availlbl->setProperty("kind", "person");
+        setColor("person", "grey");
         connect( m_availlbl, SIGNAL(dial(QMouseEvent *)),
                  this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         m_voicelbl = new QLabel();
@@ -96,14 +99,12 @@ PeerWidget::PeerWidget(UserInfo * ui,
                 QStringList terms = termname.split(".");
                 if(terms.size() > 3) {
                         m_lblphones[termname] = new ExtendedLabel();
-                        
-                        QPixmap * square = new QPixmap(12, 12);
-                        square->fill(Qt::blue);
-                        m_lblphones[termname]->setPixmap(* square);
-                        // m_lblphones[termname]->setPixmap(m_phones["grey"]);
-                        
+                        m_lblphones[termname]->setAlignment(Qt::AlignCenter);
+                        m_lblphones[termname]->setObjectName("onlyme");
+                        m_lblphones[termname]->setMinimumSize(fsize, fsize);
                         m_lblphones[termname]->setToolTip(tr("Phone ") + terms[3]);
                         m_lblphones[termname]->setProperty("kind", "term");
+                        setColor("term", "grey");
                         connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
                                  this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
                 }
@@ -111,9 +112,12 @@ PeerWidget::PeerWidget(UserInfo * ui,
         
         if(ui->agentid().size() > 0) {
                 m_agentlbl = new ExtendedLabel();
-                m_agentlbl->setPixmap(m_agents["grey"]);
+                m_agentlbl->setAlignment(Qt::AlignCenter);
+                m_agentlbl->setMinimumSize(fsize, fsize);
+                m_agentlbl->setObjectName("onlyme");
                 m_agentlbl->setToolTip(tr("Agent ") + ui->agentid());
                 m_agentlbl->setProperty("kind", "agent");
+                setColor("agent", "grey");
                 connect( m_agentlbl, SIGNAL(dial(QMouseEvent *)),
                          this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         }
@@ -125,11 +129,11 @@ PeerWidget::PeerWidget(UserInfo * ui,
 	layout->addWidget( m_availlbl, 1, 2, Qt::AlignCenter );
         int n = 3;
         foreach (QString termname, ui->termlist()) {
-                layout->addWidget( m_lblphones[termname], 1, n, Qt::AlignLeft );
+                layout->addWidget( m_lblphones[termname], 1, n, Qt::AlignCenter );
                 n++;
         }
         if(ui->agentid().size() > 0) {
-                layout->addWidget( m_agentlbl, 1, n, Qt::AlignLeft );
+                layout->addWidget( m_agentlbl, 1, n, Qt::AlignCenter );
                 n++;
         }
 	layout->setColumnStretch(20, 1);
@@ -158,19 +162,18 @@ PeerWidget::~PeerWidget()
 // blue, yellow, orange, grey, green, red
 void PeerWidget::setColor(const QString & kind, const QString & color)
 {
-	//m_square.fill( Qt::blue );
+        // QString commonqss = "QLabel#onlyme {border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }";
+        QString commonqss = "";
+        
 	if(kind == "presence") {
                 m_availlbl->setPixmap(m_persons[color]);
-                m_availlbl->setMinimumSize(50, 50);
-                m_availlbl->setObjectName("onlyme");
-                m_availlbl->setStyleSheet("QLabel#onlyme {margin: 3px; border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }");
+                m_availlbl->setStyleSheet(commonqss);
         } else if((kind == "agent") && (m_agentlbl)) {
                 m_agentlbl->setPixmap(m_agents[color]);
+                m_agentlbl->setStyleSheet(commonqss);
         } else if(m_lblphones.contains(kind)) {
                 m_lblphones[kind]->setPixmap(m_phones[color]);
-                m_lblphones[kind]->setMinimumSize(50, 50);
-                m_lblphones[kind]->setObjectName("onlyme");
-                m_lblphones[kind]->setStyleSheet("QLabel#onlyme {margin: 3px; border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }");
+                m_lblphones[kind]->setStyleSheet(commonqss);
         }
 }
 
