@@ -950,6 +950,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                 callsUpdated();
                                 peersReceived();
                         } else if (function == "update") {
+                                qDebug() << datamap;
                                 QStringList statusbase = datamap["statusbase"].toStringList();
                                 qDebug() << statusbase << datamap["statusextended"].toList();
                                 // updatePeerAndCallerid(liststatus);

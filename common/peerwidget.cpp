@@ -96,7 +96,12 @@ PeerWidget::PeerWidget(UserInfo * ui,
                 QStringList terms = termname.split(".");
                 if(terms.size() > 3) {
                         m_lblphones[termname] = new ExtendedLabel();
-                        m_lblphones[termname]->setPixmap(m_phones["grey"]);
+                        
+                        QPixmap * square = new QPixmap(12, 12);
+                        square->fill(Qt::blue);
+                        m_lblphones[termname]->setPixmap(* square);
+                        // m_lblphones[termname]->setPixmap(m_phones["grey"]);
+                        
                         m_lblphones[termname]->setToolTip(tr("Phone ") + terms[3]);
                         m_lblphones[termname]->setProperty("kind", "term");
                         connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
@@ -117,7 +122,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
         // Put the Labels into layouts
         layout->addWidget( qvline, 0, 0, 2, 1 );
 	layout->addWidget( m_textlbl, 0, 2, 1, 6, Qt::AlignLeft );
-	layout->addWidget( m_availlbl, 1, 2, Qt::AlignLeft );
+	layout->addWidget( m_availlbl, 1, 2, Qt::AlignCenter );
         int n = 3;
         foreach (QString termname, ui->termlist()) {
                 layout->addWidget( m_lblphones[termname], 1, n, Qt::AlignLeft );
@@ -154,12 +159,19 @@ PeerWidget::~PeerWidget()
 void PeerWidget::setColor(const QString & kind, const QString & color)
 {
 	//m_square.fill( Qt::blue );
-	if(kind == "presence")
+	if(kind == "presence") {
                 m_availlbl->setPixmap(m_persons[color]);
-	else if((kind == "agent") && (m_agentlbl))
+                m_availlbl->setMinimumSize(50, 50);
+                m_availlbl->setObjectName("onlyme");
+                m_availlbl->setStyleSheet("QLabel#onlyme {margin: 3px; border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }");
+        } else if((kind == "agent") && (m_agentlbl)) {
                 m_agentlbl->setPixmap(m_agents[color]);
-        else if(m_lblphones.contains(kind))
+        } else if(m_lblphones.contains(kind)) {
                 m_lblphones[kind]->setPixmap(m_phones[color]);
+                m_lblphones[kind]->setMinimumSize(50, 50);
+                m_lblphones[kind]->setObjectName("onlyme");
+                m_lblphones[kind]->setStyleSheet("QLabel#onlyme {margin: 3px; border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }");
+        }
 }
 
 void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & queues)
