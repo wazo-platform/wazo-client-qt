@@ -141,13 +141,13 @@ void AgentsPanel::updatePeerAgent(const QString &,
                                 QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                                 m_square->fill(Qt::green);
                                 m_agent_logged_status[agname]->setPixmap(QPixmap(* m_square));
-                                m_agent_logged_status[agname]->setProperty("logged", "y");
+                                m_agent_logged_status[agname]->setProperty("logged", true);
                                 m_agent_logged_action[agname]->setIcon(QIcon(":/images/cancel.png"));
                         } else if(status == "5") {
                                 QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                                 m_square->fill(Qt::red);
                                 m_agent_logged_status[agname]->setPixmap(QPixmap(* m_square));
-                                m_agent_logged_status[agname]->setProperty("logged", "n");
+                                m_agent_logged_status[agname]->setProperty("logged", false);
                                 m_agent_logged_action[agname]->setIcon(QIcon(":/images/button_ok.png"));
                         } else if(status == "3") {
                                 qDebug() << "AgentsPanel::updatePeerAgent()" << what << status;
@@ -225,7 +225,7 @@ void AgentsPanel::updatePeerAgent(const QString &,
                         QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                         m_square->fill(Qt::green);
                         m_agent_logged_status[agname]->setPixmap(QPixmap(* m_square));
-                        m_agent_logged_status[agname]->setProperty("logged", "y");
+                        m_agent_logged_status[agname]->setProperty("logged", true);
                         m_agent_logged_action[agname]->setIcon(QIcon(":/images/cancel.png"));
                 }
         } else if(command == "agentlogout") {
@@ -235,7 +235,7 @@ void AgentsPanel::updatePeerAgent(const QString &,
                         QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                         m_square->fill(Qt::red);
                         m_agent_logged_status[agname]->setPixmap(QPixmap(* m_square));
-                        m_agent_logged_status[agname]->setProperty("logged", "n");
+                        m_agent_logged_status[agname]->setProperty("logged", false);
                         m_agent_logged_action[agname]->setIcon(QIcon(":/images/button_ok.png"));
                 }
         } else if((command == "agentlink") || (command == "phonelink")) {
@@ -345,11 +345,11 @@ void AgentsPanel::setAgentList(const QVariant & alist)
                         if(agstatus == "AGENT_IDLE") {
                                 m_square->fill(Qt::green);
                                 m_agent_logged_action[agnum]->setIcon(QIcon(":/images/cancel.png"));
-                                m_agent_logged_status[agnum]->setProperty("logged", "y");
+                                m_agent_logged_status[agnum]->setProperty("logged", true);
                         } else if(agstatus == "AGENT_LOGGEDOFF") {
                                 m_square->fill(Qt::red);
                                 m_agent_logged_action[agnum]->setIcon(QIcon(":/images/button_ok.png"));
-                                m_agent_logged_status[agnum]->setProperty("logged", "n");
+                                m_agent_logged_status[agnum]->setProperty("logged", false);
                         } else {
                                 qDebug() << "AgentsPanel::setAgentList() unknown status" << agstatus;
                         }
@@ -407,9 +407,7 @@ void AgentsPanel::agentClicked()
         if(action == "changeagent")
                 changeWatchedAgent(astid + " " + agentid, true);
         else if(action == "loginoff") {
-                QString prop = m_agent_logged_status[agentid]->property("logged").toString();
-                // qDebug() << "AgentsPanel::agentClicked()" << "loginoff" << astid << agentid << prop;
-                if(prop == "y")
+                if(m_agent_logged_status[agentid]->property("logged").toBool())
                         agentAction("logout " + astid + " " + agentid);
                 else
                         agentAction("login " + astid + " " + agentid);

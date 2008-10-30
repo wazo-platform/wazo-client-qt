@@ -104,7 +104,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
                         m_lblphones[termname]->setMinimumSize(fsize, fsize);
                         m_lblphones[termname]->setToolTip(tr("Phone ") + terms[3]);
                         m_lblphones[termname]->setProperty("kind", "term");
-                        setColor("term", "grey");
+                        setColor(termname, "grey");
                         connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
                                  this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
                 }
@@ -162,8 +162,8 @@ PeerWidget::~PeerWidget()
 // blue, yellow, orange, grey, green, red
 void PeerWidget::setColor(const QString & kind, const QString & color)
 {
-        // QString commonqss = "QLabel#onlyme {border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }";
-        QString commonqss = "";
+        QString commonqss;
+        // commonqss = "QLabel#onlyme {border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }";
         
 	if(kind == "presence") {
                 m_availlbl->setPixmap(m_persons[color]);

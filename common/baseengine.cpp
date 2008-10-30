@@ -724,21 +724,20 @@ bool BaseEngine::parseCommand(const QString & line)
                                 foreach (QVariant qv, datamap["payload"].toList())
                                         newAgentList(qv);
                         } else if(function == "update") {
-                                QStringList liststatus = datamap["payload"].toStringList();
-                                if(liststatus.size() > 2) {
-                                        QString astid = liststatus[1];
-                                        QString agentid = liststatus[2];
-                                        if (agentid.startsWith("Agent/")) {
-                                                QString agentnum = agentid.mid(6);
-                                                liststatus[2] = agentnum;
-                                                UserInfo * ui = findUserFromAgent(astid, agentnum);
-                                                if(ui)
-                                                        updatePeerAgent(ui->userid(), "agentstatus", liststatus);
-                                                else // (useful ?) in order to transfer the replies to unmatched agents
-                                                        updatePeerAgent("", "agentstatus", liststatus);
-                                        } else
-                                                qDebug() << "update-agents agentnum" << agentid;
-                                }
+                                QString action = datamap["action"].toString();
+                                QString astid = datamap["astid"].toString();
+                                QString agent_channel = datamap["agent_channel"].toString();
+                                if (agent_channel.startsWith("Agent/")) {
+                                        QString agentnum = agent_channel.mid(6);
+                                        QStringList liststatus = datamap["payload"].toStringList();
+                                        liststatus[2] = agentnum;
+                                        UserInfo * ui = findUserFromAgent(astid, agentnum);
+                                        if(ui)
+                                                updatePeerAgent(ui->userid(), "agentstatus", liststatus);
+                                        else // (useful ?) in order to transfer the replies to unmatched agents
+                                                updatePeerAgent("", "agentstatus", liststatus);
+                                } else
+                                        qDebug() << "update-agents agentnum" << astid << agent_channel;
                         } else if(function == "del") {
                                 qDebug() << thisclass << "del" << datamap["astid"].toString() << datamap["deltalist"].toStringList();
                         } else if(function == "add") {
@@ -826,7 +825,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         if (function == "sendlist") {
                                 QStringList listpeers = datamap["payload"].toStringList();
                                 for(int i = 0 ; i < listpeers.size() ; i += 13) {
-                                        // qDebug() << "users-list" << listpeers[i] << listpeers[i+1] << listpeers[i+2]
+                                        //qDebug() << "users-list" << listpeers[i] << listpeers[i+1] << listpeers[i+2];
                                         //<< listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
                                         //<< listpeers[i+6] << listpeers[i+7] << listpeers[i+8] << listpeers[i+9];
                                         QString iduser = listpeers[i+1] + "/" + listpeers[i];
@@ -848,6 +847,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                                 updateAgentPresence(m_users[iduser]->agentid(), imstatus, Qt::gray);
                                 }
                                 
+                                peersReceived();
                                 m_monitored_userid = m_fullid;
                                 QString fullname_mine = "No One";
                                 if(m_users.contains(m_fullid)) {
