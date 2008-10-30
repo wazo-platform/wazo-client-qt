@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 3536 $
- * $Date: 2008-07-09 17:48:09 +0200 (Wed, 09 Jul 2008) $
+/* $Revision$
+ * $Date$
  */
 
 #ifdef USE_OUTLOOK
