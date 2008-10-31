@@ -90,6 +90,7 @@ private:
         quint32 m_gui_buttonsize;
         bool m_gui_showvqueues;
         bool m_gui_showqueuenames;
+        bool m_gui_showmore;
         
         QGridLayout * m_gridlayout;
         QStringList m_statitems;

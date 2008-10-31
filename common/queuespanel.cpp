@@ -67,6 +67,10 @@ QueuesPanel::QueuesPanel(const QVariant & options,
         bool is_supervisor = false;
         if(options.toMap().contains("supervisor"))
                 is_supervisor = options.toMap()["supervisor"].toBool();
+        QStringList xletlist;
+        foreach(QString xletdesc, options.toMap()["xlets"].toStringList())
+                xletlist.append(xletdesc.split("-")[0]);
+        m_gui_showmore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
         
 	m_gridlayout = new QGridLayout(this);
         m_statlegends["Completed"] = tr("Completed");
@@ -206,7 +210,10 @@ void QueuesPanel::checkBoxStateChanged(int state)
                         if(state) {
                                 if(m_gui_showqueuenames) {
                                         m_queuelabels[qname]->show();
-                                        m_queuemore[qname]->show();
+                                        if(m_gui_showmore)
+                                                m_queuemore[qname]->show();
+                                        else
+                                                m_queuemore[qname]->hide();
                                 }
                                 m_queuebusies[qname]->show();
                                 foreach (QString statitem, m_statitems)
@@ -268,7 +275,10 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
         
         if(m_gui_showqueuenames) {
                 m_queuelabels[queuename]->show();
-                m_queuemore[queuename]->show();
+                if(m_gui_showmore)
+                        m_queuemore[queuename]->show();
+                else
+                        m_queuemore[queuename]->hide();
         } else {
                 m_queuelabels[queuename]->hide();
                 m_queuemore[queuename]->hide();

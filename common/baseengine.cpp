@@ -1062,6 +1062,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         m_guioptions["server_gui"] = datamap["guisettings"];
                         QVariantMap tmp;
                         tmp["functions"] = datamap["capafuncs"];
+                        tmp["xlets"] = datamap["capaxlets"];
                         m_guioptions["server_funcs"] = tmp;
                         
                         qDebug() << "clientXlets" << XletList;
