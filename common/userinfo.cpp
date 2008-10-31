@@ -88,9 +88,9 @@ void UserInfo::setAgent(const QString & agentnum)
         m_agentnum = agentnum;
 }
 
-void UserInfo::setMWI(const QString & mwiw, const QString & mwio, const QString & mwin)
+void UserInfo::setMWI(const QStringList & mwi)
 {
-        m_mwi = mwiw + "-" + mwio + "-" + mwin;
+        m_mwi = mwi;
 }
 
 void UserInfo::updatePhoneStatus(const QString & term,
@@ -134,7 +134,7 @@ const QString & UserInfo::userid() const
         return m_userid;
 }
 
-const QString & UserInfo::mwi() const
+const QStringList & UserInfo::mwi() const
 {
         return m_mwi;
 }

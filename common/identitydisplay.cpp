@@ -77,6 +77,8 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         m_presencevalue->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         m_presencevalue->setProperty("function", "presence");
         
+        m_voicemail = new QLabel(this);
+        
         m_qf = new QFrame(this);
         m_qf->setFrameShape(QFrame::HLine);
         m_qf->setLineWidth(2);
@@ -117,6 +119,7 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
 	glayout->addWidget( m_presencevalue, idline, 1, Qt::AlignLeft );
         glayout->addWidget( m_agentstatus_label, idline, 2, Qt::AlignRight );
 	glayout->addWidget( m_agentstatus_value, idline, 3, Qt::AlignLeft );
+	glayout->addWidget( m_voicemail, idline, 4, Qt::AlignCenter );
         idline ++;
 	// glayout->addWidget( m_qf, idline, 0, 1, 7, 0 );
 	// glayout->addWidget( m_agent, idline, 0, Qt::AlignCenter );
@@ -235,12 +238,13 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_phonenum->setText(m_ui->phonenum());
         // + tr("on") + " <b>" + m_ui->astid() + "</b>");
         // m_presencevalue->setText(m_ui->availstate());
-        QStringList vm = m_ui->mwi().split("-");
-//         m_voicemail->setText(tr("Voicemail") + "\n" +
-//                              // vm[0] + " " + tr("waiting") + " " +
-//                              vm[1] + " " + tr("old") + " " +
-//                              vm[2] + " " + tr("new"));
-//         m_voicemail->hide();
+        QStringList vm = m_ui->mwi();
+        if(vm.size() > 2)
+                m_voicemail->setText(tr("Voicemail") + "\n" +
+                                     // vm[0] + " " + tr("waiting") + " " +
+                                     vm[1] + " " + tr("old") + " " +
+                                     vm[2] + " " + tr("new"));
+        // m_voicemail->hide();
         // changes the "watched agent" only if no one else has done it before
         changeWatchedAgent(m_ui->astid() + " " + m_ui->agentid(), false);
 }

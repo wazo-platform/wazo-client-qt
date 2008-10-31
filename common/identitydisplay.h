@@ -85,6 +85,7 @@ private:
         void hideAgentProps();
         
         QLabel * m_user;
+        QLabel * m_voicemail;
         QLabel * m_phonenum;
         QLabel * m_presencelabel;
         QComboBox * m_presencevalue;

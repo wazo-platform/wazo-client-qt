@@ -823,23 +823,24 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "users") {
                         QString function = datamap["function"].toString();
                         if (function == "sendlist") {
-                                QStringList listpeers = datamap["payload"].toStringList();
-                                for(int i = 0 ; i < listpeers.size() ; i += 13) {
-                                        //qDebug() << "users-list" << listpeers[i] << listpeers[i+1] << listpeers[i+2];
-                                        //<< listpeers[i+3] << listpeers[i+4] << listpeers[i+5]
-                                        //<< listpeers[i+6] << listpeers[i+7] << listpeers[i+8] << listpeers[i+9];
-                                        QString iduser = listpeers[i+1] + "/" + listpeers[i];
+                                QVariantList listusers = datamap["payload"].toList();
+                                foreach(QVariant userprops, listusers) {
+                                        QVariantList listpeers = userprops.toList();
+                                        //qDebug() << "users-list" << listpeers[0] << listpeers[1] << listpeers[2];
+                                        //<< listpeers[3] << listpeers[4] << listpeers[5]
+                                        //<< listpeers[6] << listpeers[7] << listpeers[8] << listpeers[9];
+                                        QString iduser = listpeers[1].toString() + "/" + listpeers[0].toString();
                                         if(! m_users.contains(iduser)) {
                                                 m_users[iduser] = new UserInfo(iduser);
-                                                m_users[iduser]->setFullName(listpeers[i+2]);
+                                                m_users[iduser]->setFullName(listpeers[2].toString());
                                                 newUser(m_users[iduser]);
                                         }
-                                        QString imstatus = listpeers[i+3];
+                                        QString imstatus = listpeers[3].toString();
                                         m_users[iduser]->setAvailState(imstatus);
-                                        m_users[iduser]->setNumber(listpeers[i+7]);
-                                        m_users[iduser]->setPhones(listpeers[i+5], listpeers[i+6], listpeers[i+8]);
-                                        m_users[iduser]->setAgent(listpeers[i+9]);
-                                        m_users[iduser]->setMWI(listpeers[i+10], listpeers[i+11], listpeers[i+12]);
+                                        m_users[iduser]->setNumber(listpeers[7].toString());
+                                        m_users[iduser]->setPhones(listpeers[5].toString(), listpeers[6].toString(), listpeers[8].toString());
+                                        m_users[iduser]->setAgent(listpeers[9].toString());
+                                        m_users[iduser]->setMWI(listpeers[10].toStringList());
                                         updatePeerAgent(iduser, "imstatus", imstatus.split("/"));
                                         if(m_presencecolors.contains(imstatus))
                                                 updateAgentPresence(m_users[iduser]->agentid(), imstatus, m_presencecolors[imstatus]);
@@ -883,8 +884,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                         if(m_users.contains(iduser) && (iduser == m_fullid)) {
                                                 QString subclass = datamap["subclass"].toString();
                                                 if(subclass == "mwi") {
-                                                        QStringList payload = datamap["payload"].toStringList();
-                                                        m_users[iduser]->setMWI(payload[0], payload[1], payload[2]);
+                                                        m_users[iduser]->setMWI(datamap["payload"].toStringList());
                                                         localUserInfoDefined(m_users[m_fullid]);
                                                 }
                                         }

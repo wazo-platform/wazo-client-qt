@@ -57,9 +57,7 @@ public:
                        const QString &,
                        const QString &);
         void setAgent(const QString &);
-        void setMWI(const QString &,
-                    const QString &,
-                    const QString &);
+        void setMWI(const QStringList &);
         bool hasPhone(const QString &,
                       const QString &,
                       const QString &);
@@ -67,7 +65,7 @@ public:
                       const QString &);
         const QString & phonenum() const;
         const QString & fullname() const;
-        const QString & mwi() const;
+        const QStringList & mwi() const;
         const QString & userid() const;
         const QString & agentid() const;
         const QString & astid() const;
@@ -89,7 +87,7 @@ private:
         QStringList m_termlist;
         QString m_agentnum;
         QString m_agentphonenum;
-        QString m_mwi;
+        QStringList m_mwi;
         QHash<QString, QString> m_termstatus;
 };
 
