@@ -164,27 +164,25 @@ void AgentsPanel::updatePeerAgent(const QString &,
                                 QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                                 m_square->fill(Qt::green);
                                 m_agent_joined_list[agname].append(qname);
-                                m_agent_joined_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()));
                                 // m_agent_joined_status[agname]->setPixmap(QPixmap(* m_square));
-
+                                
                                 QString pstatus = params[4];
                                 if(pstatus == "0") {
                                         if(! m_agent_paused_list[agname].contains(qname)) {
                                                 QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                                                 m_square->fill(Qt::green);
                                                 m_agent_paused_list[agname].append(qname);
-                                                m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
-                                                                                                       - m_agent_paused_list[agname].size()));
                                                 // m_agent_paused_status[agname]->setPixmap(QPixmap(* m_square));
                                         }
                                 } else {
                                         if(m_agent_paused_list[agname].contains(qname)) {
                                                 m_agent_paused_list[agname].removeAll(qname);
-                                                m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
-                                                                                                       - m_agent_paused_list[agname].size()));
                                         }
                                 }
                         }
+                        m_agent_joined_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()));
+                        m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
+                                                                               - m_agent_paused_list[agname].size()));
                 }
         } else if(command == "leavequeue") {
                 QString astid = params[1];
@@ -193,30 +191,31 @@ void AgentsPanel::updatePeerAgent(const QString &,
                         QString qname = params[3];
                         if(m_agent_joined_list[agname].contains(qname)) {
                                 m_agent_joined_list[agname].removeAll(qname);
-                                m_agent_joined_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()));
+                                m_agent_paused_list[agname].removeAll(qname);
                         }
+                        m_agent_joined_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()));
+                        m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
+                                                                               - m_agent_paused_list[agname].size()));
                 }
         } else if(command == "unpaused") {
                 QString astid = params[1];
                 QString agname = params[2];
                 if(m_agent_labels.contains(agname)) {
                         QString qname = params[3];
-                        if(! m_agent_paused_list[agname].contains(qname)) {
+                        if(! m_agent_paused_list[agname].contains(qname))
                                 m_agent_paused_list[agname].append(qname);
-                                m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
-                                                                                       - m_agent_paused_list[agname].size()));
-                        }
+                        m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
+                                                                               - m_agent_paused_list[agname].size()));
                 }
         } else if(command == "paused") {
                 QString astid = params[1];
                 QString agname = params[2];
                 if(m_agent_labels.contains(agname)) {
                         QString qname = params[3];
-                        if(m_agent_paused_list[agname].contains(qname)) {
+                        if(m_agent_paused_list[agname].contains(qname))
                                 m_agent_paused_list[agname].removeAll(qname);
-                                m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
-                                                                                       - m_agent_paused_list[agname].size()));
-                        }
+                        m_agent_paused_number[agname]->setText(QString::number(m_agent_joined_list[agname].size()
+                                                                               - m_agent_paused_list[agname].size()));
                 }
         } else if(command == "agentlogin") {
                 QString astid = params[1];
