@@ -123,10 +123,8 @@ public:
 	const QString & getAvailState() const;	//!< returns availability status
 	void setCheckedFunction(const QString &, bool b);	//!< set m_checked_function
 	bool checkedFunction(const QString &);			//!< get m_checked_function
-	void setEnabledPresence(bool b);	//!< set m_enabled_presence
-	bool enabledPresence();			//!< get m_enabled_presence
-	void setEnabledCInfo(bool b);		//!< set m_enabled_cinfo
-	bool enabledCInfo();			//!< get m_enabled_cinfo
+	void setEnabledFunction(const QString &, bool b);	//!< set m_enabled_function
+	bool enabledFunction(const QString &);			//!< get m_enabled_function
         
 	void setMyClientId();			//! set m_clientid
         
@@ -299,9 +297,8 @@ private:
 	uint m_keepaliveinterval;	//!< Keep alive interval (in msec)
         
 	int m_historysize;
-	bool m_enabled_presence;      	//!< presence is enabled
-	bool m_enabled_cinfo;      	//!< customer info is enabled
 	QHash<QString, bool> m_checked_function;      	//!< function checked
+	QHash<QString, bool> m_enabled_function;      	//!< function enabled
 	bool m_checked_lastconnwins;   	//!< the last connected account "wins"
         
 	// Replies given by the server

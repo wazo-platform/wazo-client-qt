@@ -5,6 +5,7 @@ QMAKE?=qmake
 LRELEASE?=lrelease
 UPXRUN?=upx
 ECHO?=/bin/echo
+JOPT?=-j1
 
 # WIN32 targets only
 MAKENSIS=/cygdrive/c/Program\ Files/NSIS/makensis.exe
@@ -47,7 +48,7 @@ clean-%:
 	@make -C $* distclean || true
 
 linux-%:
-	@cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts qt_fr.ts && make
+	@cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts qt_fr.ts && make ${JOPT}
 
 stripandpack-%:
 	@strip $*/$* || true
@@ -94,7 +95,7 @@ all-macos:
 	@make macos-xivoclient
 
 macos-%:
-	@cd $* && ${QMAKE} $*.pro -o Makefile && ${LRELEASE} $*_fr.ts qt_fr.ts && make
+	@cd $* && ${QMAKE} $*.pro -o Makefile && ${LRELEASE} $*_fr.ts qt_fr.ts && make ${JOPT}
 	@strip $*/$*.app/Contents/MacOS/$*
 	@${UPXRUN} $*/$*.app/Contents/MacOS/$*
 	@hdiutil create $*-${_XIVOVER_}-${_SVNVER_}.dmg -srcfolder $*/$*.app -format UDBZ

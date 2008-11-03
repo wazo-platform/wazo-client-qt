@@ -269,10 +269,10 @@ void BaseEngine::saveSettings()
 void BaseEngine::setCheckedFunction(const QString & function, bool b) {
 	if(b != m_checked_function[function]) {
 		m_checked_function[function] = b;
-                if(function == "presence")
-                        if((state() == ELogged) && m_enabled_presence) {
+                if ((state() == ELogged) && m_enabled_function[function]) {
+                        if(function == "presence")
                                 availAllowChanged(b);
-                        }
+                }
 	}
 }
 
@@ -280,12 +280,12 @@ bool BaseEngine::checkedFunction(const QString & function) {
         return m_checked_function[function];
 }
 
-void BaseEngine::setEnabledCInfo(bool b) {
-        m_enabled_cinfo = b;
+void BaseEngine::setEnabledFunction(const QString & function, bool b) {
+        m_enabled_function[function] = b;
 }
 
-bool BaseEngine::enabledCInfo() {
-        return m_enabled_cinfo;
+bool BaseEngine::enabledFunction(const QString & function) {
+        return m_enabled_function[function];
 }
 
 void BaseEngine::config_and_start(const QString & login,
@@ -1061,7 +1061,11 @@ bool BaseEngine::parseCommand(const QString & line)
                         m_counters = datamap["presencecounter"];
                         m_guioptions["server_gui"] = datamap["guisettings"];
                         QVariantMap tmp;
-                        tmp["functions"] = datamap["capafuncs"];
+                        QStringList todisp;
+                        foreach (QString function, m_capafuncs)
+                                if(m_checked_function.contains(function) && m_checked_function[function])
+                                        todisp.append(function);
+                        tmp["functions"] = todisp;
                         tmp["xlets"] = datamap["capaxlets"];
                         m_guioptions["server_funcs"] = tmp;
                         
@@ -1072,10 +1076,13 @@ bool BaseEngine::parseCommand(const QString & line)
                         qDebug() << "m_counters"  << m_counters;
                         
                         // XXXX m_capafuncs => config file
+                        // m_enabled_function's purposes are :
+                        // - to keep track of the user's true rights
                         foreach (QString function, CheckFunctions)
-                                if(! m_capafuncs.contains(function)) {
-                                        m_checked_function[function] = false;
-                                }
+                                if(m_capafuncs.contains(function))
+                                        m_enabled_function[function] = true;
+                                else
+                                        m_enabled_function[function] = false;
                         
                         if(m_capafuncs.size() == 0) {
                                 stop();
@@ -1847,14 +1854,12 @@ void BaseEngine::setState(EngineState state)
 	if(state != m_state) {
 		m_state = state;
 		if(state == ELogged) {
-                        m_enabled_presence = m_capafuncs.contains("presence");
 			stopTryAgainTimer();
-			if(m_checked_function["presence"] && m_enabled_presence)
+			if(m_checked_function["presence"] && m_enabled_function["presence"])
                                 availAllowChanged(true);
 			logged();
                         updatePresence(m_capapresence);
 		} else if(state == ENotLogged) {
-                        m_enabled_presence = false;
 			availAllowChanged(false);
 			delogged();
                         // reset some variables when disconnecting
