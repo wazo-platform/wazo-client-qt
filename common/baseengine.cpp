@@ -1062,6 +1062,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         m_guioptions["server_gui"] = datamap["guisettings"];
                         QVariantMap tmp;
                         QStringList todisp;
+                        m_checked_function["switchboard"] = true;
                         foreach (QString function, m_capafuncs)
                                 if(m_checked_function.contains(function) && m_checked_function[function])
                                         todisp.append(function);
@@ -1294,7 +1295,7 @@ void BaseEngine::socketReadyRead()
 
 void BaseEngine::actionFromFiche(const QStringList & infos)
 {
-        qDebug() << "BaseEngine::actionFromFiche" << infos;
+        // qDebug() << "BaseEngine::actionFromFiche()" << infos;
         ServerCommand * sc = new ServerCommand();
         sc->addString("class", "actionfiche");
         sc->addString("direction", "xivoserver");
