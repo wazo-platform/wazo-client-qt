@@ -24,9 +24,9 @@ namespace JsonQt
 	QVariantMap JsonToVariant::parse(const QString& json) throw(ParseException)
 	{
 		JsonToVariant parser;
-                parser.m_sym = 0;
 		// Store the start and end of the string
 		parser.m_next = json.constBegin();
+		parser.m_sym = parser.m_next;
 		parser.m_end = json.constEnd();
 		// A JSON Object is the top-level item in the parse tree
 		return parser.parseObject();
@@ -493,12 +493,10 @@ namespace JsonQt
 	QString JsonToVariant::remaining()
 	{
 		QString data;
-                
-                if(m_sym) {
-                        QString::ConstIterator it = m_sym;
-                        while(it != m_end) data += *it++;
-                }
-                
+
+		QString::ConstIterator it = m_sym;
+		while(it != m_end) data += *it++;
+
 		return data;
 	}
 
