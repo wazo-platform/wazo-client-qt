@@ -47,8 +47,9 @@ namespace JsonQt
 			 * 	valid JSON (or at least this parser thinks it
 			 * 	isn't ;) )
 			 */
-			QVariantMap parse(const QString& json) throw (ParseException);
+			static QVariantMap parse(const QString& json) throw (ParseException);
 		private:
+			JsonToVariant();
 			// Parsers for types given on JSON.org
 			QVariantMap parseObject();
 			QVariantMap parseMembers();

@@ -19,14 +19,17 @@
 
 namespace JsonQt
 {
+	JsonToVariant::JsonToVariant(){}
+
 	QVariantMap JsonToVariant::parse(const QString& json) throw(ParseException)
 	{
-                m_sym = 0;
+		JsonToVariant parser;
+                parser.m_sym = 0;
 		// Store the start and end of the string
-		m_next = json.constBegin();
-		m_end = json.constEnd();
+		parser.m_next = json.constBegin();
+		parser.m_end = json.constEnd();
 		// A JSON Object is the top-level item in the parse tree
-		return parseObject();
+		return parser.parseObject();
 	}
 
 	QVariantMap JsonToVariant::parseObject()
@@ -135,6 +138,8 @@ namespace JsonQt
 		 * 	bool
 		 * 	null
 		 */
+
+		tryConsume(':');
 
 		// Lookahead to work out the type of value
 		switch(peekNext().toAscii())
@@ -463,10 +468,10 @@ namespace JsonQt
 		switch(peekNext().toAscii())
 		{
 			case 't':
-				consume(QString(" true"));
+				consume(QString("true"));
 				return true;
 			case 'f':
-				consume(QString(" false"));
+				consume(QString("false"));
 				return false;
 			default:
 				consume(false);
@@ -481,7 +486,7 @@ namespace JsonQt
 		 * 	null
 		 */
 
-		consume(QString(" null"));
+		consume(QString("null"));
 		return QVariant();
 	}
 

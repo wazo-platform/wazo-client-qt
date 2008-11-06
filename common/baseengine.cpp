@@ -197,10 +197,9 @@ void BaseEngine::loadSettings()
                 "\"loginkind\":0,"
                 "\"autourl_allowed\":0,"
                 "\"queuelevels\":{\"green\":0,\"orange\":4,\"red\":12}}";
-        JsonQt::JsonToVariant parser;
         QVariant data;
         try {
-                data = parser.parse(defaultguioptions);
+                data = JsonQt::JsonToVariant::parse(defaultguioptions);
         }
         catch(JsonQt::ParseException) {
                 qDebug() << "BaseEngine::parseCommand() exception catched for" << defaultguioptions;
@@ -668,10 +667,9 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 
 bool BaseEngine::parseCommand(const QString & line)
 {
-        JsonQt::JsonToVariant parser;
         QVariant data;
         try {
-                data = parser.parse(line.trimmed());
+                data = JsonQt::JsonToVariant::parse(line.trimmed());
         }
         catch(JsonQt::ParseException) {
                 qDebug() << "BaseEngine::parseCommand() exception catched for" << line.trimmed();
@@ -1271,8 +1269,7 @@ void BaseEngine::socketReadyRead()
                 while(m_filesocket->canReadLine()) {
                         QByteArray data = m_filesocket->readLine();
                         QString line = QString::fromUtf8(data);
-                        JsonQt::JsonToVariant parser;
-                        QVariant jsondata = parser.parse(line.trimmed());
+                        QVariant jsondata = JsonQt::JsonToVariant::parse(line.trimmed());
                         QVariantMap jsondatamap = jsondata.toMap();
                         if(jsondatamap["class"].toString() == "fileref") {
                                 if(m_filedir == "download") {
