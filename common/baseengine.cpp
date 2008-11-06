@@ -50,10 +50,10 @@
 #include <QTimerEvent>
 
 #include "JsonToVariant.h"
+#include "VariantToJson.h"
 
 #include "baseengine.h"
 #include "xivoconsts.h"
-#include "servercommand.h"
 
 /*! \brief Constructor.
  *
@@ -437,6 +437,12 @@ void BaseEngine::sendCommand(const QString & command)
                 m_sbsocket->write((command + "\n").toAscii());
 }
 
+void BaseEngine::sendJsonCommand(const QVariantMap & command)
+{
+        QString jsoncommand(JsonQt::VariantToJson::parse(command));
+        sendCommand(jsoncommand);
+}
+
 /*! \brief parse history command response
  *
  * parse the history command response from the server and
@@ -481,24 +487,24 @@ void BaseEngine::socketConnected()
                 stopTryAgainTimer();
                 /* do the login/identification */
                 setMyClientId();
-                ServerCommand * sc = new ServerCommand();
-                sc->addString("class", "login_id");
-                sc->addString("direction", "xivoserver");
-                sc->addString("userid", m_userid);
-                sc->addString("company", m_company);
-                sc->addString("ident", m_clientid);
-                sc->addString("version", __current_client_version__);
-                sc->addString("xivoversion", __xivo_version__);
-                sendCommand(sc->find());
-                
+                QVariantMap command;
+                command["class"] = "login_id";
+                command["direction"] = "xivoserver";
+                command["userid"] = m_userid;
+                command["company"] = m_company;
+                command["ident"] = m_clientid;
+                command["version"] = __current_client_version__;
+                command["xivoversion"] = __xivo_version__;
+                sendJsonCommand(command);
         } else if(socketname == "filetransfers") {
-                ServerCommand * sc = new ServerCommand();
-                sc->addString("class", "filetransfer");
-                sc->addString("direction", "xivoserver");
-                sc->addString("tdirection", m_filedir);
-                sc->addString("fileid", m_fileid);
+                QVariantMap command;
+                command["class"] = "filetransfer";
+                command["direction"] = "xivoserver";
+                command["tdirection"] = m_filedir;
+                command["fileid"] = m_fileid;
+                QString jsoncommand(JsonQt::VariantToJson::parse(command));
                 if(m_filesocket->state() == QAbstractSocket::ConnectedState)
-                        m_filesocket->write((sc->find() + "\n").toAscii());
+                        m_filesocket->write((jsoncommand + "\n").toAscii());
         }
 }
 
@@ -708,11 +714,11 @@ bool BaseEngine::parseCommand(const QString & line)
                         } else if(function == "del") {
                                 removeQueues(datamap["astid"].toString(), datamap["deltalist"].toStringList());
                         } else if(function == "add") {
-                                ServerCommand * sc2 = new ServerCommand();
-                                sc2->addString("class", "queues");
-                                sc2->addString("function", "getlist");
-                                sc2->addString("direction", "xivoserver");
-                                sendCommand(sc2->find());
+                                QVariantMap command;
+                                command["class"] = "queues";
+                                command["direction"] = "xivoserver";
+                                command["function"] = "getlist";
+                                sendJsonCommand(command);
                                 // qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["deltalist"].toStringList();
                         }
                         
@@ -1000,11 +1006,11 @@ bool BaseEngine::parseCommand(const QString & line)
                                 QString tohash = datamap["sessionid"].toString() + ":" + m_password;
                                 QCryptographicHash hidepass(QCryptographicHash::Sha1);
                                 QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
-                                ServerCommand * sc2 = new ServerCommand();
-                                sc2->addString("class", "login_pass");
-                                sc2->addString("direction", "xivoserver");
-                                sc2->addString("hashedpassword", res);
-                                sendCommand(sc2->find());
+                                QVariantMap command;
+                                command["class"] = "login_pass";
+                                command["direction"] = "xivoserver";
+                                command["hashedpassword"] = QString(res);
+                                sendJsonCommand(command);
                         }
                         
                 } else if (thisclass == "loginko") {
@@ -1013,43 +1019,40 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "login_pass_ok") {
                         QStringList capas = datamap["capalist"].toStringList();
-                        ServerCommand * sc2 = new ServerCommand();
-                        sc2->addString("class", "login_capas");
-                        sc2->addString("direction", "xivoserver");
+                        QVariantMap command;
+                        command["class"] = "login_capas";
+                        command["direction"] = "xivoserver";
                         if (capas.size() == 1)
-                                sc2->addString("capaid", capas[0]);
+                                command["capaid"] = capas[0];
                         else {
                                 if(m_useridopt.size() > 0) {
                                         if(capas.contains(m_useridopt))
-                                                sc2->addString("capaid", m_useridopt);
+                                                command["capaid"] = m_useridopt;
                                         else
-                                                sc2->addString("capaid", capas[0]);
+                                                command["capaid"] = capas[0];
                                 } else
-                                        sc2->addString("capaid", capas[0]);
+                                        command["capaid"] = capas[0];
                         }
                         
                         switch(m_loginkind) {
                         case 0:
-                                sc2->addString("loginkind", "user");
+                                command["loginkind"] = "user";
                                 break;
                         case 2:
-                                sc2->addString("agentlogin", "now");
+                                command["agentlogin"] = "now";
                         case 1:
-                                sc2->addString("loginkind", "agent");
-                                sc2->addString("phonenumber", m_phonenumber);
+                                command["loginkind"] = "agent";
+                                command["phonenumber"] = m_phonenumber;
                                 break;
                         }
                         
                         if(m_checked_function["presence"])
-                                sc2->addString("state", m_availstate);
+                                command["state"] = m_availstate;
                         else
-                                sc2->addString("state", __nopresence__);
-                        if(m_checked_lastconnwins)
-                                sc2->addString("lastconnwins", "true");
-                        else
-                                sc2->addString("lastconnwins", "false");
-                        sendCommand(sc2->find());
-
+                                command["state"] = __nopresence__;
+                        command["lastconnwins"] = m_checked_lastconnwins;
+                        sendJsonCommand(command);
+                        
                 } else if (thisclass == "login_capas_ok") {
                         m_capafuncs = datamap["capafuncs"].toStringList();
                         m_capaxlets = datamap["capaxlets"].toStringList();
@@ -1103,30 +1106,29 @@ bool BaseEngine::parseCommand(const QString & line)
 
 void BaseEngine::agentAction(const QString & action)
 {
-        // qDebug() << "BaseEngine::agentAction" << action;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "agent");
-        sc->addString("direction", "xivoserver");
-        sc->addStringList("command", action.split(" "));
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "agent";
+        command["direction"] = "xivoserver";
+        command["common"] = action.split(" ");
+        sendJsonCommand(command);
 }
 
 void BaseEngine::meetmeAction(const QString & action)
 {
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "meetme");
-        sc->addString("direction", "xivoserver");
-        sc->addStringList("command", action.split(" "));
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "meetme";
+        command["direction"] = "xivoserver";
+        command["common"] = action.split(" ");
+        sendJsonCommand(command);
 }
 
 void BaseEngine::requestFileList(const QString & action)
 {
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "callcampaign");
-        sc->addString("direction", "xivoserver");
-        sc->addStringList("command", action.split(" "));
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "callcampaign";
+        command["direction"] = "xivoserver";
+        command["common"] = action.split(" ");
+        sendJsonCommand(command);
 }
 
 void BaseEngine::sendFaxCommand(const QString & filename,
@@ -1140,13 +1142,13 @@ void BaseEngine::sendFaxCommand(const QString & filename,
         qf->close();
         m_faxsize = m_filedata->size();
         if(m_filedata->size() > 0) {
-                ServerCommand * sc = new ServerCommand();
-                sc->addString("class", "faxsend");
-                sc->addString("direction", "xivoserver");
-                sc->addString("size", QString::number(m_faxsize));
-                sc->addString("number", number);
-                sc->addString("hide", QString::number(hide));
-                sendCommand(sc->find());
+                QVariantMap command;
+                command["class"] = "faxsend";
+                command["direction"] = "xivoserver";
+                command["size"] = QString::number(m_faxsize);
+                command["number"] = number;
+                command["hide"] = QString::number(hide);
+                sendJsonCommand(command);
         } else
                 ackFax("ko", "file");
 }
@@ -1293,11 +1295,11 @@ void BaseEngine::socketReadyRead()
 void BaseEngine::actionFromFiche(const QStringList & infos)
 {
         // qDebug() << "BaseEngine::actionFromFiche()" << infos;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "actionfiche");
-        sc->addString("direction", "xivoserver");
-        sc->addStringList("buttonaction", infos);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "actionfiche";
+        command["direction"] = "xivoserver";
+        command["buttonaction"] = infos;
+        sendJsonCommand(command);
 }
 
 /*! \brief transfers to the typed number
@@ -1327,12 +1329,12 @@ void BaseEngine::copyNumber(const QString & dst)
 void BaseEngine::originateCall(const QString & src, const QString & dst)
 {
 	// qDebug() << "BaseEngine::originateCall()" << src << dst;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "originate");
-        sc->addString("direction", "xivoserver");
-        sc->addString("source", src);
-        sc->addString("destination", dst);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "originate";
+        command["direction"] = "xivoserver";
+        command["source"] = src;
+        command["destination"] = dst;
+        sendJsonCommand(command);
 }
 
 /*! \brief send a transfer call command to the server
@@ -1340,12 +1342,12 @@ void BaseEngine::originateCall(const QString & src, const QString & dst)
 void BaseEngine::transferCall(const QString & src, const QString & dst)
 {
 	// qDebug() << "BaseEngine::transferCall()" << src << dst;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "transfer");
-        sc->addString("direction", "xivoserver");
-        sc->addString("source", src);
-        sc->addString("destination", dst);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "transfer";
+        command["direction"] = "xivoserver";
+        command["source"] = src;
+        command["destination"] = dst;
+        sendJsonCommand(command);
 }
 
 /*! \brief send an attended transfer call command to the server
@@ -1353,12 +1355,12 @@ void BaseEngine::transferCall(const QString & src, const QString & dst)
 void BaseEngine::atxferCall(const QString & src, const QString & dst)
 {
 	// qDebug() << "BaseEngine::atxferCall()" << src << dst;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "atxfer");
-        sc->addString("direction", "xivoserver");
-        sc->addString("source", src);
-        sc->addString("destination", dst);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "atxfer";
+        command["direction"] = "xivoserver";
+        command["source"] = src;
+        command["destination"] = dst;
+        sendJsonCommand(command);
 }
 
 /*! \brief send a transfer call command to the server
@@ -1367,13 +1369,13 @@ void BaseEngine::parkCall(const QString & src)
 {
 	// qDebug() << "BaseEngine::parkCall()" << src;
         QStringList srclist = src.split("/");
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "transfer");
-        sc->addString("direction", "xivoserver");
-        sc->addString("source", src);
-        sc->addString("destination",
-                      "p/" + srclist[1] + "/" + srclist[2] + "///special:parkthecall");
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "transfer";
+        command["direction"] = "xivoserver";
+        command["source"] = src;
+        command["destination"] =
+                "p/" + srclist[1] + "/" + srclist[2] + "///special:parkthecall";
+        sendJsonCommand(command);
 }
 
 /*! \brief intercept a call (a channel)
@@ -1385,12 +1387,12 @@ void BaseEngine::parkCall(const QString & src)
 void BaseEngine::interceptCall(const UserInfo *, const QString & channel)
 {
 	// qDebug() << "BaseEngine::interceptCall()" << ui << channel;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "transfer");
-        sc->addString("direction", "xivoserver");
-        sc->addString("source", channel);
-        sc->addString("destination", "user:special:me");
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "transfer";
+        command["direction"] = "xivoserver";
+        command["source"] = channel;
+        command["destination"] = "user:special:me";
+        sendJsonCommand(command);
 }
 
 /*! \brief hang up a channel
@@ -1400,12 +1402,12 @@ void BaseEngine::interceptCall(const UserInfo *, const QString & channel)
 void BaseEngine::hangupCall(const UserInfo * ui, const QString & channel)
 {
 	// qDebug() << "BaseEngine::hangupCall()" << ui << channel;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "hangup");
-        sc->addString("direction", "xivoserver");
-        sc->addString("astid", ui->astid());
-        sc->addString("channel", channel);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "hangup";
+        command["direction"] = "xivoserver";
+        command["astid"] = ui->astid();
+        command["channel"] = channel;
+        sendJsonCommand(command);
 }
 
 /*! \brief hang up a channel
@@ -1415,12 +1417,12 @@ void BaseEngine::hangupCall(const UserInfo * ui, const QString & channel)
 void BaseEngine::simplehangupCall(const UserInfo * ui, const QString & channel)
 {
 	// qDebug() << "BaseEngine::simplehangupCall()" << channel;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "simplehangup");
-        sc->addString("direction", "xivoserver");
-        sc->addString("astid", ui->astid());
-        sc->addString("channel", channel);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "simplehangup";
+        command["direction"] = "xivoserver";
+        command["astid"] = ui->astid();
+        command["channel"] = channel;
+        sendJsonCommand(command);
 }
 
 /*! \brief pick up a channel
@@ -1430,12 +1432,12 @@ void BaseEngine::simplehangupCall(const UserInfo * ui, const QString & channel)
 void BaseEngine::pickUp(const UserInfo * ui)
 {
 	// qDebug() << "BaseEngine::pickUp()" << ui;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "pickup");
-        sc->addString("direction", "xivoserver");
-        sc->addString("astid", ui->astid());
-        sc->addString("phonenum", ui->phonenum());
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "pickup";
+        command["direction"] = "xivoserver";
+        command["astid"] = ui->astid();
+        command["phonenum"] = ui->phonenum();
+        sendJsonCommand(command);
 }
 
 /*! \brief send the directory search command to the server
@@ -1445,11 +1447,11 @@ void BaseEngine::pickUp(const UserInfo * ui)
 void BaseEngine::searchDirectory(const QString & text)
 {
         // qDebug() << "BaseEngine::searchDirectory()" << text;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "directory-search");
-        sc->addString("direction", "xivoserver");
-        sc->addString("pattern", text);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "directory-search";
+        command["direction"] = "xivoserver";
+        command["pattern"] = text;
+        sendJsonCommand(command);
 }
 
 /*! \brief ask history for an extension 
@@ -1461,13 +1463,13 @@ void BaseEngine::requestHistory(const QString & peer, int mode)
 	 * mode = 2 : Missed calls */
 	if(mode >= 0) {
                 // qDebug() << "BaseEngine::requestHistory()" << peer;
-                ServerCommand * sc = new ServerCommand();
-                sc->addString("class", "history");
-                sc->addString("direction", "xivoserver");
-                sc->addString("peer", peer);
-                sc->addString("size", QString::number(m_historysize));
-                sc->addString("mode", QString::number(mode));
-                sendCommand(sc->find());
+                QVariantMap command;
+                command["class"] = "history";
+                command["direction"] = "xivoserver";
+                command["peer"] = peer;
+                command["size"] = QString::number(m_historysize);
+                command["mode"] = QString::number(mode);
+                sendJsonCommand(command);
         }
 }
 
@@ -1713,37 +1715,37 @@ bool BaseEngine::isRemovable(const QMetaObject * metaobject)
 
 void BaseEngine::featurePutOpt(const QString & capa, bool b)
 {
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "featuresput");
-        sc->addString("direction", "xivoserver");
-        sc->addString("userid", m_monitored_userid);
+        QVariantMap command;
+        command["class"] = "featuresput";
+        command["direction"] = "xivoserver";
+        command["userid"] = m_monitored_userid;
         if(capa == "enablevm")
-                sc->addString("function", "enablevoicemail");
+                command["function"] = "enablevoicemail";
         else if(capa == "incallrec")
-                sc->addString("function", "callrecord");
+                command["function"] = "callrecord";
         else if(capa == "incallfilter")
-                sc->addString("function", "callfilter");
+                command["function"] = "callfilter";
         else if(capa == "enablednd")
-                sc->addString("function", "enablednd");
-        sc->addString("value", QString(b ? "1" : "0"));
-        sendCommand(sc->find());
+                command["function"] = "enablednd";
+        command["value"] = QString(b ? "1" : "0");
+        sendJsonCommand(command);
 }
 
 void BaseEngine::featurePutForward(const QString & capa, bool b, const QString & dst)
 {
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "featuresput");
-        sc->addString("direction", "xivoserver");
-        sc->addString("userid", m_monitored_userid);
+        QVariantMap command;
+        command["class"] = "featuresput";
+        command["direction"] = "xivoserver";
+        command["userid"] = m_monitored_userid;
         if(capa == "fwdunc")
-                sc->addString("function", "enableunc");
+                command["function"] = "enableunc";
         else if(capa == "fwdbusy")
-                sc->addString("function", "enablebusy");
+                command["function"] = "enablebusy";
         else if(capa == "fwdrna")
-                sc->addString("function", "enablerna");
-        sc->addString("value", QString(b ? "1" : "0"));
-        sc->addString("destination", dst);
-        sendCommand(sc->find());
+                command["function"] = "enablerna";
+        command["value"] = QString(b ? "1" : "0");
+        command["destination"] = dst;
+        sendJsonCommand(command);
 }
 
 void BaseEngine::askFeatures()
@@ -1752,43 +1754,25 @@ void BaseEngine::askFeatures()
         QString featurestoget = "user:special:me";
         if(m_monitored_userid.size() > 0)
                 featurestoget = m_monitored_userid;
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "featuresget");
-        sc->addString("direction", "xivoserver");
-        sc->addString("userid", featurestoget);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "featuresget";
+        command["direction"] = "xivoserver";
+        command["userid"] = featurestoget;
+        sendJsonCommand(command);
 }
 
 void BaseEngine::askCallerIds()
 {
         // qDebug() << "BaseEngine::askCallerIds()";
-        ServerCommand * sc1 = new ServerCommand();
-        sc1->addString("class", "users");
-        sc1->addString("function", "getlist");
-        sc1->addString("direction", "xivoserver");
-        ServerCommand * sc2 = new ServerCommand();
-        sc2->addString("class", "phones");
-        sc2->addString("function", "getlist");
-        sc2->addString("direction", "xivoserver");
-        ServerCommand * sc3 = new ServerCommand();
-        sc3->addString("class", "queues");
-        sc3->addString("function", "getlist");
-        sc3->addString("direction", "xivoserver");
-        ServerCommand * sc4 = new ServerCommand();
-        sc4->addString("class", "agents");
-        sc4->addString("function", "getlist");
-        sc4->addString("direction", "xivoserver");
-        // ServerCommand * sc5 = new ServerCommand();
-        // sc5->addString("class", "getguisettings");
-        // sc5->addString("direction", "xivoserver");
-        
-        sendCommand(sc1->find());
-        sendCommand(sc3->find());
-        sendCommand(sc4->find());
-        sendCommand(sc2->find());
-        sendCommand(sc1->find());
-        
-        // sendCommand(sc5->find());
+        QVariantMap command;
+        command["direction"] = "xivoserver";
+        command["function"] = "getlist";
+        QStringList getlists = (QStringList() << "users" << "queues" << "agents" << "phones" << "users");
+        foreach(QString kind, getlists) {
+                command.remove("class");
+                command["class"] = kind;
+                sendJsonCommand(command);
+        }
 }
 
 void BaseEngine::setSystrayed(bool b)
@@ -1873,12 +1857,12 @@ void BaseEngine::changeWatchedAgentSlot(const QString & astagentid, bool force)
         if(force || ((m_agent_watched_astid.size() == 0) && (m_agent_watched_agentid.size() == 0))) {
                 m_agent_watched_astid = astagentid.split(" ")[0];
                 m_agent_watched_agentid = astagentid.split(" ")[1];
-                ServerCommand * sc = new ServerCommand();
-                sc->addString("class", "agent-status");
-                sc->addString("direction", "xivoserver");
-                sc->addString("astid", m_agent_watched_astid);
-                sc->addString("agentid", m_agent_watched_agentid);
-                sendCommand(sc->find());
+                QVariantMap command;
+                command["class"] = "agent-status";
+                command["direction"] = "xivoserver";
+                command["astid"] = m_agent_watched_astid;
+                command["agentid"] = m_agent_watched_agentid;
+                sendJsonCommand(command);
         }
 }
 
@@ -1887,12 +1871,12 @@ void BaseEngine::changeWatchedQueueSlot(const QString & astqueueid)
         // qDebug() << "BaseEngine::changeWatchedQueueSlot()" << astqueueid;
         m_queue_watched_astid = astqueueid.split(" ")[0];
         m_queue_watched_queueid = astqueueid.split(" ")[1];
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "queue-status");
-        sc->addString("direction", "xivoserver");
-        sc->addString("astid", m_queue_watched_astid);
-        sc->addString("queuename", m_queue_watched_queueid);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "queue-status";
+        command["direction"] = "xivoserver";
+        command["astid"] = m_queue_watched_astid;
+        command["queuename"] = m_queue_watched_queueid;
+        sendJsonCommand(command);
 }
 
 void BaseEngine::setOSInfos(const QString & osname)
@@ -1927,19 +1911,19 @@ void BaseEngine::keepLoginAlive()
 		return;
 	}
 
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "keepalive");
-        sc->addString("direction", "xivoserver");
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "keepalive";
+        command["direction"] = "xivoserver";
+        sendJsonCommand(command);
 }
 
 void BaseEngine::changeState()
 {
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "availstate");
-        sc->addString("direction", "xivoserver");
-        sc->addString("availstate", m_availstate);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "availstate";
+        command["direction"] = "xivoserver";
+        command["availstate"] = m_availstate;
+        sendJsonCommand(command);
 }
 
 /*!
@@ -1948,9 +1932,9 @@ void BaseEngine::changeState()
  */ 
 void BaseEngine::sendMessage(const QString & message)
 {
-        ServerCommand * sc = new ServerCommand();
-        sc->addString("class", "message");
-        sc->addString("direction", "xivoserver");
-        sc->addString("message", message);
-        sendCommand(sc->find());
+        QVariantMap command;
+        command["class"] = "message";
+        command["direction"] = "xivoserver";
+        command["message"] = message;
+        sendJsonCommand(command);
 }

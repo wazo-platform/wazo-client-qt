@@ -84,7 +84,6 @@
 #include "queuedetailspanel.h"
 #include "queueentrydetailspanel.h"
 #include "searchpanel.h"
-#include "servercommand.h"
 #include "servicepanel.h"
 #include "statuspanel.h"
 #include "switchboardwindow.h"

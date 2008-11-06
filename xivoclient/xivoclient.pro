@@ -5,7 +5,6 @@
 #
 
 COMMONDIR = ../common
-JSON_MJSON_DIR = ../3rdparty/json_mjson
 JSON_JSONQT_DIR = ../3rdparty/json_jsonqt
 OUTLOOK_DIR = ../3rdparty/outlook
 
@@ -22,7 +21,7 @@ DEFINES += SVNVER=\"$${SVNVER}\"
 TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
-INCLUDEPATH += . $${COMMONDIR} $${JSON_MJSON_DIR} $${JSON_JSONQT_DIR}
+INCLUDEPATH += . $${COMMONDIR} $${JSON_JSONQT_DIR}
 
 CONFIG -= debug
 CONFIG += static
@@ -31,11 +30,9 @@ CONFIG += x86 ppc
 
 # Input
 HEADERS += mainwidget.h $${COMMONDIR}/*.h
-HEADERS += $${JSON_MJSON_DIR}/json.h
 HEADERS += $${JSON_JSONQT_DIR}/*.h
 
 SOURCES += main.cpp mainwidget.cpp $${COMMONDIR}/*.cpp
-SOURCES += $${JSON_MJSON_DIR}/json.c
 SOURCES += $${JSON_JSONQT_DIR}/*.cpp
 
 win32 {

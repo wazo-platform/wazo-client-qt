@@ -266,6 +266,7 @@ private:
 			       const QString &);
 	void connectSocket();
         void sendCommand(const QString &);
+        void sendJsonCommand(const QVariantMap &);
         bool parseCommand(const QString &);
         void popupError(const QString &);
         

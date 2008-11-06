@@ -55,7 +55,7 @@ const QString __nopresence__ = "nopresence";
 const QStringList XletList = (QStringList() << "customerinfo" << "features" << "history"
                               << "directory" << "search" << "fax" << "dial"
                               << "operator" << "parking" << "calls" << "switchboard"
-                              << "messages" << "identity" << "datetime" << "tabber" << "conference" << "xletproto" << "servercommand" << "callcampaign" << "mylocaldir"
+                              << "messages" << "identity" << "datetime" << "tabber" << "conference" << "xletproto" << "callcampaign" << "mylocaldir"
 #ifdef USE_OUTLOOK
                               << "outlook"
 #endif /* USE_OUTLOOK */
