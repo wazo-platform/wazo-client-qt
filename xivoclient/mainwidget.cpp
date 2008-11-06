@@ -496,6 +496,7 @@ void MainWidget::createMenus()
 
 	m_helpmenu = menuBar()->addMenu(tr("&Help"));
 	m_helpmenu->addAction(tr("&About XIVO %1").arg(m_appliname), this, SLOT(about()));
+	m_helpmenu->addAction(tr("&Credits"), this, SLOT(showCredits()));
 	m_helpmenu->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
 }
 
@@ -1406,11 +1407,11 @@ void MainWidget::changeEvent(QEvent * /* event */)
 void MainWidget::keyPressEvent(QKeyEvent * event)
 {
         if((event->key() >= Qt::Key_F1) && (event->key() <= Qt::Key_F35))
-                qDebug() << "MainWidget::keyPressEvent F<n>" << (event->key() - Qt::Key_F1 + 1);
+                qDebug() << "MainWidget::keyPressEvent() F<n>" << (event->key() - Qt::Key_F1 + 1);
         else if(event->key() == Qt::Key_Up)
-                qDebug() << "MainWidget::keyPressEvent Up";
+                qDebug() << "MainWidget::keyPressEvent() Up";
         else if(event->key() == Qt::Key_Down)
-                qDebug() << "MainWidget::keyPressEvent Down";
+                qDebug() << "MainWidget::keyPressEvent() Down";
         if(((event->key() >= Qt::Key_F1) && (event->key() <= Qt::Key_F35))
            || (event->key() == Qt::Key_Up)
            || (event->key() == Qt::Key_Down))
@@ -1468,4 +1469,27 @@ void MainWidget::about()
 			   "<hr><p><b>" + tr("License : ") + "</b>" +
 			   "<a href=http://www.gnu.org/licenses/gpl-2.0.txt>GNU General Public License v2</a></p>"
 			   "<p>" + tr("with a special exception allowing you to link it with OpenSSL, under some conditions.") + "</p>");
+}
+
+void MainWidget::showCredits()
+{
+        QMessageBox::about(this,
+                           tr("Credits"),
+                           "<h3>JsonQt</h3>"
+                           "<p>Copyright (c) 2008, Frederick Emmott <mail@fredemmott.co.uk></p>"
+                           "<p></p>"
+                           "<p>Permission to use, copy, modify, and/or distribute this software for any "
+                           "purpose with or without fee is hereby granted, provided that the above "
+                           "copyright notice and this permission notice appear in all copies.</p>"
+                           "<p></p>"
+                           "<p>THE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES "
+                           "WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF "
+                           "MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR "
+                           "ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES "
+                           "WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN "
+                           "ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF "
+                           "OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>"
+                           "<h3>Outlook Xlet</h3>"
+			   "<p>Frederic Bor <a href=mailto:frederic.bor@grouperocca.fr>frederic.bor@grouperocca.fr</p>"
+                           );
 }

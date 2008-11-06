@@ -118,6 +118,7 @@ private slots:
         void systrayMsgClicked();
         void checksAvailState();
 	void about();
+	void showCredits();
         void newParkEvent();
 	void affTextChanged();
         void config_and_start();
