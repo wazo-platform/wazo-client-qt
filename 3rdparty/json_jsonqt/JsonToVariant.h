@@ -18,6 +18,9 @@
 
 #include "ParseException.h"
 
+#include "JsonQtExport.h"
+
+#include <QList>
 #include <QPair>
 #include <QString>
 #include <QVariant>
@@ -35,7 +38,7 @@ namespace JsonQt
 	 *
 	 * @author Fred Emmott <mail@fredemmott.co.uk>
 	 */
-	class JsonToVariant
+	class JSONQT_EXPORT JsonToVariant
 	{
 		public:
 			/** Main parsing function.
@@ -48,6 +51,9 @@ namespace JsonQt
 			 * 	isn't ;) )
 			 */
 			static QVariantMap parse(const QString& json) throw (ParseException);
+
+			/// Parse multiple objects in one string.
+			static QList<QVariantMap> multiParse(const QString& json) throw(ParseException);
 		private:
 			JsonToVariant();
 			// Parsers for types given on JSON.org

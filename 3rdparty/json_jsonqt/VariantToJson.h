@@ -1,6 +1,8 @@
 #ifndef _JSONQT_VARIANT_TO_JSON_H
 #define _JSONQT_VARIANT_TO_JSON_H
 
+#include "JsonQtExport.h"
+
 #include <QString>
 #include <QStringList>
 #include <QVariant>
@@ -23,7 +25,7 @@ namespace JsonQt
 	 *
 	 * @author Fred Emmott <mail@fredemmott.co.uk>
 	 */
-	class VariantToJson
+	class JSONQT_EXPORT VariantToJson
 	{
 		public:
 			/// Parse a QVariant into JSON.

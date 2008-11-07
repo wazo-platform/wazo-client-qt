@@ -16,6 +16,8 @@
 #ifndef _JSONQT_PARSE_EXCEPTION_H
 #define _JSONQT_PARSE_EXCEPTION_H
 
+#include "JsonQtExport.h"
+
 #include <exception>
 #include <QChar>
 #include <QString>
@@ -26,7 +28,7 @@ namespace JsonQt
 	 * Raised whenever JsonQt can't pass something it's been given, for
 	 * whatever reason.
 	 */
-	class ParseException : public std::exception
+	class JSONQT_EXPORT ParseException : public std::exception
 	{
 		public:
 			/** Create a ParseException.
