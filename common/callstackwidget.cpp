@@ -42,6 +42,7 @@
 #include <QDebug>
 #include <QDragEnterEvent>
 #include <QSettings>
+#include <QVariant>
 #include <QVBoxLayout>
 
 #include "callstackwidget.h"
@@ -60,17 +61,15 @@ Call::Call(const QString & channelme)
  */
 Call::Call(UserInfo * ui,
            const QString & channelme,
-	   const QString & action,
+	   const QString & status,
 	   int time,
-	   const QString & direction,
 	   const QString & channelpeer,
 	   const QString & exten)
 {
         m_ui          = ui;
 	m_channelme   = channelme;
-	m_action      = action;
+	m_status      = status;
 	m_startTime   = QDateTime::currentDateTime().addSecs(-time);
-	m_direction   = direction;
 	m_channelpeer = channelpeer;
 	m_exten       = exten;
 }
@@ -81,24 +80,21 @@ Call::Call(const Call & call)
 {
         m_ui          = call.m_ui;
 	m_channelme   = call.m_channelme;
-	m_action      = call.m_action;
+	m_status      = call.m_status;
 	m_startTime   = call.m_startTime;
-	m_direction   = call.m_direction;
 	m_channelpeer = call.m_channelpeer;
 	m_exten       = call.m_exten;
 }
 
 /*! \brief update object properties
  */
-void Call::updateCall(const QString & action,
+void Call::updateCall(const QString & status,
 		      int time,
-		      const QString & direction,
 		      const QString & channelpeer,
 		      const QString & exten)
 {
-	m_action      = action;
+	m_status      = status;
 	m_startTime   = QDateTime::currentDateTime().addSecs(-time);
-	m_direction   = direction;
 	m_channelpeer = channelpeer;
 	m_exten       = exten;
 }
@@ -115,10 +111,10 @@ const QString & Call::getChannelMe() const
         return m_channelme;
 }
 
-//! get m_action
-const QString & Call::getAction() const
+//! get m_status
+const QString & Call::getStatus() const
 {
-        return m_action;
+        return m_status;
 }
 
 
@@ -146,8 +142,7 @@ void CallStackWidget::updatePeer(UserInfo * ui,
                                  const QString &,
                                  const QVariant & chanlist)
 {
-        // qDebug() << "CallStackWidget::updatePeer()" << m_calllist.size() << chanlist;
-
+        // qDebug() << "CallStackWidget::updatePeer()" << m_callhash.keys() << chanlist;
         foreach(QString ref, chanlist.toMap().keys()) {
                 QVariant chanprops = chanlist.toMap()[ref];
                 addCall(ui, chanprops);
@@ -158,32 +153,24 @@ void CallStackWidget::updatePeer(UserInfo * ui,
  */
 void CallStackWidget::addCall(UserInfo * ui, const QVariant & chanprops)
 {
-        QString channelme;
-        QString action;
-        int time;
-        QString direction;
-        QString channelpeer;
-        QString exten;
+        // qDebug() << "CallStackWidget::addCall()" << chanprops;
+        QString channelme = chanprops.toMap()["thischannel"].toString();
+        QString status = chanprops.toMap()["status"].toString();
+        int time = chanprops.toMap()["time-dial"].toInt();
+        QString channelpeer = chanprops.toMap()["peerchannel"].toString();
+        QString exten = chanprops.toMap()["calleridnum"].toString();
         
-	int found = 0;
-        // qDebug() << "CallStackWidget::addCall" << channelme << action << time << direction << channelpeer << exten;
+        // qDebug() << "CallStackWidget::addCall()" << channelme << status << time << direction << channelpeer << exten;
         
-	for(int i = 0; i < m_calllist.count() ; i++) {
-		if(channelme == m_calllist[i].getChannelMe()) {
-			found = 1;
-			if(action == QString("Hangup")) {
-				m_calllist.removeAt(i);
-			} else {
-				m_calllist[i].updateCall(action, time,
-							 direction, channelpeer, exten);
-			}
-		}
-	}
-        
-	if((found == 0) && (action != QString("Hangup"))) {
-		Call call(ui, channelme, action, time, direction, channelpeer, exten);
-		m_calllist.append(call);
-	}
+        if(status != CHAN_STATUS_HANGUP) {
+                if(m_callhash.contains(channelme))
+                        m_callhash[channelme]->updateCall(status, time, channelpeer, exten);
+                else
+                        m_callhash[channelme] = new Call(ui, channelme, status, time, channelpeer, exten);
+        } else {
+                delete m_callhash[channelme];
+                m_callhash.remove(channelme);
+        }
 }
 
 /*! \brief hang up channel
@@ -213,7 +200,7 @@ void CallStackWidget::parkcall(const QString & chan)
 void CallStackWidget::reset()
 {
 	// qDebug() << "CallStackWidget::reset()";
-	m_calllist.clear();
+	m_callhash.clear();
 	// monitorPeer(NULL);
 }
 
@@ -240,7 +227,7 @@ void CallStackWidget::emptyList()
  */
 void CallStackWidget::updateDisplay()
 {
-	int i, j;
+	int j;
 	CallWidget * callwidget = NULL;
         // qDebug() << "CallStackWidget::updateDisplay()"
         // << m_afflist.count() << m_calllist.count();
@@ -249,45 +236,38 @@ void CallStackWidget::updateDisplay()
 	// m_layout->addWidget(callwidget, 0, Qt::AlignTop);
 	// m_afflist.append(callwidget);
 	
-	for(j = m_afflist.count() - 1; j>= 0; j--)
-	{
-		for(i = 0; i < m_calllist.count(); i++)
-		{
-			// qDebug() << "   " << j << m_afflist[j]->channel()
-			//         << i << m_calllist[i].getChannelMe();
-			if(m_afflist[j]->channel() == m_calllist[i].getChannelMe())
-				break;
-		}
-		if(i == m_calllist.count())
-		{
+        qDebug() << "CallStackWidget::updateDisplay()" << m_callhash.keys();
+	for(j = m_afflist.count() - 1; j>= 0; j--) {
+                // qDebug() << "CallStackWidget::updateDisplay()" << m_afflist[j]->channel() << m_callhash.keys();
+		if(! m_callhash.contains(m_afflist[j]->channel())) {
 			// qDebug() << " Removing " << m_afflist[j]->channel();
 			m_layout->removeWidget(m_afflist[j]);
 			//m_afflist.takeAt(j)->deleteLater();
 			delete m_afflist.takeAt(j);
 		}
 	}
-
-	for(i = 0; i < m_calllist.count() ; i++) {
-		if(m_monitored_userid == m_calllist[i].getUserId()) {
-			Call c = m_calllist[i];
+        
+	foreach(QString chanme, m_callhash.keys()) {
+                // qDebug() << "CallStackWidget::updateDisplay()" << chanme << m_monitored_userid << m_callhash[chanme]->getUserId();
+		if(m_monitored_userid == m_callhash[chanme]->getUserId()) {
+			Call * c = m_callhash[chanme];
 			for(j = 0; j < m_afflist.count(); j++) {
 				// qDebug() << j << m_afflist[j]->channel();
-				if(m_afflist[j]->channel() == c.getChannelMe()) {
-					m_afflist[j]->updateWidget( c.getAction(),
-					                            c.getTime(),
-								    c.getDirection(),
-								    c.getChannelPeer(),
-								    c.getExten() );
+				if(m_afflist[j]->channel() == chanme) {
+					m_afflist[j]->updateWidget( c->getStatus(),
+					                            c->getTime(),
+								    c->getChannelPeer(),
+								    c->getExten() );
 					break;
 				}
 			}
+                        // qDebug() << "CallStackWidget::updateDisplay() -" << j << m_afflist.count();
 			if(j == m_afflist.count()) {
-                                callwidget = new CallWidget(c.getChannelMe(),
-                                                            c.getAction(),
-                                                            c.getTime(),
-                                                            c.getDirection(),
-                                                            c.getChannelPeer(),
-                                                            c.getExten(),
+                                callwidget = new CallWidget(chanme,
+                                                            c->getStatus(),
+                                                            c->getTime(),
+                                                            c->getChannelPeer(),
+                                                            c->getExten(),
                                                             this);
                                 connect( callwidget, SIGNAL(doHangUp(const QString &)),
                                          this, SLOT(hupchan(const QString &)) );

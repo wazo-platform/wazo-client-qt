@@ -66,18 +66,16 @@ public:
 
 	//CallWidget(const QString & tomonitor,
 	//	   QWidget * parent = 0);
-	CallWidget(const QString & channelme,
-		   const QString & action,
-		   int time,
-		   const QString & direction,
-		   const QString & channelpeer,
-		   const QString & exten,
+	CallWidget(const QString &,
+		   const QString &,
+		   int,
+		   const QString &,
+		   const QString &,
 		   QWidget * parent = 0);
-	void updateWidget(const QString & action,
-			  int time,
-			  const QString & direction,
-			  const QString & channelpeer,
-			  const QString & exten);
+	void updateWidget(const QString &,
+			  int,
+			  const QString &,
+			  const QString &);
 	//void setChannel(const QString &);
 	const QString & channel() const;
 	//void setCallerId(const QString &);
@@ -109,12 +107,12 @@ private:
 	QString m_channelme;	//!< channel identifier
 	QString m_callerid;		//!< caller id
 	QString m_calleridname;	//!< caller id name
-	QLabel * m_lbl_action;	//!< sub widget
+	QLabel * m_lbl_status;	//!< sub widget
 	QLabel * m_lbl_time;	//!< sub widget
 	QLabel * m_lbl_direction;	//!< sub widget
 	QLabel * m_lbl_channelpeer;	//!< sub widget
 	QLabel * m_lbl_exten;	//!< sub widget
-	QPixmap m_square;		//!< QPixmap used to display the action square
+	QPixmap m_square;		//!< QPixmap used to display the status square
 	QPixmap m_call_yellow;	//!< yellow phone icon
 	QPixmap m_call_blue;	//!< blue phone icon
 	QPixmap m_call_red;		//!< red phone icon

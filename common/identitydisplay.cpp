@@ -360,7 +360,7 @@ void IdentityDisplay::updatePeer(UserInfo * ui,
                 return;
         if(ui != m_ui)
                 return;
-        qDebug() << "IdentityDisplay::updatePeer()" << ui->astid() << ui->userid() << ui->fullname() << sipstatus << chanlist;
+        // qDebug() << "IdentityDisplay::updatePeer()" << ui->astid() << ui->userid() << ui->fullname() << sipstatus << chanlist;
         // QString ext = ui->userid();
         // QString name = ui->fullname();
 }

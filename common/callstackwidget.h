@@ -42,13 +42,15 @@
 #ifndef __CALLSTACKWIDGET_H__
 #define __CALLSTACKWIDGET_H__
 
-#include <QObject>
+#include <QHash>
 #include <QList>
+#include <QObject>
 #include <QWidget>
 #include <QString>
 #include <QDateTime>
 
 #include "callwidget.h"
+#include "xivoconsts.h"
 
 class QVBoxLayout;
 
@@ -63,19 +65,16 @@ public:
 	Call(const QString &);
 	Call(UserInfo *,
              const QString &, const QString &, int,
-             const QString &, const QString &,
-             const QString &);
+             const QString &, const QString &);
 	Call(const Call &);
 	const QString & getUserId() const;	//! get m_phonen
 	const QString & getChannelMe() const;	//! get m_channelme
-	const QString & getAction() const;	//! get m_action
+	const QString & getStatus() const;	//! get m_status
         
 	//! get duration of the channel
 	int getTime() const {
 		return m_startTime.secsTo(QDateTime::currentDateTime());
 	};
-	//! get m_direction
-	const QString & getDirection() const {return m_direction;};
 	//! get m_channelpeer
 	const QString & getChannelPeer() const {return m_channelpeer;};
 	//! get m_exten
@@ -83,14 +82,12 @@ public:
 	void updateCall(const QString &,
 			int,
 			const QString &,
-			const QString &,
                         const QString &);
 private:
         UserInfo * m_ui;
 	QString m_channelme;	//!< "my" channel 
-	QString m_action;		//!< action
+	QString m_status;		//!< status
 	QDateTime m_startTime;	//!< channel start time
-	QString m_direction;	//!< chan direction
 	QString m_channelpeer;	//!< linked channel
 	QString m_exten;		//!< extension
 };
@@ -128,9 +125,12 @@ signals:
 	void monitorPeerRequest(const QString &);	//!< send the userid of the new monitored peer
 private:
 	QVBoxLayout * m_layout;	//!< Vertical Layout used
-	QList<Call> m_calllist;	//!< list of Call Objects
+        
+	QHash<QString, Call *> m_callhash;	//!< hash of Call Objects
 	QList<CallWidget *> m_afflist;	//!< List of CallWidget Widgets
-	QString m_monitored_userid;	//!< Peer monitored
+	QHash<QString, CallWidget *> m_affhash;	//!< List of CallWidget Widgets
+	
+        QString m_monitored_userid;	//!< Peer monitored
 };
 
 #endif

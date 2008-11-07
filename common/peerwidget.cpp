@@ -66,8 +66,8 @@ PeerWidget::PeerWidget(UserInfo * ui,
 {
         m_ui = ui;
         m_functions = options.toMap()["functions"].toStringList();
-        qDebug() << "PeerWidget::PeerWidget()" << m_functions;
-	//qDebug() << "PeerWidget::PeerWidget()" << id;
+        // qDebug() << "PeerWidget::PeerWidget()" << m_functions;
+	// qDebug() << "PeerWidget::PeerWidget()" << id;
 	//	QHBoxLayout * layout = new QHBoxLayout(this);
         QFrame * qvline = new QFrame(this);
         qvline->setFrameShape(QFrame::VLine);
@@ -77,7 +77,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
 	layout->setSpacing(2);
 	layout->setMargin(2);
 
-        int fsize = 35;
+        int fsize = 30;
         // QLabels definitions
         if(m_ui->fullname().isEmpty())
                 qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_ui->fullname() is empty for :" << m_ui->userid();

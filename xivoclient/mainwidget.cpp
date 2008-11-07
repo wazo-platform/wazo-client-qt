@@ -497,8 +497,8 @@ void MainWidget::createMenus()
 
 	m_helpmenu = menuBar()->addMenu(tr("&Help"));
 	m_helpmenu->addAction(tr("&About XIVO %1").arg(m_appliname), this, SLOT(about()));
-	m_helpmenu->addAction(tr("&Credits"), this, SLOT(showCredits()));
 	m_helpmenu->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
+	m_helpmenu->addAction(tr("&Credits"), this, SLOT(showCredits()));
 }
 
 void MainWidget::updateAppliName()

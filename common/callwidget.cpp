@@ -58,9 +58,8 @@
  * set up the widget, start timer.
  */
 CallWidget::CallWidget(const QString & channelme,
-		       const QString & action,
+		       const QString & status,
 		       int time,
-		       const QString & direction,
 		       const QString &/* channelpeer*/,
 		       const QString & exten,
                        QWidget * parent)
@@ -70,6 +69,7 @@ CallWidget::CallWidget(const QString & channelme,
           m_call_red   (":/images/phone-red.png"),
           m_call_gray  (":/images/phone-grey.png")
 {
+        qDebug() << "CallWidget::CallWidget()" << channelme;
 	QGridLayout * gridlayout = new QGridLayout(this);
         
 // 	m_callerid = callerid;
@@ -82,9 +82,9 @@ CallWidget::CallWidget(const QString & channelme,
 	//gridlayout->setMargin(0);
 
 	gridlayout->setColumnStretch(3, 1);
-	m_lbl_action = new QLabel(this);
-	gridlayout->addWidget(m_lbl_action, 0, 0);
-	setActionPixmap(action);
+	m_lbl_status = new QLabel(this);
+	gridlayout->addWidget(m_lbl_status, 0, 0);
+	setActionPixmap(status);
 
 	m_lbl_time = new QLabel(this);
 	m_lbl_time->setFont(QFont("", 8, QFont::Bold));
@@ -94,10 +94,12 @@ CallWidget::CallWidget(const QString & channelme,
 	gridlayout->addWidget(m_lbl_time, 1, 0);
 
 	m_lbl_direction = new QLabel(this);
-        if(direction == ">")
+        if(status == CHAN_STATUS_CALLING)
                 m_lbl_direction->setPixmap(QPixmap(":/images/rightarrow.png"));
-        else
+        else if(status == CHAN_STATUS_RINGING)
                 m_lbl_direction->setPixmap(QPixmap(":/images/leftarrow.png"));
+        else
+                qDebug() << "CallWidget::CallWidget()" << status;
 	gridlayout->addWidget(m_lbl_direction, 0, 1);
 
 	// 	m_lbl_channelpeer = new QLabel(channelpeer, this);
@@ -157,40 +159,41 @@ void CallWidget::timerEvent(QTimerEvent */* event*/)
 
 /*! \brief update displayed stuff
  */
-void CallWidget::updateWidget(const QString & action,
+void CallWidget::updateWidget(const QString & status,
 			      int time,
-			      const QString & direction,
 			      const QString &/* channelpeer*/,
 			      const QString & exten)
 {
-	//	qDebug() << this << "updateWidget";
-	//m_lbl_action->setText(action);
-	setActionPixmap(action);
+        qDebug() << "CallWidget::updateWidget()" << status << time << exten;
+	//m_lbl_status->setText(status);
+	setActionPixmap(status);
 	//qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
 	m_startTime = QDateTime::currentDateTime().addSecs(-time);
 	updateCallTimeLabel();
-        if(direction == ">")
+        if(status == CHAN_STATUS_CALLING)
                 m_lbl_direction->setPixmap(QPixmap(":/images/rightarrow.png"));
-        else
+        else if(status == CHAN_STATUS_RINGING)
                 m_lbl_direction->setPixmap(QPixmap(":/images/leftarrow.png"));
-
+        else
+                qDebug() << "CallWidget::updateWidget()" << status;
+        
 	//	m_lbl_channelpeer->setText(channelpeer);
 	m_lbl_exten->setText(exten);
 }
 
 /*! \brief set icon depending on status
  */
-void CallWidget::setActionPixmap(const QString & action)
+void CallWidget::setActionPixmap(const QString & status)
 {
-	if(action == "Calling")
-		m_lbl_action->setPixmap( m_call_yellow );
-	else if(action == "Ringing")
-		m_lbl_action->setPixmap( m_call_blue );
-	else if((action == "On the phone") || (action == "Up"))
-		m_lbl_action->setPixmap( m_call_red );
+	if(status == CHAN_STATUS_CALLING)
+		m_lbl_status->setPixmap( m_call_yellow );
+	else if(status == CHAN_STATUS_RINGING)
+		m_lbl_status->setPixmap( m_call_blue );
+	else if((status == "On the phone") || (status == "Up"))
+		m_lbl_status->setPixmap( m_call_red );
 	else {
-		m_lbl_action->setPixmap( m_call_gray );
-		qDebug() << "CallWidget::setActionPixmap() : action unknown" << action;
+		m_lbl_status->setPixmap( m_call_gray );
+		qDebug() << "CallWidget::setActionPixmap() : status unknown" << status;
 	}
 }
 

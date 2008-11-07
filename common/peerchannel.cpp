@@ -40,6 +40,7 @@
  */
 
 #include <QDebug>
+#include <QVariant>
 
 #include "peerchannel.h"
 
@@ -50,6 +51,7 @@
 PeerChannel::PeerChannel(const QVariant & chanprops, QObject *parent)
         : QObject(parent)
 {
+        // qDebug() << "PeerChannel::PeerChannel()" << chanprops;
         m_id; // SIP/xxx-yyy
         m_state; // calling/...
         m_otherPeer; // 0234234891
