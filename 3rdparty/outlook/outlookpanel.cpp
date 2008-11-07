@@ -382,19 +382,20 @@ void OutlookPanel::sendMail()
 
 /*! \brief update call list for transfer
  */
-void OutlookPanel::updateMyCalls(const QStringList & chanIds,
-                                   const QStringList & chanStates,
-                                   const QStringList & chanOthers)
+void OutlookPanel::updatePeer(UserInfo * /*ui*/,
+                              const QString &,
+                              const QVariant & chanlist)
 {
 	while(!m_mychannels.isEmpty())
 		delete m_mychannels.takeFirst();
-	for(int i = 0; i<chanIds.count(); i++)
-	{
-		PeerChannel * ch = new PeerChannel(chanIds[i], chanStates[i], chanOthers[i]);
-		connect(ch, SIGNAL(transferChan(const QString &)),
-		        this, SLOT(transferChan(const QString &)) );
-		m_mychannels << ch;
-	}
+        
+        foreach(QString ref, chanlist.toMap().keys()) {
+                QVariant chanprops = chanlist.toMap()[ref];
+                PeerChannel * ch = new PeerChannel(chanprops);
+ 		connect(ch, SIGNAL(transferChan(const QString &)),
+ 		        this, SLOT(transferChan(const QString &)) );
+ 		m_mychannels << ch;
+        }
 }
 
 /*! \brief transfer channel to the number

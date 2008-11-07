@@ -54,6 +54,7 @@ class QPushButton;
 class QTableWidget;
 class QTableWidgetItem;
 
+class UserInfo;
 class ExtendedLineEdit;
 class ExtendedTableWidget;
 class PeerChannel;
@@ -99,7 +100,7 @@ public slots:
         void contextMenuEvent(QContextMenuEvent *);
 	void setSearchResponse(const QString &);
 	void stop();
-	void updateMyCalls(const QStringList &, const QStringList &, const QStringList &);
+	void updatePeer(UserInfo *, const QString &, const QVariant &);
 private:
 	ExtendedLineEdit * m_searchText;	//!< search text input
 	ExtendedTableWidget * m_table;		//!< table to display results
