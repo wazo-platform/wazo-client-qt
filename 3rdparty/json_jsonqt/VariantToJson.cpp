@@ -30,6 +30,7 @@ namespace JsonQt
 			case QVariant::ULongLong:
 				return QString::number(value.toULongLong());
 			case QVariant::List:
+			case QVariant::StringList:
 				return parseList(value.toList());
 			case QVariant::String:
 				return QString("\"%1\"").arg(value.toString().replace("\"", "\\\"")).replace("\n", "\\n").replace("\t", "\\t");
