@@ -144,33 +144,27 @@ CallStackWidget::CallStackWidget(QWidget * parent)
 
 void CallStackWidget::updatePeer(UserInfo * ui,
                                  const QString &,
-                                 const QHash<QString, QStringList> & chanlist)
+                                 const QVariant & chanlist)
 {
         // qDebug() << "CallStackWidget::updatePeer()" << m_calllist.size() << chanlist;
-        QHashIterator<QString, QStringList> ccallchannel(chanlist);
-        while (ccallchannel.hasNext()) {
-                ccallchannel.next();
-                QStringList value = ccallchannel.value();
-                addCall(ui,
-                        ccallchannel.key(),
-                        value[0],
-                        value[1].toInt(),
-                        value[2],
-                        value[3],
-                        value[4]);
+
+        foreach(QString ref, chanlist.toMap().keys()) {
+                QVariant chanprops = chanlist.toMap()[ref];
+                addCall(ui, chanprops);
         }
 }
 
 /*! \brief add a call to the list
  */
-void CallStackWidget::addCall(UserInfo * ui,
-                              const QString & channelme,
-                              const QString & action,
-			      int time,
-			      const QString & direction,
-			      const QString & channelpeer,
-			      const QString & exten)
+void CallStackWidget::addCall(UserInfo * ui, const QVariant & chanprops)
 {
+        QString channelme;
+        QString action;
+        int time;
+        QString direction;
+        QString channelpeer;
+        QString exten;
+        
 	int found = 0;
         // qDebug() << "CallStackWidget::addCall" << channelme << action << time << direction << channelpeer << exten;
         

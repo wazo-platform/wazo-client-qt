@@ -89,7 +89,7 @@ public slots:
 	void stop();
         void updatePeer(UserInfo *,
                         const QString &,
-                        const QHash<QString, QStringList> &);
+                        const QVariant &);
 private:
 	ExtendedLineEdit * m_searchText;	//!< search text input
 	ExtendedTableWidget * m_table;		//!< table to display results

@@ -72,7 +72,7 @@ public:
         //	           QWidget * parent = 0/*, int size = 16*/);
 	~PeerWidget();
 	void clearChanList();
-	void addChannel(const QString &, const QString &, const QString &);
+	void addChannel(const QVariant &);
 	void setName(const QString &);
 	void setEngine(BaseEngine *);
         void setAgentToolTip(const QString &, const QStringList &);
@@ -97,7 +97,7 @@ public slots:
 	void setColor(const QString &, const QString &);	//! sets a kind of icon in a given color
         void updatePeer(UserInfo *,
                         const QString &,
-                        const QHash<QString, QStringList> &);
+                        const QVariant &);
 private slots:
 	void transferChan(const QString &);
 	void hangupChan(const QString &);

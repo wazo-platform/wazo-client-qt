@@ -77,7 +77,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
 	layout->setSpacing(2);
 	layout->setMargin(2);
 
-        int fsize = 20;
+        int fsize = 35;
         // QLabels definitions
         if(m_ui->fullname().isEmpty())
                 qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_ui->fullname() is empty for :" << m_ui->userid();
@@ -164,7 +164,7 @@ PeerWidget::~PeerWidget()
 void PeerWidget::setColor(const QString & kind, const QString & color)
 {
         QString commonqss;
-        // commonqss = "QLabel#onlyme {border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }";
+        commonqss = "QLabel#onlyme {border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }";
         
 	if(kind == "presence") {
                 m_availlbl->setPixmap(m_persons[color]);
@@ -410,9 +410,9 @@ void PeerWidget::clearChanList()
 
 /*! \brief add a channel to m_channels list
  */
-void PeerWidget::addChannel(const QString & id, const QString & state, const QString & otherPeer)
+void PeerWidget::addChannel(const QVariant & chanprops)
 {
-	PeerChannel * ch = new PeerChannel(id, state, otherPeer, this);
+	PeerChannel * ch = new PeerChannel(chanprops, this);
 	connect(ch, SIGNAL(interceptChan(const QString &)),
 	        this, SLOT(interceptChan(const QString &)));
 	connect(ch, SIGNAL(hangupChan(const QString &)),
@@ -424,7 +424,7 @@ void PeerWidget::addChannel(const QString & id, const QString & state, const QSt
  */
 void PeerWidget::updatePeer(UserInfo * ui,
                             const QString &,
-                            const QHash<QString, QStringList> & chanlist)
+                            const QVariant & chanlist)
 {
         if(ui != m_ui)
                 return;
@@ -432,13 +432,12 @@ void PeerWidget::updatePeer(UserInfo * ui,
 	while(!m_mychannels.isEmpty())
 		delete m_mychannels.takeFirst();
         
-        QHashIterator<QString, QStringList> ccallchannel(chanlist);
-        while (ccallchannel.hasNext()) {
-                ccallchannel.next();
-		PeerChannel * ch = new PeerChannel(ccallchannel.key(), ccallchannel.value()[0], ccallchannel.value()[4]);
-		connect(ch, SIGNAL(transferChan(const QString &)),
-		        this, SLOT(transferChan(const QString &)) );
-		m_mychannels << ch;
+        foreach(QString ref, chanlist.toMap().keys()) {
+                QVariant chanprops = chanlist.toMap()[ref];
+                PeerChannel * ch = new PeerChannel(chanprops);
+ 		connect(ch, SIGNAL(transferChan(const QString &)),
+ 		        this, SLOT(transferChan(const QString &)) );
+ 		m_mychannels << ch;
         }
 }
 

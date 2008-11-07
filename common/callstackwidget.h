@@ -106,14 +106,8 @@ public slots:
 	//! Add a call to the list to be displayed
         void updatePeer(UserInfo *,
                         const QString &,
-                        const QHash<QString, QStringList> &);
-        void addCall(UserInfo *,
-                     const QString &,
-		     const QString &,
-		     int,
-		     const QString &,
-		     const QString &,
-		     const QString &);
+                        const QVariant &);
+        void addCall(UserInfo *, const QVariant &);
         //	void showCalls(const QString & tomonitor, const QString & callerid);
 	void updateDisplay();
 	void hupchan(const QString &);

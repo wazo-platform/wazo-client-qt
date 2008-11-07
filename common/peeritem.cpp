@@ -94,7 +94,7 @@ void PeerItem::updateAgentStatus(const QStringList & agentstatus)
 
 /*! \brief update channel list
  */
-void PeerItem::updateChans(const QHash<QString, QStringList> & chanlist)
+void PeerItem::updateChans(const QVariant & chanlist)
 {
         m_chanlist = chanlist;
         if(m_peerwidget != NULL)
@@ -243,10 +243,9 @@ void PeerItem::updateDisplayedChans()
                 return;
 
         m_peerwidget->clearChanList();
-        QHashIterator<QString, QStringList> ccallchannel(m_chanlist);
-        while (ccallchannel.hasNext()) {
-                ccallchannel.next();
-                m_peerwidget->addChannel(ccallchannel.key(), ccallchannel.value()[0], ccallchannel.value()[4]);
+        foreach(QString ref, m_chanlist.toMap().keys()) {
+                QVariant chanprops = m_chanlist.toMap()[ref];
+                m_peerwidget->addChannel(chanprops);
         }
         return;
 }

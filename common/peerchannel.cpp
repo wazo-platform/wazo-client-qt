@@ -47,10 +47,12 @@
  *
  * Just fill the members m_id, m_state and m_otherPeer.
  */
-PeerChannel::PeerChannel(const QString & id, const QString & state,
-                         const QString & otherPeer, QObject *parent)
-        : QObject(parent), m_id(id), m_state(state), m_otherPeer(otherPeer)
+PeerChannel::PeerChannel(const QVariant & chanprops, QObject *parent)
+        : QObject(parent)
 {
+        m_id; // SIP/xxx-yyy
+        m_state; // calling/...
+        m_otherPeer; // 0234234891
 }
 
 /*! \brief intercept the channel

@@ -46,6 +46,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QVariant>
 
 class PeerWidget;
 class UserInfo;
@@ -69,7 +70,7 @@ public:
 	void updateStatus(const QString &);
         void updateIMStatus(const QString &);
 	void updateAgentStatus(const QStringList &);
-        void updateChans(const QHash<QString, QStringList> &);
+        void updateChans(const QVariant &);
 	void updateName(const QString &);
 
 	void updateDisplayedStatus();
@@ -86,7 +87,7 @@ private:
         QString m_vmstatus;
         QStringList m_agentstatus;
         QString m_pausestatus;
-        QHash<QString, QStringList> m_chanlist;
+        QVariant m_chanlist;
         QStringList m_queuelist;
 };
 

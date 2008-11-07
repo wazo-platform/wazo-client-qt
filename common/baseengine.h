@@ -141,8 +141,6 @@ public:
                               const QString &, const QString &);
         void setOSInfos(const QString &);
         UserInfo * findUserFromPhone(const QString &,
-                                     const QString &,
-                                     const QString &,
                                      const QString &);
         UserInfo * findUserFromAgent(const QString &,
                                      const QString &);
@@ -234,7 +232,7 @@ signals:
 	//! update informations about a peer
 	void updatePeer(UserInfo *,
 	                const QString &,
-                        const QHash<QString, QStringList> &);
+                        const QVariant &);
         void newUser(UserInfo *);
 	void updatePeerAgent(const QString &,
                              const QString &,

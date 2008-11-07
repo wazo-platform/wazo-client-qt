@@ -70,7 +70,7 @@ public slots:
         void setUserInfo(const UserInfo *);
         void updatePeer(UserInfo *,
                         const QString &,
-                        const QHash<QString, QStringList> &);
+                        const QVariant &);
         void functionKeyPressed(int);
         void xferPressed();
         void clicked();

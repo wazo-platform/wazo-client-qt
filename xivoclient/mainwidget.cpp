@@ -793,10 +793,10 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)),
+                                                                     const QVariant &)),
                                          m_xlet[dc], SLOT(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)) );
+                                                                     const QVariant &)) );
                                 connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
                                          m_xlet[dc], SLOT(updatePeerAgent(const QString &, const QString &, const QStringList &)));
                                 connect( m_engine, SIGNAL(newAgentList(const QVariant &)),
@@ -952,10 +952,10 @@ void MainWidget::engineStarted()
                                          m_xlet[dc], SLOT(functionKeyPressed(int)));
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)),
+                                                                     const QVariant &)),
                                          m_xlet[dc], SLOT(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)) );
+                                                                     const QVariant &)) );
                                 
                         } else if (dc == QString("messages")) {
                                 m_xlet[dc] = new DisplayMessagesPanel();
@@ -975,10 +975,10 @@ void MainWidget::engineStarted()
                                 // connectDials(m_calls);
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)),
+                                                                     const QVariant &)),
                                          m_calls, SLOT(updatePeer(UserInfo *,
                                                                   const QString &,
-                                                                  const QHash<QString, QStringList> &)) );
+                                                                  const QVariant &)) );
                                 connect( m_calls, SIGNAL(changeTitle(const QString &)),
                                          m_leftpanel->titleLabel(), SLOT(setText(const QString &)) );
                                 connect( m_engine, SIGNAL(callsUpdated()),
@@ -1006,10 +1006,10 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)),
+                                                                     const QVariant &)),
                                          m_xlet[dc], SLOT(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)) );
+                                                                     const QVariant &)) );
                                 connect( m_engine, SIGNAL(newUser(UserInfo *)),
                                          m_xlet[dc], SLOT(newUser(UserInfo *)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
@@ -1057,10 +1057,10 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)),
+                                                                     const QVariant &)),
                                          m_xlet[dc], SLOT(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)) );
+                                                                     const QVariant &)) );
                                 connect( m_engine, SIGNAL(newUser(UserInfo *)),
                                          m_xlet[dc], SLOT(newUser(UserInfo *)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
@@ -1112,10 +1112,10 @@ void MainWidget::engineStarted()
                                 connectDials(m_xlet[dc]);
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)),
+                                                                     const QVariant &)),
                                          m_xlet[dc], SLOT(updatePeer(UserInfo *,
                                                                      const QString &,
-                                                                     const QHash<QString, QStringList> &)) );
+                                                                     const QVariant &)) );
 				connect( m_xlet[dc], SIGNAL(searchDirectory(const QString &)),
 					 m_engine, SLOT(searchDirectory(const QString &)) );
 				connect( m_engine, SIGNAL(directoryResponse(const QString &)),

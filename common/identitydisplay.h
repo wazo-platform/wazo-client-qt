@@ -70,7 +70,7 @@ public slots:
 	void setQueueList(bool, const QVariant &);
         void updatePeer(UserInfo *,
                         const QString &,
-                        const QHash<QString, QStringList> &);
+                        const QVariant &);
 	void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);

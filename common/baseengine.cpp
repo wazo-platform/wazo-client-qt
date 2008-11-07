@@ -580,12 +580,10 @@ void BaseEngine::socketStateChanged(QAbstractSocket::SocketState socketState)
 }
 
 UserInfo * BaseEngine::findUserFromPhone(const QString & astid,
-                                         const QString & context,
-                                         const QString & tech,
-                                         const QString & phonenum)
+                                         const QString & phoneid)
 {
         foreach (UserInfo * uinfo, m_users)
-                if(uinfo->hasPhone(astid, context, tech + "/" + phonenum))
+                if(uinfo->hasPhone(astid, phoneid))
                         return uinfo;
         return NULL;
 }
@@ -603,10 +601,17 @@ void BaseEngine::updatePhone(const QString & astid,
                              const QString & phoneid,
                              const QVariant & properties)
 {
-        qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties;
-//         UserInfo * ui = findUserFromPhone(astid, context, tech, phoneid);
-//         if(ui)
-//                 ui->updatePhoneStatus(tech + "/" + phoneid, hintstatus);
+        // qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties;
+        QString hintstatus;
+        if(properties.toMap()["comms"].toMap().size() > 0)
+                hintstatus = "Calling";
+        else
+                hintstatus = "Ready";
+        UserInfo * ui = findUserFromPhone(astid, phoneid);
+        if(ui) {
+                ui->updatePhoneStatus(phoneid, hintstatus);
+                updatePeer(ui, hintstatus, properties.toMap()["comms"]);
+        }
 }
 
 void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
@@ -631,7 +636,7 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 	QString phoneid  = liststatus[4];
 	QString hintstatus = liststatus[5];
 
-        UserInfo * ui = findUserFromPhone(astid, context, tech, phoneid);
+        UserInfo * ui = findUserFromPhone(astid, phoneid); // findUserFromPhone(astid, context, tech, phoneid);
         if(ui) {
                 // qDebug() << liststatus;
                 ui->updatePhoneStatus(tech + "/" + phoneid, hintstatus);
@@ -657,8 +662,8 @@ void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
 		}
 	}
         
-        if(ui)
-                updatePeer(ui, hintstatus, channs);
+//         if(ui)
+//                 updatePeer(ui, hintstatus, channs);
 }
 
 void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
@@ -673,18 +678,18 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 	QString context = liststatus[5];
 	QString phonenum = liststatus[4];
         QString tech = "";
-        UserInfo * ui = findUserFromPhone(astid, context, tech, phonenum);
-        if(ui) {
-                removePeer(ui->userid());
-                m_users.remove(ui->userid());
-        }
+//         UserInfo * ui = findUserFromPhone(astid, context, tech, phonenum);
+//         if(ui) {
+//                 removePeer(ui->userid());
+//                 m_users.remove(ui->userid());
+//         }
 }
 
 bool BaseEngine::parseCommand(const QString & line)
 {
         QVariant data;
         try {
-                data = JsonQt::JsonToVariant::parse(QString::fromUtf8(line.trimmed().toAscii()));
+                data = JsonQt::JsonToVariant::parse(line.trimmed());
         }
         catch(JsonQt::ParseException) {
                 qDebug() << "BaseEngine::parseCommand() exception catched for" << line.trimmed();
@@ -852,7 +857,6 @@ bool BaseEngine::parseCommand(const QString & line)
                                         m_users[iduser]->setAvailState(imstatus);
                                         m_users[iduser]->setNumber(listpeers[7].toString());
                                         m_users[iduser]->setPhones(listpeers[5].toString(),
-                                                                   listpeers[6].toString(),
                                                                    listpeers[8].toStringList());
                                         m_users[iduser]->setAgent(listpeers[9].toString());
                                         m_users[iduser]->setMWI(listpeers[10].toStringList());
@@ -1120,7 +1124,7 @@ void BaseEngine::agentAction(const QString & action)
         QVariantMap command;
         command["class"] = "agent";
         command["direction"] = "xivoserver";
-        command["common"] = action.split(" ");
+        command["command"] = action.split(" ");
         sendJsonCommand(command);
 }
 
@@ -1129,7 +1133,7 @@ void BaseEngine::meetmeAction(const QString & action)
         QVariantMap command;
         command["class"] = "meetme";
         command["direction"] = "xivoserver";
-        command["common"] = action.split(" ");
+        command["command"] = action.split(" ");
         sendJsonCommand(command);
 }
 
@@ -1138,7 +1142,7 @@ void BaseEngine::requestFileList(const QString & action)
         QVariantMap command;
         command["class"] = "callcampaign";
         command["direction"] = "xivoserver";
-        command["common"] = action.split(" ");
+        command["command"] = action.split(" ");
         sendJsonCommand(command);
 }
 

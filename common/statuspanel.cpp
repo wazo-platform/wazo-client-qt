@@ -306,18 +306,16 @@ void StatusPanel::changeCurrentChannel(const QString & before, const QString & a
 
 void StatusPanel::updatePeer(UserInfo * ui,
                              const QString &,
-                             const QHash<QString, QStringList> & chanlist)
+                             const QVariant & chanlist)
 {
         qDebug() << "StatusPanel::updatePeer()" << ui->userid() << chanlist;
         if (ui == m_ui) {
-                QHashIterator<QString, QStringList> ccallchannel(chanlist);
-                while (ccallchannel.hasNext()) {
-                        ccallchannel.next();
+                foreach(QString ref, chanlist.toMap().keys()) {
                         // qDebug() << ccallchannel.key() << ": " << ccallchannel.value();
-                        const QString callchannel = ccallchannel.key();
-                        const QString status = ccallchannel.value()[0];
-                        const QString peerchan = ccallchannel.value()[3];
-                        const QString num = ccallchannel.value()[4];
+                        const QString callchannel;// = ccallchannel.key();
+                        const QString status;// = ccallchannel.value()[0];
+                        const QString peerchan;// = ccallchannel.value()[3];
+                        const QString num;// = ccallchannel.value()[4];
                         
                         if(status == "Ringing") {
                                 if(m_callchannels.contains(callchannel) == false) {
@@ -368,24 +366,24 @@ void StatusPanel::updatePeer(UserInfo * ui,
                                         m_callchannels.removeAll(callchannel);
                                 }
                         } else {
-                                qDebug() << status << ccallchannel.key() << ccallchannel.value();
-                                if(m_callchannels.contains(callchannel) == true) {
-                                        m_linestatuses[callchannel] = Ready;
-                                        m_statuses[callchannel]->setText(status + " " + num);
-                                        updateLine(callchannel, (QStringList()));
-                                        m_tnums[callchannel]->hide();
-                                }
+//                                 qDebug() << status << ccallchannel.key() << ccallchannel.value();
+//                                 if(m_callchannels.contains(callchannel) == true) {
+//                                         m_linestatuses[callchannel] = Ready;
+//                                         m_statuses[callchannel]->setText(status + " " + num);
+//                                         updateLine(callchannel, (QStringList()));
+//                                         m_tnums[callchannel]->hide();
+//                                 }
                         }
                 }
         } else if (ui->astid() == m_ui->astid()) {
-                if(chanlist.size() > 0) {
-                        QHashIterator<QString, QStringList> ccallchannel(chanlist);
-                        while (ccallchannel.hasNext()) {
-                                ccallchannel.next();
-                                if(m_ui->phonenum() == ccallchannel.value()[4]) {
-                                        qDebug() << "not me" << ui->fullname() << ccallchannel.key() << ": " << ccallchannel.value();
-                                        m_tferchannel = ccallchannel.value()[3];
-                                }
+                foreach(QString ref, chanlist.toMap().keys()) {
+                        const QString callchannel;// = ccallchannel.key();
+                        const QString status;// = ccallchannel.value()[0];
+                        const QString peerchan;// = ccallchannel.value()[3];
+                        const QString num;// = ccallchannel.value()[4];
+                        if(m_ui->phonenum() == num) {
+                                qDebug() << "not me" << ui->fullname() << chanlist.toMap()[ref];
+                                m_tferchannel = peerchan;
                         }
                 }
         }

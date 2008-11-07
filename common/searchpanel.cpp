@@ -141,10 +141,10 @@ void SearchPanel::affTextChanged(const QString & text)
                                                     m_engine, SLOT(interceptCall(const UserInfo *, const QString &)) );
                                         disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                                 const QString &,
-                                                                                const QHash<QString, QStringList> &)),
+                                                                                const QVariant &)),
                                                     peerwidget, SLOT(updatePeer(UserInfo *,
                                                                                 const QString &,
-                                                                                const QHash<QString, QStringList> &)) );
+                                                                                const QVariant &)) );
                                 }
                                 disconnect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
                                             m_engine, SLOT(originateCall(const QString&, const QString&)) );
@@ -186,10 +186,10 @@ void SearchPanel::affTextChanged(const QString & text)
                                                  m_engine, SLOT(interceptCall(const UserInfo *, const QString &)) );
                                         connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                              const QString &,
-                                                                             const QHash<QString, QStringList> &)),
+                                                                             const QVariant &)),
                                                  peerwidget, SLOT(updatePeer(UserInfo *,
                                                                              const QString &,
-                                                                             const QHash<QString, QStringList> &)) );
+                                                                             const QVariant &)) );
                                 }
                                 connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
                                          m_engine, SLOT(originateCall(const QString&, const QString&)) );
@@ -202,7 +202,7 @@ void SearchPanel::affTextChanged(const QString & text)
  */
 void SearchPanel::updatePeer(UserInfo * ui,
                              const QString & sipstatus,
-                             const QHash<QString, QStringList> & chanlist)
+                             const QVariant & chanlist)
 {
         QString userid = ui->userid();
         // qDebug() << "SearchPanel::updatePeer()" << userid;

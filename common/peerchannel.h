@@ -52,8 +52,7 @@ class PeerChannel : public QObject
 {
 	Q_OBJECT
 public:
-	PeerChannel(const QString &id, const QString & state,
-	            const QString &otherPeer, QObject * parent=0);
+	PeerChannel(const QVariant &, QObject * parent=0);
 	//! get m_otherPeer
 	const QString & otherPeer() const { return m_otherPeer; };
 public slots:

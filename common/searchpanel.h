@@ -72,7 +72,7 @@ public slots:
 	void affTextChanged(const QString &);
         void updatePeer(UserInfo *,
                         const QString &,
-                        const QHash<QString, QStringList> &);
+                        const QVariant &);
         void newUser(UserInfo *);
 	void updatePeerAgent(const QString &,
                              const QString &,

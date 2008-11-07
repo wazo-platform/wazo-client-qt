@@ -106,7 +106,7 @@ void SwitchBoardWindow::setUserInfo(const UserInfo *)
  */
 void SwitchBoardWindow::updatePeer(UserInfo * ui,
                                    const QString & sipstatus,
-                                   const QHash<QString, QStringList> & chanlist)
+                                   const QVariant & chanlist)
 {
         QString userid = ui->userid();
         // qDebug() << "SwitchBoardWindow::updatePeer" << userid;
@@ -151,10 +151,10 @@ void SwitchBoardWindow::updatePeer(UserInfo * ui,
                          this, SLOT(removePeerFromLayout(const QString &)) );
                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                      const QString &,
-                                                     const QHash<QString, QStringList> &)),
+                                                     const QVariant &)),
                          peerwidget, SLOT(updatePeer(UserInfo *,
                                                      const QString &,
-                                                     const QHash<QString, QStringList> &)) );
+                                                     const QVariant &)) );
                 m_layout->addWidget( peerwidget, pos );
                 m_peerlist << peeritem;
                 peeritem->setWidget(peerwidget);
@@ -224,10 +224,10 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
                                     this, SLOT(removePeerFromLayout(const QString &)) );
                         disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                 const QString &,
-                                                                const QHash<QString, QStringList> &)),
+                                                                const QVariant &)),
                                     peerwidget, SLOT(updatePeer(UserInfo *,
                                                                 const QString &,
-                                                                const QHash<QString, QStringList> &)) );
+                                                                const QVariant &)) );
                         m_peerlist.removeAt(i);
                         peerwidget->deleteLater();
                         peeritem->setWidget(NULL);
@@ -293,10 +293,10 @@ void SwitchBoardWindow::removePeers(void)
                                     this, SLOT(removePeerFromLayout(const QString &)) );
                         disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                 const QString &,
-                                                                const QHash<QString, QStringList> &)),
+                                                                const QVariant &)),
                                     peerwidget, SLOT(updatePeer(UserInfo *,
                                                                 const QString &,
-                                                                const QHash<QString, QStringList> &)) );
+                                                                const QVariant &)) );
                         peerwidget->deleteLater();
                 }
         }
@@ -382,10 +382,10 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
                          this, SLOT(removePeerFromLayout(const QString &)) );
                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                      const QString &,
-                                                     const QHash<QString, QStringList> &)),
+                                                     const QVariant &)),
                          peerwidget, SLOT(updatePeer(UserInfo *,
                                                      const QString &,
-                                                     const QHash<QString, QStringList> &)) );
+                                                     const QVariant &)) );
                 m_layout->addWidget( peerwidget, m_layout->getPosInGrid(event->pos()) );
                 m_peerlist << peeritem;
        }

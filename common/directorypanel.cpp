@@ -269,18 +269,17 @@ void DirectoryPanel::sendMail()
  */
 void DirectoryPanel::updatePeer(UserInfo * /*ui*/,
                                 const QString &,
-                                const QHash<QString, QStringList> & chanlist)
+                                const QVariant & chanlist)
 {
 	while(!m_mychannels.isEmpty())
 		delete m_mychannels.takeFirst();
 
-        QHashIterator<QString, QStringList> ccallchannel(chanlist);
-        while (ccallchannel.hasNext()) {
-                ccallchannel.next();
-		PeerChannel * ch = new PeerChannel(ccallchannel.key(), ccallchannel.value()[0], ccallchannel.value()[4]);
-		connect(ch, SIGNAL(transferChan(const QString &)),
-		        this, SLOT(transferChan(const QString &)) );
-		m_mychannels << ch;
+        foreach(QString ref, chanlist.toMap().keys()) {
+                QVariant chanprops = chanlist.toMap()[ref];
+                PeerChannel * ch = new PeerChannel(chanprops);
+ 		connect(ch, SIGNAL(transferChan(const QString &)),
+ 		        this, SLOT(transferChan(const QString &)) );
+ 		m_mychannels << ch;
         }
 }
 

@@ -65,11 +65,9 @@ void UserInfo::setNumber(const QString & phonenum)
 }
 
 void UserInfo::setPhones(const QString & astid,
-                         const QString & context,
                          const QStringList & termlist)
 {
         m_astid = astid;
-        m_context = context;
         m_termlist = termlist;
         foreach(QString term, m_termlist)
                 m_termstatus[term] = "unknown";
@@ -97,10 +95,9 @@ void UserInfo::updatePhoneStatus(const QString & term,
 }
 
 bool UserInfo::hasPhone(const QString & astid,
-                        const QString & context,
                         const QString & term)
 {
-        if((m_astid == astid) && (m_context == context) && m_termlist.contains(term))
+        if((m_astid == astid) && m_termlist.contains(term))
                 return true;
         else
                 return false;
@@ -144,11 +141,6 @@ const QString & UserInfo::agentid() const
 const QString & UserInfo::astid() const
 {
         return m_astid;
-}
-
-const QString & UserInfo::context() const
-{
-        return m_context;
 }
 
 const QString & UserInfo::availstate() const
