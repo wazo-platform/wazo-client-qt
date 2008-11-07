@@ -256,13 +256,13 @@ void IdentityDisplay::setAgentList(const QVariant & alist)
                 return;
         QVariantMap alistmap = alist.toMap();
         QString astid = alistmap["astid"].toString();
-        qDebug() << "IdentityDisplay::setAgentList" << m_ui->agentid() << astid << m_ui->astid();
+        qDebug() << "IdentityDisplay::setAgentList()" << m_ui->agentid() << astid << m_ui->astid();
         if (astid != m_ui->astid())
                 return;
         
         QStringList agentids = alistmap["newlist"].toMap().keys();
         agentids.sort();
-        qDebug() << "IdentityDisplay::setAgentList" << agentids;
+        qDebug() << "IdentityDisplay::setAgentList()" << agentids;
         foreach (QString agnum, agentids) {
                 if(agnum == m_ui->agentid()) {
                         QVariant properties = alistmap["newlist"].toMap()[agnum].toMap()["properties"];
@@ -297,7 +297,7 @@ void IdentityDisplay::setAgentList(const QVariant & alist)
                         
                         foreach (QVariant qv, agqjoined) {
                                 QStringList agqprops = qv.toStringList();
-                                qDebug() << "IdentityDisplay::setAgentList" << agqprops;
+                                qDebug() << "IdentityDisplay::setAgentList()" << agqprops;
                                 QString queuename = agqprops[0];
                                 if (m_queuesindexes.contains(queuename)) {
                                         int idx = m_queuesindexes[queuename];

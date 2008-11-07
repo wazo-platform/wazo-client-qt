@@ -66,14 +66,11 @@ void UserInfo::setNumber(const QString & phonenum)
 
 void UserInfo::setPhones(const QString & astid,
                          const QString & context,
-                         const QString & termlist)
+                         const QStringList & termlist)
 {
         m_astid = astid;
         m_context = context;
-        m_termlist.clear();
-
-        if(termlist.size() > 0)
-                m_termlist = termlist.split(",");
+        m_termlist = termlist;
         foreach(QString term, m_termlist)
                 m_termstatus[term] = "unknown";
 }

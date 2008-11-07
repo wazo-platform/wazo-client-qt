@@ -217,7 +217,7 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
         QMessageBox::Icon icon;
         QString title, text;
 
-        qDebug() << "FaxPanel::popupMsg" << status << reason;
+        // qDebug() << "FaxPanel::popupMsg()" << status << reason;
 
         if(status == "ok") {
                 icon = QMessageBox::Information;

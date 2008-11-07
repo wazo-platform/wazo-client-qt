@@ -271,7 +271,7 @@ void AgentsPanel::setAgentList(const QVariant & alist)
                 QString agfullname = properties.toMap()["name"].toString();
                 QString phonenum = properties.toMap()["phonenum"].toString();
                 bool link = properties.toMap()["link"].toBool();
-                qDebug() << "AgentsPanel::setAgentList" << agnum << agstatus << agfullname << phonenum << link;
+                qDebug() << "AgentsPanel::setAgentList()" << agnum << agstatus << agfullname << phonenum << link;
                 
                 if(! m_agent_labels.contains(agnum)) {
                         QFrame * qvline1 = new QFrame(this);

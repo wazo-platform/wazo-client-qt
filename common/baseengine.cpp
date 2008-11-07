@@ -39,10 +39,10 @@
  * $Date$
  */
 
+#include <QColor>
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QFile>
-#include <QMessageBox>
 #include <QSettings>
 #include <QSocketNotifier>
 #include <QTcpSocket>
@@ -579,7 +579,6 @@ void BaseEngine::socketStateChanged(QAbstractSocket::SocketState socketState)
                 }
 }
 
-
 UserInfo * BaseEngine::findUserFromPhone(const QString & astid,
                                          const QString & context,
                                          const QString & tech,
@@ -598,6 +597,16 @@ UserInfo * BaseEngine::findUserFromAgent(const QString & astid,
                 if(uinfo->hasAgent(astid, agentnum))
                         return uinfo;
         return NULL;
+}
+
+void BaseEngine::updatePhone(const QString & astid,
+                             const QString & phoneid,
+                             const QVariant & properties)
+{
+        qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties;
+//         UserInfo * ui = findUserFromPhone(astid, context, tech, phoneid);
+//         if(ui)
+//                 ui->updatePhoneStatus(tech + "/" + phoneid, hintstatus);
 }
 
 void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
@@ -675,7 +684,7 @@ bool BaseEngine::parseCommand(const QString & line)
 {
         QVariant data;
         try {
-                data = JsonQt::JsonToVariant::parse(line.trimmed());
+                data = JsonQt::JsonToVariant::parse(QString::fromUtf8(line.trimmed().toAscii()));
         }
         catch(JsonQt::ParseException) {
                 qDebug() << "BaseEngine::parseCommand() exception catched for" << line.trimmed();
@@ -842,7 +851,9 @@ bool BaseEngine::parseCommand(const QString & line)
                                         QString imstatus = listpeers[3].toString();
                                         m_users[iduser]->setAvailState(imstatus);
                                         m_users[iduser]->setNumber(listpeers[7].toString());
-                                        m_users[iduser]->setPhones(listpeers[5].toString(), listpeers[6].toString(), listpeers[8].toString());
+                                        m_users[iduser]->setPhones(listpeers[5].toString(),
+                                                                   listpeers[6].toString(),
+                                                                   listpeers[8].toStringList());
                                         m_users[iduser]->setAgent(listpeers[9].toString());
                                         m_users[iduser]->setMWI(listpeers[10].toStringList());
                                         updatePeerAgent(iduser, "imstatus", imstatus.split("/"));
@@ -878,7 +889,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                                 fullname_watched = fullname_mine;
                                         }
                                 }
-                        
+                                
                                 monitorPeerRequest(fullid_watched);
                                 emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
                         } else if (function == "update") {
@@ -946,17 +957,17 @@ bool BaseEngine::parseCommand(const QString & line)
                         if (function == "sendlist") {
                                 foreach(QString astid, datamap["payload"].toMap().keys()) {
                                         QVariant values = datamap["payload"].toMap()[astid];
-                                        foreach(QVariant qv, values.toList())
-                                                qDebug() << "phones" << astid
-                                                         << qv.toMap()["statusbase"].toStringList()
-                                                         << qv.toMap()["statusextended"].toList();
+                                        foreach(QString phoneid, values.toMap().keys())
+                                                // updatePeerAndCallerid(liststatus);
+                                                updatePhone(astid, phoneid, values.toMap()[phoneid]);
                                 }
                                 callsUpdated();
                                 peersReceived();
                         } else if (function == "update") {
-                                // qDebug() << datamap;
-                                QStringList statusbase = datamap["statusbase"].toStringList();
-                                qDebug() << statusbase << datamap["statusextended"].toList();
+                                QString astid = datamap["astid"].toString();
+                                QString phoneid = datamap["phoneid"].toString();
+                                QVariant value = datamap["status"];
+                                updatePhone(astid, phoneid, value);
                                 // updatePeerAndCallerid(liststatus);
                                 callsUpdated();
                         } else if (function == "add") {
@@ -1200,13 +1211,9 @@ void BaseEngine::popupError(const QString & errorid)
         else if(errorid.toLower() == "no_capability")
                 errormsg = tr("No capability allowed.");
 
-        else if(errorid.startsWith("xcusers:")) {
+        else if(errorid.startsWith("toomuchusers:")) {
                 QStringList userslist = errorid.split(":")[1].split(";");
                 errormsg = tr("Max number (%1) of XIVO Clients already reached.").arg(userslist[0]);
-        }
-        else if(errorid.startsWith("sbusers:")) {
-                QStringList userslist = errorid.split(":")[1].split(";");
-                errormsg = tr("Max number (%1) of XIVO Switchboards already reached.").arg(userslist[0]);
         }
         else if(errorid.startsWith("missing:")) {
                 errormsg = tr("Missing Argument(s)");
@@ -1234,7 +1241,7 @@ void BaseEngine::popupError(const QString & errorid)
         // logs a message before sending any popup that would block
         emitTextMessage(tr("Error") + " : " + errormsg);
         if(! m_trytoreconnect)
-                QMessageBox::critical(NULL, tr("XIVO CTI Error"), errormsg);
+                emitMessageBox(errormsg);
 }
 
 void BaseEngine::saveToFile(const QString & filename)

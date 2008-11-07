@@ -208,7 +208,7 @@ void StatusPanel::xferPressed()
 
 void StatusPanel::functionKeyPressed(int keynum)
 {
-        qDebug() << "StatusPanel::functionKeyPressed" << keynum << m_currentchannel;
+        qDebug() << "StatusPanel::functionKeyPressed()" << keynum << m_currentchannel;
         QString action;
         if(m_actionkey.contains(keynum))
                 action = m_actionkey[keynum][0];
@@ -217,7 +217,7 @@ void StatusPanel::functionKeyPressed(int keynum)
         
         if(m_callchannels.contains(m_currentchannel)) {
                 Line linestatus = m_linestatuses[m_currentchannel];
-                qDebug() << "StatusPanel::functionKeyPressed" << keynum << action << m_currentchannel << linestatus;
+                qDebug() << "StatusPanel::functionKeyPressed()" << keynum << action << m_currentchannel << linestatus;
                 if(linestatus == Ringing) {
                         if(action == "answer")
                                 pickUp(m_ui);
@@ -239,7 +239,7 @@ void StatusPanel::functionKeyPressed(int keynum)
                         }
                 } else if(linestatus == Wait) {
                         if(action == "unpark")
-                                qDebug() << "StatusPanel::functionKeyPressed" << "F1 when Wait : Take back";
+                                qDebug() << "StatusPanel::functionKeyPressed()" << "F1 when Wait : Take back";
                 } else if(linestatus == WDTransfer) {
                         if(action == "hangup") {
                                 simplehangupCall(m_ui, m_peerchan[m_currentchannel]);

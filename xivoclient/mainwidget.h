@@ -126,6 +126,7 @@ private slots:
         void loginKindChanged(int);
         void confUpdated();
         void updatePresence(const QVariant &);
+        void showMessageBox(const QString &);
 signals:
         void functionKeyPressed(int);
         void pasteToDialPanel(const QString &);

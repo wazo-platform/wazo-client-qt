@@ -55,7 +55,7 @@ public:
         void setNumber(const QString &);
         void setPhones(const QString &,
                        const QString &,
-                       const QString &);
+                       const QStringList &);
         void setAgent(const QString &);
         void setMWI(const QStringList &);
         bool hasPhone(const QString &,

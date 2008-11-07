@@ -66,6 +66,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
 {
         m_ui = ui;
         m_functions = options.toMap()["functions"].toStringList();
+        qDebug() << "PeerWidget::PeerWidget()" << m_functions;
 	//qDebug() << "PeerWidget::PeerWidget()" << id;
 	//	QHBoxLayout * layout = new QHBoxLayout(this);
         QFrame * qvline = new QFrame(this);
@@ -249,7 +250,7 @@ void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 
 void PeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 {
-        qDebug() << "PeerWidget::mouseDoubleClickEvent" << event;
+        qDebug() << "PeerWidget::mouseDoubleClickEvent()" << event;
         if(event->button() == Qt::LeftButton)
                 dial();
 }
@@ -257,7 +258,7 @@ void PeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 void PeerWidget::mouseDoubleClickEventLocal(QMouseEvent * event)
 {
         QString propkind = sender()->property("kind").toString();
-        qDebug() << "PeerWidget::mouseDoubleClickEventLocal" << event << propkind;
+        qDebug() << "PeerWidget::mouseDoubleClickEventLocal()" << event << propkind;
         if(event->button() == Qt::LeftButton)
                 dial();
 }

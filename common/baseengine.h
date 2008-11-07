@@ -184,6 +184,9 @@ public slots:
 private slots:
 	void keepLoginAlive(); //!< Keep session alive
 	void changeState(); //!< Change the presence status
+        void updatePhone(const QString &,
+                         const QString &,
+                         const QVariant &);
         void updatePeerAndCallerid(const QStringList &);
         void removePeerAndCallerid(const QStringList &);
 	void socketConnected();
@@ -213,6 +216,7 @@ signals:
         void fileReceived();
         void statusRecord(const QString &, const QString &);
         void setGuiOptions(const QVariant &);
+        void emitMessageBox(const QString &);
         
 	//! a call
 	void updateCall(UserInfo *,
