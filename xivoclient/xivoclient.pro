@@ -5,7 +5,7 @@
 #
 
 COMMONDIR = ../common
-JSON_JSONQT_DIR = ../3rdparty/json_jsonqt
+JSON_JSONQT_DIR = ../3rdparty/json_jsonqt/lib
 OUTLOOK_DIR = ../3rdparty/outlook
 
 _XIVOVER_ = 0.4
@@ -38,7 +38,6 @@ SOURCES += $${JSON_JSONQT_DIR}/*.cpp
 win32 {
 	INCLUDEPATH += $${OUTLOOK_DIR}
         DEFINES += USE_OUTLOOK=1
-        DEFINES += MAKE_JSONQT_LIB
         LIBS += -lole32 -loleaut32 -luuid
         HEADERS += $${OUTLOOK_DIR}/*.h
         SOURCES += $${OUTLOOK_DIR}/*.cpp

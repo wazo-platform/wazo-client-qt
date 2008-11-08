@@ -164,22 +164,22 @@ void BaseEngine::loadSettings()
 	m_systrayed = m_settings->value("display/systrayed", false).toBool();
         
         m_settings->beginGroup("engine");
-	m_serverhost = m_settings->value("serverhost", "192.168.0.254").toString();
+	m_serverhost = m_settings->value("serverhost", "demo.xivo.fr").toString();
 	m_ctiport    = m_settings->value("serverport", 5003).toUInt();
-
+        
 	m_userid      = m_settings->value("userid").toString();
 	m_useridopt   = m_settings->value("useridopt").toString();
         if(m_useridopt.size() > 0)
                 m_useridwithopt = m_userid + "%" + m_useridopt;
         else
                 m_useridwithopt = m_userid;
-	m_company      = m_settings->value("company").toString();
+	m_company      = m_settings->value("company", "default").toString();
 	m_password     = m_settings->value("password").toString();
 	m_keeppass     = m_settings->value("keeppass", 0).toUInt();
 	m_showagselect = m_settings->value("showagselect", 0).toUInt();
 	m_phonenumber  = m_settings->value("phonenumber").toString();
         setFullId();
-
+        
 	m_autoconnect = m_settings->value("autoconnect", false).toBool();
 	m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
 	m_trytoreconnectinterval = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();

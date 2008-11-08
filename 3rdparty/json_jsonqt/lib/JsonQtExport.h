@@ -19,14 +19,6 @@
 
 #include <QtGlobal>
 
-#ifdef Q_WS_WIN
-# if defined(MAKE_JSONQT_LIB)
-#  define JSONQT_EXPORT Q_DECL_EXPORT
-# else
-#  define JSONQT_EXPORT Q_DECL_IMPORT
-# endif
-#else
-# define JSONQT_EXPORT Q_DECL_EXPORT
-#endif
+#define JSONQT_EXPORT Q_DECL_EXPORT
 
 #endif

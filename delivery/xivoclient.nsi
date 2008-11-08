@@ -50,7 +50,6 @@ SectionEnd
 # Uninstall
 Section "Uninstall"
 # Do not remove the common CTI files if switchboard is installed
-IfFileExists "$INSTDIR\switchboard.exe" OnlyUninstallXC
 Delete "$INSTDIR\GPL_V2.txt"
 Delete "$INSTDIR\OpenSSL.LICENSE.txt"
 Delete "$INSTDIR\Qt.GPL.Exception.txt"
@@ -59,7 +58,6 @@ Delete "$INSTDIR\LICENSE"
 Delete "$INSTDIR\mingwm10.dll"
 Delete "$INSTDIR\cryptoeay32-0.9.8.dll"
 Delete "$INSTDIR\ssleay32-0.9.8.dll"
-OnlyUninstallXC:
 Delete "$INSTDIR\xivoclient.exe"
 Delete "$INSTDIR\uninstall-xivoclient.exe"
 DeleteRegKey HKLM ${REG_UNINST} 
