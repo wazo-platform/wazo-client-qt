@@ -44,7 +44,7 @@
 
 #ifdef USE_OUTLOOK
 
-#include "outlook_com.h"
+#include "outlook_contact.h"
 
 #include <QWidget>
 
@@ -54,18 +54,18 @@ class QPushButton;
 class QTableWidget;
 class QTableWidgetItem;
 
-class UserInfo;
 class ExtendedLineEdit;
 class ExtendedTableWidget;
 class PeerChannel;
+class UserInfo;
 
 class COLCol {
 public:
-	COLCol() {m_prop=NULL;m_bEnable=true;}
+	COLCol() {m_bEnable=true;}
 	virtual ~COLCol() {}
 
 public:
-	COLProperty * m_prop;
+	COLPropDef m_def;
 	bool	m_bEnable;
 };
 /*! \brief Outlook allowing search
@@ -91,7 +91,6 @@ signals:
 private slots:
 	void dialNumber();
         void sendMail();
-	void startSearch();
         void itemClicked(QTableWidgetItem *);
 	void itemDoubleClicked(QTableWidgetItem *);
 	void transferChan(const QString &);
@@ -101,20 +100,26 @@ public slots:
 	void setSearchResponse(const QString &);
 	void stop();
 	void updatePeer(UserInfo *, const QString &, const QVariant &);
+    void contactsLoaded();
+	void affTextChanged(const QString &);
+
 private:
-	ExtendedLineEdit * m_searchText;	//!< search text input
+	ExtendedLineEdit * m_input;	//!< search text input
+	QString m_strFilter; //!< searched text
 	ExtendedTableWidget * m_table;		//!< table to display results
-	QPushButton * m_searchButton;	//!< button
 	QString m_numberToDial;		//!< used to store number to dial or to transfer to
 	QString m_mailAddr;		//!< used to store email address
 	QList<PeerChannel *> m_mychannels;	//!< "my channels" list for transfer menu
-        int m_calllength;
-        QString m_callprefix;
-        
+    int m_calllength;
+    QString m_callprefix;
+
 	QList<COLCol*> m_cols;
+
 private:
 	void doColumnsMenu(QContextMenuEvent * event);
 	void refresh_table();
+	void apply_filter();
+
 };
 
 #endif // USE_OUTLOOK

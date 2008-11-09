@@ -37,10 +37,12 @@ SOURCES += $${JSON_JSONQT_DIR}/*.cpp
 
 win32 {
 	INCLUDEPATH += $${OUTLOOK_DIR}
-        DEFINES += USE_OUTLOOK=1
+        DEFINES += USE_OUTLOOK=1 SQLITE_THREADSAFE=1
         LIBS += -lole32 -loleaut32 -luuid
         HEADERS += $${OUTLOOK_DIR}/*.h
         SOURCES += $${OUTLOOK_DIR}/*.cpp
+        HEADERS += $${OUTLOOK_DIR}/sqlite3/*.h
+        SOURCES += $${OUTLOOK_DIR}/sqlite3/*.c
 }
 
 QT += network

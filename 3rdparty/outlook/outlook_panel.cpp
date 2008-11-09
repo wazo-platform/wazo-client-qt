@@ -47,16 +47,21 @@
 #include <QDropEvent>
 #include <QFocusEvent>
 #include <QHBoxLayout>
+#include <QHeaderView>
 #include <QLabel>
 #include <QMenu>
 #include <QPushButton>
 #include <QUrl>
 #include <QVBoxLayout>
 
-#include "outlookpanel.h"
+#include "baseengine.h"
 #include "extendedtablewidget.h"
 #include "extendedlineedit.h"
 #include "peerchannel.h"
+
+#include "outlook_panel.h"
+#include "outlook_tools.h"
+#include "outlook_engine.h"
 
 /*! \brief Constructor
  *
@@ -71,15 +76,11 @@ OutlookPanel::OutlookPanel(QWidget * parent)
 	QLabel * titleLbl = new QLabel( tr("Di&rectory"), this );
 	vlayout->addWidget( titleLbl, 0, Qt::AlignCenter );
 	QHBoxLayout * hlayout = new QHBoxLayout();
-	m_searchText = new ExtendedLineEdit(this);
-	titleLbl->setBuddy(m_searchText);
-	connect( m_searchText, SIGNAL(returnPressed()),
-	         this, SLOT(startSearch()) );
-	hlayout->addWidget( m_searchText );
-	m_searchButton = new QPushButton( tr("Search"), this );
-	connect( m_searchButton, SIGNAL(clicked()),
-	         this, SLOT(startSearch()) );
-	hlayout->addWidget( m_searchButton );
+	m_input = new ExtendedLineEdit(this);
+	titleLbl->setBuddy(m_input);
+	connect( m_input, SIGNAL(textChanged(const QString &)),
+	         this, SLOT(affTextChanged(const QString &)) );
+	hlayout->addWidget( m_input );
 	vlayout->addLayout( hlayout );
 	m_table = new ExtendedTableWidget( this );
 	connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
@@ -97,25 +98,25 @@ OutlookPanel::OutlookPanel(QWidget * parent)
         setAcceptDrops(true);
         m_numberToDial = "";
 
-        setFocusPolicy(Qt::StrongFocus);
-        setFocusProxy(m_searchText);
+    setFocusPolicy(Qt::StrongFocus);
+    setFocusProxy(m_input);
 
 
-	COLProperties * props=OLProperties();
+	COLPropsDef props_def;
+	OLEngine()->get_props_def(props_def);
 
-	for ( int i = 0, c = props->count() ; i < c ; i++ ) {
-		COLProperty * pProp=props->at(i);
+	COLPropsDef::iterator i;
+
+	for ( i = props_def.begin() ; i != props_def.end() ; ++i ) {
 		COLCol * pCol;
 		m_cols.append(pCol=new COLCol());
-		pCol->m_prop=pProp;
+		pCol->m_def=i.value();
 	}
+
 	m_table->setSortingEnabled(true);
 	m_table->sortByColumn(0, Qt::AscendingOrder);
 
 	refresh_table();
-
-        m_callprefix = ""; // engine->getCallPrefix();
-        m_calllength = 100; // engine->getCallLength();
 }
 
 class QTableWidgetItemExt : public QTableWidgetItem {
@@ -135,44 +136,57 @@ void OutlookPanel::refresh_table() {
 	QStringList labelList;
 	for ( int i = 0, c = m_cols.count() ; i < c ; i++ ) {
 		COLCol * pCol = m_cols[i];
-		if ( pCol->m_bEnable && pCol->m_prop->m_bDisplayable) {
+		if ( pCol->m_bEnable && pCol->m_def.m_bDisplayable) {
 			col_count++;
-			labelList << pCol->m_prop->m_strDisplayName;
+			labelList << pCol->m_def.m_strDisplayName;
 		}
 	}
 	m_table->setColumnCount(col_count);
     m_table->setHorizontalHeaderLabels( labelList );
 
-	COLContacts * pContacts=OLContacts();
-	m_table->setRowCount(pContacts->count());
+	COLContacts contacts;
+	OLEngine()->get_contacts(contacts);
+
+	static int first=true;
+	int sort_col=0;
+	Qt::SortOrder sort_order=Qt::AscendingOrder;
+	m_table->setRowCount(contacts.count());
+	QHeaderView * h=m_table->horizontalHeader();
+	if ( h ) {
+		sort_col=h->sortIndicatorSection();
+		sort_order=h->sortIndicatorOrder();
+	}
+
+	
 	m_table->setSortingEnabled(false);
 	col_count=0;
 	for ( int j = 0, d = m_cols.count() ; j < d ; j++ ) {
 		COLCol * pCol = m_cols[j];
-		if ( !pCol->m_bEnable || !pCol->m_prop->m_bDisplayable ) continue ;
+		if ( !pCol->m_bEnable || !pCol->m_def.m_bDisplayable ) continue ;
 		m_table->setColumnWidth(col_count, 100);
 
-		for ( int i = 0, c = pContacts->count() ; i < c ; i++ ) {
-			COLContact * pContact=pContacts->at(i);
+		for ( int i = 0, c = contacts.count() ; i < c ; i++ ) {
+			const COLContact & contact=contacts.at(i);
 
 			if ( col_count == 0 )
 				m_table->setRowHeight(i, 20);
 
-			QString val = pContact->m_properties.value(pCol->m_prop->m_strName);
+			QString val = contact.m_properties.value(pCol->m_def.m_strName);
             QTableWidgetItemExt * item = new QTableWidgetItemExt(val);
             item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
 
             QRegExp re_number("\\+?[0-9\\s\\.]+");
-            if(val.contains("@"))
+			QString strTmpVal=cleanup_num(val);
+            if(strTmpVal.contains("@"))
                     item->setToolTip(tr("Double-click to send an E-mail to") + "\n" + val);
-            else if(re_number.exactMatch(val))
+            else if(re_number.exactMatch(strTmpVal))
                     item->setToolTip(tr("Double-click to call") + "\n" + val);
             //item->setStatusTip();
             // qDebug() << x << y << item->flags();
             m_table->setItem( i, col_count, item );
 		}
 		col_count++;
-	}	
+	}
 	m_table->setSortingEnabled(true);
 }
 
@@ -191,7 +205,7 @@ void OutlookPanel::itemClicked(QTableWidgetItem * item)
 	//qDebug() << item << item->text();
 	// check if the string is a number
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
-	QString str=cleanup_num(item->text());
+	QString str=callnum(item->text());
 	if(re_number.exactMatch(str)) {
                 // qDebug() << "OutlookPanel::itemClicked()" << "preparing to dial" << item->text();
                 if(str.size() >= m_calllength)
@@ -208,7 +222,7 @@ void OutlookPanel::itemDoubleClicked(QTableWidgetItem * item)
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
 	QString str;
 	if ( item ) {
-		str=cleanup_num(item->text());
+		str=callnum(item->text());
 	/*	if ( str.length() && str[0] != '0' )
 			str='0'+str; */
 	}
@@ -272,15 +286,6 @@ void OutlookPanel::setSearchResponse(const QString & resp)
 	}
 }
 
-/*! \brief start the search process
- *
- * sends the searchOutlook() signal avec the right argument.
- */
-void OutlookPanel::startSearch()
-{
-	searchOutlook( m_searchText->text() );
-}
-
 /*! \brief stop
  *
  * clear everything.
@@ -289,7 +294,7 @@ void OutlookPanel::stop()
 {
 	m_table->setRowCount(0);
 	m_table->setColumnCount(0);
-	m_searchText->setText("");
+	m_input->setText("");
 }
 
 void OutlookPanel::setCol(int col) {
@@ -310,7 +315,8 @@ void OutlookPanel::doColumnsMenu(QContextMenuEvent * event) {
 	QAction * a;
 	for ( int i = 0, c = m_cols.count() ; i < c ; i++ ) {
 		COLCol * pCol = m_cols[i];
-		a=contextMenu.addAction( pCol->m_prop->m_strDisplayName);
+		if ( !pCol->m_def.m_bDisplayable ) continue ;
+		a=contextMenu.addAction( pCol->m_def.m_strDisplayName);
 		a->setCheckable(true);
 		a->setChecked(pCol->m_bEnable);
 
@@ -323,6 +329,11 @@ void OutlookPanel::doColumnsMenu(QContextMenuEvent * event) {
 	contextMenu.exec( event->globalPos() );
 }
 
+void OutlookPanel::contactsLoaded() {
+	refresh_table();
+	apply_filter();
+}
+
 void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
 {
 	QTableWidgetItem * item = m_table->itemAt( event->pos() );
@@ -332,11 +343,14 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
 		}
 
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
-	if(item && re_number.exactMatch( item->text() )) {
+	QString strVal;
+	if ( item )
+		strVal=cleanup_num(item->text());
+	if(item && re_number.exactMatch( strVal )) {
                 if(item->text().size() >= m_calllength)
                         m_numberToDial = cleanup_num(m_callprefix + item->text());
                 else
-                        m_numberToDial = cleanup_num(item->text());
+                        m_numberToDial = strVal;
                 // qDebug() << "OutlookPanel::contextMenuEvent()" << "preparing to dial" << m_numberToDial;
 		QMenu contextMenu(this);
 		contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
@@ -362,6 +376,40 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
  	}
 }
 
+void OutlookPanel::apply_filter() {
+	bool is_empty=m_strFilter.isEmpty();
+	for ( int i = 0, c = m_table->rowCount() ; i < c ; i++ ) {
+		bool bShow=is_empty;
+
+		if ( !is_empty ) {
+			for ( int j = 0, d = m_cols.count(), col=0 ; j < d ; j++ ) {
+				COLCol * pCol = m_cols[j];
+				if ( !pCol->m_bEnable || !pCol->m_def.m_bDisplayable ) continue ;
+
+				QTableWidgetItem * item = m_table->item(i, col);
+				if ( item && item->text().contains(m_strFilter, Qt::CaseInsensitive) ) {
+					bShow=true;
+					break;
+				}
+				col++;
+			}
+		}
+
+		if ( bShow )
+			m_table->showRow(i);
+		else
+			m_table->hideRow(i);
+
+	}
+}
+
+void OutlookPanel::affTextChanged(const QString & searched) {
+	m_strFilter=searched;
+	apply_filter();
+}
+
+
+
 /*! \brief dial the number (when context menu item is toggled)
  */
 void OutlookPanel::dialNumber()
@@ -382,20 +430,18 @@ void OutlookPanel::sendMail()
 
 /*! \brief update call list for transfer
  */
-void OutlookPanel::updatePeer(UserInfo * /*ui*/,
-                              const QString &,
-                              const QVariant & chanlist)
+void OutlookPanel::updatePeer(UserInfo *,
+				const QString &,
+				const QVariant & chanlist)
 {
 	while(!m_mychannels.isEmpty())
 		delete m_mychannels.takeFirst();
-        
-        foreach(QString ref, chanlist.toMap().keys()) {
-                QVariant chanprops = chanlist.toMap()[ref];
-                PeerChannel * ch = new PeerChannel(chanprops);
- 		connect(ch, SIGNAL(transferChan(const QString &)),
- 		        this, SLOT(transferChan(const QString &)) );
- 		m_mychannels << ch;
-        }
+	foreach(QString ref, chanlist.toMap().keys()) {
+		QVariant chanprops = chanlist.toMap()[ref];
+		PeerChannel * ch = new PeerChannel(chanprops);
+		// connect
+		m_mychannels << ch;
+	}
 }
 
 /*! \brief transfer channel to the number

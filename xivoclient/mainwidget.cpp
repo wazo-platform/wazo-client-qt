@@ -91,7 +91,8 @@
 #include "xletprotopanel.h"
 #include "xivoconsts.h"
 #ifdef USE_OUTLOOK
-#include "outlookpanel.h"
+#include "outlook_panel.h"
+#include "outlook_engine.h"
 #endif /* USE_OUTLOOK */
 
 const QString extraspace("  ");
@@ -222,6 +223,9 @@ MainWidget::MainWidget(BaseEngine * engine,
 MainWidget::~MainWidget()
 {
         // qDebug() << "MainWidget::~MainWidget()";
+#ifdef USE_OUTLOOK
+	OLEngineEnd();
+#endif
         savePositions();
         delete m_settings;
 }
@@ -1131,6 +1135,8 @@ void MainWidget::engineStarted()
                                 addPanel("outlook", tr("Outlook"), m_xlet[dc]);
                                 m_xlet[dc]->setFocus();
                                 
+				connect( &(OLEngine()->m_OLThread), SIGNAL(contactsLoaded()),
+                                         m_xlet[dc], SLOT(contactsLoaded()));
 				connect( m_xlet[dc], SIGNAL(searchOutlook(const QString &)),
 					 m_engine, SLOT(searchOutlook(const QString &)) );
 				connect( m_xlet[dc], SIGNAL(emitDial(const QString &)),

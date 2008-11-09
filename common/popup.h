@@ -48,6 +48,9 @@
 #include <QTcpSocket>
 #include <QWidget>
 #include "xmlhandler.h"
+#ifdef USE_OUTLOOK
+#include "outlook_contact.h"
+#endif
 
 class QComboBox;
 class QLabel;
@@ -58,9 +61,6 @@ class QXmlInputSource;
 class QXmlSimpleReader;
 
 class UserInfo;
-#ifdef USE_OUTLOOK
-class COLContact;
-#endif
 
 /*! \brief Profile popup widget
  *
@@ -163,7 +163,8 @@ private:
         QHash<QString, QPushButton *> m_form_buttons;
         QHash<QString, QString> m_remoteforms;
 #ifdef USE_OUTLOOK
-	COLContact * m_pOLContact;
+	COLContact m_OLContact;
+	bool	m_bOLFound;
 #endif
 };
 

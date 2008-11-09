@@ -4,8 +4,10 @@
 #ifdef USE_OUTLOOK
 #include <windows.h>
 #include <QString>
-#include <QList>
 #include <QHash>
+
+#define OL_FOLDER_CONTACTS 10
+
 
 class CIDispatch
 {
@@ -23,35 +25,27 @@ public:
     IDispatch *m_pIDisp;
 };
 
-class COLContact : public CIDispatch {
+class COLContact;
+class COLComContact : public CIDispatch {
 public:
-    COLContact(IDispatch * pDisp=NULL, BOOL bAddRef=FALSE):CIDispatch(pDisp, bAddRef){}
-	COLContact(const COLContact & disp):CIDispatch(disp){m_properties=disp.m_properties;}
-    virtual ~COLContact(){}
+    COLComContact(IDispatch * pDisp=NULL, BOOL bAddRef=FALSE):CIDispatch(pDisp, bAddRef){}
+	COLComContact(const COLComContact & disp):CIDispatch(disp){}
+    virtual ~COLComContact(){}
 
-	WCHAR* GetPropertyVal(const char * szName);
+	bool Load(COLContact * contact);
 
-	bool	operator <(const COLContact & c) const {
-		QString str1=m_properties.value("FullName");
-		QString str2=c.m_properties.value("FullName");
-		return str1<str2;
-	}
-
-	void Load();
-
-public:
-	QHash<QString, QString> m_properties;
 };
 
 
-class COLContactItems : public CIDispatch {
-public:
-    COLContactItems(IDispatch * pDisp=NULL, BOOL bAddRef=FALSE):CIDispatch(pDisp, bAddRef){}
-    COLContactItems(const COLContactItems & disp):CIDispatch(disp){}
-    virtual ~COLContactItems(){}
 
-	COLContact GetFirst();
-	COLContact GetNext();
+class COLComContactItems : public CIDispatch {
+public:
+    COLComContactItems(IDispatch * pDisp=NULL, BOOL bAddRef=FALSE):CIDispatch(pDisp, bAddRef){}
+    COLComContactItems(const COLComContactItems & disp):CIDispatch(disp){}
+    virtual ~COLComContactItems(){}
+
+	COLComContact GetFirst();
+	COLComContact GetNext();
 };
 
 
@@ -61,7 +55,15 @@ public:
     COLFolder(const COLFolder & disp):CIDispatch(disp){}
     virtual ~COLFolder(){}
 
-	COLContactItems GetItems();
+	COLComContactItems GetItems();
+	QString Name();
+
+	QString EntryID();
+	QString StoreID();
+
+public:
+	QString m_strEntryID;
+	QString m_strStoreID;
 };
 
 class COLNameSpace : public CIDispatch
@@ -72,6 +74,8 @@ public:
     virtual ~COLNameSpace(){}
 
 	COLFolder GetDefaultFolder(UINT nFolder);
+	COLFolder PickFolder();
+	COLFolder GetFolderFromID(const QString & strEntryID, const QString & strStoreID);
 };
 
 class COLApp {
@@ -79,6 +83,8 @@ public:
     COLApp();
     virtual ~COLApp();
 
+	bool	init();
+	void	term();
 
     // properties	
 	void          SetVisible(BOOL bVisible);
@@ -88,22 +94,6 @@ public:
 	IDispatch *m_pOutlookApp;
 	CLSID clsid;
 };
-
-class COLProperty {
-public:
-	COLProperty(const char * name, const char * display, bool displayable=false) :
-		m_strName(name),
-		m_strDisplayName(display),
-		m_bDisplayable(displayable)
-		{}
-	virtual ~COLProperty(void) {}
-
-public:
-	QString m_strName;
-	QString m_strDisplayName;
-	bool	m_bDisplayable;
-};
-
 
 /*
     _bstr_t AssistantName;
@@ -260,50 +250,6 @@ public:
     _bstr_t Home2TelephoneNumber;
 
 */
-class COLProperties : public QList<COLProperty*> {
-public:
-	COLProperties() {
-		append(new COLProperty("FirstName", "First Name"));
-		append(new COLProperty("LastName", "Last Name"));
-		append(new COLProperty("FullName", "Full Name", true));
-		append(new COLProperty("BusinessTelephoneNumber", "Business Phone", true));
-		append(new COLProperty("MobileTelephoneNumber", "Mobile Phone", true));
-		append(new COLProperty("HomeTelephoneNumber", "Home Phone", true));
-		append(new COLProperty("Email1Address", "Email Address", true));
-		
-/*		append(new COLProperty("CompanyMainTelephoneNumber", "CompanyMainTelephoneNumber"));
-		append(new COLProperty("CallbackTelephoneNumber", "CallbackTelephoneNumber"));
-		append(new COLProperty("PrimaryTelephoneNumber", "PrimaryTelephoneNumber"));
-		append(new COLProperty("Business2TelephoneNumber", "Business2TelephoneNumber"));
-		append(new COLProperty("CarTelephoneNumber", "CarTelephoneNumber"));
-		append(new COLProperty("RadioTelephoneNumber", "RadioTelephoneNumber"));
-		append(new COLProperty("OtherTelephoneNumber", "OtherTelephoneNumber"));
-		append(new COLProperty("AssistantTelephoneNumber", "AssistantTelephoneNumber"));
-		append(new COLProperty("Home2TelephoneNumber", "Home2TelephoneNumber")); */
-	}
-
-	virtual ~COLProperties() {
-		while ( !isEmpty() ) delete takeFirst();
-	}
-};
-
-COLProperties * OLProperties();
-
-
-class COLContacts : public QList<COLContact*> {
-public:
-	COLContacts() {
-	}
-
-	virtual ~COLContacts() {
-		while ( !isEmpty() ) delete takeFirst();
-	}
-};
-
-COLContacts * OLContacts();
-
-COLContact * OLFindContact(const QString & num);
-QString cleanup_num(QString str, bool clean_prefix=false);
 
 #endif // USE_OUTLOOK
 

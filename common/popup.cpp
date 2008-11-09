@@ -64,7 +64,7 @@
 #include "urllabel.h"
 #include "userinfo.h"
 #ifdef USE_OUTLOOK
-#include "outlook_com.h"
+#include "outlook_engine.h"
 #endif
 
 QStringList formbuttonnames = (QStringList()
@@ -90,7 +90,7 @@ Popup::Popup(const bool & urlautoallow,
           m_toupdate(false)
 {
 #ifdef USE_OUTLOOK
-	m_pOLContact=NULL;
+	m_bOLFound=FALSE;
 #endif
         // qDebug() << "Popup::Popup()";
 }
@@ -322,14 +322,14 @@ void Popup::addInfoText(int where, const QString & name, const QString & value)
 	QString strValue(value);
 #ifdef USE_OUTLOOK
 	// hack
-	if ( m_pOLContact && (value == QString("Inconnu") || value == QString("<b>Inconnu</b>")) ) {
+	if ( m_bOLFound && (value == QString("Inconnu") || value == QString("<b>Inconnu</b>")) ) {
 		if ( name == QString("Nom") ) {
-			QString strLastName=m_pOLContact->m_properties.value("LastName");
+			QString strLastName=m_OLContact.m_properties.value("LastName");
 			if ( ! strLastName.isEmpty() )
 				strValue=strLastName;
 		}
 		else if ( name == QString("Prénom") ) {
-			QString strFirstName=m_pOLContact->m_properties.value("FirstName");
+			QString strFirstName=m_OLContact.m_properties.value("FirstName");
 			if ( ! strFirstName.isEmpty() )
 				strValue=strFirstName;
 		}
@@ -567,13 +567,12 @@ void Popup::setMessage(const QString & order, const QString & message)
 	// hack
 	QStringList message_parts = message.split(" ");
 	if ( message_parts.count() > 1 ) {
-		m_pOLContact=OLFindContact(message_parts[1]);
-		if ( m_pOLContact ) {
-			m_message[order]=m_pOLContact->m_properties.value("FullName") + ' ' + message_parts[1];
+		if ( (m_bOLFound=OLEngine()->find_contact_by_num(message_parts[1], m_OLContact)) ) {
+			m_message[order]=m_OLContact.m_properties.value("FullName") + ' ' + message_parts[1];
 			return ;
 		}
 	}
-	m_pOLContact=NULL;
+	m_bOLFound=FALSE;
 #endif
 	m_message[order] = message;
 }

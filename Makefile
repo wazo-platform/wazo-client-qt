@@ -9,7 +9,7 @@ JOPT?=-j1
 
 # WIN32 targets only
 MAKENSIS=/cygdrive/c/Program\ Files/NSIS/makensis.exe
-UPXWIN=/cygdrive/c/upx303w/upx.exe
+UPXWIN?=/cygdrive/c/upx303w/upx.exe
 
 # Versions Definitions
 -include versions.mak

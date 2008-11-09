@@ -1,78 +1,13 @@
 #ifdef USE_OUTLOOK
 
 #include "outlook_com.h"
+#include "outlook_contact.h"
+#include "outlook_tools.h"
+#include "outlook_engine.h"
 
 #include <stdio.h>
+#include <QDebug>
 
-#define OL_FOLDER_CONTACTS 10
-
-static COLProperties * gpProperties=NULL;
-COLProperties * OLProperties() {
-	if ( !gpProperties ) gpProperties=new COLProperties;
-	return gpProperties;
-}
-
-void InitOLContacts();
-
-static COLContacts * gpContacts=NULL;
-COLContacts * OLContacts() {
-	if ( !gpContacts ) InitOLContacts();
-	return gpContacts;
-}
-
-QString cleanup_num(QString str, bool clean_prefix) {
-	str.replace(" ", "");
-	str.replace("(", "");
-	str.replace("+", "");
-	str.replace(".", "");
-
-	if ( clean_prefix ) {
-		if ( str.left(2) == QString("33") ) {
-			str.remove(0, 2);
-			str='0'+str;
-		}
-
-		if ( str.length() == 9 ) {
-			str='0'+str;
-		}
-	}
-	return str;
-}
-
-
-void InitOLContacts() {
-
-	gpContacts=new COLContacts;
-	COLApp pApp;
-	COLNameSpace pNS = pApp.GetNamespace("MAPI");
-
-	COLFolder pFolder = pNS.GetDefaultFolder(OL_FOLDER_CONTACTS);
-
-	if ( !pFolder ) {
-		// bla bla bla
-		return ;
-	}
-
-	COLContactItems pItems = pFolder.GetItems();
-
-	if ( !pItems ) {
-		// bla bla bla
-		return ;
-	}
-
-	COLContact pContact=pItems.GetFirst();
-
-	while(pContact)
-	{
-		pContact.Load();
-		COLContact * pNewContact = new COLContact(pContact);
-		gpContacts->append(pNewContact);
-		pNewContact->m_pIDisp->Release();
-		pNewContact->m_pIDisp=NULL;
-		pContact=pItems.GetNext();
-	}
-	// qSort(*gpContacts);
-}
 
 HRESULT AutoWrap(int autoType, VARIANT *pvResult, IDispatch *pDisp, LPOLESTR ptName, int cArgs...) {
     // Begin variable-argument list...
@@ -80,11 +15,8 @@ HRESULT AutoWrap(int autoType, VARIANT *pvResult, IDispatch *pDisp, LPOLESTR ptN
     va_start(marker, cArgs);
 
     if(!pDisp) {
-        MessageBoxA(NULL, "NULL IDispatch passed to AutoWrap()", "Error", 0x10010);
-#ifdef EXIT_ON_ERROR
-        _exit(0);
+		qDebug() << "NULL IDispatch passed to AutoWrap()";
 		return -1;
-#endif
     }
 
     // Variables used...
@@ -103,8 +35,7 @@ HRESULT AutoWrap(int autoType, VARIANT *pvResult, IDispatch *pDisp, LPOLESTR ptN
     hr = pDisp->GetIDsOfNames(IID_NULL, &ptName, 1, LOCALE_USER_DEFAULT, &dispID);
     if(FAILED(hr)) {
         sprintf(buf, "IDispatch::GetIDsOfNames(\"%s\") failed w/err 0x%08lx", szName, hr);
-        MessageBoxA(NULL, buf, "AutoWrap()", 0x10010);
-        _exit(0);
+        qDebug() << buf;
         return hr;
     }
 
@@ -129,10 +60,7 @@ HRESULT AutoWrap(int autoType, VARIANT *pvResult, IDispatch *pDisp, LPOLESTR ptN
     hr = pDisp->Invoke(dispID, IID_NULL, LOCALE_SYSTEM_DEFAULT, autoType, &dp, pvResult, NULL, NULL);
     if(FAILED(hr)) {
         sprintf(buf, "IDispatch::Invoke(\"%s\"=%08lx) failed w/err 0x%08lx", szName, dispID, hr);
-        MessageBoxA(NULL, buf, "AutoWrap()", 0x10010);
-#ifdef EXIT_ON_ERROR
-        _exit(0);
-#endif
+        qDebug() << buf;
         return hr;
     }
     // End variable-argument section...
@@ -143,132 +71,197 @@ HRESULT AutoWrap(int autoType, VARIANT *pvResult, IDispatch *pDisp, LPOLESTR ptN
     return hr;
 }
 
-static 	WCHAR* wchar_dup(const char * sz, BOOL bSysAlloc=FALSE) {
-    int len=strlen(sz);
-    WCHAR * pTemp=(WCHAR*)malloc(sizeof(WCHAR)*(len+1));
-    if ( (len+1) != MultiByteToWideChar(CP_ACP, 0, sz, -1, pTemp, len+1))
-    {
-       	 free(pTemp);
-//		 HLog(HLOG_ERROR, "HStrOleStr: Internal Error");
-	   	 return NULL;
-	}
-
-	WCHAR* ret;
-	if ( bSysAlloc ) {
-		ret=::SysAllocString(pTemp);
-		free(pTemp);
-	}
-	else {
-		ret=pTemp;
-	}
-	return ret;
-}
-
-// TODO: use QString internal buffer if possible
-static void wchar_to_qstr(const WCHAR * sz, QString & str) {
-	if ( sz ) {
-		
-		int len=wcslen(sz);
-		CHAR * pTemp=(CHAR*)malloc(sizeof(CHAR)*(len+1));
-	    if ( (len+1) == WideCharToMultiByte(CP_ACP, 0, sz, -1, pTemp, len+1, NULL, NULL)) {
-			str=pTemp;
-		} else {
-	   		// bla bla bla error
-			str="";
-		}
-		free(pTemp);
-	} else
-		str="";
-}
-
-WCHAR* COLContact::GetPropertyVal(const char * szName) {
-	WCHAR * prop=wchar_dup(szName);
-	VARIANT result;
-	AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, prop, 0);
-	free(prop);
-	return result.bstrVal;
-}
-
-void COLContact::Load() {
+bool COLComContact::Load(COLContact * contact) {
+	HRESULT res;
+	QString strPropVal;
 	QByteArray array;
-	COLProperties * props=OLProperties();
-	for ( int i = 0, c = props->count() ; i < c ; i++ ) {
-		COLProperty * pProp=props->at(i);
-		array=pProp->m_strName.toAscii();
-		WCHAR * prop=wchar_dup(array.constData());
-		VARIANT result;
-		AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, prop, 0);
-		free(prop);
-		QString strPropVal;
+	VARIANT result;
+	COLPropsDef props_def;
+	OLEngine()->get_props_def(props_def);
+	COLPropsDef::iterator i;
+
+	for ( i = props_def.begin() ; i != props_def.end() ; ++i ) {
+		const COLPropDef & prop=i.value();
+		array=prop.m_strName.toAscii();
+		WCHAR * wszProp=wchar_dup(array.constData());
+		res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, wszProp, 0);
+		free(wszProp);
+
 		wchar_to_qstr(result.bstrVal, strPropVal);
 		VariantClear(&result);
 
-		m_properties.insert(pProp->m_strName, strPropVal);
+		if ( FAILED(res) )	return false;
+
+		contact->m_properties.insert(prop.m_strName, strPropVal);
 	}
+
+	res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"CreationTime", 0);
+	if ( FAILED(res) ) return false;
+	contact->m_dtCreate=result.dblVal;
+	VariantClear(&result);
+
+	res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"LastModificationTime", 0);
+	if ( FAILED(res) ) return false;
+	contact->m_dtLastModified=result.dblVal;
+	VariantClear(&result);
+
+	return true;
 }
 
 
-COLContact	COLContactItems::GetFirst() {
+COLComContact	COLComContactItems::GetFirst() {
 	VARIANT result;
-	AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetFirst", 0);
-	return COLContact(result.pdispVal, FALSE);
+	HRESULT res;
+	res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetFirst", 0);
+	if ( FAILED(res) ) return NULL;
+	return COLComContact(result.pdispVal, FALSE);
 }
 
-COLContact	COLContactItems::GetNext() {
+COLComContact	COLComContactItems::GetNext() {
 	VARIANT result;
-	AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetNext", 0);
-	return COLContact(result.pdispVal, FALSE);
+	HRESULT res;
+	res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetNext", 0);
+	if ( FAILED(res) ) return NULL;
+	return COLComContact(result.pdispVal, FALSE);
 }
 
-COLContactItems	COLFolder::GetItems() {
+COLComContactItems	COLFolder::GetItems() {
 	VARIANT result;
-	AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"Items", 0);
-	return COLContactItems(result.pdispVal, FALSE);
+	HRESULT res;
+	res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"Items", 0);
+	if ( FAILED(res) ) return NULL;
+	return COLComContactItems(result.pdispVal, FALSE);
 }
+
+QString COLFolder::Name() {
+	VARIANT result;
+	HRESULT res;
+	res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"Name", 0);
+
+	QString str;
+	wchar_to_qstr(result.bstrVal, str);
+	VariantClear(&result);
+	
+	if ( FAILED(res) ) return "";
+	return str;
+}
+
+QString COLFolder::StoreID() {
+	VARIANT result;
+	HRESULT res;
+	res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"StoreID", 0);
+	
+	QString str;
+	wchar_to_qstr(result.bstrVal, str);
+	VariantClear(&result);
+	
+	if ( FAILED(res) ) return "";
+	return str;
+}
+
+QString COLFolder::EntryID() {
+	VARIANT result;
+	HRESULT res;
+	res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"EntryID", 0);
+	
+	QString str;
+	wchar_to_qstr(result.bstrVal, str);
+	VariantClear(&result);
+	
+	if ( FAILED(res) ) return "";
+	return str;
+}
+
 
 
 COLFolder	COLNameSpace::GetDefaultFolder(UINT nFolder) {
+	HRESULT res;
 	VARIANT result;
     VARIANT parm;
 	parm.vt = VT_I4;
 	parm.lVal = nFolder;
 
-	AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetDefaultFolder", 1, parm);
+	res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetDefaultFolder", 1, parm);
     VariantClear(&parm);
+	if ( FAILED(res) ) return NULL;
 
 	return COLFolder(result.pdispVal, FALSE);
 }
 
+COLFolder COLNameSpace::PickFolder() {
+	VARIANT result;
+
+	HRESULT res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"PickFolder", 0);
+
+	if ( FAILED(res) ) return NULL;
+	return COLFolder(result.pdispVal, FALSE);
+}
+
+COLFolder COLNameSpace::GetFolderFromID(const QString & strEntryID, const QString & strStoreID) {
+	VARIANT result;
+	VARIANT folderID, storeID;
+	HRESULT res;
+
+    folderID.vt = VT_BSTR;
+	folderID.bstrVal = wchar_dup(strEntryID.toAscii(), TRUE);
+
+    storeID.vt = VT_BSTR;
+	storeID.bstrVal = wchar_dup(strStoreID.toAscii(), TRUE);
+
+	// we have to invert entryID and storeID of prototype for correct working
+	// Why do we have to pass the optional parameter first???
+	res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetFolderFromID", 2, storeID, folderID);
+
+	VariantClear(&folderID);
+	VariantClear(&storeID);
+
+	if ( FAILED(res) ) return NULL;
+	return COLFolder(result.pdispVal, FALSE);
+}
 
 COLApp::COLApp()
 {
+}
+
+bool	COLApp::init() {
    // Initialize COM for this thread...
-   CoInitialize(NULL);
+   HRESULT hr = CoInitialize(NULL);
+   if(FAILED(hr)) {
+
+      qDebug() << "Unable to initialize COM?!?";
+      return false;
+   }
 
    // Get CLSID for our server...
-   HRESULT hr = CLSIDFromProgID(L"Outlook.Application", &clsid);
+   hr = CLSIDFromProgID(L"Outlook.Application", &clsid);
 
    if(FAILED(hr)) {
 
-      ::MessageBoxA(NULL, "Are you sure outlook is installed on this station?!?", "Error", 0x10010);
-      return ;
+      qDebug() << "Are you sure outlook is installed on this station?!?";
+      return false;
    }
 
    // Start server and get IDispatch...
    hr = CoCreateInstance(clsid, NULL, CLSCTX_LOCAL_SERVER, IID_IDispatch, (void **)&m_pOutlookApp);
    if(FAILED(hr)) {
-      ::MessageBoxA(NULL, "Outlook is not registered properly", "Error", 0x10010);
-      return ;
+      qDebug() << "Outlook is not registered properly";
+      return false;
    }
+
+   return true;
+}
+
+void COLApp::term() {
+	if ( m_pOutlookApp )
+		m_pOutlookApp->Release();
+	m_pOutlookApp=NULL;
+
+   // Uninitialize COM for this thread...
+   CoUninitialize();
 }
 
 COLApp::~COLApp()
 {
-	if ( m_pOutlookApp )
-		m_pOutlookApp->Release();
-
-   // Uninitialize COM for this thread...
-   CoUninitialize();
    
 }
 
@@ -278,25 +271,13 @@ COLNameSpace	COLApp::GetNamespace(const char * szName) {
     parm.vt = VT_BSTR;
     parm.bstrVal = wchar_dup(szName, TRUE);
 
-	AutoWrap(DISPATCH_PROPERTYGET, &result, m_pOutlookApp, L"GetNamespace", 1, parm);
+	HRESULT res=AutoWrap(DISPATCH_PROPERTYGET, &result, m_pOutlookApp, L"GetNamespace", 1, parm);
     VariantClear(&parm);
 
+	if ( FAILED(res) ) return NULL;
 	return COLNameSpace(result.pdispVal, FALSE);
 }
 
-COLContact * OLFindContact(const QString & num) {
-	COLProperties * pProperties = OLProperties();
-	COLContacts * pContacts=OLContacts();
-	QString strNum=cleanup_num(num, true);
-	for ( int i = 0, c = pContacts->count() ; i < c ; i++ ) {
-		COLContact * pContact=(*pContacts)[i];
-		for ( int j = 0, d = pProperties->count() ; j < d ; j++ ) {
-			QString val=cleanup_num(pContact->m_properties.value((*pProperties)[j]->m_strName), true);
-			if ( val == strNum )
-				return pContact;
-		}
-	}
-	return NULL;
-}
-
 #endif // USE_OUTLOOK
+
+
