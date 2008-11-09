@@ -47,6 +47,7 @@ win32 {
 
 QT += network
 QT += xml
+QT += webkit
 RESOURCES += appli.qrc
 TRANSLATIONS = xivoclient_fr.ts qt_fr.ts
 # TRANSLATIONS = xivoclient_fr.ts $$[QT_INSTALL_PREFIX]/translations/qt_fr.ts
