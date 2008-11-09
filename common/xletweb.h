@@ -35,35 +35,33 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision$
- * $Date$
+/* $Revision: 4519 $
+ * $Date: 2008-10-28 12:09:38 +0100 (mar 28 oct 2008) $
  */
 
-#ifndef __XIVOCONSTS_H__
-#define __XIVOCONSTS_H__
+#ifndef __XLETWEB_H__
+#define __XLETWEB_H__
 
-#define CHANNEL_MIMETYPE  "XIVO_ASTERISK_CHANNEL"
-#define PEER_MIMETYPE     "XIVO_ASTERISK_PEER"
-#define NUMBER_MIMETYPE   "XIVO_ASTERISK_NUMBER"
-#define XIVO_COMMAND_ROOT "XIVO_COMMAND_ROOT"
+#include <QObject>
+#include <QWidget>
 
-#define CHAN_STATUS_HANGUP  "hangup"
-#define CHAN_STATUS_CALLING "calling"
-#define CHAN_STATUS_RINGING "ringing"
+class BaseEngine;
+class UserInfo;
 
-const int REQUIRED_SERVER_VERSION = 4560;
-const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
-const QString __current_client_version__  = SVNVER;
-const QString __xivo_version__  = "0.4";
-const QString __nopresence__ = "nopresence";
-const QStringList XletList = (QStringList() << "customerinfo" << "features" << "history"
-                              << "directory" << "search" << "fax" << "dial"
-                              << "operator" << "parking" << "calls" << "switchboard"
-                              << "messages" << "identity" << "datetime" << "tabber" << "conference" << "xletproto" << "callcampaign" << "mylocaldir" << "xletweb"
-#ifdef USE_OUTLOOK
-                              << "outlook"
-#endif /* USE_OUTLOOK */
-                              << "agents" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
-const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
+/*! \brief XletWeb Panel
+ */
+class XletWeb : public QWidget
+{
+	Q_OBJECT
+public:
+	XletWeb(BaseEngine * engine, QWidget * parent = 0);
+	~XletWeb();
+public slots:
+        void setUserInfo(const UserInfo *);
+        void setGuiOptions(const QVariant &);
+private:
+        BaseEngine * m_engine;
+        const UserInfo * m_ui;
+};
 
-#endif /* __XIVOCONSTS_H__ */
+#endif /* __XLETWEB_H__ */

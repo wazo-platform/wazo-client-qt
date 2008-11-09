@@ -35,35 +35,47 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision$
- * $Date$
+/* $Revision: 4519 $
+ * $Date: 2008-10-28 12:09:38 +0100 (mar 28 oct 2008) $
  */
 
-#ifndef __XIVOCONSTS_H__
-#define __XIVOCONSTS_H__
+#include <QDebug>
+#include <QLabel>
+#include <QGridLayout>
+#include <QtWebKit>
 
-#define CHANNEL_MIMETYPE  "XIVO_ASTERISK_CHANNEL"
-#define PEER_MIMETYPE     "XIVO_ASTERISK_PEER"
-#define NUMBER_MIMETYPE   "XIVO_ASTERISK_NUMBER"
-#define XIVO_COMMAND_ROOT "XIVO_COMMAND_ROOT"
+#include "baseengine.h"
+#include "xletweb.h"
+#include "userinfo.h"
 
-#define CHAN_STATUS_HANGUP  "hangup"
-#define CHAN_STATUS_CALLING "calling"
-#define CHAN_STATUS_RINGING "ringing"
+/*! \brief Constructor
+ */
+XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
+        : QWidget(parent), m_engine(engine), m_ui(NULL)
+{
+        qDebug() << "XletWeb::XletWeb()";
+	
+        // replace by whatever you need
+        QGridLayout * glayout = new QGridLayout(this);
+	QWebView *view = new QWebView(this);
+	view->load(QUrl("http://www.proformatique.com/"));
+	view->show();
+        glayout->addWidget( view, 0, 0, Qt::AlignCenter );
+        glayout->setRowStretch( 0, 1 );
+        glayout->setColumnStretch( 0, 1 );
+        //
+}
 
-const int REQUIRED_SERVER_VERSION = 4560;
-const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
-const QString __current_client_version__  = SVNVER;
-const QString __xivo_version__  = "0.4";
-const QString __nopresence__ = "nopresence";
-const QStringList XletList = (QStringList() << "customerinfo" << "features" << "history"
-                              << "directory" << "search" << "fax" << "dial"
-                              << "operator" << "parking" << "calls" << "switchboard"
-                              << "messages" << "identity" << "datetime" << "tabber" << "conference" << "xletproto" << "callcampaign" << "mylocaldir" << "xletweb"
-#ifdef USE_OUTLOOK
-                              << "outlook"
-#endif /* USE_OUTLOOK */
-                              << "agents" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
-const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
+XletWeb::~XletWeb()
+{
+}
 
-#endif /* __XIVOCONSTS_H__ */
+void XletWeb::setGuiOptions(const QVariant &)
+{
+}
+
+void XletWeb::setUserInfo(const UserInfo * ui)
+{
+        m_ui = ui;
+        qDebug() << "XletWeb::setUserInfo()" << m_ui->fullname();
+}
