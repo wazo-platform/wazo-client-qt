@@ -89,6 +89,7 @@
 #include "switchboardwindow.h"
 #include "videopanel.h"
 #include "xletprotopanel.h"
+#include "xletweb.h"
 #include "xivoconsts.h"
 #ifdef USE_OUTLOOK
 #include "outlook_panel.h"
@@ -1169,6 +1170,10 @@ void MainWidget::engineStarted()
                         } else if (dc == QString("xletproto")) {
                                 m_xlet[dc] = new XletprotoPanel(m_engine);
                                 addPanel("xletproto", tr("Xlet Prototype"), m_xlet[dc]);
+
+                        } else if (dc == QString("xletweb")) {
+                                m_xlet[dc] = new XletWeb(m_engine);
+                                addPanel("xletweb", tr("Xlet Web"), m_xlet[dc]);
                         }
                 }
         }
