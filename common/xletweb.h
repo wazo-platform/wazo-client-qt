@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 4519 $
- * $Date: 2008-10-28 12:09:38 +0100 (mar 28 oct 2008) $
+/* $Revision$
+ * $Date$
  */
 
 #ifndef __XLETWEB_H__
