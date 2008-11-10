@@ -609,68 +609,17 @@ void BaseEngine::updatePhone(const QString & astid,
                              const QVariant & properties)
 {
         // qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties;
-        QString hintstatus;
-        if(properties.toMap()["comms"].toMap().size() > 0)
-                hintstatus = "Calling";
-        else
-                hintstatus = "Ready";
+        QString hintstatus = CHAN_STATUS_READY;
+        foreach(QString chan, properties.toMap()["comms"].toMap().keys()) {
+                QVariant props = properties.toMap()["comms"].toMap()[chan];
+                hintstatus = props.toMap()["status"].toString();
+        }
+        qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << hintstatus;
         UserInfo * ui = findUserFromPhone(astid, phoneid);
         if(ui) {
                 ui->updatePhoneStatus(phoneid, hintstatus);
                 updatePeer(ui, hintstatus, properties.toMap()["comms"]);
         }
-}
-
-void BaseEngine::updatePeerAndCallerid(const QStringList & liststatus)
-{
-	const int nfields0 = 8; // 0th order size (per-phone/line informations)
-	const int nfields1 = 6;  // 1st order size (per-channel informations)
-
-	// liststatus[0] is a dummy field, only used for debug on the daemon side
-	// p/(asteriskid)/(context)/(protocol)/(phoneid)/(phonenum)
-        // ("ful", "xivo", "default", "SIP", "147", "Timeout", "0")
-
-	if(liststatus.count() < nfields0) { // not valid
-		qDebug() << "BaseEngine::updatePeerAndCallerid() : Bad data from the server (not enough arguments) :" << liststatus;
-		return;
-	}
-        // BaseEngine::updatePeerAndCallerid() : Bad data from the server (not enough arguments) : ("ful", "xivo-obelisk", "default", "SIP", "100", "Unavailable", "0")
-
-	//<who>:<asterisk_id>:<tech(SIP/IAX/...)>:<phoneid>:<numero>:<contexte>:<dispo>:<etat SIP/XML>:<etat VM>:<etat Queues>: <nombre de liaisons>:
-        QString astid    = liststatus[1];
-	QString context  = liststatus[2];
-        QString tech     = liststatus[3];
-	QString phoneid  = liststatus[4];
-	QString hintstatus = liststatus[5];
-
-        UserInfo * ui = findUserFromPhone(astid, phoneid); // findUserFromPhone(astid, context, tech, phoneid);
-        if(ui) {
-                // qDebug() << liststatus;
-                ui->updatePhoneStatus(tech + "/" + phoneid, hintstatus);
-        }
-        
-        QHash<QString, QStringList> channs;
-        
-	int nchans = liststatus[nfields0 - 1].toInt();
-	if(liststatus.size() == nfields0 + nfields1 * nchans) {
-		for(int i = 0; i < nchans; i++) {
-			//  <channel>:<etat du channel>:<nb de secondes dans cet etat>:<to/from>:<channel en liaison>:<numero en liaison>
-			// "SIP/103-08248b38" "On the phone" "0" ">" "SIP/103-0827c0b8" "103"
-			int refn = nfields0 + nfields1 * i;
-                        
-                        channs[liststatus[refn]] = (QStringList()
-                                                    << liststatus[refn + 1]
-                                                    << liststatus[refn + 2]
-                                                    << liststatus[refn + 3]
-                                                    << liststatus[refn + 4]
-                                                    << liststatus[refn + 5]);
-                        
-			hintstatus = liststatus[refn + 1];
-		}
-	}
-        
-//         if(ui)
-//                 updatePeer(ui, hintstatus, channs);
 }
 
 void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
@@ -859,12 +808,12 @@ bool BaseEngine::parseCommand(const QString & line)
                                                 m_users[iduser] = new UserInfo(iduser);
                                                 m_users[iduser]->setFullName(listpeers[2].toString());
                                                 newUser(m_users[iduser]);
+                                                m_users[iduser]->setPhones(listpeers[5].toString(),
+                                                                           listpeers[8].toStringList());
                                         }
                                         QString imstatus = listpeers[3].toString();
                                         m_users[iduser]->setAvailState(imstatus);
                                         m_users[iduser]->setNumber(listpeers[7].toString());
-                                        m_users[iduser]->setPhones(listpeers[5].toString(),
-                                                                   listpeers[8].toStringList());
                                         m_users[iduser]->setAgent(listpeers[9].toString());
                                         m_users[iduser]->setMWI(listpeers[10].toStringList());
                                         updatePeerAgent(iduser, "imstatus", imstatus.split("/"));
@@ -969,7 +918,6 @@ bool BaseEngine::parseCommand(const QString & line)
                                 foreach(QString astid, datamap["payload"].toMap().keys()) {
                                         QVariant values = datamap["payload"].toMap()[astid];
                                         foreach(QString phoneid, values.toMap().keys())
-                                                // updatePeerAndCallerid(liststatus);
                                                 updatePhone(astid, phoneid, values.toMap()[phoneid]);
                                 }
                                 callsUpdated();
@@ -979,13 +927,12 @@ bool BaseEngine::parseCommand(const QString & line)
                                 QString phoneid = datamap["phoneid"].toString();
                                 QVariant value = datamap["status"];
                                 updatePhone(astid, phoneid, value);
-                                // updatePeerAndCallerid(liststatus);
                                 callsUpdated();
                         } else if (function == "add") {
                                 QStringList listpeers = datamap["payload"].toStringList();
                                 for(int i = 1 ; i < listpeers.size() - 1; i++) {
                                         QStringList liststatus = listpeers[i].split(":");
-                                        updatePeerAndCallerid(liststatus);
+                                        // updatePhone(astid, phoneid, values.toMap()[phoneid]);
                                 }
                                 if(listpeers[0] == "0") {
                                         qDebug() << "phones-add completed";

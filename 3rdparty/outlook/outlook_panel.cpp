@@ -431,15 +431,16 @@ void OutlookPanel::sendMail()
 /*! \brief update call list for transfer
  */
 void OutlookPanel::updatePeer(UserInfo *,
-				const QString &,
-				const QVariant & chanlist)
+                              const QString &,
+                              const QVariant & chanlist)
 {
 	while(!m_mychannels.isEmpty())
 		delete m_mychannels.takeFirst();
 	foreach(QString ref, chanlist.toMap().keys()) {
 		QVariant chanprops = chanlist.toMap()[ref];
 		PeerChannel * ch = new PeerChannel(chanprops);
-		// connect
+ 		connect(ch, SIGNAL(transferChan(const QString &)),
+ 		        this, SLOT(transferChan(const QString &)) );
 		m_mychannels << ch;
 	}
 }
@@ -452,4 +453,3 @@ void OutlookPanel::transferChan(const QString & chan)
 }
 
 #endif // USE_OUTLOOK
-

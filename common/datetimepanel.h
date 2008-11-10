@@ -50,6 +50,8 @@ class QLabel;
 class QProgressBar;
 class QTimerEvent;
 
+class UserInfo;
+
 /*! \brief Identity Display
  */
 class DatetimePanel : public QWidget
@@ -59,6 +61,9 @@ public:
 	DatetimePanel(QWidget * parent = 0);
 protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
+public slots:
+        void setGuiOptions(const QVariant &);
+        void setUserInfo(const UserInfo *);
 private:
         QGridLayout * m_gridlayout;
         QLabel * m_datetime;

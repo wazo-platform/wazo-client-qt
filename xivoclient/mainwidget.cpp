@@ -214,6 +214,7 @@ MainWidget::MainWidget(BaseEngine * engine,
         showLogin();
         if((m_withsystray && (m_engine->systrayed() == false)) || (! m_withsystray))
                 this->show();
+        setFocusPolicy(Qt::StrongFocus);
 }
 
 

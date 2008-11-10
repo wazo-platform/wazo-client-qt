@@ -64,6 +64,14 @@ DatetimePanel::DatetimePanel(QWidget * parent)
         m_timer = startTimer(1000);
 }
 
+void DatetimePanel::setGuiOptions(const QVariant &)
+{
+}
+
+void DatetimePanel::setUserInfo(const UserInfo *)
+{
+}
+
 void DatetimePanel::timerEvent(QTimerEvent * event)
 {
 	int timerId = event->timerId();

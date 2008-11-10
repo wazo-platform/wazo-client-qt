@@ -185,7 +185,6 @@ private slots:
         void updatePhone(const QString &,
                          const QString &,
                          const QVariant &);
-        void updatePeerAndCallerid(const QStringList &);
         void removePeerAndCallerid(const QStringList &);
 	void socketConnected();
 	void socketDisconnected();

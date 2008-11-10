@@ -102,6 +102,10 @@ ParkingPanel::~ParkingPanel()
         delete m_table;
 }
 
+void ParkingPanel::setGuiOptions(const QVariant &)
+{
+}
+
 void ParkingPanel::setUserInfo(const UserInfo * ui)
 {
 	m_userinfo = ui;

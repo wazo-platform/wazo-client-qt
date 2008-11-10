@@ -95,7 +95,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
                  this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         m_voicelbl = new QLabel();
         m_fwdlbl   = new QLabel();
-
+        
         foreach (QString termname, ui->termlist()) {
                 QStringList terms = termname.split(".");
                 if(terms.size() > 3) {

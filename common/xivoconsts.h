@@ -47,9 +47,14 @@
 #define NUMBER_MIMETYPE   "XIVO_ASTERISK_NUMBER"
 #define XIVO_COMMAND_ROOT "XIVO_COMMAND_ROOT"
 
-#define CHAN_STATUS_HANGUP  "hangup"
+#define CHAN_STATUS_READY "ready"
+#define CHAN_STATUS_HANGUP "hangup"
 #define CHAN_STATUS_CALLING "calling"
 #define CHAN_STATUS_RINGING "ringing"
+#define CHAN_STATUS_LINKED_CALLER "linked-caller"
+#define CHAN_STATUS_LINKED_CALLED "linked-called"
+#define CHAN_STATUS_UNLINKED_CALLER "unlinked-caller"
+#define CHAN_STATUS_UNLINKED_CALLED "unlinked-called"
 
 const int REQUIRED_SERVER_VERSION = 4560;
 const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);

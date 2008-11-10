@@ -121,7 +121,7 @@ void SearchPanel::affTextChanged(const QString & text)
 {
         m_searchpattern = text;
         QHashIterator<QString, PeerItem *> i(m_peerhash);
-	// qDebug() << "affTextChanged" << text;
+        // qDebug() << "SearchPanel::affTextChanged()" << "affTextChanged" << text;
 
         while(i.hasNext()) {
                 i.next();
@@ -163,6 +163,7 @@ void SearchPanel::affTextChanged(const QString & text)
 
                 if( peeritem->userinfo()->fullname().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
                         if(peerwidget == NULL) {
+                                // qDebug() << "SearchPanel::affTextChanged()" << peeritem->userinfo() << peeritem->userinfo()->termstatus();
                                 peerwidget = new PeerWidget(peeritem->userinfo(),
                                                             m_options,
                                                             m_persons,
@@ -205,7 +206,7 @@ void SearchPanel::updatePeer(UserInfo * ui,
                              const QVariant & chanlist)
 {
         QString userid = ui->userid();
-        // qDebug() << "SearchPanel::updatePeer()" << userid;
+        // qDebug() << "SearchPanel::updatePeer()" << userid << sipstatus << chanlist;
         if(m_peerhash.contains(userid)) {
                 PeerItem * peeritem = m_peerhash.value(userid);
                 peeritem->updateStatus(sipstatus);

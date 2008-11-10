@@ -44,6 +44,7 @@
 #include "peeritem.h"
 #include "peerwidget.h"
 #include "userinfo.h"
+#include "xivoconsts.h"
 
 /*! \brief Constructor
  */
@@ -123,7 +124,7 @@ void PeerItem::updateDisplayedStatus()
 	QString display_imavail;
 	QString display_sipstatus;
 
-	//qDebug() << imavail << sipstatus;
+	// qDebug() << "PeerItem::updateDisplayedStatus()" << m_imavail << m_ui->termstatus();
 	if(m_imavail == "available") {
 		m_peerwidget->setColor("presence", "green");
 		display_imavail = PeerWidget::tr("Available");
@@ -146,19 +147,26 @@ void PeerItem::updateDisplayedStatus()
 		m_peerwidget->setColor("presence", "grey");
 		display_imavail = m_imavail;
 	}
-
+        
         foreach(QString term, m_ui->termlist()) {
                 QString termstatus = m_ui->termstatus()[term];
-                if(termstatus == "Ready") {
+                // qDebug() << "PeerItem::updateDisplayedStatus()" << term << termstatus;
+                if((termstatus == CHAN_STATUS_READY) ||
+                   (termstatus == CHAN_STATUS_HANGUP) ||
+                   (termstatus == CHAN_STATUS_UNLINKED_CALLED) ||
+                   (termstatus == CHAN_STATUS_UNLINKED_CALLER)) {
                         m_peerwidget->setColor(term, "green");
                         display_sipstatus = PeerWidget::tr("Ready");
-                } else if(termstatus == "Ringing") {
+                } else if(termstatus == CHAN_STATUS_RINGING) {
                         m_peerwidget->setColor(term, "blue");
                         display_sipstatus = PeerWidget::tr("Ringing");
-                } else if(termstatus == "Calling") {
+                } else if(termstatus == CHAN_STATUS_CALLING) {
                         m_peerwidget->setColor(term, "yellow");
                         display_sipstatus = PeerWidget::tr("Calling");
-                } else if((termstatus == "On the phone") || (termstatus == "Up")) {
+                } else if((termstatus == CHAN_STATUS_LINKED_CALLED) || (termstatus == "Up")) {
+                        m_peerwidget->setColor(term, "red");
+                        display_sipstatus = PeerWidget::tr("On the phone");
+                } else if((termstatus == CHAN_STATUS_LINKED_CALLER) || (termstatus == "Up")) {
                         m_peerwidget->setColor(term, "red");
                         display_sipstatus = PeerWidget::tr("On the phone");
                 } else if(termstatus == "Not online") {
@@ -169,7 +177,7 @@ void PeerItem::updateDisplayedStatus()
                         display_sipstatus = termstatus;
                 }
         }
-
+        
         if(m_agentstatus.size() >= 4) {
                 // PeerItem::updateDisplayedStatus() ("agentlogout", "xivo", "6103", "103")
                 // PeerItem::updateDisplayedStatus() ("queuememberstatus", "6103", "qcb_00000", "5", "0")
