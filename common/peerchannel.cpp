@@ -51,10 +51,10 @@
 PeerChannel::PeerChannel(const QVariant & chanprops, QObject *parent)
         : QObject(parent)
 {
-        // qDebug() << "PeerChannel::PeerChannel()" << chanprops;
-        m_id; // SIP/xxx-yyy
-        m_state; // calling/...
-        m_otherPeer; // 0234234891
+        qDebug() << "PeerChannel::PeerChannel()" << chanprops.toMap();
+        m_id = chanprops.toMap()["thischannel"].toString();
+        m_state = chanprops.toMap()["status"].toString();
+        m_otherPeer = chanprops.toMap()["calleridnum"].toString(); // 0234234891
 }
 
 /*! \brief intercept the channel
@@ -80,4 +80,9 @@ void PeerChannel::transfer()
 {
 	// qDebug() << "PeerChannel::transfer()" << m_id;
 	transferChan( m_id );
+}
+
+const QString & PeerChannel::otherPeer() const
+{
+        return m_otherPeer;
 }

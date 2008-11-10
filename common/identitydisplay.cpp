@@ -353,8 +353,8 @@ void IdentityDisplay::setQueueList(bool changeallow, const QVariant & qlist)
 }
 
 void IdentityDisplay::updatePeer(UserInfo * ui,
-                                 const QString & sipstatus,
-                                 const QVariant & chanlist)
+                                 const QString &,
+                                 const QVariant &)
 {
         if(m_ui == NULL)
                 return;

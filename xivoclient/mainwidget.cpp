@@ -1148,6 +1148,11 @@ void MainWidget::engineStarted()
 				connect( m_engine, SIGNAL(outlookResponse(const QString &)),
 					 m_xlet[dc], SLOT(setSearchResponse(const QString &)) );
 #endif /* USE_OUTLOOK */
+#ifdef USE_WEBKIT
+                        } else if (dc == QString("xletweb")) {
+                                m_xlet[dc] = new XletWeb(m_engine);
+                                addPanel("xletweb", tr("Xlet Web"), m_xlet[dc]);
+#endif /* USE_WEBKIT */
 
 			} else if (dc == QString("instantmessaging")) {
                                 m_xlet[dc] = new QLineEdit();
@@ -1171,10 +1176,6 @@ void MainWidget::engineStarted()
                         } else if (dc == QString("xletproto")) {
                                 m_xlet[dc] = new XletprotoPanel(m_engine);
                                 addPanel("xletproto", tr("Xlet Prototype"), m_xlet[dc]);
-
-                        } else if (dc == QString("xletweb")) {
-                                m_xlet[dc] = new XletWeb(m_engine);
-                                addPanel("xletweb", tr("Xlet Web"), m_xlet[dc]);
                         }
                 }
         }

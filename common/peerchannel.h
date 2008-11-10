@@ -54,7 +54,7 @@ class PeerChannel : public QObject
 public:
 	PeerChannel(const QVariant &, QObject * parent=0);
 	//! get m_otherPeer
-	const QString & otherPeer() const { return m_otherPeer; };
+	const QString & otherPeer() const;
 public slots:
 	void intercept();
 	void hangup();
