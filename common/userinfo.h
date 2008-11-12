@@ -56,6 +56,8 @@ public:
         void setPhones(const QString &,
                        const QStringList &);
         void setAgent(const QString &);
+        void setUserId(const QString &);
+        void setCtiLogin(const QString &);
         void setMWI(const QStringList &);
         bool hasPhone(const QString &,
                       const QString &);
@@ -65,6 +67,7 @@ public:
         const QString & fullname() const;
         const QStringList & mwi() const;
         const QString & userid() const;
+        const QString & ctilogin() const;
         const QString & agentid() const;
         const QString & astid() const;
         const QString & context() const;
@@ -75,6 +78,8 @@ public:
                                const QString &);
 private:
         QString m_userid;
+        QString m_company;
+        QString m_ctilogin;
         QString m_fullname;
 
         QString m_availstate;

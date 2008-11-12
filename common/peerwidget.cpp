@@ -62,7 +62,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
                        const QHash<QString, QPixmap> & persons,
                        const QHash<QString, QPixmap> & phones,
                        const QHash<QString, QPixmap> & agents)
-	: m_agentlbl(NULL), m_phones(phones), m_persons(persons), m_agents(agents)
+	: m_availlbl(NULL), m_agentlbl(NULL), m_phones(phones), m_persons(persons), m_agents(agents)
 {
         m_ui = ui;
         m_functions = options.toMap()["functions"].toStringList();
@@ -85,14 +85,18 @@ PeerWidget::PeerWidget(UserInfo * ui,
                                this);
 	// set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
 	m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
-	m_availlbl = new ExtendedLabel();
-        m_availlbl->setAlignment(Qt::AlignCenter);
-        m_availlbl->setMinimumSize(fsize, fsize);
-        m_availlbl->setObjectName("onlyme");
-        m_availlbl->setProperty("kind", "person");
-        setColor("person", "grey");
-        connect( m_availlbl, SIGNAL(dial(QMouseEvent *)),
-                 this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
+        
+        if(! ui->ctilogin().isEmpty()) {
+                m_availlbl = new ExtendedLabel();
+                m_availlbl->setAlignment(Qt::AlignCenter);
+                m_availlbl->setMinimumSize(fsize, fsize);
+                m_availlbl->setObjectName("onlyme");
+                m_availlbl->setProperty("kind", "person");
+                setColor("person", "grey");
+                connect( m_availlbl, SIGNAL(dial(QMouseEvent *)),
+                         this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
+        }
+        
         m_voicelbl = new QLabel();
         m_fwdlbl   = new QLabel();
         
@@ -111,7 +115,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
                 }
         }
         
-        if(ui->agentid().size() > 0) {
+        if(! ui->agentid().isEmpty()) {
                 m_agentlbl = new ExtendedLabel();
                 m_agentlbl->setAlignment(Qt::AlignCenter);
                 m_agentlbl->setMinimumSize(fsize, fsize);
@@ -127,16 +131,13 @@ PeerWidget::PeerWidget(UserInfo * ui,
         // Put the Labels into layouts
         layout->addWidget( qvline, 0, 0, 2, 1 );
 	layout->addWidget( m_textlbl, 0, 2, 1, 6, Qt::AlignLeft );
-	layout->addWidget( m_availlbl, 1, 2, Qt::AlignCenter );
-        int n = 3;
-        foreach (QString termname, ui->termlist()) {
-                layout->addWidget( m_lblphones[termname], 1, n, Qt::AlignCenter );
-                n++;
-        }
-        if(ui->agentid().size() > 0) {
-                layout->addWidget( m_agentlbl, 1, n, Qt::AlignCenter );
-                n++;
-        }
+        int n = 2;
+        if(! ui->ctilogin().isEmpty())
+                layout->addWidget( m_availlbl, 1, n++, Qt::AlignCenter );
+        foreach (QString termname, ui->termlist())
+                layout->addWidget( m_lblphones[termname], 1, n++, Qt::AlignCenter );
+        if(! ui->agentid().isEmpty())
+                layout->addWidget( m_agentlbl, 1, n++, Qt::AlignCenter );
 	layout->setColumnStretch(20, 1);
 
 
@@ -164,9 +165,10 @@ PeerWidget::~PeerWidget()
 void PeerWidget::setColor(const QString & kind, const QString & color)
 {
         QString commonqss;
-        commonqss = "QLabel#onlyme {border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }";
+        // commonqss = "QLabel#onlyme {border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }";
+        commonqss = "QLabel#onlyme {border-style: solid; border-bottom-width: 8px; border-color: " + color + "; }";
         
-	if(kind == "presence") {
+	if((kind == "presence") && (m_availlbl)) {
                 m_availlbl->setPixmap(m_persons[color]);
                 m_availlbl->setStyleSheet(commonqss);
         } else if((kind == "agent") && (m_agentlbl)) {

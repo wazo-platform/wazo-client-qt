@@ -185,7 +185,6 @@ void BaseEngine::loadSettings()
 	m_keeppass     = m_settings->value("keeppass", 0).toUInt();
 	m_showagselect = m_settings->value("showagselect", 0).toUInt();
 	m_phonenumber  = m_settings->value("phonenumber").toString();
-        setFullId();
         
 	m_autoconnect = m_settings->value("autoconnect", false).toBool();
 	m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
@@ -299,7 +298,6 @@ void BaseEngine::config_and_start(const QString & login,
                                   const QString & phonenum)
 {
         setUserId(login);
-        setFullId();
         m_password = pass;
         // if phonenum's size is 0, no login as agent
         m_phonenumber = phonenum;
@@ -614,7 +612,7 @@ void BaseEngine::updatePhone(const QString & astid,
                 QVariant props = properties.toMap()["comms"].toMap()[chan];
                 hintstatus = props.toMap()["status"].toString();
         }
-        qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << hintstatus;
+        qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties.toMap()["hintstatus"].toInt() << hintstatus;
         UserInfo * ui = findUserFromPhone(astid, phoneid);
         if(ui) {
                 ui->updatePhoneStatus(phoneid, hintstatus);
@@ -769,7 +767,8 @@ bool BaseEngine::parseCommand(const QString & line)
                         serverFileList(datamap["filelist"].toStringList());
                         
                 } else if (thisclass == "presence") {
-                        QString id = datamap["company"].toString() + "/" + datamap["userid"].toString();
+                        // QString id = datamap["company"].toString() + "/" + datamap["userid"].toString();
+                        QString id = datamap["astid"].toString() + "/" + datamap["xivo_userid"].toString();
                         // qDebug() << thisclass << m_users.size() << id;
                         if(m_users.contains(id)) {
                                 QString presencestatus = datamap["capapresence"].toMap()["state"].toString();
@@ -803,9 +802,10 @@ bool BaseEngine::parseCommand(const QString & line)
                                         //qDebug() << "users-list" << listpeers[0] << listpeers[1] << listpeers[2];
                                         //<< listpeers[3] << listpeers[4] << listpeers[5]
                                         //<< listpeers[6] << listpeers[7] << listpeers[8] << listpeers[9];
-                                        QString iduser = listpeers[1].toString() + "/" + listpeers[0].toString();
+                                        QString iduser = listpeers[5].toString() + "/" + listpeers[11].toString();
                                         if(! m_users.contains(iduser)) {
                                                 m_users[iduser] = new UserInfo(iduser);
+                                                m_users[iduser]->setCtiLogin(listpeers[0].toString());
                                                 m_users[iduser]->setFullName(listpeers[2].toString());
                                                 newUser(m_users[iduser]);
                                                 m_users[iduser]->setPhones(listpeers[5].toString(),
@@ -824,6 +824,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                 }
                                 
                                 peersReceived();
+                                // qDebug() << m_fullid << m_users.keys();
                                 m_monitored_userid = m_fullid;
                                 QString fullname_mine = "No One";
                                 if(m_users.contains(m_fullid)) {
@@ -1023,6 +1024,9 @@ bool BaseEngine::parseCommand(const QString & line)
                         sendJsonCommand(command);
                         
                 } else if (thisclass == "login_capas_ok") {
+                        m_astid = datamap["astid"].toString();
+                        m_xivo_userid = datamap["xivo_userid"].toString();
+                        setFullId();
                         m_capafuncs = datamap["capafuncs"].toStringList();
                         m_capaxlets = datamap["capaxlets"].toStringList();
                         m_appliname = datamap["appliname"].toString();
@@ -1498,7 +1502,8 @@ void BaseEngine::setUserId(const QString & userid)
 
 void BaseEngine::setFullId()
 {
-        m_fullid = m_company + "/" + m_userid;
+        // m_fullid = m_company + "/" + m_userid;
+        m_fullid = m_astid + "/" + m_xivo_userid;
 }
 
 const QString & BaseEngine::phonenumber() const

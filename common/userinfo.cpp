@@ -59,6 +59,11 @@ void UserInfo::setFullName(const QString & fullname)
         m_fullname = fullname;
 }
 
+void UserInfo::setCtiLogin(const QString & ctilogin)
+{
+        m_ctilogin = ctilogin;
+}
+
 void UserInfo::setNumber(const QString & phonenum)
 {
         m_phonenum = phonenum;
@@ -126,6 +131,11 @@ const QString & UserInfo::phonenum() const
 const QString & UserInfo::userid() const
 {
         return m_userid;
+}
+
+const QString & UserInfo::ctilogin() const
+{
+        return m_ctilogin;
 }
 
 const QStringList & UserInfo::mwi() const

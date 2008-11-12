@@ -291,7 +291,9 @@ private:
 	int m_keeppass;			//!< Keep password ?
 	int m_showagselect;		//!< Show agent selection ?
 	QString m_fullid;		//!< Full Id (userid + company)
-
+        QString m_astid;
+        QString m_xivo_userid;
+        
 	bool m_autoconnect;		//!< Autoconnect to server at startup
 	bool m_trytoreconnect;		//!< "try to reconnect" flag
 	bool m_systrayed;		//!< "systrayed at startup" flag
