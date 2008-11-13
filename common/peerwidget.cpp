@@ -88,6 +88,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
         
         if(! ui->ctilogin().isEmpty()) {
                 m_availlbl = new ExtendedLabel();
+                m_availlbl->setPixmap(m_persons["grey"]);
                 m_availlbl->setAlignment(Qt::AlignCenter);
                 m_availlbl->setMinimumSize(fsize, fsize);
                 m_availlbl->setObjectName("onlyme");
@@ -169,7 +170,6 @@ void PeerWidget::setColor(const QString & kind, const QString & color)
         commonqss = "QLabel#onlyme {border-style: solid; border-bottom-width: 8px; border-color: " + color + "; }";
         
 	if((kind == "presence") && (m_availlbl)) {
-                m_availlbl->setPixmap(m_persons[color]);
                 m_availlbl->setStyleSheet(commonqss);
         } else if((kind == "agent") && (m_agentlbl)) {
                 m_agentlbl->setPixmap(m_agents[color]);

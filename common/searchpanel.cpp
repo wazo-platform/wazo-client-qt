@@ -58,6 +58,7 @@ SearchPanel::SearchPanel(BaseEngine * engine,
 {
 	m_engine = engine;
         m_options = options;
+        // qDebug() << "SearchPanel::SearchPanel()" << options;
         m_maxdisplay = options.toMap()["contacts-max"].toUInt();
         m_ncolumns = options.toMap()["contacts-width"].toUInt();
         m_functions = options.toMap()["functions"].toStringList();
@@ -202,14 +203,14 @@ void SearchPanel::affTextChanged(const QString & text)
 /*! \brief update peer
  */
 void SearchPanel::updatePeer(UserInfo * ui,
-                             const QString & sipstatus,
+                             const QString &,
                              const QVariant & chanlist)
 {
         QString userid = ui->userid();
         // qDebug() << "SearchPanel::updatePeer()" << userid << sipstatus << chanlist;
         if(m_peerhash.contains(userid)) {
                 PeerItem * peeritem = m_peerhash.value(userid);
-                peeritem->updateStatus(sipstatus);
+                peeritem->updateStatus();
                 peeritem->updateChans(chanlist);
                 peeritem->updateName(ui->fullname());
                 return;
@@ -220,7 +221,7 @@ void SearchPanel::updatePeer(UserInfo * ui,
                 return;
 
 	PeerItem * peeritem = new PeerItem(ui);
-	peeritem->updateStatus(sipstatus);
+	peeritem->updateStatus();
 	peeritem->updateChans(chanlist);
         m_peerhash.insert(userid, peeritem);
 
@@ -241,13 +242,10 @@ void SearchPanel::updatePeerAgent(const QString & id,
 {
         // qDebug() << "SearchPanel::updatePeerAgent()";
         if(m_peerhash.contains(id)) {
-                if(what == "agentstatus") {
-                        PeerItem * peeritem = m_peerhash.value(id);
-                        peeritem->updateAgentStatus(statuslist);
-                } else if(what == "imstatus") {
-                        PeerItem * peeritem = m_peerhash.value(id);
-                        peeritem->updateIMStatus(statuslist[0]);
-                }
+                if(what == "agentstatus")
+                        m_peerhash.value(id)->updateAgentStatus(statuslist);
+                else if(what == "imstatus")
+                        m_peerhash.value(id)->updateStatus();
         }
         return;
 }

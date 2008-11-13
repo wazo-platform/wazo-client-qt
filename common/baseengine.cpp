@@ -39,7 +39,6 @@
  * $Date$
  */
 
-#include <QColor>
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QFile>
@@ -380,25 +379,6 @@ void BaseEngine::updateCapaPresence(const QVariant & presence)
         foreach (QString field, presencemap.keys())
                 if(presencemap.contains(field))
                         m_capapresence[field] = presencemap[field];
-        
-        if(m_capapresence.contains("names"))
-                foreach (QString avstate, m_capapresence["names"].toMap().keys()) {
-                        QString color = m_capapresence["names"].toMap()[avstate].toMap()["color"].toString();
-                        if(color == "red")
-                                m_presencecolors[avstate] = Qt::red;
-                        else if(color == "blue")
-                                m_presencecolors[avstate] = Qt::blue;
-                        else if(color == "green")
-                                m_presencecolors[avstate] = Qt::green;
-                        else if(color == "black")
-                                m_presencecolors[avstate] = Qt::black;
-                        else if(color == "yellow")
-                                m_presencecolors[avstate] = Qt::yellow;
-                        else if(color == "orange")
-                                m_presencecolors[avstate] = QColor(255, 128, 0);
-                        else
-                                m_presencecolors[avstate] = Qt::gray;
-                }
 }
 
 const QString & BaseEngine::getCapaApplication() const
@@ -612,7 +592,7 @@ void BaseEngine::updatePhone(const QString & astid,
                 QVariant props = properties.toMap()["comms"].toMap()[chan];
                 hintstatus = props.toMap()["status"].toString();
         }
-        qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties.toMap()["hintstatus"].toInt() << hintstatus;
+        // qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties.toMap()["hintstatus"].toInt() << hintstatus;
         UserInfo * ui = findUserFromPhone(astid, phoneid);
         if(ui) {
                 ui->updatePhoneStatus(phoneid, hintstatus);
@@ -771,14 +751,9 @@ bool BaseEngine::parseCommand(const QString & line)
                         QString id = datamap["astid"].toString() + "/" + datamap["xivo_userid"].toString();
                         // qDebug() << thisclass << m_users.size() << id;
                         if(m_users.contains(id)) {
-                                QString presencestatus = datamap["capapresence"].toMap()["state"].toString();
-                                // qDebug() << thisclass << presencestatus;
-                                m_users[id]->setAvailState(presencestatus);
-                                updatePeerAgent(id, "imstatus", presencestatus.split("/"));
-                                if(m_presencecolors.contains(presencestatus))
-                                        updateAgentPresence(m_users[id]->agentid(), presencestatus, m_presencecolors[presencestatus]);
-                                else
-                                        updateAgentPresence(m_users[id]->agentid(), presencestatus, Qt::gray);
+                                m_users[id]->setAvailState(datamap["capapresence"].toMap()["state"]);
+                                updatePeerAgent(id, "imstatus", QStringList());
+                                updateAgentPresence(m_users[id]->agentid(), datamap["capapresence"].toMap()["state"]);
                                 m_counters = datamap["presencecounter"];
                                 updateCounter(m_counters);
                                 if (id == m_fullid) {
@@ -799,28 +774,21 @@ bool BaseEngine::parseCommand(const QString & line)
                                 QVariantList listusers = datamap["payload"].toList();
                                 foreach(QVariant userprops, listusers) {
                                         QVariantList listpeers = userprops.toList();
-                                        //qDebug() << "users-list" << listpeers[0] << listpeers[1] << listpeers[2];
-                                        //<< listpeers[3] << listpeers[4] << listpeers[5]
-                                        //<< listpeers[6] << listpeers[7] << listpeers[8] << listpeers[9];
-                                        QString iduser = listpeers[5].toString() + "/" + listpeers[11].toString();
+                                        QString iduser = listpeers[4].toString() + "/" + listpeers[10].toString();
                                         if(! m_users.contains(iduser)) {
                                                 m_users[iduser] = new UserInfo(iduser);
                                                 m_users[iduser]->setCtiLogin(listpeers[0].toString());
                                                 m_users[iduser]->setFullName(listpeers[2].toString());
                                                 newUser(m_users[iduser]);
-                                                m_users[iduser]->setPhones(listpeers[5].toString(),
-                                                                           listpeers[8].toStringList());
+                                                m_users[iduser]->setPhones(listpeers[4].toString(),
+                                                                           listpeers[7].toStringList());
                                         }
-                                        QString imstatus = listpeers[3].toString();
-                                        m_users[iduser]->setAvailState(imstatus);
-                                        m_users[iduser]->setNumber(listpeers[7].toString());
-                                        m_users[iduser]->setAgent(listpeers[9].toString());
-                                        m_users[iduser]->setMWI(listpeers[10].toStringList());
-                                        updatePeerAgent(iduser, "imstatus", imstatus.split("/"));
-                                        if(m_presencecolors.contains(imstatus))
-                                                updateAgentPresence(m_users[iduser]->agentid(), imstatus, m_presencecolors[imstatus]);
-                                        else
-                                                updateAgentPresence(m_users[iduser]->agentid(), imstatus, Qt::gray);
+                                        m_users[iduser]->setAvailState(listpeers[3]);
+                                        m_users[iduser]->setNumber(listpeers[6].toString());
+                                        m_users[iduser]->setAgent(listpeers[8].toString());
+                                        m_users[iduser]->setMWI(listpeers[9].toStringList());
+                                        updatePeerAgent(iduser, "imstatus", QStringList());
+                                        updateAgentPresence(m_users[iduser]->agentid(), listpeers[3]);
                                 }
                                 
                                 peersReceived();
@@ -1042,6 +1010,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                         todisp.append(function);
                         tmp["functions"] = todisp;
                         tmp["xlets"] = datamap["capaxlets"];
+                        tmp["presence"] = datamap["capapresence"];
                         m_guioptions["server_funcs"] = tmp;
                         
                         qDebug() << "clientXlets" << XletList;

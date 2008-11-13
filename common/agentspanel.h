@@ -77,7 +77,7 @@ public slots:
         void updatePeerAgent(const QString &,
                              const QString &,
                              const QStringList &);
-        void updateAgentPresence(const QString &, const QString &, const QColor &);
+        void updateAgentPresence(const QString &, const QVariant &);
 private slots:
         void agentClicked();
 private:

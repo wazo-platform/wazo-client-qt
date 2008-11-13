@@ -254,7 +254,7 @@ signals:
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QString &, const QString &, const QVariant &);
         void changeWatchedQueueSignal(const QString &, const QString &, const QVariant &);
-        void updateAgentPresence(const QString &, const QString &, const QColor &);
+        void updateAgentPresence(const QString &, const QVariant &);
         void displayFiche(const QString &, bool);
 protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
@@ -351,7 +351,6 @@ private:
         QFile * m_eventdevice;
         QSocketNotifier * m_notifier;
         QByteArray m_downloaded;
-        QHash<QString, QColor> m_presencecolors;
 };
 
 #endif

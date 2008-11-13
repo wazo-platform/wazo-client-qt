@@ -67,12 +67,11 @@ public:
 	//! get m_peerwidget
 	PeerWidget * getWidget() { return m_peerwidget; };
         
-	void updateStatus(const QString &);
-        void updateIMStatus(const QString &);
+	void updateStatus();
 	void updateAgentStatus(const QStringList &);
         void updateChans(const QVariant &);
 	void updateName(const QString &);
-
+        
 	void updateDisplayedStatus();
 	void updateDisplayedChans();
 	void updateDisplayedName();
@@ -82,8 +81,6 @@ private:
         // Properties of each peer
         UserInfo * m_ui;
 	// QString m_name;		//!< Person name
-        QString m_imavail;
-        QString m_sipstatus;
         QString m_vmstatus;
         QStringList m_agentstatus;
         QString m_pausestatus;

@@ -44,13 +44,14 @@
 
 #include <QHash>
 #include <QStringList>
+#include <QVariant>
 
 class UserInfo
 {
 public:
 	UserInfo(const QString &);
         ~UserInfo();
-        void setAvailState(const QString &);
+        void setAvailState(const QVariant &);
         void setFullName(const QString &);
         void setNumber(const QString &);
         void setPhones(const QString &,
@@ -71,7 +72,7 @@ public:
         const QString & agentid() const;
         const QString & astid() const;
         const QString & context() const;
-        const QString & availstate() const;
+        const QVariant & availstate() const;
         const QStringList & termlist() const;
         const QHash<QString, QString> & termstatus() const;
         void updatePhoneStatus(const QString &,
@@ -82,7 +83,7 @@ private:
         QString m_ctilogin;
         QString m_fullname;
 
-        QString m_availstate;
+        QVariant m_availstate;
 
         QString m_astid;
         QString m_phonenum;

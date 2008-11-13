@@ -113,11 +113,12 @@ void AgentsPanel::setUserInfo(const UserInfo * ui)
         m_userinfo = ui;
 }
 
-void AgentsPanel::updateAgentPresence(const QString & agentname, const QString &, const QColor & color)
+void AgentsPanel::updateAgentPresence(const QString & agentname, const QVariant & presencestatus)
 {
-        // qDebug() << "AgentsPanel::updateAgentPresence" << agentname << presence << color;
+        // qDebug() << "AgentsPanel::updateAgentPresence" << agentname << presencestatus;
         if(agentname.size() > 0)
                 if(m_agent_presence.contains(agentname)) {
+                        QColor color = QColor(presencestatus.toMap()["color"].toString());
                         QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                         m_square->fill(color);
                         m_agent_presence[agentname]->setPixmap(QPixmap(* m_square));

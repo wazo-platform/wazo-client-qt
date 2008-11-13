@@ -71,16 +71,8 @@ PeerItem::PeerItem(const PeerItem & peer)
  *
  * Change what is displayed according to new status values.
  */
-void PeerItem::updateStatus(const QString & sipstatus)
+void PeerItem::updateStatus()
 {
-        m_sipstatus   = sipstatus;
-        if(m_peerwidget != NULL)
-                updateDisplayedStatus();
-}
-
-void PeerItem::updateIMStatus(const QString & imavail)
-{
-        m_imavail   = imavail;
         if(m_peerwidget != NULL)
                 updateDisplayedStatus();
 }
@@ -120,34 +112,12 @@ void PeerItem::updateDisplayedStatus()
 {
         if(m_peerwidget == NULL)
                 return;
-
-	QString display_imavail;
-	QString display_sipstatus;
-
-	// qDebug() << "PeerItem::updateDisplayedStatus()" << m_imavail << m_ui->termstatus();
-	if(m_imavail == "available") {
-		m_peerwidget->setColor("presence", "green");
-		display_imavail = PeerWidget::tr("Available");
-	} else if(m_imavail == "away") {
-		m_peerwidget->setColor("presence", "blue");
-		display_imavail = PeerWidget::tr("Away");
-	} else if(m_imavail == "donotdisturb") {
-		m_peerwidget->setColor("presence", "red");
-		display_imavail = PeerWidget::tr("Do not disturb");
-	} else if(m_imavail == "berightback") {
-		m_peerwidget->setColor("presence", "orange");
-		display_imavail = PeerWidget::tr("Be Right Back");
-	} else if(m_imavail == "outtolunch") {
-		m_peerwidget->setColor("presence", "yellow");
-		display_imavail = PeerWidget::tr("Out To Lunch");
-	} else if(m_imavail == "unknown") {
-		m_peerwidget->setColor("presence", "grey");
-		display_imavail = PeerWidget::tr("Unknown");
-	} else {
-		m_peerwidget->setColor("presence", "grey");
-		display_imavail = m_imavail;
-	}
+        // qDebug() << "PeerItem::updateDisplayedStatus()";
+        QString avail_color = m_ui->availstate().toMap()["color"].toString();
+        QString display_imavail = m_ui->availstate().toMap()["longname"].toString();
+        m_peerwidget->setColor("presence", avail_color);
         
+	QString display_sipstatus;
         foreach(QString term, m_ui->termlist()) {
                 QString termstatus = m_ui->termstatus()[term];
                 // qDebug() << "PeerItem::updateDisplayedStatus()" << term << termstatus;
