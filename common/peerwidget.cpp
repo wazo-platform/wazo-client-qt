@@ -132,13 +132,13 @@ PeerWidget::PeerWidget(UserInfo * ui,
         // Put the Labels into layouts
         layout->addWidget( qvline, 0, 0, 2, 1 );
 	layout->addWidget( m_textlbl, 0, 2, 1, 6, Qt::AlignLeft );
-        int n = 2;
+        
         if(! ui->ctilogin().isEmpty())
-                layout->addWidget( m_availlbl, 1, n++, Qt::AlignCenter );
+                layout->addWidget( m_availlbl, 1, 3, Qt::AlignCenter );
         foreach (QString termname, ui->termstatus().keys())
-                layout->addWidget( m_lblphones[termname], 1, n++, Qt::AlignCenter );
+                layout->addWidget( m_lblphones[termname], 1, 2, Qt::AlignCenter );
         if(! ui->agentid().isEmpty())
-                layout->addWidget( m_agentlbl, 1, n++, Qt::AlignCenter );
+                layout->addWidget( m_agentlbl, 1, 4, Qt::AlignCenter );
 	layout->setColumnStretch(20, 1);
         
 	// to be able to receive drop
@@ -166,7 +166,7 @@ void PeerWidget::setColorAvail(const QString & kind, const QString & color, cons
 {
         QString commonqss;
         // commonqss = "QLabel#onlyme {border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }";
-        commonqss = "QLabel#onlyme {border-style: solid; border-bottom-width: 8px; border-color: " + color + "; }";
+        commonqss = "QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: " + color + "; }";
         
 	if((kind == "presence") && (m_availlbl)) {
                 m_availlbl->setStyleSheet(commonqss);

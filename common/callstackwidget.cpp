@@ -236,7 +236,7 @@ void CallStackWidget::updateDisplay()
 	// m_layout->addWidget(callwidget, 0, Qt::AlignTop);
 	// m_afflist.append(callwidget);
 	
-        qDebug() << "CallStackWidget::updateDisplay()" << m_callhash.keys();
+        // qDebug() << "CallStackWidget::updateDisplay()" << m_callhash.keys();
 	for(j = m_afflist.count() - 1; j>= 0; j--) {
                 // qDebug() << "CallStackWidget::updateDisplay()" << m_afflist[j]->channel() << m_callhash.keys();
 		if(! m_callhash.contains(m_afflist[j]->channel())) {

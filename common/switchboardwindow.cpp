@@ -109,7 +109,7 @@ void SwitchBoardWindow::updatePeer(UserInfo * ui,
                                    const QVariant & chanlist)
 {
         QString userid = ui->userid();
-        // qDebug() << "SwitchBoardWindow::updatePeer" << userid;
+        // qDebug() << "SwitchBoardWindow::updatePeer()" << userid;
 	// first search in the peerhash
         if(m_peerhash.contains(userid)) {
                 PeerItem * peeritem = m_peerhash.value(userid);
@@ -127,9 +127,13 @@ void SwitchBoardWindow::updatePeer(UserInfo * ui,
         peeritem->updateStatus();
         peeritem->updateChans(chanlist);
         m_peerhash.insert(userid, peeritem);
-
+        
 	// if not found in the peerhash, create a new PeerItem
-	QPoint pos = m_engine->getSettings()->value("layout/" + userid, QPoint(-1, -1) ).toPoint();
+        
+        QSettings * settings = m_engine->getSettings();
+        settings->beginGroup("layout");
+	QPoint pos = settings->value(userid, QPoint(-1, -1) ).toPoint();
+        settings->endGroup();
 	if(pos.x() >= 0) {
                 PeerWidget * peerwidget = new PeerWidget(ui,
                                                          m_options,
@@ -169,8 +173,8 @@ void SwitchBoardWindow::newUser(UserInfo * ui)
 {
         QString userid = ui->userid();
         // qDebug() << "SwitchBoardWindow::newUser()" << userid;
-        PeerItem * peeritem = new PeerItem(ui);
-        m_peerhash.insert(userid, peeritem);
+//         PeerItem * peeritem = new PeerItem(ui);
+//         m_peerhash.insert(userid, peeritem);
 }
 
 
@@ -400,13 +404,15 @@ void SwitchBoardWindow::savePositions() const
 {
         // qDebug() << "SwitchBoardWindow::savePositions()";
 	QSettings * settings = m_engine->getSettings();
+        settings->beginGroup("layout");
 	for(int i = 0; i < m_peerlist.size(); i++) {
                 QPoint pos = m_layout->getItemPosition(i);
                 // qDebug() << m_peerlist[i]->userinfo()->userid() << pos;
                 if(pos == QPoint(-1, -1))
-                        settings->remove("layout/" + m_peerlist[i]->userinfo()->userid());
+                        settings->remove(m_peerlist[i]->userinfo()->userid());
                 else
-                        settings->setValue("layout/" + m_peerlist[i]->userinfo()->userid(),
+                        settings->setValue(m_peerlist[i]->userinfo()->userid(),
                                            m_layout->getItemPosition(i));
 	}
+        settings->endGroup();
 }

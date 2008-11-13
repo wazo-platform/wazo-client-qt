@@ -76,6 +76,10 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
         //
 }
 
+void MyLocalDirPanel::setGuiOptions(const QVariant &)
+{
+}
+
 void MyLocalDirPanel::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;

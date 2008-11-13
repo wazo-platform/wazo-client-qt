@@ -58,6 +58,7 @@ class MyLocalDirPanel : public QWidget
 public:
 	MyLocalDirPanel(BaseEngine *, QWidget * parent = 0);
 public slots:
+        void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
         void returnPressed();
 private:

@@ -107,6 +107,10 @@ CallCampaignPanel::CallCampaignPanel(QWidget * parent)
         m_glayout->setColumnStretch(2, 1);
 }
 
+void CallCampaignPanel::setGuiOptions(const QVariant &)
+{
+}
+
 void CallCampaignPanel::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;
