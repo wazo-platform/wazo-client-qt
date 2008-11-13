@@ -42,7 +42,6 @@
 #ifndef __USERINFO_H__
 #define __USERINFO_H__
 
-#include <QHash>
 #include <QStringList>
 #include <QVariant>
 
@@ -74,9 +73,9 @@ public:
         const QString & context() const;
         const QVariant & availstate() const;
         const QStringList & termlist() const;
-        const QHash<QString, QString> & termstatus() const;
+        const QVariantMap & termstatus() const;
         void updatePhoneStatus(const QString &,
-                               const QString &);
+                               const QVariant &);
 private:
         QString m_userid;
         QString m_company;
@@ -91,7 +90,7 @@ private:
         QString m_agentnum;
         QString m_agentphonenum;
         QStringList m_mwi;
-        QHash<QString, QString> m_termstatus;
+        QVariantMap m_termstatus;
 };
 
 #endif

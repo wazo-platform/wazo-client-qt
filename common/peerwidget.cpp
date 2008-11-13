@@ -93,7 +93,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
                 m_availlbl->setMinimumSize(fsize, fsize);
                 m_availlbl->setObjectName("onlyme");
                 m_availlbl->setProperty("kind", "person");
-                setColor("person", "grey");
+                // setColorAvail("person", "grey", "");
                 connect( m_availlbl, SIGNAL(dial(QMouseEvent *)),
                          this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         }
@@ -101,16 +101,16 @@ PeerWidget::PeerWidget(UserInfo * ui,
         m_voicelbl = new QLabel();
         m_fwdlbl   = new QLabel();
         
-        foreach (QString termname, ui->termlist()) {
+        foreach (QString termname, ui->termstatus().keys()) {
                 QStringList terms = termname.split(".");
                 if(terms.size() > 3) {
                         m_lblphones[termname] = new ExtendedLabel();
+                        m_lblphones[termname]->setPixmap(m_phones["grey"]);
                         m_lblphones[termname]->setAlignment(Qt::AlignCenter);
                         m_lblphones[termname]->setObjectName("onlyme");
                         m_lblphones[termname]->setMinimumSize(fsize, fsize);
-                        m_lblphones[termname]->setToolTip(tr("Phone ") + terms[3]);
                         m_lblphones[termname]->setProperty("kind", "term");
-                        setColor(termname, "grey");
+                        // setColorAvail(termname, "grey", "");
                         connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
                                  this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
                 }
@@ -118,16 +118,16 @@ PeerWidget::PeerWidget(UserInfo * ui,
         
         if(! ui->agentid().isEmpty()) {
                 m_agentlbl = new ExtendedLabel();
+                m_agentlbl->setPixmap(m_agents["grey"]);
                 m_agentlbl->setAlignment(Qt::AlignCenter);
                 m_agentlbl->setMinimumSize(fsize, fsize);
                 m_agentlbl->setObjectName("onlyme");
                 m_agentlbl->setToolTip(tr("Agent ") + ui->agentid());
                 m_agentlbl->setProperty("kind", "agent");
-                setColor("agent", "grey");
+                setColorAvail("agent", "grey", "");
                 connect( m_agentlbl, SIGNAL(dial(QMouseEvent *)),
                          this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         }
-        
         
         // Put the Labels into layouts
         layout->addWidget( qvline, 0, 0, 2, 1 );
@@ -135,13 +135,12 @@ PeerWidget::PeerWidget(UserInfo * ui,
         int n = 2;
         if(! ui->ctilogin().isEmpty())
                 layout->addWidget( m_availlbl, 1, n++, Qt::AlignCenter );
-        foreach (QString termname, ui->termlist())
+        foreach (QString termname, ui->termstatus().keys())
                 layout->addWidget( m_lblphones[termname], 1, n++, Qt::AlignCenter );
         if(! ui->agentid().isEmpty())
                 layout->addWidget( m_agentlbl, 1, n++, Qt::AlignCenter );
 	layout->setColumnStretch(20, 1);
-
-
+        
 	// to be able to receive drop
 	setAcceptDrops(true);
 	m_removeAction = new QAction( tr("&Remove"), this);
@@ -163,7 +162,7 @@ PeerWidget::~PeerWidget()
 }
 
 // blue, yellow, orange, grey, green, red
-void PeerWidget::setColor(const QString & kind, const QString & color)
+void PeerWidget::setColorAvail(const QString & kind, const QString & color, const QString & avail)
 {
         QString commonqss;
         // commonqss = "QLabel#onlyme {border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }";
@@ -171,13 +170,24 @@ void PeerWidget::setColor(const QString & kind, const QString & color)
         
 	if((kind == "presence") && (m_availlbl)) {
                 m_availlbl->setStyleSheet(commonqss);
+                m_availlbl->setToolTip(tr("User : ") + avail);
         } else if((kind == "agent") && (m_agentlbl)) {
-                m_agentlbl->setPixmap(m_agents[color]);
                 m_agentlbl->setStyleSheet(commonqss);
         } else if(m_lblphones.contains(kind)) {
-                m_lblphones[kind]->setPixmap(m_phones[color]);
+                QStringList terms = kind.split(".");
                 m_lblphones[kind]->setStyleSheet(commonqss);
+                m_lblphones[kind]->setToolTip(tr("Phone ") + terms[3] + " : " + avail);
         }
+}
+
+QString PeerWidget::getToolTip(const QString & kind)
+{
+        QString ttip;
+	if((kind == "presence") && (m_availlbl))
+                ttip = m_availlbl->toolTip();
+        else if(m_lblphones.contains(kind))
+                ttip = m_lblphones[kind]->toolTip();
+        return ttip;
 }
 
 void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & queues)

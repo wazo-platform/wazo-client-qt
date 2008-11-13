@@ -587,16 +587,10 @@ void BaseEngine::updatePhone(const QString & astid,
                              const QVariant & properties)
 {
         // qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties;
-        QString hintstatus = CHAN_STATUS_READY;
-        foreach(QString chan, properties.toMap()["comms"].toMap().keys()) {
-                QVariant props = properties.toMap()["comms"].toMap()[chan];
-                hintstatus = props.toMap()["status"].toString();
-        }
-        // qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties.toMap()["hintstatus"].toInt() << hintstatus;
         UserInfo * ui = findUserFromPhone(astid, phoneid);
         if(ui) {
-                ui->updatePhoneStatus(phoneid, hintstatus);
-                updatePeer(ui, hintstatus, properties.toMap()["comms"]);
+                ui->updatePhoneStatus(phoneid, properties.toMap()["hintstatus"]);
+                updatePeer(ui, phoneid, properties.toMap()["comms"]);
         }
 }
 
@@ -607,7 +601,7 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 		qDebug() << "BaseEngine::removePeerAndCallerid() : Bad data from the server :" << liststatus;
 		return;
 	}
-
+        
         QString astid   = liststatus[1];
 	QString context = liststatus[5];
 	QString phonenum = liststatus[4];

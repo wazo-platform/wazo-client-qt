@@ -112,40 +112,23 @@ void PeerItem::updateDisplayedStatus()
 {
         if(m_peerwidget == NULL)
                 return;
-        // qDebug() << "PeerItem::updateDisplayedStatus()";
-        QString avail_color = m_ui->availstate().toMap()["color"].toString();
-        QString display_imavail = m_ui->availstate().toMap()["longname"].toString();
-        m_peerwidget->setColor("presence", avail_color);
         
-	QString display_sipstatus;
-        foreach(QString term, m_ui->termlist()) {
-                QString termstatus = m_ui->termstatus()[term];
-                // qDebug() << "PeerItem::updateDisplayedStatus()" << term << termstatus;
-                if((termstatus == CHAN_STATUS_READY) ||
-                   (termstatus == CHAN_STATUS_HANGUP) ||
-                   (termstatus == CHAN_STATUS_UNLINKED_CALLED) ||
-                   (termstatus == CHAN_STATUS_UNLINKED_CALLER)) {
-                        m_peerwidget->setColor(term, "green");
-                        display_sipstatus = PeerWidget::tr("Ready");
-                } else if(termstatus == CHAN_STATUS_RINGING) {
-                        m_peerwidget->setColor(term, "blue");
-                        display_sipstatus = PeerWidget::tr("Ringing");
-                } else if(termstatus == CHAN_STATUS_CALLING) {
-                        m_peerwidget->setColor(term, "yellow");
-                        display_sipstatus = PeerWidget::tr("Calling");
-                } else if((termstatus == CHAN_STATUS_LINKED_CALLED) || (termstatus == "Up")) {
-                        m_peerwidget->setColor(term, "red");
-                        display_sipstatus = PeerWidget::tr("On the phone");
-                } else if((termstatus == CHAN_STATUS_LINKED_CALLER) || (termstatus == "Up")) {
-                        m_peerwidget->setColor(term, "red");
-                        display_sipstatus = PeerWidget::tr("On the phone");
-                } else if(termstatus == "Not online") {
-                        m_peerwidget->setColor(term, "grey");
-                        display_sipstatus = PeerWidget::tr("Not online");
-                } else {
-                        m_peerwidget->setColor(term, "grey");
-                        display_sipstatus = termstatus;
-                }
+        QStringList fortooltip;
+        
+        // qDebug() << "PeerItem::updateDisplayedStatus()";
+        if(! m_ui->ctilogin().isEmpty()) {
+                m_peerwidget->setColorAvail("presence",
+                                            m_ui->availstate().toMap()["color"].toString(),
+                                            m_ui->availstate().toMap()["longname"].toString());
+                fortooltip.append(m_peerwidget->getToolTip("presence"));
+        }
+        
+        foreach(QString term, m_ui->termstatus().keys()) {
+                QVariantMap termstatusmap = m_ui->termstatus()[term].toMap();
+                m_peerwidget->setColorAvail(term,
+                                            termstatusmap["color"].toString(),
+                                            termstatusmap["longname"].toString());
+                fortooltip.append(m_peerwidget->getToolTip(term));
         }
         
         if(m_agentstatus.size() >= 4) {
@@ -156,10 +139,10 @@ void PeerItem::updateDisplayedStatus()
                 
                 if(m_agentstatus[0] == "agentlogin") {
                         m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-                        m_peerwidget->setColor("agent", "green");
+                        m_peerwidget->setColorAvail("agent", "green", "");
                 } else if(m_agentstatus[0] == "agentlogout") {
                         m_peerwidget->setAgentToolTip("", m_queuelist);
-                        m_peerwidget->setColor("agent", "grey");
+                        m_peerwidget->setColorAvail("agent", "grey", "");
                 } else if(m_agentstatus[0] == "joinqueue") {
                         if(! m_queuelist.contains(m_agentstatus[3]))
                                 m_queuelist.append(m_agentstatus[3]);
@@ -170,13 +153,13 @@ void PeerItem::updateDisplayedStatus()
                         m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
                 } else if(m_agentstatus[0] == "queuememberstatus") {
                         if(m_agentstatus[4] == "1") {
-                                m_peerwidget->setColor("agent", "green");
+                                m_peerwidget->setColorAvail("agent", "green", "");
                         } else if(m_agentstatus[4] == "3") {
-                                m_peerwidget->setColor("agent", "blue");
+                                m_peerwidget->setColorAvail("agent", "blue", "");
                         } else if(m_agentstatus[4] == "5") {
-                                m_peerwidget->setColor("agent", "grey");
+                                m_peerwidget->setColorAvail("agent", "grey", "");
                         } else {
-                                m_peerwidget->setColor("agent", "yellow");
+                                m_peerwidget->setColorAvail("agent", "yellow", "");
                         }
                         m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
                 } else if(m_agentstatus[0] == "agentstatus") {
@@ -186,10 +169,10 @@ void PeerItem::updateDisplayedStatus()
                                 m_queuelist = QStringList();
                         if (m_agentstatus[3] == "0") {
                                 m_peerwidget->setAgentToolTip("", m_queuelist);
-                                m_peerwidget->setColor("agent", "grey");
+                                m_peerwidget->setColorAvail("agent", "grey", "");
                         } else {
                                 m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-                                m_peerwidget->setColor("agent", "green");
+                                m_peerwidget->setColorAvail("agent", "green", "");
                         }
                         
                         // ("agentstatus", "xivo", "6102", "0", "qcb_00003,qcb_00000")
@@ -201,15 +184,9 @@ void PeerItem::updateDisplayedStatus()
         } else if(m_agentstatus.size() > 0) {
                 qDebug() << "PeerItem::updateDisplayedStatus() / 0 < size < 4" << m_agentstatus;
         }
-
-	QString fortooltip = PeerWidget::tr("SIP Presence : ") + display_sipstatus + "\n"
-		+ PeerWidget::tr("Availability : ") + display_imavail;
-	/* + "\n"
-	   + "Voicemail Status: " + vmstatus + "\n"
-	   + "Queues Status: " + queuestatus;*/
-
-	m_peerwidget->setToolTip(fortooltip);
-
+        
+	m_peerwidget->setToolTip(fortooltip.join("\n"));
+        
         return;
 }
 

@@ -73,9 +73,8 @@ void UserInfo::setPhones(const QString & astid,
                          const QStringList & termlist)
 {
         m_astid = astid;
-        m_termlist = termlist;
-        foreach(QString term, m_termlist)
-                m_termstatus[term] = "unknown";
+        foreach(QString term, termlist)
+                m_termstatus[term] = QVariant();
 }
 
 void UserInfo::setAvailState(const QVariant & availstate)
@@ -94,7 +93,7 @@ void UserInfo::setMWI(const QStringList & mwi)
 }
 
 void UserInfo::updatePhoneStatus(const QString & term,
-                                 const QString & status)
+                                 const QVariant & status)
 {
         m_termstatus[term] = status;
 }
@@ -102,7 +101,7 @@ void UserInfo::updatePhoneStatus(const QString & term,
 bool UserInfo::hasPhone(const QString & astid,
                         const QString & term)
 {
-        if((m_astid == astid) && m_termlist.contains(term))
+        if((m_astid == astid) && m_termstatus.keys().contains(term))
                 return true;
         else
                 return false;
@@ -158,12 +157,7 @@ const QVariant & UserInfo::availstate() const
         return m_availstate;
 }
 
-const QStringList & UserInfo::termlist() const
-{
-        return m_termlist;
-}
-
-const QHash<QString, QString> & UserInfo::termstatus() const
+const QVariantMap & UserInfo::termstatus() const
 {
         return m_termstatus;
 }

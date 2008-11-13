@@ -76,6 +76,8 @@ public:
 	void setName(const QString &);
 	void setEngine(BaseEngine *);
         void setAgentToolTip(const QString &, const QStringList &);
+        QString getToolTip(const QString &);
+	void setColorAvail(const QString &, const QString &, const QString &);	//! sets a kind of icon in a given color
 protected:
 	void mouseMoveEvent(QMouseEvent *);
 	void mousePressEvent(QMouseEvent *);
@@ -94,7 +96,6 @@ signals:
 	//! hide the widget in the channel
 	void doRemoveFromPanel(const QString &);
 public slots:
-	void setColor(const QString &, const QString &);	//! sets a kind of icon in a given color
         void updatePeer(UserInfo *,
                         const QString &,
                         const QVariant &);
