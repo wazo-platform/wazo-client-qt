@@ -521,15 +521,12 @@ void AgentdetailsPanel::getFile()
 void AgentdetailsPanel::saveToFile()
 {
         // qDebug() << "AgentdetailsPanel::saveToFile()";
-        QFileDialog::Options options;
-        options |= QFileDialog::DontUseNativeDialog;
         QString selectedFilter;
         QString fileName = QFileDialog::getSaveFileName(this,
                                                         tr("Save Sound File"),
                                                         "",
                                                         tr("All Files (*)"),
-                                                        &selectedFilter,
-                                                        options);
+                                                        &selectedFilter);
         if (!fileName.isEmpty())
                 setFileName(fileName);
 }

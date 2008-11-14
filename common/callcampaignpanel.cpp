@@ -119,17 +119,13 @@ void CallCampaignPanel::setUserInfo(const UserInfo * ui)
 
 void CallCampaignPanel::setOpenFileName()
 {
-        qDebug() << "CallCampaignPanel::setOpenFileName()";
-        QFileDialog::Options options;
-        /*        if (!native->isChecked())*/
-        options |= QFileDialog::DontUseNativeDialog;
+        // qDebug() << "CallCampaignPanel::setOpenFileName()";
         QString selectedFilter;
         QString fileName = QFileDialog::getOpenFileName(this,
                                                         tr("Open PhoneList File"),
                                                         m_openFileNameLabel->text(),
                                                         tr("CSV Files (*.csv);;All Files (*)"),
-                                                        &selectedFilter,
-                                                        options);
+                                                        &selectedFilter);
         if (!fileName.isEmpty())
                 m_openFileNameLabel->setText(fileName);
 }

@@ -164,17 +164,16 @@ void FaxPanel::fileNameChanged(const QString &/* ext*/)
 
 void FaxPanel::setOpenFileName()
 {
-        QFileDialog::Options options;
-        /*        if (!native->isChecked())*/
-        options |= QFileDialog::DontUseNativeDialog;
+        // There has been an option set as QFileDialog::DontUseNativeDialog
+        // previously, probably because of a too quick copy/paste from an example.
+        // While on Linux platforms, it makes no difference, on MacOS it is worth
+        // not setting it, in order for special places like "Volumes" to be seen.
         QString selectedFilter;
-        // see setLocale() (non-static function) to set the appropriate locale
         QString fileName = QFileDialog::getOpenFileName(this,
                                                         tr("Open Fax File"),
                                                         m_openFileNameLabel->text(),
                                                         tr("PDF Files (*.pdf);;All Files (*)"),
-                                                        &selectedFilter,
-                                                        options);
+                                                        &selectedFilter);
         if (!fileName.isEmpty())
                 m_openFileNameLabel->setText(fileName);
 }
