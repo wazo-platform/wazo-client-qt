@@ -840,22 +840,18 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "features") {
                         QString function = datamap["function"].toString();
                         if (function == "update") {
-                                QStringList featuresupdate_list = datamap["payload"].toStringList();
-                                if(featuresupdate_list.size() == 5)
-                                        if(m_monitored_userid == featuresupdate_list[0])
-                                                initFeatureFields(featuresupdate_list[1], featuresupdate_list[2]);
+                                QVariantMap featuresupdate_map = datamap["payload"].toMap();
+                                if(m_monitored_userid == datamap["userid"].toString())
+                                        foreach(QString featurekey, featuresupdate_map.keys())
+                                                initFeatureFields(featurekey, featuresupdate_map[featurekey]);
                                 
                         } else if (function == "get") {
-                                QStringList features_list = datamap["payload"].toStringList();
-                                if(features_list.size() > 2) {
-                                        QString id = features_list[0];
-                                        if(id == m_monitored_userid) {
-                                                resetFeatures();
-                                                if(features_list.size() > 2)
-                                                        for(int i = 1 ; i < features_list.size() - 1; i += 2)
-                                                                initFeatureFields(features_list[i], features_list[i+1]);
-                                                emitTextMessage(tr("Received Services Data for ") + m_monitored_userid);
-                                        }
+                                QVariantMap featuresupdate_map = datamap["payload"].toMap();
+                                if(m_monitored_userid == datamap["userid"].toString()) {
+                                        resetFeatures();
+                                        foreach(QString featurekey, featuresupdate_map.keys())
+                                                initFeatureFields(featurekey, featuresupdate_map[featurekey]);
+                                        emitTextMessage(tr("Received Services Data for ") + m_monitored_userid);
                                 }
                                 
                         } else if (function == "put") {
@@ -1534,10 +1530,11 @@ bool BaseEngine::trytoreconnect() const
 	return m_trytoreconnect;
 }
 
-void BaseEngine::initFeatureFields(const QString & field, const QString & value)
+void BaseEngine::initFeatureFields(const QString & field, const QVariant & value)
 {
         //        qDebug() << field << value;
-        bool isenabled = (value.split(":")[0] == "1");
+        bool isenabled = value.toMap()["enabled"].toBool();
+        QString number = value.toMap()["number"].toString();
 	if((field == "enablevoicemail") || (field == "vm"))
 		optChanged("enablevm", isenabled);
 	else if((field == "enablednd") || (field == "dnd"))
@@ -1547,7 +1544,7 @@ void BaseEngine::initFeatureFields(const QString & field, const QString & value)
 	else if(field == "callrecord")
 		optChanged("incallrec", isenabled);
 	else if((field == "unc") || (field == "busy") || (field == "rna"))
-		forwardUpdated(field, isenabled, value.split(":")[1]);
+		forwardUpdated(field, isenabled, number);
 }
 
 void BaseEngine::stopKeepAliveTimer()

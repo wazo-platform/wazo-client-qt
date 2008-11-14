@@ -263,8 +263,7 @@ private:
 	void startTryAgainTimer();	//!< Start the "try to reconnect" timer
 	void stopTryAgainTimer();	//!< Stop the "try to reconnect" timer
 	void processHistory(const QStringList &);
-	void initFeatureFields(const QString &,
-			       const QString &);
+	void initFeatureFields(const QString &, const QVariant &);
 	void connectSocket();
         void sendCommand(const QString &);
         void sendJsonCommand(const QVariantMap &);
