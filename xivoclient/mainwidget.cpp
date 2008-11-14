@@ -1459,12 +1459,13 @@ void MainWidget::about()
 	QString applicationVersion(XIVOVER);
         QString fetchlastone = "<a href=http://www.xivo.fr/download/xivo_cti_client/"
 #if defined(Q_WS_X11)
-                "linux"
+                "linux/debian"
 #elif defined(Q_WS_WIN)
                 "win32"
 #elif defined(Q_WS_MAC)
                 "macos"
 #endif
+                "/" + __xivo_version__ + "-beta"
                 ">" + tr("last one") + "</a>";
         
         // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
