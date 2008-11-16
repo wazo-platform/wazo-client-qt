@@ -42,6 +42,7 @@
 #include <QDropEvent>
 #include <QDebug>
 #include <QLineEdit>
+#include <QUrl>
 
 #include "extendedlineedit.h"
 
@@ -58,4 +59,28 @@ ExtendedLineEdit::ExtendedLineEdit(QWidget * parent)
 void ExtendedLineEdit::dropEvent(QDropEvent */* event*/)
 {
 	// qDebug() << "ExtendedLineEdit::dropEvent()" << event->mimeData()->text() << event->pos();
+}
+
+
+MacOSDnDLineEdit::MacOSDnDLineEdit(QWidget * parent)
+        : QLineEdit( parent )
+{
+}
+
+void MacOSDnDLineEdit::dropEvent( QDropEvent *ev )
+{
+        // qDebug() << "MacOSDnDLineEdit::dropEvent" << ev;
+        // foreach(QUrl url, ev->mimeData()->urls())
+        QList<QUrl> urls = ev->mimeData()->urls();
+        if (urls.size() > 0) {
+                QUrl url = urls[0];
+                QLineEdit::setText(url.toLocalFile());
+        }
+        QLineEdit::dropEvent( ev );
+}
+
+void MacOSDnDLineEdit::dragEnterEvent( QDragEnterEvent *ev )
+{
+        // qDebug() << "MacOSDnDLineEdit::dragEnterEvent" << ev;
+        ev->acceptProposedAction();
 }

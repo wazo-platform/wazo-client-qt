@@ -51,11 +51,9 @@
 #include <QSettings>
 #include <QVBoxLayout>
 
-#include <QDragEnterEvent>
-#include <QUrl>
-
 #include "baseengine.h"
 #include "dirdialog.h"
+#include "extendedlineedit.h"
 #include "faxpanel.h"
 
 FaxPanel::FaxPanel(BaseEngine * engine,
@@ -245,25 +243,4 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
         msgbox.setIcon(icon);
         msgbox.setText(text);
         msgbox.show();
-}
-
-
-
-MacOSDnDLineEdit::MacOSDnDLineEdit(QWidget * parent)
-        : QLineEdit( parent )
-{
-}
-
-void MacOSDnDLineEdit::dropEvent( QDropEvent *ev )
-{
-        // qDebug() << "MacOSDnDLineEdit::dropEvent" << ev;
-        foreach(QUrl url, ev->mimeData()->urls())
-                setText(url.toLocalFile());
-        QLineEdit::dropEvent( ev );
-}
-
-void MacOSDnDLineEdit::dragEnterEvent( QDragEnterEvent *ev )
-{
-        // qDebug() << "MacOSDnDLineEdit::dragEnterEvent" << ev;
-        ev->acceptProposedAction();
 }
