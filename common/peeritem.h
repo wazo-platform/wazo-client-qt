@@ -42,7 +42,6 @@
 #ifndef __PEERITEM_H__
 #define __PEERITEM_H__
 
-#include <QHash>
 #include <QObject>
 #include <QString>
 #include <QStringList>

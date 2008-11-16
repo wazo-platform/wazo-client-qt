@@ -43,7 +43,6 @@
 #define __AGENTDETAILSPANEL_H__
 
 #include <QHash>
-#include <QList>
 #include <QObject>
 #include <QVariant>
 #include <QWidget>

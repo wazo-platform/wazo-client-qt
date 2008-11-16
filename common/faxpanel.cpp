@@ -51,6 +51,9 @@
 #include <QSettings>
 #include <QVBoxLayout>
 
+#include <QDragEnterEvent>
+#include <QUrl>
+
 #include "baseengine.h"
 #include "dirdialog.h"
 #include "faxpanel.h"
@@ -86,8 +89,11 @@ FaxPanel::FaxPanel(BaseEngine * engine,
 	QGroupBox * groupBox2 = new QGroupBox( tr("2. Choose File to Send") );
 	groupBox2->setAlignment( Qt::AlignLeft );
 	QHBoxLayout * hbox2 = new QHBoxLayout( groupBox2 );
-
-        m_openFileNameLabel = new QLineEdit("", this);
+#ifdef Q_WS_MAC
+        m_openFileNameLabel = new MacOSDnDLineEdit(this);
+#else
+        m_openFileNameLabel = new QLineEdit(this);
+#endif
         connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
                 this, SLOT(fileNameChanged(const QString &)));
         QPushButton * openFileNamesButton = new QPushButton( tr("Browse"), this);
@@ -95,7 +101,7 @@ FaxPanel::FaxPanel(BaseEngine * engine,
                 this, SLOT(setOpenFileName()));
 	hbox2->addWidget(m_openFileNameLabel);
 	hbox2->addWidget(openFileNamesButton);
-
+        
         //
         QGroupBox * groupBox3 = new QGroupBox( tr("3. Hide the Number ?") );
 	groupBox3->setAlignment( Qt::AlignLeft );
@@ -220,13 +226,17 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
 
         if(status == "ok") {
                 icon = QMessageBox::Information;
-                text = tr("Your Fax (file %1)\nwas successfully sent to %2.").arg(m_file_string, m_dest_string);
+                text = tr("Your Fax (file %1)\n"
+                          "was successfully sent to %2.").arg(m_file_string, m_dest_string);
         } else if (status == "queued") {
                 icon = QMessageBox::Information;
-                text = tr("Your Fax (file %1)\nis being processed and will be sent soon.").arg(m_file_string);
+                text = tr("Your Fax (file %1)\n"
+                          "is being processed and will be sent soon.").arg(m_file_string);
         } else {
                 icon = QMessageBox::Critical;
-                text = tr("Your Fax (file %1)\nwas NOT sent to %2.\nReason given : %3.").arg(m_file_string, m_dest_string, reason);
+                text = tr("Your Fax (file %1)\n"
+                          "was NOT sent to %2.\n"
+                          "Reason given : %3.").arg(m_file_string, m_dest_string, reason);
                 m_destination->setText(m_dest_string);
                 m_openFileNameLabel->setText(m_file_string);
         }
@@ -235,4 +245,25 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
         msgbox.setIcon(icon);
         msgbox.setText(text);
         msgbox.show();
+}
+
+
+
+MacOSDnDLineEdit::MacOSDnDLineEdit(QWidget * parent)
+        : QLineEdit( parent )
+{
+}
+
+void MacOSDnDLineEdit::dropEvent( QDropEvent *ev )
+{
+        // qDebug() << "MacOSDnDLineEdit::dropEvent" << ev;
+        foreach(QUrl url, ev->mimeData()->urls())
+                setText(url.toLocalFile());
+        QLineEdit::dropEvent( ev );
+}
+
+void MacOSDnDLineEdit::dragEnterEvent( QDragEnterEvent *ev )
+{
+        // qDebug() << "MacOSDnDLineEdit::dragEnterEvent" << ev;
+        ev->acceptProposedAction();
 }

@@ -43,7 +43,6 @@
 #define __QUEUEDETAILSPANEL_H__
 
 #include <QHash>
-#include <QList>
 #include <QObject>
 #include <QVariant>
 #include <QWidget>

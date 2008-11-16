@@ -43,13 +43,14 @@
 
 #include "extendedlabel.h"
 
-ExtendedLabel::ExtendedLabel(const QString &text, QWidget *parent)
+ExtendedLabel::ExtendedLabel(const QString & text,
+                             QWidget * parent)
         : QLabel(parent)
 {
         setText(text);
 }
 
-void ExtendedLabel::mouseDoubleClickEvent(QMouseEvent *event)
+void ExtendedLabel::mouseDoubleClickEvent(QMouseEvent * event)
 {
         dial(event);
 }

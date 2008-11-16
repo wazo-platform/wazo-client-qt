@@ -52,7 +52,6 @@
 #include "outlook_contact.h"
 #endif
 
-class QComboBox;
 class QLabel;
 class QLineEdit;
 class QPushButton;

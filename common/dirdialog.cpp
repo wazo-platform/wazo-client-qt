@@ -47,6 +47,7 @@
 #include <QSettings>
 #include <QVBoxLayout>
 
+#include "baseengine.h"
 #include "dirdialog.h"
 #include "directorypanel.h"
 

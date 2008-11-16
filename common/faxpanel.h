@@ -42,6 +42,7 @@
 #ifndef __FAXPANEL_H__
 #define __FAXPANEL_H__
 
+#include <QLineEdit>
 #include <QWidget>
 
 class QCheckBox;
@@ -51,6 +52,7 @@ class QPushButton;
 
 class BaseEngine;
 class DirDialog;
+class MacOSDnDLineEdit;
 class MainWidget;
 class UserInfo;
 
@@ -73,7 +75,11 @@ public slots:
         void fileNameChanged(const QString &);
 private:
 	QWidget * m_mainwindow;	//!< MainWidget where some parameters are commited to
+#ifdef Q_WS_MAC
+        MacOSDnDLineEdit * m_openFileNameLabel;
+#else
         QLineEdit * m_openFileNameLabel;
+#endif
 	QLineEdit * m_destination;
         QCheckBox * m_maskornot;
         QPushButton * m_sendButton;
@@ -82,6 +88,16 @@ private:
 
         QString m_dest_string;
         QString m_file_string;
+};
+
+class MacOSDnDLineEdit : public QLineEdit
+{
+        Q_OBJECT
+public:
+        MacOSDnDLineEdit(QWidget *);
+protected:
+        virtual void dropEvent( QDropEvent * );
+        virtual void dragEnterEvent( QDragEnterEvent * );
 };
 
 #endif

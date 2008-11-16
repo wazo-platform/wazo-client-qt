@@ -43,7 +43,6 @@
 #define __SEARCHPANEL_H__
 
 #include <QHash>
-#include <QList>
 #include <QVariant>
 #include <QWidget>
 

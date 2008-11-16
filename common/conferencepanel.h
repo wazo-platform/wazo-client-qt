@@ -48,7 +48,6 @@
 #include <QObject>
 #include <QWidget>
 
-class QComboBox;
 class QGridLayout;
 class QProgressBar;
 class QPushButton;

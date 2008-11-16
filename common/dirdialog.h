@@ -42,16 +42,11 @@
 #ifndef __DIRDIALOG_H__
 #define __DIRDIALOG_H__
 
-#include <QCheckBox>
-#include <QComboBox>
 #include <QDialog>
-#include <QLineEdit>
-#include <QSpinBox>
-
-#include "baseengine.h"
 
 class QDialogButtonBox;
 
+class BaseEngine;
 class DirectoryPanel;
 
 //class MainWidget;
