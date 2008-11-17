@@ -108,7 +108,7 @@ void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
         
         if(eventname == "join") {
                 if(! m_infos.contains(ref)) {
-                        m_infos[ref] = new QLabel(which);
+                        m_infos[ref] = new QLabel(channel);
                         
                         m_action_kick[ref] = new QPushButton(tr("Kick"));
                         m_action_kick[ref]->setIcon(QIcon(":/images/cancel.png"));
@@ -147,10 +147,10 @@ void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
                                 this, SLOT(doMeetMeAction()));
                         // QPushButton * qp2 = new QPushButton(tr("Spy"));
                         
-                        m_layout[idx]->addWidget( m_infos[ref], 0, 1 );
-                        m_layout[idx]->addWidget( m_action_kick[ref], 0, 2 );
-                        m_layout[idx]->addWidget( m_action_record[ref], 0, 3 );
-                        m_layout[idx]->addWidget( m_action_mute[ref], 0, 4 );
+                        m_layout[idx]->addWidget( m_infos[ref], which.toInt(), 1 );
+                        m_layout[idx]->addWidget( m_action_kick[ref], which.toInt(), 2 );
+                        m_layout[idx]->addWidget( m_action_record[ref], which.toInt(), 3 );
+                        m_layout[idx]->addWidget( m_action_mute[ref], which.toInt(), 4 );
                         // glayout->addWidget( qp2, 0, 3 );
                 }
         } else if(eventname == "leave") {
