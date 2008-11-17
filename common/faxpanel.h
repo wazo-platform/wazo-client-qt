@@ -52,7 +52,7 @@ class QPushButton;
 
 class BaseEngine;
 class DirDialog;
-class MacOSDnDLineEdit;
+class FileNameLineEdit;
 class MainWidget;
 class UserInfo;
 
@@ -75,11 +75,7 @@ public slots:
         void fileNameChanged(const QString &);
 private:
 	QWidget * m_mainwindow;	//!< MainWidget where some parameters are commited to
-#ifdef Q_WS_MAC
-        MacOSDnDLineEdit * m_openFileNameLabel;
-#else
-        QLineEdit * m_openFileNameLabel;
-#endif
+        FileNameLineEdit * m_openFileNameLabel;
 	QLineEdit * m_destination;
         QCheckBox * m_maskornot;
         QPushButton * m_sendButton;

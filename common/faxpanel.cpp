@@ -87,11 +87,7 @@ FaxPanel::FaxPanel(BaseEngine * engine,
 	QGroupBox * groupBox2 = new QGroupBox( tr("2. Choose File to Send") );
 	groupBox2->setAlignment( Qt::AlignLeft );
 	QHBoxLayout * hbox2 = new QHBoxLayout( groupBox2 );
-#ifdef Q_WS_MAC
-        m_openFileNameLabel = new MacOSDnDLineEdit(this);
-#else
-        m_openFileNameLabel = new QLineEdit(this);
-#endif
+        m_openFileNameLabel = new FileNameLineEdit(this);
         connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
                 this, SLOT(fileNameChanged(const QString &)));
         QPushButton * openFileNamesButton = new QPushButton( tr("Browse"), this);
@@ -156,9 +152,16 @@ void FaxPanel::destNumberChanged(const QString &/* ext*/)
         }
 }
 
-void FaxPanel::fileNameChanged(const QString &/* ext*/)
+void FaxPanel::fileNameChanged(const QString & ext)
 {
-        // qDebug() << "FaxPanel::fileNameChanged()" << ext;
+        qDebug() << "FaxPanel::fileNameChanged()" << ext;
+        QFile * qf = new QFile(m_openFileNameLabel->text());
+        qf->open(QIODevice::ReadOnly);
+        QByteArray * qb = new QByteArray();
+        qb->append(qf->readAll());
+        qDebug() << "FaxPanel::setOpenFileName()" << qb->size();
+        qf->close();
+        
         if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
                 m_sendButton->setEnabled(true);
         } else {

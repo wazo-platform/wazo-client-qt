@@ -59,11 +59,11 @@ protected:
 	void dropEvent(QDropEvent *event);
 };
 
-class MacOSDnDLineEdit : public QLineEdit
+class FileNameLineEdit : public QLineEdit
 {
         Q_OBJECT
 public:
-        MacOSDnDLineEdit(QWidget *);
+        FileNameLineEdit(QWidget *);
 protected:
         virtual void dropEvent( QDropEvent * );
         virtual void dragEnterEvent( QDragEnterEvent * );

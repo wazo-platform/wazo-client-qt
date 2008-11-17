@@ -51,36 +51,35 @@
 ExtendedLineEdit::ExtendedLineEdit(QWidget * parent)
         : QLineEdit(parent)
 {
-	setAcceptDrops(true);
+        setAcceptDrops(true);
 }
 
 /*! \brief receive drop event
  */
-void ExtendedLineEdit::dropEvent(QDropEvent */* event*/)
+void ExtendedLineEdit::dropEvent(QDropEvent *)
 {
-	// qDebug() << "ExtendedLineEdit::dropEvent()" << event->mimeData()->text() << event->pos();
+        // qDebug() << "ExtendedLineEdit::dropEvent()" << event->mimeData()->text() << event->pos();
 }
 
 
-MacOSDnDLineEdit::MacOSDnDLineEdit(QWidget * parent)
+FileNameLineEdit::FileNameLineEdit(QWidget * parent)
         : QLineEdit( parent )
 {
 }
 
-void MacOSDnDLineEdit::dropEvent( QDropEvent *ev )
+void FileNameLineEdit::dropEvent(QDropEvent * event)
 {
-        // qDebug() << "MacOSDnDLineEdit::dropEvent" << ev;
-        // foreach(QUrl url, ev->mimeData()->urls())
-        QList<QUrl> urls = ev->mimeData()->urls();
+        // qDebug() << "FileNameLineEdit::dropEvent" << event;
+        QList<QUrl> urls = event->mimeData()->urls();
         if (urls.size() > 0) {
                 QUrl url = urls[0];
                 QLineEdit::setText(url.toLocalFile());
         }
-        QLineEdit::dropEvent( ev );
+        // QLineEdit::dropEvent(event);
 }
 
-void MacOSDnDLineEdit::dragEnterEvent( QDragEnterEvent *ev )
+void FileNameLineEdit::dragEnterEvent(QDragEnterEvent * event)
 {
-        // qDebug() << "MacOSDnDLineEdit::dragEnterEvent" << ev;
-        ev->acceptProposedAction();
+        // qDebug() << "FileNameLineEdit::dragEnterEvent" << event;
+        event->acceptProposedAction();
 }
