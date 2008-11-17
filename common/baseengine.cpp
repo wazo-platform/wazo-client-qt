@@ -207,7 +207,7 @@ void BaseEngine::loadSettings()
                 data = JsonQt::JsonToVariant::parse(defaultguioptions);
         }
         catch(JsonQt::ParseException) {
-                qDebug() << "BaseEngine::parseCommand() exception catched for" << defaultguioptions;
+                qDebug() << "BaseEngine::loadSettings() exception catched for" << defaultguioptions;
         }
         m_guioptions["user"] = m_settings->value("guisettings", data);
         m_loginkind = m_guioptions["user"].toMap()["loginkind"].toInt();
@@ -1199,7 +1199,13 @@ void BaseEngine::socketReadyRead()
                 while(m_filesocket->canReadLine()) {
                         QByteArray data = m_filesocket->readLine();
                         QString line = QString::fromUtf8(data);
-                        QVariant jsondata = JsonQt::JsonToVariant::parse(line.trimmed());
+                        QVariant jsondata;
+                        try {
+                                jsondata = JsonQt::JsonToVariant::parse(line.trimmed());
+                        }
+                        catch(JsonQt::ParseException) {
+                                qDebug() << "BaseEngine::socketReadyRead() exception catched for" << line.trimmed();
+                        }
                         QVariantMap jsondatamap = jsondata.toMap();
                         if(jsondatamap["class"].toString() == "fileref") {
                                 if(m_filedir == "download") {
