@@ -152,16 +152,9 @@ void FaxPanel::destNumberChanged(const QString &/* ext*/)
         }
 }
 
-void FaxPanel::fileNameChanged(const QString & ext)
+void FaxPanel::fileNameChanged(const QString &)
 {
-        qDebug() << "FaxPanel::fileNameChanged()" << ext;
-        QFile * qf = new QFile(m_openFileNameLabel->text());
-        qf->open(QIODevice::ReadOnly);
-        QByteArray * qb = new QByteArray();
-        qb->append(qf->readAll());
-        qDebug() << "FaxPanel::setOpenFileName()" << qb->size();
-        qf->close();
-        
+        // qDebug() << "FaxPanel::fileNameChanged()" << ext;
         if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
                 m_sendButton->setEnabled(true);
         } else {
