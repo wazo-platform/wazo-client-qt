@@ -98,6 +98,7 @@ macos-%:
 	@cd $* && ${QMAKE} $*.pro -o Makefile && ${LRELEASE} $*_fr.ts qt_fr.ts && make ${JOPT}
 	@strip $*/$*.app/Contents/MacOS/$*
 	@${UPXRUN} $*/$*.app/Contents/MacOS/$*
+	@mkdir -p $*/$*.app/Contents/Resources/French.lproj
 	@hdiutil create $*-${_XIVOVER_}-${_SVNVER_}.dmg -srcfolder $*/$*.app -format UDBZ
 
 
