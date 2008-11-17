@@ -59,7 +59,9 @@ QueuesPanel::QueuesPanel(const QVariant & options,
         : QWidget(parent)
 {
         // qDebug() << "QueuesPanel::QueuesPanel()" << options;
+#if defined(Q_WS_X11)
         m_gui_font = QFont("sans serif", 9);
+#endif
         m_gui_buttonsize = 10;
         m_gui_showvqueues = true;
         m_gui_showqueuenames = true;

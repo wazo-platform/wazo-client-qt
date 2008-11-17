@@ -61,7 +61,9 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         : QWidget(parent),
           m_ui(NULL), m_agentstatus(false), m_queuechangeallow(true), m_maxqueues(5)
 {
+#if defined(Q_WS_X11)
         m_gui_font = QFont("sans serif", 9);
+#endif
         m_gui_buttonsize = 16;
         
 	QGridLayout * glayout = new QGridLayout(this);
@@ -91,11 +93,11 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         m_queuejoinall = new QPushButton(tr("Join All"), this);
         m_queuejoinall->setIcon(QIcon(":/images/add.png"));
         m_queueaction = new QPushButton(tr("Leave"), this);
-
+        
         m_queuelist = new QComboBox(this);
         m_queuelist->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         m_queuelist->setProperty("function", "queuelist");
-
+        
         connect(m_queuelist, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
         connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
@@ -213,7 +215,7 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
                 }
         }
         if(presencemap.contains("state")) {
-                QString avstate = presencemap["state"].toString();
+                QString avstate = presencemap["state"].toMap()["stateid"].toString();
                 if(m_presence_names.contains(avstate)) {
                         QString name = m_presence_names[avstate];
                         int idx = m_presencevalue->findText(name);
