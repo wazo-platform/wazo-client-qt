@@ -51,6 +51,7 @@
 class QGridLayout;
 class QProgressBar;
 class QPushButton;
+class QTabWidget;
 
 class UserInfo;
 
@@ -66,16 +67,20 @@ protected:
 public slots:
         void setUserInfo(const UserInfo *);
         void meetmeEvent(const QStringList &);
+        void meetmeInit(const QVariant &);
         void doMeetMeAction();
         void setGuiOptions(const QVariant &);
 private:
         QHash<QString, QLabel *> m_infos;
-        QHash<QString, QPushButton *> m_actions;
+        QHash<QString, QPushButton *> m_action_kick;
+        QHash<QString, QPushButton *> m_action_record;
+        QHash<QString, QPushButton *> m_action_mute;
+        QHash<QString, QGridLayout *> m_layout;
+        QTabWidget * m_tw;
         QGridLayout * m_glayout;
         const UserInfo * m_ui;
-        int m_idline;
-signals:
-        void meetmeAction(const QString &);
+ signals:
+        void meetmeAction(const QString &, const QString &);
 };
 
 #endif

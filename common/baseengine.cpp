@@ -716,7 +716,11 @@ bool BaseEngine::parseCommand(const QString & line)
                         setGuiOptions(datamap["payload"]);
                         
                 } else if (thisclass == "meetme") {
-                        meetmeEvent(datamap["payload"].toStringList());
+                        QString function = datamap["function"].toString();
+                        if (function == "sendlist")
+                                meetmeInit(datamap["payload"]);
+                        else if (function == "update")
+                                meetmeEvent(datamap["payload"].toStringList());
                         
                 } else if (thisclass == "serverdown") {
                         qDebug() << thisclass << datamap["mode"].toString();
@@ -1045,12 +1049,13 @@ void BaseEngine::agentAction(const QString & action)
         sendJsonCommand(command);
 }
 
-void BaseEngine::meetmeAction(const QString & action)
+void BaseEngine::meetmeAction(const QString & function, const QString & functionargs)
 {
         QVariantMap command;
         command["class"] = "meetme";
         command["direction"] = "xivoserver";
-        command["command"] = action.split(" ");
+        command["function"] = function;
+        command["functionargs"] = functionargs.split(" ");
         sendJsonCommand(command);
 }
 
@@ -1703,7 +1708,7 @@ void BaseEngine::askCallerIds()
         QVariantMap command;
         command["direction"] = "xivoserver";
         command["function"] = "getlist";
-        QStringList getlists = (QStringList() << "users" << "queues" << "agents" << "phones" << "users");
+        QStringList getlists = (QStringList() << "users" << "queues" << "agents" << "phones" << "meetme" << "users");
         foreach(QString kind, getlists) {
                 command.remove("class");
                 command["class"] = kind;

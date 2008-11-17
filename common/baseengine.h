@@ -171,10 +171,10 @@ public slots:
         void copyNumber(const QString &);
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
         void agentAction(const QString &);
-        void meetmeAction(const QString &);
+        void meetmeAction(const QString &, const QString &);
         void requestFileList(const QString &);
 	void pickUp(const UserInfo *);
-
+        
         void monitorPeerRequest(const QString &);
         void changeWatchedAgentSlot(const QString &, bool);
         void changeWatchedQueueSlot(const QString &);
@@ -206,6 +206,7 @@ signals:
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
         void meetmeEvent(const QStringList &);
+        void meetmeInit(const QVariant &);
         void requestFileListResult(const QVariant &);
         void updatePresence(const QVariant &);
         void updateCounter(const QVariant &);

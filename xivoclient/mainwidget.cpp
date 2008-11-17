@@ -874,9 +874,11 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_engine, SIGNAL(meetmeEvent(const QStringList &)),
                                          m_xlet[dc], SLOT(meetmeEvent(const QStringList &)));
-                                connect( m_xlet[dc], SIGNAL(meetmeAction(const QString &)),
-                                         m_engine, SLOT(meetmeAction(const QString &)));
-
+                                connect( m_engine, SIGNAL(meetmeInit(const QVariant &)),
+                                         m_xlet[dc], SLOT(meetmeInit(const QVariant &)));
+                                connect( m_xlet[dc], SIGNAL(meetmeAction(const QString &, const QString &)),
+                                         m_engine, SLOT(meetmeAction(const QString &, const QString &)));
+                                
 			} else if (dc == QString("queues")) {
                                 m_xlet[dc] = new QueuesPanel(m_options);
                                 if (withscrollbar) {
@@ -899,7 +901,7 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
 					 m_xlet[dc], SLOT(updatePeerAgent(const QString &, const QString &, const QStringList &)) );
-
+                                
 			} else if (dc == QString("queuedetails")) {
                                 m_xlet[dc] = new QueuedetailsPanel();
                                 if (withscrollbar) {

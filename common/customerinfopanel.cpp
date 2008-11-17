@@ -57,7 +57,6 @@ CustomerInfoPanel::CustomerInfoPanel(const QVariant & options,
 {
         // qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
         QGridLayout * glayout = new QGridLayout(this);
-        // QLabel * ql = new QLabel("help");
         m_tabs = new QTabWidget(this);
         glayout->addWidget( m_tabs, 0, 0 );
         glayout->setRowStretch(0, 1);

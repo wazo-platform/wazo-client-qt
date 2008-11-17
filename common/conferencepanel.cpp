@@ -39,11 +39,11 @@
  * $Date$
  */
 
-#include <QComboBox>
 #include <QDebug>
 #include <QGridLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QTabWidget>
 
 #include "conferencepanel.h"
 #include "userinfo.h"
@@ -55,13 +55,10 @@ ConferencePanel::ConferencePanel(QWidget * parent)
 {
         qDebug() << "ConferencePanel::ConferencePanel()";
 	m_glayout = new QGridLayout(this);
-        m_idline = 0;
-        QLabel * title = new QLabel(tr("Conferences and their Members"));
-        m_glayout->addWidget( title, m_idline, 0, Qt::AlignLeft );
-        m_idline ++;
-        m_glayout->setRowStretch( m_idline, 1 );
-	// m_glayout->setMargin(0);
-        // m_glayout->setColumnStretch( 0, 1 );
+        m_tw = new QTabWidget(this);
+        m_glayout->addWidget( m_tw, 0, 0 );
+        m_glayout->setRowStretch( 0, 1 );
+        m_glayout->setColumnStretch( 0, 1 );
 }
 
 ConferencePanel::~ConferencePanel()
@@ -77,6 +74,25 @@ void ConferencePanel::setUserInfo(const UserInfo * ui)
         m_ui = ui;
 }
 
+void ConferencePanel::meetmeInit(const QVariant & meetme)
+{
+        // qDebug() << "ConferencePanel::meetmeInit()" << meetme;
+        foreach(QString astid, meetme.toMap().keys()) {
+                QVariant astrooms = meetme.toMap()[astid];
+                foreach(QString idx, astrooms.toMap().keys()) {
+                        QString roomname = astrooms.toMap()[idx].toMap()["name"].toString();
+                        QString roomnumber = astrooms.toMap()[idx].toMap()["number"].toString();
+                        QString idx = astid + "-" + roomnumber;
+                        QWidget * w = new QWidget();
+                        m_layout[idx] = new QGridLayout(w);
+                        m_layout[idx]->setColumnStretch(0, 1);
+                        m_layout[idx]->setColumnStretch(5, 1);
+                        m_layout[idx]->setRowStretch(100, 1);
+                        m_tw->addTab(w, tr("Room %1 (%2) on %3").arg(roomname, roomnumber, astid));
+                }
+        }
+}
+
 void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
 {
         // qDebug() << "ConferencePanel::meetmeEvent()" << meetmelist;
@@ -86,40 +102,80 @@ void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
         QString which = meetmelist[3];
         QString channel = meetmelist[4];
         // int busy = meetmelist[5].toInt();
-
+        
         QString ref = astid + "-" + roomnum + "-" + channel;
-
+        QString idx = astid + "-" + roomnum;
+        
         if(eventname == "join") {
-                m_infos[ref] = new QLabel("<b>" + roomnum + "</b> " + tr("on") + " <b>" + astid + "</b> : " + which + " : " + channel);
-                m_actions[ref] = new QPushButton(tr("Kick"), this);
-                m_actions[ref]->setIcon(QIcon(":/images/cancel.png"));
-                m_actions[ref]->setIconSize(QSize(16, 16));
-                m_actions[ref]->setProperty("astid", astid);
-                m_actions[ref]->setProperty("room", roomnum);
-                m_actions[ref]->setProperty("usernum", which);
-                m_actions[ref]->setProperty("reference", ref);
-                m_actions[ref]->setProperty("channel", channel);
-                connect(m_actions[ref], SIGNAL(clicked()),
-                        this, SLOT(doMeetMeAction()));
-                m_glayout->addWidget( m_infos[ref], m_idline, 0, Qt::AlignLeft );
-                m_glayout->addWidget( m_actions[ref], m_idline, 1, Qt::AlignLeft );
-                m_glayout->setRowStretch( m_idline, 0 );
-                m_idline ++;
-                m_glayout->setRowStretch( m_idline, 1 );
+                if(! m_infos.contains(ref)) {
+                        m_infos[ref] = new QLabel(which);
+                        
+                        m_action_kick[ref] = new QPushButton(tr("Kick"));
+                        m_action_kick[ref]->setIcon(QIcon(":/images/cancel.png"));
+                        m_action_kick[ref]->setIconSize(QSize(16, 16));
+                        m_action_kick[ref]->setProperty("astid", astid);
+                        m_action_kick[ref]->setProperty("room", roomnum);
+                        m_action_kick[ref]->setProperty("usernum", which);
+                        m_action_kick[ref]->setProperty("reference", ref);
+                        m_action_kick[ref]->setProperty("channel", channel);
+                        m_action_kick[ref]->setProperty("action", "kick");
+                        connect(m_action_kick[ref], SIGNAL(clicked()),
+                                this, SLOT(doMeetMeAction()));
+                        
+                        m_action_record[ref] = new QPushButton(tr("Record"));
+                        m_action_record[ref]->setIcon(QIcon(":/images/cancel.png"));
+                        m_action_record[ref]->setIconSize(QSize(16, 16));
+                        m_action_record[ref]->setProperty("astid", astid);
+                        m_action_record[ref]->setProperty("room", roomnum);
+                        m_action_record[ref]->setProperty("usernum", which);
+                        m_action_record[ref]->setProperty("reference", ref);
+                        m_action_record[ref]->setProperty("channel", channel);
+                        m_action_record[ref]->setProperty("action", "record");
+                        connect(m_action_record[ref], SIGNAL(clicked()),
+                                this, SLOT(doMeetMeAction()));
+                        
+                        m_action_mute[ref] = new QPushButton(tr("Mute"));
+                        m_action_mute[ref]->setIcon(QIcon(":/images/cancel.png"));
+                        m_action_mute[ref]->setIconSize(QSize(16, 16));
+                        m_action_mute[ref]->setProperty("astid", astid);
+                        m_action_mute[ref]->setProperty("room", roomnum);
+                        m_action_mute[ref]->setProperty("usernum", which);
+                        m_action_mute[ref]->setProperty("reference", ref);
+                        m_action_mute[ref]->setProperty("channel", channel);
+                        m_action_mute[ref]->setProperty("action", "mute");
+                        connect(m_action_mute[ref], SIGNAL(clicked()),
+                                this, SLOT(doMeetMeAction()));
+                        // QPushButton * qp2 = new QPushButton(tr("Spy"));
+                        
+                        m_layout[idx]->addWidget( m_infos[ref], 0, 1 );
+                        m_layout[idx]->addWidget( m_action_kick[ref], 0, 2 );
+                        m_layout[idx]->addWidget( m_action_record[ref], 0, 3 );
+                        m_layout[idx]->addWidget( m_action_mute[ref], 0, 4 );
+                        // glayout->addWidget( qp2, 0, 3 );
+                }
         } else if(eventname == "leave") {
-                if(m_infos.contains(ref))
+                if(m_infos.contains(ref)) {
                         delete m_infos[ref];
-                if(m_actions.contains(ref))
-                        delete m_actions[ref];
+                        delete m_action_kick[ref];
+                        delete m_action_record[ref];
+                        delete m_action_mute[ref];
+                }
         }
 }
 
 void ConferencePanel::doMeetMeAction()
 {
         // qDebug() << "ConferencePanel::doMeetMeAction()";
-        meetmeAction("kick " + sender()->property("astid").toString() +
+        QString action = sender()->property("action").toString();
+        meetmeAction(action,
+                     sender()->property("astid").toString() +
                      " " + sender()->property("room").toString() +
                      " " + sender()->property("usernum").toString() +
                      " " + sender()->property("channel").toString());
-        m_actions[sender()->property("reference").toString()]->setIconSize(QSize(8, 8));
+        if(action == "kick")
+                m_action_kick[sender()->property("reference").toString()]->setIconSize(QSize(8, 8));
+        else if(action == "record")
+                m_action_record[sender()->property("reference").toString()]->setIconSize(QSize(8, 8));
+        else if(action == "mute")
+                m_action_mute[sender()->property("reference").toString()]->setIconSize(QSize(8, 8));
 }
