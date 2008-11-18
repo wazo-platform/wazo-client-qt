@@ -136,9 +136,9 @@ void LogWidget::addElement(const QString & peer, LogEltWidget::Direction d,
 		if(widget) {
 			LogEltWidget * logelt = qobject_cast<LogEltWidget *>(widget);
 			if(logelt) {
-				if(dt == logelt->dateTime()
-				   && peer == logelt->peer()
-				   && d == logelt->direction())
+				if((dt == logelt->dateTime())
+				   && (peer == logelt->peer())
+				   && (d == logelt->direction()))
 					return;
 				else if(dt > logelt->dateTime())
 					break;

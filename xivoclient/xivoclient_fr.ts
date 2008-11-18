@@ -766,14 +766,24 @@ a été envoyé à %2.</translation>
 <context>
     <name>LogEltWidget</name>
     <message>
-        <location filename="../common/logeltwidget.cpp" line="103"/>
+        <location filename="../common/logeltwidget.cpp" line="109"/>
         <source>&amp;Call back</source>
         <translation>R&amp;appeler</translation>
     </message>
     <message>
-        <location filename="../common/logeltwidget.cpp" line="104"/>
+        <location filename="../common/logeltwidget.cpp" line="110"/>
         <source>Call back the correspondent</source>
         <translation>Rappeler le correspondant</translation>
+    </message>
+    <message>
+        <location filename="../common/logeltwidget.cpp" line="68"/>
+        <source>Unknown</source>
+        <translation>Inconnu</translation>
+    </message>
+    <message>
+        <location filename="../common/logeltwidget.cpp" line="83"/>
+        <source>(phone %1)</source>
+        <translation>(téléphone %1)</translation>
     </message>
 </context>
 <context>

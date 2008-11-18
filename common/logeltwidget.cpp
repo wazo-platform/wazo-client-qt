@@ -58,12 +58,16 @@ LogEltWidget::LogEltWidget(const QString & peer, Direction d,
                            QWidget * parent)
         : QWidget(parent), m_dateTime(dt), m_peer(peer), m_direction(d)
 {
-//	qDebug() << "  LogEltWidget::LogEltWidget()" << peer << d << dt << duration << parent;
+	// qDebug() << "  LogEltWidget::LogEltWidget()" << peer << d << dt << duration << parent;
 	QGridLayout * glayout = new QGridLayout( this );
 	//	QHBoxLayout * layout1 = new QHBoxLayout( this );
 	//	layout1->setMargin(0);
 
-	QLabel * lblpeer = new QLabel( peer, this );
+	QLabel * lblpeer = new QLabel(this);
+        if(peer.isEmpty())
+                lblpeer->setText(tr("Unknown"));
+        else
+                lblpeer->setText(peer);
 	lblpeer->setObjectName("logpeername");
 	lblpeer->setFont(QFont("helvetica", 10, QFont::Bold));
 	lblpeer->setMargin(0);
@@ -73,10 +77,12 @@ LogEltWidget::LogEltWidget(const QString & peer, Direction d,
 	lbldt->setFont(QFont("helvetica", 10, QFont::Light));
 	lbldt->setMargin(0);
 	glayout->addWidget(lbldt, 1, 0);
-
-	QLabel * lbltermin = new QLabel("(" + termin + ")");
+        
+	QLabel * lbltermin = new QLabel();
+        if(termin.split(".").size() == 4)
+                lbltermin->setText(tr("(phone %1)").arg(termin.split(".")[3]));
 	glayout->addWidget(lbltermin, 0, 2);
-
+        
 	QLabel * lblduration = new QLabel( this );
 	int min = duration / 60;
 	int sec = duration % 60;
