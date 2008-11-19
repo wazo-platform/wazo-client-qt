@@ -116,9 +116,14 @@ void DialPanel::setNumberToDial(const QString & text)
         // qDebug() << "DialPanel::setNumberToDial()" << text;
         // adds the item to the list
         QString texttmp = text.trimmed();
-        texttmp.remove(QRegExp("[. ]"));
+        // remove . and " " because we don't need them
+        // remove "+" to avoid matching the "\\D"
+        texttmp.remove(QRegExp("[. +]"));
         
-        if((texttmp.size() > 0) && (! texttmp.contains(QRegExp("\\D")))) {
+        if((! texttmp.isEmpty()) && (! texttmp.contains(QRegExp("\\D")))) {
+                // if there was a "+", put it back
+                if(text.trimmed()[0] == '+')
+                        texttmp.insert(0, "+");
                 if (m_input->findText(texttmp) == -1)
                         m_input->insertItem(0, texttmp);
                 // displays it
