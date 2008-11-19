@@ -677,12 +677,10 @@ void MainWidget::connectDials(QWidget * widget)
 {
         connect( widget, SIGNAL(pickUp(const UserInfo *)),
                  m_engine, SLOT(pickUp(const UserInfo *)) );
-        connect( widget, SIGNAL(originateCall(const QString &, const QString &)),
-                 m_engine, SLOT(originateCall(const QString &, const QString &)) );
-        connect( widget, SIGNAL(transferCall(const QString &, const QString &)),
-                 m_engine, SLOT(transferCall(const QString &, const QString &)) );
-        connect( widget, SIGNAL(atxferCall(const QString &, const QString &)),
-                 m_engine, SLOT(atxferCall(const QString &, const QString &)) );
+        connect( widget, SIGNAL(actionCall(const UserInfo *, const QString &,
+                                           const QString &, const QString &)),
+                 m_engine, SLOT(actionCall(const UserInfo *, const QString &,
+                                           const QString &, const QString &)) );
         connect( widget, SIGNAL(simplehangupCall(const UserInfo *, const QString &)),
                  m_engine, SLOT(simplehangupCall(const UserInfo *, const QString &)) );
         connect( widget, SIGNAL(hangupCall(const UserInfo *, const QString &)),

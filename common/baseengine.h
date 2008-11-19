@@ -149,9 +149,8 @@ public slots:
 	void start();				//!< start the connection process.
 	void stop();				//!< stop the engine
 	void setAvailState(const QString &, bool);	//! set m_availstate
-	void originateCall(const QString &, const QString &);
-	void transferCall(const QString &, const QString &);
-        void atxferCall(const QString &, const QString &);
+	void actionCall(const UserInfo *, const QString &,
+                        const QString &, const QString &);
 	void interceptCall(const UserInfo *, const QString &);
         void transferToNumber(const QString &);
         void parkCall(const QString &);

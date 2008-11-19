@@ -77,10 +77,11 @@ private slots:
 	void hangUp();
 	void itemClicked(QTableWidgetItem *);
 	void itemDoubleClicked(QTableWidgetItem *);
+        void proxyCallRequests(const QString &, const QString &);
 signals:
 	void copyNumber(const QString &);
-	void transferCall(const QString &, const QString &);
-	void originateCall(const QString &, const QString &);
+	void actionCall(const UserInfo *, const QString &,
+                        const QString &, const QString &);
         void newParkEvent();
 private:
 	ExtendedTableWidget * m_table;	//! Table

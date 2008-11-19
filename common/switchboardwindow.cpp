@@ -141,12 +141,10 @@ void SwitchBoardWindow::updatePeer(UserInfo * ui,
                                                          m_phones,
                                                          m_agents);
                 peerwidget->setEngine(m_engine);
-             	connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
-                         m_engine, SLOT(originateCall(const QString&, const QString&)) );
-                connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
-                         m_engine, SLOT(transferCall(const QString&, const QString&)) );
-                connect( peerwidget, SIGNAL(atxferCall(const QString&, const QString&)),
-                         m_engine, SLOT(atxferCall(const QString&, const QString&)) );
+                connect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
+                                                       const QString &, const QString &)),
+                         m_engine, SLOT(actionCall(const UserInfo *, const QString &,
+                                                   const QString &, const QString &)) );
                 connect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
                          m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
                 connect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
@@ -211,12 +209,10 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
                         m_layout->removeWidget( peerwidget );
                         // this disconnect() step takes time, whether explicitly or implicitly,
                         // so we should be careful to avoid too much connect's (anyway)
-                        disconnect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
-                                    m_engine, SLOT(originateCall(const QString&, const QString&)) );
-                        disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
-                                    m_engine, SLOT(transferCall(const QString&, const QString&)) );
-                        disconnect( peerwidget, SIGNAL(atxferCall(const QString&, const QString&)),
-                                    m_engine, SLOT(atxferCall(const QString&, const QString&)) );
+                        disconnect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
+                                                                  const QString &, const QString &)),
+                                    m_engine, SLOT(actionCall(const UserInfo *, const QString &,
+                                                              const QString &, const QString &)) );
                         disconnect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
                                     m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
                         disconnect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
@@ -280,12 +276,10 @@ void SwitchBoardWindow::removePeers(void)
                         m_layout->removeWidget( peerwidget );
                         // this disconnect() step takes time, whether explicitly or implicitly,
                         // so we should be careful to avoid too much connect's (anyway)
-                        disconnect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
-                                    m_engine, SLOT(originateCall(const QString&, const QString&)) );
-                        disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
-                                    m_engine, SLOT(transferCall(const QString&, const QString&)) );
-                        disconnect( peerwidget, SIGNAL(atxferCall(const QString&, const QString&)),
-                                    m_engine, SLOT(atxferCall(const QString&, const QString&)) );
+                        disconnect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
+                                                                  const QString &, const QString &)),
+                                    m_engine, SLOT(actionCall(const UserInfo *, const QString &,
+                                                              const QString &, const QString &)) );
                         disconnect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
                                     m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
                         disconnect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
@@ -368,13 +362,11 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
                 peeritem->updateDisplayedStatus();
                 peeritem->updateDisplayedChans();
                 peeritem->updateDisplayedName();
-
-             	connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
-                         m_engine, SLOT(originateCall(const QString&, const QString&)) );
-                connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
-                         m_engine, SLOT(transferCall(const QString&, const QString&)) );
-                connect( peerwidget, SIGNAL(atxferCall(const QString&, const QString&)),
-                         m_engine, SLOT(atxferCall(const QString&, const QString&)) );
+                
+                connect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
+                                                       const QString &, const QString &)),
+                         m_engine, SLOT(actionCall(const UserInfo *, const QString &,
+                                                   const QString &, const QString &)) );
                 connect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
                          m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
                 connect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),

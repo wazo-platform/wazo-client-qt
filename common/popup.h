@@ -114,7 +114,8 @@ public:
         QList<QStringList> & sheetlines();
 signals:
 	void wantsToBeShown(Popup *);	//!< sent when the widget want to show itself
-	void originateCall(const QString &, const QString &);	//!< sent when the widget wants to dial
+	void actionCall(const UserInfo *, const QString &,
+                        const QString &, const QString &);	//!< sent when the widget wants to dial
         void actionFromPopup(const QString &);
         void save(const QString &);
 public slots:

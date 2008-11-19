@@ -157,7 +157,7 @@ void Popup::dispurl(const QUrl &url)
 {
         // qDebug() << "Popup::dispurl()" << url;
         QString numbertodial = url.toString().mid(5);
-        originateCall("user:special:me", "ext:" + numbertodial);
+        actionCall(m_ui, "originate", "user:special:me", "ext:" + numbertodial);
 }
 
 void Popup::actionFromForm()
@@ -511,7 +511,7 @@ void Popup::dialThisNumber()
 {
         QString numbertodial = sender()->property("number").toString();
         // qDebug() << "Popup::dialThisNumber()" << numbertodial;
-        originateCall("user:special:me", "ext:" + numbertodial);
+        actionCall(m_ui, "originate", "user:special:me", "ext:" + numbertodial);
 }
 
 void Popup::httpGetNoreply()

@@ -70,10 +70,8 @@ signals:
 	//! start a search
 	void searchDirectory(const QString &);
 	void copyNumber(const QString &);
-	//! transfer one of my call to this number
-	void transferCall(const QString &, const QString &);
-	//! originate a call
-	void originateCall(const QString &, const QString &);
+	void actionCall(const UserInfo *, const QString &,
+                        const QString &, const QString &);
 private slots:
 	void dialNumber();
         void sendMail();
@@ -81,6 +79,7 @@ private slots:
         void itemClicked(QTableWidgetItem *);
 	void itemDoubleClicked(QTableWidgetItem *);
 	void transferChan(const QString &);
+        void proxyCallRequests(const QString &, const QString &);
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
@@ -91,6 +90,7 @@ public slots:
                         const QString &,
                         const QVariant &);
 private:
+        const UserInfo * m_userinfo;
 	ExtendedLineEdit * m_searchText;	//!< search text input
 	ExtendedTableWidget * m_table;		//!< table to display results
 	QPushButton * m_searchButton;	//!< button

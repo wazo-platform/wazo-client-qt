@@ -136,10 +136,12 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
 		QString from = event->mimeData()->text();
 		if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
 			event->acceptProposedAction();
-			transferCall(from, item->text());
+                        this->setProperty("action", "transfer");
+			actionCall(from, item->text());
 		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
 			event->acceptProposedAction();
-			originateCall(from, item->text());
+                        this->setProperty("action", "originate");
+			actionCall(from, item->text());
 		} else {
 			event->ignore();
                 }

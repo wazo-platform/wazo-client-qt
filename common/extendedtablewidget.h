@@ -62,8 +62,7 @@ protected:
 	void dropEvent(QDropEvent *);
         void mouseMoveEvent(QMouseEvent *);
 signals:
-	void transferCall(const QString &, const QString &);	//!< transfer a call
-	void originateCall(const QString &, const QString &);	//!< originate a call
+	void actionCall(const QString &, const QString &);	//!< transfer/originate/... a call
 	void ContextMenuEvent(QContextMenuEvent *);
 };
 

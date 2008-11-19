@@ -69,25 +69,18 @@ ParkingPanel::ParkingPanel(QWidget * parent)
         m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 	m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
 	m_table->setColumnCount( 5 );
-	QStringList labels;
-	labels << tr("XIVO Id");
-	labels << tr("Number");
-	labels << tr("Time");
-	labels << tr("Parked");
-	labels << tr("Parker");
+        QStringList labels = (QStringList() << tr("XIVO Id") << tr("Number") << tr("Time") << tr("Parked") << tr("Parker"));
 	m_table->setHorizontalHeaderLabels(labels);
-
+        
 	connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
 	         this, SLOT(itemClicked(QTableWidgetItem *)) );
 	connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
 	         this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-	connect( m_table, SIGNAL(transferCall(const QString &, const QString &)),
-	         this, SIGNAL(transferCall(const QString &, const QString &)) );
-	connect( m_table, SIGNAL(originateCall(const QString &, const QString &)),
-	         this, SIGNAL(originateCall(const QString &, const QString &)) );
 	connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
 	         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-
+        connect( m_table, SIGNAL(actionCall(const QString &, const QString &)),
+                 this, SLOT(proxyCallRequests(const QString &, const QString &)) );
+        
 	vlayout->addWidget( m_table, 0 );
         m_table->resizeColumnsToContents();
         m_timerid = 0;
@@ -109,6 +102,11 @@ void ParkingPanel::setGuiOptions(const QVariant &)
 void ParkingPanel::setUserInfo(const UserInfo * ui)
 {
 	m_userinfo = ui;
+}
+
+void ParkingPanel::proxyCallRequests(const QString & src, const QString & dst)
+{
+        actionCall(m_userinfo, sender()->property("action").toString(), src, dst);
 }
 
 /*! \brief add a message to the list
@@ -189,7 +187,7 @@ void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
         m_astid    = m_table->item(rown, 0)->text();
         m_placenum = m_table->item(rown, 1)->text();
         if(m_astid == m_userinfo->astid())
-                originateCall("user:special:me", "ext:" + m_placenum);
+                actionCall(m_userinfo, "originate", "user:special:me", "ext:" + m_placenum);
 }
 
 void ParkingPanel::timerEvent(QTimerEvent * event)
@@ -241,7 +239,7 @@ void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
 void ParkingPanel::dialNumber()
 {
 	if((m_placenum.length() > 0) && (m_astid == m_userinfo->astid()))
-                originateCall("user:special:me", "ext:" + m_placenum);
+                actionCall(m_userinfo, "originate", "user:special:me", "ext:" + m_placenum);
 }
 
 /*! \brief dial the number (when context menu item is toggled)

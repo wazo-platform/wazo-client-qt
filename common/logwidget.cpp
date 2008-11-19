@@ -147,8 +147,8 @@ void LogWidget::addElement(const QString & peer, LogEltWidget::Direction d,
 		}
 	}
 	LogEltWidget * logelt = new LogEltWidget(peer, d, dt, duration, termin, this);
-	connect( logelt, SIGNAL(originateCall(const QString &, const QString &)),
-	         m_engine, SLOT(originateCall(const QString &, const QString &)) );
+        connect( logelt, SIGNAL(actionCall(const QString &, const QString &)),
+                 this, SLOT(proxyCallRequests(const QString &, const QString &)) );
         connect( logelt, SIGNAL(copyNumber(const QString &)),
                  m_engine, SLOT(copyNumber(const QString &)) );
 	m_layout->insertWidget(index, logelt);
@@ -176,6 +176,11 @@ void LogWidget::clear()
 void LogWidget::setUserInfo(const UserInfo * ui)
 {
         m_userinfo_owner = ui;
+}
+
+void LogWidget::proxyCallRequests(const QString & src, const QString & dst)
+{
+        actionCall(m_userinfo_owner, sender()->property("action").toString(), src, dst);
 }
 
 /*! \brief add an entry

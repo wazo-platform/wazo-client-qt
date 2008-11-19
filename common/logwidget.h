@@ -76,8 +76,11 @@ public slots:
 	void monitorPeer(UserInfo *);
 private slots:
 	void modeChanged(bool);
+        void proxyCallRequests(const QString &, const QString &);
 signals:
 	void askHistory(const QString &, int);	//!< need history to be updated !
+	void actionCall(const UserInfo *, const QString &,
+                        const QString &, const QString &);
 private:
 	BaseEngine * m_engine;	//!< BaseEngine object
 	QVBoxLayout * m_layout;			//!< Widget layout

@@ -142,8 +142,9 @@ void LogEltWidget::callBackPeer()
 		QStringList qsl2 = qsl1[1].split(">");
                 number = qsl2[0];
         }
-
-        originateCall("user:special:me", "ext:" + number);
+        
+        this->setProperty("action", "originate");
+        actionCall("user:special:me", "ext:" + number);
 }
 
 void LogEltWidget::doNotCallBackPeer()

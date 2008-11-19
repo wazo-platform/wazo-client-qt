@@ -134,8 +134,6 @@ void SearchPanel::affTextChanged(const QString & text)
                                 m_peerlayout->removeWidget( peerwidget );
                                 peerwidget->hide();
                                 if(m_functions.contains("switchboard")) {
-                                        disconnect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
-                                                    m_engine, SLOT(transferCall(const QString&, const QString&)) );
                                         disconnect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
                                                     m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
                                         disconnect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
@@ -147,8 +145,11 @@ void SearchPanel::affTextChanged(const QString & text)
                                                                                 const QString &,
                                                                                 const QVariant &)) );
                                 }
-                                disconnect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
-                                            m_engine, SLOT(originateCall(const QString&, const QString&)) );
+                                // originate + transfer & atxfer if switchboard
+                                disconnect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
+                                                                          const QString &, const QString &)),
+                                            m_engine, SLOT(actionCall(const UserInfo *, const QString &,
+                                                                      const QString &, const QString &)) );
                                 peeritem->setWidget(NULL);
                                 delete peerwidget;
                         }
@@ -180,8 +181,6 @@ void SearchPanel::affTextChanged(const QString & text)
                                 naff ++;
                                 peerwidget->show();
                                 if(m_functions.contains("switchboard")) {
-                                        connect( peerwidget, SIGNAL(transferCall(const QString&, const QString&)),
-                                                 m_engine, SLOT(transferCall(const QString&, const QString&)) );
                                         connect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
                                                  m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
                                         connect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
@@ -193,8 +192,11 @@ void SearchPanel::affTextChanged(const QString & text)
                                                                              const QString &,
                                                                              const QVariant &)) );
                                 }
-                                connect( peerwidget, SIGNAL(originateCall(const QString&, const QString&)),
-                                         m_engine, SLOT(originateCall(const QString&, const QString&)) );
+                                // originate + transfer & atxfer if switchboard
+                                connect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
+                                                                       const QString &, const QString &)),
+                                         m_engine, SLOT(actionCall(const UserInfo *, const QString &,
+                                                                   const QString &, const QString &)) );
                         }
                 }
  	}

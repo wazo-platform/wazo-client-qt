@@ -74,7 +74,8 @@ public slots:
         void setNumberToDial(const QString &);
 signals:
 	void textEdited(const QString &);
-	void originateCall(const QString &, const QString &);   //!< originates a number
+	void actionCall(const UserInfo *, const QString &,
+                        const QString &, const QString &);   //!< originates a number
 private:
         const UserInfo * m_ui;
         QLabel * m_lbl;

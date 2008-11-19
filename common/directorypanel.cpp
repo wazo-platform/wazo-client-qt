@@ -84,17 +84,15 @@ DirectoryPanel::DirectoryPanel(const QVariant &, QWidget * parent)
 	         this, SLOT(itemClicked(QTableWidgetItem *)) );
 	connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
 	         this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-	connect( m_table, SIGNAL(transferCall(const QString &, const QString &)),
-	         this, SIGNAL(transferCall(const QString &, const QString &)) );
-	connect( m_table, SIGNAL(originateCall(const QString &, const QString &)),
-	         this, SIGNAL(originateCall(const QString &, const QString &)) );
 	connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
 	         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-
+        connect( m_table, SIGNAL(actionCall(const QString &, const QString &)),
+                 this, SLOT(proxyCallRequests(const QString &, const QString &)) );
+        
 	vlayout->addWidget(m_table);
         setAcceptDrops(true);
         m_numberToDial = "";
-
+        
         setFocusPolicy(Qt::StrongFocus);
         setFocusProxy(m_searchText);
 }
@@ -107,8 +105,14 @@ void DirectoryPanel::setGuiOptions(const QVariant &)
 {
 }
 
-void DirectoryPanel::setUserInfo(const UserInfo *)
+void DirectoryPanel::setUserInfo(const UserInfo * ui)
 {
+	m_userinfo = ui;
+}
+
+void DirectoryPanel::proxyCallRequests(const QString & src, const QString & dst)
+{
+        actionCall(m_userinfo, sender()->property("action").toString(), src, dst);
 }
 
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
@@ -139,7 +143,7 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
 	if(re_number.exactMatch(item->text())) {
                 //qDebug() << "dialing" << item->text();
-                originateCall("user:special:me", "ext:" + item->text());
+                actionCall(m_userinfo, "originate", "user:special:me", "ext:" + item->text());
         }
 
  	if(item && item->text().contains("@")) {
@@ -252,7 +256,7 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
 void DirectoryPanel::dialNumber()
 {
 	if(m_numberToDial.length() > 0)
-		originateCall("user:special:me", "ext:" + m_numberToDial);
+		actionCall(m_userinfo, "originate", "user:special:me", "ext:" + m_numberToDial);
 }
 
 /*! \brief dial the number (when context menu item is toggled)
@@ -287,5 +291,5 @@ void DirectoryPanel::updatePeer(UserInfo * /*ui*/,
  */
 void DirectoryPanel::transferChan(const QString & chan)
 {
-	transferCall(chan, m_numberToDial);
+        actionCall(m_userinfo, "transfer", chan, m_numberToDial);
 }

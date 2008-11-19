@@ -87,10 +87,8 @@ protected:
 	void dropEvent(QDropEvent *);
 	void contextMenuEvent(QContextMenuEvent *);
 signals:
-	void originateCall(const QString &, const QString &);	//! originate signal
-	void transferCall(const QString &, const QString &);	//! transfer signal
-	void atxferCall(const QString &, const QString &);	//! atxfer signal
-        
+	void actionCall(const UserInfo *, const QString &,
+                        const QString &, const QString &);	//! originate, transfer & atxfer signals
 	void interceptCall(const UserInfo *, const QString &);	//! intercept signal
 	void hangupCall(const UserInfo *, const QString &);	//! hang up signal
 	//! hide the widget in the channel

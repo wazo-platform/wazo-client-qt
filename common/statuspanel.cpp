@@ -207,9 +207,9 @@ void StatusPanel::xferPressed()
         QString num = m_tnums[m_currentchannel]->text();
         qDebug() << "StatusPanel::xferPressed()" << m_currentchannel << m_peerchan[m_currentchannel] << m_linestatuses[m_currentchannel] << num;
         if(m_linestatuses[m_currentchannel] == WDTransfer)
-                transferCall("chan:special:me:" + m_peerchan[m_currentchannel], "ext:" + num);
+                actionCall(m_ui, "transfer", "chan:special:me:" + m_peerchan[m_currentchannel], "ext:" + num);
         else if(m_linestatuses[m_currentchannel] == WITransfer) {
-                atxferCall("chan:special:me:" + m_currentchannel, "ext:" + num);
+                actionCall(m_ui, "atxfer", "chan:special:me:" + m_currentchannel, "ext:" + num);
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "ilink" << "icancel"));
         }
 }
@@ -244,7 +244,7 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 itransfer();
                                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
                         } else if(action == "park") {
-                                transferCall("chan:special:me:" + m_peerchan[m_currentchannel], "ext:special:parkthecall");
+                                actionCall(m_ui, "transfer", "chan:special:me:" + m_peerchan[m_currentchannel], "ext:special:parkthecall");
                         }
                 } else if(linestatus == Wait) {
                         if(action == "unpark")

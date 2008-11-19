@@ -1250,7 +1250,7 @@ void BaseEngine::transferToNumber(const QString & chan)
 {
         if(m_numbertodial.size() > 0) {
                 qDebug() << "BaseEngine::transferToNumber()" << chan << m_numbertodial;
-                transferCall(chan, m_numbertodial);
+                ////// actionCall(m_ui, "transfer", chan, m_numbertodial);
         }
 }
 
@@ -1268,41 +1268,21 @@ void BaseEngine::copyNumber(const QString & dst)
 
 /*! \brief send an originate command to the server
  */
-void BaseEngine::originateCall(const QString & src, const QString & dst)
+void BaseEngine::actionCall(const UserInfo * ui, const QString & action,
+                            const QString & src, const QString & dst)
 {
-	// qDebug() << "BaseEngine::originateCall()" << src << dst;
-        QVariantMap command;
-        command["class"] = "originate";
-        command["direction"] = "xivoserver";
-        command["source"] = src;
-        command["destination"] = dst;
-        sendJsonCommand(command);
-}
-
-/*! \brief send a transfer call command to the server
- */
-void BaseEngine::transferCall(const QString & src, const QString & dst)
-{
-	// qDebug() << "BaseEngine::transferCall()" << src << dst;
-        QVariantMap command;
-        command["class"] = "transfer";
-        command["direction"] = "xivoserver";
-        command["source"] = src;
-        command["destination"] = dst;
-        sendJsonCommand(command);
-}
-
-/*! \brief send an attended transfer call command to the server
- */
-void BaseEngine::atxferCall(const QString & src, const QString & dst)
-{
-	// qDebug() << "BaseEngine::atxferCall()" << src << dst;
-        QVariantMap command;
-        command["class"] = "atxfer";
-        command["direction"] = "xivoserver";
-        command["source"] = src;
-        command["destination"] = dst;
-        sendJsonCommand(command);
+	// qDebug() << "BaseEngine::actionCall()" << action << src << dst;
+        if(ui == NULL)
+                return;
+        if((action == "originate") || (action == "transfer") || (action == "atxfer")) {
+                QVariantMap command;
+                command["class"] = action;
+                command["direction"] = "xivoserver";
+                command["astid"] = ui->astid();
+                command["source"] = src;
+                command["destination"] = dst;
+                sendJsonCommand(command);
+        }
 }
 
 /*! \brief send a transfer call command to the server
@@ -1310,21 +1290,17 @@ void BaseEngine::atxferCall(const QString & src, const QString & dst)
 void BaseEngine::parkCall(const QString & src)
 {
 	// qDebug() << "BaseEngine::parkCall()" << src;
-        QStringList srclist = src.split("/");
         QVariantMap command;
         command["class"] = "transfer";
         command["direction"] = "xivoserver";
         command["source"] = src;
-        command["destination"] =
-                "p/" + srclist[1] + "/" + srclist[2] + "///special:parkthecall";
+        command["destination"] = "special:parkthecall";
         sendJsonCommand(command);
 }
 
 /*! \brief intercept a call (a channel)
  *
  * The channel is transfered to "Me"
- *
- * \sa transferCall
  */
 void BaseEngine::interceptCall(const UserInfo *, const QString & channel)
 {

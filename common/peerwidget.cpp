@@ -219,7 +219,7 @@ void PeerWidget::removeFromPanel()
 void PeerWidget::dial()
 {
 	qDebug() << "PeerWidget::dial()" << m_ui->userid() << sender();
-        originateCall("user:special:me", "user:" + m_ui->userid());
+        actionCall(m_ui, "originate", "user:special:me", "user:" + m_ui->userid());
 }
 
 /*! \brief mouse press. store position
@@ -335,18 +335,18 @@ void PeerWidget::dropEvent(QDropEvent *event)
 		// transfer the call to the peer "to"
 	  	if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
                         event->acceptProposedAction();
-                        transferCall(from, to);
+                        actionCall(m_ui, "transfer", from, to);
 		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
 			event->acceptProposedAction();
-			originateCall("user:" + from, "user:" + to);
+			actionCall(m_ui, "originate", "user:" + from, "user:" + to);
 		} else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
 			event->acceptProposedAction();
-                        originateCall(to, from);
+                        actionCall(m_ui, "originate", to, from);
 		}
 		break;
 	case Qt::MoveAction:
 		event->acceptProposedAction();
-		atxferCall(from, to);
+		actionCall(m_ui, "atxfer", from, to);
 		break;
 	default:
 		qDebug() << "Unrecognized action";
@@ -358,7 +358,7 @@ void PeerWidget::dropEvent(QDropEvent *event)
  */
 void PeerWidget::transferChan(const QString & chan)
 {
-	transferCall(chan, m_ui->userid());
+	actionCall(m_ui, "transfer", chan, m_ui->userid());
 }
 
 void PeerWidget::hangupChan(const QString & chan)
@@ -381,7 +381,7 @@ void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
 		// add remove action only if we are in the central widget.
 		if(parentWidget() && m_engine->isRemovable(parentWidget()->metaObject()))
 			contextMenu.addAction(m_removeAction);
-		if( !m_channels.empty() ) {
+		if( ! m_channels.empty() ) {
 			QMenu * interceptMenu = new QMenu( tr("&Intercept"), &contextMenu );
 			QMenu * hangupMenu = new QMenu( tr("&Hangup"), &contextMenu );
 			QListIterator<PeerChannel *> i(m_channels);
@@ -414,7 +414,7 @@ void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
  */
 void PeerWidget::clearChanList()
 {
-	//qDebug() << "PeerWidget::clearChanList()" << m_channels;
+	// qDebug() << "PeerWidget::clearChanList()" << m_channels;
 	//m_channels.clear();
 	while(!m_channels.isEmpty())
 		delete m_channels.takeFirst();
@@ -424,6 +424,7 @@ void PeerWidget::clearChanList()
  */
 void PeerWidget::addChannel(const QVariant & chanprops)
 {
+        // qDebug() << "PeerWidget::addChannel()" << chanprops;
 	PeerChannel * ch = new PeerChannel(chanprops, this);
 	connect(ch, SIGNAL(interceptChan(const QString &)),
 	        this, SLOT(interceptChan(const QString &)));

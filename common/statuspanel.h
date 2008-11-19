@@ -79,17 +79,16 @@ public slots:
 signals:
         void hangupCall(const UserInfo *, const QString &);	//!< hanging up a channel ...
         void simplehangupCall(const UserInfo *, const QString &);	//!< hanging up a channel ...
-        void originateCall(const QString &, const QString &);
         void pickUp(const UserInfo *);	//!< picking up a channel ...
-	void transferCall(const QString &, const QString &);
-	void atxferCall(const QString &, const QString &);
+	void actionCall(const UserInfo *, const QString &,
+                        const QString &, const QString &);
 private:
         void updateLine(const QString &, const QStringList &);
         void newCall(const QString &);
         void dtransfer();
         void itransfer();
         void changeCurrentChannel(const QString &, const QString &);
-
+        
         QGridLayout * m_glayout;
         const UserInfo * m_ui;
         QLabel * m_lbl;

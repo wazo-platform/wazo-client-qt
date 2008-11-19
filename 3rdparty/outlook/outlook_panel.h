@@ -84,10 +84,8 @@ signals:
 	//! dial selected number
 	void emitDial(const QString &);
 	void copyNumber(const QString &);
-	//! transfer one of my call to this number
-	void transferCall(const QString &, const QString &);
-	//! originate a call
-	void originateCall(const QString &, const QString &);
+	void actionCall(const UserInfo *, const QString &,
+                        const QString &, const QString &);
 private slots:
 	void dialNumber();
         void sendMail();
@@ -95,6 +93,7 @@ private slots:
 	void itemDoubleClicked(QTableWidgetItem *);
 	void transferChan(const QString &);
 	void setCol(int);
+        void proxyCallRequests(const QString &, const QString &);
 public slots:
         void contextMenuEvent(QContextMenuEvent *);
 	void setSearchResponse(const QString &);
@@ -104,22 +103,20 @@ public slots:
 	void affTextChanged(const QString &);
 
 private:
+        const UserInfo * m_userinfo;
 	ExtendedLineEdit * m_input;	//!< search text input
 	QString m_strFilter; //!< searched text
 	ExtendedTableWidget * m_table;		//!< table to display results
 	QString m_numberToDial;		//!< used to store number to dial or to transfer to
 	QString m_mailAddr;		//!< used to store email address
 	QList<PeerChannel *> m_mychannels;	//!< "my channels" list for transfer menu
-    int m_calllength;
-    QString m_callprefix;
-
+        int m_calllength;
+        QString m_callprefix;
 	QList<COLCol*> m_cols;
-
 private:
 	void doColumnsMenu(QContextMenuEvent * event);
 	void refresh_table();
 	void apply_filter();
-
 };
 
 #endif // USE_OUTLOOK
