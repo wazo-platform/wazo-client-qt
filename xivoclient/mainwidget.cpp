@@ -872,8 +872,8 @@ void MainWidget::engineStarted()
                                 m_xlet[dc] = new ConferencePanel();
                                 addPanel(dc, tr("Conference"), m_xlet[dc]);
                                 
-                                connect( m_engine, SIGNAL(meetmeEvent(const QStringList &)),
-                                         m_xlet[dc], SLOT(meetmeEvent(const QStringList &)));
+                                connect( m_engine, SIGNAL(meetmeEvent(const QVariant &)),
+                                         m_xlet[dc], SLOT(meetmeEvent(const QVariant &)));
                                 connect( m_engine, SIGNAL(meetmeInit(const QVariant &)),
                                          m_xlet[dc], SLOT(meetmeInit(const QVariant &)));
                                 connect( m_xlet[dc], SIGNAL(meetmeAction(const QString &, const QString &)),

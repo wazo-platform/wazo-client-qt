@@ -720,7 +720,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         if (function == "sendlist")
                                 meetmeInit(datamap["payload"]);
                         else if (function == "update")
-                                meetmeEvent(datamap["payload"].toStringList());
+                                meetmeEvent(datamap["payload"]);
                         
                 } else if (thisclass == "serverdown") {
                         qDebug() << thisclass << datamap["mode"].toString();

@@ -66,7 +66,7 @@ public:
 protected:
 public slots:
         void setUserInfo(const UserInfo *);
-        void meetmeEvent(const QStringList &);
+        void meetmeEvent(const QVariant &);
         void meetmeInit(const QVariant &);
         void doMeetMeAction();
         void setGuiOptions(const QVariant &);

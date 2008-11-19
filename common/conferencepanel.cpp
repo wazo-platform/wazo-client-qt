@@ -93,29 +93,29 @@ void ConferencePanel::meetmeInit(const QVariant & meetme)
         }
 }
 
-void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
+void ConferencePanel::meetmeEvent(const QVariant & meetme)
 {
-        // qDebug() << "ConferencePanel::meetmeEvent()" << meetmelist;
-        QString eventname = meetmelist[0];
-        QString astid = meetmelist[1];
-        QString roomnum = meetmelist[2];
-        QString which = meetmelist[3];
-        QString channel = meetmelist[4];
-        // int busy = meetmelist[5].toInt();
+        // qDebug() << "ConferencePanel::meetmeEvent()" << meetme;
+        QString eventname = meetme.toMap()["name"].toString();
         
+        QString astid = meetme.toMap()["astid"].toString();
+        QString roomnum = meetme.toMap()["roomnum"].toString();
+        QString channel = meetme.toMap()["channel"].toString();
         QString ref = astid + "-" + roomnum + "-" + channel;
         QString idx = astid + "-" + roomnum;
         
         if(eventname == "join") {
+                QString usernum = meetme.toMap()["usernum"].toString();
+                QString fullname = meetme.toMap()["fullname"].toString();
                 if(! m_infos.contains(ref)) {
-                        m_infos[ref] = new QLabel(channel);
+                        m_infos[ref] = new QLabel(fullname);
                         
                         m_action_kick[ref] = new QPushButton(tr("Kick"));
                         m_action_kick[ref]->setIcon(QIcon(":/images/cancel.png"));
                         m_action_kick[ref]->setIconSize(QSize(16, 16));
                         m_action_kick[ref]->setProperty("astid", astid);
                         m_action_kick[ref]->setProperty("room", roomnum);
-                        m_action_kick[ref]->setProperty("usernum", which);
+                        m_action_kick[ref]->setProperty("usernum", usernum);
                         m_action_kick[ref]->setProperty("reference", ref);
                         m_action_kick[ref]->setProperty("channel", channel);
                         m_action_kick[ref]->setProperty("action", "kick");
@@ -127,10 +127,11 @@ void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
                         m_action_record[ref]->setIconSize(QSize(16, 16));
                         m_action_record[ref]->setProperty("astid", astid);
                         m_action_record[ref]->setProperty("room", roomnum);
-                        m_action_record[ref]->setProperty("usernum", which);
+                        m_action_record[ref]->setProperty("usernum", usernum);
                         m_action_record[ref]->setProperty("reference", ref);
                         m_action_record[ref]->setProperty("channel", channel);
                         m_action_record[ref]->setProperty("action", "record");
+                        m_action_record[ref]->setProperty("recordstatus", "off");
                         connect(m_action_record[ref], SIGNAL(clicked()),
                                 this, SLOT(doMeetMeAction()));
                         
@@ -139,18 +140,19 @@ void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
                         m_action_mute[ref]->setIconSize(QSize(16, 16));
                         m_action_mute[ref]->setProperty("astid", astid);
                         m_action_mute[ref]->setProperty("room", roomnum);
-                        m_action_mute[ref]->setProperty("usernum", which);
+                        m_action_mute[ref]->setProperty("usernum", usernum);
                         m_action_mute[ref]->setProperty("reference", ref);
                         m_action_mute[ref]->setProperty("channel", channel);
                         m_action_mute[ref]->setProperty("action", "mute");
+                        m_action_mute[ref]->setProperty("mutestatus", "off");
                         connect(m_action_mute[ref], SIGNAL(clicked()),
                                 this, SLOT(doMeetMeAction()));
                         // QPushButton * qp2 = new QPushButton(tr("Spy"));
                         
-                        m_layout[idx]->addWidget( m_infos[ref], which.toInt(), 1 );
-                        m_layout[idx]->addWidget( m_action_kick[ref], which.toInt(), 2 );
-                        m_layout[idx]->addWidget( m_action_record[ref], which.toInt(), 3 );
-                        m_layout[idx]->addWidget( m_action_mute[ref], which.toInt(), 4 );
+                        m_layout[idx]->addWidget( m_infos[ref], usernum.toInt(), 1 );
+                        m_layout[idx]->addWidget( m_action_kick[ref], usernum.toInt(), 2 );
+                        m_layout[idx]->addWidget( m_action_record[ref], usernum.toInt(), 3 );
+                        m_layout[idx]->addWidget( m_action_mute[ref], usernum.toInt(), 4 );
                         // glayout->addWidget( qp2, 0, 3 );
                 }
         } else if(eventname == "leave") {
@@ -159,6 +161,28 @@ void ConferencePanel::meetmeEvent(const QStringList & meetmelist)
                         delete m_action_kick[ref];
                         delete m_action_record[ref];
                         delete m_action_mute[ref];
+                        m_infos.remove(ref);
+                        m_action_kick.remove(ref);
+                        m_action_record.remove(ref);
+                        m_action_mute.remove(ref);
+                }
+        } else if(eventname == "mutestatus") {
+                if(m_infos.contains(ref)) {
+                        QString mutestatus = meetme.toMap()["mutestatus"].toString();
+                        if(mutestatus == "on") {
+                                if (m_action_mute[ref]->property("mutestatus").toString() == "off") {
+                                        m_action_mute[ref]->setText(tr("Unmute"));
+                                        m_action_mute[ref]->setProperty("mutestatus", "on");
+                                }
+                        } else if(mutestatus == "off") {
+                                if (m_action_mute[ref]->property("mutestatus").toString() == "on") {
+                                        m_action_mute[ref]->setText(tr("Mute"));
+                                        m_action_mute[ref]->setProperty("mutestatus", "off");
+                                }
+                        } else {
+                                qDebug() << "ConferencePanel::meetmeEvent() unknown mutestatus" << mutestatus << ref;
+                        }
+                        m_action_mute[ref]->setIconSize(QSize(16, 16));
                 }
         }
 }
@@ -167,15 +191,50 @@ void ConferencePanel::doMeetMeAction()
 {
         // qDebug() << "ConferencePanel::doMeetMeAction()";
         QString action = sender()->property("action").toString();
-        meetmeAction(action,
-                     sender()->property("astid").toString() +
-                     " " + sender()->property("room").toString() +
-                     " " + sender()->property("usernum").toString() +
-                     " " + sender()->property("channel").toString());
-        if(action == "kick")
-                m_action_kick[sender()->property("reference").toString()]->setIconSize(QSize(8, 8));
-        else if(action == "record")
-                m_action_record[sender()->property("reference").toString()]->setIconSize(QSize(8, 8));
-        else if(action == "mute")
-                m_action_mute[sender()->property("reference").toString()]->setIconSize(QSize(8, 8));
+        QString ref = sender()->property("reference").toString();
+        
+        if(action == "kick") {
+                meetmeAction(action,
+                             sender()->property("astid").toString() +
+                             " " + sender()->property("room").toString() +
+                             " " + sender()->property("usernum").toString() +
+                             " " + sender()->property("channel").toString());
+                m_action_kick[ref]->setIconSize(QSize(8, 8));
+        } else if(action == "record") {
+                if(m_action_record[ref]->property("recordstatus").toString() == "off") {
+                        meetmeAction("record",
+                                     sender()->property("astid").toString() +
+                                     " " + sender()->property("room").toString() +
+                                     " " + sender()->property("usernum").toString() +
+                                     " " + sender()->property("channel").toString());
+                        m_action_record[ref]->setProperty("recordstatus", "on");
+                        m_action_record[ref]->setText(tr("Stop Record"));
+                } else {
+                        meetmeAction("unrecord",
+                                     sender()->property("astid").toString() +
+                                     " " + sender()->property("room").toString() +
+                                     " " + sender()->property("usernum").toString() +
+                                     " " + sender()->property("channel").toString());
+                        m_action_record[ref]->setProperty("recordstatus", "off");
+                        m_action_record[ref]->setText(tr("Record"));
+                }
+        } else if(action == "mute") {
+                QString mutestatus = m_action_mute[ref]->property("mutestatus").toString();
+                if(mutestatus == "off") {
+                        meetmeAction("mute",
+                                     sender()->property("astid").toString() +
+                                     " " + sender()->property("room").toString() +
+                                     " " + sender()->property("usernum").toString() +
+                                     " " + sender()->property("channel").toString());
+                } else if(mutestatus == "on") {
+                        meetmeAction("unmute",
+                                     sender()->property("astid").toString() +
+                                     " " + sender()->property("room").toString() +
+                                     " " + sender()->property("usernum").toString() +
+                                     " " + sender()->property("channel").toString());
+                } else {
+                        qDebug() << "ConferencePanel::doMeetMeAction() unknown mutestatus" << mutestatus << ref;
+                }
+                m_action_mute[ref]->setIconSize(QSize(8, 8));
+        }
 }
