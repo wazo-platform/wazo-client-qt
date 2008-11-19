@@ -95,6 +95,8 @@ private slots:
 	void setCol(int);
         void proxyCallRequests(const QString &, const QString &);
 public slots:
+	void setGuiOptions(const QVariant &);
+	void setUserInfo(const UserInfo *);
         void contextMenuEvent(QContextMenuEvent *);
 	void setSearchResponse(const QString &);
 	void stop();

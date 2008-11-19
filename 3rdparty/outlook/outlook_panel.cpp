@@ -144,7 +144,7 @@ void OutlookPanel::refresh_table() {
 	COLContacts contacts;
 	OLEngine()->get_contacts(contacts);
 
-	static int first=true;
+	// static int first=true;
 	int sort_col=0;
 	Qt::SortOrder sort_order=Qt::AscendingOrder;
 	m_table->setRowCount(contacts.count());
