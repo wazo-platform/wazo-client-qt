@@ -229,14 +229,14 @@ void StatusPanel::functionKeyPressed(int keynum)
                 qDebug() << "StatusPanel::functionKeyPressed()" << keynum << action << m_currentchannel << linestatus;
                 if(linestatus == Ringing) {
                         if(action == "answer")
-                                pickUp(m_ui);
+                                actionCall(m_ui, "pickup");
                         else if(action == "hangup")
-                                simplehangupCall(m_ui, m_peerchan[m_currentchannel]);
+                                actionCall(m_ui, "simplehangup", m_peerchan[m_currentchannel]);
                         else if(action == "dtransfer")
                                 dtransfer();
                 } else if(linestatus == Online) {
                         if(action == "hangup") {
-                                hangupCall(m_ui, m_peerchan[m_currentchannel]);
+                                actionCall(m_ui, "hangup", m_peerchan[m_currentchannel]);
                         } else if(action == "dtransfer") {
                                 dtransfer();
                                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
@@ -251,7 +251,7 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 qDebug() << "StatusPanel::functionKeyPressed()" << "F1 when Wait : Take back";
                 } else if(linestatus == WDTransfer) {
                         if(action == "hangup") {
-                                simplehangupCall(m_ui, m_peerchan[m_currentchannel]);
+                                actionCall(m_ui, "simplehangup", m_peerchan[m_currentchannel]);
                         } else if(action == "dtransfer") {
                                 dtransfer(); // cancel D. Transfer request
                                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
@@ -260,11 +260,11 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
                         } else if(action == "answer") {
                                 // only when not picked up yet
-                                pickUp(m_ui);
+                                actionCall(m_ui, "pickup");
                         }
                 } else if(linestatus == WITransfer) {
                         if(action == "hangup") {
-                                simplehangupCall(m_ui, m_peerchan[m_currentchannel]);
+                                actionCall(m_ui, "simplehangup", m_peerchan[m_currentchannel]);
                         } else if(action == "dtransfer") {
                                 dtransfer();
                                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
@@ -272,9 +272,9 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 itransfer(); // cancel I. Transfer request
                                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
                         } else if(action == "ilink") {
-                                simplehangupCall(m_ui, m_currentchannel);
+                                actionCall(m_ui, "simplehangup", m_currentchannel);
                         } else if(action == "icancel") {
-                                simplehangupCall(m_ui, m_tferchannel);
+                                actionCall(m_ui, "simplehangup", m_tferchannel);
                         }
                 }
                 

@@ -77,11 +77,9 @@ public slots:
         void xferPressed();
         void clicked();
 signals:
-        void hangupCall(const UserInfo *, const QString &);	//!< hanging up a channel ...
-        void simplehangupCall(const UserInfo *, const QString &);	//!< hanging up a channel ...
-        void pickUp(const UserInfo *);	//!< picking up a channel ...
 	void actionCall(const UserInfo *, const QString &,
-                        const QString &, const QString &);
+                        const QString & src = "",
+                        const QString & dst = "");
 private:
         void updateLine(const QString &, const QStringList &);
         void newCall(const QString &);

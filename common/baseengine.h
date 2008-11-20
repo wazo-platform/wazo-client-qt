@@ -151,11 +151,6 @@ public slots:
 	void setAvailState(const QString &, bool);	//! set m_availstate
 	void actionCall(const UserInfo *, const QString &,
                         const QString &, const QString &);
-	void interceptCall(const UserInfo *, const QString &);
-        void transferToNumber(const QString &);
-        void parkCall(const QString &);
-	void hangupCall(const UserInfo *, const QString &);
-	void simplehangupCall(const UserInfo *, const QString &);
         
 	void searchDirectory(const QString &);
 	void requestHistory(const QString &, int);
@@ -172,7 +167,6 @@ public slots:
         void agentAction(const QString &);
         void meetmeAction(const QString &, const QString &);
         void requestFileList(const QString &);
-	void pickUp(const UserInfo *);
         
         void monitorPeerRequest(const QString &);
         void changeWatchedAgentSlot(const QString &, bool);

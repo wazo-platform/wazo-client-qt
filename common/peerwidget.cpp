@@ -218,7 +218,7 @@ void PeerWidget::removeFromPanel()
  */
 void PeerWidget::dial()
 {
-	qDebug() << "PeerWidget::dial()" << m_ui->userid() << sender();
+	// qDebug() << "PeerWidget::dial()" << m_ui->userid() << sender();
         actionCall(m_ui, "originate", "user:special:me", "user:" + m_ui->userid());
 }
 
@@ -262,7 +262,7 @@ void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 
 void PeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 {
-        qDebug() << "PeerWidget::mouseDoubleClickEvent()" << event;
+        // qDebug() << "PeerWidget::mouseDoubleClickEvent()" << event;
         if(event->button() == Qt::LeftButton)
                 dial();
 }
@@ -270,7 +270,7 @@ void PeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 void PeerWidget::mouseDoubleClickEventLocal(QMouseEvent * event)
 {
         QString propkind = sender()->property("kind").toString();
-        qDebug() << "PeerWidget::mouseDoubleClickEventLocal()" << event << propkind;
+        // qDebug() << "PeerWidget::mouseDoubleClickEventLocal()" << event << propkind;
         if(event->button() == Qt::LeftButton)
                 dial();
 }
@@ -363,12 +363,12 @@ void PeerWidget::transferChan(const QString & chan)
 
 void PeerWidget::hangupChan(const QString & chan)
 {
-	hangupCall(m_ui, chan);
+        actionCall(m_ui, "hangup", chan);
 }
 
 void PeerWidget::interceptChan(const QString & chan)
 {
-        interceptCall(m_ui, chan);
+        actionCall(m_ui, "intercept", chan);
 }
 
 /*! \brief display context menu

@@ -100,6 +100,8 @@ class CallStackWidget : public QWidget
 public:
 	CallStackWidget(QWidget *);	//!< Constructor
 public slots:
+        void setGuiOptions(const QVariant &);
+        void setUserInfo(const UserInfo *);
 	//! Add a call to the list to be displayed
         void updatePeer(UserInfo *,
                         const QString &,
@@ -118,19 +120,17 @@ protected:
 private:
 	void emptyList();	//!< remove all calls from the list
 signals:
-	void hangUp(const QString &);			//!< hang up a channel
-        void transferToNumber(const QString &);	//!< transfers a channel to a number
-        void parkCall(const QString &);	//!< parks a channel
+	void actionCall(const UserInfo *, const QString &,
+                        const QString &, const QString & dst = "");	//! originate, transfer & atxfer signals
 	void changeTitle(const QString &);		//!< change Title
 	void monitorPeerRequest(const QString &);	//!< send the userid of the new monitored peer
 private:
+        UserInfo * m_monitored_ui;
 	QVBoxLayout * m_layout;	//!< Vertical Layout used
         
 	QHash<QString, Call *> m_callhash;	//!< hash of Call Objects
 	QList<CallWidget *> m_afflist;	//!< List of CallWidget Widgets
 	QHash<QString, CallWidget *> m_affhash;	//!< List of CallWidget Widgets
-	
-        QString m_monitored_userid;	//!< Peer monitored
 };
 
 #endif

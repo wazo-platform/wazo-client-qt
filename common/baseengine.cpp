@@ -762,9 +762,9 @@ bool BaseEngine::parseCommand(const QString & line)
                         }
                         
                 } else if (thisclass == "call") {
-                        qDebug() << thisclass
-                                 << "caller =" << datamap["caller"].toMap()
-                                 << "called =" << datamap["called"].toMap();
+                        // qDebug() << thisclass
+                        // << "caller =" << datamap["caller"].toMap()
+                        // << "called =" << datamap["called"].toMap();
                         
                 } else if (thisclass == "users") {
                         QString function = datamap["function"].toString();
@@ -1244,16 +1244,6 @@ void BaseEngine::actionFromFiche(const QStringList & infos)
         sendJsonCommand(command);
 }
 
-/*! \brief transfers to the typed number
- */
-void BaseEngine::transferToNumber(const QString & chan)
-{
-        if(m_numbertodial.size() > 0) {
-                qDebug() << "BaseEngine::transferToNumber()" << chan << m_numbertodial;
-                ////// actionCall(m_ui, "transfer", chan, m_numbertodial);
-        }
-}
-
 /*! \brief send an originate command to the server
  */
 void BaseEngine::textEdited(const QString & text)
@@ -1271,91 +1261,41 @@ void BaseEngine::copyNumber(const QString & dst)
 void BaseEngine::actionCall(const UserInfo * ui, const QString & action,
                             const QString & src, const QString & dst)
 {
-	// qDebug() << "BaseEngine::actionCall()" << action << src << dst;
+        qDebug() << "BaseEngine::actionCall()" << ui->userid() << action << src << dst;
         if(ui == NULL)
                 return;
+        
+        QVariantMap command;
+        command["direction"] = "xivoserver";
+        command["astid"] = ui->astid();
+        
         if((action == "originate") || (action == "transfer") || (action == "atxfer")) {
-                QVariantMap command;
                 command["class"] = action;
-                command["direction"] = "xivoserver";
-                command["astid"] = ui->astid();
                 command["source"] = src;
-                command["destination"] = dst;
+                if((dst.isEmpty()) && (! m_numbertodial.isEmpty()))
+                        command["destination"] = m_numbertodial;
+                else
+                        command["destination"] = dst;
+                sendJsonCommand(command);
+        } else if((action == "hangup") || (action == "simplehangup")) {
+                command["class"] = action;
+                command["channel"] = src;
+                sendJsonCommand(command);
+        } else if(action == "intercept") {
+                command["class"] = "transfer";
+                command["source"] = src;
+                command["destination"] = "user:special:me";
+                sendJsonCommand(command);
+        } else if(action == "parkcall") {
+                command["class"] = "transfer";
+                command["source"] = src;
+                command["destination"] = "special:parkthecall";
+                sendJsonCommand(command);
+        } else if(action == "pickup") {
+                command["class"] = "pickup";
+                command["phonenum"] = ui->phonenum();
                 sendJsonCommand(command);
         }
-}
-
-/*! \brief send a transfer call command to the server
- */
-void BaseEngine::parkCall(const QString & src)
-{
-	// qDebug() << "BaseEngine::parkCall()" << src;
-        QVariantMap command;
-        command["class"] = "transfer";
-        command["direction"] = "xivoserver";
-        command["source"] = src;
-        command["destination"] = "special:parkthecall";
-        sendJsonCommand(command);
-}
-
-/*! \brief intercept a call (a channel)
- *
- * The channel is transfered to "Me"
- */
-void BaseEngine::interceptCall(const UserInfo *, const QString & channel)
-{
-	// qDebug() << "BaseEngine::interceptCall()" << ui << channel;
-        QVariantMap command;
-        command["class"] = "transfer";
-        command["direction"] = "xivoserver";
-        command["source"] = channel;
-        command["destination"] = "user:special:me";
-        sendJsonCommand(command);
-}
-
-/*! \brief hang up a channel
- *
- * send a hang up command to the server
- */
-void BaseEngine::hangupCall(const UserInfo * ui, const QString & channel)
-{
-	// qDebug() << "BaseEngine::hangupCall()" << ui << channel;
-        QVariantMap command;
-        command["class"] = "hangup";
-        command["direction"] = "xivoserver";
-        command["astid"] = ui->astid();
-        command["channel"] = channel;
-        sendJsonCommand(command);
-}
-
-/*! \brief hang up a channel
- *
- * send a hang up command to the server
- */
-void BaseEngine::simplehangupCall(const UserInfo * ui, const QString & channel)
-{
-	// qDebug() << "BaseEngine::simplehangupCall()" << channel;
-        QVariantMap command;
-        command["class"] = "simplehangup";
-        command["direction"] = "xivoserver";
-        command["astid"] = ui->astid();
-        command["channel"] = channel;
-        sendJsonCommand(command);
-}
-
-/*! \brief pick up a channel
- *
- * send a pick up command to the server
- */
-void BaseEngine::pickUp(const UserInfo * ui)
-{
-	// qDebug() << "BaseEngine::pickUp()" << ui;
-        QVariantMap command;
-        command["class"] = "pickup";
-        command["direction"] = "xivoserver";
-        command["astid"] = ui->astid();
-        command["phonenum"] = ui->phonenum();
-        sendJsonCommand(command);
 }
 
 /*! \brief send the directory search command to the server

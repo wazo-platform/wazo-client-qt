@@ -119,12 +119,12 @@ CallWidget::CallWidget(const QString & channelme,
 	m_hangUpAction->setStatusTip( tr("Hang up/Close the channel") );
 	connect( m_hangUpAction, SIGNAL(triggered()),
 	         this, SLOT(hangUp()) );
-
+        
 	m_transferToNumberAction = new QAction( tr("&Transfer to number"), this);
 	m_transferToNumberAction->setStatusTip( tr("Transfer the channel to the dialed number") );
 	connect( m_transferToNumberAction, SIGNAL(triggered()),
 	         this, SLOT(transferToNumber()) );
-
+        
 	m_parkCall = new QAction( tr("&Park the call"), this);
 	m_parkCall->setStatusTip( tr("Park this call") );
 	connect( m_parkCall, SIGNAL(triggered()),

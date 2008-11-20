@@ -130,6 +130,7 @@ const QString & Call::getStatus() const
 CallStackWidget::CallStackWidget(QWidget * parent)
         : QWidget(parent)
 {
+        // qDebug() << "CallStackWidget::CallStackWidget()";
 	m_layout = new QVBoxLayout(this);
 	//m_layout->setMargin();
 	//m_layout->setSpacing(0);
@@ -138,11 +139,20 @@ CallStackWidget::CallStackWidget(QWidget * parent)
 	m_layout->addStretch(1);
 }
 
+void CallStackWidget::setGuiOptions(const QVariant &)
+{
+}
+
+void CallStackWidget::setUserInfo(const UserInfo * ui)
+{
+        qDebug() << "CallStackWidget::setUserInfo()" << ui->astid() << ui->userid();
+}
+
 void CallStackWidget::updatePeer(UserInfo * ui,
                                  const QString &,
                                  const QVariant & chanlist)
 {
-        // qDebug() << "CallStackWidget::updatePeer()" << m_callhash.keys() << chanlist;
+        // qDebug() << "CallStackWidget::updatePeer()" << m_callhash.keys() << chanlist << ui;
         foreach(QString ref, chanlist.toMap().keys()) {
                 QVariant chanprops = chanlist.toMap()[ref];
                 addCall(ui, chanprops);
@@ -177,23 +187,22 @@ void CallStackWidget::addCall(UserInfo * ui, const QVariant & chanprops)
  */
 void CallStackWidget::hupchan(const QString & hangupchan)
 {
-	hangUp(hangupchan);
+        actionCall(m_monitored_ui, "hangup", hangupchan);
 }
 
 /*! \brief transfers the channel to a number
  */
 void CallStackWidget::transftonumberchan(const QString & chan)
 {
-        // qDebug() << "CallStackWidget::transftonumberchan()" << chan;
-	transferToNumber(chan);
+        // the destination field is empty => will transfer to the "dial xlet" - defined number if present
+        actionCall(m_monitored_ui, "transfer", chan);
 }
 
 /*! \brief transfers the channel to a number
  */
 void CallStackWidget::parkcall(const QString & chan)
 {
-        // qDebug() << "CallStackWidget::parkcall()" << chan;
-	parkCall(chan);
+        actionCall(m_monitored_ui, "parkcall", chan);
 }
 
 /*! \brief Reset the Widget */
@@ -249,7 +258,7 @@ void CallStackWidget::updateDisplay()
         
 	foreach(QString chanme, m_callhash.keys()) {
                 // qDebug() << "CallStackWidget::updateDisplay()" << chanme << m_monitored_userid << m_callhash[chanme]->getUserId();
-		if(m_monitored_userid == m_callhash[chanme]->getUserId()) {
+		if(m_monitored_ui->userid() == m_callhash[chanme]->getUserId()) {
 			Call * c = m_callhash[chanme];
 			for(j = 0; j < m_afflist.count(); j++) {
 				// qDebug() << j << m_afflist[j]->channel();
@@ -269,6 +278,7 @@ void CallStackWidget::updateDisplay()
                                                             c->getChannelPeer(),
                                                             c->getExten(),
                                                             this);
+
                                 connect( callwidget, SIGNAL(doHangUp(const QString &)),
                                          this, SLOT(hupchan(const QString &)) );
                                 connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),
@@ -307,8 +317,9 @@ void CallStackWidget::dragEnterEvent(QDragEnterEvent * event)
  */
 void CallStackWidget::monitorPeer(UserInfo * ui)
 {
+        qDebug() << "CallStackWidget::monitorPeer()" << ui->astid() << ui->userid();
 	emptyList();
-	m_monitored_userid = ui->userid();
+        m_monitored_ui = ui;
         changeTitle(tr("Monitoring : ") + ui->fullname());
 	updateDisplay();
 }

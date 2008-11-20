@@ -675,17 +675,12 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
 
 void MainWidget::connectDials(QWidget * widget)
 {
-        connect( widget, SIGNAL(pickUp(const UserInfo *)),
-                 m_engine, SLOT(pickUp(const UserInfo *)) );
         connect( widget, SIGNAL(actionCall(const UserInfo *, const QString &,
                                            const QString &, const QString &)),
                  m_engine, SLOT(actionCall(const UserInfo *, const QString &,
                                            const QString &, const QString &)) );
-        connect( widget, SIGNAL(simplehangupCall(const UserInfo *, const QString &)),
-                 m_engine, SLOT(simplehangupCall(const UserInfo *, const QString &)) );
-        connect( widget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
-                 m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
 }
+
 
 void MainWidget::updatePresence(const QVariant & presence)
 {
@@ -979,7 +974,6 @@ void MainWidget::engineStarted()
                                 m_areaCalls->setWidget(m_calls);
                                 addPanel("calls", tr("Calls"), m_leftpanel);
                                 
-                                // connectDials(m_calls);
                                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                      const QString &,
                                                                      const QVariant &)),
@@ -992,16 +986,17 @@ void MainWidget::engineStarted()
                                          m_calls, SLOT(updateDisplay()) );
                                 connect( m_engine, SIGNAL(delogged()),
                                          m_calls, SLOT(reset()) );
-
+                                
                                 connect( m_calls, SIGNAL(monitorPeerRequest(const QString &)),
                                          m_engine, SLOT(monitorPeerRequest(const QString &)) );
                                 connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
                                          m_calls, SLOT(monitorPeer(UserInfo *)) );
-
-                                connect( m_calls, SIGNAL(transferToNumber(const QString &)),
-                                         m_engine, SLOT(transferToNumber(const QString &)) );
-                                connect( m_calls, SIGNAL(parkCall(const QString &)),
-                                         m_engine, SLOT(parkCall(const QString &)) );
+                                
+                                connectDials(m_calls);
+                                connect( m_engine, SIGNAL(setGuiOptions(const QVariant &)),
+                                         m_calls, SLOT(setGuiOptions(const QVariant &)));
+                                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                                         m_calls, SLOT(setUserInfo(const UserInfo *)));
                                 
                         } else if (dc == QString("switchboard")) {
                                 m_xlet[dc] = new SwitchBoardWindow(m_engine, m_options, this);

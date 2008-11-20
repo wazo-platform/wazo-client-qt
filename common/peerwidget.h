@@ -88,9 +88,7 @@ protected:
 	void contextMenuEvent(QContextMenuEvent *);
 signals:
 	void actionCall(const UserInfo *, const QString &,
-                        const QString &, const QString &);	//! originate, transfer & atxfer signals
-	void interceptCall(const UserInfo *, const QString &);	//! intercept signal
-	void hangupCall(const UserInfo *, const QString &);	//! hang up signal
+                        const QString &, const QString & dst = "");	//! originate, transfer & atxfer signals
 	//! hide the widget in the channel
 	void doRemoveFromPanel(const QString &);
 public slots:

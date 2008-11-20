@@ -141,14 +141,11 @@ void SwitchBoardWindow::updatePeer(UserInfo * ui,
                                                          m_phones,
                                                          m_agents);
                 peerwidget->setEngine(m_engine);
+                // originate, transfer, atxfer, hangup, intercept
                 connect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
                                                        const QString &, const QString &)),
                          m_engine, SLOT(actionCall(const UserInfo *, const QString &,
                                                    const QString &, const QString &)) );
-                connect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
-                         m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
-                connect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
-                         m_engine, SLOT(interceptCall(const UserInfo *, const QString &)) );
                 connect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
                          this, SLOT(removePeerFromLayout(const QString &)) );
                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
@@ -213,10 +210,6 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
                                                                   const QString &, const QString &)),
                                     m_engine, SLOT(actionCall(const UserInfo *, const QString &,
                                                               const QString &, const QString &)) );
-                        disconnect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
-                                    m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
-                        disconnect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
-                                    m_engine, SLOT(interceptCall(const UserInfo *, const QString &)) );
                         disconnect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
                                     this, SLOT(removePeerFromLayout(const QString &)) );
                         disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
@@ -280,10 +273,6 @@ void SwitchBoardWindow::removePeers(void)
                                                                   const QString &, const QString &)),
                                     m_engine, SLOT(actionCall(const UserInfo *, const QString &,
                                                               const QString &, const QString &)) );
-                        disconnect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
-                                    m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
-                        disconnect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
-                                    m_engine, SLOT(interceptCall(const UserInfo *, const QString &)) );
                         disconnect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
                                     this, SLOT(removePeerFromLayout(const QString &)) );
                         disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
@@ -367,10 +356,6 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
                                                        const QString &, const QString &)),
                          m_engine, SLOT(actionCall(const UserInfo *, const QString &,
                                                    const QString &, const QString &)) );
-                connect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
-                         m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
-                connect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
-                         m_engine, SLOT(interceptCall(const UserInfo *, const QString &)) );
                 connect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
                          this, SLOT(removePeerFromLayout(const QString &)) );
                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,

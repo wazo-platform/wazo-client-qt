@@ -134,10 +134,6 @@ void SearchPanel::affTextChanged(const QString & text)
                                 m_peerlayout->removeWidget( peerwidget );
                                 peerwidget->hide();
                                 if(m_functions.contains("switchboard")) {
-                                        disconnect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
-                                                    m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
-                                        disconnect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
-                                                    m_engine, SLOT(interceptCall(const UserInfo *, const QString &)) );
                                         disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                                 const QString &,
                                                                                 const QVariant &)),
@@ -145,7 +141,8 @@ void SearchPanel::affTextChanged(const QString & text)
                                                                                 const QString &,
                                                                                 const QVariant &)) );
                                 }
-                                // originate + transfer & atxfer if switchboard
+                                // originate
+                                // if switchboard : transfer, atxfer, hangup, intercept
                                 disconnect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
                                                                           const QString &, const QString &)),
                                             m_engine, SLOT(actionCall(const UserInfo *, const QString &,
@@ -181,10 +178,6 @@ void SearchPanel::affTextChanged(const QString & text)
                                 naff ++;
                                 peerwidget->show();
                                 if(m_functions.contains("switchboard")) {
-                                        connect( peerwidget, SIGNAL(hangupCall(const UserInfo *, const QString &)),
-                                                 m_engine, SLOT(hangupCall(const UserInfo *, const QString &)) );
-                                        connect( peerwidget, SIGNAL(interceptCall(const UserInfo *, const QString &)),
-                                                 m_engine, SLOT(interceptCall(const UserInfo *, const QString &)) );
                                         connect( m_engine, SIGNAL(updatePeer(UserInfo *,
                                                                              const QString &,
                                                                              const QVariant &)),
@@ -192,7 +185,8 @@ void SearchPanel::affTextChanged(const QString & text)
                                                                              const QString &,
                                                                              const QVariant &)) );
                                 }
-                                // originate + transfer & atxfer if switchboard
+                                // originate
+                                // if switchboard : transfer, atxfer, hangup, intercept
                                 connect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
                                                                        const QString &, const QString &)),
                                          m_engine, SLOT(actionCall(const UserInfo *, const QString &,
