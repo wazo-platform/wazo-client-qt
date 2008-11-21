@@ -80,8 +80,9 @@ private slots:
         void proxyCallRequests(const QString &, const QString &);
 signals:
 	void copyNumber(const QString &);
-	void actionCall(const UserInfo *, const QString &,
-                        const QString &, const QString &);
+	void actionCall(const QString &,
+                        const QString &,
+                        const QString &);
         void newParkEvent();
 private:
 	ExtendedTableWidget * m_table;	//! Table

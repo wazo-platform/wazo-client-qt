@@ -129,19 +129,20 @@ void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
  */
 void ExtendedTableWidget::dropEvent(QDropEvent *event)
 {
-	qDebug() << "ExtendedTableWidget::dropEvent()" << event->mimeData()->text() << event->pos();
+	// qDebug() << "ExtendedTableWidget::dropEvent()" << event->mimeData()->text() << event->pos();
 	QTableWidgetItem * item = itemAt( event->pos() );
 	QRegExp re("\\+?[0-9\\s\\.]+");
 	if(item && re.exactMatch( item->text() )) {
-		QString from = event->mimeData()->text();
+                QString userid_from = QString::fromAscii(event->mimeData()->data("userid"));
+                QString channel_from = QString::fromAscii(event->mimeData()->data("channel"));
 		if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
 			event->acceptProposedAction();
                         this->setProperty("action", "transfer");
-			actionCall(from, item->text());
+			actionCall("chan:" + userid_from + ":" + channel_from, "ext:" + item->text()); // Call
 		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
 			event->acceptProposedAction();
                         this->setProperty("action", "originate");
-			actionCall(from, item->text());
+			actionCall("user:" + userid_from, "ext:" + item->text()); // Call
 		} else {
 			event->ignore();
                 }

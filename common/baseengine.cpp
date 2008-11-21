@@ -1258,42 +1258,27 @@ void BaseEngine::copyNumber(const QString & dst)
 
 /*! \brief send an originate command to the server
  */
-void BaseEngine::actionCall(const UserInfo * ui, const QString & action,
-                            const QString & src, const QString & dst)
+void BaseEngine::actionCall(const QString & action,
+                            const QString & src,
+                            const QString & dst)
 {
-        qDebug() << "BaseEngine::actionCall()" << ui->userid() << action << src << dst;
-        if(ui == NULL)
-                return;
+        qDebug() << "BaseEngine::actionCall()" << action << src << dst;
         
         QVariantMap command;
         command["direction"] = "xivoserver";
-        command["astid"] = ui->astid();
+        command["class"] = action;
         
         if((action == "originate") || (action == "transfer") || (action == "atxfer")) {
-                command["class"] = action;
                 command["source"] = src;
-                if((dst.isEmpty()) && (! m_numbertodial.isEmpty()))
+                if((dst == "ext:special:dialxlet") && (! m_numbertodial.isEmpty()))
                         command["destination"] = m_numbertodial;
                 else
                         command["destination"] = dst;
                 sendJsonCommand(command);
         } else if((action == "hangup") || (action == "simplehangup")) {
-                command["class"] = action;
-                command["channel"] = src;
-                sendJsonCommand(command);
-        } else if(action == "intercept") {
-                command["class"] = "transfer";
                 command["source"] = src;
-                command["destination"] = "user:special:me";
-                sendJsonCommand(command);
-        } else if(action == "parkcall") {
-                command["class"] = "transfer";
-                command["source"] = src;
-                command["destination"] = "special:parkthecall";
                 sendJsonCommand(command);
         } else if(action == "pickup") {
-                command["class"] = "pickup";
-                command["phonenum"] = ui->phonenum();
                 sendJsonCommand(command);
         }
 }

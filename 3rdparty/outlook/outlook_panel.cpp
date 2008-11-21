@@ -189,7 +189,7 @@ void OutlookPanel::refresh_table() {
 
 void OutlookPanel::proxyCallRequests(const QString & src, const QString & dst)
 {
-        actionCall(m_userinfo, sender()->property("action").toString(), src, dst);
+        actionCall(sender()->property("action").toString(), src, dst); // Call
 }
 
 void OutlookPanel::setGuiOptions(const QVariant &)
@@ -239,7 +239,7 @@ void OutlookPanel::itemDoubleClicked(QTableWidgetItem * item)
 	}
 
 	if(re_number.exactMatch(str)) {
-                actionCall(m_userinfo, "originate", "user:special:me", "ext:" + str);
+                actionCall("originate", "user:special:me", "ext:" + str); // Call
                 
                 // 0.3 actions :
                 // if(item->text().size() >= m_calllength)
@@ -462,7 +462,7 @@ void OutlookPanel::updatePeer(UserInfo *,
  */
 void OutlookPanel::transferChan(const QString & chan)
 {
-	actionCall(m_userinfo, "transfer", chan, m_numberToDial);
+	actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial); // Call
 }
 
 #endif // USE_OUTLOOK

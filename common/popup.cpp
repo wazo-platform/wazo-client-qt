@@ -157,7 +157,7 @@ void Popup::dispurl(const QUrl &url)
 {
         // qDebug() << "Popup::dispurl()" << url;
         QString numbertodial = url.toString().mid(5);
-        actionCall(m_ui, "originate", "user:special:me", "ext:" + numbertodial);
+        actionCall("originate", "user:special:me", "ext:" + numbertodial); // Call
 }
 
 void Popup::actionFromForm()
@@ -364,8 +364,10 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
                 // the form buttons should have been defined when arriving here
                 // ('kind' definition at the end of the sheet on server-side)
                 if(value == "agi") {
-                        if(m_form_buttons["hangup"])
+                        if(m_form_buttons["hangup"]) {
+                                qDebug() << m_form_buttons.keys();
                                 m_form_buttons["hangup"]->setEnabled(false);
+                        }
                 } else if(value == "link") {
                         if(m_form_buttons["refuse"])
                                 m_form_buttons["refuse"]->setEnabled(false);
@@ -383,7 +385,7 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
 
 void Popup::addInfoPhone(int where, const QString & name, const QString & value)
 {
-        // qDebug() << "Popup::addInfoPhone()" << value;
+        qDebug() << "Popup::addInfoPhone()" << value;
 	QLabel * lblname = new QLabel(name, this);
         QPushButton * lblvalue = new QPushButton(value, this);
         lblvalue->setObjectName("phonenumber");
@@ -510,8 +512,7 @@ void Popup::streamNewData()
 void Popup::dialThisNumber()
 {
         QString numbertodial = sender()->property("number").toString();
-        // qDebug() << "Popup::dialThisNumber()" << numbertodial;
-        actionCall(m_ui, "originate", "user:special:me", "ext:" + numbertodial);
+        actionCall("originate", "user:special:me", "ext:" + numbertodial); // Call
 }
 
 void Popup::httpGetNoreply()

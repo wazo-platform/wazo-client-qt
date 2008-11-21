@@ -180,7 +180,7 @@ void LogWidget::setUserInfo(const UserInfo * ui)
 
 void LogWidget::proxyCallRequests(const QString & src, const QString & dst)
 {
-        actionCall(m_userinfo_owner, sender()->property("action").toString(), src, dst);
+        actionCall(sender()->property("action").toString(), src, dst); // Call
 }
 
 /*! \brief add an entry
@@ -198,7 +198,7 @@ void LogWidget::addLogEntry(const QDateTime & dt, int duration,
  */
 void LogWidget::monitorPeer(UserInfo * ui)
 {
-        qDebug() << "LogWidget::monitorPeer()" << ui->userid();
+        // qDebug() << "LogWidget::monitorPeer()" << ui->userid();
 	clear();
 	m_peer = ui->userid();
 	if(m_peer.size() > 0) {

@@ -142,15 +142,14 @@ void DialPanel::dropEvent(QDropEvent * event)
 {
 	QString ext;
 	QString originator = QString::fromAscii(event->mimeData()->data("userid"));
+        qDebug() << "DialPanel::dropEvent()" << originator << m_input->lineEdit();
 	if(m_input->lineEdit()) {
                 qDebug() << "DialPanel::dropEvent()" << event << originator << m_input->lineEdit()->text();
                 ext = m_input->lineEdit()->text();
                 ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
                 if(ext.length() == 0)	// do nothing if the string is empty
                         return;
-                actionCall(m_ui, "originate",
-                           "user:" + originator,
-                           "ext:" + m_input->lineEdit()->text());
+                actionCall("originate", "user:" + originator, "ext:" + m_input->lineEdit()->text()); // Call
                 m_input->insertItem(0, ext); // add to history
                 // remove the older items related to the same number
                 for(int i=1; i<m_input->count(); ) {
@@ -186,8 +185,7 @@ void DialPanel::inputValidated()
                 ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
                 if(ext.length() == 0)	// do nothing if the string is empty
                         return;
-                actionCall(m_ui, "originate",
-                           "user:special:me", "ext:" + ext);
+                actionCall("originate", "user:special:me", "ext:" + ext); // Call
                 m_input->insertItem(0, ext); // add to history
                 // remove the older items related to the same number
                 for(int i=1; i<m_input->count(); ) {

@@ -120,8 +120,9 @@ protected:
 private:
 	void emptyList();	//!< remove all calls from the list
 signals:
-	void actionCall(const UserInfo *, const QString &,
-                        const QString &, const QString & dst = "");	//! originate, transfer & atxfer signals
+	void actionCall(const QString &,
+                        const QString &,
+                        const QString & dst = "");	//! originate, transfer & atxfer signals
 	void changeTitle(const QString &);		//!< change Title
 	void monitorPeerRequest(const QString &);	//!< send the userid of the new monitored peer
 private:

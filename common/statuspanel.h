@@ -77,7 +77,7 @@ public slots:
         void xferPressed();
         void clicked();
 signals:
-	void actionCall(const UserInfo *, const QString &,
+	void actionCall(const QString &,
                         const QString & src = "",
                         const QString & dst = "");
 private:

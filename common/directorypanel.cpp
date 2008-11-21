@@ -112,7 +112,7 @@ void DirectoryPanel::setUserInfo(const UserInfo * ui)
 
 void DirectoryPanel::proxyCallRequests(const QString & src, const QString & dst)
 {
-        actionCall(m_userinfo, sender()->property("action").toString(), src, dst);
+        actionCall(sender()->property("action").toString(), src, dst); // Call
 }
 
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
@@ -143,9 +143,9 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
 	if(re_number.exactMatch(item->text())) {
                 //qDebug() << "dialing" << item->text();
-                actionCall(m_userinfo, "originate", "user:special:me", "ext:" + item->text());
+                actionCall("originate", "user:special:me", "ext:" + item->text()); // Call
         }
-
+        
  	if(item && item->text().contains("@")) {
                 QString mailAddr = item->text();
                 if(mailAddr.length() > 0) {
@@ -229,7 +229,7 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
                 // qDebug() << "DirectoryPanel::contextMenuEvent()" << "preparing to dial" << m_numberToDial;
 		QMenu contextMenu(this);
 		contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
- 		if(!m_mychannels.empty()) {
+ 		if(! m_mychannels.empty()) {
 			QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
 			QListIterator<PeerChannel *> i(m_mychannels);
 			while(i.hasNext()) {
@@ -256,7 +256,7 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
 void DirectoryPanel::dialNumber()
 {
 	if(m_numberToDial.length() > 0)
-		actionCall(m_userinfo, "originate", "user:special:me", "ext:" + m_numberToDial);
+		actionCall("originate", "user:special:me", "ext:" + m_numberToDial); // Call
 }
 
 /*! \brief dial the number (when context menu item is toggled)
@@ -291,5 +291,5 @@ void DirectoryPanel::updatePeer(UserInfo * /*ui*/,
  */
 void DirectoryPanel::transferChan(const QString & chan)
 {
-        actionCall(m_userinfo, "transfer", chan, m_numberToDial);
+        actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial); // Call
 }

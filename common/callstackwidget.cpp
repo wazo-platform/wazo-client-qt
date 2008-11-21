@@ -133,7 +133,7 @@ CallStackWidget::CallStackWidget(QWidget * parent)
         // qDebug() << "CallStackWidget::CallStackWidget()";
 	m_layout = new QVBoxLayout(this);
 	//m_layout->setMargin();
-	//m_layout->setSpacing(0);
+        //m_layout->setSpacing(0);
         setObjectName("scroller");
 	setAcceptDrops(true);
 	m_layout->addStretch(1);
@@ -143,9 +143,9 @@ void CallStackWidget::setGuiOptions(const QVariant &)
 {
 }
 
-void CallStackWidget::setUserInfo(const UserInfo * ui)
+void CallStackWidget::setUserInfo(const UserInfo *)
 {
-        qDebug() << "CallStackWidget::setUserInfo()" << ui->astid() << ui->userid();
+        // qDebug() << "CallStackWidget::setUserInfo()" << ui->astid() << ui->userid();
 }
 
 void CallStackWidget::updatePeer(UserInfo * ui,
@@ -187,22 +187,21 @@ void CallStackWidget::addCall(UserInfo * ui, const QVariant & chanprops)
  */
 void CallStackWidget::hupchan(const QString & hangupchan)
 {
-        actionCall(m_monitored_ui, "hangup", hangupchan);
+        actionCall("hangup", "chan:" + m_monitored_ui->userid() + ":" + hangupchan); // Call
 }
 
 /*! \brief transfers the channel to a number
  */
 void CallStackWidget::transftonumberchan(const QString & chan)
 {
-        // the destination field is empty => will transfer to the "dial xlet" - defined number if present
-        actionCall(m_monitored_ui, "transfer", chan);
+        actionCall("transfer", "chan:" + m_monitored_ui->userid() + ":" + chan, "ext:special:dialxlet"); // Call
 }
 
 /*! \brief transfers the channel to a number
  */
 void CallStackWidget::parkcall(const QString & chan)
 {
-        actionCall(m_monitored_ui, "parkcall", chan);
+        actionCall("transfer", "chan:" + m_monitored_ui->userid() + ":" + chan, "ext:special:parkthecall"); // Call
 }
 
 /*! \brief Reset the Widget */
@@ -272,7 +271,8 @@ void CallStackWidget::updateDisplay()
 			}
                         // qDebug() << "CallStackWidget::updateDisplay() -" << j << m_afflist.count();
 			if(j == m_afflist.count()) {
-                                callwidget = new CallWidget(chanme,
+                                callwidget = new CallWidget(m_monitored_ui,
+                                                            chanme,
                                                             c->getStatus(),
                                                             c->getTime(),
                                                             c->getChannelPeer(),

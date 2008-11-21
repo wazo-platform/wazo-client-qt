@@ -129,7 +129,7 @@ MainWidget::MainWidget(BaseEngine * engine,
           m_engine(engine), m_systrayIcon(0),
           m_icon(":/images/xivoicon.png"), m_icongrey(":/images/xivoicon-grey.png")
 {
-        m_appliname = "Clients";
+        m_appliname = "Client";
         m_engine->setOSInfos(osname);
         m_withsystray = true;
         m_loginfirst = true;
@@ -486,7 +486,7 @@ void MainWidget::checksAvailState()
 
 void MainWidget::createMenus()
 {
-	m_filemenu = menuBar()->addMenu("&XIVO " + m_appliname);
+	m_filemenu = menuBar()->addMenu("&XIVO Client"); // + m_appliname too heavy
 	m_filemenu->addAction( m_cfgact );
         if(m_withsystray)
                 m_filemenu->addAction( m_systraymin );
@@ -503,7 +503,7 @@ void MainWidget::createMenus()
 	         m_avail, SLOT(setEnabled(bool)) );
 
 	m_helpmenu = menuBar()->addMenu(tr("&Help"));
-	m_helpmenu->addAction(tr("&About XIVO %1").arg(m_appliname), this, SLOT(about()));
+	m_helpmenu->addAction(tr("&About XIVO Client"), this, SLOT(about()));
 	m_helpmenu->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
 	m_helpmenu->addAction(tr("&Credits"), this, SLOT(showCredits()));
 }
@@ -513,7 +513,7 @@ void MainWidget::updateAppliName()
 	setWindowTitle("XIVO " + m_appliname);
         if(m_withsystray && m_systrayIcon)
                 m_systrayIcon->setToolTip("XIVO " + m_appliname);
-	m_filemenu->setTitle("&XIVO " + m_appliname);
+	// m_filemenu->setTitle("&XIVO Client");
 }
 
 /*! \brief create and show the system tray icon
@@ -666,19 +666,23 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
                         m_tabwidget->addTab(widget, extraspace + title + extraspace);
         }
         qDebug() << "adding" << name << title;
-        connect( m_engine, SIGNAL(setGuiOptions(const QVariant &)),
-                 m_xlet[name], SLOT(setGuiOptions(const QVariant &)));
-        connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                 m_xlet[name], SLOT(setUserInfo(const UserInfo *)));
+        if (m_xlet[name]) {
+                connect( m_engine, SIGNAL(setGuiOptions(const QVariant &)),
+                         m_xlet[name], SLOT(setGuiOptions(const QVariant &)));
+                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                         m_xlet[name], SLOT(setUserInfo(const UserInfo *)));
+        }
 }
 
 
 void MainWidget::connectDials(QWidget * widget)
 {
-        connect( widget, SIGNAL(actionCall(const UserInfo *, const QString &,
-                                           const QString &, const QString &)),
-                 m_engine, SLOT(actionCall(const UserInfo *, const QString &,
-                                           const QString &, const QString &)) );
+        connect( widget, SIGNAL(actionCall(const QString &,
+                                           const QString &,
+                                           const QString &)),
+                 m_engine, SLOT(actionCall(const QString &,
+                                           const QString &,
+                                           const QString &)) );
 }
 
 
@@ -748,7 +752,7 @@ void MainWidget::engineStarted()
 	setForceTabs(false);
         setAppearance(m_engine->getCapaXlets());
         
-        m_appliname = m_engine->getCapaApplication();
+        m_appliname = tr("Client (%1 profile)").arg(m_engine->getCapaApplication());
         QVariantMap opt_map;
         opt_map.unite(m_engine->getGuiOptions("server_funcs").toMap());
         opt_map.unite(m_engine->getGuiOptions("server_gui").toMap());
@@ -776,6 +780,8 @@ void MainWidget::engineStarted()
                         if (dc == "history") {
                                 m_xlet[dc] = new LogWidget(m_engine, m_options, this);
                                 addPanel("history", tr("History"), m_xlet[dc]);
+                                
+                                connectDials(m_xlet[dc]);
                                 connect( m_engine, SIGNAL(updateLogEntry(const QDateTime &, int,
                                                                          const QString &, const QString &, const QString &)),
                                          m_xlet[dc], SLOT(addLogEntry(const QDateTime &, int,
@@ -1046,13 +1052,14 @@ void MainWidget::engineStarted()
                                 m_xlet[dc] = new CustomerInfoPanel(m_options);
                                 addPanel("customerinfo", tr("Sheets"), m_xlet[dc]);
                                 
+                                connectDials(m_xlet[dc]);
                                 connect( m_engine, SIGNAL(displayFiche(const QString &, bool)),
                                          m_xlet[dc], SLOT(displayFiche(const QString &, bool)) );
                                 connect( m_xlet[dc], SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
                                          this, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)) );
                                 connect( m_xlet[dc], SIGNAL(actionFromFiche(const QStringList &)),
                                          m_engine, SLOT(actionFromFiche(const QStringList &)) );
-
+                                
 			} else if (dc == QString("search")) {
 				m_xlet[dc] = new SearchPanel(m_engine, m_options);
                                 addPanel(dc, tr("Contacts"), m_xlet[dc]);
@@ -1133,12 +1140,11 @@ void MainWidget::engineStarted()
                                 addPanel("outlook", tr("Outlook"), m_xlet[dc]);
                                 m_xlet[dc]->setFocus();
                                 
+                                connectDials(m_xlet[dc]);
 				connect( &(OLEngine()->m_OLThread), SIGNAL(contactsLoaded()),
                                          m_xlet[dc], SLOT(contactsLoaded()));
 				connect( m_xlet[dc], SIGNAL(searchOutlook(const QString &)),
 					 m_engine, SLOT(searchOutlook(const QString &)) );
-				connect( m_xlet[dc], SIGNAL(emitDial(const QString &)),
-					 m_engine, SLOT(dialFullChannel(const QString &)) );
 				connect( m_xlet[dc], SIGNAL(copyNumber(const QString &)),
 					 m_engine, SLOT(copyNumber(const QString &)) );
 				connect( m_engine, SIGNAL(outlookResponse(const QString &)),
@@ -1204,10 +1210,12 @@ void MainWidget::engineStarted()
 
 void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
-        disconnect( m_engine, SIGNAL(setGuiOptions(const QVariant &)),
-                    m_xlet[name], SLOT(setGuiOptions(const QVariant &)));
-        disconnect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                    m_xlet[name], SLOT(setUserInfo(const UserInfo *)));
+        if (m_xlet[name]) {
+                disconnect( m_engine, SIGNAL(setGuiOptions(const QVariant &)),
+                            m_xlet[name], SLOT(setGuiOptions(const QVariant &)));
+                disconnect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+                            m_xlet[name], SLOT(setUserInfo(const UserInfo *)));
+        }
         if(m_docknames.contains(name)) {
                 removeDockWidget(m_docks[name]);
                 delete widget;
@@ -1283,7 +1291,7 @@ void MainWidget::engineStopped()
         m_status->setPixmap(redsquare);
 
         clearAppearance();
-        m_appliname = "Clients";
+        m_appliname = "Client";
         updateAppliName();
 }
 
@@ -1466,7 +1474,7 @@ void MainWidget::about()
         
         // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
         QMessageBox::about(this,
-                           tr("About XIVO %1").arg(m_appliname),
+                           tr("About XIVO Client"),
                            "<h3>XIVO " + m_appliname + "</h3>" +
                            tr("<p>The XIVO CTI applications, once connected to the proper server, "
                               "complete the XIVO telephony system, by providing computer tools, "

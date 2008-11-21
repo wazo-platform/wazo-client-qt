@@ -106,7 +106,7 @@ void ParkingPanel::setUserInfo(const UserInfo * ui)
 
 void ParkingPanel::proxyCallRequests(const QString & src, const QString & dst)
 {
-        actionCall(m_userinfo, sender()->property("action").toString(), src, dst);
+        actionCall(sender()->property("action").toString(), src, dst);
 }
 
 /*! \brief add a message to the list
@@ -187,7 +187,7 @@ void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
         m_astid    = m_table->item(rown, 0)->text();
         m_placenum = m_table->item(rown, 1)->text();
         if(m_astid == m_userinfo->astid())
-                actionCall(m_userinfo, "originate", "user:special:me", "ext:" + m_placenum);
+                actionCall("originate", "user:special:me", "ext:" + m_placenum); // Call
 }
 
 void ParkingPanel::timerEvent(QTimerEvent * event)
@@ -239,7 +239,7 @@ void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
 void ParkingPanel::dialNumber()
 {
 	if((m_placenum.length() > 0) && (m_astid == m_userinfo->astid()))
-                actionCall(m_userinfo, "originate", "user:special:me", "ext:" + m_placenum);
+                actionCall("originate", "user:special:me", "ext:" + m_placenum); // Call
 }
 
 /*! \brief dial the number (when context menu item is toggled)

@@ -149,8 +149,9 @@ public slots:
 	void start();				//!< start the connection process.
 	void stop();				//!< stop the engine
 	void setAvailState(const QString &, bool);	//! set m_availstate
-	void actionCall(const UserInfo *, const QString &,
-                        const QString &, const QString &);
+	void actionCall(const QString &,
+                        const QString &,
+                        const QString &);
         
 	void searchDirectory(const QString &);
 	void requestHistory(const QString &, int);

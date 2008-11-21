@@ -84,8 +84,9 @@ signals:
 	//! dial selected number
 	void emitDial(const QString &);
 	void copyNumber(const QString &);
-	void actionCall(const UserInfo *, const QString &,
-                        const QString &, const QString &);
+	void actionCall(const QString &,
+                        const QString &,
+                        const QString &);
 private slots:
 	void dialNumber();
         void sendMail();

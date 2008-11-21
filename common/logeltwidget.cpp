@@ -144,7 +144,7 @@ void LogEltWidget::callBackPeer()
         }
         
         this->setProperty("action", "originate");
-        actionCall("user:special:me", "ext:" + number);
+        actionCall("user:special:me", "ext:" + number); // Call
 }
 
 void LogEltWidget::doNotCallBackPeer()

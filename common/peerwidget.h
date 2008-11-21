@@ -87,8 +87,9 @@ protected:
 	void dropEvent(QDropEvent *);
 	void contextMenuEvent(QContextMenuEvent *);
 signals:
-	void actionCall(const UserInfo *, const QString &,
-                        const QString &, const QString & dst = "");	//! originate, transfer & atxfer signals
+	void actionCall(const QString &,
+                        const QString &,
+                        const QString & dst = "");	//! originate, transfer & atxfer signals
 	//! hide the widget in the channel
 	void doRemoveFromPanel(const QString &);
 public slots:

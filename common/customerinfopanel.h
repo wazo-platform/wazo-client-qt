@@ -66,6 +66,7 @@ signals:
                       const QHash<QString, QString> &,
                       const QString &);
         void actionFromFiche(const QStringList &);
+        void actionCall(const QString &, const QString &, const QString &);
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
@@ -74,6 +75,7 @@ public slots:
         void addToDataBase(const QString &);
         void displayFiche(const QString &, bool);
         void actionFromPopup(const QString &);
+        void localActionCall(const QString &, const QString &, const QString &);
 private:
         const UserInfo * m_ui;
         QTabWidget * m_tabs;

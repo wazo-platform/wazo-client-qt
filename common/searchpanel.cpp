@@ -143,10 +143,12 @@ void SearchPanel::affTextChanged(const QString & text)
                                 }
                                 // originate
                                 // if switchboard : transfer, atxfer, hangup, intercept
-                                disconnect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
-                                                                          const QString &, const QString &)),
-                                            m_engine, SLOT(actionCall(const UserInfo *, const QString &,
-                                                                      const QString &, const QString &)) );
+                                disconnect( peerwidget, SIGNAL(actionCall(const QString &,
+                                                                          const QString &,
+                                                                          const QString &)),
+                                            m_engine, SLOT(actionCall(const QString &,
+                                                                      const QString &,
+                                                                      const QString &)) );
                                 peeritem->setWidget(NULL);
                                 delete peerwidget;
                         }
@@ -187,10 +189,12 @@ void SearchPanel::affTextChanged(const QString & text)
                                 }
                                 // originate
                                 // if switchboard : transfer, atxfer, hangup, intercept
-                                connect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
-                                                                       const QString &, const QString &)),
-                                         m_engine, SLOT(actionCall(const UserInfo *, const QString &,
-                                                                   const QString &, const QString &)) );
+                                connect( peerwidget, SIGNAL(actionCall(const QString &,
+                                                                       const QString &,
+                                                                       const QString &)),
+                                         m_engine, SLOT(actionCall(const QString &,
+                                                                   const QString &,
+                                                                   const QString &)) );
                         }
                 }
  	}

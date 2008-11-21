@@ -152,6 +152,13 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
                  this, SLOT(addToDataBase(const QString &)) );
         connect( popup, SIGNAL(actionFromPopup(const QString &)),
                  this, SLOT(actionFromPopup(const QString &)) );
+        connect( popup, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+                 this, SLOT(localActionCall(const QString &, const QString &, const QString &)) );
+}
+
+void CustomerInfoPanel::localActionCall(const QString & a, const QString & b, const QString & c)
+{
+        actionCall(a, b, c);
 }
 
 void CustomerInfoPanel::actionFromPopup(const QString & buttonname)

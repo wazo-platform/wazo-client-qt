@@ -50,6 +50,8 @@
 
 class QLabel;
 
+class UserInfo;
+
 /*! \brief Widget displaying a call (channel)
  *
  * The Call is displayed with a colored square representing
@@ -66,7 +68,8 @@ public:
 
 	//CallWidget(const QString & tomonitor,
 	//	   QWidget * parent = 0);
-	CallWidget(const QString &,
+	CallWidget(UserInfo *,
+                   const QString &,
 		   const QString &,
 		   int,
 		   const QString &,
@@ -103,6 +106,7 @@ public slots:
 	void transferToNumber();
 	void parkCall();
 private:
+        UserInfo * m_ui;
 	QPoint m_dragstartpos;	//!< used for drag
 	QString m_channelme;	//!< channel identifier
 	QString m_callerid;		//!< caller id

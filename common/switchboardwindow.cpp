@@ -142,10 +142,12 @@ void SwitchBoardWindow::updatePeer(UserInfo * ui,
                                                          m_agents);
                 peerwidget->setEngine(m_engine);
                 // originate, transfer, atxfer, hangup, intercept
-                connect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
-                                                       const QString &, const QString &)),
-                         m_engine, SLOT(actionCall(const UserInfo *, const QString &,
-                                                   const QString &, const QString &)) );
+                connect( peerwidget, SIGNAL(actionCall(const QString &,
+                                                       const QString &,
+                                                       const QString &)),
+                         m_engine, SLOT(actionCall(const QString &,
+                                                   const QString &,
+                                                   const QString &)) );
                 connect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
                          this, SLOT(removePeerFromLayout(const QString &)) );
                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,
@@ -206,10 +208,12 @@ void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
                         m_layout->removeWidget( peerwidget );
                         // this disconnect() step takes time, whether explicitly or implicitly,
                         // so we should be careful to avoid too much connect's (anyway)
-                        disconnect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
-                                                                  const QString &, const QString &)),
-                                    m_engine, SLOT(actionCall(const UserInfo *, const QString &,
-                                                              const QString &, const QString &)) );
+                        disconnect( peerwidget, SIGNAL(actionCall(const QString &,
+                                                                  const QString &,
+                                                                  const QString &)),
+                                    m_engine, SLOT(actionCall(const QString &,
+                                                              const QString &,
+                                                              const QString &)) );
                         disconnect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
                                     this, SLOT(removePeerFromLayout(const QString &)) );
                         disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
@@ -269,10 +273,12 @@ void SwitchBoardWindow::removePeers(void)
                         m_layout->removeWidget( peerwidget );
                         // this disconnect() step takes time, whether explicitly or implicitly,
                         // so we should be careful to avoid too much connect's (anyway)
-                        disconnect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
-                                                                  const QString &, const QString &)),
-                                    m_engine, SLOT(actionCall(const UserInfo *, const QString &,
-                                                              const QString &, const QString &)) );
+                        disconnect( peerwidget, SIGNAL(actionCall(const QString &,
+                                                                  const QString &,
+                                                                  const QString &)),
+                                    m_engine, SLOT(actionCall(const QString &,
+                                                              const QString &,
+                                                              const QString &)) );
                         disconnect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
                                     this, SLOT(removePeerFromLayout(const QString &)) );
                         disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
@@ -352,10 +358,12 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
                 peeritem->updateDisplayedChans();
                 peeritem->updateDisplayedName();
                 
-                connect( peerwidget, SIGNAL(actionCall(const UserInfo *, const QString &,
-                                                       const QString &, const QString &)),
-                         m_engine, SLOT(actionCall(const UserInfo *, const QString &,
-                                                   const QString &, const QString &)) );
+                connect( peerwidget, SIGNAL(actionCall(const QString &,
+                                                       const QString &,
+                                                       const QString &)),
+                         m_engine, SLOT(actionCall(const QString &,
+                                                   const QString &,
+                                                   const QString &)) );
                 connect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
                          this, SLOT(removePeerFromLayout(const QString &)) );
                 connect( m_engine, SIGNAL(updatePeer(UserInfo *,

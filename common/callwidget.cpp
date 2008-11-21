@@ -51,13 +51,15 @@
 
 #include "callstackwidget.h"
 #include "callwidget.h"
+#include "userinfo.h"
 #include "xivoconsts.h"
 
 /*! \brief Constructor
  *
  * set up the widget, start timer.
  */
-CallWidget::CallWidget(const QString & channelme,
+CallWidget::CallWidget(UserInfo * ui,
+                       const QString & channelme,
 		       const QString & status,
 		       int time,
 		       const QString &/* channelpeer*/,
@@ -69,7 +71,8 @@ CallWidget::CallWidget(const QString & channelme,
           m_call_red   (":/images/phone-red.png"),
           m_call_gray  (":/images/phone-grey.png")
 {
-        qDebug() << "CallWidget::CallWidget()" << channelme;
+        // qDebug() << "CallWidget::CallWidget()" << channelme;
+        m_ui = ui;
 	QGridLayout * gridlayout = new QGridLayout(this);
         
 // 	m_callerid = callerid;
@@ -164,7 +167,7 @@ void CallWidget::updateWidget(const QString & status,
 			      const QString &/* channelpeer*/,
 			      const QString & exten)
 {
-        qDebug() << "CallWidget::updateWidget()" << status << time << exten;
+        // qDebug() << "CallWidget::updateWidget()" << status << time << exten;
 	//m_lbl_status->setText(status);
 	setActionPixmap(status);
 	//qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
@@ -232,7 +235,9 @@ void CallWidget::mouseMoveEvent(QMouseEvent *event)
 
 	QDrag *drag = new QDrag(this);
 	QMimeData *mimeData = new QMimeData();
-	mimeData->setText(/*"test"*/ m_channelme);
+	mimeData->setText(m_channelme); // XXX
+        mimeData->setData("userid", m_ui->userid().toAscii());
+	mimeData->setData("channel", m_channelme.toAscii());
 	mimeData->setData(CHANNEL_MIMETYPE, m_channelme.toAscii());
 	drag->setMimeData(mimeData);
 

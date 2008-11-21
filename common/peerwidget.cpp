@@ -219,7 +219,7 @@ void PeerWidget::removeFromPanel()
 void PeerWidget::dial()
 {
 	// qDebug() << "PeerWidget::dial()" << m_ui->userid() << sender();
-        actionCall(m_ui, "originate", "user:special:me", "user:" + m_ui->userid());
+        actionCall("originate", "user:special:me", "user:" + m_ui->userid()); // Call
 }
 
 /*! \brief mouse press. store position
@@ -254,7 +254,7 @@ void PeerWidget::mouseMoveEvent(QMouseEvent *event)
 	mimeData->setData("userid", m_ui->userid().toAscii());
 	mimeData->setData("name", m_ui->fullname().toUtf8());
 	drag->setMimeData(mimeData);
-
+        
 	/*Qt::DropAction dropAction = */
         drag->start(Qt::CopyAction | Qt::MoveAction);
 	//qDebug() << "PeerWidget::mouseMoveEvent : dropAction=" << dropAction;
@@ -302,8 +302,8 @@ void PeerWidget::dragMoveEvent(QDragMoveEvent *event)
 	/*if(  event->mimeData()->hasFormat(PEER_MIMETYPE)
 	  || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
 	{*/
-		if(event->proposedAction() & (Qt::CopyAction|Qt::MoveAction))
-			event->acceptProposedAction();
+        if(event->proposedAction() & (Qt::CopyAction | Qt::MoveAction))
+                event->acceptProposedAction();
 	/*}*/
 }
 
@@ -313,15 +313,17 @@ void PeerWidget::dragMoveEvent(QDragMoveEvent *event)
  */
 void PeerWidget::dropEvent(QDropEvent *event)
 {
-	QString from = QString::fromAscii(event->mimeData()->data("userid"));
+        QString userid_from = QString::fromAscii(event->mimeData()->data("userid"));
+        QString channel_from = QString::fromAscii(event->mimeData()->data("channel"));
 	QString to = m_ui->userid();
-        qDebug() << event << event->mimeData();
+        qDebug() << "PeerWidget::dropEvent()"
+                 << event << event->keyboardModifiers()
+                 << event->mimeData() << event->proposedAction();
         // 	qDebug() << "PeerWidget::dropEvent() :" << from << "on" << to;
         // 	qDebug() << " possibleActions=" << event->possibleActions();
         // 	qDebug() << " proposedAction=" << event->proposedAction();
         // qDebug() << "mouse & keyboard" << event->mouseButtons() << event->keyboardModifiers();
-        qDebug() << "PeerWidget::dropEvent()" << event->keyboardModifiers() << event->mimeData() << event->proposedAction();
-
+        
         if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
                 qDebug() << "PeerWidget::dropEvent()" << "CHANNEL_MIMETYPE";
         } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
@@ -329,27 +331,27 @@ void PeerWidget::dropEvent(QDropEvent *event)
         } else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
                 qDebug() << "PeerWidget::dropEvent()" << "NUMBER_MIMETYPE";
         }
-
+        
 	switch(event->proposedAction()) {
 	case Qt::CopyAction:
 		// transfer the call to the peer "to"
 	  	if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
                         event->acceptProposedAction();
-                        actionCall(m_ui, "transfer", from, to);
+                        actionCall("transfer", "chan:" + userid_from + ":" + channel_from, "user:" + to); // Call
 		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
 			event->acceptProposedAction();
-			actionCall(m_ui, "originate", "user:" + from, "user:" + to);
+			actionCall("originate", "user:" + userid_from, "user:" + to); // Call
 		} else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
 			event->acceptProposedAction();
-                        actionCall(m_ui, "originate", to, from);
+                        actionCall("originate", "user:" + to, "ext:" + event->mimeData()->text()); // Call
 		}
 		break;
 	case Qt::MoveAction:
 		event->acceptProposedAction();
-		actionCall(m_ui, "atxfer", from, to);
+		actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, "user:" + to);
 		break;
 	default:
-		qDebug() << "Unrecognized action";
+		qDebug() << "PeerWidget::dropEvent() Unrecognized action" << event->proposedAction();
 		break;
 	}
 }
@@ -358,17 +360,17 @@ void PeerWidget::dropEvent(QDropEvent *event)
  */
 void PeerWidget::transferChan(const QString & chan)
 {
-	actionCall(m_ui, "transfer", chan, m_ui->userid());
+	actionCall("transfer", "chan:" + m_ui->userid() + ":" + chan, "user:" + m_ui->userid());
 }
 
 void PeerWidget::hangupChan(const QString & chan)
 {
-        actionCall(m_ui, "hangup", chan);
+        actionCall("hangup", "chan:" + m_ui->userid() + ":" + chan); // Call
 }
 
 void PeerWidget::interceptChan(const QString & chan)
 {
-        actionCall(m_ui, "intercept", chan);
+        actionCall("transfer", "chan:" + m_ui->userid() + ":" + chan, "user:special:me"); // Call
 }
 
 /*! \brief display context menu
