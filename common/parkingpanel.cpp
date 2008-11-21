@@ -115,20 +115,24 @@ void ParkingPanel::proxyCallRequests(const QString & src, const QString & dst)
  */
 void ParkingPanel::parkingEvent(const QVariant & subcommand)
 {
+        // qDebug() << "ParkingPanel::parkingEvent()" << subcommand;
         QString astid, parkplacenum, seconds, parkedpeer, parkedby;
         QString eventkind = subcommand.toMap()["status"].toString();
         QStringList newpark = subcommand.toMap()["args"].toStringList();
         // QTime time = QTime::currentTime();
 
-        if(newpark.size() == 5) {
+        if(newpark.size() >= 3) {
                 astid        = newpark[0];
-                parkplacenum = newpark[3];
-                seconds      = newpark[4];
                 parkedpeer   = newpark[1].split("-")[0];
-                parkedby     = newpark[2].split("-")[0];
+                parkplacenum = newpark[2];
         } else
                 return;
-
+        
+        if(newpark.size() >= 4)
+                parkedby     = newpark[3].split("-")[0];
+        if(newpark.size() >= 5)
+                seconds = newpark[4];
+        
         if(eventkind == "parkedcall") {
                 m_table->insertRow( 0 );
                 QTableWidgetItem * item0 = new QTableWidgetItem( astid );
@@ -195,7 +199,7 @@ void ParkingPanel::timerEvent(QTimerEvent * event)
 	int timerId = event->timerId();
         if (timerId == m_timerid)
                 for(int i = 0; i < m_table->rowCount(); i++) {
-                        QTableWidgetItem * item = m_table->item(i, 2);
+                        QTableWidgetItem * item = m_table->takeItem(i, 2);
                         int leftsec = item->text().split(" ")[0].toInt() - m_deltasec;
                         item->setText( QString::number(leftsec) + " s" );
                         m_table->setItem( i, 2, item );
