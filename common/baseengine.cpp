@@ -801,7 +801,11 @@ bool BaseEngine::parseCommand(const QString & line)
                                 
                                 // Who do we monitor ?
                                 // First look at the last monitored one
-                                QString fullid_watched = m_settings->value("monitor/userid").toString();
+                                QString fullid_watched;
+                                if(m_capafuncs.contains("switchboard"))
+                                        fullid_watched = m_settings->value("monitor/userid").toString();
+                                else
+                                        fullid_watched = "";
                                 QString fullname_watched = "";
                                 // If there was nobody, let's watch ourselves.
                                 if(fullid_watched.isEmpty()) {
@@ -1597,7 +1601,7 @@ void BaseEngine::askFeatures()
 {
         qDebug() << "BaseEngine::askFeatures()" << m_monitored_userid;
         QString featurestoget = "user:special:me";
-        if(m_monitored_userid.size() > 0)
+        if(! m_monitored_userid.isEmpty())
                 featurestoget = m_monitored_userid;
         QVariantMap command;
         command["class"] = "featuresget";
