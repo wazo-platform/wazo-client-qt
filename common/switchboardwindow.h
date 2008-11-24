@@ -73,6 +73,7 @@ protected:
 /*         void mouseMoveEvent(QMouseEvent *); */
 	void dragEnterEvent(QDragEnterEvent *);
 	void dropEvent(QDropEvent *);
+        void dragMoveEvent(QDragMoveEvent *);
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);

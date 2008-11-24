@@ -347,8 +347,9 @@ void PeerWidget::dropEvent(QDropEvent *event)
 		}
 		break;
 	case Qt::MoveAction:
+                // can be reached with the shift button
 		event->acceptProposedAction();
-		actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, "user:" + to);
+		actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, "user:" + to); // Call
 		break;
 	default:
 		qDebug() << "PeerWidget::dropEvent() Unrecognized action" << event->proposedAction();

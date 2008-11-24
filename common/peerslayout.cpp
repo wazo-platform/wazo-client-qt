@@ -93,7 +93,9 @@ QSize PeersLayout::size() const
 void PeersLayout::addWidget(QWidget *w, QPoint pos)
 {
 	addChildWidget(w);
-	addItem(new QWidgetItem(w), pos);
+        QWidgetItem * wi = new QWidgetItem(w);
+        // wi->setAlignment(Qt::AlignCenter);
+        addItem(wi, pos);
 }
 
 /*! \brief add a layout item at position
@@ -101,8 +103,7 @@ void PeersLayout::addWidget(QWidget *w, QPoint pos)
 void PeersLayout::addItem(QLayoutItem * item, QPoint pos)
 {
 	m_list.append(item);
-	if(pos.x() >= 0 && pos.y() >= 0)
-	{
+	if(pos.x() >= 0 && pos.y() >= 0) {
 		if(m_listPos.contains(pos))
 			pos = freePosition();
 		if(pos.x() >= m_nb_columns)
@@ -133,16 +134,14 @@ void PeersLayout::setGeometry(const QRect &/* r*/)
 	//qDebug() << "PeersLayout::setGeometry" << r;
 	QSize itemSize = maxItemSize();
 	int i, x, y;
-	for(i = 0; i<m_list.size(); i++)
-	{
+	for(i = 0; i<m_list.size(); i++) {
 		x = m_listPos[i].x();
 		y = m_listPos[i].y();
-		if(x>=0 && y>=0)
-		{
-			m_list[i]->setGeometry(
-		       QRect( x*itemSize.width()/*left*/, y*itemSize.height()/*top*/,
-		              itemSize.width()/*width*/, itemSize.height()/*height*/ )
-					                );
+		if((x >= 0) && (y >= 0)) {
+			m_list[i]->setGeometry(QRect( x*itemSize.width()/*left*/, 
+                                                      y*itemSize.height()/*top*/,
+                                                      itemSize.width()/*width*/,
+                                                      itemSize.height()/*height*/ ) );
 		}
 	}
 }
@@ -179,8 +178,7 @@ QSize PeersLayout::maxItemSize() const
 	int max_w = 150;
 	int max_h = 20;
 	int i;
-	for(i = 0; i < m_list.size(); i++)
-	{
+	for(i = 0; i < m_list.size(); i++) {
 		QSize size = m_list[i]->minimumSize();
 		if(size.width() > max_w)
 			max_w = size.width();
@@ -195,11 +193,9 @@ QSize PeersLayout::maxItemSize() const
 QPoint PeersLayout::freePosition() const
 {
 	QPoint pos(0, 0);
-	while(m_listPos.contains(pos))
-	{
+	while(m_listPos.contains(pos)) {
 		pos.ry()++;
-		if(pos.y() > 6)
-		{
+		if(pos.y() > 6) {
 			pos.ry() = 0;
 			pos.rx()++;
 		}
@@ -219,8 +215,7 @@ QPoint PeersLayout::getPosInGrid(QPoint pos) const
  */
 void PeersLayout::setItemPosition(int i, QPoint pos)
 {
-	if(i >= 0 && i < m_listPos.size())
-	{
+	if(i >= 0 && i < m_listPos.size()) {
 		m_listPos[i] = pos;
 		if(pos.x() >= m_nb_columns)
 			m_nb_columns = pos.x() + 1;

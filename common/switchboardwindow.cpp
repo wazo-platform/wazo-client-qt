@@ -165,7 +165,6 @@ void SwitchBoardWindow::updatePeer(UserInfo * ui,
         }
 }
 
-
 void SwitchBoardWindow::newUser(UserInfo * ui)
 {
         QString userid = ui->userid();
@@ -307,6 +306,11 @@ void SwitchBoardWindow::removePeers(void)
 // 	qDebug() << "   " << event->globalX() << event->globalY() << event->globalPos();
 // }
 
+void SwitchBoardWindow::dragMoveEvent(QDragMoveEvent * event)
+{
+        event->acceptProposedAction();
+}
+
 /*!
  * This method accept or reject the drag event.
  *
@@ -330,13 +334,13 @@ void SwitchBoardWindow::dragEnterEvent(QDragEnterEvent * event)
 void SwitchBoardWindow::dropEvent(QDropEvent * event)
 {
 	QString userid = event->mimeData()->data("userid");
-        qDebug() << "SwitchBoardWindow::dropEvent()" << event << userid;
+        // qDebug() << "SwitchBoardWindow::dropEvent()" << event << userid;
 	// qDebug() << "  " << event->pos() << m_layout->getPosInGrid(event->pos());
         bool isAlreadyThere = false;
 
 	for(int i = 0 ; i < m_peerlist.count() ; i++) {
 		if(userid == m_peerlist[i]->userinfo()->userid()) {
-                        qDebug() << "   " << i;
+                        qDebug() << "SwitchBoardWindow::dropEvent()" << i;
 			m_layout->setItemPosition(i, m_layout->getPosInGrid(event->pos()));
 			updateGeometry();
                         isAlreadyThere = true;

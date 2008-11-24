@@ -95,7 +95,7 @@ void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
  */
 void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-	// qDebug() << "ExtendedTableWidget::dragEnterEvent" << event->mimeData()->formats() << event->pos();
+        // qDebug() << "ExtendedTableWidget::dragEnterEvent" << event->mimeData()->formats() << event->pos();
 	if(  event->mimeData()->hasFormat(PEER_MIMETYPE) ||
              event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
              event->mimeData()->hasFormat(CHANNEL_MIMETYPE) ) {
@@ -109,19 +109,17 @@ void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
  */
 void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-	// qDebug() << "ExtendedTableWidget::dragMoveEvent()" << event->pos();
+        // qDebug() << "ExtendedTableWidget::dragMoveEvent()" << event->pos();
 	if(event->proposedAction() & ( Qt::CopyAction | Qt::MoveAction ))
 		event->acceptProposedAction();
 	QTableWidgetItem * item = itemAt( event->pos() );
-	if(item)
-	{
+	if(item) {
 		QRegExp re("\\+?[0-9\\s\\.]+");
 		if(re.exactMatch( item->text() ))
 			event->accept(visualItemRect(item));
 		else
 			event->ignore(visualItemRect(item));
-	}
-	else
+	} else
 		event->ignore();
 }
 
@@ -129,7 +127,7 @@ void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
  */
 void ExtendedTableWidget::dropEvent(QDropEvent *event)
 {
-	// qDebug() << "ExtendedTableWidget::dropEvent()" << event->mimeData()->text() << event->pos();
+        // qDebug() << "ExtendedTableWidget::dropEvent()" << event->mimeData()->text() << event->pos();
 	QTableWidgetItem * item = itemAt( event->pos() );
 	QRegExp re("\\+?[0-9\\s\\.]+");
 	if(item && re.exactMatch( item->text() )) {

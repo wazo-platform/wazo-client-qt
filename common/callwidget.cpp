@@ -87,31 +87,25 @@ CallWidget::CallWidget(UserInfo * ui,
 	gridlayout->setColumnStretch(3, 1);
 	m_lbl_status = new QLabel(this);
 	gridlayout->addWidget(m_lbl_status, 0, 0);
-	setActionPixmap(status);
-
+        
 	m_lbl_time = new QLabel(this);
 	m_lbl_time->setFont(QFont("", 8, QFont::Bold));
 	m_startTime = QDateTime::currentDateTime().addSecs(-time);
 	startTimer(1000);
-	updateCallTimeLabel();
 	gridlayout->addWidget(m_lbl_time, 1, 0);
-
+        
 	m_lbl_direction = new QLabel(this);
-        if(status == CHAN_STATUS_CALLING)
-                m_lbl_direction->setPixmap(QPixmap(":/images/rightarrow.png"));
-        else if(status == CHAN_STATUS_RINGING)
-                m_lbl_direction->setPixmap(QPixmap(":/images/leftarrow.png"));
-        else
-                qDebug() << "CallWidget::CallWidget()" << status;
 	gridlayout->addWidget(m_lbl_direction, 0, 1);
-
+        
 	// 	m_lbl_channelpeer = new QLabel(channelpeer, this);
 	// 	gridlayout->addWidget(m_lbl_channelpeer, 0, Qt::AlignLeft );
-
-	m_lbl_exten = new QLabel(exten, this);
+        
+	m_lbl_exten = new QLabel(this);
 	m_lbl_exten->setFont(QFont("courier", 10, QFont::Light));
 	gridlayout->addWidget(m_lbl_exten, 0, 2);
-
+        
+        updateWidget(status, time, "cpeer", exten);
+        
 	// for caller id information
 	QLabel * dummy = new QLabel("", this);
 	dummy->setFont(QFont("times", 10, QFont::Light, true));
@@ -167,18 +161,18 @@ void CallWidget::updateWidget(const QString & status,
 			      const QString &/* channelpeer*/,
 			      const QString & exten)
 {
-        // qDebug() << "CallWidget::updateWidget()" << status << time << exten;
+        qDebug() << "CallWidget::updateWidget()" << status << time << exten;
 	//m_lbl_status->setText(status);
 	setActionPixmap(status);
 	//qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
 	m_startTime = QDateTime::currentDateTime().addSecs(-time);
 	updateCallTimeLabel();
-        if(status == CHAN_STATUS_CALLING)
+        if ((status == CHAN_STATUS_CALLING) || (status == CHAN_STATUS_LINKED_CALLER))
                 m_lbl_direction->setPixmap(QPixmap(":/images/rightarrow.png"));
-        else if(status == CHAN_STATUS_RINGING)
+        else if ((status == CHAN_STATUS_RINGING) || (status == CHAN_STATUS_LINKED_CALLED))
                 m_lbl_direction->setPixmap(QPixmap(":/images/leftarrow.png"));
         else
-                qDebug() << "CallWidget::updateWidget()" << status;
+                qDebug() << "CallWidget::updateWidget() : status unknown" << status;
         
 	//	m_lbl_channelpeer->setText(channelpeer);
 	m_lbl_exten->setText(exten);
@@ -188,11 +182,15 @@ void CallWidget::updateWidget(const QString & status,
  */
 void CallWidget::setActionPixmap(const QString & status)
 {
-	if(status == CHAN_STATUS_CALLING)
+	if (status == CHAN_STATUS_CALLING)
 		m_lbl_status->setPixmap( m_call_yellow );
-	else if(status == CHAN_STATUS_RINGING)
+	else if (status == CHAN_STATUS_RINGING)
 		m_lbl_status->setPixmap( m_call_blue );
-	else if((status == "On the phone") || (status == "Up"))
+	else if ((status == "On the phone") || (status == "Up"))
+		m_lbl_status->setPixmap( m_call_red );
+	else if (status == CHAN_STATUS_LINKED_CALLER)
+		m_lbl_status->setPixmap( m_call_red );
+	else if (status == CHAN_STATUS_LINKED_CALLED)
 		m_lbl_status->setPixmap( m_call_red );
 	else {
 		m_lbl_status->setPixmap( m_call_gray );
