@@ -5,6 +5,7 @@ SET(
 	JsonToVariant
 	VariantToJson
 )
+SET(HEADERS JsonQtExport.h)
 
 SET(VERSION 0.0.2)
 

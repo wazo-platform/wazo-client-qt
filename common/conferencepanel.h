@@ -71,6 +71,16 @@ public slots:
         void doMeetMeAction();
         void setGuiOptions(const QVariant &);
 private:
+        void setProperties(const QString &,
+                           const QString &,
+                           const QString &,
+                           const QString &,
+                           const QVariant &);
+        void addRoomTab(const QString &,
+                        const QString &,
+                        const QString &);
+        void delRoomTab(const QString &,
+                        const QString &);
         QHash<QString, QLabel *> m_infos;
         QHash<QString, QPushButton *> m_action_kick;
         QHash<QString, QPushButton *> m_action_record;
