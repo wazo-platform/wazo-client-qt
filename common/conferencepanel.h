@@ -75,6 +75,7 @@ private:
                            const QString &,
                            const QString &,
                            const QString &,
+                           const QString &,
                            const QVariant &);
         void addRoomTab(const QString &,
                         const QString &,
@@ -82,6 +83,7 @@ private:
         void delRoomTab(const QString &,
                         const QString &);
         QHash<QString, QLabel *> m_infos;
+        QHash<QString, QLabel *> m_timespent;
         QHash<QString, QPushButton *> m_action_kick;
         QHash<QString, QPushButton *> m_action_record;
         QHash<QString, QPushButton *> m_action_mute;

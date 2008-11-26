@@ -82,13 +82,15 @@ void ConferencePanel::meetmeInit(const QVariant & meetme)
                 foreach(QString idx, astrooms.toMap().keys()) {
                         QString roomname = astrooms.toMap()[idx].toMap()["name"].toString();
                         QString roomnum = astrooms.toMap()[idx].toMap()["number"].toString();
+                        QString adminid = astrooms.toMap()[idx].toMap()["adminid"].toString();
                         QVariantMap channels = astrooms.toMap()[idx].toMap()["channels"].toMap();
                         
                         if(channels.size() > 0) {
                                 addRoomTab(astid, roomnum, roomname);
                                 foreach(QString chan, channels.keys()) {
-                                        setProperties("join", astid, roomnum, chan, channels[chan]);
-                                        setProperties("mutestatus", astid, roomnum, chan, channels[chan]);
+                                        setProperties("join", adminid, astid, roomnum, chan, channels[chan]);
+                                        setProperties("mutestatus", adminid, astid, roomnum, chan, channels[chan]);
+                                        setProperties("recordstatus", adminid, astid, roomnum, chan, channels[chan]);
                                 }
                         } else {
                                 delRoomTab(astid, roomnum);
@@ -119,7 +121,7 @@ void ConferencePanel::addRoomTab(const QString & astid,
                 QWidget * w = new QWidget();
                 m_layout[idxroom] = new QGridLayout(w);
                 m_layout[idxroom]->setColumnStretch(0, 1);
-                m_layout[idxroom]->setColumnStretch(5, 1);
+                m_layout[idxroom]->setColumnStretch(6, 1);
                 m_layout[idxroom]->setRowStretch(100, 1);
                 m_tw->addTab(w, tr("Room %1 (%2) on %3").arg(roomname, roomnum, astid));
         }
@@ -132,30 +134,40 @@ void ConferencePanel::meetmeEvent(const QVariant & meetme)
         QString roomnum = meetme.toMap()["roomnum"].toString();
         QString roomname = meetme.toMap()["roomname"].toString();
         QString idxroom = astid + "-" + roomnum;
+        QString adminid = meetme.toMap()["adminid"].toString();
         addRoomTab(astid, roomnum, roomname);
         
-        setProperties(meetme.toMap()["name"].toString(),
+        setProperties(meetme.toMap()["action"].toString(),
+                      adminid,
                       astid,
                       roomnum,
                       meetme.toMap()["channel"].toString(),
                       meetme.toMap()["details"]);
 }
 
-void ConferencePanel::setProperties(const QString & action, const QString & astid,
-                                    const QString & roomnum, const QString & channel,
+void ConferencePanel::setProperties(const QString & action,
+                                    const QString & adminid,
+                                    const QString & astid,
+                                    const QString & roomnum,
+                                    const QString & channel,
                                     const QVariant & details)
 {
-        // qDebug() << "ConferencePanel::setProperties()" << details;
+        // qDebug() << "ConferencePanel::setProperties()" << action << adminid << astid << roomnum << channel << details;
         QString idxroom = astid + "-" + roomnum;
         QString ref = astid + "-" + roomnum + "-" + channel;
         if(action == "join") {
                 QString usernum = details.toMap()["usernum"].toString();
                 QString fullname = details.toMap()["fullname"].toString();
                 QString phonenum = details.toMap()["phonenum"].toString();
+                QString userid = details.toMap()["userid"].toString();
+                // int t0 = details.toMap()["time_now"].toInt();
+                int t1 = details.toMap()["time_spent"].toInt();
                 if(! m_infos.contains(ref)) {
                         m_infos[ref] = new QLabel(fullname + " <" + phonenum + ">");
                         m_infos[ref]->setProperty("astid", astid);
                         m_infos[ref]->setProperty("room", roomnum);
+                        
+                        m_timespent[ref] = new QLabel(QString::number(t1));
                         
                         m_action_kick[ref] = new QPushButton(tr("Kick"));
                         m_action_kick[ref]->setIcon(QIcon(":/images/cancel.png"));
@@ -166,8 +178,11 @@ void ConferencePanel::setProperties(const QString & action, const QString & asti
                         m_action_kick[ref]->setProperty("reference", ref);
                         m_action_kick[ref]->setProperty("channel", channel);
                         m_action_kick[ref]->setProperty("action", "kick");
-                        connect(m_action_kick[ref], SIGNAL(clicked()),
-                                this, SLOT(doMeetMeAction()));
+                        if((m_ui->userid() == adminid) || (m_ui->userid() == userid))
+                                connect(m_action_kick[ref], SIGNAL(clicked()),
+                                        this, SLOT(doMeetMeAction()));
+                        else
+                                m_action_kick[ref]->hide();
                         
                         m_action_record[ref] = new QPushButton(tr("Record"));
                         m_action_record[ref]->setIcon(QIcon(":/images/cancel.png"));
@@ -179,8 +194,11 @@ void ConferencePanel::setProperties(const QString & action, const QString & asti
                         m_action_record[ref]->setProperty("channel", channel);
                         m_action_record[ref]->setProperty("action", "record");
                         m_action_record[ref]->setProperty("recordstatus", "off");
-                        connect(m_action_record[ref], SIGNAL(clicked()),
-                                this, SLOT(doMeetMeAction()));
+                        if(m_ui->userid() == adminid)
+                                connect(m_action_record[ref], SIGNAL(clicked()),
+                                        this, SLOT(doMeetMeAction()));
+                        else
+                                m_action_record[ref]->hide();
                         
                         m_action_mute[ref] = new QPushButton(tr("Mute"));
                         m_action_mute[ref]->setIcon(QIcon(":/images/cancel.png"));
@@ -192,14 +210,18 @@ void ConferencePanel::setProperties(const QString & action, const QString & asti
                         m_action_mute[ref]->setProperty("channel", channel);
                         m_action_mute[ref]->setProperty("action", "mute");
                         m_action_mute[ref]->setProperty("mutestatus", "off");
-                        connect(m_action_mute[ref], SIGNAL(clicked()),
-                                this, SLOT(doMeetMeAction()));
+                        if((m_ui->userid() == adminid) || (m_ui->userid() == userid))
+                                connect(m_action_mute[ref], SIGNAL(clicked()),
+                                        this, SLOT(doMeetMeAction()));
+                        else
+                                m_action_mute[ref]->hide();
                         // QPushButton * qp2 = new QPushButton(tr("Spy"));
                         
                         m_layout[idxroom]->addWidget( m_infos[ref], usernum.toInt(), 1 );
                         m_layout[idxroom]->addWidget( m_action_kick[ref], usernum.toInt(), 2 );
                         m_layout[idxroom]->addWidget( m_action_record[ref], usernum.toInt(), 3 );
                         m_layout[idxroom]->addWidget( m_action_mute[ref], usernum.toInt(), 4 );
+                        m_layout[idxroom]->addWidget( m_timespent[ref], usernum.toInt(), 5 );
                         // glayout->addWidget( qp2, 0, 3 );
                 }
         } else if(action == "leave") {
@@ -208,14 +230,17 @@ void ConferencePanel::setProperties(const QString & action, const QString & asti
                         m_layout[idxroom]->removeWidget( m_action_kick[ref] );
                         m_layout[idxroom]->removeWidget( m_action_record[ref] );
                         m_layout[idxroom]->removeWidget( m_action_mute[ref] );
+                        m_layout[idxroom]->removeWidget( m_timespent[ref] );
                         delete m_infos[ref];
                         delete m_action_kick[ref];
                         delete m_action_record[ref];
                         delete m_action_mute[ref];
+                        delete m_timespent[ref];
                         m_infos.remove(ref);
                         m_action_kick.remove(ref);
                         m_action_record.remove(ref);
                         m_action_mute.remove(ref);
+                        m_timespent.remove(ref);
                 }
                 int count = 0;
                 foreach(QString r, m_infos.keys())
@@ -240,6 +265,19 @@ void ConferencePanel::setProperties(const QString & action, const QString & asti
                                 qDebug() << "ConferencePanel::meetmeEvent() unknown mutestatus" << mutestatus << ref;
                         }
                         m_action_mute[ref]->setIconSize(QSize(16, 16));
+                }
+        } else if(action == "recordstatus") {
+                QString recordstatus = details.toMap()["recordstatus"].toString();
+                if(m_infos.contains(ref)) {
+                        if(recordstatus == "on") {
+                                m_action_record[ref]->setText(tr("Stop Record"));
+                                m_action_record[ref]->setProperty("recordstatus", "on");
+                        } else if(recordstatus == "off") {
+                                m_action_record[ref]->setText(tr("Record"));
+                                m_action_record[ref]->setProperty("recordstatus", "off");
+                        } else {
+                                qDebug() << "ConferencePanel::meetmeEvent() unknown recordstatus" << recordstatus << ref;
+                        }
                 }
         }
 }
