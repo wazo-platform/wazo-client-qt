@@ -71,7 +71,7 @@ const QStringList XletList = (QStringList() << "customerinfo" << "features" << "
 #ifdef USE_OUTLOOK
                               << "outlook"
 #endif /* USE_OUTLOOK */
-                              << "agents" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
+                              << "agents" << "agentsnext" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
 const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
 
 #endif /* __XIVOCONSTS_H__ */
