@@ -186,7 +186,7 @@ private slots:
 	void socketError(QAbstractSocket::SocketError);
 	void socketStateChanged(QAbstractSocket::SocketState);
 	void socketReadyRead();
-        void actionFromFiche(const QStringList &);
+        void actionFromFiche(const QVariant &);
         void readInputEvent(int);
 signals:
 	void logged();				//!< signal emitted when the state becomes ELogged

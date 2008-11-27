@@ -762,11 +762,6 @@ bool BaseEngine::parseCommand(const QString & line)
                                 }
                         }
                         
-                } else if (thisclass == "call") {
-                        // qDebug() << thisclass
-                        // << "caller =" << datamap["caller"].toMap()
-                        // << "called =" << datamap["called"].toMap();
-                        
                 } else if (thisclass == "users") {
                         QString function = datamap["function"].toString();
                         if (function == "sendlist") {
@@ -1038,7 +1033,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         }
 
                 } else {
-                        qDebug() << "unknown server command class" << thisclass;
+                        qDebug() << "unknown server command class" << thisclass << datamap;
                 }
         }
         
@@ -1239,13 +1234,13 @@ void BaseEngine::socketReadyRead()
         }
 }
 
-void BaseEngine::actionFromFiche(const QStringList & infos)
+void BaseEngine::actionFromFiche(const QVariant & infos)
 {
         // qDebug() << "BaseEngine::actionFromFiche()" << infos;
         QVariantMap command;
         command["class"] = "actionfiche";
         command["direction"] = "xivoserver";
-        command["buttonaction"] = infos;
+        command["infos"] = infos;
         sendJsonCommand(command);
 }
 

@@ -150,8 +150,8 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
                  this, SLOT(showNewProfile(Popup *)) );
         connect( popup, SIGNAL(save(const QString &)),
                  this, SLOT(addToDataBase(const QString &)) );
-        connect( popup, SIGNAL(actionFromPopup(const QString &)),
-                 this, SLOT(actionFromPopup(const QString &)) );
+        connect( popup, SIGNAL(actionFromPopup(const QString &, const QVariant &)),
+                 this, SLOT(actionFromPopup(const QString &, const QVariant &)) );
         connect( popup, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
                  this, SLOT(localActionCall(const QString &, const QString &, const QString &)) );
 }
@@ -161,7 +161,7 @@ void CustomerInfoPanel::localActionCall(const QString & a, const QString & b, co
         actionCall(a, b, c);
 }
 
-void CustomerInfoPanel::actionFromPopup(const QString & buttonname)
+void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVariant & timestamps)
 {
         QString sessionid = sender()->property("sessionid").toString();
         Popup * thispopup = NULL;
@@ -171,9 +171,11 @@ void CustomerInfoPanel::actionFromPopup(const QString & buttonname)
                         break;
                 }
         if(thispopup) {
-                QStringList qsl;
-                qsl << buttonname
-                    << thispopup->sessionid() << thispopup->channel();
-                actionFromFiche(qsl);
+                QVariantMap data;
+                data["buttonname"] = buttonname;
+                data["sessionid"] = thispopup->sessionid();
+                data["channel"] = thispopup->channel();
+                data["timestamps"] = timestamps;
+                actionFromFiche(QVariant(data));
         }
 }

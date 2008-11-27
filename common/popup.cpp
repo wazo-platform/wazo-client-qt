@@ -169,9 +169,9 @@ void Popup::actionFromForm()
         else if(buttonname == "save")
                 saveandclose();
         else if((buttonname == "hangup") || (buttonname == "answer"))
-                actionFromPopup(buttonname);
+                actionFromPopup(buttonname, QVariant(m_timestamps));
         else if(buttonname.startsWith("XIVO_CALL_STATUS-")) {
-                actionFromPopup(buttonname);
+                actionFromPopup(buttonname, QVariant(m_timestamps));
                 close();
         }
 }
@@ -363,6 +363,7 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
         } else if(name == "kind") {
                 // the form buttons should have been defined when arriving here
                 // ('kind' definition at the end of the sheet on server-side)
+                m_timestamps[value] = QDateTime::currentDateTime().toTime_t();
                 if(value == "agi") {
                         if(m_form_buttons["hangup"]) {
                                 qDebug() << m_form_buttons.keys();

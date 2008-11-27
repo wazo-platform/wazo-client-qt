@@ -46,6 +46,7 @@
 #include <QIODevice>
 #include <QVBoxLayout>
 #include <QTcpSocket>
+#include <QVariant>
 #include <QWidget>
 #include "xmlhandler.h"
 #ifdef USE_OUTLOOK
@@ -117,7 +118,7 @@ signals:
 	void actionCall(const QString &,
                         const QString &,
                         const QString &);	//!< sent when the widget wants to dial
-        void actionFromPopup(const QString &);
+        void actionFromPopup(const QString &, const QVariant &);
         void save(const QString &);
 public slots:
 	void streamNewData();		//!< new input data is available
@@ -163,6 +164,7 @@ private:
         QList<QStringList> m_sheetlines;
         QHash<QString, QPushButton *> m_form_buttons;
         QHash<QString, QString> m_remoteforms;
+        QVariantMap m_timestamps;
 #ifdef USE_OUTLOOK
 	COLContact m_OLContact;
 	bool	m_bOLFound;

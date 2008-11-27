@@ -65,7 +65,7 @@ signals:
         void newPopup(const QString &,
                       const QHash<QString, QString> &,
                       const QString &);
-        void actionFromFiche(const QStringList &);
+        void actionFromFiche(const QVariant &);
         void actionCall(const QString &, const QString &, const QString &);
 public slots:
         void setGuiOptions(const QVariant &);
@@ -74,7 +74,7 @@ public slots:
         void popupDestroyed(QObject * obj);
         void addToDataBase(const QString &);
         void displayFiche(const QString &, bool);
-        void actionFromPopup(const QString &);
+        void actionFromPopup(const QString &, const QVariant &);
         void localActionCall(const QString &, const QString &, const QString &);
 private:
         const UserInfo * m_ui;

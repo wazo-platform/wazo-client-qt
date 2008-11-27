@@ -1079,8 +1079,8 @@ void MainWidget::engineStarted()
                                          m_xlet[xletid], SLOT(displayFiche(const QString &, bool)) );
                                 connect( m_xlet[xletid], SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
                                          this, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)) );
-                                connect( m_xlet[xletid], SIGNAL(actionFromFiche(const QStringList &)),
-                                         m_engine, SLOT(actionFromFiche(const QStringList &)) );
+                                connect( m_xlet[xletid], SIGNAL(actionFromFiche(const QVariant &)),
+                                         m_engine, SLOT(actionFromFiche(const QVariant &)) );
                                 
 			} else if (xletid == QString("search")) {
 				m_xlet[xletid] = new SearchPanel(m_engine, m_options);
