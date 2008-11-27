@@ -45,7 +45,6 @@
 #include <QClipboard>
 #include <QCloseEvent>
 #include <QComboBox>
-#include <QDateTime>
 #include <QDebug>
 #include <QDockWidget>
 #include <QGridLayout>
@@ -894,10 +893,10 @@ void MainWidget::engineStarted()
                                 m_xlet[xletid] = new ConferencePanel();
                                 addPanel(xletid, tr("Conference"), m_xlet[xletid]);
                                 
-                                connect( m_engine, SIGNAL(meetmeEvent(const QVariant &)),
-                                         m_xlet[xletid], SLOT(meetmeEvent(const QVariant &)));
-                                connect( m_engine, SIGNAL(meetmeInit(const QVariant &)),
-                                         m_xlet[xletid], SLOT(meetmeInit(const QVariant &)));
+                                connect( m_engine, SIGNAL(meetmeEvent(int, const QVariant &)),
+                                         m_xlet[xletid], SLOT(meetmeEvent(int, const QVariant &)));
+                                connect( m_engine, SIGNAL(meetmeInit(int, const QVariant &)),
+                                         m_xlet[xletid], SLOT(meetmeInit(int, const QVariant &)));
                                 connect( m_xlet[xletid], SIGNAL(meetmeAction(const QString &, const QString &)),
                                          m_engine, SLOT(meetmeAction(const QString &, const QString &)));
                                 

@@ -199,8 +199,8 @@ signals:
         void featurePutIsKO();
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
-        void meetmeEvent(const QVariant &);
-        void meetmeInit(const QVariant &);
+        void meetmeEvent(int, const QVariant &);
+        void meetmeInit(int, const QVariant &);
         void requestFileListResult(const QVariant &);
         void updatePresence(const QVariant &);
         void updateCounter(const QVariant &);

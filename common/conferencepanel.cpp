@@ -40,6 +40,7 @@
  */
 
 #include <QDebug>
+#include <QDateTime>
 #include <QGridLayout>
 #include <QLabel>
 #include <QPushButton>
@@ -59,6 +60,7 @@ ConferencePanel::ConferencePanel(QWidget * parent)
         m_glayout->addWidget( m_tw, 0, 0 );
         m_glayout->setRowStretch( 0, 1 );
         m_glayout->setColumnStretch( 0, 1 );
+        startTimer(1000);
 }
 
 ConferencePanel::~ConferencePanel()
@@ -74,7 +76,7 @@ void ConferencePanel::setUserInfo(const UserInfo * ui)
         m_ui = ui;
 }
 
-void ConferencePanel::meetmeInit(const QVariant & meetme)
+void ConferencePanel::meetmeInit(int timeref, const QVariant & meetme)
 {
         // qDebug() << "ConferencePanel::meetmeInit()" << meetme;
         foreach(QString astid, meetme.toMap().keys()) {
@@ -88,9 +90,9 @@ void ConferencePanel::meetmeInit(const QVariant & meetme)
                         if(channels.size() > 0) {
                                 addRoomTab(astid, roomnum, roomname);
                                 foreach(QString chan, channels.keys()) {
-                                        setProperties("join", adminid, astid, roomnum, chan, channels[chan]);
-                                        setProperties("mutestatus", adminid, astid, roomnum, chan, channels[chan]);
-                                        setProperties("recordstatus", adminid, astid, roomnum, chan, channels[chan]);
+                                        setProperties(timeref, "join", adminid, astid, roomnum, chan, channels[chan]);
+                                        setProperties(timeref, "mutestatus", adminid, astid, roomnum, chan, channels[chan]);
+                                        setProperties(timeref, "recordstatus", adminid, astid, roomnum, chan, channels[chan]);
                                 }
                         } else {
                                 delRoomTab(astid, roomnum);
@@ -127,7 +129,7 @@ void ConferencePanel::addRoomTab(const QString & astid,
         }
 }
 
-void ConferencePanel::meetmeEvent(const QVariant & meetme)
+void ConferencePanel::meetmeEvent(int timeref, const QVariant & meetme)
 {
         // qDebug() << "ConferencePanel::meetmeEvent()" << meetme;
         QString astid = meetme.toMap()["astid"].toString();
@@ -137,7 +139,8 @@ void ConferencePanel::meetmeEvent(const QVariant & meetme)
         QString adminid = meetme.toMap()["adminid"].toString();
         addRoomTab(astid, roomnum, roomname);
         
-        setProperties(meetme.toMap()["action"].toString(),
+        setProperties(timeref,
+                      meetme.toMap()["action"].toString(),
                       adminid,
                       astid,
                       roomnum,
@@ -145,7 +148,8 @@ void ConferencePanel::meetmeEvent(const QVariant & meetme)
                       meetme.toMap()["details"]);
 }
 
-void ConferencePanel::setProperties(const QString & action,
+void ConferencePanel::setProperties(int timeref,
+                                    const QString & action,
                                     const QString & adminid,
                                     const QString & astid,
                                     const QString & roomnum,
@@ -160,14 +164,15 @@ void ConferencePanel::setProperties(const QString & action,
                 QString fullname = details.toMap()["fullname"].toString();
                 QString phonenum = details.toMap()["phonenum"].toString();
                 QString userid = details.toMap()["userid"].toString();
-                // int t0 = details.toMap()["time_now"].toInt();
-                int t1 = details.toMap()["time_spent"].toInt();
+                int time_spent = timeref - details.toMap()["time_start"].toInt();
                 if(! m_infos.contains(ref)) {
                         m_infos[ref] = new QLabel(fullname + " <" + phonenum + ">");
                         m_infos[ref]->setProperty("astid", astid);
                         m_infos[ref]->setProperty("room", roomnum);
                         
-                        m_timespent[ref] = new QLabel(QString::number(t1));
+                        m_timespent[ref] = new QLabel();
+                        m_timespent[ref]->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+                        m_timespent[ref]->setProperty("inittime", QDateTime::currentDateTime().addSecs(- time_spent));
                         
                         m_action_kick[ref] = new QPushButton(tr("Kick"));
                         m_action_kick[ref]->setIcon(QIcon(":/images/cancel.png"));
@@ -331,5 +336,21 @@ void ConferencePanel::doMeetMeAction()
                         qDebug() << "ConferencePanel::doMeetMeAction() unknown mutestatus" << mutestatus << ref;
                 }
                 m_action_mute[ref]->setIconSize(QSize(8, 8));
+        }
+}
+
+void ConferencePanel::timerEvent(QTimerEvent *)
+{
+        foreach(QString ref, m_timespent.keys()) {
+                QDateTime inittime = m_timespent[ref]->property("inittime").toDateTime();
+                int nsec = inittime.secsTo(QDateTime::currentDateTime());
+                int dmin = nsec / 60;
+                int dsec = nsec % 60;
+                QString displayedtime;
+                if(dmin > 0)
+                        displayedtime = tr("%1 min %2 sec").arg(QString::number(dmin), QString::number(dsec));
+                else
+                        displayedtime = tr("%1 sec").arg(QString::number(dsec));
+                m_timespent[ref]->setText(displayedtime);
         }
 }

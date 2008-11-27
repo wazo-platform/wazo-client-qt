@@ -52,6 +52,7 @@ class QGridLayout;
 class QProgressBar;
 class QPushButton;
 class QTabWidget;
+class QTimerEvent;
 
 class UserInfo;
 
@@ -64,14 +65,16 @@ public:
 	ConferencePanel(QWidget * parent = 0);
 	~ConferencePanel();
 protected:
+        void timerEvent(QTimerEvent *);
 public slots:
         void setUserInfo(const UserInfo *);
-        void meetmeEvent(const QVariant &);
-        void meetmeInit(const QVariant &);
+        void meetmeEvent(int, const QVariant &);
+        void meetmeInit(int, const QVariant &);
         void doMeetMeAction();
         void setGuiOptions(const QVariant &);
 private:
-        void setProperties(const QString &,
+        void setProperties(int,
+                           const QString &,
                            const QString &,
                            const QString &,
                            const QString &,

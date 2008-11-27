@@ -717,10 +717,11 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "meetme") {
                         QString function = datamap["function"].toString();
+                        int timeref = datamap["timenow"].toInt();
                         if (function == "sendlist")
-                                meetmeInit(datamap["payload"]);
+                                meetmeInit(timeref, datamap["payload"]);
                         else if (function == "update")
-                                meetmeEvent(datamap["payload"]);
+                                meetmeEvent(timeref, datamap["payload"]);
                         
                 } else if (thisclass == "serverdown") {
                         qDebug() << thisclass << datamap["mode"].toString();
