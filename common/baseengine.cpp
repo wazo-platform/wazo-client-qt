@@ -1106,8 +1106,10 @@ void BaseEngine::popupError(const QString & errorid)
         else if(errorid.toLower() == "session_expired")
                 errormsg = tr("Your session has expired.");
         
-        else if(errorid.toLower() == "capaid_undefined")
-                errormsg = tr("Your profile name is not defined.");
+        else if(errorid.startsWith("capaid_undefined:")) {
+                QStringList capainfo = errorid.split(":");
+                errormsg = tr("Your profile name <%1> is not defined.").arg(capainfo[1]);
+        }
         
         else if(errorid.toLower() == "login_password")
                 errormsg = tr("You entered a wrong login / password.");
