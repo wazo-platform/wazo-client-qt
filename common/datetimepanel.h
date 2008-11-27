@@ -67,7 +67,6 @@ public slots:
 private:
         QGridLayout * m_gridlayout;
         QLabel * m_datetime;
-        int m_timer;
 };
 
 #endif /* __DATETIMEPANEL_H__ */

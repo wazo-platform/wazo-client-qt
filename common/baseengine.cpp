@@ -40,12 +40,12 @@
  */
 
 #include <QCryptographicHash>
+#include <QDateTime>
 #include <QDebug>
 #include <QFile>
 #include <QSettings>
 #include <QSocketNotifier>
 #include <QTcpSocket>
-#include <QTime>
 #include <QTimerEvent>
 
 #include "JsonToVariant.h"

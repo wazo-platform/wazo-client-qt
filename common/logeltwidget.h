@@ -42,11 +42,11 @@
 #ifndef __LOGELTWIDGET_H__
 #define __LOGELTWIDGET_H__
 
-#include <QWidget>
 #include <QDateTime>
-#include <QAction>
-#include <QContextMenuEvent>
+#include <QWidget>
 
+class QAction;
+class QContextMenuEvent;
 class QMouseEvent;
 
 /*! \brief Log element widget
@@ -63,9 +63,9 @@ public:
                      int,
                      const QString &,
                      QWidget * parent = 0 );
-	const QDateTime & dateTime() const { return m_dateTime; };	//! get m_dateTime
-	const QString & peer() const { return m_peer; };		//! get m_peer
-	Direction direction() const { return m_direction; };		//! get m_direction
+	const QDateTime & dateTime() const;	//! get m_dateTime
+	const QString & peer() const;		//! get m_peer
+	Direction direction() const;		//! get m_direction
 protected:
 	void contextMenuEvent(QContextMenuEvent *);
         void mouseDoubleClickEvent(QMouseEvent *);

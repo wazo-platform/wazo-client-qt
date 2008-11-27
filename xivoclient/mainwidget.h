@@ -42,17 +42,11 @@
 #ifndef __MAINWIDGET_H__
 #define __MAINWIDGET_H__
 
-#include <QCheckBox>
 #include <QDateTime>
 #include <QHash>
-#include <QLabel>
-#include <QLineEdit>
 #include <QMainWindow>
-#include <QPushButton>
 #include <QSettings>
-#include <QSplitter>
 #include <QSystemTrayIcon>
-#include <QVBoxLayout>
 #include <QWidget>
 
 #include "baseengine.h"
@@ -60,18 +54,20 @@
 
 class QAction;
 class QActionGroup;
+class QCheckBox;
 class QClipboard;
 class QCloseEvent;
 class QComboBox;
-class QDateTime;
 class QDockWidget;
 class QEvent;
+class QGridLayout;
 class QKeyEvent;
 class QLabel;
+class QLineEdit;
+class QPushButton;
 class QScrollArea;
 class QSystemTrayIcon;
 class QTabWidget;
-class QVBoxLayout;
 class QWidget;
 class QUrl;
 

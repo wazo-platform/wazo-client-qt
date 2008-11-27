@@ -117,12 +117,20 @@ const QString & Call::getStatus() const
         return m_status;
 }
 
+//! get duration of the channel
+int Call::getTime() const {
+        return m_startTime.secsTo(QDateTime::currentDateTime());
+}
 
+//! get m_channelpeer
+const QString & Call::getChannelPeer() const {
+        return m_channelpeer;
+}
 
-
-
-
-
+//! get m_exten
+const QString & Call::getExten() const {
+        return m_exten;
+}
 
 
 /*! \brief Constructor

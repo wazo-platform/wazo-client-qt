@@ -71,14 +71,10 @@ public:
 	const QString & getChannelMe() const;	//! get m_channelme
 	const QString & getStatus() const;	//! get m_status
         
-	//! get duration of the channel
-	int getTime() const {
-		return m_startTime.secsTo(QDateTime::currentDateTime());
-	};
-	//! get m_channelpeer
-	const QString & getChannelPeer() const {return m_channelpeer;};
-	//! get m_exten
-	const QString & getExten() const {return m_exten;};
+	int getTime() const;	//! get duration of the channel
+	const QString & getChannelPeer() const;	//! get m_channelpeer
+	const QString & getExten() const;	//! get m_exten
+        
 	void updateCall(const QString &,
 			int,
 			const QString &,

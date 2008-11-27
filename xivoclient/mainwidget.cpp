@@ -41,12 +41,14 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QCheckBox>
 #include <QClipboard>
 #include <QCloseEvent>
 #include <QComboBox>
 #include <QDateTime>
 #include <QDebug>
 #include <QDockWidget>
+#include <QGridLayout>
 #include <QHideEvent>
 #include <QLabel>
 #include <QMenu>
@@ -58,7 +60,6 @@
 #include <QStatusBar>
 #include <QSystemTrayIcon>
 #include <QTabWidget>
-#include <QTime>
 #include <QVBoxLayout>
 
 #include "agentspanel.h"
@@ -1038,8 +1039,8 @@ void MainWidget::engineStarted()
                                                                      const QString &,
                                                                      const QVariant &)),
                                          m_xlet[xletid], SLOT(updatePeer(UserInfo *,
-                                                                     const QString &,
-                                                                     const QVariant &)) );
+                                                                         const QString &,
+                                                                         const QVariant &)) );
                                 connect( m_engine, SIGNAL(newUser(UserInfo *)),
                                          m_xlet[xletid], SLOT(newUser(UserInfo *)));
 				connect( m_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QStringList &)),
@@ -1145,8 +1146,8 @@ void MainWidget::engineStarted()
                                                                      const QString &,
                                                                      const QVariant &)),
                                          m_xlet[xletid], SLOT(updatePeer(UserInfo *,
-                                                                     const QString &,
-                                                                     const QVariant &)) );
+                                                                         const QString &,
+                                                                         const QVariant &)) );
 				connect( m_xlet[xletid], SIGNAL(searchDirectory(const QString &)),
 					 m_engine, SLOT(searchDirectory(const QString &)) );
 				connect( m_engine, SIGNAL(directoryResponse(const QString &)),

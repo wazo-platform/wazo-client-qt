@@ -45,7 +45,6 @@
 #include <QLabel>
 #include <QMenu>
 #include <QTableWidget>
-#include <QTime>
 #include <QTimerEvent>
 #include <QVBoxLayout>
 
@@ -119,8 +118,7 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
         QString astid, parkplacenum, seconds, parkedpeer, parkedby;
         QString eventkind = subcommand.toMap()["status"].toString();
         QStringList newpark = subcommand.toMap()["args"].toStringList();
-        // QTime time = QTime::currentTime();
-
+        
         if(newpark.size() >= 3) {
                 astid        = newpark[0];
                 parkedpeer   = newpark[1].split("-")[0];

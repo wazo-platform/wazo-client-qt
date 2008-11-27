@@ -39,9 +39,11 @@
  * $Date$
  */
 
+#include <QAction>
 #include <QDebug>
-#include <QHBoxLayout>
+#include <QContextMenuEvent>
 #include <QGridLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QMenu>
 #include <QMouseEvent>
@@ -110,6 +112,21 @@ LogEltWidget::LogEltWidget(const QString & peer, Direction d,
 	m_dialAction->setStatusTip( tr("Call back the correspondent") );
 	connect( m_dialAction, SIGNAL(triggered()),
 	         this, SLOT(callBackPeer()) );
+}
+
+const QDateTime & LogEltWidget::dateTime() const
+{
+        return m_dateTime;
+}
+
+const QString & LogEltWidget::peer() const
+{
+        return m_peer;
+}
+
+LogEltWidget::Direction LogEltWidget::direction() const
+{
+        return m_direction;
 }
 
 void LogEltWidget::mouseDoubleClickEvent(QMouseEvent */* event*/)

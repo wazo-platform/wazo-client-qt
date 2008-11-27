@@ -61,9 +61,6 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         : QWidget(parent),
           m_ui(NULL), m_agentstatus(false), m_queuechangeallow(true), m_maxqueues(5)
 {
-#if defined(Q_WS_X11)
-        m_gui_font = QFont("sans serif", 9);
-#endif
         m_gui_buttonsize = 16;
         
 	QGridLayout * glayout = new QGridLayout(this);

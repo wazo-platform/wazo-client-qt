@@ -60,8 +60,8 @@ DatetimePanel::DatetimePanel(QWidget * parent)
  	m_gridlayout->setColumnStretch( 2, 1 );
  	m_gridlayout->setRowStretch( 0, 1 );
  	m_gridlayout->setRowStretch( 2, 1 );
-
-        m_timer = startTimer(1000);
+        
+        startTimer(1000);
 }
 
 void DatetimePanel::setGuiOptions(const QVariant &)
@@ -72,10 +72,7 @@ void DatetimePanel::setUserInfo(const UserInfo *)
 {
 }
 
-void DatetimePanel::timerEvent(QTimerEvent * event)
+void DatetimePanel::timerEvent(QTimerEvent *)
 {
-	int timerId = event->timerId();
-        if(timerId == m_timer)
-                m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
-        // qDebug() << "DatetimePanel::timerEvent() timerId=" << timerId << m_timer;
+        m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
 }

@@ -46,7 +46,6 @@
 #include <QPoint>
 #include <QPushButton>
 #include <QSettings>
-#include <QTime>
 #include <QToolTip>
 
 #include "baseengine.h"
@@ -262,8 +261,6 @@ void SwitchBoardWindow::removePeers(void)
 {
         // qDebug() << "SwitchBoardWindow::removePeers()";
         QHashIterator<QString, PeerItem *> peeriter(m_peerhash);
-        QTime qtime;
-        qtime.start();
         while(peeriter.hasNext()) {
                 peeriter.next();
                 PeerItem * peeritem = peeriter.value();
@@ -291,7 +288,6 @@ void SwitchBoardWindow::removePeers(void)
         }
        	m_peerhash.clear();
        	m_peerlist.clear();
-        // qDebug() << "SwitchBoardWindow::removePeers : time elapsed" << qtime.elapsed();
 }
 
 // void SwitchBoardWindow::mouseMoveEvent(QMouseEvent * event)

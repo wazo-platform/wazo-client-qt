@@ -272,8 +272,6 @@ void SearchPanel::removePeers()
 {
         // qDebug() << "SearchPanel::removePeers()";
         QHashIterator<QString, PeerItem *> i(m_peerhash);
-        //         QTime qtime;
-        //         qtime.start();
         while(i.hasNext()) {
                 i.next();
                 PeerItem * peeritem = i.value();

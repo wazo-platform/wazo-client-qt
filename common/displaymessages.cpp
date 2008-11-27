@@ -39,11 +39,11 @@
  * $Date$
  */
 
+#include <QDateTime>
 #include <QDebug>
 #include <QHeaderView>
 #include <QLabel>
 #include <QTableWidget>
-#include <QTime>
 #include <QVBoxLayout>
 
 #include "displaymessages.h"
@@ -80,9 +80,9 @@ void DisplayMessagesPanel::addMessage(const QString & str)
 {
 	//qDebug() << "DisplayMessagesPanel::addMessage()" << str;
         if(str.size() > 0) {
-                QTime time = QTime::currentTime();
+                QDateTime datetime = QDateTime::currentDateTime();
                 m_table->insertRow( 0 );
-                QTableWidgetItem * item1 = new QTableWidgetItem( time.toString( Qt::ISODate ) );
+                QTableWidgetItem * item1 = new QTableWidgetItem( datetime.toString( Qt::ISODate ) );
                 item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
                 m_table->setItem( 0, 0, item1 );
                 QTableWidgetItem * item2 = new QTableWidgetItem( str );

@@ -40,11 +40,11 @@
  */
 
 #include <QBuffer>
+#include <QDateTime>
 #include <QDebug>
 #include <QLabel>
 #include <QGridLayout>
 #include <QTabWidget>
-#include <QTime>
 #include <QVariant>
 
 #include "customerinfopanel.h"
@@ -97,7 +97,7 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
                         qDebug() << "CustomerInfoPanel::showNewProfile()" << "found a match for" << popup->sessionid();
                         already_popup->update(popup->sheetlines());
                 } else {
-                        QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
+                        QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm:ss");
                         quint32 index = m_tabs->addTab(popup, currentTimeStr);
                         qDebug() << "CustomerInfoPanel::showNewProfile() : added tab" << index;
                         m_popups.append(popup);
