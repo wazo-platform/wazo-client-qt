@@ -175,7 +175,7 @@ void SwitchBoardWindow::newUser(UserInfo * ui)
 
 void SwitchBoardWindow::updatePeerAgent(const QString & id,
                                         const QString & what,
-                                        const QStringList & statuslist)
+                                        const QVariant & statuslist)
 {
         // qDebug() << "SwitchBoardWindow::updatePeerAgent()";
         if(m_peerhash.contains(id)) {

@@ -81,7 +81,7 @@ public slots:
         void setQueueStatus(const QStringList &);
         void updatePeerAgent(const QString &,
                              const QString &,
-                             const QStringList &);
+                             const QVariant &);
 private slots:
         void queueClicked();
         void checkBoxStateChanged(int);

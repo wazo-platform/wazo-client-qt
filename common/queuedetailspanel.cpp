@@ -87,38 +87,34 @@ void QueuedetailsPanel::setUserInfo(const UserInfo *)
 
 void QueuedetailsPanel::updatePeerAgent(const QString &,
                                         const QString & what,
-                                        const QStringList & params)
+                                        const QVariant & params)
 {
         if(what != "agentstatus")
                 return;
-        if(params.size() < 3)
-                return;
         // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
-        QString command = params[0];
-        QString astid = params[1];
-        QString agname = params[2];
+        QString action = params.toMap()["action"].toString();
+        QString astid = params.toMap()["astid"].toString();
+        QString agentnum = params.toMap()["agent_channel"].toString().mid(6);
+        QString qname = params.toMap()["queuename"].toString();
         
-        if(command == "joinqueue") {
-                QString qname = params[3];
+        if(action == "joinqueue") {
                 if((astid == m_astid) && (qname == m_queueid)) {
-                        if(! m_agentlist.contains(agname)) {
-                                m_agentlist.append(agname);
+                        if(! m_agentlist.contains(agentnum)) {
+                                m_agentlist.append(agentnum);
                                 m_agentlist.sort();
                                 update();
                         }
                 }
-        } else if(command == "leavequeue") {
-                QString qname = params[3];
+        } else if(action == "leavequeue") {
                 if((astid == m_astid) && (qname == m_queueid))
-                        if(m_agentlist.contains(agname)) {
-                                m_agentlist.removeAll(agname);
+                        if(m_agentlist.contains(agentnum)) {
+                                m_agentlist.removeAll(agentnum);
                                 m_agentlist.sort();
                                 update();
                         }
-        } else if(command == "queuememberstatus") {
-                QString qname = params[3];
+        } else if(action == "queuememberstatus") {
                 if((astid == m_astid) && (qname == m_queueid)) {
-                        if(m_agentlist.contains(agname))
+                        if(m_agentlist.contains(agentnum))
                                 qDebug() << "qms c" << params;
                         else
                                 qDebug() << "qms n" << params;

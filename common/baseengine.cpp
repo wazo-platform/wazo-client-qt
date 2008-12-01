@@ -670,18 +670,16 @@ bool BaseEngine::parseCommand(const QString & line)
                                 foreach (QVariant qv, datamap["payload"].toList())
                                         newAgentList(qv);
                         } else if(function == "update") {
-                                QString action = datamap["action"].toString();
-                                QString astid = datamap["astid"].toString();
-                                QString agent_channel = datamap["agent_channel"].toString();
+                                QVariant params = datamap["payload"];
+                                QString action = params.toMap()["action"].toString();
+                                QString astid = params.toMap()["astid"].toString();
+                                QString agent_channel = params.toMap()["agent_channel"].toString();
                                 if (agent_channel.startsWith("Agent/")) {
-                                        QString agentnum = agent_channel.mid(6);
-                                        QStringList liststatus = datamap["payload"].toStringList();
-                                        liststatus[2] = agentnum;
-                                        UserInfo * ui = findUserFromAgent(astid, agentnum);
+                                        UserInfo * ui = findUserFromAgent(astid, agent_channel.mid(6));
                                         if(ui)
-                                                updatePeerAgent(ui->userid(), "agentstatus", liststatus);
+                                                updatePeerAgent(ui->userid(), "agentstatus", params);
                                         else // (useful ?) in order to transfer the replies to unmatched agents
-                                                updatePeerAgent("", "agentstatus", liststatus);
+                                                updatePeerAgent("", "agentstatus", params);
                                 } else
                                         qDebug() << "update-agents agentnum" << astid << agent_channel;
                         } else if(function == "del") {

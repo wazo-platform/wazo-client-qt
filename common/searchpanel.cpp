@@ -238,7 +238,7 @@ void SearchPanel::newUser(UserInfo * ui)
 
 void SearchPanel::updatePeerAgent(const QString & id,
                                   const QString & what,
-                                  const QStringList & statuslist)
+                                  const QVariant & statuslist)
 {
         // qDebug() << "SearchPanel::updatePeerAgent()";
         if(m_peerhash.contains(id)) {

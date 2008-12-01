@@ -132,33 +132,33 @@ void AgentdetailsPanel::setUserInfo(const UserInfo *)
 
 void AgentdetailsPanel::updatePeerAgent(const QString &,
                                         const QString & what,
-                                        const QStringList & params)
+                                        const QVariant & params)
 {
         if(what != "agentstatus")
                 return;
         // qDebug() << "AgentdetailsPanel::updatePeerAgent()" << params << m_astid << m_agent;
-        QString command = params[0];
-        QString astid = params[1];
-        QString agname = params[2];
-
-        if(command == "agentlogin") {
-                QString phonenum = params[3];
-                if((m_agent == agname) && (m_astid == astid)) {
+        QString action = params.toMap()["action"].toString();
+        QString astid = params.toMap()["astid"].toString();
+        QString agentnum = params.toMap()["agent_channel"].toString().mid(6);
+        
+        if(action == "agentlogin") {
+                QString phonenum = params.toMap()["phonenum"].toString();
+                if((m_agent == agentnum) && (m_astid == astid)) {
                         m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
                         m_action["alogin"]->setIcon(QIcon(":/images/cancel.png"));
                         m_action["alogin"]->setProperty("function", "alogout");
                         m_actionlegends["alogin"]->setText(tr("Logout"));
                 }
-        } else if(command == "agentlogout") {
-                if((m_agent == agname) && (m_astid == astid)) {
+        } else if(action == "agentlogout") {
+                if((m_agent == agentnum) && (m_astid == astid)) {
                         m_agentstatus->setText(tr("logged off"));
                         m_action["alogin"]->setIcon(QIcon(":/images/button_ok.png"));
                         m_action["alogin"]->setProperty("function", "alogin");
                         m_actionlegends["alogin"]->setText(tr("Login"));
                 }
-        } else if(command == "joinqueue") {
-                if((m_agent == agname) && (m_astid == astid)) {
-                        QString qname = params[3];
+        } else if(action == "joinqueue") {
+                if((m_agent == agentnum) && (m_astid == astid)) {
+                        QString qname = params.toMap()["queuename"].toString();
                         if(m_queue_labels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::green);
@@ -166,7 +166,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 m_queue_join_status[qname]->setProperty("joined", true);
                                 m_queue_join_action[qname]->setIcon(QIcon(":/images/cancel.png"));
 
-                                QString pstatus = params[4];
+                                QString pstatus = params.toMap()["pausedstatus"].toString();
                                 if(pstatus == "1") {
                                         square->fill(Orange);
                                         m_queue_pause_status[qname]->setPixmap(* square);
@@ -182,9 +182,9 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 m_queue_pause_action[qname]->show();
                         }
                 }
-        } else if(command == "leavequeue") {
-                if((m_agent == agname) && (m_astid == astid)) {
-                        QString qname = params[3];
+        } else if(action == "leavequeue") {
+                if((m_agent == agentnum) && (m_astid == astid)) {
+                        QString qname = params.toMap()["queuename"].toString();
                         if(m_queue_labels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::gray);
@@ -196,9 +196,9 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 m_queue_pause_action[qname]->hide();
                         }
                 }
-        } else if(command == "paused") {
-                if((m_agent == agname) && (m_astid == astid)) {
-                        QString qname = params[3];
+        } else if(action == "paused") {
+                if((m_agent == agentnum) && (m_astid == astid)) {
+                        QString qname = params.toMap()["queuename"].toString();
                         if(m_queue_labels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Orange);
@@ -207,9 +207,9 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 m_queue_pause_action[qname]->setIcon(QIcon(":/images/button_ok.png"));
                         }
                 }
-        } else if(command == "unpaused") {
-                if((m_agent == agname) && (m_astid == astid)) {
-                        QString qname = params[3];
+        } else if(action == "unpaused") {
+                if((m_agent == agentnum) && (m_astid == astid)) {
+                        QString qname = params.toMap()["queuename"].toString();
                         if(m_queue_labels.contains(qname)) {
                                 QPixmap * square = new QPixmap(12, 12);
                                 square->fill(Qt::green);
@@ -218,13 +218,13 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 m_queue_pause_action[qname]->setIcon(QIcon(":/images/cancel.png"));
                         }
                 }
-        } else if(command == "queuememberstatus") {
-                if((m_agent == agname) && (m_astid == astid)) {
-                        QString qname = params[3];
+        } else if(action == "queuememberstatus") {
+                if((m_agent == agentnum) && (m_astid == astid)) {
+                        QString qname = params.toMap()["queuename"].toString();
                         if(m_queue_labels.contains(qname)) {
-                                QString jstatus = params[4];
-                                QString pstatus = params[5];
-
+                                QString jstatus = params.toMap()["joinedstatus"].toString();
+                                QString pstatus = params.toMap()["pausedstatus"].toString();
+                                
                                 QPixmap * square = new QPixmap(12, 12);
                                 if (jstatus == "1") {
                                         square->fill(Qt::green);

@@ -56,7 +56,7 @@
 #define CHAN_STATUS_UNLINKED_CALLER "unlinked-caller"
 #define CHAN_STATUS_UNLINKED_CALLED "unlinked-called"
 
-const int REQUIRED_SERVER_VERSION = 4661;
+const int REQUIRED_SERVER_VERSION = 4831;
 const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
 const QString __current_client_version__  = SVNVER;
 const QString __xivo_version__  = "0.4";

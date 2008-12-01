@@ -74,7 +74,7 @@ public slots:
         void newAgent(const QString &, const QString &, const QVariant &);
         void updatePeerAgent(const QString &,
                              const QString &,
-                             const QStringList &);
+                             const QVariant &);
         void saveToFile();
         void statusRecord(const QString &, const QString &);
 private slots:

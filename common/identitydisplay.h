@@ -73,7 +73,7 @@ public slots:
                         const QVariant &);
 	void updatePeerAgent(const QString &,
                              const QString &,
-                             const QStringList &);
+                             const QVariant &);
         void doAgentAction();
         void doQueueAction();
         void doQueueJoinAll();

@@ -384,7 +384,7 @@ void IdentityDisplay::hideAgentProps()
 
 void IdentityDisplay::updatePeerAgent(const QString & userid,
                                       const QString & what,
-                                      const QStringList & newstatuses)
+                                      const QVariant & newstatuses)
 {
         if (m_loginkind == 0)
                 return;
@@ -394,58 +394,56 @@ void IdentityDisplay::updatePeerAgent(const QString & userid,
                 return;
         if(what != "agentstatus")
                 return;
-        // qDebug() << "IdentityDisplay::updatePeerAgent" << userid << what << newstatuses;
-        if (newstatuses.size() >= 4) {
-                QString command = newstatuses[0];
-                QString astid = newstatuses[1];
-                QString agentnum = newstatuses[2];
-                QString arg = newstatuses[3];
-                m_agent->setText("Agent " + agentnum);
 
-                if (command == "agentlogin") {
-                        showAgentProps();
-                        m_agentstatus_value->setIcon(QIcon(":/images/button_ok.png"));
-                        m_agentstatus_value->setText(arg);
-                        m_agentstatus = true;
-//                         if(m_queuesindexes.size() > 0) {
-//                                 if(m_queuechangeallow) {
-//                                         m_queueaction->show();
-//                                         m_queueleaveall->show();
-//                                         m_queuejoinall->show();
-//                                 }
-//                                 // m_queuelist->show();
-//                         }
-                } else if (command == "agentlogout") {
-                        showAgentProps();
-                        m_agentstatus_value->setIcon(QIcon(":/images/cancel.png"));
-                        m_agentstatus_value->setText(arg);
-                        m_agentstatus = false;
-                        m_queueaction->hide();
-                        m_queuelist->hide();
-                        m_queueleaveall->hide();
-                        m_queuejoinall->hide();
-                } else if (command == "joinqueue") {
-                        if (m_queuesindexes.contains(arg)) {
-                                int idx = m_queuesindexes[arg];
-                                m_queuelist->setItemIcon(idx, QIcon(":/images/button_ok.png"));
-                                m_queuesstatuses[arg] = true;
-                                if(arg == m_queuelist->currentText())
-                                        idxChanged(arg);
-                        }
-                } else if (command == "leavequeue") {
-                        if (m_queuesindexes.contains(arg)) {
-                                int idx = m_queuesindexes[arg];
-                                m_queuelist->setItemIcon(idx, QIcon(":/images/cancel.png"));
-                                m_queuesstatuses[arg] = false;
-                                if(arg == m_queuelist->currentText())
-                                        idxChanged(arg);
-                        }
-                } else if (command == "queuememberstatus") {
-                        if (newstatuses.size() == 6) {
-                                // qDebug() << "IdentityDisplay::setAgentStatus()" << newstatuses;
-                        }
-                } else
-                        qDebug() << "IdentityDisplay::setAgentStatus()" << newstatuses;
+        QString action = newstatuses.toMap()["action"].toString();
+        QString astid = newstatuses.toMap()["astid"].toString();
+        QString agentnum = newstatuses.toMap()["agent_channel"].toString().mid(6);
+        m_agent->setText("Agent " + agentnum);
+        
+        if (action == "agentlogin") {
+                QString phonenum = newstatuses.toMap()["phonenum"].toString();
+                showAgentProps();
+                m_agentstatus_value->setIcon(QIcon(":/images/button_ok.png"));
+                m_agentstatus_value->setText(phonenum);
+                m_agentstatus = true;
+                //if(m_queuesindexes.size() > 0) {
+                //if(m_queuechangeallow) {
+                //m_queueaction->show();
+                //m_queueleaveall->show();
+                //m_queuejoinall->show();
+                //}
+                //// m_queuelist->show();
+                //}
+        } else if (action == "agentlogout") {
+                QString phonenum = newstatuses.toMap()["phonenum"].toString();
+                showAgentProps();
+                m_agentstatus_value->setIcon(QIcon(":/images/cancel.png"));
+                m_agentstatus_value->setText(phonenum);
+                m_agentstatus = false;
+                m_queueaction->hide();
+                m_queuelist->hide();
+                m_queueleaveall->hide();
+                m_queuejoinall->hide();
+        } else if (action == "joinqueue") {
+                QString queuename = newstatuses.toMap()["queuename"].toString();
+                if (m_queuesindexes.contains(queuename)) {
+                        int idx = m_queuesindexes[queuename];
+                        m_queuelist->setItemIcon(idx, QIcon(":/images/button_ok.png"));
+                        m_queuesstatuses[queuename] = true;
+                        if(queuename == m_queuelist->currentText())
+                                idxChanged(queuename);
+                }
+        } else if (action == "leavequeue") {
+                QString queuename = newstatuses.toMap()["queuename"].toString();
+                if (m_queuesindexes.contains(queuename)) {
+                        int idx = m_queuesindexes[queuename];
+                        m_queuelist->setItemIcon(idx, QIcon(":/images/cancel.png"));
+                        m_queuesstatuses[queuename] = false;
+                        if(queuename == m_queuelist->currentText())
+                                idxChanged(queuename);
+                }
+//         } else {
+//                 qDebug() << "IdentityDisplay::updatePeerAgent()" << newstatuses;
         }
 }
 
