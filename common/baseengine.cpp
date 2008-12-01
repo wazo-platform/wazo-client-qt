@@ -435,22 +435,17 @@ void BaseEngine::sendJsonCommand(const QVariantMap & command)
  *
  * \sa Logwidget
  */
-void BaseEngine::processHistory(const QStringList & histlist)
+void BaseEngine::processHistory(const QVariant & histlist)
 {
-        foreach (QString hist, histlist) {
-                QStringList histline = hist.split(";");
-		// DateTime; CallerID; duration; Status?; peer; IN/OUT
-		//qDebug() << histlist[i+0] << histlist[i+1]
-		//         << histlist[i+2] << histlist[i+3]
-		//         << histlist[i+4] << histlist[i+5];
-		QDateTime dt = QDateTime::fromString(histline[0], Qt::ISODate);
-		int duration = histline[2].toInt();
-		QString peer = histline[4];
-                QString direction = histline[5];
-                QString techdef = histline[6];
-		//qDebug() << dt << callerid << duration << peer << direction;
-		updateLogEntry(dt, duration, peer, direction, techdef);
-	}
+        foreach (QVariant histitem, histlist.toList()) {
+                qDebug() << "BaseEngine::processHistory()" << histitem;
+ 		QDateTime dt = QDateTime::fromString(histitem.toMap()["ts"].toString(), Qt::ISODate);
+		int duration = histitem.toMap()["duration"].toInt();
+                QString fullname = histitem.toMap()["fullname"].toString();
+                QString direction = histitem.toMap()["direction"].toString();
+                QString techdef = histitem.toMap()["termin"].toString();
+                updateLogEntry(dt, duration, fullname, direction, techdef);
+ 	}
 }
 
 void BaseEngine::monitorPeerRequest(const QString & userid)
@@ -652,9 +647,10 @@ bool BaseEngine::parseCommand(const QString & line)
                                         newQueueList(! m_capafuncs.contains("nojoinleave"), qv);
                         }
                         else if(function == "update") {
-                                setQueueStatus(datamap["payload"].toStringList());
+                                setQueueStatus(datamap["payload"]);
                         } else if(function == "del") {
-                                removeQueues(datamap["astid"].toString(), datamap["deltalist"].toStringList());
+                                removeQueues(datamap["astid"].toString(),
+                                             datamap["deltalist"].toStringList());
                         } else if(function == "add") {
                                 QVariantMap command;
                                 command["class"] = "queues";
@@ -708,7 +704,7 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "history") {
                         // QCryptographicHash histohash(QCryptographicHash::Sha1);
                         // QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
-                        processHistory(datamap["payload"].toStringList());
+                        processHistory(datamap["payload"]);
                         
                 } else if (thisclass == "getguisettings") {
                         setGuiOptions(datamap["payload"]);
@@ -765,22 +761,24 @@ bool BaseEngine::parseCommand(const QString & line)
                         if (function == "sendlist") {
                                 QVariantList listusers = datamap["payload"].toList();
                                 foreach(QVariant userprops, listusers) {
-                                        QVariantList listpeers = userprops.toList();
-                                        QString iduser = listpeers[4].toString() + "/" + listpeers[10].toString();
+                                        QVariantMap uinfo = userprops.toMap();
+                                        QString iduser = uinfo["astid"].toString() + "/" + uinfo["xivo_userid"].toString();
+                                        
                                         if(! m_users.contains(iduser)) {
                                                 m_users[iduser] = new UserInfo(iduser);
-                                                m_users[iduser]->setCtiLogin(listpeers[0].toString());
-                                                m_users[iduser]->setFullName(listpeers[2].toString());
+                                                m_users[iduser]->setCtiLogin(uinfo["user"].toString());
+                                                m_users[iduser]->setFullName(uinfo["fullname"].toString());
                                                 newUser(m_users[iduser]);
-                                                m_users[iduser]->setPhones(listpeers[4].toString(),
-                                                                           listpeers[7].toStringList());
+                                                m_users[iduser]->setPhones(uinfo["astid"].toString(),
+                                                                           uinfo["techlist"].toStringList());
                                         }
-                                        m_users[iduser]->setAvailState(listpeers[3]);
-                                        m_users[iduser]->setNumber(listpeers[6].toString());
-                                        m_users[iduser]->setAgent(listpeers[8].toString());
-                                        m_users[iduser]->setMWI(listpeers[9].toStringList());
+                                        
+                                        m_users[iduser]->setAvailState(uinfo["statedetails"]);
+                                        m_users[iduser]->setNumber(uinfo["phonenum"].toString());
+                                        m_users[iduser]->setAgent(uinfo["agentnum"].toString());
+                                        m_users[iduser]->setMWI(uinfo["mwi"].toStringList());
                                         updatePeerAgent(iduser, "imstatus", QStringList());
-                                        updateAgentPresence(m_users[iduser]->agentid(), listpeers[3]);
+                                        updateAgentPresence(m_users[iduser]->agentid(), uinfo["statedetails"]);
                                 }
                                 
                                 peersReceived();
@@ -915,9 +913,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                 QStringList listpeers = datamap["payload"].toStringList();
                                 // qDebug() << "phones-signal-deloradd" << listpeers;
                                 //emitTextMessage(tr("New phone list on %1 : - %2 + %3 = %4 total").arg(listpeers[0],
-                                //listpeers[1],
-                                //listpeers[2],
-                                //listpeers[3]));
+                                //listpeers ));
                                 if(listpeers[1].toInt() > 0)
                                         sendCommand("phones-del");
                                 if(listpeers[2].toInt() > 0)

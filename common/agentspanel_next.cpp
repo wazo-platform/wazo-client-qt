@@ -248,7 +248,7 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
         agentids.sort();
         foreach (QString agnum, agentids) {
                 QVariant properties = alistmap["newlist"].toMap()[agnum].toMap()["properties"];
-                QVariantList agqjoined = alistmap["newlist"].toMap()[agnum].toMap()["queues"].toList();
+                QVariantMap agqjoined = alistmap["newlist"].toMap()[agnum].toMap()["queues"].toMap();
                 QString agstatus = properties.toMap()["status"].toString();
                 QString agfullname = properties.toMap()["name"].toString();
                 QString phonenum = properties.toMap()["phonenum"].toString();
@@ -336,24 +336,21 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
                         }
                         m_agent_logged_status[agnum]->setPixmap(QPixmap(* m_square));
                         
-                        foreach (QVariant qv, agqjoined) {
-                                QStringList agqprops = qv.toStringList();
-                                if(agqprops.size() > 2) {
-                                        QString qname = agqprops[0];
-                                        QString pstatus = agqprops[1];
-                                        QString xstatus = agqprops[2];
-                                        m_agent_joined_list[agnum] << qname;
-                                        if(pstatus == "0")
-                                                m_agent_paused_list[agnum] << qname;
-                                        // } else if(agqprops.size() == 1) {
-                                }
+                        foreach (QString qname, agqjoined.keys()) {
+                                QVariant qv = agqjoined[qname];
+                                QString pstatus = qv.toMap()["Paused"].toString();
+                                QString sstatus = qv.toMap()["Status"].toString();
+                                m_agent_joined_list[agnum] << qname;
+                                if(pstatus == "0")
+                                        m_agent_paused_list[agnum] << qname;
                         }
+                        
                         int njoined = m_agent_joined_list[agnum].size();
                         m_agent_joined_number[agnum]->setText(QString::number(njoined));
-
+                        
                         int nunpaused = m_agent_paused_list[agnum].size();
                         m_agent_paused_number[agnum]->setText(QString::number(njoined - nunpaused));
-
+                        
                         int colnum = 0;
                         int linenum = m_agent_labels.size();
                         m_gridlayout->addWidget( m_agent_labels[agnum], linenum, colnum++, Qt::AlignLeft );

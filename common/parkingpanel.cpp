@@ -115,21 +115,16 @@ void ParkingPanel::proxyCallRequests(const QString & src, const QString & dst)
 void ParkingPanel::parkingEvent(const QVariant & subcommand)
 {
         // qDebug() << "ParkingPanel::parkingEvent()" << subcommand;
-        QString astid, parkplacenum, seconds, parkedpeer, parkedby;
         QString eventkind = subcommand.toMap()["status"].toString();
+        QString astid = subcommand.toMap()["astid"].toString();
+        QString channel = subcommand.toMap()["channel"].toString();
+        QString fromchannel = subcommand.toMap()["fromchannel"].toString();
+        QString parkplacenum = subcommand.toMap()["exten"].toString();
+        QString seconds = subcommand.toMap()["timeout"].toString();
         QStringList newpark = subcommand.toMap()["args"].toStringList();
         
-        if(newpark.size() >= 3) {
-                astid        = newpark[0];
-                parkedpeer   = newpark[1].split("-")[0];
-                parkplacenum = newpark[2];
-        } else
-                return;
-        
-        if(newpark.size() >= 4)
-                parkedby     = newpark[3].split("-")[0];
-        if(newpark.size() >= 5)
-                seconds = newpark[4];
+        QString parkedpeer = channel.split("-")[0];
+        QString parkedby = fromchannel.split("-")[0];
         
         if(eventkind == "parkedcall") {
                 m_table->insertRow( 0 );

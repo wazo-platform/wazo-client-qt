@@ -912,8 +912,8 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_engine, SIGNAL(updateCounter(const QVariant &)),
                                          m_xlet[xletid], SLOT(updateCounter(const QVariant &)) );
-                                connect( m_engine, SIGNAL(setQueueStatus(const QStringList &)),
-                                         m_xlet[xletid], SLOT(setQueueStatus(const QStringList &)) );
+                                connect( m_engine, SIGNAL(setQueueStatus(const QVariant &)),
+                                         m_xlet[xletid], SLOT(setQueueStatus(const QVariant &)) );
                                 connect( m_engine, SIGNAL(newQueueList(bool, const QVariant &)),
                                          m_xlet[xletid], SLOT(setQueueList(bool, const QVariant &)) );
                                 connect( m_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),

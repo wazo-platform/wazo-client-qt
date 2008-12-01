@@ -240,7 +240,7 @@ signals:
         void connectFeatures();
         void resetFeatures();
         void localUserInfoDefined(const UserInfo *);
-        void setQueueStatus(const QStringList &);
+        void setQueueStatus(const QVariant &);
         void removeQueues(const QString &, const QStringList &);
         void newQueueList(bool, const QVariant &);
         void newAgentList(const QVariant &);
@@ -257,7 +257,7 @@ private:
 	void stopKeepAliveTimer();	//!< Stop the keep alive timer if running
 	void startTryAgainTimer();	//!< Start the "try to reconnect" timer
 	void stopTryAgainTimer();	//!< Stop the "try to reconnect" timer
-	void processHistory(const QStringList &);
+	void processHistory(const QVariant &);
 	void initFeatureFields(const QString &, const QVariant &);
 	void connectSocket();
         void sendCommand(const QString &);

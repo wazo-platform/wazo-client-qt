@@ -165,7 +165,7 @@ void AgentdetailsPanel::updatePeerAgent(const QString &,
                                 m_queue_join_status[qname]->setPixmap(* square);
                                 m_queue_join_status[qname]->setProperty("joined", true);
                                 m_queue_join_action[qname]->setIcon(QIcon(":/images/cancel.png"));
-
+                                
                                 QString pstatus = params.toMap()["pausedstatus"].toString();
                                 if(pstatus == "1") {
                                         square->fill(Orange);
@@ -284,7 +284,7 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         m_astid = astid;
         m_agent = agentid;
         QVariantMap agentstatusmap = agentstatus.toMap();
-        QVariantList queuesstats = agentstatusmap["queues"].toList();
+        QVariantMap queuesstats = agentstatusmap["queues"].toMap();
         QVariant properties = agentstatusmap["properties"];
         QString longname = properties.toMap()["name"].toString();
         QString lstatus = properties.toMap()["status"].toString();
@@ -351,16 +351,10 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                 m_action[function]->show();
         
         int ii = 0;
-        foreach (QVariant qv, queuesstats) {
-                QStringList queueinfos = qv.toStringList();
-                // for(int i = 0 ; i < queuesstats.size(); i++) {
-                QString queueid = queueinfos[0];
-                QString pstatus = "";
-                QString sstatus = "";
-                if(queueinfos.size() > 2) {
-                        pstatus = queueinfos[1];
-                        sstatus = queueinfos[2];
-                }
+        foreach (QString queueid, queuesstats.keys()) {
+                QVariant qv = queuesstats[queueid];
+                QString pstatus = qv.toMap()["Paused"].toString();
+                QString sstatus = qv.toMap()["Status"].toString();
                 m_queue_labels[queueid] = new QLabel(queueid, this);
                 
                 m_queue_more[queueid] = new QPushButton(this);

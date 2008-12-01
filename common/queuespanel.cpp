@@ -393,16 +393,14 @@ void QueuesPanel::queueClicked()
         changeWatchedQueue(astid + " " + queueid);
 }
 
-void QueuesPanel::setQueueStatus(const QStringList & newstatuses)
+void QueuesPanel::setQueueStatus(const QVariant & newstatuses)
 {
         // qDebug() << "QueuesPanel::setQueueStatus()" << newstatuses;
-        if (newstatuses.size() >= 3) {
-                QString astid = newstatuses[0];
-                QString queuename = newstatuses[1];
-                QString busyness = newstatuses[2];
-                if(m_queuebusies.contains(queuename)) {
-                        m_queuebusies[queuename]->setProperty("value", busyness);
-                        update();
-                }
+        QString astid = newstatuses.toMap()["astid"].toString();
+        QString queuename = newstatuses.toMap()["queuename"].toString();
+        QString busyness = newstatuses.toMap()["count"].toString();
+        if(m_queuebusies.contains(queuename)) {
+                m_queuebusies[queuename]->setProperty("value", busyness);
+                update();
         }
 }
