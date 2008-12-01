@@ -89,7 +89,13 @@ void PeerItem::updateAgentStatus(const QVariant & agentstatus)
  */
 void PeerItem::updateChans(const QVariant & chanlist)
 {
-        m_chanlist = chanlist;
+        QVariantMap tmpchanlist;
+        foreach(QString ref, chanlist.toMap().keys()) {
+                QString status = chanlist.toMap()[ref].toMap()["status"].toString();
+                if(status != CHAN_STATUS_HANGUP)
+                        tmpchanlist[ref] = chanlist.toMap()[ref];
+        }
+        m_chanlist = tmpchanlist;
         if(m_peerwidget != NULL)
                 updateDisplayedChans();
 }
@@ -195,7 +201,7 @@ void PeerItem::updateDisplayedChans()
 {
 	if(m_peerwidget == NULL)
                 return;
-
+        
         m_peerwidget->clearChanList();
         foreach(QString ref, m_chanlist.toMap().keys()) {
                 QVariant chanprops = m_chanlist.toMap()[ref];

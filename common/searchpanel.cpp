@@ -207,7 +207,7 @@ void SearchPanel::updatePeer(UserInfo * ui,
                              const QVariant & chanlist)
 {
         QString userid = ui->userid();
-        // qDebug() << "SearchPanel::updatePeer()" << userid << sipstatus << chanlist;
+        // qDebug() << "SearchPanel::updatePeer()" << userid << chanlist;
         if(m_peerhash.contains(userid)) {
                 PeerItem * peeritem = m_peerhash.value(userid);
                 peeritem->updateStatus();
@@ -215,7 +215,7 @@ void SearchPanel::updatePeer(UserInfo * ui,
                 peeritem->updateName(ui->fullname());
                 return;
         }
-
+        
         // if the name (i.e. full callerid info) has not been received yet, do not add as a peer
         if(ui->fullname().isEmpty())
                 return;
@@ -254,7 +254,7 @@ void SearchPanel::updatePeerAgent(const QString & id,
  */
 void SearchPanel::removePeer(const QString & ext)
 {
-        // qDebug() << "SearchPanel::removePeer()" << ext;
+        qDebug() << "SearchPanel::removePeer()" << ext;
         if(m_peerhash.contains(ext)) {
                 PeerItem * peeritem = m_peerhash.value(ext);
                 PeerWidget * peerwidget = peeritem->getWidget();

@@ -56,6 +56,7 @@
 #include "extendedlineedit.h"
 #include "peerchannel.h"
 #include "userinfo.h"
+#include "xivoconsts.h"
 
 /*! \brief Constructor
  *
@@ -280,10 +281,12 @@ void DirectoryPanel::updatePeer(UserInfo * /*ui*/,
 
         foreach(QString ref, chanlist.toMap().keys()) {
                 QVariant chanprops = chanlist.toMap()[ref];
-                PeerChannel * ch = new PeerChannel(chanprops);
- 		connect(ch, SIGNAL(transferChan(const QString &)),
- 		        this, SLOT(transferChan(const QString &)) );
- 		m_mychannels << ch;
+                if(chanprops.toMap()["status"].toString() != CHAN_STATUS_HANGUP) {
+                        PeerChannel * ch = new PeerChannel(chanprops);
+                        connect(ch, SIGNAL(transferChan(const QString &)),
+                                this, SLOT(transferChan(const QString &)) );
+                        m_mychannels << ch;
+                }
         }
 }
 

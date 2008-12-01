@@ -58,6 +58,7 @@
 #include "extendedtablewidget.h"
 #include "extendedlineedit.h"
 #include "peerchannel.h"
+#include "xivoconsts.h"
 
 #include "outlook_panel.h"
 #include "outlook_tools.h"
@@ -451,10 +452,12 @@ void OutlookPanel::updatePeer(UserInfo *,
 		delete m_mychannels.takeFirst();
 	foreach(QString ref, chanlist.toMap().keys()) {
 		QVariant chanprops = chanlist.toMap()[ref];
-		PeerChannel * ch = new PeerChannel(chanprops);
- 		connect(ch, SIGNAL(transferChan(const QString &)),
- 		        this, SLOT(transferChan(const QString &)) );
-		m_mychannels << ch;
+                if(chanprops.toMap()["status"].toString() != CHAN_STATUS_HANGUP) {
+                        PeerChannel * ch = new PeerChannel(chanprops);
+                        connect(ch, SIGNAL(transferChan(const QString &)),
+                                this, SLOT(transferChan(const QString &)) );
+                        m_mychannels << ch;
+                }
 	}
 }
 

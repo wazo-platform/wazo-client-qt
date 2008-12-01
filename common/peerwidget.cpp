@@ -378,6 +378,7 @@ void PeerWidget::interceptChan(const QString & chan)
  */
 void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
 {
+        // qDebug() << "PeerWidget::contextMenuEvent()" << event;
 	QMenu contextMenu(this);
 	contextMenu.addAction(m_dialAction);
 	if (m_functions.contains("switchboard")) {
@@ -398,7 +399,7 @@ void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
 			contextMenu.addMenu(interceptMenu);
 			contextMenu.addMenu(hangupMenu);
 		}
-		if( !m_mychannels.empty() ) {
+		if( ! m_mychannels.empty() ) {
 			QMenu * transferMenu = new QMenu( tr("&Transfer"), &contextMenu );
 			QListIterator<PeerChannel *> i(m_mychannels);
 			while(i.hasNext()) {
@@ -409,7 +410,7 @@ void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
 			contextMenu.addMenu(transferMenu);
 		}
 	}
-
+        
 	contextMenu.exec(event->globalPos());
 }
 
@@ -417,7 +418,7 @@ void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
  */
 void PeerWidget::clearChanList()
 {
-	// qDebug() << "PeerWidget::clearChanList()" << m_channels;
+        // qDebug() << "PeerWidget::clearChanList()" << m_ui->userid() << m_channels;
 	//m_channels.clear();
 	while(!m_channels.isEmpty())
 		delete m_channels.takeFirst();
@@ -450,10 +451,12 @@ void PeerWidget::updatePeer(UserInfo * ui,
         
         foreach(QString ref, chanlist.toMap().keys()) {
                 QVariant chanprops = chanlist.toMap()[ref];
-                PeerChannel * ch = new PeerChannel(chanprops);
- 		connect(ch, SIGNAL(transferChan(const QString &)),
- 		        this, SLOT(transferChan(const QString &)) );
- 		m_mychannels << ch;
+                if(chanprops.toMap()["status"].toString() != CHAN_STATUS_HANGUP) {
+                        PeerChannel * ch = new PeerChannel(chanprops);
+                        connect(ch, SIGNAL(transferChan(const QString &)),
+                                this, SLOT(transferChan(const QString &)) );
+                        m_mychannels << ch;
+                }
         }
 }
 
