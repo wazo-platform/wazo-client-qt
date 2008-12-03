@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 4659 $
- * $Date: 2008-11-13 12:10:04 +0100 (jeu, 13 nov 2008) $
+/* $Revision$
+ * $Date$
  */
 
 #ifndef __AGENTSPANELNEXT_H__
@@ -48,7 +48,7 @@
 #include <QVariant>
 #include <QWidget>
 
-class QFrame;
+class QContextMenuEvent;
 class QGridLayout;
 class QHBoxLayout;
 class QLabel;
@@ -80,9 +80,10 @@ public slots:
 private slots:
         void agentClicked();
         void setAgentProps(const QString &);
+protected:
+        void contextMenuEvent(QContextMenuEvent *);
 private:
         QFont m_gui_font;
-        quint32 m_gui_buttonsize;
         
 	QHBoxLayout * m_hlayout;
         QHash<QString, QVBoxLayout *> m_vlayout;
@@ -90,6 +91,7 @@ private:
         QHash<QString, QPushButton *> m_titleedit;
         const UserInfo * m_userinfo;
         
+        QHash<QString, QString> m_groups;
         QHash<QString, QPushButton *> m_agent_labels;
         QHash<QString, QVariant> m_agent_props;
 };

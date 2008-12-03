@@ -35,10 +35,11 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
 */
 
-/* $Revision: 4701 $
- * $Date: 2008-11-17 12:39:36 +0100 (lun, 17 nov 2008) $
+/* $Revision$
+ * $Date$
  */
 
+#include <QContextMenuEvent>
 #include <QDebug>
 #include <QFrame>
 #include <QGridLayout>
@@ -53,32 +54,35 @@
 #include "agentspanel_next.h"
 #include "userinfo.h"
 
-QStringList glist = (QStringList() << "gr1" << "gr2" << "gr3" << "gr4" << "gr5" << "gr6");
-
 /*! \brief Constructor
  */
 AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
                                  QWidget * parent)
         : QWidget(parent)
 {
-        m_gui_buttonsize = 10;
+        m_groups["gr1"] = "MARCHE A";
+        m_groups["gr2"] = "MARCHE C";
+        m_groups["gr3"] = "MARCHE F";
+        m_groups["gr4"] = "MARCHE G";
+        m_groups["gr5"] = "MARCHE J";
+        m_groups["gr6"] = "MARCHE L";
         
         m_hlayout = new QHBoxLayout(this);
         m_hlayout->setSpacing(1);
-        foreach(QString gn, glist) {
-                m_vlayout[gn] = new QVBoxLayout();
-                m_hlayout->addLayout(m_vlayout[gn]);
-                m_title[gn] = new QLabel("MARCHE " + gn);
-                m_title[gn]->setMargin(10);
-                m_title[gn]->setStyleSheet("QLabel {background: yellow};");
-                m_titleedit[gn] = new QPushButton();
-                m_vlayout[gn]->addWidget(m_title[gn], 0, Qt::AlignCenter);
-                m_vlayout[gn]->addWidget(m_titleedit[gn], 0, Qt::AlignCenter);
-                m_vlayout[gn]->insertStretch(100, 1);
-                m_vlayout[gn]->setSpacing(1);
+        foreach(QString groupid, m_groups.keys()) {
+                m_vlayout[groupid] = new QVBoxLayout();
+                m_hlayout->addLayout(m_vlayout[groupid]);
+                m_title[groupid] = new QLabel(m_groups[groupid]);
+                m_title[groupid]->setMargin(10);
+                m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
+                m_titleedit[groupid] = new QPushButton();
+                m_vlayout[groupid]->addWidget(m_title[groupid], 0, Qt::AlignCenter);
+                m_vlayout[groupid]->addWidget(m_titleedit[groupid], 0, Qt::AlignCenter);
+                m_vlayout[groupid]->insertStretch(100, 1);
+                m_vlayout[groupid]->setSpacing(1);
         }
         m_hlayout->insertStretch(100, 1);
-        m_vlayout["gr1"]->setProperty("queues", (QStringList() << "martinique" << "guadeloupe" << "metropole"));
+        m_vlayout["gr1"]->setProperty("queues", (QStringList() << "technique" << "eclair" << "normal"));
         m_vlayout["gr2"]->setProperty("queues", (QStringList() << "martinique"));
         m_vlayout["gr3"]->setProperty("queues", (QStringList() << "guadeloupe"));
         m_vlayout["gr4"]->setProperty("queues", (QStringList() << "metropole"));
@@ -99,12 +103,15 @@ void AgentsPanelNext::setGuiOptions(const QVariant & optionmap)
         if(optionmap.toMap().contains("fontname") && optionmap.toMap().contains("fontsize"))
                 m_gui_font = QFont(optionmap.toMap()["fontname"].toString(),
                                    optionmap.toMap()["fontsize"].toInt());
-        if(optionmap.toMap().contains("iconsize"))
-                m_gui_buttonsize = optionmap.toMap()["iconsize"].toInt();
         
         // setFont(m_gui_font);
-        foreach(QString gn, glist)
-                m_title[gn]->setFont(m_gui_font);
+        foreach(QString groupid, m_groups.keys())
+                m_title[groupid]->setFont(m_gui_font);
+}
+
+void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
+{
+        qDebug() << "AgentsPanelNext::contextMenuEvent" << event << event->pos() << event->reason();
 }
 
 void AgentsPanelNext::setUserInfo(const UserInfo * ui)
@@ -117,32 +124,51 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         QString astid = m_agent_labels[idx]->property("astid").toString();
         QString agentid = m_agent_labels[idx]->property("agentid").toString();
         QString groupid = m_agent_labels[idx]->property("groupid").toString();
-        QString idxa = astid + "-" + agentid;
-        m_vlayout[groupid]->insertWidget( 2, m_agent_labels[idx] );
         
+        QString idxa = astid + "-" + agentid;
         QVariant properties = m_agent_props[idxa].toMap()["properties"];
+        QVariant queues = m_agent_props[idxa].toMap()["queues"];
         QString firstname = m_agent_props[idxa].toMap()["firstname"].toString();
         QString lastname = m_agent_props[idxa].toMap()["lastname"].toString();
+        
+        // foreach(QString qname, queues.toMap().keys())
+        // qDebug() << idx << qname << queues.toMap()[qname].toMap()["Status"].toString() << queues.toMap()[qname].toMap()["Paused"].toString();
+        m_vlayout[groupid]->insertWidget( 2, m_agent_labels[idx] );
         
         QString agstatus = properties.toMap()["status"].toString();
         QString phonenum = properties.toMap()["phonenum"].toString();
         bool link = properties.toMap()["link"].toBool();
         
-        m_agent_labels[idx]->setText(firstname + " " + lastname + " " + agentid);
+        QString disptext = firstname + " " + lastname + " " + agentid;
+        int nsec = 356;
+        int dmin = nsec / 60;
+        int dsec = nsec % 60;
+        QString displayedtime;
+        if(dmin > 0)
+                displayedtime = tr("%1 min %2 sec").arg(QString::number(dmin), QString::number(dsec));
+        else
+                displayedtime = tr("%1 sec").arg(QString::number(dsec));
         
         QString colorqss;
         if(agstatus == "AGENT_IDLE")
                 colorqss = "grey";
         else if(agstatus == "AGENT_LOGGEDOFF")
-                colorqss = "red";
-        else if(agstatus == "AGENT_ONCALL")
+                colorqss = "#ff8080";
+        else if(agstatus == "AGENT_ONCALL") {
                 colorqss = "green";
-        else
+                disptext += " I";
+                disptext += " " + displayedtime;
+        } else
                 colorqss = "blue";
-        if(link)
-                colorqss = "green";
+        if(link) {
+                colorqss = "#80ff80";
+                disptext += " S";
+                disptext += " " + displayedtime;
+        }
+        
         QString qss = "QPushButton {border: 5px solid " + colorqss + "; border-radius: 0px; background: " + colorqss + "};";
         m_agent_labels[idx]->setStyleSheet(qss);
+        m_agent_labels[idx]->setText(disptext);
 }
 
 void AgentsPanelNext::updateAgentPresence(const QString &, const QVariant &)
@@ -165,6 +191,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
         QString qname = params.toMap()["queuename"].toString();
         QString jstatus = params.toMap()["joinedstatus"].toString();
         QString pstatus = params.toMap()["pausedstatus"].toString();
+        qDebug() << "AgentsPanelNext" << action << agentnum << qname << jstatus << pstatus;
         
         if(action == "queuememberstatus") {
                 if(m_agent_labels.contains(agentnum)) {
@@ -179,7 +206,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         }
                 }
         } else if(action == "joinqueue") {
-                foreach(QString groupid, glist) {
+                foreach(QString groupid, m_groups.keys()) {
                         QStringList lqueues = m_vlayout[groupid]->property("queues").toStringList();
                         if(lqueues.contains(qname)) {
                                 QString idx = astid + "-" + agentnum + "-" + groupid;
@@ -196,7 +223,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         }
                 }
         } else if(action == "leavequeue") {
-                foreach(QString groupid, glist) {
+                foreach(QString groupid, m_groups.keys()) {
                         QStringList lqueues = m_vlayout[groupid]->property("queues").toStringList();
                         if(lqueues.contains(qname)) {
                                 QString idx = astid + "-" + agentnum + "-" + groupid;
@@ -209,22 +236,26 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         }
                 }
         } else if(action == "unpaused") {
-                foreach(QString groupid, glist) {
-                        QStringList lqueues = m_vlayout[groupid]->property("queues").toStringList();
-                        if(lqueues.contains(qname)) {
-                                QString idx = astid + "-" + agentnum + "-" + groupid;
-                                if(m_agent_labels.contains(idx))
-                                        qDebug() << action << idx;
-                        }
+                QString idxa = astid + "-" + agentnum;
+                if(m_agent_props.contains(idxa)) {
+                        QVariantMap proptemp = m_agent_props[idxa].toMap();
+                        QVariantMap pqueues = proptemp["queues"].toMap();
+                        QVariantMap qprops = pqueues[qname].toMap();
+                        qprops["Paused"] = "0";
+                        pqueues[qname] = qprops;
+                        proptemp["queues"] = pqueues;
+                        m_agent_props[idxa] = proptemp;
                 }
         } else if(action == "paused") {
-                foreach(QString groupid, glist) {
-                        QStringList lqueues = m_vlayout[groupid]->property("queues").toStringList();
-                        if(lqueues.contains(qname)) {
-                                QString idx = astid + "-" + agentnum + "-" + groupid;
-                                if(m_agent_labels.contains(idx))
-                                        qDebug() << action << idx;
-                        }
+                QString idxa = astid + "-" + agentnum;
+                if(m_agent_props.contains(idxa)) {
+                        QVariantMap proptemp = m_agent_props[idxa].toMap();
+                        QVariantMap pqueues = proptemp["queues"].toMap();
+                        QVariantMap qprops = pqueues[qname].toMap();
+                        qprops["Paused"] = "1";
+                        pqueues[qname] = qprops;
+                        proptemp["queues"] = pqueues;
+                        m_agent_props[idxa] = proptemp;
                 }
         } else if(action == "agentlogin") {
                 QString idxa = astid + "-" + agentnum;
@@ -264,14 +295,14 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                 }
         }
         
+        // qDebug() << "AgentsPanelNext::updatePeerAgent()" << m_agent_labels.keys();
         foreach (QString idx, m_agent_labels.keys())
                 setAgentProps(idx);
 }
 
 void AgentsPanelNext::agentClicked()
 {
-        QPushButton * qpb = qobject_cast<QPushButton *>(sender());
-        qDebug() << "AgentsPanelNext::agentClicked()" << qpb->property("agentid") << qpb->pos();
+        // qDebug() << "AgentsPanelNext::agentClicked()";
         QMessageBox * msgbox = new QMessageBox();
         QString text = sender()->property("astid").toString();
         msgbox->setWindowTitle("Agent " + sender()->property("agentid").toString());
@@ -298,6 +329,7 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
                         p["astid"] = astid;
                         p["agentid"] = agentid;
                         p["properties"] = alistmap["newlist"].toMap()[agentid].toMap()["properties"];
+                        p["queues"] = alistmap["newlist"].toMap()[agentid].toMap()["queues"];
                         p["firstname"] = alistmap["newlist"].toMap()[agentid].toMap()["firstname"];
                         p["lastname"] = alistmap["newlist"].toMap()[agentid].toMap()["lastname"];
                         m_agent_props[idxa] = p;
@@ -308,7 +340,7 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
                 foreach (QString qname, agqjoined.keys()) {
                         QString sstatus = agqjoined[qname].toMap()["Status"].toString();
                         if((sstatus == "1") || (sstatus == "5"))
-                                foreach(QString groupid, glist) {
+                                foreach(QString groupid, m_groups.keys()) {
                                         QStringList lqueues = m_vlayout[groupid]->property("queues").toStringList();
                                         if(lqueues.contains(qname)) {
                                                 QString idx = astid + "-" + agentid + "-" + groupid;
@@ -325,28 +357,7 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
                 }
         }
         
-        qDebug() << "AgentsPanelNext::setAgentList()" << m_agent_labels.keys();
-        
+        // qDebug() << "AgentsPanelNext::setAgentList()" << m_agent_labels.keys();
         foreach (QString idx, m_agent_labels.keys())
                 setAgentProps(idx);
-        
-        foreach (QString agentid, agentids) {
-                QVariant properties = alistmap["newlist"].toMap()[agentid].toMap()["properties"];
-                QVariantMap agqjoined = alistmap["newlist"].toMap()[agentid].toMap()["queues"].toMap();
-                QString agstatus = properties.toMap()["status"].toString();
-                QString agfullname = properties.toMap()["name"].toString();
-                QString phonenum = properties.toMap()["phonenum"].toString();
-                
-                if(! m_agent_labels.contains(agentid)) {
-                        foreach (QString qname, agqjoined.keys()) {
-                                // qDebug() << astid << agentid << qname;
-                                QVariant qv = agqjoined[qname];
-                                QString pstatus = qv.toMap()["Paused"].toString();
-                                QString sstatus = qv.toMap()["Status"].toString();
-                                // m_agent_joined_list[agentid] << qname;
-                                // if(pstatus == "0")
-                                // m_agent_paused_list[agentid] << qname;
-                        }
-                }
-        }
 }

@@ -170,6 +170,7 @@ void DirectoryPanel::setSearchResponse(const QString & resp)
 	if(ncolumns > 0) {
 		int nrows = ((items.size() - 1) / ncolumns) - 1;
                 if(nrows >= 0) {
+                        m_table->setSortingEnabled(false);
                         m_table->setColumnCount(ncolumns);
                         m_table->setRowCount(nrows);
                         // qDebug() << items.size() << nrows << ncolumns ;
@@ -194,6 +195,7 @@ void DirectoryPanel::setSearchResponse(const QString & resp)
                                         //qDebug() << m_table->cellWidget( y, x );
                                 }
                         }
+                        m_table->setSortingEnabled(true);
                 }
 	}
 }
