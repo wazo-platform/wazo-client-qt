@@ -119,8 +119,8 @@ void QueuedetailsPanel::updatePeerAgent(const QString &,
                         else
                                 qDebug() << "qms n" << params;
                 }
-        } else {
-                qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
+                // } else {
+                // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
         }
 }
 

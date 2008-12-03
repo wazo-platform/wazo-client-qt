@@ -52,8 +52,6 @@ class QFrame;
 class QGridLayout;
 class QLabel;
 class QPushButton;
-class QScrollArea;
-class QVBoxLayout;
 
 class UserInfo;
 
@@ -84,11 +82,8 @@ private:
         quint32 m_gui_buttonsize;
         
         QGridLayout * m_gridlayout;
-	QVBoxLayout * m_layout;
-        QScrollArea * m_scrollarea;
-	QWidget * m_widget;
         const UserInfo * m_userinfo;
-
+        
         QHash<QString, QLabel *>      m_agent_labels;
         QHash<QString, QPushButton *> m_agent_more;
         QHash<QString, QPushButton *> m_agent_record;
@@ -98,9 +93,7 @@ private:
         QHash<QString, QLabel *>      m_agent_logged_status;
         QHash<QString, QPushButton *> m_agent_logged_action;
         QHash<QString, QLabel *>      m_agent_joined_number;
-        QHash<QString, QLabel *>      m_agent_joined_status;
         QHash<QString, QLabel *>      m_agent_paused_number;
-        QHash<QString, QLabel *>      m_agent_paused_status;
         
         QHash<QString, QStringList> m_agent_joined_list;
         QHash<QString, QStringList> m_agent_paused_list;

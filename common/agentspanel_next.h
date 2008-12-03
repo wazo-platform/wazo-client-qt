@@ -50,9 +50,9 @@
 
 class QFrame;
 class QGridLayout;
+class QHBoxLayout;
 class QLabel;
 class QPushButton;
-class QScrollArea;
 class QVBoxLayout;
 
 class UserInfo;
@@ -79,40 +79,19 @@ public slots:
         void updateAgentPresence(const QString &, const QVariant &);
 private slots:
         void agentClicked();
+        void setAgentProps(const QString &);
 private:
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
         
-        QGridLayout * m_gridlayout;
-	QVBoxLayout * m_layout;
-        QScrollArea * m_scrollarea;
-	QWidget * m_widget;
+	QHBoxLayout * m_hlayout;
+        QHash<QString, QVBoxLayout *> m_vlayout;
+        QHash<QString, QLabel *> m_title;
+        QHash<QString, QPushButton *> m_titleedit;
         const UserInfo * m_userinfo;
-
-        QHash<QString, QLabel *>      m_agent_labels;
-        QHash<QString, QPushButton *> m_agent_more;
-        QHash<QString, QPushButton *> m_agent_record;
-        QHash<QString, QPushButton *> m_agent_listen;
-        QHash<QString, QLabel *>      m_agent_busy;
-        QHash<QString, QLabel *>      m_agent_presence;
-        QHash<QString, QLabel *>      m_agent_logged_status;
-        QHash<QString, QPushButton *> m_agent_logged_action;
-        QHash<QString, QLabel *>      m_agent_joined_number;
-        QHash<QString, QLabel *>      m_agent_joined_status;
-        QHash<QString, QLabel *>      m_agent_paused_number;
-        QHash<QString, QLabel *>      m_agent_paused_status;
         
-        QHash<QString, QStringList> m_agent_joined_list;
-        QHash<QString, QStringList> m_agent_paused_list;
-        
-        QLabel * m_title1;
-        QLabel * m_title2;
-        QLabel * m_title3;
-        QLabel * m_title4;
-        QLabel * m_title5;
-        QLabel * m_title6;
-        QLabel * m_title7;
-        QLabel * m_title8;
+        QHash<QString, QPushButton *> m_agent_labels;
+        QHash<QString, QVariant> m_agent_props;
 };
 
 #endif /* __AGENTSPANEL_H__ */
