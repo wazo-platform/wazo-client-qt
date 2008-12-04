@@ -50,10 +50,8 @@
 
 class QContextMenuEvent;
 class QGridLayout;
-class QHBoxLayout;
 class QLabel;
 class QPushButton;
-class QVBoxLayout;
 
 class UserInfo;
 
@@ -83,10 +81,10 @@ private slots:
 protected:
         void contextMenuEvent(QContextMenuEvent *);
 private:
-        QFont m_gui_font;
+        void refresh();
         
-	QHBoxLayout * m_hlayout;
-        QHash<QString, QVBoxLayout *> m_vlayout;
+        QFont m_gui_font;
+	QGridLayout * m_glayout;
         QHash<QString, QLabel *> m_title;
         QHash<QString, QPushButton *> m_titleedit;
         const UserInfo * m_userinfo;

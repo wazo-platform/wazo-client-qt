@@ -60,34 +60,29 @@ AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
                                  QWidget * parent)
         : QWidget(parent)
 {
-        m_groups["gr1"] = "MARCHE A";
-        m_groups["gr2"] = "MARCHE C";
-        m_groups["gr3"] = "MARCHE F";
-        m_groups["gr4"] = "MARCHE G";
-        m_groups["gr5"] = "MARCHE J";
-        m_groups["gr6"] = "MARCHE L";
+        m_title["gr1"] = new QLabel("MARCHE A");
+        m_title["gr2"] = new QLabel("MARCHE C");
+        m_title["gr3"] = new QLabel("MARCHE F");
+        m_title["gr4"] = new QLabel("MARCHE G");
+        m_title["gr5"] = new QLabel("MARCHE J");
+        m_title["gr6"] = new QLabel("MARCHE L");
+        m_title["gr1"]->setProperty("queues", (QStringList() << "technique" << "eclair" << "normal"));
+        m_title["gr2"]->setProperty("queues", (QStringList("martinique")));
+        m_title["gr3"]->setProperty("queues", (QStringList("guadeloupe")));
+        m_title["gr4"]->setProperty("queues", (QStringList("metropole")));
+        m_title["gr5"]->setProperty("queues", (QStringList("commercial")));
+        m_title["gr6"]->setProperty("queues", (QStringList("tous")));
         
-        m_hlayout = new QHBoxLayout(this);
-        m_hlayout->setSpacing(1);
-        foreach(QString groupid, m_groups.keys()) {
-                m_vlayout[groupid] = new QVBoxLayout();
-                m_hlayout->addLayout(m_vlayout[groupid]);
-                m_title[groupid] = new QLabel(m_groups[groupid]);
+        m_glayout = new QGridLayout(this);
+        m_glayout->setSpacing(1);
+        foreach(QString groupid, m_title.keys()) {
+                int index = m_title.keys().indexOf(groupid);
                 m_title[groupid]->setMargin(10);
                 m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
                 m_titleedit[groupid] = new QPushButton();
-                m_vlayout[groupid]->addWidget(m_title[groupid], 0, Qt::AlignCenter);
-                m_vlayout[groupid]->addWidget(m_titleedit[groupid], 0, Qt::AlignCenter);
-                m_vlayout[groupid]->insertStretch(100, 1);
-                m_vlayout[groupid]->setSpacing(1);
+                m_glayout->addWidget(m_title[groupid], 0, index, Qt::AlignCenter);
+                m_glayout->addWidget(m_titleedit[groupid], 1, index, Qt::AlignCenter);
         }
-        m_hlayout->insertStretch(100, 1);
-        m_vlayout["gr1"]->setProperty("queues", (QStringList() << "technique" << "eclair" << "normal"));
-        m_vlayout["gr2"]->setProperty("queues", (QStringList() << "martinique"));
-        m_vlayout["gr3"]->setProperty("queues", (QStringList() << "guadeloupe"));
-        m_vlayout["gr4"]->setProperty("queues", (QStringList() << "metropole"));
-        m_vlayout["gr5"]->setProperty("queues", (QStringList() << "commercial"));
-        m_vlayout["gr6"]->setProperty("queues", (QStringList() << "tous"));
         // m_gridlayout->setVerticalSpacing(0);
         
         setGuiOptions(optionmap);
@@ -105,7 +100,7 @@ void AgentsPanelNext::setGuiOptions(const QVariant & optionmap)
                                    optionmap.toMap()["fontsize"].toInt());
         
         // setFont(m_gui_font);
-        foreach(QString groupid, m_groups.keys())
+        foreach(QString groupid, m_title.keys())
                 m_title[groupid]->setFont(m_gui_font);
 }
 
@@ -131,9 +126,10 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         QString firstname = m_agent_props[idxa].toMap()["firstname"].toString();
         QString lastname = m_agent_props[idxa].toMap()["lastname"].toString();
         
+        m_agent_labels[idx]->setProperty("sorter", firstname + lastname);
+        
         // foreach(QString qname, queues.toMap().keys())
         // qDebug() << idx << qname << queues.toMap()[qname].toMap()["Status"].toString() << queues.toMap()[qname].toMap()["Paused"].toString();
-        m_vlayout[groupid]->insertWidget( 2, m_agent_labels[idx] );
         
         QString agstatus = properties.toMap()["status"].toString();
         QString phonenum = properties.toMap()["phonenum"].toString();
@@ -206,8 +202,8 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         }
                 }
         } else if(action == "joinqueue") {
-                foreach(QString groupid, m_groups.keys()) {
-                        QStringList lqueues = m_vlayout[groupid]->property("queues").toStringList();
+                foreach(QString groupid, m_title.keys()) {
+                        QStringList lqueues = m_title[groupid]->property("queues").toStringList();
                         if(lqueues.contains(qname)) {
                                 QString idx = astid + "-" + agentnum + "-" + groupid;
                                 if(! m_agent_labels.contains(idx)) {
@@ -223,8 +219,8 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         }
                 }
         } else if(action == "leavequeue") {
-                foreach(QString groupid, m_groups.keys()) {
-                        QStringList lqueues = m_vlayout[groupid]->property("queues").toStringList();
+                foreach(QString groupid, m_title.keys()) {
+                        QStringList lqueues = m_title[groupid]->property("queues").toStringList();
                         if(lqueues.contains(qname)) {
                                 QString idx = astid + "-" + agentnum + "-" + groupid;
                                 if(m_agent_labels.contains(idx)) {
@@ -295,9 +291,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                 }
         }
         
-        // qDebug() << "AgentsPanelNext::updatePeerAgent()" << m_agent_labels.keys();
-        foreach (QString idx, m_agent_labels.keys())
-                setAgentProps(idx);
+        refresh();
 }
 
 void AgentsPanelNext::agentClicked()
@@ -310,6 +304,33 @@ void AgentsPanelNext::agentClicked()
         msgbox->setText(text);
         msgbox->setGeometry(100, 100, 0, 0);
         msgbox->show();
+}
+
+void AgentsPanelNext::refresh()
+{
+        int nmax = 0;
+        QHash<QString, QMap<QString, QString> > columns_sorter;
+        foreach (QString groupid, m_title.keys()) {
+                QMap<QString, QString> map;
+                columns_sorter[groupid] = map;
+        }
+        foreach (QString idx, m_agent_labels.keys()) {
+                setAgentProps(idx);
+                QString groupid = m_agent_labels[idx]->property("groupid").toString();
+                QString sorter = m_agent_labels[idx]->property("sorter").toString();
+                columns_sorter[groupid][sorter] = idx;
+        }
+        foreach (QString groupid, m_title.keys()) {
+                int iy = 2;
+                int ix = m_title.keys().indexOf(groupid);
+                QMap<QString, QString> lst = columns_sorter[groupid];
+                foreach(QString srt, lst.keys())
+                        m_glayout->addWidget(m_agent_labels[lst[srt]], iy++, ix);
+                if(iy > nmax)
+                        nmax = iy;
+        }
+        m_glayout->setRowStretch(nmax, 1);
+        m_glayout->setColumnStretch(m_title.size(), 1);
 }
 
 void AgentsPanelNext::setAgentList(const QVariant & alist)
@@ -340,8 +361,8 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
                 foreach (QString qname, agqjoined.keys()) {
                         QString sstatus = agqjoined[qname].toMap()["Status"].toString();
                         if((sstatus == "1") || (sstatus == "5"))
-                                foreach(QString groupid, m_groups.keys()) {
-                                        QStringList lqueues = m_vlayout[groupid]->property("queues").toStringList();
+                                foreach(QString groupid, m_title.keys()) {
+                                        QStringList lqueues = m_title[groupid]->property("queues").toStringList();
                                         if(lqueues.contains(qname)) {
                                                 QString idx = astid + "-" + agentid + "-" + groupid;
                                                 if(! m_agent_labels.contains(idx)) {
@@ -357,7 +378,5 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
                 }
         }
         
-        // qDebug() << "AgentsPanelNext::setAgentList()" << m_agent_labels.keys();
-        foreach (QString idx, m_agent_labels.keys())
-                setAgentProps(idx);
+        refresh();
 }
