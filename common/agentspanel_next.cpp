@@ -40,6 +40,7 @@
  */
 
 #include <QAction>
+#include <QComboBox>
 #include <QContextMenuEvent>
 #include <QDateTime>
 #include <QDebug>
@@ -445,14 +446,47 @@ void AgentsPanelNext::addQueueToGroup()
 
 void AgentsPanelNext::agentClicked()
 {
-        // qDebug() << "AgentsPanelNext::agentClicked()";
-        QMessageBox * msgbox = new QMessageBox();
-        QString text = sender()->property("astid").toString();
-        msgbox->setWindowTitle("Agent " + sender()->property("agentid").toString());
-        msgbox->setIcon(QMessageBox::Information);
-        msgbox->setText(text);
-        msgbox->setGeometry(100, 100, 0, 0);
-        msgbox->show();
+        QPushButton * qpb = qobject_cast<QPushButton *>(sender());
+        QString astid = sender()->property("astid").toString();
+        QString agentid = sender()->property("agentid").toString();
+        QPoint where = qpb->pos(); // XXX
+        QString idxa = astid + "-" + agentid;
+        
+        QGridLayout * gl = new QGridLayout();
+        QDialog * dialog = new QDialog(this);
+        dialog->setWindowTitle("Agent " + agentid + " on " + astid);
+        dialog->setLayout(gl);
+        
+        QLabel * q_name = new QLabel(m_agent_props[idxa].toMap()["firstname"].toString());
+        QLabel * q_agentid = new QLabel(agentid);
+        QLabel * q_received = new QLabel("n calls received since connexion");
+        QLabel * q_lost = new QLabel("m calls lost since connexion");
+        QPushButton * q_cancel = new QPushButton("Cancel");
+        QPushButton * q_logout = new QPushButton("Logout");
+        QPushButton * q_transfer = new QPushButton("Transfer");
+        QComboBox * q_queues = new QComboBox();
+        QPushButton * q_close = new QPushButton("Close");
+        
+        int iy = 0;
+        gl->addWidget(q_name, iy, 0, Qt::AlignCenter);
+        gl->addWidget(q_agentid, iy, 1, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_received, iy, 0, 1, 2, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_lost, iy, 0, 1, 2, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_cancel, iy, 0, Qt::AlignCenter);
+        gl->addWidget(q_logout, iy, 1, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_transfer, iy, 0, Qt::AlignCenter);
+        gl->addWidget(q_queues, iy, 1, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_close, iy, 1, Qt::AlignCenter);
+        iy ++;
+        connect( q_close, SIGNAL(clicked()),
+                 dialog, SLOT(close()) );
+        dialog->move(where);
+        dialog->exec();
 }
 
 void AgentsPanelNext::refreshContents()
