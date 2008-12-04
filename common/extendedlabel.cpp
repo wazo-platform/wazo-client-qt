@@ -52,5 +52,10 @@ ExtendedLabel::ExtendedLabel(const QString & text,
 
 void ExtendedLabel::mouseDoubleClickEvent(QMouseEvent * event)
 {
-        dial(event);
+        mouse_doubleclick(event);
+}
+
+void ExtendedLabel::mouseReleaseEvent(QMouseEvent * event)
+{
+        mouse_release(event);
 }

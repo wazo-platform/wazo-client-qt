@@ -851,6 +851,8 @@ void MainWidget::engineStarted()
                                 } else
                                         addPanel(xletid, tr("Agents' List (Next)"), m_xlet[xletid]);
                                 
+                                connect( m_engine, SIGNAL(newQueueList(bool, const QVariant &)),
+                                         m_xlet[xletid], SLOT(setQueueList(bool, const QVariant &)) );
                                 connect( m_engine, SIGNAL(newAgentList(const QVariant &)),
                                          m_xlet[xletid], SLOT(setAgentList(const QVariant &)) );
                                 connect( m_xlet[xletid], SIGNAL(changeWatchedAgent(const QString &, bool)),

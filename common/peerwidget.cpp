@@ -94,7 +94,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
                 m_availlbl->setObjectName("onlyme");
                 m_availlbl->setProperty("kind", "person");
                 // setColorAvail("person", "grey", "");
-                connect( m_availlbl, SIGNAL(dial(QMouseEvent *)),
+                connect( m_availlbl, SIGNAL(mouse_doubleclick(QMouseEvent *)),
                          this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         }
         
@@ -111,7 +111,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
                         m_lblphones[termname]->setMinimumSize(fsize, fsize);
                         m_lblphones[termname]->setProperty("kind", "term");
                         // setColorAvail(termname, "grey", "");
-                        connect( m_lblphones[termname], SIGNAL(dial(QMouseEvent *)),
+                        connect( m_lblphones[termname], SIGNAL(mouse_doubleclick(QMouseEvent *)),
                                  this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
                 }
         }
@@ -125,7 +125,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
                 m_agentlbl->setToolTip(tr("Agent ") + ui->agentid());
                 m_agentlbl->setProperty("kind", "agent");
                 setColorAvail("agent", "grey", "");
-                connect( m_agentlbl, SIGNAL(dial(QMouseEvent *)),
+                connect( m_agentlbl, SIGNAL(mouse_doubleclick(QMouseEvent *)),
                          this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         }
         

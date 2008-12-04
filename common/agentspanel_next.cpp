@@ -39,12 +39,16 @@
  * $Date$
  */
 
+#include <QAction>
 #include <QContextMenuEvent>
+#include <QDateTime>
 #include <QDebug>
 #include <QFrame>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QTextEdit>
+#include <QMenu>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QScrollArea>
@@ -52,6 +56,7 @@
 #include <QVBoxLayout>
 
 #include "agentspanel_next.h"
+#include "extendedlabel.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -60,28 +65,20 @@ AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
                                  QWidget * parent)
         : QWidget(parent)
 {
-        m_title["gr1"] = new QLabel("MARCHE A");
-        m_title["gr2"] = new QLabel("MARCHE C");
-        m_title["gr3"] = new QLabel("MARCHE F");
-        m_title["gr4"] = new QLabel("MARCHE G");
-        m_title["gr5"] = new QLabel("MARCHE J");
-        m_title["gr6"] = new QLabel("MARCHE L");
-        m_title["gr1"]->setProperty("queues", (QStringList() << "technique" << "eclair" << "normal"));
-        m_title["gr2"]->setProperty("queues", (QStringList("martinique")));
-        m_title["gr3"]->setProperty("queues", (QStringList("guadeloupe")));
-        m_title["gr4"]->setProperty("queues", (QStringList("metropole")));
-        m_title["gr5"]->setProperty("queues", (QStringList("commercial")));
-        m_title["gr6"]->setProperty("queues", (QStringList("tous")));
+        // m_title["gr1"] = new ExtendedLabel("MARCHE\nA\nB");
+        // m_title["gr1"]->setProperty("queues", (QStringList() << "technique" << "eclair" << "normal"));
         
         m_glayout = new QGridLayout(this);
         m_glayout->setSpacing(1);
+        
         foreach(QString groupid, m_title.keys()) {
+                m_title[groupid]->setProperty("groupid", groupid);
+                m_title[groupid]->setAlignment(Qt::AlignCenter);
+                connect( m_title[groupid], SIGNAL(mouse_release(QMouseEvent *)),
+                         this, SLOT(titleClicked(QMouseEvent *)) );
                 int index = m_title.keys().indexOf(groupid);
-                m_title[groupid]->setMargin(10);
                 m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
-                m_titleedit[groupid] = new QPushButton();
                 m_glayout->addWidget(m_title[groupid], 0, index, Qt::AlignCenter);
-                m_glayout->addWidget(m_titleedit[groupid], 1, index, Qt::AlignCenter);
         }
         // m_gridlayout->setVerticalSpacing(0);
         
@@ -106,7 +103,43 @@ void AgentsPanelNext::setGuiOptions(const QVariant & optionmap)
 
 void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
 {
-        qDebug() << "AgentsPanelNext::contextMenuEvent" << event << event->pos() << event->reason();
+        qDebug() << "AgentsPanelNext::contextMenuEvent()" << event << event->pos() << event->reason();
+        QPoint where = event->globalPos();
+        QGridLayout * gl = new QGridLayout();
+        QDialog * dialog = new QDialog();
+        dialog->setWindowTitle("New Group");
+        dialog->setLayout(gl);
+        QLabel * q1 = new QLabel("Name");
+        QTextEdit * q2 = new QTextEdit();
+        QPushButton * q3 = new QPushButton("OK");
+        QPushButton * q4 = new QPushButton("Cancel");
+        gl->addWidget(q1, 0, 0);
+        gl->addWidget(q2, 0, 1);
+        gl->addWidget(q3, 1, 0);
+        gl->addWidget(q4, 1, 1);
+        connect( q3, SIGNAL(clicked()),
+                 dialog, SLOT(close()) );
+        connect( q4, SIGNAL(clicked()),
+                 dialog, SLOT(close()) );
+        dialog->move(where);
+        dialog->exec();
+        
+        QString groupid = QString::number(QDateTime::currentDateTime().toTime_t());
+        m_title[groupid] = new ExtendedLabel();
+        m_title[groupid]->setText(q2->toPlainText());
+        m_title[groupid]->setProperty("queues", (QStringList()));
+        m_title[groupid]->setProperty("groupid", groupid);
+        m_title[groupid]->setAlignment(Qt::AlignCenter);
+        connect( m_title[groupid], SIGNAL(mouse_release(QMouseEvent *)),
+                 this, SLOT(titleClicked(QMouseEvent *)) );
+        m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
+        refreshContents();
+        refreshDisplay();
+}
+
+void AgentsPanelNext::mouseReleasedEvent(QMouseEvent * event)
+{
+        qDebug() << "AgentsPanelNext::mouseReleasedEvent()" << event << event->pos();
 }
 
 void AgentsPanelNext::setUserInfo(const UserInfo * ui)
@@ -291,7 +324,120 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                 }
         }
         
-        refresh();
+        refreshDisplay();
+}
+
+void AgentsPanelNext::titleClicked(QMouseEvent * event)
+{
+        ExtendedLabel * el = qobject_cast<ExtendedLabel *>(sender());
+        QStringList thisqueuelist = el->property("queues").toStringList();
+        QString thisgroupid = el->property("groupid").toString();
+        qDebug() << "AgentsPanelNext::titleClicked()" << thisgroupid << thisqueuelist;
+        
+        if(event->button() == Qt::LeftButton) {
+                QMenu contextMenu(this);
+                
+                QAction * renameAction = new QAction(tr("Rename Label"), this);
+                contextMenu.addAction(renameAction);
+                renameAction->setProperty("groupid", thisgroupid);
+                renameAction->setProperty("where", event->globalPos());
+                connect(renameAction, SIGNAL(triggered()),
+                        this, SLOT(renameQueueGroup()) );
+                
+                QAction * removeAction = new QAction(tr("Remove Group"), this);
+                contextMenu.addAction(removeAction);
+                removeAction->setProperty("groupid", thisgroupid);
+                connect(removeAction, SIGNAL(triggered()),
+                        this, SLOT(removeQueueGroup()) );
+                
+                QMenu * menu_remove = contextMenu.addMenu(tr("Remove Queue"));
+                foreach (QString qname, el->property("queues").toStringList()) {
+                        QAction * qremove = new QAction(qname, this);
+                        qremove->setProperty("groupid", thisgroupid);
+                        qremove->setProperty("queuename", qname);
+                        menu_remove->addAction(qremove);
+                        connect(qremove, SIGNAL(triggered()),
+                                this, SLOT(removeQueueFromGroup()) );
+                }
+                
+                QMenu * menu_add = contextMenu.addMenu(tr("Add Queue"));
+                foreach (QString qname, m_queuelist)
+                        if(! thisqueuelist.contains(qname)) {
+                                QAction * qadd = new QAction(qname, this);
+                                qadd->setProperty("groupid", thisgroupid);
+                                qadd->setProperty("queuename", qname);
+                                menu_add->addAction(qadd);
+                                connect(qadd, SIGNAL(triggered()),
+                                        this, SLOT(addQueueToGroup()) );
+                        }
+                
+                contextMenu.exec(event->globalPos());
+        }
+}
+
+void AgentsPanelNext::renameQueueGroup()
+{
+        QString groupid = sender()->property("groupid").toString();
+        QPoint where = sender()->property("where").toPoint();
+        QGridLayout * gl = new QGridLayout();
+        QDialog * dialog = new QDialog();
+        dialog->setWindowTitle("Rename Group");
+        dialog->setLayout(gl);
+        QLabel * q1 = new QLabel("New Name");
+        QTextEdit * q2 = new QTextEdit();
+        q2->setPlainText(m_title[groupid]->text());
+        QPushButton * q3 = new QPushButton("OK");
+        QPushButton * q4 = new QPushButton("Cancel");
+        gl->addWidget(q1, 0, 0);
+        gl->addWidget(q2, 0, 1);
+        gl->addWidget(q3, 1, 0);
+        gl->addWidget(q4, 1, 1);
+        connect( q3, SIGNAL(clicked()),
+                 dialog, SLOT(close()) );
+        connect( q4, SIGNAL(clicked()),
+                 dialog, SLOT(close()) );
+        dialog->move(where);
+        dialog->exec();
+        m_title[groupid]->setText(q2->toPlainText());
+}
+
+void AgentsPanelNext::removeQueueGroup()
+{
+        QString groupid = sender()->property("groupid").toString();
+        if(m_title.contains(groupid)) {
+                delete m_title[groupid];
+                m_title.remove(groupid);
+                refreshContents();
+                refreshDisplay();
+        }
+}
+
+void AgentsPanelNext::removeQueueFromGroup()
+{
+        QString groupid = sender()->property("groupid").toString();
+        QString queuename = sender()->property("queuename").toString();
+        qDebug() << "AgentsPanelNext::removeQueueFromGroup()" << groupid << queuename;
+        QStringList qlist = m_title[groupid]->property("queues").toStringList();
+        if(qlist.contains(queuename)) {
+                qlist.removeAll(queuename);
+                m_title[groupid]->setProperty("queues", qlist);
+                refreshContents();
+                refreshDisplay();
+        }
+}
+
+void AgentsPanelNext::addQueueToGroup()
+{
+        QString groupid = sender()->property("groupid").toString();
+        QString queuename = sender()->property("queuename").toString();
+        qDebug() << "AgentsPanelNext::addQueueToGroup()" << groupid << queuename;
+        QStringList qlist = m_title[groupid]->property("queues").toStringList();
+        if(! qlist.contains(queuename)) {
+                qlist.append(queuename);
+                m_title[groupid]->setProperty("queues", qlist);
+                refreshContents();
+                refreshDisplay();
+        }
 }
 
 void AgentsPanelNext::agentClicked()
@@ -306,7 +452,40 @@ void AgentsPanelNext::agentClicked()
         msgbox->show();
 }
 
-void AgentsPanelNext::refresh()
+void AgentsPanelNext::refreshContents()
+{
+        foreach (QString idx, m_agent_labels.keys()) {
+                delete m_agent_labels[idx];
+                m_agent_labels.remove(idx);
+        }
+        
+        foreach (QString idxa, m_agent_props.keys()) {
+                QString astid = m_agent_props[idxa].toMap()["astid"].toString();
+                QString agentid = m_agent_props[idxa].toMap()["agentid"].toString();
+                QVariantMap agqjoined = m_agent_props[idxa].toMap()["queues"].toMap();
+                
+                foreach (QString qname, agqjoined.keys()) {
+                        QString sstatus = agqjoined[qname].toMap()["Status"].toString();
+                        if((sstatus == "1") || (sstatus == "5"))
+                                foreach(QString groupid, m_title.keys()) {
+                                        QStringList lqueues = m_title[groupid]->property("queues").toStringList();
+                                        if(lqueues.contains(qname)) {
+                                                QString idx = astid + "-" + agentid + "-" + groupid;
+                                                if(! m_agent_labels.contains(idx)) {
+                                                        m_agent_labels[idx] = new QPushButton();
+                                                        m_agent_labels[idx]->setProperty("astid", astid);
+                                                        m_agent_labels[idx]->setProperty("agentid", agentid);
+                                                        m_agent_labels[idx]->setProperty("groupid", groupid);
+                                                        connect( m_agent_labels[idx], SIGNAL(clicked()),
+                                                                 this, SLOT(agentClicked()) );
+                                                }
+                                        }
+                                }
+                }
+        }
+}
+
+void AgentsPanelNext::refreshDisplay()
 {
         int nmax = 0;
         QHash<QString, QMap<QString, QString> > columns_sorter;
@@ -321,8 +500,9 @@ void AgentsPanelNext::refresh()
                 columns_sorter[groupid][sorter] = idx;
         }
         foreach (QString groupid, m_title.keys()) {
-                int iy = 2;
+                int iy = 1;
                 int ix = m_title.keys().indexOf(groupid);
+                m_glayout->addWidget(m_title[groupid], 0, ix);
                 QMap<QString, QString> lst = columns_sorter[groupid];
                 foreach(QString srt, lst.keys())
                         m_glayout->addWidget(m_agent_labels[lst[srt]], iy++, ix);
@@ -378,5 +558,16 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
                 }
         }
         
-        refresh();
+        refreshDisplay();
+}
+
+void AgentsPanelNext::setQueueList(bool, const QVariant & qlist)
+{
+        // qDebug() << "QueuesPanel::setQueueList()" << qlist;
+        QVariantMap qlistmap = qlist.toMap();
+        QString astid = qlistmap["astid"].toString();
+        QStringList queues = qlistmap["queuestats"].toMap().keys();
+        foreach (QString queuename, queues)
+                if(! m_queuelist.contains(queuename))
+                        m_queuelist.append(queuename);
 }

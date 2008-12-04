@@ -53,6 +53,7 @@ class QGridLayout;
 class QLabel;
 class QPushButton;
 
+class ExtendedLabel;
 class UserInfo;
 
 /*! \brief Identity Display
@@ -71,27 +72,35 @@ public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
         void setAgentList(const QVariant &);
+        void setQueueList(bool, const QVariant &);
         void updatePeerAgent(const QString &,
                              const QString &,
                              const QVariant &);
         void updateAgentPresence(const QString &, const QVariant &);
 private slots:
+        void renameQueueGroup();
+        void removeQueueGroup();
         void agentClicked();
+        void titleClicked(QMouseEvent *);
         void setAgentProps(const QString &);
+        void removeQueueFromGroup();
+        void addQueueToGroup();
 protected:
         void contextMenuEvent(QContextMenuEvent *);
+        void mouseReleasedEvent(QMouseEvent *);
 private:
-        void refresh();
+        void refreshContents();
+        void refreshDisplay();
         
         QFont m_gui_font;
 	QGridLayout * m_glayout;
-        QHash<QString, QLabel *> m_title;
-        QHash<QString, QPushButton *> m_titleedit;
+        QHash<QString, ExtendedLabel *> m_title;
         const UserInfo * m_userinfo;
         
         QHash<QString, QString> m_groups;
         QHash<QString, QPushButton *> m_agent_labels;
         QHash<QString, QVariant> m_agent_props;
+        QStringList m_queuelist;
 };
 
 #endif /* __AGENTSPANEL_H__ */

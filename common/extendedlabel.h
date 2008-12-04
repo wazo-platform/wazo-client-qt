@@ -50,12 +50,15 @@ class ExtendedLabel : public QLabel
 {
         Q_OBJECT
 public:
-        ExtendedLabel(const QString &text="", QWidget *parent = 0);
+        ExtendedLabel(const QString & text = "",
+                      QWidget *parent = 0);
 protected:
         void mouseDoubleClickEvent(QMouseEvent *);
+        void mouseReleaseEvent(QMouseEvent *);
 signals:
 	//! originate signal
-	void dial(QMouseEvent *event);
+	void mouse_doubleclick(QMouseEvent *);
+	void mouse_release(QMouseEvent *);
 };
 
 #endif
