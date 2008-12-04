@@ -124,17 +124,19 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
         dialog->move(where);
         dialog->exec();
         
-        QString groupid = QString::number(QDateTime::currentDateTime().toTime_t());
-        m_title[groupid] = new ExtendedLabel();
-        m_title[groupid]->setText(q2->toPlainText());
-        m_title[groupid]->setProperty("queues", (QStringList()));
-        m_title[groupid]->setProperty("groupid", groupid);
-        m_title[groupid]->setAlignment(Qt::AlignCenter);
-        connect( m_title[groupid], SIGNAL(mouse_release(QMouseEvent *)),
-                 this, SLOT(titleClicked(QMouseEvent *)) );
-        m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
-        refreshContents();
-        refreshDisplay();
+        if(! q2->toPlainText().isEmpty()) {
+                QString groupid = QString::number(QDateTime::currentDateTime().toTime_t());
+                m_title[groupid] = new ExtendedLabel();
+                m_title[groupid]->setText(q2->toPlainText().trimmed());
+                m_title[groupid]->setProperty("queues", (QStringList()));
+                m_title[groupid]->setProperty("groupid", groupid);
+                m_title[groupid]->setAlignment(Qt::AlignCenter);
+                connect( m_title[groupid], SIGNAL(mouse_release(QMouseEvent *)),
+                         this, SLOT(titleClicked(QMouseEvent *)) );
+                m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
+                refreshContents();
+                refreshDisplay();
+        }
 }
 
 void AgentsPanelNext::mouseReleasedEvent(QMouseEvent * event)
@@ -398,7 +400,8 @@ void AgentsPanelNext::renameQueueGroup()
                  dialog, SLOT(close()) );
         dialog->move(where);
         dialog->exec();
-        m_title[groupid]->setText(q2->toPlainText());
+        if(! q2->toPlainText().isEmpty())
+                m_title[groupid]->setText(q2->toPlainText().trimmed());
 }
 
 void AgentsPanelNext::removeQueueGroup()
@@ -487,7 +490,7 @@ void AgentsPanelNext::refreshContents()
 
 void AgentsPanelNext::refreshDisplay()
 {
-        int nmax = 0;
+        int nmax = 1;
         QHash<QString, QMap<QString, QString> > columns_sorter;
         foreach (QString groupid, m_title.keys()) {
                 QMap<QString, QString> map;
@@ -502,6 +505,7 @@ void AgentsPanelNext::refreshDisplay()
         foreach (QString groupid, m_title.keys()) {
                 int iy = 1;
                 int ix = m_title.keys().indexOf(groupid);
+                m_glayout->setColumnStretch(ix, 0);
                 m_glayout->addWidget(m_title[groupid], 0, ix);
                 QMap<QString, QString> lst = columns_sorter[groupid];
                 foreach(QString srt, lst.keys())

@@ -94,7 +94,7 @@ private:
         
         QFont m_gui_font;
 	QGridLayout * m_glayout;
-        QHash<QString, ExtendedLabel *> m_title;
+        QMap<QString, ExtendedLabel *> m_title;
         const UserInfo * m_userinfo;
         
         QHash<QString, QString> m_groups;
