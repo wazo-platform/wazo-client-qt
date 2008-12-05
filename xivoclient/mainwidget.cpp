@@ -863,6 +863,12 @@ void MainWidget::engineStarted()
 					 m_xlet[xletid], SLOT(updateAgentPresence(const QString &, const QVariant &)) );
                                 connect( m_xlet[xletid], SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)) );
+                                connect( m_xlet[xletid], SIGNAL(saveQueueGroups(const QVariant &)),
+                                         m_engine, SLOT(saveQueueGroups(const QVariant &)) );
+                                connect( m_xlet[xletid], SIGNAL(loadQueueGroups()),
+                                         m_engine, SLOT(loadQueueGroups()) );
+                                connect( m_engine, SIGNAL(setGroups(const QVariant &)),
+                                         m_xlet[xletid], SLOT(setGroups(const QVariant &)) );
                                 
 			} else if (xletid == QString("agentdetails")) {
                                 m_xlet[xletid] = new AgentdetailsPanel();

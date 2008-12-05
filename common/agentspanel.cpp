@@ -114,7 +114,7 @@ void AgentsPanel::setUserInfo(const UserInfo * ui)
 
 void AgentsPanel::updateAgentPresence(const QString & agentname, const QVariant & presencestatus)
 {
-        // qDebug() << "AgentsPanel::updateAgentPresence" << agentname << presencestatus;
+        // qDebug() << "AgentsPanel::updateAgentPresence()" << agentname << presencestatus;
         if(agentname.size() > 0)
                 if(m_agent_presence.contains(agentname)) {
                         QColor color = QColor(presencestatus.toMap()["color"].toString());

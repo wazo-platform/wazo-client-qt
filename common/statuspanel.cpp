@@ -300,7 +300,7 @@ void StatusPanel::functionKeyPressed(int keynum)
 
 void StatusPanel::changeCurrentChannel(const QString & before, const QString & after)
 {
-        // qDebug() << "StatusPanel::changeCurrentChannel" << before << after;
+        // qDebug() << "StatusPanel::changeCurrentChannel()" << before << after;
         if(before != after) {
                 if(m_vlinesl.contains(before) && m_vlinesr.contains(before)) {
                         m_vlinesl[before]->setLineWidth(1);

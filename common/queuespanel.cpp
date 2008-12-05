@@ -236,7 +236,7 @@ void QueuesPanel::updatePeerAgent(const QString &,
 
 void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
 {
-        // qDebug() << "QueuesPanel::removeQueues" << astid << queues;
+        // qDebug() << "QueuesPanel::removeQueues()" << astid << queues;
         foreach (QString queuename, queues) {
                 if(m_queuelabels.contains(queuename)) {
                         m_gridlayout->removeWidget( m_queuelabels[queuename] );

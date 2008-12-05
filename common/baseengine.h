@@ -173,6 +173,8 @@ public slots:
         void changeWatchedAgentSlot(const QString &, bool);
         void changeWatchedQueueSlot(const QString &);
         void saveToFile(const QString &);
+        void saveQueueGroups(const QVariant &);
+        void loadQueueGroups();
 private slots:
 	void keepLoginAlive(); //!< Keep session alive
 	void changeState(); //!< Change the presence status
@@ -209,6 +211,7 @@ signals:
         void statusRecord(const QString &, const QString &);
         void setGuiOptions(const QVariant &);
         void emitMessageBox(const QString &);
+        void setGroups(const QVariant &);
         
 	//! a call
 	void updateCall(UserInfo *,

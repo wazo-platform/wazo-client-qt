@@ -68,6 +68,8 @@ public:
 signals:
         void changeWatchedAgent(const QString &, bool);
         void agentAction(const QString &);
+        void saveQueueGroups(const QVariant &);
+        void loadQueueGroups();
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
@@ -85,12 +87,16 @@ private slots:
         void setAgentProps(const QString &);
         void removeQueueFromGroup();
         void addQueueToGroup();
+        void setGroups(const QVariant &);
+        void loadGroups();
+        void newGroup();
 protected:
         void contextMenuEvent(QContextMenuEvent *);
         void mouseReleasedEvent(QMouseEvent *);
 private:
         void refreshContents();
         void refreshDisplay();
+        void saveGroups();
         
         QFont m_gui_font;
 	QGridLayout * m_glayout;

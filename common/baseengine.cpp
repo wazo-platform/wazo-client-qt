@@ -391,7 +391,7 @@ const QString & BaseEngine::getCapaApplication() const
  */
 void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
 {
-        // qDebug() << "BaseEngine::setAvailState from" << m_availstate << "to" << newstate << comesFromServer;
+        // qDebug() << "BaseEngine::setAvailState() from" << m_availstate << "to" << newstate << comesFromServer;
 	if(m_availstate != newstate) {
 		m_availstate = newstate;
 		m_settings->setValue("engine/availstate", m_availstate);
@@ -1778,4 +1778,15 @@ void BaseEngine::sendMessage(const QString & message)
         command["direction"] = "xivoserver";
         command["message"] = message;
         sendJsonCommand(command);
+}
+
+void BaseEngine::saveQueueGroups(const QVariant & queuegroups)
+{
+	m_settings->setValue("agentpanel/queuegroups", queuegroups);
+}
+
+void BaseEngine::loadQueueGroups()
+{
+        setGroups(m_settings->value("agentpanel/queuegroups"));
+
 }
