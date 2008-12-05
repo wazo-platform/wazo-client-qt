@@ -389,7 +389,7 @@ void AgentsPanelNext::titleClicked(QMouseEvent * event)
         ExtendedLabel * el = qobject_cast<ExtendedLabel *>(sender());
         QStringList thisqueuelist = el->property("queues").toStringList();
         QString thisgroupid = el->property("groupid").toString();
-        qDebug() << "AgentsPanelNext::titleClicked()" << thisgroupid << thisqueuelist;
+        // qDebug() << "AgentsPanelNext::titleClicked()" << thisgroupid << thisqueuelist;
         
         if(event->button() == Qt::LeftButton) {
                 QMenu contextMenu(this);
@@ -464,7 +464,7 @@ void AgentsPanelNext::removeQueueGroup()
 {
         QString groupid = sender()->property("groupid").toString();
         if(m_title.contains(groupid)) {
-                delete m_title[groupid];
+                m_title[groupid]->deleteLater();
                 m_title.remove(groupid);
                 refreshContents();
                 refreshDisplay();
