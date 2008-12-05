@@ -1493,8 +1493,7 @@ void MainWidget::about()
 #elif defined(Q_WS_MAC)
                 "macos"
 #endif
-                "/" + __xivo_version__ + "-beta"
-                ">" + tr("last one") + "</a>";
+                "/" + __xivo_version__ + ">" + tr("last one") + "</a>";
         
         // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
         QMessageBox::about(this,
