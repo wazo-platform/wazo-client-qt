@@ -125,7 +125,7 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
         dialog->move(where);
         dialog->exec();
         
-        if(! q2->toPlainText().isEmpty()) {
+        if(! q2->toPlainText().trimmed().isEmpty()) {
                 QString groupid = QString::number(QDateTime::currentDateTime().toTime_t());
                 m_title[groupid] = new ExtendedLabel();
                 m_title[groupid]->setText(q2->toPlainText().trimmed());
@@ -401,7 +401,7 @@ void AgentsPanelNext::renameQueueGroup()
                  dialog, SLOT(close()) );
         dialog->move(where);
         dialog->exec();
-        if(! q2->toPlainText().isEmpty())
+        if(! q2->toPlainText().trimmed().isEmpty())
                 m_title[groupid]->setText(q2->toPlainText().trimmed());
 }
 
@@ -459,8 +459,8 @@ void AgentsPanelNext::agentClicked()
         
         QLabel * q_name = new QLabel(m_agent_props[idxa].toMap()["firstname"].toString());
         QLabel * q_agentid = new QLabel(agentid);
-        QLabel * q_received = new QLabel("n calls received since connexion");
-        QLabel * q_lost = new QLabel("m calls lost since connexion");
+        QLabel * q_received = new QLabel("n calls received since connection");
+        QLabel * q_lost = new QLabel("m calls lost since connection");
         QPushButton * q_cancel = new QPushButton("Cancel");
         QPushButton * q_logout = new QPushButton("Logout");
         QPushButton * q_transfer = new QPushButton("Transfer");
