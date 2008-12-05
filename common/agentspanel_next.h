@@ -82,7 +82,7 @@ public slots:
 private slots:
         void renameQueueGroup();
         void removeQueueGroup();
-        void agentClicked();
+        void agentClicked(QMouseEvent *);
         void titleClicked(QMouseEvent *);
         void setAgentProps(const QString &);
         void removeQueueFromGroup();
@@ -104,7 +104,7 @@ private:
         const UserInfo * m_userinfo;
         
         QHash<QString, QString> m_groups;
-        QHash<QString, QPushButton *> m_agent_labels;
+        QHash<QString, ExtendedLabel *> m_agent_labels;
         QHash<QString, QVariant> m_agent_props;
         QStringList m_queuelist;
 };

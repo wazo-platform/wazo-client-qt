@@ -60,6 +60,8 @@
 #include "extendedlabel.h"
 #include "userinfo.h"
 
+#define NCOLS 3
+
 /*! \brief Constructor
  */
 AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
@@ -76,7 +78,7 @@ AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
                          this, SLOT(titleClicked(QMouseEvent *)) );
                 int index = m_title.keys().indexOf(groupid);
                 m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
-                m_glayout->addWidget(m_title[groupid], 0, index, Qt::AlignCenter);
+                m_glayout->addWidget(m_title[groupid], 0, index * NCOLS, 1, NCOLS, Qt::AlignCenter);
         }
         // m_gridlayout->setVerticalSpacing(0);
         
@@ -133,13 +135,13 @@ void AgentsPanelNext::newGroup()
         gl->addWidget(q2, 0, 1);
         gl->addWidget(q3, 1, 0);
         gl->addWidget(q4, 1, 1);
+        q2->setFixedSize(QSize(200, 60));
         connect( q3, SIGNAL(clicked()),
                  dialog, SLOT(close()) );
         connect( q4, SIGNAL(clicked()),
                  dialog, SLOT(close()) );
         dialog->move(where);
         dialog->exec();
-        
         if(! q2->toPlainText().trimmed().isEmpty()) {
                 QString groupid = QString::number(QDateTime::currentDateTime().toTime_t());
                 m_title[groupid] = new ExtendedLabel();
@@ -177,12 +179,13 @@ void AgentsPanelNext::setGroups(const QVariant & groups)
                 m_title[groupid] = new ExtendedLabel(groups.toMap()[groupid].toMap()["label"].toString());
                 m_title[groupid]->setProperty("groupid", groupid);
                 m_title[groupid]->setProperty("queues", groups.toMap()[groupid].toMap()["queues"].toStringList());
+                m_title[groupid]->setToolTip(groups.toMap()[groupid].toMap()["queues"].toStringList().join(", "));
                 m_title[groupid]->setAlignment(Qt::AlignCenter);
                 connect( m_title[groupid], SIGNAL(mouse_release(QMouseEvent *)),
                          this, SLOT(titleClicked(QMouseEvent *)) );
                 int index = m_title.keys().indexOf(groupid);
                 m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
-                m_glayout->addWidget(m_title[groupid], 0, index, Qt::AlignCenter);
+                m_glayout->addWidget(m_title[groupid], 0, index * NCOLS, 1, NCOLS, Qt::AlignCenter);
         }
         refreshContents();
         refreshDisplay();
@@ -249,7 +252,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                 disptext += " " + displayedtime;
         }
         
-        QString qss = "QPushButton {border: 5px solid " + colorqss + "; border-radius: 0px; background: " + colorqss + "};";
+        QString qss = "QLabel {border: 5px solid " + colorqss + "; border-radius: 0px; background: " + colorqss + "};";
         m_agent_labels[idx]->setStyleSheet(qss);
         m_agent_labels[idx]->setText(disptext);
 }
@@ -294,12 +297,12 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         if(lqueues.contains(qname)) {
                                 QString idx = astid + "-" + agentnum + "-" + groupid;
                                 if(! m_agent_labels.contains(idx)) {
-                                        m_agent_labels[idx] = new QPushButton();
+                                        m_agent_labels[idx] = new ExtendedLabel();
                                         m_agent_labels[idx]->setProperty("astid", astid);
                                         m_agent_labels[idx]->setProperty("agentid", agentnum);
                                         m_agent_labels[idx]->setProperty("groupid", groupid);
-                                        connect( m_agent_labels[idx], SIGNAL(clicked()),
-                                                 this, SLOT(agentClicked()) );
+                                        connect( m_agent_labels[idx], SIGNAL(mouse_release(QMouseEvent *)),
+                                                 this, SLOT(agentClicked(QMouseEvent *)) );
                                 } else {
                                         qDebug() << "AgentsPanelNext::updatePeerAgent() joinqueue : already" << idx;
                                 }
@@ -446,6 +449,7 @@ void AgentsPanelNext::renameQueueGroup()
         gl->addWidget(q2, 0, 1);
         gl->addWidget(q3, 1, 0);
         gl->addWidget(q4, 1, 1);
+        q2->setFixedSize(QSize(200, 60));
         connect( q3, SIGNAL(clicked()),
                  dialog, SLOT(close()) );
         connect( q4, SIGNAL(clicked()),
@@ -477,6 +481,7 @@ void AgentsPanelNext::removeQueueFromGroup()
         if(qlist.contains(queuename)) {
                 qlist.removeAll(queuename);
                 m_title[groupid]->setProperty("queues", qlist);
+                m_title[groupid]->setToolTip(qlist.join(", "));
                 refreshContents();
                 refreshDisplay();
         }
@@ -491,17 +496,17 @@ void AgentsPanelNext::addQueueToGroup()
         if(! qlist.contains(queuename)) {
                 qlist.append(queuename);
                 m_title[groupid]->setProperty("queues", qlist);
+                m_title[groupid]->setToolTip(qlist.join(", "));
                 refreshContents();
                 refreshDisplay();
         }
 }
 
-void AgentsPanelNext::agentClicked()
+void AgentsPanelNext::agentClicked(QMouseEvent * event)
 {
-        QPushButton * qpb = qobject_cast<QPushButton *>(sender());
         QString astid = sender()->property("astid").toString();
         QString agentid = sender()->property("agentid").toString();
-        QPoint where = qpb->pos(); // XXX
+        QPoint where = event->globalPos();
         QString idxa = astid + "-" + agentid;
         
         QGridLayout * gl = new QGridLayout();
@@ -563,12 +568,12 @@ void AgentsPanelNext::refreshContents()
                                         if(lqueues.contains(qname)) {
                                                 QString idx = astid + "-" + agentid + "-" + groupid;
                                                 if(! m_agent_labels.contains(idx)) {
-                                                        m_agent_labels[idx] = new QPushButton();
+                                                        m_agent_labels[idx] = new ExtendedLabel();
                                                         m_agent_labels[idx]->setProperty("astid", astid);
                                                         m_agent_labels[idx]->setProperty("agentid", agentid);
                                                         m_agent_labels[idx]->setProperty("groupid", groupid);
-                                                        connect( m_agent_labels[idx], SIGNAL(clicked()),
-                                                                 this, SLOT(agentClicked()) );
+                                                        connect( m_agent_labels[idx], SIGNAL(mouse_release(QMouseEvent *)),
+                                                                 this, SLOT(agentClicked(QMouseEvent *)) );
                                                 }
                                         }
                                 }
@@ -594,17 +599,19 @@ void AgentsPanelNext::refreshDisplay()
         foreach (QString groupid, m_title.keys()) {
                 int iy = 1;
                 int ix = m_title.keys().indexOf(groupid);
-                m_glayout->setColumnStretch(ix, 0);
-                m_glayout->addWidget(m_title[groupid], 0, ix);
+                m_glayout->setColumnStretch(ix * NCOLS, 0);
+                m_glayout->addWidget(m_title[groupid], 0, ix * NCOLS, 1, NCOLS);
                 QMap<QString, QString> lst = columns_sorter[groupid];
                 foreach (QString srt, lst.uniqueKeys())
-                        foreach (QString value, lst.values(srt))
-                        m_glayout->addWidget(m_agent_labels[value], iy++, ix);
+                        foreach (QString value, lst.values(srt)) {
+                        m_glayout->setRowStretch(iy, 0);
+                        m_glayout->addWidget(m_agent_labels[value], iy++, ix * NCOLS);
+                }
                 if(iy > nmax)
                         nmax = iy;
         }
         m_glayout->setRowStretch(nmax, 1);
-        m_glayout->setColumnStretch(m_title.size(), 1);
+        m_glayout->setColumnStretch(m_title.size() * NCOLS, 1);
 }
 
 void AgentsPanelNext::setAgentList(const QVariant & alist)
@@ -640,12 +647,12 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
                                         if(lqueues.contains(qname)) {
                                                 QString idx = astid + "-" + agentid + "-" + groupid;
                                                 if(! m_agent_labels.contains(idx)) {
-                                                        m_agent_labels[idx] = new QPushButton();
+                                                        m_agent_labels[idx] = new ExtendedLabel();
                                                         m_agent_labels[idx]->setProperty("astid", astid);
                                                         m_agent_labels[idx]->setProperty("agentid", agentid);
                                                         m_agent_labels[idx]->setProperty("groupid", groupid);
-                                                        connect( m_agent_labels[idx], SIGNAL(clicked()),
-                                                                 this, SLOT(agentClicked()) );
+                                                        connect( m_agent_labels[idx], SIGNAL(mouse_release(QMouseEvent *)),
+                                                                 this, SLOT(agentClicked(QMouseEvent *)) );
                                                 }
                                         }
                                 }
