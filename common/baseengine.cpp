@@ -619,6 +619,7 @@ bool BaseEngine::parseCommand(const QString & line)
                 qDebug() << "BaseEngine::parseCommand() exception catched for" << line.trimmed();
                 return false;
         }
+        
         QVariantMap datamap = data.toMap();
         QString direction = datamap["direction"].toString();
         
@@ -889,27 +890,9 @@ bool BaseEngine::parseCommand(const QString & line)
                                 updatePhone(astid, phoneid, value);
                                 callsUpdated();
                         } else if (function == "add") {
-                                QStringList listpeers = datamap["payload"].toStringList();
-                                for(int i = 1 ; i < listpeers.size() - 1; i++) {
-                                        QStringList liststatus = listpeers[i].split(":");
-                                        // updatePhone(astid, phoneid, values.toMap()[phoneid]);
-                                }
-                                if(listpeers[0] == "0") {
-                                        qDebug() << "phones-add completed";
-                                } else {
-                                        sendCommand("phones-add " + listpeers[0]);
-                                }
+                                qDebug() << thisclass << function << datamap["astid"].toString() << datamap["deltalist"].toStringList();
                         } else if (function == "del") {
-                                QStringList listpeers = datamap["payload"].toStringList();
-                                for(int i = 1 ; i < listpeers.size() - 1; i++) {
-                                        QStringList liststatus = listpeers[i].split(":");
-                                        removePeerAndCallerid(liststatus);
-                                }
-                                if(listpeers[0] == "0") {
-                                        qDebug() << "phones-del completed";
-                                } else {
-                                        sendCommand("phones-del " + listpeers[0]);
-                                }
+                                qDebug() << thisclass << function << datamap["astid"].toString() << datamap["deltalist"].toStringList();
                         } else if (function == "signal-deloradd") {
                                 QStringList listpeers = datamap["payload"].toStringList();
                                 // qDebug() << "phones-signal-deloradd" << listpeers;
