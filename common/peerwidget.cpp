@@ -69,15 +69,50 @@ PeerWidget::PeerWidget(UserInfo * ui,
         // qDebug() << "PeerWidget::PeerWidget()" << m_functions;
 	// qDebug() << "PeerWidget::PeerWidget()" << id;
 	//	QHBoxLayout * layout = new QHBoxLayout(this);
-        QFrame * qvline = new QFrame(this);
-        qvline->setFrameShape(QFrame::VLine);
-        qvline->setLineWidth(2);
-
+        
+        QFrame * qhline1 = new QFrame(this);
+        QFrame * qhline2 = new QFrame(this);
+        QFrame * qvline1 = new QFrame(this);
+        QFrame * qvline2 = new QFrame(this);
+        
+        int spacing, fsize, width_left, width_right, width_top, width_bottom;
+        bool stretch_last;
+        Qt::Alignment alignment;
+        
+        spacing = 2;
+        fsize = 30;
+        width_left = 2;
+        width_right = 0;
+        width_top = 0;
+        width_bottom = 0;
+        qhline1->hide();
+        qhline2->hide();
+        qvline2->hide();
+        alignment = Qt::AlignLeft;
+        stretch_last = true;
+        
+        // spacing = 0;
+        // fsize = 20;
+        // width_left = 3;
+        // width_right = 1;
+        // width_top = 3;
+        // width_bottom = 1;
+        // alignment = Qt::AlignCenter;
+        // stretch_last = false;
+        
+        qhline1->setFrameShape(QFrame::HLine);
+        qhline1->setLineWidth(width_top);
+        qhline2->setFrameShape(QFrame::HLine);
+        qhline2->setLineWidth(width_bottom);
+        qvline1->setFrameShape(QFrame::VLine);
+        qvline1->setLineWidth(width_left);
+        qvline2->setFrameShape(QFrame::VLine);
+        qvline2->setLineWidth(width_right);
+        
 	QGridLayout * layout = new QGridLayout(this);
-	layout->setSpacing(2);
-	layout->setMargin(2);
-
-        int fsize = 30;
+	layout->setSpacing(spacing);
+	layout->setMargin(spacing);
+        
         // QLabels definitions
         if(m_ui->fullname().isEmpty())
                 qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_ui->fullname() is empty for :" << m_ui->userid();
@@ -130,16 +165,27 @@ PeerWidget::PeerWidget(UserInfo * ui,
         }
         
         // Put the Labels into layouts
-        layout->addWidget( qvline, 0, 0, 2, 1 );
-	layout->addWidget( m_textlbl, 0, 2, 1, 6, Qt::AlignLeft );
+        int linenum = 0;
+	layout->addWidget( qhline1, linenum, 0, 1, 10);
+	// layout->setColumnStretch( 1, 1 );
+	// layout->setColumnStretch( 8, 1 );
+        linenum ++;
+        layout->addWidget( qvline1,   linenum, 0, 2, 1 );
+	layout->addWidget( m_textlbl, linenum, 2, 1, 6, alignment );
+        layout->addWidget( qvline2,   linenum, 9, 2, 1 );
         
+        linenum ++;
         if(! ui->ctilogin().isEmpty())
-                layout->addWidget( m_availlbl, 1, 3, Qt::AlignCenter );
+                layout->addWidget( m_availlbl, linenum, 3, Qt::AlignCenter );
         foreach (QString termname, ui->termstatus().keys())
-                layout->addWidget( m_lblphones[termname], 1, 2, Qt::AlignCenter );
+                layout->addWidget( m_lblphones[termname], linenum, 2, Qt::AlignCenter );
         if(! ui->agentid().isEmpty())
-                layout->addWidget( m_agentlbl, 1, 4, Qt::AlignCenter );
-	layout->setColumnStretch(20, 1);
+                layout->addWidget( m_agentlbl, linenum, 4, Qt::AlignCenter );
+        if(stretch_last)
+                layout->setColumnStretch(20, 1);
+        
+        linenum ++;
+	layout->addWidget( qhline2, linenum, 0, 1, 10);
         
 	// to be able to receive drop
 	setAcceptDrops(true);

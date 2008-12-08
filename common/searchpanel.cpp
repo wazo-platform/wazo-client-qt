@@ -175,8 +175,16 @@ void SearchPanel::affTextChanged(const QString & text)
                                 peeritem->updateDisplayedStatus();
                                 peeritem->updateDisplayedChans();
                                 peeritem->updateDisplayedName();
-
-                                m_peerlayout->addWidget(peerwidget, naff / m_ncolumns, naff % m_ncolumns);
+                                
+                                m_peerlayout->addWidget(peerwidget,
+                                                        naff / m_ncolumns,
+                                                        naff % m_ncolumns);
+                                // m_peerlayout->addWidget(peerwidget,
+                                // naff / m_ncolumns,
+                                // naff % m_ncolumns,
+                                // Qt::AlignCenter);
+                                // peerwidget->setMinimumSize(QSize(150, 60));
+                                
                                 naff ++;
                                 peerwidget->show();
                                 if(m_functions.contains("switchboard")) {
