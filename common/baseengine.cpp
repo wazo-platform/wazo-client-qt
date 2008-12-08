@@ -534,6 +534,9 @@ void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
 	case QAbstractSocket::HostNotFoundError:
 		emitTextMessage(tr("Host not found"));
 		break;
+	case QAbstractSocket::NetworkError:
+                popupError("network_error");
+		break;
 	case QAbstractSocket::UnknownSocketError:
                 popupError("socket_error:" + QString::number(socketError));
 		break;
@@ -1097,6 +1100,9 @@ void BaseEngine::popupError(const QString & errorid)
 
         else if(errorid.toLower() == "connection_closed")
                 errormsg = tr("The XIVO daemon on %1 has just closed the connection.").arg(m_serverhost);
+        
+        else if(errorid.toLower() == "network_error")
+                errormsg = tr("An error occurred with the network (network cable accidentally plugged out ?).");
         
         else if(errorid.startsWith("socket_error:")) {
                 QStringList ipinfo = errorid.split(":");

@@ -79,9 +79,9 @@ void ConferencePanel::setUserInfo(const UserInfo * ui)
 void ConferencePanel::meetmeInit(int timeref, const QVariant & meetme)
 {
         // qDebug() << "ConferencePanel::meetmeInit()" << meetme;
-        foreach(QString astid, meetme.toMap().keys()) {
+        foreach (QString astid, meetme.toMap().keys()) {
                 QVariant astrooms = meetme.toMap()[astid];
-                foreach(QString idx, astrooms.toMap().keys()) {
+                foreach (QString idx, astrooms.toMap().keys()) {
                         QString roomname = astrooms.toMap()[idx].toMap()["name"].toString();
                         QString roomnum = astrooms.toMap()[idx].toMap()["number"].toString();
                         QString adminid = astrooms.toMap()[idx].toMap()["adminid"].toString();
@@ -89,7 +89,7 @@ void ConferencePanel::meetmeInit(int timeref, const QVariant & meetme)
                         
                         if(channels.size() > 0) {
                                 addRoomTab(astid, roomnum, roomname);
-                                foreach(QString chan, channels.keys()) {
+                                foreach (QString chan, channels.keys()) {
                                         setProperties(timeref, "join", adminid, astid, roomnum, chan, channels[chan]);
                                         setProperties(timeref, "mutestatus", adminid, astid, roomnum, chan, channels[chan]);
                                         setProperties(timeref, "recordstatus", adminid, astid, roomnum, chan, channels[chan]);
@@ -248,7 +248,7 @@ void ConferencePanel::setProperties(int timeref,
                         m_timespent.remove(ref);
                 }
                 int count = 0;
-                foreach(QString r, m_infos.keys())
+                foreach (QString r, m_infos.keys())
                         if((m_infos[r]->property("astid").toString() == astid) && (m_infos[r]->property("room").toString() == roomnum))
                                 count ++;
                 if(count == 0)
@@ -341,7 +341,7 @@ void ConferencePanel::doMeetMeAction()
 
 void ConferencePanel::timerEvent(QTimerEvent *)
 {
-        foreach(QString ref, m_timespent.keys()) {
+        foreach (QString ref, m_timespent.keys()) {
                 QDateTime inittime = m_timespent[ref]->property("inittime").toDateTime();
                 int nsec = inittime.secsTo(QDateTime::currentDateTime());
                 int dmin = nsec / 60;

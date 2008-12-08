@@ -93,6 +93,7 @@ private slots:
 protected:
         void contextMenuEvent(QContextMenuEvent *);
         void mouseReleasedEvent(QMouseEvent *);
+        void timerEvent(QTimerEvent *);
 private:
         void refreshContents();
         void refreshDisplay();

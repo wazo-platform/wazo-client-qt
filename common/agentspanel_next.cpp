@@ -83,6 +83,7 @@ AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
         // m_gridlayout->setVerticalSpacing(0);
         
         setGuiOptions(optionmap);
+        startTimer(1000);
 }
 
 AgentsPanelNext::~AgentsPanelNext()
@@ -226,14 +227,6 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         bool link = properties.toMap()["link"].toBool();
         
         QString disptext = firstname + " " + lastname + " " + agentid;
-        int nsec = 356;
-        int dmin = nsec / 60;
-        int dsec = nsec % 60;
-        QString displayedtime;
-        if(dmin > 0)
-                displayedtime = tr("%1 min %2 sec").arg(QString::number(dmin), QString::number(dsec));
-        else
-                displayedtime = tr("%1 sec").arg(QString::number(dsec));
         
         QString colorqss;
         if(agstatus == "AGENT_IDLE")
@@ -243,12 +236,24 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         else if(agstatus == "AGENT_ONCALL") {
                 colorqss = "green";
                 disptext += " I";
-                disptext += " " + displayedtime;
         } else
                 colorqss = "blue";
         if(link) {
                 colorqss = "#80ff80";
                 disptext += " S";
+                // disptext += " E";
+        }
+        
+        if(properties.toMap().contains("inittime")) {
+                QDateTime inittime = properties.toMap()["inittime"].toDateTime();
+                int nsec = inittime.secsTo(QDateTime::currentDateTime());
+                int dmin = nsec / 60;
+                int dsec = nsec % 60;
+                QString displayedtime;
+                if(dmin > 0)
+                        displayedtime = tr("%1 min %2 sec").arg(QString::number(dmin), QString::number(dsec));
+                else
+                        displayedtime = tr("%1 sec").arg(QString::number(dsec));
                 disptext += " " + displayedtime;
         }
         
@@ -282,11 +287,11 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
         if(action == "queuememberstatus") {
                 if(m_agent_labels.contains(agentnum)) {
                         if(jstatus == "1") {
-                                // m_square->fill(Qt::green);
+                                // queue member has logged in  / is available
                         } else if(jstatus == "5") {
-                                // m_square->fill(Qt::red);
+                                // queue member has logged off
                         } else if(jstatus == "3") {
-                                qDebug() << "AgentsPanelNext::updatePeerAgent()" << what << jstatus;
+                                // queue member is called
                         } else {
                                 qDebug() << "AgentsPanelNext::updatePeerAgent()" << what << jstatus;
                         }
@@ -367,6 +372,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         QVariantMap proptemp = m_agent_props[idxa].toMap();
                         QVariantMap properties = proptemp["properties"].toMap();
                         properties["link"] = true;
+                        properties["inittime"] = QDateTime::currentDateTime();
                         proptemp["properties"] = properties;
                         m_agent_props[idxa] = proptemp;
                 }
@@ -376,6 +382,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         QVariantMap proptemp = m_agent_props[idxa].toMap();
                         QVariantMap properties = proptemp["properties"].toMap();
                         properties["link"] = false;
+                        properties.remove("inittime");
                         proptemp["properties"] = properties;
                         m_agent_props[idxa] = proptemp;
                 }
@@ -671,4 +678,11 @@ void AgentsPanelNext::setQueueList(bool, const QVariant & qlist)
         foreach (QString queuename, queues)
                 if(! m_queuelist.contains(queuename))
                         m_queuelist.append(queuename);
+}
+
+void AgentsPanelNext::timerEvent(QTimerEvent *)
+{
+        // qDebug() << "AgentsPanelNext::timerEvent()";
+        foreach (QString idx, m_agent_labels.keys())
+                setAgentProps(idx);
 }
