@@ -412,6 +412,7 @@ const QString & BaseEngine::getAvailState() const
 
 void BaseEngine::setAvailability()
 {
+        // qDebug() << "BaseEngine::setAvailability()" << sender();
         QString availstate = sender()->property("availstate").toString();
 	setAvailState(availstate, false);
 }

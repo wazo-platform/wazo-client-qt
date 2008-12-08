@@ -719,7 +719,7 @@ void MainWidget::updatePresence(const QVariant & presence)
                 }
         }
         if(presencemap.contains("state")) {
-                m_engine->setAvailState(presencemap["state"].toString(), true);
+                m_engine->setAvailState(presencemap["state"].toMap()["stateid"].toString(), true);
         }
 }
 
