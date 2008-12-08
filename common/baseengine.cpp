@@ -173,8 +173,8 @@ void BaseEngine::loadSettings()
 	m_serverhost = m_settings->value("serverhost", "demo.xivo.fr").toString();
 	m_ctiport    = m_settings->value("serverport", 5003).toUInt();
         
-	m_userid      = m_settings->value("userid").toString();
-	m_useridopt   = m_settings->value("useridopt").toString();
+	m_userid      = m_settings->value("userid").toString().trimmed();
+	m_useridopt   = m_settings->value("useridopt").toString().trimmed();
         if(m_useridopt.size() > 0)
                 m_useridwithopt = m_userid + "%" + m_useridopt;
         else
@@ -1352,10 +1352,10 @@ const QString & BaseEngine::userId() const
 void BaseEngine::setUserId(const QString & userid)
 {
         QStringList useridsplit = userid.split("%");
-	m_userid = useridsplit[0];
+	m_userid = useridsplit[0].trimmed();
         m_useridwithopt = userid;
         if(useridsplit.size() > 1)
-                m_useridopt = useridsplit[1];
+                m_useridopt = useridsplit[1].trimmed();
         else
                 m_useridopt = "";
 }
