@@ -50,7 +50,7 @@ namespace JsonQt
 			 * 	valid JSON (or at least this parser thinks it
 			 * 	isn't ;) )
 			 */
-			static QVariantMap parse(const QString& json) throw (ParseException);
+			static QVariant parse(const QString& json) throw (ParseException);
 
 			/// Parse multiple objects in one string.
 			static QList<QVariantMap> multiParse(const QString& json) throw(ParseException);

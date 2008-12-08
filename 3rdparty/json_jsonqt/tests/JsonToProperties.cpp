@@ -24,8 +24,7 @@ class JsonToProperties : public QObject
 	private slots:
 		void initTestCase()
 		{
-			JsonQt::JsonToProperties parser;
-			parser.parse(
+			JsonQt::JsonToProperties::parse(
 				"{"
 					"\"objectName\": \"My JSON Properties Test Object\","
 					"\"END\" : [\"OF\", \"TEST\"]"

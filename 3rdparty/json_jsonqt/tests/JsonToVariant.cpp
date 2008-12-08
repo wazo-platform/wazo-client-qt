@@ -24,7 +24,7 @@ class JsonToVariant : public QObject
 		void initTestCase()
 		{
 			// Variable use of whitespace intentional
-			m_parsed = JsonQt::JsonToVariant::parse(
+			QVariant data = JsonQt::JsonToVariant::parse(
 				"{"
 					"\"MyString\": \"foo\","
 					"\"MyInt\" :123 ,"
@@ -38,6 +38,8 @@ class JsonToVariant : public QObject
 					"\"END\" : [\"OF\", \"TEST\"]"
 				"}"
 			);
+			QCOMPARE(data.type(), QVariant::Map);
+			m_parsed = data.toMap();
 		}
 		
 		void testMulti()
@@ -74,6 +76,7 @@ class JsonToVariant : public QObject
 			QVariant data = m_parsed["MyString"];
 			QCOMPARE(data.type(), QVariant::String);
 			QCOMPARE(data.toString(), QString("foo"));
+			QCOMPARE(data, JsonQt::JsonToVariant::parse("\"foo\""));
 		}
 
 		void testInt()
@@ -81,6 +84,7 @@ class JsonToVariant : public QObject
 			QVariant data = m_parsed["MyInt"];
 			QCOMPARE(data.type(), QVariant::Int);
 			QCOMPARE(data.toInt(), 123);
+			QCOMPARE(data, JsonQt::JsonToVariant::parse("123"));
 		}
 
 		void testBigNum()
@@ -88,6 +92,7 @@ class JsonToVariant : public QObject
 			QVariant data = m_parsed["MyBigNum"];
 			QCOMPARE(data.type(), QVariant::Double);
 			QCOMPARE(data.toDouble(), 42e10);
+			QCOMPARE(data, JsonQt::JsonToVariant::parse("42e10"));
 		}
 
 		void testLongNum()
@@ -95,6 +100,7 @@ class JsonToVariant : public QObject
 			QVariant data = m_parsed["MyLongNum"];
 			QCOMPARE(data.type(), QVariant::LongLong);
 			QCOMPARE(data.value<qint64>(), Q_INT64_C(8589934592));
+			QCOMPARE(data, JsonQt::JsonToVariant::parse("8589934592"));
 		}
 
 		void testFraction()
@@ -102,6 +108,7 @@ class JsonToVariant : public QObject
 			QVariant data = m_parsed["MyFraction"];
 			QCOMPARE(data.type(), QVariant::Double);
 			QCOMPARE(data.toDouble(), double(2.718));
+			QCOMPARE(data, JsonQt::JsonToVariant::parse("2.718"));
 		}
 
 		void testArray()
@@ -119,6 +126,8 @@ class JsonToVariant : public QObject
 			QVariantMap childData = rootData[2].toMap();
 			QCOMPARE(childData["3"].type(), QVariant::Int);
 			QCOMPARE(childData["3"].toInt(), 4);
+
+			QCOMPARE(root, JsonQt::JsonToVariant::parse("[1, \"2\", {\"3\": 4}]"));
 		}
 
 		void testObject()
@@ -130,6 +139,8 @@ class JsonToVariant : public QObject
 
 			QCOMPARE(rootData["a"].toInt(), 1);
 			QCOMPARE(rootData["b"].toInt(), 2);
+
+			QCOMPARE(root, JsonQt::JsonToVariant::parse("{\"a\" : 1, \"b\" : 2 }"));
 		}
 
 		void testEmptyObject()
@@ -137,6 +148,7 @@ class JsonToVariant : public QObject
 			QVariant root = m_parsed["MyEmptyObject"];
 			QCOMPARE(root.type(), QVariant::Map);
 			QCOMPARE(root.value<QVariantMap>().size(), 0);
+			QCOMPARE(root, JsonQt::JsonToVariant::parse("{}"));
 		}
 	private:
 		QVariantMap m_parsed;

@@ -23,15 +23,15 @@ namespace JsonQt
 {
 	JsonToVariant::JsonToVariant(){}
 
-	QVariantMap JsonToVariant::parse(const QString& json) throw(ParseException)
+	QVariant JsonToVariant::parse(const QString& json) throw(ParseException)
 	{
 		JsonToVariant parser;
 		// Store the start and end of the string
 		parser.m_next = json.constBegin();
 		parser.m_sym = parser.m_next;
 		parser.m_end = json.constEnd();
-		// A JSON Object is the top-level item in the parse tree
-		return parser.parseObject();
+		// Parse any JSON value.
+		return parser.parseValue();
 	}
 
 	QList<QVariantMap> JsonToVariant::multiParse(const QString& raw) throw(ParseException)

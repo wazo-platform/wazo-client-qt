@@ -23,10 +23,14 @@
 
 namespace JsonQt
 {
+	JsonToProperties::JsonToProperties()
+	{
+	}
+
 	void JsonToProperties::parse(const QString& json, QObject* object)
 		throw(ParseException)
 	{
-		QVariantMap dataMap = JsonToVariant::parse(json);
+		QVariantMap dataMap = JsonToVariant::parse(json).toMap();
 
 		const QMetaObject* meta = object->metaObject();
 		for(

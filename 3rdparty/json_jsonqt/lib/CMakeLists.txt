@@ -7,7 +7,7 @@ SET(
 )
 SET(HEADERS JsonQtExport.h)
 
-SET(VERSION 0.0.2)
+SET(VERSION 0.1.0)
 
 ##### Probably don't want to edit below this line ##### 
 

@@ -16,7 +16,7 @@ class VariantToJson : public QObject
 			map["double_pi"] = 3.14159;
 
 			QString json(JsonQt::VariantToJson::parse(map));
-			QCOMPARE(map, JsonQt::JsonToVariant::parse(json));
+			QCOMPARE(map, JsonQt::JsonToVariant::parse(json).toMap());
 		}
 		void testComplex()
 		{
@@ -32,7 +32,7 @@ class VariantToJson : public QObject
 			map["list"] = list;
 
 			QString json(JsonQt::VariantToJson::parse(map));
-			QCOMPARE(map, JsonQt::JsonToVariant::parse(json));
+			QCOMPARE(map, JsonQt::JsonToVariant::parse(json).toMap());
 		}
 };
 
