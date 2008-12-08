@@ -327,16 +327,18 @@ void MainWidget::loginKindChanged(int index)
         if(index == 0) {
                 m_lab3->hide();
                 m_qlab3->hide();
-        } else {
-                if(m_engine->showagselect()) {
+        }
+        
+        if(m_engine->showagselect()) {
+                if(index > 0) {
                         m_lab3->show();
                         m_qlab3->show();
-                        m_loginkind->show();
-                } else {
-                        m_lab3->hide();
-                        m_qlab3->hide();
-                        m_loginkind->hide();
                 }
+                m_loginkind->show();
+        } else {
+                m_lab3->hide();
+                m_qlab3->hide();
+                m_loginkind->hide();
         }
 }
 

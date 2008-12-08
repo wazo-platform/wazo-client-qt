@@ -182,7 +182,7 @@ void BaseEngine::loadSettings()
 	m_company      = m_settings->value("company", "default").toString();
 	m_password     = m_settings->value("password").toString();
 	m_keeppass     = m_settings->value("keeppass", 0).toUInt();
-	m_showagselect = m_settings->value("showagselect", 0).toUInt();
+	m_showagselect = m_settings->value("showagselect", 2).toUInt();
 	m_phonenumber  = m_settings->value("phonenumber").toString();
         
 	m_autoconnect = m_settings->value("autoconnect", false).toBool();
