@@ -604,7 +604,7 @@ void AgentsPanelNext::actionclicked()
         QString agentid = sender()->property("agentid").toString();
         QString groupid = sender()->property("groupid").toString();
         if(action == "transfer")
-                qDebug() << "AgentsPanelNext::actionclicked()" << astid << agentid << action << m_queue_chose->currentText();
+                agentAction("transfer " + astid + " " + agentid + " " + m_queue_chose->currentText());
         else if(action == "cancelpause")
                 foreach(QString qname, m_title[groupid]->property("queues").toStringList())
                         agentAction("unpause " + qname + " " + astid + " " + agentid);
