@@ -48,6 +48,7 @@
 #include <QVariant>
 #include <QWidget>
 
+class QComboBox;
 class QContextMenuEvent;
 class QGridLayout;
 class QLabel;
@@ -90,6 +91,7 @@ private slots:
         void setGroups(const QVariant &);
         void loadGroups();
         void newGroup();
+        void actionclicked();
 protected:
         void contextMenuEvent(QContextMenuEvent *);
         void mouseReleasedEvent(QMouseEvent *);
@@ -108,6 +110,8 @@ private:
         QHash<QString, ExtendedLabel *> m_agent_labels;
         QHash<QString, QVariant> m_agent_props;
         QStringList m_queuelist;
+        
+        QComboBox * m_queue_chose;
 };
 
 #endif /* __AGENTSPANEL_H__ */

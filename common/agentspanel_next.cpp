@@ -282,7 +282,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
         QString qname = params.toMap()["queuename"].toString();
         QString jstatus = params.toMap()["joinedstatus"].toString();
         QString pstatus = params.toMap()["pausedstatus"].toString();
-        qDebug() << "AgentsPanelNext" << action << agentnum << qname << jstatus << pstatus;
+        // qDebug() << "AgentsPanelNext::updatePeerAgent()" << action << agentnum << qname << jstatus << pstatus;
         
         if(action == "queuememberstatus") {
                 if(m_agent_labels.contains(agentnum)) {
@@ -330,10 +330,13 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                 QString idxa = astid + "-" + agentnum;
                 if(m_agent_props.contains(idxa)) {
                         QVariantMap proptemp = m_agent_props[idxa].toMap();
+                        QVariantMap properties = proptemp["properties"].toMap();
                         QVariantMap pqueues = proptemp["queues"].toMap();
                         QVariantMap qprops = pqueues[qname].toMap();
                         qprops["Paused"] = "0";
                         pqueues[qname] = qprops;
+                        properties.remove("inittime");
+                        proptemp["properties"] = properties;
                         proptemp["queues"] = pqueues;
                         m_agent_props[idxa] = proptemp;
                 }
@@ -341,10 +344,13 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                 QString idxa = astid + "-" + agentnum;
                 if(m_agent_props.contains(idxa)) {
                         QVariantMap proptemp = m_agent_props[idxa].toMap();
+                        QVariantMap properties = proptemp["properties"].toMap();
                         QVariantMap pqueues = proptemp["queues"].toMap();
                         QVariantMap qprops = pqueues[qname].toMap();
                         qprops["Paused"] = "1";
                         pqueues[qname] = qprops;
+                        properties["inittime"] = QDateTime::currentDateTime();
+                        proptemp["properties"] = properties;
                         proptemp["queues"] = pqueues;
                         m_agent_props[idxa] = proptemp;
                 }
@@ -513,6 +519,7 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
 {
         QString astid = sender()->property("astid").toString();
         QString agentid = sender()->property("agentid").toString();
+        QString groupid = sender()->property("groupid").toString();
         QPoint where = event->globalPos();
         QString idxa = astid + "-" + agentid;
         
@@ -527,11 +534,40 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
         QString m = QString::number(0);
         QLabel * q_received = new QLabel(tr("%1 calls received since connection").arg(n));
         QLabel * q_lost = new QLabel(tr("%1 calls lost since connection").arg(m));
-        QPushButton * q_cancel = new QPushButton(tr("Cancel"));
+        
+        QPushButton * q_cancelpause = new QPushButton(tr("Cancel Pause"));
+        q_cancelpause->setProperty("action", "cancelpause");
+        q_cancelpause->setProperty("astid", astid);
+        q_cancelpause->setProperty("agentid", agentid);
+        q_cancelpause->setProperty("groupid", groupid);
+        connect( q_cancelpause, SIGNAL(clicked()),
+                 this, SLOT(actionclicked()) );
+        
         QPushButton * q_logout = new QPushButton(tr("Logout"));
+        q_logout->setProperty("action", "logout");
+        q_logout->setProperty("astid", astid);
+        q_logout->setProperty("agentid", agentid);
+        connect( q_logout, SIGNAL(clicked()),
+                 this, SLOT(actionclicked()) );
+        
         QPushButton * q_transfer = new QPushButton(tr("Transfer"));
-        QComboBox * q_queues = new QComboBox();
+        q_transfer->setProperty("action", "transfer");
+        q_transfer->setProperty("astid", astid);
+        q_transfer->setProperty("agentid", agentid);
+        connect( q_transfer, SIGNAL(clicked()),
+                 this, SLOT(actionclicked()) );
+        
+        QLabel * q_labelqueues = new QLabel(tr("Available Queues"));
+        m_queue_chose = new QComboBox();
+        m_queue_chose->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        foreach (QString queuename, m_queuelist)
+                m_queue_chose->addItem(queuename);
+        
         QPushButton * q_close = new QPushButton(tr("Close"));
+        QFrame * q_hline1 = new QFrame(this);
+        QFrame * q_hline2 = new QFrame(this);
+        q_hline1->setFrameShape(QFrame::HLine);
+        q_hline2->setFrameShape(QFrame::HLine);
         
         int iy = 0;
         gl->addWidget(q_name, iy, 0, Qt::AlignCenter);
@@ -541,11 +577,17 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
         iy ++;
         gl->addWidget(q_lost, iy, 0, 1, 2, Qt::AlignCenter);
         iy ++;
-        gl->addWidget(q_cancel, iy, 0, Qt::AlignCenter);
+        gl->addWidget(q_cancelpause, iy, 0, Qt::AlignCenter);
         gl->addWidget(q_logout, iy, 1, Qt::AlignCenter);
         iy ++;
+        gl->addWidget(q_hline1, iy, 0, 1, 2);
+        iy ++;
+        gl->addWidget(q_labelqueues, iy, 1, Qt::AlignCenter);
+        iy ++;
         gl->addWidget(q_transfer, iy, 0, Qt::AlignCenter);
-        gl->addWidget(q_queues, iy, 1, Qt::AlignCenter);
+        gl->addWidget(m_queue_chose, iy, 1, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_hline2, iy, 0, 1, 2);
         iy ++;
         gl->addWidget(q_close, iy, 1, Qt::AlignCenter);
         iy ++;
@@ -553,6 +595,21 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                  dialog, SLOT(close()) );
         dialog->move(where);
         dialog->exec();
+}
+
+void AgentsPanelNext::actionclicked()
+{
+        QString action = sender()->property("action").toString();
+        QString astid = sender()->property("astid").toString();
+        QString agentid = sender()->property("agentid").toString();
+        QString groupid = sender()->property("groupid").toString();
+        if(action == "transfer")
+                qDebug() << "AgentsPanelNext::actionclicked()" << astid << agentid << action << m_queue_chose->currentText();
+        else if(action == "cancelpause")
+                foreach(QString qname, m_title[groupid]->property("queues").toStringList())
+                        agentAction("unpause " + qname + " " + astid + " " + agentid);
+        else if(action == "logout")
+                agentAction("logout " + astid + " " + agentid);
 }
 
 void AgentsPanelNext::refreshContents()
