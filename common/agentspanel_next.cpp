@@ -107,10 +107,10 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
         // qDebug() << "AgentsPanelNext::contextMenuEvent()" << event << event->pos() << event->reason();
         QMenu contextMenu(this);
         
-        QAction * loadAction = new QAction(tr("Load Settings"), this);
-        contextMenu.addAction(loadAction);
-        connect(loadAction, SIGNAL(triggered()),
-                this, SLOT(loadGroups()) );
+        //         QAction * loadAction = new QAction(tr("Load Settings"), this);
+        //         contextMenu.addAction(loadAction);
+        //         connect(loadAction, SIGNAL(triggered()),
+        //                 this, SLOT(loadGroups()) );
         
         QAction * newGroupAction = new QAction(tr("New Group"), this);
         contextMenu.addAction(newGroupAction);
