@@ -724,6 +724,7 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
         }
         
         refreshDisplay();
+        loadGroups();
 }
 
 void AgentsPanelNext::setQueueList(bool, const QVariant & qlist)
