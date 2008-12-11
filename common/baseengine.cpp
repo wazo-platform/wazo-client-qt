@@ -986,6 +986,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         tmp["functions"] = todisp;
                         tmp["xlets"] = datamap["capaxlets"];
                         tmp["presence"] = datamap["capapresence"];
+                        tmp["services"] = datamap["capaservices"];
                         m_guioptions["server_funcs"] = tmp;
                         
                         qDebug() << "clientXlets" << XletList;

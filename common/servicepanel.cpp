@@ -54,7 +54,7 @@
 const QStringList fwdcapas = (QStringList() << "fwdrna" << "fwdbusy" << "fwdunc");
 const QStringList chkcapas = (QStringList() << "enablevm" << "incallrec" << "incallfilter" << "enablednd");
 
-ServicePanel::ServicePanel(const QVariant &,
+ServicePanel::ServicePanel(const QVariant & options,
                            QWidget * parent)
         : QWidget(parent)
 {
@@ -66,13 +66,11 @@ ServicePanel::ServicePanel(const QVariant &,
         m_capalegend["fwdbusy"] = tr("Forward on &Busy");
         m_capalegend["fwdunc"]  = tr("&Unconditional Forward");
         
-        // qDebug() << "ServicePanel::ServicePanel()" << m_capas;
-        m_capas << "enablevm" << "incallrec" << "incallfilter" << "enablednd"
-                << "fwdrna" << "fwdbusy" << "fwdunc";
+        m_capas = options.toMap()["services"].toStringList();
         
 	int line = 0;
         m_status = new ServiceStatus();
-
+        
 	QGroupBox * groupBox1 = new QGroupBox( tr("Services") );
 	groupBox1->setAlignment( Qt::AlignLeft );
 	QGridLayout * gridlayout1 = new QGridLayout(groupBox1);
