@@ -224,7 +224,9 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         
         QString agstatus = properties.toMap()["status"].toString();
         QString phonenum = properties.toMap()["phonenum"].toString();
-        bool link = properties.toMap()["link"].toBool();
+        QString link = properties.toMap()["link"].toString();
+        if(link == "phonelink")
+                qDebug() << astid << agentid << link << properties.toMap();
         
         QString disptext = firstname + " " + lastname + " " + agentid;
         
@@ -238,10 +240,21 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                 disptext += " I";
         } else
                 colorqss = "blue";
-        if(link) {
+        
+        if(link == "agentlink") {
                 colorqss = "#80ff80";
-                disptext += " S";
-                // disptext += " E";
+                disptext += " E";
+        }
+        if(link == "phonelink") {
+                colorqss = "#80ff80";
+                bool isdid = properties.toMap()["did"].toBool();
+                bool isoutcall = properties.toMap()["outcall"].toBool();
+                if(isdid)
+                        disptext += " E";
+                else if(isoutcall)
+                        disptext += " S";
+                else
+                        disptext += " I";
         }
         
         if(properties.toMap().contains("inittime")) {
@@ -377,8 +390,11 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                 if(m_agent_props.contains(idxa)) {
                         QVariantMap proptemp = m_agent_props[idxa].toMap();
                         QVariantMap properties = proptemp["properties"].toMap();
-                        properties["link"] = true;
+                        properties["link"] = action;
                         properties["inittime"] = QDateTime::currentDateTime();
+                        properties["dir"] = params.toMap()["dir"].toString();
+                        properties["did"] = params.toMap()["did"].toBool();
+                        properties["outcall"] = params.toMap()["outcall"].toBool();
                         proptemp["properties"] = properties;
                         m_agent_props[idxa] = proptemp;
                 }
@@ -387,7 +403,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                 if(m_agent_props.contains(idxa)) {
                         QVariantMap proptemp = m_agent_props[idxa].toMap();
                         QVariantMap properties = proptemp["properties"].toMap();
-                        properties["link"] = false;
+                        properties["link"] = action;
                         properties.remove("inittime");
                         proptemp["properties"] = properties;
                         m_agent_props[idxa] = proptemp;
