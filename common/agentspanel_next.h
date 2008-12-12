@@ -92,8 +92,9 @@ private slots:
         void loadGroups();
         void newGroup();
         void actionclicked();
-protected:
+protected slots:
         void contextMenuEvent(QContextMenuEvent *);
+protected:
         void mouseReleasedEvent(QMouseEvent *);
         void timerEvent(QTimerEvent *);
 private:

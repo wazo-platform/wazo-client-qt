@@ -59,3 +59,8 @@ void ExtendedLabel::mouseReleaseEvent(QMouseEvent * event)
 {
         mouse_release(event);
 }
+
+void ExtendedLabel::contextMenuEvent(QContextMenuEvent * event)
+{
+        context_menu(event);
+}

@@ -55,10 +55,12 @@ public:
 protected:
         void mouseDoubleClickEvent(QMouseEvent *);
         void mouseReleaseEvent(QMouseEvent *);
+        void contextMenuEvent(QContextMenuEvent *);
 signals:
 	//! originate signal
 	void mouse_doubleclick(QMouseEvent *);
 	void mouse_release(QMouseEvent *);
+	void context_menu(QContextMenuEvent *);
 };
 
 #endif
