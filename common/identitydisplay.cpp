@@ -488,7 +488,7 @@ void IdentityDisplay::doQueueJoinAll()
 
 void IdentityDisplay::idxChanged(const QString & newidx)
 {
-        // qDebug() << "IdentityDisplay::idxChanged" << newidx;
+        // qDebug() << "IdentityDisplay::idxChanged" << newidx << sender();
         QString function = sender()->property("function").toString();
         if(function == "queuelist") {
                 if (m_queuesstatuses[newidx]) {
@@ -501,6 +501,6 @@ void IdentityDisplay::idxChanged(const QString & newidx)
         } else if(function == "presence") {
                 foreach (QString avstate, m_presence_names.keys())
                         if(m_presence_names[avstate] == newidx)
-                                setAvailState(avstate, true);
+                                setAvailState(avstate, false);
         }
 }
