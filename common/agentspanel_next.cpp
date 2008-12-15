@@ -74,8 +74,6 @@ AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
         foreach (QString groupid, m_title.keys()) {
                 m_title[groupid]->setProperty("groupid", groupid);
                 m_title[groupid]->setAlignment(Qt::AlignCenter);
-                connect( m_title[groupid], SIGNAL(mouse_release(QMouseEvent *)),
-                         this, SLOT(titleClicked(QMouseEvent *)) );
                 connect( m_title[groupid], SIGNAL(context_menu(QContextMenuEvent *)),
                          this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
                 int index = m_title.keys().indexOf(groupid);
@@ -106,19 +104,54 @@ void AgentsPanelNext::setGuiOptions(const QVariant & optionmap)
 
 void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
 {
+        QMenu contextMenu(this);
+        
         if(sender() != NULL) {
                 // group or agent label
                 if(sender()->property("agentid").isNull()) {
                         // group label
-                }
+                        ExtendedLabel * el = qobject_cast<ExtendedLabel *>(sender());
+                        QStringList thisqueuelist = el->property("queues").toStringList();
+                        QString thisgroupid = el->property("groupid").toString();
+                        
+                        QAction * renameAction = new QAction(tr("Rename this Group"), this);
+                        
+                        contextMenu.addAction(renameAction);
+                        renameAction->setProperty("groupid", thisgroupid);
+                        renameAction->setProperty("where", event->globalPos());
+                        connect(renameAction, SIGNAL(triggered()),
+                                this, SLOT(renameQueueGroup()) );
+                
+                        QAction * removeAction = new QAction(tr("Remove this Group"), this);
+                        contextMenu.addAction(removeAction);
+                        removeAction->setProperty("groupid", thisgroupid);
+                        connect(removeAction, SIGNAL(triggered()),
+                                this, SLOT(removeQueueGroup()) );
+                
+                        QMenu * menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
+                        foreach (QString qname, el->property("queues").toStringList()) {
+                                QAction * qremove = new QAction(qname, this);
+                                qremove->setProperty("groupid", thisgroupid);
+                                qremove->setProperty("queuename", qname);
+                                menu_remove->addAction(qremove);
+                                connect(qremove, SIGNAL(triggered()),
+                                        this, SLOT(removeQueueFromGroup()) );
+                        }
+                
+                        QMenu * menu_add = contextMenu.addMenu(tr("Add a Queue"));
+                        foreach (QString qname, m_queuelist)
+                                if(! thisqueuelist.contains(qname)) {
+                                        QAction * qadd = new QAction(qname, this);
+                                        qadd->setProperty("groupid", thisgroupid);
+                                        qadd->setProperty("queuename", qname);
+                                        menu_add->addAction(qadd);
+                                        connect(qadd, SIGNAL(triggered()),
+                                                this, SLOT(addQueueToGroup()) );
+                                }
+                
+                } else
+                        return;
         }
-        // qDebug() << "AgentsPanelNext::contextMenuEvent()" << event << event->pos() << event->reason();
-        QMenu contextMenu(this);
-        
-        //         QAction * loadAction = new QAction(tr("Load Settings"), this);
-        //         contextMenu.addAction(loadAction);
-        //         connect(loadAction, SIGNAL(triggered()),
-        //                 this, SLOT(loadGroups()) );
         
         QAction * newGroupAction = new QAction(tr("New Group"), this);
         contextMenu.addAction(newGroupAction);
@@ -158,8 +191,6 @@ void AgentsPanelNext::newGroup()
                 m_title[groupid]->setProperty("queues", (QStringList()));
                 m_title[groupid]->setProperty("groupid", groupid);
                 m_title[groupid]->setAlignment(Qt::AlignCenter);
-                connect( m_title[groupid], SIGNAL(mouse_release(QMouseEvent *)),
-                         this, SLOT(titleClicked(QMouseEvent *)) );
                 connect( m_title[groupid], SIGNAL(context_menu(QContextMenuEvent *)),
                          this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
                 m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
@@ -192,8 +223,6 @@ void AgentsPanelNext::setGroups(const QVariant & groups)
                 m_title[groupid]->setProperty("queues", groups.toMap()[groupid].toMap()["queues"].toStringList());
                 m_title[groupid]->setToolTip(groups.toMap()[groupid].toMap()["queues"].toStringList().join(", "));
                 m_title[groupid]->setAlignment(Qt::AlignCenter);
-                connect( m_title[groupid], SIGNAL(mouse_release(QMouseEvent *)),
-                         this, SLOT(titleClicked(QMouseEvent *)) );
                 connect( m_title[groupid], SIGNAL(context_menu(QContextMenuEvent *)),
                          this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
                 int index = m_title.keys().indexOf(groupid);
@@ -425,54 +454,6 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
         }
         
         refreshDisplay();
-}
-
-void AgentsPanelNext::titleClicked(QMouseEvent * event)
-{
-        ExtendedLabel * el = qobject_cast<ExtendedLabel *>(sender());
-        QStringList thisqueuelist = el->property("queues").toStringList();
-        QString thisgroupid = el->property("groupid").toString();
-        // qDebug() << "AgentsPanelNext::titleClicked()" << thisgroupid << thisqueuelist;
-        
-        if(event->button() == Qt::LeftButton) {
-                QMenu contextMenu(this);
-                
-                QAction * renameAction = new QAction(tr("Rename this Group"), this);
-                contextMenu.addAction(renameAction);
-                renameAction->setProperty("groupid", thisgroupid);
-                renameAction->setProperty("where", event->globalPos());
-                connect(renameAction, SIGNAL(triggered()),
-                        this, SLOT(renameQueueGroup()) );
-                
-                QAction * removeAction = new QAction(tr("Remove this Group"), this);
-                contextMenu.addAction(removeAction);
-                removeAction->setProperty("groupid", thisgroupid);
-                connect(removeAction, SIGNAL(triggered()),
-                        this, SLOT(removeQueueGroup()) );
-                
-                QMenu * menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
-                foreach (QString qname, el->property("queues").toStringList()) {
-                        QAction * qremove = new QAction(qname, this);
-                        qremove->setProperty("groupid", thisgroupid);
-                        qremove->setProperty("queuename", qname);
-                        menu_remove->addAction(qremove);
-                        connect(qremove, SIGNAL(triggered()),
-                                this, SLOT(removeQueueFromGroup()) );
-                }
-                
-                QMenu * menu_add = contextMenu.addMenu(tr("Add a Queue"));
-                foreach (QString qname, m_queuelist)
-                        if(! thisqueuelist.contains(qname)) {
-                                QAction * qadd = new QAction(qname, this);
-                                qadd->setProperty("groupid", thisgroupid);
-                                qadd->setProperty("queuename", qname);
-                                menu_add->addAction(qadd);
-                                connect(qadd, SIGNAL(triggered()),
-                                        this, SLOT(addQueueToGroup()) );
-                        }
-                
-                contextMenu.exec(event->globalPos());
-        }
 }
 
 void AgentsPanelNext::renameQueueGroup()

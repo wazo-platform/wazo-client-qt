@@ -84,7 +84,6 @@ private slots:
         void renameQueueGroup();
         void removeQueueGroup();
         void agentClicked(QMouseEvent *);
-        void titleClicked(QMouseEvent *);
         void setAgentProps(const QString &);
         void removeQueueFromGroup();
         void addQueueToGroup();
