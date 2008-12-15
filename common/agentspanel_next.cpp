@@ -71,15 +71,6 @@ AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
         m_glayout = new QGridLayout(this);
         m_glayout->setSpacing(1);
         
-        foreach (QString groupid, m_title.keys()) {
-                m_title[groupid]->setProperty("groupid", groupid);
-                m_title[groupid]->setAlignment(Qt::AlignCenter);
-                connect( m_title[groupid], SIGNAL(context_menu(QContextMenuEvent *)),
-                         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-                int index = m_title.keys().indexOf(groupid);
-                m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
-                m_glayout->addWidget(m_title[groupid], 0, index * NCOLS, 1, NCOLS, Qt::AlignCenter);
-        }
         // m_gridlayout->setVerticalSpacing(0);
         
         setGuiOptions(optionmap);
@@ -158,7 +149,8 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                                         connect(qadd, SIGNAL(triggered()),
                                                 this, SLOT(addQueueToGroup()) );
                                 }
-                }
+                } else
+                        return;
         }
         
         contextMenu.exec(event->globalPos());
@@ -227,9 +219,9 @@ void AgentsPanelNext::setGroups(const QVariant & groups)
                 m_title[groupid]->setAlignment(Qt::AlignCenter);
                 connect( m_title[groupid], SIGNAL(context_menu(QContextMenuEvent *)),
                          this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-                int index = m_title.keys().indexOf(groupid);
+                int ix = m_title.keys().indexOf(groupid);
                 m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
-                m_glayout->addWidget(m_title[groupid], 0, index * NCOLS, 1, NCOLS, Qt::AlignCenter);
+                m_glayout->addWidget(m_title[groupid], 0, ix * NCOLS, 1, NCOLS, Qt::AlignCenter);
         }
         refreshContents();
         refreshDisplay();
@@ -621,7 +613,7 @@ void AgentsPanelNext::actionclicked()
         if(action == "transfer")
                 agentAction("transfer " + astid + " " + agentid + " " + m_queue_chose->currentText());
         else if(action == "cancelpause")
-                foreach(QString qname, m_title[groupid]->property("queues").toStringList())
+                foreach (QString qname, m_title[groupid]->property("queues").toStringList())
                         agentAction("unpause " + qname + " " + astid + " " + agentid);
         else if(action == "logout")
                 agentAction("logout " + astid + " " + agentid);
@@ -667,6 +659,8 @@ void AgentsPanelNext::refreshDisplay()
 {
         int nmax = 1;
         QHash<QString, QMap<QString, QString> > columns_sorter;
+        // qDebug() << "AgentsPanelNext::refreshDisplay()";
+        
         foreach (QString groupid, m_title.keys()) {
                 QMap<QString, QString> map;
                 columns_sorter[groupid] = map;
@@ -683,10 +677,11 @@ void AgentsPanelNext::refreshDisplay()
                 m_glayout->setColumnStretch(ix * NCOLS, 0);
                 m_glayout->addWidget(m_title[groupid], 0, ix * NCOLS, 1, NCOLS);
                 QMap<QString, QString> lst = columns_sorter[groupid];
-                foreach (QString srt, lst.uniqueKeys())
+                foreach (QString srt, lst.uniqueKeys()) {
                         foreach (QString value, lst.values(srt)) {
-                        m_glayout->setRowStretch(iy, 0);
-                        m_glayout->addWidget(m_agent_labels[value], iy++, ix * NCOLS);
+                                m_glayout->setRowStretch(iy, 0);
+                                m_glayout->addWidget(m_agent_labels[value], iy++, ix * NCOLS);
+                        }
                 }
                 if(iy > nmax)
                         nmax = iy;
