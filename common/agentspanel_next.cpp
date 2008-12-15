@@ -106,7 +106,14 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
 {
         QMenu contextMenu(this);
         
-        if(sender() != NULL) {
+        QAction * newGroupAction = new QAction(tr("New Group"), this);
+        newGroupAction->setProperty("where", event->globalPos());
+        connect(newGroupAction, SIGNAL(triggered()),
+                this, SLOT(newGroup()) );
+        
+        if(sender() == NULL) {
+                contextMenu.addAction(newGroupAction);
+        } else {
                 // group or agent label
                 if(sender()->property("agentid").isNull()) {
                         // group label
@@ -121,13 +128,16 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                         renameAction->setProperty("where", event->globalPos());
                         connect(renameAction, SIGNAL(triggered()),
                                 this, SLOT(renameQueueGroup()) );
-                
+                        
                         QAction * removeAction = new QAction(tr("Remove this Group"), this);
                         contextMenu.addAction(removeAction);
                         removeAction->setProperty("groupid", thisgroupid);
                         connect(removeAction, SIGNAL(triggered()),
                                 this, SLOT(removeQueueGroup()) );
-                
+                        
+                        contextMenu.addAction(newGroupAction);
+                        contextMenu.addSeparator();
+                        
                         QMenu * menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
                         foreach (QString qname, el->property("queues").toStringList()) {
                                 QAction * qremove = new QAction(qname, this);
@@ -137,7 +147,7 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                                 connect(qremove, SIGNAL(triggered()),
                                         this, SLOT(removeQueueFromGroup()) );
                         }
-                
+                        
                         QMenu * menu_add = contextMenu.addMenu(tr("Add a Queue"));
                         foreach (QString qname, m_queuelist)
                                 if(! thisqueuelist.contains(qname)) {
@@ -148,16 +158,8 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                                         connect(qadd, SIGNAL(triggered()),
                                                 this, SLOT(addQueueToGroup()) );
                                 }
-                
-                } else
-                        return;
+                }
         }
-        
-        QAction * newGroupAction = new QAction(tr("New Group"), this);
-        contextMenu.addAction(newGroupAction);
-        newGroupAction->setProperty("where", event->globalPos());
-        connect(newGroupAction, SIGNAL(triggered()),
-                this, SLOT(newGroup()) );
         
         contextMenu.exec(event->globalPos());
 }
