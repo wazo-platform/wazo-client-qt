@@ -292,8 +292,27 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                         disptext += " I";
         }
         
-        if(properties.toMap().contains("inittime")) {
-                QDateTime inittime = properties.toMap()["inittime"].toDateTime();
+        QDateTime inittime;
+        if(properties.toMap().contains("inittime"))
+                inittime = properties.toMap()["inittime"].toDateTime();
+        
+        QVariantMap qvm = queues.toMap();
+        foreach (QString qname_group, m_title[groupid]->property("queues").toStringList()) {
+                if (qvm.contains(qname_group)) {
+                        QString pstatus = qvm[qname_group].toMap()["Paused"].toString();
+                        // qDebug() << idx << idxa << qname_group
+                        // << qvm[qname_group].toMap()["Status"].toString()
+                        // << qvm[qname_group].toMap()["Paused"].toString()
+                        // << qvm[qname_group].toMap()["PausedTime"].toString();
+                        if(pstatus == "1") {
+                                inittime = qvm[qname_group].toMap()["PausedTime"].toDateTime();
+                                if(inittime.isNull())
+                                        inittime = QDateTime::currentDateTime();
+                        }
+                }
+        }
+        
+        if(inittime.isValid()) {
                 int nsec = inittime.secsTo(QDateTime::currentDateTime());
                 int dmin = nsec / 60;
                 int dsec = nsec % 60;
@@ -387,8 +406,8 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         QVariantMap pqueues = proptemp["queues"].toMap();
                         QVariantMap qprops = pqueues[qname].toMap();
                         qprops["Paused"] = "0";
+                        qprops.remove("PausedTime");
                         pqueues[qname] = qprops;
-                        properties.remove("inittime");
                         proptemp["properties"] = properties;
                         proptemp["queues"] = pqueues;
                         m_agent_props[idxa] = proptemp;
@@ -401,8 +420,8 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         QVariantMap pqueues = proptemp["queues"].toMap();
                         QVariantMap qprops = pqueues[qname].toMap();
                         qprops["Paused"] = "1";
+                        qprops["PausedTime"] = QDateTime::currentDateTime();
                         pqueues[qname] = qprops;
-                        properties["inittime"] = QDateTime::currentDateTime();
                         proptemp["properties"] = properties;
                         proptemp["queues"] = pqueues;
                         m_agent_props[idxa] = proptemp;

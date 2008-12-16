@@ -353,11 +353,11 @@ void OutlookPanel::contactsLoaded() {
 void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
 {
 	QTableWidgetItem * item = m_table->itemAt( event->pos() );
-		if (item == NULL) {
-			doColumnsMenu(event);
-            return;
-		}
-
+        if (item == NULL) {
+                doColumnsMenu(event);
+                return;
+        }
+        
 	QRegExp re_number("\\+?[0-9\\s\\.]+");
 	QString strVal;
 	if ( item )
