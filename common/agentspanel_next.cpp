@@ -574,13 +574,31 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                 QLabel * q_received = new QLabel(tr("%1 calls received since connection").arg(n));
                 QLabel * q_lost = new QLabel(tr("%1 calls lost since connection").arg(m));
                 
-                QPushButton * q_cancelpause = new QPushButton(tr("Cancel Pause"));
-                q_cancelpause->setProperty("action", "cancelpause");
-                q_cancelpause->setProperty("astid", astid);
-                q_cancelpause->setProperty("agentid", agentid);
-                q_cancelpause->setProperty("groupid", groupid);
-                connect( q_cancelpause, SIGNAL(clicked()),
+                QPushButton * q_pause;
+                bool isinpause = false;
+                foreach (QString qname, m_agent_props[idxa].toMap()["queues"].toMap().keys())
+                        if(m_title[groupid]->property("queues").toStringList().contains(qname)) {
+                                QVariantMap qvm = m_agent_props[idxa].toMap()["queues"].toMap()[qname].toMap();
+                                if(! qvm.isEmpty())
+                                        if(qvm["Paused"].toString() == "1")
+                                                isinpause = true;
+                        }
+                // qDebug() << m_agent_props[idxa].toMap()["queues"];
+                if(isinpause) {
+                        q_pause = new QPushButton(tr("Cancel Pause"));
+                        q_pause->setProperty("action", "cancelpause");
+                } else {
+                        q_pause = new QPushButton(tr("Pause"));
+                        q_pause->setProperty("action", "pause");
+                }
+                
+                q_pause->setProperty("astid", astid);
+                q_pause->setProperty("agentid", agentid);
+                q_pause->setProperty("groupid", groupid);
+                connect( q_pause, SIGNAL(clicked()),
                          this, SLOT(actionclicked()) );
+                connect( q_pause, SIGNAL(clicked()),
+                         dialog, SLOT(close()) );
                 
                 QPushButton * q_logout = new QPushButton(tr("Logout"));
                 q_logout->setProperty("action", "logout");
@@ -588,6 +606,8 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                 q_logout->setProperty("agentid", agentid);
                 connect( q_logout, SIGNAL(clicked()),
                          this, SLOT(actionclicked()) );
+                connect( q_logout, SIGNAL(clicked()),
+                         dialog, SLOT(close()) );
                 
                 QPushButton * q_transfer = new QPushButton(tr("Transfer"));
                 q_transfer->setProperty("action", "transfer");
@@ -616,7 +636,7 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                 iy ++;
                 gl->addWidget(q_lost, iy, 0, 1, 2, Qt::AlignCenter);
                 iy ++;
-                gl->addWidget(q_cancelpause, iy, 0, Qt::AlignCenter);
+                gl->addWidget(q_pause, iy, 0, Qt::AlignCenter);
                 gl->addWidget(q_logout, iy, 1, Qt::AlignCenter);
                 iy ++;
                 gl->addWidget(q_hline1, iy, 0, 1, 2);
@@ -648,6 +668,9 @@ void AgentsPanelNext::actionclicked()
         else if(action == "cancelpause")
                 foreach (QString qname, m_title[groupid]->property("queues").toStringList())
                         agentAction("unpause " + qname + " " + astid + " " + agentid);
+        else if(action == "pause")
+                foreach (QString qname, m_title[groupid]->property("queues").toStringList())
+                        agentAction("pause " + qname + " " + astid + " " + agentid);
         else if(action == "logout")
                 agentAction("logout " + astid + " " + agentid);
 }

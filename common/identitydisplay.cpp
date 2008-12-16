@@ -488,8 +488,8 @@ void IdentityDisplay::doQueueJoinAll()
 
 void IdentityDisplay::idxChanged(const QString & newidx)
 {
-        // qDebug() << "IdentityDisplay::idxChanged" << newidx << sender();
         QString function = sender()->property("function").toString();
+        // qDebug() << "IdentityDisplay::idxChanged" << newidx << sender() << function;
         if(function == "queuelist") {
                 if (m_queuesstatuses[newidx]) {
                         m_queueaction->setText(tr("Leave"));
