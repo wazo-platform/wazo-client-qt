@@ -268,8 +268,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         QString colorqss;
         if(agstatus == "AGENT_IDLE")
                 colorqss = "grey";
-        else if(agstatus == "AGENT_LOGGEDOFF")
-                colorqss = "#ff8080";
+        // else if(agstatus == "AGENT_LOGGEDOFF")
         else if(agstatus == "AGENT_ONCALL") {
                 colorqss = "green";
                 disptext += " I";
@@ -305,6 +304,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                         // << qvm[qname_group].toMap()["Paused"].toString()
                         // << qvm[qname_group].toMap()["PausedTime"].toString();
                         if(pstatus == "1") {
+                                colorqss = "#ff8080";
                                 inittime = qvm[qname_group].toMap()["PausedTime"].toDateTime();
                                 if(inittime.isNull())
                                         inittime = QDateTime::currentDateTime();
@@ -434,6 +434,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         properties["status"] = "AGENT_IDLE";
                         proptemp["properties"] = properties;
                         m_agent_props[idxa] = proptemp;
+                        refreshContents();
                 }
         } else if(action == "agentlogout") {
                 QString idxa = astid + "-" + agentnum;
@@ -443,6 +444,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         properties["status"] = "AGENT_LOGGEDOFF";
                         proptemp["properties"] = properties;
                         m_agent_props[idxa] = proptemp;
+                        refreshContents();
                 }
         } else if((action == "agentlink") || (action == "phonelink")) {
                 QString idxa = astid + "-" + agentnum;
@@ -661,8 +663,10 @@ void AgentsPanelNext::refreshContents()
                 QString astid = m_agent_props[idxa].toMap()["astid"].toString();
                 QString agentid = m_agent_props[idxa].toMap()["agentid"].toString();
                 QVariantMap agqjoined = m_agent_props[idxa].toMap()["queues"].toMap();
+                QVariant properties = m_agent_props[idxa].toMap()["properties"];
+                QString agstatus = properties.toMap()["status"].toString();
                 
-                foreach (QString qname, agqjoined.keys()) {
+                if(agstatus != "AGENT_LOGGEDOFF") foreach (QString qname, agqjoined.keys()) {
                         if(! agqjoined[qname].toMap().isEmpty()) {
                                 QString sstatus = agqjoined[qname].toMap()["Status"].toString();
                                 if((sstatus == "1") || (sstatus == "5")) {
