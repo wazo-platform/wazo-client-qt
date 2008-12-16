@@ -55,7 +55,8 @@ QColor Orange = QColor(255, 128, 0);
 
 /*! \brief Constructor
  */
-AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
+AgentdetailsPanel::AgentdetailsPanel(const QVariant & options,
+                                     QWidget * parent)
         : QWidget(parent)
 {
         m_linenum = 0;
@@ -115,6 +116,7 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget * parent)
                 connect( m_action[function], SIGNAL(clicked()),
                          this, SLOT(actionClicked()));
         }
+        setGuiOptions(options);
 }
 
 AgentdetailsPanel::~AgentdetailsPanel()
@@ -122,8 +124,9 @@ AgentdetailsPanel::~AgentdetailsPanel()
         // qDebug() << "AgentdetailsPanel::~AgentdetailsPanel()";
 }
 
-void AgentdetailsPanel::setGuiOptions(const QVariant &)
+void AgentdetailsPanel::setGuiOptions(const QVariant & options)
 {
+        m_options = options;
 }
 
 void AgentdetailsPanel::setUserInfo(const UserInfo *)
@@ -372,18 +375,20 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                 m_queue_join_action[queueid]->setProperty("queueid", queueid);
                 m_queue_join_action[queueid]->setProperty("agentid", m_agent);
                 m_queue_join_action[queueid]->setProperty("action", "leavejoin");
-                connect( m_queue_join_action[queueid], SIGNAL(clicked()),
-                         this, SLOT(queueClicked()));
-
+                if(! m_options.toMap()["noqueueaction"].toBool())
+                        connect( m_queue_join_action[queueid], SIGNAL(clicked()),
+                                 this, SLOT(queueClicked()));
+                
                 m_queue_pause_status[queueid] = new QLabel(this);
                 m_queue_pause_action[queueid] = new QPushButton(this);
                 m_queue_pause_action[queueid]->setProperty("astid", m_astid);
                 m_queue_pause_action[queueid]->setProperty("queueid", queueid);
                 m_queue_pause_action[queueid]->setProperty("agentid", m_agent);
                 m_queue_pause_action[queueid]->setProperty("action", "pause");
-                connect( m_queue_pause_action[queueid], SIGNAL(clicked()),
-                         this, SLOT(queueClicked()));
-
+                if(! m_options.toMap()["noqueueaction"].toBool())
+                        connect( m_queue_pause_action[queueid], SIGNAL(clicked()),
+                                 this, SLOT(queueClicked()));
+                
                 m_queue_join_action[queueid]->setIconSize(QSize(8, 8));
                 m_queue_pause_action[queueid]->setIconSize(QSize(8, 8));
 

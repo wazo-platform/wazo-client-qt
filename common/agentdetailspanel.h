@@ -62,7 +62,8 @@ class AgentdetailsPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	AgentdetailsPanel(QWidget * parent = 0);
+	AgentdetailsPanel(const QVariant &,
+                          QWidget * parent = 0);
 	~AgentdetailsPanel();
 signals:
         void changeWatchedQueue(const QString &);
@@ -111,6 +112,7 @@ private:
         QHash<QString, QLabel *> m_queue_pause_status;
         
         QPoint m_eventpoint;
+        QVariant m_options;
 };
 
 #endif /* __AGENTDETAILSPANEL_H__ */

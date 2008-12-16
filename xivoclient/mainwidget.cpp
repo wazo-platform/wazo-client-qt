@@ -873,7 +873,7 @@ void MainWidget::engineStarted()
                                          m_xlet[xletid], SLOT(setGroups(const QVariant &)) );
                                 
 			} else if (xletid == QString("agentdetails")) {
-                                m_xlet[xletid] = new AgentdetailsPanel();
+                                m_xlet[xletid] = new AgentdetailsPanel(m_options);
                                 if (withscrollbar) {
                                         QScrollArea * sa_ad = new QScrollArea(this);
                                         sa_ad->setWidget(m_xlet[xletid]);
