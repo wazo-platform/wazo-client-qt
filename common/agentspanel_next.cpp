@@ -316,6 +316,8 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                 int nsec = inittime.secsTo(QDateTime::currentDateTime());
                 int dmin = nsec / 60;
                 int dsec = nsec % 60;
+                if((nsec > 10) && (nsec % 2))
+                        colorqss = "#ffb0b0";
                 QString displayedtime;
                 if(dmin > 0)
                         displayedtime = tr("%1 min %2 sec").arg(QString::number(dmin), QString::number(dsec));
