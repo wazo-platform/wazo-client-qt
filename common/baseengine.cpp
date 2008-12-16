@@ -50,9 +50,6 @@
 
 #include "JsonToVariant.h"
 #include "VariantToJson.h"
-#ifdef USE_OUTLOOK
-#include "outlook_engine.h"
-#endif
 
 #include "baseengine.h"
 #include "xivoconsts.h"
@@ -131,10 +128,6 @@ BaseEngine::BaseEngine(QSettings * settings,
                  this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
 	connect( m_filesocket, SIGNAL(readyRead()),
                  this, SLOT(socketReadyRead()));
-        
-#ifdef USE_OUTLOOK
-	OLEngine()->start_thread();
-#endif
         
 	if(m_autoconnect)
 		start();

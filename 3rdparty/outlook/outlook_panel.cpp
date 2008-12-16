@@ -72,6 +72,8 @@ OutlookPanel::OutlookPanel(QWidget * parent)
         : QWidget(parent),
           m_calllength(20), m_callprefix("")
 {
+	OLEngine()->start_thread();
+        
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
 	vlayout->setMargin(0);
 	QLabel * titleLbl = new QLabel( tr("Di&rectory"), this );
