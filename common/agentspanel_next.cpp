@@ -323,7 +323,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
 {
         if(what != "agentstatus")
                 return;
-        // qDebug() << "AgentsPanelNext::updatePeerAgent()" << what << params;
+        // qDebug() << "AgentsPanelNext::updatePeerAgent()" << params;
         QString action = params.toMap()["action"].toString();
         QString astid = params.toMap()["astid"].toString();
         QString agentnum = params.toMap()["agent_channel"].toString().mid(6);
@@ -345,36 +345,39 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         }
                 }
         } else if(action == "joinqueue") {
-                foreach (QString groupid, m_title.keys()) {
-                        QStringList lqueues = m_title[groupid]->property("queues").toStringList();
-                        if(lqueues.contains(qname)) {
-                                QString idx = astid + "-" + agentnum + "-" + groupid;
-                                if(! m_agent_labels.contains(idx)) {
-                                        m_agent_labels[idx] = new ExtendedLabel();
-                                        m_agent_labels[idx]->setProperty("astid", astid);
-                                        m_agent_labels[idx]->setProperty("agentid", agentnum);
-                                        m_agent_labels[idx]->setProperty("groupid", groupid);
-                                        connect( m_agent_labels[idx], SIGNAL(mouse_release(QMouseEvent *)),
-                                                 this, SLOT(agentClicked(QMouseEvent *)) );
-                                        connect( m_agent_labels[idx], SIGNAL(context_menu(QContextMenuEvent *)),
-                                                 this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-                                } else {
-                                        qDebug() << "AgentsPanelNext::updatePeerAgent() joinqueue : already" << idx;
-                                }
-                        }
+                QString idxa = astid + "-" + agentnum;
+                if(m_agent_props.contains(idxa)) {
+                        QVariantMap proptemp = m_agent_props[idxa].toMap();
+                        QVariantMap pqueues = proptemp["queues"].toMap();
+                        if(pqueues[qname].toMap().isEmpty()) {
+                                QVariantMap qprops;
+                                qprops["Paused"] = pstatus;
+                                qprops["Status"] = "1";
+                                pqueues[qname] = qprops;
+                                proptemp["queues"] = pqueues;
+                                m_agent_props[idxa] = proptemp;
+                                refreshContents();
+                        } else
+                                qDebug() << action << idxa << "not empty" << qname;
+                } else {
+                        qDebug() << "AgentsPanelNext::updatePeerAgent() warning : undefined" << idxa << action;
                 }
         } else if(action == "leavequeue") {
-                foreach (QString groupid, m_title.keys()) {
-                        QStringList lqueues = m_title[groupid]->property("queues").toStringList();
-                        if(lqueues.contains(qname)) {
-                                QString idx = astid + "-" + agentnum + "-" + groupid;
-                                if(m_agent_labels.contains(idx)) {
-                                        delete m_agent_labels[idx];
-                                        m_agent_labels.remove(idx);
-                                } else {
-                                        qDebug() << "AgentsPanelNext::updatePeerAgent() leavequeue : no" << idx;
-                                }
+                QString idxa = astid + "-" + agentnum;
+                if(m_agent_props.contains(idxa)) {
+                        QVariantMap proptemp = m_agent_props[idxa].toMap();
+                        QVariantMap pqueues = proptemp["queues"].toMap();
+                        if(pqueues[qname].toMap().isEmpty())
+                                qDebug() << action << idxa << "already empty" << qname;
+                        else {
+                                QVariantMap qprops;
+                                pqueues[qname] = qprops;
+                                proptemp["queues"] = pqueues;
+                                m_agent_props[idxa] = proptemp;
+                                refreshContents();
                         }
+                } else {
+                        qDebug() << "AgentsPanelNext::updatePeerAgent() warning : undefined" << idxa << action;
                 }
         } else if(action == "unpaused") {
                 QString idxa = astid + "-" + agentnum;
@@ -447,6 +450,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                 }
         }
         
+        // refreshContents();
         refreshDisplay();
 }
 
@@ -485,6 +489,14 @@ void AgentsPanelNext::removeQueueGroup()
         if(m_title.contains(groupid)) {
                 m_title[groupid]->deleteLater();
                 m_title.remove(groupid);
+                
+                // trick in order to hide an extra item (Qt Bug ?)
+                QLayoutItem * layoutitem = m_glayout->itemAtPosition(0, m_title.keys().size() * NCOLS);
+                if(layoutitem) {
+                        layoutitem->widget()->hide();
+                        m_glayout->removeWidget(layoutitem->widget());
+                }
+                
                 refreshContents();
                 refreshDisplay();
         }
@@ -632,24 +644,31 @@ void AgentsPanelNext::refreshContents()
                 QVariantMap agqjoined = m_agent_props[idxa].toMap()["queues"].toMap();
                 
                 foreach (QString qname, agqjoined.keys()) {
-                        QString sstatus = agqjoined[qname].toMap()["Status"].toString();
-                        if((sstatus == "1") || (sstatus == "5"))
-                                foreach (QString groupid, m_title.keys()) {
-                                        QStringList lqueues = m_title[groupid]->property("queues").toStringList();
-                                        if(lqueues.contains(qname)) {
-                                                QString idx = astid + "-" + agentid + "-" + groupid;
-                                                if(! m_agent_labels.contains(idx)) {
-                                                        m_agent_labels[idx] = new ExtendedLabel();
-                                                        m_agent_labels[idx]->setProperty("astid", astid);
-                                                        m_agent_labels[idx]->setProperty("agentid", agentid);
-                                                        m_agent_labels[idx]->setProperty("groupid", groupid);
-                                                        connect( m_agent_labels[idx], SIGNAL(mouse_release(QMouseEvent *)),
-                                                                 this, SLOT(agentClicked(QMouseEvent *)) );
-                                                        connect( m_agent_labels[idx], SIGNAL(context_menu(QContextMenuEvent *)),
-                                                                 this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+                        if(! agqjoined[qname].toMap().isEmpty()) {
+                                QString sstatus = agqjoined[qname].toMap()["Status"].toString();
+                                if((sstatus == "1") || (sstatus == "5")) {
+                                        foreach (QString groupid, m_title.keys()) {
+                                                QStringList lqueues = m_title[groupid]->property("queues").toStringList();
+                                                if(lqueues.contains(qname)) {
+                                                        QString idx = astid + "-" + agentid + "-" + groupid;
+                                                        if(! m_agent_labels.contains(idx)) {
+                                                                m_agent_labels[idx] = new ExtendedLabel();
+                                                                m_agent_labels[idx]->setProperty("astid", astid);
+                                                                m_agent_labels[idx]->setProperty("agentid", agentid);
+                                                                m_agent_labels[idx]->setProperty("groupid", groupid);
+                                                                connect( m_agent_labels[idx], SIGNAL(mouse_release(QMouseEvent *)),
+                                                                         this, SLOT(agentClicked(QMouseEvent *)) );
+                                                                connect( m_agent_labels[idx], SIGNAL(context_menu(QContextMenuEvent *)),
+                                                                         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+                                                        }
                                                 }
                                         }
+                                } else if (sstatus == "3") {
+                                        qDebug() << "AgentsPanelNext::refreshContents()" << idxa << sstatus;
+                                } else {
+                                        qDebug() << "AgentsPanelNext::refreshContents()" << idxa << sstatus;
                                 }
+                        }
                 }
         }
         saveGroups();
@@ -712,32 +731,9 @@ void AgentsPanelNext::setAgentList(const QVariant & alist)
                         p["lastname"] = alistmap["newlist"].toMap()[agentid].toMap()["lastname"];
                         m_agent_props[idxa] = p;
                 } else {
-                        qDebug() << "already there" << idxa;
-                }
-                
-                foreach (QString qname, agqjoined.keys()) {
-                        QString sstatus = agqjoined[qname].toMap()["Status"].toString();
-                        if((sstatus == "1") || (sstatus == "5"))
-                                foreach (QString groupid, m_title.keys()) {
-                                        QStringList lqueues = m_title[groupid]->property("queues").toStringList();
-                                        if(lqueues.contains(qname)) {
-                                                QString idx = astid + "-" + agentid + "-" + groupid;
-                                                if(! m_agent_labels.contains(idx)) {
-                                                        m_agent_labels[idx] = new ExtendedLabel();
-                                                        m_agent_labels[idx]->setProperty("astid", astid);
-                                                        m_agent_labels[idx]->setProperty("agentid", agentid);
-                                                        m_agent_labels[idx]->setProperty("groupid", groupid);
-                                                        connect( m_agent_labels[idx], SIGNAL(mouse_release(QMouseEvent *)),
-                                                                 this, SLOT(agentClicked(QMouseEvent *)) );
-                                                        connect( m_agent_labels[idx], SIGNAL(context_menu(QContextMenuEvent *)),
-                                                                 this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-                                                }
-                                        }
-                                }
+                        qDebug() << "idxa already there" << idxa;
                 }
         }
-        
-        refreshDisplay();
         loadGroups();
 }
 
