@@ -1,8 +1,8 @@
 # $Revision$
 # $Date$
 
-QMAKE?=qmake
-LRELEASE?=lrelease
+QMAKE?=qmake-qt4
+LRELEASE?=lrelease-qt4
 UPXRUN?=upx
 ECHO?=/bin/echo
 JOPT?=-j1

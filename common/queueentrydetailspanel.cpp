@@ -106,13 +106,13 @@ void QueueentrydetailsPanel::newQueue(const QString & astid, const QString & que
         foreach(QString channel, queuestatusmap["entries"].toMap().keys()) {
                 QVariantMap entryinfos = queuestatusmap["entries"].toMap()[channel].toMap();
                 qDebug() << channel << entryinfos;
-                QString entryname = entryinfos["calleridname"].toString() + " <" + entryinfos["calleridnum"].toString() + ">";
+                QString entryname = entryinfos["calleridname"].toString() + " " + entryinfos["calleridnum"].toString();
                 QString entrypos = entryinfos["position"].toString();
                 QString entrytime = entryinfos["wait"].toString();
-                m_entrypos[entryname] = new QLabel(entryname + " :: " + entrypos, this);
-                m_entrytime[entryname] = new QLabel(entrytime, this);
+                m_entrypos[entryname] = new QLabel(entrypos + " : " + entryname + " : " + entrytime + " sec", this);
+                //m_entrytime[entryname] = new QLabel(entrytime + "sec", this);
                 m_gridlayout->addWidget( m_entrypos[entryname], k + 1, 0, Qt::AlignLeft );
-                m_gridlayout->addWidget( m_entrytime[entryname], k + 1, 1, Qt::AlignLeft );
+                //m_gridlayout->addWidget( m_entrytime[entryname], k + 1, 1, Qt::AlignLeft );
                 k ++;
         }
 }
