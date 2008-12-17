@@ -365,17 +365,17 @@ void AgentsPanelNext::updatePeerAgent(int timeref,
         // qDebug() << "AgentsPanelNext::updatePeerAgent()" << action << agentnum << qname << jstatus << pstatus;
         
         if(action == "queuememberstatus") {
-                if(m_agent_labels.contains(agentnum)) {
-                        if(jstatus == "1") {
-                                // queue member has logged in  / is available
-                        } else if(jstatus == "5") {
-                                // queue member has logged off
-                        } else if(jstatus == "3") {
-                                // queue member is called
-                        } else {
-                                qDebug() << "AgentsPanelNext::updatePeerAgent()" << what << jstatus;
-                        }
-                }
+                QString idxa = astid + "-" + agentnum;
+                // if(m_agent_props.contains(idxa)) {
+                // QVariantMap proptemp = m_agent_props[idxa].toMap();
+                // QVariantMap pqueues = proptemp["queues"].toMap();
+                //  }
+                // if(jstatus == "1") {
+                // // queue member has logged in  / is available
+                // } else if(jstatus == "5") {
+                // // queue member has logged off
+                // } else if(jstatus == "3") {
+                // // queue member is called
         } else if(action == "joinqueue") {
                 QString idxa = astid + "-" + agentnum;
                 if(m_agent_props.contains(idxa)) {
@@ -439,12 +439,15 @@ void AgentsPanelNext::updatePeerAgent(int timeref,
                         proptemp["queues"] = pqueues;
                         m_agent_props[idxa] = proptemp;
                 }
+                
         } else if(action == "agentlogin") {
                 QString idxa = astid + "-" + agentnum;
                 if(m_agent_props.contains(idxa)) {
                         QVariantMap proptemp = m_agent_props[idxa].toMap();
                         QVariantMap properties = proptemp["properties"].toMap();
                         properties["status"] = "AGENT_IDLE";
+                        properties["Xivo-ReceivedCalls"] = 0;
+                        properties["Xivo-LostCalls"] = 0;
                         proptemp["properties"] = properties;
                         m_agent_props[idxa] = proptemp;
                         refreshContents();
@@ -459,6 +462,26 @@ void AgentsPanelNext::updatePeerAgent(int timeref,
                         m_agent_props[idxa] = proptemp;
                         refreshContents();
                 }
+        } else if(action == "agentcalled") {
+                QString idxa = astid + "-" + agentnum;
+                if(m_agent_props.contains(idxa)) {
+                        QVariantMap proptemp = m_agent_props[idxa].toMap();
+                        QVariantMap properties = proptemp["properties"].toMap();
+                        properties["Xivo-ReceivedCalls"] = params.toMap()["received"];
+                        properties["Xivo-LostCalls"] = params.toMap()["lost"];
+                        proptemp["properties"] = properties;
+                        m_agent_props[idxa] = proptemp;
+                }
+        } else if(action == "agentconnect") {
+                QString idxa = astid + "-" + agentnum;
+                if(m_agent_props.contains(idxa)) {
+                        QVariantMap proptemp = m_agent_props[idxa].toMap();
+                        QVariantMap properties = proptemp["properties"].toMap();
+                        properties["Xivo-LostCalls"] = params.toMap()["lost"];
+                        proptemp["properties"] = properties;
+                        m_agent_props[idxa] = proptemp;
+                }
+                
         } else if((action == "agentlink") || (action == "phonelink")) {
                 QString idxa = astid + "-" + agentnum;
                 if(m_agent_props.contains(idxa)) {
@@ -582,10 +605,11 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                 
                 QLabel * q_name = new QLabel(m_agent_props[idxa].toMap()["firstname"].toString());
                 QLabel * q_agentid = new QLabel(agentid);
-                QString n = QString::number(0);
-                QString m = QString::number(0);
-                QLabel * q_received = new QLabel(tr("%1 calls received since connection").arg(n));
-                QLabel * q_lost = new QLabel(tr("%1 calls lost since connection").arg(m));
+                
+                QString nreceived = m_agent_props[idxa].toMap()["properties"].toMap()["Xivo-ReceivedCalls"].toString();
+                QString nlost = m_agent_props[idxa].toMap()["properties"].toMap()["Xivo-LostCalls"].toString();
+                QLabel * q_received = new QLabel(tr("%1 calls received since connection").arg(nreceived));
+                QLabel * q_lost = new QLabel(tr("%1 calls lost since connection").arg(nlost));
                 
                 QPushButton * q_pause;
                 bool isinpause = false;
