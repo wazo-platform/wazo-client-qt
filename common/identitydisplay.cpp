@@ -248,7 +248,7 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         changeWatchedAgent(m_ui->astid() + " " + m_ui->agentid(), false);
 }
 
-void IdentityDisplay::setAgentList(const QVariant & alist)
+void IdentityDisplay::setAgentList(int, const QVariant & alist)
 {
         // qDebug() << "IdentityDisplay::setAgentList()" << m_loginkind << alist;
         if (m_loginkind == 0)
@@ -382,7 +382,8 @@ void IdentityDisplay::hideAgentProps()
         m_agentstatus_value->hide();
 }
 
-void IdentityDisplay::updatePeerAgent(const QString & userid,
+void IdentityDisplay::updatePeerAgent(int,
+                                      const QString & userid,
                                       const QString & what,
                                       const QVariant & newstatuses)
 {

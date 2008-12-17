@@ -124,7 +124,8 @@ void AgentsPanel::updateAgentPresence(const QString & agentname, const QVariant 
                 }
 }
 
-void AgentsPanel::updatePeerAgent(const QString &,
+void AgentsPanel::updatePeerAgent(int,
+                                  const QString &,
                                   const QString & what,
                                   const QVariant & params)
 {
@@ -238,7 +239,7 @@ void AgentsPanel::updatePeerAgent(const QString &,
         }
 }
 
-void AgentsPanel::setAgentList(const QVariant & alist)
+void AgentsPanel::setAgentList(int, const QVariant & alist)
 {
         // qDebug() << "AgentsPanel::setAgentList()" << alist;
         QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);

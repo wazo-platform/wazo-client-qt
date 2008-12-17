@@ -231,7 +231,8 @@ signals:
 	                const QString &,
                         const QVariant &);
         void newUser(UserInfo *);
-	void updatePeerAgent(const QString &,
+	void updatePeerAgent(int,
+                             const QString &,
                              const QString &,
                              const QVariant &);
 	void updateOnlineAgent(const QStringList &);
@@ -246,7 +247,7 @@ signals:
         void setQueueStatus(const QVariant &);
         void removeQueues(const QString &, const QStringList &);
         void newQueueList(bool, const QVariant &);
-        void newAgentList(const QVariant &);
+        void newAgentList(int, const QVariant &);
 	void optChanged(const QString &, bool);
 	void forwardUpdated(const QString &, bool, const QString &);
         void changesAvailChecks();

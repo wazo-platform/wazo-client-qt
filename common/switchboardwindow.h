@@ -81,7 +81,8 @@ public slots:
                         const QString &,
                         const QVariant &);
         void newUser(UserInfo *);
-        void updatePeerAgent(const QString &,
+        void updatePeerAgent(int,
+                             const QString &,
                              const QString &,
                              const QVariant &);
 	void removePeer(const QString &);

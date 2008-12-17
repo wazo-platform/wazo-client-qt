@@ -79,7 +79,8 @@ public slots:
         void removeQueues(const QString &, const QStringList &);
 	void setQueueList(bool, const QVariant &);
         void setQueueStatus(const QVariant &);
-        void updatePeerAgent(const QString &,
+        void updatePeerAgent(int,
+                             const QString &,
                              const QString &,
                              const QVariant &);
 private slots:

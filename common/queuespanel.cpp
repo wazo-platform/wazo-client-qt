@@ -228,7 +228,8 @@ void QueuesPanel::checkBoxStateChanged(int state)
         }
 }
 
-void QueuesPanel::updatePeerAgent(const QString &,
+void QueuesPanel::updatePeerAgent(int,
+                                  const QString &,
                                   const QString &,
                                   const QVariant &)
 {

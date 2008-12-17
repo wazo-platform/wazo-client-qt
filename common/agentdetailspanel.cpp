@@ -133,7 +133,8 @@ void AgentdetailsPanel::setUserInfo(const UserInfo *)
 {
 }
 
-void AgentdetailsPanel::updatePeerAgent(const QString &,
+void AgentdetailsPanel::updatePeerAgent(int,
+                                        const QString &,
                                         const QString & what,
                                         const QVariant & params)
 {

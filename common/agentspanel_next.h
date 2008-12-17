@@ -42,6 +42,7 @@
 #ifndef __AGENTSPANELNEXT_H__
 #define __AGENTSPANELNEXT_H__
 
+#include <QDateTime>
 #include <QHash>
 #include <QList>
 #include <QObject>
@@ -74,9 +75,10 @@ signals:
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-        void setAgentList(const QVariant &);
+        void setAgentList(int, const QVariant &);
         void setQueueList(bool, const QVariant &);
-        void updatePeerAgent(const QString &,
+        void updatePeerAgent(int,
+                             const QString &,
                              const QString &,
                              const QVariant &);
         void updateAgentPresence(const QString &, const QVariant &);
@@ -105,6 +107,9 @@ private:
 	QGridLayout * m_glayout;
         QMap<QString, ExtendedLabel *> m_title;
         const UserInfo * m_userinfo;
+        
+        int m_timesrv;
+        QDateTime m_timeclt;
         
         QHash<QString, QString> m_groups;
         QHash<QString, ExtendedLabel *> m_agent_labels;

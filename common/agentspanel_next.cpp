@@ -291,9 +291,8 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                         disptext += " I";
         }
         
-        QDateTime inittime;
-        if(properties.toMap().contains("inittime"))
-                inittime = properties.toMap()["inittime"].toDateTime();
+        bool doshowtime = false;
+        int nsec = 0;
         
         QVariantMap qvm = queues.toMap();
         foreach (QString qname_group, m_title[groupid]->property("queues").toStringList()) {
@@ -304,16 +303,21 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                         // << qvm[qname_group].toMap()["Paused"].toString()
                         // << qvm[qname_group].toMap()["PausedTime"].toString();
                         if(pstatus == "1") {
+                                QDateTime now = QDateTime::currentDateTime();
+                                int d1 = m_timeclt.secsTo(now);
+                                int d2 = m_timesrv - qvm[qname_group].toMap()["Xivo-StateTime"].toInt();
                                 colorqss = "#ff8080";
-                                inittime = qvm[qname_group].toMap()["PausedTime"].toDateTime();
-                                if(inittime.isNull())
-                                        inittime = QDateTime::currentDateTime();
+                                doshowtime = true;
+                                nsec = d1 + d2;
+                                // rounding leads quite often to a "-1" value
+                                // in order not to hurt sensitivities, set it to zero
+                                if(nsec == -1)
+                                        nsec = 0;
                         }
                 }
         }
         
-        if(inittime.isValid()) {
-                int nsec = inittime.secsTo(QDateTime::currentDateTime());
+        if(doshowtime) {
                 int dmin = nsec / 60;
                 int dsec = nsec % 60;
                 if((nsec > 10) && (nsec % 2))
@@ -338,7 +342,8 @@ void AgentsPanelNext::updateAgentPresence(const QString &, const QVariant &)
         // QColor color = QColor(presencestatus.toMap()["color"].toString());
 }
 
-void AgentsPanelNext::updatePeerAgent(const QString &,
+void AgentsPanelNext::updatePeerAgent(int timeref,
+                                      const QString &,
                                       const QString & what,
                                       const QVariant & params)
 {
@@ -408,7 +413,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         QVariantMap pqueues = proptemp["queues"].toMap();
                         QVariantMap qprops = pqueues[qname].toMap();
                         qprops["Paused"] = "0";
-                        qprops.remove("PausedTime");
+                        qprops["Xivo-StateTime"] = timeref;
                         pqueues[qname] = qprops;
                         proptemp["properties"] = properties;
                         proptemp["queues"] = pqueues;
@@ -422,7 +427,7 @@ void AgentsPanelNext::updatePeerAgent(const QString &,
                         QVariantMap pqueues = proptemp["queues"].toMap();
                         QVariantMap qprops = pqueues[qname].toMap();
                         qprops["Paused"] = "1";
-                        qprops["PausedTime"] = QDateTime::currentDateTime();
+                        qprops["Xivo-StateTime"] = timeref;
                         pqueues[qname] = qprops;
                         proptemp["properties"] = properties;
                         proptemp["queues"] = pqueues;
@@ -757,8 +762,10 @@ void AgentsPanelNext::refreshDisplay()
         m_glayout->setColumnStretch(m_title.size() * NCOLS, 1);
 }
 
-void AgentsPanelNext::setAgentList(const QVariant & alist)
+void AgentsPanelNext::setAgentList(int timeref, const QVariant & alist)
 {
+        m_timesrv = timeref;
+        m_timeclt = QDateTime::currentDateTime();
         // qDebug() << "AgentsPanelNext::setAgentList()" << alist;
         QVariantMap alistmap = alist.toMap();
         QString astid = alistmap["astid"].toString();
