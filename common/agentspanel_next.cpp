@@ -265,6 +265,9 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         
         QString disptext = firstname + " " + lastname + " " + agentid;
         
+        bool doshowtime = false;
+        int nsec = 0;
+        
         QString colorqss;
         if(agstatus == "AGENT_IDLE")
                 colorqss = "grey";
@@ -275,11 +278,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         } else
                 colorqss = "blue";
         
-        if(link == "agentlink") {
-                colorqss = "#80ff80";
-                disptext += " E";
-        }
-        if(link == "phonelink") {
+        if((link == "phonelink") || (link == "agentlink")) {
                 colorqss = "#80ff80";
                 bool isdid = properties.toMap()["did"].toBool();
                 bool isoutcall = properties.toMap()["outcall"].toBool();
@@ -289,10 +288,15 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                         disptext += " S";
                 else
                         disptext += " I";
+                
+                QDateTime now = QDateTime::currentDateTime();
+                int d1 = m_timeclt.secsTo(now);
+                int d2 = m_timesrv - properties.toMap()["Xivo-StateTime"].toInt();
+                doshowtime = true;
+                nsec = d1 + d2;
+                if(nsec == -1)
+                        nsec = 0;
         }
-        
-        bool doshowtime = false;
-        int nsec = 0;
         
         QVariantMap qvm = queues.toMap();
         foreach (QString qname_group, m_title[groupid]->property("queues").toStringList()) {
@@ -303,13 +307,15 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                         // << qvm[qname_group].toMap()["Paused"].toString()
                         // << qvm[qname_group].toMap()["PausedTime"].toString();
                         if(pstatus == "1") {
+                                colorqss = "#ff8080";
+                                
                                 QDateTime now = QDateTime::currentDateTime();
                                 int d1 = m_timeclt.secsTo(now);
                                 int d2 = m_timesrv - qvm[qname_group].toMap()["Xivo-StateTime"].toInt();
-                                colorqss = "#ff8080";
                                 doshowtime = true;
                                 nsec = d1 + d2;
-                                // rounding leads quite often to a "-1" value
+                                
+                                // rounding quite often leads to a "-1" value
                                 // in order not to hurt sensitivities, set it to zero
                                 if(nsec == -1)
                                         nsec = 0;
@@ -320,7 +326,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         if(doshowtime) {
                 int dmin = nsec / 60;
                 int dsec = nsec % 60;
-                if((nsec > 10) && (nsec % 2))
+                if((nsec > 10) && (nsec % 2) && (colorqss == "#ff8080"))
                         colorqss = "#ffb0b0";
                 QString displayedtime;
                 if(dmin > 0)
@@ -459,7 +465,7 @@ void AgentsPanelNext::updatePeerAgent(int timeref,
                         QVariantMap proptemp = m_agent_props[idxa].toMap();
                         QVariantMap properties = proptemp["properties"].toMap();
                         properties["link"] = action;
-                        properties["inittime"] = QDateTime::currentDateTime();
+                        properties["Xivo-StateTime"] = timeref;
                         properties["dir"] = params.toMap()["dir"].toString();
                         properties["did"] = params.toMap()["did"].toBool();
                         properties["outcall"] = params.toMap()["outcall"].toBool();
@@ -472,7 +478,7 @@ void AgentsPanelNext::updatePeerAgent(int timeref,
                         QVariantMap proptemp = m_agent_props[idxa].toMap();
                         QVariantMap properties = proptemp["properties"].toMap();
                         properties["link"] = action;
-                        properties.remove("inittime");
+                        properties["Xivo-StateTime"] = timeref;
                         proptemp["properties"] = properties;
                         m_agent_props[idxa] = proptemp;
                 }
