@@ -282,7 +282,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                 colorqss = "#80ff80";
                 bool isdid = properties.toMap()["did"].toBool();
                 bool isoutcall = properties.toMap()["outcall"].toBool();
-                if(isdid)
+                if(isdid || (link == "agentlink"))
                         disptext += " E";
                 else if(isoutcall)
                         disptext += " S";
