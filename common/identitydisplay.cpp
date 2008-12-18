@@ -450,10 +450,13 @@ void IdentityDisplay::updatePeerAgent(int,
 
 void IdentityDisplay::doAgentAction()
 {
-        if(m_agentstatus)
+        if(m_agentstatus) {
+                // agentAction("pause_all");
                 agentAction("logout");
-        else
+        } else {
                 agentAction("login");
+                // agentAction("unpause_all");
+        }
 }
 
 void IdentityDisplay::doQueueAction()
