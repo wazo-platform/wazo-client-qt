@@ -106,23 +106,24 @@ QueuesPanel::QueuesPanel(const QVariant & options,
         m_qcbox  = new QCheckBox(this);
         m_qcbox->setObjectName("queues");
         m_qcbox->setCheckState(Qt::Checked);
-        m_vqtitle = new QLabel(tr("Virtual Queues"), this);
-        m_vqcbox  = new QCheckBox(this);
-        m_vqcbox->setObjectName("vqueues");
-        m_vqcbox->setCheckState(Qt::Checked);
+        
+        //m_vqtitle = new QLabel(tr("Virtual Queues"), this);
+        //m_vqcbox  = new QCheckBox(this);
+        //m_vqcbox->setObjectName("vqueues");
+        //m_vqcbox->setCheckState(Qt::Checked);
         
         connect( m_qcbox, SIGNAL(stateChanged(int)),
                  this, SLOT(checkBoxStateChanged(int)));
-        connect( m_vqcbox, SIGNAL(stateChanged(int)),
-                 this, SLOT(checkBoxStateChanged(int)));
+        //connect( m_vqcbox, SIGNAL(stateChanged(int)),
+        //this, SLOT(checkBoxStateChanged(int)));
 
         foreach (QString statitem, m_statitems)
                 m_title_infos[statitem] = new QLabel(m_statlegends[statitem], this);
         
         m_gridlayout->addWidget( m_qtitle, 1, 1, Qt::AlignLeft );
         m_gridlayout->addWidget( m_qcbox, 1, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_vqtitle, 50, 1, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_vqcbox, 50, 2, Qt::AlignCenter );
+        //m_gridlayout->addWidget( m_vqtitle, 50, 1, Qt::AlignLeft );
+        //m_gridlayout->addWidget( m_vqcbox, 50, 2, Qt::AlignCenter );
         
         m_gridlayout->addWidget( m_busytitle, 0, 3, Qt::AlignCenter );
         foreach (QString statitem, m_statitems)
@@ -159,7 +160,7 @@ void QueuesPanel::setGuiOptions(const QVariant & options)
         
         m_busytitle->setFont(m_gui_font);
         m_qtitle->setFont(m_gui_font);
-        m_vqtitle->setFont(m_gui_font);
+        //m_vqtitle->setFont(m_gui_font);
         foreach (QString statitem, m_statitems)
                 m_title_infos[statitem]->setFont(m_gui_font);
         
@@ -169,15 +170,15 @@ void QueuesPanel::setGuiOptions(const QVariant & options)
                 m_qtitle->hide();
         if(m_gui_showvqueues) {
                 m_qcbox->show();
-                m_vqcbox->show();
+                //m_vqcbox->show();
         } else {
                 m_qcbox->hide();
-                m_vqcbox->hide();
+                //m_vqcbox->hide();
         }
-        if(m_gui_showqueuenames && m_gui_showvqueues)
-                m_vqtitle->show();
-        else
-                m_vqtitle->hide();
+        //if(m_gui_showqueuenames && m_gui_showvqueues)
+        //m_vqtitle->show();
+        //else
+        //m_vqtitle->hide();
 }
 
 void QueuesPanel::setUserInfo(const UserInfo *)

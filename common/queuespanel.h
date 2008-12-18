@@ -106,9 +106,9 @@ private:
         
         QLabel * m_busytitle;
         QLabel * m_qtitle;
-        QLabel * m_vqtitle;
+        //QLabel * m_vqtitle;
         QCheckBox * m_qcbox;
-        QCheckBox * m_vqcbox;
+        //QCheckBox * m_vqcbox;
         QHash<QString, QLabel *> m_title_infos;
         QVariant m_options;
 };
