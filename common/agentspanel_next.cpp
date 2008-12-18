@@ -264,7 +264,8 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         // qDebug() << astid << agentid << link << properties.toMap();
         
         QString disptext = firstname + " " + lastname + " " + agentid;
-        
+        QStringList groupqueues = m_title[groupid]->property("queues").toStringList();
+
         bool doshowtime = false;
         int nsec = 0;
         
@@ -282,24 +283,32 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                 colorqss = "#80ff80";
                 bool isdid = properties.toMap()["did"].toBool();
                 bool isoutcall = properties.toMap()["outcall"].toBool();
-                if(isdid || (link == "agentlink"))
-                        disptext += " E";
-                else if(isoutcall)
+                QString queuename = properties.toMap()["queuename"].toString();
+                if(isdid || (link == "agentlink")) {
+                        if(groupqueues.contains(queuename)) {
+                                doshowtime = true;
+                                disptext += " E";
+                        }
+                } else if(isoutcall) {
+                        doshowtime = true;
                         disptext += " S";
-                else
+                } else {
+                        doshowtime = true;
                         disptext += " I";
+                }
                 
-                QDateTime now = QDateTime::currentDateTime();
-                int d1 = m_timeclt.secsTo(now);
-                int d2 = m_timesrv - properties.toMap()["Xivo-StateTime"].toInt();
-                doshowtime = true;
-                nsec = d1 + d2;
-                if(nsec == -1)
-                        nsec = 0;
+                if(doshowtime) {
+                        QDateTime now = QDateTime::currentDateTime();
+                        int d1 = m_timeclt.secsTo(now);
+                        int d2 = m_timesrv - properties.toMap()["Xivo-StateTime"].toInt();
+                        nsec = d1 + d2;
+                        if(nsec == -1)
+                                nsec = 0;
+                }
         }
         
         QVariantMap qvm = queues.toMap();
-        foreach (QString qname_group, m_title[groupid]->property("queues").toStringList()) {
+        foreach (QString qname_group, groupqueues) {
                 if (qvm.contains(qname_group)) {
                         QString pstatus = qvm[qname_group].toMap()["Paused"].toString();
                         // qDebug() << idx << idxa << qname_group
@@ -489,9 +498,10 @@ void AgentsPanelNext::updatePeerAgent(int timeref,
                         QVariantMap properties = proptemp["properties"].toMap();
                         properties["link"] = action;
                         properties["Xivo-StateTime"] = timeref;
-                        properties["dir"] = params.toMap()["dir"].toString();
-                        properties["did"] = params.toMap()["did"].toBool();
-                        properties["outcall"] = params.toMap()["outcall"].toBool();
+                        properties["dir"] = params.toMap()["dir"];
+                        properties["did"] = params.toMap()["did"];
+                        properties["outcall"] = params.toMap()["outcall"];
+                        properties["queuename"] = params.toMap()["queuename"];
                         proptemp["properties"] = properties;
                         m_agent_props[idxa] = proptemp;
                 }

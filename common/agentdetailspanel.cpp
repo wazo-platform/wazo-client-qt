@@ -260,11 +260,10 @@ void AgentdetailsPanel::updatePeerAgent(int,
                                 }
                         }
                 }
-        } else {
-                // queuememberstatus
-                qDebug() << "AgentdetailsPanel::updatePeerAgent()" << params;
         }
-
+        // queuememberstatus
+        // qDebug() << "AgentdetailsPanel::updatePeerAgent()" << params;
+        
         summaryCount();
 }
 
