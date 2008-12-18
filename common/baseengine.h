@@ -291,6 +291,7 @@ private:
 	QString m_fullid;		//!< Full Id (userid + company)
         QString m_astid;
         QString m_xivo_userid;
+        QString m_profilename;
         
 	bool m_autoconnect;		//!< Autoconnect to server at startup
 	bool m_trytoreconnect;		//!< "try to reconnect" flag

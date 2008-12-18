@@ -161,8 +161,12 @@ void BaseEngine::loadSettings()
 {
         //qDebug() << "BaseEngine::loadSettings()";
 	m_systrayed = m_settings->value("display/systrayed", false).toBool();
-        
-        m_settings->beginGroup("engine");
+        QString profile = m_settings->value("profile/default", "").toString();
+        if(profile.isEmpty())
+                m_profilename = "engine";
+        else
+                m_profilename = "engine-" + profile;
+        m_settings->beginGroup(m_profilename);
 	m_serverhost = m_settings->value("serverhost", "demo.xivo.fr").toString();
 	m_ctiport    = m_settings->value("serverport", 5003).toUInt();
         
@@ -221,11 +225,11 @@ void BaseEngine::saveSettings()
         // information
 	m_settings->setValue("version/xivo", __xivo_version__);
 	m_settings->setValue("version/svn", __current_client_version__);
-
+        
 	m_settings->setValue("display/systrayed", m_systrayed);
         
         // m_settings->beginGroup("engine." + m_userid);
-        m_settings->beginGroup("engine");
+        m_settings->beginGroup(m_profilename);
 	m_settings->setValue("serverhost", m_serverhost);
 	m_settings->setValue("serverport", m_ctiport);
 

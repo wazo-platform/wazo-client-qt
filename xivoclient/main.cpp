@@ -73,7 +73,10 @@ int main(int argc, char ** argv)
                                              QSettings::UserScope,
                                              QCoreApplication::organizationName(),
                                              QCoreApplication::applicationName());
-
+        QString profile;
+        if(argc > 1)
+                profile = argv[1];
+        settings->setValue("profile/default", profile);
         QString qsskind = settings->value("display/qss", "none").toString();
         QFile qssFile(":/common/" + qsskind + ".qss");
         QString qssStr;
@@ -83,7 +86,7 @@ int main(int argc, char ** argv)
         }
         app.setStyleSheet(qssStr);
         app.setWindowIcon(QIcon(":/images/xivoicon.png"));
-
+        
         QTranslator qtTranslator_xivo, qtTranslator_qt;
         QString forcelocale = settings->value("display/forcelocale", "").toString();
         if(forcelocale.size() > 0)
