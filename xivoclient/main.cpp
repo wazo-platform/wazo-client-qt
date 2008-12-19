@@ -73,10 +73,8 @@ int main(int argc, char ** argv)
                                              QSettings::UserScope,
                                              QCoreApplication::organizationName(),
                                              QCoreApplication::applicationName());
-        QString profile;
         if(argc > 1)
-                profile = argv[1];
-        settings->setValue("profile/default", profile);
+                settings->setValue("profile/default", argv[1]);
         QString qsskind = settings->value("display/qss", "none").toString();
         QFile qssFile(":/common/" + qsskind + ".qss");
         QString qssStr;

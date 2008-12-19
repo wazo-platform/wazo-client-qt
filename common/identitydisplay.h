@@ -50,9 +50,11 @@
 #include <QWidget>
 
 class QComboBox;
+class QContextMenuEvent;
 class QProgressBar;
 class QPushButton;
 
+class ExtendedLabel;
 class UserInfo;
 
 /*! \brief Identity Display
@@ -67,7 +69,7 @@ public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
         void setAgentList(int, const QVariant &);
-	void setQueueList(bool, const QVariant &);
+	void setQueueList(const QVariant &);
         void updatePeer(UserInfo *,
                         const QString &,
                         const QVariant &);
@@ -75,38 +77,35 @@ public slots:
                              const QString &,
                              const QString &,
                              const QVariant &);
-        void doAgentAction();
-        void doQueueAction();
-        void doQueueJoinAll();
-        void doQueueLeaveAll();
+        void doAgentLogActions();
+        void doAgentPauseActions();
         void idxChanged(const QString &);
         void updatePresence(const QVariant &);
+private slots:
+        void contextMenuEvent(QContextMenuEvent *);
 private:
         void showAgentProps();
         void hideAgentProps();
         
+        ExtendedLabel * m_icon_user;
+        ExtendedLabel * m_icon_agent;
+        ExtendedLabel * m_icon_voicemail;
+        
+        QFrame * m_qvline1;
+        QFrame * m_qvline2;
+        
         QLabel * m_user;
-        QLabel * m_voicemail;
+        QLabel * m_voicemail_old;
+        QLabel * m_voicemail_new;
         QLabel * m_phonenum;
-        QLabel * m_presencelabel;
         QComboBox * m_presencevalue;
         QLabel * m_agent;
-        QFrame * m_qf;
-        QLabel * m_agentstatus_label;
         QPushButton * m_agentstatus_value;
-        QPushButton * m_queueaction;
-        QPushButton * m_queuejoinall;
-        QPushButton * m_queueleaveall;
-        QComboBox * m_queuelist;
-        QHash<QString, int> m_queuesindexes;
-        QHash<QString, bool> m_queuesstatuses;
-        QHash<QString, QString> m_queuesbusyness;
+        QPushButton * m_agentpause_value;
         
         QHash<QString, QString> m_presence_names;
         const UserInfo * m_ui;
         bool m_agentstatus;
-        bool m_queuechangeallow;
-        int m_maxqueues;
         
         QFont m_gui_font;
         quint32 m_gui_buttonsize;

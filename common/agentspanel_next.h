@@ -76,7 +76,7 @@ public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
         void setAgentList(int, const QVariant &);
-        void setQueueList(bool, const QVariant &);
+        void setQueueList(const QVariant &);
         void updatePeerAgent(int,
                              const QString &,
                              const QString &,
@@ -109,6 +109,7 @@ private:
         const UserInfo * m_userinfo;
         
         int m_timesrv;
+        int m_blinktime;
         QDateTime m_timeclt;
         
         QHash<QString, QString> m_groups;

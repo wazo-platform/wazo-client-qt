@@ -246,7 +246,7 @@ signals:
         void localUserInfoDefined(const UserInfo *);
         void setQueueStatus(const QVariant &);
         void removeQueues(const QString &, const QStringList &);
-        void newQueueList(bool, const QVariant &);
+        void newQueueList(const QVariant &);
         void newAgentList(int, const QVariant &);
 	void optChanged(const QString &, bool);
 	void forwardUpdated(const QString &, bool, const QString &);

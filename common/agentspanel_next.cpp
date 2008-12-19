@@ -72,6 +72,7 @@ AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
         m_glayout->setSpacing(1);
         
         // m_gridlayout->setVerticalSpacing(0);
+        m_blinktime = 300;
         
         setGuiOptions(optionmap);
         startTimer(1000);
@@ -302,7 +303,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                         int d1 = m_timeclt.secsTo(now);
                         int d2 = m_timesrv - properties.toMap()["Xivo-StateTime"].toInt();
                         nsec = d1 + d2;
-                        if(nsec == -1)
+                        if((nsec == -1) || (nsec == -2))
                                 nsec = 0;
                 }
         }
@@ -326,7 +327,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                                 
                                 // rounding quite often leads to a "-1" value
                                 // in order not to hurt sensitivities, set it to zero
-                                if(nsec == -1)
+                                if((nsec == -1) || (nsec == -2))
                                         nsec = 0;
                         }
                 }
@@ -335,7 +336,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         if(doshowtime) {
                 int dmin = nsec / 60;
                 int dsec = nsec % 60;
-                if((nsec > 10) && (nsec % 2) && (colorqss == "#ff8080"))
+                if((nsec > m_blinktime) && (nsec % 2) && (colorqss == "#ff8080"))
                         colorqss = "#ffb0b0";
                 QString displayedtime;
                 if(dmin > 0)
@@ -608,6 +609,8 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                 QPoint where = event->globalPos();
                 QString idxa = astid + "-" + agentid;
                 
+                changeWatchedAgent(astid + " " + agentid, true);
+                
                 QGridLayout * gl = new QGridLayout();
                 QDialog * dialog = new QDialog(this);
                 dialog->setWindowTitle(tr("Agent %1 on %2").arg(agentid, astid));
@@ -832,7 +835,7 @@ void AgentsPanelNext::setAgentList(int timeref, const QVariant & alist)
         loadGroups();
 }
 
-void AgentsPanelNext::setQueueList(bool, const QVariant & qlist)
+void AgentsPanelNext::setQueueList(const QVariant & qlist)
 {
         // qDebug() << "QueuesPanel::setQueueList()" << qlist;
         QVariantMap qlistmap = qlist.toMap();

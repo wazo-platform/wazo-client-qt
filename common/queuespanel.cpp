@@ -307,7 +307,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
                                          Qt::AlignCenter );
 }
 
-void QueuesPanel::setQueueList(bool, const QVariant & qlist)
+void QueuesPanel::setQueueList(const QVariant & qlist)
 {
         // qDebug() << "QueuesPanel::setQueueList()" << qlist;
         QVariantMap qlistmap = qlist.toMap();
