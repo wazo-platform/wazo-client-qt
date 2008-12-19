@@ -851,24 +851,44 @@ a été envoyé à %2.</translation>
 <context>
     <name>IdentityDisplay</name>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="85"/>
-        <source>Logout</source>
-        <translation>Sortie</translation>
-    </message>
-    <message>
-        <location filename="../common/identitydisplay.cpp" line="86"/>
-        <source>Withdraw</source>
-        <translation>Retrait</translation>
-    </message>
-    <message>
-        <location filename="../common/identitydisplay.cpp" line="249"/>
+        <location filename="../common/identitydisplay.cpp" line="274"/>
         <source>%1 old</source>
         <translation>%1 ancien(s)</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="250"/>
+        <location filename="../common/identitydisplay.cpp" line="275"/>
         <source>%1 new</source>
         <translation>%1 nouveau(x)</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="166"/>
+        <source>Login/Logout</source>
+        <translation>Login/Logout</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="276"/>
+        <source>VoiceMailBox %1</source>
+        <translation>Boîte %1</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="391"/>
+        <source>Disconnected from %1</source>
+        <translation>Déconnecté de %1</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="386"/>
+        <source>Connected on %1</source>
+        <translation>Connecté sur %1</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="173"/>
+        <source>Pause</source>
+        <translation>Retrait</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="180"/>
+        <source>Unpause</source>
+        <translation>Prêt</translation>
     </message>
 </context>
 <context>

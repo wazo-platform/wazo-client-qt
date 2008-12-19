@@ -62,7 +62,7 @@
 IdentityDisplay::IdentityDisplay(const QVariant & options,
                                  QWidget * parent)
         : QWidget(parent),
-          m_ui(NULL), m_agentstatus(false)
+          m_ui(NULL)
 {
         m_gui_buttonsize = 16;
         
@@ -70,31 +70,27 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
 	// glayout->setMargin(0);
         m_user = new QLabel(this);
         m_user->setObjectName("fullname");
-        m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        m_user->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        // m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         
-        m_phonenum = new QLabel(this);
-        m_presencevalue = new QComboBox(this);
+        m_phonenum = new QLabel();
+        m_presencevalue = new QComboBox();
         m_presencevalue->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         m_presencevalue->setProperty("function", "presence");
         
-        m_voicemail_old = new QLabel(this);
-        m_voicemail_new = new QLabel(this);
+        m_voicemail_old = new QLabel();
+        m_voicemail_new = new QLabel();
+        m_voicemail_name = new QLabel();
         
-        m_agent = new QLabel("", this);
-        m_agentstatus_value = new QPushButton(tr("Logout"), this);
-        m_agentpause_value = new QPushButton(tr("Withdraw"), this);
+        m_agent = new QLabel();
+        m_agentstatus = new QLabel();
+        m_agentpause = new QLabel();
         
         connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
-        if(options.toMap()["logagent"].toBool())
-                connect(m_agentstatus_value, SIGNAL(clicked()),
-                        this, SLOT(doAgentLogActions()));
-        if(options.toMap()["pauseagent"].toBool())
-                connect(m_agentpause_value, SIGNAL(clicked()),
-                        this, SLOT(doAgentPauseActions()));
+        // if(options.toMap()["logagent"].toBool())
+        // if(options.toMap()["pauseagent"].toBool())
         
-        int bigiconsize = 64;
+        int bigiconsize = 50;
         m_icon_user = new ExtendedLabel();
         m_icon_agent = new ExtendedLabel();
         m_icon_voicemail = new ExtendedLabel();
@@ -102,9 +98,9 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         m_icon_user->setPixmap(QPixmap(":/images/personal.png").scaled(QSize(bigiconsize, bigiconsize)));
         m_icon_agent->setPixmap(QPixmap(":/images/applixware.png").scaled(QSize(bigiconsize, bigiconsize)));
         m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png").scaled(QSize(bigiconsize, bigiconsize)));
-        m_icon_user->setProperty("icon", "user");
-        m_icon_agent->setProperty("icon", "agent");
-        m_icon_voicemail->setProperty("icon", "voicemail");
+        m_icon_user->setProperty("iconname", "user");
+        m_icon_agent->setProperty("iconname", "agent");
+        m_icon_voicemail->setProperty("iconname", "voicemail");
         
         connect( m_icon_user, SIGNAL(context_menu(QContextMenuEvent *)),
                  this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
@@ -113,34 +109,26 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         connect( m_icon_voicemail, SIGNAL(context_menu(QContextMenuEvent *)),
                  this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
         
-        m_qvline1 = new QFrame(this);
-        m_qvline1->setFrameShape(QFrame::VLine);
-        m_qvline1->setLineWidth(2);
-        m_qvline2 = new QFrame(this);
-        m_qvline2->setFrameShape(QFrame::VLine);
-        m_qvline2->setLineWidth(2);
+        glayout->setSpacing(2);
+        // glayout->setMargin(0);
         
-        glayout->addWidget( m_icon_user, 0, 1, 4, 1, Qt::AlignCenter );
-        glayout->addWidget( m_icon_agent, 0, 4, 4, 1, Qt::AlignCenter );
-        glayout->addWidget( m_icon_voicemail, 0, 7, 4, 1, Qt::AlignCenter );
-        glayout->addWidget( m_qvline1, 0, 3, 4, 1 );
-        glayout->addWidget( m_qvline2, 0, 6, 4, 1 );
+        glayout->addWidget( m_icon_user, 0, 1, 3, 1, Qt::AlignCenter );
+        glayout->addWidget( m_icon_agent, 0, 4, 3, 1, Qt::AlignCenter );
+        glayout->addWidget( m_icon_voicemail, 0, 7, 3, 1, Qt::AlignCenter );
         
         int idline = 0;
-	glayout->addWidget( m_user, idline, 2, Qt::AlignCenter );
-	glayout->addWidget( m_agent, idline, 5, Qt::AlignCenter );
+	glayout->addWidget( m_user, idline, 2, Qt::AlignLeft | Qt::AlignVCenter );
+	glayout->addWidget( m_agent, idline, 5, Qt::AlignLeft | Qt::AlignVCenter );
+	glayout->addWidget( m_voicemail_name, idline, 8, Qt::AlignLeft | Qt::AlignVCenter );
         idline ++;
-	glayout->addWidget( m_phonenum, idline, 2, Qt::AlignCenter );
-	glayout->addWidget( m_agentstatus_value, idline, 5, Qt::AlignCenter );
-	glayout->addWidget( m_voicemail_old, idline, 8, Qt::AlignCenter );
+	glayout->addWidget( m_phonenum, idline, 2, Qt::AlignLeft | Qt::AlignVCenter );
+	glayout->addWidget( m_agentstatus, idline, 5, Qt::AlignLeft | Qt::AlignVCenter );
+	glayout->addWidget( m_voicemail_old, idline, 8, Qt::AlignLeft | Qt::AlignVCenter );
         idline ++;
-	glayout->addWidget( m_agentpause_value, idline, 5, Qt::AlignCenter );
-	glayout->addWidget( m_voicemail_new, idline, 8, Qt::AlignCenter );
-        idline ++;
-	glayout->addWidget( m_presencevalue, idline, 2, Qt::AlignCenter );
-        idline ++;
+	glayout->addWidget( m_presencevalue, idline, 2, Qt::AlignLeft | Qt::AlignVCenter );
+	glayout->addWidget( m_agentpause, idline, 5, Qt::AlignLeft | Qt::AlignVCenter );
+	glayout->addWidget( m_voicemail_new, idline, 8, Qt::AlignLeft | Qt::AlignVCenter );
         
-        glayout->setColumnStretch( 0, 1 );
         glayout->setColumnStretch( 9, 1 );
         
         // although it might be convenient in some cases (prevent some expansions),
@@ -165,25 +153,63 @@ void IdentityDisplay::setGuiOptions(const QVariant & options)
         m_loginkind = options.toMap()["loginkind"].toUInt();
         m_functions = options.toMap()["functions"].toStringList();
         
-        // setFont(m_gui_font);
-        m_user->setFont(m_gui_font);
-        m_phonenum->setFont(m_gui_font);
-        m_presencevalue->setFont(m_gui_font);
-        m_agent->setFont(m_gui_font);
-        m_agentstatus_value->setFont(m_gui_font);
-        m_agentpause_value->setFont(m_gui_font);
-        
-        m_agentstatus_value->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
+        setFont(m_gui_font);
 }
 
 void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
 {
         if(sender() != NULL) {
-                QString iconname = sender()->property("icon").toString();
-                QMenu contextMenu(this);
-                QAction * noAction = new QAction(iconname, this);
-                contextMenu.addAction(noAction);
-                contextMenu.exec(event->globalPos());
+                QString iconname = sender()->property("iconname").toString();
+                // QMenu contextMenu(this);
+                if(iconname == "agent") {
+                        QMenu contextMenu(this);
+                        QAction * logAction = new QAction(tr("Login/Logout"), this);
+                        logAction->setProperty("iconname", iconname);
+                        logAction->setProperty("kind", "log");
+                        connect(logAction, SIGNAL(triggered()),
+                                this, SLOT(contextMenuAction()) );
+                        contextMenu.addAction(logAction);
+                        
+                        QAction * pauseAction = new QAction(tr("Pause"), this);
+                        pauseAction->setProperty("iconname", iconname);
+                        pauseAction->setProperty("kind", "pause");
+                        connect(pauseAction, SIGNAL(triggered()),
+                                this, SLOT(contextMenuAction()) );
+                        contextMenu.addAction(pauseAction);
+                        
+                        QAction * unpauseAction = new QAction(tr("Unpause"), this);
+                        unpauseAction->setProperty("iconname", iconname);
+                        unpauseAction->setProperty("kind", "unpause");
+                        connect(unpauseAction, SIGNAL(triggered()),
+                                this, SLOT(contextMenuAction()) );
+                        contextMenu.addAction(unpauseAction);
+                        contextMenu.exec(event->globalPos());
+//                 } else if(iconname == "user") {
+//                         QAction * xAction = new QAction(tr("Change State"), this);
+//                         connect(xAction, SIGNAL(triggered()),
+//                                 this, SLOT(contextMenuAction()) );
+//                         contextMenu.addAction(xAction);
+//                 } else if(iconname == "voicemail") {
+//                         QAction * xAction = new QAction(tr("Listen Message"), this);
+//                         connect(xAction, SIGNAL(triggered()),
+//                                 this, SLOT(contextMenuAction()) );
+//                         contextMenu.addAction(xAction);
+                }
+                // contextMenu.exec(event->globalPos());
+        }
+}
+
+void IdentityDisplay::contextMenuAction()
+{
+        QString iconname = sender()->property("iconname").toString();
+        if(iconname == "agent") {
+                QString kind = sender()->property("kind").toString();
+                if(kind == "log")
+                        doAgentLogActions();
+                else if(kind == "pause")
+                        doAgentPauseActions();
+                else if(kind == "unpause")
+                        doAgentUnPauseActions();
         }
 }
 
@@ -247,6 +273,7 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         if(vm.size() > 2) {
                 m_voicemail_old->setText(tr("%1 old").arg(vm[1]));
                 m_voicemail_new->setText(tr("%1 new").arg(vm[2]));
+                m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->phonenum()));
         }
         // m_voicemail->hide();
         // changes the "watched agent" only if no one else has done it before
@@ -277,15 +304,14 @@ void IdentityDisplay::setAgentList(int, const QVariant & alist)
                         QString phonenum = properties.toMap()["phonenum"].toString();
                         
                         m_agent->setText("Agent " + agnum);
-                        m_agentstatus_value->setText(phonenum);
                         showAgentProps();
                         
                         if(agstatus == "AGENT_LOGGEDOFF") {
-                                m_agentstatus_value->setIcon(QIcon(":/images/cancel.png"));
-                                m_agentstatus = false;
-                        } else if(agstatus == "AGENT_IDLE") {
-                                m_agentstatus_value->setIcon(QIcon(":/images/button_ok.png"));
-                                m_agentstatus = true;
+                                m_agentstatus->setProperty("connected", false);
+                                m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
+                        } else {/* if(agstatus == "AGENT_IDLE") */
+                                m_agentstatus->setProperty("connected", true);
+                                m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
                         }
                 }
         }
@@ -321,19 +347,17 @@ void IdentityDisplay::updatePeer(UserInfo * ui,
 void IdentityDisplay::showAgentProps()
 {
         m_agent->show();
-        m_agentstatus_value->show();
-        m_agentpause_value->show();
+        m_agentstatus->show();
+        m_agentpause->show();
         m_icon_agent->show();
-        m_qvline2->show();
 }
 
 void IdentityDisplay::hideAgentProps()
 {
         m_agent->hide();
-        m_agentstatus_value->hide();
-        m_agentpause_value->hide();
+        m_agentstatus->hide();
+        m_agentpause->hide();
         m_icon_agent->hide();
-        m_qvline2->hide();
 }
 
 void IdentityDisplay::updatePeerAgent(int,
@@ -358,21 +382,20 @@ void IdentityDisplay::updatePeerAgent(int,
         if (action == "agentlogin") {
                 QString phonenum = newstatuses.toMap()["phonenum"].toString();
                 showAgentProps();
-                m_agentstatus_value->setIcon(QIcon(":/images/button_ok.png"));
-                m_agentstatus_value->setText(phonenum);
-                m_agentstatus = true;
+                m_agentstatus->setProperty("connected", true);
+                m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
         } else if (action == "agentlogout") {
                 QString phonenum = newstatuses.toMap()["phonenum"].toString();
                 showAgentProps();
-                m_agentstatus_value->setIcon(QIcon(":/images/cancel.png"));
-                m_agentstatus_value->setText(phonenum);
-                m_agentstatus = false;
+                m_agentstatus->setProperty("connected", false);
+                m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
         }
 }
 
 void IdentityDisplay::doAgentLogActions()
 {
-        if(m_agentstatus)
+        bool connected = m_agentstatus->property("connected").toBool();
+        if(connected)
                 agentAction("logout");
         else
                 agentAction("login");
@@ -380,10 +403,14 @@ void IdentityDisplay::doAgentLogActions()
 
 void IdentityDisplay::doAgentPauseActions()
 {
-        if(m_agentstatus)
-                agentAction("pause_all");
-        else
-                agentAction("unpause_all");
+        // bool paused = m_agentpause->property("paused").toBool();
+        agentAction("pause_all");
+}
+
+void IdentityDisplay::doAgentUnPauseActions()
+{
+        // bool paused = m_agentpause->property("paused").toBool();
+        agentAction("unpause_all");
 }
 
 void IdentityDisplay::idxChanged(const QString & newidx)

@@ -52,7 +52,6 @@
 class QComboBox;
 class QContextMenuEvent;
 class QProgressBar;
-class QPushButton;
 
 class ExtendedLabel;
 class UserInfo;
@@ -79,10 +78,12 @@ public slots:
                              const QVariant &);
         void doAgentLogActions();
         void doAgentPauseActions();
+        void doAgentUnPauseActions();
         void idxChanged(const QString &);
         void updatePresence(const QVariant &);
 private slots:
         void contextMenuEvent(QContextMenuEvent *);
+        void contextMenuAction();
 private:
         void showAgentProps();
         void hideAgentProps();
@@ -97,15 +98,15 @@ private:
         QLabel * m_user;
         QLabel * m_voicemail_old;
         QLabel * m_voicemail_new;
+        QLabel * m_voicemail_name;
         QLabel * m_phonenum;
         QComboBox * m_presencevalue;
         QLabel * m_agent;
-        QPushButton * m_agentstatus_value;
-        QPushButton * m_agentpause_value;
+        QLabel * m_agentstatus;
+        QLabel * m_agentpause;
         
         QHash<QString, QString> m_presence_names;
         const UserInfo * m_ui;
-        bool m_agentstatus;
         
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
