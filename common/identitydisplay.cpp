@@ -87,8 +87,6 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         
         connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
                 this, SLOT(idxChanged(const QString &)));
-        // if(options.toMap()["logagent"].toBool())
-        // if(options.toMap()["pauseagent"].toBool())
         
         int bigiconsize = 50;
         m_icon_user = new ExtendedLabel();
@@ -153,6 +151,9 @@ void IdentityDisplay::setGuiOptions(const QVariant & options)
         m_loginkind = options.toMap()["loginkind"].toUInt();
         m_functions = options.toMap()["functions"].toStringList();
         
+        m_allow_logagent = options.toMap()["logagent"].toBool();
+        m_allow_pauseagent = options.toMap()["pauseagent"].toBool();
+        
         setFont(m_gui_font);
 }
 
@@ -163,27 +164,34 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                 // QMenu contextMenu(this);
                 if(iconname == "agent") {
                         QMenu contextMenu(this);
-                        QAction * logAction = new QAction(tr("Login/Logout"), this);
-                        logAction->setProperty("iconname", iconname);
-                        logAction->setProperty("kind", "log");
-                        connect(logAction, SIGNAL(triggered()),
-                                this, SLOT(contextMenuAction()) );
-                        contextMenu.addAction(logAction);
                         
-                        QAction * pauseAction = new QAction(tr("Pause"), this);
-                        pauseAction->setProperty("iconname", iconname);
-                        pauseAction->setProperty("kind", "pause");
-                        connect(pauseAction, SIGNAL(triggered()),
-                                this, SLOT(contextMenuAction()) );
-                        contextMenu.addAction(pauseAction);
+                        if(m_allow_logagent) {
+                                QAction * logAction = new QAction(tr("Login/Logout"), this);
+                                logAction->setProperty("iconname", iconname);
+                                logAction->setProperty("kind", "log");
+                                connect(logAction, SIGNAL(triggered()),
+                                        this, SLOT(contextMenuAction()) );
+                                contextMenu.addAction(logAction);
+                        }
                         
-                        QAction * unpauseAction = new QAction(tr("Unpause"), this);
-                        unpauseAction->setProperty("iconname", iconname);
-                        unpauseAction->setProperty("kind", "unpause");
-                        connect(unpauseAction, SIGNAL(triggered()),
-                                this, SLOT(contextMenuAction()) );
-                        contextMenu.addAction(unpauseAction);
-                        contextMenu.exec(event->globalPos());
+                        if(m_allow_pauseagent) {
+                                QAction * pauseAction = new QAction(tr("Pause"), this);
+                                pauseAction->setProperty("iconname", iconname);
+                                pauseAction->setProperty("kind", "pause");
+                                connect(pauseAction, SIGNAL(triggered()),
+                                        this, SLOT(contextMenuAction()) );
+                                contextMenu.addAction(pauseAction);
+                                
+                                QAction * unpauseAction = new QAction(tr("Unpause"), this);
+                                unpauseAction->setProperty("iconname", iconname);
+                                unpauseAction->setProperty("kind", "unpause");
+                                connect(unpauseAction, SIGNAL(triggered()),
+                                        this, SLOT(contextMenuAction()) );
+                                contextMenu.addAction(unpauseAction);
+                        }
+                        
+                        if(m_allow_logagent || m_allow_pauseagent)
+                                contextMenu.exec(event->globalPos());
 //                 } else if(iconname == "user") {
 //                         QAction * xAction = new QAction(tr("Change State"), this);
 //                         connect(xAction, SIGNAL(triggered()),

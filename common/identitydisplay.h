@@ -112,6 +112,8 @@ private:
         quint32 m_gui_buttonsize;
         quint32 m_loginkind;
         QStringList m_functions;
+        bool m_allow_logagent;
+        bool m_allow_pauseagent;
 signals:
         void agentAction(const QString &);
         void setAvailState(const QString &, bool);
