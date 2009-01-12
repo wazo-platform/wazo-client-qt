@@ -94,6 +94,8 @@ private:
         QHash<QString, QLabel *>      m_agent_logged_status;
         QHash<QString, QPushButton *> m_agent_logged_action;
         QHash<QString, QLabel *>      m_agent_joined_number;
+        QHash<QString, QLabel *>      m_agent_paused_status;
+        QHash<QString, QPushButton *> m_agent_paused_action;
         QHash<QString, QLabel *>      m_agent_paused_number;
         
         QHash<QString, QStringList> m_agent_joined_list;
@@ -104,9 +106,10 @@ private:
         QLabel * m_title3;
         QLabel * m_title4;
         QLabel * m_title5;
-        QLabel * m_title6;
-        QLabel * m_title7;
-        QLabel * m_title8;
+        QLabel * m_title_logged;
+        QLabel * m_title_paused;
+        QLabel * m_title_njoined;
+        QLabel * m_title_npaused;
 };
 
 #endif /* __AGENTSPANEL_H__ */

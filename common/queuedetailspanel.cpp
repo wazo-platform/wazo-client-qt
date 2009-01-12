@@ -116,9 +116,9 @@ void QueuedetailsPanel::updatePeerAgent(int,
         } else if(action == "queuememberstatus") {
                 if((astid == m_astid) && (qname == m_queueid)) {
                         if(m_agentlist.contains(agentnum))
-                                qDebug() << "qms c" << params;
+                                qDebug() << "QueuedetailsPanel::updatePeerAgent()" << "qms c" << params;
                         else
-                                qDebug() << "qms n" << params;
+                                qDebug() << "QueuedetailsPanel::updatePeerAgent()" << "qms n" << params;
                 }
                 // } else {
                 // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
