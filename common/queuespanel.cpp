@@ -120,16 +120,18 @@ QueuesPanel::QueuesPanel(const QVariant & options,
         foreach (QString statitem, m_statitems)
                 m_title_infos[statitem] = new QLabel(m_statlegends[statitem], this);
         
-        m_gridlayout->addWidget( m_qtitle, 1, 1, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_qcbox, 1, 2, Qt::AlignCenter );
+        int colnum = 1;
+        m_gridlayout->addWidget( m_qtitle, 1, colnum++, Qt::AlignLeft );
+        m_gridlayout->addWidget( m_qcbox, 1, colnum++, Qt::AlignCenter );
+        colnum++;
         //m_gridlayout->addWidget( m_vqtitle, 50, 1, Qt::AlignLeft );
         //m_gridlayout->addWidget( m_vqcbox, 50, 2, Qt::AlignCenter );
         
-        m_gridlayout->addWidget( m_busytitle, 0, 3, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_busytitle, 0, colnum++, Qt::AlignCenter );
         foreach (QString statitem, m_statitems)
                 m_gridlayout->addWidget( m_title_infos[statitem],
                                          0,
-                                         m_statitems.indexOf(statitem) + 4,
+                                         m_statitems.indexOf(statitem) + colnum,
                                          Qt::AlignCenter );
 //  	m_gridlayout->setColumnStretch( 0, 1 );
 //  	m_gridlayout->setColumnStretch( m_statitems.size() + 6, 1 );
@@ -271,6 +273,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
         m_queuemore[queuename] = new QPushButton(this);
         m_queuemore[queuename]->setProperty("astid", astid);
         m_queuemore[queuename]->setProperty("queueid", queuename);
+        m_queuemore[queuename]->setProperty("function", "more");
         m_queuemore[queuename]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
         m_queuemore[queuename]->setIcon(QIcon(":/images/add.png"));
         
@@ -284,9 +287,10 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
                 m_queuelabels[queuename]->hide();
                 m_queuemore[queuename]->hide();
         }
-        if(! isvirtual)
+        if(! isvirtual) {
                 connect( m_queuemore[queuename], SIGNAL(clicked()),
                          this, SLOT(queueClicked()));
+        }
         m_queuebusies[queuename] = new QProgressBar(this);
         m_queuebusies[queuename]->setFont(m_gui_font);
         m_queuebusies[queuename]->setProperty("queueid", queuename);
@@ -297,13 +301,26 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
                 m_queueinfos[queuename][statitem]->setFont(m_gui_font);
         }
         int linenum = m_queuelabels.size();
-        m_gridlayout->addWidget( m_queuelabels[queuename], delta + linenum, 1, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_queuemore[queuename], delta + linenum, 2, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_queuebusies[queuename], delta + linenum, 3, Qt::AlignCenter );
+        int colnum = 1;
+        QPushButton * lbl = new QPushButton(this);
+        lbl->setProperty("astid", astid);
+        lbl->setProperty("queueid", queuename);
+        lbl->setProperty("function", "display_up");
+        lbl->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
+        lbl->setIcon(QIcon(":/images/green_up.png"));
+        lbl->setText(QString::number(delta + linenum));
+        connect( lbl, SIGNAL(clicked()),
+                 this, SLOT(queueClicked()));
+        lbl->hide();
+        
+        m_gridlayout->addWidget( m_queuelabels[queuename], delta + linenum, colnum++, Qt::AlignLeft );
+        m_gridlayout->addWidget( m_queuemore[queuename], delta + linenum, colnum++, Qt::AlignCenter );
+        m_gridlayout->addWidget( lbl, delta + linenum, colnum++, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_queuebusies[queuename], delta + linenum, colnum++, Qt::AlignCenter );
         foreach (QString statitem, m_statitems)
                 m_gridlayout->addWidget( m_queueinfos[queuename][statitem],
                                          delta + linenum,
-                                         m_statitems.indexOf(statitem) + 4,
+                                         m_statitems.indexOf(statitem) + colnum,
                                          Qt::AlignCenter );
 }
 
@@ -390,9 +407,13 @@ void QueuesPanel::update()
 void QueuesPanel::queueClicked()
 {
         // qDebug() << "QueuesPanel::queueClicked()" << sender()->property("queueid");
+        QString function = sender()->property("function").toString();
         QString astid = sender()->property("astid").toString();
         QString queueid = sender()->property("queueid").toString();
-        changeWatchedQueue(astid + " " + queueid);
+        if(function == "more")
+                changeWatchedQueue(astid + " " + queueid);
+        else if(function == "display_up")
+                qDebug() << "QueuesPanel::queueClicked()" << astid << queueid;
 }
 
 void QueuesPanel::setQueueStatus(const QVariant & newstatuses)
