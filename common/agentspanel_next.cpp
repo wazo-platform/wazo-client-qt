@@ -73,6 +73,8 @@ AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
         
         // m_gridlayout->setVerticalSpacing(0);
         m_blinktime = 300;
+        if(optionmap.toMap().contains("blinktime"))
+                m_blinktime = optionmap.toMap()["blinktime"].toInt();
         
         setGuiOptions(optionmap);
         startTimer(1000);
