@@ -327,6 +327,34 @@ void IdentityDisplay::setAgentList(int, const QVariant & alist)
                                 m_agentstatus->setProperty("connected", true);
                                 m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
                         }
+                        
+                        QVariant queuedetails = alistmap["newlist"].toMap()[agnum].toMap()["queues"];
+                        int nj = 0;
+                        int np = 0;
+                        foreach(QString qname, queuedetails.toMap().keys())
+                                if(! queuedetails.toMap()[qname].toMap().isEmpty()) {
+                                        if(queuedetails.toMap()[qname].toMap()["Status"].toString() == "1")
+                                                nj ++;
+                                        if(queuedetails.toMap()[qname].toMap()["Paused"].toString() == "1")
+                                                np ++;
+                                }
+                        if(nj > 0) {
+                                QPixmap * p_square = new QPixmap(16, 16);
+                                if(np == nj) {
+                                        setSystrayIcon(icon_color_red);
+                                        p_square->fill(icon_color_red);
+                                } else {
+                                        bool loggedin = m_agentstatus->property("connected").toBool();
+                                        if(loggedin) {
+                                                setSystrayIcon(icon_color_green);
+                                                p_square->fill(icon_color_green);
+                                        } else {
+                                                setSystrayIcon(icon_color_grey);
+                                                p_square->fill(icon_color_grey);
+                                        }
+                                }
+                                m_agentpause->setPixmap(* p_square);
+                        }
                 }
         }
 }
@@ -387,7 +415,7 @@ void IdentityDisplay::updatePeerAgent(int,
                 return;
         if(what != "agentstatus")
                 return;
-
+        
         QString action = newstatuses.toMap()["action"].toString();
         QString astid = newstatuses.toMap()["astid"].toString();
         QString agentnum = newstatuses.toMap()["agent_channel"].toString().mid(6);
@@ -405,6 +433,26 @@ void IdentityDisplay::updatePeerAgent(int,
                 setSystrayIcon(icon_color_grey);
                 m_agentstatus->setProperty("connected", false);
                 m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
+        } else if (action == "queuesummary") {
+                int nj = newstatuses.toMap()["njoined"].toInt();
+                int np = newstatuses.toMap()["npaused"].toInt();
+                if(nj > 0) {
+                        QPixmap * p_square = new QPixmap(16, 16);
+                        if(np == nj) {
+                                setSystrayIcon(icon_color_red);
+                                p_square->fill(icon_color_red);
+                        } else {
+                                bool loggedin = m_agentstatus->property("connected").toBool();
+                                if(loggedin) {
+                                        setSystrayIcon(icon_color_green);
+                                        p_square->fill(icon_color_green);
+                                } else {
+                                        setSystrayIcon(icon_color_grey);
+                                        p_square->fill(icon_color_grey);
+                                }
+                        }
+                        m_agentpause->setPixmap(* p_square);
+                }
         }
 }
 
