@@ -70,6 +70,7 @@ public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
 	void newQueue(const QString &, const QString &, const QVariant &);
+        void setAgentList(int, const QVariant &);
         void updatePeerAgent(int,
                              const QString &,
                              const QString &,
@@ -95,6 +96,7 @@ private:
         QHash<QString, QLabel *> m_agentstatus;
         QStringList m_agentlist;
         int m_maxbusy;
+        QVariantMap m_agentlists;
 };
 
 #endif /* __QUEUEDETAILSPANEL_H__ */

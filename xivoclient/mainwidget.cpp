@@ -945,6 +945,8 @@ void MainWidget::engineStarted()
                                 
                                 connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &, const QString &, const QVariant &)),
                                          m_xlet[xletid], SLOT(newQueue(const QString &, const QString &, const QVariant &)) );
+                                connect( m_engine, SIGNAL(newAgentList(int, const QVariant &)),
+                                         m_xlet[xletid], SLOT(setAgentList(int, const QVariant &)) );
                                 connect( m_xlet[xletid], SIGNAL(changeWatchedAgent(const QString &, bool)),
                                          m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
 				connect( m_engine, SIGNAL(updatePeerAgent(int, const QString &, const QString &, const QVariant &)),

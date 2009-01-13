@@ -148,24 +148,40 @@ void QueuedetailsPanel::update()
         m_agentstatus.clear();
 
         for(int i = 0 ; i < m_agentlist.size(); i++) {
-                m_agentlabels[m_agentlist[i]] = new QLabel(m_agentlist[i], this);
-                m_agentmore[m_agentlist[i]] = new QPushButton(this);
-                m_agentmore[m_agentlist[i]]->setProperty("agentid", m_agentlist[i]);
-                m_agentmore[m_agentlist[i]]->setIconSize(QSize(10, 10));
-                m_agentmore[m_agentlist[i]]->setIcon(QIcon(":/images/add.png"));
-                connect( m_agentmore[m_agentlist[i]], SIGNAL(clicked()),
+                QString agentnum = m_agentlist[i];
+                QString agdisplay = agentnum;
+                if(m_agentlists.contains(m_astid))
+                        if(m_agentlists[m_astid].toMap().contains(agentnum))
+                                agdisplay = m_agentlists[m_astid].toMap()[agentnum].toMap()["firstname"].toString()
+                                        + " "
+                                        + m_agentlists[m_astid].toMap()[agentnum].toMap()["lastname"].toString()
+                                        + " (" + agentnum + ")";
+                m_agentlabels[agentnum] = new QLabel(agdisplay, this);
+                m_agentmore[agentnum] = new QPushButton(this);
+                m_agentmore[agentnum]->setProperty("agentid", agentnum);
+                m_agentmore[agentnum]->setIconSize(QSize(10, 10));
+                m_agentmore[agentnum]->setIcon(QIcon(":/images/add.png"));
+                connect( m_agentmore[agentnum], SIGNAL(clicked()),
                          this, SLOT(agentClicked()));
-                m_agentstatus[m_agentlist[i]] = new QLabel("", this);
+                m_agentstatus[agentnum] = new QLabel("", this);
                 
                 QFrame * qvline = new QFrame(this);
                 qvline->setFrameShape(QFrame::VLine);
                 qvline->setLineWidth(1);
                 
-                m_gridlayout->addWidget( m_agentlabels[m_agentlist[i]], i + 2, 0, Qt::AlignLeft );
-                m_gridlayout->addWidget( m_agentmore[m_agentlist[i]], i + 2, 1, Qt::AlignCenter );
-                m_gridlayout->addWidget( m_agentstatus[m_agentlist[i]], i + 2, 2, Qt::AlignLeft );
-                m_gridlayout->addWidget( qvline, i + 2, 3, Qt::AlignHCenter );
+                int colnum = 0;
+                m_gridlayout->addWidget( m_agentlabels[agentnum], i + 2, colnum++, Qt::AlignLeft );
+                m_gridlayout->addWidget( m_agentmore[agentnum], i + 2, colnum++, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_agentstatus[agentnum], i + 2, colnum++, Qt::AlignLeft );
+                m_gridlayout->addWidget( qvline, i + 2, colnum++, Qt::AlignHCenter );
         }
+}
+
+void QueuedetailsPanel::setAgentList(int, const QVariant & alist)
+{
+        // qDebug() << "QueuedetailsPanel::setAgentList()" << timeref;
+        QString astid = alist.toMap()["astid"].toString();
+        m_agentlists[astid] = alist.toMap()["newlist"].toMap();
 }
 
 void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid, const QVariant & queuestatus)
