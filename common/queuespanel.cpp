@@ -217,12 +217,14 @@ void QueuesPanel::checkBoxStateChanged(int state)
                                         else
                                                 m_queuemore[qname]->hide();
                                 }
+                                m_queuemove[qname]->show();
                                 m_queuebusies[qname]->show();
                                 foreach (QString statitem, m_statitems)
                                         m_queueinfos[qname][statitem]->show();
                         } else {
                                 m_queuelabels[qname]->hide();
                                 m_queuemore[qname]->hide();
+                                m_queuemove[qname]->hide();
                                 m_queuebusies[qname]->hide();
                                 foreach (QString statitem, m_statitems)
                                         m_queueinfos[qname][statitem]->hide();
@@ -264,9 +266,6 @@ void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
 
 void QueuesPanel::addQueue(const QString & astid, const QString & queuename, bool isvirtual)
 {
-        int delta = 1;
-        if(isvirtual)
-                delta = 50;
         m_queuelabels[queuename] = new QLabel(queuename, this);
         m_queuelabels[queuename]->setFont(m_gui_font);
         m_queuelabels[queuename]->setProperty("virtual", isvirtual);
@@ -300,28 +299,37 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
                 m_queueinfos[queuename][statitem] = new QLabel();
                 m_queueinfos[queuename][statitem]->setFont(m_gui_font);
         }
-        int linenum = m_queuelabels.size();
-        int colnum = 1;
-        QPushButton * lbl = new QPushButton(this);
-        lbl->setProperty("astid", astid);
-        lbl->setProperty("queueid", queuename);
-        lbl->setProperty("function", "display_up");
-        lbl->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
-        lbl->setIcon(QIcon(":/images/green_up.png"));
-        lbl->setText(QString::number(delta + linenum));
-        connect( lbl, SIGNAL(clicked()),
-                 this, SLOT(queueClicked()));
-        lbl->hide();
         
-        m_gridlayout->addWidget( m_queuelabels[queuename], delta + linenum, colnum++, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_queuemore[queuename], delta + linenum, colnum++, Qt::AlignCenter );
-        m_gridlayout->addWidget( lbl, delta + linenum, colnum++, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_queuebusies[queuename], delta + linenum, colnum++, Qt::AlignCenter );
-        foreach (QString statitem, m_statitems)
-                m_gridlayout->addWidget( m_queueinfos[queuename][statitem],
-                                         delta + linenum,
-                                         m_statitems.indexOf(statitem) + colnum,
-                                         Qt::AlignCenter );
+        m_queuemove[queuename] = new QPushButton(this);
+        m_queuemove[queuename]->setProperty("astid", astid);
+        m_queuemove[queuename]->setProperty("queueid", queuename);
+        m_queuemove[queuename]->setProperty("function", "display_up");
+        m_queuemove[queuename]->setProperty("position", m_queuelabels.size());
+        m_queuemove[queuename]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
+        m_queuemove[queuename]->setIcon(QIcon(":/images/red_up.png"));
+        connect( m_queuemove[queuename], SIGNAL(clicked()),
+                 this, SLOT(queueClicked()));
+        m_queue_lines[m_queuelabels.size()] = queuename;
+}
+
+void QueuesPanel::affWidgets(bool isvirtual)
+{
+        int delta = 1;
+        if(isvirtual)
+                delta = 50;
+        foreach(QString queuename, m_queuelabels.keys()) {
+                int colnum = 1;
+                int linenum = m_queuemove[queuename]->property("position").toInt();
+                m_gridlayout->addWidget( m_queuelabels[queuename], delta + linenum, colnum++, Qt::AlignLeft );
+                m_gridlayout->addWidget( m_queuemore[queuename], delta + linenum, colnum++, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queuemove[queuename], delta + linenum, colnum++, Qt::AlignCenter );
+                m_gridlayout->addWidget( m_queuebusies[queuename], delta + linenum, colnum++, Qt::AlignCenter );
+                foreach (QString statitem, m_statitems)
+                        m_gridlayout->addWidget( m_queueinfos[queuename][statitem],
+                                                 delta + linenum,
+                                                 m_statitems.indexOf(statitem) + colnum,
+                                                 Qt::AlignCenter );
+        }
 }
 
 void QueuesPanel::setQueueList(const QVariant & qlist)
@@ -346,6 +354,9 @@ void QueuesPanel::setQueueList(const QVariant & qlist)
                         if(infos.contains(statitem))
                                 m_queueinfos[queuename][statitem]->setText(infos[statitem]);
         }
+        
+        affWidgets(false);
+        
         if(m_gui_showvqueues)
                 foreach (QString vqueuename, vqueues.keys()) {
                         QStringList truequeues = vqueues[vqueuename].toStringList();
@@ -412,8 +423,17 @@ void QueuesPanel::queueClicked()
         QString queueid = sender()->property("queueid").toString();
         if(function == "more")
                 changeWatchedQueue(astid + " " + queueid);
-        else if(function == "display_up")
-                qDebug() << "QueuesPanel::queueClicked()" << astid << queueid;
+        else if(function == "display_up") {
+                int nold = m_queuemove[queueid]->property("position").toInt();
+                if(nold > 1) {
+                        int nnew = nold - 1;
+                        m_queuemove[m_queue_lines[nold]]->setProperty("position", nnew);
+                        m_queuemove[m_queue_lines[nnew]]->setProperty("position", nold);
+                        m_queue_lines[nold] = m_queue_lines[nnew];
+                        m_queue_lines[nnew] = queueid;
+                        affWidgets(false);
+                }
+        }
 }
 
 void QueuesPanel::setQueueStatus(const QVariant & newstatuses)

@@ -87,6 +87,8 @@ private slots:
         void queueClicked();
         void checkBoxStateChanged(int);
 private:
+        void affWidgets(bool);
+        
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
         bool m_gui_showvqueues;
@@ -99,8 +101,10 @@ private:
         
         QHash<QString, QLabel *> m_queuelabels;
         QHash<QString, QPushButton *> m_queuemore;
+        QHash<QString, QPushButton *> m_queuemove;
         QHash<QString, QProgressBar *> m_queuebusies;
         QHash<QString, QHash<QString, QLabel *> > m_queueinfos;
+        QHash<int, QString> m_queue_lines;
         
         quint32 m_maxbusy;
         
