@@ -102,6 +102,7 @@ public slots:
         void customerInfoPopup(const QString &,
                                const QHash<QString, QString> &,
                                const QString &);
+        void setSystrayIcon(const QString &);
 private slots:
         void clipselection();
         void clipdata();
@@ -143,13 +144,13 @@ private:
         void savePositions() const;
         void updateAppliName();
         void clearPresence();
-
+        
 	BaseEngine * m_engine;	//!< Engine
 	QSystemTrayIcon * m_systrayIcon;	//!< System Tray Icon
-	QIcon m_icon;		//!< Icon Object
-	QIcon m_icongrey;	//!< greyed Icon Object
-	QWidget * m_wid;	//!< Main widget
-
+	QIcon m_icon_on;	//!< Icon Object for connected status
+	QIcon m_icon_off;	//!< Icon Object for disconnected status
+	QWidget * m_wid;	//!< Main Widget
+        
         // Widgets for Xlets
 	QTabWidget * m_tabwidget;	//!< Area to display messages, services and histories
         LeftPanel * m_leftpanel;

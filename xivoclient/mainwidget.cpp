@@ -128,7 +128,8 @@ MainWidget::MainWidget(BaseEngine * engine,
                        QWidget * parent)
         : QMainWindow(parent),
           m_engine(engine), m_systrayIcon(0),
-          m_icon(":/images/xivoicon.png"), m_icongrey(":/images/xivoicon-grey.png")
+          m_icon_on(":/images/xivoicon.png"),
+          m_icon_off(":/images/xivoicon-grey.png")
 {
         m_appliname = "Client";
         m_engine->setOSInfos(osname);
@@ -143,7 +144,6 @@ MainWidget::MainWidget(BaseEngine * engine,
         statusBar()->addPermanentWidget(m_status);
         statusBar()->clearMessage();
 
-	setWindowIcon(QIcon(":/images/xivoicon.png"));
 	setWindowTitle("XIVO " + m_appliname);
         setDockOptions(QMainWindow::AllowNestedDocks);
 	//setWindowFlags(Qt::Dialog);
@@ -526,7 +526,8 @@ void MainWidget::updateAppliName()
  */
 void MainWidget::createSystrayIcon()
 {
-	m_systrayIcon = new QSystemTrayIcon(m_icongrey, this);
+	m_systrayIcon = new QSystemTrayIcon(this);
+        setSystrayIcon("xivo-off");
         m_systrayIcon->setToolTip("XIVO " + m_appliname);
 	QMenu * menu = new QMenu(QString("SystrayMenu"), this);
         menu->addAction(m_cfgact);
@@ -821,6 +822,8 @@ void MainWidget::engineStarted()
                                          m_xlet[xletid], SLOT(setQueueList(const QVariant &)) );
                                 connect( m_xlet[xletid], SIGNAL(agentAction(const QString &)),
                                          m_engine, SLOT(agentAction(const QString &)) );
+                                connect( m_xlet[xletid], SIGNAL(setSystrayIcon(const QString &)),
+                                         this, SLOT(setSystrayIcon(const QString &)) );
                                 
 			} else if (xletid == "agents") {
                                 m_xlet[xletid] = new AgentsPanel(m_options);
@@ -1229,10 +1232,10 @@ void MainWidget::engineStarted()
                 m_cinfo_index = m_tabwidget->indexOf(m_xlet["customerinfo"]);
                 qDebug() << "the index of customer-info widget is" << m_cinfo_index;
         }
-
+        
         if(m_withsystray && m_systrayIcon)
-                m_systrayIcon->setIcon(m_icon);
-
+                setSystrayIcon("xivo-on");
+        
         statusBar()->showMessage(tr("Connected"));
         m_connectact->setEnabled(false);
         m_disconnectact->setEnabled(true);
@@ -1241,6 +1244,23 @@ void MainWidget::engineStarted()
         m_status->setPixmap(greensquare);
 }
 
+void MainWidget::setSystrayIcon(const QString & def)
+{
+        QIcon icon;
+        if(def == "xivo-on")
+                icon = m_icon_on;
+        else if(def == "xivo-off")
+                icon = m_icon_off;
+        else {
+                int psize = 16;
+                QPixmap * p_square = new QPixmap(psize, psize);
+                p_square->fill(def);
+                icon = QIcon(* p_square);
+        }
+        
+        m_systrayIcon->setIcon(icon);
+        setWindowIcon(icon);
+}
 
 void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
@@ -1315,7 +1335,7 @@ void MainWidget::engineStopped()
         showLogin();
         
         if(m_withsystray && m_systrayIcon)
-                m_systrayIcon->setIcon(m_icongrey);
+                setSystrayIcon("xivo-off");
         
         statusBar()->showMessage(tr("Disconnected"));
         m_connectact->setEnabled(true);

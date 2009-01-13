@@ -57,6 +57,10 @@
 #include "identitydisplay.h"
 #include "userinfo.h"
 
+QString icon_color_red = "#ff0000";
+QString icon_color_grey = "#808080";
+QString icon_color_green = "#00ff00";
+
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(const QVariant & options,
@@ -315,9 +319,11 @@ void IdentityDisplay::setAgentList(int, const QVariant & alist)
                         showAgentProps();
                         
                         if(agstatus == "AGENT_LOGGEDOFF") {
+                                setSystrayIcon(icon_color_grey);
                                 m_agentstatus->setProperty("connected", false);
                                 m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
                         } else {/* if(agstatus == "AGENT_IDLE") */
+                                setSystrayIcon(icon_color_green);
                                 m_agentstatus->setProperty("connected", true);
                                 m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
                         }
@@ -390,11 +396,13 @@ void IdentityDisplay::updatePeerAgent(int,
         if (action == "agentlogin") {
                 QString phonenum = newstatuses.toMap()["phonenum"].toString();
                 showAgentProps();
+                setSystrayIcon(icon_color_green);
                 m_agentstatus->setProperty("connected", true);
                 m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
         } else if (action == "agentlogout") {
                 QString phonenum = newstatuses.toMap()["phonenum"].toString();
                 showAgentProps();
+                setSystrayIcon(icon_color_grey);
                 m_agentstatus->setProperty("connected", false);
                 m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
         }

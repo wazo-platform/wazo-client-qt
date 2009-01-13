@@ -121,9 +121,9 @@ void AgentsPanel::updateAgentPresence(const QString & agentname, const QVariant 
         if(agentname.size() > 0)
                 if(m_agent_presence.contains(agentname)) {
                         QColor color = QColor(presencestatus.toMap()["color"].toString());
-                        QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-                        m_square->fill(color);
-                        m_agent_presence[agentname]->setPixmap(QPixmap(* m_square));
+                        QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
+                        p_square->fill(color);
+                        m_agent_presence[agentname]->setPixmap(QPixmap(* p_square));
                 }
 }
 
@@ -145,15 +145,15 @@ void AgentsPanel::updatePeerAgent(int,
         if(action == "queuememberstatus") {
                 if(m_agent_labels.contains(agentnum)) {
                         if(jstatus == "1") {
-                                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-                                m_square->fill(Qt::green);
-                                m_agent_logged_status[agentnum]->setPixmap(QPixmap(* m_square));
+                                QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
+                                p_square->fill(Qt::green);
+                                m_agent_logged_status[agentnum]->setPixmap(QPixmap(* p_square));
                                 m_agent_logged_status[agentnum]->setProperty("logged", true);
                                 m_agent_logged_action[agentnum]->setIcon(QIcon(":/images/cancel.png"));
                         } else if(jstatus == "5") {
-                                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-                                m_square->fill(Qt::red);
-                                m_agent_logged_status[agentnum]->setPixmap(QPixmap(* m_square));
+                                QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
+                                p_square->fill(Qt::red);
+                                m_agent_logged_status[agentnum]->setPixmap(QPixmap(* p_square));
                                 m_agent_logged_status[agentnum]->setProperty("logged", false);
                                 m_agent_logged_action[agentnum]->setIcon(QIcon(":/images/button_ok.png"));
                         } else if(jstatus == "3") {
@@ -165,17 +165,17 @@ void AgentsPanel::updatePeerAgent(int,
         } else if(action == "joinqueue") {
                 if(m_agent_labels.contains(agentnum)) {
                         if(! m_agent_joined_list[agentnum].contains(qname)) {
-                                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-                                m_square->fill(Qt::green);
+                                QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
+                                p_square->fill(Qt::green);
                                 m_agent_joined_list[agentnum].append(qname);
-                                // m_agent_joined_status[agentnum]->setPixmap(QPixmap(* m_square));
+                                // m_agent_joined_status[agentnum]->setPixmap(QPixmap(* p_square));
                                 
                                 if(pstatus == "0") {
                                         if(! m_agent_paused_list[agentnum].contains(qname)) {
-                                                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-                                                m_square->fill(Qt::green);
+                                                QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
+                                                p_square->fill(Qt::green);
                                                 m_agent_paused_list[agentnum].append(qname);
-                                                // m_agent_paused_status[agentnum]->setPixmap(QPixmap(* m_square));
+                                                // m_agent_paused_status[agentnum]->setPixmap(QPixmap(* p_square));
                                         }
                                 } else {
                                         if(m_agent_paused_list[agentnum].contains(qname)) {
@@ -213,32 +213,32 @@ void AgentsPanel::updatePeerAgent(int,
                 }
         } else if(action == "agentlogin") {
                 if(m_agent_labels.contains(agentnum)) {
-                        QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-                        m_square->fill(Qt::green);
-                        m_agent_logged_status[agentnum]->setPixmap(QPixmap(* m_square));
+                        QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
+                        p_square->fill(Qt::green);
+                        m_agent_logged_status[agentnum]->setPixmap(QPixmap(* p_square));
                         m_agent_logged_status[agentnum]->setProperty("logged", true);
                         m_agent_logged_action[agentnum]->setIcon(QIcon(":/images/cancel.png"));
                 }
         } else if(action == "agentlogout") {
                 if(m_agent_labels.contains(agentnum)) {
-                        QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-                        m_square->fill(Qt::red);
-                        m_agent_logged_status[agentnum]->setPixmap(QPixmap(* m_square));
+                        QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
+                        p_square->fill(Qt::red);
+                        m_agent_logged_status[agentnum]->setPixmap(QPixmap(* p_square));
                         m_agent_logged_status[agentnum]->setProperty("logged", false);
                         m_agent_logged_action[agentnum]->setIcon(QIcon(":/images/button_ok.png"));
                 }
         } else if((action == "agentlink") || (action == "phonelink")) {
-                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-                m_square->fill(Qt::green);
+                QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
+                p_square->fill(Qt::green);
                 if(m_agent_busy.contains(agentnum))
                         if(astid == m_agent_busy[agentnum]->property("astid").toString())
-                                m_agent_busy[agentnum]->setPixmap(QPixmap(* m_square));
+                                m_agent_busy[agentnum]->setPixmap(QPixmap(* p_square));
         } else if((action == "agentunlink") || (action == "phoneunlink")) {
-                QPixmap * m_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-                m_square->fill(Qt::gray);
+                QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
+                p_square->fill(Qt::gray);
                 if(m_agent_busy.contains(agentnum))
                         if(astid == m_agent_busy[agentnum]->property("astid").toString())
-                                m_agent_busy[agentnum]->setPixmap(QPixmap(* m_square));
+                                m_agent_busy[agentnum]->setPixmap(QPixmap(* p_square));
         }
 }
 
