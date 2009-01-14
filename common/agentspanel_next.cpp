@@ -238,6 +238,11 @@ void AgentsPanelNext::saveGroups()
         saveQueueGroups(save);
 }
 
+void AgentsPanelNext::setQueueOrder(const QVariant & queueorder)
+{
+        m_queueorder = queueorder;
+}
+
 void AgentsPanelNext::setAgentProps(const QString & idx)
 {
         QString astid = m_agent_labels[idx]->property("astid").toString();
@@ -666,8 +671,11 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                 QLabel * q_labelqueues = new QLabel(tr("Available Queues"));
                 m_queue_chose = new QComboBox();
                 m_queue_chose->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-                foreach (QString queuename, m_queuelist)
-                        m_queue_chose->addItem(queuename);
+                foreach(QString snum, m_queueorder.toMap().keys()) {
+                        QString qname = m_queueorder.toMap()[snum].toString();
+                        if(m_queuelist.contains(qname))
+                                m_queue_chose->addItem(qname);
+                }
                 
                 QPushButton * q_close = new QPushButton(tr("Close"));
                 QFrame * q_hline1 = new QFrame(this);

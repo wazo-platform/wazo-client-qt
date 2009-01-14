@@ -419,19 +419,21 @@ void QueuesPanel::update()
 void QueuesPanel::saveOrder()
 {
         QVariantMap save;
-        foreach (QString qname, m_queuemove.keys())
-                save[qname] = m_queuemove[qname]->property("position");
+        foreach (int num, m_queue_lines.keys())
+                save[QString::number(num)] = m_queue_lines[num];
         saveQueueOrder(save);
 }
 
 void QueuesPanel::setQueueOrder(const QVariant & queueorder)
 {
-        foreach(QString qname, queueorder.toMap().keys())
+        foreach (QString snum, queueorder.toMap().keys()) {
+                QString qname = queueorder.toMap()[snum].toString();
                 if(m_queuemove.contains(qname)) {
-                        int num = queueorder.toMap()[qname].toInt();
+                        int num = snum.toInt();
                         m_queuemove[qname]->setProperty("position", num);
                         m_queue_lines[num] = qname;
                 }
+        }
         affWidgets(false);
 }
 

@@ -108,7 +108,7 @@ private:
         QHash<QString, QPushButton *> m_queuemove;
         QHash<QString, QProgressBar *> m_queuebusies;
         QHash<QString, QHash<QString, QLabel *> > m_queueinfos;
-        QHash<int, QString> m_queue_lines;
+        QMap<int, QString> m_queue_lines;
         
         quint32 m_maxbusy;
         

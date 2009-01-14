@@ -77,6 +77,7 @@ public slots:
         void setUserInfo(const UserInfo *);
         void setAgentList(int, const QVariant &);
         void setQueueList(const QVariant &);
+        void setQueueOrder(const QVariant &);
         void updatePeerAgent(int,
                              const QString &,
                              const QString &,
@@ -115,6 +116,7 @@ private:
         QHash<QString, ExtendedLabel *> m_agent_labels;
         QHash<QString, QVariant> m_agent_props;
         QStringList m_queuelist;
+        QVariant m_queueorder;
         
         QComboBox * m_queue_chose;
 };

@@ -874,6 +874,8 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(loadQueueGroups()) );
                                 connect( m_engine, SIGNAL(setQueueGroups(const QVariant &)),
                                          m_xlet[xletid], SLOT(setQueueGroups(const QVariant &)) );
+                                connect( m_engine, SIGNAL(setQueueOrder(const QVariant &)),
+                                         m_xlet[xletid], SLOT(setQueueOrder(const QVariant &)) );
                                 
 			} else if (xletid == QString("agentdetails")) {
                                 m_xlet[xletid] = new AgentdetailsPanel(m_options);
