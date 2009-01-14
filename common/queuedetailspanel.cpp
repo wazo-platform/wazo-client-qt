@@ -58,17 +58,20 @@ QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
         m_label = new QLabel("", this);
         m_queuelegend_agentid = new QLabel(tr("Agent"), this);
         m_queuelegend_status = new QLabel(tr("Status"), this);
+        m_queuelegend_paused = new QLabel(tr("Paused"), this);
         m_queuelegend_callstaken = new QLabel(tr("Calls Taken"), this);
         m_maxbusy = 0;
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_label, 0, 0);
         m_gridlayout->addWidget(m_queuelegend_agentid, 1, 0);
         m_gridlayout->addWidget(m_queuelegend_status, 1, 2);
+        m_gridlayout->addWidget(m_queuelegend_paused, 1, 3);
         m_gridlayout->addWidget(m_queuelegend_callstaken, 1, 4);
         m_gridlayout->setColumnStretch( 5, 1 );
         m_gridlayout->setVerticalSpacing(0);
         m_queuelegend_agentid->hide();
         m_queuelegend_status->hide();
+        m_queuelegend_paused->hide();
         m_queuelegend_callstaken->hide();
 }
 
@@ -128,34 +131,55 @@ void QueuedetailsPanel::updatePeerAgent(int,
 void QueuedetailsPanel::update()
 {
         // qDebug() << "QueuedetailsPanel::update()";
-        QHashIterator<QString, QLabel *> i(m_agentlabels);
-        while (i.hasNext()) {
-                i.next();
-                delete i.value();
+        QHashIterator<QString, QLabel *> it1(m_agentlabels);
+        while (it1.hasNext()) {
+                it1.next();
+                delete it1.value();
         }
-        QHashIterator<QString, QPushButton *> j(m_agentmore);
-        while (j.hasNext()) {
-                j.next();
-                delete j.value();
+        QHashIterator<QString, QPushButton *> it2(m_agentmore);
+        while (it2.hasNext()) {
+                it2.next();
+                delete it2.value();
         }
-        QHashIterator<QString, QLabel *> k(m_agentstatus);
-        while (k.hasNext()) {
-                k.next();
-                delete k.value();
+        QHashIterator<QString, QLabel *> it3(m_agentstatus);
+        while (it3.hasNext()) {
+                it3.next();
+                delete it3.value();
+        }
+        QHashIterator<QString, QLabel *> it4(m_agentpaused);
+        while (it4.hasNext()) {
+                it4.next();
+                delete it4.value();
+        }
+        QHashIterator<QString, QLabel *> it5(m_agentncalls);
+        while (it5.hasNext()) {
+                it5.next();
+                delete it5.value();
         }
         m_agentlabels.clear();
         m_agentmore.clear();
         m_agentstatus.clear();
-
+        m_agentpaused.clear();
+        m_agentncalls.clear();
+        
         for(int i = 0 ; i < m_agentlist.size(); i++) {
                 QString agentnum = m_agentlist[i];
                 QString agdisplay = agentnum;
+                QString status;
+                QString paused;
+                QString callstaken;
                 if(m_agentlists.contains(m_astid))
-                        if(m_agentlists[m_astid].toMap().contains(agentnum))
-                                agdisplay = m_agentlists[m_astid].toMap()[agentnum].toMap()["firstname"].toString()
-                                        + " "
-                                        + m_agentlists[m_astid].toMap()[agentnum].toMap()["lastname"].toString()
-                                        + " (" + agentnum + ")";
+                        if(m_agentlists[m_astid].toMap().contains(agentnum)) {
+                                QString firstname = m_agentlists[m_astid].toMap()[agentnum].toMap()["firstname"].toString();
+                                QString lastname = m_agentlists[m_astid].toMap()[agentnum].toMap()["lastname"].toString();
+                                QVariantMap queues = m_agentlists[m_astid].toMap()[agentnum].toMap()["queues"].toMap();
+                                if(queues.contains(m_queueid)) {
+                                        status = queues[m_queueid].toMap()["Status"].toString();
+                                        paused = queues[m_queueid].toMap()["Paused"].toString();
+                                        callstaken = queues[m_queueid].toMap()["CallsTaken"].toString();
+                                }
+                                agdisplay = firstname + " " + lastname + " (" + agentnum + ")";
+                        }
                 m_agentlabels[agentnum] = new QLabel(agdisplay, this);
                 m_agentmore[agentnum] = new QPushButton(this);
                 m_agentmore[agentnum]->setProperty("agentid", agentnum);
@@ -163,17 +187,16 @@ void QueuedetailsPanel::update()
                 m_agentmore[agentnum]->setIcon(QIcon(":/images/add.png"));
                 connect( m_agentmore[agentnum], SIGNAL(clicked()),
                          this, SLOT(agentClicked()));
-                m_agentstatus[agentnum] = new QLabel("", this);
-                
-                QFrame * qvline = new QFrame(this);
-                qvline->setFrameShape(QFrame::VLine);
-                qvline->setLineWidth(1);
+                m_agentstatus[agentnum] = new QLabel(status, this);
+                m_agentpaused[agentnum] = new QLabel(paused, this);
+                m_agentncalls[agentnum] = new QLabel(callstaken, this);
                 
                 int colnum = 0;
                 m_gridlayout->addWidget( m_agentlabels[agentnum], i + 2, colnum++, Qt::AlignLeft );
                 m_gridlayout->addWidget( m_agentmore[agentnum], i + 2, colnum++, Qt::AlignCenter );
-                m_gridlayout->addWidget( m_agentstatus[agentnum], i + 2, colnum++, Qt::AlignLeft );
-                m_gridlayout->addWidget( qvline, i + 2, colnum++, Qt::AlignHCenter );
+                m_gridlayout->addWidget( m_agentstatus[agentnum], i + 2, colnum++, Qt::AlignRight );
+                m_gridlayout->addWidget( m_agentpaused[agentnum], i + 2, colnum++, Qt::AlignRight );
+                m_gridlayout->addWidget( m_agentncalls[agentnum], i + 2, colnum++, Qt::AlignRight );
         }
 }
 
@@ -190,6 +213,7 @@ void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid,
         QStringList prevlist = m_agentlist;
         m_queuelegend_agentid->show();
         m_queuelegend_status->show();
+        m_queuelegend_paused->show();
         m_queuelegend_callstaken->show();
         m_agentlist.clear();
         QVariantMap queuestatusmap = queuestatus.toMap();

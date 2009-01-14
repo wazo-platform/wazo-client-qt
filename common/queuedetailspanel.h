@@ -89,11 +89,14 @@ private:
         QString m_queueid;
         QLabel * m_queuelegend_agentid;
         QLabel * m_queuelegend_status;
+        QLabel * m_queuelegend_paused;
         QLabel * m_queuelegend_callstaken;
         QLabel * m_label;
         QHash<QString, QLabel *> m_agentlabels;
         QHash<QString, QPushButton *> m_agentmore;
         QHash<QString, QLabel *> m_agentstatus;
+        QHash<QString, QLabel *> m_agentpaused;
+        QHash<QString, QLabel *> m_agentncalls;
         QStringList m_agentlist;
         int m_maxbusy;
         QVariantMap m_agentlists;
