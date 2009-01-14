@@ -64,9 +64,14 @@ void UserInfo::setCtiLogin(const QString & ctilogin)
         m_ctilogin = ctilogin;
 }
 
-void UserInfo::setNumber(const QString & phonenum)
+void UserInfo::setPhoneNumber(const QString & phonenum)
 {
         m_phonenum = phonenum;
+}
+
+void UserInfo::setVoiceMailNumber(const QString & voicemailnum)
+{
+        m_voicemailnum = voicemailnum;
 }
 
 void UserInfo::setPhones(const QString & astid,
@@ -122,9 +127,14 @@ const QString & UserInfo::fullname() const
         return m_fullname;
 }
 
-const QString & UserInfo::phonenum() const
+const QString & UserInfo::phonenumber() const
 {
         return m_phonenum;
+}
+
+const QString & UserInfo::voicemailnumber() const
+{
+        return m_voicemailnum;
 }
 
 const QString & UserInfo::userid() const

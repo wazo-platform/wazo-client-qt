@@ -52,7 +52,8 @@ public:
         ~UserInfo();
         void setAvailState(const QVariant &);
         void setFullName(const QString &);
-        void setNumber(const QString &);
+        void setPhoneNumber(const QString &);
+        void setVoiceMailNumber(const QString &);
         void setPhones(const QString &,
                        const QStringList &);
         void setAgent(const QString &);
@@ -63,7 +64,8 @@ public:
                       const QString &);
         bool hasAgent(const QString &,
                       const QString &);
-        const QString & phonenum() const;
+        const QString & phonenumber() const;
+        const QString & voicemailnumber() const;
         const QString & fullname() const;
         const QStringList & mwi() const;
         const QString & userid() const;
@@ -81,11 +83,12 @@ private:
         QString m_company;
         QString m_ctilogin;
         QString m_fullname;
-
+        
         QVariant m_availstate;
-
+        
         QString m_astid;
         QString m_phonenum;
+        QString m_voicemailnum;
         QStringList m_termlist;
         QString m_agentnum;
         QString m_agentphonenum;

@@ -393,7 +393,7 @@ void StatusPanel::updatePeer(UserInfo * ui,
                         const QString status = qvm["status"].toString();
                         const QString peerchan = qvm["peerchannel"].toString();
                         const QString num = qvm["calleridnum"].toString();
-                        if(m_ui->phonenum() == num) {
+                        if(m_ui->phonenumber() == num) {
                                 // qDebug() << "not me" << ui->fullname() << chanlist.toMap()[ref];
                                 m_tferchannel = peerchan;
                         }

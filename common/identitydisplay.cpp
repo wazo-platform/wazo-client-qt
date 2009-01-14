@@ -280,12 +280,12 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_ui = ui;
 
         m_user->setText(m_ui->fullname());
-        m_phonenum->setText(m_ui->phonenum());
+        m_phonenum->setText(m_ui->phonenumber());
         QStringList vm = m_ui->mwi();
         if(vm.size() > 2) {
                 m_voicemail_old->setText(tr("%1 old").arg(vm[1]));
                 m_voicemail_new->setText(tr("%1 new").arg(vm[2]));
-                m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->phonenum()));
+                m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
         }
         // m_voicemail->hide();
         // changes the "watched agent" only if no one else has done it before

@@ -780,7 +780,8 @@ bool BaseEngine::parseCommand(const QString & line)
                                         }
                                         
                                         m_users[iduser]->setAvailState(uinfo["statedetails"]);
-                                        m_users[iduser]->setNumber(uinfo["phonenum"].toString());
+                                        m_users[iduser]->setPhoneNumber(uinfo["phonenum"].toString());
+                                        m_users[iduser]->setVoiceMailNumber(uinfo["voicemailnum"].toString());
                                         m_users[iduser]->setAgent(uinfo["agentnum"].toString());
                                         m_users[iduser]->setMWI(uinfo["mwi"].toStringList());
                                         updatePeerAgent(timeref, iduser, "imstatus", QStringList());
