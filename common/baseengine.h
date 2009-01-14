@@ -175,6 +175,8 @@ public slots:
         void saveToFile(const QString &);
         void saveQueueGroups(const QVariant &);
         void loadQueueGroups();
+        void saveQueueOrder(const QVariant &);
+        void loadQueueOrder();
 private slots:
 	void keepLoginAlive(); //!< Keep session alive
 	void changeState(); //!< Change the presence status
@@ -211,7 +213,8 @@ signals:
         void statusRecord(const QString &, const QString &);
         void setGuiOptions(const QVariant &);
         void emitMessageBox(const QString &);
-        void setGroups(const QVariant &);
+        void setQueueGroups(const QVariant &);
+        void setQueueOrder(const QVariant &);
         
 	//! a call
 	void updateCall(UserInfo *,

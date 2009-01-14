@@ -872,8 +872,8 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(saveQueueGroups(const QVariant &)) );
                                 connect( m_xlet[xletid], SIGNAL(loadQueueGroups()),
                                          m_engine, SLOT(loadQueueGroups()) );
-                                connect( m_engine, SIGNAL(setGroups(const QVariant &)),
-                                         m_xlet[xletid], SLOT(setGroups(const QVariant &)) );
+                                connect( m_engine, SIGNAL(setQueueGroups(const QVariant &)),
+                                         m_xlet[xletid], SLOT(setQueueGroups(const QVariant &)) );
                                 
 			} else if (xletid == QString("agentdetails")) {
                                 m_xlet[xletid] = new AgentdetailsPanel(m_options);
@@ -935,6 +935,12 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)) );
 				connect( m_engine, SIGNAL(updatePeerAgent(int, const QString &, const QString &, const QVariant &)),
 					 m_xlet[xletid], SLOT(updatePeerAgent(int, const QString &, const QString &, const QVariant &)) );
+                                connect( m_xlet[xletid], SIGNAL(saveQueueOrder(const QVariant &)),
+                                         m_engine, SLOT(saveQueueOrder(const QVariant &)) );
+                                connect( m_xlet[xletid], SIGNAL(loadQueueOrder()),
+                                         m_engine, SLOT(loadQueueOrder()) );
+                                connect( m_engine, SIGNAL(setQueueOrder(const QVariant &)),
+                                         m_xlet[xletid], SLOT(setQueueOrder(const QVariant &)) );
                                 
 			} else if (xletid == QString("queuedetails")) {
                                 m_xlet[xletid] = new QueuedetailsPanel();

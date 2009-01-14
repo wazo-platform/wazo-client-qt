@@ -206,14 +206,9 @@ void AgentsPanelNext::setUserInfo(const UserInfo * ui)
         m_userinfo = ui;
 }
 
-void AgentsPanelNext::loadGroups()
+void AgentsPanelNext::setQueueGroups(const QVariant & groups)
 {
-        loadQueueGroups();
-}
-
-void AgentsPanelNext::setGroups(const QVariant & groups)
-{
-        // qDebug() << "AgentsPanelNext::setGroups()" << groups;
+        // qDebug() << "AgentsPanelNext::setQueueGroups()" << groups;
         foreach (QString groupid, groups.toMap().keys()) {
                 m_title[groupid] = new ExtendedLabel(groups.toMap()[groupid].toMap()["label"].toString());
                 m_title[groupid]->setProperty("groupid", groupid);
@@ -268,7 +263,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         
         QString disptext = firstname + " " + lastname + " " + agentid;
         QStringList groupqueues = m_title[groupid]->property("queues").toStringList();
-
+        
         bool doshowtime = false;
         int nsec = 0;
         
@@ -834,7 +829,7 @@ void AgentsPanelNext::setAgentList(int timeref, const QVariant & alist)
                         qDebug() << "idxa already there" << idxa;
                 }
         }
-        loadGroups();
+        loadQueueGroups();
 }
 
 void AgentsPanelNext::setQueueList(const QVariant & qlist)

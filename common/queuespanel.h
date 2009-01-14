@@ -70,8 +70,11 @@ protected:
         void update();
 private:
         void addQueue(const QString &, const QString &, bool);
+        void saveOrder();
 signals:
         void changeWatchedQueue(const QString &);
+        void saveQueueOrder(const QVariant &);
+        void loadQueueOrder();
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
@@ -83,6 +86,7 @@ public slots:
                              const QString &,
                              const QString &,
                              const QVariant &);
+        void setQueueOrder(const QVariant &);
 private slots:
         void queueClicked();
         void checkBoxStateChanged(int);

@@ -89,8 +89,7 @@ private slots:
         void setAgentProps(const QString &);
         void removeQueueFromGroup();
         void addQueueToGroup();
-        void setGroups(const QVariant &);
-        void loadGroups();
+        void setQueueGroups(const QVariant &);
         void newGroup();
         void actionclicked();
 protected slots:

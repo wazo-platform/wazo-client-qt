@@ -1779,6 +1779,15 @@ void BaseEngine::saveQueueGroups(const QVariant & queuegroups)
 
 void BaseEngine::loadQueueGroups()
 {
-        setGroups(m_settings->value("agentpanel/queuegroups"));
+        setQueueGroups(m_settings->value("agentpanel/queuegroups"));
+}
 
+void BaseEngine::saveQueueOrder(const QVariant & queueorder)
+{
+	m_settings->setValue("queuepanel/queueorder", queueorder);
+}
+
+void BaseEngine::loadQueueOrder()
+{
+        setQueueOrder(m_settings->value("queuepanel/queueorder"));
 }

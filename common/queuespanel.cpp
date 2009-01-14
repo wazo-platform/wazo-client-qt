@@ -356,6 +356,7 @@ void QueuesPanel::setQueueList(const QVariant & qlist)
         }
         
         affWidgets(false);
+        loadQueueOrder();
         
         if(m_gui_showvqueues)
                 foreach (QString vqueuename, vqueues.keys()) {
@@ -415,6 +416,25 @@ void QueuesPanel::update()
         }
 }
 
+void QueuesPanel::saveOrder()
+{
+        QVariantMap save;
+        foreach (QString qname, m_queuemove.keys())
+                save[qname] = m_queuemove[qname]->property("position");
+        saveQueueOrder(save);
+}
+
+void QueuesPanel::setQueueOrder(const QVariant & queueorder)
+{
+        foreach(QString qname, queueorder.toMap().keys())
+                if(m_queuemove.contains(qname)) {
+                        int num = queueorder.toMap()[qname].toInt();
+                        m_queuemove[qname]->setProperty("position", num);
+                        m_queue_lines[num] = qname;
+                }
+        affWidgets(false);
+}
+
 void QueuesPanel::queueClicked()
 {
         // qDebug() << "QueuesPanel::queueClicked()" << sender()->property("queueid");
@@ -432,6 +452,7 @@ void QueuesPanel::queueClicked()
                         m_queue_lines[nold] = m_queue_lines[nnew];
                         m_queue_lines[nnew] = queueid;
                         affWidgets(false);
+                        saveOrder();
                 }
         }
 }
