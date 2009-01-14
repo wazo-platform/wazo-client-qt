@@ -370,13 +370,13 @@ void QueuesPanel::setQueueList(const QVariant & qlist)
                                                         value += m_queueinfos[truequeue][statitem]->text().toInt();
                                         infos[statitem] = QString::number(value);
                                 }
-                        
+                                
                                 int value = 0;
                                 foreach (QString truequeue, truequeues)
                                         if(m_queuebusies.contains(truequeue))
                                                 value += m_queuebusies[truequeue]->property("value").toInt();
                                 infos["Calls"] = QString::number(value);
-                        
+                                
                                 if(! m_queuelabels.contains(vqueuename)) {
                                         addQueue(astid, vqueuename, true);
                                 }

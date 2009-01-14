@@ -403,7 +403,12 @@ void AgentsPanel::agentClicked()
                 agentAction("pause " + astid + " " + agentid);
         } else if(action == "listen") {
                 agentAction("listen " + astid + " " + agentid);
+                m_agent_listen[agentid]->setProperty("action", "stoplisten");
                 m_agent_listen[agentid]->setStyleSheet("QPushButton {background: #fbb638}");
+        } else if(action == "stoplisten") {
+                agentAction("stoplisten " + astid + " " + agentid);
+                m_agent_listen[agentid]->setProperty("action", "listen");
+                m_agent_listen[agentid]->setStyleSheet("");
         } else if(action == "record") {
                 agentAction("record " + astid + " " + agentid);
                 m_agent_record[agentid]->setProperty("action", "stoprecord");
