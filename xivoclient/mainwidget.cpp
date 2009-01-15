@@ -45,6 +45,7 @@
 #include <QClipboard>
 #include <QCloseEvent>
 #include <QComboBox>
+#include <QDateTime>
 #include <QDebug>
 #include <QDockWidget>
 #include <QGridLayout>
@@ -177,6 +178,10 @@ MainWidget::MainWidget(BaseEngine * engine,
 	m_wid = new QWidget();
 	m_gridlayout = new QGridLayout(m_wid);
         
+        if(m_settings->value("display/logtofile", false).toBool())
+                m_engine->setLogFile(m_settings->value("display/logfilename", "XIVO_Client.log").toString());
+        m_engine->logAction("application started on " + osname);
+        
         m_xivobg = new QLabel();
         m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
         m_xivobg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -218,7 +223,6 @@ MainWidget::MainWidget(BaseEngine * engine,
         setFocusPolicy(Qt::StrongFocus);
 }
 
-
 /*! \brief Destructor
  *
  * The Geometry settings are saved for use by the new instance
@@ -231,6 +235,7 @@ MainWidget::~MainWidget()
 #endif
         savePositions();
         delete m_settings;
+        m_engine->logAction("application quit");
 }
 
 void MainWidget::clipselection()
@@ -1250,6 +1255,7 @@ void MainWidget::engineStarted()
         // set status icon to green
         QPixmap greensquare(":/images/connected.png");
         m_status->setPixmap(greensquare);
+        m_engine->logAction("connection started");
 }
 
 void MainWidget::setSystrayIcon(const QString & def)
@@ -1355,6 +1361,7 @@ void MainWidget::engineStopped()
         clearAppearance();
         m_appliname = "Client";
         updateAppliName();
+        m_engine->logAction("connection stopped");
 }
 
 void MainWidget::setForceTabs(bool force)

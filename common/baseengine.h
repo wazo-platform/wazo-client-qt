@@ -145,6 +145,10 @@ public:
         UserInfo * findUserFromAgent(const QString &,
                                      const QString &);
         void setGuiOption(const QString &, const QVariant &);
+        
+        void setLogFile(const QString &);
+        void logAction(const QString &);
+        
 public slots:
 	void start();				//!< start the connection process.
 	void stop();				//!< stop the engine
@@ -353,6 +357,7 @@ private:
         QFile * m_eventdevice;
         QSocketNotifier * m_notifier;
         QByteArray m_downloaded;
+        QFile * m_logfile;
 };
 
 #endif

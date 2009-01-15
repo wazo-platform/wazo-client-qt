@@ -42,6 +42,7 @@
 #include <QCryptographicHash>
 #include <QDateTime>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QSettings>
 #include <QSocketNotifier>
@@ -70,7 +71,7 @@ BaseEngine::BaseEngine(QSettings * settings,
 	  m_serverhost(""), m_ctiport(0),
           m_userid(""), m_useridopt(""), m_company(""), m_password(""), m_phonenumber(""),
           m_sessionid(""), m_state(ENotLogged),
-          m_pendingkeepalivemsg(0)
+          m_pendingkeepalivemsg(0), m_logfile(NULL)
 {
 	m_ka_timerid = 0;
 	m_try_timerid = 0;
@@ -267,7 +268,8 @@ void BaseEngine::saveSettings()
 /*!
  *
  */
-void BaseEngine::setCheckedFunction(const QString & function, bool b) {
+void BaseEngine::setCheckedFunction(const QString & function, bool b)
+{
 	if(b != m_checked_function[function]) {
 		m_checked_function[function] = b;
                 if ((state() == ELogged) && m_enabled_function[function]) {
@@ -277,16 +279,38 @@ void BaseEngine::setCheckedFunction(const QString & function, bool b) {
 	}
 }
 
-bool BaseEngine::checkedFunction(const QString & function) {
+bool BaseEngine::checkedFunction(const QString & function)
+{
         return m_checked_function[function];
 }
 
-void BaseEngine::setEnabledFunction(const QString & function, bool b) {
+void BaseEngine::setEnabledFunction(const QString & function, bool b)
+{
         m_enabled_function[function] = b;
 }
 
-bool BaseEngine::enabledFunction(const QString & function) {
+bool BaseEngine::enabledFunction(const QString & function)
+{
         return m_enabled_function[function];
+}
+
+void BaseEngine::setLogFile(const QString & logfilename)
+{
+        if (! logfilename.isEmpty()) {
+                m_logfile = new QFile();
+                QDir::setCurrent(QDir::homePath());
+                m_logfile->setFileName(logfilename);
+                m_logfile->open(QIODevice::Append);
+        }
+}
+
+void BaseEngine::logAction(const QString & logstring)
+{
+        if(m_logfile != NULL) {
+                QString tolog = QDateTime::currentDateTime().toString(Qt::ISODate) + " " + logstring + "\n";
+                m_logfile->write(tolog.toUtf8());
+                m_logfile->flush();
+        }
 }
 
 void BaseEngine::config_and_start(const QString & login,
