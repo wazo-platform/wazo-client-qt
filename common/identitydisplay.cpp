@@ -171,7 +171,12 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                         QMenu contextMenu(this);
                         
                         if(m_allow_logagent) {
-                                QAction * logAction = new QAction(tr("Login/Logout"), this);
+                                QAction * logAction = new QAction(this);
+                                bool connected = m_agentstatus->property("connected").toBool();
+                                if(connected)
+                                        logAction->setText(tr("Logout"));
+                                else
+                                        logAction->setText(tr("Login"));
                                 logAction->setProperty("iconname", iconname);
                                 logAction->setProperty("kind", "log");
                                 connect(logAction, SIGNAL(triggered()),
