@@ -57,9 +57,9 @@
 #include "identitydisplay.h"
 #include "userinfo.h"
 
-QString icon_color_red = "#ff0000";
-QString icon_color_grey = "#808080";
-QString icon_color_green = "#00ff00";
+QString icon_color_red = "xivo-red";
+QString icon_color_black = "xivo-black";
+QString icon_color_green = "xivo-green";
 
 /*! \brief Constructor
  */
@@ -321,7 +321,7 @@ void IdentityDisplay::setAgentList(int, const QVariant & alist)
                         showAgentProps();
                         
                         if(agstatus == "AGENT_LOGGEDOFF") {
-                                setSystrayIcon(icon_color_grey);
+                                setSystrayIcon(icon_color_black);
                                 m_agentstatus->setProperty("connected", false);
                                 m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
                         } else {/* if(agstatus == "AGENT_IDLE") */
@@ -417,7 +417,7 @@ void IdentityDisplay::updatePeerAgent(int,
         } else if (action == "agentlogout") {
                 QString phonenum = newstatuses.toMap()["phonenum"].toString();
                 showAgentProps();
-                setSystrayIcon(icon_color_grey);
+                setSystrayIcon(icon_color_black);
                 m_agentstatus->setProperty("connected", false);
                 m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
         } else if (action == "queuesummary") {
@@ -433,17 +433,17 @@ void IdentityDisplay::setStatusColors(int nj, int np)
         if(nj > 0) {
                 if(np == nj) {
                         setSystrayIcon(icon_color_red);
-                        p_square->fill(icon_color_red);
+                        p_square->fill("#ff0000");
                 } else {
                         bool loggedin = m_agentstatus->property("connected").toBool();
-                        p_square->fill(icon_color_green);
+                        p_square->fill("#00ff00");
                         if(loggedin)
                                 setSystrayIcon(icon_color_green);
                         else
-                                setSystrayIcon(icon_color_grey);
+                                setSystrayIcon(icon_color_black);
                 }
         } else {
-                p_square->fill(icon_color_red);
+                p_square->fill("#ff0000");
         }
         m_agentpause->setPixmap(* p_square);
 }

@@ -129,8 +129,10 @@ MainWidget::MainWidget(BaseEngine * engine,
                        QWidget * parent)
         : QMainWindow(parent),
           m_engine(engine), m_systrayIcon(0),
-          m_icon_on(":/images/xivoicon.png"),
-          m_icon_off(":/images/xivoicon-grey.png")
+          m_icon_transp(":/images/xivoicon.png"),
+          m_icon_red(":/images/xivoicon-red.png"),
+          m_icon_green(":/images/xivoicon-green.png"),
+          m_icon_black(":/images/xivoicon-black.png")
 {
         m_appliname = "Client";
         m_engine->setOSInfos(osname);
@@ -532,7 +534,7 @@ void MainWidget::updateAppliName()
 void MainWidget::createSystrayIcon()
 {
 	m_systrayIcon = new QSystemTrayIcon(this);
-        setSystrayIcon("xivo-off");
+        setSystrayIcon("xivo-black");
         m_systrayIcon->setToolTip("XIVO " + m_appliname);
 	QMenu * menu = new QMenu(QString("SystrayMenu"), this);
         menu->addAction(m_cfgact);
@@ -1247,7 +1249,7 @@ void MainWidget::engineStarted()
         }
         
         if(m_withsystray && m_systrayIcon)
-                setSystrayIcon("xivo-on");
+                setSystrayIcon("xivo-transp");
         
         statusBar()->showMessage(tr("Connected"));
         m_connectact->setEnabled(false);
@@ -1261,10 +1263,14 @@ void MainWidget::engineStarted()
 void MainWidget::setSystrayIcon(const QString & def)
 {
         QIcon icon;
-        if(def == "xivo-on")
-                icon = m_icon_on;
-        else if(def == "xivo-off")
-                icon = m_icon_off;
+        if(def == "xivo-transp")
+                icon = m_icon_transp;
+        else if(def == "xivo-red")
+                icon = m_icon_red;
+        else if(def == "xivo-green")
+                icon = m_icon_green;
+        else if(def == "xivo-black")
+                icon = m_icon_black;
         else {
                 int psize = 16;
                 QPixmap * p_square = new QPixmap(psize, psize);
@@ -1349,7 +1355,7 @@ void MainWidget::engineStopped()
         showLogin();
         
         if(m_withsystray && m_systrayIcon)
-                setSystrayIcon("xivo-off");
+                setSystrayIcon("xivo-black");
         
         statusBar()->showMessage(tr("Disconnected"));
         m_connectact->setEnabled(true);

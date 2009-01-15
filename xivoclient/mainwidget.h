@@ -147,8 +147,10 @@ private:
         
 	BaseEngine * m_engine;	//!< Engine
 	QSystemTrayIcon * m_systrayIcon;	//!< System Tray Icon
-	QIcon m_icon_on;	//!< Icon Object for connected status
-	QIcon m_icon_off;	//!< Icon Object for disconnected status
+	QIcon m_icon_transp;	//!< Icon Objects
+	QIcon m_icon_red;
+	QIcon m_icon_green;
+	QIcon m_icon_black;
 	QWidget * m_wid;	//!< Main Widget
         
         // Widgets for Xlets
