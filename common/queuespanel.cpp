@@ -134,7 +134,7 @@ QueuesPanel::QueuesPanel(const QVariant & options,
                                          m_statitems.indexOf(statitem) + colnum,
                                          Qt::AlignCenter );
 //  	m_gridlayout->setColumnStretch( 0, 1 );
-//  	m_gridlayout->setColumnStretch( m_statitems.size() + 6, 1 );
+  	m_gridlayout->setColumnStretch( 100, 1 );
  	m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->setVerticalSpacing(0);
         

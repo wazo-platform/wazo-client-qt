@@ -87,6 +87,7 @@ private slots:
 private:
         void showAgentProps();
         void hideAgentProps();
+        void setStatusColors(int, int);
         
         ExtendedLabel * m_icon_user;
         ExtendedLabel * m_icon_agent;

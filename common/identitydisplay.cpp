@@ -96,6 +96,7 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         m_icon_user = new ExtendedLabel();
         m_icon_agent = new ExtendedLabel();
         m_icon_voicemail = new ExtendedLabel();
+        m_icon_voicemail->hide();
         
         m_icon_user->setPixmap(QPixmap(":/images/personal.png").scaled(QSize(bigiconsize, bigiconsize)));
         m_icon_agent->setPixmap(QPixmap(":/images/applixware.png").scaled(QSize(bigiconsize, bigiconsize)));
@@ -283,6 +284,7 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_phonenum->setText(m_ui->phonenumber());
         QStringList vm = m_ui->mwi();
         if(vm.size() > 2) {
+                m_icon_voicemail->show();
                 m_voicemail_old->setText(tr("%1 old").arg(vm[1]));
                 m_voicemail_new->setText(tr("%1 new").arg(vm[2]));
                 m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
@@ -338,23 +340,8 @@ void IdentityDisplay::setAgentList(int, const QVariant & alist)
                                         if(queuedetails.toMap()[qname].toMap()["Paused"].toString() == "1")
                                                 np ++;
                                 }
-                        if(nj > 0) {
-                                QPixmap * p_square = new QPixmap(16, 16);
-                                if(np == nj) {
-                                        setSystrayIcon(icon_color_red);
-                                        p_square->fill(icon_color_red);
-                                } else {
-                                        bool loggedin = m_agentstatus->property("connected").toBool();
-                                        if(loggedin) {
-                                                setSystrayIcon(icon_color_green);
-                                                p_square->fill(icon_color_green);
-                                        } else {
-                                                setSystrayIcon(icon_color_grey);
-                                                p_square->fill(icon_color_grey);
-                                        }
-                                }
-                                m_agentpause->setPixmap(* p_square);
-                        }
+                        
+                        setStatusColors(nj, np);
                 }
         }
 }
@@ -436,24 +423,29 @@ void IdentityDisplay::updatePeerAgent(int,
         } else if (action == "queuesummary") {
                 int nj = newstatuses.toMap()["njoined"].toInt();
                 int np = newstatuses.toMap()["npaused"].toInt();
-                if(nj > 0) {
-                        QPixmap * p_square = new QPixmap(16, 16);
-                        if(np == nj) {
-                                setSystrayIcon(icon_color_red);
-                                p_square->fill(icon_color_red);
-                        } else {
-                                bool loggedin = m_agentstatus->property("connected").toBool();
-                                if(loggedin) {
-                                        setSystrayIcon(icon_color_green);
-                                        p_square->fill(icon_color_green);
-                                } else {
-                                        setSystrayIcon(icon_color_grey);
-                                        p_square->fill(icon_color_grey);
-                                }
-                        }
-                        m_agentpause->setPixmap(* p_square);
-                }
+                setStatusColors(nj, np);
         }
+}
+
+void IdentityDisplay::setStatusColors(int nj, int np)
+{
+        QPixmap * p_square = new QPixmap(16, 16);
+        if(nj > 0) {
+                if(np == nj) {
+                        setSystrayIcon(icon_color_red);
+                        p_square->fill(icon_color_red);
+                } else {
+                        bool loggedin = m_agentstatus->property("connected").toBool();
+                        p_square->fill(icon_color_green);
+                        if(loggedin)
+                                setSystrayIcon(icon_color_green);
+                        else
+                                setSystrayIcon(icon_color_grey);
+                }
+        } else {
+                p_square->fill(icon_color_red);
+        }
+        m_agentpause->setPixmap(* p_square);
 }
 
 void IdentityDisplay::doAgentLogActions()
