@@ -68,11 +68,11 @@ int main(int argc, char ** argv)
 	QCoreApplication::setOrganizationDomain("xivo.fr");
         QCoreApplication::setApplicationName("XIVO_Client");
 	QApplication app(argc, argv);
-        qDebug() << "style" << app.style();
         QSettings * settings = new QSettings(QSettings::IniFormat,
                                              QSettings::UserScope,
                                              QCoreApplication::organizationName(),
                                              QCoreApplication::applicationName());
+        qDebug() << "style" << app.style() << settings->fileName();
         if(argc > 1)
                 settings->setValue("profile/default", argv[1]);
         QString qsskind = settings->value("display/qss", "none").toString();

@@ -1546,6 +1546,7 @@ void MainWidget::about()
                                                                          fetchlastone) +
                            "<p>(" + tr("Advised Server Version : ") + __required_server_version__ + ")</p>" +
                            "<p>(" + tr("Application Launched on : ") + m_launchDateTime.toString() + ")</p>" +
+                           "<p>(" + tr("Config File Location : ") + m_settings->fileName() + ")</p>" +
 			   "<hr><p>Copyright (C) 2007, 2008  <a href=http://www.proformatique.com><b>Proformatique</b></a></p>"
 			   "<p>67 rue Voltaire 92800 Puteaux FRANCE</p>"
 			   "<p><b>E-mail : </b><a href=mailto:technique@proformatique.com>technique@proformatique.com</p>"
