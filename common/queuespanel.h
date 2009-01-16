@@ -70,7 +70,6 @@ protected:
         void update();
 private:
         void addQueue(const QString &, const QString &, bool);
-        void saveOrder();
 signals:
         void changeWatchedQueue(const QString &);
         void saveQueueOrder(const QVariant &);
@@ -108,7 +107,7 @@ private:
         QHash<QString, QPushButton *> m_queuemove;
         QHash<QString, QProgressBar *> m_queuebusies;
         QHash<QString, QHash<QString, QLabel *> > m_queueinfos;
-        QMap<int, QString> m_queue_lines;
+        QStringList m_queue_lines;
         
         quint32 m_maxbusy;
         

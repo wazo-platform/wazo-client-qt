@@ -304,12 +304,12 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, boo
         m_queuemove[queuename]->setProperty("astid", astid);
         m_queuemove[queuename]->setProperty("queueid", queuename);
         m_queuemove[queuename]->setProperty("function", "display_up");
-        m_queuemove[queuename]->setProperty("position", m_queuelabels.size());
+        m_queuemove[queuename]->setProperty("position", m_queuelabels.size() - 1);
         m_queuemove[queuename]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
         m_queuemove[queuename]->setIcon(QIcon(":/images/red_up.png"));
         connect( m_queuemove[queuename], SIGNAL(clicked()),
                  this, SLOT(queueClicked()));
-        m_queue_lines[m_queuelabels.size()] = queuename;
+        m_queue_lines << queuename;
 }
 
 void QueuesPanel::affWidgets(bool isvirtual)
@@ -319,7 +319,7 @@ void QueuesPanel::affWidgets(bool isvirtual)
                 delta = 50;
         foreach(QString queuename, m_queuelabels.keys()) {
                 int colnum = 1;
-                int linenum = m_queuemove[queuename]->property("position").toInt();
+                int linenum = m_queuemove[queuename]->property("position").toInt() + 1;
                 m_gridlayout->addWidget( m_queuelabels[queuename], delta + linenum, colnum++, Qt::AlignLeft );
                 m_gridlayout->addWidget( m_queuemore[queuename], delta + linenum, colnum++, Qt::AlignCenter );
                 m_gridlayout->addWidget( m_queuemove[queuename], delta + linenum, colnum++, Qt::AlignCenter );
@@ -416,24 +416,19 @@ void QueuesPanel::update()
         }
 }
 
-void QueuesPanel::saveOrder()
-{
-        QVariantMap save;
-        foreach (int num, m_queue_lines.keys())
-                save[QString::number(num)] = m_queue_lines[num];
-        saveQueueOrder(save);
-}
-
 void QueuesPanel::setQueueOrder(const QVariant & queueorder)
 {
-        foreach (QString snum, queueorder.toMap().keys()) {
-                QString qname = queueorder.toMap()[snum].toString();
-                if(m_queuemove.contains(qname)) {
-                        int num = snum.toInt();
-                        m_queuemove[qname]->setProperty("position", num);
-                        m_queue_lines[num] = qname;
-                }
-        }
+        QStringList qlist;
+        foreach (QString qname, queueorder.toStringList())
+                if (m_queue_lines.contains(qname) && (! qlist.contains(qname)))
+                        qlist << qname;
+        foreach (QString qname, m_queue_lines)
+                if (! qlist.contains(qname))
+                        qlist << qname;
+        m_queue_lines = qlist;
+        int num = 0;
+        foreach (QString qname, m_queue_lines)
+                m_queuemove[qname]->setProperty("position", num ++);
         affWidgets(false);
 }
 
@@ -447,14 +442,14 @@ void QueuesPanel::queueClicked()
                 changeWatchedQueue(astid + " " + queueid);
         else if(function == "display_up") {
                 int nold = m_queuemove[queueid]->property("position").toInt();
-                if(nold > 1) {
+                if(nold > 0) {
                         int nnew = nold - 1;
                         m_queuemove[m_queue_lines[nold]]->setProperty("position", nnew);
                         m_queuemove[m_queue_lines[nnew]]->setProperty("position", nold);
                         m_queue_lines[nold] = m_queue_lines[nnew];
                         m_queue_lines[nnew] = queueid;
                         affWidgets(false);
-                        saveOrder();
+                        saveQueueOrder(QVariant(m_queue_lines));
                 }
         }
 }
