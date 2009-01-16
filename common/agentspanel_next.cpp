@@ -266,7 +266,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         
         // qDebug() << astid << agentid << link << properties.toMap();
         
-        QString disptext = firstname + " " + lastname + " " + agentid;
+        QString calldirection;
         QStringList groupqueues = m_title[groupid]->property("queues").toStringList();
         
         bool doshowtime = false;
@@ -278,7 +278,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         // else if(agstatus == "AGENT_LOGGEDOFF")
         else if(agstatus == "AGENT_ONCALL") {
                 colorqss = "green";
-                disptext += " I";
+                calldirection = "I";
         } else
                 colorqss = "blue";
         
@@ -290,14 +290,14 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                 if(isdid || (link == "agentlink")) {
                         if(groupqueues.contains(queuename)) {
                                 doshowtime = true;
-                                disptext += " E";
+                                calldirection = "E";
                         }
                 } else if(isoutcall) {
                         doshowtime = true;
-                        disptext += " S";
+                        calldirection = "S";
                 } else {
                         doshowtime = true;
-                        disptext += " I";
+                        calldirection = "I";
                 }
                 
                 if(doshowtime) {
@@ -311,7 +311,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         }
         
         QVariantMap qvm = queues.toMap();
-        foreach (QString qname_group, groupqueues) {
+        if(calldirection.isEmpty()) foreach (QString qname_group, groupqueues) {
                 if (qvm.contains(qname_group)) {
                         QString pstatus = qvm[qname_group].toMap()["Paused"].toString();
                         // qDebug() << idx << idxa << qname_group
@@ -336,18 +336,19 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                 }
         }
         
+        QString displayedtime;
         if(doshowtime) {
                 int dmin = nsec / 60;
                 int dsec = nsec % 60;
                 if((nsec > m_blinktime) && (nsec % 2) && (colorqss == "#ff8080"))
                         colorqss = "#ffb0b0";
-                QString displayedtime;
                 if(dmin > 0)
                         displayedtime = tr("%1 min %2 sec").arg(dmin).arg(dsec);
                 else
                         displayedtime = tr("%1 sec").arg(dsec);
-                disptext += " " + displayedtime;
         }
+        
+        QString disptext = QString("%1 %2 %3 %4 %5").arg(firstname).arg(lastname).arg(agentid).arg(calldirection).arg(displayedtime);
         
         m_agent_labels[idx]->setStyleSheet(QString("QLabel {border: 5px solid %1; border-radius: 0px; background: %1};").arg(colorqss));
         m_agent_labels[idx]->setText(disptext);
