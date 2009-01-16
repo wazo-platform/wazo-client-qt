@@ -720,12 +720,16 @@ void AgentsPanelNext::actionclicked()
         QString groupid = sender()->property("groupid").toString();
         if(action == "transfer")
                 agentAction("transfer " + astid + " " + agentid + " " + m_queue_chose->currentText());
-        else if(action == "cancelpause")
-                foreach (QString qname, m_title[groupid]->property("queues").toStringList())
-                        agentAction("unpause " + qname + " " + astid + " " + agentid);
-        else if(action == "pause")
-                foreach (QString qname, m_title[groupid]->property("queues").toStringList())
-                        agentAction("pause " + qname + " " + astid + " " + agentid);
+        else if(action == "cancelpause") {
+                // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
+                // agentAction("unpause " + qname + " " + astid + " " + agentid);
+                agentAction("unpause_all " + astid + " " + agentid);
+        }
+        else if(action == "pause") {
+                // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
+                // agentAction("pause " + qname + " " + astid + " " + agentid);
+                agentAction("pause_all " + astid + " " + agentid);
+        }
         else if(action == "logout")
                 agentAction("logout " + astid + " " + agentid);
 }
