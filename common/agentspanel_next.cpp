@@ -672,8 +672,7 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                 QLabel * q_labelqueues = new QLabel(tr("Available Queues"));
                 m_queue_chose = new QComboBox();
                 m_queue_chose->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-                foreach(QString snum, m_queueorder.toMap().keys()) {
-                        QString qname = m_queueorder.toMap()[snum].toString();
+                foreach(QString qname, m_queueorder.toStringList()) {
                         if(m_queuelist.contains(qname))
                                 m_queue_chose->addItem(qname);
                 }
