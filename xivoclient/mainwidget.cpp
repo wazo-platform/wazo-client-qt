@@ -783,7 +783,7 @@ void MainWidget::engineStarted()
         if(m_gridnames.contains("tabber")) {
                 m_gridlayout->addWidget(m_tabwidget, 1, 0);
         }
-
+        
         for(int j = 0; j < XletList.size(); j++) {
 		QString xletid = XletList[j];
  		if (m_forcetabs || m_allnames.contains(xletid)) {
@@ -883,6 +883,8 @@ void MainWidget::engineStarted()
                                          m_xlet[xletid], SLOT(setQueueGroups(const QVariant &)) );
                                 connect( m_engine, SIGNAL(setQueueOrder(const QVariant &)),
                                          m_xlet[xletid], SLOT(setQueueOrder(const QVariant &)) );
+                                connect( m_xlet[xletid], SIGNAL(logAction(const QString &)),
+                                         m_engine, SLOT(logAction(const QString &)) );
                                 
 			} else if (xletid == QString("agentdetails")) {
                                 m_xlet[xletid] = new AgentdetailsPanel(m_options);

@@ -331,6 +331,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                                 // in order not to hurt sensitivities, set it to zero
                                 if((nsec == -1) || (nsec == -2))
                                         nsec = 0;
+                                logAction(QString("agentpause times %1 clt=%2 srv=%3").arg(qname_group).arg(d1).arg(d2));
                         }
                 }
         }
@@ -342,14 +343,13 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                         colorqss = "#ffb0b0";
                 QString displayedtime;
                 if(dmin > 0)
-                        displayedtime = tr("%1 min %2 sec").arg(QString::number(dmin), QString::number(dsec));
+                        displayedtime = tr("%1 min %2 sec").arg(dmin).arg(dsec);
                 else
-                        displayedtime = tr("%1 sec").arg(QString::number(dsec));
+                        displayedtime = tr("%1 sec").arg(dsec);
                 disptext += " " + displayedtime;
         }
         
-        QString qss = "QLabel {border: 5px solid " + colorqss + "; border-radius: 0px; background: " + colorqss + "};";
-        m_agent_labels[idx]->setStyleSheet(qss);
+        m_agent_labels[idx]->setStyleSheet(QString("QLabel {border: 5px solid %1; border-radius: 0px; background: %1};").arg(colorqss));
         m_agent_labels[idx]->setText(disptext);
 }
 

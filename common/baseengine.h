@@ -147,7 +147,6 @@ public:
         void setGuiOption(const QString &, const QVariant &);
         
         void setLogFile(const QString &);
-        void logAction(const QString &);
         
 public slots:
 	void start();				//!< start the connection process.
@@ -181,6 +180,7 @@ public slots:
         void loadQueueGroups();
         void saveQueueOrder(const QVariant &);
         void loadQueueOrder();
+        void logAction(const QString &);
 private slots:
 	void keepLoginAlive(); //!< Keep session alive
 	void changeState(); //!< Change the presence status

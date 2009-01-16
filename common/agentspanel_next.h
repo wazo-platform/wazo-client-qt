@@ -72,6 +72,7 @@ signals:
         void agentAction(const QString &);
         void saveQueueGroups(const QVariant &);
         void loadQueueGroups();
+        void logAction(const QString &);
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
