@@ -49,6 +49,7 @@
 #include <QVariant>
 
 #include "queuespanel.h"
+#include "userinfo.h"
 
 const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 100px; height: 15px}";
 
@@ -183,8 +184,9 @@ void QueuesPanel::setGuiOptions(const QVariant & options)
         //m_vqtitle->hide();
 }
 
-void QueuesPanel::setUserInfo(const UserInfo *)
+void QueuesPanel::setUserInfo(const UserInfo * ui)
 {
+        m_userinfo = ui;
 }
 
 void QueuesPanel::updateCounter(const QVariant & counters)
@@ -264,14 +266,20 @@ void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
         }
 }
 
-void QueuesPanel::addQueue(const QString & astid, const QString & queuename, bool isvirtual)
+void QueuesPanel::addQueue(const QString & astid, const QString & queuename, const QString & queuecontext, bool isvirtual)
 {
+        if(m_userinfo->astid() != astid)
+                return;
+        if(! m_userinfo->contexts().contains(queuecontext))
+                return;
+        
         m_queuelabels[queuename] = new QLabel(queuename, this);
         m_queuelabels[queuename]->setFont(m_gui_font);
         m_queuelabels[queuename]->setProperty("virtual", isvirtual);
         m_queuemore[queuename] = new QPushButton(this);
         m_queuemore[queuename]->setProperty("astid", astid);
         m_queuemore[queuename]->setProperty("queueid", queuename);
+        m_queuemore[queuename]->setProperty("queuecontext", queuecontext);
         m_queuemore[queuename]->setProperty("function", "more");
         m_queuemore[queuename]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
         m_queuemore[queuename]->setIcon(QIcon(":/images/add.png"));
@@ -346,13 +354,16 @@ void QueuesPanel::setQueueList(const QVariant & qlist)
                 foreach (QString statname, queuestatcontents.keys()) {
                         infos[statname] = queuestatcontents[statname].toString();
                 }
-                if(! m_queuelabels.contains(queuename)) {
-                        addQueue(astid, queuename, false);
+                if((! m_queuelabels.contains(queuename)) && (qlistmap["queueprops"].toMap().keys().contains(queuename))) {
+                        QString queuecontext = qlistmap["queueprops"].toMap()[queuename].toString();
+                        addQueue(astid, queuename, queuecontext, false);
                 }
-                m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
-                foreach (QString statitem, m_statitems)
-                        if(infos.contains(statitem))
-                                m_queueinfos[queuename][statitem]->setText(infos[statitem]);
+                if(m_queuebusies.contains(queuename)) {
+                        m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
+                        foreach (QString statitem, m_statitems)
+                                if(infos.contains(statitem))
+                                        m_queueinfos[queuename][statitem]->setText(infos[statitem]);
+                }
         }
         
         affWidgets(false);
@@ -377,12 +388,15 @@ void QueuesPanel::setQueueList(const QVariant & qlist)
                                                 value += m_queuebusies[truequeue]->property("value").toInt();
                                 infos["Calls"] = QString::number(value);
                                 
-                                if(! m_queuelabels.contains(vqueuename)) {
-                                        addQueue(astid, vqueuename, true);
+                                if((! m_queuelabels.contains(vqueuename)) && (qlistmap["queueprops"].toMap().keys().contains(vqueuename))) {
+                                        QString vqueuecontext = qlistmap["queueprops"].toMap()[vqueuename].toString();
+                                        addQueue(astid, vqueuename, vqueuecontext, true);
                                 }
-                                m_queuebusies[vqueuename]->setProperty("value", infos["Calls"]);
-                                foreach (QString statitem, m_statitems)
-                                        m_queueinfos[vqueuename][statitem]->setText(infos[statitem]);
+                                if(m_queuebusies.contains(vqueuename)) {
+                                        m_queuebusies[vqueuename]->setProperty("value", infos["Calls"]);
+                                        foreach (QString statitem, m_statitems)
+                                                m_queueinfos[vqueuename][statitem]->setText(infos[statitem]);
+                                }
                         }
                 }
         update();

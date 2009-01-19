@@ -69,7 +69,7 @@ public:
 protected:
         void update();
 private:
-        void addQueue(const QString &, const QString &, bool);
+        void addQueue(const QString &, const QString &, const QString &, bool);
 signals:
         void changeWatchedQueue(const QString &);
         void saveQueueOrder(const QVariant &);
@@ -92,6 +92,7 @@ private slots:
 private:
         void affWidgets(bool);
         
+        const UserInfo * m_userinfo;
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
         bool m_gui_showvqueues;

@@ -72,7 +72,7 @@ public:
         const QString & ctilogin() const;
         const QString & agentid() const;
         const QString & astid() const;
-        const QString & context() const;
+        const QStringList contexts() const;
         const QVariant & availstate() const;
         const QStringList & termlist() const;
         const QVariantMap & termstatus() const;

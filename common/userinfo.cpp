@@ -157,6 +157,15 @@ const QString & UserInfo::agentid() const
         return m_agentnum;
 }
 
+const QStringList UserInfo::contexts() const
+{
+        QStringList tlist = m_termstatus.keys();
+        QStringList clist;
+        foreach(QString term, tlist)
+                clist << term.split(".")[1];
+        return clist;
+}
+
 const QString & UserInfo::astid() const
 {
         return m_astid;
@@ -169,5 +178,6 @@ const QVariant & UserInfo::availstate() const
 
 const QVariantMap & UserInfo::termstatus() const
 {
+
         return m_termstatus;
 }

@@ -50,6 +50,7 @@
 #include <QVariant>
 
 #include "agentdetailspanel.h"
+#include "userinfo.h"
 
 QColor Orange = QColor(255, 128, 0);
 
@@ -129,8 +130,9 @@ void AgentdetailsPanel::setGuiOptions(const QVariant & options)
         m_options = options;
 }
 
-void AgentdetailsPanel::setUserInfo(const UserInfo *)
+void AgentdetailsPanel::setUserInfo(const UserInfo * ui)
 {
+        m_userinfo = ui;
 }
 
 void AgentdetailsPanel::updatePeerAgent(int,
