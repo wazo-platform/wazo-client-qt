@@ -639,7 +639,7 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                 // qDebug() << m_agent_props[idxa].toMap()["queues"];
                 if(isinpause) {
                         q_pause = new QPushButton(tr("Cancel Pause"));
-                        q_pause->setProperty("action", "cancelpause");
+                        q_pause->setProperty("action", "unpause");
                 } else {
                         q_pause = new QPushButton(tr("Pause"));
                         q_pause->setProperty("action", "pause");
@@ -720,7 +720,7 @@ void AgentsPanelNext::actionclicked()
         QString groupid = sender()->property("groupid").toString();
         if(action == "transfer")
                 agentAction("transfer " + astid + " " + agentid + " " + m_queue_chose->currentText());
-        else if(action == "cancelpause") {
+        else if(action == "unpause") {
                 // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
                 // agentAction("unpause " + qname + " " + astid + " " + agentid);
                 agentAction("unpause_all " + astid + " " + agentid);

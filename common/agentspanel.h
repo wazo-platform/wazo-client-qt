@@ -79,6 +79,8 @@ public slots:
 private slots:
         void agentClicked();
 private:
+        void showPausedStatus(const QString &, int);
+        
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
         
