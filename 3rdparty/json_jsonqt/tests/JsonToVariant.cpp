@@ -41,6 +41,13 @@ class JsonToVariant : public QObject
 			QCOMPARE(data.type(), QVariant::Map);
 			m_parsed = data.toMap();
 		}
+
+		void testStringWithEscapedForwardSlash()
+		{
+			QVariant data = JsonQt::JsonToVariant::parse("\"\\/\"");
+			QCOMPARE(data.type(), QVariant::String);
+			QCOMPARE(data.toString(), QString("/"));
+		}
 		
 		void testMulti()
 		{

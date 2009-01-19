@@ -1,6 +1,9 @@
 SET(
 	CLASSES
 	ParseException
+	JsonRpc
+	JsonRpcAdaptor
+	JsonRpcAdaptorPrivate
 	JsonToProperties
 	JsonToVariant
 	VariantToJson
@@ -11,11 +14,6 @@ SET(VERSION 0.1.0)
 
 ##### Probably don't want to edit below this line ##### 
 
-FOREACH(class ${CLASSES})
-	SET(SOURCES ${SOURCES} ${class}.cpp)
-	SET(HEADERS ${HEADERS} ${class}.h)
-ENDFOREACH()
-
 # Find Qt4
 FIND_PACKAGE( Qt4 REQUIRED )
 
@@ -23,6 +21,16 @@ SET( QT_DONT_USE_QTGUI TRUE )
 
 # Include the cmake file needed to use qt4
 INCLUDE( ${QT_USE_FILE} )
+
+# Include the binary directory for moc files.
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
+FOREACH(class ${CLASSES})
+	QT4_WRAP_CPP(MOC_SOURCE ${class}.h)
+	SET(SOURCES ${SOURCES} ${class}.cpp ${MOC_SOURCE})
+	SET(HEADERS ${HEADERS} ${class}.h)
+ENDFOREACH()
+SET(SOURCES ${SOURCES} ${MOC_SOURCE})
 
 IF("${STATIC_JSONQT}" STREQUAL "")
 	OPTION(STATIC_JSONQT "Build static libraries of JsonQt instead of shared" OFF)

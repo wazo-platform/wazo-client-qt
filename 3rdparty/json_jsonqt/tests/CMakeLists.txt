@@ -1,5 +1,7 @@
 SET(
 	TESTS
+	JsonRpc
+	JsonRpcAdaptor
 	JsonToProperties
 	JsonToVariant
 	VariantToJson

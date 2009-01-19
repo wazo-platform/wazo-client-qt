@@ -276,6 +276,8 @@ namespace JsonQt
 					return '"';
 				case '\\':
 					return '\\';
+				case '/':
+					return '/';
 				case 'b':
 					return '\b';
 				case 'f':

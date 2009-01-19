@@ -52,7 +52,10 @@ namespace JsonQt
 			 */
 			static QVariant parse(const QString& json) throw (ParseException);
 
-			/// Parse multiple objects in one string.
+			/** Parse multiple objects in one string.
+			 * This is useful when working on streams where
+			 * one-chunk-per-json-object is not guaranteed.
+			 */
 			static QList<QVariantMap> multiParse(const QString& json) throw(ParseException);
 		private:
 			JsonToVariant();
