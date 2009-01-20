@@ -349,7 +349,9 @@ void ConfigWidget::saveAndClose()
                 qvm[color] = QVariant(m_queuelevels[color]->value());
         opts["queuelevels"] = qvm;
         
-        opts["loginkind"] = m_loginkind->currentIndex();
+	// BaseEngine::setLoginKind() sets the user option if needed.
+	m_engine->setLoginKind(m_loginkind->currentIndex());
+        //opts["loginkind"] = m_loginkind->currentIndex();
         
         opts["contacts-max"] = m_contactssize_sbox->value();
         opts["contacts-width"] = m_contactswidth_sbox->value();
