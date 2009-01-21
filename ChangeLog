@@ -1,6 +1,6 @@
 # $Revision$
 # $Date$
-# Copyright (C) 2008, Proformatique
+# Copyright (C) 2008-2009 Proformatique
 
 XiVO 0.4
 	- [dirs] support for any http:// requests (EBP, local file)
