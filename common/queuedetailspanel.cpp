@@ -167,6 +167,7 @@ void QueuedetailsPanel::update()
                         }
                 m_agentlabels[agentnum] = new QLabel(agdisplay, this);
                 m_agentmore[agentnum] = new QPushButton(this);
+                m_agentmore[agentnum]->setProperty("astid", m_astid);
                 m_agentmore[agentnum]->setProperty("agentid", agentnum);
                 m_agentmore[agentnum]->setIconSize(QSize(10, 10));
                 m_agentmore[agentnum]->setIcon(QIcon(":/images/add.png"));
