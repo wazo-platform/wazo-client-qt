@@ -245,7 +245,7 @@ void AgentsPanel::setAgentList(int, const QVariant & alist)
 {
         if(m_userinfo == NULL)
                 return;
-        // qDebug() << "AgentsPanel::setAgentList()" << alist;
+        qDebug() << "AgentsPanel::setAgentList()" << alist.toMap().keys();
         QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
         QVariantMap alistmap = alist.toMap();
         QString astid = alistmap["astid"].toString();
@@ -253,10 +253,16 @@ void AgentsPanel::setAgentList(int, const QVariant & alist)
         QStringList agentids = alistmap["newlist"].toMap().keys();
         agentids.sort();
         foreach (QString agnum, agentids) {
+                QString firstname = alistmap["newlist"].toMap()[agnum].toMap()["firstname"].toString();
+                QString lastname = alistmap["newlist"].toMap()[agnum].toMap()["lastname"].toString();
+                QString agentcontext = alistmap["newlist"].toMap()[agnum].toMap()["context"].toString();
+                if(! m_userinfo->contexts().contains(agentcontext))
+                        continue;
+                QString agfullname = QString("%1 %2").arg(firstname).arg(lastname);
+                
                 QVariant properties = alistmap["newlist"].toMap()[agnum].toMap()["properties"];
                 QVariantMap agqjoined = alistmap["newlist"].toMap()[agnum].toMap()["queues"].toMap();
                 QString agstatus = properties.toMap()["status"].toString();
-                QString agfullname = properties.toMap()["name"].toString();
                 QString phonenum = properties.toMap()["phonenum"].toString();
                 bool link = properties.toMap()["link"].toBool();
                 // qDebug() << "AgentsPanel::setAgentList()" << agnum << agstatus << agfullname << phonenum << link;

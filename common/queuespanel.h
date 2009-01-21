@@ -88,14 +88,12 @@ public slots:
         void setQueueOrder(const QVariant &);
 private slots:
         void queueClicked();
-        void checkBoxStateChanged(int);
 private:
         void affWidgets(bool);
         
         const UserInfo * m_userinfo;
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
-        bool m_gui_showvqueues;
         bool m_gui_showqueuenames;
         bool m_gui_showmore;
         
@@ -114,9 +112,6 @@ private:
         
         QLabel * m_busytitle;
         QLabel * m_qtitle;
-        //QLabel * m_vqtitle;
-        QCheckBox * m_qcbox;
-        //QCheckBox * m_vqcbox;
         QHash<QString, QLabel *> m_title_infos;
         QVariant m_options;
 };

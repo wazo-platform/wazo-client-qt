@@ -72,8 +72,8 @@ AgentdetailsPanel::AgentdetailsPanel(const QVariant & options,
         m_agentlegend_njoined = new QLabel("0", this);
         m_agentlegend_npaused = new QLabel("0", this);
         
-        m_actionlegends["alogin"] = new QLabel(tr("Login"), this);
         m_actionlegends["record"] = new QLabel(tr("Record"), this);
+        m_actionlegends["alogin"] = new QLabel(tr("Login"), this);
         
         foreach (QString function, m_actionlegends.keys())
                 m_action[function] = new QPushButton(this);
@@ -112,6 +112,7 @@ AgentdetailsPanel::AgentdetailsPanel(const QVariant & options,
         m_agentlegend_npaused->hide();
         
         foreach (QString function, m_actionlegends.keys()) {
+                m_actionlegends[function]->hide();
                 m_action[function]->hide();
                 m_action[function]->setProperty("function", function);
                 connect( m_action[function], SIGNAL(clicked()),
@@ -293,7 +294,7 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         QVariantMap agentstatusmap = agentstatus.toMap();
         QVariantMap queuesstats = agentstatusmap["queues"].toMap();
         QVariant properties = agentstatusmap["properties"];
-        QString longname = properties.toMap()["name"].toString();
+        QString longname = QString("%1 %2").arg(agentstatusmap["firstname"].toString()).arg(agentstatusmap["lastname"].toString());
         QString lstatus = properties.toMap()["status"].toString();
         QString phonenum = properties.toMap()["phonenum"].toString();
         
@@ -337,8 +338,10 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         m_agentlegend_paused->show();
         m_agentlegend_njoined->show();
         m_agentlegend_npaused->show();
-        foreach (QString function, m_actionlegends.keys())
+        foreach (QString function, m_actionlegends.keys()) {
+                m_actionlegends[function]->show();
                 m_action[function]->show();
+        }
         
         int ii = 0;
         foreach (QString queueid, queuesstats.keys()) {

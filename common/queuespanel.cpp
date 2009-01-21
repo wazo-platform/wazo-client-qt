@@ -61,7 +61,6 @@ QueuesPanel::QueuesPanel(const QVariant & options,
 {
         // qDebug() << "QueuesPanel::QueuesPanel()" << options;
         m_gui_buttonsize = 10;
-        m_gui_showvqueues = true;
         m_gui_showqueuenames = true;
         
         bool is_supervisor = false;
@@ -104,29 +103,14 @@ QueuesPanel::QueuesPanel(const QVariant & options,
         
         m_qtitle = new QLabel(tr("Queues"), this);
         m_busytitle = new QLabel(tr("Busy"), this);
-        m_qcbox  = new QCheckBox(this);
-        m_qcbox->setObjectName("queues");
-        m_qcbox->setCheckState(Qt::Checked);
         
-        //m_vqtitle = new QLabel(tr("Virtual Queues"), this);
-        //m_vqcbox  = new QCheckBox(this);
-        //m_vqcbox->setObjectName("vqueues");
-        //m_vqcbox->setCheckState(Qt::Checked);
-        
-        connect( m_qcbox, SIGNAL(stateChanged(int)),
-                 this, SLOT(checkBoxStateChanged(int)));
-        //connect( m_vqcbox, SIGNAL(stateChanged(int)),
-        //this, SLOT(checkBoxStateChanged(int)));
-
         foreach (QString statitem, m_statitems)
                 m_title_infos[statitem] = new QLabel(m_statlegends[statitem], this);
         
         int colnum = 1;
         m_gridlayout->addWidget( m_qtitle, 1, colnum++, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_qcbox, 1, colnum++, Qt::AlignCenter );
         colnum++;
-        //m_gridlayout->addWidget( m_vqtitle, 50, 1, Qt::AlignLeft );
-        //m_gridlayout->addWidget( m_vqcbox, 50, 2, Qt::AlignCenter );
+        colnum++;
         
         m_gridlayout->addWidget( m_busytitle, 0, colnum++, Qt::AlignCenter );
         foreach (QString statitem, m_statitems)
@@ -156,14 +140,11 @@ void QueuesPanel::setGuiOptions(const QVariant & options)
                                    m_options.toMap()["fontsize"].toInt());
         if(m_options.toMap().contains("iconsize"))
                 m_gui_buttonsize = m_options.toMap()["iconsize"].toInt();
-        if(m_options.toMap().contains("queues-showvqueues"))
-                m_gui_showvqueues = m_options.toMap()["queues-showvqueues"].toBool();
         if(m_options.toMap().contains("queues-showqueuenames"))
                 m_gui_showqueuenames = m_options.toMap()["queues-showqueuenames"].toBool();
         
         m_busytitle->setFont(m_gui_font);
         m_qtitle->setFont(m_gui_font);
-        //m_vqtitle->setFont(m_gui_font);
         foreach (QString statitem, m_statitems)
                 m_title_infos[statitem]->setFont(m_gui_font);
         
@@ -171,17 +152,6 @@ void QueuesPanel::setGuiOptions(const QVariant & options)
                 m_qtitle->show();
         else
                 m_qtitle->hide();
-        if(m_gui_showvqueues) {
-                m_qcbox->show();
-                //m_vqcbox->show();
-        } else {
-                m_qcbox->hide();
-                //m_vqcbox->hide();
-        }
-        //if(m_gui_showqueuenames && m_gui_showvqueues)
-        //m_vqtitle->show();
-        //else
-        //m_vqtitle->hide();
 }
 
 void QueuesPanel::setUserInfo(const UserInfo * ui)
@@ -201,37 +171,6 @@ void QueuesPanel::updateCounter(const QVariant & counters)
                         m_queueinfos[queuename]["Xivo-Conn"]->setText(QString::number(ntot));
                 if(m_queueinfos[queuename].contains("Xivo-Avail"))
                         m_queueinfos[queuename]["Xivo-Avail"]->setText(QString::number(navail));
-        }
-}
-
-void QueuesPanel::checkBoxStateChanged(int state)
-{
-        bool isvirtual_req = (sender()->objectName() == "vqueues");
-        // qDebug() << "QueuesPanel::checkBoxStateChanged()" << isvirtual_req << state;
-        foreach(QString qname, m_queuelabels.keys()) {
-                bool isvirtual = m_queuelabels[qname]->property("virtual").toBool();
-                if(isvirtual_req == isvirtual) {
-                        if(state) {
-                                if(m_gui_showqueuenames) {
-                                        m_queuelabels[qname]->show();
-                                        if(m_gui_showmore)
-                                                m_queuemore[qname]->show();
-                                        else
-                                                m_queuemore[qname]->hide();
-                                }
-                                m_queuemove[qname]->show();
-                                m_queuebusies[qname]->show();
-                                foreach (QString statitem, m_statitems)
-                                        m_queueinfos[qname][statitem]->show();
-                        } else {
-                                m_queuelabels[qname]->hide();
-                                m_queuemore[qname]->hide();
-                                m_queuemove[qname]->hide();
-                                m_queuebusies[qname]->hide();
-                                foreach (QString statitem, m_statitems)
-                                        m_queueinfos[qname][statitem]->hide();
-                        }
-                }
         }
 }
 
@@ -348,7 +287,6 @@ void QueuesPanel::setQueueList(const QVariant & qlist)
         QVariantMap qlistmap = qlist.toMap();
         QString astid = qlistmap["astid"].toString();
         QVariantMap queuestats = qlistmap["queuestats"].toMap();
-        QVariantMap vqueues = qlistmap["vqueues"].toMap();
         foreach (QString queuename, queuestats.keys()) {
                 QVariantMap queuestatcontents = queuestats[queuename].toMap();
                 QHash <QString, QString> infos;
@@ -370,37 +308,6 @@ void QueuesPanel::setQueueList(const QVariant & qlist)
         
         affWidgets(false);
         loadQueueOrder();
-        
-        if(m_gui_showvqueues)
-                foreach (QString vqueuename, vqueues.keys()) {
-                        QStringList truequeues = vqueues[vqueuename].toStringList();
-                        if(truequeues.size() > 0) {
-                                QHash <QString, QString> infos;
-                                foreach (QString statitem, m_statitems) {
-                                        int value = 0;
-                                        foreach (QString truequeue, truequeues)
-                                                if(m_queueinfos.contains(truequeue))
-                                                        value += m_queueinfos[truequeue][statitem]->text().toInt();
-                                        infos[statitem] = QString::number(value);
-                                }
-                                
-                                int value = 0;
-                                foreach (QString truequeue, truequeues)
-                                        if(m_queuebusies.contains(truequeue))
-                                                value += m_queuebusies[truequeue]->property("value").toInt();
-                                infos["Calls"] = QString::number(value);
-                                
-                                if((! m_queuelabels.contains(vqueuename)) && (qlistmap["queueprops"].toMap().keys().contains(vqueuename))) {
-                                        QString vqueuecontext = qlistmap["queueprops"].toMap()[vqueuename].toString();
-                                        addQueue(astid, vqueuename, vqueuecontext, true);
-                                }
-                                if(m_queuebusies.contains(vqueuename)) {
-                                        m_queuebusies[vqueuename]->setProperty("value", infos["Calls"]);
-                                        foreach (QString statitem, m_statitems)
-                                                m_queueinfos[vqueuename][statitem]->setText(infos[statitem]);
-                                }
-                        }
-                }
         update();
 }
 
