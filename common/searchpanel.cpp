@@ -263,7 +263,7 @@ void SearchPanel::updatePeerAgent(int,
  */
 void SearchPanel::removePeer(const QString & ext)
 {
-        qDebug() << "SearchPanel::removePeer()" << ext;
+        // qDebug() << "SearchPanel::removePeer()" << ext;
         if(m_peerhash.contains(ext)) {
                 PeerItem * peeritem = m_peerhash.value(ext);
                 PeerWidget * peerwidget = peeritem->getWidget();
@@ -280,10 +280,8 @@ void SearchPanel::removePeer(const QString & ext)
 void SearchPanel::removePeers()
 {
         // qDebug() << "SearchPanel::removePeers()";
-        QHashIterator<QString, PeerItem *> i(m_peerhash);
-        while(i.hasNext()) {
-                i.next();
-                PeerItem * peeritem = i.value();
+        foreach(QString peerkey, m_peerhash.keys()) {
+                PeerItem * peeritem = m_peerhash[peerkey];
                 PeerWidget * peerwidget = peeritem->getWidget();
                 // qDebug() << "span" << m_peerlayout->indexOf( peerwidget );
                 if (m_peerlayout->indexOf( peerwidget ) > -1)

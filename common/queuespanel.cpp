@@ -268,6 +268,8 @@ void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
 
 void QueuesPanel::addQueue(const QString & astid, const QString & queuename, const QString & queuecontext, bool isvirtual)
 {
+        if(m_userinfo == NULL)
+                return;
         if(m_userinfo->astid() != astid)
                 return;
         if(! m_userinfo->contexts().contains(queuecontext))

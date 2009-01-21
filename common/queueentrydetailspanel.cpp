@@ -86,18 +86,12 @@ void QueueentrydetailsPanel::newQueue(const QString & astid, const QString & que
         // qDebug() << "QueueentrydetailsPanel::newQueue()" << astid << queueid << queuestatus;
         m_astid = astid;
         m_queueid = queueid;
-        m_label->setText("<b>" + m_queueid + "</b> " + tr("on") + " <b>" + m_astid + "</b>");
-
-        QHashIterator<QString, QLabel *> i(m_entrypos);
-        while (i.hasNext()) {
-                i.next();
-                delete i.value();
-        }
-        QHashIterator<QString, QLabel *> j(m_entrytime);
-        while (j.hasNext()) {
-                j.next();
-                delete j.value();
-        }
+        m_label->setText(tr("<b>%1</b> on <b>%2</b>").arg(m_queueid).arg(m_astid));
+        
+        foreach(QString q, m_entrypos.keys())
+                delete m_entrypos[q];
+        foreach(QString q, m_entrytime.keys())
+                delete m_entrytime[q];
         m_entrypos.clear();
         m_entrytime.clear();
         
@@ -119,8 +113,8 @@ void QueueentrydetailsPanel::newQueue(const QString & astid, const QString & que
 
 void QueueentrydetailsPanel::agentClicked()
 {
-        qDebug() << "AgentsPanel::agentClicked()" << sender()->property("agentid");
+        // qDebug() << "QueueentrydetailsPanel::agentClicked()" << sender()->property("agentid");
         QString astid = sender()->property("astid").toString();
         QString agentid = sender()->property("agentid").toString();
-        changeWatchedAgent(astid + " " + agentid);
+        changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid));
 }

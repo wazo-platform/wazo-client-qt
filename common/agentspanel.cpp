@@ -243,10 +243,13 @@ void AgentsPanel::updatePeerAgent(int,
 
 void AgentsPanel::setAgentList(int, const QVariant & alist)
 {
+        if(m_userinfo == NULL)
+                return;
         // qDebug() << "AgentsPanel::setAgentList()" << alist;
         QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
         QVariantMap alistmap = alist.toMap();
         QString astid = alistmap["astid"].toString();
+        // if(m_userinfo->astid() != astid) return;
         QStringList agentids = alistmap["newlist"].toMap().keys();
         agentids.sort();
         foreach (QString agnum, agentids) {
@@ -256,7 +259,7 @@ void AgentsPanel::setAgentList(int, const QVariant & alist)
                 QString agfullname = properties.toMap()["name"].toString();
                 QString phonenum = properties.toMap()["phonenum"].toString();
                 bool link = properties.toMap()["link"].toBool();
-                qDebug() << "AgentsPanel::setAgentList()" << agnum << agstatus << agfullname << phonenum << link;
+                // qDebug() << "AgentsPanel::setAgentList()" << agnum << agstatus << agfullname << phonenum << link;
                 
                 if(! m_agent_labels.contains(agnum)) {
                         QFrame * qvline1 = new QFrame(this);
@@ -269,7 +272,7 @@ void AgentsPanel::setAgentList(int, const QVariant & alist)
                         qvline3->setFrameShape(QFrame::VLine);
                         qvline3->setLineWidth(1);
                         
-                        m_agent_labels[agnum] = new QLabel(agfullname + " (" + agnum + ")", this);
+                        m_agent_labels[agnum] = new QLabel(QString("%1 (%2)").arg(agfullname).arg(agnum), this);
                         m_agent_more[agnum] = new QPushButton(this);
                         m_agent_more[agnum]->setProperty("astid", astid);
                         m_agent_more[agnum]->setProperty("agentid", agnum);
@@ -402,30 +405,30 @@ void AgentsPanel::agentClicked()
         QString agentid = sender()->property("agentid").toString();
         QString action  = sender()->property("action").toString();
         if(action == "changeagent")
-                changeWatchedAgent(astid + " " + agentid, true);
+                changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid), true);
         else if(action == "loginoff") {
                 if(m_agent_logged_status[agentid]->property("logged").toBool())
-                        agentAction("logout " + astid + " " + agentid);
+                        agentAction(QString("logout %1 %2").arg(astid).arg(agentid));
                 else
-                        agentAction("login " + astid + " " + agentid);
+                        agentAction(QString("login %1 %2").arg(astid).arg(agentid));
         } else if(action == "unpause") {
                 agentAction(QString("unpause_all %1 %2").arg(astid).arg(agentid));
         } else if(action == "pause") {
                 agentAction(QString("pause_all %1 %2").arg(astid).arg(agentid));
         } else if(action == "listen") {
-                agentAction("listen " + astid + " " + agentid);
+                agentAction(QString("listen %1 %2").arg(astid).arg(agentid));
                 m_agent_listen[agentid]->setProperty("action", "stoplisten");
                 m_agent_listen[agentid]->setStyleSheet("QPushButton {background: #fbb638}");
         } else if(action == "stoplisten") {
-                agentAction("stoplisten " + astid + " " + agentid);
+                agentAction(QString("stoplisten %1 %2").arg(astid).arg(agentid));
                 m_agent_listen[agentid]->setProperty("action", "listen");
                 m_agent_listen[agentid]->setStyleSheet("");
         } else if(action == "record") {
-                agentAction("record " + astid + " " + agentid);
+                agentAction(QString("record %1 %2").arg(astid).arg(agentid));
                 m_agent_record[agentid]->setProperty("action", "stoprecord");
                 m_agent_record[agentid]->setStyleSheet("QPushButton {background: #fbb638}");
         } else if(action == "stoprecord") {
-                agentAction("stoprecord " + astid + " " + agentid);
+                agentAction(QString("stoprecord %1 %2").arg(astid).arg(agentid));
                 m_agent_record[agentid]->setProperty("action", "record");
                 m_agent_record[agentid]->setStyleSheet("");
         }

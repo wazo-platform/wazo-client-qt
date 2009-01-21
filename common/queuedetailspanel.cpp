@@ -131,31 +131,16 @@ void QueuedetailsPanel::updatePeerAgent(int,
 void QueuedetailsPanel::update()
 {
         // qDebug() << "QueuedetailsPanel::update()";
-        QHashIterator<QString, QLabel *> it1(m_agentlabels);
-        while (it1.hasNext()) {
-                it1.next();
-                delete it1.value();
-        }
-        QHashIterator<QString, QPushButton *> it2(m_agentmore);
-        while (it2.hasNext()) {
-                it2.next();
-                delete it2.value();
-        }
-        QHashIterator<QString, QLabel *> it3(m_agentstatus);
-        while (it3.hasNext()) {
-                it3.next();
-                delete it3.value();
-        }
-        QHashIterator<QString, QLabel *> it4(m_agentpaused);
-        while (it4.hasNext()) {
-                it4.next();
-                delete it4.value();
-        }
-        QHashIterator<QString, QLabel *> it5(m_agentncalls);
-        while (it5.hasNext()) {
-                it5.next();
-                delete it5.value();
-        }
+        foreach(QString q, m_agentlabels.keys())
+                delete m_agentlabels[q];
+        foreach(QString q, m_agentmore.keys())
+                delete m_agentmore[q];
+        foreach(QString q, m_agentstatus.keys())
+                delete m_agentstatus[q];
+        foreach(QString q, m_agentpaused.keys())
+                delete m_agentpaused[q];
+        foreach(QString q, m_agentncalls.keys())
+                delete m_agentncalls[q];
         m_agentlabels.clear();
         m_agentmore.clear();
         m_agentstatus.clear();
@@ -178,7 +163,7 @@ void QueuedetailsPanel::update()
                                         paused = queues[m_queueid].toMap()["Paused"].toString();
                                         callstaken = queues[m_queueid].toMap()["CallsTaken"].toString();
                                 }
-                                agdisplay = firstname + " " + lastname + " (" + agentnum + ")";
+                                agdisplay = QString("%1 %2 (%3)").arg(firstname).arg(lastname).arg(agentnum);
                         }
                 m_agentlabels[agentnum] = new QLabel(agdisplay, this);
                 m_agentmore[agentnum] = new QPushButton(this);
@@ -235,7 +220,7 @@ void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid,
         } else {
                 m_astid = astid;
                 m_queueid = queueid;
-                m_label->setText("<b>" + m_queueid + "</b> " + tr("on") + " <b>" + m_astid + "</b>");
+                m_label->setText(tr("<b>%1</b> on <b>%2</b>").arg(m_queueid).arg(m_astid));
                 update();
         }
 }
@@ -243,6 +228,7 @@ void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid,
 void QueuedetailsPanel::agentClicked()
 {
         // qDebug() << "QueuedetailsPanel::agentClicked()" << sender()->property("agentid");
+        QString astid = sender()->property("astid").toString();
         QString agentid = sender()->property("agentid").toString();
-        changeWatchedAgent(m_astid + " " + agentid, true);
+        changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid), true);
 }

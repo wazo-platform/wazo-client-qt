@@ -150,7 +150,7 @@ void AgentdetailsPanel::updatePeerAgent(int,
         if(action == "agentlogin") {
                 QString phonenum = params.toMap()["phonenum"].toString();
                 if((m_agent == agentnum) && (m_astid == astid)) {
-                        m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
+                        m_agentstatus->setText(tr("logged on phone number <b>%1</b>").arg(phonenum));
                         m_action["alogin"]->setIcon(QIcon(":/images/cancel.png"));
                         m_action["alogin"]->setProperty("function", "alogout");
                         m_actionlegends["alogin"]->setText(tr("Logout"));
@@ -286,6 +286,8 @@ void AgentdetailsPanel::summaryCount()
 void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid, const QVariant & agentstatus)
 {
         // qDebug() << "AgentdetailsPanel::newAgent()" << astid << agentid << agentstatus;
+        if(m_userinfo == NULL)
+                return;
         m_astid = astid;
         m_agent = agentid;
         QVariantMap agentstatusmap = agentstatus.toMap();
@@ -294,39 +296,22 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         QString longname = properties.toMap()["name"].toString();
         QString lstatus = properties.toMap()["status"].toString();
         QString phonenum = properties.toMap()["phonenum"].toString();
-
-        m_agentname->setText("<b>" + m_agent + "</b> (" + longname + ") " + tr("on") + " <b>" + m_astid + "</b>");
         
-        QHashIterator<QString, QLabel *> i(m_queue_labels);
-        while (i.hasNext()) {
-                i.next();
-                delete i.value();
-        }
-        QHashIterator<QString, QPushButton *> i2(m_queue_more);
-        while (i2.hasNext()) {
-                i2.next();
-                delete i2.value();
-        }
-        QHashIterator<QString, QLabel *> j(m_queue_join_status);
-        while (j.hasNext()) {
-                j.next();
-                delete j.value();
-        }
-        QHashIterator<QString, QPushButton *> k(m_queue_join_action);
-        while (k.hasNext()) {
-                k.next();
-                delete k.value();
-        }
-        QHashIterator<QString, QLabel *> l(m_queue_pause_status);
-        while (l.hasNext()) {
-                l.next();
-                delete l.value();
-        }
-        QHashIterator<QString, QPushButton *> m(m_queue_pause_action);
-        while (m.hasNext()) {
-                m.next();
-                delete m.value();
-        }
+        m_agentname->setText(tr("<b>%1</b> (%2) on <b>%3</b>").arg(m_agent).arg(longname).arg(m_astid));
+        
+        foreach(QString q, m_queue_labels.keys())
+                delete m_queue_labels[q];
+        foreach(QString q, m_queue_more.keys())
+                delete m_queue_more[q];
+        foreach(QString q, m_queue_join_status.keys())
+                delete m_queue_join_status[q];
+        foreach(QString q, m_queue_join_action.keys())
+                delete m_queue_join_action[q];
+        foreach(QString q, m_queue_pause_status.keys())
+                delete m_queue_pause_status[q];
+        foreach(QString q, m_queue_pause_action.keys())
+                delete m_queue_pause_action[q];
+        
         m_queue_labels.clear();
         m_queue_more.clear();
         m_queue_join_status.clear();
@@ -336,12 +321,12 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         // m_queuestatus.clear();
         
         if(lstatus == "AGENT_LOGGEDOFF") {
-                m_agentstatus->setText(tr("logged off") + " <b>" + phonenum + "</b>");
+                m_agentstatus->setText(tr("logged off <b>%1</b>").arg(phonenum));
                 m_action["alogin"]->setProperty("function", "alogin");
                 m_action["alogin"]->setIcon(QIcon(":/images/button_ok.png"));
                 m_actionlegends["alogin"]->setText(tr("Login"));
         } else if(lstatus == "AGENT_IDLE") {
-                m_agentstatus->setText(tr("logged on phone number") + " <b>" + phonenum + "</b>");
+                m_agentstatus->setText(tr("logged on phone number <b>%1</b>").arg(phonenum));
                 m_action["alogin"]->setProperty("function", "alogout");
                 m_action["alogin"]->setIcon(QIcon(":/images/cancel.png"));
                 m_actionlegends["alogin"]->setText(tr("Logout"));
@@ -358,6 +343,9 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         int ii = 0;
         foreach (QString queueid, queuesstats.keys()) {
                 QVariant qv = queuesstats[queueid];
+                QString queuecontext = qv.toMap()["context"].toString();
+                if(! m_userinfo->contexts().contains(queuecontext))
+                        continue;
                 QString pstatus = qv.toMap()["Paused"].toString();
                 QString sstatus = qv.toMap()["Status"].toString();
                 m_queue_labels[queueid] = new QLabel(queueid, this);
@@ -370,7 +358,7 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                          this, SLOT(queueClicked()));
                 m_queue_more[queueid]->setIconSize(QSize(10, 10));
                 m_queue_more[queueid]->setIcon(QIcon(":/images/add.png"));
-
+                
                 m_queue_join_status[queueid] = new QLabel(this);
                 m_queue_join_action[queueid] = new QPushButton(this);
                 m_queue_join_action[queueid]->setProperty("astid", m_astid);
@@ -393,7 +381,7 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                 
                 m_queue_join_action[queueid]->setIconSize(QSize(8, 8));
                 m_queue_pause_action[queueid]->setIconSize(QSize(8, 8));
-
+                
                 if (pstatus == "") {
                         QPixmap * square = new QPixmap(12, 12);
                         square->fill(Qt::gray);
@@ -439,26 +427,26 @@ void AgentdetailsPanel::queueClicked()
         QString astid   = sender()->property("astid").toString();
         QString queueid = sender()->property("queueid").toString();
         QString action  = sender()->property("action").toString();
-
+        
         if(action == "changequeue")
-                changeWatchedQueue(astid + " " + queueid);
+                changeWatchedQueue(QString("%1 %2").arg(astid).arg(queueid));
         else if(action == "leavejoin") {
                 QString agentid = sender()->property("agentid").toString();
                 if(m_queue_join_status[queueid]->property("joined").toBool())
-                        agentAction("leave " + queueid + " " + astid + " " + agentid);
+                        agentAction(QString("leave %1 %2 %3").arg(queueid).arg(astid).arg(agentid));
                 else {
                         // join the queue in the previously recorded paused status
                         if(m_queue_pause_status[queueid]->property("paused").toBool())
-                                agentAction("join " + queueid + " " + astid + " " + agentid + " pause");
+                                agentAction(QString("join %1 %2 %3 pause").arg(queueid).arg(astid).arg(agentid));
                         else
-                                agentAction("join " + queueid + " " + astid + " " + agentid + " unpause");
+                                agentAction(QString("join %1 %2 %3 unpause").arg(queueid).arg(astid).arg(agentid));
                 }
         } else if(action == "pause") {
                 QString agentid = sender()->property("agentid").toString();
                 if(m_queue_pause_status[queueid]->property("paused").toBool())
-                        agentAction("unpause " + queueid + " " + astid + " " + agentid);
+                        agentAction(QString("unpause %1 %2 %3").arg(queueid).arg(astid).arg(agentid));
                 else
-                        agentAction("pause " + queueid + " " + astid + " " + agentid);
+                        agentAction(QString("pause %1 %2 %3").arg(queueid).arg(astid).arg(agentid));
         } else
                 qDebug() << "AgentdetailsPanel::queueClicked() : unknown action" << action;
 }
@@ -468,20 +456,20 @@ void AgentdetailsPanel::actionClicked()
         // qDebug() << "AgentdetailsPanel::actionClicked()" << sender()->property("function").toString() << m_astid << m_agent;
         QString function = sender()->property("function").toString();
         if(function == "record")
-                agentAction("record " + m_astid + " " + m_agent);
+                agentAction(QString("record %1 %2").arg(m_astid).arg(m_agent));
         else if(function == "stoprecord")
-                agentAction("stoprecord " + m_astid + " " + m_agent);
+                agentAction(QString("stoprecord %1 %2").arg(m_astid).arg(m_agent));
         else if(function == "alogin")
-                agentAction("login " + m_astid + " " + m_agent);
+                agentAction(QString("login %1 %2").arg(m_astid).arg(m_agent));
         else if(function == "alogout")
-                agentAction("logout " + m_astid + " " + m_agent);
+                agentAction(QString("logout %1 %2").arg(m_astid).arg(m_agent));
 }
 
 void AgentdetailsPanel::contextMenuEvent(QContextMenuEvent * event)
 {
-        qDebug() << "AgentdetailsPanel::contextMenuEvent()" << event;
+        // qDebug() << "AgentdetailsPanel::contextMenuEvent()" << event;
         m_eventpoint = event->globalPos();
-        agentAction("getfilelist " + m_astid + " " + m_agent);
+        agentAction(QString("getfilelist %1 %2").arg(m_astid).arg(m_agent));
 }
 
 void AgentdetailsPanel::serverFileList(const QStringList & qsl)
@@ -516,7 +504,7 @@ void AgentdetailsPanel::getFile()
 {
         // qDebug() << "AgentdetailsPanel::getFile()";
         QString filename = sender()->property("filename").toString();
-        agentAction("getfile " + m_astid + " " + m_agent + " " + filename);
+        agentAction(QString("getfile %1 %2 %3").arg(m_astid).arg(m_agent).arg(filename));
 }
 
 void AgentdetailsPanel::saveToFile()
