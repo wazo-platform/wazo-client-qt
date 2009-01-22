@@ -46,12 +46,15 @@
 #include <QScrollArea>
 #include <QVariant>
 
+#include "baseengine.h"
 #include "queuedetailspanel.h"
 
 /*! \brief Constructor
  */
-QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
-        : QWidget(parent)
+QueuedetailsPanel::QueuedetailsPanel(BaseEngine * engine,
+                                     const QVariant &, // options
+                                     QWidget * parent)
+        : QWidget(parent), m_engine(engine)
 {
 	m_gridlayout = new QGridLayout(this);
 
@@ -98,27 +101,33 @@ void QueuedetailsPanel::updatePeerAgent(int,
         // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
         QString action = params.toMap()["action"].toString();
         QString astid = params.toMap()["astid"].toString();
-        QString agentnum = params.toMap()["agent_channel"].toString().mid(6);
+        QString agent_channel = params.toMap()["agent_channel"].toString();
         QString qname = params.toMap()["queuename"].toString();
         
         if(action == "joinqueue") {
                 if((astid == m_astid) && (qname == m_queueid)) {
-                        if(! m_agentlist.contains(agentnum)) {
-                                m_agentlist.append(agentnum);
-                                m_agentlist.sort();
+                        if(! m_agentlist.keys().contains(agent_channel)) {
+                                m_agentlist[agent_channel] = QVariant();
                                 update();
                         }
                 }
         } else if(action == "leavequeue") {
                 if((astid == m_astid) && (qname == m_queueid))
-                        if(m_agentlist.contains(agentnum)) {
-                                m_agentlist.removeAll(agentnum);
-                                m_agentlist.sort();
+                        if(m_agentlist.keys().contains(agent_channel)) {
+                                m_agentlist.remove(agent_channel);
                                 update();
                         }
+        } else if(action == "paused") {
+                if((astid == m_astid) && (qname == m_queueid))
+                        if(m_agentlist.keys().contains(agent_channel))
+                                update();
+        } else if(action == "unpaused") {
+                if((astid == m_astid) && (qname == m_queueid))
+                        if(m_agentlist.keys().contains(agent_channel))
+                                update();
         } else if(action == "queuememberstatus") {
                 if((astid == m_astid) && (qname == m_queueid)) {
-                        if(m_agentlist.contains(agentnum))
+                        if(m_agentlist.keys().contains(agent_channel))
                                 qDebug() << "QueuedetailsPanel::updatePeerAgent()" << "qms c" << params;
                         else
                                 qDebug() << "QueuedetailsPanel::updatePeerAgent()" << "qms n" << params;
@@ -147,25 +156,14 @@ void QueuedetailsPanel::update()
         m_agentpaused.clear();
         m_agentncalls.clear();
         
-        for(int i = 0 ; i < m_agentlist.size(); i++) {
-                QString agentnum = m_agentlist[i];
-                QString agdisplay = agentnum;
+        int i = 0;
+        if(m_agentlists.contains(m_astid)) foreach(QString agent_channel, m_agentlist.keys()) {
+                QString agdisplay = agent_channel;
+                QString agentnum = agent_channel.mid(6);
                 QString status;
                 QString paused;
                 QString callstaken;
-                if(m_agentlists.contains(m_astid))
-                        if(m_agentlists[m_astid].toMap().contains(agentnum)) {
-                                QString firstname = m_agentlists[m_astid].toMap()[agentnum].toMap()["firstname"].toString();
-                                QString lastname = m_agentlists[m_astid].toMap()[agentnum].toMap()["lastname"].toString();
-                                QVariantMap queues = m_agentlists[m_astid].toMap()[agentnum].toMap()["queues"].toMap();
-                                if(queues.contains(m_queueid)) {
-                                        status = queues[m_queueid].toMap()["Status"].toString();
-                                        paused = queues[m_queueid].toMap()["Paused"].toString();
-                                        callstaken = queues[m_queueid].toMap()["CallsTaken"].toString();
-                                }
-                                agdisplay = QString("%1 %2 (%3)").arg(firstname).arg(lastname).arg(agentnum);
-                        }
-                m_agentlabels[agentnum] = new QLabel(agdisplay, this);
+                
                 m_agentmore[agentnum] = new QPushButton(this);
                 m_agentmore[agentnum]->setProperty("astid", m_astid);
                 m_agentmore[agentnum]->setProperty("agentid", agentnum);
@@ -173,6 +171,29 @@ void QueuedetailsPanel::update()
                 m_agentmore[agentnum]->setIcon(QIcon(":/images/add.png"));
                 connect( m_agentmore[agentnum], SIGNAL(clicked()),
                          this, SLOT(agentClicked()));
+                
+                if(m_agentlists[m_astid].toMap().contains(agentnum)) {
+                        QString firstname = m_agentlists[m_astid].toMap()[agentnum].toMap()["firstname"].toString();
+                        QString lastname = m_agentlists[m_astid].toMap()[agentnum].toMap()["lastname"].toString();
+                        QVariantMap queues = m_agentlists[m_astid].toMap()[agentnum].toMap()["queues"].toMap();
+                        if(queues.contains(m_queueid)) {
+                                status = queues[m_queueid].toMap()["Status"].toString();
+                                paused = queues[m_queueid].toMap()["Paused"].toString();
+                                callstaken = queues[m_queueid].toMap()["CallsTaken"].toString();
+                        }
+                        agdisplay = QString("%1 %2 (%3)").arg(firstname).arg(lastname).arg(agentnum);
+                } else {
+                        status ="-";
+                        paused = "-";
+                        callstaken = "-";
+                        m_agentmore[agentnum]->hide();
+                        UserInfo * ui = m_engine->findUserFromPhone(m_astid, agent_channel);
+                        QString fullname = ui->fullname();
+                        QString phonenum = ui->phonenumber();
+                        agdisplay = QString("%1 (%2)").arg(fullname).arg(phonenum);
+                }
+                
+                m_agentlabels[agentnum] = new QLabel(agdisplay, this);
                 m_agentstatus[agentnum] = new QLabel(status, this);
                 m_agentpaused[agentnum] = new QLabel(paused, this);
                 m_agentncalls[agentnum] = new QLabel(callstaken, this);
@@ -183,6 +204,7 @@ void QueuedetailsPanel::update()
                 m_gridlayout->addWidget( m_agentstatus[agentnum], i + 2, colnum++, Qt::AlignRight );
                 m_gridlayout->addWidget( m_agentpaused[agentnum], i + 2, colnum++, Qt::AlignRight );
                 m_gridlayout->addWidget( m_agentncalls[agentnum], i + 2, colnum++, Qt::AlignRight );
+                i ++;
         }
 }
 
@@ -195,35 +217,17 @@ void QueuedetailsPanel::setAgentList(int, const QVariant & alist)
 
 void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid, const QVariant & queuestatus)
 {
-        // qDebug() << "QueuedetailsPanel::newQueue()" << astid << queueid << queuestatus;
-        QStringList prevlist = m_agentlist;
+        // qDebug() << "QueuedetailsPanel::newQueue()" << astid << queueid << queuestatus.toMap();
         m_queuelegend_agentid->show();
         m_queuelegend_status->show();
         m_queuelegend_paused->show();
         m_queuelegend_callstaken->show();
-        m_agentlist.clear();
-        QVariantMap queuestatusmap = queuestatus.toMap();
-        foreach(QString agname, queuestatusmap["agents"].toMap().keys()) {
-                // qDebug() << agname
-                // << queuestatus["agents"].toMap()[agname].toMap()["Status"].toString()
-                // << queuestatus["agents"].toMap()[agname].toMap()["CallsTaken"].toString();
-                // << queuestatus["agents"].toMap()[agname].toMap()["Paused"].toString();
-                if(agname.startsWith("Agent/"))
-                        m_agentlist << agname.mid(6);
-                else
-                        m_agentlist << agname;
-        }
-        m_agentlist.sort();
+        m_agentlist = queuestatus.toMap()["agents"].toMap();
         
-        if ((m_astid == astid) && (m_queueid == queueid)) {
-                if (prevlist != m_agentlist)
-                        update();
-        } else {
-                m_astid = astid;
-                m_queueid = queueid;
-                m_label->setText(tr("<b>%1</b> on <b>%2</b>").arg(m_queueid).arg(m_astid));
-                update();
-        }
+        m_astid = astid;
+        m_queueid = queueid;
+        m_label->setText(tr("<b>%1</b> on <b>%2</b>").arg(m_queueid).arg(m_astid));
+        update();
 }
 
 void QueuedetailsPanel::agentClicked()

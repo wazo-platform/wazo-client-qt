@@ -687,6 +687,10 @@ bool BaseEngine::parseCommand(const QString & line)
                                 // qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["deltalist"].toStringList();
                         }
                         
+                } else if (thisclass == "groups") {
+                        QString function = datamap["function"].toString();
+                        // qDebug() << "___" << thisclass << datamap;
+                        
                 } else if (thisclass == "agents") {
                         QString function = datamap["function"].toString();
                         int timeref = datamap["timenow"].toInt();

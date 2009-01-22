@@ -104,7 +104,7 @@ void ConferencePanel::meetmeInit(int timeref, const QVariant & meetme)
 void ConferencePanel::delRoomTab(const QString & astid,
                                  const QString & roomnum)
 {
-        QString idxroom = astid + "-" + roomnum;
+        QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
         if(m_layout.contains(idxroom)) {
                 QWidget * w = qobject_cast<QWidget *>(m_layout[idxroom]->parent());
                 if(w)
@@ -118,7 +118,7 @@ void ConferencePanel::addRoomTab(const QString & astid,
                                  const QString & roomnum,
                                  const QString & roomname)
 {
-        QString idxroom = astid + "-" + roomnum;
+        QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
         if(! m_layout.contains(idxroom)) {
                 QWidget * w = new QWidget();
                 m_layout[idxroom] = new QGridLayout(w);
@@ -135,7 +135,7 @@ void ConferencePanel::meetmeEvent(int timeref, const QVariant & meetme)
         QString astid = meetme.toMap()["astid"].toString();
         QString roomnum = meetme.toMap()["roomnum"].toString();
         QString roomname = meetme.toMap()["roomname"].toString();
-        QString idxroom = astid + "-" + roomnum;
+        QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
         QString adminid = meetme.toMap()["adminid"].toString();
         addRoomTab(astid, roomnum, roomname);
         
@@ -157,8 +157,8 @@ void ConferencePanel::setProperties(int timeref,
                                     const QVariant & details)
 {
         // qDebug() << "ConferencePanel::setProperties()" << action << adminid << astid << roomnum << channel << details;
-        QString idxroom = astid + "-" + roomnum;
-        QString ref = astid + "-" + roomnum + "-" + channel;
+        QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
+        QString ref = QString("%1-%2-%3").arg(astid).arg(roomnum).arg(channel);
         if(action == "join") {
                 QString usernum = details.toMap()["usernum"].toString();
                 QString fullname = details.toMap()["fullname"].toString();
@@ -166,7 +166,7 @@ void ConferencePanel::setProperties(int timeref,
                 QString userid = details.toMap()["userid"].toString();
                 int time_spent = timeref - details.toMap()["time_start"].toInt();
                 if(! m_infos.contains(ref)) {
-                        m_infos[ref] = new QLabel(fullname + " <" + phonenum + ">");
+                        m_infos[ref] = new QLabel(QString("%1 <%2>").arg(fullname).arg(phonenum));
                         m_infos[ref]->setProperty("astid", astid);
                         m_infos[ref]->setProperty("room", roomnum);
                         

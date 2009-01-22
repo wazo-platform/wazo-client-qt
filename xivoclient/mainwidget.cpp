@@ -946,7 +946,7 @@ void MainWidget::engineStarted()
                                          m_xlet[xletid], SLOT(setQueueOrder(const QVariant &)) );
                                 
 			} else if (xletid == QString("queuedetails")) {
-                                m_xlet[xletid] = new QueuedetailsPanel();
+                                m_xlet[xletid] = new QueuedetailsPanel(m_engine, m_options);
                                 if (withscrollbar) {
                                         QScrollArea * sa_qd = new QScrollArea(this);
                                         sa_qd->setWidget(m_xlet[xletid]);

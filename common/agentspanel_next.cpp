@@ -712,12 +712,12 @@ void AgentsPanelNext::actionclicked()
                 agentAction(QString("transfer %1 %2 %3").arg(astid).arg(agentid).arg(m_queue_chose->currentText()));
         else if(action == "unpause") {
                 // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
-                // agentAction("unpause " + qname + " " + astid + " " + agentid);
+                // agentAction(QString("unpause %1 %2").arg(astid).arg(agentid));
                 agentAction(QString("unpause_all %1 %2").arg(astid).arg(agentid));
         }
         else if(action == "pause") {
                 // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
-                // agentAction("pause " + qname + " " + astid + " " + agentid);
+                // agentAction(QString("pause %1 %2").arg(astid).arg(agentid));
                 agentAction(QString("pause_all %1 %2").arg(astid).arg(agentid));
         }
         else if(action == "logout")

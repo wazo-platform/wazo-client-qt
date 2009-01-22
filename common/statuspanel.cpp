@@ -231,12 +231,12 @@ void StatusPanel::functionKeyPressed(int keynum)
                         if(action == "answer")
                                 actionCall("pickup"); // Call
                         else if(action == "hangup")
-                                actionCall("simplehangup", "chan:" + m_ui->userid() + ":" + m_peerchan[m_currentchannel]); // Call
+                                actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(m_peerchan[m_currentchannel])); // Call
                         else if(action == "dtransfer")
                                 dtransfer();
                 } else if(linestatus == Online) {
                         if(action == "hangup") {
-                                actionCall("hangup", "chan:" + m_ui->userid() + ":" + m_peerchan[m_currentchannel]); // Call
+                                actionCall("hangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(m_peerchan[m_currentchannel])); // Call
                         } else if(action == "dtransfer") {
                                 dtransfer();
                                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
@@ -251,7 +251,7 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 qDebug() << "StatusPanel::functionKeyPressed()" << "F1 when Wait : Take back";
                 } else if(linestatus == WDTransfer) {
                         if(action == "hangup") {
-                                actionCall("simplehangup", "chan:" + m_ui->userid() + ":" + m_peerchan[m_currentchannel]); // Call
+                                actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(m_peerchan[m_currentchannel])); // Call
                         } else if(action == "dtransfer") {
                                 dtransfer(); // cancel D. Transfer request
                                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
@@ -264,7 +264,7 @@ void StatusPanel::functionKeyPressed(int keynum)
                         }
                 } else if(linestatus == WITransfer) {
                         if(action == "hangup") {
-                                actionCall("simplehangup", "chan:" + m_ui->userid() + ":" + m_peerchan[m_currentchannel]); // Call
+                                actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(m_peerchan[m_currentchannel])); // Call
                         } else if(action == "dtransfer") {
                                 dtransfer();
                                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
@@ -272,9 +272,9 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 itransfer(); // cancel I. Transfer request
                                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
                         } else if(action == "ilink") {
-                                actionCall("simplehangup", "chan:" + m_ui->userid() + ":" + m_currentchannel); // Call
+                                actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(m_currentchannel)); // Call
                         } else if(action == "icancel") {
-                                actionCall("simplehangup", "chan:" + m_ui->userid() + ":" + m_tferchannel); // Call
+                                actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(m_tferchannel)); // Call
                         }
                 }
                 
@@ -335,7 +335,7 @@ void StatusPanel::updatePeer(UserInfo * ui,
                                         m_linestatuses[callchannel] = Ringing;
                                         m_peerchan[callchannel] = peerchan;
                                         updateLine(callchannel, (QStringList() << "answer" << "hangup" << "dtransfer"));
-                                        m_statuses[callchannel]->setText(num + " " + tr("Ringing"));
+                                        m_statuses[callchannel]->setText(tr("%1 Ringing").arg(num));
                                         m_statuses[callchannel]->show();
                                 }
                         } else if (status == CHAN_STATUS_LINKED_CALLED) {
@@ -346,7 +346,7 @@ void StatusPanel::updatePeer(UserInfo * ui,
                                 m_linestatuses[callchannel] = Online;
                                 m_peerchan[callchannel] = peerchan;
                                 updateLine(callchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
-                                m_statuses[callchannel]->setText(tr("Link") + " " + num);
+                                m_statuses[callchannel]->setText(tr("Link %1").arg(num));
                                 m_statuses[callchannel]->show();
                         } else if(status == CHAN_STATUS_HANGUP) {
                                 if(m_callchannels.contains(callchannel) == true) {

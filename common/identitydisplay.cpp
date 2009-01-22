@@ -116,22 +116,24 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         glayout->setSpacing(2);
         // glayout->setMargin(0);
         
-        glayout->addWidget( m_icon_user, 0, 1, 3, 1, Qt::AlignCenter | Qt::AlignTop );
-        glayout->addWidget( m_icon_agent, 0, 4, 3, 1, Qt::AlignCenter | Qt::AlignTop );
-        glayout->addWidget( m_icon_voicemail, 0, 7, 3, 1, Qt::AlignCenter | Qt::AlignTop );
+        Qt::Alignment iconAlign = Qt::AlignHCenter | Qt::AlignTop; // Qt::AlignVCenter
+        glayout->addWidget( m_icon_user, 0, 1, 3, 1, iconAlign );
+        glayout->addWidget( m_icon_agent, 0, 4, 3, 1, iconAlign );
+        glayout->addWidget( m_icon_voicemail, 0, 7, 3, 1, iconAlign );
         
         int idline = 0;
-	glayout->addWidget( m_user, idline, 2, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
-	glayout->addWidget( m_agent, idline, 5, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
-	glayout->addWidget( m_voicemail_name, idline, 8, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
+        Qt::Alignment textAlign = Qt::AlignLeft | Qt::AlignTop; // Qt::AlignVCenter
+	glayout->addWidget( m_user, idline, 2, textAlign );
+	glayout->addWidget( m_agent, idline, 5, textAlign );
+	glayout->addWidget( m_voicemail_name, idline, 8, textAlign );
         idline ++;
-	glayout->addWidget( m_phonenum, idline, 2, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
-	glayout->addWidget( m_agentstatus, idline, 5, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
-	glayout->addWidget( m_voicemail_old, idline, 8, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
+	glayout->addWidget( m_phonenum, idline, 2, textAlign );
+	glayout->addWidget( m_agentstatus, idline, 5, textAlign );
+	glayout->addWidget( m_voicemail_old, idline, 8, textAlign );
         idline ++;
-	glayout->addWidget( m_presencevalue, idline, 2, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
-	glayout->addWidget( m_agentpause, idline, 5, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
-	glayout->addWidget( m_voicemail_new, idline, 8, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
+	glayout->addWidget( m_presencevalue, idline, 2, textAlign );
+	glayout->addWidget( m_agentpause, idline, 5, textAlign );
+	glayout->addWidget( m_voicemail_new, idline, 8, textAlign );
         
         glayout->setColumnStretch( 9, 1 );
         

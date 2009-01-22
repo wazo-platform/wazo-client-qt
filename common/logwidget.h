@@ -57,7 +57,9 @@ class LogWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	LogWidget(BaseEngine * engine, const QVariant &, QWidget * parent = 0);
+	LogWidget(BaseEngine *,
+                  const QVariant &,
+                  QWidget * parent = 0);
 	void addElement(const QString &,
                         LogEltWidget::Direction,
 	                const QDateTime &,

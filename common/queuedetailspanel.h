@@ -53,6 +53,7 @@ class QPushButton;
 class QScrollArea;
 class QVBoxLayout;
 
+class BaseEngine;
 class UserInfo;
 
 /*! \brief Identity Display
@@ -61,7 +62,9 @@ class QueuedetailsPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	QueuedetailsPanel(QWidget * parent = 0);
+	QueuedetailsPanel(BaseEngine *,
+                          const QVariant &,
+                          QWidget * parent = 0);
 	~QueuedetailsPanel();
 signals:
         void changeWatchedAgent(const QString &, bool);
@@ -79,12 +82,13 @@ private slots:
         void agentClicked();
 private:
         void update();
-
+        
+	BaseEngine * m_engine;	//!< BaseEngine object
         QGridLayout * m_gridlayout;
 	QVBoxLayout * m_layout;
         QScrollArea * m_scrollarea;
 	QWidget * m_widget;
-
+        
         QString m_astid;
         QString m_queueid;
         QLabel * m_queuelegend_agentid;
@@ -97,8 +101,9 @@ private:
         QHash<QString, QLabel *> m_agentstatus;
         QHash<QString, QLabel *> m_agentpaused;
         QHash<QString, QLabel *> m_agentncalls;
-        QStringList m_agentlist;
+        
         int m_maxbusy;
+        QVariantMap m_agentlist;
         QVariantMap m_agentlists;
 };
 
