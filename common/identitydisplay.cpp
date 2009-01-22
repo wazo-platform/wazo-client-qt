@@ -74,7 +74,8 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
 	// glayout->setMargin(0);
         m_user = new QLabel(this);
         m_user->setObjectName("fullname");
-        // m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        //m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         
         m_phonenum = new QLabel();
         m_presencevalue = new QComboBox();
@@ -115,28 +116,28 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         glayout->setSpacing(2);
         // glayout->setMargin(0);
         
-        glayout->addWidget( m_icon_user, 0, 1, 3, 1, Qt::AlignCenter );
-        glayout->addWidget( m_icon_agent, 0, 4, 3, 1, Qt::AlignCenter );
-        glayout->addWidget( m_icon_voicemail, 0, 7, 3, 1, Qt::AlignCenter );
+        glayout->addWidget( m_icon_user, 0, 1, 3, 1, Qt::AlignCenter | Qt::AlignTop );
+        glayout->addWidget( m_icon_agent, 0, 4, 3, 1, Qt::AlignCenter | Qt::AlignTop );
+        glayout->addWidget( m_icon_voicemail, 0, 7, 3, 1, Qt::AlignCenter | Qt::AlignTop );
         
         int idline = 0;
-	glayout->addWidget( m_user, idline, 2, Qt::AlignLeft | Qt::AlignVCenter );
-	glayout->addWidget( m_agent, idline, 5, Qt::AlignLeft | Qt::AlignVCenter );
-	glayout->addWidget( m_voicemail_name, idline, 8, Qt::AlignLeft | Qt::AlignVCenter );
+	glayout->addWidget( m_user, idline, 2, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
+	glayout->addWidget( m_agent, idline, 5, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
+	glayout->addWidget( m_voicemail_name, idline, 8, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
         idline ++;
-	glayout->addWidget( m_phonenum, idline, 2, Qt::AlignLeft | Qt::AlignVCenter );
-	glayout->addWidget( m_agentstatus, idline, 5, Qt::AlignLeft | Qt::AlignVCenter );
-	glayout->addWidget( m_voicemail_old, idline, 8, Qt::AlignLeft | Qt::AlignVCenter );
+	glayout->addWidget( m_phonenum, idline, 2, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
+	glayout->addWidget( m_agentstatus, idline, 5, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
+	glayout->addWidget( m_voicemail_old, idline, 8, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
         idline ++;
-	glayout->addWidget( m_presencevalue, idline, 2, Qt::AlignLeft | Qt::AlignVCenter );
-	glayout->addWidget( m_agentpause, idline, 5, Qt::AlignLeft | Qt::AlignVCenter );
-	glayout->addWidget( m_voicemail_new, idline, 8, Qt::AlignLeft | Qt::AlignVCenter );
+	glayout->addWidget( m_presencevalue, idline, 2, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
+	glayout->addWidget( m_agentpause, idline, 5, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
+	glayout->addWidget( m_voicemail_new, idline, 8, Qt::AlignLeft | Qt::AlignVCenter | Qt::AlignTop );
         
         glayout->setColumnStretch( 9, 1 );
         
         // although it might be convenient in some cases (prevent some expansions),
         // in the basic xivoclient/grid case, it fills too much room without no resizing available
-        // glayout->setRowStretch( idline, 1 );
+        //glayout->setRowStretch( idline, 1 );
         
         hideAgentProps();
         
