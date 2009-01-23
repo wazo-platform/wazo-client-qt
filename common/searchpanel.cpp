@@ -244,7 +244,7 @@ void SearchPanel::newUser(UserInfo * ui)
         m_peerhash.insert(userid, peeritem);
 }
 
-void SearchPanel::updatePeerAgent(int,
+void SearchPanel::updatePeerAgent(double,
                                   const QString & id,
                                   const QString & what,
                                   const QVariant & statuslist)

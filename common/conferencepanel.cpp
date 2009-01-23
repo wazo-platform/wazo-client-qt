@@ -76,7 +76,7 @@ void ConferencePanel::setUserInfo(const UserInfo * ui)
         m_ui = ui;
 }
 
-void ConferencePanel::meetmeInit(int timeref, const QVariant & meetme)
+void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
 {
         // qDebug() << "ConferencePanel::meetmeInit()" << meetme;
         foreach (QString astid, meetme.toMap().keys()) {
@@ -129,7 +129,7 @@ void ConferencePanel::addRoomTab(const QString & astid,
         }
 }
 
-void ConferencePanel::meetmeEvent(int timeref, const QVariant & meetme)
+void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
 {
         // qDebug() << "ConferencePanel::meetmeEvent()" << meetme;
         QString astid = meetme.toMap()["astid"].toString();
@@ -148,7 +148,7 @@ void ConferencePanel::meetmeEvent(int timeref, const QVariant & meetme)
                       meetme.toMap()["details"]);
 }
 
-void ConferencePanel::setProperties(int timeref,
+void ConferencePanel::setProperties(double timeref,
                                     const QString & action,
                                     const QString & adminid,
                                     const QString & astid,
@@ -164,7 +164,7 @@ void ConferencePanel::setProperties(int timeref,
                 QString fullname = details.toMap()["fullname"].toString();
                 QString phonenum = details.toMap()["phonenum"].toString();
                 QString userid = details.toMap()["userid"].toString();
-                int time_spent = timeref - details.toMap()["time_start"].toInt();
+                int time_spent = int(timeref - details.toMap()["time_start"].toDouble() + 0.5);
                 if(! m_infos.contains(ref)) {
                         m_infos[ref] = new QLabel(QString("%1 <%2>").arg(fullname).arg(phonenum));
                         m_infos[ref]->setProperty("astid", astid);

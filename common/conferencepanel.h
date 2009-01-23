@@ -68,12 +68,12 @@ protected:
         void timerEvent(QTimerEvent *);
 public slots:
         void setUserInfo(const UserInfo *);
-        void meetmeEvent(int, const QVariant &);
-        void meetmeInit(int, const QVariant &);
+        void meetmeEvent(double, const QVariant &);
+        void meetmeInit(double, const QVariant &);
         void doMeetMeAction();
         void setGuiOptions(const QVariant &);
 private:
-        void setProperties(int,
+        void setProperties(double,
                            const QString &,
                            const QString &,
                            const QString &,

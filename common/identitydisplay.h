@@ -67,12 +67,12 @@ public:
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-        void setAgentList(int, const QVariant &);
+        void setAgentList(double, const QVariant &);
 	void setQueueList(const QVariant &);
         void updatePeer(UserInfo *,
                         const QString &,
                         const QVariant &);
-	void updatePeerAgent(int,
+	void updatePeerAgent(double,
                              const QString &,
                              const QString &,
                              const QVariant &);

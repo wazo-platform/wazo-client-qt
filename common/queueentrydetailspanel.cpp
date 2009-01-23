@@ -74,7 +74,7 @@ void QueueentrydetailsPanel::setUserInfo(const UserInfo *)
 {
 }
 
-void QueueentrydetailsPanel::updatePeerAgent(int,
+void QueueentrydetailsPanel::updatePeerAgent(double,
                                              const QString &,
                                              const QString &,
                                              const QVariant &)

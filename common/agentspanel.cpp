@@ -127,7 +127,7 @@ void AgentsPanel::updateAgentPresence(const QString & agentname, const QVariant 
                 }
 }
 
-void AgentsPanel::updatePeerAgent(int,
+void AgentsPanel::updatePeerAgent(double,
                                   const QString &,
                                   const QString & what,
                                   const QVariant & params)
@@ -241,7 +241,7 @@ void AgentsPanel::updatePeerAgent(int,
         }
 }
 
-void AgentsPanel::setAgentList(int, const QVariant & alist)
+void AgentsPanel::setAgentList(double, const QVariant & alist)
 {
         if(m_userinfo == NULL)
                 return;

@@ -73,7 +73,7 @@ public slots:
                         const QString &,
                         const QVariant &);
         void newUser(UserInfo *);
-	void updatePeerAgent(int,
+	void updatePeerAgent(double,
                              const QString &,
                              const QString &,
                              const QVariant &);

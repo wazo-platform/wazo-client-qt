@@ -270,7 +270,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         QStringList groupqueues = m_title[groupid]->property("queues").toStringList();
         
         bool doshowtime = false;
-        int nsec = 0;
+        double dsec = 0;
         
         QString colorqss;
         if(agstatus == "AGENT_IDLE")
@@ -303,10 +303,9 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                 if(doshowtime) {
                         QDateTime now = QDateTime::currentDateTime();
                         int d1 = m_timeclt.secsTo(now);
-                        int d2 = m_timesrv - properties.toMap()["Xivo-StateTime"].toInt();
-                        nsec = d1 + d2;
-                        if((nsec == -1) || (nsec == -2))
-                                nsec = 0;
+                        double d2 = m_timesrv - properties.toMap()["Xivo-StateTime"].toDouble();
+                        dsec = d1 + d2;
+                        // if(dsec) dsec = 0;
                 }
         }
         
@@ -323,14 +322,13 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                                 
                                 QDateTime now = QDateTime::currentDateTime();
                                 int d1 = m_timeclt.secsTo(now);
-                                int d2 = m_timesrv - qvm[qname_group].toMap()["Xivo-StateTime"].toInt();
+                                double d2 = m_timesrv - qvm[qname_group].toMap()["Xivo-StateTime"].toDouble();
                                 doshowtime = true;
-                                nsec = d1 + d2;
+                                dsec = d1 + d2;
                                 
                                 // rounding quite often leads to a "-1" value
                                 // in order not to hurt sensitivities, set it to zero
-                                if((nsec == -1) || (nsec == -2))
-                                        nsec = 0;
+                                // if(dsec) dsec = 0;
                                 logAction(QString("agentpause times %1 clt=%2 srv=%3").arg(qname_group).arg(d1).arg(d2));
                         }
                 }
@@ -338,11 +336,15 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         
         QString displayedtime;
         if(doshowtime) {
+                int nsec = int(dsec + 0.5);
+                int dhr  = nsec / 3600;
                 int dmin = nsec / 60;
                 int dsec = nsec % 60;
                 if((nsec > m_blinktime) && (nsec % 2) && (colorqss == "#ff8080"))
                         colorqss = "#ffb0b0";
-                if(dmin > 0)
+                if(dhr > 0)
+                        displayedtime = tr("%1 hr %2 min %3 sec").arg(dhr).arg(dmin).arg(dsec);
+                else if(dmin > 0)
                         displayedtime = tr("%1 min %2 sec").arg(dmin).arg(dsec);
                 else
                         displayedtime = tr("%1 sec").arg(dsec);
@@ -361,7 +363,7 @@ void AgentsPanelNext::updateAgentPresence(const QString &, const QVariant &)
         // QColor color = QColor(presencestatus.toMap()["color"].toString());
 }
 
-void AgentsPanelNext::updatePeerAgent(int timeref,
+void AgentsPanelNext::updatePeerAgent(double timeref,
                                       const QString &,
                                       const QString & what,
                                       const QVariant & params)
@@ -804,7 +806,7 @@ void AgentsPanelNext::refreshDisplay()
         m_glayout->setColumnStretch(m_title.size() * NCOLS, 1);
 }
 
-void AgentsPanelNext::setAgentList(int timeref, const QVariant & alist)
+void AgentsPanelNext::setAgentList(double timeref, const QVariant & alist)
 {
         m_timesrv = timeref;
         m_timeclt = QDateTime::currentDateTime();

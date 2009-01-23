@@ -70,7 +70,7 @@ public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
 	void newQueue(const QString &, const QString &, const QVariant &);
-        void updatePeerAgent(int,
+        void updatePeerAgent(double,
                              const QString &,
                              const QString &,
                              const QVariant &);

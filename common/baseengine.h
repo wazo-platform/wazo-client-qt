@@ -207,8 +207,8 @@ signals:
         void featurePutIsKO();
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
-        void meetmeEvent(int, const QVariant &);
-        void meetmeInit(int, const QVariant &);
+        void meetmeEvent(double, const QVariant &);
+        void meetmeInit(double, const QVariant &);
         void requestFileListResult(const QVariant &);
         void updatePresence(const QVariant &);
         void updateCounter(const QVariant &);
@@ -238,7 +238,7 @@ signals:
 	                const QString &,
                         const QVariant &);
         void newUser(UserInfo *);
-	void updatePeerAgent(int,
+	void updatePeerAgent(double,
                              const QString &,
                              const QString &,
                              const QVariant &);
@@ -254,7 +254,7 @@ signals:
         void setQueueStatus(const QVariant &);
         void removeQueues(const QString &, const QStringList &);
         void newQueueList(const QVariant &);
-        void newAgentList(int, const QVariant &);
+        void newAgentList(double, const QVariant &);
 	void optChanged(const QString &, bool);
 	void forwardUpdated(const QString &, bool, const QString &);
         void changesAvailChecks();

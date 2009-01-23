@@ -91,7 +91,7 @@ void QueuedetailsPanel::setUserInfo(const UserInfo *)
 {
 }
 
-void QueuedetailsPanel::updatePeerAgent(int,
+void QueuedetailsPanel::updatePeerAgent(double,
                                         const QString &,
                                         const QString & what,
                                         const QVariant & params)
@@ -210,7 +210,7 @@ void QueuedetailsPanel::update()
         }
 }
 
-void QueuedetailsPanel::setAgentList(int, const QVariant & alist)
+void QueuedetailsPanel::setAgentList(double, const QVariant & alist)
 {
         // qDebug() << "QueuedetailsPanel::setAgentList()" << alist;
         QString astid = alist.toMap()["astid"].toString();

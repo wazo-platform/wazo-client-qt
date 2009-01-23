@@ -76,10 +76,10 @@ signals:
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-        void setAgentList(int, const QVariant &);
+        void setAgentList(double, const QVariant &);
         void setQueueList(const QVariant &);
         void setQueueOrder(const QVariant &);
-        void updatePeerAgent(int,
+        void updatePeerAgent(double,
                              const QString &,
                              const QString &,
                              const QVariant &);
@@ -109,7 +109,7 @@ private:
         QMap<QString, ExtendedLabel *> m_title;
         const UserInfo * m_userinfo;
         
-        int m_timesrv;
+        double m_timesrv;
         int m_blinktime;
         QDateTime m_timeclt;
         

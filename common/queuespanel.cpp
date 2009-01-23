@@ -174,7 +174,7 @@ void QueuesPanel::updateCounter(const QVariant & counters)
         }
 }
 
-void QueuesPanel::updatePeerAgent(int,
+void QueuesPanel::updatePeerAgent(double,
                                   const QString &,
                                   const QString &,
                                   const QVariant &)

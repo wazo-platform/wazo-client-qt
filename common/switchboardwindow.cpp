@@ -173,7 +173,7 @@ void SwitchBoardWindow::newUser(UserInfo * ui)
 }
 
 
-void SwitchBoardWindow::updatePeerAgent(int,
+void SwitchBoardWindow::updatePeerAgent(double,
                                         const QString & id,
                                         const QString & what,
                                         const QVariant & statuslist)

@@ -650,6 +650,7 @@ bool BaseEngine::parseCommand(const QString & line)
         
         if(direction == "client") {
                 QString thisclass = datamap["class"].toString();
+                double timenow = datamap["timenow"].toDouble();
                 if (thisclass == "callcampaign") {
                         requestFileListResult(datamap["payload"]);
                         
@@ -693,10 +694,9 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "agents") {
                         QString function = datamap["function"].toString();
-                        int timeref = datamap["timenow"].toInt();
                         if(function == "sendlist") {
                                 foreach (QVariant qv, datamap["payload"].toList())
-                                        newAgentList(timeref, qv);
+                                        newAgentList(timenow, qv);
                         } else if(function == "update") {
                                 QVariant params = datamap["payload"];
                                 QString action = params.toMap()["action"].toString();
@@ -705,9 +705,9 @@ bool BaseEngine::parseCommand(const QString & line)
                                 if (agent_channel.startsWith("Agent/")) {
                                         UserInfo * ui = findUserFromAgent(astid, agent_channel.mid(6));
                                         if(ui)
-                                                updatePeerAgent(timeref, ui->userid(), "agentstatus", params);
+                                                updatePeerAgent(timenow, ui->userid(), "agentstatus", params);
                                         else // (useful ?) in order to transfer the replies to unmatched agents
-                                                updatePeerAgent(timeref, "", "agentstatus", params);
+                                                updatePeerAgent(timenow, "", "agentstatus", params);
                                 } else
                                         qDebug() << "update-agents agentnum" << astid << agent_channel;
                         } else if(function == "del") {
@@ -743,11 +743,10 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "meetme") {
                         QString function = datamap["function"].toString();
-                        int timeref = datamap["timenow"].toInt();
                         if (function == "sendlist")
-                                meetmeInit(timeref, datamap["payload"]);
+                                meetmeInit(timenow, datamap["payload"]);
                         else if (function == "update")
-                                meetmeEvent(timeref, datamap["payload"]);
+                                meetmeEvent(timenow, datamap["payload"]);
                         
                 } else if (thisclass == "serverdown") {
                         qDebug() << thisclass << datamap["mode"].toString();
@@ -774,11 +773,10 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "presence") {
                         // QString id = datamap["company"].toString() + "/" + datamap["userid"].toString();
                         QString id = datamap["astid"].toString() + "/" + datamap["xivo_userid"].toString();
-                        int timeref = datamap["timenow"].toInt();
                         // qDebug() << thisclass << m_users.size() << id;
                         if(m_users.contains(id)) {
                                 m_users[id]->setAvailState(datamap["capapresence"].toMap()["state"]);
-                                updatePeerAgent(timeref, id, "imstatus", QStringList());
+                                updatePeerAgent(timenow, id, "imstatus", QStringList());
                                 updateAgentPresence(m_users[id]->agentid(), datamap["capapresence"].toMap()["state"]);
                                 m_counters = datamap["presencecounter"];
                                 updateCounter(m_counters);
@@ -791,7 +789,6 @@ bool BaseEngine::parseCommand(const QString & line)
                         
                 } else if (thisclass == "users") {
                         QString function = datamap["function"].toString();
-                        int timeref = datamap["timenow"].toInt();
                         if (function == "sendlist") {
                                 QVariantList listusers = datamap["payload"].toList();
                                 foreach(QVariant userprops, listusers) {
@@ -812,7 +809,7 @@ bool BaseEngine::parseCommand(const QString & line)
                                         m_users[iduser]->setVoiceMailNumber(uinfo["voicemailnum"].toString());
                                         m_users[iduser]->setAgent(uinfo["agentnum"].toString());
                                         m_users[iduser]->setMWI(uinfo["mwi"].toStringList());
-                                        updatePeerAgent(timeref, iduser, "imstatus", QStringList());
+                                        updatePeerAgent(timenow, iduser, "imstatus", QStringList());
                                         updateAgentPresence(m_users[iduser]->agentid(), uinfo["statedetails"]);
                                 }
                                 

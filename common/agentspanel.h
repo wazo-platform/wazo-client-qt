@@ -70,8 +70,8 @@ signals:
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-        void setAgentList(int, const QVariant &);
-        void updatePeerAgent(int,
+        void setAgentList(double, const QVariant &);
+        void updatePeerAgent(double,
                              const QString &,
                              const QString &,
                              const QVariant &);

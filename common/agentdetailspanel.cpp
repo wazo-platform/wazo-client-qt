@@ -136,7 +136,7 @@ void AgentdetailsPanel::setUserInfo(const UserInfo * ui)
         m_userinfo = ui;
 }
 
-void AgentdetailsPanel::updatePeerAgent(int,
+void AgentdetailsPanel::updatePeerAgent(double,
                                         const QString &,
                                         const QString & what,
                                         const QVariant & params)
