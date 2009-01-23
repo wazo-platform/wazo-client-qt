@@ -188,9 +188,11 @@ void QueuedetailsPanel::update()
                         callstaken = "-";
                         m_agentmore[agentnum]->hide();
                         UserInfo * ui = m_engine->findUserFromPhone(m_astid, agent_channel);
-                        QString fullname = ui->fullname();
-                        QString phonenum = ui->phonenumber();
-                        agdisplay = QString("%1 (%2)").arg(fullname).arg(phonenum);
+                        if(ui != NULL) {
+                                QString fullname = ui->fullname();
+                                QString phonenum = ui->phonenumber();
+                                agdisplay = QString("%1 (%2)").arg(fullname).arg(phonenum);
+                        }
                 }
                 
                 m_agentlabels[agentnum] = new QLabel(agdisplay, this);
@@ -210,7 +212,7 @@ void QueuedetailsPanel::update()
 
 void QueuedetailsPanel::setAgentList(int, const QVariant & alist)
 {
-        // qDebug() << "QueuedetailsPanel::setAgentList()" << timeref;
+        // qDebug() << "QueuedetailsPanel::setAgentList()" << alist;
         QString astid = alist.toMap()["astid"].toString();
         m_agentlists[astid] = alist.toMap()["newlist"].toMap();
 }
