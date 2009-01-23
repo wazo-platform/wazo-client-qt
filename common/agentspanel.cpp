@@ -245,7 +245,6 @@ void AgentsPanel::setAgentList(int, const QVariant & alist)
 {
         if(m_userinfo == NULL)
                 return;
-        qDebug() << "AgentsPanel::setAgentList()" << alist.toMap().keys();
         QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
         QVariantMap alistmap = alist.toMap();
         QString astid = alistmap["astid"].toString();
@@ -265,7 +264,7 @@ void AgentsPanel::setAgentList(int, const QVariant & alist)
                 QString agstatus = properties.toMap()["status"].toString();
                 QString phonenum = properties.toMap()["phonenum"].toString();
                 bool link = properties.toMap()["link"].toBool();
-                // qDebug() << "AgentsPanel::setAgentList()" << agnum << agstatus << agfullname << phonenum << link;
+                // qDebug() << "AgentsPanel::setAgentList()" << astid << agnum << agstatus << agfullname << phonenum << link << agqjoined;
                 
                 if(! m_agent_labels.contains(agnum)) {
                         QFrame * qvline1 = new QFrame(this);
@@ -354,17 +353,18 @@ void AgentsPanel::setAgentList(int, const QVariant & alist)
                         
                         foreach (QString qname, agqjoined.keys()) {
                                 QVariant qv = agqjoined[qname];
-                                QString pstatus = qv.toMap()["Paused"].toString();
-                                QString sstatus = qv.toMap()["Status"].toString();
-                                m_agent_joined_list[agnum] << qname;
-                                if(pstatus == "0")
-                                        m_agent_paused_list[agnum] << qname;
+                                if(qv.toMap().contains("Status")) {
+                                        QString pstatus = qv.toMap()["Paused"].toString();
+                                        QString sstatus = qv.toMap()["Status"].toString();
+                                        m_agent_joined_list[agnum] << qname;
+                                        if(pstatus == "0")
+                                                m_agent_paused_list[agnum] << qname;
+                                }
                         }
                         
                         int njoined = m_agent_joined_list[agnum].size();
-                        m_agent_joined_number[agnum]->setText(QString::number(njoined));
-                        
                         int nunpaused = m_agent_paused_list[agnum].size();
+                        m_agent_joined_number[agnum]->setText(QString::number(njoined));
                         showPausedStatus(agnum, njoined - nunpaused);
                         
                         int colnum = 0;
