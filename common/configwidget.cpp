@@ -145,7 +145,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         
 	gridlayout2->addWidget(new QLabel(tr("Contacts' width"), this), line, 0);
 	m_contactswidth_sbox = new QSpinBox(this);
-	m_contactswidth_sbox->setRange(1, 10);
+	m_contactswidth_sbox->setRange(1, 20);
 	m_contactswidth_sbox->setValue(opts.toMap()["contacts-width"].toUInt());
 	gridlayout2->addWidget(m_contactswidth_sbox, line++, 1);
         

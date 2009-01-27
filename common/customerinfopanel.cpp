@@ -85,16 +85,16 @@ void CustomerInfoPanel::setUserInfo(const UserInfo * ui)
 void CustomerInfoPanel::showNewProfile(Popup * popup)
 {
         QString opt = "";
-        qDebug() << "CustomerInfoPanel::showNewProfile()" << popup->sessionid();
+        qDebug() << "CustomerInfoPanel::showNewProfile()" << popup->callUniqueid();
         if(popup->sheetpopup()) {
                 Popup * already_popup = NULL;
                 foreach(Popup * mpopup, m_popups)
-                        if(mpopup->sessionid() == popup->sessionid()) {
+                        if(mpopup->callUniqueid() == popup->callUniqueid()) {
                                 already_popup = mpopup;
                                 break;
                         }
                 if(already_popup) {
-                        qDebug() << "CustomerInfoPanel::showNewProfile()" << "found a match for" << popup->sessionid();
+                        qDebug() << "CustomerInfoPanel::showNewProfile()" << "found a match for" << popup->callUniqueid();
                         already_popup->update(popup->sheetlines());
                 } else {
                         QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm:ss");
@@ -122,9 +122,9 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
 
 void CustomerInfoPanel::popupDestroyed(QObject * obj)
 {
-	qDebug() << "CustomerInfoPanel::popupDestroyed()" << obj->property("sessionid");
+	qDebug() << "CustomerInfoPanel::popupDestroyed()" << obj->property("uniqueid");
         foreach(Popup * mpopup, m_popups)
-                if(mpopup->sessionid() == obj->property("sessionid"))
+                if(mpopup->callUniqueid() == obj->property("uniqueid"))
                         m_popups.removeAll(mpopup);
 }
 
@@ -163,18 +163,19 @@ void CustomerInfoPanel::localActionCall(const QString & a, const QString & b, co
 
 void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVariant & timestamps)
 {
-        QString sessionid = sender()->property("sessionid").toString();
+        QString uniqueid = sender()->property("uniqueid").toString();
         Popup * thispopup = NULL;
         foreach(Popup * mpopup, m_popups)
-                if(mpopup->sessionid() == sessionid) {
+                if(mpopup->callUniqueid() == uniqueid) {
                         thispopup = mpopup;
                         break;
                 }
         if(thispopup) {
                 QVariantMap data;
                 data["buttonname"] = buttonname;
-                data["sessionid"] = thispopup->sessionid();
-                data["channel"] = thispopup->channel();
+                data["sessionid"] = thispopup->callUniqueid();
+                data["channel"] = thispopup->callChannel();
+                data["astid"] = thispopup->callAstid();
                 data["timestamps"] = timestamps;
                 actionFromFiche(QVariant(data));
         }

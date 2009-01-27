@@ -74,8 +74,6 @@ QStringList formbuttonnames = (QStringList()
 /*!
  * This constructor inits all XML objects and connect signals
  * to slots.
- * \param inputstream	inputstream to read the XML
- * \param sessionid		sessionid to check incoming connection to
  * \param parent		parent widget
  */
 Popup::Popup(const bool & urlautoallow,
@@ -95,6 +93,9 @@ Popup::Popup(const bool & urlautoallow,
         // qDebug() << "Popup::Popup()";
 }
 
+/*!
+ * \param inputstream	inputstream to read the XML
+ */
 void Popup::feed(QIODevice * inputstream,
                  const bool & sheetui)
 {
@@ -357,9 +358,12 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
                 m_focus = false;
         else if(name == "called")
                 m_called = value;
-        else if(name == "sessionid") {
-                m_sessionid = value;
-                setProperty("sessionid", m_sessionid);
+        else if(name == "astid") {
+                m_astid = value;
+                setProperty("astid", m_astid);
+        } else if(name == "sessionid") {
+                m_uniqueid = value;
+                setProperty("uniqueid", m_uniqueid);
         } else if(name == "kind") {
                 // the form buttons should have been defined when arriving here
                 // ('kind' definition at the end of the sheet on server-side)
@@ -604,12 +608,17 @@ void Popup::setSheetPopup(const bool & sheetpopup)
 	m_sheetpopup = sheetpopup;
 }
 
-const QString & Popup::sessionid() const
+const QString & Popup::callUniqueid() const
 {
-        return m_sessionid;
+        return m_uniqueid;
 }
 
-const QString & Popup::channel() const
+const QString & Popup::callAstid() const
+{
+        return m_astid;
+}
+
+const QString & Popup::callChannel() const
 {
         return m_channel;
 }

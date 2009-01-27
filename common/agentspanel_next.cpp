@@ -329,7 +329,6 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                                 // rounding quite often leads to a "-1" value
                                 // in order not to hurt sensitivities, set it to zero
                                 // if(dsec) dsec = 0;
-                                logAction(QString("agentpause times %1 clt=%2 srv=%3").arg(qname_group).arg(d1).arg(d2));
                         }
                 }
         }
@@ -368,6 +367,8 @@ void AgentsPanelNext::updatePeerAgent(double timeref,
                                       const QString & what,
                                       const QVariant & params)
 {
+        m_timesrv = timeref;
+        m_timeclt = QDateTime::currentDateTime();
         if(what != "agentstatus")
                 return;
         // qDebug() << "AgentsPanelNext::updatePeerAgent()" << params;
@@ -378,7 +379,6 @@ void AgentsPanelNext::updatePeerAgent(double timeref,
         QString jstatus = params.toMap()["joinedstatus"].toString();
         QString pstatus = params.toMap()["pausedstatus"].toString();
         // qDebug() << "AgentsPanelNext::updatePeerAgent()" << action << agentnum << qname << jstatus << pstatus;
-
         QString idxa = QString("%1-%2").arg(astid).arg(agentnum);
         if(action == "queuememberstatus") {
                 // if(m_agent_props.contains(idxa)) {
