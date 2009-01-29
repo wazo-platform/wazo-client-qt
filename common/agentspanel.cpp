@@ -337,7 +337,7 @@ void AgentsPanel::setAgentList(double, const QVariant & alist)
                         p_square->fill(Qt::gray);
                         m_agent_presence[agnum]->setPixmap(QPixmap(* p_square));
                         
-                        if(agstatus == "AGENT_IDLE") {
+                        if((agstatus == "AGENT_IDLE") || (agstatus == "AGENT_ONCALL")) {
                                 p_square->fill(Qt::green);
                                 m_agent_logged_action[agnum]->setIcon(QIcon(":/images/cancel.png"));
                                 m_agent_logged_status[agnum]->setProperty("logged", true);
@@ -346,6 +346,8 @@ void AgentsPanel::setAgentList(double, const QVariant & alist)
                                 m_agent_logged_action[agnum]->setIcon(QIcon(":/images/button_ok.png"));
                                 m_agent_logged_status[agnum]->setProperty("logged", false);
                         } else {
+                                p_square->fill(Qt::gray);
+                                m_agent_logged_action[agnum]->setIcon(QIcon(QPixmap(* p_square)));
                                 qDebug() << "AgentsPanel::setAgentList() unknown status" << agstatus;
                         }
                         m_agent_logged_status[agnum]->setPixmap(QPixmap(* p_square));
@@ -412,10 +414,12 @@ void AgentsPanel::agentClicked()
         if(action == "changeagent")
                 changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid), true);
         else if(action == "loginoff") {
-                if(m_agent_logged_status[agentid]->property("logged").toBool())
-                        agentAction(QString("logout %1 %2").arg(astid).arg(agentid));
-                else
-                        agentAction(QString("login %1 %2").arg(astid).arg(agentid));
+                if(m_agent_logged_status[agentid]->property("logged").isValid()) {
+                        if(m_agent_logged_status[agentid]->property("logged").toBool())
+                                agentAction(QString("logout %1 %2").arg(astid).arg(agentid));
+                        else
+                                agentAction(QString("login %1 %2").arg(astid).arg(agentid));
+                }
         } else if(action == "unpause") {
                 agentAction(QString("unpause_all %1 %2").arg(astid).arg(agentid));
         } else if(action == "pause") {

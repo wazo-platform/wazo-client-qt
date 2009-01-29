@@ -332,11 +332,12 @@ void IdentityDisplay::setAgentList(double, const QVariant & alist)
                                 setSystrayIcon(icon_color_black);
                                 m_agentstatus->setProperty("connected", false);
                                 m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
-                        } else {/* if(agstatus == "AGENT_IDLE") */
+                        } else if((agstatus == "AGENT_IDLE") || (agstatus == "AGENT_ONCALL")) {
                                 setSystrayIcon(icon_color_green);
                                 m_agentstatus->setProperty("connected", true);
                                 m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
-                        }
+                        } else
+                                qDebug() << "IdentityDisplay::setAgentList() unknown status" << agstatus;
                         
                         QVariant queuedetails = alistmap["newlist"].toMap()[agnum].toMap()["queues"];
                         int nj = 0;

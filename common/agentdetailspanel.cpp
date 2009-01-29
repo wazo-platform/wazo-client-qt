@@ -326,12 +326,13 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
                 m_action["alogin"]->setProperty("function", "alogin");
                 m_action["alogin"]->setIcon(QIcon(":/images/button_ok.png"));
                 m_actionlegends["alogin"]->setText(tr("Login"));
-        } else if(lstatus == "AGENT_IDLE") {
+        } else if((lstatus == "AGENT_IDLE") || (lstatus == "AGENT_ONCALL")) {
                 m_agentstatus->setText(tr("logged on phone number <b>%1</b>").arg(phonenum));
                 m_action["alogin"]->setProperty("function", "alogout");
                 m_action["alogin"]->setIcon(QIcon(":/images/cancel.png"));
                 m_actionlegends["alogin"]->setText(tr("Logout"));
-        }
+        } else
+                qDebug() << "AgentdetailsPanel::newAgent() unknown status" << astid << agentid << lstatus;
         
         m_agentlegend_qname->show();
         m_agentlegend_joined->show();
