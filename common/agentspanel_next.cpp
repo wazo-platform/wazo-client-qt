@@ -743,6 +743,7 @@ void AgentsPanelNext::refreshContents()
                 if(agstatus != "AGENT_LOGGEDOFF") foreach (QString qname, agqjoined.keys()) {
                         if(! agqjoined[qname].toMap().isEmpty()) {
                                 QString sstatus = agqjoined[qname].toMap()["Status"].toString();
+                                // qDebug() << "AgentsPanelNext::refreshContents()" << qname << idxa << sstatus;
                                 if((sstatus == "1") || (sstatus == "5")) {
                                         foreach (QString groupid, m_title.keys()) {
                                                 QStringList lqueues = m_title[groupid]->property("queues").toStringList();
@@ -760,11 +761,8 @@ void AgentsPanelNext::refreshContents()
                                                         }
                                                 }
                                         }
-                                } else if (sstatus == "3") {
-                                        qDebug() << "AgentsPanelNext::refreshContents()" << idxa << sstatus;
-                                } else {
-                                        qDebug() << "AgentsPanelNext::refreshContents()" << idxa << sstatus;
                                 }
+                                // "3", "" (agent not in queue)
                         }
                 }
         }

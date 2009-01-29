@@ -150,17 +150,15 @@ void AgentsPanel::updatePeerAgent(double,
                                 m_agent_logged_status[agentnum]->setPixmap(QPixmap(* p_square));
                                 m_agent_logged_status[agentnum]->setProperty("logged", true);
                                 m_agent_logged_action[agentnum]->setIcon(QIcon(":/images/cancel.png"));
-                        } else if(jstatus == "5") {
+                        } else if(jstatus == "5") { // agent in queue but not logged
                                 QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
                                 p_square->fill(Qt::red);
                                 m_agent_logged_status[agentnum]->setPixmap(QPixmap(* p_square));
                                 m_agent_logged_status[agentnum]->setProperty("logged", false);
                                 m_agent_logged_action[agentnum]->setIcon(QIcon(":/images/button_ok.png"));
-                        } else if(jstatus == "3") {
-                                qDebug() << "AgentsPanel::updatePeerAgent()" << what << jstatus;
-                        } else {
-                                qDebug() << "AgentsPanel::updatePeerAgent()" << what << jstatus;
-                        }
+                        } else
+                                qDebug() << "AgentsPanel::updatePeerAgent()" << what << astid << qname << agentnum << jstatus;
+                        // "3" : agent called
                 }
         } else if(action == "joinqueue") {
                 if(m_agent_labels.contains(agentnum)) {
@@ -263,8 +261,9 @@ void AgentsPanel::setAgentList(double, const QVariant & alist)
                 QVariantMap agqjoined = alistmap["newlist"].toMap()[agnum].toMap()["queues"].toMap();
                 QString agstatus = properties.toMap()["status"].toString();
                 QString phonenum = properties.toMap()["phonenum"].toString();
-                bool link = properties.toMap()["link"].toBool();
-                // qDebug() << "AgentsPanel::setAgentList()" << astid << agnum << agstatus << agfullname << phonenum << link << agqjoined;
+                QString slink = properties.toMap()["link"].toString();
+                bool link = (slink == "phonelink") || (slink == "agentlink");
+                // qDebug() << "AgentsPanel::setAgentList()" << astid << agnum << agstatus << agfullname << phonenum << link; // << agqjoined;
                 
                 if(! m_agent_labels.contains(agnum)) {
                         QFrame * qvline1 = new QFrame(this);
