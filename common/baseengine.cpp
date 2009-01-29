@@ -846,7 +846,8 @@ bool BaseEngine::parseCommand(const QString & line)
                                 }
                                 
                                 monitorPeerRequest(fullid_watched);
-                                emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
+                                // emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
+                                // XXX this information might not be relevant (to be filtered according to context, ...)
                         } else if (function == "update") {
                                 QStringList userupdate = datamap["user"].toStringList();
                                 if(userupdate.size() == 2) {
