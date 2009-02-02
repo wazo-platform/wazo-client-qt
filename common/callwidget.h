@@ -70,6 +70,7 @@ public:
 	//	   QWidget * parent = 0);
 	CallWidget(UserInfo *,
                    const QString &,
+                   const QString &,
 		   const QString &,
 		   int,
 		   const QString &,
@@ -81,6 +82,7 @@ public:
 			  const QString &);
 	//void setChannel(const QString &);
 	const QString & channel() const;
+	const QString & uidref() const;
 	//void setCallerId(const QString &);
 	//const QString & callerId() const;
 	//void setCallerIdName(const QString &);
@@ -108,6 +110,7 @@ public slots:
 private:
         UserInfo * m_ui;
 	QPoint m_dragstartpos;	//!< used for drag
+	QString m_uidref;	//!< call uniqueid identifier
 	QString m_channelme;	//!< channel identifier
 	QString m_callerid;		//!< caller id
 	QString m_calleridname;	//!< caller id name

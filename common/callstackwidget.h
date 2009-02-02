@@ -102,7 +102,9 @@ public slots:
         void updatePeer(UserInfo *,
                         const QString &,
                         const QVariant &);
-        void addCall(UserInfo *, const QVariant &);
+        void addCall(UserInfo *,
+                     const QString &,
+                     const QVariant &);
         //	void showCalls(const QString & tomonitor, const QString & callerid);
 	void updateDisplay();
 	void hupchan(const QString &);

@@ -72,7 +72,7 @@ public:
         //	           QWidget * parent = 0/*, int size = 16*/);
 	~PeerWidget();
 	void clearChanList();
-	void addChannel(const QVariant &);
+	void addChannel(const QString &, const QVariant &);
 	void setName(const QString &);
 	void setEngine(BaseEngine *);
         void setAgentToolTip(const QString &, const QStringList &);

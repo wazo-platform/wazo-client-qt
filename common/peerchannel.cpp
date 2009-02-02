@@ -48,7 +48,9 @@
  *
  * Just fill the members m_id, m_state and m_otherPeer.
  */
-PeerChannel::PeerChannel(const QVariant & chanprops, QObject *parent)
+PeerChannel::PeerChannel(const QString &,
+                         const QVariant & chanprops,
+                         QObject *parent)
         : QObject(parent)
 {
         // qDebug() << "PeerChannel::PeerChannel()" << chanprops.toMap();

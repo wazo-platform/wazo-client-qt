@@ -447,7 +447,7 @@ void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
 		}
 		if( ! m_mychannels.empty() ) {
 			QMenu * transferMenu = new QMenu( tr("&Transfer"), &contextMenu );
-			QListIterator<PeerChannel *> i(m_mychannels);
+                        QListIterator<PeerChannel *> i(m_mychannels);
 			while(i.hasNext()) {
 				const PeerChannel * channel = i.next();
 				transferMenu->addAction(channel->otherPeer(),
@@ -472,10 +472,11 @@ void PeerWidget::clearChanList()
 
 /*! \brief add a channel to m_channels list
  */
-void PeerWidget::addChannel(const QVariant & chanprops)
+void PeerWidget::addChannel(const QString & uidref,
+                            const QVariant & chanprops)
 {
         // qDebug() << "PeerWidget::addChannel()" << chanprops;
-	PeerChannel * ch = new PeerChannel(chanprops, this);
+	PeerChannel * ch = new PeerChannel(uidref, chanprops, this);
 	connect(ch, SIGNAL(interceptChan(const QString &)),
 	        this, SLOT(interceptChan(const QString &)));
 	connect(ch, SIGNAL(hangupChan(const QString &)),
@@ -498,7 +499,7 @@ void PeerWidget::updatePeer(UserInfo * ui,
         foreach(QString ref, chanlist.toMap().keys()) {
                 QVariant chanprops = chanlist.toMap()[ref];
                 if(chanprops.toMap()["status"].toString() != CHAN_STATUS_HANGUP) {
-                        PeerChannel * ch = new PeerChannel(chanprops);
+                        PeerChannel * ch = new PeerChannel(ref, chanprops);
                         connect(ch, SIGNAL(transferChan(const QString &)),
                                 this, SLOT(transferChan(const QString &)) );
                         m_mychannels << ch;

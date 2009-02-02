@@ -163,31 +163,32 @@ void CallStackWidget::updatePeer(UserInfo * ui,
         // qDebug() << "CallStackWidget::updatePeer()" << m_callhash.keys() << chanlist << ui;
         foreach(QString ref, chanlist.toMap().keys()) {
                 QVariant chanprops = chanlist.toMap()[ref];
-                addCall(ui, chanprops);
+                addCall(ui, ref, chanprops);
         }
 }
 
 /*! \brief add a call to the list
  */
-void CallStackWidget::addCall(UserInfo * ui, const QVariant & chanprops)
+void CallStackWidget::addCall(UserInfo * ui, const QString & uidref, const QVariant & chanprops)
 {
-        // qDebug() << "CallStackWidget::addCall()" << chanprops;
+        // qDebug() << "CallStackWidget::addCall()" << uidref << chanprops;
         QString channelme = chanprops.toMap()["thischannel"].toString();
         QString status = chanprops.toMap()["status"].toString();
         int time = chanprops.toMap()["time-dial"].toInt();
         QString channelpeer = chanprops.toMap()["peerchannel"].toString();
         QString exten = chanprops.toMap()["calleridnum"].toString();
         
-        // qDebug() << "CallStackWidget::addCall()" << channelme << status << time << direction << channelpeer << exten;
+        QString callindex = uidref;
+        qDebug() << "CallStackWidget::addCall()" << uidref << channelme << status << time << channelpeer << exten;
         
         if(status != CHAN_STATUS_HANGUP) {
-                if(m_callhash.contains(channelme))
-                        m_callhash[channelme]->updateCall(status, time, channelpeer, exten);
+                if(m_callhash.contains(callindex))
+                        m_callhash[callindex]->updateCall(status, time, channelpeer, exten);
                 else
-                        m_callhash[channelme] = new Call(ui, channelme, status, time, channelpeer, exten);
+                        m_callhash[callindex] = new Call(ui, channelme, status, time, channelpeer, exten);
         } else {
-                delete m_callhash[channelme];
-                m_callhash.remove(channelme);
+                delete m_callhash[callindex];
+                m_callhash.remove(callindex);
         }
 }
 
@@ -263,13 +264,13 @@ void CallStackWidget::updateDisplay()
 		}
 	}
         
-	foreach(QString chanme, m_callhash.keys()) {
+	foreach(QString cindex, m_callhash.keys()) {
                 // qDebug() << "CallStackWidget::updateDisplay()" << chanme << m_monitored_userid << m_callhash[chanme]->getUserId();
-		if(m_monitored_ui->userid() == m_callhash[chanme]->getUserId()) {
-			Call * c = m_callhash[chanme];
+		if(m_monitored_ui->userid() == m_callhash[cindex]->getUserId()) {
+			Call * c = m_callhash[cindex];
 			for(j = 0; j < m_afflist.count(); j++) {
 				// qDebug() << j << m_afflist[j]->channel();
-				if(m_afflist[j]->channel() == chanme) {
+				if(m_afflist[j]->uidref() == cindex) {
 					m_afflist[j]->updateWidget( c->getStatus(),
 					                            c->getTime(),
 								    c->getChannelPeer(),
@@ -280,13 +281,14 @@ void CallStackWidget::updateDisplay()
                         // qDebug() << "CallStackWidget::updateDisplay() -" << j << m_afflist.count();
 			if(j == m_afflist.count()) {
                                 callwidget = new CallWidget(m_monitored_ui,
-                                                            chanme,
+                                                            cindex,
+                                                            c->getChannelMe(),
                                                             c->getStatus(),
                                                             c->getTime(),
                                                             c->getChannelPeer(),
                                                             c->getExten(),
                                                             this);
-
+                                
                                 connect( callwidget, SIGNAL(doHangUp(const QString &)),
                                          this, SLOT(hupchan(const QString &)) );
                                 connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),

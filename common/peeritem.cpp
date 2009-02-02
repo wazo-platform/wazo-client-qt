@@ -205,7 +205,7 @@ void PeerItem::updateDisplayedChans()
         m_peerwidget->clearChanList();
         foreach(QString ref, m_chanlist.toMap().keys()) {
                 QVariant chanprops = m_chanlist.toMap()[ref];
-                m_peerwidget->addChannel(chanprops);
+                m_peerwidget->addChannel(ref, chanprops);
         }
         return;
 }

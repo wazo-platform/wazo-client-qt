@@ -59,6 +59,7 @@
  * set up the widget, start timer.
  */
 CallWidget::CallWidget(UserInfo * ui,
+                       const QString & uidref,
                        const QString & channelme,
 		       const QString & status,
 		       int time,
@@ -73,6 +74,7 @@ CallWidget::CallWidget(UserInfo * ui,
 {
         // qDebug() << "CallWidget::CallWidget()" << channelme;
         m_ui = ui;
+        m_uidref = uidref;
 	QGridLayout * gridlayout = new QGridLayout(this);
         
 // 	m_callerid = callerid;
@@ -329,3 +331,7 @@ const QString & CallWidget::channel() const
 	return m_channelme;
 }
 
+const QString & CallWidget::uidref() const
+{
+	return m_uidref;
+}
