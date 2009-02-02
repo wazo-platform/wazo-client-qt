@@ -6,6 +6,7 @@ LRELEASE?=lrelease
 UPXRUN?=upx
 ECHO?=/bin/echo
 JOPT?=-j1
+DOXYGEN?=doxygen
 
 # WIN32 targets only
 MAKENSIS=/cygdrive/c/Program\ Files/NSIS/makensis.exe
@@ -119,3 +120,10 @@ debian-%:
 	cd pf-xivo-cti-$*-${XIVOVER}~svn${SVNVER} && \
 		DEB_AUTO_UPDATE_DEBIAN_CONTROL=yes fakeroot debian/rules clean && \
 		dpkg-buildpackage -us -uc -tc -rfakeroot
+
+# build doc
+
+doc:	common xivoclient
+	${DOXYGEN} xivoclient/Doxyfile 
+
+
