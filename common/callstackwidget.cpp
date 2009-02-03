@@ -88,11 +88,15 @@ Call::Call(const Call & call)
 
 /*! \brief update object properties
  */
-void Call::updateCall(const QString & status,
+void Call::updateCall(UserInfo * ui,
+                      const QString & channelme,
+                      const QString & status,
 		      int time,
 		      const QString & channelpeer,
 		      const QString & exten)
 {
+        m_ui          = ui;
+	m_channelme   = channelme;
 	m_status      = status;
 	m_startTime   = QDateTime::currentDateTime().addSecs(-time);
 	m_channelpeer = channelpeer;
@@ -157,10 +161,11 @@ void CallStackWidget::setUserInfo(const UserInfo *)
 }
 
 void CallStackWidget::updatePeer(UserInfo * ui,
-                                 const QString &,
+                                 const QString & /* phoneid */,
                                  const QVariant & chanlist)
 {
         // qDebug() << "CallStackWidget::updatePeer()" << m_callhash.keys() << chanlist << ui;
+        // qDebug() << "CallStackWidget::updatePeer()" << ui->phonenumber() << phoneid << chanlist.toMap().keys();
         foreach(QString ref, chanlist.toMap().keys()) {
                 QVariant chanprops = chanlist.toMap()[ref];
                 addCall(ui, ref, chanprops);
@@ -183,7 +188,7 @@ void CallStackWidget::addCall(UserInfo * ui, const QString & uidref, const QVari
         
         if(status != CHAN_STATUS_HANGUP) {
                 if(m_callhash.contains(callindex))
-                        m_callhash[callindex]->updateCall(status, time, channelpeer, exten);
+                        m_callhash[callindex]->updateCall(ui, channelme, status, time, channelpeer, exten);
                 else
                         m_callhash[callindex] = new Call(ui, channelme, status, time, channelpeer, exten);
         } else {

@@ -64,7 +64,8 @@ public:
 	//Peer( const QString & ext, QObject * parent = 0 );
 	Call(const QString &);
 	Call(UserInfo *,
-             const QString &, const QString &, int,
+             const QString &, const QString &,
+             int,
              const QString &, const QString &);
 	Call(const Call &);
 	const QString & getUserId() const;	//! get m_phonen
@@ -75,10 +76,10 @@ public:
 	const QString & getChannelPeer() const;	//! get m_channelpeer
 	const QString & getExten() const;	//! get m_exten
         
-	void updateCall(const QString &,
+	void updateCall(UserInfo *,
+                        const QString &, const QString &,
 			int,
-			const QString &,
-                        const QString &);
+			const QString &, const QString &);
 private:
         UserInfo * m_ui;
 	QString m_channelme;	//!< "my" channel 
