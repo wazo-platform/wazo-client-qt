@@ -54,7 +54,7 @@
 ConferencePanel::ConferencePanel(QWidget * parent)
         : QWidget(parent), m_ui(NULL)
 {
-        qDebug() << "ConferencePanel::ConferencePanel()";
+        // qDebug() << "ConferencePanel::ConferencePanel()";
 	m_glayout = new QGridLayout(this);
         m_tw = new QTabWidget(this);
         m_glayout->addWidget( m_tw, 0, 0 );
@@ -85,14 +85,15 @@ void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
                         QString roomname = astrooms.toMap()[idx].toMap()["name"].toString();
                         QString roomnum = astrooms.toMap()[idx].toMap()["number"].toString();
                         QString adminid = astrooms.toMap()[idx].toMap()["adminid"].toString();
-                        QVariantMap channels = astrooms.toMap()[idx].toMap()["channels"].toMap();
+                        QVariantMap uniqueids = astrooms.toMap()[idx].toMap()["uniqueids"].toMap();
+                        // qDebug() << "ConferencePanel::meetmeInit()" << astid << idx << roomname << roomnum << adminid << uniqueids;
                         
-                        if(channels.size() > 0) {
+                        if(uniqueids.size() > 0) {
                                 addRoomTab(astid, roomnum, roomname);
-                                foreach (QString chan, channels.keys()) {
-                                        setProperties(timeref, "join", adminid, astid, roomnum, chan, channels[chan]);
-                                        setProperties(timeref, "mutestatus", adminid, astid, roomnum, chan, channels[chan]);
-                                        setProperties(timeref, "recordstatus", adminid, astid, roomnum, chan, channels[chan]);
+                                foreach (QString uid, uniqueids.keys()) {
+                                        setProperties(timeref, "join", adminid, astid, roomnum, uid, uniqueids[uid]);
+                                        setProperties(timeref, "mutestatus", adminid, astid, roomnum, uid, uniqueids[uid]);
+                                        setProperties(timeref, "recordstatus", adminid, astid, roomnum, uid, uniqueids[uid]);
                                 }
                         } else {
                                 delRoomTab(astid, roomnum);
@@ -144,7 +145,7 @@ void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
                       adminid,
                       astid,
                       roomnum,
-                      meetme.toMap()["channel"].toString(),
+                      meetme.toMap()["uniqueid"].toString(),
                       meetme.toMap()["details"]);
 }
 
@@ -153,12 +154,12 @@ void ConferencePanel::setProperties(double timeref,
                                     const QString & adminid,
                                     const QString & astid,
                                     const QString & roomnum,
-                                    const QString & channel,
+                                    const QString & uniqueid,
                                     const QVariant & details)
 {
-        // qDebug() << "ConferencePanel::setProperties()" << action << adminid << astid << roomnum << channel << details;
+        // qDebug() << "ConferencePanel::setProperties()" << action << adminid << astid << roomnum << uniqueid << details;
         QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
-        QString ref = QString("%1-%2-%3").arg(astid).arg(roomnum).arg(channel);
+        QString ref = QString("%1-%2-%3").arg(astid).arg(roomnum).arg(uniqueid);
         if(action == "join") {
                 QString usernum = details.toMap()["usernum"].toString();
                 QString fullname = details.toMap()["fullname"].toString();
@@ -181,7 +182,7 @@ void ConferencePanel::setProperties(double timeref,
                         m_action_kick[ref]->setProperty("room", roomnum);
                         m_action_kick[ref]->setProperty("usernum", usernum);
                         m_action_kick[ref]->setProperty("reference", ref);
-                        m_action_kick[ref]->setProperty("channel", channel);
+                        m_action_kick[ref]->setProperty("uniqueid", uniqueid);
                         m_action_kick[ref]->setProperty("action", "kick");
                         if((m_ui->userid() == adminid) || (m_ui->userid() == userid))
                                 connect(m_action_kick[ref], SIGNAL(clicked()),
@@ -196,7 +197,7 @@ void ConferencePanel::setProperties(double timeref,
                         m_action_record[ref]->setProperty("room", roomnum);
                         m_action_record[ref]->setProperty("usernum", usernum);
                         m_action_record[ref]->setProperty("reference", ref);
-                        m_action_record[ref]->setProperty("channel", channel);
+                        m_action_record[ref]->setProperty("uniqueid", uniqueid);
                         m_action_record[ref]->setProperty("action", "record");
                         m_action_record[ref]->setProperty("recordstatus", "off");
                         if(m_ui->userid() == adminid)
@@ -212,7 +213,7 @@ void ConferencePanel::setProperties(double timeref,
                         m_action_mute[ref]->setProperty("room", roomnum);
                         m_action_mute[ref]->setProperty("usernum", usernum);
                         m_action_mute[ref]->setProperty("reference", ref);
-                        m_action_mute[ref]->setProperty("channel", channel);
+                        m_action_mute[ref]->setProperty("uniqueid", uniqueid);
                         m_action_mute[ref]->setProperty("action", "mute");
                         m_action_mute[ref]->setProperty("mutestatus", "off");
                         if((m_ui->userid() == adminid) || (m_ui->userid() == userid))
@@ -298,7 +299,7 @@ void ConferencePanel::doMeetMeAction()
                              sender()->property("astid").toString() +
                              " " + sender()->property("room").toString() +
                              " " + sender()->property("usernum").toString() +
-                             " " + sender()->property("channel").toString());
+                             " " + sender()->property("uniqueid").toString());
                 m_action_kick[ref]->setIconSize(QSize(8, 8));
         } else if(action == "record") {
                 if(m_action_record[ref]->property("recordstatus").toString() == "off") {
@@ -306,7 +307,7 @@ void ConferencePanel::doMeetMeAction()
                                      sender()->property("astid").toString() +
                                      " " + sender()->property("room").toString() +
                                      " " + sender()->property("usernum").toString() +
-                                     " " + sender()->property("channel").toString());
+                                     " " + sender()->property("uniqueid").toString());
                         m_action_record[ref]->setProperty("recordstatus", "on");
                         m_action_record[ref]->setText(tr("Stop Record"));
                 } else {
@@ -314,7 +315,7 @@ void ConferencePanel::doMeetMeAction()
                                      sender()->property("astid").toString() +
                                      " " + sender()->property("room").toString() +
                                      " " + sender()->property("usernum").toString() +
-                                     " " + sender()->property("channel").toString());
+                                     " " + sender()->property("uniqueid").toString());
                         m_action_record[ref]->setProperty("recordstatus", "off");
                         m_action_record[ref]->setText(tr("Record"));
                 }
@@ -325,13 +326,13 @@ void ConferencePanel::doMeetMeAction()
                                      sender()->property("astid").toString() +
                                      " " + sender()->property("room").toString() +
                                      " " + sender()->property("usernum").toString() +
-                                     " " + sender()->property("channel").toString());
+                                     " " + sender()->property("uniqueid").toString());
                 } else if(mutestatus == "on") {
                         meetmeAction("unmute",
                                      sender()->property("astid").toString() +
                                      " " + sender()->property("room").toString() +
                                      " " + sender()->property("usernum").toString() +
-                                     " " + sender()->property("channel").toString());
+                                     " " + sender()->property("uniqueid").toString());
                 } else {
                         qDebug() << "ConferencePanel::doMeetMeAction() unknown mutestatus" << mutestatus << ref;
                 }

@@ -184,7 +184,7 @@ void CallStackWidget::addCall(UserInfo * ui, const QString & uidref, const QVari
         QString exten = chanprops.toMap()["calleridnum"].toString();
         
         QString callindex = uidref;
-        qDebug() << "CallStackWidget::addCall()" << uidref << channelme << status << time << channelpeer << exten;
+        // qDebug() << "CallStackWidget::addCall()" << uidref << channelme << status << time << channelpeer << exten;
         
         if(status != CHAN_STATUS_HANGUP) {
                 if(m_callhash.contains(callindex))

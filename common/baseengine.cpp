@@ -935,6 +935,16 @@ bool BaseEngine::parseCommand(const QString & line)
                                         sendCommand("phones-add");
                         }
                         
+                } else if (thisclass == "trunks") {
+                        // if (function == "update") {
+                        // QString astid = datamap["astid"].toString();
+                        // QString trunkid = datamap["trunkid"].toString();
+                        // QVariant value = datamap["status"];
+                        // updatePhone(astid, trunkid, value);
+                        // callsUpdated();
+                        // }
+                        qDebug() << "BaseEngine::parseCommand()" << thisclass << "not yet supported";
+                        
                 } else if (thisclass == "login_id_ok") {
                         
                         m_version_server = datamap["version"].toInt();
@@ -1043,7 +1053,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         }
 
                 } else {
-                        qDebug() << "unknown server command class" << thisclass << datamap;
+                        qDebug() << "BaseEngine::parseCommand() : unknown server command class" << thisclass << datamap;
                 }
         }
         

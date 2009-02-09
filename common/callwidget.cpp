@@ -163,7 +163,7 @@ void CallWidget::updateWidget(const QString & status,
 			      const QString &/* channelpeer*/,
 			      const QString & exten)
 {
-        qDebug() << "CallWidget::updateWidget()" << status << time << exten;
+        // qDebug() << "CallWidget::updateWidget()" << status << time << exten;
 	//m_lbl_status->setText(status);
 	setActionPixmap(status);
 	//qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
