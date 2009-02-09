@@ -337,7 +337,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         if(doshowtime) {
                 int nsec = int(dsec + 0.5);
                 int dhr  = nsec / 3600;
-                int dmin = nsec / 60;
+                int dmin = (nsec - dhr * 3600) / 60;
                 int dsec = nsec % 60;
                 if((nsec > m_blinktime) && (nsec % 2) && (colorqss == "#ff8080"))
                         colorqss = "#ffb0b0";

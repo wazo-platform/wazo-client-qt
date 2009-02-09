@@ -345,13 +345,18 @@ void ConferencePanel::timerEvent(QTimerEvent *)
         foreach (QString ref, m_timespent.keys()) {
                 QDateTime inittime = m_timespent[ref]->property("inittime").toDateTime();
                 int nsec = inittime.secsTo(QDateTime::currentDateTime());
-                int dmin = nsec / 60;
-                int dsec = nsec % 60;
                 QString displayedtime;
-                if(dmin > 0)
-                        displayedtime = tr("%1 min %2 sec").arg(QString::number(dmin), QString::number(dsec));
+                
+                int dhr  = nsec / 3600;
+                int dmin = (nsec - dhr * 3600) / 60;
+                int dsec = nsec % 60;
+                if(dhr > 0)
+                        displayedtime = tr("%1 hr %2 min %3 sec").arg(dhr).arg(dmin).arg(dsec);
+                else if(dmin > 0)
+                        displayedtime = tr("%1 min %2 sec").arg(dmin).arg(dsec);
                 else
-                        displayedtime = tr("%1 sec").arg(QString::number(dsec));
+                        displayedtime = tr("%1 sec").arg(dsec);
+                
                 m_timespent[ref]->setText(displayedtime);
         }
 }
