@@ -42,6 +42,7 @@
 #ifndef __QUEUEDETAILSPANEL_H__
 #define __QUEUEDETAILSPANEL_H__
 
+#include <QDateTime>
 #include <QHash>
 #include <QObject>
 #include <QVariant>
@@ -69,10 +70,11 @@ public:
 signals:
         void changeWatchedAgent(const QString &, bool);
 protected:
+        void timerEvent(QTimerEvent *);
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-	void newQueue(const QString &, const QString &, const QVariant &);
+	void newQueue(double, const QString &, const QString &, const QVariant &);
         void setAgentList(double, const QVariant &);
         void updatePeerAgent(double,
                              const QString &,
@@ -82,6 +84,9 @@ private slots:
         void agentClicked();
 private:
         void update();
+        
+        double m_timesrv;
+        QDateTime m_timeclt;
         
 	BaseEngine * m_engine;	//!< BaseEngine object
         QGridLayout * m_gridlayout;

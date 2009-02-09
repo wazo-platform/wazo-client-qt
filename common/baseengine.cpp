@@ -729,7 +729,8 @@ bool BaseEngine::parseCommand(const QString & line)
                 } else if (thisclass == "queue-status") {
                         if((datamap["astid"].toString() == m_queue_watched_astid) &&
                            (datamap["queuename"].toString() == m_queue_watched_queueid))
-                                changeWatchedQueueSignal(m_queue_watched_astid,
+                                changeWatchedQueueSignal(timenow,
+                                                         m_queue_watched_astid,
                                                          m_queue_watched_queueid,
                                                          datamap["payload"]);
                         

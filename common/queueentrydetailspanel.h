@@ -42,6 +42,7 @@
 #ifndef __QUEUEENTRYDETAILSPANEL_H__
 #define __QUEUEENTRYDETAILSPANEL_H__
 
+#include <QDateTime>
 #include <QHash>
 #include <QList>
 #include <QObject>
@@ -66,10 +67,11 @@ public:
 signals:
         void changeWatchedAgent(const QString &);
 protected:
+        void timerEvent(QTimerEvent *);
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-	void newQueue(const QString &, const QString &, const QVariant &);
+	void newQueue(double, const QString &, const QString &, const QVariant &);
         void updatePeerAgent(double,
                              const QString &,
                              const QString &,
@@ -77,6 +79,8 @@ public slots:
 private slots:
         void agentClicked();
 private:
+        void updateEntryChannel(const QString &);
+        
         QGridLayout * m_gridlayout;
 	QVBoxLayout * m_layout;
         QScrollArea * m_scrollarea;
@@ -88,6 +92,8 @@ private:
         QHash<QString, QLabel *> m_entrypos;
         QHash<QString, QLabel *> m_entrytime;
         int m_maxbusy;
+        double m_timesrv;
+        QDateTime m_timeclt;
 };
 
 #endif /* __QUEUEENTRYDETAILSPANEL_H__ */

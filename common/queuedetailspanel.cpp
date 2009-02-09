@@ -76,6 +76,7 @@ QueuedetailsPanel::QueuedetailsPanel(BaseEngine * engine,
         m_queuelegend_status->hide();
         m_queuelegend_paused->hide();
         m_queuelegend_callstaken->hide();
+        // startTimer(1000);
 }
 
 QueuedetailsPanel::~QueuedetailsPanel()
@@ -91,11 +92,13 @@ void QueuedetailsPanel::setUserInfo(const UserInfo *)
 {
 }
 
-void QueuedetailsPanel::updatePeerAgent(double,
+void QueuedetailsPanel::updatePeerAgent(double timeref,
                                         const QString &,
                                         const QString & what,
                                         const QVariant & params)
 {
+        m_timesrv = timeref;
+        m_timeclt = QDateTime::currentDateTime();
         if(what != "agentstatus")
                 return;
         // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
@@ -217,7 +220,7 @@ void QueuedetailsPanel::setAgentList(double, const QVariant & alist)
         m_agentlists[astid] = alist.toMap()["newlist"].toMap();
 }
 
-void QueuedetailsPanel::newQueue(const QString & astid, const QString & queueid, const QVariant & queuestatus)
+void QueuedetailsPanel::newQueue(double, const QString & astid, const QString & queueid, const QVariant & queuestatus)
 {
         // qDebug() << "QueuedetailsPanel::newQueue()" << astid << queueid << queuestatus.toMap();
         m_queuelegend_agentid->show();
@@ -238,4 +241,9 @@ void QueuedetailsPanel::agentClicked()
         QString astid = sender()->property("astid").toString();
         QString agentid = sender()->property("agentid").toString();
         changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid), true);
+}
+
+void QueuedetailsPanel::timerEvent(QTimerEvent *)
+{
+        // qDebug() << "QueuedetailsPanel::timerEvent()";
 }

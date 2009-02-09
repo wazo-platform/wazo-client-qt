@@ -85,6 +85,7 @@ private:
                         const QString &);
         void delRoomTab(const QString &,
                         const QString &);
+        
         QHash<QString, QLabel *> m_infos;
         QHash<QString, QLabel *> m_timespent;
         QHash<QString, QPushButton *> m_action_kick;

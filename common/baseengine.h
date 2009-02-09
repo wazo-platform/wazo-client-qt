@@ -259,7 +259,7 @@ signals:
 	void forwardUpdated(const QString &, bool, const QString &);
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QString &, const QString &, const QVariant &);
-        void changeWatchedQueueSignal(const QString &, const QString &, const QVariant &);
+        void changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &);
         void updateAgentPresence(const QString &, const QVariant &);
         void displayFiche(const QString &, bool);
 protected:

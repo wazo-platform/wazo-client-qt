@@ -955,8 +955,8 @@ void MainWidget::engineStarted()
                                 } else
                                         addPanel(xletid, tr("Agents of a Queue"), m_xlet[xletid]);
                                 
-                                connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &, const QString &, const QVariant &)),
-                                         m_xlet[xletid], SLOT(newQueue(const QString &, const QString &, const QVariant &)) );
+                                connect( m_engine, SIGNAL(changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &)),
+                                         m_xlet[xletid], SLOT(newQueue(double, const QString &, const QString &, const QVariant &)) );
                                 connect( m_engine, SIGNAL(newAgentList(double, const QVariant &)),
                                          m_xlet[xletid], SLOT(setAgentList(double, const QVariant &)) );
                                 connect( m_xlet[xletid], SIGNAL(changeWatchedAgent(const QString &, bool)),
@@ -974,8 +974,8 @@ void MainWidget::engineStarted()
                                 } else
                                         addPanel(xletid, tr("Calls of a Queue"), m_xlet[xletid]);
                                 
-                                connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &, const QString &, const QVariant &)),
-                                         m_xlet[xletid], SLOT(newQueue(const QString &, const QString &, const QVariant &)) );
+                                connect( m_engine, SIGNAL(changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &)),
+                                         m_xlet[xletid], SLOT(newQueue(double, const QString &, const QString &, const QVariant &)) );
                                 
 			} else if (xletid == QString("datetime")) {
 				m_xlet[xletid] = new DatetimePanel();
@@ -1560,7 +1560,7 @@ void MainWidget::about()
 			   "<p>(+33 / 0) 1.41.38.99.60</p>" +
 			   "<p><b>" + tr("Authors : ") + "</b>Thomas Bernard, Corentin Le Gall</p>" +
 			   "<hr><p><b>" + tr("License : ") + "</b>" +
-			   "<a href=http://www.gnu.org/licenses/gpl-2.0.txt>GNU General Public License v2</a></p>"
+			   "<a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GNU General Public License v3</a></p>"
 			   "<p>" + tr("with a special exception allowing you to link it with OpenSSL, under some conditions.") + "</p>");
 }
 
