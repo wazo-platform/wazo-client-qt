@@ -105,6 +105,7 @@ void QueueentrydetailsPanel::newQueue(double timeref,
         QVariantMap queuestatusmap = queuestatus.toMap();
         foreach(QString channel, queuestatusmap["entries"].toMap().keys()) {
                 QVariantMap entryinfos = queuestatusmap["entries"].toMap()[channel].toMap();
+                qDebug() << "QueueentrydetailsPanel::newQueue()" << astid << queueid << channel << entryinfos;
                 
                 m_entrypos[channel] = new QLabel(this);
                 int time_spent = int(timeref - entryinfos["entrytime"].toDouble() + 0.5);

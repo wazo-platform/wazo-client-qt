@@ -54,6 +54,7 @@
 
 #include "baseengine.h"
 #include "xivoconsts.h"
+#include "jsondecodethread.h"
 
 /*! \brief Constructor.
  *
@@ -129,6 +130,11 @@ BaseEngine::BaseEngine(QSettings * settings,
                  this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
 	connect( m_filesocket, SIGNAL(readyRead()),
                  this, SLOT(socketReadyRead()));
+        
+        m_jsondecode_thread = new JsonDecodeThread(this);
+        connect( m_jsondecode_thread, SIGNAL(gotit()),
+                 this, SLOT(threadfinished()));
+        m_jsondecode_thread->start();
         
 	if(m_autoconnect)
 		start();
@@ -634,16 +640,21 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 //         }
 }
 
-bool BaseEngine::parseCommand(const QString & line)
+void BaseEngine::parseJsonCommand(const QString & line)
 {
-        QVariant data;
-        try {
-                data = JsonQt::JsonToVariant::parse(line.trimmed());
-        }
-        catch(JsonQt::ParseException) {
-                qDebug() << "BaseEngine::parseCommand() exception catched for" << line.trimmed();
-                return false;
-        }
+        m_jsondecode_thread->setLine(line);
+}
+
+void BaseEngine::threadfinished()
+{
+        QVariant data = m_jsondecode_thread->property("parsed");
+        parseQVariantCommand(data);
+}
+
+void BaseEngine::parseQVariantCommand(const QVariant & data)
+{
+        if(! data.isValid())
+                return;
         
         QVariantMap datamap = data.toMap();
         QString direction = datamap["direction"].toString();
@@ -944,7 +955,7 @@ bool BaseEngine::parseCommand(const QString & line)
                         // updatePhone(astid, trunkid, value);
                         // callsUpdated();
                         // }
-                        qDebug() << "BaseEngine::parseCommand()" << thisclass << "not yet supported";
+                        qDebug() << "BaseEngine::parseQVariantCommand()" << thisclass << "not yet supported";
                         
                 } else if (thisclass == "login_id_ok") {
                         
@@ -1054,11 +1065,9 @@ bool BaseEngine::parseCommand(const QString & line)
                         }
 
                 } else {
-                        qDebug() << "BaseEngine::parseCommand() : unknown server command class" << thisclass << datamap;
+                        qDebug() << "BaseEngine::parseQVariantCommand() : unknown server command class" << thisclass << datamap;
                 }
         }
-        
-        return true;
 }
 
 void BaseEngine::agentAction(const QString & action)
@@ -1227,7 +1236,7 @@ void BaseEngine::socketReadyRead()
                                 qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
                                 displayFiche(line, true);
                         } else
-                                parseCommand(line);
+                                parseJsonCommand(line);
                 }
         else if(socketname == "filetransfers") {
                 while(m_filesocket->canReadLine()) {
