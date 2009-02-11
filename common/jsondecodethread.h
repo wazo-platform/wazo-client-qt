@@ -54,12 +54,16 @@ public:
         JsonDecodeThread(QObject * parent);
         void setLine(const QString &);
         void run(); // this is virtual method, we must implement it in our subclass of QThread
+        void lock();
+        void unlock_and_wake();
 signals:
         void gotit();
 private:
         QQueue<QString> m_queue;
-        QMutex m_mtx;
-        QWaitCondition m_waitcond;
+        QMutex m_mtx_queueloop;
+        QMutex m_mtx_data;
+        QWaitCondition m_waitcond_queueloop;
+        QWaitCondition m_waitcond_data;
 };
 
 #endif

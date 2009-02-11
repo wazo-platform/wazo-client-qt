@@ -647,8 +647,10 @@ void BaseEngine::parseJsonCommand(const QString & line)
 
 void BaseEngine::threadfinished()
 {
+        m_jsondecode_thread->lock();
         QVariant data = m_jsondecode_thread->property("parsed");
         parseQVariantCommand(data);
+        m_jsondecode_thread->unlock_and_wake();
 }
 
 void BaseEngine::parseQVariantCommand(const QVariant & data)

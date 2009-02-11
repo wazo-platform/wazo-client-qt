@@ -41,6 +41,7 @@
 
 #include <QDebug>
 #include <QVariant>
+#include <QTime>
 
 #include "JsonToVariant.h"
 #include "VariantToJson.h"
@@ -56,17 +57,18 @@ void JsonDecodeThread::setLine(const QString & line)
 {
         // qDebug() << "JsonDecodeThread::setLine()";
         m_queue.enqueue(line);
-        m_waitcond.wakeAll();
+        m_waitcond_queueloop.wakeAll();
 }
 
 void JsonDecodeThread::run()
 {
         while(true) {
-                m_mtx.lock();
-                m_waitcond.wait(& m_mtx);
+                m_mtx_queueloop.lock();
+                m_waitcond_queueloop.wait(& m_mtx_queueloop);
                 while(! m_queue.isEmpty()) {
                         QString line = m_queue.dequeue();
                         QVariant data;
+                        QTime t0 = QTime::currentTime();
                         try {
                                 data = JsonQt::JsonToVariant::parse(line.trimmed());
                         }
@@ -74,10 +76,28 @@ void JsonDecodeThread::run()
                                 qDebug() << "JsonDecodeThread::run() exception catched for" << line.trimmed();
                                 data = QVariant(QVariant::Invalid);
                         }
+                        QTime t1 = QTime::currentTime();
+                        int nmsecs = t0.msecsTo(t1);
+                        if(nmsecs > 0)
+                                qDebug() << "JsonDecodeThread::run()" << data.toMap()["class"].toString()
+                                         << line.size() << nmsecs << (line.size() / nmsecs) << "bytes/ms";
+                        m_mtx_data.lock();
                         setProperty("parsed", data);
-                        // qDebug() << "JsonDecodeThread::run() Execution done";
                         gotit();
+                        m_waitcond_data.wait(& m_mtx_data);
+                        m_mtx_data.unlock();
                 }
-                m_mtx.unlock();
+                m_mtx_queueloop.unlock();
         }
+}
+
+void JsonDecodeThread::lock()
+{
+        m_mtx_data.lock();
+}
+
+void JsonDecodeThread::unlock_and_wake()
+{
+        m_mtx_data.unlock();
+        m_waitcond_data.wakeAll();
 }
