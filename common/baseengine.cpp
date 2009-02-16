@@ -711,7 +711,6 @@ void BaseEngine::parseQVariantCommand(const QVariant & data)
                                 foreach (QVariant qv, datamap["payload"].toList())
                                         newAgentList(timenow, qv);
                         } else if(function == "update") {
-                                qDebug() << thisclass << function << datamap;
                                 QVariant params = datamap["payload"];
                                 QString action = params.toMap()["action"].toString();
                                 QString astid = params.toMap()["astid"].toString();

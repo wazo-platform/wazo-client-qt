@@ -398,6 +398,7 @@ void AgentsPanelNext::updatePeerAgent(double timeref,
                         if(pqueues[qname].toMap().isEmpty()) {
                                 QVariantMap qprops;
                                 qprops["Paused"] = pstatus;
+                                qprops["Xivo-StateTime"] = timeref;
                                 qprops["Status"] = "1";
                                 pqueues[qname] = qprops;
                                 proptemp["queues"] = pqueues;
