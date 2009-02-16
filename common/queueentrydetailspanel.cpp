@@ -105,7 +105,7 @@ void QueueentrydetailsPanel::newQueue(double timeref,
         QVariantMap queuestatusmap = queuestatus.toMap();
         foreach(QString channel, queuestatusmap["entries"].toMap().keys()) {
                 QVariantMap entryinfos = queuestatusmap["entries"].toMap()[channel].toMap();
-                qDebug() << "QueueentrydetailsPanel::newQueue()" << astid << queueid << channel << entryinfos;
+                // qDebug() << "QueueentrydetailsPanel::newQueue()" << astid << queueid << channel << entryinfos;
                 
                 m_entrypos[channel] = new QLabel(this);
                 int time_spent = int(timeref - entryinfos["entrytime"].toDouble() + 0.5);
@@ -113,10 +113,7 @@ void QueueentrydetailsPanel::newQueue(double timeref,
                 m_entrypos[channel]->setProperty("position", entryinfos["position"]);
                 m_entrypos[channel]->setProperty("cidname", entryinfos["calleridname"]);
                 m_entrypos[channel]->setProperty("cidnum", entryinfos["calleridnum"]);
-                m_gridlayout->addWidget( m_entrypos[channel], k + 1, 0, Qt::AlignLeft );
                 updateEntryChannel(channel);
-                //m_gridlayout->addWidget( m_entrytime[entryname], k + 1, 1, Qt::AlignLeft );
-                k ++;
         }
 }
 
@@ -125,11 +122,14 @@ void QueueentrydetailsPanel::updateEntryChannel(const QString & channel)
         if(m_entrypos.contains(channel)) {
                 QDateTime inittime = m_entrypos[channel]->property("entrytime").toDateTime();
                 int nsec = inittime.secsTo(QDateTime::currentDateTime());
+                int pos = m_entrypos[channel]->property("position").toInt();
+                
                 m_entrypos[channel]->setText(QString("%1 : %2 %3 : %4 sec")
-                                             .arg(m_entrypos[channel]->property("position").toString())
+                                             .arg(pos)
                                              .arg(m_entrypos[channel]->property("cidname").toString())
                                              .arg(m_entrypos[channel]->property("cidnum").toString())
                                              .arg(nsec));
+                m_gridlayout->addWidget( m_entrypos[channel], pos, 0, Qt::AlignLeft );
         }
 }
 
