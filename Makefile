@@ -77,6 +77,15 @@ versions-%:
 displayversions:
 	@${ECHO} ${_XIVOVER_}-${_SVNVER_}
 
+# to be used with care
+forceversions-%:
+	@${ECHO} -n "version (before force) : " && make -s displayversions
+	@touch common/xivoconsts.h $*/mainwidget.cpp
+	@rm -f $*/versions.pro
+	@${ECHO} "_SVNVER_ =" ${FORCEVERSION} >> $*/versions.pro
+	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
+	@${ECHO} -n "version (after force) : " && make -s displayversions
+
 # to be executed under a mingw/dos-like terminal
 win32-%:
 	@cd $* && ${QMAKE} $*.pro && ${LRELEASE} $*_fr.ts qt_fr.ts && make -f Makefile.Release
