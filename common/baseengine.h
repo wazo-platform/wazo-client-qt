@@ -57,8 +57,6 @@ class QSocketNotifier;
 class QTcpSocket;
 class QTimerEvent;
 
-class JsonDecodeThread;
-
 /*! \brief Class which handles connection with the XIVO CTI server
  *   + Profile popup engine
  *  The engine object contains all the code to
@@ -184,7 +182,6 @@ public slots:
         void loadQueueOrder();
         void logAction(const QString &);
 private slots:
-        void threadfinished();
 	void keepLoginAlive(); //!< Keep session alive
 	void changeState(); //!< Change the presence status
         void updatePhone(const QString &,
@@ -362,7 +359,6 @@ private:
         QSocketNotifier * m_notifier;
         QByteArray m_downloaded;
         QFile * m_logfile;
-        JsonDecodeThread * m_jsondecode_thread;
 };
 
 #endif

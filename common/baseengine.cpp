@@ -54,7 +54,6 @@
 
 #include "baseengine.h"
 #include "xivoconsts.h"
-#include "jsondecodethread.h"
 
 /*! \brief Constructor.
  *
@@ -130,11 +129,6 @@ BaseEngine::BaseEngine(QSettings * settings,
                  this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
 	connect( m_filesocket, SIGNAL(readyRead()),
                  this, SLOT(socketReadyRead()));
-        
-        m_jsondecode_thread = new JsonDecodeThread(this);
-        connect( m_jsondecode_thread, SIGNAL(gotit()),
-                 this, SLOT(threadfinished()));
-        m_jsondecode_thread->start();
         
 	if(m_autoconnect)
 		start();
@@ -642,15 +636,15 @@ void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
 
 void BaseEngine::parseJsonCommand(const QString & line)
 {
-        m_jsondecode_thread->setLine(line);
-}
-
-void BaseEngine::threadfinished()
-{
-        m_jsondecode_thread->lock();
-        QVariant data = m_jsondecode_thread->property("parsed");
+        QVariant data;
+        try {
+                data = JsonQt::JsonToVariant::parse(line.trimmed());
+        }
+        catch(JsonQt::ParseException) {
+                qDebug() << "BaseEngine::parseJsonCommand() exception catched for" << line.trimmed();
+                data = QVariant(QVariant::Invalid);
+        }
         parseQVariantCommand(data);
-        m_jsondecode_thread->unlock_and_wake();
 }
 
 void BaseEngine::parseQVariantCommand(const QVariant & data)

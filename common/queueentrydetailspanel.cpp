@@ -101,7 +101,6 @@ void QueueentrydetailsPanel::newQueue(double timeref,
         m_entrypos.clear();
         m_entrytime.clear();
         
-        int k = 0;
         QVariantMap queuestatusmap = queuestatus.toMap();
         foreach(QString channel, queuestatusmap["entries"].toMap().keys()) {
                 QVariantMap entryinfos = queuestatusmap["entries"].toMap()[channel].toMap();
