@@ -90,7 +90,9 @@ private slots:
         void agentClicked(QMouseEvent *);
         void setAgentProps(const QString &);
         void removeQueueFromGroup();
+        void removeQueuesFromGroup();
         void addQueueToGroup();
+        void addQueuesToGroup();
         void setQueueGroups(const QVariant &);
         void newGroup();
         void actionclicked();

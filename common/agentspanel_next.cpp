@@ -132,19 +132,33 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                         contextMenu.addAction(newGroupAction);
                         contextMenu.addSeparator();
                         
-                        QMenu * menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
-                        foreach (QString qname, el->property("queues").toStringList()) {
-                                QAction * qremove = new QAction(qname, this);
-                                qremove->setProperty("groupid", thisgroupid);
-                                qremove->setProperty("queuename", qname);
-                                menu_remove->addAction(qremove);
-                                connect(qremove, SIGNAL(triggered()),
-                                        this, SLOT(removeQueueFromGroup()) );
+                        if(thisqueuelist.size() > 0) {
+                                QMenu * menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
+                                foreach (QString qname, thisqueuelist) {
+                                        QAction * qremove = new QAction(qname, this);
+                                        qremove->setProperty("groupid", thisgroupid);
+                                        qremove->setProperty("queuename", qname);
+                                        menu_remove->addAction(qremove);
+                                        connect(qremove, SIGNAL(triggered()),
+                                                this, SLOT(removeQueueFromGroup()) );
+                                }
+                                
+                                menu_remove->addSeparator();
+                                
+                                QAction * removeAllQueuesAction = new QAction(tr("Remove them all"), this);
+                                menu_remove->addAction(removeAllQueuesAction);
+                                removeAllQueuesAction->setProperty("groupid", thisgroupid);
+                                connect(removeAllQueuesAction, SIGNAL(triggered()),
+                                        this, SLOT(removeQueuesFromGroup()) );
                         }
                         
-                        QMenu * menu_add = contextMenu.addMenu(tr("Add a Queue"));
+                        QStringList queuestoadd;
                         foreach (QString qname, m_queuelist)
-                                if(! thisqueuelist.contains(qname)) {
+                                if(! thisqueuelist.contains(qname))
+                                        queuestoadd << qname;
+                        if(queuestoadd.size() > 0) {
+                                QMenu * menu_add = contextMenu.addMenu(tr("Add a Queue"));
+                                foreach (QString qname, queuestoadd) {
                                         QAction * qadd = new QAction(qname, this);
                                         qadd->setProperty("groupid", thisgroupid);
                                         qadd->setProperty("queuename", qname);
@@ -152,6 +166,15 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                                         connect(qadd, SIGNAL(triggered()),
                                                 this, SLOT(addQueueToGroup()) );
                                 }
+                                
+                                menu_add->addSeparator();
+                                
+                                QAction * addAllQueuesAction = new QAction(tr("Add them all"), this);
+                                menu_add->addAction(addAllQueuesAction);
+                                addAllQueuesAction->setProperty("groupid", thisgroupid);
+                                connect(addAllQueuesAction, SIGNAL(triggered()),
+                                        this, SLOT(addQueuesToGroup()) );
+                        }
                 } else
                         return;
         }
@@ -395,17 +418,16 @@ void AgentsPanelNext::updatePeerAgent(double timeref,
                 if(m_agent_props.contains(idxa)) {
                         QVariantMap proptemp = m_agent_props[idxa].toMap();
                         QVariantMap pqueues = proptemp["queues"].toMap();
-                        if(pqueues[qname].toMap().isEmpty()) {
-                                QVariantMap qprops;
-                                qprops["Paused"] = pstatus;
-                                qprops["Xivo-StateTime"] = timeref;
-                                qprops["Status"] = "1";
-                                pqueues[qname] = qprops;
-                                proptemp["queues"] = pqueues;
-                                m_agent_props[idxa] = proptemp;
-                                refreshContents();
-                        } else
-                                qDebug() << action << idxa << "not empty" << qname;
+                        qDebug() << "AgentsPanelNext::updatePeerAgent()" << action << idxa << qname << pqueues[qname].toMap().isEmpty();
+                        // if(pqueues[qname].toMap().isEmpty()) {
+                        QVariantMap qprops;
+                        qprops["Paused"] = pstatus;
+                        qprops["Xivo-StateTime"] = timeref;
+                        qprops["Status"] = "1";
+                        pqueues[qname] = qprops;
+                        proptemp["queues"] = pqueues;
+                        m_agent_props[idxa] = proptemp;
+                        refreshContents();
                 } else {
                         qDebug() << "AgentsPanelNext::updatePeerAgent() warning : undefined" << idxa << action;
                 }
@@ -566,6 +588,15 @@ void AgentsPanelNext::removeQueueGroup()
         }
 }
 
+void AgentsPanelNext::removeQueuesFromGroup()
+{
+        QString groupid = sender()->property("groupid").toString();
+        m_title[groupid]->setProperty("queues", QStringList());
+        m_title[groupid]->setToolTip("");
+        refreshContents();
+        refreshDisplay();
+}
+
 void AgentsPanelNext::removeQueueFromGroup()
 {
         QString groupid = sender()->property("groupid").toString();
@@ -579,6 +610,15 @@ void AgentsPanelNext::removeQueueFromGroup()
                 refreshContents();
                 refreshDisplay();
         }
+}
+
+void AgentsPanelNext::addQueuesToGroup()
+{
+        QString groupid = sender()->property("groupid").toString();
+        m_title[groupid]->setProperty("queues", m_queuelist);
+        m_title[groupid]->setToolTip(m_queuelist.join(", "));
+        refreshContents();
+        refreshDisplay();
 }
 
 void AgentsPanelNext::addQueueToGroup()

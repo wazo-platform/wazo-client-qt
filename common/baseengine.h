@@ -109,9 +109,9 @@ public:
 	void setHistorySize(uint size);		//!< set history size
 	bool systrayed() const;			//!< systrayed flag
 	void setSystrayed(bool);		//!< set systrayed flag
-
+        
 	void saveSettings();			//!< save server settings
-
+        
 	void deleteRemovables();
 	void addRemovable(const QMetaObject *);
 	bool isRemovable(const QMetaObject *);
@@ -119,7 +119,7 @@ public:
         
 	const EngineState & state() const;	//!< Engine state (Logged/Not Logged)
 	void setState(EngineState state);	//!< see state()
-
+        
 	const QString & getAvailState() const;	//!< returns availability status
 	void setCheckedFunction(const QString &, bool b);	//!< set m_checked_function
 	bool checkedFunction(const QString &);			//!< get m_checked_function
