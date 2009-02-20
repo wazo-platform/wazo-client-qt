@@ -67,9 +67,9 @@
 #include "outlook_engine.h"
 #endif
 
-QStringList formbuttonnames = (QStringList()
-                               << "refuse" << "hangup" << "answer"
-                               << "close" << "save");
+QStringList g_formbuttonnames = (QStringList()
+                                 << "refuse" << "hangup" << "answer"
+                                 << "close" << "save");
 
 /*!
  * This constructor inits all XML objects and connect signals
@@ -126,12 +126,12 @@ void Popup::feed(QIODevice * inputstream,
 	m_title->setAlignment(Qt::AlignHCenter);
 	m_vlayout->addWidget(m_title);
         m_vlayout->addStretch();
-
+        
         QUiLoader loader;
         if(sheetui) {
                 m_sheetui_widget = loader.load(m_inputstream, this);
                 m_vlayout->insertWidget(m_vlayout->count() - 1, m_sheetui_widget, 0, 0);
-                foreach(QString formbuttonname, formbuttonnames) {
+                foreach(QString formbuttonname, g_formbuttonnames) {
                         m_form_buttons[formbuttonname] = m_sheetui_widget->findChild<QPushButton *>(formbuttonname);
                         if(m_form_buttons[formbuttonname]) {
                                 m_form_buttons[formbuttonname]->setProperty("buttonname", formbuttonname);
@@ -164,7 +164,7 @@ void Popup::dispurl(const QUrl &url)
 void Popup::actionFromForm()
 {
         QString buttonname = sender()->property("buttonname").toString();
-        // qDebug() << "Popup::actionFromForm()" << buttonname << m_channel;
+        qDebug() << "Popup::actionFromForm()" << buttonname << m_channel << m_astid << m_uniqueid;
         if(buttonname == "close")
                 close();
         else if(buttonname == "save")
@@ -203,6 +203,7 @@ void Popup::addAnyInfo(const QString & localName,
 	if( localName == "sheet_info" ) {
                 int where = 0;
                 if(m_orders.contains(infoOrder)) {
+                        m_form_buttons.clear();
                         // removes the layout and widgets there
                         where = m_orders.indexOf(infoOrder) + 1;
                         QLayoutItem * qli = m_vlayout->itemAt(where);
@@ -280,7 +281,7 @@ void Popup::addDefForm(const QString & name, const QString & value)
 
 void Popup::addInfoForm(int where, const QString & value)
 {
-        // qDebug() << "Popup::addInfoForm()" << value;
+        // qDebug() << "Popup::addInfoForm()" << m_remoteforms << value;
         QUiLoader loader;
         QWidget * form;
         if(m_remoteforms.contains(value)) {
@@ -296,7 +297,7 @@ void Popup::addInfoForm(int where, const QString & value)
                 file.close();
         }
         
-        foreach(QString formbuttonname, formbuttonnames) {
+        foreach(QString formbuttonname, g_formbuttonnames) {
                 if(! m_form_buttons[formbuttonname]) {
                         m_form_buttons[formbuttonname] = form->findChild<QPushButton *>(formbuttonname);
                         if(m_form_buttons[formbuttonname]) {
@@ -304,6 +305,8 @@ void Popup::addInfoForm(int where, const QString & value)
                                 connect( m_form_buttons[formbuttonname], SIGNAL(clicked()),
                                          this, SLOT(actionFromForm()) );
                         }
+                } else {
+                        qDebug() << "Popup::addInfoForm()" << "already ?" << formbuttonname << form->findChild<QPushButton *>(formbuttonname);
                 }
         }
         QRegExp re_callstatus("^XIVO_CALL_STATUS-");
@@ -361,7 +364,7 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
         else if(name == "astid") {
                 m_astid = value;
                 setProperty("astid", m_astid);
-        } else if(name == "sessionid") {
+        } else if(name == "uniqueid") {
                 m_uniqueid = value;
                 setProperty("uniqueid", m_uniqueid);
         } else if(name == "kind") {
@@ -369,10 +372,8 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
                 // ('kind' definition at the end of the sheet on server-side)
                 m_timestamps[value] = QDateTime::currentDateTime().toTime_t();
                 if(value == "agi") {
-                        if(m_form_buttons["hangup"]) {
-                                qDebug() << m_form_buttons.keys();
+                        if(m_form_buttons["hangup"])
                                 m_form_buttons["hangup"]->setEnabled(false);
-                        }
                 } else if(value == "link") {
                         if(m_form_buttons["refuse"])
                                 m_form_buttons["refuse"]->setEnabled(false);
@@ -390,7 +391,7 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
 
 void Popup::addInfoPhone(int where, const QString & name, const QString & value)
 {
-        qDebug() << "Popup::addInfoPhone()" << value;
+        // qDebug() << "Popup::addInfoPhone()" << value;
 	QLabel * lblname = new QLabel(name, this);
         QPushButton * lblvalue = new QPushButton(value, this);
         lblvalue->setObjectName("phonenumber");
@@ -410,12 +411,10 @@ QList<QStringList> & Popup::sheetlines()
 
 void Popup::update(QList<QStringList> & newsheetlines)
 {
+        qDebug() << "Popup::update()";
         m_toupdate = true;
-        QListIterator<QStringList> i(newsheetlines);
-        while(i.hasNext()) {
-                QStringList qsl = i.next();
+        foreach(QStringList qsl, newsheetlines)
                 addAnyInfo(qsl[0], qsl[1], qsl[2], qsl[3], qsl[4]);
-        }
 }
 
 void Popup::addInfoPhoneURL(int where, const QString & name, const QString & value)
