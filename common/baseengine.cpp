@@ -887,27 +887,25 @@ void BaseEngine::parseQVariantCommand(const QVariant & data)
                                                 initFeatureFields(featurekey, featuresupdate_map[featurekey]);
                                 
                         } else if (function == "get") {
-                                QVariantMap featuresupdate_map = datamap["payload"].toMap();
+                                QVariantMap featuresget_map = datamap["payload"].toMap();
                                 if(m_monitored_userid == datamap["userid"].toString()) {
                                         resetFeatures();
-                                        foreach(QString featurekey, featuresupdate_map.keys())
-                                                initFeatureFields(featurekey, featuresupdate_map[featurekey]);
+                                        foreach(QString featurekey, featuresget_map.keys())
+                                                initFeatureFields(featurekey, featuresget_map[featurekey]);
                                         emitTextMessage(tr("Received Services Data for ") + m_monitored_userid);
                                 }
                                 
                         } else if (function == "put") {
-                                QStringList features_list = datamap["payload"].toStringList();
-                                if(features_list.size() > 1) {
-                                        QString id = features_list[0];
-                                        if(id == m_monitored_userid) {
-                                                QString ret = features_list[1];
-                                                if(ret == "OK") {
-                                                        featurePutIsOK();
-                                                        emitTextMessage("");
-                                                } else {
-                                                        featurePutIsKO();
-                                                        emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
-                                                }
+                                QVariantMap featuresput_map = datamap["payload"].toMap();
+                                if(m_monitored_userid == datamap["userid"].toString()) {
+                                        if(featuresput_map.isEmpty()) {
+                                                featurePutIsKO();
+                                                emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
+                                        } else {
+                                                featurePutIsOK();
+                                                foreach(QString featurekey, featuresput_map.keys())
+                                                        initFeatureFields(featurekey, featuresput_map[featurekey]);
+                                                emitTextMessage("");
                                         }
                                 }
                         }
