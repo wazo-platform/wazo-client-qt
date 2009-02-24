@@ -218,16 +218,16 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
         m_phonenumber = new QLineEdit(m_engine->phonenumber(), this);
         gridlayout3->addWidget(m_lblphone, line, 0);
         gridlayout3->addWidget(m_phonenumber, line++, 1);
-
+        
         loginKindChanged(m_loginkind->currentIndex());
-
+        
  	gridlayout3->setRowStretch( line, 1 );
  	gridlayout3->setColumnStretch( 2, 1 );
-
+        
         //
         // GUI Settings
         //
-
+        
 	QGridLayout * gridlayout4 = new QGridLayout();
         QWidget * widget_gui = new QWidget();
         widget_gui->setLayout(gridlayout4);
@@ -350,8 +350,8 @@ void ConfigWidget::saveAndClose()
         opts["queuelevels"] = qvm;
         
 	// BaseEngine::setLoginKind() sets the user option if needed.
-	m_engine->setLoginKind(m_loginkind->currentIndex());
-        //opts["loginkind"] = m_loginkind->currentIndex();
+	// m_engine->setLoginKind(m_loginkind->currentIndex());
+        opts["loginkind"] = m_loginkind->currentIndex();
         
         opts["contacts-max"] = m_contactssize_sbox->value();
         opts["contacts-width"] = m_contactswidth_sbox->value();

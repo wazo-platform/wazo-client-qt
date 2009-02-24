@@ -582,7 +582,16 @@ void MainWidget::confUpdated()
         m_qlab3->setText(m_engine->phonenumber());
         m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
         m_loginkind->setCurrentIndex(m_engine->loginkind());
-	loginKindChanged(m_loginkind->currentIndex());	// Hide or Show the phone number
+        if(m_engine->showagselect()) {
+                m_lab3->show();
+                m_qlab3->show();
+                m_loginkind->show();
+        } else {
+                m_lab3->hide();
+                m_qlab3->hide();
+                m_loginkind->hide();
+        }
+	// loginKindChanged(m_loginkind->currentIndex());	// Hide or Show the phone number
 }
 
 /*! \brief process clicks to the systray icon
