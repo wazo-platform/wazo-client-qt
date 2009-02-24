@@ -33,6 +33,7 @@ namespace JsonQt
 		private:
 			static QString parseElement(const QVariant& element);
 			static QString parseList(const QVariantList& list);
+			static QString parseStringList(const QStringList& list);
 	};
 }
 

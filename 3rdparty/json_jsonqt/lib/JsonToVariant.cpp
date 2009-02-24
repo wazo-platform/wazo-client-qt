@@ -80,25 +80,36 @@ namespace JsonQt
 		 */
 
 		QVariantMap data;
-                QString key;
-                QVariant value;
-                
+		QPair<QString, QVariant> pair;
+
 		// loop instead of recursing
 		do
 		{
 			// Grab a pair
-                        key = parseString();
-                        consume(':');
-                        value = parseValue();
-                        
+			pair = parsePair();
+
 			// Store it in our data
-			data[key] = value;
+			data[pair.first] = pair.second;
 		}
 		while(tryConsume(',')); // Loop if we've got a list separator
 
 		return data;
 	}
-        
+
+	QPair<QString, QVariant> JsonToVariant::parsePair()
+	{
+		/*
+		 * pair
+		 * 	string : value
+		 */
+
+		QString key = parseString();
+		consume(':');
+		QVariant value = parseValue();
+
+		return qMakePair(key, value);
+	}
+
 	QVariantList JsonToVariant::parseArray()
 	{
 		/*
@@ -130,7 +141,7 @@ namespace JsonQt
 		do
 		{
 			// Grab a value
-			data.append(parseValue());
+			data += parseValue();
 		}
 		while(tryConsume(',')); // repeat if we've got a list separator
 
@@ -218,9 +229,8 @@ namespace JsonQt
 		// chars contains at least one char
 		data = parseChar();
 
-		// See if there's more...
-                while(peekNext() != '"')
-                        data.append( parseChar() );
+		while(peekNext() != '"')
+			data.append( parseChar() );
 		return data;
 	}
 

@@ -30,10 +30,11 @@ namespace JsonQt
 			case QVariant::ULongLong:
 				return QString::number(value.toULongLong());
 			case QVariant::List:
-			case QVariant::StringList:
 				return parseList(value.toList());
 			case QVariant::String:
 				return QString("\"%1\"").arg(value.toString().replace("\\", "\\\\").replace("\"", "\\\""));
+			case QVariant::StringList:
+				return parseStringList(value.toStringList());
 			case QVariant::Invalid:
 				return "null";
 			default:
@@ -49,5 +50,15 @@ namespace JsonQt
 			parts.append(parseElement(variant));
 		}
 		return "[" + parts.join(", ") + "]";
+	}
+	
+	QString VariantToJson::parseStringList(const QStringList& stringList)
+	{
+		QVariantList variantList;
+		Q_FOREACH(const QString& string, stringList)
+		{
+			variantList.append(string);
+		}
+		return parseList(variantList);
 	}
 }

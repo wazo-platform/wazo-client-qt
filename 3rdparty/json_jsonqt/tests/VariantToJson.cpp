@@ -31,6 +31,11 @@ class VariantToJson : public QObject
 			list.append("one");
 			map["list"] = list;
 
+			QStringList list2;
+			for(int i = 0; i < 25; i++)
+				list2.append(QString("element").append(QString::number(i)));
+			map["list2"] = list2;
+
 			QString json(JsonQt::VariantToJson::parse(map));
 			QCOMPARE(map, JsonQt::JsonToVariant::parse(json).toMap());
 		}
