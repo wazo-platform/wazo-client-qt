@@ -473,6 +473,7 @@ void BaseEngine::processHistory(const QVariant & histlist)
 
 void BaseEngine::monitorPeerRequest(const QString & userid)
 {
+        // qDebug() << "BaseEngine::monitorPeerRequest()" << userid;
         if(m_users.contains(userid)) {
                 m_monitored_userid = userid;
                 monitorPeer(m_users[userid]);
@@ -822,7 +823,6 @@ void BaseEngine::parseQVariantCommand(const QVariant & data)
                                 }
                                 
                                 peersReceived();
-                                // qDebug() << m_fullid << m_users.keys();
                                 m_monitored_userid = m_fullid;
                                 QString fullname_mine = "No One";
                                 if(m_users.contains(m_fullid)) {
@@ -1405,6 +1405,7 @@ void BaseEngine::setUserId(const QString & userid)
 
 void BaseEngine::setFullId()
 {
+        // qDebug() << "BaseEngine::setFullId()" << m_astid << m_xivo_userid;
         // m_fullid = m_company + "/" + m_userid;
         m_fullid = m_astid + "/" + m_xivo_userid;
 }
@@ -1478,7 +1479,6 @@ void BaseEngine::initFeatureFields(const QString & field, const QVariant & value
 {
         //        qDebug() << field << value;
         bool isenabled = value.toMap()["enabled"].toBool();
-        QString number = value.toMap()["number"].toString();
 	if((field == "enablevoicemail") || (field == "vm"))
 		optChanged("enablevm", isenabled);
 	else if((field == "enablednd") || (field == "dnd"))
@@ -1488,7 +1488,9 @@ void BaseEngine::initFeatureFields(const QString & field, const QVariant & value
 	else if(field == "callrecord")
 		optChanged("incallrec", isenabled);
 	else if((field == "unc") || (field == "busy") || (field == "rna"))
-		forwardUpdated(field, isenabled, number);
+		forwardUpdated(field, value);
+	else if((field == "enableunc") || (field == "enablebusy") || (field == "enablerna"))
+		forwardUpdated(field.mid(6), value);
 }
 
 void BaseEngine::stopKeepAliveTimer()

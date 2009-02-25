@@ -1162,11 +1162,11 @@ void MainWidget::engineStarted()
                                          m_engine, SLOT(featurePutOpt(const QString &, bool)) );
                                 
                                 connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
-                                         m_xlet[xletid], SLOT(setOpt(const QString &, bool)) );                                
+                                         m_xlet[xletid], SLOT(setOpt(const QString &, bool)) );
                                 connect( m_xlet[xletid], SIGNAL(forwardChanged(const QString &, bool, const QString &)),
                                          m_engine, SLOT(featurePutForward(const QString &, bool, const QString &)) );
-                                connect( m_engine, SIGNAL(forwardUpdated(const QString &, bool, const QString &)),
-                                         m_xlet[xletid], SLOT(setForward(const QString &, bool, const QString &)) );
+                                connect( m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
+                                         m_xlet[xletid], SLOT(setForward(const QString &, const QVariant &)) );
                                 
 			} else if (xletid == QString("directory")) {
                                 m_xlet[xletid] = new DirectoryPanel(m_options);

@@ -66,7 +66,7 @@ public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
 	void setOpt(const QString &, bool);
-	void setForward(const QString &, bool, const QString &);
+	void setForward(const QString &, const QVariant &);
         void monitorPeer(UserInfo *);
         void Connect();
         void DisConnect();

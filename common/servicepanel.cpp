@@ -211,14 +211,21 @@ void ServicePanel::setOpt(const QString & capa, bool b)
                 m_chkopt[capa]->setChecked(b);
 }
 
-void ServicePanel::setForward(const QString & capa, bool b, const QString & dest)
+void ServicePanel::setForward(const QString & capa, const QVariant & value)
 {
+        bool b = value.toMap()["enabled"].toBool();
         QString thiscapa = "fwd" + capa;
         if(m_capas.contains(thiscapa)) {
-                m_status->setForward(thiscapa, b, dest);
-                m_forwarddest[thiscapa]->setText(dest);
-                m_forward[thiscapa]->setChecked(b);
-                m_forward[thiscapa]->setEnabled(dest.size() > 0);
+                if(value.toMap().keys().contains("number")) {
+                        QString dest = value.toMap()["number"].toString();
+                        m_status->setForward(thiscapa, b, dest);
+                        m_forward[thiscapa]->setChecked(b);
+                        m_forwarddest[thiscapa]->setText(dest);
+                        m_forward[thiscapa]->setEnabled(dest.size() > 0);
+                } else {
+                        // m_status->setForward(thiscapa, b, dest);
+                        m_forward[thiscapa]->setChecked(b);
+                }
         }
 }
 
@@ -256,8 +263,6 @@ void ServicePanel::getRecordedStatus()
 }
 
 
-////////////////////////////////////////////////:::
-
 ServiceStatus::ServiceStatus()
 {
         foreach(QString capa, chkcapas)
@@ -281,6 +286,5 @@ void ServiceStatus::setForward(const QString & capa, bool b, const QString & des
 
 void ServiceStatus::display()
 {
-        qDebug() << m_chkopt << "/"
-                 << m_forward << m_forwarddest;
+        qDebug() << m_chkopt << "/" << m_forward << m_forwarddest;
 }

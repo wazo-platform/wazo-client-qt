@@ -256,7 +256,7 @@ signals:
         void newQueueList(const QVariant &);
         void newAgentList(double, const QVariant &);
 	void optChanged(const QString &, bool);
-	void forwardUpdated(const QString &, bool, const QString &);
+	void forwardUpdated(const QString &, const QVariant &);
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QString &, const QString &, const QVariant &);
         void changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &);
