@@ -120,10 +120,10 @@ void AgentsPanel::updateAgentPresence(const QString & agentname, const QVariant 
         // qDebug() << "AgentsPanel::updateAgentPresence()" << agentname << presencestatus;
         if(agentname.size() > 0)
                 if(m_agent_presence.contains(agentname)) {
-                        QColor color = QColor(presencestatus.toMap()["color"].toString());
                         QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-                        p_square->fill(color);
+                        p_square->fill(QColor(presencestatus.toMap()["color"].toString()));
                         m_agent_presence[agentname]->setPixmap(QPixmap(* p_square));
+                        m_agent_presence[agentname]->setToolTip(presencestatus.toMap()["longname"].toString());
                 }
 }
 
