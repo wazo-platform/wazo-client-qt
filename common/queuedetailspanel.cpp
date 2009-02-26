@@ -48,6 +48,7 @@
 
 #include "baseengine.h"
 #include "queuedetailspanel.h"
+#include "userinfo.h"
 
 /*! \brief Constructor
  */
@@ -63,7 +64,6 @@ QueuedetailsPanel::QueuedetailsPanel(BaseEngine * engine,
         m_queuelegend_status = new QLabel(tr("Status"), this);
         m_queuelegend_paused = new QLabel(tr("Paused"), this);
         m_queuelegend_callstaken = new QLabel(tr("Calls Taken"), this);
-        m_maxbusy = 0;
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_label, 0, 0);
         m_gridlayout->addWidget(m_queuelegend_agentid, 1, 0);
@@ -79,19 +79,29 @@ QueuedetailsPanel::QueuedetailsPanel(BaseEngine * engine,
         // startTimer(1000);
 }
 
+/*! \brief destructor
+ */
 QueuedetailsPanel::~QueuedetailsPanel()
 {
         // qDebug() << "QueuedetailsPanel::~QueuedetailsPanel()";
 }
 
+/*! \brief does nothing
+ */
 void QueuedetailsPanel::setGuiOptions(const QVariant &)
 {
 }
 
+/*! \brief does nothing
+ */
 void QueuedetailsPanel::setUserInfo(const UserInfo *)
 {
 }
 
+/*! \brief react to "agentstatus"
+ *
+ * add or remove agent from queue if needed, update display
+ */
 void QueuedetailsPanel::updatePeerAgent(double timeref,
                                         const QString &,
                                         const QString & what,
@@ -140,6 +150,10 @@ void QueuedetailsPanel::updatePeerAgent(double timeref,
         }
 }
 
+/*! \brief update the list displayed
+ *
+ * First clear everything, then recreate widgets
+ */
 void QueuedetailsPanel::update()
 {
         // qDebug() << "QueuedetailsPanel::update()";
@@ -213,6 +227,8 @@ void QueuedetailsPanel::update()
         }
 }
 
+/*! \brief update m_agentlists
+ */
 void QueuedetailsPanel::setAgentList(double, const QVariant & alist)
 {
         // qDebug() << "QueuedetailsPanel::setAgentList()" << alist;
@@ -220,6 +236,8 @@ void QueuedetailsPanel::setAgentList(double, const QVariant & alist)
         m_agentlists[astid] = alist.toMap()["newlist"].toMap();
 }
 
+/*! \brief set queue
+ */
 void QueuedetailsPanel::newQueue(double, const QString & astid, const QString & queueid, const QVariant & queuestatus)
 {
         // qDebug() << "QueuedetailsPanel::newQueue()" << astid << queueid << queuestatus.toMap();
@@ -235,12 +253,14 @@ void QueuedetailsPanel::newQueue(double, const QString & astid, const QString & 
         update();
 }
 
+/*! \brief emit changeWatchedAgent signal
+ */
 void QueuedetailsPanel::agentClicked()
 {
         // qDebug() << "QueuedetailsPanel::agentClicked()" << sender()->property("agentid");
         QString astid = sender()->property("astid").toString();
         QString agentid = sender()->property("agentid").toString();
-        changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid), true);
+        emit changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid), true);
 }
 
 void QueuedetailsPanel::timerEvent(QTimerEvent *)

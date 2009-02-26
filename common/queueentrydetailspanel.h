@@ -56,22 +56,22 @@ class QVBoxLayout;
 
 class UserInfo;
 
-/*! \brief Identity Display
+/*! \brief Display entries of a queue
  */
 class QueueentrydetailsPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	QueueentrydetailsPanel(QWidget * parent = 0);
-	~QueueentrydetailsPanel();
+        QueueentrydetailsPanel(QWidget * parent = 0);
+        ~QueueentrydetailsPanel();
 signals:
-        void changeWatchedAgent(const QString &);
+        void changeWatchedAgent(const QString &);   //!< change watched agent
 protected:
         void timerEvent(QTimerEvent *);
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-	void newQueue(double, const QString &, const QString &, const QVariant &);
+        void newQueue(double, const QString &, const QString &, const QVariant &);
         void updatePeerAgent(double,
                              const QString &,
                              const QString &,
@@ -80,18 +80,14 @@ private slots:
         void agentClicked();
 private:
         void updateEntryChannel(const QString &);
-        
-        QGridLayout * m_gridlayout;
-	QVBoxLayout * m_layout;
-        QScrollArea * m_scrollarea;
-	QWidget * m_widget;
 
-        QString m_astid;
-        QString m_queueid;
-        QLabel * m_label;
-        QHash<QString, QLabel *> m_entrypos;
-        QHash<QString, QLabel *> m_entrytime;
-        int m_maxbusy;
+        QGridLayout * m_gridlayout; //!< Layout
+
+        QString m_astid;    //!< asterisk id
+        QString m_queueid;  //!< queue id
+        QLabel * m_label;   //!< label for displaying queue name
+        QHash<QString, QLabel *> m_entrypos;    //!< display entry
+        QHash<QString, QLabel *> m_entrytime;   //!< display call duration ?
         double m_timesrv;
         QDateTime m_timeclt;
 };

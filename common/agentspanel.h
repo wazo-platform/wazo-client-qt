@@ -55,15 +55,15 @@ class QPushButton;
 
 class UserInfo;
 
-/*! \brief Identity Display
+/*! \brief Display a list of agents
  */
 class AgentsPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	AgentsPanel(const QVariant &,
+        AgentsPanel(const QVariant &,
                     QWidget * parent = 0);
-	~AgentsPanel();
+        ~AgentsPanel();
 signals:
         void changeWatchedAgent(const QString &, bool);
         void agentAction(const QString &);
@@ -81,11 +81,11 @@ private slots:
 private:
         void showPausedStatus(const QString &, int);
         
-        QFont m_gui_font;
-        quint32 m_gui_buttonsize;
+        QFont m_gui_font;   //!< font
+        quint32 m_gui_buttonsize;   //!< button size
         
-        QGridLayout * m_gridlayout;
-        const UserInfo * m_userinfo;
+        QGridLayout * m_gridlayout;     //!< Layout
+        const UserInfo * m_userinfo;    //!< user info
         
         QHash<QString, QLabel *>      m_agent_labels;
         QHash<QString, QPushButton *> m_agent_more;
@@ -103,15 +103,15 @@ private:
         QHash<QString, QStringList> m_agent_joined_list;
         QHash<QString, QStringList> m_agent_paused_list;
         
-        QLabel * m_title1;
-        QLabel * m_title2;
-        QLabel * m_title3;
-        QLabel * m_title4;
-        QLabel * m_title5;
-        QLabel * m_title_logged;
-        QLabel * m_title_paused;
-        QLabel * m_title_njoined;
-        QLabel * m_title_npaused;
+        QLabel * m_title1;  //!< "Agent"
+        QLabel * m_title2;  //!< "Record"
+        QLabel * m_title3;  //!< "Listen"
+        QLabel * m_title4;  //!< "On Line"
+        QLabel * m_title5;  //!< "Presence"
+        QLabel * m_title_logged;    //!< "Logged"
+        QLabel * m_title_paused;    //!< "Paused"
+        QLabel * m_title_njoined;   //!< "Joined queues"
+        QLabel * m_title_npaused;   //!< "paused queues"
 };
 
 #endif /* __AGENTSPANEL_H__ */

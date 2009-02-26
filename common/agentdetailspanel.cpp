@@ -121,21 +121,29 @@ AgentdetailsPanel::AgentdetailsPanel(const QVariant & options,
         setGuiOptions(options);
 }
 
+/*! \brief Destructor
+ */
 AgentdetailsPanel::~AgentdetailsPanel()
 {
         // qDebug() << "AgentdetailsPanel::~AgentdetailsPanel()";
 }
 
+/*! \brief set options
+ */
 void AgentdetailsPanel::setGuiOptions(const QVariant & options)
 {
         m_options = options;
 }
 
+/*! \brief set user info 
+ */
 void AgentdetailsPanel::setUserInfo(const UserInfo * ui)
 {
         m_userinfo = ui;
 }
 
+/*! \brief update everything
+ */
 void AgentdetailsPanel::updatePeerAgent(double,
                                         const QString &,
                                         const QString & what,
@@ -270,6 +278,8 @@ void AgentdetailsPanel::updatePeerAgent(double,
         summaryCount();
 }
 
+/*! \brief update m_agentlegend_njoined and m_agentlegend_npaused
+ */
 void AgentdetailsPanel::summaryCount()
 {
         int njoined = 0;
@@ -284,6 +294,10 @@ void AgentdetailsPanel::summaryCount()
         m_agentlegend_npaused->setText(QString::number(npaused));
 }
 
+/*! \brief set agent informations
+ *
+ *
+ */
 void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid, const QVariant & agentstatus)
 {
         // qDebug() << "AgentdetailsPanel::newAgent()" << astid << agentid << agentstatus;
@@ -425,6 +439,10 @@ void AgentdetailsPanel::newAgent(const QString & astid, const QString & agentid,
         summaryCount();
 }
 
+/*! \brief execute action on queue
+ *
+ * supports actions "changequeue", "leavejoin", "pause"
+ */
 void AgentdetailsPanel::queueClicked()
 {
         // qDebug() << "AgentdetailsPanel::queueClicked()" << sender()->property("queueid");
@@ -455,6 +473,8 @@ void AgentdetailsPanel::queueClicked()
                 qDebug() << "AgentdetailsPanel::queueClicked() : unknown action" << action;
 }
 
+/*! \brief 
+ */
 void AgentdetailsPanel::actionClicked()
 {
         // qDebug() << "AgentdetailsPanel::actionClicked()" << sender()->property("function").toString() << m_astid << m_agent;
@@ -469,6 +489,7 @@ void AgentdetailsPanel::actionClicked()
                 agentAction(QString("logout %1 %2").arg(m_astid).arg(m_agent));
 }
 
+/*! \brief triggerred on right click */
 void AgentdetailsPanel::contextMenuEvent(QContextMenuEvent * event)
 {
         // qDebug() << "AgentdetailsPanel::contextMenuEvent()" << event;
@@ -476,6 +497,7 @@ void AgentdetailsPanel::contextMenuEvent(QContextMenuEvent * event)
         agentAction(QString("getfilelist %1 %2").arg(m_astid).arg(m_agent));
 }
 
+/*! \brief display file list */
 void AgentdetailsPanel::serverFileList(const QStringList & qsl)
 {
         // qDebug() << "AgentdetailsPanel::serverFileList()" << qsl;
@@ -490,6 +512,8 @@ void AgentdetailsPanel::serverFileList(const QStringList & qsl)
         contextMenu.exec( m_eventpoint );
 }
 
+/*! \brief update Record/Stop Record buttons
+ */
 void AgentdetailsPanel::statusRecord(const QString & agentnum, const QString & status)
 {
         // qDebug() << "AgentdetailsPanel::statusRecord()" << agentnum << m_agent << status;
@@ -504,6 +528,8 @@ void AgentdetailsPanel::statusRecord(const QString & agentnum, const QString & s
         }
 }
 
+/*! \brief ???
+ */
 void AgentdetailsPanel::getFile()
 {
         // qDebug() << "AgentdetailsPanel::getFile()";
@@ -511,6 +537,10 @@ void AgentdetailsPanel::getFile()
         agentAction(QString("getfile %1 %2 %3").arg(m_astid).arg(m_agent).arg(filename));
 }
 
+/*! \brief to save sound files
+ *
+ * open a QFileDialog and emit setFileName()
+ */
 void AgentdetailsPanel::saveToFile()
 {
         // qDebug() << "AgentdetailsPanel::saveToFile()";

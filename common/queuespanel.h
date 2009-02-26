@@ -57,7 +57,7 @@ class QPushButton;
 
 class UserInfo;
 
-/*! \brief Identity Display
+/*! \brief Displays queues and their status
  */
 class QueuesPanel : public QWidget
 {
@@ -71,9 +71,9 @@ protected:
 private:
         void addQueue(const QString &, const QString &, const QString &, bool);
 signals:
-        void changeWatchedQueue(const QString &);
-        void saveQueueOrder(const QVariant &);
-        void loadQueueOrder();
+        void changeWatchedQueue(const QString &);   //!< Watch this queue
+        void saveQueueOrder(const QVariant &);      //!< Save Queue order (in settings)
+        void loadQueueOrder();                      //!< request load of queue order
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
@@ -97,22 +97,22 @@ private:
         bool m_gui_showqueuenames;
         bool m_gui_showmore;
         
-        QGridLayout * m_gridlayout;
-        QStringList m_statitems;
-        QHash<QString, QString> m_statlegends;
+        QGridLayout * m_gridlayout; //!< Layout
+        QStringList m_statitems;    //!< list of stats items which are reported for each queue
+        QHash<QString, QString> m_statlegends;  //!< text displayed on top of each column
         
-        QHash<QString, QLabel *> m_queuelabels;
-        QHash<QString, QPushButton *> m_queuemore;
-        QHash<QString, QPushButton *> m_queuemove;
-        QHash<QString, QProgressBar *> m_queuebusies;
-        QHash<QString, QHash<QString, QLabel *> > m_queueinfos;
-        QStringList m_queue_lines;
+        QHash<QString, QLabel *> m_queuelabels; //!< QLabel used to display the names of queues
+        QHash<QString, QPushButton *> m_queuemore;  //!< Button to display queue details
+        QHash<QString, QPushButton *> m_queuemove;  //!< Button to change the order in which the queues are displayed
+        QHash<QString, QProgressBar *> m_queuebusies;   //!< Widgets to display the queues busy level
+        QHash<QString, QHash<QString, QLabel *> > m_queueinfos; //!< display details about queues
+        QStringList m_queue_lines;  //!< store the order of queues
         
-        quint32 m_maxbusy;
+        quint32 m_maxbusy;  //!< Maximum value for busy level
         
-        QLabel * m_busytitle;
-        QLabel * m_qtitle;
-        QHash<QString, QLabel *> m_title_infos;
+        QLabel * m_busytitle;   //!< displayed on top of the column of busy levels
+        QLabel * m_qtitle;      //!< global title
+        QHash<QString, QLabel *> m_title_infos; //!< To display text on top of each column
         QVariant m_options;
 };
 

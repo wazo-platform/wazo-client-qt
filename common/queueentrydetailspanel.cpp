@@ -55,26 +55,33 @@ QueueentrydetailsPanel::QueueentrydetailsPanel(QWidget * parent)
 	m_gridlayout = new QGridLayout(this);
 
         m_label = new QLabel("", this);
-        m_maxbusy = 0;
         m_gridlayout->setColumnStretch( 5, 1 );
         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->addWidget(m_label, 0, 0);
         startTimer(1000);
 }
 
+/*! \brief Destructor
+ */
 QueueentrydetailsPanel::~QueueentrydetailsPanel()
 {
         // qDebug() << "QueueentrydetailsPanel::~QueueentrydetailsPanel()";
 }
 
+/*! \brief Do nothing
+ */
 void QueueentrydetailsPanel::setGuiOptions(const QVariant &)
 {
 }
 
+/*! \brief Do nothing
+ */
 void QueueentrydetailsPanel::setUserInfo(const UserInfo *)
 {
 }
 
+/*! \brief Do nothing
+ */
 void QueueentrydetailsPanel::updatePeerAgent(double timeref,
                                              const QString &,
                                              const QString &,
@@ -84,6 +91,10 @@ void QueueentrydetailsPanel::updatePeerAgent(double timeref,
         m_timeclt = QDateTime::currentDateTime();
 }
 
+/*! \brief update entries
+ *
+ * remove all entries and then recreate them with new values
+ */
 void QueueentrydetailsPanel::newQueue(double timeref,
                                       const QString & astid,
                                       const QString & queueid,
@@ -95,9 +106,10 @@ void QueueentrydetailsPanel::newQueue(double timeref,
         m_label->setText(tr("<b>%1</b> on <b>%2</b>").arg(m_queueid).arg(m_astid));
         
         foreach(QString q, m_entrypos.keys())
+        {
                 delete m_entrypos[q];
-        foreach(QString q, m_entrytime.keys())
                 delete m_entrytime[q];
+        }
         m_entrypos.clear();
         m_entrytime.clear();
         
@@ -132,12 +144,14 @@ void QueueentrydetailsPanel::updateEntryChannel(const QString & channel)
         }
 }
 
+/*! \brief call changWatchedAgent()
+ */
 void QueueentrydetailsPanel::agentClicked()
 {
         // qDebug() << "QueueentrydetailsPanel::agentClicked()" << sender()->property("agentid");
         QString astid = sender()->property("astid").toString();
         QString agentid = sender()->property("agentid").toString();
-        changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid));
+        emit changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid));
 }
 
 void QueueentrydetailsPanel::timerEvent(QTimerEvent *)

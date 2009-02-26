@@ -56,15 +56,17 @@ class QVBoxLayout;
 
 class UserInfo;
 
-/*! \brief Identity Display
+/*! \brief Display details about an agent
  */
 class AgentdetailsPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	AgentdetailsPanel(const QVariant &,
+        AgentdetailsPanel(const QVariant &,
                           QWidget * parent = 0);
-	~AgentdetailsPanel();
+        ~AgentdetailsPanel();
+protected:
+        void contextMenuEvent(QContextMenuEvent *);
 signals:
         void changeWatchedQueue(const QString &);
         void agentAction(const QString &);
@@ -83,30 +85,26 @@ private slots:
         void queueClicked();
         void actionClicked();
         void serverFileList(const QStringList &);
-        void contextMenuEvent(QContextMenuEvent *);
         void getFile();
 private:
         void summaryCount();
         
-        const UserInfo * m_userinfo;
+        const UserInfo * m_userinfo;    //!< user info
         
-        QGridLayout * m_gridlayout;
-	QVBoxLayout * m_layout;
-        QScrollArea * m_scrollarea;
-	QWidget * m_widget;
-        int m_linenum;
+        QGridLayout * m_gridlayout; //!< layout
+        int m_linenum;  //!< line number ?
 
-        QString m_astid;
-        QString m_agent;
-        QLabel * m_agentname;
-        QLabel * m_agentstatus;
-        QLabel * m_agentlegend_qname;
-        QLabel * m_agentlegend_joined;
-        QLabel * m_agentlegend_paused;
-        QLabel * m_agentlegend_njoined;
-        QLabel * m_agentlegend_npaused;
-        QHash<QString, QLabel *> m_actionlegends;
-        QHash<QString, QPushButton *> m_action;
+        QString m_astid;    //!< asterisk id
+        QString m_agent;    //!< agent id
+        QLabel * m_agentname;   //!< to display agent name
+        QLabel * m_agentstatus; //!< to display agent status
+        QLabel * m_agentlegend_qname;   //!< "Queues"
+        QLabel * m_agentlegend_joined;  //!< "Joined"
+        QLabel * m_agentlegend_paused;  //!< "Paused"
+        QLabel * m_agentlegend_njoined; //!< number joined
+        QLabel * m_agentlegend_npaused; //!< number paused
+        QHash<QString, QLabel *> m_actionlegends;   //!< Label Login/Logout
+        QHash<QString, QPushButton *> m_action; //!< buttons cancel/ok
         
         QHash<QString, QLabel *> m_queue_labels;
         QHash<QString, QPushButton *> m_queue_more;

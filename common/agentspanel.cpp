@@ -85,11 +85,14 @@ AgentsPanel::AgentsPanel(const QVariant & optionmap,
         setGuiOptions(optionmap);
 }
 
+/*! \brief Destructor */
 AgentsPanel::~AgentsPanel()
 {
         // qDebug() << "AgentsPanel::~AgentsPanel()";
 }
 
+/*! \brief set font
+ */
 void AgentsPanel::setGuiOptions(const QVariant & optionmap)
 {
         if(optionmap.toMap().contains("fontname") && optionmap.toMap().contains("fontsize"))
@@ -110,11 +113,15 @@ void AgentsPanel::setGuiOptions(const QVariant & optionmap)
         m_title_npaused->setFont(m_gui_font);
 }
 
+/*! \brief set m_userinfo
+ */
 void AgentsPanel::setUserInfo(const UserInfo * ui)
 {
         m_userinfo = ui;
 }
 
+/*! \brief set agent presence status
+ */
 void AgentsPanel::updateAgentPresence(const QString & agentname, const QVariant & presencestatus)
 {
         // qDebug() << "AgentsPanel::updateAgentPresence()" << agentname << presencestatus;
@@ -127,6 +134,12 @@ void AgentsPanel::updateAgentPresence(const QString & agentname, const QVariant 
                 }
 }
 
+/*! \brief process updates
+ *
+ * supports actions "queuememberstatus", "joinqueue", "leavequeue",
+ * "unpaused", "paused", "agentlogin", "agentlogout",
+ * "phonelink", "agentlink", "phoneunlink", "agentunlink"
+ */
 void AgentsPanel::updatePeerAgent(double,
                                   const QString &,
                                   const QString & what,
@@ -239,6 +252,8 @@ void AgentsPanel::updatePeerAgent(double,
         }
 }
 
+/*! \brief set Agent list
+ */
 void AgentsPanel::setAgentList(double, const QVariant & alist)
 {
         if(m_userinfo == NULL)
@@ -389,6 +404,8 @@ void AgentsPanel::setAgentList(double, const QVariant & alist)
         }
 }
 
+/*! \brief 
+ */
 void AgentsPanel::showPausedStatus(const QString & agentnum, int npaused)
 {
         QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
@@ -405,6 +422,8 @@ void AgentsPanel::showPausedStatus(const QString & agentnum, int npaused)
         m_agent_paused_status[agentnum]->setPixmap(QPixmap(* p_square));
 }
 
+/*! \brief process actions
+ */
 void AgentsPanel::agentClicked()
 {
         // qDebug() << "AgentsPanel::agentClicked()" << sender()->property("agentid");

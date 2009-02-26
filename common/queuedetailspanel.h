@@ -57,7 +57,9 @@ class QVBoxLayout;
 class BaseEngine;
 class UserInfo;
 
-/*! \brief Identity Display
+/*! \brief Display details about a queue
+ *
+ * The agents in this queue and details are displayed
  */
 class QueuedetailsPanel : public QWidget
 {
@@ -68,7 +70,7 @@ public:
                           QWidget * parent = 0);
 	~QueuedetailsPanel();
 signals:
-        void changeWatchedAgent(const QString &, bool);
+        void changeWatchedAgent(const QString &, bool); //!< select an agent to watch
 protected:
         void timerEvent(QTimerEvent *);
 public slots:
@@ -89,27 +91,26 @@ private:
         QDateTime m_timeclt;
         
 	BaseEngine * m_engine;	//!< BaseEngine object
-        QGridLayout * m_gridlayout;
-	QVBoxLayout * m_layout;
-        QScrollArea * m_scrollarea;
-	QWidget * m_widget;
+        QGridLayout * m_gridlayout; //!< Layout
+	//QVBoxLayout * m_layout; //
+    //    QScrollArea * m_scrollarea;
+	//QWidget * m_widget;
         
-        QString m_astid;
-        QString m_queueid;
-        QLabel * m_queuelegend_agentid;
-        QLabel * m_queuelegend_status;
-        QLabel * m_queuelegend_paused;
-        QLabel * m_queuelegend_callstaken;
-        QLabel * m_label;
-        QHash<QString, QLabel *> m_agentlabels;
-        QHash<QString, QPushButton *> m_agentmore;
-        QHash<QString, QLabel *> m_agentstatus;
-        QHash<QString, QLabel *> m_agentpaused;
-        QHash<QString, QLabel *> m_agentncalls;
+        QString m_astid;    //!< asterisk id
+        QString m_queueid;  //!< queue id
+        QLabel * m_queuelegend_agentid; //!< "Agent" label
+        QLabel * m_queuelegend_status;  //!< "Status" label
+        QLabel * m_queuelegend_paused;  //!< "Paused" label
+        QLabel * m_queuelegend_callstaken;  //!< "Call Taken" label
+        QLabel * m_label;       //!< queue name label
+        QHash<QString, QLabel *> m_agentlabels; //!< agents name
+        QHash<QString, QPushButton *> m_agentmore;  //!< "+" buttons
+        QHash<QString, QLabel *> m_agentstatus; //!< agents status
+        QHash<QString, QLabel *> m_agentpaused; //!< agents paused
+        QHash<QString, QLabel *> m_agentncalls; //!< agents number of calls
         
-        int m_maxbusy;
-        QVariantMap m_agentlist;
-        QVariantMap m_agentlists;
+        QVariantMap m_agentlist;    //!< list of agents in queue
+        QVariantMap m_agentlists;   //!< list of agents in asterisk instance
 };
 
 #endif /* __QUEUEDETAILSPANEL_H__ */

@@ -126,11 +126,18 @@ QueuesPanel::QueuesPanel(const QVariant & options,
         setGuiOptions(options);
 }
 
+/*! \brief Destructor
+ */
 QueuesPanel::~QueuesPanel()
 {
         // qDebug() << "QueuesPanel::~QueuesPanel()";
 }
 
+/*! \brief set user interface options
+ *
+ * set m_gui_font, m_gui_buttonsize, m_gui_showqueuenames
+ * set fonts, etc...
+ */
 void QueuesPanel::setGuiOptions(const QVariant & options)
 {
         m_options = options;
@@ -154,11 +161,17 @@ void QueuesPanel::setGuiOptions(const QVariant & options)
                 m_qtitle->hide();
 }
 
+/*! \brief Set UserInfo object used
+ */
 void QueuesPanel::setUserInfo(const UserInfo * ui)
 {
         m_userinfo = ui;
 }
 
+/*! \brief update counters
+ *
+ * update Xivo-Conn and Xivo-Avail values
+ */
 void QueuesPanel::updateCounter(const QVariant & counters)
 {
         QVariantMap countersmap = counters.toMap();
@@ -174,6 +187,8 @@ void QueuesPanel::updateCounter(const QVariant & counters)
         }
 }
 
+/*! \brief Do nothing
+ */
 void QueuesPanel::updatePeerAgent(double,
                                   const QString &,
                                   const QString &,
@@ -181,6 +196,8 @@ void QueuesPanel::updatePeerAgent(double,
 {
 }
 
+/*! \brief remove the queues
+ */
 void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
 {
         // qDebug() << "QueuesPanel::removeQueues()" << astid << queues;
@@ -189,6 +206,7 @@ void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
                         m_gridlayout->removeWidget( m_queuelabels[queuename] );
                         m_gridlayout->removeWidget( m_queuemore[queuename] );
                         m_gridlayout->removeWidget( m_queuebusies[queuename] );
+                        // TODO : used ->deleteLater() ?
                         delete m_queuelabels[queuename];
                         delete m_queuemore[queuename];
                         delete m_queuebusies[queuename];
@@ -205,12 +223,17 @@ void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
         }
 }
 
+/*! \brief Add a new queue
+ */
 void QueuesPanel::addQueue(const QString & astid, const QString & queuename, const QString & queuecontext, bool isvirtual)
 {
+        //qDebug() << "QueuesPanel::addQueue" << m_userinfo;
         if(m_userinfo == NULL)
                 return;
+        //qDebug() << "QueuesPanel::addQueue" << m_userinfo->astid() << astid;
         if(m_userinfo->astid() != astid)
                 return;
+        //qDebug() << "QueuesPanel::addQueue" << queuecontext <<  m_userinfo->contexts();
         if(! m_userinfo->contexts().contains(queuecontext))
                 return;
         
@@ -261,6 +284,11 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, con
         m_queue_lines << queuename;
 }
 
+/*! \brief add all necessaries widgets
+ *
+ * iterate through m_queuelabels and add all related
+ * widgets to the layout.
+ */
 void QueuesPanel::affWidgets(bool isvirtual)
 {
         int delta = 1;
@@ -281,20 +309,29 @@ void QueuesPanel::affWidgets(bool isvirtual)
         }
 }
 
+/*! \brief update list of queues
+ *
+ * update m_queueinfos
+ */
 void QueuesPanel::setQueueList(const QVariant & qlist)
 {
-        // qDebug() << "QueuesPanel::setQueueList()" << qlist;
+        //qDebug() << "QueuesPanel::setQueueList()" << qlist;
         QVariantMap qlistmap = qlist.toMap();
         QString astid = qlistmap["astid"].toString();
         QVariantMap queuestats = qlistmap["queuestats"].toMap();
-        foreach (QString queuename, queuestats.keys()) {
+        foreach (QString queuename, queuestats.keys())
+        {
                 QVariantMap queuestatcontents = queuestats[queuename].toMap();
+                //qDebug() << "QueuesPanel::setQueueList()" << queuename << queuestatcontents;
                 QHash <QString, QString> infos;
                 infos["Calls"] = "0";
-                foreach (QString statname, queuestatcontents.keys()) {
+                foreach (QString statname, queuestatcontents.keys())
+                {
                         infos[statname] = queuestatcontents[statname].toString();
                 }
-                if((! m_queuelabels.contains(queuename)) && (qlistmap["queueprops"].toMap().keys().contains(queuename))) {
+                if( (!m_queuelabels.contains(queuename))
+                    && (qlistmap["queueprops"].toMap().keys().contains(queuename)) )
+                {
                         QString queuecontext = qlistmap["queueprops"].toMap()[queuename].toString();
                         addQueue(astid, queuename, queuecontext, false);
                 }
@@ -311,8 +348,13 @@ void QueuesPanel::setQueueList(const QVariant & qlist)
         update();
 }
 
+/*! \brief update display of busy levels bars
+ *
+ * update m_maxbusy and color of QProgressBar 
+ */
 void QueuesPanel::update()
 {
+        qDebug() << "QueuesPanel::update()";
         m_maxbusy = 0;
         foreach (QProgressBar * qpb, m_queuebusies) {
                 quint32 val = qpb->property("value").toUInt();
@@ -339,6 +381,11 @@ void QueuesPanel::update()
         }
 }
 
+/*! \brief set queue order
+ *
+ * Set new order un m_queue_lines and then call affWidget()
+ * to update display.
+ */
 void QueuesPanel::setQueueOrder(const QVariant & queueorder)
 {
         QStringList qlist;
@@ -355,6 +402,10 @@ void QueuesPanel::setQueueOrder(const QVariant & queueorder)
         affWidgets(false);
 }
 
+/*! \brief triggered when a queue is clicked
+ *
+ * Two possible actions : "more" or "display_up"
+ */
 void QueuesPanel::queueClicked()
 {
         // qDebug() << "QueuesPanel::queueClicked()" << sender()->property("queueid");
@@ -377,6 +428,8 @@ void QueuesPanel::queueClicked()
         }
 }
 
+/*! \brief set busyness
+ */
 void QueuesPanel::setQueueStatus(const QVariant & newstatuses)
 {
         // qDebug() << "QueuesPanel::setQueueStatus()" << newstatuses;
@@ -388,3 +441,4 @@ void QueuesPanel::setQueueStatus(const QVariant & newstatuses)
                 update();
         }
 }
+

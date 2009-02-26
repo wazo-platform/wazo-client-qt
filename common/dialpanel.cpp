@@ -141,7 +141,7 @@ void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 void DialPanel::dropEvent(QDropEvent * event)
 {
 	QString ext;
-	QString originator = QString::fromAscii(event->mimeData()->data("userid"));
+	QString originator = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
         qDebug() << "DialPanel::dropEvent()" << originator << m_input->lineEdit();
 	if(m_input->lineEdit()) {
                 qDebug() << "DialPanel::dropEvent()" << event << originator << m_input->lineEdit()->text();
