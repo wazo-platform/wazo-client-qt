@@ -56,7 +56,7 @@ SearchPanel::SearchPanel(BaseEngine * engine,
         : QWidget(parent),
           m_engine(engine)
 {
-	m_engine = engine;
+        m_engine = engine;
         m_options = options;
         // qDebug() << "SearchPanel::SearchPanel()" << options;
         m_maxdisplay = options.toMap()["contacts-max"].toUInt();
@@ -64,25 +64,25 @@ SearchPanel::SearchPanel(BaseEngine * engine,
         m_functions = options.toMap()["functions"].toStringList();
         // m_engine->askCallerIds();
 
-	QVBoxLayout * vlayout = new QVBoxLayout(this);
-	vlayout->setMargin(0);
-	QLabel * lbl = new QLabel( tr("N&ame or number to search :"), this );
-	vlayout->addWidget(lbl, 0, Qt::AlignCenter);
-	m_input = new ExtendedLineEdit( this );
-	lbl->setBuddy(m_input);
-	connect( m_input, SIGNAL(textChanged(const QString &)),
-	         this, SLOT(affTextChanged(const QString &)) );
-	vlayout->addWidget( m_input );
-	QScrollArea * scrollarea = new QScrollArea(this);
-	scrollarea->setWidgetResizable(true);
-	QWidget * widget = new QWidget(scrollarea);
+        QVBoxLayout * vlayout = new QVBoxLayout(this);
+        vlayout->setMargin(0);
+        QLabel * lbl = new QLabel( tr("N&ame or number to search :"), this );
+        vlayout->addWidget(lbl, 0, Qt::AlignCenter);
+        m_input = new ExtendedLineEdit( this );
+        lbl->setBuddy(m_input);
+        connect( m_input, SIGNAL(textChanged(const QString &)),
+                 this, SLOT(affTextChanged(const QString &)) );
+        vlayout->addWidget( m_input );
+        QScrollArea * scrollarea = new QScrollArea(this);
+        scrollarea->setWidgetResizable(true);
+        QWidget * widget = new QWidget(scrollarea);
         widget->setObjectName("scroller");
-	scrollarea->setWidget(widget);
-	QVBoxLayout * scrollarealayout = new QVBoxLayout(widget);
-	m_peerlayout = new QGridLayout();
-	scrollarealayout->addLayout( m_peerlayout );
-	scrollarealayout->addStretch( 1 );
-	vlayout->addWidget(scrollarea);
+        scrollarea->setWidget(widget);
+        QVBoxLayout * scrollarealayout = new QVBoxLayout(widget);
+        m_peerlayout = new QGridLayout();
+        scrollarealayout->addLayout( m_peerlayout );
+        scrollarealayout->addStretch( 1 );
+        vlayout->addWidget(scrollarea);
 
         m_searchpattern = "";
 }
@@ -176,7 +176,7 @@ void SearchPanel::updateDisplay()
                                                    const QString &)) );
             }
         }
- 	}
+         }
 }
 
 /*! \brief update display according to changes

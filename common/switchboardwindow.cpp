@@ -70,7 +70,7 @@
 SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine,
                                      const QVariant & options,
                                      QWidget * parent)
-	: QWidget(parent), m_engine(engine),
+        : QWidget(parent), m_engine(engine),
       m_trace_box(false), m_group_to_resize(0)
 {
     qDebug() << options;
@@ -126,9 +126,9 @@ void SwitchBoardWindow::updateUser(UserInfo * ui)
         m_peerhash.insert(userid, peeritem);
         QSettings * settings = m_engine->getSettings();
         settings->beginGroup("layout");
-    	QPoint pos = settings->value(userid, QPoint(-1, -1) ).toPoint();
+            QPoint pos = settings->value(userid, QPoint(-1, -1) ).toPoint();
         settings->endGroup();
-	    if(pos.x() >= 0) {
+            if(pos.x() >= 0) {
             /*BasePeerWidget * peerwidget = */addPeerWidget(peeritem, pos);
         }
     }
@@ -186,7 +186,7 @@ void SwitchBoardWindow::removePeerFromLayout()
         peerwidget->deleteLater();
         peeritem->setWidget(NULL);
         update();
-	}
+        }
     else
     {
         m_layout->removeWidget( static_cast<QWidget *>(sender()) );
@@ -297,7 +297,7 @@ void SwitchBoardWindow::removePeers(void)
                 }
                 delete peeritem;
         }
-       	m_peerhash.clear();
+               m_peerhash.clear();
 }
 
 void SwitchBoardWindow::dragMoveEvent(QDragMoveEvent * event)
@@ -313,9 +313,9 @@ void SwitchBoardWindow::dragMoveEvent(QDragMoveEvent * event)
 void SwitchBoardWindow::dragEnterEvent(QDragEnterEvent * event)
 {
         // qDebug() << "SwitchBoardWindow::dragEnterEvent()" << event->mimeData()->formats();
-	if( event->mimeData()->hasFormat(USERID_MIMETYPE) ||
+        if( event->mimeData()->hasFormat(USERID_MIMETYPE) ||
             event->mimeData()->hasFormat(NUMBER_MIMETYPE) )
-		event->acceptProposedAction();
+                event->acceptProposedAction();
 }
 
 /*! \brief Receives drop events
@@ -343,8 +343,8 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
                 peerwidget = addPeerWidget( peeritem, m_layout->getPosInGrid(event->pos()) );
             }
             updateGeometry();
-    	    event->acceptProposedAction();
-    	    savePositions();
+                event->acceptProposedAction();
+                savePositions();
             update();
         }
     }
@@ -362,8 +362,8 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
                 {
                     m_layout->setItemPosition(w, m_layout->getPosInGrid(event->pos()));
                     updateGeometry();
-            	    event->acceptProposedAction();
-            	    savePositions();
+                        event->acceptProposedAction();
+                        savePositions();
                     update();
                     break;
                 }

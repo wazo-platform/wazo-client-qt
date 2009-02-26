@@ -61,38 +61,38 @@ class UserInfo;
  */
 class ParkingPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	ParkingPanel(QWidget * parent = 0);
+        ParkingPanel(QWidget * parent = 0);
         ~ParkingPanel();
 protected:
-	void timerEvent(QTimerEvent *);		//!< receive timer events
+        void timerEvent(QTimerEvent *);                //!< receive timer events
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
         void parkingEvent(const QVariant &);
         void contextMenuEvent(QContextMenuEvent *);
 private slots:
-	void dialNumber();
-	void hangUp();
-	void itemClicked(QTableWidgetItem *);
-	void itemDoubleClicked(QTableWidgetItem *);
+        void dialNumber();
+        void hangUp();
+        void itemClicked(QTableWidgetItem *);
+        void itemDoubleClicked(QTableWidgetItem *);
         void proxyCallRequests(const QString &, const QString &);
 signals:
-	void copyNumber(const QString &);
-	void actionCall(const QString &,
+        void copyNumber(const QString &);
+        void actionCall(const QString &,
                         const QString &,
                         const QString &);
         void newParkEvent();
 private:
-	ExtendedTableWidget * m_table;	//! Table
+        ExtendedTableWidget * m_table;        //! Table
         const UserInfo * m_userinfo;
         int m_timerid;
         int m_deltasec;
-	QString m_astid;	//!< asterisk id selected
-	QString m_placenum;	//!< number to call to retrieve the parked call
-	QString m_parkedpeer;	//!< parked peer
-	QList<PeerChannel *> m_mychannels;	//!< "my channels" list for transfer menu
+        QString m_astid;        //!< asterisk id selected
+        QString m_placenum;        //!< number to call to retrieve the parked call
+        QString m_parkedpeer;        //!< parked peer
+        QList<PeerChannel *> m_mychannels;        //!< "my channels" list for transfer menu
 };
 
 #endif

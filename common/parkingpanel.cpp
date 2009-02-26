@@ -58,29 +58,29 @@
  * Set up the layout and the table widget.
  */
 ParkingPanel::ParkingPanel(QWidget * parent)
-	: QWidget(parent)
+        : QWidget(parent)
 {
-	QVBoxLayout * vlayout = new QVBoxLayout(this);
-	vlayout->setMargin(0);
-	m_table = new ExtendedTableWidget( this );
+        QVBoxLayout * vlayout = new QVBoxLayout(this);
+        vlayout->setMargin(0);
+        m_table = new ExtendedTableWidget( this );
         qDebug() << m_table;
         m_table->setAlternatingRowColors(true);
         m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-	m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
-	m_table->setColumnCount( 5 );
+        m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
+        m_table->setColumnCount( 5 );
         QStringList labels = (QStringList() << tr("XIVO Id") << tr("Number") << tr("Time") << tr("Parked") << tr("Parker"));
-	m_table->setHorizontalHeaderLabels(labels);
+        m_table->setHorizontalHeaderLabels(labels);
         
-	connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
-	         this, SLOT(itemClicked(QTableWidgetItem *)) );
-	connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
-	         this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-	connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
-	         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+        connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
+                 this, SLOT(itemClicked(QTableWidgetItem *)) );
+        connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
+                 this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
+        connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
+                 this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
         connect( m_table, SIGNAL(actionCall(const QString &, const QString &)),
                  this, SLOT(proxyCallRequests(const QString &, const QString &)) );
         
-	vlayout->addWidget( m_table, 0 );
+        vlayout->addWidget( m_table, 0 );
         m_table->resizeColumnsToContents();
         m_timerid = 0;
         m_deltasec = 2;
@@ -100,7 +100,7 @@ void ParkingPanel::setGuiOptions(const QVariant &)
 
 void ParkingPanel::setUserInfo(const UserInfo * ui)
 {
-	m_userinfo = ui;
+        m_userinfo = ui;
 }
 
 void ParkingPanel::proxyCallRequests(const QString & src, const QString & dst)
@@ -189,7 +189,7 @@ void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
 
 void ParkingPanel::timerEvent(QTimerEvent * event)
 {
-	int timerId = event->timerId();
+        int timerId = event->timerId();
         if (timerId == m_timerid)
                 for(int i = 0; i < m_table->rowCount(); i++) {
                         QTableWidgetItem * item = m_table->takeItem(i, 2);
@@ -201,7 +201,7 @@ void ParkingPanel::timerEvent(QTimerEvent * event)
 
 void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
 {
-	QTableWidgetItem * item = m_table->itemAt( event->pos() );
+        QTableWidgetItem * item = m_table->itemAt( event->pos() );
         if (item == NULL)
                 return;
 
@@ -210,35 +210,35 @@ void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
         m_placenum   = m_table->item(rown, 1)->text();
         m_parkedpeer = m_table->item(rown, 3)->text();
 
-	QRegExp re_number("\\+?[0-9\\s\\.]+");
-	if(item && re_number.exactMatch(m_placenum) && (m_astid == m_userinfo->astid())) {
-		QMenu contextMenu(this);
-		contextMenu.addAction( tr("&Dial") + " " + m_placenum + tr(" to unpark ") + m_parkedpeer,
+        QRegExp re_number("\\+?[0-9\\s\\.]+");
+        if(item && re_number.exactMatch(m_placenum) && (m_astid == m_userinfo->astid())) {
+                QMenu contextMenu(this);
+                contextMenu.addAction( tr("&Dial") + " " + m_placenum + tr(" to unpark ") + m_parkedpeer,
                                        this, SLOT(dialNumber()) );
-// 		contextMenu.addAction( tr("&Hangup") + " " + m_parkedpeer,
+//                 contextMenu.addAction( tr("&Hangup") + " " + m_parkedpeer,
 //                                        this, SLOT(hangUp()) );
-		if(!m_mychannels.empty()) {
-			QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
+                if(!m_mychannels.empty()) {
+                        QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
 #if 0
 // TODO : new way to do that
-			QListIterator<PeerChannel *> i(m_mychannels);
-			while(i.hasNext()) {
-				const PeerChannel * channel = i.next();
-				transferMenu->addAction(channel->otherPeer(),
-				                        channel, SLOT(transfer()));
-			}
+                        QListIterator<PeerChannel *> i(m_mychannels);
+                        while(i.hasNext()) {
+                                const PeerChannel * channel = i.next();
+                                transferMenu->addAction(channel->otherPeer(),
+                                                        channel, SLOT(transfer()));
+                        }
 #endif
-			contextMenu.addMenu(transferMenu);
-		}
-		contextMenu.exec( event->globalPos() );
-	}
+                        contextMenu.addMenu(transferMenu);
+                }
+                contextMenu.exec( event->globalPos() );
+        }
 }
 
 /*! \brief dial the number (when context menu item is toggled)
  */
 void ParkingPanel::dialNumber()
 {
-	if((m_placenum.length() > 0) && (m_astid == m_userinfo->astid()))
+        if((m_placenum.length() > 0) && (m_astid == m_userinfo->astid()))
                 actionCall("originate", "user:special:me", "ext:" + m_placenum); // Call
 }
 

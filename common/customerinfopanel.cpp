@@ -125,7 +125,7 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
 
 void CustomerInfoPanel::popupDestroyed(QObject * obj)
 {
-	qDebug() << "CustomerInfoPanel::popupDestroyed()"
+        qDebug() << "CustomerInfoPanel::popupDestroyed()"
                  << obj->property("astid") << obj->property("uniqueid");
         foreach(Popup * mpopup, m_popups)
                 if((mpopup->callUniqueid() == obj->property("uniqueid")) &&

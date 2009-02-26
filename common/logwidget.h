@@ -55,44 +55,44 @@ class UserInfo;
  */
 class LogWidget : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	LogWidget(BaseEngine *,
+        LogWidget(BaseEngine *,
                   const QVariant &,
                   QWidget * parent = 0);
-	void addElement(const QString &,
+        void addElement(const QString &,
                         LogEltWidget::Direction,
-	                const QDateTime &,
+                        const QDateTime &,
                         int,
                         const QString &);
 protected:
-	void timerEvent(QTimerEvent *);
+        void timerEvent(QTimerEvent *);
 private:
-	int mode();
+        int mode();
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-	void clear();
-	void addLogEntry(const QDateTime &, int,
+        void clear();
+        void addLogEntry(const QDateTime &, int,
                          const QString &, const QString &, const QString &);
-	void monitorPeer(UserInfo *);
+        void monitorPeer(UserInfo *);
 private slots:
-	void modeChanged(bool);
+        void modeChanged(bool);
         void proxyCallRequests(const QString &, const QString &);
 signals:
-	void askHistory(const QString &, int);	//!< need history to be updated !
-	void actionCall(const QString &,
+        void askHistory(const QString &, int);        //!< need history to be updated !
+        void actionCall(const QString &,
                         const QString &,
                         const QString &);
 private:
-	BaseEngine * m_engine;	//!< BaseEngine object
-	QVBoxLayout * m_layout;			//!< Widget layout
-	QString m_peer;					//!< "monitored" peer
-	int m_timer;					//!< timer id for refresh
-	QRadioButton * m_radioNone;		//!< "None" radio button
-	QRadioButton * m_radioOut;		//!< "Out" radio button
-	QRadioButton * m_radioIn;		//!< "In" radio button
-	QRadioButton * m_radioMissed;	//!< "Missed" radio button
+        BaseEngine * m_engine;        //!< BaseEngine object
+        QVBoxLayout * m_layout;                        //!< Widget layout
+        QString m_peer;                                        //!< "monitored" peer
+        int m_timer;                                        //!< timer id for refresh
+        QRadioButton * m_radioNone;                //!< "None" radio button
+        QRadioButton * m_radioOut;                //!< "Out" radio button
+        QRadioButton * m_radioIn;                //!< "In" radio button
+        QRadioButton * m_radioMissed;        //!< "Missed" radio button
         const UserInfo * m_userinfo_owner;
 };
 

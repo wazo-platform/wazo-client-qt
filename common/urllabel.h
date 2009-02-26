@@ -49,9 +49,9 @@
  * This label is a QLabel designed to display an URL. */
 class UrlLabel : public QLabel
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	UrlLabel(const QString & url, QWidget *parent=0);
+        UrlLabel(const QString & url, QWidget *parent=0);
 };
 
 #endif

@@ -59,32 +59,32 @@ class UserInfo;
  */
 class SearchPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	SearchPanel(BaseEngine *,
+        SearchPanel(BaseEngine *,
                     const QVariant &,
                     QWidget * parent = 0);
-	~SearchPanel();	//!< Destructor
+        ~SearchPanel();        //!< Destructor
 public slots:
         void setGuiOptions(const QVariant &);
-	void affTextChanged(const QString &);
-	void updatePeerAgent(double,
+        void affTextChanged(const QString &);
+        void updatePeerAgent(double,
                              const QString &,
                              const QString &,
                              const QVariant &);
-	void removePeer(const QString &);
-	void removePeers();
+        void removePeer(const QString &);
+        void removePeers();
     void updateDisplay();
     void updateUser(UserInfo *);
 signals:
-	void askCallerIds();
+        void askCallerIds();
 private:
-	BaseEngine * m_engine;	//!< engine to connect to peer widgets
-	QHash<QString, PeerItem *> m_peerhash;	//!< PeerItem hash
-	QGridLayout * m_peerlayout;	//!< layout object
-	ExtendedLineEdit * m_input;	//!< widget for search string input
+        BaseEngine * m_engine;        //!< engine to connect to peer widgets
+        QHash<QString, PeerItem *> m_peerhash;        //!< PeerItem hash
+        QGridLayout * m_peerlayout;        //!< layout object
+        ExtendedLineEdit * m_input;        //!< widget for search string input
         
-        int m_maxdisplay;	//!< max number of peers displayed on the search panel
+        int m_maxdisplay;        //!< max number of peers displayed on the search panel
         int m_ncolumns;
         QString m_searchpattern;
         QStringList m_functions;

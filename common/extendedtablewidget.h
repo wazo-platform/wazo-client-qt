@@ -51,19 +51,19 @@ class QMouseEvent;
  */
 class ExtendedTableWidget : public QTableWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	ExtendedTableWidget(QWidget * parent = 0);
-	ExtendedTableWidget(int rows, int columns, QWidget * parent = 0);
+        ExtendedTableWidget(QWidget * parent = 0);
+        ExtendedTableWidget(int rows, int columns, QWidget * parent = 0);
 protected:
-	void contextMenuEvent(QContextMenuEvent *);
-	void dragEnterEvent(QDragEnterEvent *);
-	void dragMoveEvent(QDragMoveEvent *);
-	void dropEvent(QDropEvent *);
+        void contextMenuEvent(QContextMenuEvent *);
+        void dragEnterEvent(QDragEnterEvent *);
+        void dragMoveEvent(QDragMoveEvent *);
+        void dropEvent(QDropEvent *);
         void mouseMoveEvent(QMouseEvent *);
 signals:
-	void actionCall(const QString &, const QString &);	//!< transfer/originate/... a call
-	void ContextMenuEvent(QContextMenuEvent *);
+        void actionCall(const QString &, const QString &);        //!< transfer/originate/... a call
+        void ContextMenuEvent(QContextMenuEvent *);
 };
 
 #endif

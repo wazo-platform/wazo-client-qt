@@ -51,12 +51,12 @@ class QLineEdit;
  */
 class ExtendedLineEdit : public QLineEdit
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	ExtendedLineEdit(QWidget * parent = 0);
-	ExtendedLineEdit(int rows, int columns, QWidget * parent = 0);
+        ExtendedLineEdit(QWidget * parent = 0);
+        ExtendedLineEdit(int rows, int columns, QWidget * parent = 0);
 protected:
-	void dropEvent(QDropEvent *event);
+        void dropEvent(QDropEvent *event);
 };
 
 class FileNameLineEdit : public QLineEdit

@@ -63,12 +63,12 @@ class Group;
  */
 class SwitchBoardWindow : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
     SwitchBoardWindow(BaseEngine *,
                       const QVariant &,
                       QWidget * parent = 0);
-    ~SwitchBoardWindow();	//!< Destructor
+    ~SwitchBoardWindow();        //!< Destructor
 protected:
     // event handlers
     void mousePressEvent(QMouseEvent *); //!< Catch mouse press events
@@ -87,8 +87,8 @@ public slots:
                          const QString &,
                          const QString &,
                          const QVariant &);
-	void removePeer(const QString &);
-	void removePeers();
+        void removePeer(const QString &);
+        void removePeers();
 private slots:
     void removePeerFromLayout();
     void removeGroup();
@@ -97,14 +97,14 @@ private slots:
     void addPhoneNumberEntry();
 private:
     void saveGroups() const;
-	void savePositions() const;
+        void savePositions() const;
     void reloadGroups();
     void reloadExternalPhones();
     BasePeerWidget * addPeerWidget(PeerItem * peeritem, const QPoint & pos);
     Group * getGroup( const QPoint & ) const;
-    BaseEngine * m_engine;	//!< engine to connect to peer widgets
-    QHash<QString, PeerItem *> m_peerhash;	//!< PeerItem hash
-    PeersLayout * m_layout;			//!< Grid Layout for displaying peers
+    BaseEngine * m_engine;        //!< engine to connect to peer widgets
+    QHash<QString, PeerItem *> m_peerhash;        //!< PeerItem hash
+    PeersLayout * m_layout;                        //!< Grid Layout for displaying peers
     QVariant m_options;
     // for the groups of people :
     bool m_trace_box;   //!< is box drawing enable

@@ -65,32 +65,32 @@
 DirectoryPanel::DirectoryPanel(const QVariant &, QWidget * parent)
         : QWidget(parent), m_re_number("\\+?[0-9\\s\\.]+")
 {
-	QVBoxLayout * vlayout = new QVBoxLayout(this);
-	vlayout->setMargin(0);
-	QLabel * titleLbl = new QLabel( tr("Di&rectory"), this );
-	vlayout->addWidget( titleLbl, 0, Qt::AlignCenter );
-	QHBoxLayout * hlayout = new QHBoxLayout();
-	m_searchText = new ExtendedLineEdit(this);
-	titleLbl->setBuddy(m_searchText);
-	connect( m_searchText, SIGNAL(returnPressed()),
-	         this, SLOT(startSearch()) );
-	hlayout->addWidget( m_searchText );
-	m_searchButton = new QPushButton( tr("Search"), this );
-	connect( m_searchButton, SIGNAL(clicked()),
-	         this, SLOT(startSearch()) );
-	hlayout->addWidget( m_searchButton );
-	vlayout->addLayout( hlayout );
-	m_table = new ExtendedTableWidget( this );
-	connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
-	         this, SLOT(itemClicked(QTableWidgetItem *)) );
-	connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
-	         this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-	connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
-	         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+        QVBoxLayout * vlayout = new QVBoxLayout(this);
+        vlayout->setMargin(0);
+        QLabel * titleLbl = new QLabel( tr("Di&rectory"), this );
+        vlayout->addWidget( titleLbl, 0, Qt::AlignCenter );
+        QHBoxLayout * hlayout = new QHBoxLayout();
+        m_searchText = new ExtendedLineEdit(this);
+        titleLbl->setBuddy(m_searchText);
+        connect( m_searchText, SIGNAL(returnPressed()),
+                 this, SLOT(startSearch()) );
+        hlayout->addWidget( m_searchText );
+        m_searchButton = new QPushButton( tr("Search"), this );
+        connect( m_searchButton, SIGNAL(clicked()),
+                 this, SLOT(startSearch()) );
+        hlayout->addWidget( m_searchButton );
+        vlayout->addLayout( hlayout );
+        m_table = new ExtendedTableWidget( this );
+        connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
+                 this, SLOT(itemClicked(QTableWidgetItem *)) );
+        connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
+                 this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
+        connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
+                 this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
         connect( m_table, SIGNAL(actionCall(const QString &, const QString &)),
                  this, SLOT(proxyCallRequests(const QString &, const QString &)) );
         
-	vlayout->addWidget(m_table);
+        vlayout->addWidget(m_table);
         setAcceptDrops(true);
         m_numberToDial = "";
         
@@ -108,7 +108,7 @@ void DirectoryPanel::setGuiOptions(const QVariant &)
 
 void DirectoryPanel::setUserInfo(const UserInfo * ui)
 {
-	m_userinfo = ui;
+        m_userinfo = ui;
 }
 
 void DirectoryPanel::proxyCallRequests(const QString & src, const QString & dst)
@@ -138,20 +138,20 @@ void DirectoryPanel::itemClicked(QTableWidgetItem * item)
 
 void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 {
-	//qDebug() << item << item->text();
-	// check if the string is a number
-	if( m_re_number.exactMatch(item->text()) ) {
+        //qDebug() << item << item->text();
+        // check if the string is a number
+        if( m_re_number.exactMatch(item->text()) ) {
         //qDebug() << "dialing" << item->text();
         actionCall("originate", "user:special:me", "ext:" + item->text()); // Call
     }
         
- 	if(item && item->text().contains("@")) {
+         if(item && item->text().contains("@")) {
         QString mailAddr = item->text();
         if(mailAddr.length() > 0) {
             //qDebug() << "DirectoryPanel::itemDoubleClicked() : mail" << mailAddr;
             QDesktopServices::openUrl(QUrl("mailto:" + mailAddr));
         }
- 	}
+         }
 }
 
 /*! \brief receive and process search response
@@ -161,12 +161,12 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
  */
 void DirectoryPanel::setSearchResponse(const QString & resp)
 {
-	int i, x, y;
-	//qDebug() << "DirectoryPanel::setSearchResponse()" << resp;
-	QStringList items = resp.split(";");
-	int ncolumns = items[0].toInt();
-	if(ncolumns > 0) {
-		int nrows = ((items.size() - 1) / ncolumns) - 1;
+        int i, x, y;
+        //qDebug() << "DirectoryPanel::setSearchResponse()" << resp;
+        QStringList items = resp.split(";");
+        int ncolumns = items[0].toInt();
+        if(ncolumns > 0) {
+                int nrows = ((items.size() - 1) / ncolumns) - 1;
                 if(nrows >= 0) {
                         m_table->setSortingEnabled(false);
                         m_table->setColumnCount(ncolumns);
@@ -195,7 +195,7 @@ void DirectoryPanel::setSearchResponse(const QString & resp)
                         }
                         m_table->setSortingEnabled(true);
                 }
-	}
+        }
 }
 
 /*! \brief start the search process
@@ -204,7 +204,7 @@ void DirectoryPanel::setSearchResponse(const QString & resp)
  */
 void DirectoryPanel::startSearch()
 {
-	searchDirectory( m_searchText->text() );
+        searchDirectory( m_searchText->text() );
 }
 
 /*! \brief stop
@@ -213,9 +213,9 @@ void DirectoryPanel::startSearch()
  */
 void DirectoryPanel::stop()
 {
-	m_table->setRowCount(0);
-	m_table->setColumnCount(0);
-	m_searchText->setText("");
+        m_table->setRowCount(0);
+        m_table->setColumnCount(0);
+        m_searchText->setText("");
 }
 
 void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
@@ -224,13 +224,13 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
     if (item == NULL)
         return;
 
-	if(item && m_re_number.exactMatch( item->text() )) {
+        if(item && m_re_number.exactMatch( item->text() )) {
         // this is a phone number, offer Dial and Transfer options
-		m_numberToDial = item->text();
+                m_numberToDial = item->text();
         // qDebug() << "DirectoryPanel::contextMenuEvent()" << "preparing to dial" << m_numberToDial;
-		QMenu contextMenu( this );
-		contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
-		QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
+                QMenu contextMenu( this );
+                contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
+                QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
         if(m_userinfo)
         {
             foreach( const QString phone, m_userinfo->phonelist() )
@@ -263,9 +263,9 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
         if( !transferMenu->isEmpty() )
             contextMenu.addMenu(transferMenu);
         contextMenu.exec( event->globalPos() );
-	}
+        }
 
- 	if(item && item->text().contains("@")) {
+         if(item && item->text().contains("@")) {
         // this is an email address
         m_mailAddr = item->text();
         qDebug() << "email addr detection :" << m_mailAddr;
@@ -280,8 +280,8 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
  */
 void DirectoryPanel::dialNumber()
 {
-	if( !m_numberToDial.isEmpty() )
-		actionCall("originate", "user:special:me", "ext:" + m_numberToDial); // Call
+        if( !m_numberToDial.isEmpty() )
+                actionCall("originate", "user:special:me", "ext:" + m_numberToDial); // Call
 }
 
 /*! \brief dial the number (when context menu item is toggled)

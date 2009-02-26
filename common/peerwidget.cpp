@@ -64,7 +64,7 @@ QHash<QString, QPixmap> PeerWidget::m_agents = QHash<QString, QPixmap>();
 /*! \brief Constructor
  */
 PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui, const QVariant & options)
-	: BasePeerWidget(engine, ui, options), m_availlbl(NULL), m_agentlbl(NULL)
+        : BasePeerWidget(engine, ui, options), m_availlbl(NULL), m_agentlbl(NULL)
 {
     //qDebug() << "PeerWidget constuctor options :" << options;
     // fill m_persons, m_phones and m_agents if needed.
@@ -80,8 +80,8 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui, const QVariant & opti
 
         m_functions = options.toMap()["functions"].toStringList();
 //        qDebug() << "PeerWidget::PeerWidget()" << m_functions;
-	// qDebug() << "PeerWidget::PeerWidget()" << id;
-	//	QHBoxLayout * layout = new QHBoxLayout(this);
+        // qDebug() << "PeerWidget::PeerWidget()" << id;
+        //        QHBoxLayout * layout = new QHBoxLayout(this);
         
         QFrame * qhline1 = new QFrame(this);
         QFrame * qhline2 = new QFrame(this);
@@ -122,17 +122,17 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui, const QVariant & opti
         qvline2->setFrameShape(QFrame::VLine);
         qvline2->setLineWidth(width_right);
         
-	QGridLayout * layout = new QGridLayout(this);
-	layout->setSpacing(spacing);
-	layout->setMargin(spacing);
+        QGridLayout * layout = new QGridLayout(this);
+        layout->setSpacing(spacing);
+        layout->setMargin(spacing);
         
         // QLabels definitions
         if(m_ui->fullname().isEmpty())
                 qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_ui->fullname() is empty for :" << m_ui->userid();
-	m_textlbl = new QLabel(m_ui->fullname().isEmpty() ? tr("(No callerid yet)") : m_ui->fullname(),
+        m_textlbl = new QLabel(m_ui->fullname().isEmpty() ? tr("(No callerid yet)") : m_ui->fullname(),
                                this);
-	// set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
-	m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
+        // set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
+        m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
         
         if(! m_ui->ctilogin().isEmpty()) {
                 m_availlbl = new ExtendedLabel();
@@ -177,12 +177,12 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui, const QVariant & opti
         
         // Put the Labels into layouts
         int linenum = 0;
-	layout->addWidget( qhline1, linenum, 0, 1, 10);
-	// layout->setColumnStretch( 1, 1 );
-	// layout->setColumnStretch( 8, 1 );
+        layout->addWidget( qhline1, linenum, 0, 1, 10);
+        // layout->setColumnStretch( 1, 1 );
+        // layout->setColumnStretch( 8, 1 );
         linenum ++;
         layout->addWidget( qvline1,   linenum, 0, 2, 1 );
-	layout->addWidget( m_textlbl, linenum, 2, 1, 6, alignment );
+        layout->addWidget( m_textlbl, linenum, 2, 1, 6, alignment );
         layout->addWidget( qvline2,   linenum, 9, 2, 1 );
         
         linenum ++;
@@ -201,10 +201,10 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui, const QVariant & opti
             layout->setColumnStretch(20, 1);
         
         linenum ++;
-	layout->addWidget( qhline2, linenum, 0, 1, 10);
+        layout->addWidget( qhline2, linenum, 0, 1, 10);
         
-	// to be able to receive drop
-	setAcceptDrops(true);
+        // to be able to receive drop
+        setAcceptDrops(true);
 }
 
 /*! \brief destructor
@@ -269,8 +269,8 @@ void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & q
  */
 void PeerWidget::setName(const QString & name)
 {
-	m_ui->setFullName(name);
-	m_textlbl->setText(m_ui->fullname());
+        m_ui->setFullName(name);
+        m_textlbl->setText(m_ui->fullname());
 }
 
 /*! \brief  

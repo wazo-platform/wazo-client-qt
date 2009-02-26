@@ -62,9 +62,9 @@ class UserInfo;
  */
 class StatusPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	StatusPanel(QWidget * parent = 0);
+        StatusPanel(QWidget * parent = 0);
         ~StatusPanel();
         enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
 public slots:
@@ -75,7 +75,7 @@ public slots:
         void clicked();
     void updateUser(UserInfo *);
 signals:
-	void actionCall(const QString &,
+        void actionCall(const QString &,
                         const QString & src = "",
                         const QString & dst = "");
 private:

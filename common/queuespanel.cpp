@@ -71,7 +71,7 @@ QueuesPanel::QueuesPanel(const QVariant & options,
                 xletlist.append(xletdesc.split("-")[0]);
         m_gui_showmore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
         
-	m_gridlayout = new QGridLayout(this);
+        m_gridlayout = new QGridLayout(this);
         m_statlegends["Completed"] = tr("Completed");
         m_statlegends["Abandoned"] = tr("Abandoned");
         m_statlegends["Holdtime"] = tr("Holdtime (s)");
@@ -118,9 +118,9 @@ QueuesPanel::QueuesPanel(const QVariant & options,
                                          0,
                                          m_statitems.indexOf(statitem) + colnum,
                                          Qt::AlignCenter );
-//  	m_gridlayout->setColumnStretch( 0, 1 );
-  	m_gridlayout->setColumnStretch( 100, 1 );
- 	m_gridlayout->setRowStretch( 100, 1 );
+//          m_gridlayout->setColumnStretch( 0, 1 );
+          m_gridlayout->setColumnStretch( 100, 1 );
+         m_gridlayout->setRowStretch( 100, 1 );
         m_gridlayout->setVerticalSpacing(0);
         
         setGuiOptions(options);

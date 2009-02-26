@@ -60,10 +60,10 @@ class UserInfo;
  */
 class ConferencePanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	ConferencePanel(QWidget * parent = 0);
-	~ConferencePanel();
+        ConferencePanel(QWidget * parent = 0);
+        ~ConferencePanel();
 protected:
         void timerEvent(QTimerEvent *);
 public slots:

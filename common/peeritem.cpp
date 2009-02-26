@@ -63,8 +63,8 @@ PeerItem::PeerItem()
  */
 PeerItem::PeerItem(const PeerItem & peer)
 {
-	m_ui = peer.m_ui;
-	m_peerwidget = peer.m_peerwidget;
+        m_ui = peer.m_ui;
+        m_peerwidget = peer.m_peerwidget;
 }
 
 /*! \brief update status of the peer
@@ -106,8 +106,8 @@ void PeerItem::updateChans(const QVariant & chanlist)
  */
 void PeerItem::updateName(const QString & newname)
 {
-	if(newname != m_ui->fullname())
-		m_ui->setFullName(newname);
+        if(newname != m_ui->fullname())
+                m_ui->setFullName(newname);
         if(m_peerwidget != NULL)
                 updateDisplayedName();
 }
@@ -183,7 +183,7 @@ void PeerItem::updateDisplayedStatus()
  */
 void PeerItem::updateDisplayedName()
 {
-	if(m_peerwidget == NULL)
+        if(m_peerwidget == NULL)
                 return;
 
         m_peerwidget->setName(m_ui->fullname());

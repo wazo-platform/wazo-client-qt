@@ -53,26 +53,26 @@ class QTemporaryFile;
 //! Downloads and displays a picture
 class RemotePicWidget : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	//! Constructor
-	RemotePicWidget(const QString & name, const QString & url, QWidget *parent=0);
-	//! Starts the download process
-	void startHttpRequest(const QString &);
+        //! Constructor
+        RemotePicWidget(const QString & name, const QString & url, QWidget *parent=0);
+        //! Starts the download process
+        void startHttpRequest(const QString &);
 private slots:
-	//! connected to the requestFinished() signal
-	void httpRequestFinished(int, bool);
-	//! connected to the dataReadProgress() signal
-	void httpDataReadProgress(int, int);
-	//! connected to the responseHeaderReceived() signal
-	void httpReadResponseHeader(const QHttpResponseHeader &);
+        //! connected to the requestFinished() signal
+        void httpRequestFinished(int, bool);
+        //! connected to the dataReadProgress() signal
+        void httpDataReadProgress(int, int);
+        //! connected to the responseHeaderReceived() signal
+        void httpReadResponseHeader(const QHttpResponseHeader &);
 
         void httpSslErrors(const QList<QSslError> &);
 private:
-	QHttp * m_http;				//!< QHttp object
-        // QTemporaryFile * m_tempFile;	//!< Temporary file for storing the picture
-        QFile * m_tempFile;		//!< Temporary file for storing the picture
-	QLabel * m_label;		//!< QLabel widget used to display the picture
+        QHttp * m_http;                                //!< QHttp object
+        // QTemporaryFile * m_tempFile;        //!< Temporary file for storing the picture
+        QFile * m_tempFile;                //!< Temporary file for storing the picture
+        QLabel * m_label;                //!< QLabel widget used to display the picture
         int m_httpGetId;
 };
 

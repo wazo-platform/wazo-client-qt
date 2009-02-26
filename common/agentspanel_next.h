@@ -62,11 +62,11 @@ class UserInfo;
  */
 class AgentsPanelNext : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	AgentsPanelNext(const QVariant &,
+        AgentsPanelNext(const QVariant &,
                     QWidget * parent = 0);
-	~AgentsPanelNext();
+        ~AgentsPanelNext();
 signals:
         void changeWatchedAgent(const QString &, bool);
         void agentAction(const QString &);
@@ -107,7 +107,7 @@ private:
         void saveGroups();
         
         QFont m_gui_font;
-	QGridLayout * m_glayout;
+        QGridLayout * m_glayout;
         QMap<QString, ExtendedLabel *> m_title;
         const UserInfo * m_userinfo;
         

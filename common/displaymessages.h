@@ -55,18 +55,18 @@ class QTableWidget;
  */
 class DisplayMessagesPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	DisplayMessagesPanel(QWidget * parent = 0);
+        DisplayMessagesPanel(QWidget * parent = 0);
 public slots:
-/* 	void affTextChanged(); */
-	void addMessage(const QString &);
+/*         void affTextChanged(); */
+        void addMessage(const QString &);
 /* signals: */
-/* 	void emitDial(const QString &); */
+/*         void emitDial(const QString &); */
 private:
- 	//QLabel * m_text;
-	//! Table
-	QTableWidget * m_table;
+         //QLabel * m_text;
+        //! Table
+        QTableWidget * m_table;
 };
 
 #endif

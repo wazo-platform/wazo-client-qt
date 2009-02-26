@@ -60,9 +60,9 @@ class UserInfo;
  */
 class CallWidget : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	//! Default constructor
+        //! Default constructor
     CallWidget(QWidget * parent = 0);
     ~CallWidget();
     CallWidget(UserInfo *,
@@ -76,47 +76,47 @@ public:
                       int,
                       const QString &,
                       const QString &);
-	const QString & channel() const;
+        const QString & channel() const;
 protected:
-	void mousePressEvent(QMouseEvent *);
-	void mouseMoveEvent(QMouseEvent *);
-	//void mouseDoubleClickEvent(QMouseEvent * event);
-	//void dragEnterEvent(QDragEnterEvent * event);
-	//	void dragMoveEvent(QDragMoveEvent * event);
-	//	void dropEvent(QDropEvent * event);
-	void timerEvent(QTimerEvent *);
-	void contextMenuEvent(QContextMenuEvent *);
+        void mousePressEvent(QMouseEvent *);
+        void mouseMoveEvent(QMouseEvent *);
+        //void mouseDoubleClickEvent(QMouseEvent * event);
+        //void dragEnterEvent(QDragEnterEvent * event);
+        //        void dragMoveEvent(QDragMoveEvent * event);
+        //        void dropEvent(QDropEvent * event);
+        void timerEvent(QTimerEvent *);
+        void contextMenuEvent(QContextMenuEvent *);
 private:
-	void setActionPixmap(const QString &);
-	void updateCallTimeLabel();
+        void setActionPixmap(const QString &);
+        void updateCallTimeLabel();
 signals:
-	void doHangUp(const QString &);	//!< hang up the channel
-	void doTransferToNumber(const QString &);	//!< transfers the channel
-	void doParkCall(const QString &);	//!< parks the channel
+        void doHangUp(const QString &);        //!< hang up the channel
+        void doTransferToNumber(const QString &);        //!< transfers the channel
+        void doParkCall(const QString &);        //!< parks the channel
 public slots:
-	void hangUp();
-	void transferToNumber();
-	void parkCall();
+        void hangUp();
+        void transferToNumber();
+        void parkCall();
 private:
         UserInfo * m_ui;
-	QPoint m_dragstartpos;	//!< used for drag
-	QString m_channelme;	//!< channel identifier
-	QString m_callerid;		//!< caller id
-	QString m_calleridname;	//!< caller id name
-	QLabel * m_lbl_status;	//!< sub widget
-	QLabel * m_lbl_time;	//!< sub widget
-	QLabel * m_lbl_direction;	//!< sub widget
-	QLabel * m_lbl_channelpeer;	//!< sub widget
-	QLabel * m_lbl_exten;	//!< sub widget
-	QPixmap m_square;		//!< QPixmap used to display the status square
-	static QPixmap * m_call_yellow; //!< yellow phone icon
-	static QPixmap * m_call_blue;   //!< blue phone icon
-	static QPixmap * m_call_red;    //!< red phone icon
-	static QPixmap * m_call_gray;   //!< gray phone icon
-	QDateTime m_startTime;	//!< call start date/time
-	QAction * m_hangUpAction;	//!< Hang Up Action
-        QAction * m_transferToNumberAction;	//!< Transfer to Number Action
-        QAction * m_parkCall;	//!< Park the Call Action
+        QPoint m_dragstartpos;        //!< used for drag
+        QString m_channelme;        //!< channel identifier
+        QString m_callerid;                //!< caller id
+        QString m_calleridname;        //!< caller id name
+        QLabel * m_lbl_status;        //!< sub widget
+        QLabel * m_lbl_time;        //!< sub widget
+        QLabel * m_lbl_direction;        //!< sub widget
+        QLabel * m_lbl_channelpeer;        //!< sub widget
+        QLabel * m_lbl_exten;        //!< sub widget
+        QPixmap m_square;                //!< QPixmap used to display the status square
+        static QPixmap * m_call_yellow; //!< yellow phone icon
+        static QPixmap * m_call_blue;   //!< blue phone icon
+        static QPixmap * m_call_red;    //!< red phone icon
+        static QPixmap * m_call_gray;   //!< gray phone icon
+        QDateTime m_startTime;        //!< call start date/time
+        QAction * m_hangUpAction;        //!< Hang Up Action
+        QAction * m_transferToNumberAction;        //!< Transfer to Number Action
+        QAction * m_parkCall;        //!< Park the Call Action
         QMenu * m_contextMenu;
 };
 

@@ -56,11 +56,11 @@ class UserInfo;
  */
 class DatetimePanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	DatetimePanel(QWidget * parent = 0);
+        DatetimePanel(QWidget * parent = 0);
 protected:
-	void timerEvent(QTimerEvent *);		//!< receive timer events
+        void timerEvent(QTimerEvent *);                //!< receive timer events
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);

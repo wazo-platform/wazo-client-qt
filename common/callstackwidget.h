@@ -60,36 +60,36 @@ class UserInfo;
  */
 class CallStackWidget : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	CallStackWidget(QWidget *);	//!< Constructor
+        CallStackWidget(QWidget *);        //!< Constructor
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
     void updateUser(UserInfo *);
-	void updateDisplay();
-	void hupchan(const QString &);
-	void transftonumberchan(const QString &);
-	void parkcall(const QString &);
-	void reset();
-	void monitorPeer(UserInfo *);
+        void updateDisplay();
+        void hupchan(const QString &);
+        void transftonumberchan(const QString &);
+        void parkcall(const QString &);
+        void reset();
+        void monitorPeer(UserInfo *);
 protected:
-	void dragEnterEvent(QDragEnterEvent *event);
-	void dropEvent(QDropEvent *event);
+        void dragEnterEvent(QDragEnterEvent *event);
+        void dropEvent(QDropEvent *event);
 private:
-//	void emptyList();	//!< remove all calls from the list
+//        void emptyList();        //!< remove all calls from the list
 signals:
     //! originate, transfer & atxfer signals
     void actionCall(const QString &,
                     const QString &,
                     const QString & dst = "");
-    void changeTitle(const QString &);		//!< change Title
-    void monitorPeerRequest(const QString &);	//!< send the userid of the new monitored peer
+    void changeTitle(const QString &);                //!< change Title
+    void monitorPeerRequest(const QString &);        //!< send the userid of the new monitored peer
 private:
     UserInfo * m_monitored_ui;
-    QVBoxLayout * m_layout;	//!< Vertical Layout used
+    QVBoxLayout * m_layout;        //!< Vertical Layout used
         
-    QHash<QString, CallWidget *> m_affhash;	//!< List of CallWidget Widgets
+    QHash<QString, CallWidget *> m_affhash;        //!< List of CallWidget Widgets
 };
 
 #endif

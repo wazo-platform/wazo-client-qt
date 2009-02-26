@@ -61,31 +61,31 @@
 
 class PlayerWidget: public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	PlayerWidget(QWidget * parent = 0);
+        PlayerWidget(QWidget * parent = 0);
 protected:
-	virtual void closeEvent(QCloseEvent *);
+        virtual void closeEvent(QCloseEvent *);
 private:
-	bool startMPlayer();
-	bool stopMPlayer();
+        bool startMPlayer();
+        bool stopMPlayer();
 
 private slots:
-	void catchOutput();
-	void pollCurrentTime();
-	// Dirige la timeline
-	void timeLineChanged(int);
-	// Play/stop
-	void switchPlayState();
-	void mplayerEnded(int, QProcess::ExitStatus);
+        void catchOutput();
+        void pollCurrentTime();
+        // Dirige la timeline
+        void timeLineChanged(int);
+        // Play/stop
+        void switchPlayState();
+        void mplayerEnded(int, QProcess::ExitStatus);
 private:
-	QPushButton *controller;
-	QWidget *renderTarget;
-	QProcess *mplayerProcess;
-	bool isPlaying;
-	QSlider *timeLine;
-	QTimer *poller;
-	QTextEdit *log;
+        QPushButton *controller;
+        QWidget *renderTarget;
+        QProcess *mplayerProcess;
+        bool isPlaying;
+        QSlider *timeLine;
+        QTimer *poller;
+        QTextEdit *log;
         QString m_movie_url;
 };
 

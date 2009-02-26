@@ -60,58 +60,58 @@ LogEltWidget::LogEltWidget(const QString & peer, Direction d,
                            QWidget * parent)
         : QWidget(parent), m_dateTime(dt), m_peer(peer), m_direction(d)
 {
-	// qDebug() << "  LogEltWidget::LogEltWidget()" << peer << d << dt << duration << parent;
-	QGridLayout * glayout = new QGridLayout( this );
-	//	QHBoxLayout * layout1 = new QHBoxLayout( this );
-	//	layout1->setMargin(0);
+        // qDebug() << "  LogEltWidget::LogEltWidget()" << peer << d << dt << duration << parent;
+        QGridLayout * glayout = new QGridLayout( this );
+        //        QHBoxLayout * layout1 = new QHBoxLayout( this );
+        //        layout1->setMargin(0);
 
-	QLabel * lblpeer = new QLabel(this);
+        QLabel * lblpeer = new QLabel(this);
         if(peer.isEmpty())
                 lblpeer->setText(tr("Unknown"));
         else
                 lblpeer->setText(peer);
-	lblpeer->setObjectName("logpeername");
-	lblpeer->setFont(QFont("helvetica", 10, QFont::Bold));
-	lblpeer->setMargin(0);
-	glayout->addWidget(lblpeer, 0, 0);
+        lblpeer->setObjectName("logpeername");
+        lblpeer->setFont(QFont("helvetica", 10, QFont::Bold));
+        lblpeer->setMargin(0);
+        glayout->addWidget(lblpeer, 0, 0);
 
-	QLabel * lbldt = new QLabel( dt.toString(Qt::SystemLocaleDate) + "   ", this );
-	lbldt->setFont(QFont("helvetica", 10, QFont::Light));
-	lbldt->setMargin(0);
-	glayout->addWidget(lbldt, 1, 0);
+        QLabel * lbldt = new QLabel( dt.toString(Qt::SystemLocaleDate) + "   ", this );
+        lbldt->setFont(QFont("helvetica", 10, QFont::Light));
+        lbldt->setMargin(0);
+        glayout->addWidget(lbldt, 1, 0);
         
-	QLabel * lbltermin = new QLabel();
+        QLabel * lbltermin = new QLabel();
         if(termin.split(".").size() == 4)
                 lbltermin->setText(tr("(phone %1)").arg(termin.split(".")[3]));
-	glayout->addWidget(lbltermin, 0, 2);
+        glayout->addWidget(lbltermin, 0, 2);
         
-	QLabel * lblduration = new QLabel( this );
-	int min = duration / 60;
-	int sec = duration % 60;
-	lblduration->setText((min?(QString::number(min) + "min "):"") + QString::number(sec) + "s");
-	lblduration->setFont(QFont("helvetica", 10, QFont::Light));
-	lblduration->setMargin(0);
-	glayout->addWidget(lblduration, 1, 1);
+        QLabel * lblduration = new QLabel( this );
+        int min = duration / 60;
+        int sec = duration % 60;
+        lblduration->setText((min?(QString::number(min) + "min "):"") + QString::number(sec) + "s");
+        lblduration->setFont(QFont("helvetica", 10, QFont::Light));
+        lblduration->setMargin(0);
+        glayout->addWidget(lblduration, 1, 1);
 
-	QLabel * lbldummy = new QLabel( "", this );
-	lbldummy->setMargin(0);
-	glayout->addWidget(lbldummy, 1, 2);
+        QLabel * lbldummy = new QLabel( "", this );
+        lbldummy->setMargin(0);
+        glayout->addWidget(lbldummy, 1, 2);
 
-	/*	QLabel * lbldir = new QLabel( this );
-	  lbldir->setText((d == OutCall)?"<=":"=>");
-	  glayout->addWidget(lbldir);
-	*/
+        /*        QLabel * lbldir = new QLabel( this );
+          lbldir->setText((d == OutCall)?"<=":"=>");
+          glayout->addWidget(lbldir);
+        */
 
-	glayout->setSpacing(0);
-	glayout->setColumnStretch(0, 0);
-	glayout->setColumnStretch(1, 0);
-	glayout->setColumnStretch(2, 0);
-	glayout->setColumnStretch(3, 1);
+        glayout->setSpacing(0);
+        glayout->setColumnStretch(0, 0);
+        glayout->setColumnStretch(1, 0);
+        glayout->setColumnStretch(2, 0);
+        glayout->setColumnStretch(3, 1);
 
-	m_dialAction = new QAction( tr("&Call back"), this );
-	m_dialAction->setStatusTip( tr("Call back the correspondent") );
-	connect( m_dialAction, SIGNAL(triggered()),
-	         this, SLOT(callBackPeer()) );
+        m_dialAction = new QAction( tr("&Call back"), this );
+        m_dialAction->setStatusTip( tr("Call back the correspondent") );
+        connect( m_dialAction, SIGNAL(triggered()),
+                 this, SLOT(callBackPeer()) );
 }
 
 const QDateTime & LogEltWidget::dateTime() const
@@ -143,9 +143,9 @@ void LogEltWidget::mouseReleaseEvent(QMouseEvent */* event*/)
  */
 void LogEltWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-	QMenu contextMenu(this);
-	contextMenu.addAction( m_dialAction );
-	contextMenu.exec(event->globalPos());
+        QMenu contextMenu(this);
+        contextMenu.addAction( m_dialAction );
+        contextMenu.exec(event->globalPos());
 }
 
 /*! \brief call the guy if dials is true, otherwise transmits the number in order to paste it
@@ -153,10 +153,10 @@ void LogEltWidget::contextMenuEvent(QContextMenuEvent *event)
  */
 void LogEltWidget::callBackPeer()
 {
-	QStringList qsl1 = m_peer.split("<");
+        QStringList qsl1 = m_peer.split("<");
         QString number = m_peer;
-	if (qsl1.size() > 1) {
-		QStringList qsl2 = qsl1[1].split(">");
+        if (qsl1.size() > 1) {
+                QStringList qsl2 = qsl1[1].split(">");
                 number = qsl2[0];
         }
         
@@ -166,10 +166,10 @@ void LogEltWidget::callBackPeer()
 
 void LogEltWidget::doNotCallBackPeer()
 {
-	QStringList qsl1 = m_peer.split("<");
+        QStringList qsl1 = m_peer.split("<");
         QString number = m_peer;
-	if (qsl1.size() > 1) {
-		QStringList qsl2 = qsl1[1].split(">");
+        if (qsl1.size() > 1) {
+                QStringList qsl2 = qsl1[1].split(">");
                 number = qsl2[0];
         }
 

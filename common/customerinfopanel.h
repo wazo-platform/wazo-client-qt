@@ -56,9 +56,9 @@ class UserInfo;
 
 class CustomerInfoPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	CustomerInfoPanel(const QVariant &,
+        CustomerInfoPanel(const QVariant &,
                           QWidget * parent = 0);
         ~CustomerInfoPanel();
 signals:

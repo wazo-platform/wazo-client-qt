@@ -61,11 +61,11 @@ class UserInfo;
  */
 class QueuesPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	QueuesPanel(const QVariant &,
+        QueuesPanel(const QVariant &,
                     QWidget * parent = 0);
-	~QueuesPanel();
+        ~QueuesPanel();
 protected:
         void update();
 private:
@@ -79,7 +79,7 @@ public slots:
         void setUserInfo(const UserInfo *);
         void updateCounter(const QVariant &);
         void removeQueues(const QString &, const QStringList &);
-	void setQueueList(const QVariant &);
+        void setQueueList(const QVariant &);
         void setQueueStatus(const QVariant &);
         void updatePeerAgent(double,
                              const QString &,

@@ -56,7 +56,7 @@
 StatusPanel::StatusPanel(QWidget * parent)
         : QWidget(parent), m_ui(NULL)
 {
-	m_glayout = new QGridLayout(this);
+        m_glayout = new QGridLayout(this);
         m_lbl = new QLabel( "", this );
         m_linenum = 0;
         
@@ -69,7 +69,7 @@ StatusPanel::StatusPanel(QWidget * parent)
         m_actionkey[Qt::Key_F7] = (QStringList() << "park" << tr("Park"));
         // m_actionkey[Qt::Key_Return] = (QStringList() << "numreturn" << tr("Call Number"));
         
-	m_glayout->addWidget( m_lbl, 0, 0, 1, m_actionkey.size() + 4, Qt::AlignHCenter | Qt::AlignVCenter );
+        m_glayout->addWidget( m_lbl, 0, 0, 1, m_actionkey.size() + 4, Qt::AlignHCenter | Qt::AlignVCenter );
         m_glayout->setRowStretch(100, 1);
 }
 
@@ -125,7 +125,7 @@ void StatusPanel::updateLine(const QString & chan, const QStringList & allowed)
 {
         int colnum = 1;
         m_glayout->addWidget( m_vlinesl[chan], m_linenum, 0, Qt::AlignLeft );
-	m_glayout->addWidget( m_statuses[chan], m_linenum, colnum++, Qt::AlignHCenter );
+        m_glayout->addWidget( m_statuses[chan], m_linenum, colnum++, Qt::AlignHCenter );
 
         QMapIterator<int, QStringList> act(m_actionkey);
         while (act.hasNext()) {

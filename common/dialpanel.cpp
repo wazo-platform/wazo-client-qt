@@ -59,42 +59,42 @@ DialPanel::DialPanel(const QVariant &,
                      QWidget * parent)
         : QWidget(parent)
 {
-	QHBoxLayout * vlayout = new QHBoxLayout(this);
-	vlayout->setMargin(0);
+        QHBoxLayout * vlayout = new QHBoxLayout(this);
+        vlayout->setMargin(0);
         m_lbl = new QLabel( tr("Enter &Number :"), this );
-	m_input = new QComboBox( this );
-	m_lbl->setBuddy(m_input);
-	m_input->setToolTip( tr("Input here the phone number to dial") );
-	m_input->setEditable( true );
+        m_input = new QComboBox( this );
+        m_lbl->setBuddy(m_input);
+        m_input->setToolTip( tr("Input here the phone number to dial") );
+        m_input->setEditable( true );
         m_input->setDuplicatesEnabled( false );
         m_input->setInsertPolicy( QComboBox::InsertAlphabetically );
-	m_input->setMinimumContentsLength( 15 );
-	//m_input->setSizeAdjustPolicy( QComboBox::AdjustToContents );
-	connect( m_input->lineEdit(), SIGNAL(returnPressed()),
-	         this, SLOT(inputValidated()) );
-	connect( m_input, SIGNAL(editTextChanged(const QString &)),
-	         this, SIGNAL(textEdited(const QString &)) );
+        m_input->setMinimumContentsLength( 15 );
+        //m_input->setSizeAdjustPolicy( QComboBox::AdjustToContents );
+        connect( m_input->lineEdit(), SIGNAL(returnPressed()),
+                 this, SLOT(inputValidated()) );
+        connect( m_input, SIGNAL(editTextChanged(const QString &)),
+                 this, SIGNAL(textEdited(const QString &)) );
         
         QPixmap pmphone = QPixmap(":/images/sipphone.png");
         QPushButton * dialButton = new QPushButton(this);
         // dialButton->setStyleSheet("QPushButton {border: 0px}");
         dialButton->setIcon(pmphone);
         dialButton->setIconSize(pmphone.size());
-	connect( dialButton, SIGNAL(clicked()),
-	         this, SLOT(inputValidated()) );
+        connect( dialButton, SIGNAL(clicked()),
+                 this, SLOT(inputValidated()) );
         
         // QPushButton * clearButton = new QPushButton(this);
         // clearButton->setIcon(QIcon(":/images/cancel.png"));
-	// connect( clearButton, SIGNAL(clicked()),
+        // connect( clearButton, SIGNAL(clicked()),
         // this, SLOT(clearlist()) );
 
         setAcceptDrops(true);
 
         vlayout->addStretch(1);
-	// vlayout->addWidget( clearButton, 0, Qt::AlignCenter );
-	vlayout->addWidget( m_lbl, 0, Qt::AlignCenter );
-	vlayout->addWidget( m_input, 0, Qt::AlignCenter );
-	vlayout->addWidget( dialButton, 0, Qt::AlignCenter );
+        // vlayout->addWidget( clearButton, 0, Qt::AlignCenter );
+        vlayout->addWidget( m_lbl, 0, Qt::AlignCenter );
+        vlayout->addWidget( m_input, 0, Qt::AlignCenter );
+        vlayout->addWidget( dialButton, 0, Qt::AlignCenter );
         vlayout->addStretch(1);
 }
 
@@ -134,20 +134,20 @@ void DialPanel::setNumberToDial(const QString & text)
 void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 {
         // qDebug() << "DialPanel::dragEnterEvent()" << event;
-	if(event->mimeData()->hasFormat(PEER_MIMETYPE))
+        if(event->mimeData()->hasFormat(PEER_MIMETYPE))
                 event->acceptProposedAction();
 }
 
 void DialPanel::dropEvent(QDropEvent * event)
 {
-	QString ext;
-	QString originator = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
+        QString ext;
+        QString originator = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
         qDebug() << "DialPanel::dropEvent()" << originator << m_input->lineEdit();
-	if(m_input->lineEdit()) {
+        if(m_input->lineEdit()) {
                 qDebug() << "DialPanel::dropEvent()" << event << originator << m_input->lineEdit()->text();
                 ext = m_input->lineEdit()->text();
                 ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
-                if(ext.length() == 0)	// do nothing if the string is empty
+                if(ext.length() == 0)        // do nothing if the string is empty
                         return;
                 actionCall("originate", "user:" + originator, "ext:" + m_input->lineEdit()->text()); // Call
                 m_input->insertItem(0, ext); // add to history
@@ -165,12 +165,12 @@ void DialPanel::dropEvent(QDropEvent * event)
 
 // void DialPanel::mouseMoveEvent(QMouseEvent *event)
 // {
-// 	qDebug() << "DialPanel::mouseMoveEvent()" << event;
+//         qDebug() << "DialPanel::mouseMoveEvent()" << event;
 // }
 
 // void DialPanel::mousePressEvent(QMouseEvent *event)
 // {
-// 	qDebug() << "DialPanel::mousePressEvent()" << event;
+//         qDebug() << "DialPanel::mousePressEvent()" << event;
 // }
 
 /*! \brief the input was validated
@@ -179,11 +179,11 @@ void DialPanel::dropEvent(QDropEvent * event)
  */
 void DialPanel::inputValidated()
 {
-	QString ext;
-	if(m_input->lineEdit()) {
-		ext = m_input->lineEdit()->text();
+        QString ext;
+        if(m_input->lineEdit()) {
+                ext = m_input->lineEdit()->text();
                 ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
-                if(ext.length() == 0)	// do nothing if the string is empty
+                if(ext.length() == 0)        // do nothing if the string is empty
                         return;
                 actionCall("originate", "user:special:me", "ext:" + ext); // Call
                 m_input->insertItem(0, ext); // add to history

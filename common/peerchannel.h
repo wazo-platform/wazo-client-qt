@@ -50,23 +50,23 @@
  */
 class PeerChannel : public QObject
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	PeerChannel(const QString &, const QVariant &, QObject * parent=0);
-	//! get m_otherPeer
-	const QString & otherPeer() const;
+        PeerChannel(const QString &, const QVariant &, QObject * parent=0);
+        //! get m_otherPeer
+        const QString & otherPeer() const;
 public slots:
-	void intercept();
-	void hangup();
-	void transfer();
+        void intercept();
+        void hangup();
+        void transfer();
 signals:
-	void interceptChan(const QString &);	//!< intercept
-	void hangupChan(const QString &);	//!< hang up
-	void transferChan(const QString &);	//!< transfer
+        void interceptChan(const QString &);        //!< intercept
+        void hangupChan(const QString &);        //!< hang up
+        void transferChan(const QString &);        //!< transfer
 private:
-	QString m_id;		//!< Identification string of the channel
-	QString m_state;	//!< State of the channel
-	QString m_otherPeer;	//!< other side of the channel
+        QString m_id;                //!< Identification string of the channel
+        QString m_state;        //!< State of the channel
+        QString m_otherPeer;        //!< other side of the channel
 };
 
 #endif

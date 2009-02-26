@@ -63,12 +63,12 @@ class UserInfo;
  */
 class QueuedetailsPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	QueuedetailsPanel(BaseEngine *,
+        QueuedetailsPanel(BaseEngine *,
                           const QVariant &,
                           QWidget * parent = 0);
-	~QueuedetailsPanel();
+        ~QueuedetailsPanel();
 signals:
         void changeWatchedAgent(const QString &, bool); //!< select an agent to watch
 protected:
@@ -76,7 +76,7 @@ protected:
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-	void newQueue(double, const QString &, const QString &, const QVariant &);
+        void newQueue(double, const QString &, const QString &, const QVariant &);
         void setAgentList(double, const QVariant &);
         void updatePeerAgent(double,
                              const QString &,
@@ -90,11 +90,11 @@ private:
         double m_timesrv;
         QDateTime m_timeclt;
         
-	BaseEngine * m_engine;	//!< BaseEngine object
+        BaseEngine * m_engine;        //!< BaseEngine object
         QGridLayout * m_gridlayout; //!< Layout
-	//QVBoxLayout * m_layout; //
+        //QVBoxLayout * m_layout; //
     //    QScrollArea * m_scrollarea;
-	//QWidget * m_widget;
+        //QWidget * m_widget;
         
         QString m_astid;    //!< asterisk id
         QString m_queueid;  //!< queue id

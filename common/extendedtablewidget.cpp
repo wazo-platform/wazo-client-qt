@@ -55,7 +55,7 @@
 ExtendedTableWidget::ExtendedTableWidget(QWidget * parent)
         : QTableWidget(parent)
 {
-	setAcceptDrops(true);
+        setAcceptDrops(true);
         setAlternatingRowColors(true);
         this->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 }
@@ -65,7 +65,7 @@ ExtendedTableWidget::ExtendedTableWidget(QWidget * parent)
 ExtendedTableWidget::ExtendedTableWidget(int rows, int columns, QWidget * parent)
         : QTableWidget(rows, columns, parent)
 {
-	setAcceptDrops(true);
+        setAcceptDrops(true);
         setAlternatingRowColors(true);
 }
 
@@ -80,7 +80,7 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
 void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
 {
         // qDebug() << "ExtendedTableWidget::mouseMoveEvent()" << event << event->pos();
-	QTableWidgetItem * item = itemAt( event->pos() );
+        QTableWidgetItem * item = itemAt( event->pos() );
         if(item) {
                 QDrag *drag = new QDrag(this);
                 QMimeData *mimeData = new QMimeData;
@@ -96,7 +96,7 @@ void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
 void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
         // qDebug() << "ExtendedTableWidget::dragEnterEvent" << event->mimeData()->formats() << event->pos();
-	if(  event->mimeData()->hasFormat(PEER_MIMETYPE) ||
+        if(  event->mimeData()->hasFormat(PEER_MIMETYPE) ||
              event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
              event->mimeData()->hasFormat(CHANNEL_MIMETYPE) ) {
                 event->acceptProposedAction();
@@ -110,17 +110,17 @@ void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
 {
         // qDebug() << "ExtendedTableWidget::dragMoveEvent()" << event->pos();
-	if(event->proposedAction() & ( Qt::CopyAction | Qt::MoveAction ))
-		event->acceptProposedAction();
-	QTableWidgetItem * item = itemAt( event->pos() );
-	if(item) {
-		QRegExp re("\\+?[0-9\\s\\.]+");
-		if(re.exactMatch( item->text() ))
-			event->accept(visualItemRect(item));
-		else
-			event->ignore(visualItemRect(item));
-	} else
-		event->ignore();
+        if(event->proposedAction() & ( Qt::CopyAction | Qt::MoveAction ))
+                event->acceptProposedAction();
+        QTableWidgetItem * item = itemAt( event->pos() );
+        if(item) {
+                QRegExp re("\\+?[0-9\\s\\.]+");
+                if(re.exactMatch( item->text() ))
+                        event->accept(visualItemRect(item));
+                else
+                        event->ignore(visualItemRect(item));
+        } else
+                event->ignore();
 }
 
 /*! \brief receive drop event
@@ -128,23 +128,23 @@ void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
 void ExtendedTableWidget::dropEvent(QDropEvent *event)
 {
         // qDebug() << "ExtendedTableWidget::dropEvent()" << event->mimeData()->text() << event->pos();
-	QTableWidgetItem * item = itemAt( event->pos() );
-	QRegExp re("\\+?[0-9\\s\\.]+");
-	if(item && re.exactMatch( item->text() )) {
+        QTableWidgetItem * item = itemAt( event->pos() );
+        QRegExp re("\\+?[0-9\\s\\.]+");
+        if(item && re.exactMatch( item->text() )) {
                 QString userid_from = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
                 QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
-		if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
-			event->acceptProposedAction();
+                if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
+                        event->acceptProposedAction();
                         this->setProperty("action", "transfer");
-			actionCall("chan:" + userid_from + ":" + channel_from, "ext:" + item->text()); // Call
-		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
-			event->acceptProposedAction();
+                        actionCall("chan:" + userid_from + ":" + channel_from, "ext:" + item->text()); // Call
+                } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+                        event->acceptProposedAction();
                         this->setProperty("action", "originate");
-			actionCall("user:" + userid_from, "ext:" + item->text()); // Call
-		} else {
-			event->ignore();
+                        actionCall("user:" + userid_from, "ext:" + item->text()); // Call
+                } else {
+                        event->ignore();
                 }
-	}
-	else
-		event->ignore();
+        }
+        else
+                event->ignore();
 }

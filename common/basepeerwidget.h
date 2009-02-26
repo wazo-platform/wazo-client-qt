@@ -51,7 +51,7 @@ protected slots:
 protected:
     BaseEngine * m_engine;      //!< Xivo CTI Client Engine
     UserInfo * m_ui;            //!< user infos
-    QPoint m_dragstartpos;	    //!< drag start position
+    QPoint m_dragstartpos;            //!< drag start position
     QAction * m_dialAction;     //!< action to dial this number
     QAction * m_removeAction;   //!< action to remove this peer from the window
     QString m_number;   //!< phone number (filled if m_ui is NULL)

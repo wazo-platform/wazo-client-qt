@@ -53,23 +53,23 @@
  * Set up the layout and the table widget.
  */
 DisplayMessagesPanel::DisplayMessagesPanel(QWidget * parent)
-	: QWidget(parent)
+        : QWidget(parent)
 {
-	QVBoxLayout * vlayout = new QVBoxLayout(this);
-	vlayout->setMargin(0);
-	// QLabel * lbl = new QLabel( tr("Messages :"), this );
-	m_table = new QTableWidget( this );
+        QVBoxLayout * vlayout = new QVBoxLayout(this);
+        vlayout->setMargin(0);
+        // QLabel * lbl = new QLabel( tr("Messages :"), this );
+        m_table = new QTableWidget( this );
         m_table->setAlternatingRowColors(true);
         m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-	m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
-	m_table->setColumnCount( 2 );
-	QStringList labels;
-	labels << tr("Time Stamp");
-	labels << tr("Message");
-	m_table->setHorizontalHeaderLabels(labels);
+        m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
+        m_table->setColumnCount( 2 );
+        QStringList labels;
+        labels << tr("Time Stamp");
+        labels << tr("Message");
+        m_table->setHorizontalHeaderLabels(labels);
 
-        //	vlayout->addWidget( lbl, 0, Qt::AlignCenter );
-	vlayout->addWidget( m_table, 0 );
+        //        vlayout->addWidget( lbl, 0, Qt::AlignCenter );
+        vlayout->addWidget( m_table, 0 );
 }
 
 /*! \brief add a message to the list
@@ -78,7 +78,7 @@ DisplayMessagesPanel::DisplayMessagesPanel(QWidget * parent)
  */
 void DisplayMessagesPanel::addMessage(const QString & str)
 {
-	//qDebug() << "DisplayMessagesPanel::addMessage()" << str;
+        //qDebug() << "DisplayMessagesPanel::addMessage()" << str;
         if(str.size() > 0) {
                 QDateTime datetime = QDateTime::currentDateTime();
                 m_table->insertRow( 0 );

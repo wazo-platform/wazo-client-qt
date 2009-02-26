@@ -53,18 +53,18 @@ RemotePicWidget::RemotePicWidget(const QString & name, const QString & url,
                                  QWidget *parent)
         : QWidget(parent), m_http(0), m_tempFile(0)
 {
-	QStackedLayout * layout = new QStackedLayout(this);
-	m_label = new QLabel(name, this);
-	layout->addWidget(m_label);
-	startHttpRequest(url);
+        QStackedLayout * layout = new QStackedLayout(this);
+        m_label = new QLabel(name, this);
+        layout->addWidget(m_label);
+        startHttpRequest(url);
 }
 
 void RemotePicWidget::startHttpRequest(const QString & urlstr)
 {
-	QUrl url(urlstr);
-	if(!m_http)
-	{
-		m_http = new QHttp(this);
+        QUrl url(urlstr);
+        if(!m_http)
+        {
+                m_http = new QHttp(this);
                 connect( m_http, SIGNAL(requestFinished(int, bool)),
                          this, SLOT(httpRequestFinished(int, bool)) );
                 connect( m_http, SIGNAL(dataReadProgress(int, int)),
@@ -73,8 +73,8 @@ void RemotePicWidget::startHttpRequest(const QString & urlstr)
                          this, SLOT(httpReadResponseHeader(const QHttpResponseHeader &)) );
                 connect( m_http, SIGNAL(sslErrors(const QList<QSslError> &)),
                          this, SLOT(httpSslErrors(const QList<QSslError> &)) );
-	}
-	if(!m_tempFile) {
+        }
+        if(!m_tempFile) {
                 // m_tempFile = new QTemporaryFile(this);
                 // m_tempFile->setAutoRemove(false);
 #ifdef Q_WS_WIN
@@ -83,8 +83,8 @@ void RemotePicWidget::startHttpRequest(const QString & urlstr)
                 m_tempFile = new QFile("/tmp/xivopush." + url.host() + url.path().replace("/", "."));
 #endif
                 m_tempFile->open(QIODevice::ReadWrite);
-	}
-	qDebug() << m_tempFile->fileName() << m_tempFile->size() << url.host() << url.port() << url.scheme();
+        }
+        qDebug() << m_tempFile->fileName() << m_tempFile->size() << url.host() << url.port() << url.scheme();
         if(url.scheme() == QString("https"))
                 m_http->setHost(url.host(),
                                 QHttp::ConnectionModeHttps,
@@ -93,14 +93,14 @@ void RemotePicWidget::startHttpRequest(const QString & urlstr)
                 m_http->setHost(url.host(),
                                 QHttp::ConnectionModeHttp,
                                 url.port() != -1 ? url.port() : 80);
-	if (! url.userName().isEmpty())
-		m_http->setUser(url.userName(), url.password());
-	//httpRequestAborted = false;
+        if (! url.userName().isEmpty())
+                m_http->setUser(url.userName(), url.password());
+        //httpRequestAborted = false;
         m_http->ignoreSslErrors();
-	m_httpGetId = m_http->get(url.path(), m_tempFile);
-	// qDebug() << "httpGetId =" << m_httpGetId;
-	// do we need to send data towards a temporary file ?
-	// QTemporaryFile().open() et filename() apres.
+        m_httpGetId = m_http->get(url.path(), m_tempFile);
+        // qDebug() << "httpGetId =" << m_httpGetId;
+        // do we need to send data towards a temporary file ?
+        // QTemporaryFile().open() et filename() apres.
 }
 
 void RemotePicWidget::httpSslErrors(const QList<QSslError> & errors)
@@ -133,6 +133,6 @@ void RemotePicWidget::httpRequestFinished(int requestId, bool error)
 
 void RemotePicWidget::httpReadResponseHeader(const QHttpResponseHeader &responseHeader)
 {
-	qDebug() << "RemotePicWidget::httpReadResponseHeader()"
-	         << responseHeader.statusCode();
+        qDebug() << "RemotePicWidget::httpReadResponseHeader()"
+                 << responseHeader.statusCode();
 }

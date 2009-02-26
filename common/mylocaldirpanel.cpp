@@ -55,7 +55,7 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
         : QWidget(parent), m_engine(engine), m_ui(NULL)
 {
         qDebug() << "MyLocalDirPanel::MyLocalDirPanel()";
-	
+        
         // replace by whatever you need
         QVBoxLayout * vlayout = new QVBoxLayout(this);
         QHBoxLayout * hlayout = new QHBoxLayout();

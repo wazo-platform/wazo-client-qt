@@ -51,7 +51,7 @@
 XmlHandler::XmlHandler( Popup *popup )
         : m_popup(popup), m_isParsingInfo(false)
 {
-	qDebug() << "XmlHandler::XmlHandler()";
+        qDebug() << "XmlHandler::XmlHandler()";
 }
 
 /*!
@@ -66,38 +66,38 @@ bool XmlHandler::startElement( const QString & /*namespaceURI*/,
                                const QXmlAttributes & atts )
 {
         // qDebug() << "XmlHandler::startElement()" << localName << namespaceURI << qName;
-	if( localName == "sheet_info" ) {
-		m_isParsingInfo = true;
-		m_infoOrder = atts.value("order");
-		m_infoName  = atts.value("name");
-		m_infoType  = atts.value("type");
-		m_infoValue = "";
-	} else if( localName == "systray_info" ) {
-		m_isParsingInfo = true;
-		m_infoOrder = atts.value("order");
-		m_infoName  = "";
-		m_infoType  = atts.value("type");
-		m_infoValue = "";
-	} else if( localName == "action_info" ) {
-		m_isParsingInfo = true;
-		m_infoOrder = atts.value("order");
-		m_infoName  = atts.value("name");
-		m_infoType  = atts.value("type");
-		m_infoValue = "";
-	} else if( localName == "sheet_qtui" ) {
+        if( localName == "sheet_info" ) {
                 m_isParsingInfo = true;
-		m_infoName  = atts.value("name");
-		m_infoValue = "";
-	} else if( localName == "internal" ) {
-		m_isParsingInfo = true;
+                m_infoOrder = atts.value("order");
+                m_infoName  = atts.value("name");
+                m_infoType  = atts.value("type");
+                m_infoValue = "";
+        } else if( localName == "systray_info" ) {
+                m_isParsingInfo = true;
+                m_infoOrder = atts.value("order");
+                m_infoName  = "";
+                m_infoType  = atts.value("type");
+                m_infoValue = "";
+        } else if( localName == "action_info" ) {
+                m_isParsingInfo = true;
+                m_infoOrder = atts.value("order");
+                m_infoName  = atts.value("name");
+                m_infoType  = atts.value("type");
+                m_infoValue = "";
+        } else if( localName == "sheet_qtui" ) {
+                m_isParsingInfo = true;
+                m_infoName  = atts.value("name");
+                m_infoValue = "";
+        } else if( localName == "internal" ) {
+                m_isParsingInfo = true;
                 m_infoOrder = "";
-		m_infoName  = atts.value("name");
-		m_infoType  = atts.value("type");
-		m_infoValue = "";
-	} else {
-		m_isParsingInfo = false;
-	}
-	return true;
+                m_infoName  = atts.value("name");
+                m_infoType  = atts.value("type");
+                m_infoValue = "";
+        } else {
+                m_isParsingInfo = false;
+        }
+        return true;
 }
 
 /*!
@@ -110,11 +110,11 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
                              const QString & /*qName*/)
 {
         // qDebug() << "XmlHandler::endElement()" << localName << m_infoOrder << m_infoType << m_infoName << m_infoValue;
-	m_isParsingInfo = false;
+        m_isParsingInfo = false;
         if(m_popup == NULL)
                 return true;
         
-	if( (localName == "sheet_info") ||
+        if( (localName == "sheet_info") ||
             (localName == "systray_info") ||
             (localName == "action_info" ) ||
             (localName == "internal") )
@@ -124,40 +124,40 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
         else if( localName == "profile" )
                 m_popup->finishAndShow();
         
-	return true;
+        return true;
 }
 
 bool XmlHandler::characters( const QString & ch )
 {
-	//qDebug() << "chars=" << ch;
-	if(m_isParsingInfo)
-		m_infoValue.append(ch);
-	return true;
+        //qDebug() << "chars=" << ch;
+        if(m_isParsingInfo)
+                m_infoValue.append(ch);
+        return true;
 }
 
 bool XmlHandler::endDocument()
 {
-	qDebug() << "XmlHandler::endDocument()";
-	//if(m_popup)
-	//	m_popup->finishAndShow();
-	return true;
+        qDebug() << "XmlHandler::endDocument()";
+        //if(m_popup)
+        //        m_popup->finishAndShow();
+        return true;
 }
 
 // QXmlErrorHandler
 bool XmlHandler::warning( const QXmlParseException & exception )
 {
-	qDebug() << "XmlHandler::warning() " << exception.message();
-	return true;
+        qDebug() << "XmlHandler::warning() " << exception.message();
+        return true;
 }
 
 bool XmlHandler::error( const QXmlParseException & exception )
 {
-	qDebug() << "XmlHandler::error() " << exception.message();
-	return true;
+        qDebug() << "XmlHandler::error() " << exception.message();
+        return true;
 }
 
 bool XmlHandler::fatalError( const QXmlParseException & exception )
 {
-	qDebug() << "XmlHandler::fatalError() " << exception.message() << exception.columnNumber() << exception.lineNumber();
-	return true;
+        qDebug() << "XmlHandler::fatalError() " << exception.message() << exception.columnNumber() << exception.lineNumber();
+        return true;
 }

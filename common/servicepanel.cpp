@@ -68,12 +68,12 @@ ServicePanel::ServicePanel(const QVariant & options,
         
         m_capas = options.toMap()["services"].toStringList();
         
-	int line = 0;
+        int line = 0;
         m_status = new ServiceStatus();
         
-	QGroupBox * groupBox1 = new QGroupBox( tr("Services") );
-	groupBox1->setAlignment( Qt::AlignLeft );
-	QGridLayout * gridlayout1 = new QGridLayout(groupBox1);
+        QGroupBox * groupBox1 = new QGroupBox( tr("Services") );
+        groupBox1->setAlignment( Qt::AlignLeft );
+        QGridLayout * gridlayout1 = new QGridLayout(groupBox1);
         
         foreach(QString capa, chkcapas)
                 if(m_capas.contains(capa)) {
@@ -83,9 +83,9 @@ ServicePanel::ServicePanel(const QVariant & options,
                         gridlayout1->addWidget(m_chkopt[capa], line++, 0, 1, 0);
         }
         
-	QGroupBox * groupBox2 = new QGroupBox( tr("Call Forwards") );
-	groupBox2->setAlignment( Qt::AlignLeft );
-	QGridLayout * gridlayout2 = new QGridLayout(groupBox2);
+        QGroupBox * groupBox2 = new QGroupBox( tr("Call Forwards") );
+        groupBox2->setAlignment( Qt::AlignLeft );
+        QGridLayout * gridlayout2 = new QGridLayout(groupBox2);
         QHash<QString, QLabel *> label;
         
         foreach(QString capa, fwdcapas)
@@ -275,7 +275,7 @@ ServiceStatus::ServiceStatus()
 
 void ServiceStatus::setOpt(const QString & capa, bool b)
 {
-	m_chkopt[capa] = b;
+        m_chkopt[capa] = b;
 }
 
 void ServiceStatus::setForward(const QString & capa, bool b, const QString & dest)

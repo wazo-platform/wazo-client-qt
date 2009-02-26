@@ -54,9 +54,9 @@ class UserInfo;
  */
 class MyLocalDirPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	MyLocalDirPanel(BaseEngine *, QWidget * parent = 0);
+        MyLocalDirPanel(BaseEngine *, QWidget * parent = 0);
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);

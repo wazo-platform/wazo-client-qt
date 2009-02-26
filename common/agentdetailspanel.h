@@ -60,7 +60,7 @@ class UserInfo;
  */
 class AgentdetailsPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
         AgentdetailsPanel(const QVariant &,
                           QWidget * parent = 0);

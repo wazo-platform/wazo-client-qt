@@ -57,32 +57,32 @@ class UserInfo;
 class PeerItem// : public QObject
 {
 public:
-	//PeerItem( const QString & ext, QObject * parent = 0 );
-	PeerItem( UserInfo * );
-	PeerItem( const PeerItem & );
-	PeerItem( );
+        //PeerItem( const QString & ext, QObject * parent = 0 );
+        PeerItem( UserInfo * );
+        PeerItem( const PeerItem & );
+        PeerItem( );
         UserInfo * userinfo();
         // PeerItem & operator=(const PeerItem & peer);
-	//! set m_peerwidget
-	//void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
-	void setWidget(BasePeerWidget * widget) { m_peerwidget = widget; };
-	//! get m_peerwidget
-	//PeerWidget * getWidget() { return m_peerwidget; };
-	BasePeerWidget * getWidget() { return m_peerwidget; };
+        //! set m_peerwidget
+        //void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
+        void setWidget(BasePeerWidget * widget) { m_peerwidget = widget; };
+        //! get m_peerwidget
+        //PeerWidget * getWidget() { return m_peerwidget; };
+        BasePeerWidget * getWidget() { return m_peerwidget; };
         
-	void updateStatus();
-	void updateAgentStatus(const QVariant &);
-	void updateName(const QString &);
+        void updateStatus();
+        void updateAgentStatus(const QVariant &);
+        void updateName(const QString &);
         
-	void updateDisplayedStatus();
-	void updateDisplayedName();
+        void updateDisplayedStatus();
+        void updateDisplayedName();
 private:
-	//PeerWidget * m_peerwidget;	//!< related PeerWidget
-	BasePeerWidget * m_peerwidget;	//!< related PeerWidget
+        //PeerWidget * m_peerwidget;        //!< related PeerWidget
+        BasePeerWidget * m_peerwidget;        //!< related PeerWidget
 
         // Properties of each peer
         UserInfo * m_ui;
-	// QString m_name;		//!< Person name
+        // QString m_name;                //!< Person name
         QString m_vmstatus;
         QVariant m_agentstatus;
         QString m_pausestatus;

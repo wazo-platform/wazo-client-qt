@@ -55,7 +55,7 @@ ConferencePanel::ConferencePanel(QWidget * parent)
         : QWidget(parent), m_ui(NULL)
 {
         // qDebug() << "ConferencePanel::ConferencePanel()";
-	m_glayout = new QGridLayout(this);
+        m_glayout = new QGridLayout(this);
         m_tw = new QTabWidget(this);
         m_glayout->addWidget( m_tw, 0, 0 );
         m_glayout->setRowStretch( 0, 1 );

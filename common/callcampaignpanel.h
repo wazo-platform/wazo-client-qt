@@ -60,9 +60,9 @@ class UserInfo;
  */
 class CallCampaignPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	CallCampaignPanel(QWidget * parent = 0);
+        CallCampaignPanel(QWidget * parent = 0);
 signals:
         void requestFileList(const QString &);
 public slots:
@@ -82,10 +82,10 @@ private:
         
         const UserInfo * m_ui;
         QLineEdit * m_openFileNameLabel;
-	QVBoxLayout * m_vlayout;
-	QHBoxLayout * m_hlayout1;
-	QHBoxLayout * m_hlayout2;
-	QGridLayout * m_glayout;
+        QVBoxLayout * m_vlayout;
+        QHBoxLayout * m_hlayout1;
+        QHBoxLayout * m_hlayout2;
+        QGridLayout * m_glayout;
         QHash<QString, QString> m_numbers;
         QHash<QString, QLabel *> m_numlabel;
         QHash<QString, QPushButton *> m_qpbstart;

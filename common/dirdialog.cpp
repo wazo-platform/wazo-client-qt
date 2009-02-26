@@ -56,11 +56,11 @@
 DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
         : QDialog(parent), m_engine(engine)
 {
-	restoreGeometry(m_engine->getSettings()->value("faxhistory/geometry").toByteArray());
-	// the object will be destroyed when closed
-	setWindowTitle(tr("Directory"));
+        restoreGeometry(m_engine->getSettings()->value("faxhistory/geometry").toByteArray());
+        // the object will be destroyed when closed
+        setWindowTitle(tr("Directory"));
 
-	QVBoxLayout * vlayout = new QVBoxLayout(this);
+        QVBoxLayout * vlayout = new QVBoxLayout(this);
         m_directory = new DirectoryPanel(this);
         connect( m_directory, SIGNAL(searchDirectory(const QString &)),
                  m_engine, SLOT(searchDirectory(const QString &)) );
@@ -71,16 +71,16 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
         connect( m_directory, SIGNAL(emitDial(const QString &, bool)),
                  this, SLOT(copyNumberAndQuit(const QString &, bool)) );
 
-	m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
-	connect(m_btnbox, SIGNAL(accepted()),
+        m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+        connect(m_btnbox, SIGNAL(accepted()),
                 this, SLOT(saveAndClose()));
-	connect(m_btnbox, SIGNAL(rejected()),
+        connect(m_btnbox, SIGNAL(rejected()),
                 this, SLOT(close()));
         m_btnbox->button(QDialogButtonBox::Cancel)->setDefault(false);
         m_btnbox->button(QDialogButtonBox::Ok)->setDefault(false);
 
-	vlayout->addWidget(m_directory);
-	vlayout->addWidget(m_btnbox);
+        vlayout->addWidget(m_directory);
+        vlayout->addWidget(m_btnbox);
 
         m_faxnumber = "";
         m_retfaxnumber = "";
@@ -89,12 +89,12 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
 DirDialog::~DirDialog()
 {
         // qDebug() << "DirDialog::~DirDialog()";
-	m_engine->getSettings()->setValue("faxhistory/geometry", saveGeometry() );
+        m_engine->getSettings()->setValue("faxhistory/geometry", saveGeometry() );
 }
 
 const QString & DirDialog::faxnumber() const
 {
-	return m_retfaxnumber;
+        return m_retfaxnumber;
 }
 
 void DirDialog::copyNumber(const QString & number)

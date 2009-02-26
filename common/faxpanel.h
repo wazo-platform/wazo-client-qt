@@ -58,9 +58,9 @@ class UserInfo;
 
 class FaxPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	FaxPanel(BaseEngine *, const QVariant &, QWidget * parent = 0);
+        FaxPanel(BaseEngine *, const QVariant &, QWidget * parent = 0);
         ~FaxPanel();
 signals:
         void faxSend(const QString &, const QString &, Qt::CheckState);
@@ -74,9 +74,9 @@ public slots:
         void destNumberChanged(const QString &);
         void fileNameChanged(const QString &);
 private:
-	QWidget * m_mainwindow;	//!< MainWidget where some parameters are commited to
+        QWidget * m_mainwindow;        //!< MainWidget where some parameters are commited to
         FileNameLineEdit * m_openFileNameLabel;
-	QLineEdit * m_destination;
+        QLineEdit * m_destination;
         QCheckBox * m_maskornot;
         QPushButton * m_sendButton;
         BaseEngine * m_engine;

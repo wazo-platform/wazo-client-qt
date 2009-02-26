@@ -51,25 +51,25 @@
 UrlLabel::UrlLabel(const QString & url, QWidget * parent)
         : QLabel(parent)
 {
-	QString displaytext, text;
-	//setForegroundRole( QPalette::Link );
-	setOpenExternalLinks(true);	// new in Qt 4.2
-	setTextInteractionFlags( Qt::LinksAccessibleByMouse
+        QString displaytext, text;
+        //setForegroundRole( QPalette::Link );
+        setOpenExternalLinks(true);        // new in Qt 4.2
+        setTextInteractionFlags( Qt::LinksAccessibleByMouse
                                  | Qt::LinksAccessibleByKeyboard );
-	//                        | Qt::TextSelectableByMouse
-	//                        | Qt::TextSelectableByKeyboard );
-	if(url.startsWith("mailto:"))
-		displaytext = url.mid(7);
+        //                        | Qt::TextSelectableByMouse
+        //                        | Qt::TextSelectableByKeyboard );
+        if(url.startsWith("mailto:"))
+                displaytext = url.mid(7);
         else if(url.startsWith("dial:"))
                 displaytext = url.mid(5);
         else
-		displaytext = url;
+                displaytext = url;
         //qDebug() << "UrlLabel::UrlLabel()" << url << displaytext;
-	text = "<a href=\"";
-	text.append(url);
-	text.append("\">");
-	text.append(displaytext);
-	text.append("</a>");
-	setText(text);
+        text = "<a href=\"";
+        text.append(url);
+        text.append("\">");
+        text.append(displaytext);
+        text.append("</a>");
+        setText(text);
 }
 

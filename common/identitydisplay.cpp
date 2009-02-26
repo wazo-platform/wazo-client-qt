@@ -70,8 +70,8 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
 {
         m_gui_buttonsize = 16;
         
-	QGridLayout * glayout = new QGridLayout(this);
-	// glayout->setMargin(0);
+        QGridLayout * glayout = new QGridLayout(this);
+        // glayout->setMargin(0);
         m_user = new QLabel(this);
         m_user->setObjectName("fullname");
         //m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -123,17 +123,17 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         
         int idline = 0;
         Qt::Alignment textAlign = Qt::AlignLeft | Qt::AlignTop; // Qt::AlignVCenter
-	glayout->addWidget( m_user, idline, 2, textAlign );
-	glayout->addWidget( m_agent, idline, 5, textAlign );
-	glayout->addWidget( m_voicemail_name, idline, 8, textAlign );
+        glayout->addWidget( m_user, idline, 2, textAlign );
+        glayout->addWidget( m_agent, idline, 5, textAlign );
+        glayout->addWidget( m_voicemail_name, idline, 8, textAlign );
         idline ++;
-	glayout->addWidget( m_phonenum, idline, 2, textAlign );
-	glayout->addWidget( m_agentstatus, idline, 5, textAlign );
-	glayout->addWidget( m_voicemail_old, idline, 8, textAlign );
+        glayout->addWidget( m_phonenum, idline, 2, textAlign );
+        glayout->addWidget( m_agentstatus, idline, 5, textAlign );
+        glayout->addWidget( m_voicemail_old, idline, 8, textAlign );
         idline ++;
-	glayout->addWidget( m_presencevalue, idline, 2, textAlign );
-	glayout->addWidget( m_agentpause, idline, 5, textAlign );
-	glayout->addWidget( m_voicemail_new, idline, 8, textAlign );
+        glayout->addWidget( m_presencevalue, idline, 2, textAlign );
+        glayout->addWidget( m_agentpause, idline, 5, textAlign );
+        glayout->addWidget( m_voicemail_new, idline, 8, textAlign );
         
         glayout->setColumnStretch( 9, 1 );
         
@@ -144,7 +144,7 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
         hideAgentProps();
         
         setGuiOptions(options);
-        // 	glayout->setColumnStretch( 0, 1 );
+        //         glayout->setColumnStretch( 0, 1 );
 }
 
 void IdentityDisplay::setGuiOptions(const QVariant & options)

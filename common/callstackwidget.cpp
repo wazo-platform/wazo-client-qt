@@ -107,9 +107,9 @@ void CallStackWidget::parkcall(const QString & chan)
 /*! \brief Reset the Widget */
 void CallStackWidget::reset()
 {
-	// qDebug() << "CallStackWidget::reset()";
-	//m_callhash.clear();
-	// monitorPeer(NULL);
+        // qDebug() << "CallStackWidget::reset()";
+        //m_callhash.clear();
+        // monitorPeer(NULL);
 }
 
 #if 0
@@ -118,16 +118,16 @@ void CallStackWidget::reset()
  * and empty m_afflist */
 void CallStackWidget::emptyList()
 {
-	// qDebug() << "CallStackWidget::emptyList()";
-	// cleaning the calling list displayed
-	for(int i = 0; i < m_afflist.count() ; i++) {
-		// qDebug() << " Removing" << m_afflist[i]->channel();
-		m_layout->removeWidget(m_afflist[i]);
-		//m_afflist[i]->deleteLater();
-		delete m_afflist[i];
-	}
-	m_afflist.clear();
-	//m_calllist.clear();
+        // qDebug() << "CallStackWidget::emptyList()";
+        // cleaning the calling list displayed
+        for(int i = 0; i < m_afflist.count() ; i++) {
+                // qDebug() << " Removing" << m_afflist[i]->channel();
+                m_layout->removeWidget(m_afflist[i]);
+                //m_afflist[i]->deleteLater();
+                delete m_afflist[i];
+        }
+        m_afflist.clear();
+        //m_calllist.clear();
 }
 #endif
 
@@ -137,7 +137,7 @@ void CallStackWidget::emptyList()
  */
 void CallStackWidget::updateDisplay()
 {
-	CallWidget * callwidget = NULL;
+        CallWidget * callwidget = NULL;
 
     QStringList activeChannels;  // list of active channels to be displayed
 
@@ -198,34 +198,34 @@ void CallStackWidget::updateDisplay()
     
 #if 0
         // qDebug() << "CallStackWidget::updateDisplay()" << m_callhash.keys();
-	for(j = m_afflist.count() - 1; j>= 0; j--) {
+        for(j = m_afflist.count() - 1; j>= 0; j--) {
                 // qDebug() << "CallStackWidget::updateDisplay()" << m_afflist[j]->channel() << m_callhash.keys();
-		if(! m_callhash.contains(m_afflist[j]->channel())) {
-			// qDebug() << " Removing " << m_afflist[j]->channel();
-			m_layout->removeWidget(m_afflist[j]);
-			//m_afflist.takeAt(j)->deleteLater();
-			delete m_afflist.takeAt(j);
-		}
-	}
+                if(! m_callhash.contains(m_afflist[j]->channel())) {
+                        // qDebug() << " Removing " << m_afflist[j]->channel();
+                        m_layout->removeWidget(m_afflist[j]);
+                        //m_afflist.takeAt(j)->deleteLater();
+                        delete m_afflist.takeAt(j);
+                }
+        }
 #endif
    
 #if 0
-	foreach(QString chanme, m_callhash.keys()) {
+        foreach(QString chanme, m_callhash.keys()) {
         // qDebug() << "CallStackWidget::updateDisplay()" << chanme << m_monitored_userid << m_callhash[chanme]->getUserId();
-		if(m_monitored_ui->userid() == m_callhash[chanme]->getUserId()) {
-			Call * c = m_callhash[chanme];
-			for(j = 0; j < m_afflist.count(); j++) {
-				// qDebug() << j << m_afflist[j]->channel();
-				if(m_afflist[j]->channel() == chanme) {
-					m_afflist[j]->updateWidget( c->getStatus(),
-					                            c->getTime(),
-								    c->getChannelPeer(),
-								    c->getExten() );
-					break;
-				}
-			}
+                if(m_monitored_ui->userid() == m_callhash[chanme]->getUserId()) {
+                        Call * c = m_callhash[chanme];
+                        for(j = 0; j < m_afflist.count(); j++) {
+                                // qDebug() << j << m_afflist[j]->channel();
+                                if(m_afflist[j]->channel() == chanme) {
+                                        m_afflist[j]->updateWidget( c->getStatus(),
+                                                                    c->getTime(),
+                                                                    c->getChannelPeer(),
+                                                                    c->getExten() );
+                                        break;
+                                }
+                        }
                         // qDebug() << "CallStackWidget::updateDisplay() -" << j << m_afflist.count();
-			if(j == m_afflist.count()) {
+                        if(j == m_afflist.count()) {
                 callwidget = new CallWidget(m_monitored_ui,
                                             chanme,
                                             c->getStatus(),
@@ -244,14 +244,14 @@ void CallStackWidget::updateDisplay()
                 //m_layout->addWidget(callwidget, 0, Qt::AlignTop);
                 m_layout->insertWidget(m_layout->count() - 1, callwidget,
                                        0, Qt::AlignTop);
-			}
-		}
-	}
+                        }
+                }
+        }
 #endif
-/*	
-	callwidget = new CallWidget(this);
-	m_layout->addWidget(callwidget, 1, Qt::AlignTop);
-	m_afflist.append(callwidget);
+/*        
+        callwidget = new CallWidget(this);
+        m_layout->addWidget(callwidget, 1, Qt::AlignTop);
+        m_afflist.append(callwidget);
 */
 }
 
@@ -259,11 +259,11 @@ void CallStackWidget::updateDisplay()
  */
 void CallStackWidget::dragEnterEvent(QDragEnterEvent * event)
 {
-	// qDebug() << "CallStackWidget::dragEnterEvent()" << event->mimeData()->formats();
-	if (event->mimeData()->hasFormat(PEER_MIMETYPE))
-	{
-		event->acceptProposedAction();
-	}
+        // qDebug() << "CallStackWidget::dragEnterEvent()" << event->mimeData()->formats();
+        if (event->mimeData()->hasFormat(PEER_MIMETYPE))
+        {
+                event->acceptProposedAction();
+        }
 }
 
 /*! \brief updates the peer to be monitored
@@ -287,11 +287,11 @@ void CallStackWidget::monitorPeer(UserInfo * ui)
  */
 void CallStackWidget::dropEvent(QDropEvent * event)
 {
-	if(!event->mimeData()->hasFormat(PEER_MIMETYPE)) {
-		event->ignore();
-		return;
-	}
+        if(!event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+                event->ignore();
+                return;
+        }
     qDebug() << "CallStackWidget::dropEvent" << event->mimeData()->data(USERID_MIMETYPE);
-	monitorPeerRequest(event->mimeData()->data(USERID_MIMETYPE));
-	event->acceptProposedAction();
+        monitorPeerRequest(event->mimeData()->data(USERID_MIMETYPE));
+        event->acceptProposedAction();
 }

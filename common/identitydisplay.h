@@ -60,16 +60,16 @@ class UserInfo;
  */
 class IdentityDisplay : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	IdentityDisplay(const QVariant &,
+        IdentityDisplay(const QVariant &,
                         QWidget * parent = 0);
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
         void setAgentList(double, const QVariant &);
-	void setQueueList(const QVariant &);
-	void updatePeerAgent(double,
+        void setQueueList(const QVariant &);
+        void updatePeerAgent(double,
                              const QString &,
                              const QString &,
                              const QVariant &);

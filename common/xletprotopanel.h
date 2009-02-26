@@ -52,10 +52,10 @@ class UserInfo;
  */
 class XletprotoPanel : public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	XletprotoPanel(BaseEngine * engine, QWidget * parent = 0);
-	~XletprotoPanel();
+        XletprotoPanel(BaseEngine * engine, QWidget * parent = 0);
+        ~XletprotoPanel();
 public slots:
         void setUserInfo(const UserInfo *);
         void setGuiOptions(const QVariant &);

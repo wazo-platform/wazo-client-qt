@@ -56,13 +56,13 @@ XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
         : QWidget(parent), m_engine(engine), m_ui(NULL)
 {
         qDebug() << "XletWeb::XletWeb()";
-	
+        
         // replace by whatever you need
         QGridLayout * glayout = new QGridLayout(this);
 #ifdef USE_WEBKIT
-	QWebView *view = new QWebView(this);
-	view->load(QUrl("http://www.proformatique.com/"));
-	view->show();
+        QWebView *view = new QWebView(this);
+        view->load(QUrl("http://www.proformatique.com/"));
+        view->show();
         glayout->addWidget( view, 0, 0, Qt::AlignCenter );
 #endif
         glayout->setRowStretch( 0, 1 );

@@ -58,12 +58,12 @@ CallCampaignPanel::CallCampaignPanel(QWidget * parent)
 {
         qDebug() << "CallCampaignPanel::CallCampaignPanel()";
         
-	m_vlayout = new QVBoxLayout(this);
-	m_hlayout1 = new QHBoxLayout();
-	m_hlayout2 = new QHBoxLayout();
-	m_glayout = new QGridLayout();
+        m_vlayout = new QVBoxLayout(this);
+        m_hlayout1 = new QHBoxLayout();
+        m_hlayout2 = new QHBoxLayout();
+        m_glayout = new QGridLayout();
 
-	QLabel * label1 = new QLabel(tr("File to load"), this);
+        QLabel * label1 = new QLabel(tr("File to load"), this);
         m_openFileNameLabel = new QLineEdit("", this);
 //         connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
 //                 this, SLOT(fileNameChanged(const QString &)));
@@ -74,7 +74,7 @@ CallCampaignPanel::CallCampaignPanel(QWidget * parent)
         connect(loadFile, SIGNAL(clicked()),
                 this, SLOT(loadFileClicked()));
 
-	QLabel * label2 = new QLabel(tr("Server"), this);
+        QLabel * label2 = new QLabel(tr("Server"), this);
         QPushButton * getCallsButton = new QPushButton( tr("Get"), this);
         QPushButton * startCallsButton = new QPushButton( tr("Start"), this);
         QPushButton * stopCallsButton = new QPushButton( tr("Stop"), this);

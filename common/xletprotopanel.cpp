@@ -53,7 +53,7 @@ XletprotoPanel::XletprotoPanel(BaseEngine * engine, QWidget * parent)
         : QWidget(parent), m_engine(engine), m_ui(NULL)
 {
         qDebug() << "XletprotoPanel::XletprotoPanel()";
-	
+        
         // replace by whatever you need
         QGridLayout * glayout = new QGridLayout(this);
         QLabel * title = new QLabel(tr("Xlet Example"));

@@ -52,7 +52,7 @@
 QueueentrydetailsPanel::QueueentrydetailsPanel(QWidget * parent)
         : QWidget(parent)
 {
-	m_gridlayout = new QGridLayout(this);
+        m_gridlayout = new QGridLayout(this);
 
         m_label = new QLabel("", this);
         m_gridlayout->setColumnStretch( 5, 1 );

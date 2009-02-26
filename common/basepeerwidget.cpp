@@ -36,7 +36,7 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui, const QVarian
  */
 void BasePeerWidget::dial()
 {
-	// qDebug() << "PeerWidget::dial()" << m_ui->userid() << sender();
+        // qDebug() << "PeerWidget::dial()" << m_ui->userid() << sender();
     if(m_ui)
     {
         emit actionCall("originate", "user:special:me", "user:" + m_ui->userid());
@@ -136,27 +136,27 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
         return;
     if ( (event->pos() - m_dragstartpos).manhattanLength()
          < QApplication::startDragDistance())
-	    return;
+            return;
 
-	QDrag *drag = new QDrag(this);
-	QMimeData *mimeData = new QMimeData;
+        QDrag *drag = new QDrag(this);
+        QMimeData *mimeData = new QMimeData;
     if( m_ui )
     {
-    	mimeData->setText(m_ui->phonenumber());
-    	mimeData->setData(PEER_MIMETYPE, m_ui->userid().toAscii());
-    	mimeData->setData(USERID_MIMETYPE, m_ui->userid().toAscii());
-    	mimeData->setData(NAME_MIMETYPE, m_ui->fullname().toUtf8());
+            mimeData->setText(m_ui->phonenumber());
+            mimeData->setData(PEER_MIMETYPE, m_ui->userid().toAscii());
+            mimeData->setData(USERID_MIMETYPE, m_ui->userid().toAscii());
+            mimeData->setData(NAME_MIMETYPE, m_ui->fullname().toUtf8());
     }
     else
     {
         mimeData->setText(m_number);
         mimeData->setData(NUMBER_MIMETYPE, m_number.toAscii());
     }
-	drag->setMimeData(mimeData);
+        drag->setMimeData(mimeData);
         
-	/*Qt::DropAction dropAction = */
+        /*Qt::DropAction dropAction = */
         drag->start(Qt::CopyAction | Qt::MoveAction);
-	//qDebug() << "PeerWidget::mouseMoveEvent : dropAction=" << dropAction;
+        //qDebug() << "PeerWidget::mouseMoveEvent : dropAction=" << dropAction;
 }
 
 /*! \brief open a context menu

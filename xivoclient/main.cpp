@@ -62,12 +62,12 @@
  */
 int main(int argc, char ** argv)
 {
-	QString locale = QLocale::system().name();
+        QString locale = QLocale::system().name();
         // QApplication::setStyle(new XIVOCTIStyle());
-	QCoreApplication::setOrganizationName("XIVO");
-	QCoreApplication::setOrganizationDomain("xivo.fr");
+        QCoreApplication::setOrganizationName("XIVO");
+        QCoreApplication::setOrganizationDomain("xivo.fr");
         QCoreApplication::setApplicationName("XIVO_Client");
-	QApplication app(argc, argv);
+        QApplication app(argc, argv);
         QSettings * settings = new QSettings(QSettings::IniFormat,
                                              QSettings::UserScope,
                                              QCoreApplication::organizationName(),
@@ -117,7 +117,7 @@ int main(int argc, char ** argv)
 
         MainWidget main(engine, info_osname);
         
-	//main.dumpObjectTree();
+        //main.dumpObjectTree();
         app.setProperty("stopper", "lastwindow");
         
         // setting this connection breeds the following behaviour :
@@ -127,6 +127,6 @@ int main(int argc, char ** argv)
         // QObject::connect( &app, SIGNAL(lastWindowClosed()),
         // engine, SLOT(stop()) );
         
-	//engine.startTimer(1000);
+        //engine.startTimer(1000);
         return app.exec();
 }

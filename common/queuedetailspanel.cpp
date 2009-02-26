@@ -57,7 +57,7 @@ QueuedetailsPanel::QueuedetailsPanel(BaseEngine * engine,
                                      QWidget * parent)
         : QWidget(parent), m_engine(engine)
 {
-	m_gridlayout = new QGridLayout(this);
+        m_gridlayout = new QGridLayout(this);
 
         m_label = new QLabel("", this);
         m_queuelegend_agentid = new QLabel(tr("Agent"), this);

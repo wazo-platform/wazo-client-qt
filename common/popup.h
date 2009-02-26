@@ -67,43 +67,43 @@ class UserInfo;
  * Constructed from the message received */
 class Popup: public QWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	//! Construct from a QIODevice used to read XML input
-	Popup(const bool &,
+        //! Construct from a QIODevice used to read XML input
+        Popup(const bool &,
               const UserInfo *,
               QWidget * parent = 0);
         void feed(QIODevice *, const bool &);
         void addInfoInternal(const QString &, const QString &);
-	//! Add a Text field (name, value)
-	void addInfoText(int, const QString &, const QString &);
-	//! Add a url field
-	void addInfoLink(int, const QString &, const QString &);
-	void addInfoLinkX(int, const QString &, const QString &, const QString &);
+        //! Add a Text field (name, value)
+        void addInfoText(int, const QString &, const QString &);
+        //! Add a url field
+        void addInfoLink(int, const QString &, const QString &);
+        void addInfoLinkX(int, const QString &, const QString &, const QString &);
         void addInfoLinkAuto(const QString &, const QString &);
-	//! Add a Picture
-	void addInfoPicture(int, const QString &, const QString &);
-	//! Add a Phone number
-	void addInfoPhone(int, const QString &, const QString &);
-	//! Add a Phone number
-	void addInfoPhoneURL(int, const QString &, const QString &);
-	//! getter for the message
-	void setMessage(const QString &, const QString &);
-	//! access to the message
-	const QHash<QString, QString> & message() const;
-	//! getter for the message
-	void setMessageTitle(const QString &);
-	//! access to the message
-	const QString & messagetitle() const;
-	//! finalize the Construction of the window and show it
-	void finishAndShow();
+        //! Add a Picture
+        void addInfoPicture(int, const QString &, const QString &);
+        //! Add a Phone number
+        void addInfoPhone(int, const QString &, const QString &);
+        //! Add a Phone number
+        void addInfoPhoneURL(int, const QString &, const QString &);
+        //! getter for the message
+        void setMessage(const QString &, const QString &);
+        //! access to the message
+        const QHash<QString, QString> & message() const;
+        //! getter for the message
+        void setMessageTitle(const QString &);
+        //! access to the message
+        const QString & messagetitle() const;
+        //! finalize the Construction of the window and show it
+        void finishAndShow();
         void setSheetPopup(const bool &);
-	bool sheetpopup();
-	const QString & callUniqueid() const;
-	const QString & callAstid() const;
-	const QString & callChannel() const;
-	bool systraypopup();
-	bool focus();
+        bool sheetpopup();
+        const QString & callUniqueid() const;
+        const QString & callAstid() const;
+        const QString & callChannel() const;
+        bool systraypopup();
+        bool focus();
         void setTitle(const QString &);
         
         void addAnyInfo(const QString &,
@@ -115,42 +115,42 @@ public:
         void update(QList<QStringList> &);
         QList<QStringList> & sheetlines();
 signals:
-	void wantsToBeShown(Popup *);	//!< sent when the widget want to show itself
-	void actionCall(const QString &,
+        void wantsToBeShown(Popup *);        //!< sent when the widget want to show itself
+        void actionCall(const QString &,
                         const QString &,
-                        const QString &);	//!< sent when the widget wants to dial
+                        const QString &);        //!< sent when the widget wants to dial
         void actionFromPopup(const QString &, const QVariant &);
         void save(const QString &);
 public slots:
-	void streamNewData();		//!< new input data is available
-	void streamAboutToClose();	//!< catch aboutToClose() signal from the socket
-	void socketDisconnected();	//!< connected to disconnected() signal
-	void socketError(QAbstractSocket::SocketError err);	//!< socket error handling
+        void streamNewData();                //!< new input data is available
+        void streamAboutToClose();        //!< catch aboutToClose() signal from the socket
+        void socketDisconnected();        //!< connected to disconnected() signal
+        void socketError(QAbstractSocket::SocketError err);        //!< socket error handling
         void dialThisNumber();
         void dispurl(const QUrl &);
         void httpGetNoreply();
         void actionFromForm();
 protected:
-	void closeEvent(QCloseEvent *);	//!< catch close event
+        void closeEvent(QCloseEvent *);        //!< catch close event
 private:
         void addInfoForm(int, const QString &);
         void saveandclose();
         
-	QIODevice * m_inputstream;	//!< input stream where the XML is read from
-	/* the following properties are for XML parsing */
-	//! QXmlInputSource constructed from m_inputstream
-	QXmlInputSource * m_xmlInputSource;
-	//! XML parser object.
-	QXmlSimpleReader m_reader;
+        QIODevice * m_inputstream;        //!< input stream where the XML is read from
+        /* the following properties are for XML parsing */
+        //! QXmlInputSource constructed from m_inputstream
+        QXmlInputSource * m_xmlInputSource;
+        //! XML parser object.
+        QXmlSimpleReader m_reader;
         const UserInfo * m_ui;
-	//! Handler for event generated by the XML parser
-	XmlHandler * m_handler;
-	bool m_parsingStarted;		//! Is the XML already started or not ?
-	//! layout for the widget : vertical box
-	QVBoxLayout * m_vlayout;
-	QHash<QString, QString> m_message;	//! Message property
-	QString m_messagetitle;	//! Message title
-	QLabel * m_title;	//! Sheet Title
+        //! Handler for event generated by the XML parser
+        XmlHandler * m_handler;
+        bool m_parsingStarted;                //! Is the XML already started or not ?
+        //! layout for the widget : vertical box
+        QVBoxLayout * m_vlayout;
+        QHash<QString, QString> m_message;        //! Message property
+        QString m_messagetitle;        //! Message title
+        QLabel * m_title;        //! Sheet Title
         QString m_uniqueid;
         QString m_channel;
         QString m_astid;
@@ -168,8 +168,8 @@ private:
         QHash<QString, QString> m_remoteforms;
         QVariantMap m_timestamps;
 #ifdef USE_OUTLOOK
-	COLContact m_OLContact;
-	bool	m_bOLFound;
+        COLContact m_OLContact;
+        bool        m_bOLFound;
 #endif
 };
 

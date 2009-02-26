@@ -62,32 +62,32 @@ class UserInfo;
  */
 class PeerWidget : public BasePeerWidget
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	PeerWidget(BaseEngine *, UserInfo *, const QVariant &);
-	~PeerWidget();
-	void setName(const QString &);
-	void setEngine(BaseEngine *);
+        PeerWidget(BaseEngine *, UserInfo *, const QVariant &);
+        ~PeerWidget();
+        void setName(const QString &);
+        void setEngine(BaseEngine *);
     void setAgentToolTip(const QString &, const QStringList &);
     void setAgentState(const QString & color);
     void updatePresence();  //!< update presence information displayed
     void updatePhonesStates();
 protected:
-	void dragEnterEvent(QDragEnterEvent *);
-	void dragMoveEvent(QDragMoveEvent *);
-	void dropEvent(QDropEvent *);
+        void dragEnterEvent(QDragEnterEvent *);
+        void dragMoveEvent(QDragMoveEvent *);
+        void dropEvent(QDropEvent *);
 private:
-	QHash<QString, QLabel *> m_lblphones;	//!< phone labels
+        QHash<QString, QLabel *> m_lblphones;        //!< phone labels
         
-	QLabel * m_availlbl;	//!< Peer state display from XIVO CTI Client
-	ExtendedLabel * m_agentlbl;
-	QLabel * m_voicelbl;
-	QLabel * m_fwdlbl;
-	QLabel * m_textlbl;		//!< text label : to display peer name
+        QLabel * m_availlbl;        //!< Peer state display from XIVO CTI Client
+        ExtendedLabel * m_agentlbl;
+        QLabel * m_voicelbl;
+        QLabel * m_fwdlbl;
+        QLabel * m_textlbl;                //!< text label : to display peer name
         
-    static QHash<QString, QPixmap> m_phones;	//!< phone icons
-    static QHash<QString, QPixmap> m_persons;	//!< person icons
-    static QHash<QString, QPixmap> m_agents;	//!< agent icons
+    static QHash<QString, QPixmap> m_phones;        //!< phone icons
+    static QHash<QString, QPixmap> m_persons;        //!< person icons
+    static QHash<QString, QPixmap> m_agents;        //!< agent icons
     QStringList m_functions;
 };
 

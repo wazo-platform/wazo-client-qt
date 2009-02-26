@@ -112,7 +112,7 @@ bool PlayerWidget::startMPlayer()
                 return true;
 
         QStringList args;
-	
+        
         // On demande à utiliser mplayer comme backend
         args << "-slave";
         // Et on veut ne pas avoir trop de chose à parser :)
@@ -173,10 +173,10 @@ void PlayerWidget::catchOutput()
         while(mplayerProcess->canReadLine()) {
                 QByteArray buffer(mplayerProcess->readLine());
                 //log->append(QString(buffer));
-			
+                        
                 // On vérifie si on a eu des réponses
                 if(buffer.startsWith("ANS_VIDEO_RESOLUTION")) {
-			// réponse à get_video_resolution : ANS_VIDEO_RESOLUTION='<width> x <height>'
+                        // réponse à get_video_resolution : ANS_VIDEO_RESOLUTION='<width> x <height>'
                         buffer.remove(0, 21); // vire ANS_VIDEO_RESOLUTION=
                         buffer.replace(QByteArray("'"), QByteArray(""));
                         buffer.replace(QByteArray(" "), QByteArray(""));
@@ -187,7 +187,7 @@ void PlayerWidget::catchOutput()
                         int resY = buffer.mid(sepIndex+1).toInt();
                         renderTarget->setMinimumSize(resX, resY);
                 } else if(buffer.startsWith("ANS_LENGTH")) {
-			// réponse à get_time_length : ANS_LENGTH=xx.yy
+                        // réponse à get_time_length : ANS_LENGTH=xx.yy
                         buffer.remove(0, 11); // vire ANS_LENGTH=
                         buffer.replace(QByteArray("'"), QByteArray(""));
                         buffer.replace(QByteArray(" "), QByteArray(""));
@@ -196,7 +196,7 @@ void PlayerWidget::catchOutput()
                         float maxTime = buffer.toFloat();
                         timeLine->setMaximum(static_cast<int>(maxTime+1));
                 } else if(buffer.startsWith("ANS_TIME_POSITION")) {
-			// réponse à get_time_pos : ANS_TIME_POSITION=xx.y
+                        // réponse à get_time_pos : ANS_TIME_POSITION=xx.y
                         buffer.remove(0, 18); // vire ANS_TIME_POSITION=
                         buffer.replace(QByteArray("'"), QByteArray(""));
                         buffer.replace(QByteArray(" "), QByteArray(""));

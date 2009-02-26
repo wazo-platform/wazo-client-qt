@@ -64,19 +64,19 @@ class MainWidget;
 //class ConfigWidget: public QWidget
 class ConfigWidget: public QDialog
 {
-	Q_OBJECT
+        Q_OBJECT
 public:
-	/*! \brief Constructor
-	 *
-	 * Construct the widget and its layout.
-	 * Fill widgets with values got from the BaseEngine object.
-	 * Once constructed, the Widget is ready to be shown.
-	 * \param engine	related BaseEngine object where parameters will be modified
-	 * \param parent	parent QWidget
-	 */
-	ConfigWidget(BaseEngine *,
+        /*! \brief Constructor
+         *
+         * Construct the widget and its layout.
+         * Fill widgets with values got from the BaseEngine object.
+         * Once constructed, the Widget is ready to be shown.
+         * \param engine        related BaseEngine object where parameters will be modified
+         * \param parent        parent QWidget
+         */
+        ConfigWidget(BaseEngine *,
                    MainWidget *);
-	~ConfigWidget();
+        ~ConfigWidget();
 
 signals:
         void confUpdated();
@@ -86,43 +86,43 @@ private slots:
         void loginKindChanged(int);
 
 private:
-	BaseEngine * m_engine;		//!< BaseEngine object parameters are commited to
+        BaseEngine * m_engine;                //!< BaseEngine object parameters are commited to
         
-	QLineEdit * m_serverhost;	//!< IP/hostname of the server
-	QSpinBox  * m_ctiport;		//!< server port (switchboard)
+        QLineEdit * m_serverhost;        //!< IP/hostname of the server
+        QSpinBox  * m_ctiport;                //!< server port (switchboard)
 
-	QCheckBox * m_autoconnect;	//!< "Auto connect" checkbox
-	QCheckBox * m_trytoreconnect;	//!< "Try to reconnect" Checkbox
-	QCheckBox * m_systrayed;	//!< "Systray at startup" Checkbox
-	QSpinBox  * m_tryinterval_sbox;	//!< "Try to reconnect" interval
-	QSpinBox  * m_kainterval_sbox;	//!< Keep alive interval
+        QCheckBox * m_autoconnect;        //!< "Auto connect" checkbox
+        QCheckBox * m_trytoreconnect;        //!< "Try to reconnect" Checkbox
+        QCheckBox * m_systrayed;        //!< "Systray at startup" Checkbox
+        QSpinBox  * m_tryinterval_sbox;        //!< "Try to reconnect" interval
+        QSpinBox  * m_kainterval_sbox;        //!< Keep alive interval
 
-	QLineEdit * m_company;		//!< name of the company
-	QLineEdit * m_password;		//!< user password
-	QCheckBox * m_keeppass;		//!< keep password ?
-	QCheckBox * m_showagselect;	//!< show agent select on main window ?
-	QLineEdit * m_userid;		//!< user login
-	QComboBox * m_loginkind;	//!< login kind (user or agent)
-	QLineEdit * m_phonenumber;	//!< agent's phone number
+        QLineEdit * m_company;                //!< name of the company
+        QLineEdit * m_password;                //!< user password
+        QCheckBox * m_keeppass;                //!< keep password ?
+        QCheckBox * m_showagselect;        //!< show agent select on main window ?
+        QLineEdit * m_userid;                //!< user login
+        QComboBox * m_loginkind;        //!< login kind (user or agent)
+        QLineEdit * m_phonenumber;        //!< agent's phone number
 
         QLabel * m_lblphone;    //!< label "Phone Number"
 
-        QHash<QString, QCheckBox *> m_function;	//!< connect to functions checkboxes
+        QHash<QString, QCheckBox *> m_function;        //!< connect to functions checkboxes
         QCheckBox * m_autourl_allowed;  //!< Allow automatic opening of urls
-        QSpinBox  * m_history_sbox;	//!< History size
+        QSpinBox  * m_history_sbox;        //!< History size
         
         QHash<QString, QSpinBox *> m_queuelevels;   //!< For queue display
 //        QHash<QString, QString> m_func_legend;
         
-	QSpinBox  * m_contactssize_sbox;	//!< Displayed contacts' size
-	QSpinBox  * m_contactswidth_sbox;	//!< Displayed contacts' width
-	QSpinBox  * m_tablimit_sbox;	//!< Maximum number of tabs
-	QCheckBox * m_lastconnwins;	//!< The last connected user wins => disconnects the other
+        QSpinBox  * m_contactssize_sbox;        //!< Displayed contacts' size
+        QSpinBox  * m_contactswidth_sbox;        //!< Displayed contacts' width
+        QSpinBox  * m_tablimit_sbox;        //!< Maximum number of tabs
+        QCheckBox * m_lastconnwins;        //!< The last connected user wins => disconnects the other
 
         QComboBox * m_comboswitchboard; //!< Apparence of SwitchBoard
         QSpinBox * m_maxWidthWanted;    //!< maximum width for small items in swich board
 
-        QDialogButtonBox * m_btnbox;	//!< Buttons box
+        QDialogButtonBox * m_btnbox;        //!< Buttons box
         QTabWidget * m_tabwidget;       //!< Tabs to access configuration widgets
 };
 #endif
