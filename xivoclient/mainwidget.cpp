@@ -1046,7 +1046,6 @@ void MainWidget::engineStarted()
                                 
                         } else if (xletid == QString("switchboard")) {
                                 m_xlet[xletid] = new SwitchBoardWindow(m_engine, m_options, this);
-                                //m_engine->addRemovable(m_xlet[xletid]->metaObject());
                                 QScrollArea * sa_sb = new QScrollArea(this);
                                 sa_sb->setWidget(m_xlet[xletid]);
                                 sa_sb->setWidgetResizable(true);

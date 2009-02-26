@@ -84,8 +84,7 @@ BaseEngine::BaseEngine(QSettings * settings,
     m_filesocket = new QTcpSocket(this);
     m_settings = settings;
     loadSettings();
-    //deleteRemovables();
-
+    
     /*  QTcpSocket signals :
         void connected ()
         void disconnected ()
@@ -1635,26 +1634,6 @@ void BaseEngine::timerEvent(QTimerEvent * event)
         killTimer(timerId);
     }
 }
-
-#if 0
-void BaseEngine::deleteRemovables()
-{
-    m_removable.clear();
-}
-
-void BaseEngine::addRemovable(const QMetaObject * metaobject)
-{
-    m_removable.append(metaobject);
-}
-
-bool BaseEngine::isRemovable(const QMetaObject * metaobject)
-{
-    for(int i = 0; i < m_removable.count() ; i++)
-        if (metaobject == m_removable[i])
-            return true;
-    return false;
-}
-#endif
 
 void BaseEngine::featurePutOpt(const QString & capa, bool b)
 {
