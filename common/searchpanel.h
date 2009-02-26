@@ -67,19 +67,15 @@ public:
 	~SearchPanel();	//!< Destructor
 public slots:
         void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
 	void affTextChanged(const QString &);
-        void updatePeer(UserInfo *,
-                        const QString &,
-                        const QVariant &);
-        void newUser(UserInfo *);
 	void updatePeerAgent(double,
                              const QString &,
                              const QString &,
                              const QVariant &);
 	void removePeer(const QString &);
 	void removePeers();
-        void callsUpdated();
+    void updateDisplay();
+    void updateUser(UserInfo *);
 signals:
 	void askCallerIds();
 private:
@@ -87,9 +83,6 @@ private:
 	QHash<QString, PeerItem *> m_peerhash;	//!< PeerItem hash
 	QGridLayout * m_peerlayout;	//!< layout object
 	ExtendedLineEdit * m_input;	//!< widget for search string input
-	QHash<QString, QPixmap> m_persons;
-	QHash<QString, QPixmap> m_phones;
-	QHash<QString, QPixmap> m_agents;
         
         int m_maxdisplay;	//!< max number of peers displayed on the search panel
         int m_ncolumns;

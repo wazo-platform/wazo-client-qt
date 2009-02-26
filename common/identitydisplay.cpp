@@ -368,20 +368,6 @@ void IdentityDisplay::setQueueList(const QVariant & qlist)
                 return;
 }
 
-void IdentityDisplay::updatePeer(UserInfo * ui,
-                                 const QString &,
-                                 const QVariant &)
-{
-        if(m_ui == NULL)
-                return;
-        if(ui != m_ui)
-                return;
-        // qDebug() << "IdentityDisplay::updatePeer()" << ui->astid() << ui->userid() << ui->fullname() << sipstatus << chanlist;
-        // QString ext = ui->userid();
-        // QString name = ui->fullname();
-}
-
-
 void IdentityDisplay::showAgentProps()
 {
         m_agent->show();

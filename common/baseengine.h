@@ -49,8 +49,10 @@
 #include <QObject>
 #include <QSettings>
 #include <QStringList>
+#include <QTime>
 
-#include "userinfo.h"
+class UserInfo;
+class PhoneInfo;
 
 class QFile;
 class QSocketNotifier;
@@ -58,7 +60,7 @@ class QTcpSocket;
 class QTimerEvent;
 
 /*! \brief Class which handles connection with the XIVO CTI server
- *   + Profile popup engine
+ *
  *  The engine object contains all the code to
  *  handle network connection and requests */
 class BaseEngine: public QObject
@@ -112,9 +114,9 @@ public:
         
 	void saveSettings();			//!< save server settings
         
-	void deleteRemovables();
-	void addRemovable(const QMetaObject *);
-	bool isRemovable(const QMetaObject *);
+	//void deleteRemovables();
+	//void addRemovable(const QMetaObject *);
+	//bool isRemovable(const QMetaObject *);
 	void sendMessage(const QString &);      //!< Sends an instant message
         
 	const EngineState & state() const;	//!< Engine state (Logged/Not Logged)
@@ -147,7 +149,8 @@ public:
         void setGuiOption(const QString &, const QVariant &);
         
         void setLogFile(const QString &);
-        
+    const QString & xivoUserId() const { return m_xivo_userid; };
+    UserInfo * getXivoClientUser(); //!< Return the user of the Xivo CTI Client
 public slots:
 	void start();				//!< start the connection process.
 	void stop();				//!< stop the engine
@@ -184,10 +187,10 @@ public slots:
 private slots:
 	void keepLoginAlive(); //!< Keep session alive
 	void changeState(); //!< Change the presence status
-        void updatePhone(const QString &,
-                         const QString &,
-                         const QVariant &);
-        void removePeerAndCallerid(const QStringList &);
+//        void updatePhone(const QString &,
+//                         const QString &,
+//                         const QVariant &);
+//        void removePeerAndCallerid(const QStringList &);
 	void socketConnected();
 	void socketDisconnected();
 	void socketHostFound();
@@ -220,29 +223,17 @@ signals:
         void setQueueGroups(const QVariant &);
         void setQueueOrder(const QVariant &);
         
-	//! a call
-	void updateCall(UserInfo *,
-                        const QString &,
-                        const QString &,
-                        int,
-                        const QString &,
-                        const QString &,
-                        const QString &);
 	//! call list is updated
-	void callsUpdated();
+	//void callsUpdated();
+    //! list of peer was received
 	void peersReceived();
 	//! the server requested a peer remove
-	void removePeer(const QString &);
-	//! update informations about a peer
-	void updatePeer(UserInfo *,
-	                const QString &,
-                        const QVariant &);
-        void newUser(UserInfo *);
+	//void removePeer(const QString &);
+    void userUpdated(UserInfo *);
 	void updatePeerAgent(double,
                              const QString &,
                              const QString &,
                              const QVariant &);
-	void updateOnlineAgent(const QStringList &);
 	//! a log entry has to be updated.
 	void updateLogEntry(const QDateTime &, int, const QString &, const QString &, const QString &);
 	//! the directory search response has been received.
@@ -265,22 +256,24 @@ signals:
 protected:
 	void timerEvent(QTimerEvent *);		//!< receive timer events
 private:
-	void stopKeepAliveTimer();	//!< Stop the keep alive timer if running
-	void startTryAgainTimer();	//!< Start the "try to reconnect" timer
-	void stopTryAgainTimer();	//!< Stop the "try to reconnect" timer
-	void processHistory(const QVariant &);
-	void initFeatureFields(const QString &, const QVariant &);
-	void connectSocket();
-        void sendCommand(const QString &);
-        void sendJsonCommand(const QVariantMap &);
-        void parseJsonCommand(const QString &);
-        void parseQVariantCommand(const QVariant &);
-        void popupError(const QString &);
+    void stopKeepAliveTimer();	//!< Stop the keep alive timer if running
+    void startTryAgainTimer();	//!< Start the "try to reconnect" timer
+    void stopTryAgainTimer();	//!< Stop the "try to reconnect" timer
+    void processHistory(const QVariant &);
+    void initFeatureFields(const QString &, const QVariant &);
+    void connectSocket();
+    void sendCommand(const QString &);
+    void sendJsonCommand(const QVariantMap &);
+    void parseCommand(const QString &);
+    void popupError(const QString &);
+    void updatePhone(const QString &, const QString &, const QMap<QString, QVariant> &);
+    void clearUserList();
+    void clearPhoneList();
         
 	// Class Members
         
 	// GUI client capabilities
-	QList<const QMetaObject *> m_removable;
+	//QList<const QMetaObject *> m_removable;
         
 	// Parameters given by the User at Login time
 	QString m_serverhost;		//!< Host to the login server
@@ -321,7 +314,8 @@ private:
 	QString m_sessionid;		//!< Session id obtained after a successful login
 	QString m_clientid;		//!< Client Identifier
 	QString m_forced_state;		//!< Forced state sent by the server
-        QHash<QString, UserInfo *> m_users;	//!< List of User Informations
+    QHash<QString, UserInfo *> m_users;	//!< List of User Informations
+    QHash<QString, PhoneInfo *> m_phones;   //!< List of Phone informations
 	int m_version_server;		//!< Version issued by the server after a successful login
         QString m_xivover_server;	//!< Server's XIVO version
         
@@ -350,7 +344,7 @@ private:
 
         QString m_fileid;
         QString m_filedir;
-        QByteArray * m_filedata;
+        QByteArray m_filedata;
         int m_faxsize;
 
         QString m_monitored_userid;	//!< UserId of the Monitored Phone (on SB, or one's own on XC)
@@ -359,6 +353,8 @@ private:
         QSocketNotifier * m_notifier;
         QByteArray m_downloaded;
         QFile * m_logfile;
+        int m_byte_counter;
+        QTime m_time;
 };
 
 #endif

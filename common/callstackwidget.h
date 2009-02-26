@@ -56,39 +56,6 @@ class QVBoxLayout;
 
 class UserInfo;
 
-/*! \brief Object storing call parametters
- */
-class Call// : public QObject
-{
-public:
-	//Peer( const QString & ext, QObject * parent = 0 );
-	Call(const QString &);
-	Call(UserInfo *,
-             const QString &, const QString &,
-             int,
-             const QString &, const QString &);
-	Call(const Call &);
-	const QString & getUserId() const;	//! get m_phonen
-	const QString & getChannelMe() const;	//! get m_channelme
-	const QString & getStatus() const;	//! get m_status
-        
-	int getTime() const;	//! get duration of the channel
-	const QString & getChannelPeer() const;	//! get m_channelpeer
-	const QString & getExten() const;	//! get m_exten
-        
-	void updateCall(UserInfo *,
-                        const QString &, const QString &,
-			int,
-			const QString &, const QString &);
-private:
-        UserInfo * m_ui;
-	QString m_channelme;	//!< "my" channel 
-	QString m_status;		//!< status
-	QDateTime m_startTime;	//!< channel start time
-	QString m_channelpeer;	//!< linked channel
-	QString m_exten;		//!< extension
-};
-
 /*! \brief Widget displaying the current open channels for a phone line.
  */
 class CallStackWidget : public QWidget
@@ -99,14 +66,7 @@ public:
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-	//! Add a call to the list to be displayed
-        void updatePeer(UserInfo *,
-                        const QString &,
-                        const QVariant &);
-        void addCall(UserInfo *,
-                     const QString &,
-                     const QVariant &);
-        //	void showCalls(const QString & tomonitor, const QString & callerid);
+    void updateUser(UserInfo *);
 	void updateDisplay();
 	void hupchan(const QString &);
 	void transftonumberchan(const QString &);
@@ -117,20 +77,19 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *event);
 	void dropEvent(QDropEvent *event);
 private:
-	void emptyList();	//!< remove all calls from the list
+//	void emptyList();	//!< remove all calls from the list
 signals:
-	void actionCall(const QString &,
-                        const QString &,
-                        const QString & dst = "");	//! originate, transfer & atxfer signals
-	void changeTitle(const QString &);		//!< change Title
-	void monitorPeerRequest(const QString &);	//!< send the userid of the new monitored peer
+    //! originate, transfer & atxfer signals
+    void actionCall(const QString &,
+                    const QString &,
+                    const QString & dst = "");
+    void changeTitle(const QString &);		//!< change Title
+    void monitorPeerRequest(const QString &);	//!< send the userid of the new monitored peer
 private:
-        UserInfo * m_monitored_ui;
-	QVBoxLayout * m_layout;	//!< Vertical Layout used
+    UserInfo * m_monitored_ui;
+    QVBoxLayout * m_layout;	//!< Vertical Layout used
         
-	QHash<QString, Call *> m_callhash;	//!< hash of Call Objects
-	QList<CallWidget *> m_afflist;	//!< List of CallWidget Widgets
-	QHash<QString, CallWidget *> m_affhash;	//!< List of CallWidget Widgets
+    QHash<QString, CallWidget *> m_affhash;	//!< List of CallWidget Widgets
 };
 
 #endif

@@ -63,30 +63,20 @@ class CallWidget : public QWidget
 	Q_OBJECT
 public:
 	//! Default constructor
-	CallWidget(QWidget * parent = 0);
-        ~CallWidget();
-
-	//CallWidget(const QString & tomonitor,
-	//	   QWidget * parent = 0);
-	CallWidget(UserInfo *,
-                   const QString &,
-                   const QString &,
-		   const QString &,
-		   int,
-		   const QString &,
-		   const QString &,
-		   QWidget * parent = 0);
-	void updateWidget(const QString &,
-			  int,
-			  const QString &,
-			  const QString &);
-	//void setChannel(const QString &);
+    CallWidget(QWidget * parent = 0);
+    ~CallWidget();
+    CallWidget(UserInfo *,
+               const QString &,
+               const QString &,
+               int,
+               const QString &,
+               const QString &,
+               QWidget * parent = 0);
+    void updateWidget(const QString &,
+                      int,
+                      const QString &,
+                      const QString &);
 	const QString & channel() const;
-	const QString & uidref() const;
-	//void setCallerId(const QString &);
-	//const QString & callerId() const;
-	//void setCallerIdName(const QString &);
-	//const QString & callerIdName() const;
 protected:
 	void mousePressEvent(QMouseEvent *);
 	void mouseMoveEvent(QMouseEvent *);
@@ -110,7 +100,6 @@ public slots:
 private:
         UserInfo * m_ui;
 	QPoint m_dragstartpos;	//!< used for drag
-	QString m_uidref;	//!< call uniqueid identifier
 	QString m_channelme;	//!< channel identifier
 	QString m_callerid;		//!< caller id
 	QString m_calleridname;	//!< caller id name
@@ -120,10 +109,10 @@ private:
 	QLabel * m_lbl_channelpeer;	//!< sub widget
 	QLabel * m_lbl_exten;	//!< sub widget
 	QPixmap m_square;		//!< QPixmap used to display the status square
-	QPixmap m_call_yellow;	//!< yellow phone icon
-	QPixmap m_call_blue;	//!< blue phone icon
-	QPixmap m_call_red;		//!< red phone icon
-	QPixmap m_call_gray;	//!< gray phone icon
+	static QPixmap * m_call_yellow; //!< yellow phone icon
+	static QPixmap * m_call_blue;   //!< blue phone icon
+	static QPixmap * m_call_red;    //!< red phone icon
+	static QPixmap * m_call_gray;   //!< gray phone icon
 	QDateTime m_startTime;	//!< call start date/time
 	QAction * m_hangUpAction;	//!< Hang Up Action
         QAction * m_transferToNumberAction;	//!< Transfer to Number Action

@@ -47,6 +47,8 @@
 #include <QStringList>
 #include <QVariant>
 
+#include "basicpeerwidget.h"
+
 class PeerWidget;
 class UserInfo;
 
@@ -62,20 +64,21 @@ public:
         UserInfo * userinfo();
         // PeerItem & operator=(const PeerItem & peer);
 	//! set m_peerwidget
-	void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
+	//void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
+	void setWidget(BasePeerWidget * widget) { m_peerwidget = widget; };
 	//! get m_peerwidget
-	PeerWidget * getWidget() { return m_peerwidget; };
+	//PeerWidget * getWidget() { return m_peerwidget; };
+	BasePeerWidget * getWidget() { return m_peerwidget; };
         
 	void updateStatus();
 	void updateAgentStatus(const QVariant &);
-        void updateChans(const QVariant &);
 	void updateName(const QString &);
         
 	void updateDisplayedStatus();
-	void updateDisplayedChans();
 	void updateDisplayedName();
 private:
-	PeerWidget * m_peerwidget;	//!< related PeerWidget
+	//PeerWidget * m_peerwidget;	//!< related PeerWidget
+	BasePeerWidget * m_peerwidget;	//!< related PeerWidget
 
         // Properties of each peer
         UserInfo * m_ui;
@@ -83,7 +86,7 @@ private:
         QString m_vmstatus;
         QVariant m_agentstatus;
         QString m_pausestatus;
-        QVariant m_chanlist;
+//        QVariant m_chanlist;
         QStringList m_queuelist;
 };
 

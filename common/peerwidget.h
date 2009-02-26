@@ -46,7 +46,7 @@
 #include <QWidget>
 #include <QPoint>
 
-#include "peerchannel.h"
+#include "basepeerwidget.h"
 
 class QLabel;
 class QPixmap;
@@ -60,53 +60,23 @@ class UserInfo;
  *
  * Display Icons for the state and the peer name.
  */
-class PeerWidget : public QWidget
+class PeerWidget : public BasePeerWidget
 {
 	Q_OBJECT
 public:
-	PeerWidget(UserInfo *,
-                   const QVariant &,
-                   const QHash<QString, QPixmap> &,
-                   const QHash<QString, QPixmap> &,
-                   const QHash<QString, QPixmap> &);
-        //	           QWidget * parent = 0/*, int size = 16*/);
+	PeerWidget(BaseEngine *, UserInfo *, const QVariant &);
 	~PeerWidget();
-	void clearChanList();
-	void addChannel(const QString &, const QVariant &);
 	void setName(const QString &);
 	void setEngine(BaseEngine *);
-        void setAgentToolTip(const QString &, const QStringList &);
-        QString getToolTip(const QString &);
-	void setColorAvail(const QString &, const QString &, const QString &);	//! sets a kind of icon in a given color
+    void setAgentToolTip(const QString &, const QStringList &);
+    void setAgentState(const QString & color);
+    void updatePresence();  //!< update presence information displayed
+    void updatePhonesStates();
 protected:
-	void mouseMoveEvent(QMouseEvent *);
-	void mousePressEvent(QMouseEvent *);
-        void mouseDoubleClickEvent(QMouseEvent *);
 	void dragEnterEvent(QDragEnterEvent *);
 	void dragMoveEvent(QDragMoveEvent *);
 	void dropEvent(QDropEvent *);
-	void contextMenuEvent(QContextMenuEvent *);
-signals:
-	void actionCall(const QString &,
-                        const QString &,
-                        const QString & dst = "");	//! originate, transfer & atxfer signals
-	//! hide the widget in the channel
-	void doRemoveFromPanel(const QString &);
-public slots:
-        void updatePeer(UserInfo *,
-                        const QString &,
-                        const QVariant &);
-private slots:
-	void transferChan(const QString &);
-	void hangupChan(const QString &);
-	void interceptChan(const QString &);
-	void removeFromPanel();
-        void mouseDoubleClickEventLocal(QMouseEvent *);
-	void dial();
 private:
-	BaseEngine * m_engine;  //!< Base Engine reference
-        UserInfo * m_ui;
-        
 	QHash<QString, QLabel *> m_lblphones;	//!< phone labels
         
 	QLabel * m_availlbl;	//!< Peer state display from XIVO CTI Client
@@ -114,20 +84,11 @@ private:
 	QLabel * m_voicelbl;
 	QLabel * m_fwdlbl;
 	QLabel * m_textlbl;		//!< text label : to display peer name
-	//QPixmap m_square;		//!< pixmap used to display the states
-	QPoint m_dragstartpos;	//!< drag start position
         
-	QAction * m_removeAction;	//!< action to remove this peer from the window
-	QAction * m_dialAction;		//!< action to dial this number
-	
-	QList<PeerChannel *> m_channels;	//!< channels associated with THIS peer
-	QList<PeerChannel *> m_mychannels;	//!< channels associated with ME
-        
-	/* TODO : have the Pixmaps as static objects */
-	QHash<QString, QPixmap> m_phones;	//!< phone icons
-	QHash<QString, QPixmap> m_persons;	//!< person icons
-	QHash<QString, QPixmap> m_agents;	//!< agent icons
-        QStringList m_functions;
+    static QHash<QString, QPixmap> m_phones;	//!< phone icons
+    static QHash<QString, QPixmap> m_persons;	//!< person icons
+    static QHash<QString, QPixmap> m_agents;	//!< agent icons
+    QStringList m_functions;
 };
 
 #endif

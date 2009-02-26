@@ -81,8 +81,8 @@ public:
 signals:
         void confUpdated();
 private slots:
-	//! Save the configuration to the BaseEngine object and close
-	void saveAndClose();
+        //! Save the configuration to the BaseEngine object and close
+        void saveAndClose();
         void loginKindChanged(int);
 
 private:
@@ -105,24 +105,24 @@ private:
 	QComboBox * m_loginkind;	//!< login kind (user or agent)
 	QLineEdit * m_phonenumber;	//!< agent's phone number
 
-        QLabel * m_lblulogin;
-        QLabel * m_lblcompany;
-        QLabel * m_lblpassword;
-        QLabel * m_lblphone;
+        QLabel * m_lblphone;    //!< label "Phone Number"
 
-	QHash<QString, QCheckBox *> m_function;	//!< connect to functions checkboxes
-        QCheckBox * m_autourl_allowed;
-	QSpinBox  * m_history_sbox;	//!< History size
+        QHash<QString, QCheckBox *> m_function;	//!< connect to functions checkboxes
+        QCheckBox * m_autourl_allowed;  //!< Allow automatic opening of urls
+        QSpinBox  * m_history_sbox;	//!< History size
         
-        QHash<QString, QSpinBox *> m_queuelevels;
-        QHash<QString, QString> m_func_legend;
+        QHash<QString, QSpinBox *> m_queuelevels;   //!< For queue display
+//        QHash<QString, QString> m_func_legend;
         
 	QSpinBox  * m_contactssize_sbox;	//!< Displayed contacts' size
 	QSpinBox  * m_contactswidth_sbox;	//!< Displayed contacts' width
 	QSpinBox  * m_tablimit_sbox;	//!< Maximum number of tabs
 	QCheckBox * m_lastconnwins;	//!< The last connected user wins => disconnects the other
 
+        QComboBox * m_comboswitchboard; //!< Apparence of SwitchBoard
+        QSpinBox * m_maxWidthWanted;    //!< maximum width for small items in swich board
+
         QDialogButtonBox * m_btnbox;	//!< Buttons box
-        QTabWidget * m_tabwidget;
+        QTabWidget * m_tabwidget;       //!< Tabs to access configuration widgets
 };
 #endif

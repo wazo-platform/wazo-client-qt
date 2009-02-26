@@ -50,7 +50,7 @@
 
 #include "extendedtablewidget.h"
 #include "parkingpanel.h"
-#include "peerchannel.h"
+//#include "peerchannel.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -219,12 +219,15 @@ void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
 //                                        this, SLOT(hangUp()) );
 		if(!m_mychannels.empty()) {
 			QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
+#if 0
+// TODO : new way to do that
 			QListIterator<PeerChannel *> i(m_mychannels);
 			while(i.hasNext()) {
 				const PeerChannel * channel = i.next();
 				transferMenu->addAction(channel->otherPeer(),
 				                        channel, SLOT(transfer()));
 			}
+#endif
 			contextMenu.addMenu(transferMenu);
 		}
 		contextMenu.exec( event->globalPos() );

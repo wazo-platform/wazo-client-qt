@@ -48,11 +48,7 @@ PeersLayout::PeersLayout(QWidget * parent)
         : QLayout(parent), m_nb_rows(0), m_nb_columns(0)
 {
 	//qDebug() << "PeersLayout::PeersLayout(" << parent << ")";
-}
-
-PeersLayout::PeersLayout()
-{
-	//qDebug() << "PeersLayout::PeersLayout()";
+    //qDebug() << "PeersLayout::spacing" << spacing();
 }
 
 /*! \brief same as size()
@@ -84,18 +80,18 @@ QSize PeersLayout::maximumSize() const
 QSize PeersLayout::size() const
 {
 	QSize itemSize = maxItemSize();
-	return QSize( itemSize.width() * m_nb_columns, 
-	              itemSize.height() * m_nb_rows );
+	return QSize( (itemSize.width() + 2 ) * m_nb_columns, 
+	              (itemSize.height() + 2 ) * m_nb_rows );
 }
 
 /*! \brief add a widget at position
  */
 void PeersLayout::addWidget(QWidget *w, QPoint pos)
 {
-	addChildWidget(w);
-        QWidgetItem * wi = new QWidgetItem(w);
-        // wi->setAlignment(Qt::AlignCenter);
-        addItem(wi, pos);
+    addChildWidget(w);
+    QWidgetItem * wi = new QWidgetItem(w);
+    // wi->setAlignment(Qt::AlignCenter);
+    addItem(wi, pos);
 }
 
 /*! \brief add a layout item at position
@@ -131,19 +127,19 @@ void PeersLayout::addItem(QLayoutItem * item)
  */
 void PeersLayout::setGeometry(const QRect &/* r*/)
 {
-	//qDebug() << "PeersLayout::setGeometry" << r;
-	QSize itemSize = maxItemSize();
-	int i, x, y;
-	for(i = 0; i<m_list.size(); i++) {
-		x = m_listPos[i].x();
-		y = m_listPos[i].y();
-		if((x >= 0) && (y >= 0)) {
-			m_list[i]->setGeometry(QRect( x*itemSize.width()/*left*/, 
-                                                      y*itemSize.height()/*top*/,
-                                                      itemSize.width()/*width*/,
-                                                      itemSize.height()/*height*/ ) );
-		}
-	}
+    //qDebug() << "PeersLayout::setGeometry" << r;
+    QSize itemSize = maxItemSize();
+    int i, x, y;
+    for(i = 0; i<m_list.size(); i++) {
+        x = m_listPos[i].x();
+        y = m_listPos[i].y();
+        if((x >= 0) && (y >= 0)) {
+            m_list[i]->setGeometry(QRect( x*(itemSize.width()+2)+1/*left*/, 
+                                          y*(itemSize.height()+2)+1/*top*/,
+                                          itemSize.width()/*width*/,
+                                          itemSize.height()/*height*/ ) );
+        }
+    }
 }
 
 /*! \brief return item at index
@@ -175,8 +171,8 @@ int PeersLayout::count() const
  */
 QSize PeersLayout::maxItemSize() const
 {
-	int max_w = 150;
-	int max_h = 20;
+	int max_w = 40; //150;
+	int max_h = 10; //20;
 	int i;
 	for(i = 0; i < m_list.size(); i++) {
 		QSize size = m_list[i]->minimumSize();
@@ -192,6 +188,7 @@ QSize PeersLayout::maxItemSize() const
  */
 QPoint PeersLayout::freePosition() const
 {
+    // TODO : change this...
 	QPoint pos(0, 0);
 	while(m_listPos.contains(pos)) {
 		pos.ry()++;
@@ -205,10 +202,18 @@ QPoint PeersLayout::freePosition() const
 
 /*! \brief return in which case of the cell is the pixel
  */
-QPoint PeersLayout::getPosInGrid(QPoint pos) const
+QPoint PeersLayout::getPosInGrid(const QPoint & pos) const
 {
-	QSize itemSize = maxItemSize();
-	return QPoint(pos.x() / itemSize.width(), pos.y() / itemSize.height());
+    QSize itemSize = maxItemSize();
+    return QPoint( pos.x() / (itemSize.width() + 2),
+                   pos.y() / (itemSize.height() + 2) );
+}
+
+QPoint PeersLayout::getPosFromGrid(const QPoint & pos) const
+{
+    QSize itemSize = maxItemSize();
+    return QPoint( pos.x() * (itemSize.width() + 2),
+                   pos.y() * (itemSize.height() + 2) );
 }
 
 /*! \brief set item position
@@ -229,12 +234,53 @@ void PeersLayout::setItemPosition(int i, QPoint pos)
 	}
 }
 
+/*! \brief set item position
+ */
+void PeersLayout::setItemPosition(QWidget * widget, QPoint pos)
+{
+    setItemPosition(itemIndex(widget), pos);
+}
+
 /*! \brief get item position
  */
 QPoint PeersLayout::getItemPosition(int i) const
 {
-        QPoint reply = QPoint(-1, -1);
-	if(i >= 0 && i < m_listPos.size())
-                reply = m_listPos[i];
-        return reply;
+    QPoint reply = QPoint(-1, -1);
+    if(i >= 0 && i < m_listPos.size())
+        reply = m_listPos[i];
+    return reply;
 }
+
+/*! \brief get item position
+ */
+QPoint PeersLayout::getItemPosition(QWidget * widget) const
+{
+    return getItemPosition( itemIndex( widget ) );
+}
+
+/*! \brief get item index
+ */
+int PeersLayout::itemIndex(QWidget * widget) const 
+{
+    int i = m_list.size();
+    while(--i >= 0)
+    {
+        if(widget == m_list[i]->widget())
+            break;
+    }
+    return i;
+}
+
+/*! \brief get a "grid" rect around the given rectangle
+ *
+ * used for Group layout
+ */
+QRect PeersLayout::getGridRect( const QRect & rect ) const
+{
+    QSize itemSize = maxItemSize();
+    QPoint add = QPoint( itemSize.width() >> 1, itemSize.height() >> 1 );
+    return QRect( getPosInGrid(rect.topLeft() + add),
+                   getPosInGrid(rect.bottomRight() + add) );
+
+}
+

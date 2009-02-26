@@ -48,107 +48,21 @@
 #include "callstackwidget.h"
 #include "callwidget.h"
 #include "userinfo.h"
+#include "phoneinfo.h"
 #include "xivoconsts.h"
 
 /*! \brief Constructor
  */
-Call::Call(const QString & channelme)
-{
-	m_channelme = channelme;
-}
-
-/*! \brief Constructor
- */
-Call::Call(UserInfo * ui,
-           const QString & channelme,
-	   const QString & status,
-	   int time,
-	   const QString & channelpeer,
-	   const QString & exten)
-{
-        m_ui          = ui;
-	m_channelme   = channelme;
-	m_status      = status;
-	m_startTime   = QDateTime::currentDateTime().addSecs(-time);
-	m_channelpeer = channelpeer;
-	m_exten       = exten;
-}
-
-/*! \brief Copy constructor */
-Call::Call(const Call & call)
-//: QObject(call.parent())
-{
-        m_ui          = call.m_ui;
-	m_channelme   = call.m_channelme;
-	m_status      = call.m_status;
-	m_startTime   = call.m_startTime;
-	m_channelpeer = call.m_channelpeer;
-	m_exten       = call.m_exten;
-}
-
-/*! \brief update object properties
- */
-void Call::updateCall(UserInfo * ui,
-                      const QString & channelme,
-                      const QString & status,
-		      int time,
-		      const QString & channelpeer,
-		      const QString & exten)
-{
-        m_ui          = ui;
-	m_channelme   = channelme;
-	m_status      = status;
-	m_startTime   = QDateTime::currentDateTime().addSecs(-time);
-	m_channelpeer = channelpeer;
-	m_exten       = exten;
-}
-
-//! get m_phonen
-const QString & Call::getUserId() const
-{
-        return m_ui->userid();
-}
-
-//! get m_channelme
-const QString & Call::getChannelMe() const
-{
-        return m_channelme;
-}
-
-//! get m_status
-const QString & Call::getStatus() const
-{
-        return m_status;
-}
-
-//! get duration of the channel
-int Call::getTime() const {
-        return m_startTime.secsTo(QDateTime::currentDateTime());
-}
-
-//! get m_channelpeer
-const QString & Call::getChannelPeer() const {
-        return m_channelpeer;
-}
-
-//! get m_exten
-const QString & Call::getExten() const {
-        return m_exten;
-}
-
-
-/*! \brief Constructor
- */
 CallStackWidget::CallStackWidget(QWidget * parent)
-        : QWidget(parent)
+        : QWidget(parent), m_monitored_ui(0)
 {
-        // qDebug() << "CallStackWidget::CallStackWidget()";
-	m_layout = new QVBoxLayout(this);
-	//m_layout->setMargin();
-        //m_layout->setSpacing(0);
-        setObjectName("scroller");
-	setAcceptDrops(true);
-	m_layout->addStretch(1);
+// qDebug() << "CallStackWidget::CallStackWidget()";
+    m_layout = new QVBoxLayout(this);
+    //m_layout->setMargin();
+    //m_layout->setSpacing(0);
+    setObjectName("scroller");
+    setAcceptDrops(true);
+    m_layout->addStretch(1);
 }
 
 void CallStackWidget::setGuiOptions(const QVariant &)
@@ -160,41 +74,13 @@ void CallStackWidget::setUserInfo(const UserInfo *)
         // qDebug() << "CallStackWidget::setUserInfo()" << ui->astid() << ui->userid();
 }
 
-void CallStackWidget::updatePeer(UserInfo * ui,
-                                 const QString & /* phoneid */,
-                                 const QVariant & chanlist)
+void CallStackWidget::updateUser(UserInfo * ui)
 {
-        // qDebug() << "CallStackWidget::updatePeer()" << m_callhash.keys() << chanlist << ui;
-        // qDebug() << "CallStackWidget::updatePeer()" << ui->phonenumber() << phoneid << chanlist.toMap().keys();
-        foreach(QString ref, chanlist.toMap().keys()) {
-                QVariant chanprops = chanlist.toMap()[ref];
-                addCall(ui, ref, chanprops);
-        }
-}
-
-/*! \brief add a call to the list
- */
-void CallStackWidget::addCall(UserInfo * ui, const QString & uidref, const QVariant & chanprops)
-{
-        // qDebug() << "CallStackWidget::addCall()" << uidref << chanprops;
-        QString channelme = chanprops.toMap()["thischannel"].toString();
-        QString status = chanprops.toMap()["status"].toString();
-        int time = chanprops.toMap()["time-dial"].toInt();
-        QString channelpeer = chanprops.toMap()["peerchannel"].toString();
-        QString exten = chanprops.toMap()["calleridnum"].toString();
-        
-        QString callindex = uidref;
-        // qDebug() << "CallStackWidget::addCall()" << uidref << channelme << status << time << channelpeer << exten;
-        
-        if(status != CHAN_STATUS_HANGUP) {
-                if(m_callhash.contains(callindex))
-                        m_callhash[callindex]->updateCall(ui, channelme, status, time, channelpeer, exten);
-                else
-                        m_callhash[callindex] = new Call(ui, channelme, status, time, channelpeer, exten);
-        } else {
-                delete m_callhash[callindex];
-                m_callhash.remove(callindex);
-        }
+    if(ui == m_monitored_ui)
+    {
+        // we need to update the display
+        updateDisplay();
+    }
 }
 
 /*! \brief hang up channel
@@ -222,10 +108,11 @@ void CallStackWidget::parkcall(const QString & chan)
 void CallStackWidget::reset()
 {
 	// qDebug() << "CallStackWidget::reset()";
-	m_callhash.clear();
+	//m_callhash.clear();
 	// monitorPeer(NULL);
 }
 
+#if 0
 /*!
  * delete all widgets in the list 
  * and empty m_afflist */
@@ -242,6 +129,7 @@ void CallStackWidget::emptyList()
 	m_afflist.clear();
 	//m_calllist.clear();
 }
+#endif
 
 /*! \brief update display according to call list
  *
@@ -249,15 +137,66 @@ void CallStackWidget::emptyList()
  */
 void CallStackWidget::updateDisplay()
 {
-	int j;
 	CallWidget * callwidget = NULL;
-        // qDebug() << "CallStackWidget::updateDisplay()"
-        // << m_afflist.count() << m_calllist.count();
-	// building the new calling list
-	// CallWidget * callwidget = new CallWidget(callerid, this);
-	// m_layout->addWidget(callwidget, 0, Qt::AlignTop);
-	// m_afflist.append(callwidget);
-	
+
+    QStringList activeChannels;  // list of active channels to be displayed
+
+    if(m_monitored_ui)
+    {
+        foreach(const QString phone, m_monitored_ui->phonelist())
+        {
+            const PhoneInfo * pi = m_monitored_ui->getPhoneInfo(phone);
+            if( !pi )
+                continue;
+            QMapIterator<QString, QVariant> it = QMapIterator<QString, QVariant>( pi->comms() );
+            while( it.hasNext() )
+            {
+                it.next();
+                QMap<QString, QVariant> map = it.value().toMap();
+                //qDebug() << it.key() << map;
+                QString channelme = map["thischannel"].toString();
+                QString status = map["status"].toString();
+                int time = map["time-dial"].toInt(); // or time-link ???
+                QString channelpeer = map["peerchannel"].toString();
+                QString exten = map["calleridnum"].toString();
+                activeChannels << channelme;
+                if( m_affhash.contains( channelme ) )
+                {
+                    m_affhash[channelme]->updateWidget( status, time, channelpeer, exten );
+                }
+                else
+                {
+                    callwidget = new CallWidget(m_monitored_ui,
+                                                channelme,
+                                                status,
+                                                time,
+                                                channelpeer,
+                                                exten,
+                                                this);
+                    connect( callwidget, SIGNAL(doHangUp(const QString &)),
+                             this, SLOT(hupchan(const QString &)) );
+                    connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),
+                             this, SLOT(transftonumberchan(const QString &)) );
+                    connect( callwidget, SIGNAL(doParkCall(const QString &)),
+                             this, SLOT(parkcall(const QString &)) );
+                    m_layout->insertWidget(m_layout->count() - 1, callwidget,
+                                           0, Qt::AlignTop);
+                    m_affhash[channelme] = callwidget;
+                }
+            }
+        }
+    }
+
+    // remove old channels
+    foreach(const QString chan, m_affhash.keys())
+    {
+        if( !activeChannels.contains( chan ) )
+        {
+            m_affhash.take( chan )->deleteLater();
+        }
+    }
+    
+#if 0
         // qDebug() << "CallStackWidget::updateDisplay()" << m_callhash.keys();
 	for(j = m_afflist.count() - 1; j>= 0; j--) {
                 // qDebug() << "CallStackWidget::updateDisplay()" << m_afflist[j]->channel() << m_callhash.keys();
@@ -268,14 +207,16 @@ void CallStackWidget::updateDisplay()
 			delete m_afflist.takeAt(j);
 		}
 	}
-        
-	foreach(QString cindex, m_callhash.keys()) {
-                // qDebug() << "CallStackWidget::updateDisplay()" << chanme << m_monitored_userid << m_callhash[chanme]->getUserId();
-		if(m_monitored_ui->userid() == m_callhash[cindex]->getUserId()) {
-			Call * c = m_callhash[cindex];
+#endif
+   
+#if 0
+	foreach(QString chanme, m_callhash.keys()) {
+        // qDebug() << "CallStackWidget::updateDisplay()" << chanme << m_monitored_userid << m_callhash[chanme]->getUserId();
+		if(m_monitored_ui->userid() == m_callhash[chanme]->getUserId()) {
+			Call * c = m_callhash[chanme];
 			for(j = 0; j < m_afflist.count(); j++) {
 				// qDebug() << j << m_afflist[j]->channel();
-				if(m_afflist[j]->uidref() == cindex) {
+				if(m_afflist[j]->channel() == chanme) {
 					m_afflist[j]->updateWidget( c->getStatus(),
 					                            c->getTime(),
 								    c->getChannelPeer(),
@@ -285,28 +226,28 @@ void CallStackWidget::updateDisplay()
 			}
                         // qDebug() << "CallStackWidget::updateDisplay() -" << j << m_afflist.count();
 			if(j == m_afflist.count()) {
-                                callwidget = new CallWidget(m_monitored_ui,
-                                                            cindex,
-                                                            c->getChannelMe(),
-                                                            c->getStatus(),
-                                                            c->getTime(),
-                                                            c->getChannelPeer(),
-                                                            c->getExten(),
-                                                            this);
-                                
-                                connect( callwidget, SIGNAL(doHangUp(const QString &)),
-                                         this, SLOT(hupchan(const QString &)) );
-                                connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),
-                                         this, SLOT(transftonumberchan(const QString &)) );
-                                connect( callwidget, SIGNAL(doParkCall(const QString &)),
-                                         this, SLOT(parkcall(const QString &)) );
-                                m_afflist.append(callwidget);
-                                //m_layout->addWidget(callwidget, 0, Qt::AlignTop);
-                                m_layout->insertWidget(m_layout->count() - 1, callwidget,
-                                                       0, Qt::AlignTop);
+                callwidget = new CallWidget(m_monitored_ui,
+                                            chanme,
+                                            c->getStatus(),
+                                            c->getTime(),
+                                            c->getChannelPeer(),
+                                            c->getExten(),
+                                            this);
+
+                connect( callwidget, SIGNAL(doHangUp(const QString &)),
+                         this, SLOT(hupchan(const QString &)) );
+                connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),
+                         this, SLOT(transftonumberchan(const QString &)) );
+                connect( callwidget, SIGNAL(doParkCall(const QString &)),
+                         this, SLOT(parkcall(const QString &)) );
+                m_afflist.append(callwidget);
+                //m_layout->addWidget(callwidget, 0, Qt::AlignTop);
+                m_layout->insertWidget(m_layout->count() - 1, callwidget,
+                                       0, Qt::AlignTop);
 			}
 		}
 	}
+#endif
 /*	
 	callwidget = new CallWidget(this);
 	m_layout->addWidget(callwidget, 1, Qt::AlignTop);
@@ -332,11 +273,11 @@ void CallStackWidget::dragEnterEvent(QDragEnterEvent * event)
  */
 void CallStackWidget::monitorPeer(UserInfo * ui)
 {
-        qDebug() << "CallStackWidget::monitorPeer()" << ui->astid() << ui->userid();
-	emptyList();
-        m_monitored_ui = ui;
-        changeTitle(tr("Monitoring : ") + ui->fullname());
-	updateDisplay();
+    qDebug() << "CallStackWidget::monitorPeer()" << ui->astid() << ui->userid();
+    //emptyList();
+    m_monitored_ui = ui;
+    changeTitle(tr("Monitoring : ") + ui->fullname());
+    updateDisplay();
 }
 
 /*! \brief receive drop Events.
@@ -350,6 +291,7 @@ void CallStackWidget::dropEvent(QDropEvent * event)
 		event->ignore();
 		return;
 	}
-	monitorPeerRequest(event->mimeData()->data("userid"));
+    qDebug() << "CallStackWidget::dropEvent" << event->mimeData()->data(USERID_MIMETYPE);
+	monitorPeerRequest(event->mimeData()->data(USERID_MIMETYPE));
 	event->acceptProposedAction();
 }

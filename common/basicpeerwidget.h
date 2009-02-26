@@ -39,28 +39,48 @@
  * $Date$
  */
 
-#ifndef __EXTENDEDLABEL_H__
-#define __EXTENDEDLABEL_H__
+#ifndef __BASICPEERWIDGET_H__
+#define __BASICPEERWIDGET_H__
 
-#include <QLabel>
+#include <QColor>
+#include <QString>
+#include <QWidget>
+//#include <QFrame>
 
-/*! \brief Identity Display
- */
-class ExtendedLabel : public QLabel
+#include "basepeerwidget.h"
+
+/*! \brief Simple widget to display a Peer
+ * 
+ * Only display the name of the user in a color rectangle
+ * which gives the status of its telephone :
+ * Green for available, blue for ringing, red for online.
+ * More informations are given by the tool tip. */
+class BasicPeerWidget : public BasePeerWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 public:
-        ExtendedLabel(const QString & text = "",
-                      QWidget *parent = 0);
+    BasicPeerWidget(BaseEngine *, UserInfo *, const QVariant &);
+    void setAgentToolTip(const QString &, const QStringList &);
+    void setAgentState(const QString & color);
+    void updatePresence();
+    void updatePhonesStates();
+    void setName(const QString & name) { setText(name); };
 protected:
-        //void mouseDoubleClickEvent(QMouseEvent *);
-        void mouseReleaseEvent(QMouseEvent *);
-        void contextMenuEvent(QContextMenuEvent *);
-signals:
-	//! originate signal
-	//void mouse_doubleclick(QMouseEvent *);
-	void mouse_release(QMouseEvent *);
-	void context_menu(QContextMenuEvent *);
+    void paintEvent(QPaintEvent *);
+//    void mouseMoveEvent(QMouseEvent *);
+//    void mousePressEvent(QMouseEvent *);
+    void mouseDoubleClickEvent(QMouseEvent *);
+//    void dragEnterEvent(QDragEnterEvent *);
+//    void dragMoveEvent(QDragMoveEvent *);
+//    void dropEvent(QDropEvent *);
+//    void contextMenuEvent(QContextMenuEvent *);
+private:
+    void setText(const QString &);  //!< Set displayed text
+private:    // attributes
+    QString m_text; //!< Text to display
+    QColor m_color; //!< color
+    QColor m_presenceColor; //!< color of presence indicator
 };
 
 #endif
+

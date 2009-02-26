@@ -53,9 +53,7 @@ class PeersLayout : public QLayout
 	Q_OBJECT
 public:
 	//! constructor
-	PeersLayout(QWidget * parent);
-	//! ??
-	PeersLayout();
+	PeersLayout(QWidget * parent = 0);
 	//! set geometry
 	void setGeometry( const QRect & );
 	//! return size Hint (prefered size)
@@ -79,10 +77,15 @@ public:
 	int nbColumns() const { return m_nb_columns; };
 	//! set m_nb_columns
 	void setNbColumns(int cols) { m_nb_columns = cols; };
-	QPoint getPosInGrid(QPoint) const;
+	QPoint getPosInGrid(const QPoint &) const;
+    QPoint getPosFromGrid(const QPoint &) const;
 	void setItemPosition(int i, QPoint pos);
+    void setItemPosition(QWidget * widget, QPoint pos);
 	QPoint getItemPosition(int i) const;
+    QPoint getItemPosition(QWidget * widget) const;
+    QRect getGridRect( const QRect & ) const;
 private:
+    int itemIndex(QWidget * widget) const;
 	QPoint freePosition() const;
 	QSize size() const;
 	QSize maxItemSize() const;

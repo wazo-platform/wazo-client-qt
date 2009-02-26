@@ -58,7 +58,7 @@ class QPushButton;
 
 class UserInfo;
 
-/*! \brief Simple widget to enter a number and dial it
+/*! \brief Operator widget used to answer and transfer calls
  */
 class StatusPanel : public QWidget
 {
@@ -70,12 +70,10 @@ public:
 public slots:
         void setGuiOptions(const QVariant &);
         void setUserInfo(const UserInfo *);
-        void updatePeer(UserInfo *,
-                        const QString &,
-                        const QVariant &);
         void functionKeyPressed(int);
         void xferPressed();
         void clicked();
+    void updateUser(UserInfo *);
 signals:
 	void actionCall(const QString &,
                         const QString & src = "",

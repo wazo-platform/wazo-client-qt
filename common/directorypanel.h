@@ -64,40 +64,37 @@ public:
 	DirectoryPanel(const QVariant &, QWidget * parent = 0);
 	~DirectoryPanel();
 protected:
-        void dropEvent(QDropEvent *);
-        void focusInEvent(QFocusEvent *);
+    void dropEvent(QDropEvent *);
+    void focusInEvent(QFocusEvent *);
 signals:
-	//! start a search
-	void searchDirectory(const QString &);
-	void copyNumber(const QString &);
-	void actionCall(const QString &,
-                        const QString &,
-                        const QString &);
+    //! start a search
+    void searchDirectory(const QString &);
+    void copyNumber(const QString &);
+    void actionCall(const QString &,
+                    const QString &,
+                    const QString &);
 private slots:
-	void dialNumber();
-        void sendMail();
-	void startSearch();
-        void itemClicked(QTableWidgetItem *);
-	void itemDoubleClicked(QTableWidgetItem *);
-	void transferChan(const QString &);
-        void proxyCallRequests(const QString &, const QString &);
+    void dialNumber();
+    void sendMail();
+    void startSearch();
+    void itemClicked(QTableWidgetItem *);
+    void itemDoubleClicked(QTableWidgetItem *);
+    void transfer();
+    void proxyCallRequests(const QString &, const QString &);
 public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void contextMenuEvent(QContextMenuEvent *);
-	void setSearchResponse(const QString &);
-	void stop();
-        void updatePeer(UserInfo *,
-                        const QString &,
-                        const QVariant &);
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void contextMenuEvent(QContextMenuEvent *);
+    void setSearchResponse(const QString &);
+    void stop();
 private:
-        const UserInfo * m_userinfo;
-	ExtendedLineEdit * m_searchText;	//!< search text input
-	ExtendedTableWidget * m_table;		//!< table to display results
-	QPushButton * m_searchButton;	//!< button
-	QString m_numberToDial;		//!< used to store number to dial or to transfer to
-	QString m_mailAddr;		//!< used to store email address
-	QList<PeerChannel *> m_mychannels;	//!< "my channels" list for transfer menu
+    const UserInfo * m_userinfo;
+    ExtendedLineEdit * m_searchText;	//!< search text input
+    ExtendedTableWidget * m_table;		//!< table to display results
+    QPushButton * m_searchButton;	//!< button
+    QString m_numberToDial;		//!< used to store number to dial or to transfer to
+    QString m_mailAddr;		//!< used to store email address
+    QRegExp m_re_number;    //!< regexp used to recognize phone numbers
 };
 
 #endif

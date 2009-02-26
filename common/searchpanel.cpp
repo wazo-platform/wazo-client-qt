@@ -84,13 +84,6 @@ SearchPanel::SearchPanel(BaseEngine * engine,
 	scrollarealayout->addStretch( 1 );
 	vlayout->addWidget(scrollarea);
 
-        QStringList colors = (QStringList() << "red" << "blue" << "green" << "grey" << "orange" << "yellow");
-        foreach(QString color, colors) {
-                m_persons[color] = QPixmap(":/images/personal-" + color + ".png");
-                m_phones[color] = QPixmap(":/images/phone-" + color + ".png");
-                m_agents[color] = QPixmap(":/images/agent-" + color + ".png");
-        }
-        
         m_searchpattern = "";
 }
 
@@ -104,144 +97,104 @@ void SearchPanel::setGuiOptions(const QVariant &)
 {
 }
 
-void SearchPanel::setUserInfo(const UserInfo *)
-{
-}
-
-/*! \brief apply the search
- */
-void SearchPanel::callsUpdated()
-{
-        affTextChanged("");
-}
-
-
 /*! \brief apply the search
  */
 void SearchPanel::affTextChanged(const QString & text)
 {
-        m_searchpattern = text;
-        QHashIterator<QString, PeerItem *> i(m_peerhash);
-        // qDebug() << "SearchPanel::affTextChanged()" << "affTextChanged" << text;
+    m_searchpattern = text;
+    updateDisplay();
+}
 
-        while(i.hasNext()) {
-                i.next();
-                PeerItem * peeritem = i.value();
-                PeerWidget * peerwidget = peeritem->getWidget();
+/*! \brief update the list of Persons displayed
+ */
+void SearchPanel::updateDisplay()
+{
+    // first hide/delete everyonedisplayed
+    QHashIterator<QString, PeerItem *> i( m_peerhash );
+    while(i.hasNext())
+    {
+        i.next();
+        PeerItem * peeritem = i.value();
+        BasePeerWidget * peerwidget = peeritem->getWidget();
 
-                if ( m_peerlayout->indexOf( peerwidget ) > -1 ) {
-                        if(peerwidget != NULL) {
-                                m_peerlayout->removeWidget( peerwidget );
-                                peerwidget->hide();
-                                if(m_functions.contains("switchboard")) {
-                                        disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
-                                                                                const QString &,
-                                                                                const QVariant &)),
-                                                    peerwidget, SLOT(updatePeer(UserInfo *,
-                                                                                const QString &,
-                                                                                const QVariant &)) );
-                                }
-                                // originate
-                                // if switchboard : transfer, atxfer, hangup, intercept
-                                disconnect( peerwidget, SIGNAL(actionCall(const QString &,
-                                                                          const QString &,
-                                                                          const QString &)),
-                                            m_engine, SLOT(actionCall(const QString &,
-                                                                      const QString &,
-                                                                      const QString &)) );
-                                peeritem->setWidget(NULL);
-                                delete peerwidget;
-                        }
-                }
+        if ( (peerwidget != NULL)
+            && (m_peerlayout->indexOf( peerwidget ) > -1) )
+        {
+            m_peerlayout->removeWidget( peerwidget );
+            peerwidget->hide();
+            // originate
+            // if switchboard : transfer, atxfer, hangup, intercept
+            disconnect( peerwidget, SIGNAL(actionCall(const QString &,
+                                                      const QString &,
+                                                      const QString &)),
+                        m_engine, SLOT(actionCall(const QString &,
+                                                  const QString &,
+                                                  const QString &)) );
+            peeritem->setWidget(NULL);
+            //delete peerwidget;
+            peerwidget->deleteLater();
         }
+    }
 
-        int naff = 0;
-        i.toFront();
-        while(i.hasNext()) {
-                i.next();
-                PeerItem * peeritem = i.value();
-                PeerWidget * peerwidget = peeritem->getWidget();
+    // then display all users whose name match the search pattern
+    int naff = 0;
+    i.toFront();
+    while(i.hasNext())
+    {
+        i.next();
+        PeerItem * peeritem = i.value();
+        BasePeerWidget * peerwidget = peeritem->getWidget();
 
-                if( peeritem->userinfo()->fullname().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) ) {
-                        if(peerwidget == NULL) {
-                                // qDebug() << "SearchPanel::affTextChanged()" << peeritem->userinfo() << peeritem->userinfo()->termstatus();
-                                peerwidget = new PeerWidget(peeritem->userinfo(),
-                                                            m_options,
-                                                            m_persons,
-                                                            m_phones,
-                                                            m_agents);
-                                peerwidget->setEngine(m_engine);
-                                peeritem->setWidget(peerwidget);
-                                peeritem->updateDisplayedStatus();
-                                peeritem->updateDisplayedChans();
-                                peeritem->updateDisplayedName();
+        if( peeritem->userinfo()->fullname().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) )
+        {
+            if(peerwidget == NULL)
+            {
+                // qDebug() << "SearchPanel::affTextChanged()" << peeritem->userinfo() << peeritem->userinfo()->termstatus();
+                peerwidget = new PeerWidget(m_engine, peeritem->userinfo(), m_options);
+                //peerwidget->setEngine(m_engine);
+                peeritem->setWidget(peerwidget);
+                peeritem->updateDisplayedStatus();
+                peeritem->updateDisplayedName();
                                 
-                                m_peerlayout->addWidget(peerwidget,
-                                                        naff / m_ncolumns,
-                                                        naff % m_ncolumns);
-                                // m_peerlayout->addWidget(peerwidget,
-                                // naff / m_ncolumns,
-                                // naff % m_ncolumns,
-                                // Qt::AlignCenter);
-                                // peerwidget->setMinimumSize(QSize(150, 60));
+                m_peerlayout->addWidget(peerwidget,
+                                        naff / m_ncolumns,
+                                        naff % m_ncolumns);
+                // m_peerlayout->addWidget(peerwidget,
+                // naff / m_ncolumns,
+                // naff % m_ncolumns,
+                // Qt::AlignCenter);
+                // peerwidget->setMinimumSize(QSize(150, 60));
                                 
-                                naff ++;
-                                peerwidget->show();
-                                if(m_functions.contains("switchboard")) {
-                                        connect( m_engine, SIGNAL(updatePeer(UserInfo *,
-                                                                             const QString &,
-                                                                             const QVariant &)),
-                                                 peerwidget, SLOT(updatePeer(UserInfo *,
-                                                                             const QString &,
-                                                                             const QVariant &)) );
-                                }
-                                // originate
-                                // if switchboard : transfer, atxfer, hangup, intercept
-                                connect( peerwidget, SIGNAL(actionCall(const QString &,
-                                                                       const QString &,
-                                                                       const QString &)),
-                                         m_engine, SLOT(actionCall(const QString &,
-                                                                   const QString &,
-                                                                   const QString &)) );
-                        }
-                }
+                naff ++;
+                peerwidget->show();
+                // if switchboard : transfer, atxfer, hangup, intercept
+                connect( peerwidget, SIGNAL(actionCall(const QString &,
+                                                       const QString &,
+                                                       const QString &)),
+                         m_engine, SLOT(actionCall(const QString &,
+                                                   const QString &,
+                                                   const QString &)) );
+            }
+        }
  	}
 }
 
-/*! \brief update peer
+/*! \brief update display according to changes
  */
-void SearchPanel::updatePeer(UserInfo * ui,
-                             const QString &,
-                             const QVariant & chanlist)
+void SearchPanel::updateUser(UserInfo * ui)
 {
-        QString userid = ui->userid();
-        // qDebug() << "SearchPanel::updatePeer()" << userid << chanlist;
-        if(m_peerhash.contains(userid)) {
-                PeerItem * peeritem = m_peerhash.value(userid);
-                peeritem->updateStatus();
-                peeritem->updateChans(chanlist);
-                peeritem->updateName(ui->fullname());
-                return;
-        }
-        
-        // if the name (i.e. full callerid info) has not been received yet, do not add as a peer
-        if(ui->fullname().isEmpty())
-                return;
-
-	PeerItem * peeritem = new PeerItem(ui);
-	peeritem->updateStatus();
-	peeritem->updateChans(chanlist);
+    const QString & userid = ui->userid();
+    PeerItem * peeritem = NULL;
+    if(m_peerhash.contains(userid))
+    {
+        peeritem = m_peerhash.value(userid);
+    }
+    else
+    {
+        peeritem = new PeerItem(ui);
         m_peerhash.insert(userid, peeritem);
-
-        // the peerwidget is not set while its display is not needed, see affTextChanged()
-}
-
-void SearchPanel::newUser(UserInfo * ui)
-{
-        QString userid = ui->userid();
-        // qDebug() << "SearchPanel::newUser()" << userid;
-        PeerItem * peeritem = new PeerItem(ui);
-        m_peerhash.insert(userid, peeritem);
+    }
+    peeritem->updateStatus();
 }
 
 void SearchPanel::updatePeerAgent(double,
@@ -266,7 +219,7 @@ void SearchPanel::removePeer(const QString & ext)
         // qDebug() << "SearchPanel::removePeer()" << ext;
         if(m_peerhash.contains(ext)) {
                 PeerItem * peeritem = m_peerhash.value(ext);
-                PeerWidget * peerwidget = peeritem->getWidget();
+                BasePeerWidget * peerwidget = peeritem->getWidget();
                 if (m_peerlayout->indexOf( peerwidget ) > -1)
                         m_peerlayout->removeWidget( peerwidget );
                 m_peerhash.remove(ext);
@@ -282,13 +235,18 @@ void SearchPanel::removePeers()
         // qDebug() << "SearchPanel::removePeers()";
         foreach(QString peerkey, m_peerhash.keys()) {
                 PeerItem * peeritem = m_peerhash[peerkey];
-                PeerWidget * peerwidget = peeritem->getWidget();
-                // qDebug() << "span" << m_peerlayout->indexOf( peerwidget );
-                if (m_peerlayout->indexOf( peerwidget ) > -1)
-                        m_peerlayout->removeWidget( peerwidget );
-                delete peerwidget;
-                //peerwidget->deleteLater();
+                BasePeerWidget * peerwidget = peeritem->getWidget();
+                if( peerwidget )
+                {
+                    // qDebug() << "span" << m_peerlayout->indexOf( peerwidget );
+                    if (m_peerlayout->indexOf( peerwidget ) > -1)
+                            m_peerlayout->removeWidget( peerwidget );
+                    delete peerwidget;
+                    //peerwidget->deleteLater();
+                }
+                delete peeritem;
         }
         // qDebug() << "SearchPanel::removePeers : time elapsed" << qtime.elapsed();
         m_peerhash.clear();
 }
+

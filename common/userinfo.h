@@ -44,18 +44,25 @@
 
 #include <QStringList>
 #include <QVariant>
+#include <QHash>
+#include <QMap>
 
+class PhoneInfo;
+
+/*! \brief Store informations on a user
+ */
 class UserInfo
 {
 public:
-	UserInfo(const QString &);
+        UserInfo(const QString &);
         ~UserInfo();
         void setAvailState(const QVariant &);
         void setFullName(const QString &);
         void setPhoneNumber(const QString &);
         void setVoiceMailNumber(const QString &);
         void setPhones(const QString &,
-                       const QStringList &);
+                       const QStringList &,
+                       const QHash<QString, PhoneInfo *> & phones);
         void setAgent(const QString &);
         void setUserId(const QString &);
         void setCtiLogin(const QString &);
@@ -73,27 +80,31 @@ public:
         const QString & agentid() const;
         const QString & astid() const;
         const QStringList contexts() const;
-        const QVariant & availstate() const;
-        const QStringList & termlist() const;
-        const QVariantMap & termstatus() const;
-        void updatePhoneStatus(const QString &,
-                               const QVariant &);
+        const QHash<QString, QString> & availstate() const;
+//        const QStringList & termlist() const;
+//        const QMap<QString, QHash<QString, QString> > & termstatus() const;
+//        void updatePhoneStatus(const QString &,
+//                               const QVariant &);
+        QList<QString> phonelist() const;
+        const PhoneInfo * getPhoneInfo(const QString &) const;
+        void updatePhone( PhoneInfo * );
 private:
-        QString m_userid;
-        QString m_company;
-        QString m_ctilogin;
-        QString m_fullname;
+        QString m_userid;   //!< user id
+        QString m_company;  //!< user company
+        QString m_ctilogin; //!< user login on cti
+        QString m_fullname; //!< user fulle name
         
-        QVariant m_availstate;
+        QHash<QString, QString> m_availstate;   //!< availability state properties
         
-        QString m_astid;
-        QString m_phonenum;
-        QString m_voicemailnum;
-        QStringList m_termlist;
-        QString m_agentnum;
-        QString m_agentphonenum;
-        QStringList m_mwi;
-        QVariantMap m_termstatus;
+        QString m_astid;    //!< asterisk id (for main phone)
+        QString m_phonenum; //!< main phone number
+        QString m_voicemailnum; //!< voice mail box number
+//        QStringList m_termlist;
+        QString m_agentnum; //!< agent number
+        QString m_agentphonenum;    //!< agent phone number
+        QStringList m_mwi;  //!< message waiting indicator
+ //       QMap<QString, QHash<QString, QString> > m_termstatus;
+        QMap<QString, PhoneInfo *> m_phones;    //!< map to phones
 };
 
 #endif

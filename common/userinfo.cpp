@@ -42,7 +42,12 @@
 #include <QDebug>
 
 #include "userinfo.h"
+#include "phoneinfo.h"
 
+/*! \brief Constructor
+ *
+ * just set userid
+ */
 UserInfo::UserInfo(const QString & userid)
         : m_fullname("")
 {
@@ -50,15 +55,19 @@ UserInfo::UserInfo(const QString & userid)
 }
 
 
+/*! \brief Destructor */
 UserInfo::~UserInfo()
 {
+    //qDebug() << "UserInfo::~UserInfo()" << m_userid;
 }
 
+/*! \brief set full name */
 void UserInfo::setFullName(const QString & fullname)
 {
         m_fullname = fullname;
 }
 
+/*! \brief set CTI Login */
 void UserInfo::setCtiLogin(const QString & ctilogin)
 {
         m_ctilogin = ctilogin;
@@ -74,17 +83,35 @@ void UserInfo::setVoiceMailNumber(const QString & voicemailnum)
         m_voicemailnum = voicemailnum;
 }
 
+/*! \brief set phone list
+ *
+ * fill m_phones Hash with pointers to PhoneInfo objects
+ */
 void UserInfo::setPhones(const QString & astid,
-                         const QStringList & termlist)
+                         const QStringList & termlist,
+                         const QHash<QString, PhoneInfo *> & phones)
 {
-        m_astid = astid;
-        foreach(QString term, termlist)
-                m_termstatus[term] = QVariant();
+    //qDebug() << "UserInfo::setPhones" << astid << termlist;
+    m_astid = astid;
+    foreach(const QString term, termlist)
+    {
+        PhoneInfo * pi = NULL;
+        QString key = astid + "." + term;
+        if(phones.contains(key))
+            pi = phones[key];
+        m_phones[term] = pi;
+    }
 }
 
+/*! \brief update availability state */
 void UserInfo::setAvailState(const QVariant & availstate)
 {
-        m_availstate = availstate;
+    m_availstate.clear();
+    const QMap<QString, QVariant> map = availstate.toMap();
+    foreach(const QString key, map.keys())
+    {
+        m_availstate[key] = map[key].toString();
+    }
 }
 
 void UserInfo::setAgent(const QString & agentnum)
@@ -92,41 +119,34 @@ void UserInfo::setAgent(const QString & agentnum)
         m_agentnum = agentnum;
 }
 
+/*! \brief set Message Waiting indicator */
 void UserInfo::setMWI(const QStringList & mwi)
 {
         m_mwi = mwi;
 }
 
-void UserInfo::updatePhoneStatus(const QString & term,
-                                 const QVariant & status)
-{
-        m_termstatus[term] = status;
-}
-
+/*! \brief check if this user has this phone */
 bool UserInfo::hasPhone(const QString & astid,
                         const QString & term)
 {
-        if((m_astid == astid) && m_termstatus.keys().contains(term))
-                return true;
-        else
-                return false;
+//    qDebug() << "UserInfo::hasPhone" << term << m_phones;
+    return ((m_astid == astid) && m_phones.keys().contains(term));
 }
 
+/*! \brief check if this user has this agent */
 bool UserInfo::hasAgent(const QString & astid,
                         const QString & agentnum)
 {
-        if((m_astid == astid) && m_agentnum == agentnum)
-                return true;
-        else
-                return false;
+    return ((m_astid == astid) && m_agentnum == agentnum);
 }
 
-
+/*! \brief return m_fullname */
 const QString & UserInfo::fullname() const
 {
         return m_fullname;
 }
 
+/*! \brief return m_phonenum */
 const QString & UserInfo::phonenumber() const
 {
         return m_phonenum;
@@ -157,13 +177,19 @@ const QString & UserInfo::agentid() const
         return m_agentnum;
 }
 
+/*! \brief return a list of contexts where this user has its phones
+ */
 const QStringList UserInfo::contexts() const
 {
-        QStringList tlist = m_termstatus.keys();
-        QStringList clist;
-        foreach(QString term, tlist)
-                clist << term.split(".")[1];
-        return clist;
+    QStringList clist;
+    //qDebug() << m_phones;
+    foreach(const QString key, m_phones.keys())
+    {
+        //if(m_phones[key])
+        //    clist << m_phones[key]->context();
+        clist << (key.split(QChar('.')))[1];
+    }
+    return clist;
 }
 
 const QString & UserInfo::astid() const
@@ -171,13 +197,35 @@ const QString & UserInfo::astid() const
         return m_astid;
 }
 
-const QVariant & UserInfo::availstate() const
+const QHash<QString, QString> & UserInfo::availstate() const
 {
         return m_availstate;
 }
 
-const QVariantMap & UserInfo::termstatus() const
+/*! \brief return list of phones identifier */
+QList<QString> UserInfo::phonelist() const
 {
-
-        return m_termstatus;
+    return m_phones.keys();
 }
+
+const PhoneInfo * UserInfo::getPhoneInfo(const QString & id) const
+{
+    if(m_phones.contains(id))
+        return m_phones[id];
+    QString key = m_astid + "." + id;
+    if(m_phones.contains(key))
+        return m_phones[key];
+    return NULL;
+}
+
+void UserInfo::updatePhone( PhoneInfo * pi )
+{
+    //qDebug() << "UserInfo::updatePhone before" << m_phones;
+    if(pi)
+    {
+        QString key = pi->tech() + "." + pi->context() + "." + pi->phoneid() + "." + pi->number();
+        m_phones[key] = pi;
+    }
+    //qDebug() << "UserInfo::updatePhone after " << m_phones;
+}
+

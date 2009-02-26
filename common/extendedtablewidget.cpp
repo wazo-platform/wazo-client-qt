@@ -131,8 +131,8 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
 	QTableWidgetItem * item = itemAt( event->pos() );
 	QRegExp re("\\+?[0-9\\s\\.]+");
 	if(item && re.exactMatch( item->text() )) {
-                QString userid_from = QString::fromAscii(event->mimeData()->data("userid"));
-                QString channel_from = QString::fromAscii(event->mimeData()->data("channel"));
+                QString userid_from = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
+                QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
 		if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
 			event->acceptProposedAction();
                         this->setProperty("action", "transfer");

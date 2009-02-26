@@ -54,8 +54,8 @@
 #include "directorypanel.h"
 #include "extendedtablewidget.h"
 #include "extendedlineedit.h"
-#include "peerchannel.h"
 #include "userinfo.h"
+#include "phoneinfo.h"
 #include "xivoconsts.h"
 
 /*! \brief Constructor
@@ -63,7 +63,7 @@
  *  Build layout and child widgets, connect signals/slots.
  */
 DirectoryPanel::DirectoryPanel(const QVariant &, QWidget * parent)
-        : QWidget(parent)
+        : QWidget(parent), m_re_number("\\+?[0-9\\s\\.]+")
 {
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
 	vlayout->setMargin(0);
@@ -128,31 +128,29 @@ void DirectoryPanel::dropEvent(QDropEvent * event)
 
 void DirectoryPanel::itemClicked(QTableWidgetItem * item)
 {
-	//qDebug() << item << item->text();
-	// check if the string is a number
-	QRegExp re_number("\\+?[0-9\\s\\.]+");
-	if(re_number.exactMatch(item->text())) {
-                // qDebug() << "DirectoryPanel::itemClicked()" << "preparing to dial" << item->text();
-                copyNumber(item->text());
-        }
+    //qDebug() << item << item->text();
+    // check if the string is a phone number
+    if( m_re_number.exactMatch(item->text()) ) {
+        // qDebug() << "DirectoryPanel::itemClicked()" << "preparing to dial" << item->text();
+        copyNumber(item->text());
+    }
 }
 
 void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 {
 	//qDebug() << item << item->text();
 	// check if the string is a number
-	QRegExp re_number("\\+?[0-9\\s\\.]+");
-	if(re_number.exactMatch(item->text())) {
-                //qDebug() << "dialing" << item->text();
-                actionCall("originate", "user:special:me", "ext:" + item->text()); // Call
-        }
+	if( m_re_number.exactMatch(item->text()) ) {
+        //qDebug() << "dialing" << item->text();
+        actionCall("originate", "user:special:me", "ext:" + item->text()); // Call
+    }
         
  	if(item && item->text().contains("@")) {
-                QString mailAddr = item->text();
-                if(mailAddr.length() > 0) {
-                        //qDebug() << "DirectoryPanel::itemDoubleClicked() : mail" << mailAddr;
-                        QDesktopServices::openUrl(QUrl("mailto:" + mailAddr));
-                }
+        QString mailAddr = item->text();
+        if(mailAddr.length() > 0) {
+            //qDebug() << "DirectoryPanel::itemDoubleClicked() : mail" << mailAddr;
+            QDesktopServices::openUrl(QUrl("mailto:" + mailAddr));
+        }
  	}
 }
 
@@ -222,43 +220,67 @@ void DirectoryPanel::stop()
 
 void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
 {
-	QTableWidgetItem * item = m_table->itemAt( event->pos() );
-        if (item == NULL)
-                return;
+    QTableWidgetItem * item = m_table->itemAt( event->pos() );
+    if (item == NULL)
+        return;
 
-	QRegExp re_number("\\+?[0-9\\s\\.]+");
-	if(item && re_number.exactMatch( item->text() )) {
+	if(item && m_re_number.exactMatch( item->text() )) {
+        // this is a phone number, offer Dial and Transfer options
 		m_numberToDial = item->text();
-                // qDebug() << "DirectoryPanel::contextMenuEvent()" << "preparing to dial" << m_numberToDial;
-		QMenu contextMenu(this);
+        // qDebug() << "DirectoryPanel::contextMenuEvent()" << "preparing to dial" << m_numberToDial;
+		QMenu contextMenu( this );
 		contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
- 		if(! m_mychannels.empty()) {
-			QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
-			QListIterator<PeerChannel *> i(m_mychannels);
-			while(i.hasNext()) {
-				const PeerChannel * channel = i.next();
-				transferMenu->addAction(channel->otherPeer(),
-				                        channel, SLOT(transfer()));
-			}
-			contextMenu.addMenu(transferMenu);
-		}
-		contextMenu.exec( event->globalPos() );
+		QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
+        if(m_userinfo)
+        {
+            foreach( const QString phone, m_userinfo->phonelist() )
+            {
+                const PhoneInfo * pi = m_userinfo->getPhoneInfo( phone );
+                if( pi )
+                {
+                    QMapIterator<QString, QVariant> it( pi->comms() );
+                    while( it.hasNext() )
+                    {
+                        it.next();
+                        QMap<QString, QVariant> call = it.value().toMap();
+                        // Add the transfer entry with the callerid name and num
+                        QString text;
+                        if( call.contains("calleridname") )
+                        {
+                            text.append( call["calleridname"].toString() );
+                            text.append(" : ");
+                        }
+                        text.append( call["calleridnum"].toString() );
+                        QAction * transferAction =
+                            transferMenu->addAction( text,
+                                                     this, SLOT(transfer()) );
+//                        transferAction->setProperty( "chan", call["thischannel"] );
+                        transferAction->setProperty( "chan", call["peerchannel"] );
+                    }
+                }
+            }
+        }
+        if( !transferMenu->isEmpty() )
+            contextMenu.addMenu(transferMenu);
+        contextMenu.exec( event->globalPos() );
 	}
 
  	if(item && item->text().contains("@")) {
-                m_mailAddr = item->text();
-                qDebug() << "email addr detection :" << m_mailAddr;
- 		QMenu emailContextMenu(this);
-                emailContextMenu.addAction( tr("Send an E-mail"), this, SLOT(sendMail()) );
-                emailContextMenu.exec( event->globalPos() );
- 	}
+        // this is an email address
+        m_mailAddr = item->text();
+        qDebug() << "email addr detection :" << m_mailAddr;
+        QMenu emailContextMenu( this );
+        emailContextMenu.addAction( tr("Send an E-mail"),
+                                    this, SLOT(sendMail()) );
+        emailContextMenu.exec( event->globalPos() );
+    }
 }
 
 /*! \brief dial the number (when context menu item is toggled)
  */
 void DirectoryPanel::dialNumber()
 {
-	if(m_numberToDial.length() > 0)
+	if( !m_numberToDial.isEmpty() )
 		actionCall("originate", "user:special:me", "ext:" + m_numberToDial); // Call
 }
 
@@ -266,35 +288,22 @@ void DirectoryPanel::dialNumber()
  */
 void DirectoryPanel::sendMail()
 {
-        if(m_mailAddr.length() > 0) {
-                qDebug() << "ExtendedTableWidget::sendMail()" << m_mailAddr;
-                QDesktopServices::openUrl(QUrl("mailto:" + m_mailAddr));
-        }
-}
-
-/*! \brief update call list for transfer
- */
-void DirectoryPanel::updatePeer(UserInfo * /*ui*/,
-                                const QString &,
-                                const QVariant & chanlist)
-{
-	while(!m_mychannels.isEmpty())
-		delete m_mychannels.takeFirst();
-
-        foreach(QString ref, chanlist.toMap().keys()) {
-                QVariant chanprops = chanlist.toMap()[ref];
-                if(chanprops.toMap()["status"].toString() != CHAN_STATUS_HANGUP) {
-                        PeerChannel * ch = new PeerChannel(ref, chanprops);
-                        connect(ch, SIGNAL(transferChan(const QString &)),
-                                this, SLOT(transferChan(const QString &)) );
-                        m_mychannels << ch;
-                }
-        }
+    if(m_mailAddr.length() > 0) {
+//        qDebug() << "ExtendedTableWidget::sendMail()" << m_mailAddr;
+        QDesktopServices::openUrl( QUrl("mailto:" + m_mailAddr) );
+    }
 }
 
 /*! \brief transfer channel to the number
  */
-void DirectoryPanel::transferChan(const QString & chan)
+void DirectoryPanel::transfer()
 {
-        actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial); // Call
+    QString chan = sender()->property( "chan" ).toString();
+    qDebug() << "DirectoryPanel::transfer" << chan;
+    if( !chan.isEmpty() && !m_numberToDial.isEmpty() )
+    {
+        // transfer the channel to the selected number
+        actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial); 
+    }
 }
+

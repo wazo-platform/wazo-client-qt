@@ -54,28 +54,32 @@
 #include "userinfo.h"
 #include "xivoconsts.h"
 
+// Static members initialization
+QPixmap * CallWidget::m_call_yellow = NULL;
+QPixmap * CallWidget::m_call_blue   = NULL;
+QPixmap * CallWidget::m_call_red    = NULL;
+QPixmap * CallWidget::m_call_gray   = NULL;
+
 /*! \brief Constructor
  *
  * set up the widget, start timer.
  */
-CallWidget::CallWidget(UserInfo * ui,
-                       const QString & uidref,
-                       const QString & channelme,
-		       const QString & status,
-		       int time,
-		       const QString &/* channelpeer*/,
-		       const QString & exten,
+CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
+                       const QString & status, int time,
+                       const QString &/* channelpeer*/, const QString & exten,
                        QWidget * parent)
-        : QWidget(parent), m_square(16,16),
-          m_call_yellow(":/images/phone-yellow.png"),
-          m_call_blue  (":/images/phone-blue.png"),
-          m_call_red   (":/images/phone-red.png"),
-          m_call_gray  (":/images/phone-grey.png")
+    : QWidget(parent), m_square(16,16)
 {
-        // qDebug() << "CallWidget::CallWidget()" << channelme;
-        m_ui = ui;
-        m_uidref = uidref;
-	QGridLayout * gridlayout = new QGridLayout(this);
+    // qDebug() << "CallWidget::CallWidget()" << channelme;
+    if(m_call_yellow == NULL)
+    {
+        m_call_yellow = new QPixmap(":/images/phone-yellow.png");
+        m_call_blue   = new QPixmap(":/images/phone-blue.png");
+        m_call_red    = new QPixmap(":/images/phone-red.png");
+        m_call_gray   = new QPixmap(":/images/phone-grey.png");
+    }
+    m_ui = ui;
+    QGridLayout * gridlayout = new QGridLayout(this);
         
 // 	m_callerid = callerid;
 // 	m_calleridname = calleridname;
@@ -150,7 +154,7 @@ void CallWidget::updateCallTimeLabel()
  *
  * update the time displayed.
  */
-void CallWidget::timerEvent(QTimerEvent */* event*/)
+void CallWidget::timerEvent(QTimerEvent * /*event*/)
 {
 	// event->timerId();
 	updateCallTimeLabel();
@@ -163,20 +167,18 @@ void CallWidget::updateWidget(const QString & status,
 			      const QString &/* channelpeer*/,
 			      const QString & exten)
 {
-        // qDebug() << "CallWidget::updateWidget()" << status << time << exten;
-	//m_lbl_status->setText(status);
-	setActionPixmap(status);
-	//qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
-	m_startTime = QDateTime::currentDateTime().addSecs(-time);
-	updateCallTimeLabel();
-        if ((status == CHAN_STATUS_CALLING) || (status == CHAN_STATUS_LINKED_CALLER))
-                m_lbl_direction->setPixmap(QPixmap(":/images/rightarrow.png"));
-        else if ((status == CHAN_STATUS_RINGING) || (status == CHAN_STATUS_LINKED_CALLED))
-                m_lbl_direction->setPixmap(QPixmap(":/images/leftarrow.png"));
-        else
-                qDebug() << "CallWidget::updateWidget() : status unknown" << status;
+    //qDebug() << "CallWidget::updateWidget()" << status << time << exten;
+    setActionPixmap(status);
+    //qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
+    m_startTime = QDateTime::currentDateTime().addSecs(-time);
+    updateCallTimeLabel();
+    if ((status == CHAN_STATUS_CALLING) || (status == CHAN_STATUS_LINKED_CALLER))
+        m_lbl_direction->setPixmap(QPixmap(":/images/rightarrow.png"));
+    else if ((status == CHAN_STATUS_RINGING) || (status == CHAN_STATUS_LINKED_CALLED))
+        m_lbl_direction->setPixmap(QPixmap(":/images/leftarrow.png"));
+    else
+        qDebug() << "CallWidget::updateWidget() : status unknown" << status;
         
-	//	m_lbl_channelpeer->setText(channelpeer);
 	m_lbl_exten->setText(exten);
 }
 
@@ -185,17 +187,17 @@ void CallWidget::updateWidget(const QString & status,
 void CallWidget::setActionPixmap(const QString & status)
 {
 	if (status == CHAN_STATUS_CALLING)
-		m_lbl_status->setPixmap( m_call_yellow );
+		m_lbl_status->setPixmap( *m_call_yellow );
 	else if (status == CHAN_STATUS_RINGING)
-		m_lbl_status->setPixmap( m_call_blue );
+		m_lbl_status->setPixmap( *m_call_blue );
 	else if ((status == "On the phone") || (status == "Up"))
-		m_lbl_status->setPixmap( m_call_red );
+		m_lbl_status->setPixmap( *m_call_red );
 	else if (status == CHAN_STATUS_LINKED_CALLER)
-		m_lbl_status->setPixmap( m_call_red );
+		m_lbl_status->setPixmap( *m_call_red );
 	else if (status == CHAN_STATUS_LINKED_CALLED)
-		m_lbl_status->setPixmap( m_call_red );
+		m_lbl_status->setPixmap( *m_call_red );
 	else {
-		m_lbl_status->setPixmap( m_call_gray );
+		m_lbl_status->setPixmap( *m_call_gray );
 		qDebug() << "CallWidget::setActionPixmap() : status unknown" << status;
 	}
 }
@@ -236,8 +238,7 @@ void CallWidget::mouseMoveEvent(QMouseEvent *event)
 	QDrag *drag = new QDrag(this);
 	QMimeData *mimeData = new QMimeData();
 	mimeData->setText(m_channelme); // XXX
-        mimeData->setData("userid", m_ui->userid().toAscii());
-	mimeData->setData("channel", m_channelme.toAscii());
+        mimeData->setData(USERID_MIMETYPE, m_ui->userid().toAscii());
 	mimeData->setData(CHANNEL_MIMETYPE, m_channelme.toAscii());
 	drag->setMimeData(mimeData);
 
@@ -307,23 +308,6 @@ void CallWidget::contextMenuEvent(QContextMenuEvent *event)
 	m_contextMenu->exec(event->globalPos());
 }
 
-/*
-void CallWidget::setCallerId(const QString & callerid)
-{
-	m_callerid = callerid;
-}
-
-void CallWidget::setCallerIdName(const QString & calleridname)
-{
-	m_calleridname = calleridname;
-}
-
-void CallWidget::setChannel(const QString & channel)
-{
-	m_channel = channel;
-}
-*/
-
 /*! \brief return m_channelme
  */
 const QString & CallWidget::channel() const
@@ -331,7 +315,3 @@ const QString & CallWidget::channel() const
 	return m_channelme;
 }
 
-const QString & CallWidget::uidref() const
-{
-	return m_uidref;
-}

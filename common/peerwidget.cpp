@@ -51,22 +51,35 @@
 
 #include "baseengine.h"
 #include "extendedlabel.h"
-#include "peerchannel.h"
 #include "peerwidget.h"
 #include "xivoconsts.h"
+#include "userinfo.h"
+#include "phoneinfo.h"
+
+// Initialize static members
+QHash<QString, QPixmap> PeerWidget::m_phones = QHash<QString, QPixmap>();
+QHash<QString, QPixmap> PeerWidget::m_persons = QHash<QString, QPixmap>();
+QHash<QString, QPixmap> PeerWidget::m_agents = QHash<QString, QPixmap>();
 
 /*! \brief Constructor
  */
-PeerWidget::PeerWidget(UserInfo * ui,
-                       const QVariant & options,
-                       const QHash<QString, QPixmap> & persons,
-                       const QHash<QString, QPixmap> & phones,
-                       const QHash<QString, QPixmap> & agents)
-	: m_availlbl(NULL), m_agentlbl(NULL), m_phones(phones), m_persons(persons), m_agents(agents)
+PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui, const QVariant & options)
+	: BasePeerWidget(engine, ui, options), m_availlbl(NULL), m_agentlbl(NULL)
 {
-        m_ui = ui;
+    //qDebug() << "PeerWidget constuctor options :" << options;
+    // fill m_persons, m_phones and m_agents if needed.
+    if(m_persons.count() == 0)
+    {
+        QStringList colors = (QStringList() << "red" << "blue" << "green" << "grey" << "orange" << "yellow");
+        foreach(QString color, colors) {
+            m_persons[color] = QPixmap(":/images/personal-" + color + ".png");
+            m_phones[color] = QPixmap(":/images/phone-" + color + ".png");
+            m_agents[color] = QPixmap(":/images/agent-" + color + ".png");
+        }
+    }
+
         m_functions = options.toMap()["functions"].toStringList();
-        // qDebug() << "PeerWidget::PeerWidget()" << m_functions;
+//        qDebug() << "PeerWidget::PeerWidget()" << m_functions;
 	// qDebug() << "PeerWidget::PeerWidget()" << id;
 	//	QHBoxLayout * layout = new QHBoxLayout(this);
         
@@ -121,7 +134,7 @@ PeerWidget::PeerWidget(UserInfo * ui,
 	// set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
 	m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
         
-        if(! ui->ctilogin().isEmpty()) {
+        if(! m_ui->ctilogin().isEmpty()) {
                 m_availlbl = new ExtendedLabel();
                 m_availlbl->setPixmap(m_persons["grey"]);
                 m_availlbl->setAlignment(Qt::AlignCenter);
@@ -129,26 +142,23 @@ PeerWidget::PeerWidget(UserInfo * ui,
                 m_availlbl->setObjectName("onlyme");
                 m_availlbl->setProperty("kind", "person");
                 // setColorAvail("person", "grey", "");
-                connect( m_availlbl, SIGNAL(mouse_doubleclick(QMouseEvent *)),
-                         this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
+                //connect( m_availlbl, SIGNAL(mouse_doubleclick(QMouseEvent *)),
+                //         this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         }
         
-        m_voicelbl = new QLabel();
-        m_fwdlbl   = new QLabel();
+        //m_voicelbl = new QLabel();
+        //m_fwdlbl   = new QLabel();
         
-        foreach (QString termname, ui->termstatus().keys()) {
-                QStringList terms = termname.split(".");
-                if(terms.size() > 3) {
-                        m_lblphones[termname] = new ExtendedLabel();
-                        m_lblphones[termname]->setPixmap(m_phones["grey"]);
-                        m_lblphones[termname]->setAlignment(Qt::AlignCenter);
-                        m_lblphones[termname]->setObjectName("onlyme");
-                        m_lblphones[termname]->setMinimumSize(fsize, fsize);
-                        m_lblphones[termname]->setProperty("kind", "term");
-                        // setColorAvail(termname, "grey", "");
-                        connect( m_lblphones[termname], SIGNAL(mouse_doubleclick(QMouseEvent *)),
-                                 this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
-                }
+        foreach (QString phone, ui->phonelist())
+        {
+            m_lblphones[phone] = new ExtendedLabel();
+            m_lblphones[phone]->setPixmap(m_phones["grey"]);
+            m_lblphones[phone]->setAlignment(Qt::AlignCenter);
+            m_lblphones[phone]->setObjectName("onlyme");
+            m_lblphones[phone]->setMinimumSize(fsize, fsize);
+            m_lblphones[phone]->setProperty("kind", "term");
+            //connect( m_lblphones[termname], SIGNAL(mouse_doubleclick(QMouseEvent *)),
+            //         this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         }
         
         if(! ui->agentid().isEmpty()) {
@@ -159,9 +169,10 @@ PeerWidget::PeerWidget(UserInfo * ui,
                 m_agentlbl->setObjectName("onlyme");
                 m_agentlbl->setToolTip(tr("Agent ") + ui->agentid());
                 m_agentlbl->setProperty("kind", "agent");
-                setColorAvail("agent", "grey", "");
-                connect( m_agentlbl, SIGNAL(mouse_doubleclick(QMouseEvent *)),
-                         this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
+                //setColorAvail("agent", "grey", "");
+                setAgentState("grey");
+                //connect( m_agentlbl, SIGNAL(mouse_doubleclick(QMouseEvent *)),
+                //         this, SLOT(mouseDoubleClickEventLocal(QMouseEvent *)) );
         }
         
         // Put the Labels into layouts
@@ -175,28 +186,25 @@ PeerWidget::PeerWidget(UserInfo * ui,
         layout->addWidget( qvline2,   linenum, 9, 2, 1 );
         
         linenum ++;
+        int colnum = 2;
+        foreach (QString phone, ui->phonelist())
+        {
+            layout->addWidget( m_lblphones[phone],
+                               linenum, colnum++,
+                               Qt::AlignCenter );
+        }
         if(! ui->ctilogin().isEmpty())
-                layout->addWidget( m_availlbl, linenum, 3, Qt::AlignCenter );
-        foreach (QString termname, ui->termstatus().keys())
-                layout->addWidget( m_lblphones[termname], linenum, 2, Qt::AlignCenter );
+            layout->addWidget( m_availlbl, linenum, colnum++, Qt::AlignCenter );
         if(! ui->agentid().isEmpty())
-                layout->addWidget( m_agentlbl, linenum, 4, Qt::AlignCenter );
+            layout->addWidget( m_agentlbl, linenum, colnum++, Qt::AlignCenter );
         if(stretch_last)
-                layout->setColumnStretch(20, 1);
+            layout->setColumnStretch(20, 1);
         
         linenum ++;
 	layout->addWidget( qhline2, linenum, 0, 1, 10);
         
 	// to be able to receive drop
 	setAcceptDrops(true);
-	m_removeAction = new QAction( tr("&Remove"), this);
-	m_removeAction->setStatusTip( tr("Remove this peer from the panel") );
-	connect( m_removeAction, SIGNAL(triggered()),
-	         this, SLOT(removeFromPanel()) );
-	m_dialAction = new QAction( tr("&Call"), this);
-	m_dialAction->setStatusTip( tr("Call this peer") );
-	connect( m_dialAction, SIGNAL(triggered()),
-	         this, SLOT(dial()) );
 }
 
 /*! \brief destructor
@@ -204,307 +212,57 @@ PeerWidget::PeerWidget(UserInfo * ui,
 PeerWidget::~PeerWidget()
 {
         //qDebug() << "PeerWidget::~PeerWidget()";
-        clearChanList();
 }
 
-// blue, yellow, orange, grey, green, red
-void PeerWidget::setColorAvail(const QString & kind, const QString & color, const QString & avail)
+void PeerWidget::setAgentState(const QString & color)
 {
-        QString commonqss;
-        // commonqss = "QLabel#onlyme {border-style: solid; border-width: 3px; border-radius: 3px; border-color: " + color + "; }";
-        commonqss = "QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: " + color + "; }";
-        
-	if((kind == "presence") && (m_availlbl)) {
-                m_availlbl->setStyleSheet(commonqss);
-                m_availlbl->setToolTip(tr("User : ") + avail);
-        } else if((kind == "agent") && (m_agentlbl)) {
-                m_agentlbl->setStyleSheet(commonqss);
-        } else if(m_lblphones.contains(kind)) {
-                QStringList terms = kind.split(".");
-                m_lblphones[kind]->setStyleSheet(commonqss);
-                m_lblphones[kind]->setToolTip(tr("Phone ") + terms[3] + " : " + avail);
+    QString qss =  "QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: " + color + "; }";
+    if(m_agentlbl)
+        m_agentlbl->setStyleSheet( qss );
+}
+
+void PeerWidget::updatePresence()
+{
+    if(m_availlbl)
+    {
+        QString qss = "QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: " + m_ui->availstate()["color"] + "; }";
+        m_availlbl->setStyleSheet( qss );
+        m_availlbl->setToolTip( tr("User : ") + m_ui->availstate()["longname"] );
+    }
+}
+
+void PeerWidget::updatePhonesStates()
+{
+    //qDebug() << "PeerWidget::updatePhonesStates()";
+    foreach(QString phone, m_ui->phonelist())
+    {
+        const PhoneInfo * pi = m_ui->getPhoneInfo(phone);
+        if(pi)
+        {
+            QString qss = "QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: " + pi->hintstatus("color") + "; }";
+            m_lblphones[phone]->setStyleSheet( qss );
+            m_lblphones[phone]->setToolTip( tr("Phone ") + pi->number() + " : " +  pi->hintstatus("longname") );
         }
-}
-
-QString PeerWidget::getToolTip(const QString & kind)
-{
-        QString ttip;
-	if((kind == "presence") && (m_availlbl))
-                ttip = m_availlbl->toolTip();
-        else if(m_lblphones.contains(kind))
-                ttip = m_lblphones[kind]->toolTip();
-        return ttip;
+    }
 }
 
 void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & queues)
 {
-        if(! m_agentlbl)
-                return;
-        if(agentnum == "")
-                m_agentlbl->setToolTip("");
-        else {
+    if(! m_agentlbl)
+        return;
+    if(agentnum == "")
+        m_agentlbl->setToolTip("");
+    else {
+#if 0
                 if(queues.size() == 0)
                         m_agentlbl->setToolTip(tr("Agent ") + agentnum + "\n0 Queue");
                 else if (queues.size() == 1)
                         m_agentlbl->setToolTip(tr("Agent ") + agentnum + "\n1 Queue " + queues[0]);
                 else
                         m_agentlbl->setToolTip(tr("Agent ") + agentnum + "\n" + QString::number(queues.size()) + " Queues " + queues.join(","));
-        }
-}
-
-/*! \brief hide this widget from the panel
- */
-void PeerWidget::removeFromPanel()
-{
-        // qDebug() << "PeerWidget::removeFromPanel()" << m_ui->userid();
-	doRemoveFromPanel( m_ui->userid() );
-}
-
-/*! \brief call this peer
- */
-void PeerWidget::dial()
-{
-	// qDebug() << "PeerWidget::dial()" << m_ui->userid() << sender();
-        actionCall("originate", "user:special:me", "user:" + m_ui->userid()); // Call
-}
-
-/*! \brief mouse press. store position
- */
-void PeerWidget::mousePressEvent(QMouseEvent *event)
-{
-        // qDebug() << "PeerWidget::mousePressEvent()" << event;
-	if (event->button() == Qt::LeftButton)
-		m_dragstartpos = event->pos();
-	//else if (event->button() == Qt::RightButton)
-	//	qDebug() << "depending on what has been left-cliked on the left ...";
-}
-
-/*! \brief start drag if necessary
- */
-void PeerWidget::mouseMoveEvent(QMouseEvent *event)
-{
-	if (! m_functions.contains("switchboard"))
-		return;
-	if (!(event->buttons() & Qt::LeftButton))
-		return;
-	if ((event->pos() - m_dragstartpos).manhattanLength()
-	    < QApplication::startDragDistance())
-		return;
-
-	//qDebug() << "PeerWidget::mouseMoveEvent() startDrag";
-	QDrag *drag = new QDrag(this);
-	QMimeData *mimeData = new QMimeData;
-	// qDebug() << "PeerWidget::mouseMoveEvent()" << m_ui->userid() << m_ui->phonenumber();
-	mimeData->setText(m_ui->phonenumber());
-	mimeData->setData(PEER_MIMETYPE, m_ui->userid().toAscii());
-	mimeData->setData("userid", m_ui->userid().toAscii());
-	mimeData->setData("name", m_ui->fullname().toUtf8());
-	drag->setMimeData(mimeData);
-        
-	/*Qt::DropAction dropAction = */
-        drag->start(Qt::CopyAction | Qt::MoveAction);
-	//qDebug() << "PeerWidget::mouseMoveEvent : dropAction=" << dropAction;
-}
-
-void PeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
-{
-        // qDebug() << "PeerWidget::mouseDoubleClickEvent()" << event;
-        if(event->button() == Qt::LeftButton)
-                dial();
-}
-
-void PeerWidget::mouseDoubleClickEventLocal(QMouseEvent * event)
-{
-        QString propkind = sender()->property("kind").toString();
-        // qDebug() << "PeerWidget::mouseDoubleClickEventLocal()" << event << propkind;
-        if(event->button() == Qt::LeftButton)
-                dial();
-}
-
-/*! \brief  
- *
- * filters the acceptable drag on the mime type.
- */
-void PeerWidget::dragEnterEvent(QDragEnterEvent *event)
-{
-        // qDebug() << "PeerWidget::dragEnterEvent()" << event->mimeData()->formats();
-	if(  event->mimeData()->hasFormat(PEER_MIMETYPE)
-             || event->mimeData()->hasFormat(NUMBER_MIMETYPE)
-             || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
-	{
-		if(event->proposedAction() & (Qt::CopyAction|Qt::MoveAction))
-			event->acceptProposedAction();
-	}
-}
-
-/*! \brief drag move event
- *
- * filter based on the mimeType.
- */
-void PeerWidget::dragMoveEvent(QDragMoveEvent *event)
-{
-	//qDebug() << "PeerWidget::dragMoveEvent()" << event->mimeData()->formats() << event->pos();
-	event->accept(rect());
-	/*if(  event->mimeData()->hasFormat(PEER_MIMETYPE)
-	  || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
-	{*/
-        if(event->proposedAction() & (Qt::CopyAction | Qt::MoveAction))
-                event->acceptProposedAction();
-	/*}*/
-}
-
-/*! \brief receive drop events
- *
- * initiate an originate or transfer
- */
-void PeerWidget::dropEvent(QDropEvent *event)
-{
-        QString userid_from = QString::fromAscii(event->mimeData()->data("userid"));
-        QString channel_from = QString::fromAscii(event->mimeData()->data("channel"));
-	QString to = m_ui->userid();
-        qDebug() << "PeerWidget::dropEvent()"
-                 << event << event->keyboardModifiers()
-                 << event->mimeData() << event->proposedAction();
-        // 	qDebug() << "PeerWidget::dropEvent() :" << from << "on" << to;
-        // 	qDebug() << " possibleActions=" << event->possibleActions();
-        // 	qDebug() << " proposedAction=" << event->proposedAction();
-        // qDebug() << "mouse & keyboard" << event->mouseButtons() << event->keyboardModifiers();
-        
-        if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
-                qDebug() << "PeerWidget::dropEvent()" << "CHANNEL_MIMETYPE";
-        } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
-                qDebug() << "PeerWidget::dropEvent()" << "PEER_MIMETYPE";
-        } else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
-                qDebug() << "PeerWidget::dropEvent()" << "NUMBER_MIMETYPE";
-        }
-        
-	switch(event->proposedAction()) {
-	case Qt::CopyAction:
-		// transfer the call to the peer "to"
-	  	if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
-                        event->acceptProposedAction();
-                        actionCall("transfer", "chan:" + userid_from + ":" + channel_from, "user:" + to); // Call
-		} else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
-			event->acceptProposedAction();
-			actionCall("originate", "user:" + userid_from, "user:" + to); // Call
-		} else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
-			event->acceptProposedAction();
-                        actionCall("originate", "user:" + to, "ext:" + event->mimeData()->text()); // Call
-		}
-		break;
-	case Qt::MoveAction:
-                // can be reached with the shift button
-		event->acceptProposedAction();
-		actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, "user:" + to); // Call
-		break;
-	default:
-		qDebug() << "PeerWidget::dropEvent() Unrecognized action" << event->proposedAction();
-		break;
-	}
-}
-
-/*! \brief transfer the channel to this peer
- */
-void PeerWidget::transferChan(const QString & chan)
-{
-	actionCall("transfer", "chan:" + m_ui->userid() + ":" + chan, "user:" + m_ui->userid());
-}
-
-void PeerWidget::hangupChan(const QString & chan)
-{
-        actionCall("hangup", "chan:" + m_ui->userid() + ":" + chan); // Call
-}
-
-void PeerWidget::interceptChan(const QString & chan)
-{
-        actionCall("transfer", "chan:" + m_ui->userid() + ":" + chan, "user:special:me"); // Call
-}
-
-/*! \brief display context menu
- */
-void PeerWidget::contextMenuEvent(QContextMenuEvent * event)
-{
-        // qDebug() << "PeerWidget::contextMenuEvent()" << event;
-	QMenu contextMenu(this);
-	contextMenu.addAction(m_dialAction);
-	if (m_functions.contains("switchboard")) {
-		// add remove action only if we are in the central widget.
-		if(parentWidget() && m_engine->isRemovable(parentWidget()->metaObject()))
-			contextMenu.addAction(m_removeAction);
-		if( ! m_channels.empty() ) {
-			QMenu * interceptMenu = new QMenu( tr("&Intercept"), &contextMenu );
-			QMenu * hangupMenu = new QMenu( tr("&Hangup"), &contextMenu );
-			QListIterator<PeerChannel *> i(m_channels);
-			while(i.hasNext()) {
-				const PeerChannel * channel = i.next();
-				interceptMenu->addAction(channel->otherPeer(),
-							 channel, SLOT(intercept()));
-				hangupMenu->addAction(channel->otherPeer(),
-						      channel, SLOT(hangup()));
-			}
-			contextMenu.addMenu(interceptMenu);
-			contextMenu.addMenu(hangupMenu);
-		}
-		if( ! m_mychannels.empty() ) {
-			QMenu * transferMenu = new QMenu( tr("&Transfer"), &contextMenu );
-                        QListIterator<PeerChannel *> i(m_mychannels);
-			while(i.hasNext()) {
-				const PeerChannel * channel = i.next();
-				transferMenu->addAction(channel->otherPeer(),
-							channel, SLOT(transfer()));
-			}
-			contextMenu.addMenu(transferMenu);
-		}
-	}
-        
-	contextMenu.exec(event->globalPos());
-}
-
-/*! \brief empty m_channels
- */
-void PeerWidget::clearChanList()
-{
-        // qDebug() << "PeerWidget::clearChanList()" << m_ui->userid() << m_channels;
-	//m_channels.clear();
-	while(!m_channels.isEmpty())
-		delete m_channels.takeFirst();
-}
-
-/*! \brief add a channel to m_channels list
- */
-void PeerWidget::addChannel(const QString & uidref,
-                            const QVariant & chanprops)
-{
-        // qDebug() << "PeerWidget::addChannel()" << chanprops;
-	PeerChannel * ch = new PeerChannel(uidref, chanprops, this);
-	connect(ch, SIGNAL(interceptChan(const QString &)),
-	        this, SLOT(interceptChan(const QString &)));
-	connect(ch, SIGNAL(hangupChan(const QString &)),
-	        this, SLOT(hangupChan(const QString &)));
-	m_channels << ch;
-}
-
-/*! \brief update calls of "ME" (for transfer context menu)
- */
-void PeerWidget::updatePeer(UserInfo * ui,
-                            const QString &,
-                            const QVariant & chanlist)
-{
-        if(ui != m_ui)
-                return;
-        // qDebug() << m_ui << m_ui->userid();
-	while(!m_mychannels.isEmpty())
-		delete m_mychannels.takeFirst();
-        
-        foreach(QString ref, chanlist.toMap().keys()) {
-                QVariant chanprops = chanlist.toMap()[ref];
-                if(chanprops.toMap()["status"].toString() != CHAN_STATUS_HANGUP) {
-                        PeerChannel * ch = new PeerChannel(ref, chanprops);
-                        connect(ch, SIGNAL(transferChan(const QString &)),
-                                this, SLOT(transferChan(const QString &)) );
-                        m_mychannels << ch;
-                }
-        }
+#endif
+        m_agentlbl->setToolTip( tr("Agent %1\n%n Queue(s) %2", "", queues.size()).arg(agentnum).arg(queues.join(",")) );
+    }
 }
 
 /*! \brief change displayed name
@@ -515,12 +273,82 @@ void PeerWidget::setName(const QString & name)
 	m_textlbl->setText(m_ui->fullname());
 }
 
-/*! \brief setter for m_engine
+/*! \brief  
  *
- * set BaseEngine object to be used to connect to
- * peer object slot/signals.
+ * filters the acceptable drag on the mime type.
  */
-void PeerWidget::setEngine(BaseEngine * engine)
+void PeerWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-	m_engine = engine;
+        // qDebug() << "PeerWidget::dragEnterEvent()" << event->mimeData()->formats();
+       if(  event->mimeData()->hasFormat(PEER_MIMETYPE)
+             || event->mimeData()->hasFormat(NUMBER_MIMETYPE)
+             || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
+       {
+               if(event->proposedAction() & (Qt::CopyAction|Qt::MoveAction))
+                       event->acceptProposedAction();
+       }
 }
+
+/*! \brief drag move event
+ *
+ * filter based on the mimeType.
+ */
+void PeerWidget::dragMoveEvent(QDragMoveEvent *event)
+{
+   //qDebug() << "PeerWidget::dragMoveEvent()" << event->mimeData()->formats() << event->po
+   event->accept(rect());
+   /*if(  event->mimeData()->hasFormat(PEER_MIMETYPE)
+     || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
+   {*/
+    if(event->proposedAction() & (Qt::CopyAction | Qt::MoveAction))
+        event->acceptProposedAction();
+   /*}*/
+}
+
+/*! \brief receive drop events
+ *
+ * initiate an originate or transfer
+ */
+void PeerWidget::dropEvent(QDropEvent *event)
+{
+    QString userid_from = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
+    QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
+    QString to = m_ui->userid();
+    qDebug() << "PeerWidget::dropEvent()"
+             << event << event->keyboardModifiers()
+             << event->mimeData() << event->proposedAction();
+
+    if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
+        qDebug() << "PeerWidget::dropEvent()" << "CHANNEL_MIMETYPE";
+    } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+        qDebug() << "PeerWidget::dropEvent()" << "PEER_MIMETYPE";
+    } else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
+        qDebug() << "PeerWidget::dropEvent()" << "NUMBER_MIMETYPE";
+    }
+        
+    switch(event->proposedAction()) {
+    case Qt::CopyAction:
+       // transfer the call to the peer "to"
+       if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
+            event->acceptProposedAction();
+            actionCall("transfer", "chan:" + userid_from + ":" + channel_from, "user:" + to); // Call
+
+       } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+           event->acceptProposedAction();
+           actionCall("originate", "user:" + userid_from, "user:" + to); // Call
+       } else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
+           event->acceptProposedAction();
+           actionCall("originate", "user:" + to, "ext:" + event->mimeData()->text());
+       }
+       break;
+   case Qt::MoveAction:
+       // can be reached with the shift button
+       event->acceptProposedAction();
+       actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, "user:" + to); 
+       break;
+   default:
+       qDebug() << "PeerWidget::dropEvent() Unrecognized action" << event->proposedAction();
+       break;
+   }
+}
+

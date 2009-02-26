@@ -87,6 +87,7 @@ void PeerItem::updateAgentStatus(const QVariant & agentstatus)
 
 /*! \brief update channel list
  */
+#if 0
 void PeerItem::updateChans(const QVariant & chanlist)
 {
         QVariantMap tmpchanlist;
@@ -99,6 +100,7 @@ void PeerItem::updateChans(const QVariant & chanlist)
         if(m_peerwidget != NULL)
                 updateDisplayedChans();
 }
+#endif
 
 /*! \brief update name if changed
  */
@@ -119,24 +121,10 @@ void PeerItem::updateDisplayedStatus()
         if(m_peerwidget == NULL)
                 return;
         
-        QStringList fortooltip;
-        
         // qDebug() << "PeerItem::updateDisplayedStatus()";
-        if(! m_ui->ctilogin().isEmpty()) {
-                m_peerwidget->setColorAvail("presence",
-                                            m_ui->availstate().toMap()["color"].toString(),
-                                            m_ui->availstate().toMap()["longname"].toString());
-                fortooltip.append(m_peerwidget->getToolTip("presence"));
-        }
+        m_peerwidget->updatePresence();
         
-        foreach(QString term, m_ui->termstatus().keys()) {
-                QVariantMap termstatusmap = m_ui->termstatus()[term].toMap();
-                m_peerwidget->setColorAvail(term,
-                                            termstatusmap["color"].toString(),
-                                            termstatusmap["longname"].toString());
-                fortooltip.append(m_peerwidget->getToolTip(term));
-        }
-        
+        m_peerwidget->updatePhonesStates();      
         
         
         QString action = m_agentstatus.toMap()["action"].toString();
@@ -146,10 +134,10 @@ void PeerItem::updateDisplayedStatus()
         
         if(action == "agentlogin") {
                 m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-                m_peerwidget->setColorAvail("agent", "green", "");
+                m_peerwidget->setAgentState("green");
         } else if(action == "agentlogout") {
                 m_peerwidget->setAgentToolTip("", m_queuelist);
-                m_peerwidget->setColorAvail("agent", "grey", "");
+                m_peerwidget->setAgentState("grey");
         } else if(action == "joinqueue") {
                 if(! m_queuelist.contains(queuename))
                         m_queuelist.append(queuename);
@@ -161,13 +149,13 @@ void PeerItem::updateDisplayedStatus()
         } else if(action == "queuememberstatus") {
                 QString joinedstatus = m_agentstatus.toMap()["joinedstatus"].toString();
                 if(joinedstatus == "1") {
-                        m_peerwidget->setColorAvail("agent", "green", "");
+                        m_peerwidget->setAgentState("green");
                 } else if(joinedstatus == "3") {
-                        m_peerwidget->setColorAvail("agent", "blue", "");
+                        m_peerwidget->setAgentState("blue");
                 } else if(joinedstatus == "5") {
-                        m_peerwidget->setColorAvail("agent", "grey", "");
+                        m_peerwidget->setAgentState("grey");
                 } else {
-                        m_peerwidget->setColorAvail("agent", "yellow", "");
+                        m_peerwidget->setAgentState("yellow");
                 }
                 m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
         } else if(action == "agentstatus") {
@@ -189,25 +177,6 @@ void PeerItem::updateDisplayedStatus()
                 // m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
                 // m_peerwidget->setBlue("agent");
         }
-        
-	m_peerwidget->setToolTip(fortooltip.join("\n"));
-        
-        return;
-}
-
-/*! \brief update channel list
- */
-void PeerItem::updateDisplayedChans()
-{
-	if(m_peerwidget == NULL)
-                return;
-        
-        m_peerwidget->clearChanList();
-        foreach(QString ref, m_chanlist.toMap().keys()) {
-                QVariant chanprops = m_chanlist.toMap()[ref];
-                m_peerwidget->addChannel(ref, chanprops);
-        }
-        return;
 }
 
 /*! \brief update name if changed

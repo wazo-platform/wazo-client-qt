@@ -40,13 +40,16 @@
  */
 
 #include <QDebug>
-#include <QGridLayout>
 #include <QLabel>
 #include <QMouseEvent>
 #include <QPoint>
 #include <QPushButton>
 #include <QSettings>
 #include <QToolTip>
+#include <QPainter>
+#include <QInputDialog>
+#include <QColorDialog>
+#include <QMenu>
 
 #include "baseengine.h"
 #include "peerwidget.h"
@@ -55,124 +58,87 @@
 #include "switchboardwindow.h"
 #include "userinfo.h"
 #include "xivoconsts.h"
+#include "basicpeerwidget.h"
+#include "externalphonepeerwidget.h"
+#include "externalphonedialog.h"
+#include "group.h"
 
+/*! \brief constructor
+ *
+ * initialize layout, attributes, etc.
+ */
 SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine,
                                      const QVariant & options,
                                      QWidget * parent)
-	: QWidget(parent), m_engine(engine)
+	: QWidget(parent), m_engine(engine),
+      m_trace_box(false), m_group_to_resize(0)
 {
-	m_layout = new PeersLayout(this);
-        m_options = options;
-        setObjectName("scroller"); // in order for the style settings to be set accordingly
-	setAcceptDrops(true);
-
-        QStringList colors = (QStringList() << "red" << "blue" << "green" << "grey" << "orange" << "yellow");
-        foreach(QString color, colors) {
-                m_persons[color] = QPixmap(":/images/personal-" + color + ".png");
-                m_phones[color] = QPixmap(":/images/phone-" + color + ".png");
-                m_agents[color] = QPixmap(":/images/agent-" + color + ".png");
-        }
+    qDebug() << options;
+    m_layout = new PeersLayout(this);
+    m_options = options;
+    setObjectName("scroller"); // in order for the style settings to be set accordingly
+    setAcceptDrops(true);
+    reloadGroups();
+    reloadExternalPhones();
 }
 
-/*!
+/*! 
  * Save the positions in the grid of the peer widgets.
  */
 SwitchBoardWindow::~SwitchBoardWindow()
 {
-	// qDebug() << "SwitchBoardWindow::~SwitchBoardWindow()";
-        savePositions();
-        removePeers();
+    savePositions();
+    saveGroups();
+    removePeers();
 }
 
+/*!
+ * Does nothing
+ */
 void SwitchBoardWindow::setGuiOptions(const QVariant &)
 {
 }
 
+/*!
+ * Does nothing
+ */
 void SwitchBoardWindow::setUserInfo(const UserInfo *)
 {
 }
 
-/*! \brief update or add a peer
+/*! \brief update display of user informations
  *
- * Th peer with the ext extension is updated or added
- * to the list if it is not present.
- * The placement of the PeerWidget is restored from the settings.
- * 
- * \arg ext phone extension
- * \arg name name
- *
- * \sa removePeer
+ * Update all what need to be displayed about this user.
+ * PeerItem is created if needed.
+ * Display the PeerWidget if needed.
  */
-void SwitchBoardWindow::updatePeer(UserInfo * ui,
-                                   const QString &,
-                                   const QVariant & chanlist)
+void SwitchBoardWindow::updateUser(UserInfo * ui)
 {
-        QString userid = ui->userid();
-        // qDebug() << "SwitchBoardWindow::updatePeer()" << userid;
-	// first search in the peerhash
-        if(m_peerhash.contains(userid)) {
-                PeerItem * peeritem = m_peerhash.value(userid);
-                peeritem->updateStatus();
-                peeritem->updateChans(chanlist);
-                peeritem->updateName(ui->fullname());
-                return;
-        }
-        
-        // if the name (i.e. full callerid info) has not been received yet, do not add as a peer
-        if(ui->fullname().isEmpty())
-                return;
-        
-	PeerItem * peeritem = new PeerItem(ui);
-        peeritem->updateStatus();
-        peeritem->updateChans(chanlist);
+    QString userid = ui->userid();
+    PeerItem * peeritem = NULL;
+    if(m_peerhash.contains(userid))
+    {
+        peeritem = m_peerhash.value(userid);
+    }
+    else
+    {
+        peeritem = new PeerItem(ui);
         m_peerhash.insert(userid, peeritem);
-        
-	// if not found in the peerhash, create a new PeerItem
-        
         QSettings * settings = m_engine->getSettings();
         settings->beginGroup("layout");
-	QPoint pos = settings->value(userid, QPoint(-1, -1) ).toPoint();
+    	QPoint pos = settings->value(userid, QPoint(-1, -1) ).toPoint();
         settings->endGroup();
-	if(pos.x() >= 0) {
-                PeerWidget * peerwidget = new PeerWidget(ui,
-                                                         m_options,
-                                                         m_persons,
-                                                         m_phones,
-                                                         m_agents);
-                peerwidget->setEngine(m_engine);
-                // originate, transfer, atxfer, hangup, intercept
-                connect( peerwidget, SIGNAL(actionCall(const QString &,
-                                                       const QString &,
-                                                       const QString &)),
-                         m_engine, SLOT(actionCall(const QString &,
-                                                   const QString &,
-                                                   const QString &)) );
-                connect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
-                         this, SLOT(removePeerFromLayout(const QString &)) );
-                connect( m_engine, SIGNAL(updatePeer(UserInfo *,
-                                                     const QString &,
-                                                     const QVariant &)),
-                         peerwidget, SLOT(updatePeer(UserInfo *,
-                                                     const QString &,
-                                                     const QVariant &)) );
-                m_layout->addWidget( peerwidget, pos );
-                m_peerlist << peeritem;
-                peeritem->setWidget(peerwidget);
-                peeritem->updateDisplayedStatus();
-                peeritem->updateDisplayedChans();
-                peeritem->updateDisplayedName();
+	    if(pos.x() >= 0) {
+            /*BasePeerWidget * peerwidget = */addPeerWidget(peeritem, pos);
         }
+    }
+    peeritem->updateStatus();
+    update();
 }
 
-void SwitchBoardWindow::newUser(UserInfo * ui)
-{
-        QString userid = ui->userid();
-        // qDebug() << "SwitchBoardWindow::newUser()" << userid;
-//         PeerItem * peeritem = new PeerItem(ui);
-//         m_peerhash.insert(userid, peeritem);
-}
-
-
+/*! \brief update agent status
+ *
+ */
 void SwitchBoardWindow::updatePeerAgent(double,
                                         const QString & id,
                                         const QString & what,
@@ -185,70 +151,118 @@ void SwitchBoardWindow::updatePeerAgent(double,
                 else if(what == "imstatus")
                         m_peerhash.value(id)->updateStatus();
         }
-        return;
 }
 
 
 /*! \brief remove the peer from the layout
  *
- * the peer with extension is moved to position (-1, -1) so it
+ * the peer is moved to position (-1, -1) so it
  * wont be displayed anymore
  *
  * \sa dropEvent()
  */
-void SwitchBoardWindow::removePeerFromLayout(const QString & ext)
+void SwitchBoardWindow::removePeerFromLayout()
 {
-	for(int i = 0; i < m_peerlist.count(); i++) {
-		if(ext == m_peerlist[i]->userinfo()->userid()) {
-                        m_layout->setItemPosition(i, QPoint(-1, -1));
-			savePositions();
-                        PeerItem * peeritem = m_peerhash[ext];
-                        PeerWidget * peerwidget = peeritem->getWidget();
-                        m_layout->removeWidget( peerwidget );
-                        // this disconnect() step takes time, whether explicitly or implicitly,
-                        // so we should be careful to avoid too much connect's (anyway)
-                        disconnect( peerwidget, SIGNAL(actionCall(const QString &,
-                                                                  const QString &,
-                                                                  const QString &)),
-                                    m_engine, SLOT(actionCall(const QString &,
-                                                              const QString &,
-                                                              const QString &)) );
-                        disconnect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
-                                    this, SLOT(removePeerFromLayout(const QString &)) );
-                        disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
-                                                                const QString &,
-                                                                const QVariant &)),
-                                    peerwidget, SLOT(updatePeer(UserInfo *,
-                                                                const QString &,
-                                                                const QVariant &)) );
-                        m_peerlist.removeAt(i);
-                        peerwidget->deleteLater();
-                        peeritem->setWidget(NULL);
-			return;
-		}
+    const QString userid = sender()->property( "userid" ).toString();
+    qDebug() << "SwitchBoardWindow::removePeerFromLayout" << userid << m_peerhash.keys();
+    if( m_peerhash.contains(userid) )
+    {
+        PeerItem * peeritem = m_peerhash[userid];
+        BasePeerWidget * peerwidget = peeritem->getWidget();
+        m_layout->removeWidget( peerwidget );
+
+        m_layout->setItemPosition(peerwidget, QPoint(-1, -1));
+//savePositions();
+        // this disconnect() step takes time, whether explicitly or implicitly,
+        // so we should be careful to avoid too much connect's (anyway)
+        disconnect( peerwidget, SIGNAL(actionCall(const QString &,
+                                                  const QString &,
+                                                  const QString &)),
+                    m_engine, SLOT(actionCall(const QString &,
+                                              const QString &,
+                                              const QString &)) );
+        disconnect( peerwidget, SIGNAL(removeFromPanel()),
+                    this, SLOT(removePeerFromLayout()) );
+        peerwidget->deleteLater();
+        peeritem->setWidget(NULL);
+        update();
 	}
+    else
+    {
+        m_layout->removeWidget( static_cast<QWidget *>(sender()) );
+        sender()->deleteLater();
+    }
 }
 
+/*! \brief remove a group
+ */
+void SwitchBoardWindow::removeGroup()
+{
+    qDebug() << "removeGroup" << sender()->property( "group" );
+    Group * group = (Group *)(sender()->property( "group" ).value<void *>());
+    if( group )
+    {
+        m_group_list.removeAll( group );
+        group->deleteLater();
+        update();
+        //saveGroups();
+    }
+}
+
+/*! \brief change a group color
+ */
+void SwitchBoardWindow::changeGroupColor()
+{
+    Group * group = (Group *)(sender()->property( "group" ).value<void *>());
+    if( group )
+    {
+        QColor newColor = QColorDialog::getColor( group->color(), this );
+        if( newColor.isValid() )
+        {
+            group->setColor( newColor );
+            update();
+            //saveGroups();
+        }
+    }
+}
+
+/*! \brief change group name
+ */
+void SwitchBoardWindow::changeGroupName()
+{    
+    Group * group = (Group *)(sender()->property( "group" ).value<void *>());
+    if( group )
+    {
+        QString newName
+            = QInputDialog::getText( this, tr("Edit group color"),
+                                     tr("Name for group"), QLineEdit::Normal,
+                                     group->name() );
+        if(!newName.isEmpty())
+        {
+            group->setName( newName );
+            update();
+        }
+    }
+}
 
 /*! \brief remove a PeerItem
  *
- * Find the peer with extension ext and remove it from the list
+ * Find the peer and remove it from the list
  * and the widget.
  *
  * \sa updatePeer
  * \sa removePeers
  */
-void SwitchBoardWindow::removePeer(const QString & ext)
+void SwitchBoardWindow::removePeer(const QString & userid)
 {
-        // qDebug() << "SwitchBoardWindow::removePeer()" << ext;
-        if(m_peerhash.contains(ext)) {
-                PeerItem * peeritem = m_peerhash.value(ext);
-                PeerWidget * peerwidget = peeritem->getWidget();
-                m_layout->removeWidget( peerwidget );
-                m_peerhash.remove(ext);
-                delete peerwidget; //peerwidget->deleteLater();
-                return;
-        }
+    // qDebug() << "SwitchBoardWindow::removePeer()" << userid;
+    if(m_peerhash.contains(userid)) {
+        PeerItem * peeritem = m_peerhash.value(userid);
+        BasePeerWidget * peerwidget = peeritem->getWidget();
+        m_layout->removeWidget( peerwidget );
+        peerwidget->deleteLater();
+        delete m_peerhash.take(userid);
+    }
 }
 
 
@@ -265,7 +279,8 @@ void SwitchBoardWindow::removePeers(void)
         while(peeriter.hasNext()) {
                 peeriter.next();
                 PeerItem * peeritem = peeriter.value();
-                PeerWidget * peerwidget = peeritem->getWidget();
+                //PeerWidget * peerwidget = peeritem->getWidget();
+                BasePeerWidget * peerwidget = peeritem->getWidget();
                 if(peerwidget != NULL) {
                         m_layout->removeWidget( peerwidget );
                         // this disconnect() step takes time, whether explicitly or implicitly,
@@ -276,36 +291,18 @@ void SwitchBoardWindow::removePeers(void)
                                     m_engine, SLOT(actionCall(const QString &,
                                                               const QString &,
                                                               const QString &)) );
-                        disconnect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
-                                    this, SLOT(removePeerFromLayout(const QString &)) );
-                        disconnect( m_engine, SIGNAL(updatePeer(UserInfo *,
-                                                                const QString &,
-                                                                const QVariant &)),
-                                    peerwidget, SLOT(updatePeer(UserInfo *,
-                                                                const QString &,
-                                                                const QVariant &)) );
+                        disconnect( peerwidget, SIGNAL(removeFromPanel()),
+                                    this, SLOT(removePeerFromLayout()) );
                         peerwidget->deleteLater();
                 }
+                delete peeritem;
         }
        	m_peerhash.clear();
-       	m_peerlist.clear();
 }
-
-// void SwitchBoardWindow::mouseMoveEvent(QMouseEvent * event)
-// {
-// 	qDebug() << "SwitchBoardWindow::mouseMoveEvent()" << event;
-// }
-
-// void SwitchBoardWindow::mousePressEvent(QMouseEvent * event)
-// {
-// 	qDebug() << "SwitchBoardWindow::mousePressEvent()" << event;
-// 	qDebug() << "   " << event->x() << event->y() << event->pos();
-// 	qDebug() << "   " << event->globalX() << event->globalY() << event->globalPos();
-// }
 
 void SwitchBoardWindow::dragMoveEvent(QDragMoveEvent * event)
 {
-        event->acceptProposedAction();
+    event->acceptProposedAction();
 }
 
 /*!
@@ -316,7 +313,7 @@ void SwitchBoardWindow::dragMoveEvent(QDragMoveEvent * event)
 void SwitchBoardWindow::dragEnterEvent(QDragEnterEvent * event)
 {
         // qDebug() << "SwitchBoardWindow::dragEnterEvent()" << event->mimeData()->formats();
-	if( event->mimeData()->hasFormat(PEER_MIMETYPE) ||
+	if( event->mimeData()->hasFormat(USERID_MIMETYPE) ||
             event->mimeData()->hasFormat(NUMBER_MIMETYPE) )
 		event->acceptProposedAction();
 }
@@ -330,55 +327,49 @@ void SwitchBoardWindow::dragEnterEvent(QDragEnterEvent * event)
  */
 void SwitchBoardWindow::dropEvent(QDropEvent * event)
 {
-	QString userid = event->mimeData()->data("userid");
-        // qDebug() << "SwitchBoardWindow::dropEvent()" << event << userid;
-	// qDebug() << "  " << event->pos() << m_layout->getPosInGrid(event->pos());
-        bool isAlreadyThere = false;
-
-	for(int i = 0 ; i < m_peerlist.count() ; i++) {
-		if(userid == m_peerlist[i]->userinfo()->userid()) {
-                        qDebug() << "SwitchBoardWindow::dropEvent()" << i;
-			m_layout->setItemPosition(i, m_layout->getPosInGrid(event->pos()));
-			updateGeometry();
-                        isAlreadyThere = true;
-			//update();
-		}
-	}
-        
-        if((! isAlreadyThere) && m_peerhash.contains(userid)) {
-                PeerItem * peeritem = m_peerhash[userid];
-                // PeerWidget * peerwidget = peeritem->getWidget();
-                PeerWidget * peerwidget = new PeerWidget(peeritem->userinfo(),
-                                                         m_options,
-                                                         m_persons,
-                                                         m_phones,
-                                                         m_agents);
-                peerwidget->setEngine(m_engine);
-                peeritem->setWidget(peerwidget);
-                peeritem->updateDisplayedStatus();
-                peeritem->updateDisplayedChans();
-                peeritem->updateDisplayedName();
-                
-                connect( peerwidget, SIGNAL(actionCall(const QString &,
-                                                       const QString &,
-                                                       const QString &)),
-                         m_engine, SLOT(actionCall(const QString &,
-                                                   const QString &,
-                                                   const QString &)) );
-                connect( peerwidget, SIGNAL(doRemoveFromPanel(const QString &)),
-                         this, SLOT(removePeerFromLayout(const QString &)) );
-                connect( m_engine, SIGNAL(updatePeer(UserInfo *,
-                                                     const QString &,
-                                                     const QVariant &)),
-                         peerwidget, SLOT(updatePeer(UserInfo *,
-                                                     const QString &,
-                                                     const QVariant &)) );
-                m_layout->addWidget( peerwidget, m_layout->getPosInGrid(event->pos()) );
-                m_peerlist << peeritem;
-       }
-
-	event->acceptProposedAction();
-	savePositions();
+    if( event->mimeData()->hasFormat(USERID_MIMETYPE) )
+    {
+        QString userid = event->mimeData()->data(USERID_MIMETYPE);
+        if( m_peerhash.contains(userid) )
+        {
+            PeerItem * peeritem = m_peerhash[userid];
+            BasePeerWidget * peerwidget = peeritem->getWidget();
+            if( peerwidget )
+            {
+                m_layout->setItemPosition(peerwidget, m_layout->getPosInGrid(event->pos()));
+            }
+            else
+            {
+                peerwidget = addPeerWidget( peeritem, m_layout->getPosInGrid(event->pos()) );
+            }
+            updateGeometry();
+    	    event->acceptProposedAction();
+    	    savePositions();
+            update();
+        }
+    }
+    else if( event->mimeData()->hasFormat(NUMBER_MIMETYPE) )
+    {
+        QString number = event->mimeData()->data(NUMBER_MIMETYPE);
+        for(int i = 0; i < m_layout->count(); i++)
+        {
+            QLayoutItem * item = m_layout->itemAt(i);
+            if( item && item->widget()
+                && item->widget()->inherits("ExternalPhonePeerWidget") )
+            {
+                ExternalPhonePeerWidget * w = static_cast<ExternalPhonePeerWidget *>( item->widget() );
+                if( number == w->number() )
+                {
+                    m_layout->setItemPosition(w, m_layout->getPosInGrid(event->pos()));
+                    updateGeometry();
+            	    event->acceptProposedAction();
+            	    savePositions();
+                    update();
+                    break;
+                }
+            }
+        }
+    }
 }
 
 
@@ -388,17 +379,436 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
  */
 void SwitchBoardWindow::savePositions() const
 {
-        // qDebug() << "SwitchBoardWindow::savePositions()";
-	QSettings * settings = m_engine->getSettings();
-        settings->beginGroup("layout");
-	for(int i = 0; i < m_peerlist.size(); i++) {
-                QPoint pos = m_layout->getItemPosition(i);
-                // qDebug() << m_peerlist[i]->userinfo()->userid() << pos;
-                if(pos == QPoint(-1, -1))
-                        settings->remove(m_peerlist[i]->userinfo()->userid());
-                else
-                        settings->setValue(m_peerlist[i]->userinfo()->userid(),
-                                           m_layout->getItemPosition(i));
-	}
-        settings->endGroup();
+    // qDebug() << "SwitchBoardWindow::savePositions()";
+    QSettings * settings = m_engine->getSettings();
+    settings->beginGroup("layout");
+    QHashIterator<QString, PeerItem *> it( m_peerhash );
+    while( it.hasNext() )
+    {
+        it.next();
+        const QString userid = it.key();
+        PeerItem * peeritem = it.value();
+        if( peeritem->getWidget() )
+        {
+            settings->setValue( userid,
+                                m_layout->getItemPosition( peeritem->getWidget() ) );
+        }
+        else
+        {
+            settings->remove( userid );
+        }
+    }
+    settings->beginWriteArray("externalphone");
+    int index = 0;
+    for(int i = 0; i < m_layout->count(); i++)
+    {
+        QLayoutItem * item = m_layout->itemAt(i);
+        if( item && item->widget()
+            && item->widget()->inherits("ExternalPhonePeerWidget") )
+        {
+            ExternalPhonePeerWidget * w = static_cast<ExternalPhonePeerWidget *>( item->widget() );
+            settings->setArrayIndex( index++ );
+            settings->setValue( "position", m_layout->getItemPosition( w ) );
+            settings->setValue( "name", w->name() );
+            settings->setValue( "number", w->number() );
+        }
+    }
+    settings->endArray();
+    settings->endGroup();
 }
+
+/*! \brief reload existings "external phones" widget from config
+ */
+void SwitchBoardWindow::reloadExternalPhones()
+{
+    QSettings * settings = m_engine->getSettings();
+    settings->beginGroup("layout");
+    int size = settings->beginReadArray("externalphone");
+    for(int i = 0; i < size; i++)
+    {
+        settings->setArrayIndex( i );
+        BasePeerWidget  * peerwidget = NULL;
+        peerwidget = new ExternalPhonePeerWidget( m_engine,
+                                                  m_options,
+                                                  settings->value("name").toString(),
+                                                  settings->value("number").toString() );
+        connect( peerwidget, SIGNAL(actionCall(const QString &,
+                                           const QString &,
+                                           const QString &)),
+                 m_engine, SLOT(actionCall(const QString &,
+                                           const QString &,
+                                           const QString &)) );
+        connect( peerwidget, SIGNAL(removeFromPanel()),
+                 this, SLOT(removePeerFromLayout()) );
+        m_layout->addWidget( peerwidget, settings->value("position").toPoint() );
+    }
+    settings->endArray();
+    settings->endGroup();
+}
+
+/*!
+ * update m_second_corner if needed
+ */
+void SwitchBoardWindow::mouseMoveEvent ( QMouseEvent * event )
+{
+    //if( event->buttons() == Qt::LeftButton)
+    //{
+    //}
+    if(m_trace_box)
+    {
+        // set second box corner
+        m_second_corner = event->pos();
+        // request redraw
+        update();
+    }
+    if(m_group_to_resize)
+    {
+        QPoint delta = event->pos() - m_first_corner;
+        QPoint deltaGrid = m_layout->getPosInGrid( delta );
+        //qDebug() << delta << deltaGrid;
+        switch(m_group_resize_mode)
+        {
+        case EMove:
+            if(deltaGrid != QPoint(0, 0))
+            {
+                QRect rect = m_group_to_resize->rect().adjusted(0, 0, -1, -1);
+                bool intersects = false;
+                foreach(Group * group, m_group_list)
+                {
+                    if(group != m_group_to_resize)
+                        intersects = intersects || group->rect().adjusted(0, 0, -1, -1).intersects( rect.translated(deltaGrid) );
+                }
+                if(!intersects)
+                {
+                    for(int i = 0; i < m_layout->count(); i++)
+                    {
+                        if( rect.contains( m_layout->getItemPosition( i ) ) )
+                        {
+                            m_layout->setItemPosition( i, m_layout->getItemPosition( i ) + deltaGrid );
+                        }
+                    }
+                    m_group_to_resize->rect().translate(deltaGrid);
+                    update();
+                    //m_first_corner = event->pos();
+                    m_first_corner += m_layout->getPosFromGrid(deltaGrid);
+                }
+            }
+            break;
+        case ETop:
+            if(deltaGrid.y() != 0 && (m_group_to_resize->rect().height() - deltaGrid.y() > 1))
+            {
+                m_group_to_resize->rect().adjust(0, deltaGrid.y(), 0, 0);
+                update();
+                //m_first_corner = event->pos();
+                m_first_corner += m_layout->getPosFromGrid(deltaGrid);
+            }
+            break;
+        case EBottom:
+            if(deltaGrid.y() != 0 && (m_group_to_resize->rect().height() + deltaGrid.y() > 1))
+            {
+                m_group_to_resize->rect().adjust(0, 0, 0, deltaGrid.y());
+                update();
+                //m_first_corner = event->pos();
+                m_first_corner += m_layout->getPosFromGrid(deltaGrid);
+            }
+            break;
+        case ELeft:
+            if(deltaGrid.x() != 0 && (m_group_to_resize->rect().width() - deltaGrid.x() > 1))
+            {
+                m_group_to_resize->rect().adjust(deltaGrid.x(), 0, 0, 0);
+                update();
+                //m_first_corner = event->pos();
+                m_first_corner += m_layout->getPosFromGrid(deltaGrid);
+            }
+            break;
+        case ERight:
+            if(deltaGrid.x() != 0 && (m_group_to_resize->rect().width() + deltaGrid.x() > 1))
+            {
+                m_group_to_resize->rect().adjust(0, 0, deltaGrid.x(), 0);
+                update();
+                //m_first_corner = event->pos();
+                m_first_corner += m_layout->getPosFromGrid(deltaGrid);
+            }
+            break;
+        default:
+            qDebug() << "case not handled";
+        }
+    }
+}
+
+/*!
+ * starts to draw a new group
+ * or to move/resize an existing group
+ */
+void SwitchBoardWindow::mousePressEvent( QMouseEvent * event )
+{
+    // check which button was pressed
+    if( event->button() == Qt::LeftButton)
+    {
+        // check if there is a group under the cursor
+        Group * group = getGroup( m_layout->getPosInGrid( event->pos() ) );
+        if( !group )
+        {
+            // start drawing a box for a new group
+            m_first_corner = event->pos();
+            m_second_corner = event->pos();
+            m_trace_box = true;
+        }
+        else
+        {
+            QPoint topLeft = m_layout->getPosFromGrid(group->rect().topLeft());
+            QPoint bottomRight = m_layout->getPosFromGrid(group->rect().bottomRight());
+            if( event->pos().y() - topLeft.y() < 10 )
+            {
+                setCursor( QCursor( Qt::SizeVerCursor ) );
+                m_group_resize_mode = ETop;
+            }
+            else if( bottomRight.y() - event->pos().y() < 10 )
+            {
+                setCursor( QCursor( Qt::SizeVerCursor ) );
+                m_group_resize_mode = EBottom;
+            }
+            else if( event->pos().x() - topLeft.x() < 10 )
+            {
+                setCursor( QCursor( Qt::SizeHorCursor ) );
+                m_group_resize_mode = ELeft;
+            }
+            else if( bottomRight.x() - event->pos().x() < 10 )
+            {
+                setCursor( QCursor( Qt::SizeHorCursor ) );
+                m_group_resize_mode = ERight;
+            }
+            else
+            {
+                setCursor( QCursor( Qt::SizeAllCursor ) );
+                m_group_resize_mode = EMove;
+            }
+            m_group_to_resize = group;
+            m_first_corner = event->pos();  // storing "start" position
+        }
+    }
+}
+
+void SwitchBoardWindow::mouseReleaseEvent( QMouseEvent * event )
+{
+    //if( event->button() == Qt::LeftButton)
+    if( m_trace_box )
+    {
+        QRect rect = QRect( m_first_corner, m_second_corner ).normalized();
+//        QRect gridRect = QRect( m_layout->getPosInGrid(rect.topLeft()),
+//                                m_layout->getPosInGrid(rect.bottomRight()) );
+        QRect gridRect = m_layout->getGridRect( rect );
+        qDebug() << rect << gridRect;
+        if( (gridRect.top() != gridRect.bottom())
+           && (gridRect.right() != gridRect.left()) )
+        {
+            QString name = 
+                QInputDialog::getText( this, tr("Name of the group"),
+                                       tr("Please enter a name for the new group") );
+            if( !name.isEmpty() ) 
+            {
+                Group * group = new Group( this );
+                group->setRect( gridRect );
+                group->setName( name );
+                group->setColor( QColor(63, 63, 255) );
+                m_group_list << group;
+                saveGroups();
+            }
+        }
+        m_trace_box = false;
+        update();
+    }
+    if( m_group_to_resize )
+    {
+        unsetCursor();
+        m_group_to_resize = NULL;
+    }
+}
+
+/*! \brief handle paint event
+ *
+ * Draw graphical representation of groups
+ */
+void SwitchBoardWindow::paintEvent(QPaintEvent *event)
+{
+    QPainter painter( this );
+    for(int i = 0; i < m_group_list.size(); i++)
+    {
+        // draw the color rectangle
+        painter.setBrush( m_group_list[i]->color() );
+        painter.setPen(Qt::NoPen);
+        const QRect & gridRect = m_group_list[i]->rect();
+        QRect rect = QRect( m_layout->getPosFromGrid(gridRect.topLeft()),
+                            m_layout->getPosFromGrid(gridRect.bottomRight()) - QPoint(1, 1) );
+        painter.drawRect( rect );
+        // write the text
+        painter.setPen(Qt::SolidLine);
+        QFont font = this->font();
+        font.setBold( true );
+        if(m_group_list[i]->color().value() < 128)
+            painter.setPen( QColor(0xcc, 0xcc, 0xcc) );
+        painter.setFont( font );
+        painter.drawText( rect, Qt::AlignTop | Qt::AlignHCenter, m_group_list[i]->name() );
+    }
+    if( m_trace_box )
+    {
+        painter.setBrush( Qt::NoBrush );
+        painter.setPen( Qt::DashLine );
+        painter.drawRect( QRect( m_first_corner, m_second_corner ) );
+    }
+}
+
+/*! \brief show the context menu
+ */
+void SwitchBoardWindow::contextMenuEvent(QContextMenuEvent * event)
+{
+//    qDebug() << "SwitchBoardWindow::contextMenuEvent";
+    QMenu contextMenu( this );
+    // check if there is a group under the cursor
+    Group * group = getGroup( m_layout->getPosInGrid( event->pos() ) );
+    if( group )
+    {
+        QAction * removeGroupAction
+            = contextMenu.addAction( tr("Remove group %1").arg( group->name() ),
+                                     this, SLOT(removeGroup()) );
+        removeGroupAction->setProperty( "group", QVariant::fromValue( (void *)group ) );
+        QAction * changeColorAction
+            = contextMenu.addAction( tr("Change color of group %1").arg( group->name() ),
+                                     this, SLOT(changeGroupColor()) );
+        changeColorAction->setProperty( "group", QVariant::fromValue( (void *)group ) );
+        QAction * changeNameAction
+            = contextMenu.addAction( tr("Rename group %1").arg( group->name() ),
+                                     this, SLOT(changeGroupName()) ); 
+        changeNameAction->setProperty( "group", QVariant::fromValue( (void *)group ) );
+    }
+    QAction * addPhoneAction
+        = contextMenu.addAction( tr("Add Phone number entry"),
+                                 this, SLOT(addPhoneNumberEntry()) );
+    addPhoneAction->setProperty( "pos", m_layout->getPosInGrid( event->pos() ) );
+    contextMenu.exec( event->globalPos() );
+}
+
+/*! \brief save groups and their position
+ *
+ * Groups are saved into the settings "groups"
+ */
+void SwitchBoardWindow::saveGroups() const
+{
+    QSettings * settings = m_engine->getSettings();
+    settings->beginGroup("groups");
+    settings->beginWriteArray("groups");
+    for(int i = 0; i < m_group_list.size(); i++)
+    {
+        settings->setArrayIndex( i );
+        settings->setValue( "name", m_group_list[i]->name() );
+        settings->setValue( "rect", m_group_list[i]->rect() );
+        settings->setValue( "color", m_group_list[i]->color() );
+    }
+    settings->endArray();
+    settings->endGroup();
+}
+
+/*! \brief load groups and their positions
+ *
+ * Groups are loaded from the settings "groups"
+ */
+void SwitchBoardWindow::reloadGroups()
+{
+    m_group_list.clear();
+    QSettings * settings = m_engine->getSettings();
+    settings->beginGroup("groups");
+    int size = settings->beginReadArray("groups");
+    for(int i = 0; i < size; i++)
+    {
+        settings->setArrayIndex( i );
+        Group * group = new Group( this );
+        group->setName( settings->value( "name" ).toString() );
+        group->setRect( settings->value( "rect" ).toRect() );
+        group->setColor( settings->value( "color" ).value<QColor>() );
+        m_group_list.insert( i, group );
+    }
+    settings->endArray();
+    settings->endGroup();
+}
+
+/*! \brief return the group under this position in the grid
+ */
+Group * SwitchBoardWindow::getGroup( const QPoint & position ) const
+{
+    foreach(Group * group, m_group_list)
+    {
+        if( group->rect().contains( position ) 
+            && (group->rect().right() != position.x())
+            && (group->rect().bottom() != position.y()) )
+            return group;
+    }
+    return NULL;
+}
+
+/*! \brief add a widget for user display
+ *
+ * create the object, connect signal/slots,
+ * put in layout and update display
+ */
+BasePeerWidget * SwitchBoardWindow::addPeerWidget(PeerItem * peeritem, const QPoint & pos)
+{
+    BasePeerWidget  * peerwidget = NULL;
+    QString eltType = m_options.toMap()["switchboard-elt-type"].toString();
+    //qDebug() << "  " << eltType;
+    if( eltType == "small" )
+    {
+        peerwidget = new BasicPeerWidget( m_engine,
+                                          peeritem->userinfo(),
+                                          m_options );
+    }
+    else
+    {
+        // default
+        peerwidget = new PeerWidget( m_engine,
+                                     peeritem->userinfo(),
+                                     m_options );
+    }
+    connect( peerwidget, SIGNAL(actionCall(const QString &,
+                                           const QString &,
+                                           const QString &)),
+             m_engine, SLOT(actionCall(const QString &,
+                                       const QString &,
+                                       const QString &)) );
+    connect( peerwidget, SIGNAL(removeFromPanel()),
+             this, SLOT(removePeerFromLayout()) );
+
+    peeritem->setWidget(peerwidget);
+    m_layout->addWidget( peerwidget, pos );
+    peeritem->updateDisplayedStatus();
+    peeritem->updateDisplayedName();
+    return peerwidget;
+}
+
+/*! \brief Add an "external" user widget used to call
+ */
+void SwitchBoardWindow::addPhoneNumberEntry()
+{
+    qDebug() << "SwitchBoardWindow::addPhoneNumberEntry()";
+    ExternalPhoneDialog dialog;
+    int rDialog = dialog.exec();
+    QPoint pos = sender()->property( "pos" ).toPoint();
+    if( rDialog && !dialog.number().isEmpty() )
+    {
+        QString label = dialog.label();
+        QString number = dialog.number();
+        if( label.isEmpty() )
+            label = number;
+        BasePeerWidget  * peerwidget = NULL;
+        peerwidget = new ExternalPhonePeerWidget( m_engine, m_options, label, number );
+        connect( peerwidget, SIGNAL(actionCall(const QString &,
+                                           const QString &,
+                                           const QString &)),
+                 m_engine, SLOT(actionCall(const QString &,
+                                           const QString &,
+                                           const QString &)) );
+        connect( peerwidget, SIGNAL(removeFromPanel()),
+                 this, SLOT(removePeerFromLayout()) );
+        m_layout->addWidget( peerwidget, pos );
+    }
+}
+
