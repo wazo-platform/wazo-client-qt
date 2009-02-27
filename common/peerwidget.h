@@ -72,10 +72,6 @@ public:
     void setAgentState(const QString & color);
     void updatePresence();  //!< update presence information displayed
     void updatePhonesStates();
-protected:
-        void dragEnterEvent(QDragEnterEvent *);
-        void dragMoveEvent(QDragMoveEvent *);
-        void dropEvent(QDropEvent *);
 private:
         QHash<QString, QLabel *> m_lblphones;        //!< phone labels
         

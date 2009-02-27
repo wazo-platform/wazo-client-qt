@@ -35,6 +35,9 @@ protected:
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
     void contextMenuEvent(QContextMenuEvent *);
+    void dragEnterEvent(QDragEnterEvent *);
+    void dragMoveEvent(QDragMoveEvent *);
+    void dropEvent(QDropEvent *);
 signals:
     //! originate, transfer, etc...
     void actionCall(const QString &,

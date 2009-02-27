@@ -30,6 +30,7 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui, const QVarian
     m_maxWidthWanted = m_engine->getGuiOptions("user").toMap()["maxwidthwanted"].toInt();
     if(m_maxWidthWanted < 50)
         m_maxWidthWanted = 100;
+    setAcceptDrops(true);
 }
 
 /*! \brief call this peer
@@ -326,5 +327,88 @@ QString BasePeerWidget::name() const
     {
         return QString();
     }
+}
+
+/*! \brief  
+ *
+ * filters the acceptable drag on the mime type.
+ */
+void BasePeerWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+    // qDebug() << "PeerWidget::dragEnterEvent()" << event->mimeData()->formats();
+   if(  event->mimeData()->hasFormat(PEER_MIMETYPE)
+      || event->mimeData()->hasFormat(NUMBER_MIMETYPE)
+      || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
+   {
+       if(event->proposedAction() & (Qt::CopyAction|Qt::MoveAction))
+           event->acceptProposedAction();
+   }
+}
+
+/*! \brief drag move event
+ *
+ * filter based on the mimeType.
+ */
+void BasePeerWidget::dragMoveEvent(QDragMoveEvent *event)
+{
+   //qDebug() << "PeerWidget::dragMoveEvent()" << event->mimeData()->formats() << event->po
+   event->accept(rect());
+   /*if(  event->mimeData()->hasFormat(PEER_MIMETYPE)
+     || event->mimeData()->hasFormat(CHANNEL_MIMETYPE) )
+   {*/
+    if(event->proposedAction() & (Qt::CopyAction | Qt::MoveAction))
+        event->acceptProposedAction();
+   /*}*/
+}
+
+/*! \brief receive drop events
+ *
+ * initiate an originate or transfer
+ */
+void BasePeerWidget::dropEvent(QDropEvent *event)
+{
+    QString userid_from = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
+    QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
+    QString to;
+    if(m_ui)
+        to = "user:" + m_ui->userid();
+    else
+        to = "ext:" + m_number;
+    qDebug() << "PeerWidget::dropEvent()"
+             << event << event->keyboardModifiers()
+             << event->mimeData() << event->proposedAction();
+
+    if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
+        qDebug() << "PeerWidget::dropEvent()" << "CHANNEL_MIMETYPE";
+    } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+        qDebug() << "PeerWidget::dropEvent()" << "PEER_MIMETYPE";
+    } else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
+        qDebug() << "PeerWidget::dropEvent()" << "NUMBER_MIMETYPE";
+    }
+        
+    switch(event->proposedAction()) {
+    case Qt::CopyAction:
+       // transfer the call to the peer "to"
+       if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
+            event->acceptProposedAction();
+            actionCall("transfer", "chan:" + userid_from + ":" + channel_from, to); // Call
+
+       } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+           event->acceptProposedAction();
+           actionCall("originate", "user:" + userid_from, to); // Call
+       } else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
+           event->acceptProposedAction();
+           actionCall("originate", to, "ext:" + event->mimeData()->text());
+       }
+       break;
+   case Qt::MoveAction:
+       // can be reached with the shift button
+       event->acceptProposedAction();
+       actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, to); 
+       break;
+   default:
+       qDebug() << "PeerWidget::dropEvent() Unrecognized action" << event->proposedAction();
+       break;
+   }
 }
 

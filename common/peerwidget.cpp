@@ -202,9 +202,6 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui, const QVariant & opti
         
         linenum ++;
         layout->addWidget( qhline2, linenum, 0, 1, 10);
-        
-        // to be able to receive drop
-        setAcceptDrops(true);
 }
 
 /*! \brief destructor
@@ -273,6 +270,7 @@ void PeerWidget::setName(const QString & name)
         m_textlbl->setText(m_ui->fullname());
 }
 
+#if 0
 /*! \brief  
  *
  * filters the acceptable drag on the mime type.
@@ -351,4 +349,5 @@ void PeerWidget::dropEvent(QDropEvent *event)
        break;
    }
 }
+#endif
 
