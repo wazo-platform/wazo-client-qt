@@ -53,7 +53,7 @@ class PhoneInfo;
  */
 class UserInfo
 {
- public:
+public:
     UserInfo(const QString &);
     ~UserInfo();
     void setAvailState(const QVariant &);
@@ -81,13 +81,11 @@ class UserInfo
     const QString & astid() const;
     const QStringList contexts() const;
     const QHash<QString, QString> & availstate() const;
-    //        const QMap<QString, QHash<QString, QString> > & termstatus() const;
-    //        void updatePhoneStatus(const QString &,
-    //                               const QVariant &);
     QList<QString> phonelist() const;
     const PhoneInfo * getPhoneInfo(const QString &) const;
     void updatePhone( PhoneInfo * );
- private:
+    QList<QString> channelList() const;
+private:
     QString m_userid;   //!< user id
     QString m_company;  //!< user company
     QString m_ctilogin; //!< user login on cti
@@ -101,7 +99,6 @@ class UserInfo
     QString m_agentnum; //!< agent number
     QString m_agentphonenum;    //!< agent phone number
     QStringList m_mwi;  //!< message waiting indicator
-    //       QMap<QString, QHash<QString, QString> > m_termstatus;
     QMap<QString, PhoneInfo *> m_phones;    //!< map to phones
 };
 

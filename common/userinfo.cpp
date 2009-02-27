@@ -229,3 +229,28 @@ void UserInfo::updatePhone( PhoneInfo * pi )
     //qDebug() << "UserInfo::updatePhone after " << m_phones;
 }
 
+/*! \brief list channels of this user
+ *
+ * iterate through the list comms of each phones.
+ */
+QList<QString> UserInfo::channelList() const
+{
+    QList<QString> list;
+    QMapIterator<QString, PhoneInfo *> it = QMapIterator<QString, PhoneInfo *>(m_phones);
+    while(it.hasNext())
+    {
+        it.next();
+        if(it.value())
+        {
+            QMapIterator<QString, QVariant> itphone( it.value()->comms() );
+            while( itphone.hasNext() )
+            {
+                itphone.next();
+                QVariantMap qvm = itphone.value().toMap();
+                list << qvm["thischannel"].toString();
+            }
+        }
+    }
+    return list;
+}
+

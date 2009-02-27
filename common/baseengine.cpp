@@ -669,27 +669,6 @@ void BaseEngine::updatePhone(const QString & astid,
         }
 }
 
-#if 0
-void BaseEngine::removePeerAndCallerid(const QStringList & liststatus)
-{
-    const int nfields0 = 10; // 0th order size (per-phone/line informations)
-    if(liststatus.count() < nfields0) { // not valid
-        qDebug() << "BaseEngine::removePeerAndCallerid() : Bad data from the server :" << liststatus;
-        return;
-    }
-        
-    QString astid   = liststatus[1];
-    QString context = liststatus[5];
-    QString phonenum = liststatus[4];
-    QString tech = "";
-    //         UserInfo * ui = findUserFromPhone(astid, context, tech, phonenum);
-    //         if(ui) {
-    //                 removePeer(ui->userid());
-    //                 m_users.remove(ui->userid());
-    //         }
-}
-#endif
-
 void BaseEngine::parseCommand(const QString & line)
 {
     QVariant data;

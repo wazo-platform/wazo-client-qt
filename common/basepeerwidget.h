@@ -48,6 +48,7 @@ protected slots:
     void intercept();
     void transfer();
     void itransfer();
+    void parkcall();
 protected:
     BaseEngine * m_engine;      //!< Xivo CTI Client Engine
     UserInfo * m_ui;            //!< user infos

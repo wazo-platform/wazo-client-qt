@@ -84,6 +84,8 @@ private:
         void dtransfer();
         void itransfer();
         void changeCurrentChannel(const QString &, const QString &);
+        QString getPeerChan(const QString & chan) const;
+        void removeLine(const QString &);
         
         QGridLayout * m_glayout;
         const UserInfo * m_ui;
@@ -95,7 +97,6 @@ private:
         QHash<QString, QHash<QString, QPushButton *> > m_actions;
         QHash<QString, QLineEdit *> m_tnums;
         QHash<QString, Line> m_linestatuses;
-        QHash<QString, QString> m_peerchan;
         
         QMap<int, QStringList> m_actionkey;
         

@@ -107,6 +107,18 @@ void BasePeerWidget::itransfer()
     }
 }
 
+/*! \brief park the call
+ */
+void BasePeerWidget::parkcall()
+{
+    QString chan = sender()->property("peerchannel").toString();
+    //if( chan.isEmpty() )
+    //    chan = sender()->property("thischannel").toString();
+    actionCall("transfer",
+               "chan:" + m_ui->userid() + ":" + chan,
+               "ext:special:parkthecall");
+}
+
 /*! \brief handle double click
  *
  * dial if left mouse button used
@@ -176,7 +188,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
         QMenu * hangupMenu = NULL;
         QMenu * transferMenu = NULL;
         QMenu * itransferMenu = NULL;
-        qDebug() << m_ui->phonelist();
+        QMenu * parkMenu = NULL;
+        //qDebug() << m_ui->phonelist();
         // TODO : upgrade this when several phones per user will be supported
         // or at least check it's working as expected
         foreach(const QString phone, m_ui->phonelist())
@@ -187,7 +200,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
             foreach(const QString ts, comms.keys())
             {
                 const QMap<QString, QVariant> & comm = comms[ts].toMap();
-                qDebug() << pi->phoneid() << ts << comm;
+                qDebug() << "BasePeerWidget::contextMenuEvent" << pi->phoneid() << ts << comm;
                 const QString status = comm["status"].toString();
                 QString text = comm["calleridnum"].toString();
                 if( comm.contains("calleridname")
@@ -223,11 +236,25 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                              this, SLOT(intercept()) );
                     interceptMenu->addAction( interceptAction );
                 }
+                // TODO : check for correct status
+                if( true )
+                {
+                    if( !parkMenu )
+                        parkMenu = new QMenu( tr("&Park"), &contextMenu );
+                    QAction * parkAction = new QAction( parkMenu );
+                    parkAction->setText( text );
+                    parkAction->setStatusTip( tr("Park this communication") );
+                    parkAction->setProperty( "thischannel", comm["thischannel"] );
+                    parkAction->setProperty( "peerchannel", comm["peerchannel"] );
+                    connect( parkAction, SIGNAL(triggered()),
+                             this, SLOT(parkcall()) );
+                    parkMenu->addAction( parkAction );
+                }
             }
         }
         // get "my" currently open channels
         const UserInfo * ui = m_engine->getXivoClientUser();
-        qDebug() << m_ui->userid() << ui;
+        //qDebug() << m_ui->userid() << ui;
         if( ui ) 
         {       
             foreach(const QString phone, ui->phonelist())
@@ -238,7 +265,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                 foreach(const QString ts, comms.keys())
                 {
                     const QMap<QString, QVariant> & comm = comms[ts].toMap();
-                    qDebug() << pi->phoneid() << ts << comm;
+                    qDebug() << "BasePeerWidget::contextMenuEvent my comms : " << pi->phoneid() << ts << comm;
                     const QString status = comm["status"].toString();
                     QString text = comm["calleridnum"].toString();
                     if( comm.contains("calleridname")
@@ -279,6 +306,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
             contextMenu.addMenu( interceptMenu );
         if( hangupMenu )
             contextMenu.addMenu( hangupMenu );
+        if( parkMenu )
+            contextMenu.addMenu( parkMenu );
         if( transferMenu )
             contextMenu.addMenu( transferMenu );
         if( itransferMenu )
