@@ -97,11 +97,11 @@ private:
         QHash<QString, QHash<QString, QPushButton *> > m_actions;
         QHash<QString, QLineEdit *> m_tnums;
         QHash<QString, Line> m_linestatuses;
+        QHash<QString, int> m_row;
         
         QMap<int, QStringList> m_actionkey;
         
         QString m_currentchannel;
-        int m_linenum;
         QStringList m_callchannels;
         QString m_tferchannel;
 };

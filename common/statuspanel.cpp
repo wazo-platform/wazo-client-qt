@@ -58,7 +58,6 @@ StatusPanel::StatusPanel(QWidget * parent)
 {
         m_glayout = new QGridLayout(this);
         m_lbl = new QLabel( "", this );
-        m_linenum = 0;
         
         m_actionkey[Qt::Key_F1] = (QStringList() << "answer" << tr("Answer"));
         m_actionkey[Qt::Key_F2] = (QStringList() << "hangup" << tr("Hangup"));
@@ -77,7 +76,7 @@ StatusPanel::StatusPanel(QWidget * parent)
 /*! \brief destructor */
 StatusPanel::~StatusPanel()
 {
-    qDebug() << "StatusPanel::~StatusPanel()" << m_linenum
+    qDebug() << "StatusPanel::~StatusPanel()"
              << m_actions;
 }
 
@@ -98,7 +97,6 @@ void StatusPanel::newCall(const QString & chan)
         m_vlinesr[chan] = new QFrame(this);
         m_statuses[chan] = new QLabel("none", this);
         m_tnums[chan] = new QLineEdit("", this);
-        m_linenum ++;
 
         m_vlinesl[chan]->setFrameShape(QFrame::VLine);
         m_vlinesl[chan]->setLineWidth(1);
@@ -129,13 +127,27 @@ void StatusPanel::newCall(const QString & chan)
         }
         
         m_actions[chan] = k;
+        int row = 1;
+        foreach(int r, m_row)
+        {
+            if(r >= row)
+                row = r + 1;
+        }
+        m_row[chan] = row;
 }
 
+/*! \brief update display of a line of buttons
+ *
+ * first clean the line by removing all buttons
+ * then add wanted buttons. 
+ */
 void StatusPanel::updateLine(const QString & chan, const QStringList & allowed)
 {
+        int row = m_row[chan];
         int colnum = 1;
-        m_glayout->addWidget( m_vlinesl[chan], m_linenum, 0, Qt::AlignLeft );
-        m_glayout->addWidget( m_statuses[chan], m_linenum, colnum++, Qt::AlignHCenter );
+        qDebug() << "StatusPanel::updateLine" << row;
+        m_glayout->addWidget( m_vlinesl[chan], row, 0, Qt::AlignLeft );
+        m_glayout->addWidget( m_statuses[chan], row, colnum++, Qt::AlignHCenter );
 
         QMapIterator<int, QStringList> act(m_actionkey);
         while (act.hasNext()) {
@@ -149,12 +161,12 @@ void StatusPanel::updateLine(const QString & chan, const QStringList & allowed)
                 act.next();
                 QString actionname = act.value()[0];
                 if (allowed.contains(actionname)) {
-                        m_glayout->addWidget( m_actions[chan][actionname], m_linenum, colnum++, Qt::AlignHCenter );
+                        m_glayout->addWidget( m_actions[chan][actionname], row, colnum++, Qt::AlignHCenter );
                         m_actions[chan][actionname]->show();
                 }
         }
-        m_glayout->addWidget( m_tnums[chan],   m_linenum, m_actionkey.size() + 2, Qt::AlignHCenter );
-        m_glayout->addWidget( m_vlinesr[chan], m_linenum, m_actionkey.size() + 3, Qt::AlignRight );
+        m_glayout->addWidget( m_tnums[chan],   row, m_actionkey.size() + 2, Qt::AlignHCenter );
+        m_glayout->addWidget( m_vlinesr[chan], row, m_actionkey.size() + 3, Qt::AlignRight );
 }
 
 void StatusPanel::clicked()
@@ -229,11 +241,29 @@ void StatusPanel::xferPressed()
 void StatusPanel::functionKeyPressed(int keynum)
 {
         // qDebug() << "StatusPanel::functionKeyPressed()" << keynum << m_currentchannel;
+                
+        if(keynum == Qt::Key_Up) {
+            if(m_currentchannel.isEmpty())
+                return;
+            int ci = m_callchannels.indexOf(m_currentchannel);
+            if(ci > 0)
+                ci--;
+            changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
+            m_currentchannel = m_callchannels[ci];
+        } else if(keynum == Qt::Key_Down) {
+            if(m_currentchannel.isEmpty())
+                return;
+            int ci = m_callchannels.indexOf(m_currentchannel);
+            if(ci < m_callchannels.size() - 1)
+                ci++;
+            changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
+            m_currentchannel = m_callchannels[ci];
+        }
         QString action;
         if(m_actionkey.contains(keynum))
-                action = m_actionkey[keynum][0];
+            action = m_actionkey[keynum][0];
         else
-                return;
+            return;
         
         if(m_callchannels.contains(m_currentchannel)) {
                 Line linestatus = m_linestatuses[m_currentchannel];
@@ -295,40 +325,24 @@ void StatusPanel::functionKeyPressed(int keynum)
                                 actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(m_tferchannel)); // Call
                         }
                 }
-                
-                if(keynum == Qt::Key_Up) {
-                        int ci = m_callchannels.indexOf(m_currentchannel);
-                        if(ci == 0)
-                                ci = 0; // ci = m_callchannels.size() - 1;
-                        else
-                                ci = ci - 1;
-                        changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
-                        m_currentchannel = m_callchannels[ci];
-                } else if(keynum == Qt::Key_Down) {
-                        int ci = m_callchannels.indexOf(m_currentchannel);
-                        if(ci == m_callchannels.size() - 1)
-                                ci = m_callchannels.size() - 1; // ci = 0;
-                        else
-                                ci = ci + 1;
-                        changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
-                        m_currentchannel = m_callchannels[ci];
-                }
         }
 }
 
+/*! \brief set lines width according to current channel
+ */
 void StatusPanel::changeCurrentChannel(const QString & before, const QString & after)
 {
-        // qDebug() << "StatusPanel::changeCurrentChannel()" << before << after;
-        if(before != after) {
-                if(m_vlinesl.contains(before) && m_vlinesr.contains(before)) {
-                        m_vlinesl[before]->setLineWidth(1);
-                        m_vlinesr[before]->setLineWidth(1);
-                }
-                if(m_vlinesl.contains(after) && m_vlinesr.contains(after)) {
-                        m_vlinesl[after]->setLineWidth(3);
-                        m_vlinesr[after]->setLineWidth(3);
-                }
+    // qDebug() << "StatusPanel::changeCurrentChannel()" << before << after;
+    if(before != after) {
+        if(m_vlinesl.contains(before) && m_vlinesr.contains(before)) {
+            m_vlinesl[before]->setLineWidth(1);
+            m_vlinesr[before]->setLineWidth(1);
         }
+        if(m_vlinesl.contains(after) && m_vlinesr.contains(after)) {
+            m_vlinesl[after]->setLineWidth(3);
+            m_vlinesr[after]->setLineWidth(3);
+        }
+    }
 }
 
 void StatusPanel::updateUser(UserInfo * ui)
@@ -475,7 +489,6 @@ void StatusPanel::removeLine(QString const & chan)
             m_currentchannel = "";
     }
     m_callchannels.removeAll(chan);
-    if(m_callchannels.size() == 0)
-        m_linenum = 0;
+    m_row.remove(chan);
 }
 
