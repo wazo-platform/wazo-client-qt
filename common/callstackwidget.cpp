@@ -145,14 +145,20 @@ void CallStackWidget::updateDisplay()
                 QString status = map["status"].toString();
                 int time = map["time-dial"].toInt(); // or time-link ???
                 QString channelpeer = map["peerchannel"].toString();
-                QString exten = map["calleridnum"].toString();
+                QString callerid = map["calleridnum"].toString();
+                QString calleridname = map["calleridname"].toString();
+                if(!calleridname.isEmpty() && (callerid != calleridname))
+                {
+                    callerid.append(" : ");
+                    callerid.append(calleridname);
+                }
                 // dont display hangup channels !
                 if(status == CHAN_STATUS_HANGUP)
                     continue;
                 activeChannels << channelme;
                 if( m_affhash.contains( channelme ) )
                 {
-                    m_affhash[channelme]->updateWidget( status, time, channelpeer, exten );
+                    m_affhash[channelme]->updateWidget( status, time, channelpeer, callerid );
                 }
                 else
                 {
@@ -161,7 +167,7 @@ void CallStackWidget::updateDisplay()
                                                 status,
                                                 time,
                                                 channelpeer,
-                                                exten,
+                                                callerid,
                                                 this);
                     connect( callwidget, SIGNAL(doHangUp(const QString &)),
                              this, SLOT(hupchan(const QString &)) );
