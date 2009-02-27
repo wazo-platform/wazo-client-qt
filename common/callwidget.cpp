@@ -179,7 +179,7 @@ void CallWidget::updateWidget(const QString & status,
     else
         qDebug() << "CallWidget::updateWidget() : status unknown" << status;
         
-        m_lbl_exten->setText(exten);
+    m_lbl_exten->setText(exten);
 }
 
 /*! \brief set icon depending on status

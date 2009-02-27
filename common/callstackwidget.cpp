@@ -123,7 +123,8 @@ void CallStackWidget::reset()
  */
 void CallStackWidget::updateDisplay()
 {
-        CallWidget * callwidget = NULL;
+    //qDebug() << "CallStackWidget::updateDisplay()";
+    CallWidget * callwidget = NULL;
 
     QStringList activeChannels;  // list of active channels to be displayed
 
@@ -145,6 +146,9 @@ void CallStackWidget::updateDisplay()
                 int time = map["time-dial"].toInt(); // or time-link ???
                 QString channelpeer = map["peerchannel"].toString();
                 QString exten = map["calleridnum"].toString();
+                // dont display hangup channels !
+                if(status == CHAN_STATUS_HANGUP)
+                    continue;
                 activeChannels << channelme;
                 if( m_affhash.contains( channelme ) )
                 {
