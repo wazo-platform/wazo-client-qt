@@ -169,6 +169,10 @@ void StatusPanel::updateLine(const QString & chan, const QStringList & allowed)
         m_glayout->addWidget( m_vlinesr[chan], row, m_actionkey.size() + 3, Qt::AlignRight );
 }
 
+/*! \brief received when a button was pressed
+ *
+ * Simultate the press of a function key
+ */
 void StatusPanel::clicked()
 {
         QString channel = sender()->property("channel").toString();
@@ -178,12 +182,16 @@ void StatusPanel::clicked()
         functionKeyPressed(function);
 }
 
+/*! \brief Set user to manage
+ */
 void StatusPanel::setUserInfo(const UserInfo * ui)
 {
         m_ui = ui;
         m_lbl->setText(ui->fullname());
 }
 
+/*! \brief setup things for a direct transfer
+ */
 void StatusPanel::dtransfer()
 {
         if(m_callchannels.contains(m_currentchannel)) {
@@ -204,6 +212,8 @@ void StatusPanel::dtransfer()
         }
 }
 
+/*! \brief set up things for an indirect transfer
+ */
 void StatusPanel::itransfer()
 {
         if(m_callchannels.contains(m_currentchannel)) {
@@ -224,20 +234,27 @@ void StatusPanel::itransfer()
         }
 }
 
-
+/*! \brief Does the transfer
+ */
 void StatusPanel::xferPressed()
 {
         QString num = m_tnums[m_currentchannel]->text();
-        qDebug() << "StatusPanel::xferPressed()" << m_currentchannel << m_linestatuses[m_currentchannel] << num;
+        QString peerchan = getPeerChan(m_currentchannel);
+        qDebug() << "StatusPanel::xferPressed()" << m_currentchannel << peerchan << m_linestatuses[m_currentchannel] << num;
         if(m_linestatuses[m_currentchannel] == WDTransfer)
-                actionCall("transfer", "chan:special:me:" + getPeerChan(m_currentchannel), "ext:" + num); // Call
+                emit actionCall("transfer",
+                                "chan:special:me:" + peerchan,
+                                "ext:" + num);
         else if(m_linestatuses[m_currentchannel] == WITransfer) {
-                actionCall("atxfer", "chan:special:me:" + m_currentchannel, "ext:" + num); // Call
+                emit actionCall("atxfer",
+                                "chan:special:me:" + m_currentchannel,
+                                "ext:" + num);
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "ilink" << "icancel"));
         }
 }
 
-
+/*! \brief a key was pressed
+ */
 void StatusPanel::functionKeyPressed(int keynum)
 {
         // qDebug() << "StatusPanel::functionKeyPressed()" << keynum << m_currentchannel;
@@ -377,7 +394,8 @@ void StatusPanel::updateUser(UserInfo * ui)
                             m_statuses[callchannel]->setText(tr("%1 Ringing").arg(num));
                             m_statuses[callchannel]->show();
                         }
-                    } else if (status == CHAN_STATUS_LINKED_CALLED) {
+                    } else if (status == CHAN_STATUS_LINKED_CALLED
+                              || status == CHAN_STATUS_LINKED_CALLER) {
                         if( !m_callchannels.contains(callchannel) ) {
                             newCall(callchannel);
                             m_callchannels << callchannel;

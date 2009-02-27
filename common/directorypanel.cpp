@@ -280,8 +280,8 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
  */
 void DirectoryPanel::dialNumber()
 {
-        if( !m_numberToDial.isEmpty() )
-                actionCall("originate", "user:special:me", "ext:" + m_numberToDial); // Call
+    if( !m_numberToDial.isEmpty() )
+        emit actionCall("originate", "user:special:me", "ext:" + m_numberToDial); // Call
 }
 
 /*! \brief dial the number (when context menu item is toggled)
@@ -303,7 +303,7 @@ void DirectoryPanel::transfer()
     if( !chan.isEmpty() && !m_numberToDial.isEmpty() )
     {
         // transfer the channel to the selected number
-        actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial); 
+        emit actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial); 
     }
 }
 
