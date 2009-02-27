@@ -59,11 +59,8 @@ void BasicPeerWidget::paintEvent(QPaintEvent *event)
     }
     // write the text
     painter.setPen(Qt::SolidLine);
-//    QFontMetrics fontMetrics( font() );
-//    QSize size = fontMetrics.size(0, m_text);
-//    painter.drawText( (rectangle.width() - size.width()) >> 1,
-//                      rectangle.height() - fontMetrics.strikeOutPos(),
-//                      m_text );
+    if(m_color.value() < 128)
+        painter.setPen( QColor(0xcc, 0xcc, 0xcc) );
     painter.drawText( rectangle, Qt::AlignVCenter | Qt::AlignHCenter, m_text );
 }
 
