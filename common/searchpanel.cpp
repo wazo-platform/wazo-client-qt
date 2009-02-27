@@ -145,7 +145,9 @@ void SearchPanel::updateDisplay()
         PeerItem * peeritem = i.value();
         BasePeerWidget * peerwidget = peeritem->getWidget();
 
-        if( peeritem->userinfo()->fullname().contains(m_searchpattern, Qt::CaseInsensitive) && (naff < m_maxdisplay) )
+        if( ( peeritem->userinfo()->fullname().contains(m_searchpattern, Qt::CaseInsensitive)
+             || peeritem->userinfo()->phonenumber().contains(m_searchpattern))
+           && (naff < m_maxdisplay) )
         {
             if(peerwidget == NULL)
             {
