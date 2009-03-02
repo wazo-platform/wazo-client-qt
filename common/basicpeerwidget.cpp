@@ -84,7 +84,7 @@ void BasicPeerWidget::setText(const QString & text)
  * Draw a small square for user presence indicator
  * Then write the name of the user.
  */
-void BasicPeerWidget::paintEvent(QPaintEvent *event)
+void BasicPeerWidget::paintEvent(QPaintEvent * /*event*/)
 {
     QRect rectangle = contentsRect();
     QPainter painter( this );
@@ -105,12 +105,12 @@ void BasicPeerWidget::paintEvent(QPaintEvent *event)
     painter.drawText( rectangle, Qt::AlignVCenter | Qt::AlignHCenter, m_text );
 }
 
-void BasicPeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & queues)
+void BasicPeerWidget::setAgentToolTip(const QString & /*agentnum*/, const QStringList & /*queues*/)
 {
     // do nothing !
 }
  
-void BasicPeerWidget::setAgentState(const QString & color)
+void BasicPeerWidget::setAgentState(const QString & /*color*/)
 {
     // do nothing !
 }

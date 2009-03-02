@@ -85,42 +85,42 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
     m_voicemail_old = new QLabel();
     m_voicemail_new = new QLabel();
     m_voicemail_name = new QLabel();
-        
+    
     m_agent = new QLabel();
     m_agentstatus = new QLabel();
     m_agentpause = new QLabel();
-        
+    
     connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
             this, SLOT(idxChanged(const QString &)));
-        
+    
     int bigiconsize = 50;
     m_icon_user = new ExtendedLabel();
     m_icon_agent = new ExtendedLabel();
     m_icon_voicemail = new ExtendedLabel();
     m_icon_voicemail->hide();
-        
+    
     m_icon_user->setPixmap(QPixmap(":/images/personal.png").scaled(QSize(bigiconsize, bigiconsize)));
     m_icon_agent->setPixmap(QPixmap(":/images/applixware.png").scaled(QSize(bigiconsize, bigiconsize)));
     m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png").scaled(QSize(bigiconsize, bigiconsize)));
     m_icon_user->setProperty("iconname", "user");
     m_icon_agent->setProperty("iconname", "agent");
     m_icon_voicemail->setProperty("iconname", "voicemail");
-        
+    
     connect( m_icon_user, SIGNAL(context_menu(QContextMenuEvent *)),
              this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
     connect( m_icon_agent, SIGNAL(context_menu(QContextMenuEvent *)),
              this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
     connect( m_icon_voicemail, SIGNAL(context_menu(QContextMenuEvent *)),
              this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-        
+    
     glayout->setSpacing(2);
     // glayout->setMargin(0);
-        
+    
     Qt::Alignment iconAlign = Qt::AlignHCenter | Qt::AlignTop; // Qt::AlignVCenter
     glayout->addWidget( m_icon_user, 0, 1, 3, 1, iconAlign );
     glayout->addWidget( m_icon_agent, 0, 4, 3, 1, iconAlign );
     glayout->addWidget( m_icon_voicemail, 0, 7, 3, 1, iconAlign );
-        
+    
     int idline = 0;
     Qt::Alignment textAlign = Qt::AlignLeft | Qt::AlignTop; // Qt::AlignVCenter
     glayout->addWidget( m_user, idline, 2, textAlign );
@@ -314,7 +314,7 @@ void IdentityDisplay::setAgentList(double, const QVariant & alist)
     qDebug() << "IdentityDisplay::setAgentList()" << m_ui->agentid() << astid << m_ui->astid();
     if (astid != m_ui->astid())
         return;
-        
+    
     QStringList agentids = alistmap["newlist"].toMap().keys();
     agentids.sort();
     foreach (QString agnum, agentids) {
@@ -324,10 +324,10 @@ void IdentityDisplay::setAgentList(double, const QVariant & alist)
             QString agstatus = properties.toMap()["status"].toString();
             QString agfullname = properties.toMap()["name"].toString();
             QString phonenum = properties.toMap()["phonenum"].toString();
-                        
+            
             m_agent->setText("Agent " + agnum);
             showAgentProps();
-                        
+            
             if(agstatus == "AGENT_LOGGEDOFF") {
                 setSystrayIcon(icon_color_black);
                 m_agentstatus->setProperty("connected", false);
@@ -338,7 +338,7 @@ void IdentityDisplay::setAgentList(double, const QVariant & alist)
                 m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
             } else
                 qDebug() << "IdentityDisplay::setAgentList() unknown status" << agstatus;
-                        
+            
             QVariant queuedetails = alistmap["newlist"].toMap()[agnum].toMap()["queues"];
             int nj = 0;
             int np = 0;
@@ -349,7 +349,7 @@ void IdentityDisplay::setAgentList(double, const QVariant & alist)
                     if(queuedetails.toMap()[qname].toMap()["Paused"].toString() == "1")
                         np ++;
                 }
-                        
+            
             setStatusColors(nj, np);
         }
     }
@@ -397,12 +397,13 @@ void IdentityDisplay::updatePeerAgent(double,
         return;
     if(what != "agentstatus")
         return;
-        
+    // qDebug() << "IdentityDisplay::updatePeerAgent" << userid << what << newstatuses;
+    
     QString action = newstatuses.toMap()["action"].toString();
     QString astid = newstatuses.toMap()["astid"].toString();
     QString agentnum = newstatuses.toMap()["agent_channel"].toString().mid(6);
     m_agent->setText("Agent " + agentnum);
-        
+    
     if (action == "agentlogin") {
         QString phonenum = newstatuses.toMap()["phonenum"].toString();
         showAgentProps();

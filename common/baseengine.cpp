@@ -738,7 +738,7 @@ void BaseEngine::parseCommand(const QString & line)
             QString function = datamap["function"].toString();
             if(function == "sendlist") {
                 foreach (QVariant qv, datamap["payload"].toList())
-                    newAgentList(timenow, qv);
+                    emit newAgentList(timenow, qv);
             } else if(function == "update") {
                 QVariant params = datamap["payload"];
                 QString action = params.toMap()["action"].toString();
@@ -747,9 +747,9 @@ void BaseEngine::parseCommand(const QString & line)
                 if (agent_channel.startsWith("Agent/")) {
                     UserInfo * ui = findUserFromAgent(astid, agent_channel.mid(6));
                     if(ui)
-                        updatePeerAgent(timenow, ui->userid(), "agentstatus", params);
+                        emit updatePeerAgent(timenow, ui->userid(), "agentstatus", params);
                     else // (useful ?) in order to transfer the replies to unmatched agents
-                        updatePeerAgent(timenow, "", "agentstatus", params);
+                        emit updatePeerAgent(timenow, "", "agentstatus", params);
                 } else
                     qDebug() << "update-agents agentnum" << astid << agent_channel;
             } else if(function == "del") {
@@ -819,14 +819,14 @@ void BaseEngine::parseCommand(const QString & line)
             // qDebug() << thisclass << m_users.size() << id;
             if(m_users.contains(id)) {
                 m_users[id]->setAvailState(datamap["capapresence"].toMap()["state"]);
-                updatePeerAgent(timenow, id, "imstatus", QStringList());
-                updateAgentPresence(m_users[id]->agentid(), datamap["capapresence"].toMap()["state"]);
+                emit updatePeerAgent(timenow, id, "imstatus", QStringList());
+                emit updateAgentPresence(m_users[id]->agentid(), datamap["capapresence"].toMap()["state"]);
                 m_counters = datamap["presencecounter"];
-                updateCounter(m_counters);
+                emit updateCounter(m_counters);
                 if (id == m_fullid) {
                     updateCapaPresence(datamap["capapresence"]);
                     updatePresence(m_capapresence);
-                    localUserInfoDefined(m_users[m_fullid]);
+                    emit localUserInfoDefined(m_users[m_fullid]);
                 }
             }
                         
@@ -838,7 +838,7 @@ void BaseEngine::parseCommand(const QString & line)
                     QVariantMap uinfo = userprops.toMap();
                     //qDebug() << "-------------" << uinfo;
                     QString iduser = uinfo["astid"].toString() + "/" + uinfo["xivo_userid"].toString();
-                                        
+                    
                     if(! m_users.contains(iduser)) {
                         m_users[iduser] = new UserInfo(iduser);
                         m_users[iduser]->setCtiLogin(uinfo["user"].toString());
@@ -848,27 +848,27 @@ void BaseEngine::parseCommand(const QString & line)
                                                    uinfo["techlist"].toStringList(),
                                                    m_phones);
                     }
-                                        
+                    
                     m_users[iduser]->setAvailState(uinfo["statedetails"]);
                     m_users[iduser]->setPhoneNumber(uinfo["phonenum"].toString());
                     m_users[iduser]->setVoiceMailNumber(uinfo["voicemailnum"].toString());
                     m_users[iduser]->setAgent(uinfo["agentnum"].toString());
                     m_users[iduser]->setMWI(uinfo["mwi"].toStringList());
                     //m_users[iduser]->setContext(uinfo["context"].toString());
-                    updatePeerAgent(timenow, iduser, "imstatus", QStringList());
-                    updateAgentPresence(m_users[iduser]->agentid(), uinfo["statedetails"]);
+                    emit updatePeerAgent(timenow, iduser, "imstatus", QStringList());
+                    emit updateAgentPresence(m_users[iduser]->agentid(), uinfo["statedetails"]);
                     emit userUpdated( m_users[iduser] );
                 }
-                                
+                
                 peersReceived();
                 m_monitored_userid = m_fullid;
                 QString fullname_mine = "No One";
                 if(m_users.contains(m_fullid)) {
                     fullname_mine = m_users[m_fullid]->fullname();
-                    localUserInfoDefined(m_users[m_fullid]);
-                    updateCounter(m_counters);
+                    emit localUserInfoDefined(m_users[m_fullid]);
+                    emit updateCounter(m_counters);
                 }
-                                
+                
                 // Who do we monitor ?
                 // First look at the last monitored one
                 QString fullid_watched;
@@ -890,7 +890,7 @@ void BaseEngine::parseCommand(const QString & line)
                         fullname_watched = fullname_mine;
                     }
                 }
-                                
+                
                 monitorPeerRequest(fullid_watched);
                 // emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
                 // XXX this information might not be relevant (to be filtered according to context, ...)
@@ -902,13 +902,13 @@ void BaseEngine::parseCommand(const QString & line)
                         QString subclass = datamap["subclass"].toString();
                         if(subclass == "mwi") {
                             m_users[iduser]->setMWI(datamap["payload"].toStringList());
-                            localUserInfoDefined(m_users[m_fullid]);
+                            emit localUserInfoDefined(m_users[m_fullid]);
                         }
                         emit userUpdated(m_users[iduser]);
                     }
                 }
             }
-                        
+            
         } else if (thisclass == "message") {
             QStringList message = datamap["payload"].toStringList();
             // message[0] : emitter name

@@ -354,7 +354,7 @@ void QueuesPanel::setQueueList(const QVariant & qlist)
  */
 void QueuesPanel::update()
 {
-    qDebug() << "QueuesPanel::update()";
+    // qDebug() << "QueuesPanel::update()";
     m_maxbusy = 0;
     foreach (QProgressBar * qpb, m_queuebusies) {
         quint32 val = qpb->property("value").toUInt();
