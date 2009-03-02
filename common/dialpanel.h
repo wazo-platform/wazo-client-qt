@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -57,30 +57,30 @@ class UserInfo;
  */
 class DialPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        DialPanel(const QVariant &, QWidget * parent = 0);
-        ~DialPanel();
-protected:
-        /*void mouseMoveEvent(QMouseEvent *);        //!< Catch mouse press events */
-        /*void mousePressEvent(QMouseEvent *); */
-        void dragEnterEvent(QDragEnterEvent *);
-        void dropEvent(QDropEvent *);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void inputValidated();
-        void clearlist();
-        void setNumberToDial(const QString &);
-signals:
-        void textEdited(const QString &);
-        void actionCall(const QString &,
-                        const QString &,
-                        const QString &);   //!< originates a number
-private:
-        const UserInfo * m_ui;
-        QLabel * m_lbl;
-        QComboBox * m_input;        //!< input widget
+    Q_OBJECT
+        public:
+    DialPanel(const QVariant &, QWidget * parent = 0);
+    ~DialPanel();
+ protected:
+    /*void mouseMoveEvent(QMouseEvent *);        //!< Catch mouse press events */
+    /*void mousePressEvent(QMouseEvent *); */
+    void dragEnterEvent(QDragEnterEvent *);
+    void dropEvent(QDropEvent *);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void inputValidated();
+    void clearlist();
+    void setNumberToDial(const QString &);
+ signals:
+    void textEdited(const QString &);
+    void actionCall(const QString &,
+                    const QString &,
+                    const QString &);   //!< originates a number
+ private:
+    const UserInfo * m_ui;
+    QLabel * m_lbl;
+    QComboBox * m_input;        //!< input widget
 };
 
 #endif

@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -63,13 +63,13 @@ class Group;
  */
 class SwitchBoardWindow : public QWidget
 {
-        Q_OBJECT
-public:
+    Q_OBJECT
+        public:
     SwitchBoardWindow(BaseEngine *,
                       const QVariant &,
                       QWidget * parent = 0);
     ~SwitchBoardWindow();        //!< Destructor
-protected:
+ protected:
     // event handlers
     void mousePressEvent(QMouseEvent *); //!< Catch mouse press events
     void mouseMoveEvent(QMouseEvent *);
@@ -79,7 +79,7 @@ protected:
     void dropEvent(QDropEvent *);
     void dragMoveEvent(QDragMoveEvent *);
     void contextMenuEvent(QContextMenuEvent *);
-public slots:
+    public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *);
     void updateUser(UserInfo *);
@@ -87,17 +87,17 @@ public slots:
                          const QString &,
                          const QString &,
                          const QVariant &);
-        void removePeer(const QString &);
-        void removePeers();
-private slots:
+    void removePeer(const QString &);
+    void removePeers();
+    private slots:
     void removePeerFromLayout();
     void removeGroup();
     void changeGroupColor();
     void changeGroupName();
     void addPhoneNumberEntry();
-private:
+ private:
     void saveGroups() const;
-        void savePositions() const;
+    void savePositions() const;
     void reloadGroups();
     void reloadExternalPhones();
     BasePeerWidget * addPeerWidget(PeerItem * peeritem, const QPoint & pos);

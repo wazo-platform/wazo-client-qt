@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -49,9 +49,9 @@
  * This label is a QLabel designed to display an URL. */
 class UrlLabel : public QLabel
 {
-        Q_OBJECT
-public:
-        UrlLabel(const QString & url, QWidget *parent=0);
+    Q_OBJECT
+        public:
+    UrlLabel(const QString & url, QWidget *parent=0);
 };
 
 #endif

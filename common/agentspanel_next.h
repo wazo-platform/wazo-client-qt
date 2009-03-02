@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -62,66 +62,66 @@ class UserInfo;
  */
 class AgentsPanelNext : public QWidget
 {
-        Q_OBJECT
-public:
-        AgentsPanelNext(const QVariant &,
+    Q_OBJECT
+        public:
+    AgentsPanelNext(const QVariant &,
                     QWidget * parent = 0);
-        ~AgentsPanelNext();
-signals:
-        void changeWatchedAgent(const QString &, bool);
-        void agentAction(const QString &);
-        void saveQueueGroups(const QVariant &);
-        void loadQueueGroups();
-        void logAction(const QString &);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void setAgentList(double, const QVariant &);
-        void setQueueList(const QVariant &);
-        void setQueueOrder(const QVariant &);
-        void updatePeerAgent(double,
-                             const QString &,
-                             const QString &,
-                             const QVariant &);
-        void updateAgentPresence(const QString &, const QVariant &);
-private slots:
-        void renameQueueGroup();
-        void removeQueueGroup();
-        void agentClicked(QMouseEvent *);
-        void setAgentProps(const QString &);
-        void removeQueueFromGroup();
-        void removeQueuesFromGroup();
-        void addQueueToGroup();
-        void addQueuesToGroup();
-        void setQueueGroups(const QVariant &);
-        void newGroup();
-        void actionclicked();
-protected slots:
-        void contextMenuEvent(QContextMenuEvent *);
-protected:
-        void mouseReleasedEvent(QMouseEvent *);
-        void timerEvent(QTimerEvent *);
-private:
-        void refreshContents();
-        void refreshDisplay();
-        void saveGroups();
+    ~AgentsPanelNext();
+ signals:
+    void changeWatchedAgent(const QString &, bool);
+    void agentAction(const QString &);
+    void saveQueueGroups(const QVariant &);
+    void loadQueueGroups();
+    void logAction(const QString &);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void setAgentList(double, const QVariant &);
+    void setQueueList(const QVariant &);
+    void setQueueOrder(const QVariant &);
+    void updatePeerAgent(double,
+                         const QString &,
+                         const QString &,
+                         const QVariant &);
+    void updateAgentPresence(const QString &, const QVariant &);
+    private slots:
+    void renameQueueGroup();
+    void removeQueueGroup();
+    void agentClicked(QMouseEvent *);
+    void setAgentProps(const QString &);
+    void removeQueueFromGroup();
+    void removeQueuesFromGroup();
+    void addQueueToGroup();
+    void addQueuesToGroup();
+    void setQueueGroups(const QVariant &);
+    void newGroup();
+    void actionclicked();
+    protected slots:
+    void contextMenuEvent(QContextMenuEvent *);
+ protected:
+    void mouseReleasedEvent(QMouseEvent *);
+    void timerEvent(QTimerEvent *);
+ private:
+    void refreshContents();
+    void refreshDisplay();
+    void saveGroups();
         
-        QFont m_gui_font;
-        QGridLayout * m_glayout;
-        QMap<QString, ExtendedLabel *> m_title;
-        const UserInfo * m_userinfo;
+    QFont m_gui_font;
+    QGridLayout * m_glayout;
+    QMap<QString, ExtendedLabel *> m_title;
+    const UserInfo * m_userinfo;
         
-        double m_timesrv;
-        int m_blinktime;
-        QDateTime m_timeclt;
+    double m_timesrv;
+    int m_blinktime;
+    QDateTime m_timeclt;
         
-        QHash<QString, QString> m_groups;
-        QHash<QString, ExtendedLabel *> m_agent_labels;
-        QHash<QString, QVariant> m_agent_props;
-        QStringList m_queuelist;
-        QVariant m_queueorder;
+    QHash<QString, QString> m_groups;
+    QHash<QString, ExtendedLabel *> m_agent_labels;
+    QHash<QString, QVariant> m_agent_props;
+    QStringList m_queuelist;
+    QVariant m_queueorder;
         
-        QComboBox * m_queue_chose;
+    QComboBox * m_queue_chose;
 };
 
 #endif /* __AGENTSPANEL_H__ */

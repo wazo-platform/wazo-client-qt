@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -60,35 +60,35 @@ class UserInfo;
  */
 class CallCampaignPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        CallCampaignPanel(QWidget * parent = 0);
-signals:
-        void requestFileList(const QString &);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void setOpenFileName();
-        void fileNameChanged(const QString &);
-        void getCalls();
-        void startCalls();
-        void stopCalls();
-        void clearCalls();
-        void loadFileClicked();
-        void requestFileListResult(const QVariant &);
-private:
-        void addNumber(const QString &);
-        void checkStatuses();
+    Q_OBJECT
+        public:
+    CallCampaignPanel(QWidget * parent = 0);
+ signals:
+    void requestFileList(const QString &);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void setOpenFileName();
+    void fileNameChanged(const QString &);
+    void getCalls();
+    void startCalls();
+    void stopCalls();
+    void clearCalls();
+    void loadFileClicked();
+    void requestFileListResult(const QVariant &);
+ private:
+    void addNumber(const QString &);
+    void checkStatuses();
         
-        const UserInfo * m_ui;
-        QLineEdit * m_openFileNameLabel;
-        QVBoxLayout * m_vlayout;
-        QHBoxLayout * m_hlayout1;
-        QHBoxLayout * m_hlayout2;
-        QGridLayout * m_glayout;
-        QHash<QString, QString> m_numbers;
-        QHash<QString, QLabel *> m_numlabel;
-        QHash<QString, QPushButton *> m_qpbstart;
+    const UserInfo * m_ui;
+    QLineEdit * m_openFileNameLabel;
+    QVBoxLayout * m_vlayout;
+    QHBoxLayout * m_hlayout1;
+    QHBoxLayout * m_hlayout2;
+    QGridLayout * m_glayout;
+    QHash<QString, QString> m_numbers;
+    QHash<QString, QLabel *> m_numlabel;
+    QHash<QString, QPushButton *> m_qpbstart;
 };
 
 #endif /* __CALLCAMPAIGNPANEL_H__ */

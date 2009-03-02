@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -55,18 +55,18 @@ class QTableWidget;
  */
 class DisplayMessagesPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        DisplayMessagesPanel(QWidget * parent = 0);
-public slots:
-/*         void affTextChanged(); */
-        void addMessage(const QString &);
-/* signals: */
-/*         void emitDial(const QString &); */
-private:
-         //QLabel * m_text;
-        //! Table
-        QTableWidget * m_table;
+    Q_OBJECT
+        public:
+    DisplayMessagesPanel(QWidget * parent = 0);
+    public slots:
+    /*         void affTextChanged(); */
+    void addMessage(const QString &);
+    /* signals: */
+    /*         void emitDial(const QString &); */
+ private:
+    //QLabel * m_text;
+    //! Table
+    QTableWidget * m_table;
 };
 
 #endif

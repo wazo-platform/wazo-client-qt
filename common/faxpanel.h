@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -58,32 +58,32 @@ class UserInfo;
 
 class FaxPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        FaxPanel(BaseEngine *, const QVariant &, QWidget * parent = 0);
-        ~FaxPanel();
-signals:
-        void faxSend(const QString &, const QString &, Qt::CheckState);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void setOpenFileName();
-        void sendFax();
-        void dirLookup();
-        void popupMsg(const QString &, const QString &);
-        void destNumberChanged(const QString &);
-        void fileNameChanged(const QString &);
-private:
-        QWidget * m_mainwindow;        //!< MainWidget where some parameters are commited to
-        FileNameLineEdit * m_openFileNameLabel;
-        QLineEdit * m_destination;
-        QCheckBox * m_maskornot;
-        QPushButton * m_sendButton;
-        BaseEngine * m_engine;
-        DirDialog * m_dirw;
+    Q_OBJECT
+        public:
+    FaxPanel(BaseEngine *, const QVariant &, QWidget * parent = 0);
+    ~FaxPanel();
+ signals:
+    void faxSend(const QString &, const QString &, Qt::CheckState);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void setOpenFileName();
+    void sendFax();
+    void dirLookup();
+    void popupMsg(const QString &, const QString &);
+    void destNumberChanged(const QString &);
+    void fileNameChanged(const QString &);
+ private:
+    QWidget * m_mainwindow;        //!< MainWidget where some parameters are commited to
+    FileNameLineEdit * m_openFileNameLabel;
+    QLineEdit * m_destination;
+    QCheckBox * m_maskornot;
+    QPushButton * m_sendButton;
+    BaseEngine * m_engine;
+    DirDialog * m_dirw;
 
-        QString m_dest_string;
-        QString m_file_string;
+    QString m_dest_string;
+    QString m_file_string;
 };
 
 #endif

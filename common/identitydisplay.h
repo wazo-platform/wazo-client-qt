@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -60,63 +60,63 @@ class UserInfo;
  */
 class IdentityDisplay : public QWidget
 {
-        Q_OBJECT
-public:
-        IdentityDisplay(const QVariant &,
-                        QWidget * parent = 0);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void setAgentList(double, const QVariant &);
-        void setQueueList(const QVariant &);
-        void updatePeerAgent(double,
-                             const QString &,
-                             const QString &,
-                             const QVariant &);
-        void doAgentLogActions();
-        void doAgentPauseActions();
-        void doAgentUnPauseActions();
-        void idxChanged(const QString &);
-        void updatePresence(const QVariant &);
-private slots:
-        void contextMenuEvent(QContextMenuEvent *);
-        void contextMenuAction();
-private:
-        void showAgentProps();
-        void hideAgentProps();
-        void setStatusColors(int, int);
+    Q_OBJECT
+        public:
+    IdentityDisplay(const QVariant &,
+                    QWidget * parent = 0);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void setAgentList(double, const QVariant &);
+    void setQueueList(const QVariant &);
+    void updatePeerAgent(double,
+                         const QString &,
+                         const QString &,
+                         const QVariant &);
+    void doAgentLogActions();
+    void doAgentPauseActions();
+    void doAgentUnPauseActions();
+    void idxChanged(const QString &);
+    void updatePresence(const QVariant &);
+    private slots:
+    void contextMenuEvent(QContextMenuEvent *);
+    void contextMenuAction();
+ private:
+    void showAgentProps();
+    void hideAgentProps();
+    void setStatusColors(int, int);
         
-        ExtendedLabel * m_icon_user;
-        ExtendedLabel * m_icon_agent;
-        ExtendedLabel * m_icon_voicemail;
+    ExtendedLabel * m_icon_user;
+    ExtendedLabel * m_icon_agent;
+    ExtendedLabel * m_icon_voicemail;
         
-        QFrame * m_qvline1;
-        QFrame * m_qvline2;
+    QFrame * m_qvline1;
+    QFrame * m_qvline2;
         
-        QLabel * m_user;
-        QLabel * m_voicemail_old;
-        QLabel * m_voicemail_new;
-        QLabel * m_voicemail_name;
-        QLabel * m_phonenum;
-        QComboBox * m_presencevalue;
-        QLabel * m_agent;
-        QLabel * m_agentstatus;
-        QLabel * m_agentpause;
+    QLabel * m_user;
+    QLabel * m_voicemail_old;
+    QLabel * m_voicemail_new;
+    QLabel * m_voicemail_name;
+    QLabel * m_phonenum;
+    QComboBox * m_presencevalue;
+    QLabel * m_agent;
+    QLabel * m_agentstatus;
+    QLabel * m_agentpause;
         
-        QHash<QString, QString> m_presence_names;
-        const UserInfo * m_ui;
+    QHash<QString, QString> m_presence_names;
+    const UserInfo * m_ui;
         
-        QFont m_gui_font;
-        quint32 m_gui_buttonsize;
-        quint32 m_loginkind;
-        QStringList m_functions;
-        bool m_allow_logagent;
-        bool m_allow_pauseagent;
-signals:
-        void agentAction(const QString &);
-        void setAvailState(const QString &, bool);
-        void changeWatchedAgent(const QString &, bool);
-        void setSystrayIcon(const QString &);
+    QFont m_gui_font;
+    quint32 m_gui_buttonsize;
+    quint32 m_loginkind;
+    QStringList m_functions;
+    bool m_allow_logagent;
+    bool m_allow_pauseagent;
+ signals:
+    void agentAction(const QString &);
+    void setAvailState(const QString &, bool);
+    void changeWatchedAgent(const QString &, bool);
+    void setSystrayIcon(const QString &);
 };
 
 #endif

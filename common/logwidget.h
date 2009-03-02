@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -55,45 +55,45 @@ class UserInfo;
  */
 class LogWidget : public QWidget
 {
-        Q_OBJECT
-public:
-        LogWidget(BaseEngine *,
-                  const QVariant &,
-                  QWidget * parent = 0);
-        void addElement(const QString &,
-                        LogEltWidget::Direction,
-                        const QDateTime &,
-                        int,
-                        const QString &);
-protected:
-        void timerEvent(QTimerEvent *);
-private:
-        int mode();
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void clear();
-        void addLogEntry(const QDateTime &, int,
-                         const QString &, const QString &, const QString &);
-        void monitorPeer(UserInfo *);
-private slots:
-        void modeChanged(bool);
-        void proxyCallRequests(const QString &, const QString &);
-signals:
-        void askHistory(const QString &, int);        //!< need history to be updated !
-        void actionCall(const QString &,
-                        const QString &,
-                        const QString &);
-private:
-        BaseEngine * m_engine;        //!< BaseEngine object
-        QVBoxLayout * m_layout;                        //!< Widget layout
-        QString m_peer;                                        //!< "monitored" peer
-        int m_timer;                                        //!< timer id for refresh
-        QRadioButton * m_radioNone;                //!< "None" radio button
-        QRadioButton * m_radioOut;                //!< "Out" radio button
-        QRadioButton * m_radioIn;                //!< "In" radio button
-        QRadioButton * m_radioMissed;        //!< "Missed" radio button
-        const UserInfo * m_userinfo_owner;
+    Q_OBJECT
+        public:
+    LogWidget(BaseEngine *,
+              const QVariant &,
+              QWidget * parent = 0);
+    void addElement(const QString &,
+                    LogEltWidget::Direction,
+                    const QDateTime &,
+                    int,
+                    const QString &);
+ protected:
+    void timerEvent(QTimerEvent *);
+ private:
+    int mode();
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void clear();
+    void addLogEntry(const QDateTime &, int,
+                     const QString &, const QString &, const QString &);
+    void monitorPeer(UserInfo *);
+    private slots:
+    void modeChanged(bool);
+    void proxyCallRequests(const QString &, const QString &);
+ signals:
+    void askHistory(const QString &, int);        //!< need history to be updated !
+    void actionCall(const QString &,
+                    const QString &,
+                    const QString &);
+ private:
+    BaseEngine * m_engine;        //!< BaseEngine object
+    QVBoxLayout * m_layout;                        //!< Widget layout
+    QString m_peer;                                        //!< "monitored" peer
+    int m_timer;                                        //!< timer id for refresh
+    QRadioButton * m_radioNone;                //!< "None" radio button
+    QRadioButton * m_radioOut;                //!< "Out" radio button
+    QRadioButton * m_radioIn;                //!< "In" radio button
+    QRadioButton * m_radioMissed;        //!< "Missed" radio button
+    const UserInfo * m_userinfo_owner;
 };
 
 #endif

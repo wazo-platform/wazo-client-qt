@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -59,59 +59,59 @@ class UserInfo;
  */
 class AgentsPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        AgentsPanel(const QVariant &,
-                    QWidget * parent = 0);
-        ~AgentsPanel();
-signals:
-        void changeWatchedAgent(const QString &, bool);
-        void agentAction(const QString &);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void setAgentList(double, const QVariant &);
-        void updatePeerAgent(double,
-                             const QString &,
-                             const QString &,
-                             const QVariant &);
-        void updateAgentPresence(const QString &, const QVariant &);
-private slots:
-        void agentClicked();
-private:
-        void showPausedStatus(const QString &, int);
+    Q_OBJECT
+        public:
+    AgentsPanel(const QVariant &,
+                QWidget * parent = 0);
+    ~AgentsPanel();
+ signals:
+    void changeWatchedAgent(const QString &, bool);
+    void agentAction(const QString &);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void setAgentList(double, const QVariant &);
+    void updatePeerAgent(double,
+                         const QString &,
+                         const QString &,
+                         const QVariant &);
+    void updateAgentPresence(const QString &, const QVariant &);
+    private slots:
+    void agentClicked();
+ private:
+    void showPausedStatus(const QString &, int);
         
-        QFont m_gui_font;   //!< font
-        quint32 m_gui_buttonsize;   //!< button size
+    QFont m_gui_font;   //!< font
+    quint32 m_gui_buttonsize;   //!< button size
         
-        QGridLayout * m_gridlayout;     //!< Layout
-        const UserInfo * m_userinfo;    //!< user info
+    QGridLayout * m_gridlayout;     //!< Layout
+    const UserInfo * m_userinfo;    //!< user info
         
-        QHash<QString, QLabel *>      m_agent_labels;
-        QHash<QString, QPushButton *> m_agent_more;
-        QHash<QString, QPushButton *> m_agent_record;
-        QHash<QString, QPushButton *> m_agent_listen;
-        QHash<QString, QLabel *>      m_agent_busy;
-        QHash<QString, QLabel *>      m_agent_presence;
-        QHash<QString, QLabel *>      m_agent_logged_status;
-        QHash<QString, QPushButton *> m_agent_logged_action;
-        QHash<QString, QLabel *>      m_agent_joined_number;
-        QHash<QString, QLabel *>      m_agent_paused_status;
-        QHash<QString, QPushButton *> m_agent_paused_action;
-        QHash<QString, QLabel *>      m_agent_paused_number;
+    QHash<QString, QLabel *>      m_agent_labels;
+    QHash<QString, QPushButton *> m_agent_more;
+    QHash<QString, QPushButton *> m_agent_record;
+    QHash<QString, QPushButton *> m_agent_listen;
+    QHash<QString, QLabel *>      m_agent_busy;
+    QHash<QString, QLabel *>      m_agent_presence;
+    QHash<QString, QLabel *>      m_agent_logged_status;
+    QHash<QString, QPushButton *> m_agent_logged_action;
+    QHash<QString, QLabel *>      m_agent_joined_number;
+    QHash<QString, QLabel *>      m_agent_paused_status;
+    QHash<QString, QPushButton *> m_agent_paused_action;
+    QHash<QString, QLabel *>      m_agent_paused_number;
         
-        QHash<QString, QStringList> m_agent_joined_list;
-        QHash<QString, QStringList> m_agent_paused_list;
+    QHash<QString, QStringList> m_agent_joined_list;
+    QHash<QString, QStringList> m_agent_paused_list;
         
-        QLabel * m_title1;  //!< "Agent"
-        QLabel * m_title2;  //!< "Record"
-        QLabel * m_title3;  //!< "Listen"
-        QLabel * m_title4;  //!< "On Line"
-        QLabel * m_title5;  //!< "Presence"
-        QLabel * m_title_logged;    //!< "Logged"
-        QLabel * m_title_paused;    //!< "Paused"
-        QLabel * m_title_njoined;   //!< "Joined queues"
-        QLabel * m_title_npaused;   //!< "paused queues"
+    QLabel * m_title1;  //!< "Agent"
+    QLabel * m_title2;  //!< "Record"
+    QLabel * m_title3;  //!< "Listen"
+    QLabel * m_title4;  //!< "On Line"
+    QLabel * m_title5;  //!< "Presence"
+    QLabel * m_title_logged;    //!< "Logged"
+    QLabel * m_title_paused;    //!< "Paused"
+    QLabel * m_title_njoined;   //!< "Joined queues"
+    QLabel * m_title_npaused;   //!< "paused queues"
 };
 
 #endif /* __AGENTSPANEL_H__ */

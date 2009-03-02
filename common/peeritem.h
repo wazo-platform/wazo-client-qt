@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -56,38 +56,38 @@ class UserInfo;
  */
 class PeerItem// : public QObject
 {
-public:
-        //PeerItem( const QString & ext, QObject * parent = 0 );
-        PeerItem( UserInfo * );
-        PeerItem( const PeerItem & );
-        PeerItem( );
-        UserInfo * userinfo();
-        // PeerItem & operator=(const PeerItem & peer);
-        //! set m_peerwidget
-        //void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
-        void setWidget(BasePeerWidget * widget) { m_peerwidget = widget; };
-        //! get m_peerwidget
-        //PeerWidget * getWidget() { return m_peerwidget; };
-        BasePeerWidget * getWidget() { return m_peerwidget; };
+ public:
+    //PeerItem( const QString & ext, QObject * parent = 0 );
+    PeerItem( UserInfo * );
+    PeerItem( const PeerItem & );
+    PeerItem( );
+    UserInfo * userinfo();
+    // PeerItem & operator=(const PeerItem & peer);
+    //! set m_peerwidget
+    //void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
+    void setWidget(BasePeerWidget * widget) { m_peerwidget = widget; };
+    //! get m_peerwidget
+    //PeerWidget * getWidget() { return m_peerwidget; };
+    BasePeerWidget * getWidget() { return m_peerwidget; };
         
-        void updateStatus();
-        void updateAgentStatus(const QVariant &);
-        void updateName(const QString &);
+    void updateStatus();
+    void updateAgentStatus(const QVariant &);
+    void updateName(const QString &);
         
-        void updateDisplayedStatus();
-        void updateDisplayedName();
-private:
-        //PeerWidget * m_peerwidget;        //!< related PeerWidget
-        BasePeerWidget * m_peerwidget;        //!< related PeerWidget
+    void updateDisplayedStatus();
+    void updateDisplayedName();
+ private:
+    //PeerWidget * m_peerwidget;        //!< related PeerWidget
+    BasePeerWidget * m_peerwidget;        //!< related PeerWidget
 
-        // Properties of each peer
-        UserInfo * m_ui;
-        // QString m_name;                //!< Person name
-        QString m_vmstatus;
-        QVariant m_agentstatus;
-        QString m_pausestatus;
-//        QVariant m_chanlist;
-        QStringList m_queuelist;
+    // Properties of each peer
+    UserInfo * m_ui;
+    // QString m_name;                //!< Person name
+    QString m_vmstatus;
+    QVariant m_agentstatus;
+    QString m_pausestatus;
+    //        QVariant m_chanlist;
+    QStringList m_queuelist;
 };
 
 #endif

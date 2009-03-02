@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -59,29 +59,29 @@ class DirectoryPanel;
 //class DirDialog: public QWidget
 class DirDialog: public QDialog
 {
-        Q_OBJECT
-public:
-        /*! \brief Constructor
-         *
-         * Construct the widget and its layout.
-         * Fill widgets with values got from the BaseEngine object.
-         * Once constructed, the Widget is ready to be shown.
-         * \param engine        related BaseEngine object where parameters will be modified
-         * \param parent        parent QWidget
-         */
-        DirDialog(BaseEngine *, QWidget *);
-        ~DirDialog();
-        const QString & faxnumber() const;
-private slots:
-        //! Save the configuration to the BaseEngine object and close
-        void saveAndClose();
-        void copyNumber(const QString &);
-        void copyNumberAndQuit(const QString &, bool);
-private:
-        BaseEngine * m_engine;
-        DirectoryPanel * m_directory;
-        QDialogButtonBox * m_btnbox;        //!< Buttons box
-        QString m_faxnumber;
-        QString m_retfaxnumber;
+    Q_OBJECT
+        public:
+    /*! \brief Constructor
+     *
+     * Construct the widget and its layout.
+     * Fill widgets with values got from the BaseEngine object.
+     * Once constructed, the Widget is ready to be shown.
+     * \param engine        related BaseEngine object where parameters will be modified
+     * \param parent        parent QWidget
+     */
+    DirDialog(BaseEngine *, QWidget *);
+    ~DirDialog();
+    const QString & faxnumber() const;
+    private slots:
+    //! Save the configuration to the BaseEngine object and close
+    void saveAndClose();
+    void copyNumber(const QString &);
+    void copyNumberAndQuit(const QString &, bool);
+ private:
+    BaseEngine * m_engine;
+    DirectoryPanel * m_directory;
+    QDialogButtonBox * m_btnbox;        //!< Buttons box
+    QString m_faxnumber;
+    QString m_retfaxnumber;
 };
 #endif

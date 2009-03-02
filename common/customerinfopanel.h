@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -56,32 +56,32 @@ class UserInfo;
 
 class CustomerInfoPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        CustomerInfoPanel(const QVariant &,
-                          QWidget * parent = 0);
-        ~CustomerInfoPanel();
-signals:
-        void newPopup(const QString &,
-                      const QHash<QString, QString> &,
-                      const QString &);
-        void actionFromFiche(const QVariant &);
-        void actionCall(const QString &, const QString &, const QString &);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void showNewProfile(Popup *);
-        void popupDestroyed(QObject * obj);
-        void addToDataBase(const QString &);
-        void displayFiche(const QString &, bool);
-        void actionFromPopup(const QString &, const QVariant &);
-        void localActionCall(const QString &, const QString &, const QString &);
-private:
-        const UserInfo * m_ui;
-        QTabWidget * m_tabs;
-        QList<Popup *> m_popups;
-        quint32 m_tablimit;
-        bool m_autourl_allowed;
+    Q_OBJECT
+        public:
+    CustomerInfoPanel(const QVariant &,
+                      QWidget * parent = 0);
+    ~CustomerInfoPanel();
+ signals:
+    void newPopup(const QString &,
+                  const QHash<QString, QString> &,
+                  const QString &);
+    void actionFromFiche(const QVariant &);
+    void actionCall(const QString &, const QString &, const QString &);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void showNewProfile(Popup *);
+    void popupDestroyed(QObject * obj);
+    void addToDataBase(const QString &);
+    void displayFiche(const QString &, bool);
+    void actionFromPopup(const QString &, const QVariant &);
+    void localActionCall(const QString &, const QString &, const QString &);
+ private:
+    const UserInfo * m_ui;
+    QTabWidget * m_tabs;
+    QList<Popup *> m_popups;
+    quint32 m_tablimit;
+    bool m_autourl_allowed;
 };
 
 #endif /* __CUSTOMERINFOPANEL_H__ */

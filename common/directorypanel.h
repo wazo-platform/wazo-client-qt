@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -59,21 +59,21 @@ class UserInfo;
  */
 class DirectoryPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        DirectoryPanel(const QVariant &, QWidget * parent = 0);
-        ~DirectoryPanel();
-protected:
+    Q_OBJECT
+        public:
+    DirectoryPanel(const QVariant &, QWidget * parent = 0);
+    ~DirectoryPanel();
+ protected:
     void dropEvent(QDropEvent *);
     void focusInEvent(QFocusEvent *);
-signals:
+ signals:
     //! start a search
     void searchDirectory(const QString &);
     void copyNumber(const QString &);
     void actionCall(const QString &,
                     const QString &,
                     const QString &);
-private slots:
+    private slots:
     void dialNumber();
     void sendMail();
     void startSearch();
@@ -81,13 +81,13 @@ private slots:
     void itemDoubleClicked(QTableWidgetItem *);
     void transfer();
     void proxyCallRequests(const QString &, const QString &);
-public slots:
+    public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *);
     void contextMenuEvent(QContextMenuEvent *);
     void setSearchResponse(const QString &);
     void stop();
-private:
+ private:
     const UserInfo * m_userinfo;
     ExtendedLineEdit * m_searchText;        //!< search text input
     ExtendedTableWidget * m_table;                //!< table to display results

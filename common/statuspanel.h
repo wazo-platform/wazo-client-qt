@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -62,48 +62,48 @@ class UserInfo;
  */
 class StatusPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        StatusPanel(QWidget * parent = 0);
-        ~StatusPanel();
-        enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void functionKeyPressed(int);
-        void xferPressed();
-        void clicked();
+    Q_OBJECT
+        public:
+    StatusPanel(QWidget * parent = 0);
+    ~StatusPanel();
+    enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void functionKeyPressed(int);
+    void xferPressed();
+    void clicked();
     void updateUser(UserInfo *);
-signals:
-        void actionCall(const QString &,
-                        const QString & src = "",
-                        const QString & dst = "");
-private:
-        void updateLine(const QString &, const QStringList &);
-        void newCall(const QString &);
-        void dtransfer();
-        void itransfer();
-        void changeCurrentChannel(const QString &, const QString &);
-        QString getPeerChan(const QString & chan) const;
-        void removeLine(const QString &);
+ signals:
+    void actionCall(const QString &,
+                    const QString & src = "",
+                    const QString & dst = "");
+ private:
+    void updateLine(const QString &, const QStringList &);
+    void newCall(const QString &);
+    void dtransfer();
+    void itransfer();
+    void changeCurrentChannel(const QString &, const QString &);
+    QString getPeerChan(const QString & chan) const;
+    void removeLine(const QString &);
         
-        QGridLayout * m_glayout;
-        const UserInfo * m_ui;
-        QLabel * m_lbl;
+    QGridLayout * m_glayout;
+    const UserInfo * m_ui;
+    QLabel * m_lbl;
         
-        QHash<QString, QFrame *> m_vlinesl;
-        QHash<QString, QFrame *> m_vlinesr;
-        QHash<QString, QLabel *> m_statuses;
-        QHash<QString, QHash<QString, QPushButton *> > m_actions;
-        QHash<QString, QLineEdit *> m_tnums;
-        QHash<QString, Line> m_linestatuses;
-        QHash<QString, int> m_row;
+    QHash<QString, QFrame *> m_vlinesl;
+    QHash<QString, QFrame *> m_vlinesr;
+    QHash<QString, QLabel *> m_statuses;
+    QHash<QString, QHash<QString, QPushButton *> > m_actions;
+    QHash<QString, QLineEdit *> m_tnums;
+    QHash<QString, Line> m_linestatuses;
+    QHash<QString, int> m_row;
         
-        QMap<int, QStringList> m_actionkey;
+    QMap<int, QStringList> m_actionkey;
         
-        QString m_currentchannel;
-        QStringList m_callchannels;
-        QString m_tferchannel;
+    QString m_currentchannel;
+    QStringList m_callchannels;
+    QString m_tferchannel;
 };
 
 #endif

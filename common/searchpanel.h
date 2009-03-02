@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -59,36 +59,36 @@ class UserInfo;
  */
 class SearchPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        SearchPanel(BaseEngine *,
-                    const QVariant &,
-                    QWidget * parent = 0);
-        ~SearchPanel();        //!< Destructor
-public slots:
-        void setGuiOptions(const QVariant &);
-        void affTextChanged(const QString &);
-        void updatePeerAgent(double,
-                             const QString &,
-                             const QString &,
-                             const QVariant &);
-        void removePeer(const QString &);
-        void removePeers();
+    Q_OBJECT
+        public:
+    SearchPanel(BaseEngine *,
+                const QVariant &,
+                QWidget * parent = 0);
+    ~SearchPanel();        //!< Destructor
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void affTextChanged(const QString &);
+    void updatePeerAgent(double,
+                         const QString &,
+                         const QString &,
+                         const QVariant &);
+    void removePeer(const QString &);
+    void removePeers();
     void updateDisplay();
     void updateUser(UserInfo *);
-signals:
-        void askCallerIds();
-private:
-        BaseEngine * m_engine;        //!< engine to connect to peer widgets
-        QHash<QString, PeerItem *> m_peerhash;        //!< PeerItem hash
-        QGridLayout * m_peerlayout;        //!< layout object
-        ExtendedLineEdit * m_input;        //!< widget for search string input
+ signals:
+    void askCallerIds();
+ private:
+    BaseEngine * m_engine;        //!< engine to connect to peer widgets
+    QHash<QString, PeerItem *> m_peerhash;        //!< PeerItem hash
+    QGridLayout * m_peerlayout;        //!< layout object
+    ExtendedLineEdit * m_input;        //!< widget for search string input
         
-        int m_maxdisplay;        //!< max number of peers displayed on the search panel
-        int m_ncolumns;
-        QString m_searchpattern;
-        QStringList m_functions;
-        QVariant m_options;
+    int m_maxdisplay;        //!< max number of peers displayed on the search panel
+    int m_ncolumns;
+    QString m_searchpattern;
+    QStringList m_functions;
+    QVariant m_options;
 };
 
 #endif

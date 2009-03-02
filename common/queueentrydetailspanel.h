@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -60,36 +60,36 @@ class UserInfo;
  */
 class QueueentrydetailsPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        QueueentrydetailsPanel(QWidget * parent = 0);
-        ~QueueentrydetailsPanel();
-signals:
-        void changeWatchedAgent(const QString &);   //!< change watched agent
-protected:
-        void timerEvent(QTimerEvent *);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void newQueue(double, const QString &, const QString &, const QVariant &);
-        void updatePeerAgent(double,
-                             const QString &,
-                             const QString &,
-                             const QVariant &);
-private slots:
-        void agentClicked();
-private:
-        void updateEntryChannel(const QString &);
+    Q_OBJECT
+        public:
+    QueueentrydetailsPanel(QWidget * parent = 0);
+    ~QueueentrydetailsPanel();
+ signals:
+    void changeWatchedAgent(const QString &);   //!< change watched agent
+ protected:
+    void timerEvent(QTimerEvent *);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void newQueue(double, const QString &, const QString &, const QVariant &);
+    void updatePeerAgent(double,
+                         const QString &,
+                         const QString &,
+                         const QVariant &);
+    private slots:
+    void agentClicked();
+ private:
+    void updateEntryChannel(const QString &);
 
-        QGridLayout * m_gridlayout; //!< Layout
+    QGridLayout * m_gridlayout; //!< Layout
 
-        QString m_astid;    //!< asterisk id
-        QString m_queueid;  //!< queue id
-        QLabel * m_label;   //!< label for displaying queue name
-        QHash<QString, QLabel *> m_entrypos;    //!< display entry
-        QHash<QString, QLabel *> m_entrytime;   //!< display call duration ?
-        double m_timesrv;
-        QDateTime m_timeclt;
+    QString m_astid;    //!< asterisk id
+    QString m_queueid;  //!< queue id
+    QLabel * m_label;   //!< label for displaying queue name
+    QHash<QString, QLabel *> m_entrypos;    //!< display entry
+    QHash<QString, QLabel *> m_entrytime;   //!< display call duration ?
+    double m_timesrv;
+    QDateTime m_timeclt;
 };
 
 #endif /* __QUEUEENTRYDETAILSPANEL_H__ */

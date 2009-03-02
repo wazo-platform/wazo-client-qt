@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -52,16 +52,16 @@ class UserInfo;
  */
 class XletprotoPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        XletprotoPanel(BaseEngine * engine, QWidget * parent = 0);
-        ~XletprotoPanel();
-public slots:
-        void setUserInfo(const UserInfo *);
-        void setGuiOptions(const QVariant &);
-private:
-        BaseEngine * m_engine;
-        const UserInfo * m_ui;
+    Q_OBJECT
+        public:
+    XletprotoPanel(BaseEngine * engine, QWidget * parent = 0);
+    ~XletprotoPanel();
+    public slots:
+    void setUserInfo(const UserInfo *);
+    void setGuiOptions(const QVariant &);
+ private:
+    BaseEngine * m_engine;
+    const UserInfo * m_ui;
 };
 
 #endif /* __XLETPROTOPANEL_H__ */

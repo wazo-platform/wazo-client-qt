@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -60,61 +60,61 @@ class UserInfo;
  */
 class AgentdetailsPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        AgentdetailsPanel(const QVariant &,
-                          QWidget * parent = 0);
-        ~AgentdetailsPanel();
-protected:
-        void contextMenuEvent(QContextMenuEvent *);
-signals:
-        void changeWatchedQueue(const QString &);
-        void agentAction(const QString &);
-        void setFileName(const QString &);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void newAgent(const QString &, const QString &, const QVariant &);
-        void updatePeerAgent(double,
-                             const QString &,
-                             const QString &,
-                             const QVariant &);
-        void saveToFile();
-        void statusRecord(const QString &, const QString &);
-private slots:
-        void queueClicked();
-        void actionClicked();
-        void serverFileList(const QStringList &);
-        void getFile();
-private:
-        void summaryCount();
+    Q_OBJECT
+        public:
+    AgentdetailsPanel(const QVariant &,
+                      QWidget * parent = 0);
+    ~AgentdetailsPanel();
+ protected:
+    void contextMenuEvent(QContextMenuEvent *);
+ signals:
+    void changeWatchedQueue(const QString &);
+    void agentAction(const QString &);
+    void setFileName(const QString &);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void newAgent(const QString &, const QString &, const QVariant &);
+    void updatePeerAgent(double,
+                         const QString &,
+                         const QString &,
+                         const QVariant &);
+    void saveToFile();
+    void statusRecord(const QString &, const QString &);
+    private slots:
+    void queueClicked();
+    void actionClicked();
+    void serverFileList(const QStringList &);
+    void getFile();
+ private:
+    void summaryCount();
         
-        const UserInfo * m_userinfo;    //!< user info
+    const UserInfo * m_userinfo;    //!< user info
         
-        QGridLayout * m_gridlayout; //!< layout
-        int m_linenum;  //!< line number ?
+    QGridLayout * m_gridlayout; //!< layout
+    int m_linenum;  //!< line number ?
 
-        QString m_astid;    //!< asterisk id
-        QString m_agent;    //!< agent id
-        QLabel * m_agentname;   //!< to display agent name
-        QLabel * m_agentstatus; //!< to display agent status
-        QLabel * m_agentlegend_qname;   //!< "Queues"
-        QLabel * m_agentlegend_joined;  //!< "Joined"
-        QLabel * m_agentlegend_paused;  //!< "Paused"
-        QLabel * m_agentlegend_njoined; //!< number joined
-        QLabel * m_agentlegend_npaused; //!< number paused
-        QHash<QString, QLabel *> m_actionlegends;   //!< Label Login/Logout
-        QHash<QString, QPushButton *> m_action; //!< buttons cancel/ok
+    QString m_astid;    //!< asterisk id
+    QString m_agent;    //!< agent id
+    QLabel * m_agentname;   //!< to display agent name
+    QLabel * m_agentstatus; //!< to display agent status
+    QLabel * m_agentlegend_qname;   //!< "Queues"
+    QLabel * m_agentlegend_joined;  //!< "Joined"
+    QLabel * m_agentlegend_paused;  //!< "Paused"
+    QLabel * m_agentlegend_njoined; //!< number joined
+    QLabel * m_agentlegend_npaused; //!< number paused
+    QHash<QString, QLabel *> m_actionlegends;   //!< Label Login/Logout
+    QHash<QString, QPushButton *> m_action; //!< buttons cancel/ok
         
-        QHash<QString, QLabel *> m_queue_labels;
-        QHash<QString, QPushButton *> m_queue_more;
-        QHash<QString, QPushButton *> m_queue_join_action;
-        QHash<QString, QPushButton *> m_queue_pause_action;
-        QHash<QString, QLabel *> m_queue_join_status;
-        QHash<QString, QLabel *> m_queue_pause_status;
+    QHash<QString, QLabel *> m_queue_labels;
+    QHash<QString, QPushButton *> m_queue_more;
+    QHash<QString, QPushButton *> m_queue_join_action;
+    QHash<QString, QPushButton *> m_queue_pause_action;
+    QHash<QString, QLabel *> m_queue_join_status;
+    QHash<QString, QLabel *> m_queue_pause_status;
         
-        QPoint m_eventpoint;
-        QVariant m_options;
+    QPoint m_eventpoint;
+    QVariant m_options;
 };
 
 #endif /* __AGENTDETAILSPANEL_H__ */

@@ -53,7 +53,7 @@ class PhoneInfo;
  */
 class UserInfo
 {
-public:
+ public:
     UserInfo(const QString &);
     ~UserInfo();
     void setAvailState(const QVariant &);
@@ -85,7 +85,7 @@ public:
     const PhoneInfo * getPhoneInfo(const QString &) const;
     void updatePhone( PhoneInfo * );
     QList<QString> channelList() const;
-private:
+ private:
     QString m_userid;   //!< user id
     QString m_company;  //!< user company
     QString m_ctilogin; //!< user login on cti

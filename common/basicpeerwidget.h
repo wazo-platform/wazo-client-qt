@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -58,25 +58,25 @@
 class BasicPeerWidget : public BasePeerWidget
 {
     Q_OBJECT
-public:
+        public:
     BasicPeerWidget(BaseEngine *, UserInfo *, const QVariant &);
     void setAgentToolTip(const QString &, const QStringList &);
     void setAgentState(const QString & color);
     void updatePresence();
     void updatePhonesStates();
     void setName(const QString & name) { setText(name); };
-protected:
+ protected:
     void paintEvent(QPaintEvent *);
-//    void mouseMoveEvent(QMouseEvent *);
-//    void mousePressEvent(QMouseEvent *);
+    //    void mouseMoveEvent(QMouseEvent *);
+    //    void mousePressEvent(QMouseEvent *);
     void mouseDoubleClickEvent(QMouseEvent *);
-//    void dragEnterEvent(QDragEnterEvent *);
-//    void dragMoveEvent(QDragMoveEvent *);
-//    void dropEvent(QDropEvent *);
-//    void contextMenuEvent(QContextMenuEvent *);
-private:
+    //    void dragEnterEvent(QDragEnterEvent *);
+    //    void dragMoveEvent(QDragMoveEvent *);
+    //    void dropEvent(QDropEvent *);
+    //    void contextMenuEvent(QContextMenuEvent *);
+ private:
     void setText(const QString &);  //!< Set displayed text
-private:    // attributes
+ private:    // attributes
     QString m_text; //!< Text to display
     QColor m_color; //!< color
     QColor m_presenceColor; //!< color of presence indicator

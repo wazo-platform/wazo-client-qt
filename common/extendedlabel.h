@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -48,19 +48,19 @@
  */
 class ExtendedLabel : public QLabel
 {
-        Q_OBJECT
-public:
-        ExtendedLabel(const QString & text = "",
-                      QWidget *parent = 0);
-protected:
-        //void mouseDoubleClickEvent(QMouseEvent *);
-        void mouseReleaseEvent(QMouseEvent *);
-        void contextMenuEvent(QContextMenuEvent *);
-signals:
-        //! originate signal
-        //void mouse_doubleclick(QMouseEvent *);
-        void mouse_release(QMouseEvent *);
-        void context_menu(QContextMenuEvent *);
+    Q_OBJECT
+        public:
+    ExtendedLabel(const QString & text = "",
+                  QWidget *parent = 0);
+ protected:
+    //void mouseDoubleClickEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void contextMenuEvent(QContextMenuEvent *);
+ signals:
+    //! originate signal
+    //void mouse_doubleclick(QMouseEvent *);
+    void mouse_release(QMouseEvent *);
+    void context_menu(QContextMenuEvent *);
 };
 
 #endif

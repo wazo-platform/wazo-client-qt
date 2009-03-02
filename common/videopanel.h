@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -61,32 +61,32 @@
 
 class PlayerWidget: public QWidget
 {
-        Q_OBJECT
-public:
-        PlayerWidget(QWidget * parent = 0);
-protected:
-        virtual void closeEvent(QCloseEvent *);
-private:
-        bool startMPlayer();
-        bool stopMPlayer();
+    Q_OBJECT
+        public:
+    PlayerWidget(QWidget * parent = 0);
+ protected:
+    virtual void closeEvent(QCloseEvent *);
+ private:
+    bool startMPlayer();
+    bool stopMPlayer();
 
-private slots:
-        void catchOutput();
-        void pollCurrentTime();
-        // Dirige la timeline
-        void timeLineChanged(int);
-        // Play/stop
-        void switchPlayState();
-        void mplayerEnded(int, QProcess::ExitStatus);
-private:
-        QPushButton *controller;
-        QWidget *renderTarget;
-        QProcess *mplayerProcess;
-        bool isPlaying;
-        QSlider *timeLine;
-        QTimer *poller;
-        QTextEdit *log;
-        QString m_movie_url;
+    private slots:
+    void catchOutput();
+    void pollCurrentTime();
+    // Dirige la timeline
+    void timeLineChanged(int);
+    // Play/stop
+    void switchPlayState();
+    void mplayerEnded(int, QProcess::ExitStatus);
+ private:
+    QPushButton *controller;
+    QWidget *renderTarget;
+    QProcess *mplayerProcess;
+    bool isPlaying;
+    QSlider *timeLine;
+    QTimer *poller;
+    QTextEdit *log;
+    QString m_movie_url;
 };
 
 #endif /* __VIDEOPLAYERWIDGET_H__ */

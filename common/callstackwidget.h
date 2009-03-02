@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -60,32 +60,32 @@ class UserInfo;
  */
 class CallStackWidget : public QWidget
 {
-        Q_OBJECT
-public:
-        CallStackWidget(QWidget *);        //!< Constructor
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
+    Q_OBJECT
+        public:
+    CallStackWidget(QWidget *);        //!< Constructor
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
     void updateUser(UserInfo *);
-        void updateDisplay();
-        void hupchan(const QString &);
-        void transftonumberchan(const QString &);
-        void parkcall(const QString &);
-        void reset();
-        void monitorPeer(UserInfo *);
-protected:
-        void dragEnterEvent(QDragEnterEvent *event);
-        void dropEvent(QDropEvent *event);
-private:
-//        void emptyList();        //!< remove all calls from the list
-signals:
+    void updateDisplay();
+    void hupchan(const QString &);
+    void transftonumberchan(const QString &);
+    void parkcall(const QString &);
+    void reset();
+    void monitorPeer(UserInfo *);
+ protected:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+ private:
+    //        void emptyList();        //!< remove all calls from the list
+ signals:
     //! originate, transfer & atxfer signals
     void actionCall(const QString &,
                     const QString &,
                     const QString & dst = "");
     void changeTitle(const QString &);                //!< change Title
     void monitorPeerRequest(const QString &);        //!< send the userid of the new monitored peer
-private:
+ private:
     UserInfo * m_monitored_ui;  //!< user currently monitored
     QVBoxLayout * m_layout;        //!< Vertical Layout used
         

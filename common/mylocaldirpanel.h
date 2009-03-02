@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -54,23 +54,23 @@ class UserInfo;
  */
 class MyLocalDirPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        MyLocalDirPanel(BaseEngine *, QWidget * parent = 0);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void returnPressed();
-private:
-        void getDir();
-        void saveNew(const QStringList &);
+    Q_OBJECT
+        public:
+    MyLocalDirPanel(BaseEngine *, QWidget * parent = 0);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void returnPressed();
+ private:
+    void getDir();
+    void saveNew(const QStringList &);
         
-        BaseEngine * m_engine;
-        const UserInfo * m_ui;
+    BaseEngine * m_engine;
+    const UserInfo * m_ui;
         
-        QLineEdit * m_who;
-        QLineEdit * m_number;
-        QList<QStringList> m_localdir;
+    QLineEdit * m_who;
+    QLineEdit * m_number;
+    QList<QStringList> m_localdir;
 };
 
 #endif /* __MYLOCALDIRPANEL_H__ */

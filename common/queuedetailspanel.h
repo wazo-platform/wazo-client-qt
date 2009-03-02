@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -63,54 +63,54 @@ class UserInfo;
  */
 class QueuedetailsPanel : public QWidget
 {
-        Q_OBJECT
-public:
-        QueuedetailsPanel(BaseEngine *,
-                          const QVariant &,
-                          QWidget * parent = 0);
-        ~QueuedetailsPanel();
-signals:
-        void changeWatchedAgent(const QString &, bool); //!< select an agent to watch
-protected:
-        void timerEvent(QTimerEvent *);
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-        void newQueue(double, const QString &, const QString &, const QVariant &);
-        void setAgentList(double, const QVariant &);
-        void updatePeerAgent(double,
-                             const QString &,
-                             const QString &,
-                             const QVariant &);
-private slots:
-        void agentClicked();
-private:
-        void update();
+    Q_OBJECT
+        public:
+    QueuedetailsPanel(BaseEngine *,
+                      const QVariant &,
+                      QWidget * parent = 0);
+    ~QueuedetailsPanel();
+ signals:
+    void changeWatchedAgent(const QString &, bool); //!< select an agent to watch
+ protected:
+    void timerEvent(QTimerEvent *);
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+    void newQueue(double, const QString &, const QString &, const QVariant &);
+    void setAgentList(double, const QVariant &);
+    void updatePeerAgent(double,
+                         const QString &,
+                         const QString &,
+                         const QVariant &);
+    private slots:
+    void agentClicked();
+ private:
+    void update();
         
-        double m_timesrv;
-        QDateTime m_timeclt;
+    double m_timesrv;
+    QDateTime m_timeclt;
         
-        BaseEngine * m_engine;        //!< BaseEngine object
-        QGridLayout * m_gridlayout; //!< Layout
-        //QVBoxLayout * m_layout; //
+    BaseEngine * m_engine;        //!< BaseEngine object
+    QGridLayout * m_gridlayout; //!< Layout
+    //QVBoxLayout * m_layout; //
     //    QScrollArea * m_scrollarea;
-        //QWidget * m_widget;
+    //QWidget * m_widget;
         
-        QString m_astid;    //!< asterisk id
-        QString m_queueid;  //!< queue id
-        QLabel * m_queuelegend_agentid; //!< "Agent" label
-        QLabel * m_queuelegend_status;  //!< "Status" label
-        QLabel * m_queuelegend_paused;  //!< "Paused" label
-        QLabel * m_queuelegend_callstaken;  //!< "Call Taken" label
-        QLabel * m_label;       //!< queue name label
-        QHash<QString, QLabel *> m_agentlabels; //!< agents name
-        QHash<QString, QPushButton *> m_agentmore;  //!< "+" buttons
-        QHash<QString, QLabel *> m_agentstatus; //!< agents status
-        QHash<QString, QLabel *> m_agentpaused; //!< agents paused
-        QHash<QString, QLabel *> m_agentncalls; //!< agents number of calls
+    QString m_astid;    //!< asterisk id
+    QString m_queueid;  //!< queue id
+    QLabel * m_queuelegend_agentid; //!< "Agent" label
+    QLabel * m_queuelegend_status;  //!< "Status" label
+    QLabel * m_queuelegend_paused;  //!< "Paused" label
+    QLabel * m_queuelegend_callstaken;  //!< "Call Taken" label
+    QLabel * m_label;       //!< queue name label
+    QHash<QString, QLabel *> m_agentlabels; //!< agents name
+    QHash<QString, QPushButton *> m_agentmore;  //!< "+" buttons
+    QHash<QString, QLabel *> m_agentstatus; //!< agents status
+    QHash<QString, QLabel *> m_agentpaused; //!< agents paused
+    QHash<QString, QLabel *> m_agentncalls; //!< agents number of calls
         
-        QVariantMap m_agentlist;    //!< list of agents in queue
-        QVariantMap m_agentlists;   //!< list of agents in asterisk instance
+    QVariantMap m_agentlist;    //!< list of agents in queue
+    QVariantMap m_agentlists;   //!< list of agents in asterisk instance
 };
 
 #endif /* __QUEUEDETAILSPANEL_H__ */

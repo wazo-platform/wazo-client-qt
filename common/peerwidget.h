@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -62,24 +62,24 @@ class UserInfo;
  */
 class PeerWidget : public BasePeerWidget
 {
-        Q_OBJECT
-public:
-        PeerWidget(BaseEngine *, UserInfo *, const QVariant &);
-        ~PeerWidget();
-        void setName(const QString &);
-        void setEngine(BaseEngine *);
+    Q_OBJECT
+        public:
+    PeerWidget(BaseEngine *, UserInfo *, const QVariant &);
+    ~PeerWidget();
+    void setName(const QString &);
+    void setEngine(BaseEngine *);
     void setAgentToolTip(const QString &, const QStringList &);
     void setAgentState(const QString & color);
     void updatePresence();  //!< update presence information displayed
     void updatePhonesStates();
-private:
-        QHash<QString, QLabel *> m_lblphones;        //!< phone labels
+ private:
+    QHash<QString, QLabel *> m_lblphones;        //!< phone labels
         
-        QLabel * m_availlbl;        //!< Peer state display from XIVO CTI Client
-        ExtendedLabel * m_agentlbl;
-        QLabel * m_voicelbl;
-        QLabel * m_fwdlbl;
-        QLabel * m_textlbl;                //!< text label : to display peer name
+    QLabel * m_availlbl;        //!< Peer state display from XIVO CTI Client
+    ExtendedLabel * m_agentlbl;
+    QLabel * m_voicelbl;
+    QLabel * m_fwdlbl;
+    QLabel * m_textlbl;                //!< text label : to display peer name
         
     static QHash<QString, QPixmap> m_phones;        //!< phone icons
     static QHash<QString, QPixmap> m_persons;        //!< person icons

@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -60,43 +60,43 @@ class UserInfo;
  */
 class ConferencePanel : public QWidget
 {
-        Q_OBJECT
-public:
-        ConferencePanel(QWidget * parent = 0);
-        ~ConferencePanel();
-protected:
-        void timerEvent(QTimerEvent *);
-public slots:
-        void setUserInfo(const UserInfo *);
-        void meetmeEvent(double, const QVariant &);
-        void meetmeInit(double, const QVariant &);
-        void doMeetMeAction();
-        void setGuiOptions(const QVariant &);
-private:
-        void setProperties(double,
-                           const QString &,
-                           const QString &,
-                           const QString &,
-                           const QString &,
-                           const QString &,
-                           const QVariant &);
-        void addRoomTab(const QString &,
-                        const QString &,
-                        const QString &);
-        void delRoomTab(const QString &,
-                        const QString &);
+    Q_OBJECT
+        public:
+    ConferencePanel(QWidget * parent = 0);
+    ~ConferencePanel();
+ protected:
+    void timerEvent(QTimerEvent *);
+    public slots:
+    void setUserInfo(const UserInfo *);
+    void meetmeEvent(double, const QVariant &);
+    void meetmeInit(double, const QVariant &);
+    void doMeetMeAction();
+    void setGuiOptions(const QVariant &);
+ private:
+    void setProperties(double,
+                       const QString &,
+                       const QString &,
+                       const QString &,
+                       const QString &,
+                       const QString &,
+                       const QVariant &);
+    void addRoomTab(const QString &,
+                    const QString &,
+                    const QString &);
+    void delRoomTab(const QString &,
+                    const QString &);
         
-        QHash<QString, QLabel *> m_infos;
-        QHash<QString, QLabel *> m_timespent;
-        QHash<QString, QPushButton *> m_action_kick;
-        QHash<QString, QPushButton *> m_action_record;
-        QHash<QString, QPushButton *> m_action_mute;
-        QHash<QString, QGridLayout *> m_layout;
-        QTabWidget * m_tw;
-        QGridLayout * m_glayout;
-        const UserInfo * m_ui;
+    QHash<QString, QLabel *> m_infos;
+    QHash<QString, QLabel *> m_timespent;
+    QHash<QString, QPushButton *> m_action_kick;
+    QHash<QString, QPushButton *> m_action_record;
+    QHash<QString, QPushButton *> m_action_mute;
+    QHash<QString, QGridLayout *> m_layout;
+    QTabWidget * m_tw;
+    QGridLayout * m_glayout;
+    const UserInfo * m_ui;
  signals:
-        void meetmeAction(const QString &, const QString &);
+    void meetmeAction(const QString &, const QString &);
 };
 
 #endif
