@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -49,37 +49,37 @@
 /*! \brief Constructor
  */
 ExtendedLineEdit::ExtendedLineEdit(QWidget * parent)
-        : QLineEdit(parent)
+    : QLineEdit(parent)
 {
-        setAcceptDrops(true);
+    setAcceptDrops(true);
 }
 
 /*! \brief receive drop event
  */
 void ExtendedLineEdit::dropEvent(QDropEvent *)
 {
-        // qDebug() << "ExtendedLineEdit::dropEvent()" << event->mimeData()->text() << event->pos();
+    // qDebug() << "ExtendedLineEdit::dropEvent()" << event->mimeData()->text() << event->pos();
 }
 
 
 FileNameLineEdit::FileNameLineEdit(QWidget * parent)
-        : QLineEdit( parent )
+    : QLineEdit( parent )
 {
 }
 
 void FileNameLineEdit::dropEvent(QDropEvent * event)
 {
-        // qDebug() << "FileNameLineEdit::dropEvent" << event;
-        QList<QUrl> urls = event->mimeData()->urls();
-        if (urls.size() > 0) {
-                QUrl url = urls[0];
-                QLineEdit::setText(url.toLocalFile());
-        }
-        // QLineEdit::dropEvent(event);
+    // qDebug() << "FileNameLineEdit::dropEvent" << event;
+    QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.size() > 0) {
+        QUrl url = urls[0];
+        QLineEdit::setText(url.toLocalFile());
+    }
+    // QLineEdit::dropEvent(event);
 }
 
 void FileNameLineEdit::dragEnterEvent(QDragEnterEvent * event)
 {
-        // qDebug() << "FileNameLineEdit::dragEnterEvent" << event;
-        event->acceptProposedAction();
+    // qDebug() << "FileNameLineEdit::dragEnterEvent" << event;
+    event->acceptProposedAction();
 }

@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -50,17 +50,17 @@
 /*! \brief Constructor
  */
 XletprotoPanel::XletprotoPanel(BaseEngine * engine, QWidget * parent)
-        : QWidget(parent), m_engine(engine), m_ui(NULL)
+    : QWidget(parent), m_engine(engine), m_ui(NULL)
 {
-        qDebug() << "XletprotoPanel::XletprotoPanel()";
+    qDebug() << "XletprotoPanel::XletprotoPanel()";
         
-        // replace by whatever you need
-        QGridLayout * glayout = new QGridLayout(this);
-        QLabel * title = new QLabel(tr("Xlet Example"));
-        glayout->addWidget( title, 0, 0, Qt::AlignCenter );
-        glayout->setRowStretch( 0, 1 );
-        glayout->setColumnStretch( 0, 1 );
-        //
+    // replace by whatever you need
+    QGridLayout * glayout = new QGridLayout(this);
+    QLabel * title = new QLabel(tr("Xlet Example"));
+    glayout->addWidget( title, 0, 0, Qt::AlignCenter );
+    glayout->setRowStretch( 0, 1 );
+    glayout->setColumnStretch( 0, 1 );
+    //
 }
 
 XletprotoPanel::~XletprotoPanel()
@@ -73,6 +73,6 @@ void XletprotoPanel::setGuiOptions(const QVariant &)
 
 void XletprotoPanel::setUserInfo(const UserInfo * ui)
 {
-        m_ui = ui;
-        qDebug() << "XletprotoPanel::setUserInfo()" << m_ui->fullname();
+    m_ui = ui;
+    qDebug() << "XletprotoPanel::setUserInfo()" << m_ui->fullname();
 }

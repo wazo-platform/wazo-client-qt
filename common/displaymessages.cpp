@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -53,23 +53,23 @@
  * Set up the layout and the table widget.
  */
 DisplayMessagesPanel::DisplayMessagesPanel(QWidget * parent)
-        : QWidget(parent)
+    : QWidget(parent)
 {
-        QVBoxLayout * vlayout = new QVBoxLayout(this);
-        vlayout->setMargin(0);
-        // QLabel * lbl = new QLabel( tr("Messages :"), this );
-        m_table = new QTableWidget( this );
-        m_table->setAlternatingRowColors(true);
-        m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-        m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
-        m_table->setColumnCount( 2 );
-        QStringList labels;
-        labels << tr("Time Stamp");
-        labels << tr("Message");
-        m_table->setHorizontalHeaderLabels(labels);
+    QVBoxLayout * vlayout = new QVBoxLayout(this);
+    vlayout->setMargin(0);
+    // QLabel * lbl = new QLabel( tr("Messages :"), this );
+    m_table = new QTableWidget( this );
+    m_table->setAlternatingRowColors(true);
+    m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+    m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
+    m_table->setColumnCount( 2 );
+    QStringList labels;
+    labels << tr("Time Stamp");
+    labels << tr("Message");
+    m_table->setHorizontalHeaderLabels(labels);
 
-        //        vlayout->addWidget( lbl, 0, Qt::AlignCenter );
-        vlayout->addWidget( m_table, 0 );
+    //        vlayout->addWidget( lbl, 0, Qt::AlignCenter );
+    vlayout->addWidget( m_table, 0 );
 }
 
 /*! \brief add a message to the list
@@ -78,16 +78,16 @@ DisplayMessagesPanel::DisplayMessagesPanel(QWidget * parent)
  */
 void DisplayMessagesPanel::addMessage(const QString & str)
 {
-        //qDebug() << "DisplayMessagesPanel::addMessage()" << str;
-        if(str.size() > 0) {
-                QDateTime datetime = QDateTime::currentDateTime();
-                m_table->insertRow( 0 );
-                QTableWidgetItem * item1 = new QTableWidgetItem( datetime.toString( Qt::ISODate ) );
-                item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-                m_table->setItem( 0, 0, item1 );
-                QTableWidgetItem * item2 = new QTableWidgetItem( str );
-                item2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-                m_table->setItem( 0, 1, item2 );
-                m_table->resizeColumnsToContents();
-        }
+    //qDebug() << "DisplayMessagesPanel::addMessage()" << str;
+    if(str.size() > 0) {
+        QDateTime datetime = QDateTime::currentDateTime();
+        m_table->insertRow( 0 );
+        QTableWidgetItem * item1 = new QTableWidgetItem( datetime.toString( Qt::ISODate ) );
+        item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
+        m_table->setItem( 0, 0, item1 );
+        QTableWidgetItem * item2 = new QTableWidgetItem( str );
+        item2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
+        m_table->setItem( 0, 1, item2 );
+        m_table->resizeColumnsToContents();
+    }
 }

@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -56,17 +56,17 @@ class UserInfo;
  */
 class DatetimePanel : public QWidget
 {
-        Q_OBJECT
-public:
-        DatetimePanel(QWidget * parent = 0);
-protected:
-        void timerEvent(QTimerEvent *);                //!< receive timer events
-public slots:
-        void setGuiOptions(const QVariant &);
-        void setUserInfo(const UserInfo *);
-private:
-        QGridLayout * m_gridlayout;
-        QLabel * m_datetime;
+    Q_OBJECT
+        public:
+    DatetimePanel(QWidget * parent = 0);
+ protected:
+    void timerEvent(QTimerEvent *);                //!< receive timer events
+    public slots:
+    void setGuiOptions(const QVariant &);
+    void setUserInfo(const UserInfo *);
+ private:
+    QGridLayout * m_gridlayout;
+    QLabel * m_datetime;
 };
 
 #endif /* __DATETIMEPANEL_H__ */

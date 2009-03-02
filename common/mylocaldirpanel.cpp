@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -52,28 +52,28 @@
 /*! \brief Constructor
  */
 MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
-        : QWidget(parent), m_engine(engine), m_ui(NULL)
+    : QWidget(parent), m_engine(engine), m_ui(NULL)
 {
-        qDebug() << "MyLocalDirPanel::MyLocalDirPanel()";
+    qDebug() << "MyLocalDirPanel::MyLocalDirPanel()";
         
-        // replace by whatever you need
-        QVBoxLayout * vlayout = new QVBoxLayout(this);
-        QHBoxLayout * hlayout = new QHBoxLayout();
-        QLabel * title = new QLabel(tr("New Entry"));
-        QLabel * dummy = new QLabel();
-        m_who = new QLineEdit();
-        m_number = new QLineEdit();
-        hlayout->addWidget(title);
-        hlayout->addWidget(m_who);
-        hlayout->addWidget(m_number);
-        vlayout->addLayout(hlayout);
-        vlayout->addWidget(dummy);
+    // replace by whatever you need
+    QVBoxLayout * vlayout = new QVBoxLayout(this);
+    QHBoxLayout * hlayout = new QHBoxLayout();
+    QLabel * title = new QLabel(tr("New Entry"));
+    QLabel * dummy = new QLabel();
+    m_who = new QLineEdit();
+    m_number = new QLineEdit();
+    hlayout->addWidget(title);
+    hlayout->addWidget(m_who);
+    hlayout->addWidget(m_number);
+    vlayout->addLayout(hlayout);
+    vlayout->addWidget(dummy);
 
-        connect( m_who, SIGNAL(returnPressed()),
-                 this, SLOT(returnPressed()) );
-        connect( m_number, SIGNAL(returnPressed()),
-                 this, SLOT(returnPressed()) );
-        //
+    connect( m_who, SIGNAL(returnPressed()),
+             this, SLOT(returnPressed()) );
+    connect( m_number, SIGNAL(returnPressed()),
+             this, SLOT(returnPressed()) );
+    //
 }
 
 void MyLocalDirPanel::setGuiOptions(const QVariant &)
@@ -82,36 +82,36 @@ void MyLocalDirPanel::setGuiOptions(const QVariant &)
 
 void MyLocalDirPanel::setUserInfo(const UserInfo * ui)
 {
-        m_ui = ui;
-        // qDebug() << "MyLocalDirPanel::setUserInfo()" << m_ui->fullname();
+    m_ui = ui;
+    // qDebug() << "MyLocalDirPanel::setUserInfo()" << m_ui->fullname();
 }
 
 void MyLocalDirPanel::returnPressed()
 {
-        qDebug() << "MyLocalDirPanel::returnPressed()" << m_who->text() << m_number->text();
-        QString entry = m_who->text();
-        bool already = false;
-        foreach(QStringList qsl, m_localdir)
-                if(qsl[0] == entry) {
-                        already = true;
-                        break;
-                }
-        if(! already) {
-                QStringList qsl = (QStringList() << m_who->text() << m_number->text());
-                m_localdir.append(qsl);
-                saveNew(qsl);
-                qDebug() << m_localdir;
+    qDebug() << "MyLocalDirPanel::returnPressed()" << m_who->text() << m_number->text();
+    QString entry = m_who->text();
+    bool already = false;
+    foreach(QStringList qsl, m_localdir)
+        if(qsl[0] == entry) {
+            already = true;
+            break;
         }
+    if(! already) {
+        QStringList qsl = (QStringList() << m_who->text() << m_number->text());
+        m_localdir.append(qsl);
+        saveNew(qsl);
+        qDebug() << m_localdir;
+    }
 }
 
 void MyLocalDirPanel::getDir()
 {
-        qDebug() << "MyLocalDirPanel::getDir()";
+    qDebug() << "MyLocalDirPanel::getDir()";
 }
 
 void MyLocalDirPanel::saveNew(const QStringList & qsl)
 {
-        qDebug() << "MyLocalDirPanel::saveNew()" << qsl;
-        // QSettings * settings = m_engine->getSettings();
-        // settings->setValue("localdirectory/" + qsl[0], qsl[1]);
+    qDebug() << "MyLocalDirPanel::saveNew()" << qsl;
+    // QSettings * settings = m_engine->getSettings();
+    // settings->setValue("localdirectory/" + qsl[0], qsl[1]);
 }

@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -54,57 +54,57 @@
 /*! \brief Constructor
  */
 CallCampaignPanel::CallCampaignPanel(QWidget * parent)
-        : QWidget(parent), m_ui(NULL)
+    : QWidget(parent), m_ui(NULL)
 {
-        qDebug() << "CallCampaignPanel::CallCampaignPanel()";
+    qDebug() << "CallCampaignPanel::CallCampaignPanel()";
         
-        m_vlayout = new QVBoxLayout(this);
-        m_hlayout1 = new QHBoxLayout();
-        m_hlayout2 = new QHBoxLayout();
-        m_glayout = new QGridLayout();
+    m_vlayout = new QVBoxLayout(this);
+    m_hlayout1 = new QHBoxLayout();
+    m_hlayout2 = new QHBoxLayout();
+    m_glayout = new QGridLayout();
 
-        QLabel * label1 = new QLabel(tr("File to load"), this);
-        m_openFileNameLabel = new QLineEdit("", this);
-//         connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
-//                 this, SLOT(fileNameChanged(const QString &)));
-        QPushButton * openFileNamesButton = new QPushButton( tr("Browse"), this);
-        connect(openFileNamesButton, SIGNAL(clicked()),
-                this, SLOT(setOpenFileName()));
-        QPushButton * loadFile = new QPushButton( tr("Load"), this);
-        connect(loadFile, SIGNAL(clicked()),
-                this, SLOT(loadFileClicked()));
+    QLabel * label1 = new QLabel(tr("File to load"), this);
+    m_openFileNameLabel = new QLineEdit("", this);
+    //         connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
+    //                 this, SLOT(fileNameChanged(const QString &)));
+    QPushButton * openFileNamesButton = new QPushButton( tr("Browse"), this);
+    connect(openFileNamesButton, SIGNAL(clicked()),
+            this, SLOT(setOpenFileName()));
+    QPushButton * loadFile = new QPushButton( tr("Load"), this);
+    connect(loadFile, SIGNAL(clicked()),
+            this, SLOT(loadFileClicked()));
 
-        QLabel * label2 = new QLabel(tr("Server"), this);
-        QPushButton * getCallsButton = new QPushButton( tr("Get"), this);
-        QPushButton * startCallsButton = new QPushButton( tr("Start"), this);
-        QPushButton * stopCallsButton = new QPushButton( tr("Stop"), this);
-        QPushButton * clearCallsButton = new QPushButton( tr("Clear"), this);
-        connect(getCallsButton, SIGNAL(clicked()),
-                this, SLOT(getCalls()));
-        connect(startCallsButton, SIGNAL(clicked()),
-                this, SLOT(startCalls()));
-        connect(stopCallsButton, SIGNAL(clicked()),
-                this, SLOT(stopCalls()));
-        connect(clearCallsButton, SIGNAL(clicked()),
-                this, SLOT(clearCalls()));
+    QLabel * label2 = new QLabel(tr("Server"), this);
+    QPushButton * getCallsButton = new QPushButton( tr("Get"), this);
+    QPushButton * startCallsButton = new QPushButton( tr("Start"), this);
+    QPushButton * stopCallsButton = new QPushButton( tr("Stop"), this);
+    QPushButton * clearCallsButton = new QPushButton( tr("Clear"), this);
+    connect(getCallsButton, SIGNAL(clicked()),
+            this, SLOT(getCalls()));
+    connect(startCallsButton, SIGNAL(clicked()),
+            this, SLOT(startCalls()));
+    connect(stopCallsButton, SIGNAL(clicked()),
+            this, SLOT(stopCalls()));
+    connect(clearCallsButton, SIGNAL(clicked()),
+            this, SLOT(clearCalls()));
         
-        m_hlayout1->addWidget(label1);
-        m_hlayout1->addWidget(m_openFileNameLabel);
-        m_hlayout1->addWidget(openFileNamesButton);
-        m_hlayout1->addWidget(loadFile);
+    m_hlayout1->addWidget(label1);
+    m_hlayout1->addWidget(m_openFileNameLabel);
+    m_hlayout1->addWidget(openFileNamesButton);
+    m_hlayout1->addWidget(loadFile);
         
-        m_hlayout2->addWidget(label2);
-        m_hlayout2->addWidget(getCallsButton);
-        m_hlayout2->addWidget(startCallsButton);
-        m_hlayout2->addWidget(stopCallsButton);
-        m_hlayout2->addWidget(clearCallsButton);
+    m_hlayout2->addWidget(label2);
+    m_hlayout2->addWidget(getCallsButton);
+    m_hlayout2->addWidget(startCallsButton);
+    m_hlayout2->addWidget(stopCallsButton);
+    m_hlayout2->addWidget(clearCallsButton);
         
-        m_vlayout->addLayout(m_hlayout1);
-        m_vlayout->addLayout(m_hlayout2);
-        m_vlayout->addLayout(m_glayout);
-        m_vlayout->addStretch();
+    m_vlayout->addLayout(m_hlayout1);
+    m_vlayout->addLayout(m_hlayout2);
+    m_vlayout->addLayout(m_glayout);
+    m_vlayout->addStretch();
         
-        m_glayout->setColumnStretch(2, 1);
+    m_glayout->setColumnStretch(2, 1);
 }
 
 void CallCampaignPanel::setGuiOptions(const QVariant &)
@@ -113,158 +113,158 @@ void CallCampaignPanel::setGuiOptions(const QVariant &)
 
 void CallCampaignPanel::setUserInfo(const UserInfo * ui)
 {
-        m_ui = ui;
-        // qDebug() << "CallCampaignPanel::setUserInfo()" << m_ui->fullname();
+    m_ui = ui;
+    // qDebug() << "CallCampaignPanel::setUserInfo()" << m_ui->fullname();
 }
 
 void CallCampaignPanel::setOpenFileName()
 {
-        // qDebug() << "CallCampaignPanel::setOpenFileName()";
-        QString selectedFilter;
-        QString fileName = QFileDialog::getOpenFileName(this,
-                                                        tr("Open PhoneList File"),
-                                                        m_openFileNameLabel->text(),
-                                                        tr("CSV Files (*.csv);;All Files (*)"),
-                                                        &selectedFilter);
-        if (!fileName.isEmpty())
-                m_openFileNameLabel->setText(fileName);
+    // qDebug() << "CallCampaignPanel::setOpenFileName()";
+    QString selectedFilter;
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open PhoneList File"),
+                                                    m_openFileNameLabel->text(),
+                                                    tr("CSV Files (*.csv);;All Files (*)"),
+                                                    &selectedFilter);
+    if (!fileName.isEmpty())
+        m_openFileNameLabel->setText(fileName);
 }
 
 
 void CallCampaignPanel::addNumber(const QString & line)
 {
-        if(line.size() > 0) {
-                QString numbertoadd = line.split(";")[0].trimmed();
-                if(! m_numbers.keys().contains(numbertoadd)) {
-                        m_numbers[numbertoadd] = "new";
-                        m_numlabel[numbertoadd] = new QLabel(numbertoadd);
-                        m_qpbstart[numbertoadd] = new QPushButton();
-                        m_qpbstart[numbertoadd]->setIcon(QIcon(":/images/bookmark.png"));
-                        m_qpbstart[numbertoadd]->setIconSize(QSize(16, 16));
-                        int nlines = m_glayout->rowCount();
-                        m_glayout->addWidget(m_numlabel[numbertoadd], nlines, 0);
-                        m_glayout->addWidget(m_qpbstart[numbertoadd], nlines, 1);
-                }
+    if(line.size() > 0) {
+        QString numbertoadd = line.split(";")[0].trimmed();
+        if(! m_numbers.keys().contains(numbertoadd)) {
+            m_numbers[numbertoadd] = "new";
+            m_numlabel[numbertoadd] = new QLabel(numbertoadd);
+            m_qpbstart[numbertoadd] = new QPushButton();
+            m_qpbstart[numbertoadd]->setIcon(QIcon(":/images/bookmark.png"));
+            m_qpbstart[numbertoadd]->setIconSize(QSize(16, 16));
+            int nlines = m_glayout->rowCount();
+            m_glayout->addWidget(m_numlabel[numbertoadd], nlines, 0);
+            m_glayout->addWidget(m_qpbstart[numbertoadd], nlines, 1);
         }
+    }
 }
 
 void CallCampaignPanel::fileNameChanged(const QString &)
 {
-//         if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
-//                 m_sendButton->setEnabled(true);
-//         } else {
-//                 m_sendButton->setEnabled(false);
-//         }
+    //         if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
+    //                 m_sendButton->setEnabled(true);
+    //         } else {
+    //                 m_sendButton->setEnabled(false);
+    //         }
 }
 
 void CallCampaignPanel::requestFileListResult(const QVariant & result)
 {
-        // qDebug() << "CallCampaignPanel::requestFileListResult()" << result;
-        QString action = result.toMap()["command"].toString();
+    // qDebug() << "CallCampaignPanel::requestFileListResult()" << result;
+    QString action = result.toMap()["command"].toString();
         
-        if(action == "fetchlist") {
-                foreach(QString number, result.toMap()["list"].toStringList())
-                        addNumber(number);
-        } else if(action == "callstarted") {
-                QString number = result.toMap()["number"].toString();
-                m_qpbstart[number]->setIcon(QIcon(":/images/reload.png"));
-                m_numbers[number] = "ongoing";
-        } else if(action == "callstopped") {
-                QString number = result.toMap()["number"].toString();
-                m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
-                m_numbers[number] = "stopped";
-        } else if(action == "callnext") {
-                QString number = result.toMap()["number"].toString();
-                m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
-                m_numbers[number] = "stopped";
-                checkStatuses();
-        }
+    if(action == "fetchlist") {
+        foreach(QString number, result.toMap()["list"].toStringList())
+            addNumber(number);
+    } else if(action == "callstarted") {
+        QString number = result.toMap()["number"].toString();
+        m_qpbstart[number]->setIcon(QIcon(":/images/reload.png"));
+        m_numbers[number] = "ongoing";
+    } else if(action == "callstopped") {
+        QString number = result.toMap()["number"].toString();
+        m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
+        m_numbers[number] = "stopped";
+    } else if(action == "callnext") {
+        QString number = result.toMap()["number"].toString();
+        m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
+        m_numbers[number] = "stopped";
+        checkStatuses();
+    }
 }
 
 void CallCampaignPanel::checkStatuses()
 {
-        QString toexec;
-        QStringList keys = m_numbers.keys();
-        keys.sort();
-        foreach(QString key, keys) {
-                if(m_numbers[key] == "ongoing") {
-                        break;
-                } else if(m_numbers[key] == "new") {
-                        toexec = key;
-                        break;
-                }
+    QString toexec;
+    QStringList keys = m_numbers.keys();
+    keys.sort();
+    foreach(QString key, keys) {
+        if(m_numbers[key] == "ongoing") {
+            break;
+        } else if(m_numbers[key] == "new") {
+            toexec = key;
+            break;
         }
-        if(toexec.size() > 0) {
-                qDebug() << "CallCampaignPanel::checkStatuses()" << toexec;
-                requestFileList("startcall " + toexec);
-        }
+    }
+    if(toexec.size() > 0) {
+        qDebug() << "CallCampaignPanel::checkStatuses()" << toexec;
+        requestFileList("startcall " + toexec);
+    }
 }
 
 void CallCampaignPanel::getCalls()
 {
-        // qDebug() << "CallCampaignPanel::getCalls()";
-        requestFileList("fetchlist");
+    // qDebug() << "CallCampaignPanel::getCalls()";
+    requestFileList("fetchlist");
 }
 
 void CallCampaignPanel::startCalls()
 {
-        // qDebug() << "CallCampaignPanel::startCalls()";
-        checkStatuses();
-        // requestFileList("fetchlist");
+    // qDebug() << "CallCampaignPanel::startCalls()";
+    checkStatuses();
+    // requestFileList("fetchlist");
 }
 
 void CallCampaignPanel::stopCalls()
 {
-        // qDebug() << "CallCampaignPanel::stopCalls()";
-        QString toexec;
-        QStringList keys = m_numbers.keys();
-        keys.sort();
-        foreach(QString key, keys) {
-                if(m_numbers[key] == "ongoing") {
-                        toexec = key;
-                        break;
-                }
+    // qDebug() << "CallCampaignPanel::stopCalls()";
+    QString toexec;
+    QStringList keys = m_numbers.keys();
+    keys.sort();
+    foreach(QString key, keys) {
+        if(m_numbers[key] == "ongoing") {
+            toexec = key;
+            break;
         }
-        if(toexec.size() > 0) {
-                requestFileList("stopcall " + toexec);
-        }
+    }
+    if(toexec.size() > 0) {
+        requestFileList("stopcall " + toexec);
+    }
 }
 
 void CallCampaignPanel::clearCalls()
 {
-        // qDebug() << "CallCampaignPanel::clearCalls()";
-        QStringList keys = m_numbers.keys();
-        foreach(QString key, m_numbers.keys()) {
-                if(m_numbers[key] == "stopped") {
-                        m_numbers.remove(key);
-                        delete m_qpbstart[key];
-                        m_qpbstart.remove(key);
-                        delete m_numlabel[key];
-                        m_numlabel.remove(key);
-                }
+    // qDebug() << "CallCampaignPanel::clearCalls()";
+    QStringList keys = m_numbers.keys();
+    foreach(QString key, m_numbers.keys()) {
+        if(m_numbers[key] == "stopped") {
+            m_numbers.remove(key);
+            delete m_qpbstart[key];
+            m_qpbstart.remove(key);
+            delete m_numlabel[key];
+            m_numlabel.remove(key);
         }
+    }
 }
 
 void CallCampaignPanel::loadFileClicked()
 {
-        qDebug() << "CallCampaignPanel::loadFileClicked()" << m_openFileNameLabel->text();
-        if(m_openFileNameLabel->text().size() == 0)
-                return;
+    qDebug() << "CallCampaignPanel::loadFileClicked()" << m_openFileNameLabel->text();
+    if(m_openFileNameLabel->text().size() == 0)
+        return;
         
-        QFile * qf = new QFile(m_openFileNameLabel->text());
-        qf->open(QFile::ReadOnly);
-        QString line = "dummy";
-        int nlines = 0;
-        while(line.size() > 0) {
-                QByteArray data = qf->readLine();
-                line = QString::fromUtf8(data);
-                addNumber(line);
-                nlines ++;
-        }
-        qDebug() << nlines << "read";
+    QFile * qf = new QFile(m_openFileNameLabel->text());
+    qf->open(QFile::ReadOnly);
+    QString line = "dummy";
+    int nlines = 0;
+    while(line.size() > 0) {
+        QByteArray data = qf->readLine();
+        line = QString::fromUtf8(data);
+        addNumber(line);
+        nlines ++;
+    }
+    qDebug() << nlines << "read";
         
-//         QByteArray * filedata = new QByteArray();
-//         filedata->append(qf->readAll());
-        qf->close();
-        //        qDebug() << "CallCampaignPanel::fileNameChanged() size = " << filedata->size();
+    //         QByteArray * filedata = new QByteArray();
+    //         filedata->append(qf->readAll());
+    qf->close();
+    //        qDebug() << "CallCampaignPanel::fileNameChanged() size = " << filedata->size();
 }

@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -62,71 +62,71 @@
  */
 int main(int argc, char ** argv)
 {
-        QString locale = QLocale::system().name();
-        // QApplication::setStyle(new XIVOCTIStyle());
-        QCoreApplication::setOrganizationName("XIVO");
-        QCoreApplication::setOrganizationDomain("xivo.fr");
-        QCoreApplication::setApplicationName("XIVO_Client");
-        QApplication app(argc, argv);
-        QSettings * settings = new QSettings(QSettings::IniFormat,
-                                             QSettings::UserScope,
-                                             QCoreApplication::organizationName(),
-                                             QCoreApplication::applicationName());
-        qDebug() << "style" << app.style() << settings->fileName();
-        if(argc > 1)
-                settings->setValue("profile/default", argv[1]);
-        QString qsskind = settings->value("display/qss", "none").toString();
-        QFile qssFile(":/common/" + qsskind + ".qss");
-        QString qssStr;
-        if(qssFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                qssStr = qssFile.readAll();
-                qssFile.close();
-        }
-        app.setStyleSheet(qssStr);
-        app.setWindowIcon(QIcon(":/images/xivoicon.png"));
-        
-        QTranslator qtTranslator_xivo, qtTranslator_qt;
-        QString forcelocale = settings->value("display/forcelocale", "").toString();
-        if(forcelocale.size() > 0)
-                locale = forcelocale;
-        qtTranslator_xivo.load(QString(":/xivoclient_") + locale);
-        qtTranslator_qt.load(QString(":/qt_") + locale);
-        // QLibraryInfo::location(QLibraryInfo::TranslationsPath)
-        app.installTranslator(&qtTranslator_xivo);
-        app.installTranslator(&qtTranslator_qt);
-        app.setQuitOnLastWindowClosed(false);
-        
-        BaseEngine * engine = new BaseEngine(settings);
-        
-        QString info_osname;
-        QString info_endianness;
-        if(QSysInfo::ByteOrder == 0)
-                info_endianness = "BE";
-        else
-                info_endianness = "LE";
+    QString locale = QLocale::system().name();
+    // QApplication::setStyle(new XIVOCTIStyle());
+    QCoreApplication::setOrganizationName("XIVO");
+    QCoreApplication::setOrganizationDomain("xivo.fr");
+    QCoreApplication::setApplicationName("XIVO_Client");
+    QApplication app(argc, argv);
+    QSettings * settings = new QSettings(QSettings::IniFormat,
+                                         QSettings::UserScope,
+                                         QCoreApplication::organizationName(),
+                                         QCoreApplication::applicationName());
+    qDebug() << "style" << app.style() << settings->fileName();
+    if(argc > 1)
+        settings->setValue("profile/default", argv[1]);
+    QString qsskind = settings->value("display/qss", "none").toString();
+    QFile qssFile(QString(":/common/%1.qss").arg(qsskind));
+    QString qssStr;
+    if(qssFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qssStr = qssFile.readAll();
+        qssFile.close();
+    }
+    app.setStyleSheet(qssStr);
+    app.setWindowIcon(QIcon(":/images/xivoicon.png"));
+    
+    QTranslator qtTranslator_xivo, qtTranslator_qt;
+    QString forcelocale = settings->value("display/forcelocale", "").toString();
+    if(forcelocale.size() > 0)
+        locale = forcelocale;
+    qtTranslator_xivo.load(QString(":/xivoclient_%1").arg(locale));
+    qtTranslator_qt.load(QString(":/qt_%1").arg(locale));
+    // QLibraryInfo::location(QLibraryInfo::TranslationsPath)
+    app.installTranslator(&qtTranslator_xivo);
+    app.installTranslator(&qtTranslator_qt);
+    app.setQuitOnLastWindowClosed(false);
+    
+    BaseEngine * engine = new BaseEngine(settings);
+    
+    QString info_osname;
+    QString info_endianness;
+    if(QSysInfo::ByteOrder == 0)
+        info_endianness = "BE";
+    else
+        info_endianness = "LE";
 #if defined(Q_WS_X11)
-        info_osname = "X11-" + info_endianness;
+    info_osname = QString("X11-%1").arg(info_endianness);
 #elif defined(Q_WS_WIN)
-        info_osname = "WIN-" + info_endianness + "-0x" + QString::number(QSysInfo::WindowsVersion, 16).toUpper();
+    info_osname = QString("WIN-%1-0x%2").arg(info_endianness).arg(QSysInfo::WindowsVersion, 2, 16, QChar('0'));
 #elif defined(Q_WS_MAC)
-        info_osname = "MAC-" + info_endianness + "-0x" + QString::number(QSysInfo::MacintoshVersion, 16).toUpper();
+    info_osname = QString("MAC-%1-0x%2").arg(info_endianness).arg(QSysInfo::MacintoshVersion, 2, 16, QChar('0'));
 #else
-        info_osname = "unknown-" + info_endianness;
+    info_osname = QString("unknown-%1").arg(info_endianness);
 #endif
-        qDebug() << "main() osname=" << info_osname << "locale=" << locale;
-
-        MainWidget main(engine, info_osname);
-        
-        //main.dumpObjectTree();
-        app.setProperty("stopper", "lastwindow");
-        
-        // setting this connection breeds the following behaviour :
-        //  * exit of config window when systray-only => disconnects from server
-        // there seemed to be a case when this was useful however ...
-        //    we let this commented until a relevant use case is met again
-        // QObject::connect( &app, SIGNAL(lastWindowClosed()),
-        // engine, SLOT(stop()) );
-        
-        //engine.startTimer(1000);
-        return app.exec();
+    qDebug() << "main() osname=" << info_osname << "locale=" << locale;
+    
+    MainWidget main(engine, info_osname);
+    
+    //main.dumpObjectTree();
+    app.setProperty("stopper", "lastwindow");
+    
+    // setting this connection breeds the following behaviour :
+    //  * exit of config window when systray-only => disconnects from server
+    // there seemed to be a case when this was useful however ...
+    //    we let this commented until a relevant use case is met again
+    // QObject::connect( &app, SIGNAL(lastWindowClosed()),
+    // engine, SLOT(stop()) );
+    
+    //engine.startTimer(1000);
+    return app.exec();
 }

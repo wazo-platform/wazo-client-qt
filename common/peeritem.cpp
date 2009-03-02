@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -49,22 +49,22 @@
 /*! \brief Constructor
  */
 PeerItem::PeerItem(UserInfo * ui)
-        : m_ui(ui)
+    : m_ui(ui)
 {
-        m_peerwidget = NULL;
+    m_peerwidget = NULL;
 }
 
 PeerItem::PeerItem()
 {
-        m_peerwidget = NULL;
+    m_peerwidget = NULL;
 }
 
 /*! \brief Copy constructor
  */
 PeerItem::PeerItem(const PeerItem & peer)
 {
-        m_ui = peer.m_ui;
-        m_peerwidget = peer.m_peerwidget;
+    m_ui = peer.m_ui;
+    m_peerwidget = peer.m_peerwidget;
 }
 
 /*! \brief update status of the peer
@@ -73,16 +73,16 @@ PeerItem::PeerItem(const PeerItem & peer)
  */
 void PeerItem::updateStatus()
 {
-        if(m_peerwidget != NULL)
-                updateDisplayedStatus();
+    if(m_peerwidget != NULL)
+        updateDisplayedStatus();
 }
 
 void PeerItem::updateAgentStatus(const QVariant & agentstatus)
 {
-        // qDebug() << "PeerItem::updateAgentStatus()" << agentstatus;
-        m_agentstatus = agentstatus;
-        if(m_peerwidget != NULL)
-                updateDisplayedStatus();
+    // qDebug() << "PeerItem::updateAgentStatus()" << agentstatus;
+    m_agentstatus = agentstatus;
+    if(m_peerwidget != NULL)
+        updateDisplayedStatus();
 }
 
 /*! \brief update channel list
@@ -90,15 +90,15 @@ void PeerItem::updateAgentStatus(const QVariant & agentstatus)
 #if 0
 void PeerItem::updateChans(const QVariant & chanlist)
 {
-        QVariantMap tmpchanlist;
-        foreach(QString ref, chanlist.toMap().keys()) {
-                QString status = chanlist.toMap()[ref].toMap()["status"].toString();
-                if(status != CHAN_STATUS_HANGUP)
-                        tmpchanlist[ref] = chanlist.toMap()[ref];
-        }
-        m_chanlist = tmpchanlist;
-        if(m_peerwidget != NULL)
-                updateDisplayedChans();
+    QVariantMap tmpchanlist;
+    foreach(QString ref, chanlist.toMap().keys()) {
+        QString status = chanlist.toMap()[ref].toMap()["status"].toString();
+        if(status != CHAN_STATUS_HANGUP)
+            tmpchanlist[ref] = chanlist.toMap()[ref];
+    }
+    m_chanlist = tmpchanlist;
+    if(m_peerwidget != NULL)
+        updateDisplayedChans();
 }
 #endif
 
@@ -106,10 +106,10 @@ void PeerItem::updateChans(const QVariant & chanlist)
  */
 void PeerItem::updateName(const QString & newname)
 {
-        if(newname != m_ui->fullname())
-                m_ui->setFullName(newname);
-        if(m_peerwidget != NULL)
-                updateDisplayedName();
+    if(newname != m_ui->fullname())
+        m_ui->setFullName(newname);
+    if(m_peerwidget != NULL)
+        updateDisplayedName();
 }
 
 /*! \brief update status of the peer
@@ -118,79 +118,79 @@ void PeerItem::updateName(const QString & newname)
  */
 void PeerItem::updateDisplayedStatus()
 {
-        if(m_peerwidget == NULL)
-                return;
+    if(m_peerwidget == NULL)
+        return;
         
-        // qDebug() << "PeerItem::updateDisplayedStatus()";
-        m_peerwidget->updatePresence();
+    // qDebug() << "PeerItem::updateDisplayedStatus()";
+    m_peerwidget->updatePresence();
         
-        m_peerwidget->updatePhonesStates();      
+    m_peerwidget->updatePhonesStates();      
         
         
-        QString action = m_agentstatus.toMap()["action"].toString();
-        QString astid = m_agentstatus.toMap()["astid"].toString();
-        QString agentnum = m_agentstatus.toMap()["agent_channel"].toString().mid(6);
-        QString queuename = m_agentstatus.toMap()["queuename"].toString();
+    QString action = m_agentstatus.toMap()["action"].toString();
+    QString astid = m_agentstatus.toMap()["astid"].toString();
+    QString agentnum = m_agentstatus.toMap()["agent_channel"].toString().mid(6);
+    QString queuename = m_agentstatus.toMap()["queuename"].toString();
         
-        if(action == "agentlogin") {
-                m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-                m_peerwidget->setAgentState("green");
-        } else if(action == "agentlogout") {
-                m_peerwidget->setAgentToolTip("", m_queuelist);
-                m_peerwidget->setAgentState("grey");
-        } else if(action == "joinqueue") {
-                if(! m_queuelist.contains(queuename))
-                        m_queuelist.append(queuename);
-                m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-        } else if(action == "leavequeue") {
-                if(m_queuelist.contains(queuename))
-                        m_queuelist.removeAll(queuename);
-                m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-        } else if(action == "queuememberstatus") {
-                QString joinedstatus = m_agentstatus.toMap()["joinedstatus"].toString();
-                if(joinedstatus == "1") {
-                        m_peerwidget->setAgentState("green");
-                } else if(joinedstatus == "3") {
-                        m_peerwidget->setAgentState("blue");
-                } else if(joinedstatus == "5") {
-                        m_peerwidget->setAgentState("grey");
-                } else {
-                        m_peerwidget->setAgentState("yellow");
-                }
-                m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-        } else if(action == "agentstatus") {
-//                 if(m_agentstatus[4].size() > 0)
-//                         m_queuelist = m_agentstatus[4].split(",");
-//                 else
-//                         m_queuelist = QStringList();
-//                 if (m_agentstatus[3] == "0") {
-//                         m_peerwidget->setAgentToolTip("", m_queuelist);
-//                         m_peerwidget->setColorAvail("agent", "grey", "");
-//                 } else {
-//                         m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-//                         m_peerwidget->setColorAvail("agent", "green", "");
-//                 }
-                
-                // ("agentstatus", "xivo", "6102", "0", "qcb_00003,qcb_00000")
-//         } else {
-//                 qDebug() << "UNKNOWN in PeerItem::updateDisplayedStatus()" << m_agentstatus;
-                // m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-                // m_peerwidget->setBlue("agent");
+    if(action == "agentlogin") {
+        m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+        m_peerwidget->setAgentState("green");
+    } else if(action == "agentlogout") {
+        m_peerwidget->setAgentToolTip("", m_queuelist);
+        m_peerwidget->setAgentState("grey");
+    } else if(action == "joinqueue") {
+        if(! m_queuelist.contains(queuename))
+            m_queuelist.append(queuename);
+        m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+    } else if(action == "leavequeue") {
+        if(m_queuelist.contains(queuename))
+            m_queuelist.removeAll(queuename);
+        m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+    } else if(action == "queuememberstatus") {
+        QString joinedstatus = m_agentstatus.toMap()["joinedstatus"].toString();
+        if(joinedstatus == "1") {
+            m_peerwidget->setAgentState("green");
+        } else if(joinedstatus == "3") {
+            m_peerwidget->setAgentState("blue");
+        } else if(joinedstatus == "5") {
+            m_peerwidget->setAgentState("grey");
+        } else {
+            m_peerwidget->setAgentState("yellow");
         }
+        m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+    } else if(action == "agentstatus") {
+        //                 if(m_agentstatus[4].size() > 0)
+        //                         m_queuelist = m_agentstatus[4].split(",");
+        //                 else
+        //                         m_queuelist = QStringList();
+        //                 if (m_agentstatus[3] == "0") {
+        //                         m_peerwidget->setAgentToolTip("", m_queuelist);
+        //                         m_peerwidget->setColorAvail("agent", "grey", "");
+        //                 } else {
+        //                         m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+        //                         m_peerwidget->setColorAvail("agent", "green", "");
+        //                 }
+                
+        // ("agentstatus", "xivo", "6102", "0", "qcb_00003,qcb_00000")
+        //         } else {
+        //                 qDebug() << "UNKNOWN in PeerItem::updateDisplayedStatus()" << m_agentstatus;
+        // m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
+        // m_peerwidget->setBlue("agent");
+    }
 }
 
 /*! \brief update name if changed
  */
 void PeerItem::updateDisplayedName()
 {
-        if(m_peerwidget == NULL)
-                return;
-
-        m_peerwidget->setName(m_ui->fullname());
+    if(m_peerwidget == NULL)
         return;
+
+    m_peerwidget->setName(m_ui->fullname());
+    return;
 }
 
 UserInfo * PeerItem::userinfo()
 {
-        return m_ui;
+    return m_ui;
 }

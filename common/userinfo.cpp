@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -49,9 +49,9 @@
  * just set userid
  */
 UserInfo::UserInfo(const QString & userid)
-        : m_fullname("")
+    : m_fullname("")
 {
-        m_userid = userid;
+    m_userid = userid;
 }
 
 
@@ -64,23 +64,23 @@ UserInfo::~UserInfo()
 /*! \brief set full name */
 void UserInfo::setFullName(const QString & fullname)
 {
-        m_fullname = fullname;
+    m_fullname = fullname;
 }
 
 /*! \brief set CTI Login */
 void UserInfo::setCtiLogin(const QString & ctilogin)
 {
-        m_ctilogin = ctilogin;
+    m_ctilogin = ctilogin;
 }
 
 void UserInfo::setPhoneNumber(const QString & phonenum)
 {
-        m_phonenum = phonenum;
+    m_phonenum = phonenum;
 }
 
 void UserInfo::setVoiceMailNumber(const QString & voicemailnum)
 {
-        m_voicemailnum = voicemailnum;
+    m_voicemailnum = voicemailnum;
 }
 
 /*! \brief set phone list
@@ -94,13 +94,13 @@ void UserInfo::setPhones(const QString & astid,
     //qDebug() << "UserInfo::setPhones" << astid << termlist;
     m_astid = astid;
     foreach(const QString term, termlist)
-    {
-        PhoneInfo * pi = NULL;
-        QString key = astid + "." + term;
-        if(phones.contains(key))
-            pi = phones[key];
-        m_phones[term] = pi;
-    }
+        {
+            PhoneInfo * pi = NULL;
+            QString key = astid + "." + term;
+            if(phones.contains(key))
+                pi = phones[key];
+            m_phones[term] = pi;
+        }
 }
 
 /*! \brief update availability state */
@@ -109,27 +109,27 @@ void UserInfo::setAvailState(const QVariant & availstate)
     m_availstate.clear();
     const QMap<QString, QVariant> map = availstate.toMap();
     foreach(const QString key, map.keys())
-    {
-        m_availstate[key] = map[key].toString();
-    }
+        {
+            m_availstate[key] = map[key].toString();
+        }
 }
 
 void UserInfo::setAgent(const QString & agentnum)
 {
-        m_agentnum = agentnum;
+    m_agentnum = agentnum;
 }
 
 /*! \brief set Message Waiting indicator */
 void UserInfo::setMWI(const QStringList & mwi)
 {
-        m_mwi = mwi;
+    m_mwi = mwi;
 }
 
 /*! \brief check if this user has this phone */
 bool UserInfo::hasPhone(const QString & astid,
                         const QString & term)
 {
-//    qDebug() << "UserInfo::hasPhone" << term << m_phones;
+    //    qDebug() << "UserInfo::hasPhone" << term << m_phones;
     return ((m_astid == astid) && m_phones.keys().contains(term));
 }
 
@@ -143,38 +143,38 @@ bool UserInfo::hasAgent(const QString & astid,
 /*! \brief return m_fullname */
 const QString & UserInfo::fullname() const
 {
-        return m_fullname;
+    return m_fullname;
 }
 
 /*! \brief return m_phonenum */
 const QString & UserInfo::phonenumber() const
 {
-        return m_phonenum;
+    return m_phonenum;
 }
 
 const QString & UserInfo::voicemailnumber() const
 {
-        return m_voicemailnum;
+    return m_voicemailnum;
 }
 
 const QString & UserInfo::userid() const
 {
-        return m_userid;
+    return m_userid;
 }
 
 const QString & UserInfo::ctilogin() const
 {
-        return m_ctilogin;
+    return m_ctilogin;
 }
 
 const QStringList & UserInfo::mwi() const
 {
-        return m_mwi;
+    return m_mwi;
 }
 
 const QString & UserInfo::agentid() const
 {
-        return m_agentnum;
+    return m_agentnum;
 }
 
 /*! \brief return a list of contexts where this user has its phones
@@ -184,22 +184,22 @@ const QStringList UserInfo::contexts() const
     QStringList clist;
     //qDebug() << m_phones;
     foreach(const QString key, m_phones.keys())
-    {
-        //if(m_phones[key])
-        //    clist << m_phones[key]->context();
-        clist << (key.split(QChar('.')))[1];
-    }
+        {
+            //if(m_phones[key])
+            //    clist << m_phones[key]->context();
+            clist << (key.split(QChar('.')))[1];
+        }
     return clist;
 }
 
 const QString & UserInfo::astid() const
 {
-        return m_astid;
+    return m_astid;
 }
 
 const QHash<QString, QString> & UserInfo::availstate() const
 {
-        return m_availstate;
+    return m_availstate;
 }
 
 /*! \brief return list of phones identifier */
@@ -222,10 +222,10 @@ void UserInfo::updatePhone( PhoneInfo * pi )
 {
     //qDebug() << "UserInfo::updatePhone before" << m_phones;
     if(pi)
-    {
-        QString key = pi->tech() + "." + pi->context() + "." + pi->phoneid() + "." + pi->number();
-        m_phones[key] = pi;
-    }
+        {
+            QString key = pi->tech() + "." + pi->context() + "." + pi->phoneid() + "." + pi->number();
+            m_phones[key] = pi;
+        }
     //qDebug() << "UserInfo::updatePhone after " << m_phones;
 }
 
@@ -238,19 +238,19 @@ QList<QString> UserInfo::channelList() const
     QList<QString> list;
     QMapIterator<QString, PhoneInfo *> it = QMapIterator<QString, PhoneInfo *>(m_phones);
     while(it.hasNext())
-    {
-        it.next();
-        if(it.value())
         {
-            QMapIterator<QString, QVariant> itphone( it.value()->comms() );
-            while( itphone.hasNext() )
-            {
-                itphone.next();
-                QVariantMap qvm = itphone.value().toMap();
-                list << qvm["thischannel"].toString();
-            }
+            it.next();
+            if(it.value())
+                {
+                    QMapIterator<QString, QVariant> itphone( it.value()->comms() );
+                    while( itphone.hasNext() )
+                        {
+                            itphone.next();
+                            QVariantMap qvm = itphone.value().toMap();
+                            list << qvm["thischannel"].toString();
+                        }
+                }
         }
-    }
     return list;
 }
 

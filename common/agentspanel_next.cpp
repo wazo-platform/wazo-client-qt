@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -66,323 +66,323 @@
  */
 AgentsPanelNext::AgentsPanelNext(const QVariant & optionmap,
                                  QWidget * parent)
-        : QWidget(parent)
+    : QWidget(parent)
 {
-        m_glayout = new QGridLayout(this);
-        m_glayout->setSpacing(1);
+    m_glayout = new QGridLayout(this);
+    m_glayout->setSpacing(1);
         
-        // m_gridlayout->setVerticalSpacing(0);
-        m_blinktime = 300;
-        if(optionmap.toMap().contains("blinktime"))
-                m_blinktime = optionmap.toMap()["blinktime"].toInt();
+    // m_gridlayout->setVerticalSpacing(0);
+    m_blinktime = 300;
+    if(optionmap.toMap().contains("blinktime"))
+        m_blinktime = optionmap.toMap()["blinktime"].toInt();
         
-        setGuiOptions(optionmap);
-        startTimer(1000);
+    setGuiOptions(optionmap);
+    startTimer(1000);
 }
 
 AgentsPanelNext::~AgentsPanelNext()
 {
-        // qDebug() << "AgentsPanelNext::~AgentsPanelNext()";
+    // qDebug() << "AgentsPanelNext::~AgentsPanelNext()";
 }
 
 void AgentsPanelNext::setGuiOptions(const QVariant & optionmap)
 {
-        if(optionmap.toMap().contains("fontname") && optionmap.toMap().contains("fontsize"))
-                m_gui_font = QFont(optionmap.toMap()["fontname"].toString(),
-                                   optionmap.toMap()["fontsize"].toInt());
+    if(optionmap.toMap().contains("fontname") && optionmap.toMap().contains("fontsize"))
+        m_gui_font = QFont(optionmap.toMap()["fontname"].toString(),
+                           optionmap.toMap()["fontsize"].toInt());
         
-        // setFont(m_gui_font);
-        foreach (QString groupid, m_title.keys())
-                m_title[groupid]->setFont(m_gui_font);
+    // setFont(m_gui_font);
+    foreach (QString groupid, m_title.keys())
+        m_title[groupid]->setFont(m_gui_font);
 }
 
 void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
 {
-        QMenu contextMenu(this);
+    QMenu contextMenu(this);
         
-        QAction * newGroupAction = new QAction(tr("New Group"), this);
-        newGroupAction->setProperty("where", event->globalPos());
-        connect(newGroupAction, SIGNAL(triggered()),
-                this, SLOT(newGroup()) );
+    QAction * newGroupAction = new QAction(tr("New Group"), this);
+    newGroupAction->setProperty("where", event->globalPos());
+    connect(newGroupAction, SIGNAL(triggered()),
+            this, SLOT(newGroup()) );
         
-        if(sender() == NULL) {
-                contextMenu.addAction(newGroupAction);
-        } else {
-                // group or agent label
-                if(sender()->property("agentid").isNull()) {
-                        // group label
-                        ExtendedLabel * el = qobject_cast<ExtendedLabel *>(sender());
-                        QStringList thisqueuelist = el->property("queues").toStringList();
-                        QString thisgroupid = el->property("groupid").toString();
+    if(sender() == NULL) {
+        contextMenu.addAction(newGroupAction);
+    } else {
+        // group or agent label
+        if(sender()->property("agentid").isNull()) {
+            // group label
+            ExtendedLabel * el = qobject_cast<ExtendedLabel *>(sender());
+            QStringList thisqueuelist = el->property("queues").toStringList();
+            QString thisgroupid = el->property("groupid").toString();
                         
-                        QAction * renameAction = new QAction(tr("Rename this Group"), this);
+            QAction * renameAction = new QAction(tr("Rename this Group"), this);
                         
-                        contextMenu.addAction(renameAction);
-                        renameAction->setProperty("groupid", thisgroupid);
-                        renameAction->setProperty("where", event->globalPos());
-                        connect(renameAction, SIGNAL(triggered()),
-                                this, SLOT(renameQueueGroup()) );
+            contextMenu.addAction(renameAction);
+            renameAction->setProperty("groupid", thisgroupid);
+            renameAction->setProperty("where", event->globalPos());
+            connect(renameAction, SIGNAL(triggered()),
+                    this, SLOT(renameQueueGroup()) );
                         
-                        QAction * removeAction = new QAction(tr("Remove this Group"), this);
-                        contextMenu.addAction(removeAction);
-                        removeAction->setProperty("groupid", thisgroupid);
-                        connect(removeAction, SIGNAL(triggered()),
-                                this, SLOT(removeQueueGroup()) );
+            QAction * removeAction = new QAction(tr("Remove this Group"), this);
+            contextMenu.addAction(removeAction);
+            removeAction->setProperty("groupid", thisgroupid);
+            connect(removeAction, SIGNAL(triggered()),
+                    this, SLOT(removeQueueGroup()) );
                         
-                        contextMenu.addAction(newGroupAction);
-                        contextMenu.addSeparator();
+            contextMenu.addAction(newGroupAction);
+            contextMenu.addSeparator();
                         
-                        if(thisqueuelist.size() > 0) {
-                                QMenu * menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
-                                foreach (QString qname, thisqueuelist) {
-                                        QAction * qremove = new QAction(qname, this);
-                                        qremove->setProperty("groupid", thisgroupid);
-                                        qremove->setProperty("queuename", qname);
-                                        menu_remove->addAction(qremove);
-                                        connect(qremove, SIGNAL(triggered()),
-                                                this, SLOT(removeQueueFromGroup()) );
-                                }
+            if(thisqueuelist.size() > 0) {
+                QMenu * menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
+                foreach (QString qname, thisqueuelist) {
+                    QAction * qremove = new QAction(qname, this);
+                    qremove->setProperty("groupid", thisgroupid);
+                    qremove->setProperty("queuename", qname);
+                    menu_remove->addAction(qremove);
+                    connect(qremove, SIGNAL(triggered()),
+                            this, SLOT(removeQueueFromGroup()) );
+                }
                                 
-                                menu_remove->addSeparator();
+                menu_remove->addSeparator();
                                 
-                                QAction * removeAllQueuesAction = new QAction(tr("Remove them all"), this);
-                                menu_remove->addAction(removeAllQueuesAction);
-                                removeAllQueuesAction->setProperty("groupid", thisgroupid);
-                                connect(removeAllQueuesAction, SIGNAL(triggered()),
-                                        this, SLOT(removeQueuesFromGroup()) );
-                        }
+                QAction * removeAllQueuesAction = new QAction(tr("Remove them all"), this);
+                menu_remove->addAction(removeAllQueuesAction);
+                removeAllQueuesAction->setProperty("groupid", thisgroupid);
+                connect(removeAllQueuesAction, SIGNAL(triggered()),
+                        this, SLOT(removeQueuesFromGroup()) );
+            }
                         
-                        QStringList queuestoadd;
-                        foreach (QString qname, m_queuelist)
-                                if(! thisqueuelist.contains(qname))
-                                        queuestoadd << qname;
-                        if(queuestoadd.size() > 0) {
-                                QMenu * menu_add = contextMenu.addMenu(tr("Add a Queue"));
-                                foreach (QString qname, queuestoadd) {
-                                        QAction * qadd = new QAction(qname, this);
-                                        qadd->setProperty("groupid", thisgroupid);
-                                        qadd->setProperty("queuename", qname);
-                                        menu_add->addAction(qadd);
-                                        connect(qadd, SIGNAL(triggered()),
-                                                this, SLOT(addQueueToGroup()) );
-                                }
+            QStringList queuestoadd;
+            foreach (QString qname, m_queuelist)
+                if(! thisqueuelist.contains(qname))
+                    queuestoadd << qname;
+            if(queuestoadd.size() > 0) {
+                QMenu * menu_add = contextMenu.addMenu(tr("Add a Queue"));
+                foreach (QString qname, queuestoadd) {
+                    QAction * qadd = new QAction(qname, this);
+                    qadd->setProperty("groupid", thisgroupid);
+                    qadd->setProperty("queuename", qname);
+                    menu_add->addAction(qadd);
+                    connect(qadd, SIGNAL(triggered()),
+                            this, SLOT(addQueueToGroup()) );
+                }
                                 
-                                menu_add->addSeparator();
+                menu_add->addSeparator();
                                 
-                                QAction * addAllQueuesAction = new QAction(tr("Add them all"), this);
-                                menu_add->addAction(addAllQueuesAction);
-                                addAllQueuesAction->setProperty("groupid", thisgroupid);
-                                connect(addAllQueuesAction, SIGNAL(triggered()),
-                                        this, SLOT(addQueuesToGroup()) );
-                        }
-                } else
-                        return;
-        }
+                QAction * addAllQueuesAction = new QAction(tr("Add them all"), this);
+                menu_add->addAction(addAllQueuesAction);
+                addAllQueuesAction->setProperty("groupid", thisgroupid);
+                connect(addAllQueuesAction, SIGNAL(triggered()),
+                        this, SLOT(addQueuesToGroup()) );
+            }
+        } else
+            return;
+    }
         
-        contextMenu.exec(event->globalPos());
+    contextMenu.exec(event->globalPos());
 }
 
 void AgentsPanelNext::newGroup()
 {
-        QPoint where = sender()->property("where").toPoint();
-        QGridLayout * gl = new QGridLayout();
-        QDialog * dialog = new QDialog();
-        dialog->setWindowTitle(tr("New Group"));
-        dialog->setLayout(gl);
-        QLabel * q1 = new QLabel(tr("Name"));
-        QTextEdit * q2 = new QTextEdit();
-        QPushButton * q3 = new QPushButton(tr("OK"));
-        QPushButton * q4 = new QPushButton(tr("Cancel"));
-        gl->addWidget(q1, 0, 0);
-        gl->addWidget(q2, 0, 1);
-        gl->addWidget(q3, 1, 0);
-        gl->addWidget(q4, 1, 1);
-        q2->setFixedSize(QSize(200, 60));
-        connect( q3, SIGNAL(clicked()),
-                 dialog, SLOT(close()) );
-        connect( q4, SIGNAL(clicked()),
-                 dialog, SLOT(close()) );
-        dialog->move(where);
-        dialog->exec();
-        if(! q2->toPlainText().trimmed().isEmpty()) {
-                QString groupid = QString::number(QDateTime::currentDateTime().toTime_t());
-                m_title[groupid] = new ExtendedLabel();
-                m_title[groupid]->setText(q2->toPlainText().trimmed());
-                m_title[groupid]->setProperty("queues", (QStringList()));
-                m_title[groupid]->setProperty("groupid", groupid);
-                m_title[groupid]->setAlignment(Qt::AlignCenter);
-                connect( m_title[groupid], SIGNAL(context_menu(QContextMenuEvent *)),
-                         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-                m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
-                refreshContents();
-                refreshDisplay();
-        }
+    QPoint where = sender()->property("where").toPoint();
+    QGridLayout * gl = new QGridLayout();
+    QDialog * dialog = new QDialog();
+    dialog->setWindowTitle(tr("New Group"));
+    dialog->setLayout(gl);
+    QLabel * q1 = new QLabel(tr("Name"));
+    QTextEdit * q2 = new QTextEdit();
+    QPushButton * q3 = new QPushButton(tr("OK"));
+    QPushButton * q4 = new QPushButton(tr("Cancel"));
+    gl->addWidget(q1, 0, 0);
+    gl->addWidget(q2, 0, 1);
+    gl->addWidget(q3, 1, 0);
+    gl->addWidget(q4, 1, 1);
+    q2->setFixedSize(QSize(200, 60));
+    connect( q3, SIGNAL(clicked()),
+             dialog, SLOT(close()) );
+    connect( q4, SIGNAL(clicked()),
+             dialog, SLOT(close()) );
+    dialog->move(where);
+    dialog->exec();
+    if(! q2->toPlainText().trimmed().isEmpty()) {
+        QString groupid = QString::number(QDateTime::currentDateTime().toTime_t());
+        m_title[groupid] = new ExtendedLabel();
+        m_title[groupid]->setText(q2->toPlainText().trimmed());
+        m_title[groupid]->setProperty("queues", (QStringList()));
+        m_title[groupid]->setProperty("groupid", groupid);
+        m_title[groupid]->setAlignment(Qt::AlignCenter);
+        connect( m_title[groupid], SIGNAL(context_menu(QContextMenuEvent *)),
+                 this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+        m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
+        refreshContents();
+        refreshDisplay();
+    }
 }
 
 void AgentsPanelNext::mouseReleasedEvent(QMouseEvent * event)
 {
-        qDebug() << "AgentsPanelNext::mouseReleasedEvent()" << event << event->pos();
+    qDebug() << "AgentsPanelNext::mouseReleasedEvent()" << event << event->pos();
 }
 
 void AgentsPanelNext::setUserInfo(const UserInfo * ui)
 {
-        m_userinfo = ui;
+    m_userinfo = ui;
 }
 
 void AgentsPanelNext::setQueueGroups(const QVariant & groups)
 {
-        // qDebug() << "AgentsPanelNext::setQueueGroups()" << groups;
-        foreach (QString groupid, groups.toMap().keys()) {
-                m_title[groupid] = new ExtendedLabel(groups.toMap()[groupid].toMap()["label"].toString());
-                m_title[groupid]->setProperty("groupid", groupid);
-                m_title[groupid]->setProperty("queues", groups.toMap()[groupid].toMap()["queues"].toStringList());
-                m_title[groupid]->setToolTip(groups.toMap()[groupid].toMap()["queues"].toStringList().join(", "));
-                m_title[groupid]->setAlignment(Qt::AlignCenter);
-                connect( m_title[groupid], SIGNAL(context_menu(QContextMenuEvent *)),
-                         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-                int ix = m_title.keys().indexOf(groupid);
-                m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
-                m_glayout->addWidget(m_title[groupid], 0, ix * NCOLS, 1, NCOLS, Qt::AlignCenter);
-        }
-        refreshContents();
-        refreshDisplay();
+    // qDebug() << "AgentsPanelNext::setQueueGroups()" << groups;
+    foreach (QString groupid, groups.toMap().keys()) {
+        m_title[groupid] = new ExtendedLabel(groups.toMap()[groupid].toMap()["label"].toString());
+        m_title[groupid]->setProperty("groupid", groupid);
+        m_title[groupid]->setProperty("queues", groups.toMap()[groupid].toMap()["queues"].toStringList());
+        m_title[groupid]->setToolTip(groups.toMap()[groupid].toMap()["queues"].toStringList().join(", "));
+        m_title[groupid]->setAlignment(Qt::AlignCenter);
+        connect( m_title[groupid], SIGNAL(context_menu(QContextMenuEvent *)),
+                 this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+        int ix = m_title.keys().indexOf(groupid);
+        m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
+        m_glayout->addWidget(m_title[groupid], 0, ix * NCOLS, 1, NCOLS, Qt::AlignCenter);
+    }
+    refreshContents();
+    refreshDisplay();
 }
 
 void AgentsPanelNext::saveGroups()
 {
-        QVariantMap save;
-        foreach (QString groupid, m_title.keys()) {
-                QVariantMap tmp;
-                tmp["queues"] = m_title[groupid]->property("queues");
-                tmp["groupid"] = m_title[groupid]->property("groupid");
-                tmp["label"] = m_title[groupid]->text();
-                save[groupid] = tmp;
-        }
-        saveQueueGroups(save);
+    QVariantMap save;
+    foreach (QString groupid, m_title.keys()) {
+        QVariantMap tmp;
+        tmp["queues"] = m_title[groupid]->property("queues");
+        tmp["groupid"] = m_title[groupid]->property("groupid");
+        tmp["label"] = m_title[groupid]->text();
+        save[groupid] = tmp;
+    }
+    saveQueueGroups(save);
 }
 
 void AgentsPanelNext::setQueueOrder(const QVariant & queueorder)
 {
-        m_queueorder = queueorder;
+    m_queueorder = queueorder;
 }
 
 void AgentsPanelNext::setAgentProps(const QString & idx)
 {
-        QString astid = m_agent_labels[idx]->property("astid").toString();
-        QString agentid = m_agent_labels[idx]->property("agentid").toString();
-        QString groupid = m_agent_labels[idx]->property("groupid").toString();
+    QString astid = m_agent_labels[idx]->property("astid").toString();
+    QString agentid = m_agent_labels[idx]->property("agentid").toString();
+    QString groupid = m_agent_labels[idx]->property("groupid").toString();
         
-        QString idxa = QString("%1-%2").arg(astid).arg(agentid);
-        QVariant properties = m_agent_props[idxa].toMap()["properties"];
-        QVariant queues = m_agent_props[idxa].toMap()["queues"];
-        QString firstname = m_agent_props[idxa].toMap()["firstname"].toString();
-        QString lastname = m_agent_props[idxa].toMap()["lastname"].toString();
+    QString idxa = QString("%1-%2").arg(astid).arg(agentid);
+    QVariant properties = m_agent_props[idxa].toMap()["properties"];
+    QVariant queues = m_agent_props[idxa].toMap()["queues"];
+    QString firstname = m_agent_props[idxa].toMap()["firstname"].toString();
+    QString lastname = m_agent_props[idxa].toMap()["lastname"].toString();
         
-        m_agent_labels[idx]->setProperty("sorter", firstname + lastname);
+    m_agent_labels[idx]->setProperty("sorter", firstname + lastname);
         
-        // foreach (QString qname, queues.toMap().keys())
-        // qDebug() << idx << qname << queues.toMap()[qname].toMap()["Status"].toString() << queues.toMap()[qname].toMap()["Paused"].toString();
+    // foreach (QString qname, queues.toMap().keys())
+    // qDebug() << idx << qname << queues.toMap()[qname].toMap()["Status"].toString() << queues.toMap()[qname].toMap()["Paused"].toString();
         
-        QString agstatus = properties.toMap()["status"].toString();
-        QString phonenum = properties.toMap()["phonenum"].toString();
-        QString link = properties.toMap()["link"].toString();
+    QString agstatus = properties.toMap()["status"].toString();
+    QString phonenum = properties.toMap()["phonenum"].toString();
+    QString link = properties.toMap()["link"].toString();
         
-        // qDebug() << astid << agentid << link << properties.toMap();
+    // qDebug() << astid << agentid << link << properties.toMap();
         
-        QString calldirection;
-        QStringList groupqueues = m_title[groupid]->property("queues").toStringList();
+    QString calldirection;
+    QStringList groupqueues = m_title[groupid]->property("queues").toStringList();
         
-        bool doshowtime = false;
-        double dsec = 0;
+    bool doshowtime = false;
+    double dsec = 0;
         
-        QString colorqss;
-        if(agstatus == "AGENT_IDLE")
-                colorqss = "grey";
-        // else if(agstatus == "AGENT_LOGGEDOFF")
-        else if(agstatus == "AGENT_ONCALL") {
-                colorqss = "green";
-                calldirection = "I";
-        } else
-                colorqss = "blue";
+    QString colorqss;
+    if(agstatus == "AGENT_IDLE")
+        colorqss = "grey";
+    // else if(agstatus == "AGENT_LOGGEDOFF")
+    else if(agstatus == "AGENT_ONCALL") {
+        colorqss = "green";
+        calldirection = "I";
+    } else
+        colorqss = "blue";
         
-        if((link == "phonelink") || (link == "agentlink")) {
-                colorqss = "#80ff80";
-                bool isdid = properties.toMap()["did"].toBool();
-                bool isoutcall = properties.toMap()["outcall"].toBool();
-                QString queuename = properties.toMap()["queuename"].toString();
-                if(isdid || (link == "agentlink")) {
-                        if(groupqueues.contains(queuename)) {
-                                doshowtime = true;
-                                calldirection = "E";
-                        }
-                } else if(isoutcall) {
-                        doshowtime = true;
-                        calldirection = "S";
-                } else {
-                        doshowtime = true;
-                        calldirection = "I";
-                }
+    if((link == "phonelink") || (link == "agentlink")) {
+        colorqss = "#80ff80";
+        bool isdid = properties.toMap()["did"].toBool();
+        bool isoutcall = properties.toMap()["outcall"].toBool();
+        QString queuename = properties.toMap()["queuename"].toString();
+        if(isdid || (link == "agentlink")) {
+            if(groupqueues.contains(queuename)) {
+                doshowtime = true;
+                calldirection = "E";
+            }
+        } else if(isoutcall) {
+            doshowtime = true;
+            calldirection = "S";
+        } else {
+            doshowtime = true;
+            calldirection = "I";
+        }
                 
-                if(doshowtime) {
-                        QDateTime now = QDateTime::currentDateTime();
-                        int d1 = m_timeclt.secsTo(now);
-                        double d2 = m_timesrv - properties.toMap()["Xivo-StateTime"].toDouble();
-                        dsec = d1 + d2;
-                        // if(dsec) dsec = 0;
-                }
-        }
-        
-        QVariantMap qvm = queues.toMap();
-        if(calldirection.isEmpty()) foreach (QString qname_group, groupqueues) {
-                if (qvm.contains(qname_group)) {
-                        QString pstatus = qvm[qname_group].toMap()["Paused"].toString();
-                        // qDebug() << idx << idxa << qname_group
-                        // << qvm[qname_group].toMap()["Status"].toString()
-                        // << qvm[qname_group].toMap()["Paused"].toString()
-                        // << qvm[qname_group].toMap()["PausedTime"].toString();
-                        if(pstatus == "1") {
-                                colorqss = "#ff8080";
-                                
-                                QDateTime now = QDateTime::currentDateTime();
-                                int d1 = m_timeclt.secsTo(now);
-                                double d2 = m_timesrv - qvm[qname_group].toMap()["Xivo-StateTime"].toDouble();
-                                doshowtime = true;
-                                dsec = d1 + d2;
-                                
-                                // rounding quite often leads to a "-1" value
-                                // in order not to hurt sensitivities, set it to zero
-                                // if(dsec) dsec = 0;
-                        }
-                }
-        }
-        
-        QString displayedtime;
         if(doshowtime) {
-                int nsec = int(dsec + 0.5);
-                int dhr  = nsec / 3600;
-                int dmin = (nsec - dhr * 3600) / 60;
-                int dsec = nsec % 60;
-                if((nsec > m_blinktime) && (nsec % 2) && (colorqss == "#ff8080"))
-                        colorqss = "#ffb0b0";
-                if(dhr > 0)
-                        displayedtime = tr("%1 hr %2 min %3 sec").arg(dhr).arg(dmin).arg(dsec);
-                else if(dmin > 0)
-                        displayedtime = tr("%1 min %2 sec").arg(dmin).arg(dsec);
-                else
-                        displayedtime = tr("%1 sec").arg(dsec);
+            QDateTime now = QDateTime::currentDateTime();
+            int d1 = m_timeclt.secsTo(now);
+            double d2 = m_timesrv - properties.toMap()["Xivo-StateTime"].toDouble();
+            dsec = d1 + d2;
+            // if(dsec) dsec = 0;
         }
+    }
         
-        QString disptext = QString("%1 %2 %3 %4 %5").arg(firstname).arg(lastname).arg(agentid).arg(calldirection).arg(displayedtime);
+    QVariantMap qvm = queues.toMap();
+    if(calldirection.isEmpty()) foreach (QString qname_group, groupqueues) {
+        if (qvm.contains(qname_group)) {
+            QString pstatus = qvm[qname_group].toMap()["Paused"].toString();
+            // qDebug() << idx << idxa << qname_group
+            // << qvm[qname_group].toMap()["Status"].toString()
+            // << qvm[qname_group].toMap()["Paused"].toString()
+            // << qvm[qname_group].toMap()["PausedTime"].toString();
+            if(pstatus == "1") {
+                colorqss = "#ff8080";
+                                
+                QDateTime now = QDateTime::currentDateTime();
+                int d1 = m_timeclt.secsTo(now);
+                double d2 = m_timesrv - qvm[qname_group].toMap()["Xivo-StateTime"].toDouble();
+                doshowtime = true;
+                dsec = d1 + d2;
+                                
+                // rounding quite often leads to a "-1" value
+                // in order not to hurt sensitivities, set it to zero
+                // if(dsec) dsec = 0;
+            }
+        }
+    }
         
-        m_agent_labels[idx]->setStyleSheet(QString("QLabel {border: 5px solid %1; border-radius: 0px; background: %1};").arg(colorqss));
-        m_agent_labels[idx]->setText(disptext);
+    QString displayedtime;
+    if(doshowtime) {
+        int nsec = int(dsec + 0.5);
+        int dhr  = nsec / 3600;
+        int dmin = (nsec - dhr * 3600) / 60;
+        int dsec = nsec % 60;
+        if((nsec > m_blinktime) && (nsec % 2) && (colorqss == "#ff8080"))
+            colorqss = "#ffb0b0";
+        if(dhr > 0)
+            displayedtime = tr("%1 hr %2 min %3 sec").arg(dhr).arg(dmin).arg(dsec);
+        else if(dmin > 0)
+            displayedtime = tr("%1 min %2 sec").arg(dmin).arg(dsec);
+        else
+            displayedtime = tr("%1 sec").arg(dsec);
+    }
+        
+    QString disptext = QString("%1 %2 %3 %4 %5").arg(firstname).arg(lastname).arg(agentid).arg(calldirection).arg(displayedtime);
+        
+    m_agent_labels[idx]->setStyleSheet(QString("QLabel {border: 5px solid %1; border-radius: 0px; background: %1};").arg(colorqss));
+    m_agent_labels[idx]->setText(disptext);
 }
 
 void AgentsPanelNext::updateAgentPresence(const QString &, const QVariant &)
 {
-        // qDebug() << "AgentsPanelNext::updateAgentPresence()" << agentname << presencestatus;
+    // qDebug() << "AgentsPanelNext::updateAgentPresence()" << agentname << presencestatus;
         
-        // QColor color = QColor(presencestatus.toMap()["color"].toString());
+    // QColor color = QColor(presencestatus.toMap()["color"].toString());
 }
 
 void AgentsPanelNext::updatePeerAgent(double timeref,
@@ -390,509 +390,509 @@ void AgentsPanelNext::updatePeerAgent(double timeref,
                                       const QString & what,
                                       const QVariant & params)
 {
-        m_timesrv = timeref;
-        m_timeclt = QDateTime::currentDateTime();
-        if(what != "agentstatus")
-                return;
-        // qDebug() << "AgentsPanelNext::updatePeerAgent()" << params;
-        QString action = params.toMap()["action"].toString();
-        QString astid = params.toMap()["astid"].toString();
-        QString agentnum = params.toMap()["agent_channel"].toString().mid(6);
-        QString qname = params.toMap()["queuename"].toString();
-        QString jstatus = params.toMap()["joinedstatus"].toString();
-        QString pstatus = params.toMap()["pausedstatus"].toString();
-        // qDebug() << "AgentsPanelNext::updatePeerAgent()" << action << agentnum << qname << jstatus << pstatus;
-        QString idxa = QString("%1-%2").arg(astid).arg(agentnum);
-        if(action == "queuememberstatus") {
-                // if(m_agent_props.contains(idxa)) {
-                // QVariantMap proptemp = m_agent_props[idxa].toMap();
-                // QVariantMap pqueues = proptemp["queues"].toMap();
-                //  }
-                // if(jstatus == "1") {
-                // // queue member has logged in  / is available
-                // } else if(jstatus == "5") {
-                // // queue member has logged off
-                // } else if(jstatus == "3") {
-                // // queue member is called
-        } else if(action == "joinqueue") {
-                if(m_agent_props.contains(idxa)) {
-                        QVariantMap proptemp = m_agent_props[idxa].toMap();
-                        QVariantMap pqueues = proptemp["queues"].toMap();
-                        qDebug() << "AgentsPanelNext::updatePeerAgent()" << action << idxa << qname << pqueues[qname].toMap().isEmpty();
-                        // if(pqueues[qname].toMap().isEmpty()) {
-                        QVariantMap qprops;
-                        qprops["Paused"] = pstatus;
-                        qprops["Xivo-StateTime"] = timeref;
-                        qprops["Status"] = "1";
-                        pqueues[qname] = qprops;
-                        proptemp["queues"] = pqueues;
-                        m_agent_props[idxa] = proptemp;
-                        refreshContents();
-                } else {
-                        qDebug() << "AgentsPanelNext::updatePeerAgent() warning : undefined" << idxa << action;
-                }
-        } else if(action == "leavequeue") {
-                if(m_agent_props.contains(idxa)) {
-                        QVariantMap proptemp = m_agent_props[idxa].toMap();
-                        QVariantMap pqueues = proptemp["queues"].toMap();
-                        if(pqueues[qname].toMap().isEmpty())
-                                qDebug() << action << idxa << "already empty" << qname;
-                        else {
-                                QVariantMap qprops;
-                                pqueues[qname] = qprops;
-                                proptemp["queues"] = pqueues;
-                                m_agent_props[idxa] = proptemp;
-                                refreshContents();
-                        }
-                } else {
-                        qDebug() << "AgentsPanelNext::updatePeerAgent() warning : undefined" << idxa << action;
-                }
-        } else if(action == "unpaused") {
-                if(m_agent_props.contains(idxa)) {
-                        QVariantMap proptemp = m_agent_props[idxa].toMap();
-                        QVariantMap properties = proptemp["properties"].toMap();
-                        QVariantMap pqueues = proptemp["queues"].toMap();
-                        QVariantMap qprops = pqueues[qname].toMap();
-                        qprops["Paused"] = "0";
-                        qprops["Xivo-StateTime"] = timeref;
-                        pqueues[qname] = qprops;
-                        proptemp["properties"] = properties;
-                        proptemp["queues"] = pqueues;
-                        m_agent_props[idxa] = proptemp;
-                }
-        } else if(action == "paused") {
-                if(m_agent_props.contains(idxa)) {
-                        QVariantMap proptemp = m_agent_props[idxa].toMap();
-                        QVariantMap properties = proptemp["properties"].toMap();
-                        QVariantMap pqueues = proptemp["queues"].toMap();
-                        QVariantMap qprops = pqueues[qname].toMap();
-                        qprops["Paused"] = "1";
-                        qprops["Xivo-StateTime"] = timeref;
-                        pqueues[qname] = qprops;
-                        proptemp["properties"] = properties;
-                        proptemp["queues"] = pqueues;
-                        m_agent_props[idxa] = proptemp;
-                }
-                
-        } else if(action == "agentlogin") {
-                if(m_agent_props.contains(idxa)) {
-                        QVariantMap proptemp = m_agent_props[idxa].toMap();
-                        QVariantMap properties = proptemp["properties"].toMap();
-                        properties["status"] = "AGENT_IDLE";
-                        properties["Xivo-ReceivedCalls"] = 0;
-                        properties["Xivo-LostCalls"] = 0;
-                        proptemp["properties"] = properties;
-                        m_agent_props[idxa] = proptemp;
-                        refreshContents();
-                }
-        } else if(action == "agentlogout") {
-                if(m_agent_props.contains(idxa)) {
-                        QVariantMap proptemp = m_agent_props[idxa].toMap();
-                        QVariantMap properties = proptemp["properties"].toMap();
-                        properties["status"] = "AGENT_LOGGEDOFF";
-                        proptemp["properties"] = properties;
-                        m_agent_props[idxa] = proptemp;
-                        refreshContents();
-                }
-        } else if(action == "agentcalled") {
-                if(m_agent_props.contains(idxa)) {
-                        QVariantMap proptemp = m_agent_props[idxa].toMap();
-                        QVariantMap properties = proptemp["properties"].toMap();
-                        properties["Xivo-ReceivedCalls"] = params.toMap()["received"];
-                        properties["Xivo-LostCalls"] = params.toMap()["lost"];
-                        proptemp["properties"] = properties;
-                        m_agent_props[idxa] = proptemp;
-                }
-        } else if(action == "agentconnect") {
-                if(m_agent_props.contains(idxa)) {
-                        QVariantMap proptemp = m_agent_props[idxa].toMap();
-                        QVariantMap properties = proptemp["properties"].toMap();
-                        properties["Xivo-LostCalls"] = params.toMap()["lost"];
-                        proptemp["properties"] = properties;
-                        m_agent_props[idxa] = proptemp;
-                }
-                
-        } else if((action == "agentlink") || (action == "phonelink")) {
-                if(m_agent_props.contains(idxa)) {
-                        QVariantMap proptemp = m_agent_props[idxa].toMap();
-                        QVariantMap properties = proptemp["properties"].toMap();
-                        properties["link"] = action;
-                        properties["Xivo-StateTime"] = timeref;
-                        properties["dir"] = params.toMap()["dir"];
-                        properties["did"] = params.toMap()["did"];
-                        properties["outcall"] = params.toMap()["outcall"];
-                        properties["queuename"] = params.toMap()["queuename"];
-                        proptemp["properties"] = properties;
-                        m_agent_props[idxa] = proptemp;
-                }
-        } else if((action == "agentunlink") || (action == "phoneunlink")) {
-                if(m_agent_props.contains(idxa)) {
-                        QVariantMap proptemp = m_agent_props[idxa].toMap();
-                        QVariantMap properties = proptemp["properties"].toMap();
-                        properties["link"] = action;
-                        properties["Xivo-StateTime"] = timeref;
-                        proptemp["properties"] = properties;
-                        m_agent_props[idxa] = proptemp;
-                }
+    m_timesrv = timeref;
+    m_timeclt = QDateTime::currentDateTime();
+    if(what != "agentstatus")
+        return;
+    // qDebug() << "AgentsPanelNext::updatePeerAgent()" << params;
+    QString action = params.toMap()["action"].toString();
+    QString astid = params.toMap()["astid"].toString();
+    QString agentnum = params.toMap()["agent_channel"].toString().mid(6);
+    QString qname = params.toMap()["queuename"].toString();
+    QString jstatus = params.toMap()["joinedstatus"].toString();
+    QString pstatus = params.toMap()["pausedstatus"].toString();
+    // qDebug() << "AgentsPanelNext::updatePeerAgent()" << action << agentnum << qname << jstatus << pstatus;
+    QString idxa = QString("%1-%2").arg(astid).arg(agentnum);
+    if(action == "queuememberstatus") {
+        // if(m_agent_props.contains(idxa)) {
+        // QVariantMap proptemp = m_agent_props[idxa].toMap();
+        // QVariantMap pqueues = proptemp["queues"].toMap();
+        //  }
+        // if(jstatus == "1") {
+        // // queue member has logged in  / is available
+        // } else if(jstatus == "5") {
+        // // queue member has logged off
+        // } else if(jstatus == "3") {
+        // // queue member is called
+    } else if(action == "joinqueue") {
+        if(m_agent_props.contains(idxa)) {
+            QVariantMap proptemp = m_agent_props[idxa].toMap();
+            QVariantMap pqueues = proptemp["queues"].toMap();
+            qDebug() << "AgentsPanelNext::updatePeerAgent()" << action << idxa << qname << pqueues[qname].toMap().isEmpty();
+            // if(pqueues[qname].toMap().isEmpty()) {
+            QVariantMap qprops;
+            qprops["Paused"] = pstatus;
+            qprops["Xivo-StateTime"] = timeref;
+            qprops["Status"] = "1";
+            pqueues[qname] = qprops;
+            proptemp["queues"] = pqueues;
+            m_agent_props[idxa] = proptemp;
+            refreshContents();
+        } else {
+            qDebug() << "AgentsPanelNext::updatePeerAgent() warning : undefined" << idxa << action;
         }
+    } else if(action == "leavequeue") {
+        if(m_agent_props.contains(idxa)) {
+            QVariantMap proptemp = m_agent_props[idxa].toMap();
+            QVariantMap pqueues = proptemp["queues"].toMap();
+            if(pqueues[qname].toMap().isEmpty())
+                qDebug() << action << idxa << "already empty" << qname;
+            else {
+                QVariantMap qprops;
+                pqueues[qname] = qprops;
+                proptemp["queues"] = pqueues;
+                m_agent_props[idxa] = proptemp;
+                refreshContents();
+            }
+        } else {
+            qDebug() << "AgentsPanelNext::updatePeerAgent() warning : undefined" << idxa << action;
+        }
+    } else if(action == "unpaused") {
+        if(m_agent_props.contains(idxa)) {
+            QVariantMap proptemp = m_agent_props[idxa].toMap();
+            QVariantMap properties = proptemp["properties"].toMap();
+            QVariantMap pqueues = proptemp["queues"].toMap();
+            QVariantMap qprops = pqueues[qname].toMap();
+            qprops["Paused"] = "0";
+            qprops["Xivo-StateTime"] = timeref;
+            pqueues[qname] = qprops;
+            proptemp["properties"] = properties;
+            proptemp["queues"] = pqueues;
+            m_agent_props[idxa] = proptemp;
+        }
+    } else if(action == "paused") {
+        if(m_agent_props.contains(idxa)) {
+            QVariantMap proptemp = m_agent_props[idxa].toMap();
+            QVariantMap properties = proptemp["properties"].toMap();
+            QVariantMap pqueues = proptemp["queues"].toMap();
+            QVariantMap qprops = pqueues[qname].toMap();
+            qprops["Paused"] = "1";
+            qprops["Xivo-StateTime"] = timeref;
+            pqueues[qname] = qprops;
+            proptemp["properties"] = properties;
+            proptemp["queues"] = pqueues;
+            m_agent_props[idxa] = proptemp;
+        }
+                
+    } else if(action == "agentlogin") {
+        if(m_agent_props.contains(idxa)) {
+            QVariantMap proptemp = m_agent_props[idxa].toMap();
+            QVariantMap properties = proptemp["properties"].toMap();
+            properties["status"] = "AGENT_IDLE";
+            properties["Xivo-ReceivedCalls"] = 0;
+            properties["Xivo-LostCalls"] = 0;
+            proptemp["properties"] = properties;
+            m_agent_props[idxa] = proptemp;
+            refreshContents();
+        }
+    } else if(action == "agentlogout") {
+        if(m_agent_props.contains(idxa)) {
+            QVariantMap proptemp = m_agent_props[idxa].toMap();
+            QVariantMap properties = proptemp["properties"].toMap();
+            properties["status"] = "AGENT_LOGGEDOFF";
+            proptemp["properties"] = properties;
+            m_agent_props[idxa] = proptemp;
+            refreshContents();
+        }
+    } else if(action == "agentcalled") {
+        if(m_agent_props.contains(idxa)) {
+            QVariantMap proptemp = m_agent_props[idxa].toMap();
+            QVariantMap properties = proptemp["properties"].toMap();
+            properties["Xivo-ReceivedCalls"] = params.toMap()["received"];
+            properties["Xivo-LostCalls"] = params.toMap()["lost"];
+            proptemp["properties"] = properties;
+            m_agent_props[idxa] = proptemp;
+        }
+    } else if(action == "agentconnect") {
+        if(m_agent_props.contains(idxa)) {
+            QVariantMap proptemp = m_agent_props[idxa].toMap();
+            QVariantMap properties = proptemp["properties"].toMap();
+            properties["Xivo-LostCalls"] = params.toMap()["lost"];
+            proptemp["properties"] = properties;
+            m_agent_props[idxa] = proptemp;
+        }
+                
+    } else if((action == "agentlink") || (action == "phonelink")) {
+        if(m_agent_props.contains(idxa)) {
+            QVariantMap proptemp = m_agent_props[idxa].toMap();
+            QVariantMap properties = proptemp["properties"].toMap();
+            properties["link"] = action;
+            properties["Xivo-StateTime"] = timeref;
+            properties["dir"] = params.toMap()["dir"];
+            properties["did"] = params.toMap()["did"];
+            properties["outcall"] = params.toMap()["outcall"];
+            properties["queuename"] = params.toMap()["queuename"];
+            proptemp["properties"] = properties;
+            m_agent_props[idxa] = proptemp;
+        }
+    } else if((action == "agentunlink") || (action == "phoneunlink")) {
+        if(m_agent_props.contains(idxa)) {
+            QVariantMap proptemp = m_agent_props[idxa].toMap();
+            QVariantMap properties = proptemp["properties"].toMap();
+            properties["link"] = action;
+            properties["Xivo-StateTime"] = timeref;
+            proptemp["properties"] = properties;
+            m_agent_props[idxa] = proptemp;
+        }
+    }
         
-        // refreshContents();
-        refreshDisplay();
+    // refreshContents();
+    refreshDisplay();
 }
 
 void AgentsPanelNext::renameQueueGroup()
 {
-        QString groupid = sender()->property("groupid").toString();
-        QPoint where = sender()->property("where").toPoint();
-        QGridLayout * gl = new QGridLayout();
-        QDialog * dialog = new QDialog();
-        dialog->setWindowTitle(tr("Rename a Group"));
-        dialog->setLayout(gl);
-        QLabel * q1 = new QLabel(tr("New Name"));
-        QTextEdit * q2 = new QTextEdit();
-        q2->setPlainText(m_title[groupid]->text());
-        QPushButton * q3 = new QPushButton(tr("OK"));
-        QPushButton * q4 = new QPushButton(tr("Cancel"));
-        gl->addWidget(q1, 0, 0);
-        gl->addWidget(q2, 0, 1);
-        gl->addWidget(q3, 1, 0);
-        gl->addWidget(q4, 1, 1);
-        q2->setFixedSize(QSize(200, 60));
-        connect( q3, SIGNAL(clicked()),
-                 dialog, SLOT(close()) );
-        connect( q4, SIGNAL(clicked()),
-                 dialog, SLOT(close()) );
-        dialog->move(where);
-        dialog->exec();
-        if(! q2->toPlainText().trimmed().isEmpty())
-                m_title[groupid]->setText(q2->toPlainText().trimmed());
-        saveGroups();
+    QString groupid = sender()->property("groupid").toString();
+    QPoint where = sender()->property("where").toPoint();
+    QGridLayout * gl = new QGridLayout();
+    QDialog * dialog = new QDialog();
+    dialog->setWindowTitle(tr("Rename a Group"));
+    dialog->setLayout(gl);
+    QLabel * q1 = new QLabel(tr("New Name"));
+    QTextEdit * q2 = new QTextEdit();
+    q2->setPlainText(m_title[groupid]->text());
+    QPushButton * q3 = new QPushButton(tr("OK"));
+    QPushButton * q4 = new QPushButton(tr("Cancel"));
+    gl->addWidget(q1, 0, 0);
+    gl->addWidget(q2, 0, 1);
+    gl->addWidget(q3, 1, 0);
+    gl->addWidget(q4, 1, 1);
+    q2->setFixedSize(QSize(200, 60));
+    connect( q3, SIGNAL(clicked()),
+             dialog, SLOT(close()) );
+    connect( q4, SIGNAL(clicked()),
+             dialog, SLOT(close()) );
+    dialog->move(where);
+    dialog->exec();
+    if(! q2->toPlainText().trimmed().isEmpty())
+        m_title[groupid]->setText(q2->toPlainText().trimmed());
+    saveGroups();
 }
 
 void AgentsPanelNext::removeQueueGroup()
 {
-        QString groupid = sender()->property("groupid").toString();
-        if(m_title.contains(groupid)) {
-                m_title[groupid]->deleteLater();
-                m_title.remove(groupid);
+    QString groupid = sender()->property("groupid").toString();
+    if(m_title.contains(groupid)) {
+        m_title[groupid]->deleteLater();
+        m_title.remove(groupid);
                 
-                // trick in order to hide an extra item (Qt Bug ?)
-                QLayoutItem * layoutitem = m_glayout->itemAtPosition(0, m_title.keys().size() * NCOLS);
-                if(layoutitem) {
-                        layoutitem->widget()->hide();
-                        m_glayout->removeWidget(layoutitem->widget());
-                }
-                
-                refreshContents();
-                refreshDisplay();
+        // trick in order to hide an extra item (Qt Bug ?)
+        QLayoutItem * layoutitem = m_glayout->itemAtPosition(0, m_title.keys().size() * NCOLS);
+        if(layoutitem) {
+            layoutitem->widget()->hide();
+            m_glayout->removeWidget(layoutitem->widget());
         }
+                
+        refreshContents();
+        refreshDisplay();
+    }
 }
 
 void AgentsPanelNext::removeQueuesFromGroup()
 {
-        QString groupid = sender()->property("groupid").toString();
-        m_title[groupid]->setProperty("queues", QStringList());
-        m_title[groupid]->setToolTip("");
-        refreshContents();
-        refreshDisplay();
+    QString groupid = sender()->property("groupid").toString();
+    m_title[groupid]->setProperty("queues", QStringList());
+    m_title[groupid]->setToolTip("");
+    refreshContents();
+    refreshDisplay();
 }
 
 void AgentsPanelNext::removeQueueFromGroup()
 {
-        QString groupid = sender()->property("groupid").toString();
-        QString queuename = sender()->property("queuename").toString();
-        // qDebug() << "AgentsPanelNext::removeQueueFromGroup()" << groupid << queuename;
-        QStringList qlist = m_title[groupid]->property("queues").toStringList();
-        if(qlist.contains(queuename)) {
-                qlist.removeAll(queuename);
-                m_title[groupid]->setProperty("queues", qlist);
-                m_title[groupid]->setToolTip(qlist.join(", "));
-                refreshContents();
-                refreshDisplay();
-        }
+    QString groupid = sender()->property("groupid").toString();
+    QString queuename = sender()->property("queuename").toString();
+    // qDebug() << "AgentsPanelNext::removeQueueFromGroup()" << groupid << queuename;
+    QStringList qlist = m_title[groupid]->property("queues").toStringList();
+    if(qlist.contains(queuename)) {
+        qlist.removeAll(queuename);
+        m_title[groupid]->setProperty("queues", qlist);
+        m_title[groupid]->setToolTip(qlist.join(", "));
+        refreshContents();
+        refreshDisplay();
+    }
 }
 
 void AgentsPanelNext::addQueuesToGroup()
 {
-        QString groupid = sender()->property("groupid").toString();
-        m_title[groupid]->setProperty("queues", m_queuelist);
-        m_title[groupid]->setToolTip(m_queuelist.join(", "));
-        refreshContents();
-        refreshDisplay();
+    QString groupid = sender()->property("groupid").toString();
+    m_title[groupid]->setProperty("queues", m_queuelist);
+    m_title[groupid]->setToolTip(m_queuelist.join(", "));
+    refreshContents();
+    refreshDisplay();
 }
 
 void AgentsPanelNext::addQueueToGroup()
 {
-        QString groupid = sender()->property("groupid").toString();
-        QString queuename = sender()->property("queuename").toString();
-        // qDebug() << "AgentsPanelNext::addQueueToGroup()" << groupid << queuename;
-        QStringList qlist = m_title[groupid]->property("queues").toStringList();
-        if(! qlist.contains(queuename)) {
-                qlist.append(queuename);
-                m_title[groupid]->setProperty("queues", qlist);
-                m_title[groupid]->setToolTip(qlist.join(", "));
-                refreshContents();
-                refreshDisplay();
-        }
+    QString groupid = sender()->property("groupid").toString();
+    QString queuename = sender()->property("queuename").toString();
+    // qDebug() << "AgentsPanelNext::addQueueToGroup()" << groupid << queuename;
+    QStringList qlist = m_title[groupid]->property("queues").toStringList();
+    if(! qlist.contains(queuename)) {
+        qlist.append(queuename);
+        m_title[groupid]->setProperty("queues", qlist);
+        m_title[groupid]->setToolTip(qlist.join(", "));
+        refreshContents();
+        refreshDisplay();
+    }
 }
 
 void AgentsPanelNext::agentClicked(QMouseEvent * event)
 {
-        if(event->button() == Qt::LeftButton) {
-                QString astid = sender()->property("astid").toString();
-                QString agentid = sender()->property("agentid").toString();
-                QString groupid = sender()->property("groupid").toString();
-                QPoint where = event->globalPos();
-                QString idxa = QString("%1-%2").arg(astid).arg(agentid);
+    if(event->button() == Qt::LeftButton) {
+        QString astid = sender()->property("astid").toString();
+        QString agentid = sender()->property("agentid").toString();
+        QString groupid = sender()->property("groupid").toString();
+        QPoint where = event->globalPos();
+        QString idxa = QString("%1-%2").arg(astid).arg(agentid);
                 
-                changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid), true);
+        changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid), true);
                 
-                QGridLayout * gl = new QGridLayout();
-                QDialog * dialog = new QDialog(this);
-                dialog->setWindowTitle(tr("Agent %1 on %2").arg(agentid, astid));
-                dialog->setLayout(gl);
+        QGridLayout * gl = new QGridLayout();
+        QDialog * dialog = new QDialog(this);
+        dialog->setWindowTitle(tr("Agent %1 on %2").arg(agentid, astid));
+        dialog->setLayout(gl);
                 
-                QLabel * q_name = new QLabel(m_agent_props[idxa].toMap()["firstname"].toString());
-                QLabel * q_agentid = new QLabel(agentid);
+        QLabel * q_name = new QLabel(m_agent_props[idxa].toMap()["firstname"].toString());
+        QLabel * q_agentid = new QLabel(agentid);
                 
-                QString nreceived = m_agent_props[idxa].toMap()["properties"].toMap()["Xivo-ReceivedCalls"].toString();
-                QString nlost = m_agent_props[idxa].toMap()["properties"].toMap()["Xivo-LostCalls"].toString();
-                QLabel * q_received = new QLabel(tr("%1 calls received since connection").arg(nreceived));
-                QLabel * q_lost = new QLabel(tr("%1 calls lost since connection").arg(nlost));
+        QString nreceived = m_agent_props[idxa].toMap()["properties"].toMap()["Xivo-ReceivedCalls"].toString();
+        QString nlost = m_agent_props[idxa].toMap()["properties"].toMap()["Xivo-LostCalls"].toString();
+        QLabel * q_received = new QLabel(tr("%1 calls received since connection").arg(nreceived));
+        QLabel * q_lost = new QLabel(tr("%1 calls lost since connection").arg(nlost));
                 
-                QPushButton * q_pause;
-                bool isinpause = false;
-                foreach (QString qname, m_agent_props[idxa].toMap()["queues"].toMap().keys())
-                        if(m_title[groupid]->property("queues").toStringList().contains(qname)) {
-                                QVariantMap qvm = m_agent_props[idxa].toMap()["queues"].toMap()[qname].toMap();
-                                if(! qvm.isEmpty())
-                                        if(qvm["Paused"].toString() == "1")
-                                                isinpause = true;
-                        }
-                // qDebug() << m_agent_props[idxa].toMap()["queues"];
-                if(isinpause) {
-                        q_pause = new QPushButton(tr("Cancel Pause"));
-                        q_pause->setProperty("action", "unpause");
-                } else {
-                        q_pause = new QPushButton(tr("Pause"));
-                        q_pause->setProperty("action", "pause");
-                }
-                
-                q_pause->setProperty("astid", astid);
-                q_pause->setProperty("agentid", agentid);
-                q_pause->setProperty("groupid", groupid);
-                connect( q_pause, SIGNAL(clicked()),
-                         this, SLOT(actionclicked()) );
-                connect( q_pause, SIGNAL(clicked()),
-                         dialog, SLOT(close()) );
-                
-                QPushButton * q_logout = new QPushButton(tr("Logout"));
-                q_logout->setProperty("action", "logout");
-                q_logout->setProperty("astid", astid);
-                q_logout->setProperty("agentid", agentid);
-                connect( q_logout, SIGNAL(clicked()),
-                         this, SLOT(actionclicked()) );
-                connect( q_logout, SIGNAL(clicked()),
-                         dialog, SLOT(close()) );
-                
-                QPushButton * q_transfer = new QPushButton(tr("Transfer"));
-                q_transfer->setProperty("action", "transfer");
-                q_transfer->setProperty("astid", astid);
-                q_transfer->setProperty("agentid", agentid);
-                connect( q_transfer, SIGNAL(clicked()),
-                         this, SLOT(actionclicked()) );
-                
-                QLabel * q_labelqueues = new QLabel(tr("Available Queues"));
-                m_queue_chose = new QComboBox();
-                m_queue_chose->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-                foreach(QString qname, m_queueorder.toStringList()) {
-                        if(m_queuelist.contains(qname))
-                                m_queue_chose->addItem(qname);
-                }
-                
-                QPushButton * q_close = new QPushButton(tr("Close"));
-                QFrame * q_hline1 = new QFrame(this);
-                QFrame * q_hline2 = new QFrame(this);
-                q_hline1->setFrameShape(QFrame::HLine);
-                q_hline2->setFrameShape(QFrame::HLine);
-                
-                int iy = 0;
-                gl->addWidget(q_name, iy, 0, Qt::AlignCenter);
-                gl->addWidget(q_agentid, iy, 1, Qt::AlignCenter);
-                iy ++;
-                gl->addWidget(q_received, iy, 0, 1, 2, Qt::AlignCenter);
-                iy ++;
-                gl->addWidget(q_lost, iy, 0, 1, 2, Qt::AlignCenter);
-                iy ++;
-                gl->addWidget(q_pause, iy, 0, Qt::AlignCenter);
-                gl->addWidget(q_logout, iy, 1, Qt::AlignCenter);
-                iy ++;
-                gl->addWidget(q_hline1, iy, 0, 1, 2);
-                iy ++;
-                gl->addWidget(q_labelqueues, iy, 1, Qt::AlignCenter);
-                iy ++;
-                gl->addWidget(q_transfer, iy, 0, Qt::AlignCenter);
-                gl->addWidget(m_queue_chose, iy, 1, Qt::AlignCenter);
-                iy ++;
-                gl->addWidget(q_hline2, iy, 0, 1, 2);
-                iy ++;
-                gl->addWidget(q_close, iy, 1, Qt::AlignCenter);
-                iy ++;
-                connect( q_close, SIGNAL(clicked()),
-                         dialog, SLOT(close()) );
-                dialog->move(where);
-                dialog->exec();
+        QPushButton * q_pause;
+        bool isinpause = false;
+        foreach (QString qname, m_agent_props[idxa].toMap()["queues"].toMap().keys())
+            if(m_title[groupid]->property("queues").toStringList().contains(qname)) {
+                QVariantMap qvm = m_agent_props[idxa].toMap()["queues"].toMap()[qname].toMap();
+                if(! qvm.isEmpty())
+                    if(qvm["Paused"].toString() == "1")
+                        isinpause = true;
+            }
+        // qDebug() << m_agent_props[idxa].toMap()["queues"];
+        if(isinpause) {
+            q_pause = new QPushButton(tr("Cancel Pause"));
+            q_pause->setProperty("action", "unpause");
+        } else {
+            q_pause = new QPushButton(tr("Pause"));
+            q_pause->setProperty("action", "pause");
         }
+                
+        q_pause->setProperty("astid", astid);
+        q_pause->setProperty("agentid", agentid);
+        q_pause->setProperty("groupid", groupid);
+        connect( q_pause, SIGNAL(clicked()),
+                 this, SLOT(actionclicked()) );
+        connect( q_pause, SIGNAL(clicked()),
+                 dialog, SLOT(close()) );
+                
+        QPushButton * q_logout = new QPushButton(tr("Logout"));
+        q_logout->setProperty("action", "logout");
+        q_logout->setProperty("astid", astid);
+        q_logout->setProperty("agentid", agentid);
+        connect( q_logout, SIGNAL(clicked()),
+                 this, SLOT(actionclicked()) );
+        connect( q_logout, SIGNAL(clicked()),
+                 dialog, SLOT(close()) );
+                
+        QPushButton * q_transfer = new QPushButton(tr("Transfer"));
+        q_transfer->setProperty("action", "transfer");
+        q_transfer->setProperty("astid", astid);
+        q_transfer->setProperty("agentid", agentid);
+        connect( q_transfer, SIGNAL(clicked()),
+                 this, SLOT(actionclicked()) );
+                
+        QLabel * q_labelqueues = new QLabel(tr("Available Queues"));
+        m_queue_chose = new QComboBox();
+        m_queue_chose->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        foreach(QString qname, m_queueorder.toStringList()) {
+            if(m_queuelist.contains(qname))
+                m_queue_chose->addItem(qname);
+        }
+                
+        QPushButton * q_close = new QPushButton(tr("Close"));
+        QFrame * q_hline1 = new QFrame(this);
+        QFrame * q_hline2 = new QFrame(this);
+        q_hline1->setFrameShape(QFrame::HLine);
+        q_hline2->setFrameShape(QFrame::HLine);
+                
+        int iy = 0;
+        gl->addWidget(q_name, iy, 0, Qt::AlignCenter);
+        gl->addWidget(q_agentid, iy, 1, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_received, iy, 0, 1, 2, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_lost, iy, 0, 1, 2, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_pause, iy, 0, Qt::AlignCenter);
+        gl->addWidget(q_logout, iy, 1, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_hline1, iy, 0, 1, 2);
+        iy ++;
+        gl->addWidget(q_labelqueues, iy, 1, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_transfer, iy, 0, Qt::AlignCenter);
+        gl->addWidget(m_queue_chose, iy, 1, Qt::AlignCenter);
+        iy ++;
+        gl->addWidget(q_hline2, iy, 0, 1, 2);
+        iy ++;
+        gl->addWidget(q_close, iy, 1, Qt::AlignCenter);
+        iy ++;
+        connect( q_close, SIGNAL(clicked()),
+                 dialog, SLOT(close()) );
+        dialog->move(where);
+        dialog->exec();
+    }
 }
 
 void AgentsPanelNext::actionclicked()
 {
-        QString action = sender()->property("action").toString();
-        QString astid = sender()->property("astid").toString();
-        QString agentid = sender()->property("agentid").toString();
-        QString groupid = sender()->property("groupid").toString();
-        if(action == "transfer")
-                agentAction(QString("transfer %1 %2 %3").arg(astid).arg(agentid).arg(m_queue_chose->currentText()));
-        else if(action == "unpause") {
-                // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
-                // agentAction(QString("unpause %1 %2").arg(astid).arg(agentid));
-                agentAction(QString("unpause_all %1 %2").arg(astid).arg(agentid));
-        }
-        else if(action == "pause") {
-                // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
-                // agentAction(QString("pause %1 %2").arg(astid).arg(agentid));
-                agentAction(QString("pause_all %1 %2").arg(astid).arg(agentid));
-        }
-        else if(action == "logout")
-                agentAction(QString("logout %1 %2").arg(astid).arg(agentid));
+    QString action = sender()->property("action").toString();
+    QString astid = sender()->property("astid").toString();
+    QString agentid = sender()->property("agentid").toString();
+    QString groupid = sender()->property("groupid").toString();
+    if(action == "transfer")
+        agentAction(QString("transfer %1 %2 %3").arg(astid).arg(agentid).arg(m_queue_chose->currentText()));
+    else if(action == "unpause") {
+        // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
+        // agentAction(QString("unpause %1 %2").arg(astid).arg(agentid));
+        agentAction(QString("unpause_all %1 %2").arg(astid).arg(agentid));
+    }
+    else if(action == "pause") {
+        // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
+        // agentAction(QString("pause %1 %2").arg(astid).arg(agentid));
+        agentAction(QString("pause_all %1 %2").arg(astid).arg(agentid));
+    }
+    else if(action == "logout")
+        agentAction(QString("logout %1 %2").arg(astid).arg(agentid));
 }
 
 void AgentsPanelNext::refreshContents()
 {
-        foreach (QString idx, m_agent_labels.keys()) {
-                delete m_agent_labels[idx];
-                m_agent_labels.remove(idx);
-        }
+    foreach (QString idx, m_agent_labels.keys()) {
+        delete m_agent_labels[idx];
+        m_agent_labels.remove(idx);
+    }
         
-        foreach (QString idxa, m_agent_props.keys()) {
-                QString astid = m_agent_props[idxa].toMap()["astid"].toString();
-                QString agentid = m_agent_props[idxa].toMap()["agentid"].toString();
-                QVariantMap agqjoined = m_agent_props[idxa].toMap()["queues"].toMap();
-                QVariant properties = m_agent_props[idxa].toMap()["properties"];
-                QString agstatus = properties.toMap()["status"].toString();
+    foreach (QString idxa, m_agent_props.keys()) {
+        QString astid = m_agent_props[idxa].toMap()["astid"].toString();
+        QString agentid = m_agent_props[idxa].toMap()["agentid"].toString();
+        QVariantMap agqjoined = m_agent_props[idxa].toMap()["queues"].toMap();
+        QVariant properties = m_agent_props[idxa].toMap()["properties"];
+        QString agstatus = properties.toMap()["status"].toString();
                 
-                if(agstatus != "AGENT_LOGGEDOFF") foreach (QString qname, agqjoined.keys()) {
-                        if(! agqjoined[qname].toMap().isEmpty()) {
-                                QString sstatus = agqjoined[qname].toMap()["Status"].toString();
-                                // qDebug() << "AgentsPanelNext::refreshContents()" << qname << idxa << sstatus;
-                                if((sstatus == "1") || (sstatus == "5")) {
-                                        foreach (QString groupid, m_title.keys()) {
-                                                QStringList lqueues = m_title[groupid]->property("queues").toStringList();
-                                                if(lqueues.contains(qname)) {
-                                                        QString idx = QString("%1-%2-%3").arg(astid).arg(agentid).arg(groupid);
-                                                        if(! m_agent_labels.contains(idx)) {
-                                                                m_agent_labels[idx] = new ExtendedLabel();
-                                                                m_agent_labels[idx]->setProperty("astid", astid);
-                                                                m_agent_labels[idx]->setProperty("agentid", agentid);
-                                                                m_agent_labels[idx]->setProperty("groupid", groupid);
-                                                                connect( m_agent_labels[idx], SIGNAL(mouse_release(QMouseEvent *)),
-                                                                         this, SLOT(agentClicked(QMouseEvent *)) );
-                                                                connect( m_agent_labels[idx], SIGNAL(context_menu(QContextMenuEvent *)),
-                                                                         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-                                                        }
-                                                }
-                                        }
-                                }
-                                // "3", "" (agent not in queue)
+        if(agstatus != "AGENT_LOGGEDOFF") foreach (QString qname, agqjoined.keys()) {
+            if(! agqjoined[qname].toMap().isEmpty()) {
+                QString sstatus = agqjoined[qname].toMap()["Status"].toString();
+                // qDebug() << "AgentsPanelNext::refreshContents()" << qname << idxa << sstatus;
+                if((sstatus == "1") || (sstatus == "5")) {
+                    foreach (QString groupid, m_title.keys()) {
+                        QStringList lqueues = m_title[groupid]->property("queues").toStringList();
+                        if(lqueues.contains(qname)) {
+                            QString idx = QString("%1-%2-%3").arg(astid).arg(agentid).arg(groupid);
+                            if(! m_agent_labels.contains(idx)) {
+                                m_agent_labels[idx] = new ExtendedLabel();
+                                m_agent_labels[idx]->setProperty("astid", astid);
+                                m_agent_labels[idx]->setProperty("agentid", agentid);
+                                m_agent_labels[idx]->setProperty("groupid", groupid);
+                                connect( m_agent_labels[idx], SIGNAL(mouse_release(QMouseEvent *)),
+                                         this, SLOT(agentClicked(QMouseEvent *)) );
+                                connect( m_agent_labels[idx], SIGNAL(context_menu(QContextMenuEvent *)),
+                                         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+                            }
                         }
+                    }
                 }
+                // "3", "" (agent not in queue)
+            }
         }
-        saveGroups();
+    }
+    saveGroups();
 }
 
 void AgentsPanelNext::refreshDisplay()
 {
-        int nmax = 1;
-        QHash<QString, QMap<QString, QString> > columns_sorter;
-        // qDebug() << "AgentsPanelNext::refreshDisplay()";
+    int nmax = 1;
+    QHash<QString, QMap<QString, QString> > columns_sorter;
+    // qDebug() << "AgentsPanelNext::refreshDisplay()";
         
-        foreach (QString groupid, m_title.keys()) {
-                QMap<QString, QString> map;
-                columns_sorter[groupid] = map;
+    foreach (QString groupid, m_title.keys()) {
+        QMap<QString, QString> map;
+        columns_sorter[groupid] = map;
+    }
+    foreach (QString idx, m_agent_labels.keys()) {
+        setAgentProps(idx);
+        QString groupid = m_agent_labels[idx]->property("groupid").toString();
+        QString sorter = m_agent_labels[idx]->property("sorter").toString();
+        columns_sorter[groupid].insertMulti(sorter, idx);
+    }
+    foreach (QString groupid, m_title.keys()) {
+        int iy = 1;
+        int ix = m_title.keys().indexOf(groupid);
+        m_glayout->setColumnStretch(ix * NCOLS, 0);
+        m_glayout->addWidget(m_title[groupid], 0, ix * NCOLS, 1, NCOLS);
+        QMap<QString, QString> lst = columns_sorter[groupid];
+        foreach (QString srt, lst.uniqueKeys()) {
+            foreach (QString value, lst.values(srt)) {
+                m_glayout->setRowStretch(iy, 0);
+                m_glayout->addWidget(m_agent_labels[value], iy++, ix * NCOLS);
+            }
         }
-        foreach (QString idx, m_agent_labels.keys()) {
-                setAgentProps(idx);
-                QString groupid = m_agent_labels[idx]->property("groupid").toString();
-                QString sorter = m_agent_labels[idx]->property("sorter").toString();
-                columns_sorter[groupid].insertMulti(sorter, idx);
-        }
-        foreach (QString groupid, m_title.keys()) {
-                int iy = 1;
-                int ix = m_title.keys().indexOf(groupid);
-                m_glayout->setColumnStretch(ix * NCOLS, 0);
-                m_glayout->addWidget(m_title[groupid], 0, ix * NCOLS, 1, NCOLS);
-                QMap<QString, QString> lst = columns_sorter[groupid];
-                foreach (QString srt, lst.uniqueKeys()) {
-                        foreach (QString value, lst.values(srt)) {
-                                m_glayout->setRowStretch(iy, 0);
-                                m_glayout->addWidget(m_agent_labels[value], iy++, ix * NCOLS);
-                        }
-                }
-                if(iy > nmax)
-                        nmax = iy;
-        }
-        m_glayout->setRowStretch(nmax, 1);
-        m_glayout->setColumnStretch(m_title.size() * NCOLS, 1);
+        if(iy > nmax)
+            nmax = iy;
+    }
+    m_glayout->setRowStretch(nmax, 1);
+    m_glayout->setColumnStretch(m_title.size() * NCOLS, 1);
 }
 
 void AgentsPanelNext::setAgentList(double timeref, const QVariant & alist)
 {
-        m_timesrv = timeref;
-        m_timeclt = QDateTime::currentDateTime();
-        // qDebug() << "AgentsPanelNext::setAgentList()" << alist;
-        QVariantMap alistmap = alist.toMap();
-        QString astid = alistmap["astid"].toString();
-        QStringList agentids = alistmap["newlist"].toMap().keys();
+    m_timesrv = timeref;
+    m_timeclt = QDateTime::currentDateTime();
+    // qDebug() << "AgentsPanelNext::setAgentList()" << alist;
+    QVariantMap alistmap = alist.toMap();
+    QString astid = alistmap["astid"].toString();
+    QStringList agentids = alistmap["newlist"].toMap().keys();
         
-        // sets the labels
-        foreach (QString agentid, agentids) {
-                QVariantMap agqjoined = alistmap["newlist"].toMap()[agentid].toMap()["queues"].toMap();
+    // sets the labels
+    foreach (QString agentid, agentids) {
+        QVariantMap agqjoined = alistmap["newlist"].toMap()[agentid].toMap()["queues"].toMap();
                 
-                QString idxa = QString("%1-%2").arg(astid).arg(agentid);
-                if(! m_agent_props.contains(idxa)) {
-                        QVariantMap p;
-                        p["astid"] = astid;
-                        p["agentid"] = agentid;
-                        p["properties"] = alistmap["newlist"].toMap()[agentid].toMap()["properties"];
-                        p["queues"] = alistmap["newlist"].toMap()[agentid].toMap()["queues"];
-                        p["firstname"] = alistmap["newlist"].toMap()[agentid].toMap()["firstname"];
-                        p["lastname"] = alistmap["newlist"].toMap()[agentid].toMap()["lastname"];
-                        m_agent_props[idxa] = p;
-                } else {
-                        qDebug() << "idxa already there" << idxa;
-                }
+        QString idxa = QString("%1-%2").arg(astid).arg(agentid);
+        if(! m_agent_props.contains(idxa)) {
+            QVariantMap p;
+            p["astid"] = astid;
+            p["agentid"] = agentid;
+            p["properties"] = alistmap["newlist"].toMap()[agentid].toMap()["properties"];
+            p["queues"] = alistmap["newlist"].toMap()[agentid].toMap()["queues"];
+            p["firstname"] = alistmap["newlist"].toMap()[agentid].toMap()["firstname"];
+            p["lastname"] = alistmap["newlist"].toMap()[agentid].toMap()["lastname"];
+            m_agent_props[idxa] = p;
+        } else {
+            qDebug() << "idxa already there" << idxa;
         }
-        loadQueueGroups();
+    }
+    loadQueueGroups();
 }
 
 void AgentsPanelNext::setQueueList(const QVariant & qlist)
 {
-        // qDebug() << "QueuesPanel::setQueueList()" << qlist;
-        if(m_userinfo == NULL)
-                return;
-        QVariantMap qlistmap = qlist.toMap();
-        QString astid = qlistmap["astid"].toString();
-        // if(astid != m_userinfo->astid()) return;
-        QStringList queues = qlistmap["queuestats"].toMap().keys();
-        foreach (QString queuename, queues)
-                if((! m_queuelist.contains(queuename))
-                   && m_userinfo->contexts().contains(qlistmap["queueprops"].toMap()[queuename].toString()))
-                        m_queuelist.append(queuename);
+    // qDebug() << "QueuesPanel::setQueueList()" << qlist;
+    if(m_userinfo == NULL)
+        return;
+    QVariantMap qlistmap = qlist.toMap();
+    QString astid = qlistmap["astid"].toString();
+    // if(astid != m_userinfo->astid()) return;
+    QStringList queues = qlistmap["queuestats"].toMap().keys();
+    foreach (QString queuename, queues)
+        if((! m_queuelist.contains(queuename))
+           && m_userinfo->contexts().contains(qlistmap["queueprops"].toMap()[queuename].toString()))
+            m_queuelist.append(queuename);
 }
 
 void AgentsPanelNext::timerEvent(QTimerEvent *)
 {
-        // qDebug() << "AgentsPanelNext::timerEvent()";
-        foreach (QString idx, m_agent_labels.keys())
-                setAgentProps(idx);
+    // qDebug() << "AgentsPanelNext::timerEvent()";
+    foreach (QString idx, m_agent_labels.keys())
+        setAgentProps(idx);
 }

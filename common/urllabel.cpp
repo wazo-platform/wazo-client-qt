@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -49,27 +49,26 @@
  * allow link to be clickable and put some html magic
  * into the label text. */
 UrlLabel::UrlLabel(const QString & url, QWidget * parent)
-        : QLabel(parent)
+    : QLabel(parent)
 {
-        QString displaytext, text;
-        //setForegroundRole( QPalette::Link );
-        setOpenExternalLinks(true);        // new in Qt 4.2
-        setTextInteractionFlags( Qt::LinksAccessibleByMouse
-                                 | Qt::LinksAccessibleByKeyboard );
-        //                        | Qt::TextSelectableByMouse
-        //                        | Qt::TextSelectableByKeyboard );
-        if(url.startsWith("mailto:"))
-                displaytext = url.mid(7);
-        else if(url.startsWith("dial:"))
-                displaytext = url.mid(5);
-        else
-                displaytext = url;
-        //qDebug() << "UrlLabel::UrlLabel()" << url << displaytext;
-        text = "<a href=\"";
-        text.append(url);
-        text.append("\">");
-        text.append(displaytext);
-        text.append("</a>");
-        setText(text);
+    QString displaytext, text;
+    //setForegroundRole( QPalette::Link );
+    setOpenExternalLinks(true);        // new in Qt 4.2
+    setTextInteractionFlags( Qt::LinksAccessibleByMouse
+                             | Qt::LinksAccessibleByKeyboard );
+    //                        | Qt::TextSelectableByMouse
+    //                        | Qt::TextSelectableByKeyboard );
+    if(url.startsWith("mailto:"))
+        displaytext = url.mid(7);
+    else if(url.startsWith("dial:"))
+        displaytext = url.mid(5);
+    else
+        displaytext = url;
+    //qDebug() << "UrlLabel::UrlLabel()" << url << displaytext;
+    text = "<a href=\"";
+    text.append(url);
+    text.append("\">");
+    text.append(displaytext);
+    text.append("</a>");
+    setText(text);
 }
-

@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -50,22 +50,22 @@
 /*! \brief Constructor
  */
 QueueentrydetailsPanel::QueueentrydetailsPanel(QWidget * parent)
-        : QWidget(parent)
+    : QWidget(parent)
 {
-        m_gridlayout = new QGridLayout(this);
+    m_gridlayout = new QGridLayout(this);
 
-        m_label = new QLabel("", this);
-        m_gridlayout->setColumnStretch( 5, 1 );
-        m_gridlayout->setRowStretch( 100, 1 );
-        m_gridlayout->addWidget(m_label, 0, 0);
-        startTimer(1000);
+    m_label = new QLabel("", this);
+    m_gridlayout->setColumnStretch( 5, 1 );
+    m_gridlayout->setRowStretch( 100, 1 );
+    m_gridlayout->addWidget(m_label, 0, 0);
+    startTimer(1000);
 }
 
 /*! \brief Destructor
  */
 QueueentrydetailsPanel::~QueueentrydetailsPanel()
 {
-        // qDebug() << "QueueentrydetailsPanel::~QueueentrydetailsPanel()";
+    // qDebug() << "QueueentrydetailsPanel::~QueueentrydetailsPanel()";
 }
 
 /*! \brief Do nothing
@@ -87,8 +87,8 @@ void QueueentrydetailsPanel::updatePeerAgent(double timeref,
                                              const QString &,
                                              const QVariant &)
 {
-        m_timesrv = timeref;
-        m_timeclt = QDateTime::currentDateTime();
+    m_timesrv = timeref;
+    m_timeclt = QDateTime::currentDateTime();
 }
 
 /*! \brief update entries
@@ -100,63 +100,63 @@ void QueueentrydetailsPanel::newQueue(double timeref,
                                       const QString & queueid,
                                       const QVariant & queuestatus)
 {
-        // qDebug() << "QueueentrydetailsPanel::newQueue()" << astid << queueid << queuestatus;
-        m_astid = astid;
-        m_queueid = queueid;
-        m_label->setText(tr("<b>%1</b> on <b>%2</b>").arg(m_queueid).arg(m_astid));
+    // qDebug() << "QueueentrydetailsPanel::newQueue()" << astid << queueid << queuestatus;
+    m_astid = astid;
+    m_queueid = queueid;
+    m_label->setText(tr("<b>%1</b> on <b>%2</b>").arg(m_queueid).arg(m_astid));
         
-        foreach(QString q, m_entrypos.keys())
+    foreach(QString q, m_entrypos.keys())
         {
-                delete m_entrypos[q];
-                delete m_entrytime[q];
+            delete m_entrypos[q];
+            delete m_entrytime[q];
         }
-        m_entrypos.clear();
-        m_entrytime.clear();
+    m_entrypos.clear();
+    m_entrytime.clear();
         
-        QVariantMap queuestatusmap = queuestatus.toMap();
-        foreach(QString channel, queuestatusmap["entries"].toMap().keys()) {
-                QVariantMap entryinfos = queuestatusmap["entries"].toMap()[channel].toMap();
-                // qDebug() << "QueueentrydetailsPanel::newQueue()" << astid << queueid << channel << entryinfos;
+    QVariantMap queuestatusmap = queuestatus.toMap();
+    foreach(QString channel, queuestatusmap["entries"].toMap().keys()) {
+        QVariantMap entryinfos = queuestatusmap["entries"].toMap()[channel].toMap();
+        // qDebug() << "QueueentrydetailsPanel::newQueue()" << astid << queueid << channel << entryinfos;
                 
-                m_entrypos[channel] = new QLabel(this);
-                int time_spent = int(timeref - entryinfos["entrytime"].toDouble() + 0.5);
-                m_entrypos[channel]->setProperty("entrytime", QDateTime::currentDateTime().addSecs(- time_spent));
-                m_entrypos[channel]->setProperty("position", entryinfos["position"]);
-                m_entrypos[channel]->setProperty("cidname", entryinfos["calleridname"]);
-                m_entrypos[channel]->setProperty("cidnum", entryinfos["calleridnum"]);
-                updateEntryChannel(channel);
-        }
+        m_entrypos[channel] = new QLabel(this);
+        int time_spent = int(timeref - entryinfos["entrytime"].toDouble() + 0.5);
+        m_entrypos[channel]->setProperty("entrytime", QDateTime::currentDateTime().addSecs(- time_spent));
+        m_entrypos[channel]->setProperty("position", entryinfos["position"]);
+        m_entrypos[channel]->setProperty("cidname", entryinfos["calleridname"]);
+        m_entrypos[channel]->setProperty("cidnum", entryinfos["calleridnum"]);
+        updateEntryChannel(channel);
+    }
 }
 
 void QueueentrydetailsPanel::updateEntryChannel(const QString & channel)
 {
-        if(m_entrypos.contains(channel)) {
-                QDateTime inittime = m_entrypos[channel]->property("entrytime").toDateTime();
-                int nsec = inittime.secsTo(QDateTime::currentDateTime());
-                int pos = m_entrypos[channel]->property("position").toInt();
+    if(m_entrypos.contains(channel)) {
+        QDateTime inittime = m_entrypos[channel]->property("entrytime").toDateTime();
+        int nsec = inittime.secsTo(QDateTime::currentDateTime());
+        int pos = m_entrypos[channel]->property("position").toInt();
                 
-                m_entrypos[channel]->setText(QString("%1 : %2 %3 : %4 sec")
-                                             .arg(pos)
-                                             .arg(m_entrypos[channel]->property("cidname").toString())
-                                             .arg(m_entrypos[channel]->property("cidnum").toString())
-                                             .arg(nsec));
-                m_gridlayout->addWidget( m_entrypos[channel], pos, 0, Qt::AlignLeft );
-        }
+        m_entrypos[channel]->setText(QString("%1 : %2 %3 : %4 sec")
+                                     .arg(pos)
+                                     .arg(m_entrypos[channel]->property("cidname").toString())
+                                     .arg(m_entrypos[channel]->property("cidnum").toString())
+                                     .arg(nsec));
+        m_gridlayout->addWidget( m_entrypos[channel], pos, 0, Qt::AlignLeft );
+    }
 }
 
 /*! \brief call changWatchedAgent()
  */
 void QueueentrydetailsPanel::agentClicked()
 {
-        // qDebug() << "QueueentrydetailsPanel::agentClicked()" << sender()->property("agentid");
-        QString astid = sender()->property("astid").toString();
-        QString agentid = sender()->property("agentid").toString();
-        emit changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid));
+    // qDebug() << "QueueentrydetailsPanel::agentClicked()" << sender()->property("agentid");
+    QString astid = sender()->property("astid").toString();
+    QString agentid = sender()->property("agentid").toString();
+    emit changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid));
 }
 
 void QueueentrydetailsPanel::timerEvent(QTimerEvent *)
 {
-        // qDebug() << "QueueentrydetailsPanel::timerEvent()";
-        foreach(QString channel, m_entrypos.keys())
-                updateEntryChannel(channel);
+    // qDebug() << "QueueentrydetailsPanel::timerEvent()";
+    foreach(QString channel, m_entrypos.keys())
+        updateEntryChannel(channel);
 }

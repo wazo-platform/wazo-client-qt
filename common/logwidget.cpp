@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -59,63 +59,63 @@
  * build layout and child widgets.
  */
 LogWidget::LogWidget(BaseEngine * engine, const QVariant &, QWidget * parent)
-        : QWidget(parent), m_engine(engine), m_timer(-1)
+    : QWidget(parent), m_engine(engine), m_timer(-1)
 {
-        QVBoxLayout * layout = new QVBoxLayout(this);
-        layout->setMargin(0);
-        layout->setSpacing(0);
+    QVBoxLayout * layout = new QVBoxLayout(this);
+    layout->setMargin(0);
+    layout->setSpacing(0);
 
-        QGroupBox * groupBox = new QGroupBox( this );
-        groupBox->setAlignment( Qt::AlignHCenter );
-        QHBoxLayout * vbox = new QHBoxLayout( groupBox );
-        vbox->setMargin(0);
-        vbox->setSpacing(0);
+    QGroupBox * groupBox = new QGroupBox( this );
+    groupBox->setAlignment( Qt::AlignHCenter );
+    QHBoxLayout * vbox = new QHBoxLayout( groupBox );
+    vbox->setMargin(0);
+    vbox->setSpacing(0);
 
-        vbox->addStretch( 1 );
-        m_radioNone = new QRadioButton( " ", groupBox );
-        m_radioNone->setIcon(QIcon(":/images/cancel.png"));
-        m_radioNone->setToolTip( tr("No calls") );
-        connect( m_radioNone, SIGNAL(toggled(bool)),
-                 this, SLOT(modeChanged(bool)) );
-        vbox->addWidget( m_radioNone );
+    vbox->addStretch( 1 );
+    m_radioNone = new QRadioButton( " ", groupBox );
+    m_radioNone->setIcon(QIcon(":/images/cancel.png"));
+    m_radioNone->setToolTip( tr("No calls") );
+    connect( m_radioNone, SIGNAL(toggled(bool)),
+             this, SLOT(modeChanged(bool)) );
+    vbox->addWidget( m_radioNone );
 
-        m_radioOut = new QRadioButton( " ", groupBox );
-        m_radioOut->setIcon(QIcon(":/images/green_up.png"));
-        m_radioOut->setToolTip( tr("Outgoing calls") );
-        connect( m_radioOut, SIGNAL(toggled(bool)),
-                 this, SLOT(modeChanged(bool)) );
-        vbox->addWidget( m_radioOut );
+    m_radioOut = new QRadioButton( " ", groupBox );
+    m_radioOut->setIcon(QIcon(":/images/green_up.png"));
+    m_radioOut->setToolTip( tr("Outgoing calls") );
+    connect( m_radioOut, SIGNAL(toggled(bool)),
+             this, SLOT(modeChanged(bool)) );
+    vbox->addWidget( m_radioOut );
 
-        m_radioIn = new QRadioButton( " ", groupBox );
-        m_radioIn->setIcon(QIcon(":/images/green_down.png"));
-        m_radioIn->setToolTip( tr("Incoming calls") );
-        connect( m_radioIn, SIGNAL(toggled(bool)),
-                 this, SLOT(modeChanged(bool)) );
-        vbox->addWidget( m_radioIn );
+    m_radioIn = new QRadioButton( " ", groupBox );
+    m_radioIn->setIcon(QIcon(":/images/green_down.png"));
+    m_radioIn->setToolTip( tr("Incoming calls") );
+    connect( m_radioIn, SIGNAL(toggled(bool)),
+             this, SLOT(modeChanged(bool)) );
+    vbox->addWidget( m_radioIn );
 
-        m_radioMissed = new QRadioButton( " ", groupBox );
-        m_radioMissed->setIcon(QIcon(":/images/red_down.png"));
-        m_radioMissed->setToolTip( tr("Missed calls") );
-        connect( m_radioMissed, SIGNAL(toggled(bool)),
-                 this, SLOT(modeChanged(bool)) );
-        vbox->addWidget( m_radioMissed );
-        vbox->addStretch( 1 );
+    m_radioMissed = new QRadioButton( " ", groupBox );
+    m_radioMissed->setIcon(QIcon(":/images/red_down.png"));
+    m_radioMissed->setToolTip( tr("Missed calls") );
+    connect( m_radioMissed, SIGNAL(toggled(bool)),
+             this, SLOT(modeChanged(bool)) );
+    vbox->addWidget( m_radioMissed );
+    vbox->addStretch( 1 );
 
-        m_radioNone->setChecked( true );
+    m_radioNone->setChecked( true );
 
-        layout->addWidget( groupBox );
-        QScrollArea * scrollArea = new QScrollArea( this );
-        scrollArea->setWidgetResizable( true );
+    layout->addWidget( groupBox );
+    QScrollArea * scrollArea = new QScrollArea( this );
+    scrollArea->setWidgetResizable( true );
 
-        QWidget * widget = new QWidget( this );
-        scrollArea->setWidget( widget );
-        widget->setObjectName("scroller"); // in order for the style settings to be set accordingly
+    QWidget * widget = new QWidget( this );
+    scrollArea->setWidget( widget );
+    widget->setObjectName("scroller"); // in order for the style settings to be set accordingly
 
-        m_layout = new QVBoxLayout( widget );
-        m_layout->setMargin(0);
-        m_layout->setSpacing(0);
-        m_layout->addStretch(0);
-        layout->addWidget( scrollArea );
+    m_layout = new QVBoxLayout( widget );
+    m_layout->setMargin(0);
+    m_layout->setSpacing(0);
+    m_layout->addStretch(0);
+    layout->addWidget( scrollArea );
 }
 
 void LogWidget::setGuiOptions(const QVariant &)
@@ -129,58 +129,58 @@ void LogWidget::setGuiOptions(const QVariant &)
 void LogWidget::addElement(const QString & peer, LogEltWidget::Direction d,
                            const QDateTime & dt, int duration, const QString & termin)
 {
-        //qDebug() << "LogWidget::addElement()" << peer << d << dt << duration;
-        int i, index = 0;
-        for(i = 0; i < m_layout->count(); i++) {
-                QWidget * widget = m_layout->itemAt( i )->widget();
-                if(widget) {
-                        LogEltWidget * logelt = qobject_cast<LogEltWidget *>(widget);
-                        if(logelt) {
-                                if((dt == logelt->dateTime())
-                                   && (peer == logelt->peer())
-                                   && (d == logelt->direction()))
-                                        return;
-                                else if(dt > logelt->dateTime())
-                                        break;
-                                index = i + 1;
-                        }
-                }
+    //qDebug() << "LogWidget::addElement()" << peer << d << dt << duration;
+    int i, index = 0;
+    for(i = 0; i < m_layout->count(); i++) {
+        QWidget * widget = m_layout->itemAt( i )->widget();
+        if(widget) {
+            LogEltWidget * logelt = qobject_cast<LogEltWidget *>(widget);
+            if(logelt) {
+                if((dt == logelt->dateTime())
+                   && (peer == logelt->peer())
+                   && (d == logelt->direction()))
+                    return;
+                else if(dt > logelt->dateTime())
+                    break;
+                index = i + 1;
+            }
         }
-        LogEltWidget * logelt = new LogEltWidget(peer, d, dt, duration, termin, this);
-        connect( logelt, SIGNAL(actionCall(const QString &, const QString &)),
-                 this, SLOT(proxyCallRequests(const QString &, const QString &)) );
-        connect( logelt, SIGNAL(copyNumber(const QString &)),
-                 m_engine, SLOT(copyNumber(const QString &)) );
-        m_layout->insertWidget(index, logelt);
+    }
+    LogEltWidget * logelt = new LogEltWidget(peer, d, dt, duration, termin, this);
+    connect( logelt, SIGNAL(actionCall(const QString &, const QString &)),
+             this, SLOT(proxyCallRequests(const QString &, const QString &)) );
+    connect( logelt, SIGNAL(copyNumber(const QString &)),
+             m_engine, SLOT(copyNumber(const QString &)) );
+    m_layout->insertWidget(index, logelt);
 }
 
 /*! \brief remove all child widgets
  */
 void LogWidget::clear()
 {
-        QLayoutItem * child;
-        while ((child = m_layout->itemAt(0)) != 0)
+    QLayoutItem * child;
+    while ((child = m_layout->itemAt(0)) != 0)
         {
-                if(child->widget())
+            if(child->widget())
                 {
-                        m_layout->removeItem(child);
-                        delete child->widget();
-                        delete child;
+                    m_layout->removeItem(child);
+                    delete child->widget();
+                    delete child;
                 }
-                else
-                        break;
+            else
+                break;
         }
-        //m_layout->addStretch(1);
+    //m_layout->addStretch(1);
 }
 
 void LogWidget::setUserInfo(const UserInfo * ui)
 {
-        m_userinfo_owner = ui;
+    m_userinfo_owner = ui;
 }
 
 void LogWidget::proxyCallRequests(const QString & src, const QString & dst)
 {
-        actionCall(sender()->property("action").toString(), src, dst); // Call
+    actionCall(sender()->property("action").toString(), src, dst); // Call
 }
 
 /*! \brief add an entry
@@ -188,47 +188,47 @@ void LogWidget::proxyCallRequests(const QString & src, const QString & dst)
 void LogWidget::addLogEntry(const QDateTime & dt, int duration,
                             const QString & peer, const QString & direction, const QString & termin)
 {
-        LogEltWidget::Direction d;
-        d = (direction == "IN") ? LogEltWidget::InCall : LogEltWidget::OutCall;
-        // TODO: manage the list !
-        addElement(peer, d, dt, duration, termin);
+    LogEltWidget::Direction d;
+    d = (direction == "IN") ? LogEltWidget::InCall : LogEltWidget::OutCall;
+    // TODO: manage the list !
+    addElement(peer, d, dt, duration, termin);
 }
 
 /*! \brief change the monitored peer
  */
 void LogWidget::monitorPeer(UserInfo * ui)
 {
-        // qDebug() << "LogWidget::monitorPeer()" << ui->userid();
-        clear();
-        m_peer = ui->userid();
-        if(m_peer.size() > 0) {
-                askHistory(m_peer, mode());
-                if(m_timer < 0)
-                        m_timer = startTimer(10000);
-        }
+    // qDebug() << "LogWidget::monitorPeer()" << ui->userid();
+    clear();
+    m_peer = ui->userid();
+    if(m_peer.size() > 0) {
+        askHistory(m_peer, mode());
+        if(m_timer < 0)
+            m_timer = startTimer(10000);
+    }
 }
 
 /*! \brief timer event : ask for update
  */
 void LogWidget::timerEvent(QTimerEvent *)
 {
-        // qDebug() << "LogWidget::timerEvent() id=" << event->timerId();
-        if(m_peer.size() > 0)
-                askHistory(m_peer, mode());
+    // qDebug() << "LogWidget::timerEvent() id=" << event->timerId();
+    if(m_peer.size() > 0)
+        askHistory(m_peer, mode());
 }
 
 /*! \brief return the mode (out/in or missed)
  */
 int LogWidget::mode()
 {
-        int r = -1;
-        if(m_radioOut->isChecked())
-                r = 0;
-        else if(m_radioIn->isChecked())
-                r = 1;
-        else if(m_radioMissed->isChecked())
-                r = 2;
-        return r;
+    int r = -1;
+    if(m_radioOut->isChecked())
+        r = 0;
+    else if(m_radioIn->isChecked())
+        r = 1;
+    else if(m_radioMissed->isChecked())
+        r = 2;
+    return r;
 }
 
 /*! \brief triggered when mode is changed.
@@ -237,9 +237,9 @@ int LogWidget::mode()
  */
 void LogWidget::modeChanged(bool b)
 {
-        // qDebug() << "LogWidget::modeChanged()" << b << mode();
-        if(b && m_peer.size() > 0) {
-                clear();
-                askHistory(m_peer, mode());
-        }
+    // qDebug() << "LogWidget::modeChanged()" << b << mode();
+    if(b && m_peer.size() > 0) {
+        clear();
+        askHistory(m_peer, mode());
+    }
 }

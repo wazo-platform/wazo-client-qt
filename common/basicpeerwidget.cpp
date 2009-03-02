@@ -1,3 +1,44 @@
+/* XIVO CTI clients
+ * Copyright (C) 2007-2009  Proformatique
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License version 2 for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Linking the Licensed Program statically or dynamically with other
+ * modules is making a combined work based on the Licensed Program. Thus,
+ * the terms and conditions of the GNU General Public License version 2
+ * cover the whole combination.
+ *
+ * In addition, as a special exception, the copyright holders of the
+ * Licensed Program give you permission to combine the Licensed Program
+ * with free software programs or libraries that are released under the
+ * GNU Library General Public License version 2.0 or GNU Lesser General
+ * Public License version 2.1 or any later version of the GNU Lesser
+ * General Public License, and with code included in the standard release
+ * of OpenSSL under a version of the OpenSSL license (with original SSLeay
+ * license) which is identical to the one that was published in year 2003,
+ * or modified versions of such code, with unchanged license. You may copy
+ * and distribute such a system following the terms of the GNU GPL
+ * version 2 for the Licensed Program and the licenses of the other code
+ * concerned, provided that you include the source code of that other code
+ * when and as the GNU GPL version 2 requires distribution of source code.
+ */
+
+/* $Revision$
+ * $Date$
+ */
+
 #include <QDebug>
 #include <QVariant>
 #include <QPainter>
@@ -15,7 +56,7 @@
 BasicPeerWidget::BasicPeerWidget(BaseEngine * engine, UserInfo * ui,
                                  const QVariant & options)
     : BasePeerWidget(engine, ui, options), m_color(0xcc, 0xcc, 0xcc),
-     m_presenceColor(0xcc, 0xcc, 0xcc)
+      m_presenceColor(0xcc, 0xcc, 0xcc)
 {
     // can grow horizontaly but not verticaly
     setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
@@ -53,10 +94,10 @@ void BasicPeerWidget::paintEvent(QPaintEvent *event)
     painter.drawRect( rectangle );
     // small square
     if(! m_ui->ctilogin().isEmpty())
-    {
-        painter.setBrush( m_presenceColor );
-        painter.drawRect( QRect(rectangle.width() - 5, rectangle.height() - 5, 4, 4) );
-    }
+        {
+            painter.setBrush( m_presenceColor );
+            painter.drawRect( QRect(rectangle.width() - 5, rectangle.height() - 5, 4, 4) );
+        }
     // write the text
     painter.setPen(Qt::SolidLine);
     if(m_color.value() < 128)
@@ -78,10 +119,10 @@ void BasicPeerWidget::updatePresence()
 {
     QString text = m_ui->phonenumber();
     if(! m_ui->ctilogin().isEmpty())
-    {
-        text.append(" ");
-        text.append(m_ui->availstate()["longname"]);
-    }
+        {
+            text.append(" ");
+            text.append(m_ui->availstate()["longname"]);
+        }
     setToolTip( text );
     m_presenceColor.setNamedColor( m_ui->availstate()["color"] );
 }
@@ -90,50 +131,50 @@ void BasicPeerWidget::updatePhonesStates()
 {
     // set the color according to the 1st phone
     if( !m_ui->phonelist().isEmpty() )
-    {
-        const PhoneInfo * pi = m_ui->getPhoneInfo(m_ui->phonelist()[0]);
-        if(pi)
         {
-            m_color.setNamedColor( pi->hintstatus("color") );
-            update();
+            const PhoneInfo * pi = m_ui->getPhoneInfo(m_ui->phonelist()[0]);
+            if(pi)
+                {
+                    m_color.setNamedColor( pi->hintstatus("color") );
+                    update();
+                }
         }
-    }
 }
 
 void BasicPeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 {
     // Call or indirect transfer
     if(event->button() == Qt::LeftButton)
-    {
-        qDebug() << "BasicPeerWidget::mouseDoubleClickEvent";
-        // check if we are in communication
-        const UserInfo * ui = m_engine->getXivoClientUser();
-        if( ui && !ui->phonelist().isEmpty() )
         {
-            foreach(const QString phone, ui->phonelist())
-            {
-                const PhoneInfo * pi = ui->getPhoneInfo( phone );
-                const QMap<QString, QVariant> & comms = pi->comms();
-                //qDebug() << pi->phoneid() << pi->comms();
-                foreach(const QString ts, comms.keys())
+            qDebug() << "BasicPeerWidget::mouseDoubleClickEvent";
+            // check if we are in communication
+            const UserInfo * ui = m_engine->getXivoClientUser();
+            if( ui && !ui->phonelist().isEmpty() )
                 {
-                    const QMap<QString, QVariant> & comm = comms[ts].toMap();
-                    //qDebug() << pi->phoneid() << ts << comm;
-                    const QString status = comm["status"].toString();
-                    if( status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED )
-                    {
-                        // Initiate an indirect transfer.
-                        //qDebug() << "transfer to" << comm["thischannel"] << "or" << comm["peerchannel"];
-                        emit actionCall("atxfer",
-                                        "chan:special:me:" + comm["thischannel"].toString(),
-                                        "ext:" + m_ui->phonenumber() );
-                        return;
-                    }
+                    foreach(const QString phone, ui->phonelist())
+                        {
+                            const PhoneInfo * pi = ui->getPhoneInfo( phone );
+                            const QMap<QString, QVariant> & comms = pi->comms();
+                            //qDebug() << pi->phoneid() << pi->comms();
+                            foreach(const QString ts, comms.keys())
+                                {
+                                    const QMap<QString, QVariant> & comm = comms[ts].toMap();
+                                    //qDebug() << pi->phoneid() << ts << comm;
+                                    const QString status = comm["status"].toString();
+                                    if( status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED )
+                                        {
+                                            // Initiate an indirect transfer.
+                                            //qDebug() << "transfer to" << comm["thischannel"] << "or" << comm["peerchannel"];
+                                            emit actionCall("atxfer",
+                                                            "chan:special:me:" + comm["thischannel"].toString(),
+                                                            "ext:" + m_ui->phonenumber() );
+                                            return;
+                                        }
+                                }
+                        }
                 }
-            }
+            // "I" have no current communications, just call the person...
+            dial();
         }
-        // "I" have no current communications, just call the person...
-        dial();
-    }
 }
 

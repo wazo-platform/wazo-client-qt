@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -57,45 +57,45 @@
  */
 DialPanel::DialPanel(const QVariant &,
                      QWidget * parent)
-        : QWidget(parent)
+    : QWidget(parent)
 {
-        QHBoxLayout * vlayout = new QHBoxLayout(this);
-        vlayout->setMargin(0);
-        m_lbl = new QLabel( tr("Enter &Number :"), this );
-        m_input = new QComboBox( this );
-        m_lbl->setBuddy(m_input);
-        m_input->setToolTip( tr("Input here the phone number to dial") );
-        m_input->setEditable( true );
-        m_input->setDuplicatesEnabled( false );
-        m_input->setInsertPolicy( QComboBox::InsertAlphabetically );
-        m_input->setMinimumContentsLength( 15 );
-        //m_input->setSizeAdjustPolicy( QComboBox::AdjustToContents );
-        connect( m_input->lineEdit(), SIGNAL(returnPressed()),
-                 this, SLOT(inputValidated()) );
-        connect( m_input, SIGNAL(editTextChanged(const QString &)),
-                 this, SIGNAL(textEdited(const QString &)) );
+    QHBoxLayout * vlayout = new QHBoxLayout(this);
+    vlayout->setMargin(0);
+    m_lbl = new QLabel( tr("Enter &Number :"), this );
+    m_input = new QComboBox( this );
+    m_lbl->setBuddy(m_input);
+    m_input->setToolTip( tr("Input here the phone number to dial") );
+    m_input->setEditable( true );
+    m_input->setDuplicatesEnabled( false );
+    m_input->setInsertPolicy( QComboBox::InsertAlphabetically );
+    m_input->setMinimumContentsLength( 15 );
+    //m_input->setSizeAdjustPolicy( QComboBox::AdjustToContents );
+    connect( m_input->lineEdit(), SIGNAL(returnPressed()),
+             this, SLOT(inputValidated()) );
+    connect( m_input, SIGNAL(editTextChanged(const QString &)),
+             this, SIGNAL(textEdited(const QString &)) );
         
-        QPixmap pmphone = QPixmap(":/images/sipphone.png");
-        QPushButton * dialButton = new QPushButton(this);
-        // dialButton->setStyleSheet("QPushButton {border: 0px}");
-        dialButton->setIcon(pmphone);
-        dialButton->setIconSize(pmphone.size());
-        connect( dialButton, SIGNAL(clicked()),
-                 this, SLOT(inputValidated()) );
+    QPixmap pmphone = QPixmap(":/images/sipphone.png");
+    QPushButton * dialButton = new QPushButton(this);
+    // dialButton->setStyleSheet("QPushButton {border: 0px}");
+    dialButton->setIcon(pmphone);
+    dialButton->setIconSize(pmphone.size());
+    connect( dialButton, SIGNAL(clicked()),
+             this, SLOT(inputValidated()) );
         
-        // QPushButton * clearButton = new QPushButton(this);
-        // clearButton->setIcon(QIcon(":/images/cancel.png"));
-        // connect( clearButton, SIGNAL(clicked()),
-        // this, SLOT(clearlist()) );
+    // QPushButton * clearButton = new QPushButton(this);
+    // clearButton->setIcon(QIcon(":/images/cancel.png"));
+    // connect( clearButton, SIGNAL(clicked()),
+    // this, SLOT(clearlist()) );
 
-        setAcceptDrops(true);
+    setAcceptDrops(true);
 
-        vlayout->addStretch(1);
-        // vlayout->addWidget( clearButton, 0, Qt::AlignCenter );
-        vlayout->addWidget( m_lbl, 0, Qt::AlignCenter );
-        vlayout->addWidget( m_input, 0, Qt::AlignCenter );
-        vlayout->addWidget( dialButton, 0, Qt::AlignCenter );
-        vlayout->addStretch(1);
+    vlayout->addStretch(1);
+    // vlayout->addWidget( clearButton, 0, Qt::AlignCenter );
+    vlayout->addWidget( m_lbl, 0, Qt::AlignCenter );
+    vlayout->addWidget( m_input, 0, Qt::AlignCenter );
+    vlayout->addWidget( dialButton, 0, Qt::AlignCenter );
+    vlayout->addStretch(1);
 }
 
 DialPanel::~DialPanel()
@@ -108,59 +108,59 @@ void DialPanel::setGuiOptions(const QVariant &)
 
 void DialPanel::setUserInfo(const UserInfo * ui)
 {
-        m_ui = ui;
+    m_ui = ui;
 }
 
 void DialPanel::setNumberToDial(const QString & text)
 {
-        // qDebug() << "DialPanel::setNumberToDial()" << text;
-        // adds the item to the list
-        QString texttmp = text.trimmed();
-        // remove . and " " because we don't need them
-        // remove "+" to avoid matching the "\\D"
-        texttmp.remove(QRegExp("[. +]"));
+    // qDebug() << "DialPanel::setNumberToDial()" << text;
+    // adds the item to the list
+    QString texttmp = text.trimmed();
+    // remove . and " " because we don't need them
+    // remove "+" to avoid matching the "\\D"
+    texttmp.remove(QRegExp("[. +]"));
         
-        if((! texttmp.isEmpty()) && (! texttmp.contains(QRegExp("\\D")))) {
-                // if there was a "+", put it back
-                if(text.trimmed()[0] == '+')
-                        texttmp.insert(0, "+");
-                if (m_input->findText(texttmp) == -1)
-                        m_input->insertItem(0, texttmp);
-                // displays it
-                m_input->lineEdit()->setText(texttmp);
-        }
+    if((! texttmp.isEmpty()) && (! texttmp.contains(QRegExp("\\D")))) {
+        // if there was a "+", put it back
+        if(text.trimmed()[0] == '+')
+            texttmp.insert(0, "+");
+        if (m_input->findText(texttmp) == -1)
+            m_input->insertItem(0, texttmp);
+        // displays it
+        m_input->lineEdit()->setText(texttmp);
+    }
 }
 
 void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 {
-        // qDebug() << "DialPanel::dragEnterEvent()" << event;
-        if(event->mimeData()->hasFormat(PEER_MIMETYPE))
-                event->acceptProposedAction();
+    // qDebug() << "DialPanel::dragEnterEvent()" << event;
+    if(event->mimeData()->hasFormat(PEER_MIMETYPE))
+        event->acceptProposedAction();
 }
 
 void DialPanel::dropEvent(QDropEvent * event)
 {
-        QString ext;
-        QString originator = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
-        qDebug() << "DialPanel::dropEvent()" << originator << m_input->lineEdit();
-        if(m_input->lineEdit()) {
-                qDebug() << "DialPanel::dropEvent()" << event << originator << m_input->lineEdit()->text();
-                ext = m_input->lineEdit()->text();
-                ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
-                if(ext.length() == 0)        // do nothing if the string is empty
-                        return;
-                actionCall("originate", "user:" + originator, "ext:" + m_input->lineEdit()->text()); // Call
-                m_input->insertItem(0, ext); // add to history
-                // remove the older items related to the same number
-                for(int i=1; i<m_input->count(); ) {
-                        if(ext == m_input->itemText(i)) {
-                                m_input->removeItem(i);
-                        }
-                        else
-                                i++;
-                }
-                m_input->clearEditText();
+    QString ext;
+    QString originator = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
+    qDebug() << "DialPanel::dropEvent()" << originator << m_input->lineEdit();
+    if(m_input->lineEdit()) {
+        qDebug() << "DialPanel::dropEvent()" << event << originator << m_input->lineEdit()->text();
+        ext = m_input->lineEdit()->text();
+        ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
+        if(ext.length() == 0)        // do nothing if the string is empty
+            return;
+        actionCall("originate", "user:" + originator, "ext:" + m_input->lineEdit()->text()); // Call
+        m_input->insertItem(0, ext); // add to history
+        // remove the older items related to the same number
+        for(int i=1; i<m_input->count(); ) {
+            if(ext == m_input->itemText(i)) {
+                m_input->removeItem(i);
+            }
+            else
+                i++;
         }
+        m_input->clearEditText();
+    }
 }
 
 // void DialPanel::mouseMoveEvent(QMouseEvent *event)
@@ -179,27 +179,27 @@ void DialPanel::dropEvent(QDropEvent * event)
  */
 void DialPanel::inputValidated()
 {
-        QString ext;
-        if(m_input->lineEdit()) {
-                ext = m_input->lineEdit()->text();
-                ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
-                if(ext.length() == 0)        // do nothing if the string is empty
-                        return;
-                actionCall("originate", "user:special:me", "ext:" + ext); // Call
-                m_input->insertItem(0, ext); // add to history
-                // remove the older items related to the same number
-                for(int i=1; i<m_input->count(); ) {
-                        if(ext == m_input->itemText(i)) {
-                                m_input->removeItem(i);
-                        }
-                        else
-                                i++;
-                }
-                m_input->clearEditText();
+    QString ext;
+    if(m_input->lineEdit()) {
+        ext = m_input->lineEdit()->text();
+        ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
+        if(ext.length() == 0)        // do nothing if the string is empty
+            return;
+        actionCall("originate", "user:special:me", "ext:" + ext); // Call
+        m_input->insertItem(0, ext); // add to history
+        // remove the older items related to the same number
+        for(int i=1; i<m_input->count(); ) {
+            if(ext == m_input->itemText(i)) {
+                m_input->removeItem(i);
+            }
+            else
+                i++;
         }
+        m_input->clearEditText();
+    }
 }
 
 void DialPanel::clearlist()
 {
-        m_input->clear();
+    m_input->clear();
 }

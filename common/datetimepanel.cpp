@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -50,18 +50,18 @@
 /*! \brief Constructor
  */
 DatetimePanel::DatetimePanel(QWidget * parent)
-        : QWidget(parent)
+    : QWidget(parent)
 {
-        m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocaleDate));
-        m_gridlayout = new QGridLayout(this);
+    m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocaleDate));
+    m_gridlayout = new QGridLayout(this);
         
-         m_gridlayout->addWidget( m_datetime, 1, 1, Qt::AlignCenter);
-         m_gridlayout->setColumnStretch( 0, 1 );
-         m_gridlayout->setColumnStretch( 2, 1 );
-         m_gridlayout->setRowStretch( 0, 1 );
-         m_gridlayout->setRowStretch( 2, 1 );
+    m_gridlayout->addWidget( m_datetime, 1, 1, Qt::AlignCenter);
+    m_gridlayout->setColumnStretch( 0, 1 );
+    m_gridlayout->setColumnStretch( 2, 1 );
+    m_gridlayout->setRowStretch( 0, 1 );
+    m_gridlayout->setRowStretch( 2, 1 );
         
-        startTimer(1000);
+    startTimer(1000);
 }
 
 void DatetimePanel::setGuiOptions(const QVariant &)
@@ -74,5 +74,5 @@ void DatetimePanel::setUserInfo(const UserInfo *)
 
 void DatetimePanel::timerEvent(QTimerEvent *)
 {
-        m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
+    m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
 }

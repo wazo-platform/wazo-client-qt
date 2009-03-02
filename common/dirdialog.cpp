@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -54,63 +54,63 @@
 /*! \brief constructor
  */
 DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
-        : QDialog(parent), m_engine(engine)
+    : QDialog(parent), m_engine(engine)
 {
-        restoreGeometry(m_engine->getSettings()->value("faxhistory/geometry").toByteArray());
-        // the object will be destroyed when closed
-        setWindowTitle(tr("Directory"));
+    restoreGeometry(m_engine->getSettings()->value("faxhistory/geometry").toByteArray());
+    // the object will be destroyed when closed
+    setWindowTitle(tr("Directory"));
 
-        QVBoxLayout * vlayout = new QVBoxLayout(this);
-        m_directory = new DirectoryPanel(this);
-        connect( m_directory, SIGNAL(searchDirectory(const QString &)),
-                 m_engine, SLOT(searchDirectory(const QString &)) );
-        connect( m_engine, SIGNAL(directoryResponse(const QString &)),
-                 m_directory, SLOT(setSearchResponse(const QString &)) );
-        connect( m_directory, SIGNAL(copyNumber(const QString &)),
-                 this, SLOT(copyNumber(const QString &)) );
-        connect( m_directory, SIGNAL(emitDial(const QString &, bool)),
-                 this, SLOT(copyNumberAndQuit(const QString &, bool)) );
+    QVBoxLayout * vlayout = new QVBoxLayout(this);
+    m_directory = new DirectoryPanel(this);
+    connect( m_directory, SIGNAL(searchDirectory(const QString &)),
+             m_engine, SLOT(searchDirectory(const QString &)) );
+    connect( m_engine, SIGNAL(directoryResponse(const QString &)),
+             m_directory, SLOT(setSearchResponse(const QString &)) );
+    connect( m_directory, SIGNAL(copyNumber(const QString &)),
+             this, SLOT(copyNumber(const QString &)) );
+    connect( m_directory, SIGNAL(emitDial(const QString &, bool)),
+             this, SLOT(copyNumberAndQuit(const QString &, bool)) );
 
-        m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
-        connect(m_btnbox, SIGNAL(accepted()),
-                this, SLOT(saveAndClose()));
-        connect(m_btnbox, SIGNAL(rejected()),
-                this, SLOT(close()));
-        m_btnbox->button(QDialogButtonBox::Cancel)->setDefault(false);
-        m_btnbox->button(QDialogButtonBox::Ok)->setDefault(false);
+    m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    connect(m_btnbox, SIGNAL(accepted()),
+            this, SLOT(saveAndClose()));
+    connect(m_btnbox, SIGNAL(rejected()),
+            this, SLOT(close()));
+    m_btnbox->button(QDialogButtonBox::Cancel)->setDefault(false);
+    m_btnbox->button(QDialogButtonBox::Ok)->setDefault(false);
 
-        vlayout->addWidget(m_directory);
-        vlayout->addWidget(m_btnbox);
+    vlayout->addWidget(m_directory);
+    vlayout->addWidget(m_btnbox);
 
-        m_faxnumber = "";
-        m_retfaxnumber = "";
+    m_faxnumber = "";
+    m_retfaxnumber = "";
 }
 
 DirDialog::~DirDialog()
 {
-        // qDebug() << "DirDialog::~DirDialog()";
-        m_engine->getSettings()->setValue("faxhistory/geometry", saveGeometry() );
+    // qDebug() << "DirDialog::~DirDialog()";
+    m_engine->getSettings()->setValue("faxhistory/geometry", saveGeometry() );
 }
 
 const QString & DirDialog::faxnumber() const
 {
-        return m_retfaxnumber;
+    return m_retfaxnumber;
 }
 
 void DirDialog::copyNumber(const QString & number)
 {
-        m_faxnumber = number;
+    m_faxnumber = number;
 }
 
 void DirDialog::copyNumberAndQuit(const QString & number, bool)
 {
-        m_faxnumber = number;
-        saveAndClose();
+    m_faxnumber = number;
+    saveAndClose();
 }
 
 void DirDialog::saveAndClose()
 {
-        m_retfaxnumber = m_faxnumber;
-        if(m_retfaxnumber.size() > 0)
-                close();
+    m_retfaxnumber = m_faxnumber;
+    if(m_retfaxnumber.size() > 0)
+        close();
 }

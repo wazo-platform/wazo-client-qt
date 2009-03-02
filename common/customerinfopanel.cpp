@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -53,16 +53,16 @@
 
 CustomerInfoPanel::CustomerInfoPanel(const QVariant & options,
                                      QWidget * parent)
-        : QWidget(parent)
+    : QWidget(parent)
 {
-        // qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
-        QGridLayout * glayout = new QGridLayout(this);
-        m_tabs = new QTabWidget(this);
-        glayout->addWidget( m_tabs, 0, 0 );
-        glayout->setRowStretch(0, 1);
-        glayout->setColumnStretch(0, 1);
-        m_tablimit = options.toMap()["sheet-tablimit"].toUInt();
-        m_autourl_allowed = options.toMap()["autourl_allowed"].toBool();
+    // qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
+    QGridLayout * glayout = new QGridLayout(this);
+    m_tabs = new QTabWidget(this);
+    glayout->addWidget( m_tabs, 0, 0 );
+    glayout->setRowStretch(0, 1);
+    glayout->setColumnStretch(0, 1);
+    m_tablimit = options.toMap()["sheet-tablimit"].toUInt();
+    m_autourl_allowed = options.toMap()["autourl_allowed"].toBool();
 }
 
 CustomerInfoPanel::~CustomerInfoPanel()
@@ -75,7 +75,7 @@ void CustomerInfoPanel::setGuiOptions(const QVariant &)
 
 void CustomerInfoPanel::setUserInfo(const UserInfo * ui)
 {
-        m_ui = ui;
+    m_ui = ui;
 }
 
 /*!
@@ -84,106 +84,106 @@ void CustomerInfoPanel::setUserInfo(const UserInfo * ui)
  */
 void CustomerInfoPanel::showNewProfile(Popup * popup)
 {
-        QString opt = "";
-        qDebug() << "CustomerInfoPanel::showNewProfile()"
-                 << popup->callAstid() << popup->callUniqueid();
-        if(popup->sheetpopup()) {
-                Popup * already_popup = NULL;
-                foreach(Popup * mpopup, m_popups)
-                        if((mpopup->callUniqueid() == popup->callUniqueid()) &&
-                           (mpopup->callAstid() == popup->callAstid())) {
-                                already_popup = mpopup;
-                                break;
-                        }
-                if(already_popup) {
-                        qDebug() << "CustomerInfoPanel::showNewProfile()" << "found a match for"
-                                 << popup->callAstid() << popup->callUniqueid();
-                        already_popup->update(popup->sheetlines());
-                } else {
-                        QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm:ss");
-                        quint32 index = m_tabs->addTab(popup, currentTimeStr);
-                        qDebug() << "CustomerInfoPanel::showNewProfile() : added tab" << index;
-                        m_popups.append(popup);
-                        m_tabs->setCurrentIndex(index);
-                        if (index >= m_tablimit)
-                                // close the first widget
-                                m_tabs->removeTab(0);
-                }
-                
-                // no need to focus if there is no sheet popup
-                if(popup->focus())
-                        opt += "fp";
+    QString opt = "";
+    qDebug() << "CustomerInfoPanel::showNewProfile()"
+             << popup->callAstid() << popup->callUniqueid();
+    if(popup->sheetpopup()) {
+        Popup * already_popup = NULL;
+        foreach(Popup * mpopup, m_popups)
+            if((mpopup->callUniqueid() == popup->callUniqueid()) &&
+               (mpopup->callAstid() == popup->callAstid())) {
+                already_popup = mpopup;
+                break;
+            }
+        if(already_popup) {
+            qDebug() << "CustomerInfoPanel::showNewProfile()" << "found a match for"
+                     << popup->callAstid() << popup->callUniqueid();
+            already_popup->update(popup->sheetlines());
+        } else {
+            QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm:ss");
+            quint32 index = m_tabs->addTab(popup, currentTimeStr);
+            qDebug() << "CustomerInfoPanel::showNewProfile() : added tab" << index;
+            m_popups.append(popup);
+            m_tabs->setCurrentIndex(index);
+            if (index >= m_tablimit)
+                // close the first widget
+                m_tabs->removeTab(0);
         }
+                
+        // no need to focus if there is no sheet popup
+        if(popup->focus())
+            opt += "fp";
+    }
         
-        // tells the main widget that a new popup has arrived here
-        if(popup->systraypopup())
-                opt += "s";
-        newPopup(popup->messagetitle(), popup->message(), opt);
+    // tells the main widget that a new popup has arrived here
+    if(popup->systraypopup())
+        opt += "s";
+    newPopup(popup->messagetitle(), popup->message(), opt);
         
-        //         connectDials(popup);
+    //         connectDials(popup);
 }
 
 void CustomerInfoPanel::popupDestroyed(QObject * obj)
 {
-        qDebug() << "CustomerInfoPanel::popupDestroyed()"
-                 << obj->property("astid") << obj->property("uniqueid");
-        foreach(Popup * mpopup, m_popups)
-                if((mpopup->callUniqueid() == obj->property("uniqueid")) &&
-                   (mpopup->callAstid() == obj->property("astid")))
-                        m_popups.removeAll(mpopup);
+    qDebug() << "CustomerInfoPanel::popupDestroyed()"
+             << obj->property("astid") << obj->property("uniqueid");
+    foreach(Popup * mpopup, m_popups)
+        if((mpopup->callUniqueid() == obj->property("uniqueid")) &&
+           (mpopup->callAstid() == obj->property("astid")))
+            m_popups.removeAll(mpopup);
 }
 
 void CustomerInfoPanel::addToDataBase(const QString & dbdetails)
 {
-        qDebug() << "CustomerInfoPanel::addToDataBase()" << dbdetails;
-        // if (dbdetails.size() > 0)
-        // sendCommand("database " + dbdetails);
+    qDebug() << "CustomerInfoPanel::addToDataBase()" << dbdetails;
+    // if (dbdetails.size() > 0)
+    // sendCommand("database " + dbdetails);
 }
 
 void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
 {
-        QBuffer * inputstream = new QBuffer(this);
-        inputstream->open(QIODevice::ReadWrite);
-        inputstream->write(fichecontent.toUtf8());
-        inputstream->close();
-        // Get Data and Popup the profile if ok
-        Popup * popup = new Popup(m_autourl_allowed, m_ui);
-        popup->feed(inputstream, qtui);
-        connect( popup, SIGNAL(destroyed(QObject *)),
-                 this, SLOT(popupDestroyed(QObject *)) );
-        connect( popup, SIGNAL(wantsToBeShown(Popup *)),
-                 this, SLOT(showNewProfile(Popup *)) );
-        connect( popup, SIGNAL(save(const QString &)),
-                 this, SLOT(addToDataBase(const QString &)) );
-        connect( popup, SIGNAL(actionFromPopup(const QString &, const QVariant &)),
-                 this, SLOT(actionFromPopup(const QString &, const QVariant &)) );
-        connect( popup, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-                 this, SLOT(localActionCall(const QString &, const QString &, const QString &)) );
+    QBuffer * inputstream = new QBuffer(this);
+    inputstream->open(QIODevice::ReadWrite);
+    inputstream->write(fichecontent.toUtf8());
+    inputstream->close();
+    // Get Data and Popup the profile if ok
+    Popup * popup = new Popup(m_autourl_allowed, m_ui);
+    popup->feed(inputstream, qtui);
+    connect( popup, SIGNAL(destroyed(QObject *)),
+             this, SLOT(popupDestroyed(QObject *)) );
+    connect( popup, SIGNAL(wantsToBeShown(Popup *)),
+             this, SLOT(showNewProfile(Popup *)) );
+    connect( popup, SIGNAL(save(const QString &)),
+             this, SLOT(addToDataBase(const QString &)) );
+    connect( popup, SIGNAL(actionFromPopup(const QString &, const QVariant &)),
+             this, SLOT(actionFromPopup(const QString &, const QVariant &)) );
+    connect( popup, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+             this, SLOT(localActionCall(const QString &, const QString &, const QString &)) );
 }
 
 void CustomerInfoPanel::localActionCall(const QString & a, const QString & b, const QString & c)
 {
-        actionCall(a, b, c);
+    actionCall(a, b, c);
 }
 
 void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVariant & timestamps)
 {
-        QString astid = sender()->property("astid").toString();
-        QString uniqueid = sender()->property("uniqueid").toString();
-        Popup * thispopup = NULL;
-        foreach(Popup * mpopup, m_popups)
-                if((mpopup->callUniqueid() == uniqueid) &&
-                   (mpopup->callAstid() == astid)) {
-                        thispopup = mpopup;
-                        break;
-                }
-        if(thispopup) {
-                QVariantMap data;
-                data["buttonname"] = buttonname;
-                data["astid"] = thispopup->callAstid();
-                data["uniqueid"] = thispopup->callUniqueid();
-                data["channel"] = thispopup->callChannel();
-                data["timestamps"] = timestamps;
-                actionFromFiche(QVariant(data));
+    QString astid = sender()->property("astid").toString();
+    QString uniqueid = sender()->property("uniqueid").toString();
+    Popup * thispopup = NULL;
+    foreach(Popup * mpopup, m_popups)
+        if((mpopup->callUniqueid() == uniqueid) &&
+           (mpopup->callAstid() == astid)) {
+            thispopup = mpopup;
+            break;
         }
+    if(thispopup) {
+        QVariantMap data;
+        data["buttonname"] = buttonname;
+        data["astid"] = thispopup->callAstid();
+        data["uniqueid"] = thispopup->callUniqueid();
+        data["channel"] = thispopup->callChannel();
+        data["timestamps"] = timestamps;
+        actionFromFiche(QVariant(data));
+    }
 }

@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -53,21 +53,21 @@
 /*! \brief Constructor
  */
 XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
-        : QWidget(parent), m_engine(engine), m_ui(NULL)
+    : QWidget(parent), m_engine(engine), m_ui(NULL)
 {
-        qDebug() << "XletWeb::XletWeb()";
+    qDebug() << "XletWeb::XletWeb()";
         
-        // replace by whatever you need
-        QGridLayout * glayout = new QGridLayout(this);
+    // replace by whatever you need
+    QGridLayout * glayout = new QGridLayout(this);
 #ifdef USE_WEBKIT
-        QWebView *view = new QWebView(this);
-        view->load(QUrl("http://www.proformatique.com/"));
-        view->show();
-        glayout->addWidget( view, 0, 0, Qt::AlignCenter );
+    QWebView *view = new QWebView(this);
+    view->load(QUrl("http://www.proformatique.com/"));
+    view->show();
+    glayout->addWidget( view, 0, 0, Qt::AlignCenter );
 #endif
-        glayout->setRowStretch( 0, 1 );
-        glayout->setColumnStretch( 0, 1 );
-        //
+    glayout->setRowStretch( 0, 1 );
+    glayout->setColumnStretch( 0, 1 );
+    //
 }
 
 XletWeb::~XletWeb()
@@ -80,6 +80,6 @@ void XletWeb::setGuiOptions(const QVariant &)
 
 void XletWeb::setUserInfo(const UserInfo * ui)
 {
-        m_ui = ui;
-        qDebug() << "XletWeb::setUserInfo()" << m_ui->fullname();
+    m_ui = ui;
+    qDebug() << "XletWeb::setUserInfo()" << m_ui->fullname();
 }
