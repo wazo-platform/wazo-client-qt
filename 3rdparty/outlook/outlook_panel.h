@@ -56,7 +56,6 @@ class QTableWidgetItem;
 
 class ExtendedLineEdit;
 class ExtendedTableWidget;
-class PeerChannel;
 class UserInfo;
 
 class COLCol {
@@ -92,7 +91,7 @@ private slots:
         void sendMail();
         void itemClicked(QTableWidgetItem *);
 	void itemDoubleClicked(QTableWidgetItem *);
-	void transferChan(const QString &);
+	void transfer();
 	void setCol(int);
         void proxyCallRequests(const QString &, const QString &);
 public slots:
@@ -112,7 +111,6 @@ private:
 	ExtendedTableWidget * m_table;		//!< table to display results
 	QString m_numberToDial;		//!< used to store number to dial or to transfer to
 	QString m_mailAddr;		//!< used to store email address
-	QList<PeerChannel *> m_mychannels;	//!< "my channels" list for transfer menu
         int m_calllength;
         QString m_callprefix;
 	QList<COLCol*> m_cols;

@@ -57,8 +57,9 @@
 #include "baseengine.h"
 #include "extendedtablewidget.h"
 #include "extendedlineedit.h"
-#include "peerchannel.h"
 #include "xivoconsts.h"
+#include "phoneinfo.h"
+#include "userinfo.h"
 
 #include "outlook_panel.h"
 #include "outlook_tools.h"
@@ -370,16 +371,46 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
                 // qDebug() << "OutlookPanel::contextMenuEvent()" << "preparing to dial" << m_numberToDial;
 		QMenu contextMenu(this);
 		contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
- 		if(!m_mychannels.empty()) {
-			QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
+		QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
+		if(m_userinfo)
+		{
+			foreach( const QString phone, m_userinfo->phonelist() )
+			{
+				const PhoneInfo * pi = m_userinfo->getPhoneInfo( phone );
+				if( pi )
+				{
+					QMapIterator<QString, QVariant> it( pi->comms() );
+					while( it.hasNext() )
+					{
+						it.next();
+						QMap<QString, QVariant> call = it.value().toMap();
+						QString text;
+						if( call.contains("calleridname") )
+						{
+							text.append( call["calleridname"].toString() );
+							text.append( " : " );
+						}
+						text.append( call["calleridnum"].toString() );
+						QAction * transferAction =
+							transferMenu->addAction( text,
+							                         this, SLOT(transfer()) );
+						transferAction->setProperty( "chan", call["peerchannel"] );
+					}
+				}
+			}
+		}
+#if 0
+ 		if(false) { //!m_mychannels.empty()) {
 			QListIterator<PeerChannel *> i(m_mychannels);
 			while(i.hasNext()) {
 				const PeerChannel * channel = i.next();
 				transferMenu->addAction(channel->otherPeer(),
 				                        channel, SLOT(transfer()));
 			}
-			contextMenu.addMenu(transferMenu);
 		}
+#endif
+		if( !transferMenu->isEmpty() )
+			contextMenu.addMenu( transferMenu );
 		contextMenu.exec( event->globalPos() );
 	}
 
@@ -450,24 +481,30 @@ void OutlookPanel::updatePeer(UserInfo *,
                               const QString &,
                               const QVariant & chanlist)
 {
+#if 0
 	while(!m_mychannels.isEmpty())
 		delete m_mychannels.takeFirst();
 	foreach(QString ref, chanlist.toMap().keys()) {
 		QVariant chanprops = chanlist.toMap()[ref];
                 if(chanprops.toMap()["status"].toString() != CHAN_STATUS_HANGUP) {
-                        PeerChannel * ch = new PeerChannel(ref, chanprops);
+                        PeerChannel * ch = new PeerChannel(chanprops);
                         connect(ch, SIGNAL(transferChan(const QString &)),
                                 this, SLOT(transferChan(const QString &)) );
                         m_mychannels << ch;
                 }
 	}
+#endif
 }
 
 /*! \brief transfer channel to the number
  */
-void OutlookPanel::transferChan(const QString & chan)
+void OutlookPanel::transfer()
 {
-	actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial); // Call
+	QString chan = sender()->property( "chan" ).toString();
+	if( !chan.isEmpty() && !m_numberToDial.isEmpty() )
+	{
+		actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial);
+	}
 }
 
 #endif // USE_OUTLOOK
