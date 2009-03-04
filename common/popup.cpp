@@ -359,8 +359,6 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
         m_systraypopup = false;
     else if(name == "nofocus")
         m_focus = false;
-    else if(name == "called")
-        m_called = value;
     else if(name == "astid") {
         m_astid = value;
         setProperty("astid", m_astid);

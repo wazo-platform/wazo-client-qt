@@ -72,6 +72,7 @@ class FaxPanel : public QWidget
     void dirLookup();
     void popupMsg(const QString &, const QString &);
     void destNumberChanged(const QString &);
+    void destSelectionChanged();
     void fileNameChanged(const QString &);
  private:
     QWidget * m_mainwindow;        //!< MainWidget where some parameters are commited to

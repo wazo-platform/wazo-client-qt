@@ -154,7 +154,6 @@ class Popup: public QWidget
     QString m_uniqueid;
     QString m_channel;
     QString m_astid;
-    QString m_called;
     bool m_sheetpopup;
     bool m_systraypopup;
     bool m_focus;

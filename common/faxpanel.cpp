@@ -78,6 +78,8 @@ FaxPanel::FaxPanel(BaseEngine * engine,
             this, SLOT(dirLookup()));
     connect(m_destination, SIGNAL(textChanged(const QString &)),
             this, SLOT(destNumberChanged(const QString &)));
+    connect(m_destination, SIGNAL(selectionChanged()),
+            this, SLOT(destSelectionChanged()));
     hbox1->addWidget(lblfax);
     hbox1->addWidget(m_destination);
     hbox1->addWidget(directory);
@@ -140,6 +142,16 @@ void FaxPanel::setGuiOptions(const QVariant &)
 
 void FaxPanel::setUserInfo(const UserInfo *)
 {
+}
+
+void FaxPanel::destSelectionChanged()
+{
+    if(m_destination->selectedText() == m_destination->text()) {
+        QString dt = m_destination->text();
+        dt.remove('.').remove(' ');
+        if(m_destination->text() != dt)
+            m_destination->setText(dt);
+    }
 }
 
 void FaxPanel::destNumberChanged(const QString &/* ext*/)
