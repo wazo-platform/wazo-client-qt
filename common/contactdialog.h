@@ -35,47 +35,34 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
  */
 
-/* $Revision$
- * $Date$
+/* $Revision: 5513 $
+ * $Date: 2009-03-02 11:10:04 +0100 (lun 02 mar 2009) $
  */
 
-#ifndef __MYLOCALDIRPANEL_H__
-#define __MYLOCALDIRPANEL_H__
+#ifndef __CONTACTDIALOG_H__
+#define __CONTACTDIALOG_H__
 
-#include <QObject>
-#include <QWidget>
-#include <QFile>
+#include <QDialog>
+#include <QLineEdit>
 
-class QLineEdit;
-class BaseEngine;
-class UserInfo;
-class ExtendedTableWidget;
-class SearchDialog;
-
-/*! \brief MyLocalDir Panel
+/*! \brief dialog for creating/editing a new personnal contact
+ *
  */
-class MyLocalDirPanel : public QWidget
+class ContactDialog : public QDialog
 {
     Q_OBJECT
 public:
-    MyLocalDirPanel(BaseEngine *, QWidget * parent = 0);
-    ~MyLocalDirPanel();
-public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
-    void openNewContactDialog();
-    void importContacts();
-    void exportContacts();
-    void findNext();
+    ContactDialog(QWidget * parent = 0);
+    ~ContactDialog();
+    QString firstname() const { return m_firstname?m_firstname->text():QString(); };
+    QString lastname() const { return m_lastname?m_lastname->text():QString(); };
+    QString number() const { return m_number?m_number->text():QString(); };
+    QString company() const { return m_company?m_company->text():QString(); };
 private:
-    void loadFromFile(QFile & file);
-    void saveToFile(QFile & file);
-    int findCol(QStringList, QStringList);
-
-    BaseEngine * m_engine;
-    const UserInfo * m_ui;
-    ExtendedTableWidget * m_table;
-    SearchDialog * m_searchBox;
+    QLineEdit * m_firstname;
+    QLineEdit * m_lastname;
+    QLineEdit * m_number;
+    QLineEdit * m_company;
 };
+#endif
 
-#endif /* __MYLOCALDIRPANEL_H__ */
