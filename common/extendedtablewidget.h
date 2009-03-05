@@ -68,6 +68,8 @@ signals:
 private slots:
     void dialNumber();
     void sendMail();
+    void itransfer();
+    void dtransfer();
     void remove();
 private:
     BaseEngine * m_engine;

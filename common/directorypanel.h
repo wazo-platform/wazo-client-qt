@@ -81,8 +81,6 @@ private slots:
     void startSearch();
     void itemClicked(QTableWidgetItem *);
     void itemDoubleClicked(QTableWidgetItem *);
-    void transfer();
-//    void proxyCallRequests(const QString &, const QString &);
 public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *);

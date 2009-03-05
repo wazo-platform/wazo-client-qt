@@ -98,7 +98,8 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
             QAction * dialAction
                 = contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
             dialAction->setProperty("number", item->text());
-            QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
+            QMenu * transferMenu = new QMenu(tr("Direct &Transfer"), &contextMenu);
+            QMenu * indirectTransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
             UserInfo * ui = NULL;
             if(m_engine)
                 ui = m_engine->getXivoClientUser();
@@ -124,15 +125,22 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
                             text.append( call["calleridnum"].toString() );
                             QAction * transferAction =
                                 transferMenu->addAction( text,
-                                                         this, SLOT(transfer()) );
-//                            transferAction->setProperty( "chan", call["thischannel"] );
+                                                         this, SLOT(dtransfer()) );
                             transferAction->setProperty( "chan", call["peerchannel"] );
+                            transferAction->setProperty("number", item->text());
+                            QAction * indirectTransferAction =
+                                indirectTransferMenu->addAction( text,
+                                                                 this, SLOT(itransfer()) );
+                            indirectTransferAction->setProperty("chan", call["thischannel"] );
+                            indirectTransferAction->setProperty("number", item->text());
                         }
                     }
                 }
             }
             if( !transferMenu->isEmpty() )
                 contextMenu.addMenu(transferMenu);
+            if( !indirectTransferMenu->isEmpty() )
+                contextMenu.addMenu(indirectTransferMenu);
         }
         else if(item->text().contains("@"))
         {
@@ -250,3 +258,26 @@ void ExtendedTableWidget::remove()
     removeRow(_row);
 }
 
+void ExtendedTableWidget::dtransfer()
+{
+    QString chan = sender()->property("chan").toString();
+    QString number = sender()->property("number").toString();
+    if( !chan.isEmpty() && !number.isEmpty() )
+    {
+        emit actionCall("transfer",
+                        "chan:special:me:" + chan,
+                        "ext:" + number); 
+    }
+}
+
+void ExtendedTableWidget::itransfer()
+{
+    QString chan = sender()->property("chan").toString();
+    QString number = sender()->property("number").toString();
+    if( !chan.isEmpty() && !number.isEmpty() )
+    {
+        emit actionCall("atxfer",
+                        "chan:special:me:" + chan,
+                        "ext:" + number); 
+    }
+}

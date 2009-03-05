@@ -301,15 +301,3 @@ void DirectoryPanel::sendMail()
     }
 }
 
-/*! \brief transfer channel to the number
- */
-void DirectoryPanel::transfer()
-{
-    QString chan = sender()->property( "chan" ).toString();
-    qDebug() << "DirectoryPanel::transfer" << chan;
-    if( !chan.isEmpty() && !m_numberToDial.isEmpty() )
-    {
-        // transfer the channel to the selected number
-        emit actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial); 
-    }
-}
