@@ -239,6 +239,7 @@ MainWidget::~MainWidget()
 #endif
     savePositions();
     m_engine->logAction("application quit");
+    qDebug() << "GRR" << childAt(10, 10);
 }
 
 void MainWidget::clipselection()
@@ -778,11 +779,14 @@ void MainWidget::engineStarted()
     hideLogin();
         
     m_tabwidget = new QTabWidget(this);
+    m_tabwidget->hide();
         
     if(m_docknames.contains("tabber")) {
+        m_tabwidget->show();
         addPanel("tabber", tr("Tabs"), m_tabwidget);
     }
     if(m_gridnames.contains("tabber")) {
+        m_tabwidget->show();
         m_gridlayout->addWidget(m_tabwidget, 1, 0);
     }
         
@@ -1028,8 +1032,6 @@ void MainWidget::engineStarted()
                          m_calls, SLOT(updateUser(UserInfo *)) );
                 connect( m_calls, SIGNAL(changeTitle(const QString &)),
                          m_leftpanel->titleLabel(), SLOT(setText(const QString &)) );
-                //                                connect( m_engine, SIGNAL(callsUpdated()),
-                //                                         m_calls, SLOT(updateDisplay()) );
                 connect( m_engine, SIGNAL(delogged()),
                          m_calls, SLOT(reset()) );
                                 
@@ -1095,16 +1097,6 @@ void MainWidget::engineStarted()
                 m_xlet[xletid] = new SearchPanel(m_engine, m_options);
                 addPanel(xletid, tr("Contacts"), m_xlet[xletid]);
                                 
-#if 0
-                connect( m_engine, SIGNAL(updatePeer(UserInfo *,
-                                                     const QString &,
-                                                     const QVariant &)),
-                         m_xlet[xletid], SLOT(updatePeer(UserInfo *,
-                                                         const QString &,
-                                                         const QVariant &)) );
-                connect( m_engine, SIGNAL(newUser(UserInfo *)),
-                         m_xlet[xletid], SLOT(newUser(UserInfo *)) );
-#endif
                 connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
                          m_xlet[xletid], SLOT(updateUser(UserInfo *)) );
                 connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
@@ -1115,9 +1107,6 @@ void MainWidget::engineStarted()
                          m_engine, SLOT(askCallerIds()) );
                 connect( m_engine, SIGNAL(delogged()),
                          m_xlet[xletid], SLOT(removePeers()) );
-                //                                connect( m_engine, SIGNAL(removePeer(const QString &)),
-                //                                         m_xlet[xletid], SLOT(removePeer(const QString &)) );
-                                
             } else if (xletid == QString("features")) {
                 m_xlet[xletid] = new ServicePanel(m_options);
                 addPanel(xletid, tr("Services"), m_xlet[xletid]);
