@@ -74,7 +74,7 @@ DialPanel::DialPanel(const QVariant &,
              this, SLOT(inputValidated()) );
     connect( m_input, SIGNAL(editTextChanged(const QString &)),
              this, SIGNAL(textEdited(const QString &)) );
-        
+    
     QPixmap pmphone = QPixmap(":/images/sipphone.png");
     QPushButton * dialButton = new QPushButton(this);
     // dialButton->setStyleSheet("QPushButton {border: 0px}");
@@ -82,7 +82,7 @@ DialPanel::DialPanel(const QVariant &,
     dialButton->setIconSize(pmphone.size());
     connect( dialButton, SIGNAL(clicked()),
              this, SLOT(inputValidated()) );
-        
+    
     // QPushButton * clearButton = new QPushButton(this);
     // clearButton->setIcon(QIcon(":/images/cancel.png"));
     // connect( clearButton, SIGNAL(clicked()),
@@ -119,7 +119,7 @@ void DialPanel::setNumberToDial(const QString & text)
     // remove . and " " because we don't need them
     // remove "+" to avoid matching the "\\D"
     texttmp.remove(QRegExp("[. +]"));
-        
+    
     if((! texttmp.isEmpty()) && (! texttmp.contains(QRegExp("\\D")))) {
         // if there was a "+", put it back
         if(text.trimmed()[0] == '+')

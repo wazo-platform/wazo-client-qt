@@ -388,6 +388,7 @@ void QueuesPanel::update()
  */
 void QueuesPanel::setQueueOrder(const QVariant & queueorder)
 {
+    // qDebug() << "QueuesPanel::setQueueOrder()" << queueorder;
     QStringList qlist;
     foreach (QString qname, queueorder.toStringList())
         if (m_queue_lines.contains(qname) && (! qlist.contains(qname)))
@@ -399,6 +400,7 @@ void QueuesPanel::setQueueOrder(const QVariant & queueorder)
     int num = 0;
     foreach (QString qname, m_queue_lines)
         m_queuemove[qname]->setProperty("position", num ++);
+    saveQueueOrder(QVariant(m_queue_lines));
     affWidgets(false);
 }
 

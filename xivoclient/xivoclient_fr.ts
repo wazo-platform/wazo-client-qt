@@ -135,57 +135,57 @@ discrète</translation>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="554"/>
+        <location filename="../common/agentspanel_next.cpp" line="555"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="555"/>
+        <location filename="../common/agentspanel_next.cpp" line="556"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="370"/>
+        <location filename="../common/agentspanel_next.cpp" line="371"/>
         <source>%1 min %2 sec</source>
         <translation>%1 min %2 sec</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="372"/>
+        <location filename="../common/agentspanel_next.cpp" line="373"/>
         <source>%1 sec</source>
         <translation>%1 sec</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="551"/>
+        <location filename="../common/agentspanel_next.cpp" line="552"/>
         <source>New Name</source>
         <translation>Nouveau Nom</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="652"/>
+        <location filename="../common/agentspanel_next.cpp" line="653"/>
         <source>Agent %1 on %2</source>
         <translation>Agent %1 sur %2</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="660"/>
+        <location filename="../common/agentspanel_next.cpp" line="661"/>
         <source>%1 calls received since connection</source>
         <translation>%1 appels reçus depuis la connexion</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="661"/>
+        <location filename="../common/agentspanel_next.cpp" line="662"/>
         <source>%1 calls lost since connection</source>
         <translation>%1 appels perdus depuis la connexion</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="689"/>
+        <location filename="../common/agentspanel_next.cpp" line="690"/>
         <source>Logout</source>
         <translation>Délogger</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="698"/>
+        <location filename="../common/agentspanel_next.cpp" line="699"/>
         <source>Transfer</source>
         <translation>Transférer</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="713"/>
+        <location filename="../common/agentspanel_next.cpp" line="714"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
@@ -210,39 +210,39 @@ discrète</translation>
         <translation>Ajouter une File</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="549"/>
+        <location filename="../common/agentspanel_next.cpp" line="550"/>
         <source>Rename a Group</source>
         <translation>Renommer un Groupe</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="674"/>
+        <location filename="../common/agentspanel_next.cpp" line="675"/>
         <source>Cancel Pause</source>
         <translation>Annuler Pause</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="705"/>
+        <location filename="../common/agentspanel_next.cpp" line="706"/>
         <source>Available Queues</source>
         <translation>FA Disponibles</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="677"/>
+        <location filename="../common/agentspanel_next.cpp" line="678"/>
         <source>Pause</source>
         <translation>Mettre en Pause</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel_next.cpp" line="368"/>
+        <location filename="../common/agentspanel_next.cpp" line="369"/>
         <source>%1 hr %2 min %3 sec</source>
         <translation>%1 h %2 mn %3 sec</translation>
     </message>
     <message>
         <location filename="../common/agentspanel_next.cpp" line="148"/>
         <source>Remove them all</source>
-        <translation type="unfinished">Enlever tous</translation>
+        <translation>Les enlever toutes</translation>
     </message>
     <message>
         <location filename="../common/agentspanel_next.cpp" line="172"/>
         <source>Add them all</source>
-        <translation type="unfinished">Ajouter tous</translation>
+        <translation>Les ajouter toutes</translation>
     </message>
 </context>
 <context>
@@ -433,7 +433,7 @@ Merci de mettre à jour votre serveur.</translation>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="63"/>
         <source>Remove this peer from the panel</source>
-        <translation type="unfinished">Enlever ce poste du tableau</translation>
+        <translation>Enlever ce poste du tableau</translation>
     </message>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="67"/>
@@ -653,7 +653,7 @@ Merci de mettre à jour votre serveur.</translation>
     <message>
         <location filename="../common/conferencepanel.cpp" line="354"/>
         <source>%1 hr %2 min %3 sec</source>
-        <translation type="unfinished">%1 h %2 mn %3 sec</translation>
+        <translation>%1 hr %2 min %3 sec</translation>
     </message>
 </context>
 <context>
@@ -818,12 +818,12 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../common/configwidget.cpp" line="271"/>
         <source>Small</source>
-        <translation>Petit</translation>
+        <translation>Petite</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="272"/>
         <source>Detailed</source>
-        <translation>Détaillé</translation>
+        <translation>Détaillée</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="278"/>
@@ -833,7 +833,7 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../common/configwidget.cpp" line="284"/>
         <source>Maximum width for small SwitchBoard elements</source>
-        <translation type="unfinished">Largeur maximale des petits éléments du switchboard</translation>
+        <translation>Largeur maximale des petits éléments du switchboard</translation>
     </message>
 </context>
 <context>
@@ -841,7 +841,7 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../common/contactdialog.cpp" line="9"/>
         <source>Contact</source>
-        <translation type="unfinished">Contact</translation>
+        <translation>Contact</translation>
     </message>
     <message>
         <location filename="../common/contactdialog.cpp" line="12"/>
@@ -861,7 +861,7 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../common/contactdialog.cpp" line="18"/>
         <source>Company</source>
-        <translation type="unfinished">Entreprise</translation>
+        <translation>Entreprise</translation>
     </message>
 </context>
 <context>
@@ -888,7 +888,7 @@ que celles ci-dessous) en première page</translation>
 <context>
     <name>DirectoryPanel</name>
     <message>
-        <location filename="../common/directorypanel.cpp" line="240"/>
+        <location filename="../common/directorypanel.cpp" line="232"/>
         <source>&amp;Dial</source>
         <translation>&amp;Composer</translation>
     </message>
@@ -913,12 +913,12 @@ que celles ci-dessous) en première page</translation>
         <translation>Rechercher</translation>
     </message>
     <message>
-        <location filename="../common/directorypanel.cpp" line="283"/>
+        <location filename="../common/directorypanel.cpp" line="273"/>
         <source>Send an E-mail</source>
         <translation>Envoyer un E-mail</translation>
     </message>
     <message>
-        <location filename="../common/directorypanel.cpp" line="241"/>
+        <location filename="../common/directorypanel.cpp" line="233"/>
         <source>&amp;Transfer</source>
         <translation>&amp;Transférer</translation>
     </message>
@@ -962,22 +962,22 @@ que celles ci-dessous) en première page</translation>
         <translation>1. Choisir le Numéro Destination</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="87"/>
+        <location filename="../common/faxpanel.cpp" line="89"/>
         <source>2. Choose File to Send</source>
         <translation>2. Choisir le Fichier à Envoyer</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="100"/>
+        <location filename="../common/faxpanel.cpp" line="102"/>
         <source>3. Hide the Number ?</source>
         <translation>3. Cacher le Numéro ?</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="111"/>
+        <location filename="../common/faxpanel.cpp" line="113"/>
         <source>4. Send your File</source>
         <translation>4. Envoyer le Fichier</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="93"/>
+        <location filename="../common/faxpanel.cpp" line="95"/>
         <source>Browse</source>
         <translation>Parcourir</translation>
     </message>
@@ -992,34 +992,34 @@ que celles ci-dessous) en première page</translation>
         <translation>Numéro de Fax</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="104"/>
+        <location filename="../common/faxpanel.cpp" line="106"/>
         <source>Hide Number</source>
         <translation>Cacher le Numéro</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="173"/>
+        <location filename="../common/faxpanel.cpp" line="185"/>
         <source>Open Fax File</source>
         <translation>Ouvrir le Fichier Fax</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="175"/>
+        <location filename="../common/faxpanel.cpp" line="187"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
         <translation>Fichiers PDF (*.pdf);;Tous les Fichiers (*)</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="115"/>
+        <location filename="../common/faxpanel.cpp" line="117"/>
         <source>Send</source>
         <translation>Envoyer</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="228"/>
+        <location filename="../common/faxpanel.cpp" line="240"/>
         <source>Your Fax (file %1)
 is being processed and will be sent soon.</source>
         <translation>Votre Fax (ficher %1)
 est en cours de traitement et sera bientôt envoyé.</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="233"/>
+        <location filename="../common/faxpanel.cpp" line="245"/>
         <source>Your Fax (file %1)
 was NOT sent to %2.
 Reason given : %3.</source>
@@ -1028,7 +1028,7 @@ n&apos;a PAS été envoyé à %2.
 Raison donnée : %3.</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="224"/>
+        <location filename="../common/faxpanel.cpp" line="236"/>
         <source>Your Fax (file %1)
 was successfully sent to %2.</source>
         <translation>Votre Fax (ficher %1)
@@ -1081,6 +1081,16 @@ a été envoyé à %2.</translation>
         <location filename="../common/identitydisplay.cpp" line="182"/>
         <source>Login</source>
         <translation>Login</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="445"/>
+        <source>Paused</source>
+        <translation>En retrait</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="437"/>
+        <source>Unpaused</source>
+        <translation>Prêt</translation>
     </message>
 </context>
 <context>
@@ -1163,8 +1173,8 @@ a été envoyé à %2.</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="838"/>
-        <source>Agents&apos; List</source>
-        <translation>Liste des Agents</translation>
+        <source>Agents&apos; List (plain)</source>
+        <translation>Liste des Agents (classique)</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="1538"/>
@@ -1458,8 +1468,8 @@ a été envoyé à %2.</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="859"/>
-        <source>Agents&apos; List (Next)</source>
-        <translation>Liste des Agents</translation>
+        <source>Agents&apos; List (queue groups)</source>
+        <translation>Liste des Agents (par groupes de files)</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="1539"/>
@@ -1475,85 +1485,95 @@ a été envoyé à %2.</translation>
         <translation type="obsolete">Nouvelle Entrée</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="65"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="70"/>
         <source>&amp;New Contact</source>
         <translation>&amp;Nouveau contact</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="69"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="74"/>
         <source>&amp;Export Contacts</source>
         <translation>&amp;Exporter les contacts</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="73"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="78"/>
         <source>&amp;Import Contacts</source>
         <translation>&amp;Importer les contacts</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="159"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="222"/>
         <source>First Name</source>
         <translation>Prénom</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="162"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="225"/>
         <source>Last Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="165"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="228"/>
         <source>Phone Number</source>
-        <translation type="unfinished">Numéro de téléphone</translation>
+        <translation>Numéro de téléphone</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="170"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="233"/>
         <source>Email Address</source>
         <translation>Adresse email</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="175"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="239"/>
         <source>Company</source>
         <translation>Entreprise</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="128"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="152"/>
         <source>Open Contacts File</source>
         <translation>Ouvrir un fichier de contact</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="130"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="167"/>
         <source>Coma separated Value (*.csv)</source>
         <translation type="unfinished">Fichier CSV (*.csv)</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="167"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="230"/>
         <source>Number</source>
         <translation>Numéro</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="171"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="234"/>
         <source>Email</source>
         <translation type="unfinished">Email</translation>
+    </message>
+    <message>
+        <location filename="../common/mylocaldirpanel.cpp" line="82"/>
+        <source>&amp;Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/mylocaldirpanel.cpp" line="165"/>
+        <source>Save Contacts File</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OutlookPanel</name>
     <message>
-        <location filename="../3rdparty/outlook/outlook_panel.cpp" line="79"/>
+        <location filename="../3rdparty/outlook/outlook_panel.cpp" line="80"/>
         <source>Di&amp;rectory</source>
         <translation>&amp;Répertoire</translation>
     </message>
     <message>
-        <location filename="../3rdparty/outlook/outlook_panel.cpp" line="292"/>
+        <location filename="../3rdparty/outlook/outlook_panel.cpp" line="293"/>
         <source>Double-click to send an E-mail to</source>
         <translation>Double-cliquer pour envoyer un E-mail à</translation>
     </message>
     <message>
-        <location filename="../3rdparty/outlook/outlook_panel.cpp" line="294"/>
+        <location filename="../3rdparty/outlook/outlook_panel.cpp" line="295"/>
         <source>Double-click to call</source>
         <translation>Double-cliquer pour appeler</translation>
     </message>
     <message>
-        <location filename="../3rdparty/outlook/outlook_panel.cpp" line="372"/>
+        <location filename="../3rdparty/outlook/outlook_panel.cpp" line="373"/>
         <source>&amp;Dial</source>
         <translation>&amp;Composer</translation>
     </message>
@@ -1563,7 +1583,7 @@ a été envoyé à %2.</translation>
         <translation>&amp;Transférer</translation>
     </message>
     <message>
-        <location filename="../3rdparty/outlook/outlook_panel.cpp" line="390"/>
+        <location filename="../3rdparty/outlook/outlook_panel.cpp" line="421"/>
         <source>Send an E-mail</source>
         <translation>Envoyer un E-mail</translation>
     </message>
@@ -1672,9 +1692,10 @@ a été envoyé à %2.</translation>
         <location filename="../common/peerwidget.cpp" line="261"/>
         <source>Agent %1
 %n Queue(s) %2</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Agent %1
+%n File(s) %2</numerusform>
         </translation>
     </message>
 </context>
@@ -1722,14 +1743,49 @@ a été envoyé à %2.</translation>
         <translation>Agent</translation>
     </message>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="65"/>
+        <location filename="../common/queuedetailspanel.cpp" line="239"/>
         <source>Paused</source>
-        <translation>En pause</translation>
+        <translation>En retrait</translation>
     </message>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="252"/>
+        <location filename="../common/queuedetailspanel.cpp" line="283"/>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; sur &lt;b&gt;%2&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../common/queuedetailspanel.cpp" line="65"/>
+        <source>Paused ?</source>
+        <translation>En retrait ?</translation>
+    </message>
+    <message>
+        <location filename="../common/queuedetailspanel.cpp" line="218"/>
+        <source>Available</source>
+        <translation>Disponible</translation>
+    </message>
+    <message>
+        <location filename="../common/queuedetailspanel.cpp" line="221"/>
+        <source>Busy</source>
+        <translation>Occupé</translation>
+    </message>
+    <message>
+        <location filename="../common/queuedetailspanel.cpp" line="224"/>
+        <source>Invalid</source>
+        <translation>Invalide</translation>
+    </message>
+    <message>
+        <location filename="../common/queuedetailspanel.cpp" line="227"/>
+        <source>Unavailable</source>
+        <translation>Indisponible</translation>
+    </message>
+    <message>
+        <location filename="../common/queuedetailspanel.cpp" line="242"/>
+        <source>Unknown (%1)</source>
+        <translation>Inconnu (%1)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuedetailspanel.cpp" line="236"/>
+        <source>Unpaused</source>
+        <translation>Prêt</translation>
     </message>
 </context>
 <context>
@@ -1826,6 +1882,14 @@ décroché (%)</translation>
         <location filename="../common/queuespanel.cpp" line="83"/>
         <source>Available</source>
         <translation>Disponibles</translation>
+    </message>
+</context>
+<context>
+    <name>SearchDialog</name>
+    <message>
+        <location filename="../common/searchdialog.cpp" line="11"/>
+        <source>Search :</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

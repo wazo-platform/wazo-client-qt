@@ -186,7 +186,7 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                         this, SLOT(contextMenuAction()) );
                 contextMenu.addAction(logAction);
             }
-                        
+            
             if(m_allow_pauseagent) {
                 QAction * pauseAction = new QAction(tr("Pause"), this);
                 pauseAction->setProperty("iconname", iconname);
@@ -194,7 +194,7 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                 connect(pauseAction, SIGNAL(triggered()),
                         this, SLOT(contextMenuAction()) );
                 contextMenu.addAction(pauseAction);
-                                
+                
                 QAction * unpauseAction = new QAction(tr("Unpause"), this);
                 unpauseAction->setProperty("iconname", iconname);
                 unpauseAction->setProperty("kind", "unpause");
@@ -202,7 +202,7 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                         this, SLOT(contextMenuAction()) );
                 contextMenu.addAction(unpauseAction);
             }
-                        
+            
             if(m_allow_logagent || m_allow_pauseagent)
                 contextMenu.exec(event->globalPos());
             //                 } else if(iconname == "user") {
@@ -430,9 +430,11 @@ void IdentityDisplay::setStatusColors(int nj, int np)
         if(np == nj) {
             setSystrayIcon(icon_color_red);
             p_square->fill("#ff0000");
+            m_agentpause->setToolTip(tr("Paused"));
         } else {
             bool loggedin = m_agentstatus->property("connected").toBool();
             p_square->fill("#00ff00");
+            m_agentpause->setToolTip(tr("Unpaused"));
             if(loggedin)
                 setSystrayIcon(icon_color_green);
             else
@@ -440,6 +442,7 @@ void IdentityDisplay::setStatusColors(int nj, int np)
         }
     } else {
         p_square->fill("#ff0000");
+        m_agentpause->setToolTip(tr("Paused"));
     }
     m_agentpause->setPixmap(* p_square);
 }

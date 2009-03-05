@@ -62,7 +62,7 @@ QueuedetailsPanel::QueuedetailsPanel(BaseEngine * engine,
     m_label = new QLabel("", this);
     m_queuelegend_agentid = new QLabel(tr("Agent"), this);
     m_queuelegend_status = new QLabel(tr("Status"), this);
-    m_queuelegend_paused = new QLabel(tr("Paused"), this);
+    m_queuelegend_paused = new QLabel(tr("Paused ?"), this);
     m_queuelegend_callstaken = new QLabel(tr("Calls Taken"), this);
     m_gridlayout->setRowStretch( 100, 1 );
     m_gridlayout->addWidget(m_label, 0, 0);
@@ -172,15 +172,15 @@ void QueuedetailsPanel::update()
     m_agentstatus.clear();
     m_agentpaused.clear();
     m_agentncalls.clear();
-        
+    
     int i = 0;
     if(m_agentlists.contains(m_astid)) foreach(QString agent_channel, m_agentlist.keys()) {
         QString agdisplay = agent_channel;
         QString agentnum = agent_channel.mid(6);
-        QString status;
-        QString paused;
+        int status = 0;
+        int paused = 0;
         QString callstaken;
-                
+        
         m_agentmore[agentnum] = new QPushButton(this);
         m_agentmore[agentnum]->setProperty("astid", m_astid);
         m_agentmore[agentnum]->setProperty("agentid", agentnum);
@@ -188,20 +188,18 @@ void QueuedetailsPanel::update()
         m_agentmore[agentnum]->setIcon(QIcon(":/images/add.png"));
         connect( m_agentmore[agentnum], SIGNAL(clicked()),
                  this, SLOT(agentClicked()));
-                
+        
         if(m_agentlists[m_astid].toMap().contains(agentnum)) {
             QString firstname = m_agentlists[m_astid].toMap()[agentnum].toMap()["firstname"].toString();
             QString lastname = m_agentlists[m_astid].toMap()[agentnum].toMap()["lastname"].toString();
             QVariantMap queues = m_agentlists[m_astid].toMap()[agentnum].toMap()["queues"].toMap();
             if(queues.contains(m_queueid)) {
-                status = queues[m_queueid].toMap()["Status"].toString();
-                paused = queues[m_queueid].toMap()["Paused"].toString();
+                status = queues[m_queueid].toMap()["Status"].toInt();
+                paused = queues[m_queueid].toMap()["Paused"].toInt();
                 callstaken = queues[m_queueid].toMap()["CallsTaken"].toString();
             }
             agdisplay = QString("%1 %2 (%3)").arg(firstname).arg(lastname).arg(agentnum);
         } else {
-            status ="-";
-            paused = "-";
             callstaken = "-";
             m_agentmore[agentnum]->hide();
             UserInfo * ui = m_engine->findUserFromPhone(m_astid, agent_channel);
@@ -211,17 +209,50 @@ void QueuedetailsPanel::update()
                 agdisplay = QString("%1 (%2)").arg(fullname).arg(phonenum);
             }
         }
-                
+        
+        QString displaystatus;
+        QString displaypaused;
+        
+        switch(status) {
+        case 1:
+            displaystatus = tr("Available");
+            break;
+        case 3:
+            displaystatus = tr("Busy");
+            break;
+        case 4:
+            displaystatus = tr("Invalid");
+            break;
+        case 5:
+            displaystatus = tr("Unavailable");
+            break;
+        default:
+            displaystatus = tr("Unknown (%1)").arg(status);
+            break;
+        }
+        
+        switch(paused) {
+        case 0:
+            displaypaused = tr("Unpaused");
+            break;
+        case 1:
+            displaypaused = tr("Paused");
+            break;
+        default:
+            displaypaused = tr("Unknown (%1)").arg(paused);
+            break;
+        }
+        
         m_agentlabels[agentnum] = new QLabel(agdisplay, this);
-        m_agentstatus[agentnum] = new QLabel(status, this);
-        m_agentpaused[agentnum] = new QLabel(paused, this);
+        m_agentstatus[agentnum] = new QLabel(displaystatus, this);
+        m_agentpaused[agentnum] = new QLabel(displaypaused, this);
         m_agentncalls[agentnum] = new QLabel(callstaken, this);
-                
+        
         int colnum = 0;
         m_gridlayout->addWidget( m_agentlabels[agentnum], i + 2, colnum++, Qt::AlignLeft );
         m_gridlayout->addWidget( m_agentmore[agentnum], i + 2, colnum++, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_agentstatus[agentnum], i + 2, colnum++, Qt::AlignRight );
-        m_gridlayout->addWidget( m_agentpaused[agentnum], i + 2, colnum++, Qt::AlignRight );
+        m_gridlayout->addWidget( m_agentstatus[agentnum], i + 2, colnum++, Qt::AlignLeft );
+        m_gridlayout->addWidget( m_agentpaused[agentnum], i + 2, colnum++, Qt::AlignLeft );
         m_gridlayout->addWidget( m_agentncalls[agentnum], i + 2, colnum++, Qt::AlignRight );
         i ++;
     }
@@ -246,7 +277,7 @@ void QueuedetailsPanel::newQueue(double, const QString & astid, const QString & 
     m_queuelegend_paused->show();
     m_queuelegend_callstaken->show();
     m_agentlist = queuestatus.toMap()["agents"].toMap();
-        
+    
     m_astid = astid;
     m_queueid = queueid;
     m_label->setText(tr("<b>%1</b> on <b>%2</b>").arg(m_queueid).arg(m_astid));

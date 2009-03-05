@@ -833,10 +833,10 @@ void MainWidget::engineStarted()
                     QScrollArea * sa_ag = new QScrollArea(this);
                     sa_ag->setWidget(m_xlet[xletid]);
                     sa_ag->setWidgetResizable(true);
-                    addPanel(xletid, tr("Agents' List"), sa_ag);
+                    addPanel(xletid, tr("Agents' List (plain)"), sa_ag);
                 } else
-                    addPanel(xletid, tr("Agents' List"), m_xlet[xletid]);
-                                
+                    addPanel(xletid, tr("Agents' List (plain)"), m_xlet[xletid]);
+                
                 connect( m_engine, SIGNAL(newAgentList(double, const QVariant &)),
                          m_xlet[xletid], SLOT(setAgentList(double, const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(changeWatchedAgent(const QString &, bool)),
@@ -847,17 +847,17 @@ void MainWidget::engineStarted()
                          m_xlet[xletid], SLOT(updateAgentPresence(const QString &, const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(agentAction(const QString &)),
                          m_engine, SLOT(agentAction(const QString &)) );
-                                
+                
             } else if (xletid == "agentsnext") {
                 m_xlet[xletid] = new AgentsPanelNext(m_options);
                 if (withscrollbar) {
                     QScrollArea * sa_ag = new QScrollArea(this);
                     sa_ag->setWidget(m_xlet[xletid]);
                     sa_ag->setWidgetResizable(true);
-                    addPanel(xletid, tr("Agents' List (Next)"), sa_ag);
+                    addPanel(xletid, tr("Agents' List (queue groups)"), sa_ag);
                 } else
-                    addPanel(xletid, tr("Agents' List (Next)"), m_xlet[xletid]);
-                                
+                    addPanel(xletid, tr("Agents' List (queue groups)"), m_xlet[xletid]);
+                
                 connect( m_engine, SIGNAL(newQueueList(const QVariant &)),
                          m_xlet[xletid], SLOT(setQueueList(const QVariant &)) );
                 connect( m_engine, SIGNAL(newAgentList(double, const QVariant &)),
@@ -880,7 +880,7 @@ void MainWidget::engineStarted()
                          m_xlet[xletid], SLOT(setQueueOrder(const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(logAction(const QString &)),
                          m_engine, SLOT(logAction(const QString &)) );
-                                
+                
             } else if (xletid == QString("agentdetails")) {
                 m_xlet[xletid] = new AgentdetailsPanel(m_options);
                 if (withscrollbar) {
@@ -890,7 +890,7 @@ void MainWidget::engineStarted()
                     addPanel(xletid, tr("Agent Details"), sa_ad);
                 } else
                     addPanel(xletid, tr("Agent Details"), m_xlet[xletid]);
-                                
+                
                 connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QString &, const QString &, const QVariant &)),
                          m_xlet[xletid], SLOT(newAgent(const QString &, const QString &, const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(changeWatchedQueue(const QString &)),

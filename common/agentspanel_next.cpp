@@ -263,6 +263,7 @@ void AgentsPanelNext::saveGroups()
 
 void AgentsPanelNext::setQueueOrder(const QVariant & queueorder)
 {
+    // qDebug() << "AgentsPanelNext::setQueueOrder()" << queueorder;
     m_queueorder = queueorder;
 }
 
@@ -644,22 +645,22 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
         QString groupid = sender()->property("groupid").toString();
         QPoint where = event->globalPos();
         QString idxa = QString("%1-%2").arg(astid).arg(agentid);
-                
+        
         changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentid), true);
-                
+        
         QGridLayout * gl = new QGridLayout();
         QDialog * dialog = new QDialog(this);
         dialog->setWindowTitle(tr("Agent %1 on %2").arg(agentid, astid));
         dialog->setLayout(gl);
-                
+        
         QLabel * q_name = new QLabel(m_agent_props[idxa].toMap()["firstname"].toString());
         QLabel * q_agentid = new QLabel(agentid);
-                
+        
         QString nreceived = m_agent_props[idxa].toMap()["properties"].toMap()["Xivo-ReceivedCalls"].toString();
         QString nlost = m_agent_props[idxa].toMap()["properties"].toMap()["Xivo-LostCalls"].toString();
         QLabel * q_received = new QLabel(tr("%1 calls received since connection").arg(nreceived));
         QLabel * q_lost = new QLabel(tr("%1 calls lost since connection").arg(nlost));
-                
+        
         QPushButton * q_pause;
         bool isinpause = false;
         foreach (QString qname, m_agent_props[idxa].toMap()["queues"].toMap().keys())
@@ -677,7 +678,7 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
             q_pause = new QPushButton(tr("Pause"));
             q_pause->setProperty("action", "pause");
         }
-                
+        
         q_pause->setProperty("astid", astid);
         q_pause->setProperty("agentid", agentid);
         q_pause->setProperty("groupid", groupid);
@@ -685,7 +686,7 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                  this, SLOT(actionclicked()) );
         connect( q_pause, SIGNAL(clicked()),
                  dialog, SLOT(close()) );
-                
+        
         QPushButton * q_logout = new QPushButton(tr("Logout"));
         q_logout->setProperty("action", "logout");
         q_logout->setProperty("astid", astid);
@@ -694,14 +695,14 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
                  this, SLOT(actionclicked()) );
         connect( q_logout, SIGNAL(clicked()),
                  dialog, SLOT(close()) );
-                
+        
         QPushButton * q_transfer = new QPushButton(tr("Transfer"));
         q_transfer->setProperty("action", "transfer");
         q_transfer->setProperty("astid", astid);
         q_transfer->setProperty("agentid", agentid);
         connect( q_transfer, SIGNAL(clicked()),
                  this, SLOT(actionclicked()) );
-                
+        
         QLabel * q_labelqueues = new QLabel(tr("Available Queues"));
         m_queue_chose = new QComboBox();
         m_queue_chose->setSizeAdjustPolicy(QComboBox::AdjustToContents);
@@ -709,13 +710,13 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
             if(m_queuelist.contains(qname))
                 m_queue_chose->addItem(qname);
         }
-                
+        
         QPushButton * q_close = new QPushButton(tr("Close"));
         QFrame * q_hline1 = new QFrame(this);
         QFrame * q_hline2 = new QFrame(this);
         q_hline1->setFrameShape(QFrame::HLine);
         q_hline2->setFrameShape(QFrame::HLine);
-                
+        
         int iy = 0;
         gl->addWidget(q_name, iy, 0, Qt::AlignCenter);
         gl->addWidget(q_agentid, iy, 1, Qt::AlignCenter);
