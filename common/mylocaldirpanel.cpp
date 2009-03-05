@@ -53,6 +53,7 @@
 #include "contactdialog.h"
 #include "extendedtablewidget.h"
 #include "searchdialog.h"
+#include "csvstream.h"
 
 /*! \brief Constructor
  */
@@ -86,7 +87,10 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
 
     vlayout->addLayout(hlayout);
 
-    m_table = new ExtendedTableWidget();
+    m_table = new ExtendedTableWidget( m_engine );
+    m_table->setEditable( true );
+    connect( m_table, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+             this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
     QStringList columnNames;
     columnNames.append( tr("First Name") );
     columnNames.append( tr("Last Name") );
@@ -112,16 +116,22 @@ MyLocalDirPanel::~MyLocalDirPanel()
     saveToFile( file );
 }
 
+/*! Does nothing
+ */
 void MyLocalDirPanel::setGuiOptions(const QVariant &)
 {
 }
 
+/*! store current user
+ */
 void MyLocalDirPanel::setUserInfo(const UserInfo * ui)
 {
     m_ui = ui;
     // qDebug() << "MyLocalDirPanel::setUserInfo()" << m_ui->fullname();
 }
 
+/*! open the dialog box used to enter a new contact
+ */
 void MyLocalDirPanel::openNewContactDialog()
 {
     ContactDialog dialog;
@@ -139,12 +149,19 @@ void MyLocalDirPanel::openNewContactDialog()
         m_table->setItem( row, 1, itemLastName );
         QTableWidgetItem * itemNumber = new QTableWidgetItem( dialog.number() );
         m_table->setItem( row, 2, itemNumber );
+        QTableWidgetItem * itemEmail = new QTableWidgetItem( dialog.email() );
+        m_table->setItem( row, 3, itemEmail );
         QTableWidgetItem * itemCompany = new QTableWidgetItem( dialog.company() );
         m_table->setItem( row, 4, itemCompany );
         m_table->setSortingEnabled( saveSorting );
     }
 }
 
+/*! \brief import contacts from a .csv file
+ *
+ * open a "Open File" dialog and then call
+ * loadFromFile()
+ */
 void MyLocalDirPanel::importContacts()
 {
     //qDebug() << "MyLocalDirPanel::importContacts()";
@@ -152,13 +169,16 @@ void MyLocalDirPanel::importContacts()
                          tr("Open Contacts File"),
                          QString(),
                          tr("Coma separated Value (*.csv)"));
-    qDebug() << fileName;
     if(fileName.isEmpty())
         return;
     QFile file(fileName);
     loadFromFile( file );
 }
 
+/*! \brief export contact to a .csv file
+ *
+ * open a "Save File" dialog then call saveToFile()
+ */
 void MyLocalDirPanel::exportContacts()
 {
     //qDebug() << "MyLocalDirPanel::exportContacts()";
@@ -172,6 +192,10 @@ void MyLocalDirPanel::exportContacts()
     saveToFile( file );
 }
 
+/*! \brief save the contact list to a .csv file
+ *
+ * iterate through entries and save them to the .csv file.
+ */
 void MyLocalDirPanel::saveToFile(QFile & file)
 {
     QChar separator = QChar(',');
@@ -201,22 +225,23 @@ void MyLocalDirPanel::saveToFile(QFile & file)
 
 void MyLocalDirPanel::loadFromFile(QFile & file)
 {
-    QChar separator = QChar(',');
+    //QChar separator = QChar(',');
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
 
-    QTextStream in(&file);
-    QString headerLine = in.readLine();
-    if(headerLine.isEmpty())
-        return;
+    CsvStream in(&file);
+    //QString headerLine = in.readLine();
+    //if(headerLine.isEmpty())
+    //    return;
     bool saveSorting = m_table->isSortingEnabled();
     m_table->setSortingEnabled( false );
-    QStringList headers = headerLine.split(separator);
-    if(headers.count() == 1)
-    {
-        separator = QChar(';');
-        headers = headerLine.split(separator);
-    }
+    //QStringList headers = headerLine.split(separator);
+    //if(headers.count() == 1)
+    //{
+    //    separator = QChar(';');
+    //    headers = headerLine.split(separator);
+    //}
+    QStringList headers = in.readRecords();
     int firstNameCol = findCol(headers, QStringList()
                                         << tr("First Name")
                                         << QString("First Name") );
@@ -245,36 +270,40 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
     {
         int row = m_table->rowCount();
         m_table->setRowCount( row + 1 );
-        QStringList record = in.readLine().split(separator);
+        //QStringList record = in.readLine().split(separator);
+        QStringList record = in.readRecords();
         if(firstNameCol >= 0)
         {
-            QTableWidgetItem * itemFirstName = new QTableWidgetItem( record[firstNameCol].remove(QChar('"')) );
+            QTableWidgetItem * itemFirstName = new QTableWidgetItem( record[firstNameCol] );
             m_table->setItem( row, 0, itemFirstName );
         }
         if(lastNameCol >= 0)
         {
-            QTableWidgetItem * itemLastName = new QTableWidgetItem( record[lastNameCol].remove(QChar('"')) );
+            QTableWidgetItem * itemLastName = new QTableWidgetItem( record[lastNameCol] );
             m_table->setItem( row, 1, itemLastName );
         }
         if(numberCol >= 0)
         {
-            QTableWidgetItem * itemNumber = new QTableWidgetItem( record[numberCol].remove(QChar('"')) );
+            QTableWidgetItem * itemNumber = new QTableWidgetItem( record[numberCol] );
             m_table->setItem( row, 2, itemNumber );
         }
         if(emailCol >= 0)
         {
-            QTableWidgetItem * itemEmail = new QTableWidgetItem( record[emailCol].remove(QChar('"')) );
+            QTableWidgetItem * itemEmail = new QTableWidgetItem( record[emailCol] );
             m_table->setItem( row, 3, itemEmail );
         }
         if(companyCol >= 0)
         {
-            QTableWidgetItem * itemCompany = new QTableWidgetItem( record[companyCol].remove(QChar('"')) );
+            QTableWidgetItem * itemCompany = new QTableWidgetItem( record[companyCol] );
             m_table->setItem( row, 4, itemCompany );
         }
     }
     m_table->setSortingEnabled( saveSorting );
 }
 
+/*! \brief find the column index
+ *
+ */
 int MyLocalDirPanel::findCol(QStringList headers, QStringList labels)
 {
     int n = headers.size();
@@ -283,10 +312,6 @@ int MyLocalDirPanel::findCol(QStringList headers, QStringList labels)
         for(int i = 0; i < n; i++)
         {
             QString header = headers[i].trimmed();
-            if(header.startsWith(QChar('"')))
-            {
-                header = header.remove(QChar('"'));
-            }
             if( label.compare(header, Qt::CaseInsensitive) == 0 )
                 return i;
         }
@@ -294,12 +319,20 @@ int MyLocalDirPanel::findCol(QStringList headers, QStringList labels)
     return -1;
 }
 
+/*! \brief select next match
+ *
+ * use the text from the searchbox to find all matching cells
+ * and select the next one.
+ */
 void MyLocalDirPanel::findNext()
 {
+    if(!m_searchBox)
+        return;
     QString searchText = m_searchBox->text();
     qDebug() << "MyLocalDirPanel::findNext()" << searchText;
     QTableWidgetItem * currentItem = m_table->currentItem();
-    QList<QTableWidgetItem *> items = m_table->findItems( searchText, Qt::MatchContains | Qt::MatchFixedString);
+    QList<QTableWidgetItem *> items
+        = m_table->findItems( searchText, Qt::MatchContains | Qt::MatchFixedString);
     if(items.size() == 0)
         return;
     if(currentItem) {

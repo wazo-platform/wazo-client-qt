@@ -1863,8 +1863,7 @@ void BaseEngine::loadQueueOrder()
 UserInfo * BaseEngine::getXivoClientUser()
 {
     //qDebug() << "BaseEngine::getXivoClientUser()" << m_astid << m_xivo_userid;
-    QString key = m_astid + "/" + m_xivo_userid;
-    if( m_users.contains( key ) )
-        return m_users.value( key );
+    if( m_users.contains( m_fullid ) )
+        return m_users.value( m_fullid );
     return NULL;
 }

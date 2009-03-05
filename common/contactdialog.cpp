@@ -14,6 +14,8 @@ ContactDialog::ContactDialog(QWidget * parent)
     layout->addRow( tr("Last Name"), m_lastname);
     m_number = new QLineEdit();
     layout->addRow( tr("Phone Number"), m_number);
+    m_email = new QLineEdit();
+    layout->addRow( tr("Email Address"), m_email);
     m_company = new QLineEdit();
     layout->addRow( tr("Company"), m_company);
     QDialogButtonBox * buttonBox

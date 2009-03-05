@@ -62,29 +62,30 @@ class UserInfo;
 class ParkingPanel : public QWidget
 {
     Q_OBJECT
-        public:
-    ParkingPanel(QWidget * parent = 0);
+public:
+    ParkingPanel(BaseEngine * engine, QWidget * parent = 0);
     ~ParkingPanel();
- protected:
+protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
-    public slots:
+public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *);
     void parkingEvent(const QVariant &);
-    void contextMenuEvent(QContextMenuEvent *);
-    private slots:
-    void dialNumber();
+//    void contextMenuEvent(QContextMenuEvent *);
+private slots:
+//    void dialNumber();
     void hangUp();
     void itemClicked(QTableWidgetItem *);
     void itemDoubleClicked(QTableWidgetItem *);
     void proxyCallRequests(const QString &, const QString &);
- signals:
+signals:
     void copyNumber(const QString &);
     void actionCall(const QString &,
                     const QString &,
                     const QString &);
     void newParkEvent();
- private:
+private:
+    BaseEngine * m_engine;
     ExtendedTableWidget * m_table;        //! Table
     const UserInfo * m_userinfo;
     int m_timerid;

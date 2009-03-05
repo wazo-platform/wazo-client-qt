@@ -50,7 +50,7 @@
 class ExternalPhoneDialog : public QDialog
 {
     Q_OBJECT
-        public:
+public:
     ExternalPhoneDialog(QWidget * parent = 0);
     ~ExternalPhoneDialog();
     //! return text label
@@ -61,7 +61,7 @@ class ExternalPhoneDialog : public QDialog
     QString number() const { return m_number?m_number->text():QString(); };
     //! set phone number text
     void setNumber(const QString & number) { if(m_number) m_number->setText(number); };
- private:
+private:
     //! widget for entering label
     QLineEdit * m_label;
     //! widget for entering phone number

@@ -1059,7 +1059,7 @@ void MainWidget::engineStarted()
                          m_xlet[xletid], SLOT(removePeers()) );
                                 
             } else if (xletid == QString("parking")) {
-                m_xlet[xletid] = new ParkingPanel();
+                m_xlet[xletid] = new ParkingPanel(m_engine, this);
                 addPanel(xletid, tr("Parking"), m_xlet[xletid]);
                                 
                 connect( m_engine, SIGNAL(parkingEvent(const QVariant &)),
@@ -1149,7 +1149,7 @@ void MainWidget::engineStarted()
                          m_xlet[xletid], SLOT(setForward(const QString &, const QVariant &)) );
                                 
             } else if (xletid == QString("directory")) {
-                m_xlet[xletid] = new DirectoryPanel(m_options);
+                m_xlet[xletid] = new DirectoryPanel(m_engine, this);
                 addPanel(xletid, tr("Directory"), m_xlet[xletid]);
                 m_xlet[xletid]->setFocus();
                                 
@@ -1202,6 +1202,7 @@ void MainWidget::engineStarted()
 
             } else if (xletid == QString("mylocaldir")) {
                 m_xlet[xletid] = new MyLocalDirPanel(m_engine);
+                connectDials(m_xlet[xletid]);
                 addPanel(xletid, tr("Personal Directory"), m_xlet[xletid]);
                                 
             } else if (xletid == QString("xletproto")) {

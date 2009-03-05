@@ -57,11 +57,13 @@ public:
     QString firstname() const { return m_firstname?m_firstname->text():QString(); };
     QString lastname() const { return m_lastname?m_lastname->text():QString(); };
     QString number() const { return m_number?m_number->text():QString(); };
+    QString email() const { return m_email?m_email->text():QString(); };
     QString company() const { return m_company?m_company->text():QString(); };
 private:
     QLineEdit * m_firstname;
     QLineEdit * m_lastname;
     QLineEdit * m_number;
+    QLineEdit * m_email;
     QLineEdit * m_company;
 };
 #endif

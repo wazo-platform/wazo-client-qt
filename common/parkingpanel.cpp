@@ -57,12 +57,12 @@
  *
  * Set up the layout and the table widget.
  */
-ParkingPanel::ParkingPanel(QWidget * parent)
-    : QWidget(parent)
+ParkingPanel::ParkingPanel(BaseEngine * engine, QWidget * parent)
+    : QWidget(parent), m_engine(engine)
 {
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
-    m_table = new ExtendedTableWidget( this );
+    m_table = new ExtendedTableWidget( m_engine, this );
     qDebug() << m_table;
     m_table->setAlternatingRowColors(true);
     m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
@@ -75,8 +75,6 @@ ParkingPanel::ParkingPanel(QWidget * parent)
              this, SLOT(itemClicked(QTableWidgetItem *)) );
     connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
              this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-    connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
-             this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
     connect( m_table, SIGNAL(actionCall(const QString &, const QString &)),
              this, SLOT(proxyCallRequests(const QString &, const QString &)) );
         
@@ -199,6 +197,7 @@ void ParkingPanel::timerEvent(QTimerEvent * event)
         }
 }
 
+#if 0
 void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
 {
     QTableWidgetItem * item = m_table->itemAt( event->pos() );
@@ -241,6 +240,7 @@ void ParkingPanel::dialNumber()
     if((m_placenum.length() > 0) && (m_astid == m_userinfo->astid()))
         actionCall("originate", "user:special:me", "ext:" + m_placenum); // Call
 }
+#endif
 
 /*! \brief dial the number (when context menu item is toggled)
  */

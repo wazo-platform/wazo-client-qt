@@ -52,6 +52,7 @@
 #include <QVBoxLayout>
 
 #include "directorypanel.h"
+#include "baseengine.h"
 #include "extendedtablewidget.h"
 #include "extendedlineedit.h"
 #include "userinfo.h"
@@ -62,8 +63,8 @@
  *
  *  Build layout and child widgets, connect signals/slots.
  */
-DirectoryPanel::DirectoryPanel(const QVariant &, QWidget * parent)
-    : QWidget(parent), m_re_number("\\+?[0-9\\s\\.]+")
+DirectoryPanel::DirectoryPanel(BaseEngine * engine, QWidget * parent)
+    : QWidget(parent), m_engine(engine), m_re_number("\\+?[0-9\\s\\.]+")
 {
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
@@ -80,15 +81,13 @@ DirectoryPanel::DirectoryPanel(const QVariant &, QWidget * parent)
              this, SLOT(startSearch()) );
     hlayout->addWidget( m_searchButton );
     vlayout->addLayout( hlayout );
-    m_table = new ExtendedTableWidget( this );
+    m_table = new ExtendedTableWidget( m_engine, this );
     connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
              this, SLOT(itemClicked(QTableWidgetItem *)) );
     connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
              this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-    connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
-             this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-    connect( m_table, SIGNAL(actionCall(const QString &, const QString &)),
-             this, SLOT(proxyCallRequests(const QString &, const QString &)) );
+    connect( m_table, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+             this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
         
     vlayout->addWidget(m_table);
     setAcceptDrops(true);
@@ -108,12 +107,7 @@ void DirectoryPanel::setGuiOptions(const QVariant &)
 
 void DirectoryPanel::setUserInfo(const UserInfo * ui)
 {
-    m_userinfo = ui;
-}
-
-void DirectoryPanel::proxyCallRequests(const QString & src, const QString & dst)
-{
-    actionCall(sender()->property("action").toString(), src, dst); // Call
+    //m_userinfo = ui;
 }
 
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
@@ -142,7 +136,7 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
     // check if the string is a number
     if( m_re_number.exactMatch(item->text()) ) {
         //qDebug() << "dialing" << item->text();
-        actionCall("originate", "user:special:me", "ext:" + item->text()); // Call
+        emit actionCall("originate", "user:special:me", "ext:" + item->text()); // Call
     }
         
     if(item && item->text().contains("@")) {
@@ -182,10 +176,10 @@ void DirectoryPanel::setSearchResponse(const QString & resp)
                     QTableWidgetItem * item = new QTableWidgetItem(it);
                     item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
 
-                    QRegExp re_number("\\+?[0-9\\s\\.]+");
+                    //QRegExp re_number("\\+?[0-9\\s\\.]+");
                     if(it.contains("@"))
                         item->setToolTip(tr("Double-click to send an E-mail to") + "\n" + it);
-                    else if(re_number.exactMatch(it))
+                    else if(m_re_number.exactMatch(it))
                         item->setToolTip(tr("Double-click to call") + "\n" + it);
                     //item->setStatusTip();
                     // qDebug() << x << y << item->flags();
@@ -218,9 +212,18 @@ void DirectoryPanel::stop()
     m_searchText->setText("");
 }
 
+#if 0
 void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
 {
-    QTableWidgetItem * item = m_table->itemAt( event->pos() );
+    QTableWidgetItem * item = m_table->itemAt( m_table->mapFromParent( event->pos() ) );
+    qDebug() << "DirectoryPanel::contextMenuEvent()" << item;
+    qDebug() << event->pos() << m_table->pos();
+    qDebug() << m_table->mapFromParent( event->pos() );
+//    qDebug() << ( event->pos() - m_table->pos() );
+//    qDebug() << m_table;
+//    qDebug() << m_table->parent();
+//    qDebug() << m_table->parent()->parent();
+//    qDebug() << this;
     if (item == NULL)
         return;
 
@@ -231,41 +234,44 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
         QMenu contextMenu( this );
         contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
         QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
-        if(m_userinfo)
+        UserInfo * ui = m_engine?m_engine->getXivoClientUser():0;
+        if(ui)
+        {
+            foreach( const QString phone, ui->phonelist() )
             {
-                foreach( const QString phone, m_userinfo->phonelist() )
+                const PhoneInfo * pi = ui->getPhoneInfo( phone );
+                if( pi )
+                {
+                    QMapIterator<QString, QVariant> it( pi->comms() );
+                    while( it.hasNext() )
                     {
-                        const PhoneInfo * pi = m_userinfo->getPhoneInfo( phone );
-                        if( pi )
-                            {
-                                QMapIterator<QString, QVariant> it( pi->comms() );
-                                while( it.hasNext() )
-                                    {
-                                        it.next();
-                                        QMap<QString, QVariant> call = it.value().toMap();
-                                        // Add the transfer entry with the callerid name and num
-                                        QString text;
-                                        if( call.contains("calleridname") )
-                                            {
-                                                text.append( call["calleridname"].toString() );
-                                                text.append(" : ");
-                                            }
-                                        text.append( call["calleridnum"].toString() );
-                                        QAction * transferAction =
-                                            transferMenu->addAction( text,
-                                                                     this, SLOT(transfer()) );
-                                        //                        transferAction->setProperty( "chan", call["thischannel"] );
-                                        transferAction->setProperty( "chan", call["peerchannel"] );
-                                    }
-                            }
+                        it.next();
+                        QMap<QString, QVariant> call = it.value().toMap();
+                        // Add the transfer entry with the callerid name and num
+                        QString text;
+                        if( call.contains("calleridname") )
+                        {
+                            text.append( call["calleridname"].toString() );
+                            text.append(" : ");
+                        }
+                        text.append( call["calleridnum"].toString() );
+                        QAction * transferAction =
+                            transferMenu->addAction( text,
+                                                     this, SLOT(transfer()) );
+//                        transferAction->setProperty( "chan", call["thischannel"] );
+                        transferAction->setProperty( "chan", call["peerchannel"] );
                     }
+                }
             }
+        }
+        event->accept();
         if( !transferMenu->isEmpty() )
             contextMenu.addMenu(transferMenu);
         contextMenu.exec( event->globalPos() );
     }
 
     if(item && item->text().contains("@")) {
+        event->accept();
         // this is an email address
         m_mailAddr = item->text();
         qDebug() << "email addr detection :" << m_mailAddr;
@@ -275,6 +281,7 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
         emailContextMenu.exec( event->globalPos() );
     }
 }
+#endif
 
 /*! \brief dial the number (when context menu item is toggled)
  */
@@ -301,8 +308,8 @@ void DirectoryPanel::transfer()
     QString chan = sender()->property( "chan" ).toString();
     qDebug() << "DirectoryPanel::transfer" << chan;
     if( !chan.isEmpty() && !m_numberToDial.isEmpty() )
-        {
-            // transfer the channel to the selected number
-            emit actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial); 
-        }
+    {
+        // transfer the channel to the selected number
+        emit actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial); 
+    }
 }

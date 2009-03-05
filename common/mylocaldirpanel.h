@@ -52,7 +52,10 @@ class UserInfo;
 class ExtendedTableWidget;
 class SearchDialog;
 
-/*! \brief MyLocalDir Panel
+/*! \brief Local Directory Panel
+ *
+ * Displays a local contact base that can be imported/exported
+ * from/to .csv files.
  */
 class MyLocalDirPanel : public QWidget
 {
@@ -67,15 +70,17 @@ public slots:
     void importContacts();
     void exportContacts();
     void findNext();
+signals:
+    void actionCall(const QString &, const QString &, const QString &);
 private:
     void loadFromFile(QFile & file);
     void saveToFile(QFile & file);
     int findCol(QStringList, QStringList);
 
-    BaseEngine * m_engine;
-    const UserInfo * m_ui;
-    ExtendedTableWidget * m_table;
-    SearchDialog * m_searchBox;
+    BaseEngine * m_engine;  //!< xivo client engine
+    const UserInfo * m_ui;  //!< current user
+    ExtendedTableWidget * m_table;  //!< Table widget to display contacts
+    SearchDialog * m_searchBox; //!< Search dialog box
 };
 
 #endif /* __MYLOCALDIRPANEL_H__ */

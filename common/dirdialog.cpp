@@ -61,7 +61,7 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
     setWindowTitle(tr("Directory"));
 
     QVBoxLayout * vlayout = new QVBoxLayout(this);
-    m_directory = new DirectoryPanel(this);
+    m_directory = new DirectoryPanel( m_engine, this);
     connect( m_directory, SIGNAL(searchDirectory(const QString &)),
              m_engine, SLOT(searchDirectory(const QString &)) );
     connect( m_engine, SIGNAL(directoryResponse(const QString &)),

@@ -66,7 +66,7 @@ class QTimerEvent;
 class BaseEngine: public QObject
 {
     Q_OBJECT
-        public:
+public:
     //! Enum for BaseEngine state logged/not logged
     typedef enum {ENotLogged, ELogged } EngineState;
     //! Constructor
@@ -148,7 +148,7 @@ class BaseEngine: public QObject
     void setLogFile(const QString &);
     const QString & xivoUserId() const { return m_xivo_userid; };
     UserInfo * getXivoClientUser(); //!< Return the user of the Xivo CTI Client
-    public slots:
+public slots:
     void start();        //!< start the connection process.
     void stop();         //!< stop the engine
     void setAvailState(const QString &, bool);        //! set m_availstate
@@ -181,7 +181,7 @@ class BaseEngine: public QObject
     void saveQueueOrder(const QVariant &);
     void loadQueueOrder();
     void logAction(const QString &);
-    private slots:
+private slots:
     void keepLoginAlive(); //!< Keep session alive
     void changeState(); //!< Change the presence status
     void socketConnected();
@@ -192,7 +192,7 @@ class BaseEngine: public QObject
     void socketReadyRead();
     void actionFromFiche(const QVariant &);
     void readInputEvent(int);
- signals:
+signals:
     void logged();                                //!< signal emitted when the state becomes ELogged
     void delogged();                        //!< signal emitted when the state becomes ENotLogged
     void availAllowChanged(bool);                //!< signal 
@@ -246,9 +246,9 @@ class BaseEngine: public QObject
     void changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &);
     void updateAgentPresence(const QString &, const QVariant &);
     void displayFiche(const QString &, bool);
- protected:
+protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
- private:
+private:
     void stopKeepAliveTimer();       //!< Stop the keep alive timer if running
     void startTryAgainTimer();       //!< Start the "try to reconnect" timer
     void stopTryAgainTimer();        //!< Stop the "try to reconnect" timer

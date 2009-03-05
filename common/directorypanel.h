@@ -50,6 +50,7 @@ class QPushButton;
 class QTableWidget;
 class QTableWidgetItem;
 
+class BaseEngine;
 class ExtendedLineEdit;
 class ExtendedTableWidget;
 class PeerChannel;
@@ -60,35 +61,36 @@ class UserInfo;
 class DirectoryPanel : public QWidget
 {
     Q_OBJECT
-        public:
-    DirectoryPanel(const QVariant &, QWidget * parent = 0);
+public:
+    DirectoryPanel(BaseEngine * engine, QWidget * parent = 0);
     ~DirectoryPanel();
- protected:
+protected:
     void dropEvent(QDropEvent *);
     void focusInEvent(QFocusEvent *);
- signals:
+//    void contextMenuEvent(QContextMenuEvent *);
+signals:
     //! start a search
     void searchDirectory(const QString &);
     void copyNumber(const QString &);
     void actionCall(const QString &,
                     const QString &,
                     const QString &);
-    private slots:
+private slots:
     void dialNumber();
     void sendMail();
     void startSearch();
     void itemClicked(QTableWidgetItem *);
     void itemDoubleClicked(QTableWidgetItem *);
     void transfer();
-    void proxyCallRequests(const QString &, const QString &);
-    public slots:
+//    void proxyCallRequests(const QString &, const QString &);
+public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *);
-    void contextMenuEvent(QContextMenuEvent *);
     void setSearchResponse(const QString &);
     void stop();
- private:
-    const UserInfo * m_userinfo;
+private:
+    BaseEngine * m_engine;
+    //const UserInfo * m_userinfo;
     ExtendedLineEdit * m_searchText;        //!< search text input
     ExtendedTableWidget * m_table;                //!< table to display results
     QPushButton * m_searchButton;        //!< button
