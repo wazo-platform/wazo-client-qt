@@ -56,13 +56,38 @@ QStringList CsvStream::readRecords()
                 }
             }
         }
-        else
+        else do
         {
             record.append(*i);
             i++;
-        }
+        } while(i != line.end() && *i != fieldSeparator);
     }
     records.append(record);
     return records;
 }
+
+/*! \brief write a line in the CSV file
+ */
+CsvStream & CsvStream::operator<< (const QStringList records)
+{
+    QString doubleDelimiter = QString(textDelimiter) + textDelimiter;
+    for(int i = 0; i < records.size(); i++)
+    {
+        QString record = records[i];
+        if( record.contains(fieldSeparator)
+           || record.contains(textDelimiter) )
+        {
+            record = textDelimiter
+                     + record.replace(textDelimiter, doubleDelimiter)
+                     + textDelimiter;
+        }
+        (QTextStream &)*this << record;
+        if(i == records.size() - 1)
+            (QTextStream &)*this << QChar('\n');
+        else
+            (QTextStream &)*this << fieldSeparator;
+    }
+    return *this;
+}
+
 

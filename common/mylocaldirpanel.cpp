@@ -201,24 +201,27 @@ void MyLocalDirPanel::saveToFile(QFile & file)
     QChar separator = QChar(',');
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
-    QTextStream out(&file);
+    CsvStream out(&file);
     // write header line
-    out << tr("First Name")<< separator;
-    out << tr("Last Name") << separator;
-    out << tr("Phone Number") << separator;
-    out << tr("Email Address") << separator;
-    out << tr("Company") << '\n';
+    out << ( QStringList()
+             << tr("First Name")
+             << tr("Last Name")
+             << tr("Phone Number")
+             << tr("Email Address")
+             << tr("Company") );
     // write all entries
     for(int i = 0; i < m_table->rowCount(); i++)
     {
+        QStringList records;
         for(int j = 0; j < 5; j++)
         {
             QTableWidgetItem * item = m_table->item(i, j);
             QString text;
             if(item)
                 text = item->text();
-            out << text << (j == 4 ? '\n' : separator);
+            records.append(text);
         }
+        out << records;
     }
     out.flush();
 }
@@ -248,30 +251,34 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
     int lastNameCol = findCol(headers, QStringList()
                                         << tr("Last Name")
                                         << QString("Last Name") );
+    int maxCol = qMax(firstNameCol, lastNameCol);
     int numberCol = findCol(headers, QStringList()
                                         << tr("Phone Number")
                                         << QString("Phone Number")
                                         << tr("Number")
                                         << QString("Number") );
+    maxCol = qMax(maxCol, numberCol);
     int emailCol = findCol(headers, QStringList()
                                     << tr("Email Address")
                                     << tr("Email")
                                     << QString("Email Address")
                                     << QString("Email")
                                     << QString("Primary Email") );
+    maxCol = qMax(maxCol, emailCol);
     int companyCol = findCol(headers, QStringList()
                                       << tr("Company")
                                       << QString("Company") );
-
+    maxCol = qMax(maxCol, companyCol);
     qDebug() << "MyLocalDirPanel::loadFromFile"
              << firstNameCol << lastNameCol << numberCol
              << emailCol << companyCol;
     while (!in.atEnd())
     {
+        QStringList record = in.readRecords();
+        if(record.size() <= maxCol)
+            continue;
         int row = m_table->rowCount();
         m_table->setRowCount( row + 1 );
-        //QStringList record = in.readLine().split(separator);
-        QStringList record = in.readRecords();
         if(firstNameCol >= 0)
         {
             QTableWidgetItem * itemFirstName = new QTableWidgetItem( record[firstNameCol] );
