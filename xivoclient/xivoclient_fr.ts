@@ -893,7 +893,7 @@ que celles ci-dessous) en première page</translation>
 <context>
     <name>DirectoryPanel</name>
     <message>
-        <location filename="../common/directorypanel.cpp" line="242"/>
+        <location filename="../common/directorypanel.cpp" line="235"/>
         <source>&amp;Dial</source>
         <translation>&amp;Composer</translation>
     </message>
@@ -903,12 +903,12 @@ que celles ci-dessous) en première page</translation>
         <translation>&amp;Répertoire</translation>
     </message>
     <message>
-        <location filename="../common/directorypanel.cpp" line="190"/>
+        <location filename="../common/directorypanel.cpp" line="183"/>
         <source>Double-click to call</source>
         <translation>Double-cliquer pour appeler</translation>
     </message>
     <message>
-        <location filename="../common/directorypanel.cpp" line="188"/>
+        <location filename="../common/directorypanel.cpp" line="181"/>
         <source>Double-click to send an E-mail to</source>
         <translation>Double-cliquer pour envoyer un E-mail à</translation>
     </message>
@@ -918,12 +918,12 @@ que celles ci-dessous) en première page</translation>
         <translation>Rechercher</translation>
     </message>
     <message>
-        <location filename="../common/directorypanel.cpp" line="286"/>
+        <location filename="../common/directorypanel.cpp" line="279"/>
         <source>Send an E-mail</source>
         <translation>Envoyer un E-mail</translation>
     </message>
     <message>
-        <location filename="../common/directorypanel.cpp" line="243"/>
+        <location filename="../common/directorypanel.cpp" line="236"/>
         <source>&amp;Transfer</source>
         <translation>&amp;Transférer</translation>
     </message>
@@ -956,12 +956,22 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../common/extendedtablewidget.cpp" line="101"/>
         <source>&amp;Transfer</source>
-        <translation>&amp;Transférer</translation>
+        <translation type="obsolete">&amp;Transférer</translation>
     </message>
     <message>
-        <location filename="../common/extendedtablewidget.cpp" line="142"/>
+        <location filename="../common/extendedtablewidget.cpp" line="150"/>
         <source>Send an E-mail</source>
         <translation>Envoyer un E-mail</translation>
+    </message>
+    <message>
+        <location filename="../common/extendedtablewidget.cpp" line="101"/>
+        <source>Direct &amp;Transfer</source>
+        <translation>&amp;Transfer direct</translation>
+    </message>
+    <message>
+        <location filename="../common/extendedtablewidget.cpp" line="102"/>
+        <source>&amp;Indirect Transfer</source>
+        <translation>Transfer &amp;Indirect</translation>
     </message>
 </context>
 <context>
