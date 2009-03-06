@@ -113,6 +113,7 @@ void DialPanel::setUserInfo(const UserInfo * ui)
 
 void DialPanel::setNumberToDial(const QString & text)
 {
+    QString oldtext = m_input->lineEdit()->text();
     // qDebug() << "DialPanel::setNumberToDial()" << text;
     // adds the item to the list
     QString texttmp = text.trimmed();
@@ -124,6 +125,10 @@ void DialPanel::setNumberToDial(const QString & text)
         // if there was a "+", put it back
         if(text.trimmed()[0] == '+')
             texttmp.insert(0, "+");
+        // stop if the selection is the same as the number already displayed
+        if(texttmp == oldtext)
+            return;
+        // put in history if not already there
         if (m_input->findText(texttmp) == -1)
             m_input->insertItem(0, texttmp);
         // displays it
