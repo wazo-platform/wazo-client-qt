@@ -540,11 +540,10 @@ void MainWidget::createSystrayIcon()
  */
 void MainWidget::showConfDialog()
 {
-    ConfigWidget * config = new ConfigWidget(m_engine, this);
-    connect( config, SIGNAL(confUpdated()),
+    ConfigWidget config(m_engine);
+    connect( &config, SIGNAL(confUpdated()),
              this, SLOT(confUpdated()) );
-    config->exec();
-    config->deleteLater();
+    config.exec();
 }
 
 void MainWidget::confUpdated()

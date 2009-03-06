@@ -68,8 +68,6 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
       m_history_sbox(NULL)
 {
     int line = 0;
-    // the object will be destroyed when closed
-    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("Configuration"));
 
     QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -303,7 +301,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 
 ConfigWidget::~ConfigWidget()
 {
-    //qDebug() << "ConfigWidget::~ConfigWidget()" << m_engine;
+//    qDebug() << "ConfigWidget::~ConfigWidget()" << m_engine;
     m_engine->getSettings()->setValue("display/configtab", m_tabwidget->currentIndex());
 }
 
