@@ -120,7 +120,11 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
     QString parkplacenum = subcommand.toMap()["exten"].toString();
     QString seconds = subcommand.toMap()["timeout"].toString();
     QStringList newpark = subcommand.toMap()["args"].toStringList();
-        
+
+    // ignore buggy events 
+    if(fromchannel == channel)
+        return;
+
     QString parkedpeer = channel.split("-")[0];
     QString parkedby = fromchannel.split("-")[0];
         
