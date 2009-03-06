@@ -70,6 +70,7 @@ class QSystemTrayIcon;
 class QTabWidget;
 class QWidget;
 class QUrl;
+class QStackedWidget;
 
 class BaseEngine;
 class CallStackWidget;
@@ -86,7 +87,7 @@ class OutlookPanel;
 class MainWidget : public QMainWindow
 {
     Q_OBJECT
-        public:
+public:
     //! Constructor
     MainWidget(BaseEngine *,
                const QString &,
@@ -97,13 +98,13 @@ class MainWidget : public QMainWindow
     void setForceTabs(bool);//!< setter for m_forcetabs
     void setAppearance(const QStringList &);        //!< dock options
     void clearAppearance();
-    public slots:
+public slots:
     void dispurl(const QUrl &url);
     void customerInfoPopup(const QString &,
                            const QHash<QString, QString> &,
                            const QString &);
     void setSystrayIcon(const QString &);
-    private slots:
+private slots:
     void clipselection();
     void clipdata();
     void showConfDialog();
@@ -124,10 +125,10 @@ class MainWidget : public QMainWindow
     void confUpdated();
     void updatePresence(const QVariant &);
     void showMessageBox(const QString &);
- signals:
+signals:
     void functionKeyPressed(int);
     void pasteToDialPanel(const QString &);
- protected:
+protected:
     void showEvent(QShowEvent *);        //!< Catch show events
     void hideEvent(QHideEvent *);        //!< Catch hide events
     void closeEvent(QCloseEvent *);
@@ -137,7 +138,7 @@ class MainWidget : public QMainWindow
     void removePanel(const QString &, QWidget *);
     void connectDials(QWidget *);
     // bool event(QEvent *);
- private:
+private:
     void createActions();        //!< Create Actions (for menus)
     void createMenus();                //!< Create Menus
     void createSystrayIcon();        //!< Create the systray Icon and its menu
@@ -151,7 +152,10 @@ class MainWidget : public QMainWindow
     QIcon m_icon_red;
     QIcon m_icon_green;
     QIcon m_icon_black;
-    QWidget * m_wid;        //!< Main Widget
+    QStackedWidget * m_central_widget; //!< central widget
+    QWidget * m_wid;        //!< "Main" Widget
+    QWidget * m_login_widget;   //!< Central Widget for login
+    QGridLayout * m_login_layout;   //!< layout for login widget
         
     // Widgets for Xlets
     QTabWidget * m_tabwidget;        //!< Area to display messages, services and histories
@@ -176,7 +180,6 @@ class MainWidget : public QMainWindow
     QStringList m_allnames;
 
     bool m_withsystray;
-    bool m_loginfirst;
 
     QHash<QString, QDockWidget *> m_docks;
 

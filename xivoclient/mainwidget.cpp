@@ -61,6 +61,7 @@
 #include <QSystemTrayIcon>
 #include <QTabWidget>
 #include <QVBoxLayout>
+#include <QStackedWidget>
 
 #include "agentspanel.h"
 #include "agentspanel_next.h"
@@ -139,7 +140,6 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_appliname = "Client";
     m_engine->setOSInfos(osname);
     m_withsystray = true;
-    m_loginfirst = true;
 
     m_settings = m_engine->getSettings();
     QPixmap redsquare(":/images/disconnected.png");
@@ -179,9 +179,22 @@ MainWidget::MainWidget(BaseEngine * engine,
     // to be better defined
     // resize(500, 400);
     restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
-    m_wid = new QWidget();
+
+    m_central_widget = new QStackedWidget( this );
+    setCentralWidget( m_central_widget );
+
+    m_wid = new QWidget( m_central_widget );
+    m_central_widget->addWidget( m_wid );
     m_gridlayout = new QGridLayout(m_wid);
-        
+
+    m_login_widget = new QWidget( m_central_widget );
+    m_central_widget->addWidget( m_login_widget );
+    m_login_layout = new QGridLayout( m_login_widget );
+    m_login_layout->setRowStretch(0, 1);
+    m_login_layout->setColumnStretch(0, 1);
+    m_login_layout->setColumnStretch(2, 1);
+    m_login_layout->setRowStretch(6, 1);
+
     if(m_settings->value("display/logtofile", false).toBool())
         m_engine->setLogFile(m_settings->value("display/logfilename", "XIVO_Client.log").toString());
     m_engine->logAction("application started on " + osname);
@@ -189,38 +202,53 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_xivobg = new QLabel();
     m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
     m_xivobg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    m_login_layout->addWidget(m_xivobg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
         
-    if(m_loginfirst) {
-        m_lab1 = new QLabel(tr("Login"));
-        m_lab2 = new QLabel(tr("Password"));
-        m_lab3 = new QLabel(tr("Phone"));
-        m_qlab1 = new QLineEdit();
-        m_qlab2 = new QLineEdit();
-        m_qlab3 = new QLineEdit();
-        m_ack = new QPushButton("OK");
-        m_kpass = new QCheckBox(tr("Keep Password"));
-        m_loginkind = new QComboBox(this);
-        m_loginkind->addItem(QString(tr("No Agent")));
-        m_loginkind->addItem(QString(tr("Agent (unlogged)")));
-        m_loginkind->addItem(QString(tr("Agent (logged)")));
+    m_lab1 = new QLabel(tr("Login"));
+    m_login_layout->addWidget(m_lab1, 2, 0, Qt::AlignRight);
+    m_lab2 = new QLabel(tr("Password"));
+    m_login_layout->addWidget(m_lab2, 3, 0, Qt::AlignRight);
+    m_lab3 = new QLabel(tr("Phone"));
+    m_login_layout->addWidget(m_lab3, 4, 0, Qt::AlignRight);
+
+    m_qlab1 = new QLineEdit();
+    m_qlab1->setText(m_engine->userId());
+    m_login_layout->addWidget(m_qlab1, 2, 1);
+    m_qlab2 = new QLineEdit();
+    m_qlab2->setText(m_engine->password());
+    m_qlab2->setEchoMode(QLineEdit::Password);
+    m_login_layout->addWidget(m_qlab2, 3, 1);
+    m_qlab3 = new QLineEdit();
+    m_qlab3->setText(m_engine->phonenumber());
+    m_login_layout->addWidget(m_qlab3, 4, 1);
+
+    m_ack = new QPushButton("OK");
+    m_login_layout->addWidget(m_ack, 2, 2, Qt::AlignLeft);
+    m_kpass = new QCheckBox(tr("Keep Password"));
+    m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
+    m_login_layout->addWidget(m_kpass, 3, 2, Qt::AlignLeft);
+    m_loginkind = new QComboBox();
+    m_loginkind->addItem(QString(tr("No Agent")));
+    m_loginkind->addItem(QString(tr("Agent (unlogged)")));
+    m_loginkind->addItem(QString(tr("Agent (logged)")));
+    m_loginkind->setCurrentIndex(m_engine->loginkind());
+    m_login_layout->addWidget(m_loginkind, 4, 2, Qt::AlignLeft);
                 
-        connect( m_qlab1, SIGNAL(returnPressed()),
-                 this, SLOT(config_and_start()) );
-        // connect( m_qlab1, SIGNAL(textChanged(const QString &)),
-        // this, SLOT(logintextChanged(const QString &)) );
-        connect( m_qlab2, SIGNAL(returnPressed()),
-                 this, SLOT(config_and_start()) );
-        connect( m_qlab3, SIGNAL(returnPressed()),
-                 this, SLOT(config_and_start()) );
-        connect( m_ack, SIGNAL(pressed()),
-                 this, SLOT(config_and_start()) );
-        connect( m_loginkind, SIGNAL(currentIndexChanged(int)),
-                 this, SLOT(loginKindChanged(int)) );
-        m_qlab2->setEchoMode(QLineEdit::Password);
-    }
+    loginKindChanged(m_loginkind->currentIndex());
+    m_qlab1->setFocus();
+                
+    connect( m_qlab1, SIGNAL(returnPressed()),
+             this, SLOT(config_and_start()) );
+    connect( m_qlab2, SIGNAL(returnPressed()),
+             this, SLOT(config_and_start()) );
+    connect( m_qlab3, SIGNAL(returnPressed()),
+             this, SLOT(config_and_start()) );
+    connect( m_ack, SIGNAL(pressed()),
+             this, SLOT(config_and_start()) );
+    connect( m_loginkind, SIGNAL(currentIndexChanged(int)),
+             this, SLOT(loginKindChanged(int)) );
     m_launchDateTime = QDateTime::currentDateTime();
 
-    setCentralWidget(m_wid);
     showLogin();
     if((m_withsystray && (m_engine->systrayed() == false)) || (! m_withsystray))
         this->show();
@@ -351,85 +379,26 @@ void MainWidget::loginKindChanged(int index)
     }
 }
 
+/*! \brief hide "main" window and show login widget
+ */
 void MainWidget::showLogin()
 {
-    m_gridlayout->addWidget(m_xivobg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
-    m_gridlayout->setRowStretch(0, 1);
-    m_gridlayout->setColumnStretch(0, 1);
-    m_gridlayout->setColumnStretch(2, 1);
-    m_gridlayout->setRowStretch(6, 1);
-    if(m_loginfirst) {
-        m_gridlayout->addWidget(m_lab1, 2, 0, Qt::AlignRight);
-        m_gridlayout->addWidget(m_qlab1, 2, 1);
-        m_gridlayout->addWidget(m_ack, 2, 2, Qt::AlignLeft);
-                
-        m_gridlayout->addWidget(m_lab2, 3, 0, Qt::AlignRight);
-        m_gridlayout->addWidget(m_qlab2, 3, 1);
-        m_gridlayout->addWidget(m_kpass, 3, 2, Qt::AlignLeft);
-                
-        m_gridlayout->addWidget(m_lab3, 4, 0, Qt::AlignRight);
-        m_gridlayout->addWidget(m_qlab3, 4, 1);
-        m_gridlayout->addWidget(m_loginkind, 4, 2, Qt::AlignLeft);
-                
-        // show widgets after they have been put in the layout, in order for
-        // temporary windows not to be opened
-        m_lab1->show();
-        m_lab2->show();
-        m_qlab1->show();
-        m_qlab2->show();
-        m_ack->show();
-        m_kpass->show();
-        m_loginkind->show();
-                
-        m_qlab1->setText(m_engine->userId());
-        m_qlab2->setText(m_engine->password());
-        m_qlab3->setText(m_engine->phonenumber());
-        m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
-        m_loginkind->setCurrentIndex(m_engine->loginkind());
-                
-        loginKindChanged(m_loginkind->currentIndex());
-        m_qlab1->setFocus();
-    }
-    m_xivobg->show();
+    m_central_widget->setCurrentWidget( m_login_widget );
 }
 
+/*! \brief hide login widget and show "Main" window
+ */
 void MainWidget::hideLogin()
 {
-    m_xivobg->hide();
-    m_gridlayout->setRowStretch(0, 0);
-    m_gridlayout->setColumnStretch(0, 0);
-    m_gridlayout->setColumnStretch(2, 0);
-    m_gridlayout->setRowStretch(6, 0);
-    if(m_loginfirst) {
-        m_lab1->hide();
-        m_lab2->hide();
-        m_lab3->hide();
-        m_qlab1->hide();
-        m_qlab2->hide();
-        m_qlab3->hide();
-        m_ack->hide();
-        m_kpass->hide();
-        m_loginkind->hide();
-
-        m_gridlayout->removeWidget(m_ack);
-        m_gridlayout->removeWidget(m_lab1);
-        m_gridlayout->removeWidget(m_lab2);
-        m_gridlayout->removeWidget(m_lab3);
-        m_gridlayout->removeWidget(m_qlab1);
-        m_gridlayout->removeWidget(m_qlab2);
-        m_gridlayout->removeWidget(m_qlab3);
-        m_gridlayout->removeWidget(m_kpass);
-        m_gridlayout->removeWidget(m_loginkind);
-    }
-    m_gridlayout->removeWidget(m_xivobg);
+    m_central_widget->setCurrentWidget( m_wid );
 }
 
 void MainWidget::affTextChanged()
 {
-    //         QString txt = m_xlet["instantmessaging"]->text();
-    //         txt.replace(" ", "_");
-    //         m_engine->sendMessage(txt.toUtf8());
-    //         m_xlet["instantmessaging"]->setText("");
+//         QString txt = m_xlet["instantmessaging"]->text();
+//         txt.replace(" ", "_");
+//         m_engine->sendMessage(txt.toUtf8());
+//         m_xlet["instantmessaging"]->setText("");
 }
 
 void MainWidget::createActions()
@@ -1358,6 +1327,9 @@ void MainWidget::showEvent(QShowEvent *event)
     // << "isActiveWindow =" << isActiveWindow();
 }
 
+/*!
+ * does nothing
+ */
 void MainWidget::dispurl(const QUrl &url)
 {
     qDebug() << "MainWidget::dispurl()" << url;
