@@ -74,7 +74,6 @@ class QStackedWidget;
 
 class BaseEngine;
 class CallStackWidget;
-class ConfigWidget;
 class DirectoryPanel;
 class LeftPanel;
 class SwitchBoardWindow;
@@ -165,8 +164,6 @@ private:
     QHash<QString, QWidget *> m_xlet;
 
     QLabel * m_xivobg;
-
-    ConfigWidget * m_config;
 
     bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
     bool m_presence;

@@ -54,7 +54,6 @@ class QSpinBox;
 class QTabWidget;
 
 class BaseEngine;
-class MainWidget;
 
 /*! \brief Configuration Window
  *
@@ -65,7 +64,7 @@ class MainWidget;
 class ConfigWidget: public QDialog
 {
     Q_OBJECT
-        public:
+public:
     /*! \brief Constructor
      *
      * Construct the widget and its layout.
@@ -74,18 +73,17 @@ class ConfigWidget: public QDialog
      * \param engine        related BaseEngine object where parameters will be modified
      * \param parent        parent QWidget
      */
-    ConfigWidget(BaseEngine *,
-                 MainWidget *);
+    ConfigWidget(BaseEngine * engine, QWidget * parent = 0);
     ~ConfigWidget();
 
- signals:
+signals:
     void confUpdated();
-    private slots:
+private slots:
     //! Save the configuration to the BaseEngine object and close
     void saveAndClose();
     void loginKindChanged(int);
 
- private:
+private:
     BaseEngine * m_engine;                //!< BaseEngine object parameters are commited to
         
     QLineEdit * m_serverhost;        //!< IP/hostname of the server
@@ -112,7 +110,6 @@ class ConfigWidget: public QDialog
     QSpinBox  * m_history_sbox;        //!< History size
         
     QHash<QString, QSpinBox *> m_queuelevels;   //!< For queue display
-    //        QHash<QString, QString> m_func_legend;
         
     QSpinBox  * m_contactssize_sbox;        //!< Displayed contacts' size
     QSpinBox  * m_contactswidth_sbox;        //!< Displayed contacts' width

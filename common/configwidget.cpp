@@ -55,7 +55,6 @@
 #include <QFormLayout>
 
 #include "configwidget.h"
-#include "mainwidget.h"
 #include "baseengine.h"
 #include "xivoconsts.h"
 
@@ -64,7 +63,7 @@ QStringList queuelevel_colors = (QStringList() << "green" << "orange" << "red");
 /*! \brief constructor
  */
 ConfigWidget::ConfigWidget(BaseEngine * engine,
-                           MainWidget * parent)
+                           QWidget * parent)
     : QDialog(parent), m_engine(engine),
       m_history_sbox(NULL)
 {
@@ -304,6 +303,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 
 ConfigWidget::~ConfigWidget()
 {
+    //qDebug() << "ConfigWidget::~ConfigWidget()" << m_engine;
     m_engine->getSettings()->setValue("display/configtab", m_tabwidget->currentIndex());
 }
 
@@ -361,8 +361,8 @@ void ConfigWidget::saveAndClose()
     opts["queuelevels"] = qvm;
         
     // BaseEngine::setLoginKind() sets the user option if needed.
-    // m_engine->setLoginKind(m_loginkind->currentIndex());
-    opts["loginkind"] = m_loginkind->currentIndex();
+    m_engine->setLoginKind(m_loginkind->currentIndex());
+    //opts["loginkind"] = m_loginkind->currentIndex();
         
     opts["contacts-max"] = m_contactssize_sbox->value();
     opts["contacts-width"] = m_contactswidth_sbox->value();

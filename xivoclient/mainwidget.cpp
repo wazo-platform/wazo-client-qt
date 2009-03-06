@@ -188,6 +188,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_gridlayout = new QGridLayout(m_wid);
 
     m_login_widget = new QWidget( m_central_widget );
+    m_login_widget->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
     m_central_widget->addWidget( m_login_widget );
     m_login_layout = new QGridLayout( m_login_widget );
     m_login_layout->setRowStretch(0, 1);
@@ -539,10 +540,11 @@ void MainWidget::createSystrayIcon()
  */
 void MainWidget::showConfDialog()
 {
-    m_config = new ConfigWidget(m_engine, this);
-    connect( m_config, SIGNAL(confUpdated()),
+    ConfigWidget * config = new ConfigWidget(m_engine, this);
+    connect( config, SIGNAL(confUpdated()),
              this, SLOT(confUpdated()) );
-    m_config->exec();
+    config->exec();
+    config->deleteLater();
 }
 
 void MainWidget::confUpdated()
@@ -553,16 +555,7 @@ void MainWidget::confUpdated()
     m_qlab3->setText(m_engine->phonenumber());
     m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
     m_loginkind->setCurrentIndex(m_engine->loginkind());
-    if(m_engine->showagselect()) {
-        m_lab3->show();
-        m_qlab3->show();
-        m_loginkind->show();
-    } else {
-        m_lab3->hide();
-        m_qlab3->hide();
-        m_loginkind->hide();
-    }
-    // loginKindChanged(m_loginkind->currentIndex());        // Hide or Show the phone number
+    loginKindChanged(m_loginkind->currentIndex()); // Hide or Show the phone number
 }
 
 /*! \brief process clicks to the systray icon
@@ -1242,7 +1235,8 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
     }
     if(m_gridnames.contains(name)) {
         m_gridlayout->removeWidget(widget);
-        delete widget;
+        //delete widget;
+        widget->deleteLater();
     }
 }
 
@@ -1285,7 +1279,8 @@ void MainWidget::engineStopped()
     }
     if(m_gridnames.contains("tabber")) {
         m_gridlayout->removeWidget(m_tabwidget);
-        delete m_tabwidget;
+        //delete m_tabwidget;
+        m_tabwidget->deleteLater();
     }
 
     showLogin();
