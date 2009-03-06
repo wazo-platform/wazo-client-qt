@@ -39,23 +39,23 @@
  * $Date$
  */
 
-#ifndef __PHONEINFO_H__
-#define __PHONEINFO_H__
+#ifndef __AGENTINFO_H__
+#define __AGENTINFO_H__
 
 #include <QString>
 #include <QVariant>
 #include <QMap>
 
-/*! \brief Store Phone information
+/*! \brief Store Agent information
  */
-class PhoneInfo
+class AgentInfo
 {
  public:
     //! constructor
-    PhoneInfo(const QString & astid,
+    AgentInfo(const QString & astid,
               const QMap<QString, QVariant> & prop);
     //! destructor
-    ~PhoneInfo();
+    ~AgentInfo();
     //! update attribute members
     void update(const QMap<QString, QVariant> & prop);
     //! context this phone belongs to

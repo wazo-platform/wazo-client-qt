@@ -111,12 +111,12 @@ void QueuedetailsPanel::updatePeerAgent(double timeref,
     m_timeclt = QDateTime::currentDateTime();
     if(what != "agentstatus")
         return;
-    // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << params;
     QString action = params.toMap()["action"].toString();
     QString astid = params.toMap()["astid"].toString();
     QString agent_channel = params.toMap()["agent_channel"].toString();
     QString qname = params.toMap()["queuename"].toString();
-        
+    // qDebug() << "QueuedetailsPanel::updatePeerAgent()" << action << m_queueid << m_agentlist.keys();
+    
     if(action == "joinqueue") {
         if((astid == m_astid) && (qname == m_queueid)) {
             if(! m_agentlist.keys().contains(agent_channel)) {
@@ -189,6 +189,7 @@ void QueuedetailsPanel::update()
         connect( m_agentmore[agentnum], SIGNAL(clicked()),
                  this, SLOT(agentClicked()));
         
+        // qDebug() << "QueuedetailsPanel::update()" << m_astid << agent_channel;
         if(m_agentlists[m_astid].toMap().contains(agentnum)) {
             QString firstname = m_agentlists[m_astid].toMap()[agentnum].toMap()["firstname"].toString();
             QString lastname = m_agentlists[m_astid].toMap()[agentnum].toMap()["lastname"].toString();

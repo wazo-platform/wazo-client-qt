@@ -39,23 +39,23 @@
  * $Date$
  */
 
-#ifndef __PHONEINFO_H__
-#define __PHONEINFO_H__
+#ifndef __QUEUEINFO_H__
+#define __QUEUEINFO_H__
 
 #include <QString>
 #include <QVariant>
 #include <QMap>
 
-/*! \brief Store Phone information
+/*! \brief Store Queue information
  */
-class PhoneInfo
+class QueueInfo
 {
  public:
     //! constructor
-    PhoneInfo(const QString & astid,
+    QueueInfo(const QString & astid,
               const QMap<QString, QVariant> & prop);
     //! destructor
-    ~PhoneInfo();
+    ~QueueInfo();
     //! update attribute members
     void update(const QMap<QString, QVariant> & prop);
     //! context this phone belongs to

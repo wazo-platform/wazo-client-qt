@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
  */
 
-/* $Revision: 5513 $
- * $Date: 2009-03-02 11:10:04 +0100 (lun 02 mar 2009) $
+/* $Revision$
+ * $Date$
  */
 
 #ifndef __CONTACTDIALOG_H__

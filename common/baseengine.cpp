@@ -56,6 +56,8 @@
 #include "xivoconsts.h"
 #include "userinfo.h"
 #include "phoneinfo.h"
+#include "agentinfo.h"
+#include "queueinfo.h"
 
 /*! \brief Constructor.
  *
@@ -153,6 +155,8 @@ BaseEngine::~BaseEngine()
     // clean m_users and m_phones
     clearUserList();
     clearPhoneList();
+    clearAgentList();
+    clearQueueList();
 }
 
 QSettings * BaseEngine::getSettings()
@@ -355,18 +359,21 @@ void BaseEngine::stop()
 {
     qDebug() << "BaseEngine::stop()" << sender() << sender()->property("stopper").toString();
     m_sbsocket->disconnectFromHost();
-        
+    
     stopKeepAliveTimer();
     stopTryAgainTimer();
     setState(ENotLogged);
     m_sessionid = "";
-        
+    
     clearUserList();
     clearPhoneList();
+    clearAgentList();
+    clearQueueList();
     int elapsed = m_time.elapsed();
     qDebug() << m_byte_counter << "bytes received in" << elapsed << "ms : "
              << ((1000*m_byte_counter)/elapsed) << "Bytes/Second";
 }
+
 
 /*! \brief clear the content of m_users
  *
@@ -374,11 +381,11 @@ void BaseEngine::stop()
  */
 void BaseEngine::clearUserList()
 {
-    QHashIterator<QString, UserInfo *> it1 = QHashIterator<QString, UserInfo *>(m_users);
-    while( it1.hasNext() )
+    QHashIterator<QString, UserInfo *> iter = QHashIterator<QString, UserInfo *>(m_users);
+    while( iter.hasNext() )
         {
-            it1.next();
-            delete it1.value();
+            iter.next();
+            delete iter.value();
         }
     m_users.clear();
 }
@@ -389,14 +396,45 @@ void BaseEngine::clearUserList()
  */
 void BaseEngine::clearPhoneList()
 {
-    QHashIterator<QString, PhoneInfo *> it2 = QHashIterator<QString, PhoneInfo *>(m_phones);
-    while( it2.hasNext() )
+    QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(m_phones);
+    while( iter.hasNext() )
         {
-            it2.next();
-            delete it2.value();
+            iter.next();
+            delete iter.value();
         }
     m_phones.clear();
 }
+
+/*! \brief clear the content of m_agents
+ *
+ * Delete all contained AgentInfo objects
+ */
+void BaseEngine::clearAgentList()
+{
+    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_agents);
+    while( iter.hasNext() )
+        {
+            iter.next();
+            delete iter.value();
+        }
+    m_agents.clear();
+}
+
+/*! \brief clear the content of m_queues
+ *
+ * Delete all contained QueueInfo objects
+ */
+void BaseEngine::clearQueueList()
+{
+    QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_queues);
+    while( iter.hasNext() )
+        {
+            iter.next();
+            delete iter.value();
+        }
+    m_queues.clear();
+}
+
 
 /*! \brief initiate connection to the server
  */
@@ -1811,7 +1849,7 @@ void BaseEngine::keepLoginAlive()
         startTryAgainTimer();
         return;
     }
-
+    
     QVariantMap command;
     command["class"] = "keepalive";
     command["direction"] = "xivoserver";

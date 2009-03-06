@@ -53,6 +53,8 @@
 
 class UserInfo;
 class PhoneInfo;
+class AgentInfo;
+class QueueInfo;
 
 class QFile;
 class QSocketNotifier;
@@ -262,13 +264,15 @@ private:
     void updatePhone(const QString &, const QString &, const QMap<QString, QVariant> &);
     void clearUserList();
     void clearPhoneList();
-        
+    void clearAgentList();
+    void clearQueueList();
+    
     // Class Members
-        
+    
     // Parameters given by the User at Login time
     QString m_serverhost;           //!< Host to the login server
     quint16 m_ctiport;              //!< TCP port to connect to server
-        
+    
     QString m_userid;               //!< User Id
     QString m_useridopt;            //!< User Id Option (kind of login)
     QString m_useridwithopt;        //!< User Id Option (kind of login)
@@ -304,15 +308,17 @@ private:
     QString m_sessionid;            //!< Session id obtained after a successful login
     QString m_clientid;             //!< Client Identifier
     QString m_forced_state;         //!< Forced state sent by the server
-    QHash<QString, UserInfo *> m_users;        //!< List of User Informations
-    QHash<QString, PhoneInfo *> m_phones;   //!< List of Phone informations
+    QHash<QString, UserInfo *> m_users;    //!< List of User Informations
+    QHash<QString, PhoneInfo *> m_phones;  //!< List of Phone informations
+    QHash<QString, AgentInfo *> m_agents;  //!< List of Agent informations
+    QHash<QString, QueueInfo *> m_queues;  //!< List of Queue informations
     int m_version_server;           //!< Version issued by the server after a successful login
     QString m_xivover_server;       //!< Server's XIVO version
         
     // Status variables
     EngineState m_state;            //!< State of the engine (Logged/Not Logged)
     QString m_availstate;           //!< Availability state to send to the server
-
+    
     // Internal management
     QHostAddress m_serveraddress;   //!< Resolved address of the login server
     QTcpSocket * m_sbsocket;        //!< TCP socket to connect to the server (SB mode)
@@ -326,7 +332,7 @@ private:
     QString m_numbertodial;         //!< Number dialed in
     QString m_osname;               //!< OS informations
     QVariant m_counters;
-
+    
     QString m_agent_watched_astid;
     QString m_agent_watched_agentid;
     QString m_queue_watched_astid;

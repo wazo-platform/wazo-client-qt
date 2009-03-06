@@ -33,56 +33,46 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
  */
 
-#ifndef __PHONEINFO_H__
-#define __PHONEINFO_H__
+#include "queueinfo.h"
 
-#include <QString>
-#include <QVariant>
-#include <QMap>
-
-/*! \brief Store Phone information
- */
-class PhoneInfo
+QueueInfo::QueueInfo(const QString & astid,
+                     const QMap<QString, QVariant> & prop)
+    : m_astid(astid), m_initialized(false), m_enable_hint(false)
 {
- public:
-    //! constructor
-    PhoneInfo(const QString & astid,
-              const QMap<QString, QVariant> & prop);
-    //! destructor
-    ~PhoneInfo();
-    //! update attribute members
-    void update(const QMap<QString, QVariant> & prop);
-    //! context this phone belongs to
-    const QString & context() const { return m_context; };
-    //! access to the status values of this phone
-    const QString hintstatus(const QString & key) const {
-        return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
-    };
-    //! phone number
-    const QString & number() const { return m_number; };
-    //! phone technology (sip, iax, etc...)
-    const QString & tech() const { return m_tech; };
-    //! phone id
-    const QString & phoneid() const { return m_phoneid; };
-    //! current communications of this phone
-    const QMap<QString, QVariant> & comms() const { return m_comms; };
- private:
-    QString m_astid;
-    QString m_tech;
-    QString m_context;
-    QString m_phoneid;
-    QString m_number;
-    bool m_initialized;
-    bool m_enable_hint;
-    QMap<QString, QString> m_hintstatus;
-    QMap<QString, QVariant> m_comms;
-    
-};
+    m_tech = prop["tech"].toString();
+    m_context = prop["context"].toString();
+    m_phoneid = prop["phoneid"].toString();
+    m_number = prop["number"].toString();
+    update(prop);
+}
 
-#endif
+QueueInfo::~QueueInfo()
+{
+}
+
+void QueueInfo::update(const QMap<QString, QVariant> & prop)
+{
+    if(prop.contains("initialized"))
+        m_initialized = prop["initialized"].toBool();
+    if(prop.contains("enable_hint"))
+        m_enable_hint = prop["enable_hint"].toBool();
+    if(prop.contains("hintstatus"))
+    {
+        m_hintstatus.clear();
+        QMap<QString, QVariant> hintstatus = prop["hintstatus"].toMap();
+        foreach(const QString key, hintstatus.keys())
+        {
+            m_hintstatus[key] = hintstatus[key].toString();
+        }
+    }
+    if(prop.contains("comms"))
+    {
+        m_comms = prop["comms"].toMap();
+    }
+}
