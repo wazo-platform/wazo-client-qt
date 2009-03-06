@@ -1116,7 +1116,7 @@ void MainWidget::engineStarted()
                                 
 #ifdef USE_OUTLOOK
             } else if ((xletid == QString("outlook")) ) {
-                m_xlet[xletid] = new OutlookPanel(this);
+                m_xlet[xletid] = new OutlookPanel(m_engine, this);
                 addPanel(xletid, tr("Outlook"), m_xlet[xletid]);
                 m_xlet[xletid]->setFocus();
                                 

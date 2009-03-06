@@ -57,6 +57,7 @@ class QTableWidgetItem;
 class ExtendedLineEdit;
 class ExtendedTableWidget;
 class UserInfo;
+class BaseEngine;
 
 class COLCol {
 public:
@@ -73,7 +74,7 @@ class OutlookPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	OutlookPanel(QWidget * parent = 0);
+	OutlookPanel(BaseEngine * engine, QWidget * parent = 0);
 protected:
         void dropEvent(QDropEvent *);
         void focusInEvent(QFocusEvent *);

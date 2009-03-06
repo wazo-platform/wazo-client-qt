@@ -69,7 +69,7 @@
  *
  *  Build layout and child widgets, connect signals/slots.
  */
-OutlookPanel::OutlookPanel(QWidget * parent)
+OutlookPanel::OutlookPanel(BaseEngine * engine, QWidget * parent)
         : QWidget(parent),
           m_calllength(20), m_callprefix("")
 {
@@ -86,7 +86,7 @@ OutlookPanel::OutlookPanel(QWidget * parent)
 	         this, SLOT(affTextChanged(const QString &)) );
 	hlayout->addWidget( m_input );
 	vlayout->addLayout( hlayout );
-	m_table = new ExtendedTableWidget( this );
+	m_table = new ExtendedTableWidget( engine, this );
 	connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
 	         this, SLOT(itemClicked(QTableWidgetItem *)) );
 	connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
