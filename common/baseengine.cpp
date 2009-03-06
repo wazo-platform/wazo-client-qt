@@ -45,7 +45,7 @@
 #include <QDir>
 #include <QFile>
 #include <QSettings>
-#include <QSocketNotifier>
+//#include <QSocketNotifier>
 #include <QTcpSocket>
 #include <QTimerEvent>
 
@@ -76,7 +76,8 @@ BaseEngine::BaseEngine(QSettings * settings,
       m_serverhost(""), m_ctiport(0),
       m_userid(""), m_useridopt(""), m_company(""), m_password(""), m_phonenumber(""),
       m_sessionid(""), m_state(ENotLogged),
-      m_pendingkeepalivemsg(0), m_logfile(NULL)
+      m_pendingkeepalivemsg(0), m_logfile(NULL),
+      m_byte_counter(0)
 {
     settings->setParent( this );
     m_ka_timerid = 0;
@@ -369,9 +370,13 @@ void BaseEngine::stop()
     clearPhoneList();
     clearAgentList();
     clearQueueList();
-    int elapsed = m_time.elapsed();
-    qDebug() << m_byte_counter << "bytes received in" << elapsed << "ms : "
-             << ((1000*m_byte_counter)/elapsed) << "Bytes/Second";
+    if(m_time.isValid())
+    {
+        int elapsed = m_time.elapsed();
+        qDebug() << m_byte_counter << "bytes received in" << elapsed << "ms : "
+                 << (elapsed?QString::number((1000*m_byte_counter)/elapsed):QString("infinite"))
+                 << "Bytes/Second";
+    }
 }
 
 

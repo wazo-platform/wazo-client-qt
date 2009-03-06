@@ -346,7 +346,7 @@ private:
     QString m_monitored_userid;     //!< UserId of the Monitored Phone (on SB, or one's own on XC)
     QSettings * m_settings;
     QFile * m_eventdevice;
-    QSocketNotifier * m_notifier;
+//    QSocketNotifier * m_notifier;
     QByteArray m_downloaded;
     QFile * m_logfile;
     int m_byte_counter;
