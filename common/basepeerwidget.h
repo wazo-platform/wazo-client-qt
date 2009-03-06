@@ -54,7 +54,7 @@ class BaseEngine;
 class BasePeerWidget : public QWidget
 {
     Q_OBJECT
-        public:
+public:
     BasePeerWidget(BaseEngine *, UserInfo *, const QVariant &);
     //! change username to be displayed
     virtual void setName(const QString &) = 0;
@@ -71,7 +71,7 @@ class BasePeerWidget : public QWidget
     //! Name
     virtual QString name() const;
     int maxWidthWanted() const { return m_maxWidthWanted; };
- protected:
+protected:
     void mouseDoubleClickEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
@@ -79,21 +79,22 @@ class BasePeerWidget : public QWidget
     void dragEnterEvent(QDragEnterEvent *);
     void dragMoveEvent(QDragMoveEvent *);
     void dropEvent(QDropEvent *);
- signals:
+signals:
     //! originate, transfer, etc...
     void actionCall(const QString &,
                     const QString &,
                     const QString &dst = "");
     //! hide the widget from the containing window
     void removeFromPanel();
-    protected slots:
+protected slots:
     void dial();
     void hangup();
     void intercept();
     void transfer();
     void itransfer();
+    void vmtransfer();
     void parkcall();
- protected:
+protected:
     BaseEngine * m_engine;      //!< Xivo CTI Client Engine
     UserInfo * m_ui;            //!< user infos
     QPoint m_dragstartpos;            //!< drag start position
@@ -101,7 +102,7 @@ class BasePeerWidget : public QWidget
     QAction * m_removeAction;   //!< action to remove this peer from the window
     QString m_number;   //!< phone number (filled if m_ui is NULL)
     bool m_editable;    //!< editable from a user point of view
- private:
+private:
     int m_maxWidthWanted;   //!< maximum width for "small" items
 };
 

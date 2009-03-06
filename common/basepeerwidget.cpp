@@ -80,13 +80,13 @@ void BasePeerWidget::dial()
 {
     // qDebug() << "PeerWidget::dial()" << m_ui->userid() << sender();
     if(m_ui)
-        {
-            emit actionCall("originate", "user:special:me", "user:" + m_ui->userid());
-        }
+    {
+        emit actionCall("originate", "user:special:me", "user:" + m_ui->userid());
+    }
     else
-        {
-            emit actionCall("originate", "user:special:me", "ext:" + m_number);
-        }
+    {
+        emit actionCall("originate", "user:special:me", "ext:" + m_number);
+    }
 }
 
 /*! \brief hangup a channel
@@ -96,11 +96,11 @@ void BasePeerWidget::dial()
 void BasePeerWidget::hangup()
 {
     if(m_ui)
-        {
-            //qDebug() << "BasePeerWidget::hangup()" << m_ui->userid() << sender()->property("thischannel");
-            emit actionCall("hangup",
-                            "chan:" + m_ui->userid() + ":" + sender()->property("thischannel").toString());
-        }
+    {
+        //qDebug() << "BasePeerWidget::hangup()" << m_ui->userid() << sender()->property("thischannel");
+        emit actionCall("hangup",
+                        "chan:" + m_ui->userid() + ":" + sender()->property("thischannel").toString());
+    }
 }
 
 /*! \brief intercept a call
@@ -110,13 +110,13 @@ void BasePeerWidget::hangup()
 void BasePeerWidget::intercept()
 {
     if(m_ui)
-        {
-            //qDebug() << "BasePeerWidget::intercept()" << m_ui->userid() << sender()->property("thischannel");
-            qDebug() << "BasePeerWidget::intercept()" << m_ui->userid() << sender()->property("peerchannel");
-            actionCall("transfer",
-                       "chan:" + m_ui->userid() + ":" + sender()->property("peerchannel").toString(),
-                       "user:special:me");
-        }
+    {
+        //qDebug() << "BasePeerWidget::intercept()" << m_ui->userid() << sender()->property("thischannel");
+        qDebug() << "BasePeerWidget::intercept()" << m_ui->userid() << sender()->property("peerchannel");
+        emit actionCall("transfer",
+                        "chan:" + m_ui->userid() + ":" + sender()->property("peerchannel").toString(),
+                        "user:special:me");
+   }
 }
 
 /*! \brief Direct transfer
@@ -125,28 +125,27 @@ void BasePeerWidget::intercept()
  */
 void BasePeerWidget::transfer()
 {
+    const UserInfo * ui = m_engine->getXivoClientUser();
     if(m_ui)
-        {
-            qDebug() << "BasePeerWidget::transfer()" << m_ui->userid() << sender()->property("thischannel").toString();
-            actionCall("transfer",
-                       "chan:" + m_ui->userid() + ":" + sender()->property("peerchannel").toString(),
-                       "user:" + m_ui->userid());
-            //actionCall("transfer",
-            //           "chan:" + m_ui->userid() + ":" + sender()->property("thischannel").toString(),
-            //           "user:" + m_ui->userid());
-        }
+    {
+        qDebug() << "BasePeerWidget::transfer()" << m_ui->userid() << sender()->property("thischannel").toString();
+        emit actionCall("transfer",
+                        "chan:" + ui->userid() + ":" + sender()->property("peerchannel").toString(),
+                        "user:" + m_ui->userid());
+    }
 }
 
 /*! \brief Indirect Transfer
  */
 void BasePeerWidget::itransfer()
 {
+    const UserInfo * ui = m_engine->getXivoClientUser();
     if(m_ui)
-        {
-            actionCall("atxfer",
-                       "chan:" + m_ui->userid() + ":" + sender()->property("thischannel").toString(),
-                       "user:" + m_ui->userid());
-        }
+    {
+        emit actionCall("atxfer",
+                        "chan:" + ui->userid() + ":" + sender()->property("thischannel").toString(),
+                        "user:" + m_ui->userid());
+    }
 }
 
 /*! \brief park the call
@@ -156,9 +155,22 @@ void BasePeerWidget::parkcall()
     QString chan = sender()->property("peerchannel").toString();
     //if( chan.isEmpty() )
     //    chan = sender()->property("thischannel").toString();
-    actionCall("transfer",
-               "chan:" + m_ui->userid() + ":" + chan,
-               "ext:special:parkthecall");
+    emit actionCall("transfer",
+                    "chan:" + m_ui->userid() + ":" + chan,
+                    "ext:special:parkthecall");
+}
+
+/*! \brief transfer to voice mail
+ */
+void BasePeerWidget::vmtransfer()
+{
+    const UserInfo * ui = m_engine->getXivoClientUser();
+    if(m_ui)
+    {
+        emit actionCall("transfer",
+                        "chan:" + ui->userid() + ":" + sender()->property("thischannel").toString(),
+                        "voicemail:" + m_ui->userid());
+    }
 }
 
 /*! \brief handle double click
@@ -225,136 +237,150 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
     if( m_editable )
         contextMenu.addAction( tr("&Edit"), this, SLOT(edit()) );
     if( m_ui )
+    {
+        QMenu * interceptMenu = NULL;
+        QMenu * hangupMenu = NULL;
+        QMenu * transferMenu = NULL;
+        QMenu * itransferMenu = NULL;
+        QMenu * vmtransferMenu = NULL;
+        QMenu * parkMenu = NULL;
+        //qDebug() << m_ui->phonelist();
+        // TODO : upgrade this when several phones per user will be supported
+        // or at least check it's working as expected
+        foreach(const QString phone, m_ui->phonelist())
         {
-            QMenu * interceptMenu = NULL;
-            QMenu * hangupMenu = NULL;
-            QMenu * transferMenu = NULL;
-            QMenu * itransferMenu = NULL;
-            QMenu * parkMenu = NULL;
-            //qDebug() << m_ui->phonelist();
-            // TODO : upgrade this when several phones per user will be supported
-            // or at least check it's working as expected
-            foreach(const QString phone, m_ui->phonelist())
+            const PhoneInfo * pi = m_ui->getPhoneInfo( phone );
+            const QMap<QString, QVariant> & comms = pi->comms();
+            //qDebug() << pi->phoneid() << pi->comms();
+            foreach(const QString ts, comms.keys())
+            {
+                const QMap<QString, QVariant> & comm = comms[ts].toMap();
+                qDebug() << "BasePeerWidget::contextMenuEvent" << pi->phoneid() << ts << comm;
+                const QString status = comm["status"].toString();
+                QString text = comm["calleridnum"].toString();
+                if( comm.contains("calleridname")
+                    && comm["calleridname"] != comm["calleridnum"] )
                 {
-                    const PhoneInfo * pi = m_ui->getPhoneInfo( phone );
-                    const QMap<QString, QVariant> & comms = pi->comms();
-                    //qDebug() << pi->phoneid() << pi->comms();
-                    foreach(const QString ts, comms.keys())
-                        {
-                            const QMap<QString, QVariant> & comm = comms[ts].toMap();
-                            qDebug() << "BasePeerWidget::contextMenuEvent" << pi->phoneid() << ts << comm;
-                            const QString status = comm["status"].toString();
-                            QString text = comm["calleridnum"].toString();
-                            if( comm.contains("calleridname")
-                                && comm["calleridname"] != comm["calleridnum"] )
-                                {
-                                    text.append( " : " );
-                                    text.append( comm["calleridname"].toString() );
-                                }
-                            if( status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED )
-                                {
-                                    if( !hangupMenu )
-                                        hangupMenu = new QMenu( tr("&Hangup"), &contextMenu );
-                                    QAction * hangupAction = new QAction( hangupMenu );
-                                    hangupAction->setText( text );
-                                    hangupAction->setStatusTip( tr("Hangup this communication") );
-                                    hangupAction->setProperty( "thischannel", comm["thischannel"] );
-                                    hangupAction->setProperty( "peerchannel", comm["peerchannel"] );
-                                    connect( hangupAction, SIGNAL(triggered()),
-                                             this, SLOT(hangup()) );
-                                    hangupMenu->addAction( hangupAction );
-                                }
-                            // TODO : intercept only if the status is right
-                            if( true ) //status != 
-                                {
-                                    if( !interceptMenu )
-                                        interceptMenu = new QMenu( tr("&Intercept"), &contextMenu );
-                                    QAction * interceptAction = new QAction( interceptMenu );
-                                    interceptAction->setText( text );
-                                    interceptAction->setStatusTip( tr("Intercept this communication") );
-                                    interceptAction->setProperty( "thischannel", comm["thischannel"] );
-                                    interceptAction->setProperty( "peerchannel", comm["peerchannel"] );
-                                    connect( interceptAction, SIGNAL(triggered()),
-                                             this, SLOT(intercept()) );
-                                    interceptMenu->addAction( interceptAction );
-                                }
-                            // TODO : check for correct status
-                            if( true )
-                                {
-                                    if( !parkMenu )
-                                        parkMenu = new QMenu( tr("&Park"), &contextMenu );
-                                    QAction * parkAction = new QAction( parkMenu );
-                                    parkAction->setText( text );
-                                    parkAction->setStatusTip( tr("Park this communication") );
-                                    parkAction->setProperty( "thischannel", comm["thischannel"] );
-                                    parkAction->setProperty( "peerchannel", comm["peerchannel"] );
-                                    connect( parkAction, SIGNAL(triggered()),
-                                             this, SLOT(parkcall()) );
-                                    parkMenu->addAction( parkAction );
-                                }
-                        }
+                    text.append( " : " );
+                    text.append( comm["calleridname"].toString() );
                 }
-            // get "my" currently open channels
-            const UserInfo * ui = m_engine->getXivoClientUser();
-            //qDebug() << m_ui->userid() << ui;
-            if( ui ) 
-                {       
-                    foreach(const QString phone, ui->phonelist())
-                        {
-                            const PhoneInfo * pi = ui->getPhoneInfo( phone );
-                            const QMap<QString, QVariant> & comms = pi->comms();
-                            //qDebug() << pi->phoneid() << pi->comms();
-                            foreach(const QString ts, comms.keys())
-                                {
-                                    const QMap<QString, QVariant> & comm = comms[ts].toMap();
-                                    qDebug() << "BasePeerWidget::contextMenuEvent my comms : " << pi->phoneid() << ts << comm;
-                                    const QString status = comm["status"].toString();
-                                    QString text = comm["calleridnum"].toString();
-                                    if( comm.contains("calleridname")
-                                        && comm["calleridname"] != comm["calleridnum"] )
-                                        {
-                                            text.append( " : " );
-                                            text.append( comm["calleridname"].toString() );
-                                        }
-                                    if( true )
-                                        {
-                                            if( !transferMenu )
-                                                transferMenu = new QMenu( tr("Direct &Transfer"), &contextMenu );
-                                            QAction * transferAction = new QAction( text, transferMenu );
-                                            transferAction->setStatusTip( tr("Transfer this communication") );
-                                            transferAction->setProperty( "thischannel", comm["thischannel"] );
-                                            transferAction->setProperty( "peerchannel", comm["peerchannel"] );
-                                            connect( transferAction, SIGNAL(triggered()),
-                                                     this, SLOT(transfer()) );
-                                            transferMenu->addAction( transferAction );
-                                        }
-                                    if( true )
-                                        {
-                                            if( !itransferMenu )
-                                                itransferMenu = new QMenu( tr("&Indirect Transfer"), &contextMenu );
-                                            QAction * itransferAction = new QAction( text, itransferMenu );
-                                            itransferAction->setStatusTip( tr("Transfer this communication") );
-                                            itransferAction->setProperty( "thischannel", comm["thischannel"] );
-                                            itransferAction->setProperty( "peerchannel", comm["peerchannel"] );
-                                            connect( itransferAction, SIGNAL(triggered()),
-                                                     this, SLOT(itransfer()) );
-                                            itransferMenu->addAction( itransferAction );
-                                        }
-                                }
-                        }
+                if( status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED )
+                {
+                    if( !hangupMenu )
+                        hangupMenu = new QMenu( tr("&Hangup"), &contextMenu );
+                    QAction * hangupAction = new QAction( hangupMenu );
+                    hangupAction->setText( text );
+                    hangupAction->setStatusTip( tr("Hangup this communication") );
+                    hangupAction->setProperty( "thischannel", comm["thischannel"] );
+                    hangupAction->setProperty( "peerchannel", comm["peerchannel"] );
+                    connect( hangupAction, SIGNAL(triggered()),
+                             this, SLOT(hangup()) );
+                    hangupMenu->addAction( hangupAction );
                 }
-            // adding submenus to context menu
-            if( interceptMenu )
-                contextMenu.addMenu( interceptMenu );
-            if( hangupMenu )
-                contextMenu.addMenu( hangupMenu );
-            if( parkMenu )
-                contextMenu.addMenu( parkMenu );
-            if( transferMenu )
-                contextMenu.addMenu( transferMenu );
-            if( itransferMenu )
-                contextMenu.addMenu( itransferMenu );
+                // TODO : intercept only if the status is right
+                if( true ) //status != 
+                {
+                    if( !interceptMenu )
+                        interceptMenu = new QMenu( tr("&Intercept"), &contextMenu );
+                    QAction * interceptAction = new QAction( interceptMenu );
+                    interceptAction->setText( text );
+                    interceptAction->setStatusTip( tr("Intercept this communication") );
+                    interceptAction->setProperty( "thischannel", comm["thischannel"] );
+                    interceptAction->setProperty( "peerchannel", comm["peerchannel"] );
+                    connect( interceptAction, SIGNAL(triggered()),
+                             this, SLOT(intercept()) );
+                    interceptMenu->addAction( interceptAction );
+                }
+                // TODO : check for correct status
+                if( true )
+                {
+                    if( !parkMenu )
+                        parkMenu = new QMenu( tr("&Park"), &contextMenu );
+                    QAction * parkAction = new QAction( parkMenu );
+                    parkAction->setText( text );
+                    parkAction->setStatusTip( tr("Park this communication") );
+                    parkAction->setProperty( "thischannel", comm["thischannel"] );
+                    parkAction->setProperty( "peerchannel", comm["peerchannel"] );
+                    connect( parkAction, SIGNAL(triggered()),
+                             this, SLOT(parkcall()) );
+                    parkMenu->addAction( parkAction );
+                }
+            }
         }
+        // get "my" currently open channels
+        const UserInfo * ui = m_engine->getXivoClientUser();
+        //qDebug() << m_ui->userid() << ui;
+        if( ui ) 
+        {       
+            foreach(const QString phone, ui->phonelist())
+            {
+                const PhoneInfo * pi = ui->getPhoneInfo( phone );
+                const QMap<QString, QVariant> & comms = pi->comms();
+                //qDebug() << pi->phoneid() << pi->comms();
+                foreach(const QString ts, comms.keys())
+                {
+                    const QMap<QString, QVariant> & comm = comms[ts].toMap();
+                    qDebug() << "BasePeerWidget::contextMenuEvent my comms : " << pi->phoneid() << ts << comm;
+                    const QString status = comm["status"].toString();
+                    QString text = comm["calleridnum"].toString();
+                    if( comm.contains("calleridname")
+                        && comm["calleridname"] != comm["calleridnum"] )
+                    {
+                        text.append( " : " );
+                        text.append( comm["calleridname"].toString() );
+                    }
+                    if( true )
+                    {
+                        if( !transferMenu )
+                            transferMenu = new QMenu( tr("Direct &Transfer"), &contextMenu );
+                        QAction * transferAction = new QAction( text, transferMenu );
+                        transferAction->setStatusTip( tr("Transfer this communication") );
+                        transferAction->setProperty( "thischannel", comm["thischannel"] );
+                        transferAction->setProperty( "peerchannel", comm["peerchannel"] );
+                        connect( transferAction, SIGNAL(triggered()),
+                                 this, SLOT(transfer()) );
+                        transferMenu->addAction( transferAction );
+                    }
+                    if( true )
+                    {
+                        if( !itransferMenu )
+                            itransferMenu = new QMenu( tr("&Indirect Transfer"), &contextMenu );
+                        QAction * itransferAction = new QAction( text, itransferMenu );
+                        itransferAction->setStatusTip( tr("Transfer this communication") );
+                        itransferAction->setProperty( "thischannel", comm["thischannel"] );
+                        itransferAction->setProperty( "peerchannel", comm["peerchannel"] );
+                        connect( itransferAction, SIGNAL(triggered()),
+                                 this, SLOT(itransfer()) );
+                        itransferMenu->addAction( itransferAction );
+                    }
+                    if( true )
+                    {
+                        if( !vmtransferMenu )
+                            vmtransferMenu = new QMenu( tr("Transfer to &voice mail"), &contextMenu );
+                        QAction * vmtransferAction = new QAction( text, vmtransferMenu );
+                        vmtransferAction->setProperty( "thischannel", comm["thischannel"] );
+                        vmtransferAction->setProperty( "peerchannel", comm["peerchannel"] );
+                        connect( vmtransferAction, SIGNAL(triggered()),
+                                 this, SLOT(vmtransfer()) );
+                        vmtransferMenu->addAction( vmtransferAction );
+                    }
+                }
+            }
+        }
+        // adding submenus to context menu
+        if( interceptMenu )
+            contextMenu.addMenu( interceptMenu );
+        if( hangupMenu )
+            contextMenu.addMenu( hangupMenu );
+        if( parkMenu )
+            contextMenu.addMenu( parkMenu );
+        if( transferMenu )
+            contextMenu.addMenu( transferMenu );
+        if( itransferMenu )
+            contextMenu.addMenu( itransferMenu );
+        if( vmtransferMenu )
+            contextMenu.addMenu( vmtransferMenu );
+    }
     contextMenu.exec( event->globalPos() );
 }
 
