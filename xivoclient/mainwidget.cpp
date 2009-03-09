@@ -175,7 +175,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     connect(m_clipboard, SIGNAL(dataChanged()),
             this, SLOT(clipdata()) );
     m_clipboard->setText("", QClipboard::Selection); // see comment in MainWidget::clipselection()
-        
+    
     // to be better defined
     // resize(500, 400);
     restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
@@ -199,19 +199,19 @@ MainWidget::MainWidget(BaseEngine * engine,
     if(m_settings->value("display/logtofile", false).toBool())
         m_engine->setLogFile(m_settings->value("display/logfilename", "XIVO_Client.log").toString());
     m_engine->logAction("application started on " + osname);
-        
+    
     m_xivobg = new QLabel();
     m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
     m_xivobg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_login_layout->addWidget(m_xivobg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
-        
+    
     m_lab1 = new QLabel(tr("Login"));
     m_login_layout->addWidget(m_lab1, 2, 0, Qt::AlignRight);
     m_lab2 = new QLabel(tr("Password"));
     m_login_layout->addWidget(m_lab2, 3, 0, Qt::AlignRight);
     m_lab3 = new QLabel(tr("Phone"));
     m_login_layout->addWidget(m_lab3, 4, 0, Qt::AlignRight);
-
+    
     m_qlab1 = new QLineEdit();
     m_qlab1->setText(m_engine->userId());
     m_login_layout->addWidget(m_qlab1, 2, 1);
@@ -234,10 +234,10 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_loginkind->addItem(QString(tr("Agent (logged)")));
     m_loginkind->setCurrentIndex(m_engine->loginkind());
     m_login_layout->addWidget(m_loginkind, 4, 2, Qt::AlignLeft);
-                
+    
     loginKindChanged(m_loginkind->currentIndex());
     m_qlab1->setFocus();
-                
+    
     connect( m_qlab1, SIGNAL(returnPressed()),
              this, SLOT(config_and_start()) );
     connect( m_qlab2, SIGNAL(returnPressed()),
@@ -278,14 +278,14 @@ void MainWidget::clipselection()
         
     QString selected = m_clipboard->text(QClipboard::Selection);
     pasteToDialPanel(selected);
-        
+    
     // X11 : when a pattern is selected on (seemingly) any KDE(QT) application on Linux
     // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)
-        
+    
     // X11 (non-KDE) : force a selection to be owned, so that the next not-owned one will be catched
     // if(selected.size() > 0) // avoid infinite loop, however
     // m_clipboard->setText("", QClipboard::Selection);
-        
+    
     // might be boring anyway, since the selected texts disappear at once wherever you are
     // the following does not fix it :
     // if((selected.size() > 0) && (! m_clipboard->ownsSelection()))
@@ -298,7 +298,7 @@ void MainWidget::clipdata()
     // statusBar()->showMessage("data : " + m_clipboard->text(QClipboard::Clipboard));
         
     pasteToDialPanel(m_clipboard->text(QClipboard::Clipboard));
-        
+    
     // WIN : we fall here in any Ctrl-C/Ctrl-X/"copy"/... action
     // X11 : same actions, on (seemingly) any KDE(QT) application
     // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)

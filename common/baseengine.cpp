@@ -181,7 +181,7 @@ void BaseEngine::loadSettings()
     m_settings->beginGroup(m_profilename);
     m_serverhost = m_settings->value("serverhost", "demo.xivo.fr").toString();
     m_ctiport    = m_settings->value("serverport", 5003).toUInt();
-        
+    
     m_userid      = m_settings->value("userid").toString().trimmed();
     m_useridopt   = m_settings->value("useridopt").toString().trimmed();
     if(m_useridopt.size() > 0)
@@ -193,7 +193,7 @@ void BaseEngine::loadSettings()
     m_keeppass     = m_settings->value("keeppass", 0).toUInt();
     m_showagselect = m_settings->value("showagselect", 2).toUInt();
     m_phonenumber  = m_settings->value("phonenumber").toString();
-        
+    
     m_autoconnect = m_settings->value("autoconnect", false).toBool();
     m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
     m_trytoreconnectinterval = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
@@ -201,10 +201,10 @@ void BaseEngine::loadSettings()
     m_checked_lastconnwins = m_settings->value("lastconnwins", false).toBool();
     m_availstate = m_settings->value("availstate", "available").toString();
     m_settings->endGroup();
-        
+    
     m_settings->beginGroup("user-gui");
     m_historysize = m_settings->value("historysize", 8).toUInt();
-        
+    
     QString defaultguioptions = "{\"contacts-max\":30,"
         "\"contacts-width\":4,"
         "\"sheet-tablimit\":4,"
@@ -221,7 +221,7 @@ void BaseEngine::loadSettings()
     m_guioptions["user"] = m_settings->value("guisettings", data);
     m_loginkind = m_guioptions["user"].toMap()["loginkind"].toInt();
     m_settings->endGroup();
-        
+    
     m_settings->beginGroup("user-functions");
     foreach (QString function, CheckFunctions)
         m_checked_function[function] = m_settings->value(function, false).toBool();
@@ -237,14 +237,14 @@ void BaseEngine::saveSettings()
     // information
     m_settings->setValue("version/xivo", __xivo_version__);
     m_settings->setValue("version/svn", __current_client_version__);
-        
+    
     m_settings->setValue("display/systrayed", m_systrayed);
-        
+    
     // m_settings->beginGroup("engine." + m_userid);
     m_settings->beginGroup(m_profilename);
     m_settings->setValue("serverhost", m_serverhost);
     m_settings->setValue("serverport", m_ctiport);
-
+    
     m_settings->setValue("userid",     m_userid);
     m_settings->setValue("useridopt",  m_useridopt);
     m_settings->setValue("company",    m_company);
@@ -255,7 +255,7 @@ void BaseEngine::saveSettings()
     m_settings->setValue("keeppass",   m_keeppass);
     m_settings->setValue("showagselect", m_showagselect);
     m_settings->setValue("phonenumber", m_phonenumber);
-
+    
     m_settings->setValue("autoconnect", m_autoconnect);
     m_settings->setValue("trytoreconnect", m_trytoreconnect);
     m_settings->setValue("trytoreconnectinterval", m_trytoreconnectinterval);
@@ -263,13 +263,13 @@ void BaseEngine::saveSettings()
     m_settings->setValue("lastconnwins", m_checked_lastconnwins);
     m_settings->setValue("availstate", m_availstate);
     m_settings->endGroup();
-        
+    
     m_settings->beginGroup("user-gui");
     m_settings->setValue("historysize", m_historysize);
-        
+    
     m_settings->setValue("guisettings", m_guioptions["user"]);
     m_settings->endGroup();
-        
+    
     m_settings->beginGroup("user-functions");
     foreach (QString function, CheckFunctions)
         m_settings->setValue(function, m_checked_function[function]);
@@ -1073,7 +1073,7 @@ void BaseEngine::parseCommand(const QString & line)
                 } else
                     command["capaid"] = capas[0];
             }
-                        
+            
             switch(m_loginkind) {
             case 0:
                 command["loginkind"] = "user";
@@ -1085,14 +1085,14 @@ void BaseEngine::parseCommand(const QString & line)
                 command["phonenumber"] = m_phonenumber;
                 break;
             }
-                        
+            
             if(m_checked_function["presence"])
                 command["state"] = m_availstate;
             else
                 command["state"] = __nopresence__;
             command["lastconnwins"] = m_checked_lastconnwins;
             sendJsonCommand(command);
-                        
+            
         } else if (thisclass == "login_capas_ok") {
             m_astid = datamap["astid"].toString();
             m_xivo_userid = datamap["xivo_userid"].toString();

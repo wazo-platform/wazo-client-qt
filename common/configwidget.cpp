@@ -178,24 +178,24 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
     m_company = new QLineEdit(m_engine->company(), this);
     gridlayout3->addWidget( new QLabel(tr("Company"), this), line, 0);
     gridlayout3->addWidget(m_company, line++, 1);
-
+    
     m_userid = new QLineEdit(m_engine->userId(), this);
     gridlayout3->addWidget( new QLabel(tr("User Login"), this), line, 0);
     gridlayout3->addWidget(m_userid, line++, 1);
-        
+    
     m_password = new QLineEdit(m_engine->password(), this);
     m_password->setEchoMode(QLineEdit::Password);
     gridlayout3->addWidget( new QLabel(tr("Password"), this), line, 0);
     gridlayout3->addWidget(m_password, line++, 1);
-
+    
     m_keeppass = new QCheckBox(tr("Keep Password"));
     m_keeppass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
     gridlayout3->addWidget(m_keeppass, line++, 0, 1, 2);
-        
+    
     m_showagselect = new QCheckBox(tr("Show the Agent options (like the\nones beneath) on first window"));
     m_showagselect->setCheckState((m_engine->showagselect() == 2) ? Qt::Checked : Qt::Unchecked);
     gridlayout3->addWidget(m_showagselect, line++, 0, 1, 2);
-        
+    
     QFrame * qhline3 = new QFrame(this);
     qhline3->setFrameShape(QFrame::HLine);
     gridlayout3->addWidget(qhline3, line++, 0, 1, 2);
@@ -357,11 +357,11 @@ void ConfigWidget::saveAndClose()
     foreach(QString color, queuelevel_colors)
         qvm[color] = QVariant(m_queuelevels[color]->value());
     opts["queuelevels"] = qvm;
-        
+    
     // BaseEngine::setLoginKind() sets the user option if needed.
     m_engine->setLoginKind(m_loginkind->currentIndex());
-    //opts["loginkind"] = m_loginkind->currentIndex();
-        
+    opts["loginkind"] = m_loginkind->currentIndex();
+    
     opts["contacts-max"] = m_contactssize_sbox->value();
     opts["contacts-width"] = m_contactswidth_sbox->value();
     opts["sheet-tablimit"] = m_tablimit_sbox->value();
@@ -369,7 +369,7 @@ void ConfigWidget::saveAndClose()
     opts["switchboard-elt-type"] = m_comboswitchboard->itemData( m_comboswitchboard->currentIndex() ).toString();
     opts["maxwidthwanted"] = m_maxWidthWanted->value();
     m_engine->setGuiOption("user", opts);
-        
+    
     m_engine->saveSettings();
     emit confUpdated();
     close();
