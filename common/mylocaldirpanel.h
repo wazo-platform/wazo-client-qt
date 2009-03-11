@@ -76,6 +76,7 @@ private:
     void loadFromFile(QFile & file);
     void saveToFile(QFile & file);
     int findCol(QStringList, QStringList);
+    QString getSaveFile() const;
 
     BaseEngine * m_engine;  //!< xivo client engine
     const UserInfo * m_ui;  //!< current user

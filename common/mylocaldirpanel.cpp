@@ -46,6 +46,7 @@
 #include <QLabel>
 #include <QFileDialog>
 #include <QApplication>
+#include <QFileInfo>
 
 #include "baseengine.h"
 #include "mylocaldirpanel.h"
@@ -101,8 +102,7 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
     m_table->setHorizontalHeaderLabels( columnNames );
     m_table->setSortingEnabled( true );
     vlayout->addWidget(m_table);
-    QDir dir( qApp->applicationDirPath() );
-    QFile file(dir.absoluteFilePath("localdir.csv"));
+    QFile file(getSaveFile());
     loadFromFile( file );
 }
 
@@ -111,9 +111,17 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
 MyLocalDirPanel::~MyLocalDirPanel()
 {
     qDebug() << "MyLocalDirPanel::~MyLocalDirPanel()";
-    QDir dir( qApp->applicationDirPath() );
-    QFile file(dir.absoluteFilePath("localdir.csv"));
+    QFile file(getSaveFile());
     saveToFile( file );
+}
+
+QString MyLocalDirPanel::getSaveFile() const
+{
+    qDebug() << "MyLocalDirPanel::getSaveFile()" << qApp->applicationDirPath() << m_engine->getSettings()->fileName();
+    //QDir dir( qApp->applicationDirPath() );
+    QFileInfo fi( m_engine->getSettings()->fileName() );
+    QDir dir( fi.canonicalPath() );
+    return dir.absoluteFilePath("localdir.csv");
 }
 
 /*! Does nothing
