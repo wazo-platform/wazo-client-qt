@@ -77,7 +77,6 @@ private slots:
     void hangUp();
     void itemClicked(QTableWidgetItem *);
     void itemDoubleClicked(QTableWidgetItem *);
-    void proxyCallRequests(const QString &, const QString &);
 signals:
     void copyNumber(const QString &);
     void actionCall(const QString &,

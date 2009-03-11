@@ -75,8 +75,9 @@ ParkingPanel::ParkingPanel(BaseEngine * engine, QWidget * parent)
              this, SLOT(itemClicked(QTableWidgetItem *)) );
     connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
              this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-    connect( m_table, SIGNAL(actionCall(const QString &, const QString &)),
-             this, SLOT(proxyCallRequests(const QString &, const QString &)) );
+    // forward SIGNAL
+    connect( m_table, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+             this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
         
     vlayout->addWidget( m_table, 0 );
     m_table->resizeColumnsToContents();
@@ -99,11 +100,6 @@ void ParkingPanel::setGuiOptions(const QVariant &)
 void ParkingPanel::setUserInfo(const UserInfo * ui)
 {
     m_userinfo = ui;
-}
-
-void ParkingPanel::proxyCallRequests(const QString & src, const QString & dst)
-{
-    actionCall(sender()->property("action").toString(), src, dst);
 }
 
 /*! \brief add a message to the list
