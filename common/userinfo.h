@@ -53,7 +53,7 @@ class PhoneInfo;
  */
 class UserInfo
 {
- public:
+public:
     UserInfo(const QString &);
     ~UserInfo();
     void setAvailState(const QVariant &);
@@ -85,11 +85,12 @@ class UserInfo
     const PhoneInfo * getPhoneInfo(const QString &) const;
     void updatePhone( PhoneInfo * );
     QList<QString> channelList() const;
- private:
+    QString toString() const;
+private:
     QString m_userid;   //!< user id
     QString m_company;  //!< user company
     QString m_ctilogin; //!< user login on cti
-    QString m_fullname; //!< user fulle name
+    QString m_fullname; //!< user full name
         
     QHash<QString, QString> m_availstate;   //!< availability state properties
         

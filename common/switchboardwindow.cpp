@@ -110,24 +110,24 @@ void SwitchBoardWindow::setUserInfo(const UserInfo *)
  */
 void SwitchBoardWindow::updateUser(UserInfo * ui)
 {
+    qDebug() << "SwitchBoardWindow::updateUser()" << ui->toString();
     QString userid = ui->userid();
     PeerItem * peeritem = NULL;
     if(m_peerhash.contains(userid))
-        {
-            peeritem = m_peerhash.value(userid);
-        }
+    {
+        peeritem = m_peerhash.value(userid);
+    }
     else
-        {
-            peeritem = new PeerItem(ui);
-            m_peerhash.insert(userid, peeritem);
-            QSettings * settings = m_engine->getSettings();
-            settings->beginGroup("layout");
-            QPoint pos = settings->value(userid, QPoint(-1, -1) ).toPoint();
-            settings->endGroup();
-            if(pos.x() >= 0) {
-                /*BasePeerWidget * peerwidget = */addPeerWidget(peeritem, pos);
-            }
-        }
+    {
+        peeritem = new PeerItem(ui);
+        m_peerhash.insert(userid, peeritem);
+        QSettings * settings = m_engine->getSettings();
+        settings->beginGroup("layout");
+        QPoint pos = settings->value(userid, QPoint(-1, -1) ).toPoint();
+        settings->endGroup();
+        if(pos.x() >= 0)
+            addPeerWidget(peeritem, pos);
+    }
     peeritem->updateStatus();
     update();
 }

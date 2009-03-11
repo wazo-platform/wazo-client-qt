@@ -167,7 +167,8 @@ MainWidget::MainWidget(BaseEngine * engine,
     connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
              statusBar(), SLOT(showMessage(const QString &)) );
     connect( m_engine, SIGNAL(emitMessageBox(const QString &)),
-             this, SLOT(showMessageBox(const QString &)) );
+             this, SLOT(showMessageBox(const QString &)),
+             Qt::QueuedConnection );
 
     m_clipboard = QApplication::clipboard();
     connect(m_clipboard, SIGNAL(selectionChanged()),

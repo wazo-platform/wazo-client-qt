@@ -637,6 +637,7 @@ void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
         //m_timer = startTimer(2000);
         break;
     case QAbstractSocket::RemoteHostClosedError:
+        stopKeepAliveTimer();
         popupError("connection_closed");
         break;
     case QAbstractSocket::HostNotFoundError:
@@ -732,9 +733,9 @@ void BaseEngine::parseCommand(const QString & line)
     if(direction == "client") {
         QString thisclass = datamap["class"].toString();
         double timenow = datamap["timenow"].toDouble();
-        //qDebug() << datamap["timenow"].toString() << "BaseEngine message received"
-        //         << thisclass << datamap["function"].toString()
-        //         << datamap["phoneid"].toString();
+        qDebug() << datamap["timenow"].toString() << "BaseEngine message received"
+                 << thisclass << datamap["function"].toString()
+                 << datamap["phoneid"].toString();
         if (thisclass == "callcampaign") {
             requestFileListResult(datamap["payload"]);
                         
@@ -757,7 +758,10 @@ void BaseEngine::parseCommand(const QString & line)
             QString function = datamap["function"].toString();
             if(function == "sendlist") {
                 foreach (QVariant qv, datamap["payload"].toList())
-                    newQueueList(qv);
+                {
+                    //qDebug() << "  " << qv;
+                    emit newQueueList(qv);
+                }
             }
             else if(function == "update") {
                 setQueueStatus(datamap["payload"]);
@@ -781,7 +785,10 @@ void BaseEngine::parseCommand(const QString & line)
             QString function = datamap["function"].toString();
             if(function == "sendlist") {
                 foreach (QVariant qv, datamap["payload"].toList())
+                {
+                    //qDebug() << "   " << qv;
                     emit newAgentList(timenow, qv);
+                }
             } else if(function == "update") {
                 QVariant params = datamap["payload"];
                 QString action = params.toMap()["action"].toString();

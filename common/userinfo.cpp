@@ -94,13 +94,13 @@ void UserInfo::setPhones(const QString & astid,
     //qDebug() << "UserInfo::setPhones" << astid << termlist;
     m_astid = astid;
     foreach(const QString term, termlist)
-        {
-            PhoneInfo * pi = NULL;
-            QString key = astid + "." + term;
-            if(phones.contains(key))
-                pi = phones[key];
-            m_phones[term] = pi;
-        }
+    {
+        PhoneInfo * pi = NULL;
+        QString key = astid + "." + term;
+        if(phones.contains(key))
+            pi = phones[key];
+        m_phones[term] = pi;
+    }
 }
 
 /*! \brief update availability state */
@@ -109,9 +109,9 @@ void UserInfo::setAvailState(const QVariant & availstate)
     m_availstate.clear();
     const QMap<QString, QVariant> map = availstate.toMap();
     foreach(const QString key, map.keys())
-        {
-            m_availstate[key] = map[key].toString();
-        }
+    {
+        m_availstate[key] = map[key].toString();
+    }
 }
 
 void UserInfo::setAgent(const QString & agentnum)
@@ -184,11 +184,11 @@ const QStringList UserInfo::contexts() const
     QStringList clist;
     //qDebug() << m_phones;
     foreach(const QString key, m_phones.keys())
-        {
-            //if(m_phones[key])
-            //    clist << m_phones[key]->context();
-            clist << (key.split(QChar('.')))[1];
-        }
+    {
+        //if(m_phones[key])
+        //    clist << m_phones[key]->context();
+        clist << (key.split(QChar('.')))[1];
+    }
     return clist;
 }
 
@@ -222,10 +222,10 @@ void UserInfo::updatePhone( PhoneInfo * pi )
 {
     //qDebug() << "UserInfo::updatePhone before" << m_phones;
     if(pi)
-        {
-            QString key = pi->tech() + "." + pi->context() + "." + pi->phoneid() + "." + pi->number();
-            m_phones[key] = pi;
-        }
+    {
+        QString key = pi->tech() + "." + pi->context() + "." + pi->phoneid() + "." + pi->number();
+        m_phones[key] = pi;
+    }
     //qDebug() << "UserInfo::updatePhone after " << m_phones;
 }
 
@@ -238,19 +238,32 @@ QList<QString> UserInfo::channelList() const
     QList<QString> list;
     QMapIterator<QString, PhoneInfo *> it = QMapIterator<QString, PhoneInfo *>(m_phones);
     while(it.hasNext())
+    {
+        it.next();
+        if(it.value())
         {
-            it.next();
-            if(it.value())
-                {
-                    QMapIterator<QString, QVariant> itphone( it.value()->comms() );
-                    while( itphone.hasNext() )
-                        {
-                            itphone.next();
-                            QVariantMap qvm = itphone.value().toMap();
-                            list << qvm["thischannel"].toString();
-                        }
-                }
+            QMapIterator<QString, QVariant> itphone( it.value()->comms() );
+            while( itphone.hasNext() )
+            {
+                itphone.next();
+                QVariantMap qvm = itphone.value().toMap();
+                list << qvm["thischannel"].toString();
+            }
         }
+    }
     return list;
+}
+
+/*! \brief return a String representation of the object
+ *
+ * usefull for debug
+ */
+QString UserInfo::toString() const
+{
+    QString str;
+    str = "Userid=" + m_userid + " company=" + m_company + " fullname=" + m_fullname;
+    str += " phonenum=" + m_phonenum + " m_voicemailnum=" + m_voicemailnum;
+    str += " nphones=" +QString::number(m_phones.size()) + " phonesids=" + QStringList(m_phones.keys()).join(",");
+    return str;
 }
 
