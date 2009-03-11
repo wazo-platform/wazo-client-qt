@@ -40,68 +40,79 @@
  */
 
 #include <QDebug>
-#include <QPainter>
+#include <QFrame>
 #include <QLabel>
-#include "externalphonepeerwidget.h"
+#include <QGridLayout>
+#include "extendedlabel.h"
+#include "detailedexternalphonepeerwidget.h"
 #include "externalphonedialog.h"
 
-ExternalPhonePeerWidget::ExternalPhonePeerWidget(BaseEngine * engine, const QString & label, const QString & number)
+DetailedExternalPhonePeerWidget::DetailedExternalPhonePeerWidget(BaseEngine * engine, const QString & label, const QString & number)
     : BasePeerWidget(engine, 0)
 {
     m_number = number;
-    setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
-    setText( label );
-    setToolTip( number );
-    m_editable = true;  // allow "edit" option in context menu
+    m_editable = true;
+    int spacing = 2;
+    QGridLayout * layout = new QGridLayout(this);
+    layout->setSpacing(spacing);
+    layout->setMargin(spacing);
+    QFrame * qhline1 = new QFrame(this);
+    QFrame * qhline2 = new QFrame(this);
+    QFrame * qvline1 = new QFrame(this);
+    QFrame * qvline2 = new QFrame(this);
+    qhline1->hide();
+    qhline2->hide();
+    qvline2->hide();
+    qhline1->setFrameShape(QFrame::HLine);
+    qhline1->setLineWidth(0);
+    qhline2->setFrameShape(QFrame::HLine);
+    qhline2->setLineWidth(0);
+    qvline1->setFrameShape(QFrame::VLine);
+    qvline1->setLineWidth(2);
+    qvline2->setFrameShape(QFrame::VLine);
+    qvline2->setLineWidth(0);
+
+    m_textlbl = new QLabel(label, this);
+    // set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
+    m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
+    m_lblphone = new ExtendedLabel();
+    m_lblphone->setPixmap(QPixmap(":/images/phone-grey.png"));
+    m_lblphone->setToolTip( m_number );
+    // the widget does not feature a context menu, context menu handling is deferred to the widget's parent.
+    m_lblphone->setContextMenuPolicy( Qt::NoContextMenu );
+    layout->addWidget( qhline1, 0, 0, 1, 10);
+    layout->addWidget( qvline1,   1, 0, 2, 1 );
+    layout->addWidget( m_textlbl, 1, 2, 1, 6, Qt::AlignLeft );
+    layout->addWidget( qvline2,   1, 9, 2, 1 );
+    layout->addWidget( m_lblphone, 2, 2, Qt::AlignCenter);
+    layout->setColumnStretch(20, 1);
+    layout->addWidget( qhline2, 3, 0, 1, 10);
 }
 
-void ExternalPhonePeerWidget::setText(const QString & text)
+void DetailedExternalPhonePeerWidget::setText(const QString & text)
 {
-    m_text = text;
-    // calculate size
-    QFontMetrics fontMetrics( font() );
-    QSize size = fontMetrics.size(0, m_text);
-    // set a maximum width PeerWidget
-    if(size.width() > maxWidthWanted())
-        size.setWidth(maxWidthWanted());
-    setMinimumSize( size );
-    update();
+    qDebug() << "DetailedExternalPhonePeerWidget::setText()" << text;
+    m_textlbl->setText( text );
 }
 
-/*! \brief paint this widget
- *
- * Fill the whole widget with a rectange of color
- * which indicate the status of the phone.
- * Draw a small square for user presence indicator
- * Then write the name of the user.
- */
-void ExternalPhonePeerWidget::paintEvent(QPaintEvent *event)
-{
-    QRect rectangle = contentsRect();
-    QPainter painter( this );
-    // draw the color rectangle
-    painter.setBrush( QColor(192, 160, 160) );
-    painter.setPen( Qt::NoPen );
-    painter.drawRect( rectangle );
-    // write the text
-    painter.setPen(Qt::SolidLine);
-    painter.drawText( rectangle, Qt::AlignVCenter | Qt::AlignHCenter, m_text );
-}
-
-/*! \brief run a dialog to edit number and label
+/*! \brief 
  *
  *
  */
-void ExternalPhonePeerWidget::edit()
+void DetailedExternalPhonePeerWidget::edit()
 {
     ExternalPhoneDialog dialog;
     dialog.setNumber( m_number );
-    dialog.setLabel( m_text );
+    dialog.setLabel( m_textlbl->text() );
     if(dialog.exec())
     {
         if(!dialog.number().isEmpty())
+        {
             m_number = dialog.number();
+            m_lblphone->setToolTip( m_number );
+        }
         if(!dialog.label().isEmpty())
             setText( dialog.label() );
     }
 }
+

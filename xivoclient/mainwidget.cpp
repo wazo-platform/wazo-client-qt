@@ -268,12 +268,11 @@ MainWidget::~MainWidget()
 #endif
     savePositions();
     m_engine->logAction("application quit");
-    qDebug() << "GRR" << childAt(10, 10);
 }
 
 void MainWidget::clipselection()
 {
-    // qDebug() << "BaseEngine::clipselection()" << m_clipboard->text(QClipboard::Selection);
+    //qDebug() << "BaseEngine::clipselection()" << m_clipboard->text(QClipboard::Selection);
     // statusBar()->showMessage("selected : " + m_clipboard->text(QClipboard::Selection));
         
     QString selected = m_clipboard->text(QClipboard::Selection);
@@ -294,7 +293,7 @@ void MainWidget::clipselection()
 
 void MainWidget::clipdata()
 {
-    // qDebug() << "BaseEngine::clipdata()" << m_clipboard->text(QClipboard::Clipboard);
+    //qDebug() << "BaseEngine::clipdata()" << m_clipboard->text(QClipboard::Clipboard);
     // statusBar()->showMessage("data : " + m_clipboard->text(QClipboard::Clipboard));
         
     pasteToDialPanel(m_clipboard->text(QClipboard::Clipboard));
@@ -1008,7 +1007,7 @@ void MainWidget::engineStarted()
                          m_calls, SLOT(setUserInfo(const UserInfo *)) );
                                 
             } else if (xletid == QString("switchboard")) {
-                m_xlet[xletid] = new SwitchBoardWindow(m_engine, m_options, this);
+                m_xlet[xletid] = new SwitchBoardWindow(m_engine, this);
                 QScrollArea * sa_sb = new QScrollArea(this);
                 sa_sb->setWidget(m_xlet[xletid]);
                 sa_sb->setWidgetResizable(true);

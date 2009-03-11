@@ -63,8 +63,8 @@ class UserInfo;
 class PeerWidget : public BasePeerWidget
 {
     Q_OBJECT
-        public:
-    PeerWidget(BaseEngine *, UserInfo *, const QVariant &);
+public:
+    PeerWidget(BaseEngine *, UserInfo *);
     ~PeerWidget();
     void setName(const QString &);
     void setEngine(BaseEngine *);
@@ -72,7 +72,7 @@ class PeerWidget : public BasePeerWidget
     void setAgentState(const QString & color);
     void updatePresence();  //!< update presence information displayed
     void updatePhonesStates();
- private:
+private:
     QHash<QString, QLabel *> m_lblphones;        //!< phone labels
         
     QLabel * m_availlbl;        //!< Peer state display from XIVO CTI Client
@@ -84,7 +84,6 @@ class PeerWidget : public BasePeerWidget
     static QHash<QString, QPixmap> m_phones;        //!< phone icons
     static QHash<QString, QPixmap> m_persons;        //!< person icons
     static QHash<QString, QPixmap> m_agents;        //!< agent icons
-    QStringList m_functions;
 };
 
 #endif

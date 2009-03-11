@@ -63,10 +63,9 @@ QHash<QString, QPixmap> PeerWidget::m_agents = QHash<QString, QPixmap>();
 
 /*! \brief Constructor
  */
-PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui, const QVariant & options)
-    : BasePeerWidget(engine, ui, options), m_availlbl(NULL), m_agentlbl(NULL)
+PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
+    : BasePeerWidget(engine, ui), m_availlbl(NULL), m_agentlbl(NULL)
 {
-    //qDebug() << "PeerWidget constuctor options :" << options;
     // fill m_persons, m_phones and m_agents if needed.
     if(m_persons.count() == 0)
         {
@@ -78,8 +77,6 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui, const QVariant & opti
             }
         }
 
-    m_functions = options.toMap()["functions"].toStringList();
-    //        qDebug() << "PeerWidget::PeerWidget()" << m_functions;
     // qDebug() << "PeerWidget::PeerWidget()" << id;
     //        QHBoxLayout * layout = new QHBoxLayout(this);
         

@@ -39,41 +39,60 @@
  * $Date$
  */
 
-#ifndef __BASICPEERWIDGET_H__
-#define __BASICPEERWIDGET_H__
 
-#include <QColor>
-#include <QString>
-#include <QWidget>
+#include "peerwidgetfactory.h"
+#include "baseengine.h"
+#include "basicpeerwidget.h"
+#include "peerwidget.h"
+#include "detailedexternalphonepeerwidget.h"
+#include "externalphonepeerwidget.h"
 
-#include "basepeerwidget.h"
-
-/*! \brief Simple widget to display a Peer
- * 
- * Only display the name of the user in a color rectangle
- * which gives the status of its telephone :
- * Green for available, blue for ringing, red for online.
- * More informations are given by the tool tip. */
-class BasicPeerWidget : public BasePeerWidget
+PeerWidgetFactory::PeerWidgetFactory(BaseEngine * engine, QObject * parent)
+    : QObject(parent), m_engine(engine)
 {
-    Q_OBJECT
-public:
-    BasicPeerWidget(BaseEngine *, UserInfo *);
-    void setAgentToolTip(const QString &, const QStringList &);
-    void setAgentState(const QString & color);
-    void updatePresence();
-    void updatePhonesStates();
-    void setName(const QString & name) { setText(name); };
-protected:
-    void paintEvent(QPaintEvent *);
-    void mouseDoubleClickEvent(QMouseEvent *);
-private:
-    void setText(const QString &);  //!< Set displayed text
-private:    // attributes
-    QString m_text; //!< Text to display
-    QColor m_color; //!< color
-    QColor m_presenceColor; //!< color of presence indicator
-};
+}
 
-#endif
+QString PeerWidgetFactory::getSwitchBoardEltType() const
+{
+    return m_engine->getGuiOptions("user").toMap()["switchboard-elt-type"].toString();
+}
 
+BasePeerWidget * PeerWidgetFactory::newExternalPhonePeerWidget(const QString & label, const QString & number)
+{
+    BasePeerWidget * w;
+    if(getSwitchBoardEltType() == "small")
+    {
+        w = new ExternalPhonePeerWidget( m_engine, label, number );
+    }
+    else
+    {
+        w = new DetailedExternalPhonePeerWidget( m_engine, label, number );
+    }
+    connect( w, SIGNAL(actionCall(const QString &,
+                                  const QString &,
+                                  const QString &)),
+             m_engine, SLOT(actionCall(const QString &,
+                                       const QString &,
+                                       const QString &)) );
+    return w;
+}
+
+BasePeerWidget * PeerWidgetFactory::newPeerWidget(UserInfo * ui)
+{
+    BasePeerWidget * w;
+    if(getSwitchBoardEltType() == "small")
+    {
+        w = new BasicPeerWidget( m_engine, ui );
+    }
+    else
+    {
+        w = new PeerWidget( m_engine, ui );
+    }
+    connect( w, SIGNAL(actionCall(const QString &,
+                                  const QString &,
+                                  const QString &)),
+             m_engine, SLOT(actionCall(const QString &,
+                                       const QString &,
+                                       const QString &)) );
+    return w;
+}

@@ -39,40 +39,33 @@
  * $Date$
  */
 
-#ifndef __BASICPEERWIDGET_H__
-#define __BASICPEERWIDGET_H__
+#ifndef __DETAILEDEXTERNALPHONEPEERWIDGET_H__
+#define __DETAILEDEXTERNALPHONEPEERWIDGET_H__
 
-#include <QColor>
-#include <QString>
-#include <QWidget>
-
+#include <QLabel>
 #include "basepeerwidget.h"
 
-/*! \brief Simple widget to display a Peer
- * 
- * Only display the name of the user in a color rectangle
- * which gives the status of its telephone :
- * Green for available, blue for ringing, red for online.
- * More informations are given by the tool tip. */
-class BasicPeerWidget : public BasePeerWidget
+class ExtendedLabel;
+
+/*! \brief xxx
+ */
+class DetailedExternalPhonePeerWidget : public BasePeerWidget
 {
     Q_OBJECT
 public:
-    BasicPeerWidget(BaseEngine *, UserInfo *);
-    void setAgentToolTip(const QString &, const QStringList &);
-    void setAgentState(const QString & color);
-    void updatePresence();
-    void updatePhonesStates();
+    DetailedExternalPhonePeerWidget(BaseEngine *, const QString &, const QString &);
+    void setAgentToolTip(const QString &, const QStringList &) { };
+    void setAgentState(const QString &) { };
+    void updatePresence() { };
+    void updatePhonesStates() { };
     void setName(const QString & name) { setText(name); };
-protected:
-    void paintEvent(QPaintEvent *);
-    void mouseDoubleClickEvent(QMouseEvent *);
+    void setText(const QString & text);
+    QString name() const { return m_textlbl->text(); };
+public slots:
+    void edit();
 private:
-    void setText(const QString &);  //!< Set displayed text
-private:    // attributes
-    QString m_text; //!< Text to display
-    QColor m_color; //!< color
-    QColor m_presenceColor; //!< color of presence indicator
+    QLabel * m_textlbl;
+    ExtendedLabel * m_lblphone;
 };
 
 #endif

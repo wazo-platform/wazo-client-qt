@@ -52,14 +52,12 @@
 #include <QMenu>
 
 #include "baseengine.h"
-#include "peerwidget.h"
+#include "peerwidgetfactory.h"
 #include "peerslayout.h"
 #include "peeritem.h"
 #include "switchboardwindow.h"
 #include "userinfo.h"
 #include "xivoconsts.h"
-#include "basicpeerwidget.h"
-#include "externalphonepeerwidget.h"
 #include "externalphonedialog.h"
 #include "group.h"
 
@@ -68,14 +66,12 @@
  * initialize layout, attributes, etc.
  */
 SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine,
-                                     const QVariant & options,
                                      QWidget * parent)
     : QWidget(parent), m_engine(engine),
       m_trace_box(false), m_group_to_resize(0)
 {
-    qDebug() << options;
+    m_peerwidgetfactory = new PeerWidgetFactory(m_engine, this),
     m_layout = new PeersLayout(this);
-    m_options = options;
     setObjectName("scroller"); // in order for the style settings to be set accordingly
     setAcceptDrops(true);
     reloadGroups();
@@ -328,48 +324,50 @@ void SwitchBoardWindow::dragEnterEvent(QDragEnterEvent * event)
 void SwitchBoardWindow::dropEvent(QDropEvent * event)
 {
     if( event->mimeData()->hasFormat(USERID_MIMETYPE) )
+    {
+        QString userid = event->mimeData()->data(USERID_MIMETYPE);
+        if( m_peerhash.contains(userid) )
         {
-            QString userid = event->mimeData()->data(USERID_MIMETYPE);
-            if( m_peerhash.contains(userid) )
+            PeerItem * peeritem = m_peerhash[userid];
+            BasePeerWidget * peerwidget = peeritem->getWidget();
+            if( peerwidget )
+            {
+                m_layout->setItemPosition(peerwidget, m_layout->getPosInGrid(event->pos()));
+            }
+            else
+            {
+                peerwidget = addPeerWidget( peeritem, m_layout->getPosInGrid(event->pos()) );
+            }
+            updateGeometry();
+            event->acceptProposedAction();
+            savePositions();
+            update();
+        }
+    }
+    else if( event->mimeData()->hasFormat(NUMBER_MIMETYPE) )
+    {
+        QString number = event->mimeData()->data(NUMBER_MIMETYPE);
+        for(int i = 0; i < m_layout->count(); i++)
+        {
+            QLayoutItem * item = m_layout->itemAt(i);
+            if( item && item->widget()
+                && (item->widget()->inherits("ExternalPhonePeerWidget")
+                    || item->widget()->inherits("DetailedExternalPhonePeerWidget") ) )
+//                && item->widget()->inherits("ExternalPhonePeerWidget") )
+            {
+                BasePeerWidget * w = static_cast<BasePeerWidget *>( item->widget() );
+                if( number == w->number() )
                 {
-                    PeerItem * peeritem = m_peerhash[userid];
-                    BasePeerWidget * peerwidget = peeritem->getWidget();
-                    if( peerwidget )
-                        {
-                            m_layout->setItemPosition(peerwidget, m_layout->getPosInGrid(event->pos()));
-                        }
-                    else
-                        {
-                            peerwidget = addPeerWidget( peeritem, m_layout->getPosInGrid(event->pos()) );
-                        }
+                    m_layout->setItemPosition(w, m_layout->getPosInGrid(event->pos()));
                     updateGeometry();
                     event->acceptProposedAction();
                     savePositions();
                     update();
+                    break;
                 }
+            }
         }
-    else if( event->mimeData()->hasFormat(NUMBER_MIMETYPE) )
-        {
-            QString number = event->mimeData()->data(NUMBER_MIMETYPE);
-            for(int i = 0; i < m_layout->count(); i++)
-                {
-                    QLayoutItem * item = m_layout->itemAt(i);
-                    if( item && item->widget()
-                        && item->widget()->inherits("ExternalPhonePeerWidget") )
-                        {
-                            ExternalPhonePeerWidget * w = static_cast<ExternalPhonePeerWidget *>( item->widget() );
-                            if( number == w->number() )
-                                {
-                                    m_layout->setItemPosition(w, m_layout->getPosInGrid(event->pos()));
-                                    updateGeometry();
-                                    event->acceptProposedAction();
-                                    savePositions();
-                                    update();
-                                    break;
-                                }
-                        }
-                }
-        }
+    }
 }
 
 
@@ -384,35 +382,37 @@ void SwitchBoardWindow::savePositions() const
     settings->beginGroup("layout");
     QHashIterator<QString, PeerItem *> it( m_peerhash );
     while( it.hasNext() )
+    {
+        it.next();
+        const QString userid = it.key();
+        PeerItem * peeritem = it.value();
+        if( peeritem->getWidget() )
         {
-            it.next();
-            const QString userid = it.key();
-            PeerItem * peeritem = it.value();
-            if( peeritem->getWidget() )
-                {
-                    settings->setValue( userid,
-                                        m_layout->getItemPosition( peeritem->getWidget() ) );
-                }
-            else
-                {
-                    settings->remove( userid );
-                }
+            settings->setValue( userid,
+                                m_layout->getItemPosition( peeritem->getWidget() ) );
         }
+        else
+        {
+            settings->remove( userid );
+        }
+    }
     settings->beginWriteArray("externalphone");
     int index = 0;
     for(int i = 0; i < m_layout->count(); i++)
+    {
+        QLayoutItem * item = m_layout->itemAt(i);
+        if( item && item->widget()
+            && (item->widget()->inherits("ExternalPhonePeerWidget")
+                || item->widget()->inherits("DetailedExternalPhonePeerWidget") ) )
+//            && item->widget()->inherits("ExternalPhonePeerWidget") )
         {
-            QLayoutItem * item = m_layout->itemAt(i);
-            if( item && item->widget()
-                && item->widget()->inherits("ExternalPhonePeerWidget") )
-                {
-                    ExternalPhonePeerWidget * w = static_cast<ExternalPhonePeerWidget *>( item->widget() );
-                    settings->setArrayIndex( index++ );
-                    settings->setValue( "position", m_layout->getItemPosition( w ) );
-                    settings->setValue( "name", w->name() );
-                    settings->setValue( "number", w->number() );
-                }
+            BasePeerWidget * w = static_cast<BasePeerWidget *>( item->widget() );
+            settings->setArrayIndex( index++ );
+            settings->setValue( "position", m_layout->getItemPosition( w ) );
+            settings->setValue( "name", w->name() );
+            settings->setValue( "number", w->number() );
         }
+    }
     settings->endArray();
     settings->endGroup();
 }
@@ -425,23 +425,15 @@ void SwitchBoardWindow::reloadExternalPhones()
     settings->beginGroup("layout");
     int size = settings->beginReadArray("externalphone");
     for(int i = 0; i < size; i++)
-        {
-            settings->setArrayIndex( i );
-            BasePeerWidget  * peerwidget = NULL;
-            peerwidget = new ExternalPhonePeerWidget( m_engine,
-                                                      m_options,
-                                                      settings->value("name").toString(),
-                                                      settings->value("number").toString() );
-            connect( peerwidget, SIGNAL(actionCall(const QString &,
-                                                   const QString &,
-                                                   const QString &)),
-                     m_engine, SLOT(actionCall(const QString &,
-                                               const QString &,
-                                               const QString &)) );
-            connect( peerwidget, SIGNAL(removeFromPanel()),
-                     this, SLOT(removePeerFromLayout()) );
-            m_layout->addWidget( peerwidget, settings->value("position").toPoint() );
-        }
+    {
+        settings->setArrayIndex( i );
+        BasePeerWidget * peerwidget
+            = m_peerwidgetfactory->newExternalPhonePeerWidget( settings->value("name").toString(),
+                                                               settings->value("number").toString() );
+        connect( peerwidget, SIGNAL(removeFromPanel()),
+                 this, SLOT(removePeerFromLayout()) );
+        m_layout->addWidget( peerwidget, settings->value("position").toPoint() );
+    }
     settings->endArray();
     settings->endGroup();
 }
@@ -455,85 +447,80 @@ void SwitchBoardWindow::mouseMoveEvent ( QMouseEvent * event )
     //{
     //}
     if(m_trace_box)
-        {
-            // set second box corner
-            m_second_corner = event->pos();
-            // request redraw
-            update();
-        }
+    {
+        // set second box corner
+        m_second_corner = event->pos();
+        // request redraw
+        update();
+    }
     if(m_group_to_resize)
+    {
+        QPoint delta = event->pos() - m_first_corner;
+        QPoint deltaGrid = m_layout->getPosInGrid( delta );
+        //qDebug() << delta << deltaGrid;
+        switch(m_group_resize_mode)
         {
-            QPoint delta = event->pos() - m_first_corner;
-            QPoint deltaGrid = m_layout->getPosInGrid( delta );
-            //qDebug() << delta << deltaGrid;
-            switch(m_group_resize_mode)
+        case EMove:
+            if(deltaGrid != QPoint(0, 0))
+            {
+                QRect rect = m_group_to_resize->rect().adjusted(0, 0, -1, -1);
+                bool intersects = false;
+                foreach(Group * group, m_group_list)
                 {
-                case EMove:
-                    if(deltaGrid != QPoint(0, 0))
-                        {
-                            QRect rect = m_group_to_resize->rect().adjusted(0, 0, -1, -1);
-                            bool intersects = false;
-                            foreach(Group * group, m_group_list)
-                                {
-                                    if(group != m_group_to_resize)
-                                        intersects = intersects || group->rect().adjusted(0, 0, -1, -1).intersects( rect.translated(deltaGrid) );
-                                }
-                            if(!intersects)
-                                {
-                                    for(int i = 0; i < m_layout->count(); i++)
-                                        {
-                                            if( rect.contains( m_layout->getItemPosition( i ) ) )
-                                                {
-                                                    m_layout->setItemPosition( i, m_layout->getItemPosition( i ) + deltaGrid );
-                                                }
-                                        }
-                                    m_group_to_resize->rect().translate(deltaGrid);
-                                    update();
-                                    //m_first_corner = event->pos();
-                                    m_first_corner += m_layout->getPosFromGrid(deltaGrid);
-                                }
-                        }
-                    break;
-                case ETop:
-                    if(deltaGrid.y() != 0 && (m_group_to_resize->rect().height() - deltaGrid.y() > 1))
-                        {
-                            m_group_to_resize->rect().adjust(0, deltaGrid.y(), 0, 0);
-                            update();
-                            //m_first_corner = event->pos();
-                            m_first_corner += m_layout->getPosFromGrid(deltaGrid);
-                        }
-                    break;
-                case EBottom:
-                    if(deltaGrid.y() != 0 && (m_group_to_resize->rect().height() + deltaGrid.y() > 1))
-                        {
-                            m_group_to_resize->rect().adjust(0, 0, 0, deltaGrid.y());
-                            update();
-                            //m_first_corner = event->pos();
-                            m_first_corner += m_layout->getPosFromGrid(deltaGrid);
-                        }
-                    break;
-                case ELeft:
-                    if(deltaGrid.x() != 0 && (m_group_to_resize->rect().width() - deltaGrid.x() > 1))
-                        {
-                            m_group_to_resize->rect().adjust(deltaGrid.x(), 0, 0, 0);
-                            update();
-                            //m_first_corner = event->pos();
-                            m_first_corner += m_layout->getPosFromGrid(deltaGrid);
-                        }
-                    break;
-                case ERight:
-                    if(deltaGrid.x() != 0 && (m_group_to_resize->rect().width() + deltaGrid.x() > 1))
-                        {
-                            m_group_to_resize->rect().adjust(0, 0, deltaGrid.x(), 0);
-                            update();
-                            //m_first_corner = event->pos();
-                            m_first_corner += m_layout->getPosFromGrid(deltaGrid);
-                        }
-                    break;
-                default:
-                    qDebug() << "case not handled";
+                    if(group != m_group_to_resize)
+                        intersects = intersects || group->rect().adjusted(0, 0, -1, -1).intersects( rect.translated(deltaGrid) );
                 }
+                if(!intersects)
+                {
+                    for(int i = 0; i < m_layout->count(); i++)
+                    {
+                        if( rect.contains( m_layout->getItemPosition( i ) ) )
+                        {
+                            m_layout->setItemPosition( i, m_layout->getItemPosition( i ) + deltaGrid );
+                        }
+                    }
+                    m_group_to_resize->rect().translate(deltaGrid);
+                    update();
+                    m_first_corner += m_layout->getPosFromGrid(deltaGrid);
+                }
+            }
+            break;
+        case ETop:
+            if(deltaGrid.y() != 0 && (m_group_to_resize->rect().height() - deltaGrid.y() > 1))
+            {
+                m_group_to_resize->rect().adjust(0, deltaGrid.y(), 0, 0);
+                update();
+                m_first_corner += m_layout->getPosFromGrid(deltaGrid);
+            }
+            break;
+        case EBottom:
+            if(deltaGrid.y() != 0 && (m_group_to_resize->rect().height() + deltaGrid.y() > 1))
+            {
+                m_group_to_resize->rect().adjust(0, 0, 0, deltaGrid.y());
+                update();
+                m_first_corner += m_layout->getPosFromGrid(deltaGrid);
+            }
+            break;
+        case ELeft:
+            if(deltaGrid.x() != 0 && (m_group_to_resize->rect().width() - deltaGrid.x() > 1))
+            {
+                m_group_to_resize->rect().adjust(deltaGrid.x(), 0, 0, 0);
+                update();
+                m_first_corner += m_layout->getPosFromGrid(deltaGrid);
+            }
+            break;
+        case ERight:
+            if(deltaGrid.x() != 0 && (m_group_to_resize->rect().width() + deltaGrid.x() > 1))
+            {
+                m_group_to_resize->rect().adjust(0, 0, deltaGrid.x(), 0);
+                update();
+                m_first_corner += m_layout->getPosFromGrid(deltaGrid);
+            }
+            break;
+        default:
+            qDebug() << "case not handled";
         }
+    }
 }
 
 /*!
@@ -633,29 +620,32 @@ void SwitchBoardWindow::paintEvent(QPaintEvent *event)
 {
     QPainter painter( this );
     for(int i = 0; i < m_group_list.size(); i++)
-        {
-            // draw the color rectangle
-            painter.setBrush( m_group_list[i]->color() );
-            painter.setPen(Qt::NoPen);
-            const QRect & gridRect = m_group_list[i]->rect();
-            QRect rect = QRect( m_layout->getPosFromGrid(gridRect.topLeft()),
-                                m_layout->getPosFromGrid(gridRect.bottomRight()) - QPoint(1, 1) );
-            painter.drawRect( rect );
-            // write the text
-            painter.setPen(Qt::SolidLine);
-            QFont font = this->font();
-            font.setBold( true );
-            if(m_group_list[i]->color().value() < 128)
-                painter.setPen( QColor(0xcc, 0xcc, 0xcc) );
-            painter.setFont( font );
-            painter.drawText( rect, Qt::AlignTop | Qt::AlignHCenter, m_group_list[i]->name() );
-        }
+    {
+        // draw the color rectangle
+        const QRect & gridRect = m_group_list[i]->rect();
+        QRect rect = QRect( m_layout->getPosFromGrid(gridRect.topLeft()),
+                            m_layout->getPosFromGrid(gridRect.bottomRight()) - QPoint(1, 1) );
+        // skip useless groups !
+        if(!event->region().contains(rect))
+            continue;
+        painter.setBrush( m_group_list[i]->color() );
+        painter.setPen(Qt::NoPen);
+        painter.drawRect( rect );
+        // write the text
+        painter.setPen(Qt::SolidLine);
+        QFont font = this->font();
+        font.setBold( true );
+        if(m_group_list[i]->color().value() < 128)
+            painter.setPen( QColor(0xcc, 0xcc, 0xcc) );
+        painter.setFont( font );
+        painter.drawText( rect, Qt::AlignTop | Qt::AlignHCenter, m_group_list[i]->name() );
+    }
     if( m_trace_box )
-        {
-            painter.setBrush( Qt::NoBrush );
-            painter.setPen( Qt::DashLine );
-            painter.drawRect( QRect( m_first_corner, m_second_corner ) );
-        }
+    {
+        painter.setBrush( Qt::NoBrush );
+        painter.setPen( Qt::DashLine );
+        painter.drawRect( QRect( m_first_corner, m_second_corner ) );
+    }
 }
 
 /*! \brief show the context menu
@@ -698,12 +688,12 @@ void SwitchBoardWindow::saveGroups() const
     settings->beginGroup("groups");
     settings->beginWriteArray("groups");
     for(int i = 0; i < m_group_list.size(); i++)
-        {
-            settings->setArrayIndex( i );
-            settings->setValue( "name", m_group_list[i]->name() );
-            settings->setValue( "rect", m_group_list[i]->rect() );
-            settings->setValue( "color", m_group_list[i]->color() );
-        }
+    {
+        settings->setArrayIndex( i );
+        settings->setValue( "name", m_group_list[i]->name() );
+        settings->setValue( "rect", m_group_list[i]->rect() );
+        settings->setValue( "color", m_group_list[i]->color() );
+    }
     settings->endArray();
     settings->endGroup();
 }
@@ -719,14 +709,14 @@ void SwitchBoardWindow::reloadGroups()
     settings->beginGroup("groups");
     int size = settings->beginReadArray("groups");
     for(int i = 0; i < size; i++)
-        {
-            settings->setArrayIndex( i );
-            Group * group = new Group( this );
-            group->setName( settings->value( "name" ).toString() );
-            group->setRect( settings->value( "rect" ).toRect() );
-            group->setColor( settings->value( "color" ).value<QColor>() );
-            m_group_list.insert( i, group );
-        }
+    {
+        settings->setArrayIndex( i );
+        Group * group = new Group( this );
+        group->setName( settings->value( "name" ).toString() );
+        group->setRect( settings->value( "rect" ).toRect() );
+        group->setColor( settings->value( "color" ).value<QColor>() );
+        m_group_list.insert( i, group );
+    }
     settings->endArray();
     settings->endGroup();
 }
@@ -736,12 +726,12 @@ void SwitchBoardWindow::reloadGroups()
 Group * SwitchBoardWindow::getGroup( const QPoint & position ) const
 {
     foreach(Group * group, m_group_list)
-        {
-            if( group->rect().contains( position ) 
-                && (group->rect().right() != position.x())
-                && (group->rect().bottom() != position.y()) )
-                return group;
-        }
+    {
+        if( group->rect().contains( position ) 
+            && (group->rect().right() != position.x())
+            && (group->rect().bottom() != position.y()) )
+            return group;
+    }
     return NULL;
 }
 
@@ -752,28 +742,8 @@ Group * SwitchBoardWindow::getGroup( const QPoint & position ) const
  */
 BasePeerWidget * SwitchBoardWindow::addPeerWidget(PeerItem * peeritem, const QPoint & pos)
 {
-    BasePeerWidget  * peerwidget = NULL;
-    QString eltType = m_options.toMap()["switchboard-elt-type"].toString();
-    //qDebug() << "  " << eltType;
-    if( eltType == "small" )
-        {
-            peerwidget = new BasicPeerWidget( m_engine,
-                                              peeritem->userinfo(),
-                                              m_options );
-        }
-    else
-        {
-            // default
-            peerwidget = new PeerWidget( m_engine,
-                                         peeritem->userinfo(),
-                                         m_options );
-        }
-    connect( peerwidget, SIGNAL(actionCall(const QString &,
-                                           const QString &,
-                                           const QString &)),
-             m_engine, SLOT(actionCall(const QString &,
-                                       const QString &,
-                                       const QString &)) );
+    BasePeerWidget * peerwidget
+        = m_peerwidgetfactory->newPeerWidget( peeritem->userinfo() );
     connect( peerwidget, SIGNAL(removeFromPanel()),
              this, SLOT(removePeerFromLayout()) );
 
@@ -793,21 +763,15 @@ void SwitchBoardWindow::addPhoneNumberEntry()
     int rDialog = dialog.exec();
     QPoint pos = sender()->property( "pos" ).toPoint();
     if( rDialog && !dialog.number().isEmpty() )
-        {
-            QString label = dialog.label();
-            QString number = dialog.number();
-            if( label.isEmpty() )
-                label = number;
-            BasePeerWidget  * peerwidget = NULL;
-            peerwidget = new ExternalPhonePeerWidget( m_engine, m_options, label, number );
-            connect( peerwidget, SIGNAL(actionCall(const QString &,
-                                                   const QString &,
-                                                   const QString &)),
-                     m_engine, SLOT(actionCall(const QString &,
-                                               const QString &,
-                                               const QString &)) );
-            connect( peerwidget, SIGNAL(removeFromPanel()),
-                     this, SLOT(removePeerFromLayout()) );
-            m_layout->addWidget( peerwidget, pos );
-        }
+    {
+        QString label = dialog.label();
+        QString number = dialog.number();
+        if( label.isEmpty() )
+            label = number;
+        BasePeerWidget * peerwidget
+            = m_peerwidgetfactory->newExternalPhonePeerWidget( label, number );
+        connect( peerwidget, SIGNAL(removeFromPanel()),
+                 this, SLOT(removePeerFromLayout()) );
+        m_layout->addWidget( peerwidget, pos );
+    }
 }

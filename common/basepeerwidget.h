@@ -55,7 +55,7 @@ class BasePeerWidget : public QWidget
 {
     Q_OBJECT
 public:
-    BasePeerWidget(BaseEngine *, UserInfo *, const QVariant &);
+    BasePeerWidget(BaseEngine *, UserInfo *);
     //! change username to be displayed
     virtual void setName(const QString &) = 0;
     //! set Tooltip for agent

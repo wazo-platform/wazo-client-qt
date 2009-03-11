@@ -53,10 +53,9 @@
  *
  * initialize members.
  */
-BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui, const QVariant & /*options*/)
+BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
     : m_engine(engine), m_ui(ui), m_editable(false)
 {
-    //qDebug() << "BasePeerWidget() options :" << options;
     if(m_ui)
         setProperty( "userid", m_ui->userid() );
     m_removeAction = new QAction( tr("&Remove"), this);

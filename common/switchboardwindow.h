@@ -54,6 +54,7 @@ class BaseEngine;
 class PeerItem;
 class PeersLayout;
 class BasePeerWidget;
+class PeerWidgetFactory;
 class UserInfo;
 class Group;
 
@@ -64,12 +65,10 @@ class Group;
 class SwitchBoardWindow : public QWidget
 {
     Q_OBJECT
-        public:
-    SwitchBoardWindow(BaseEngine *,
-                      const QVariant &,
-                      QWidget * parent = 0);
+public:
+    SwitchBoardWindow(BaseEngine *, QWidget * parent = 0);
     ~SwitchBoardWindow();        //!< Destructor
- protected:
+protected:
     // event handlers
     void mousePressEvent(QMouseEvent *); //!< Catch mouse press events
     void mouseMoveEvent(QMouseEvent *);
@@ -79,7 +78,7 @@ class SwitchBoardWindow : public QWidget
     void dropEvent(QDropEvent *);
     void dragMoveEvent(QDragMoveEvent *);
     void contextMenuEvent(QContextMenuEvent *);
-    public slots:
+public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *);
     void updateUser(UserInfo *);
@@ -89,13 +88,13 @@ class SwitchBoardWindow : public QWidget
                          const QVariant &);
     void removePeer(const QString &);
     void removePeers();
-    private slots:
+private slots:
     void removePeerFromLayout();
     void removeGroup();
     void changeGroupColor();
     void changeGroupName();
     void addPhoneNumberEntry();
- private:
+private:
     void saveGroups() const;
     void savePositions() const;
     void reloadGroups();
@@ -105,7 +104,7 @@ class SwitchBoardWindow : public QWidget
     BaseEngine * m_engine;        //!< engine to connect to peer widgets
     QHash<QString, PeerItem *> m_peerhash;        //!< PeerItem hash
     PeersLayout * m_layout;                        //!< Grid Layout for displaying peers
-    QVariant m_options;
+    PeerWidgetFactory * m_peerwidgetfactory;    //!< to build *PeerWidget objects
     // for the groups of people :
     bool m_trace_box;   //!< is box drawing enable
     QPoint m_first_corner;  //!< first corner of the box being drawn
