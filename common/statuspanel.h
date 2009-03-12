@@ -57,28 +57,29 @@ class QLineEdit;
 class QPushButton;
 
 class UserInfo;
+class BaseEngine;
 
 /*! \brief Operator widget used to answer and transfer calls
  */
 class StatusPanel : public QWidget
 {
     Q_OBJECT
-        public:
-    StatusPanel(QWidget * parent = 0);
+public:
+    StatusPanel(BaseEngine * engine, QWidget * parent = 0);
     ~StatusPanel();
     enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
-    public slots:
+public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *);
     void functionKeyPressed(int);
     void xferPressed();
     void clicked();
     void updateUser(UserInfo *);
- signals:
+signals:
     void actionCall(const QString &,
                     const QString & src = "",
                     const QString & dst = "");
- private:
+private:
     void updateLine(const QString &, const QStringList &);
     void newCall(const QString &);
     void dtransfer();
@@ -88,7 +89,7 @@ class StatusPanel : public QWidget
     void removeLine(const QString &);
         
     QGridLayout * m_glayout;
-    const UserInfo * m_ui;
+    BaseEngine * m_engine;
     QLabel * m_lbl;
         
     QHash<QString, QFrame *> m_vlinesl;

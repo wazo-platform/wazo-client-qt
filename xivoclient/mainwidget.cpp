@@ -966,7 +966,7 @@ void MainWidget::engineStarted()
                 addPanel(xletid, tr("Video"), m_xlet[xletid]);
 
             } else if (xletid == QString("operator")) {
-                m_xlet[xletid] = new StatusPanel(this);
+                m_xlet[xletid] = new StatusPanel(m_engine, this);
                 addPanel(xletid, tr("Operator"), m_xlet[xletid]);
                                 
                 connectDials(m_xlet[xletid]);

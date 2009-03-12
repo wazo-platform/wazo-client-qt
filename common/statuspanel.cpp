@@ -50,11 +50,12 @@
 #include "userinfo.h"
 #include "phoneinfo.h"
 #include "xivoconsts.h"
+#include "baseengine.h"
 
 /*! \brief Constructor
  */
-StatusPanel::StatusPanel(QWidget * parent)
-    : QWidget(parent), m_ui(NULL)
+StatusPanel::StatusPanel(BaseEngine * engine, QWidget * parent)
+    : QWidget(parent), m_engine(engine)
 {
     m_glayout = new QGridLayout(this);
     m_lbl = new QLabel( "", this );
@@ -129,10 +130,10 @@ void StatusPanel::newCall(const QString & chan)
     m_actions[chan] = k;
     int row = 1;
     foreach(int r, m_row)
-        {
-            if(r >= row)
-                row = r + 1;
-        }
+    {
+        if(r >= row)
+            row = r + 1;
+    }
     m_row[chan] = row;
 }
 
@@ -184,10 +185,8 @@ void StatusPanel::clicked()
 
 /*! \brief Set user to manage
  */
-void StatusPanel::setUserInfo(const UserInfo * ui)
+void StatusPanel::setUserInfo(const UserInfo *)
 {
-    m_ui = ui;
-    m_lbl->setText(ui->fullname());
 }
 
 /*! \brief setup things for a direct transfer
@@ -281,7 +280,11 @@ void StatusPanel::functionKeyPressed(int keynum)
         action = m_actionkey[keynum][0];
     else
         return;
-        
+     
+    QString userid;
+    if(m_engine->getXivoClientUser())
+        userid = m_engine->getXivoClientUser()->userid();
+
     if(m_callchannels.contains(m_currentchannel)) {
         Line linestatus = m_linestatuses[m_currentchannel];
         qDebug() << "StatusPanel::functionKeyPressed()" << keynum << action << m_currentchannel << linestatus;
@@ -289,12 +292,12 @@ void StatusPanel::functionKeyPressed(int keynum)
             if(action == "answer")
                 actionCall("pickup"); // Call
             else if(action == "hangup")
-                actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(getPeerChan(m_currentchannel))); // Call
+                actionCall("simplehangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
             else if(action == "dtransfer")
                 dtransfer();
         } else if(linestatus == Online) {
             if(action == "hangup") {
-                actionCall("hangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(getPeerChan(m_currentchannel))); // Call
+                actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
             } else if(action == "dtransfer") {
                 dtransfer();
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
@@ -309,7 +312,7 @@ void StatusPanel::functionKeyPressed(int keynum)
                 qDebug() << "StatusPanel::functionKeyPressed()" << "F1 when Wait : Take back";
         } else if(linestatus == WDTransfer) {
             if(action == "hangup") {
-                actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(getPeerChan(m_currentchannel))); // Call
+                actionCall("simplehangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
             } else if(action == "dtransfer") {
                 dtransfer(); // cancel D. Transfer request
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
@@ -322,7 +325,7 @@ void StatusPanel::functionKeyPressed(int keynum)
             }
         } else if(linestatus == WITransfer) {
             if(action == "hangup") {
-                actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(getPeerChan(m_currentchannel))); // Call
+                actionCall("simplehangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
             } else if(action == "dtransfer") {
                 dtransfer();
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
@@ -330,7 +333,7 @@ void StatusPanel::functionKeyPressed(int keynum)
                 itransfer(); // cancel I. Transfer request
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
             } else if(action == "ilink") {
-                actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(m_currentchannel)); // Call
+                actionCall("simplehangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
             } else if(action == "icancel") {
                 /*
                   qDebug() << "icancel : currentchannel=" << m_currentchannel
@@ -339,7 +342,7 @@ void StatusPanel::functionKeyPressed(int keynum)
                   if(m_ui)
                   qDebug() << "  user channels" << m_ui->channelList();
                 */
-                actionCall("simplehangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(m_tferchannel)); // Call
+                actionCall("simplehangup", QString("chan:%1:%2").arg(userid).arg(m_tferchannel)); // Call
             }
         }
     }
@@ -364,90 +367,94 @@ void StatusPanel::changeCurrentChannel(const QString & before, const QString & a
 
 void StatusPanel::updateUser(UserInfo * ui)
 {
-    if (!ui || !m_ui)
+    //qDebug() << " StatusPanel::updateUser()" << ui << m_engine->getXivoClientUser();
+    if (!ui || !m_engine->getXivoClientUser())
         return;
-    if (ui == m_ui)
+    if (ui == m_engine->getXivoClientUser())
+    {
+        m_lbl->setText(ui->fullname());
+        // it is concerning our user
+        foreach(const QString phone, ui->phonelist())
         {
-            // it is concerning our user
-            foreach(const QString phone, ui->phonelist())
+            const PhoneInfo * pi = ui->getPhoneInfo( phone );
+            if( pi )
+            {
+                QMapIterator<QString, QVariant> it( pi->comms() );
+                while( it.hasNext() )
                 {
-                    const PhoneInfo * pi = ui->getPhoneInfo( phone );
-                    if( pi )
+                    it.next();
+                    QVariantMap qvm = it.value().toMap();
+                    const QString callchannel = qvm["thischannel"].toString();
+                    const QString status = qvm["status"].toString();
+                    const QString peerchan = qvm["peerchannel"].toString();
+                    const QString num = qvm["calleridnum"].toString();
+                    qDebug() << " StatusPanel::updateUser" << it.key() << status << num << callchannel << peerchan;
+                    if(callchannel.isEmpty())
+                        continue;
+                    if(status == CHAN_STATUS_RINGING) {
+                        if( !m_callchannels.contains(callchannel) )
                         {
-                            QMapIterator<QString, QVariant> it( pi->comms() );
-                            while( it.hasNext() )
-                                {
-                                    it.next();
-                                    QVariantMap qvm = it.value().toMap();
-                                    const QString callchannel = qvm["thischannel"].toString();
-                                    const QString status = qvm["status"].toString();
-                                    const QString peerchan = qvm["peerchannel"].toString();
-                                    const QString num = qvm["calleridnum"].toString();
-                                    qDebug() << " StatusPanel::updateUser" << it.key() << status << num << callchannel << peerchan;
-                                    if(status == CHAN_STATUS_RINGING) {
-                                        if( !m_callchannels.contains(callchannel) )
-                                            {
-                                                newCall(callchannel);
-                                                m_callchannels << callchannel;
-                                                m_linestatuses[callchannel] = Ringing;
-                                                updateLine(callchannel, (QStringList() << "answer" << "hangup" << "dtransfer"));
-                                                m_statuses[callchannel]->setText(tr("%1 Ringing").arg(num));
-                                                m_statuses[callchannel]->show();
-                                            }
-                                    } else if (status == CHAN_STATUS_LINKED_CALLED
-                                               || status == CHAN_STATUS_LINKED_CALLER) {
-                                        if( !m_callchannels.contains(callchannel) ) {
-                                            newCall(callchannel);
-                                            m_callchannels << callchannel;
-                                        }
-                                        m_linestatuses[callchannel] = Online;
-                                        updateLine(callchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
-                                        m_statuses[callchannel]->setText(tr("Link %1").arg(num));
-                                        m_statuses[callchannel]->show();
-                                    } else if(status == CHAN_STATUS_HANGUP) {
-                                        if(m_callchannels.contains(callchannel)) {
-                                            removeLine(callchannel);
-                                        }
-                                    } else {
-                                        qDebug() << " StatusPanel::updateUser" << callchannel << peerchan << status;
-                                        //                        if(m_callchannels.contains(callchannel) == true) {
-                                        //                                         m_linestatuses[callchannel] = Ready;
-                                        //                                         m_statuses[callchannel]->setText(status + " " + num);
-                                        //                                         updateLine(callchannel, (QStringList()));
-                                        //                                         m_tnums[callchannel]->hide();
-                                        //                                 }
-                                    }
-                                }
+                            newCall(callchannel);
+                            m_callchannels << callchannel;
+                            m_linestatuses[callchannel] = Ringing;
+                            updateLine(callchannel, (QStringList() << "answer" << "hangup" << "dtransfer"));
+                            m_statuses[callchannel]->setText(tr("%1 Ringing").arg(num));
+                            m_statuses[callchannel]->show();
                         }
+                    } else if (status == CHAN_STATUS_LINKED_CALLED
+                               || status == CHAN_STATUS_LINKED_CALLER) {
+                        if( !m_callchannels.contains(callchannel) ) {
+                            newCall(callchannel);
+                            m_callchannels << callchannel;
+                        }
+                        m_linestatuses[callchannel] = Online;
+                        updateLine(callchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
+                        m_statuses[callchannel]->setText(tr("Link %1").arg(num));
+                        m_statuses[callchannel]->show();
+                    } else if(status == CHAN_STATUS_HANGUP) {
+                        if(m_callchannels.contains(callchannel)) {
+                            removeLine(callchannel);
+                        }
+                    } else {
+                        qDebug() << " StatusPanel::updateUser not processed" << callchannel << peerchan << status;
+//                        if(m_callchannels.contains(callchannel) == true) {
+//                                         m_linestatuses[callchannel] = Ready;
+//                                         m_statuses[callchannel]->setText(status + " " + num);
+//                                         updateLine(callchannel, (QStringList()));
+//                                         m_tnums[callchannel]->hide();
+//                                 }
+                    }
                 }
+            }
         }
-    else if (ui->astid() == m_ui->astid())
+    }
+    else if (ui->astid() == m_engine->getXivoClientUser()->astid())
+    {
+        // another user on the same asterisk instance,
+        // we should look for channels concerning our user !
+        foreach(const QString phone, ui->phonelist())
         {
-            // another user on the same asterisk instance,
-            // we should look for channels concerning our user !
-            foreach(const QString phone, ui->phonelist())
+            const PhoneInfo * pi = ui->getPhoneInfo( phone );
+            if( pi )
+            {
+                QMapIterator<QString, QVariant> it( pi->comms() );
+                while( it.hasNext() )
                 {
-                    const PhoneInfo * pi = ui->getPhoneInfo( phone );
-                    if( pi )
-                        {
-                            QMapIterator<QString, QVariant> it( pi->comms() );
-                            while( it.hasNext() )
-                                {
-                                    it.next();
-                                    QVariantMap qvm = it.value().toMap();
-                                    // qDebug() << "StatusPanel::updatePeer()" << ui->userid() << qvm;
-                                    //const QString callchannel = qvm["thischannel"].toString();
-                                    //const QString status = qvm["status"].toString();
-                                    const QString peerchan = qvm["peerchannel"].toString();
-                                    const QString num = qvm["calleridnum"].toString();
-                                    if(m_ui->phonenumber() == num) {
-                                        // qDebug() << "not me" << ui->fullname() << chanlist.toMap()[ref];
-                                        m_tferchannel = peerchan;
-                                    }
-                                }
-                        }
+                    it.next();
+                    QVariantMap qvm = it.value().toMap();
+                    // qDebug() << "StatusPanel::updatePeer()" << ui->userid() << qvm;
+                    //const QString callchannel = qvm["thischannel"].toString();
+                    //const QString status = qvm["status"].toString();
+                    const QString peerchan = qvm["peerchannel"].toString();
+                    const QString num = qvm["calleridnum"].toString();
+                    if(m_engine->getXivoClientUser()->phonenumber() == num) {
+                        // qDebug() << "not me" << ui->fullname() << chanlist.toMap()[ref];
+                        m_tferchannel = peerchan;
+                    }
                 }
+            }
         }
+    }
 }
 
 /*! \brief get the peer channel linked to channel
@@ -457,23 +464,23 @@ void StatusPanel::updateUser(UserInfo * ui)
  */
 QString StatusPanel::getPeerChan(QString const & chan) const
 {
-    if(!m_ui)
+    if(!m_engine->getXivoClientUser())
         return QString();
-    foreach(const QString phone, m_ui->phonelist())
+    foreach(const QString phone, m_engine->getXivoClientUser()->phonelist())
+    {
+        const PhoneInfo * pi = m_engine->getXivoClientUser()->getPhoneInfo( phone );
+        if( pi )
         {
-            const PhoneInfo * pi = m_ui->getPhoneInfo( phone );
-            if( pi )
-                {
-                    QMapIterator<QString, QVariant> it( pi->comms() );
-                    while( it.hasNext() )
-                        {
-                            it.next();
-                            QVariantMap qvm = it.value().toMap();
-                            if(qvm["thischannel"].toString() == chan)
-                                return qvm["peerchannel"].toString();
-                        }
-                }
+            QMapIterator<QString, QVariant> it( pi->comms() );
+            while( it.hasNext() )
+            {
+                it.next();
+                QVariantMap qvm = it.value().toMap();
+                if(qvm["thischannel"].toString() == chan)
+                    return qvm["peerchannel"].toString();
+            }
         }
+    }
     return QString();
 }
 
@@ -490,10 +497,10 @@ void StatusPanel::removeLine(QString const & chan)
     m_linestatuses.remove(chan);
     QHashIterator<QString, QPushButton *> it(m_actions[chan]);
     while(it.hasNext())
-        {
-            it.next();
-            it.value()->deleteLater();
-        }
+    {
+        it.next();
+        it.value()->deleteLater();
+    }
     m_actions.remove(chan);
     // current channel is next channel
     if(m_currentchannel == chan) {
