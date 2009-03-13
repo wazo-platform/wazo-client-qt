@@ -65,7 +65,7 @@ QPixmap * CallWidget::m_call_gray   = NULL;
  * set up the widget, start timer.
  */
 CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
-                       const QString & status, int time,
+                       const QString & status, uint ts,
                        const QString &/* channelpeer*/, const QString & exten,
                        QWidget * parent)
     : QWidget(parent), m_square(16,16)
@@ -96,7 +96,8 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
         
     m_lbl_time = new QLabel(this);
     m_lbl_time->setFont(QFont("", 8, QFont::Bold));
-    m_startTime = QDateTime::currentDateTime().addSecs(-time);
+    //m_startTime = QDateTime::currentDateTime().addSecs(-time);
+    m_startTime = QDateTime::fromTime_t(ts);
     startTimer(1000);
     gridlayout->addWidget(m_lbl_time, 1, 0);
         
@@ -110,7 +111,7 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
     m_lbl_exten->setFont(QFont("courier", 10, QFont::Light));
     gridlayout->addWidget(m_lbl_exten, 0, 2);
         
-    updateWidget(status, time, "cpeer", exten);
+    updateWidget(status, ts, "cpeer", exten);
         
     // for caller id information
     QLabel * dummy = new QLabel("", this);
@@ -163,14 +164,15 @@ void CallWidget::timerEvent(QTimerEvent * /*event*/)
 /*! \brief update displayed stuff
  */
 void CallWidget::updateWidget(const QString & status,
-                              int time,
+                              uint ts,
                               const QString &/* channelpeer*/,
                               const QString & exten)
 {
     //qDebug() << "CallWidget::updateWidget()" << status << time << exten;
     setActionPixmap(status);
     //qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
-    m_startTime = QDateTime::currentDateTime().addSecs(-time);
+    //m_startTime = QDateTime::currentDateTime().addSecs(-time);
+    m_startTime = QDateTime::fromTime_t(ts);
     updateCallTimeLabel();
     if ((status == CHAN_STATUS_CALLING) || (status == CHAN_STATUS_LINKED_CALLER))
         m_lbl_direction->setPixmap(QPixmap(":/images/rightarrow.png"));

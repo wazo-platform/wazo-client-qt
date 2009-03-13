@@ -123,74 +123,83 @@ void CallStackWidget::reset()
  */
 void CallStackWidget::updateDisplay()
 {
+    uint current_ts = QDateTime::currentDateTime().toTime_t();
     //qDebug() << "CallStackWidget::updateDisplay()";
     CallWidget * callwidget = NULL;
 
     QStringList activeChannels;  // list of active channels to be displayed
 
     if(m_monitored_ui)
+    {
+        foreach(const QString phone, m_monitored_ui->phonelist())
         {
-            foreach(const QString phone, m_monitored_ui->phonelist())
+            const PhoneInfo * pi = m_monitored_ui->getPhoneInfo(phone);
+            if( !pi )
+                continue;
+            QMapIterator<QString, QVariant> it = QMapIterator<QString, QVariant>( pi->comms() );
+            while( it.hasNext() )
+            {
+                it.next();
+                QMap<QString, QVariant> map = it.value().toMap();
+                qDebug() << it.key() << map;
+                QString channelme = map["thischannel"].toString();
+                QString status = map["status"].toString();
+                uint ts = current_ts;
+                if(map.contains("time-dial"))
+                    map["time-dial"].toUInt() + current_ts;
+                if(map.contains("timestamp-dial"))
+                    ts = map["timestamp-link"].toUInt();
+                if(map.contains("time-dial"))
+                    ts = map["time-link"].toUInt() + current_ts;
+                if(map.contains("timestamp-link"))
+                    ts = map["timestamp-link"].toUInt();
+                QString channelpeer = map["peerchannel"].toString();
+                QString callerid = map["calleridnum"].toString();
+                QString calleridname = map["calleridname"].toString();
+                if(!calleridname.isEmpty() && (callerid != calleridname))
                 {
-                    const PhoneInfo * pi = m_monitored_ui->getPhoneInfo(phone);
-                    if( !pi )
-                        continue;
-                    QMapIterator<QString, QVariant> it = QMapIterator<QString, QVariant>( pi->comms() );
-                    while( it.hasNext() )
-                        {
-                            it.next();
-                            QMap<QString, QVariant> map = it.value().toMap();
-                            //qDebug() << it.key() << map;
-                            QString channelme = map["thischannel"].toString();
-                            QString status = map["status"].toString();
-                            int time = map["time-dial"].toInt(); // or time-link ???
-                            QString channelpeer = map["peerchannel"].toString();
-                            QString callerid = map["calleridnum"].toString();
-                            QString calleridname = map["calleridname"].toString();
-                            if(!calleridname.isEmpty() && (callerid != calleridname))
-                                {
-                                    callerid.append(" : ");
-                                    callerid.append(calleridname);
-                                }
-                            // dont display hangup channels !
-                            if(status == CHAN_STATUS_HANGUP)
-                                continue;
-                            activeChannels << channelme;
-                            if( m_affhash.contains( channelme ) )
-                                {
-                                    m_affhash[channelme]->updateWidget( status, time, channelpeer, callerid );
-                                }
-                            else
-                                {
-                                    callwidget = new CallWidget(m_monitored_ui,
-                                                                channelme,
-                                                                status,
-                                                                time,
-                                                                channelpeer,
-                                                                callerid,
-                                                                this);
-                                    connect( callwidget, SIGNAL(doHangUp(const QString &)),
-                                             this, SLOT(hupchan(const QString &)) );
-                                    connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),
-                                             this, SLOT(transftonumberchan(const QString &)) );
-                                    connect( callwidget, SIGNAL(doParkCall(const QString &)),
-                                             this, SLOT(parkcall(const QString &)) );
-                                    m_layout->insertWidget(m_layout->count() - 1, callwidget,
-                                                           0, Qt::AlignTop);
-                                    m_affhash[channelme] = callwidget;
-                                }
-                        }
+                    callerid.append(" : ");
+                    callerid.append(calleridname);
                 }
+                // dont display hangup channels !
+                if(status == CHAN_STATUS_HANGUP)
+                    continue;
+                activeChannels << channelme;
+                if( m_affhash.contains( channelme ) )
+                {
+                    m_affhash[channelme]->updateWidget( status, ts, channelpeer, callerid );
+                }
+                else
+                {
+                    callwidget = new CallWidget(m_monitored_ui,
+                                                channelme,
+                                                status,
+                                                ts,
+                                                channelpeer,
+                                                callerid,
+                                                this);
+                    connect( callwidget, SIGNAL(doHangUp(const QString &)),
+                             this, SLOT(hupchan(const QString &)) );
+                    connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),
+                             this, SLOT(transftonumberchan(const QString &)) );
+                    connect( callwidget, SIGNAL(doParkCall(const QString &)),
+                             this, SLOT(parkcall(const QString &)) );
+                    m_layout->insertWidget(m_layout->count() - 1, callwidget,
+                                           0, Qt::AlignTop);
+                    m_affhash[channelme] = callwidget;
+                }
+            }
         }
+    }
 
     // remove old channels
     foreach(const QString chan, m_affhash.keys())
+    {
+        if( !activeChannels.contains( chan ) )
         {
-            if( !activeChannels.contains( chan ) )
-                {
-                    m_affhash.take( chan )->deleteLater();
-                }
+            m_affhash.take( chan )->deleteLater();
         }
+    }
 }
 
 /*! \brief filter events based on the mimetype

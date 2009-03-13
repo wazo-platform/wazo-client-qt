@@ -68,12 +68,12 @@ class CallWidget : public QWidget
     CallWidget(UserInfo *,
                const QString &,
                const QString &,
-               int,
+               uint,
                const QString &,
                const QString &,
                QWidget * parent = 0);
     void updateWidget(const QString &,
-                      int,
+                      uint,
                       const QString &,
                       const QString &);
     const QString & channel() const;
