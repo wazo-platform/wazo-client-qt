@@ -185,13 +185,45 @@ void BasePeerWidget::vmtransfer()
 
 /*! \brief handle double click
  *
- * dial if left mouse button used
+ * dial or indirect transfer if left mouse button used
  */
 void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 {
-    // TODO : check if already online and then transfer ?
     if(event->button() == Qt::LeftButton)
+    {
+        // check if we are in communication
+        const UserInfo * ui = m_engine->getXivoClientUser();
+        if( ui && !ui->phonelist().isEmpty() )
+        {
+            foreach(const QString phone, ui->phonelist())
+            {
+                const PhoneInfo * pi = ui->getPhoneInfo( phone );
+                const QMap<QString, QVariant> & comms = pi->comms();
+                //qDebug() << pi->phoneid() << pi->comms();
+                foreach(const QString ts, comms.keys())
+                {
+                    const QMap<QString, QVariant> & comm = comms[ts].toMap();
+                    //qDebug() << pi->phoneid() << ts << comm;
+                    const QString status = comm["status"].toString();
+                    if( status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED )
+                    {
+                        QString to;
+                        if(m_ui)
+                            to = "user:" + m_ui->userid();//"ext:" + m_ui->phonenumber();
+                        else
+                            to = "ext:" + m_number;
+                        // Initiate an indirect transfer.
+                        emit actionCall("atxfer",
+                                        "chan:special:me:" + comm["thischannel"].toString(),
+                                        to );
+                        return;
+                    }
+                }
+            }
+        }
+        // "I" have no current communications, just call the person...
         dial();
+    }
 }
 
 /*! \brief handle mouse press

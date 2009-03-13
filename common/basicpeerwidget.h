@@ -66,7 +66,6 @@ public:
     void setName(const QString & name) { setText(name); };
 protected:
     void paintEvent(QPaintEvent *);
-    void mouseDoubleClickEvent(QMouseEvent *);
 private:
     void setText(const QString &);  //!< Set displayed text
 private:    // attributes
