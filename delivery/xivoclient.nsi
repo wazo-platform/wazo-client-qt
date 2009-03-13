@@ -8,15 +8,20 @@
 !define REG_UNINST Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient
 Name "XIVO Client"
 OutFile "xivoclient-setup-win32.exe"
-InstallDir "$PROGRAMFILES\XIVO"
 InstallDirRegKey HKLM "Software\XIVO\xivoclient" "Install_Dir" 
 LicenseText "XIVO Client est distribué sous licence GNU General Public License v2 avec une exception spéciale vous autorisant à le lier à OpenSSL, sous certaines conditions."
 # ComponentText "(Choix des composants / sections)"
 # DirText "(Choix du répertoire d'installation)"
 
+Page license
 LicenseData "LICENSE"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\French.nlf"
 
+Page directory
+DirText "Spécifier l'emplacement d'installation de XIVO Client."
+InstallDir "$PROGRAMFILES\XIVO"
+
+Page instfiles
 # Installation of executables
 Section "Prog"
 SetOutPath $INSTDIR
