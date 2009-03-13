@@ -146,9 +146,9 @@ void CallStackWidget::updateDisplay()
                 QString status = map["status"].toString();
                 uint ts = current_ts;
                 if(map.contains("time-dial"))
-                    map["time-dial"].toUInt() + current_ts;
+                    ts = map["time-dial"].toUInt() + current_ts;
                 if(map.contains("timestamp-dial"))
-                    ts = map["timestamp-link"].toUInt();
+                    ts = map["timestamp-dial"].toUInt();
                 if(map.contains("time-dial"))
                     ts = map["time-link"].toUInt() + current_ts;
                 if(map.contains("timestamp-link"))
