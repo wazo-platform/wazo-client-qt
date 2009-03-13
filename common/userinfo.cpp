@@ -267,3 +267,15 @@ QString UserInfo::toString() const
     return str;
 }
 
+/*! \brief count the number of current communications for this user
+ */
+int UserInfo::commsCount() const
+{
+    int c = 0;
+    foreach(const QString phone, phonelist())
+    {
+        const PhoneInfo * pi = getPhoneInfo( phone );
+        c += pi->comms().count();
+    }
+    return c;
+}

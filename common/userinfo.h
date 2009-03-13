@@ -86,6 +86,7 @@ public:
     void updatePhone( PhoneInfo * );
     QList<QString> channelList() const;
     QString toString() const;
+    int commsCount() const;
 private:
     QString m_userid;   //!< user id
     QString m_company;  //!< user company
