@@ -1483,24 +1483,31 @@ void MainWidget::about()
     QMessageBox::about(this,
                        tr("About XIVO Client"),
                        "<h3>XIVO " + m_appliname + "</h3>" +
-                       tr("<p>The XIVO CTI applications, once connected to the proper server, "
+                       tr("The XIVO CTI applications, once connected to the proper server, "
                           "complete the XIVO telephony system, by providing computer tools, "
                           "such as customer information display, directory searches, or various "
                           "supervision 'X-lets' for call centers.") +
-                       "<p><b>" + tr("Version : ") + QString("</b>%1 (").arg(applicationVersion) +
-                       "<b>svn : " + QString("</b>%1 - %2)</p>").arg(__current_client_version__,
+                       "<p>"
+                       "<b>" + tr("Version : ") + QString("</b>%1 (").arg(applicationVersion) +
+                       "<b>svn : " + QString("</b>%1 - %2)<br>").arg(__current_client_version__,
                                                                      fetchlastone) +
-                       "<p>(" + tr("Advised Server Version : ") + __required_server_version__ + ")</p>" +
-                       "<p>(" + tr("Application Launched on : ") + m_launchDateTime.toString() + ")</p>" +
-                       "<p>(" + tr("Config File Location : ") + m_settings->fileName() + ")</p>" +
-                       "<hr><p>Copyright (C) 2007, 2008  <a href=http://www.proformatique.com><b>Proformatique</b></a></p>"
-                       "<p>67 rue Voltaire 92800 Puteaux FRANCE</p>"
-                       "<p><b>E-mail : </b><a href=mailto:technique@proformatique.com>technique@proformatique.com</p>"
-                       "<p>(+33 / 0) 1.41.38.99.60</p>" +
-                       "<p><b>" + tr("Authors : ") + "</b>Thomas Bernard, Corentin Le Gall</p>" +
-                       "<hr><p><b>" + tr("License : ") + "</b>" +
-                       "<a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GNU General Public License v3</a></p>"
-                       "<p>" + tr("with a special exception allowing you to link it with OpenSSL, under some conditions.") + "</p>");
+                       "(" + tr("Advised Server Version : ") + __required_server_version__ + ")"
+                       "<br>" +
+                       "(" + tr("Application Launched on : ") + m_launchDateTime.toString() + ")"
+                       "<br>" +
+                       "(" + tr("Config File Location : ") + m_settings->fileName() + ")" +
+                       "<hr>"
+                       "Copyright (C) 2007, 2008, 2009  <a href=http://www.proformatique.com><b>Proformatique</b></a>"
+                       "<br>"
+                       "67 rue Voltaire 92800 Puteaux FRANCE"
+                       "<p>"
+                       "<b>" + tr("E-mail : ") + "</b><a href=mailto:technique@proformatique.com>technique@proformatique.com</a><br>"
+                       "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
+                       "<b>" + tr("Authors : ") + "</b>Thomas Bernard, Corentin Le Gall" +
+                       "<hr>"
+                       "<b>" + tr("License : ") + "</b>" +
+                       "<a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GNU General Public License v3</a><br>"
+                       + tr("with a special exception allowing you to link it with OpenSSL, under some conditions."));
 }
 
 void MainWidget::showCredits()
