@@ -308,11 +308,6 @@ discrète</translation>
         <translation>Reçu les Informations de Services pour </translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="902"/>
-        <source>Received status for %1 users</source>
-        <translation type="obsolete">Statut reçu pour %1 utilisateurs</translation>
-    </message>
-    <message>
         <location filename="../common/baseengine.cpp" line="1211"/>
         <source>Server has sent an Error.</source>
         <translation>Le serveur a renvoyé une Erreur.</translation>
@@ -466,11 +461,6 @@ Merci de mettre à jour votre serveur.</translation>
         <translation>Intercepter la communication</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="201"/>
-        <source>&amp;Transfer</source>
-        <translation type="obsolete">&amp;Transférer</translation>
-    </message>
-    <message>
         <location filename="../common/basepeerwidget.cpp" line="426"/>
         <source>Transfer this communication</source>
         <translation>Transférer cette communication</translation>
@@ -496,11 +486,6 @@ Merci de mettre à jour votre serveur.</translation>
         <translation>&amp;Parquer</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="301"/>
-        <source>Park this communication</source>
-        <translation type="obsolete">Parquer la communication</translation>
-    </message>
-    <message>
         <location filename="../common/basepeerwidget.cpp" line="455"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Transfer sur boite &amp;vocale</translation>
@@ -513,12 +498,12 @@ Merci de mettre à jour votre serveur.</translation>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="431"/>
         <source>Transfer to this person</source>
-        <translation type="unfinished">Transferer vers ce poste</translation>
+        <translation>Transférer vers ce poste</translation>
     </message>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="456"/>
         <source>Transfer to voice mail</source>
-        <translation type="unfinished">Transférer vers cette messagie vocale</translation>
+        <translation>Transférer vers cette messagie vocale</translation>
     </message>
 </context>
 <context>
@@ -584,11 +569,6 @@ Merci de mettre à jour votre serveur.</translation>
 </context>
 <context>
     <name>CallStackWidget</name>
-    <message>
-        <location filename="../common/callstackwidget.cpp" line="261"/>
-        <source>Monitoring : </source>
-        <translation type="obsolete">Surveillance : </translation>
-    </message>
     <message>
         <location filename="../common/callstackwidget.cpp" line="226"/>
         <source>Monitoring : %1</source>
@@ -794,11 +774,6 @@ Merci de mettre à jour votre serveur.</translation>
         <translation>Nombre maximum d&apos;onglets</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="236"/>
-        <source>The last connected one takes on the login</source>
-        <translation type="obsolete">Le dernier connecté prend la main</translation>
-    </message>
-    <message>
         <location filename="../common/configwidget.cpp" line="239"/>
         <source>Try to reconnect</source>
         <translation>Reconnexion automatique</translation>
@@ -974,11 +949,6 @@ que celles ci-dessous) en première page</translation>
         <translation>&amp;Composer</translation>
     </message>
     <message>
-        <location filename="../common/extendedtablewidget.cpp" line="101"/>
-        <source>&amp;Transfer</source>
-        <translation type="obsolete">&amp;Transférer</translation>
-    </message>
-    <message>
         <location filename="../common/extendedtablewidget.cpp" line="150"/>
         <source>Send an E-mail</source>
         <translation>Envoyer un E-mail</translation>
@@ -986,12 +956,12 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../common/extendedtablewidget.cpp" line="101"/>
         <source>Direct &amp;Transfer</source>
-        <translation>&amp;Transfer direct</translation>
+        <translation>&amp;Transfert direct</translation>
     </message>
     <message>
         <location filename="../common/extendedtablewidget.cpp" line="102"/>
         <source>&amp;Indirect Transfer</source>
-        <translation>Transfer &amp;Indirect</translation>
+        <translation>Transfert &amp;Indirect</translation>
     </message>
 </context>
 <context>
@@ -1201,8 +1171,8 @@ a été envoyé à %2.</translation>
     <name>MainWidget</name>
     <message>
         <location filename="mainwidget.cpp" line="1490"/>
-        <source>&lt;p&gt;The XIVO CTI applications, once connected to the proper server, complete the XIVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
-        <translation>&lt;p&gt; Les applications CTI XIVO, une fois connectées au serveur adéquat, complètent le système téléphonique XIVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
+        <source>The XIVO CTI applications, once connected to the proper server, complete the XIVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
+        <translation>Les applications CTI XIVO, une fois connectées au serveur adéquat, complètent le système téléphonique XIVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="489"/>
@@ -1215,7 +1185,7 @@ a été envoyé à %2.</translation>
         <translation>A propos de &amp;XIVO Client</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1493"/>
+        <location filename="mainwidget.cpp" line="1494"/>
         <source>Advised Server Version : </source>
         <translation>Version Conseillée du Serveur : </translation>
     </message>
@@ -1235,12 +1205,12 @@ a été envoyé à %2.</translation>
         <translation>Liste des Agents (classique)</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1494"/>
+        <location filename="mainwidget.cpp" line="1496"/>
         <source>Application Launched on : </source>
         <translation>Application Lancée le : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1500"/>
+        <location filename="mainwidget.cpp" line="1506"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
@@ -1370,7 +1340,7 @@ a été envoyé à %2.</translation>
         <translation>Sortir l&apos;application de la zone de notification système</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1501"/>
+        <location filename="mainwidget.cpp" line="1508"/>
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
@@ -1450,7 +1420,7 @@ a été envoyé à %2.</translation>
         <translation>&amp;Minimiser</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1490"/>
+        <location filename="mainwidget.cpp" line="1491"/>
         <source>Version : </source>
         <translation>Version : </translation>
     </message>
@@ -1470,7 +1440,7 @@ a été envoyé à %2.</translation>
         <translation>dernière</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1503"/>
+        <location filename="mainwidget.cpp" line="1510"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>avec une exception particulière vous permettant de le lier avec OpenSSL, sous certaines conditions.</translation>
     </message>
@@ -1505,7 +1475,7 @@ a été envoyé à %2.</translation>
         <translation>XIVO CTI Erreur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1509"/>
+        <location filename="mainwidget.cpp" line="1516"/>
         <source>Credits</source>
         <translation>Crédits</translation>
     </message>
@@ -1530,18 +1500,23 @@ a été envoyé à %2.</translation>
         <translation>Liste des Agents (par groupes de files)</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1495"/>
+        <location filename="mainwidget.cpp" line="1498"/>
         <source>Config File Location : </source>
         <translation>Fichier de Configuration :</translation>
+    </message>
+    <message>
+        <location filename="mainwidget.cpp" line="1504"/>
+        <source>E-mail : </source>
+        <translation>E-mail : </translation>
+    </message>
+    <message>
+        <location filename="mainwidget.cpp" line="1505"/>
+        <source>Phone : </source>
+        <translation>Téléphone : </translation>
     </message>
 </context>
 <context>
     <name>MyLocalDirPanel</name>
-    <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="62"/>
-        <source>New Entry</source>
-        <translation type="obsolete">Nouvelle Entrée</translation>
-    </message>
     <message>
         <location filename="../common/mylocaldirpanel.cpp" line="72"/>
         <source>&amp;New Contact</source>
@@ -1588,11 +1563,6 @@ a été envoyé à %2.</translation>
         <translation>Ouvrir un fichier de contact</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="195"/>
-        <source>Coma separated Value (*.csv)</source>
-        <translation type="unfinished">Fichier CSV (*.csv)</translation>
-    </message>
-    <message>
         <location filename="../common/mylocaldirpanel.cpp" line="267"/>
         <source>Number</source>
         <translation>Numéro</translation>
@@ -1605,12 +1575,17 @@ a été envoyé à %2.</translation>
     <message>
         <location filename="../common/mylocaldirpanel.cpp" line="84"/>
         <source>&amp;Search</source>
-        <translation type="unfinished">&amp;Recherche</translation>
+        <translation>&amp;Recherche</translation>
     </message>
     <message>
         <location filename="../common/mylocaldirpanel.cpp" line="193"/>
         <source>Save Contacts File</source>
-        <translation type="unfinished">Enregistrer le fichier de contatcs</translation>
+        <translation>Enregistrer le fichier de contacts</translation>
+    </message>
+    <message>
+        <location filename="../common/mylocaldirpanel.cpp" line="195"/>
+        <source>Comma Separated Value (*.csv)</source>
+        <translation>Fichier CSV (*.csv)</translation>
     </message>
 </context>
 <context>
@@ -1695,41 +1670,6 @@ a été envoyé à %2.</translation>
         <location filename="../common/peerwidget.cpp" line="129"/>
         <source>(No callerid yet)</source>
         <translation>(Callerid en attente)</translation>
-    </message>
-    <message>
-        <location filename="../common/peerwidget.cpp" line="196"/>
-        <source>&amp;Call</source>
-        <translation type="obsolete">&amp;Appeler</translation>
-    </message>
-    <message>
-        <location filename="../common/peerwidget.cpp" line="197"/>
-        <source>Call this peer</source>
-        <translation type="obsolete">Appeler ce poste</translation>
-    </message>
-    <message>
-        <location filename="../common/peerwidget.cpp" line="418"/>
-        <source>&amp;Hangup</source>
-        <translation type="obsolete">&amp;Raccrocher</translation>
-    </message>
-    <message>
-        <location filename="../common/peerwidget.cpp" line="417"/>
-        <source>&amp;Intercept</source>
-        <translation type="obsolete">&amp;Intercepter</translation>
-    </message>
-    <message>
-        <location filename="../common/peerwidget.cpp" line="192"/>
-        <source>&amp;Remove</source>
-        <translation type="obsolete">&amp;Enlever</translation>
-    </message>
-    <message>
-        <location filename="../common/peerwidget.cpp" line="193"/>
-        <source>Remove this peer from the panel</source>
-        <translation type="obsolete">Enlever ce poste du tableau</translation>
-    </message>
-    <message>
-        <location filename="../common/peerwidget.cpp" line="431"/>
-        <source>&amp;Transfer</source>
-        <translation type="obsolete">&amp;Transférer</translation>
     </message>
     <message>
         <location filename="../common/peerwidget.cpp" line="232"/>
@@ -1946,7 +1886,7 @@ décroché (%)</translation>
     <message>
         <location filename="../common/searchdialog.cpp" line="11"/>
         <source>Search :</source>
-        <translation type="unfinished">Recherche :</translation>
+        <translation>Recherche :</translation>
     </message>
 </context>
 <context>
@@ -2083,12 +2023,12 @@ décroché (%)</translation>
     <message>
         <location filename="../common/switchboardwindow.cpp" line="675"/>
         <source>Add Phone number entry</source>
-        <translation type="unfinished">Ajouter un numéro de téléphone</translation>
+        <translation>Ajouter un numéro de téléphone</translation>
     </message>
     <message>
         <location filename="../common/switchboardwindow.cpp" line="233"/>
         <source>Edit group color</source>
-        <translation type="unfinished">Changer la &amp;couleur du groupe</translation>
+        <translation>Changer la couleur du groupe</translation>
     </message>
     <message>
         <location filename="../common/switchboardwindow.cpp" line="234"/>
