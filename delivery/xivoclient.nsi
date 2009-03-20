@@ -49,6 +49,7 @@ SetOutPath "$SMPROGRAMS\XIVO"
 CreateShortCut "$SMPROGRAMS\XIVO\xivoclient.lnk"  "$INSTDIR\xivoclient.exe"
 CreateShortCut "$SMPROGRAMS\XIVO\Désinstaller xivoclient.lnk"  "$INSTDIR\uninstall-xivoclient.exe"
 CreateShortCut "$DESKTOP\xivoclient.lnk"  "$INSTDIR\xivoclient.exe"
+IfSilent +2
 MessageBox MB_OK "Installation terminée."
 SectionEnd
 
