@@ -118,10 +118,6 @@ LogWidget::LogWidget(BaseEngine * engine, const QVariant &, QWidget * parent)
     layout->addWidget( scrollArea );
 }
 
-void LogWidget::setGuiOptions(const QVariant &)
-{
-}
-
 /*! \brief add an entry
  *
  * \sa addLogEntry
@@ -171,11 +167,6 @@ void LogWidget::clear()
                 break;
         }
     //m_layout->addStretch(1);
-}
-
-void LogWidget::setUserInfo(const UserInfo * ui)
-{
-    m_userinfo_owner = ui;
 }
 
 void LogWidget::proxyCallRequests(const QString & src, const QString & dst)

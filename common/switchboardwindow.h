@@ -79,8 +79,8 @@ protected:
     void dragMoveEvent(QDragMoveEvent *);
     void contextMenuEvent(QContextMenuEvent *);
 public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
     void updateUser(UserInfo *);
     void updatePeerAgent(double,
                          const QString &,

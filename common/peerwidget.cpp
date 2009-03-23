@@ -79,16 +79,16 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
 
     // qDebug() << "PeerWidget::PeerWidget()" << id;
     //        QHBoxLayout * layout = new QHBoxLayout(this);
-        
+    
     QFrame * qhline1 = new QFrame(this);
     QFrame * qhline2 = new QFrame(this);
     QFrame * qvline1 = new QFrame(this);
     QFrame * qvline2 = new QFrame(this);
-        
+    
     int spacing, fsize, width_left, width_right, width_top, width_bottom;
     bool stretch_last;
     Qt::Alignment alignment;
-        
+    
     spacing = 2;
     fsize = 30;
     width_left = 2;
@@ -100,7 +100,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     qvline2->hide();
     alignment = Qt::AlignLeft;
     stretch_last = true;
-        
+    
     // spacing = 0;
     // fsize = 20;
     // width_left = 3;
@@ -109,7 +109,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     // width_bottom = 1;
     // alignment = Qt::AlignCenter;
     // stretch_last = false;
-        
+    
     qhline1->setFrameShape(QFrame::HLine);
     qhline1->setLineWidth(width_top);
     qhline2->setFrameShape(QFrame::HLine);
@@ -118,11 +118,11 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     qvline1->setLineWidth(width_left);
     qvline2->setFrameShape(QFrame::VLine);
     qvline2->setLineWidth(width_right);
-        
+    
     QGridLayout * layout = new QGridLayout(this);
     layout->setSpacing(spacing);
     layout->setMargin(spacing);
-        
+    
     // QLabels definitions
     if(m_ui->fullname().isEmpty())
         qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_ui->fullname() is empty for :" << m_ui->userid();
@@ -130,7 +130,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
                            this);
     // set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
     m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
-        
+    
     if(! m_ui->ctilogin().isEmpty()) {
         m_availlbl = new ExtendedLabel();
         m_availlbl->setPixmap(m_persons["grey"]);
@@ -140,10 +140,10 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
         m_availlbl->setProperty("kind", "person");
         // setColorAvail("person", "grey", "");
     }
-        
+    
     //m_voicelbl = new QLabel();
     //m_fwdlbl   = new QLabel();
-        
+    
     foreach (QString phone, ui->phonelist())
     {
         m_lblphones[phone] = new ExtendedLabel();
@@ -160,12 +160,12 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
         m_agentlbl->setAlignment(Qt::AlignCenter);
         m_agentlbl->setMinimumSize(fsize, fsize);
         m_agentlbl->setObjectName("onlyme");
-        m_agentlbl->setToolTip(tr("Agent ") + ui->agentid());
+        m_agentlbl->setToolTip(tr("Agent ") + ui->agentnumber());
         m_agentlbl->setProperty("kind", "agent");
         //setColorAvail("agent", "grey", "");
         setAgentState("grey");
     }
-        
+    
     // Put the Labels into layouts
     int linenum = 0;
     layout->addWidget( qhline1, linenum, 0, 1, 10);
@@ -175,7 +175,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     layout->addWidget( qvline1,   linenum, 0, 2, 1 );
     layout->addWidget( m_textlbl, linenum, 2, 1, 6, alignment );
     layout->addWidget( qvline2,   linenum, 9, 2, 1 );
-        
+    
     linenum ++;
     int colnum = 2;
     foreach (QString phone, ui->phonelist())
@@ -186,11 +186,11 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     }
     if(! ui->ctilogin().isEmpty())
         layout->addWidget( m_availlbl, linenum, colnum++, Qt::AlignCenter );
-    if(! ui->agentid().isEmpty())
+    if(! ui->agentnumber().isEmpty())
         layout->addWidget( m_agentlbl, linenum, colnum++, Qt::AlignCenter );
     if(stretch_last)
         layout->setColumnStretch(20, 1);
-        
+    
     linenum ++;
     layout->addWidget( qhline2, linenum, 0, 1, 10);
 }

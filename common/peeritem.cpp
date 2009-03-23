@@ -123,15 +123,13 @@ void PeerItem::updateDisplayedStatus()
         
     // qDebug() << "PeerItem::updateDisplayedStatus()";
     m_peerwidget->updatePresence();
-        
     m_peerwidget->updatePhonesStates();      
-        
-        
+    
     QString action = m_agentstatus.toMap()["action"].toString();
     QString astid = m_agentstatus.toMap()["astid"].toString();
     QString agentnum = m_agentstatus.toMap()["agent_channel"].toString().mid(6);
     QString queuename = m_agentstatus.toMap()["queuename"].toString();
-        
+    
     if(action == "agentlogin") {
         m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
         m_peerwidget->setAgentState("green");

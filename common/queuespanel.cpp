@@ -48,21 +48,24 @@
 #include <QScrollArea>
 #include <QVariant>
 
+#include "baseengine.h"
 #include "queuespanel.h"
 #include "userinfo.h"
+#include "queueinfo.h"
 
 const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 100px; height: 15px}";
 
 /*! \brief Constructor
  */
-QueuesPanel::QueuesPanel(const QVariant & options,
+QueuesPanel::QueuesPanel(BaseEngine * engine,
+                         const QVariant & options,
                          QWidget * parent)
-    : QWidget(parent)
+    : QWidget(parent), m_engine(engine)
 {
     // qDebug() << "QueuesPanel::QueuesPanel()" << options;
     m_gui_buttonsize = 10;
     m_gui_showqueuenames = true;
-        
+    
     bool is_supervisor = false;
     if(options.toMap().contains("supervisor"))
         is_supervisor = options.toMap()["supervisor"].toBool();
@@ -70,7 +73,7 @@ QueuesPanel::QueuesPanel(const QVariant & options,
     foreach(QString xletdesc, options.toMap()["xlets"].toStringList())
         xletlist.append(xletdesc.split("-")[0]);
     m_gui_showmore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
-        
+    
     m_gridlayout = new QGridLayout(this);
     m_statlegends["Completed"] = tr("Completed");
     m_statlegends["Abandoned"] = tr("Abandoned");
@@ -100,18 +103,18 @@ QueuesPanel::QueuesPanel(const QVariant & options,
     else
         m_statitems = (QStringList() << "Xivo-Conn" << "Xivo-Avail" << "Xivo-Rate");
     m_maxbusy = 0;
-        
+    
     m_qtitle = new QLabel(tr("Queues"), this);
     m_busytitle = new QLabel(tr("Busy"), this);
-        
+    
     foreach (QString statitem, m_statitems)
         m_title_infos[statitem] = new QLabel(m_statlegends[statitem], this);
-        
+    
     int colnum = 1;
     m_gridlayout->addWidget( m_qtitle, 1, colnum++, Qt::AlignLeft );
     colnum++;
     colnum++;
-        
+    
     m_gridlayout->addWidget( m_busytitle, 0, colnum++, Qt::AlignCenter );
     foreach (QString statitem, m_statitems)
         m_gridlayout->addWidget( m_title_infos[statitem],
@@ -122,7 +125,7 @@ QueuesPanel::QueuesPanel(const QVariant & options,
     m_gridlayout->setColumnStretch( 100, 1 );
     m_gridlayout->setRowStretch( 100, 1 );
     m_gridlayout->setVerticalSpacing(0);
-        
+    
     setGuiOptions(options);
 }
 
@@ -141,7 +144,7 @@ QueuesPanel::~QueuesPanel()
 void QueuesPanel::setGuiOptions(const QVariant & options)
 {
     m_options = options;
-        
+    
     if(m_options.toMap().contains("fontname") && m_options.toMap().contains("fontsize"))
         m_gui_font = QFont(m_options.toMap()["fontname"].toString(),
                            m_options.toMap()["fontsize"].toInt());
@@ -149,23 +152,16 @@ void QueuesPanel::setGuiOptions(const QVariant & options)
         m_gui_buttonsize = m_options.toMap()["iconsize"].toInt();
     if(m_options.toMap().contains("queues-showqueuenames"))
         m_gui_showqueuenames = m_options.toMap()["queues-showqueuenames"].toBool();
-        
+    
     m_busytitle->setFont(m_gui_font);
     m_qtitle->setFont(m_gui_font);
     foreach (QString statitem, m_statitems)
         m_title_infos[statitem]->setFont(m_gui_font);
-        
+    
     if(m_gui_showqueuenames)
         m_qtitle->show();
     else
         m_qtitle->hide();
-}
-
-/*! \brief Set UserInfo object used
- */
-void QueuesPanel::setUserInfo(const UserInfo * ui)
-{
-    m_userinfo = ui;
 }
 
 /*! \brief update counters
@@ -185,15 +181,6 @@ void QueuesPanel::updateCounter(const QVariant & counters)
         if(m_queueinfos[queuename].contains("Xivo-Avail"))
             m_queueinfos[queuename]["Xivo-Avail"]->setText(QString::number(navail));
     }
-}
-
-/*! \brief Do nothing
- */
-void QueuesPanel::updatePeerAgent(double,
-                                  const QString &,
-                                  const QString &,
-                                  const QVariant &)
-{
 }
 
 /*! \brief remove the queues
@@ -225,21 +212,13 @@ void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
 
 /*! \brief Add a new queue
  */
-void QueuesPanel::addQueue(const QString & astid, const QString & queuename, const QString & queuecontext, bool isvirtual)
+void QueuesPanel::addQueue(const QString & astid, const QString & queuename, const QString & queuecontext)
 {
-    //qDebug() << "QueuesPanel::addQueue" << m_userinfo;
-    if(m_userinfo == NULL)
-        return;
-    //qDebug() << "QueuesPanel::addQueue" << m_userinfo->astid() << astid;
-    if(m_userinfo->astid() != astid)
-        return;
-    //qDebug() << "QueuesPanel::addQueue" << queuecontext <<  m_userinfo->contexts();
-    if(! m_userinfo->contexts().contains(queuecontext))
-        return;
-        
+    // UserInfo * userinfo = m_engine->getXivoClientUser();
+    // if(userinfo == NULL) return;
+    
     m_queuelabels[queuename] = new QLabel(queuename, this);
     m_queuelabels[queuename]->setFont(m_gui_font);
-    m_queuelabels[queuename]->setProperty("virtual", isvirtual);
     m_queuemore[queuename] = new QPushButton(this);
     m_queuemore[queuename]->setProperty("astid", astid);
     m_queuemore[queuename]->setProperty("queueid", queuename);
@@ -247,7 +226,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, con
     m_queuemore[queuename]->setProperty("function", "more");
     m_queuemore[queuename]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
     m_queuemore[queuename]->setIcon(QIcon(":/images/add.png"));
-        
+    
     if(m_gui_showqueuenames) {
         m_queuelabels[queuename]->show();
         if(m_gui_showmore)
@@ -258,10 +237,8 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, con
         m_queuelabels[queuename]->hide();
         m_queuemore[queuename]->hide();
     }
-    if(! isvirtual) {
-        connect( m_queuemore[queuename], SIGNAL(clicked()),
-                 this, SLOT(queueClicked()));
-    }
+    connect( m_queuemore[queuename], SIGNAL(clicked()),
+             this, SLOT(queueClicked()));
     m_queuebusies[queuename] = new QProgressBar(this);
     m_queuebusies[queuename]->setFont(m_gui_font);
     m_queuebusies[queuename]->setProperty("queueid", queuename);
@@ -271,7 +248,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, con
         m_queueinfos[queuename][statitem] = new QLabel();
         m_queueinfos[queuename][statitem]->setFont(m_gui_font);
     }
-        
+    
     m_queuemove[queuename] = new QPushButton(this);
     m_queuemove[queuename]->setProperty("astid", astid);
     m_queuemove[queuename]->setProperty("queueid", queuename);
@@ -289,11 +266,9 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, con
  * iterate through m_queuelabels and add all related
  * widgets to the layout.
  */
-void QueuesPanel::affWidgets(bool isvirtual)
+void QueuesPanel::affWidgets()
 {
     int delta = 1;
-    if(isvirtual)
-        delta = 50;
     foreach(QString queuename, m_queuelabels.keys()) {
         int colnum = 1;
         int linenum = m_queuemove[queuename]->property("position").toInt() + 1;
@@ -309,43 +284,51 @@ void QueuesPanel::affWidgets(bool isvirtual)
     }
 }
 
+/*! \brief update display once the queues have been received
+ */
+void QueuesPanel::newQueueList()
+{
+    // qDebug() << "QueuesPanel::newQueueList()";
+    QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
+    while( iter.hasNext() )
+        {
+            iter.next();
+            QueueInfo * qinfo = iter.value();
+            newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
+        }
+    affWidgets();
+    loadQueueOrder();
+    update();
+}
+
+/*! \brief update display once the agents have been received
+ */
+void QueuesPanel::newAgentList()
+{
+    qDebug() << "QueuesPanel::newAgentList()";
+}
+
 /*! \brief update list of queues
  *
  * update m_queueinfos
  */
-void QueuesPanel::setQueueList(const QVariant & qlist)
+void QueuesPanel::newQueue(const QString & astid, const QString & queuename, const QVariant & queueprops)
 {
-    //qDebug() << "QueuesPanel::setQueueList()" << qlist;
-    QVariantMap qlistmap = qlist.toMap();
-    QString astid = qlistmap["astid"].toString();
-    QVariantMap queuestats = qlistmap["queuestats"].toMap();
-    foreach (QString queuename, queuestats.keys())
-        {
-            QVariantMap queuestatcontents = queuestats[queuename].toMap();
-            //qDebug() << "QueuesPanel::setQueueList()" << queuename << queuestatcontents;
-            QHash <QString, QString> infos;
-            infos["Calls"] = "0";
-            foreach (QString statname, queuestatcontents.keys())
-                {
-                    infos[statname] = queuestatcontents[statname].toString();
-                }
-            if( (!m_queuelabels.contains(queuename))
-                && (qlistmap["queueprops"].toMap().keys().contains(queuename)) )
-                {
-                    QString queuecontext = qlistmap["queueprops"].toMap()[queuename].toString();
-                    addQueue(astid, queuename, queuecontext, false);
-                }
-            if(m_queuebusies.contains(queuename)) {
-                m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
-                foreach (QString statitem, m_statitems)
-                    if(infos.contains(statitem))
-                        m_queueinfos[queuename][statitem]->setText(infos[statitem]);
-            }
-        }
-        
-    affWidgets(false);
-    loadQueueOrder();
-    update();
+    QVariantMap queuestatcontents = queueprops.toMap()["queuestats"].toMap();
+    QString queuecontext = queueprops.toMap()["context"].toString();
+    // qDebug() << "QueuesPanel::newQueue()" << queuename << queuecontext;
+    QHash <QString, QString> infos;
+    infos["Calls"] = "0";
+    foreach (QString statname, queuestatcontents.keys())
+        infos[statname] = queuestatcontents[statname].toString();
+    if(! m_queuelabels.contains(queuename))
+        addQueue(astid, queuename, queuecontext);
+    if(m_queuebusies.contains(queuename)) {
+        m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
+        foreach (QString statitem, m_statitems)
+            if(infos.contains(statitem))
+                m_queueinfos[queuename][statitem]->setText(infos[statitem]);
+    }
 }
 
 /*! \brief update display of busy levels bars
@@ -362,7 +345,7 @@ void QueuesPanel::update()
             m_maxbusy = val;
     }
     // qDebug() << "QueuesPanel::update() maxbusy =" << m_maxbusy;
-        
+    
     quint32 greenlevel = m_options.toMap()["queuelevels"].toMap()["green"].toUInt();
     quint32 orangelevel = m_options.toMap()["queuelevels"].toMap()["orange"].toUInt();
     foreach (QProgressBar * qpb, m_queuebusies) {
@@ -371,7 +354,7 @@ void QueuesPanel::update()
         qpb->setRange(0, m_maxbusy + 1);
         // qpb->setValue(0); // trick in order to refresh
         qpb->setValue(val);
-                
+        
         if(val <= greenlevel)
             qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #00ff00;}");
         else if(val <= orangelevel)
@@ -401,7 +384,7 @@ void QueuesPanel::setQueueOrder(const QVariant & queueorder)
     foreach (QString qname, m_queue_lines)
         m_queuemove[qname]->setProperty("position", num ++);
     saveQueueOrder(QVariant(m_queue_lines));
-    affWidgets(false);
+    affWidgets();
 }
 
 /*! \brief triggered when a queue is clicked
@@ -415,7 +398,7 @@ void QueuesPanel::queueClicked()
     QString astid = sender()->property("astid").toString();
     QString queueid = sender()->property("queueid").toString();
     if(function == "more")
-        changeWatchedQueue(astid + " " + queueid);
+        changeWatchedQueue("queue:" + astid + "/" + queueid);
     else if(function == "display_up") {
         int nold = m_queuemove[queueid]->property("position").toInt();
         if(nold > 0) {
@@ -424,22 +407,8 @@ void QueuesPanel::queueClicked()
             m_queuemove[m_queue_lines[nnew]]->setProperty("position", nold);
             m_queue_lines[nold] = m_queue_lines[nnew];
             m_queue_lines[nnew] = queueid;
-            affWidgets(false);
+            affWidgets();
             saveQueueOrder(QVariant(m_queue_lines));
         }
-    }
-}
-
-/*! \brief set busyness
- */
-void QueuesPanel::setQueueStatus(const QVariant & newstatuses)
-{
-    // qDebug() << "QueuesPanel::setQueueStatus()" << newstatuses;
-    QString astid = newstatuses.toMap()["astid"].toString();
-    QString queuename = newstatuses.toMap()["queuename"].toString();
-    QString busyness = newstatuses.toMap()["count"].toString();
-    if(m_queuebusies.contains(queuename)) {
-        m_queuebusies[queuename]->setProperty("value", busyness);
-        update();
     }
 }

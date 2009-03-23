@@ -51,6 +51,7 @@ class QLabel;
 class QMouseEvent;
 class QVBoxLayout;
 
+class BaseEngine;
 class UserInfo;
 
 /*! \brief Simple widget to enter a number and dial it
@@ -58,17 +59,19 @@ class UserInfo;
 class DialPanel : public QWidget
 {
     Q_OBJECT
-        public:
-    DialPanel(const QVariant &, QWidget * parent = 0);
+ public:
+    DialPanel(BaseEngine *,
+              const QVariant &,
+              QWidget * parent = 0);
     ~DialPanel();
  protected:
     /*void mouseMoveEvent(QMouseEvent *);        //!< Catch mouse press events */
     /*void mousePressEvent(QMouseEvent *); */
     void dragEnterEvent(QDragEnterEvent *);
     void dropEvent(QDropEvent *);
-    public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+ public slots:
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
     void inputValidated();
     void clearlist();
     void setNumberToDial(const QString &);
@@ -78,7 +81,7 @@ class DialPanel : public QWidget
                     const QString &,
                     const QString &);   //!< originates a number
  private:
-    const UserInfo * m_ui;
+    BaseEngine * m_engine;
     QLabel * m_lbl;
     QComboBox * m_input;        //!< input widget
 };

@@ -83,12 +83,11 @@ private slots:
     void itemDoubleClicked(QTableWidgetItem *);
 public slots:
     void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+    void setUserInfo(const UserInfo *) {};
     void setSearchResponse(const QString &);
     void stop();
 private:
     BaseEngine * m_engine;
-    //const UserInfo * m_userinfo;
     ExtendedLineEdit * m_searchText;        //!< search text input
     ExtendedTableWidget * m_table;                //!< table to display results
     QPushButton * m_searchButton;        //!< button

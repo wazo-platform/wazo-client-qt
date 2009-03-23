@@ -57,32 +57,32 @@ class AgentInfo
     //! destructor
     ~AgentInfo();
     //! update attribute members
-    void update(const QMap<QString, QVariant> & prop);
-    //! context this phone belongs to
-    const QString & context() const { return m_context; };
-    //! access to the status values of this phone
+    bool update(const QMap<QString, QVariant> & prop);
+    //! asterisk this agent belongs to
+    const QString & astid() const;
+    //! context this agent belongs to
+    const QString & context() const;
+    //! access to the status values of this agent
     const QString hintstatus(const QString & key) const {
         return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
     };
-    //! phone number
-    const QString & number() const { return m_number; };
-    //! phone technology (sip, iax, etc...)
-    const QString & tech() const { return m_tech; };
-    //! phone id
-    const QString & phoneid() const { return m_phoneid; };
-    //! current communications of this phone
+    //! agent number
+    const QString & agentnumber() const;
+    //! agent fullname
+    const QString & fullname() const;
+    //! agent properties
+    const QVariantMap & properties() const;
+    //! current communications of this agent
     const QMap<QString, QVariant> & comms() const { return m_comms; };
  private:
     QString m_astid;
-    QString m_tech;
     QString m_context;
-    QString m_phoneid;
-    QString m_number;
-    bool m_initialized;
-    bool m_enable_hint;
+    QString m_agentname;
+    QString m_agentnumber;
+    QString m_fullname;
     QMap<QString, QString> m_hintstatus;
     QMap<QString, QVariant> m_comms;
-    
+    QVariantMap m_properties;
 };
 
 #endif

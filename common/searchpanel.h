@@ -60,12 +60,12 @@ class UserInfo;
 class SearchPanel : public QWidget
 {
     Q_OBJECT
-        public:
+ public:
     SearchPanel(BaseEngine *,
                 const QVariant &,
                 QWidget * parent = 0);
     ~SearchPanel();        //!< Destructor
-    public slots:
+ public slots:
     void setGuiOptions(const QVariant &);
     void affTextChanged(const QString &);
     void updatePeerAgent(double,

@@ -53,9 +53,12 @@
 #include <QRegExp>
 #include <QScrollArea>
 
+#include "baseengine.h"
 #include "extendedlabel.h"
 #include "identitydisplay.h"
 #include "userinfo.h"
+#include "agentinfo.h"
+#include "queueinfo.h"
 
 QString icon_color_red = "xivo-red";
 QString icon_color_black = "xivo-black";
@@ -63,25 +66,26 @@ QString icon_color_green = "xivo-green";
 
 /*! \brief Constructor
  */
-IdentityDisplay::IdentityDisplay(const QVariant & options,
+IdentityDisplay::IdentityDisplay(BaseEngine * engine,
+                                 const QVariant & options,
                                  QWidget * parent)
-    : QWidget(parent),
+    : QWidget(parent), m_engine(engine),
       m_ui(NULL)
 {
     m_gui_buttonsize = 16;
-        
+    
     QGridLayout * glayout = new QGridLayout(this);
     // glayout->setMargin(0);
     m_user = new QLabel(this);
     m_user->setObjectName("fullname");
     //m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        
+    
     m_phonenum = new QLabel();
     m_presencevalue = new QComboBox();
     m_presencevalue->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     m_presencevalue->setProperty("function", "presence");
-        
+    
     m_voicemail_old = new QLabel();
     m_voicemail_new = new QLabel();
     m_voicemail_name = new QLabel();
@@ -89,6 +93,7 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
     m_agent = new QLabel();
     m_agentstatus = new QLabel();
     m_agentpause = new QLabel();
+    m_agentpausetxt = new QLabel();
     
     connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
             this, SLOT(idxChanged(const QString &)));
@@ -119,30 +124,31 @@ IdentityDisplay::IdentityDisplay(const QVariant & options,
     Qt::Alignment iconAlign = Qt::AlignHCenter | Qt::AlignTop; // Qt::AlignVCenter
     glayout->addWidget( m_icon_user, 0, 1, 3, 1, iconAlign );
     glayout->addWidget( m_icon_agent, 0, 4, 3, 1, iconAlign );
-    glayout->addWidget( m_icon_voicemail, 0, 7, 3, 1, iconAlign );
+    glayout->addWidget( m_icon_voicemail, 0, 8, 3, 1, iconAlign );
     
     int idline = 0;
     Qt::Alignment textAlign = Qt::AlignLeft | Qt::AlignTop; // Qt::AlignVCenter
     glayout->addWidget( m_user, idline, 2, textAlign );
-    glayout->addWidget( m_agent, idline, 5, textAlign );
-    glayout->addWidget( m_voicemail_name, idline, 8, textAlign );
+    glayout->addWidget( m_agent, idline, 5, 1, 2, textAlign );
+    glayout->addWidget( m_voicemail_name, idline, 9, textAlign );
     idline ++;
     glayout->addWidget( m_phonenum, idline, 2, textAlign );
-    glayout->addWidget( m_agentstatus, idline, 5, textAlign );
-    glayout->addWidget( m_voicemail_old, idline, 8, textAlign );
+    glayout->addWidget( m_agentstatus, idline, 5, 1, 2, textAlign );
+    glayout->addWidget( m_voicemail_old, idline, 9, textAlign );
     idline ++;
     glayout->addWidget( m_presencevalue, idline, 2, textAlign );
     glayout->addWidget( m_agentpause, idline, 5, textAlign );
-    glayout->addWidget( m_voicemail_new, idline, 8, textAlign );
-        
-    glayout->setColumnStretch( 9, 1 );
-        
+    glayout->addWidget( m_agentpausetxt, idline, 6, textAlign );
+    glayout->addWidget( m_voicemail_new, idline, 9, textAlign );
+    
+    glayout->setColumnStretch( 10, 1 );
+    
     // although it might be convenient in some cases (prevent some expansions),
     // in the basic xivoclient/grid case, it fills too much room without no resizing available
     //glayout->setRowStretch( idline, 1 );
-        
+    
     hideAgentProps();
-        
+    
     setGuiOptions(options);
     //         glayout->setColumnStretch( 0, 1 );
 }
@@ -155,13 +161,13 @@ void IdentityDisplay::setGuiOptions(const QVariant & options)
                            options.toMap()["fontsize"].toInt());
     if(options.toMap().contains("iconsize"))
         m_gui_buttonsize = options.toMap()["iconsize"].toInt();
-        
+    
     m_loginkind = options.toMap()["loginkind"].toUInt();
     m_functions = options.toMap()["functions"].toStringList();
-        
+    
     m_allow_logagent = options.toMap()["logagent"].toBool();
     m_allow_pauseagent = options.toMap()["pauseagent"].toBool();
-        
+    
     setFont(m_gui_font);
 }
 
@@ -299,73 +305,72 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     }
     // m_voicemail->hide();
     // changes the "watched agent" only if no one else has done it before
-    changeWatchedAgent(m_ui->astid() + " " + m_ui->agentid(), false);
+    changeWatchedAgent(m_ui->astid() + " " + m_ui->agentnumber(), false);
 }
 
-void IdentityDisplay::setAgentList(double, const QVariant & alist)
+void IdentityDisplay::newAgentList()
 {
-    // qDebug() << "IdentityDisplay::setAgentList()" << m_loginkind << alist;
     if (m_loginkind == 0)
         return;
     if (m_ui == NULL)
         return;
-    QVariantMap alistmap = alist.toMap();
-    QString astid = alistmap["astid"].toString();
-    qDebug() << "IdentityDisplay::setAgentList()" << m_ui->agentid() << astid << m_ui->astid();
-    if (astid != m_ui->astid())
-        return;
-    
-    QStringList agentids = alistmap["newlist"].toMap().keys();
-    agentids.sort();
-    foreach (QString agnum, agentids) {
-        if(agnum == m_ui->agentid()) {
-            QVariant properties = alistmap["newlist"].toMap()[agnum].toMap()["properties"];
-            QVariantList agqjoined = alistmap["newlist"].toMap()[agnum].toMap()["queues"].toList();
-            QString agstatus = properties.toMap()["status"].toString();
-            QString agfullname = properties.toMap()["name"].toString();
-            QString phonenum = properties.toMap()["phonenum"].toString();
-            
-            m_agent->setText("Agent " + agnum);
-            showAgentProps();
-            
-            if(agstatus == "AGENT_LOGGEDOFF") {
-                setSystrayIcon(icon_color_black);
-                m_agentstatus->setProperty("connected", false);
-                m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
-            } else if((agstatus == "AGENT_IDLE") || (agstatus == "AGENT_ONCALL")) {
-                setSystrayIcon(icon_color_green);
-                m_agentstatus->setProperty("connected", true);
-                m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
-            } else
-                qDebug() << "IdentityDisplay::setAgentList() unknown status" << agstatus;
-            
-            QVariant queuedetails = alistmap["newlist"].toMap()[agnum].toMap()["queues"];
-            int nj = 0;
-            int np = 0;
-            foreach(QString qname, queuedetails.toMap().keys())
-                if(! queuedetails.toMap()[qname].toMap().isEmpty()) {
-                    if(queuedetails.toMap()[qname].toMap()["Status"].toString() == "1")
-                        nj ++;
-                    if(queuedetails.toMap()[qname].toMap()["Paused"].toString() == "1")
-                        np ++;
-                }
-            
-            setStatusColors(nj, np);
+    // qDebug() << "IdentityDisplay::newAgentList()";
+    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
+    while( iter.hasNext() )
+        {
+            iter.next();
+            AgentInfo * ainfo = iter.value();
+            QString agentid = iter.key();
+            if((m_ui->astid() == ainfo->astid()) && (m_ui->agentnumber() == ainfo->agentnumber())) {
+                m_agent->setText(QString("Agent %1").arg(ainfo->agentnumber()));
+                showAgentProps();
+                updateAgentStatus(ainfo->properties());
+            }
         }
-    }
 }
 
-void IdentityDisplay::setQueueList(const QVariant & qlist)
+void IdentityDisplay::newQueueList()
 {
     if (m_loginkind == 0)
         return;
-    // qDebug() << "IdentityDisplay::setQueueList()" << qlist;
-    if(m_ui == NULL)
+    if (m_ui == NULL)
         return;
-    QVariantMap qlistmap = qlist.toMap();
-    QString astid = qlistmap["astid"].toString();
-    if (astid != m_ui->astid())
-        return;
+    // qDebug() << "IdentityDisplay::newQueueList()";
+}
+
+void IdentityDisplay::updateAgentStatus(const QVariantMap & properties)
+{
+    QVariantMap agqjoined = properties["queues_by_agent"].toMap();
+    QString agstatus = properties["agentstats"].toMap()["status"].toString();
+    QString phonenum = properties["agentstats"].toMap()["agent_phone_number"].toString();
+    
+    if(agstatus == "AGENT_LOGGEDOFF") {
+        setSystrayIcon(icon_color_black);
+        m_agentstatus->setProperty("connected", false);
+        m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
+    } else if((agstatus == "AGENT_IDLE") || (agstatus == "AGENT_ONCALL")) {
+        setSystrayIcon(icon_color_green);
+        m_agentstatus->setProperty("connected", true);
+        m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
+    } else
+        qDebug() << "IdentityDisplay::setAgentList() unknown status" << agstatus;
+    
+    QStringList joined_queues;
+    QStringList unpaused_queues;
+    foreach (QString qname, agqjoined.keys()) {
+        QVariant qv = agqjoined[qname];
+        if(qv.toMap().contains("Status")) {
+            QString pstatus = qv.toMap()["Paused"].toString();
+            QString sstatus = qv.toMap()["Status"].toString();
+            joined_queues << qname;
+            if(pstatus == "0")
+                unpaused_queues << qname;
+        }
+    }
+    
+    int njoined = joined_queues.size();
+    int nunpaused = unpaused_queues.size();
+    setStatusColors(njoined, njoined - nunpaused);
 }
 
 void IdentityDisplay::showAgentProps()
@@ -373,6 +378,7 @@ void IdentityDisplay::showAgentProps()
     m_agent->show();
     m_agentstatus->show();
     m_agentpause->show();
+    m_agentpausetxt->show();
     m_icon_agent->show();
 }
 
@@ -381,46 +387,8 @@ void IdentityDisplay::hideAgentProps()
     m_agent->hide();
     m_agentstatus->hide();
     m_agentpause->hide();
+    m_agentpausetxt->hide();
     m_icon_agent->hide();
-}
-
-void IdentityDisplay::updatePeerAgent(double,
-                                      const QString & userid,
-                                      const QString & what,
-                                      const QVariant & newstatuses)
-{
-    if (m_loginkind == 0)
-        return;
-    if(m_ui == NULL)
-        return;
-    if(userid != m_ui->userid())
-        return;
-    if(what != "agentstatus")
-        return;
-    // qDebug() << "IdentityDisplay::updatePeerAgent" << userid << what << newstatuses;
-    
-    QString action = newstatuses.toMap()["action"].toString();
-    QString astid = newstatuses.toMap()["astid"].toString();
-    QString agentnum = newstatuses.toMap()["agent_channel"].toString().mid(6);
-    m_agent->setText("Agent " + agentnum);
-    
-    if (action == "agentlogin") {
-        QString phonenum = newstatuses.toMap()["phonenum"].toString();
-        showAgentProps();
-        setSystrayIcon(icon_color_green);
-        m_agentstatus->setProperty("connected", true);
-        m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
-    } else if (action == "agentlogout") {
-        QString phonenum = newstatuses.toMap()["phonenum"].toString();
-        showAgentProps();
-        setSystrayIcon(icon_color_black);
-        m_agentstatus->setProperty("connected", false);
-        m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
-    } else if (action == "queuesummary") {
-        int nj = newstatuses.toMap()["njoined"].toInt();
-        int np = newstatuses.toMap()["npaused"].toInt();
-        setStatusColors(nj, np);
-    }
 }
 
 void IdentityDisplay::setStatusColors(int nj, int np)
@@ -431,10 +399,12 @@ void IdentityDisplay::setStatusColors(int nj, int np)
             setSystrayIcon(icon_color_red);
             p_square->fill("#ff0000");
             m_agentpause->setToolTip(tr("Paused"));
+            m_agentpausetxt->setText(tr("Paused"));
         } else {
             bool loggedin = m_agentstatus->property("connected").toBool();
             p_square->fill("#00ff00");
             m_agentpause->setToolTip(tr("Unpaused"));
+            m_agentpausetxt->setText(tr("Unpaused"));
             if(loggedin)
                 setSystrayIcon(icon_color_green);
             else
@@ -443,6 +413,7 @@ void IdentityDisplay::setStatusColors(int nj, int np)
     } else {
         p_square->fill("#ff0000");
         m_agentpause->setToolTip(tr("Paused"));
+        m_agentpausetxt->setText(tr("Paused"));
     }
     m_agentpause->setPixmap(* p_square);
 }

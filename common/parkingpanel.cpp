@@ -48,6 +48,7 @@
 #include <QTimerEvent>
 #include <QVBoxLayout>
 
+#include "baseengine.h"
 #include "extendedtablewidget.h"
 #include "parkingpanel.h"
 //#include "peerchannel.h"
@@ -57,7 +58,9 @@
  *
  * Set up the layout and the table widget.
  */
-ParkingPanel::ParkingPanel(BaseEngine * engine, QWidget * parent)
+ParkingPanel::ParkingPanel(BaseEngine * engine,
+                           const QVariant & options,
+                           QWidget * parent)
     : QWidget(parent), m_engine(engine)
 {
     QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -78,23 +81,19 @@ ParkingPanel::ParkingPanel(BaseEngine * engine, QWidget * parent)
     // forward SIGNAL
     connect( m_table, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
              this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
-        
     vlayout->addWidget( m_table, 0 );
     m_table->resizeColumnsToContents();
     m_timerid = 0;
     m_deltasec = 2;
     m_astid    = "";
     m_placenum = "";
+    setGuiOptions(options);
 }
 
 ParkingPanel::~ParkingPanel()
 {
     // qDebug() << "ParkingPanel::~ParkingPanel()";
     delete m_table;
-}
-
-void ParkingPanel::setGuiOptions(const QVariant &)
-{
 }
 
 void ParkingPanel::setUserInfo(const UserInfo * ui)
@@ -123,7 +122,7 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
 
     QString parkedpeer = channel.split("-")[0];
     QString parkedby = fromchannel.split("-")[0];
-        
+    
     if(eventkind == "parkedcall") {
         m_table->insertRow( 0 );
         QTableWidgetItem * item0 = new QTableWidgetItem( astid );

@@ -114,9 +114,14 @@ void UserInfo::setAvailState(const QVariant & availstate)
     }
 }
 
-void UserInfo::setAgent(const QString & agentnum)
+void UserInfo::setAgentNumber(const QString & agentnumber)
 {
-    m_agentnum = agentnum;
+    m_agentnumber = agentnumber;
+}
+
+void UserInfo::setAgentId(const QString & agentid)
+{
+    m_agentid = agentid;
 }
 
 /*! \brief set Message Waiting indicator */
@@ -134,10 +139,10 @@ bool UserInfo::hasPhone(const QString & astid,
 }
 
 /*! \brief check if this user has this agent */
-bool UserInfo::hasAgent(const QString & astid,
-                        const QString & agentnum)
+bool UserInfo::hasAgentNumber(const QString & astid,
+                              const QString & agentnumber)
 {
-    return ((m_astid == astid) && m_agentnum == agentnum);
+    return ((m_astid == astid) && (m_agentnumber == agentnumber));
 }
 
 /*! \brief return m_fullname */
@@ -172,9 +177,14 @@ const QStringList & UserInfo::mwi() const
     return m_mwi;
 }
 
+const QString & UserInfo::agentnumber() const
+{
+    return m_agentnumber;
+}
+
 const QString & UserInfo::agentid() const
 {
-    return m_agentnum;
+    return m_agentid;
 }
 
 /*! \brief return a list of contexts where this user has its phones
@@ -182,7 +192,6 @@ const QString & UserInfo::agentid() const
 const QStringList UserInfo::contexts() const
 {
     QStringList clist;
-    //qDebug() << m_phones;
     foreach(const QString key, m_phones.keys())
     {
         //if(m_phones[key])

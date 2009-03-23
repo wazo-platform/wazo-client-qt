@@ -64,14 +64,6 @@ DatetimePanel::DatetimePanel(QWidget * parent)
     startTimer(1000);
 }
 
-void DatetimePanel::setGuiOptions(const QVariant &)
-{
-}
-
-void DatetimePanel::setUserInfo(const UserInfo *)
-{
-}
-
 void DatetimePanel::timerEvent(QTimerEvent *)
 {
     m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));

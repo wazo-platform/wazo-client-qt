@@ -49,11 +49,12 @@
 
 #include "customerinfopanel.h"
 #include "popup.h"
-#include "userinfo.h"
+#include "baseengine.h"
 
-CustomerInfoPanel::CustomerInfoPanel(const QVariant & options,
+CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
+                                     const QVariant & options,
                                      QWidget * parent)
-    : QWidget(parent)
+    : XletprotoPanel(engine, options, parent)
 {
     // qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
     QGridLayout * glayout = new QGridLayout(this);
@@ -69,15 +70,6 @@ CustomerInfoPanel::~CustomerInfoPanel()
 {
 }
 
-void CustomerInfoPanel::setGuiOptions(const QVariant &)
-{
-}
-
-void CustomerInfoPanel::setUserInfo(const UserInfo * ui)
-{
-    m_ui = ui;
-}
-
 /*!
  * Display the new profile in the tabbed area
  * and show a message with the systray icon
@@ -86,18 +78,21 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
 {
     QString opt = "";
     qDebug() << "CustomerInfoPanel::showNewProfile()"
-             << popup->callAstid() << popup->callUniqueid();
+             << popup->callKind()
+             << popup->callAstid() << popup->callContext()
+             << popup->callUniqueid() << popup->callChannel();
     if(popup->sheetpopup()) {
         Popup * already_popup = NULL;
         foreach(Popup * mpopup, m_popups)
-            if((mpopup->callUniqueid() == popup->callUniqueid()) &&
-               (mpopup->callAstid() == popup->callAstid())) {
+            if ( (mpopup->callAstid() == popup->callAstid()) &&
+                 (mpopup->callContext() == popup->callContext()) &&
+                 (mpopup->callUniqueid() == popup->callUniqueid()) ) {
                 already_popup = mpopup;
                 break;
             }
         if(already_popup) {
             qDebug() << "CustomerInfoPanel::showNewProfile()" << "found a match for"
-                     << popup->callAstid() << popup->callUniqueid();
+                     << popup->callAstid() << popup->callContext() << popup->callUniqueid();
             already_popup->update(popup->sheetlines());
         } else {
             QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm:ss");
@@ -114,22 +109,23 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
         if(popup->focus())
             opt += "fp";
     }
-        
+    
     // tells the main widget that a new popup has arrived here
     if(popup->systraypopup())
         opt += "s";
     newPopup(popup->messagetitle(), popup->message(), opt);
-        
+    
     //         connectDials(popup);
 }
 
 void CustomerInfoPanel::popupDestroyed(QObject * obj)
 {
     qDebug() << "CustomerInfoPanel::popupDestroyed()"
-             << obj->property("astid") << obj->property("uniqueid");
+             << obj->property("astid") << obj->property("context") << obj->property("uniqueid") << obj->property("context");
     foreach(Popup * mpopup, m_popups)
-        if((mpopup->callUniqueid() == obj->property("uniqueid")) &&
-           (mpopup->callAstid() == obj->property("astid")))
+        if ( (mpopup->callAstid() == obj->property("astid")) &&
+             (mpopup->callContext() == obj->property("context")) &&
+             (mpopup->callUniqueid() == obj->property("uniqueid")) )
             m_popups.removeAll(mpopup);
 }
 
@@ -147,7 +143,8 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
     inputstream->write(fichecontent.toUtf8());
     inputstream->close();
     // Get Data and Popup the profile if ok
-    Popup * popup = new Popup(m_autourl_allowed, m_ui);
+    UserInfo * ui = m_engine ? m_engine->getXivoClientUser() : NULL;
+    Popup * popup = new Popup(m_autourl_allowed, ui);
     popup->feed(inputstream, qtui);
     connect( popup, SIGNAL(destroyed(QObject *)),
              this, SLOT(popupDestroyed(QObject *)) );
@@ -170,10 +167,12 @@ void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVaria
 {
     QString astid = sender()->property("astid").toString();
     QString uniqueid = sender()->property("uniqueid").toString();
+    QString context = sender()->property("context").toString();
     Popup * thispopup = NULL;
     foreach(Popup * mpopup, m_popups)
-        if((mpopup->callUniqueid() == uniqueid) &&
-           (mpopup->callAstid() == astid)) {
+        if ( (mpopup->callUniqueid() == uniqueid) &&
+             (mpopup->callContext() == context) &&
+             (mpopup->callAstid() == astid) ) {
             thispopup = mpopup;
             break;
         }
@@ -181,7 +180,8 @@ void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVaria
         QVariantMap data;
         data["buttonname"] = buttonname;
         data["astid"] = thispopup->callAstid();
-        data["uniqueid"] = thispopup->callUniqueid();
+        data["uniqueid"] = thispopup->callContext();
+        data["context"] = thispopup->callUniqueid();
         data["channel"] = thispopup->callChannel();
         data["timestamps"] = timestamps;
         actionFromFiche(QVariant(data));

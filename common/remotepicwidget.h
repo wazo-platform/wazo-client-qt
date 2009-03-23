@@ -54,12 +54,12 @@ class QTemporaryFile;
 class RemotePicWidget : public QWidget
 {
     Q_OBJECT
-        public:
+ public:
     //! Constructor
     RemotePicWidget(const QString & name, const QString & url, QWidget *parent=0);
     //! Starts the download process
     void startHttpRequest(const QString &);
-    private slots:
+ private slots:
     //! connected to the requestFinished() signal
     void httpRequestFinished(int, bool);
     //! connected to the dataReadProgress() signal

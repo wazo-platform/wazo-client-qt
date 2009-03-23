@@ -64,8 +64,8 @@ public:
     MyLocalDirPanel(BaseEngine *, QWidget * parent = 0);
     ~MyLocalDirPanel();
 public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
     void openNewContactDialog();
     void importContacts();
     void exportContacts();
@@ -79,7 +79,6 @@ private:
     QString getSaveFile() const;
 
     BaseEngine * m_engine;  //!< xivo client engine
-    const UserInfo * m_ui;  //!< current user
     ExtendedTableWidget * m_table;  //!< Table widget to display contacts
     SearchDialog * m_searchBox; //!< Search dialog box
 };

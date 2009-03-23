@@ -49,14 +49,16 @@
 #include <QVBoxLayout>
 
 #include "servicepanel.h"
+#include "baseengine.h"
 #include "userinfo.h"
 
 const QStringList fwdcapas = (QStringList() << "fwdrna" << "fwdbusy" << "fwdunc");
 const QStringList chkcapas = (QStringList() << "enablevm" << "incallrec" << "incallfilter" << "enablednd");
 
-ServicePanel::ServicePanel(const QVariant & options,
+ServicePanel::ServicePanel(BaseEngine * engine,
+                           const QVariant & options,
                            QWidget * parent)
-    : QWidget(parent)
+    : QWidget(parent), m_engine(engine)
 {
     m_capalegend["enablevm"]     = tr("Voice &Mail");
     m_capalegend["incallrec"]    = tr("Call &Recording");
@@ -120,14 +122,6 @@ ServicePanel::ServicePanel(const QVariant & options,
 }
 
 ServicePanel::~ServicePanel()
-{
-}
-
-void ServicePanel::setGuiOptions(const QVariant &)
-{
-}
-
-void ServicePanel::setUserInfo(const UserInfo *)
 {
 }
 

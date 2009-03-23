@@ -46,13 +46,15 @@
 #include <QPushButton>
 #include <QTabWidget>
 
+#include "baseengine.h"
 #include "conferencepanel.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
  */
-ConferencePanel::ConferencePanel(QWidget * parent)
-    : QWidget(parent), m_ui(NULL)
+ConferencePanel::ConferencePanel(BaseEngine * engine,
+                                 QWidget * parent)
+    : QWidget(parent), m_engine(engine)
 {
     // qDebug() << "ConferencePanel::ConferencePanel()";
     m_glayout = new QGridLayout(this);
@@ -65,15 +67,6 @@ ConferencePanel::ConferencePanel(QWidget * parent)
 
 ConferencePanel::~ConferencePanel()
 {
-}
-
-void ConferencePanel::setGuiOptions(const QVariant &)
-{
-}
-
-void ConferencePanel::setUserInfo(const UserInfo * ui)
-{
-    m_ui = ui;
 }
 
 void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
@@ -167,14 +160,16 @@ void ConferencePanel::setProperties(double timeref,
         QString userid = details.toMap()["userid"].toString();
         int time_spent = int(timeref - details.toMap()["time_start"].toDouble() + 0.5);
         if(! m_infos.contains(ref)) {
+            UserInfo * userinfo = m_engine ? m_engine->getXivoClientUser() : NULL;
+            
             m_infos[ref] = new QLabel(QString("%1 <%2>").arg(fullname).arg(phonenum));
             m_infos[ref]->setProperty("astid", astid);
             m_infos[ref]->setProperty("room", roomnum);
-                        
+            
             m_timespent[ref] = new QLabel();
             m_timespent[ref]->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
             m_timespent[ref]->setProperty("inittime", QDateTime::currentDateTime().addSecs(- time_spent));
-                        
+            
             m_action_kick[ref] = new QPushButton(tr("Kick"));
             m_action_kick[ref]->setIcon(QIcon(":/images/cancel.png"));
             m_action_kick[ref]->setIconSize(QSize(16, 16));
@@ -184,12 +179,13 @@ void ConferencePanel::setProperties(double timeref,
             m_action_kick[ref]->setProperty("reference", ref);
             m_action_kick[ref]->setProperty("uniqueid", uniqueid);
             m_action_kick[ref]->setProperty("action", "kick");
-            if((m_ui->userid() == adminid) || (m_ui->userid() == userid))
-                connect(m_action_kick[ref], SIGNAL(clicked()),
-                        this, SLOT(doMeetMeAction()));
-            else
-                m_action_kick[ref]->hide();
-                        
+            if(userinfo) {
+                if((userinfo->userid() == adminid) || (userinfo->userid() == userid))
+                    connect(m_action_kick[ref], SIGNAL(clicked()),
+                            this, SLOT(doMeetMeAction()));
+                else
+                    m_action_kick[ref]->hide();
+            }
             m_action_record[ref] = new QPushButton(tr("Record"));
             m_action_record[ref]->setIcon(QIcon(":/images/cancel.png"));
             m_action_record[ref]->setIconSize(QSize(16, 16));
@@ -200,12 +196,13 @@ void ConferencePanel::setProperties(double timeref,
             m_action_record[ref]->setProperty("uniqueid", uniqueid);
             m_action_record[ref]->setProperty("action", "record");
             m_action_record[ref]->setProperty("recordstatus", "off");
-            if(m_ui->userid() == adminid)
-                connect(m_action_record[ref], SIGNAL(clicked()),
-                        this, SLOT(doMeetMeAction()));
-            else
-                m_action_record[ref]->hide();
-                        
+            if(userinfo) {
+                if(userinfo->userid() == adminid)
+                    connect(m_action_record[ref], SIGNAL(clicked()),
+                            this, SLOT(doMeetMeAction()));
+                else
+                    m_action_record[ref]->hide();
+            }
             m_action_mute[ref] = new QPushButton(tr("Mute"));
             m_action_mute[ref]->setIcon(QIcon(":/images/cancel.png"));
             m_action_mute[ref]->setIconSize(QSize(16, 16));
@@ -216,13 +213,15 @@ void ConferencePanel::setProperties(double timeref,
             m_action_mute[ref]->setProperty("uniqueid", uniqueid);
             m_action_mute[ref]->setProperty("action", "mute");
             m_action_mute[ref]->setProperty("mutestatus", "off");
-            if((m_ui->userid() == adminid) || (m_ui->userid() == userid))
-                connect(m_action_mute[ref], SIGNAL(clicked()),
-                        this, SLOT(doMeetMeAction()));
-            else
-                m_action_mute[ref]->hide();
+            if(userinfo) {
+                if((userinfo->userid() == adminid) || (userinfo->userid() == userid))
+                    connect(m_action_mute[ref], SIGNAL(clicked()),
+                            this, SLOT(doMeetMeAction()));
+                else
+                    m_action_mute[ref]->hide();
+            }
             // QPushButton * qp2 = new QPushButton(tr("Spy"));
-                        
+            
             m_layout[idxroom]->addWidget( m_infos[ref], usernum.toInt(), 1 );
             m_layout[idxroom]->addWidget( m_action_kick[ref], usernum.toInt(), 2 );
             m_layout[idxroom]->addWidget( m_action_record[ref], usernum.toInt(), 3 );

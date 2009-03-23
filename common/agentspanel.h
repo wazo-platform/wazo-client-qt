@@ -53,6 +53,7 @@ class QGridLayout;
 class QLabel;
 class QPushButton;
 
+class BaseEngine;
 class UserInfo;
 
 /*! \brief Display a list of agents
@@ -60,33 +61,38 @@ class UserInfo;
 class AgentsPanel : public QWidget
 {
     Q_OBJECT
-        public:
-    AgentsPanel(const QVariant &,
+ public:
+    AgentsPanel(BaseEngine *,
+                const QVariant &,
                 QWidget * parent = 0);
     ~AgentsPanel();
  signals:
     void changeWatchedAgent(const QString &, bool);
     void agentAction(const QString &);
-    public slots:
+    void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
+ public slots:
     void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
-    void setAgentList(double, const QVariant &);
-    void updatePeerAgent(double,
-                         const QString &,
-                         const QString &,
-                         const QVariant &);
-    void updateAgentPresence(const QString &, const QVariant &);
-    private slots:
+    void setUserInfo(const UserInfo *) {};
+    void newAgentList();
+    void newQueueList();
+    void updateAgentPresence(const QString &, const QString &, const QVariant &);
+    void statusRecord(const QString &, const QString &, const QString &);
+    void statusListen(const QString &, const QString &, const QString &);
+ private slots:
     void agentClicked();
  private:
-    void showPausedStatus(const QString &, int);
-        
+    void newAgentLine(const QString &);
+    void updateAgentLineAdmin(const QString &, const QString &, const QString &);
+    void updateAgentLineEvent(const QString &);
+    void displayLine(const QString &, int);
+    void updateAgentStatus(const QString &, const QVariantMap &);
+    
     QFont m_gui_font;   //!< font
     quint32 m_gui_buttonsize;   //!< button size
-        
+    
+    BaseEngine * m_engine;
     QGridLayout * m_gridlayout;     //!< Layout
-    const UserInfo * m_userinfo;    //!< user info
-        
+    
     QHash<QString, QLabel *>      m_agent_labels;
     QHash<QString, QPushButton *> m_agent_more;
     QHash<QString, QPushButton *> m_agent_record;
@@ -99,10 +105,10 @@ class AgentsPanel : public QWidget
     QHash<QString, QLabel *>      m_agent_paused_status;
     QHash<QString, QPushButton *> m_agent_paused_action;
     QHash<QString, QLabel *>      m_agent_paused_number;
-        
+    
     QHash<QString, QStringList> m_agent_joined_list;
     QHash<QString, QStringList> m_agent_paused_list;
-        
+    
     QLabel * m_title1;  //!< "Agent"
     QLabel * m_title2;  //!< "Record"
     QLabel * m_title3;  //!< "Listen"

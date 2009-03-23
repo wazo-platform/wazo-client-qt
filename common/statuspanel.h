@@ -69,8 +69,8 @@ public:
     ~StatusPanel();
     enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
 public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
     void functionKeyPressed(int);
     void xferPressed();
     void clicked();

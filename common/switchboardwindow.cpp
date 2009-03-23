@@ -88,20 +88,6 @@ SwitchBoardWindow::~SwitchBoardWindow()
     removePeers();
 }
 
-/*!
- * Does nothing
- */
-void SwitchBoardWindow::setGuiOptions(const QVariant &)
-{
-}
-
-/*!
- * Does nothing
- */
-void SwitchBoardWindow::setUserInfo(const UserInfo *)
-{
-}
-
 /*! \brief update display of user informations
  *
  * Update all what need to be displayed about this user.
@@ -576,7 +562,7 @@ void SwitchBoardWindow::mousePressEvent( QMouseEvent * event )
         }
 }
 
-void SwitchBoardWindow::mouseReleaseEvent( QMouseEvent * event )
+void SwitchBoardWindow::mouseReleaseEvent( QMouseEvent * )
 {
     //if( event->button() == Qt::LeftButton)
     if( m_trace_box )

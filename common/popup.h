@@ -68,7 +68,7 @@ class UserInfo;
 class Popup: public QWidget
 {
     Q_OBJECT
-        public:
+ public:
     //! Construct from a QIODevice used to read XML input
     Popup(const bool &,
           const UserInfo *,
@@ -99,9 +99,11 @@ class Popup: public QWidget
     void finishAndShow();
     void setSheetPopup(const bool &);
     bool sheetpopup();
-    const QString & callUniqueid() const;
     const QString & callAstid() const;
+    const QString & callUniqueid() const;
+    const QString & callContext() const;
     const QString & callChannel() const;
+    const QString & callKind() const;
     bool systraypopup();
     bool focus();
     void setTitle(const QString &);
@@ -121,7 +123,7 @@ class Popup: public QWidget
                     const QString &);        //!< sent when the widget wants to dial
     void actionFromPopup(const QString &, const QVariant &);
     void save(const QString &);
-    public slots:
+ public slots:
     void streamNewData();                //!< new input data is available
     void streamAboutToClose();        //!< catch aboutToClose() signal from the socket
     void socketDisconnected();        //!< connected to disconnected() signal
@@ -135,7 +137,7 @@ class Popup: public QWidget
  private:
     void addInfoForm(int, const QString &);
     void saveandclose();
-        
+    
     QIODevice * m_inputstream;        //!< input stream where the XML is read from
     /* the following properties are for XML parsing */
     //! QXmlInputSource constructed from m_inputstream
@@ -151,9 +153,13 @@ class Popup: public QWidget
     QHash<QString, QString> m_message;        //! Message property
     QString m_messagetitle;        //! Message title
     QLabel * m_title;        //! Sheet Title
+    
+    QString m_astid;
+    QString m_context;
     QString m_uniqueid;
     QString m_channel;
-    QString m_astid;
+    QString m_kind;
+    
     bool m_sheetpopup;
     bool m_systraypopup;
     bool m_focus;

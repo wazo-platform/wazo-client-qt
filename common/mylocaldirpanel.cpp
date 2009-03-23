@@ -59,7 +59,7 @@
 /*! \brief Constructor
  */
 MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
-    : QWidget(parent), m_engine(engine), m_ui(NULL)
+    : QWidget(parent), m_engine(engine)
 {
     qDebug() << "MyLocalDirPanel::MyLocalDirPanel()";
         
@@ -115,6 +115,8 @@ MyLocalDirPanel::~MyLocalDirPanel()
     saveToFile( file );
 }
 
+/*! \brief get the saved file
+ */
 QString MyLocalDirPanel::getSaveFile() const
 {
     qDebug() << "MyLocalDirPanel::getSaveFile()" << qApp->applicationDirPath() << m_engine->getSettings()->fileName();
@@ -122,20 +124,6 @@ QString MyLocalDirPanel::getSaveFile() const
     QFileInfo fi( m_engine->getSettings()->fileName() );
     QDir dir( fi.canonicalPath() );
     return dir.absoluteFilePath("localdir.csv");
-}
-
-/*! Does nothing
- */
-void MyLocalDirPanel::setGuiOptions(const QVariant &)
-{
-}
-
-/*! store current user
- */
-void MyLocalDirPanel::setUserInfo(const UserInfo * ui)
-{
-    m_ui = ui;
-    // qDebug() << "MyLocalDirPanel::setUserInfo()" << m_ui->fullname();
 }
 
 /*! open the dialog box used to enter a new contact

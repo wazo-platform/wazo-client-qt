@@ -48,17 +48,19 @@
 #include <QWidget>
 
 #include "popup.h"
+#include "xletprotopanel.h"
 
 class QTabWidget;
 
 class Popup;
-class UserInfo;
+class BaseEngine;
 
-class CustomerInfoPanel : public QWidget
+class CustomerInfoPanel : public XletprotoPanel
 {
     Q_OBJECT
-        public:
-    CustomerInfoPanel(const QVariant &,
+ public:
+    CustomerInfoPanel(BaseEngine *,
+                      const QVariant &,
                       QWidget * parent = 0);
     ~CustomerInfoPanel();
  signals:
@@ -67,9 +69,7 @@ class CustomerInfoPanel : public QWidget
                   const QString &);
     void actionFromFiche(const QVariant &);
     void actionCall(const QString &, const QString &, const QString &);
-    public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+ public slots:
     void showNewProfile(Popup *);
     void popupDestroyed(QObject * obj);
     void addToDataBase(const QString &);
@@ -77,7 +77,6 @@ class CustomerInfoPanel : public QWidget
     void actionFromPopup(const QString &, const QVariant &);
     void localActionCall(const QString &, const QString &, const QString &);
  private:
-    const UserInfo * m_ui;
     QTabWidget * m_tabs;
     QList<Popup *> m_popups;
     quint32 m_tablimit;

@@ -57,32 +57,31 @@ class QueueInfo
     //! destructor
     ~QueueInfo();
     //! update attribute members
-    void update(const QMap<QString, QVariant> & prop);
-    //! context this phone belongs to
-    const QString & context() const { return m_context; };
-    //! access to the status values of this phone
+    bool update(const QMap<QString, QVariant> & prop);
+    //! asterisk this queue belongs to
+    const QString & astid() const;
+    //! context this queue belongs to
+    const QString & context() const;
+    //! access to the status values of this queue
     const QString hintstatus(const QString & key) const {
         return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
     };
-    //! phone number
+    //! queue number
     const QString & number() const { return m_number; };
-    //! phone technology (sip, iax, etc...)
-    const QString & tech() const { return m_tech; };
-    //! phone id
-    const QString & phoneid() const { return m_phoneid; };
-    //! current communications of this phone
+    //! queuename
+    const QString & queuename() const;
+    //! queue properties
+    const QVariantMap & properties() const;
+    //! current communications of this queue
     const QMap<QString, QVariant> & comms() const { return m_comms; };
  private:
     QString m_astid;
-    QString m_tech;
     QString m_context;
-    QString m_phoneid;
+    QString m_queuename;
     QString m_number;
-    bool m_initialized;
-    bool m_enable_hint;
     QMap<QString, QString> m_hintstatus;
     QMap<QString, QVariant> m_comms;
-    
+    QVariantMap m_properties;
 };
 
 #endif

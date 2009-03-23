@@ -105,11 +105,6 @@ void DirectoryPanel::setGuiOptions(const QVariant &)
 {
 }
 
-void DirectoryPanel::setUserInfo(const UserInfo * ui)
-{
-    //m_userinfo = ui;
-}
-
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
 {
     qDebug() << "DirectoryPanel::focusInEvent()" << event;
@@ -234,7 +229,7 @@ void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
         QMenu contextMenu( this );
         contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
         QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
-        UserInfo * ui = m_engine?m_engine->getXivoClientUser():0;
+        UserInfo * ui = m_engine ? m_engine->getXivoClientUser() : 0;
         if(ui)
         {
             foreach( const QString phone, ui->phonelist() )

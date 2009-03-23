@@ -54,7 +54,7 @@
 /*! \brief Constructor
  */
 CallCampaignPanel::CallCampaignPanel(QWidget * parent)
-    : QWidget(parent), m_ui(NULL)
+    : QWidget(parent)
 {
     qDebug() << "CallCampaignPanel::CallCampaignPanel()";
         
@@ -105,16 +105,6 @@ CallCampaignPanel::CallCampaignPanel(QWidget * parent)
     m_vlayout->addStretch();
         
     m_glayout->setColumnStretch(2, 1);
-}
-
-void CallCampaignPanel::setGuiOptions(const QVariant &)
-{
-}
-
-void CallCampaignPanel::setUserInfo(const UserInfo * ui)
-{
-    m_ui = ui;
-    // qDebug() << "CallCampaignPanel::setUserInfo()" << m_ui->fullname();
 }
 
 void CallCampaignPanel::setOpenFileName()

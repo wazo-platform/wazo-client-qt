@@ -56,7 +56,7 @@ class UserInfo;
 class LogWidget : public QWidget
 {
     Q_OBJECT
-        public:
+ public:
     LogWidget(BaseEngine *,
               const QVariant &,
               QWidget * parent = 0);
@@ -69,14 +69,14 @@ class LogWidget : public QWidget
     void timerEvent(QTimerEvent *);
  private:
     int mode();
-    public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+ public slots:
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
     void clear();
     void addLogEntry(const QDateTime &, int,
                      const QString &, const QString &, const QString &);
     void monitorPeer(UserInfo *);
-    private slots:
+ private slots:
     void modeChanged(bool);
     void proxyCallRequests(const QString &, const QString &);
  signals:
@@ -93,7 +93,6 @@ class LogWidget : public QWidget
     QRadioButton * m_radioOut;                //!< "Out" radio button
     QRadioButton * m_radioIn;                //!< "In" radio button
     QRadioButton * m_radioMissed;        //!< "Missed" radio button
-    const UserInfo * m_userinfo_owner;
 };
 
 #endif

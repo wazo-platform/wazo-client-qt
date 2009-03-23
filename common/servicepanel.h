@@ -50,21 +50,23 @@ class QLineEdit;
 
 class ServiceStatus;
 class UserInfo;
+class BaseEngine;
 
 class ServicePanel : public QWidget
 {
     Q_OBJECT
-        public:
-    ServicePanel(const QVariant &,
+ public:
+    ServicePanel(BaseEngine *,
+                 const QVariant &,
                  QWidget * parent = 0);
     ~ServicePanel();
  signals:
     void chkoptChanged(const QString &, bool);
     void forwardChanged(const QString &, bool, const QString &);
     void askFeatures(); //!< need features to be updated !
-    public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+ public slots:
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
     void setOpt(const QString &, bool);
     void setForward(const QString &, const QVariant &);
     void monitorPeer(UserInfo *);
@@ -73,11 +75,12 @@ class ServicePanel : public QWidget
     void Reset();
     void getRecordedStatus();
     void setRecordedStatus();
-    private slots:
+ private slots:
     void chkoptToggled(bool);
     void Toggled(bool);
     void toggleIfAllowed(const QString &);
  private:
+    BaseEngine * m_engine;
     ServiceStatus * m_status;
     QStringList m_capas;
     QHash<QString, QString> m_capalegend;

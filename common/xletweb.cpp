@@ -53,7 +53,7 @@
 /*! \brief Constructor
  */
 XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
-    : QWidget(parent), m_engine(engine), m_ui(NULL)
+    : QWidget(parent), m_engine(engine)
 {
     qDebug() << "XletWeb::XletWeb()";
         
@@ -72,14 +72,4 @@ XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
 
 XletWeb::~XletWeb()
 {
-}
-
-void XletWeb::setGuiOptions(const QVariant &)
-{
-}
-
-void XletWeb::setUserInfo(const UserInfo * ui)
-{
-    m_ui = ui;
-    qDebug() << "XletWeb::setUserInfo()" << m_ui->fullname();
 }

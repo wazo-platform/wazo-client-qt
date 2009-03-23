@@ -148,18 +148,18 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_status->setPixmap(redsquare);
     statusBar()->addPermanentWidget(m_status);
     statusBar()->clearMessage();
-
+    
     setWindowTitle("XIVO " + m_appliname);
     setDockOptions(QMainWindow::AllowNestedDocks);
     //setWindowFlags(Qt::Dialog);
     //layout->setSizeConstraint(QLayout::SetFixedSize);        // remove minimize and maximize button
     setAnimated(false);
-
+    
     createActions();
     createMenus();
     if ( m_withsystray && QSystemTrayIcon::isSystemTrayAvailable() )
         createSystrayIcon();
-
+    
     connect( m_engine, SIGNAL(logged()),
              this, SLOT(engineStarted()) );
     connect( m_engine, SIGNAL(delogged()),
@@ -169,7 +169,6 @@ MainWidget::MainWidget(BaseEngine * engine,
     connect( m_engine, SIGNAL(emitMessageBox(const QString &)),
              this, SLOT(showMessageBox(const QString &)),
              Qt::QueuedConnection );
-
     m_clipboard = QApplication::clipboard();
     connect(m_clipboard, SIGNAL(selectionChanged()),
             this, SLOT(clipselection()) );
@@ -180,14 +179,14 @@ MainWidget::MainWidget(BaseEngine * engine,
     // to be better defined
     // resize(500, 400);
     restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
-
+    
     m_central_widget = new QStackedWidget( this );
     setCentralWidget( m_central_widget );
-
+    
     m_wid = new QWidget( m_central_widget );
     m_central_widget->addWidget( m_wid );
     m_gridlayout = new QGridLayout(m_wid);
-
+    
     m_login_widget = new QWidget( m_central_widget );
     m_login_widget->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
     m_central_widget->addWidget( m_login_widget );
@@ -196,7 +195,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_login_layout->setColumnStretch(0, 1);
     m_login_layout->setColumnStretch(2, 1);
     m_login_layout->setRowStretch(6, 1);
-
+    
     if(m_settings->value("display/logtofile", false).toBool())
         m_engine->setLogFile(m_settings->value("display/logfilename", "XIVO_Client.log").toString());
     m_engine->logAction("application started on " + osname);
@@ -223,7 +222,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_qlab3 = new QLineEdit();
     m_qlab3->setText(m_engine->phonenumber());
     m_login_layout->addWidget(m_qlab3, 4, 1);
-
+    
     m_ack = new QPushButton("OK");
     m_login_layout->addWidget(m_ack, 2, 2, Qt::AlignLeft);
     m_kpass = new QCheckBox(tr("Keep Password"));
@@ -250,7 +249,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     connect( m_loginkind, SIGNAL(currentIndexChanged(int)),
              this, SLOT(loginKindChanged(int)) );
     m_launchDateTime = QDateTime::currentDateTime();
-
+    
     showLogin();
     if((m_withsystray && (m_engine->systrayed() == false)) || (! m_withsystray))
         this->show();
@@ -275,7 +274,7 @@ void MainWidget::clipselection()
 {
     //qDebug() << "BaseEngine::clipselection()" << m_clipboard->text(QClipboard::Selection);
     // statusBar()->showMessage("selected : " + m_clipboard->text(QClipboard::Selection));
-        
+    
     QString selected = m_clipboard->text(QClipboard::Selection);
     pasteToDialPanel(selected);
     
@@ -296,7 +295,7 @@ void MainWidget::clipdata()
 {
     //qDebug() << "BaseEngine::clipdata()" << m_clipboard->text(QClipboard::Clipboard);
     // statusBar()->showMessage("data : " + m_clipboard->text(QClipboard::Clipboard));
-        
+    
     pasteToDialPanel(m_clipboard->text(QClipboard::Clipboard));
     
     // WIN : we fall here in any Ctrl-C/Ctrl-X/"copy"/... action
@@ -726,22 +725,22 @@ void MainWidget::engineStarted()
 {
     setForceTabs(false);
     setAppearance(m_engine->getCapaXlets());
-        
+    
     m_appliname = tr("Client (%1 profile)").arg(m_engine->getCapaApplication());
     QVariantMap opt_map;
     opt_map.unite(m_engine->getGuiOptions("server_funcs").toMap());
     opt_map.unite(m_engine->getGuiOptions("server_gui").toMap());
     opt_map.unite(m_engine->getGuiOptions("user").toMap());
     m_options = QVariant(opt_map);
-        
+    
     connect( m_engine, SIGNAL(updatePresence(const QVariant &)),
              this, SLOT(updatePresence(const QVariant &)) );
     updateAppliName();
     hideLogin();
-        
+    
     m_tabwidget = new QTabWidget(this);
     m_tabwidget->hide();
-        
+    
     if(m_docknames.contains("tabber")) {
         m_tabwidget->show();
         addPanel("tabber", tr("Tabs"), m_tabwidget);
@@ -750,7 +749,7 @@ void MainWidget::engineStarted()
         m_tabwidget->show();
         m_gridlayout->addWidget(m_tabwidget, 1, 0);
     }
-        
+    
     for(int j = 0; j < XletList.size(); j++) {
         QString xletid = XletList[j];
         if (m_forcetabs || m_allnames.contains(xletid)) {
@@ -758,7 +757,7 @@ void MainWidget::engineStarted()
             if (xletid == "history") {
                 m_xlet[xletid] = new LogWidget(m_engine, m_options, this);
                 addPanel(xletid, tr("History"), m_xlet[xletid]);
-                                
+                
                 connectDials(m_xlet[xletid]);
                 connect( m_engine, SIGNAL(updateLogEntry(const QDateTime &, int,
                                                          const QString &, const QString &, const QString &)),
@@ -770,30 +769,30 @@ void MainWidget::engineStarted()
                          m_xlet[xletid], SLOT(clear()) );
                 connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
                          m_xlet[xletid], SLOT(monitorPeer(UserInfo *)) );
-                                
+                
             } else if (xletid == "identity") {
-                m_xlet[xletid] = new IdentityDisplay(m_options);
+                m_xlet[xletid] = new IdentityDisplay(m_engine, m_options);
                 addPanel(xletid, tr("&Identity"), m_xlet[xletid]);
-                connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
-                connect( m_engine, SIGNAL(newAgentList(double, const QVariant &)),
-                         m_xlet[xletid], SLOT(setAgentList(double, const QVariant &)) );
+                
+                connect( m_engine, SIGNAL(newAgentList()),
+                         m_xlet[xletid], SLOT(newAgentList()) );
+                connect( m_engine, SIGNAL(newQueueList()),
+                         m_xlet[xletid], SLOT(newQueueList()) );
+                
                 connect( m_engine, SIGNAL(updatePresence(const QVariant &)),
                          m_xlet[xletid], SLOT(updatePresence(const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(setAvailState(const QString &, bool)),
                          m_engine, SLOT(setAvailState(const QString &, bool)) );
                 connect( m_xlet[xletid], SIGNAL(changeWatchedAgent(const QString &, bool)),
                          m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
-                                
-                connect( m_engine, SIGNAL(newQueueList(const QVariant &)),
-                         m_xlet[xletid], SLOT(setQueueList(const QVariant &)) );
+                
                 connect( m_xlet[xletid], SIGNAL(agentAction(const QString &)),
                          m_engine, SLOT(agentAction(const QString &)) );
                 connect( m_xlet[xletid], SIGNAL(setSystrayIcon(const QString &)),
                          this, SLOT(setSystrayIcon(const QString &)) );
-                                
+                
             } else if (xletid == "agents") {
-                m_xlet[xletid] = new AgentsPanel(m_options);
+                m_xlet[xletid] = new AgentsPanel(m_engine, m_options);
                 if (withscrollbar) {
                     QScrollArea * sa_ag = new QScrollArea(this);
                     sa_ag->setWidget(m_xlet[xletid]);
@@ -802,19 +801,26 @@ void MainWidget::engineStarted()
                 } else
                     addPanel(xletid, tr("Agents' List (plain)"), m_xlet[xletid]);
                 
-                connect( m_engine, SIGNAL(newAgentList(double, const QVariant &)),
-                         m_xlet[xletid], SLOT(setAgentList(double, const QVariant &)) );
+                connect( m_engine, SIGNAL(newAgentList()),
+                         m_xlet[xletid], SLOT(newAgentList()) );
+                connect( m_engine, SIGNAL(newQueueList()),
+                         m_xlet[xletid], SLOT(newQueueList()) );
+                
+                connect( m_xlet[xletid], SIGNAL(shouldNotOccur(const QString &, const QString &)),
+                         m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
                 connect( m_xlet[xletid], SIGNAL(changeWatchedAgent(const QString &, bool)),
                          m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
-                connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
-                connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(updateAgentPresence(const QString &, const QVariant &)) );
+                connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QString &, const QVariant &)),
+                         m_xlet[xletid], SLOT(updateAgentPresence(const QString &, const QString &, const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(agentAction(const QString &)),
                          m_engine, SLOT(agentAction(const QString &)) );
+                connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
+                         m_xlet[xletid], SLOT(statusRecord(const QString &, const QString &, const QString &)) );
+                connect( m_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
+                         m_xlet[xletid], SLOT(statusListen(const QString &, const QString &, const QString &)) );
                 
             } else if (xletid == "agentsnext") {
-                m_xlet[xletid] = new AgentsPanelNext(m_options);
+                m_xlet[xletid] = new AgentsPanelNext(m_engine, m_options);
                 if (withscrollbar) {
                     QScrollArea * sa_ag = new QScrollArea(this);
                     sa_ag->setWidget(m_xlet[xletid]);
@@ -823,16 +829,15 @@ void MainWidget::engineStarted()
                 } else
                     addPanel(xletid, tr("Agents' List (queue groups)"), m_xlet[xletid]);
                 
-                connect( m_engine, SIGNAL(newQueueList(const QVariant &)),
-                         m_xlet[xletid], SLOT(setQueueList(const QVariant &)) );
-                connect( m_engine, SIGNAL(newAgentList(double, const QVariant &)),
-                         m_xlet[xletid], SLOT(setAgentList(double, const QVariant &)) );
+                connect( m_engine, SIGNAL(newAgentList()),
+                         m_xlet[xletid], SLOT(newAgentList()) );
+                connect( m_engine, SIGNAL(newQueueList()),
+                         m_xlet[xletid], SLOT(newQueueList()) );
+                
                 connect( m_xlet[xletid], SIGNAL(changeWatchedAgent(const QString &, bool)),
                          m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
-                connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
-                connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(updateAgentPresence(const QString &, const QVariant &)) );
+                connect( m_xlet[xletid], SIGNAL(shouldNotOccur(const QString &, const QString &)),
+                         m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
                 connect( m_xlet[xletid], SIGNAL(agentAction(const QString &)),
                          m_engine, SLOT(agentAction(const QString &)) );
                 connect( m_xlet[xletid], SIGNAL(saveQueueGroups(const QVariant &)),
@@ -847,7 +852,7 @@ void MainWidget::engineStarted()
                          m_engine, SLOT(logAction(const QString &)) );
                 
             } else if (xletid == QString("agentdetails")) {
-                m_xlet[xletid] = new AgentdetailsPanel(m_options);
+                m_xlet[xletid] = new AgentdetailsPanel(m_engine, m_options);
                 if (withscrollbar) {
                     QScrollArea * sa_ad = new QScrollArea(this);
                     sa_ad->setWidget(m_xlet[xletid]);
@@ -856,36 +861,42 @@ void MainWidget::engineStarted()
                 } else
                     addPanel(xletid, tr("Agent Details"), m_xlet[xletid]);
                 
-                connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QString &, const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(newAgent(const QString &, const QString &, const QVariant &)) );
+                connect( m_engine, SIGNAL(newAgentList()),
+                         m_xlet[xletid], SLOT(newAgentList()) );
+                connect( m_engine, SIGNAL(newQueueList()),
+                         m_xlet[xletid], SLOT(newQueueList()) );
+                
+                connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
+                         m_xlet[xletid], SLOT(monitorThisAgent(const QString &)) );
                 connect( m_xlet[xletid], SIGNAL(changeWatchedQueue(const QString &)),
                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)) );
-                connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(agentAction(const QString &)),
                          m_engine, SLOT(agentAction(const QString &)) );
+                
                 connect( m_engine, SIGNAL(serverFileList(const QStringList &)),
                          m_xlet[xletid], SLOT(serverFileList(const QStringList &)) );
                 connect( m_engine, SIGNAL(fileReceived()),
                          m_xlet[xletid], SLOT(saveToFile()) );
                 connect( m_xlet[xletid], SIGNAL(setFileName(const QString &)),
                          m_engine, SLOT(saveToFile(const QString &)) );
-                connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &)),
-                         m_xlet[xletid], SLOT(statusRecord(const QString &, const QString &)) );
-                                
+                connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
+                         m_xlet[xletid], SLOT(statusRecord(const QString &, const QString &, const QString &)) );
+                connect( m_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
+                         m_xlet[xletid], SLOT(statusListen(const QString &, const QString &, const QString &)) );
+                
             } else if (xletid == QString("conference")) {
-                m_xlet[xletid] = new ConferencePanel();
+                m_xlet[xletid] = new ConferencePanel(m_engine);
                 addPanel(xletid, tr("Conference"), m_xlet[xletid]);
-                                
+                
                 connect( m_engine, SIGNAL(meetmeEvent(double, const QVariant &)),
                          m_xlet[xletid], SLOT(meetmeEvent(double, const QVariant &)) );
                 connect( m_engine, SIGNAL(meetmeInit(double, const QVariant &)),
                          m_xlet[xletid], SLOT(meetmeInit(double, const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(meetmeAction(const QString &, const QString &)),
                          m_engine, SLOT(meetmeAction(const QString &, const QString &)) );
-                                
+                
             } else if (xletid == QString("queues")) {
-                m_xlet[xletid] = new QueuesPanel(m_options);
+                m_xlet[xletid] = new QueuesPanel(m_engine, m_options);
                 if (withscrollbar) {
                     QScrollArea * sa_qu = new QScrollArea(this);
                     sa_qu->setWidget(m_xlet[xletid]);
@@ -893,26 +904,22 @@ void MainWidget::engineStarted()
                     addPanel(xletid, tr("Queues' List"), sa_qu);
                 } else
                     addPanel(xletid, tr("Queues' List"), m_xlet[xletid]);
-                                
+                
                 connect( m_engine, SIGNAL(updateCounter(const QVariant &)),
                          m_xlet[xletid], SLOT(updateCounter(const QVariant &)) );
-                connect( m_engine, SIGNAL(setQueueStatus(const QVariant &)),
-                         m_xlet[xletid], SLOT(setQueueStatus(const QVariant &)) );
-                connect( m_engine, SIGNAL(newQueueList(const QVariant &)),
-                         m_xlet[xletid], SLOT(setQueueList(const QVariant &)) );
+                connect( m_engine, SIGNAL(newQueueList()),
+                         m_xlet[xletid], SLOT(newQueueList()) );
                 connect( m_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
                          m_xlet[xletid], SLOT(removeQueues(const QString &, const QStringList &)) );
                 connect( m_xlet[xletid], SIGNAL(changeWatchedQueue(const QString &)),
                          m_engine, SLOT(changeWatchedQueueSlot(const QString &)) );
-                connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(saveQueueOrder(const QVariant &)),
                          m_engine, SLOT(saveQueueOrder(const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(loadQueueOrder()),
                          m_engine, SLOT(loadQueueOrder()) );
                 connect( m_engine, SIGNAL(setQueueOrder(const QVariant &)),
                          m_xlet[xletid], SLOT(setQueueOrder(const QVariant &)) );
-                                
+                
             } else if (xletid == QString("queuedetails")) {
                 m_xlet[xletid] = new QueuedetailsPanel(m_engine, m_options);
                 if (withscrollbar) {
@@ -922,18 +929,21 @@ void MainWidget::engineStarted()
                     addPanel(xletid, tr("Agents of a Queue"), sa_qd);
                 } else
                     addPanel(xletid, tr("Agents of a Queue"), m_xlet[xletid]);
-                                
-                connect( m_engine, SIGNAL(changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(newQueue(double, const QString &, const QString &, const QVariant &)) );
-                connect( m_engine, SIGNAL(newAgentList(double, const QVariant &)),
-                         m_xlet[xletid], SLOT(setAgentList(double, const QVariant &)) );
+                
+                connect( m_engine, SIGNAL(newAgentList()),
+                         m_xlet[xletid], SLOT(newAgentList()) );
+                connect( m_engine, SIGNAL(newQueueList()),
+                         m_xlet[xletid], SLOT(newQueueList()) );
+                
+                connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
+                         m_xlet[xletid], SLOT(monitorThisQueue(const QString &)) );
                 connect( m_xlet[xletid], SIGNAL(changeWatchedAgent(const QString &, bool)),
                          m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
-                connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
-                                
+                connect( m_xlet[xletid], SIGNAL(agentAction(const QString &)),
+                         m_engine, SLOT(agentAction(const QString &)) );
+                
             } else if (xletid == QString("queueentrydetails")) {
-                m_xlet[xletid] = new QueueentrydetailsPanel();
+                m_xlet[xletid] = new QueueentrydetailsPanel(m_engine, m_options);
                 if (withscrollbar) {
                     QScrollArea * sa_qd = new QScrollArea(this);
                     sa_qd->setWidget(m_xlet[xletid]);
@@ -941,18 +951,21 @@ void MainWidget::engineStarted()
                     addPanel(xletid, tr("Calls of a Queue"), sa_qd);
                 } else
                     addPanel(xletid, tr("Calls of a Queue"), m_xlet[xletid]);
-                                
-                connect( m_engine, SIGNAL(changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &)),
-                         m_xlet[xletid], SLOT(newQueue(double, const QString &, const QString &, const QVariant &)) );
-                                
+                
+                connect( m_engine, SIGNAL(newQueueList()),
+                         m_xlet[xletid], SLOT(newQueueList()) );
+                
+                connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
+                         m_xlet[xletid], SLOT(monitorThisQueue(const QString &)) );
+                
             } else if (xletid == QString("datetime")) {
                 m_xlet[xletid] = new DatetimePanel();
                 addPanel(xletid, tr("Date and Time"), m_xlet[xletid]);
-
+                
             } else if (xletid == QString("dial")) {
-                m_xlet[xletid] = new DialPanel(m_options);
+                m_xlet[xletid] = new DialPanel(m_engine, m_options);
                 addPanel(xletid, tr("Dial"), m_xlet[xletid]);
-
+                
                 connectDials(m_xlet[xletid]);
                 connect( this, SIGNAL(pasteToDialPanel(const QString &)),
                          m_xlet[xletid], SLOT(setNumberToDial(const QString &)) );
@@ -960,27 +973,28 @@ void MainWidget::engineStarted()
                          m_xlet[xletid], SLOT(setNumberToDial(const QString &)) );
                 connect( m_xlet[xletid], SIGNAL(textEdited(const QString &)),
                          m_engine, SLOT(textEdited(const QString &)) );
-                                
+                
             } else if (xletid == QString("video")) {
                 m_xlet[xletid] = new PlayerWidget(this);
                 addPanel(xletid, tr("Video"), m_xlet[xletid]);
-
+                
             } else if (xletid == QString("operator")) {
                 m_xlet[xletid] = new StatusPanel(m_engine, this);
                 addPanel(xletid, tr("Operator"), m_xlet[xletid]);
-                                
+                
                 connectDials(m_xlet[xletid]);
                 connect( this, SIGNAL(functionKeyPressed(int)),
                          m_xlet[xletid], SLOT(functionKeyPressed(int)) );
                 connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
                          m_xlet[xletid], SLOT(updateUser(UserInfo *)) );
+                
             } else if (xletid == QString("messages")) {
                 m_xlet[xletid] = new DisplayMessagesPanel();
                 addPanel(xletid, tr("Messages"), m_xlet[xletid]);
-                                
+                
                 connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
                          m_xlet[xletid], SLOT(addMessage(const QString &)) );
-                                
+                
             } else if (xletid == QString("calls")) {
                 m_areaCalls = new QScrollArea(this);
                 m_areaCalls->setWidgetResizable(true);
@@ -988,43 +1002,43 @@ void MainWidget::engineStarted()
                 m_calls = new CallStackWidget(this);
                 m_areaCalls->setWidget(m_calls);
                 addPanel(xletid, tr("Calls"), m_leftpanel);
-                                
+                
                 connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
                          m_calls, SLOT(updateUser(UserInfo *)) );
                 connect( m_calls, SIGNAL(changeTitle(const QString &)),
                          m_leftpanel->titleLabel(), SLOT(setText(const QString &)) );
                 connect( m_engine, SIGNAL(delogged()),
                          m_calls, SLOT(reset()) );
-                                
+                
                 connect( m_calls, SIGNAL(monitorPeerRequest(const QString &)),
                          m_engine, SLOT(monitorPeerRequest(const QString &)) );
                 connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
                          m_calls, SLOT(monitorPeer(UserInfo *)) );
-                                
+                
                 connectDials(m_calls);
                 connect( m_engine, SIGNAL(setGuiOptions(const QVariant &)),
                          m_calls, SLOT(setGuiOptions(const QVariant &)) );
                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                          m_calls, SLOT(setUserInfo(const UserInfo *)) );
-                                
+                
             } else if (xletid == QString("switchboard")) {
-                m_xlet[xletid] = new SwitchBoardWindow(m_engine, this);
+                m_xlet[xletid] = new SwitchBoardWindow(m_engine, this); // m_options
                 QScrollArea * sa_sb = new QScrollArea(this);
                 sa_sb->setWidget(m_xlet[xletid]);
                 sa_sb->setWidgetResizable(true);
                 addPanel(xletid, tr("Switchboard"), sa_sb);
-                                
+                
                 connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
                          m_xlet[xletid], SLOT(updateUser(UserInfo *)) );
                 connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
                          m_xlet[xletid], SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
                 connect( m_engine, SIGNAL(delogged()),
                          m_xlet[xletid], SLOT(removePeers()) );
-                                
+                
             } else if (xletid == QString("parking")) {
-                m_xlet[xletid] = new ParkingPanel(m_engine, this);
+                m_xlet[xletid] = new ParkingPanel(m_engine, m_options, this);
                 addPanel(xletid, tr("Parking"), m_xlet[xletid]);
-                                
+                
                 connect( m_engine, SIGNAL(parkingEvent(const QVariant &)),
                          m_xlet[xletid], SLOT(parkingEvent(const QVariant &)) );
                 connect( m_xlet[xletid], SIGNAL(copyNumber(const QString &)),
@@ -1032,20 +1046,20 @@ void MainWidget::engineStarted()
                 connect( m_xlet[xletid], SIGNAL(newParkEvent()),
                          this, SLOT(newParkEvent()) );
                 connectDials(m_xlet[xletid]);
-                                
+                
             } else if (xletid == QString("fax")) {
                 m_xlet[xletid] = new FaxPanel(m_engine, m_options, this);
                 addPanel(xletid, tr("Fax"), m_xlet[xletid]);
-                                
+                
                 connect( m_xlet[xletid], SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
                          m_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
                 connect( m_engine, SIGNAL(ackFax(const QString &, const QString &)),
                          m_xlet[xletid], SLOT(popupMsg(const QString &, const QString &)) );
-                                
+                
             } else if ((xletid == "customerinfo") && m_engine->checkedFunction(xletid)) {
-                m_xlet[xletid] = new CustomerInfoPanel(m_options);
+                m_xlet[xletid] = new CustomerInfoPanel(m_engine, m_options);
                 addPanel(xletid, tr("Sheets"), m_xlet[xletid]);
-                                
+                
                 connectDials(m_xlet[xletid]);
                 connect( m_engine, SIGNAL(displayFiche(const QString &, bool)),
                          m_xlet[xletid], SLOT(displayFiche(const QString &, bool)) );
@@ -1053,11 +1067,11 @@ void MainWidget::engineStarted()
                          this, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)) );
                 connect( m_xlet[xletid], SIGNAL(actionFromFiche(const QVariant &)),
                          m_engine, SLOT(actionFromFiche(const QVariant &)) );
-                                
+                
             } else if (xletid == QString("search")) {
                 m_xlet[xletid] = new SearchPanel(m_engine, m_options);
                 addPanel(xletid, tr("Contacts"), m_xlet[xletid]);
-                                
+                
                 connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
                          m_xlet[xletid], SLOT(updateUser(UserInfo *)) );
                 connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
@@ -1069,14 +1083,14 @@ void MainWidget::engineStarted()
                 connect( m_engine, SIGNAL(delogged()),
                          m_xlet[xletid], SLOT(removePeers()) );
             } else if (xletid == QString("features")) {
-                m_xlet[xletid] = new ServicePanel(m_options);
+                m_xlet[xletid] = new ServicePanel(m_engine, m_options);
                 addPanel(xletid, tr("Services"), m_xlet[xletid]);
-                                
+                
                 connect( m_xlet[xletid], SIGNAL(askFeatures()),
                          m_engine, SLOT(askFeatures()) );
                 connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
                          m_xlet[xletid], SLOT(monitorPeer(UserInfo *)) );
-                                
+                
                 connect( m_engine, SIGNAL(disconnectFeatures()),
                          m_xlet[xletid], SLOT(DisConnect()) );
                 connect( m_engine, SIGNAL(connectFeatures()),
@@ -1087,22 +1101,22 @@ void MainWidget::engineStarted()
                          m_xlet[xletid], SLOT(getRecordedStatus()) );
                 connect( m_engine, SIGNAL(featurePutIsOK()),
                          m_xlet[xletid], SLOT(setRecordedStatus()) );
-                                
+                
                 connect( m_xlet[xletid], SIGNAL(chkoptChanged(const QString &, bool)),
                          m_engine, SLOT(featurePutOpt(const QString &, bool)) );
-                                
+                
                 connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
                          m_xlet[xletid], SLOT(setOpt(const QString &, bool)) );
                 connect( m_xlet[xletid], SIGNAL(forwardChanged(const QString &, bool, const QString &)),
                          m_engine, SLOT(featurePutForward(const QString &, bool, const QString &)) );
                 connect( m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
                          m_xlet[xletid], SLOT(setForward(const QString &, const QVariant &)) );
-                                
+                
             } else if (xletid == QString("directory")) {
                 m_xlet[xletid] = new DirectoryPanel(m_engine, this);
                 addPanel(xletid, tr("Directory"), m_xlet[xletid]);
                 m_xlet[xletid]->setFocus();
-                                
+                
                 connectDials(m_xlet[xletid]);
                 connect( m_xlet[xletid], SIGNAL(searchDirectory(const QString &)),
                          m_engine, SLOT(searchDirectory(const QString &)) );
@@ -1112,13 +1126,13 @@ void MainWidget::engineStarted()
                          m_engine, SLOT(copyNumber(const QString &)) );
                 connect( m_engine, SIGNAL(delogged()),
                          m_xlet[xletid], SLOT(stop()) );
-                                
+                
 #ifdef USE_OUTLOOK
             } else if ((xletid == QString("outlook")) ) {
                 m_xlet[xletid] = new OutlookPanel(m_engine, this);
                 addPanel(xletid, tr("Outlook"), m_xlet[xletid]);
                 m_xlet[xletid]->setFocus();
-                                
+                
                 connectDials(m_xlet[xletid]);
                 connect( &(OLEngine()->m_OLThread), SIGNAL(contactsLoaded()),
                          m_xlet[xletid], SLOT(contactsLoaded()) );
@@ -1134,14 +1148,14 @@ void MainWidget::engineStarted()
                 m_xlet[xletid] = new XletWeb(m_engine);
                 addPanel(xletid, tr("Xlet Web"), m_xlet[xletid]);
 #endif /* USE_WEBKIT */
-
+                
             } else if (xletid == QString("instantmessaging")) {
                 m_xlet[xletid] = new QLineEdit();
                 addPanel(xletid, tr("Messages"), m_xlet[xletid]);
-                                
+                
                 connect( m_xlet[xletid], SIGNAL(returnPressed()),
                          this, SLOT(affTextChanged()) );
-                                
+                
             } else if (xletid == QString("callcampaign")) {
                 m_xlet[xletid] = new CallCampaignPanel();
                 addPanel(xletid, tr("Call Campaigns"), m_xlet[xletid]);
@@ -1149,14 +1163,14 @@ void MainWidget::engineStarted()
                          m_engine, SLOT(requestFileList(const QString &)) );
                 connect( m_engine, SIGNAL(requestFileListResult(const QVariant &)),
                          m_xlet[xletid], SLOT(requestFileListResult(const QVariant &)) );
-
+                
             } else if (xletid == QString("mylocaldir")) {
                 m_xlet[xletid] = new MyLocalDirPanel(m_engine);
                 connectDials(m_xlet[xletid]);
                 addPanel(xletid, tr("Personal Directory"), m_xlet[xletid]);
-                                
+                
             } else if (xletid == QString("xletproto")) {
-                m_xlet[xletid] = new XletprotoPanel(m_engine);
+                m_xlet[xletid] = new XletprotoPanel(m_engine, m_options);
                 addPanel(xletid, tr("Xlet Prototype"), m_xlet[xletid]);
             }
         }

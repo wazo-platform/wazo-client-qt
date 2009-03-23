@@ -136,14 +136,6 @@ FaxPanel::~FaxPanel()
     // qDebug() << "FaxPanel::~FaxPanel()";
 }
 
-void FaxPanel::setGuiOptions(const QVariant &)
-{
-}
-
-void FaxPanel::setUserInfo(const UserInfo *)
-{
-}
-
 void FaxPanel::destSelectionChanged()
 {
     if(m_destination->selectedText() == m_destination->text()) {

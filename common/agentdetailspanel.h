@@ -54,15 +54,18 @@ class QPushButton;
 class QScrollArea;
 class QVBoxLayout;
 
+class BaseEngine;
 class UserInfo;
+class QueueInfo;
 
 /*! \brief Display details about an agent
  */
 class AgentdetailsPanel : public QWidget
 {
     Q_OBJECT
-        public:
-    AgentdetailsPanel(const QVariant &,
+ public:
+    AgentdetailsPanel(BaseEngine *,
+                      const QVariant &,
                       QWidget * parent = 0);
     ~AgentdetailsPanel();
  protected:
@@ -71,32 +74,39 @@ class AgentdetailsPanel : public QWidget
     void changeWatchedQueue(const QString &);
     void agentAction(const QString &);
     void setFileName(const QString &);
-    public slots:
+ public slots:
     void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
-    void newAgent(const QString &, const QString &, const QVariant &);
-    void updatePeerAgent(double,
-                         const QString &,
-                         const QString &,
-                         const QVariant &);
+    void setUserInfo(const UserInfo *) {};
+    void newAgentList();
+    void newQueueList();
+    void monitorThisAgent(const QString &);
     void saveToFile();
-    void statusRecord(const QString &, const QString &);
-    private slots:
+    void statusRecord(const QString &, const QString &, const QString &);
+    void statusListen(const QString &, const QString &, const QString &);
+ private slots:
     void queueClicked();
     void actionClicked();
     void serverFileList(const QStringList &);
     void getFile();
  private:
-    void summaryCount();
-        
-    const UserInfo * m_userinfo;    //!< user info
-        
+    void clearPanel();
+    void updatePanel();
+    void setQueueLookProps(const QString &);
+    void setQueueAgentProps(const QString &, const QVariant &);
+    void setQueueProps(const QString &, const QueueInfo *);
+    void setQueueAgentSignals(const QString &);
+    void fillQueue(int, const QString &);
+    
+    BaseEngine * m_engine;
+    
     QGridLayout * m_gridlayout; //!< layout
     int m_linenum;  //!< line number ?
-
-    QString m_astid;    //!< asterisk id
-    QString m_agent;    //!< agent id
-    QLabel * m_agentname;   //!< to display agent name
+    
+    QString m_monitored_astid;    //!< asterisk id
+    QString m_monitored_context;    //!< context
+    QString m_monitored_agentnumber;    //!< agent id
+    QString m_monitored_agentid;    //!< monitored agent id
+    QLabel * m_agentdescription; //!< to display agent name
     QLabel * m_agentstatus; //!< to display agent status
     QLabel * m_agentlegend_qname;   //!< "Queues"
     QLabel * m_agentlegend_joined;  //!< "Joined"
@@ -105,14 +115,14 @@ class AgentdetailsPanel : public QWidget
     QLabel * m_agentlegend_npaused; //!< number paused
     QHash<QString, QLabel *> m_actionlegends;   //!< Label Login/Logout
     QHash<QString, QPushButton *> m_action; //!< buttons cancel/ok
-        
+    
     QHash<QString, QLabel *> m_queue_labels;
     QHash<QString, QPushButton *> m_queue_more;
     QHash<QString, QPushButton *> m_queue_join_action;
     QHash<QString, QPushButton *> m_queue_pause_action;
     QHash<QString, QLabel *> m_queue_join_status;
     QHash<QString, QLabel *> m_queue_pause_status;
-        
+    
     QPoint m_eventpoint;
     QVariant m_options;
 };

@@ -57,13 +57,13 @@ class UserInfo;
 class DatetimePanel : public QWidget
 {
     Q_OBJECT
-        public:
+ public:
     DatetimePanel(QWidget * parent = 0);
  protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
-    public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+ public slots:
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
  private:
     QGridLayout * m_gridlayout;
     QLabel * m_datetime;

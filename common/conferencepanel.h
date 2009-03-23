@@ -54,6 +54,7 @@ class QPushButton;
 class QTabWidget;
 class QTimerEvent;
 
+class BaseEngine;
 class UserInfo;
 
 /*! \brief Identity Display
@@ -61,17 +62,18 @@ class UserInfo;
 class ConferencePanel : public QWidget
 {
     Q_OBJECT
-        public:
-    ConferencePanel(QWidget * parent = 0);
+ public:
+    ConferencePanel(BaseEngine *,
+                    QWidget * parent = 0);
     ~ConferencePanel();
  protected:
     void timerEvent(QTimerEvent *);
-    public slots:
-    void setUserInfo(const UserInfo *);
+ public slots:
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
     void meetmeEvent(double, const QVariant &);
     void meetmeInit(double, const QVariant &);
     void doMeetMeAction();
-    void setGuiOptions(const QVariant &);
  private:
     void setProperties(double,
                        const QString &,
@@ -85,7 +87,8 @@ class ConferencePanel : public QWidget
                     const QString &);
     void delRoomTab(const QString &,
                     const QString &);
-        
+    
+    BaseEngine * m_engine;
     QHash<QString, QLabel *> m_infos;
     QHash<QString, QLabel *> m_timespent;
     QHash<QString, QPushButton *> m_action_kick;
@@ -94,7 +97,6 @@ class ConferencePanel : public QWidget
     QHash<QString, QGridLayout *> m_layout;
     QTabWidget * m_tw;
     QGridLayout * m_glayout;
-    const UserInfo * m_ui;
  signals:
     void meetmeAction(const QString &, const QString &);
 };

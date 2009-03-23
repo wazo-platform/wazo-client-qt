@@ -103,12 +103,12 @@ void Popup::feed(QIODevice * inputstream,
     m_xmlInputSource = new QXmlInputSource(m_inputstream);
     m_handler = new XmlHandler(this);
     m_sheetui = sheetui;
-        
+    
     // qDebug() << "Popup::feed()" << inputstream;
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString currentDateTimeStr = currentDateTime.toString(Qt::LocalDate);
     qDebug() << "Popup::feed()" << currentDateTime;
-        
+    
     setAttribute(Qt::WA_DeleteOnClose);
     m_reader.setContentHandler(m_handler);
     m_reader.setErrorHandler(m_handler);
@@ -126,7 +126,7 @@ void Popup::feed(QIODevice * inputstream,
     m_title->setAlignment(Qt::AlignHCenter);
     m_vlayout->addWidget(m_title);
     m_vlayout->addStretch();
-        
+    
     QUiLoader loader;
     if(sheetui) {
         m_sheetui_widget = loader.load(m_inputstream, this);
@@ -141,7 +141,7 @@ void Popup::feed(QIODevice * inputstream,
         }
         QRegExp re_status("^XIVO_CALL_STATUS-");
         qDebug() << "Popup::feed() found" << m_sheetui_widget->findChildren<QPushButton *>(re_status);
-                
+        
         QLineEdit   * datetime    = m_sheetui_widget->findChild<QLineEdit *>("datetime");
         QLineEdit   * year        = m_sheetui_widget->findChild<QLineEdit *>("year");
         if(datetime)
@@ -149,7 +149,7 @@ void Popup::feed(QIODevice * inputstream,
         if(year)
             year->setText(currentDateTime.toString("yyyy"));
     }
-        
+    
     setWindowIcon(QIcon(":/images/xivoicon.png"));
     QDesktopServices::setUrlHandler(QString("dial"), this, "dispurl");
 }
@@ -164,7 +164,7 @@ void Popup::dispurl(const QUrl &url)
 void Popup::actionFromForm()
 {
     QString buttonname = sender()->property("buttonname").toString();
-    qDebug() << "Popup::actionFromForm()" << buttonname << m_channel << m_astid << m_uniqueid;
+    qDebug() << "Popup::actionFromForm()" << buttonname << m_astid << m_context << m_uniqueid << m_channel;
     if(buttonname == "close")
         close();
     else if(buttonname == "save")
@@ -296,7 +296,7 @@ void Popup::addInfoForm(int where, const QString & value)
         form = loader.load(&file, this);
         file.close();
     }
-        
+    
     foreach(QString formbuttonname, g_formbuttonnames) {
         if(! m_form_buttons[formbuttonname]) {
             m_form_buttons[formbuttonname] = form->findChild<QPushButton *>(formbuttonname);
@@ -353,21 +353,27 @@ void Popup::addInfoText(int where, const QString & name, const QString & value)
 void Popup::addInfoInternal(const QString & name, const QString & value)
 {
     // qDebug() << "Popup::addInfoInternal()" << name << value;
-    if(name == "channel")
+    if(name == "channel") {
         m_channel = value;
-    else if(name == "nosystraypopup")
-        m_systraypopup = false;
-    else if(name == "nofocus")
-        m_focus = false;
-    else if(name == "astid") {
+        setProperty("channel", m_channel);
+    } else if(name == "astid") {
         m_astid = value;
         setProperty("astid", m_astid);
+    } else if(name == "context") {
+        m_context = value;
+        setProperty("context", m_context);
     } else if(name == "uniqueid") {
         m_uniqueid = value;
         setProperty("uniqueid", m_uniqueid);
-    } else if(name == "kind") {
+        
+    } else if(name == "nosystraypopup")
+        m_systraypopup = false;
+    else if(name == "nofocus")
+        m_focus = false;
+    else if(name == "kind") {
         // the form buttons should have been defined when arriving here
         // ('kind' definition at the end of the sheet on server-side)
+        m_kind = value;
         m_timestamps[value] = QDateTime::currentDateTime().toTime_t();
         if(value == "agi") {
             if(m_form_buttons["hangup"])
@@ -507,7 +513,7 @@ void Popup::streamNewData()
         }
     else
         finishAndShow();
-                
+    
     // qDebug() << "Popup::streamNewData() parse returned" << b;
 }
 
@@ -605,20 +611,32 @@ void Popup::setSheetPopup(const bool & sheetpopup)
     m_sheetpopup = sheetpopup;
 }
 
-const QString & Popup::callUniqueid() const
-{
-    return m_uniqueid;
-}
 
 const QString & Popup::callAstid() const
 {
     return m_astid;
 }
 
+const QString & Popup::callContext() const
+{
+    return m_context;
+}
+
+const QString & Popup::callUniqueid() const
+{
+    return m_uniqueid;
+}
+
 const QString & Popup::callChannel() const
 {
     return m_channel;
 }
+
+const QString & Popup::callKind() const
+{
+    return m_kind;
+}
+
 
 bool Popup::sheetpopup()
 {

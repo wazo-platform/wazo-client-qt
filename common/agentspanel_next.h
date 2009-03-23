@@ -55,6 +55,7 @@ class QGridLayout;
 class QLabel;
 class QPushButton;
 
+class BaseEngine;
 class ExtendedLabel;
 class UserInfo;
 
@@ -63,8 +64,9 @@ class UserInfo;
 class AgentsPanelNext : public QWidget
 {
     Q_OBJECT
-        public:
-    AgentsPanelNext(const QVariant &,
+ public:
+    AgentsPanelNext(BaseEngine *,
+                    const QVariant &,
                     QWidget * parent = 0);
     ~AgentsPanelNext();
  signals:
@@ -73,18 +75,14 @@ class AgentsPanelNext : public QWidget
     void saveQueueGroups(const QVariant &);
     void loadQueueGroups();
     void logAction(const QString &);
-    public slots:
+    void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
+ public slots:
     void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
-    void setAgentList(double, const QVariant &);
-    void setQueueList(const QVariant &);
+    void setUserInfo(const UserInfo *) {};
+    void newAgentList();
+    void newQueueList();
     void setQueueOrder(const QVariant &);
-    void updatePeerAgent(double,
-                         const QString &,
-                         const QString &,
-                         const QVariant &);
-    void updateAgentPresence(const QString &, const QVariant &);
-    private slots:
+ private slots:
     void renameQueueGroup();
     void removeQueueGroup();
     void agentClicked(QMouseEvent *);
@@ -96,31 +94,29 @@ class AgentsPanelNext : public QWidget
     void setQueueGroups(const QVariant &);
     void newGroup();
     void actionclicked();
-    protected slots:
+ protected slots:
     void contextMenuEvent(QContextMenuEvent *);
  protected:
     void mouseReleasedEvent(QMouseEvent *);
     void timerEvent(QTimerEvent *);
  private:
+    void newQueue(const QString &, const QString &, const QVariant &);
     void refreshContents();
     void refreshDisplay();
     void saveGroups();
-        
+    
     QFont m_gui_font;
     QGridLayout * m_glayout;
     QMap<QString, ExtendedLabel *> m_title;
-    const UserInfo * m_userinfo;
-        
-    double m_timesrv;
+    BaseEngine * m_engine;
+    
     int m_blinktime;
-    QDateTime m_timeclt;
-        
+    
     QHash<QString, QString> m_groups;
     QHash<QString, ExtendedLabel *> m_agent_labels;
-    QHash<QString, QVariant> m_agent_props;
     QStringList m_queuelist;
     QVariant m_queueorder;
-        
+    
     QComboBox * m_queue_chose;
 };
 

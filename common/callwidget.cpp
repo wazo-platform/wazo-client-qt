@@ -80,17 +80,17 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
         }
     m_ui = ui;
     QGridLayout * gridlayout = new QGridLayout(this);
-        
+    
     //         m_callerid = callerid;
     //         m_calleridname = calleridname;
     m_channelme = channelme;
     m_channelpeer = channelpeer;
-
+    
     //        qDebug() << "spacing" << gridlayout->spacing()
     //                 << ", margin" << gridlayout->margin();
     //        gridlayout->setSpacing(0);
     //gridlayout->setMargin(0);
-
+    
     gridlayout->setColumnStretch(3, 1);
     m_lbl_status = new QLabel(this);
     gridlayout->addWidget(m_lbl_status, 0, 0);

@@ -66,8 +66,8 @@ class CallCampaignPanel : public QWidget
  signals:
     void requestFileList(const QString &);
     public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
     void setOpenFileName();
     void fileNameChanged(const QString &);
     void getCalls();
@@ -79,8 +79,7 @@ class CallCampaignPanel : public QWidget
  private:
     void addNumber(const QString &);
     void checkStatuses();
-        
-    const UserInfo * m_ui;
+    
     QLineEdit * m_openFileNameLabel;
     QVBoxLayout * m_vlayout;
     QHBoxLayout * m_hlayout1;

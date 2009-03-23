@@ -64,8 +64,8 @@ class CallStackWidget : public QWidget
         public:
     CallStackWidget(QWidget *);        //!< Constructor
     public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
     void updateUser(UserInfo *);
     void updateDisplay();
     void hupchan(const QString &);

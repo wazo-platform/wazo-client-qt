@@ -63,20 +63,22 @@ public:
     void setPhones(const QString &,
                    const QStringList &,
                    const QHash<QString, PhoneInfo *> & phones);
-    void setAgent(const QString &);
+    void setAgentNumber(const QString &);
+    void setAgentId(const QString &);
     void setUserId(const QString &);
     void setCtiLogin(const QString &);
     void setMWI(const QStringList &);
     bool hasPhone(const QString &,
                   const QString &);
-    bool hasAgent(const QString &,
-                  const QString &);
+    bool hasAgentNumber(const QString &,
+                        const QString &);
     const QString & phonenumber() const;
     const QString & voicemailnumber() const;
     const QString & fullname() const;
     const QStringList & mwi() const;
     const QString & userid() const;
     const QString & ctilogin() const;
+    const QString & agentnumber() const;
     const QString & agentid() const;
     const QString & astid() const;
     const QStringList contexts() const;
@@ -98,7 +100,8 @@ private:
     QString m_astid;    //!< asterisk id (for main phone)
     QString m_phonenum; //!< main phone number
     QString m_voicemailnum; //!< voice mail box number
-    QString m_agentnum; //!< agent number
+    QString m_agentnumber; //!< agent number
+    QString m_agentid; //!< agent id
     QString m_agentphonenum;    //!< agent phone number
     QStringList m_mwi;  //!< message waiting indicator
     QMap<QString, PhoneInfo *> m_phones;    //!< map to phones

@@ -65,21 +65,6 @@ CallStackWidget::CallStackWidget(QWidget * parent)
     m_layout->addStretch(1);
 }
 
-/*!
- * does nothing
- */
-void CallStackWidget::setGuiOptions(const QVariant &)
-{
-}
-
-/*!
- * does nothing
- */
-void CallStackWidget::setUserInfo(const UserInfo *)
-{
-    // qDebug() << "CallStackWidget::setUserInfo()" << ui->astid() << ui->userid();
-}
-
 void CallStackWidget::updateUser(UserInfo * ui)
 {
     if(ui == m_monitored_ui)

@@ -68,14 +68,14 @@ class QTimerEvent;
 class BaseEngine: public QObject
 {
     Q_OBJECT
-public:
+ public:
     //! Enum for BaseEngine state logged/not logged
     typedef enum {ENotLogged, ELogged } EngineState;
     //! Constructor
     BaseEngine(QSettings *, QObject * parent = 0);
     //! Destructor
     ~BaseEngine();
-
+    
     QSettings * getSettings();
     void loadSettings();                        //!< load server settings
     // setter/getter for properties
@@ -86,7 +86,7 @@ public:
     const QString & serverip() const;        //!< Host of the login server
     const quint16 & loginPort() const;        //!< TCP port for connection to server
     void setLoginPort(const quint16 &);        //!< see loginPort()
-        
+    
     void setFullId();
     const QString & company() const;        //!< name of the user's company
     void setCompany(const QString &);       //!< see company()
@@ -102,7 +102,7 @@ public:
     void setShowAgentSelect(const int);     //!< see showagselect()
     const QString & password() const;       //!< password to identify to the sever
     void setPassword(const QString &);      //!< see password()
-        
+    
     bool autoconnect() const;               //!< auto connect flag
     void setAutoconnect(bool);              //!< set auto connect flag
     bool trytoreconnect() const;            //!< try to reconnect flag
@@ -113,22 +113,22 @@ public:
     void setHistorySize(uint size);         //!< set history size
     bool systrayed() const;                 //!< systrayed flag
     void setSystrayed(bool);                //!< set systrayed flag
-        
+    
     void saveSettings();                    //!< save server settings
-        
+    
     void sendMessage(const QString &);      //!< Sends an instant message
-        
+    
     const EngineState & state() const;      //!< Engine state (Logged/Not Logged)
     void setState(EngineState state);       //!< see state()
-        
+    
     const QString & getAvailState() const;        //!< returns availability status
     void setCheckedFunction(const QString &, bool b);        //!< set m_checked_function
     bool checkedFunction(const QString &);                   //!< get m_checked_function
     void setEnabledFunction(const QString &, bool b);        //!< set m_enabled_function
     bool enabledFunction(const QString &);                   //!< get m_enabled_function
-        
+    
     void setMyClientId();                        //! set m_clientid
-        
+    
     uint keepaliveinterval() const;           //!< keep alive interval
     bool lastconnwins() const;                //!< last connected one wins
     void setLastConnWins(bool b);                //!< last connected user wins
@@ -146,21 +146,26 @@ public:
     UserInfo * findUserFromAgent(const QString &,
                                  const QString &);
     void setGuiOption(const QString &, const QVariant &);
-        
+    
     void setLogFile(const QString &);
     const QString & xivoUserId() const { return m_xivo_userid; };
     UserInfo * getXivoClientUser(); //!< Return the user of the Xivo CTI Client
-public slots:
+    QHash<QString, AgentInfo *> agents(); //!< Return the agents to any Xlet
+    QHash<QString, QueueInfo *> queues(); //!< Return the queues to any Xlet
+    double timeServer();
+    const QDateTime & timeClient() const;
+    
+ public slots:
     void start();        //!< start the connection process.
     void stop();         //!< stop the engine
     void setAvailState(const QString &, bool);        //! set m_availstate
     void actionCall(const QString &,
                     const QString &,
                     const QString &);
-        
+    
     void searchDirectory(const QString &);
     void requestHistory(const QString &, int);
-        
+    
     void textEdited(const QString &);
     void setAvailability();       //!< set user status from menu
     void featurePutOpt(const QString &, bool);
@@ -173,7 +178,7 @@ public slots:
     void agentAction(const QString &);
     void meetmeAction(const QString &, const QString &);
     void requestFileList(const QString &);
-        
+    
     void monitorPeerRequest(const QString &);
     void changeWatchedAgentSlot(const QString &, bool);
     void changeWatchedQueueSlot(const QString &);
@@ -183,7 +188,8 @@ public slots:
     void saveQueueOrder(const QVariant &);
     void loadQueueOrder();
     void logAction(const QString &);
-private slots:
+    void shouldNotOccur(const QString &, const QString &); //!< log tricky situations
+ private slots:
     void keepLoginAlive(); //!< Keep session alive
     void changeState(); //!< Change the presence status
     void socketConnected();
@@ -194,10 +200,10 @@ private slots:
     void socketReadyRead();
     void actionFromFiche(const QVariant &);
     void readInputEvent(int);
-signals:
+ signals:
     void logged();                                //!< signal emitted when the state becomes ELogged
     void delogged();                        //!< signal emitted when the state becomes ENotLogged
-    void availAllowChanged(bool);                //!< signal 
+    void availAllowChanged(bool);                //!< signal
     void emitTextMessage(const QString &);        //! message to be displayed to the user.
     void pasteToDialPanel(const QString &);
     void parkingEvent(const QVariant &);
@@ -212,12 +218,13 @@ signals:
     void updateCounter(const QVariant &);
     void serverFileList(const QStringList &);
     void fileReceived();
-    void statusRecord(const QString &, const QString &);
+    void statusRecord(const QString &, const QString &, const QString &);
+    void statusListen(const QString &, const QString &, const QString &);
     void setGuiOptions(const QVariant &);
     void emitMessageBox(const QString &);
     void setQueueGroups(const QVariant &);
     void setQueueOrder(const QVariant &);
-        
+    
     //! call list is updated
     //void callsUpdated();
     //! list of peer was received
@@ -237,16 +244,16 @@ signals:
     void connectFeatures();
     void resetFeatures();
     void localUserInfoDefined(const UserInfo *);
-    void setQueueStatus(const QVariant &);
     void removeQueues(const QString &, const QStringList &);
-    void newQueueList(const QVariant &);
-    void newAgentList(double, const QVariant &);
+    void newQueueList();
+    void newAgentList();
     void optChanged(const QString &, bool);
     void forwardUpdated(const QString &, const QVariant &);
     void changesAvailChecks();
-    void changeWatchedAgentSignal(const QString &, const QString &, const QVariant &);
+    void changeWatchedAgentSignal(const QString &);
+    void changeWatchedQueueSignal(const QString &);
     void changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &);
-    void updateAgentPresence(const QString &, const QVariant &);
+    void updateAgentPresence(const QString &, const QString &, const QVariant &);
     void displayFiche(const QString &, bool);
 protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
@@ -262,6 +269,8 @@ private:
     void parseCommand(const QString &);
     void popupError(const QString &);
     void updatePhone(const QString &, const QString &, const QMap<QString, QVariant> &);
+    QStringList updateQueue(const QString &, const QString &, const QMap<QString, QVariant> &);
+    QStringList updateAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
     void clearUserList();
     void clearPhoneList();
     void clearAgentList();
@@ -287,18 +296,21 @@ private:
     QString m_astid;
     QString m_xivo_userid;
     QString m_profilename;
-        
+    
+    QDateTime m_timeclt;
+    double m_timesrv;
+    
     bool m_autoconnect;             //!< Autoconnect to server at startup
     bool m_trytoreconnect;          //!< "try to reconnect" flag
     bool m_systrayed;               //!< "systrayed at startup" flag
     uint m_trytoreconnectinterval;  //!< Try to reconnect interval (in msec)
     uint m_keepaliveinterval;       //!< Keep alive interval (in msec)
-        
+    
     int m_historysize;
     QHash<QString, bool> m_checked_function;              //!< function checked
     QHash<QString, bool> m_enabled_function;              //!< function enabled
     bool m_checked_lastconnwins;           //!< the last connected account "wins"
-        
+    
     // Replies given by the server
     QStringList m_capafuncs;        //!< List of func capabilities issued by the server after a successful login
     QStringList m_capaxlets;        //!< List of xlet capabilities issued by the server after a successful login
@@ -314,7 +326,7 @@ private:
     QHash<QString, QueueInfo *> m_queues;  //!< List of Queue informations
     int m_version_server;           //!< Version issued by the server after a successful login
     QString m_xivover_server;       //!< Server's XIVO version
-        
+    
     // Status variables
     EngineState m_state;            //!< State of the engine (Logged/Not Logged)
     QString m_availstate;           //!< Availability state to send to the server
@@ -337,12 +349,12 @@ private:
     QString m_agent_watched_agentid;
     QString m_queue_watched_astid;
     QString m_queue_watched_queueid;
-
+    
     QString m_fileid;
     QString m_filedir;
     QByteArray m_filedata;
     int m_faxsize;
-
+    
     QString m_monitored_userid;     //!< UserId of the Monitored Phone (on SB, or one's own on XC)
     QSettings * m_settings;
     QFile * m_eventdevice;

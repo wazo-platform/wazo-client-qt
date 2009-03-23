@@ -54,6 +54,7 @@ class QLabel;
 class QScrollArea;
 class QVBoxLayout;
 
+class BaseEngine;
 class UserInfo;
 
 /*! \brief Display entries of a queue
@@ -61,35 +62,36 @@ class UserInfo;
 class QueueentrydetailsPanel : public QWidget
 {
     Q_OBJECT
-        public:
-    QueueentrydetailsPanel(QWidget * parent = 0);
+ public:
+    QueueentrydetailsPanel(BaseEngine *,
+                           const QVariant &,
+                           QWidget * parent = 0);
     ~QueueentrydetailsPanel();
  signals:
     void changeWatchedAgent(const QString &);   //!< change watched agent
  protected:
     void timerEvent(QTimerEvent *);
-    public slots:
-    void setGuiOptions(const QVariant &);
-    void setUserInfo(const UserInfo *);
-    void newQueue(double, const QString &, const QString &, const QVariant &);
-    void updatePeerAgent(double,
-                         const QString &,
-                         const QString &,
-                         const QVariant &);
-    private slots:
-    void agentClicked();
+ public slots:
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
+    void newAgentList();
+    void newQueueList();
+    void monitorThisQueue(const QString &);
  private:
     void updateEntryChannel(const QString &);
-
+    void clearPanel();
+    void updatePanel();
+    
+    BaseEngine * m_engine;        //!< BaseEngine object
     QGridLayout * m_gridlayout; //!< Layout
-
-    QString m_astid;    //!< asterisk id
-    QString m_queueid;  //!< queue id
-    QLabel * m_label;   //!< label for displaying queue name
+    
+    QString m_monitored_queueid;  //!< queue id
+    QString m_monitored_astid;    //!< asterisk id
+    QString m_monitored_context;  //!< context
+    QString m_monitored_queuename;  //!< queue name
+    QLabel * m_queuedescription;   //!< label for displaying queue name
     QHash<QString, QLabel *> m_entrypos;    //!< display entry
     QHash<QString, QLabel *> m_entrytime;   //!< display call duration ?
-    double m_timesrv;
-    QDateTime m_timeclt;
 };
 
 #endif /* __QUEUEENTRYDETAILSPANEL_H__ */

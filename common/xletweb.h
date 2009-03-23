@@ -56,12 +56,11 @@ class XletWeb : public QWidget
         public:
     XletWeb(BaseEngine * engine, QWidget * parent = 0);
     ~XletWeb();
-    public slots:
-    void setUserInfo(const UserInfo *);
-    void setGuiOptions(const QVariant &);
+ public slots:
+    void setUserInfo(const UserInfo *) {};
+    void setGuiOptions(const QVariant &) {};
  private:
     BaseEngine * m_engine;
-    const UserInfo * m_ui;
 };
 
 #endif /* __XLETWEB_H__ */

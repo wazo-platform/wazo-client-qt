@@ -53,6 +53,7 @@ class QComboBox;
 class QContextMenuEvent;
 class QProgressBar;
 
+class BaseEngine;
 class ExtendedLabel;
 class UserInfo;
 
@@ -61,38 +62,41 @@ class UserInfo;
 class IdentityDisplay : public QWidget
 {
     Q_OBJECT
-        public:
-    IdentityDisplay(const QVariant &,
+ public:
+    IdentityDisplay(BaseEngine *,
+                    const QVariant &,
                     QWidget * parent = 0);
-    public slots:
+ public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *);
-    void setAgentList(double, const QVariant &);
-    void setQueueList(const QVariant &);
-    void updatePeerAgent(double,
-                         const QString &,
-                         const QString &,
-                         const QVariant &);
+    void newAgentList();
+    void newQueueList();
     void doAgentLogActions();
     void doAgentPauseActions();
     void doAgentUnPauseActions();
     void idxChanged(const QString &);
     void updatePresence(const QVariant &);
-    private slots:
+ private slots:
     void contextMenuEvent(QContextMenuEvent *);
     void contextMenuAction();
+ signals:
+    void agentAction(const QString &);
+    void setAvailState(const QString &, bool);
+    void changeWatchedAgent(const QString &, bool);
+    void setSystrayIcon(const QString &);
  private:
     void showAgentProps();
     void hideAgentProps();
     void setStatusColors(int, int);
-        
+    void updateAgentStatus(const QVariantMap &);
+    
     ExtendedLabel * m_icon_user;
     ExtendedLabel * m_icon_agent;
     ExtendedLabel * m_icon_voicemail;
-        
+    
     QFrame * m_qvline1;
     QFrame * m_qvline2;
-        
+    
     QLabel * m_user;
     QLabel * m_voicemail_old;
     QLabel * m_voicemail_new;
@@ -102,21 +106,18 @@ class IdentityDisplay : public QWidget
     QLabel * m_agent;
     QLabel * m_agentstatus;
     QLabel * m_agentpause;
-        
+    QLabel * m_agentpausetxt;
+    
+    BaseEngine * m_engine;
     QHash<QString, QString> m_presence_names;
     const UserInfo * m_ui;
-        
+    
     QFont m_gui_font;
     quint32 m_gui_buttonsize;
     quint32 m_loginkind;
     QStringList m_functions;
     bool m_allow_logagent;
     bool m_allow_pauseagent;
- signals:
-    void agentAction(const QString &);
-    void setAvailState(const QString &, bool);
-    void changeWatchedAgent(const QString &, bool);
-    void setSystrayIcon(const QString &);
 };
 
 #endif

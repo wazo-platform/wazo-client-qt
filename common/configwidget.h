@@ -64,7 +64,7 @@ class BaseEngine;
 class ConfigWidget: public QDialog
 {
     Q_OBJECT
-public:
+ public:
     /*! \brief Constructor
      *
      * Construct the widget and its layout.
@@ -76,14 +76,14 @@ public:
     ConfigWidget(BaseEngine * engine, QWidget * parent = 0);
     ~ConfigWidget();
 
-signals:
+ signals:
     void confUpdated();
-private slots:
+ private slots:
     //! Save the configuration to the BaseEngine object and close
     void saveAndClose();
     void loginKindChanged(int);
 
-private:
+ private:
     BaseEngine * m_engine;                //!< BaseEngine object parameters are commited to
         
     QLineEdit * m_serverhost;        //!< IP/hostname of the server
@@ -108,9 +108,9 @@ private:
     QHash<QString, QCheckBox *> m_function;        //!< connect to functions checkboxes
     QCheckBox * m_autourl_allowed;  //!< Allow automatic opening of urls
     QSpinBox  * m_history_sbox;        //!< History size
-        
+    
     QHash<QString, QSpinBox *> m_queuelevels;   //!< For queue display
-        
+    
     QSpinBox  * m_contactssize_sbox;        //!< Displayed contacts' size
     QSpinBox  * m_contactswidth_sbox;        //!< Displayed contacts' width
     QSpinBox  * m_tablimit_sbox;        //!< Maximum number of tabs

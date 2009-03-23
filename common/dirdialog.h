@@ -60,7 +60,7 @@ class DirectoryPanel;
 class DirDialog: public QDialog
 {
     Q_OBJECT
-        public:
+ public:
     /*! \brief Constructor
      *
      * Construct the widget and its layout.
@@ -72,7 +72,7 @@ class DirDialog: public QDialog
     DirDialog(BaseEngine *, QWidget *);
     ~DirDialog();
     const QString & faxnumber() const;
-    private slots:
+ private slots:
     //! Save the configuration to the BaseEngine object and close
     void saveAndClose();
     void copyNumber(const QString &);

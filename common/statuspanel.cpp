@@ -81,13 +81,6 @@ StatusPanel::~StatusPanel()
              << m_actions;
 }
 
-/*!
- * does nothing
- */
-void StatusPanel::setGuiOptions(const QVariant &)
-{
-}
-
 /*! \brief add a line of widgets for a call
  *
  * create all widgets and fill m_vlinesl, m_vlinesr, m_statuses, m_tnums
@@ -181,12 +174,6 @@ void StatusPanel::clicked()
     qDebug() << "StatusPanel::clicked()" << channel << function;
     m_currentchannel = channel;
     functionKeyPressed(function);
-}
-
-/*! \brief Set user to manage
- */
-void StatusPanel::setUserInfo(const UserInfo *)
-{
 }
 
 /*! \brief setup things for a direct transfer
