@@ -1393,7 +1393,7 @@ void BaseEngine::actionCall(const QString & action,
     if((action == "originate") || (action == "transfer") || (action == "atxfer")) {
         command["source"] = src;
         if((dst == "ext:special:dialxlet") && (! m_numbertodial.isEmpty()))
-            command["destination"] = m_numbertodial;
+            command["destination"] = "ext:" + m_numbertodial;
         else
             command["destination"] = dst;
         sendJsonCommand(command);
