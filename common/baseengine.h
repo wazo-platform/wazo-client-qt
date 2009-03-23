@@ -68,7 +68,7 @@ class QTimerEvent;
 class BaseEngine: public QObject
 {
     Q_OBJECT
- public:
+public:
     //! Enum for BaseEngine state logged/not logged
     typedef enum {ENotLogged, ELogged } EngineState;
     //! Constructor
@@ -152,10 +152,11 @@ class BaseEngine: public QObject
     UserInfo * getXivoClientUser(); //!< Return the user of the Xivo CTI Client
     QHash<QString, AgentInfo *> agents(); //!< Return the agents to any Xlet
     QHash<QString, QueueInfo *> queues(); //!< Return the queues to any Xlet
-    double timeServer();
+    double timeServer() const;
     const QDateTime & timeClient() const;
+    double timeDeltaServerClient() const;
     
- public slots:
+public slots:
     void start();        //!< start the connection process.
     void stop();         //!< stop the engine
     void setAvailState(const QString &, bool);        //! set m_availstate
@@ -189,7 +190,7 @@ class BaseEngine: public QObject
     void loadQueueOrder();
     void logAction(const QString &);
     void shouldNotOccur(const QString &, const QString &); //!< log tricky situations
- private slots:
+private slots:
     void keepLoginAlive(); //!< Keep session alive
     void changeState(); //!< Change the presence status
     void socketConnected();
@@ -200,7 +201,7 @@ class BaseEngine: public QObject
     void socketReadyRead();
     void actionFromFiche(const QVariant &);
     void readInputEvent(int);
- signals:
+signals:
     void logged();                                //!< signal emitted when the state becomes ELogged
     void delogged();                        //!< signal emitted when the state becomes ENotLogged
     void availAllowChanged(bool);                //!< signal

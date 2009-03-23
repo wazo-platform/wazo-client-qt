@@ -55,17 +55,16 @@
 class QVBoxLayout;
 
 class UserInfo;
+class BaseEngine;
 
 /*! \brief Widget displaying the current open channels for a phone line.
  */
 class CallStackWidget : public QWidget
 {
     Q_OBJECT
-        public:
-    CallStackWidget(QWidget *);        //!< Constructor
-    public slots:
-    void setGuiOptions(const QVariant &) {};
-    void setUserInfo(const UserInfo *) {};
+public:
+    CallStackWidget(BaseEngine * engine, QWidget * parent = 0); //!< Constructor
+public slots:
     void updateUser(UserInfo *);
     void updateDisplay();
     void hupchan(const QString &);
@@ -73,19 +72,20 @@ class CallStackWidget : public QWidget
     void parkcall(const QString &);
     void reset();
     void monitorPeer(UserInfo *);
- protected:
+protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
- private:
+private:
     //        void emptyList();        //!< remove all calls from the list
- signals:
+signals:
     //! originate, transfer & atxfer signals
     void actionCall(const QString &,
                     const QString &,
                     const QString & dst = "");
     void changeTitle(const QString &);                //!< change Title
     void monitorPeerRequest(const QString &);        //!< send the userid of the new monitored peer
- private:
+private:
+    BaseEngine * m_engine;      //!< pointer to the BaseEngine
     UserInfo * m_monitored_ui;  //!< user currently monitored
     QVBoxLayout * m_layout;        //!< Vertical Layout used
         

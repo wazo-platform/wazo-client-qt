@@ -757,7 +757,7 @@ QStringList BaseEngine::updateAgent(const QString & astid,
     return keychanges;
 }
 
-double BaseEngine::timeServer()
+double BaseEngine::timeServer() const
 {
     return m_timesrv;
 }
@@ -765,6 +765,11 @@ double BaseEngine::timeServer()
 const QDateTime & BaseEngine::timeClient() const
 {
     return m_timeclt;
+}
+
+double BaseEngine::timeDeltaServerClient() const
+{
+    return m_timeclt.toTime_t()-m_timesrv;
 }
 
 void BaseEngine::parseCommand(const QString & line)

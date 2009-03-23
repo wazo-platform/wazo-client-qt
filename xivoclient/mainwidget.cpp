@@ -999,7 +999,7 @@ void MainWidget::engineStarted()
                 m_areaCalls = new QScrollArea(this);
                 m_areaCalls->setWidgetResizable(true);
                 m_leftpanel = new LeftPanel(m_areaCalls);
-                m_calls = new CallStackWidget(this);
+                m_calls = new CallStackWidget(m_engine, this);
                 m_areaCalls->setWidget(m_calls);
                 addPanel(xletid, tr("Calls"), m_leftpanel);
                 

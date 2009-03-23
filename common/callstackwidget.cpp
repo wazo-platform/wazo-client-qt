@@ -45,6 +45,7 @@
 #include <QVariant>
 #include <QVBoxLayout>
 
+#include "baseengine.h"
 #include "callstackwidget.h"
 #include "callwidget.h"
 #include "userinfo.h"
@@ -53,8 +54,8 @@
 
 /*! \brief Constructor
  */
-CallStackWidget::CallStackWidget(QWidget * parent)
-    : QWidget(parent), m_monitored_ui(0)
+CallStackWidget::CallStackWidget(BaseEngine * engine, QWidget * parent)
+    : QWidget(parent), m_engine(engine), m_monitored_ui(0)
 {
     // qDebug() << "CallStackWidget::CallStackWidget()";
     m_layout = new QVBoxLayout(this);
@@ -133,11 +134,11 @@ void CallStackWidget::updateDisplay()
                 if(map.contains("time-dial"))
                     ts = map["time-dial"].toUInt() + current_ts;
                 if(map.contains("timestamp-dial"))
-                    ts = map["timestamp-dial"].toUInt();
+                    ts = map["timestamp-dial"].toDouble() + m_engine->timeDeltaServerClient();
                 if(map.contains("time-link"))
                     ts = map["time-link"].toUInt() + current_ts;
                 if(map.contains("timestamp-link"))
-                    ts = map["timestamp-link"].toUInt();
+                    ts = map["timestamp-link"].toDouble() + m_engine->timeDeltaServerClient();
                 QString channelpeer = map["peerchannel"].toString();
                 QString callerid = map["calleridnum"].toString();
                 QString calleridname = map["calleridname"].toString();
