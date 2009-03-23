@@ -231,54 +231,57 @@ void AgentdetailsPanel::updatePanel()
         m_action[function]->show();
     }
     
+    QStringList queueids;
     m_agentlegend_njoined->setText(agentstats.toMap()["Xivo-NJoined"].toString());
     m_agentlegend_npaused->setText(agentstats.toMap()["Xivo-NPaused"].toString());
-    int i = 0;
+    
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
-    while( iter.hasNext() )
-        {
-            iter.next();
-            QueueInfo * qinfo = iter.value();
-            // newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
-            QString queueid = iter.key();
+    while( iter.hasNext() ) {
+        iter.next();
+        QueueInfo * qinfo = iter.value();
+        // newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
+        QString queueid = iter.key();
+        queueids << queueid;
+        bool isnewqueue = false;
+        if(! m_queue_labels.contains(queueid))
+            isnewqueue = true;
+        
+        if(isnewqueue) {
+            m_queue_labels[queueid] = new QLabel(this);
+            m_queue_more[queueid] = new QPushButton(this);
+            m_queue_join_status[queueid] = new QLabel(this);
+            m_queue_join_action[queueid] = new QPushButton(this);
+            m_queue_pause_status[queueid] = new QLabel(this);
+            m_queue_pause_action[queueid] = new QPushButton(this);
+            m_queue_join_status[queueid]->setProperty("Status", "undefined");
+            m_queue_pause_status[queueid]->setProperty("Paused", "undefined");
             
-            bool isnewqueue = false;
-            if(! m_queue_labels.contains(queueid))
-                isnewqueue = true;
-
-            if(isnewqueue) {
-                m_queue_labels[queueid] = new QLabel(this);
-                m_queue_more[queueid] = new QPushButton(this);
-                m_queue_join_status[queueid] = new QLabel(this);
-                m_queue_join_action[queueid] = new QPushButton(this);
-                m_queue_pause_status[queueid] = new QLabel(this);
-                m_queue_pause_action[queueid] = new QPushButton(this);
-                m_queue_join_status[queueid]->setProperty("Status", "undefined");
-                m_queue_pause_status[queueid]->setProperty("Paused", "undefined");
-                
-                fillQueue(i, queueid);
-                
-                m_queue_join_status[queueid]->hide();
-                m_queue_join_action[queueid]->hide();
-                m_queue_pause_status[queueid]->hide();
-                m_queue_pause_action[queueid]->hide();
-            }
-            
-            setQueueLookProps(queueid);
-            
-            QString queuename = qinfo->queuename();
-            // if(queuesstats.contains(queuename))
-            setQueueProps(queueid, qinfo);
-            // qDebug() << ainfo->astid() << ainfo->agentnumber() << queuename << qinfo->astid();
-            if(qinfo->astid() == ainfo->astid()) {
+            m_queue_join_status[queueid]->hide();
+            m_queue_join_action[queueid]->hide();
+            m_queue_pause_status[queueid]->hide();
+            m_queue_pause_action[queueid]->hide();
+        }
+        
+        setQueueLookProps(queueid);
+        
+        QString queuename = qinfo->queuename();
+        // if(queuesstats.contains(queuename))
+        setQueueProps(queueid, qinfo);
+        // qDebug() << ainfo->astid() << ainfo->agentnumber() << queuename << qinfo->astid();
+        if(qinfo->astid() == ainfo->astid()) {
                 setQueueAgentProps(queueid, queuesstats[queuename]);
             }
-            
-            if(isnewqueue)
-                setQueueAgentSignals(queueid);
-            
-            i ++;
-        }
+        
+        if(isnewqueue)
+            setQueueAgentSignals(queueid);
+    }
+    
+    queueids.sort();
+    int i = 0;
+    foreach(QString queueid, queueids) {
+        fillQueue(i, queueid);
+        i ++;
+    }
 }
 
 /*! \brief 
