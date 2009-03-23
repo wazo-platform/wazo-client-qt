@@ -149,7 +149,7 @@ void CallStackWidget::updateDisplay()
                     ts = map["time-dial"].toUInt() + current_ts;
                 if(map.contains("timestamp-dial"))
                     ts = map["timestamp-dial"].toUInt();
-                if(map.contains("time-dial"))
+                if(map.contains("time-link"))
                     ts = map["time-link"].toUInt() + current_ts;
                 if(map.contains("timestamp-link"))
                     ts = map["timestamp-link"].toUInt();
