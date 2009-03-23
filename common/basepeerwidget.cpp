@@ -309,6 +309,9 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     text.append( " : " );
                     text.append( comm["calleridname"].toString() );
                 }
+#if 0
+                /* hanging up others communication doesn't make much sense
+                 * excepting in test environment or in special cases. */
                 if( status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED )
                 {
                     if( !hangupMenu && commsCount > 1 )
@@ -325,6 +328,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     else
                         contextMenu.addAction( hangupAction );
                 }
+#endif
                 // TODO : intercept only if the status is right
                 if( m_ui != ui ) //status != 
                 {
@@ -342,6 +346,9 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     else
                         contextMenu.addAction( interceptAction );
                 }
+#if 0
+                /* Parking doesn't make much sense here : people usually park their
+                 * correspondants, not someone random on the switchboard */
                 // TODO : check for correct status
                 if( m_ui != ui )
                 {
@@ -359,6 +366,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     else
                         contextMenu.addAction( parkAction );
                 }
+#endif
             }
         }
     }
