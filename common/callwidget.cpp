@@ -66,7 +66,7 @@ QPixmap * CallWidget::m_call_gray   = NULL;
  */
 CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
                        const QString & status, uint ts,
-                       const QString &/* channelpeer*/, const QString & exten,
+                       const QString & channelpeer, const QString & exten,
                        QWidget * parent)
     : QWidget(parent), m_square(16,16)
 {
@@ -84,6 +84,7 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
     //         m_callerid = callerid;
     //         m_calleridname = calleridname;
     m_channelme = channelme;
+    m_channelpeer = channelpeer;
 
     //        qDebug() << "spacing" << gridlayout->spacing()
     //                 << ", margin" << gridlayout->margin();
@@ -239,9 +240,11 @@ void CallWidget::mouseMoveEvent(QMouseEvent *event)
 
     QDrag *drag = new QDrag(this);
     QMimeData *mimeData = new QMimeData();
-    mimeData->setText(m_channelme); // XXX
+    //mimeData->setText(m_channelme); // XXX
+    mimeData->setText(m_channelpeer); // XXX
     mimeData->setData(USERID_MIMETYPE, m_ui->userid().toAscii());
-    mimeData->setData(CHANNEL_MIMETYPE, m_channelme.toAscii());
+    //mimeData->setData(CHANNEL_MIMETYPE, m_channelme.toAscii());
+    mimeData->setData(CHANNEL_MIMETYPE, m_channelpeer.toAscii());
     drag->setMimeData(mimeData);
 
     Qt::DropAction dropAction = drag->start(Qt::CopyAction | Qt::MoveAction);

@@ -101,6 +101,7 @@ class CallWidget : public QWidget
     UserInfo * m_ui;
     QPoint m_dragstartpos;        //!< used for drag
     QString m_channelme;        //!< channel identifier
+    QString m_channelpeer;      //!< peer channel identifier
     QString m_callerid;                //!< caller id
     QString m_calleridname;        //!< caller id name
     QLabel * m_lbl_status;        //!< sub widget
