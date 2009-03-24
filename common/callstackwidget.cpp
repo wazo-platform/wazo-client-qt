@@ -69,10 +69,10 @@ CallStackWidget::CallStackWidget(BaseEngine * engine, QWidget * parent)
 void CallStackWidget::updateUser(UserInfo * ui)
 {
     if(ui == m_monitored_ui)
-        {
-            // we need to update the display
-            updateDisplay();
-        }
+    {
+        // we need to update the display
+        updateDisplay();
+    }
 }
 
 /*! \brief hang up channel

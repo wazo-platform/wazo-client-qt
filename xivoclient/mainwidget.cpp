@@ -763,8 +763,8 @@ void MainWidget::engineStarted()
                                                          const QString &, const QString &, const QString &)),
                          m_xlet[xletid], SLOT(addLogEntry(const QDateTime &, int,
                                                           const QString &, const QString &, const QString &)) );
-                connect( m_xlet[xletid], SIGNAL(askHistory(const QString &, int)),
-                         m_engine, SLOT(requestHistory(const QString &, int)) );
+                connect( m_xlet[xletid], SIGNAL(askHistory(const QString &, int, const QDateTime &)),
+                         m_engine, SLOT(requestHistory(const QString &, int, const QDateTime &)) );
                 connect( m_engine, SIGNAL(delogged()),
                          m_xlet[xletid], SLOT(clear()) );
                 connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),

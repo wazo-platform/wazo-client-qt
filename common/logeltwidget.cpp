@@ -129,12 +129,12 @@ LogEltWidget::Direction LogEltWidget::direction() const
     return m_direction;
 }
 
-void LogEltWidget::mouseDoubleClickEvent(QMouseEvent */* event*/)
+void LogEltWidget::mouseDoubleClickEvent(QMouseEvent * /* event*/)
 {
     callBackPeer();
 }
 
-void LogEltWidget::mouseReleaseEvent(QMouseEvent */* event*/)
+void LogEltWidget::mouseReleaseEvent(QMouseEvent * /* event*/)
 {
     doNotCallBackPeer();
 }
@@ -160,8 +160,7 @@ void LogEltWidget::callBackPeer()
         number = qsl2[0];
     }
         
-    this->setProperty("action", "originate");
-    actionCall("user:special:me", "ext:" + number); // Call
+    emit actionCall("originate", "user:special:me", "ext:" + number); // Call
 }
 
 void LogEltWidget::doNotCallBackPeer()
@@ -173,5 +172,5 @@ void LogEltWidget::doNotCallBackPeer()
         number = qsl2[0];
     }
 
-    copyNumber(number);
+    emit copyNumber(number);
 }

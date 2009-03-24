@@ -137,11 +137,13 @@ void LogWidget::addElement(const QString & peer, LogEltWidget::Direction d,
         }
     }
     LogEltWidget * logelt = new LogEltWidget(peer, d, dt, duration, termin, this);
-    connect( logelt, SIGNAL(actionCall(const QString &, const QString &)),
-             this, SLOT(proxyCallRequests(const QString &, const QString &)) );
+    connect( logelt, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+             this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
     connect( logelt, SIGNAL(copyNumber(const QString &)),
              m_engine, SLOT(copyNumber(const QString &)) );
     m_layout->insertWidget(index, logelt);
+    if(dt > m_moreRecent)
+        m_moreRecent = dt;
 }
 
 /*! \brief remove all child widgets
@@ -150,22 +152,18 @@ void LogWidget::clear()
 {
     QLayoutItem * child;
     while ((child = m_layout->itemAt(0)) != 0)
+    {
+        if(child->widget())
         {
-            if(child->widget())
-                {
-                    m_layout->removeItem(child);
-                    delete child->widget();
-                    delete child;
-                }
-            else
-                break;
+            m_layout->removeItem(child);
+            delete child->widget();
+            delete child;
         }
+        else
+            break;
+    }
+    m_moreRecent = QDateTime();
     //m_layout->addStretch(1);
-}
-
-void LogWidget::proxyCallRequests(const QString & src, const QString & dst)
-{
-    actionCall(sender()->property("action").toString(), src, dst); // Call
 }
 
 /*! \brief add an entry
@@ -187,7 +185,7 @@ void LogWidget::monitorPeer(UserInfo * ui)
     clear();
     m_peer = ui->userid();
     if(m_peer.size() > 0) {
-        askHistory(m_peer, mode());
+        emit askHistory(m_peer, mode(), m_moreRecent);
         if(m_timer < 0)
             m_timer = startTimer(10000);
     }
@@ -199,7 +197,7 @@ void LogWidget::timerEvent(QTimerEvent *)
 {
     // qDebug() << "LogWidget::timerEvent() id=" << event->timerId();
     if(m_peer.size() > 0)
-        askHistory(m_peer, mode());
+        emit askHistory(m_peer, mode(), m_moreRecent);
 }
 
 /*! \brief return the mode (out/in or missed)
@@ -225,6 +223,6 @@ void LogWidget::modeChanged(bool b)
     // qDebug() << "LogWidget::modeChanged()" << b << mode();
     if(b && m_peer.size() > 0) {
         clear();
-        askHistory(m_peer, mode());
+        emit askHistory(m_peer, mode(), m_moreRecent);
     }
 }

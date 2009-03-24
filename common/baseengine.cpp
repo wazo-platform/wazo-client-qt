@@ -714,23 +714,23 @@ void BaseEngine::updatePhone(const QString & astid,
                              const QString & phoneid,
                              const QMap<QString, QVariant> & properties)
 {
-    //    if(phoneid == "sip.default.121.121")
+    //if(phoneid == "sip.default.103.103")
     //    qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties;
     //qDebug() << map.keys();
     QString key = astid + "." + phoneid;
     UserInfo * ui = findUserFromPhone(astid, phoneid);
     if( ! m_phones.contains( key ) )
-        {
-            m_phones[key] = new PhoneInfo(astid, properties);
-            if(ui)
-                ui->updatePhone( m_phones[key] );
-        } else {
+    {
+        m_phones[key] = new PhoneInfo(astid, properties);
+        if(ui)
+            ui->updatePhone( m_phones[key] );
+    } else {
         m_phones[key]->update(properties);
     }
     if(ui)
-        {
-            emit userUpdated(ui);
-        }
+    {
+        emit userUpdated(ui);
+    }
 }
 
 QStringList BaseEngine::updateQueue(const QString & astid,
@@ -1499,7 +1499,7 @@ void BaseEngine::searchDirectory(const QString & text)
 
 /*! \brief ask history for an extension
  */
-void BaseEngine::requestHistory(const QString & peer, int mode)
+void BaseEngine::requestHistory(const QString & peer, int mode, const QDateTime & moreRecent)
 {
     /* mode = 0 : Out calls
      * mode = 1 : In calls
@@ -1512,6 +1512,10 @@ void BaseEngine::requestHistory(const QString & peer, int mode)
         command["peer"] = peer;
         command["size"] = QString::number(m_historysize);
         command["mode"] = QString::number(mode);
+        if(moreRecent.isValid()) {
+            //command["morerecentthan"] = QString::number(moreRecent.toTime_t());
+            command["morerecentthan"] = moreRecent.toString(Qt::ISODate);
+        }
         sendJsonCommand(command);
     }
 }

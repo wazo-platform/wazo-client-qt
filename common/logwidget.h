@@ -43,6 +43,7 @@
 #define __LOGWIDGET_H__
 
 #include <QWidget>
+#include <QDateTime>
 #include "logeltwidget.h"
 
 class QVBoxLayout;
@@ -56,7 +57,7 @@ class UserInfo;
 class LogWidget : public QWidget
 {
     Q_OBJECT
- public:
+public:
     LogWidget(BaseEngine *,
               const QVariant &,
               QWidget * parent = 0);
@@ -65,26 +66,23 @@ class LogWidget : public QWidget
                     const QDateTime &,
                     int,
                     const QString &);
- protected:
+protected:
     void timerEvent(QTimerEvent *);
- private:
+private:
     int mode();
- public slots:
+public slots:
     void setGuiOptions(const QVariant &) {};
     void setUserInfo(const UserInfo *) {};
     void clear();
     void addLogEntry(const QDateTime &, int,
                      const QString &, const QString &, const QString &);
     void monitorPeer(UserInfo *);
- private slots:
+private slots:
     void modeChanged(bool);
-    void proxyCallRequests(const QString &, const QString &);
- signals:
-    void askHistory(const QString &, int);        //!< need history to be updated !
-    void actionCall(const QString &,
-                    const QString &,
-                    const QString &);
- private:
+signals:
+    void askHistory(const QString &, int, const QDateTime &);        //!< need history to be updated !
+    void actionCall(const QString &, const QString &, const QString &);
+private:
     BaseEngine * m_engine;        //!< BaseEngine object
     QVBoxLayout * m_layout;                        //!< Widget layout
     QString m_peer;                                        //!< "monitored" peer
@@ -92,6 +90,7 @@ class LogWidget : public QWidget
     QRadioButton * m_radioOut;                //!< "Out" radio button
     QRadioButton * m_radioIn;                //!< "In" radio button
     QRadioButton * m_radioMissed;        //!< "Missed" radio button
+    QDateTime m_moreRecent;         //!< dateTime of the more recent item
 };
 
 #endif

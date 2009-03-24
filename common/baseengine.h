@@ -50,6 +50,7 @@
 #include <QSettings>
 #include <QStringList>
 #include <QTime>
+#include <QDateTime>
 
 class UserInfo;
 class PhoneInfo;
@@ -167,7 +168,7 @@ public slots:
                     const QString &);
     
     void searchDirectory(const QString &);
-    void requestHistory(const QString &, int);
+    void requestHistory(const QString &, int, const QDateTime &);
     
     void textEdited(const QString &);
     void setAvailability();       //!< set user status from menu
