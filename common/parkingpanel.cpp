@@ -85,20 +85,13 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
     m_table->resizeColumnsToContents();
     m_timerid = 0;
     m_deltasec = 2;
-    m_astid    = "";
-    m_placenum = "";
     setGuiOptions(options);
 }
 
 ParkingPanel::~ParkingPanel()
 {
     // qDebug() << "ParkingPanel::~ParkingPanel()";
-    delete m_table;
-}
-
-void ParkingPanel::setUserInfo(const UserInfo * ui)
-{
-    m_userinfo = ui;
+    //delete m_table;
 }
 
 /*! \brief add a message to the list
@@ -169,19 +162,19 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
 void ParkingPanel::itemClicked(QTableWidgetItem * item)
 {
     int rown   = m_table->row(item);
-    m_astid    = m_table->item(rown, 0)->text();
-    m_placenum = m_table->item(rown, 1)->text();
-    if(m_astid == m_userinfo->astid())
-        copyNumber(m_placenum);
+    QString astid    = m_table->item(rown, 0)->text();
+    QString placenum = m_table->item(rown, 1)->text();
+    if(m_engine && m_engine->getXivoClientUser() && astid == m_engine->getXivoClientUser()->astid())
+        emit copyNumber(placenum);
 }
 
 void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
 {
     int rown   = m_table->row(item);
-    m_astid    = m_table->item(rown, 0)->text();
-    m_placenum = m_table->item(rown, 1)->text();
-    if(m_astid == m_userinfo->astid())
-        actionCall("originate", "user:special:me", "ext:" + m_placenum); // Call
+    QString astid    = m_table->item(rown, 0)->text();
+    QString placenum = m_table->item(rown, 1)->text();
+    if(m_engine && m_engine->getXivoClientUser() && astid == m_engine->getXivoClientUser()->astid())
+        emit actionCall("originate", "user:special:me", "ext:" + placenum); // Call
 }
 
 void ParkingPanel::timerEvent(QTimerEvent * event)
@@ -241,8 +234,10 @@ void ParkingPanel::dialNumber()
 }
 #endif
 
-/*! \brief dial the number (when context menu item is toggled)
+#if 0
+/*! \brief hang up
  */
 void ParkingPanel::hangUp()
 {
 }
+#endif

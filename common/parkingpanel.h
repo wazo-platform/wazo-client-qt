@@ -71,12 +71,9 @@ protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
 public slots:
     void setGuiOptions(const QVariant &) {};
-    void setUserInfo(const UserInfo *);
+    void setUserInfo(const UserInfo *) {};
     void parkingEvent(const QVariant &);
-//    void contextMenuEvent(QContextMenuEvent *);
 private slots:
-//    void dialNumber();
-    void hangUp();
     void itemClicked(QTableWidgetItem *);
     void itemDoubleClicked(QTableWidgetItem *);
 signals:
@@ -88,12 +85,8 @@ signals:
 private:
     BaseEngine * m_engine;
     ExtendedTableWidget * m_table;        //! Table
-    const UserInfo * m_userinfo;
     int m_timerid;
     int m_deltasec;
-    QString m_astid;        //!< asterisk id selected
-    QString m_placenum;        //!< number to call to retrieve the parked call
-    QString m_parkedpeer;        //!< parked peer
     QList<PeerChannel *> m_mychannels;        //!< "my channels" list for transfer menu
 };
 
