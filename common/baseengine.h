@@ -152,6 +152,8 @@ public:
     UserInfo * getXivoClientUser(); //!< Return the user of the Xivo CTI Client
     QHash<QString, AgentInfo *> agents(); //!< Return the agents to any Xlet
     QHash<QString, QueueInfo *> queues(); //!< Return the queues to any Xlet
+    QHash<QString, PhoneInfo *> phones(); //!< Return the phones to any Xlet
+    QHash<QString, UserInfo *> users(); //!< Return the users to any Xlet
     double timeServer() const;
     const QDateTime & timeClient() const;
     double timeDeltaServerClient() const;

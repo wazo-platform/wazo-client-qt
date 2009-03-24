@@ -64,6 +64,8 @@ class PhoneInfo
     const QString hintstatus(const QString & key) const {
         return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
     };
+    //! asterisk id
+    const QString & astid() const { return m_astid; };
     //! phone number
     const QString & number() const { return m_number; };
     //! phone technology (sip, iax, etc...)

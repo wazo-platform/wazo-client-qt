@@ -50,6 +50,7 @@
 #include "baseengine.h"
 #include "agentspanel.h"
 #include "agentinfo.h"
+#include "phoneinfo.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -276,12 +277,26 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
                            QString("agentid %1 linkmode %2").arg(agentid).arg(linkmode));
     }
     
+    AgentInfo * ainfo = m_engine->agents()[agentid];
     QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-    if(link)
+    QStringList ttips;
+    if(link) {
         p_square->fill(Qt::green);
-    else
+        QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(m_engine->phones());
+        while( iter.hasNext() )
+            {
+                iter.next();
+                if((iter.value()->number() == phonenum) && (iter.value()->astid() == ainfo->astid())) {
+                    foreach(QString uniqueid, iter.value()->comms().keys()) {
+                        QVariantMap commval = iter.value()->comms()[uniqueid].toMap();
+                        ttips << tr("online with %1 (%2)").arg(commval["calleridname"].toString()).arg(commval["calleridnum"].toString());
+                    }
+                }
+            }
+    } else
         p_square->fill(Qt::gray);
     m_agent_busy[agentid]->setPixmap(QPixmap(* p_square));
+    m_agent_busy[agentid]->setToolTip(ttips.join("\n"));
     
     QString tooltip;
     if(agstatus == "AGENT_IDLE") {

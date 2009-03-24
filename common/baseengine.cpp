@@ -450,6 +450,16 @@ QHash<QString, QueueInfo *> BaseEngine::queues()
     return m_queues;
 }
 
+QHash<QString, PhoneInfo *> BaseEngine::phones()
+{
+    return m_phones;
+}
+
+QHash<QString, UserInfo *> BaseEngine::users()
+{
+    return m_users;
+}
+
 /*! \brief initiate connection to the server
  */
 void BaseEngine::connectSocket()

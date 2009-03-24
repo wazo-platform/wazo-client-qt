@@ -181,7 +181,7 @@ void StatusPanel::clicked()
 void StatusPanel::dtransfer()
 {
     if(m_callchannels.contains(m_currentchannel)) {
-        qDebug() << "Direct   Transfer" << m_currentchannel;
+        qDebug() << "StatusPanel::dtransfer() Direct   Transfer" << m_currentchannel;
         if(m_linestatuses[m_currentchannel] == WDTransfer) {
             m_tnums[m_currentchannel]->hide();
             m_statuses[m_currentchannel]->setFocus();
@@ -203,7 +203,7 @@ void StatusPanel::dtransfer()
 void StatusPanel::itransfer()
 {
     if(m_callchannels.contains(m_currentchannel)) {
-        qDebug() << "Indirect Transfer" << m_currentchannel;
+        qDebug() << "StatusPanel::itransfer() Indirect Transfer" << m_currentchannel;
         if(m_linestatuses[m_currentchannel] == WITransfer) {
             m_tnums[m_currentchannel]->hide();
             m_statuses[m_currentchannel]->setFocus();
