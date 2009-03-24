@@ -78,9 +78,9 @@ DialPanel::DialPanel(BaseEngine * engine,
     // clearButton->setIcon(QIcon(":/images/cancel.png"));
     // connect( clearButton, SIGNAL(clicked()),
     // this, SLOT(clearlist()) );
-
+    
     setAcceptDrops(true);
-
+    
     vlayout->addStretch(1);
     // vlayout->addWidget( clearButton, 0, Qt::AlignCenter );
     vlayout->addWidget( m_lbl, 0, Qt::AlignCenter );

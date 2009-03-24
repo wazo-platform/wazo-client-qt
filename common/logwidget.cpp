@@ -72,27 +72,21 @@ LogWidget::LogWidget(BaseEngine * engine, const QVariant &, QWidget * parent)
     vbox->setSpacing(0);
 
     vbox->addStretch( 1 );
-    m_radioNone = new QRadioButton( " ", groupBox );
-    m_radioNone->setIcon(QIcon(":/images/cancel.png"));
-    m_radioNone->setToolTip( tr("No calls") );
-    connect( m_radioNone, SIGNAL(toggled(bool)),
-             this, SLOT(modeChanged(bool)) );
-    vbox->addWidget( m_radioNone );
-
+    
     m_radioOut = new QRadioButton( " ", groupBox );
     m_radioOut->setIcon(QIcon(":/images/green_up.png"));
     m_radioOut->setToolTip( tr("Outgoing calls") );
     connect( m_radioOut, SIGNAL(toggled(bool)),
              this, SLOT(modeChanged(bool)) );
     vbox->addWidget( m_radioOut );
-
+    
     m_radioIn = new QRadioButton( " ", groupBox );
     m_radioIn->setIcon(QIcon(":/images/green_down.png"));
     m_radioIn->setToolTip( tr("Incoming calls") );
     connect( m_radioIn, SIGNAL(toggled(bool)),
              this, SLOT(modeChanged(bool)) );
     vbox->addWidget( m_radioIn );
-
+    
     m_radioMissed = new QRadioButton( " ", groupBox );
     m_radioMissed->setIcon(QIcon(":/images/red_down.png"));
     m_radioMissed->setToolTip( tr("Missed calls") );
@@ -100,9 +94,9 @@ LogWidget::LogWidget(BaseEngine * engine, const QVariant &, QWidget * parent)
              this, SLOT(modeChanged(bool)) );
     vbox->addWidget( m_radioMissed );
     vbox->addStretch( 1 );
-
-    m_radioNone->setChecked( true );
-
+    
+    m_radioMissed->setChecked( true );
+    
     layout->addWidget( groupBox );
     QScrollArea * scrollArea = new QScrollArea( this );
     scrollArea->setWidgetResizable( true );

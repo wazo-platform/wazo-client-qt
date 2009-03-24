@@ -89,7 +89,6 @@ class LogWidget : public QWidget
     QVBoxLayout * m_layout;                        //!< Widget layout
     QString m_peer;                                        //!< "monitored" peer
     int m_timer;                                        //!< timer id for refresh
-    QRadioButton * m_radioNone;                //!< "None" radio button
     QRadioButton * m_radioOut;                //!< "Out" radio button
     QRadioButton * m_radioIn;                //!< "In" radio button
     QRadioButton * m_radioMissed;        //!< "Missed" radio button
