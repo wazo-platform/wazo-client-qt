@@ -125,6 +125,12 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
         parkedby = fromcalleridname + " (" + fromcalleridnum + ")";
     
     if(eventkind == "parkedcall") {
+        for(int m = 0; m < m_table->rowCount(); m++) {
+            if (m_table->item(m, 0)->data(1).toString() == channel) {
+                // do not add the same entry twice !
+                return;
+            }
+        }
         int i = 0;
         m_table->insertRow( 0 );
         //QTableWidgetItem * item0 = new QTableWidgetItem( astid );
@@ -143,27 +149,23 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
         QTableWidgetItem * item4 = new QTableWidgetItem( parkedby );
         item4->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         m_table->setItem( 0, i++, item4 );
-        //                m_table->resizeColumnsToContents();
-        newParkEvent();
+
+        emit newParkEvent();
         // do not start another timer if there is already one running
         if(m_timerid == 0)
             m_timerid = startTimer(m_deltasec * 1000);
     } else if ((eventkind == "unparkedcall") ||
                (eventkind == "parkedcalltimeout") ||
                (eventkind == "parkedcallgiveup")) {
-        QList<QTableWidgetItem *> finditem = m_table->findItems(parkplacenum, Qt::MatchExactly);
-        for(int i = 0; i < finditem.count(); i++) {
-            int n = m_table->column(finditem[i]);
-            int m = m_table->row(finditem[i]);
-            if (n == 0)
-                if (m_table->item(m, 0)->data(1).toString() == channel) {
-                    m_table->removeRow(m);
-                    // kills the timer only if there are no parked calls left
-                    if(m_table->rowCount() == 0) {
-                        killTimer(m_timerid);
-                        m_timerid = 0;
-                    }
+        for(int m = 0; m < m_table->rowCount(); m++) {
+            if (m_table->item(m, 0)->data(1).toString() == channel) {
+                m_table->removeRow(m);
+                // kills the timer only if there are no parked calls left
+                if(m_table->rowCount() == 0) {
+                    killTimer(m_timerid);
+                    m_timerid = 0;
                 }
+            }
         }
     }
     // make columns fit the content
