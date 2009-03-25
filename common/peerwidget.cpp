@@ -50,7 +50,6 @@
 #include <QDebug>
 
 #include "baseengine.h"
-#include "extendedlabel.h"
 #include "peerwidget.h"
 #include "xivoconsts.h"
 #include "userinfo.h"
@@ -132,7 +131,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
     
     if(! m_ui->ctilogin().isEmpty()) {
-        m_availlbl = new ExtendedLabel();
+        m_availlbl = new QLabel();
         m_availlbl->setPixmap(m_persons["grey"]);
         m_availlbl->setAlignment(Qt::AlignCenter);
         m_availlbl->setMinimumSize(fsize, fsize);
@@ -146,7 +145,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     
     foreach (QString phone, ui->phonelist())
     {
-        m_lblphones[phone] = new ExtendedLabel();
+        m_lblphones[phone] = new QLabel();
         m_lblphones[phone]->setPixmap(m_phones["grey"]);
         m_lblphones[phone]->setAlignment(Qt::AlignCenter);
         m_lblphones[phone]->setObjectName("onlyme");
@@ -155,7 +154,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     }
         
     if(! ui->agentid().isEmpty()) {
-        m_agentlbl = new ExtendedLabel();
+        m_agentlbl = new QLabel();
         m_agentlbl->setPixmap(m_agents["grey"]);
         m_agentlbl->setAlignment(Qt::AlignCenter);
         m_agentlbl->setMinimumSize(fsize, fsize);

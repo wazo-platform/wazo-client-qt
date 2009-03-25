@@ -4,7 +4,7 @@
 #include <QTextStream>
 #include <QStringList>
 
-/*! \brief Stream used to read CSV files
+/*! \brief Stream used to read and write CSV files
  */
 class CsvStream : public QTextStream
 {

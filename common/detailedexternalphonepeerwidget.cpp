@@ -43,10 +43,11 @@
 #include <QFrame>
 #include <QLabel>
 #include <QGridLayout>
-#include "extendedlabel.h"
 #include "detailedexternalphonepeerwidget.h"
 #include "externalphonedialog.h"
 
+/*! \brief constructor
+ */
 DetailedExternalPhonePeerWidget::DetailedExternalPhonePeerWidget(BaseEngine * engine, const QString & label, const QString & number)
     : BasePeerWidget(engine, 0)
 {
@@ -75,7 +76,7 @@ DetailedExternalPhonePeerWidget::DetailedExternalPhonePeerWidget(BaseEngine * en
     m_textlbl = new QLabel(label, this);
     // set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
     m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
-    m_lblphone = new ExtendedLabel();
+    m_lblphone = new QLabel();
     m_lblphone->setPixmap(QPixmap(":/images/phone-grey.png"));
     m_lblphone->setToolTip( m_number );
     // the widget does not feature a context menu, context menu handling is deferred to the widget's parent.
@@ -89,13 +90,15 @@ DetailedExternalPhonePeerWidget::DetailedExternalPhonePeerWidget(BaseEngine * en
     layout->addWidget( qhline2, 3, 0, 1, 10);
 }
 
+/*! \brief set text
+ */
 void DetailedExternalPhonePeerWidget::setText(const QString & text)
 {
-    qDebug() << "DetailedExternalPhonePeerWidget::setText()" << text;
+//    qDebug() << "DetailedExternalPhonePeerWidget::setText()" << text;
     m_textlbl->setText( text );
 }
 
-/*! \brief 
+/*! \brief edit the number and text with a dialog
  *
  *
  */

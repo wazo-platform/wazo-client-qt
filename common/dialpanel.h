@@ -59,30 +59,30 @@ class UserInfo;
 class DialPanel : public QWidget
 {
     Q_OBJECT
- public:
+public:
     DialPanel(BaseEngine *,
               const QVariant &,
               QWidget * parent = 0);
     ~DialPanel();
- protected:
+protected:
     /*void mouseMoveEvent(QMouseEvent *);        //!< Catch mouse press events */
     /*void mousePressEvent(QMouseEvent *); */
     void dragEnterEvent(QDragEnterEvent *);
     void dropEvent(QDropEvent *);
- public slots:
+public slots:
     void setGuiOptions(const QVariant &) {};
     void setUserInfo(const UserInfo *) {};
     void inputValidated();
     void clearlist();
     void setNumberToDial(const QString &);
- signals:
-    void textEdited(const QString &);
+signals:
+    void textEdited(const QString &);   //!< text has changed
     void actionCall(const QString &,
                     const QString &,
                     const QString &);   //!< originates a number
- private:
-    BaseEngine * m_engine;
-    QLabel * m_lbl;
+private:
+    BaseEngine * m_engine;      //!< base engine
+    QLabel * m_lbl;             //!< label
     QComboBox * m_input;        //!< input widget
 };
 

@@ -44,7 +44,7 @@
 
 #include <QLabel>
 
-/*! \brief Identity Display
+/*! \brief QLabec with context menu and mouse release event forwarding
  */
 class ExtendedLabel : public QLabel
 {

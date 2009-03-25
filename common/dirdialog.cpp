@@ -51,8 +51,6 @@
 #include "dirdialog.h"
 #include "directorypanel.h"
 
-/*! \brief constructor
- */
 DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
     : QDialog(parent), m_engine(engine)
 {
@@ -86,6 +84,7 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
     m_retfaxnumber = "";
 }
 
+/*! \brief Destructor */
 DirDialog::~DirDialog()
 {
     // qDebug() << "DirDialog::~DirDialog()";

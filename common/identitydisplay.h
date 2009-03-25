@@ -54,7 +54,6 @@ class QContextMenuEvent;
 class QProgressBar;
 
 class BaseEngine;
-class ExtendedLabel;
 class UserInfo;
 
 /*! \brief Identity Display
@@ -62,11 +61,11 @@ class UserInfo;
 class IdentityDisplay : public QWidget
 {
     Q_OBJECT
- public:
+public:
     IdentityDisplay(BaseEngine *,
                     const QVariant &,
                     QWidget * parent = 0);
- public slots:
+public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *);
     void newAgentList();
@@ -76,23 +75,23 @@ class IdentityDisplay : public QWidget
     void doAgentUnPauseActions();
     void idxChanged(const QString &);
     void updatePresence(const QVariant &);
- private slots:
+private slots:
     void contextMenuEvent(QContextMenuEvent *);
     void contextMenuAction();
- signals:
+signals:
     void agentAction(const QString &);
     void setAvailState(const QString &, bool);
     void changeWatchedAgent(const QString &, bool);
     void setSystrayIcon(const QString &);
- private:
+private:
     void showAgentProps();
     void hideAgentProps();
     void setStatusColors(int, int);
     void updateAgentStatus(const QVariantMap &);
     
-    ExtendedLabel * m_icon_user;
-    ExtendedLabel * m_icon_agent;
-    ExtendedLabel * m_icon_voicemail;
+    QLabel * m_icon_user;
+    QLabel * m_icon_agent;
+    QLabel * m_icon_voicemail;
     
     QFrame * m_qvline1;
     QFrame * m_qvline2;

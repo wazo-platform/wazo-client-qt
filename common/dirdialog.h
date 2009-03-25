@@ -49,18 +49,12 @@ class QDialogButtonBox;
 class BaseEngine;
 class DirectoryPanel;
 
-//class MainWidget;
-
-/*! \brief Configuration Window
- *
- * This Widget enables the user to edit the connection
- * parameters to the identification server */
-/* could be a QDialog instead of QWidget */
-//class DirDialog: public QWidget
+/*! \brief Directory dialog used for fax
+ */
 class DirDialog: public QDialog
 {
     Q_OBJECT
- public:
+public:
     /*! \brief Constructor
      *
      * Construct the widget and its layout.
@@ -72,16 +66,15 @@ class DirDialog: public QDialog
     DirDialog(BaseEngine *, QWidget *);
     ~DirDialog();
     const QString & faxnumber() const;
- private slots:
-    //! Save the configuration to the BaseEngine object and close
+private slots:
     void saveAndClose();
     void copyNumber(const QString &);
     void copyNumberAndQuit(const QString &, bool);
- private:
-    BaseEngine * m_engine;
-    DirectoryPanel * m_directory;
-    QDialogButtonBox * m_btnbox;        //!< Buttons box
-    QString m_faxnumber;
-    QString m_retfaxnumber;
+private:
+    BaseEngine * m_engine;          //!< base engine
+    DirectoryPanel * m_directory;   //!< Directory panel
+    QDialogButtonBox * m_btnbox;    //!< Buttons box
+    QString m_faxnumber;            //!< fax number
+    QString m_retfaxnumber;         //!< fax number to return
 };
 #endif

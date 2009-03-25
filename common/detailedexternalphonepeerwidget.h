@@ -45,9 +45,7 @@
 #include <QLabel>
 #include "basepeerwidget.h"
 
-class ExtendedLabel;
-
-/*! \brief xxx
+/*! \brief External phone widget for detailed switchboard display
  */
 class DetailedExternalPhonePeerWidget : public BasePeerWidget
 {
@@ -64,8 +62,8 @@ public:
 public slots:
     void edit();
 private:
-    QLabel * m_textlbl;
-    ExtendedLabel * m_lblphone;
+    QLabel * m_textlbl;         //!< text label
+    QLabel * m_lblphone;        //!< phone icon
 };
 
 #endif

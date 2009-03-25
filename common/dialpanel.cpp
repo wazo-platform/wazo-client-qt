@@ -91,10 +91,14 @@ DialPanel::DialPanel(BaseEngine * engine,
     setGuiOptions(options);
 }
 
+/*! \brief Destructor
+ */
 DialPanel::~DialPanel()
 {
 }
 
+/*! \brief fills the input field
+ */
 void DialPanel::setNumberToDial(const QString & text)
 {
     QString oldtext = m_input->lineEdit()->text();
@@ -127,6 +131,10 @@ void DialPanel::dragEnterEvent(QDragEnterEvent * event)
         event->acceptProposedAction();
 }
 
+/*! \brief handle drop events 
+ *
+ * This method processes data from the drop event and makes the call
+ */
 void DialPanel::dropEvent(QDropEvent * event)
 {
     QString ext;
@@ -151,16 +159,6 @@ void DialPanel::dropEvent(QDropEvent * event)
         m_input->clearEditText();
     }
 }
-
-// void DialPanel::mouseMoveEvent(QMouseEvent *event)
-// {
-//         qDebug() << "DialPanel::mouseMoveEvent()" << event;
-// }
-
-// void DialPanel::mousePressEvent(QMouseEvent *event)
-// {
-//         qDebug() << "DialPanel::mousePressEvent()" << event;
-// }
 
 /*! \brief the input was validated
  *
@@ -188,7 +186,10 @@ void DialPanel::inputValidated()
     }
 }
 
+/*! \brief clear the input list
+ */
 void DialPanel::clearlist()
 {
     m_input->clear();
 }
+

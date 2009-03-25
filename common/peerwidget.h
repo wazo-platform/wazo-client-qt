@@ -53,7 +53,6 @@ class QPixmap;
 
 class BaseEngine;
 class PeerChannel;
-class ExtendedLabel;
 class UserInfo;
 
 /*! \brief Widget to display a Peer status
@@ -76,7 +75,7 @@ private:
     QHash<QString, QLabel *> m_lblphones;        //!< phone labels
         
     QLabel * m_availlbl;        //!< Peer state display from XIVO CTI Client
-    ExtendedLabel * m_agentlbl;
+    QLabel * m_agentlbl;        //!< agent state label
     QLabel * m_voicelbl;
     QLabel * m_fwdlbl;
     QLabel * m_textlbl;                //!< text label : to display peer name
