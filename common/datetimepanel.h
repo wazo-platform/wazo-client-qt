@@ -52,19 +52,19 @@ class QTimerEvent;
 
 class UserInfo;
 
-/*! \brief Identity Display
+/*! \brief Panel displaying the date and time
  */
 class DatetimePanel : public QWidget
 {
     Q_OBJECT
- public:
+public:
     DatetimePanel(QWidget * parent = 0);
- protected:
+protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
- public slots:
+public slots:
     void setGuiOptions(const QVariant &) {};
     void setUserInfo(const UserInfo *) {};
- private:
+private:
     QGridLayout * m_gridlayout;
     QLabel * m_datetime;
 };

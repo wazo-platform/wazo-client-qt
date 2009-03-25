@@ -58,7 +58,7 @@ public:
     BasePeerWidget * newPeerWidget(UserInfo * ui);
 private:
     QString getSwitchBoardEltType() const;
-    BaseEngine * m_engine;
+    BaseEngine * m_engine;  //!< base engine
 };
 
 #endif

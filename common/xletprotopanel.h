@@ -53,15 +53,18 @@ class UserInfo;
 class XletprotoPanel : public QWidget
 {
     Q_OBJECT
- public:
+public:
     XletprotoPanel(BaseEngine * engine,
                    const QVariant &,
                    QWidget * parent = 0);
     ~XletprotoPanel();
- public slots:
+public slots:
+    //! does nothing
     void setUserInfo(const UserInfo *) {};
+    //! does nothing
     void setGuiOptions(const QVariant &) {};
- protected:
+protected:
+    //! Base engine pointer
     BaseEngine * m_engine;
 };
 

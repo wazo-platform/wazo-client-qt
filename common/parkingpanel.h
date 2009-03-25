@@ -55,9 +55,7 @@ class ExtendedTableWidget;
 class PeerChannel;
 class UserInfo;
 
-/*! \brief Widget to display a list of messages
- *
- * dispays the messages in a table with timestamps.
+/*! \brief Displays the parking slots.
  */
 class ParkingPanel : public QWidget
 {
@@ -83,10 +81,10 @@ signals:
                     const QString &);
     void newParkEvent();
 private:
-    BaseEngine * m_engine;
-    ExtendedTableWidget * m_table;        //! Table
-    int m_timerid;
-    int m_deltasec;
+    BaseEngine * m_engine;  //!< engine
+    ExtendedTableWidget * m_table;        //!< Table
+    int m_timerid;  //!< id of the timer
+    int m_deltasec; //!< timer period
     QList<PeerChannel *> m_mychannels;        //!< "my channels" list for transfer menu
 };
 

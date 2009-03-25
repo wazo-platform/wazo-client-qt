@@ -53,14 +53,16 @@ class UserInfo;
 class XletWeb : public QWidget
 {
     Q_OBJECT
-        public:
+public:
     XletWeb(BaseEngine * engine, QWidget * parent = 0);
     ~XletWeb();
- public slots:
+public slots:
+    //! does nothing
     void setUserInfo(const UserInfo *) {};
+    //! does nothing
     void setGuiOptions(const QVariant &) {};
- private:
-    BaseEngine * m_engine;
+private:
+    BaseEngine * m_engine; //!< base engine
 };
 
 #endif /* __XLETWEB_H__ */

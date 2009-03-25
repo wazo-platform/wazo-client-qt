@@ -172,6 +172,7 @@ const QString & UserInfo::ctilogin() const
     return m_ctilogin;
 }
 
+/*! \brief return Message Waiting Indicator */
 const QStringList & UserInfo::mwi() const
 {
     return m_mwi;
@@ -217,6 +218,8 @@ QList<QString> UserInfo::phonelist() const
     return m_phones.keys();
 }
 
+/*! \brief return phone info
+ */
 const PhoneInfo * UserInfo::getPhoneInfo(const QString & id) const
 {
     if(m_phones.contains(id))
@@ -227,6 +230,8 @@ const PhoneInfo * UserInfo::getPhoneInfo(const QString & id) const
     return NULL;
 }
 
+/*! \brief update phone info pointer
+ */
 void UserInfo::updatePhone( PhoneInfo * pi )
 {
     //qDebug() << "UserInfo::updatePhone before" << m_phones;

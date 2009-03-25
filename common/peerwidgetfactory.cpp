@@ -47,16 +47,24 @@
 #include "detailedexternalphonepeerwidget.h"
 #include "externalphonepeerwidget.h"
 
+/*! \brief Constructor */
 PeerWidgetFactory::PeerWidgetFactory(BaseEngine * engine, QObject * parent)
     : QObject(parent), m_engine(engine)
 {
 }
 
+/*! \brief Destructor */
 QString PeerWidgetFactory::getSwitchBoardEltType() const
 {
     return m_engine->getGuiOptions("user").toMap()["switchboard-elt-type"].toString();
 }
 
+/*! \brief return an "External phone" widget
+ *
+ * return an instance of ExternalPhonePeerWidget or DetailedExternalPhonePeerWidget
+ * depending on the value of the "switchboard-elt-type" gui setting of the BaseEngine.
+ * The actionCall() signal is already connected to the BaseEngine.
+ */
 BasePeerWidget * PeerWidgetFactory::newExternalPhonePeerWidget(const QString & label, const QString & number)
 {
     BasePeerWidget * w;
@@ -77,6 +85,12 @@ BasePeerWidget * PeerWidgetFactory::newExternalPhonePeerWidget(const QString & l
     return w;
 }
 
+/*! \brief return an "Internal phone" widget
+ *
+ * return an instance of BasicPeerWidget or PeerWidget
+ * depending on the value of the "switchboard-elt-type" gui setting of the BaseEngine.
+ * The actionCall() signal is already connected to the BaseEngine.
+ */
 BasePeerWidget * PeerWidgetFactory::newPeerWidget(UserInfo * ui)
 {
     BasePeerWidget * w;
@@ -96,3 +110,4 @@ BasePeerWidget * PeerWidgetFactory::newPeerWidget(UserInfo * ui)
                                        const QString &)) );
     return w;
 }
+

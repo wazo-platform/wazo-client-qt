@@ -28,6 +28,9 @@ help:
 	@echo "          make all-win32 "
 	@echo " -- to build Mac OS X binaries (Universal Binary applications + .dmg packages) :"
 	@echo "          make all-macos "
+	@echo ""
+	@echo "You can also build docs using doxygen :"
+	@echo "          make doc"
 	@echo "Thanks."
 	@${ECHO} -n "_UNAME_ = " > uname.mak
 	@uname -s | sed "s/Linux/linux/;s/CYGWIN.*/win32/;s/Darwin/macos/" >> uname.mak

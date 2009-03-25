@@ -57,24 +57,24 @@ class QTimerEvent;
 class BaseEngine;
 class UserInfo;
 
-/*! \brief Identity Display
+/*! \brief Conference Panel
  */
 class ConferencePanel : public QWidget
 {
     Q_OBJECT
- public:
+public:
     ConferencePanel(BaseEngine *,
                     QWidget * parent = 0);
     ~ConferencePanel();
- protected:
+protected:
     void timerEvent(QTimerEvent *);
- public slots:
+public slots:
     void setGuiOptions(const QVariant &) {};
     void setUserInfo(const UserInfo *) {};
     void meetmeEvent(double, const QVariant &);
     void meetmeInit(double, const QVariant &);
     void doMeetMeAction();
- private:
+private:
     void setProperties(double,
                        const QString &,
                        const QString &,
@@ -97,7 +97,7 @@ class ConferencePanel : public QWidget
     QHash<QString, QGridLayout *> m_layout;
     QTabWidget * m_tw;
     QGridLayout * m_glayout;
- signals:
+signals:
     void meetmeAction(const QString &, const QString &);
 };
 

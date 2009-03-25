@@ -79,7 +79,9 @@ protected:
     void dragMoveEvent(QDragMoveEvent *);
     void contextMenuEvent(QContextMenuEvent *);
 public slots:
+    //! does nothing
     void setGuiOptions(const QVariant &) {};
+    //! does nothing
     void setUserInfo(const UserInfo *) {};
     void updateUser(UserInfo *);
     void updatePeerAgent(double,
@@ -101,6 +103,7 @@ private:
     void reloadExternalPhones();
     BasePeerWidget * addPeerWidget(PeerItem * peeritem, const QPoint & pos);
     Group * getGroup( const QPoint & ) const;
+
     BaseEngine * m_engine;        //!< engine to connect to peer widgets
     QHash<QString, PeerItem *> m_peerhash;        //!< PeerItem hash
     PeersLayout * m_layout;                        //!< Grid Layout for displaying peers
