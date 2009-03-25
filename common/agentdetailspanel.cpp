@@ -305,7 +305,7 @@ void AgentdetailsPanel::setQueueLookProps(const QString & queueid)
 void AgentdetailsPanel::setQueueProps(const QString & queueid, const QueueInfo * qinfo)
 {
     m_queue_labels[queueid]->setText(qinfo->queuename());
-    m_queue_labels[queueid]->setToolTip(QString("Server: %1\nContext: %2").arg(qinfo->astid()).arg(qinfo->context()));
+    m_queue_labels[queueid]->setToolTip(tr("Server: %1\nContext: %2").arg(qinfo->astid()).arg(qinfo->context()));
 }
 
 /*! \brief 

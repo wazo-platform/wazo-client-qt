@@ -226,7 +226,7 @@ void QueuedetailsPanel::setAgentLookProps(const QString & agentid)
 void QueuedetailsPanel::setAgentProps(const QString & agentid, const AgentInfo * ainfo)
 {
     m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(ainfo->fullname()).arg(ainfo->agentnumber()));
-    m_agent_labels[agentid]->setToolTip(QString("Server: %1\nContext: %2").arg(ainfo->astid()).arg(ainfo->context()));
+    m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->astid()).arg(ainfo->context()));
     // qDebug() << "QueuedetailsPanel::setAgentProps" << agentid << ainfo->properties()["agentstats"].toMap()["loggedintime"].toInt();
 }
 

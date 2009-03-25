@@ -143,6 +143,13 @@
         <source>logged (busy with %1) on phone number &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>loggé (en ligne avec %1) sur le téléphone &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
+    <message>
+        <location filename="../common/agentdetailspanel.cpp" line="308"/>
+        <source>Server: %1
+Context: %2</source>
+        <translation>Serveur: %1
+Contexte: %2</translation>
+    </message>
 </context>
 <context>
     <name>AgentsPanel</name>
@@ -197,54 +204,61 @@ discrète</translation>
         <translation>En pause</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel.cpp" line="305"/>
+        <location filename="../common/agentspanel.cpp" line="307"/>
         <source>Agent logged</source>
         <translation>Agent loggé</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel.cpp" line="309"/>
+        <location filename="../common/agentspanel.cpp" line="311"/>
         <source>Agent busy</source>
         <translation>Agent occupé</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel.cpp" line="313"/>
+        <location filename="../common/agentspanel.cpp" line="315"/>
         <source>Agent NOT logged</source>
         <translation>Agent NON loggé</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel.cpp" line="317"/>
+        <location filename="../common/agentspanel.cpp" line="319"/>
         <source>Unknown %1</source>
         <translation>Inconnu %1</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel.cpp" line="346"/>
+        <location filename="../common/agentspanel.cpp" line="348"/>
         <source>Joined queues : %1</source>
         <translation>Files jointes : %1</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel.cpp" line="355"/>
+        <location filename="../common/agentspanel.cpp" line="357"/>
         <source>Paused queues : %1</source>
         <translation>Files en pause : %1</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel.cpp" line="357"/>
+        <location filename="../common/agentspanel.cpp" line="359"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel.cpp" line="363"/>
+        <location filename="../common/agentspanel.cpp" line="365"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel.cpp" line="369"/>
+        <location filename="../common/agentspanel.cpp" line="371"/>
         <source>Partial</source>
         <translation>Partielle</translation>
     </message>
     <message>
-        <location filename="../common/agentspanel.cpp" line="292"/>
+        <location filename="../common/agentspanel.cpp" line="294"/>
         <source>online with %1 (%2)</source>
         <translation>en ligne avec %1 (%2)</translation>
+    </message>
+    <message>
+        <location filename="../common/agentspanel.cpp" line="202"/>
+        <source>Server: %1
+Context: %2</source>
+        <translation>Serveur: %1
+Contexte: %2</translation>
     </message>
 </context>
 <context>
@@ -378,7 +392,7 @@ discrète</translation>
         <translation> a dit : </translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1739"/>
+        <location filename="../common/baseengine.cpp" line="1749"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
@@ -398,7 +412,7 @@ discrète</translation>
         <translation>Impossible de modifier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1370"/>
+        <location filename="../common/baseengine.cpp" line="1380"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -485,14 +499,14 @@ Peut-être un problème de version ?</translation>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1353"/>
+        <location filename="../common/baseengine.cpp" line="1363"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1357"/>
+        <location filename="../common/baseengine.cpp" line="1367"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
@@ -509,14 +523,14 @@ Merci de mettre à jour votre client.</translation>
         <translation>Votre nom &lt;%1@%2&gt; est inconnu.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1363"/>
+        <location filename="../common/baseengine.cpp" line="1373"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1366"/>
+        <location filename="../common/baseengine.cpp" line="1376"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
@@ -1999,6 +2013,13 @@ a été envoyé à %2.</translation>
         <source>Penalty</source>
         <translation>Pénalité</translation>
     </message>
+    <message>
+        <location filename="../common/queuedetailspanel.cpp" line="229"/>
+        <source>Server: %1
+Context: %2</source>
+        <translation>Serveur: %1
+Contexte: %2</translation>
+    </message>
 </context>
 <context>
     <name>QueueentrydetailsPanel</name>
@@ -2094,6 +2115,13 @@ décroché (%)</translation>
         <location filename="../common/queuespanel.cpp" line="86"/>
         <source>Available</source>
         <translation>Disponibles</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="222"/>
+        <source>Server: %1
+Context: %2</source>
+        <translation>Serveur: %1
+Contexte: %2</translation>
     </message>
 </context>
 <context>

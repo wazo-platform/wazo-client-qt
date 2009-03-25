@@ -219,6 +219,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, con
     
     m_queuelabels[queuename] = new QLabel(queuename, this);
     m_queuelabels[queuename]->setFont(m_gui_font);
+    m_queuelabels[queuename]->setToolTip(tr("Server: %1\nContext: %2").arg(astid).arg(queuecontext));
     m_queuemore[queuename] = new QPushButton(this);
     m_queuemore[queuename]->setProperty("astid", astid);
     m_queuemore[queuename]->setProperty("queueid", queuename);

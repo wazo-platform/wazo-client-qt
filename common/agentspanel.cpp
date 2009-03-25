@@ -197,7 +197,9 @@ void AgentsPanel::newAgentLine(const QString & agentid)
 // update according to admin-defined parameters
 void AgentsPanel::updateAgentLineAdmin(const QString & agentid, const QString & agfullname, const QString & agentnumber)
 {
+    AgentInfo * ainfo = m_engine->agents()[agentid];
     m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(agfullname).arg(agentnumber));
+    m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->astid()).arg(ainfo->context()));
     m_agent_more[agentid]->setProperty("agentid", agentid);
     m_agent_more[agentid]->setProperty("action", "changeagent");
     m_agent_record[agentid]->setProperty("agentid", agentid);
