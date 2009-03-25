@@ -166,11 +166,12 @@ void CallWidget::timerEvent(QTimerEvent * /*event*/)
  */
 void CallWidget::updateWidget(const QString & status,
                               uint ts,
-                              const QString &/* channelpeer*/,
+                              const QString & channelpeer,
                               const QString & exten)
 {
     //qDebug() << "CallWidget::updateWidget()" << status << time << exten;
     setActionPixmap(status);
+    m_channelpeer = channelpeer;
     //qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
     //m_startTime = QDateTime::currentDateTime().addSecs(-time);
     m_startTime = QDateTime::fromTime_t(ts);
@@ -251,32 +252,6 @@ void CallWidget::mouseMoveEvent(QMouseEvent *event)
     qDebug() << "dropAction =" << dropAction;
 }
 
-/*
-  void CallWidget::dragEnterEvent(QDragEnterEvent *event)
-  {
-  qDebug() << "dragEnterEvent()";
-  //         qDebug() << event->mimeData()->formats();
-  //         if(event->mimeData()->hasText())
-  //         {
-  //                 if(event->proposedAction() & (Qt::CopyAction|Qt::MoveAction))
-  //                         event->acceptProposedAction();
-  //         }
-  }
-*/
-
-#if 0
-void CallWidget::mouseDoubleClickEvent(QMouseEvent *event)
-{
-    qDebug() << "mouseDoubleClickEvent" << event;
-    if (event->button() == Qt::RightButton) {
-        //                 qDebug() << this << this->parentWidget();
-        //                 qDebug() << "I want to Hangup" << m_channelme << m_lbl_channelpeer->text();
-        CallStackWidget * csw = (CallStackWidget *) this->parentWidget();
-        csw->hupchan(m_channelme);
-    }
-}
-#endif
-
 /*! \brief hang up the channel
  */
 void CallWidget::hangUp()
@@ -289,8 +264,8 @@ void CallWidget::hangUp()
  */
 void CallWidget::transferToNumber()
 {
-    qDebug() << "CallWidget::transferToNumber()" << m_channelme;
-    doTransferToNumber( m_channelme );
+    qDebug() << "CallWidget::transferToNumber()" << m_channelpeer;
+    doTransferToNumber( m_channelpeer);
 }
 
 /*! \brief transfers the channel to a number
@@ -319,3 +294,4 @@ const QString & CallWidget::channel() const
 {
     return m_channelme;
 }
+

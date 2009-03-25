@@ -127,7 +127,7 @@ void CallStackWidget::updateDisplay()
             {
                 it.next();
                 QMap<QString, QVariant> map = it.value().toMap();
-                qDebug() << it.key() << map;
+                //qDebug() << it.key() << map;
                 QString channelme = map["thischannel"].toString();
                 QString status = map["status"].toString();
                 uint ts = current_ts;
@@ -194,9 +194,9 @@ void CallStackWidget::dragEnterEvent(QDragEnterEvent * event)
 {
     // qDebug() << "CallStackWidget::dragEnterEvent()" << event->mimeData()->formats();
     if (event->mimeData()->hasFormat(USERID_MIMETYPE))
-        {
-            event->acceptProposedAction();
-        }
+    {
+        event->acceptProposedAction();
+    }
 }
 
 /*! \brief updates the peer to be monitored
@@ -228,3 +228,4 @@ void CallStackWidget::dropEvent(QDropEvent * event)
     monitorPeerRequest(event->mimeData()->data(USERID_MIMETYPE));
     event->acceptProposedAction();
 }
+
