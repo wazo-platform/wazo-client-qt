@@ -367,6 +367,8 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
             m_agent_paused_number[agentid]->setToolTip(tooltip);
         } else {
             m_agent_paused_status[agentid]->setText(tr("Partial"));
+            m_agent_paused_action[agentid]->setIcon(QIcon(":/images/button_ok.png"));
+            m_agent_paused_action[agentid]->setProperty("action", "unpause");
             m_agent_paused_status[agentid]->setToolTip(tooltip);
             m_agent_paused_number[agentid]->setToolTip(tooltip);
         }
