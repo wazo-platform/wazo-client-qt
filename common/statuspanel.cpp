@@ -282,6 +282,8 @@ void StatusPanel::functionKeyPressed(int keynum)
                 actionCall("simplehangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
             else if(action == "dtransfer")
                 dtransfer();
+            else if(action == "park")
+                actionCall("transfer", "chan:special:me:" + m_currentchannel, "ext:special:parkthecall"); // Call
         } else if(linestatus == Online) {
             if(action == "hangup") {
                 actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
@@ -386,7 +388,7 @@ void StatusPanel::updateUser(UserInfo * ui)
                             newCall(callchannel);
                             m_callchannels << callchannel;
                             m_linestatuses[callchannel] = Ringing;
-                            updateLine(callchannel, (QStringList() << "answer" << "hangup" << "dtransfer"));
+                            updateLine(callchannel, (QStringList() << "answer" << "hangup" << "dtransfer" << "park"));
                             m_statuses[callchannel]->setText(tr("%1 Ringing").arg(num));
                             m_statuses[callchannel]->show();
                         }

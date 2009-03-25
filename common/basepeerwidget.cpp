@@ -159,9 +159,7 @@ void BasePeerWidget::itransfer()
  */
 void BasePeerWidget::parkcall()
 {
-    QString chan = sender()->property("peerchannel").toString();
-    //if( chan.isEmpty() )
-    //    chan = sender()->property("thischannel").toString();
+    QString chan = sender()->property("thischannel").toString();
     if(m_ui)
     {
         emit actionCall("transfer",
@@ -332,10 +330,9 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     text.append( " : " );
                     text.append( comm["calleridname"].toString() );
                 }
-#if 0
                 /* hanging up others communication doesn't make much sense
                  * excepting in test environment or in special cases. */
-                if( status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED )
+                if( m_ui == ui && (status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED) )
                 {
                     if( !hangupMenu && commsCount > 1 )
                         hangupMenu = new QMenu( tr("&Hangup"), &contextMenu );
@@ -351,7 +348,6 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     else
                         contextMenu.addAction( hangupAction );
                 }
-#endif
                 // TODO : intercept only if the status is right
                 if( m_ui != ui ) //status != 
                 {
@@ -369,17 +365,16 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     else
                         contextMenu.addAction( interceptAction );
                 }
-#if 0
                 /* Parking doesn't make much sense here : people usually park their
                  * correspondants, not someone random on the switchboard */
                 // TODO : check for correct status
-                if( m_ui != ui )
+                if( m_ui == ui )
                 {
                     if( !parkMenu && commsCount > 1 )
                         parkMenu = new QMenu( tr("&Park"), &contextMenu );
                     QAction * parkAction = new QAction( parkMenu?parkMenu:&contextMenu );
                     parkAction->setText( commsCount > 1 ? text : tr("&Park") );
-                    parkAction->setStatusTip( tr("Park this person") );
+                    parkAction->setStatusTip( tr("Park this call") );
                     parkAction->setProperty( "thischannel", comm["thischannel"] );
                     parkAction->setProperty( "peerchannel", comm["peerchannel"] );
                     connect( parkAction, SIGNAL(triggered()),
@@ -389,7 +384,6 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     else
                         contextMenu.addAction( parkAction );
                 }
-#endif
             }
         }
     }
