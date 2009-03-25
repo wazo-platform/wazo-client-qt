@@ -178,7 +178,7 @@ void BasePeerWidget::vmtransfer()
     if(m_ui)
     {
         emit actionCall("transfer",
-                        "chan:" + ui->userid() + ":" + sender()->property("thischannel").toString(),
+                        "chan:" + ui->userid() + ":" + sender()->property("peerchannel").toString(),
                         "voicemail:" + m_ui->userid());
     }
 }
