@@ -315,10 +315,16 @@ void QueuedetailsPanel::setAgentQueueProps(const QString & agentid, const QVaria
     else
         m_agent_callstaken[agentid]->setText("0");
     
-    if(qv.toMap().contains("LastCall"))
-        m_agent_lastcall[agentid]->setText(qv.toMap()["LastCall"].toString());
-    else
-        m_agent_lastcall[agentid]->setText("0");
+    QString slastcall = "-";
+    if(qv.toMap().contains("LastCall")) {
+        QDateTime lastcall;
+        int epoch = qv.toMap()["LastCall"].toInt();
+        if(epoch > 0) {
+            lastcall.setTime_t(epoch);
+            slastcall = lastcall.toString();
+        }
+    }
+    m_agent_lastcall[agentid]->setText(slastcall);
     
     if(qv.toMap().contains("Penalty"))
         m_agent_penalty[agentid]->setText(qv.toMap()["Penalty"].toString());

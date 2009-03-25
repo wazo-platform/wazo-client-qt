@@ -303,11 +303,13 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
     double dsec = 0;
     
     QString colorqss;
-    if(agstatus == "AGENT_IDLE")
+    if(agstatus == "AGENT_IDLE") {
         colorqss = "grey";
-    else if(agstatus == "AGENT_ONCALL") {
-        colorqss = "green";
-        calldirection = "I";
+    } else if(agstatus == "AGENT_ONCALL") {
+        colorqss = "grey";
+        // define it the same way as AGENT_IDLE, since it can not been really trusted now
+        // colorqss = "green";
+        // calldirection = "I";
     } else if(agstatus == "AGENT_LOGGEDOFF") {
         shouldNotOccur("AgentsPanelNext::setAgentProps",
                        QString("agentid %1 agstatus %2").arg(agentid).arg(agstatus));

@@ -64,6 +64,8 @@ QString icon_color_red = "xivo-red";
 QString icon_color_black = "xivo-black";
 QString icon_color_green = "xivo-green";
 
+const QColor Orange = QColor(255, 128, 0);
+
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(BaseEngine * engine,
@@ -400,7 +402,7 @@ void IdentityDisplay::setStatusColors(int nj, int np)
             p_square->fill("#ff0000");
             m_agentpause->setToolTip(tr("Paused"));
             m_agentpausetxt->setText(tr("Paused"));
-        } else {
+        } else if(np == 0) {
             bool loggedin = m_agentstatus->property("connected").toBool();
             p_square->fill("#00ff00");
             m_agentpause->setToolTip(tr("Unpaused"));
@@ -409,11 +411,15 @@ void IdentityDisplay::setStatusColors(int nj, int np)
                 setSystrayIcon(icon_color_green);
             else
                 setSystrayIcon(icon_color_black);
+        } else {
+            p_square->fill(Orange);
+            m_agentpause->setToolTip(tr("Partially paused"));
+            m_agentpausetxt->setText(tr("Partially paused"));
         }
     } else {
-        p_square->fill("#ff0000");
-        m_agentpause->setToolTip(tr("Paused"));
-        m_agentpausetxt->setText(tr("Paused"));
+        p_square->fill(Qt::gray);
+        m_agentpause->setToolTip(tr("Not relevant"));
+        m_agentpausetxt->setText(tr("Not relevant"));
     }
     m_agentpause->setPixmap(* p_square);
 }
