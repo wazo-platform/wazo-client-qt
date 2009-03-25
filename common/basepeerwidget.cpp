@@ -221,7 +221,30 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
                 }
             }
         }
-        // "I" have no current communications, just call the person...
+        // "I" have no current communications, intercept if the person is being called
+        if( m_ui && !m_ui->phonelist().isEmpty() )
+        {
+            foreach(const QString phone, m_ui->phonelist())
+            {
+                const PhoneInfo * pi = m_ui->getPhoneInfo( phone );
+                const QMap<QString, QVariant> & comms = pi->comms();
+                //qDebug() << pi->phoneid() << pi->comms();
+                foreach(const QString ts, comms.keys())
+                {
+                    const QMap<QString, QVariant> & comm = comms[ts].toMap();
+                    //qDebug() << pi->phoneid() << ts << comm;
+                    const QString status = comm["status"].toString();
+                    if( status == CHAN_STATUS_RINGING )
+                    {
+                        emit actionCall("transfer",
+                                        "chan:" + m_ui->userid() + ":" + comm["peerchannel"].toString(),
+                                        "user:special:me");
+                        return;
+                    }
+                }
+            }
+        }
+        // just dial the person
         dial();
     }
 }
