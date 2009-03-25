@@ -70,8 +70,8 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
     m_table->setAlternatingRowColors(true);
     m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
-    m_table->setColumnCount( 5 );
-    QStringList labels = (QStringList() << tr("XIVO Id") << tr("Number") << tr("Time") << tr("Parked") << tr("Parker"));
+    m_table->setColumnCount( 4 );
+    QStringList labels = (QStringList() << /*tr("XIVO Id") << */tr("Number") << tr("Time") << tr("Parked") << tr("Parker"));
     m_table->setHorizontalHeaderLabels(labels);
         
     connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
@@ -100,39 +100,49 @@ ParkingPanel::~ParkingPanel()
  */
 void ParkingPanel::parkingEvent(const QVariant & subcommand)
 {
-    // qDebug() << "ParkingPanel::parkingEvent()" << subcommand;
-    QString eventkind = subcommand.toMap()["status"].toString();
-    QString astid = subcommand.toMap()["astid"].toString();
-    QString channel = subcommand.toMap()["channel"].toString();
-    QString fromchannel = subcommand.toMap()["fromchannel"].toString();
-    QString parkplacenum = subcommand.toMap()["exten"].toString();
-    QString seconds = subcommand.toMap()["timeout"].toString();
-    QStringList newpark = subcommand.toMap()["args"].toStringList();
+    QVariantMap map = subcommand.toMap();
+    qDebug() << "ParkingPanel::parkingEvent()" << map;
+    QString eventkind = map["status"].toString();
+    QString astid = map["astid"].toString();
+    QString channel = map["channel"].toString();
+    QString fromchannel = map["fromchannel"].toString();
+    QString parkplacenum = map["exten"].toString();
+    QString seconds = map["timeout"].toString();
+    QStringList newpark = map["args"].toStringList();
+    QString calleridnum = map["calleridnum"].toString();
+    QString calleridname = map["calleridname"].toString();
+    QString fromcalleridnum = map["fromcalleridnum"].toString();
+    QString fromcalleridname = map["fromcalleridname"].toString();
 
     // ignore buggy events 
     if(fromchannel == channel)
         return;
 
-    QString parkedpeer = channel.split("-")[0];
+    //QString parkedpeer = channel.split("-")[0];
+    QString parkedpeer = calleridname + " (" + calleridnum + ")";
     QString parkedby = fromchannel.split("-")[0];
+    if(!fromcalleridnum.isEmpty())
+        parkedby = fromcalleridname + " (" + fromcalleridnum + ")";
     
     if(eventkind == "parkedcall") {
+        int i = 0;
         m_table->insertRow( 0 );
-        QTableWidgetItem * item0 = new QTableWidgetItem( astid );
-        item0->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        m_table->setItem( 0, 0, item0 );
+        //QTableWidgetItem * item0 = new QTableWidgetItem( astid );
+        //item0->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
+        //m_table->setItem( 0, 0, item0 );
         QTableWidgetItem * item1 = new QTableWidgetItem( parkplacenum );
         item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        m_table->setItem( 0, 1, item1 );
+        item1->setData(1, channel);
+        m_table->setItem( 0, i++, item1 );
         QTableWidgetItem * item2 = new QTableWidgetItem( seconds + " s" );
         item2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        m_table->setItem( 0, 2, item2 );
+        m_table->setItem( 0, i++, item2 );
         QTableWidgetItem * item3 = new QTableWidgetItem( parkedpeer );
         item3->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        m_table->setItem( 0, 3, item3 );
+        m_table->setItem( 0, i++, item3 );
         QTableWidgetItem * item4 = new QTableWidgetItem( parkedby );
         item4->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        m_table->setItem( 0, 4, item4 );
+        m_table->setItem( 0, i++, item4 );
         //                m_table->resizeColumnsToContents();
         newParkEvent();
         // do not start another timer if there is already one running
@@ -145,18 +155,19 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
         for(int i = 0; i < finditem.count(); i++) {
             int n = m_table->column(finditem[i]);
             int m = m_table->row(finditem[i]);
-            if (n == 1)
-                if (astid == m_table->item(m, 0)->text())
-                    if (parkedpeer == m_table->item(m, 3)->text()) {
-                        m_table->removeRow(m);
-                        // kills the timer only if there are no parked calls left
-                        if(m_table->rowCount() == 0) {
-                            killTimer(m_timerid);
-                            m_timerid = 0;
-                        }
+            if (n == 0)
+                if (m_table->item(m, 0)->data(1).toString() == channel) {
+                    m_table->removeRow(m);
+                    // kills the timer only if there are no parked calls left
+                    if(m_table->rowCount() == 0) {
+                        killTimer(m_timerid);
+                        m_timerid = 0;
                     }
+                }
         }
     }
+    // make columns fit the content
+    m_table->resizeColumnsToContents();
 }
 
 void ParkingPanel::itemClicked(QTableWidgetItem * item)
@@ -182,62 +193,10 @@ void ParkingPanel::timerEvent(QTimerEvent * event)
     int timerId = event->timerId();
     if (timerId == m_timerid)
         for(int i = 0; i < m_table->rowCount(); i++) {
-            QTableWidgetItem * item = m_table->takeItem(i, 2);
+            QTableWidgetItem * item = m_table->takeItem(i, 1);
             int leftsec = item->text().split(" ")[0].toInt() - m_deltasec;
             item->setText( QString::number(leftsec) + " s" );
-            m_table->setItem( i, 2, item );
+            m_table->setItem( i, 1, item );
         }
 }
 
-#if 0
-void ParkingPanel::contextMenuEvent(QContextMenuEvent * event)
-{
-    QTableWidgetItem * item = m_table->itemAt( event->pos() );
-    if (item == NULL)
-        return;
-
-    int rown     = m_table->row(item);
-    m_astid      = m_table->item(rown, 0)->text();
-    m_placenum   = m_table->item(rown, 1)->text();
-    m_parkedpeer = m_table->item(rown, 3)->text();
-
-    QRegExp re_number("\\+?[0-9\\s\\.]+");
-    if(item && re_number.exactMatch(m_placenum) && (m_astid == m_userinfo->astid())) {
-        QMenu contextMenu(this);
-        contextMenu.addAction( tr("&Dial") + " " + m_placenum + tr(" to unpark ") + m_parkedpeer,
-                               this, SLOT(dialNumber()) );
-        //                 contextMenu.addAction( tr("&Hangup") + " " + m_parkedpeer,
-        //                                        this, SLOT(hangUp()) );
-        if(!m_mychannels.empty()) {
-            QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
-#if 0
-            // TODO : new way to do that
-            QListIterator<PeerChannel *> i(m_mychannels);
-            while(i.hasNext()) {
-                const PeerChannel * channel = i.next();
-                transferMenu->addAction(channel->otherPeer(),
-                                        channel, SLOT(transfer()));
-            }
-#endif
-            contextMenu.addMenu(transferMenu);
-        }
-        contextMenu.exec( event->globalPos() );
-    }
-}
-
-/*! \brief dial the number (when context menu item is toggled)
- */
-void ParkingPanel::dialNumber()
-{
-    if((m_placenum.length() > 0) && (m_astid == m_userinfo->astid()))
-        actionCall("originate", "user:special:me", "ext:" + m_placenum); // Call
-}
-#endif
-
-#if 0
-/*! \brief hang up
- */
-void ParkingPanel::hangUp()
-{
-}
-#endif
