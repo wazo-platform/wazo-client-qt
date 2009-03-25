@@ -360,6 +360,7 @@ void StatusPanel::updateUser(UserInfo * ui)
     if (ui == m_engine->getXivoClientUser())
     {
         m_lbl->setText(ui->fullname());
+        QStringList chanList;
         // it is concerning our user
         foreach(const QString phone, ui->phonelist())
         {
@@ -378,6 +379,7 @@ void StatusPanel::updateUser(UserInfo * ui)
                     qDebug() << " StatusPanel::updateUser" << it.key() << status << num << callchannel << peerchan;
                     if(callchannel.isEmpty())
                         continue;
+                    chanList << callchannel;
                     if(status == CHAN_STATUS_RINGING) {
                         if( !m_callchannels.contains(callchannel) )
                         {
@@ -413,6 +415,13 @@ void StatusPanel::updateUser(UserInfo * ui)
                     }
                 }
             }
+        }
+        //qDebug() << " StatusPane::updateUser chanList" << chanList << "m_callchannels" << m_callchannels;
+        // clean up "ghost" entries...
+        foreach(QString chan, m_callchannels)
+        {
+            if(!chanList.contains(chan))
+                removeLine(chan);
         }
     }
     else if (ui->astid() == m_engine->getXivoClientUser()->astid())
@@ -503,3 +512,4 @@ void StatusPanel::removeLine(QString const & chan)
     m_callchannels.removeAll(chan);
     m_row.remove(chan);
 }
+
