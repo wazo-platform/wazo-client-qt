@@ -1356,6 +1356,16 @@ void BaseEngine::popupError(const QString & errorid)
             errormsg = tr("Your client version (%1) is too old for this server.\n"
                           "Please upgrade it.").arg(__current_client_version__);
     }
+    else if(errorid.startsWith("xivoversion_client:")) {
+        QStringList versionslist = errorid.split(":")[1].split(";");
+        if(versionslist.size() >= 2)
+            errormsg = tr("Your client version (%1) is too old for this server.\n"
+                          "Please upgrade it to %2 at least.").arg(__xivo_version__,
+                                                                   versionslist[1]);
+        else
+            errormsg = tr("Your client version (%1) is too old for this server.\n"
+                          "Please upgrade it.").arg(__xivo_version__);
+    }
     else if(errorid.startsWith("version_server:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
         if(versionslist.size() >= 2)
