@@ -66,7 +66,8 @@ QPixmap * CallWidget::m_call_gray   = NULL;
  */
 CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
                        const QString & status, uint ts,
-                       const QString & channelpeer, const QString & exten,
+                       const QString & channelpeer, const QString & callerid,
+                       const QString & calleridname,
                        QWidget * parent)
     : QWidget(parent), m_square(16,16)
 {
@@ -112,7 +113,7 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
     m_lbl_exten->setFont(QFont("courier", 10, QFont::Light));
     gridlayout->addWidget(m_lbl_exten, 0, 2);
         
-    updateWidget(status, ts, "cpeer", exten);
+    updateWidget(status, ts, "cpeer", callerid, calleridname);
         
     // for caller id information
     QLabel * dummy = new QLabel("", this);
@@ -167,7 +168,8 @@ void CallWidget::timerEvent(QTimerEvent * /*event*/)
 void CallWidget::updateWidget(const QString & status,
                               uint ts,
                               const QString & channelpeer,
-                              const QString & exten)
+                              const QString & callerid,
+                              const QString & calleridname)
 {
     //qDebug() << "CallWidget::updateWidget()" << status << time << exten;
     setActionPixmap(status);
@@ -183,7 +185,14 @@ void CallWidget::updateWidget(const QString & status,
     else
         qDebug() << "CallWidget::updateWidget() : status unknown" << status;
         
-    m_lbl_exten->setText(exten);
+    QString text = tr("Unknown");
+    if(calleridname == "<meetme>")
+        text = tr("Conference room number %1").arg(callerid);
+    else if(calleridname != "<unknown>" && !calleridname.isEmpty())
+        text = tr("%1 : %2").arg(callerid).arg(calleridname);
+    else if(!callerid.isEmpty())
+        text = callerid;
+    m_lbl_exten->setText(text);
 }
 
 /*! \brief set icon depending on status

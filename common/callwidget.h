@@ -61,7 +61,7 @@ class UserInfo;
 class CallWidget : public QWidget
 {
     Q_OBJECT
-        public:
+public:
     //! Default constructor
     CallWidget(QWidget * parent = 0);
     ~CallWidget();
@@ -71,13 +71,15 @@ class CallWidget : public QWidget
                uint,
                const QString &,
                const QString &,
+               const QString &,
                QWidget * parent = 0);
     void updateWidget(const QString &,
                       uint,
                       const QString &,
+                      const QString &,
                       const QString &);
     const QString & channel() const;
- protected:
+protected:
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
     //void mouseDoubleClickEvent(QMouseEvent * event);
@@ -86,18 +88,18 @@ class CallWidget : public QWidget
     //        void dropEvent(QDropEvent * event);
     void timerEvent(QTimerEvent *);
     void contextMenuEvent(QContextMenuEvent *);
- private:
+private:
     void setActionPixmap(const QString &);
     void updateCallTimeLabel();
- signals:
+signals:
     void doHangUp(const QString &);        //!< hang up the channel
     void doTransferToNumber(const QString &);        //!< transfers the channel
     void doParkCall(const QString &);        //!< parks the channel
-    public slots:
+public slots:
     void hangUp();
     void transferToNumber();
     void parkCall();
- private:
+private:
     UserInfo * m_ui;
     QPoint m_dragstartpos;        //!< used for drag
     QString m_channelme;        //!< channel identifier

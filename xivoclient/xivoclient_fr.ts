@@ -566,69 +566,74 @@ Merci de mettre à jour votre serveur.</translation>
         <translation>Appeler ce poste</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="343"/>
+        <location filename="../common/basepeerwidget.cpp" line="340"/>
         <source>&amp;Hangup</source>
         <translation>&amp;Raccrocher</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="344"/>
+        <location filename="../common/basepeerwidget.cpp" line="341"/>
         <source>Hangup this communication</source>
         <translation>Terminer la communication</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="361"/>
+        <location filename="../common/basepeerwidget.cpp" line="357"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Intercepter</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="362"/>
+        <location filename="../common/basepeerwidget.cpp" line="358"/>
         <source>Intercept this communication</source>
         <translation>Intercepter la communication</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="457"/>
+        <location filename="../common/basepeerwidget.cpp" line="451"/>
         <source>Transfer this communication</source>
         <translation>Transférer cette communication</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="437"/>
+        <location filename="../common/basepeerwidget.cpp" line="431"/>
         <source>Direct &amp;Transfer</source>
         <translation>&amp;Transfert direct</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="461"/>
+        <location filename="../common/basepeerwidget.cpp" line="455"/>
         <source>&amp;Indirect Transfer</source>
         <translation>Transfert &amp;Indirect</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="305"/>
+        <location filename="../common/basepeerwidget.cpp" line="303"/>
         <source>&amp;Edit</source>
         <translation>&amp;Modifier</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="381"/>
+        <location filename="../common/basepeerwidget.cpp" line="376"/>
         <source>&amp;Park</source>
         <translation>&amp;Parquer</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="486"/>
+        <location filename="../common/basepeerwidget.cpp" line="480"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Transfert vers boite &amp;vocale</translation>
     </message>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="382"/>
         <source>Park this person</source>
-        <translation>Parquer cette personne</translation>
+        <translation type="obsolete">Parquer cette personne</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="462"/>
+        <location filename="../common/basepeerwidget.cpp" line="456"/>
         <source>Transfer to this person</source>
         <translation>Transférer vers ce poste</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="487"/>
+        <location filename="../common/basepeerwidget.cpp" line="481"/>
         <source>Transfer to voice mail</source>
         <translation>Transférer vers cette messagerie vocale</translation>
+    </message>
+    <message>
+        <location filename="../common/basepeerwidget.cpp" line="377"/>
+        <source>Park this call</source>
+        <translation>Parquer cet appel</translation>
     </message>
 </context>
 <context>
@@ -695,7 +700,7 @@ Merci de mettre à jour votre serveur.</translation>
 <context>
     <name>CallStackWidget</name>
     <message>
-        <location filename="../common/callstackwidget.cpp" line="212"/>
+        <location filename="../common/callstackwidget.cpp" line="208"/>
         <source>Monitoring : %1</source>
         <translation>Surveillance : %1</translation>
     </message>
@@ -703,34 +708,49 @@ Merci de mettre à jour votre serveur.</translation>
 <context>
     <name>CallWidget</name>
     <message>
-        <location filename="../common/callwidget.cpp" line="124"/>
+        <location filename="../common/callwidget.cpp" line="125"/>
         <source>Hang up/Close the channel</source>
         <translation>Raccrocher</translation>
     </message>
     <message>
-        <location filename="../common/callwidget.cpp" line="123"/>
+        <location filename="../common/callwidget.cpp" line="124"/>
         <source>&amp;Hangup</source>
         <translation>&amp;Raccrocher</translation>
     </message>
     <message>
-        <location filename="../common/callwidget.cpp" line="133"/>
+        <location filename="../common/callwidget.cpp" line="134"/>
         <source>&amp;Park the call</source>
         <translation>&amp;Parquer l&apos;appel</translation>
     </message>
     <message>
-        <location filename="../common/callwidget.cpp" line="134"/>
+        <location filename="../common/callwidget.cpp" line="135"/>
         <source>Park this call</source>
         <translation>Parquer cet appel</translation>
     </message>
     <message>
-        <location filename="../common/callwidget.cpp" line="129"/>
+        <location filename="../common/callwidget.cpp" line="130"/>
         <source>Transfer the channel to the dialed number</source>
         <translation>Transférer vers le numéro composé</translation>
     </message>
     <message>
-        <location filename="../common/callwidget.cpp" line="128"/>
+        <location filename="../common/callwidget.cpp" line="129"/>
         <source>&amp;Transfer to number</source>
         <translation>&amp;Transférer vers un numéro</translation>
+    </message>
+    <message>
+        <location filename="../common/callwidget.cpp" line="188"/>
+        <source>Unknown</source>
+        <translation>Inconnu</translation>
+    </message>
+    <message>
+        <location filename="../common/callwidget.cpp" line="190"/>
+        <source>Conference room number %1</source>
+        <translation>Chambre de conférence numero %1</translation>
+    </message>
+    <message>
+        <location filename="../common/callwidget.cpp" line="192"/>
+        <source>%1 : %2</source>
+        <translation>%1 : %2</translation>
     </message>
 </context>
 <context>
@@ -1005,7 +1025,7 @@ que celles ci-dessous) en première page</translation>
 <context>
     <name>DirDialog</name>
     <message>
-        <location filename="../common/dirdialog.cpp" line="61"/>
+        <location filename="../common/dirdialog.cpp" line="59"/>
         <source>Directory</source>
         <translation>Répertoire</translation>
     </message>
@@ -1761,12 +1781,12 @@ a été envoyé à %2.</translation>
     <message>
         <location filename="../common/parkingpanel.cpp" line="207"/>
         <source> to unpark </source>
-        <translation> pour reprendre </translation>
+        <translation type="obsolete"> pour reprendre </translation>
     </message>
     <message>
         <location filename="../common/parkingpanel.cpp" line="207"/>
         <source>&amp;Dial</source>
-        <translation>&amp;Composer</translation>
+        <translation type="obsolete">&amp;Composer</translation>
     </message>
     <message>
         <location filename="../common/parkingpanel.cpp" line="74"/>
@@ -1791,38 +1811,38 @@ a été envoyé à %2.</translation>
     <message>
         <location filename="../common/parkingpanel.cpp" line="212"/>
         <source>&amp;Transfer</source>
-        <translation>&amp;Transférer</translation>
+        <translation type="obsolete">&amp;Transférer</translation>
     </message>
     <message>
         <location filename="../common/parkingpanel.cpp" line="74"/>
         <source>XIVO Id</source>
-        <translation>Identifiant XIVO</translation>
+        <translation type="obsolete">Identifiant XIVO</translation>
     </message>
 </context>
 <context>
     <name>PeerWidget</name>
     <message>
-        <location filename="../common/peerwidget.cpp" line="129"/>
+        <location filename="../common/peerwidget.cpp" line="128"/>
         <source>(No callerid yet)</source>
         <translation>(Callerid en attente)</translation>
     </message>
     <message>
-        <location filename="../common/peerwidget.cpp" line="232"/>
+        <location filename="../common/peerwidget.cpp" line="231"/>
         <source>Phone </source>
         <translation>Téléphone </translation>
     </message>
     <message>
-        <location filename="../common/peerwidget.cpp" line="250"/>
+        <location filename="../common/peerwidget.cpp" line="249"/>
         <source>Agent </source>
         <translation>Agent </translation>
     </message>
     <message>
-        <location filename="../common/peerwidget.cpp" line="218"/>
+        <location filename="../common/peerwidget.cpp" line="217"/>
         <source>User : </source>
         <translation>Utilisateur : </translation>
     </message>
     <message numerus="yes">
-        <location filename="../common/peerwidget.cpp" line="252"/>
+        <location filename="../common/peerwidget.cpp" line="251"/>
         <source>Agent %1
 %n Queue(s) %2</source>
         <translation>
@@ -2183,12 +2203,12 @@ décroché (%)</translation>
         <translation>Parquer</translation>
     </message>
     <message>
-        <location filename="../common/statuspanel.cpp" line="390"/>
+        <location filename="../common/statuspanel.cpp" line="392"/>
         <source>%1 Ringing</source>
         <translation>%1 Sonne</translation>
     </message>
     <message>
-        <location filename="../common/statuspanel.cpp" line="401"/>
+        <location filename="../common/statuspanel.cpp" line="403"/>
         <source>Link %1</source>
         <translation>Etabli %1</translation>
     </message>
