@@ -106,8 +106,7 @@ class AgentdetailsPanel : public QWidget
     QString m_monitored_context;    //!< context
     QString m_monitored_agentnumber;    //!< agent id
     QString m_monitored_agentid;    //!< monitored agent id
-    QLabel * m_agentdescription; //!< to display agent name
-    QLabel * m_agentstatus; //!< to display agent status
+    QLabel * m_agentstatus; //!< to display agent name and status
     QLabel * m_agentlegend_qname;   //!< "Queues"
     QLabel * m_agentlegend_joined;  //!< "Joined"
     QLabel * m_agentlegend_paused;  //!< "Paused"

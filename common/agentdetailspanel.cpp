@@ -68,7 +68,6 @@ AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
     m_gridlayout = new QGridLayout(this);
     
     m_monitored_agentnumber = "";
-    m_agentdescription = new QLabel(this);
     m_agentstatus = new QLabel(this);
     m_agentlegend_qname = new QLabel(tr("Queues"), this);
     m_agentlegend_joined = new QLabel(tr("Joined"), this);
@@ -87,8 +86,7 @@ AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
     m_action["alogin"]->setIcon(QIcon(":/images/button_ok.png"));
     
     m_gridlayout->setRowStretch( 100, 1 );
-    m_gridlayout->addWidget(m_agentdescription, m_linenum, 0);
-    m_gridlayout->addWidget(m_agentstatus, m_linenum, 1, 1, 7);
+    m_gridlayout->addWidget(m_agentstatus, m_linenum, 0, 1, 9);
     m_linenum ++;
     
     int colnum = 0;
@@ -200,32 +198,40 @@ void AgentdetailsPanel::clearPanel()
 void AgentdetailsPanel::updatePanel()
 {
     AgentInfo * ainfo = m_engine->agents()[m_monitored_agentid];
-    m_agentdescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4)").arg(ainfo->agentnumber()).arg(ainfo->fullname()).arg(ainfo->astid()).arg(ainfo->context()));
+    QStringList agent_descriptions;
+    agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->agentnumber()).arg(ainfo->fullname());
+    if(! m_options.toMap()["hideastid"].toBool())
+        agent_descriptions << tr("on <b>%1</b>").arg(ainfo->astid());
+    if(! m_options.toMap()["hidecontext"].toBool())
+        agent_descriptions << QString("(%1)").arg(ainfo->context());
     QVariantMap properties = ainfo->properties();
     // qDebug() << "AgentdetailsPanel::updatePanel()" << ainfo->astid() << ainfo->agentnumber();
     QVariant agentstats = properties["agentstats"];
     QString lstatus = agentstats.toMap()["status"].toString();
     QString phonenum = agentstats.toMap()["agent_phone_number"].toString();
-    QString talkingto = agentstats.toMap()["talkingto"].toString();
     QVariantMap queuesstats = properties["queues_by_agent"].toMap();
     
     if(lstatus == "AGENT_LOGGEDOFF") {
-        m_agentstatus->setText(tr("logged off <b>%1</b>").arg(phonenum));
+        agent_descriptions << tr("logged off <b>%1</b>").arg(phonenum);
         m_action["alogin"]->setProperty("function", "alogin");
         m_action["alogin"]->setIcon(QIcon(":/images/button_ok.png"));
         m_actionlegends["alogin"]->setText(tr("Login"));
     } else if(lstatus == "AGENT_IDLE") {
-        m_agentstatus->setText(tr("logged on phone number <b>%1</b>").arg(phonenum));
+        agent_descriptions << tr("logged on phone number <b>%1</b>").arg(phonenum);
         m_action["alogin"]->setProperty("function", "alogout");
         m_action["alogin"]->setIcon(QIcon(":/images/cancel.png"));
         m_actionlegends["alogin"]->setText(tr("Logout"));
     } else if(lstatus == "AGENT_ONCALL") {
-        m_agentstatus->setText(tr("logged (busy with %1) on phone number <b>%2</b>").arg(talkingto).arg(phonenum));
+        // QString talkingto = agentstats.toMap()["talkingto"].toString();
+        // agent_status = tr("logged (busy with %1) on phone number <b>%2</b>").arg(talkingto).arg(phonenum);
+        agent_descriptions << tr("logged on phone number <b>%1</b>").arg(phonenum);
         m_action["alogin"]->setProperty("function", "alogout");
         m_action["alogin"]->setIcon(QIcon(":/images/cancel.png"));
         m_actionlegends["alogin"]->setText(tr("Logout"));
     } else
         qDebug() << "AgentdetailsPanel::newAgent() unknown status" << m_monitored_agentid << lstatus;
+    
+    m_agentstatus->setText(agent_descriptions.join(" "));
     
     m_agentlegend_qname->show();
     m_agentlegend_joined->show();
@@ -305,7 +311,12 @@ void AgentdetailsPanel::setQueueLookProps(const QString & queueid)
 void AgentdetailsPanel::setQueueProps(const QString & queueid, const QueueInfo * qinfo)
 {
     m_queue_labels[queueid]->setText(qinfo->queuename());
-    m_queue_labels[queueid]->setToolTip(tr("Server: %1\nContext: %2").arg(qinfo->astid()).arg(qinfo->context()));
+    QStringList tooltips;
+    if(! m_options.toMap()["hideastid"].toBool())
+        tooltips << tr("Server: %1").arg(qinfo->astid());
+    if(! m_options.toMap()["hidecontext"].toBool())
+        tooltips << tr("Context: %1").arg(qinfo->context());
+    m_queue_labels[queueid]->setToolTip(tooltips.join("\n"));
 }
 
 /*! \brief 

@@ -306,9 +306,11 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
         m_agent_logged_action[agentid]->setIcon(QIcon(":/images/cancel.png"));
         tooltip = tr("Agent logged");
     } else if(agstatus == "AGENT_ONCALL") {
-        p_square->fill(Qt::darkGreen);
+        // p_square->fill(Qt::darkGreen);
+        p_square->fill(Qt::green);
         m_agent_logged_action[agentid]->setIcon(QIcon(":/images/cancel.png"));
-        tooltip = tr("Agent busy");
+        // tooltip = tr("Agent busy");
+        tooltip = tr("Agent logged");
     } else if(agstatus == "AGENT_LOGGEDOFF") {
         p_square->fill(Qt::red);
         m_agent_logged_action[agentid]->setIcon(QIcon(":/images/button_ok.png"));
@@ -399,7 +401,9 @@ void AgentsPanel::agentClicked()
     
     else if(action == "loginoff") {
         QString status = ainfo->properties()["agentstats"].toMap()["status"].toString();
-        if((status == "AGENT_IDLE") || (status == "AGENT_ONCALL"))
+        if(status == "AGENT_IDLE")
+            emit agentAction(QString("logout %1 %2").arg(astid).arg(agentnumber));
+        else if(status == "AGENT_ONCALL")
             emit agentAction(QString("logout %1 %2").arg(astid).arg(agentnumber));
         else if(status == "AGENT_LOGGEDOFF")
             emit agentAction(QString("login %1 %2").arg(astid).arg(agentnumber));
