@@ -244,8 +244,8 @@ void AgentdetailsPanel::updatePanel()
     }
     
     QStringList queueids;
-    m_agentlegend_njoined->setText(agentstats.toMap()["Xivo-NJoined"].toString());
-    m_agentlegend_npaused->setText(agentstats.toMap()["Xivo-NPaused"].toString());
+    m_agentlegend_njoined->setText(agentstats.toMap()["Xivo-NQJoined"].toString());
+    m_agentlegend_npaused->setText(agentstats.toMap()["Xivo-NQPaused"].toString());
     
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
     while( iter.hasNext() ) {
@@ -280,9 +280,8 @@ void AgentdetailsPanel::updatePanel()
         // if(queuesstats.contains(queuename))
         setQueueProps(queueid, qinfo);
         // qDebug() << ainfo->astid() << ainfo->agentnumber() << queuename << qinfo->astid();
-        if(qinfo->astid() == ainfo->astid()) {
+        if(qinfo->astid() == ainfo->astid())
                 setQueueAgentProps(queueid, queuesstats[queuename]);
-            }
         
         if(isnewqueue)
             setQueueAgentSignals(queueid);

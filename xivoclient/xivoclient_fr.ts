@@ -385,7 +385,7 @@ Contexte: %2</translation>
         <translation> a dit : </translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1749"/>
+        <location filename="../common/baseengine.cpp" line="1746"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
@@ -405,7 +405,7 @@ Contexte: %2</translation>
         <translation>Impossible de modifier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1380"/>
+        <location filename="../common/baseengine.cpp" line="1377"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -492,14 +492,14 @@ Peut-être un problème de version ?</translation>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1363"/>
+        <location filename="../common/baseengine.cpp" line="1353"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1367"/>
+        <location filename="../common/baseengine.cpp" line="1357"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
@@ -516,14 +516,14 @@ Merci de mettre à jour votre client.</translation>
         <translation>Votre nom &lt;%1@%2&gt; est inconnu.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1373"/>
+        <location filename="../common/baseengine.cpp" line="1370"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1376"/>
+        <location filename="../common/baseengine.cpp" line="1373"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
@@ -548,6 +548,13 @@ Merci de mettre à jour votre serveur.</translation>
         <location filename="../common/baseengine.cpp" line="1318"/>
         <source>An error occurred with the network (network cable accidentally plugged out ?).</source>
         <translation>Une erreur s&apos;est produite sur le réseau (câble accidentellement débranché ?).</translation>
+    </message>
+    <message>
+        <location filename="../common/baseengine.cpp" line="1363"/>
+        <source>Your client&apos;s major version (%1)
+is not the same as the server&apos;s (%2).</source>
+        <translation>La version majeure de votre client (%1)
+est différente de celle du serveur (%2).</translation>
     </message>
 </context>
 <context>
