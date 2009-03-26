@@ -14,17 +14,17 @@
         <translation>Enregistre</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="590"/>
+        <location filename="../common/agentdetailspanel.cpp" line="589"/>
         <source>Save Sound File</source>
         <translation>Sauve un Fichier Son</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="592"/>
+        <location filename="../common/agentdetailspanel.cpp" line="591"/>
         <source>All Files (*)</source>
         <translation>Tous les Fichiers (*)</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="444"/>
+        <location filename="../common/agentdetailspanel.cpp" line="443"/>
         <source>Paused</source>
         <translation>En pause</translation>
     </message>
@@ -54,82 +54,82 @@
         <translation>déloggé de &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="364"/>
+        <location filename="../common/agentdetailspanel.cpp" line="363"/>
         <source>Agent not in Queue</source>
         <translation>Agent pas dans la File</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="370"/>
+        <location filename="../common/agentdetailspanel.cpp" line="369"/>
         <source>Agent in Queue</source>
         <translation>Agent dans la File</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="375"/>
+        <location filename="../common/agentdetailspanel.cpp" line="374"/>
         <source>Agent in Queue (statically)</source>
         <translation>Agent dans la File (statique)</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="379"/>
+        <location filename="../common/agentdetailspanel.cpp" line="378"/>
         <source>Agent in Queue (%1)</source>
         <translation>Agent dans la File (%1)</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="385"/>
+        <location filename="../common/agentdetailspanel.cpp" line="384"/>
         <source>Called/Busy</source>
         <translation>Appelé/Occupé</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="390"/>
+        <location filename="../common/agentdetailspanel.cpp" line="389"/>
         <source>Called/Busy (statically)</source>
         <translation>Appelé/Occupé (statique)</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="394"/>
+        <location filename="../common/agentdetailspanel.cpp" line="393"/>
         <source>Called/Busy (%1)</source>
         <translation>Appelé/Occupé (%1)</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="400"/>
+        <location filename="../common/agentdetailspanel.cpp" line="399"/>
         <source>Agent in Queue but Invalid</source>
         <translation>Agent dans la File mais Invalide</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="405"/>
+        <location filename="../common/agentdetailspanel.cpp" line="404"/>
         <source>Agent in Queue but Invalid (statically)</source>
         <translation>Agent dans la File mais Invalide (statique)</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="409"/>
+        <location filename="../common/agentdetailspanel.cpp" line="408"/>
         <source>Agent in Queue but Invalid (%1)</source>
         <translation>Agent dans la File mais Invalide (%1)</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="415"/>
+        <location filename="../common/agentdetailspanel.cpp" line="414"/>
         <source>Agent in Queue but NOT logged</source>
         <translation>Agent dans la File mais NON loggé</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="420"/>
+        <location filename="../common/agentdetailspanel.cpp" line="419"/>
         <source>Agent in Queue (statically) but NOT logged</source>
         <translation>Agent dans la File (statique) mais NON loggé</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="424"/>
+        <location filename="../common/agentdetailspanel.cpp" line="423"/>
         <source>Agent in Queue (%1) but NOT logged</source>
         <translation>Agent dans la File (%1) mais NON loggé</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="453"/>
+        <location filename="../common/agentdetailspanel.cpp" line="452"/>
         <source>Unknown %1</source>
         <translation>Inconnu %1</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="439"/>
+        <location filename="../common/agentdetailspanel.cpp" line="438"/>
         <source>Not paused</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="449"/>
+        <location filename="../common/agentdetailspanel.cpp" line="448"/>
         <source>Not relevant</source>
         <translation>Non pertinent</translation>
     </message>
@@ -139,12 +139,12 @@
         <translation>sur &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="316"/>
+        <location filename="../common/agentdetailspanel.cpp" line="315"/>
         <source>Server: %1</source>
         <translation>Serveur: %1</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="318"/>
+        <location filename="../common/agentdetailspanel.cpp" line="317"/>
         <source>Context: %1</source>
         <translation>Contexte: %1</translation>
     </message>
@@ -380,12 +380,12 @@ Contexte: %2</translation>
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="../common/baseengine.cpp" line="1046"/>
+        <location filename="../common/baseengine.cpp" line="1045"/>
         <source> said : </source>
         <translation> a dit : </translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1746"/>
+        <location filename="../common/baseengine.cpp" line="1745"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
@@ -400,12 +400,12 @@ Contexte: %2</translation>
         <translation>Connexion refusée</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1070"/>
+        <location filename="../common/baseengine.cpp" line="1069"/>
         <source>Could not modify the Services data.</source>
         <translation>Impossible de modifier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1377"/>
+        <location filename="../common/baseengine.cpp" line="1376"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -415,142 +415,142 @@ Contexte: %2</translation>
         <translation>Hôte non trouvé</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1344"/>
+        <location filename="../common/baseengine.cpp" line="1343"/>
         <source>Max number (%1) of XIVO Clients already reached.</source>
         <translation>Le nombre maximal (%1) de XIVO Clients est déjà connecté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1070"/>
+        <location filename="../common/baseengine.cpp" line="1069"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Asterisk est peut-être arrêté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1347"/>
+        <location filename="../common/baseengine.cpp" line="1346"/>
         <source>Missing Argument(s)</source>
         <translation>Argument(s) manquant(s)</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1340"/>
+        <location filename="../common/baseengine.cpp" line="1339"/>
         <source>No capability allowed.</source>
         <translation>Aucune capacité autorisée.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1062"/>
+        <location filename="../common/baseengine.cpp" line="1061"/>
         <source>Received Services Data for </source>
         <translation>Reçu les Informations de Services pour </translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1289"/>
+        <location filename="../common/baseengine.cpp" line="1288"/>
         <source>Server has sent an Error.</source>
         <translation>Le serveur a renvoyé une Erreur.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1312"/>
+        <location filename="../common/baseengine.cpp" line="1311"/>
         <source>The XIVO daemon on %1 did not reply to the last keepalive.</source>
         <translation>Le daemon XIVO sur %1 n&apos;a pas répondu au dernier keepalive.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1329"/>
+        <location filename="../common/baseengine.cpp" line="1328"/>
         <source>The XIVO daemon on %1 has just been reloaded.</source>
         <translation>Le daemon XIVO sur %1 vient d&apos;être rechargé.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1326"/>
+        <location filename="../common/baseengine.cpp" line="1325"/>
         <source>The XIVO daemon on %1 has just been stopped.</source>
         <translation>Le daemon XIVO sur %1 vient d&apos;être arrêté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1315"/>
+        <location filename="../common/baseengine.cpp" line="1314"/>
         <source>The XIVO daemon on %1 has just closed the connection.</source>
         <translation>Le daemon XIVO sur %1 vient de fermer la connexion.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1295"/>
+        <location filename="../common/baseengine.cpp" line="1294"/>
         <source>The number of arguments sent is incorrect.
 Maybe a version issue ?</source>
         <translation>Le nombre d&apos;arguments envoyés est incorrect.
 Peut-être un problème de version ?</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1046"/>
+        <location filename="../common/baseengine.cpp" line="1045"/>
         <source>Unknown</source>
         <translation>Inconnue</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1333"/>
+        <location filename="../common/baseengine.cpp" line="1332"/>
         <source>You are already connected from %1:%2.</source>
         <translation>Vous êtes déjà connecté depuis %1:%2.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1291"/>
+        <location filename="../common/baseengine.cpp" line="1290"/>
         <source>You are not allowed to connect to the XIVO daemon on %1.</source>
         <translation>Vous n&apos;êtes pas autorisé à vous connecter au daemon XIVO sur %1.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1309"/>
+        <location filename="../common/baseengine.cpp" line="1308"/>
         <source>You entered a wrong login / password.</source>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1353"/>
+        <location filename="../common/baseengine.cpp" line="1352"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1357"/>
+        <location filename="../common/baseengine.cpp" line="1356"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1337"/>
+        <location filename="../common/baseengine.cpp" line="1336"/>
         <source>Your phone &lt;%1&gt; has not been provisioned on XIVO.</source>
         <translation>Votre téléphone &lt;%1&gt; n&apos;a pas été provisionné sur le XIVO.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1298"/>
+        <location filename="../common/baseengine.cpp" line="1297"/>
         <source>Your registration name &lt;%1@%2&gt; is not known.</source>
         <translation>Votre nom &lt;%1@%2&gt; est inconnu.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1370"/>
+        <location filename="../common/baseengine.cpp" line="1369"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1373"/>
+        <location filename="../common/baseengine.cpp" line="1372"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1301"/>
+        <location filename="../common/baseengine.cpp" line="1300"/>
         <source>Your session has expired.</source>
         <translation>Votre session a expiré.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1322"/>
+        <location filename="../common/baseengine.cpp" line="1321"/>
         <source>Socket Error number %1.</source>
         <translation>Erreur de Socket %1.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1305"/>
+        <location filename="../common/baseengine.cpp" line="1304"/>
         <source>Your profile name &lt;%1&gt; is not defined.</source>
         <translation>Votre nom de profil &lt;%1&gt; n&apos;est pas défini.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1318"/>
+        <location filename="../common/baseengine.cpp" line="1317"/>
         <source>An error occurred with the network (network cable accidentally plugged out ?).</source>
         <translation>Une erreur s&apos;est produite sur le réseau (câble accidentellement débranché ?).</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1363"/>
+        <location filename="../common/baseengine.cpp" line="1362"/>
         <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>La version majeure de votre client (%1)
@@ -1329,7 +1329,7 @@ a été envoyé à %2.</translation>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="mainwidget.cpp" line="1504"/>
+        <location filename="mainwidget.cpp" line="1509"/>
         <source>The XIVO CTI applications, once connected to the proper server, complete the XIVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>Les applications CTI XIVO, une fois connectées au serveur adéquat, complètent le système téléphonique XIVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
@@ -1344,7 +1344,7 @@ a été envoyé à %2.</translation>
         <translation>A propos de &amp;XIVO Client</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1508"/>
+        <location filename="mainwidget.cpp" line="1513"/>
         <source>Advised Server Version : </source>
         <translation>Version Conseillée du Serveur : </translation>
     </message>
@@ -1354,7 +1354,7 @@ a été envoyé à %2.</translation>
         <translation>Détails des Agents</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="931"/>
+        <location filename="mainwidget.cpp" line="934"/>
         <source>Agents of a Queue</source>
         <translation>Agents d&apos;une File d&apos;Attente</translation>
     </message>
@@ -1364,12 +1364,12 @@ a été envoyé à %2.</translation>
         <translation>Liste des Agents (classique)</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1510"/>
+        <location filename="mainwidget.cpp" line="1515"/>
         <source>Application Launched on : </source>
         <translation>Application Lancée le : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1520"/>
+        <location filename="mainwidget.cpp" line="1525"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
@@ -1379,17 +1379,17 @@ a été envoyé à %2.</translation>
         <translation>&amp;Disponibilité</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1161"/>
+        <location filename="mainwidget.cpp" line="1166"/>
         <source>Call Campaigns</source>
         <translation>Campagnes d&apos;Appels</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1004"/>
+        <location filename="mainwidget.cpp" line="1009"/>
         <source>Calls</source>
         <translation>Appels</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="953"/>
+        <location filename="mainwidget.cpp" line="956"/>
         <source>Calls of a Queue</source>
         <translation>Appels dans une File d&apos;Attente</translation>
     </message>
@@ -1424,27 +1424,27 @@ a été envoyé à %2.</translation>
         <translation>Se connecter au serveur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1196"/>
+        <location filename="mainwidget.cpp" line="1201"/>
         <source>Connected</source>
         <translation>Connecté</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1073"/>
+        <location filename="mainwidget.cpp" line="1078"/>
         <source>Contacts</source>
         <translation>Contacts</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="963"/>
+        <location filename="mainwidget.cpp" line="968"/>
         <source>Date and Time</source>
         <translation>Date et Heure</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="967"/>
+        <location filename="mainwidget.cpp" line="972"/>
         <source>Dial</source>
         <translation>Composer</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1117"/>
+        <location filename="mainwidget.cpp" line="1122"/>
         <source>Directory</source>
         <translation>Répertoire</translation>
     </message>
@@ -1459,7 +1459,7 @@ a été envoyé à %2.</translation>
         <translation>Se déconnecter du serveur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1304"/>
+        <location filename="mainwidget.cpp" line="1309"/>
         <source>Disconnected</source>
         <translation>Déconnecté</translation>
     </message>
@@ -1469,7 +1469,7 @@ a été envoyé à %2.</translation>
         <translation>Minimiser l&apos;application dans la zone de notification système</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1052"/>
+        <location filename="mainwidget.cpp" line="1057"/>
         <source>Fax</source>
         <translation>Fax</translation>
     </message>
@@ -1499,7 +1499,7 @@ a été envoyé à %2.</translation>
         <translation>Sortir l&apos;application de la zone de notification système</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1522"/>
+        <location filename="mainwidget.cpp" line="1527"/>
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
@@ -1509,17 +1509,17 @@ a été envoyé à %2.</translation>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1154"/>
+        <location filename="mainwidget.cpp" line="1159"/>
         <source>Messages</source>
         <translation>Messages</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="983"/>
+        <location filename="mainwidget.cpp" line="988"/>
         <source>Operator</source>
         <translation>Opérateur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1040"/>
+        <location filename="mainwidget.cpp" line="1045"/>
         <source>Parking</source>
         <translation>Parking</translation>
     </message>
@@ -1529,7 +1529,7 @@ a été envoyé à %2.</translation>
         <translation>Mot de passe</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1170"/>
+        <location filename="mainwidget.cpp" line="1175"/>
         <source>Personal Directory</source>
         <translation>Répertoire Personnel</translation>
     </message>
@@ -1549,12 +1549,12 @@ a été envoyé à %2.</translation>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1087"/>
+        <location filename="mainwidget.cpp" line="1092"/>
         <source>Services</source>
         <translation>Services</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1061"/>
+        <location filename="mainwidget.cpp" line="1066"/>
         <source>Sheets</source>
         <translation>Fiches</translation>
     </message>
@@ -1564,7 +1564,7 @@ a été envoyé à %2.</translation>
         <translation>&amp;Afficher la fenêtre</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1029"/>
+        <location filename="mainwidget.cpp" line="1034"/>
         <source>Switchboard</source>
         <translation>Switchboard</translation>
     </message>
@@ -1579,32 +1579,32 @@ a été envoyé à %2.</translation>
         <translation>&amp;Minimiser</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1505"/>
+        <location filename="mainwidget.cpp" line="1510"/>
         <source>Version : </source>
         <translation>Version : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="979"/>
+        <location filename="mainwidget.cpp" line="984"/>
         <source>Video</source>
         <translation>Vidéo</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1174"/>
+        <location filename="mainwidget.cpp" line="1179"/>
         <source>Xlet Prototype</source>
         <translation>Prototype de Xlet</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1494"/>
+        <location filename="mainwidget.cpp" line="1499"/>
         <source>last one</source>
         <translation>dernière</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1524"/>
+        <location filename="mainwidget.cpp" line="1529"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>avec une exception particulière vous permettant de le lier avec OpenSSL, sous certaines conditions.</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1133"/>
+        <location filename="mainwidget.cpp" line="1138"/>
         <source>Outlook</source>
         <translation>Outlook</translation>
     </message>
@@ -1634,12 +1634,12 @@ a été envoyé à %2.</translation>
         <translation>XIVO CTI Erreur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1530"/>
+        <location filename="mainwidget.cpp" line="1535"/>
         <source>Credits</source>
         <translation>Crédits</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1149"/>
+        <location filename="mainwidget.cpp" line="1154"/>
         <source>Xlet Web</source>
         <translation>Xlet Web</translation>
     </message>
@@ -1649,7 +1649,7 @@ a été envoyé à %2.</translation>
         <translation>Client (profil %1)</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1498"/>
+        <location filename="mainwidget.cpp" line="1503"/>
         <source>About XIVO Client</source>
         <translation>A propos de XIVO Client</translation>
     </message>
@@ -1659,17 +1659,17 @@ a été envoyé à %2.</translation>
         <translation>Liste des Agents (par groupes de files)</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1512"/>
+        <location filename="mainwidget.cpp" line="1517"/>
         <source>Config File Location : </source>
         <translation>Fichier de Configuration :</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1518"/>
+        <location filename="mainwidget.cpp" line="1523"/>
         <source>E-mail : </source>
         <translation>E-mail : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1519"/>
+        <location filename="mainwidget.cpp" line="1524"/>
         <source>Phone : </source>
         <translation>Téléphone : </translation>
     </message>
@@ -2002,96 +2002,156 @@ Contexte: %2</translation>
 <context>
     <name>QueuesPanel</name>
     <message>
-        <location filename="../common/queuespanel.cpp" line="79"/>
+        <location filename="../common/queuespanel.cpp" line="100"/>
         <source>Abandoned</source>
         <translation>Abandonnés</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="108"/>
+        <location filename="../common/queuespanel.cpp" line="120"/>
         <source>Busy</source>
         <translation>Occupation</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="78"/>
+        <location filename="../common/queuespanel.cpp" line="99"/>
         <source>Completed</source>
         <translation>Réussis</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="81"/>
+        <location filename="../common/queuespanel.cpp" line="102"/>
         <source>ServicelevelPerf</source>
         <translation>Perf. de
 Niveau de
 Service</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="82"/>
+        <location filename="../common/queuespanel.cpp" line="103"/>
         <source>ServiceLevel</source>
         <translation>Niveau de
 Service</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="83"/>
+        <location filename="../common/queuespanel.cpp" line="104"/>
         <source>Max</source>
         <translation>Max</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="84"/>
+        <location filename="../common/queuespanel.cpp" line="105"/>
         <source>Weight</source>
         <translation>Poids</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="80"/>
+        <location filename="../common/queuespanel.cpp" line="101"/>
         <source>Holdtime (s)</source>
         <translation>Attente (s)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="87"/>
+        <location filename="../common/queuespanel.cpp" line="108"/>
         <source>Joined</source>
         <translation>Présentés</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="88"/>
+        <location filename="../common/queuespanel.cpp" line="109"/>
         <source>Linked</source>
         <translation>Aboutis</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="107"/>
+        <location filename="../common/queuespanel.cpp" line="119"/>
         <source>Queues</source>
         <translation>Files d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="91"/>
+        <location filename="../common/queuespanel.cpp" line="112"/>
         <source>Conversation</source>
         <translation>Conversation</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="89"/>
+        <location filename="../common/queuespanel.cpp" line="110"/>
         <source>Lost</source>
         <translation>Perdus</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="90"/>
+        <location filename="../common/queuespanel.cpp" line="111"/>
         <source>Pickup
 rate (%)</source>
         <translation>Taux de
 décroché (%)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="85"/>
+        <location filename="../common/queuespanel.cpp" line="106"/>
         <source>Connected</source>
         <translation>Connectés</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="86"/>
+        <location filename="../common/queuespanel.cpp" line="107"/>
         <source>Available</source>
         <translation>Disponibles</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="222"/>
+        <location filename="../common/queuespanel.cpp" line="239"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
 Contexte: %2</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="84"/>
+        <source>Comp.</source>
+        <translation>Réus.</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="85"/>
+        <source>Ab.</source>
+        <translation>Abd.</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="86"/>
+        <source>HT (s)</source>
+        <translation>Att. (s)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="87"/>
+        <source>SLPerf</source>
+        <translation>Perf. NS</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="88"/>
+        <source>SL</source>
+        <translation>NS</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="90"/>
+        <source>W.</source>
+        <translation>P.</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="91"/>
+        <source>Conn.</source>
+        <translation>Conn.</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="92"/>
+        <source>Avail.</source>
+        <translation>Disp.</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="93"/>
+        <source>J.</source>
+        <translation>Prés.</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="94"/>
+        <source>L.</source>
+        <translation>Abt.</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="96"/>
+        <source>PR (%)</source>
+        <translation>TxDéc (%)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="97"/>
+        <source>Conv.</source>
+        <translation>Conv.</translation>
     </message>
 </context>
 <context>
