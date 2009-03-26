@@ -77,8 +77,8 @@ class AgentdetailsPanel : public QWidget
  public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *) {};
-    void newAgentList();
-    void newQueueList();
+    void newAgentList(const QStringList &);
+    void newQueueList(const QStringList &);
     void monitorThisAgent(const QString &);
     void saveToFile();
     void statusRecord(const QString &, const QString &, const QString &);

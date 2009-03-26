@@ -73,8 +73,8 @@ class AgentsPanel : public QWidget
  public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *) {};
-    void newAgentList();
-    void newQueueList();
+    void newAgentList(const QStringList &);
+    void newQueueList(const QStringList &);
     void updateAgentPresence(const QString &, const QString &, const QVariant &);
     void statusRecord(const QString &, const QString &, const QString &);
     void statusListen(const QString &, const QString &, const QString &);

@@ -249,8 +249,8 @@ signals:
     void resetFeatures();
     void localUserInfoDefined(const UserInfo *);
     void removeQueues(const QString &, const QStringList &);
-    void newQueueList();
-    void newAgentList();
+    void newQueueList(const QStringList &);
+    void newAgentList(const QStringList &);
     void optChanged(const QString &, bool);
     void forwardUpdated(const QString &, const QVariant &);
     void changesAvailChecks();

@@ -774,10 +774,10 @@ void MainWidget::engineStarted()
                 m_xlet[xletid] = new IdentityDisplay(m_engine, m_options);
                 addPanel(xletid, tr("&Identity"), m_xlet[xletid]);
                 
-                connect( m_engine, SIGNAL(newAgentList()),
-                         m_xlet[xletid], SLOT(newAgentList()) );
-                connect( m_engine, SIGNAL(newQueueList()),
-                         m_xlet[xletid], SLOT(newQueueList()) );
+                connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newAgentList(const QStringList &)) );
+                connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newQueueList(const QStringList &)) );
                 
                 connect( m_engine, SIGNAL(updatePresence(const QVariant &)),
                          m_xlet[xletid], SLOT(updatePresence(const QVariant &)) );
@@ -801,10 +801,10 @@ void MainWidget::engineStarted()
                 } else
                     addPanel(xletid, tr("Agents' List (plain)"), m_xlet[xletid]);
                 
-                connect( m_engine, SIGNAL(newAgentList()),
-                         m_xlet[xletid], SLOT(newAgentList()) );
-                connect( m_engine, SIGNAL(newQueueList()),
-                         m_xlet[xletid], SLOT(newQueueList()) );
+                connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newAgentList(const QStringList &)) );
+                connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newQueueList(const QStringList &)) );
                 
                 connect( m_xlet[xletid], SIGNAL(shouldNotOccur(const QString &, const QString &)),
                          m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
@@ -829,10 +829,10 @@ void MainWidget::engineStarted()
                 } else
                     addPanel(xletid, tr("Agents' List (queue groups)"), m_xlet[xletid]);
                 
-                connect( m_engine, SIGNAL(newAgentList()),
-                         m_xlet[xletid], SLOT(newAgentList()) );
-                connect( m_engine, SIGNAL(newQueueList()),
-                         m_xlet[xletid], SLOT(newQueueList()) );
+                connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newAgentList(const QStringList &)) );
+                connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newQueueList(const QStringList &)) );
                 
                 connect( m_xlet[xletid], SIGNAL(changeWatchedAgent(const QString &, bool)),
                          m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
@@ -861,10 +861,10 @@ void MainWidget::engineStarted()
                 } else
                     addPanel(xletid, tr("Agent Details"), m_xlet[xletid]);
                 
-                connect( m_engine, SIGNAL(newAgentList()),
-                         m_xlet[xletid], SLOT(newAgentList()) );
-                connect( m_engine, SIGNAL(newQueueList()),
-                         m_xlet[xletid], SLOT(newQueueList()) );
+                connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newAgentList(const QStringList &)) );
+                connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newQueueList(const QStringList &)) );
                 
                 connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
                          m_xlet[xletid], SLOT(monitorThisAgent(const QString &)) );
@@ -905,10 +905,13 @@ void MainWidget::engineStarted()
                 } else
                     addPanel(xletid, tr("Queues' List"), m_xlet[xletid]);
                 
+                connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newAgentList(const QStringList &)) );
+                connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newQueueList(const QStringList &)) );
+                
                 connect( m_engine, SIGNAL(updateCounter(const QVariant &)),
                          m_xlet[xletid], SLOT(updateCounter(const QVariant &)) );
-                connect( m_engine, SIGNAL(newQueueList()),
-                         m_xlet[xletid], SLOT(newQueueList()) );
                 connect( m_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
                          m_xlet[xletid], SLOT(removeQueues(const QString &, const QStringList &)) );
                 connect( m_xlet[xletid], SIGNAL(changeWatchedQueue(const QString &)),
@@ -930,10 +933,10 @@ void MainWidget::engineStarted()
                 } else
                     addPanel(xletid, tr("Agents of a Queue"), m_xlet[xletid]);
                 
-                connect( m_engine, SIGNAL(newAgentList()),
-                         m_xlet[xletid], SLOT(newAgentList()) );
-                connect( m_engine, SIGNAL(newQueueList()),
-                         m_xlet[xletid], SLOT(newQueueList()) );
+                connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newAgentList(const QStringList &)) );
+                connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newQueueList(const QStringList &)) );
                 
                 connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
                          m_xlet[xletid], SLOT(monitorThisQueue(const QString &)) );
@@ -952,8 +955,10 @@ void MainWidget::engineStarted()
                 } else
                     addPanel(xletid, tr("Calls of a Queue"), m_xlet[xletid]);
                 
-                connect( m_engine, SIGNAL(newQueueList()),
-                         m_xlet[xletid], SLOT(newQueueList()) );
+                connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newAgentList(const QStringList &)) );
+                connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+                         m_xlet[xletid], SLOT(newQueueList(const QStringList &)) );
                 
                 connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
                          m_xlet[xletid], SLOT(monitorThisQueue(const QString &)) );

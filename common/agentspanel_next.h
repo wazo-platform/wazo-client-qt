@@ -79,8 +79,8 @@ class AgentsPanelNext : public QWidget
  public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *) {};
-    void newAgentList();
-    void newQueueList();
+    void newAgentList(const QStringList &);
+    void newQueueList(const QStringList &);
     void setQueueOrder(const QVariant &);
  private slots:
     void renameQueueGroup();

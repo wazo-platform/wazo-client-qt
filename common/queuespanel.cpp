@@ -66,49 +66,66 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_gui_buttonsize = 10;
     m_gui_showqueuenames = true;
     
-    bool is_supervisor = false;
-    if(options.toMap().contains("supervisor"))
-        is_supervisor = options.toMap()["supervisor"].toBool();
+    QString statscols = "Xivo-Conn,Xivo-Avail,Xivo-Rate,Xivo-Join,Xivo-Link,Xivo-Lost,Xivo-Chat,Holdtime";
+    // statscols = "Xivo-Conn,Xivo-Avail,Xivo-Rate";
+    if(options.toMap().contains("queues-statscolumns"))
+        statscols = options.toMap()["queues-statscolumns"].toString();
+    bool shortlegends = false;
+    if(options.toMap().contains("queues-shortlegends"))
+        shortlegends = options.toMap()["queues-shortlegends"].toBool();
+    
     QStringList xletlist;
     foreach(QString xletdesc, options.toMap()["xlets"].toStringList())
         xletlist.append(xletdesc.split("-")[0]);
     m_gui_showmore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
     
     m_gridlayout = new QGridLayout(this);
-    m_statlegends["Completed"] = tr("Completed");
-    m_statlegends["Abandoned"] = tr("Abandoned");
-    m_statlegends["Holdtime"] = tr("Holdtime (s)");
-    m_statlegends["ServicelevelPerf"] = tr("ServicelevelPerf");
-    m_statlegends["ServiceLevel"] = tr("ServiceLevel");
-    m_statlegends["Max"] = tr("Max");
-    m_statlegends["Weight"] = tr("Weight");
-    m_statlegends["Xivo-Conn"] = tr("Connected");
-    m_statlegends["Xivo-Avail"] = tr("Available");
-    m_statlegends["Xivo-Join"] = tr("Joined");
-    m_statlegends["Xivo-Link"] = tr("Linked");
-    m_statlegends["Xivo-Lost"] = tr("Lost");
-    m_statlegends["Xivo-Rate"] = tr("Pickup\nrate (%)");
-    m_statlegends["Xivo-Chat"] = tr("Conversation");
-    //         m_statitems = (QStringList()
-    //                        << "Completed" << "Abandoned"
-    //                        << "Holdtime" //  << "ServicelevelPerf"
-    //                        << "Xivo-Join" << "Xivo-Link"
-    //                        << "ServiceLevel" << "Max" << "Weight");
-    if(is_supervisor)
-        m_statitems = (QStringList()
-                       << "Xivo-Conn" << "Xivo-Avail"
-                       << "Xivo-Rate"
-                       << "Xivo-Join" << "Xivo-Link" << "Xivo-Lost" << "Xivo-Chat"
-                       << "Holdtime");
-    else
-        m_statitems = (QStringList() << "Xivo-Conn" << "Xivo-Avail" << "Xivo-Rate");
+    
+    m_statlegends_short["Completed"] = tr("Comp.");
+    m_statlegends_short["Abandoned"] = tr("Ab.");
+    m_statlegends_short["Holdtime"] = tr("HT (s)");
+    m_statlegends_short["ServicelevelPerf"] = tr("SLPerf");
+    m_statlegends_short["ServiceLevel"] = tr("SL");
+    m_statlegends_short["Max"] = tr("Max");
+    m_statlegends_short["Weight"] = tr("W.");
+    m_statlegends_short["Xivo-Conn"] = tr("Conn.");
+    m_statlegends_short["Xivo-Avail"] = tr("Avail.");
+    m_statlegends_short["Xivo-Join"] = tr("J.");
+    m_statlegends_short["Xivo-Link"] = tr("L.");
+    m_statlegends_short["Xivo-Lost"] = tr("Lost");
+    m_statlegends_short["Xivo-Rate"] = tr("PR (%)");
+    m_statlegends_short["Xivo-Chat"] = tr("Conv.");
+    
+    m_statlegends_long["Completed"] = tr("Completed");
+    m_statlegends_long["Abandoned"] = tr("Abandoned");
+    m_statlegends_long["Holdtime"] = tr("Holdtime (s)");
+    m_statlegends_long["ServicelevelPerf"] = tr("ServicelevelPerf");
+    m_statlegends_long["ServiceLevel"] = tr("ServiceLevel");
+    m_statlegends_long["Max"] = tr("Max");
+    m_statlegends_long["Weight"] = tr("Weight");
+    m_statlegends_long["Xivo-Conn"] = tr("Connected");
+    m_statlegends_long["Xivo-Avail"] = tr("Available");
+    m_statlegends_long["Xivo-Join"] = tr("Joined");
+    m_statlegends_long["Xivo-Link"] = tr("Linked");
+    m_statlegends_long["Xivo-Lost"] = tr("Lost");
+    m_statlegends_long["Xivo-Rate"] = tr("Pickup\nrate (%)");
+    m_statlegends_long["Xivo-Chat"] = tr("Conversation");
+    
+    foreach(QString statcol, statscols.split(","))
+        if(m_statlegends_long.contains(statcol))
+            m_statitems << statcol;
     m_maxbusy = 0;
     
     m_qtitle = new QLabel(tr("Queues"), this);
     m_busytitle = new QLabel(tr("Busy"), this);
     
-    foreach (QString statitem, m_statitems)
-        m_title_infos[statitem] = new QLabel(m_statlegends[statitem], this);
+    foreach (QString statitem, m_statitems) {
+        if(shortlegends) {
+            m_title_infos[statitem] = new QLabel(m_statlegends_short[statitem], this);
+            m_title_infos[statitem]->setToolTip(m_statlegends_long[statitem]);
+        } else
+            m_title_infos[statitem] = new QLabel(m_statlegends_long[statitem], this);
+    }
     
     int colnum = 1;
     m_gridlayout->addWidget( m_qtitle, 1, colnum++, Qt::AlignLeft );
@@ -287,7 +304,7 @@ void QueuesPanel::affWidgets()
 
 /*! \brief update display once the queues have been received
  */
-void QueuesPanel::newQueueList()
+void QueuesPanel::newQueueList(const QStringList &)
 {
     // qDebug() << "QueuesPanel::newQueueList()";
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
@@ -304,7 +321,7 @@ void QueuesPanel::newQueueList()
 
 /*! \brief update display once the agents have been received
  */
-void QueuesPanel::newAgentList()
+void QueuesPanel::newAgentList(const QStringList &)
 {
     qDebug() << "QueuesPanel::newAgentList()";
 }

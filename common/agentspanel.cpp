@@ -134,14 +134,14 @@ void AgentsPanel::updateAgentPresence(const QString & astid, const QString & age
 
 /*! \brief 
  */
-void AgentsPanel::newQueueList()
+void AgentsPanel::newQueueList(const QStringList &)
 {
     // qDebug() << "AgentsPanel::newQueueList()";
 }
 
 /*! \brief 
  */
-void AgentsPanel::newAgentList()
+void AgentsPanel::newAgentList(const QStringList &)
 {
     // qDebug() << "AgentsPanel::newAgentList()";
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());

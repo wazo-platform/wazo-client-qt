@@ -74,7 +74,7 @@ QueueentrydetailsPanel::~QueueentrydetailsPanel()
 
 /*! \brief 
  */
-void QueueentrydetailsPanel::newQueueList()
+void QueueentrydetailsPanel::newQueueList(const QStringList &)
 {
     // qDebug() << "QueuedetailsPanel::newQueueList()";
     if(m_engine->queues().contains(m_monitored_queueid))
@@ -83,7 +83,7 @@ void QueueentrydetailsPanel::newQueueList()
 
 /*! \brief 
  */
-void QueueentrydetailsPanel::newAgentList()
+void QueueentrydetailsPanel::newAgentList(const QStringList &)
 {
     // qDebug() << "QueuedetailsPanel::newAgentList()";
     if(m_engine->queues().contains(m_monitored_queueid))

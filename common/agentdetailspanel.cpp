@@ -139,14 +139,14 @@ void AgentdetailsPanel::setGuiOptions(const QVariant & options)
 
 /*! \brief 
  */
-void AgentdetailsPanel::newQueueList()
+void AgentdetailsPanel::newQueueList(const QStringList &)
 {
     // qDebug() << "AgentdetailsPanel::newQueueList()";
 }
 
 /*! \brief 
  */
-void AgentdetailsPanel::newAgentList()
+void AgentdetailsPanel::newAgentList(const QStringList &)
 {
     // qDebug() << "AgentdetailsPanel::newAgentList()" << m_monitored_agentid;
     if(m_engine->agents().contains(m_monitored_agentid))

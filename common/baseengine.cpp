@@ -835,7 +835,7 @@ void BaseEngine::parseCommand(const QString & line)
                     }
                 }
                 if(! kk.isEmpty())
-                    emit newQueueList();
+                    emit newQueueList(kk);
             } else if(function == "del") {
                 removeQueues(datamap["astid"].toString(),
                              datamap["deltalist"].toStringList());
@@ -864,7 +864,7 @@ void BaseEngine::parseCommand(const QString & line)
                     }
                 }
                 if(! kk.isEmpty())
-                    emit newAgentList();
+                    emit newAgentList(kk);
                 
             } else if(function == "update") {
                 QVariant params = datamap["payload"];
@@ -874,7 +874,6 @@ void BaseEngine::parseCommand(const QString & line)
                 QString agent_channel = params.toMap()["agent_channel"].toString();
                 QVariantMap properties = params.toMap()["properties"].toMap();
                 // updateAgent(astid, agentid, properties);
-                emit newAgentList();
                 if (agent_channel.startsWith("Agent/")) {
                     UserInfo * ui = findUserFromAgent(astid, agent_channel.mid(6));
                     if(ui)

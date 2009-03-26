@@ -81,8 +81,8 @@ class QueuesPanel : public QWidget
     void setUserInfo(const UserInfo *) {};
     void updateCounter(const QVariant &);
     void removeQueues(const QString &, const QStringList &);
-    void newQueueList();
-    void newAgentList();
+    void newQueueList(const QStringList &);
+    void newAgentList(const QStringList &);
     void setQueueOrder(const QVariant &);
  private slots:
     void queueClicked();
@@ -98,7 +98,8 @@ class QueuesPanel : public QWidget
     BaseEngine * m_engine;        //!< BaseEngine object
     QGridLayout * m_gridlayout; //!< Layout
     QStringList m_statitems;    //!< list of stats items which are reported for each queue
-    QHash<QString, QString> m_statlegends;  //!< text displayed on top of each column
+    QHash<QString, QString> m_statlegends_short;  //!< text displayed on top of each column
+    QHash<QString, QString> m_statlegends_long;  //!< text displayed on top of each column
     
     QHash<QString, QLabel *> m_queuelabels; //!< QLabel used to display the names of queues
     QHash<QString, QPushButton *> m_queuemore;  //!< Button to display queue details

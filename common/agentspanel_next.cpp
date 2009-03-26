@@ -704,7 +704,7 @@ void AgentsPanelNext::refreshDisplay()
     m_glayout->setColumnStretch(m_title.size() * NCOLS, 1);
 }
 
-void AgentsPanelNext::newAgentList()
+void AgentsPanelNext::newAgentList(const QStringList &)
 {
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
     while( iter.hasNext() ) {
@@ -719,7 +719,7 @@ void AgentsPanelNext::newAgentList()
     emit loadQueueGroups();
 }
 
-void AgentsPanelNext::newQueueList()
+void AgentsPanelNext::newQueueList(const QStringList &)
 {
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
     while( iter.hasNext() ) {
