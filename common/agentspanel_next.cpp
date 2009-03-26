@@ -513,13 +513,16 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
         
         QPushButton * q_pause;
         bool isinpause = false;
-        foreach (QString qname, m_engine->queues().keys())
-            if(m_title[groupid]->property("queues").toStringList().contains(qname)) {
-                QVariantMap qvm = ainfo->properties()["queues_by_agent"].toMap()[qname].toMap();
+        foreach (QString queueid, m_engine->queues().keys()) {
+            QueueInfo * qinfo = m_engine->queues()[queueid];
+            QString queuename = qinfo->queuename();
+            if(m_title[groupid]->property("queues").toStringList().contains(queuename)) {
+                QVariantMap qvm = ainfo->properties()["queues_by_agent"].toMap()[queuename].toMap();
                 if(! qvm.isEmpty())
                     if(qvm["Paused"].toString() == "1")
                         isinpause = true;
             }
+        }
         if(isinpause) {
             q_pause = new QPushButton(tr("Cancel Pause"));
             q_pause->setProperty("action", "unpause");
