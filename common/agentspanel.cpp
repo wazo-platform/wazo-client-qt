@@ -268,7 +268,7 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
     QString agstatus = properties["agentstats"].toMap()["status"].toString();
     QString phonenum = properties["agentstats"].toMap()["agent_phone_number"].toString();
     
-    QVariantMap slink = properties["agentstats"].toMap()["Xivo-Status-Link"].toMap();
+    QVariantMap slink = properties["agentstats"].toMap()["Xivo-Agent-Status-Link"].toMap();
     bool link = false;
     if(! slink.isEmpty()) {
         QString linkmode = slink["linkmode"].toString();

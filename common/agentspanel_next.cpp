@@ -278,8 +278,8 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
     QVariant queues = properties["queues_by_agent"];
     m_agent_labels[idx]->setProperty("sorter", ainfo->fullname());
     
-    double statetime = properties["agentstats"].toMap()["Xivo-StateTime"].toDouble();
-    QVariantMap slink = properties["agentstats"].toMap()["Xivo-Status-Link"].toMap();
+    double statetime = properties["agentstats"].toMap()["Xivo-Agent-StateTime"].toDouble();
+    QVariantMap slink = properties["agentstats"].toMap()["Xivo-Agent-Status-Link"].toMap();
     bool link = false;
     bool isdid = false;
     bool isoutcall = false;
@@ -357,7 +357,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                 
                 QDateTime now = QDateTime::currentDateTime();
                 int d1 = m_engine->timeClient().secsTo(now);
-                double d2 = m_engine->timeServer() - qvm[qname_group].toMap()["Xivo-StateTime"].toDouble();
+                double d2 = m_engine->timeServer() - qvm[qname_group].toMap()["Xivo-QueueMember-StateTime"].toDouble();
                 doshowtime = true;
                 dsec = d1 + d2;
                 
