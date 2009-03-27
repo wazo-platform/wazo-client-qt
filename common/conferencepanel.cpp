@@ -80,7 +80,7 @@ void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
             QString adminid = astrooms.toMap()[idx].toMap()["adminid"].toString();
             QVariantMap uniqueids = astrooms.toMap()[idx].toMap()["uniqueids"].toMap();
             // qDebug() << "ConferencePanel::meetmeInit()" << astid << idx << roomname << roomnum << adminid << uniqueids;
-                        
+            
             if(uniqueids.size() > 0) {
                 addRoomTab(astid, roomnum, roomname);
                 foreach (QString uid, uniqueids.keys()) {
@@ -132,7 +132,7 @@ void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
     QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     QString adminid = meetme.toMap()["adminid"].toString();
     addRoomTab(astid, roomnum, roomname);
-        
+    
     setProperties(timeref,
                   meetme.toMap()["action"].toString(),
                   adminid,

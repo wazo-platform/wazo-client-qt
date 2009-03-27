@@ -183,20 +183,15 @@ void QueuesPanel::setGuiOptions(const QVariant & options)
 
 /*! \brief update counters
  *
- * update Xivo-Conn and Xivo-Avail values
+ * update Xivo-Conn value
  */
 void QueuesPanel::updateCounter(const QVariant & counters)
 {
     QVariantMap countersmap = counters.toMap();
     int ntot = countersmap["connected"].toInt();
     foreach (QString queuename, m_queueinfos.keys()) {
-        int navail = 0;
-        if(countersmap["byqueue"].toMap().contains(queuename))
-            navail = countersmap["byqueue"].toMap()[queuename].toInt();
         if(m_queueinfos[queuename].contains("Xivo-Conn"))
             m_queueinfos[queuename]["Xivo-Conn"]->setText(QString::number(ntot));
-        if(m_queueinfos[queuename].contains("Xivo-Avail"))
-            m_queueinfos[queuename]["Xivo-Avail"]->setText(QString::number(navail));
     }
 }
 
@@ -231,6 +226,7 @@ void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
  */
 void QueuesPanel::addQueue(const QString & astid, const QString & queuename, const QString & queuecontext)
 {
+    // qDebug() << "QueuesPanel::addQueue()" << astid << queuename << queuecontext;
     // UserInfo * userinfo = m_engine->getXivoClientUser();
     // if(userinfo == NULL) return;
     
@@ -323,7 +319,7 @@ void QueuesPanel::newQueueList(const QStringList &)
  */
 void QueuesPanel::newAgentList(const QStringList &)
 {
-    qDebug() << "QueuesPanel::newAgentList()";
+    // qDebug() << "QueuesPanel::newAgentList()";
 }
 
 /*! \brief update list of queues
@@ -334,7 +330,8 @@ void QueuesPanel::newQueue(const QString & astid, const QString & queuename, con
 {
     QVariantMap queuestatcontents = queueprops.toMap()["queuestats"].toMap();
     QString queuecontext = queueprops.toMap()["context"].toString();
-    // qDebug() << "QueuesPanel::newQueue()" << queuename << queuecontext;
+    // qDebug() << "QueuesPanel::newQueue()" << astid << queuename << queuecontext;
+    
     QHash <QString, QString> infos;
     infos["Calls"] = "0";
     foreach (QString statname, queuestatcontents.keys())
@@ -346,6 +343,25 @@ void QueuesPanel::newQueue(const QString & astid, const QString & queuename, con
         foreach (QString statitem, m_statitems)
             if(infos.contains(statitem))
                 m_queueinfos[queuename][statitem]->setText(infos[statitem]);
+    }
+    
+    QVariantMap queueagents = queueprops.toMap()["agents_in_queue"].toMap();
+    QStringList queueagents_list;
+    int navail = 0;
+    foreach(QString agentname, queueagents.keys()) {
+        QVariantMap qaprops = queueagents[agentname].toMap();
+        if((qaprops["Status"].toString() == "1") || (qaprops["Status"].toString() == "3"))
+            if(qaprops["Paused"].toString() == "0") {
+                navail ++;
+                queueagents_list << agentname;
+            }
+    }
+    if(m_queueinfos[queuename].contains("Xivo-Avail")) {
+        m_queueinfos[queuename]["Xivo-Avail"]->setText(QString::number(navail));
+        if(navail)
+            m_queueinfos[queuename]["Xivo-Avail"]->setToolTip(tr("Available agents : %1").arg(queueagents_list.join(", ")));
+        else
+            m_queueinfos[queuename]["Xivo-Avail"]->setToolTip("");
     }
 }
 

@@ -321,7 +321,7 @@ void QueuedetailsPanel::setAgentQueueProps(const QString & agentid, const QVaria
         int epoch = qv.toMap()["LastCall"].toInt();
         if(epoch > 0) {
             lastcall.setTime_t(epoch);
-            slastcall = lastcall.toString();
+            slastcall = lastcall.toString("hh:mm:ss");
         }
     }
     m_agent_lastcall[agentid]->setText(slastcall);
