@@ -14,12 +14,12 @@
         <translation>Enregistre</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="589"/>
+        <location filename="../common/agentdetailspanel.cpp" line="600"/>
         <source>Save Sound File</source>
         <translation>Sauve un Fichier Son</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="591"/>
+        <location filename="../common/agentdetailspanel.cpp" line="602"/>
         <source>All Files (*)</source>
         <translation>Tous les Fichiers (*)</translation>
     </message>
@@ -147,6 +147,16 @@
         <location filename="../common/agentdetailspanel.cpp" line="317"/>
         <source>Context: %1</source>
         <translation>Contexte: %1</translation>
+    </message>
+    <message>
+        <location filename="../common/agentdetailspanel.cpp" line="541"/>
+        <source>Record files for this agent</source>
+        <translation>Fichiers enregistrés pour cet agent</translation>
+    </message>
+    <message>
+        <location filename="../common/agentdetailspanel.cpp" line="552"/>
+        <source>No Record for this agent</source>
+        <translation>Pas d&apos;enregistrement pour cet agent</translation>
     </message>
 </context>
 <context>

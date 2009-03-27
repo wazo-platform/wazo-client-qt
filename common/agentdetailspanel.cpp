@@ -526,7 +526,8 @@ void AgentdetailsPanel::contextMenuEvent(QContextMenuEvent * event)
 {
     // qDebug() << "AgentdetailsPanel::contextMenuEvent()" << event;
     m_eventpoint = event->globalPos();
-    emit agentAction(QString("getfilelist %1 %2").arg(m_monitored_astid).arg(m_monitored_agentnumber));
+    if((! m_monitored_astid.isEmpty()) && (! m_monitored_agentnumber.isEmpty()))
+        emit agentAction(QString("getfilelist %1 %2").arg(m_monitored_astid).arg(m_monitored_agentnumber));
 }
 
 /*! \brief display file list */
@@ -534,11 +535,21 @@ void AgentdetailsPanel::serverFileList(const QStringList & qsl)
 {
     // qDebug() << "AgentdetailsPanel::serverFileList()" << qsl;
     QMenu contextMenu(this);
-    foreach (QString filename, qsl) {
-        QAction * action = new QAction(filename, this);
-        action->setProperty("filename", filename);
-        connect( action, SIGNAL(triggered()),
-                 this, SLOT(getFile()) );
+    QStringList qsl_sorted = qsl;
+    qsl_sorted.sort();
+    if(qsl.size() > 0) {
+        QAction * actiontitle = new QAction(tr("Record files for this agent"), this);
+        contextMenu.addAction(actiontitle);
+        contextMenu.addSeparator();
+        foreach (QString filename, qsl_sorted) {
+            QAction * action = new QAction(filename, this);
+            action->setProperty("filename", filename);
+            connect( action, SIGNAL(triggered()),
+                     this, SLOT(getFile()) );
+            contextMenu.addAction(action);
+        }
+    } else {
+        QAction * action = new QAction(tr("No Record for this agent"), this);
         contextMenu.addAction(action);
     }
     contextMenu.exec( m_eventpoint );
