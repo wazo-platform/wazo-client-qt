@@ -81,25 +81,25 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     
     m_gridlayout = new QGridLayout(this);
     
-    m_statlegends_short["Completed"] = tr("Comp.");
-    m_statlegends_short["Abandoned"] = tr("Ab.");
-    m_statlegends_short["Holdtime"] = tr("HT (s)");
-    m_statlegends_short["ServicelevelPerf"] = tr("SLPerf");
+    m_statlegends_short["Completed"] = tr("Cmptd");
+    m_statlegends_short["Abandoned"] = tr("Abdnd");
+    m_statlegends_short["Holdtime"] = tr("HT\n(s)");
+    m_statlegends_short["ServicelevelPerf"] = tr("SLPerf\n(%)");
     m_statlegends_short["ServiceLevel"] = tr("SL");
-    m_statlegends_short["Max"] = tr("Max");
-    m_statlegends_short["Weight"] = tr("W.");
+    m_statlegends_short["Max"] = tr("Mx");
+    m_statlegends_short["Weight"] = tr("Wght");
     m_statlegends_short["Xivo-Conn"] = tr("Conn.");
     m_statlegends_short["Xivo-Avail"] = tr("Avail.");
-    m_statlegends_short["Xivo-Join"] = tr("J.");
-    m_statlegends_short["Xivo-Link"] = tr("L.");
-    m_statlegends_short["Xivo-Lost"] = tr("Lost");
-    m_statlegends_short["Xivo-Rate"] = tr("PR (%)");
-    m_statlegends_short["Xivo-Chat"] = tr("Conv.");
+    m_statlegends_short["Xivo-Join"] = tr("Jnd");
+    m_statlegends_short["Xivo-Link"] = tr("Lnkd");
+    m_statlegends_short["Xivo-Lost"] = tr("Lst");
+    m_statlegends_short["Xivo-Rate"] = tr("PR\n(%)");
+    m_statlegends_short["Xivo-Chat"] = tr("Conv.\n(s)");
     
     m_statlegends_long["Completed"] = tr("Completed");
     m_statlegends_long["Abandoned"] = tr("Abandoned");
-    m_statlegends_long["Holdtime"] = tr("Holdtime (s)");
-    m_statlegends_long["ServicelevelPerf"] = tr("ServicelevelPerf");
+    m_statlegends_long["Holdtime"] = tr("Holdtime(s)");
+    m_statlegends_long["ServicelevelPerf"] = tr("ServicelevelPerf(%)");
     m_statlegends_long["ServiceLevel"] = tr("ServiceLevel");
     m_statlegends_long["Max"] = tr("Max");
     m_statlegends_long["Weight"] = tr("Weight");
@@ -108,8 +108,8 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_long["Xivo-Join"] = tr("Joined");
     m_statlegends_long["Xivo-Link"] = tr("Linked");
     m_statlegends_long["Xivo-Lost"] = tr("Lost");
-    m_statlegends_long["Xivo-Rate"] = tr("Pickup\nrate (%)");
-    m_statlegends_long["Xivo-Chat"] = tr("Conversation");
+    m_statlegends_long["Xivo-Rate"] = tr("Pickup rate(%)");
+    m_statlegends_long["Xivo-Chat"] = tr("Conversation(s)");
     
     foreach(QString statcol, statscols.split(","))
         if(m_statlegends_long.contains(statcol))

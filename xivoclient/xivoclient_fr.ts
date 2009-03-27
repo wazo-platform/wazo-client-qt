@@ -2017,13 +2017,6 @@ Contexte: %2</translation>
         <translation>Réussis</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="102"/>
-        <source>ServicelevelPerf</source>
-        <translation>Perf. de
-Niveau de
-Service</translation>
-    </message>
-    <message>
         <location filename="../common/queuespanel.cpp" line="103"/>
         <source>ServiceLevel</source>
         <translation>Niveau de
@@ -2038,11 +2031,6 @@ Service</translation>
         <location filename="../common/queuespanel.cpp" line="105"/>
         <source>Weight</source>
         <translation>Poids</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="101"/>
-        <source>Holdtime (s)</source>
-        <translation>Attente (s)</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="108"/>
@@ -2060,21 +2048,9 @@ Service</translation>
         <translation>Files d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="112"/>
-        <source>Conversation</source>
-        <translation>Conversation</translation>
-    </message>
-    <message>
         <location filename="../common/queuespanel.cpp" line="110"/>
         <source>Lost</source>
         <translation>Perdus</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="111"/>
-        <source>Pickup
-rate (%)</source>
-        <translation>Taux de
-décroché (%)</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="106"/>
@@ -2087,41 +2063,16 @@ décroché (%)</translation>
         <translation>Disponibles</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="239"/>
+        <location filename="../common/queuespanel.cpp" line="235"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
 Contexte: %2</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="84"/>
-        <source>Comp.</source>
-        <translation>Réus.</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="85"/>
-        <source>Ab.</source>
-        <translation>Abd.</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="86"/>
-        <source>HT (s)</source>
-        <translation>Att. (s)</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="87"/>
-        <source>SLPerf</source>
-        <translation>Perf. NS</translation>
-    </message>
-    <message>
         <location filename="../common/queuespanel.cpp" line="88"/>
         <source>SL</source>
         <translation>NS</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="90"/>
-        <source>W.</source>
-        <translation>P.</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="91"/>
@@ -2134,24 +2085,94 @@ Contexte: %2</translation>
         <translation>Disp.</translation>
     </message>
     <message>
+        <location filename="../common/queuespanel.cpp" line="84"/>
+        <source>Cmptd</source>
+        <translation>Réus.</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="85"/>
+        <source>Abdnd</source>
+        <translation>Abd.</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="86"/>
+        <source>HT
+(s)</source>
+        <translation>Att.
+(s)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="87"/>
+        <source>SLPerf
+(%)</source>
+        <translation>Perf. NS
+(%)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="89"/>
+        <source>Mx</source>
+        <translation>Max</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="90"/>
+        <source>Wght</source>
+        <translation>Poids</translation>
+    </message>
+    <message>
         <location filename="../common/queuespanel.cpp" line="93"/>
-        <source>J.</source>
+        <source>Jnd</source>
         <translation>Prés.</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="94"/>
-        <source>L.</source>
+        <source>Lnkd</source>
         <translation>Abt.</translation>
     </message>
     <message>
+        <location filename="../common/queuespanel.cpp" line="95"/>
+        <source>Lst</source>
+        <translation>Perdus</translation>
+    </message>
+    <message>
         <location filename="../common/queuespanel.cpp" line="96"/>
-        <source>PR (%)</source>
-        <translation>TxDéc (%)</translation>
+        <source>PR
+(%)</source>
+        <translation>TxDéc
+(%)</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="97"/>
-        <source>Conv.</source>
-        <translation>Conv.</translation>
+        <source>Conv.
+(s)</source>
+        <translation>Conv.
+(s)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="101"/>
+        <source>Holdtime(s)</source>
+        <translation>Attente(s)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="102"/>
+        <source>ServicelevelPerf(%)</source>
+        <translation>Perf. de
+Niveau de
+Service(%)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="111"/>
+        <source>Pickup rate(%)</source>
+        <translation>Taux de décroché(%)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="112"/>
+        <source>Conversation(s)</source>
+        <translation>Conversation(s)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="362"/>
+        <source>Available agents : %1</source>
+        <translation>Agents disponibles : %1</translation>
     </message>
 </context>
 <context>
