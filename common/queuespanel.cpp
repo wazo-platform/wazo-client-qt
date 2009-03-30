@@ -350,11 +350,10 @@ void QueuesPanel::newQueue(const QString & astid, const QString & queuename, con
     int navail = 0;
     foreach(QString agentname, queueagents.keys()) {
         QVariantMap qaprops = queueagents[agentname].toMap();
-        if((qaprops["Status"].toString() == "1") || (qaprops["Status"].toString() == "3"))
-            if(qaprops["Paused"].toString() == "0") {
-                navail ++;
-                queueagents_list << agentname;
-            }
+        if((qaprops["Status"].toString() == "1") && (qaprops["Paused"].toString() == "0")) {
+            navail ++;
+            queueagents_list << agentname;
+        }
     }
     if(m_queueinfos[queuename].contains("Xivo-Avail")) {
         m_queueinfos[queuename]["Xivo-Avail"]->setText(QString::number(navail));

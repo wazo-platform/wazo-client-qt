@@ -51,6 +51,7 @@
 #include "agentspanel.h"
 #include "agentinfo.h"
 #include "phoneinfo.h"
+#include "queueinfo.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -263,6 +264,10 @@ void AgentsPanel::displayLine(const QString & agentid, int linenum)
 
 void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap & properties)
 {
+    AgentInfo * ainfo = m_engine->agents()[agentid];
+    if(ainfo == NULL)
+        return;
+    QString context_agent = ainfo->context();
     QVariantMap agqjoined = properties["queues_by_agent"].toMap();
     QVariantMap aggjoined = properties["groups_by_agent"].toMap();
     QString agstatus = properties["agentstats"].toMap()["status"].toString();
@@ -279,7 +284,6 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
                            QString("agentid %1 linkmode %2").arg(agentid).arg(linkmode));
     }
     
-    AgentInfo * ainfo = m_engine->agents()[agentid];
     QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
     QStringList ttips;
     if(link) {
@@ -328,14 +332,20 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
     QStringList joined_queues;
     QStringList paused_queues;
     foreach (QString qname, agqjoined.keys()) {
-        QVariant qv = agqjoined[qname];
-        if(qv.toMap().contains("Status")) {
-            QString pstatus = qv.toMap()["Paused"].toString();
-            QString sstatus = qv.toMap()["Status"].toString();
-            if((sstatus == "1") || (sstatus == "3") || (sstatus == "4") || (sstatus == "5"))
-                joined_queues << qname;
-            if(pstatus == "1")
-                paused_queues << qname;
+        QString queueid = QString("queue:%1/%2").arg(ainfo->astid()).arg(qname);
+        QueueInfo * qinfo = m_engine->queues()[queueid];
+        if(qinfo != NULL) {
+            // if(qinfo->context() == context_agent) {
+            QVariant qv = agqjoined[qname];
+            if(qv.toMap().contains("Status")) {
+                QString pstatus = qv.toMap()["Paused"].toString();
+                QString sstatus = qv.toMap()["Status"].toString();
+                if((sstatus == "1") || (sstatus == "3") || (sstatus == "4") || (sstatus == "5"))
+                    joined_queues << qname;
+                if(pstatus == "1")
+                    paused_queues << qname;
+                }
+            // }
         }
     }
     

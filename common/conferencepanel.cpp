@@ -196,8 +196,11 @@ void ConferencePanel::setProperties(double timeref,
             m_action_record[ref]->setProperty("uniqueid", uniqueid);
             m_action_record[ref]->setProperty("action", "record");
             m_action_record[ref]->setProperty("recordstatus", "off");
+            bool show_record = false;
+            if(m_engine->getGuiOptions("server_gui").toMap().contains("conference-allowrecord"))
+                show_record = m_engine->getGuiOptions("server_gui").toMap()["conference-allowrecord"].toBool();
             if(userinfo) {
-                if(userinfo->userid() == adminid)
+                if((userinfo->userid() == adminid) && show_record)
                     connect(m_action_record[ref], SIGNAL(clicked()),
                             this, SLOT(doMeetMeAction()));
                 else
