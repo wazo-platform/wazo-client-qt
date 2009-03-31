@@ -58,6 +58,8 @@ class QueueInfo
     ~QueueInfo();
     //! update attribute members
     bool update(const QMap<QString, QVariant> & prop);
+    //! update attribute members
+    bool updateAgent(const QMap<QString, QVariant> & prop);
     //! asterisk this queue belongs to
     const QString & astid() const;
     //! context this queue belongs to

@@ -750,6 +750,23 @@ QStringList BaseEngine::updateQueue(const QString & astid,
     return keychanges;
 }
 
+QStringList BaseEngine::updateQueueAgent(const QString & astid,
+                                         const QString & queueid,
+                                         const QMap<QString, QVariant> & properties)
+{
+    QStringList keychanges;
+    QString key = QString("queue:%1/%2").arg(astid).arg(queueid);
+    if( ! m_queues.contains( key ) ) {
+        m_queues[key] = new QueueInfo(astid, properties);
+        keychanges << key;
+    } else {
+        bool haschanged = m_queues[key]->updateAgent(properties);
+        if (haschanged)
+            keychanges << key;
+    }
+    return keychanges;
+}
+
 QStringList BaseEngine::updateAgent(const QString & astid,
                                     const QString & agentid,
                                     const QMap<QString, QVariant> & properties)
@@ -832,6 +849,17 @@ void BaseEngine::parseCommand(const QString & line)
                     QMap<QString, QVariant> values = payload[astid].toMap();
                     foreach(QString queueid, values.keys()) {
                         kk += updateQueue(astid, queueid, values[queueid].toMap());
+                    }
+                }
+                if(! kk.isEmpty())
+                    emit newQueueList(kk);
+            } else if(function == "update") {
+                QStringList kk;
+                QMap<QString, QVariant> payload = datamap["payload"].toMap();
+                foreach(QString astid, payload.keys()) {
+                    QMap<QString, QVariant> values = payload[astid].toMap();
+                    foreach(QString queueid, values.keys()) {
+                        kk += updateQueueAgent(astid, queueid, values[queueid].toMap());
                     }
                 }
                 if(! kk.isEmpty())

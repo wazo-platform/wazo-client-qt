@@ -274,6 +274,7 @@ private:
     void popupError(const QString &);
     void updatePhone(const QString &, const QString &, const QMap<QString, QVariant> &);
     QStringList updateQueue(const QString &, const QString &, const QMap<QString, QVariant> &);
+    QStringList updateQueueAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
     QStringList updateAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
     void clearUserList();
     void clearPhoneList();
