@@ -373,6 +373,10 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
                 p_square->fill(Qt::darkGreen);
                 m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (statically)"));
                 m_queue_join_action[queueid]->hide();
+            } else if(dynstatus == "realtime") {
+                p_square->fill(Qt::darkGreen);
+                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (realtime)"));
+                m_queue_join_action[queueid]->hide();
             } else {
                 p_square->fill(Qt::black);
                 m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (%1)").arg(dynstatus));
@@ -387,6 +391,10 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
             } else if(dynstatus == "static") {
                 p_square->fill(Qt::darkYellow);
                 m_queue_join_status[queueid]->setToolTip(tr("Called/Busy (statically)"));
+                m_queue_join_action[queueid]->hide();
+            } else if(dynstatus == "realtime") {
+                p_square->fill(Qt::darkYellow);
+                m_queue_join_status[queueid]->setToolTip(tr("Called/Busy (realtime)"));
                 m_queue_join_action[queueid]->hide();
             } else {
                 p_square->fill(Qt::black);
@@ -403,6 +411,10 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
                 p_square->fill(Qt::darkRed);
                 m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue but Invalid (statically)"));
                 m_queue_join_action[queueid]->hide();
+            } else if(dynstatus == "realtime") {
+                p_square->fill(Qt::darkRed);
+                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue but Invalid (realtime)"));
+                m_queue_join_action[queueid]->hide();
             } else {
                 p_square->fill(Qt::black);
                 m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue but Invalid (%1)").arg(dynstatus));
@@ -417,6 +429,10 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
             } else if(dynstatus == "static") {
                 p_square->fill(Qt::darkBlue);
                 m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (statically) but NOT logged"));
+                m_queue_join_action[queueid]->hide();
+            } else if(dynstatus == "realtime") {
+                p_square->fill(Qt::darkBlue);
+                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (realtime) but NOT logged"));
                 m_queue_join_action[queueid]->hide();
             } else {
                 p_square->fill(Qt::black);
