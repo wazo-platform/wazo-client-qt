@@ -276,6 +276,7 @@ private:
     QStringList updateQueue(const QString &, const QString &, const QMap<QString, QVariant> &);
     QStringList updateQueueAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
     QStringList updateAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
+    QStringList updateAgentQueue(const QString &, const QString &, const QMap<QString, QVariant> &);
     void clearUserList();
     void clearPhoneList();
     void clearAgentList();

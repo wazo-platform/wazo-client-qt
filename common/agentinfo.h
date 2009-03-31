@@ -58,6 +58,8 @@ class AgentInfo
     ~AgentInfo();
     //! update attribute members
     bool update(const QMap<QString, QVariant> & prop);
+    //! update attribute members
+    bool updateQueue(const QMap<QString, QVariant> & prop);
     //! asterisk this agent belongs to
     const QString & astid() const;
     //! context this agent belongs to

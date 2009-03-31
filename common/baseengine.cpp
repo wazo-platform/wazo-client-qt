@@ -784,6 +784,23 @@ QStringList BaseEngine::updateAgent(const QString & astid,
     return keychanges;
 }
 
+QStringList BaseEngine::updateAgentQueue(const QString & astid,
+                                         const QString & agentid,
+                                         const QMap<QString, QVariant> & properties)
+{
+    QStringList keychanges;
+    QString key = QString("agent:%1/%2").arg(astid).arg(agentid);
+    if( ! m_agents.contains( key ) ) {
+        m_agents[key] = new AgentInfo(astid, properties);
+        keychanges << key;
+    } else {
+        bool haschanged = m_agents[key]->updateQueue(properties);
+        if (haschanged)
+            keychanges << key;
+    }
+    return keychanges;
+}
+
 double BaseEngine::timeServer() const
 {
     return m_timesrv;
@@ -895,6 +912,18 @@ void BaseEngine::parseCommand(const QString & line)
                     emit newAgentList(kk);
                 
             } else if(function == "update") {
+                QStringList kk;
+                QMap<QString, QVariant> payload = datamap["payload"].toMap();
+                foreach(QString astid, payload.keys()) {
+                    QMap<QString, QVariant> values = payload[astid].toMap();
+                    foreach(QString agentid, values.keys()) {
+                        kk += updateAgentQueue(astid, agentid, values[agentid].toMap());
+                    }
+                }
+                if(! kk.isEmpty())
+                    emit newAgentList(kk);
+                
+            } else if(function == "update-old") {
                 QVariant params = datamap["payload"];
                 QString action = params.toMap()["action"].toString();
                 QString astid = params.toMap()["astid"].toString();

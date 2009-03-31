@@ -61,12 +61,39 @@ AgentInfo::~AgentInfo()
 
 bool AgentInfo::update(const QMap<QString, QVariant> & prop)
 {
-    if (m_properties == prop)
-        return false;
-    else {
+    bool haschanged = false;
+    if (m_properties != prop) {
         m_properties = prop;
-        return true;
+        haschanged = true;
     }
+    return haschanged;
+}
+
+bool AgentInfo::updateQueue(const QMap<QString, QVariant> & prop)
+{
+    bool haschanged = false;
+    if (m_properties != prop)
+        foreach(QString arg, prop.keys()) {
+            if(! m_properties.contains(arg)) {
+                m_properties[arg] = prop[arg];
+                haschanged = true;
+            }
+            
+            if(m_properties[arg] != prop[arg]) {
+                QVariantMap tmp = m_properties[arg].toMap();
+                foreach(QString arg2, prop[arg].toMap().keys()) {
+                    if(! tmp.contains(arg2)) {
+                        tmp[arg2] = prop[arg].toMap()[arg2];
+                    }
+                    if(tmp[arg2] != prop[arg].toMap()[arg2]) {
+                        tmp[arg2] = prop[arg].toMap()[arg2];
+                    }
+                }
+                m_properties[arg] = tmp;
+                haschanged = true;
+            }
+        }
+    return haschanged;
 }
 
 const QString & AgentInfo::astid() const
