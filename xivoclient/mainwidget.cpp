@@ -1366,12 +1366,12 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
                                    QSystemTrayIcon::Information,
                                    5000);
     }
-        
+    
     // focus on the customerinfo tab
     if(m_tabnames.contains("customerinfo") && m_engine->checkedFunction("customerinfo") && options.contains("f"))
         if (m_cinfo_index > -1)
             m_tabwidget->setCurrentIndex(m_cinfo_index);
-        
+    
     // to be customisable, if the user wants the window to popup
     if(options.contains("p")) {
         setVisible(true);
@@ -1488,7 +1488,7 @@ bool MainWidget::event(QEvent *event)
 void MainWidget::about()
 {
     QString applicationVersion(XIVOVER);
-    QString fetchlastone = "<a href=http://www.xivo.fr/download/xivo_cti_client/"
+    QString fetchlastone = "<a href=http://downloads.xivo.fr/xivo_cti_client/"
 #if defined(Q_WS_X11)
         "linux/debian"
 #elif defined(Q_WS_WIN)
@@ -1497,7 +1497,7 @@ void MainWidget::about()
         "macos"
 #endif
         "/" + __xivo_version__ + ">" + tr("last one") + "</a>";
-        
+    
     // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
     QMessageBox::about(this,
                        tr("About XIVO Client"),

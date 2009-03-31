@@ -101,6 +101,7 @@ win32pack-%:
 
 
 # MACOS targets
+# (man hdiutil) "-format UDBZ" works only >= 10.4, thus "-format UDZO"
 # export UPXRUN=/Users/proformatique/upx-3.01-src/src/upx.out
 
 all-macos:
@@ -112,8 +113,7 @@ macos-%:
 	@strip $*/$*.app/Contents/MacOS/$*
 	@${UPXRUN} $*/$*.app/Contents/MacOS/$*
 	@mkdir -p $*/$*.app/Contents/Resources/French.lproj
-	@hdiutil create $*-${_XIVOVER_}-${_SVNVER_}.dmg -srcfolder $*/$*.app -format UDBZ
-
+	@hdiutil create $*-${_XIVOVER_}-${_SVNVER_}.dmg -srcfolder $*/$*.app -format UDZO
 
 
 # DEBIAN targets
