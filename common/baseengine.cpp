@@ -1281,7 +1281,7 @@ void BaseEngine::parseCommand(const QString & line)
                 m_ka_timerid = startTimer(m_keepaliveinterval);
                 askCallerIds();
             }
-
+            
         } else {
             qDebug() << "BaseEngine::parseQVariantCommand() : unknown server command class" << thisclass << datamap;
         }
@@ -1458,7 +1458,7 @@ void BaseEngine::socketReadyRead()
             m_byte_counter += data.size();
             // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
             QString line = QString::fromUtf8(data);
-                        
+            
             if(line.startsWith("<ui version=")) {
                 // we get here when receiving a sheet as a Qt4 .ui form
                 qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
@@ -1949,8 +1949,8 @@ void BaseEngine::setState(EngineState state)
 
 void BaseEngine::changeWatchedAgentSlot(const QString & agentid, bool force)
 {
-    // qDebug() << "BaseEngine::changeWatchedAgentSlot" << agentid;
-    if(force || (agentid.size() == 0)) {
+    // qDebug() << "BaseEngine::changeWatchedAgentSlot" << agentid << force;
+    if((force || (agentid.size() > 0)) && (m_agents.contains(agentid))) {
         m_agent_watched_agentid = agentid;
         emit changeWatchedAgentSignal(agentid);
     }

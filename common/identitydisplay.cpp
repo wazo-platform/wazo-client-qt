@@ -307,16 +307,16 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     }
     // m_voicemail->hide();
     // changes the "watched agent" only if no one else has done it before
-    changeWatchedAgent(m_ui->astid() + " " + m_ui->agentnumber(), false);
+    changeWatchedAgent(QString("agent:%1/%2").arg(m_ui->astid()).arg(m_ui->agentid()), false);
 }
 
 void IdentityDisplay::newAgentList(const QStringList &)
 {
+    // qDebug() << "IdentityDisplay::newAgentList()" << qsl;
     if (m_loginkind == 0)
         return;
     if (m_ui == NULL)
         return;
-    // qDebug() << "IdentityDisplay::newAgentList()";
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
     while( iter.hasNext() )
         {
