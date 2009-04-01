@@ -310,64 +310,68 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     changeWatchedAgent(QString("agent:%1/%2").arg(m_ui->astid()).arg(m_ui->agentid()), false);
 }
 
-void IdentityDisplay::newAgentList(const QStringList &)
+void IdentityDisplay::newAgentList(const QStringList & list)
 {
-    // qDebug() << "IdentityDisplay::newAgentList()" << qsl;
-    if (m_loginkind == 0)
+    if (m_loginkind == 0 || !m_ui)
         return;
-    if (m_ui == NULL)
-        return;
+    //qDebug() << "IdentityDisplay::newAgentList()" << list;
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
     while( iter.hasNext() )
-        {
-            iter.next();
-            AgentInfo * ainfo = iter.value();
-            QString agentid = iter.key();
-            if((m_ui->astid() == ainfo->astid()) && (m_ui->agentnumber() == ainfo->agentnumber())) {
-                m_agent->setText(QString("Agent %1").arg(ainfo->agentnumber()));
-                showAgentProps();
-                updateAgentStatus(ainfo->properties());
-            }
+    {
+        iter.next();
+        AgentInfo * ainfo = iter.value();
+        QString agentid = iter.key();
+        if((m_ui->astid() == ainfo->astid()) && (m_ui->agentnumber() == ainfo->agentnumber())) {
+            m_agent->setText(QString("Agent %1").arg(ainfo->agentnumber()));
+            showAgentProps();
+            updateAgentStatus(ainfo->properties());
         }
+    }
 }
 
 void IdentityDisplay::newQueueList(const QStringList &)
 {
+/*
     if (m_loginkind == 0)
         return;
     if (m_ui == NULL)
         return;
+*/
     // qDebug() << "IdentityDisplay::newQueueList()";
 }
 
 void IdentityDisplay::updateAgentStatus(const QVariantMap & properties)
 {
     QVariantMap agqjoined = properties["queues_by_agent"].toMap();
-    QString agstatus = properties["agentstats"].toMap()["status"].toString();
-    QString phonenum = properties["agentstats"].toMap()["agent_phone_number"].toString();
+    QVariantMap agentstats =  properties["agentstats"].toMap();
+    QString agstatus = agentstats["status"].toString();
+    QString phonenum = agentstats["agent_phone_number"].toString();
     
-    if(agstatus == "AGENT_LOGGEDOFF") {
-        setSystrayIcon(icon_color_black);
-        m_agentstatus->setProperty("connected", false);
-        m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
-    } else if(agstatus == "AGENT_IDLE") {
-        setSystrayIcon(icon_color_green);
-        m_agentstatus->setProperty("connected", true);
-        m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
-    } else if(agstatus == "AGENT_ONCALL") {
-        setSystrayIcon(icon_color_green);
-        m_agentstatus->setProperty("connected", true);
-        m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
-    } else
-        qDebug() << "IdentityDisplay::setAgentList() unknown status" << agstatus;
+    if(agstatus != m_agstatus) {
+        m_agstatus = agstatus;
+        if(agstatus == "AGENT_LOGGEDOFF") {
+            setSystrayIcon(icon_color_black);
+            m_agentstatus->setProperty("connected", false);
+            m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
+        } else if(agstatus == "AGENT_IDLE") {
+            setSystrayIcon(icon_color_green);
+            m_agentstatus->setProperty("connected", true);
+            m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
+        } else if(agstatus == "AGENT_ONCALL") {
+            setSystrayIcon(icon_color_green);
+            m_agentstatus->setProperty("connected", true);
+            m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
+        } else
+            qDebug() << "IdentityDisplay::setAgentList() unknown status" << agstatus;
+    }
     
     QStringList joined_queues;
     QStringList unpaused_queues;
     foreach (QString qname, agqjoined.keys()) {
-        QVariant qv = agqjoined[qname];
-        if(qv.toMap().contains("Status")) {
-            QString pstatus = qv.toMap()["Paused"].toString();
-            QString sstatus = qv.toMap()["Status"].toString();
+        QVariantMap qv = agqjoined[qname].toMap();
+        if(qv.contains("Status")) {
+            QString pstatus = qv["Paused"].toString();
+            //QString sstatus = qv["Status"].toString();
             joined_queues << qname;
             if(pstatus == "0")
                 unpaused_queues << qname;

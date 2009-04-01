@@ -63,20 +63,20 @@ class UserInfo;
 class QueuesPanel : public QWidget
 {
     Q_OBJECT
- public:
+public:
     QueuesPanel(BaseEngine *,
                 const QVariant &,
                 QWidget * parent = 0);
     ~QueuesPanel();
- protected:
-    void update();
- private:
+protected:
+    void update(const QStringList &);
+private:
     void addQueue(const QString &, const QString &, const QString &);
- signals:
+signals:
     void changeWatchedQueue(const QString &);   //!< Watch this queue
     void saveQueueOrder(const QVariant &);      //!< Save Queue order (in settings)
     void loadQueueOrder();                      //!< request load of queue order
- public slots:
+public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *) {};
     void updateCounter(const QVariant &);
@@ -84,10 +84,10 @@ class QueuesPanel : public QWidget
     void newQueueList(const QStringList &);
     void newAgentList(const QStringList &);
     void setQueueOrder(const QVariant &);
- private slots:
+private slots:
     void queueClicked();
- private:
-    void newQueue(const QString &, const QString &, const QVariant &);
+private:
+    bool updateQueue(const QString &, const QString &, const QVariant &);
     void affWidgets();
     
     QFont m_gui_font;

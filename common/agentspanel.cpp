@@ -142,14 +142,17 @@ void AgentsPanel::newQueueList(const QStringList &)
 
 /*! \brief 
  */
-void AgentsPanel::newAgentList(const QStringList &)
+void AgentsPanel::newAgentList(const QStringList & list)
 {
-    // qDebug() << "AgentsPanel::newAgentList()";
+    //qDebug() << "AgentsPanel::newAgentList()" << list;
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
+    qDebug() << m_engine->agents();
     while( iter.hasNext() ) {
         iter.next();
         AgentInfo * ainfo = iter.value();
         QString agentid = iter.key();
+        if(!list.contains(agentid))
+            continue;
         
         // QString agentcontext = properties.toMap()["context"].toString();
         // if(m_ui->contexts().contains(agentcontext))

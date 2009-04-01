@@ -256,6 +256,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, con
     m_queuebusies[queuename] = new QProgressBar(this);
     m_queuebusies[queuename]->setFont(m_gui_font);
     m_queuebusies[queuename]->setProperty("queueid", queuename);
+    m_queuebusies[queuename]->setProperty("astid", astid);
     m_queuebusies[queuename]->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
     m_queuebusies[queuename]->setFormat("%v");
     foreach (QString statitem, m_statitems) {
@@ -282,6 +283,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queuename, con
  */
 void QueuesPanel::affWidgets()
 {
+    //qDebug() << "QueuesPanel::affWidgets()";
     int delta = 1;
     foreach(QString queuename, m_queuelabels.keys()) {
         int colnum = 1;
@@ -302,19 +304,25 @@ void QueuesPanel::affWidgets()
  */
 void QueuesPanel::newQueueList(const QStringList & qsl)
 {
+    bool addedNewQueue = false;
     // qDebug() << "QueuesPanel::newQueueList()" << qsl;
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
     while( iter.hasNext() )
+    {
+        iter.next();
+        if(qsl.contains(iter.key()))
         {
-            iter.next();
-            if (qsl.contains(iter.key())) {
-                QueueInfo * qinfo = iter.value();
-                newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
-            }
+            QueueInfo * qinfo = iter.value();
+            if(updateQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties()))
+                addedNewQueue = true;
         }
-    affWidgets();
-    loadQueueOrder();
-    update();
+    }
+    if(addedNewQueue)
+    {
+        //affWidgets();
+        loadQueueOrder();
+    }
+    update(qsl);
 }
 
 /*! \brief update display once the agents have been received
@@ -328,8 +336,9 @@ void QueuesPanel::newAgentList(const QStringList &)
  *
  * update m_queueinfos
  */
-void QueuesPanel::newQueue(const QString & astid, const QString & queuename, const QVariant & queueprops)
+bool QueuesPanel::updateQueue(const QString & astid, const QString & queuename, const QVariant & queueprops)
 {
+    bool newQueue = false;
     QVariantMap queuestatcontents = queueprops.toMap()["queuestats"].toMap();
     QString queuecontext = queueprops.toMap()["context"].toString();
     // qDebug() << "QueuesPanel::newQueue()" << astid << queuename << queuecontext;
@@ -338,8 +347,10 @@ void QueuesPanel::newQueue(const QString & astid, const QString & queuename, con
     infos["Calls"] = "0";
     foreach (QString statname, queuestatcontents.keys())
         infos[statname] = queuestatcontents[statname].toString();
-    if(! m_queuelabels.contains(queuename))
+    if(! m_queuelabels.contains(queuename)) {
         addQueue(astid, queuename, queuecontext);
+        newQueue = true;
+    }
     if(m_queuebusies.contains(queuename)) {
         m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
         foreach (QString statitem, m_statitems)
@@ -364,38 +375,48 @@ void QueuesPanel::newQueue(const QString & astid, const QString & queuename, con
         else
             m_queueinfos[queuename]["Xivo-Avail"]->setToolTip("");
     }
+    return newQueue;
 }
 
 /*! \brief update display of busy levels bars
  *
  * update m_maxbusy and color of QProgressBar 
  */
-void QueuesPanel::update()
+void QueuesPanel::update(const QStringList & list)
 {
     // qDebug() << "QueuesPanel::update()";
-    m_maxbusy = 0;
+    quint32 maxbusy = 0;
+    bool maxbusychanged;
     foreach (QProgressBar * qpb, m_queuebusies) {
         quint32 val = qpb->property("value").toUInt();
-        if(val > m_maxbusy)
-            m_maxbusy = val;
+        if(val > maxbusy)
+            maxbusy = val;
     }
-    // qDebug() << "QueuesPanel::update() maxbusy =" << m_maxbusy;
+    if( (maxbusychanged = (maxbusy != m_maxbusy)) )
+        m_maxbusy = maxbusy;
     
     quint32 greenlevel = m_options.toMap()["queuelevels"].toMap()["green"].toUInt();
     quint32 orangelevel = m_options.toMap()["queuelevels"].toMap()["orange"].toUInt();
-    foreach (QProgressBar * qpb, m_queuebusies) {
-        QString qname = qpb->property("queueid").toString();
-        quint32 val = qpb->property("value").toUInt();
-        qpb->setRange(0, m_maxbusy + 1);
-        // qpb->setValue(0); // trick in order to refresh
-        qpb->setValue(val);
-        
-        if(val <= greenlevel)
-            qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #00ff00;}");
-        else if(val <= orangelevel)
-            qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #f38402;}");
-        else
-            qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ff0000;}");
+    QHashIterator<QString, QProgressBar *> it(m_queuebusies);
+    while(it.hasNext()) {
+        it.next();
+        QProgressBar * qpb = it.value();
+        QString astid = qpb->property("astid").toString();
+        QString queueid = QString("queue:%1/%2").arg(astid).arg(it.key());
+        if(maxbusychanged || list.contains(queueid)) {
+            quint32 val = qpb->property("value").toUInt();
+            //qDebug() << "QueuesPanel::update()" << queueid;
+            qpb->setRange(0, m_maxbusy + 1);
+            // qpb->setValue(0); // trick in order to refresh
+            qpb->setValue(val);
+            
+            if(val <= greenlevel)
+                qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #00ff00;}");
+            else if(val <= orangelevel)
+                qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #f38402;}");
+            else
+                qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ff0000;}");
+        }
     }
 }
 
@@ -447,3 +468,4 @@ void QueuesPanel::queueClicked()
         }
     }
 }
+

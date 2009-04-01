@@ -117,6 +117,7 @@ private:
     QStringList m_functions;
     bool m_allow_logagent;
     bool m_allow_pauseagent;
+    QString m_agstatus; //!< agent status string
 };
 
 #endif

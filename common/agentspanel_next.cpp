@@ -704,8 +704,10 @@ void AgentsPanelNext::refreshDisplay()
     m_glayout->setColumnStretch(m_title.size() * NCOLS, 1);
 }
 
-void AgentsPanelNext::newAgentList(const QStringList &)
+void AgentsPanelNext::newAgentList(const QStringList & list)
 {
+    //qDebug() << "AgentsPanelNext::newAgentList" << list;
+#if 0
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
     while( iter.hasNext() ) {
         iter.next();
@@ -716,23 +718,27 @@ void AgentsPanelNext::newAgentList(const QStringList &)
         QString agentnumber = ainfo->agentnumber();
         QString idxa = QString("%1-%2").arg(astid).arg(agentnumber);
     }
+#endif
     emit loadQueueGroups();
 }
 
-void AgentsPanelNext::newQueueList(const QStringList &)
+void AgentsPanelNext::newQueueList(const QStringList & list)
 {
+    //qDebug() << "AgentsPanelNext::newQueueList" << list;
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
     while( iter.hasNext() ) {
         iter.next();
-        QueueInfo * qinfo = iter.value();
         QString queueid = iter.key();
-        newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
+        if(list.contains(queueid)) {
+            QueueInfo * qinfo = iter.value();
+            newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
+        }
     }
 }
 
 void AgentsPanelNext::newQueue(const QString & astid, const QString & queuename, const QVariant & queueprops)
 {
-    // qDebug() << "QueuesPanel::newQueue()" << astid << queuename;
+    //qDebug() << "AgentsPanelNext::newQueue()" << astid << queuename;
     UserInfo * userinfo = m_engine->getXivoClientUser();
     if(userinfo == NULL)
         return;
@@ -747,3 +753,4 @@ void AgentsPanelNext::timerEvent(QTimerEvent *)
     foreach (QString idx, m_agent_labels.keys())
         setAgentProps(idx);
 }
+
