@@ -73,17 +73,15 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
 {
     // qDebug() << "CallWidget::CallWidget()" << channelme;
     if(m_call_yellow == NULL)
-        {
-            m_call_yellow = new QPixmap(":/images/phone-yellow.png");
-            m_call_blue   = new QPixmap(":/images/phone-blue.png");
-            m_call_red    = new QPixmap(":/images/phone-red.png");
-            m_call_gray   = new QPixmap(":/images/phone-grey.png");
-        }
+    {
+        m_call_yellow = new QPixmap(":/images/phone-yellow.png");
+        m_call_blue   = new QPixmap(":/images/phone-blue.png");
+        m_call_red    = new QPixmap(":/images/phone-red.png");
+        m_call_gray   = new QPixmap(":/images/phone-grey.png");
+    }
     m_ui = ui;
     QGridLayout * gridlayout = new QGridLayout(this);
     
-    //         m_callerid = callerid;
-    //         m_calleridname = calleridname;
     m_channelme = channelme;
     m_channelpeer = channelpeer;
     
@@ -98,28 +96,18 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
         
     m_lbl_time = new QLabel(this);
     m_lbl_time->setFont(QFont("", 8, QFont::Bold));
-    //m_startTime = QDateTime::currentDateTime().addSecs(-time);
     m_startTime = QDateTime::fromTime_t(ts);
     startTimer(1000);
-    gridlayout->addWidget(m_lbl_time, 1, 0);
+    gridlayout->addWidget(m_lbl_time, 1, 0, 1, 3);
         
     m_lbl_direction = new QLabel(this);
     gridlayout->addWidget(m_lbl_direction, 0, 1);
-        
-    //         m_lbl_channelpeer = new QLabel(channelpeer, this);
-    //         gridlayout->addWidget(m_lbl_channelpeer, 0, Qt::AlignLeft );
         
     m_lbl_exten = new QLabel(this);
     m_lbl_exten->setFont(QFont("courier", 10, QFont::Light));
     gridlayout->addWidget(m_lbl_exten, 0, 2);
         
     updateWidget(status, ts, "cpeer", callerid, calleridname);
-        
-    // for caller id information
-    QLabel * dummy = new QLabel("", this);
-    dummy->setFont(QFont("times", 10, QFont::Light, true));
-    gridlayout->addWidget(dummy, 1, 2);
-    //setAcceptDrops(true);
         
     m_hangUpAction = new QAction( tr("&Hangup"), this);
     m_hangUpAction->setStatusTip( tr("Hang up/Close the channel") );
@@ -223,13 +211,6 @@ void CallWidget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_dragstartpos = event->pos();
-        /*
-          if(m_lbl_channelpeer)
-          {
-          qDebug() << "I'm selecting this one for future use :" << m_channelme
-          << m_lbl_channelpeer->text();
-          }
-        */
     }
 }
 
@@ -289,12 +270,12 @@ void CallWidget::parkCall()
  */
 void CallWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-    m_contextMenu = new QMenu(this);
-    m_contextMenu->addAction(m_hangUpAction);
+    QMenu contextMenu;
+    contextMenu.addAction(m_hangUpAction);
     // m_transferToNumberAction only if there is something written
-    m_contextMenu->addAction(m_transferToNumberAction);
-    m_contextMenu->addAction(m_parkCall);
-    m_contextMenu->exec(event->globalPos());
+    contextMenu.addAction(m_transferToNumberAction);
+    contextMenu.addAction(m_parkCall);
+    contextMenu.exec(event->globalPos());
 }
 
 /*! \brief return m_channelme

@@ -44,7 +44,6 @@
 
 // QT includes.
 #include <QDateTime>
-#include <QMenu>
 #include <QObject>
 #include <QWidget>
 
@@ -100,7 +99,7 @@ public slots:
     void transferToNumber();
     void parkCall();
 private:
-    UserInfo * m_ui;
+    UserInfo * m_ui;            //!< monitored user infos
     QPoint m_dragstartpos;        //!< used for drag
     QString m_channelme;        //!< channel identifier
     QString m_channelpeer;      //!< peer channel identifier
@@ -120,7 +119,6 @@ private:
     QAction * m_hangUpAction;        //!< Hang Up Action
     QAction * m_transferToNumberAction;        //!< Transfer to Number Action
     QAction * m_parkCall;        //!< Park the Call Action
-    QMenu * m_contextMenu;
 };
 
 #endif
