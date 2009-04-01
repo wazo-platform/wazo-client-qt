@@ -300,15 +300,17 @@ void QueuesPanel::affWidgets()
 
 /*! \brief update display once the queues have been received
  */
-void QueuesPanel::newQueueList(const QStringList &)
+void QueuesPanel::newQueueList(const QStringList & qsl)
 {
-    // qDebug() << "QueuesPanel::newQueueList()";
+    // qDebug() << "QueuesPanel::newQueueList()" << qsl;
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
     while( iter.hasNext() )
         {
             iter.next();
-            QueueInfo * qinfo = iter.value();
-            newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
+            if (qsl.contains(iter.key())) {
+                QueueInfo * qinfo = iter.value();
+                newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
+            }
         }
     affWidgets();
     loadQueueOrder();
