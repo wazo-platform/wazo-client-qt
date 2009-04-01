@@ -96,10 +96,10 @@ QueuedetailsPanel::~QueuedetailsPanel()
 
 /*! \brief 
  */
-void QueuedetailsPanel::newQueueList(const QStringList &)
+void QueuedetailsPanel::newQueueList(const QStringList & qsl)
 {
-    // qDebug() << "QueuedetailsPanel::newQueueList()";
-    if(m_engine->queues().contains(m_monitored_queueid))
+    // qDebug() << "QueuedetailsPanel::newQueueList()" << qsl;
+    if(qsl.contains(m_monitored_queueid) && m_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
@@ -107,7 +107,7 @@ void QueuedetailsPanel::newQueueList(const QStringList &)
  */
 void QueuedetailsPanel::newAgentList(const QStringList &)
 {
-    // qDebug() << "QueuedetailsPanel::newAgentList()";
+    // qDebug() << "QueuedetailsPanel::newAgentList()" << qsl;
     if(m_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }

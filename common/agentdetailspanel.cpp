@@ -146,10 +146,10 @@ void AgentdetailsPanel::newQueueList(const QStringList &)
 
 /*! \brief 
  */
-void AgentdetailsPanel::newAgentList(const QStringList &)
+void AgentdetailsPanel::newAgentList(const QStringList & qsl)
 {
-    // qDebug() << "AgentdetailsPanel::newAgentList()" << m_monitored_agentid;
-    if(m_engine->agents().contains(m_monitored_agentid))
+    // qDebug() << "AgentdetailsPanel::newAgentList()" << qsl;
+    if(qsl.contains(m_monitored_agentid) && m_engine->agents().contains(m_monitored_agentid))
         updatePanel();
 }
 
