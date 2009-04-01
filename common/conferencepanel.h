@@ -47,6 +47,7 @@
 #include <QList>
 #include <QObject>
 #include <QWidget>
+#include <QVariant>
 
 class QGridLayout;
 class QProgressBar;
@@ -69,7 +70,9 @@ public:
 protected:
     void timerEvent(QTimerEvent *);
 public slots:
+    //! does nothing...
     void setGuiOptions(const QVariant &) {};
+    //! does nothing...
     void setUserInfo(const UserInfo *) {};
     void meetmeEvent(double, const QVariant &);
     void meetmeInit(double, const QVariant &);
@@ -81,24 +84,24 @@ private:
                        const QString &,
                        const QString &,
                        const QString &,
-                       const QVariant &);
+                       const QVariantMap &);
     void addRoomTab(const QString &,
                     const QString &,
                     const QString &);
     void delRoomTab(const QString &,
                     const QString &);
     
-    BaseEngine * m_engine;
-    QHash<QString, QLabel *> m_infos;
-    QHash<QString, QLabel *> m_timespent;
-    QHash<QString, QPushButton *> m_action_kick;
-    QHash<QString, QPushButton *> m_action_record;
-    QHash<QString, QPushButton *> m_action_mute;
-    QHash<QString, QGridLayout *> m_layout;
-    QTabWidget * m_tw;
-    QGridLayout * m_glayout;
+    BaseEngine * m_engine;  //!< BaseEngine pointer
+    QHash<QString, QLabel *> m_infos;   //!< widgets for displaying name and phone number
+    QHash<QString, QLabel *> m_timespent;   //!< call durations
+    QHash<QString, QPushButton *> m_action_kick;    //!< kick buttons
+    QHash<QString, QPushButton *> m_action_record;  //!< record buttons
+    QHash<QString, QPushButton *> m_action_mute;    //!< mute buttons
+    QHash<QString, QGridLayout *> m_layout;         //!< layouts
+    QTabWidget * m_tw;              //!< Tab container
+    QGridLayout * m_glayout;        //!< gridlayout
 signals:
-    void meetmeAction(const QString &, const QString &);
+    void meetmeAction(const QString &, const QString &);    //!< action
 };
 
 #endif
