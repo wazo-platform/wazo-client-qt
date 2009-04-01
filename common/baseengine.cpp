@@ -1035,6 +1035,7 @@ void BaseEngine::parseCommand(const QString & line)
                     m_users[iduser]->setVoiceMailNumber(uinfo["voicemailnum"].toString());
                     m_users[iduser]->setAgentNumber(uinfo["agentnumber"].toString());
                     m_users[iduser]->setAgentId(uinfo["agentid"].toString());
+                    m_users[iduser]->setContext(uinfo["context"].toString());
                     m_users[iduser]->setMWI(uinfo["mwi"].toStringList());
                     //m_users[iduser]->setContext(uinfo["context"].toString());
                     emit updatePeerAgent(m_timesrv, iduser, "imstatus", QStringList());

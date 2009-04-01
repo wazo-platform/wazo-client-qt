@@ -68,6 +68,7 @@ public:
     void setUserId(const QString &);
     void setCtiLogin(const QString &);
     void setMWI(const QStringList &);
+    void setContext(const QString &);
     bool hasPhone(const QString &,
                   const QString &);
     bool hasAgentNumber(const QString &,
@@ -81,7 +82,7 @@ public:
     const QString & agentnumber() const;
     const QString & agentid() const;
     const QString & astid() const;
-    const QStringList contexts() const;
+    const QString & context() const;
     const QHash<QString, QString> & availstate() const;
     QList<QString> phonelist() const;
     const PhoneInfo * getPhoneInfo(const QString &) const;
@@ -94,9 +95,10 @@ private:
     QString m_company;  //!< user company
     QString m_ctilogin; //!< user login on cti
     QString m_fullname; //!< user full name
-        
+    QString m_context; //!< user context
+    
     QHash<QString, QString> m_availstate;   //!< availability state properties
-        
+    
     QString m_astid;    //!< asterisk id (for main phone)
     QString m_phonenum; //!< main phone number
     QString m_voicemailnum; //!< voice mail box number

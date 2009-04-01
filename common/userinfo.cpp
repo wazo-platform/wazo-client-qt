@@ -83,6 +83,11 @@ void UserInfo::setVoiceMailNumber(const QString & voicemailnum)
     m_voicemailnum = voicemailnum;
 }
 
+void UserInfo::setContext(const QString & context)
+{
+    m_context = context;
+}
+
 /*! \brief set phone list
  *
  * fill m_phones Hash with pointers to PhoneInfo objects
@@ -190,16 +195,9 @@ const QString & UserInfo::agentid() const
 
 /*! \brief return a list of contexts where this user has its phones
  */
-const QStringList UserInfo::contexts() const
+const QString & UserInfo::context() const
 {
-    QStringList clist;
-    foreach(const QString key, m_phones.keys())
-    {
-        //if(m_phones[key])
-        //    clist << m_phones[key]->context();
-        clist << (key.split(QChar('.')))[1];
-    }
-    return clist;
+    return m_context;
 }
 
 const QString & UserInfo::astid() const

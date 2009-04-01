@@ -729,21 +729,23 @@ void AgentsPanelNext::newQueueList(const QStringList & list)
     while( iter.hasNext() ) {
         iter.next();
         QString queueid = iter.key();
-        if(list.contains(queueid)) {
-            QueueInfo * qinfo = iter.value();
-            newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
-        }
+        // if(list.contains(queueid)) {
+        QueueInfo * qinfo = iter.value();
+        newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
+        // }
     }
 }
 
 void AgentsPanelNext::newQueue(const QString & astid, const QString & queuename, const QVariant & queueprops)
 {
-    //qDebug() << "AgentsPanelNext::newQueue()" << astid << queuename;
+    QString queuecontext = queueprops.toMap()["context"].toString();
+    // qDebug() << "AgentsPanelNext::newQueue()" << astid << queuename << queuecontext;
     UserInfo * userinfo = m_engine->getXivoClientUser();
+    
     if(userinfo == NULL)
         return;
-    QString queuecontext = queueprops.toMap()["context"].toString();
-    if((! m_queuelist.contains(queuename)) && userinfo->contexts().contains(queuecontext))
+    
+    if((! m_queuelist.contains(queuename)) && (userinfo->context() == queuecontext))
         m_queuelist.append(queuename);
 }
 
@@ -753,4 +755,3 @@ void AgentsPanelNext::timerEvent(QTimerEvent *)
     foreach (QString idx, m_agent_labels.keys())
         setAgentProps(idx);
 }
-
