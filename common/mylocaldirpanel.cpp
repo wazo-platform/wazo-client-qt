@@ -233,7 +233,6 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
     //if(headerLine.isEmpty())
     //    return;
     bool saveSorting = m_table->isSortingEnabled();
-    m_table->setSortingEnabled( false );
     //QStringList headers = headerLine.split(separator);
     //if(headers.count() == 1)
     //{
@@ -268,6 +267,11 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
     qDebug() << "MyLocalDirPanel::loadFromFile"
              << firstNameCol << lastNameCol << numberCol
              << emailCol << companyCol;
+    if(maxCol < 0) {
+        // no header recognized... exiting
+        return;
+    }
+    m_table->setSortingEnabled( false );
     while (!in.atEnd())
     {
         QStringList record = in.readRecords();
