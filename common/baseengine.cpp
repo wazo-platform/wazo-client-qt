@@ -358,7 +358,15 @@ void BaseEngine::start()
  */
 void BaseEngine::stop()
 {
-    qDebug() << "BaseEngine::stop()" << sender() << sender()->property("stopper").toString();
+    QString stopper = sender()->property("stopper").toString();
+    qDebug() << "BaseEngine::stop()" << sender() << stopper;
+    QVariantMap command;
+    command["class"] = "logout";
+    command["direction"] = "xivoserver";
+    command["stopper"] = stopper;
+    sendJsonCommand(command);
+    
+    m_sbsocket->flush();
     m_sbsocket->disconnectFromHost();
     
     stopKeepAliveTimer();
@@ -962,6 +970,9 @@ void BaseEngine::parseCommand(const QString & line)
             
         } else if (thisclass == "getguisettings") {
             setGuiOptions(datamap["payload"]);
+            
+        } else if (thisclass == "finally") {
+            qDebug() << "I should have received everything";
             
         } else if (thisclass == "meetme") {
             QString function = datamap["function"].toString();
@@ -1864,7 +1875,7 @@ void BaseEngine::askCallerIds()
     QVariantMap command;
     command["direction"] = "xivoserver";
     command["function"] = "getlist";
-    QStringList getlists = (QStringList() << "users" << "queues" << "agents" << "phones" << "meetme" << "users");
+    QStringList getlists = (QStringList() << "users" << "queues" << "agents" << "phones" << "meetme" << "users" << "endinit");
     foreach(QString kind, getlists) {
         command.remove("class");
         command["class"] = kind;
