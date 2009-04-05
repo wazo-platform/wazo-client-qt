@@ -369,6 +369,7 @@ private:
     QFile * m_logfile;
     int m_byte_counter;
     QTime m_time;
+    bool m_attempt_loggedin;
 };
 
 #endif

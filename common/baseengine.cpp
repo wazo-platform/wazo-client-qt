@@ -77,7 +77,7 @@ BaseEngine::BaseEngine(QSettings * settings,
       m_userid(""), m_useridopt(""), m_company(""), m_password(""), m_phonenumber(""),
       m_sessionid(""), m_state(ENotLogged),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
-      m_byte_counter(0)
+      m_byte_counter(0), m_attempt_loggedin(false)
 {
     settings->setParent( this );
     m_ka_timerid = 0;
@@ -360,11 +360,16 @@ void BaseEngine::stop()
 {
     QString stopper = sender()->property("stopper").toString();
     qDebug() << "BaseEngine::stop()" << sender() << stopper;
-    QVariantMap command;
-    command["class"] = "logout";
-    command["direction"] = "xivoserver";
-    command["stopper"] = stopper;
-    sendJsonCommand(command);
+    if(m_attempt_loggedin) {
+            QVariantMap command;
+            command["class"] = "logout";
+            command["direction"] = "xivoserver";
+            command["stopper"] = stopper;
+            sendJsonCommand(command);
+            m_settings->setValue("lastlogout/stopper", stopper);
+            m_settings->setValue("lastlogout/datetime", QDateTime::currentDateTime().toString(Qt::ISODate));
+            m_attempt_loggedin = false;
+    }
     
     m_sbsocket->flush();
     m_sbsocket->disconnectFromHost();
@@ -603,6 +608,7 @@ void BaseEngine::socketConnected()
         stopTryAgainTimer();
         /* do the login/identification */
         setMyClientId();
+        m_attempt_loggedin = false;
         QVariantMap command;
         command["class"] = "login_id";
         command["direction"] = "xivoserver";
@@ -611,6 +617,13 @@ void BaseEngine::socketConnected()
         command["ident"] = m_clientid;
         command["version"] = __current_client_version__;
         command["xivoversion"] = __xivo_version__;
+        if(m_settings->contains("lastlogout")) {
+                command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
+                command["lastlogout-datetime"] = m_settings->value("lastlogout/datetime").toString();
+                m_settings->remove("lastlogout/stopper");
+                m_settings->remove("lastlogout/datetime");
+        } else
+                m_settings->setValue("lastlogout/stopper", "init");
         sendJsonCommand(command);
     } else if(socketname == "filetransfers") {
         QVariantMap command;
@@ -1186,12 +1199,12 @@ void BaseEngine::parseCommand(const QString & line)
             // callsUpdated();
             // }
             qDebug() << "BaseEngine::parseQVariantCommand()" << thisclass << "not yet supported";
-                        
+            
         } else if (thisclass == "login_id_ok") {
-                        
+                
             m_version_server = datamap["version"].toInt();
             m_xivover_server = datamap["xivoversion"].toString();
-                        
+            
             if(m_version_server < REQUIRED_SERVER_VERSION) {
                 stop();
                 popupError("version_server:" + QString::number(m_version_server) + ";" + QString::number(REQUIRED_SERVER_VERSION));
@@ -1205,11 +1218,11 @@ void BaseEngine::parseCommand(const QString & line)
                 command["hashedpassword"] = QString(res);
                 sendJsonCommand(command);
             }
-                        
+            
         } else if (thisclass == "loginko") {
             stop();
             popupError(datamap["errorstring"].toString());
-                        
+            
         } else if (thisclass == "login_pass_ok") {
             QStringList capas = datamap["capalist"].toStringList();
             QVariantMap command;
@@ -1292,6 +1305,7 @@ void BaseEngine::parseCommand(const QString & line)
                 setAvailState(m_forced_state, true);
                 m_ka_timerid = startTimer(m_keepaliveinterval);
                 askCallerIds();
+                m_attempt_loggedin = true;
             }
             
         } else {
