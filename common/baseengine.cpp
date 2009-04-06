@@ -617,13 +617,12 @@ void BaseEngine::socketConnected()
         command["ident"] = m_clientid;
         command["version"] = __current_client_version__;
         command["xivoversion"] = __xivo_version__;
-        if(m_settings->contains("lastlogout")) {
-                command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
-                command["lastlogout-datetime"] = m_settings->value("lastlogout/datetime").toString();
-                m_settings->remove("lastlogout/stopper");
-                m_settings->remove("lastlogout/datetime");
-        } else
-                m_settings->setValue("lastlogout/stopper", "init");
+        
+        command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
+        command["lastlogout-datetime"] = m_settings->value("lastlogout/datetime").toString();
+        m_settings->remove("lastlogout/stopper");
+        m_settings->remove("lastlogout/datetime");
+        
         sendJsonCommand(command);
     } else if(socketname == "filetransfers") {
         QVariantMap command;
@@ -984,7 +983,7 @@ void BaseEngine::parseCommand(const QString & line)
         } else if (thisclass == "getguisettings") {
             setGuiOptions(datamap["payload"]);
             
-        } else if (thisclass == "finally") {
+        } else if (thisclass == "endinit") {
             qDebug() << "I should have received everything";
             
         } else if (thisclass == "meetme") {
@@ -1099,8 +1098,9 @@ void BaseEngine::parseCommand(const QString & line)
                         fullname_watched = fullname_mine;
                     }
                 }
-                
                 monitorPeerRequest(fullid_watched);
+                
+                
                 // emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
                 // XXX this information might not be relevant (to be filtered according to context, ...)
             } else if (function == "update") {
