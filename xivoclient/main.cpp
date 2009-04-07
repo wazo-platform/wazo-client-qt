@@ -111,7 +111,7 @@ int main(int argc, char ** argv)
 #elif defined(Q_WS_MAC)
     info_osname = QString("MAC-%1-0x%2-%3").arg(info_endianness).arg(QSysInfo::MacintoshVersion, 2, 16, QChar('0')).arg(app.applicationPid());
 #else
-    info_osname = QString("unknown-%1-%2").arg(info_endianness);
+    info_osname = QString("unknown-%1-%2").arg(info_endianness).arg(app.applicationPid());
 #endif
     qDebug() << "main() osname=" << info_osname << "locale=" << locale;
     

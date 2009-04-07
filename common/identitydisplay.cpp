@@ -295,7 +295,7 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
 {
     // qDebug() << "IdentityDisplay::setUserInfo()";
     m_ui = ui;
-
+    
     m_user->setText(m_ui->fullname());
     m_phonenum->setText(m_ui->phonenumber());
     QStringList vm = m_ui->mwi();
@@ -312,15 +312,16 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
 
 void IdentityDisplay::newAgentList(const QStringList & list)
 {
-    if (m_loginkind == 0 || !m_ui)
+    // qDebug() << "IdentityDisplay::newAgentList()" << m_loginkind << list << m_engine->agents();
+    if (m_loginkind == 0 || ! m_ui)
         return;
-    //qDebug() << "IdentityDisplay::newAgentList()" << list;
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
     while( iter.hasNext() )
     {
         iter.next();
         AgentInfo * ainfo = iter.value();
         QString agentid = iter.key();
+        // qDebug() << "IdentityDisplay::newAgentList" << m_ui->astid() << ainfo->astid() << m_ui->agentnumber() << ainfo->agentnumber();
         if((m_ui->astid() == ainfo->astid()) && (m_ui->agentnumber() == ainfo->agentnumber())) {
             m_agent->setText(QString("Agent %1").arg(ainfo->agentnumber()));
             showAgentProps();

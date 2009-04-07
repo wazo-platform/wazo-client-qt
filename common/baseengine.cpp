@@ -1895,6 +1895,8 @@ void BaseEngine::askCallerIds()
         command["class"] = kind;
         sendJsonCommand(command);
     }
+    if(m_loginkind == 2)
+        agentAction("login");
 }
 
 void BaseEngine::setSystrayed(bool b)
