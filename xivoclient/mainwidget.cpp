@@ -169,12 +169,15 @@ MainWidget::MainWidget(BaseEngine * engine,
     connect( m_engine, SIGNAL(emitMessageBox(const QString &)),
              this, SLOT(showMessageBox(const QString &)),
              Qt::QueuedConnection );
+    
+#ifndef Q_WS_WIN
     m_clipboard = QApplication::clipboard();
     connect(m_clipboard, SIGNAL(selectionChanged()),
             this, SLOT(clipselection()) );
     connect(m_clipboard, SIGNAL(dataChanged()),
             this, SLOT(clipdata()) );
     m_clipboard->setText("", QClipboard::Selection); // see comment in MainWidget::clipselection()
+#endif
     
     // to be better defined
     // resize(500, 400);
@@ -270,6 +273,7 @@ MainWidget::~MainWidget()
     m_engine->logAction("application quit");
 }
 
+#ifndef Q_WS_WIN
 void MainWidget::clipselection()
 {
     //qDebug() << "BaseEngine::clipselection()" << m_clipboard->text(QClipboard::Selection);
@@ -303,6 +307,7 @@ void MainWidget::clipdata()
     // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)
     // X11 (non-KDE) : however, the xclipboard application seems to be able to catch such signals ...
 }
+#endif
 
 void MainWidget::setAppearance(const QStringList & dockoptions)
 {
@@ -1330,16 +1335,6 @@ void MainWidget::savePositions() const
     m_settings->setValue("display/mainwingeometry", saveGeometry());
 }
 
-void MainWidget::showEvent(QShowEvent *event)
-{
-    // qDebug() << "MainWidget::showEvent()";
-    event->accept();
-    // << "spontaneous =" << event->spontaneous()
-    // << "isMinimized =" << isMinimized()
-    // << "isVisible ="   << isVisible()
-    // << "isActiveWindow =" << isActiveWindow();
-}
-
 /*!
  * does nothing
  */
@@ -1387,6 +1382,16 @@ void MainWidget::newParkEvent()
     int index_parking = m_tabwidget->indexOf(m_xlet["parking"]);
     if(index_parking > -1)
         m_tabwidget->setCurrentIndex(index_parking);
+}
+
+void MainWidget::showEvent(QShowEvent *event)
+{
+    // qDebug() << "MainWidget::showEvent()";
+    event->accept();
+    // << "spontaneous =" << event->spontaneous()
+    // << "isMinimized =" << isMinimized()
+    // << "isVisible ="   << isVisible()
+    // << "isActiveWindow =" << isActiveWindow();
 }
 
 void MainWidget::hideEvent(QHideEvent *event)

@@ -104,8 +104,10 @@ public slots:
                            const QString &);
     void setSystrayIcon(const QString &);
 private slots:
+#ifndef Q_WS_WIN
     void clipselection();
     void clipdata();
+#endif
     void showConfDialog();
     void showLogin();
     void hideLogin();
