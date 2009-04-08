@@ -39,7 +39,15 @@
  * $Date: 2009-04-07 12:44:04 +0200 (mar 07 avr 2009) $
  */
 
+#include <QCoreApplication>
 #include "powerawareapplication.h"
+#ifdef Q_OS_WIN
+#define NOGDI
+#include <windef.h>
+#include <winbase.h>
+#include <winuser.h>
+#include <pbt.h>
+#endif
 
 /*! \brief constructor */
 PowerAwareApplication::PowerAwareApplication(int & argc, char ** argv)
