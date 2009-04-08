@@ -277,7 +277,10 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
 
     m_maxWidthWanted = new QSpinBox(this);
     m_maxWidthWanted->setRange(50, 250);
-    m_maxWidthWanted->setValue(opts["maxwidthwanted"].toInt());
+    int maxwidthwanted = opts["maxwidthwanted"].toInt();
+    if(maxwidthwanted < 50)
+        maxwidthwanted = 200;
+    m_maxWidthWanted->setValue( maxwidthwanted );
     layout4->addRow( tr("Maximum width for small SwitchBoard elements"),
                      m_maxWidthWanted );
 

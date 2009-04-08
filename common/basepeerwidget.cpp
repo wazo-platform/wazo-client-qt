@@ -69,7 +69,7 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
              this, SLOT(dial()) );
     m_maxWidthWanted = m_engine->getGuiOptions("user").toMap()["maxwidthwanted"].toInt();
     if(m_maxWidthWanted < 50)
-        m_maxWidthWanted = 100;
+        m_maxWidthWanted = 200;
     setAcceptDrops(true);
 }
 
