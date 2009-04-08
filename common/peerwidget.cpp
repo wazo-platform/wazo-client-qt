@@ -125,8 +125,11 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     // QLabels definitions
     if(m_ui->fullname().isEmpty())
         qDebug() << "PeerWidget::PeerWidget()" << "the callerid information m_ui->fullname() is empty for :" << m_ui->userid();
-    m_textlbl = new QLabel(m_ui->fullname().isEmpty() ? tr("(No callerid yet)") : m_ui->fullname(),
-                           this);
+    //m_textlbl = new QLabel(m_ui->fullname().isEmpty() ? tr("(No callerid yet)") : m_ui->fullname(),
+    //                       this);
+    m_textlbl = new QLabel(this);
+    setName(m_ui->fullname());
+    
     // set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
     m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
     
@@ -256,7 +259,15 @@ void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & q
  */
 void PeerWidget::setName(const QString & name)
 {
-    m_ui->setFullName(name);
-    m_textlbl->setText(m_ui->fullname());
+    Q_UNUSED(name)
+    //m_ui->setFullName(name);
+    QString text = tr("(No callerid yet)");
+    if(!m_ui->fullname().isEmpty() && !m_ui->phonenumber().isEmpty())
+        text = tr("%1 <%2>").arg(m_ui->fullname()).arg(m_ui->phonenumber());
+    else if(!m_ui->fullname().isEmpty())
+        text = m_ui->fullname();
+    else if(!m_ui->phonenumber().isEmpty())
+        text = m_ui->phonenumber();
+    m_textlbl->setText(text);
 }
 
