@@ -40,6 +40,8 @@
  */
 
 #include <QCoreApplication>
+#include <QVariant>
+
 #include "powerawareapplication.h"
 #ifdef Q_OS_WIN
 #define NOGDI
