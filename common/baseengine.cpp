@@ -1201,7 +1201,7 @@ void BaseEngine::parseCommand(const QString & line)
             qDebug() << "BaseEngine::parseQVariantCommand()" << thisclass << "not yet supported";
             
         } else if (thisclass == "login_id_ok") {
-                
+            
             m_version_server = datamap["version"].toInt();
             m_xivover_server = datamap["xivoversion"].toString();
             

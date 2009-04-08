@@ -127,7 +127,7 @@ int main(int argc, char ** argv)
     //    we let this commented until a relevant use case is met again
     // QObject::connect( &app, SIGNAL(lastWindowClosed()),
     // engine, SLOT(stop()) );
-
+    
     QObject::connect( &app, SIGNAL(standBy()),
                       engine, SLOT(stop()) );
     QObject::connect( &app, SIGNAL(resume()),

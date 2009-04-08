@@ -71,6 +71,7 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
             return true;
         } */
         if(msg->wParam == PBT_APMSUSPEND) {
+            setProperty("stopper", "standby");
             standBy();
             *result = TRUE;
             return true;
@@ -88,4 +89,3 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
     return false;
 }
 #endif
-
