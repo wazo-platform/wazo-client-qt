@@ -348,8 +348,10 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     else
                         contextMenu.addAction( hangupAction );
                 }
-                // TODO : intercept only if the status is right
-                if( m_ui != ui ) //status != 
+                if( (m_ui != ui) 
+                   && ( (status == CHAN_STATUS_RINGING)
+                      ||(status == CHAN_STATUS_LINKED_CALLER)
+                      ||(status == CHAN_STATUS_LINKED_CALLED) ) )
                 {
                     if( !interceptMenu && commsCount > 1 )
                         interceptMenu = new QMenu( tr("&Intercept"), &contextMenu );
@@ -367,8 +369,10 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                 }
                 /* Parking doesn't make much sense here : people usually park their
                  * correspondants, not someone random on the switchboard */
-                // TODO : check for correct status
-                if( m_ui == ui )
+                if( (m_ui == ui) 
+                   && ( (status == CHAN_STATUS_RINGING)
+                      ||(status == CHAN_STATUS_LINKED_CALLER)
+                      ||(status == CHAN_STATUS_LINKED_CALLED) ) )
                 {
                     if( !parkMenu && commsCount > 1 )
                         parkMenu = new QMenu( tr("&Park"), &contextMenu );
