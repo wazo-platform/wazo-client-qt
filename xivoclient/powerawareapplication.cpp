@@ -51,13 +51,26 @@ PowerAwareApplication::PowerAwareApplication(int & argc, char ** argv)
 bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
 {
     if(msg->message == WM_POWERBROADCAST) {
-/* PBT_APMQUERYSUSPEND PBT_APMSUSPEND PBT_APMQUERYSUSPENDFAILED */
-        if(msg->wParam == PBT_APMQUERYSUSPEND) {
+/*
+ PBT_APMSUSPEND System is suspending operation.
+ - only since windows 2000:
+ PBT_APMQUERYSUSPEND Request for permission to suspend
+ PBT_APMQUERYSUSPENDFAILED Suspension request denied.
+*/
+/*      if(msg->wParam == PBT_APMQUERYSUSPEND) {
             standBy();
             *result = TRUE; // BROADCAST_QUERY_DENY would block & deny/abort the Suspend Operation
             return true;
+        } */
+        if(msg->wParam == PBT_APMSUSPEND) {
+            standBy();
+            *result = TRUE;
+            return true;
         }
-/* PBT_APMRESUMESUSPEND */
+/*
+ PBT_APMRESUMEAUTOMATIC Operation is resuming automatically from a low-power state. This message is sent every time the system resumes.
+ PBT_APMRESUMESUSPEND   Operation is resuming from a low-power state. This message is sent after PBT_APMRESUMEAUTOMATIC if the resume is triggered by user input, such as pressing a key.
+*/
         if(msg->wParam == PBT_APMRESUMESUSPEND) {
             resume();
             *result = TRUE;
@@ -67,3 +80,4 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
     return false;
 }
 #endif
+
