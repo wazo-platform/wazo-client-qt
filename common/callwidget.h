@@ -119,6 +119,7 @@ private:
     QAction * m_hangUpAction;        //!< Hang Up Action
     QAction * m_transferToNumberAction;        //!< Transfer to Number Action
     QAction * m_parkCall;        //!< Park the Call Action
+    bool m_parkedCall;          //!< Is it a parked call ?
 };
 
 #endif

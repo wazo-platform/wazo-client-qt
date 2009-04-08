@@ -69,7 +69,7 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
                        const QString & channelpeer, const QString & callerid,
                        const QString & calleridname,
                        QWidget * parent)
-    : QWidget(parent), m_square(16,16)
+    : QWidget(parent), m_square(16,16), m_parkedCall(false)
 {
     // qDebug() << "CallWidget::CallWidget()" << channelme;
     if(m_call_yellow == NULL)
@@ -160,6 +160,7 @@ void CallWidget::updateWidget(const QString & status,
                               const QString & calleridname)
 {
     //qDebug() << "CallWidget::updateWidget()" << status << time << exten;
+    m_parkedCall = (calleridname == QString("<parked>"));
     setActionPixmap(status);
     m_channelpeer = channelpeer;
     //qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
@@ -176,6 +177,8 @@ void CallWidget::updateWidget(const QString & status,
     QString text = tr("Unknown");
     if(calleridname == "<meetme>")
         text = tr("Conference room number %1").arg(callerid);
+    else if(calleridname == "<parked>")
+        text = tr("Parked call");
     else if(calleridname != "<unknown>" && !calleridname.isEmpty())
         text = tr("%1 : %2").arg(callerid).arg(calleridname);
     else if(!callerid.isEmpty())
@@ -273,8 +276,10 @@ void CallWidget::contextMenuEvent(QContextMenuEvent *event)
     QMenu contextMenu;
     contextMenu.addAction(m_hangUpAction);
     // m_transferToNumberAction only if there is something written
-    contextMenu.addAction(m_transferToNumberAction);
-    contextMenu.addAction(m_parkCall);
+    if(!m_parkedCall) {
+        contextMenu.addAction(m_transferToNumberAction);
+        contextMenu.addAction(m_parkCall);
+    }
     contextMenu.exec(event->globalPos());
 }
 
