@@ -66,6 +66,7 @@
 DirectoryPanel::DirectoryPanel(BaseEngine * engine, QWidget * parent)
     : QWidget(parent), m_engine(engine), m_re_number("\\+?[0-9\\s\\.]+")
 {
+    setAccessibleName( tr("Directory Panel") );
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
     QLabel * titleLbl = new QLabel( tr("Di&rectory"), this );

@@ -50,6 +50,7 @@ DialPanel::DialPanel(BaseEngine * engine,
                      QWidget * parent)
     : QWidget(parent), m_engine(engine)
 {
+    setAccessibleName( tr("Dial Panel") );
     QHBoxLayout * vlayout = new QHBoxLayout(this);
     vlayout->setMargin(0);
     m_lbl = new QLabel( tr("Enter &Number :"), this );

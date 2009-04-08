@@ -74,6 +74,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     : QWidget(parent), m_engine(engine),
       m_ui(NULL)
 {
+    setAccessibleName( tr("Current User Panel") );
     m_gui_buttonsize = 16;
     
     QGridLayout * glayout = new QGridLayout(this);
@@ -158,17 +159,18 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
 void IdentityDisplay::setGuiOptions(const QVariant & options)
 {
     // qDebug() << "IdentityDisplay::setGuiOptions()" << options;
-    if(options.toMap().contains("fontname") && options.toMap().contains("fontsize"))
-        m_gui_font = QFont(options.toMap()["fontname"].toString(),
-                           options.toMap()["fontsize"].toInt());
-    if(options.toMap().contains("iconsize"))
-        m_gui_buttonsize = options.toMap()["iconsize"].toInt();
+    QVariantMap optionsMap = options.toMap();
+    if(optionsMap.contains("fontname") && optionsMap.contains("fontsize"))
+        m_gui_font = QFont(optionsMap["fontname"].toString(),
+                           optionsMap["fontsize"].toInt());
+    if(optionsMap.contains("iconsize"))
+        m_gui_buttonsize = optionsMap["iconsize"].toInt();
     
-    m_loginkind = options.toMap()["loginkind"].toUInt();
-    m_functions = options.toMap()["functions"].toStringList();
+    m_loginkind = optionsMap["loginkind"].toUInt();
+    m_functions = optionsMap["functions"].toStringList();
     
-    m_allow_logagent = options.toMap()["logagent"].toBool();
-    m_allow_pauseagent = options.toMap()["pauseagent"].toBool();
+    m_allow_logagent = optionsMap["logagent"].toBool();
+    m_allow_pauseagent = optionsMap["pauseagent"].toBool();
     
     setFont(m_gui_font);
 }

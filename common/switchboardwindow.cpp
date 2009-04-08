@@ -73,6 +73,7 @@ SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine,
     m_peerwidgetfactory = new PeerWidgetFactory(m_engine, this),
     m_layout = new PeersLayout(this);
     setObjectName("scroller"); // in order for the style settings to be set accordingly
+    setAccessibleName(tr("Switchboard"));
     setAcceptDrops(true);
     reloadGroups();
     reloadExternalPhones();
