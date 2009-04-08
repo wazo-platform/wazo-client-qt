@@ -24,15 +24,16 @@ DEPENDPATH += .
 INCLUDEPATH += . $${COMMONDIR} $${JSON_JSONQT_DIR}
 
 CONFIG -= debug
+# CONFIG += debug
 CONFIG += static
 CONFIG += uitools
 CONFIG += x86 ppc
 
 # Input
-HEADERS += mainwidget.h $${COMMONDIR}/*.h
+HEADERS += mainwidget.h powerawareapplication.h $${COMMONDIR}/*.h
 HEADERS += $${JSON_JSONQT_DIR}/*.h
 
-SOURCES += main.cpp mainwidget.cpp $${COMMONDIR}/*.cpp
+SOURCES += main.cpp mainwidget.cpp powerawareapplication.cpp $${COMMONDIR}/*.cpp
 SOURCES += $${JSON_JSONQT_DIR}/*.cpp
 
 win32 {

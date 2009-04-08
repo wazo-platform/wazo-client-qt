@@ -50,6 +50,7 @@
 
 #include "baseengine.h"
 #include "mainwidget.h"
+#include "powerawareapplication.h"
 
 /*! \fn main
  *
@@ -67,7 +68,7 @@ int main(int argc, char ** argv)
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.fr");
     QCoreApplication::setApplicationName("XIVO_Client");
-    QApplication app(argc, argv);
+    PowerAwareApplication app(argc, argv);
     QSettings * settings = new QSettings(QSettings::IniFormat,
                                          QSettings::UserScope,
                                          QCoreApplication::organizationName(),
@@ -126,6 +127,11 @@ int main(int argc, char ** argv)
     //    we let this commented until a relevant use case is met again
     // QObject::connect( &app, SIGNAL(lastWindowClosed()),
     // engine, SLOT(stop()) );
+
+    QObject::connect( &app, SIGNAL(standBy()),
+                      engine, SLOT(stop()) );
+    QObject::connect( &app, SIGNAL(resume()),
+                      engine, SLOT(start()) );
     
     //engine.startTimer(1000);
     return app.exec();
