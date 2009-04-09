@@ -370,6 +370,8 @@ private:
     int m_byte_counter;
     QTime m_time;
     bool m_attempt_loggedin;
+    int m_rate_bytes;
+    int m_rate_msec;
 };
 
 #endif
