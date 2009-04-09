@@ -74,7 +74,7 @@ ConferencePanel::~ConferencePanel()
  */
 void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
 {
-    qDebug() << "ConferencePanel::meetmeInit()" << meetme;
+    // qDebug() << "ConferencePanel::meetmeInit()" << meetme;
     foreach (QString astid, meetme.toMap().keys()) {
         QVariantMap astrooms = meetme.toMap()[astid].toMap();
         foreach (QString idx, astrooms.keys()) {

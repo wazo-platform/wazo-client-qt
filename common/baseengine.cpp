@@ -579,7 +579,7 @@ void BaseEngine::sendJsonCommand(const QVariantMap & command)
 void BaseEngine::processHistory(const QVariant & histlist)
 {
     foreach (QVariant histitem, histlist.toList()) {
-        qDebug() << "BaseEngine::processHistory()" << histitem;
+        // qDebug() << "BaseEngine::processHistory()" << histitem;
         QDateTime dt = QDateTime::fromString(histitem.toMap()["ts"].toString(), Qt::ISODate);
         int duration = histitem.toMap()["duration"].toInt();
         QString fullname = histitem.toMap()["fullname"].toString();
@@ -2031,11 +2031,13 @@ void BaseEngine::keepLoginAlive()
     QVariantMap command;
     command["class"] = "keepalive";
     command["direction"] = "xivoserver";
-    command["rate-bytes"] = m_rate_bytes;
-    command["rate-msec"] = m_rate_msec;
+    if(m_rate_bytes > 100000) {
+        command["rate-bytes"] = m_rate_bytes;
+        command["rate-msec"] = m_rate_msec;
+        m_rate_bytes = 0;
+        m_rate_msec = 0;
+    }
     sendJsonCommand(command);
-    m_rate_bytes = 0;
-    m_rate_msec = 0;
 }
 
 void BaseEngine::changeState()

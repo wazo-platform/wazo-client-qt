@@ -24,7 +24,7 @@ DEPENDPATH += .
 INCLUDEPATH += . $${COMMONDIR} $${JSON_JSONQT_DIR}
 
 CONFIG -= debug
-# CONFIG += debug
+# CONFIG += console # uncomment to get console on Win32
 CONFIG += static
 CONFIG += uitools
 CONFIG += x86 ppc

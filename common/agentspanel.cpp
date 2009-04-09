@@ -146,7 +146,7 @@ void AgentsPanel::newAgentList(const QStringList & list)
 {
     //qDebug() << "AgentsPanel::newAgentList()" << list;
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
-    qDebug() << m_engine->agents();
+    // qDebug() << "AgentsPanel::newAgentList()" << m_engine->agents();
     while( iter.hasNext() ) {
         iter.next();
         AgentInfo * ainfo = iter.value();
