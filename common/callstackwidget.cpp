@@ -113,7 +113,8 @@ void CallStackWidget::updateDisplay()
     //qDebug() << "CallStackWidget::updateDisplay()";
     CallWidget * callwidget = NULL;
 
-    QStringList activeChannels;  // list of active channels to be displayed
+    //QStringList activeChannels;  // list of active channels to be displayed
+    QStringList activeUids;
 
     if(m_monitored_ui)
     {
@@ -142,13 +143,16 @@ void CallStackWidget::updateDisplay()
                 QString channelpeer = map["peerchannel"].toString();
                 QString callerid = map["calleridnum"].toString();
                 QString calleridname = map["calleridname"].toString();
+                //qDebug() << "CallStackWidget::updateDisplay()" << it.key() << channelme << "status" << status;
                 // dont display hangup channels !
                 if(status == CHAN_STATUS_HANGUP)
                     continue;
-                activeChannels << channelme;
-                if( m_affhash.contains( channelme ) )
+                //activeChannels << channelme;
+                activeUids << it.key();
+//                qDebug() << "CallStackWidget::updateDisplay() adding/updating" << channelme;
+                if( m_affhash.contains( /*channelme*/it.key() ) )
                 {
-                    m_affhash[channelme]->updateWidget( status, ts, channelpeer, callerid, calleridname );
+                    m_affhash[it.key()/*channelme*/]->updateWidget( status, ts, channelpeer, callerid, calleridname );
                 }
                 else
                 {
@@ -168,18 +172,26 @@ void CallStackWidget::updateDisplay()
                              this, SLOT(parkcall(const QString &)) );
                     m_layout->insertWidget(m_layout->count() - 1, callwidget,
                                            0, Qt::AlignTop);
-                    m_affhash[channelme] = callwidget;
+                    m_affhash[it.key()/*channelme*/] = callwidget;
                 }
             }
         }
     }
 
+    //qDebug() << "CallStackWidget::updateDisplay() activeChannels" << activeChannels;
+//    qDebug() << "CallStackWidget::updateDisplay() activeUids" << activeUids;
+//    qDebug() << "CallStackWidget::updateDisplay() m_affhash" << m_affhash.keys();
     // remove old channels
-    foreach(const QString chan, m_affhash.keys())
+//    foreach(const QString chan, m_affhash.keys())
+    foreach(const QString uid, m_affhash.keys())
     {
-        if( !activeChannels.contains( chan ) )
+//        if( !activeChannels.contains( chan ) )
+        if( !activeUids.contains( uid ) )
         {
-            m_affhash.take( chan )->deleteLater();
+            //qDebug() << "CallStackWidget::updateDisplay() removing" << chan;
+            //m_affhash.take( chan )->deleteLater();
+            qDebug() << "CallStackWidget::updateDisplay() removing" << uid;
+            m_affhash.take( uid )->deleteLater();
         }
     }
 }

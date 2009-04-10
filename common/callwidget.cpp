@@ -107,7 +107,8 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
     m_lbl_exten->setFont(QFont("courier", 10, QFont::Light));
     gridlayout->addWidget(m_lbl_exten, 0, 2);
         
-    updateWidget(status, ts, "cpeer", callerid, calleridname);
+    //updateWidget(status, ts, "cpeer", callerid, calleridname);
+    updateWidget(status, ts, channelpeer, callerid, calleridname);
         
     m_hangUpAction = new QAction( tr("&Hangup"), this);
     m_hangUpAction->setStatusTip( tr("Hang up/Close the channel") );
@@ -159,7 +160,7 @@ void CallWidget::updateWidget(const QString & status,
                               const QString & callerid,
                               const QString & calleridname)
 {
-    //qDebug() << "CallWidget::updateWidget()" << status << ts << channelpeer << callerid << calleridname;
+    qDebug() << "CallWidget::updateWidget()" << status << ts << channelpeer << callerid << calleridname;
     m_parkedCall = (callerid == QString("<parked>"));
     setActionPixmap(status);
     m_channelpeer = channelpeer;
