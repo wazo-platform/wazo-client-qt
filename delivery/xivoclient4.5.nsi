@@ -1,5 +1,5 @@
-# $Revision: 5684 $
-# $Date: 2009-03-20 14:05:48 +0100 (Fri 20 Mar 2009) $
+# $Revision$
+# $Date$
 #
 # NullSoft Installation System
 #

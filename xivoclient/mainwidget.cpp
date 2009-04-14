@@ -1502,6 +1502,7 @@ void MainWidget::about()
         "macos"
 #endif
         "/" + __xivo_version__ + ">" + tr("last one") + "</a>";
+    QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
     
     // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
     QMessageBox::about(this,
@@ -1516,6 +1517,8 @@ void MainWidget::about()
                        "<b>svn : " + QString("</b>%1 - %2)<br>").arg(__current_client_version__,
                                                                      fetchlastone) +
                        "(" + tr("Advised Server Version : ") + __required_server_version__ + ")"
+                       "<br>" +
+                       "(" + tr("Application Built on : ") + datebuild + ")"
                        "<br>" +
                        "(" + tr("Application Launched on : ") + m_launchDateTime.toString() + ")"
                        "<br>" +

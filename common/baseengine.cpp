@@ -84,8 +84,6 @@ BaseEngine::BaseEngine(QSettings * settings,
     m_ka_timerid = 0;
     m_try_timerid = 0;
     m_timer = -1;
-    m_sbsocket   = new QTcpSocket(this);
-    m_filesocket = new QTcpSocket(this);
     m_settings = settings;
     loadSettings();
     
@@ -109,34 +107,24 @@ BaseEngine::BaseEngine(QSettings * settings,
     //                 this, SLOT(readInputEvent(int)));
         
     // Socket for TCP connections
-    m_sbsocket->setProperty("socket", "cticommands");
-    connect( m_sbsocket, SIGNAL(connected()),
-             this, SLOT(socketConnected()));
-    connect( m_sbsocket, SIGNAL(disconnected()),
-             this, SLOT(socketDisconnected()));
-    connect( m_sbsocket, SIGNAL(hostFound()),
-             this, SLOT(socketHostFound()));
-    connect( m_sbsocket, SIGNAL(error(QAbstractSocket::SocketError)),
-             this, SLOT(socketError(QAbstractSocket::SocketError)));
-    connect( m_sbsocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
+    QStringList socknames = (QStringList() << "cticommands" << "filetransfers");
+    foreach(QString sockname, socknames) {
+        m_tcpsocket[sockname] = new QTcpSocket(this);
+        m_tcpsocket[sockname]->setProperty("socket", sockname);
+        connect( m_tcpsocket[sockname], SIGNAL(connected()),
+                 this, SLOT(socketConnected()));
+        connect( m_tcpsocket[sockname], SIGNAL(disconnected()),
+                 this, SLOT(socketDisconnected()));
+        connect( m_tcpsocket[sockname], SIGNAL(hostFound()),
+                 this, SLOT(socketHostFound()));
+        connect( m_tcpsocket[sockname], SIGNAL(error(QAbstractSocket::SocketError)),
+                 this, SLOT(socketError(QAbstractSocket::SocketError)));
+        connect( m_tcpsocket[sockname], SIGNAL(stateChanged(QAbstractSocket::SocketState)),
              this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
-    connect( m_sbsocket, SIGNAL(readyRead()),
-             this, SLOT(socketReadyRead()));
-        
-    m_filesocket->setProperty("socket", "filetransfers");
-    connect( m_filesocket, SIGNAL(connected()),
-             this, SLOT(socketConnected()) );
-    connect( m_filesocket, SIGNAL(disconnected()),
-             this, SLOT(socketDisconnected()));
-    connect( m_filesocket, SIGNAL(hostFound()),
-             this, SLOT(socketHostFound()) );
-    connect( m_filesocket, SIGNAL(error(QAbstractSocket::SocketError)),
-             this, SLOT(socketError(QAbstractSocket::SocketError)));
-    connect( m_filesocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
-             this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
-    connect( m_filesocket, SIGNAL(readyRead()),
-             this, SLOT(socketReadyRead()));
-        
+        connect( m_tcpsocket[sockname], SIGNAL(readyRead()),
+                 this, SLOT(socketReadyRead()));
+    }
+    
     if(m_autoconnect)
         start();
 }
@@ -347,7 +335,7 @@ void BaseEngine::start()
     qDebug() << "BaseEngine::start()" << m_serverhost << m_checked_function;
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
-    m_sbsocket->abort();
+    m_tcpsocket["cticommands"]->abort();
 
     connectSocket();
     m_byte_counter = 0;
@@ -372,8 +360,8 @@ void BaseEngine::stop()
             m_attempt_loggedin = false;
     }
     
-    m_sbsocket->flush();
-    m_sbsocket->disconnectFromHost();
+    m_tcpsocket["cticommands"]->flush();
+    m_tcpsocket["cticommands"]->disconnectFromHost();
     
     stopKeepAliveTimer();
     stopTryAgainTimer();
@@ -479,7 +467,7 @@ QHash<QString, UserInfo *> BaseEngine::users()
 void BaseEngine::connectSocket()
 {
     qDebug() << "BaseEngine::connectSocket()" << m_serverhost << m_ctiport;
-    m_sbsocket->connectToHost(m_serverhost, m_ctiport);
+    m_tcpsocket["cticommands"]->connectToHost(m_serverhost, m_ctiport);
 }
 
 bool BaseEngine::lastconnwins() const
@@ -559,8 +547,8 @@ void BaseEngine::setAvailability()
 
 void BaseEngine::sendCommand(const QString & command)
 {
-    if(m_sbsocket->state() == QAbstractSocket::ConnectedState)
-        m_sbsocket->write((command + "\n").toAscii());
+    if(m_tcpsocket["cticommands"]->state() == QAbstractSocket::ConnectedState)
+        m_tcpsocket["cticommands"]->write((command + "\n").toAscii());
 }
 
 void BaseEngine::sendJsonCommand(const QVariantMap & command)
@@ -632,8 +620,8 @@ void BaseEngine::socketConnected()
         command["tdirection"] = m_filedir;
         command["fileid"] = m_fileid;
         QString jsoncommand(JsonQt::VariantToJson::parse(command));
-        if(m_filesocket->state() == QAbstractSocket::ConnectedState)
-            m_filesocket->write((jsoncommand + "\n").toAscii());
+        if(m_tcpsocket["filetransfers"]->state() == QAbstractSocket::ConnectedState)
+            m_tcpsocket["filetransfers"]->write((jsoncommand + "\n").toAscii());
     }
 }
 
@@ -653,7 +641,7 @@ void BaseEngine::socketDisconnected()
 
 /*! \brief cat host found socket signal
  *
- * This slot is connected to the hostFound() signal of the m_sbsocket
+ * This slot is connected to the hostFound() signal of the m_tcpsocket["cticommands"]
  */
 void BaseEngine::socketHostFound()
 {
@@ -1010,7 +998,7 @@ void BaseEngine::parseCommand(const QString & line)
         } else if (thisclass == "faxsend") {
             m_filedir = datamap["tdirection"].toString();
             m_fileid = datamap["fileid"].toString();
-            m_filesocket->connectToHost(m_serverhost, m_ctiport);
+            m_tcpsocket["filetransfers"]->connectToHost(m_serverhost, m_ctiport);
             qDebug() << m_filedir << m_fileid;
             
         } else if (thisclass == "faxprogress") {
@@ -1484,8 +1472,8 @@ void BaseEngine::socketReadyRead()
     // qDebug() << "BaseEngine::socketReadyRead()";
     QString socketname = sender()->property("socket").toString();
     if(socketname == "cticommands")
-        while(m_sbsocket->canReadLine()) {
-            QByteArray data  = m_sbsocket->readLine();
+        while(m_tcpsocket["cticommands"]->canReadLine()) {
+            QByteArray data  = m_tcpsocket["cticommands"]->readLine();
             m_byte_counter += data.size();
             // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
             QString line = QString::fromUtf8(data);
@@ -1498,8 +1486,8 @@ void BaseEngine::socketReadyRead()
                 parseCommand(line);
         }
     else if(socketname == "filetransfers") {
-        while(m_filesocket->canReadLine()) {
-            QByteArray data = m_filesocket->readLine();
+        while(m_tcpsocket["filetransfers"]->canReadLine()) {
+            QByteArray data = m_tcpsocket["filetransfers"]->readLine();
             QString line = QString::fromUtf8(data);
             QVariant jsondata;
             try {
@@ -1517,10 +1505,10 @@ void BaseEngine::socketReadyRead()
                 } else {
                     qDebug() << "sending fax contents" << jsondatamap["fileid"].toString();
                     if(m_faxsize > 0)
-                        m_filesocket->write(m_filedata);
+                        m_tcpsocket["filetransfers"]->write(m_filedata);
                     m_filedata.clear();
                 }
-                m_filesocket->close();
+                m_tcpsocket["filetransfers"]->close();
                 m_faxsize = 0;
                 m_fileid = "";
             }

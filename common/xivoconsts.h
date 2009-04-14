@@ -63,6 +63,7 @@ const int REQUIRED_SERVER_VERSION = 5650;
 
 const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
 const QString __current_client_version__  = SVNVER;
+const QString __datebuild_client__  = DATEBUILD;
 const QString __xivo_version__  = "1.0";
 const QString __nopresence__ = "nopresence";
 const QStringList XletList = (QStringList() << "customerinfo" << "features" << "history"

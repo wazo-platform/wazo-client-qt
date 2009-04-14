@@ -13,10 +13,13 @@ _SVNVER_ = 1
 include(versions.pro)
 XIVOVER = '\\"$${_XIVOVER_}\\"'
 SVNVER  = '\\"$${_SVNVER_}\\"'
+DATEBUILD = '\\"$${_DATEBUILD_}\\"'
 message('XIVO version:' $${XIVOVER})
 message(' svn version:' $${SVNVER})
+message('  build date:' $${DATEBUILD})
 DEFINES += XIVOVER=\"$${XIVOVER}\"
 DEFINES += SVNVER=\"$${SVNVER}\"
+DEFINES += DATEBUILD=\"$${DATEBUILD}\"
 
 TEMPLATE = app
 TARGET = 

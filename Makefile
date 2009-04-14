@@ -75,6 +75,8 @@ versions-%:
 	@${ECHO} -n "_SVNVER_ = " >> $*/versions.pro
 	@LANG=C svn info | sed -n "/Last Changed Rev/s/.*: //p" >> $*/versions.pro
 	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
+	@${ECHO} -n "_DATEBUILD_ = " >> $*/versions.pro
+	@date +%Y-%m-%dT%H:%M:%S >> $*/versions.pro
 	@${ECHO} -n "version (after update) : " && make -s displayversions
 
 displayversions:
@@ -99,6 +101,10 @@ win32pack-%:
 	@${MAKENSIS} delivery/$*.nsi
 	@mv delivery/$*-setup-win32.exe $*-setup-${_XIVOVER_}-${_SVNVER_}-win32.exe
 
+win32packdyn-%:
+	@${UPXWIN} $*/release/$*.exe || true
+	@${MAKENSIS} delivery/$*4.5.nsi
+	@mv delivery/$*-setup-win32.exe $*-setup-${_XIVOVER_}-${_SVNVER_}-win32.exe
 
 # MACOS targets
 # (man hdiutil) "-format UDBZ" works only >= 10.4, thus "-format UDZO"
@@ -137,5 +143,3 @@ debian-%:
 
 doc:	common xivoclient
 	${DOXYGEN} xivoclient/Doxyfile 
-
-

@@ -339,9 +339,7 @@ private:
     
     // Internal management
     QHostAddress m_serveraddress;   //!< Resolved address of the login server
-    QTcpSocket * m_sbsocket;        //!< TCP socket to connect to the server (SB mode)
-    QTcpSocket * m_filesocket;      //!< TCP socket to send fax data to the server
-    QTcpSocket * m_connection;      //!< TCP socket set from TCP server listening for profiles
+    QHash<QString, QTcpSocket *> m_tcpsocket; //!< TCP sockets
     ushort m_listenport;            //!< Port where we are listening for profiles
     int m_timer;                    //!< timer id
     int m_ka_timerid;               //!< timer id for keep alive
