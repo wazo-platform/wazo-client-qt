@@ -415,7 +415,7 @@ Contexte: %2</translation>
         <translation> a dit : </translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1821"/>
+        <location filename="../common/baseengine.cpp" line="1824"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
@@ -1246,7 +1246,7 @@ is being processed and will be sent soon.</source>
 est en cours de traitement et sera bientôt envoyé.</translation>
     </message>
     <message>
-        <location filename="../common/faxpanel.cpp" line="237"/>
+        <location filename="../common/faxpanel.cpp" line="250"/>
         <source>Your Fax (file %1)
 was NOT sent to %2.
 Reason given : %3.</source>
@@ -1260,6 +1260,36 @@ Raison donnée : %3.</translation>
 was successfully sent to %2.</source>
         <translation>Votre Fax (ficher %1)
 a été envoyé à %2.</translation>
+    </message>
+    <message>
+        <location filename="../common/faxpanel.cpp" line="236"/>
+        <source>Problem when dialing the number</source>
+        <translation>Problème lors de la composition du numéro</translation>
+    </message>
+    <message>
+        <location filename="../common/faxpanel.cpp" line="238"/>
+        <source>Unable to convert your PDF to TIFF</source>
+        <translation>Impossible de convertir votre PDF en TIFF</translation>
+    </message>
+    <message>
+        <location filename="../common/faxpanel.cpp" line="240"/>
+        <source>Document not a PDF</source>
+        <translation>Document non PDF</translation>
+    </message>
+    <message>
+        <location filename="../common/faxpanel.cpp" line="242"/>
+        <source>Dialog between CTI server and IPBX</source>
+        <translation>Dialogue entre le serveur CTI et l&apos;IPBX</translation>
+    </message>
+    <message>
+        <location filename="../common/faxpanel.cpp" line="244"/>
+        <source>(Server) missing directory</source>
+        <translation>(Serveur) répertoire manquant</translation>
+    </message>
+    <message>
+        <location filename="../common/faxpanel.cpp" line="246"/>
+        <source>Unknown</source>
+        <translation>Inconnue</translation>
     </message>
 </context>
 <context>

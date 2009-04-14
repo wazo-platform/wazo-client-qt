@@ -1092,6 +1092,7 @@ void MainWidget::engineStarted()
                          m_engine, SLOT(askCallerIds()) );
                 connect( m_engine, SIGNAL(delogged()),
                          m_xlet[xletid], SLOT(removePeers()) );
+                
             } else if (xletid == QString("features")) {
                 m_xlet[xletid] = new ServicePanel(m_engine, m_options);
                 addPanel(xletid, tr("Services"), m_xlet[xletid]);
@@ -1185,24 +1186,24 @@ void MainWidget::engineStarted()
             }
         }
     }
-        
+    
     qDebug() << "MainWidget::engineStarted() : the xlets have been created";
     m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
-        
+    
     foreach (QString dname, m_docknames)
         m_docks[dname]->show();
-        
+    
     // restore settings, especially for Docks' positions
     restoreState(m_settings->value("display/mainwindowstate").toByteArray());
-
+    
     if(m_tabnames.contains("customerinfo") && m_engine->checkedFunction("customerinfo")) {
         m_cinfo_index = m_tabwidget->indexOf(m_xlet["customerinfo"]);
         qDebug() << "the index of customer-info widget is" << m_cinfo_index;
     }
-        
+    
     if(m_withsystray && m_systrayIcon)
         setSystrayIcon("xivo-transp");
-        
+    
     statusBar()->showMessage(tr("Connected"));
     m_connectact->setEnabled(false);
     m_disconnectact->setEnabled(true);

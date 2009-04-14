@@ -312,7 +312,7 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     changeWatchedAgent(QString("agent:%1/%2").arg(m_ui->astid()).arg(m_ui->agentid()), false);
 }
 
-void IdentityDisplay::newAgentList(const QStringList & list)
+void IdentityDisplay::newAgentList(const QStringList &)
 {
     // qDebug() << "IdentityDisplay::newAgentList()" << m_loginkind << list << m_engine->agents();
     if (m_loginkind == 0 || ! m_ui)

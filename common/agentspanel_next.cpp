@@ -704,7 +704,7 @@ void AgentsPanelNext::refreshDisplay()
     m_glayout->setColumnStretch(m_title.size() * NCOLS, 1);
 }
 
-void AgentsPanelNext::newAgentList(const QStringList & list)
+void AgentsPanelNext::newAgentList(const QStringList &)
 {
     //qDebug() << "AgentsPanelNext::newAgentList" << list;
 #if 0
@@ -722,7 +722,7 @@ void AgentsPanelNext::newAgentList(const QStringList & list)
     emit loadQueueGroups();
 }
 
-void AgentsPanelNext::newQueueList(const QStringList & list)
+void AgentsPanelNext::newQueueList(const QStringList &)
 {
     //qDebug() << "AgentsPanelNext::newQueueList" << list;
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
@@ -736,7 +736,7 @@ void AgentsPanelNext::newQueueList(const QStringList & list)
     }
 }
 
-void AgentsPanelNext::newQueue(const QString & astid, const QString & queuename, const QVariant & queueprops)
+void AgentsPanelNext::newQueue(const QString & /*astid*/, const QString & queuename, const QVariant & queueprops)
 {
     QString queuecontext = queueprops.toMap()["context"].toString();
     // qDebug() << "AgentsPanelNext::newQueue()" << astid << queuename << queuecontext;

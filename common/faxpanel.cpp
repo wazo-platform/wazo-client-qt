@@ -231,14 +231,27 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
         text = tr("Your Fax (file %1)\n"
                   "is being processed and will be sent soon.").arg(m_file_string);
     } else {
+        QString faxreason;
+        if(reason == "orig")
+            faxreason = tr("Problem when dialing the number");
+        else if(reason == "convert-pdftif")
+            faxreason = tr("Unable to convert your PDF to TIFF");
+        else if(reason == "filetype")
+            faxreason = tr("Document not a PDF");
+        else if(reason == "AMI")
+            faxreason = tr("Dialog between CTI server and IPBX");
+        else if(reason == "exists-pathspool")
+            faxreason = tr("(Server) missing directory");
+        else if(reason == "unknown")
+            faxreason = tr("Unknown");
         icon = QMessageBox::Critical;
         text = tr("Your Fax (file %1)\n"
                   "was NOT sent to %2.\n"
-                  "Reason given : %3.").arg(m_file_string, m_dest_string, reason);
+                  "Reason given : %3.").arg(m_file_string, m_dest_string, faxreason);
         m_destination->setText(m_dest_string);
         m_openFileNameLabel->setText(m_file_string);
     }
-        
+    
     msgbox.setWindowTitle("XIVO CTI (Fax)");
     msgbox.setIcon(icon);
     msgbox.setText(text);

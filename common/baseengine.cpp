@@ -1503,12 +1503,15 @@ void BaseEngine::socketReadyRead()
                     qDebug() << jsondatamap["filename"].toString() << m_downloaded.size();
                     fileReceived();
                 } else {
-                    qDebug() << "sending fax contents" << jsondatamap["fileid"].toString();
-                    if(m_faxsize > 0)
-                        m_tcpsocket["filetransfers"]->write(m_filedata);
+                    QByteArray fax64 = m_filedata.toBase64();
+                    qDebug() << "sending fax contents" << jsondatamap["fileid"].toString() << m_faxsize << fax64.size();
+                    if(m_faxsize > 0) {
+                        m_tcpsocket["filetransfers"]->write(fax64 + "\n");
+                        m_tcpsocket["filetransfers"]->flush();
+                    }
                     m_filedata.clear();
                 }
-                m_tcpsocket["filetransfers"]->close();
+                m_tcpsocket["filetransfers"]->disconnectFromHost();
                 m_faxsize = 0;
                 m_fileid = "";
             }
