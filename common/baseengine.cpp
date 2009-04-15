@@ -325,12 +325,12 @@ void BaseEngine::config_and_start(const QString & login,
     start();
 }
 
-void BaseEngine::powerEvent(int powerevent)
+void BaseEngine::powerEvent(const QString & eventinfo)
 {
     QVariantMap command;
     command["class"] = "powerevent";
     command["direction"] = "xivoserver";
-    command["value"] = powerevent;
+    command["value"] = eventinfo;
     sendJsonCommand(command);
 }
 

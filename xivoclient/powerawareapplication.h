@@ -54,10 +54,11 @@ public:
 #ifdef Q_OS_WIN
     bool winEventFilter(MSG *, long *);
 #endif
+    void commitData(QSessionManager &);
 signals:
     void standBy();
     void resume();
-    void powerEvent(int);
+    void powerEvent(const QString &);
 };
 
 #endif

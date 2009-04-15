@@ -72,7 +72,7 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
             *result = TRUE; // BROADCAST_QUERY_DENY would block & deny/abort the Suspend Operation
             return true;
         } */
-        powerEvent(msg->wParam);
+        powerEvent(QString("pbt-%1").arg(msg->wParam));
         
         if(msg->wParam == PBT_APMSUSPEND) {
             setProperty("stopper", "standby");
@@ -93,3 +93,8 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
     return false;
 }
 #endif
+
+void PowerAwareApplication::commitData(QSessionManager &)
+{
+    powerEvent("sessionclosed");
+}
