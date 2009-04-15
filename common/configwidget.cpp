@@ -240,30 +240,30 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
                                      tr("Checking this box disables the Error Popups"), this);
     m_trytoreconnect->setCheckState(m_engine->trytoreconnect() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow( m_trytoreconnect );
-
+    
     m_tryinterval_sbox = new QSpinBox(this);
     m_tryinterval_sbox->setRange(1, 120);
     m_tryinterval_sbox->setValue(m_engine->trytoreconnectinterval() / 1000);
     layout4->addRow( tr("Try to reconnect interval"), m_tryinterval_sbox );
-
+    
     m_kainterval_sbox = new QSpinBox(this);
     m_kainterval_sbox->setRange(1, 120);
     m_kainterval_sbox->setValue(m_engine->keepaliveinterval() / 1000);
     layout4->addRow( tr("Keep alive interval"), m_kainterval_sbox );
-
+    
     QFrame * qhline5 = new QFrame(this);
     qhline5->setFrameShape(QFrame::HLine);
     layout4->addRow( qhline5 );
-
+    
     m_tablimit_sbox = new QSpinBox(this);
     m_tablimit_sbox->setRange(0, 99);
     m_tablimit_sbox->setValue(opts["sheet-tablimit"].toUInt());
     layout4->addRow( tr("Tab limit"), m_tablimit_sbox );
-        
+    
     m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
     m_systrayed->setCheckState(m_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow( m_systrayed );
-
+    
     m_comboswitchboard = new QComboBox(this);
     m_comboswitchboard->addItem( tr("Small"), QString("small") );
     m_comboswitchboard->addItem( tr("Detailed"), QString("detailed") );

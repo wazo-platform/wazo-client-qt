@@ -57,7 +57,7 @@ public:
 signals:
     void standBy();
     void resume();
+    void powerEvent(int);
 };
 
 #endif
-

@@ -72,6 +72,8 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
             *result = TRUE; // BROADCAST_QUERY_DENY would block & deny/abort the Suspend Operation
             return true;
         } */
+        powerEvent(msg->wParam);
+        
         if(msg->wParam == PBT_APMSUSPEND) {
             setProperty("stopper", "standby");
             standBy();

@@ -132,6 +132,8 @@ int main(int argc, char ** argv)
                       engine, SLOT(stop()) );
     QObject::connect( &app, SIGNAL(resume()),
                       engine, SLOT(start()) );
+    QObject::connect( &app, SIGNAL(powerEvent(int)),
+                      engine, SLOT(powerEvent(int)) );
     
     //engine.startTimer(1000);
     return app.exec();

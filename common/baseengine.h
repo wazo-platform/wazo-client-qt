@@ -162,6 +162,7 @@ public:
 public slots:
     void start();        //!< start the connection process.
     void stop();         //!< stop the engine
+    void powerEvent(int);
     void setAvailState(const QString &, bool);        //! set m_availstate
     void actionCall(const QString &,
                     const QString &,

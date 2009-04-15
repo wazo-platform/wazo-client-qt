@@ -325,6 +325,14 @@ void BaseEngine::config_and_start(const QString & login,
     start();
 }
 
+void BaseEngine::powerEvent(int powerevent)
+{
+    QVariantMap command;
+    command["class"] = "powerevent";
+    command["direction"] = "xivoserver";
+    command["value"] = powerevent;
+    sendJsonCommand(command);
+}
 
 /*! \brief Starts the connection to the server
  * This method starts the login process by connection
@@ -333,10 +341,10 @@ void BaseEngine::config_and_start(const QString & login,
 void BaseEngine::start()
 {
     qDebug() << "BaseEngine::start()" << m_serverhost << m_checked_function;
-
+    
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_tcpsocket["cticommands"]->abort();
-
+    
     connectSocket();
     m_byte_counter = 0;
     m_time.start();
@@ -1221,6 +1229,7 @@ void BaseEngine::parseCommand(const QString & line)
             QVariantMap command;
             command["class"] = "login_capas";
             command["direction"] = "xivoserver";
+            command["keepalive"] = m_keepaliveinterval;
             if (capas.size() == 1)
                 command["capaid"] = capas[0];
             else {
