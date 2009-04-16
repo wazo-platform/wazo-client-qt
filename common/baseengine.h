@@ -371,6 +371,7 @@ private:
     bool m_attempt_loggedin;
     int m_rate_bytes;
     int m_rate_msec;
+    int m_rate_samples;
 };
 
 #endif

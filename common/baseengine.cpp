@@ -78,7 +78,7 @@ BaseEngine::BaseEngine(QSettings * settings,
       m_sessionid(""), m_state(ENotLogged),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
-      m_rate_bytes(0), m_rate_msec(0)
+      m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0)
 {
     settings->setParent( this );
     m_ka_timerid = 0;
@@ -842,6 +842,7 @@ void BaseEngine::parseCommand(const QString & line)
         data = JsonQt::JsonToVariant::parse(line.trimmed());
         m_rate_msec += jsondecodetime.elapsed();
         m_rate_bytes += line.trimmed().size();
+        m_rate_samples ++;
     }
     catch(JsonQt::ParseException) {
         qDebug() << "BaseEngine::parseCommand() exception catched for" << line.trimmed();
@@ -1229,7 +1230,6 @@ void BaseEngine::parseCommand(const QString & line)
             QVariantMap command;
             command["class"] = "login_capas";
             command["direction"] = "xivoserver";
-            command["keepalive"] = m_keepaliveinterval;
             if (capas.size() == 1)
                 command["capaid"] = capas[0];
             else {
@@ -2034,8 +2034,10 @@ void BaseEngine::keepLoginAlive()
     if(m_rate_bytes > 100000) {
         command["rate-bytes"] = m_rate_bytes;
         command["rate-msec"] = m_rate_msec;
+        command["rate-samples"] = m_rate_samples;
         m_rate_bytes = 0;
         m_rate_msec = 0;
+        m_rate_samples = 0;
     }
     sendJsonCommand(command);
 }

@@ -102,10 +102,6 @@ DirectoryPanel::~DirectoryPanel()
 {
 }
 
-void DirectoryPanel::setGuiOptions(const QVariant &)
-{
-}
-
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
 {
     qDebug() << "DirectoryPanel::focusInEvent()" << event;
