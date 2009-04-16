@@ -223,7 +223,7 @@ void PeerWidget::updatePresence()
 
 void PeerWidget::updatePhonesStates()
 {
-    qDebug() << "PeerWidget::updatePhonesStates()" << m_ui->phonelist();
+    //qDebug() << "PeerWidget::updatePhonesStates()" << m_ui->phonelist();
     foreach(QString phone, m_ui->phonelist())
     {
         const PhoneInfo * pi = m_ui->getPhoneInfo(phone);
