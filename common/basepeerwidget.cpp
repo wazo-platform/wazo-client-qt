@@ -296,7 +296,9 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
     const UserInfo * ui = m_engine->getXivoClientUser();
     // Construct and display the context menu
     QMenu contextMenu( this );
-    contextMenu.addAction( m_dialAction );
+    // allow to dial everyone except me !
+    if( ui != m_ui )
+        contextMenu.addAction( m_dialAction );
     if( true )
         contextMenu.addAction( m_removeAction );
     if( m_editable )
@@ -351,7 +353,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                 if( (m_ui != ui) 
                    && ( (status == CHAN_STATUS_RINGING)
                       ||(status == CHAN_STATUS_LINKED_CALLER)
-                      ||(status == CHAN_STATUS_LINKED_CALLED) ) )
+                      ||(status == CHAN_STATUS_LINKED_CALLED) )
+                   && (comm["calleridnum"] != QString("<parked>")) )
                 {
                     if( !interceptMenu && commsCount > 1 )
                         interceptMenu = new QMenu( tr("&Intercept"), &contextMenu );
