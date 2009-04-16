@@ -126,7 +126,8 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
     
     if(eventkind == "parkedcall") {
         for(int m = 0; m < m_table->rowCount(); m++) {
-            if (m_table->item(m, 0)->data(1).toString() == channel) {
+            if (m_table->item(m, 0)->data(Qt::UserRole+0).toString() == channel
+               && m_table->item(m, 0)->data(Qt::UserRole+1).toString() == astid) {
                 // do not add the same entry twice !
                 return;
             }
@@ -138,7 +139,8 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
         //m_table->setItem( 0, 0, item0 );
         QTableWidgetItem * item1 = new QTableWidgetItem( parkplacenum );
         item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        item1->setData(1, channel);
+        item1->setData(Qt::UserRole+0, channel);
+        item1->setData(Qt::UserRole+1, astid);
         m_table->setItem( 0, i++, item1 );
         QTableWidgetItem * item2 = new QTableWidgetItem( seconds + " s" );
         item2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
@@ -158,7 +160,8 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
                (eventkind == "parkedcalltimeout") ||
                (eventkind == "parkedcallgiveup")) {
         for(int m = 0; m < m_table->rowCount(); m++) {
-            if (m_table->item(m, 0)->data(1).toString() == channel) {
+            if (m_table->item(m, 0)->data(Qt::UserRole+0).toString() == channel
+               &&m_table->item(m, 0)->data(Qt::UserRole+1).toString() == astid) {
                 m_table->removeRow(m);
                 // kills the timer only if there are no parked calls left
                 if(m_table->rowCount() == 0) {
@@ -175,8 +178,9 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
 void ParkingPanel::itemClicked(QTableWidgetItem * item)
 {
     int rown   = m_table->row(item);
-    QString astid    = m_table->item(rown, 0)->text();
-    QString placenum = m_table->item(rown, 1)->text();
+    QString astid    = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
+    QString placenum = m_table->item(rown, 0)->text();
+    //qDebug() << "ParkingPanel::itemClicked" << rown << astid << placenum;
     if(m_engine && m_engine->getXivoClientUser() && astid == m_engine->getXivoClientUser()->astid())
         emit copyNumber(placenum);
 }
@@ -184,8 +188,9 @@ void ParkingPanel::itemClicked(QTableWidgetItem * item)
 void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
 {
     int rown   = m_table->row(item);
-    QString astid    = m_table->item(rown, 0)->text();
-    QString placenum = m_table->item(rown, 1)->text();
+    QString astid    = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
+    QString placenum = m_table->item(rown, 0)->text();
+    //qDebug() << "ParkingPanel::itemDoubleClicked" << rown << astid << placenum;
     if(m_engine && m_engine->getXivoClientUser() && astid == m_engine->getXivoClientUser()->astid())
         emit actionCall("originate", "user:special:me", "ext:" + placenum); // Call
 }
