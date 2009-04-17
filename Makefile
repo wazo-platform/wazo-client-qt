@@ -44,9 +44,11 @@ all:
 # but allows the 'include versions.mak' to be reloaded once it has been set
 all-linux:
 	@make versions-xivoclient
-	@make clean-xivoclient
 	@make linux-xivoclient
 	@make stripandpack-xivoclient
+
+distclean:
+	@make clean-xivoclient
 
 clean-%:
 	@make -C $* distclean || true
