@@ -131,7 +131,7 @@ MainWidget::MainWidget(BaseEngine * engine,
                        QWidget * parent)
     : QMainWindow(parent),
       m_engine(engine), m_systrayIcon(0),
-      m_icon_transp(":/images/xivoicon.png"),
+      m_icon_transp(":/images/xivo-login.png"),
       m_icon_red(":/images/xivoicon-red.png"),
       m_icon_green(":/images/xivoicon-green.png"),
       m_icon_black(":/images/xivoicon-black.png")

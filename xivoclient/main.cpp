@@ -84,7 +84,7 @@ int main(int argc, char ** argv)
         qssFile.close();
     }
     app.setStyleSheet(qssStr);
-    app.setWindowIcon(QIcon(":/images/xivoicon.png"));
+    app.setWindowIcon(QIcon(":/images/xivo-login.png"));
     
     QTranslator qtTranslator_xivo, qtTranslator_qt;
     QString forcelocale = settings->value("display/forcelocale", "").toString();
