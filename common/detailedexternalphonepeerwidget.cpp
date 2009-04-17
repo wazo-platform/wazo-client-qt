@@ -86,8 +86,8 @@ DetailedExternalPhonePeerWidget::DetailedExternalPhonePeerWidget(BaseEngine * en
     layout->addWidget( m_textlbl, 1, 2, 1, 6, Qt::AlignLeft );
     layout->addWidget( qvline2,   1, 9, 2, 1 );
     layout->addWidget( m_lblphone, 2, 2, Qt::AlignCenter);
-    QLabel * phoneNumLabel = new QLabel( m_number );
-    layout->addWidget( phoneNumLabel, 2, 3, Qt::AlignLeft );
+    m_lblphonenum = new QLabel( m_number );
+    layout->addWidget( m_lblphonenum, 2, 3, Qt::AlignLeft );
     layout->setColumnStretch(20, 1);
     layout->addWidget( qhline2, 3, 0, 1, 10);
 }
@@ -115,6 +115,7 @@ void DetailedExternalPhonePeerWidget::edit()
         {
             m_number = dialog.number();
             m_lblphone->setToolTip( m_number );
+            m_lblphonenum->setText( m_number );
         }
         if(!dialog.label().isEmpty())
             setText( dialog.label() );

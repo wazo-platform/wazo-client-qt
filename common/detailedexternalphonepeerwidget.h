@@ -64,6 +64,7 @@ public slots:
 private:
     QLabel * m_textlbl;         //!< text label
     QLabel * m_lblphone;        //!< phone icon
+    QLabel * m_lblphonenum;     //!< phone number (text)
 };
 
 #endif
