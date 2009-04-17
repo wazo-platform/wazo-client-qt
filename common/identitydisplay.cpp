@@ -107,8 +107,8 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_icon_voicemail = new ExtendedLabel();
     m_icon_voicemail->hide();
     
-    m_icon_user->setPixmap(QPixmap(":/images/personal.png").scaled(QSize(51, 70)));
-    m_icon_agent->setPixmap(QPixmap(":/images/applixware.png").scaled(QSize(45, 70)));
+    m_icon_user->setPixmap(QPixmap(":/images/personal.png"));
+    m_icon_agent->setPixmap(QPixmap(":/images/applixware.png"));
     m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png").scaled(QSize(bigiconsize, bigiconsize)));
     m_icon_user->setProperty("iconname", "user");
     m_icon_agent->setProperty("iconname", "agent");
