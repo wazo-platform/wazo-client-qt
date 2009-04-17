@@ -86,6 +86,8 @@ DetailedExternalPhonePeerWidget::DetailedExternalPhonePeerWidget(BaseEngine * en
     layout->addWidget( m_textlbl, 1, 2, 1, 6, Qt::AlignLeft );
     layout->addWidget( qvline2,   1, 9, 2, 1 );
     layout->addWidget( m_lblphone, 2, 2, Qt::AlignCenter);
+    QLabel * phoneNumLabel = new QLabel( m_number );
+    layout->addWidget( phoneNumLabel, 2, 3, Qt::AlignLeft );
     layout->setColumnStretch(20, 1);
     layout->addWidget( qhline2, 3, 0, 1, 10);
 }
