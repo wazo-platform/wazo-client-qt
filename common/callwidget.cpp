@@ -161,7 +161,7 @@ void CallWidget::updateWidget(const QString & status,
                               const QString & calleridname)
 {
     qDebug() << "CallWidget::updateWidget()" << status << ts << channelpeer << callerid << calleridname;
-    m_parkedCall = (callerid == QString("<parked>"));
+    m_parkedCall = (callerid == QString("<parked>")) || (calleridname == QString("<parked>"));
     setActionPixmap(status);
     m_channelpeer = channelpeer;
     //qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
@@ -178,6 +178,8 @@ void CallWidget::updateWidget(const QString & status,
     QString text = tr("Unknown");
     if(calleridname == "<meetme>")
         text = tr("Conference room number %1").arg(callerid);
+    else if(calleridname == "<parked>")
+        text = tr("Parked call in %1").arg(callerid);
     else if(callerid == "<parked>")
         text = tr("Parked call");
     else if(calleridname != "<unknown>" && !calleridname.isEmpty())
