@@ -90,6 +90,7 @@ protected slots:
     void dial();
     void hangup();
     void intercept();
+    void intercept2();
     void transfer();
     void itransfer();
     void vmtransfer();
@@ -100,6 +101,7 @@ protected:
     QPoint m_dragstartpos;            //!< drag start position
     QAction * m_dialAction;     //!< action to dial this number
     QAction * m_removeAction;   //!< action to remove this peer from the window
+    QAction * m_interceptAction;    //!< action to intercept ringing calls to this number
     QString m_number;   //!< phone number (filled if m_ui is NULL)
     bool m_editable;    //!< editable from a user point of view
 private:

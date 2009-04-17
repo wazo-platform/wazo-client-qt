@@ -58,6 +58,7 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
 {
     if(m_ui)
         setProperty( "userid", m_ui->userid() );
+
     m_removeAction = new QAction( tr("&Remove"), this);
     m_removeAction->setStatusTip( tr("Remove this peer from the panel") );
     connect( m_removeAction, SIGNAL(triggered()),
@@ -67,6 +68,12 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
     m_dialAction->setStatusTip( tr("Call this peer") );
     connect( m_dialAction, SIGNAL(triggered()),
              this, SLOT(dial()) );
+
+    m_interceptAction = new QAction( tr("&Intercept"), this);
+    m_interceptAction->setStatusTip( tr("Intercept call") );
+    connect( m_dialAction, SIGNAL(triggered()),
+             this, SLOT(intercept2()) );
+
     m_maxWidthWanted = m_engine->getGuiOptions("user").toMap()["maxwidthwanted"].toInt();
     if(m_maxWidthWanted < 50)
         m_maxWidthWanted = 200;
@@ -113,6 +120,14 @@ void BasePeerWidget::intercept()
                         "chan:" + m_ui->userid() + ":" + sender()->property("peerchannel").toString(),
                         "user:special:me");
    }
+}
+
+void BasePeerWidget::intercept2()
+{
+    if(m_ui)
+    {
+        qDebug() << "BasePeerWidget::intercept2()" << m_ui->userid();
+    }
 }
 
 /*! \brief Direct transfer
@@ -318,8 +333,15 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
         foreach(const QString phone, m_ui->phonelist())
         {
             const PhoneInfo * pi = m_ui->getPhoneInfo( phone );
-            const QMap<QString, QVariant> & comms = pi->comms();
+            int hintstatuscode = -1;
+            if( !pi->hintstatus("code").isEmpty() )
+                hintstatuscode = pi->hintstatus("code").toInt();
+            //qDebug() << "hintstatus code" << hintstatuscode;
+            //qDebug() << "commsCount" << commsCount;
             //qDebug() << pi->phoneid() << pi->comms();
+            //if((commsCount == 0) && (hintstatuscode & 8))
+            //    contextMenu.addAction( m_interceptAction );
+            const QMap<QString, QVariant> & comms = pi->comms();
             foreach(const QString ts, comms.keys())
             {
                 const QMap<QString, QVariant> & comm = comms[ts].toMap();
@@ -354,7 +376,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                    && ( (status == CHAN_STATUS_RINGING)
                       ||(status == CHAN_STATUS_LINKED_CALLER)
                       ||(status == CHAN_STATUS_LINKED_CALLED) )
-                   && (comm["calleridnum"] != QString("<parked>")) )
+                   && (comm["calleridnum"] != QString("<parked>"))
+                   && (comm["calleridname"] != QString("<parked>")) )
                 {
                     if( !interceptMenu && commsCount > 1 )
                         interceptMenu = new QMenu( tr("&Intercept"), &contextMenu );
