@@ -101,7 +101,6 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
             this, SLOT(idxChanged(const QString &)));
     
-    int bigiconsize = 60;
     m_icon_user = new ExtendedLabel();
     m_icon_agent = new ExtendedLabel();
     m_icon_voicemail = new ExtendedLabel();
@@ -109,7 +108,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     m_icon_user->setPixmap(QPixmap(":/images/personal.png"));
     m_icon_agent->setPixmap(QPixmap(":/images/applixware.png"));
-    m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png").scaled(QSize(bigiconsize, bigiconsize)));
+    m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png"));
     m_icon_user->setProperty("iconname", "user");
     m_icon_agent->setProperty("iconname", "agent");
     m_icon_voicemail->setProperty("iconname", "voicemail");
