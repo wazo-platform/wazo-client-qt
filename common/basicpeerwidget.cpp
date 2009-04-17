@@ -90,13 +90,15 @@ void BasicPeerWidget::paintEvent(QPaintEvent * /*event*/)
     // draw the color rectangle
     painter.setBrush( m_color );
     painter.setPen( Qt::NoPen );
-    painter.drawRect( rectangle );
+    //painter.drawRect( rectangle );
+    painter.drawRect( rectangle.adjusted( 1, 0, -1, 0 ) );
+    painter.drawRect( rectangle.adjusted( 0, 1, 0, -1 ) );
     // small square
     if(! m_ui->ctilogin().isEmpty())
-        {
-            painter.setBrush( m_presenceColor );
-            painter.drawRect( QRect(rectangle.width() - 5, rectangle.height() - 5, 4, 4) );
-        }
+    {
+        painter.setBrush( m_presenceColor );
+        painter.drawRect( QRect(rectangle.width() - 5, rectangle.height() - 5, 4, 4) );
+    }
     // write the text
     painter.setPen(Qt::SolidLine);
     if(m_color.value() < 128)

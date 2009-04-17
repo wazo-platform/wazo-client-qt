@@ -82,7 +82,9 @@ void ExternalPhonePeerWidget::paintEvent(QPaintEvent *event)
     // draw the color rectangle
     painter.setBrush( QColor(192, 160, 160) );
     painter.setPen( Qt::NoPen );
-    painter.drawRect( rectangle );
+    //painter.drawRect( rectangle );
+    painter.drawRect( rectangle.adjusted(1, 0, -1, 0) );
+    painter.drawRect( rectangle.adjusted(0, 1, 0, -1) );
     // write the text
     painter.setPen(Qt::SolidLine);
     painter.drawText( rectangle, Qt::AlignVCenter | Qt::AlignHCenter, m_text );
