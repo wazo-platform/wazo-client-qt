@@ -180,8 +180,8 @@ void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVaria
         QVariantMap data;
         data["buttonname"] = buttonname;
         data["astid"] = thispopup->callAstid();
-        data["uniqueid"] = thispopup->callContext();
-        data["context"] = thispopup->callUniqueid();
+        data["uniqueid"] = thispopup->callUniqueid();
+        data["context"] = thispopup->callContext();
         data["channel"] = thispopup->callChannel();
         data["timestamps"] = timestamps;
         actionFromFiche(QVariant(data));
