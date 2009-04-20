@@ -137,6 +137,7 @@ class Popup: public QWidget
  private:
     void addInfoForm(int, const QString &);
     void saveandclose();
+    void setEnablesOnForms();
     
     QIODevice * m_inputstream;        //!< input stream where the XML is read from
     /* the following properties are for XML parsing */

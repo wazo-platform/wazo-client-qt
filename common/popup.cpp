@@ -139,6 +139,7 @@ void Popup::feed(QIODevice * inputstream,
                          this, SLOT(actionFromForm()) );
             }
         }
+        setEnablesOnForms();
         QRegExp re_status("^XIVO_CALL_STATUS-");
         qDebug() << "Popup::feed() found" << m_sheetui_widget->findChildren<QPushButton *>(re_status);
         
@@ -169,7 +170,7 @@ void Popup::actionFromForm()
         close();
     else if(buttonname == "save")
         saveandclose();
-    else if((buttonname == "hangup") || (buttonname == "answer"))
+    else if((buttonname == "hangup") || (buttonname == "answer") || (buttonname == "refuse"))
         actionFromPopup(buttonname, QVariant(m_timestamps));
     else if(buttonname.startsWith("XIVO_CALL_STATUS-")) {
         actionFromPopup(buttonname, QVariant(m_timestamps));
@@ -177,6 +178,8 @@ void Popup::actionFromForm()
     }
 }
 
+/*! \brief saves the filled-in forms and closes the sheet
+ */
 void Popup::saveandclose()
 {
     // qDebug() << "Popup::saveandclose()";
@@ -281,7 +284,7 @@ void Popup::addDefForm(const QString & name, const QString & value)
 
 void Popup::addInfoForm(int where, const QString & value)
 {
-    // qDebug() << "Popup::addInfoForm()" << m_remoteforms << value;
+    // qDebug() << "Popup::addInfoForm()" << where << value << m_kind;
     QUiLoader loader;
     QWidget * form;
     if(m_remoteforms.contains(value)) {
@@ -317,7 +320,7 @@ void Popup::addInfoForm(int where, const QString & value)
         connect( m_form_buttons[formbuttonname], SIGNAL(clicked()),
                  this, SLOT(actionFromForm()) );
     }
-        
+    setEnablesOnForms();
     m_vlayout->insertWidget(where, form);
 }
 
@@ -375,22 +378,36 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
         // ('kind' definition at the end of the sheet on server-side)
         m_kind = value;
         m_timestamps[value] = QDateTime::currentDateTime().toTime_t();
-        if(value == "agi") {
-            if(m_form_buttons["hangup"])
-                m_form_buttons["hangup"]->setEnabled(false);
-        } else if(value == "link") {
-            if(m_form_buttons["refuse"])
-                m_form_buttons["refuse"]->setEnabled(false);
-            if(m_form_buttons["hangup"])
-                m_form_buttons["hangup"]->setEnabled(true);
-            if(m_form_buttons["answer"])
-                m_form_buttons["answer"]->setEnabled(false);
-        } else if(value == "unlink") {
-            if(m_form_buttons["hangup"])
-                m_form_buttons["hangup"]->setEnabled(false);
-        }
+        setEnablesOnForms();
     } else
         qDebug() << "Popup::addInfoInternal() : undefined internal" << name << value;
+}
+
+/*! \brief disables the call-related actions for most of the sheets
+ */
+void Popup::setEnablesOnForms()
+{
+    if(m_kind == "agi") {
+        if(m_form_buttons["hangup"])
+            m_form_buttons["hangup"]->setEnabled(false);
+    } else if(m_kind == "link") {
+        if(m_form_buttons["refuse"])
+            m_form_buttons["refuse"]->setEnabled(false);
+        if(m_form_buttons["hangup"])
+            m_form_buttons["hangup"]->setEnabled(true);
+        if(m_form_buttons["answer"])
+            m_form_buttons["answer"]->setEnabled(false);
+    } else if(m_kind == "unlink") {
+        if(m_form_buttons["hangup"])
+            m_form_buttons["hangup"]->setEnabled(false);
+    } else {
+        if(m_form_buttons["refuse"])
+            m_form_buttons["refuse"]->setEnabled(false);
+        if(m_form_buttons["hangup"])
+            m_form_buttons["hangup"]->setEnabled(false);
+        if(m_form_buttons["answer"])
+            m_form_buttons["answer"]->setEnabled(false);
+    }
 }
 
 void Popup::addInfoPhone(int where, const QString & name, const QString & value)
