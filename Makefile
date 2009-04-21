@@ -18,7 +18,7 @@ UPXWIN?=/cygdrive/c/upx303w/upx.exe
 
 default: help
 
-help:
+help: guessos
 	@echo
 	@echo "Please choose your target according to the OS you are using :"
 	@echo " -- to build Linux binaries or debian packages :"
@@ -32,10 +32,16 @@ help:
 	@echo "You can also build docs using doxygen :"
 	@echo "          make doc"
 	@echo "Thanks."
+
+guessos:
 	@${ECHO} -n "_UNAME_ = " > uname.mak
 	@uname -s | sed "s/Linux/linux/;s/CYGWIN.*/win32/;s/Darwin/macos/" >> uname.mak
 
 all:
+	@make -s guessos
+	@make allbyos
+
+allbyos:
 	@echo "Will compile for target ${_UNAME_} : all-${_UNAME_}"
 	@make all-${_UNAME_}
 
