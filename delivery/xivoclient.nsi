@@ -30,6 +30,12 @@ SetOutPath $INSTDIR
 File C:\MinGW\bin\mingwm10.dll
 File ${ODPATH}\cryptoeay32-0.9.8.dll
 File ${ODPATH}\ssleay32-0.9.8.dll
+!ifdef QTBINPATH
+File ${QTBINPATH}\QtCore4.dll
+File ${QTBINPATH}\QtGui4.dll
+File ${QTBINPATH}\QtNetwork4.dll
+File ${QTBINPATH}\QtXml4.dll
+!endif
 File LICENSE
 File GPL_V2.txt
 File OpenSSL.LICENSE.txt
@@ -68,6 +74,12 @@ Delete "$INSTDIR\cryptoeay32-0.9.8.dll"
 Delete "$INSTDIR\ssleay32-0.9.8.dll"
 Delete "$INSTDIR\xivoclient.exe"
 Delete "$INSTDIR\uninstall-xivoclient.exe"
+!ifdef QTBINPATH
+Delete "$INSTDIR\QtCore4.dll"
+Delete "$INSTDIR\QtGui4.dll"
+Delete "$INSTDIR\QtNetwork4.dll"
+Delete "$INSTDIR\QtXml4.dll"
+!endif
 DeleteRegKey HKLM ${REG_UNINST} 
 DeleteRegKey HKLM "Software\XIVO\xivoclient"
 RmDir "$INSTDIR"

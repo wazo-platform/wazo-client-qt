@@ -102,13 +102,17 @@ win32pack-%:
 	@${UPXWIN} $*/release/$*.exe || true
 	@rm -f delivery/settings.nsh
 	@${ECHO} "!define XIVOVER ${_XIVOVER_}" >> delivery/settings.nsh
-	@${ECHO} "!define SVNVER  ${_SVNVER_}"  >> delivery/settings.nsh
+	@${ECHO} "!define SVNVER ${_SVNVER_}" >> delivery/settings.nsh
 	@${MAKENSIS} delivery/$*.nsi
 	@mv delivery/$*-setup-win32.exe $*-setup-${_XIVOVER_}-${_SVNVER_}-win32.exe
 
 win32packdyn-%:
 	@${UPXWIN} $*/release/$*.exe || true
-	@${MAKENSIS} delivery/$*4.5.nsi
+	@rm -f delivery/settings.nsh
+	@${ECHO} "!define XIVOVER ${_XIVOVER_}" >> delivery/settings.nsh
+	@${ECHO} "!define SVNVER ${_SVNVER_}" >> delivery/settings.nsh
+	@${ECHO} "!define QTBINPATH c:\Qt\4.5.0\bin" >> delivery/settings.nsh
+	@${MAKENSIS} delivery/$*.nsi
 	@mv delivery/$*-setup-win32.exe $*-setup-${_XIVOVER_}-${_SVNVER_}-win32.exe
 
 # MACOS targets
