@@ -139,7 +139,7 @@ macos-%:
 
 # DEBIAN targets
 
-all-debian : debian-xivoclient debian-switchboard
+all-debian : debian-xivoclient
 
 debian-%:
 	@echo "## Building Debian Package for : $*"

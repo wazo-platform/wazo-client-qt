@@ -199,7 +199,7 @@ void BaseEngine::loadSettings()
         "\"sheet-tablimit\":4,"
         "\"loginkind\":0,"
         "\"autourl_allowed\":0,"
-        "\"queuelevels\":{\"green\":0,\"orange\":4,\"red\":12}}";
+        "\"queuelevels\":{\"green\":2,\"orange\":4,\"red\":6}}";
     QVariant data;
     try {
         data = JsonQt::JsonToVariant::parse(defaultguioptions);

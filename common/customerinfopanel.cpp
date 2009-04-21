@@ -158,9 +158,11 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
              this, SLOT(localActionCall(const QString &, const QString &, const QString &)) );
 }
 
-void CustomerInfoPanel::localActionCall(const QString & a, const QString & b, const QString & c)
+/*! \brief originate action redirection
+ */
+void CustomerInfoPanel::localActionCall(const QString & cmd, const QString & orig, const QString & src)
 {
-    actionCall(a, b, c);
+    actionCall(cmd, orig, src);
 }
 
 void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVariant & timestamps)

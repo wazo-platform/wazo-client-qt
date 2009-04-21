@@ -270,6 +270,8 @@ void Popup::addAnyInfo(const QString & localName,
     }
 }
 
+/*! \brief sets the sheet's title
+ */
 void Popup::setTitle(const QString & title)
 {
     // qDebug() << "Popup::setTitle()" << title;
@@ -410,6 +412,8 @@ void Popup::setEnablesOnForms()
     }
 }
 
+/*! \brief adds phone-like data to the sheet
+ */
 void Popup::addInfoPhone(int where, const QString & name, const QString & value)
 {
     // qDebug() << "Popup::addInfoPhone()" << value;
@@ -438,6 +442,8 @@ void Popup::update(QList<QStringList> & newsheetlines)
         addAnyInfo(qsl[0], qsl[1], qsl[2], qsl[3], qsl[4]);
 }
 
+/*! \brief adds phone-like data (as clickable URL) to the sheet
+ */
 void Popup::addInfoPhoneURL(int where, const QString & name, const QString & value)
 {
     // qDebug() << "Popup::addInfoPhoneURL()" << value;
