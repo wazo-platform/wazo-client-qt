@@ -100,6 +100,9 @@ win32-%:
 # to be executed under a bash/cygwin-like terminal
 win32pack-%:
 	@${UPXWIN} $*/release/$*.exe || true
+	@rm -f delivery/settings.nsh
+	@${ECHO} "!define XIVOVER ${_XIVOVER_}" >> delivery/settings.nsh
+	@${ECHO} "!define SVNVER  ${_SVNVER_}"  >> delivery/settings.nsh
 	@${MAKENSIS} delivery/$*.nsi
 	@mv delivery/$*-setup-win32.exe $*-setup-${_XIVOVER_}-${_SVNVER_}-win32.exe
 

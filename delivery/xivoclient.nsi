@@ -6,7 +6,9 @@
 
 !define ODPATH ..\..\openssl-0.9.8g-mingw\openssl-0.9.8g
 !define REG_UNINST Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient
-Name "XIVO Client"
+!include settings.nsh
+!define FULLVERSION "${XIVOVER} (svn ${SVNVER})"
+Name "XIVO Client ${FULLVERSION}"
 OutFile "xivoclient-setup-win32.exe"
 InstallDirRegKey HKLM "Software\XIVO\xivoclient" "Install_Dir" 
 LicenseText "XIVO Client est distribué sous licence GNU General Public License v2 avec une exception spéciale vous autorisant à le lier à OpenSSL, sous certaines conditions."
@@ -47,7 +49,7 @@ SectionEnd
 Section "Shortcuts"
 SetOutPath "$SMPROGRAMS\XIVO"
 CreateShortCut "$SMPROGRAMS\XIVO\xivoclient.lnk"  "$INSTDIR\xivoclient.exe"
-CreateShortCut "$SMPROGRAMS\XIVO\Désinstaller xivoclient.lnk"  "$INSTDIR\uninstall-xivoclient.exe"
+CreateShortCut "$SMPROGRAMS\XIVO\Désinstaller xivoclient ${FULLVERSION}.lnk"  "$INSTDIR\uninstall-xivoclient.exe"
 CreateShortCut "$DESKTOP\xivoclient.lnk"  "$INSTDIR\xivoclient.exe"
 IfSilent +2
 MessageBox MB_OK "Installation terminée."
@@ -73,7 +75,7 @@ RmDir "$INSTDIR"
 Delete "$DESKTOP\xivoclient.lnk"
 
 Delete "$SMPROGRAMS\XIVO\xivoclient.lnk"
-Delete "$SMPROGRAMS\XIVO\Désinstaller xivoclient.lnk"
+Delete "$SMPROGRAMS\XIVO\Désinstaller xivoclient ${FULLVERSION}.lnk"
 RmDir "$SMPROGRAMS\XIVO"
 
 SectionEnd
