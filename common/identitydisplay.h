@@ -86,7 +86,8 @@ signals:
 private:
     void showAgentProps();
     void hideAgentProps();
-    void setStatusColors(int, int);
+    void setStatusColors(const QString &);
+    void setPausedColors(int, int);
     void updateAgentStatus(const QVariantMap &);
     
     QLabel * m_icon_user;
@@ -104,6 +105,7 @@ private:
     QComboBox * m_presencevalue;
     QLabel * m_agent;
     QLabel * m_agentstatus;
+    QLabel * m_agentstatustxt;
     QLabel * m_agentpause;
     QLabel * m_agentpausetxt;
     

@@ -413,7 +413,7 @@ void MainWidget::createActions()
     m_cfgact->setStatusTip(tr("Configure account and connection options"));
     connect( m_cfgact, SIGNAL(triggered()),
              this, SLOT(showConfDialog()) );
-
+    
     m_quitact = new QAction(tr("&Quit"), this);
     m_quitact->setProperty("stopper", "quit");
     m_quitact->setStatusTip(tr("Close the application"));
@@ -421,14 +421,14 @@ void MainWidget::createActions()
              m_engine, SLOT(stop()) );
     connect( m_quitact, SIGNAL(triggered()),
              qApp, SLOT(quit()) );
-
+    
     if(m_withsystray) {
         m_systraymin = new QAction(tr("To S&ystray"), this);
         m_systraymin->setStatusTip(tr("Enter the system tray"));
         connect( m_systraymin, SIGNAL(triggered()),
                  this, SLOT(hide()) );
         m_systraymin->setEnabled( QSystemTrayIcon::isSystemTrayAvailable() );
-                
+        
         m_systraymax = new QAction(tr("&Show window"), this);
         m_systraymax->setStatusTip(tr("Leave the system tray"));
         connect( m_systraymax, SIGNAL(triggered()),
@@ -439,28 +439,28 @@ void MainWidget::createActions()
                  this, SLOT(raise()) );
         m_systraymax->setEnabled( QSystemTrayIcon::isSystemTrayAvailable() );
     }
-
+    
     m_connectact = new QAction(tr("&Connect"), this);
     m_connectact->setStatusTip(tr("Connect to the server"));
     connect( m_connectact, SIGNAL(triggered()),
              m_engine, SLOT(start()) );
-
+    
     m_disconnectact = new QAction(tr("&Disconnect"), this);
     m_disconnectact->setProperty("stopper", "disconnect");
     m_disconnectact->setStatusTip(tr("Disconnect from the server"));
     connect( m_disconnectact, SIGNAL(triggered()),
              m_engine, SLOT(stop()) );
-
+    
     m_connectact->setEnabled(true);
     m_disconnectact->setEnabled(false);
-
+    
     // Availability actions :
     m_availgrp = new QActionGroup( this );
     m_availgrp->setExclusive(true);
-        
+    
     connect( m_engine, SIGNAL(changesAvailChecks()),
              this, SLOT(checksAvailState()) );
-        
+    
     checksAvailState();
 }
 

@@ -66,7 +66,7 @@ const QString __current_client_version__  = SVNVER;
 const QString __datebuild_client__  = DATEBUILD;
 const QString __xivo_version__  = "1.0";
 const QString __nopresence__ = "nopresence";
-const QStringList XletList = (QStringList() << "customerinfo" << "features" << "history"
+const QStringList XletList = (QStringList() << "void" << "customerinfo" << "features" << "history"
                               << "directory" << "search" << "fax" << "dial"
                               << "operator" << "parking" << "calls" << "switchboard"
                               << "messages" << "identity" << "datetime" << "tabber" << "conference" << "xletproto" << "callcampaign" << "mylocaldir"

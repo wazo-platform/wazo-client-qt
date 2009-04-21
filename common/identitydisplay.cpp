@@ -95,6 +95,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     m_agent = new QLabel();
     m_agentstatus = new QLabel();
+    m_agentstatustxt = new QLabel();
     m_agentpause = new QLabel();
     m_agentpausetxt = new QLabel();
     
@@ -129,19 +130,21 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     glayout->addWidget( m_icon_voicemail, 0, 8, 3, 1, iconAlign );
     
     int idline = 0;
-    Qt::Alignment textAlign = Qt::AlignLeft | Qt::AlignTop; // Qt::AlignVCenter
-    glayout->addWidget( m_user, idline, 2, textAlign );
-    glayout->addWidget( m_agent, idline, 5, 1, 2, textAlign );
-    glayout->addWidget( m_voicemail_name, idline, 9, textAlign );
+    Qt::Alignment textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
+    // Qt::Alignment textAlignTop = Qt::AlignLeft | Qt::AlignTop;
+    glayout->addWidget( m_user, idline, 2, textAlignVCenter );
+    glayout->addWidget( m_agent, idline, 5, 1, 2, textAlignVCenter );
+    glayout->addWidget( m_voicemail_name, idline, 9, textAlignVCenter );
     idline ++;
-    glayout->addWidget( m_phonenum, idline, 2, textAlign );
-    glayout->addWidget( m_agentstatus, idline, 5, 1, 2, textAlign );
-    glayout->addWidget( m_voicemail_old, idline, 9, textAlign );
+    glayout->addWidget( m_phonenum, idline, 2, textAlignVCenter );
+    glayout->addWidget( m_agentstatus, idline, 5, textAlignVCenter );
+    glayout->addWidget( m_agentstatustxt, idline, 6, textAlignVCenter );
+    glayout->addWidget( m_voicemail_old, idline, 9, textAlignVCenter );
     idline ++;
-    glayout->addWidget( m_presencevalue, idline, 2, textAlign );
-    glayout->addWidget( m_agentpause, idline, 5, textAlign );
-    glayout->addWidget( m_agentpausetxt, idline, 6, textAlign );
-    glayout->addWidget( m_voicemail_new, idline, 9, textAlign );
+    glayout->addWidget( m_presencevalue, idline, 2, textAlignVCenter );
+    glayout->addWidget( m_agentpause, idline, 5, textAlignVCenter );
+    glayout->addWidget( m_agentpausetxt, idline, 6, textAlignVCenter );
+    glayout->addWidget( m_voicemail_new, idline, 9, textAlignVCenter );
     
     glayout->setColumnStretch( 10, 1 );
     
@@ -184,7 +187,7 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                         
             if(m_allow_logagent) {
                 QAction * logAction = new QAction(this);
-                bool connected = m_agentstatus->property("connected").toBool();
+                bool connected = m_agentstatustxt->property("connected").toBool();
                 if(connected)
                     logAction->setText(tr("Logout"));
                 else
@@ -353,16 +356,16 @@ void IdentityDisplay::updateAgentStatus(const QVariantMap & properties)
         m_agstatus = agstatus;
         if(agstatus == "AGENT_LOGGEDOFF") {
             setSystrayIcon(icon_color_black);
-            m_agentstatus->setProperty("connected", false);
-            m_agentstatus->setText(tr("Disconnected from %1").arg(phonenum));
+            m_agentstatustxt->setProperty("connected", false);
+            setStatusColors(phonenum);
         } else if(agstatus == "AGENT_IDLE") {
             setSystrayIcon(icon_color_green);
-            m_agentstatus->setProperty("connected", true);
-            m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
+            m_agentstatustxt->setProperty("connected", true);
+            setStatusColors(phonenum);
         } else if(agstatus == "AGENT_ONCALL") {
             setSystrayIcon(icon_color_green);
-            m_agentstatus->setProperty("connected", true);
-            m_agentstatus->setText(tr("Connected on %1").arg(phonenum));
+            m_agentstatustxt->setProperty("connected", true);
+            setStatusColors(phonenum);
         } else
             qDebug() << "IdentityDisplay::setAgentList() unknown status" << agstatus;
     }
@@ -382,13 +385,14 @@ void IdentityDisplay::updateAgentStatus(const QVariantMap & properties)
     
     int njoined = joined_queues.size();
     int nunpaused = unpaused_queues.size();
-    setStatusColors(njoined, njoined - nunpaused);
+    setPausedColors(njoined, njoined - nunpaused);
 }
 
 void IdentityDisplay::showAgentProps()
 {
     m_agent->show();
     m_agentstatus->show();
+    m_agentstatustxt->show();
     m_agentpause->show();
     m_agentpausetxt->show();
     m_icon_agent->show();
@@ -398,14 +402,28 @@ void IdentityDisplay::hideAgentProps()
 {
     m_agent->hide();
     m_agentstatus->hide();
+    m_agentstatustxt->hide();
     m_agentpause->hide();
     m_agentpausetxt->hide();
     m_icon_agent->hide();
 }
 
-void IdentityDisplay::setStatusColors(int nj, int np)
+void IdentityDisplay::setStatusColors(const QString & phonenum)
 {
-    QPixmap * p_square = new QPixmap(16, 16);
+    QPixmap * p_square = new QPixmap(10, 10);
+    if(m_agentstatustxt->property("connected").toBool()) {
+        p_square->fill("#00ff00");
+        m_agentstatustxt->setText(tr("Connected on %1").arg(phonenum));
+    } else {
+        p_square->fill("#ff0000");
+        m_agentstatustxt->setText(tr("Disconnected from %1").arg(phonenum));
+    }
+    m_agentstatus->setPixmap(* p_square);
+}
+
+void IdentityDisplay::setPausedColors(int nj, int np)
+{
+    QPixmap * p_square = new QPixmap(10, 10);
     if(nj > 0) {
         if(np == nj) {
             setSystrayIcon(icon_color_red);
@@ -413,7 +431,7 @@ void IdentityDisplay::setStatusColors(int nj, int np)
             m_agentpause->setToolTip(tr("Paused"));
             m_agentpausetxt->setText(tr("Paused"));
         } else if(np == 0) {
-            bool loggedin = m_agentstatus->property("connected").toBool();
+            bool loggedin = m_agentstatustxt->property("connected").toBool();
             p_square->fill("#00ff00");
             m_agentpause->setToolTip(tr("Unpaused"));
             m_agentpausetxt->setText(tr("Unpaused"));
@@ -436,7 +454,7 @@ void IdentityDisplay::setStatusColors(int nj, int np)
 
 void IdentityDisplay::doAgentLogActions()
 {
-    bool connected = m_agentstatus->property("connected").toBool();
+    bool connected = m_agentstatustxt->property("connected").toBool();
     if(connected)
         agentAction("logout");
     else
