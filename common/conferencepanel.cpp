@@ -60,6 +60,8 @@ ConferencePanel::ConferencePanel(BaseEngine * engine,
     m_glayout = new QGridLayout(this);
     m_tw = new QTabWidget(this);
     m_glayout->addWidget( m_tw, 0, 0 );
+    m_summary = new QLabel( this );
+    m_glayout->addWidget( m_summary, 1, 0 );
     m_glayout->setRowStretch( 0, 1 );
     m_glayout->setColumnStretch( 0, 1 );
     startTimer(1000);
@@ -99,6 +101,7 @@ void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
             }
         }
     }
+    updateSummary();
 }
 
 /*! \brief delete a Tab
@@ -126,10 +129,14 @@ void ConferencePanel::addRoomTab(const QString & astid,
     if(! m_layout.contains(idxroom)) {
         QWidget * w = new QWidget();
         m_layout[idxroom] = new QGridLayout(w);
+        m_layout[idxroom]->setProperty("astid", astid);
+        m_layout[idxroom]->setProperty("roomnum", roomnum);
+        m_layout[idxroom]->setProperty("roomname", roomname);
         m_layout[idxroom]->setColumnStretch(0, 1);
         m_layout[idxroom]->setColumnStretch(6, 1);
         m_layout[idxroom]->setRowStretch(100, 1);
-        m_tw->addTab(w, tr("Room %1 (%2) on %3").arg(roomname, roomnum, astid));
+        int i = m_tw->addTab(w, tr("%1 (%2)").arg(roomname, roomnum));
+        m_tw->setTabToolTip(i, tr("Room %1 (%2) on %3").arg(roomname, roomnum, astid));
     }
 }
 
@@ -153,6 +160,8 @@ void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
                   roomnum,
                   meetmeMap["uniqueid"].toString(),
                   meetmeMap["details"].toMap());
+
+    updateSummary();
 }
 
 /*! \brief create/update widgets which display person info
@@ -381,3 +390,32 @@ void ConferencePanel::timerEvent(QTimerEvent *)
         m_timespent[ref]->setText(displayedtime);
     }
 }
+
+/*! \brief Update the list of how many members in each room
+ */
+void ConferencePanel::updateSummary()
+{
+    QString summary;
+    int count = 0;
+    qDebug() << "ConferencePanel::updateSummary()";
+    qDebug() << "  " << m_tw->count();
+    qDebug() << "  " << m_infos.keys();
+    qDebug() << "  " << m_layout.keys();
+    foreach(QString idxroom, m_layout.keys()) {
+        //qDebug() << "    " << idxroom << m_layout[idxroom]->count();
+        //qDebug() << "    " << idxroom << m_layout[idxroom]->rowCount();
+        count = 0;
+        foreach(QString ref, m_infos.keys()) {
+            if(ref.startsWith(idxroom))
+                count++;
+        }
+        qDebug() << "    " << idxroom
+                 << m_layout[idxroom]->property("astid").toString()
+                 << m_layout[idxroom]->property("roomnum").toString()
+                 << m_layout[idxroom]->property("roomname").toString()
+                 << count;
+        summary.append(tr("%1 (%2) : %3\n").arg(m_layout[idxroom]->property("roomname").toString()).arg(m_layout[idxroom]->property("roomnum").toString()).arg(tr("%n member(s)", "", count)));
+    }
+    m_summary->setText( summary );
+}
+

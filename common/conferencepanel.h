@@ -77,6 +77,8 @@ public slots:
     void meetmeEvent(double, const QVariant &);
     void meetmeInit(double, const QVariant &);
     void doMeetMeAction();
+signals:
+    void meetmeAction(const QString &, const QString &);    //!< action
 private:
     void setProperties(double,
                        const QString &,
@@ -90,6 +92,7 @@ private:
                     const QString &);
     void delRoomTab(const QString &,
                     const QString &);
+    void updateSummary();
     
     BaseEngine * m_engine;  //!< BaseEngine pointer
     QHash<QString, QLabel *> m_infos;   //!< widgets for displaying name and phone number
@@ -100,8 +103,7 @@ private:
     QHash<QString, QGridLayout *> m_layout;         //!< layouts
     QTabWidget * m_tw;              //!< Tab container
     QGridLayout * m_glayout;        //!< gridlayout
-signals:
-    void meetmeAction(const QString &, const QString &);    //!< action
+    QLabel * m_summary;
 };
 
 #endif
