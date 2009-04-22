@@ -995,7 +995,6 @@ void BaseEngine::parseCommand(const QString & line)
             //qDebug() << "**** MEETME **** " << function << datamap["payload"];
             if (function == "sendlist")
             {
-                meetmeInit(m_timesrv, datamap["payload"]);
                 QVariantMap map1 = datamap["payload"].toMap();
                 foreach(QString astid, map1.keys()) {
                     QVariantMap map2 = map1[astid].toMap();
@@ -1010,20 +1009,23 @@ void BaseEngine::parseCommand(const QString & line)
                         m_meetme[astid][meetmeid].m_uniqueids = map3["uniqueids"].toMap();
                     }
                 }
+                meetmeInit(m_timesrv, datamap["payload"]);
             }
             else if (function == "update")
             {
-                meetmeEvent(m_timesrv, datamap["payload"]);
                 QVariantMap map = datamap["payload"].toMap();
                 QString action = map["action"].toString();
                 QString astid = map["astid"].toString();
                 QString meetmeid = map["meetmeid"].toString();
                 QString uniqueid = map["uniqueid"].toString();
-                if(action == QString("join")) {
-                    m_meetme[astid][meetmeid].m_uniqueids[uniqueid] = map["details"].toMap();
-                } else if(action == "leave") {
-                    m_meetme[astid][meetmeid].m_uniqueids.remove(uniqueid);
+                if(!meetmeid.isEmpty() && !astid.isEmpty()) {
+                    if(action == QString("join")) {
+                        m_meetme[astid][meetmeid].m_uniqueids[uniqueid] = map["details"].toMap();
+                    } else if(action == "leave") {
+                        m_meetme[astid][meetmeid].m_uniqueids.remove(uniqueid);
+                    }
                 }
+                meetmeEvent(m_timesrv, datamap["payload"]);
             }
             qDebug() << "**** MEETME " << m_meetme;
         } else if (thisclass == "serverdown") {

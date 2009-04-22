@@ -198,6 +198,7 @@ public:
     double timeServer() const;
     const QDateTime & timeClient() const;
     double timeDeltaServerClient() const;
+    const QHash<QString, QHash<QString, MeetmeInfo> > meetme() const { return m_meetme; };
     
 public slots:
     void start();        //!< start the connection process.

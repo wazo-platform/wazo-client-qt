@@ -401,6 +401,7 @@ void ConferencePanel::updateSummary()
     qDebug() << "  " << m_tw->count();
     qDebug() << "  " << m_infos.keys();
     qDebug() << "  " << m_layout.keys();
+/*
     foreach(QString idxroom, m_layout.keys()) {
         //qDebug() << "    " << idxroom << m_layout[idxroom]->count();
         //qDebug() << "    " << idxroom << m_layout[idxroom]->rowCount();
@@ -415,6 +416,18 @@ void ConferencePanel::updateSummary()
                  << m_layout[idxroom]->property("roomname").toString()
                  << count;
         summary.append(tr("%1 (%2) : %3\n").arg(m_layout[idxroom]->property("roomname").toString()).arg(m_layout[idxroom]->property("roomnum").toString()).arg(tr("%n member(s)", "", count)));
+    }
+*/
+    if(!m_engine)
+        return;
+    foreach(QString astid, m_engine->meetme().keys()) {
+        foreach(QString meetmeid, m_engine->meetme()[astid].keys()) {
+            qDebug() << astid << meetmeid << m_engine->meetme()[astid][meetmeid];
+            QString roomname = m_engine->meetme()[astid][meetmeid].m_name;
+            QString roomnum = m_engine->meetme()[astid][meetmeid].m_number;
+            count = m_engine->meetme()[astid][meetmeid].m_uniqueids.count();
+            summary.append(tr("%1 (%2) : %3\n").arg(roomname).arg(roomnum).arg(tr("%n member(s)", "", count)));
+        }
     }
     m_summary->setText( summary );
 }
