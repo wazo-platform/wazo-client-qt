@@ -62,6 +62,46 @@ class QSocketNotifier;
 class QTcpSocket;
 class QTimerEvent;
 
+/*! \brief for storing meetme stuff
+ *
+ * All attributes use implicitly shared stuff
+ */
+class MeetmeInfo
+{
+public:
+    MeetmeInfo() {};
+    MeetmeInfo(const MeetmeInfo & other) {
+        m_context = other.m_context;
+        m_name = other.m_name;
+        m_number = other.m_number;
+        m_pin = other.m_pin;
+        m_adminpin = other.m_adminpin;
+        m_adminid = other.m_adminid;
+        m_uniqueids = other.m_uniqueids;
+    };
+    operator QString() const {
+        QString str("MeetmeInfo(");
+        str.append(m_number);
+        str.append(", ");
+        str.append(m_name);
+        str.append(", [");
+        foreach(QString uid, m_uniqueids.keys()) {
+            str.append(uid);
+            str.append(" ");
+        }
+        str.append("])");
+        return str;
+    };
+
+    QString m_context;
+    QString m_name;
+    QString m_number;
+    QString m_pin;
+    QString m_adminpin;
+    QString m_adminid;
+    QMap<QString, QVariant> m_uniqueids;
+};
+
 /*! \brief Class which handles connection with the XIVO CTI server
  *
  *  The engine object contains all the code to
@@ -372,6 +412,8 @@ private:
     int m_rate_bytes;
     int m_rate_msec;
     int m_rate_samples;
+
+    QHash<QString, QHash<QString, MeetmeInfo> > m_meetme; //! meet me !
 };
 
 #endif
