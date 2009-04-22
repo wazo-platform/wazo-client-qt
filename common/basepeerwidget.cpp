@@ -440,13 +440,15 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                 qDebug() << "BasePeerWidget::contextMenuEvent my comms : " << pi->phoneid() << ts << comm;
                 const QString status = comm["status"].toString();
                 QString text = comm["calleridnum"].toString();
+                QString calleridname = text;
                 if( comm.contains("calleridname")
                     && comm["calleridname"] != comm["calleridnum"] )
                 {
+                    calleridname = comm["calleridname"].toString();
                     text.append( " : " );
-                    text.append( comm["calleridname"].toString() );
+                    text.append( calleridname );
                 }
-                if( true )
+                if( calleridname != QString("<meetme>") )
                 {
                     if( !transferMenu && commsCount > 1 )
                         transferMenu = new QMenu( tr("Direct &Transfer"), &contextMenu );
@@ -470,7 +472,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     else
                         contextMenu.addAction( transferAction );
                 }
-                if( true )
+                if( calleridname != QString("<meetme>") )
                 {
                     if( !itransferMenu && commsCount > 1)
                         itransferMenu = new QMenu( tr("&Indirect Transfer"), &contextMenu );
@@ -494,7 +496,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     else
                         contextMenu.addAction( itransferAction );
                 }
-                if( m_ui )
+                if( m_ui && calleridname != QString("<meetme>") )
                 {
                     // TODO : check if this really has a Voice Mail
                     if( !vmtransferMenu && commsCount > 1)
