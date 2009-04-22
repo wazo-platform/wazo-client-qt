@@ -95,6 +95,18 @@ void BasePeerWidget::dial()
     }
 }
 
+/*! \brief make this peer call the number
+ */
+void BasePeerWidget::peerdial()
+{
+    if(m_ui)
+    {
+        emit actionCall("originate",
+                        "user:" + m_ui->userid(),
+                        "ext:" + sender()->property("number").toString());
+    }
+}
+
 /*! \brief hangup a channel
  *
  * uses "thischannel" property of the sender
@@ -439,16 +451,25 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                 const QMap<QString, QVariant> & comm = comms[ts].toMap();
                 qDebug() << "BasePeerWidget::contextMenuEvent my comms : " << pi->phoneid() << ts << comm;
                 const QString status = comm["status"].toString();
-                QString text = comm["calleridnum"].toString();
-                QString calleridname = text;
+                QString calleridnum = comm["calleridnum"].toString();
+                QString calleridname = calleridnum;
+                QString text = calleridnum;
                 if( comm.contains("calleridname")
-                    && comm["calleridname"] != comm["calleridnum"] )
+                    && comm["calleridname"] != calleridnum )
                 {
                     calleridname = comm["calleridname"].toString();
                     text.append( " : " );
                     text.append( calleridname );
                 }
-                if( calleridname != QString("<meetme>") )
+                if( calleridname == QString("<meetme>") )
+                {
+                    QAction * meetmeAction = new QAction( tr("Invite in meetme room %1").arg(calleridnum), &contextMenu);
+                    meetmeAction->setProperty( "number", calleridnum );
+                    connect( meetmeAction, SIGNAL(triggered()),
+                             this, SLOT(peerdial()) );
+                    //contextMenu.addAction( meetmeAction );//disabled
+                }
+                else
                 {
                     if( !transferMenu && commsCount > 1 )
                         transferMenu = new QMenu( tr("Direct &Transfer"), &contextMenu );

@@ -88,6 +88,7 @@ signals:
     void removeFromPanel();
 protected slots:
     void dial();
+    void peerdial();
     void hangup();
     void intercept();
     void intercept2();
