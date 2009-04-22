@@ -172,7 +172,8 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
         }
     }
     // make columns fit the content
-    m_table->resizeColumnsToContents();
+    if(m_table->rowCount() > 0)
+        m_table->resizeColumnsToContents();
 }
 
 void ParkingPanel::itemClicked(QTableWidgetItem * item)
