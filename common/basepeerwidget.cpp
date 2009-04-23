@@ -105,6 +105,12 @@ void BasePeerWidget::peerdial()
                         "user:" + m_ui->userid(),
                         "ext:" + sender()->property("number").toString());
     }
+    else
+    {
+        emit actionCall("originate",
+                        "ext:" + m_number,
+                        "ext:" + sender()->property("number").toString());
+    }
 }
 
 /*! \brief hangup a channel
@@ -469,7 +475,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     meetmeAction->setProperty( "number", calleridnum );
                     connect( meetmeAction, SIGNAL(triggered()),
                              this, SLOT(peerdial()) );
-                    //contextMenu.addAction( meetmeAction );//disabled
+                    contextMenu.addAction( meetmeAction );
                 }
                 else
                 {
