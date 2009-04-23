@@ -104,7 +104,7 @@ private:
         
     QString m_currentchannel;
     QStringList m_callchannels;
-    QString m_tferchannel;
+    //QString m_tferchannel;
 };
 
 #endif
