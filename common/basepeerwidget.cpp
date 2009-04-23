@@ -324,10 +324,12 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
     // Construct and display the context menu
     QMenu contextMenu( this );
     // allow to dial everyone except me !
+    if( true ) {
+        contextMenu.addAction( m_removeAction );
+        contextMenu.addSeparator();
+    }
     if( ui != m_ui )
         contextMenu.addAction( m_dialAction );
-    if( true )
-        contextMenu.addAction( m_removeAction );
     if( m_editable )
         contextMenu.addAction( tr("&Edit"), this, SLOT(edit()) );
     QMenu * interceptMenu = NULL;

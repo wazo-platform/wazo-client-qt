@@ -92,16 +92,16 @@ void StatusPanel::newCall(const QString & chan)
     m_vlinesr[chan] = new QFrame(this);
     m_statuses[chan] = new QLabel("none", this);
     m_tnums[chan] = new QLineEdit("", this);
-
+    
     m_vlinesl[chan]->setFrameShape(QFrame::VLine);
     m_vlinesl[chan]->setLineWidth(1);
     m_vlinesr[chan]->setFrameShape(QFrame::VLine);
     m_vlinesr[chan]->setLineWidth(1);
     m_tnums[chan]->hide();
-
+    
     changeCurrentChannel(m_currentchannel, chan);
     m_currentchannel = chan;
-        
+    
     QHash<QString, QPushButton *> k;
     QMapIterator<int, QStringList> act(m_actionkey);
     while (act.hasNext()) {
@@ -120,7 +120,7 @@ void StatusPanel::newCall(const QString & chan)
         connect( k[actionname], SIGNAL(clicked()),
                  this, SLOT(clicked()) );
     }
-        
+    
     m_actions[chan] = k;
     int row = 1;
     foreach(int r, m_row)
