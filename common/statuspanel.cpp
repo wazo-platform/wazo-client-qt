@@ -465,8 +465,13 @@ QString StatusPanel::getPeerChan(QString const & chan) const
             {
                 it.next();
                 QVariantMap qvm = it.value().toMap();
-                if(qvm["thischannel"].toString() == chan)
-                    return qvm["peerchannel"].toString();
+                if(qvm["thischannel"].toString() == chan) {
+                    QString peerchan = qvm["peerchannel"].toString();
+                    // ugly workaround...
+                    if(peerchan.endsWith("<MASQ>"))
+                        peerchan.remove("<MASQ>");
+                    return peerchan;
+                }
             }
         }
     }
