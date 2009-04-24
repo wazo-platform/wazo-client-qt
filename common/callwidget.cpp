@@ -182,7 +182,7 @@ void CallWidget::updateWidget(const QString & status,
         text = tr("Parked call in %1").arg(callerid);
     else if(callerid == "<parked>")
         text = tr("Parked call");
-    else if(calleridname != "<unknown>" && !calleridname.isEmpty())
+    else if(calleridname != "<unknown>" && !calleridname.isEmpty() && calleridname != callerid)
         text = tr("%1 : %2").arg(callerid).arg(calleridname);
     else if(!callerid.isEmpty())
         text = callerid;
