@@ -305,6 +305,7 @@ void StatusPanel::functionKeyPressed(int keynum)
             actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel));
         } else if(action == "atxfercancel") {
             actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));
+            updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
         } else if(action == "ilink") {
             actionCall("simplehangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
         } else if(action == "icancel") {
