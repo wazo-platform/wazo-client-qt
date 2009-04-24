@@ -731,7 +731,7 @@ void BaseEngine::updatePhone(const QString & astid,
                              const QString & phoneid,
                              const QMap<QString, QVariant> & properties)
 {
-    //if(phoneid == "sip.default.103.103")
+    //if(phoneid == "sip.default.121.121")
     //    qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties;
     //qDebug() << map.keys();
     QString key = astid + "." + phoneid;
@@ -997,6 +997,7 @@ void BaseEngine::parseCommand(const QString & line)
             {
                 QVariantMap map1 = datamap["payload"].toMap();
                 foreach(QString astid, map1.keys()) {
+                    m_meetme[astid].clear();
                     QVariantMap map2 = map1[astid].toMap();
                     foreach(QString meetmeid, map2.keys()) {
                         QVariantMap map3 = map2[meetmeid].toMap();
