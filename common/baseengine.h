@@ -62,14 +62,18 @@ class QSocketNotifier;
 class QTcpSocket;
 class QTimerEvent;
 
-/*! \brief for storing meetme stuff
+/*! \brief for storing meetme (conference room) infos
  *
- * All attributes use implicitly shared stuff
+ * All attributes use implicitly shared data
+ * so it would be not too costy to copy/return this
+ * class.
  */
 class MeetmeInfo
 {
 public:
+    //! Default constructor
     MeetmeInfo() {};
+    //! Copy constructor. Just copy all attributes
     MeetmeInfo(const MeetmeInfo & other) {
         m_context = other.m_context;
         m_name = other.m_name;
@@ -79,6 +83,7 @@ public:
         m_adminid = other.m_adminid;
         m_uniqueids = other.m_uniqueids;
     };
+    //! cast to QString operator for debugging
     operator QString() const {
         QString str("MeetmeInfo(");
         str.append(m_number);
@@ -93,13 +98,13 @@ public:
         return str;
     };
 
-    QString m_context;
-    QString m_name;
-    QString m_number;
-    QString m_pin;
-    QString m_adminpin;
-    QString m_adminid;
-    QMap<QString, QVariant> m_uniqueids;
+    QString m_context;  //!< room context
+    QString m_name;     //!< room name
+    QString m_number;   //!< room access number
+    QString m_pin;      //!< room pin number (if any)
+    QString m_adminpin; //!< room admin pin number (if any) 
+    QString m_adminid;  //!< admin id ???
+    QMap<QString, QVariant> m_uniqueids;    //!< people in this conference room
 };
 
 /*! \brief Class which handles connection with the XIVO CTI server
@@ -341,9 +346,9 @@ private:
     int m_keeppass;                 //!< Keep password ?
     int m_showagselect;             //!< Show agent selection ?
     QString m_fullid;               //!< Full Id (userid + company)
-    QString m_astid;
-    QString m_xivo_userid;
-    QString m_profilename;
+    QString m_astid;                //!< asterisk id of the current user
+    QString m_xivo_userid;          //!< xivo user id of the current user
+    QString m_profilename;          //!< CTI profil name of the current user
     
     QDateTime m_timeclt;
     double m_timesrv;
@@ -354,7 +359,7 @@ private:
     uint m_trytoreconnectinterval;  //!< Try to reconnect interval (in msec)
     uint m_keepaliveinterval;       //!< Keep alive interval (in msec)
     
-    int m_historysize;
+    int m_historysize;              //!< Number of elements when requestion call log
     QHash<QString, bool> m_checked_function;              //!< function checked
     QHash<QString, bool> m_enabled_function;              //!< function enabled
     bool m_checked_lastconnwins;           //!< the last connected account "wins"
@@ -402,19 +407,19 @@ private:
     int m_faxsize;
     
     QString m_monitored_userid;     //!< UserId of the Monitored Phone (on SB, or one's own on XC)
-    QSettings * m_settings;
+    QSettings * m_settings;         //!< Settings (stored in .ini file)
     QFile * m_eventdevice;
 //    QSocketNotifier * m_notifier;
-    QByteArray m_downloaded;
+    QByteArray m_downloaded;    //!< downloaded data
     QFile * m_logfile;
-    int m_byte_counter;
-    QTime m_time;
+    int m_byte_counter; //!< byte counter for calculating network throughput
+    QTime m_time;       //!< time counter for calculating network throughput
     bool m_attempt_loggedin;
-    int m_rate_bytes;
-    int m_rate_msec;
-    int m_rate_samples;
+    int m_rate_bytes;   //!< byte counter to calculate Json decode throughput
+    int m_rate_msec;    //!< time counter to calculate Json decode throughput
+    int m_rate_samples; //!< number of Json decode
 
-    QHash<QString, QHash<QString, MeetmeInfo> > m_meetme; //! meet me !
+    QHash<QString, QHash<QString, MeetmeInfo> > m_meetme; //! meet me (conference rooms)
 };
 
 #endif

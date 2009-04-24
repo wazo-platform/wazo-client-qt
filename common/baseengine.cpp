@@ -129,7 +129,9 @@ BaseEngine::BaseEngine(QSettings * settings,
         start();
 }
 
+/*! */
 void BaseEngine::readInputEvent(int) {
+    // does nothing ??
     // qDebug() << "BaseEngine::readInputEvent()" << r;
     if(m_eventdevice->isReadable()) {
         QByteArray qba = m_eventdevice->read(1024);
@@ -313,6 +315,7 @@ void BaseEngine::logAction(const QString & logstring)
     }
 }
 
+/*! \brief set login/pass and then starts */
 void BaseEngine::config_and_start(const QString & login,
                                   const QString & pass,
                                   const QString & phonenum)
@@ -488,11 +491,13 @@ void BaseEngine::setLastConnWins(bool b)
     m_checked_lastconnwins = b;
 }
 
+/*! \brief gets m_capaxlets */
 const QStringList & BaseEngine::getCapaXlets() const
 {
     return m_capaxlets;
 }
 
+/*! \brief gets m_capapresence */
 const QVariantMap & BaseEngine::getCapaPresence() const
 {
     return m_capapresence;
@@ -546,6 +551,7 @@ const QString & BaseEngine::getAvailState() const
     return m_availstate;
 }
 
+/*! \brief set availability */
 void BaseEngine::setAvailability()
 {
     // qDebug() << "BaseEngine::setAvailability()" << sender();
@@ -553,12 +559,14 @@ void BaseEngine::setAvailability()
     setAvailState(availstate, false);
 }
 
+/*! \brief send command to CTI daemon */
 void BaseEngine::sendCommand(const QString & command)
 {
     if(m_tcpsocket["cticommands"]->state() == QAbstractSocket::ConnectedState)
         m_tcpsocket["cticommands"]->write((command + "\n").toAscii());
 }
 
+/*! \brief encode json and then send command to CTI daemon */
 void BaseEngine::sendJsonCommand(const QVariantMap & command)
 {
     QString jsoncommand(JsonQt::VariantToJson::parse(command));
@@ -585,6 +593,7 @@ void BaseEngine::processHistory(const QVariant & histlist)
     }
 }
 
+/*! \brief set monitored peer id */
 void BaseEngine::monitorPeerRequest(const QString & userid)
 {
     // qDebug() << "BaseEngine::monitorPeerRequest()" << userid;
@@ -677,6 +686,7 @@ void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
         popupError("connection_closed");
         break;
     case QAbstractSocket::HostNotFoundError:
+/*! \brief set monitored peer id */
         emitTextMessage(tr("Host not found"));
         break;
     case QAbstractSocket::NetworkError:
@@ -833,6 +843,7 @@ double BaseEngine::timeDeltaServerClient() const
     return m_timeclt.toTime_t()-m_timesrv;
 }
 
+/*! \brief parse JSON and then process command */
 void BaseEngine::parseCommand(const QString & line)
 {
     QVariant data;
@@ -1359,6 +1370,7 @@ void BaseEngine::agentAction(const QString & action)
     sendJsonCommand(command);
 }
 
+/*! \brief send meetme command to the CTI server */
 void BaseEngine::meetmeAction(const QString & function, const QString & functionargs)
 {
     QVariantMap command;
@@ -1369,6 +1381,7 @@ void BaseEngine::meetmeAction(const QString & function, const QString & function
     sendJsonCommand(command);
 }
 
+/*! \brief send callcampaign command to the CTI server */
 void BaseEngine::requestFileList(const QString & action)
 {
     QVariantMap command;
@@ -1378,6 +1391,7 @@ void BaseEngine::requestFileList(const QString & action)
     sendJsonCommand(command);
 }
 
+/*! \brief Send fax to CTI Server */
 void BaseEngine::sendFaxCommand(const QString & filename,
                                 const QString & number,
                                 Qt::CheckState hide)
@@ -1402,6 +1416,10 @@ void BaseEngine::sendFaxCommand(const QString & filename,
         ackFax("ko", "file");
 }
 
+/*! \brief select message and then display a messagebox
+ *
+ * TODO : replace string errorids by an enum ?
+ */
 void BaseEngine::popupError(const QString & errorid)
 {
     QString errormsg = QString(tr("Server has sent an Error."));
@@ -1497,6 +1515,9 @@ void BaseEngine::popupError(const QString & errorid)
         emitMessageBox(errormsg);
 }
 
+/*! \brief save BaseEngine::m_downloaded to a file
+ *  \sa BaseEngine::m_downloaded
+ */
 void BaseEngine::saveToFile(const QString & filename)
 {
     qDebug() << "BaseEngine::saveToFile()" << filename << m_downloaded.size();
@@ -1562,6 +1583,10 @@ void BaseEngine::socketReadyRead()
     }
 }
 
+/*! \brief forward actions from fiche to daemon
+ *
+ * Build and send JSON command
+ */
 void BaseEngine::actionFromFiche(const QVariant & infos)
 {
     // qDebug() << "BaseEngine::actionFromFiche()" << infos;
@@ -1922,6 +1947,14 @@ void BaseEngine::askFeatures()
     sendJsonCommand(command);
 }
 
+/*! \brief send a lot of getlist commands to the CTI server
+ *
+ * send getlist for "users", "queues", "agents", "phones",
+ * "meetme", "users", "endinit"
+ *
+ * \todo rename this method to something more meaningful
+ *
+ */
 void BaseEngine::askCallerIds()
 {
     // qDebug() << "BaseEngine::askCallerIds()";
@@ -2030,6 +2063,7 @@ void BaseEngine::changeWatchedQueueSlot(const QString & queueid)
     emit changeWatchedQueueSignal(queueid);
 }
 
+/*! \brief sets m_osname */
 void BaseEngine::setOSInfos(const QString & osname)
 {
     m_osname = osname;
@@ -2076,6 +2110,7 @@ void BaseEngine::keepLoginAlive()
     sendJsonCommand(command);
 }
 
+/*! \brief send m_availstate to CTI server */
 void BaseEngine::changeState()
 {
     QVariantMap command;
@@ -2098,6 +2133,7 @@ void BaseEngine::sendMessage(const QString & message)
     sendJsonCommand(command);
 }
 
+/*! \brief send error message to the CTI Server */
 void BaseEngine::shouldNotOccur(const QString & classmethod, const QString & message)
 {
     qDebug() << "BE::sNO" << classmethod << message;
@@ -2109,26 +2145,33 @@ void BaseEngine::shouldNotOccur(const QString & classmethod, const QString & mes
     sendJsonCommand(command);
 }
 
+/*! \brief save parameter in settings (.ini file) */
 void BaseEngine::saveQueueGroups(const QVariant & queuegroups)
 {
     m_settings->setValue("agentpanel/queuegroups", queuegroups);
 }
 
+/*! \brief load parameters from settings */
 void BaseEngine::loadQueueGroups()
 {
     emit setQueueGroups(m_settings->value("agentpanel/queuegroups"));
 }
 
+/*! \brief save queue order in settings (.ini file) */
 void BaseEngine::saveQueueOrder(const QVariant & queueorder)
 {
     m_settings->setValue("queuepanel/queueorder", queueorder);
 }
 
+/*! \brief load queue order from settings */
 void BaseEngine::loadQueueOrder()
 {
     emit setQueueOrder(m_settings->value("queuepanel/queueorder"));
 }
 
+/*! \brief get pointer to the currently logged user
+ *
+ * Return NULL if not available */
 UserInfo * BaseEngine::getXivoClientUser()
 {
     //qDebug() << "BaseEngine::getXivoClientUser()" << m_astid << m_xivo_userid;
@@ -2136,3 +2179,4 @@ UserInfo * BaseEngine::getXivoClientUser()
         return m_users.value( m_fullid );
     return NULL;
 }
+
