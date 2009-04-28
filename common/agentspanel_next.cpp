@@ -136,9 +136,6 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
             contextMenu.addAction(p_newGroupAction);
             contextMenu.addSeparator();
             
-            delete p_renameAction;
-            delete p_removeAction;
-            
             if(thisqueuelist.size() > 0) {
                 QMenu * menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
                 foreach (QString qname, thisqueuelist) {
@@ -148,7 +145,6 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                     menu_remove->addAction(p_qremove);
                     connect(p_qremove, SIGNAL(triggered()),
                             this, SLOT(removeQueueFromGroup()) );
-                    delete p_qremove;
                 }
                 
                 menu_remove->addSeparator();
@@ -158,7 +154,6 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                 p_removeAllQueuesAction->setProperty("groupid", thisgroupid);
                 connect(p_removeAllQueuesAction, SIGNAL(triggered()),
                         this, SLOT(removeQueuesFromGroup()) );
-                delete p_removeAllQueuesAction;
             }
             
             QStringList queuestoadd;
@@ -174,7 +169,6 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                     menu_add->addAction(p_qadd);
                     connect(p_qadd, SIGNAL(triggered()),
                             this, SLOT(addQueueToGroup()) );
-                    delete p_qadd;
                 }
                 
                 menu_add->addSeparator();
@@ -184,14 +178,12 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                 p_addAllQueuesAction->setProperty("groupid", thisgroupid);
                 connect(p_addAllQueuesAction, SIGNAL(triggered()),
                         this, SLOT(addQueuesToGroup()) );
-                delete p_addAllQueuesAction;
             }
         } else
             return;
     }
-        
+    
     contextMenu.exec(event->globalPos());
-    delete p_newGroupAction;
 }
 
 void AgentsPanelNext::newGroup()
@@ -218,7 +210,8 @@ void AgentsPanelNext::newGroup()
     dialog->exec();
     if(! q2->toPlainText().trimmed().isEmpty()) {
         QString groupid = QString::number(QDateTime::currentDateTime().toTime_t());
-        m_title[groupid] = new ExtendedLabel();
+        if(! m_title.contains(groupid))
+            m_title[groupid] = new ExtendedLabel();
         m_title[groupid]->setText(q2->toPlainText().trimmed());
         m_title[groupid]->setProperty("queues", (QStringList()));
         m_title[groupid]->setProperty("groupid", groupid);
@@ -240,7 +233,8 @@ void AgentsPanelNext::setQueueGroups(const QVariant & groups)
 {
     // qDebug() << "AgentsPanelNext::setQueueGroups()" << groups;
     foreach (QString groupid, groups.toMap().keys()) {
-        m_title[groupid] = new ExtendedLabel(groups.toMap()[groupid].toMap()["label"].toString());
+        if(! m_title.contains(groupid))
+            m_title[groupid] = new ExtendedLabel(groups.toMap()[groupid].toMap()["label"].toString());
         m_title[groupid]->setProperty("groupid", groupid);
         m_title[groupid]->setProperty("queues", groups.toMap()[groupid].toMap()["queues"].toStringList());
         m_title[groupid]->setToolTip(groups.toMap()[groupid].toMap()["queues"].toStringList().join(", "));
