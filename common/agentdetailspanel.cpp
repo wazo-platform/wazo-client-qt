@@ -471,6 +471,8 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
         m_queue_pause_status[queueid]->setPixmap(* p_square);
         m_queue_pause_status[queueid]->setProperty("Paused", pstatus);
     }
+    
+    delete p_square;
 }
 
 /*! \brief 
@@ -563,10 +565,13 @@ void AgentdetailsPanel::serverFileList(const QStringList & qsl)
             connect( action, SIGNAL(triggered()),
                      this, SLOT(getFile()) );
             contextMenu.addAction(action);
+            delete action;
         }
+        delete actiontitle;
     } else {
         QAction * action = new QAction(tr("No Record for this agent"), this);
         contextMenu.addAction(action);
+        delete action;
     }
     contextMenu.exec( m_eventpoint );
 }

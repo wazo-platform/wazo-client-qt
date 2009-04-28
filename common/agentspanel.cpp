@@ -130,6 +130,7 @@ void AgentsPanel::updateAgentPresence(const QString & astid, const QString & age
             p_square->fill(QColor(presencestatus.toMap()["color"].toString()));
             m_agent_presence[agentid]->setPixmap(QPixmap(* p_square));
             m_agent_presence[agentid]->setToolTip(presencestatus.toMap()["longname"].toString());
+            delete p_square;
         }
 }
 
@@ -263,6 +264,11 @@ void AgentsPanel::displayLine(const QString & agentid, int linenum)
     m_gridlayout->addWidget( m_agent_paused_status[agentid], linenum, colnum++, Qt::AlignCenter );
     m_gridlayout->addWidget( m_agent_paused_action[agentid], linenum, colnum++, Qt::AlignCenter );
     m_gridlayout->addWidget( m_agent_paused_number[agentid], linenum, colnum++, Qt::AlignRight );
+    
+    delete qvline1;
+    delete qvline2;
+    delete qvline3;
+    delete p_square;
 }
 
 void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap & properties)
@@ -393,6 +399,8 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
         m_agent_paused_action[agentid]->show();
         m_agent_paused_number[agentid]->show();
     }
+    
+    delete p_square;
 }
 
 /*! \brief process actions

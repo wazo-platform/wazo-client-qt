@@ -67,16 +67,16 @@ ServicePanel::ServicePanel(BaseEngine * engine,
     m_capalegend["fwdrna"]  = tr("Forward on &No Reply");
     m_capalegend["fwdbusy"] = tr("Forward on &Busy");
     m_capalegend["fwdunc"]  = tr("&Unconditional Forward");
-        
+    
     m_capas = options.toMap()["services"].toStringList();
-        
+    
     int line = 0;
     m_status = new ServiceStatus();
-        
+    
     QGroupBox * groupBox1 = new QGroupBox( tr("Services") );
     groupBox1->setAlignment( Qt::AlignLeft );
     QGridLayout * gridlayout1 = new QGridLayout(groupBox1);
-        
+    
     foreach(QString capa, chkcapas)
         if(m_capas.contains(capa)) {
             m_chkopt[capa] = new QCheckBox(m_capalegend[capa], this);
@@ -84,12 +84,12 @@ ServicePanel::ServicePanel(BaseEngine * engine,
             m_chkopt[capa]->setProperty("capa", capa);
             gridlayout1->addWidget(m_chkopt[capa], line++, 0, 1, 0);
         }
-        
+    
     QGroupBox * groupBox2 = new QGroupBox( tr("Call Forwards") );
     groupBox2->setAlignment( Qt::AlignLeft );
     QGridLayout * gridlayout2 = new QGridLayout(groupBox2);
     QHash<QString, QLabel *> label;
-        
+    
     foreach(QString capa, fwdcapas)
         if(m_capas.contains(capa)) {
             m_forward[capa] = new QCheckBox(m_capalegend[capa], this);
@@ -104,14 +104,14 @@ ServicePanel::ServicePanel(BaseEngine * engine,
             gridlayout2->addWidget(m_forwarddest[capa], line++, 1);
             label[capa]->setObjectName("service");
         }
-        
+    
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     if(m_capas.contains("enablevm") || m_capas.contains("incallrec") || m_capas.contains("incallfilter") || m_capas.contains("enablednd"))
         vlayout->addWidget(groupBox1);
     if(m_capas.contains("fwdrna") || m_capas.contains("fwdbusy") || m_capas.contains("fwdunc"))
         vlayout->addWidget(groupBox2);
     vlayout->addStretch(1);
-
+    
     Reset();
     foreach(QString capa, fwdcapas)
         if(m_capas.contains(capa)) {
@@ -123,6 +123,7 @@ ServicePanel::ServicePanel(BaseEngine * engine,
 
 ServicePanel::~ServicePanel()
 {
+    delete m_status;
 }
 
 void ServicePanel::Connect()
