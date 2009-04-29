@@ -78,7 +78,8 @@ BaseEngine::BaseEngine(QSettings * settings,
       m_sessionid(""), m_state(ENotLogged),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
-      m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0)
+      m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
+      m_forced_to_disconnect(false)
 {
     settings->setParent( this );
     m_ka_timerid = 0;
@@ -1354,7 +1355,16 @@ void BaseEngine::parseCommand(const QString & line)
                 askCallerIds();
                 m_attempt_loggedin = true;
             }
-            
+        } else if (thisclass == "disconnect") {
+            qDebug() << "disconnect" << datamap;
+            QString type = datamap["type"].toString();
+            stop();
+            if(type=="force") {
+                m_forced_to_disconnect = true;// disable autoreconnect
+                popupError("forcedisconnected");
+            } else {
+                popupError("disconnected");
+            }
         } else {
             qDebug() << "BaseEngine::parseQVariantCommand() : unknown server command class" << thisclass << datamap;
         }
@@ -1507,11 +1517,15 @@ void BaseEngine::popupError(const QString & errorid)
         else
             errormsg = tr("Your server version (%1) is too old for this client.\n"
                           "Please upgrade it.").arg(versionslist[0]);
+    } else if (errorid == "disconnected") {
+        errormsg = tr("You were disconnected by the server.");
+    } else if (errorid == "forcedisconnected") {
+        errormsg = tr("You were forced to disconnect by the server.");
     }
 
     // logs a message before sending any popup that would block
     emitTextMessage(tr("Error") + " : " + errormsg);
-    if(! m_trytoreconnect)
+    if(!m_trytoreconnect || m_forced_to_disconnect)
         emitMessageBox(errormsg);
 }
 
@@ -1839,7 +1853,7 @@ void BaseEngine::stopTryAgainTimer()
 
 void BaseEngine::startTryAgainTimer()
 {
-    if( m_try_timerid == 0 && m_trytoreconnect )
+    if( m_try_timerid == 0 && m_trytoreconnect && !m_forced_to_disconnect)
         m_try_timerid = startTimer(m_trytoreconnectinterval);
 }
 

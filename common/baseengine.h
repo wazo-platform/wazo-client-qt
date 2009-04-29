@@ -418,6 +418,7 @@ private:
     int m_rate_bytes;   //!< byte counter to calculate Json decode throughput
     int m_rate_msec;    //!< time counter to calculate Json decode throughput
     int m_rate_samples; //!< number of Json decode
+    bool m_forced_to_disconnect;    //!< set to true when disconnected by server
 
     QHash<QString, QHash<QString, MeetmeInfo> > m_meetme; //! meet me (conference rooms)
 };
