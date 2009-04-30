@@ -397,10 +397,7 @@ void ConferencePanel::updateSummary()
 {
     QString summary;
     int count = 0;
-    qDebug() << "ConferencePanel::updateSummary()";
-    qDebug() << "  " << m_tw->count();
-    qDebug() << "  " << m_infos.keys();
-    qDebug() << "  " << m_layout.keys();
+    //qDebug() << "ConferencePanel::updateSummary()" << m_tw->count() << m_infos.keys() << m_layout.keys();
 /*
     foreach(QString idxroom, m_layout.keys()) {
         //qDebug() << "    " << idxroom << m_layout[idxroom]->count();
@@ -422,7 +419,7 @@ void ConferencePanel::updateSummary()
         return;
     foreach(QString astid, m_engine->meetme().keys()) {
         foreach(QString meetmeid, m_engine->meetme()[astid].keys()) {
-            qDebug() << astid << meetmeid << m_engine->meetme()[astid][meetmeid];
+            //qDebug() << astid << meetmeid << m_engine->meetme()[astid][meetmeid];
             QString roomname = m_engine->meetme()[astid][meetmeid].m_name;
             QString roomnum = m_engine->meetme()[astid][meetmeid].m_number;
             count = m_engine->meetme()[astid][meetmeid].m_uniqueids.count();

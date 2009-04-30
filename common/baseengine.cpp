@@ -1040,7 +1040,7 @@ void BaseEngine::parseCommand(const QString & line)
                 }
                 meetmeEvent(m_timesrv, datamap["payload"]);
             }
-            qDebug() << "**** MEETME " << m_meetme;
+            //qDebug() << "**** MEETME " << m_meetme;
         } else if (thisclass == "serverdown") {
             qDebug() << thisclass << datamap["mode"].toString();
             
