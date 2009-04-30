@@ -76,8 +76,6 @@ signals:
                     const QString &,
                     const QString &);
 private slots:
-    void dialNumber();
-    void sendMail();
     void startSearch();
     void itemClicked(QTableWidgetItem *);
     void itemDoubleClicked(QTableWidgetItem *);

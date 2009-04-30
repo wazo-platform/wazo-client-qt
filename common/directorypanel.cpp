@@ -117,7 +117,7 @@ void DirectoryPanel::itemClicked(QTableWidgetItem * item)
     //qDebug() << item << item->text();
     // check if the string is a phone number
     if( m_re_number.exactMatch(item->text()) ) {
-        // qDebug() << "DirectoryPanel::itemClicked()" << "preparing to dial" << item->text();
+        //qDebug() << "DirectoryPanel::itemClicked()" << "preparing to dial" << item->text();
         copyNumber(item->text());
     }
 }
@@ -182,6 +182,9 @@ void DirectoryPanel::setSearchResponse(const QString & resp)
             m_table->setSortingEnabled(true);
         }
     }
+    // make columns fit the content
+    //if(m_table->rowCount() > 0)
+    //    m_table->resizeColumnsToContents();
 }
 
 /*! \brief start the search process
@@ -202,94 +205,5 @@ void DirectoryPanel::stop()
     m_table->setRowCount(0);
     m_table->setColumnCount(0);
     m_searchText->setText("");
-}
-
-#if 0
-void DirectoryPanel::contextMenuEvent(QContextMenuEvent * event)
-{
-    QTableWidgetItem * item = m_table->itemAt( m_table->mapFromParent( event->pos() ) );
-    qDebug() << "DirectoryPanel::contextMenuEvent()" << item;
-    qDebug() << event->pos() << m_table->pos();
-    qDebug() << m_table->mapFromParent( event->pos() );
-//    qDebug() << ( event->pos() - m_table->pos() );
-//    qDebug() << m_table;
-//    qDebug() << m_table->parent();
-//    qDebug() << m_table->parent()->parent();
-//    qDebug() << this;
-    if (item == NULL)
-        return;
-
-    if(item && m_re_number.exactMatch( item->text() )) {
-        // this is a phone number, offer Dial and Transfer options
-        m_numberToDial = item->text();
-        // qDebug() << "DirectoryPanel::contextMenuEvent()" << "preparing to dial" << m_numberToDial;
-        QMenu contextMenu( this );
-        contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
-        QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
-        UserInfo * ui = m_engine ? m_engine->getXivoClientUser() : 0;
-        if(ui)
-        {
-            foreach( const QString phone, ui->phonelist() )
-            {
-                const PhoneInfo * pi = ui->getPhoneInfo( phone );
-                if( pi )
-                {
-                    QMapIterator<QString, QVariant> it( pi->comms() );
-                    while( it.hasNext() )
-                    {
-                        it.next();
-                        QMap<QString, QVariant> call = it.value().toMap();
-                        // Add the transfer entry with the callerid name and num
-                        QString text;
-                        if( call.contains("calleridname") )
-                        {
-                            text.append( call["calleridname"].toString() );
-                            text.append(" : ");
-                        }
-                        text.append( call["calleridnum"].toString() );
-                        QAction * transferAction =
-                            transferMenu->addAction( text,
-                                                     this, SLOT(transfer()) );
-//                        transferAction->setProperty( "chan", call["thischannel"] );
-                        transferAction->setProperty( "chan", call["peerchannel"] );
-                    }
-                }
-            }
-        }
-        event->accept();
-        if( !transferMenu->isEmpty() )
-            contextMenu.addMenu(transferMenu);
-        contextMenu.exec( event->globalPos() );
-    }
-
-    if(item && item->text().contains("@")) {
-        event->accept();
-        // this is an email address
-        m_mailAddr = item->text();
-        qDebug() << "email addr detection :" << m_mailAddr;
-        QMenu emailContextMenu( this );
-        emailContextMenu.addAction( tr("Send an E-mail"),
-                                    this, SLOT(sendMail()) );
-        emailContextMenu.exec( event->globalPos() );
-    }
-}
-#endif
-
-/*! \brief dial the number (when context menu item is toggled)
- */
-void DirectoryPanel::dialNumber()
-{
-    if( !m_numberToDial.isEmpty() )
-        emit actionCall("originate", "user:special:me", "ext:" + m_numberToDial); // Call
-}
-
-/*! \brief dial the number (when context menu item is toggled)
- */
-void DirectoryPanel::sendMail()
-{
-    if(m_mailAddr.length() > 0) {
-        //        qDebug() << "ExtendedTableWidget::sendMail()" << m_mailAddr;
-        QDesktopServices::openUrl( QUrl("mailto:" + m_mailAddr) );
-    }
 }
 
