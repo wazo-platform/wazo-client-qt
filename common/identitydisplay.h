@@ -76,6 +76,7 @@ public slots:
     void idxChanged(const QString &);
     void updatePresence(const QVariant &);
     void setOpt(const QString &, bool);
+    void updateUser(UserInfo *);
 private slots:
     void contextMenuEvent(QContextMenuEvent *);
     void contextMenuAction();
@@ -105,6 +106,7 @@ private:
     QLabel * m_voicemail_new;
     QLabel * m_voicemail_name;
     QLabel * m_phonenum;
+    QLabel * m_phonecall;
     QComboBox * m_presencevalue;
     QLabel * m_agent;
     QLabel * m_agentstatus;

@@ -798,6 +798,8 @@ void MainWidget::engineStarted()
                 
                 connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
                          m_xlet[xletid], SLOT(setOpt(const QString &, bool)) );
+                connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
+                         m_xlet[xletid], SLOT(updateUser(UserInfo *)) );
                 
             } else if (xletid == "agents") {
                 m_xlet[xletid] = new AgentsPanel(m_engine, m_options);

@@ -57,6 +57,7 @@
 #include "extendedlabel.h"
 #include "identitydisplay.h"
 #include "userinfo.h"
+#include "phoneinfo.h"
 #include "agentinfo.h"
 #include "queueinfo.h"
 
@@ -91,6 +92,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     m_phone = new QLabel();
     m_phonestatus = new QLabel();
+    m_phonecall = new QLabel();
     
     m_voicemail_old = new QLabel();
     m_voicemail_new = new QLabel();
@@ -156,6 +158,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     glayout->addWidget( m_presencevalue, idline, 2, textAlignVCenter );
     glayout->addWidget( m_agentpause, idline, 5, textAlignVCenter );
     glayout->addWidget( m_agentpausetxt, idline, 6, textAlignVCenter );
+    glayout->addWidget( m_phonecall, idline, 9, textAlignVCenter );
     glayout->addWidget( m_voicemail_new, idline, 12, textAlignVCenter );
     
     glayout->setColumnStretch( 13, 1 );
@@ -368,6 +371,21 @@ void IdentityDisplay::setOpt(const QString & capa, bool b)
         else
             p_square->fill("#00ff00");
         m_phonestatus->setPixmap(* p_square);
+    }
+}
+
+/*! \brief update user status
+ */
+void IdentityDisplay::updateUser(UserInfo * ui)
+{
+    if(m_ui != ui)
+        return;
+    foreach(QString phoneid, m_ui->phonelist()) {
+        QPixmap * p_square = new QPixmap(10, 10);
+        const PhoneInfo * p_pi = m_ui->getPhoneInfo(phoneid);
+        p_square->fill(p_pi->hintstatus("color"));
+        m_phonecall->setPixmap(* p_square);
+        m_phonecall->setToolTip(p_pi->hintstatus("longname"));
     }
 }
 

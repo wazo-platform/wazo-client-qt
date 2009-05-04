@@ -268,7 +268,7 @@ QList<QString> UserInfo::channelList() const
 
 /*! \brief return a String representation of the object
  *
- * usefull for debug
+ * useful for debug
  */
 QString UserInfo::toString() const
 {

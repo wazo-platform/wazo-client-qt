@@ -43,6 +43,7 @@
 #define __PHONEINFO_H__
 
 #include <QString>
+#include <QStringList>
 #include <QVariant>
 #include <QMap>
 
