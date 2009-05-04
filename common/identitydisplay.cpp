@@ -363,7 +363,7 @@ void IdentityDisplay::newQueueList(const QStringList &)
 
 void IdentityDisplay::setOpt(const QString & capa, bool b)
 {
-    qDebug() << "IdentityDisplay::setOpt" << capa << b;
+    // qDebug() << "IdentityDisplay::setOpt" << capa << b;
     if(capa == "enablednd") {
         QPixmap * p_square = new QPixmap(10, 10);
         if(b)
@@ -372,6 +372,12 @@ void IdentityDisplay::setOpt(const QString & capa, bool b)
             p_square->fill("#00ff00");
         m_phonestatus->setPixmap(* p_square);
     }
+}
+
+// void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
+void IdentityDisplay::setForward(const QString &, const QVariant &)
+{
+    // qDebug() << "IdentityDisplay::setForward" << capa << value;
 }
 
 /*! \brief update user status

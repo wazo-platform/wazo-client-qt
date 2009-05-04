@@ -798,6 +798,8 @@ void MainWidget::engineStarted()
                 
                 connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
                          m_xlet[xletid], SLOT(setOpt(const QString &, bool)) );
+                connect( m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
+                         m_xlet[xletid], SLOT(setForward(const QString &, const QVariant &)) );
                 connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
                          m_xlet[xletid], SLOT(updateUser(UserInfo *)) );
                 

@@ -76,6 +76,7 @@ public slots:
     void idxChanged(const QString &);
     void updatePresence(const QVariant &);
     void setOpt(const QString &, bool);
+    void setForward(const QString &, const QVariant &);
     void updateUser(UserInfo *);
 private slots:
     void contextMenuEvent(QContextMenuEvent *);
