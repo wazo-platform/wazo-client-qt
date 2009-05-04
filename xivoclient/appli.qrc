@@ -54,6 +54,7 @@
 	<file>../images/rightarrow.png</file>
 	<file>../images/personal.png</file>
 	<file>../images/kthememgr.png</file>
+	<file>../images/phone.png</file>
 	<file>../images/applixware.png</file>
 </qresource>
 </RCC>

@@ -89,6 +89,9 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_presencevalue->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     m_presencevalue->setProperty("function", "presence");
     
+    m_phone = new QLabel();
+    m_phonestatus = new QLabel();
+    
     m_voicemail_old = new QLabel();
     m_voicemail_new = new QLabel();
     m_voicemail_name = new QLabel();
@@ -104,19 +107,25 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     m_icon_user = new ExtendedLabel();
     m_icon_agent = new ExtendedLabel();
+    m_icon_phone = new ExtendedLabel();
     m_icon_voicemail = new ExtendedLabel();
     m_icon_voicemail->hide();
     
     m_icon_user->setPixmap(QPixmap(":/images/personal.png"));
     m_icon_agent->setPixmap(QPixmap(":/images/applixware.png"));
+    m_icon_phone->setPixmap(QPixmap(":/images/phone.png"));
     m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png"));
+    
     m_icon_user->setProperty("iconname", "user");
     m_icon_agent->setProperty("iconname", "agent");
+    m_icon_phone->setProperty("iconname", "phone");
     m_icon_voicemail->setProperty("iconname", "voicemail");
     
     connect( m_icon_user, SIGNAL(context_menu(QContextMenuEvent *)),
              this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
     connect( m_icon_agent, SIGNAL(context_menu(QContextMenuEvent *)),
+             this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+    connect( m_icon_phone, SIGNAL(context_menu(QContextMenuEvent *)),
              this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
     connect( m_icon_voicemail, SIGNAL(context_menu(QContextMenuEvent *)),
              this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
@@ -127,26 +136,29 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     Qt::Alignment iconAlign = Qt::AlignHCenter | Qt::AlignTop; // Qt::AlignVCenter
     glayout->addWidget( m_icon_user, 0, 1, 3, 1, iconAlign );
     glayout->addWidget( m_icon_agent, 0, 4, 3, 1, iconAlign );
-    glayout->addWidget( m_icon_voicemail, 0, 8, 3, 1, iconAlign );
+    glayout->addWidget( m_icon_phone, 0, 8, 3, 1, iconAlign );
+    glayout->addWidget( m_icon_voicemail, 0, 11, 3, 1, iconAlign );
     
     int idline = 0;
     Qt::Alignment textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
     // Qt::Alignment textAlignTop = Qt::AlignLeft | Qt::AlignTop;
     glayout->addWidget( m_user, idline, 2, textAlignVCenter );
     glayout->addWidget( m_agent, idline, 5, 1, 2, textAlignVCenter );
-    glayout->addWidget( m_voicemail_name, idline, 9, textAlignVCenter );
+    glayout->addWidget( m_phone, idline, 9, textAlignVCenter );
+    glayout->addWidget( m_voicemail_name, idline, 12, textAlignVCenter );
     idline ++;
     glayout->addWidget( m_phonenum, idline, 2, textAlignVCenter );
     glayout->addWidget( m_agentstatus, idline, 5, textAlignVCenter );
     glayout->addWidget( m_agentstatustxt, idline, 6, textAlignVCenter );
-    glayout->addWidget( m_voicemail_old, idline, 9, textAlignVCenter );
+    glayout->addWidget( m_phonestatus, idline, 9, textAlignVCenter );
+    glayout->addWidget( m_voicemail_old, idline, 12, textAlignVCenter );
     idline ++;
     glayout->addWidget( m_presencevalue, idline, 2, textAlignVCenter );
     glayout->addWidget( m_agentpause, idline, 5, textAlignVCenter );
     glayout->addWidget( m_agentpausetxt, idline, 6, textAlignVCenter );
-    glayout->addWidget( m_voicemail_new, idline, 9, textAlignVCenter );
+    glayout->addWidget( m_voicemail_new, idline, 12, textAlignVCenter );
     
-    glayout->setColumnStretch( 10, 1 );
+    glayout->setColumnStretch( 13, 1 );
     
     // although it might be convenient in some cases (prevent some expansions),
     // in the basic xivoclient/grid case, it fills too much room without no resizing available
@@ -302,6 +314,7 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     
     m_user->setText(m_ui->fullname());
     m_phonenum->setText(m_ui->phonenumber());
+    m_phone->setText(m_ui->phonenumber());
     QStringList vm = m_ui->mwi();
     if(vm.size() > 2) {
         m_icon_voicemail->show();
@@ -343,6 +356,19 @@ void IdentityDisplay::newQueueList(const QStringList &)
         return;
 */
     // qDebug() << "IdentityDisplay::newQueueList()";
+}
+
+void IdentityDisplay::setOpt(const QString & capa, bool b)
+{
+    qDebug() << "IdentityDisplay::setOpt" << capa << b;
+    if(capa == "enablednd") {
+        QPixmap * p_square = new QPixmap(10, 10);
+        if(b)
+            p_square->fill("#ff0000");
+        else
+            p_square->fill("#00ff00");
+        m_phonestatus->setPixmap(* p_square);
+    }
 }
 
 void IdentityDisplay::updateAgentStatus(const QVariantMap & properties)

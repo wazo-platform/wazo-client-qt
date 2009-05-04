@@ -75,6 +75,7 @@ public slots:
     void doAgentUnPauseActions();
     void idxChanged(const QString &);
     void updatePresence(const QVariant &);
+    void setOpt(const QString &, bool);
 private slots:
     void contextMenuEvent(QContextMenuEvent *);
     void contextMenuAction();
@@ -92,12 +93,14 @@ private:
     
     QLabel * m_icon_user;
     QLabel * m_icon_agent;
+    QLabel * m_icon_phone;
     QLabel * m_icon_voicemail;
     
     QFrame * m_qvline1;
     QFrame * m_qvline2;
     
     QLabel * m_user;
+    QLabel * m_phone;
     QLabel * m_voicemail_old;
     QLabel * m_voicemail_new;
     QLabel * m_voicemail_name;
@@ -108,6 +111,7 @@ private:
     QLabel * m_agentstatustxt;
     QLabel * m_agentpause;
     QLabel * m_agentpausetxt;
+    QLabel * m_phonestatus;
     
     BaseEngine * m_engine;
     QHash<QString, QString> m_presence_names;

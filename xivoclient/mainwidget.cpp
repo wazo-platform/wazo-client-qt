@@ -796,6 +796,9 @@ void MainWidget::engineStarted()
                 connect( m_xlet[xletid], SIGNAL(setSystrayIcon(const QString &)),
                          this, SLOT(setSystrayIcon(const QString &)) );
                 
+                connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
+                         m_xlet[xletid], SLOT(setOpt(const QString &, bool)) );
+                
             } else if (xletid == "agents") {
                 m_xlet[xletid] = new AgentsPanel(m_engine, m_options);
                 if (withscrollbar) {
