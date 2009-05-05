@@ -108,6 +108,7 @@ private:
     QLabel * m_voicemail_name;
     QLabel * m_phonenum;
     QLabel * m_phonecall;
+    QLabel * m_phonecalltxt;
     QComboBox * m_presencevalue;
     QLabel * m_agent;
     QLabel * m_agentstatus;
@@ -115,6 +116,7 @@ private:
     QLabel * m_agentpause;
     QLabel * m_agentpausetxt;
     QLabel * m_phonestatus;
+    QLabel * m_phonestatustxt;
     
     BaseEngine * m_engine;
     QHash<QString, QString> m_presence_names;

@@ -92,7 +92,9 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     m_phone = new QLabel();
     m_phonestatus = new QLabel();
+    m_phonestatustxt = new QLabel();
     m_phonecall = new QLabel();
+    m_phonecalltxt = new QLabel();
     
     m_voicemail_old = new QLabel();
     m_voicemail_new = new QLabel();
@@ -146,22 +148,24 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     // Qt::Alignment textAlignTop = Qt::AlignLeft | Qt::AlignTop;
     glayout->addWidget( m_user, idline, 2, textAlignVCenter );
     glayout->addWidget( m_agent, idline, 5, 1, 2, textAlignVCenter );
-    glayout->addWidget( m_phone, idline, 9, textAlignVCenter );
-    glayout->addWidget( m_voicemail_name, idline, 12, textAlignVCenter );
+    glayout->addWidget( m_phone, idline, 9, 1, 2, textAlignVCenter );
+    glayout->addWidget( m_voicemail_name, idline, 13, textAlignVCenter );
     idline ++;
     glayout->addWidget( m_phonenum, idline, 2, textAlignVCenter );
     glayout->addWidget( m_agentstatus, idline, 5, textAlignVCenter );
     glayout->addWidget( m_agentstatustxt, idline, 6, textAlignVCenter );
     glayout->addWidget( m_phonestatus, idline, 9, textAlignVCenter );
-    glayout->addWidget( m_voicemail_old, idline, 12, textAlignVCenter );
+    glayout->addWidget( m_phonestatustxt, idline, 10, textAlignVCenter );
+    glayout->addWidget( m_voicemail_old, idline, 13, textAlignVCenter );
     idline ++;
     glayout->addWidget( m_presencevalue, idline, 2, textAlignVCenter );
     glayout->addWidget( m_agentpause, idline, 5, textAlignVCenter );
     glayout->addWidget( m_agentpausetxt, idline, 6, textAlignVCenter );
     glayout->addWidget( m_phonecall, idline, 9, textAlignVCenter );
-    glayout->addWidget( m_voicemail_new, idline, 12, textAlignVCenter );
+    glayout->addWidget( m_phonecalltxt, idline, 10, textAlignVCenter );
+    glayout->addWidget( m_voicemail_new, idline, 13, textAlignVCenter );
     
-    glayout->setColumnStretch( 13, 1 );
+    glayout->setColumnStretch( 14, 1 );
     
     // although it might be convenient in some cases (prevent some expansions),
     // in the basic xivoclient/grid case, it fills too much room without no resizing available
@@ -317,7 +321,7 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     
     m_user->setText(m_ui->fullname());
     m_phonenum->setText(m_ui->phonenumber());
-    m_phone->setText(m_ui->phonenumber());
+    m_phone->setText(tr("Phone %1").arg(m_ui->phonenumber()));
     QStringList vm = m_ui->mwi();
     if(vm.size() > 2) {
         m_icon_voicemail->show();
@@ -366,10 +370,13 @@ void IdentityDisplay::setOpt(const QString & capa, bool b)
     // qDebug() << "IdentityDisplay::setOpt" << capa << b;
     if(capa == "enablednd") {
         QPixmap * p_square = new QPixmap(10, 10);
-        if(b)
+        if(b) {
             p_square->fill("#ff0000");
-        else
+            m_phonestatustxt->setText("DND");
+        } else {
             p_square->fill("#00ff00");
+            m_phonestatustxt->setText("");
+        }
         m_phonestatus->setPixmap(* p_square);
     }
 }
@@ -392,6 +399,7 @@ void IdentityDisplay::updateUser(UserInfo * ui)
         p_square->fill(p_pi->hintstatus("color"));
         m_phonecall->setPixmap(* p_square);
         m_phonecall->setToolTip(p_pi->hintstatus("longname"));
+        m_phonecalltxt->setText(p_pi->hintstatus("longname"));
     }
 }
 
