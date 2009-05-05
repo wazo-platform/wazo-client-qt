@@ -246,8 +246,14 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
             //                         connect(xAction, SIGNAL(triggered()),
             //                                 this, SLOT(contextMenuAction()) );
             //                         contextMenu.addAction(xAction);
+//         } else if(iconname == "phone") {
+//             QMenu contextMenu(this);
+//             QAction * a1 = new QAction("dnd", this);
+//             contextMenu.addAction(a1);
+//             QAction * a2 = new QAction("fwd", this);
+//             contextMenu.addAction(a2);
+//             contextMenu.exec(event->globalPos());
         }
-        // contextMenu.exec(event->globalPos());
     }
 }
 
@@ -367,8 +373,7 @@ void IdentityDisplay::newQueueList(const QStringList &)
 
 void IdentityDisplay::setOpt(const QString & capa, bool b)
 {
-    // qDebug() << "IdentityDisplay::setOpt" << capa << b;
-    if(capa == "enablednd") {
+    if(capa == "enablednd") { // "incallfilter", "incallrec", "enablevm"
         QPixmap * p_square = new QPixmap(10, 10);
         if(b) {
             p_square->fill("#ff0000");
@@ -381,10 +386,10 @@ void IdentityDisplay::setOpt(const QString & capa, bool b)
     }
 }
 
-// void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
-void IdentityDisplay::setForward(const QString &, const QVariant &)
+void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
 {
-    // qDebug() << "IdentityDisplay::setForward" << capa << value;
+    if(capa == "unc") // "busy", "rna"
+        qDebug() << "IdentityDisplay::setForward" << capa << value.toMap()["enabled"].toBool() << value.toMap()["number"].toString();
 }
 
 /*! \brief update user status

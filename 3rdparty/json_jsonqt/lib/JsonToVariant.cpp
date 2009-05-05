@@ -229,8 +229,8 @@ namespace JsonQt
 		// chars contains at least one char
 		data = parseChar();
 
-        while(peekNext() != '"')
-            data.append( parseChar() );
+		while(peekNext() != '"')
+			data.append( parseChar() );
 		return data;
 	}
 
