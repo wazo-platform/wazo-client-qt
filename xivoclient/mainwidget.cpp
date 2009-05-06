@@ -1138,8 +1138,8 @@ void MainWidget::engineStarted()
                 connectDials(m_xlet[xletid]);
                 connect( m_xlet[xletid], SIGNAL(searchDirectory(const QString &)),
                          m_engine, SLOT(searchDirectory(const QString &)) );
-                connect( m_engine, SIGNAL(directoryResponse(const QString &)),
-                         m_xlet[xletid], SLOT(setSearchResponse(const QString &)) );
+                connect( m_engine, SIGNAL(directoryResponse(const QStringList &, const QStringList &)),
+                         m_xlet[xletid], SLOT(setSearchResponse(const QStringList &, const QStringList &)) );
                 connect( m_xlet[xletid], SIGNAL(copyNumber(const QString &)),
                          m_engine, SLOT(copyNumber(const QString &)) );
                 connect( m_engine, SIGNAL(delogged()),

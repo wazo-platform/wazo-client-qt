@@ -145,42 +145,44 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
  * Parses the response, sets column and row headers,
  * set table cells.
  */
-void DirectoryPanel::setSearchResponse(const QString & resp)
+void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStringList & resp)
 {
-    int i, x, y;
-    //qDebug() << "DirectoryPanel::setSearchResponse()" << resp;
-    QStringList items = resp.split(";");
-    int ncolumns = items[0].toInt();
-    if(ncolumns > 0) {
-        int nrows = ((items.size() - 1) / ncolumns) - 1;
-        if(nrows >= 0) {
-            m_table->setSortingEnabled(false);
-            m_table->setColumnCount(ncolumns);
-            m_table->setRowCount(nrows);
-            // qDebug() << items.size() << nrows << ncolumns ;
-            QStringList labelList;
-            for(i = 1; i <= ncolumns; i++)
-                labelList << items[i];
-            m_table->setHorizontalHeaderLabels( labelList );
-            for(y = 0; y < nrows; y++) {
-                for(x = 0; x < ncolumns; x++) {
-                    QString it = items[1+(1+y)*ncolumns+x];
-                    QTableWidgetItem * item = new QTableWidgetItem(it);
-                    item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
-
-                    //QRegExp re_number("\\+?[0-9\\s\\.]+");
-                    if(it.contains("@"))
-                        item->setToolTip(tr("Double-click to send an E-mail to") + "\n" + it);
-                    else if(m_re_number.exactMatch(it))
-                        item->setToolTip(tr("Double-click to call") + "\n" + it);
-                    //item->setStatusTip();
-                    // qDebug() << x << y << item->flags();
-                    m_table->setItem( y, x, item );
-                    //qDebug() << m_table->cellWidget( y, x );
-                }
+    int x, y;
+    //qDebug() << "DirectoryPanel::setSearchResponse()" << headers << resp;
+    int ncolumns = headers.size();
+    int nrows = resp.size();
+    
+    m_table->setColumnCount(ncolumns);
+    m_table->setRowCount(nrows);
+    m_table->setHorizontalHeaderLabels(headers);
+    
+    if((ncolumns > 0) && (nrows > 0)) {
+        m_table->setSortingEnabled(false);
+        for(y = 0; y < nrows; y++) {
+            QStringList items = resp[y].split(";");
+            for(x = 0; x < ncolumns; x++) {
+                QString it = items[x];
+                QTableWidgetItem * item = new QTableWidgetItem(it);
+                item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
+                
+                //QRegExp re_number("\\+?[0-9\\s\\.]+");
+                if(it.contains("@"))
+                    item->setToolTip(tr("Double-click to send an E-mail to") + "\n" + it);
+                else if(m_re_number.exactMatch(it))
+                    item->setToolTip(tr("Double-click to call") + "\n" + it);
+                //item->setStatusTip();
+                // qDebug() << x << y << item->flags();
+                m_table->setItem( y, x, item );
+                //qDebug() << m_table->cellWidget( y, x );
             }
-            m_table->setSortingEnabled(true);
         }
+        m_table->setSortingEnabled(true);
+        
+        // to remove the headers if ever ...
+        // (they are useful to know that a reply has been received)
+        // } else {
+        // m_table->setColumnCount(0);
+        // m_table->setRowCount(0);
     }
     // make columns fit the content
     //if(m_table->rowCount() > 0)
