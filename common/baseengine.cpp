@@ -881,16 +881,18 @@ void BaseEngine::parseCommand(const QString & line)
             parkingEvent(datamap["payload"]);
             
         } else if (thisclass == "sheet") {
-            QString payload;
-            QByteArray qba = QByteArray::fromBase64(datamap["payload"].toString().toAscii());
-            if(datamap["compressed"].toString().size() > 0) {
-                payload = QString::fromUtf8(qUncompress(qba));
-            } else {
-                payload = QString::fromUtf8(qba);
-            }
-            // will eventually call the XML parser
-            displayFiche(payload, false);
-            
+            qDebug() << "** sheet" << datamap;
+            if(datamap.contains("payload")) {
+                QString payload;
+                QByteArray qba = QByteArray::fromBase64(datamap["payload"].toString().toAscii());
+                if(datamap["compressed"].toString().size() > 0) {
+                    payload = QString::fromUtf8(qUncompress(qba));
+                } else {
+                    payload = QString::fromUtf8(qba);
+                }
+                // will eventually call the XML parser
+                displayFiche(payload, false);
+            }            
         } else if (thisclass == "queues") {
             QString function = datamap["function"].toString();
             //qDebug() << "*** queues !!!" << function << line.length();
