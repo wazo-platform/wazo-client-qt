@@ -1362,8 +1362,11 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
         QStringList todisp;
         QStringList orders = msgs.keys();
         orders.sort();
-        foreach (QString order, orders)
-            todisp.append(msgs[order]);
+        foreach (QString order, orders) {
+            QString linetodisp = msgs[order];
+            if(! linetodisp.isEmpty())
+                todisp.append(linetodisp);
+        }
         m_systrayIcon->showMessage(msgtitle,
                                    todisp.join("\n"),
                                    QSystemTrayIcon::Information,
