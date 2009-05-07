@@ -87,11 +87,11 @@ private:
     void changeCurrentChannel(const QString &, const QString &);
     QString getPeerChan(const QString & chan) const;
     void removeLine(const QString &);
-        
+    
     QGridLayout * m_glayout;
     BaseEngine * m_engine;
     QLabel * m_lbl;
-        
+    
     QHash<QString, QFrame *> m_vlinesl;
     QHash<QString, QFrame *> m_vlinesr;
     QHash<QString, QLabel *> m_statuses;
@@ -99,9 +99,9 @@ private:
     QHash<QString, QLineEdit *> m_tnums;
     QHash<QString, Line> m_linestatuses;
     QHash<QString, int> m_row;
-        
+    
     QMap<int, QStringList> m_actionkey;
-        
+    
     QString m_currentchannel;
     QStringList m_callchannels;
     //QString m_tferchannel;

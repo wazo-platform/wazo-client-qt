@@ -253,6 +253,20 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
 //             QAction * a2 = new QAction("fwd", this);
 //             contextMenu.addAction(a2);
 //             contextMenu.exec(event->globalPos());
+        } else if(iconname == "phone") {
+            foreach(QString uniqueid, m_comms.keys()) {
+                QString thiscommchan = m_comms[uniqueid].toMap()["thischannel"].toString();
+                if(! thiscommchan.isEmpty()) {
+                    QMenu contextMenu(this);
+                    QAction * hangupMe = new QAction(tr("Cancel"), this);
+                    hangupMe->setProperty("iconname", iconname);
+                    hangupMe->setProperty("channel", thiscommchan);
+                    connect(hangupMe, SIGNAL(triggered()),
+                            this, SLOT(contextMenuAction()) );
+                    contextMenu.addAction(hangupMe);
+                    contextMenu.exec(event->globalPos());
+                }
+            }
         }
     }
 }
@@ -268,6 +282,9 @@ void IdentityDisplay::contextMenuAction()
             doAgentPauseActions();
         else if(kind == "unpause")
             doAgentUnPauseActions();
+    } else if(iconname == "phone") {
+        actionCall("hangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(sender()->property("channel").toString()));
+        // qDebug() << m_ui->astid() << sender()->property("channel").toString();
     }
 }
 
@@ -277,7 +294,7 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
     m_presencevalue->hide();
     if(! m_functions.contains("presence"))
         return;
-        
+    
     disconnect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
                this, SLOT(idxChanged(const QString &)));
     QVariantMap presencemap = presence.toMap();
@@ -405,6 +422,7 @@ void IdentityDisplay::updateUser(UserInfo * ui)
         m_phonecall->setPixmap(* p_square);
         m_phonecall->setToolTip(p_pi->hintstatus("longname"));
         m_phonecalltxt->setText(p_pi->hintstatus("longname"));
+        m_comms = p_pi->comms();
     }
 }
 

@@ -86,6 +86,9 @@ signals:
     void setAvailState(const QString &, bool);
     void changeWatchedAgent(const QString &, bool);
     void setSystrayIcon(const QString &);
+    void actionCall(const QString &,
+                    const QString &,
+                    const QString & dst = "");   //!< to hangup
 private:
     void showAgentProps();
     void hideAgentProps();
@@ -129,6 +132,7 @@ private:
     bool m_allow_logagent;
     bool m_allow_pauseagent;
     QString m_agstatus; //!< agent status string
+    QMap<QString, QVariant> m_comms;
 };
 
 #endif

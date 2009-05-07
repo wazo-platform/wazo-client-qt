@@ -779,6 +779,7 @@ void MainWidget::engineStarted()
                 m_xlet[xletid] = new IdentityDisplay(m_engine, m_options);
                 addPanel(xletid, tr("&Identity"), m_xlet[xletid]);
                 
+                connectDials(m_xlet[xletid]);
                 connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
                          m_xlet[xletid], SLOT(newAgentList(const QStringList &)) );
                 connect( m_engine, SIGNAL(newQueueList(const QStringList &)),

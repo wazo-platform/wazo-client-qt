@@ -85,7 +85,6 @@ class PhoneInfo
     bool m_enable_hint;
     QMap<QString, QString> m_hintstatus;
     QMap<QString, QVariant> m_comms;
-    
 };
 
 #endif
