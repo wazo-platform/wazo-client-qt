@@ -1079,12 +1079,8 @@ void MainWidget::engineStarted()
                 addPanel(xletid, tr("Sheets"), m_xlet[xletid]);
                 
                 connectDials(m_xlet[xletid]);
-                connect( m_engine, SIGNAL(displayFiche(const QString &, bool)),
-                         m_xlet[xletid], SLOT(displayFiche(const QString &, bool)) );
                 connect( m_xlet[xletid], SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
                          this, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)) );
-                connect( m_xlet[xletid], SIGNAL(actionFromFiche(const QVariant &)),
-                         m_engine, SLOT(actionFromFiche(const QVariant &)) );
                 
             } else if (xletid == QString("search")) {
                 m_xlet[xletid] = new SearchPanel(m_engine, m_options);
@@ -1443,8 +1439,9 @@ void MainWidget::hideEvent(QHideEvent *event)
  */
 void MainWidget::closeEvent(QCloseEvent *event)
 {
-    // qDebug() << "MainWidget::closeEvent()";
-    // << "spontaneous =" << event->spontaneous()
+    qDebug() << "MainWidget::closeEvent()"
+    << "spontaneous =" << event->spontaneous()
+    << "type =" << event->type();
     // << "isMinimized =" << isMinimized()
     // << "isVisible ="   << isVisible()
     // << "isActiveWindow =" << isActiveWindow();

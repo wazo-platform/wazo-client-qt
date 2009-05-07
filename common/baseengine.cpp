@@ -866,6 +866,7 @@ void BaseEngine::parseCommand(const QString & line)
     
     QVariantMap datamap = data.toMap();
     QString direction = datamap["direction"].toString();
+    QString function = datamap["function"].toString();
     
     if(direction == "client") {
         QString thisclass = datamap["class"].toString();
@@ -881,8 +882,16 @@ void BaseEngine::parseCommand(const QString & line)
             parkingEvent(datamap["payload"]);
             
         } else if (thisclass == "sheet") {
+            // TODO : use id better than just channel name
             qDebug() << "** sheet" << datamap;
-            if(datamap.contains("payload")) {
+            QString channel = datamap["channel"].toString();
+            if(function == "getownership") {
+                gotSheetOwnership(channel);
+            } else if(function == "looseownership") {
+                lostSheetOwnership(channel);
+            } else if(function == "entryadded") {
+                sheetEntryAdded(channel, datamap["entry"].toMap());
+            } if(datamap.contains("payload")) {
                 QString payload;
                 QByteArray qba = QByteArray::fromBase64(datamap["payload"].toString().toAscii());
                 if(datamap["compressed"].toString().size() > 0) {
@@ -891,10 +900,9 @@ void BaseEngine::parseCommand(const QString & line)
                     payload = QString::fromUtf8(qba);
                 }
                 // will eventually call the XML parser
-                displayFiche(payload, false);
+                displayFiche(payload, false, channel);
             }            
         } else if (thisclass == "queues") {
-            QString function = datamap["function"].toString();
             //qDebug() << "*** queues !!!" << function << line.length();
             if(function == "sendlist") {
                 QStringList kk;
@@ -931,11 +939,9 @@ void BaseEngine::parseCommand(const QString & line)
             }
             
         } else if (thisclass == "groups") {
-            QString function = datamap["function"].toString();
             // qDebug() << "___" << thisclass << datamap;
             
         } else if (thisclass == "agents") {
-            QString function = datamap["function"].toString();
             //qDebug() << "*** agents !!!" << function << line.length();
             if(function == "sendlist") {
                 QStringList kk;
@@ -1005,7 +1011,6 @@ void BaseEngine::parseCommand(const QString & line)
             qDebug() << "I should have received everything";
             
         } else if (thisclass == "meetme") {
-            QString function = datamap["function"].toString();
             //qDebug() << "**** MEETME **** " << function << datamap["payload"];
             if (function == "sendlist")
             {
@@ -1086,7 +1091,6 @@ void BaseEngine::parseCommand(const QString & line)
             }
             
         } else if (thisclass == "users") {
-            QString function = datamap["function"].toString();
             if (function == "sendlist") {
                 QVariantList listusers = datamap["payload"].toList();
                 foreach(QVariant userprops, listusers) {
@@ -1178,7 +1182,6 @@ void BaseEngine::parseCommand(const QString & line)
                 emitTextMessage(tr("Unknown") + tr(" said : ") + message[0]);
                         
         } else if (thisclass == "features") {
-            QString function = datamap["function"].toString();
             if (function == "update") {
                 QVariantMap featuresupdate_map = datamap["payload"].toMap();
                 if(m_monitored_userid == datamap["userid"].toString())
@@ -1210,7 +1213,6 @@ void BaseEngine::parseCommand(const QString & line)
             }
             
         } else if (thisclass == "phones") {
-            QString function = datamap["function"].toString();
             if (function == "sendlist") {
                 QMap<QString, QVariant> payload = datamap["payload"].toMap();
                 foreach(QString astid, payload.keys()) {
@@ -1562,7 +1564,7 @@ void BaseEngine::socketReadyRead()
             if(line.startsWith("<ui version=")) {
                 // we get here when receiving a sheet as a Qt4 .ui form
                 qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
-                displayFiche(line, true);
+                displayFiche(line, true, QString());
             } else
                 parseCommand(line);
         }
@@ -2195,5 +2197,17 @@ UserInfo * BaseEngine::getXivoClientUser()
     if( m_users.contains( m_fullid ) )
         return m_users.value( m_fullid );
     return NULL;
+}
+
+/*! \brief send new remark about a sheet */
+void BaseEngine::sendNewRemark(const QString & id, const QString & text)
+{
+    QVariantMap command;
+    command["class"] = "sheet";
+    command["direction"] = "xivoserver";
+    command["function"] = "addentry";
+    command["channel"] = id;
+    command["text"] = text;
+    sendJsonCommand(command);
 }
 

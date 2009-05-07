@@ -61,6 +61,7 @@ class QXmlInputSource;
 class QXmlSimpleReader;
 
 class UserInfo;
+class RemarkArea;
 
 /*! \brief Profile popup widget
  *
@@ -68,7 +69,7 @@ class UserInfo;
 class Popup: public QWidget
 {
     Q_OBJECT
- public:
+public:
     //! Construct from a QIODevice used to read XML input
     Popup(const bool &,
           const UserInfo *,
@@ -116,14 +117,21 @@ class Popup: public QWidget
     void addDefForm(const QString &, const QString &);
     void update(QList<QStringList> &);
     QList<QStringList> & sheetlines();
- signals:
+    void addRemarkArea();
+    void activateRemarkArea();
+    void desactivateRemarkArea();
+    void addRemark(const QVariantMap & entry);
+    const QString & id() const { return m_id; };
+    void setId(const QString & id) { m_id = id; };
+signals:
     void wantsToBeShown(Popup *);        //!< sent when the widget want to show itself
     void actionCall(const QString &,
                     const QString &,
                     const QString &);        //!< sent when the widget wants to dial
     void actionFromPopup(const QString &, const QVariant &);
     void save(const QString &);
- public slots:
+    void newRemarkSubmitted(const QString &, const QString &);
+public slots:
     void streamNewData();                //!< new input data is available
     void streamAboutToClose();        //!< catch aboutToClose() signal from the socket
     void socketDisconnected();        //!< connected to disconnected() signal
@@ -132,9 +140,10 @@ class Popup: public QWidget
     void dispurl(const QUrl &);
     void httpGetNoreply();
     void actionFromForm();
- protected:
+    void newRemark(const QString &);
+protected:
     void closeEvent(QCloseEvent *);        //!< catch close event
- private:
+private:
     void addInfoForm(int, const QString &);
     void saveandclose();
     void setEnablesOnForms();
@@ -177,6 +186,8 @@ class Popup: public QWidget
     COLContact m_OLContact;
     bool        m_bOLFound;
 #endif
+    RemarkArea * m_remarkarea;  //!< user editable area
+    QString m_id;
 };
 
 #endif

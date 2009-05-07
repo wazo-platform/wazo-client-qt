@@ -63,6 +63,7 @@
 #include "remotepicwidget.h"
 #include "urllabel.h"
 #include "userinfo.h"
+#include "remarkarea.h"
 #ifdef USE_OUTLOOK
 #include "outlook_engine.h"
 #endif
@@ -91,6 +92,7 @@ Popup::Popup(const bool & urlautoallow,
     m_bOLFound=FALSE;
 #endif
     // qDebug() << "Popup::Popup()";
+    m_remarkarea = 0;
 }
 
 /*!
@@ -527,7 +529,7 @@ void Popup::streamNewData()
 {
     bool b = false;
     // qDebug() << "Popup::streamNewData()" << m_inputstream->bytesAvailable() << "bytes available";
-    if(m_sheetui == false)
+    if(!m_sheetui)
         if(m_parsingStarted)
             b = m_reader.parseContinue();
         else {
@@ -580,6 +582,7 @@ void Popup::socketError(QAbstractSocket::SocketError err)
 void Popup::finishAndShow()
 {
     qDebug() << "Popup::finishAndShow()";
+    addRemarkArea();
     //dumpObjectInfo();
     //dumpObjectTree();
     // ...
@@ -669,4 +672,39 @@ bool Popup::sheetpopup()
 bool Popup::focus()
 {
     return m_focus;
+}
+
+void Popup::addRemarkArea()
+{
+    qDebug() << "Popup::addRemarkArea()";
+    m_remarkarea = new RemarkArea(this);
+    m_vlayout->addWidget( m_remarkarea );
+    connect( m_remarkarea, SIGNAL(textSubmitted(const QString &)),
+             this, SLOT(newRemark(const QString &)) );
+}
+
+void Popup::activateRemarkArea()
+{
+    if(m_remarkarea)
+        m_remarkarea->displayInputForm();
+}
+
+void Popup::desactivateRemarkArea()
+{
+    if(m_remarkarea)
+        m_remarkarea->hideInputForm();
+}
+
+void Popup::newRemark(const QString & text)
+{
+    emit newRemarkSubmitted(id(), text);
+}
+
+void Popup::addRemark(const QVariantMap & entry)
+{
+    if(m_remarkarea) {
+        QString text = entry["text"].toString();
+        QString header = entry["time"].toString() + " " + entry["user"].toString();
+        m_remarkarea->addRemark(header, text);
+    }
 }

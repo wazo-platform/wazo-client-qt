@@ -91,11 +91,14 @@ void RemarkArea::hideInputForm()
  */
 void RemarkArea::addRemark(const QString & header, const QString & text)
 {
-    hideInputForm();
+    bool inputActive = m_inputline->isVisible();
+    if(inputActive)
+        hideInputForm();
     m_layout->addWidget(new QLabel(header, this), m_currentline, 0, 1, 1);
     m_layout->addWidget(new QLabel(text, this), m_currentline, 1, 1, 2);
     m_currentline++;
-    displayInputForm();
+    if(inputActive)
+        displayInputForm();
 }
 
 void RemarkArea::submitClicked()
@@ -103,7 +106,7 @@ void RemarkArea::submitClicked()
     QString text = m_inputline->text();
     qDebug() << "RemarkArea::submitClicked()" << text;
     if(!text.isEmpty()) {
-        textSubmitted( text );
+        emit textSubmitted( text );
     }
 }
 

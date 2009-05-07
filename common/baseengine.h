@@ -240,6 +240,7 @@ public slots:
     void loadQueueOrder();
     void logAction(const QString &);
     void shouldNotOccur(const QString &, const QString &); //!< log tricky situations
+    void sendNewRemark(const QString &, const QString &);
 private slots:
     void keepLoginAlive(); //!< Keep session alive
     void changeState(); //!< Change the presence status
@@ -305,7 +306,10 @@ signals:
     void changeWatchedQueueSignal(const QString &);
     void changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &);
     void updateAgentPresence(const QString &, const QString &, const QVariant &);
-    void displayFiche(const QString &, bool);
+    void displayFiche(const QString &, bool, const QString &);
+    void gotSheetOwnership(const QString & id);
+    void lostSheetOwnership(const QString & id);
+    void sheetEntryAdded(const QString & id, const QVariantMap &);
 protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
 private:

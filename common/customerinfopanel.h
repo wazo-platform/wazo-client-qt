@@ -55,28 +55,33 @@ class QTabWidget;
 class Popup;
 class BaseEngine;
 
+/*! \brief display "sheets" from calling customers
+ */
 class CustomerInfoPanel : public XletprotoPanel
 {
     Q_OBJECT
- public:
+public:
     CustomerInfoPanel(BaseEngine *,
                       const QVariant &,
                       QWidget * parent = 0);
     ~CustomerInfoPanel();
- signals:
+signals:
     void newPopup(const QString &,
                   const QHash<QString, QString> &,
                   const QString &);
     void actionFromFiche(const QVariant &);
     void actionCall(const QString &, const QString &, const QString &);
- public slots:
+public slots:
     void showNewProfile(Popup *);
     void popupDestroyed(QObject * obj);
     void addToDataBase(const QString &);
-    void displayFiche(const QString &, bool);
+    void displayFiche(const QString &, bool, const QString &);
     void actionFromPopup(const QString &, const QVariant &);
     void localActionCall(const QString &, const QString &, const QString &);
- private:
+    void activateRemarkArea(const QString & id);
+    void desactivateRemarkArea(const QString & id);
+    void addNewRemark(const QString & id, const QVariantMap & entry);
+private:
     QTabWidget * m_tabs;
     QList<Popup *> m_popups;
     quint32 m_tablimit;

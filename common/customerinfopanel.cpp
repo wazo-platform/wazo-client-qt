@@ -51,11 +51,24 @@
 #include "popup.h"
 #include "baseengine.h"
 
+/*! \brief Constructor
+ */
 CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
                                      const QVariant & options,
                                      QWidget * parent)
     : XletprotoPanel(engine, options, parent)
 {
+    connect( m_engine, SIGNAL(displayFiche(const QString &, bool, const QString &)),
+             this, SLOT(displayFiche(const QString &, bool, const QString &)) );
+    connect( m_engine, SIGNAL(gotSheetOwnership(const QString &)),
+             this, SLOT(activateRemarkArea(const QString &)) );
+    connect( m_engine, SIGNAL(lostSheetOwnership(const QString &)),
+             this, SLOT(desactivateRemarkArea(const QString &)) );
+    connect( m_engine, SIGNAL(sheetEntryAdded(const QString &, const QVariantMap &)),
+             this, SLOT(addNewRemark(const QString &, const QVariantMap &)) );
+    connect( this, SIGNAL(actionFromFiche(const QVariant &)),
+             m_engine, SLOT(actionFromFiche(const QVariant &)) );
+
     // qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
     QGridLayout * glayout = new QGridLayout(this);
     m_tabs = new QTabWidget(this);
@@ -136,7 +149,7 @@ void CustomerInfoPanel::addToDataBase(const QString & dbdetails)
     // sendCommand("database " + dbdetails);
 }
 
-void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
+void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, const QString & id)
 {
     QBuffer * inputstream = new QBuffer(this);
     inputstream->open(QIODevice::ReadWrite);
@@ -145,6 +158,7 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
     // Get Data and Popup the profile if ok
     UserInfo * ui = m_engine ? m_engine->getXivoClientUser() : NULL;
     Popup * popup = new Popup(m_autourl_allowed, ui);
+    popup->setId(id);
     popup->feed(inputstream, qtui);
     connect( popup, SIGNAL(destroyed(QObject *)),
              this, SLOT(popupDestroyed(QObject *)) );
@@ -156,6 +170,8 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui)
              this, SLOT(actionFromPopup(const QString &, const QVariant &)) );
     connect( popup, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
              this, SLOT(localActionCall(const QString &, const QString &, const QString &)) );
+    connect( popup, SIGNAL(newRemarkSubmitted(const QString &, const QString &)),
+             m_engine, SLOT(sendNewRemark(const QString &, const QString &)) );
 }
 
 /*! \brief originate action redirection
@@ -189,3 +205,29 @@ void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVaria
         actionFromFiche(QVariant(data));
     }
 }
+
+void CustomerInfoPanel::activateRemarkArea(const QString & id)
+{
+    foreach(Popup * mpopup, m_popups) {
+        if(mpopup->id() == id)
+            mpopup->activateRemarkArea();
+    }
+}
+
+void CustomerInfoPanel::desactivateRemarkArea(const QString & id)
+{
+    foreach(Popup * mpopup, m_popups) {
+        if(mpopup->id() == id)
+            mpopup->desactivateRemarkArea();
+    }
+}
+
+void CustomerInfoPanel::addNewRemark(const QString & id, const QVariantMap & entry)
+{
+    qDebug() << "CustomerInfoPanel::addNewRemark" << id << entry;
+    foreach(Popup * mpopup, m_popups) {
+        if(mpopup->id() == id)
+            mpopup->addRemark(entry);
+    }
+}
+
