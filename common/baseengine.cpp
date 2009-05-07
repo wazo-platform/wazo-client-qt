@@ -1184,16 +1184,16 @@ void BaseEngine::parseCommand(const QString & line)
                 if(m_monitored_userid == datamap["userid"].toString())
                     foreach(QString featurekey, featuresupdate_map.keys())
                         initFeatureFields(featurekey, featuresupdate_map[featurekey]);
-                                
+                
             } else if (function == "get") {
                 QVariantMap featuresget_map = datamap["payload"].toMap();
                 if(m_monitored_userid == datamap["userid"].toString()) {
                     resetFeatures();
                     foreach(QString featurekey, featuresget_map.keys())
                         initFeatureFields(featurekey, featuresget_map[featurekey]);
-                    emitTextMessage(tr("Received Services Data for ") + m_monitored_userid);
+                    emitTextMessage(tr("Received Services Data"));
                 }
-                                
+                
             } else if (function == "put") {
                 QVariantMap featuresput_map = datamap["payload"].toMap();
                 if(m_monitored_userid == datamap["userid"].toString()) {
@@ -1208,7 +1208,7 @@ void BaseEngine::parseCommand(const QString & line)
                     }
                 }
             }
-                        
+            
         } else if (thisclass == "phones") {
             QString function = datamap["function"].toString();
             if (function == "sendlist") {
