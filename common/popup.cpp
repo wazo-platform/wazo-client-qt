@@ -391,7 +391,7 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
  */
 void Popup::setEnablesOnForms()
 {
-    if(m_kind == "agi") {
+    if(m_kind == "dial") {
         if(m_form_buttons["hangup"])
             m_form_buttons["hangup"]->setEnabled(false);
     } else if(m_kind == "link") {
