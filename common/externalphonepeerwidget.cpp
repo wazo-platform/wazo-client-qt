@@ -67,7 +67,7 @@ void ExternalPhonePeerWidget::setText(const QString & text)
  * Draw a small square for user presence indicator
  * Then write the name of the user.
  */
-void ExternalPhonePeerWidget::paintEvent(QPaintEvent *event)
+void ExternalPhonePeerWidget::paintEvent(QPaintEvent * /*event*/)
 {
     QRect rectangle = contentsRect();
     QPainter painter( this );
