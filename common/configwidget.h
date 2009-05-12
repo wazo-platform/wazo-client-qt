@@ -95,7 +95,7 @@ class ConfigWidget: public QDialog
     QSpinBox  * m_tryinterval_sbox;        //!< "Try to reconnect" interval
     QSpinBox  * m_kainterval_sbox;        //!< Keep alive interval
 
-    QLineEdit * m_company;                //!< name of the company
+    QLineEdit * m_context;                //!< context name (related to the company)
     QLineEdit * m_password;                //!< user password
     QCheckBox * m_keeppass;                //!< keep password ?
     QCheckBox * m_showagselect;        //!< show agent select on main window ?

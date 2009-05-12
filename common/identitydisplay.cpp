@@ -73,13 +73,13 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
                                  const QVariant & options,
                                  QWidget * parent)
     : QWidget(parent), m_engine(engine),
-      m_ui(NULL)
+      m_ui(NULL), m_nlines(0)
 {
     setAccessibleName( tr("Current User Panel") );
     m_gui_buttonsize = 16;
     
-    QGridLayout * glayout = new QGridLayout(this);
-    // glayout->setMargin(0);
+    m_glayout = new QGridLayout(this);
+    // m_glayout->setMargin(0);
     m_user = new QLabel(this);
     m_user->setObjectName("fullname");
     //m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -91,8 +91,10 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_presencevalue->setProperty("function", "presence");
     
     m_phone = new QLabel();
-    m_phonestatus = new QLabel();
     m_phonestatustxt = new QLabel();
+    m_phonestatustxt->setText("");
+    m_phonestatustxt->setScaledContents(true);
+    m_phonestatustxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_phonecall = new QLabel();
     m_phonecalltxt = new QLabel();
     
@@ -134,47 +136,59 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     connect( m_icon_voicemail, SIGNAL(context_menu(QContextMenuEvent *)),
              this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
     
-    glayout->setSpacing(2);
-    // glayout->setMargin(0);
+    m_glayout->setSpacing(2);
+    // m_glayout->setMargin(0);
     
-    Qt::Alignment iconAlign = Qt::AlignHCenter | Qt::AlignTop; // Qt::AlignVCenter
-    glayout->addWidget( m_icon_user, 0, 1, 3, 1, iconAlign );
-    glayout->addWidget( m_icon_agent, 0, 4, 3, 1, iconAlign );
-    glayout->addWidget( m_icon_phone, 0, 8, 3, 1, iconAlign );
-    glayout->addWidget( m_icon_voicemail, 0, 11, 3, 1, iconAlign );
+    m_col_user = 0;
+    m_col_agent = 2;
+    m_col_phone = 5;
+    m_col_vm = 8;
+    m_col_last = 10;
     
-    int idline = 0;
-    Qt::Alignment textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
-    // Qt::Alignment textAlignTop = Qt::AlignLeft | Qt::AlignTop;
-    glayout->addWidget( m_user, idline, 2, textAlignVCenter );
-    glayout->addWidget( m_agent, idline, 5, 1, 2, textAlignVCenter );
-    glayout->addWidget( m_phone, idline, 9, 1, 2, textAlignVCenter );
-    glayout->addWidget( m_voicemail_name, idline, 13, textAlignVCenter );
-    idline ++;
-    glayout->addWidget( m_phonenum, idline, 2, textAlignVCenter );
-    glayout->addWidget( m_agentstatus, idline, 5, textAlignVCenter );
-    glayout->addWidget( m_agentstatustxt, idline, 6, textAlignVCenter );
-    glayout->addWidget( m_phonestatus, idline, 9, textAlignVCenter );
-    glayout->addWidget( m_phonestatustxt, idline, 10, textAlignVCenter );
-    glayout->addWidget( m_voicemail_old, idline, 13, textAlignVCenter );
-    idline ++;
-    glayout->addWidget( m_presencevalue, idline, 2, textAlignVCenter );
-    glayout->addWidget( m_agentpause, idline, 5, textAlignVCenter );
-    glayout->addWidget( m_agentpausetxt, idline, 6, textAlignVCenter );
-    glayout->addWidget( m_phonecall, idline, 9, textAlignVCenter );
-    glayout->addWidget( m_phonecalltxt, idline, 10, textAlignVCenter );
-    glayout->addWidget( m_voicemail_new, idline, 13, textAlignVCenter );
+    m_iconAlign = Qt::AlignHCenter | Qt::AlignTop; // Qt::AlignVCenter
+    m_textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
+    // m_textAlignTop = Qt::AlignLeft | Qt::AlignTop;
     
-    glayout->setColumnStretch( 14, 1 );
+    setupIcons();
     
     // although it might be convenient in some cases (prevent some expansions),
     // in the basic xivoclient/grid case, it fills too much room without no resizing available
-    //glayout->setRowStretch( idline, 1 );
+    //m_glayout->setRowStretch( idline, 1 );
     
     hideAgentProps();
     
     setGuiOptions(options);
-    //         glayout->setColumnStretch( 0, 1 );
+    //         m_glayout->setColumnStretch( 0, 1 );
+}
+
+void IdentityDisplay::setupIcons()
+{
+    m_glayout->addWidget( m_icon_user, 0, m_col_user, 3, 1, m_iconAlign );
+    m_glayout->addWidget( m_icon_agent, 0, m_col_agent, 3, 1, m_iconAlign );
+    m_glayout->addWidget( m_icon_phone, 0, m_col_phone, 3, 1, m_iconAlign );
+    m_glayout->addWidget( m_icon_voicemail, 0, m_col_vm, 3, 1, m_iconAlign );
+    int idline = 0;
+    m_glayout->addWidget( m_user, idline, m_col_user + 1, m_textAlignVCenter );
+    m_glayout->addWidget( m_agent, idline, m_col_agent + 1, 1, 2, m_textAlignVCenter );
+    m_glayout->addWidget( m_phone, idline, m_col_phone + 1, 1, 2, m_textAlignVCenter );
+    m_glayout->addWidget( m_voicemail_name, idline, m_col_vm + 1, m_textAlignVCenter );
+    idline ++;
+    m_glayout->addWidget( m_phonenum, idline, m_col_user + 1, m_textAlignVCenter );
+    m_glayout->addWidget( m_agentstatus, idline, m_col_agent + 1, m_textAlignVCenter );
+    m_glayout->addWidget( m_agentstatustxt, idline, m_col_agent + 2, m_textAlignVCenter );
+    m_glayout->addWidget( m_phonecall, idline, m_col_phone + 1, m_textAlignVCenter );
+    m_glayout->addWidget( m_phonecalltxt, idline, m_col_phone + 2, m_textAlignVCenter );
+    m_glayout->addWidget( m_voicemail_old, idline, m_col_vm + 1, m_textAlignVCenter );
+    idline ++;
+    m_glayout->addWidget( m_presencevalue, idline, m_col_user + 1, m_textAlignVCenter );
+    m_glayout->addWidget( m_agentpause, idline, m_col_agent + 1, m_textAlignVCenter );
+    m_glayout->addWidget( m_agentpausetxt, idline, m_col_agent + 2, m_textAlignVCenter );
+    m_glayout->addWidget( m_phonestatustxt, idline, m_col_phone + 1, 1, 2, m_textAlignVCenter );
+    m_glayout->addWidget( m_voicemail_new, idline, m_col_vm + 1, m_textAlignVCenter );
+    for(int i = 0; i < m_col_last; i++)
+        if(m_glayout->columnStretch(i) == 1)
+            m_glayout->setColumnStretch(i, 0);
+    m_glayout->setColumnStretch( m_col_last, 1 );
 }
 
 void IdentityDisplay::setGuiOptions(const QVariant & options)
@@ -203,7 +217,7 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
         // QMenu contextMenu(this);
         if(iconname == "agent") {
             QMenu contextMenu(this);
-                        
+            
             if(m_allow_logagent) {
                 QAction * logAction = new QAction(this);
                 bool connected = m_agentstatustxt->property("connected").toBool();
@@ -336,6 +350,28 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
     m_presencevalue->show();
 }
 
+void IdentityDisplay::setPhoneLines()
+{
+    QPixmap * p_square = new QPixmap(6, 6);
+    p_square->fill(Qt::black);
+    for(int jj = 0 ; jj < m_nlines ; jj ++) {
+        QString sjj = QString::number(jj + 1);
+        if(! m_lineaction.contains(sjj)) {
+            m_lineaction[sjj] = new QLabel();
+            m_linestatus[sjj] = new QLabel();
+        }
+        m_lineaction[sjj]->setPixmap(* p_square);
+        
+        int ix = jj / 3;
+        int iy = jj % 3;
+        m_glayout->addWidget( m_lineaction[sjj], iy, m_col_phone + 3 + 2 * ix, m_textAlignVCenter );
+        m_glayout->addWidget( m_linestatus[sjj], iy, m_col_phone + 4 + 2 * ix, m_textAlignVCenter );
+    }
+    
+    m_col_vm = 8 + 2 * ((m_nlines + 2) / 3);
+    m_col_last = 10 + 2 * ((m_nlines + 2) / 3);
+    setupIcons();
+}
 
 void IdentityDisplay::setUserInfo(const UserInfo * ui)
 {
@@ -345,6 +381,8 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     m_user->setText(m_ui->fullname());
     m_phonenum->setText(m_ui->phonenumber());
     m_phone->setText(tr("Phone %1").arg(m_ui->phonenumber()));
+    m_nlines = m_ui->simultcalls();
+    setPhoneLines();
     QStringList vm = m_ui->mwi();
     if(vm.size() > 2) {
         m_icon_voicemail->show();
@@ -390,23 +428,45 @@ void IdentityDisplay::newQueueList(const QStringList &)
 
 void IdentityDisplay::setOpt(const QString & capa, bool b)
 {
-    if(capa == "enablednd") { // "incallfilter", "incallrec", "enablevm"
-        QPixmap * p_square = new QPixmap(10, 10);
-        if(b) {
-            p_square->fill("#ff0000");
-            m_phonestatustxt->setText("DND");
-        } else {
-            p_square->fill("#00ff00");
-            m_phonestatustxt->setText("");
-        }
-        m_phonestatus->setPixmap(* p_square);
-    }
+    if((capa == "enablednd") || (capa == "incallfilter") || (capa == "incallrec") || (capa == "enablevm"))
+        m_svcstatus[capa] = b;
+    svcSummary();
 }
 
 void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
 {
-    if(capa == "unc") // "busy", "rna"
-        qDebug() << "IdentityDisplay::setForward" << capa << value.toMap()["enabled"].toBool() << value.toMap()["number"].toString();
+    if((capa == "unc") || (capa == "busy") || (capa == "rna")) {
+        m_svcstatus[capa + "-enabled"] = value.toMap()["enabled"];
+        m_svcstatus[capa + "-number"] = value.toMap()["number"];
+    }
+    svcSummary();
+}
+
+void IdentityDisplay::svcSummary()
+{
+    if(m_svcstatus["enablednd"].toBool()) {
+        m_phonestatustxt->setText(tr("DND"));
+        m_phonestatustxt->setToolTip(tr("Do Not Disturb"));
+    } else {
+        if(m_svcstatus["unc-enabled"].toBool()) {
+            m_phonestatustxt->setText(tr("UNC %1").arg(m_svcstatus["unc-number"].toString()));
+            m_phonestatustxt->setToolTip(tr("Unconditional Forward towards %1").arg(m_svcstatus["unc-number"].toString()));
+        } else if (m_svcstatus["busy-enabled"].toBool()) {
+            m_phonestatustxt->setText(tr("Busy %1").arg(m_svcstatus["busy-number"].toString()));
+            m_phonestatustxt->setToolTip(tr("Busy Forward towards %1").arg(m_svcstatus["busy-number"].toString()));
+        } else if (m_svcstatus["rna-enabled"].toBool()) {
+            m_phonestatustxt->setText(tr("RNA %1").arg(m_svcstatus["rna-number"].toString()));
+            m_phonestatustxt->setToolTip(tr("Non-Answer Forward towards %1").arg(m_svcstatus["rna-number"].toString()));
+        } else if (m_svcstatus["incallrec"].toBool()) {
+            m_phonestatustxt->setText("Call Rec");
+        } else if (m_svcstatus["incallfilter"].toBool()) {
+            m_phonestatustxt->setText("Call Filter");
+        } else {
+            m_phonestatustxt->setText("");
+            m_phonestatustxt->setToolTip("");
+        }
+    }
+    return;
 }
 
 /*! \brief update user status
@@ -423,6 +483,21 @@ void IdentityDisplay::updateUser(UserInfo * ui)
         m_phonecall->setToolTip(p_pi->hintstatus("longname"));
         m_phonecalltxt->setText(p_pi->hintstatus("longname"));
         m_comms = p_pi->comms();
+        int ic = 0;
+        foreach(QString callref, m_comms.keys()) {
+            QString status = m_comms[callref].toMap()["status"].toString();
+            QString todisplay = m_comms[callref].toMap()["calleridname"].toString();
+            QPixmap * p_square_comm = new QPixmap(6, 6);
+            p_square_comm->fill(Qt::green);
+            if(status == "hangup") {
+                todisplay = "";
+                p_square_comm->fill(Qt::black);
+            }
+            m_lineaction[QString::number(ic + 1)]->setPixmap(* p_square_comm);
+            m_linestatus[QString::number(ic + 1)]->setText(todisplay);
+            // qDebug() << "IdentityDisplay::updateUser" << phoneid << callref << m_comms[callref];
+            ic ++;
+        }
     }
 }
 

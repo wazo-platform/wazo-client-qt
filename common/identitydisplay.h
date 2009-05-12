@@ -51,7 +51,9 @@
 
 class QComboBox;
 class QContextMenuEvent;
+class QGridLayout;
 class QProgressBar;
+class QPushButton;
 
 class BaseEngine;
 class UserInfo;
@@ -95,6 +97,11 @@ private:
     void setStatusColors(const QString &);
     void setPausedColors(int, int);
     void updateAgentStatus(const QVariantMap &);
+    void svcSummary();
+    void setPhoneLines();
+    void setupIcons();
+    
+    QGridLayout * m_glayout;
     
     QLabel * m_icon_user;
     QLabel * m_icon_agent;
@@ -118,13 +125,22 @@ private:
     QLabel * m_agentstatustxt;
     QLabel * m_agentpause;
     QLabel * m_agentpausetxt;
-    QLabel * m_phonestatus;
     QLabel * m_phonestatustxt;
     
     BaseEngine * m_engine;
     QHash<QString, QString> m_presence_names;
+    QHash<QString, QLabel *> m_lineaction;
+    QHash<QString, QLabel *> m_linestatus;
     const UserInfo * m_ui;
     
+    int m_col_user;
+    int m_col_agent;
+    int m_col_phone;
+    int m_col_vm;
+    int m_col_last;
+    int m_nlines;
+    Qt::Alignment m_iconAlign;
+    Qt::Alignment m_textAlignVCenter;
     QFont m_gui_font;
     quint32 m_gui_buttonsize;
     quint32 m_loginkind;
@@ -133,6 +149,7 @@ private:
     bool m_allow_pauseagent;
     QString m_agstatus; //!< agent status string
     QMap<QString, QVariant> m_comms;
+    QMap<QString, QVariant> m_svcstatus;
 };
 
 #endif

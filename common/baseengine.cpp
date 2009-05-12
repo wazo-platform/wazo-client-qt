@@ -1110,6 +1110,7 @@ void BaseEngine::parseCommand(const QString & line)
                     
                     m_users[iduser]->setAvailState(uinfo["statedetails"]);
                     m_users[iduser]->setPhoneNumber(uinfo["phonenum"].toString());
+                    m_users[iduser]->setSimultCalls(uinfo["simultcalls"].toInt());
                     m_users[iduser]->setVoiceMailNumber(uinfo["voicemailnum"].toString());
                     m_users[iduser]->setAgentNumber(uinfo["agentnumber"].toString());
                     m_users[iduser]->setAgentId(uinfo["agentid"].toString());

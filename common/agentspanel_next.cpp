@@ -427,14 +427,14 @@ void AgentsPanelNext::removeQueueGroup()
     if(m_title.contains(groupid)) {
         m_title[groupid]->deleteLater();
         m_title.remove(groupid);
-                
+        
         // trick in order to hide an extra item (Qt Bug ?)
         QLayoutItem * layoutitem = m_glayout->itemAtPosition(0, m_title.keys().size() * NCOLS);
         if(layoutitem) {
             layoutitem->widget()->hide();
             m_glayout->removeWidget(layoutitem->widget());
         }
-                
+        
         refreshContents();
         refreshDisplay();
     }

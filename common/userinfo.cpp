@@ -78,6 +78,11 @@ void UserInfo::setPhoneNumber(const QString & phonenum)
     m_phonenum = phonenum;
 }
 
+void UserInfo::setSimultCalls(int simultcalls)
+{
+    m_simultcalls = simultcalls;
+}
+
 void UserInfo::setVoiceMailNumber(const QString & voicemailnum)
 {
     m_voicemailnum = voicemailnum;

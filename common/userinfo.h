@@ -56,9 +56,11 @@ class UserInfo
 public:
     UserInfo(const QString &);
     ~UserInfo();
+    
     void setAvailState(const QVariant &);
     void setFullName(const QString &);
     void setPhoneNumber(const QString &);
+    void setSimultCalls(int);
     void setVoiceMailNumber(const QString &);
     void setPhones(const QString &,
                    const QStringList &,
@@ -69,10 +71,12 @@ public:
     void setCtiLogin(const QString &);
     void setMWI(const QStringList &);
     void setContext(const QString &);
+    
     bool hasPhone(const QString &,
                   const QString &);
     bool hasAgentNumber(const QString &,
                         const QString &);
+    
     const QString & phonenumber() const;
     const QString & voicemailnumber() const;
     const QString & fullname() const;
@@ -83,6 +87,8 @@ public:
     const QString & agentid() const;
     const QString & astid() const;
     const QString & context() const;
+    int simultcalls() const { return m_simultcalls; };
+    
     const QHash<QString, QString> & availstate() const;
     QList<QString> phonelist() const;
     const PhoneInfo * getPhoneInfo(const QString &) const;
@@ -106,6 +112,7 @@ private:
     QString m_agentid; //!< agent id
     QString m_agentphonenum;    //!< agent phone number
     QStringList m_mwi;  //!< message waiting indicator
+    int m_simultcalls;
     QMap<QString, PhoneInfo *> m_phones;    //!< map to phones
 };
 
