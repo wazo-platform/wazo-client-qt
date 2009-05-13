@@ -126,14 +126,14 @@ void AgentsPanel::updateAgentPresence(const QString & astid, const QString & age
         }
 }
 
-/*! \brief 
+/*! \brief slot when one or more queues have been updated
  */
 void AgentsPanel::newQueueList(const QStringList &)
 {
     // qDebug() << "AgentsPanel::newQueueList()";
 }
 
-/*! \brief 
+/*! \brief slot when one or more agents have been updated
  */
 void AgentsPanel::newAgentList(const QStringList & list)
 {
