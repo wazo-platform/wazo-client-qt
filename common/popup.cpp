@@ -705,7 +705,16 @@ void Popup::newRemark(const QString & text)
 void Popup::addRemark(const QVariantMap & entry)
 {
     if(m_remarkarea) {
+        QString type = QString("text");
         QString text = entry["text"].toString();
+        if(entry.contains("type") && entry.contains("data")) {
+            type = entry["type"].toString();
+            if(type == QString("text"))
+                text = entry["data"].toString();
+            // TODO handle other types of data
+            else
+                text = type + " : " + entry["data"].toString();
+        }
         QDateTime datetime;
         datetime.setTime_t( entry["time"].toUInt() );
         QString user = entry["user"].toString();
