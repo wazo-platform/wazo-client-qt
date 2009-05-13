@@ -735,7 +735,7 @@ void BaseEngine::updatePhone(const QString & astid,
                              const QMap<QString, QVariant> & properties)
 {
     //if(phoneid == "sip.default.121.121")
-    //    qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties;
+    // qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties;
     //qDebug() << map.keys();
     QString key = astid + "." + phoneid;
     UserInfo * ui = findUserFromPhone(astid, phoneid);
@@ -886,14 +886,13 @@ void BaseEngine::parseCommand(const QString & line)
             } if(datamap.contains("payload")) {
                 QString payload;
                 QByteArray qba = QByteArray::fromBase64(datamap["payload"].toString().toAscii());
-                if(datamap["compressed"].toString().size() > 0) {
+                if(datamap["compressed"].toBool())
                     payload = QString::fromUtf8(qUncompress(qba));
-                } else {
+                else
                     payload = QString::fromUtf8(qba);
-                }
                 // will eventually call the XML parser
                 displayFiche(payload, false, channel);
-            }            
+            }
         } else if (thisclass == "queues") {
             //qDebug() << "*** queues !!!" << function << line.length();
             if(function == "sendlist") {
