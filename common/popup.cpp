@@ -49,8 +49,10 @@
 #include <QUiLoader>
 #include <QUrl>
 #include <QVariant>
+#include <QHBoxLayout>
 
 #include "popup.h"
+#include "baseengine.h"
 #include "xmlhandler.h"
 #include "remotepicwidget.h"
 #include "urllabel.h"
@@ -70,10 +72,10 @@ QStringList g_formbuttonnames = (QStringList()
  * \param parent                parent widget
  */
 Popup::Popup(const bool & urlautoallow,
-             const UserInfo * ui,
+             BaseEngine * engine,
              QWidget * parent)
     : QWidget(parent),
-      m_ui(ui),
+      m_engine(engine),
       m_sheetpopup(false),
       m_systraypopup(true),
       m_focus(true),
@@ -569,10 +571,12 @@ void Popup::socketDisconnected()
     m_reader.parseContinue();
 }
 
+/*
 void Popup::socketError(QAbstractSocket::SocketError err)
 {
     qDebug() << "Popup::socketError()" << err;
 }
+*/
 
 /*!
  * Send signal to be shown !
@@ -702,7 +706,15 @@ void Popup::addRemark(const QVariantMap & entry)
 {
     if(m_remarkarea) {
         QString text = entry["text"].toString();
-        QString header = entry["time"].toString() + " " + entry["user"].toString();
+        QDateTime datetime;
+        datetime.setTime_t( entry["time"].toUInt() );
+        QString user = entry["user"].toString();
+        if(m_engine) {
+            UserInfo * ui = m_engine->users()[user];
+            if(ui)
+                user = ui->fullname();
+        }
+        QString header = datetime.toString(Qt::DefaultLocaleShortDate) + " - " + user + " :";
         m_remarkarea->addRemark(header, text);
     }
 }

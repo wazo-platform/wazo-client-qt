@@ -148,9 +148,8 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
     inputstream->write(fichecontent.toUtf8());
     inputstream->close();
     // Get Data and Popup the profile if ok
-    UserInfo * ui = m_engine ? m_engine->getXivoClientUser() : NULL;
-    Popup * popup = new Popup(m_autourl_allowed, ui);
-    qDebug() << "CustomerInfoPanel::displayFiche id=" << id << "ui=" << ui;
+    Popup * popup = new Popup(m_autourl_allowed, m_engine);
+    qDebug() << "CustomerInfoPanel::displayFiche id=" << id;
     popup->setId(id);
     connect( popup, SIGNAL(destroyed(QObject *)),
              this, SLOT(popupDestroyed(QObject *)) );
