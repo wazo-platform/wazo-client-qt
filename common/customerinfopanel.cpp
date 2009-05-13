@@ -150,8 +150,8 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
     // Get Data and Popup the profile if ok
     UserInfo * ui = m_engine ? m_engine->getXivoClientUser() : NULL;
     Popup * popup = new Popup(m_autourl_allowed, ui);
+    qDebug() << "CustomerInfoPanel::displayFiche id=" << id << "ui=" << ui;
     popup->setId(id);
-    popup->feed(inputstream, qtui);
     connect( popup, SIGNAL(destroyed(QObject *)),
              this, SLOT(popupDestroyed(QObject *)) );
     connect( popup, SIGNAL(wantsToBeShown(Popup *)),
@@ -164,6 +164,7 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
              this, SLOT(localActionCall(const QString &, const QString &, const QString &)) );
     connect( popup, SIGNAL(newRemarkSubmitted(const QString &, const QString &)),
              m_engine, SLOT(sendNewRemark(const QString &, const QString &)) );
+    popup->feed(inputstream, qtui);
 }
 
 /*! \brief originate action redirection

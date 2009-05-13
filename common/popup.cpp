@@ -147,11 +147,17 @@ void Popup::feed(QIODevice * inputstream,
     
     setWindowIcon(QIcon(":/images/xivoicon.png"));
     QDesktopServices::setUrlHandler(QString("dial"), this, "dispurl");
+
+    qDebug() << "Popup::feed()" << m_inputstream->bytesAvailable() << "bytes available";
+    if(m_inputstream->bytesAvailable() > 0) {
+        streamNewData();
+    }
 }
 
 void Popup::dispurl(const QUrl &url)
 {
     // qDebug() << "Popup::dispurl()" << url;
+    // TODO : check if the string starts with "dial:"
     QString numbertodial = url.toString().mid(5);
     actionCall("originate", "user:special:me", "ext:" + numbertodial); // Call
 }
@@ -520,7 +526,7 @@ void Popup::addInfoPicture(int where, const QString & name, const QString & valu
 void Popup::streamNewData()
 {
     bool b = false;
-    // qDebug() << "Popup::streamNewData()" << m_inputstream->bytesAvailable() << "bytes available";
+    //qDebug() << "Popup::streamNewData()" << m_inputstream->bytesAvailable() << "bytes available";
     if(!m_sheetui)
         if(m_parsingStarted)
             b = m_reader.parseContinue();
