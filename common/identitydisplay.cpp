@@ -253,30 +253,24 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
             //                         connect(xAction, SIGNAL(triggered()),
             //                                 this, SLOT(contextMenuAction()) );
             //                         contextMenu.addAction(xAction);
-//         } else if(iconname == "phone") {
-//             QMenu contextMenu(this);
-//             QAction * a1 = new QAction("dnd", this);
-//             contextMenu.addAction(a1);
-//             QAction * a2 = new QAction("fwd", this);
-//             contextMenu.addAction(a2);
-//             contextMenu.exec(event->globalPos());
-        } else if(iconname == "phone") {
-            foreach(QString uniqueid, m_comms.keys()) {
-                QString thiscommchan = m_comms[uniqueid].toMap()["thischannel"].toString();
-                if(! thiscommchan.isEmpty()) {
-                    QMenu contextMenu(this);
-                    QAction * hangupMe = new QAction(tr("Cancel"), this);
-                    hangupMe->setProperty("iconname", iconname);
-                    hangupMe->setProperty("channel", thiscommchan);
-                    connect(hangupMe, SIGNAL(triggered()),
-                            this, SLOT(contextMenuAction()) );
-                    contextMenu.addAction(hangupMe);
-                    contextMenu.exec(event->globalPos());
-                }
-            }
         } else if(iconname == "phoneline") {
             QString linenumber = sender()->property("linenumber").toString();
-            qDebug() << "IdentityDisplay::contextMenuEvent()" << iconname << linenumber;
+            foreach(QString callref, m_comms.keys()) {
+                int ic = m_comms[callref].toMap()["linenum"].toInt();
+                if(QString::number(ic) == linenumber) {
+                    QString thiscommchan = m_comms[callref].toMap()["thischannel"].toString();
+                    if(! thiscommchan.isEmpty()) {
+                        QMenu contextMenu(this);
+                        QAction * hangupMe = new QAction(tr("Cancel"), this);
+                        hangupMe->setProperty("iconname", iconname);
+                        hangupMe->setProperty("channel", thiscommchan);
+                        connect(hangupMe, SIGNAL(triggered()),
+                                this, SLOT(contextMenuAction()) );
+                        contextMenu.addAction(hangupMe);
+                        contextMenu.exec(event->globalPos());
+                    }
+                }
+            }
         }
     }
 }
@@ -292,7 +286,7 @@ void IdentityDisplay::contextMenuAction()
             doAgentPauseActions();
         else if(kind == "unpause")
             doAgentUnPauseActions();
-    } else if(iconname == "phone") {
+    } else if(iconname == "phoneline") {
         actionCall("hangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(sender()->property("channel").toString()));
         // qDebug() << m_ui->astid() << sender()->property("channel").toString();
     }
@@ -500,8 +494,8 @@ void IdentityDisplay::updateUser(UserInfo * ui)
         m_phonecall->setToolTip(p_pi->hintstatus("longname"));
         m_phonecalltxt->setText(p_pi->hintstatus("longname"));
         m_comms = p_pi->comms();
-        int ic = 0;
         foreach(QString callref, m_comms.keys()) {
+            int ic = m_comms[callref].toMap()["linenum"].toInt();
             QString status = m_comms[callref].toMap()["status"].toString();
             QString todisplay = m_comms[callref].toMap()["calleridname"].toString();
             QPixmap * p_square_comm = new QPixmap(6, 6);
@@ -510,10 +504,9 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                 todisplay = "";
                 p_square_comm->fill(Qt::black);
             }
-            m_lineaction[QString::number(ic + 1)]->setPixmap(* p_square_comm);
-            m_linestatus[QString::number(ic + 1)]->setText(todisplay);
+            m_lineaction[QString::number(ic)]->setPixmap(* p_square_comm);
+            m_linestatus[QString::number(ic)]->setText(todisplay);
             // qDebug() << "IdentityDisplay::updateUser" << phoneid << callref << m_comms[callref];
-            ic ++;
         }
     }
 }
