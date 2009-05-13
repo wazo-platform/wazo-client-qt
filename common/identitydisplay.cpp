@@ -496,6 +496,8 @@ void IdentityDisplay::updateUser(UserInfo * ui)
     foreach(QString phoneid, m_ui->phonelist()) {
         QPixmap * p_square = new QPixmap(10, 10);
         const PhoneInfo * p_pi = m_ui->getPhoneInfo(phoneid);
+        if(p_pi == NULL)
+            continue;
         p_square->fill(p_pi->hintstatus("color"));
         m_phonecall->setPixmap(* p_square);
         m_phonecall->setToolTip(p_pi->hintstatus("longname"));
