@@ -204,6 +204,7 @@ void IdentityDisplay::setGuiOptions(const QVariant & options)
 
 void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
 {
+    // qDebug() << "IdentityDisplay::contextMenuEvent()";
     if(sender() != NULL) {
         QString iconname = sender()->property("iconname").toString();
         // QMenu contextMenu(this);
@@ -273,6 +274,9 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                     contextMenu.exec(event->globalPos());
                 }
             }
+        } else if(iconname == "phoneline") {
+            QString linenumber = sender()->property("linenumber").toString();
+            qDebug() << "IdentityDisplay::contextMenuEvent()" << iconname << linenumber;
         }
     }
 }
@@ -342,6 +346,8 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
     m_presencevalue->show();
 }
 
+/*! \brief display the phones' lines
+ */
 void IdentityDisplay::setPhoneLines()
 {
     QPixmap * p_square = new QPixmap(6, 6);
@@ -349,8 +355,17 @@ void IdentityDisplay::setPhoneLines()
     for(int jj = 0 ; jj < m_nlines ; jj ++) {
         QString sjj = QString::number(jj + 1);
         if(! m_lineaction.contains(sjj)) {
-            m_lineaction[sjj] = new QLabel();
-            m_linestatus[sjj] = new QLabel();
+            m_lineaction[sjj] = new ExtendedLabel();
+            m_lineaction[sjj]->setProperty("iconname", "phoneline");
+            m_lineaction[sjj]->setProperty("linenumber", sjj);
+            connect( m_lineaction[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
+                     this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+            
+            m_linestatus[sjj] = new ExtendedLabel();
+            m_linestatus[sjj]->setProperty("iconname", "phoneline");
+            m_linestatus[sjj]->setProperty("linenumber", sjj);
+            connect( m_linestatus[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
+                     this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
         }
         m_lineaction[sjj]->setPixmap(* p_square);
         
@@ -387,6 +402,8 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     changeWatchedAgent(QString("agent:%1/%2").arg(m_ui->astid()).arg(m_ui->agentid()), false);
 }
 
+/*! \brief slot when one or more agents have been updated
+ */
 void IdentityDisplay::newAgentList(const QStringList &)
 {
     // qDebug() << "IdentityDisplay::newAgentList()" << m_loginkind << list << m_engine->agents();
@@ -407,6 +424,8 @@ void IdentityDisplay::newAgentList(const QStringList &)
     }
 }
 
+/*! \brief slot when one or more queues have been updated
+ */
 void IdentityDisplay::newQueueList(const QStringList &)
 {
 /*
@@ -418,6 +437,8 @@ void IdentityDisplay::newQueueList(const QStringList &)
     // qDebug() << "IdentityDisplay::newQueueList()";
 }
 
+/*! \brief updates the boolean services
+ */
 void IdentityDisplay::setOpt(const QString & capa, bool b)
 {
     if((capa == "enablednd") || (capa == "incallfilter") || (capa == "incallrec") || (capa == "enablevm"))
@@ -425,6 +446,8 @@ void IdentityDisplay::setOpt(const QString & capa, bool b)
     svcSummary();
 }
 
+/*! \brief updates the boolean+value services
+ */
 void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
 {
     if((capa == "unc") || (capa == "busy") || (capa == "rna")) {
@@ -434,6 +457,8 @@ void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
     svcSummary();
 }
 
+/*! \brief updates the display of Services data
+ */
 void IdentityDisplay::svcSummary()
 {
     if(m_svcstatus["enablednd"].toBool()) {
