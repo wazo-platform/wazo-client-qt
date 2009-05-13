@@ -39,6 +39,7 @@
 #include <QFileDialog>
 #include <QApplication>
 #include <QFileInfo>
+#include <QSettings>
 
 #include "baseengine.h"
 #include "mylocaldirpanel.h"

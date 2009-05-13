@@ -39,10 +39,10 @@
 #include <QHash>
 #include <QHostAddress>
 #include <QObject>
-#include <QSettings>
 #include <QStringList>
 #include <QTime>
 #include <QDateTime>
+#include <QVariant>
 
 class UserInfo;
 class PhoneInfo;
@@ -53,6 +53,7 @@ class QFile;
 class QSocketNotifier;
 class QTcpSocket;
 class QTimerEvent;
+class QSettings;
 
 /*! \brief for storing meetme (conference room) infos
  *
