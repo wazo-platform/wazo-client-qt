@@ -552,14 +552,14 @@ void BaseEngine::setAvailability()
     setAvailState(availstate, false);
 }
 
-/*! \brief send command to CTI daemon */
+/*! \brief send command to XiVO CTI server */
 void BaseEngine::sendCommand(const QString & command)
 {
     if(m_tcpsocket["cticommands"]->state() == QAbstractSocket::ConnectedState)
         m_tcpsocket["cticommands"]->write((command + "\n").toAscii());
 }
 
-/*! \brief encode json and then send command to CTI daemon */
+/*! \brief encode json and then send command to XiVO CTI server */
 void BaseEngine::sendJsonCommand(const QVariantMap & command)
 {
     QString jsoncommand(JsonQt::VariantToJson::parse(command));
@@ -642,7 +642,7 @@ void BaseEngine::socketDisconnected()
     QString socketname = sender()->property("socket").toString();
     if(socketname == "cticommands") {
         setState(ENotLogged); // calls delogged();
-        emitTextMessage(tr("Connection lost with XIVO Daemon"));
+        emitTextMessage(tr("Connection lost with XiVO CTI server"));
         startTryAgainTimer();
         //removePeers();
         //connectSocket();
@@ -1431,57 +1431,66 @@ void BaseEngine::popupError(const QString & errorid)
 {
     QString errormsg = QString(tr("Server has sent an Error."));
     if(errorid.toLower() == "connection_refused")
-        errormsg = tr("You are not allowed to connect to the XIVO daemon on %1.").arg(m_serverhost);
-
+        errormsg = tr("You are not allowed to connect\n"
+                      "to the XiVO CTI server on %1:%2.")
+            .arg(m_serverhost).arg(m_ctiport);
+    
     else if(errorid.toLower() == "number_of_arguments")
         errormsg = tr("The number of arguments sent is incorrect.\n"
                       "Maybe a version issue ?");
-
+    
     else if(errorid.toLower() == "user_not_found")
-        errormsg = tr("Your registration name <%1@%2> is not known.").arg(m_userid, m_company);
-
+        errormsg = tr("Your registration name <%1@%2>\n"
+                      "is not known by the XiVO CTI server on %3:%4.")
+            .arg(m_userid).arg(m_company)
+            .arg(m_serverhost).arg(m_ctiport);
+    
     else if(errorid.toLower() == "session_expired")
         errormsg = tr("Your session has expired.");
-        
+    
     else if(errorid.startsWith("capaid_undefined:")) {
         QStringList capainfo = errorid.split(":");
         errormsg = tr("Your profile name <%1> is not defined.").arg(capainfo[1]);
     }
-        
+    
     else if(errorid.toLower() == "login_password")
         errormsg = tr("You entered a wrong login / password.");
-        
+    
     else if(errorid.toLower() == "no_keepalive_from_server")
-        errormsg = tr("The XIVO daemon on %1 did not reply to the last keepalive.").arg(m_serverhost);
-
+        errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.")
+            .arg(m_serverhost).arg(m_ctiport);
+    
     else if(errorid.toLower() == "connection_closed")
-        errormsg = tr("The XIVO daemon on %1 has just closed the connection.").arg(m_serverhost);
-        
+        errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.")
+            .arg(m_serverhost).arg(m_ctiport);
+    
     else if(errorid.toLower() == "network_error")
         errormsg = tr("An error occurred with the network (network cable accidentally plugged out ?).");
-        
+    
     else if(errorid.startsWith("socket_error:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("Socket Error number %1.").arg(ipinfo[1]);
     }
-        
+    
     else if(errorid.toLower() == "server_stopped")
-        errormsg = tr("The XIVO daemon on %1 has just been stopped.").arg(m_serverhost);
-        
+        errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.")
+            .arg(m_serverhost).arg(m_ctiport);
+    
     else if(errorid.toLower() == "server_reloaded")
-        errormsg = tr("The XIVO daemon on %1 has just been reloaded.").arg(m_serverhost);
-        
+        errormsg = tr("The XiVO CTI server on %1:%2 has just been reloaded.")
+            .arg(m_serverhost).arg(m_ctiport);
+    
     else if(errorid.startsWith("already_connected:")) {
         QStringList ipinfo = errorid.split(":");
-        errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1], ipinfo[2]);
+        errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);
     }
-
+    
     else if(errorid.toLower() == "uninit_phone")
         errormsg = tr("Your phone <%1> has not been provisioned on XIVO.").arg(m_userid);
-
+    
     else if(errorid.toLower() == "no_capability")
         errormsg = tr("No capability allowed.");
-
+    
     else if(errorid.startsWith("toomuchusers:")) {
         QStringList userslist = errorid.split(":")[1].split(";");
         errormsg = tr("Max number (%1) of XIVO Clients already reached.").arg(userslist[0]);
@@ -1493,8 +1502,9 @@ void BaseEngine::popupError(const QString & errorid)
         QStringList versionslist = errorid.split(":")[1].split(";");
         if(versionslist.size() >= 2)
             errormsg = tr("Your client version (%1) is too old for this server.\n"
-                          "Please upgrade it to %2 at least.").arg(__current_client_version__,
-                                                                   versionslist[1]);
+                          "Please upgrade it to %2 at least.")
+                .arg(__current_client_version__)
+                .arg(versionslist[1]);
         else
             errormsg = tr("Your client version (%1) is too old for this server.\n"
                           "Please upgrade it.").arg(__current_client_version__);
@@ -1503,14 +1513,17 @@ void BaseEngine::popupError(const QString & errorid)
         QStringList versionslist = errorid.split(":")[1].split(";");
         if(versionslist.size() >= 2)
             errormsg = tr("Your client's major version (%1)\n"
-                          "is not the same as the server's (%2).").arg(__xivo_version__,
-                                                                   versionslist[1]);
+                          "is not the same as the server's (%2).")
+                .arg(__xivo_version__)
+                .arg(versionslist[1]);
     }
     else if(errorid.startsWith("version_server:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
         if(versionslist.size() >= 2)
             errormsg = tr("Your server version (%1) is too old for this client.\n"
-                          "Please upgrade it to %2 at least.").arg(versionslist[0], __current_client_version__);
+                          "Please upgrade it to %2 at least.")
+                .arg(versionslist[0])
+                .arg(__current_client_version__);
         else
             errormsg = tr("Your server version (%1) is too old for this client.\n"
                           "Please upgrade it.").arg(versionslist[0]);
@@ -1519,7 +1532,7 @@ void BaseEngine::popupError(const QString & errorid)
     } else if (errorid == "forcedisconnected") {
         errormsg = tr("You were forced to disconnect by the server.");
     }
-
+    
     // logs a message before sending any popup that would block
     emitTextMessage(tr("Error") + " : " + errormsg);
     if(!m_trytoreconnect || m_forced_to_disconnect)
@@ -1594,7 +1607,7 @@ void BaseEngine::socketReadyRead()
     }
 }
 
-/*! \brief forward actions from fiche to daemon
+/*! \brief forward actions from fiche to XiVO CTI server
  *
  * Build and send JSON command
  */
