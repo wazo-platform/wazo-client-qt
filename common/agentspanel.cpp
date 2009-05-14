@@ -118,11 +118,10 @@ void AgentsPanel::updateAgentPresence(const QString & astid, const QString & age
     QString agentid = QString("agent:%1/%2").arg(astid).arg(agent_number);
     if(m_engine->agents().contains(agentid))
         if(m_agent_presence.contains(agentid)) {
-            QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-            p_square->fill(QColor(presencestatus.toMap()["color"].toString()));
-            m_agent_presence[agentid]->setPixmap(QPixmap(* p_square));
+            QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
+            square.fill(QColor(presencestatus.toMap()["color"].toString()));
+            m_agent_presence[agentid]->setPixmap(square);
             m_agent_presence[agentid]->setToolTip(presencestatus.toMap()["longname"].toString());
-            delete p_square;
         }
 }
 
@@ -227,9 +226,9 @@ void AgentsPanel::displayLine(const QString & agentid, int linenum)
     qvline3->setFrameShape(QFrame::VLine);
     qvline3->setLineWidth(1);
     
-    QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
-    p_square->fill(Qt::gray);
-    m_agent_presence[agentid]->setPixmap(QPixmap(* p_square));
+    QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
+    square.fill(Qt::gray);
+    m_agent_presence[agentid]->setPixmap(square);
     
     m_agent_more[agentid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
     m_agent_more[agentid]->setIcon(QIcon(":/images/add.png"));
@@ -256,11 +255,6 @@ void AgentsPanel::displayLine(const QString & agentid, int linenum)
     m_gridlayout->addWidget( m_agent_paused_status[agentid], linenum, colnum++, Qt::AlignCenter );
     m_gridlayout->addWidget( m_agent_paused_action[agentid], linenum, colnum++, Qt::AlignCenter );
     m_gridlayout->addWidget( m_agent_paused_number[agentid], linenum, colnum++, Qt::AlignRight );
-    
-    delete qvline1;
-    delete qvline2;
-    delete qvline3;
-    delete p_square;
 }
 
 void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap & properties)
@@ -285,49 +279,48 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
                            QString("agentid %1 linkmode %2").arg(agentid).arg(linkmode));
     }
     
-    QPixmap * p_square = new QPixmap(m_gui_buttonsize, m_gui_buttonsize);
+    QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
     QStringList ttips;
     if(link) {
-        p_square->fill(Qt::green);
+        square.fill(Qt::green);
         QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(m_engine->phones());
-        while( iter.hasNext() )
-            {
-                iter.next();
-                if((iter.value()->number() == phonenum) && (iter.value()->astid() == ainfo->astid())) {
-                    foreach(QString uniqueid, iter.value()->comms().keys()) {
-                        QVariantMap commval = iter.value()->comms()[uniqueid].toMap();
-                        ttips << tr("online with %1 (%2)").arg(commval["calleridname"].toString()).arg(commval["calleridnum"].toString());
-                    }
+        while( iter.hasNext() ) {
+            iter.next();
+            if((iter.value()->number() == phonenum) && (iter.value()->astid() == ainfo->astid())) {
+                foreach(QString uniqueid, iter.value()->comms().keys()) {
+                    QVariantMap commval = iter.value()->comms()[uniqueid].toMap();
+                    ttips << tr("online with %1 (%2)").arg(commval["calleridname"].toString()).arg(commval["calleridnum"].toString());
                 }
             }
+        }
     } else
-        p_square->fill(Qt::gray);
-    m_agent_busy[agentid]->setPixmap(QPixmap(* p_square));
+        square.fill(Qt::gray);
+    m_agent_busy[agentid]->setPixmap(square);
     m_agent_busy[agentid]->setToolTip(ttips.join("\n"));
     
     QString tooltip;
     if(agstatus == "AGENT_IDLE") {
-        p_square->fill(Qt::green);
+        square.fill(Qt::green);
         m_agent_logged_action[agentid]->setIcon(QIcon(":/images/cancel.png"));
         tooltip = tr("Agent logged");
     } else if(agstatus == "AGENT_ONCALL") {
-        // p_square->fill(Qt::darkGreen);
-        p_square->fill(Qt::green);
+        // square.fill(Qt::darkGreen);
+        square.fill(Qt::green);
         m_agent_logged_action[agentid]->setIcon(QIcon(":/images/cancel.png"));
         // tooltip = tr("Agent busy");
         tooltip = tr("Agent logged");
     } else if(agstatus == "AGENT_LOGGEDOFF") {
-        p_square->fill(Qt::red);
+        square.fill(Qt::red);
         m_agent_logged_action[agentid]->setIcon(QIcon(":/images/button_ok.png"));
         tooltip = tr("Agent NOT logged");
     } else {
-        p_square->fill(Qt::gray);
-        m_agent_logged_action[agentid]->setIcon(QIcon(QPixmap(* p_square)));
+        square.fill(Qt::gray);
+        m_agent_logged_action[agentid]->setIcon(QIcon(square));
         tooltip = tr("Unknown %1").arg(agstatus);
         shouldNotOccur("AgentsPanel::updateAgentStatus",
                        QString("agentid %1 agstatus %2").arg(agentid).arg(agstatus));
     }
-    m_agent_logged_status[agentid]->setPixmap(QPixmap(* p_square));
+    m_agent_logged_status[agentid]->setPixmap(square);
     m_agent_logged_status[agentid]->setToolTip(tooltip);
     
     QStringList joined_queues;
@@ -391,8 +384,6 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
         m_agent_paused_action[agentid]->show();
         m_agent_paused_number[agentid]->show();
     }
-    
-    delete p_square;
 }
 
 /*! \brief process actions

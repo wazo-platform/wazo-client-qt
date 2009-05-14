@@ -53,9 +53,9 @@
 #include "agentinfo.h"
 #include "queueinfo.h"
 
-QString icon_color_red = "xivo-red";
-QString icon_color_black = "xivo-black";
-QString icon_color_green = "xivo-green";
+const QString icon_color_red = "xivo-red";
+const QString icon_color_black = "xivo-black";
+const QString icon_color_green = "xivo-green";
 
 const QColor Orange = QColor(255, 128, 0);
 
@@ -350,8 +350,8 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
  */
 void IdentityDisplay::setPhoneLines()
 {
-    QPixmap * p_square = new QPixmap(6, 6);
-    p_square->fill(Qt::black);
+    QPixmap square(6, 6);
+    square.fill(Qt::black);
     for(int jj = 0 ; jj < m_nlines ; jj ++) {
         QString sjj = QString::number(jj + 1);
         if(! m_lineaction.contains(sjj)) {
@@ -368,7 +368,7 @@ void IdentityDisplay::setPhoneLines()
             connect( m_linestatus[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
             
-            m_lineaction[sjj]->setPixmap(* p_square);
+            m_lineaction[sjj]->setPixmap(square);
         }
         
         int ix = jj / 3;
@@ -495,12 +495,12 @@ void IdentityDisplay::updateUser(UserInfo * ui)
     if(m_ui != ui)
         return;
     foreach(QString phoneid, m_ui->phonelist()) {
-        QPixmap * p_square = new QPixmap(10, 10);
+        QPixmap square(10, 10);
         const PhoneInfo * p_pi = m_ui->getPhoneInfo(phoneid);
         if(p_pi == NULL)
             continue;
-        p_square->fill(p_pi->hintstatus("color"));
-        m_phonecall->setPixmap(* p_square);
+        square.fill(p_pi->hintstatus("color"));
+        m_phonecall->setPixmap(square);
         m_phonecall->setToolTip(p_pi->hintstatus("longname"));
         m_phonecalltxt->setText(p_pi->hintstatus("longname"));
         m_comms = p_pi->comms();
@@ -515,16 +515,13 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                 QString todisplay = callprops["calleridname"].toString();
                 bool isholded = callprops.contains("time-hold");
                 
-                QPixmap * p_square_comm = new QPixmap(6, 6);
-                if(isholded)
-                    p_square_comm->fill(Qt::darkGreen);
-                else
-                    p_square_comm->fill(Qt::green);
+                QPixmap square_comm(6, 6);
+                square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
                 if(status == "hangup") {
                     todisplay = "-";
-                    p_square_comm->fill(Qt::black);
+                    square_comm.fill(Qt::black);
                 }
-                m_lineaction[QString::number(ic)]->setPixmap(* p_square_comm);
+                m_lineaction[QString::number(ic)]->setPixmap(square_comm);
                 m_linestatus[QString::number(ic)]->setText(todisplay);
             }
         }
@@ -596,29 +593,29 @@ void IdentityDisplay::hideAgentProps()
 
 void IdentityDisplay::setStatusColors(const QString & phonenum)
 {
-    QPixmap * p_square = new QPixmap(10, 10);
+    QPixmap square(10, 10);
     if(m_agentstatustxt->property("connected").toBool()) {
-        p_square->fill("#00ff00");
+        square.fill("#00ff00");
         m_agentstatustxt->setText(tr("Connected on %1").arg(phonenum));
     } else {
-        p_square->fill("#ff0000");
+        square.fill("#ff0000");
         m_agentstatustxt->setText(tr("Disconnected from %1").arg(phonenum));
     }
-    m_agentstatus->setPixmap(* p_square);
+    m_agentstatus->setPixmap(square);
 }
 
 void IdentityDisplay::setPausedColors(int nj, int np)
 {
-    QPixmap * p_square = new QPixmap(10, 10);
+    QPixmap square(10, 10);
     if(nj > 0) {
         if(np == nj) {
             setSystrayIcon(icon_color_red);
-            p_square->fill("#ff0000");
+            square.fill("#ff0000");
             m_agentpause->setToolTip(tr("Paused"));
             m_agentpausetxt->setText(tr("Paused"));
         } else if(np == 0) {
             bool loggedin = m_agentstatustxt->property("connected").toBool();
-            p_square->fill("#00ff00");
+            square.fill("#00ff00");
             m_agentpause->setToolTip(tr("Unpaused"));
             m_agentpausetxt->setText(tr("Unpaused"));
             if(loggedin)
@@ -626,16 +623,16 @@ void IdentityDisplay::setPausedColors(int nj, int np)
             else
                 setSystrayIcon(icon_color_black);
         } else {
-            p_square->fill(Orange);
+            square.fill(Orange);
             m_agentpause->setToolTip(tr("Partially paused"));
             m_agentpausetxt->setText(tr("Partially paused"));
         }
     } else {
-        p_square->fill(Qt::gray);
+        square.fill(Qt::gray);
         m_agentpause->setToolTip(tr("Not relevant"));
         m_agentpausetxt->setText(tr("Not relevant"));
     }
-    m_agentpause->setPixmap(* p_square);
+    m_agentpause->setPixmap(square);
 }
 
 void IdentityDisplay::doAgentLogActions()
