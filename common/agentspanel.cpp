@@ -302,13 +302,13 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
     if(agstatus == "AGENT_IDLE") {
         square.fill(Qt::green);
         m_agent_logged_action[agentid]->setIcon(QIcon(":/images/cancel.png"));
-        tooltip = tr("Agent logged");
+        tooltip = tr("Agent logged on %1").arg(phonenum);
     } else if(agstatus == "AGENT_ONCALL") {
         // square.fill(Qt::darkGreen);
         square.fill(Qt::green);
         m_agent_logged_action[agentid]->setIcon(QIcon(":/images/cancel.png"));
         // tooltip = tr("Agent busy");
-        tooltip = tr("Agent logged");
+        tooltip = tr("Agent logged on %1").arg(phonenum);
     } else if(agstatus == "AGENT_LOGGEDOFF") {
         square.fill(Qt::red);
         m_agent_logged_action[agentid]->setIcon(QIcon(":/images/button_ok.png"));
