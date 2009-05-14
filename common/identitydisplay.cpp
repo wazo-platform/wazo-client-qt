@@ -77,36 +77,35 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     //m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
     
-    m_phonenum = new QLabel();
-    m_presencevalue = new QComboBox();
+    m_phonenum = new QLabel(this);
+    m_presencevalue = new QComboBox(this);
     m_presencevalue->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     m_presencevalue->setProperty("function", "presence");
     
-    m_phone = new QLabel();
-    m_phonestatustxt = new QLabel();
-    m_phonestatustxt->setText("");
+    m_phone = new QLabel(this);
+    m_phonestatustxt = new QLabel("", this);
     m_phonestatustxt->setScaledContents(true);
     m_phonestatustxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_phonecall = new QLabel();
-    m_phonecalltxt = new QLabel();
+    m_phonecall = new QLabel(this);
+    m_phonecalltxt = new QLabel(this);
     
-    m_voicemail_old = new QLabel();
-    m_voicemail_new = new QLabel();
-    m_voicemail_name = new QLabel();
+    m_voicemail_old = new QLabel(this);
+    m_voicemail_new = new QLabel(this);
+    m_voicemail_name = new QLabel(this);
     
-    m_agent = new QLabel();
-    m_agentstatus = new QLabel();
-    m_agentstatustxt = new QLabel();
-    m_agentpause = new QLabel();
-    m_agentpausetxt = new QLabel();
+    m_agent = new QLabel(this);
+    m_agentstatus = new QLabel(this);
+    m_agentstatustxt = new QLabel(this);
+    m_agentpause = new QLabel(this);
+    m_agentpausetxt = new QLabel(this);
     
     connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
             this, SLOT(idxChanged(const QString &)));
     
-    m_icon_user = new ExtendedLabel();
-    m_icon_agent = new ExtendedLabel();
-    m_icon_phone = new ExtendedLabel();
-    m_icon_voicemail = new ExtendedLabel();
+    m_icon_user = new ExtendedLabel("", this);
+    m_icon_agent = new ExtendedLabel("", this);
+    m_icon_phone = new ExtendedLabel("", this);
+    m_icon_voicemail = new ExtendedLabel("", this);
     m_icon_voicemail->hide();
     
     m_icon_user->setPixmap(QPixmap(":/images/personal.png"));
@@ -355,14 +354,13 @@ void IdentityDisplay::setPhoneLines()
     for(int jj = 0 ; jj < m_nlines ; jj ++) {
         QString sjj = QString::number(jj + 1);
         if(! m_lineaction.contains(sjj)) {
-            m_lineaction[sjj] = new ExtendedLabel();
+            m_lineaction[sjj] = new ExtendedLabel("", this);
             m_lineaction[sjj]->setProperty("iconname", "phoneline");
             m_lineaction[sjj]->setProperty("linenumber", jj + 1);
             connect( m_lineaction[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
             
-            m_linestatus[sjj] = new ExtendedLabel();
-            m_linestatus[sjj]->setText("-");
+            m_linestatus[sjj] = new ExtendedLabel("-", this);
             m_linestatus[sjj]->setProperty("iconname", "phoneline");
             m_linestatus[sjj]->setProperty("linenumber", jj + 1);
             connect( m_linestatus[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
@@ -522,10 +520,10 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                     todisplay = "-";
                     square_comm.fill(Qt::black);
                 }
-                qDebug() << "IdentityDisplay::updateUser" << ics << m_lineaction << m_linestatus;
-                if(m_lineaction[ics])
+                //qDebug() << "IdentityDisplay::updateUser" << ics << m_lineaction << m_linestatus;
+                if(m_lineaction.contains(ics) && m_lineaction[ics])
                     m_lineaction[ics]->setPixmap(square_comm);
-                if(m_linestatus[ics])
+                if(m_linestatus.contains(ics) && m_linestatus[ics])
                     m_linestatus[ics]->setText(todisplay);
             }
         }

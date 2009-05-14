@@ -41,14 +41,14 @@
 class ExtendedLabel : public QLabel
 {
     Q_OBJECT
-        public:
+public:
     ExtendedLabel(const QString & text = "",
                   QWidget *parent = 0);
- protected:
+protected:
     //void mouseDoubleClickEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void contextMenuEvent(QContextMenuEvent *);
- signals:
+signals:
     //! originate signal
     //void mouse_doubleclick(QMouseEvent *);
     void mouse_release(QMouseEvent *);

@@ -56,25 +56,25 @@ class UserInfo;
 class AgentsPanelNext : public QWidget
 {
     Q_OBJECT
- public:
+public:
     AgentsPanelNext(BaseEngine *,
                     const QVariant &,
                     QWidget * parent = 0);
     ~AgentsPanelNext();
- signals:
+signals:
     void changeWatchedAgent(const QString &, bool);
     void agentAction(const QString &);
     void saveQueueGroups(const QVariant &);
     void loadQueueGroups();
     void logAction(const QString &);
     void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
- public slots:
+public slots:
     void setGuiOptions(const QVariant &);
     void setUserInfo(const UserInfo *) {};
     void newAgentList(const QStringList &);
     void newQueueList(const QStringList &);
     void setQueueOrder(const QVariant &);
- private slots:
+private slots:
     void renameQueueGroup();
     void removeQueueGroup();
     void agentClicked(QMouseEvent *);
@@ -86,12 +86,12 @@ class AgentsPanelNext : public QWidget
     void setQueueGroups(const QVariant &);
     void newGroup();
     void actionclicked();
- protected slots:
+protected slots:
     void contextMenuEvent(QContextMenuEvent *);
- protected:
+protected:
     void mouseReleasedEvent(QMouseEvent *);
     void timerEvent(QTimerEvent *);
- private:
+private:
     void newQueue(const QString &, const QString &, const QVariant &);
     void refreshContents();
     void refreshDisplay();
