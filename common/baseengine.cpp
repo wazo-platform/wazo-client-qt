@@ -1485,9 +1485,6 @@ void BaseEngine::popupError(const QString & errorid)
         errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);
     }
     
-    else if(errorid.toLower() == "uninit_phone")
-        errormsg = tr("Your phone <%1> has not been provisioned on XIVO.").arg(m_userid);
-    
     else if(errorid.toLower() == "no_capability")
         errormsg = tr("No capability allowed.");
     

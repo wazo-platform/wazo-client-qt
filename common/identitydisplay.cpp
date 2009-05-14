@@ -367,8 +367,9 @@ void IdentityDisplay::setPhoneLines()
             m_linestatus[sjj]->setProperty("linenumber", jj + 1);
             connect( m_linestatus[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+            
+            m_lineaction[sjj]->setPixmap(* p_square);
         }
-        m_lineaction[sjj]->setPixmap(* p_square);
         
         int ix = jj / 3;
         int iy = jj % 3;
@@ -512,8 +513,13 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                 int ic = callprops["linenum"].toInt();
                 QString status = callprops["status"].toString();
                 QString todisplay = callprops["calleridname"].toString();
+                bool isholded = callprops.contains("time-hold");
+                
                 QPixmap * p_square_comm = new QPixmap(6, 6);
-                p_square_comm->fill(Qt::green);
+                if(isholded)
+                    p_square_comm->fill(Qt::darkGreen);
+                else
+                    p_square_comm->fill(Qt::green);
                 if(status == "hangup") {
                     todisplay = "-";
                     p_square_comm->fill(Qt::black);
