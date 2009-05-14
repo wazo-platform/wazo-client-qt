@@ -182,7 +182,7 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
 void AgentsPanelNext::newGroup()
 {
     QPoint where = sender()->property("where").toPoint();
-    QGridLayout * gl = new QGridLayout(this);
+    QGridLayout * gl = new QGridLayout();
     QDialog * dialog = new QDialog(this);
     dialog->setWindowTitle(tr("New Group"));
     dialog->setLayout(gl);
@@ -390,7 +390,7 @@ void AgentsPanelNext::renameQueueGroup()
 {
     QString groupid = sender()->property("groupid").toString();
     QPoint where = sender()->property("where").toPoint();
-    QGridLayout * gl = new QGridLayout(this);
+    QGridLayout * gl = new QGridLayout();
     QDialog * dialog = new QDialog(this);
     dialog->setWindowTitle(tr("Rename a Group"));
     dialog->setLayout(gl);
@@ -494,7 +494,7 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
         QString agentnumber = ainfo->agentnumber();
         changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentnumber), true);
         
-        QGridLayout * gl = new QGridLayout(this);
+        QGridLayout * gl = new QGridLayout();
         QDialog * dialog = new QDialog(this);
         dialog->setWindowTitle(tr("Agent %1 on %2").arg(agentnumber, astid));
         dialog->setLayout(gl);
