@@ -58,7 +58,7 @@ class ServicePanel : public QWidget
     void askFeatures(); //!< need features to be updated !
  public slots:
     void setGuiOptions(const QVariant &) {};
-    void setUserInfo(const UserInfo *) {};
+    void setUserInfo(const UserInfo *);
     void setOpt(const QString &, bool);
     void setForward(const QString &, const QVariant &);
     void monitorPeer(UserInfo *);

@@ -508,7 +508,6 @@ void IdentityDisplay::updateUser(UserInfo * ui)
             QString callref = iter.key();
             QVariantMap callprops = iter.value().toMap();
             if(callprops.contains("linenum")) {
-                //int ic = callprops["linenum"].toInt();
                 QString ics = callprops["linenum"].toString();
                 QString status = callprops["status"].toString();
                 QString todisplay = callprops["calleridname"].toString();

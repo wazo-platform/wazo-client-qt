@@ -36,14 +36,18 @@
 
 #include <QLabel>
 
-/*! \brief QLabec with context menu and mouse release event forwarding
+class QContextMenuEvent;
+class QMouseEvent;
+
+/*! \brief QLabel with context menu and mouse release event forwarding
  */
 class ExtendedLabel : public QLabel
 {
     Q_OBJECT
 public:
     ExtendedLabel(const QString & text = "",
-                  QWidget *parent = 0);
+                  QWidget * parent = 0);
+    ExtendedLabel(QWidget * parent = 0);
 protected:
     //void mouseDoubleClickEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);

@@ -118,6 +118,14 @@ ServicePanel::~ServicePanel()
     delete m_status;
 }
 
+void ServicePanel::setUserInfo(const UserInfo * ui)
+{
+    if(ui == NULL)
+        return;
+    if((ui->mwi().size() < 3) && (m_chkopt.contains("enablevm")))
+        m_chkopt["enablevm"]->hide();
+}
+
 void ServicePanel::Connect()
 {
     //qDebug() << "ServicePanel::Connect()";

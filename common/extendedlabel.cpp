@@ -42,6 +42,11 @@ ExtendedLabel::ExtendedLabel(const QString & text,
     setText(text);
 }
 
+ExtendedLabel::ExtendedLabel(QWidget * parent)
+    : QLabel(parent)
+{
+}
+
 /*
   void ExtendedLabel::mouseDoubleClickEvent(QMouseEvent * event)
   {
