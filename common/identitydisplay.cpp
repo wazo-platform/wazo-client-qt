@@ -510,7 +510,8 @@ void IdentityDisplay::updateUser(UserInfo * ui)
             QString callref = iter.key();
             QVariantMap callprops = iter.value().toMap();
             if(callprops.contains("linenum")) {
-                int ic = callprops["linenum"].toInt();
+                //int ic = callprops["linenum"].toInt();
+                QString ics = callprops["linenum"].toString();
                 QString status = callprops["status"].toString();
                 QString todisplay = callprops["calleridname"].toString();
                 bool isholded = callprops.contains("time-hold");
@@ -521,8 +522,11 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                     todisplay = "-";
                     square_comm.fill(Qt::black);
                 }
-                m_lineaction[QString::number(ic)]->setPixmap(square_comm);
-                m_linestatus[QString::number(ic)]->setText(todisplay);
+                qDebug() << "IdentityDisplay::updateUser" << ics << m_lineaction << m_linestatus;
+                if(m_lineaction[ics])
+                    m_lineaction[ics]->setPixmap(square_comm);
+                if(m_linestatus[ics])
+                    m_linestatus[ics]->setText(todisplay);
             }
         }
     }
