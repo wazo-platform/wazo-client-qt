@@ -43,9 +43,11 @@
 class PeersLayout : public QLayout
 {
     Q_OBJECT
-        public:
+public:
     //! constructor
     PeersLayout(QWidget * parent = 0);
+    //! destructor
+    virtual ~PeersLayout();
     //! set geometry
     void setGeometry( const QRect & );
     //! return size Hint (prefered size)
@@ -76,15 +78,15 @@ class PeersLayout : public QLayout
     QPoint getItemPosition(int i) const;
     QPoint getItemPosition(QWidget * widget) const;
     QRect getGridRect( const QRect & ) const;
- private:
+private:
     int itemIndex(QWidget * widget) const;
     QPoint freePosition() const;
     QSize size() const;
     QSize maxItemSize() const;
     QList<QLayoutItem *> m_list;        //!< layout items list
-    QList<QPoint> m_listPos;                //!< positions list
-    int m_nb_rows;                                        //!< height
-    int m_nb_columns;                                //!< width
+    QList<QPoint> m_listPos;            //!< positions list
+    int m_nb_rows;                      //!< height
+    int m_nb_columns;                   //!< width
 };
 
 #endif

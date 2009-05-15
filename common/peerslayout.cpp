@@ -43,6 +43,13 @@ PeersLayout::PeersLayout(QWidget * parent)
     //qDebug() << "PeersLayout::spacing" << spacing();
 }
 
+PeersLayout::~PeersLayout()
+{
+    while(!m_list.isEmpty()) {
+        delete m_list.takeFirst();
+    }
+}
+
 /*! \brief same as size()
  */
 QSize PeersLayout::sizeHint() const

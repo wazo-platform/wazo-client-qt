@@ -75,7 +75,9 @@ Popup::Popup(const bool & urlautoallow,
              BaseEngine * engine,
              QWidget * parent)
     : QWidget(parent),
+      m_xmlInputSource(0),
       m_engine(engine),
+      m_handler(0),
       m_sheetpopup(false),
       m_systraypopup(true),
       m_focus(true),
@@ -89,6 +91,13 @@ Popup::Popup(const bool & urlautoallow,
     // qDebug() << "Popup::Popup()";
     m_remarkarea = 0;
 }
+
+Popup::~Popup()
+{
+    delete m_xmlInputSource;
+    delete m_handler;
+}
+
 
 /*!
  * \param inputstream        inputstream to read the XML

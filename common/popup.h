@@ -67,6 +67,8 @@ public:
     Popup(const bool &,
           BaseEngine * engine = 0,
           QWidget * parent = 0);
+    //! destructor
+    virtual ~Popup();
     void feed(QIODevice *, const bool &);
     void addInfoInternal(const QString &, const QString &);
     //! Add a Text field (name, value)
