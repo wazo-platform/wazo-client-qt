@@ -34,7 +34,7 @@
 #ifndef __DIRECTORYPANEL_H__
 #define __DIRECTORYPANEL_H__
 
-#include <QWidget>
+#include "xlet.h"
 
 class QDropEvent;
 class QFocusEvent;
@@ -50,7 +50,7 @@ class UserInfo;
 
 /*! \brief Directory allowing search
  */
-class DirectoryPanel : public QWidget
+class DirectoryPanel : public XLet
 {
     Q_OBJECT
 public:
@@ -77,7 +77,6 @@ public slots:
     void setSearchResponse(const QStringList &, const QStringList &);
     void stop();
 private:
-    BaseEngine * m_engine;
     ExtendedLineEdit * m_searchText;        //!< search text input
     ExtendedTableWidget * m_table;                //!< table to display results
     QPushButton * m_searchButton;        //!< button

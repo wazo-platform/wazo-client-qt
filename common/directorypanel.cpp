@@ -56,7 +56,7 @@
  *  Build layout and child widgets, connect signals/slots.
  */
 DirectoryPanel::DirectoryPanel(BaseEngine * engine, QWidget * parent)
-    : QWidget(parent), m_engine(engine), m_re_number("\\+?[0-9\\s\\.]+")
+    : XLet(engine, parent), m_re_number("\\+?[0-9\\s\\.]+")
 {
     setAccessibleName( tr("Directory Panel") );
     QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -88,6 +88,18 @@ DirectoryPanel::DirectoryPanel(BaseEngine * engine, QWidget * parent)
         
     setFocusPolicy(Qt::StrongFocus);
     setFocusProxy(m_searchText);
+
+    // connect signal/slots
+    connect( this, SIGNAL(searchDirectory(const QString &)),
+             m_engine, SLOT(searchDirectory(const QString &)) );
+    connect( m_engine, SIGNAL(directoryResponse(const QStringList &, const QStringList &)),
+             this, SLOT(setSearchResponse(const QStringList &, const QStringList &)) );
+    connect( this, SIGNAL(copyNumber(const QString &)),
+             m_engine, SLOT(copyNumber(const QString &)) );
+    connect( m_engine, SIGNAL(delogged()),
+             this, SLOT(stop()) );
+    connect( this, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+             m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
 }
 
 DirectoryPanel::~DirectoryPanel()
