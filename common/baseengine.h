@@ -385,9 +385,10 @@ private:
     QHostAddress m_serveraddress;   //!< Resolved address of the login server
     QHash<QString, QTcpSocket *> m_tcpsocket; //!< TCP sockets
     ushort m_listenport;            //!< Port where we are listening for profiles
-    int m_timer;                    //!< timer id
-    int m_ka_timerid;               //!< timer id for keep alive
-    int m_try_timerid;              //!< timer id for try to reconnect
+    int m_timer;                    //!< timer id for ???
+    int m_timerid_keepalive;        //!< timer id for keep alive
+    int m_timerid_tryreconnect;     //!< timer id for try to reconnect
+    int m_timerid_changestate;      //!< timer id for changing state automatically
     int m_pendingkeepalivemsg;      //!< number of keepalivemsg sent without response
     QString m_numbertodial;         //!< Number dialed in
     QString m_osname;               //!< OS informations

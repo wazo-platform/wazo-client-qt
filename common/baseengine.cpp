@@ -74,8 +74,8 @@ BaseEngine::BaseEngine(QSettings * settings,
       m_forced_to_disconnect(false)
 {
     settings->setParent( this );
-    m_ka_timerid = 0;
-    m_try_timerid = 0;
+    m_timerid_keepalive = 0;
+    m_timerid_tryreconnect = 0;
     m_timer = -1;
     m_settings = settings;
     loadSettings();
@@ -1075,6 +1075,10 @@ void BaseEngine::parseCommand(const QString & line)
             QString id = datamap["astid"].toString() + "/" + datamap["xivo_userid"].toString();
             // qDebug() << thisclass << m_users.size() << id;
             if(m_users.contains(id)) {
+                QString stateid = datamap["capapresence"].toMap()["state"].toMap()["stateid"].toString();
+                QVariantMap changeme = m_guioptions["server_gui"].toMap()["autochangestate"].toMap();
+                if(stateid == changeme["statesrc"].toString())
+                    m_timerid_changestate = startTimer(changeme["seconds"].toInt() * 1000);
                 m_users[id]->setAvailState(datamap["capapresence"].toMap()["state"]);
                 emit updatePeerAgent(m_timesrv, id, "imstatus", QStringList());
                 emit updateAgentPresence(m_users[id]->astid(),
@@ -1356,7 +1360,7 @@ void BaseEngine::parseCommand(const QString & line)
             } else {
                 setState(ELogged); // calls logged()
                 setAvailState(m_forced_state, true);
-                m_ka_timerid = startTimer(m_keepaliveinterval);
+                m_timerid_keepalive = startTimer(m_keepaliveinterval);
                 askCallerIds();
                 m_attempt_loggedin = true;
             }
@@ -1852,24 +1856,24 @@ void BaseEngine::initFeatureFields(const QString & field, const QVariant & value
 
 void BaseEngine::stopKeepAliveTimer()
 {
-    if( m_ka_timerid > 0 ) {
-        killTimer(m_ka_timerid);
-        m_ka_timerid = 0;
+    if( m_timerid_keepalive > 0 ) {
+        killTimer(m_timerid_keepalive);
+        m_timerid_keepalive = 0;
     }
 }
 
 void BaseEngine::stopTryAgainTimer()
 {
-    if( m_try_timerid > 0 ) {
-        killTimer(m_try_timerid);
-        m_try_timerid = 0;
+    if( m_timerid_tryreconnect > 0 ) {
+        killTimer(m_timerid_tryreconnect);
+        m_timerid_tryreconnect = 0;
     }
 }
 
 void BaseEngine::startTryAgainTimer()
 {
-    if( m_try_timerid == 0 && m_trytoreconnect && !m_forced_to_disconnect)
-        m_try_timerid = startTimer(m_trytoreconnectinterval);
+    if( m_timerid_tryreconnect == 0 && m_trytoreconnect && !m_forced_to_disconnect)
+        m_timerid_tryreconnect = startTimer(m_trytoreconnectinterval);
 }
 
 void BaseEngine::setHistorySize(uint size)
@@ -1898,10 +1902,10 @@ void BaseEngine::setTrytoreconnectinterval(uint i)
     if( m_trytoreconnectinterval != i )
         {
             m_trytoreconnectinterval = i;
-            if(m_try_timerid > 0)
+            if(m_timerid_tryreconnect > 0)
                 {
-                    killTimer(m_try_timerid);
-                    m_try_timerid = startTimer(m_trytoreconnectinterval);
+                    killTimer(m_timerid_tryreconnect);
+                    m_timerid_tryreconnect = startTimer(m_trytoreconnectinterval);
                 }
         }
 }
@@ -1913,13 +1917,18 @@ void BaseEngine::setTrytoreconnectinterval(uint i)
 void BaseEngine::timerEvent(QTimerEvent * event)
 {
     int timerId = event->timerId();
-    // qDebug() << "BaseEngine::timerEvent() timerId's" << timerId << m_ka_timerid << m_try_timerid;
-    if(timerId == m_ka_timerid) {
+    // qDebug() << "BaseEngine::timerEvent() timerId's" << timerId << m_timerid_keepalive << m_timerid_tryreconnect;
+    if(timerId == m_timerid_keepalive) {
         keepLoginAlive();
         event->accept();
-    } else if(timerId == m_try_timerid) {
+    } else if(timerId == m_timerid_tryreconnect) {
         emitTextMessage(tr("Attempting to reconnect to server"));
         start();
+        event->accept();
+    } else if(timerId == m_timerid_changestate) {
+        QVariantMap changeme = m_guioptions["server_gui"].toMap()["autochangestate"].toMap();
+        setAvailState(changeme["statedst"].toString(), false);
+        killTimer(timerId);
         event->accept();
     } else {
         event->ignore();
@@ -2036,10 +2045,10 @@ void BaseEngine::setKeepaliveinterval(uint i)
     if(i != m_keepaliveinterval)
         {
             m_keepaliveinterval = i;
-            if(m_ka_timerid > 0)
+            if(m_timerid_keepalive > 0)
                 {
-                    killTimer(m_ka_timerid);
-                    m_ka_timerid = startTimer(m_keepaliveinterval);
+                    killTimer(m_timerid_keepalive);
+                    m_timerid_keepalive = startTimer(m_keepaliveinterval);
                 }
         }
 }
