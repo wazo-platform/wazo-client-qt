@@ -94,15 +94,15 @@ void AgentsPanelNext::setGuiOptions(const QVariant & optionmap)
 
 void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
 {
-    QMenu * p_contextMenu = new QMenu(this);
+    QMenu contextMenu(this);
     
-    QAction * p_newGroupAction = new QAction(tr("New Group"), this);
+    QAction * p_newGroupAction = new QAction(tr("New Group"), &contextMenu);
     p_newGroupAction->setProperty("where", event->globalPos());
     connect(p_newGroupAction, SIGNAL(triggered()),
             this, SLOT(newGroup()) );
     
     if(sender() == NULL) {
-        p_contextMenu->addAction(p_newGroupAction);
+        contextMenu.addAction(p_newGroupAction);
     } else {
         // group or agent label
         if(sender()->property("agentid").isNull()) {
@@ -111,25 +111,25 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
             QStringList thisqueuelist = el->property("queues").toStringList();
             QString thisgroupid = el->property("groupid").toString();
             
-            QAction * p_renameAction = new QAction(tr("Rename this Group"), this);
+            QAction * p_renameAction = new QAction(tr("Rename this Group"), &contextMenu);
             
-            p_contextMenu->addAction(p_renameAction);
+            contextMenu.addAction(p_renameAction);
             p_renameAction->setProperty("groupid", thisgroupid);
             p_renameAction->setProperty("where", event->globalPos());
             connect(p_renameAction, SIGNAL(triggered()),
                     this, SLOT(renameQueueGroup()) );
             
-            QAction * p_removeAction = new QAction(tr("Remove this Group"), this);
-            p_contextMenu->addAction(p_removeAction);
+            QAction * p_removeAction = new QAction(tr("Remove this Group"), &contextMenu);
+            contextMenu.addAction(p_removeAction);
             p_removeAction->setProperty("groupid", thisgroupid);
             connect(p_removeAction, SIGNAL(triggered()),
                     this, SLOT(removeQueueGroup()) );
             
-            p_contextMenu->addAction(p_newGroupAction);
-            p_contextMenu->addSeparator();
+            contextMenu.addAction(p_newGroupAction);
+            contextMenu.addSeparator();
             
             if(thisqueuelist.size() > 0) {
-                QMenu * menu_remove = p_contextMenu->addMenu(tr("Remove a Queue"));
+                QMenu * menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
                 foreach (QString qname, thisqueuelist) {
                     QAction * p_qremove = new QAction(qname, this);
                     p_qremove->setProperty("groupid", thisgroupid);
@@ -141,7 +141,7 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                 
                 menu_remove->addSeparator();
                 
-                QAction * p_removeAllQueuesAction = new QAction(tr("Remove them all"), this);
+                QAction * p_removeAllQueuesAction = new QAction(tr("Remove them all"), &contextMenu);
                 menu_remove->addAction(p_removeAllQueuesAction);
                 p_removeAllQueuesAction->setProperty("groupid", thisgroupid);
                 connect(p_removeAllQueuesAction, SIGNAL(triggered()),
@@ -153,7 +153,7 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
                 if(! thisqueuelist.contains(qname))
                     queuestoadd << qname;
             if(queuestoadd.size() > 0) {
-                QMenu * menu_add = p_contextMenu->addMenu(tr("Add a Queue"));
+                QMenu * menu_add = contextMenu.addMenu(tr("Add a Queue"));
                 foreach (QString qname, queuestoadd) {
                     QAction * p_qadd = new QAction(qname, this);
                     p_qadd->setProperty("groupid", thisgroupid);
@@ -176,20 +176,20 @@ void AgentsPanelNext::contextMenuEvent(QContextMenuEvent * event)
     }
     
     // QAction * chosen =
-    p_contextMenu->exec(event->globalPos());
+    contextMenu.exec(event->globalPos());
 }
 
 void AgentsPanelNext::newGroup()
 {
     QPoint where = sender()->property("where").toPoint();
-    QGridLayout * gl = new QGridLayout();
     QDialog * dialog = new QDialog(this);
+    QGridLayout * gl = new QGridLayout(dialog);
     dialog->setWindowTitle(tr("New Group"));
     dialog->setLayout(gl);
-    QLabel * q1 = new QLabel(tr("Name"), this);
-    QTextEdit * q2 = new QTextEdit(this);
-    QPushButton * q3 = new QPushButton(tr("OK"), this);
-    QPushButton * q4 = new QPushButton(tr("Cancel"), this);
+    QLabel * q1 = new QLabel(tr("Name"), dialog);
+    QTextEdit * q2 = new QTextEdit(dialog);
+    QPushButton * q3 = new QPushButton(tr("OK"), dialog);
+    QPushButton * q4 = new QPushButton(tr("Cancel"), dialog);
     gl->addWidget(q1, 0, 0);
     gl->addWidget(q2, 0, 1);
     gl->addWidget(q3, 1, 0);
