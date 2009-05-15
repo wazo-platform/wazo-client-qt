@@ -107,7 +107,6 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png"));
     
     m_icon_user->setContentsMargins(0, 0, 5, 0);
-    //m_icon_agent->setContentsMargins(20, 0, 5, 0);
     m_icon_phone->setContentsMargins(20, 0, 5, 0);
     m_icon_voicemail->setContentsMargins(20, 0, 5, 0);
     
