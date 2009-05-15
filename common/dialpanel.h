@@ -35,8 +35,8 @@
 #define __DIALPANEL_H__
 
 #include <QObject>
-#include <QWidget>
 #include <QList>
+#include "xlet.h"
 
 class QComboBox;
 class QLabel;
@@ -48,17 +48,14 @@ class UserInfo;
 
 /*! \brief Simple widget to enter a number and dial it
  */
-class DialPanel : public QWidget
+class DialPanel : public XLet
 {
     Q_OBJECT
 public:
     DialPanel(BaseEngine *,
-              const QVariant &,
               QWidget * parent = 0);
     ~DialPanel();
 protected:
-    /*void mouseMoveEvent(QMouseEvent *);        //!< Catch mouse press events */
-    /*void mousePressEvent(QMouseEvent *); */
     void dragEnterEvent(QDragEnterEvent *);
     void dropEvent(QDropEvent *);
 public slots:
@@ -73,7 +70,6 @@ signals:
                     const QString &,
                     const QString &);   //!< originates a number
 private:
-    BaseEngine * m_engine;      //!< base engine
     QLabel * m_lbl;             //!< label
     QComboBox * m_input;        //!< input widget
 };

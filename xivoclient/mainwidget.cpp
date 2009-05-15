@@ -249,6 +249,9 @@ MainWidget::MainWidget(BaseEngine * engine,
     if((m_withsystray && (m_engine->systrayed() == false)) || (! m_withsystray))
         this->show();
     setFocusPolicy(Qt::StrongFocus);
+
+    connect( this, SIGNAL(pasteToDialPanel(const QString &)),
+             m_engine, SIGNAL(pasteToDialPanel(const QString &)) );
 }
 
 /*! \brief Destructor
@@ -958,17 +961,8 @@ void MainWidget::engineStarted()
                 addPanel(xletid, tr("Date and Time"), m_xlet[xletid]);
                 
             } else if (xletid == QString("dial")) {
-                m_xlet[xletid] = new DialPanel(m_engine, m_options);
+                m_xlet[xletid] = new DialPanel(m_engine, this);
                 addPanel(xletid, tr("Dial"), m_xlet[xletid]);
-                
-                connectDials(m_xlet[xletid]);
-                connect( this, SIGNAL(pasteToDialPanel(const QString &)),
-                         m_xlet[xletid], SLOT(setNumberToDial(const QString &)) );
-                connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
-                         m_xlet[xletid], SLOT(setNumberToDial(const QString &)) );
-                connect( m_xlet[xletid], SIGNAL(textEdited(const QString &)),
-                         m_engine, SLOT(textEdited(const QString &)) );
-                
             } else if (xletid == QString("video")) {
                 m_xlet[xletid] = new PlayerWidget(this);
                 addPanel(xletid, tr("Video"), m_xlet[xletid]);

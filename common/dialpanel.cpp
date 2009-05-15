@@ -49,9 +49,8 @@
 /*! \brief Constructor
  */
 DialPanel::DialPanel(BaseEngine * engine,
-                     const QVariant & options,
                      QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     setAccessibleName( tr("Dial Panel") );
     QHBoxLayout * vlayout = new QHBoxLayout(this);
@@ -91,8 +90,14 @@ DialPanel::DialPanel(BaseEngine * engine,
     vlayout->addWidget( m_input, 0, Qt::AlignCenter );
     vlayout->addWidget( dialButton, 0, Qt::AlignCenter );
     vlayout->addStretch(1);
-    
-    setGuiOptions(options);
+
+    // connect signals/slots
+    connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
+             this, SLOT(setNumberToDial(const QString &)) );
+    connect( this, SIGNAL(textEdited(const QString &)),
+             m_engine, SLOT(textEdited(const QString &)) );
+    connect( this, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+             m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
 }
 
 /*! \brief Destructor
