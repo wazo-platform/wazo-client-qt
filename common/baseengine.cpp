@@ -894,6 +894,12 @@ void BaseEngine::parseCommand(const QString & line)
                     payload = QString::fromUtf8(qba);
                 // will eventually call the XML parser
                 displayFiche(payload, false, channel);
+                if(datamap.contains("entries")) {
+                    QVariantList entries = datamap["entries"].toList();
+                    foreach(QVariant entry, entries) {
+                        sheetEntryAdded(channel, entry.toMap());
+                    }
+                }
             }
         } else if (thisclass == "queues") {
             //qDebug() << "*** queues !!!" << function << line.length();

@@ -143,13 +143,18 @@ void CustomerInfoPanel::addToDataBase(const QString & dbdetails)
 
 void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, const QString & id)
 {
+    qDebug() << "CustomerInfoPanel::displayFiche id=" << id;
+    for(int i = m_popups.size() - 1; --i > 0; ) {
+        if(id == m_popups[i]->id()) {
+            qDebug() << " fiche id allready there";
+        }
+    }
     QBuffer * inputstream = new QBuffer(this);
     inputstream->open(QIODevice::ReadWrite);
     inputstream->write(fichecontent.toUtf8());
     inputstream->close();
     // Get Data and Popup the profile if ok
     Popup * popup = new Popup(m_autourl_allowed, m_engine);
-    qDebug() << "CustomerInfoPanel::displayFiche id=" << id;
     popup->setId(id);
     connect( popup, SIGNAL(destroyed(QObject *)),
              this, SLOT(popupDestroyed(QObject *)) );
