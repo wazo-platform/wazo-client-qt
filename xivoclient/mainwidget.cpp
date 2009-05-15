@@ -784,8 +784,6 @@ void MainWidget::engineStarted()
                 connect( m_xlet[xletid], SIGNAL(changeWatchedAgent(const QString &, bool)),
                          m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
                 
-                connect( m_xlet[xletid], SIGNAL(agentAction(const QString &)),
-                         m_engine, SLOT(agentAction(const QString &)) );
                 connect( m_xlet[xletid], SIGNAL(setSystrayIcon(const QString &)),
                          this, SLOT(setSystrayIcon(const QString &)) );
                 

@@ -35,7 +35,6 @@
 #define __IDENTITYDISPLAY_H__
 
 #include <QHash>
-#include <QLabel>
 #include <QList>
 #include <QObject>
 #include <QVariant>
@@ -46,9 +45,12 @@ class QContextMenuEvent;
 class QGridLayout;
 class QProgressBar;
 class QPushButton;
+class QLabel;
+class QFrame;
 
 class BaseEngine;
 class UserInfo;
+class IdentityAgent;
 
 /*! \brief Identity Display
  */
@@ -64,9 +66,6 @@ public slots:
     void setUserInfo(const UserInfo *);
     void newAgentList(const QStringList &);
     void newQueueList(const QStringList &);
-    void doAgentLogActions();
-    void doAgentPauseActions();
-    void doAgentUnPauseActions();
     void idxChanged(const QString &);
     void updatePresence(const QVariant &);
     void setOpt(const QString &, bool);
@@ -76,7 +75,6 @@ private slots:
     void contextMenuEvent(QContextMenuEvent *);
     void contextMenuAction();
 signals:
-    void agentAction(const QString &);
     void setAvailState(const QString &, bool);
     void changeWatchedAgent(const QString &, bool);
     void setSystrayIcon(const QString &);
@@ -84,11 +82,6 @@ signals:
                     const QString &,
                     const QString & dst = "");   //!< to hangup
 private:
-    void showAgentProps();
-    void hideAgentProps();
-    void setStatusColors(const QString &);
-    void setPausedColors(int, int);
-    void updateAgentStatus(const QVariantMap &);
     void svcSummary();
     void setPhoneLines();
     void setupIcons();
@@ -96,7 +89,6 @@ private:
     QGridLayout * m_glayout;
     
     QLabel * m_icon_user;
-    QLabel * m_icon_agent;
     QLabel * m_icon_phone;
     QLabel * m_icon_voicemail;
     
@@ -112,12 +104,9 @@ private:
     QLabel * m_phonecall;
     QLabel * m_phonecalltxt;
     QComboBox * m_presencevalue;
-    QLabel * m_agent;
-    QLabel * m_agentstatus;
-    QLabel * m_agentstatustxt;
-    QLabel * m_agentpause;
-    QLabel * m_agentpausetxt;
     QLabel * m_phonestatustxt;
+
+    IdentityAgent * m_agent;
     
     BaseEngine * m_engine;
     QHash<QString, QString> m_presence_names;
@@ -137,9 +126,6 @@ private:
     quint32 m_gui_buttonsize;
     quint32 m_loginkind;
     QStringList m_functions;
-    bool m_allow_logagent;
-    bool m_allow_pauseagent;
-    QString m_agstatus; //!< agent status string
     QMap<QString, QVariant> m_comms;
     QMap<QString, QVariant> m_svcstatus;
 };
