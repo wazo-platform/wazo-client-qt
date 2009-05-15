@@ -121,7 +121,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     m_icon_agent->setContentsMargins(20, 0, 0, 0);
     m_icon_phone->setContentsMargins(20, 0, 0, 0);
-    m_icon_voicemail->setContentsMargins(20, 0, 0, 0);
+    m_icon_voicemail->setContentsMargins(20, 0, 10, 0);
     
     m_icon_user->setProperty("iconname", "user");
     m_icon_agent->setProperty("iconname", "agent");
@@ -406,7 +406,10 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_icon_voicemail->show();
         m_voicemail_old->setText(tr("%1 old").arg(vm[1]));
         m_voicemail_new->setText(tr("%1 new").arg(vm[2]));
-        m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
+        if(m_svcstatus["enablevm"].toBool())
+            m_voicemail_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_ui->voicemailnumber()));
+        else
+            m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
     }
     // m_voicemail->hide();
     // changes the "watched agent" only if no one else has done it before
@@ -494,6 +497,14 @@ void IdentityDisplay::svcSummary()
             m_phonestatustxt->setToolTip(tr("No Service"));
         }
     }
+    QStringList vm = m_ui->mwi();
+    if(vm.size() > 2) {
+        if(m_svcstatus["enablevm"].toBool())
+            m_voicemail_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_ui->voicemailnumber()));
+        else
+            m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
+    }
+    
     return;
 }
 

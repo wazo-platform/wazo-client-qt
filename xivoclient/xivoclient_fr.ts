@@ -234,7 +234,7 @@ discrète</translation>
     <message>
         <location filename="../common/agentspanel.cpp" line="311"/>
         <source>Agent logged</source>
-        <translation>Agent loggé</translation>
+        <translation type="obsolete">Agent loggé</translation>
     </message>
     <message>
         <location filename="../common/agentspanel.cpp" line="315"/>
@@ -282,6 +282,11 @@ discrète</translation>
 Context: %2</source>
         <translation>Serveur: %1
 Contexte: %2</translation>
+    </message>
+    <message>
+        <location filename="../common/agentspanel.cpp" line="311"/>
+        <source>Agent logged on %1</source>
+        <translation>Agent loggé sur %1</translation>
     </message>
 </context>
 <context>
@@ -1324,67 +1329,67 @@ a été envoyé à %2.</translation>
 <context>
     <name>IdentityDisplay</name>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="396"/>
+        <location filename="../common/identitydisplay.cpp" line="407"/>
         <source>%1 old</source>
         <translation>%1 ancien(s)</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="397"/>
+        <location filename="../common/identitydisplay.cpp" line="408"/>
         <source>%1 new</source>
         <translation>%1 nouveau(x)</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="398"/>
+        <location filename="../common/identitydisplay.cpp" line="502"/>
         <source>VoiceMailBox %1</source>
         <translation>Boîte %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="603"/>
+        <location filename="../common/identitydisplay.cpp" line="622"/>
         <source>Disconnected from %1</source>
         <translation>Déconnecté de %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="600"/>
+        <location filename="../common/identitydisplay.cpp" line="619"/>
         <source>Connected on %1</source>
         <translation>Connecté sur %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="228"/>
+        <location filename="../common/identitydisplay.cpp" line="238"/>
         <source>Pause</source>
         <translation>Retrait</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="235"/>
+        <location filename="../common/identitydisplay.cpp" line="245"/>
         <source>Unpause</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="217"/>
+        <location filename="../common/identitydisplay.cpp" line="227"/>
         <source>Logout</source>
         <translation>Logout</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="219"/>
+        <location filename="../common/identitydisplay.cpp" line="229"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="616"/>
+        <location filename="../common/identitydisplay.cpp" line="635"/>
         <source>Paused</source>
         <translation>En retrait</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="621"/>
+        <location filename="../common/identitydisplay.cpp" line="640"/>
         <source>Unpaused</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="629"/>
+        <location filename="../common/identitydisplay.cpp" line="648"/>
         <source>Partially paused</source>
         <translation>Pause partielle</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="634"/>
+        <location filename="../common/identitydisplay.cpp" line="653"/>
         <source>Not relevant</source>
         <translation>Non pertinent</translation>
     </message>
@@ -1394,54 +1399,74 @@ a été envoyé à %2.</translation>
         <translation>Panneau des détails utilisateur</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="390"/>
+        <location filename="../common/identitydisplay.cpp" line="401"/>
         <source>Phone %1</source>
         <translation>Téléphone %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="268"/>
+        <location filename="../common/identitydisplay.cpp" line="278"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="465"/>
+        <location filename="../common/identitydisplay.cpp" line="476"/>
         <source>DND</source>
         <translation>NPD</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="466"/>
+        <location filename="../common/identitydisplay.cpp" line="477"/>
         <source>Do Not Disturb</source>
         <translation>Ne Pas Déranger</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="469"/>
+        <location filename="../common/identitydisplay.cpp" line="480"/>
         <source>UNC %1</source>
         <translation>INC %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="470"/>
+        <location filename="../common/identitydisplay.cpp" line="481"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Renvoi Inconditionnel vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="472"/>
+        <location filename="../common/identitydisplay.cpp" line="483"/>
         <source>Busy %1</source>
         <translation>Occ %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="473"/>
+        <location filename="../common/identitydisplay.cpp" line="484"/>
         <source>Busy Forward towards %1</source>
         <translation>Renvoi sur Occupation vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="475"/>
+        <location filename="../common/identitydisplay.cpp" line="486"/>
         <source>RNA %1</source>
         <translation>RNR %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="476"/>
+        <location filename="../common/identitydisplay.cpp" line="487"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Renvoi sur Non-Réponse vers %1</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="494"/>
+        <source>No Service</source>
+        <translation>Pas de Service</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="489"/>
+        <source>Call Rec</source>
+        <translation>Enr Appel</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="491"/>
+        <source>Call Filter</source>
+        <translation>Filtre Appel</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="500"/>
+        <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Boîte %1&lt;/b&gt;</translation>
     </message>
 </context>
 <context>

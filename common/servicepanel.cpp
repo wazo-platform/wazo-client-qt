@@ -77,7 +77,7 @@ ServicePanel::ServicePanel(BaseEngine * engine,
             gridlayout1->addWidget(m_chkopt[capa], line++, 0, 1, 0);
         }
     
-    QGroupBox * groupBox2 = new QGroupBox( tr("Call Forwards") );
+    QGroupBox * groupBox2 = new QGroupBox(tr("Call Forwards"), this);
     groupBox2->setAlignment( Qt::AlignLeft );
     QGridLayout * gridlayout2 = new QGridLayout(groupBox2);
     QHash<QString, QLabel *> label;
