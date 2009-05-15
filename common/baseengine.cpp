@@ -470,8 +470,10 @@ QHash<QString, UserInfo *> BaseEngine::users()
  */
 void BaseEngine::connectSocket()
 {
-    qDebug() << "BaseEngine::connectSocket()" << m_serverhost << m_ctiport;
-    m_tcpsocket["cticommands"]->connectToHost(m_serverhost, m_ctiport);
+    if(! m_userid.isEmpty()) {
+        qDebug() << "BaseEngine::connectSocket()" << m_serverhost << m_ctiport;
+        m_tcpsocket["cticommands"]->connectToHost(m_serverhost, m_ctiport);
+    }
 }
 
 bool BaseEngine::lastconnwins() const
@@ -2212,4 +2214,3 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
     command["text"] = text;
     sendJsonCommand(command);
 }
-
