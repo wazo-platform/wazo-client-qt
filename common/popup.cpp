@@ -142,7 +142,7 @@ void Popup::feed(QIODevice * inputstream,
     m_vlayout->addWidget(m_title);
     QFrame * qf = new QFrame(this);
     qf->setFrameStyle(QFrame::HLine | QFrame::Plain);
-    qf->setLineWidth(1);
+    qf->setLineWidth(0);
     m_vlayout->addWidget(qf);
     m_vlayout->addStretch();
     

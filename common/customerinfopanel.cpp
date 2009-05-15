@@ -126,11 +126,11 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
 void CustomerInfoPanel::popupDestroyed(QObject * obj)
 {
     qDebug() << "CustomerInfoPanel::popupDestroyed()"
-             << obj->property("astid") << obj->property("context") << obj->property("uniqueid") << obj->property("context");
+             << obj->property("astid") << obj->property("uniqueid") << obj->property("context");
     foreach(Popup * mpopup, m_popups)
-        if ( (mpopup->callAstid() == obj->property("astid")) &&
-             (mpopup->callContext() == obj->property("context")) &&
-             (mpopup->callUniqueid() == obj->property("uniqueid")) )
+        if ( (mpopup->callAstid() == obj->property("astid").toString()) &&
+             (mpopup->callContext() == obj->property("context").toString()) &&
+             (mpopup->callUniqueid() == obj->property("uniqueid").toString()) )
             m_popups.removeAll(mpopup);
 }
 

@@ -119,9 +119,19 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_icon_phone->setPixmap(QPixmap(":/images/phone.png"));
     m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png"));
     
-    m_icon_agent->setContentsMargins(20, 0, 0, 0);
-    m_icon_phone->setContentsMargins(20, 0, 0, 0);
-    m_icon_voicemail->setContentsMargins(20, 0, 10, 0);
+    m_icon_user->setContentsMargins(0, 0, 5, 0);
+    m_icon_agent->setContentsMargins(20, 0, 5, 0);
+    m_icon_phone->setContentsMargins(20, 0, 5, 0);
+    m_icon_voicemail->setContentsMargins(20, 0, 5, 0);
+    
+//     m_icon_user->setFrameStyle(QFrame::Panel | QFrame::Raised);
+//     m_icon_user->setLineWidth(2);
+//     m_icon_agent->setFrameStyle(QFrame::Panel | QFrame::Raised);
+//     m_icon_agent->setLineWidth(2);
+//     m_icon_phone->setFrameStyle(QFrame::Panel | QFrame::Raised);
+//     m_icon_phone->setLineWidth(2);
+//     m_icon_voicemail->setFrameStyle(QFrame::Panel | QFrame::Raised);
+//     m_icon_voicemail->setLineWidth(2);
     
     m_icon_user->setProperty("iconname", "user");
     m_icon_agent->setProperty("iconname", "agent");
