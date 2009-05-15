@@ -54,6 +54,7 @@ IdentityAgent::IdentityAgent(QWidget * parent)
 
     m_icon = new QLabel(this);
     m_icon->setPixmap(QPixmap(":/images/applixware.png"));
+    m_icon->setContentsMargins(0, 0, 5, 0);
     m_text = new QLabel(this);
     m_status = new QLabel(this);
     m_statustxt = new QLabel(this);
