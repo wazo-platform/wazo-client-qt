@@ -752,21 +752,8 @@ void MainWidget::engineStarted()
         if (m_forcetabs || m_allnames.contains(xletid)) {
             bool withscrollbar = m_dockoptions[xletid].contains("s");
             if (xletid == "history") {
-                m_xlet[xletid] = new LogWidget(m_engine, m_options, this);
+                m_xlet[xletid] = new LogWidget(m_engine, this);
                 addPanel(xletid, tr("History"), m_xlet[xletid]);
-                
-                connectDials(m_xlet[xletid]);
-                connect( m_engine, SIGNAL(updateLogEntry(const QDateTime &, int,
-                                                         const QString &, const QString &, const QString &)),
-                         m_xlet[xletid], SLOT(addLogEntry(const QDateTime &, int,
-                                                          const QString &, const QString &, const QString &)) );
-                connect( m_xlet[xletid], SIGNAL(askHistory(const QString &, int, const QDateTime &)),
-                         m_engine, SLOT(requestHistory(const QString &, int, const QDateTime &)) );
-                connect( m_engine, SIGNAL(delogged()),
-                         m_xlet[xletid], SLOT(clear()) );
-                connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
-                         m_xlet[xletid], SLOT(monitorPeer(UserInfo *)) );
-                
             } else if (xletid == "identity") {
                 m_xlet[xletid] = new IdentityDisplay(m_engine, m_options);
                 addPanel(xletid, tr("&Identity"), m_xlet[xletid]);
@@ -1284,9 +1271,6 @@ void MainWidget::engineStopped()
                 removePanel(xletid, m_xlet[xletid]);
             } else if (xletid == QString("calls")) {
                 removePanel("calls", m_leftpanel);
-                //delete m_calls;
-                //delete m_areaCalls;
-                //delete m_leftpanel;
             } else
                 removePanel(xletid, m_xlet[xletid]);
         }
@@ -1297,7 +1281,6 @@ void MainWidget::engineStopped()
     }
     if(m_gridnames.contains("tabber")) {
         m_gridlayout->removeWidget(m_tabwidget);
-        //delete m_tabwidget;
         m_tabwidget->deleteLater();
     }
 

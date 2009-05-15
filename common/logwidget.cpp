@@ -50,8 +50,8 @@
  *
  * build layout and child widgets.
  */
-LogWidget::LogWidget(BaseEngine * engine, const QVariant &, QWidget * parent)
-    : QWidget(parent), m_engine(engine), m_timer(-1)
+LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
+    : XLet(engine, parent), m_timer(-1)
 {
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->setMargin(0);
@@ -102,6 +102,18 @@ LogWidget::LogWidget(BaseEngine * engine, const QVariant &, QWidget * parent)
     m_layout->setSpacing(0);
     m_layout->addStretch(0);
     layout->addWidget( scrollArea );
+
+    // connect slots
+    connect( m_engine, SIGNAL(updateLogEntry(const QDateTime &, int,
+                                             const QString &, const QString &, const QString &)),
+             this, SLOT(addLogEntry(const QDateTime &, int,
+                                    const QString &, const QString &, const QString &)) );
+    connect( this, SIGNAL(askHistory(const QString &, int, const QDateTime &)),
+             m_engine, SLOT(requestHistory(const QString &, int, const QDateTime &)) );
+    connect( m_engine, SIGNAL(delogged()),
+             this, SLOT(clear()) );
+    connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
+             this, SLOT(monitorPeer(UserInfo *)) );
 }
 
 /*! \brief add an entry
@@ -130,7 +142,7 @@ void LogWidget::addElement(const QString & peer, LogEltWidget::Direction d,
     }
     LogEltWidget * logelt = new LogEltWidget(peer, d, dt, duration, termin, this);
     connect( logelt, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-             this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
+             m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
     connect( logelt, SIGNAL(copyNumber(const QString &)),
              m_engine, SLOT(copyNumber(const QString &)) );
     m_layout->insertWidget(index, logelt);

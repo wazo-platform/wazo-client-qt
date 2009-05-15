@@ -34,8 +34,8 @@
 #ifndef __LOGWIDGET_H__
 #define __LOGWIDGET_H__
 
-#include <QWidget>
 #include <QDateTime>
+#include "xlet.h"
 #include "logeltwidget.h"
 
 class QVBoxLayout;
@@ -46,12 +46,11 @@ class UserInfo;
 
 /*! \brief Call Log display widget
  */
-class LogWidget : public QWidget
+class LogWidget : public XLet
 {
     Q_OBJECT
 public:
     LogWidget(BaseEngine *,
-              const QVariant &,
               QWidget * parent = 0);
     void addElement(const QString &,
                     LogEltWidget::Direction,
@@ -75,14 +74,13 @@ signals:
     void askHistory(const QString &, int, const QDateTime &);        //!< need history to be updated !
     void actionCall(const QString &, const QString &, const QString &);
 private:
-    BaseEngine * m_engine;        //!< BaseEngine object
-    QVBoxLayout * m_layout;                        //!< Widget layout
-    QString m_peer;                                        //!< "monitored" peer
-    int m_timer;                                        //!< timer id for refresh
-    QRadioButton * m_radioOut;                //!< "Out" radio button
-    QRadioButton * m_radioIn;                //!< "In" radio button
-    QRadioButton * m_radioMissed;        //!< "Missed" radio button
-    QDateTime m_moreRecent;         //!< dateTime of the more recent item
+    QVBoxLayout * m_layout;          //!< Widget layout
+    QString m_peer;                  //!< "monitored" peer
+    int m_timer;                     //!< timer id for refresh
+    QRadioButton * m_radioOut;       //!< "Out" radio button
+    QRadioButton * m_radioIn;        //!< "In" radio button
+    QRadioButton * m_radioMissed;    //!< "Missed" radio button
+    QDateTime m_moreRecent;          //!< dateTime of the more recent item
 };
 
 #endif
