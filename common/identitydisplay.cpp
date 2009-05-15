@@ -129,7 +129,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
              this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
     connect( m_icon_voicemail, SIGNAL(context_menu(QContextMenuEvent *)),
              this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-
+    
     m_agent = new IdentityAgent(this);
     connect( m_agent, SIGNAL(agentAction(const QString &)),
              m_engine, SLOT(agentAction(const QString &)) );
