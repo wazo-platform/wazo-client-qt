@@ -80,7 +80,8 @@ Popup::Popup(const bool & urlautoallow,
       m_systraypopup(true),
       m_focus(true),
       m_urlautoallow(urlautoallow),
-      m_toupdate(false)
+      m_toupdate(false),
+      m_firstline(3)
 {
 #ifdef USE_OUTLOOK
     m_bOLFound=FALSE;
@@ -120,12 +121,26 @@ void Popup::feed(QIODevice * inputstream,
     m_vlayout = new QVBoxLayout(this);
     m_title = new QLabel(this);
     m_title->setAlignment(Qt::AlignHCenter);
+    QHBoxLayout * hlayout = new QHBoxLayout();
+    m_closesheet = new QPushButton(this);
+    m_closesheet->setIcon(QIcon(":/images/cancel.png"));
+    m_closesheet->setIconSize(QSize(10, 10));
+    connect( m_closesheet, SIGNAL(clicked()),
+             this, SLOT(close()) );
+    hlayout->addStretch();
+    hlayout->addWidget(m_closesheet);
+    m_vlayout->addLayout(hlayout);
     m_vlayout->addWidget(m_title);
+    QFrame * qf = new QFrame(this);
+    qf->setFrameStyle(QFrame::HLine | QFrame::Plain);
+    qf->setLineWidth(1);
+    m_vlayout->addWidget(qf);
     m_vlayout->addStretch();
     
     QUiLoader loader;
     if(sheetui) {
         m_sheetui_widget = loader.load(m_inputstream, this);
+        // qDebug() << "m_vlayout->count()" << m_vlayout->count();
         m_vlayout->insertWidget(m_vlayout->count() - 1, m_sheetui_widget, 0, 0);
         foreach(QString formbuttonname, g_formbuttonnames) {
             m_form_buttons[formbuttonname] = m_sheetui_widget->findChild<QPushButton *>(formbuttonname);
@@ -149,7 +164,7 @@ void Popup::feed(QIODevice * inputstream,
     
     setWindowIcon(QIcon(":/images/xivoicon.png"));
     QDesktopServices::setUrlHandler(QString("dial"), this, "dispurl");
-
+    
     qDebug() << "Popup::feed()" << m_inputstream->bytesAvailable() << "bytes available";
     if(m_inputstream->bytesAvailable() > 0) {
         streamNewData();
@@ -210,7 +225,7 @@ void Popup::addAnyInfo(const QString & localName,
         if(m_orders.contains(infoOrder)) {
             m_form_buttons.clear();
             // removes the layout and widgets there
-            where = m_orders.indexOf(infoOrder) + 1;
+            where = m_orders.indexOf(infoOrder) + m_firstline;
             QLayoutItem * qli = m_vlayout->itemAt(where);
             if(qli->layout()) {
                 QLayoutItem * child;
@@ -227,7 +242,7 @@ void Popup::addAnyInfo(const QString & localName,
         } else {
             m_orders.append(infoOrder);
             m_orders.sort();
-            where = m_orders.indexOf(infoOrder) + 1;
+            where = m_orders.indexOf(infoOrder) + m_firstline;
         }
         setSheetPopup( true );
         if( infoType == "text" ) {

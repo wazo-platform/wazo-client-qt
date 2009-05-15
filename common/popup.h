@@ -156,6 +156,7 @@ private:
     QHash<QString, QString> m_message;        //! Message property
     QString m_messagetitle;        //! Message title
     QLabel * m_title;        //! Sheet Title
+    QPushButton * m_closesheet;
     
     QString m_astid;
     QString m_context;
@@ -169,6 +170,7 @@ private:
     bool m_urlautoallow;
     bool m_toupdate;
     bool m_sheetui;
+    int m_firstline;
     QWidget * m_sheetui_widget;
     QStringList m_orders;
     QList<QStringList> m_sheetlines;

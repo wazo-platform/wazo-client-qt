@@ -83,11 +83,17 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_presencevalue->setProperty("function", "presence");
     
     m_phone = new QLabel(this);
-    m_phonestatustxt = new QLabel("", this);
+    m_phonestatustxt = new QLabel(tr("No Service"), this);
     m_phonestatustxt->setScaledContents(true);
     m_phonestatustxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    
     m_phonecall = new QLabel(this);
     m_phonecalltxt = new QLabel(this);
+    
+    m_phone->setContentsMargins(0, 0, 10, 0);
+    m_phonecall->setContentsMargins(0, 0, 0, 0);
+    m_phonecalltxt->setContentsMargins(0, 0, 10, 0);
+    m_phonestatustxt->setContentsMargins(0, 0, 10, 0);
     
     m_voicemail_old = new QLabel(this);
     m_voicemail_new = new QLabel(this);
@@ -112,6 +118,10 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_icon_agent->setPixmap(QPixmap(":/images/applixware.png"));
     m_icon_phone->setPixmap(QPixmap(":/images/phone.png"));
     m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png"));
+    
+    m_icon_agent->setContentsMargins(20, 0, 0, 0);
+    m_icon_phone->setContentsMargins(20, 0, 0, 0);
+    m_icon_voicemail->setContentsMargins(20, 0, 0, 0);
     
     m_icon_user->setProperty("iconname", "user");
     m_icon_agent->setProperty("iconname", "agent");
@@ -349,7 +359,7 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
  */
 void IdentityDisplay::setPhoneLines()
 {
-    QPixmap square(6, 6);
+    QPixmap square(20, 6);
     square.fill(Qt::black);
     for(int jj = 0 ; jj < m_nlines ; jj ++) {
         QString sjj = QString::number(jj + 1);
@@ -360,13 +370,14 @@ void IdentityDisplay::setPhoneLines()
             connect( m_lineaction[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
             
-            m_linestatus[sjj] = new ExtendedLabel("-", this);
+            m_linestatus[sjj] = new ExtendedLabel("", this);
             m_linestatus[sjj]->setProperty("iconname", "phoneline");
             m_linestatus[sjj]->setProperty("linenumber", jj + 1);
             connect( m_linestatus[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
             
             m_lineaction[sjj]->setPixmap(square);
+            m_linestatus[sjj]->setText("");
         }
         
         int ix = jj / 3;
@@ -475,12 +486,12 @@ void IdentityDisplay::svcSummary()
             m_phonestatustxt->setText(tr("RNA %1").arg(m_svcstatus["rna-number"].toString()));
             m_phonestatustxt->setToolTip(tr("Non-Answer Forward towards %1").arg(m_svcstatus["rna-number"].toString()));
         } else if (m_svcstatus["incallrec"].toBool()) {
-            m_phonestatustxt->setText("Call Rec");
+            m_phonestatustxt->setText(tr("Call Rec"));
         } else if (m_svcstatus["incallfilter"].toBool()) {
-            m_phonestatustxt->setText("Call Filter");
+            m_phonestatustxt->setText(tr("Call Filter"));
         } else {
-            m_phonestatustxt->setText("");
-            m_phonestatustxt->setToolTip("");
+            m_phonestatustxt->setText(tr("No Service"));
+            m_phonestatustxt->setToolTip(tr("No Service"));
         }
     }
     return;
@@ -513,10 +524,10 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                 QString todisplay = callprops["calleridname"].toString();
                 bool isholded = callprops.contains("time-hold");
                 
-                QPixmap square_comm(6, 6);
+                QPixmap square_comm(20, 6);
                 square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
                 if(status == "hangup") {
-                    todisplay = "-";
+                    todisplay = "";
                     square_comm.fill(Qt::black);
                 }
                 //qDebug() << "IdentityDisplay::updateUser" << ics << m_lineaction << m_linestatus;
