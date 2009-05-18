@@ -222,14 +222,34 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                         QString thiscommchan = callprops["thischannel"].toString();
                         if(! thiscommchan.isEmpty()) {
                             QMenu contextMenu(this);
-                            QAction * hangupMe = new QAction(tr("Cancel"), this);
+                            
+                            QAction * hangupMe = new QAction(tr("Hangup"), this);
                             hangupMe->setProperty("iconname", iconname);
                             hangupMe->setProperty("channel", thiscommchan);
+                            hangupMe->setProperty("action", "hangup");
                             connect(hangupMe, SIGNAL(triggered()),
                                     this, SLOT(contextMenuAction()) );
                             contextMenu.addAction(hangupMe);
+                            
+                            QAction * replyMe = new QAction(tr("Reply"), this);
+                            replyMe->setProperty("iconname", iconname);
+                            replyMe->setProperty("channel", thiscommchan);
+                            replyMe->setProperty("action", "reply");
+                            connect(replyMe, SIGNAL(triggered()),
+                                    this, SLOT(contextMenuAction()) );
+                            contextMenu.addAction(replyMe);
+                            
+                            QAction * refuseMe = new QAction(tr("Refuse"), this);
+                            refuseMe->setProperty("iconname", iconname);
+                            refuseMe->setProperty("channel", thiscommchan);
+                            refuseMe->setProperty("action", "refuse");
+                            connect(refuseMe, SIGNAL(triggered()),
+                                    this, SLOT(contextMenuAction()) );
+                            contextMenu.addAction(refuseMe);
+                            
                             contextMenu.exec(event->globalPos());
                         }
+                        break;
                     }
                 }
             }
@@ -240,10 +260,10 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
 void IdentityDisplay::contextMenuAction()
 {
     QString iconname = sender()->property("iconname").toString();
-    if(iconname == "phoneline") {
-        actionCall("hangup", QString("chan:%1:%2").arg(m_ui->userid()).arg(sender()->property("channel").toString()));
-        // qDebug() << m_ui->astid() << sender()->property("channel").toString();
-    }
+    QString actionname = sender()->property("action").toString();
+    if(iconname == "phoneline")
+        actionCall(actionname, QString("chan:%1:%2").arg(m_ui->userid()).arg(sender()->property("channel").toString()));
+    // qDebug() << m_ui->astid() << sender()->property("channel").toString();
 }
 
 void IdentityDisplay::updatePresence(const QVariant & presence)
@@ -316,7 +336,8 @@ void IdentityDisplay::setPhoneLines()
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
             
             m_lineaction[sjj]->setPixmap(square);
-            m_linestatus[sjj]->setText(QString("  Line %1  ").arg(jj + 1));
+            QString todisplay = tr("(Line %1)").arg(jj + 1);
+            m_linestatus[sjj]->setText(QString("  %1  ").arg(todisplay));
         }
         
         int ix = jj / 3;
@@ -482,7 +503,7 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                 QPixmap square_comm(25, 3);
                 square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
                 if(status == "hangup") {
-                    todisplay = QString("Line %1").arg(ics);
+                    todisplay = tr("(Line %1)").arg(ics);
                     square_comm.fill(Qt::black);
                 }
                 //qDebug() << "IdentityDisplay::updateUser" << ics << m_lineaction << m_linestatus;
