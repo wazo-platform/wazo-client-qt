@@ -8,7 +8,7 @@ COMMONDIR = ../common
 JSON_JSONQT_DIR = ../3rdparty/json_jsonqt/lib
 OUTLOOK_DIR = ../3rdparty/outlook
 
-_XIVOVER_ = 1.0
+_XIVOVER_ = 1.1
 _SVNVER_ = 1
 include(versions.pro)
 XIVOVER = '\\"$${_XIVOVER_}\\"'
