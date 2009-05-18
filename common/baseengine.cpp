@@ -881,7 +881,7 @@ void BaseEngine::parseCommand(const QString & line)
             QString channel = datamap["channel"].toString();
             if(function == "getownership") {
                 gotSheetOwnership(channel);
-            } else if(function == "looseownership") {
+            } else if(function == "loseownership") {
                 lostSheetOwnership(channel);
             } else if(function == "entryadded") {
                 sheetEntryAdded(channel, datamap["entry"].toMap());

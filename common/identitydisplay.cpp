@@ -223,7 +223,7 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                         if(! thiscommchan.isEmpty()) {
                             QMenu contextMenu(this);
                             
-                            QAction * hangupMe = new QAction(tr("Hangup"), this);
+                            QAction * hangupMe = new QAction(tr("Hangup"), &contextMenu);
                             hangupMe->setProperty("iconname", iconname);
                             hangupMe->setProperty("channel", thiscommchan);
                             hangupMe->setProperty("action", "hangup");
@@ -231,7 +231,7 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                                     this, SLOT(contextMenuAction()) );
                             contextMenu.addAction(hangupMe);
                             
-                            QAction * replyMe = new QAction(tr("Reply"), this);
+                            QAction * replyMe = new QAction(tr("Reply"), &contextMenu);
                             replyMe->setProperty("iconname", iconname);
                             replyMe->setProperty("channel", thiscommchan);
                             replyMe->setProperty("action", "reply");
@@ -239,7 +239,7 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                                     this, SLOT(contextMenuAction()) );
                             contextMenu.addAction(replyMe);
                             
-                            QAction * refuseMe = new QAction(tr("Refuse"), this);
+                            QAction * refuseMe = new QAction(tr("Refuse"), &contextMenu);
                             refuseMe->setProperty("iconname", iconname);
                             refuseMe->setProperty("channel", thiscommchan);
                             refuseMe->setProperty("action", "refuse");
