@@ -1387,7 +1387,7 @@ a été envoyé à %2.</translation>
         <translation>%1 nouveau(x)</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="444"/>
+        <location filename="../common/identitydisplay.cpp" line="448"/>
         <source>VoiceMailBox %1</source>
         <translation>Boîte %1</translation>
     </message>
@@ -1407,64 +1407,74 @@ a été envoyé à %2.</translation>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="418"/>
+        <location filename="../common/identitydisplay.cpp" line="421"/>
         <source>DND</source>
         <translation>NPD</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="419"/>
+        <location filename="../common/identitydisplay.cpp" line="422"/>
         <source>Do Not Disturb</source>
         <translation>Ne Pas Déranger</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="422"/>
+        <location filename="../common/identitydisplay.cpp" line="425"/>
         <source>UNC %1</source>
         <translation>INC %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="423"/>
+        <location filename="../common/identitydisplay.cpp" line="426"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Renvoi Inconditionnel vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="425"/>
+        <location filename="../common/identitydisplay.cpp" line="428"/>
         <source>Busy %1</source>
         <translation>Occ %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="426"/>
+        <location filename="../common/identitydisplay.cpp" line="429"/>
         <source>Busy Forward towards %1</source>
         <translation>Renvoi sur Occupation vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="428"/>
+        <location filename="../common/identitydisplay.cpp" line="431"/>
         <source>RNA %1</source>
         <translation>RNR %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="429"/>
+        <location filename="../common/identitydisplay.cpp" line="432"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Renvoi sur Non-Réponse vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="431"/>
+        <location filename="../common/identitydisplay.cpp" line="434"/>
         <source>Call Rec</source>
         <translation>Enr Appel</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="433"/>
+        <location filename="../common/identitydisplay.cpp" line="436"/>
         <source>Call Filter</source>
         <translation>Filtre Appel</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="442"/>
+        <location filename="../common/identitydisplay.cpp" line="445"/>
         <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Boîte %1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="436"/>
-        <source>No Option</source>
-        <translation>Pas d&apos;Option</translation>
+        <location filename="../common/identitydisplay.cpp" line="439"/>
+        <source>No option</source>
+        <translation>Pas d&apos;option</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="446"/>
+        <source>VoiceMail activated on %1</source>
+        <translation>Messagerie activée sur %1</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="449"/>
+        <source>VoiceMail not activated on %1</source>
+        <translation>Messagerie non activée sur %1</translation>
     </message>
 </context>
 <context>

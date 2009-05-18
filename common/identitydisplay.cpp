@@ -78,7 +78,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_presencevalue->setProperty("function", "presence");
     
     m_phone = new QLabel(this);
-    m_phonestatustxt = new QLabel(tr("No Option"), this);
+    m_phonestatustxt = new QLabel(tr("No option"), this);
     m_phonestatustxt->setScaledContents(true);
     m_phonestatustxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
@@ -316,7 +316,7 @@ void IdentityDisplay::setPhoneLines()
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
             
             m_lineaction[sjj]->setPixmap(square);
-            m_linestatus[sjj]->setText(QString(" %1) ").arg(jj + 1));
+            m_linestatus[sjj]->setText(QString("  Line %1  ").arg(jj + 1));
         }
         
         int ix = jj / 3;
@@ -345,10 +345,13 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
         m_icon_voicemail->show();
         m_voicemail_old->setText(tr("%1 old").arg(vm[1]));
         m_voicemail_new->setText(tr("%1 new").arg(vm[2]));
-        if(m_svcstatus["enablevm"].toBool())
+        if(m_svcstatus["enablevm"].toBool()) {
             m_voicemail_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_ui->voicemailnumber()));
-        else
+            m_voicemail_name->setToolTip(tr("VoiceMail activated on %1").arg(m_ui->voicemailnumber()));
+        } else {
             m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
+            m_voicemail_name->setToolTip(tr("VoiceMail not activated on %1").arg(m_ui->voicemailnumber()));
+        }
     }
     // m_voicemail->hide();
     // changes the "watched agent" only if no one else has done it before
@@ -432,16 +435,19 @@ void IdentityDisplay::svcSummary()
         } else if (m_svcstatus["incallfilter"].toBool()) {
             m_phonestatustxt->setText(tr("Call Filter"));
         } else {
-            m_phonestatustxt->setText(tr("No Option"));
-            m_phonestatustxt->setToolTip(tr("No Option"));
+            m_phonestatustxt->setText(tr("No option"));
+            m_phonestatustxt->setToolTip(tr("No option"));
         }
     }
     QStringList vm = m_ui->mwi();
     if(vm.size() > 2) {
-        if(m_svcstatus["enablevm"].toBool())
+        if(m_svcstatus["enablevm"].toBool()) {
             m_voicemail_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_ui->voicemailnumber()));
-        else
+            m_voicemail_name->setToolTip(tr("VoiceMail activated on %1").arg(m_ui->voicemailnumber()));
+        } else {
             m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
+            m_voicemail_name->setToolTip(tr("VoiceMail not activated on %1").arg(m_ui->voicemailnumber()));
+        }
     }
     
     return;
@@ -476,14 +482,14 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                 QPixmap square_comm(25, 3);
                 square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
                 if(status == "hangup") {
-                    todisplay = "";
+                    todisplay = QString("Line %1").arg(ics);
                     square_comm.fill(Qt::black);
                 }
                 //qDebug() << "IdentityDisplay::updateUser" << ics << m_lineaction << m_linestatus;
                 if(m_lineaction.contains(ics) && m_lineaction[ics])
                     m_lineaction[ics]->setPixmap(square_comm);
                 if(m_linestatus.contains(ics) && m_linestatus[ics])
-                    m_linestatus[ics]->setText(QString(" %1) %2 ").arg(ics).arg(todisplay));
+                    m_linestatus[ics]->setText(QString("  %1  ").arg(todisplay));
             }
         }
     }

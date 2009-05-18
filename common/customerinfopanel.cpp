@@ -146,7 +146,7 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
     qDebug() << "CustomerInfoPanel::displayFiche id=" << id;
     for(int i = m_popups.size() - 1; --i > 0; ) {
         if(id == m_popups[i]->id()) {
-            qDebug() << " fiche id allready there";
+            qDebug() << " fiche id already there";
         }
     }
     QBuffer * inputstream = new QBuffer(this);
