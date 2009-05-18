@@ -234,7 +234,7 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                             QAction * replyMe = new QAction(tr("Reply"), &contextMenu);
                             replyMe->setProperty("iconname", iconname);
                             replyMe->setProperty("channel", thiscommchan);
-                            replyMe->setProperty("action", "reply");
+                            replyMe->setProperty("action", "pickup");
                             connect(replyMe, SIGNAL(triggered()),
                                     this, SLOT(contextMenuAction()) );
                             contextMenu.addAction(replyMe);
