@@ -78,7 +78,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_presencevalue->setProperty("function", "presence");
     
     m_phone = new QLabel(this);
-    m_phonestatustxt = new QLabel(tr("No Service"), this);
+    m_phonestatustxt = new QLabel(tr("No Option"), this);
     m_phonestatustxt->setScaledContents(true);
     m_phonestatustxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
@@ -137,8 +137,8 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
              this, SIGNAL(setSystrayIcon(const QString &)) );
     m_agent->setContentsMargins(20, 0, 0, 0);
     
-    m_glayout->setSpacing(2);
-    // m_glayout->setMargin(0);
+    m_glayout->setSpacing(0);
+    m_glayout->setMargin(0);
     
     m_col_user = 0;
     m_col_agent = 2;
@@ -215,7 +215,6 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
             QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(m_comms);
             while( iter.hasNext() ) {
                 iter.next();
-                QString callref = iter.key();
                 QVariantMap callprops = iter.value().toMap();
                 if(callprops.contains("linenum")) {
                     int ic = callprops["linenum"].toInt();
@@ -299,7 +298,7 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
  */
 void IdentityDisplay::setPhoneLines()
 {
-    QPixmap square(20, 6);
+    QPixmap square(25, 3);
     square.fill(Qt::black);
     for(int jj = 0 ; jj < m_nlines ; jj ++) {
         QString sjj = QString::number(jj + 1);
@@ -317,7 +316,7 @@ void IdentityDisplay::setPhoneLines()
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
             
             m_lineaction[sjj]->setPixmap(square);
-            m_linestatus[sjj]->setText("");
+            m_linestatus[sjj]->setText(QString(" %1) ").arg(jj + 1));
         }
         
         int ix = jj / 3;
@@ -433,8 +432,8 @@ void IdentityDisplay::svcSummary()
         } else if (m_svcstatus["incallfilter"].toBool()) {
             m_phonestatustxt->setText(tr("Call Filter"));
         } else {
-            m_phonestatustxt->setText(tr("No Service"));
-            m_phonestatustxt->setToolTip(tr("No Service"));
+            m_phonestatustxt->setText(tr("No Option"));
+            m_phonestatustxt->setToolTip(tr("No Option"));
         }
     }
     QStringList vm = m_ui->mwi();
@@ -467,7 +466,6 @@ void IdentityDisplay::updateUser(UserInfo * ui)
         QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(m_comms);
         while( iter.hasNext() ) {
             iter.next();
-            QString callref = iter.key();
             QVariantMap callprops = iter.value().toMap();
             if(callprops.contains("linenum")) {
                 QString ics = callprops["linenum"].toString();
@@ -475,7 +473,7 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                 QString todisplay = callprops["calleridname"].toString();
                 bool isholded = callprops.contains("time-hold");
                 
-                QPixmap square_comm(20, 6);
+                QPixmap square_comm(25, 3);
                 square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
                 if(status == "hangup") {
                     todisplay = "";
@@ -485,7 +483,7 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                 if(m_lineaction.contains(ics) && m_lineaction[ics])
                     m_lineaction[ics]->setPixmap(square_comm);
                 if(m_linestatus.contains(ics) && m_linestatus[ics])
-                    m_linestatus[ics]->setText(todisplay);
+                    m_linestatus[ics]->setText(QString(" %1) %2 ").arg(ics).arg(todisplay));
             }
         }
     }

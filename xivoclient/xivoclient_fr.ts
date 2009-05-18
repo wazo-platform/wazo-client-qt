@@ -410,12 +410,12 @@ Contexte: %2</translation>
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="../common/baseengine.cpp" line="1176"/>
+        <location filename="../common/baseengine.cpp" line="1186"/>
         <source> said : </source>
         <translation> a dit : </translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1915"/>
+        <location filename="../common/baseengine.cpp" line="1925"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
@@ -425,12 +425,12 @@ Contexte: %2</translation>
         <translation>Connexion refusée</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1199"/>
+        <location filename="../common/baseengine.cpp" line="1209"/>
         <source>Could not modify the Services data.</source>
         <translation>Impossible de modifier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1536"/>
+        <location filename="../common/baseengine.cpp" line="1546"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -440,119 +440,119 @@ Contexte: %2</translation>
         <translation>Hôte non trouvé</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1495"/>
+        <location filename="../common/baseengine.cpp" line="1505"/>
         <source>Max number (%1) of XIVO Clients already reached.</source>
         <translation>Le nombre maximal (%1) de XIVO Clients est déjà connecté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1199"/>
+        <location filename="../common/baseengine.cpp" line="1209"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Asterisk est peut-être arrêté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1498"/>
+        <location filename="../common/baseengine.cpp" line="1508"/>
         <source>Missing Argument(s)</source>
         <translation>Argument(s) manquant(s)</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1491"/>
+        <location filename="../common/baseengine.cpp" line="1501"/>
         <source>No capability allowed.</source>
         <translation>Aucune capacité autorisée.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1434"/>
+        <location filename="../common/baseengine.cpp" line="1444"/>
         <source>Server has sent an Error.</source>
         <translation>Le serveur a renvoyé une Erreur.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1442"/>
+        <location filename="../common/baseengine.cpp" line="1452"/>
         <source>The number of arguments sent is incorrect.
 Maybe a version issue ?</source>
         <translation>Le nombre d&apos;arguments envoyés est incorrect.
 Peut-être un problème de version ?</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1176"/>
+        <location filename="../common/baseengine.cpp" line="1186"/>
         <source>Unknown</source>
         <translation>Inconnue</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1487"/>
+        <location filename="../common/baseengine.cpp" line="1497"/>
         <source>You are already connected from %1:%2.</source>
         <translation>Vous êtes déjà connecté depuis %1:%2.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1459"/>
+        <location filename="../common/baseengine.cpp" line="1469"/>
         <source>You entered a wrong login / password.</source>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1505"/>
+        <location filename="../common/baseengine.cpp" line="1515"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1509"/>
+        <location filename="../common/baseengine.cpp" line="1519"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1524"/>
+        <location filename="../common/baseengine.cpp" line="1534"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1528"/>
+        <location filename="../common/baseengine.cpp" line="1538"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1451"/>
+        <location filename="../common/baseengine.cpp" line="1461"/>
         <source>Your session has expired.</source>
         <translation>Votre session a expiré.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1474"/>
+        <location filename="../common/baseengine.cpp" line="1484"/>
         <source>Socket Error number %1.</source>
         <translation>Erreur de Socket %1.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1455"/>
+        <location filename="../common/baseengine.cpp" line="1465"/>
         <source>Your profile name &lt;%1&gt; is not defined.</source>
         <translation>Votre nom de profil &lt;%1&gt; n&apos;est pas défini.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1470"/>
+        <location filename="../common/baseengine.cpp" line="1480"/>
         <source>An error occurred with the network (network cable accidentally plugged out ?).</source>
         <translation>Une erreur s&apos;est produite sur le réseau (câble accidentellement débranché ?).</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1516"/>
+        <location filename="../common/baseengine.cpp" line="1526"/>
         <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>La version majeure de votre client (%1)
 est différente de celle du serveur (%2).</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1530"/>
+        <location filename="../common/baseengine.cpp" line="1540"/>
         <source>You were disconnected by the server.</source>
         <translation>Vous avez été déconnecté par le serveur.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1532"/>
+        <location filename="../common/baseengine.cpp" line="1542"/>
         <source>You were forced to disconnect by the server.</source>
         <translation>Vous avez été déconnecté de force par le serveur.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1191"/>
+        <location filename="../common/baseengine.cpp" line="1201"/>
         <source>Received Services Data</source>
         <translation>Reçu les Informations de Services</translation>
     </message>
@@ -562,36 +562,36 @@ est différente de celle du serveur (%2).</translation>
         <translation>Connexion perdue avec le serveur CTI XiVO</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1438"/>
+        <location filename="../common/baseengine.cpp" line="1448"/>
         <source>You are not allowed to connect
 to the XiVO CTI server on %1:%2.</source>
         <translation>Vous n&apos;êtes pas autorisé à vous connecter
 au serveur CTI XiVO sur %1:%2.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1447"/>
+        <location filename="../common/baseengine.cpp" line="1457"/>
         <source>Your registration name &lt;%1@%2&gt;
 is not known by the XiVO CTI server on %3:%4.</source>
         <translation>Votre nom &lt;%1@%2&gt; est inconnu
 par le serveur CTI XiVO sur %3:%4.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1463"/>
+        <location filename="../common/baseengine.cpp" line="1473"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 n&apos;a pas répondu au dernier keepalive.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1467"/>
+        <location filename="../common/baseengine.cpp" line="1477"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient de fermer la connexion.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1479"/>
+        <location filename="../common/baseengine.cpp" line="1489"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient d&apos;être arrêté.</translation>
     </message>
     <message>
-        <location filename="../common/baseengine.cpp" line="1483"/>
+        <location filename="../common/baseengine.cpp" line="1493"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient d&apos;être rechargé.</translation>
     </message>
@@ -1324,52 +1324,52 @@ a été envoyé à %2.</translation>
 <context>
     <name>IdentityAgent</name>
     <message>
-        <location filename="../common/identityagent.cpp" line="125"/>
+        <location filename="../common/identityagent.cpp" line="130"/>
         <source>Connected on %1</source>
         <translation>Connecté sur %1</translation>
     </message>
     <message>
-        <location filename="../common/identityagent.cpp" line="128"/>
+        <location filename="../common/identityagent.cpp" line="133"/>
         <source>Disconnected from %1</source>
         <translation>Déconnecté de %1</translation>
     </message>
     <message>
-        <location filename="../common/identityagent.cpp" line="141"/>
+        <location filename="../common/identityagent.cpp" line="146"/>
         <source>Paused</source>
         <translation>En retrait</translation>
     </message>
     <message>
-        <location filename="../common/identityagent.cpp" line="146"/>
+        <location filename="../common/identityagent.cpp" line="151"/>
         <source>Unpaused</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../common/identityagent.cpp" line="154"/>
+        <location filename="../common/identityagent.cpp" line="159"/>
         <source>Partially paused</source>
         <translation>Pause partielle</translation>
     </message>
     <message>
-        <location filename="../common/identityagent.cpp" line="159"/>
+        <location filename="../common/identityagent.cpp" line="164"/>
         <source>Not relevant</source>
         <translation>Non pertinent</translation>
     </message>
     <message>
-        <location filename="../common/identityagent.cpp" line="173"/>
+        <location filename="../common/identityagent.cpp" line="178"/>
         <source>Logout</source>
         <translation>Logout</translation>
     </message>
     <message>
-        <location filename="../common/identityagent.cpp" line="177"/>
+        <location filename="../common/identityagent.cpp" line="182"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="../common/identityagent.cpp" line="185"/>
+        <location filename="../common/identityagent.cpp" line="190"/>
         <source>Pause</source>
         <translation>Retrait</translation>
     </message>
     <message>
-        <location filename="../common/identityagent.cpp" line="190"/>
+        <location filename="../common/identityagent.cpp" line="195"/>
         <source>Unpause</source>
         <translation>Prêt</translation>
     </message>
@@ -1377,17 +1377,17 @@ a été envoyé à %2.</translation>
 <context>
     <name>IdentityDisplay</name>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="347"/>
+        <location filename="../common/identitydisplay.cpp" line="346"/>
         <source>%1 old</source>
         <translation>%1 ancien(s)</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="348"/>
+        <location filename="../common/identitydisplay.cpp" line="347"/>
         <source>%1 new</source>
         <translation>%1 nouveau(x)</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="445"/>
+        <location filename="../common/identitydisplay.cpp" line="444"/>
         <source>VoiceMailBox %1</source>
         <translation>Boîte %1</translation>
     </message>
@@ -1397,74 +1397,74 @@ a été envoyé à %2.</translation>
         <translation>Panneau des détails utilisateur</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="341"/>
+        <location filename="../common/identitydisplay.cpp" line="340"/>
         <source>Phone %1</source>
         <translation>Téléphone %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="226"/>
+        <location filename="../common/identitydisplay.cpp" line="225"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="419"/>
+        <location filename="../common/identitydisplay.cpp" line="418"/>
         <source>DND</source>
         <translation>NPD</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="420"/>
+        <location filename="../common/identitydisplay.cpp" line="419"/>
         <source>Do Not Disturb</source>
         <translation>Ne Pas Déranger</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="423"/>
+        <location filename="../common/identitydisplay.cpp" line="422"/>
         <source>UNC %1</source>
         <translation>INC %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="424"/>
+        <location filename="../common/identitydisplay.cpp" line="423"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Renvoi Inconditionnel vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="426"/>
+        <location filename="../common/identitydisplay.cpp" line="425"/>
         <source>Busy %1</source>
         <translation>Occ %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="427"/>
+        <location filename="../common/identitydisplay.cpp" line="426"/>
         <source>Busy Forward towards %1</source>
         <translation>Renvoi sur Occupation vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="429"/>
+        <location filename="../common/identitydisplay.cpp" line="428"/>
         <source>RNA %1</source>
         <translation>RNR %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="430"/>
+        <location filename="../common/identitydisplay.cpp" line="429"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Renvoi sur Non-Réponse vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="437"/>
-        <source>No Service</source>
-        <translation>Pas de Service</translation>
-    </message>
-    <message>
-        <location filename="../common/identitydisplay.cpp" line="432"/>
+        <location filename="../common/identitydisplay.cpp" line="431"/>
         <source>Call Rec</source>
         <translation>Enr Appel</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="434"/>
+        <location filename="../common/identitydisplay.cpp" line="433"/>
         <source>Call Filter</source>
         <translation>Filtre Appel</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="443"/>
+        <location filename="../common/identitydisplay.cpp" line="442"/>
         <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Boîte %1&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="436"/>
+        <source>No Option</source>
+        <translation>Pas d&apos;Option</translation>
     </message>
 </context>
 <context>

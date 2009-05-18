@@ -34,7 +34,7 @@
 #ifndef __IDENTITYAGENT_H__
 #define __IDENTITYAGENT_H__
 
-#include <QWidget>
+#include <QFrame>
 #include <QVariant>
 
 class QGridLayout;
@@ -44,7 +44,7 @@ class QLabel;
  *
  * \see IdentityDisplay
  */
-class IdentityAgent : public QWidget
+class IdentityAgent : public QFrame
 {
     Q_OBJECT
 public:

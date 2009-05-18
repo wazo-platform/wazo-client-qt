@@ -46,12 +46,12 @@ const QString icon_color_green = "xivo-green";
 const QColor Orange = QColor(255, 128, 0);
 
 IdentityAgent::IdentityAgent(QWidget * parent)
-    : QWidget(parent),
+    : QFrame(parent),
       m_allow_logagent(false),
       m_allow_pauseagent(false)
 {
     m_layout = new QGridLayout(this);
-
+    
     m_icon = new QLabel(this);
     m_icon->setPixmap(QPixmap(":/images/applixware.png"));
     m_icon->setContentsMargins(0, 0, 5, 0);
@@ -60,13 +60,18 @@ IdentityAgent::IdentityAgent(QWidget * parent)
     m_statustxt = new QLabel(this);
     m_pause = new QLabel(this);
     m_pausetxt = new QLabel(this);
-
+    
     m_layout->addWidget(m_icon, 0, 0, 3, 1, Qt::AlignHCenter | Qt::AlignTop);
     m_layout->addWidget(m_text, 0, 1, 1, 2);
     m_layout->addWidget(m_status, 1, 1);
     m_layout->addWidget(m_statustxt, 1, 2);
     m_layout->addWidget(m_pause, 2, 1);
     m_layout->addWidget(m_pausetxt, 2, 2);
+    
+    // setFrameStyle(QFrame::Panel | QFrame::Raised);
+    // setLineWidth(3);
+    // m_layout->setSpacing(0);
+    // m_layout->setMargin(0);
 }
 
 void IdentityAgent::setText(const QString & text)
@@ -165,7 +170,7 @@ void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
 {
     qDebug() << "IdentityAgent::contextMenuEvent";
     QMenu contextMenu(this);
-            
+    
     if(m_allow_logagent) {
         QAction * logAction = new QAction(this);
         bool connected = m_statustxt->property("connected").toBool();
@@ -180,7 +185,7 @@ void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
         }
         contextMenu.addAction(logAction);
     }
-            
+    
     if(m_allow_pauseagent) {
         QAction * pauseAction = new QAction(tr("Pause"), this);
         connect(pauseAction, SIGNAL(triggered()),
@@ -222,4 +227,3 @@ void IdentityAgent::setAllowedActions(bool allow_logagent, bool allow_pauseagent
     m_allow_logagent = allow_logagent;
     m_allow_pauseagent = allow_pauseagent;
 }
-

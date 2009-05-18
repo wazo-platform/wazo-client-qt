@@ -127,7 +127,7 @@ void SearchPanel::updateDisplay()
                     peerwidget->deleteLater();
                 }
         }
-
+    
     // then display all users whose name match the search pattern
     int naff = 0;
     i.toFront();
@@ -136,7 +136,7 @@ void SearchPanel::updateDisplay()
             i.next();
             PeerItem * peeritem = i.value();
             BasePeerWidget * peerwidget = peeritem->getWidget();
-
+            
             if( ( peeritem->userinfo()->fullname().contains(m_searchpattern, Qt::CaseInsensitive)
                   || peeritem->userinfo()->phonenumber().contains(m_searchpattern))
                 && (naff < m_maxdisplay) )
