@@ -42,7 +42,6 @@
 /*! \brief Constructor
  */
 XletprotoPanel::XletprotoPanel(BaseEngine * engine,
-                               const QVariant & options,
                                QWidget * parent)
     : QWidget(parent), m_engine(engine)
 {
@@ -53,7 +52,7 @@ XletprotoPanel::XletprotoPanel(BaseEngine * engine,
 //     glayout->setRowStretch( 0, 1 );
 //     glayout->setColumnStretch( 0, 1 );
 //     //
-    setGuiOptions(options);
+    setGuiOptions(m_engine->getGuiOptions("server_gui").toMap());
 }
 
 XletprotoPanel::~XletprotoPanel()

@@ -55,7 +55,6 @@ class AgentsPanel : public QWidget
     Q_OBJECT
  public:
     AgentsPanel(BaseEngine *,
-                const QVariant &,
                 QWidget * parent = 0);
     ~AgentsPanel();
  signals:

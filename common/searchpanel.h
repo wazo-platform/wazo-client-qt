@@ -54,11 +54,11 @@ class SearchPanel : public QWidget
     Q_OBJECT
  public:
     SearchPanel(BaseEngine *,
-                const QVariant &,
                 QWidget * parent = 0);
     ~SearchPanel();        //!< Destructor
  public slots:
-    void setGuiOptions(const QVariant &);
+    void setGuiOptions(const QVariant &) {};
+    void setUserInfo(const UserInfo *) {};
     void affTextChanged(const QString &);
     void updatePeerAgent(double,
                          const QString &,
@@ -79,8 +79,6 @@ class SearchPanel : public QWidget
     int m_maxdisplay;        //!< max number of peers displayed on the search panel
     int m_ncolumns;
     QString m_searchpattern;
-    QStringList m_functions;
-    QVariant m_options;
 };
 
 #endif

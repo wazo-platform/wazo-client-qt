@@ -49,7 +49,6 @@
 #include "faxpanel.h"
 
 FaxPanel::FaxPanel(BaseEngine * engine,
-                   const QVariant &,
                    QWidget * parent)
     : QWidget(parent), m_mainwindow(parent), m_engine(engine)
 {

@@ -59,10 +59,9 @@ class IdentityDisplay : public QWidget
     Q_OBJECT
 public:
     IdentityDisplay(BaseEngine *,
-                    const QVariant &,
                     QWidget * parent = 0);
 public slots:
-    void setGuiOptions(const QVariant &);
+    void setGuiOptions(const QVariantMap &);
     void setUserInfo(const UserInfo *);
     void newAgentList(const QStringList &);
     void newQueueList(const QStringList &);

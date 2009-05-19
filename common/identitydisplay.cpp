@@ -57,7 +57,6 @@
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(BaseEngine * engine,
-                                 const QVariant & options,
                                  QWidget * parent)
     : QWidget(parent), m_engine(engine),
       m_ui(NULL), m_nlines(0)
@@ -160,7 +159,9 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     m_agent->hide();
     
-    setGuiOptions(options);
+    m_loginkind = m_engine->getGuiOptions("user").toMap()["loginkind"].toUInt();
+    m_functions = m_engine->getGuiOptions("server_funcs").toMap()["functions"].toStringList();
+    setGuiOptions(m_engine->getGuiOptions("server_gui").toMap());
     //         m_glayout->setColumnStretch( 0, 1 );
 }
 
@@ -188,18 +189,13 @@ void IdentityDisplay::setupIcons()
     m_glayout->setColumnStretch( m_col_last, 1 );
 }
 
-void IdentityDisplay::setGuiOptions(const QVariant & options)
+void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
 {
-    // qDebug() << "IdentityDisplay::setGuiOptions()" << options;
-    QVariantMap optionsMap = options.toMap();
     if(optionsMap.contains("fontname") && optionsMap.contains("fontsize"))
         m_gui_font = QFont(optionsMap["fontname"].toString(),
                            optionsMap["fontsize"].toInt());
     if(optionsMap.contains("iconsize"))
         m_gui_buttonsize = optionsMap["iconsize"].toInt();
-    
-    m_loginkind = optionsMap["loginkind"].toUInt();
-    m_functions = optionsMap["functions"].toStringList();
     
     m_agent->setAllowedActions( optionsMap["logagent"].toBool(), optionsMap["pauseagent"].toBool() );
     

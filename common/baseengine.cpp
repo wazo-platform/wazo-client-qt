@@ -1003,9 +1003,6 @@ void BaseEngine::parseCommand(const QString & line)
             // QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
             processHistory(datamap["payload"]);
             
-        } else if (thisclass == "getguisettings") {
-            setGuiOptions(datamap["payload"]);
-            
         } else if (thisclass == "endinit") {
             qDebug() << "I should have received everything";
             

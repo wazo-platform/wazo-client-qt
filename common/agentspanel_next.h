@@ -58,7 +58,6 @@ class AgentsPanelNext : public QWidget
     Q_OBJECT
 public:
     AgentsPanelNext(BaseEngine *,
-                    const QVariant &,
                     QWidget * parent = 0);
     ~AgentsPanelNext();
 signals:

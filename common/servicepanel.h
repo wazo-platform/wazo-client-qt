@@ -35,6 +35,7 @@
 #define __SERVICEPANEL_H__
 
 #include <QHash>
+#include <QVariant>
 #include <QWidget>
 
 class QCheckBox;
@@ -49,7 +50,6 @@ class ServicePanel : public QWidget
     Q_OBJECT
  public:
     ServicePanel(BaseEngine *,
-                 const QVariant &,
                  QWidget * parent = 0);
     ~ServicePanel();
  signals:
@@ -57,7 +57,7 @@ class ServicePanel : public QWidget
     void forwardChanged(const QString &, bool, const QString &);
     void askFeatures(); //!< need features to be updated !
  public slots:
-    void setGuiOptions(const QVariant &) {};
+    void setGuiOptions(const QVariantMap &) {};
     void setUserInfo(const UserInfo *);
     void setOpt(const QString &, bool);
     void setForward(const QString &, const QVariant &);

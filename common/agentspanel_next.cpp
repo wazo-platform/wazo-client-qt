@@ -60,7 +60,6 @@
 /*! \brief Constructor
  */
 AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
-                                 const QVariant & optionmap,
                                  QWidget * parent)
     : QWidget(parent), m_engine(engine)
 {
@@ -69,10 +68,8 @@ AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
     
     // m_gridlayout->setVerticalSpacing(0);
     m_blinktime = 300;
-    if(optionmap.toMap().contains("blinktime"))
-        m_blinktime = optionmap.toMap()["blinktime"].toInt();
     
-    setGuiOptions(optionmap);
+    setGuiOptions(m_engine->getGuiOptions("server_gui"));
     startTimer(1000);
 }
 
@@ -83,6 +80,8 @@ AgentsPanelNext::~AgentsPanelNext()
 
 void AgentsPanelNext::setGuiOptions(const QVariant & optionmap)
 {
+    if(optionmap.toMap().contains("blinktime"))
+        m_blinktime = optionmap.toMap()["blinktime"].toInt();
     if(optionmap.toMap().contains("fontname") && optionmap.toMap().contains("fontsize"))
         m_gui_font = QFont(optionmap.toMap()["fontname"].toString(),
                            optionmap.toMap()["fontsize"].toInt());

@@ -62,10 +62,8 @@ public:
 protected:
     void timerEvent(QTimerEvent *);
 public slots:
-    //! does nothing...
-    void setGuiOptions(const QVariant &) {};
-    //! does nothing...
-    void setUserInfo(const UserInfo *) {};
+    void setGuiOptions(const QVariantMap &);
+    void setUserInfo(const UserInfo *) {};    //! does nothing...
     void meetmeEvent(double, const QVariant &);
     void meetmeInit(double, const QVariant &);
     void doMeetMeAction();
@@ -96,6 +94,7 @@ private:
     QTabWidget * m_tw;              //!< Tab container
     QGridLayout * m_glayout;        //!< gridlayout
     QLabel * m_summary;
+    bool m_show_record;
 };
 
 #endif

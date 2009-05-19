@@ -48,7 +48,6 @@ const QStringList fwdcapas = (QStringList() << "fwdrna" << "fwdbusy" << "fwdunc"
 const QStringList chkcapas = (QStringList() << "enablevm" << "incallrec" << "incallfilter" << "enablednd");
 
 ServicePanel::ServicePanel(BaseEngine * engine,
-                           const QVariant & options,
                            QWidget * parent)
     : QWidget(parent), m_engine(engine)
 {
@@ -60,7 +59,7 @@ ServicePanel::ServicePanel(BaseEngine * engine,
     m_capalegend["fwdbusy"] = tr("Forward on &Busy");
     m_capalegend["fwdunc"]  = tr("&Unconditional Forward");
     
-    m_capas = options.toMap()["services"].toStringList();
+    m_capas = m_engine->getGuiOptions("server_funcs").toMap()["services"].toStringList();
     
     int line = 0;
     m_status = new ServiceStatus();

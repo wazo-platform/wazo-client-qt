@@ -52,7 +52,8 @@ class FaxPanel : public QWidget
 {
     Q_OBJECT
  public:
-    FaxPanel(BaseEngine *, const QVariant &, QWidget * parent = 0);
+    FaxPanel(BaseEngine *,
+             QWidget * parent = 0);
     ~FaxPanel();
  signals:
     void faxSend(const QString &, const QString &, Qt::CheckState);

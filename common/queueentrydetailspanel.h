@@ -56,7 +56,6 @@ class QueueentrydetailsPanel : public QWidget
     Q_OBJECT
  public:
     QueueentrydetailsPanel(BaseEngine *,
-                           const QVariant &,
                            QWidget * parent = 0);
     ~QueueentrydetailsPanel();
  signals:
@@ -64,7 +63,7 @@ class QueueentrydetailsPanel : public QWidget
  protected:
     void timerEvent(QTimerEvent *);
  public slots:
-    void setGuiOptions(const QVariant &) {};
+    void setGuiOptions(const QVariantMap &) {};
     void setUserInfo(const UserInfo *) {};
     void newAgentList(const QStringList &);
     void newQueueList(const QStringList &);

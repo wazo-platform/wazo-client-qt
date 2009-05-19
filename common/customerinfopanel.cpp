@@ -46,9 +46,8 @@
 /*! \brief Constructor
  */
 CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
-                                     const QVariant & options,
                                      QWidget * parent)
-    : XletprotoPanel(engine, options, parent)
+    : XletprotoPanel(engine, parent)
 {
     connect( m_engine, SIGNAL(displayFiche(const QString &, bool, const QString &)),
              this, SLOT(displayFiche(const QString &, bool, const QString &)) );
@@ -67,8 +66,9 @@ CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
     glayout->addWidget( m_tabs, 0, 0 );
     glayout->setRowStretch(0, 1);
     glayout->setColumnStretch(0, 1);
-    m_tablimit = options.toMap()["sheet-tablimit"].toUInt();
-    m_autourl_allowed = options.toMap()["autourl_allowed"].toBool();
+    QVariantMap optionsMap = m_engine->getGuiOptions("user").toMap();
+    m_tablimit = optionsMap["sheet-tablimit"].toUInt();
+    m_autourl_allowed = optionsMap["autourl_allowed"].toBool();
 }
 
 CustomerInfoPanel::~CustomerInfoPanel()

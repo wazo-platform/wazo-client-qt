@@ -54,7 +54,6 @@ class CustomerInfoPanel : public XletprotoPanel
     Q_OBJECT
 public:
     CustomerInfoPanel(BaseEngine *,
-                      const QVariant &,
                       QWidget * parent = 0);
     ~CustomerInfoPanel();
 signals:

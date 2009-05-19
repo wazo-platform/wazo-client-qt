@@ -205,9 +205,7 @@ private:
     QSettings * m_settings;
 
     QClipboard * m_clipboard;
-    QVariant m_options;
 };
-
 
 /*! \brief Widget containing the CallStackWidget and a Title QLabel
  */

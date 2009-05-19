@@ -43,19 +43,15 @@
 #include "userinfo.h"
 
 SearchPanel::SearchPanel(BaseEngine * engine,
-                         const QVariant & options,
                          QWidget * parent)
-    : QWidget(parent),
-      m_engine(engine)
+    : QWidget(parent), m_engine(engine)
 {
-    m_engine = engine;
-    m_options = options;
     // qDebug() << "SearchPanel::SearchPanel()" << options;
-    m_maxdisplay = options.toMap()["contacts-max"].toUInt();
-    m_ncolumns = options.toMap()["contacts-width"].toUInt();
-    m_functions = options.toMap()["functions"].toStringList();
+    QVariantMap optionsMap = m_engine->getGuiOptions("user").toMap();
+    m_maxdisplay = optionsMap["contacts-max"].toUInt();
+    m_ncolumns = optionsMap["contacts-width"].toUInt();
     // m_engine->askCallerIds();
-
+    
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
     QLabel * lbl = new QLabel( tr("N&ame or number to search :"), this );
@@ -75,7 +71,7 @@ SearchPanel::SearchPanel(BaseEngine * engine,
     scrollarealayout->addLayout( m_peerlayout );
     scrollarealayout->addStretch( 1 );
     vlayout->addWidget(scrollarea);
-
+    
     m_searchpattern = "";
 }
 
@@ -83,10 +79,6 @@ SearchPanel::~SearchPanel()
 {
     // qDebug() << "SearchPanel::~SearchPanel()";
     removePeers();
-}
-
-void SearchPanel::setGuiOptions(const QVariant &)
-{
 }
 
 /*! \brief apply the search

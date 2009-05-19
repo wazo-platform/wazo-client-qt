@@ -44,7 +44,6 @@
 /*! \brief Constructor
  */
 QueueentrydetailsPanel::QueueentrydetailsPanel(BaseEngine * engine,
-                                               const QVariant &, // options
                                                QWidget * parent)
     : QWidget(parent), m_engine(engine)
 {

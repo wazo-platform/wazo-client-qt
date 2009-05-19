@@ -50,7 +50,6 @@ const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 
 /*! \brief Constructor
  */
 QueuesPanel::QueuesPanel(BaseEngine * engine,
-                         const QVariant & options,
                          QWidget * parent)
     : QWidget(parent), m_engine(engine)
 {
@@ -60,6 +59,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     
     QString statscols = "Xivo-Conn,Xivo-Avail,Xivo-Rate,Xivo-Join,Xivo-Link,Xivo-Lost,Xivo-Chat,Holdtime";
     // statscols = "Xivo-Conn,Xivo-Avail,Xivo-Rate";
+    QVariant options = m_engine->getGuiOptions("server_gui");
     if(options.toMap().contains("queues-statscolumns"))
         statscols = options.toMap()["queues-statscolumns"].toString();
     bool shortlegends = false;

@@ -57,7 +57,6 @@ class AgentdetailsPanel : public QWidget
     Q_OBJECT
  public:
     AgentdetailsPanel(BaseEngine *,
-                      const QVariant &,
                       QWidget * parent = 0);
     ~AgentdetailsPanel();
  protected:
@@ -67,7 +66,7 @@ class AgentdetailsPanel : public QWidget
     void agentAction(const QString &);
     void setFileName(const QString &);
  public slots:
-    void setGuiOptions(const QVariant &);
+    void setGuiOptions(const QVariantMap &);
     void setUserInfo(const UserInfo *) {};
     void newAgentList(const QStringList &);
     void newQueueList(const QStringList &);
@@ -115,7 +114,7 @@ class AgentdetailsPanel : public QWidget
     QHash<QString, QLabel *> m_queue_pause_status;
     
     QPoint m_eventpoint;
-    QVariant m_options;
+    QVariantMap m_optionsMap;
 };
 
 #endif /* __AGENTDETAILSPANEL_H__ */

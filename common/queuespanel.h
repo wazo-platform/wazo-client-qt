@@ -57,7 +57,6 @@ class QueuesPanel : public QWidget
     Q_OBJECT
 public:
     QueuesPanel(BaseEngine *,
-                const QVariant &,
                 QWidget * parent = 0);
     ~QueuesPanel();
 protected:

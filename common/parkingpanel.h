@@ -54,13 +54,12 @@ class ParkingPanel : public QWidget
     Q_OBJECT
 public:
     ParkingPanel(BaseEngine *,
-                 const QVariant &,
                  QWidget * parent = 0);
     ~ParkingPanel();
 protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
 public slots:
-    void setGuiOptions(const QVariant &) {};
+    void setGuiOptions(const QVariantMap &) {};
     void setUserInfo(const UserInfo *) {};
     void parkingEvent(const QVariant &);
 private slots:

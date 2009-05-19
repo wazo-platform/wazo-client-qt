@@ -52,7 +52,6 @@ const QColor Orange = QColor(255, 128, 0);
 /*! \brief Constructor
  */
 AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
-                                     const QVariant & options,
                                      QWidget * parent)
     : QWidget(parent), m_engine(engine)
 {
@@ -112,7 +111,7 @@ AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
         connect( m_action[function], SIGNAL(clicked()),
                  this, SLOT(actionClicked()));
     }
-    setGuiOptions(options);
+    setGuiOptions(m_engine->getGuiOptions("server_gui").toMap());
 }
 
 /*! \brief Destructor
@@ -124,9 +123,9 @@ AgentdetailsPanel::~AgentdetailsPanel()
 
 /*! \brief set options
  */
-void AgentdetailsPanel::setGuiOptions(const QVariant & options)
+void AgentdetailsPanel::setGuiOptions(const QVariantMap & optionsMap)
 {
-    m_options = options;
+    m_optionsMap = optionsMap;
 }
 
 /*! \brief 
@@ -192,9 +191,9 @@ void AgentdetailsPanel::updatePanel()
     AgentInfo * ainfo = m_engine->agents()[m_monitored_agentid];
     QStringList agent_descriptions;
     agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->agentnumber()).arg(ainfo->fullname());
-    if(! m_options.toMap()["hideastid"].toBool())
+    if(! m_optionsMap["hideastid"].toBool())
         agent_descriptions << tr("on <b>%1</b>").arg(ainfo->astid());
-    if(! m_options.toMap()["hidecontext"].toBool())
+    if(! m_optionsMap["hidecontext"].toBool())
         agent_descriptions << QString("(%1)").arg(ainfo->context());
     QVariantMap properties = ainfo->properties();
     // qDebug() << "AgentdetailsPanel::updatePanel()" << ainfo->astid() << ainfo->agentnumber();
@@ -303,9 +302,9 @@ void AgentdetailsPanel::setQueueProps(const QString & queueid, const QueueInfo *
 {
     m_queue_labels[queueid]->setText(qinfo->queuename());
     QStringList tooltips;
-    if(! m_options.toMap()["hideastid"].toBool())
+    if(! m_optionsMap["hideastid"].toBool())
         tooltips << tr("Server: %1").arg(qinfo->astid());
-    if(! m_options.toMap()["hidecontext"].toBool())
+    if(! m_optionsMap["hidecontext"].toBool())
         tooltips << tr("Context: %1").arg(qinfo->context());
     m_queue_labels[queueid]->setToolTip(tooltips.join("\n"));
 }
@@ -319,7 +318,7 @@ void AgentdetailsPanel::setQueueAgentSignals(const QString & queueid)
     
     connect( m_queue_more[queueid], SIGNAL(clicked()),
              this, SLOT(queueClicked()));
-    if(! m_options.toMap()["noqueueaction"].toBool()) {
+    if(! m_optionsMap["noqueueaction"].toBool()) {
         connect( m_queue_join_action[queueid], SIGNAL(clicked()),
                  this, SLOT(queueClicked()));
         connect( m_queue_pause_action[queueid], SIGNAL(clicked()),

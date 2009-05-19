@@ -56,12 +56,21 @@ ConferencePanel::ConferencePanel(BaseEngine * engine,
     m_glayout->addWidget( m_summary, 1, 0 );
     m_glayout->setRowStretch( 0, 1 );
     m_glayout->setColumnStretch( 0, 1 );
+    m_show_record = false;
+    
+    setGuiOptions(m_engine->getGuiOptions("server_gui").toMap());
     startTimer(1000);
 }
 
 /*! \brief Destructor */
 ConferencePanel::~ConferencePanel()
 {
+}
+
+void ConferencePanel::setGuiOptions(const QVariantMap & optionsMap)
+{
+    if(optionsMap.contains("conference-allowrecord"))
+        m_show_record = optionsMap["conference-allowrecord"].toBool();
 }
 
 /*! \brief Initial setup
@@ -212,16 +221,15 @@ void ConferencePanel::setProperties(double timeref,
             m_action_record[ref]->setProperty("uniqueid", uniqueid);
             m_action_record[ref]->setProperty("action", "record");
             m_action_record[ref]->setProperty("recordstatus", "off");
-            bool show_record = false;
-            if(m_engine->getGuiOptions("server_gui").toMap().contains("conference-allowrecord"))
-                show_record = m_engine->getGuiOptions("server_gui").toMap()["conference-allowrecord"].toBool();
+            
             if(userinfo) {
-                if((userinfo->userid() == adminid) && show_record)
+                if((userinfo->userid() == adminid) && m_show_record)
                     connect(m_action_record[ref], SIGNAL(clicked()),
                             this, SLOT(doMeetMeAction()));
                 else
                     m_action_record[ref]->hide();
             }
+            
             m_action_mute[ref] = new QPushButton(tr("Mute"));
             m_action_mute[ref]->setIcon(QIcon(":/images/cancel.png"));
             m_action_mute[ref]->setIconSize(QSize(16, 16));
@@ -420,4 +428,3 @@ void ConferencePanel::updateSummary()
     }
     m_summary->setText( summary );
 }
-

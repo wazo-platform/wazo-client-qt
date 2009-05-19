@@ -35,6 +35,7 @@
 #define __XLETPROTOPANEL_H__
 
 #include <QObject>
+#include <QVariant>
 #include <QWidget>
 
 class BaseEngine;
@@ -47,14 +48,13 @@ class XletprotoPanel : public QWidget
     Q_OBJECT
 public:
     XletprotoPanel(BaseEngine * engine,
-                   const QVariant &,
                    QWidget * parent = 0);
     ~XletprotoPanel();
 public slots:
     //! does nothing
     void setUserInfo(const UserInfo *) {};
     //! does nothing
-    void setGuiOptions(const QVariant &) {};
+    void setGuiOptions(const QVariantMap &) {};
 protected:
     //! Base engine pointer
     BaseEngine * m_engine;

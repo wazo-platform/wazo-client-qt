@@ -51,7 +51,6 @@
  * Set up the layout and the table widget.
  */
 ParkingPanel::ParkingPanel(BaseEngine * engine,
-                           const QVariant & options,
                            QWidget * parent)
     : QWidget(parent), m_engine(engine)
 {
@@ -65,7 +64,7 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
     m_table->setColumnCount( 4 );
     QStringList labels = (QStringList() << /*tr("XIVO Id") << */tr("Number") << tr("Time") << tr("Parked") << tr("Parker"));
     m_table->setHorizontalHeaderLabels(labels);
-        
+    
     connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
              this, SLOT(itemClicked(QTableWidgetItem *)) );
     connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
@@ -77,7 +76,6 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
     m_table->resizeColumnsToContents();
     m_timerid = 0;
     m_deltasec = 2;
-    setGuiOptions(options);
 }
 
 ParkingPanel::~ParkingPanel()
@@ -105,11 +103,11 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
     QString calleridname = map["calleridname"].toString();
     QString fromcalleridnum = map["fromcalleridnum"].toString();
     QString fromcalleridname = map["fromcalleridname"].toString();
-
+    
     // ignore buggy events 
     if(fromchannel == channel)
         return;
-
+    
     //QString parkedpeer = channel.split("-")[0];
     QString parkedpeer = calleridname + " (" + calleridnum + ")";
     QString parkedby = fromchannel.split("-")[0];

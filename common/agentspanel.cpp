@@ -49,7 +49,6 @@
 /*! \brief Constructor
  */
 AgentsPanel::AgentsPanel(BaseEngine * engine,
-                         const QVariant & optionmap,
                          QWidget * parent)
     : QWidget(parent), m_engine(engine)
 {
@@ -79,7 +78,7 @@ AgentsPanel::AgentsPanel(BaseEngine * engine,
     m_gridlayout->setRowStretch( 100, 1 );
     m_gridlayout->setVerticalSpacing(0);
     
-    setGuiOptions(optionmap);
+    setGuiOptions(m_engine->getGuiOptions("server_gui"));
 }
 
 /*! \brief Destructor */
