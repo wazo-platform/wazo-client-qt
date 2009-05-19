@@ -68,6 +68,7 @@ IdentityAgent::IdentityAgent(QWidget * parent)
     m_layout->addWidget(m_pause, 2, 1);
     m_layout->addWidget(m_pausetxt, 2, 2);
     
+    setStyleSheet("QFrame {background: white;}");
     // setFrameStyle(QFrame::Panel | QFrame::Raised);
     // setLineWidth(3);
     // m_layout->setSpacing(0);

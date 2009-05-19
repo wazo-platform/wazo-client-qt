@@ -76,6 +76,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_presencevalue = new QComboBox(this);
     m_presencevalue->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     m_presencevalue->setProperty("function", "presence");
+    m_presencevalue->setContentsMargins(0, 0, 10, 0);
     
     m_phone = new QLabel(this);
     m_phonestatustxt = new QLabel(tr("No option"), this);
@@ -135,7 +136,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
              m_engine, SLOT(agentAction(const QString &)) );
     connect( m_agent, SIGNAL(setSystrayIcon(const QString &)),
              this, SIGNAL(setSystrayIcon(const QString &)) );
-    m_agent->setContentsMargins(20, 0, 0, 0);
+    m_agent->setContentsMargins(5, 0, 5, 0);
     
     m_glayout->setSpacing(0);
     m_glayout->setMargin(0);
