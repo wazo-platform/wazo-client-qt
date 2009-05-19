@@ -1080,7 +1080,7 @@ void BaseEngine::parseCommand(const QString & line)
                 if(changeme.count()) {
                     if(stateid == changeme["statesrc"].toString()) {
                         m_timerid_changestate = startTimer(changeme["seconds"].toInt() * 1000);
-                        m_changestate_newstate = changeme[stateid].toMap()["newstate"].toString();
+                        m_changestate_newstate = changeme["statedst"].toString();
                     } else if(changeme.contains(stateid)) {
                         // if(stateid == changeme["statesrc"].toString()) {
                         m_timerid_changestate = startTimer(changeme[stateid].toMap()["delaymsec"].toInt());
