@@ -1077,8 +1077,16 @@ void BaseEngine::parseCommand(const QString & line)
             if(m_users.contains(id)) {
                 QString stateid = datamap["capapresence"].toMap()["state"].toMap()["stateid"].toString();
                 QVariantMap changeme = m_guioptions["server_gui"].toMap()["autochangestate"].toMap();
-                if(stateid == changeme["statesrc"].toString())
-                    m_timerid_changestate = startTimer(changeme["seconds"].toInt() * 1000);
+                if(changeme.count()) {
+                    if(stateid == changeme["statesrc"].toString()) {
+                        m_timerid_changestate = startTimer(changeme["seconds"].toInt() * 1000);
+                        m_changestate_newstate = changeme[stateid].toMap()["newstate"].toString();
+                    } else if(changeme.contains(stateid)) {
+                        // if(stateid == changeme["statesrc"].toString()) {
+                        m_timerid_changestate = startTimer(changeme[stateid].toMap()["delaymsec"].toInt());
+                        m_changestate_newstate = changeme[stateid].toMap()["newstate"].toString();
+                    }
+                }
                 m_users[id]->setAvailState(datamap["capapresence"].toMap()["state"]);
                 emit updatePeerAgent(m_timesrv, id, "imstatus", QStringList());
                 emit updateAgentPresence(m_users[id]->astid(),
@@ -1930,9 +1938,9 @@ void BaseEngine::timerEvent(QTimerEvent * event)
         start();
         event->accept();
     } else if(timerId == m_timerid_changestate) {
-        QVariantMap changeme = m_guioptions["server_gui"].toMap()["autochangestate"].toMap();
-        setAvailState(changeme["statedst"].toString(), false);
+        setAvailState(m_changestate_newstate, false);
         killTimer(timerId);
+        m_timerid_changestate = -1;
         event->accept();
     } else {
         event->ignore();

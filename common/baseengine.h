@@ -50,10 +50,10 @@ class AgentInfo;
 class QueueInfo;
 
 class QFile;
+class QSettings;
 class QSocketNotifier;
 class QTcpSocket;
 class QTimerEvent;
-class QSettings;
 
 /*! \brief for storing meetme (conference room) infos
  *
@@ -389,6 +389,7 @@ private:
     int m_timerid_keepalive;        //!< timer id for keep alive
     int m_timerid_tryreconnect;     //!< timer id for try to reconnect
     int m_timerid_changestate;      //!< timer id for changing state automatically
+    QString m_changestate_newstate; //!< new state when changing state automatically
     int m_pendingkeepalivemsg;      //!< number of keepalivemsg sent without response
     QString m_numbertodial;         //!< Number dialed in
     QString m_osname;               //!< OS informations
