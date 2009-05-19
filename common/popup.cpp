@@ -349,7 +349,8 @@ void Popup::addInfoForm(int where, const QString & value)
                  this, SLOT(actionFromForm()) );
     }
     setEnablesOnForms();
-    m_vlayout->insertWidget(where, form);
+    if(form != NULL)
+        m_vlayout->insertWidget(where, form);
 }
 
 void Popup::addInfoText(int where, const QString & name, const QString & value)

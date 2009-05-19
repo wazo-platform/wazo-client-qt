@@ -1217,7 +1217,7 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
     if(m_tabnames.contains(name)) {
         int thisindex = m_tabwidget->indexOf(widget);
         if (thisindex > -1) {
-            qDebug() << "removing" << name << thisindex;
+            qDebug() << "removing tab" << name << thisindex;
             m_tabwidget->removeTab(thisindex);
         }
         delete widget;
@@ -1236,20 +1236,22 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
  */
 void MainWidget::engineStopped()
 {
-    qDebug() << "MainWidget::engineStopped()";
+    // qDebug() << "MainWidget::engineStopped()";
     m_settings->setValue("display/mainwindowstate", saveState());
     if (m_tabwidget->currentIndex() > -1) {
         // qDebug() << m_tabwidget->currentIndex();
         m_settings->setValue("display/lastfocusedtab", m_tabwidget->currentIndex());
         // qDebug() << m_tabwidget->tabText(m_tabwidget->currentIndex());
     }
-        
+    
     foreach (QString dname, m_docknames)
         m_docks[dname]->hide();
     clearPresence();
-        
+    
     for(int j = 0; j < XletList.size(); j++) {
         QString xletid = XletList[j];
+        if (xletid == "tabber")
+            continue;
         if (m_forcetabs || m_allnames.contains(xletid)) {
             if ((xletid == QString("customerinfo")) && m_engine->checkedFunction("customerinfo")) {
                 removePanel(xletid, m_xlet[xletid]);
@@ -1259,7 +1261,7 @@ void MainWidget::engineStopped()
                 removePanel(xletid, m_xlet[xletid]);
         }
     }
-        
+    
     if(m_docknames.contains("tabber")) {
         removePanel("tabber", m_tabwidget);
     }
@@ -1267,12 +1269,12 @@ void MainWidget::engineStopped()
         m_gridlayout->removeWidget(m_tabwidget);
         m_tabwidget->deleteLater();
     }
-
+    
     showLogin();
-        
+    
     if(m_withsystray && m_systrayIcon)
         setSystrayIcon("xivo-black");
-        
+    
     statusBar()->showMessage(tr("Disconnected"));
     m_connectact->setEnabled(true);
     m_disconnectact->setEnabled(false);
