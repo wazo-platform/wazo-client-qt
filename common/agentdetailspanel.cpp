@@ -38,7 +38,6 @@
 #include <QLabel>
 #include <QMenu>
 #include <QPushButton>
-#include <QScrollArea>
 #include <QVariant>
 
 #include "baseengine.h"

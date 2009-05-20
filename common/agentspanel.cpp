@@ -36,7 +36,6 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QPushButton>
-#include <QScrollArea>
 #include <QVariant>
 
 #include "baseengine.h"

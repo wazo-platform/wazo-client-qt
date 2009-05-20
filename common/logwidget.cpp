@@ -93,7 +93,7 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
     QScrollArea * scrollArea = new QScrollArea( this );
     scrollArea->setWidgetResizable( true );
 
-    QWidget * widget = new QWidget( this );
+    QWidget * widget = new QWidget( scrollArea );
     scrollArea->setWidget( widget );
     widget->setObjectName("scroller"); // in order for the style settings to be set accordingly
 

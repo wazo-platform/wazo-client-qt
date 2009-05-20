@@ -39,7 +39,6 @@
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QRegExp>
-#include <QScrollArea>
 
 #include "baseengine.h"
 #include "dialpanel.h"

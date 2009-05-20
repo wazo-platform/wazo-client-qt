@@ -44,7 +44,6 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QScrollArea>
 #include <QVariant>
 #include <QVBoxLayout>
 

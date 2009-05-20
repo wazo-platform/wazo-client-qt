@@ -43,7 +43,6 @@ class QContextMenuEvent;
 class QGridLayout;
 class QLabel;
 class QPushButton;
-class QScrollArea;
 class QVBoxLayout;
 
 class BaseEngine;
