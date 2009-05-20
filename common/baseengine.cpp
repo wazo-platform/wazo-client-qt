@@ -2247,11 +2247,11 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
 void BaseEngine::handleOtherInstanceMessage(const QString & msg)
 {
     qDebug() << "BaseEngine::handleOtherInstanceMessage()" << msg;
-    QRegExp re("tel:([0-9\\. +]*[0-9])");
+    QRegExp re("^(tel|callto):([-0-9\\. +]*[0-9])", Qt::CaseInsensitive);
     int pos = re.indexIn(msg);
     if(pos >= 0) {
-        QString phonenum = re.cap(1);
-        phonenum.remove('.').remove(' ');
+        QString phonenum = re.cap(2);
+        phonenum.remove('.').remove(' ').remove('-');
         qDebug() << "  trying to dial" << phonenum;
         actionCall("originate", "user:special:me", "ext:"+phonenum);
     }
