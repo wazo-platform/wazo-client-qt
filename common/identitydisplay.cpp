@@ -36,14 +36,10 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QLabel>
-#include <QLineEdit>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QSizePolicy>
-#include <QProgressBar>
-#include <QPushButton>
 #include <QRegExp>
-#include <QScrollArea>
 
 #include "baseengine.h"
 #include "extendedlabel.h"
