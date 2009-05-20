@@ -45,7 +45,8 @@
 
 /*! \brief constructor */
 PowerAwareApplication::PowerAwareApplication(int & argc, char ** argv)
-    : QApplication(argc, argv)
+    : QtSingleApplication(argc, argv)
+    //: QApplication(argc, argv)
 {
 }
 

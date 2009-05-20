@@ -234,6 +234,7 @@ public slots:
     void logAction(const QString &);
     void shouldNotOccur(const QString &, const QString &); //!< log tricky situations
     void sendNewRemark(const QString &, const QString &);
+    void handleOtherInstanceMessage(const QString &);
 private slots:
     void keepLoginAlive(); //!< Keep session alive
     void changeState(); //!< Change the presence status

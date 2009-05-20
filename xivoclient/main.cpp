@@ -31,7 +31,8 @@
  * $Date$
  */
 
-#include <QApplication>
+//#include <QApplication>
+//#include <QtSingleApplication>
 #include <QFile>
 #include <QLocale>
 #include <QSettings>
@@ -61,6 +62,20 @@ int main(int argc, char ** argv)
     QCoreApplication::setOrganizationDomain("xivo.fr");
     QCoreApplication::setApplicationName("XIVO_Client");
     PowerAwareApplication app(argc, argv);
+    if(app.isRunning()) {
+        qDebug() << "application is already running";
+        // do not create a new application, just activate the currently running one
+        QString msg;
+        if(argc > 1) {
+            // send message if there is an argument.
+            // see http://people.w3.org/~dom/archives/2005/09/integrating-a-new-uris-scheme-handler-to-gnome-and-firefox/
+            // to learn how to handle "tel:0123456" uri scheme
+            msg.append(argv[1]);
+            qDebug() << "sending" << msg;
+            qDebug() << app.sendMessage(msg);
+        }
+        return 0;
+    }
     QSettings * settings = new QSettings(QSettings::IniFormat,
                                          QSettings::UserScope,
                                          QCoreApplication::organizationName(),
@@ -109,6 +124,7 @@ int main(int argc, char ** argv)
     qDebug() << "main() osname=" << info_osname << "locale=" << locale;
     
     MainWidget main(engine, info_osname);
+    app.setActivationWindow( &main );
     
     //main.dumpObjectTree();
     app.setProperty("stopper", "lastwindow");
@@ -126,6 +142,8 @@ int main(int argc, char ** argv)
                       engine, SLOT(start()) );
     QObject::connect( &app, SIGNAL(powerEvent(const QString &)),
                       engine, SLOT(powerEvent(const QString &)) );
+    QObject::connect( &app, SIGNAL(messageReceived(const QString &)),
+                      engine, SLOT(handleOtherInstanceMessage(const QString &)) );
     
     //engine.startTimer(1000);
     return app.exec();

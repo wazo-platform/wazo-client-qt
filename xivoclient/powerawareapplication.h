@@ -34,11 +34,11 @@
 #ifndef __POWERAWAREAPPLICATION_H__
 #define __POWERAWAREAPPLICATION_H__
 
-#include <QApplication>
+#include <QtSingleApplication>
 
 /*! \brief Extends QApplication to support stand-by/resume events
  */
-class PowerAwareApplication : public QApplication
+class PowerAwareApplication : public QtSingleApplication
 {
     Q_OBJECT
 public:

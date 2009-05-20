@@ -1076,6 +1076,7 @@ void BaseEngine::parseCommand(const QString & line)
                 QVariantMap changeme = m_guioptions["server_gui"].toMap()["autochangestate"].toMap();
                 if(changeme.count()) {
                     if(stateid == changeme["statesrc"].toString()) {
+                        // QTimer::singleShot() could be used.
                         m_timerid_changestate = startTimer(changeme["seconds"].toInt() * 1000);
                         m_changestate_newstate = changeme["statedst"].toString();
                     } else if(changeme.contains(stateid)) {
@@ -2238,3 +2239,21 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
     command["text"] = text;
     sendJsonCommand(command);
 }
+
+/*! \brief receive the message from other instance of this application
+ *
+ * \see QtSingleApplication
+ */
+void BaseEngine::handleOtherInstanceMessage(const QString & msg)
+{
+    qDebug() << "BaseEngine::handleOtherInstanceMessage()" << msg;
+    QRegExp re("tel:([0-9\\. +]*[0-9])");
+    int pos = re.indexIn(msg);
+    if(pos >= 0) {
+        QString phonenum = re.cap(1);
+        phonenum.remove('.').remove(' ');
+        qDebug() << "  trying to dial" << phonenum;
+        actionCall("originate", "user:special:me", "ext:"+phonenum);
+    }
+}
+
