@@ -4,6 +4,8 @@
 # $Date$
 #
 
+include(../qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
+
 COMMONDIR = ../common
 JSON_JSONQT_DIR = ../3rdparty/json_jsonqt/lib
 OUTLOOK_DIR = ../3rdparty/outlook
