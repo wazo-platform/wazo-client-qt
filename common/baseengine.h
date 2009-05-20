@@ -265,7 +265,6 @@ signals:
     void fileReceived();
     void statusRecord(const QString &, const QString &, const QString &);
     void statusListen(const QString &, const QString &, const QString &);
-    void setGuiOptions(const QVariant &);
     void emitMessageBox(const QString &);
     void setQueueGroups(const QVariant &);
     void setQueueOrder(const QVariant &);

@@ -331,11 +331,13 @@ void IdentityDisplay::setPhoneLines()
             m_linestatus[sjj]->setProperty("linenumber", jj + 1);
             connect( m_linestatus[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-            
-            m_lineaction[sjj]->setPixmap(square);
-            QString todisplay = tr("(Line %1)").arg(jj + 1);
-            m_linestatus[sjj]->setText(QString("  %1  ").arg(todisplay));
         }
+        
+        // enforces the "no busy line" here in order to handle empty comm lists
+        // (occurs when there is a pickup)
+        m_lineaction[sjj]->setPixmap(square);
+        QString todisplay = tr("(Line %1)").arg(jj + 1);
+        m_linestatus[sjj]->setText(QString("  %1  ").arg(todisplay));
         
         int ix = jj / 3;
         int iy = jj % 3;

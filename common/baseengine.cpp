@@ -1234,8 +1234,8 @@ void BaseEngine::parseCommand(const QString & line)
             } else if (function == "update") {
                 QString astid = datamap["astid"].toString();
                 QString phoneid = datamap["phoneid"].toString();
-                QVariant value = datamap["status"];
-                updatePhone(astid, phoneid, value.toMap());
+                QVariantMap value = datamap["status"].toMap();
+                updatePhone(astid, phoneid, value);
                 //callsUpdated();
             } else if (function == "add") {
                 qDebug() << thisclass << function << datamap["astid"].toString() << datamap["deltalist"].toStringList();

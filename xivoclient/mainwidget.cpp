@@ -641,8 +641,6 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
     }
     qDebug() << "adding" << name << title;
     if (m_xlet[name]) {
-        connect( m_engine, SIGNAL(setGuiOptions(const QVariantMap &)),
-                 m_xlet[name], SLOT(setGuiOptions(const QVariantMap &)) );
         connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                  m_xlet[name], SLOT(setUserInfo(const UserInfo *)) );
     }
@@ -1000,8 +998,6 @@ void MainWidget::engineStarted()
                          m_calls, SLOT(monitorPeer(UserInfo *)) );
                 
                 connectDials(m_calls);
-                connect( m_engine, SIGNAL(setGuiOptions(const QVariant &)),
-                         m_calls, SLOT(setGuiOptions(const QVariant &)) );
                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                          m_calls, SLOT(setUserInfo(const UserInfo *)) );
                 
@@ -1198,8 +1194,6 @@ void MainWidget::setSystrayIcon(const QString & def)
 void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
     if (m_xlet[name]) {
-        disconnect( m_engine, SIGNAL(setGuiOptions(const QVariantMap &)),
-                    m_xlet[name], SLOT(setGuiOptions(const QVariantMap &)) );
         disconnect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                     m_xlet[name], SLOT(setUserInfo(const UserInfo *)) );
     }
