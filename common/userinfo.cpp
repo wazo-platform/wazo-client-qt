@@ -100,7 +100,7 @@ void UserInfo::setPhones(const QString & astid,
         PhoneInfo * pi = NULL;
         QString key = astid + "." + term;
         if(phones.contains(key))
-            pi = phones[key];
+            pi = phones.value(key);
         m_phones[term] = pi;
     }
 }
@@ -112,7 +112,7 @@ void UserInfo::setAvailState(const QVariant & availstate)
     const QMap<QString, QVariant> map = availstate.toMap();
     foreach(const QString key, map.keys())
     {
-        m_availstate[key] = map[key].toString();
+        m_availstate[key] = map.value(key).toString();
     }
 }
 
@@ -218,10 +218,10 @@ QList<QString> UserInfo::phonelist() const
 const PhoneInfo * UserInfo::getPhoneInfo(const QString & id) const
 {
     if(m_phones.contains(id))
-        return m_phones[id];
+        return m_phones.value(id);
     QString key = m_astid + "." + id;
     if(m_phones.contains(key))
-        return m_phones[key];
+        return m_phones.value(key);
     return NULL;
 }
 
@@ -256,7 +256,7 @@ QList<QString> UserInfo::channelList() const
             {
                 itphone.next();
                 QVariantMap qvm = itphone.value().toMap();
-                list << qvm["thischannel"].toString();
+                list << qvm.value("thischannel").toString();
             }
         }
     }

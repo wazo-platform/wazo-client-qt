@@ -39,10 +39,10 @@ AgentInfo::AgentInfo(const QString & astid,
                      const QMap<QString, QVariant> & prop)
     : m_astid(astid)
 {
-    m_context = prop["context"].toString();
-    m_agentnumber = prop["number"].toString();
-    QString firstname = prop["firstname"].toString();
-    QString lastname = prop["lastname"].toString();
+    m_context = prop.value("context").toString();
+    m_agentnumber = prop.value("number").toString();
+    QString firstname = prop.value("firstname").toString();
+    QString lastname = prop.value("lastname").toString();
     m_fullname = QString("%1 %2").arg(firstname).arg(lastname);
     update(prop);
 }
@@ -71,13 +71,13 @@ bool AgentInfo::updateQueue(const QMap<QString, QVariant> & prop)
         if(! m_properties.contains(arg)) {
             haschanged = true;
             m_properties[arg] = it.value();
-        } else if(m_properties[arg] != it.value()) {
+        } else if(m_properties.value(arg) != it.value()) {
             haschanged = true;
-            QVariantMap tmp = m_properties[arg].toMap();
+            QVariantMap tmp = m_properties.value(arg).toMap();
             QMapIterator<QString, QVariant> it2(it.value().toMap());
             while(it2.hasNext()) {
                 it2.next();
-                if(tmp[it2.key()] != it2.value()) {
+                if(tmp.value(it2.key()) != it2.value()) {
                     tmp[it2.key()] = it2.value();
                 }
             }

@@ -155,7 +155,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     m_agent->hide();
     
-    m_loginkind = m_engine->getGuiOptions("user").toMap()["loginkind"].toUInt();
+    m_loginkind = m_engine->getGuiOptions("client_gui").toMap()["loginkind"].toUInt();
     m_functions = m_engine->getGuiOptions("server_funcs").toMap()["functions"].toStringList();
     setGuiOptions(m_engine->getGuiOptions("server_gui").toMap());
     //         m_glayout->setColumnStretch( 0, 1 );

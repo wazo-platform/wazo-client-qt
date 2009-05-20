@@ -65,7 +65,7 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     m_tabwidget = new QTabWidget();
     
-    QVariantMap opts = m_engine->getGuiOptions("user").toMap();
+    QVariantMap opts = m_engine->getGuiOptions("client_gui").toMap();
     //
     // Connection Tab
     //
@@ -363,7 +363,7 @@ void ConfigWidget::saveAndClose()
     opts["autourl_allowed"] = m_autourl_allowed->checkState();
     opts["switchboard-elt-type"] = m_comboswitchboard->itemData( m_comboswitchboard->currentIndex() ).toString();
     opts["maxwidthwanted"] = m_maxWidthWanted->value();
-    m_engine->setGuiOption("user", opts);
+    m_engine->setGuiOption("client_gui", opts);
     
     m_engine->saveSettings();
     emit confUpdated();

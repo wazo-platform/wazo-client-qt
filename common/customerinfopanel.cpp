@@ -66,7 +66,7 @@ CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
     glayout->addWidget( m_tabs, 0, 0 );
     glayout->setRowStretch(0, 1);
     glayout->setColumnStretch(0, 1);
-    QVariantMap optionsMap = m_engine->getGuiOptions("user").toMap();
+    QVariantMap optionsMap = m_engine->getGuiOptions("client_gui").toMap();
     m_tablimit = optionsMap["sheet-tablimit"].toUInt();
     m_autourl_allowed = optionsMap["autourl_allowed"].toBool();
 }

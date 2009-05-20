@@ -47,7 +47,7 @@ SearchPanel::SearchPanel(BaseEngine * engine,
     : QWidget(parent), m_engine(engine)
 {
     // qDebug() << "SearchPanel::SearchPanel()" << options;
-    QVariantMap optionsMap = m_engine->getGuiOptions("user").toMap();
+    QVariantMap optionsMap = m_engine->getGuiOptions("client_gui").toMap();
     m_maxdisplay = optionsMap["contacts-max"].toUInt();
     m_ncolumns = optionsMap["contacts-width"].toUInt();
     // m_engine->askCallerIds();

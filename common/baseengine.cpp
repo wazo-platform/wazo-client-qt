@@ -202,8 +202,8 @@ void BaseEngine::loadSettings()
     catch(JsonQt::ParseException) {
         qDebug() << "BaseEngine::loadSettings() exception catched for" << defaultguioptions;
     }
-    m_guioptions["user"] = m_settings->value("guisettings", data);
-    m_loginkind = m_guioptions["user"].toMap()["loginkind"].toInt();
+    m_guioptions["client_gui"] = m_settings->value("guisettings", data);
+    m_loginkind = m_guioptions["client_gui"].toMap()["loginkind"].toInt();
     m_settings->endGroup();
     
     m_settings->beginGroup("user-functions");
@@ -251,7 +251,7 @@ void BaseEngine::saveSettings()
     m_settings->beginGroup("user-gui");
     m_settings->setValue("historysize", m_historysize);
     
-    m_settings->setValue("guisettings", m_guioptions["user"]);
+    m_settings->setValue("guisettings", m_guioptions["client_gui"]);
     m_settings->endGroup();
     
     m_settings->beginGroup("user-functions");
@@ -703,6 +703,7 @@ void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
 void BaseEngine::socketStateChanged(QAbstractSocket::SocketState socketState)
 {
     QString socketname = sender()->property("socket").toString();
+    // qDebug() << "BaseEngine::socketStateChanged()" << socketname;
     if(socketname == "cticommands")
         if(socketState == QAbstractSocket::ConnectedState) {
             if(m_timer != -1) {
@@ -1799,10 +1800,11 @@ const int & BaseEngine::loginkind() const
 void BaseEngine::setLoginKind(const int loginkind)
 {
     if(loginkind != m_loginkind) {
+        QVariantMap tmpqvm = m_guioptions.value("client_gui").toMap();
+        tmpqvm["loginkind"] = loginkind;
+        m_guioptions["client_gui"] = tmpqvm;
+        
         m_loginkind = loginkind;
-        QVariantMap tmpqvm = m_guioptions["user"].toMap();
-        tmpqvm["loginkind"] = m_loginkind;
-        m_guioptions["user"] = tmpqvm;
     }
 }
 
@@ -2256,4 +2258,3 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
         actionCall("originate", "user:special:me", "ext:"+phonenum);
     }
 }
-

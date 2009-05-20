@@ -38,9 +38,9 @@ QueueInfo::QueueInfo(const QString & astid,
                      const QMap<QString, QVariant> & prop)
     : m_astid(astid)
 {
-    m_context = prop["context"].toString();
-    m_queuename = prop["queuename"].toString();
-    m_number = prop["number"].toString();
+    m_context = prop.value("context").toString();
+    m_queuename = prop.value("queuename").toString();
+    m_number = prop.value("number").toString();
     update(prop);
 }
 
@@ -68,13 +68,13 @@ bool QueueInfo::updateAgent(const QMap<QString, QVariant> & prop)
         if(!m_properties.contains(arg)) {
             haschanged = true;
             m_properties[arg] = it.value();
-        } else if(m_properties[arg] != it.value()) {
+        } else if(m_properties.value(arg) != it.value()) {
             haschanged = true;
-            QVariantMap tmp = m_properties[arg].toMap();
+            QVariantMap tmp = m_properties.value(arg).toMap();
             QMapIterator<QString, QVariant> it2(it.value().toMap());
             while(it2.hasNext()) {
                 it2.next();
-                if(tmp[it2.key()] != it2.value()) {
+                if(tmp.value(it2.key()) != it2.value()) {
                     tmp[it2.key()] = it2.value();
                 }
             }
