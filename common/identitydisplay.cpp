@@ -204,7 +204,7 @@ void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
 
 void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
 {
-    qDebug() << "IdentityDisplay::contextMenuEvent()" << sender();
+    // qDebug() << "IdentityDisplay::contextMenuEvent()" << sender();
     if(sender() != NULL) {
         QString iconname = sender()->property("iconname").toString();
         if(iconname == "phoneline") {
@@ -315,6 +315,7 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
  */
 void IdentityDisplay::setPhoneLines()
 {
+    // qDebug() << "IdentityDisplay::setPhoneLines()";
     QPixmap square(25, 3);
     square.fill(Qt::black);
     for(int jj = 0 ; jj < m_nlines ; jj ++) {
@@ -331,13 +332,11 @@ void IdentityDisplay::setPhoneLines()
             m_linestatus[sjj]->setProperty("linenumber", jj + 1);
             connect( m_linestatus[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+            
+            m_lineaction[sjj]->setPixmap(square);
+            QString todisplay = tr("(Line %1)").arg(jj + 1);
+            m_linestatus[sjj]->setText(QString("  %1  ").arg(todisplay));
         }
-        
-        // enforces the "no busy line" here in order to handle empty comm lists
-        // (occurs when there is a pickup)
-        m_lineaction[sjj]->setPixmap(square);
-        QString todisplay = tr("(Line %1)").arg(jj + 1);
-        m_linestatus[sjj]->setText(QString("  %1  ").arg(todisplay));
         
         int ix = jj / 3;
         int iy = jj % 3;
@@ -490,6 +489,7 @@ void IdentityDisplay::updateUser(UserInfo * ui)
         m_phonecalltxt->setText(p_pi->hintstatus("longname"));
         m_comms = p_pi->comms();
         QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(m_comms);
+        QStringList busylines;
         while( iter.hasNext() ) {
             iter.next();
             QVariantMap callprops = iter.value().toMap();
@@ -498,6 +498,7 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                 QString status = callprops["status"].toString();
                 QString todisplay = callprops["calleridname"].toString();
                 bool isholded = callprops.contains("time-hold");
+                busylines << ics;
                 
                 QPixmap square_comm(25, 3);
                 square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
@@ -510,6 +511,17 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                     m_lineaction[ics]->setPixmap(square_comm);
                 if(m_linestatus.contains(ics) && m_linestatus[ics])
                     m_linestatus[ics]->setText(QString("  %1  ").arg(todisplay));
+            }
+        }
+        
+        QPixmap square_black(25, 3);
+        square_black.fill(Qt::black);
+        for(int jj = 0 ; jj < m_nlines ; jj ++) {
+            QString sjj = QString::number(jj + 1);
+            if(! busylines.contains(sjj)) {
+                m_lineaction[sjj]->setPixmap(square_black);
+                QString todisplay = tr("(Line %1)").arg(sjj);
+                m_linestatus[sjj]->setText(QString("  %1  ").arg(todisplay));
             }
         }
     }
