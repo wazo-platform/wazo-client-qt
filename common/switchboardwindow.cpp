@@ -42,6 +42,8 @@
 #include <QInputDialog>
 #include <QColorDialog>
 #include <QMenu>
+#include <QDialogButtonBox>
+#include <QtColorPicker>
 
 #include "baseengine.h"
 #include "peerwidgetfactory.h"
@@ -89,7 +91,7 @@ SwitchBoardWindow::~SwitchBoardWindow()
  */
 void SwitchBoardWindow::updateUser(UserInfo * ui)
 {
-    qDebug() << "SwitchBoardWindow::updateUser()" << ui->toString();
+    //qDebug() << "SwitchBoardWindow::updateUser()" << ui->toString();
     QString userid = ui->userid();
     PeerItem * peeritem = NULL;
     if(m_peerhash.contains(userid))
@@ -190,15 +192,14 @@ void SwitchBoardWindow::changeGroupColor()
 {
     Group * group = (Group *)(sender()->property( "group" ).value<void *>());
     if( group )
-        {
-            QColor newColor = QColorDialog::getColor( group->color(), this );
-            if( newColor.isValid() )
-                {
-                    group->setColor( newColor );
-                    update();
-                    //saveGroups();
-                }
+    {
+        QColor newColor = QColorDialog::getColor( group->color(), this );
+        if( newColor.isValid() ) {
+            group->setColor( newColor );
+            update();
+            //saveGroups();
         }
+    }
 }
 
 /*! \brief change group name
@@ -207,17 +208,16 @@ void SwitchBoardWindow::changeGroupName()
 {    
     Group * group = (Group *)(sender()->property( "group" ).value<void *>());
     if( group )
-        {
-            QString newName
-                = QInputDialog::getText( this, tr("Edit group color"),
-                                         tr("Name for group"), QLineEdit::Normal,
-                                         group->name() );
-            if(!newName.isEmpty())
-                {
-                    group->setName( newName );
-                    update();
-                }
+    {
+        QString newName
+            = QInputDialog::getText( this, tr("Edit group name"),
+                                     tr("Name for group"), QLineEdit::Normal,
+                                     group->name() );
+        if(!newName.isEmpty()) {
+            group->setName( newName );
+            update();
         }
+    }
 }
 
 /*! \brief remove a PeerItem
@@ -559,36 +559,58 @@ void SwitchBoardWindow::mouseReleaseEvent( QMouseEvent * )
 {
     //if( event->button() == Qt::LeftButton)
     if( m_trace_box )
+    {
+        QRect rect = QRect( m_first_corner, m_second_corner ).normalized();
+        //        QRect gridRect = QRect( m_layout->getPosInGrid(rect.topLeft()),
+        //                                m_layout->getPosInGrid(rect.bottomRight()) );
+        QRect gridRect = m_layout->getGridRect( rect );
+        qDebug() << rect << gridRect;
+        if( (gridRect.top() != gridRect.bottom())
+            && (gridRect.right() != gridRect.left()) )
         {
-            QRect rect = QRect( m_first_corner, m_second_corner ).normalized();
-            //        QRect gridRect = QRect( m_layout->getPosInGrid(rect.topLeft()),
-            //                                m_layout->getPosInGrid(rect.bottomRight()) );
-            QRect gridRect = m_layout->getGridRect( rect );
-            qDebug() << rect << gridRect;
-            if( (gridRect.top() != gridRect.bottom())
-                && (gridRect.right() != gridRect.left()) )
-                {
-                    QString name = 
-                        QInputDialog::getText( this, tr("Name of the group"),
-                                               tr("Please enter a name for the new group") );
-                    if( !name.isEmpty() ) 
-                        {
-                            Group * group = new Group( this );
-                            group->setRect( gridRect );
-                            group->setName( name );
-                            group->setColor( QColor(63, 63, 255) );
-                            m_group_list << group;
-                            saveGroups();
-                        }
-                }
-            m_trace_box = false;
-            update();
+            //QString name = 
+            //    QInputDialog::getText( this, tr("Name of the group"),
+            //                           tr("Please enter a name for the new group") );
+            QString name;
+            QDialog dialog;
+            dialog.setWindowTitle(tr("New group"));
+            QVBoxLayout * layout = new QVBoxLayout(&dialog);
+            layout->addWidget(new QLabel(tr("Please enter a name for the new group"), &dialog));
+            QLineEdit * lineedit = new QLineEdit(&dialog);
+            layout->addWidget(lineedit);
+            layout->addWidget(new QLabel(tr("Please choose a color for the new group"), &dialog));
+            QtColorPicker * colorpicker = new QtColorPicker(&dialog);
+            colorpicker->setStandardColors();
+            colorpicker->setCurrentColor( QColor(63, 63, 255) );
+            layout->addWidget(colorpicker);
+            QDialogButtonBox * buttonbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &dialog);
+            layout->addWidget(buttonbox);
+            connect( buttonbox, SIGNAL(accepted()),
+                     &dialog, SLOT(accept()) );
+            connect( buttonbox, SIGNAL(rejected()),
+                     &dialog, SLOT(reject()) );
+            dialog.exec();
+            if(dialog.result() == QDialog::Accepted)
+                name = lineedit->text();
+            if( !name.isEmpty() ) 
+            {
+                Group * group = new Group( this );
+                group->setRect( gridRect );
+                group->setName( name );
+                //group->setColor( QColor(63, 63, 255) );
+                group->setColor( colorpicker->currentColor() );
+                m_group_list << group;
+                saveGroups();
+            }
         }
+        m_trace_box = false;
+        update();
+    }
     if( m_group_to_resize )
-        {
-            unsetCursor();
-            m_group_to_resize = NULL;
-        }
+    {
+        unsetCursor();
+        m_group_to_resize = NULL;
+    }
 }
 
 /*! \brief handle paint event

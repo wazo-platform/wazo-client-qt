@@ -5,6 +5,7 @@
 #
 
 include(../qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
+include(../qtaddons/qtcolorpicker/src/qtcolorpicker.pri)
 
 COMMONDIR = ../common
 JSON_JSONQT_DIR = ../3rdparty/json_jsonqt/lib
