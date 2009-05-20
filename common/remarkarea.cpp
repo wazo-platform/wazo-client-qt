@@ -36,24 +36,47 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QLabel>
+#include <QScrollArea>
+#include <QScrollBar>
 #include "remarkarea.h"
 
 /*! \brief Constructor */
 RemarkArea::RemarkArea(QWidget * parent)
     : QWidget(parent), m_currentline(0)
 {
-    m_layout = new QGridLayout( this );
-    m_layout->setColumnStretch(1, 1);
+    // top level widget : VBoxLayout
+    m_layout = new QVBoxLayout( this );
+    // on top : a ScrollArea containing the entries
+    m_scrollarea = new QScrollArea( this );
+    m_layout->addWidget( m_scrollarea );
+    m_layout->setStretchFactor( m_scrollarea, 1 );
+
+    QWidget * scrolledwidget = new QWidget( m_scrollarea );
+    m_scrollarea->setWidget( scrolledwidget );
+    //m_scrollarea->setWidgetResizable( true );
+    m_gridlayout = new QGridLayout( scrolledwidget );
+    m_gridlayout->setSizeConstraint( QLayout::SetFixedSize );
+    m_gridlayout->setVerticalSpacing(0);
+    m_gridlayout->setColumnStretch(1, 1);
+
+    // bottom : one HBoxLayout containing a QLineEdit and a QPushButton
+    QHBoxLayout * hlayout = new QHBoxLayout();
+    m_layout->addLayout( hlayout );
     m_inputline = new QLineEdit( this );
+    hlayout->addWidget( m_inputline );
     m_submitbutton = new QPushButton( tr("&Submit"), this );
+    hlayout->addWidget( m_submitbutton );
     connect( m_submitbutton, SIGNAL(clicked()),
              this, SLOT(submitClicked()) );
     connect( m_inputline, SIGNAL(returnPressed()),
              this, SLOT(submitClicked()) );
     m_inputline->hide();
     m_submitbutton->hide();
-    //displayInputForm();
-    //addRemark(QString("test header"), QString("blahblahblah blahblahblah"));
+
+    scrolledwidget->show();
+    // automatically scroll to last entry when the size of the scroll area change
+    connect( m_scrollarea->verticalScrollBar(), SIGNAL(rangeChanged(int, int)),
+             this, SLOT(scrollToLastEntry()) );
 }
 
 /*! \brief display input form
@@ -63,8 +86,8 @@ RemarkArea::RemarkArea(QWidget * parent)
 void RemarkArea::displayInputForm()
 {
     m_inputline->clear();
-    m_layout->addWidget(m_inputline, m_currentline, 0, 1, 2);
-    m_layout->addWidget(m_submitbutton, m_currentline, 2, 1, 1);
+    //m_layout->addWidget(m_inputline, m_currentline, 0, 1, 2);
+    //m_layout->addWidget(m_submitbutton, m_currentline, 2, 1, 1);
     m_inputline->show();
     m_submitbutton->show();
     m_inputline->setFocus();
@@ -75,22 +98,20 @@ void RemarkArea::hideInputForm()
 {
     m_inputline->hide();
     m_submitbutton->hide();
-    m_layout->removeWidget(m_inputline);
-    m_layout->removeWidget(m_submitbutton);
+    //m_layout->removeWidget(m_inputline);
+    //m_layout->removeWidget(m_submitbutton);
 }
 
 /*! \brief add and display a remark
  */
 void RemarkArea::addRemark(const QString & header, const QString & text)
 {
-    bool inputActive = m_inputline->isVisible();
-    if(inputActive)
-        hideInputForm();
-    m_layout->addWidget(new QLabel(header, this), m_currentline, 0, 1, 1);
-    m_layout->addWidget(new QLabel(text, this), m_currentline, 1, 1, 2);
+    QWidget * headerwidget = new QLabel(header, m_scrollarea);
+    m_gridlayout->addWidget(headerwidget, m_currentline, 0);
+    m_gridlayout->addWidget(new QLabel(text, m_scrollarea), m_currentline, 1);
     m_currentline++;
-    if(inputActive)
-        displayInputForm();
+    //m_scrollarea->ensureWidgetVisible(headerwidget); // doesnt work
+    //m_scrollarea->ensureVisible(0, m_currentline*100);
 }
 
 void RemarkArea::submitClicked()
@@ -100,5 +121,16 @@ void RemarkArea::submitClicked()
     if(!text.isEmpty()) {
         emit textSubmitted( text );
     }
+    m_inputline->clear();
 }
 
+/*! \brief scroll to the bottom of the scroll area in order to show last entry */
+void RemarkArea::scrollToLastEntry()
+{
+    qDebug() << "RemarkArea::autoScroll()";
+    if(m_scrollarea->verticalScrollBar()) {
+        //qDebug() << " vScrollBar" << m_scrollarea->verticalScrollBar();
+        //qDebug() << m_scrollarea->verticalScrollBar()->value() << m_scrollarea->verticalScrollBar()->maximum();
+        m_scrollarea->verticalScrollBar()->setValue( m_scrollarea->verticalScrollBar()->maximum() );
+    }
+}

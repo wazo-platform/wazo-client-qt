@@ -706,6 +706,7 @@ void Popup::addRemarkArea()
     qDebug() << "Popup::addRemarkArea()";
     m_remarkarea = new RemarkArea(this);
     m_vlayout->addWidget( m_remarkarea );
+    m_vlayout->setStretchFactor( m_remarkarea, 1 ); // take available space
     connect( m_remarkarea, SIGNAL(textSubmitted(const QString &)),
              this, SLOT(newRemark(const QString &)) );
 }

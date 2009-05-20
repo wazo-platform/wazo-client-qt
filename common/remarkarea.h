@@ -39,6 +39,8 @@
 class QGridLayout;
 class QLineEdit;
 class QPushButton;
+class QScrollArea;
+class QVBoxLayout;
 
 /*! \brief User Remark Area
  *
@@ -55,11 +57,14 @@ public slots:
     void addRemark(const QString & header, const QString & text);
     void displayInputForm();
     void hideInputForm();
+    void scrollToLastEntry();
 signals:
     void textSubmitted( const QString & );
 private:
     int m_currentline;  //<! last line where the form is
-    QGridLayout * m_layout; //!< Layout
+    QVBoxLayout * m_layout;     //!< Layout for this widget
+    QGridLayout * m_gridlayout; //!< Layout for m_scrollarea
+    QScrollArea * m_scrollarea; //!< Scroll Area
     QLineEdit * m_inputline;    //!< input field for text
     QPushButton * m_submitbutton;   //!< submit button
 };
