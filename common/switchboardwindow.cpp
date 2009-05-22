@@ -631,7 +631,9 @@ void SwitchBoardWindow::paintEvent(QPaintEvent *event)
             continue;
         painter.setBrush( m_group_list[i]->color() );
         painter.setPen(Qt::NoPen);
-        painter.drawRect( rect );
+        painter.drawRect( rect.adjusted(1, 0, -1, 0) );
+        painter.drawRect( rect.x(), rect.y() + 1, 1, rect.height() - 2 );
+        painter.drawRect( rect.right(), rect.y() + 1, 1, rect.height() - 2 );
         // write the text
         painter.setPen(Qt::SolidLine);
         QFont font = this->font();
