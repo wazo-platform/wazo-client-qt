@@ -35,8 +35,8 @@
 #define __MYLOCALDIRPANEL_H__
 
 #include <QObject>
-#include <QWidget>
 #include <QFile>
+#include "xlet.h"
 
 class QLineEdit;
 class BaseEngine;
@@ -49,7 +49,7 @@ class SearchDialog;
  * Displays a local contact base that can be imported/exported
  * from/to .csv files.
  */
-class MyLocalDirPanel : public QWidget
+class MyLocalDirPanel : public XLet
 {
     Q_OBJECT
 public:
@@ -70,9 +70,9 @@ private:
     int findCol(QStringList, QStringList);
     QString getSaveFile() const;
 
-    BaseEngine * m_engine;  //!< xivo client engine
     ExtendedTableWidget * m_table;  //!< Table widget to display contacts
     SearchDialog * m_searchBox; //!< Search dialog box
 };
 
 #endif /* __MYLOCALDIRPANEL_H__ */
+

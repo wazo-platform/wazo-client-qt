@@ -35,14 +35,13 @@
 #define __XLETWEB_H__
 
 #include <QObject>
-#include <QWidget>
+#include "xlet.h"
 
-class BaseEngine;
 class UserInfo;
 
 /*! \brief XletWeb Panel
  */
-class XletWeb : public QWidget
+class XletWeb : public XLet
 {
     Q_OBJECT
 public:
@@ -53,8 +52,6 @@ public slots:
     void setUserInfo(const UserInfo *) {};
     //! does nothing
     void setGuiOptions(const QVariant &) {};
-private:
-    BaseEngine * m_engine; //!< base engine
 };
 
 #endif /* __XLETWEB_H__ */

@@ -45,7 +45,7 @@
 /*! \brief Constructor
  */
 XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     qDebug() << "XletWeb::XletWeb()";
         

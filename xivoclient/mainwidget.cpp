@@ -993,6 +993,7 @@ void MainWidget::engineStarted()
             } else if (xletid == QString("parking")) {
                 m_xlet[xletid] = new ParkingPanel(m_engine, this);
                 addPanel(xletid, tr("Parking"), m_xlet[xletid]);
+                // to change the tab
                 connect( m_xlet[xletid], SIGNAL(newParkEvent()),
                          this, SLOT(newParkEvent()) );
             } else if (xletid == QString("fax")) {
@@ -1047,18 +1048,11 @@ void MainWidget::engineStarted()
                          this, SLOT(affTextChanged()) );
                 
             } else if (xletid == QString("callcampaign")) {
-                m_xlet[xletid] = new CallCampaignPanel(this);
+                m_xlet[xletid] = new CallCampaignPanel(m_engine, this);
                 addPanel(xletid, tr("Call Campaigns"), m_xlet[xletid]);
-                connect( m_xlet[xletid], SIGNAL(requestFileList(const QString &)),
-                         m_engine, SLOT(requestFileList(const QString &)) );
-                connect( m_engine, SIGNAL(requestFileListResult(const QVariant &)),
-                         m_xlet[xletid], SLOT(requestFileListResult(const QVariant &)) );
-                
             } else if (xletid == QString("mylocaldir")) {
                 m_xlet[xletid] = new MyLocalDirPanel(m_engine, this);
-                connectDials(m_xlet[xletid]);
                 addPanel(xletid, tr("Personal Directory"), m_xlet[xletid]);
-                
             } else if (xletid == QString("xletproto")) {
                 m_xlet[xletid] = new XletprotoPanel(m_engine, this);
                 addPanel(xletid, tr("Xlet Prototype"), m_xlet[xletid]);
@@ -1256,6 +1250,7 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
 
 void MainWidget::newParkEvent()
 {
+    // set the current tab to parking
     qDebug() << "MainWidget::newParkEvent()";
 
     int index_parking = m_tabwidget->indexOf(m_xlet["parking"]);

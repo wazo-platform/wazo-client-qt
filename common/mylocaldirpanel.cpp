@@ -52,7 +52,7 @@
 /*! \brief Constructor
  */
 MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     qDebug() << "MyLocalDirPanel::MyLocalDirPanel()";
         
@@ -97,6 +97,9 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
     vlayout->addWidget(m_table);
     QFile file(getSaveFile());
     loadFromFile( file );
+
+    // connects signals/slots with engine
+    connectDials();
 }
 
 /*! \brief Destructor

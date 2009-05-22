@@ -42,11 +42,12 @@
 
 #include "callcampaignpanel.h"
 #include "userinfo.h"
+#include "baseengine.h"
 
 /*! \brief Constructor
  */
-CallCampaignPanel::CallCampaignPanel(QWidget * parent)
-    : QWidget(parent)
+CallCampaignPanel::CallCampaignPanel(BaseEngine * engine, QWidget * parent)
+    : XLet(engine, parent)
 {
     qDebug() << "CallCampaignPanel::CallCampaignPanel()";
         
@@ -97,6 +98,12 @@ CallCampaignPanel::CallCampaignPanel(QWidget * parent)
     m_vlayout->addStretch();
         
     m_glayout->setColumnStretch(2, 1);
+
+    // connects signals/slots with engine
+    connect( this, SIGNAL(requestFileList(const QString &)),
+             m_engine, SLOT(requestFileList(const QString &)) );
+    connect( m_engine, SIGNAL(requestFileListResult(const QVariant &)),
+             this, SLOT(requestFileListResult(const QVariant &)) );
 }
 
 void CallCampaignPanel::setOpenFileName()

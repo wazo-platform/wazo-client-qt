@@ -37,7 +37,7 @@
 #include <QHash>
 #include <QObject>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QGridLayout;
 class QHBoxLayout;
@@ -50,14 +50,14 @@ class UserInfo;
 
 /*! \brief CallCampaign Panel
  */
-class CallCampaignPanel : public QWidget
+class CallCampaignPanel : public XLet
 {
     Q_OBJECT
-        public:
-    CallCampaignPanel(QWidget * parent = 0);
- signals:
+public:
+    CallCampaignPanel(BaseEngine * engine, QWidget * parent = 0);
+signals:
     void requestFileList(const QString &);
-    public slots:
+public slots:
     void setGuiOptions(const QVariant &) {};
     void setUserInfo(const UserInfo *) {};
     void setOpenFileName();
@@ -68,7 +68,7 @@ class CallCampaignPanel : public QWidget
     void clearCalls();
     void loadFileClicked();
     void requestFileListResult(const QVariant &);
- private:
+private:
     void addNumber(const QString &);
     void checkStatuses();
     
@@ -83,3 +83,4 @@ class CallCampaignPanel : public QWidget
 };
 
 #endif /* __CALLCAMPAIGNPANEL_H__ */
+
