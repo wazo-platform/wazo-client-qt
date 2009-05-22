@@ -189,10 +189,13 @@ void BaseEngine::loadSettings()
     m_settings->beginGroup("user-gui");
     m_historysize = m_settings->value("historysize", 8).toUInt();
     
+    QString defaultguioptions;
     QFile defaultguioptions_file(":/common/guioptions.json");
-    defaultguioptions_file.open(QFile::ReadOnly);
-    QString defaultguioptions = defaultguioptions_file.read(1024);
-    defaultguioptions_file.close();
+    if(defaultguioptions_file.exists()) {
+        defaultguioptions_file.open(QFile::ReadOnly);
+        defaultguioptions = defaultguioptions_file.readAll();
+        defaultguioptions_file.close();
+    }
     QVariant data;
     try {
         data = JsonQt::JsonToVariant::parse(defaultguioptions);
