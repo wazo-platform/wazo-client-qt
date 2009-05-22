@@ -38,30 +38,29 @@
 #include <QList>
 #include <QObject>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QFrame;
 class QGridLayout;
 class QLabel;
 class QPushButton;
 
-class BaseEngine;
 class UserInfo;
 
 /*! \brief Display a list of agents
  */
-class AgentsPanel : public QWidget
+class AgentsPanel : public XLet
 {
     Q_OBJECT
- public:
+public:
     AgentsPanel(BaseEngine *,
                 QWidget * parent = 0);
     ~AgentsPanel();
- signals:
+signals:
     void changeWatchedAgent(const QString &, bool);
     void agentAction(const QString &);
     void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
- public slots:
+public slots:
     void setGuiOptions(const QVariantMap &);
     void setUserInfo(const UserInfo *) {};
     void newAgentList(const QStringList &);
@@ -69,9 +68,9 @@ class AgentsPanel : public QWidget
     void updateAgentPresence(const QString &, const QString &, const QVariant &);
     void statusRecord(const QString &, const QString &, const QString &);
     void statusListen(const QString &, const QString &, const QString &);
- private slots:
+private slots:
     void agentClicked();
- private:
+private:
     void newAgentLine(const QString &);
     void updateAgentLineAdmin(const QString &, const QString &, const QString &);
     void updateAgentLineEvent(const QString &);
@@ -81,7 +80,6 @@ class AgentsPanel : public QWidget
     QFont m_gui_font;   //!< font
     quint32 m_gui_buttonsize;   //!< button size
     
-    BaseEngine * m_engine;
     QGridLayout * m_gridlayout;     //!< Layout
     
     QHash<QString, QLabel *>      m_agent_labels;

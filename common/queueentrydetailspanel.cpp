@@ -45,7 +45,7 @@
  */
 QueueentrydetailsPanel::QueueentrydetailsPanel(BaseEngine * engine,
                                                QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     m_gridlayout = new QGridLayout(this);
     
@@ -54,6 +54,14 @@ QueueentrydetailsPanel::QueueentrydetailsPanel(BaseEngine * engine,
     m_gridlayout->setRowStretch( 100, 1 );
     m_gridlayout->addWidget(m_queuedescription, 0, 0);
     startTimer(1000);
+    // connect signal slots to engine
+    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+             this, SLOT(newAgentList(const QStringList &)) );
+    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+             this, SLOT(newQueueList(const QStringList &)) );
+
+    connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
+             this, SLOT(monitorThisQueue(const QString &)) );
 }
 
 /*! \brief Destructor

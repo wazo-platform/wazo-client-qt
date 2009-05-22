@@ -39,7 +39,7 @@
 #include <QList>
 #include <QObject>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QComboBox;
 class QContextMenuEvent;
@@ -47,13 +47,12 @@ class QGridLayout;
 class QLabel;
 class QPushButton;
 
-class BaseEngine;
 class ExtendedLabel;
 class UserInfo;
 
 /*! \brief Identity Display
  */
-class AgentsPanelNext : public QWidget
+class AgentsPanelNext : public XLet
 {
     Q_OBJECT
 public:
@@ -99,7 +98,6 @@ private:
     QFont m_gui_font;
     QGridLayout * m_glayout;
     QMap<QString, ExtendedLabel *> m_title;
-    BaseEngine * m_engine;
     
     int m_blinktime;
     

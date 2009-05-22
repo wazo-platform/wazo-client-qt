@@ -37,7 +37,7 @@
 #include <QHash>
 #include <QObject>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QContextMenuEvent;
 class QGridLayout;
@@ -45,26 +45,25 @@ class QLabel;
 class QPushButton;
 class QVBoxLayout;
 
-class BaseEngine;
 class UserInfo;
 class QueueInfo;
 
 /*! \brief Display details about an agent
  */
-class AgentdetailsPanel : public QWidget
+class AgentdetailsPanel : public XLet
 {
     Q_OBJECT
- public:
+public:
     AgentdetailsPanel(BaseEngine *,
                       QWidget * parent = 0);
     ~AgentdetailsPanel();
- protected:
+protected:
     void contextMenuEvent(QContextMenuEvent *);
- signals:
+signals:
     void changeWatchedQueue(const QString &);
     void agentAction(const QString &);
     void setFileName(const QString &);
- public slots:
+public slots:
     void setGuiOptions(const QVariantMap &);
     void setUserInfo(const UserInfo *) {};
     void newAgentList(const QStringList &);
@@ -73,12 +72,12 @@ class AgentdetailsPanel : public QWidget
     void saveToFile();
     void statusRecord(const QString &, const QString &, const QString &);
     void statusListen(const QString &, const QString &, const QString &);
- private slots:
+private slots:
     void queueClicked();
     void actionClicked();
     void serverFileList(const QStringList &);
     void getFile();
- private:
+private:
     void clearPanel();
     void updatePanel();
     void setQueueLookProps(const QString &);
@@ -86,8 +85,6 @@ class AgentdetailsPanel : public QWidget
     void setQueueProps(const QString &, const QueueInfo *);
     void setQueueAgentSignals(const QString &);
     void fillQueue(int, const QString &);
-    
-    BaseEngine * m_engine;
     
     QGridLayout * m_gridlayout; //!< layout
     int m_linenum;  //!< line number ?

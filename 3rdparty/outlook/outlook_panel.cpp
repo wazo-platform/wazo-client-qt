@@ -70,7 +70,7 @@
  *  Build layout and child widgets, connect signals/slots.
  */
 OutlookPanel::OutlookPanel(BaseEngine * engine, QWidget * parent)
-        : QWidget(parent),
+        : XLet(engine, parent),
           m_calllength(20), m_callprefix("")
 {
 	OLEngine()->start_thread();
@@ -118,6 +118,16 @@ OutlookPanel::OutlookPanel(BaseEngine * engine, QWidget * parent)
 	m_table->sortByColumn(0, Qt::AscendingOrder);
 
 	refresh_table();
+    // connect signals/slots to engine
+    connectDials();
+    connect( &(OLEngine()->m_OLThread), SIGNAL(contactsLoaded()),
+             this, SLOT(contactsLoaded()) );
+    connect( this, SIGNAL(searchOutlook(const QString &)),
+             m_engine, SLOT(searchOutlook(const QString &)) );
+    connect( this, SIGNAL(copyNumber(const QString &)),
+             m_engine, SLOT(copyNumber(const QString &)) );
+    connect( m_engine, SIGNAL(outlookResponse(const QString &)),
+             this, SLOT(setSearchResponse(const QString &)) );
 }
 
 class QTableWidgetItemExt : public QTableWidgetItem {

@@ -59,6 +59,7 @@ CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
              this, SLOT(addNewRemark(const QString &, const QVariantMap &)) );
     connect( this, SIGNAL(actionFromFiche(const QVariant &)),
              m_engine, SLOT(actionFromFiche(const QVariant &)) );
+    connectDials();
 
     // qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
     QGridLayout * glayout = new QGridLayout(this);

@@ -38,7 +38,7 @@
 #include <QList>
 #include <QObject>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QComboBox;
 class QContextMenuEvent;
@@ -48,13 +48,12 @@ class QPushButton;
 class QLabel;
 class QFrame;
 
-class BaseEngine;
 class UserInfo;
 class IdentityAgent;
 
 /*! \brief Identity Display
  */
-class IdentityDisplay : public QWidget
+class IdentityDisplay : public XLet
 {
     Q_OBJECT
 public:
@@ -107,7 +106,6 @@ private:
 
     IdentityAgent * m_agent;
     
-    BaseEngine * m_engine;
     QHash<QString, QString> m_presence_names;
     QHash<QString, QLabel *> m_lineaction;
     QHash<QString, QLabel *> m_linestatus;

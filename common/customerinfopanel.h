@@ -44,7 +44,6 @@
 class QTabWidget;
 
 class Popup;
-class BaseEngine;
 
 /*! \brief display "sheets" from calling customers
  */

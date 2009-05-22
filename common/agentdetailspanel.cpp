@@ -40,6 +40,7 @@
 #include <QPushButton>
 #include <QVariant>
 
+#include "xlet.h"
 #include "baseengine.h"
 #include "agentdetailspanel.h"
 #include "agentinfo.h"
@@ -52,7 +53,7 @@ const QColor Orange = QColor(255, 128, 0);
  */
 AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
                                      QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     m_linenum = 0;
     m_gridlayout = new QGridLayout(this);
@@ -111,6 +112,30 @@ AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
                  this, SLOT(actionClicked()));
     }
     setGuiOptions(m_engine->getGuiOptions("merged_gui"));
+
+    // connect signal/slots with engine
+    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+             this, SLOT(newAgentList(const QStringList &)) );
+    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+             this, SLOT(newQueueList(const QStringList &)) );
+
+    connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
+             this, SLOT(monitorThisAgent(const QString &)) );
+    connect( this, SIGNAL(changeWatchedQueue(const QString &)),
+             m_engine, SLOT(changeWatchedQueueSlot(const QString &)) );
+    connect( this, SIGNAL(agentAction(const QString &)),
+             m_engine, SLOT(agentAction(const QString &)) );
+
+    connect( m_engine, SIGNAL(serverFileList(const QStringList &)),
+             this, SLOT(serverFileList(const QStringList &)) );
+    connect( m_engine, SIGNAL(fileReceived()),
+             this, SLOT(saveToFile()) );
+    connect( this, SIGNAL(setFileName(const QString &)),
+             m_engine, SLOT(saveToFile(const QString &)) );
+    connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
+             this, SLOT(statusRecord(const QString &, const QString &, const QString &)) );
+    connect( m_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
+             this, SLOT(statusListen(const QString &, const QString &, const QString &)) );
 }
 
 /*! \brief Destructor

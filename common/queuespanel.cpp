@@ -51,7 +51,7 @@ const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 
  */
 QueuesPanel::QueuesPanel(BaseEngine * engine,
                          QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     // qDebug() << "QueuesPanel::QueuesPanel()" << options;
     m_gui_buttonsize = 10;
@@ -133,6 +133,24 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_gridlayout->setVerticalSpacing(0);
     
     setGuiOptions(optionsMap);
+    // connect signal/slots to engine
+    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+             this, SLOT(newAgentList(const QStringList &)) );
+    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+             this, SLOT(newQueueList(const QStringList &)) );
+                
+    connect( m_engine, SIGNAL(updateCounter(const QVariant &)),
+             this, SLOT(updateCounter(const QVariant &)) );
+    connect( m_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
+             this, SLOT(removeQueues(const QString &, const QStringList &)) );
+    connect( this, SIGNAL(changeWatchedQueue(const QString &)),
+             m_engine, SLOT(changeWatchedQueueSlot(const QString &)) );
+    connect( this, SIGNAL(saveQueueOrder(const QVariant &)),
+             m_engine, SLOT(saveQueueOrder(const QVariant &)) );
+    connect( this, SIGNAL(loadQueueOrder()),
+             m_engine, SLOT(loadQueueOrder()) );
+    connect( m_engine, SIGNAL(setQueueOrder(const QVariant &)),
+             this, SLOT(setQueueOrder(const QVariant &)) );
 }
 
 /*! \brief Destructor

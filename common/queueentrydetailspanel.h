@@ -39,36 +39,35 @@
 #include <QList>
 #include <QObject>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QGridLayout;
 class QLabel;
 class QScrollArea;
 class QVBoxLayout;
 
-class BaseEngine;
 class UserInfo;
 
 /*! \brief Display entries of a queue
  */
-class QueueentrydetailsPanel : public QWidget
+class QueueentrydetailsPanel : public XLet
 {
     Q_OBJECT
- public:
+public:
     QueueentrydetailsPanel(BaseEngine *,
                            QWidget * parent = 0);
     ~QueueentrydetailsPanel();
- signals:
+signals:
     void changeWatchedAgent(const QString &);   //!< change watched agent
- protected:
+protected:
     void timerEvent(QTimerEvent *);
- public slots:
+public slots:
     void setGuiOptions(const QVariantMap &) {};
     void setUserInfo(const UserInfo *) {};
     void newAgentList(const QStringList &);
     void newQueueList(const QStringList &);
     void monitorThisQueue(const QString &);
- private:
+private:
     void updateEntryChannel(const QString &);
     void clearPanel();
     void updatePanel();

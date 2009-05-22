@@ -41,7 +41,7 @@
 #include <QSystemTrayIcon>
 #include <QWidget>
 
-#include "baseengine.h"
+#include "xlet.h"
 #include "directorypanel.h"
 
 class QAction;
@@ -155,7 +155,8 @@ private:
     LeftPanel * m_leftpanel;
     QScrollArea * m_areaCalls;
     CallStackWidget * m_calls;
-    QHash<QString, QWidget *> m_xlet;
+//    QHash<QString, QWidget *> m_xlet;
+    QHash<QString, XLet *> m_xlet;
 
     QLabel * m_xivobg;
 
@@ -211,10 +212,10 @@ private:
  */
 class LeftPanel : public QWidget
 {
- public:
+public:
     LeftPanel(QWidget *, QWidget * parent = 0);        //!< Constructor
     QLabel * titleLabel();        //!< getter for m_titleLabel
- private:
+private:
     QLabel * m_titleLabel;        //!< Title label property
 };
 

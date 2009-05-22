@@ -49,7 +49,7 @@
  */
 AgentsPanel::AgentsPanel(BaseEngine * engine,
                          QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     m_gui_buttonsize = 10;
     
@@ -78,6 +78,23 @@ AgentsPanel::AgentsPanel(BaseEngine * engine,
     m_gridlayout->setVerticalSpacing(0);
     
     setGuiOptions(m_engine->getGuiOptions("merged_gui"));
+    // connect signals/slots with engine
+    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+             this, SLOT(newAgentList(const QStringList &)) );
+    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+             this, SLOT(newQueueList(const QStringList &)) );
+    connect( this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
+             m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
+    connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
+             m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
+    connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QString &, const QVariant &)),
+             this, SLOT(updateAgentPresence(const QString &, const QString &, const QVariant &)) );
+    connect( this, SIGNAL(agentAction(const QString &)),
+             m_engine, SLOT(agentAction(const QString &)) );
+    connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
+             this, SLOT(statusRecord(const QString &, const QString &, const QString &)) );
+    connect( m_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
+             this, SLOT(statusListen(const QString &, const QString &, const QString &)) );
 }
 
 /*! \brief Destructor */

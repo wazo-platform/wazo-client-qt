@@ -60,7 +60,7 @@
  */
 AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
                                  QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     m_glayout = new QGridLayout(this);
     m_glayout->setSpacing(1);
@@ -70,6 +70,29 @@ AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
     
     setGuiOptions(m_engine->getGuiOptions("merged_gui"));
     startTimer(1000);
+
+    // connect signal/slots with engine
+    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+             this, SLOT(newAgentList(const QStringList &)) );
+    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+             this, SLOT(newQueueList(const QStringList &)) );
+                
+    connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
+             m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
+    connect( this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
+             m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
+    connect( this, SIGNAL(agentAction(const QString &)),
+             m_engine, SLOT(agentAction(const QString &)) );
+    connect( this, SIGNAL(saveQueueGroups(const QVariant &)),
+             m_engine, SLOT(saveQueueGroups(const QVariant &)) );
+    connect( this, SIGNAL(loadQueueGroups()),
+             m_engine, SLOT(loadQueueGroups()) );
+    connect( m_engine, SIGNAL(setQueueGroups(const QVariant &)),
+             this, SLOT(setQueueGroups(const QVariant &)) );
+    connect( m_engine, SIGNAL(setQueueOrder(const QVariant &)),
+             this, SLOT(setQueueOrder(const QVariant &)) );
+    connect( this, SIGNAL(logAction(const QString &)),
+             m_engine, SLOT(logAction(const QString &)) );
 }
 
 AgentsPanelNext::~AgentsPanelNext()

@@ -54,7 +54,7 @@
  */
 IdentityDisplay::IdentityDisplay(BaseEngine * engine,
                                  QWidget * parent)
-    : QWidget(parent), m_engine(engine),
+    : XLet(engine, parent),
       m_ui(NULL), m_nlines(0)
 {
     setAccessibleName( tr("Current User Panel") );
@@ -158,6 +158,27 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_functions = m_engine->getGuiOptions("server_funcs").value("functions").toStringList();
     setGuiOptions(m_engine->getGuiOptions("merged_gui"));
     // m_glayout->setColumnStretch( 0, 1 );
+
+    // connect signals/slots
+    connectDials();
+    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+             this, SLOT(newAgentList(const QStringList &)) );
+    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+             this, SLOT(newQueueList(const QStringList &)) );
+
+    connect( m_engine, SIGNAL(updatePresence(const QVariant &)),
+             this, SLOT(updatePresence(const QVariant &)) );
+    connect( this, SIGNAL(setAvailState(const QString &, bool)),
+             m_engine, SLOT(setAvailState(const QString &, bool)) );
+    connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
+             m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
+
+    connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
+             this, SLOT(setOpt(const QString &, bool)) );
+    connect( m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
+             this, SLOT(setForward(const QString &, const QVariant &)) );
+    connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
+             this, SLOT(updateUser(UserInfo *)) );
 }
 
 void IdentityDisplay::setupIcons()

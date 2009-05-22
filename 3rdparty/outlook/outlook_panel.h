@@ -46,7 +46,7 @@
 
 #include "outlook_contact.h"
 
-#include <QWidget>
+#include "xlet.h"
 
 class QDropEvent;
 class QFocusEvent;
@@ -57,7 +57,6 @@ class QTableWidgetItem;
 class ExtendedLineEdit;
 class ExtendedTableWidget;
 class UserInfo;
-class BaseEngine;
 
 class COLCol {
 public:
@@ -70,7 +69,7 @@ public:
 };
 /*! \brief Outlook allowing search
  */
-class OutlookPanel : public QWidget
+class OutlookPanel : public XLet
 {
 	Q_OBJECT
 public:

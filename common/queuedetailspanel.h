@@ -38,7 +38,7 @@
 #include <QHash>
 #include <QObject>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QGridLayout;
 class QLabel;
@@ -47,34 +47,33 @@ class QScrollArea;
 class QVBoxLayout;
 
 class AgentInfo;
-class BaseEngine;
 class UserInfo;
 
 /*! \brief Display details about a queue
  *
  * The agents in this queue and details are displayed
  */
-class QueuedetailsPanel : public QWidget
+class QueuedetailsPanel : public XLet
 {
     Q_OBJECT
- public:
+public:
     QueuedetailsPanel(BaseEngine *,
                       QWidget * parent = 0);
     ~QueuedetailsPanel();
- signals:
+signals:
     void changeWatchedAgent(const QString &, bool); //!< select an agent to watch
     void agentAction(const QString &);
- protected:
+protected:
     void timerEvent(QTimerEvent *);
- public slots:
+public slots:
     void setGuiOptions(const QVariantMap &) {};
     void setUserInfo(const UserInfo *) {};
     void newAgentList(const QStringList &);
     void newQueueList(const QStringList &);
     void monitorThisQueue(const QString &);
- private slots:
+private slots:
     void agentClicked();
- private:
+private:
     void clearPanel();
     void updatePanel();
     void update();

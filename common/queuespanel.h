@@ -39,7 +39,7 @@
 #include <QList>
 #include <QObject>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QCheckBox;
 class QGridLayout;
@@ -47,12 +47,11 @@ class QLabel;
 class QProgressBar;
 class QPushButton;
 
-class BaseEngine;
 class UserInfo;
 
 /*! \brief Displays queues and their status
  */
-class QueuesPanel : public QWidget
+class QueuesPanel : public XLet
 {
     Q_OBJECT
 public:
@@ -86,7 +85,6 @@ private:
     bool m_gui_showqueuenames;
     bool m_gui_showmore;
     
-    BaseEngine * m_engine;        //!< BaseEngine object
     QGridLayout * m_gridlayout; //!< Layout
     QStringList m_statitems;    //!< list of stats items which are reported for each queue
     QHash<QString, QString> m_statlegends_short;  //!< text displayed on top of each column

@@ -41,8 +41,8 @@
 
 /*! \brief Constructor
  */
-DatetimePanel::DatetimePanel(QWidget * parent)
-    : QWidget(parent)
+DatetimePanel::DatetimePanel(BaseEngine * engine, QWidget * parent)
+    : XLet(engine, parent)
 {
     m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocaleDate));
     m_gridlayout = new QGridLayout(this);
