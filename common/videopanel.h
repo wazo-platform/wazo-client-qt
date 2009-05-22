@@ -50,15 +50,16 @@
 #include <QSlider>
 #include <QCloseEvent>
 #include <QTimer>
+#include "xlet.h"
 
-class PlayerWidget: public QWidget
+class PlayerWidget: public XLet
 {
-    Q_OBJECT
-        public:
-    PlayerWidget(QWidget * parent = 0);
- protected:
+Q_OBJECT
+    public:
+    PlayerWidget(BaseEngine * engine, QWidget * parent = 0);
+protected:
     virtual void closeEvent(QCloseEvent *);
- private:
+private:
     bool startMPlayer();
     bool stopMPlayer();
 
@@ -70,7 +71,7 @@ class PlayerWidget: public QWidget
     // Play/stop
     void switchPlayState();
     void mplayerEnded(int, QProcess::ExitStatus);
- private:
+private:
     QPushButton *controller;
     QWidget *renderTarget;
     QProcess *mplayerProcess;

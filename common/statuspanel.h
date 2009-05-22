@@ -38,9 +38,9 @@
 #include <QList>
 #include <QMap>
 #include <QObject>
-#include <QWidget>
 
 #include "userinfo.h"
+#include "xlet.h"
 
 class QFrame;
 class QGridLayout;
@@ -53,7 +53,7 @@ class BaseEngine;
 
 /*! \brief Operator widget used to answer and transfer calls
  */
-class StatusPanel : public QWidget
+class StatusPanel : public XLet
 {
     Q_OBJECT
 public:
@@ -81,7 +81,6 @@ private:
     void removeLine(const QString &);
     
     QGridLayout * m_glayout;
-    BaseEngine * m_engine;
     QLabel * m_lbl;
     
     QHash<QString, QFrame *> m_vlinesl;

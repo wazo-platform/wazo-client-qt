@@ -57,8 +57,10 @@ const QString mplayerPath("path/to/mplayer.exe");
 const QString mplayerPath("mplayer");
 #endif
 
-PlayerWidget::PlayerWidget(QWidget * parent)
-    : QWidget(parent), isPlaying(false), m_movie_url("")
+PlayerWidget::PlayerWidget(BaseEngine * engine, QWidget * parent)
+    : XLet(engine, parent),
+    isPlaying(false),
+    m_movie_url("")
 {
     controller = new QPushButton("Play");
         

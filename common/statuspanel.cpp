@@ -47,7 +47,7 @@
 /*! \brief Constructor
  */
 StatusPanel::StatusPanel(BaseEngine * engine, QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     m_glayout = new QGridLayout(this);
     m_lbl = new QLabel( "", this );
@@ -66,6 +66,10 @@ StatusPanel::StatusPanel(BaseEngine * engine, QWidget * parent)
         
     m_glayout->addWidget( m_lbl, 0, 0, 1, m_actionkey.size() + 4, Qt::AlignHCenter | Qt::AlignVCenter );
     m_glayout->setRowStretch(100, 1);
+
+    // connect signal/SLOTS
+    connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
+             this, SLOT(updateUser(UserInfo *)) );
 }
 
 

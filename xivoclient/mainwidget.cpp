@@ -952,24 +952,19 @@ void MainWidget::engineStarted()
             } else if (xletid == QString("datetime")) {
                 m_xlet[xletid] = new DatetimePanel(this);
                 addPanel(xletid, tr("Date and Time"), m_xlet[xletid]);
-                
             } else if (xletid == QString("dial")) {
                 m_xlet[xletid] = new DialPanel(m_engine, this);
                 addPanel(xletid, tr("Dial"), m_xlet[xletid]);
             } else if (xletid == QString("video")) {
-                m_xlet[xletid] = new PlayerWidget(this);
+                m_xlet[xletid] = new PlayerWidget(m_engine, this);
                 addPanel(xletid, tr("Video"), m_xlet[xletid]);
-                
             } else if (xletid == QString("operator")) {
                 m_xlet[xletid] = new StatusPanel(m_engine, this);
                 addPanel(xletid, tr("Operator"), m_xlet[xletid]);
-                
+
                 connectDials(m_xlet[xletid]);
                 connect( this, SIGNAL(functionKeyPressed(int)),
                          m_xlet[xletid], SLOT(functionKeyPressed(int)) );
-                connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
-                         m_xlet[xletid], SLOT(updateUser(UserInfo *)) );
-                
             } else if (xletid == QString("messages")) {
                 m_xlet[xletid] = new DisplayMessagesPanel(this);
                 addPanel(xletid, tr("Messages"), m_xlet[xletid]);

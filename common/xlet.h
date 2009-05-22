@@ -46,9 +46,11 @@ class XLet : public QWidget
 public:
     //! Constructor
     XLet(BaseEngine * engine, QWidget * parent = 0);
+    QString title() const { return m_title; };
 protected:
     //! BaseEngine pointer
     BaseEngine * m_engine;
+    QString m_title;
 };
 #endif
 
