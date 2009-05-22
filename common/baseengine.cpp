@@ -189,12 +189,10 @@ void BaseEngine::loadSettings()
     m_settings->beginGroup("user-gui");
     m_historysize = m_settings->value("historysize", 8).toUInt();
     
-    QString defaultguioptions = "{\"contacts-max\":30,"
-        "\"contacts-width\":4,"
-        "\"sheet-tablimit\":4,"
-        "\"loginkind\":0,"
-        "\"autourl_allowed\":0,"
-        "\"queuelevels\":{\"green\":2,\"orange\":4,\"red\":6}}";
+    QFile defaultguioptions_file(":/common/guioptions.json");
+    defaultguioptions_file.open(QFile::ReadOnly);
+    QString defaultguioptions = defaultguioptions_file.read(1024);
+    defaultguioptions_file.close();
     QVariant data;
     try {
         data = JsonQt::JsonToVariant::parse(defaultguioptions);
@@ -202,6 +200,7 @@ void BaseEngine::loadSettings()
     catch(JsonQt::ParseException) {
         qDebug() << "BaseEngine::loadSettings() exception catched for" << defaultguioptions;
     }
+    
     m_guioptions["client_gui"] = m_settings->value("guisettings", data);
     m_loginkind = m_guioptions.value("client_gui").toMap().value("loginkind").toInt();
     m_settings->endGroup();

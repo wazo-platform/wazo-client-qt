@@ -1,0 +1,8 @@
+{
+"contacts-max":30,
+"contacts-width":4,
+"sheet-tablimit":4,
+"loginkind":0,
+"autourl_allowed":0,
+"queuelevels":{"green":2,"orange":4,"red":6}
+}

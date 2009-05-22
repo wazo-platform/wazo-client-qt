@@ -402,8 +402,8 @@ void QueuesPanel::update(const QStringList & list)
     if( (maxbusychanged = (maxbusy != m_maxbusy)) )
         m_maxbusy = maxbusy;
     
-    quint32 greenlevel = m_optionsMap["queuelevels"].toMap()["green"].toUInt();
-    quint32 orangelevel = m_optionsMap["queuelevels"].toMap()["orange"].toUInt();
+    quint32 greenlevel = m_optionsMap.value("queuelevels").toMap().value("green").toUInt();
+    quint32 orangelevel = m_optionsMap.value("queuelevels").toMap().value("orange").toUInt();
     QHashIterator<QString, QProgressBar *> it(m_queuebusies);
     while(it.hasNext()) {
         it.next();
