@@ -72,6 +72,7 @@ class SwitchBoardWindow;
 #ifdef USE_OUTLOOK
 class OutlookPanel;
 #endif
+class XLetFactory;
 
 /*! \brief Main window class
  */
@@ -129,8 +130,6 @@ protected:
     void keyPressEvent(QKeyEvent *);
     void addPanel(const QString &, const QString &, QWidget *);
     void removePanel(const QString &, QWidget *);
-    void connectDials(QWidget *);
-    // bool event(QEvent *);
 private:
     void createActions();        //!< Create Actions (for menus)
     void createMenus();                //!< Create Menus
@@ -206,6 +205,7 @@ private:
     QSettings * m_settings;
 
     QClipboard * m_clipboard;
+    XLetFactory * m_xletfactory;
 };
 
 /*! \brief Widget containing the CallStackWidget and a Title QLabel

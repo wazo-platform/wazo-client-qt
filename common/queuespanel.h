@@ -68,7 +68,6 @@ signals:
     void loadQueueOrder();                      //!< request load of queue order
 public slots:
     void setGuiOptions(const QVariantMap &);
-    void setUserInfo(const UserInfo *) {};
     void updateCounter(const QVariant &);
     void removeQueues(const QString &, const QStringList &);
     void newQueueList(const QStringList &);

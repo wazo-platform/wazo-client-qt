@@ -65,7 +65,6 @@ signals:
     void setFileName(const QString &);
 public slots:
     void setGuiOptions(const QVariantMap &);
-    void setUserInfo(const UserInfo *) {};
     void newAgentList(const QStringList &);
     void newQueueList(const QStringList &);
     void monitorThisAgent(const QString &);

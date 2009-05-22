@@ -49,8 +49,6 @@ public:
     ~XletWeb();
 public slots:
     //! does nothing
-    void setUserInfo(const UserInfo *) {};
-    //! does nothing
     void setGuiOptions(const QVariant &) {};
 };
 

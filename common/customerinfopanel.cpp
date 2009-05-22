@@ -49,6 +49,7 @@ CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
                                      QWidget * parent)
     : XLet(engine, parent)
 {
+    setTitle( tr("Sheets") );
     connect( m_engine, SIGNAL(displayFiche(const QString &, bool, const QString &)),
              this, SLOT(displayFiche(const QString &, bool, const QString &)) );
     connect( m_engine, SIGNAL(gotSheetOwnership(const QString &)),

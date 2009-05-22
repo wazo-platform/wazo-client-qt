@@ -57,7 +57,6 @@ public:
     ~MyLocalDirPanel();
 public slots:
     void setGuiOptions(const QVariant &) {};
-    void setUserInfo(const UserInfo *) {};
     void openNewContactDialog();
     void importContacts();
     void exportContacts();

@@ -53,6 +53,7 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
                            QWidget * parent)
     : XLet(engine, parent)
 {
+    setTitle( tr("Parking") );
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
     m_table = new ExtendedTableWidget( m_engine, this );
@@ -111,7 +112,8 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
     
     // ignore buggy events 
     if(fromchannel == channel)
-        return;
+        qDebug() << " *** WARNING channel==fromchannel ***" << channel;
+    //    return;
     
     //QString parkedpeer = channel.split("-")[0];
     QString parkedpeer = calleridname + " (" + calleridnum + ")";

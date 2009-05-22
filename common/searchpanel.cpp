@@ -46,7 +46,8 @@ SearchPanel::SearchPanel(BaseEngine * engine,
                          QWidget * parent)
     : XLet(engine, parent)
 {
-    // qDebug() << "SearchPanel::SearchPanel()" << options;
+    // qDebug() << "SearchPanel::SearchPanel()";
+    setTitle( tr("Contacts") );
     QVariantMap optionsMap = m_engine->getGuiOptions("merged_gui");
     m_maxdisplay = optionsMap.value("contacts-max").toUInt();
     m_ncolumns = optionsMap.value("contacts-width").toUInt();

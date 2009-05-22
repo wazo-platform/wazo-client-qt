@@ -58,7 +58,6 @@ public:
     ~SearchPanel();        //!< Destructor
 public slots:
     void setGuiOptions(const QVariant &) {};
-    void setUserInfo(const UserInfo *) {};
     void affTextChanged(const QString &);
     void updatePeerAgent(double,
                          const QString &,

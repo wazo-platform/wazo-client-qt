@@ -63,7 +63,6 @@ protected:
     void timerEvent(QTimerEvent *);
 public slots:
     void setGuiOptions(const QVariantMap &) {};
-    void setUserInfo(const UserInfo *) {};
     void newAgentList(const QStringList &);
     void newQueueList(const QStringList &);
     void monitorThisQueue(const QString &);

@@ -53,6 +53,7 @@ FaxPanel::FaxPanel(BaseEngine * engine,
     : XLet(engine, parent), m_mainwindow(parent)
 {
     // qDebug() << "FaxPanel::FaxPanel()" << parent;
+    setTitle( tr("Fax") );
     Qt::CheckState previous_hide = (Qt::CheckState) m_engine->getSettings()->value("faxhistory/hidenumber", 0).toInt();
 
     QVBoxLayout * vlayout = new QVBoxLayout(this);

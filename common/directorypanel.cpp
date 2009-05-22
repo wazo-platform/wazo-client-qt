@@ -58,6 +58,7 @@
 DirectoryPanel::DirectoryPanel(BaseEngine * engine, QWidget * parent)
     : XLet(engine, parent), m_re_number("\\+?[0-9\\s\\.]+")
 {
+    setTitle( tr("Directory") );
     setAccessibleName( tr("Directory Panel") );
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);

@@ -51,6 +51,7 @@ DialPanel::DialPanel(BaseEngine * engine,
                      QWidget * parent)
     : XLet(engine, parent)
 {
+    setTitle( tr("Dial") );
     setAccessibleName( tr("Dial Panel") );
     QHBoxLayout * vlayout = new QHBoxLayout(this);
     vlayout->setMargin(0);

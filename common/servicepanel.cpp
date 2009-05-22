@@ -51,6 +51,7 @@ ServicePanel::ServicePanel(BaseEngine * engine,
                            QWidget * parent)
     : XLet(engine, parent)
 {
+    setTitle( tr("Services") );
     m_capalegend["enablevm"]     = tr("Voice &Mail");
     m_capalegend["incallrec"]    = tr("Call &Recording");
     m_capalegend["incallfilter"] = tr("Call &Filtering");
@@ -143,6 +144,8 @@ ServicePanel::ServicePanel(BaseEngine * engine,
              m_engine, SLOT(featurePutForward(const QString &, bool, const QString &)) );
     connect( m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
              this, SLOT(setForward(const QString &, const QVariant &)) );
+    connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+             this, SLOT(setUserInfo(const UserInfo *)) );
 }
 
 ServicePanel::~ServicePanel()

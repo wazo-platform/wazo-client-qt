@@ -59,7 +59,6 @@ protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
 public slots:
     void setGuiOptions(const QVariantMap &) {};
-    void setUserInfo(const UserInfo *) {};
     void parkingEvent(const QVariant &);
 private slots:
     void itemClicked(QTableWidgetItem *);

@@ -55,6 +55,7 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
     : XLet(engine, parent)
 {
     qDebug() << "MyLocalDirPanel::MyLocalDirPanel()";
+    setTitle( tr("Personal Directory") );
         
     m_searchBox = new SearchDialog(this);
     connect(m_searchBox, SIGNAL(findNext()), this, SLOT(findNext()));

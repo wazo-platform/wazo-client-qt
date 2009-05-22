@@ -52,6 +52,7 @@ StatusPanel::StatusPanel(BaseEngine * engine, QWidget * parent)
     m_glayout = new QGridLayout(this);
     m_lbl = new QLabel( "", this );
     setAccessibleName( tr("Operator panel") );
+    setTitle( tr("Operator") );
         
     m_actionkey[Qt::Key_F1] = (QStringList() << "answer" << tr("Answer"));
     m_actionkey[Qt::Key_F2] = (QStringList() << "hangup" << tr("Hangup"));

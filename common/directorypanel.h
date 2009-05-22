@@ -73,7 +73,6 @@ private slots:
     void itemDoubleClicked(QTableWidgetItem *);
 public slots:
     void setGuiOptions(const QVariant &) {};
-    void setUserInfo(const UserInfo *) {};
     void setSearchResponse(const QStringList &, const QStringList &);
     void stop();
 private:

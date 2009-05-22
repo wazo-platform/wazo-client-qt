@@ -55,7 +55,6 @@ protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
 public slots:
     void setGuiOptions(const QVariant &) {};
-    void setUserInfo(const UserInfo *) {};
 private:
     QGridLayout * m_gridlayout;
     QLabel * m_datetime;

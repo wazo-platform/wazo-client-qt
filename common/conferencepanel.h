@@ -62,7 +62,6 @@ protected:
     void timerEvent(QTimerEvent *);
 public slots:
     void setGuiOptions(const QVariantMap &);
-    void setUserInfo(const UserInfo *) {};    //! does nothing...
     void meetmeEvent(double, const QVariant &);
     void meetmeInit(double, const QVariant &);
     void doMeetMeAction();

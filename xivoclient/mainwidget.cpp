@@ -54,15 +54,19 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QStackedWidget>
+#include <QLineEdit>
+#include <QPushButton>
 
+#include "mainwidget.h"
+#include "baseengine.h"
+#include "configwidget.h"
+/*
 #include "agentspanel.h"
 #include "agentspanel_next.h"
 #include "agentdetailspanel.h"
-#include "baseengine.h"
 #include "callcampaignpanel.h"
 #include "callstackwidget.h"
 #include "conferencepanel.h"
-#include "configwidget.h"
 #include "customerinfopanel.h"
 #include "datetimepanel.h"
 #include "dialpanel.h"
@@ -71,7 +75,6 @@
 #include "identitydisplay.h"
 #include "faxpanel.h"
 #include "logwidget.h"
-#include "mainwidget.h"
 #include "mylocaldirpanel.h"
 #include "parkingpanel.h"
 #include "popup.h"
@@ -85,11 +88,13 @@
 #include "videopanel.h"
 #include "xletprotopanel.h"
 #include "xletweb.h"
+*/
 #include "xivoconsts.h"
 #ifdef USE_OUTLOOK
 #include "outlook_panel.h"
 #include "outlook_engine.h"
 #endif /* USE_OUTLOOK */
+#include "xletfactory.h"
 
 const QString extraspace("  ");
 
@@ -128,6 +133,7 @@ MainWidget::MainWidget(BaseEngine * engine,
       m_icon_green(":/images/xivoicon-green.png"),
       m_icon_black(":/images/xivoicon-black.png")
 {
+    m_xletfactory = new XLetFactory(m_engine, this);
     m_engine->setParent( this ); // take ownership of the engine object
     m_appliname = "Client";
     m_engine->setOSInfos(osname);
@@ -640,23 +646,7 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
             m_tabwidget->addTab(widget, extraspace + title + extraspace);
     }
     qDebug() << "adding" << name << title;
-    if (m_xlet[name]) {
-        connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                 m_xlet[name], SLOT(setUserInfo(const UserInfo *)) );
-    }
 }
-
-
-void MainWidget::connectDials(QWidget * widget)
-{
-    connect( widget, SIGNAL(actionCall(const QString &,
-                                       const QString &,
-                                       const QString &)),
-             m_engine, SLOT(actionCall(const QString &,
-                                       const QString &,
-                                       const QString &)) );
-}
-
 
 void MainWidget::updatePresence(const QVariant & presence)
 {
@@ -747,6 +737,20 @@ void MainWidget::engineStarted()
         QString xletid = XletList[j];
         if (m_forcetabs || m_allnames.contains(xletid)) {
             bool withscrollbar = m_dockoptions[xletid].contains("s");
+            XLet * xlet = m_xletfactory->newXLet(xletid, this);
+            if(xlet) {
+                if (withscrollbar) {
+                    QScrollArea * sa_ag = new QScrollArea(this);
+                    sa_ag->setWidget(xlet);
+                    sa_ag->setWidgetResizable(true);
+                    addPanel(xletid, xlet->title(), sa_ag);
+                } else {
+                    addPanel(xletid, xlet->title(), xlet);
+                }
+            } else {
+                qDebug() << "cannot instanciate XLet" << xletid;
+            }
+#if 0
             if (xletid == "history") {
                 m_xlet[xletid] = new LogWidget(m_engine, this);
                 addPanel(xletid, tr("History"), m_xlet[xletid]);
@@ -917,14 +921,19 @@ void MainWidget::engineStarted()
 //                m_xlet[xletid] = new XletprotoPanel(m_engine, this);
 //                addPanel(xletid, tr("Xlet Prototype"), m_xlet[xletid]);
             }
+#endif
         }
     }
     
     qDebug() << "MainWidget::engineStarted() : the xlets have been created";
     m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
     
-    foreach (QString dname, m_docknames)
-        m_docks[dname]->show();
+    foreach (QString dname, m_docknames) {
+        if(m_docks.value(dname))
+            m_docks.value(dname)->show();
+        else
+            qDebug() << "dock" << dname << "not there";
+    }
     
     // restore settings, especially for Docks' positions
     restoreState(m_settings->value("display/mainwindowstate").toByteArray());
@@ -970,14 +979,12 @@ void MainWidget::setSystrayIcon(const QString & def)
 
 void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
-    if (m_xlet[name]) {
-        disconnect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                    m_xlet[name], SLOT(setUserInfo(const UserInfo *)) );
-    }
     if(m_docknames.contains(name)) {
         removeDockWidget(m_docks[name]);
-        delete widget;
-        delete m_docks[name]; // seems to "delete widget", also
+        //delete widget;
+        //delete m_docks[name]; // seems to "delete widget", also
+        //widget->deleteLater();
+        m_docks[name]->deleteLater();
         m_docks.remove(name);
     }
     if(m_tabnames.contains(name)) {
@@ -986,12 +993,13 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
             qDebug() << "removing tab" << name << thisindex;
             m_tabwidget->removeTab(thisindex);
         }
-        delete widget;
+        //widget->deleteLater();
+        //delete widget;
     }
     if(m_gridnames.contains(name)) {
-        m_gridlayout->removeWidget(widget);
+        //m_gridlayout->removeWidget(widget);
         //delete widget;
-        widget->deleteLater();
+        //widget->deleteLater();
     }
 }
 
@@ -1010,8 +1018,10 @@ void MainWidget::engineStopped()
         // qDebug() << m_tabwidget->tabText(m_tabwidget->currentIndex());
     }
     
-    foreach (QString dname, m_docknames)
-        m_docks[dname]->hide();
+    foreach (QString dname, m_docknames) {
+        if(m_docks.contains(dname))
+            m_docks.value(dname)->hide();
+    }
     clearPresence();
     
     for(int j = 0; j < XletList.size(); j++) {

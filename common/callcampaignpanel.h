@@ -59,7 +59,6 @@ signals:
     void requestFileList(const QString &);
 public slots:
     void setGuiOptions(const QVariant &) {};
-    void setUserInfo(const UserInfo *) {};
     void setOpenFileName();
     void fileNameChanged(const QString &);
     void getCalls();

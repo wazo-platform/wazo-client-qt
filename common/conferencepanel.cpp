@@ -49,6 +49,7 @@ ConferencePanel::ConferencePanel(BaseEngine * engine,
     : XLet(engine, parent)
 {
     // qDebug() << "ConferencePanel::ConferencePanel()";
+    setTitle( tr("Conference") );
     m_glayout = new QGridLayout(this);
     m_tw = new QTabWidget(this);
     m_glayout->addWidget( m_tw, 0, 0 );

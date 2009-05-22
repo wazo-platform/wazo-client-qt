@@ -72,8 +72,6 @@ protected:
 public slots:
     //! does nothing
     void setGuiOptions(const QVariant &) {};
-    //! does nothing
-    void setUserInfo(const UserInfo *) {};
     void updateUser(UserInfo *);
     void updatePeerAgent(double,
                          const QString &,

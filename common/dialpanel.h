@@ -60,7 +60,6 @@ protected:
     void dropEvent(QDropEvent *);
 public slots:
     void setGuiOptions(const QVariant &) {};
-    void setUserInfo(const UserInfo *) {};
     void inputValidated();
     void clearlist();
     void setNumberToDial(const QString &);
