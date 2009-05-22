@@ -52,6 +52,8 @@
 #include <QTimer>
 #include "xlet.h"
 
+/*! \brief to be documented !
+ */
 class PlayerWidget: public XLet
 {
 Q_OBJECT
