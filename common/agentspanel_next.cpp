@@ -68,7 +68,7 @@ AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
     // m_gridlayout->setVerticalSpacing(0);
     m_blinktime = 300;
     
-    setGuiOptions(m_engine->getGuiOptions("server_gui"));
+    setGuiOptions(m_engine->getGuiOptions("merged_gui"));
     startTimer(1000);
 }
 
@@ -77,13 +77,13 @@ AgentsPanelNext::~AgentsPanelNext()
     // qDebug() << "AgentsPanelNext::~AgentsPanelNext()";
 }
 
-void AgentsPanelNext::setGuiOptions(const QVariant & optionmap)
+void AgentsPanelNext::setGuiOptions(const QVariantMap & optionsMap)
 {
-    if(optionmap.toMap().contains("blinktime"))
-        m_blinktime = optionmap.toMap()["blinktime"].toInt();
-    if(optionmap.toMap().contains("fontname") && optionmap.toMap().contains("fontsize"))
-        m_gui_font = QFont(optionmap.toMap()["fontname"].toString(),
-                           optionmap.toMap()["fontsize"].toInt());
+    if(optionsMap.contains("blinktime"))
+        m_blinktime = optionsMap["blinktime"].toInt();
+    if(optionsMap.contains("fontname") && optionsMap.contains("fontsize"))
+        m_gui_font = QFont(optionsMap["fontname"].toString(),
+                           optionsMap["fontsize"].toInt());
     
     // setFont(m_gui_font);
     foreach (QString groupid, m_title.keys())

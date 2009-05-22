@@ -65,7 +65,8 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     m_tabwidget = new QTabWidget();
     
-    QVariantMap opts = m_engine->getGuiOptions("client_gui").toMap();
+    QVariantMap opts = m_engine->getGuiOptions("client_gui");
+    QVariantMap forcedopts = m_engine->getGuiOptions("server_gui");
     //
     // Connection Tab
     //
@@ -127,10 +128,11 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
     m_history_sbox->setValue(m_engine->historySize());
     gridlayout2->addWidget(m_history_sbox, line++, 1);
     
+    qDebug() << forcedopts;
     gridlayout2->addWidget(new QLabel(tr("Contacts' max number"), this), line, 0);
     m_contactssize_sbox = new QSpinBox(this);
     m_contactssize_sbox->setRange(1, 500);
-    m_contactssize_sbox->setValue(opts["contacts-max"].toUInt());
+    m_contactssize_sbox->setValue(opts.value("contacts-max").toUInt());
     gridlayout2->addWidget(m_contactssize_sbox, line++, 1);
     
     gridlayout2->addWidget(new QLabel(tr("Contacts' width"), this), line, 0);

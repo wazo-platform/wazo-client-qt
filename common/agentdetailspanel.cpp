@@ -110,7 +110,7 @@ AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
         connect( m_action[function], SIGNAL(clicked()),
                  this, SLOT(actionClicked()));
     }
-    setGuiOptions(m_engine->getGuiOptions("server_gui").toMap());
+    setGuiOptions(m_engine->getGuiOptions("merged_gui"));
 }
 
 /*! \brief Destructor

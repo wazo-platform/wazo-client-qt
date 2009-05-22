@@ -203,7 +203,7 @@ void BaseEngine::loadSettings()
         qDebug() << "BaseEngine::loadSettings() exception catched for" << defaultguioptions;
     }
     m_guioptions["client_gui"] = m_settings->value("guisettings", data);
-    m_loginkind = m_guioptions["client_gui"].toMap()["loginkind"].toInt();
+    m_loginkind = m_guioptions.value("client_gui").toMap().value("loginkind").toInt();
     m_settings->endGroup();
     
     m_settings->beginGroup("user-functions");
@@ -251,7 +251,7 @@ void BaseEngine::saveSettings()
     m_settings->beginGroup("user-gui");
     m_settings->setValue("historysize", m_historysize);
     
-    m_settings->setValue("guisettings", m_guioptions["client_gui"]);
+    m_settings->setValue("guisettings", m_guioptions.value("client_gui"));
     m_settings->endGroup();
     
     m_settings->beginGroup("user-functions");
@@ -339,7 +339,7 @@ void BaseEngine::start()
     qDebug() << "BaseEngine::start()" << m_serverhost << m_checked_function;
     
     // (In case the TCP sockets were attempting to connect ...) aborts them first
-    m_tcpsocket["cticommands"]->abort();
+    m_tcpsocket.value("cticommands")->abort();
     
     connectSocket();
     m_byte_counter = 0;
@@ -364,8 +364,8 @@ void BaseEngine::stop()
             m_attempt_loggedin = false;
     }
     
-    m_tcpsocket["cticommands"]->flush();
-    m_tcpsocket["cticommands"]->disconnectFromHost();
+    m_tcpsocket.value("cticommands")->flush();
+    m_tcpsocket.value("cticommands")->disconnectFromHost();
     
     stopKeepAliveTimer();
     stopTryAgainTimer();
@@ -472,7 +472,7 @@ void BaseEngine::connectSocket()
 {
     if(! m_userid.isEmpty()) {
         qDebug() << "BaseEngine::connectSocket()" << m_serverhost << m_ctiport;
-        m_tcpsocket["cticommands"]->connectToHost(m_serverhost, m_ctiport);
+        m_tcpsocket.value("cticommands")->connectToHost(m_serverhost, m_ctiport);
     }
 }
 
@@ -498,9 +498,9 @@ const QVariantMap & BaseEngine::getCapaPresence() const
     return m_capapresence;
 }
 
-const QVariant BaseEngine::getGuiOptions(const QString & arg) const
+const QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
 {
-    return m_guioptions[arg];
+    return m_guioptions.value(arg).toMap();
 }
 
 void BaseEngine::setGuiOption(const QString & arg, const QVariant & opt)
@@ -557,8 +557,8 @@ void BaseEngine::setAvailability()
 /*! \brief send command to XiVO CTI server */
 void BaseEngine::sendCommand(const QString & command)
 {
-    if(m_tcpsocket["cticommands"]->state() == QAbstractSocket::ConnectedState)
-        m_tcpsocket["cticommands"]->write((command + "\n").toAscii());
+    if(m_tcpsocket.value("cticommands")->state() == QAbstractSocket::ConnectedState)
+        m_tcpsocket.value("cticommands")->write((command + "\n").toAscii());
 }
 
 /*! \brief encode json and then send command to XiVO CTI server */
@@ -653,7 +653,7 @@ void BaseEngine::socketDisconnected()
 
 /*! \brief cat host found socket signal
  *
- * This slot is connected to the hostFound() signal of the m_tcpsocket["cticommands"]
+ * This slot is connected to the hostFound() signal of the m_tcpsocket.value("cticommands")
  */
 void BaseEngine::socketHostFound()
 {
@@ -945,7 +945,7 @@ void BaseEngine::parseCommand(const QString & line)
             //qDebug() << "*** agents !!!" << function << line.length();
             if(function == "sendlist") {
                 QStringList kk;
-                QMap<QString, QVariant> payload = datamap["payload"].toMap();
+                QMap<QString, QVariant> payload = datamap.value("payload").toMap();
                 foreach(QString astid, payload.keys()) {
                     QMap<QString, QVariant> values = payload[astid].toMap();
                     foreach(QString agentid, values.keys()) {
@@ -957,7 +957,7 @@ void BaseEngine::parseCommand(const QString & line)
                 
             } else if(function == "update") {
                 QStringList kk;
-                QMap<QString, QVariant> payload = datamap["payload"].toMap();
+                QMap<QString, QVariant> payload = datamap.value("payload").toMap();
                 foreach(QString astid, payload.keys()) {
                     QMap<QString, QVariant> values = payload[astid].toMap();
                     foreach(QString agentid, values.keys()) {
@@ -1073,8 +1073,8 @@ void BaseEngine::parseCommand(const QString & line)
             QString id = datamap["astid"].toString() + "/" + datamap["xivo_userid"].toString();
             // qDebug() << thisclass << m_users.size() << id;
             if(m_users.contains(id)) {
-                QString stateid = datamap["capapresence"].toMap()["state"].toMap()["stateid"].toString();
-                QVariantMap changeme = m_guioptions["server_gui"].toMap()["autochangestate"].toMap();
+                QString stateid = datamap.value("capapresence").toMap().value("state").toMap().value("stateid").toString();
+                QVariantMap changeme = m_guioptions.value("server_gui").toMap().value("autochangestate").toMap();
                 if(changeme.count()) {
                     if(stateid == changeme["statesrc"].toString()) {
                         // QTimer::singleShot() could be used.
@@ -1334,6 +1334,22 @@ void BaseEngine::parseCommand(const QString & line)
             m_forced_state = datamap["capapresence"].toMap()["state"].toString();
             m_counters = datamap["presencecounter"];
             m_guioptions["server_gui"] = datamap["guisettings"];
+            
+            // Put the values of client_gui, then those of server_gui into merged_gui.
+            // The first ones are overrided by the second ones.
+            QVariantMap tmpa;
+            QMapIterator<QString, QVariant> cg1(m_guioptions.value("client_gui").toMap());
+            while (cg1.hasNext()) {
+                cg1.next();
+                tmpa[cg1.key()] = cg1.value();
+            }
+            QMapIterator<QString, QVariant> cg2(m_guioptions.value("server_gui").toMap());
+            while (cg2.hasNext()) {
+                cg2.next();
+                tmpa[cg2.key()] = cg2.value();
+            }
+            m_guioptions["merged_gui"] = tmpa;
+            
             QVariantMap tmp;
             QStringList todisp;
             m_checked_function["switchboard"] = true;
@@ -1341,9 +1357,6 @@ void BaseEngine::parseCommand(const QString & line)
                 if(m_checked_function.contains(function) && m_checked_function[function])
                     todisp.append(function);
             tmp["functions"] = todisp;
-            tmp["xlets"] = datamap["capaxlets"];
-            tmp["presence"] = datamap["capapresence"];
-            tmp["services"] = datamap["capaservices"];
             m_guioptions["server_funcs"] = tmp;
             
             qDebug() << "clientXlets" << XletList;
@@ -1576,8 +1589,8 @@ void BaseEngine::socketReadyRead()
     // qDebug() << "BaseEngine::socketReadyRead()";
     QString socketname = sender()->property("socket").toString();
     if(socketname == "cticommands")
-        while(m_tcpsocket["cticommands"]->canReadLine()) {
-            QByteArray data  = m_tcpsocket["cticommands"]->readLine();
+        while(m_tcpsocket.value("cticommands")->canReadLine()) {
+            QByteArray data  = m_tcpsocket.value("cticommands")->readLine();
             m_byte_counter += data.size();
             // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
             QString line = QString::fromUtf8(data);

@@ -62,7 +62,7 @@ class AgentsPanel : public QWidget
     void agentAction(const QString &);
     void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
  public slots:
-    void setGuiOptions(const QVariant &);
+    void setGuiOptions(const QVariantMap &);
     void setUserInfo(const UserInfo *) {};
     void newAgentList(const QStringList &);
     void newQueueList(const QStringList &);

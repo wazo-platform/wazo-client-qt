@@ -58,7 +58,7 @@ ConferencePanel::ConferencePanel(BaseEngine * engine,
     m_glayout->setColumnStretch( 0, 1 );
     m_show_record = false;
     
-    setGuiOptions(m_engine->getGuiOptions("server_gui").toMap());
+    setGuiOptions(m_engine->getGuiOptions("merged_gui"));
     startTimer(1000);
 
     // connect signal/slots

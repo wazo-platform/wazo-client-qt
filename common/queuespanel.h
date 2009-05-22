@@ -68,7 +68,7 @@ signals:
     void saveQueueOrder(const QVariant &);      //!< Save Queue order (in settings)
     void loadQueueOrder();                      //!< request load of queue order
 public slots:
-    void setGuiOptions(const QVariant &);
+    void setGuiOptions(const QVariantMap &);
     void setUserInfo(const UserInfo *) {};
     void updateCounter(const QVariant &);
     void removeQueues(const QString &, const QStringList &);
@@ -104,7 +104,7 @@ private:
     QLabel * m_busytitle;   //!< displayed on top of the column of busy levels
     QLabel * m_qtitle;      //!< global title
     QHash<QString, QLabel *> m_title_infos; //!< To display text on top of each column
-    QVariant m_options;
+    QVariantMap m_optionsMap;
 };
 
 #endif /* __QUEUESPANEL_H__ */

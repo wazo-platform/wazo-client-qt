@@ -77,7 +77,7 @@ AgentsPanel::AgentsPanel(BaseEngine * engine,
     m_gridlayout->setRowStretch( 100, 1 );
     m_gridlayout->setVerticalSpacing(0);
     
-    setGuiOptions(m_engine->getGuiOptions("server_gui"));
+    setGuiOptions(m_engine->getGuiOptions("merged_gui"));
 }
 
 /*! \brief Destructor */
@@ -88,13 +88,13 @@ AgentsPanel::~AgentsPanel()
 
 /*! \brief set font
  */
-void AgentsPanel::setGuiOptions(const QVariant & optionmap)
+void AgentsPanel::setGuiOptions(const QVariantMap & optionsMap)
 {
-    if(optionmap.toMap().contains("fontname") && optionmap.toMap().contains("fontsize"))
-        m_gui_font = QFont(optionmap.toMap()["fontname"].toString(),
-                           optionmap.toMap()["fontsize"].toInt());
-    if(optionmap.toMap().contains("iconsize"))
-        m_gui_buttonsize = optionmap.toMap()["iconsize"].toInt();
+    if(optionsMap.contains("fontname") && optionsMap.contains("fontsize"))
+        m_gui_font = QFont(optionsMap["fontname"].toString(),
+                           optionsMap["fontsize"].toInt());
+    if(optionsMap.contains("iconsize"))
+        m_gui_buttonsize = optionsMap["iconsize"].toInt();
     
     // setFont(m_gui_font);
     m_title1->setFont(m_gui_font);

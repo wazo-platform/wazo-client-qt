@@ -155,10 +155,9 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     m_agent->hide();
     
-    m_loginkind = m_engine->getGuiOptions("client_gui").toMap()["loginkind"].toUInt();
-    m_functions = m_engine->getGuiOptions("server_funcs").toMap()["functions"].toStringList();
-    setGuiOptions(m_engine->getGuiOptions("server_gui").toMap());
-    //         m_glayout->setColumnStretch( 0, 1 );
+    m_functions = m_engine->getGuiOptions("server_funcs").value("functions").toStringList();
+    setGuiOptions(m_engine->getGuiOptions("merged_gui"));
+    // m_glayout->setColumnStretch( 0, 1 );
 }
 
 void IdentityDisplay::setupIcons()
@@ -196,6 +195,8 @@ void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
     m_agent->setAllowedActions( optionsMap["logagent"].toBool(), optionsMap["pauseagent"].toBool() );
     
     setFont(m_gui_font);
+    
+    m_loginkind = optionsMap["loginkind"].toUInt();
 }
 
 void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)

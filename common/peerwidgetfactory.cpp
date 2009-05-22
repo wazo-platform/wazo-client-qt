@@ -48,7 +48,7 @@ PeerWidgetFactory::PeerWidgetFactory(BaseEngine * engine, QObject * parent)
 /*! \brief Destructor */
 QString PeerWidgetFactory::getSwitchBoardEltType() const
 {
-    return m_engine->getGuiOptions("client_gui").toMap()["switchboard-elt-type"].toString();
+    return m_engine->getGuiOptions("merged_gui").value("switchboard-elt-type").toString();
 }
 
 /*! \brief return an "External phone" widget

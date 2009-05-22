@@ -174,7 +174,7 @@ public:
     const QStringList & getCapabilities() const;        //!< returns capabilities
     const QStringList & getCapaXlets() const;
     const QVariantMap & getCapaPresence() const;
-    const QVariant getGuiOptions(const QString &) const;
+    const QVariantMap getGuiOptions(const QString &) const;
     void updateCapaPresence(const QVariant &);
     const QString     & getCapaApplication() const;
     void config_and_start(const QString &,

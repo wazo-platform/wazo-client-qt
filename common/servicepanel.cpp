@@ -59,13 +59,14 @@ ServicePanel::ServicePanel(BaseEngine * engine,
     m_capalegend["fwdbusy"] = tr("Forward on &Busy");
     m_capalegend["fwdunc"]  = tr("&Unconditional Forward");
     
-    m_capas = m_engine->getGuiOptions("server_funcs").toMap()["services"].toStringList();
+    m_capas = m_engine->getGuiOptions("merged_gui").value("services").toStringList();
     
     int line = 0;
     m_status = new ServiceStatus();
     
     QGroupBox * groupBox1 = new QGroupBox( tr("Services") );
     groupBox1->setAlignment( Qt::AlignLeft );
+    groupBox1->hide();
     QGridLayout * gridlayout1 = new QGridLayout(groupBox1);
     
     foreach(QString capa, chkcapas)
@@ -78,6 +79,7 @@ ServicePanel::ServicePanel(BaseEngine * engine,
     
     QGroupBox * groupBox2 = new QGroupBox(tr("Call Forwards"), this);
     groupBox2->setAlignment( Qt::AlignLeft );
+    groupBox2->hide();
     QGridLayout * gridlayout2 = new QGridLayout(groupBox2);
     QHash<QString, QLabel *> label;
     
@@ -97,10 +99,14 @@ ServicePanel::ServicePanel(BaseEngine * engine,
         }
     
     QVBoxLayout * vlayout = new QVBoxLayout(this);
-    if(m_capas.contains("enablevm") || m_capas.contains("incallrec") || m_capas.contains("incallfilter") || m_capas.contains("enablednd"))
+    if(m_capas.contains("enablevm") || m_capas.contains("incallrec") || m_capas.contains("incallfilter") || m_capas.contains("enablednd")) {
+        groupBox1->show();
         vlayout->addWidget(groupBox1);
-    if(m_capas.contains("fwdrna") || m_capas.contains("fwdbusy") || m_capas.contains("fwdunc"))
+    }
+    if(m_capas.contains("fwdrna") || m_capas.contains("fwdbusy") || m_capas.contains("fwdunc")) {
+        groupBox2->show();
         vlayout->addWidget(groupBox2);
+    }
     vlayout->addStretch(1);
     
     Reset();

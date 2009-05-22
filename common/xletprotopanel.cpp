@@ -52,7 +52,7 @@ XletprotoPanel::XletprotoPanel(BaseEngine * engine,
 //     glayout->setRowStretch( 0, 1 );
 //     glayout->setColumnStretch( 0, 1 );
 //     //
-    setGuiOptions(m_engine->getGuiOptions("server_gui").toMap());
+    setGuiOptions(m_engine->getGuiOptions("merged_gui"));
 }
 
 XletprotoPanel::~XletprotoPanel()

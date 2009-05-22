@@ -50,23 +50,23 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
 {
     if(m_ui)
         setProperty( "userid", m_ui->userid() );
-
+    
     m_removeAction = new QAction( tr("&Remove"), this);
     m_removeAction->setStatusTip( tr("Remove this peer from the panel") );
     connect( m_removeAction, SIGNAL(triggered()),
              this, SIGNAL(removeFromPanel()) );
-
+    
     m_dialAction = new QAction( tr("&Call"), this);
     m_dialAction->setStatusTip( tr("Call this peer") );
     connect( m_dialAction, SIGNAL(triggered()),
              this, SLOT(dial()) );
-
+    
     m_interceptAction = new QAction( tr("&Intercept"), this);
     m_interceptAction->setStatusTip( tr("Intercept call") );
     connect( m_dialAction, SIGNAL(triggered()),
              this, SLOT(intercept2()) );
-
-    m_maxWidthWanted = m_engine->getGuiOptions("client_gui").toMap()["maxwidthwanted"].toInt();
+    
+    m_maxWidthWanted = m_engine->getGuiOptions("merged_gui").value("maxwidthwanted").toInt();
     if(m_maxWidthWanted < 50)
         m_maxWidthWanted = 200;
     setAcceptDrops(true);

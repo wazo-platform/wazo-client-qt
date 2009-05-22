@@ -47,9 +47,9 @@ SearchPanel::SearchPanel(BaseEngine * engine,
     : XLet(engine, parent)
 {
     // qDebug() << "SearchPanel::SearchPanel()" << options;
-    QVariantMap optionsMap = m_engine->getGuiOptions("client_gui").toMap();
-    m_maxdisplay = optionsMap["contacts-max"].toUInt();
-    m_ncolumns = optionsMap["contacts-width"].toUInt();
+    QVariantMap optionsMap = m_engine->getGuiOptions("merged_gui");
+    m_maxdisplay = optionsMap.value("contacts-max").toUInt();
+    m_ncolumns = optionsMap.value("contacts-width").toUInt();
     // m_engine->askCallerIds();
     
     QVBoxLayout * vlayout = new QVBoxLayout(this);

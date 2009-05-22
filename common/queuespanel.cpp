@@ -57,17 +57,14 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_gui_buttonsize = 10;
     m_gui_showqueuenames = true;
     
-    QString statscols = "Xivo-Conn,Xivo-Avail,Xivo-Rate,Xivo-Join,Xivo-Link,Xivo-Lost,Xivo-Chat,Holdtime";
     // statscols = "Xivo-Conn,Xivo-Avail,Xivo-Rate";
-    QVariant options = m_engine->getGuiOptions("server_gui");
-    if(options.toMap().contains("queues-statscolumns"))
-        statscols = options.toMap()["queues-statscolumns"].toString();
-    bool shortlegends = false;
-    if(options.toMap().contains("queues-shortlegends"))
-        shortlegends = options.toMap()["queues-shortlegends"].toBool();
-    
+    QVariantMap optionsMap = m_engine->getGuiOptions("merged_gui");
+    QString statscols = optionsMap.value("queues-statscolumns",
+                                         "Xivo-Conn,Xivo-Avail,Xivo-Rate,Xivo-Join,Xivo-Link,Xivo-Lost,Xivo-Chat,Holdtime").toString();
+    bool shortlegends = optionsMap.value("queues-shortlegends",
+                                         false).toBool();
     QStringList xletlist;
-    foreach(QString xletdesc, options.toMap()["xlets"].toStringList())
+    foreach(QString xletdesc, m_engine->getCapaXlets())
         xletlist.append(xletdesc.split("-")[0]);
     m_gui_showmore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
     
@@ -135,7 +132,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_gridlayout->setRowStretch( 100, 1 );
     m_gridlayout->setVerticalSpacing(0);
     
-    setGuiOptions(options);
+    setGuiOptions(optionsMap);
 }
 
 /*! \brief Destructor
@@ -150,17 +147,17 @@ QueuesPanel::~QueuesPanel()
  * set m_gui_font, m_gui_buttonsize, m_gui_showqueuenames
  * set fonts, etc...
  */
-void QueuesPanel::setGuiOptions(const QVariant & options)
+void QueuesPanel::setGuiOptions(const QVariantMap & optionsMap)
 {
-    m_options = options;
+    m_optionsMap = optionsMap;
     
-    if(m_options.toMap().contains("fontname") && m_options.toMap().contains("fontsize"))
-        m_gui_font = QFont(m_options.toMap()["fontname"].toString(),
-                           m_options.toMap()["fontsize"].toInt());
-    if(m_options.toMap().contains("iconsize"))
-        m_gui_buttonsize = m_options.toMap()["iconsize"].toInt();
-    if(m_options.toMap().contains("queues-showqueuenames"))
-        m_gui_showqueuenames = m_options.toMap()["queues-showqueuenames"].toBool();
+    if(m_optionsMap.contains("fontname") && m_optionsMap.contains("fontsize"))
+        m_gui_font = QFont(m_optionsMap["fontname"].toString(),
+                           m_optionsMap["fontsize"].toInt());
+    if(m_optionsMap.contains("iconsize"))
+        m_gui_buttonsize = m_optionsMap["iconsize"].toInt();
+    if(m_optionsMap.contains("queues-showqueuenames"))
+        m_gui_showqueuenames = m_optionsMap["queues-showqueuenames"].toBool();
     
     m_busytitle->setFont(m_gui_font);
     m_qtitle->setFont(m_gui_font);
@@ -387,8 +384,8 @@ void QueuesPanel::update(const QStringList & list)
     if( (maxbusychanged = (maxbusy != m_maxbusy)) )
         m_maxbusy = maxbusy;
     
-    quint32 greenlevel = m_options.toMap()["queuelevels"].toMap()["green"].toUInt();
-    quint32 orangelevel = m_options.toMap()["queuelevels"].toMap()["orange"].toUInt();
+    quint32 greenlevel = m_optionsMap["queuelevels"].toMap()["green"].toUInt();
+    quint32 orangelevel = m_optionsMap["queuelevels"].toMap()["orange"].toUInt();
     QHashIterator<QString, QProgressBar *> it(m_queuebusies);
     while(it.hasNext()) {
         it.next();
