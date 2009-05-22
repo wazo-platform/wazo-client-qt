@@ -36,8 +36,8 @@
 
 #include <QHash>
 #include <QVariant>
-#include <QWidget>
 
+#include "xlet.h"
 #include "peeritem.h"
 
 class QGridLayout;
@@ -49,14 +49,14 @@ class UserInfo;
 
 /*! \brief search panel widget
  */
-class SearchPanel : public QWidget
+class SearchPanel : public XLet
 {
     Q_OBJECT
- public:
+public:
     SearchPanel(BaseEngine *,
                 QWidget * parent = 0);
     ~SearchPanel();        //!< Destructor
- public slots:
+public slots:
     void setGuiOptions(const QVariant &) {};
     void setUserInfo(const UserInfo *) {};
     void affTextChanged(const QString &);
@@ -68,10 +68,9 @@ class SearchPanel : public QWidget
     void removePeers();
     void updateDisplay();
     void updateUser(UserInfo *);
- signals:
+signals:
     void askCallerIds();
- private:
-    BaseEngine * m_engine;        //!< engine to connect to peer widgets
+private:
     QHash<QString, PeerItem *> m_peerhash;        //!< PeerItem hash
     QGridLayout * m_peerlayout;        //!< layout object
     ExtendedLineEdit * m_input;        //!< widget for search string input

@@ -46,7 +46,7 @@
  */
 ConferencePanel::ConferencePanel(BaseEngine * engine,
                                  QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     // qDebug() << "ConferencePanel::ConferencePanel()";
     m_glayout = new QGridLayout(this);
@@ -60,6 +60,14 @@ ConferencePanel::ConferencePanel(BaseEngine * engine,
     
     setGuiOptions(m_engine->getGuiOptions("server_gui").toMap());
     startTimer(1000);
+
+    // connect signal/slots
+    connect( m_engine, SIGNAL(meetmeEvent(double, const QVariant &)),
+             this, SLOT(meetmeEvent(double, const QVariant &)) );
+    connect( m_engine, SIGNAL(meetmeInit(double, const QVariant &)),
+             this, SLOT(meetmeInit(double, const QVariant &)) );
+    connect( this, SIGNAL(meetmeAction(const QString &, const QString &)),
+             m_engine, SLOT(meetmeAction(const QString &, const QString &)) );
 }
 
 /*! \brief Destructor */

@@ -50,7 +50,7 @@
 
 FaxPanel::FaxPanel(BaseEngine * engine,
                    QWidget * parent)
-    : QWidget(parent), m_mainwindow(parent), m_engine(engine)
+    : XLet(engine, parent), m_mainwindow(parent)
 {
     // qDebug() << "FaxPanel::FaxPanel()" << parent;
     Qt::CheckState previous_hide = (Qt::CheckState) m_engine->getSettings()->value("faxhistory/hidenumber", 0).toInt();
@@ -119,6 +119,11 @@ FaxPanel::FaxPanel(BaseEngine * engine,
     vlayout->addWidget(groupBox4);
     vlayout->addStretch(1);
 
+    // connect signals / slots
+    connect( this, SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
+             m_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
+    connect( m_engine, SIGNAL(ackFax(const QString &, const QString &)),
+             this, SLOT(popupMsg(const QString &, const QString &)) );
 }
 
 

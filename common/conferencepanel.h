@@ -38,8 +38,8 @@
 #include <QLabel>
 #include <QList>
 #include <QObject>
-#include <QWidget>
 #include <QVariant>
+#include "xlet.h"
 
 class QGridLayout;
 class QProgressBar;
@@ -47,12 +47,11 @@ class QPushButton;
 class QTabWidget;
 class QTimerEvent;
 
-class BaseEngine;
 class UserInfo;
 
 /*! \brief Conference Panel
  */
-class ConferencePanel : public QWidget
+class ConferencePanel : public XLet
 {
     Q_OBJECT
 public:
@@ -84,7 +83,6 @@ private:
                     const QString &);
     void updateSummary();
     
-    BaseEngine * m_engine;  //!< BaseEngine pointer
     QHash<QString, QLabel *> m_infos;   //!< widgets for displaying name and phone number
     QHash<QString, QLabel *> m_timespent;   //!< call durations
     QHash<QString, QPushButton *> m_action_kick;    //!< kick buttons

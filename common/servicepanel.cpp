@@ -49,7 +49,7 @@ const QStringList chkcapas = (QStringList() << "enablevm" << "incallrec" << "inc
 
 ServicePanel::ServicePanel(BaseEngine * engine,
                            QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     m_capalegend["enablevm"]     = tr("Voice &Mail");
     m_capalegend["incallrec"]    = tr("Call &Recording");
@@ -110,6 +110,33 @@ ServicePanel::ServicePanel(BaseEngine * engine,
                     this, SLOT(toggleIfAllowed(const QString &)));
         }
     Connect();
+
+    // connect signals/slots
+    connect( this, SIGNAL(askFeatures()),
+             m_engine, SLOT(askFeatures()) );
+    connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
+             this, SLOT(monitorPeer(UserInfo *)) );
+                
+    connect( m_engine, SIGNAL(disconnectFeatures()),
+             this, SLOT(DisConnect()) );
+    connect( m_engine, SIGNAL(connectFeatures()),
+             this, SLOT(Connect()) );
+    connect( m_engine, SIGNAL(resetFeatures()),
+             this, SLOT(Reset()) );
+    connect( m_engine, SIGNAL(featurePutIsKO()),
+             this, SLOT(getRecordedStatus()) );
+    connect( m_engine, SIGNAL(featurePutIsOK()),
+             this, SLOT(setRecordedStatus()) );
+                
+    connect( this, SIGNAL(chkoptChanged(const QString &, bool)),
+             m_engine, SLOT(featurePutOpt(const QString &, bool)) );
+                
+    connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
+             this, SLOT(setOpt(const QString &, bool)) );
+    connect( this, SIGNAL(forwardChanged(const QString &, bool, const QString &)),
+             m_engine, SLOT(featurePutForward(const QString &, bool, const QString &)) );
+    connect( m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
+             this, SLOT(setForward(const QString &, const QVariant &)) );
 }
 
 ServicePanel::~ServicePanel()

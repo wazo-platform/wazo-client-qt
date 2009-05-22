@@ -32,10 +32,23 @@
  */
 
 #include "xlet.h"
+#include "baseengine.h"
 
 XLet::XLet(BaseEngine * engine, QWidget * parent)
     : QWidget(parent),
       m_engine(engine)
 {
+}
+
+/*! \brief connect actionCall signal to the engine
+ */
+void XLet::connectDials()
+{
+    connect( this, SIGNAL(actionCall(const QString &,
+                                     const QString &,
+                                     const QString &)),
+             m_engine, SLOT(actionCall(const QString &,
+                                       const QString &,
+                                       const QString &)) );
 }
 

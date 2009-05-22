@@ -70,6 +70,7 @@ StatusPanel::StatusPanel(BaseEngine * engine, QWidget * parent)
     // connect signal/SLOTS
     connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
              this, SLOT(updateUser(UserInfo *)) );
+    connectDials();
 }
 
 

@@ -36,20 +36,19 @@
 
 #include <QList>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QContextMenuEvent;
 class QTableWidget;
 class QTableWidgetItem;
 
-class BaseEngine;
 class ExtendedTableWidget;
 class PeerChannel;
 class UserInfo;
 
 /*! \brief Displays the parking slots.
  */
-class ParkingPanel : public QWidget
+class ParkingPanel : public XLet
 {
     Q_OBJECT
 public:
@@ -72,11 +71,10 @@ signals:
                     const QString &);
     void newParkEvent();
 private:
-    BaseEngine * m_engine;  //!< engine
     ExtendedTableWidget * m_table;        //!< Table
     int m_timerid;  //!< id of the timer
     int m_deltasec; //!< timer period
-    QList<PeerChannel *> m_mychannels;        //!< "my channels" list for transfer menu
+    QList<PeerChannel *> m_mychannels;    //!< "my channels" list for transfer menu
 };
 
 #endif

@@ -39,17 +39,17 @@
 #include <QVBoxLayout>
 
 #include "displaymessages.h"
+#include "baseengine.h"
 
 /*! \brief Constructor
  *
  * Set up the layout and the table widget.
  */
-DisplayMessagesPanel::DisplayMessagesPanel(QWidget * parent)
-    : QWidget(parent)
+DisplayMessagesPanel::DisplayMessagesPanel(BaseEngine * engine, QWidget * parent)
+    : XLet(engine, parent)
 {
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
-    // QLabel * lbl = new QLabel( tr("Messages :"), this );
     m_table = new QTableWidget( this );
     m_table->setAlternatingRowColors(true);
     m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
@@ -60,8 +60,10 @@ DisplayMessagesPanel::DisplayMessagesPanel(QWidget * parent)
     labels << tr("Message");
     m_table->setHorizontalHeaderLabels(labels);
 
-    //        vlayout->addWidget( lbl, 0, Qt::AlignCenter );
     vlayout->addWidget( m_table, 0 );
+    // connect signal / slots
+    connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
+             this, SLOT(addMessage(const QString &)) );
 }
 
 /*! \brief add a message to the list

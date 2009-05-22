@@ -34,8 +34,8 @@
 #ifndef __DISPLAYMESSAGES_H__
 #define __DISPLAYMESSAGES_H__
 
-#include <QWidget>
 #include <QLabel>
+#include "xlet.h"
 
 class QVBoxLayout;
 class QLineEdit;
@@ -45,18 +45,14 @@ class QTableWidget;
  *
  * dispays the messages in a table with timestamps.
  */
-class DisplayMessagesPanel : public QWidget
+class DisplayMessagesPanel : public XLet
 {
     Q_OBJECT
-        public:
-    DisplayMessagesPanel(QWidget * parent = 0);
-    public slots:
-    /*         void affTextChanged(); */
+public:
+    DisplayMessagesPanel(BaseEngine * engine, QWidget * parent = 0);
+public slots:
     void addMessage(const QString &);
-    /* signals: */
-    /*         void emitDial(const QString &); */
- private:
-    //QLabel * m_text;
+private:
     //! Table
     QTableWidget * m_table;
 };

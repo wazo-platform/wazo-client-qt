@@ -37,12 +37,11 @@
 #include <QHash>
 #include <QList>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QGridLayout;
 class QMouseEvent;
 
-class BaseEngine;
 class PeerItem;
 class PeersLayout;
 class BasePeerWidget;
@@ -54,7 +53,7 @@ class Group;
  *
  * This widget use a PeersLayout to display PeerItems in a grid.
  */
-class SwitchBoardWindow : public QWidget
+class SwitchBoardWindow : public XLet
 {
     Q_OBJECT
 public:
@@ -96,7 +95,6 @@ private:
     BasePeerWidget * addPeerWidget(PeerItem * peeritem, const QPoint & pos);
     Group * getGroup( const QPoint & ) const;
 
-    BaseEngine * m_engine;        //!< engine to connect to peer widgets
     QHash<QString, PeerItem *> m_peerhash;        //!< PeerItem hash
     PeersLayout * m_layout;                        //!< Grid Layout for displaying peers
     PeerWidgetFactory * m_peerwidgetfactory;    //!< to build *PeerWidget objects

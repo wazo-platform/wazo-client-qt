@@ -61,16 +61,22 @@
  */
 SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine,
                                      QWidget * parent)
-    : QWidget(parent), m_engine(engine),
+    : XLet(engine, parent),
       m_trace_box(false), m_group_to_resize(0)
 {
-    m_peerwidgetfactory = new PeerWidgetFactory(m_engine, this),
+    m_peerwidgetfactory = new PeerWidgetFactory(m_engine, this);
     m_layout = new PeersLayout(this);
     setObjectName("scroller"); // in order for the style settings to be set accordingly
     setAccessibleName(tr("Switchboard"));
     setAcceptDrops(true);
     reloadGroups();
     reloadExternalPhones();
+    connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
+             this, SLOT(updateUser(UserInfo *)) );
+    connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
+             this, SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
+    connect( m_engine, SIGNAL(delogged()),
+             this, SLOT(removePeers()) );
 }
 
 /*! 

@@ -36,7 +36,7 @@
 
 #include <QHash>
 #include <QVariant>
-#include <QWidget>
+#include "xlet.h"
 
 class QCheckBox;
 class QLineEdit;
@@ -45,18 +45,17 @@ class ServiceStatus;
 class UserInfo;
 class BaseEngine;
 
-class ServicePanel : public QWidget
+class ServicePanel : public XLet
 {
     Q_OBJECT
- public:
-    ServicePanel(BaseEngine *,
-                 QWidget * parent = 0);
+public:
+    ServicePanel(BaseEngine * engine, QWidget * parent = 0);
     ~ServicePanel();
- signals:
+signals:
     void chkoptChanged(const QString &, bool);
     void forwardChanged(const QString &, bool, const QString &);
     void askFeatures(); //!< need features to be updated !
- public slots:
+public slots:
     void setGuiOptions(const QVariantMap &) {};
     void setUserInfo(const UserInfo *);
     void setOpt(const QString &, bool);
@@ -67,12 +66,11 @@ class ServicePanel : public QWidget
     void Reset();
     void getRecordedStatus();
     void setRecordedStatus();
- private slots:
+private slots:
     void chkoptToggled(bool);
     void Toggled(bool);
     void toggleIfAllowed(const QString &);
- private:
-    BaseEngine * m_engine;
+private:
     ServiceStatus * m_status;
     QStringList m_capas;
     QHash<QString, QString> m_capalegend;
@@ -84,7 +82,7 @@ class ServicePanel : public QWidget
 
 class ServiceStatus
 {
- public:
+public:
     ServiceStatus();
     QHash<QString, bool> m_chkopt;
     QHash<QString, bool> m_forward;

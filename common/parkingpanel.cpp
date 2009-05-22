@@ -43,7 +43,6 @@
 #include "baseengine.h"
 #include "extendedtablewidget.h"
 #include "parkingpanel.h"
-//#include "peerchannel.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -52,7 +51,7 @@
  */
 ParkingPanel::ParkingPanel(BaseEngine * engine,
                            QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
@@ -76,6 +75,12 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
     m_table->resizeColumnsToContents();
     m_timerid = 0;
     m_deltasec = 2;
+    // connect signal / slots
+    connect( m_engine, SIGNAL(parkingEvent(const QVariant &)),
+             this, SLOT(parkingEvent(const QVariant &)) );
+    connect( this, SIGNAL(copyNumber(const QString &)),
+             m_engine, SLOT(copyNumber(const QString &)) );
+    connectDials();
 }
 
 ParkingPanel::~ParkingPanel()

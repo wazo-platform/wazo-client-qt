@@ -44,7 +44,7 @@
 
 SearchPanel::SearchPanel(BaseEngine * engine,
                          QWidget * parent)
-    : QWidget(parent), m_engine(engine)
+    : XLet(engine, parent)
 {
     // qDebug() << "SearchPanel::SearchPanel()" << options;
     QVariantMap optionsMap = m_engine->getGuiOptions("client_gui").toMap();
@@ -73,6 +73,18 @@ SearchPanel::SearchPanel(BaseEngine * engine,
     vlayout->addWidget(scrollarea);
     
     m_searchpattern = "";
+
+    // connect signal/slots
+    connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
+             this, SLOT(updateUser(UserInfo *)) );
+    connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
+             this, SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
+    connect( m_engine, SIGNAL(peersReceived()),
+             this, SLOT(updateDisplay()) );
+    connect( this, SIGNAL(askCallerIds()),
+             m_engine, SLOT(askCallerIds()) );
+    connect( m_engine, SIGNAL(delogged()),
+             this, SLOT(removePeers()) );
 }
 
 SearchPanel::~SearchPanel()
