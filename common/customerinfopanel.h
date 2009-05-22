@@ -37,10 +37,9 @@
 #include <QHash>
 #include <QList>
 #include <QObject>
-#include <QWidget>
 
+#include "xlet.h"
 #include "popup.h"
-#include "xletprotopanel.h"
 
 class QTabWidget;
 
@@ -49,7 +48,7 @@ class BaseEngine;
 
 /*! \brief display "sheets" from calling customers
  */
-class CustomerInfoPanel : public XletprotoPanel
+class CustomerInfoPanel : public XLet
 {
     Q_OBJECT
 public:

@@ -47,7 +47,7 @@
  */
 CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
                                      QWidget * parent)
-    : XletprotoPanel(engine, parent)
+    : XLet(engine, parent)
 {
     connect( m_engine, SIGNAL(displayFiche(const QString &, bool, const QString &)),
              this, SLOT(displayFiche(const QString &, bool, const QString &)) );
