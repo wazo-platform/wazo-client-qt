@@ -53,6 +53,7 @@
 LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
     : XLet(engine, parent), m_timer(-1)
 {
+    setTitle(tr("History"));
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(0);

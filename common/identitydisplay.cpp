@@ -57,6 +57,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     : XLet(engine, parent),
       m_ui(NULL), m_nlines(0)
 {
+    setTitle("Identity");
     setAccessibleName( tr("Current User Panel") );
     m_gui_buttonsize = 16;
     
@@ -179,6 +180,8 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
              this, SLOT(setForward(const QString &, const QVariant &)) );
     connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
              this, SLOT(updateUser(UserInfo *)) );
+    connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+             this, SLOT(setUserInfo(const UserInfo *)) );
 }
 
 void IdentityDisplay::setupIcons()
@@ -274,11 +277,13 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
 
 void IdentityDisplay::contextMenuAction()
 {
-    QString iconname = sender()->property("iconname").toString();
-    QString actionname = sender()->property("action").toString();
-    if(iconname == "phoneline")
-        actionCall(actionname, QString("chan:%1:%2").arg(m_ui->userid()).arg(sender()->property("channel").toString()));
-    // qDebug() << m_ui->astid() << sender()->property("channel").toString();
+    if(sender()) {
+        QString iconname = sender()->property("iconname").toString();
+        QString actionname = sender()->property("action").toString();
+        if(iconname == "phoneline" && m_ui)
+            actionCall(actionname, QString("chan:%1:%2").arg(m_ui->userid()).arg(sender()->property("channel").toString()));
+        // qDebug() << m_ui->astid() << sender()->property("channel").toString();
+    }
 }
 
 void IdentityDisplay::updatePresence(const QVariant & presence)
@@ -476,17 +481,18 @@ void IdentityDisplay::svcSummary()
             m_phonestatustxt->setToolTip(tr("No option"));
         }
     }
-    QStringList vm = m_ui->mwi();
-    if(vm.size() > 2) {
-        if(m_svcstatus["enablevm"].toBool()) {
-            m_voicemail_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_ui->voicemailnumber()));
-            m_voicemail_name->setToolTip(tr("VoiceMail activated on %1").arg(m_ui->voicemailnumber()));
-        } else {
-            m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
-            m_voicemail_name->setToolTip(tr("VoiceMail not activated on %1").arg(m_ui->voicemailnumber()));
+    if(m_ui) {
+        QStringList vm = m_ui->mwi();
+        if(vm.size() > 2) {
+            if(m_svcstatus["enablevm"].toBool()) {
+                m_voicemail_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_ui->voicemailnumber()));
+                m_voicemail_name->setToolTip(tr("VoiceMail activated on %1").arg(m_ui->voicemailnumber()));
+            } else {
+                m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
+                m_voicemail_name->setToolTip(tr("VoiceMail not activated on %1").arg(m_ui->voicemailnumber()));
+            }
         }
     }
-    
     return;
 }
 
