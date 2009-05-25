@@ -47,6 +47,10 @@
 #include "faxpanel.h"
 #include "logwidget.h"
 #include "mylocaldirpanel.h"
+#ifdef USE_OUTLOOK
+#include "outlook_panel.h"
+#include "outlook_engine.h"
+#endif /* USE_OUTLOOK */
 #include "parkingpanel.h"
 #include "queuespanel.h"
 #include "queuedetailspanel.h"
