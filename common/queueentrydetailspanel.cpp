@@ -47,6 +47,7 @@ QueueentrydetailsPanel::QueueentrydetailsPanel(BaseEngine * engine,
                                                QWidget * parent)
     : XLet(engine, parent)
 {
+    setTitle( tr("Calls of a Queue") );
     m_gridlayout = new QGridLayout(this);
     
     m_queuedescription = new QLabel("", this);

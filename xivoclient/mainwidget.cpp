@@ -138,7 +138,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_appliname = "Client";
     m_engine->setOSInfos(osname);
     m_withsystray = true;
-
+    
     m_settings = m_engine->getSettings();
     QPixmap redsquare(":/images/disconnected.png");
     statusBar();        // This creates the status bar.
@@ -221,7 +221,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_qlab2->setEchoMode(QLineEdit::Password);
     m_login_layout->addWidget(m_qlab2, 3, 1);
     m_qlab3 = new QLineEdit();
-    m_qlab3->setText(m_engine->phonenumber());
+    m_qlab3->setText(m_engine->agentphonenumber());
     m_login_layout->addWidget(m_qlab3, 4, 1);
     
     m_ack = new QPushButton("OK");
@@ -556,7 +556,7 @@ void MainWidget::confUpdated()
     // qDebug() << "MainWidget::confUpdated()";
     m_qlab1->setText(m_engine->userId());
     m_qlab2->setText(m_engine->password());
-    m_qlab3->setText(m_engine->phonenumber());
+    m_qlab3->setText(m_engine->agentphonenumber());
     m_kpass->setCheckState((m_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
     m_loginkind->setCurrentIndex(m_engine->loginkind());
     loginKindChanged(m_loginkind->currentIndex()); // Hide or Show the phone number
@@ -760,63 +760,6 @@ void MainWidget::engineStarted()
                 
                 connect( m_xlet[xletid], SIGNAL(setSystrayIcon(const QString &)),
                          this, SLOT(setSystrayIcon(const QString &)) );
-            } else if (xletid == "agents") {
-                m_xlet[xletid] = new AgentsPanel(m_engine, this);
-                if (withscrollbar) {
-                    QScrollArea * sa_ag = new QScrollArea(this);
-                    sa_ag->setWidget(m_xlet[xletid]);
-                    sa_ag->setWidgetResizable(true);
-                    addPanel(xletid, tr("Agents' List (plain)"), sa_ag);
-                } else
-                    addPanel(xletid, tr("Agents' List (plain)"), m_xlet[xletid]);
-            } else if (xletid == "agentsnext") {
-                m_xlet[xletid] = new AgentsPanelNext(m_engine, this);
-                if (withscrollbar) {
-                    QScrollArea * sa_ag = new QScrollArea(this);
-                    sa_ag->setWidget(m_xlet[xletid]);
-                    sa_ag->setWidgetResizable(true);
-                    addPanel(xletid, tr("Agents' List (queue groups)"), sa_ag);
-                } else
-                    addPanel(xletid, tr("Agents' List (queue groups)"), m_xlet[xletid]);
-            } else if (xletid == QString("agentdetails")) {
-                m_xlet[xletid] = new AgentdetailsPanel(m_engine, this);
-                if (withscrollbar) {
-                    QScrollArea * sa_ad = new QScrollArea(this);
-                    sa_ad->setWidget(m_xlet[xletid]);
-                    sa_ad->setWidgetResizable(true);
-                    addPanel(xletid, tr("Agent Details"), sa_ad);
-                } else
-                    addPanel(xletid, tr("Agent Details"), m_xlet[xletid]);
-            } else if (xletid == QString("conference")) {
-                m_xlet[xletid] = new ConferencePanel(m_engine, this);
-                addPanel(xletid, tr("Conference"), m_xlet[xletid]);
-            } else if (xletid == QString("queues")) {
-                m_xlet[xletid] = new QueuesPanel(m_engine, this);
-                if (withscrollbar) {
-                    QScrollArea * sa_qu = new QScrollArea(this);
-                    sa_qu->setWidget(m_xlet[xletid]);
-                    sa_qu->setWidgetResizable(true);
-                    addPanel(xletid, tr("Queues' List"), sa_qu);
-                } else
-                    addPanel(xletid, tr("Queues' List"), m_xlet[xletid]);
-            } else if (xletid == QString("queuedetails")) {
-                m_xlet[xletid] = new QueuedetailsPanel(m_engine, this);
-                if (withscrollbar) {
-                    QScrollArea * sa_qd = new QScrollArea(this);
-                    sa_qd->setWidget(m_xlet[xletid]);
-                    sa_qd->setWidgetResizable(true);
-                    addPanel(xletid, tr("Agents of a Queue"), sa_qd);
-                } else
-                    addPanel(xletid, tr("Agents of a Queue"), m_xlet[xletid]);
-            } else if (xletid == QString("queueentrydetails")) {
-                m_xlet[xletid] = new QueueentrydetailsPanel(m_engine, this);
-                if (withscrollbar) {
-                    QScrollArea * sa_qd = new QScrollArea(this);
-                    sa_qd->setWidget(m_xlet[xletid]);
-                    sa_qd->setWidgetResizable(true);
-                    addPanel(xletid, tr("Calls of a Queue"), sa_qd);
-                } else
-                    addPanel(xletid, tr("Calls of a Queue"), m_xlet[xletid]);
             } else if (xletid == QString("datetime")) {
                 m_xlet[xletid] = new DatetimePanel(m_engine, this);
                 addPanel(xletid, tr("Date and Time"), m_xlet[xletid]);
@@ -972,7 +915,7 @@ void MainWidget::setSystrayIcon(const QString & def)
         p_square->fill(def);
         icon = QIcon(* p_square);
     }
-        
+    
     m_systrayIcon->setIcon(icon);
     setWindowIcon(icon);
 }

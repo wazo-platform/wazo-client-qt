@@ -198,29 +198,39 @@ void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
                 this, SLOT(unpause()) );
         contextMenu.addAction(unpauseAction);
     }
-            
+    
     if(m_allow_logagent || m_allow_pauseagent)
         contextMenu.exec(event->globalPos());
 }
 
 void IdentityAgent::login()
 {
-    agentAction("login");
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "agentlogin";
+    emit ipbxCommand(ipbxcommand);
 }
 
 void IdentityAgent::logout()
 {
-    agentAction("logout");
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "agentlogout";
+    emit ipbxCommand(ipbxcommand);
 }
 
 void IdentityAgent::pause()
 {
-    agentAction("pause_all");
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "agentpausequeue";
+    ipbxcommand["queueids"] = QString("queue:%1/special:all").arg("xivo");
+    emit ipbxCommand(ipbxcommand);
 }
 
 void IdentityAgent::unpause()
 {
-    agentAction("unpause_all");
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "agentunpausequeue";
+    ipbxcommand["queueids"] = QString("queue:%1/special:all").arg("xivo");
+    emit ipbxCommand(ipbxcommand);
 }
 
 void IdentityAgent::setAllowedActions(bool allow_logagent, bool allow_pauseagent)

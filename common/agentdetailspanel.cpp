@@ -55,10 +55,10 @@ AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
                                      QWidget * parent)
     : XLet(engine, parent)
 {
+    setTitle( tr("Agent Details") );
     m_linenum = 0;
     m_gridlayout = new QGridLayout(this);
     
-    m_monitored_agentnumber = "";
     m_agentstatus = new QLabel(this);
     m_agentlegend_qname = new QLabel(tr("Queues"), this);
     m_agentlegend_joined = new QLabel(tr("Joined"), this);
@@ -67,14 +67,14 @@ AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
     m_agentlegend_npaused = new QLabel("0", this);
     
     m_actionlegends["record"] = new QLabel(tr("Record"), this);
-    m_actionlegends["alogin"] = new QLabel(tr("Login"), this);
+    m_actionlegends["agentlogin"] = new QLabel(tr("Login"), this);
     
     foreach (QString function, m_actionlegends.keys())
         m_action[function] = new QPushButton(this);
     m_action["record"]->setIconSize(QSize(10, 10));
     m_action["record"]->setIcon(QIcon(":/images/player_stop.png"));
-    m_action["alogin"]->setIconSize(QSize(10, 10));
-    m_action["alogin"]->setIcon(QIcon(":/images/button_ok.png"));
+    m_action["agentlogin"]->setIconSize(QSize(10, 10));
+    m_action["agentlogin"]->setIcon(QIcon(":/images/button_ok.png"));
     
     m_gridlayout->setRowStretch( 100, 1 );
     m_gridlayout->addWidget(m_agentstatus, m_linenum, 0, 1, 9);
@@ -112,20 +112,21 @@ AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
                  this, SLOT(actionClicked()));
     }
     setGuiOptions(m_engine->getGuiOptions("merged_gui"));
-
+    
     // connect signal/slots with engine
+    connect( this, SIGNAL(ipbxCommand(const QVariantMap &)),
+             m_engine, SLOT(ipbxCommand(const QVariantMap &)) );
+    
     connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
              this, SLOT(newAgentList(const QStringList &)) );
     connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
              this, SLOT(newQueueList(const QStringList &)) );
-
+    
     connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
              this, SLOT(monitorThisAgent(const QString &)) );
     connect( this, SIGNAL(changeWatchedQueue(const QString &)),
              m_engine, SLOT(changeWatchedQueueSlot(const QString &)) );
-    connect( this, SIGNAL(agentAction(const QString &)),
-             m_engine, SLOT(agentAction(const QString &)) );
-
+    
     connect( m_engine, SIGNAL(serverFileList(const QStringList &)),
              this, SLOT(serverFileList(const QStringList &)) );
     connect( m_engine, SIGNAL(fileReceived()),
@@ -176,7 +177,6 @@ void AgentdetailsPanel::monitorThisAgent(const QString & agentid)
         m_monitored_agentid = agentid;
         m_monitored_astid = m_engine->agents()[agentid]->astid();
         m_monitored_context = m_engine->agents()[agentid]->context();
-        m_monitored_agentnumber = m_engine->agents()[agentid]->agentnumber();
         clearPanel();
         updatePanel();
     }
@@ -228,21 +228,21 @@ void AgentdetailsPanel::updatePanel()
     
     if(lstatus == "AGENT_LOGGEDOFF") {
         agent_descriptions << tr("logged off <b>%1</b>").arg(phonenum);
-        m_action["alogin"]->setProperty("function", "alogin");
-        m_action["alogin"]->setIcon(QIcon(":/images/button_ok.png"));
-        m_actionlegends["alogin"]->setText(tr("Login"));
+        m_action["agentlogin"]->setProperty("function", "agentlogin");
+        m_action["agentlogin"]->setIcon(QIcon(":/images/button_ok.png"));
+        m_actionlegends["agentlogin"]->setText(tr("Login"));
     } else if(lstatus == "AGENT_IDLE") {
         agent_descriptions << tr("logged on phone number <b>%1</b>").arg(phonenum);
-        m_action["alogin"]->setProperty("function", "alogout");
-        m_action["alogin"]->setIcon(QIcon(":/images/cancel.png"));
-        m_actionlegends["alogin"]->setText(tr("Logout"));
+        m_action["agentlogin"]->setProperty("function", "agentlogout");
+        m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
+        m_actionlegends["agentlogin"]->setText(tr("Logout"));
     } else if(lstatus == "AGENT_ONCALL") {
         // QString talkingto = agentstats.toMap()["talkingto"].toString();
         // agent_status = tr("logged (busy with %1) on phone number <b>%2</b>").arg(talkingto).arg(phonenum);
         agent_descriptions << tr("logged on phone number <b>%1</b>").arg(phonenum);
-        m_action["alogin"]->setProperty("function", "alogout");
-        m_action["alogin"]->setIcon(QIcon(":/images/cancel.png"));
-        m_actionlegends["alogin"]->setText(tr("Logout"));
+        m_action["agentlogin"]->setProperty("function", "agentlogout");
+        m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
+        m_actionlegends["agentlogin"]->setText(tr("Logout"));
     } else
         qDebug() << "AgentdetailsPanel::newAgent() unknown status" << m_monitored_agentid << lstatus;
     
@@ -366,6 +366,7 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
     QString pstatus = qv.toMap()["Paused"].toString();
     QString sstatus = qv.toMap()["Status"].toString();
     QString dynstatus = qv.toMap()["Membership"].toString();
+    // dynstatus @ app_queue.c : cur->dynamic ? "dynamic" : cur->realtime ? "realtime" : "static"
     // CallsTaken, LastCall, Penalty
     
     QString oldsstatus = m_queue_join_status[queueid]->property("Status").toString();
@@ -516,40 +517,56 @@ void AgentdetailsPanel::queueClicked()
     QString smstatus = mstatus.toMap()["Status"].toString();
     QString pmstatus = mstatus.toMap()["Paused"].toString();
     
+    QVariantMap ipbxcommand;
+    ipbxcommand["agentids"] = m_monitored_agentid;
+    ipbxcommand["queueids"] = "queue:" + m_monitored_astid + "/" + queuename;
+    
     if(action == "changequeue")
         changeWatchedQueue(QString("queue:%1/%2").arg(astid).arg(queuename));
     else if(action == "leavejoin") {
-        if((smstatus == "1") || (smstatus == "3") || (smstatus == "4") || (smstatus == "5"))
-            emit agentAction(QString("leave %1 %2 %3").arg(queuename).arg(m_monitored_astid).arg(m_monitored_agentnumber));
-        else if(smstatus == "")
-            emit agentAction(QString("join %1 %2 %3 unpause").arg(queuename).arg(m_monitored_astid).arg(m_monitored_agentnumber));
-        else
-            qDebug() << "AgentdetailsPanel::queueClicked()" << queuename << m_monitored_astid << m_monitored_agentnumber << smstatus << pmstatus;
+        if((smstatus == "1") || (smstatus == "3") || (smstatus == "4") || (smstatus == "5")) {
+            ipbxcommand["command"] = "agentleavequeue";
+        } else if(smstatus == "") {
+            ipbxcommand["command"] = "agentjoinqueue";
+        } else
+            qDebug() << "AgentdetailsPanel::queueClicked()" << queuename << m_monitored_agentid << smstatus << pmstatus;
         // join the queue in the previously recorded paused status (to manage on the server side)
     } else if(action == "pause") {
-        if(pmstatus == "0")
-            emit agentAction(QString("pause %1 %2 %3").arg(queuename).arg(m_monitored_astid).arg(m_monitored_agentnumber));
-        else if(pmstatus == "1")
-            emit agentAction(QString("unpause %1 %2 %3").arg(queuename).arg(m_monitored_astid).arg(m_monitored_agentnumber));
-        else
-            qDebug() << "AgentdetailsPanel::queueClicked()" << queuename << m_monitored_astid << m_monitored_agentnumber << smstatus << pmstatus;
+        if(pmstatus == "0") {
+            ipbxcommand["command"] = "agentpausequeue";
+        } else if(pmstatus == "1") {
+            ipbxcommand["command"] = "agentunpausequeue";
+        } else
+            qDebug() << "AgentdetailsPanel::queueClicked()" << queuename << m_monitored_agentid << smstatus << pmstatus;
     } else
         qDebug() << "AgentdetailsPanel::queueClicked() : unknown action" << action;
+    
+    emit ipbxCommand(ipbxcommand);
 }
 
 /*! \brief left click actions (record, stoprecord, login, logout) */
 void AgentdetailsPanel::actionClicked()
 {
-    // qDebug() << "AgentdetailsPanel::actionClicked()" << sender()->property("function").toString() << m_monitored_astid << m_monitored_agentnumber;
+    // qDebug() << "AgentdetailsPanel::actionClicked()" << sender()->property("function").toString() << m_monitored_agentid;
     QString function = sender()->property("function").toString();
-    if(function == "record")
-        emit agentAction(QString("record %1 %2").arg(m_monitored_astid).arg(m_monitored_agentnumber));
-    else if(function == "stoprecord")
-        emit agentAction(QString("stoprecord %1 %2").arg(m_monitored_astid).arg(m_monitored_agentnumber));
-    else if(function == "alogin")
-        emit agentAction(QString("login %1 %2").arg(m_monitored_astid).arg(m_monitored_agentnumber));
-    else if(function == "alogout")
-        emit agentAction(QString("logout %1 %2").arg(m_monitored_astid).arg(m_monitored_agentnumber));
+    QVariantMap ipbxcommand;
+    if(function == "record") {
+        ipbxcommand["command"] = "record";
+        ipbxcommand["target"] = m_monitored_agentid;
+        emit ipbxCommand(ipbxcommand);
+    } else if(function == "stoprecord") {
+        ipbxcommand["command"] = "stoprecord";
+        ipbxcommand["target"] = m_monitored_agentid;
+        emit ipbxCommand(ipbxcommand);
+    } else if(function == "agentlogin") {
+        ipbxcommand["command"] = "agentlogin";
+        ipbxcommand["agentids"] = m_monitored_agentid;
+        emit ipbxCommand(ipbxcommand);
+    } else if(function == "agentlogout") {
+        ipbxcommand["command"] = "agentlogout";
+        ipbxcommand["agentids"] = m_monitored_agentid;
+        emit ipbxCommand(ipbxcommand);
+    }
 }
 
 /*! \brief triggerred on right click */
@@ -557,8 +574,10 @@ void AgentdetailsPanel::contextMenuEvent(QContextMenuEvent * event)
 {
     // qDebug() << "AgentdetailsPanel::contextMenuEvent()" << event;
     m_eventpoint = event->globalPos();
-    if((! m_monitored_astid.isEmpty()) && (! m_monitored_agentnumber.isEmpty()))
-        emit agentAction(QString("getfilelist %1 %2").arg(m_monitored_astid).arg(m_monitored_agentnumber));
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "getfilelist";
+    ipbxcommand["agentid"] = m_monitored_agentid;
+    emit ipbxCommand(ipbxcommand);
 }
 
 /*! \brief display file list */
@@ -593,7 +612,7 @@ void AgentdetailsPanel::serverFileList(const QStringList & qsl)
  */
 void AgentdetailsPanel::statusRecord(const QString & astid, const QString & agentid, const QString & status)
 {
-    // qDebug() << "AgentdetailsPanel::statusRecord()" << agentnum << m_monitored_agentnumber << status;
+    // qDebug() << "AgentdetailsPanel::statusRecord()" << agentnum << m_monitored_agentid << status;
     QString gagentid = QString("agent:%1/%2").arg(astid).arg(agentid);
     if(gagentid == m_monitored_agentid) {
         if(status == "started") {
@@ -619,7 +638,11 @@ void AgentdetailsPanel::getFile()
 {
     // qDebug() << "AgentdetailsPanel::getFile()";
     QString filename = sender()->property("filename").toString();
-    emit agentAction(QString("getfile %1 %2 %3").arg(m_monitored_astid).arg(m_monitored_agentnumber).arg(filename));
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "getfile";
+    ipbxcommand["agentid"] = m_monitored_agentid;
+    ipbxcommand["filename"] = filename;
+    emit ipbxCommand(ipbxcommand);
 }
 
 /*! \brief to save sound files

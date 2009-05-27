@@ -79,6 +79,7 @@ signals:
     void actionCall(const QString &,
                     const QString &,
                     const QString & dst = "");   //!< to hangup
+    void ipbxCommand(const QVariantMap &);
 private:
     void svcSummary();
     void setPhoneLines();

@@ -66,7 +66,7 @@ BaseEngine::BaseEngine(QSettings * settings,
                        QObject * parent)
     : QObject(parent),
       m_serverhost(""), m_ctiport(0),
-      m_userid(""), m_useridopt(""), m_company(""), m_password(""), m_phonenumber(""),
+      m_userid(""), m_useridopt(""), m_company(""), m_password(""), m_agentphonenumber(""),
       m_sessionid(""), m_state(ENotLogged),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
@@ -176,7 +176,7 @@ void BaseEngine::loadSettings()
     m_password     = m_settings->value("password").toString();
     m_keeppass     = m_settings->value("keeppass", 0).toUInt();
     m_showagselect = m_settings->value("showagselect", 2).toUInt();
-    m_phonenumber  = m_settings->value("phonenumber").toString();
+    m_agentphonenumber  = m_settings->value("agentphonenumber").toString();
     
     m_autoconnect = m_settings->value("autoconnect", false).toBool();
     m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
@@ -240,7 +240,7 @@ void BaseEngine::saveSettings()
         m_settings->remove("password");
     m_settings->setValue("keeppass",   m_keeppass);
     m_settings->setValue("showagselect", m_showagselect);
-    m_settings->setValue("phonenumber", m_phonenumber);
+    m_settings->setValue("agentphonenumber", m_agentphonenumber);
     
     m_settings->setValue("autoconnect", m_autoconnect);
     m_settings->setValue("trytoreconnect", m_trytoreconnect);
@@ -313,12 +313,12 @@ void BaseEngine::logAction(const QString & logstring)
 /*! \brief set login/pass and then starts */
 void BaseEngine::config_and_start(const QString & login,
                                   const QString & pass,
-                                  const QString & phonenum)
+                                  const QString & agentphonenumber)
 {
     setUserId(login);
     m_password = pass;
-    // if phonenum's size is 0, no login as agent
-    m_phonenumber = phonenum;
+    // if agentphonenumber's size is 0, no login as agent
+    m_agentphonenumber = agentphonenumber;
     saveSettings();
     start();
 }
@@ -1314,7 +1314,7 @@ void BaseEngine::parseCommand(const QString & line)
                 command["agentlogin"] = "now";
             case 1:
                 command["loginkind"] = "agent";
-                command["phonenumber"] = m_phonenumber;
+                command["agentphonenumber"] = m_agentphonenumber;
                 break;
             }
             
@@ -1400,15 +1400,6 @@ void BaseEngine::parseCommand(const QString & line)
             qDebug() << "BaseEngine::parseQVariantCommand() : unknown server command class" << thisclass << datamap;
         }
     }
-}
-
-void BaseEngine::agentAction(const QString & action)
-{
-    QVariantMap command;
-    command["class"] = "agent";
-    command["direction"] = "xivoserver";
-    command["command"] = action.split(" ");
-    sendJsonCommand(command);
 }
 
 /*! \brief send meetme command to the CTI server */
@@ -1683,15 +1674,21 @@ void BaseEngine::actionCall(const QString & action,
         else
             command["destination"] = dst;
         sendJsonCommand(command);
-    } else if((action == "hangup") || (action == "simplehangup")) {
-        command["source"] = src;
-        sendJsonCommand(command);
-    } else if(action == "pickup") {
-        command["source"] = src;
-        sendJsonCommand(command);
+    } else if(action == "hangup") {
+        QVariantMap ipbxcommand;
+        ipbxcommand["command"] = action;
+        ipbxcommand["channelids"] = src;
+        ipbxCommand(ipbxcommand);
+    } else if(action == "answer") {
+        QVariantMap ipbxcommand;
+        ipbxcommand["command"] = action;
+        ipbxcommand["phoneids"] = src;
+        ipbxCommand(ipbxcommand);
     } else if(action == "refuse") {
-        command["source"] = src;
-        sendJsonCommand(command);
+        QVariantMap ipbxcommand;
+        ipbxcommand["command"] = action;
+        ipbxcommand["channelids"] = src;
+        ipbxCommand(ipbxcommand);
     }
 }
 
@@ -1797,14 +1794,14 @@ void BaseEngine::setFullId()
     m_fullid = m_astid + "/" + m_xivo_userid;
 }
 
-const QString & BaseEngine::phonenumber() const
+const QString & BaseEngine::agentphonenumber() const
 {
-    return m_phonenumber;
+    return m_agentphonenumber;
 }
 
-void BaseEngine::setPhonenumber(const QString & phonenumber)
+void BaseEngine::setAgentPhoneNumber(const QString & agentphonenumber)
 {
-    m_phonenumber = phonenumber;
+    m_agentphonenumber = agentphonenumber;
 }
 
 const int & BaseEngine::loginkind() const
@@ -2032,8 +2029,24 @@ void BaseEngine::askCallerIds()
         command["class"] = kind;
         sendJsonCommand(command);
     }
-    if(m_loginkind == 2)
-        agentAction("login");
+    if(m_loginkind == 2) {
+        QVariantMap ipbxcommand;
+        ipbxcommand["command"] = "agentlogin";
+        ipbxcommand["agentids"] = "agent:special:me";
+        ipbxcommand["agentphonenumber"] = m_agentphonenumber;
+        ipbxCommand(ipbxcommand);
+    }
+}
+
+void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
+{
+    if(! ipbxcommand.contains("command"))
+        return;
+    QVariantMap command;
+    command["class"] = "ipbxcommand";
+    command["direction"] = "xivoserver";
+    command["details"] = ipbxcommand;
+    sendJsonCommand(command);
 }
 
 void BaseEngine::setSystrayed(bool b)

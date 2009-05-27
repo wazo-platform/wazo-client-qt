@@ -268,7 +268,7 @@ void StatusPanel::functionKeyPressed(int keynum)
         action = m_actionkey[keynum][0];
     else
         return;
-     
+    
     QString userid;
     if(m_engine->getXivoClientUser())
         userid = m_engine->getXivoClientUser()->userid();
@@ -277,10 +277,10 @@ void StatusPanel::functionKeyPressed(int keynum)
         Line linestatus = m_linestatuses[m_currentchannel];
         qDebug() << "StatusPanel::functionKeyPressed()" << keynum << action << m_currentchannel << linestatus;
         if(action == "answer") {
-            actionCall("pickup");
+            actionCall("answer");
         } else if(action == "hangup") {
             if(linestatus == Ringing || linestatus == WITransfer || linestatus == WDTransfer) {
-                actionCall("simplehangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
+                actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
             } else {
                 //actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));
                 actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
@@ -305,7 +305,7 @@ void StatusPanel::functionKeyPressed(int keynum)
             actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));
             updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
         } else if(action == "ilink") {
-            actionCall("simplehangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
+            actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
         } else if(action == "icancel") {
             /*
               qDebug() << "icancel : currentchannel=" << m_currentchannel
@@ -314,7 +314,7 @@ void StatusPanel::functionKeyPressed(int keynum)
               if(m_ui)
                   qDebug() << "  user channels" << m_ui->channelList();
             */
-            //actionCall("simplehangup", QString("chan:%1:%2").arg(userid).arg(m_tferchannel)); // Call
+            //actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_tferchannel)); // Call
         }
 //            if(action == "unpark")
 //                qDebug() << "StatusPanel::functionKeyPressed()" << "F1 when Wait : Take back";

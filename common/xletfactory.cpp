@@ -129,4 +129,3 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
     }
     return xlet;
 }
-

@@ -54,6 +54,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     : XLet(engine, parent)
 {
     // qDebug() << "QueuesPanel::QueuesPanel()" << options;
+    setTitle( tr("Queues' List") );
     m_gui_buttonsize = 10;
     m_gui_showqueuenames = true;
     
@@ -138,7 +139,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
              this, SLOT(newAgentList(const QStringList &)) );
     connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
              this, SLOT(newQueueList(const QStringList &)) );
-                
+    
     connect( m_engine, SIGNAL(updateCounter(const QVariant &)),
              this, SLOT(updateCounter(const QVariant &)) );
     connect( m_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),

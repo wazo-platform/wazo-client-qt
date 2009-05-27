@@ -204,9 +204,9 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
              this, SLOT(loginKindChanged(int)) );
     
     m_lblphone = new QLabel(tr("Phone Number"), this);
-    m_phonenumber = new QLineEdit(m_engine->phonenumber(), this);
+    m_agentphonenumber = new QLineEdit(m_engine->agentphonenumber(), this);
     gridlayout3->addWidget(m_lblphone, line, 0);
-    gridlayout3->addWidget(m_phonenumber, line++, 1);
+    gridlayout3->addWidget(m_agentphonenumber, line++, 1);
     
     loginKindChanged(m_loginkind->currentIndex());
     
@@ -302,17 +302,17 @@ ConfigWidget::~ConfigWidget()
     m_engine->getSettings()->setValue("display/configtab", m_tabwidget->currentIndex());
 }
 
-/*! \brief hide/show phonenumber input according to loginKind
+/*! \brief hide/show agentphonenumber input according to loginKind
  */
 void ConfigWidget::loginKindChanged(int index)
 {
     // qDebug() << "ConfigWidget::loginKindChanged()" << index;
     if(index == 0) {
         m_lblphone->hide();
-        m_phonenumber->hide();
+        m_agentphonenumber->hide();
     } else {
         m_lblphone->show();
-        m_phonenumber->show();
+        m_agentphonenumber->show();
     }
 }
 
@@ -332,7 +332,7 @@ void ConfigWidget::saveAndClose()
     m_engine->setShowAgentSelect(m_showagselect->checkState());
     
     m_engine->setUserId(m_userid->text());
-    m_engine->setPhonenumber(m_phonenumber->text());
+    m_engine->setAgentPhoneNumber(m_agentphonenumber->text());
     m_engine->setFullId();
     
     m_engine->setPassword(m_password->text());

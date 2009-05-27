@@ -61,8 +61,8 @@ protected:
     void contextMenuEvent(QContextMenuEvent *);
 signals:
     void changeWatchedQueue(const QString &);
-    void agentAction(const QString &);
     void setFileName(const QString &);
+    void ipbxCommand(const QVariantMap &);
 public slots:
     void setGuiOptions(const QVariantMap &);
     void newAgentList(const QStringList &);
@@ -90,7 +90,6 @@ private:
     
     QString m_monitored_astid;    //!< asterisk id
     QString m_monitored_context;    //!< context
-    QString m_monitored_agentnumber;    //!< agent id
     QString m_monitored_agentid;    //!< monitored agent id
     QLabel * m_agentstatus; //!< to display agent name and status
     QLabel * m_agentlegend_qname;   //!< "Queues"

@@ -34,6 +34,7 @@
 #ifndef __XLET_H__
 #define __XLET_H__
 
+#include <QVariantMap>
 #include <QWidget>
 
 class BaseEngine;
@@ -47,6 +48,8 @@ public:
     //! Constructor
     XLet(BaseEngine * engine, QWidget * parent = 0);
     QString title() const { return m_title; };
+signals:
+    void ipbxCommand(const QVariantMap &);
 protected:
     void connectDials();
     void setTitle(const QString & title) { m_title = title; };
@@ -56,4 +59,3 @@ private:
     QString m_title;
 };
 #endif
-

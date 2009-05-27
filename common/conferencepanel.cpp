@@ -61,7 +61,7 @@ ConferencePanel::ConferencePanel(BaseEngine * engine,
     
     setGuiOptions(m_engine->getGuiOptions("merged_gui"));
     startTimer(1000);
-
+    
     // connect signal/slots
     connect( m_engine, SIGNAL(meetmeEvent(double, const QVariant &)),
              this, SLOT(meetmeEvent(double, const QVariant &)) );
@@ -330,7 +330,7 @@ void ConferencePanel::doMeetMeAction()
     QString action = sender()->property("action").toString();
     QString ref = sender()->property("reference").toString();
     qDebug() << "ConferencePanel::doMeetMeAction()" << action << ref;
-        
+    
     if(action == "kick") {
         meetmeAction(action,
                      sender()->property("astid").toString() +
@@ -348,7 +348,7 @@ void ConferencePanel::doMeetMeAction()
             m_action_record[ref]->setProperty("recordstatus", "on");
             m_action_record[ref]->setText(tr("Stop Record"));
         } else {
-            meetmeAction("unrecord",
+            meetmeAction("stoprecord",
                          sender()->property("astid").toString() +
                          " " + sender()->property("room").toString() +
                          " " + sender()->property("usernum").toString() +
@@ -385,7 +385,7 @@ void ConferencePanel::timerEvent(QTimerEvent *)
         QDateTime inittime = m_timespent[ref]->property("inittime").toDateTime();
         int nsec = inittime.secsTo(QDateTime::currentDateTime());
         QString displayedtime;
-                
+        
         int dhr  = nsec / 3600;
         int dmin = (nsec - dhr * 3600) / 60;
         int dsec = nsec % 60;
@@ -395,7 +395,7 @@ void ConferencePanel::timerEvent(QTimerEvent *)
             displayedtime = tr("%1 min %2 sec").arg(dmin).arg(dsec);
         else
             displayedtime = tr("%1 sec").arg(dsec);
-                
+        
         m_timespent[ref]->setText(displayedtime);
     }
 }

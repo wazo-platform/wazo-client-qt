@@ -50,6 +50,7 @@ QueuedetailsPanel::QueuedetailsPanel(BaseEngine * engine,
                                      QWidget * parent)
     : XLet(engine, parent)
 {
+    setTitle( tr("Agents of a Queue") );
     m_gridlayout = new QGridLayout(this);
     
     m_queuedescription = new QLabel(this);
@@ -81,13 +82,11 @@ QueuedetailsPanel::QueuedetailsPanel(BaseEngine * engine,
              this, SLOT(newAgentList(const QStringList &)) );
     connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
              this, SLOT(newQueueList(const QStringList &)) );
-
+    
     connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
              this, SLOT(monitorThisQueue(const QString &)) );
     connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
              m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
-    connect( this, SIGNAL(agentAction(const QString &)),
-             m_engine, SLOT(agentAction(const QString &)) );
 }
 
 /*! \brief destructor

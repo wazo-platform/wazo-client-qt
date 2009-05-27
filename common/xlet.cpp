@@ -38,6 +38,10 @@ XLet::XLet(BaseEngine * engine, QWidget * parent)
     : QWidget(parent),
       m_engine(engine)
 {
+    connect( this, SIGNAL(logAction(const QString &)),
+             m_engine, SLOT(logAction(const QString &)) );
+    connect( this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
+             m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
 }
 
 /*! \brief connect actionCall signal to the engine
@@ -51,4 +55,3 @@ void XLet::connectDials()
                                        const QString &,
                                        const QString &)) );
 }
-

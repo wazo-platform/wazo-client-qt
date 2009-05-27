@@ -51,6 +51,7 @@ AgentsPanel::AgentsPanel(BaseEngine * engine,
                          QWidget * parent)
     : XLet(engine, parent)
 {
+    setTitle( tr("Agents' List (plain)") );
     m_gui_buttonsize = 10;
     
     m_gridlayout = new QGridLayout(this);
@@ -79,18 +80,19 @@ AgentsPanel::AgentsPanel(BaseEngine * engine,
     
     setGuiOptions(m_engine->getGuiOptions("merged_gui"));
     // connect signals/slots with engine
+    connect( this, SIGNAL(ipbxCommand(const QVariantMap &)),
+             m_engine, SLOT(ipbxCommand(const QVariantMap &)) );
+    connect( this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
+             m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
+    
     connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
              this, SLOT(newAgentList(const QStringList &)) );
     connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
              this, SLOT(newQueueList(const QStringList &)) );
-    connect( this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
-             m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
     connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
              m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
     connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QString &, const QVariant &)),
              this, SLOT(updateAgentPresence(const QString &, const QString &, const QVariant &)) );
-    connect( this, SIGNAL(agentAction(const QString &)),
-             m_engine, SLOT(agentAction(const QString &)) );
     connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
              this, SLOT(statusRecord(const QString &, const QString &, const QString &)) );
     connect( m_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
@@ -414,33 +416,49 @@ void AgentsPanel::agentClicked()
     AgentInfo * ainfo = m_engine->agents()[agentid];
     QString astid = ainfo->astid();
     QString agentnumber = ainfo->agentnumber();
+    QVariantMap ipbxcommand;
     
     if(action == "changeagent")
         emit changeWatchedAgent(agentid, true);
     
     else if(action == "loginoff") {
         QString status = ainfo->properties()["agentstats"].toMap()["status"].toString();
+        ipbxcommand["agentids"] = agentid;
         if(status == "AGENT_IDLE")
-            emit agentAction(QString("logout %1 %2").arg(astid).arg(agentnumber));
+            ipbxcommand["command"] = "agentlogout";
         else if(status == "AGENT_ONCALL")
-            emit agentAction(QString("logout %1 %2").arg(astid).arg(agentnumber));
+            ipbxcommand["command"] = "agentlogout";
         else if(status == "AGENT_LOGGEDOFF")
-            emit agentAction(QString("login %1 %2").arg(astid).arg(agentnumber));
+            ipbxcommand["command"] = "agentlogin";
         else
             shouldNotOccur("AgentsPanel::agentClicked",
                            QString("agentid %1 action %2 status %3").arg(agentid).arg(action).arg(status));
-    } else if(action == "unpause")
-        emit agentAction(QString("unpause_all %1 %2").arg(astid).arg(agentnumber));
-    else if(action == "pause")
-        emit agentAction(QString("pause_all %1 %2").arg(astid).arg(agentnumber));
-    else if(action == "listen")
-        emit agentAction(QString("listen %1 %2").arg(astid).arg(agentnumber));
-    else if(action == "stoplisten")
-        emit agentAction(QString("stoplisten %1 %2").arg(astid).arg(agentnumber));
-    else if(action == "record")
-        emit agentAction(QString("record %1 %2").arg(astid).arg(agentnumber));
-    else if(action == "stoprecord")
-        emit agentAction(QString("stoprecord %1 %2").arg(astid).arg(agentnumber));
+    } else if(action == "unpause") {
+        ipbxcommand["command"] = "agentunpausequeue";
+        ipbxcommand["agentids"] = agentid;
+        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
+    } else if(action == "pause") {
+        ipbxcommand["command"] = "agentpausequeue";
+        ipbxcommand["agentids"] = agentid;
+        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
+    } else if(action == "listen") {
+        ipbxcommand["command"] = "listen";
+        ipbxcommand["source"] = "user:special:me";
+        ipbxcommand["destination"] = agentid;
+    } else if(action == "stoplisten") {
+        ipbxcommand["command"] = "stoplisten";
+        ipbxcommand["source"] = "user:special:me";
+        ipbxcommand["destination"] = agentid;
+    } else if(action == "record") {
+        ipbxcommand["command"] = "record";
+        ipbxcommand["source"] = "user:special:me";
+        ipbxcommand["destination"] = agentid;
+    } else if(action == "stoprecord") {
+        ipbxcommand["command"] = "stoprecord";
+        ipbxcommand["source"] = "user:special:me";
+        ipbxcommand["destination"] = agentid;
+    }
+    emit ipbxCommand(ipbxcommand);
 }
 
 /*! \brief update Record/Stop Record buttons

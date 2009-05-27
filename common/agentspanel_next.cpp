@@ -62,6 +62,7 @@ AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
                                  QWidget * parent)
     : XLet(engine, parent)
 {
+    setTitle( tr("Agents' List (queue groups)") );
     m_glayout = new QGridLayout(this);
     m_glayout->setSpacing(1);
     
@@ -70,7 +71,7 @@ AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
     
     setGuiOptions(m_engine->getGuiOptions("merged_gui"));
     startTimer(1000);
-
+    
     // connect signal/slots with engine
     connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
              this, SLOT(newAgentList(const QStringList &)) );
@@ -79,10 +80,6 @@ AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
                 
     connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
              m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
-    connect( this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
-             m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
-    connect( this, SIGNAL(agentAction(const QString &)),
-             m_engine, SLOT(agentAction(const QString &)) );
     connect( this, SIGNAL(saveQueueGroups(const QVariant &)),
              m_engine, SLOT(saveQueueGroups(const QVariant &)) );
     connect( this, SIGNAL(loadQueueGroups()),
@@ -91,8 +88,6 @@ AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
              this, SLOT(setQueueGroups(const QVariant &)) );
     connect( m_engine, SIGNAL(setQueueOrder(const QVariant &)),
              this, SLOT(setQueueOrder(const QVariant &)) );
-    connect( this, SIGNAL(logAction(const QString &)),
-             m_engine, SLOT(logAction(const QString &)) );
 }
 
 AgentsPanelNext::~AgentsPanelNext()
@@ -623,21 +618,25 @@ void AgentsPanelNext::actionclicked()
     AgentInfo * ainfo = m_engine->agents()[agentid];
     QString astid = ainfo->astid();
     QString agentnumber = ainfo->agentnumber();
+    QVariantMap ipbxcommand;
     
-    if(action == "transfer")
-        agentAction(QString("transfer %1 %2 %3").arg(astid).arg(agentnumber).arg(m_queue_chose->currentText()));
-    else if(action == "unpause") {
-        // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
-        // agentAction(QString("unpause %1 %2").arg(astid).arg(agentnumber));
-        agentAction(QString("unpause_all %1 %2").arg(astid).arg(agentnumber));
+    if(action == "transfer") {
+        ipbxcommand["command"] = "transfer";
+        ipbxcommand["source"] = agentid;
+        ipbxcommand["destination"] = QString("queue:%1/%2").arg(astid).arg(m_queue_chose->currentText());
+    } else if(action == "unpause") {
+        ipbxcommand["command"] = "agentunpausequeue";
+        ipbxcommand["agentids"] = agentid;
+        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
+    } else if(action == "pause") {
+        ipbxcommand["command"] = "agentpausequeue";
+        ipbxcommand["agentids"] = agentid;
+        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
+    } else if(action == "agentlogout") {
+        ipbxcommand["command"] = "agentlogout";
+        ipbxcommand["agentids"] = agentid;
     }
-    else if(action == "pause") {
-        // foreach (QString qname, m_title[groupid]->property("queues").toStringList())
-        // agentAction(QString("pause %1 %2").arg(astid).arg(agentnumber));
-        agentAction(QString("pause_all %1 %2").arg(astid).arg(agentnumber));
-    }
-    else if(action == "logout")
-        agentAction(QString("logout %1 %2").arg(astid).arg(agentnumber));
+    emit ipbxCommand(ipbxcommand);
 }
 
 void AgentsPanelNext::refreshContents()

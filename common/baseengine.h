@@ -131,8 +131,8 @@ public:
     void setCompany(const QString &);       //!< see company()
     const QString & userId() const;         //!< userid to identify to the server
     void setUserId(const QString &);        //!< see userid()
-    const QString & phonenumber() const;    //!< agent's phone number
-    void setPhonenumber(const QString &);   //!< see phonenumber()
+    const QString & agentphonenumber() const;  //!< agent's phone number
+    void setAgentPhoneNumber(const QString &); //!< see agentphonenumber()
     const int & loginkind() const;          //!< loginkind to identify to the server
     void setLoginKind(const int);           //!< see loginkind()
     const int & keeppass() const;           //!< keeppass to identify to the server
@@ -219,7 +219,6 @@ public slots:
     void setKeepaliveinterval(uint);        //!< set keep alive interval
     void copyNumber(const QString &);
     void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
-    void agentAction(const QString &);
     void meetmeAction(const QString &, const QString &);
     void requestFileList(const QString &);
     
@@ -235,6 +234,7 @@ public slots:
     void shouldNotOccur(const QString &, const QString &); //!< log tricky situations
     void sendNewRemark(const QString &, const QString &);
     void handleOtherInstanceMessage(const QString &);
+    void ipbxCommand(const QVariantMap &);
 private slots:
     void keepLoginAlive(); //!< Keep session alive
     void changeState(); //!< Change the presence status
@@ -338,7 +338,7 @@ private:
     QString m_company;
     QString m_password;             //!< User password for account
     QString m_agentid;              //!< Agent Id
-    QString m_phonenumber;          //!< Agent's phone
+    QString m_agentphonenumber;     //!< Agent's phone number
     int m_loginkind;                //!< Login Kind
     int m_keeppass;                 //!< Keep password ?
     int m_showagselect;             //!< Show agent selection ?

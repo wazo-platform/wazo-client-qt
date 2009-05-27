@@ -128,8 +128,6 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
              this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
     
     m_agent = new IdentityAgent(this);
-    connect( m_agent, SIGNAL(agentAction(const QString &)),
-             m_engine, SLOT(agentAction(const QString &)) );
     connect( m_agent, SIGNAL(setSystrayIcon(const QString &)),
              this, SIGNAL(setSystrayIcon(const QString &)) );
     m_agent->setContentsMargins(5, 0, 5, 0);
@@ -166,14 +164,14 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
              this, SLOT(newAgentList(const QStringList &)) );
     connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
              this, SLOT(newQueueList(const QStringList &)) );
-
+    
     connect( m_engine, SIGNAL(updatePresence(const QVariant &)),
              this, SLOT(updatePresence(const QVariant &)) );
     connect( this, SIGNAL(setAvailState(const QString &, bool)),
              m_engine, SLOT(setAvailState(const QString &, bool)) );
     connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
              m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
-
+    
     connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
              this, SLOT(setOpt(const QString &, bool)) );
     connect( m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
@@ -182,6 +180,9 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
              this, SLOT(updateUser(UserInfo *)) );
     connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
              this, SLOT(setUserInfo(const UserInfo *)) );
+    
+    connect( m_agent, SIGNAL(ipbxCommand(const QVariantMap &)),
+             m_engine, SLOT(ipbxCommand(const QVariantMap &)) );
 }
 
 void IdentityDisplay::setupIcons()
@@ -252,7 +253,7 @@ void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
                             QAction * replyMe = new QAction(tr("Reply"), &contextMenu);
                             replyMe->setProperty("iconname", iconname);
                             replyMe->setProperty("channel", thiscommchan);
-                            replyMe->setProperty("action", "pickup");
+                            replyMe->setProperty("action", "answer");
                             connect(replyMe, SIGNAL(triggered()),
                                     this, SLOT(contextMenuAction()) );
                             contextMenu.addAction(replyMe);

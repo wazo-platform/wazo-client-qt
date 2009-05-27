@@ -56,7 +56,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent *);
 signals:
     void setSystrayIcon(const QString &);
-    void agentAction(const QString &);
+    void ipbxCommand(const QVariantMap &);
 private slots:
     void logout();
     void login();
