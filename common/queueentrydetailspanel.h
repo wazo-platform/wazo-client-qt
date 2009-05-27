@@ -71,7 +71,6 @@ private:
     void clearPanel();
     void updatePanel();
     
-    BaseEngine * m_engine;        //!< BaseEngine object
     QGridLayout * m_gridlayout; //!< Layout
     
     QString m_monitored_queueid;  //!< queue id

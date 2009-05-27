@@ -85,7 +85,6 @@ private:
     double m_timesrv;
     QDateTime m_timeclt;
     
-    BaseEngine * m_engine;        //!< BaseEngine object
     const UserInfo * m_ui;    //!< user info
     QGridLayout * m_gridlayout; //!< Layout
     //QVBoxLayout * m_layout; //
