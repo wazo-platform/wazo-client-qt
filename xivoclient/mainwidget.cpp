@@ -65,24 +65,6 @@
 
 const QString extraspace("  ");
 
-/*! \brief Widget containing the CallStackWidget and a Title QLabel
- */
-LeftPanel::LeftPanel(QWidget * bottomWidget, QWidget * parent)
-    : QWidget(parent)
-{
-    QVBoxLayout * layout = new QVBoxLayout(this);
-    layout->setMargin(0);
-    m_titleLabel = new QLabel("                     ", this);
-    m_titleLabel->setObjectName("monitored");
-    layout->addWidget(m_titleLabel, 0, Qt::AlignCenter);
-    layout->addWidget(bottomWidget, 1);
-}
-
-QLabel * LeftPanel::titleLabel()
-{
-    return m_titleLabel;
-}
-
 /*! \brief Constructor
  *
  * Construct the Widget with all subwidgets.
@@ -852,8 +834,6 @@ void MainWidget::engineStopped()
         if (m_forcetabs || m_allnames.contains(xletid)) {
             if ((xletid == QString("customerinfo")) && m_engine->checkedFunction("customerinfo")) {
                 removePanel(xletid, m_xlet[xletid]);
-            } else if (xletid == QString("calls")) {
-                removePanel("calls", m_leftpanel);
             } else
                 removePanel(xletid, m_xlet[xletid]);
         }

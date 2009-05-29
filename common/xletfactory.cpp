@@ -37,6 +37,7 @@
 #include "agentspanel_next.h"
 #include "agentdetailspanel.h"
 #include "callcampaignpanel.h"
+#include "callstackwidget.h"
 #include "conferencepanel.h"
 #include "customerinfopanel.h"
 #include "datetimepanel.h"
@@ -126,6 +127,8 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
         xlet = new CallCampaignPanel(m_engine, topwindow);
     } else if(id == "mylocaldir") {
         xlet = new MyLocalDirPanel(m_engine, topwindow);
+    } else if(id == "calls") {
+        xlet = new CallStackWidget(m_engine, topwindow);
     }
     return xlet;
 }

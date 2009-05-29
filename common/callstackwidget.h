@@ -36,11 +36,10 @@
 
 #include <QHash>
 #include <QList>
-#include <QObject>
-#include <QWidget>
 #include <QString>
 #include <QDateTime>
 
+#include "xlet.h"
 #include "callwidget.h"
 #include "xivoconsts.h"
 
@@ -51,7 +50,7 @@ class BaseEngine;
 
 /*! \brief Widget displaying the current open channels for a phone line.
  */
-class CallStackWidget : public QWidget
+class CallStackWidget : public XLet
 {
     Q_OBJECT
 public:
@@ -77,7 +76,6 @@ signals:
     void changeTitle(const QString &);                //!< change Title
     void monitorPeerRequest(const QString &);        //!< send the userid of the new monitored peer
 private:
-    BaseEngine * m_engine;      //!< pointer to the BaseEngine
     UserInfo * m_monitored_ui;  //!< user currently monitored
     QVBoxLayout * m_layout;        //!< Vertical Layout used
         

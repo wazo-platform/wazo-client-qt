@@ -36,6 +36,8 @@
 #include <QSettings>
 #include <QVariant>
 #include <QVBoxLayout>
+#include <QLabel>
+#include <QScrollArea>
 
 #include "baseengine.h"
 #include "callstackwidget.h"
@@ -47,15 +49,42 @@
 /*! \brief Constructor
  */
 CallStackWidget::CallStackWidget(BaseEngine * engine, QWidget * parent)
-    : QWidget(parent), m_engine(engine), m_monitored_ui(0)
+    : XLet(engine, parent), m_monitored_ui(0)
 {
-    // qDebug() << "CallStackWidget::CallStackWidget()";
-    m_layout = new QVBoxLayout(this);
+    qDebug() << "CallStackWidget::CallStackWidget()";
+    QVBoxLayout * toplayout = new QVBoxLayout(this);
+    toplayout->setMargin(0);
+    QLabel * titleLabel = new QLabel("                     ", this);
+    toplayout->addWidget( titleLabel, 0, Qt::AlignCenter);
+
+    QScrollArea * scrollarea = new QScrollArea(this);
+    scrollarea->setWidgetResizable(true);
+    QWidget * w = new QWidget(scrollarea);
+    scrollarea->setWidget(w);
+    m_layout = new QVBoxLayout(w);
     //m_layout->setMargin();
     //m_layout->setSpacing(0);
     setObjectName("scroller");
     setAcceptDrops(true);
     m_layout->addStretch(1);
+    toplayout->addWidget(scrollarea);
+
+    // connect signals/slots
+    connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
+             this, SLOT(updateUser(UserInfo *)) );
+    connect( this, SIGNAL(changeTitle(const QString &)),
+             titleLabel, SLOT(setText(const QString &)) );
+    connect( m_engine, SIGNAL(delogged()),
+             this, SLOT(reset()) );
+                
+    connect( this, SIGNAL(monitorPeerRequest(const QString &)),
+             m_engine, SLOT(monitorPeerRequest(const QString &)) );
+    connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
+             this, SLOT(monitorPeer(UserInfo *)) );
+                
+    connectDials();
+    connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+             this, SLOT(setUserInfo(const UserInfo *)) );
 }
 
 void CallStackWidget::updateUser(UserInfo * ui)

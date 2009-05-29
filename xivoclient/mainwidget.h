@@ -67,7 +67,6 @@ class QStackedWidget;
 class BaseEngine;
 class CallStackWidget;
 class DirectoryPanel;
-class LeftPanel;
 class SwitchBoardWindow;
 #ifdef USE_OUTLOOK
 class OutlookPanel;
@@ -151,9 +150,6 @@ private:
         
     // Widgets for Xlets
     QTabWidget * m_tabwidget;        //!< Area to display messages, services and histories
-    LeftPanel * m_leftpanel;
-    QScrollArea * m_areaCalls;
-    CallStackWidget * m_calls;
 //    QHash<QString, QWidget *> m_xlet;
     QHash<QString, XLet *> m_xlet;
 
@@ -206,17 +202,6 @@ private:
 
     QClipboard * m_clipboard;
     XLetFactory * m_xletfactory;
-};
-
-/*! \brief Widget containing the CallStackWidget and a Title QLabel
- */
-class LeftPanel : public QWidget
-{
-public:
-    LeftPanel(QWidget *, QWidget * parent = 0);        //!< Constructor
-    QLabel * titleLabel();        //!< getter for m_titleLabel
-private:
-    QLabel * m_titleLabel;        //!< Title label property
 };
 
 #endif
