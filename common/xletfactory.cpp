@@ -68,69 +68,68 @@
 #include "switchboardwindow.h"
 #include "videopanel.h"
 
+/*! \brief templates for returning a new XLet */
+template <class T>
+XLet * newXLet(BaseEngine * engine, QWidget * parent)
+{
+    return new T(engine, parent);
+}
+
+/*! \brief list of XLets */
+static const struct {
+    const char * name;
+    const newXLetProto construct;
+} xlets[] = {
+    { "history", newXLet<LogWidget> },
+    { "identity", newXLet<IdentityDisplay> },
+    { "agents", newXLet<AgentsPanel> },
+    { "agentsnext", newXLet<AgentsPanelNext> },
+    { "agentdetails", newXLet<AgentdetailsPanel> },
+    { "conference", newXLet<ConferencePanel> },
+    { "customerinfo", newXLet<CustomerInfoPanel> },
+    { "queues", newXLet<QueuesPanel> },
+    { "queuedetails", newXLet<QueuedetailsPanel> },
+    { "queueentrydetails", newXLet<QueueentrydetailsPanel> },
+    { "datetime", newXLet<DatetimePanel> },
+    { "dial", newXLet<DialPanel> },
+    { "video", newXLet<PlayerWidget> },
+    { "operator", newXLet<StatusPanel> },
+    { "messages", newXLet<DisplayMessagesPanel> },
+    { "switchboard", newXLet<SwitchBoardWindow> },
+    { "parking", newXLet<ParkingPanel> },
+    { "fax", newXLet<FaxPanel> },
+    { "search", newXLet<SearchPanel> },
+    { "features", newXLet<ServicePanel> },
+    { "directory", newXLet<DirectoryPanel> },
+    { "callcampaign", newXLet<CallCampaignPanel> },
+    { "mylocaldir", newXLet<MyLocalDirPanel> },
+    { "calls", newXLet<CallStackWidget>},
+    { 0, 0 }
+};
+
 /*! \brief Constructor 
  */
 XLetFactory::XLetFactory(BaseEngine * engine, QObject * parent)
     : QObject(parent), m_engine(engine)
 {
+    // populate the m_xlets hash table
+    int i;
+    for(i = 0; xlets[i].name; i++) {
+        m_xlets.insert(QString(xlets[i].name), xlets[i].construct);
+    }
 }
 
 /*! \brief build a new XLet depending on the type wanted */
 XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
 {
     XLet * xlet = 0;
-    if(id == "history") {
-        xlet = new LogWidget(m_engine, topwindow);
-    } else if(id == "identity") {
-        xlet = new IdentityDisplay(m_engine, topwindow);
-    } else if(id == "agents") {
-        xlet = new AgentsPanel(m_engine, topwindow);
-    } else if(id == "agentsnext") {
-        xlet = new AgentsPanelNext(m_engine, topwindow);
-    } else if(id == "agentdetails") {
-        xlet = new AgentdetailsPanel(m_engine, topwindow);
-    } else if(id == "conference") {
-        xlet = new ConferencePanel(m_engine, topwindow);
-    } else if(id == "customerinfo") {
-        xlet = new CustomerInfoPanel(m_engine, topwindow);
-    } else if(id == "queues") {
-        xlet = new QueuesPanel(m_engine, topwindow);
-    } else if(id == "queuedetails") {
-        xlet = new QueuedetailsPanel(m_engine, topwindow);
-    } else if(id == "queueentrydetails") {
-        xlet = new QueueentrydetailsPanel(m_engine, topwindow);
-    } else if(id == "datetime") {
-        xlet = new DatetimePanel(m_engine, topwindow);
-    } else if(id == "dial") {
-        xlet = new DialPanel(m_engine, topwindow);
-    } else if(id == "video") {
-        xlet = new PlayerWidget(m_engine, topwindow);
-    } else if(id == "operator") {
-        xlet = new StatusPanel(m_engine, topwindow);
-    } else if(id == "messages") {
-        xlet = new DisplayMessagesPanel(m_engine, topwindow);
-    } else if(id == "switchboard") {
-        xlet = new SwitchBoardWindow(m_engine, topwindow);
-    } else if(id == "parking") {
-        xlet = new ParkingPanel(m_engine, topwindow);
-    } else if(id == "fax") {
-        xlet = new FaxPanel(m_engine, topwindow);
-    } else if(id == "search") {
-        xlet = new SearchPanel(m_engine, topwindow);
-    } else if(id == "features") {
-        xlet = new ServicePanel(m_engine, topwindow);
-    } else if(id == "directory") {
-        xlet = new DirectoryPanel(m_engine, topwindow);
+    newXLetProto construct = m_xlets.value(id);
+    if(construct) {
+        xlet = construct(m_engine, topwindow);
 #ifdef USE_OUTLOOK
     } else if(id == "outlook") {
         xlet = new OutlookPanel(m_engine, topwindow);
 #endif /* USE_OUTLOOK */
-    } else if(id == "callcampaign") {
-        xlet = new CallCampaignPanel(m_engine, topwindow);
-    } else if(id == "mylocaldir") {
-        xlet = new MyLocalDirPanel(m_engine, topwindow);
-    } else if(id == "calls") {
-        xlet = new CallStackWidget(m_engine, topwindow);
     } else {
         QDir pluginsDir( qApp->applicationDirPath() );
         pluginsDir.cdUp(); // to be checked

@@ -35,9 +35,13 @@
 #define __XLETFACTORY_H__
 
 #include <QObject>
+#include <QHash>
 #include "xlet.h"
 class QWidget;
 class BaseEngine;
+
+/*! xlet creator function prototype */
+typedef XLet * (*newXLetProto)(BaseEngine *, QWidget *);
 
 /*! \brief XLet Factory */
 class XLetFactory : public QObject
@@ -47,6 +51,7 @@ public:
     XLet * newXLet(const QString & id, QWidget * topwindow) const;
 private:
     BaseEngine * m_engine;  //!< BaseEngine reference
+    QHash<QString, newXLetProto> m_xlets;   //!< built in XLets constuctors
 };
 
 #endif
