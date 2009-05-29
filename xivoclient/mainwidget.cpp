@@ -682,9 +682,10 @@ void MainWidget::engineStarted()
         m_gridlayout->addWidget(m_tabwidget, 1, 0);
     }
     
-    for(int j = 0; j < XletList.size(); j++) {
-        QString xletid = XletList[j];
-        if (m_forcetabs || m_allnames.contains(xletid)) {
+//    for(int j = 0; j < XletList.size(); j++) {
+//        QString xletid = XletList[j];
+//        if (m_forcetabs || m_allnames.contains(xletid)) {
+        foreach(QString xletid, m_allnames) {
             bool withscrollbar = m_dockoptions[xletid].contains("s");
             XLet * xlet = m_xletfactory->newXLet(xletid, this);
             if(xlet) {
@@ -701,7 +702,7 @@ void MainWidget::engineStarted()
                 qDebug() << "cannot instanciate XLet" << xletid;
             }
         }
-    }
+//    }
     
     qDebug() << "MainWidget::engineStarted() : the xlets have been created";
     m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
@@ -802,17 +803,17 @@ void MainWidget::engineStopped()
     }
     clearPresence();
     
-    for(int j = 0; j < XletList.size(); j++) {
-        QString xletid = XletList[j];
-        if (xletid == "tabber")
-            continue;
-        if (m_forcetabs || m_allnames.contains(xletid)) {
-            if ((xletid == QString("customerinfo")) && m_engine->checkedFunction("customerinfo")) {
-                removePanel(xletid, m_xlet[xletid]);
-            } else
-                removePanel(xletid, m_xlet[xletid]);
-        }
-    }
+//    for(int j = 0; j < XletList.size(); j++) {
+//        QString xletid = XletList[j];
+//        if (xletid == "tabber")
+//            continue;
+//        if (m_forcetabs || m_allnames.contains(xletid)) {
+//            if ((xletid == QString("customerinfo")) && m_engine->checkedFunction("customerinfo")) {
+//                removePanel(xletid, m_xlet[xletid]);
+//            } else
+//                removePanel(xletid, m_xlet[xletid]);
+//        }
+//    }
     
     if(m_docknames.contains("tabber")) {
         removePanel("tabber", m_tabwidget);

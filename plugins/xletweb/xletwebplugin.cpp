@@ -1,8 +1,10 @@
 #include <QDebug>
+#include <QtPlugin>
 
+#include "xletweb.h"
 #include "xletwebplugin.h"
 
-Q_EXPORT_PLUGIN2(xletwebplugin, XletWebPlugin);
+Q_EXPORT_PLUGIN2(xletwebplugin, XLetWebPlugin);
 
 XLetWebPlugin::~XLetWebPlugin()
 {

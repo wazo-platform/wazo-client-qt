@@ -7,3 +7,4 @@ TARGET      = $$qtLibraryTarget(xletwebplugin)
 DESTDIR     = ..
 
 QT += network
+QT += webkit

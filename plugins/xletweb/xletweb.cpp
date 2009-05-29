@@ -34,13 +34,9 @@
 #include <QDebug>
 #include <QLabel>
 #include <QGridLayout>
-#ifdef USE_WEBKIT
 #include <QtWebKit>
-#endif
 
-#include "baseengine.h"
 #include "xletweb.h"
-#include "userinfo.h"
 
 /*! \brief Constructor
  */
@@ -51,12 +47,10 @@ XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
         
     // replace by whatever you need
     QGridLayout * glayout = new QGridLayout(this);
-#ifdef USE_WEBKIT
     QWebView *view = new QWebView(this);
     view->load(QUrl("http://www.proformatique.com/"));
     view->show();
     glayout->addWidget( view, 0, 0, Qt::AlignCenter );
-#endif
     glayout->setRowStretch( 0, 1 );
     glayout->setColumnStretch( 0, 1 );
     //
@@ -64,4 +58,6 @@ XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
 
 XletWeb::~XletWeb()
 {
+    qDebug() << "XletWeb::~XletWeb()";
 }
+

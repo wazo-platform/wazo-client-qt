@@ -37,8 +37,6 @@
 #include <QObject>
 #include "xlet.h"
 
-class UserInfo;
-
 /*! \brief XletWeb Panel
  */
 class XletWeb : public XLet
@@ -47,9 +45,6 @@ class XletWeb : public XLet
 public:
     XletWeb(BaseEngine * engine, QWidget * parent = 0);
     ~XletWeb();
-public slots:
-    //! does nothing
-    void setGuiOptions(const QVariant &) {};
 };
 
 #endif /* __XLETWEB_H__ */

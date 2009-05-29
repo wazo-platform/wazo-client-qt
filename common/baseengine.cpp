@@ -1363,7 +1363,7 @@ void BaseEngine::parseCommand(const QString & line)
             tmp["functions"] = todisp;
             m_guioptions["server_funcs"] = tmp;
             
-            qDebug() << "clientXlets" << XletList;
+            //qDebug() << "clientXlets" << XletList;
             qDebug() << "m_capaxlets" << m_capaxlets;
             qDebug() << "m_capafuncs" << m_capafuncs;
             qDebug() << "m_appliname" << m_appliname;

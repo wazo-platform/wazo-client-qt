@@ -123,10 +123,6 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
     } else if(id == "outlook") {
         xlet = new OutlookPanel(m_engine, topwindow);
 #endif /* USE_OUTLOOK */
-#ifdef USE_WEBKIT
-    } else if(id == "xletweb") {
-        xlet = new XletWeb(m_engine, topwindow);
-#endif /* USE_WEBKIT */
     } else if(id == "callcampaign") {
         xlet = new CallCampaignPanel(m_engine, topwindow);
     } else if(id == "mylocaldir") {
