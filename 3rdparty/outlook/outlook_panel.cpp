@@ -74,6 +74,7 @@ OutlookPanel::OutlookPanel(BaseEngine * engine, QWidget * parent)
           m_calllength(20), m_callprefix("")
 {
 	OLEngine()->start_thread();
+    setTitle( tr("Outlook") );
         
 	QVBoxLayout * vlayout = new QVBoxLayout(this);
 	vlayout->setMargin(0);
