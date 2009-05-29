@@ -30,6 +30,7 @@ DEPENDPATH += .
 INCLUDEPATH += . $${COMMONDIR} $${JSON_JSONQT_DIR}
 
 CONFIG -= debug
+#CONFIG += debug
 # CONFIG += console # uncomment to get console on Win32
 CONFIG += static
 CONFIG += uitools
@@ -54,15 +55,6 @@ win32 {
 
 QT += network
 QT += xml
-
-# let's forget it for the time being (2008/11/10) :
-# - makes xivoclient 60% more heavier (static mode)
-# - recompilation under win32 is not straightforward yet
-# - no hurry for actual use
-exists(../webkit.mak) {
-        QT += webkit
-        DEFINES += USE_WEBKIT
-}
 
 RESOURCES += appli.qrc
 TRANSLATIONS = xivoclient_fr.ts qt_fr.ts
