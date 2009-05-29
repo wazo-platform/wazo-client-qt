@@ -35,8 +35,9 @@
 #include "queueinfo.h"
 
 QueueInfo::QueueInfo(const QString & astid,
+                     const QString & id,
                      const QMap<QString, QVariant> & prop)
-    : m_astid(astid)
+    : m_astid(astid), m_id(id)
 {
     m_context = prop.value("context").toString();
     m_queuename = prop.value("queuename").toString();
@@ -87,6 +88,11 @@ bool QueueInfo::updateAgent(const QMap<QString, QVariant> & prop)
 const QString & QueueInfo::astid() const
 {
     return m_astid;
+}
+
+const QString & QueueInfo::id() const
+{
+    return m_id;
 }
 
 const QString & QueueInfo::context() const

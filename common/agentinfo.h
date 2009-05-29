@@ -42,18 +42,21 @@
  */
 class AgentInfo
 {
- public:
+public:
     //! constructor
-    AgentInfo(const QString & astid,
-              const QMap<QString, QVariant> & prop);
+    AgentInfo(const QString &,
+              const QString &,
+              const QMap<QString, QVariant> &);
     //! destructor
     ~AgentInfo();
     //! update attribute members
-    bool update(const QMap<QString, QVariant> & prop);
+    bool update(const QMap<QString, QVariant> &);
     //! update attribute members
-    bool updateQueue(const QMap<QString, QVariant> & prop);
+    bool updateQueue(const QMap<QString, QVariant> &);
     //! asterisk this agent belongs to
     const QString & astid() const;
+    //! reference id of this agent on the server
+    const QString & id() const;
     //! context this agent belongs to
     const QString & context() const;
     //! access to the status values of this agent
@@ -70,6 +73,7 @@ class AgentInfo
     const QMap<QString, QVariant> & comms() const { return m_comms; };
  private:
     QString m_astid;
+    QString m_id;
     QString m_context;
     QString m_agentname;
     QString m_agentnumber;

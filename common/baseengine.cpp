@@ -762,10 +762,11 @@ QStringList BaseEngine::updateQueue(const QString & astid,
                                     const QString & queueid,
                                     const QMap<QString, QVariant> & properties)
 {
+    // qDebug() << "BaseEngine::updateQueue" << astid << queueid << properties;
     QStringList keychanges;
     QString key = QString("queue:%1/%2").arg(astid).arg(queueid);
     if( ! m_queues.contains( key ) ) {
-        m_queues[key] = new QueueInfo(astid, properties);
+        m_queues[key] = new QueueInfo(astid, queueid, properties);
         keychanges << key;
     } else {
         bool haschanged = m_queues[key]->update(properties);
@@ -782,7 +783,7 @@ QStringList BaseEngine::updateQueueAgent(const QString & astid,
     QStringList keychanges;
     QString key = QString("queue:%1/%2").arg(astid).arg(queueid);
     if( ! m_queues.contains( key ) ) {
-        m_queues[key] = new QueueInfo(astid, properties);
+        m_queues[key] = new QueueInfo(astid, queueid, properties);
         keychanges << key;
     } else {
         bool haschanged = m_queues[key]->updateAgent(properties);
@@ -799,7 +800,7 @@ QStringList BaseEngine::updateAgent(const QString & astid,
     QStringList keychanges;
     QString key = QString("agent:%1/%2").arg(astid).arg(agentid);
     if( ! m_agents.contains( key ) ) {
-        m_agents[key] = new AgentInfo(astid, properties);
+        m_agents[key] = new AgentInfo(astid, agentid, properties);
         keychanges << key;
     } else {
         bool haschanged = m_agents[key]->update(properties);
@@ -816,7 +817,7 @@ QStringList BaseEngine::updateAgentQueue(const QString & astid,
     QStringList keychanges;
     QString key = QString("agent:%1/%2").arg(astid).arg(agentid);
     if( ! m_agents.contains( key ) ) {
-        m_agents[key] = new AgentInfo(astid, properties);
+        m_agents[key] = new AgentInfo(astid, agentid, properties);
         keychanges << key;
     } else {
         bool haschanged = m_agents[key]->updateQueue(properties);
@@ -1122,12 +1123,13 @@ void BaseEngine::parseCommand(const QString & line)
                     
                     m_users[iduser]->setAvailState(uinfo["statedetails"]);
                     m_users[iduser]->setPhoneNumber(uinfo["phonenum"].toString());
+                    m_users[iduser]->setAgentId(uinfo["agentid"].toString());
+                    m_users[iduser]->setContext(uinfo["context"].toString());
+                    
+                    m_users[iduser]->setMWI(uinfo["mwi"].toStringList());
                     m_users[iduser]->setSimultCalls(uinfo["simultcalls"].toInt());
                     m_users[iduser]->setVoiceMailNumber(uinfo["voicemailnum"].toString());
                     m_users[iduser]->setAgentNumber(uinfo["agentnumber"].toString());
-                    m_users[iduser]->setAgentId(uinfo["agentid"].toString());
-                    m_users[iduser]->setContext(uinfo["context"].toString());
-                    m_users[iduser]->setMWI(uinfo["mwi"].toStringList());
                     //m_users[iduser]->setContext(uinfo["context"].toString());
                     emit updatePeerAgent(m_timesrv, iduser, "imstatus", QStringList());
                     emit updateAgentPresence(m_users[iduser]->astid(),

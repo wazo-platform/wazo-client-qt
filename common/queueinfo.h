@@ -44,16 +44,19 @@ class QueueInfo
 {
  public:
     //! constructor
-    QueueInfo(const QString & astid,
-              const QMap<QString, QVariant> & prop);
+    QueueInfo(const QString &,
+              const QString &,
+              const QMap<QString, QVariant> &);
     //! destructor
     ~QueueInfo();
     //! update attribute members
-    bool update(const QMap<QString, QVariant> & prop);
+    bool update(const QMap<QString, QVariant> &);
     //! update attribute members
-    bool updateAgent(const QMap<QString, QVariant> & prop);
+    bool updateAgent(const QMap<QString, QVariant> &);
     //! asterisk this queue belongs to
     const QString & astid() const;
+    //! reference id of this queue on the server
+    const QString & id() const;
     //! context this queue belongs to
     const QString & context() const;
     //! access to the status values of this queue
@@ -70,6 +73,7 @@ class QueueInfo
     const QMap<QString, QVariant> & comms() const { return m_comms; };
  private:
     QString m_astid;
+    QString m_id;
     QString m_context;
     QString m_queuename;
     QString m_number;

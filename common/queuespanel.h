@@ -61,7 +61,7 @@ public:
 protected:
     void update(const QStringList &);
 private:
-    void addQueue(const QString &, const QString &, const QString &);
+    void addQueue(const QString &, const QString &, const QString &, const QString &);
 signals:
     void changeWatchedQueue(const QString &);   //!< Watch this queue
     void saveQueueOrder(const QVariant &);      //!< Save Queue order (in settings)
@@ -76,7 +76,7 @@ public slots:
 private slots:
     void queueClicked();
 private:
-    bool updateQueue(const QString &, const QString &, const QVariant &);
+    bool updateQueue(const QString &, const QString &, const QString &, const QVariant &);
     void affWidgets();
     
     QFont m_gui_font;

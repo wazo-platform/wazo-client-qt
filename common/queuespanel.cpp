@@ -197,91 +197,89 @@ void QueuesPanel::updateCounter(const QVariant & counters)
 {
     QVariantMap countersmap = counters.toMap();
     int ntot = countersmap["connected"].toInt();
-    foreach (QString queuename, m_queueinfos.keys()) {
-        if(m_queueinfos[queuename].contains("Xivo-Conn"))
-            m_queueinfos[queuename]["Xivo-Conn"]->setText(QString::number(ntot));
+    foreach (QString queueid, m_queueinfos.keys()) {
+        if(m_queueinfos[queueid].contains("Xivo-Conn"))
+            m_queueinfos[queueid]["Xivo-Conn"]->setText(QString::number(ntot));
     }
 }
 
 /*! \brief remove the queues
  */
-void QueuesPanel::removeQueues(const QString &, const QStringList & queues)
+void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues)
 {
     // qDebug() << "QueuesPanel::removeQueues()" << astid << queues;
     foreach (QString queuename, queues) {
-        if(m_queuelabels.contains(queuename)) {
-            m_gridlayout->removeWidget( m_queuelabels[queuename] );
-            m_gridlayout->removeWidget( m_queuemore[queuename] );
-            m_gridlayout->removeWidget( m_queuebusies[queuename] );
+        QString queueid = QString("queue:%1/%2").arg(astid).arg(queuename);
+        if(m_queuelabels.contains(queueid)) {
+            m_gridlayout->removeWidget( m_queuelabels[queueid] );
+            m_gridlayout->removeWidget( m_queuemore[queueid] );
+            m_gridlayout->removeWidget( m_queuebusies[queueid] );
             // TODO : used ->deleteLater() ?
-            delete m_queuelabels[queuename];
-            delete m_queuemore[queuename];
-            delete m_queuebusies[queuename];
-            m_queuelabels.remove(queuename);
-            m_queuemore.remove(queuename);
-            m_queuebusies.remove(queuename);
+            delete m_queuelabels[queueid];
+            delete m_queuemore[queueid];
+            delete m_queuebusies[queueid];
+            m_queuelabels.remove(queueid);
+            m_queuemore.remove(queueid);
+            m_queuebusies.remove(queueid);
             foreach (QString statitem, m_statitems) {
-                m_gridlayout->removeWidget( m_queueinfos[queuename][statitem] );
-                delete m_queueinfos[queuename][statitem];
-                m_queueinfos[queuename].remove(statitem);
+                m_gridlayout->removeWidget( m_queueinfos[queueid][statitem] );
+                delete m_queueinfos[queueid][statitem];
+                m_queueinfos[queueid].remove(statitem);
             }
-            m_queueinfos.remove(queuename);
+            m_queueinfos.remove(queueid);
         }
     }
 }
 
 /*! \brief Add a new queue
  */
-void QueuesPanel::addQueue(const QString & astid, const QString & queuename, const QString & queuecontext)
+void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const QString & queuename, const QString & queuecontext)
 {
     // qDebug() << "QueuesPanel::addQueue()" << astid << queuename << queuecontext;
     // UserInfo * userinfo = m_engine->getXivoClientUser();
     // if(userinfo == NULL) return;
     
-    m_queuelabels[queuename] = new QLabel(queuename, this);
-    m_queuelabels[queuename]->setFont(m_gui_font);
-    m_queuelabels[queuename]->setToolTip(tr("Server: %1\nContext: %2").arg(astid).arg(queuecontext));
-    m_queuemore[queuename] = new QPushButton(this);
-    m_queuemore[queuename]->setProperty("astid", astid);
-    m_queuemore[queuename]->setProperty("queueid", queuename);
-    m_queuemore[queuename]->setProperty("queuecontext", queuecontext);
-    m_queuemore[queuename]->setProperty("function", "more");
-    m_queuemore[queuename]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
-    m_queuemore[queuename]->setIcon(QIcon(":/images/add.png"));
+    m_queuelabels[queueid] = new QLabel(queuename, this);
+    m_queuelabels[queueid]->setFont(m_gui_font);
+    m_queuelabels[queueid]->setToolTip(tr("Server: %1\nContext: %2").arg(astid).arg(queuecontext));
+    m_queuemore[queueid] = new QPushButton(this);
+    m_queuemore[queueid]->setProperty("queueid", queueid);
+    m_queuemore[queueid]->setProperty("queuecontext", queuecontext);
+    m_queuemore[queueid]->setProperty("function", "more");
+    m_queuemore[queueid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
+    m_queuemore[queueid]->setIcon(QIcon(":/images/add.png"));
     
     if(m_gui_showqueuenames) {
-        m_queuelabels[queuename]->show();
+        m_queuelabels[queueid]->show();
         if(m_gui_showmore)
-            m_queuemore[queuename]->show();
+            m_queuemore[queueid]->show();
         else
-            m_queuemore[queuename]->hide();
+            m_queuemore[queueid]->hide();
     } else {
-        m_queuelabels[queuename]->hide();
-        m_queuemore[queuename]->hide();
+        m_queuelabels[queueid]->hide();
+        m_queuemore[queueid]->hide();
     }
-    connect( m_queuemore[queuename], SIGNAL(clicked()),
+    connect( m_queuemore[queueid], SIGNAL(clicked()),
              this, SLOT(queueClicked()));
-    m_queuebusies[queuename] = new QProgressBar(this);
-    m_queuebusies[queuename]->setFont(m_gui_font);
-    m_queuebusies[queuename]->setProperty("queueid", queuename);
-    m_queuebusies[queuename]->setProperty("astid", astid);
-    m_queuebusies[queuename]->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
-    m_queuebusies[queuename]->setFormat("%v");
+    m_queuebusies[queueid] = new QProgressBar(this);
+    m_queuebusies[queueid]->setFont(m_gui_font);
+    m_queuebusies[queueid]->setProperty("queueid", queueid);
+    m_queuebusies[queueid]->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
+    m_queuebusies[queueid]->setFormat("%v");
     foreach (QString statitem, m_statitems) {
-        m_queueinfos[queuename][statitem] = new QLabel();
-        m_queueinfos[queuename][statitem]->setFont(m_gui_font);
+        m_queueinfos[queueid][statitem] = new QLabel();
+        m_queueinfos[queueid][statitem]->setFont(m_gui_font);
     }
     
-    m_queuemove[queuename] = new QPushButton(this);
-    m_queuemove[queuename]->setProperty("astid", astid);
-    m_queuemove[queuename]->setProperty("queueid", queuename);
-    m_queuemove[queuename]->setProperty("function", "display_up");
-    m_queuemove[queuename]->setProperty("position", m_queuelabels.size() - 1);
-    m_queuemove[queuename]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
-    m_queuemove[queuename]->setIcon(QIcon(":/images/red_up.png"));
-    connect( m_queuemove[queuename], SIGNAL(clicked()),
+    m_queuemove[queueid] = new QPushButton(this);
+    m_queuemove[queueid]->setProperty("queueid", queueid);
+    m_queuemove[queueid]->setProperty("function", "display_up");
+    m_queuemove[queueid]->setProperty("position", m_queuelabels.size() - 1);
+    m_queuemove[queueid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
+    m_queuemove[queueid]->setIcon(QIcon(":/images/red_up.png"));
+    connect( m_queuemove[queueid], SIGNAL(clicked()),
              this, SLOT(queueClicked()));
-    m_queue_lines << queuename;
+    m_queue_lines << queueid;
 }
 
 /*! \brief add all necessaries widgets
@@ -293,15 +291,15 @@ void QueuesPanel::affWidgets()
 {
     //qDebug() << "QueuesPanel::affWidgets()";
     int delta = 1;
-    foreach(QString queuename, m_queuelabels.keys()) {
+    foreach(QString queueid, m_queuelabels.keys()) {
         int colnum = 1;
-        int linenum = m_queuemove[queuename]->property("position").toInt() + 1;
-        m_gridlayout->addWidget( m_queuelabels[queuename], delta + linenum, colnum++, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_queuemore[queuename], delta + linenum, colnum++, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_queuemove[queuename], delta + linenum, colnum++, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_queuebusies[queuename], delta + linenum, colnum++, Qt::AlignCenter );
+        int linenum = m_queuemove[queueid]->property("position").toInt() + 1;
+        m_gridlayout->addWidget( m_queuelabels[queueid], delta + linenum, colnum++, Qt::AlignLeft );
+        m_gridlayout->addWidget( m_queuemore[queueid], delta + linenum, colnum++, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_queuemove[queueid], delta + linenum, colnum++, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_queuebusies[queueid], delta + linenum, colnum++, Qt::AlignCenter );
         foreach (QString statitem, m_statitems)
-            m_gridlayout->addWidget( m_queueinfos[queuename][statitem],
+            m_gridlayout->addWidget( m_queueinfos[queueid][statitem],
                                      delta + linenum,
                                      m_statitems.indexOf(statitem) + colnum,
                                      Qt::AlignCenter );
@@ -321,7 +319,7 @@ void QueuesPanel::newQueueList(const QStringList & qsl)
         if(qsl.contains(iter.key()))
         {
             QueueInfo * qinfo = iter.value();
-            if(updateQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties()))
+            if(updateQueue(qinfo->astid(), iter.key(), qinfo->queuename(), qinfo->properties()))
                 addedNewQueue = true;
         }
     }
@@ -344,7 +342,8 @@ void QueuesPanel::newAgentList(const QStringList &)
  *
  * update m_queueinfos
  */
-bool QueuesPanel::updateQueue(const QString & astid, const QString & queuename, const QVariant & queueprops)
+bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
+                              const QString & queuename, const QVariant & queueprops)
 {
     bool newQueue = false;
     QVariantMap queuestatcontents = queueprops.toMap()["queuestats"].toMap();
@@ -355,15 +354,15 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queuename, 
     infos["Calls"] = "0";
     foreach (QString statname, queuestatcontents.keys())
         infos[statname] = queuestatcontents[statname].toString();
-    if(! m_queuelabels.contains(queuename)) {
-        addQueue(astid, queuename, queuecontext);
+    if(! m_queuelabels.contains(queueid)) {
+        addQueue(astid, queueid, queuename, queuecontext);
         newQueue = true;
     }
-    if(m_queuebusies.contains(queuename)) {
-        m_queuebusies[queuename]->setProperty("value", infos["Calls"]);
+    if(m_queuebusies.contains(queueid)) {
+        m_queuebusies[queueid]->setProperty("value", infos["Calls"]);
         foreach (QString statitem, m_statitems)
             if(infos.contains(statitem))
-                m_queueinfos[queuename][statitem]->setText(infos[statitem]);
+                m_queueinfos[queueid][statitem]->setText(infos[statitem]);
     }
     
     QVariantMap queueagents = queueprops.toMap()["agents_in_queue"].toMap();
@@ -376,12 +375,12 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queuename, 
             queueagents_list << agentname;
         }
     }
-    if(m_queueinfos[queuename].contains("Xivo-Avail")) {
-        m_queueinfos[queuename]["Xivo-Avail"]->setText(QString::number(navail));
+    if(m_queueinfos[queueid].contains("Xivo-Avail")) {
+        m_queueinfos[queueid]["Xivo-Avail"]->setText(QString::number(navail));
         if(navail)
-            m_queueinfos[queuename]["Xivo-Avail"]->setToolTip(tr("Available agents : %1").arg(queueagents_list.join(", ")));
+            m_queueinfos[queueid]["Xivo-Avail"]->setToolTip(tr("Available agents : %1").arg(queueagents_list.join(", ")));
         else
-            m_queueinfos[queuename]["Xivo-Avail"]->setToolTip("");
+            m_queueinfos[queueid]["Xivo-Avail"]->setToolTip("");
     }
     return newQueue;
 }
@@ -409,8 +408,7 @@ void QueuesPanel::update(const QStringList & list)
     while(it.hasNext()) {
         it.next();
         QProgressBar * qpb = it.value();
-        QString astid = qpb->property("astid").toString();
-        QString queueid = QString("queue:%1/%2").arg(astid).arg(it.key());
+        QString queueid = it.key();
         if(maxbusychanged || list.contains(queueid)) {
             quint32 val = qpb->property("value").toUInt();
             //qDebug() << "QueuesPanel::update()" << queueid;
@@ -459,10 +457,9 @@ void QueuesPanel::queueClicked()
 {
     // qDebug() << "QueuesPanel::queueClicked()" << sender()->property("queueid");
     QString function = sender()->property("function").toString();
-    QString astid = sender()->property("astid").toString();
     QString queueid = sender()->property("queueid").toString();
     if(function == "more")
-        changeWatchedQueue("queue:" + astid + "/" + queueid);
+        changeWatchedQueue(queueid);
     else if(function == "display_up") {
         int nold = m_queuemove[queueid]->property("position").toInt();
         if(nold > 0) {
@@ -476,4 +473,3 @@ void QueuesPanel::queueClicked()
         }
     }
 }
-

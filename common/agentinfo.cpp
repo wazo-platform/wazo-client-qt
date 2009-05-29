@@ -36,8 +36,9 @@
 #include "agentinfo.h"
 
 AgentInfo::AgentInfo(const QString & astid,
+                     const QString & id,
                      const QMap<QString, QVariant> & prop)
-    : m_astid(astid)
+    : m_astid(astid), m_id(id)
 {
     m_context = prop.value("context").toString();
     m_agentnumber = prop.value("number").toString();
@@ -90,6 +91,11 @@ bool AgentInfo::updateQueue(const QMap<QString, QVariant> & prop)
 const QString & AgentInfo::astid() const
 {
     return m_astid;
+}
+
+const QString & AgentInfo::id() const
+{
+    return m_id;
 }
 
 const QString & AgentInfo::context() const

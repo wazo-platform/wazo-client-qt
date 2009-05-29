@@ -291,12 +291,10 @@ void AgentdetailsPanel::updatePanel()
         
         setQueueLookProps(queueid);
         
-        QString queuename = qinfo->queuename();
-        // if(queuesstats.contains(queuename))
+        QString qid = qinfo->id();
         setQueueProps(queueid, qinfo);
-        // qDebug() << ainfo->astid() << ainfo->agentnumber() << queuename << qinfo->astid();
         if(qinfo->astid() == ainfo->astid())
-                setQueueAgentProps(queueid, queuesstats[queuename]);
+            setQueueAgentProps(queueid, queuesstats[qid]);
         
         if(isnewqueue)
             setQueueAgentSignals(queueid);
@@ -512,17 +510,18 @@ void AgentdetailsPanel::queueClicked()
     QString action  = sender()->property("action").toString();
     
     QString astid = m_engine->queues()[queueid]->astid();
+    QString qid = m_engine->queues()[queueid]->id();
     QString queuename = m_engine->queues()[queueid]->queuename();
-    QVariant mstatus = m_engine->agents()[m_monitored_agentid]->properties()["queues_by_agent"].toMap()[queuename];
+    QVariant mstatus = m_engine->agents()[m_monitored_agentid]->properties()["queues_by_agent"].toMap()[qid];
     QString smstatus = mstatus.toMap()["Status"].toString();
     QString pmstatus = mstatus.toMap()["Paused"].toString();
     
     QVariantMap ipbxcommand;
     ipbxcommand["agentids"] = m_monitored_agentid;
-    ipbxcommand["queueids"] = "queue:" + m_monitored_astid + "/" + queuename;
+    ipbxcommand["queueids"] = queueid;
     
     if(action == "changequeue")
-        changeWatchedQueue(QString("queue:%1/%2").arg(astid).arg(queuename));
+        changeWatchedQueue(queueid);
     else if(action == "leavejoin") {
         if((smstatus == "1") || (smstatus == "3") || (smstatus == "4") || (smstatus == "5")) {
             ipbxcommand["command"] = "agentleavequeue";
