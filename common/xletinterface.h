@@ -38,15 +38,15 @@ class BaseEngine;
 class QWidget;
 class XLet;
 
-class XletInterface
+class XLetInterface
 {
 public:
-    virtual ~XletInterface() {};
+    virtual ~XLetInterface() {};
     virtual XLet * newXLetInstance(BaseEngine * engine = 0, QWidget * parent = 0) = 0;
 };
 
-Q_DECLARE_INTERFACE(XletInterface,
-                    "com.proformatique.Plugin.XletInterface/1.0");
+Q_DECLARE_INTERFACE(XLetInterface,
+                    "com.proformatique.Plugin.XLetInterface/1.0");
 
 #endif
 

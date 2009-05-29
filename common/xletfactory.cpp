@@ -31,7 +31,11 @@
  * $Date$
  */
 
+#include <QApplication>
+#include <QPluginLoader>
+
 #include "xletfactory.h"
+#include "xletinterface.h"
 
 #include "agentspanel.h"
 #include "agentspanel_next.h"
