@@ -180,9 +180,6 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
              this, SLOT(updateUser(UserInfo *)) );
     connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
              this, SLOT(setUserInfo(const UserInfo *)) );
-    
-    connect( m_agent, SIGNAL(ipbxCommand(const QVariantMap &)),
-             m_engine, SLOT(ipbxCommand(const QVariantMap &)) );
 }
 
 void IdentityDisplay::setupIcons()

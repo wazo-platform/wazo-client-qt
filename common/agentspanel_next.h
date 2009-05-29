@@ -63,9 +63,6 @@ signals:
     void changeWatchedAgent(const QString &, bool);
     void saveQueueGroups(const QVariant &);
     void loadQueueGroups();
-    void logAction(const QString &);
-    void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
-    void ipbxCommand(const QVariantMap &);
 public slots:
     void setGuiOptions(const QVariantMap &);
     void newAgentList(const QStringList &);

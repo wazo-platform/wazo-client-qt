@@ -58,8 +58,6 @@ public:
     ~AgentsPanel();
 signals:
     void changeWatchedAgent(const QString &, bool);
-    void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
-    void ipbxCommand(const QVariantMap &);
 public slots:
     void setGuiOptions(const QVariantMap &);
     void newAgentList(const QStringList &);

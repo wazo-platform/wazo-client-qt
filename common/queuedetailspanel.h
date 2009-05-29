@@ -62,7 +62,6 @@ public:
     ~QueuedetailsPanel();
 signals:
     void changeWatchedAgent(const QString &, bool); //!< select an agent to watch
-    void ipbxCommand(const QVariantMap &);
 protected:
     void timerEvent(QTimerEvent *);
 public slots:

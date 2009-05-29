@@ -42,6 +42,8 @@ XLet::XLet(BaseEngine * engine, QWidget * parent)
              m_engine, SLOT(logAction(const QString &)) );
     connect( this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
              m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
+    connect( this, SIGNAL(ipbxCommand(const QVariantMap &)),
+             m_engine, SLOT(ipbxCommand(const QVariantMap &)) );
 }
 
 /*! \brief connect actionCall signal to the engine

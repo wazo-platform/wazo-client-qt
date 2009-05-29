@@ -62,7 +62,6 @@ protected:
 signals:
     void changeWatchedQueue(const QString &);
     void setFileName(const QString &);
-    void ipbxCommand(const QVariantMap &);
 public slots:
     void setGuiOptions(const QVariantMap &);
     void newAgentList(const QStringList &);

@@ -53,7 +53,7 @@ public:
 signals:
     void ipbxCommand(const QVariantMap &);
     void logAction(const QString &);
-    void shouldNotOccur(const QString &, const QString &);
+    void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
 protected:
     void connectDials();
     void setTitle(const QString & title) { m_title = title; };

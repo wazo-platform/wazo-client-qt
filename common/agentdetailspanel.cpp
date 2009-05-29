@@ -114,9 +114,6 @@ AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
     setGuiOptions(m_engine->getGuiOptions("merged_gui"));
     
     // connect signal/slots with engine
-    connect( this, SIGNAL(ipbxCommand(const QVariantMap &)),
-             m_engine, SLOT(ipbxCommand(const QVariantMap &)) );
-    
     connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
              this, SLOT(newAgentList(const QStringList &)) );
     connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
