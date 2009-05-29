@@ -82,8 +82,6 @@ AgentsPanel::AgentsPanel(BaseEngine * engine,
     // connect signals/slots with engine
     connect( this, SIGNAL(ipbxCommand(const QVariantMap &)),
              m_engine, SLOT(ipbxCommand(const QVariantMap &)) );
-    connect( this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
-             m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
     
     connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
              this, SLOT(newAgentList(const QStringList &)) );

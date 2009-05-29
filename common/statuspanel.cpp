@@ -510,3 +510,9 @@ void StatusPanel::removeLine(QString const & chan)
     m_row.remove(chan);
 }
 
+void StatusPanel::doGUIConnects(QWidget * mainwindow)
+{
+    connect( mainwindow, SIGNAL(functionKeyPressed(int)),
+             this, SLOT(functionKeyPressed(int)) );
+}
+

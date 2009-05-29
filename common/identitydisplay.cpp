@@ -563,3 +563,9 @@ void IdentityDisplay::idxChanged(const QString & newidx)
     }
 }
 
+void IdentityDisplay::doGUIConnects(QWidget * mainwindow)
+{
+    connect( this, SIGNAL(setSystrayIcon(const QString &)),
+             mainwindow, SLOT(setSystrayIcon(const QString &)) );
+}
+

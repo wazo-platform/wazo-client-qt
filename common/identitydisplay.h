@@ -59,6 +59,7 @@ class IdentityDisplay : public XLet
 public:
     IdentityDisplay(BaseEngine *,
                     QWidget * parent = 0);
+    void doGUIConnects(QWidget *);
 public slots:
     void setGuiOptions(const QVariantMap &);
     void setUserInfo(const UserInfo *);

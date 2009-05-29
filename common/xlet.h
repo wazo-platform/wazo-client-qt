@@ -44,12 +44,16 @@ class BaseEngine;
  */
 class XLet : public QWidget
 {
+    Q_OBJECT
 public:
     //! Constructor
     XLet(BaseEngine * engine, QWidget * parent = 0);
     QString title() const { return m_title; };
+    virtual void doGUIConnects(QWidget *) {};
 signals:
     void ipbxCommand(const QVariantMap &);
+    void logAction(const QString &);
+    void shouldNotOccur(const QString &, const QString &);
 protected:
     void connectDials();
     void setTitle(const QString & title) { m_title = title; };

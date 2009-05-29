@@ -54,6 +54,7 @@ public:
     CustomerInfoPanel(BaseEngine *,
                       QWidget * parent = 0);
     ~CustomerInfoPanel();
+    void doGUIConnects(QWidget * mainwindow);
 signals:
     void newPopup(const QString &,
                   const QHash<QString, QString> &,

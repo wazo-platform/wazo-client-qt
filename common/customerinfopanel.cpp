@@ -230,3 +230,9 @@ void CustomerInfoPanel::addNewRemark(const QString & id, const QVariantMap & ent
     }
 }
 
+void CustomerInfoPanel::doGUIConnects(QWidget * mainwindow)
+{
+    connect( this, SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
+             mainwindow, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)) );
+}
+

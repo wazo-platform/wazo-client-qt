@@ -739,6 +739,7 @@ void MainWidget::engineStarted()
             bool withscrollbar = m_dockoptions[xletid].contains("s");
             XLet * xlet = m_xletfactory->newXLet(xletid, this);
             if(xlet) {
+                xlet->doGUIConnects( this );
                 if (withscrollbar) {
                     QScrollArea * sa_ag = new QScrollArea(this);
                     sa_ag->setWidget(xlet);
@@ -751,32 +752,6 @@ void MainWidget::engineStarted()
                 qDebug() << "cannot instanciate XLet" << xletid;
             }
 #if 0
-            if (xletid == "history") {
-                m_xlet[xletid] = new LogWidget(m_engine, this);
-                addPanel(xletid, tr("History"), m_xlet[xletid]);
-            } else if (xletid == "identity") {
-                m_xlet[xletid] = new IdentityDisplay(m_engine, this);
-                addPanel(xletid, tr("&Identity"), m_xlet[xletid]);
-                
-                connect( m_xlet[xletid], SIGNAL(setSystrayIcon(const QString &)),
-                         this, SLOT(setSystrayIcon(const QString &)) );
-            } else if (xletid == QString("datetime")) {
-                m_xlet[xletid] = new DatetimePanel(m_engine, this);
-                addPanel(xletid, tr("Date and Time"), m_xlet[xletid]);
-            } else if (xletid == QString("dial")) {
-                m_xlet[xletid] = new DialPanel(m_engine, this);
-                addPanel(xletid, tr("Dial"), m_xlet[xletid]);
-            } else if (xletid == QString("video")) {
-                m_xlet[xletid] = new PlayerWidget(m_engine, this);
-                addPanel(xletid, tr("Video"), m_xlet[xletid]);
-            } else if (xletid == QString("operator")) {
-                m_xlet[xletid] = new StatusPanel(m_engine, this);
-                addPanel(xletid, tr("Operator"), m_xlet[xletid]);
-                connect( this, SIGNAL(functionKeyPressed(int)),
-                         m_xlet[xletid], SLOT(functionKeyPressed(int)) );
-            } else if (xletid == QString("messages")) {
-                m_xlet[xletid] = new DisplayMessagesPanel(m_engine, this);
-                addPanel(xletid, tr("Messages"), m_xlet[xletid]);
             } else if (xletid == QString("calls")) {
                 m_areaCalls = new QScrollArea(this);
                 m_areaCalls->setWidgetResizable(true);
@@ -800,70 +775,6 @@ void MainWidget::engineStarted()
                 connectDials(m_calls);
                 connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
                          m_calls, SLOT(setUserInfo(const UserInfo *)) );
-                
-            } else if (xletid == QString("switchboard")) {
-                m_xlet[xletid] = new SwitchBoardWindow(m_engine, this);
-                // put in a scroll area!
-                QScrollArea * sa_sb = new QScrollArea(this);
-                sa_sb->setWidget(m_xlet[xletid]);
-                sa_sb->setWidgetResizable(true);
-                addPanel(xletid, tr("Switchboard"), sa_sb);
-                //addPanel(xletid, tr("Switchboard"), m_xlet[xletid]);
-            } else if (xletid == QString("parking")) {
-                m_xlet[xletid] = new ParkingPanel(m_engine, this);
-                addPanel(xletid, tr("Parking"), m_xlet[xletid]);
-                // to change the tab
-                connect( m_xlet[xletid], SIGNAL(newParkEvent()),
-                         this, SLOT(newParkEvent()) );
-            } else if (xletid == QString("fax")) {
-                m_xlet[xletid] = new FaxPanel(m_engine, this);
-                addPanel(xletid, tr("Fax"), m_xlet[xletid]);
-            } else if ((xletid == "customerinfo") && m_engine->checkedFunction(xletid)) {
-                m_xlet[xletid] = new CustomerInfoPanel(m_engine, this);
-                addPanel(xletid, tr("Sheets"), m_xlet[xletid]);
-                
-                connect( m_xlet[xletid], SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
-                         this, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)) );
-                
-            } else if (xletid == QString("search")) {
-                m_xlet[xletid] = new SearchPanel(m_engine, this);
-                addPanel(xletid, tr("Contacts"), m_xlet[xletid]);
-            } else if (xletid == QString("features")) {
-                m_xlet[xletid] = new ServicePanel(m_engine, this);
-                addPanel(xletid, tr("Services"), m_xlet[xletid]);
-            } else if (xletid == QString("directory")) {
-                m_xlet[xletid] = new DirectoryPanel(m_engine, this);
-                addPanel(xletid, tr("Directory"), m_xlet[xletid]);
-                m_xlet[xletid]->setFocus();
-                
-#ifdef USE_OUTLOOK
-            } else if ((xletid == QString("outlook")) ) {
-                m_xlet[xletid] = new OutlookPanel(m_engine, this);
-                addPanel(xletid, tr("Outlook"), m_xlet[xletid]);
-                m_xlet[xletid]->setFocus();
-#endif /* USE_OUTLOOK */
-#ifdef USE_WEBKIT
-            } else if (xletid == QString("xletweb")) {
-                m_xlet[xletid] = new XletWeb(m_engine, this);
-                addPanel(xletid, tr("Xlet Web"), m_xlet[xletid]);
-#endif /* USE_WEBKIT */
-                
-//            } else if (xletid == QString("instantmessaging")) {
-//                m_xlet[xletid] = new QLineEdit(this);
-//                addPanel(xletid, tr("Messages"), m_xlet[xletid]);
-//                
-//                connect( m_xlet[xletid], SIGNAL(returnPressed()),
-//                         this, SLOT(affTextChanged()) );
-            } else if (xletid == QString("callcampaign")) {
-                m_xlet[xletid] = new CallCampaignPanel(m_engine, this);
-                addPanel(xletid, tr("Call Campaigns"), m_xlet[xletid]);
-            } else if (xletid == QString("mylocaldir")) {
-                m_xlet[xletid] = new MyLocalDirPanel(m_engine, this);
-                addPanel(xletid, tr("Personal Directory"), m_xlet[xletid]);
-//            } else if (xletid == QString("xletproto")) {
-//                m_xlet[xletid] = new XletprotoPanel(m_engine, this);
-//                addPanel(xletid, tr("Xlet Prototype"), m_xlet[xletid]);
-            }
 #endif
         }
     }
@@ -1061,6 +972,8 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
     }
 }
 
+// DEPRECATED ?
+// make something more flexible
 void MainWidget::newParkEvent()
 {
     // set the current tab to parking
