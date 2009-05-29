@@ -38,10 +38,15 @@ class BaseEngine;
 class QWidget;
 class XLet;
 
+/*! \brief inteface class for xlets 
+ *
+ * Only one method which return a XLet of the selected type
+ */
 class XLetInterface
 {
 public:
     virtual ~XLetInterface() {};
+    //! Return a XLet of the type of the plugin loaded 
     virtual XLet * newXLetInstance(BaseEngine * engine = 0, QWidget * parent = 0) = 0;
 };
 
