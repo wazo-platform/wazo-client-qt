@@ -700,31 +700,6 @@ void MainWidget::engineStarted()
             } else {
                 qDebug() << "cannot instanciate XLet" << xletid;
             }
-#if 0
-            } else if (xletid == QString("calls")) {
-                m_areaCalls = new QScrollArea(this);
-                m_areaCalls->setWidgetResizable(true);
-                m_leftpanel = new LeftPanel(m_areaCalls);
-                m_calls = new CallStackWidget(m_engine, this);
-                m_areaCalls->setWidget(m_calls);
-                addPanel(xletid, tr("Calls"), m_leftpanel);
-                
-                connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
-                         m_calls, SLOT(updateUser(UserInfo *)) );
-                connect( m_calls, SIGNAL(changeTitle(const QString &)),
-                         m_leftpanel->titleLabel(), SLOT(setText(const QString &)) );
-                connect( m_engine, SIGNAL(delogged()),
-                         m_calls, SLOT(reset()) );
-                
-                connect( m_calls, SIGNAL(monitorPeerRequest(const QString &)),
-                         m_engine, SLOT(monitorPeerRequest(const QString &)) );
-                connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
-                         m_calls, SLOT(monitorPeer(UserInfo *)) );
-                
-                connectDials(m_calls);
-                connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-                         m_calls, SLOT(setUserInfo(const UserInfo *)) );
-#endif
         }
     }
     
