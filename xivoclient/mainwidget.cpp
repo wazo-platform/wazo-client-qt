@@ -62,6 +62,9 @@
 #include "configwidget.h"
 #include "xivoconsts.h"
 #include "xletfactory.h"
+#ifdef USE_OUTLOOK
+#include "outlook_engine.h"
+#endif
 
 const QString extraspace("  ");
 
