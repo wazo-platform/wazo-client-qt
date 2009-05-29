@@ -133,7 +133,7 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
         xlet = new CallStackWidget(m_engine, topwindow);
     } else {
         QDir pluginsDir( qApp->applicationDirPath() );
-        pluginsDir.cdUp();
+        pluginsDir.cdUp(); // to be checked
         pluginsDir.cd("plugins");
         QString fileName = "lib" + id + "plugin.so";
         qDebug() << "Trying to load pluging" << fileName << pluginsDir.absoluteFilePath(fileName);

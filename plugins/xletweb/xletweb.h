@@ -37,6 +37,10 @@
 #include <QObject>
 #include "xlet.h"
 
+class QWebView;
+class QLineEdit;
+class QLabel;
+
 /*! \brief XletWeb Panel
  */
 class XletWeb : public XLet
@@ -45,6 +49,15 @@ class XletWeb : public XLet
 public:
     XletWeb(BaseEngine * engine, QWidget * parent = 0);
     ~XletWeb();
+public slots:
+    void loadAddress();
+    void displayUrl(const QUrl &);
+    void displayIcon();
+private:
+    QWebView * web;
+    QLineEdit * urlLine;
+    QLabel * icon;
 };
 
 #endif /* __XLETWEB_H__ */
+

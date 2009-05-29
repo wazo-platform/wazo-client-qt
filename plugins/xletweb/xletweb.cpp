@@ -33,8 +33,12 @@
 
 #include <QDebug>
 #include <QLabel>
-#include <QGridLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QtWebKit>
+#include <QLineEdit>
+#include <QProgressBar>
+#include <QPushButton>
 
 #include "xletweb.h"
 
@@ -46,19 +50,82 @@ XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
     qDebug() << "XletWeb::XletWeb()";
     setTitle( tr("Web Browser") );
         
-    // replace by whatever you need
-    QGridLayout * glayout = new QGridLayout(this);
-    QWebView *view = new QWebView(this);
-    view->load(QUrl("http://www.proformatique.com/"));
-    view->show();
-    glayout->addWidget( view, 0, 0, Qt::AlignCenter );
-    glayout->setRowStretch( 0, 1 );
-    glayout->setColumnStretch( 0, 1 );
-    //
+    QVBoxLayout * layout = new QVBoxLayout(this);
+
+    QLabel * title = new QLabel(this);
+    title->setAlignment(Qt::AlignCenter);
+    layout->addWidget(title);
+
+    QHBoxLayout * hlayout = new QHBoxLayout();
+
+    icon = new QLabel(this);
+    hlayout->addWidget(icon);
+    
+    urlLine = new QLineEdit(this);
+    hlayout->addWidget(urlLine, 3);
+
+    QProgressBar * progress = new QProgressBar(this);
+    hlayout->addWidget(progress, 1);
+
+    QPushButton * back = new QPushButton(tr("Back"), this);
+    hlayout->addWidget(back);
+
+    QPushButton * forward = new QPushButton(tr("Forward"), this);
+    hlayout->addWidget(forward);
+    
+    layout->addLayout(hlayout);
+
+    web = new QWebView(this);
+    layout->addWidget(web);
+
+    QLabel * statusbar = new QLabel(this);
+    layout->addWidget(statusbar);
+
+    connect( web, SIGNAL(titleChanged(const QString &)),
+             title, SLOT(setText(const QString &)) );
+    connect( web, SIGNAL(statusBarMessage(const QString &)),
+             statusbar, SLOT(setText(const QString &)) );
+    connect( urlLine, SIGNAL(editingFinished()),
+             this, SLOT(loadAddress()) );
+    connect( web, SIGNAL(urlChanged(const QUrl &)),
+             this, SLOT(displayUrl(const QUrl &)) );
+    connect( web, SIGNAL(iconChanged()),
+             this, SLOT(displayIcon()) );
+    connect( web, SIGNAL(loadProgress(int)),
+             progress, SLOT(setValue(int)) );
+    connect( back, SIGNAL(clicked()),
+             web, SLOT(back()) );
+    connect( forward, SIGNAL(clicked()),
+             web, SLOT(forward()) );
 }
 
 XletWeb::~XletWeb()
 {
     qDebug() << "XletWeb::~XletWeb()";
+}
+
+void XletWeb::loadAddress()
+{
+    QString address(urlLine->text());
+    QUrl url(address);
+    if(url.scheme().isEmpty())
+        url.setUrl("http://" + address);
+    qDebug() << "XletWeb::loadAddress" << address << url;
+    web->load(url);
+}
+
+void XletWeb::displayUrl(const QUrl & url)
+{
+    urlLine->setText(url.toString());
+}
+
+void XletWeb::displayIcon()
+{
+    const QIcon & _icon = web->icon();
+#if QT_VERSION >= 0x040500
+    qDebug() << "XletWeb::displayIcon() available sizes"
+             << _icon.availableSizes(); //Qt 4.5
+#endif
+    icon->setPixmap(_icon.pixmap(32));
 }
 
