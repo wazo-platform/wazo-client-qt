@@ -50,6 +50,7 @@ CallCampaignPanel::CallCampaignPanel(BaseEngine * engine, QWidget * parent)
     : XLet(engine, parent)
 {
     qDebug() << "CallCampaignPanel::CallCampaignPanel()";
+    setTitle(tr("Call Campaign"));
         
     m_vlayout = new QVBoxLayout(this);
     m_hlayout1 = new QHBoxLayout();

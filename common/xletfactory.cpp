@@ -31,8 +31,10 @@
  * $Date$
  */
 
+#include <QDebug>
 #include <QApplication>
 #include <QPluginLoader>
+#include <QDir>
 
 #include "xletfactory.h"
 #include "xletinterface.h"
@@ -129,6 +131,23 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
         xlet = new MyLocalDirPanel(m_engine, topwindow);
     } else if(id == "calls") {
         xlet = new CallStackWidget(m_engine, topwindow);
+    } else {
+        QDir pluginsDir( qApp->applicationDirPath() );
+        pluginsDir.cdUp();
+        pluginsDir.cd("plugins");
+        QString fileName = "lib" + id + "plugin.so";
+        qDebug() << "Trying to load pluging" << fileName << pluginsDir.absoluteFilePath(fileName);
+        QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+        QObject * plugin = pluginLoader.instance();
+        qDebug() << "      " << plugin;
+        if (plugin) {
+            XLetInterface * xleti = qobject_cast<XLetInterface *>(plugin);
+            if(xleti) {
+                xlet = xleti->newXLetInstance(m_engine, topwindow);
+            }
+        } else {
+            qDebug() << pluginLoader.errorString();
+        }
     }
     return xlet;
 }

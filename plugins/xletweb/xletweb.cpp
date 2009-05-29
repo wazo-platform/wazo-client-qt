@@ -44,6 +44,7 @@ XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
     : XLet(engine, parent)
 {
     qDebug() << "XletWeb::XletWeb()";
+    setTitle( tr("Web Browser") );
         
     // replace by whatever you need
     QGridLayout * glayout = new QGridLayout(this);
