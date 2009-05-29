@@ -36,6 +36,7 @@
 
 #include <QObject>
 #include <QHash>
+#include <QDir>
 #include "xlet.h"
 class QWidget;
 class BaseEngine;
@@ -52,6 +53,7 @@ public:
 private:
     BaseEngine * m_engine;  //!< BaseEngine reference
     QHash<QString, newXLetProto> m_xlets;   //!< built in XLets constuctors
+    QDir m_pluginsDir;  //!< directory where to find plugins
 };
 
 #endif

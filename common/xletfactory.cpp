@@ -110,10 +110,17 @@ static const struct {
 /*! \brief Constructor 
  */
 XLetFactory::XLetFactory(BaseEngine * engine, QObject * parent)
-    : QObject(parent), m_engine(engine)
+    : QObject(parent), m_engine(engine),
+      m_pluginsDir( qApp->applicationDirPath() )
 {
+    int i = 0;
+    // find plugins dir
+    while(!m_pluginsDir.exists("plugins") && i < 2) {
+        m_pluginsDir.cdUp();
+        i++;
+    }
+    m_pluginsDir.cd("plugins");
     // populate the m_xlets hash table
-    int i;
     for(i = 0; xlets[i].name; i++) {
         m_xlets.insert(QString(xlets[i].name), xlets[i].construct);
     }
@@ -131,12 +138,17 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
         xlet = new OutlookPanel(m_engine, topwindow);
 #endif /* USE_OUTLOOK */
     } else {
-        QDir pluginsDir( qApp->applicationDirPath() );
-        pluginsDir.cdUp(); // to be checked
-        pluginsDir.cd("plugins");
+#ifdef Q_WS_WIN
+        QString fileName = id + "plugin.dll";
+#endif
+#ifdef Q_WS_X11
         QString fileName = "lib" + id + "plugin.so";
-        qDebug() << "Trying to load pluging" << fileName << pluginsDir.absoluteFilePath(fileName);
-        QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+#endif
+#ifdef Q_WS_MAC
+        QString fileName = "???"; // TODO : fill that
+#endif
+        qDebug() << "Trying to load pluging" << fileName << m_pluginsDir.absoluteFilePath(fileName);
+        QPluginLoader pluginLoader(m_pluginsDir.absoluteFilePath(fileName));
         QObject * plugin = pluginLoader.instance();
         qDebug() << "      " << plugin;
         if (plugin) {
