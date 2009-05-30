@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 5882 $
- * $Date: 2009-04-07 12:44:04 +0200 (mar 07 avr 2009) $
+/* $Revision$
+ * $Date$
  */
 
 #include <QCoreApplication>
