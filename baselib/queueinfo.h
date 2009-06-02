@@ -34,13 +34,14 @@
 #ifndef __QUEUEINFO_H__
 #define __QUEUEINFO_H__
 
+#include "baselib_export.h"
 #include <QString>
 #include <QVariant>
 #include <QMap>
 
 /*! \brief Store Queue information
  */
-class QueueInfo
+class BASELIB_EXPORT QueueInfo
 {
  public:
     //! constructor

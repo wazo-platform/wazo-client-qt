@@ -34,6 +34,7 @@
 #ifndef __USERINFO_H__
 #define __USERINFO_H__
 
+#include "baselib_export.h"
 #include <QStringList>
 #include <QVariant>
 #include <QHash>
@@ -43,7 +44,7 @@ class PhoneInfo;
 
 /*! \brief Store informations on a user
  */
-class UserInfo
+class BASELIB_EXPORT UserInfo
 {
 public:
     UserInfo(const QString &);

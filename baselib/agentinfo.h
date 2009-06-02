@@ -34,13 +34,14 @@
 #ifndef __AGENTINFO_H__
 #define __AGENTINFO_H__
 
+#include "baselib_export.h"
 #include <QString>
 #include <QVariant>
 #include <QMap>
 
 /*! \brief Store Agent information
  */
-class AgentInfo
+class BASELIB_EXPORT AgentInfo
 {
 public:
     //! constructor

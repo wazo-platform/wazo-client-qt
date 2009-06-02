@@ -34,6 +34,7 @@
 #ifndef __PHONEINFO_H__
 #define __PHONEINFO_H__
 
+#include "baselib_export.h"
 #include <QString>
 #include <QStringList>
 #include <QVariant>
@@ -41,9 +42,9 @@
 
 /*! \brief Store Phone information
  */
-class PhoneInfo
+class BASELIB_EXPORT PhoneInfo
 {
- public:
+public:
     //! constructor
     PhoneInfo(const QString & astid,
               const QMap<QString, QVariant> & prop);
@@ -67,7 +68,7 @@ class PhoneInfo
     const QString & phoneid() const { return m_phoneid; };
     //! current communications of this phone
     const QMap<QString, QVariant> & comms() const { return m_comms; };
- private:
+private:
     QString m_astid;
     QString m_tech;
     QString m_context;
