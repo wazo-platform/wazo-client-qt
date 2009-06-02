@@ -1,5 +1,6 @@
 # $Id$
 TEMPLATE    = lib
+CONFIG      += dll
 COMMONDIR = ../common
 JSON_JSONQT_DIR = ../3rdparty/json_jsonqt/lib
 
