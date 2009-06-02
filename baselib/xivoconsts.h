@@ -34,6 +34,7 @@
 #ifndef __XIVOCONSTS_H__
 #define __XIVOCONSTS_H__
 
+#include "baselib_export.h"
 #include <QString>
 #include <QStringList>
 
@@ -54,13 +55,14 @@
 #define CHAN_STATUS_UNLINKED_CALLER "unlinked-caller"
 #define CHAN_STATUS_UNLINKED_CALLED "unlinked-called"
 
-extern const int REQUIRED_SERVER_VERSION;
+BASELIB_EXPORT extern const int REQUIRED_SERVER_VERSION;
 
-extern const QString __required_server_version__;
-extern const QString __current_client_version__;
-extern const QString __datebuild_client__;
-extern const QString __xivo_version__;
-extern const QString __nopresence__;
-extern const QStringList CheckFunctions;
+BASELIB_EXPORT extern const QString __required_server_version__;
+BASELIB_EXPORT extern const QString __current_client_version__;
+BASELIB_EXPORT extern const QString __datebuild_client__;
+BASELIB_EXPORT extern const QString __xivo_version__;
+BASELIB_EXPORT extern const QString __nopresence__;
+BASELIB_EXPORT extern const QStringList CheckFunctions;
 
 #endif /* __XIVOCONSTS_H__ */
+
