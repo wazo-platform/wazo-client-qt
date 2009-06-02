@@ -16,7 +16,7 @@ HEADERS     += xivoconsts.h
 HEADERS     += $${JSON_JSONQT_DIR}/*.h
 SOURCES     = xlet.cpp baseengine.cpp
 SOURCES     += phoneinfo.cpp userinfo.cpp
-SOURCEs     += agentinfo.cpp queueinfo.cpp
+SOURCES     += agentinfo.cpp queueinfo.cpp
 SOURCES     += xivoconsts.cpp
 SOURCES     += $${JSON_JSONQT_DIR}/*.cpp
 

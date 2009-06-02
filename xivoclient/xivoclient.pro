@@ -36,7 +36,6 @@ win32 {
         SOURCES += $${OUTLOOK_DIR}/sqlite3/*.c
 }
 
-QT += network
 QT += xml
 
 RESOURCES += appli.qrc
