@@ -20,6 +20,8 @@ SOURCES     += agentinfo.cpp queueinfo.cpp
 SOURCES     += xivoconsts.cpp
 SOURCES     += $${JSON_JSONQT_DIR}/*.cpp
 
+DEFINES     += BASELIB_LIBRARY
+
 DESTDIR     = ../bin
 
 QT += network

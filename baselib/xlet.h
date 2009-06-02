@@ -34,6 +34,7 @@
 #ifndef __XLET_H__
 #define __XLET_H__
 
+#include "baselib_export.h"
 #include <QVariantMap>
 #include <QWidget>
 
@@ -41,8 +42,12 @@ class BaseEngine;
 
 /*! \brief base class for all XLets
  *
+ * To implement a new XLet, you need to inherit from
+ * this class. Use setTitle() in the constructor to set
+ * the name of your XLet. The constructor should also connect
+ * appropriate signals and slots to the BaseEngine object.
  */
-class XLet : public QWidget
+class BASELIB_EXPORT XLet : public QWidget
 {
     Q_OBJECT
 public:

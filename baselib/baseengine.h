@@ -34,6 +34,7 @@
 #ifndef __BASEENGINE_H__
 #define __BASEENGINE_H__
 
+#include "baselib_export.h"
 // QT includes.
 #include <QAbstractSocket>
 #include <QHash>
@@ -104,7 +105,7 @@ public:
  *
  *  The engine object contains all the code to
  *  handle network connection and requests */
-class BaseEngine: public QObject
+class BASELIB_EXPORT BaseEngine: public QObject
 {
     Q_OBJECT
 public:
