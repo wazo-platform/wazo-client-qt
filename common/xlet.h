@@ -48,7 +48,15 @@ class XLet : public QWidget
 public:
     //! Constructor
     XLet(BaseEngine * engine, QWidget * parent = 0);
+    //! title accessor
     QString title() const { return m_title; };
+    /*! \brief connects signals/slots to the main GUI window
+     *
+     * Reimplement this method for connecting signals/slots to the
+     * top level window.
+     * The default implementation does nothing.
+     * \see MainWidget
+     */
     virtual void doGUIConnects(QWidget *) {};
 signals:
     void ipbxCommand(const QVariantMap &);
@@ -56,10 +64,11 @@ signals:
     void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
 protected:
     void connectDials();
+    //! set title of the XLet
     void setTitle(const QString & title) { m_title = title; };
     //! BaseEngine pointer
     BaseEngine * m_engine;
 private:
-    QString m_title;
+    QString m_title;    //!< title of the XLet
 };
 #endif

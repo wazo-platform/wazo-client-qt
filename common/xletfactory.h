@@ -44,7 +44,11 @@ class BaseEngine;
 /*! xlet creator function prototype */
 typedef XLet * (*newXLetProto)(BaseEngine *, QWidget *);
 
-/*! \brief XLet Factory */
+/*! \brief XLet Factory
+ *
+ * Use this class to instanciate a XLet.
+ * XLet would be first searched in built-in XLet list
+ * and then in plugins directory if not built-in. */
 class XLetFactory : public QObject
 {
 public:
@@ -54,6 +58,7 @@ private:
     BaseEngine * m_engine;  //!< BaseEngine reference
     QHash<QString, newXLetProto> m_xlets;   //!< built in XLets constuctors
     QDir m_pluginsDir;  //!< directory where to find plugins
+    bool m_pluginsDirFound; //!< Is plugins directory found.
 };
 
 #endif

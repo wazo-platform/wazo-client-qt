@@ -108,10 +108,14 @@ static const struct {
 };
 
 /*! \brief Constructor 
+ *
+ * Find and initialize plugins directory,
+ * populate the m_xlets hash table.
  */
 XLetFactory::XLetFactory(BaseEngine * engine, QObject * parent)
     : QObject(parent), m_engine(engine),
-      m_pluginsDir( qApp->applicationDirPath() )
+      m_pluginsDir( qApp->applicationDirPath() ),
+      m_pluginsDirFound(false)
 {
     int i = 0;
     // find plugins dir
@@ -119,14 +123,27 @@ XLetFactory::XLetFactory(BaseEngine * engine, QObject * parent)
         m_pluginsDir.cdUp();
         i++;
     }
-    m_pluginsDir.cd("plugins");
+    if(m_pluginsDir.exists("plugins")) {
+        m_pluginsDir.cd("plugins");
+        m_pluginsDirFound = true;
+    } else {
+        qDebug() << "cannot find plugins directory";
+    }
     // populate the m_xlets hash table
     for(i = 0; xlets[i].name; i++) {
         m_xlets.insert(QString(xlets[i].name), xlets[i].construct);
     }
 }
 
-/*! \brief build a new XLet depending on the type wanted */
+/*! \brief build a new XLet depending on the type wanted
+ *
+ *  First try to find the XLet into the build in list, then
+ *  search for a plugin.
+ *  Plugin name is lib<id>plugin.so under Linux, <id>plugin.dll under
+ *  Win32.
+ *
+ *  \return a pointer to the XLet or NULL if it was not found
+ */
 XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
 {
     XLet * xlet = 0;
@@ -137,7 +154,7 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
     } else if(id == "outlook") {
         xlet = new OutlookPanel(m_engine, topwindow);
 #endif /* USE_OUTLOOK */
-    } else {
+    } else if(m_pluginsDirFound) {
 #ifdef Q_WS_WIN
         QString fileName = id + "plugin.dll";
 #endif
@@ -145,7 +162,7 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
         QString fileName = "lib" + id + "plugin.so";
 #endif
 #ifdef Q_WS_MAC
-        QString fileName = "???"; // TODO : fill that
+        QString fileName = "lib" + id + "plugin.dylib"; // TODO : check for correctness
 #endif
         qDebug() << "Trying to load pluging" << fileName << m_pluginsDir.absoluteFilePath(fileName);
         QPluginLoader pluginLoader(m_pluginsDir.absoluteFilePath(fileName));
@@ -155,10 +172,13 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
             XLetInterface * xleti = qobject_cast<XLetInterface *>(plugin);
             if(xleti) {
                 xlet = xleti->newXLetInstance(m_engine, topwindow);
+            } else {
+                qDebug() << "failed to cast plugin loaded to XLetInterface";
             }
         } else {
-            qDebug() << pluginLoader.errorString();
+            qDebug() << "failed to load plugin :" << pluginLoader.errorString();
         }
     }
     return xlet;
 }
+
