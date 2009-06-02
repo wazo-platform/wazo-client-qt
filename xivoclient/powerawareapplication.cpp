@@ -46,11 +46,13 @@
 /*! \brief constructor */
 PowerAwareApplication::PowerAwareApplication(int & argc, char ** argv)
     : QtSingleApplication(argc, argv)
-    //: QApplication(argc, argv)
 {
 }
 
 #ifdef Q_OS_WIN
+/*! \brief filter windows events
+ *
+ * Process PBT_APM* events */
 bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
 {
     if(msg->message == WM_POWERBROADCAST) {
@@ -69,7 +71,7 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
         
         if(msg->wParam == PBT_APMSUSPEND) {
             setProperty("stopper", "standby");
-            standBy();
+            emit standBy();
             *result = TRUE;
             return true;
         }
@@ -78,7 +80,7 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
  PBT_APMRESUMESUSPEND   Operation is resuming from a low-power state. This message is sent after PBT_APMRESUMEAUTOMATIC if the resume is triggered by user input, such as pressing a key.
 */
         if(msg->wParam == PBT_APMRESUMESUSPEND) {
-            resume();
+            emit resume();
             *result = TRUE;
             return true;
         }
@@ -87,7 +89,10 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
 }
 #endif
 
+/*! ???
+ */
 void PowerAwareApplication::commitData(QSessionManager &)
 {
     powerEvent("sessionclosed");
 }
+

@@ -37,6 +37,8 @@
 #include <QtSingleApplication>
 
 /*! \brief Extends QApplication to support stand-by/resume events
+ *
+ * This only works under MS Windows.
  */
 class PowerAwareApplication : public QtSingleApplication
 {
@@ -48,8 +50,11 @@ public:
 #endif
     void commitData(QSessionManager &);
 signals:
+    //! emitted when going to stand by mode
     void standBy();
+    //! emitted when resuming from stand by mode
     void resume();
+    //! ???
     void powerEvent(const QString &);
 };
 
