@@ -13,6 +13,7 @@ OUTLOOK_DIR = ../3rdparty/outlook
 include(../common.pri)
 
 TEMPLATE = app
+# CONFIG += console # uncomment to get console on Win32
 TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += . $${COMMONDIR} ../baselib
