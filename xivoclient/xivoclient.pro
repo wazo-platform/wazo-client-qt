@@ -8,7 +8,7 @@ include(../qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
 include(../qtaddons/qtcolorpicker/src/qtcolorpicker.pri)
 
 COMMONDIR = ../common
-JSON_JSONQT_DIR = ../3rdparty/json_jsonqt/lib
+# JSON_JSONQT_DIR = ../3rdparty/json_jsonqt/lib
 OUTLOOK_DIR = ../3rdparty/outlook
 
 _XIVOVER_ = 1.1
@@ -27,7 +27,8 @@ DEFINES += DATEBUILD=\"$${DATEBUILD}\"
 TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
-INCLUDEPATH += . $${COMMONDIR} $${JSON_JSONQT_DIR}
+INCLUDEPATH += . $${COMMONDIR} ../baselib
+# $${JSON_JSONQT_DIR}
 
 CONFIG -= debug
 #CONFIG += debug
@@ -39,11 +40,13 @@ CONFIG += x86 ppc
 # Input
 HEADERS += mainwidget.h powerawareapplication.h
 HEADERS += $${COMMONDIR}/*.h
-HEADERS += $${JSON_JSONQT_DIR}/*.h
+# HEADERS += $${JSON_JSONQT_DIR}/*.h
 
 SOURCES += main.cpp mainwidget.cpp powerawareapplication.cpp
 SOURCES += $${COMMONDIR}/*.cpp
-SOURCES += $${JSON_JSONQT_DIR}/*.cpp
+# SOURCES += $${JSON_JSONQT_DIR}/*.cpp
+
+LIBS += ../bin/libxivoclientbaselib.so
 
 win32 {
 	INCLUDEPATH += $${OUTLOOK_DIR}
@@ -62,3 +65,6 @@ RESOURCES += appli.qrc
 TRANSLATIONS = xivoclient_fr.ts qt_fr.ts
 # TRANSLATIONS = xivoclient_fr.ts $$[QT_INSTALL_PREFIX]/translations/qt_fr.ts
 RC_FILE = appli.rc
+
+DESTDIR  = ../bin
+

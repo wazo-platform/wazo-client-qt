@@ -1,3 +1,4 @@
+# $Id$
 COMMONDIR = ../common
 JSON_JSONQT_DIR = ../3rdparty/json_jsonqt/lib
 
@@ -19,10 +20,12 @@ VERSION     = 1.1
 TEMPLATE    = lib
 CONFIG      += release
 INCLUDEPATH += $${COMMONDIR} $${JSON_JSONQT_DIR}
-HEADERS     = $${COMMONDIR}/xlet.h   $${COMMONDIR}/baseengine.h
+HEADERS     = xlet.h   baseengine.h
 HEADERS     += $${JSON_JSONQT_DIR}/*.h
-SOURCES     = $${COMMONDIR}/xlet.cpp $${COMMONDIR}/baseengine.cpp
+SOURCES     = xlet.cpp baseengine.cpp
 SOURCES     += $${JSON_JSONQT_DIR}/*.cpp
+
+DESTDIR     = ../bin
 
 QT += network
 
