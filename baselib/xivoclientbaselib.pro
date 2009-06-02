@@ -27,3 +27,5 @@ DESTDIR     = ../bin
 
 QT += network
 
+TRANSLATIONS = baselib_fr.ts
+

@@ -252,8 +252,10 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
     maxCol = qMax(maxCol, numberCol);
     int emailCol = findCol(headers, QStringList()
                                     << tr("Email Address")
+                                    << tr("E-mail Address")
                                     << tr("Email")
                                     << QString("Email Address")
+                                    << QString("E-mail Address")
                                     << QString("Email")
                                     << QString("Primary Email") );
     maxCol = qMax(maxCol, emailCol);
