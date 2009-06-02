@@ -4,6 +4,10 @@
 #include <QObject>
 #include "xletinterface.h"
 
+/*! \brief XLetInterface implementation
+ *
+ * entry point to instanciate XletWeb
+ */
 class XLetWebPlugin : public QObject, XLetInterface
 {
     Q_OBJECT
