@@ -34,6 +34,9 @@
 #ifndef __XIVOCONSTS_H__
 #define __XIVOCONSTS_H__
 
+#include <QString>
+#include <QStringList>
+
 #define CHANNEL_MIMETYPE  "XIVO_ASTERISK_CHANNEL"
 #define PEER_MIMETYPE     "XIVO_ASTERISK_PEER"
 #define NUMBER_MIMETYPE   "XIVO_ASTERISK_NUMBER"
@@ -51,23 +54,13 @@
 #define CHAN_STATUS_UNLINKED_CALLER "unlinked-caller"
 #define CHAN_STATUS_UNLINKED_CALLED "unlinked-called"
 
-const int REQUIRED_SERVER_VERSION = 5650;
+extern const int REQUIRED_SERVER_VERSION;
 
-const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
-const QString __current_client_version__  = SVNVER;
-const QString __datebuild_client__  = DATEBUILD;
-const QString __xivo_version__  = XIVOVER;
-const QString __nopresence__ = "nopresence";
-#if 0
-const QStringList XletList = (QStringList() << "void" << "customerinfo" << "features" << "history"
-                              << "directory" << "search" << "fax" << "dial"
-                              << "operator" << "parking" << "calls" << "switchboard"
-                              << "messages" << "identity" << "datetime" << "tabber" << "conference" << "xletproto" << "callcampaign" << "mylocaldir"
-#ifdef USE_OUTLOOK
-                              << "outlook"
-#endif /* USE_OUTLOOK */
-                              << "agents" << "agentsnext" << "agentdetails" << "queues" << "queuedetails" << "queueentrydetails");
-#endif
-const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
+extern const QString __required_server_version__;
+extern const QString __current_client_version__;
+extern const QString __datebuild_client__;
+extern const QString __xivo_version__;
+extern const QString __nopresence__;
+extern const QStringList CheckFunctions;
 
 #endif /* __XIVOCONSTS_H__ */

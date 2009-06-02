@@ -79,12 +79,12 @@ versions-%:
 	@${ECHO} -n "version (before update) : " && make -s displayversions
 	@svn up
 	@touch common/xivoconsts.h $*/mainwidget.cpp
-	@rm -f $*/versions.pro
-	@${ECHO} -n "_SVNVER_ = " >> $*/versions.pro
-	@LANG=C svn info | sed -n "/Last Changed Rev/s/.*: //p" >> $*/versions.pro
+	@rm -f $*/versions.pri
+	@${ECHO} -n "_SVNVER_ = " >> $*/versions.pri
+	@LANG=C svn info | sed -n "/Last Changed Rev/s/.*: //p" >> $*/versions.pri
 	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
-	@${ECHO} -n "_DATEBUILD_ = " >> $*/versions.pro
-	@date +%Y-%m-%dT%H:%M:%S >> $*/versions.pro
+	@${ECHO} -n "_DATEBUILD_ = " >> $*/versions.pri
+	@date +%Y-%m-%dT%H:%M:%S >> $*/versions.pri
 	@${ECHO} -n "version (after update) : " && make -s displayversions
 
 displayversions:
@@ -94,8 +94,8 @@ displayversions:
 forceversions-%:
 	@${ECHO} -n "version (before force) : " && make -s displayversions
 	@touch common/xivoconsts.h $*/mainwidget.cpp
-	@rm -f $*/versions.pro
-	@${ECHO} "_SVNVER_ =" ${FORCEVERSION} >> $*/versions.pro
+	@rm -f $*/versions.pri
+	@${ECHO} "_SVNVER_ =" ${FORCEVERSION} >> $*/versions.pri
 	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
 	@${ECHO} -n "version (after force) : " && make -s displayversions
 

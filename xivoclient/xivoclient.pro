@@ -8,43 +8,21 @@ include(../qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
 include(../qtaddons/qtcolorpicker/src/qtcolorpicker.pri)
 
 COMMONDIR = ../common
-# JSON_JSONQT_DIR = ../3rdparty/json_jsonqt/lib
 OUTLOOK_DIR = ../3rdparty/outlook
 
-_XIVOVER_ = 1.1
-_SVNVER_ = 1
-include(versions.pro)
-XIVOVER = '\\"$${_XIVOVER_}\\"'
-SVNVER  = '\\"$${_SVNVER_}\\"'
-DATEBUILD = '\\"$${_DATEBUILD_}\\"'
-message('XIVO version:' $${XIVOVER})
-message(' svn version:' $${SVNVER})
-message('  build date:' $${DATEBUILD})
-DEFINES += XIVOVER=\"$${XIVOVER}\"
-DEFINES += SVNVER=\"$${SVNVER}\"
-DEFINES += DATEBUILD=\"$${DATEBUILD}\"
+include(../common.pri)
 
 TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += . $${COMMONDIR} ../baselib
-# $${JSON_JSONQT_DIR}
-
-CONFIG -= debug
-#CONFIG += debug
-# CONFIG += console # uncomment to get console on Win32
-CONFIG += static
-CONFIG += uitools
-CONFIG += x86 ppc
 
 # Input
 HEADERS += mainwidget.h powerawareapplication.h
 HEADERS += $${COMMONDIR}/*.h
-# HEADERS += $${JSON_JSONQT_DIR}/*.h
 
 SOURCES += main.cpp mainwidget.cpp powerawareapplication.cpp
 SOURCES += $${COMMONDIR}/*.cpp
-# SOURCES += $${JSON_JSONQT_DIR}/*.cpp
 
 LIBS += ../bin/libxivoclientbaselib.so
 
