@@ -50,7 +50,9 @@ allbyos:
 # but allows the 'include versions.mak' to be reloaded once it has been set
 all-linux:
 	@make versions-xivoclient
+	@make linux-baselib
 	@make linux-xivoclient
+	@make linux-plugins
 	@make stripandpack-xivoclient
 
 distclean:
@@ -60,11 +62,11 @@ clean-%:
 	@make -C $* distclean || true
 
 linux-%:
-	@cd $* && ${QMAKE} && ${LRELEASE} $*_fr.ts qt_fr.ts && make ${JOPT}
+	@cd $* && ${QMAKE} && ${LRELEASE} *.pro && make ${JOPT}
 
 stripandpack-%:
-	@strip $*/$* || true
-	@${UPXRUN} $*/$* || true
+	@strip bin/$* || true
+	@${UPXRUN} bin/$* || true
 
 all-win32:
 	@make -s versions-xivoclient
@@ -101,7 +103,7 @@ forceversions-%:
 
 # to be executed under a mingw/dos-like terminal
 win32-%:
-	@cd $* && ${QMAKE} $*.pro && ${LRELEASE} $*_fr.ts qt_fr.ts && make -f Makefile.Release
+	@cd $* && ${QMAKE} && ${LRELEASE} $*.pro && make release
 
 # to be executed under a bash/cygwin-like terminal
 win32pack-%:
