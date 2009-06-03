@@ -1,7 +1,7 @@
 include(../../common.pri)
 TEMPLATE    = lib
 CONFIG      += plugin
-INCLUDEPATH += ../../common ../../baselib
+INCLUDEPATH += ../../baselib
 HEADERS     = xletweb.h   xletwebplugin.h
 SOURCES     = xletweb.cpp xletwebplugin.cpp
 TARGET      = $$qtLibraryTarget(xletwebplugin)
