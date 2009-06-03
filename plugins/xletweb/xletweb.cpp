@@ -108,15 +108,18 @@ XletWeb::~XletWeb()
 void XletWeb::loadAddress()
 {
     QString address(urlLine->text());
-    QUrl url(address);
-    if(url.scheme().isEmpty())
-        url.setUrl("http://" + address);
-    qDebug() << "XletWeb::loadAddress" << address << url;
-    web->load(url);
+    if(!address.isEmpty()) {
+        QUrl url(address);
+        if(url.scheme().isEmpty())
+            url.setUrl("http://" + address);
+        qDebug() << Q_FUNC_INFO << address << url;
+        web->load(url);
+    }
 }
 
 void XletWeb::displayUrl(const QUrl & url)
 {
+    qDebug() << Q_FUNC_INFO << url;
     urlLine->setText(url.toString());
 }
 
