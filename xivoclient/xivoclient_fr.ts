@@ -1433,119 +1433,165 @@ a été envoyé à %2.</translation>
 <context>
     <name>IdentityDisplay</name>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="386"/>
+        <location filename="../common/identitydisplay.cpp" line="261"/>
         <source>%1 old</source>
         <translation>%1 ancien(s)</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="387"/>
+        <location filename="../common/identitydisplay.cpp" line="262"/>
         <source>%1 new</source>
         <translation>%1 nouveau(x)</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="489"/>
+        <location filename="../common/identitydisplay.cpp" line="366"/>
         <source>VoiceMailBox %1</source>
         <translation>Boîte %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="61"/>
+        <location filename="../common/identitydisplay.cpp" line="62"/>
         <source>Current User Panel</source>
         <translation>Panneau des détails utilisateur</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="380"/>
         <source>Phone %1</source>
-        <translation>Téléphone %1</translation>
+        <translation type="obsolete">Téléphone %1</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="461"/>
         <source>DND</source>
-        <translation>NPD</translation>
+        <translation type="obsolete">NPD</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="462"/>
         <source>Do Not Disturb</source>
-        <translation>Ne Pas Déranger</translation>
+        <translation type="obsolete">Ne Pas Déranger</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="465"/>
         <source>UNC %1</source>
-        <translation>INC %1</translation>
+        <translation type="obsolete">INC %1</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="466"/>
         <source>Unconditional Forward towards %1</source>
-        <translation>Renvoi Inconditionnel vers %1</translation>
+        <translation type="obsolete">Renvoi Inconditionnel vers %1</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="468"/>
         <source>Busy %1</source>
-        <translation>Occ %1</translation>
+        <translation type="obsolete">Occ %1</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="469"/>
         <source>Busy Forward towards %1</source>
-        <translation>Renvoi sur Occupation vers %1</translation>
+        <translation type="obsolete">Renvoi sur Occupation vers %1</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="471"/>
         <source>RNA %1</source>
-        <translation>RNR %1</translation>
+        <translation type="obsolete">RNR %1</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="472"/>
         <source>Non-Answer Forward towards %1</source>
-        <translation>Renvoi sur Non-Réponse vers %1</translation>
+        <translation type="obsolete">Renvoi sur Non-Réponse vers %1</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="474"/>
         <source>Call Rec</source>
-        <translation>Enr Appel</translation>
+        <translation type="obsolete">Enr Appel</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="476"/>
         <source>Call Filter</source>
-        <translation>Filtre Appel</translation>
+        <translation type="obsolete">Filtre Appel</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="486"/>
+        <location filename="../common/identitydisplay.cpp" line="363"/>
         <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Boîte %1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../common/identitydisplay.cpp" line="479"/>
         <source>No option</source>
-        <translation>Pas d&apos;option</translation>
+        <translation type="obsolete">Pas d&apos;option</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="487"/>
+        <location filename="../common/identitydisplay.cpp" line="364"/>
         <source>VoiceMail activated on %1</source>
         <translation>Messagerie activée sur %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="490"/>
+        <location filename="../common/identitydisplay.cpp" line="367"/>
         <source>VoiceMail not activated on %1</source>
         <translation>Messagerie non activée sur %1</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="242"/>
+        <location filename="../common/identitydisplay.cpp" line="249"/>
         <source>Hangup</source>
-        <translation>Annuler/Raccrocher</translation>
+        <translation type="obsolete">Annuler/Raccrocher</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="250"/>
+        <location filename="../common/identitydisplay.cpp" line="257"/>
+        <source>Reply</source>
+        <translation type="obsolete">Répondre</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="265"/>
+        <source>Refuse</source>
+        <translation type="obsolete">Refuser</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="401"/>
+        <source>(Line %1)</source>
+        <translation>(Ligne %1)</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="61"/>
+        <source>Identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>IdentityPhone</name>
+    <message>
+        <location filename="../common/identityphone.cpp" line="183"/>
+        <source>No option</source>
+        <translation>Pas d&apos;option</translation>
+    </message>
+    <message>
+        <location filename="../common/identityphone.cpp" line="199"/>
+        <source>Phone %1</source>
+        <translation>Téléphone %1</translation>
+    </message>
+    <message>
+        <location filename="../common/identityphone.cpp" line="247"/>
+        <source>(Line %1)</source>
+        <translation>(Ligne %1)</translation>
+    </message>
+</context>
+<context>
+    <name>IdentityPhoneLine</name>
+    <message>
+        <location filename="../common/identityphone.cpp" line="58"/>
+        <source>(Line %1)</source>
+        <translation>(Ligne %1)</translation>
+    </message>
+    <message>
+        <location filename="../common/identityphone.cpp" line="103"/>
+        <source>Hangup</source>
+        <translation type="unfinished">Annuler/Raccrocher</translation>
+    </message>
+    <message>
+        <location filename="../common/identityphone.cpp" line="109"/>
         <source>Reply</source>
         <translation>Répondre</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="258"/>
+        <location filename="../common/identityphone.cpp" line="115"/>
         <source>Refuse</source>
         <translation>Refuser</translation>
-    </message>
-    <message>
-        <location filename="../common/identitydisplay.cpp" line="545"/>
-        <source>(Line %1)</source>
-        <translation>(Ligne %1)</translation>
     </message>
 </context>
 <context>
