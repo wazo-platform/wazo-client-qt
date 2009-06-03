@@ -31,25 +31,24 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QtPlugin>
+#ifndef __XLETWEBPLUGIN_H__
+#define __XLETWEBPLUGIN_H__
 
-#include "xletweb.h"
-#include "xletwebplugin.h"
+#include <QObject>
+#include "xletinterface.h"
 
-Q_EXPORT_PLUGIN2(xletwebplugin, XLetWebPlugin);
-
-/*! \brief Destructor */
-XLetWebPlugin::~XLetWebPlugin()
-{
-    qDebug() << "XLetWebPlugin::~XLetWebPlugin()";
-}
-
-/*! \brief instanciate XletWeb
+/*! \brief XLetInterface implementation
  *
- * \return a new instance of XletWeb */
-XLet * XLetWebPlugin::newXLetInstance(BaseEngine * engine, QWidget * parent)
+ * entry point to instanciate Video Xlet
+ */
+class VideoXLetPlugin : public QObject, XLetInterface
 {
-    return new XletWeb(engine, parent);
-}
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+public:
+    ~VideoXLetPlugin();
+    XLet * newXLetInstance(BaseEngine * engine = 0, QWidget * parent = 0);
+};
+
+#endif
 

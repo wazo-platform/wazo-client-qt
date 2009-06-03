@@ -66,7 +66,6 @@
 #include "servicepanel.h"
 #include "statuspanel.h"
 #include "switchboardwindow.h"
-#include "videopanel.h"
 
 /*! \brief templates for returning a new XLet */
 template <class T>
@@ -92,7 +91,6 @@ static const struct {
     { "queueentrydetails", newXLet<QueueentrydetailsPanel> },
     { "datetime", newXLet<DatetimePanel> },
     { "dial", newXLet<DialPanel> },
-    { "video", newXLet<PlayerWidget> },
     { "operator", newXLet<StatusPanel> },
     { "messages", newXLet<DisplayMessagesPanel> },
     { "switchboard", newXLet<SwitchBoardWindow> },

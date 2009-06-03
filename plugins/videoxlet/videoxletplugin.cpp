@@ -34,22 +34,22 @@
 #include <QDebug>
 #include <QtPlugin>
 
-#include "xletweb.h"
-#include "xletwebplugin.h"
+#include "videopanel.h"
+#include "videoxletplugin.h"
 
-Q_EXPORT_PLUGIN2(xletwebplugin, XLetWebPlugin);
+Q_EXPORT_PLUGIN2(videoxletplugin, VideoXLetPlugin);
 
 /*! \brief Destructor */
-XLetWebPlugin::~XLetWebPlugin()
+VideoXLetPlugin::~VideoXLetPlugin()
 {
-    qDebug() << "XLetWebPlugin::~XLetWebPlugin()";
+    qDebug() << "VideoXLetPlugin::~VideoXLetPlugin()";
 }
 
 /*! \brief instanciate XletWeb
  *
  * \return a new instance of XletWeb */
-XLet * XLetWebPlugin::newXLetInstance(BaseEngine * engine, QWidget * parent)
+XLet * VideoXLetPlugin::newXLetInstance(BaseEngine * engine, QWidget * parent)
 {
-    return new XletWeb(engine, parent);
+    return new PlayerWidget(engine, parent);
 }
 
