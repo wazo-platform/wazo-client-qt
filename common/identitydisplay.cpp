@@ -332,30 +332,8 @@ void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
  */
 void IdentityDisplay::svcSummary()
 {
-/*
-    if(m_svcstatus["enablednd"].toBool()) {
-        m_phonestatustxt->setText(tr("DND"));
-        m_phonestatustxt->setToolTip(tr("Do Not Disturb"));
-    } else {
-        if(m_svcstatus["unc-enabled"].toBool()) {
-            m_phonestatustxt->setText(tr("UNC %1").arg(m_svcstatus["unc-number"].toString()));
-            m_phonestatustxt->setToolTip(tr("Unconditional Forward towards %1").arg(m_svcstatus["unc-number"].toString()));
-        } else if (m_svcstatus["busy-enabled"].toBool()) {
-            m_phonestatustxt->setText(tr("Busy %1").arg(m_svcstatus["busy-number"].toString()));
-            m_phonestatustxt->setToolTip(tr("Busy Forward towards %1").arg(m_svcstatus["busy-number"].toString()));
-        } else if (m_svcstatus["rna-enabled"].toBool()) {
-            m_phonestatustxt->setText(tr("RNA %1").arg(m_svcstatus["rna-number"].toString()));
-            m_phonestatustxt->setToolTip(tr("Non-Answer Forward towards %1").arg(m_svcstatus["rna-number"].toString()));
-        } else if (m_svcstatus["incallrec"].toBool()) {
-            m_phonestatustxt->setText(tr("Call Rec"));
-        } else if (m_svcstatus["incallfilter"].toBool()) {
-            m_phonestatustxt->setText(tr("Call Filter"));
-        } else {
-            m_phonestatustxt->setText(tr("No option"));
-            m_phonestatustxt->setToolTip(tr("No option"));
-        }
-    }
-*/
+    if(m_phone)
+        m_phone->svcSummary(m_svcstatus);
     if(m_ui) {
         QStringList vm = m_ui->mwi();
         if(vm.size() > 2) {
@@ -381,8 +359,6 @@ void IdentityDisplay::updateUser(UserInfo * ui)
         const PhoneInfo * p_pi = m_ui->getPhoneInfo(phoneid);
         if(p_pi == NULL)
             continue;
-        //m_comms = p_pi->comms();
-        //QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(m_comms);
         QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(p_pi->comms());
         QStringList busylines;
         while( iter.hasNext() ) {

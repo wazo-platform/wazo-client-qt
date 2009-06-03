@@ -76,6 +76,7 @@ class IdentityPhone : public QWidget
     Q_OBJECT
 public:
     IdentityPhone(QWidget * parent = 0);
+    void svcSummary(QMap<QString, QVariant> & svcstatus);
 signals:
     void actionCall(const QString & action, const QString & src, const QString & dst);
 public slots:

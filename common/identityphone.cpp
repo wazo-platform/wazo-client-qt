@@ -272,4 +272,29 @@ void IdentityPhone::setPhoneLines()
     }
 }
 
+void IdentityPhone::svcSummary(QMap<QString, QVariant> & svcstatus)
+{
+    if(svcstatus["enablednd"].toBool()) {
+        m_phonestatustxt->setText(tr("DND"));
+        m_phonestatustxt->setToolTip(tr("Do Not Disturb"));
+    } else {
+        if(svcstatus["unc-enabled"].toBool()) {
+            m_phonestatustxt->setText(tr("UNC %1").arg(svcstatus["unc-number"].toString()));
+            m_phonestatustxt->setToolTip(tr("Unconditional Forward towards %1").arg(svcstatus["unc-number"].toString()));
+        } else if (svcstatus["busy-enabled"].toBool()) {
+            m_phonestatustxt->setText(tr("Busy %1").arg(svcstatus["busy-number"].toString()));
+            m_phonestatustxt->setToolTip(tr("Busy Forward towards %1").arg(svcstatus["busy-number"].toString()));
+        } else if (svcstatus["rna-enabled"].toBool()) {
+            m_phonestatustxt->setText(tr("RNA %1").arg(svcstatus["rna-number"].toString()));
+            m_phonestatustxt->setToolTip(tr("Non-Answer Forward towards %1").arg(svcstatus["rna-number"].toString()));
+        } else if (svcstatus["incallrec"].toBool()) {
+            m_phonestatustxt->setText(tr("Call Rec"));
+        } else if (svcstatus["incallfilter"].toBool()) {
+            m_phonestatustxt->setText(tr("Call Filter"));
+        } else {
+            m_phonestatustxt->setText(tr("No option"));
+            m_phonestatustxt->setToolTip(tr("No option"));
+        }
+    }
+}
 
