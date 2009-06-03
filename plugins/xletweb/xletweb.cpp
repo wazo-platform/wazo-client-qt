@@ -51,6 +51,7 @@ XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
     setTitle( tr("Web Browser") );
         
     QVBoxLayout * layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     QLabel * title = new QLabel(this);
     title->setAlignment(Qt::AlignCenter);
