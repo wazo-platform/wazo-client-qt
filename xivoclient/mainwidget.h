@@ -36,6 +36,7 @@
 
 #include <QDateTime>
 #include <QHash>
+#include <QSet>
 #include <QMainWindow>
 #include <QSettings>
 #include <QSystemTrayIcon>
@@ -65,12 +66,6 @@ class QUrl;
 class QStackedWidget;
 
 class BaseEngine;
-class CallStackWidget;
-class DirectoryPanel;
-class SwitchBoardWindow;
-#ifdef USE_OUTLOOK
-class OutlookPanel;
-#endif
 class XLetFactory;
 
 /*! \brief Main window class
@@ -110,8 +105,6 @@ private slots:
     void checksAvailState();
     void about();
     void showCredits();
-    void newParkEvent();
-    void affTextChanged();
     void config_and_start();
     void logintextChanged(const QString &);
     void loginKindChanged(int);
@@ -150,14 +143,13 @@ private:
         
     // Widgets for Xlets
     QTabWidget * m_tabwidget;        //!< Area to display messages, services and histories
-//    QHash<QString, QWidget *> m_xlet;
-    QHash<QString, XLet *> m_xlet;
+    //QHash<QString, XLet *> m_xlet;
+    QSet<XLet *> m_xletlist;
 
     QLabel * m_xivobg;
 
     bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
     bool m_presence;
-    int m_cinfo_index;
 
     QString m_appliname;
     QHash<QString, QString> m_dockoptions;

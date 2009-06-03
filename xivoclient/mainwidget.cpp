@@ -94,7 +94,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_settings = m_engine->getSettings();
     QPixmap redsquare(":/images/disconnected.png");
     statusBar();        // This creates the status bar.
-    m_status = new QLabel();
+    m_status = new QLabel( this );
     m_status->setPixmap(redsquare);
     statusBar()->addPermanentWidget(m_status);
     statusBar()->clearMessage();
@@ -205,7 +205,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     
     showLogin();
     if((m_withsystray && (m_engine->systrayed() == false)) || (! m_withsystray))
-        this->show();
+        show();
     setFocusPolicy(Qt::StrongFocus);
 
     connect( this, SIGNAL(pasteToDialPanel(const QString &)),
@@ -349,14 +349,6 @@ void MainWidget::showLogin()
 void MainWidget::hideLogin()
 {
     m_central_widget->setCurrentWidget( m_wid );
-}
-
-void MainWidget::affTextChanged()
-{
-//         QString txt = m_xlet["instantmessaging"]->text();
-//         txt.replace(" ", "_");
-//         m_engine->sendMessage(txt.toUtf8());
-//         m_xlet["instantmessaging"]->setText("");
 }
 
 void MainWidget::createActions()
@@ -685,13 +677,11 @@ void MainWidget::engineStarted()
         m_gridlayout->addWidget(m_tabwidget, 1, 0);
     }
     
-//    for(int j = 0; j < XletList.size(); j++) {
-//        QString xletid = XletList[j];
-//        if (m_forcetabs || m_allnames.contains(xletid)) {
         foreach(QString xletid, m_allnames) {
             bool withscrollbar = m_dockoptions[xletid].contains("s");
             XLet * xlet = m_xletfactory->newXLet(xletid, this);
             if(xlet) {
+                m_xletlist.insert(xlet);
                 xlet->doGUIConnects( this );
                 if (withscrollbar) {
                     QScrollArea * sa_ag = new QScrollArea(this);
@@ -705,7 +695,6 @@ void MainWidget::engineStarted()
                 qDebug() << "cannot instanciate XLet" << xletid;
             }
         }
-//    }
     
     qDebug() << "MainWidget::engineStarted() : the xlets have been created";
     m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
@@ -719,11 +708,6 @@ void MainWidget::engineStarted()
     
     // restore settings, especially for Docks' positions
     restoreState(m_settings->value("display/mainwindowstate").toByteArray());
-    
-    if(m_tabnames.contains("customerinfo") && m_engine->checkedFunction("customerinfo")) {
-        m_cinfo_index = m_tabwidget->indexOf(m_xlet["customerinfo"]);
-        qDebug() << "the index of customer-info widget is" << m_cinfo_index;
-    }
     
     if(m_withsystray && m_systrayIcon)
         setSystrayIcon("xivo-transp");
@@ -750,12 +734,13 @@ void MainWidget::setSystrayIcon(const QString & def)
         icon = m_icon_black;
     else {
         int psize = 16;
-        QPixmap * p_square = new QPixmap(psize, psize);
-        p_square->fill(def);
-        icon = QIcon(* p_square);
+        QPixmap square(psize, psize);
+        square.fill(def);
+        icon = QIcon(square);
     }
     
-    m_systrayIcon->setIcon(icon);
+    if(m_systrayIcon)
+        m_systrayIcon->setIcon(icon);
     setWindowIcon(icon);
 }
 
@@ -806,17 +791,12 @@ void MainWidget::engineStopped()
     }
     clearPresence();
     
-//    for(int j = 0; j < XletList.size(); j++) {
-//        QString xletid = XletList[j];
-//        if (xletid == "tabber")
-//            continue;
-//        if (m_forcetabs || m_allnames.contains(xletid)) {
-//            if ((xletid == QString("customerinfo")) && m_engine->checkedFunction("customerinfo")) {
-//                removePanel(xletid, m_xlet[xletid]);
-//            } else
-//                removePanel(xletid, m_xlet[xletid]);
-//        }
-//    }
+    // delete all xlets
+    QSetIterator<XLet *> i(m_xletlist);
+    while (i.hasNext()) {
+        i.next()->deleteLater();
+    }
+    m_xletlist.clear();
     
     if(m_docknames.contains("tabber")) {
         removePanel("tabber", m_tabwidget);
@@ -886,9 +866,9 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
     }
     
     // focus on the customerinfo tab
-    if(m_tabnames.contains("customerinfo") && m_engine->checkedFunction("customerinfo") && options.contains("f"))
-        if (m_cinfo_index > -1)
-            m_tabwidget->setCurrentIndex(m_cinfo_index);
+//    if(m_tabnames.contains("customerinfo") && m_engine->checkedFunction("customerinfo") && options.contains("f"))
+//        if (m_cinfo_index > -1)
+//            m_tabwidget->setCurrentIndex(m_cinfo_index);
     
     // to be customisable, if the user wants the window to popup
     if(options.contains("p")) {
@@ -896,18 +876,6 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
         activateWindow();
         raise();
     }
-}
-
-// DEPRECATED ?
-// make something more flexible
-void MainWidget::newParkEvent()
-{
-    // set the current tab to parking
-    qDebug() << "MainWidget::newParkEvent()";
-
-    int index_parking = m_tabwidget->indexOf(m_xlet["parking"]);
-    if(index_parking > -1)
-        m_tabwidget->setCurrentIndex(index_parking);
 }
 
 void MainWidget::showEvent(QShowEvent *event)

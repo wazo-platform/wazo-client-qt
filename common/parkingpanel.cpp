@@ -149,7 +149,6 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
         item4->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         m_table->setItem( 0, i++, item4 );
 
-        emit newParkEvent();
         // do not start another timer if there is already one running
         if(m_timerid == 0)
             m_timerid = startTimer(m_deltasec * 1000);

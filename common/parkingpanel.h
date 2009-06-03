@@ -68,7 +68,6 @@ signals:
     void actionCall(const QString &,
                     const QString &,
                     const QString &);
-    void newParkEvent();
 private:
     ExtendedTableWidget * m_table;        //!< Table
     int m_timerid;  //!< id of the timer
