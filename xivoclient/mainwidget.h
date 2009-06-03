@@ -111,6 +111,7 @@ private slots:
     void confUpdated();
     void updatePresence(const QVariant &);
     void showMessageBox(const QString &);
+    void showWidgetOnTop(QWidget *);
 signals:
     void functionKeyPressed(int);
     void pasteToDialPanel(const QString &);

@@ -560,6 +560,15 @@ void MainWidget::systrayMsgClicked()
     raise();
 }
 
+/*! \brief show this XLet on top of others
+ *
+ * This slot Works when tabbed view is selected.
+ */
+void MainWidget::showWidgetOnTop(QWidget * widget)
+{
+    if(m_tabwidget)
+        m_tabwidget->setCurrentWidget(widget);
+}
 
 void MainWidget::addPanel(const QString & name, const QString & title, QWidget * widget)
 {

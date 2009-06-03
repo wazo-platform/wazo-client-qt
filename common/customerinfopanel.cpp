@@ -121,8 +121,8 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
     if(popup->systraypopup())
         opt += "s";
     newPopup(popup->messagetitle(), popup->message(), opt);
-    
-    //         connectDials(popup);
+    // set this widget to be the current tab in XiVO Client
+    emit showWidgetOnTop(this);
 }
 
 void CustomerInfoPanel::popupDestroyed(QObject * obj)
@@ -167,17 +167,10 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
     connect( popup, SIGNAL(actionFromPopup(const QString &, const QVariant &)),
              this, SLOT(actionFromPopup(const QString &, const QVariant &)) );
     connect( popup, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-             this, SLOT(localActionCall(const QString &, const QString &, const QString &)) );
+             m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
     connect( popup, SIGNAL(newRemarkSubmitted(const QString &, const QString &)),
              m_engine, SLOT(sendNewRemark(const QString &, const QString &)) );
     popup->feed(inputstream, qtui);
-}
-
-/*! \brief originate action redirection
- */
-void CustomerInfoPanel::localActionCall(const QString & cmd, const QString & orig, const QString & src)
-{
-    actionCall(cmd, orig, src);
 }
 
 void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVariant & timestamps)
@@ -234,5 +227,7 @@ void CustomerInfoPanel::doGUIConnects(QWidget * mainwindow)
 {
     connect( this, SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
              mainwindow, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)) );
+    connect( this, SIGNAL(showWidgetOnTop(QWidget *)),
+             mainwindow, SLOT(showWidgetOnTop(QWidget *)) );
 }
 

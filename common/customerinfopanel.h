@@ -60,14 +60,13 @@ signals:
                   const QHash<QString, QString> &,
                   const QString &);
     void actionFromFiche(const QVariant &);
-    void actionCall(const QString &, const QString &, const QString &);
+    void showWidgetOnTop(QWidget *);
 public slots:
     void showNewProfile(Popup *);
     void popupDestroyed(QObject * obj);
     void addToDataBase(const QString &);
     void displayFiche(const QString &, bool, const QString &);
     void actionFromPopup(const QString &, const QVariant &);
-    void localActionCall(const QString &, const QString &, const QString &);
     void activateRemarkArea(const QString & id);
     void desactivateRemarkArea(const QString & id);
     void addNewRemark(const QString & id, const QVariantMap & entry);
