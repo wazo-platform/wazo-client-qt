@@ -50,6 +50,7 @@ class QFrame;
 
 class UserInfo;
 class IdentityAgent;
+class IdentityPhone;
 
 /*! \brief Identity Display
  */
@@ -70,9 +71,6 @@ public slots:
     void setOpt(const QString &, bool);
     void setForward(const QString &, const QVariant &);
     void updateUser(UserInfo *);
-private slots:
-    void contextMenuEvent(QContextMenuEvent *);
-    void contextMenuAction();
 signals:
     void setAvailState(const QString &, bool);
     void changeWatchedAgent(const QString &, bool);
@@ -82,34 +80,27 @@ signals:
                     const QString & dst = "");   //!< to hangup
 private:
     void svcSummary();
-    void setPhoneLines();
     void setupIcons();
     
     QGridLayout * m_glayout;
     
     QLabel * m_icon_user;
-    QLabel * m_icon_phone;
     QLabel * m_icon_voicemail;
     
     QFrame * m_qvline1;
     QFrame * m_qvline2;
     
     QLabel * m_user;
-    QLabel * m_phone;
     QLabel * m_voicemail_old;
     QLabel * m_voicemail_new;
     QLabel * m_voicemail_name;
     QLabel * m_phonenum;
-    QLabel * m_phonecall;
-    QLabel * m_phonecalltxt;
     QComboBox * m_presencevalue;
-    QLabel * m_phonestatustxt;
 
     IdentityAgent * m_agent;
+    IdentityPhone * m_phone;
     
     QHash<QString, QString> m_presence_names;
-    QHash<QString, QLabel *> m_lineaction;
-    QHash<QString, QLabel *> m_linestatus;
     const UserInfo * m_ui;
     
     int m_col_user;
@@ -117,14 +108,12 @@ private:
     int m_col_phone;
     int m_col_vm;
     int m_col_last;
-    int m_nlines;
     Qt::Alignment m_iconAlign;
     Qt::Alignment m_textAlignVCenter;
     QFont m_gui_font;
     quint32 m_gui_buttonsize;
     quint32 m_loginkind;
     QStringList m_functions;
-    QMap<QString, QVariant> m_comms;
     QMap<QString, QVariant> m_svcstatus;
 };
 

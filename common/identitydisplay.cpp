@@ -49,15 +49,16 @@
 #include "agentinfo.h"
 #include "queueinfo.h"
 #include "identityagent.h"
+#include "identityphone.h"
 
 /*! \brief Constructor
  */
 IdentityDisplay::IdentityDisplay(BaseEngine * engine,
                                  QWidget * parent)
     : XLet(engine, parent),
-      m_ui(NULL), m_nlines(0)
+      m_ui(NULL)
 {
-    setTitle("Identity");
+    setTitle( tr("Identity") );
     setAccessibleName( tr("Current User Panel") );
     m_gui_buttonsize = 16;
     
@@ -74,19 +75,6 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_presencevalue->setProperty("function", "presence");
     m_presencevalue->setContentsMargins(0, 0, 10, 0);
     
-    m_phone = new QLabel(this);
-    m_phonestatustxt = new QLabel(tr("No option"), this);
-    m_phonestatustxt->setScaledContents(true);
-    m_phonestatustxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    
-    m_phonecall = new QLabel(this);
-    m_phonecalltxt = new QLabel(this);
-    
-    m_phone->setContentsMargins(0, 0, 10, 0);
-    m_phonecall->setContentsMargins(0, 0, 0, 0);
-    m_phonecalltxt->setContentsMargins(0, 0, 10, 0);
-    m_phonestatustxt->setContentsMargins(0, 0, 10, 0);
-    
     m_voicemail_old = new QLabel(this);
     m_voicemail_new = new QLabel(this);
     m_voicemail_name = new QLabel(this);
@@ -95,16 +83,13 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
             this, SLOT(idxChanged(const QString &)));
     
     m_icon_user = new ExtendedLabel("", this);
-    m_icon_phone = new ExtendedLabel("", this);
     m_icon_voicemail = new ExtendedLabel("", this);
     m_icon_voicemail->hide();
     
     m_icon_user->setPixmap(QPixmap(":/images/personal.png"));
-    m_icon_phone->setPixmap(QPixmap(":/images/phone.png"));
     m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png"));
     
     m_icon_user->setContentsMargins(0, 0, 5, 0);
-    m_icon_phone->setContentsMargins(20, 0, 5, 0);
     m_icon_voicemail->setContentsMargins(20, 0, 5, 0);
     
 //     m_icon_user->setFrameStyle(QFrame::Panel | QFrame::Raised);
@@ -116,21 +101,12 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
 //     m_icon_voicemail->setFrameStyle(QFrame::Panel | QFrame::Raised);
 //     m_icon_voicemail->setLineWidth(2);
     
-    m_icon_user->setProperty("iconname", "user");
-    m_icon_phone->setProperty("iconname", "phone");
-    m_icon_voicemail->setProperty("iconname", "voicemail");
-    
-    connect( m_icon_user, SIGNAL(context_menu(QContextMenuEvent *)),
-             this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-    connect( m_icon_phone, SIGNAL(context_menu(QContextMenuEvent *)),
-             this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-    connect( m_icon_voicemail, SIGNAL(context_menu(QContextMenuEvent *)),
-             this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-    
     m_agent = new IdentityAgent(this);
     connect( m_agent, SIGNAL(setSystrayIcon(const QString &)),
              this, SIGNAL(setSystrayIcon(const QString &)) );
     m_agent->setContentsMargins(5, 0, 5, 0);
+
+    m_phone = new IdentityPhone(this);
     
     m_glayout->setSpacing(0);
     m_glayout->setMargin(0);
@@ -138,8 +114,8 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_col_user = 0;
     m_col_agent = 2;
     m_col_phone = 3;
-    m_col_vm = 6;
-    m_col_last = 8;
+    m_col_vm = 4;
+    m_col_last = 6;
     
     m_iconAlign = Qt::AlignHCenter | Qt::AlignTop; // Qt::AlignVCenter
     m_textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
@@ -147,6 +123,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     setupIcons();
     m_glayout->addWidget( m_agent, 0, m_col_agent, 3, 1 );
+    m_glayout->addWidget( m_phone, 0, m_col_phone, 3, 1 );
     
     // although it might be convenient in some cases (prevent some expansions),
     // in the basic xivoclient/grid case, it fills too much room without no resizing available
@@ -178,27 +155,29 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
              this, SLOT(setForward(const QString &, const QVariant &)) );
     connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
              this, SLOT(updateUser(UserInfo *)) );
+    connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
+             m_phone, SLOT(updateUser(UserInfo *)) );
     connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
              this, SLOT(setUserInfo(const UserInfo *)) );
+    connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+             m_phone, SLOT(setUserInfo(const UserInfo *)) );
+
+    connect( m_phone, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+             m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
 }
 
 void IdentityDisplay::setupIcons()
 {
     m_glayout->addWidget( m_icon_user, 0, m_col_user, 3, 1, m_iconAlign );
-    m_glayout->addWidget( m_icon_phone, 0, m_col_phone, 3, 1, m_iconAlign );
     m_glayout->addWidget( m_icon_voicemail, 0, m_col_vm, 3, 1, m_iconAlign );
     int idline = 0;
     m_glayout->addWidget( m_user, idline, m_col_user + 1, m_textAlignVCenter );
-    m_glayout->addWidget( m_phone, idline, m_col_phone + 1, 1, 2, m_textAlignVCenter );
     m_glayout->addWidget( m_voicemail_name, idline, m_col_vm + 1, m_textAlignVCenter );
     idline ++;
     m_glayout->addWidget( m_phonenum, idline, m_col_user + 1, m_textAlignVCenter );
-    m_glayout->addWidget( m_phonecall, idline, m_col_phone + 1, m_textAlignVCenter );
-    m_glayout->addWidget( m_phonecalltxt, idline, m_col_phone + 2, m_textAlignVCenter );
     m_glayout->addWidget( m_voicemail_old, idline, m_col_vm + 1, m_textAlignVCenter );
     idline ++;
     m_glayout->addWidget( m_presencevalue, idline, m_col_user + 1, m_textAlignVCenter );
-    m_glayout->addWidget( m_phonestatustxt, idline, m_col_phone + 1, 1, 2, m_textAlignVCenter );
     m_glayout->addWidget( m_voicemail_new, idline, m_col_vm + 1, m_textAlignVCenter );
     for(int i = 0; i < m_col_last; i++)
         if(m_glayout->columnStretch(i) == 1)
@@ -219,69 +198,6 @@ void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
     setFont(m_gui_font);
     
     m_loginkind = optionsMap["loginkind"].toUInt();
-}
-
-void IdentityDisplay::contextMenuEvent(QContextMenuEvent * event)
-{
-    // qDebug() << "IdentityDisplay::contextMenuEvent()" << sender();
-    if(sender() != NULL) {
-        QString iconname = sender()->property("iconname").toString();
-        if(iconname == "phoneline") {
-            int linenumber = sender()->property("linenumber").toInt();
-            QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(m_comms);
-            while( iter.hasNext() ) {
-                iter.next();
-                QVariantMap callprops = iter.value().toMap();
-                if(callprops.contains("linenum")) {
-                    int ic = callprops["linenum"].toInt();
-                    if(ic == linenumber) {
-                        QString thiscommchan = callprops["thischannel"].toString();
-                        if(! thiscommchan.isEmpty()) {
-                            QMenu contextMenu(this);
-                            
-                            QAction * hangupMe = new QAction(tr("Hangup"), &contextMenu);
-                            hangupMe->setProperty("iconname", iconname);
-                            hangupMe->setProperty("channel", thiscommchan);
-                            hangupMe->setProperty("action", "hangup");
-                            connect(hangupMe, SIGNAL(triggered()),
-                                    this, SLOT(contextMenuAction()) );
-                            contextMenu.addAction(hangupMe);
-                            
-                            QAction * replyMe = new QAction(tr("Reply"), &contextMenu);
-                            replyMe->setProperty("iconname", iconname);
-                            replyMe->setProperty("channel", thiscommchan);
-                            replyMe->setProperty("action", "answer");
-                            connect(replyMe, SIGNAL(triggered()),
-                                    this, SLOT(contextMenuAction()) );
-                            contextMenu.addAction(replyMe);
-                            
-                            QAction * refuseMe = new QAction(tr("Refuse"), &contextMenu);
-                            refuseMe->setProperty("iconname", iconname);
-                            refuseMe->setProperty("channel", thiscommchan);
-                            refuseMe->setProperty("action", "refuse");
-                            connect(refuseMe, SIGNAL(triggered()),
-                                    this, SLOT(contextMenuAction()) );
-                            contextMenu.addAction(refuseMe);
-                            
-                            contextMenu.exec(event->globalPos());
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-    }
-}
-
-void IdentityDisplay::contextMenuAction()
-{
-    if(sender()) {
-        QString iconname = sender()->property("iconname").toString();
-        QString actionname = sender()->property("action").toString();
-        if(iconname == "phoneline" && m_ui)
-            actionCall(actionname, QString("chan:%1:%2").arg(m_ui->userid()).arg(sender()->property("channel").toString()));
-        // qDebug() << m_ui->astid() << sender()->property("channel").toString();
-    }
 }
 
 void IdentityDisplay::updatePresence(const QVariant & presence)
@@ -332,44 +248,6 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
     m_presencevalue->show();
 }
 
-/*! \brief display the phones' lines
- */
-void IdentityDisplay::setPhoneLines()
-{
-    // qDebug() << "IdentityDisplay::setPhoneLines()";
-    QPixmap square(25, 3);
-    square.fill(Qt::black);
-    for(int jj = 0 ; jj < m_nlines ; jj ++) {
-        QString sjj = QString::number(jj + 1);
-        if(! m_lineaction.contains(sjj)) {
-            m_lineaction[sjj] = new ExtendedLabel("", this);
-            m_lineaction[sjj]->setProperty("iconname", "phoneline");
-            m_lineaction[sjj]->setProperty("linenumber", jj + 1);
-            connect( m_lineaction[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
-                     this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-            
-            m_linestatus[sjj] = new ExtendedLabel("", this);
-            m_linestatus[sjj]->setProperty("iconname", "phoneline");
-            m_linestatus[sjj]->setProperty("linenumber", jj + 1);
-            connect( m_linestatus[sjj], SIGNAL(context_menu(QContextMenuEvent *)),
-                     this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-            
-            m_lineaction[sjj]->setPixmap(square);
-            QString todisplay = tr("(Line %1)").arg(jj + 1);
-            m_linestatus[sjj]->setText(QString("  %1  ").arg(todisplay));
-        }
-        
-        int ix = jj / 3;
-        int iy = jj % 3;
-        m_glayout->addWidget( m_lineaction[sjj], iy, m_col_phone + 3 + 2 * ix, m_textAlignVCenter );
-        m_glayout->addWidget( m_linestatus[sjj], iy, m_col_phone + 4 + 2 * ix, m_textAlignVCenter );
-    }
-    
-    m_col_vm = 8 + 2 * ((m_nlines + 2) / 3);
-    m_col_last = 10 + 2 * ((m_nlines + 2) / 3);
-    setupIcons();
-}
-
 void IdentityDisplay::setUserInfo(const UserInfo * ui)
 {
     // qDebug() << "IdentityDisplay::setUserInfo()";
@@ -377,9 +255,6 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     
     m_user->setText(m_ui->fullname());
     m_phonenum->setText(m_ui->phonenumber());
-    m_phone->setText(tr("Phone %1").arg(m_ui->phonenumber()));
-    m_nlines = m_ui->simultcalls();
-    setPhoneLines();
     QStringList vm = m_ui->mwi();
     if(vm.size() > 2) {
         m_icon_voicemail->show();
@@ -457,6 +332,7 @@ void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
  */
 void IdentityDisplay::svcSummary()
 {
+/*
     if(m_svcstatus["enablednd"].toBool()) {
         m_phonestatustxt->setText(tr("DND"));
         m_phonestatustxt->setToolTip(tr("Do Not Disturb"));
@@ -479,6 +355,7 @@ void IdentityDisplay::svcSummary()
             m_phonestatustxt->setToolTip(tr("No option"));
         }
     }
+*/
     if(m_ui) {
         QStringList vm = m_ui->mwi();
         if(vm.size() > 2) {
@@ -501,16 +378,12 @@ void IdentityDisplay::updateUser(UserInfo * ui)
     if(m_ui != ui)
         return;
     foreach(QString phoneid, m_ui->phonelist()) {
-        QPixmap square(10, 10);
         const PhoneInfo * p_pi = m_ui->getPhoneInfo(phoneid);
         if(p_pi == NULL)
             continue;
-        square.fill(p_pi->hintstatus("color"));
-        m_phonecall->setPixmap(square);
-        m_phonecall->setToolTip(p_pi->hintstatus("longname"));
-        m_phonecalltxt->setText(p_pi->hintstatus("longname"));
-        m_comms = p_pi->comms();
-        QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(m_comms);
+        //m_comms = p_pi->comms();
+        //QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(m_comms);
+        QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(p_pi->comms());
         QStringList busylines;
         while( iter.hasNext() ) {
             iter.next();
@@ -528,22 +401,6 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                     todisplay = tr("(Line %1)").arg(ics);
                     square_comm.fill(Qt::black);
                 }
-                //qDebug() << "IdentityDisplay::updateUser" << ics << m_lineaction << m_linestatus;
-                if(m_lineaction.contains(ics) && m_lineaction[ics])
-                    m_lineaction[ics]->setPixmap(square_comm);
-                if(m_linestatus.contains(ics) && m_linestatus[ics])
-                    m_linestatus[ics]->setText(QString("  %1  ").arg(todisplay));
-            }
-        }
-        
-        QPixmap square_black(25, 3);
-        square_black.fill(Qt::black);
-        for(int jj = 0 ; jj < m_nlines ; jj ++) {
-            QString sjj = QString::number(jj + 1);
-            if(! busylines.contains(sjj)) {
-                m_lineaction[sjj]->setPixmap(square_black);
-                QString todisplay = tr("(Line %1)").arg(sjj);
-                m_linestatus[sjj]->setText(QString("  %1  ").arg(todisplay));
             }
         }
     }
