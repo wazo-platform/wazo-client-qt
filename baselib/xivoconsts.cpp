@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 6435 $
- * $Date: 2009-05-29 15:14:32 +0200 (ven 29 mai 2009) $
+/* $Revision$
+ * $Date$
  */
 
 #include "xivoconsts.h"
