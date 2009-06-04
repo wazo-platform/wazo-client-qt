@@ -1,8 +1,6 @@
 #ifndef OUTLOOK_THREAD_H_INCLUDED
 #define OUTLOOK_THREAD_H_INCLUDED
 
-#ifdef USE_OUTLOOK
-
 #include <QThread>
 #include <QMutex>
 
@@ -33,8 +31,6 @@ public:
 	bool m_bStop;
 };
 
-
-#endif /* USE_OUTLOOK */
 
 #endif /* OUTLOOK_THREAD_H_INCLUDED */
 

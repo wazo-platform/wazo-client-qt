@@ -39,8 +39,6 @@
  * $Date$
  */
 
-#ifdef USE_OUTLOOK
-
 #include <QContextMenuEvent>
 #include <QDebug>
 #include <QDesktopServices>
@@ -53,10 +51,11 @@
 #include <QPushButton>
 #include <QUrl>
 #include <QVBoxLayout>
+#include <QLineEdit>
 
 #include "baseengine.h"
 #include "extendedtablewidget.h"
-#include "extendedlineedit.h"
+//#include "extendedlineedit.h"
 #include "xivoconsts.h"
 #include "phoneinfo.h"
 #include "userinfo.h"
@@ -81,7 +80,8 @@ OutlookPanel::OutlookPanel(BaseEngine * engine, QWidget * parent)
 	QLabel * titleLbl = new QLabel( tr("Di&rectory"), this );
 	vlayout->addWidget( titleLbl, 0, Qt::AlignCenter );
 	QHBoxLayout * hlayout = new QHBoxLayout();
-	m_input = new ExtendedLineEdit(this);
+	//m_input = new ExtendedLineEdit(this);
+	m_input = new QLineEdit(this);
 	titleLbl->setBuddy(m_input);
 	connect( m_input, SIGNAL(textChanged(const QString &)),
 	         this, SLOT(affTextChanged(const QString &)) );
@@ -518,4 +518,3 @@ void OutlookPanel::transfer()
 	}
 }
 
-#endif // USE_OUTLOOK

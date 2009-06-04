@@ -42,8 +42,6 @@
 #ifndef __OUTLOOKPANEL_H__
 #define __OUTLOOKPANEL_H__
 
-#ifdef USE_OUTLOOK
-
 #include "outlook_contact.h"
 
 #include "xlet.h"
@@ -54,7 +52,7 @@ class QPushButton;
 class QTableWidget;
 class QTableWidgetItem;
 
-class ExtendedLineEdit;
+class QLineEdit;
 class ExtendedTableWidget;
 class UserInfo;
 
@@ -106,7 +104,8 @@ public slots:
 
 private:
         const UserInfo * m_userinfo;
-	ExtendedLineEdit * m_input;	//!< search text input
+	//ExtendedLineEdit * m_input;	//!< search text input
+	QLineEdit * m_input;	//!< search text input
 	QString m_strFilter; //!< searched text
 	ExtendedTableWidget * m_table;		//!< table to display results
 	QString m_numberToDial;		//!< used to store number to dial or to transfer to
@@ -120,6 +119,5 @@ private:
 	void apply_filter();
 };
 
-#endif // USE_OUTLOOK
-
 #endif
+

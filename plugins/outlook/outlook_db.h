@@ -1,9 +1,7 @@
 #ifndef OUTLOOK_DB_H_INCLUDED
 #define OUTLOOK_DB_H_INCLUDED
 
-#ifdef USE_OUTLOOK
-
-#include "sqlite3/sqlite3.h"
+// #include "sqlite3/sqlite3.h"
 
 #include "outlook_contact.h"
 
@@ -28,7 +26,7 @@ public:
 
 	// misc
 	bool table_exist(const QString & strTableName);
-	operator sqlite3 *()const{return m_pDB;}
+	//operator sqlite3 *()const{return m_pDB;}
 
 private:
 	bool create_contact(COLContact & contact, const COLPropsDef & props_def);
@@ -38,12 +36,12 @@ private:
 
 
 public:
-	sqlite3 * m_pDB;
+//	sqlite3 * m_pDB;
 };
 
 class COLQuery {
 public:
-	COLQuery(sqlite3 * pDB);
+	COLQuery(/*sqlite3 * pDB*/);
 	virtual ~COLQuery();
 
 	bool run(const QString & strQuery);
@@ -63,13 +61,11 @@ private:
 	void cleanup();
 
 private:
-	sqlite3 * m_pDB;
-	sqlite3_stmt * m_pStmt;
+	//sqlite3 * m_pDB;
+	//sqlite3_stmt * m_pStmt;
 	bool	m_bHasRow;
 	int		m_nColCount;
 };
-
-#endif /* USE_OUTLOOK */
 
 #endif /* OUTLOOK_DB_H_INCLUDED */
 

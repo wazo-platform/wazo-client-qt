@@ -1,8 +1,6 @@
 #ifndef OUTLOOK_ENGINE_H_INCLUDED
 #define OUTLOOK_ENGINE_H_INCLUDED
 
-#ifdef USE_OUTLOOK
-
 #include "outlook_thread.h"
 
 class COLEngine {
@@ -30,14 +28,12 @@ public:
 private:
 	COLPropsDef	m_props_def;
 	COLContacts			m_contacts;
-	COLDB				m_db;
+	//COLDB				m_db;
 	QMutex				m_mutex;
 };
 
 COLEngine * OLEngine();
 void OLEngineEnd();
-
-#endif
 
 #endif /* OUTLOOK_ENGINE_H_INCLUDED */
 

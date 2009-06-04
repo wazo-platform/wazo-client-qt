@@ -1,5 +1,3 @@
-#ifdef USE_OUTLOOK
-
 #include "outlook_com.h"
 #include "outlook_contact.h"
 #include "outlook_tools.h"
@@ -277,7 +275,5 @@ COLNameSpace	COLApp::GetNamespace(const char * szName) {
 	if ( FAILED(res) ) return NULL;
 	return COLNameSpace(result.pdispVal, FALSE);
 }
-
-#endif // USE_OUTLOOK
 
 

@@ -1,8 +1,6 @@
 #ifndef OUTLOOK_CONTACT_H_INCLUDED
 #define OUTLOOK_CONTACT_H_INCLUDED
 
-#ifdef USE_OUTLOOK
-
 #include <QList>
 #include <QHash>
 
@@ -92,8 +90,6 @@ public:
 };
 
 typedef QHash<QString, COLPropDef>	COLPropsDef;
-
-#endif
 
 #endif
 

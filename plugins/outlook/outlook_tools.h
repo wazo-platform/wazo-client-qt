@@ -1,9 +1,6 @@
 #ifndef OUTLOOK_TOOLS_H_INCLUDED
 #define OUTLOOK_TOOLS_H_INCLUDED
 
-
-#ifdef USE_OUTLOOK
-
 #include <QString>
 
 #include <windows.h>
@@ -43,8 +40,6 @@ bool OLCreateDirectory(const QString & strPath);
 
 #	define ASSERTCONTINUE(expr) \
 		if ( !(expr) ) continue 
-#endif
-
 #endif
 
 

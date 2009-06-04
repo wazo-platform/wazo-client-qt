@@ -1,4 +1,3 @@
-#ifdef USE_OUTLOOK
 #include "outlook_thread.h"
 #include "outlook_com.h"
 #include "outlook_engine.h"
@@ -95,4 +94,3 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts) {
 	return true;
 }
 
-#endif /* USE_OUTLOOK */

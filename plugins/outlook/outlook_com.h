@@ -1,7 +1,6 @@
 #ifndef OUTLOOK_H_INCLUDED
 #define OUTLOOK_H_INCLUDED
 
-#ifdef USE_OUTLOOK
 #include <windows.h>
 #include <QString>
 #include <QHash>
@@ -250,8 +249,6 @@ public:
     _bstr_t Home2TelephoneNumber;
 
 */
-
-#endif // USE_OUTLOOK
 
 #endif // def(OUTLOOK_H_INCLUDED)
 

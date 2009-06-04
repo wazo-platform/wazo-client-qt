@@ -1,5 +1,3 @@
-#ifdef USE_OUTLOOK
-
 #include "outlook_tools.h"
 
 WCHAR* wchar_dup(const char * sz, BOOL bSysAlloc) {
@@ -99,4 +97,3 @@ bool OLCreateDirectory(const QString & strPath) {
 	return res;
 }
 
-#endif

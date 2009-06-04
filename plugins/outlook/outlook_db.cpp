@@ -1,5 +1,3 @@
-#ifdef USE_OUTLOOK
-
 #include <windows.h>
 #include <QString>
 #include <QDebug>
@@ -7,6 +5,7 @@
 #include "outlook_db.h"
 #include "outlook_tools.h"
 
+#if 0
 
 /* === taken from res_sqlite */
 
@@ -511,3 +510,4 @@ QString COLQuery::safe_string(const QString & str) {
 }
 
 #endif
+
