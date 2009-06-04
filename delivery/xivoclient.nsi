@@ -35,13 +35,25 @@ File ${QTBINPATH}\QtCore4.dll
 File ${QTBINPATH}\QtGui4.dll
 File ${QTBINPATH}\QtNetwork4.dll
 File ${QTBINPATH}\QtXml4.dll
+File ${QTBINPATH}\QtWebKit4.dll
+File ${QTBINPATH}\QtSql4.dll
+!endif
+!ifdef QTPLUGINSPATH
+File ${QTPLUGINSPATH}\sqldrivers\qsqlite4.dll
+File ${QTPLUGINSPATH}\sqldrivers\qsqlodbc4.dll
 !endif
 File LICENSE
 File GPL_V2.txt
 File OpenSSL.LICENSE.txt
 File Qt.GPL.Exception.txt
 File Qt.GPL.Exception.Addendum.txt
-File ..\xivoclient\release\xivoclient.exe
+File ..\bin\xivoclient.exe
+File ..\bin\xivoclientbaselib1.dll
+SetOutPath $INSTDIR\plugins
+File ..\bin\plugins\outlookplugin.dll
+File ..\bin\plugins\videoxletplugin.dll
+File ..\bin\plugins\xletnullplugin.dll
+File ..\bin\plugins\xletwebplugin.dll
 # Write keys in Registry in order for the applications to appear in Add/Remove Programs
 WriteRegStr HKLM "Software\XIVO\xivoclient" "Install_Dir" "$INSTDIR"
 WriteRegStr HKLM ${REG_UNINST} "DisplayName" "XIVO Client"
@@ -63,7 +75,6 @@ SectionEnd
 
 # Uninstall
 Section "Uninstall"
-# Do not remove the common CTI files if switchboard is installed
 Delete "$INSTDIR\GPL_V2.txt"
 Delete "$INSTDIR\OpenSSL.LICENSE.txt"
 Delete "$INSTDIR\Qt.GPL.Exception.txt"
@@ -73,15 +84,27 @@ Delete "$INSTDIR\mingwm10.dll"
 Delete "$INSTDIR\cryptoeay32-0.9.8.dll"
 Delete "$INSTDIR\ssleay32-0.9.8.dll"
 Delete "$INSTDIR\xivoclient.exe"
+Delete "$INSTDIR\xivoclientbaselib1.dll"
 Delete "$INSTDIR\uninstall-xivoclient.exe"
 !ifdef QTBINPATH
 Delete "$INSTDIR\QtCore4.dll"
 Delete "$INSTDIR\QtGui4.dll"
 Delete "$INSTDIR\QtNetwork4.dll"
 Delete "$INSTDIR\QtXml4.dll"
+Delete "$INSTDIR\QtWebKit4.dll"
+Delete "$INSTDIR\QtSql4.dll"
 !endif
+!ifdef QTPLUGINSPATH
+Delete "$INSTDIR\qsqlite4.dll"
+Delete "$INSTDIR\qsqlodbc4.dll"
+!endif
+Delete "$INSTDIR\plugins\outlookplugin.dll"
+Delete "$INSTDIR\plugins\videoxletplugin.dll"
+Delete "$INSTDIR\plugins\xletnullplugin.dll"
+Delete "$INSTDIR\plugins\xletwebplugin.dll"
 DeleteRegKey HKLM ${REG_UNINST} 
 DeleteRegKey HKLM "Software\XIVO\xivoclient"
+RmDir "$INSTDIR\plugins"
 RmDir "$INSTDIR"
 
 Delete "$DESKTOP\xivoclient.lnk"
