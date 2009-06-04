@@ -56,7 +56,6 @@ public:
     MyLocalDirPanel(BaseEngine *, QWidget * parent = 0);
     ~MyLocalDirPanel();
 public slots:
-    void setGuiOptions(const QVariant &) {};
     void openNewContactDialog();
     void importContacts();
     void exportContacts();

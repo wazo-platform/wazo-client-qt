@@ -62,7 +62,6 @@ public:
     enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
     void doGUIConnects(QWidget * mainwindow);
 public slots:
-    void setGuiOptions(const QVariant &) {};
     void functionKeyPressed(int);
     void xferPressed();
     void clicked();

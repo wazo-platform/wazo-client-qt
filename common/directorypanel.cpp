@@ -107,16 +107,20 @@ DirectoryPanel::~DirectoryPanel()
 {
 }
 
+/*! \brief does nothing for the moment */
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
 {
     qDebug() << "DirectoryPanel::focusInEvent()" << event;
 }
 
+/*! \brief does nothing for the moment */
 void DirectoryPanel::dropEvent(QDropEvent * event)
 {
     qDebug() << "DirectoryPanel::dropEvent()" << event;
 }
 
+/*! \brief copy number in clicked cell to clipboard
+ */
 void DirectoryPanel::itemClicked(QTableWidgetItem * item)
 {
     //qDebug() << item << item->text();
@@ -127,6 +131,7 @@ void DirectoryPanel::itemClicked(QTableWidgetItem * item)
     }
 }
 
+/*! \brief call the number or send an email to the address */
 void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 {
     //qDebug() << item << item->text();

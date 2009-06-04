@@ -71,7 +71,6 @@ protected:
     void contextMenuEvent(QContextMenuEvent *);
 public slots:
     //! does nothing
-    void setGuiOptions(const QVariant &) {};
     void updateUser(UserInfo *);
     void updatePeerAgent(double,
                          const QString &,

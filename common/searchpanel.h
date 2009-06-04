@@ -57,7 +57,6 @@ public:
                 QWidget * parent = 0);
     ~SearchPanel();        //!< Destructor
 public slots:
-    void setGuiOptions(const QVariant &) {};
     void affTextChanged(const QString &);
     void updatePeerAgent(double,
                          const QString &,

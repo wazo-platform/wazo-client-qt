@@ -56,7 +56,6 @@ signals:
     void forwardChanged(const QString &, bool, const QString &);
     void askFeatures(); //!< need features to be updated !
 public slots:
-    void setGuiOptions(const QVariantMap &) {};
     void setUserInfo(const UserInfo *);
     void setOpt(const QString &, bool);
     void setForward(const QString &, const QVariant &);

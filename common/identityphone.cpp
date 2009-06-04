@@ -204,7 +204,7 @@ void IdentityPhone::updateUser(UserInfo * ui)
 {
     if(m_ui != ui)
         return;
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
     foreach(QString phoneid, m_ui->phonelist()) {
         QPixmap square(10, 10);
         const PhoneInfo * p_pi = m_ui->getPhoneInfo(phoneid);
@@ -255,11 +255,11 @@ void IdentityPhone::updateUser(UserInfo * ui)
  */
 void IdentityPhone::setPhoneLines()
 {
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
     if(!m_ui)
         return;
     for(int jj = 0 ; jj < m_ui->simultcalls() ; jj ++) {
-        qDebug() << " --- " << jj << m_lines.value(jj);
+        //qDebug() << " --- " << jj << m_lines.value(jj);
         if(jj >= m_lines.size()) {
             m_lines.insert(jj, new IdentityPhoneLine(jj + 1, this));
             m_lines[jj]->setUserInfo(m_ui);

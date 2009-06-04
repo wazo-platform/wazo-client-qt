@@ -42,7 +42,6 @@
 #include <QRegExp>
 
 #include "baseengine.h"
-#include "extendedlabel.h"
 #include "identitydisplay.h"
 #include "userinfo.h"
 #include "phoneinfo.h"
@@ -82,8 +81,8 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
             this, SLOT(idxChanged(const QString &)));
     
-    m_icon_user = new ExtendedLabel("", this);
-    m_icon_voicemail = new ExtendedLabel("", this);
+    m_icon_user = new QLabel(this);
+    m_icon_voicemail = new QLabel(this);
     m_icon_voicemail->hide();
     
     m_icon_user->setPixmap(QPixmap(":/images/personal.png"));

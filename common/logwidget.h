@@ -62,7 +62,6 @@ protected:
 private:
     int mode();
 public slots:
-    void setGuiOptions(const QVariant &) {};
     void clear();
     void addLogEntry(const QDateTime &, int,
                      const QString &, const QString &, const QString &);
