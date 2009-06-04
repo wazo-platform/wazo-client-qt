@@ -40,6 +40,8 @@
 #include "datetimepanel.h"
 
 /*! \brief Constructor
+ *
+ * Creates layout, subwidgets and starts the timer.
  */
 DatetimePanel::DatetimePanel(BaseEngine * engine, QWidget * parent)
     : XLet(engine, parent)
@@ -56,7 +58,12 @@ DatetimePanel::DatetimePanel(BaseEngine * engine, QWidget * parent)
     startTimer(1000);
 }
 
+/*! \brief method called periodically
+ *
+ * Just update the date/time displayed.
+ */
 void DatetimePanel::timerEvent(QTimerEvent *)
 {
     m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
 }
+

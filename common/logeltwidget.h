@@ -55,9 +55,12 @@ public:
                  int,
                  const QString &,
                  QWidget * parent = 0 );
-    const QDateTime & dateTime() const;        //! get m_dateTime
-    const QString & peer() const;                //! get m_peer
-    Direction direction() const;                //! get m_direction
+    //! get m_dateTime
+    const QDateTime & dateTime() const;
+    //! get m_peer
+    const QString & peer() const;
+    //! get m_direction
+    Direction direction() const;
 protected:
     void contextMenuEvent(QContextMenuEvent *);
     void mouseDoubleClickEvent(QMouseEvent *);
@@ -69,10 +72,10 @@ signals:
     void actionCall(const QString &, const QString &, const QString &);        //!< signal to dial back.
     void copyNumber(const QString &);
 private:
-    QDateTime m_dateTime;        //!< date time of the call
-    QString m_peer;                        //!< phone number who called/was called
-    Direction m_direction;        //!< call direction (In/out)
-    QAction * m_dialAction;        //!< dial action
+    QDateTime m_dateTime;       //!< date time of the call
+    QString m_peer;             //!< phone number who called/was called
+    Direction m_direction;      //!< call direction (In/out)
+    QAction * m_dialAction;     //!< dial action
 };
 
 #endif

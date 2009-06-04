@@ -121,11 +121,19 @@ LogEltWidget::Direction LogEltWidget::direction() const
     return m_direction;
 }
 
+/*! \brief call on double click
+ *
+ * \see callBackPeer
+ */
 void LogEltWidget::mouseDoubleClickEvent(QMouseEvent * /* event*/)
 {
     callBackPeer();
 }
 
+/*! \brief copy number on simple click
+ *
+ * \see doNotCallBackPeer
+ */
 void LogEltWidget::mouseReleaseEvent(QMouseEvent * /* event*/)
 {
     doNotCallBackPeer();
@@ -140,8 +148,9 @@ void LogEltWidget::contextMenuEvent(QContextMenuEvent *event)
     contextMenu.exec(event->globalPos());
 }
 
-/*! \brief call the guy if dials is true, otherwise transmits the number in order to paste it
- *     somewhere, for instance in the dial input widget
+/*! call the guy if dials is true, otherwise transmits
+ *  the number in order to paste it
+ *  somewhere, for instance in the dial input widget
  */
 void LogEltWidget::callBackPeer()
 {
@@ -155,6 +164,7 @@ void LogEltWidget::callBackPeer()
     emit actionCall("originate", "user:special:me", "ext:" + number); // Call
 }
 
+/*! \brief Copy number */
 void LogEltWidget::doNotCallBackPeer()
 {
     QStringList qsl1 = m_peer.split("<");

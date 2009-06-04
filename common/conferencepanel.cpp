@@ -76,6 +76,10 @@ ConferencePanel::~ConferencePanel()
 {
 }
 
+/*! \brief set gui options
+ *
+ * Set m_show_record.
+ */
 void ConferencePanel::setGuiOptions(const QVariantMap & optionsMap)
 {
     if(optionsMap.contains("conference-allowrecord"))

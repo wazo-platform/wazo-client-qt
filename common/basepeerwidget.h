@@ -62,6 +62,7 @@ public:
     virtual const QString & number() const { return m_number; };
     //! Name
     virtual QString name() const;
+    //! maximum width for "small" items
     int maxWidthWanted() const { return m_maxWidthWanted; };
 protected:
     void mouseDoubleClickEvent(QMouseEvent *);

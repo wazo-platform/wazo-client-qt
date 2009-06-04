@@ -87,6 +87,11 @@ CallStackWidget::CallStackWidget(BaseEngine * engine, QWidget * parent)
              this, SLOT(setUserInfo(const UserInfo *)) );
 }
 
+/*! \brief update display if needed
+ *
+ * Check if this is about the monitored user
+ * and call updateDisplay().
+ */
 void CallStackWidget::updateUser(UserInfo * ui)
 {
     if(ui == m_monitored_ui)

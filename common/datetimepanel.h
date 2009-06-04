@@ -53,8 +53,6 @@ public:
     DatetimePanel(BaseEngine * engine, QWidget * parent = 0);
 protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
-public slots:
-    void setGuiOptions(const QVariant &) {};
 private:
     QGridLayout * m_gridlayout;
     QLabel * m_datetime;
