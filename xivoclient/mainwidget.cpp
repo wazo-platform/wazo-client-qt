@@ -62,9 +62,6 @@
 #include "configwidget.h"
 #include "xivoconsts.h"
 #include "xletfactory.h"
-#ifdef USE_OUTLOOK
-#include "outlook_engine.h"
-#endif
 
 const QString extraspace("  ");
 
@@ -219,9 +216,6 @@ MainWidget::MainWidget(BaseEngine * engine,
 MainWidget::~MainWidget()
 {
     // qDebug() << "MainWidget::~MainWidget()";
-#ifdef USE_OUTLOOK
-    OLEngineEnd();
-#endif
     savePositions();
     m_engine->logAction("application quit");
 }

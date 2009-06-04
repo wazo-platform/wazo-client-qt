@@ -8,7 +8,6 @@ include(../qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
 include(../qtaddons/qtcolorpicker/src/qtcolorpicker.pri)
 
 COMMONDIR = ../common
-OUTLOOK_DIR = ../3rdparty/outlook
 
 include(../common.pri)
 
@@ -30,13 +29,7 @@ unix:LIBS += ../bin/libxivoclientbaselib.so
 win32:LIBS += -L"..\\bin" -lxivoclientbaselib1
 
 win32 {
-	INCLUDEPATH += $${OUTLOOK_DIR}
-        DEFINES += USE_OUTLOOK=1 SQLITE_THREADSAFE=1
-        LIBS += -lole32 -loleaut32 -luuid
-        HEADERS += $${OUTLOOK_DIR}/*.h
-        SOURCES += $${OUTLOOK_DIR}/*.cpp
-        HEADERS += $${OUTLOOK_DIR}/sqlite3/*.h
-        SOURCES += $${OUTLOOK_DIR}/sqlite3/*.c
+    LIBS += -lole32 -loleaut32 -luuid
 }
 
 QT += xml

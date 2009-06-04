@@ -54,10 +54,6 @@
 #include "faxpanel.h"
 #include "logwidget.h"
 #include "mylocaldirpanel.h"
-#ifdef USE_OUTLOOK
-#include "outlook_panel.h"
-#include "outlook_engine.h"
-#endif /* USE_OUTLOOK */
 #include "parkingpanel.h"
 #include "queuespanel.h"
 #include "queuedetailspanel.h"
@@ -148,10 +144,6 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
     newXLetProto construct = m_xlets.value(id);
     if(construct) {
         xlet = construct(m_engine, topwindow);
-#ifdef USE_OUTLOOK
-    } else if(id == "outlook") {
-        xlet = new OutlookPanel(m_engine, topwindow);
-#endif /* USE_OUTLOOK */
     } else if(m_pluginsDirFound) {
 #ifdef Q_WS_WIN
         QString fileName = id + "plugin.dll";

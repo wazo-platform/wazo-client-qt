@@ -38,9 +38,6 @@
 #include <QVariant>
 #include <QWidget>
 #include "xmlhandler.h"
-#ifdef USE_OUTLOOK
-#include "outlook_contact.h"
-#endif
 
 class QLabel;
 class QLineEdit;
@@ -179,10 +176,6 @@ private:
     QHash<QString, QPushButton *> m_form_buttons;
     QHash<QString, QString> m_remoteforms;
     QVariantMap m_timestamps;
-#ifdef USE_OUTLOOK
-    COLContact m_OLContact;
-    bool        m_bOLFound;
-#endif
     RemarkArea * m_remarkarea;  //!< user editable area
     QString m_id;
 };
