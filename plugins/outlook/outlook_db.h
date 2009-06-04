@@ -1,11 +1,10 @@
 #ifndef OUTLOOK_DB_H_INCLUDED
 #define OUTLOOK_DB_H_INCLUDED
 
-// #include "sqlite3/sqlite3.h"
-
 #include "outlook_contact.h"
 
 #include <QString>
+#include <QtSQL>
 
 class COLDB {
 public:
@@ -36,35 +35,7 @@ private:
 
 
 public:
-//	sqlite3 * m_pDB;
-};
-
-class COLQuery {
-public:
-	COLQuery(/*sqlite3 * pDB*/);
-	virtual ~COLQuery();
-
-	bool run(const QString & strQuery);
-
-	bool has_row(){return m_bHasRow;}
-	bool fetch();
-
-	QString value_str(int col);
-	__int64 value_64(int col);
-	bool	value_bool(int col);
-	double  value_d(int col);
-
-	__int64 last_id();
-
-	QString safe_string(const QString & str);
-private:
-	void cleanup();
-
-private:
-	//sqlite3 * m_pDB;
-	//sqlite3_stmt * m_pStmt;
-	bool	m_bHasRow;
-	int		m_nColCount;
+	QSqlDatabase m_db;	// Database object
 };
 
 #endif /* OUTLOOK_DB_H_INCLUDED */

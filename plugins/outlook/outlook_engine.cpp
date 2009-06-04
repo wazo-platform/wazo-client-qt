@@ -27,10 +27,10 @@ COLEngine::~COLEngine() {
 
 void COLEngine::init() {
 	QMutexLocker lock(&m_mutex);	
-	//m_db.open();
-	//m_db.load_props_def(m_props_def);
-	//m_db.load_contacts(m_contacts);
-	//m_db.close();
+	m_db.open();
+	m_db.load_props_def(m_props_def);
+	m_db.load_contacts(m_contacts);
+	m_db.close();
 }
 
 void COLEngine::start_thread() {
@@ -101,22 +101,23 @@ void COLEngine::update_contacts(COLContacts & contacts) {
 				m_contacts[nIndex].m_state=OL_STATE_NO_CHG;
 		}
 	}
-	/*
+	
 	m_db.open();
 
-	COLQuery query(m_db);
-	if ( !query.run("BEGIN"))
-		query.run("ROLLBACK");
+	//COLQuery query(m_db);
+	//if ( !query.run("BEGIN"))
+	//	query.run("ROLLBACK");
 
-	if ( !m_db.update_contacts(m_contacts, m_props_def))
-		query.run("ROLLBACK");
-	else
-		query.run("COMMIT");
-	{
-	}
-
+	//if ( !m_db.update_contacts(m_contacts, m_props_def))
+	//	query.run("ROLLBACK");
+	//else
+	//	query.run("COMMIT");
+	//{
+	//}
+	m_db.update_contacts(m_contacts, m_props_def);
+	
 	m_db.close();
-	*/
+	
 }
 
 

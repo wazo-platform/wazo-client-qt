@@ -28,7 +28,7 @@ public:
 private:
 	COLPropsDef	m_props_def;
 	COLContacts			m_contacts;
-	//COLDB				m_db;
+	COLDB				m_db;
 	QMutex				m_mutex;
 };
 

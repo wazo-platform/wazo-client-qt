@@ -10,5 +10,5 @@ unix:LIBS   += ../../bin/libxivoclientbaselib.so
 win32:LIBS  += ../../bin/libxivoclientbaselib1.a
 win32:LIBS  += -luuid -lole32 -loleaut32
 
-QT += network
+QT += network sql
 
