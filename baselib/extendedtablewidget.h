@@ -34,6 +34,8 @@
 #ifndef __EXTENDEDTABLEWIDGET_H__
 #define __EXTENDEDTABLEWIDGET_H__
 
+#include "baselib_export.h"
+
 #include <QTableWidget>
 
 class QContextMenuEvent;
@@ -42,7 +44,7 @@ class BaseEngine;
 
 /*! \brief Table class inheriting QTableWidget with contextMenu added.
  */
-class ExtendedTableWidget : public QTableWidget
+class BASELIB_EXPORT ExtendedTableWidget : public QTableWidget
 {
     Q_OBJECT
 public:
