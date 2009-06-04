@@ -62,6 +62,7 @@ PlayerWidget::PlayerWidget(BaseEngine * engine, QWidget * parent)
     isPlaying(false),
     m_movie_url("")
 {
+    setTitle( tr("Video") );
     controller = new QPushButton("Play");
         
     renderTarget = new QWidget(this);
