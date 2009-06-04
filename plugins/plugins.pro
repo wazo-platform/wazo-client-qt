@@ -1,4 +1,4 @@
 # build projects contained in subdirectories
 TEMPLATE = subdirs
-SUBDIRS  = xletweb videoxlet
+SUBDIRS  = xletweb videoxlet xletnull
 
