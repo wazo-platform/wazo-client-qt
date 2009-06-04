@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 6512 $
- * $Date: 2009-06-03 19:29:17 +0200 (mer 03 jun 2009) $
+/* $Revision$
+ * $Date$
  */
 
 #ifndef __XLETNULLPLUGIN_H__
