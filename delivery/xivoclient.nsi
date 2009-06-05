@@ -43,7 +43,7 @@ File ${QTPLUGINSPATH}\sqldrivers\qsqlite4.dll
 File ${QTPLUGINSPATH}\sqldrivers\qsqlodbc4.dll
 !endif
 File LICENSE
-File GPL_V2.txt
+File GPL_V3.txt
 File OpenSSL.LICENSE.txt
 File Qt.GPL.Exception.txt
 File Qt.GPL.Exception.Addendum.txt
@@ -82,7 +82,7 @@ SectionEnd
 
 # Uninstall
 Section "Uninstall"
-Delete "$INSTDIR\GPL_V2.txt"
+Delete "$INSTDIR\GPL_V3.txt"
 Delete "$INSTDIR\OpenSSL.LICENSE.txt"
 Delete "$INSTDIR\Qt.GPL.Exception.txt"
 Delete "$INSTDIR\Qt.GPL.Exception.Addendum.txt"
