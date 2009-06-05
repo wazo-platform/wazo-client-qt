@@ -81,8 +81,11 @@ int main(int argc, char ** argv)
                                          QCoreApplication::organizationName(),
                                          QCoreApplication::applicationName());
     qDebug() << "style" << app.style() << settings->fileName();
-    if(argc > 1)
-        settings->setValue("profile/default", argv[1]);
+    if(argc > 1) {
+        QString argv1(argv[1]);
+        if(!argv1.startsWith("tel:", Qt::CaseInsensitive) && !argv1.startsWith("callto:", Qt::CaseInsensitive))
+            settings->setValue("profile/default", argv1);
+    }
     QString qsskind = settings->value("display/qss", "none").toString();
     QFile qssFile(QString(":/common/%1.qss").arg(qsskind));
     QString qssStr;
