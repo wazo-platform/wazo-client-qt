@@ -60,7 +60,7 @@ IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
     m_layout->addWidget( m_new, 2, 1, Qt::AlignLeft | Qt::AlignVCenter );
 }
 
-/*!
+/*! \brief update voicemail box name.
  */
 void IdentityVoiceMail::svcSummary(QVariantMap & svcstatus, const UserInfo * ui)
 {

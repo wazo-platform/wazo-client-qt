@@ -46,6 +46,9 @@ class BaseEngine;
  * this class. Use setTitle() in the constructor to set
  * the name of your XLet. The constructor should also connect
  * appropriate signals and slots to the BaseEngine object.
+ *
+ * doGUIConnects() can be superclassed for xlet needing to connect
+ * signal/slots from the MainWidget class.
  */
 class BASELIB_EXPORT XLet : public QWidget
 {
@@ -77,3 +80,4 @@ private:
     QString m_title;    //!< title of the XLet
 };
 #endif
+

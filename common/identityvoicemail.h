@@ -51,11 +51,11 @@ public:
     void svcSummary(QVariantMap & svcstatus, const UserInfo * ui);
     void setOldNew(const QString & _old, const QString & _new);
 private:
-    QGridLayout * m_layout;
-    QLabel * m_icon;
-    QLabel * m_name;
-    QLabel * m_old;
-    QLabel * m_new;
+    QGridLayout * m_layout; //!< layout
+    QLabel * m_icon;        //!< icon
+    QLabel * m_name;        //!< box name
+    QLabel * m_old;         //!< number of old messages
+    QLabel * m_new;         //!< number of new messages
 };
 
 #endif
