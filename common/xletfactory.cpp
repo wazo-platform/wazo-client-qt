@@ -117,6 +117,8 @@ XLetFactory::XLetFactory(BaseEngine * engine, QObject * parent)
         m_pluginsDir.cdUp();
         i++;
     }
+    // TODO : also find in some default linux directory
+    // such as /usr/share/lib/xivoclient/plugins
     if(m_pluginsDir.exists("plugins")) {
         m_pluginsDir.cd("plugins");
         m_pluginsDirFound = true;

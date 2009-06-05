@@ -40,7 +40,9 @@ class XLet;
 
 /*! \brief inteface class for xlets 
  *
- * Only one method which return a XLet of the selected type
+ * Only one method which return a XLet of the selected type.
+ * Inherited classes could implement also constructor or destructor
+ * in order to initialize things.
  */
 class XLetInterface
 {
