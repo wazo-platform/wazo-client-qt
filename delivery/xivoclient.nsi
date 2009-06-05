@@ -61,6 +61,13 @@ WriteRegStr HKLM ${REG_UNINST} "UninstallString" '"$INSTDIR\uninstall-xivoclient
 WriteRegDWORD HKLM ${REG_UNINST} "NoModify" 1
 WriteRegDWORD HKLM ${REG_UNINST} "NoRepair" 1
 WriteUninstaller "$INSTDIR\uninstall-xivoclient.exe"
+# Associate with tel: and callto: protocol
+WriteRegStr HKCR "tel" "" "URL:tel Protocol"
+WriteRegStr HKCR "tel" "URL Protocol" ""
+WriteRegStr HKCR "tel\shell\open\command" "" "$INSTDIR\xivoclient.exe %1"
+WriteRegStr HKCR "callto" "" "URL:callto Protocol"
+WriteRegStr HKCR "callto" "URL Protocol" ""
+WriteRegStr HKCR "callto\shell\open\command" "" "$INSTDIR\xivoclient.exe %1"
 SectionEnd
 
 # Shortcuts
@@ -104,6 +111,8 @@ Delete "$INSTDIR\plugins\xletnullplugin.dll"
 Delete "$INSTDIR\plugins\xletwebplugin.dll"
 DeleteRegKey HKLM ${REG_UNINST} 
 DeleteRegKey HKLM "Software\XIVO\xivoclient"
+DeleteRegKey HKCR "tel"
+DeleteRegKey HKCR "callto"
 RmDir "$INSTDIR\plugins"
 RmDir "$INSTDIR"
 
