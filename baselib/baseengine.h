@@ -202,7 +202,8 @@ public slots:
     void start();        //!< start the connection process.
     void stop();         //!< stop the engine
     void powerEvent(const QString &);
-    void setAvailState(const QString &, bool);        //! set m_availstate
+    //! set m_availstate
+    void setAvailState(const QString &, bool);
     void actionCall(const QString &,
                     const QString &,
                     const QString &);
@@ -238,19 +239,19 @@ public slots:
 private slots:
     void keepLoginAlive(); //!< Keep session alive
     void changeState(); //!< Change the presence status
-    void socketConnected();
-    void socketDisconnected();
-    void socketHostFound();
-    void socketError(QAbstractSocket::SocketError);
-    void socketStateChanged(QAbstractSocket::SocketState);
-    void socketReadyRead();
+    void ctiSocketConnected();
+    void ctiSocketDisconnected();
+    void ctiSocketError(QAbstractSocket::SocketError);
+    void ctiSocketStateChanged(QAbstractSocket::SocketState);
+    void ctiSocketReadyRead();
+    void filetransferSocketReadyRead();
+    void filetransferSocketConnected();
     void actionFromFiche(const QVariant &);
-    void readInputEvent(int);
 signals:
-    void logged();                                //!< signal emitted when the state becomes ELogged
-    void delogged();                        //!< signal emitted when the state becomes ENotLogged
-    void availAllowChanged(bool);                //!< signal
-    void emitTextMessage(const QString &);        //! message to be displayed to the user.
+    void logged();      //!< signal emitted when the state becomes ELogged
+    void delogged();    //!< signal emitted when the state becomes ENotLogged
+    void availAllowChanged(bool);           //!< signal
+    void emitTextMessage(const QString &);  //!< message to be displayed to the user.
     void pasteToDialPanel(const QString &);
     void parkingEvent(const QVariant &);
     void ackFax(const QString &, const QString &);
@@ -383,8 +384,8 @@ private:
     
     // Internal management
     QHostAddress m_serveraddress;   //!< Resolved address of the login server
-    QHash<QString, QTcpSocket *> m_tcpsocket; //!< TCP sockets
-    ushort m_listenport;            //!< Port where we are listening for profiles
+    QTcpSocket * m_ctiserversocket;     //!< Connection to the CTI server
+    QTcpSocket * m_filetransfersocket;  //!< TCP connection for File transfer.
     int m_timer;                    //!< timer id for ???
     int m_timerid_keepalive;        //!< timer id for keep alive
     int m_timerid_tryreconnect;     //!< timer id for try to reconnect

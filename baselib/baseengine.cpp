@@ -99,29 +99,32 @@ BaseEngine::BaseEngine(QSettings * settings,
     //         connect(m_notifier, SIGNAL(activated(int)),
     //                 this, SLOT(readInputEvent(int)));
         
-    // Socket for TCP connections
-    QStringList socknames = (QStringList() << "cticommands" << "filetransfers");
-    foreach(QString sockname, socknames) {
-        m_tcpsocket[sockname] = new QTcpSocket(this);
-        m_tcpsocket[sockname]->setProperty("socket", sockname);
-        connect( m_tcpsocket[sockname], SIGNAL(connected()),
-                 this, SLOT(socketConnected()));
-        connect( m_tcpsocket[sockname], SIGNAL(disconnected()),
-                 this, SLOT(socketDisconnected()));
-        connect( m_tcpsocket[sockname], SIGNAL(hostFound()),
-                 this, SLOT(socketHostFound()));
-        connect( m_tcpsocket[sockname], SIGNAL(error(QAbstractSocket::SocketError)),
-                 this, SLOT(socketError(QAbstractSocket::SocketError)));
-        connect( m_tcpsocket[sockname], SIGNAL(stateChanged(QAbstractSocket::SocketState)),
-             this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
-        connect( m_tcpsocket[sockname], SIGNAL(readyRead()),
-                 this, SLOT(socketReadyRead()));
-    }
+    // TCP connection with CTI Server
+    m_ctiserversocket = new QTcpSocket(this);
+    connect( m_ctiserversocket, SIGNAL(connected()),
+             this, SLOT(ctiSocketConnected()));
+    connect( m_ctiserversocket, SIGNAL(disconnected()),
+             this, SLOT(ctiSocketDisconnected()));
+    connect( m_ctiserversocket, SIGNAL(error(QAbstractSocket::SocketError)),
+             this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
+    connect( m_ctiserversocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
+             this, SLOT(ctiSocketStateChanged(QAbstractSocket::SocketState)));
+    connect( m_ctiserversocket, SIGNAL(readyRead()),
+             this, SLOT(ctiSocketReadyRead()));
+
+    // TCP connection for file transfer
+    // (this could be moved to some other class)
+    m_filetransfersocket = new QTcpSocket(this);
+    connect( m_filetransfersocket, SIGNAL(readyRead()),
+             this, SLOT(filetransferSocketReadyRead()) );
+    connect( m_filetransfersocket, SIGNAL(connected()),
+             this, SLOT(filetransferSocketConnected()) );
     
     if(m_autoconnect)
         start();
 }
 
+#if 0
 /*! */
 void BaseEngine::readInputEvent(int) {
     // does nothing ??
@@ -131,6 +134,7 @@ void BaseEngine::readInputEvent(int) {
         qDebug() << "BaseEngine::readInputEvent()" << qba.size();
     }
 }
+#endif
 
 /*! \brief Destructor
  */
@@ -199,8 +203,7 @@ void BaseEngine::loadSettings()
     QVariant data;
     try {
         data = JsonQt::JsonToVariant::parse(defaultguioptions);
-    }
-    catch(JsonQt::ParseException) {
+    } catch(JsonQt::ParseException) {
         qDebug() << "BaseEngine::loadSettings() exception catched for" << defaultguioptions;
     }
     
@@ -323,6 +326,10 @@ void BaseEngine::config_and_start(const QString & login,
     start();
 }
 
+/*! \brief send power event to the server.
+ *
+ * \todo check if this is usefull. If not, remove it.
+ */
 void BaseEngine::powerEvent(const QString & eventinfo)
 {
     QVariantMap command;
@@ -341,7 +348,7 @@ void BaseEngine::start()
     qDebug() << "BaseEngine::start()" << m_serverhost << m_checked_function;
     
     // (In case the TCP sockets were attempting to connect ...) aborts them first
-    m_tcpsocket.value("cticommands")->abort();
+    m_ctiserversocket->abort();
     
     connectSocket();
     m_byte_counter = 0;
@@ -366,8 +373,8 @@ void BaseEngine::stop()
             m_attempt_loggedin = false;
     }
     
-    m_tcpsocket.value("cticommands")->flush();
-    m_tcpsocket.value("cticommands")->disconnectFromHost();
+    m_ctiserversocket->flush();
+    m_ctiserversocket->disconnectFromHost();
     
     stopKeepAliveTimer();
     stopTryAgainTimer();
@@ -472,9 +479,9 @@ QHash<QString, UserInfo *> BaseEngine::users()
  */
 void BaseEngine::connectSocket()
 {
-    if(! m_userid.isEmpty()) {
+    if( !m_userid.isEmpty() ) {
         qDebug() << "BaseEngine::connectSocket()" << m_serverhost << m_ctiport;
-        m_tcpsocket.value("cticommands")->connectToHost(m_serverhost, m_ctiport);
+        m_ctiserversocket->connectToHost(m_serverhost, m_ctiport);
     }
 }
 
@@ -559,8 +566,8 @@ void BaseEngine::setAvailability()
 /*! \brief send command to XiVO CTI server */
 void BaseEngine::sendCommand(const QString & command)
 {
-    if(m_tcpsocket.value("cticommands")->state() == QAbstractSocket::ConnectedState)
-        m_tcpsocket.value("cticommands")->write((command + "\n").toAscii());
+    if(m_ctiserversocket->state() == QAbstractSocket::ConnectedState)
+        m_ctiserversocket->write((command + "\n").toAscii());
 }
 
 /*! \brief encode json and then send command to XiVO CTI server */
@@ -602,72 +609,73 @@ void BaseEngine::monitorPeerRequest(const QString & userid)
 }
 
 /*! \brief called when the socket is first connected
+ *
+ * currently send the identification to login
+ * \todo read correctly the banner
  */
-void BaseEngine::socketConnected()
+void BaseEngine::ctiSocketConnected()
 {
-    QString socketname = sender()->property("socket").toString();
-    qDebug() << "BaseEngine::socketConnected()" << socketname;
-    if(socketname == "cticommands") {
-        stopTryAgainTimer();
-        /* do the login/identification */
-        m_attempt_loggedin = false;
-        QVariantMap command;
-        command["class"] = "login_id";
-        command["direction"] = "xivoserver";
-        command["userid"] = m_userid;
-        command["company"] = m_company;
-        command["ident"] = m_clientid;
-        command["version"] = __current_client_version__;
-        command["xivoversion"] = __xivo_version__;
+    qDebug() << Q_FUNC_INFO; 
+    stopTryAgainTimer();
+    /* do the login/identification */
+    m_attempt_loggedin = false;
+    QVariantMap command;
+    command["class"] = "login_id";
+    command["direction"] = "xivoserver";
+    command["userid"] = m_userid;
+    command["company"] = m_company;
+    command["ident"] = m_clientid;
+    command["version"] = __current_client_version__;
+    command["xivoversion"] = __xivo_version__;
+    // for debuging purposes :
+    command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
+    command["lastlogout-datetime"] = m_settings->value("lastlogout/datetime").toString();
+    m_settings->remove("lastlogout/stopper");
+    m_settings->remove("lastlogout/datetime");
         
-        command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
-        command["lastlogout-datetime"] = m_settings->value("lastlogout/datetime").toString();
-        m_settings->remove("lastlogout/stopper");
-        m_settings->remove("lastlogout/datetime");
-        
-        sendJsonCommand(command);
-    } else if(socketname == "filetransfers") {
-        QVariantMap command;
-        command["class"] = "filetransfer";
-        command["direction"] = "xivoserver";
-        command["tdirection"] = m_filedir;
-        command["fileid"] = m_fileid;
-        QString jsoncommand(JsonQt::VariantToJson::parse(command));
-        if(m_tcpsocket["filetransfers"]->state() == QAbstractSocket::ConnectedState)
-            m_tcpsocket["filetransfers"]->write((jsoncommand + "\n").toAscii());
-    }
+    sendJsonCommand(command);
+}
+
+/*! \brief send filetransfer command
+ */
+void BaseEngine::filetransferSocketConnected()
+{
+    QVariantMap command;
+    command["class"] = "filetransfer";
+    command["direction"] = "xivoserver";
+    command["tdirection"] = m_filedir;
+    command["fileid"] = m_fileid;
+    QString jsoncommand(JsonQt::VariantToJson::parse(command));
+    // ??? useless test ???
+    if(m_filetransfersocket->state() == QAbstractSocket::ConnectedState)
+        m_filetransfersocket->write((jsoncommand + "\n").toAscii());
 }
 
 /*! \brief called when the socket is disconnected from the server
  */
-void BaseEngine::socketDisconnected()
+void BaseEngine::ctiSocketDisconnected()
 {
-    QString socketname = sender()->property("socket").toString();
-    if(socketname == "cticommands") {
-        setState(ENotLogged); // calls delogged();
-        emitTextMessage(tr("Connection lost with XiVO CTI server"));
-        startTryAgainTimer();
-        //removePeers();
-        //connectSocket();
-    }
+    setState(ENotLogged); // calls delogged();
+    emitTextMessage(tr("Connection lost with XiVO CTI server"));
+    startTryAgainTimer();
 }
 
 /*! \brief cat host found socket signal
  *
  * This slot is connected to the hostFound() signal of the m_tcpsocket.value("cticommands")
  */
+/*
 void BaseEngine::socketHostFound()
 {
-    QString socketname = sender()->property("socket").toString();
-    qDebug() << "BaseEngine::socketHostFound()" << socketname;
+    qDebug() << "BaseEngine::socketHostFound()";
 }
+*/
 
 /*! \brief catch socket errors
  */
-void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
+void BaseEngine::ctiSocketError(QAbstractSocket::SocketError socketError)
 {
-    QString socketname = sender()->property("socket").toString();
-    qDebug() << "BaseEngine::socketError()" << socketError << socketname;
+    qDebug() << Q_FUNC_INFO << socketError;
     switch(socketError) {
     case QAbstractSocket::ConnectionRefusedError:
         emitTextMessage(tr("Connection refused"));
@@ -682,7 +690,6 @@ void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
         popupError("connection_closed");
         break;
     case QAbstractSocket::HostNotFoundError:
-/*! \brief set monitored peer id */
         emitTextMessage(tr("Host not found"));
         break;
     case QAbstractSocket::NetworkError:
@@ -699,20 +706,19 @@ void BaseEngine::socketError(QAbstractSocket::SocketError socketError)
 
 /*! \brief receive signals of socket state change
  *
- * useless...
+ * kills timer if connected.
+ * \todo check if this can be safely removed
  */
-void BaseEngine::socketStateChanged(QAbstractSocket::SocketState socketState)
+void BaseEngine::ctiSocketStateChanged(QAbstractSocket::SocketState socketState)
 {
-    QString socketname = sender()->property("socket").toString();
-    // qDebug() << "BaseEngine::socketStateChanged()" << socketname;
-    if(socketname == "cticommands")
-        if(socketState == QAbstractSocket::ConnectedState) {
-            if(m_timer != -1) {
-                killTimer(m_timer);
-                m_timer = -1;
-            }
-            //startTimer(3000);
+    qDebug() << Q_FUNC_INFO << socketState;
+    if(socketState == QAbstractSocket::ConnectedState) {
+        if(m_timer != -1) {
+            killTimer(m_timer);
+            m_timer = -1;
         }
+        //startTimer(3000);
+    }
 }
 
 UserInfo * BaseEngine::findUserFromPhone(const QString & astid,
@@ -743,16 +749,14 @@ void BaseEngine::updatePhone(const QString & astid,
     //qDebug() << map.keys();
     QString key = astid + "." + phoneid;
     UserInfo * ui = findUserFromPhone(astid, phoneid);
-    if( ! m_phones.contains( key ) )
-    {
+    if( ! m_phones.contains( key ) ) {
         m_phones[key] = new PhoneInfo(astid, properties);
         if(ui)
             ui->updatePhone( m_phones[key] );
     } else {
         m_phones[key]->update(properties);
     }
-    if(ui)
-    {
+    if(ui) {
         emit userUpdated(ui);
     }
 }
@@ -852,8 +856,7 @@ void BaseEngine::parseCommand(const QString & line)
         m_rate_msec += jsondecodetime.elapsed();
         m_rate_bytes += line.trimmed().size();
         m_rate_samples ++;
-    }
-    catch(JsonQt::ParseException) {
+    } catch(JsonQt::ParseException) {
         qDebug() << "BaseEngine::parseCommand() exception catched for" << line.trimmed();
         data = QVariant(QVariant::Invalid);
     }
@@ -1060,7 +1063,7 @@ void BaseEngine::parseCommand(const QString & line)
         } else if (thisclass == "faxsend") {
             m_filedir = datamap["tdirection"].toString();
             m_fileid = datamap["fileid"].toString();
-            m_tcpsocket["filetransfers"]->connectToHost(m_serverhost, m_ctiport);
+            m_filetransfersocket->connectToHost(m_serverhost, m_ctiport);
             qDebug() << m_filedir << m_fileid;
             
         } else if (thisclass == "faxprogress") {
@@ -1578,54 +1581,52 @@ void BaseEngine::saveToFile(const QString & filename)
  *
  * Read and process the data from the server.
  */
-void BaseEngine::socketReadyRead()
+void BaseEngine::ctiSocketReadyRead()
 {
-    // qDebug() << "BaseEngine::socketReadyRead()";
-    QString socketname = sender()->property("socket").toString();
-    if(socketname == "cticommands")
-        while(m_tcpsocket.value("cticommands")->canReadLine()) {
-            QByteArray data  = m_tcpsocket.value("cticommands")->readLine();
-            m_byte_counter += data.size();
-            // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
-            QString line = QString::fromUtf8(data);
+    while(m_ctiserversocket->canReadLine()) {
+        QByteArray data  = m_ctiserversocket->readLine();
+        m_byte_counter += data.size();
+        // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
+        QString line = QString::fromUtf8(data);
             
-            if(line.startsWith("<ui version=")) {
-                // we get here when receiving a sheet as a Qt4 .ui form
-                qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
-                displayFiche(line, true, QString());
-            } else
-                parseCommand(line);
+        if(line.startsWith("<ui version=")) {
+            // we get here when receiving a sheet as a Qt4 .ui form
+            qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
+            displayFiche(line, true, QString());
+        } else
+            parseCommand(line);
+    }
+}
+
+void BaseEngine::filetransferSocketReadyRead()
+{
+    while(m_filetransfersocket->canReadLine()) {
+        QByteArray data = m_filetransfersocket->readLine();
+        QString line = QString::fromUtf8(data);
+        QVariant jsondata;
+        try {
+            jsondata = JsonQt::JsonToVariant::parse(line.trimmed());
+        } catch(JsonQt::ParseException) {
+            qDebug() << "BaseEngine::socketReadyRead() exception catched for" << line.trimmed();
         }
-    else if(socketname == "filetransfers") {
-        while(m_tcpsocket["filetransfers"]->canReadLine()) {
-            QByteArray data = m_tcpsocket["filetransfers"]->readLine();
-            QString line = QString::fromUtf8(data);
-            QVariant jsondata;
-            try {
-                jsondata = JsonQt::JsonToVariant::parse(line.trimmed());
-            }
-            catch(JsonQt::ParseException) {
-                qDebug() << "BaseEngine::socketReadyRead() exception catched for" << line.trimmed();
-            }
-            QVariantMap jsondatamap = jsondata.toMap();
-            if(jsondatamap["class"].toString() == "fileref") {
-                if(m_filedir == "download") {
-                    m_downloaded = QByteArray::fromBase64(jsondatamap["payload"].toByteArray());
-                    qDebug() << jsondatamap["filename"].toString() << m_downloaded.size();
-                    fileReceived();
-                } else {
-                    QByteArray fax64 = m_filedata.toBase64();
-                    qDebug() << "sending fax contents" << jsondatamap["fileid"].toString() << m_faxsize << fax64.size();
-                    if(m_faxsize > 0) {
-                        m_tcpsocket["filetransfers"]->write(fax64 + "\n");
-                        m_tcpsocket["filetransfers"]->flush();
-                    }
-                    m_filedata.clear();
+        QVariantMap jsondatamap = jsondata.toMap();
+        if(jsondatamap["class"].toString() == "fileref") {
+            if(m_filedir == "download") {
+                m_downloaded = QByteArray::fromBase64(jsondatamap["payload"].toByteArray());
+                qDebug() << jsondatamap["filename"].toString() << m_downloaded.size();
+                fileReceived();
+            } else {
+                QByteArray fax64 = m_filedata.toBase64();
+                qDebug() << "sending fax contents" << jsondatamap["fileid"].toString() << m_faxsize << fax64.size();
+                if(m_faxsize > 0) {
+                    m_filetransfersocket->write(fax64 + "\n");
+                    m_filetransfersocket->flush();
                 }
-                m_tcpsocket["filetransfers"]->disconnectFromHost();
-                m_faxsize = 0;
-                m_fileid = "";
+                m_filedata.clear();
             }
+            m_filetransfersocket->disconnectFromHost();
+            m_faxsize = 0;
+            m_fileid = "";
         }
     }
 }
@@ -1656,7 +1657,9 @@ void BaseEngine::copyNumber(const QString & dst)
     pasteToDialPanel(dst);
 }
 
-/*! \brief send an originate command to the server
+/*! \brief send telephony command to the server
+ *
+ * \param action originate/transfer/atxfer/hangup/answer/refuse
  */
 void BaseEngine::actionCall(const QString & action,
                             const QString & src,
@@ -1924,15 +1927,13 @@ uint BaseEngine::trytoreconnectinterval() const
  */
 void BaseEngine::setTrytoreconnectinterval(uint i)
 {
-    if( m_trytoreconnectinterval != i )
-        {
-            m_trytoreconnectinterval = i;
-            if(m_timerid_tryreconnect > 0)
-                {
-                    killTimer(m_timerid_tryreconnect);
-                    m_timerid_tryreconnect = startTimer(m_trytoreconnectinterval);
-                }
+    if( m_trytoreconnectinterval != i ) {
+        m_trytoreconnectinterval = i;
+        if(m_timerid_tryreconnect > 0) {
+            killTimer(m_timerid_tryreconnect);
+            m_timerid_tryreconnect = startTimer(m_trytoreconnectinterval);
         }
+    }
 }
 
 /*! \brief implement timer event
