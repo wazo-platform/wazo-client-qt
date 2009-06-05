@@ -73,7 +73,6 @@ const QString extraspace("  ");
  */
 //        : QMainWindow(parent, Qt::FramelessWindowHint),
 MainWidget::MainWidget(BaseEngine * engine,
-                       const QString & osname,
                        QWidget * parent)
     : QMainWindow(parent),
       m_engine(engine), m_systrayIcon(0),
@@ -85,7 +84,6 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_xletfactory = new XLetFactory(m_engine, this);
     m_engine->setParent( this ); // take ownership of the engine object
     m_appliname = "Client";
-    m_engine->setOSInfos(osname);
     m_withsystray = true;
     
     m_settings = m_engine->getSettings();
@@ -148,7 +146,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     
     if(m_settings->value("display/logtofile", false).toBool())
         m_engine->setLogFile(m_settings->value("display/logfilename", "XIVO_Client.log").toString());
-    m_engine->logAction("application started on " + osname);
+    m_engine->logAction("application started on " + m_engine->osname());
     
     m_xivobg = new QLabel();
     m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));

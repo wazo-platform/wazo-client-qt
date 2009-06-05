@@ -76,7 +76,6 @@ class MainWidget : public QMainWindow
 public:
     //! Constructor
     MainWidget(BaseEngine *,
-               const QString &,
                QWidget * parent=0);
     //! Destructor
     virtual ~MainWidget();

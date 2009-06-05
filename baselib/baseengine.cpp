@@ -610,7 +610,6 @@ void BaseEngine::socketConnected()
     if(socketname == "cticommands") {
         stopTryAgainTimer();
         /* do the login/identification */
-        setMyClientId();
         m_attempt_loggedin = false;
         QVariantMap command;
         command["class"] = "login_id";
@@ -2143,17 +2142,14 @@ void BaseEngine::changeWatchedQueueSlot(const QString & queueid)
     emit changeWatchedQueueSignal(queueid);
 }
 
-/*! \brief sets m_osname */
+/*! \brief sets m_osname
+ *
+ * also
+ * Builds a string defining who is the client (SB or XC @ osname)
+ */
 void BaseEngine::setOSInfos(const QString & osname)
 {
     m_osname = osname;
-}
-
-/*!
- * Builds a string defining who is the client (SB or XC @ osname)
- */
-void BaseEngine::setMyClientId()
-{
     m_clientid = "undef@" + m_osname;
 }
 

@@ -167,8 +167,6 @@ public:
     void setEnabledFunction(const QString &, bool b);        //!< set m_enabled_function
     bool enabledFunction(const QString &);                   //!< get m_enabled_function
     
-    void setMyClientId();                        //! set m_clientid
-    
     uint keepaliveinterval() const;           //!< keep alive interval
     bool lastconnwins() const;                //!< last connected one wins
     void setLastConnWins(bool b);                //!< last connected user wins
@@ -181,6 +179,7 @@ public:
     void config_and_start(const QString &,
                           const QString &, const QString &);
     void setOSInfos(const QString &);
+    QString osname() const { return m_osname; };
     UserInfo * findUserFromPhone(const QString &,
                                  const QString &);
     UserInfo * findUserFromAgent(const QString &,

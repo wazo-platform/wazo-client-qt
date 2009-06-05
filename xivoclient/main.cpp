@@ -123,7 +123,8 @@ int main(int argc, char ** argv)
 #endif
     qDebug() << "main() osname=" << info_osname << "locale=" << locale;
     
-    MainWidget main(engine, info_osname);
+    engine->setOSInfos(info_osname);
+    MainWidget main(engine);
     app.setActivationWindow( &main );
     
     //main.dumpObjectTree();
