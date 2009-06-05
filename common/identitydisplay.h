@@ -51,6 +51,7 @@ class QFrame;
 class UserInfo;
 class IdentityAgent;
 class IdentityPhone;
+class IdentityVoiceMail;
 
 /*! \brief Identity Display
  */
@@ -85,20 +86,21 @@ private:
     QGridLayout * m_glayout;
     
     QLabel * m_icon_user;
-    QLabel * m_icon_voicemail;
+//    QLabel * m_icon_voicemail;
     
     QFrame * m_qvline1;
     QFrame * m_qvline2;
     
     QLabel * m_user;
-    QLabel * m_voicemail_old;
-    QLabel * m_voicemail_new;
-    QLabel * m_voicemail_name;
+    //QLabel * m_voicemail_old;
+    //QLabel * m_voicemail_new;
+    //QLabel * m_voicemail_name;
     QLabel * m_phonenum;
     QComboBox * m_presencevalue;
 
     IdentityAgent * m_agent;
     IdentityPhone * m_phone;
+    IdentityVoiceMail * m_voicemail;
     
     QHash<QString, QString> m_presence_names;
     const UserInfo * m_ui;

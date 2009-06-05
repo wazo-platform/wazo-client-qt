@@ -49,6 +49,7 @@
 #include "queueinfo.h"
 #include "identityagent.h"
 #include "identityphone.h"
+#include "identityvoicemail.h"
 
 /*! \brief Constructor
  */
@@ -74,22 +75,22 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_presencevalue->setProperty("function", "presence");
     m_presencevalue->setContentsMargins(0, 0, 10, 0);
     
-    m_voicemail_old = new QLabel(this);
-    m_voicemail_new = new QLabel(this);
-    m_voicemail_name = new QLabel(this);
+    //m_voicemail_old = new QLabel(this);
+    //m_voicemail_new = new QLabel(this);
+    //m_voicemail_name = new QLabel(this);
     
     connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
             this, SLOT(idxChanged(const QString &)));
     
     m_icon_user = new QLabel(this);
-    m_icon_voicemail = new QLabel(this);
-    m_icon_voicemail->hide();
+    //m_icon_voicemail = new QLabel(this);
+    //m_icon_voicemail->hide();
     
     m_icon_user->setPixmap(QPixmap(":/images/personal.png"));
-    m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png"));
+    //m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png"));
     
     m_icon_user->setContentsMargins(0, 0, 5, 0);
-    m_icon_voicemail->setContentsMargins(20, 0, 5, 0);
+    //m_icon_voicemail->setContentsMargins(20, 0, 5, 0);
     
 //     m_icon_user->setFrameStyle(QFrame::Panel | QFrame::Raised);
 //     m_icon_user->setLineWidth(2);
@@ -106,6 +107,9 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_agent->setContentsMargins(5, 0, 5, 0);
 
     m_phone = new IdentityPhone(this);
+
+    m_voicemail = new IdentityVoiceMail(this);
+    m_voicemail->hide();
     
     m_glayout->setSpacing(0);
     m_glayout->setMargin(0);
@@ -114,7 +118,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_col_agent = 2;
     m_col_phone = 3;
     m_col_vm = 4;
-    m_col_last = 6;
+    m_col_last = 5;
     
     m_iconAlign = Qt::AlignHCenter | Qt::AlignTop; // Qt::AlignVCenter
     m_textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
@@ -123,6 +127,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     setupIcons();
     m_glayout->addWidget( m_agent, 0, m_col_agent, 3, 1 );
     m_glayout->addWidget( m_phone, 0, m_col_phone, 3, 1 );
+    m_glayout->addWidget( m_voicemail, 0, m_col_vm, 3, 1 );
     
     // although it might be convenient in some cases (prevent some expansions),
     // in the basic xivoclient/grid case, it fills too much room without no resizing available
@@ -168,16 +173,12 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
 void IdentityDisplay::setupIcons()
 {
     m_glayout->addWidget( m_icon_user, 0, m_col_user, 3, 1, m_iconAlign );
-    m_glayout->addWidget( m_icon_voicemail, 0, m_col_vm, 3, 1, m_iconAlign );
     int idline = 0;
     m_glayout->addWidget( m_user, idline, m_col_user + 1, m_textAlignVCenter );
-    m_glayout->addWidget( m_voicemail_name, idline, m_col_vm + 1, m_textAlignVCenter );
     idline ++;
     m_glayout->addWidget( m_phonenum, idline, m_col_user + 1, m_textAlignVCenter );
-    m_glayout->addWidget( m_voicemail_old, idline, m_col_vm + 1, m_textAlignVCenter );
     idline ++;
     m_glayout->addWidget( m_presencevalue, idline, m_col_user + 1, m_textAlignVCenter );
-    m_glayout->addWidget( m_voicemail_new, idline, m_col_vm + 1, m_textAlignVCenter );
     for(int i = 0; i < m_col_last; i++)
         if(m_glayout->columnStretch(i) == 1)
             m_glayout->setColumnStretch(i, 0);
@@ -256,18 +257,10 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     m_phonenum->setText(m_ui->phonenumber());
     QStringList vm = m_ui->mwi();
     if(vm.size() > 2) {
-        m_icon_voicemail->show();
-        m_voicemail_old->setText(tr("%1 old").arg(vm[1]));
-        m_voicemail_new->setText(tr("%1 new").arg(vm[2]));
-        if(m_svcstatus["enablevm"].toBool()) {
-            m_voicemail_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_ui->voicemailnumber()));
-            m_voicemail_name->setToolTip(tr("VoiceMail activated on %1").arg(m_ui->voicemailnumber()));
-        } else {
-            m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
-            m_voicemail_name->setToolTip(tr("VoiceMail not activated on %1").arg(m_ui->voicemailnumber()));
-        }
+        m_voicemail->show();
+        m_voicemail->svcSummary(m_svcstatus, m_ui);
+        m_voicemail->setOldNew(vm[1], vm[2]);
     }
-    // m_voicemail->hide();
     // changes the "watched agent" only if no one else has done it before
     changeWatchedAgent(QString("agent:%1/%2").arg(m_ui->astid()).arg(m_ui->agentid()), false);
 }
@@ -336,6 +329,8 @@ void IdentityDisplay::svcSummary()
     if(m_ui) {
         QStringList vm = m_ui->mwi();
         if(vm.size() > 2) {
+            m_voicemail->svcSummary(m_svcstatus, m_ui);
+/*
             if(m_svcstatus["enablevm"].toBool()) {
                 m_voicemail_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_ui->voicemailnumber()));
                 m_voicemail_name->setToolTip(tr("VoiceMail activated on %1").arg(m_ui->voicemailnumber()));
@@ -343,6 +338,7 @@ void IdentityDisplay::svcSummary()
                 m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
                 m_voicemail_name->setToolTip(tr("VoiceMail not activated on %1").arg(m_ui->voicemailnumber()));
             }
+*/
         }
     }
     return;
