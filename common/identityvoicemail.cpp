@@ -44,6 +44,8 @@ IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
 {
     m_layout = new QGridLayout( this );
 
+    // setContentsMargins() ???
+
     m_icon = new QLabel(this);
     m_icon->setPixmap(QPixmap(":/images/kthememgr.png"));
     m_layout->addWidget( m_icon, 0, 0, 3, 1, Qt::AlignHCenter | Qt::AlignTop );

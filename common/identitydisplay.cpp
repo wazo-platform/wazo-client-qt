@@ -75,31 +75,14 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_presencevalue->setProperty("function", "presence");
     m_presencevalue->setContentsMargins(0, 0, 10, 0);
     
-    //m_voicemail_old = new QLabel(this);
-    //m_voicemail_new = new QLabel(this);
-    //m_voicemail_name = new QLabel(this);
-    
     connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
             this, SLOT(idxChanged(const QString &)));
     
     m_icon_user = new QLabel(this);
-    //m_icon_voicemail = new QLabel(this);
-    //m_icon_voicemail->hide();
     
     m_icon_user->setPixmap(QPixmap(":/images/personal.png"));
-    //m_icon_voicemail->setPixmap(QPixmap(":/images/kthememgr.png"));
     
     m_icon_user->setContentsMargins(0, 0, 5, 0);
-    //m_icon_voicemail->setContentsMargins(20, 0, 5, 0);
-    
-//     m_icon_user->setFrameStyle(QFrame::Panel | QFrame::Raised);
-//     m_icon_user->setLineWidth(2);
-//     m_icon_agent->setFrameStyle(QFrame::Panel | QFrame::Raised);
-//     m_icon_agent->setLineWidth(2);
-//     m_icon_phone->setFrameStyle(QFrame::Panel | QFrame::Raised);
-//     m_icon_phone->setLineWidth(2);
-//     m_icon_voicemail->setFrameStyle(QFrame::Panel | QFrame::Raised);
-//     m_icon_voicemail->setLineWidth(2);
     
     m_agent = new IdentityAgent(this);
     connect( m_agent, SIGNAL(setSystrayIcon(const QString &)),
@@ -330,15 +313,6 @@ void IdentityDisplay::svcSummary()
         QStringList vm = m_ui->mwi();
         if(vm.size() > 2) {
             m_voicemail->svcSummary(m_svcstatus, m_ui);
-/*
-            if(m_svcstatus["enablevm"].toBool()) {
-                m_voicemail_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_ui->voicemailnumber()));
-                m_voicemail_name->setToolTip(tr("VoiceMail activated on %1").arg(m_ui->voicemailnumber()));
-            } else {
-                m_voicemail_name->setText(tr("VoiceMailBox %1").arg(m_ui->voicemailnumber()));
-                m_voicemail_name->setToolTip(tr("VoiceMail not activated on %1").arg(m_ui->voicemailnumber()));
-            }
-*/
         }
     }
     return;

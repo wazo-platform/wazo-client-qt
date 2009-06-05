@@ -86,15 +86,11 @@ private:
     QGridLayout * m_glayout;
     
     QLabel * m_icon_user;
-//    QLabel * m_icon_voicemail;
     
     QFrame * m_qvline1;
     QFrame * m_qvline2;
     
     QLabel * m_user;
-    //QLabel * m_voicemail_old;
-    //QLabel * m_voicemail_new;
-    //QLabel * m_voicemail_name;
     QLabel * m_phonenum;
     QComboBox * m_presencevalue;
 
