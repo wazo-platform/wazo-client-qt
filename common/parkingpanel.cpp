@@ -80,7 +80,7 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
     connect( m_engine, SIGNAL(parkingEvent(const QVariant &)),
              this, SLOT(parkingEvent(const QVariant &)) );
     connect( this, SIGNAL(copyNumber(const QString &)),
-             m_engine, SLOT(copyNumber(const QString &)) );
+             m_engine, SIGNAL(pasteToDialPanel(const QString &)) );
     connectDials();
 }
 

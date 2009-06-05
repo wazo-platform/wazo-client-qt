@@ -127,7 +127,6 @@ public:
     const quint16 & loginPort() const;        //!< TCP port for connection to server
     void setLoginPort(const quint16 &);        //!< see loginPort()
     
-    void setFullId();
     const QString & company() const;        //!< name of the user's company
     void setCompany(const QString &);       //!< see company()
     const QString & userId() const;         //!< userid to identify to the server
@@ -187,6 +186,7 @@ public:
     void setGuiOption(const QString &, const QVariant &);
     
     void setLogFile(const QString &);
+    //! return m_xivo_userid
     const QString & xivoUserId() const { return m_xivo_userid; };
     UserInfo * getXivoClientUser(); //!< Return the user of the Xivo CTI Client
     QHash<QString, AgentInfo *> agents(); //!< Return the agents to any Xlet
@@ -196,6 +196,7 @@ public:
     double timeServer() const;
     const QDateTime & timeClient() const;
     double timeDeltaServerClient() const;
+    //! return m_meetme hash table
     const QHash<QString, QHash<QString, MeetmeInfo> > meetme() const { return m_meetme; };
     
 public slots:
@@ -218,7 +219,6 @@ public slots:
     void askFeatures();
     void askCallerIds();
     void setKeepaliveinterval(uint);        //!< set keep alive interval
-    void copyNumber(const QString &);
     void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
     void meetmeAction(const QString &, const QString &);
     void requestFileList(const QString &);
@@ -252,7 +252,7 @@ signals:
     void delogged();    //!< signal emitted when the state becomes ENotLogged
     void availAllowChanged(bool);           //!< signal
     void emitTextMessage(const QString &);  //!< message to be displayed to the user.
-    void pasteToDialPanel(const QString &);
+    void pasteToDialPanel(const QString &); //!< send the number to the dial panel
     void parkingEvent(const QVariant &);
     void ackFax(const QString &, const QString &);
     void featurePutIsKO();
@@ -301,8 +301,11 @@ signals:
     void changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &);
     void updateAgentPresence(const QString &, const QString &, const QVariant &);
     void displayFiche(const QString &, bool, const QString &);
+    //! the user logged has now ownership of the sheet
     void gotSheetOwnership(const QString & id);
+    //! the user logged just lost ownership of the sheet
     void lostSheetOwnership(const QString & id);
+    //! sheet data added by a user.
     void sheetEntryAdded(const QString & id, const QVariantMap &);
 protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events

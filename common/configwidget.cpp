@@ -333,7 +333,6 @@ void ConfigWidget::saveAndClose()
     
     m_engine->setUserId(m_userid->text());
     m_engine->setAgentPhoneNumber(m_agentphonenumber->text());
-    m_engine->setFullId();
     
     m_engine->setPassword(m_password->text());
     

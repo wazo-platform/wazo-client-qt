@@ -1332,7 +1332,7 @@ void BaseEngine::parseCommand(const QString & line)
         } else if (thisclass == "login_capas_ok") {
             m_astid = datamap["astid"].toString();
             m_xivo_userid = datamap["xivo_userid"].toString();
-            setFullId();
+            m_fullid = m_astid + "/" + m_xivo_userid;
             m_capafuncs = datamap["capafuncs"].toStringList();
             m_capaxlets = datamap["capaxlets"].toStringList();
             m_appliname = datamap["appliname"].toString();
@@ -1598,6 +1598,10 @@ void BaseEngine::ctiSocketReadyRead()
     }
 }
 
+/*! \brief read data from the file transfer socket
+ *
+ * Read text data, the file is encapsulated into JSON as a base 64 string.
+ */
 void BaseEngine::filetransferSocketReadyRead()
 {
     while(m_filetransfersocket->canReadLine()) {
@@ -1650,11 +1654,6 @@ void BaseEngine::actionFromFiche(const QVariant & infos)
 void BaseEngine::textEdited(const QString & text)
 {
     m_numbertodial = text;
-}
-
-void BaseEngine::copyNumber(const QString & dst)
-{
-    pasteToDialPanel(dst);
 }
 
 /*! \brief send telephony command to the server
@@ -1789,13 +1788,6 @@ void BaseEngine::setUserId(const QString & userid)
         m_useridopt = useridsplit[1].trimmed();
     else
         m_useridopt = "";
-}
-
-void BaseEngine::setFullId()
-{
-    // qDebug() << "BaseEngine::setFullId()" << m_astid << m_xivo_userid;
-    // m_fullid = m_company + "/" + m_userid;
-    m_fullid = m_astid + "/" + m_xivo_userid;
 }
 
 const QString & BaseEngine::agentphonenumber() const
@@ -1963,6 +1955,10 @@ void BaseEngine::timerEvent(QTimerEvent * event)
     }
 }
 
+/*! \brief send a feature put command to the cti server
+ *
+ * ???
+ */
 void BaseEngine::featurePutOpt(const QString & capa, bool b)
 {
     QVariantMap command;
@@ -1981,6 +1977,9 @@ void BaseEngine::featurePutOpt(const QString & capa, bool b)
     sendJsonCommand(command);
 }
 
+/*! \brief send a feature put command to the cti server
+ *
+ */
 void BaseEngine::featurePutForward(const QString & capa, bool b, const QString & dst)
 {
     QVariantMap command;
@@ -1998,6 +1997,7 @@ void BaseEngine::featurePutForward(const QString & capa, bool b, const QString &
     sendJsonCommand(command);
 }
 
+/*! \brief send a featursget command to the cti server */
 void BaseEngine::askFeatures()
 {
     qDebug() << "BaseEngine::askFeatures()" << m_monitored_userid;
@@ -2040,6 +2040,7 @@ void BaseEngine::askCallerIds()
     }
 }
 
+/*! \brief send an ipbxcommand command to the cti server */
 void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
 {
     if(! ipbxcommand.contains("command"))
@@ -2084,15 +2085,13 @@ uint BaseEngine::keepaliveinterval() const
  */
 void BaseEngine::setKeepaliveinterval(uint i)
 {
-    if(i != m_keepaliveinterval)
-        {
-            m_keepaliveinterval = i;
-            if(m_timerid_keepalive > 0)
-                {
-                    killTimer(m_timerid_keepalive);
-                    m_timerid_keepalive = startTimer(m_keepaliveinterval);
-                }
+    if(i != m_keepaliveinterval) {
+        m_keepaliveinterval = i;
+        if(m_timerid_keepalive > 0) {
+            killTimer(m_timerid_keepalive);
+            m_timerid_keepalive = startTimer(m_keepaliveinterval);
         }
+    }
 }
 
 const BaseEngine::EngineState & BaseEngine::state() const
@@ -2145,8 +2144,7 @@ void BaseEngine::changeWatchedQueueSlot(const QString & queueid)
 
 /*! \brief sets m_osname
  *
- * also
- * Builds a string defining who is the client (SB or XC @ osname)
+ * also builds a string defining who is the client (SB or XC @ osname)
  */
 void BaseEngine::setOSInfos(const QString & osname)
 {
@@ -2271,6 +2269,7 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
 
 /*! \brief receive the message from other instance of this application
  *
+ * Dial the number if the message is tel:<i>number</i>.
  * \see QtSingleApplication
  */
 void BaseEngine::handleOtherInstanceMessage(const QString & msg)
@@ -2285,3 +2284,4 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
         actionCall("originate", "user:special:me", "ext:"+phonenum);
     }
 }
+

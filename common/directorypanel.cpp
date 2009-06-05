@@ -96,7 +96,7 @@ DirectoryPanel::DirectoryPanel(BaseEngine * engine, QWidget * parent)
     connect( m_engine, SIGNAL(directoryResponse(const QStringList &, const QStringList &)),
              this, SLOT(setSearchResponse(const QStringList &, const QStringList &)) );
     connect( this, SIGNAL(copyNumber(const QString &)),
-             m_engine, SLOT(copyNumber(const QString &)) );
+             m_engine, SIGNAL(pasteToDialPanel(const QString &)) );
     connect( m_engine, SIGNAL(delogged()),
              this, SLOT(stop()) );
     connect( this, SIGNAL(actionCall(const QString &, const QString &, const QString &)),

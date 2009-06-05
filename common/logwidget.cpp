@@ -145,7 +145,7 @@ void LogWidget::addElement(const QString & peer, LogEltWidget::Direction d,
     connect( logelt, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
              m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
     connect( logelt, SIGNAL(copyNumber(const QString &)),
-             m_engine, SLOT(copyNumber(const QString &)) );
+             m_engine, SIGNAL(pasteToDialPanel(const QString &)) );
     m_layout->insertWidget(index, logelt);
     if(dt > m_moreRecent)
         m_moreRecent = dt;
