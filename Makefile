@@ -119,7 +119,7 @@ win32packdyn-%:
 	@rm -f delivery/settings.nsh
 	@${ECHO} "!define XIVOVER ${_XIVOVER_}" >> delivery/settings.nsh
 	@${ECHO} "!define SVNVER ${_SVNVER_}" >> delivery/settings.nsh
-	@${ECHO} "!define QTBINPATH c:\Qt\4.5.0\bin" >> delivery/settings.nsh
+	@${ECHO} "!define QTBINPATH c:\Qt\4.5.2\bin" >> delivery/settings.nsh
 	@${MAKENSIS} delivery/$*.nsi
 	@mv delivery/$*-setup-win32.exe $*-setup-${_XIVOVER_}-${_SVNVER_}-win32.exe
 
