@@ -1022,7 +1022,7 @@ void MainWidget::about()
                        "<hr>"
                        "Copyright (C) 2007, 2008, 2009  <a href=http://www.proformatique.com><b>Proformatique</b></a>"
                        "<br>"
-                       "67 rue Voltaire 92800 Puteaux FRANCE"
+                       "10 bis, rue Lucien VOILIN 92800 Puteaux FRANCE"
                        "<p>"
                        "<b>" + tr("E-mail : ") + "</b><a href=mailto:technique@proformatique.com>technique@proformatique.com</a><br>"
                        "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
