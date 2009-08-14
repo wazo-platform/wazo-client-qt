@@ -1864,10 +1864,10 @@ void BaseEngine::initFeatureFields(const QString & field, const QVariant & value
         optChanged("enablevm", isenabled);
     else if((field == "enablednd") || (field == "dnd"))
         optChanged("enablednd", isenabled);
-    else if(field == "callfilter")
+    else if(field == "incallfilter")
         optChanged("incallfilter", isenabled);
     else if(field == "callrecord")
-        optChanged("incallrec", isenabled);
+        optChanged("callrecord", isenabled);
     else if((field == "unc") || (field == "busy") || (field == "rna"))
         forwardUpdated(field, value);
     else if((field == "enableunc") || (field == "enablebusy") || (field == "enablerna"))
@@ -1967,10 +1967,10 @@ void BaseEngine::featurePutOpt(const QString & capa, bool b)
     command["userid"] = m_monitored_userid;
     if(capa == "enablevm")
         command["function"] = "enablevoicemail";
-    else if(capa == "incallrec")
+    else if(capa == "callrecord")
         command["function"] = "callrecord";
     else if(capa == "incallfilter")
-        command["function"] = "callfilter";
+        command["function"] = "incallfilter";
     else if(capa == "enablednd")
         command["function"] = "enablednd";
     command["value"] = QString(b ? "1" : "0");

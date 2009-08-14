@@ -287,7 +287,7 @@ void IdentityDisplay::newQueueList(const QStringList &)
  */
 void IdentityDisplay::setOpt(const QString & capa, bool b)
 {
-    if((capa == "enablednd") || (capa == "incallfilter") || (capa == "incallrec") || (capa == "enablevm"))
+    if((capa == "enablednd") || (capa == "incallfilter") || (capa == "callrecord") || (capa == "enablevm"))
         m_svcstatus[capa] = b;
     svcSummary();
 }

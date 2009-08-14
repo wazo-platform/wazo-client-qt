@@ -45,7 +45,7 @@
 #include "userinfo.h"
 
 const QStringList fwdcapas = (QStringList() << "fwdrna" << "fwdbusy" << "fwdunc");
-const QStringList chkcapas = (QStringList() << "enablevm" << "incallrec" << "incallfilter" << "enablednd");
+const QStringList chkcapas = (QStringList() << "enablevm" << "callrecord" << "incallfilter" << "enablednd");
 
 ServicePanel::ServicePanel(BaseEngine * engine,
                            QWidget * parent)
@@ -53,7 +53,7 @@ ServicePanel::ServicePanel(BaseEngine * engine,
 {
     setTitle( tr("Services") );
     m_capalegend["enablevm"]     = tr("Voice &Mail");
-    m_capalegend["incallrec"]    = tr("Call &Recording");
+    m_capalegend["callrecord"]    = tr("Call &Recording");
     m_capalegend["incallfilter"] = tr("Call &Filtering");
     m_capalegend["enablednd"]    = tr("Do Not &Disturb");
     m_capalegend["fwdrna"]  = tr("Forward on &No Reply");
@@ -100,7 +100,7 @@ ServicePanel::ServicePanel(BaseEngine * engine,
         }
     
     QVBoxLayout * vlayout = new QVBoxLayout(this);
-    if(m_capas.contains("enablevm") || m_capas.contains("incallrec") || m_capas.contains("incallfilter") || m_capas.contains("enablednd")) {
+    if(m_capas.contains("enablevm") || m_capas.contains("callrecord") || m_capas.contains("incallfilter") || m_capas.contains("enablednd")) {
         groupBox1->show();
         vlayout->addWidget(groupBox1);
     }
