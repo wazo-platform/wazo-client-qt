@@ -72,7 +72,9 @@ all-win32:
 	@make -s versions-xivoclient
 	@echo "   (under Qt prompt) :"
 	@pwd | sed "s#/#\\\\#g;s#^#      cd C:\\\\cygwin#"
+	@echo "      make win32-baselib"
 	@echo "      make win32-xivoclient"
+	@echo "      make win32-plugins"
 	@echo "   (back here under Cygwin) :"
 	@echo "      make win32pack-xivoclient"
 
