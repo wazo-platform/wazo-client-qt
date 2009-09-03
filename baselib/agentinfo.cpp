@@ -40,11 +40,6 @@ AgentInfo::AgentInfo(const QString & astid,
                      const QMap<QString, QVariant> & prop)
     : m_astid(astid), m_id(id)
 {
-    m_context = prop.value("context").toString();
-    m_agentnumber = prop.value("number").toString();
-    QString firstname = prop.value("firstname").toString();
-    QString lastname = prop.value("lastname").toString();
-    m_fullname = QString("%1 %2").arg(firstname).arg(lastname);
     update(prop);
 }
 
@@ -58,6 +53,12 @@ bool AgentInfo::update(const QMap<QString, QVariant> & prop)
     if (m_properties != prop) {
         m_properties = prop;
         haschanged = true;
+        
+        m_context = prop.value("context").toString();
+        m_agentnumber = prop.value("number").toString();
+        QString firstname = prop.value("firstname").toString();
+        QString lastname = prop.value("lastname").toString();
+        m_fullname = QString("%1 %2").arg(firstname).arg(lastname);
     }
     return haschanged;
 }
