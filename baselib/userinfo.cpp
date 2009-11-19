@@ -284,7 +284,8 @@ int UserInfo::commsCount() const
     foreach(const QString phone, phonelist())
     {
         const PhoneInfo * pi = getPhoneInfo( phone );
-        c += pi->comms().count();
+        if( pi )
+            c += pi->comms().count();
     }
     return c;
 }

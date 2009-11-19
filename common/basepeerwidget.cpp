@@ -349,6 +349,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
         foreach(const QString phone, m_ui->phonelist())
         {
             const PhoneInfo * pi = m_ui->getPhoneInfo( phone );
+            if( !pi )
+                continue;
             int hintstatuscode = -1;
             if( !pi->hintstatus("code").isEmpty() )
                 hintstatuscode = pi->hintstatus("code").toInt();
@@ -448,6 +450,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
         foreach(const QString phone, ui->phonelist())
         {
             const PhoneInfo * pi = ui->getPhoneInfo( phone );
+            if( !pi )
+                continue;
             const QMap<QString, QVariant> & comms = pi->comms();
             //qDebug() << pi->phoneid() << pi->comms();
             foreach(const QString ts, comms.keys())
