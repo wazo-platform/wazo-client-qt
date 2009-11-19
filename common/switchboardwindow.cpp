@@ -78,6 +78,7 @@ SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine,
              this, SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
     connect( m_engine, SIGNAL(delogged()),
              this, SLOT(removePeers()) );
+    setMouseTracking( true ); // receive mouseMove events even if mouse button is not pressed
 }
 
 /*! 
@@ -439,7 +440,7 @@ void SwitchBoardWindow::mouseMoveEvent ( QMouseEvent * event )
         // request redraw
         update();
     }
-    if(m_group_to_resize)
+    else if(m_group_to_resize)
     {
         QPoint delta = event->pos() - m_first_corner;
         QPoint deltaGrid = m_layout->getPosInGrid( delta );
@@ -505,6 +506,30 @@ void SwitchBoardWindow::mouseMoveEvent ( QMouseEvent * event )
             break;
         default:
             qDebug() << "case not handled";
+        }
+    }
+    else
+    {
+        // rien de special, mais on change le curseur si est sur une zone
+        // pour resizer un groupe
+        Group * group = getGroup( m_layout->getPosInGrid( event->pos() ) );
+        if(group) {
+            QPoint topLeft = m_layout->getPosFromGrid(group->rect().topLeft());
+            QPoint bottomRight = m_layout->getPosFromGrid(group->rect().bottomRight());
+            if( event->pos().y() - topLeft.y() < 10 ) {
+                setCursor( QCursor( Qt::SizeVerCursor ) );
+            } else if( bottomRight.y() - event->pos().y() < 10 ) {
+                setCursor( QCursor( Qt::SizeVerCursor ) );
+            } else if( event->pos().x() - topLeft.x() < 10 ) {
+                setCursor( QCursor( Qt::SizeHorCursor ) );
+            } else if( bottomRight.x() - event->pos().x() < 10 ) {
+                setCursor( QCursor( Qt::SizeHorCursor ) );
+            } else {
+                //setCursor( QCursor( Qt::SizeAllCursor ) ); // Curseur de "move"
+                setCursor( QCursor( Qt::ArrowCursor ) );
+            }
+        } else {
+            setCursor( QCursor( Qt::ArrowCursor ) ); // curseur de souris standard
         }
     }
 }
