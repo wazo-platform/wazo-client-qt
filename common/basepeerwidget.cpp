@@ -673,12 +673,12 @@ void BasePeerWidget::tryRemoveFromPanel()
     if(!_number.isEmpty())
         _number = "("+_number+")";
     int ret;
-    ret = QMessageBox::warning(this,
+    ret = QMessageBox::question(this,
                 tr("Xivo Client - Removing %1 %2").arg(name()).arg(_number),
                 tr("Removing %1 %2.\nAre you sure ?").arg(name()).arg(_number),
-                QMessageBox::Ok | QMessageBox::Cancel,
+                QMessageBox::Yes | QMessageBox::Cancel,
                 QMessageBox::Cancel);
-    if(ret == QMessageBox::Ok) {
+    if(ret == QMessageBox::Yes) {
         emit removeFromPanel();
     }
 }

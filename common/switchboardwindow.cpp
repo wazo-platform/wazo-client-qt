@@ -44,6 +44,7 @@
 #include <QMenu>
 #include <QDialogButtonBox>
 #include <QtColorPicker>
+#include <QMessageBox>
 
 #include "baseengine.h"
 #include "peerwidgetfactory.h"
@@ -183,15 +184,22 @@ void SwitchBoardWindow::removePeerFromLayout()
  */
 void SwitchBoardWindow::removeGroup()
 {
+    int ret;
     qDebug() << "removeGroup" << sender()->property( "group" );
     Group * group = (Group *)(sender()->property( "group" ).value<void *>());
-    if( group )
-        {
+    if( group ) {
+        ret = QMessageBox::question(this,
+                tr("Removing group %1").arg(group->name()),
+                tr("Removing group %1.\nAre you sure ?").arg(group->name()),
+                QMessageBox::Yes | QMessageBox::Cancel,
+                QMessageBox::Cancel );
+        if(ret == QMessageBox::Yes) {
             m_group_list.removeAll( group );
             group->deleteLater();
             update();
             //saveGroups();
         }
+    }
 }
 
 /*! \brief change a group color
