@@ -342,29 +342,35 @@ void SwitchBoardWindow::dropEvent(QDropEvent * event)
     else if( event->mimeData()->hasFormat(NUMBER_MIMETYPE) )
     {
         QString number = event->mimeData()->data(NUMBER_MIMETYPE);
-        for(int i = 0; i < m_layout->count(); i++)
-        {
-            QLayoutItem * item = m_layout->itemAt(i);
-            if( item && item->widget()
-                && (item->widget()->inherits("ExternalPhonePeerWidget")
-                    || item->widget()->inherits("DetailedExternalPhonePeerWidget") ) )
-//                && item->widget()->inherits("ExternalPhonePeerWidget") )
-            {
-                BasePeerWidget * w = static_cast<BasePeerWidget *>( item->widget() );
-                if( number == w->number() )
-                {
-                    m_layout->setItemPosition(w, m_layout->getPosInGrid(event->pos()));
-                    updateGeometry();
-                    event->acceptProposedAction();
-                    savePositions();
-                    update();
-                    break;
-                }
-            }
+        BasePeerWidget * w = getExternalPhonePeerWidget(number);
+        if(w) {
+            m_layout->setItemPosition(w, m_layout->getPosInGrid(event->pos()));
+            updateGeometry();
+            event->acceptProposedAction();
+            savePositions();
+            update();
         }
     }
 }
 
+/** Return the "ExternalPhonePeerWidget" with a number if it already exists
+ */
+BasePeerWidget * SwitchBoardWindow::getExternalPhonePeerWidget(const QString & number)
+{
+    for(int i = 0; i < m_layout->count(); i++)
+    {
+        QLayoutItem * item = m_layout->itemAt(i);
+        if( item && item->widget()
+            && (item->widget()->inherits("ExternalPhonePeerWidget")
+                || item->widget()->inherits("DetailedExternalPhonePeerWidget") ) )
+        {
+            BasePeerWidget * w = static_cast<BasePeerWidget *>( item->widget() );
+            if( number == w->number() )
+                return w;
+        }
+    }
+    return NULL;
+}
 
 /*! \brief Save the positions of Peer Widgets
  *
@@ -811,10 +817,18 @@ void SwitchBoardWindow::addPhoneNumberEntry()
         QString number = dialog.number();
         if( label.isEmpty() )
             label = number;
-        BasePeerWidget * peerwidget
-            = m_peerwidgetfactory->newExternalPhonePeerWidget( label, number );
-        connect( peerwidget, SIGNAL(removeFromPanel()),
-                 this, SLOT(removePeerFromLayout()) );
-        m_layout->addWidget( peerwidget, pos );
+        // verifier tout d'abord qu'il n'y a pas deja une etiquette avec
+        // le meme numero
+        if(getExternalPhonePeerWidget(number)) {
+            QMessageBox::information(this, tr("Duplicate number"),
+                            tr("Phone number %1 is already present in the switchboard panel.").arg(number));
+        } else {
+            BasePeerWidget * peerwidget
+                = m_peerwidgetfactory->newExternalPhonePeerWidget( label, number );
+            connect( peerwidget, SIGNAL(removeFromPanel()),
+                     this, SLOT(removePeerFromLayout()) );
+            m_layout->addWidget( peerwidget, pos );
+        }
     }
 }
+

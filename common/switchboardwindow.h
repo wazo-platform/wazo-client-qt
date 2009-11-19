@@ -89,6 +89,7 @@ private:
     void savePositions() const;
     void reloadGroups();
     void reloadExternalPhones();
+    BasePeerWidget * getExternalPhonePeerWidget(const QString & number);
     BasePeerWidget * addPeerWidget(PeerItem * peeritem, const QPoint & pos);
     Group * getGroup( const QPoint & ) const;
 
