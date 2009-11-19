@@ -669,10 +669,13 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
  */
 void BasePeerWidget::tryRemoveFromPanel()
 {
+    QString _number = number();
+    if(!_number.isEmpty())
+        _number = "("+_number+")";
     int ret;
     ret = QMessageBox::warning(this,
-                tr("Xivo Client - Removing %1 (%2)").arg(name()).arg(number()),
-                tr("Removing %1 (%2).\nAre you sure ?").arg(name()).arg(number()),
+                tr("Xivo Client - Removing %1 %2").arg(name()).arg(_number),
+                tr("Removing %1 %2.\nAre you sure ?").arg(name()).arg(_number),
                 QMessageBox::Ok | QMessageBox::Cancel,
                 QMessageBox::Cancel);
     if(ret == QMessageBox::Ok) {
