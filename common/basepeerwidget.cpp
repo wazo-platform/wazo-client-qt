@@ -35,6 +35,7 @@
 #include <QApplication>
 #include <QAction>
 #include <QMenu>
+#include <QMessageBox>
 #include "baseengine.h"
 #include "basepeerwidget.h"
 #include "userinfo.h"
@@ -54,7 +55,8 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
     m_removeAction = new QAction( tr("&Remove"), this);
     m_removeAction->setStatusTip( tr("Remove this peer from the panel") );
     connect( m_removeAction, SIGNAL(triggered()),
-             this, SIGNAL(removeFromPanel()) );
+             this, SLOT(tryRemoveFromPanel()) );
+//             this, SIGNAL(removeFromPanel()) );
     
     m_dialAction = new QAction( tr("&Call"), this);
     m_dialAction->setStatusTip( tr("Call this peer") );
@@ -660,6 +662,21 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
     default:
         qDebug() << "PeerWidget::dropEvent() Unrecognized action" << event->proposedAction();
         break;
+    }
+}
+
+/** First ask the user and send the signal if the user accepts
+ */
+void BasePeerWidget::tryRemoveFromPanel()
+{
+    int ret;
+    ret = QMessageBox::warning(this,
+                tr("Xivo Client - Removing %1 (%2)").arg(name()).arg(number()),
+                tr("Removing %1 (%2).\nAre you sure ?").arg(name()).arg(number()),
+                QMessageBox::Ok | QMessageBox::Cancel,
+                QMessageBox::Cancel);
+    if(ret == QMessageBox::Ok) {
+        emit removeFromPanel();
     }
 }
 

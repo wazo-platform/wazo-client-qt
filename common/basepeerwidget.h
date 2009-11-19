@@ -89,6 +89,7 @@ protected slots:
     void itransfer();
     void vmtransfer();
     void parkcall();
+    void tryRemoveFromPanel();
 protected:
     BaseEngine * m_engine;      //!< Xivo CTI Client Engine
     UserInfo * m_ui;            //!< user infos
