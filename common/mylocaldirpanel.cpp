@@ -86,13 +86,17 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
     m_table->setEditable( true );
     connect( m_table, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
              this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
+    connect( m_table, SIGNAL(itemSelectionChanged()),
+             this, SLOT(itemSelectionChanged()) );
     QStringList columnNames;
     columnNames.append( tr("First Name") );
     columnNames.append( tr("Last Name") );
     columnNames.append( tr("Phone Number") );
     columnNames.append( tr("Email Address") );
     columnNames.append( tr("Company") );
-    m_table->setColumnCount( 5 );
+    columnNames.append( tr("Fax Number") );
+    columnNames.append( tr("Mobile Number") );
+    m_table->setColumnCount( 7 );
     m_table->setHorizontalHeaderLabels( columnNames );
     m_table->setSortingEnabled( true );
     vlayout->addWidget(m_table);
@@ -101,6 +105,11 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
 
     // connects signals/slots with engine
     connectDials();
+}
+
+void MyLocalDirPanel::itemSelectionChanged()
+{
+    // loop over m_table->selectedItems() to know which ones to remove (for instance)
 }
 
 /*! \brief Destructor
@@ -136,16 +145,22 @@ void MyLocalDirPanel::openNewContactDialog()
         m_table->setSortingEnabled( false );
         int row = m_table->rowCount();
         m_table->setRowCount( row + 1 );
+
         QTableWidgetItem * itemFirstName = new QTableWidgetItem( dialog.firstname() );
         m_table->setItem( row, 0, itemFirstName );
         QTableWidgetItem * itemLastName = new QTableWidgetItem( dialog.lastname() );
         m_table->setItem( row, 1, itemLastName );
-        QTableWidgetItem * itemNumber = new QTableWidgetItem( dialog.number() );
-        m_table->setItem( row, 2, itemNumber );
+        QTableWidgetItem * itemPhoneNumber = new QTableWidgetItem( dialog.phonenumber() );
+        m_table->setItem( row, 2, itemPhoneNumber );
         QTableWidgetItem * itemEmail = new QTableWidgetItem( dialog.email() );
         m_table->setItem( row, 3, itemEmail );
         QTableWidgetItem * itemCompany = new QTableWidgetItem( dialog.company() );
         m_table->setItem( row, 4, itemCompany );
+        QTableWidgetItem * itemFaxNumber = new QTableWidgetItem( dialog.faxnumber() );
+        m_table->setItem( row, 5, itemFaxNumber );
+        QTableWidgetItem * itemMobileNumber = new QTableWidgetItem( dialog.mobilenumber() );
+        m_table->setItem( row, 6, itemMobileNumber );
+
         m_table->setSortingEnabled( saveSorting );
     }
 }
@@ -201,12 +216,15 @@ void MyLocalDirPanel::saveToFile(QFile & file)
              << tr("Last Name")
              << tr("Phone Number")
              << tr("Email Address")
-             << tr("Company") );
+             << tr("Company")
+             << tr("Fax Number")
+             << tr("Mobile Number")
+            );
     // write all entries
     for(int i = 0; i < m_table->rowCount(); i++)
     {
         QStringList records;
-        for(int j = 0; j < 5; j++)
+        for(int j = 0; j < 7; j++)
         {
             QTableWidgetItem * item = m_table->item(i, j);
             QString text;
@@ -244,12 +262,12 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
                                         << tr("Last Name")
                                         << QString("Last Name") );
     int maxCol = qMax(firstNameCol, lastNameCol);
-    int numberCol = findCol(headers, QStringList()
+    int phonenumberCol = findCol(headers, QStringList()
                                         << tr("Phone Number")
                                         << QString("Phone Number")
                                         << tr("Number")
                                         << QString("Number") );
-    maxCol = qMax(maxCol, numberCol);
+    maxCol = qMax(maxCol, phonenumberCol);
     int emailCol = findCol(headers, QStringList()
                                     << tr("Email Address")
                                     << tr("E-mail Address")
@@ -263,9 +281,21 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
                                       << tr("Company")
                                       << QString("Company") );
     maxCol = qMax(maxCol, companyCol);
+    int faxnumberCol = findCol(headers, QStringList()
+                               << tr("Fax Number")
+                               << tr("Fax")
+                               << QString("Fax Number")
+                               << QString("Fax") );
+    maxCol = qMax(maxCol, faxnumberCol);
+    int mobilenumberCol = findCol(headers, QStringList()
+                                  << tr("Mobile Number")
+                                  << tr("Mobile")
+                                  << QString("Mobile Number")
+                                  << QString("Mobile") );
+    maxCol = qMax(maxCol, mobilenumberCol);
     qDebug() << "MyLocalDirPanel::loadFromFile"
-             << firstNameCol << lastNameCol << numberCol
-             << emailCol << companyCol;
+             << firstNameCol << lastNameCol << phonenumberCol
+             << emailCol << companyCol << faxnumberCol << mobilenumberCol;
     if(maxCol < 0) {
         // no header recognized... exiting
         return;
@@ -288,10 +318,10 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
             QTableWidgetItem * itemLastName = new QTableWidgetItem( record[lastNameCol] );
             m_table->setItem( row, 1, itemLastName );
         }
-        if(numberCol >= 0)
+        if(phonenumberCol >= 0)
         {
-            QTableWidgetItem * itemNumber = new QTableWidgetItem( record[numberCol] );
-            m_table->setItem( row, 2, itemNumber );
+            QTableWidgetItem * itemPhoneNumber = new QTableWidgetItem( record[phonenumberCol] );
+            m_table->setItem( row, 2, itemPhoneNumber );
         }
         if(emailCol >= 0)
         {
@@ -302,6 +332,16 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
         {
             QTableWidgetItem * itemCompany = new QTableWidgetItem( record[companyCol] );
             m_table->setItem( row, 4, itemCompany );
+        }
+        if(faxnumberCol >= 0)
+        {
+            QTableWidgetItem * itemFaxNumber = new QTableWidgetItem( record[faxnumberCol] );
+            m_table->setItem( row, 5, itemFaxNumber );
+        }
+        if(mobilenumberCol >= 0)
+        {
+            QTableWidgetItem * itemMobileNumber = new QTableWidgetItem( record[mobilenumberCol] );
+            m_table->setItem( row, 6, itemMobileNumber );
         }
     }
     m_table->setSortingEnabled( saveSorting );

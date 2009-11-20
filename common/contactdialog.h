@@ -48,15 +48,19 @@ public:
     ~ContactDialog();
     QString firstname() const { return m_firstname?m_firstname->text():QString(); };
     QString lastname() const { return m_lastname?m_lastname->text():QString(); };
-    QString number() const { return m_number?m_number->text():QString(); };
+    QString phonenumber() const { return m_phonenumber?m_phonenumber->text():QString(); };
     QString email() const { return m_email?m_email->text():QString(); };
     QString company() const { return m_company?m_company->text():QString(); };
+    QString faxnumber() const { return m_faxnumber?m_faxnumber->text():QString(); };
+    QString mobilenumber() const { return m_mobilenumber?m_mobilenumber->text():QString(); };
 private:
     QLineEdit * m_firstname;
     QLineEdit * m_lastname;
-    QLineEdit * m_number;
+    QLineEdit * m_phonenumber;
     QLineEdit * m_email;
     QLineEdit * m_company;
+    QLineEdit * m_faxnumber;
+    QLineEdit * m_mobilenumber;
 };
 #endif
 

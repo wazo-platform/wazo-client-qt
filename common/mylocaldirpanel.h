@@ -60,6 +60,7 @@ public slots:
     void importContacts();
     void exportContacts();
     void findNext();
+    void itemSelectionChanged();
 signals:
     void actionCall(const QString &, const QString &, const QString &);
 private:

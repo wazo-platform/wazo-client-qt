@@ -44,12 +44,16 @@ ContactDialog::ContactDialog(QWidget * parent)
     layout->addRow( tr("First Name"), m_firstname);
     m_lastname = new QLineEdit();
     layout->addRow( tr("Last Name"), m_lastname);
-    m_number = new QLineEdit();
-    layout->addRow( tr("Phone Number"), m_number);
+    m_phonenumber = new QLineEdit();
+    layout->addRow( tr("Phone Number"), m_phonenumber);
     m_email = new QLineEdit();
     layout->addRow( tr("Email Address"), m_email);
     m_company = new QLineEdit();
     layout->addRow( tr("Company"), m_company);
+    m_faxnumber = new QLineEdit();
+    layout->addRow( tr("Fax Number"), m_faxnumber);
+    m_mobilenumber = new QLineEdit();
+    layout->addRow( tr("Mobile Number"), m_mobilenumber);
     QDialogButtonBox * buttonBox
         = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel );
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
