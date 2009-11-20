@@ -36,6 +36,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QScrollArea>
 #include <QTabWidget>
 
 #include "baseengine.h"
@@ -53,8 +54,11 @@ ConferencePanel::ConferencePanel(BaseEngine * engine,
     m_glayout = new QGridLayout(this);
     m_tw = new QTabWidget(this);
     m_glayout->addWidget( m_tw, 0, 0 );
-    m_summary = new QLabel( this );
-    m_glayout->addWidget( m_summary, 1, 0 );
+    QScrollArea * scrollarea = new QScrollArea(this);
+    scrollarea->setWidgetResizable(true);
+    m_summary = new QLabel( scrollarea );
+    scrollarea->setWidget(m_summary);
+    m_glayout->addWidget( scrollarea, 1, 0 );
     m_glayout->setRowStretch( 0, 1 );
     m_glayout->setColumnStretch( 0, 1 );
     m_show_record = false;
