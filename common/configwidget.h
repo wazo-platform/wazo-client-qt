@@ -110,6 +110,7 @@ class ConfigWidget: public QDialog
     
     QComboBox * m_comboswitchboard; //!< Apparence of SwitchBoard
     QSpinBox * m_maxWidthWanted;    //!< maximum width for small items in swich board
+    QSpinBox * m_presenceIndicatorSize; //<! size of the presence indicator for basic peer widgets
     
     QDialogButtonBox * m_btnbox;        //!< Buttons box
     QTabWidget * m_tabwidget;       //!< Tabs to access configuration widgets

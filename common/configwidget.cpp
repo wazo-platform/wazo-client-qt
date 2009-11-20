@@ -277,6 +277,15 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
     m_maxWidthWanted->setValue( maxwidthwanted );
     layout4->addRow( tr("Maximum width for small SwitchBoard elements"),
                      m_maxWidthWanted );
+
+    m_presenceIndicatorSize = new QSpinBox(this);
+    m_presenceIndicatorSize->setRange(1, 20);
+    int presenceIndicatorSize = opts["presenceindicatorsize"].toInt();
+    if(presenceIndicatorSize<=0||presenceIndicatorSize>20)
+        presenceIndicatorSize = 5;
+    m_presenceIndicatorSize->setValue(presenceIndicatorSize);
+    layout4->addRow( tr("Presence indicator size (in pixels)"),
+                     m_presenceIndicatorSize );
     
     m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     connect(m_btnbox, SIGNAL(accepted()),
@@ -364,6 +373,7 @@ void ConfigWidget::saveAndClose()
     opts["autourl_allowed"] = m_autourl_allowed->checkState();
     opts["switchboard-elt-type"] = m_comboswitchboard->itemData( m_comboswitchboard->currentIndex() ).toString();
     opts["maxwidthwanted"] = m_maxWidthWanted->value();
+    opts["presenceindicatorsize"] = m_presenceIndicatorSize->value();
     m_engine->setGuiOption("client_gui", opts);
     
     m_engine->saveSettings();

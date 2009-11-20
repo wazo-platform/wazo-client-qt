@@ -53,6 +53,9 @@ BasicPeerWidget::BasicPeerWidget(BaseEngine * engine, UserInfo * ui)
     setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
     setText( ui->fullname().isEmpty() ? tr("(No callerid yet)") : ui->fullname() );
     setToolTip( ui->phonenumber() );
+    m_presenceSquareSize = m_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
+    if(m_presenceSquareSize<=0||m_presenceSquareSize>20)
+        m_presenceSquareSize = 5;
 }
 
 void BasicPeerWidget::setText(const QString & text)
@@ -89,7 +92,9 @@ void BasicPeerWidget::paintEvent(QPaintEvent * /*event*/)
     if(! m_ui->ctilogin().isEmpty())
     {
         painter.setBrush( m_presenceColor );
-        painter.drawRect( QRect(rectangle.width() - 5, rectangle.height() - 5, 4, 4) );
+        painter.drawRect( QRect(rectangle.width() - m_presenceSquareSize - 1,
+                                rectangle.height() - m_presenceSquareSize - 1,
+                                m_presenceSquareSize, m_presenceSquareSize) );
     }
     // write the text
     painter.setPen(Qt::SolidLine);

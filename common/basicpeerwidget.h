@@ -64,6 +64,7 @@ private:    // attributes
     QString m_text; //!< Text to display
     QColor m_color; //!< color
     QColor m_presenceColor; //!< color of presence indicator
+    int m_presenceSquareSize;   //!< size of the presence indicator
 };
 
 #endif
