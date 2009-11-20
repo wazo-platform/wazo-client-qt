@@ -614,110 +614,130 @@ par le serveur CTI XiVO sur %3:%4.</translation>
 <context>
     <name>BasePeerWidget</name>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="55"/>
+        <location filename="../common/basepeerwidget.cpp" line="56"/>
         <source>&amp;Remove</source>
         <translation>&amp;Enlever</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="56"/>
+        <location filename="../common/basepeerwidget.cpp" line="57"/>
         <source>Remove this peer from the panel</source>
         <translation>Enlever ce poste du tableau</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="61"/>
+        <location filename="../common/basepeerwidget.cpp" line="67"/>
         <source>&amp;Call</source>
         <translation>&amp;Appeler</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="62"/>
+        <location filename="../common/basepeerwidget.cpp" line="68"/>
         <source>Call this peer</source>
         <translation>Appeler ce poste</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="394"/>
+        <location filename="../common/basepeerwidget.cpp" line="401"/>
         <source>&amp;Hangup</source>
         <translation>&amp;Raccrocher</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="395"/>
+        <location filename="../common/basepeerwidget.cpp" line="402"/>
         <source>Hangup this communication</source>
         <translation>Terminer la communication</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="415"/>
+        <location filename="../common/basepeerwidget.cpp" line="422"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Intercepter</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="416"/>
+        <location filename="../common/basepeerwidget.cpp" line="423"/>
         <source>Intercept this communication</source>
         <translation>Intercepter la communication</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="524"/>
+        <location filename="../common/basepeerwidget.cpp" line="531"/>
         <source>Transfer this communication</source>
         <translation>Transférer cette communication</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="504"/>
+        <location filename="../common/basepeerwidget.cpp" line="511"/>
         <source>Direct &amp;Transfer</source>
         <translation>&amp;Transfert direct</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="528"/>
+        <location filename="../common/basepeerwidget.cpp" line="535"/>
         <source>&amp;Indirect Transfer</source>
         <translation>Transfert &amp;Indirect</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="348"/>
+        <location filename="../common/basepeerwidget.cpp" line="355"/>
         <source>&amp;Edit</source>
         <translation>&amp;Modifier</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="436"/>
+        <location filename="../common/basepeerwidget.cpp" line="443"/>
         <source>&amp;Park</source>
         <translation>&amp;Parquer</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="553"/>
+        <location filename="../common/basepeerwidget.cpp" line="560"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Transfert vers boite &amp;vocale</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="529"/>
+        <location filename="../common/basepeerwidget.cpp" line="536"/>
         <source>Transfer to this person</source>
         <translation>Transférer vers ce poste</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="554"/>
+        <location filename="../common/basepeerwidget.cpp" line="561"/>
         <source>Transfer to voice mail</source>
         <translation>Transférer vers cette messagerie vocale</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="437"/>
+        <location filename="../common/basepeerwidget.cpp" line="444"/>
         <source>Park this call</source>
         <translation>Parquer cet appel</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="67"/>
+        <location filename="../common/basepeerwidget.cpp" line="73"/>
         <source>Intercept call</source>
         <translation>Intercepter l&apos;appel</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="486"/>
+        <location filename="../common/basepeerwidget.cpp" line="493"/>
         <source>Invite in meetme room %1</source>
         <translation>Inviter à la conférence %1</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="687"/>
+        <location filename="../common/basepeerwidget.cpp" line="694"/>
         <source>Xivo Client - Removing %1 %2</source>
         <translation>Xivo Client - Enlever %1 %2</translation>
     </message>
     <message>
-        <location filename="../common/basepeerwidget.cpp" line="688"/>
+        <location filename="../common/basepeerwidget.cpp" line="695"/>
         <source>Removing %1 %2.
 Are you sure ?</source>
         <translation>Enlever %1 %2.Etes vous sur ?</translation>
+    </message>
+    <message>
+        <location filename="../common/basepeerwidget.cpp" line="62"/>
+        <source>Re&amp;name</source>
+        <translation>Re&amp;nommer</translation>
+    </message>
+    <message>
+        <location filename="../common/basepeerwidget.cpp" line="63"/>
+        <source>Rename this peer</source>
+        <translation>Renommer ce poste</translation>
+    </message>
+    <message>
+        <location filename="../common/basepeerwidget.cpp" line="709"/>
+        <source>Rename Item</source>
+        <translation>Renommer le poste</translation>
+    </message>
+    <message>
+        <location filename="../common/basepeerwidget.cpp" line="709"/>
+        <source>Rename %1 :</source>
+        <translation>Renommer %1 :</translation>
     </message>
 </context>
 <context>
@@ -936,7 +956,7 @@ Are you sure ?</source>
 <context>
     <name>ConfigWidget</name>
     <message>
-        <location filename="../common/configwidget.cpp" line="288"/>
+        <location filename="../common/configwidget.cpp" line="297"/>
         <source>Account</source>
         <translation>Compte</translation>
     </message>
@@ -961,7 +981,7 @@ Are you sure ?</source>
         <translation>Configuration</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="289"/>
+        <location filename="../common/configwidget.cpp" line="298"/>
         <source>Connection</source>
         <translation>Connexion</translation>
     </message>
@@ -981,12 +1001,12 @@ Are you sure ?</source>
         <translation>Remontée de Fiches</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="290"/>
+        <location filename="../common/configwidget.cpp" line="299"/>
         <source>Functions</source>
         <translation>Fonctions</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="291"/>
+        <location filename="../common/configwidget.cpp" line="300"/>
         <source>GUI Settings</source>
         <translation>Réglages IHM</translation>
     </message>
@@ -1106,6 +1126,11 @@ que celles ci-dessous) en première page</translation>
         <location filename="../common/configwidget.cpp" line="173"/>
         <source>Context</source>
         <translation>Contexte</translation>
+    </message>
+    <message>
+        <location filename="../common/configwidget.cpp" line="287"/>
+        <source>Presence indicator size (in pixels)</source>
+        <translation>Taille de l&apos;indicateur de présence (pixels)</translation>
     </message>
 </context>
 <context>
@@ -2100,104 +2125,121 @@ a été envoyé à %2.</translation>
 <context>
     <name>MyLocalDirPanel</name>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="66"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="67"/>
         <source>&amp;New Contact</source>
         <translation>&amp;Nouveau contact</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="70"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="71"/>
         <source>&amp;Export Contacts</source>
         <translation>&amp;Exporter les contacts</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="74"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="75"/>
         <source>&amp;Import Contacts</source>
         <translation>&amp;Importer les contacts</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="260"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="265"/>
         <source>First Name</source>
         <translation>Prénom</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="263"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="268"/>
         <source>Last Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="267"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="272"/>
         <source>Phone Number</source>
         <translation>Numéro de téléphone</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="273"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="278"/>
         <source>Email Address</source>
         <translation>Adresse email</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="282"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="287"/>
         <source>Company</source>
         <translation>Entreprise</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="177"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="182"/>
         <source>Open Contacts File</source>
         <translation>Ouvrir un fichier de contact</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="269"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="274"/>
         <source>Number</source>
         <translation>Numéro</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="275"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="280"/>
         <source>Email</source>
         <translation>Email</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="78"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="79"/>
         <source>&amp;Search</source>
         <translation>&amp;Recherche</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="193"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="198"/>
         <source>Save Contacts File</source>
         <translation>Enregistrer le fichier de contacts</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="195"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="200"/>
         <source>Comma Separated Value (*.csv)</source>
         <translation>Fichier CSV (*.csv)</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="58"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="59"/>
         <source>Personal Directory</source>
         <translation>Répertoire Personnel</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="274"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="279"/>
         <source>E-mail Address</source>
         <translation>Adresse de messagerie</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="286"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="291"/>
         <source>Fax Number</source>
         <translation type="unfinished">Numéro de Fax</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="292"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="297"/>
         <source>Mobile Number</source>
         <translation>Numéro de mobile</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="287"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="292"/>
         <source>Fax</source>
         <translation type="unfinished">Fax</translation>
     </message>
     <message>
-        <location filename="../common/mylocaldirpanel.cpp" line="293"/>
+        <location filename="../common/mylocaldirpanel.cpp" line="298"/>
         <source>Mobile</source>
         <translation>Mobile</translation>
+    </message>
+    <message>
+        <location filename="../common/mylocaldirpanel.cpp" line="83"/>
+        <source>&amp;Remove all Contacts</source>
+        <translation>&amp;Supprimer tous les contacts</translation>
+    </message>
+    <message>
+        <location filename="../common/mylocaldirpanel.cpp" line="408"/>
+        <source>Removing all contacts</source>
+        <translation>Suppression de tous les contacts</translation>
+    </message>
+    <message>
+        <location filename="../common/mylocaldirpanel.cpp" line="409"/>
+        <source>Removing all contacts.
+Are you sure ?</source>
+        <translation>Vous êtes sur le point de supprimer tous les contacts.
+Etes vous sur ?</translation>
     </message>
 </context>
 <context>
