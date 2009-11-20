@@ -67,7 +67,12 @@ void UserInfo::setCtiLogin(const QString & ctilogin)
 
 void UserInfo::setPhoneNumber(const QString & phonenum)
 {
-    m_phonenum = phonenum;
+    m_phonenumber = phonenum;
+}
+
+void UserInfo::setMobileNumber(const QString & mobilenum)
+{
+    m_mobilenumber = mobilenum;
 }
 
 void UserInfo::setSimultCalls(int simultcalls)
@@ -77,7 +82,7 @@ void UserInfo::setSimultCalls(int simultcalls)
 
 void UserInfo::setVoiceMailNumber(const QString & voicemailnum)
 {
-    m_voicemailnum = voicemailnum;
+    m_voicemailnumber = voicemailnum;
 }
 
 void UserInfo::setContext(const QString & context)
@@ -153,15 +158,21 @@ const QString & UserInfo::fullname() const
     return m_fullname;
 }
 
-/*! \brief return m_phonenum */
+/*! \brief return m_phonenumber */
 const QString & UserInfo::phonenumber() const
 {
-    return m_phonenum;
+    return m_phonenumber;
+}
+
+/*! \brief return m_mobilenumber */
+const QString & UserInfo::mobilenumber() const
+{
+    return m_mobilenumber;
 }
 
 const QString & UserInfo::voicemailnumber() const
 {
-    return m_voicemailnum;
+    return m_voicemailnumber;
 }
 
 const QString & UserInfo::userid() const
@@ -271,8 +282,10 @@ QString UserInfo::toString() const
 {
     QString str;
     str = "Userid=" + m_userid + " company=" + m_company + " fullname=" + m_fullname;
-    str += " phonenum=" + m_phonenum + " m_voicemailnum=" + m_voicemailnum;
-    str += " nphones=" +QString::number(m_phones.size()) + " phonesids=" + QStringList(m_phones.keys()).join(",");
+    str += " phonenum=" + m_phonenumber + " mobile=" + m_mobilenumber;
+    str += " m_voicemailnum=" + m_voicemailnumber;
+    str += " nphones=" + QString::number(m_phones.size());
+    str += " phonesids=" + QStringList(m_phones.keys()).join(",");
     return str;
 }
 

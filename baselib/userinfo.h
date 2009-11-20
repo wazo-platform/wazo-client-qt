@@ -53,6 +53,7 @@ public:
     void setAvailState(const QVariant &);
     void setFullName(const QString &);
     void setPhoneNumber(const QString &);
+    void setMobileNumber(const QString &);
     void setSimultCalls(int);
     void setVoiceMailNumber(const QString &);
     void setPhones(const QString &,
@@ -71,6 +72,7 @@ public:
                         const QString &);
     
     const QString & phonenumber() const;
+    const QString & mobilenumber() const;
     const QString & voicemailnumber() const;
     const QString & fullname() const;
     const QStringList & mwi() const;
@@ -99,11 +101,12 @@ private:
     QHash<QString, QString> m_availstate;   //!< availability state properties
     
     QString m_astid;    //!< asterisk id (for main phone)
-    QString m_phonenum; //!< main phone number
-    QString m_voicemailnum; //!< voice mail box number
+    QString m_phonenumber; //!< main phone number
+    QString m_mobilenumber; //!< mobile phone number
+    QString m_voicemailnumber; //!< voice mail box number
     QString m_agentnumber; //!< agent number
     QString m_agentid; //!< agent id
-    QString m_agentphonenum;    //!< agent phone number
+    QString m_agentphonenumber;    //!< agent phone number
     QStringList m_mwi;  //!< message waiting indicator
     int m_simultcalls;
     QMap<QString, PhoneInfo *> m_phones;    //!< map to phones
