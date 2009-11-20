@@ -40,6 +40,7 @@
 #include <QApplication>
 #include <QFileInfo>
 #include <QSettings>
+#include <QMessageBox>
 
 #include "baseengine.h"
 #include "mylocaldirpanel.h"
@@ -79,6 +80,10 @@ MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
     connect( searchBtn, SIGNAL(clicked()),
              m_searchBox, SLOT(show()) );
     hlayout->addWidget( searchBtn );
+    QPushButton * removeAllBtn = new QPushButton( tr("&Remove all Contacts") );
+    connect( removeAllBtn, SIGNAL(clicked()),
+             this, SLOT(removeAllContacts()) );
+    hlayout->addWidget( removeAllBtn );
 
     vlayout->addLayout(hlayout);
 
@@ -393,5 +398,22 @@ void MyLocalDirPanel::findNext()
         currentItem = items[0];
     }
     m_table->setCurrentItem( currentItem );
+}
+
+/** \brief ask and then remove all contacts
+ */
+void  MyLocalDirPanel::removeAllContacts()
+{
+    int ret;
+    ret = QMessageBox::warning(this, tr("Removing all contacts"),
+                         tr("Removing all contacts.\nAre you sure ?"),
+                         QMessageBox::Yes|QMessageBox::No);
+    if(ret == QMessageBox::Yes) {
+        //m_table->clearContents(); // doesnt resize the table (remove rows)
+        // remove all rows 1 by 1 until none left.
+        while(m_table->rowCount() > 0) {
+            m_table->removeRow( 0 );
+        }
+    }
 }
 
