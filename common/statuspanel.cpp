@@ -277,13 +277,13 @@ void StatusPanel::functionKeyPressed(int keynum)
         Line linestatus = m_linestatuses[m_currentchannel];
         qDebug() << "StatusPanel::functionKeyPressed()" << keynum << action << m_currentchannel << linestatus;
         if(action == "answer") {
-            actionCall("answer");
+            emit actionCall("answer", QString("chan:%1:not_relevant_here").arg(userid));
         } else if(action == "hangup") {
             if(linestatus == Ringing || linestatus == WITransfer || linestatus == WDTransfer) {
-                actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
+                emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
             } else {
                 //actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));
-                actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
+                emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
             }
         } else if(action == "dtransfer") {
             dtransfer();
@@ -298,14 +298,14 @@ void StatusPanel::functionKeyPressed(int keynum)
             else
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
         } else if(action == "park") {
-            actionCall("transfer", "chan:special:me:" + m_currentchannel, "ext:special:parkthecall"); // Call
+            emit actionCall("transfer", "chan:special:me:" + m_currentchannel, "ext:special:parkthecall"); // Call
         } else if(action == "atxferfinalize") {
-            actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel));
+            emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel));
         } else if(action == "atxfercancel") {
-            actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));
+            emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));
             updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
         } else if(action == "ilink") {
-            actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
+            emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
         } else if(action == "icancel") {
             /*
               qDebug() << "icancel : currentchannel=" << m_currentchannel
