@@ -75,6 +75,7 @@ BaseEngine::BaseEngine(QSettings * settings,
 {
     settings->setParent( this );
     m_timerid_keepalive = 0;
+    m_timerid_changestate = 0;
     m_timerid_tryreconnect = 0;
     m_timer = -1;
     m_settings = settings;
@@ -538,7 +539,9 @@ void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
     // qDebug() << "BaseEngine::setAvailState() from" << m_availstate << "to" << newstate << comesFromServer;
     if(m_availstate != newstate) {
         m_availstate = newstate;
-        m_settings->setValue("engine/availstate", m_availstate);
+        //m_settings->setValue("engine/availstate", m_availstate);
+        m_settings->setValue(QString("%1/availstate").arg(m_profilename),
+                             m_availstate);
         if (comesFromServer)
             changesAvailChecks();
         else
@@ -1080,7 +1083,7 @@ void BaseEngine::parseCommand(const QString & line)
             if(m_users.contains(id)) {
                 QString stateid = datamap.value("capapresence").toMap().value("state").toMap().value("stateid").toString();
                 QVariantMap changeme = m_guioptions.value("server_gui").toMap().value("autochangestate").toMap();
-                if(changeme.count()) {
+                if(changeme.count() && (id == m_fullid)) {
                     if(stateid == changeme["statesrc"].toString()) {
                         // QTimer::singleShot() could be used.
                         m_timerid_changestate = startTimer(changeme["seconds"].toInt() * 1000);
@@ -1125,6 +1128,7 @@ void BaseEngine::parseCommand(const QString & line)
                     
                     m_users[iduser]->setAvailState(uinfo["statedetails"]);
                     m_users[iduser]->setPhoneNumber(uinfo["phonenum"].toString());
+                    m_users[iduser]->setMobileNumber(uinfo["mobilenum"].toString());
                     m_users[iduser]->setAgentId(uinfo["agentid"].toString());
                     m_users[iduser]->setContext(uinfo["context"].toString());
                     
@@ -1946,7 +1950,8 @@ void BaseEngine::timerEvent(QTimerEvent * event)
     } else if(timerId == m_timerid_changestate) {
         setAvailState(m_changestate_newstate, false);
         killTimer(timerId);
-        m_timerid_changestate = -1;
+        //m_timerid_changestate = -1;
+        m_timerid_changestate = 0;
         event->accept();
     } else {
         event->ignore();
