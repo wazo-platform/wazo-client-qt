@@ -61,6 +61,7 @@ public:
     void setEngine(BaseEngine *);
     void setAgentToolTip(const QString &, const QStringList &);
     void setAgentState(const QString & color);
+    void setMobileState(const QString & color);
     void updatePresence();  //!< update presence information displayed
     void updatePhonesStates();
 private:
@@ -68,6 +69,7 @@ private:
         
     QLabel * m_availlbl;        //!< Peer state display from XIVO CTI Client
     QLabel * m_agentlbl;        //!< agent state label
+    QLabel * m_mobilelbl;       //!< mobile phone label
     QLabel * m_voicelbl;
     QLabel * m_fwdlbl;
     QLabel * m_textlbl;                //!< text label : to display peer name
@@ -75,6 +77,7 @@ private:
     static QHash<QString, QPixmap> m_phones;        //!< phone icons
     static QHash<QString, QPixmap> m_persons;        //!< person icons
     static QHash<QString, QPixmap> m_agents;        //!< agent icons
+    static QHash<QString, QPixmap> m_mobiles;        //!< mobil phone icons
 };
 
 #endif

@@ -203,9 +203,9 @@ void BasePeerWidget::parkcall()
  */
 void BasePeerWidget::vmtransfer()
 {
-    const UserInfo * ui = m_engine->getXivoClientUser();
     if(m_ui)
     {
+        const UserInfo * ui = m_engine->getXivoClientUser();
         emit actionCall("transfer",
                         "chan:" + ui->userid() + ":" + sender()->property("peerchannel").toString(),
                         "voicemail:" + m_ui->userid());
@@ -220,6 +220,10 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
 {
     if(event->button() == Qt::LeftButton)
     {
+        QWidget * w = childAt(event->pos());
+        QString subwidgetkind;
+        if(w)
+            subwidgetkind = w->property("kind").toString();
         // check if we are in communication
         const UserInfo * ui = m_engine->getXivoClientUser();
         if( ui && !ui->phonelist().isEmpty() )
@@ -273,8 +277,14 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
                 }
             }
         }
-        // just dial the person
-        dial();
+        if ((subwidgetkind == "mobile") && (m_ui != NULL)) {
+            emit actionCall("originate",
+                            "user:special:me",
+                            QString("ext:%1").arg(m_ui->mobilenumber()));
+        } else {
+            // just dial the person
+            dial();
+        }
     }
 }
 
