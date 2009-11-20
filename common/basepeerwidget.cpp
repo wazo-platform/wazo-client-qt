@@ -36,6 +36,7 @@
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
+#include <QInputDialog>
 #include "baseengine.h"
 #include "basepeerwidget.h"
 #include "userinfo.h"
@@ -57,6 +58,11 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
     connect( m_removeAction, SIGNAL(triggered()),
              this, SLOT(tryRemoveFromPanel()) );
 //             this, SIGNAL(removeFromPanel()) );
+
+    m_renameAction = new QAction( tr("Re&name"), this);
+    m_renameAction->setStatusTip( tr("Rename this peer") );
+    connect( m_renameAction, SIGNAL(triggered()),
+             this, SLOT(rename()) );
     
     m_dialAction = new QAction( tr("&Call"), this);
     m_dialAction->setStatusTip( tr("Call this peer") );
@@ -337,11 +343,12 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
     const UserInfo * ui = m_engine->getXivoClientUser();
     // Construct and display the context menu
     QMenu contextMenu( this );
-    // allow to dial everyone except me !
     if( true ) {
         contextMenu.addAction( m_removeAction );
+        contextMenu.addAction( m_renameAction );
         contextMenu.addSeparator();
     }
+    // allow to dial everyone except me !
     if( ui != m_ui )
         contextMenu.addAction( m_dialAction );
     if( m_editable )
@@ -690,6 +697,20 @@ void BasePeerWidget::tryRemoveFromPanel()
                 QMessageBox::Cancel);
     if(ret == QMessageBox::Yes) {
         emit removeFromPanel();
+    }
+}
+
+/** rename the element
+ */
+void BasePeerWidget::rename()
+{
+    // open a prompt to change the name
+    bool ok = false;
+    QString text = QInputDialog::getText(this, tr("Rename Item"), tr("Rename %1 :").arg(name()),
+                                         QLineEdit::Normal, name(), &ok);
+    if(ok && !text.isEmpty()) {
+        setName(text);
+        // save the name
     }
 }
 

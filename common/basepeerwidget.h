@@ -90,6 +90,7 @@ protected slots:
     void vmtransfer();
     void parkcall();
     void tryRemoveFromPanel();
+    void rename();
 protected:
     BaseEngine * m_engine;      //!< Xivo CTI Client Engine
     UserInfo * m_ui;            //!< user infos
@@ -97,6 +98,7 @@ protected:
     QAction * m_dialAction;     //!< action to dial this number
     QAction * m_removeAction;   //!< action to remove this peer from the window
     QAction * m_interceptAction;    //!< action to intercept ringing calls to this number
+    QAction * m_renameAction;   //<! action to rename the user
     QString m_number;   //!< phone number (filled if m_ui is NULL)
     bool m_editable;    //!< editable from a user point of view
 private:
