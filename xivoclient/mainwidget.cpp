@@ -678,24 +678,24 @@ void MainWidget::engineStarted()
         m_gridlayout->addWidget(m_tabwidget, 1, 0);
     }
     
-        foreach(QString xletid, m_allnames) {
-            bool withscrollbar = m_dockoptions[xletid].contains("s");
-            XLet * xlet = m_xletfactory->newXLet(xletid, this);
-            if(xlet) {
-                m_xletlist.insert(xlet);
-                xlet->doGUIConnects( this );
-                if (withscrollbar) {
-                    QScrollArea * sa_ag = new QScrollArea(this);
-                    sa_ag->setWidget(xlet);
-                    sa_ag->setWidgetResizable(true);
-                    addPanel(xletid, xlet->title(), sa_ag);
-                } else {
-                    addPanel(xletid, xlet->title(), xlet);
-                }
+    foreach(QString xletid, m_allnames) {
+        bool withscrollbar = m_dockoptions[xletid].contains("s");
+        XLet * xlet = m_xletfactory->newXLet(xletid, this);
+        if(xlet) {
+            m_xletlist.insert(xlet);
+            xlet->doGUIConnects( this );
+            if (withscrollbar) {
+                QScrollArea * sa_ag = new QScrollArea(this);
+                sa_ag->setWidget(xlet);
+                sa_ag->setWidgetResizable(true);
+                addPanel(xletid, xlet->title(), sa_ag);
             } else {
-                qDebug() << "cannot instanciate XLet" << xletid;
+                addPanel(xletid, xlet->title(), xlet);
             }
+        } else {
+            qDebug() << "cannot instanciate XLet" << xletid;
         }
+    }
     
     qDebug() << "MainWidget::engineStarted() : the xlets have been created";
     m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
@@ -747,6 +747,7 @@ void MainWidget::setSystrayIcon(const QString & def)
 
 void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
+//    qDebug() << "MainWidget::removePanel" << name << widget;
     if(m_docknames.contains(name)) {
         removeDockWidget(m_docks[name]);
         //delete widget;
@@ -787,12 +788,15 @@ void MainWidget::engineStopped()
     }
     
     foreach (QString dname, m_docknames) {
-        if(m_docks.contains(dname))
-            m_docks.value(dname)->hide();
+//        if(m_docks.contains(dname)) {
+//            m_docks.value(dname)->hide();
+//        }
+        removePanel(dname, m_docks.value(dname));
     }
     clearPresence();
     
     // delete all xlets
+    //qDebug() << "m_xletlist" << m_xletlist;
     QSetIterator<XLet *> i(m_xletlist);
     while (i.hasNext()) {
         i.next()->deleteLater();
