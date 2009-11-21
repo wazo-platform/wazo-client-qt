@@ -253,6 +253,7 @@ void SwitchBoardWindow::removePeer(const QString & userid)
         m_layout->removeWidget( peerwidget );
         peerwidget->deleteLater();
         delete m_peerhash.take(userid);
+        update();
     }
 }
 
@@ -289,6 +290,7 @@ void SwitchBoardWindow::removePeers(void)
         delete peeritem;
     }
     m_peerhash.clear();
+    update();
 }
 
 void SwitchBoardWindow::dragMoveEvent(QDragMoveEvent * event)
@@ -828,6 +830,7 @@ void SwitchBoardWindow::addPhoneNumberEntry()
             connect( peerwidget, SIGNAL(removeFromPanel()),
                      this, SLOT(removePeerFromLayout()) );
             m_layout->addWidget( peerwidget, pos );
+            update();
         }
     }
 }
