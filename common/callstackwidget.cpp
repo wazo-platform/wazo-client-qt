@@ -51,6 +51,7 @@
 CallStackWidget::CallStackWidget(BaseEngine * engine, QWidget * parent)
     : XLet(engine, parent), m_monitored_ui(0)
 {
+    setTitle(tr("Calls"));
     qDebug() << "CallStackWidget::CallStackWidget()";
     QVBoxLayout * toplayout = new QVBoxLayout(this);
     toplayout->setMargin(0);

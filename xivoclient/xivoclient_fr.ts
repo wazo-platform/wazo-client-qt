@@ -809,9 +809,14 @@ Are you sure ?</source>
 <context>
     <name>CallStackWidget</name>
     <message>
-        <location filename="../common/callstackwidget.cpp" line="246"/>
+        <location filename="../common/callstackwidget.cpp" line="247"/>
         <source>Monitoring : %1</source>
         <translation>Surveillance : %1</translation>
+    </message>
+    <message>
+        <location filename="../common/callstackwidget.cpp" line="54"/>
+        <source>Calls</source>
+        <translation>Appels</translation>
     </message>
 </context>
 <context>
@@ -1772,7 +1777,7 @@ a été envoyé à %2.</translation>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="mainwidget.cpp" line="1011"/>
+        <location filename="mainwidget.cpp" line="1015"/>
         <source>The XIVO CTI applications, once connected to the proper server, complete the XIVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>Les applications CTI XIVO, une fois connectées au serveur adéquat, complètent le système téléphonique XIVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
@@ -1787,7 +1792,7 @@ a été envoyé à %2.</translation>
         <translation>A propos de &amp;XIVO Client</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1015"/>
+        <location filename="mainwidget.cpp" line="1019"/>
         <source>Advised Server Version : </source>
         <translation>Version Conseillée du Serveur : </translation>
     </message>
@@ -1807,12 +1812,12 @@ a été envoyé à %2.</translation>
         <translation type="obsolete">Liste des Agents (classique)</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1019"/>
+        <location filename="mainwidget.cpp" line="1023"/>
         <source>Application Launched on : </source>
         <translation>Application Lancée le : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1029"/>
+        <location filename="mainwidget.cpp" line="1033"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
@@ -1902,7 +1907,7 @@ a été envoyé à %2.</translation>
         <translation>Se déconnecter du serveur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="815"/>
+        <location filename="mainwidget.cpp" line="819"/>
         <source>Disconnected</source>
         <translation>Déconnecté</translation>
     </message>
@@ -1942,7 +1947,7 @@ a été envoyé à %2.</translation>
         <translation>Sortir l&apos;application de la zone de notification système</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1031"/>
+        <location filename="mainwidget.cpp" line="1035"/>
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
@@ -2022,7 +2027,7 @@ a été envoyé à %2.</translation>
         <translation>&amp;Minimiser</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1012"/>
+        <location filename="mainwidget.cpp" line="1016"/>
         <source>Version : </source>
         <translation>Version : </translation>
     </message>
@@ -2037,12 +2042,12 @@ a été envoyé à %2.</translation>
         <translation type="obsolete">Prototype de Xlet</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1000"/>
+        <location filename="mainwidget.cpp" line="1004"/>
         <source>last one</source>
         <translation>dernière</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1033"/>
+        <location filename="mainwidget.cpp" line="1037"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>avec une exception particulière vous permettant de le lier avec OpenSSL, sous certaines conditions.</translation>
     </message>
@@ -2077,7 +2082,7 @@ a été envoyé à %2.</translation>
         <translation>XIVO CTI Erreur</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1039"/>
+        <location filename="mainwidget.cpp" line="1043"/>
         <source>Credits</source>
         <translation>Crédits</translation>
     </message>
@@ -2092,7 +2097,7 @@ a été envoyé à %2.</translation>
         <translation>Client (profil %1)</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1005"/>
+        <location filename="mainwidget.cpp" line="1009"/>
         <source>About XIVO Client</source>
         <translation>A propos de XIVO Client</translation>
     </message>
@@ -2102,22 +2107,22 @@ a été envoyé à %2.</translation>
         <translation type="obsolete">Liste des Agents (par groupes de files)</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1021"/>
+        <location filename="mainwidget.cpp" line="1025"/>
         <source>Config File Location : </source>
         <translation>Fichier de Configuration :</translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1027"/>
+        <location filename="mainwidget.cpp" line="1031"/>
         <source>E-mail : </source>
         <translation>E-mail : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1028"/>
+        <location filename="mainwidget.cpp" line="1032"/>
         <source>Phone : </source>
         <translation>Téléphone : </translation>
     </message>
     <message>
-        <location filename="mainwidget.cpp" line="1017"/>
+        <location filename="mainwidget.cpp" line="1021"/>
         <source>Application Built on : </source>
         <translation>Application Construite le : </translation>
     </message>
@@ -2945,22 +2950,22 @@ Service(%)</translation>
         <translation type="obsolete">Nom du groupe</translation>
     </message>
     <message>
-        <location filename="../common/switchboardwindow.cpp" line="624"/>
+        <location filename="../common/switchboardwindow.cpp" line="626"/>
         <source>Please enter a name for the new group</source>
         <translation>Veuillez saisir un nom pour le nouveau groupe</translation>
     </message>
     <message>
-        <location filename="../common/switchboardwindow.cpp" line="711"/>
+        <location filename="../common/switchboardwindow.cpp" line="713"/>
         <source>Remove group %1</source>
         <translation>Supprimer le groupe %1</translation>
     </message>
     <message>
-        <location filename="../common/switchboardwindow.cpp" line="715"/>
+        <location filename="../common/switchboardwindow.cpp" line="717"/>
         <source>Change color of group %1</source>
         <translation>Changer la couleur du groupe %1</translation>
     </message>
     <message>
-        <location filename="../common/switchboardwindow.cpp" line="724"/>
+        <location filename="../common/switchboardwindow.cpp" line="726"/>
         <source>Add Phone number entry</source>
         <translation>Ajouter un numéro de téléphone</translation>
     </message>
@@ -2975,7 +2980,7 @@ Service(%)</translation>
         <translation>Nom du groupe</translation>
     </message>
     <message>
-        <location filename="../common/switchboardwindow.cpp" line="719"/>
+        <location filename="../common/switchboardwindow.cpp" line="721"/>
         <source>Rename group %1</source>
         <translation>Renommer le groupe %1</translation>
     </message>
@@ -2990,12 +2995,12 @@ Service(%)</translation>
         <translation>Changer le nom du groupe</translation>
     </message>
     <message>
-        <location filename="../common/switchboardwindow.cpp" line="622"/>
+        <location filename="../common/switchboardwindow.cpp" line="624"/>
         <source>New group</source>
         <translation>Nouveau groupe</translation>
     </message>
     <message>
-        <location filename="../common/switchboardwindow.cpp" line="627"/>
+        <location filename="../common/switchboardwindow.cpp" line="629"/>
         <source>Please choose a color for the new group</source>
         <translation>Veuillez choisir une couleur pour le nouveau groupe</translation>
     </message>
@@ -3011,12 +3016,12 @@ Are you sure ?</source>
         <translation>Suppression du groupe %1.Etes vous sur ?</translation>
     </message>
     <message>
-        <location filename="../common/switchboardwindow.cpp" line="823"/>
+        <location filename="../common/switchboardwindow.cpp" line="825"/>
         <source>Duplicate number</source>
         <translation>Doublon de numéro</translation>
     </message>
     <message>
-        <location filename="../common/switchboardwindow.cpp" line="824"/>
+        <location filename="../common/switchboardwindow.cpp" line="826"/>
         <source>Phone number %1 is already present in the switchboard panel.</source>
         <translation>Le numéro de téléphone %1 est déjà présent dans le panneau du switchboard.</translation>
     </message>
