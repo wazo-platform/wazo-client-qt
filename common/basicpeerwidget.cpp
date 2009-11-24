@@ -57,6 +57,7 @@ BasicPeerWidget::BasicPeerWidget(BaseEngine * engine, UserInfo * ui)
     m_presenceSquareSize = m_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
     if(m_presenceSquareSize<=0||m_presenceSquareSize>20)
         m_presenceSquareSize = 5;
+    reloadSavedName();
 }
 
 void BasicPeerWidget::setText(const QString & text)

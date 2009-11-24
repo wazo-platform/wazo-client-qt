@@ -801,7 +801,7 @@ BasePeerWidget * SwitchBoardWindow::addPeerWidget(PeerItem * peeritem, const QPo
     peeritem->setWidget(peerwidget);
     m_layout->addWidget( peerwidget, pos );
     peeritem->updateDisplayedStatus();
-    peeritem->updateDisplayedName();
+    //peeritem->updateDisplayedName();
     return peerwidget;
 }
 

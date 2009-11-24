@@ -199,6 +199,8 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     
     linenum ++;
     layout->addWidget( qhline2, linenum, 0, 1, 10);
+
+    reloadSavedName();
 }
 
 /*! \brief destructor

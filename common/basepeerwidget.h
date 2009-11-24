@@ -64,6 +64,10 @@ public:
     virtual QString name() const;
     //! maximum width for "small" items
     int maxWidthWanted() const { return m_maxWidthWanted; };
+    //! return a unique id for the item
+    virtual QString id() const;
+    //! reload the saved name
+    void reloadSavedName();
 protected:
     void mouseDoubleClickEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);

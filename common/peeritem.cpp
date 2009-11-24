@@ -98,10 +98,11 @@ void PeerItem::updateChans(const QVariant & chanlist)
  */
 void PeerItem::updateName(const QString & newname)
 {
-    if(newname != m_ui->fullname())
+    if(newname != m_ui->fullname()) {
         m_ui->setFullName(newname);
-    if(m_peerwidget != NULL)
-        updateDisplayedName();
+        if(m_peerwidget != NULL)
+            updateDisplayedName();
+    }
 }
 
 /*! \brief update status of the peer

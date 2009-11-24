@@ -37,6 +37,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QSettings>
 #include "baseengine.h"
 #include "basepeerwidget.h"
 #include "userinfo.h"
@@ -78,6 +79,18 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
     if(m_maxWidthWanted < 50)
         m_maxWidthWanted = 200;
     setAcceptDrops(true);
+}
+
+void BasePeerWidget::reloadSavedName()
+{
+    // retrieve saved name
+    QSettings * settings = m_engine->getSettings();
+    settings->beginGroup("renamed_items");
+    QVariant value = settings->value(id());
+    if(!value.isNull()) {
+        setName( value.toString() );
+    }
+    settings->endGroup();
 }
 
 /*! \brief call this peer
@@ -317,18 +330,15 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
 
     QDrag *drag = new QDrag(this);
     QMimeData *mimeData = new QMimeData;
-    if( m_ui )
-        {
-            mimeData->setText(m_ui->phonenumber());
-            mimeData->setData(PEER_MIMETYPE, m_ui->userid().toAscii());
-            mimeData->setData(USERID_MIMETYPE, m_ui->userid().toAscii());
-            mimeData->setData(NAME_MIMETYPE, m_ui->fullname().toUtf8());
-        }
-    else
-        {
-            mimeData->setText(m_number);
-            mimeData->setData(NUMBER_MIMETYPE, m_number.toAscii());
-        }
+    if( m_ui ) {
+        mimeData->setText(m_ui->phonenumber());
+        mimeData->setData(PEER_MIMETYPE, m_ui->userid().toAscii());
+        mimeData->setData(USERID_MIMETYPE, m_ui->userid().toAscii());
+        mimeData->setData(NAME_MIMETYPE, m_ui->fullname().toUtf8());
+    } else {
+        mimeData->setText(m_number);
+        mimeData->setData(NUMBER_MIMETYPE, m_number.toAscii());
+    }
     drag->setMimeData(mimeData);
         
     /*Qt::DropAction dropAction = */
@@ -711,6 +721,20 @@ void BasePeerWidget::rename()
     if(ok && !text.isEmpty()) {
         setName(text);
         // save the name
+        QSettings * settings = m_engine->getSettings();
+        settings->beginGroup("renamed_items");
+        settings->setValue(id(), text);
+        settings->endGroup();
     }
+}
+
+/** Return a unique id for the item
+ */
+QString BasePeerWidget::id() const
+{
+    if(m_ui)
+        return (QString("userid-") + m_ui->userid());
+    else
+        return (QString("number-") + number());
 }
 
