@@ -1334,6 +1334,7 @@ void BaseEngine::parseCommand(const QString & line)
             sendJsonCommand(command);
             
         } else if (thisclass == "login_capas_ok") {
+            //qDebug() << "login_capas_ok" << datamap.keys();
             m_astid = datamap["astid"].toString();
             m_xivo_userid = datamap["xivo_userid"].toString();
             m_fullid = m_astid + "/" + m_xivo_userid;
@@ -1344,6 +1345,7 @@ void BaseEngine::parseCommand(const QString & line)
             m_forced_state = datamap["capapresence"].toMap()["state"].toString();
             m_counters = datamap["presencecounter"];
             m_guioptions["server_gui"] = datamap["guisettings"];
+            //qDebug() << "======== guisettings ======== " << datamap["guisettings"];
             
             // Put the values of client_gui, then those of server_gui into merged_gui.
             // The first ones are overrided by the second ones.
