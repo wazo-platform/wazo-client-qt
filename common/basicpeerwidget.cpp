@@ -51,7 +51,8 @@ BasicPeerWidget::BasicPeerWidget(BaseEngine * engine, UserInfo * ui)
 {
     // can grow horizontaly but not verticaly
     setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
-    setText( ui->fullname().isEmpty() ? tr("(No callerid yet)") : ui->fullname() );
+    QString name = (!ui || ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
+    setText( name );
     setToolTip( ui->phonenumber() );
     m_presenceSquareSize = m_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
     if(m_presenceSquareSize<=0||m_presenceSquareSize>20)
@@ -64,6 +65,7 @@ void BasicPeerWidget::setText(const QString & text)
     // calculate size
     QFontMetrics fontMetrics( font() );
     QSize size = fontMetrics.size(0, m_text);
+    size.rwidth() += m_presenceSquareSize;
     // maximum width for PeerWidget
     if(size.width() > maxWidthWanted())
         size.setWidth(maxWidthWanted());
@@ -80,26 +82,31 @@ void BasicPeerWidget::setText(const QString & text)
  */
 void BasicPeerWidget::paintEvent(QPaintEvent * /*event*/)
 {
+    bool hasPresenceIndicator = !m_ui->ctilogin().isEmpty();
     QRect rectangle = contentsRect();
     QPainter painter( this );
     // draw the color rectangle
     painter.setBrush( m_color );
     painter.setPen( Qt::NoPen );
-    //painter.drawRect( rectangle );
-    painter.drawRect( rectangle.adjusted( 1, 0, -1, 0 ) );
+    painter.drawRect( QRect( 1, 0, rectangle.width() - 2, 1 ) );
     painter.drawRect( rectangle.adjusted( 0, 1, 0, -1 ) );
-    // small square
-    if(! m_ui->ctilogin().isEmpty())
-    {
+    painter.drawRect( QRect( 1, rectangle.height() - 1, rectangle.width() - 2, 1 ) );
+    // draw presence indicator
+    if(hasPresenceIndicator) {
         painter.setBrush( m_presenceColor );
-        painter.drawRect( QRect(rectangle.width() - m_presenceSquareSize - 1,
-                                rectangle.height() - m_presenceSquareSize - 1,
-                                m_presenceSquareSize, m_presenceSquareSize) );
+        // square
+//        painter.drawRect( QRect(rectangle.width() - m_presenceSquareSize - 1,
+//                                rectangle.height() - m_presenceSquareSize - 1,
+//                                m_presenceSquareSize, m_presenceSquareSize) );
+        // vertical bar
+        painter.drawRect( QRect( 1, 0, m_presenceSquareSize + 1, rectangle.height() ) );
     }
     // write the text
     painter.setPen(Qt::SolidLine);
     if(m_color.value() < 128)
         painter.setPen( QColor(0xcc, 0xcc, 0xcc) );
+    if(hasPresenceIndicator)
+        rectangle.adjust( m_presenceSquareSize + 1, 0, 0, 0 );
     painter.drawText( rectangle, Qt::AlignVCenter | Qt::AlignHCenter, m_text );
 }
 
