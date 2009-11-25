@@ -1032,6 +1032,7 @@ void BaseEngine::parseCommand(const QString & line)
                         m_meetme[astid][meetmeid].m_adminpin = map3["admin-pin"].toString();
                         m_meetme[astid][meetmeid].m_adminid = map3["adminid"].toString();
                         m_meetme[astid][meetmeid].m_uniqueids = map3["uniqueids"].toMap();
+                        // TODO : add adminlist ?
                     }
                 }
                 meetmeInit(m_timesrv, datamap["payload"]);
@@ -1044,6 +1045,8 @@ void BaseEngine::parseCommand(const QString & line)
                 QString meetmeid = map["meetmeid"].toString();
                 QString uniqueid = map["uniqueid"].toString();
                 if(!meetmeid.isEmpty() && !astid.isEmpty()) {
+                    m_meetme[astid][meetmeid].m_adminid = map["adminid"].toString();
+                    // TODO : add adminlist ?
                     if(action == QString("join")) {
                         m_meetme[astid][meetmeid].m_uniqueids[uniqueid] = map["details"].toMap();
                     } else if(action == "leave") {
