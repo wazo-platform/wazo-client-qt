@@ -75,6 +75,7 @@ public:
         m_pin = other.m_pin;
         m_adminpin = other.m_adminpin;
         m_adminid = other.m_adminid;
+        m_adminlist = other.m_adminlist;
         m_uniqueids = other.m_uniqueids;
     };
     //! cast to QString operator for debugging
