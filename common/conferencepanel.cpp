@@ -201,9 +201,9 @@ void ConferencePanel::updateButtons(const QString & astid,
         i.next();
         const MeetmeInfo & meetmeinfo = i.value();
         if(meetmeinfo.m_number == roomnum) {
-            qDebug() << "ConferencePanel::updateButtons" << roomnum << meetmeinfo.m_adminid;
+            qDebug() << "ConferencePanel::updateButtons" << roomnum << meetmeinfo.m_adminid << meetmeinfo.m_adminlist;
             //qDebug() << "ConferencePanel::updateButtons" << meetmeinfo.m_uniqueids;
-            bool isAdmin = (userid == meetmeinfo.m_adminid);
+            bool isAdmin = (userid == meetmeinfo.m_adminid) || meetmeinfo.m_adminlist.contains(userid);
             QMapIterator<QString, QVariant> j(meetmeinfo.m_uniqueids);
             while(j.hasNext()) {
                 j.next();

@@ -98,6 +98,7 @@ public:
     QString m_pin;      //!< room pin number (if any)
     QString m_adminpin; //!< room admin pin number (if any) 
     QString m_adminid;  //!< admin id ???
+    QStringList m_adminlist;    //!< admin list (user ids)
     QMap<QString, QVariant> m_uniqueids;    //!< people in this conference room
 };
 
