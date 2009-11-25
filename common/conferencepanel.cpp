@@ -98,10 +98,11 @@ void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
     foreach (QString astid, meetme.toMap().keys()) {
         QVariantMap astrooms = meetme.toMap()[astid].toMap();
         foreach (QString idx, astrooms.keys()) {
-            QString roomname = astrooms[idx].toMap()["name"].toString();
-            QString roomnum = astrooms[idx].toMap()["number"].toString();
-            QString adminid = astrooms[idx].toMap()["adminid"].toString();
-            QVariantMap uniqueids = astrooms[idx].toMap()["uniqueids"].toMap();
+            QVariantMap astroom = astrooms[idx].toMap();
+            QString roomname = astroom["name"].toString();
+            QString roomnum = astroom["number"].toString();
+            QString adminid = astroom["adminid"].toString();
+            QVariantMap uniqueids = astroom["uniqueids"].toMap();
             // qDebug() << "ConferencePanel::meetmeInit()" << astid << idx << roomname << roomnum << adminid << uniqueids;
             
             if(uniqueids.size() > 0) {
@@ -114,6 +115,7 @@ void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
                     setProperties(timeref, "recordstatus",
                                   adminid, astid, roomnum, uid, uniqueids[uid].toMap());
                 }
+                updateButtons(astid, roomnum);
             } else {
                 delRoomTab(astid, roomnum);
             }
@@ -167,7 +169,7 @@ void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
     QString astid = meetmeMap["astid"].toString();
     QString roomnum = meetmeMap["roomnum"].toString();
     QString roomname = meetmeMap["roomname"].toString();
-    QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
+    //QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     QString adminid = meetmeMap["adminid"].toString();
     addRoomTab(astid, roomnum, roomname);
     
@@ -179,7 +181,51 @@ void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
                   meetmeMap["uniqueid"].toString(),
                   meetmeMap["details"].toMap());
 
+    updateButtons(astid, roomnum);
+
     updateSummary();
+}
+
+/*! \brief Update the Kick/mute buttons
+ */
+void ConferencePanel::updateButtons(const QString & astid,
+                                    const QString & roomnum)
+{
+    if(!m_engine)
+        return;
+    QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
+    UserInfo * userinfo = m_engine->getXivoClientUser();
+    QString userid = (userinfo ? userinfo->userid() : QString(""));
+    QHashIterator<QString, MeetmeInfo> i(m_engine->meetme()[astid]);
+    while(i.hasNext()) {
+        i.next();
+        const MeetmeInfo & meetmeinfo = i.value();
+        if(meetmeinfo.m_number == roomnum) {
+            qDebug() << "ConferencePanel::updateButtons" << roomnum << meetmeinfo.m_adminid;
+            //qDebug() << "ConferencePanel::updateButtons" << meetmeinfo.m_uniqueids;
+            bool isAdmin = (userid == meetmeinfo.m_adminid);
+            QMapIterator<QString, QVariant> j(meetmeinfo.m_uniqueids);
+            while(j.hasNext()) {
+                j.next();
+                QString ref = QString("%1-%2-%3").arg(astid).arg(roomnum).arg(j.key());
+                // We have the right to kick and mute if
+                //    1) we are the admin (userinfo->userid() == adminid)
+                // or 2) it is ourself    (userinfo->userid() == userid)
+                if(isAdmin || (userid == j.value().toMap()["userid"].toString())) {
+                    m_action_kick[ref]->show();
+                    m_action_mute[ref]->show();
+                } else {
+                    m_action_kick[ref]->hide();
+                    m_action_mute[ref]->hide();
+                }
+                if(isAdmin && m_show_record) {
+                    m_action_record[ref]->show();
+                } else {
+                    m_action_record[ref]->hide();
+                }
+            }
+        }
+    }
 }
 
 /*! \brief create/update widgets which display person info
@@ -192,7 +238,7 @@ void ConferencePanel::setProperties(double timeref,
                                     const QString & uniqueid,
                                     const QVariantMap & details)
 {
-    // qDebug() << "ConferencePanel::setProperties()" << action << adminid << astid << roomnum << uniqueid << details;
+    qDebug() << "ConferencePanel::setProperties()" << action << adminid << astid << roomnum << uniqueid << details;
     QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     QString ref = QString("%1-%2-%3").arg(astid).arg(roomnum).arg(uniqueid);
     if(action == "join") {
@@ -202,7 +248,7 @@ void ConferencePanel::setProperties(double timeref,
         QString userid = details["userid"].toString();
         int time_spent = int(timeref - details["time_start"].toDouble() + 0.5);
         if(! m_infos.contains(ref)) {
-            UserInfo * userinfo = m_engine ? m_engine->getXivoClientUser() : NULL;
+            //UserInfo * userinfo = m_engine ? m_engine->getXivoClientUser() : NULL;
             
             m_infos[ref] = new QLabel(QString("%1 <%2>").arg(fullname).arg(phonenum));
             m_infos[ref]->setProperty("astid", astid);
@@ -220,14 +266,19 @@ void ConferencePanel::setProperties(double timeref,
             m_action_kick[ref]->setProperty("usernum", usernum);
             m_action_kick[ref]->setProperty("reference", ref);
             m_action_kick[ref]->setProperty("uniqueid", uniqueid);
+            m_action_kick[ref]->setProperty("userid", userid);
             m_action_kick[ref]->setProperty("action", "kick");
+            connect(m_action_kick[ref], SIGNAL(clicked()),
+                    this, SLOT(doMeetMeAction()));
+/*
             if(userinfo) {
+                qDebug() << "ConferencePanel::setProperties" << userinfo->userid() << adminid << userid;
                 if((userinfo->userid() == adminid) || (userinfo->userid() == userid))
-                    connect(m_action_kick[ref], SIGNAL(clicked()),
-                            this, SLOT(doMeetMeAction()));
+                    m_action_kick[ref]->show();
                 else
                     m_action_kick[ref]->hide();
             }
+*/
             m_action_record[ref] = new QPushButton(tr("Record"));
             m_action_record[ref]->setIcon(QIcon(":/images/cancel.png"));
             m_action_record[ref]->setIconSize(QSize(16, 16));
@@ -238,15 +289,16 @@ void ConferencePanel::setProperties(double timeref,
             m_action_record[ref]->setProperty("uniqueid", uniqueid);
             m_action_record[ref]->setProperty("action", "record");
             m_action_record[ref]->setProperty("recordstatus", "off");
-            
+            connect(m_action_record[ref], SIGNAL(clicked()),
+                    this, SLOT(doMeetMeAction()));
+/*
             if(userinfo) {
                 if((userinfo->userid() == adminid) && m_show_record)
-                    connect(m_action_record[ref], SIGNAL(clicked()),
-                            this, SLOT(doMeetMeAction()));
+                    m_action_record[ref]->show();
                 else
                     m_action_record[ref]->hide();
             }
-            
+*/           
             m_action_mute[ref] = new QPushButton(tr("Mute"));
             m_action_mute[ref]->setIcon(QIcon(":/images/cancel.png"));
             m_action_mute[ref]->setIconSize(QSize(16, 16));
@@ -257,13 +309,16 @@ void ConferencePanel::setProperties(double timeref,
             m_action_mute[ref]->setProperty("uniqueid", uniqueid);
             m_action_mute[ref]->setProperty("action", "mute");
             m_action_mute[ref]->setProperty("mutestatus", "off");
+            connect(m_action_mute[ref], SIGNAL(clicked()),
+                    this, SLOT(doMeetMeAction()));
+/*
             if(userinfo) {
                 if((userinfo->userid() == adminid) || (userinfo->userid() == userid))
-                    connect(m_action_mute[ref], SIGNAL(clicked()),
-                            this, SLOT(doMeetMeAction()));
+                    m_action_mute[ref]->show();
                 else
                     m_action_mute[ref]->hide();
             }
+*/
             // QPushButton * qp2 = new QPushButton(tr("Spy"));
             
             m_layout[idxroom]->addWidget( m_infos[ref], usernum.toInt(), 1 );

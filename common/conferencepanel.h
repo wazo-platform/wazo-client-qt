@@ -81,6 +81,7 @@ private:
     void delRoomTab(const QString &,
                     const QString &);
     void updateSummary();
+    void updateButtons(const QString &, const QString &);
     
     QHash<QString, QLabel *> m_infos;   //!< widgets for displaying name and phone number
     QHash<QString, QLabel *> m_timespent;   //!< call durations
