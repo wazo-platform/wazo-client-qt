@@ -241,6 +241,8 @@ void StatusPanel::xferPressed()
 }
 
 /*! \brief a key was pressed
+ *
+ * \todo make icancel work
  */
 void StatusPanel::functionKeyPressed(int keynum)
 {
@@ -314,7 +316,11 @@ void StatusPanel::functionKeyPressed(int keynum)
               if(m_ui)
                   qDebug() << "  user channels" << m_ui->channelList();
             */
-            //actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_tferchannel)); // Call
+            //emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));  // does nothing
+            //emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // finalize the indirect transfer
+            // @TODO we should retrieve the Local/xxx channel that was created by the atxfer
+            // command and hangup it. It may involve adding an amievent in asterisk at the right
+            // place and doing some work in the xivo_daemon and here.
         }
 //            if(action == "unpark")
 //                qDebug() << "StatusPanel::functionKeyPressed()" << "F1 when Wait : Take back";
