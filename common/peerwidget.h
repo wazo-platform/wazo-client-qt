@@ -39,6 +39,7 @@
 #include <QPoint>
 
 #include "basepeerwidget.h"
+#include "taintedpixmap.h"
 
 class QLabel;
 class QPixmap;
@@ -75,7 +76,6 @@ private:
     QLabel * m_textlbl;                //!< text label : to display peer name
         
     static QHash<QString, QPixmap> m_phones;        //!< phone icons
-    static QHash<QString, QPixmap> m_persons;        //!< person icons
     static QHash<QString, QPixmap> m_agents;        //!< agent icons
     static QHash<QString, QPixmap> m_mobiles;        //!< mobil phone icons
 };

@@ -49,7 +49,6 @@
 
 // Initialize static members
 QHash<QString, QPixmap> PeerWidget::m_phones = QHash<QString, QPixmap>();
-QHash<QString, QPixmap> PeerWidget::m_persons = QHash<QString, QPixmap>();
 QHash<QString, QPixmap> PeerWidget::m_agents = QHash<QString, QPixmap>();
 QHash<QString, QPixmap> PeerWidget::m_mobiles = QHash<QString, QPixmap>();
 
@@ -59,10 +58,10 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     : BasePeerWidget(engine, ui), m_availlbl(NULL), m_agentlbl(NULL)
 {
     // fill m_persons, m_phones and m_agents if needed.
-    if(m_persons.count() == 0)
+    if(m_phones.count() == 0)
     {
         QString color = "grey"; // we use only one color now
-        m_persons[color] = QPixmap(QString(":/images/personal-%1.png").arg(color));
+
         m_phones[color] = QPixmap(QString(":/images/phone-%1.png").arg(color));
         m_agents[color] = QPixmap(QString(":/images/agent-%1.png").arg(color));
         m_mobiles[color] = QPixmap(QString(":/images/mobile-%1.png").arg(color));
@@ -127,7 +126,6 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     
     if(! m_ui->ctilogin().isEmpty()) {
         m_availlbl = new QLabel(this);
-        m_availlbl->setPixmap(m_persons["grey"]);
         m_availlbl->setAlignment(Qt::AlignCenter);
         m_availlbl->setMinimumSize(fsize, fsize);
         m_availlbl->setObjectName("onlyme");
@@ -231,6 +229,9 @@ void PeerWidget::updatePresence()
 {
     if(m_availlbl)
     {
+        QColor c = QColor(m_ui->availstate()["color"]);
+        m_availlbl->setPixmap(*TaintedPixmap(QString(":/images/personal-trans.png"),c).getPixmap());
+
         QString qss = QString("QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: %1; }").arg(m_ui->availstate()["color"]);
         m_availlbl->setStyleSheet( qss );
         m_availlbl->setToolTip( tr("User : %1").arg(m_ui->availstate()["longname"]) );
