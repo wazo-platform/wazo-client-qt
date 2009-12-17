@@ -409,6 +409,7 @@ void BaseEngine::clearUserList()
             delete iter.value();
         }
     m_users.clear();
+
 }
 
 /*! \brief clear the content of m_phones
@@ -1033,6 +1034,7 @@ void BaseEngine::parseCommand(const QString & line)
                         m_meetme[astid][meetmeid].m_adminid = map3["adminid"].toString();
                         m_meetme[astid][meetmeid].m_uniqueids = map3["uniqueids"].toMap();
                         m_meetme[astid][meetmeid].m_adminlist = map3["adminlist"].toStringList();
+                        m_meetme[astid][meetmeid].m_adminnum = map3["adminnum"].toString();
                     }
                 }
                 meetmeInit(m_timesrv, datamap["payload"]);
@@ -1045,9 +1047,12 @@ void BaseEngine::parseCommand(const QString & line)
                 QString meetmeid = map["meetmeid"].toString();
                 QString uniqueid = map["uniqueid"].toString();
                 if(!meetmeid.isEmpty() && !astid.isEmpty()) {
-                    m_meetme[astid][meetmeid].m_adminid = map["adminid"].toString();
+                    if ( !map["adminid"].toString().isNull()) {
+                        m_meetme[astid][meetmeid].m_adminid = map["adminid"].toString();
+                    }
+                    m_meetme[astid][meetmeid].m_adminnum = map["adminnum"].toString();
                     m_meetme[astid][meetmeid].m_adminlist = map["adminlist"].toStringList();
-                    if(action == QString("join")) {
+                    if((action == QString("join"))||(action == QString("auth"))) {
                         m_meetme[astid][meetmeid].m_uniqueids[uniqueid] = map["details"].toMap();
                     } else if(action == "leave") {
                         m_meetme[astid][meetmeid].m_uniqueids.remove(uniqueid);
@@ -2259,7 +2264,7 @@ void BaseEngine::loadQueueOrder()
  * Return NULL if not available */
 UserInfo * BaseEngine::getXivoClientUser()
 {
-    //qDebug() << "BaseEngine::getXivoClientUser()" << m_astid << m_xivo_userid;
+    qDebug() << "BaseEngine::getXivoClientUser()" << m_astid << m_xivo_userid << "aaaa" << m_fullid;
     if( m_users.contains( m_fullid ) )
         return m_users.value( m_fullid );
     return NULL;

@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 7106 $
- * $Date: 2009-11-20 15:33:15 +0100 (Fri, 20 Nov 2009) $
+/* $Revision$
+ * $Date$
  */
 
 #include "taintedpixmap.h"

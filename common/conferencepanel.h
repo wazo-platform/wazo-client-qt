@@ -37,9 +37,12 @@
 #include <QHash>
 #include <QLabel>
 #include <QList>
+#include <QTreeWidget>
+#include <QHeaderView>
 #include <QObject>
 #include <QVariant>
 #include "xlet.h"
+#include <stdio.h>
 
 class QGridLayout;
 class QProgressBar;
@@ -65,6 +68,7 @@ public slots:
     void meetmeEvent(double, const QVariant &);
     void meetmeInit(double, const QVariant &);
     void doMeetMeAction();
+    void doMeetMeAdminOnlyAction(QTreeWidgetItem *, int );
 signals:
     void meetmeAction(const QString &, const QString &);    //!< action
 private:
@@ -74,7 +78,9 @@ private:
                        const QString &,
                        const QString &,
                        const QString &,
-                       const QVariantMap &);
+                       const QVariantMap &,
+                       const QString &
+                       );
     void addRoomTab(const QString &,
                     const QString &,
                     const QString &);
@@ -85,14 +91,19 @@ private:
     
     QHash<QString, QLabel *> m_infos;   //!< widgets for displaying name and phone number
     QHash<QString, QLabel *> m_timespent;   //!< call durations
-    QHash<QString, QPushButton *> m_action_kick;    //!< kick buttons
-    QHash<QString, QPushButton *> m_action_record;  //!< record buttons
-    QHash<QString, QPushButton *> m_action_mute;    //!< mute buttons
-    QHash<QString, QGridLayout *> m_layout;         //!< layouts
+    QHash<QString, QPushButton *> m_action_kick;      //!< kick buttons
+    QHash<QString, QPushButton *> m_action_record;    //!< record buttons
+    QHash<QString, QPushButton *> m_action_mute;      //!< mute buttons
+    QHash<QString, QGridLayout *> m_layout;           //!< layouts
+    QHash<QString, QTreeWidget *> m_user_not_authed_list;  //!< list of user not authed by admin
+    QHash<QString, QTreeWidgetItem *> m_user_not_authed;   //!< list of user not authed by admin
+
     QTabWidget * m_tw;              //!< Tab container
     QGridLayout * m_glayout;        //!< gridlayout
     QLabel * m_summary;
     bool m_show_record;
 };
+
+//#include <stdio.h>
 
 #endif

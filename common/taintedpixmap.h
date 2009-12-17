@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 6218 $
- * $Date: 2009-05-12 16:55:46 +0200 (Tue, 12 May 2009) $
+/* $Revision$
+ * $Date$
  */
 
 #ifndef __PAINTEDPIXMAP_H__

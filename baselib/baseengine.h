@@ -75,6 +75,7 @@ public:
         m_pin = other.m_pin;
         m_adminpin = other.m_adminpin;
         m_adminid = other.m_adminid;
+        m_adminnum = other.m_adminnum;
         m_adminlist = other.m_adminlist;
         m_uniqueids = other.m_uniqueids;
     };
@@ -98,10 +99,12 @@ public:
     QString m_number;   //!< room access number
     QString m_pin;      //!< room pin number (if any)
     QString m_adminpin; //!< room admin pin number (if any) 
-    QString m_adminid;  //!< admin id ???
+    QString m_adminid;  //!< admin id ??? (global)
+    QString m_adminnum;  //!< admin num ( local in the meetme room )
     QStringList m_adminlist;    //!< admin list (user ids)
     QMap<QString, QVariant> m_uniqueids;    //!< people in this conference room
 };
+
 
 /*! \brief Class which handles connection with the XIVO CTI server
  *
@@ -427,5 +430,7 @@ private:
 
     QHash<QString, QHash<QString, MeetmeInfo> > m_meetme; //! meet me (conference rooms)
 };
+
+//#include <stdio.h>
 
 #endif

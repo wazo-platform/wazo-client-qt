@@ -102,6 +102,7 @@ void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
             QString roomname = astroom["name"].toString();
             QString roomnum = astroom["number"].toString();
             QString adminid = astroom["adminid"].toString();
+            QString adminnum = astroom["adminnum"].toString();
             QVariantMap uniqueids = astroom["uniqueids"].toMap();
             // qDebug() << "ConferencePanel::meetmeInit()" << astid << idx << roomname << roomnum << adminid << uniqueids;
             
@@ -109,11 +110,11 @@ void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
                 addRoomTab(astid, roomnum, roomname);
                 foreach (QString uid, uniqueids.keys()) {
                     setProperties(timeref, "join",
-                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap());
+                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum);
                     setProperties(timeref, "mutestatus",
-                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap());
+                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum);
                     setProperties(timeref, "recordstatus",
-                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap());
+                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum);
                 }
                 updateButtons(astid, roomnum);
             } else {
@@ -148,13 +149,41 @@ void ConferencePanel::addRoomTab(const QString & astid,
     QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     if(! m_layout.contains(idxroom)) {
         QWidget * w = new QWidget();
-        m_layout[idxroom] = new QGridLayout(w);
+        QWidget * for_everyone = new QWidget();
+
+        // this panel should only be shown to admin
+        QTreeWidget * user_not_authed = 
+        m_user_not_authed_list[idxroom] = new QTreeWidget();
+        user_not_authed->setColumnCount(4);
+        QTreeWidgetItem * header  = new QTreeWidgetItem(user_not_authed);
+        header->setText(0, tr("User(s) not (yet)? acknowledged"));
+        header->setFirstColumnSpanned(true);
+        header->setFlags(Qt::ItemIsEnabled);
+        header->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicator);
+        header->setExpanded(true);
+        m_user_not_authed_list[idxroom]->setColumnWidth(0, 150);
+
+        connect(user_not_authed, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
+                this, SLOT(doMeetMeAdminOnlyAction(QTreeWidgetItem*, int)));
+
+        user_not_authed->header()->hide();
+        user_not_authed->setSelectionMode(QAbstractItemView::NoSelection);
+
+        //(user_not_authed->headerItem())->hide()
+
+        QHBoxLayout *hlayout = new QHBoxLayout(w);
+        hlayout->addWidget(user_not_authed);
+        hlayout->addWidget(for_everyone);
+
+
+        m_layout[idxroom] = new QGridLayout(for_everyone);
         m_layout[idxroom]->setProperty("astid", astid);
         m_layout[idxroom]->setProperty("roomnum", roomnum);
         m_layout[idxroom]->setProperty("roomname", roomname);
         m_layout[idxroom]->setColumnStretch(0, 1);
         m_layout[idxroom]->setColumnStretch(6, 1);
         m_layout[idxroom]->setRowStretch(100, 1);
+
         int i = m_tw->addTab(w, tr("%1 (%2)").arg(roomname, roomnum));
         m_tw->setTabToolTip(i, tr("Room %1 (%2) on %3").arg(roomname, roomnum, astid));
     }
@@ -165,12 +194,13 @@ void ConferencePanel::addRoomTab(const QString & astid,
 void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
 {
     QVariantMap meetmeMap = meetme.toMap();
-    //qDebug() << "ConferencePanel::meetmeEvent()" << meetmeMap;
+    qDebug() << "ConferencePanel::meetmeEvent()" << meetmeMap;
     QString astid = meetmeMap["astid"].toString();
     QString roomnum = meetmeMap["roomnum"].toString();
     QString roomname = meetmeMap["roomname"].toString();
     //QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     QString adminid = meetmeMap["adminid"].toString();
+    QString adminnum = meetmeMap["adminnum"].toString();
     addRoomTab(astid, roomnum, roomname);
     
     setProperties(timeref,
@@ -179,7 +209,8 @@ void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
                   astid,
                   roomnum,
                   meetmeMap["uniqueid"].toString(),
-                  meetmeMap["details"].toMap());
+                  meetmeMap["details"].toMap(),
+                  adminnum);
 
     updateButtons(astid, roomnum);
 
@@ -193,8 +224,11 @@ void ConferencePanel::updateButtons(const QString & astid,
 {
     if(!m_engine)
         return;
+
+
     QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     UserInfo * userinfo = m_engine->getXivoClientUser();
+    //printf("userinfo -> %p\n",userinfo);
     QString userid = (userinfo ? userinfo->userid() : QString(""));
     QHashIterator<QString, MeetmeInfo> i(m_engine->meetme()[astid]);
     while(i.hasNext()) {
@@ -204,6 +238,26 @@ void ConferencePanel::updateButtons(const QString & astid,
             qDebug() << "ConferencePanel::updateButtons" << roomnum << meetmeinfo.m_adminid << meetmeinfo.m_adminlist;
             //qDebug() << "ConferencePanel::updateButtons" << meetmeinfo.m_uniqueids;
             bool isAdmin = (userid == meetmeinfo.m_adminid) || meetmeinfo.m_adminlist.contains(userid);
+
+            bool isAuthed = false;
+            {
+                QMapIterator<QString, QVariant> j(meetmeinfo.m_uniqueids);
+                while(j.hasNext()) {
+                    j.next();
+                    //printf("userid == j.value().toMap()[\"userid\"].toString() : %s %s\n",userid.toUtf8().constData(),j.value().toMap()["userid"].toString().toUtf8().constData());
+                    if ((userid == j.value().toMap()["userid"].toString())&&(j.value().toMap()["authed"].toBool())) {
+                        isAuthed = true;
+                        break;
+                    }
+                }
+            }
+
+            // non admin don't have to see the list of user not yet allowed
+            //printf("isAdmin '%d' '%s' '%s' isAuthed: '%d'\n",isAdmin,meetmeinfo.m_adminid.toUtf8().constData(),userid.toUtf8().constData(),isAuthed);
+            if (!isAdmin) {
+                m_user_not_authed_list[idxroom]->hide();
+            }
+
             QMapIterator<QString, QVariant> j(meetmeinfo.m_uniqueids);
             while(j.hasNext()) {
                 j.next();
@@ -211,17 +265,31 @@ void ConferencePanel::updateButtons(const QString & astid,
                 // We have the right to kick and mute if
                 //    1) we are the admin (userinfo->userid() == adminid)
                 // or 2) it is ourself    (userinfo->userid() == userid)
-                if(isAdmin || (userid == j.value().toMap()["userid"].toString())) {
-                    m_action_kick[ref]->show();
-                    m_action_mute[ref]->show();
-                } else {
+
+                // all non authed user don't have to appear here, they should see nothing too
+                if ((!isAuthed)||(!j.value().toMap()["authed"].toBool())) {
+                    m_timespent[ref]->hide();
+                    m_infos[ref]->hide();
                     m_action_kick[ref]->hide();
                     m_action_mute[ref]->hide();
-                }
-                if(isAdmin && m_show_record) {
-                    m_action_record[ref]->show();
-                } else {
                     m_action_record[ref]->hide();
+                } else {
+                    if (j.value().toMap()["authed"].toBool()) {
+                        m_timespent[ref]->show();
+                        m_infos[ref]->show();
+                    }
+                    if(isAdmin || (userid == j.value().toMap()["userid"].toString())) {
+                        m_action_kick[ref]->show();
+                        m_action_mute[ref]->show();
+                    } else {
+                        m_action_kick[ref]->hide();
+                        m_action_mute[ref]->hide();
+                    }
+                    if(isAdmin && m_show_record) {
+                        m_action_record[ref]->show();
+                    } else {
+                        m_action_record[ref]->hide();
+                    }
                 }
             }
         }
@@ -236,7 +304,9 @@ void ConferencePanel::setProperties(double timeref,
                                     const QString & astid,
                                     const QString & roomnum,
                                     const QString & uniqueid,
-                                    const QVariantMap & details)
+                                    const QVariantMap & details,
+                                    const QString & adminnum
+                                    )
 {
     qDebug() << "ConferencePanel::setProperties()" << action << adminid << astid << roomnum << uniqueid << details;
     QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
@@ -246,6 +316,25 @@ void ConferencePanel::setProperties(double timeref,
         QString fullname = details["fullname"].toString();
         QString phonenum = details["phonenum"].toString();
         QString userid = details["userid"].toString();
+        bool authed = details["authed"].toBool();
+
+        if (!authed) {
+            if(! m_user_not_authed.contains(ref)) {
+                m_user_not_authed[ref] = new QTreeWidgetItem(m_user_not_authed_list[idxroom]->topLevelItem(0));
+
+                m_user_not_authed[ref]->setText(0, details["fullname"].toString() + "<" + details["phonenum"].toString() + ">");
+                m_user_not_authed[ref]->setText(1, tr("screw him"));
+                m_user_not_authed[ref]->setText(2, tr("talk to"));
+                m_user_not_authed[ref]->setText(3, tr("allow him in"));
+                // QTreeWidgetItem isn't inheriting from Q_OBJECT so we can't set any property
+                // but we can still store extra data in hidden columns
+                m_user_not_authed[ref]->setText(4, astid);
+                m_user_not_authed[ref]->setText(5, roomnum);
+                m_user_not_authed[ref]->setText(6, usernum);
+                m_user_not_authed[ref]->setText(7, adminnum);
+            }
+        }
+
         int time_spent = int(timeref - details["time_start"].toDouble() + 0.5);
         if(! m_infos.contains(ref)) {
             //UserInfo * userinfo = m_engine ? m_engine->getXivoClientUser() : NULL;
@@ -352,6 +441,9 @@ void ConferencePanel::setProperties(double timeref,
                 count ++;
         if(count == 0)
             delRoomTab(astid, roomnum);
+    } else if(action == "auth") {
+        delete m_user_not_authed[ref];
+        m_user_not_authed.remove(ref);
     } else if(action == "mutestatus") {
         QString mutestatus = details["mutestatus"].toString();
         if(m_infos.contains(ref)) {
@@ -383,6 +475,39 @@ void ConferencePanel::setProperties(double timeref,
                 qDebug() << "ConferencePanel::meetmeEvent() unknown recordstatus" << recordstatus << ref;
             }
         }
+    }
+}
+
+/*! \brief execute meet me Admin actions (screw/talk with/allow in)
+ */
+void ConferencePanel::doMeetMeAdminOnlyAction(QTreeWidgetItem * item, int column)
+{
+    QString action = sender()->property("action").toString();
+    QString ref = sender()->property("reference").toString();
+
+    QString cast_id = item->text(4);
+    QString meet_num = item->text(5);
+    QString user_id = item->text(6);
+    QString admin_id = item->text(7).right(item->text(7).length()-item->text(7).indexOf('/')-1) ;
+
+    //printf("ConferencePanel::doMeetMeAdminOnlyAction %p %d %s %s %s %s\n",item,column
+    //,admin_id.toUtf8().constData()
+    //,cast_id.toUtf8().constData()
+    //,meet_num.toUtf8().constData()
+    //,user_id.toUtf8().constData()
+    //);
+    switch (column) {
+        case 1: // screw him
+            meetmeAction("MeetmeKick", cast_id + " " + meet_num + " " + user_id + " " + admin_id);
+            break;
+        case 2: // screw him
+            meetmeAction("MeetmeTalk", cast_id + " " + meet_num + " " + user_id + " " + admin_id);
+            break;
+        case 3: // screw him
+            meetmeAction("MeetmeAccept", cast_id + " " + meet_num + " " + user_id + " " + admin_id);
+            break;
+        default:
+            break;
     }
 }
 
