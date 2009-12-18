@@ -73,6 +73,7 @@ public:
         m_name = other.m_name;
         m_number = other.m_number;
         m_pin = other.m_pin;
+        m_paused = other.m_paused;
         m_adminpin = other.m_adminpin;
         m_adminid = other.m_adminid;
         m_adminnum = other.m_adminnum;
@@ -101,6 +102,7 @@ public:
     QString m_adminpin; //!< room admin pin number (if any) 
     QString m_adminid;  //!< admin id ??? (global)
     QString m_adminnum;  //!< admin num ( local in the meetme room )
+    bool m_paused;
     QStringList m_adminlist;    //!< admin list (user ids)
     QMap<QString, QVariant> m_uniqueids;    //!< people in this conference room
 };

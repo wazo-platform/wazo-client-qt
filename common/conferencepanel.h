@@ -68,6 +68,7 @@ public slots:
     void meetmeEvent(double, const QVariant &);
     void meetmeInit(double, const QVariant &);
     void doMeetMeAction();
+    void changeRoomPauseState();
     void doMeetMeAdminOnlyAction(QTreeWidgetItem *, int );
 signals:
     void meetmeAction(const QString &, const QString &);    //!< action
@@ -79,7 +80,8 @@ private:
                        const QString &,
                        const QString &,
                        const QVariantMap &,
-                       const QString &
+                       const QString &,
+                       const bool &
                        );
     void addRoomTab(const QString &,
                     const QString &,
@@ -96,6 +98,7 @@ private:
     QHash<QString, QPushButton *> m_action_mute;      //!< mute buttons
     QHash<QString, QGridLayout *> m_layout;           //!< layouts
     QHash<QString, QTreeWidget *> m_user_not_authed_list;  //!< list of user not authed by admin
+    QHash<QString, QPushButton *> m_action_chamber_toggle_pause;  //!< button to pause a conf chamber
     QHash<QString, QTreeWidgetItem *> m_user_not_authed;   //!< list of user not authed by admin
 
     QTabWidget * m_tw;              //!< Tab container

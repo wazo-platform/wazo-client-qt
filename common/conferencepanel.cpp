@@ -103,6 +103,7 @@ void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
             QString roomnum = astroom["number"].toString();
             QString adminid = astroom["adminid"].toString();
             QString adminnum = astroom["adminnum"].toString();
+            bool pause = astroom["paused"].toBool();
             QVariantMap uniqueids = astroom["uniqueids"].toMap();
             // qDebug() << "ConferencePanel::meetmeInit()" << astid << idx << roomname << roomnum << adminid << uniqueids;
             
@@ -110,11 +111,13 @@ void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
                 addRoomTab(astid, roomnum, roomname);
                 foreach (QString uid, uniqueids.keys()) {
                     setProperties(timeref, "join",
-                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum);
+                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum,pause);
                     setProperties(timeref, "mutestatus",
-                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum);
+                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum,pause);
                     setProperties(timeref, "recordstatus",
-                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum);
+                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum,pause);
+                    setProperties(timeref, "changeroompausedstate",
+                                  adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum,pause);
                 }
                 updateButtons(astid, roomnum);
             } else {
@@ -150,12 +153,10 @@ void ConferencePanel::addRoomTab(const QString & astid,
     if(! m_layout.contains(idxroom)) {
         QWidget * w = new QWidget();
         QWidget * for_everyone = new QWidget();
-
         // this panel should only be shown to admin
-        QTreeWidget * user_not_authed = 
         m_user_not_authed_list[idxroom] = new QTreeWidget();
-        user_not_authed->setColumnCount(4);
-        QTreeWidgetItem * header  = new QTreeWidgetItem(user_not_authed);
+        m_user_not_authed_list[idxroom]->setColumnCount(4);
+        QTreeWidgetItem * header  = new QTreeWidgetItem(m_user_not_authed_list[idxroom]);
         header->setText(0, tr("User(s) not (yet)? acknowledged"));
         header->setFirstColumnSpanned(true);
         header->setFlags(Qt::ItemIsEnabled);
@@ -163,16 +164,21 @@ void ConferencePanel::addRoomTab(const QString & astid,
         header->setExpanded(true);
         m_user_not_authed_list[idxroom]->setColumnWidth(0, 150);
 
-        connect(user_not_authed, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
+        connect(m_user_not_authed_list[idxroom], SIGNAL(itemClicked(QTreeWidgetItem*, int)),
                 this, SLOT(doMeetMeAdminOnlyAction(QTreeWidgetItem*, int)));
 
-        user_not_authed->header()->hide();
-        user_not_authed->setSelectionMode(QAbstractItemView::NoSelection);
+        m_user_not_authed_list[idxroom]->header()->hide();
+        m_user_not_authed_list[idxroom]->setSelectionMode(QAbstractItemView::NoSelection);
 
-        //(user_not_authed->headerItem())->hide()
+        QHBoxLayout * hlayout = new QHBoxLayout(w);
+        QVBoxLayout * vlayout = new QVBoxLayout();
 
-        QHBoxLayout *hlayout = new QHBoxLayout(w);
-        hlayout->addWidget(user_not_authed);
+        m_action_chamber_toggle_pause[idxroom] = new QPushButton();
+        connect(m_action_chamber_toggle_pause[idxroom], SIGNAL(clicked()), this, SLOT(changeRoomPauseState()));
+
+        vlayout->addWidget(m_user_not_authed_list[idxroom]);
+        vlayout->addWidget(m_action_chamber_toggle_pause[idxroom]);
+        hlayout->addLayout(vlayout);
         hlayout->addWidget(for_everyone);
 
 
@@ -201,6 +207,7 @@ void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
     //QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     QString adminid = meetmeMap["adminid"].toString();
     QString adminnum = meetmeMap["adminnum"].toString();
+    bool pause = meetmeMap["paused"].toBool();
     addRoomTab(astid, roomnum, roomname);
     
     setProperties(timeref,
@@ -210,7 +217,8 @@ void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
                   roomnum,
                   meetmeMap["uniqueid"].toString(),
                   meetmeMap["details"].toMap(),
-                  adminnum);
+                  adminnum,
+                  pause);
 
     updateButtons(astid, roomnum);
 
@@ -256,6 +264,7 @@ void ConferencePanel::updateButtons(const QString & astid,
             //printf("isAdmin '%d' '%s' '%s' isAuthed: '%d'\n",isAdmin,meetmeinfo.m_adminid.toUtf8().constData(),userid.toUtf8().constData(),isAuthed);
             if (!isAdmin) {
                 m_user_not_authed_list[idxroom]->hide();
+                m_action_chamber_toggle_pause[idxroom]->hide();
             }
 
             QMapIterator<QString, QVariant> j(meetmeinfo.m_uniqueids);
@@ -305,7 +314,8 @@ void ConferencePanel::setProperties(double timeref,
                                     const QString & roomnum,
                                     const QString & uniqueid,
                                     const QVariantMap & details,
-                                    const QString & adminnum
+                                    const QString & adminnum,
+                                    const bool & paused
                                     )
 {
     qDebug() << "ConferencePanel::setProperties()" << action << adminid << astid << roomnum << uniqueid << details;
@@ -475,6 +485,19 @@ void ConferencePanel::setProperties(double timeref,
                 qDebug() << "ConferencePanel::meetmeEvent() unknown recordstatus" << recordstatus << ref;
             }
         }
+    } else if(action == "changeroompausedstate") {
+        QString pause_state_label;
+
+        if (paused) {
+            pause_state_label = tr("&Start/Continue the conference");
+        } else {
+            pause_state_label = tr("&Put the conference room in pause");
+        }
+
+        m_action_chamber_toggle_pause[idxroom]->setProperty("astid", astid);
+        m_action_chamber_toggle_pause[idxroom]->setProperty("room", roomnum);
+        m_action_chamber_toggle_pause[idxroom]->setProperty("togglepause", QString((paused)?"off":"on"));
+        m_action_chamber_toggle_pause[idxroom]->setText(pause_state_label);
     }
 }
 
@@ -489,6 +512,7 @@ void ConferencePanel::doMeetMeAdminOnlyAction(QTreeWidgetItem * item, int column
     QString meet_num = item->text(5);
     QString user_id = item->text(6);
     QString admin_id = item->text(7).right(item->text(7).length()-item->text(7).indexOf('/')-1) ;
+
 
     //printf("ConferencePanel::doMeetMeAdminOnlyAction %p %d %s %s %s %s\n",item,column
     //,admin_id.toUtf8().constData()
@@ -509,6 +533,20 @@ void ConferencePanel::doMeetMeAdminOnlyAction(QTreeWidgetItem * item, int column
         default:
             break;
     }
+
+    item->setSelected(true);
+}
+
+/*! \brief change the paused state of the room
+ */
+void ConferencePanel::changeRoomPauseState()
+{
+    QString action = sender()->property("action").toString();
+
+    meetmeAction("MeetmePause",
+                 sender()->property("astid").toString() +
+                 " " + sender()->property("room").toString() +
+                 " " + sender()->property("togglepause").toString());
 }
 
 /*! \brief execute meet me actions (kick/record/mute)

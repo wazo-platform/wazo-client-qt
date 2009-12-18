@@ -1035,6 +1035,7 @@ void BaseEngine::parseCommand(const QString & line)
                         m_meetme[astid][meetmeid].m_uniqueids = map3["uniqueids"].toMap();
                         m_meetme[astid][meetmeid].m_adminlist = map3["adminlist"].toStringList();
                         m_meetme[astid][meetmeid].m_adminnum = map3["adminnum"].toString();
+                        m_meetme[astid][meetmeid].m_paused = map3["paused"].toBool();
                     }
                 }
                 meetmeInit(m_timesrv, datamap["payload"]);
@@ -1056,6 +1057,9 @@ void BaseEngine::parseCommand(const QString & line)
                         m_meetme[astid][meetmeid].m_uniqueids[uniqueid] = map["details"].toMap();
                     } else if(action == "leave") {
                         m_meetme[astid][meetmeid].m_uniqueids.remove(uniqueid);
+                    } else if(action == "changeroompausedstate") {
+                        m_meetme[astid][meetmeid].m_paused = map["paused"].toBool();
+                        
                     }
                 }
                 meetmeEvent(m_timesrv, datamap["payload"]);
