@@ -1,19 +1,26 @@
-_XIVOVER_ = 1.1
-_SVNVER_ = 1
-include(xivoclient/versions.pri)
-XIVOVER = '\\"$${_XIVOVER_}\\"'
-SVNVER  = '\\"$${_SVNVER_}\\"'
-DATEBUILD = '\\"$${_DATEBUILD_}\\"'
-message('XIVO version:' $${XIVOVER})
-message(' svn version:' $${SVNVER})
-message('  build date:' $${DATEBUILD})
-DEFINES += XIVOVER=\"$${XIVOVER}\"
-DEFINES += SVNVER=\"$${SVNVER}\"
-DEFINES += DATEBUILD=\"$${DATEBUILD}\"
+XIVOVER = 1.1
 
-CONFIG += release
-CONFIG -= debug
-#CONFIG += debug
-CONFIG += uitools
-CONFIG += x86 ppc
+SVNVER = $$system(svn info | sed -n \"s/Revision: //p\")
+DATEBUILD =  $$system(date)
 
+# take care of inferior(s) system(s) {
+
+  isEmpty( SVNVER ) {
+    SVNVER = -1
+  }
+  
+  isEmpty( DATEBUILD ) {
+    DATEBUILD = "ice age"
+  }
+
+# }
+
+!build_pass:message('XIVO version:' $${XIVOVER})
+!build_pass:message('svn version:' $${SVNVER})
+!build_pass:message('build date:'  $${DATEBUILD})
+
+# add everything correctly escaped as a string
+
+QMAKE_CXXFLAGS += -DXIVOVER=\"\\\"$${XIVOVER}\\\"\"
+QMAKE_CXXFLAGS += -DSVNVER=\"\\\"$${SVNVER}\\\"\"
+QMAKE_CXXFLAGS += -DDATEBUILD=\"\\\"$${DATEBUILD}\\\"\"

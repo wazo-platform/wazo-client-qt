@@ -14,6 +14,7 @@ include(../common.pri)
 TEMPLATE = app
 # CONFIG += console # uncomment to get console on Win32
 TARGET = 
+CONFIG += uitools
 DEPENDPATH += .
 INCLUDEPATH += . $${COMMONDIR} ../baselib
 
