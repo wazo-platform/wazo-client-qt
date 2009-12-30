@@ -6,7 +6,7 @@ DATEBUILD =  $$system(date)
 # take care of inferior(s) system(s) {
 
   isEmpty( SVNVER ) {
-    SVNVER = -1
+    SVNVER = 9999
   }
   
   isEmpty( DATEBUILD ) {
