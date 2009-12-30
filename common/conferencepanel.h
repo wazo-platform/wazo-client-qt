@@ -89,6 +89,7 @@ private:
     void delRoomTab(const QString &,
                     const QString &);
     void updateSummary();
+    QWidget * createLeftUserList(QWidget *parent, const QString &);
     void updateButtons(const QString &, const QString &);
     
     QHash<QString, QLabel *> m_infos;   //!< widgets for displaying name and phone number
@@ -106,7 +107,5 @@ private:
     QLabel * m_summary;
     bool m_show_record;
 };
-
-//#include <stdio.h>
 
 #endif

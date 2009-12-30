@@ -135,12 +135,46 @@ void ConferencePanel::delRoomTab(const QString & astid,
 {
     QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     if(m_layout.contains(idxroom)) {
-        QWidget * w = qobject_cast<QWidget *>(m_layout[idxroom]->parent());
+        QWidget * w = qobject_cast<QWidget *>(m_layout[idxroom]->parent()->parent());
         if(w)
             m_tw->removeTab(m_tw->indexOf(w));
         m_layout[idxroom]->deleteLater();
         m_layout.remove(idxroom);
     }
+}
+
+/*! \brief make the not authed user list and the button to pause the room on the left part of ui
+ */
+QWidget* ConferencePanel::createLeftUserList(QWidget * parent, const QString & idxroom)
+{
+    QWidget * w = new QWidget(parent);
+    QVBoxLayout * vlayout = new QVBoxLayout(w);
+
+    m_user_not_authed_list[idxroom] = new QTreeWidget(w);
+    m_user_not_authed_list[idxroom]->setColumnCount(4);
+    m_user_not_authed_list[idxroom]->setColumnWidth(0, 150);
+    m_user_not_authed_list[idxroom]->header()->hide();
+    m_user_not_authed_list[idxroom]->setSelectionMode(QAbstractItemView::NoSelection);
+
+    QTreeWidgetItem * header  = new QTreeWidgetItem(m_user_not_authed_list[idxroom]);
+
+    header->setText(0, tr("User(s) not (yet)? acknowledged"));
+    header->setFirstColumnSpanned(true);
+    header->setFlags(Qt::ItemIsEnabled);
+    header->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicator);
+    header->setExpanded(true);
+
+    vlayout->addWidget(m_user_not_authed_list[idxroom]);
+
+    connect(m_user_not_authed_list[idxroom], SIGNAL(itemClicked(QTreeWidgetItem*, int)),
+            this, SLOT(doMeetMeAdminOnlyAction(QTreeWidgetItem*, int)));
+
+    m_action_chamber_toggle_pause[idxroom] = new QPushButton(tr("&Start/Continue the conference"),w);
+    connect(m_action_chamber_toggle_pause[idxroom], SIGNAL(clicked()), this, SLOT(changeRoomPauseState()));
+    vlayout->addWidget(m_action_chamber_toggle_pause[idxroom]);
+
+
+    return w;
 }
 
 /*! \brief add a tab for the conference if there is not already one
@@ -152,37 +186,13 @@ void ConferencePanel::addRoomTab(const QString & astid,
     QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     if(! m_layout.contains(idxroom)) {
         QWidget * w = new QWidget();
-        QWidget * for_everyone = new QWidget();
-        // this panel should only be shown to admin
-        m_user_not_authed_list[idxroom] = new QTreeWidget();
-        m_user_not_authed_list[idxroom]->setColumnCount(4);
-        QTreeWidgetItem * header  = new QTreeWidgetItem(m_user_not_authed_list[idxroom]);
-        header->setText(0, tr("User(s) not (yet)? acknowledged"));
-        header->setFirstColumnSpanned(true);
-        header->setFlags(Qt::ItemIsEnabled);
-        header->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicator);
-        header->setExpanded(true);
-        m_user_not_authed_list[idxroom]->setColumnWidth(0, 150);
-
-        connect(m_user_not_authed_list[idxroom], SIGNAL(itemClicked(QTreeWidgetItem*, int)),
-                this, SLOT(doMeetMeAdminOnlyAction(QTreeWidgetItem*, int)));
-
-        m_user_not_authed_list[idxroom]->header()->hide();
-        m_user_not_authed_list[idxroom]->setSelectionMode(QAbstractItemView::NoSelection);
-
         QHBoxLayout * hlayout = new QHBoxLayout(w);
-        QVBoxLayout * vlayout = new QVBoxLayout();
+        QWidget * shown_to_everyone = new QWidget(w);
 
-        m_action_chamber_toggle_pause[idxroom] = new QPushButton();
-        connect(m_action_chamber_toggle_pause[idxroom], SIGNAL(clicked()), this, SLOT(changeRoomPauseState()));
+        hlayout->addWidget(createLeftUserList(w,idxroom));
+        hlayout->addWidget(shown_to_everyone);
 
-        vlayout->addWidget(m_user_not_authed_list[idxroom]);
-        vlayout->addWidget(m_action_chamber_toggle_pause[idxroom]);
-        hlayout->addLayout(vlayout);
-        hlayout->addWidget(for_everyone);
-
-
-        m_layout[idxroom] = new QGridLayout(for_everyone);
+        m_layout[idxroom] = new QGridLayout(shown_to_everyone);
         m_layout[idxroom]->setProperty("astid", astid);
         m_layout[idxroom]->setProperty("roomnum", roomnum);
         m_layout[idxroom]->setProperty("roomname", roomname);
@@ -321,6 +331,7 @@ void ConferencePanel::setProperties(double timeref,
     qDebug() << "ConferencePanel::setProperties()" << action << adminid << astid << roomnum << uniqueid << details;
     QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     QString ref = QString("%1-%2-%3").arg(astid).arg(roomnum).arg(uniqueid);
+
     if(action == "join") {
         QString usernum = details["usernum"].toString();
         QString fullname = details["fullname"].toString();
@@ -428,6 +439,10 @@ void ConferencePanel::setProperties(double timeref,
             // glayout->addWidget( qp2, 0, 3 );
         }
     } else if(action == "leave") {
+        if(m_user_not_authed.contains(ref)) {
+          delete m_user_not_authed[ref];
+          m_user_not_authed.remove(ref);
+        }
         if(m_infos.contains(ref)) {
             m_layout[idxroom]->removeWidget( m_infos[ref] );
             m_layout[idxroom]->removeWidget( m_action_kick[ref] );
@@ -446,9 +461,13 @@ void ConferencePanel::setProperties(double timeref,
             m_timespent.remove(ref);
         }
         int count = 0;
-        foreach (QString r, m_infos.keys())
-            if((m_infos[r]->property("astid").toString() == astid) && (m_infos[r]->property("room").toString() == roomnum))
+        printf("STARTING COUNT");
+        foreach (QString r, m_infos.keys()) {
+            if((m_infos[r]->property("astid").toString() == astid) && (m_infos[r]->property("room").toString() == roomnum)) {
                 count ++;
+            }
+            printf("COUNT = %d - %s\n\n",count,m_infos[r]->property("astid").toString().toUtf8().constData());
+        }
         if(count == 0)
             delRoomTab(astid, roomnum);
     } else if(action == "auth") {
@@ -524,10 +543,10 @@ void ConferencePanel::doMeetMeAdminOnlyAction(QTreeWidgetItem * item, int column
         case 1: // screw him
             meetmeAction("MeetmeKick", cast_id + " " + meet_num + " " + user_id + " " + admin_id);
             break;
-        case 2: // screw him
+        case 2: // talk to him
             meetmeAction("MeetmeTalk", cast_id + " " + meet_num + " " + user_id + " " + admin_id);
             break;
-        case 3: // screw him
+        case 3: // accept him in
             meetmeAction("MeetmeAccept", cast_id + " " + meet_num + " " + user_id + " " + admin_id);
             break;
         default:
