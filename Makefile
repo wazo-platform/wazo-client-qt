@@ -5,7 +5,7 @@ QMAKE?=qmake
 LRELEASE?=lrelease
 UPXRUN?=upx
 ECHO?=/bin/echo
-JOPT?=-j5
+JOPT?=-j1
 DOXYGEN?=doxygen
 
 # WIN32 targets only

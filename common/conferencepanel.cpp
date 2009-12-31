@@ -94,7 +94,8 @@ void ConferencePanel::setGuiOptions(const QVariantMap & optionsMap)
  */
 void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
 {
-    // qDebug() << "ConferencePanel::meetmeInit()" << meetme;
+    QString our_userid = m_engine->getXivoClientUser()->userid();
+    //qDebug() << "ConferencePanel::meetmeInit()" << meetme;
     foreach (QString astid, meetme.toMap().keys()) {
         QVariantMap astrooms = meetme.toMap()[astid].toMap();
         foreach (QString idx, astrooms.keys()) {
@@ -105,10 +106,22 @@ void ConferencePanel::meetmeInit(double timeref, const QVariant & meetme)
             QString adminnum = astroom["adminnum"].toString();
             bool pause = astroom["paused"].toBool();
             QVariantMap uniqueids = astroom["uniqueids"].toMap();
-            // qDebug() << "ConferencePanel::meetmeInit()" << astid << idx << roomname << roomnum << adminid << uniqueids;
+            bool are_we_in_room = false;
+            //qDebug() << "ConferencePanel::meetmeInit()" << astid << idx << roomname << roomnum << adminid << uniqueids << "\n\n";
+
+            foreach (QString uniqueid, uniqueids.keys()) {
+                //qDebug()<< "Conf::" << uniqueids[uniqueid].toMap()["userid"].toString() << "\n";
+                if (uniqueids[uniqueid].toMap()["userid"].toString() == our_userid) {
+                    are_we_in_room = true;
+                    break;
+                }
+            }
+            /*
+             ConferencePanel::meetmeInit() "xivo" "1" "360" "360" "" QMap(("1262248767.61", QVariant(QVariantMap, QMap(("authed", QVariant(bool, false) ) ( "fullname" ,  QVariant(QString, "plop plop") ) ( "mutestatus" ,  QVariant(QString, "off") ) ( "phonenum" ,  QVariant(QString, "205") ) ( "recordstatus" ,  QVariant(QString, "off") ) ( "time_start" ,  QVariant(double, 1.26225e+09) ) ( "userid" ,  QVariant(QString, "xivo/7") ) ( "usernum" ,  QVariant(QString, "1") ) )  ) ) )
+            */
             
             if(uniqueids.size() > 0) {
-                addRoomTab(astid, roomnum, roomname);
+                addRoomTab(astid, roomnum, roomname, are_we_in_room);
                 foreach (QString uid, uniqueids.keys()) {
                     setProperties(timeref, "join",
                                   adminid, astid, roomnum, uid, uniqueids[uid].toMap(),adminnum,pause);
@@ -145,10 +158,12 @@ void ConferencePanel::delRoomTab(const QString & astid,
 
 /*! \brief make the not authed user list and the button to pause the room on the left part of ui
  */
-QWidget* ConferencePanel::createLeftUserList(QWidget * parent, const QString & idxroom)
+QWidget* ConferencePanel::createLeftUserList(QWidget * parent, const QString & astid,
+                                 const QString & roomnum )
 {
     QWidget * w = new QWidget(parent);
     QVBoxLayout * vlayout = new QVBoxLayout(w);
+    QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
 
     m_user_not_authed_list[idxroom] = new QTreeWidget(w);
     m_user_not_authed_list[idxroom]->setColumnCount(4);
@@ -169,8 +184,12 @@ QWidget* ConferencePanel::createLeftUserList(QWidget * parent, const QString & i
     connect(m_user_not_authed_list[idxroom], SIGNAL(itemClicked(QTreeWidgetItem*, int)),
             this, SLOT(doMeetMeAdminOnlyAction(QTreeWidgetItem*, int)));
 
-    m_action_chamber_toggle_pause[idxroom] = new QPushButton(tr("&Start/Continue the conference"),w);
+    m_action_chamber_toggle_pause[idxroom] = new QPushButton(tr("&Put the conference room in pause"),w);
+    m_action_chamber_toggle_pause[idxroom]->setProperty("astid", astid);
+    m_action_chamber_toggle_pause[idxroom]->setProperty("room", roomnum);
+    m_action_chamber_toggle_pause[idxroom]->setProperty("togglepause", "on");
     connect(m_action_chamber_toggle_pause[idxroom], SIGNAL(clicked()), this, SLOT(changeRoomPauseState()));
+
     vlayout->addWidget(m_action_chamber_toggle_pause[idxroom]);
 
 
@@ -181,7 +200,8 @@ QWidget* ConferencePanel::createLeftUserList(QWidget * parent, const QString & i
  */
 void ConferencePanel::addRoomTab(const QString & astid,
                                  const QString & roomnum,
-                                 const QString & roomname)
+                                 const QString & roomname,
+                                 int are_we_inside )
 {
     QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     if(! m_layout.contains(idxroom)) {
@@ -189,7 +209,7 @@ void ConferencePanel::addRoomTab(const QString & astid,
         QHBoxLayout * hlayout = new QHBoxLayout(w);
         QWidget * shown_to_everyone = new QWidget(w);
 
-        hlayout->addWidget(createLeftUserList(w,idxroom));
+        hlayout->addWidget(createLeftUserList(w,astid,roomnum));
         hlayout->addWidget(shown_to_everyone);
 
         m_layout[idxroom] = new QGridLayout(shown_to_everyone);
@@ -200,8 +220,22 @@ void ConferencePanel::addRoomTab(const QString & astid,
         m_layout[idxroom]->setColumnStretch(6, 1);
         m_layout[idxroom]->setRowStretch(100, 1);
 
-        int i = m_tw->addTab(w, tr("%1 (%2)").arg(roomname, roomnum));
-        m_tw->setTabToolTip(i, tr("Room %1 (%2) on %3").arg(roomname, roomnum, astid));
+
+        if(are_we_inside) {
+            int i = m_tw->addTab(w, tr("%1 (%2)").arg(roomname, roomnum));
+            m_tw->setTabToolTip(i, tr("Room %1 (%2) on %3").arg(roomname, roomnum, astid));
+        }
+    } else {
+        if(are_we_inside) {
+            // a dirty way to see if our tab has ever been added
+            QWidget * shown_to_everyone = m_layout[idxroom]->parentWidget();
+            QWidget * w = shown_to_everyone->parentWidget();
+
+            if(w->parentWidget()!=m_tw) {
+                int i = m_tw->addTab(w, tr("%1 (%2)").arg(roomname, roomnum));
+                m_tw->setTabToolTip(i, tr("Room %1 (%2) on %3").arg(roomname, roomnum, astid));
+            }
+        }
     }
 }
 
@@ -214,11 +248,16 @@ void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
     QString astid = meetmeMap["astid"].toString();
     QString roomnum = meetmeMap["roomnum"].toString();
     QString roomname = meetmeMap["roomname"].toString();
-    //QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     QString adminid = meetmeMap["adminid"].toString();
     QString adminnum = meetmeMap["adminnum"].toString();
     bool pause = meetmeMap["paused"].toBool();
-    addRoomTab(astid, roomnum, roomname);
+    bool is_this_us = false;
+    QString our_userid = m_engine->getXivoClientUser()->userid();
+
+    if (meetmeMap["details"].toMap()["userid"].toString() == our_userid)
+        is_this_us = true;
+
+    addRoomTab(astid, roomnum, roomname,is_this_us);
     
     setProperties(timeref,
                   meetmeMap["action"].toString(),
@@ -246,23 +285,21 @@ void ConferencePanel::updateButtons(const QString & astid,
 
     QString idxroom = QString("%1-%2").arg(astid).arg(roomnum);
     UserInfo * userinfo = m_engine->getXivoClientUser();
-    //printf("userinfo -> %p\n",userinfo);
     QString userid = (userinfo ? userinfo->userid() : QString(""));
     QHashIterator<QString, MeetmeInfo> i(m_engine->meetme()[astid]);
     while(i.hasNext()) {
         i.next();
         const MeetmeInfo & meetmeinfo = i.value();
         if(meetmeinfo.m_number == roomnum) {
-            qDebug() << "ConferencePanel::updateButtons" << roomnum << meetmeinfo.m_adminid << meetmeinfo.m_adminlist;
             //qDebug() << "ConferencePanel::updateButtons" << meetmeinfo.m_uniqueids;
             bool isAdmin = (userid == meetmeinfo.m_adminid) || meetmeinfo.m_adminlist.contains(userid);
+            qDebug() << "ConferencePanel::updateButtons" << roomnum << meetmeinfo.m_adminid << meetmeinfo.m_adminlist << "\nuserid"<< userid << "=?" << meetmeinfo.m_adminid << "isAdmin:" << isAdmin;
 
             bool isAuthed = false;
             {
                 QMapIterator<QString, QVariant> j(meetmeinfo.m_uniqueids);
                 while(j.hasNext()) {
                     j.next();
-                    //printf("userid == j.value().toMap()[\"userid\"].toString() : %s %s\n",userid.toUtf8().constData(),j.value().toMap()["userid"].toString().toUtf8().constData());
                     if ((userid == j.value().toMap()["userid"].toString())&&(j.value().toMap()["authed"].toBool())) {
                         isAuthed = true;
                         break;
@@ -271,10 +308,12 @@ void ConferencePanel::updateButtons(const QString & astid,
             }
 
             // non admin don't have to see the list of user not yet allowed
-            //printf("isAdmin '%d' '%s' '%s' isAuthed: '%d'\n",isAdmin,meetmeinfo.m_adminid.toUtf8().constData(),userid.toUtf8().constData(),isAuthed);
             if (!isAdmin) {
                 m_user_not_authed_list[idxroom]->hide();
                 m_action_chamber_toggle_pause[idxroom]->hide();
+            } else {
+                m_user_not_authed_list[idxroom]->show();
+                m_action_chamber_toggle_pause[idxroom]->show();
             }
 
             QMapIterator<QString, QVariant> j(meetmeinfo.m_uniqueids);
@@ -461,12 +500,10 @@ void ConferencePanel::setProperties(double timeref,
             m_timespent.remove(ref);
         }
         int count = 0;
-        printf("STARTING COUNT");
         foreach (QString r, m_infos.keys()) {
             if((m_infos[r]->property("astid").toString() == astid) && (m_infos[r]->property("room").toString() == roomnum)) {
                 count ++;
             }
-            printf("COUNT = %d - %s\n\n",count,m_infos[r]->property("astid").toString().toUtf8().constData());
         }
         if(count == 0)
             delRoomTab(astid, roomnum);
@@ -532,13 +569,6 @@ void ConferencePanel::doMeetMeAdminOnlyAction(QTreeWidgetItem * item, int column
     QString user_id = item->text(6);
     QString admin_id = item->text(7).right(item->text(7).length()-item->text(7).indexOf('/')-1) ;
 
-
-    //printf("ConferencePanel::doMeetMeAdminOnlyAction %p %d %s %s %s %s\n",item,column
-    //,admin_id.toUtf8().constData()
-    //,cast_id.toUtf8().constData()
-    //,meet_num.toUtf8().constData()
-    //,user_id.toUtf8().constData()
-    //);
     switch (column) {
         case 1: // screw him
             meetmeAction("MeetmeKick", cast_id + " " + meet_num + " " + user_id + " " + admin_id);

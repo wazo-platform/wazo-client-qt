@@ -85,11 +85,12 @@ private:
                        );
     void addRoomTab(const QString &,
                     const QString &,
-                    const QString &);
+                    const QString &,
+                    int are_we_inside=1);
     void delRoomTab(const QString &,
                     const QString &);
     void updateSummary();
-    QWidget * createLeftUserList(QWidget *parent, const QString &);
+    QWidget * createLeftUserList(QWidget *parent, const QString &,const QString &);
     void updateButtons(const QString &, const QString &);
     
     QHash<QString, QLabel *> m_infos;   //!< widgets for displaying name and phone number
