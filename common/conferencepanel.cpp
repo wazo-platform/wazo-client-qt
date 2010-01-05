@@ -729,9 +729,9 @@ void ConferencePanel::updateSummary()
             membercountformat = tr("%n member(s)", "", count);
 
             if(roomnum.isEmpty())
-                summaryformat = tr("%1: %2\n").arg(roomname).arg(membercountformat);
+                summaryformat = tr("%1 : %2\n").arg(roomname).arg(membercountformat);
             else
-                summaryformat = tr("%1 (%2): %3\n").arg(roomname).arg(roomnum).arg(membercountformat);
+                summaryformat = tr("%1 (%2) : %3\n").arg(roomname).arg(roomnum).arg(membercountformat);
             summary.append(summaryformat);
         }
     }
