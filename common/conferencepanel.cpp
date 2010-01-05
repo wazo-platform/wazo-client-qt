@@ -260,7 +260,7 @@ void ConferencePanel::meetmeEvent(double timeref, const QVariant & meetme)
     QVariantMap meetmeMap = meetme.toMap();
     qDebug() << "ConferencePanel::meetmeEvent()" << meetmeMap;
     QString astid = meetmeMap["astid"].toString();
-    QString roomconfno = meetmeMap["roomconfno"].toString();
+    QString roomconfno = meetmeMap["confno"].toString();
     QString roomnum = meetmeMap["roomnum"].toString();
     QString roomname = meetmeMap["roomname"].toString();
     QString adminid = meetmeMap["adminid"].toString();
