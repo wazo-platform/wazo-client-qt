@@ -86,6 +86,7 @@ private:
     void addRoomTab(const QString &,
                     const QString &,
                     const QString &,
+                    const QString &,
                     int are_we_inside=1);
     void delRoomTab(const QString &,
                     const QString &);

@@ -71,6 +71,7 @@ public:
     MeetmeInfo(const MeetmeInfo & other) {
         m_context = other.m_context;
         m_name = other.m_name;
+        m_confno = other.m_confno;
         m_number = other.m_number;
         m_pin = other.m_pin;
         m_paused = other.m_paused;
@@ -97,7 +98,8 @@ public:
 
     QString m_context;  //!< room context
     QString m_name;     //!< room name
-    QString m_number;   //!< room access number
+    QString m_confno;   //!< room access confno (name or number)
+    QString m_number;   //!< room access number (if any)
     QString m_pin;      //!< room pin number (if any)
     QString m_adminpin; //!< room admin pin number (if any) 
     QString m_adminid;  //!< admin id ??? (global)

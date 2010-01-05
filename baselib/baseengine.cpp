@@ -1028,9 +1028,10 @@ void BaseEngine::parseCommand(const QString & line)
                         QVariantMap map3 = map2[meetmeid].toMap();
                         m_meetme[astid][meetmeid].m_context = map3["context"].toString();
                         m_meetme[astid][meetmeid].m_name = map3["name"].toString();
+                        m_meetme[astid][meetmeid].m_confno = map3["confno"].toString();
                         m_meetme[astid][meetmeid].m_number = map3["number"].toString();
                         m_meetme[astid][meetmeid].m_pin = map3["pin"].toString();
-                        m_meetme[astid][meetmeid].m_adminpin = map3["admin-pin"].toString();
+                        m_meetme[astid][meetmeid].m_adminpin = map3["pinadmin"].toString();
                         m_meetme[astid][meetmeid].m_adminid = map3["adminid"].toString();
                         m_meetme[astid][meetmeid].m_uniqueids = map3["uniqueids"].toMap();
                         m_meetme[astid][meetmeid].m_adminlist = map3["adminlist"].toStringList();
