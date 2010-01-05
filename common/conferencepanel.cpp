@@ -211,7 +211,7 @@ void ConferencePanel::addRoomTab(const QString & astid,
     QString tabtooltipformat;
     if(roomnum.isEmpty()) {
         addtabformat = QString("%1").arg(roomname);
-        tabtooltipformat = tr("Room %1 on %3").arg(roomname).arg(astid);
+        tabtooltipformat = tr("Room %1 on %2").arg(roomname).arg(astid);
     } else {
         addtabformat = QString("%1 (%2)").arg(roomname).arg(roomnum);
         tabtooltipformat = tr("Room %1 (%2) on %3").arg(roomname).arg(roomnum).arg(astid);
