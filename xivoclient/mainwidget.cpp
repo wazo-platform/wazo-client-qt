@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2009, Proformatique
+ * Copyright (C) 2007-2010, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -1024,7 +1024,7 @@ void MainWidget::about()
                        "<br>" +
                        "(" + tr("Config File Location : ") + m_settings->fileName() + ")" +
                        "<hr>"
-                       "Copyright (C) 2007, 2008, 2009  <a href=http://www.proformatique.com><b>Proformatique</b></a>"
+                       "Copyright (C) 2007-2010  <a href=http://www.proformatique.com><b>Proformatique</b></a>"
                        "<br>"
                        "10 bis, rue Lucien VOILIN 92800 Puteaux FRANCE"
                        "<p>"

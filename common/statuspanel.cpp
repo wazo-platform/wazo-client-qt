@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2009, Proformatique
+ * Copyright (C) 2007-2010, Proformatique
  *
  * This file is part of XiVO Client.
  *
