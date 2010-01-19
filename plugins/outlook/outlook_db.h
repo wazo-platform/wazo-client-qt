@@ -4,7 +4,7 @@
 #include "outlook_contact.h"
 
 #include <QString>
-#include <QtSQL>
+#include <QtSql>
 
 class COLDB {
 public:

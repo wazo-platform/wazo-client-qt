@@ -19,3 +19,4 @@ win32 {
   LIBS      += -luuid -lole32 -loleaut32
 }
 
+QT += network sql
