@@ -248,3 +248,20 @@ void SearchPanel::removePeers()
     // qDebug() << "SearchPanel::removePeers : time elapsed" << qtime.elapsed();
     m_peerhash.clear();
 }
+
+/*! \brief force the widget to be redrawn a least two time
+ * to fix a bug occurring on qt ~4.5 where the contact list is not correctly redraw after one expose event
+ */
+void SearchPanel::paintEvent(QPaintEvent * event)
+{
+    static int i = 0;
+    
+    if (i) {
+        i = 0;
+    } else {
+        update();
+        i = 1;
+    }
+}
+
+

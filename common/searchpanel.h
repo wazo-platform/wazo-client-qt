@@ -37,6 +37,7 @@
 #include <QHash>
 #include <QVariant>
 
+#include <QPaintEvent>
 #include "xlet.h"
 #include "peeritem.h"
 
@@ -76,6 +77,8 @@ private:
     int m_maxdisplay;        //!< max number of peers displayed on the search panel
     int m_ncolumns;
     QString m_searchpattern;
+protected:
+    virtual void paintEvent(QPaintEvent * event);
 };
 
 #endif
