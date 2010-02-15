@@ -55,7 +55,7 @@ QHash<QString, QPixmap> PeerWidget::m_mobiles = QHash<QString, QPixmap>();
 /*! \brief Constructor
  */
 PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
-    : BasePeerWidget(engine, ui), m_availlbl(NULL), m_agentlbl(NULL)
+    : BasePeerWidget(engine, ui), m_availlbl(NULL), m_agentlbl(NULL), m_mobilelbl(NULL)
 {
     // fill m_persons, m_phones and m_agents if needed.
     if(m_phones.count() == 0)
@@ -122,22 +122,19 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     setName(m_ui->fullname());
     
     // set TextInteraction Flags so the mouse clicks are not catched by the QLabel widget
-    m_textlbl->setTextInteractionFlags( Qt::NoTextInteraction );
+    // m_textlbl->setTextInteractionFlags(Qt::NoTextInteraction);
     
     if(! m_ui->ctilogin().isEmpty()) {
-        m_availlbl = new QLabel(this);
-        m_availlbl->setAlignment(Qt::AlignCenter);
+        m_availlbl = new QPushButton(this);
         m_availlbl->setMinimumSize(fsize, fsize);
-        m_availlbl->setObjectName("onlyme");
-        m_availlbl->setProperty("kind", "person");
-        // setColorAvail("person", "grey", "");
+        m_availlbl->setProperty("userid", ui->userid());
+        m_availlbl->setProperty("astid", ui->astid());
+        m_availlbl->setFlat(true);
+        if (m_engine->enabledFunction("chitchat"))
+            connect(m_availlbl, SIGNAL(pressed()), ChitChatWindow::chitchat_instance ,SLOT(WriteMessageTo()) );
     }
     
-    //m_voicelbl = new QLabel();
-    //m_fwdlbl   = new QLabel();
-    
-    foreach (QString phone, ui->phonelist())
-    {
+    foreach (QString phone, ui->phonelist()) {
         m_lblphones[phone] = new QLabel(this);
         m_lblphones[phone]->setPixmap(m_phones["grey"]);
         m_lblphones[phone]->setAlignment(Qt::AlignCenter);
@@ -164,39 +161,37 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
         m_agentlbl->setObjectName("onlyme");
         m_agentlbl->setToolTip(tr("Agent %1").arg(ui->agentnumber()));
         m_agentlbl->setProperty("kind", "agent");
-        //setColorAvail("agent", "grey", "");
         setAgentState("grey");
     }
     
     // Put the Labels into layouts
     int linenum = 0;
-    layout->addWidget( qhline1, linenum, 0, 1, 10);
-    // layout->setColumnStretch( 1, 1 );
-    // layout->setColumnStretch( 8, 1 );
+    layout->addWidget(qhline1, linenum, 0, 1, 10);
+
     linenum ++;
-    layout->addWidget( qvline1,   linenum, 0, 2, 1 );
-    layout->addWidget( m_textlbl, linenum, 2, 1, 6, alignment );
-    layout->addWidget( qvline2,   linenum, 9, 2, 1 );
+    layout->addWidget(qvline1,   linenum, 0, 2, 1);
+    layout->addWidget(m_textlbl, linenum, 2, 1, 6, alignment);
+    layout->addWidget(qvline2,   linenum, 9, 2, 1);
     
     linenum ++;
     int colnum = 2;
     foreach (QString phone, ui->phonelist())
     {
-        layout->addWidget( m_lblphones[phone],
+        layout->addWidget(m_lblphones[phone],
                            linenum, colnum++,
-                           Qt::AlignCenter );
+                           Qt::AlignCenter);
     }
     if(! ui->mobilenumber().isEmpty())
-        layout->addWidget( m_mobilelbl, linenum, colnum++, Qt::AlignCenter );
+        layout->addWidget(m_mobilelbl, linenum, colnum++, Qt::AlignCenter);
     if(! ui->ctilogin().isEmpty())
-        layout->addWidget( m_availlbl, linenum, colnum++, Qt::AlignCenter );
+        layout->addWidget(m_availlbl, linenum, colnum++, Qt::AlignCenter);
     if(! ui->agentnumber().isEmpty())
-        layout->addWidget( m_agentlbl, linenum, colnum++, Qt::AlignCenter );
+        layout->addWidget(m_agentlbl, linenum, colnum++, Qt::AlignCenter);
     if(stretch_last)
         layout->setColumnStretch(20, 1);
     
     linenum ++;
-    layout->addWidget( qhline2, linenum, 0, 1, 10);
+    layout->addWidget(qhline2, linenum, 0, 1, 10);
 
     reloadSavedName();
 }
@@ -212,7 +207,7 @@ void PeerWidget::setAgentState(const QString & color)
 {
     if(m_agentlbl) {
         QString qss =  QString("QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: %1; }").arg(color);
-        m_agentlbl->setStyleSheet( qss );
+        m_agentlbl->setStyleSheet(qss);
     }
 }
 
@@ -220,51 +215,51 @@ void PeerWidget::setMobileState(const QString & color)
 {
     if(m_mobilelbl) {
         QString qss = QString("QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: %1; }").arg(color);
-        m_mobilelbl->setStyleSheet( qss );
+        m_mobilelbl->setStyleSheet(qss);
         m_mobilelbl->setToolTip(tr("Mobile number : %1").arg(m_ui->mobilenumber()));
     }
 }
 
 void PeerWidget::updatePresence()
 {
-    if(m_availlbl)
-    {
+    if(m_availlbl) {
         QColor c = QColor(m_ui->availstate()["color"]);
-        m_availlbl->setPixmap(*TaintedPixmap(QString(":/images/personal-trans.png"),c).getPixmap());
+        m_availlbl->setIcon(*TaintedPixmap(QString(":/images/personal-trans.png"),c).getPixmap());
 
-        QString qss = QString("QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: %1; }").arg(m_ui->availstate()["color"]);
-        m_availlbl->setStyleSheet( qss );
-        m_availlbl->setToolTip( tr("User : %1").arg(m_ui->availstate()["longname"]) );
+        /*
+        QString qss = QString("border-style: solid; border-bottom-width: 3px; border-color: %1;")
+                              .arg(m_ui->availstate()["color"]);
+        m_availlbl->setStyleSheet(qss);
+        */
+        m_availlbl->setToolTip(tr("User : %1").arg(m_ui->availstate()["longname"]));
     }
 }
 
 void PeerWidget::updatePhonesStates()
 {
     //qDebug() << "PeerWidget::updatePhonesStates()" << m_ui->phonelist();
-    foreach(QString phone, m_ui->phonelist())
-    {
+    foreach(QString phone, m_ui->phonelist()) {
         const PhoneInfo * pi = m_ui->getPhoneInfo(phone);
-        if(pi)
-        {
-            QString qss = QString("QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: %1; }").arg(pi->hintstatus("color"));
-            m_lblphones[phone]->setStyleSheet( qss );
-            m_lblphones[phone]->setToolTip( tr("Phone %1 : %2")
+        if(pi) {
+            QString qss = QString("QLabel#onlyme {border-style: solid; border-bottom-width: 3px; border-color: %1; }")
+                                  .arg(pi->hintstatus("color"));
+            m_lblphones[phone]->setStyleSheet(qss);
+            m_lblphones[phone]->setToolTip(tr("Phone %1 : %2")
                                             .arg(pi->number())
-                                            .arg(pi->hintstatus("longname")) );
+                                            .arg(pi->hintstatus("longname")));
         }
     }
 }
 
-void PeerWidget::setAgentToolTip(const QString & agentnum,
-                                 const QStringList & queues)
+void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & queues)
 {
     if(! m_agentlbl)
         return;
     if(agentnum == "")
         m_agentlbl->setToolTip("");
     else {
-        m_agentlbl->setToolTip( tr("Agent %1\n%n Queue(s) %2", "",
-                                queues.size()).arg(agentnum).arg(queues.join(",")) );
+        m_agentlbl->setToolTip(tr("Agent %1\n%n Queue(s) %2", "",
+                                queues.size()).arg(agentnum).arg(queues.join(",")));
     }
 }
 

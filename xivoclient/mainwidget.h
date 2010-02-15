@@ -80,7 +80,6 @@ public:
     //! Destructor
     virtual ~MainWidget();
 
-    void setForceTabs(bool);//!< setter for m_forcetabs
     void setAppearance(const QStringList &);        //!< dock options
     void clearAppearance();
 public slots:
@@ -148,7 +147,6 @@ private:
 
     QLabel * m_xivobg;
 
-    bool m_forcetabs;    //!< Flag to allow the display of "unallowed" tabs, useful to test server-side capabilities
     bool m_presence;
 
     QString m_appliname;

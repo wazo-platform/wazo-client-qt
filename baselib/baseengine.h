@@ -41,9 +41,11 @@
 #include <QHostAddress>
 #include <QObject>
 #include <QStringList>
+#include <QMultiHash>
 #include <QTime>
 #include <QDateTime>
 #include <QVariant>
+#include <QVariantMap>
 
 class UserInfo;
 class PhoneInfo;
@@ -173,12 +175,15 @@ public:
     void setCheckedFunction(const QString &, bool b);        //!< set m_checked_function
     bool checkedFunction(const QString &);                   //!< get m_checked_function
     void setEnabledFunction(const QString &, bool b);        //!< set m_enabled_function
-    bool enabledFunction(const QString &);                   //!< get m_enabled_function
+    bool enabledFunction(const QString &);                   //!< on m_capafuncs
     
     uint keepaliveinterval() const;           //!< keep alive interval
     bool lastconnwins() const;                //!< last connected one wins
-    void setLastConnWins(bool b);                //!< last connected user wins
-    const QStringList & getCapabilities() const;        //!< returns capabilities
+    void setLastConnWins(bool b);             //!< last connected user wins
+
+    bool hasCapaFun(QString &);                //!< 0 we don't have the fun, 1 we got it
+
+    const QStringList & getCapabilities() const;  //!< returns capabilities
     const QStringList & getCapaXlets() const;
     const QVariantMap & getCapaPresence() const;
     const QVariantMap getGuiOptions(const QString &) const;
@@ -208,6 +213,14 @@ public:
     //! return m_meetme hash table
     const QHash<QString, QHash<QString, MeetmeInfo> > meetme() const { return m_meetme; };
     
+
+public:
+    void registerClassEvent(QString class_function, void (*)(QVariantMap map));
+    void sendJsonCommand(const QVariantMap &);
+private:
+    int callClassEventCallback(QString className, QVariantMap map);
+    QMultiHash<QString, void (*)(QVariantMap) > m_class_event_cb;
+
 public slots:
     void start();        //!< start the connection process.
     void stop();         //!< stop the engine
@@ -326,7 +339,6 @@ private:
     void initFeatureFields(const QString &, const QVariant &);
     void connectSocket();
     void sendCommand(const QString &);
-    void sendJsonCommand(const QVariantMap &);
     void parseCommand(const QString &);
     void popupError(const QString &);
     void updatePhone(const QString &, const QString &, const QMap<QString, QVariant> &);

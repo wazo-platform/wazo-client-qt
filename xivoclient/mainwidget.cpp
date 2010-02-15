@@ -656,7 +656,7 @@ void MainWidget::clearPresence()
  */
 void MainWidget::engineStarted()
 {
-    setForceTabs(false);
+    //setForceTabs(false);
     setAppearance(m_engine->getCapaXlets());
     
     m_appliname = tr("Client (%1 profile)").arg(m_engine->getCapaApplication());
@@ -827,11 +827,6 @@ void MainWidget::engineStopped()
     m_appliname = "Client";
     updateAppliName();
     m_engine->logAction("connection stopped");
-}
-
-void MainWidget::setForceTabs(bool force)
-{
-    m_forcetabs = force;
 }
 
 void MainWidget::savePositions() const

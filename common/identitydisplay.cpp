@@ -155,6 +155,7 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
 
 void IdentityDisplay::setupIcons()
 {
+
     m_glayout->addWidget( m_icon_user, 0, m_col_user, 3, 1, m_iconAlign );
     int idline = 0;
     m_glayout->addWidget( m_user, idline, m_col_user + 1, m_textAlignVCenter );
@@ -162,10 +163,16 @@ void IdentityDisplay::setupIcons()
     m_glayout->addWidget( m_phonenum, idline, m_col_user + 1, m_textAlignVCenter );
     idline ++;
     m_glayout->addWidget( m_presencevalue, idline, m_col_user + 1, m_textAlignVCenter );
+
+    m_glayout->setColumnStretch(0, 0);
+    m_glayout->setColumnStretch(1, 0);
+    m_glayout->setColumnStretch(4, 1);
+    /*
     for(int i = 0; i < m_col_last; i++)
         if(m_glayout->columnStretch(i) == 1)
             m_glayout->setColumnStretch(i, 0);
     m_glayout->setColumnStretch( m_col_last, 1 );
+    */
 }
 
 void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)

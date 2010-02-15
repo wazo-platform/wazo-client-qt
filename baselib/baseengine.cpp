@@ -292,7 +292,7 @@ void BaseEngine::setEnabledFunction(const QString & function, bool b)
 
 bool BaseEngine::enabledFunction(const QString & function)
 {
-    return m_enabled_function[function];
+    return m_capafuncs.contains(function);
 }
 
 void BaseEngine::setLogFile(const QString & logfilename)
@@ -364,14 +364,14 @@ void BaseEngine::stop()
     QString stopper = sender()->property("stopper").toString();
     qDebug() << "BaseEngine::stop()" << sender() << stopper;
     if(m_attempt_loggedin) {
-            QVariantMap command;
-            command["class"] = "logout";
-            command["direction"] = "xivoserver";
-            command["stopper"] = stopper;
-            sendJsonCommand(command);
-            m_settings->setValue("lastlogout/stopper", stopper);
-            m_settings->setValue("lastlogout/datetime", QDateTime::currentDateTime().toString(Qt::ISODate));
-            m_attempt_loggedin = false;
+        QVariantMap command;
+        command["class"] = "logout";
+        command["direction"] = "xivoserver";
+        command["stopper"] = stopper;
+        sendJsonCommand(command);
+        m_settings->setValue("lastlogout/stopper", stopper);
+        m_settings->setValue("lastlogout/datetime", QDateTime::currentDateTime().toString(Qt::ISODate));
+        m_attempt_loggedin = false;
     }
     
     m_ctiserversocket->flush();
@@ -496,6 +496,13 @@ void BaseEngine::setLastConnWins(bool b)
 {
     m_checked_lastconnwins = b;
 }
+
+bool BaseEngine::hasCapaFun(QString & capa)
+{
+    return m_capafuncs.contains(capa);
+}
+
+
 
 /*! \brief gets m_capaxlets */
 const QStringList & BaseEngine::getCapaXlets() const
@@ -876,6 +883,10 @@ void BaseEngine::parseCommand(const QString & line)
         QString thisclass = datamap["class"].toString();
         m_timesrv = datamap["timenow"].toDouble();
         m_timeclt = QDateTime::currentDateTime();
+
+        if (callClassEventCallback(thisclass, datamap))  // a callback was called,
+            return;                                      // so zap the 500 loc of if-else soup
+
         // qDebug() << datamap["timenow"].toString() << "BaseEngine message received"
         // << thisclass << datamap["function"].toString()
         // << datamap["phoneid"].toString();
@@ -2305,3 +2316,19 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
     }
 }
 
+
+int BaseEngine::callClassEventCallback(QString class_event, QVariantMap map)
+{
+    QList<void (*)(QVariantMap)> values = m_class_event_cb.values(class_event);
+
+    for (int i = 0; i < values.size(); ++i)
+        (values.at(i))(map);
+
+    return values.size();
+}
+
+
+void BaseEngine::registerClassEvent(QString class_event, void (*cb)(QVariantMap) )
+{
+    m_class_event_cb.insert(class_event, cb);
+}

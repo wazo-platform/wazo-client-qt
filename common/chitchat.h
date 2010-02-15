@@ -31,55 +31,72 @@
  * $Date$
  */
 
-#ifndef __PEERWIDGET_H__
-#define __PEERWIDGET_H__
+#ifndef __CHITCHAT_H__
+#define __CHITCHAT_H__
 
-#include <QHash>
 #include <QWidget>
-#include <QPoint>
+#include <QDebug>
+#include <QVariant>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QPushButton>
+#include <QTextEdit>
+#include <QHash>
+#include <QKeyEvent>
+#include <QScrollBar>
+#include <QDebug>
 
-#include "basepeerwidget.h"
-#include "taintedpixmap.h"
-#include "chitchat.h"
+#include "baseengine.h"
+#include "userinfo.h"
 
-class QLabel;
-class QPixmap;
 
-class BaseEngine;
-class PeerChannel;
-class UserInfo;
+class MessageEdit;
 
-/*! \brief Widget to display a Peer status
- *
- * Display Icons for the state and the peer name.
+
+/*! \brief open a chat window with another xivo user
  */
-class PeerWidget : public BasePeerWidget
+class ChitChatWindow : public QWidget
 {
     Q_OBJECT
-public:
-    PeerWidget(BaseEngine *, UserInfo *);
-    ~PeerWidget();
-    void setName(const QString &);
-    void setEngine(BaseEngine *);
-    void setAgentToolTip(const QString &, const QStringList &);
-    void setAgentState(const QString & color);
-    void setMobileState(const QString & color);
-    void updatePresence();  //!< update presence information displayed
-    void updatePhonesStates();
-private:
-    QHash<QString, QLabel *> m_lblphones;        //!< phone labels
+
+    public:
+        static ChitChatWindow *chitchat_instance;
+
+        ChitChatWindow(BaseEngine *e);
+        ChitChatWindow(QString);
         
-    QPushButton * m_availlbl;        //!< Peer state display from XIVO CTI Client
-    QLabel * m_agentlbl;        //!< agent state label
-    QLabel * m_mobilelbl;       //!< mobile phone label
-    QLabel * m_voicelbl;
-    QLabel * m_fwdlbl;
-    QLabel * m_textlbl;                //!< text label : to display peer name
-        
-    static QHash<QString, QPixmap> m_phones;        //!< phone icons
-    static QHash<QString, QPixmap> m_agents;        //!< agent icons
-    static QHash<QString, QPixmap> m_mobiles;        //!< mobil phone icons
+        void send_message(QString message);
+        void addMessage(QString, QString, QString, QString);
+        static void receive_message(QVariantMap message);
+
+    public slots:
+        void WriteMessageTo();
+        void clear_message_history();
+
+    private:
+        QString m_userid;
+        static BaseEngine *m_engine;
+        static QHash<QString, ChitChatWindow*> m_chat_window_opened;
+        MessageEdit *m_message;
+        QTextEdit *m_message_history;
+};
+
+
+class MessageEdit : public QTextEdit
+{
+    Q_OBJECT
+
+    public:
+        MessageEdit(ChitChatWindow *parent) : QTextEdit((QWidget*) parent) { m_dad = parent; };
+
+    public slots:
+        void send_message();
+
+    private:
+        ChitChatWindow *m_dad;
+
+    protected:
+        virtual void keyPressEvent(QKeyEvent * event);
 };
 
 #endif

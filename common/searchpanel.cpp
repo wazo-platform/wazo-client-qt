@@ -41,6 +41,7 @@
 #include "baseengine.h"
 #include "extendedlineedit.h"
 #include "userinfo.h"
+#include "chitchat.h"
 
 SearchPanel::SearchPanel(BaseEngine * engine,
                          QWidget * parent)
@@ -48,6 +49,7 @@ SearchPanel::SearchPanel(BaseEngine * engine,
 {
     // qDebug() << "SearchPanel::SearchPanel()";
     setTitle( tr("Contacts") );
+    ChitChatWindow::chitchat_instance = new ChitChatWindow(m_engine);
     QVariantMap optionsMap = m_engine->getGuiOptions("merged_gui");
     m_maxdisplay = optionsMap.value("contacts-max").toUInt();
     m_ncolumns = optionsMap.value("contacts-width").toUInt();

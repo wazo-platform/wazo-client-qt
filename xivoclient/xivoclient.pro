@@ -25,7 +25,7 @@ HEADERS += $${COMMONDIR}/*.h
 SOURCES += main.cpp mainwidget.cpp powerawareapplication.cpp
 SOURCES += $${COMMONDIR}/*.cpp
 
-unix:LIBS += ../bin/libxivoclientbaselib.so
+unix:LIBS += -L../bin/ -lxivoclientbaselib
 # win32:LIBS += ../bin/libxivoclientbaselib1.a
 win32:LIBS += -L"..\\bin" -lxivoclientbaselib1
 
