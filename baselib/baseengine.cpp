@@ -223,6 +223,10 @@ void BaseEngine::loadSettings()
  */
 void BaseEngine::saveSettings()
 {
+    if(m_settings->value(m_profilename + "/userid").toString() != m_userid) {
+        m_settings->setValue("monitor/userid", QString(""));
+    }
+
     //qDebug() << "BaseEngine::saveSettings()";
     // information
     m_settings->setValue("version/xivo", __xivo_version__);
@@ -230,7 +234,6 @@ void BaseEngine::saveSettings()
     
     m_settings->setValue("display/systrayed", m_systrayed);
     
-    // m_settings->beginGroup("engine." + m_userid);
     m_settings->beginGroup(m_profilename);
     m_settings->setValue("serverhost", m_serverhost);
     m_settings->setValue("serverport", m_ctiport);
