@@ -75,30 +75,29 @@ static const struct {
     const char * name;
     const newXLetProto construct;
 } xlets[] = {
-    { "history", newXLet<LogWidget> },
-    { "identity", newXLet<IdentityDisplay> },
-    { "agents", newXLet<AgentsPanel> },
-    { "agentsnext", newXLet<AgentsPanelNext> },
-    { "agentdetails", newXLet<AgentdetailsPanel> },
-    { "conference", newXLet<ConferencePanel> },
-    { "customerinfo", newXLet<CustomerInfoPanel> },
-    { "queues", newXLet<QueuesPanel> },
-    { "queuedetails", newXLet<QueuedetailsPanel> },
-    { "queueentrydetails", newXLet<QueueentrydetailsPanel> },
-    { "datetime", newXLet<DatetimePanel> },
-    { "dial", newXLet<DialPanel> },
-    { "operator", newXLet<StatusPanel> },
-    { "messages", newXLet<DisplayMessagesPanel> },
-    { "switchboard", newXLet<SwitchBoardWindow> },
-    { "parking", newXLet<ParkingPanel> },
-    { "fax", newXLet<FaxPanel> },
-    { "search", newXLet<SearchPanel> },
-    { "features", newXLet<ServicePanel> },
-    { "directory", newXLet<DirectoryPanel> },
-    { "callcampaign", newXLet<CallCampaignPanel> },
-    { "mylocaldir", newXLet<MyLocalDirPanel> },
-    { "calls", newXLet<CallStackWidget>},
-    { 0, 0 }
+    { "history"           ,newXLet<LogWidget>              },
+    { "identity"          ,newXLet<IdentityDisplay>        },
+    { "agents"            ,newXLet<AgentsPanel>            },
+    { "agentsnext"        ,newXLet<AgentsPanelNext>        },
+    { "agentdetails"      ,newXLet<AgentdetailsPanel>      },
+    { "conference"        ,newXLet<ConferencePanel>        },
+    { "customerinfo"      ,newXLet<CustomerInfoPanel>      },
+    { "queues"            ,newXLet<QueuesPanel>            },
+    { "queuedetails"      ,newXLet<QueuedetailsPanel>      },
+    { "queueentrydetails" ,newXLet<QueueentrydetailsPanel> },
+    { "datetime"          ,newXLet<DatetimePanel>          },
+    { "dial"              ,newXLet<DialPanel>              },
+    { "operator"          ,newXLet<StatusPanel>            },
+    { "messages"          ,newXLet<DisplayMessagesPanel>   },
+    { "switchboard"       ,newXLet<SwitchBoardWindow>      },
+    { "parking"           ,newXLet<ParkingPanel>           },
+    { "fax"               ,newXLet<FaxPanel>               },
+    { "search"            ,newXLet<SearchPanel>            },
+    { "features"          ,newXLet<ServicePanel>           },
+    { "directory"         ,newXLet<DirectoryPanel>         },
+    { "callcampaign"      ,newXLet<CallCampaignPanel>      },
+    { "mylocaldir"        ,newXLet<MyLocalDirPanel>        },
+    { "calls"             ,newXLet<CallStackWidget>        },
 };
 
 /*! \brief Constructor 
@@ -108,26 +107,34 @@ static const struct {
  */
 XLetFactory::XLetFactory(BaseEngine * engine, QObject * parent)
     : QObject(parent), m_engine(engine),
-      m_pluginsDir( qApp->applicationDirPath() ),
+      m_pluginsDir(qApp->applicationDirPath()),
       m_pluginsDirFound(false)
 {
-    int i = 0;
-    // find plugins dir
-    while(!m_pluginsDir.exists("plugins") && i < 2) {
-        m_pluginsDir.cdUp();
-        i++;
+#ifndef Q_WS_MAC
+    if(m_pluginsDir.cd("plugins")) {
+        // if there is a plugins dir next to where, the application remain
+        m_pluginsDirFound = true;
+    } else {
+        if (m_pluginsDir.cd("/usr/share/xivoclient/plugins")) {
+            //  the xivo_client might be installed properly for all the user on an unix box
+            m_pluginsDirFound = true;
+        } else {
+            qDebug() << "cannot find plugins directory";
+        }
     }
-    // TODO : also find in some default linux directory
-    // such as /usr/share/lib/xivoclient/plugins
-    if(m_pluginsDir.exists("plugins")) {
-        m_pluginsDir.cd("plugins");
+#else
+    if (m_pluginsDir.cd("../Resources/plugins"))
         m_pluginsDirFound = true;
     } else {
         qDebug() << "cannot find plugins directory";
     }
+#endif
+
+    uint i;
+
     // populate the m_xlets hash table
-    for(i = 0; xlets[i].name; i++) {
-        m_xlets.insert(QString(xlets[i].name), xlets[i].construct);
+    for(i=0;i<(sizeof(xlets)/sizeof(xlets[0]));i++) {
+        m_xlets.insert(QString(xlets[i].name),xlets[i].construct);
     }
 }
 
@@ -159,18 +166,19 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
         qDebug() << "Trying to load pluging" << fileName << m_pluginsDir.absoluteFilePath(fileName);
         QPluginLoader pluginLoader(m_pluginsDir.absoluteFilePath(fileName));
         QObject * plugin = pluginLoader.instance();
-        qDebug() << "      " << plugin;
+
         if (plugin) {
-            XLetInterface * xleti = qobject_cast<XLetInterface *>(plugin);
+            XLetInterface *xleti = qobject_cast<XLetInterface *>(plugin);
             if(xleti) {
                 xlet = xleti->newXLetInstance(m_engine, topwindow);
             } else {
                 qDebug() << "failed to cast plugin loaded to XLetInterface";
             }
         } else {
-            qDebug() << "failed to load plugin :" << pluginLoader.errorString();
+            qDebug() << "failed to load plugin :"<< pluginLoader.errorString();
         }
     }
+
     return xlet;
 }
 

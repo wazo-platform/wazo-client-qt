@@ -82,14 +82,14 @@ MainWidget::MainWidget(BaseEngine * engine,
       m_icon_black(":/images/xivoicon-black.png")
 {
     m_xletfactory = new XLetFactory(m_engine, this);
-    m_engine->setParent( this ); // take ownership of the engine object
+    m_engine->setParent(this); // take ownership of the engine object
     m_appliname = "Client";
     m_withsystray = true;
     
     m_settings = m_engine->getSettings();
     QPixmap redsquare(":/images/disconnected.png");
     statusBar();        // This creates the status bar.
-    m_status = new QLabel( this );
+    m_status = new QLabel(this);
     m_status->setPixmap(redsquare);
     statusBar()->addPermanentWidget(m_status);
     statusBar()->clearMessage();
@@ -102,43 +102,42 @@ MainWidget::MainWidget(BaseEngine * engine,
     
     createActions();
     createMenus();
-    if ( m_withsystray && QSystemTrayIcon::isSystemTrayAvailable() )
+    if (m_withsystray && QSystemTrayIcon::isSystemTrayAvailable())
         createSystrayIcon();
     
-    connect( m_engine, SIGNAL(logged()),
-             this, SLOT(engineStarted()) );
-    connect( m_engine, SIGNAL(delogged()),
-             this, SLOT(engineStopped()) );
-    connect( m_engine, SIGNAL(emitTextMessage(const QString &)),
-             statusBar(), SLOT(showMessage(const QString &)) );
-    connect( m_engine, SIGNAL(emitMessageBox(const QString &)),
-             this, SLOT(showMessageBox(const QString &)),
-             Qt::QueuedConnection );
+    connect(m_engine, SIGNAL(logged()),
+            this, SLOT(engineStarted()));
+    connect(m_engine, SIGNAL(delogged()),
+            this, SLOT(engineStopped()));
+    connect(m_engine, SIGNAL(emitTextMessage(const QString &)),
+            statusBar(), SLOT(showMessage(const QString &)));
+    connect(m_engine, SIGNAL(emitMessageBox(const QString &)),
+            this, SLOT(showMessageBox(const QString &)),
+            Qt::QueuedConnection);
     
 #ifndef Q_WS_WIN
     m_clipboard = QApplication::clipboard();
     connect(m_clipboard, SIGNAL(selectionChanged()),
-            this, SLOT(clipselection()) );
+            this, SLOT(clipselection()));
     connect(m_clipboard, SIGNAL(dataChanged()),
-            this, SLOT(clipdata()) );
+            this, SLOT(clipdata()));
     m_clipboard->setText("", QClipboard::Selection); // see comment in MainWidget::clipselection()
 #endif
     
-    // to be better defined
-    // resize(500, 400);
+    resize(500, 440);
     restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
     
-    m_central_widget = new QStackedWidget( this );
-    setCentralWidget( m_central_widget );
+    m_central_widget = new QStackedWidget(this);
+    setCentralWidget(m_central_widget);
     
-    m_wid = new QWidget( m_central_widget );
-    m_central_widget->addWidget( m_wid );
+    m_wid = new QWidget(m_central_widget);
+    m_central_widget->addWidget(m_wid);
     m_gridlayout = new QGridLayout(m_wid);
     
-    m_login_widget = new QWidget( m_central_widget );
-    m_login_widget->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
-    m_central_widget->addWidget( m_login_widget );
-    m_login_layout = new QGridLayout( m_login_widget );
+    m_login_widget = new QWidget(m_central_widget);
+    m_login_widget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    m_central_widget->addWidget(m_login_widget);
+    m_login_layout = new QGridLayout(m_login_widget);
     m_login_layout->setRowStretch(0, 1);
     m_login_layout->setColumnStretch(0, 1);
     m_login_layout->setColumnStretch(2, 1);
@@ -186,16 +185,16 @@ MainWidget::MainWidget(BaseEngine * engine,
     loginKindChanged(m_loginkind->currentIndex());
     m_qlab1->setFocus();
     
-    connect( m_qlab1, SIGNAL(returnPressed()),
-             this, SLOT(config_and_start()) );
-    connect( m_qlab2, SIGNAL(returnPressed()),
-             this, SLOT(config_and_start()) );
-    connect( m_qlab3, SIGNAL(returnPressed()),
-             this, SLOT(config_and_start()) );
-    connect( m_ack, SIGNAL(pressed()),
-             this, SLOT(config_and_start()) );
-    connect( m_loginkind, SIGNAL(currentIndexChanged(int)),
-             this, SLOT(loginKindChanged(int)) );
+    connect(m_qlab1, SIGNAL(returnPressed()),
+             this, SLOT(config_and_start()));
+    connect(m_qlab2, SIGNAL(returnPressed()),
+             this, SLOT(config_and_start()));
+    connect(m_qlab3, SIGNAL(returnPressed()),
+             this, SLOT(config_and_start()));
+    connect(m_ack, SIGNAL(pressed()),
+             this, SLOT(config_and_start()));
+    connect(m_loginkind, SIGNAL(currentIndexChanged(int)),
+             this, SLOT(loginKindChanged(int)));
     m_launchDateTime = QDateTime::currentDateTime();
     
     showLogin();
@@ -203,8 +202,8 @@ MainWidget::MainWidget(BaseEngine * engine,
         show();
     setFocusPolicy(Qt::StrongFocus);
 
-    connect( this, SIGNAL(pasteToDialPanel(const QString &)),
-             m_engine, SIGNAL(pasteToDialPanel(const QString &)) );
+    connect(this, SIGNAL(pasteToDialPanel(const QString &)),
+            m_engine, SIGNAL(pasteToDialPanel(const QString &)));
 }
 
 /*! \brief Destructor
@@ -333,14 +332,16 @@ void MainWidget::loginKindChanged(int index)
  */
 void MainWidget::showLogin()
 {
-    m_central_widget->setCurrentWidget( m_login_widget );
+    m_central_widget->setCurrentWidget(m_login_widget);
+    m_login_widget->show();
 }
 
 /*! \brief hide login widget and show "Main" window
  */
 void MainWidget::hideLogin()
 {
-    m_central_widget->setCurrentWidget( m_wid );
+    m_login_widget->hide();
+    m_central_widget->setCurrentWidget(m_wid);
 }
 
 void MainWidget::createActions()
@@ -348,55 +349,55 @@ void MainWidget::createActions()
     m_cfgact = new QAction(tr("Confi&gure"), this);
     m_cfgact->setMenuRole(QAction::PreferencesRole);
     m_cfgact->setStatusTip(tr("Configure account and connection options"));
-    connect( m_cfgact, SIGNAL(triggered()),
-             this, SLOT(showConfDialog()) );
+    connect(m_cfgact, SIGNAL(triggered()),
+             this, SLOT(showConfDialog()));
     
     m_quitact = new QAction(tr("&Quit"), this);
     m_quitact->setProperty("stopper", "quit");
     m_quitact->setStatusTip(tr("Close the application"));
-    connect( m_quitact, SIGNAL(triggered()),
-             m_engine, SLOT(stop()) );
-    connect( m_quitact, SIGNAL(triggered()),
-             qApp, SLOT(quit()) );
+    connect(m_quitact, SIGNAL(triggered()),
+             m_engine, SLOT(stop()));
+    connect(m_quitact, SIGNAL(triggered()),
+             qApp, SLOT(quit()));
     
     if(m_withsystray) {
         m_systraymin = new QAction(tr("To S&ystray"), this);
         m_systraymin->setStatusTip(tr("Enter the system tray"));
-        connect( m_systraymin, SIGNAL(triggered()),
-                 this, SLOT(hide()) );
-        m_systraymin->setEnabled( QSystemTrayIcon::isSystemTrayAvailable() );
+        connect(m_systraymin, SIGNAL(triggered()),
+                 this, SLOT(hide()));
+        m_systraymin->setEnabled(QSystemTrayIcon::isSystemTrayAvailable());
         
         m_systraymax = new QAction(tr("&Show window"), this);
         m_systraymax->setStatusTip(tr("Leave the system tray"));
-        connect( m_systraymax, SIGNAL(triggered()),
-                 this, SLOT(showNormal()) );
-        connect( m_systraymax, SIGNAL(triggered()),
-                 this, SLOT(show()) );
-        connect( m_systraymax, SIGNAL(triggered()),
-                 this, SLOT(raise()) );
-        m_systraymax->setEnabled( QSystemTrayIcon::isSystemTrayAvailable() );
+        connect(m_systraymax, SIGNAL(triggered()),
+                this, SLOT(showNormal()));
+        connect(m_systraymax, SIGNAL(triggered()),
+                this, SLOT(show()));
+        connect(m_systraymax, SIGNAL(triggered()),
+                this, SLOT(raise()));
+        m_systraymax->setEnabled(QSystemTrayIcon::isSystemTrayAvailable());
     }
     
     m_connectact = new QAction(tr("&Connect"), this);
     m_connectact->setStatusTip(tr("Connect to the server"));
-    connect( m_connectact, SIGNAL(triggered()),
-             m_engine, SLOT(start()) );
+    connect(m_connectact, SIGNAL(triggered()),
+            m_engine, SLOT(start()));
     
     m_disconnectact = new QAction(tr("&Disconnect"), this);
     m_disconnectact->setProperty("stopper", "disconnect");
     m_disconnectact->setStatusTip(tr("Disconnect from the server"));
-    connect( m_disconnectact, SIGNAL(triggered()),
-             m_engine, SLOT(stop()) );
+    connect(m_disconnectact, SIGNAL(triggered()),
+            m_engine, SLOT(stop()));
     
     m_connectact->setEnabled(true);
     m_disconnectact->setEnabled(false);
     
     // Availability actions :
-    m_availgrp = new QActionGroup( this );
+    m_availgrp = new QActionGroup(this);
     m_availgrp->setExclusive(true);
     
-    connect( m_engine, SIGNAL(changesAvailChecks()),
-             this, SLOT(checksAvailState()) );
+    connect(m_engine, SIGNAL(changesAvailChecks()),
+            this, SLOT(checksAvailState()));
     
     checksAvailState();
 }
@@ -404,26 +405,26 @@ void MainWidget::createActions()
 void MainWidget::checksAvailState()
 {
     if(m_avact.contains(m_engine->getAvailState()))
-        m_avact[m_engine->getAvailState()]->setChecked( true );
+        m_avact[m_engine->getAvailState()]->setChecked(true);
 }
 
 void MainWidget::createMenus()
 {
     m_filemenu = menuBar()->addMenu("&XIVO Client"); // + m_appliname too heavy
-    m_filemenu->addAction( m_cfgact );
+    m_filemenu->addAction(m_cfgact);
     if(m_withsystray)
-        m_filemenu->addAction( m_systraymin );
+        m_filemenu->addAction(m_systraymin);
     m_filemenu->addSeparator();
-    m_filemenu->addAction( m_connectact );
-    m_filemenu->addAction( m_disconnectact );
+    m_filemenu->addAction(m_connectact);
+    m_filemenu->addAction(m_disconnectact);
     m_filemenu->addSeparator();
-    m_filemenu->addAction( m_quitact );
+    m_filemenu->addAction(m_quitact);
 
     m_avail = menuBar()->addMenu(tr("&Availability"));
-    // m_avail->addActions( m_availgrp->actions() );
-    m_avail->setEnabled( false );
-    connect( m_engine, SIGNAL(availAllowChanged(bool)),
-             m_avail, SLOT(setEnabled(bool)) );
+    // m_avail->addActions(m_availgrp->actions());
+    m_avail->setEnabled(false);
+    connect(m_engine, SIGNAL(availAllowChanged(bool)),
+             m_avail, SLOT(setEnabled(bool)));
 
     m_helpmenu = menuBar()->addMenu(tr("&Help"));
     m_helpmenu->addAction(tr("&About XIVO Client"), this, SLOT(about()));
@@ -462,14 +463,14 @@ void MainWidget::createSystrayIcon()
     menu->addSeparator();
 #endif
     menu->addAction(m_quitact);
-    m_systrayIcon->setContextMenu( menu );
+    m_systrayIcon->setContextMenu(menu);
     m_systrayIcon->show();
-    //connect( m_systrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-    //         this, SLOT(show()) );
-    connect( m_systrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-             this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)) );
-    connect( m_systrayIcon, SIGNAL(messageClicked()),
-             this, SLOT(systrayMsgClicked()) );
+    //connect(m_systrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+    //         this, SLOT(show()));
+    connect(m_systrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+             this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
+    connect(m_systrayIcon, SIGNAL(messageClicked()),
+             this, SLOT(systrayMsgClicked()));
     // QSystemTrayIcon::ActivationReason
     // qDebug() << "QSystemTrayIcon::supportsMessages() = "
     //          << QSystemTrayIcon::supportsMessages();
@@ -482,8 +483,8 @@ void MainWidget::createSystrayIcon()
 void MainWidget::showConfDialog()
 {
     ConfigWidget config(m_engine);
-    connect( &config, SIGNAL(confUpdated()),
-             this, SLOT(confUpdated()) );
+    connect(&config, SIGNAL(confUpdated()),
+             this, SLOT(confUpdated()));
     config.exec();
 }
 
@@ -515,17 +516,17 @@ void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
     if (reason == QSystemTrayIcon::Trigger) {
 #ifdef Q_WS_MAC
         // try to reduce potential problems under MacOS X
-        if ( isVisible() )
+        if (isVisible())
             setVisible(false);
 #else
-        if ( isVisible() && !isActiveWindow() ) {
+        if (isVisible() && !isActiveWindow()) {
             showNormal();
             activateWindow();
             raise();
         } else {
             // Toggle visibility
             setVisible(!isVisible());
-            if ( isVisible() ) {
+            if (isVisible()) {
                 showNormal();
                 activateWindow();
                 raise();
@@ -605,12 +606,12 @@ void MainWidget::updatePresence(const QVariant & presence)
                 m_avact[avstate]->setCheckable(false);
                 m_avact[avstate]->setProperty("availstate", avstate);
                 m_avact[avstate]->setEnabled(false);
-                connect( m_avact[avstate], SIGNAL(triggered()),
-                         m_engine, SLOT(setAvailability()) );
-                m_availgrp->addAction( m_avact[avstate] );
+                connect(m_avact[avstate], SIGNAL(triggered()),
+                        m_engine, SLOT(setAvailability()));
+                m_availgrp->addAction(m_avact[avstate]);
             }
         }
-        m_avail->addActions( m_availgrp->actions() );
+        m_avail->addActions(m_availgrp->actions());
     }
     if(presencemap.contains("allowed")) {
         QMapIterator<QString, QVariant> capapres(presencemap["allowed"].toMap());
@@ -638,9 +639,9 @@ void MainWidget::clearPresence()
             capapres.next();
             QString avstate = capapres.key();
             if(m_avact.contains(avstate)) {
-                disconnect( m_avact[avstate], SIGNAL(triggered()),
-                            m_engine, SLOT(setAvailability()) );
-                m_availgrp->removeAction( m_avact[avstate] );
+                disconnect(m_avact[avstate], SIGNAL(triggered()),
+                            m_engine, SLOT(setAvailability()));
+                m_availgrp->removeAction(m_avact[avstate]);
                 delete m_avact[avstate];
             }
         }
@@ -656,13 +657,12 @@ void MainWidget::clearPresence()
  */
 void MainWidget::engineStarted()
 {
-    //setForceTabs(false);
     setAppearance(m_engine->getCapaXlets());
     
     m_appliname = tr("Client (%1 profile)").arg(m_engine->getCapaApplication());
     
-    connect( m_engine, SIGNAL(updatePresence(const QVariant &)),
-             this, SLOT(updatePresence(const QVariant &)) );
+    connect(m_engine, SIGNAL(updatePresence(const QVariant &)),
+            this, SLOT(updatePresence(const QVariant &)));
     updateAppliName();
     hideLogin();
     
@@ -679,21 +679,23 @@ void MainWidget::engineStarted()
     }
     
     foreach(QString xletid, m_allnames) {
-        bool withscrollbar = m_dockoptions[xletid].contains("s");
-        XLet * xlet = m_xletfactory->newXLet(xletid, this);
-        if(xlet) {
-            m_xletlist.insert(xlet);
-            xlet->doGUIConnects( this );
-            if (withscrollbar) {
-                QScrollArea * sa_ag = new QScrollArea(this);
-                sa_ag->setWidget(xlet);
-                sa_ag->setWidgetResizable(true);
-                addPanel(xletid, xlet->title(), sa_ag);
+        if (! QStringList("tabber").contains(xletid)) {
+            bool withscrollbar = m_dockoptions[xletid].contains("s");
+            XLet * xlet = m_xletfactory->newXLet(xletid, this);
+            if(xlet) {
+                m_xletlist.insert(xlet);
+                xlet->doGUIConnects(this);
+                if (withscrollbar) {
+                    QScrollArea * sa_ag = new QScrollArea(this);
+                    sa_ag->setWidget(xlet);
+                    sa_ag->setWidgetResizable(true);
+                    addPanel(xletid, xlet->title(), sa_ag);
+                } else {
+                    addPanel(xletid, xlet->title(), xlet);
+                }
             } else {
-                addPanel(xletid, xlet->title(), xlet);
+                qDebug() << "cannot instanciate XLet" << xletid;
             }
-        } else {
-            qDebug() << "cannot instanciate XLet" << xletid;
         }
     }
     
@@ -910,7 +912,7 @@ void MainWidget::hideEvent(QHideEvent *event)
 #endif
 
     // #ifndef Q_WS_MAC
-    //          if ( QSystemTrayIcon::isSystemTrayAvailable() ) {
+    //          if (QSystemTrayIcon::isSystemTrayAvailable()) {
     //                 qDebug() << "MainWidget::hideEvent() setVisible(false)";
     //                  setVisible(false);
     //         }
@@ -937,8 +939,8 @@ void MainWidget::closeEvent(QCloseEvent *event)
 #ifdef Q_WS_MAC
     setVisible(false);
 #else
-    if ( QSystemTrayIcon::isSystemTrayAvailable() )
-        setVisible( false );
+    if (QSystemTrayIcon::isSystemTrayAvailable())
+        setVisible(false);
     else
         showMinimized();
 #endif

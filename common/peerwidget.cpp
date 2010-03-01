@@ -224,7 +224,7 @@ void PeerWidget::updatePresence()
 {
     if(m_availlbl) {
         QColor c = QColor(m_ui->availstate()["color"]);
-        m_availlbl->setIcon(*TaintedPixmap(QString(":/images/personal-trans.png"),c).getPixmap());
+        m_availlbl->setIcon(TaintedPixmap(QString(":/images/personal-trans.png"),c).getPixmap());
 
         /*
         QString qss = QString("border-style: solid; border-bottom-width: 3px; border-color: %1;")

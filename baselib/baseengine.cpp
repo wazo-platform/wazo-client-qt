@@ -614,7 +614,7 @@ void BaseEngine::monitorPeerRequest(const QString & userid)
     // qDebug() << "BaseEngine::monitorPeerRequest()" << userid;
     if(m_users.contains(userid)) {
         m_monitored_userid = userid;
-        monitorPeer(m_users[userid]);
+        emit monitorPeer(m_users[userid]);
         m_settings->setValue("monitor/userid", userid);
     }
 }
@@ -884,7 +884,7 @@ void BaseEngine::parseCommand(const QString & line)
         m_timesrv = datamap["timenow"].toDouble();
         m_timeclt = QDateTime::currentDateTime();
 
-        if (callClassEventCallback(thisclass, datamap))  // a callback was called,
+        if (callClassEventCallback(thisclass, datamap))  // a class callback was called,
             return;                                      // so zap the 500 loc of if-else soup
 
         // qDebug() << datamap["timenow"].toString() << "BaseEngine message received"
@@ -1026,7 +1026,6 @@ void BaseEngine::parseCommand(const QString & line)
             
         } else if (thisclass == "endinit") {
             qDebug() << "I should have received everything";
-            
         } else if (thisclass == "meetme") {
             //qDebug() << "**** MEETME **** " << function << datamap["payload"];
             if (function == "sendlist")
@@ -1052,8 +1051,7 @@ void BaseEngine::parseCommand(const QString & line)
                 }
                 meetmeInit(m_timesrv, datamap["payload"]);
             }
-            else if (function == "update")
-            {
+            else if (function == "update") {
                 QVariantMap map = datamap["payload"].toMap();
                 QString action = map["action"].toString();
                 QString astid = map["astid"].toString();

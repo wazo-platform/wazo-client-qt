@@ -44,13 +44,13 @@
  */
 class TaintedPixmap : public QPixmap
 {
- public:
-    TaintedPixmap(QString , QColor &);
-    QPixmap* getPixmap();
- private:
-    static QHash<QString, QPixmap*> m_pixmap_cache;
+    public:
+        TaintedPixmap(QString , QColor &);
+        QPixmap getPixmap();
+    private:
+        static QHash<QString, QPixmap*> m_pixmap_cache;
 
-    QString m_pixmap_hash;
+        QString m_pixmap_hash;
 };
 
 #endif

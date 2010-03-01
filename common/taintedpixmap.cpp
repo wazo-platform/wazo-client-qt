@@ -36,7 +36,7 @@
 // Initialize static members
 QHash<QString, QPixmap*> TaintedPixmap::m_pixmap_cache = QHash <QString, QPixmap*>();
 
-/*! \brief Constructor
+/*! \brief Constructor create if needed a tainted pixmap
  */
 TaintedPixmap::TaintedPixmap(QString pixmap_path, QColor &bg_color)
 {
@@ -51,7 +51,7 @@ TaintedPixmap::TaintedPixmap(QString pixmap_path, QColor &bg_color)
 
       painter->setBackgroundMode(Qt::TransparentMode);
       painter->fillRect(painter->viewport(), bg_color);
-      painter->drawPixmap(0,0,pix.width(),pix.height(),pix);
+      painter->drawPixmap(0, 0, pix.width(), pix.height(), pix);
 
       delete painter;
 
@@ -61,9 +61,9 @@ TaintedPixmap::TaintedPixmap(QString pixmap_path, QColor &bg_color)
     }
 }
 
-/*! \brief return your pixmap colored
+/*! \brief return your tainted pixmap
  */
-QPixmap* TaintedPixmap::getPixmap()
+QPixmap TaintedPixmap::getPixmap()
 {
-    return m_pixmap_cache.value(m_pixmap_hash);
+    return *m_pixmap_cache.value(m_pixmap_hash);
 }

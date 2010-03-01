@@ -215,23 +215,23 @@ void ServicePanel::toggleIfAllowed(const QString & text)
     if(allowed == false) {
         m_forward[capa]->setChecked(false);
         if(was_checked)
-            forwardChanged(capa, false,
+            emit forwardChanged(capa, false,
                            m_forwarddest[capa]->text());
     } else if(was_checked)
-        forwardChanged(capa, true,
+        emit forwardChanged(capa, true,
                        m_forwarddest[capa]->text());
 }
 
 void ServicePanel::chkoptToggled(bool b)
 {
     QString capa = sender()->property("capa").toString();
-    chkoptChanged(capa, b);
+    emit chkoptChanged(capa, b);
 }
 
 void ServicePanel::Toggled(bool b)
 {
     QString capa = sender()->property("capa").toString();
-    forwardChanged(capa, b, m_forwarddest[capa]->text());
+    emit forwardChanged(capa, b, m_forwarddest[capa]->text());
 }
 
 // The following actions are entered in when the status is received from the server (init or update)
@@ -267,7 +267,7 @@ void ServicePanel::setForward(const QString & capa, const QVariant & value)
 void ServicePanel::monitorPeer(UserInfo * /*ui*/)
 {
     // qDebug() << "ServicePanel::monitorPeer()" << peer;
-    askFeatures();
+    emit askFeatures();
 }
 
 void ServicePanel::setRecordedStatus()
