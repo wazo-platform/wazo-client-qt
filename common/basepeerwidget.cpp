@@ -419,13 +419,14 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                     else
                         contextMenu.addAction( hangupAction );
                 }
-                if( (m_ui != ui) 
-                   && ( (status == CHAN_STATUS_RINGING)
-                      ||(status == CHAN_STATUS_LINKED_CALLER)
-                      ||(status == CHAN_STATUS_LINKED_CALLED) )
-                   && (comm["calleridnum"] != QString("<parked>"))
-                   && (comm["calleridname"] != QString("<parked>")) )
-                {
+                if((m_ui != ui) && 
+                    ((status == CHAN_STATUS_RINGING) ||
+                     (status == CHAN_STATUS_LINKED_CALLER) ||
+                     (status == CHAN_STATUS_LINKED_CALLED)) &&
+                     (comm["calleridnum"] != QString("<parked>")) &&
+                     (comm["calleridname"] != QString("<parked>")) &&
+                     (m_engine->enabledFunction("switchboard"))) {
+
                     if( !interceptMenu && commsCount > 1 )
                         interceptMenu = new QMenu( tr("&Intercept"), &contextMenu );
                     QAction * interceptAction = new QAction( interceptMenu?interceptMenu:&contextMenu );
