@@ -667,28 +667,30 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
     }
         
     switch(event->proposedAction()) {
-    case Qt::CopyAction:
-        // transfer the call to the peer "to"
-        if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
-            event->acceptProposedAction();
-            actionCall("transfer", "chan:" + userid_from + ":" + channel_from, to); // Call
+        case Qt::CopyAction:
+            // transfer the call to the peer "to"
+            if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
+                event->acceptProposedAction();
+                actionCall("transfer", "chan:" + userid_from + ":" + channel_from, to); // Call
 
-        } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+            } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+                event->acceptProposedAction();
+                if (m_engine->enabledFunction("switchboard")) {
+                    actionCall("originate", "user:" + userid_from, to); // Call
+                }
+            } else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
+                event->acceptProposedAction();
+                actionCall("originate", to, "ext:" + event->mimeData()->text());
+            }
+            break;
+        case Qt::MoveAction:
+            // can be reached with the shift button
             event->acceptProposedAction();
-            actionCall("originate", "user:" + userid_from, to); // Call
-        } else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
-            event->acceptProposedAction();
-            actionCall("originate", to, "ext:" + event->mimeData()->text());
-        }
-        break;
-    case Qt::MoveAction:
-        // can be reached with the shift button
-        event->acceptProposedAction();
-        actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, to); 
-        break;
-    default:
-        qDebug() << "PeerWidget::dropEvent() Unrecognized action" << event->proposedAction();
-        break;
+            actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, to); 
+            break;
+        default:
+            qDebug() << "PeerWidget::dropEvent() Unrecognized action" << event->proposedAction();
+            break;
     }
 }
 
