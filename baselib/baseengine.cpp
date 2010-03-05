@@ -591,26 +591,6 @@ void BaseEngine::sendJsonCommand(const QVariantMap & command)
     sendCommand(jsoncommand);
 }
 
-/*! \brief parse history command response
- *
- * parse the history command response from the server and
- * trigger the update of the call history panel.
- *
- * \sa Logwidget
- */
-void BaseEngine::processHistory(const QVariant & histlist)
-{
-    foreach (QVariant histitem, histlist.toList()) {
-        // qDebug() << "BaseEngine::processHistory()" << histitem;
-        QDateTime dt = QDateTime::fromString(histitem.toMap()["ts"].toString(), Qt::ISODate);
-        int duration = histitem.toMap()["duration"].toInt();
-        QString fullname = histitem.toMap()["fullname"].toString();
-        QString direction = histitem.toMap()["direction"].toString();
-        QString techdef = histitem.toMap()["termin"].toString();
-        updateLogEntry(dt, duration, fullname, direction, techdef);
-    }
-}
-
 /*! \brief set monitored peer id */
 void BaseEngine::monitorPeerRequest(const QString & userid)
 {
@@ -1021,14 +1001,10 @@ void BaseEngine::parseCommand(const QString & line)
             statusListen(datamap["astid"].toString(),
                          datamap["agentid"].toString(),
                          datamap["status"].toString());
-            
-        } else if (thisclass == "history") {
-            // QCryptographicHash histohash(QCryptographicHash::Sha1);
-            // QByteArray res = histohash.hash(command_args.toAscii(), QCryptographicHash::Sha1).toHex();
-            processHistory(datamap["payload"]);
-            
         } else if (thisclass == "endinit") {
             qDebug() << "I should have received everything";
+
+#if 0
         } else if (thisclass == "meetme") {
             //qDebug() << "**** MEETME **** " << function << datamap["payload"];
             if (function == "sendlist")
@@ -1078,6 +1054,7 @@ void BaseEngine::parseCommand(const QString & line)
                 meetmeEvent(m_timesrv, datamap["payload"]);
             }
             //qDebug() << "**** MEETME " << m_meetme;
+#endif
         } else if (thisclass == "serverdown") {
             qDebug() << thisclass << datamap["mode"].toString();
             
@@ -1740,29 +1717,6 @@ void BaseEngine::searchDirectory(const QString & text)
     sendJsonCommand(command);
 }
 
-/*! \brief ask history for an extension
- */
-void BaseEngine::requestHistory(const QString & peer, int mode, const QDateTime & moreRecent)
-{
-    /* mode = 0 : Out calls
-     * mode = 1 : In calls
-     * mode = 2 : Missed calls */
-    if(mode >= 0) {
-        // qDebug() << "BaseEngine::requestHistory()" << peer;
-        QVariantMap command;
-        command["class"] = "history";
-        command["direction"] = "xivoserver";
-        command["peer"] = peer;
-        command["size"] = QString::number(m_historysize);
-        command["mode"] = QString::number(mode);
-        if(moreRecent.isValid()) {
-            //command["morerecentthan"] = QString::number(moreRecent.toTime_t());
-            command["morerecentthan"] = moreRecent.toString(Qt::ISODate);
-        }
-        sendJsonCommand(command);
-    }
-}
-
 // === Getter and Setters ===
 /* \brief set server address
  *
@@ -1991,7 +1945,7 @@ void BaseEngine::timerEvent(QTimerEvent * event)
  *
  * ???
  */
-void BaseEngine::featurePutOpt(const QString & capa, bool b)
+void BaseEngine::featurePutOpt(const QString &capa, bool b)
 {
     QVariantMap command;
     command["class"] = "featuresput";

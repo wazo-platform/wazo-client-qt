@@ -35,50 +35,81 @@
 #define __LOGWIDGET_H__
 
 #include <QDateTime>
+#include <QAbstractTableModel>
+#include <QTableView>
+#include <QVariant>
+#include <QHeaderView>
+#include <QList>
+#include <QDebug>
+
 #include "xlet.h"
-#include "logeltwidget.h"
 
 class QVBoxLayout;
 class QRadioButton;
 
 class BaseEngine;
 class UserInfo;
+class LogWidgetModel;
+
+
+class LogWidgetModel : public QAbstractTableModel
+{
+  Q_OBJECT
+
+  public:
+    LogWidgetModel(BaseEngine *, int);
+    static void updateHistory(QVariantMap p);
+  protected:
+    virtual int rowCount(const QModelIndex&) const;
+    virtual int columnCount(const QModelIndex&) const;
+    virtual QVariant data(const QModelIndex&, int) const;
+    virtual Qt::ItemFlags flags(const QModelIndex &) const;
+    virtual void sort(int, Qt::SortOrder);
+    virtual QVariant headerData(int , Qt::Orientation, int) const;
+  public slots:
+    void changeMode(bool);
+  private:
+    static int ascendingOrderByDuration(QVariant a, QVariant b) {
+      return a.toMap()["duration"].toInt() <  b.toMap()["duration"].toInt();
+    }
+    static int descendingOrderByDuration(QVariant a, QVariant b) {
+      return a.toMap()["duration"].toInt() >  b.toMap()["duration"].toInt();
+    }
+    static int ascendingOrderByNumber(QVariant a, QVariant b) {
+      return a.toMap()["fullname"].toString() <  b.toMap()["fullname"].toString();
+    }
+    static int descendingOrderByNumber(QVariant a, QVariant b) {
+      return a.toMap()["fullname"].toString() >  b.toMap()["fullname"].toString();
+    }
+    static int ascendingOrderByDate(QVariant a, QVariant b) {
+      return 
+        QDateTime::fromString(a.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t() <
+        QDateTime::fromString(b.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t();
+    }
+    static int descendingOrderByDate(QVariant a, QVariant b) {
+      return 
+        QDateTime::fromString(a.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t() >
+        QDateTime::fromString(b.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t();
+    }
+
+    void requestHistory(QString , int, QDateTime since = QDateTime(), int f = 0);
+    BaseEngine *engine;
+    QVariantList history;
+    int mode;
+    static LogWidgetModel *self;
+
+};
+
 
 /*! \brief Call Log display widget
  */
 class LogWidget : public XLet
 {
     Q_OBJECT
-public:
-    LogWidget(BaseEngine *,
-              QWidget * parent = 0);
-    void addElement(const QString &,
-                    LogEltWidget::Direction,
-                    const QDateTime &,
-                    int,
-                    const QString &);
-protected:
-    void timerEvent(QTimerEvent *);
-private:
-    int mode();
-public slots:
-    void clear();
-    void addLogEntry(const QDateTime &, int,
-                     const QString &, const QString &, const QString &);
-    void monitorPeer(UserInfo *);
-private slots:
-    void modeChanged(bool);
-signals:
-    void askHistory(const QString &, int, const QDateTime &);        //!< need history to be updated !
-    void actionCall(const QString &, const QString &, const QString &);
-private:
-    QVBoxLayout * m_layout;          //!< Widget layout
-    QString m_peer;                  //!< "monitored" peer
-    int m_timer;                     //!< timer id for refresh
-    QRadioButton * m_radioOut;       //!< "Out" radio button
-    QRadioButton * m_radioIn;        //!< "In" radio button
-    QRadioButton * m_radioMissed;    //!< "Missed" radio button
-    QDateTime m_moreRecent;          //!< dateTime of the more recent item
+  public:
+    LogWidget(BaseEngine *, QWidget *parent=0);
+  private:
+    QTableView *m_view;
 };
 
 #endif

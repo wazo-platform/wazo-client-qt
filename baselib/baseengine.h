@@ -202,6 +202,7 @@ public:
     void setLogFile(const QString &);
     //! return m_xivo_userid
     const QString & xivoUserId() const { return m_xivo_userid; };
+    const QString & getFullId() const { return m_fullid; };
     UserInfo * getXivoClientUser(); //!< Return the user of the Xivo CTI Client
     QHash<QString, AgentInfo *> agents(); //!< Return the agents to any Xlet
     QHash<QString, QueueInfo *> queues(); //!< Return the queues to any Xlet
@@ -212,6 +213,7 @@ public:
     double timeDeltaServerClient() const;
     //! return m_meetme hash table
     const QHash<QString, QHash<QString, MeetmeInfo> > meetme() const { return m_meetme; };
+    int m_historysize;              //!< Number of elements when requestion call log
     
 
 public:
@@ -232,8 +234,6 @@ public slots:
                     const QString &);
     
     void searchDirectory(const QString &);
-    void requestHistory(const QString &, int, const QDateTime &);
-    
     void textEdited(const QString &);
     void setAvailability();       //!< set user status from menu
     void featurePutOpt(const QString &, bool);
@@ -304,8 +304,6 @@ signals:
                          const QString &,
                          const QString &,
                          const QVariant &);
-    //! a log entry has to be updated.
-    void updateLogEntry(const QDateTime &, int, const QString &, const QString &, const QString &);
     //! the directory search response has been received.
     void directoryResponse(const QStringList &, const QStringList &);
     void disconnectFeatures();
@@ -335,7 +333,6 @@ private:
     void stopKeepAliveTimer();       //!< Stop the keep alive timer if running
     void startTryAgainTimer();       //!< Start the "try to reconnect" timer
     void stopTryAgainTimer();        //!< Stop the "try to reconnect" timer
-    void processHistory(const QVariant &);
     void initFeatureFields(const QString &, const QVariant &);
     void connectSocket();
     void sendCommand(const QString &);
@@ -381,7 +378,6 @@ private:
     uint m_trytoreconnectinterval;  //!< Try to reconnect interval (in msec)
     uint m_keepaliveinterval;       //!< Keep alive interval (in msec)
     
-    int m_historysize;              //!< Number of elements when requestion call log
     QHash<QString, bool> m_checked_function;              //!< function checked
     QHash<QString, bool> m_enabled_function;              //!< function enabled
     bool m_checked_lastconnwins;           //!< the last connected account "wins"

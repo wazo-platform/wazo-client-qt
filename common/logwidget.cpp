@@ -42,192 +42,211 @@
 #include <QVBoxLayout>
 
 #include "baseengine.h"
-#include "logeltwidget.h"
 #include "logwidget.h"
-#include "userinfo.h"
 
-/*! \brief Constructor
- *
- * build layout and child widgets.
- */
-LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent), m_timer(-1)
+LogWidgetModel* LogWidgetModel::self = NULL;
+
+LogWidgetModel::LogWidgetModel(BaseEngine *b, int initialMode)
+    : QAbstractTableModel(NULL), engine(b)
 {
-    setTitle(tr("History"));
-    QVBoxLayout * layout = new QVBoxLayout(this);
-    layout->setMargin(0);
-    layout->setSpacing(0);
-
-    QGroupBox * groupBox = new QGroupBox( this );
-    groupBox->setAlignment( Qt::AlignHCenter );
-    QHBoxLayout * vbox = new QHBoxLayout( groupBox );
-    vbox->setMargin(0);
-    vbox->setSpacing(0);
-
-    vbox->addStretch( 1 );
-    
-    m_radioOut = new QRadioButton( " ", groupBox );
-    m_radioOut->setIcon(QIcon(":/images/green_up.png"));
-    m_radioOut->setToolTip( tr("Outgoing calls") );
-    connect( m_radioOut, SIGNAL(toggled(bool)),
-             this, SLOT(modeChanged(bool)) );
-    vbox->addWidget( m_radioOut );
-    
-    m_radioIn = new QRadioButton( " ", groupBox );
-    m_radioIn->setIcon(QIcon(":/images/green_down.png"));
-    m_radioIn->setToolTip( tr("Incoming calls") );
-    connect( m_radioIn, SIGNAL(toggled(bool)),
-             this, SLOT(modeChanged(bool)) );
-    vbox->addWidget( m_radioIn );
-    
-    m_radioMissed = new QRadioButton( " ", groupBox );
-    m_radioMissed->setIcon(QIcon(":/images/red_down.png"));
-    m_radioMissed->setToolTip( tr("Missed calls") );
-    connect( m_radioMissed, SIGNAL(toggled(bool)),
-             this, SLOT(modeChanged(bool)) );
-    vbox->addWidget( m_radioMissed );
-    vbox->addStretch( 1 );
-    
-    m_radioMissed->setChecked( true );
-    
-    layout->addWidget( groupBox );
-    QScrollArea * scrollArea = new QScrollArea( this );
-    scrollArea->setWidgetResizable( true );
-
-    QWidget * widget = new QWidget( scrollArea );
-    scrollArea->setWidget( widget );
-    widget->setObjectName("scroller"); // in order for the style settings to be set accordingly
-
-    m_layout = new QVBoxLayout( widget );
-    m_layout->setMargin(0);
-    m_layout->setSpacing(0);
-    m_layout->addStretch(0);
-    layout->addWidget( scrollArea );
-
-    // connect slots
-    connect( m_engine, SIGNAL(updateLogEntry(const QDateTime &, int,
-                                             const QString &, const QString &, const QString &)),
-             this, SLOT(addLogEntry(const QDateTime &, int,
-                                    const QString &, const QString &, const QString &)) );
-    connect( this, SIGNAL(askHistory(const QString &, int, const QDateTime &)),
-             m_engine, SLOT(requestHistory(const QString &, int, const QDateTime &)) );
-    connect( m_engine, SIGNAL(delogged()),
-             this, SLOT(clear()) );
-    connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
-             this, SLOT(monitorPeer(UserInfo *)) );
+    b->registerClassEvent("history", LogWidgetModel::updateHistory);
+    mode = initialMode;
+    self = this;
+    history << QVariant() << QVariant() << QVariant();
 }
 
-/*! \brief add an entry
- *
- * \sa addLogEntry
- */
-void LogWidget::addElement(const QString & peer, LogEltWidget::Direction d,
-                           const QDateTime & dt, int duration, const QString & termin)
+void LogWidgetModel::sort(int column, Qt::SortOrder order)
 {
-    //qDebug() << "LogWidget::addElement()" << peer << d << dt << duration;
-    int i, index = 0;
-    for(i = 0; i < m_layout->count(); i++) {
-        QWidget * widget = m_layout->itemAt( i )->widget();
-        if(widget) {
-            LogEltWidget * logelt = qobject_cast<LogEltWidget *>(widget);
-            if(logelt) {
-                if((dt == logelt->dateTime())
-                   && (peer == logelt->peer())
-                   && (d == logelt->direction()))
-                    return;
-                else if(dt > logelt->dateTime())
-                    break;
-                index = i + 1;
+    QList<QVariant> tosort = history[mode].toList();
+
+    if (order == Qt::AscendingOrder) {
+        if (column == 0) {
+            qSort(tosort.begin(), tosort.end(), ascendingOrderByNumber);
+        } else if (column == 1) {
+            qSort(tosort.begin(), tosort.end(), ascendingOrderByDate);
+        } else if (column == 2) {
+            qSort(tosort.begin(), tosort.end(), ascendingOrderByDuration);
+        }
+    } else {
+        if (column == 0) {
+            qSort(tosort.begin(), tosort.end(), descendingOrderByNumber);
+        } else if (column == 1) {
+            qSort(tosort.begin(), tosort.end(), descendingOrderByDate);
+        } else if (column == 2) {
+            qSort(tosort.begin(), tosort.end(), descendingOrderByDuration);
+        }
+    }
+
+    history[mode] = tosort;
+    reset();
+}
+
+int LogWidgetModel::rowCount(const QModelIndex &a) const
+{
+    int row, column; row = a.row(); column = a.column();
+    int nbrow = 0;
+
+    if (((history[mode].toList().count())))
+        nbrow = (history[mode].toList()).count();
+
+    return nbrow;
+}
+
+int LogWidgetModel::columnCount(const QModelIndex&) const
+{
+    if ((mode==0) || (mode==1))
+        return 3;
+    else if (mode==2)
+        return 2;
+
+    return 0;
+}
+
+QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
+{
+    int row, column; row = a.row(); column = a.column();
+
+    if (role==Qt::DisplayRole) {
+        if (((history[mode].toList().count()) &&
+             ((history[mode].toList()).value(row).toMap().count()))) {
+            if (column == 0) {
+                return ((history[mode].toList()).value(row).toMap())["fullname"]; 
+            } else if (column == 1) {
+                return ((history[mode].toList()).value(row).toMap())["ts"]; 
+            } else if (column == 2) {
+                int duration = ((history[mode].toList()).value(row).toMap())["duration"].toInt();
+                return tr("%0 min %1 sec").arg((duration-duration%60)/60).arg(duration%60);
             }
         }
-    }
-    LogEltWidget * logelt = new LogEltWidget(peer, d, dt, duration, termin, this);
-    connect( logelt, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-             m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
-    connect( logelt, SIGNAL(copyNumber(const QString &)),
-             m_engine, SIGNAL(pasteToDialPanel(const QString &)) );
-    m_layout->insertWidget(index, logelt);
-    if(dt > m_moreRecent)
-        m_moreRecent = dt;
+    } 
+
+    return QVariant();
 }
 
-/*! \brief remove all child widgets
+/*! \brief parse history command response
  */
-void LogWidget::clear()
+void LogWidgetModel::updateHistory(QVariantMap p)
 {
-    QLayoutItem * child;
-    while ((child = m_layout->itemAt(0)) != 0)
-    {
-        if(child->widget())
-        {
-            m_layout->removeItem(child);
-            delete child->widget();
-            delete child;
+    QVariant payload = p["payload"] ;
+    
+    self->history[self->mode] = payload;
+    self->reset();
+}
+
+Qt::ItemFlags LogWidgetModel::flags(const QModelIndex &) const
+{
+    return Qt::NoItemFlags;
+}
+
+/*! \brief ask history for an extension */
+void LogWidgetModel::requestHistory(QString peer, int mode, QDateTime moreRecent, int forceEntry)
+{
+    /* mode = 0 : Out calls
+     * mode = 1 : In calls
+     * mode = 2 : Missed calls */
+    if(mode >= 0) {
+        QVariantMap command;
+        command["class"] = "history";
+        command["direction"] = "xivoserver";
+        command["peer"] = peer;
+        command["size"] = QString::number(engine->historySize());
+        command["mode"] = QString::number(mode);
+        if(moreRecent.isValid()) {
+            command["morerecentthan"] = moreRecent.toString(Qt::ISODate);
         }
-        else
-            break;
-    }
-    m_moreRecent = QDateTime();
-    //m_layout->addStretch(1);
-}
-
-/*! \brief add an entry
- */
-void LogWidget::addLogEntry(const QDateTime & dt, int duration,
-                            const QString & peer, const QString & direction, const QString & termin)
-{
-    LogEltWidget::Direction d;
-    d = (direction == "IN") ? LogEltWidget::InCall : LogEltWidget::OutCall;
-    // TODO: manage the list !
-    addElement(peer, d, dt, duration, termin);
-}
-
-/*! \brief change the monitored peer
- */
-void LogWidget::monitorPeer(UserInfo * ui)
-{
-    // qDebug() << "LogWidget::monitorPeer()" << ui->userid();
-    clear();
-    m_peer = ui->userid();
-    if(m_peer.size() > 0) {
-        emit askHistory(m_peer, mode(), m_moreRecent);
-        if(m_timer < 0)
-            m_timer = startTimer(10000);
+        engine->sendJsonCommand(command);
     }
 }
 
-/*! \brief timer event : ask for update
- */
-void LogWidget::timerEvent(QTimerEvent *)
+void LogWidgetModel::changeMode(bool active)
 {
-    // qDebug() << "LogWidget::timerEvent() id=" << event->timerId();
-    if(m_peer.size() > 0)
-        emit askHistory(m_peer, mode(), m_moreRecent);
-}
-
-/*! \brief return the mode (out/in or missed)
- */
-int LogWidget::mode()
-{
-    int r = -1;
-    if(m_radioOut->isChecked())
-        r = 0;
-    else if(m_radioIn->isChecked())
-        r = 1;
-    else if(m_radioMissed->isChecked())
-        r = 2;
-    return r;
-}
-
-/*! \brief triggered when mode is changed.
- *
- * clear the list and ask an update.
- */
-void LogWidget::modeChanged(bool b)
-{
-    // qDebug() << "LogWidget::modeChanged()" << b << mode();
-    if(b && m_peer.size() > 0) {
-        clear();
-        emit askHistory(m_peer, mode(), m_moreRecent);
+    if (active) {
+        mode = qobject_cast<QRadioButton *>(sender())->property("mode").toInt();
+        requestHistory(engine->getFullId(), mode);
+        emit headerDataChanged(Qt::Horizontal, 0, 3);
+        reset();
     }
+}
+
+QVariant LogWidgetModel::headerData(int section,
+                                     Qt::Orientation orientation,
+                                     int role = Qt::DisplayRole) const
+{
+    if (role != Qt::DisplayRole)
+        return QVariant();
+    
+    if (orientation == Qt::Horizontal) {
+        if (section == 0)
+            return QVariant(tr("Number"));
+        else if (section == 1)
+            return QVariant(tr("Date"));
+
+        if ((section==2) && ((mode==0) || (mode==1)))
+            return QVariant(tr("Duration"));
+    }
+
+    return QVariant();
+}
+
+
+
+
+
+static inline QRadioButton* buildRadioButton(QString text, QString icon, int mode, QGroupBox *groupBox, QHBoxLayout *hbox, LogWidgetModel *m_viewmodel)
+{
+    QRadioButton *build = new QRadioButton(text, groupBox);
+
+    build->setIcon(QIcon(QString(":/images/%0").arg(icon)));
+    build->setProperty("mode", mode);
+    build->setToolTip(build->text());
+    hbox->addWidget(build);
+
+    QObject::connect(build, SIGNAL(toggled(bool)), m_viewmodel, SLOT(changeMode(bool)));
+
+    return build;
+}
+
+static inline void layoutMarginSpacingTo0(QBoxLayout *l)
+{
+    l->setMargin(0);
+    l->setSpacing(0);
+}
+
+
+LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
+    : XLet(engine, parent)
+{
+    setTitle(tr("History"));
+
+    QGroupBox *groupBox = new QGroupBox(this);
+    groupBox->setAlignment(Qt::AlignHCenter);
+
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    QHBoxLayout *hBox = new QHBoxLayout(groupBox);
+    QHBoxLayout *hBox2 = new QHBoxLayout(groupBox);
+    layoutMarginSpacingTo0(layout);
+    layoutMarginSpacingTo0(hBox);
+
+    LogWidgetModel *viewmodel = new LogWidgetModel(engine, 0);
+
+    m_view = new QTableView(this);
+    m_view->setSortingEnabled(true);
+    m_view->setModel(viewmodel);
+    m_view->verticalHeader()->hide();
+    m_view->horizontalHeader()->setStretchLastSection(true);
+    m_view->setStyleSheet("QTableView { border: none; background:transparent; color:black; }");
+
+    hBox->addStretch(1);
+
+    buildRadioButton(tr("Outgoing calls"), "green_up.png",   0, groupBox, hBox, viewmodel)->setChecked(true);
+    buildRadioButton(tr("Incoming calls"), "green_down.png", 1, groupBox, hBox, viewmodel);
+    buildRadioButton(tr("Missed calls"),   "red_down.png",   2, groupBox, hBox, viewmodel);
+
+    hBox->addStretch(1);
+
+    layout->addWidget(groupBox);
+    hBox2->addStretch(1);
+    hBox2->addWidget(m_view,4);
+    hBox2->addStretch(1);
+    layout->addLayout(hBox2);
 }
