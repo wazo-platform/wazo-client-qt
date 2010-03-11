@@ -211,9 +211,9 @@ void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues
     foreach (QString queuename, queues) {
         QString queueid = QString("queue:%1/%2").arg(astid).arg(queuename);
         if(m_queuelabels.contains(queueid)) {
-            m_gridlayout->removeWidget( m_queuelabels[queueid] );
-            m_gridlayout->removeWidget( m_queuemore[queueid] );
-            m_gridlayout->removeWidget( m_queuebusies[queueid] );
+            m_gridlayout->removeWidget(m_queuelabels[queueid]);
+            m_gridlayout->removeWidget(m_queuemore[queueid]);
+            m_gridlayout->removeWidget(m_queuebusies[queueid]);
             // TODO : used ->deleteLater() ?
             delete m_queuelabels[queueid];
             delete m_queuemore[queueid];
@@ -222,7 +222,7 @@ void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues
             m_queuemore.remove(queueid);
             m_queuebusies.remove(queueid);
             foreach (QString statitem, m_statitems) {
-                m_gridlayout->removeWidget( m_queueinfos[queueid][statitem] );
+                m_gridlayout->removeWidget( m_queueinfos[queueid][statitem]);
                 delete m_queueinfos[queueid][statitem];
                 m_queueinfos[queueid].remove(statitem);
             }
@@ -294,15 +294,15 @@ void QueuesPanel::affWidgets()
     foreach(QString queueid, m_queuelabels.keys()) {
         int colnum = 1;
         int linenum = m_queuemove[queueid]->property("position").toInt() + 1;
-        m_gridlayout->addWidget( m_queuelabels[queueid], delta + linenum, colnum++, Qt::AlignLeft );
-        m_gridlayout->addWidget( m_queuemore[queueid], delta + linenum, colnum++, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_queuemove[queueid], delta + linenum, colnum++, Qt::AlignCenter );
-        m_gridlayout->addWidget( m_queuebusies[queueid], delta + linenum, colnum++, Qt::AlignCenter );
+        m_gridlayout->addWidget( m_queuelabels[queueid], delta + linenum, colnum++, Qt::AlignLeft);
+        m_gridlayout->addWidget( m_queuemore[queueid], delta + linenum, colnum++, Qt::AlignCenter);
+        m_gridlayout->addWidget( m_queuemove[queueid], delta + linenum, colnum++, Qt::AlignCenter);
+        m_gridlayout->addWidget( m_queuebusies[queueid], delta + linenum, colnum++, Qt::AlignCenter);
         foreach (QString statitem, m_statitems)
             m_gridlayout->addWidget( m_queueinfos[queueid][statitem],
                                      delta + linenum,
                                      m_statitems.indexOf(statitem) + colnum,
-                                     Qt::AlignCenter );
+                                     Qt::AlignCenter);
     }
 }
 
@@ -313,18 +313,15 @@ void QueuesPanel::newQueueList(const QStringList & qsl)
     bool addedNewQueue = false;
     // qDebug() << "QueuesPanel::newQueueList()" << qsl;
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
-    while( iter.hasNext() )
-    {
+    while( iter.hasNext() ) {
         iter.next();
-        if(qsl.contains(iter.key()))
-        {
+        if(qsl.contains(iter.key())) {
             QueueInfo * qinfo = iter.value();
             if(updateQueue(qinfo->astid(), iter.key(), qinfo->queuename(), qinfo->properties()))
                 addedNewQueue = true;
         }
     }
-    if(addedNewQueue)
-    {
+    if(addedNewQueue) {
         //affWidgets();
         loadQueueOrder();
     }

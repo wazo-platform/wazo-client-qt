@@ -115,7 +115,15 @@ QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
                 return ((history[mode].toList()).value(row).toMap())["ts"]; 
             } else if (column == 2) {
                 int duration = ((history[mode].toList()).value(row).toMap())["duration"].toInt();
-                return tr("%0 min %1 sec").arg((duration-duration%60)/60).arg(duration%60);
+                int sec =   ( duration % 60);
+                int min =   ( duration - sec ) / 60 % 60;
+                int hou = ( ( duration - sec - min * 60 ) / 60 ) / 60;
+                if (hou)
+                    return QString("%0 hou %1 min %2 sec").arg(hou).arg(min).arg(sec);
+                else if (min) 
+                  return tr("%0 min %1 sec").arg(min).arg(sec);
+                else
+                  return tr("%0 sec").arg(sec);
             }
         }
     } 
@@ -233,7 +241,10 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
     m_view->setSortingEnabled(true);
     m_view->setModel(viewmodel);
     m_view->verticalHeader()->hide();
-    m_view->horizontalHeader()->setStretchLastSection(true);
+    m_view->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
+    m_view->horizontalHeader()->setResizeMode(1,QHeaderView::Stretch);
+    m_view->horizontalHeader()->setResizeMode(2,QHeaderView::Stretch);
+    //m_view->horizontalHeader()->setStretchLastSection(true);
     m_view->setStyleSheet("QTableView { border: none; background:transparent; color:black; }");
 
     hBox->addStretch(1);
@@ -246,7 +257,7 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
 
     layout->addWidget(groupBox);
     hBox2->addStretch(1);
-    hBox2->addWidget(m_view,4);
+    hBox2->addWidget(m_view, 4);
     hBox2->addStretch(1);
     layout->addLayout(hBox2);
 }

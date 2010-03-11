@@ -35,16 +35,14 @@
 #define __PEERWIDGET_H__
 
 #include <QHash>
-#include <QWidget>
+#include <QLabel>
+#include <QPixmap>
 #include <QPoint>
 #include <QPushButton>
 
 #include "basepeerwidget.h"
 #include "taintedpixmap.h"
 #include "chitchat.h"
-
-class QLabel;
-class QPixmap;
 
 class BaseEngine;
 class PeerChannel;
@@ -59,7 +57,6 @@ class PeerWidget : public BasePeerWidget
     Q_OBJECT
 public:
     PeerWidget(BaseEngine *, UserInfo *);
-    ~PeerWidget();
     void setName(const QString &);
     void setEngine(BaseEngine *);
     void setAgentToolTip(const QString &, const QStringList &);
@@ -68,18 +65,12 @@ public:
     void updatePresence();  //!< update presence information displayed
     void updatePhonesStates();
 private:
-    QHash<QString, QLabel *> m_lblphones;        //!< phone labels
+    QHash<QString, QLabel *> m_lblphones; //!< phone labels
         
-    QPushButton * m_availlbl;        //!< Peer state display from XIVO CTI Client
-    QLabel * m_agentlbl;        //!< agent state label
-    QLabel * m_mobilelbl;       //!< mobile phone label
-    QLabel * m_voicelbl;
-    QLabel * m_fwdlbl;
-    QLabel * m_textlbl;                //!< text label : to display peer name
-        
-    static QHash<QString, QPixmap> m_phones;        //!< phone icons
-    static QHash<QString, QPixmap> m_agents;        //!< agent icons
-    static QHash<QString, QPixmap> m_mobiles;        //!< mobil phone icons
+    QPushButton *m_user_status;  //!< Peer state display from XIVO CTI Client
+    QLabel *m_agentlbl;       //!< agent state label
+    QLabel *m_mobilelbl;      //!< mobile phone label
+    QLabel *m_textlbl;        //!< text label : to display peer name
 };
 
 #endif

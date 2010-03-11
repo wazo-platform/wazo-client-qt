@@ -86,14 +86,12 @@ BasePeerWidget * PeerWidgetFactory::newExternalPhonePeerWidget(const QString & l
 BasePeerWidget * PeerWidgetFactory::newPeerWidget(UserInfo * ui)
 {
     BasePeerWidget * w;
-    if(getSwitchBoardEltType() == "small")
-    {
-        w = new BasicPeerWidget( m_engine, ui );
+    if(getSwitchBoardEltType() == "small") {
+        w = new BasicPeerWidget(m_engine, ui);
+    } else {
+        w = new PeerWidget(m_engine, ui);
     }
-    else
-    {
-        w = new PeerWidget( m_engine, ui );
-    }
+
     connect( w, SIGNAL(actionCall(const QString &,
                                   const QString &,
                                   const QString &)),
