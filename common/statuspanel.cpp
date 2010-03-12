@@ -140,7 +140,7 @@ void StatusPanel::updateLine(const QString & chan, const QStringList & allowed)
 {
     int row = m_row[chan];
     int colnum = 1;
-    qDebug() << "StatusPanel::updateLine" << row;
+    qDebug() << "StatusPanel::updateLine" << row << "allowed=" << allowed;
     m_glayout->addWidget( m_vlinesl[chan], row, 0, Qt::AlignLeft );
     m_glayout->addWidget( m_statuses[chan], row, colnum++, Qt::AlignHCenter );
 
@@ -291,6 +291,8 @@ void StatusPanel::functionKeyPressed(int keynum)
             dtransfer();
             if(linestatus == WDTransfer || linestatus == WITransfer)
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
+            else if (linestatus == Ringing)
+                updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer"));
             else
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
         } else if(action == "itransfer") {
