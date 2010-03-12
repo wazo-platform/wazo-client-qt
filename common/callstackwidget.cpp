@@ -241,11 +241,14 @@ void CallStackWidget::dragEnterEvent(QDragEnterEvent * event)
  */
 void CallStackWidget::monitorPeer(UserInfo * ui)
 {
-    qDebug() << "CallStackWidget::monitorPeer()" << ui->astid() << ui->userid();
+    qDebug() << "CallStackWidget::monitorPeer()" << m_engine->getFullId()<< ui->astid() << ui->userid();
     //emptyList();
-    m_monitored_ui = ui;
-    changeTitle(tr("Monitoring : %1").arg(ui->fullname()));
-    updateDisplay();
+    if ((m_engine->getFullId() == ui->userid()) ||
+        (m_engine->enabledFunction("switchboard"))) {
+        m_monitored_ui = ui;
+        changeTitle(tr("Monitoring : %1").arg(ui->fullname()));
+        updateDisplay();
+    }
 }
 
 /*! \brief receive drop Events.
