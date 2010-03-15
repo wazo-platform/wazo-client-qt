@@ -74,6 +74,7 @@ public slots:
     void newAgentList(const QStringList &);
     void setQueueOrder(const QVariant &);
 private slots:
+    void updateLongestWaitWidgets();
     void queueClicked();
 private:
     bool updateQueue(const QString &, const QString &, const QString &, const QVariant &);
@@ -91,6 +92,7 @@ private:
     
     QHash<QString, QLabel *> m_queuelabels; //!< QLabel used to display the names of queues
     QHash<QString, QPushButton *> m_queuemore;  //!< Button to display queue details
+    QHash<QString, QLabel *> m_queuelongestwait;    //!< Widget to display the longuest waiting time for each queue
     QHash<QString, QPushButton *> m_queuemove;  //!< Button to change the order in which the queues are displayed
     QHash<QString, QProgressBar *> m_queuebusies;   //!< Widgets to display the queues busy level
     QHash<QString, QHash<QString, QLabel *> > m_queueinfos; //!< display details about queues
@@ -98,6 +100,7 @@ private:
     
     quint32 m_maxbusy;  //!< Maximum value for busy level
     
+    QLabel * m_longestwait; //!< displayed on top of the column where we display the longuest waiting time for each queue
     QLabel * m_busytitle;   //!< displayed on top of the column of busy levels
     QLabel * m_qtitle;      //!< global title
     QHash<QString, QLabel *> m_title_infos; //!< To display text on top of each column

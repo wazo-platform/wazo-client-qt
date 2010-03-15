@@ -39,6 +39,7 @@
 #include <QProgressBar>
 #include <QScrollArea>
 #include <QVariant>
+#include <QTimer>
 
 #include "baseengine.h"
 #include "queuespanel.h"
@@ -108,6 +109,13 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     
     m_qtitle = new QLabel(tr("Queues"), this);
     m_busytitle = new QLabel(tr("Busy"), this);
+    m_longestwait = new QLabel(tr("Longest Wait"), this);
+    
+
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateLongestWaitWidgets()));
+    timer->start(1000);
+
     
     foreach (QString statitem, m_statitems) {
         if(shortlegends) {
@@ -123,6 +131,8 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     colnum++;
     
     m_gridlayout->addWidget( m_busytitle, 0, colnum++, Qt::AlignCenter );
+    m_gridlayout->addWidget( m_longestwait, 0, colnum++, Qt::AlignCenter );
+    
     foreach (QString statitem, m_statitems)
         m_gridlayout->addWidget( m_title_infos[statitem],
                                  0,
@@ -214,13 +224,17 @@ void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues
             m_gridlayout->removeWidget(m_queuelabels[queueid]);
             m_gridlayout->removeWidget(m_queuemore[queueid]);
             m_gridlayout->removeWidget(m_queuebusies[queueid]);
+            m_gridlayout->removeWidget(m_queuelongestwait[queueid]);
             // TODO : used ->deleteLater() ?
             delete m_queuelabels[queueid];
             delete m_queuemore[queueid];
             delete m_queuebusies[queueid];
+            delete m_queuelongestwait[queueid];
+
             m_queuelabels.remove(queueid);
             m_queuemore.remove(queueid);
             m_queuebusies.remove(queueid);
+            m_queuelongestwait.remove(queueid);
             foreach (QString statitem, m_statitems) {
                 m_gridlayout->removeWidget( m_queueinfos[queueid][statitem]);
                 delete m_queueinfos[queueid][statitem];
@@ -266,6 +280,15 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     m_queuebusies[queueid]->setProperty("queueid", queueid);
     m_queuebusies[queueid]->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
     m_queuebusies[queueid]->setFormat("%v");
+
+
+    m_queuelongestwait[queueid] = new QLabel(this);
+    m_queuelongestwait[queueid]->setText(">)-|-/('>");
+    m_queuelongestwait[queueid]->setStyleSheet("border-radius: 3px;background-color:red;border: 2px solid black;");
+    m_queuelongestwait[queueid]->setAlignment(Qt::AlignCenter); // can't set size & text alignment of Qlabel widget
+    m_queuelongestwait[queueid]->setFixedSize(100,19);          // through css blah
+
+
     foreach (QString statitem, m_statitems) {
         m_queueinfos[queueid][statitem] = new QLabel();
         m_queueinfos[queueid][statitem]->setFont(m_gui_font);
@@ -298,6 +321,7 @@ void QueuesPanel::affWidgets()
         m_gridlayout->addWidget( m_queuemore[queueid], delta + linenum, colnum++, Qt::AlignCenter);
         m_gridlayout->addWidget( m_queuemove[queueid], delta + linenum, colnum++, Qt::AlignCenter);
         m_gridlayout->addWidget( m_queuebusies[queueid], delta + linenum, colnum++, Qt::AlignCenter);
+        m_gridlayout->addWidget( m_queuelongestwait[queueid], delta + linenum, colnum++, Qt::AlignCenter );
         foreach (QString statitem, m_statitems)
             m_gridlayout->addWidget( m_queueinfos[queueid][statitem],
                                      delta + linenum,
@@ -361,7 +385,36 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
             if(infos.contains(statitem))
                 m_queueinfos[queueid][statitem]->setText(infos[statitem]);
     }
-    
+
+    if (infos["Calls"].toInt() == 0 ) {
+        if(m_queuelongestwait.contains(queueid)) {
+            m_queuelongestwait[queueid]->setProperty("running_time", 0);
+        m_queuelongestwait[queueid]->setProperty("time", 0);
+        }
+    } else if(m_queuelongestwait.contains(queueid)) {
+        QueueInfo * qinfo = m_engine->queues()[QString("queue:%1/%2").arg(astid).arg(queuename)];
+        QVariantMap properties = qinfo->properties();
+        QVariantMap channel_list = properties["channels"].toMap();
+
+        uint oldest = 0;
+        int first_item = 1;
+        uint current_entrytime;
+
+        foreach (QString channel_name, channel_list.keys()) {
+          current_entrytime = channel_list[channel_name].toMap()["entrytime"].toUInt();
+          if (first_item) {
+            oldest = current_entrytime;
+            first_item = 0;
+          }
+          oldest = (oldest < current_entrytime) ? oldest : current_entrytime ;
+        }
+
+        uint oldest_waiting_time = (oldest == 0 ) ? oldest : (m_engine->timeServer() - oldest);
+
+        m_queuelongestwait[queueid]->setProperty("time", oldest_waiting_time);
+        m_queuelongestwait[queueid]->setProperty("running_time", !first_item);
+
+    }
     QVariantMap queueagents = queueprops.toMap()["agents_in_queue"].toMap();
     QStringList queueagents_list;
     int navail = 0;
@@ -372,6 +425,7 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
             queueagents_list << agentname;
         }
     }
+
     if(m_queueinfos[queueid].contains("Xivo-Avail")) {
         m_queueinfos[queueid]["Xivo-Avail"]->setText(QString::number(navail));
         if(navail)
@@ -379,6 +433,7 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
         else
             m_queueinfos[queueid]["Xivo-Avail"]->setToolTip("");
     }
+
     return newQueue;
 }
 
@@ -468,5 +523,87 @@ void QueuesPanel::queueClicked()
             affWidgets();
             saveQueueOrder(QVariant(m_queue_lines));
         }
+    }
+}
+
+
+/*! \brief updateLongestWaitWidgets
+ *
+ *  update the longest waiting time label for each queues
+ */
+void QueuesPanel::updateLongestWaitWidgets()
+{
+
+
+    uint greenlevel = m_optionsMap["queuelevels_wait"].toMap()["green"].toUInt() - 1;
+    uint orangelevel = m_optionsMap["queuelevels_wait"].toMap()["orange"].toUInt() - 1;
+
+    // if we don't want this widget displayed
+    int display_column = m_optionsMap["queue_longestwait"].toBool();
+
+    if (!display_column) { 
+        if (m_longestwait->isVisible()) {
+            QHashIterator<QString, QLabel *> i(m_queuelongestwait);
+
+            while (i.hasNext()) {
+                i.next();
+                QLabel *longestwait = i.value();
+                longestwait->hide();
+            }
+
+            m_longestwait->hide();
+        }
+        return ;
+    } else {
+        if (!m_longestwait->isVisible()) {
+            QHashIterator<QString, QLabel *> i(m_queuelongestwait);
+
+            while (i.hasNext()) {
+                i.next();
+                QLabel *longestwait = i.value();
+                longestwait->show();
+            }
+
+            m_longestwait->show();
+        }
+    }
+
+    QHashIterator<QString, QLabel *> i(m_queuelongestwait);
+
+    while (i.hasNext()) {
+        i.next();
+        QLabel *longestwait = i.value();
+        uint new_time = longestwait->property("time").toUInt();
+
+        if(longestwait->property("running_time").toInt()) {
+            new_time += 1;
+            longestwait->setProperty("time", new_time);
+        }
+
+        int sec =   ( new_time % 60);
+        int min =   ( new_time - sec ) / 60 % 60;
+        int hou = ( ( new_time - sec - min * 60 ) / 60 ) / 60;
+
+        QString time_label;
+        
+        if (hou) {
+            time_label += QString("%0:%1:%2").arg(hou,2).arg(min,2,10,QChar('0')).arg(sec,2,10,QChar('0'));
+        } else {
+            time_label += QString("%0 Min ").arg(min,2);
+
+            if(longestwait->property("running_time").toInt())
+                time_label += QString("%0 Sec ").arg(sec,2,10,QChar('0'));
+            else
+                time_label += QString("%0 Sec ").arg(sec,2);
+        }
+
+        if(new_time <= greenlevel)
+            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #00ff00;");
+        else if(new_time <= orangelevel)
+            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #f38402;");
+        else
+            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #ff0000;");
+
+        longestwait->setText(time_label);
     }
 }

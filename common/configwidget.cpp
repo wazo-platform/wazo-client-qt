@@ -153,6 +153,20 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
     
     gridlayout2->setRowStretch( line, 1 );
     gridlayout2->setColumnStretch( width, 1 );
+
+
+    m_queue_longestwait = new QCheckBox(tr("Queue Display (Longest Wait)"), this);
+    m_queue_longestwait->setCheckState(opts["queue_longestwait"].toBool() ? Qt::Checked : Qt::Unchecked);
+    gridlayout2->addWidget(m_queue_longestwait, line, 0);
+    ncol = 1;
+    foreach(QString color, queuelevel_colors) {
+        m_queuelevels_wait[color] = new QSpinBox(this);
+        m_queuelevels_wait[color]->setRange(0, 3600);
+        m_queuelevels_wait[color]->setValue(opts["queuelevels_wait"].toMap()[color].toUInt());
+        gridlayout2->addWidget(m_queuelevels_wait[color], line, ncol ++);
+    }
+    line++;
+
     
     // Box for Connection Definition
     //        QGroupBox * groupBox_conn = new QGroupBox( tr("Identification"), this );
@@ -358,10 +372,14 @@ void ConfigWidget::saveAndClose()
     m_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
     
     QVariantMap opts;
-    QVariantMap qvm;
+    QVariantMap qvm,qvm2;
     foreach(QString color, queuelevel_colors)
         qvm[color] = QVariant(m_queuelevels[color]->value());
     opts["queuelevels"] = qvm;
+
+    foreach(QString color, queuelevel_colors)
+        qvm2[color] = QVariant(m_queuelevels_wait[color]->value());
+    opts["queuelevels_wait"] = qvm2;
     
     // BaseEngine::setLoginKind() sets the user option if needed.
     m_engine->setLoginKind(m_loginkind->currentIndex());
@@ -371,6 +389,7 @@ void ConfigWidget::saveAndClose()
     opts["contacts-width"] = m_contactswidth_sbox->value();
     opts["sheet-tablimit"] = m_tablimit_sbox->value();
     opts["autourl_allowed"] = m_autourl_allowed->checkState();
+    opts["queue_longestwait"] = m_queue_longestwait->checkState() == Qt::Checked;
     opts["switchboard-elt-type"] = m_comboswitchboard->itemData( m_comboswitchboard->currentIndex() ).toString();
     opts["maxwidthwanted"] = m_maxWidthWanted->value();
     opts["presenceindicatorsize"] = m_presenceIndicatorSize->value();

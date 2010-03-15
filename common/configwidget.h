@@ -102,6 +102,7 @@ class ConfigWidget: public QDialog
     QSpinBox  * m_history_sbox;        //!< History size
     
     QHash<QString, QSpinBox *> m_queuelevels;   //!< For queue display
+    QHash<QString, QSpinBox *> m_queuelevels_wait;   //!< For queue display
     
     QSpinBox  * m_contactssize_sbox;        //!< Displayed contacts' size
     QSpinBox  * m_contactswidth_sbox;        //!< Displayed contacts' width
@@ -114,5 +115,7 @@ class ConfigWidget: public QDialog
     
     QDialogButtonBox * m_btnbox;        //!< Buttons box
     QTabWidget * m_tabwidget;       //!< Tabs to access configuration widgets
+    QCheckBox * m_queue_longestwait;  //!< should we display the longest wait in the queue xlet ?
+    
 };
 #endif
