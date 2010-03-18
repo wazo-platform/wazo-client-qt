@@ -36,6 +36,7 @@
 
 #include <QDialog>
 #include <QHash>
+#include <QVariantMap>
 
 class QCheckBox;
 class QComboBox;
@@ -73,10 +74,22 @@ class ConfigWidget: public QDialog
  private slots:
     //! Save the configuration to the BaseEngine object and close
     void saveAndClose();
+    void changeOperatorKey(bool);
     void loginKindChanged(int);
+ protected:
+    virtual void keyPressEvent(QKeyEvent *);
 
  private:
-    BaseEngine * m_engine;                //!< BaseEngine object parameters are commited to
+    void _insert_connection_tab();
+    void _insert_function_tab();
+    void _insert_account_tab();
+    void _insert_guisetting_tab();
+    void _insert_operatorxlet_tab();
+
+    QVariantMap opts;
+    QVariantMap forcedopts;
+
+    BaseEngine * m_engine;          //!< BaseEngine object parameters are commited to
         
     QLineEdit * m_serverhost;       //!< IP/hostname of the server
     QSpinBox  * m_ctiport;          //!< server port (switchboard)
@@ -116,6 +129,14 @@ class ConfigWidget: public QDialog
     QDialogButtonBox * m_btnbox;        //!< Buttons box
     QTabWidget * m_tabwidget;       //!< Tabs to access configuration widgets
     QCheckBox * m_queue_longestwait;  //!< should we display the longest wait in the queue xlet ?
+
+    struct {
+      QString action;
+      QString translation;
+      QPushButton *button;
+    } m_operator_action[9];
+
+    int m_currentKeyChange;
     
 };
 #endif

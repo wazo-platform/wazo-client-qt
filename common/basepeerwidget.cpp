@@ -79,7 +79,6 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
     if(m_maxWidthWanted < 50)
         m_maxWidthWanted = 200;
     setMaximumWidth(m_maxWidthWanted);
-    setMaximumHeight(80);
     setAcceptDrops(true);
 }
 

@@ -53,16 +53,18 @@ StatusPanel::StatusPanel(BaseEngine * engine, QWidget * parent)
     m_lbl = new QLabel( "", this );
     setAccessibleName( tr("Operator panel") );
     setTitle( tr("Operator") );
+
+    QVariantMap opts = m_engine->getGuiOptions("client_gui");
         
-    m_actionkey[Qt::Key_F1] = (QStringList() << "answer" << tr("Answer"));
-    m_actionkey[Qt::Key_F2] = (QStringList() << "hangup" << tr("Hangup"));
-    m_actionkey[Qt::Key_F3] = (QStringList() << "dtransfer" << tr("D. Transfer"));
-    m_actionkey[Qt::Key_F4] = (QStringList() << "itransfer" << tr("I. Transfer"));
-    m_actionkey[Qt::Key_F5] = (QStringList() << "ilink" << tr("I. Link"));
-    m_actionkey[Qt::Key_F6] = (QStringList() << "icancel" << tr("I. Cancel"));
-    m_actionkey[Qt::Key_F7] = (QStringList() << "park" << tr("Park"));
-    m_actionkey[Qt::Key_F8] = (QStringList() << "atxferfinalize" << tr("Finalize Transfer"));
-    m_actionkey[Qt::Key_F9] = (QStringList() << "atxfercancel" << tr("Cancel Transfer"));
+    m_actionkey[opts["xlet_operator_keyanswer"        ].toInt()] = (QStringList() << "answer" << tr("Answer"));
+    m_actionkey[opts["xlet_operator_keyhangup"        ].toInt()] = (QStringList() << "hangup" << tr("Hangup"));
+    m_actionkey[opts["xlet_operator_keydtransfer"     ].toInt()] = (QStringList() << "dtransfer" << tr("D. Transfer"));
+    m_actionkey[opts["xlet_operator_keyitransfer"     ].toInt()] = (QStringList() << "itransfer" << tr("I. Transfer"));
+    m_actionkey[opts["xlet_operator_keyilink"         ].toInt()] = (QStringList() << "ilink" << tr("I. Link"));
+    m_actionkey[opts["xlet_operator_keyicancel"       ].toInt()] = (QStringList() << "icancel" << tr("I. Cancel"));
+    m_actionkey[opts["xlet_operator_keypark"          ].toInt()] = (QStringList() << "park" << tr("Park"));
+    m_actionkey[opts["xlet_operator_keyatxferfinalize"].toInt()] = (QStringList() << "atxferfinalize" << tr("Finalize Transfer"));
+    m_actionkey[opts["xlet_operator_keyatxfercancel"  ].toInt()] = (QStringList() << "atxfercancel" << tr("Cancel Transfer"));
     // m_actionkey[Qt::Key_Return] = (QStringList() << "numreturn" << tr("Call Number"));
         
     m_glayout->addWidget( m_lbl, 0, 0, 1, m_actionkey.size() + 4, Qt::AlignHCenter | Qt::AlignVCenter );
@@ -109,12 +111,15 @@ void StatusPanel::newCall(const QString & chan)
         QString actionname = act.value()[0];
         k[actionname] = new QPushButton("", this);
         k[actionname]->hide();
-        if((act.key() >= Qt::Key_F1) && (act.key() <= Qt::Key_F12))
-            k[actionname]->setText(act.value()[1] + " (F" + QString::number(act.key() - Qt::Key_F1 + 1) + ")");
-        else if(act.key() == Qt::Key_Return)
-            k[actionname]->setText(act.value()[1] + " (Return)");
-        else
-            k[actionname]->setText(act.value()[1] + " (?)");
+        //if((act.key() >= Qt::Key_F1) && (act.key() <= Qt::Key_F12))
+        //    k[actionname]->setText(act.value()[1] + " (F" + QString::number(act.key() - Qt::Key_F1 + 1) + ")");
+        //else if(act.key() == Qt::Key_Return)
+        //    k[actionname]->setText(act.value()[1] + " (Return)");
+        //else
+        //    k[actionname]->setText(act.value()[1] + " (?)");
+        
+        k[actionname]->setText(act.value()[1] + " (" + QKeySequence(act.key()).toString() + ")");
+
         k[actionname]->setProperty("channel", chan);
         k[actionname]->setProperty("function", act.key());
         connect( k[actionname], SIGNAL(clicked()),

@@ -57,37 +57,38 @@ SearchPanel::SearchPanel(BaseEngine * engine,
     
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
-    QLabel * lbl = new QLabel( tr("N&ame or number to search :"), this );
+    QLabel * lbl = new QLabel(tr("N&ame or number to search :"), this);
     vlayout->addWidget(lbl, 0, Qt::AlignCenter);
-    m_input = new ExtendedLineEdit( this );
+    m_input = new ExtendedLineEdit(this);
     lbl->setBuddy(m_input);
-    connect( m_input, SIGNAL(textChanged(const QString &)),
-             this, SLOT(affTextChanged(const QString &)) );
-    vlayout->addWidget( m_input );
+    connect(m_input, SIGNAL(textChanged(const QString &)),
+             this, SLOT(affTextChanged(const QString &)));
+    vlayout->addWidget(m_input);
     QScrollArea * scrollarea = new QScrollArea(this);
     scrollarea->setWidgetResizable(true);
     QWidget * widget = new QWidget(scrollarea);
     widget->setObjectName("scroller");
     scrollarea->setWidget(widget);
     QVBoxLayout * scrollarealayout = new QVBoxLayout(widget);
-    m_peerlayout = new QGridLayout();
-    scrollarealayout->addLayout( m_peerlayout );
-    scrollarealayout->addStretch( 1 );
+    m_peerlayout = new QGridLayout;
+    m_peerlayout->setSpacing(10);
+    scrollarealayout->addLayout(m_peerlayout);
+    scrollarealayout->addStretch(1);
     vlayout->addWidget(scrollarea);
     
     m_searchpattern = "";
 
     // connect signal/slots
-    connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
-             this, SLOT(updateUser(UserInfo *)) );
-    connect( m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
-             this, SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)) );
-    connect( m_engine, SIGNAL(peersReceived()),
-             this, SLOT(updateDisplay()) );
-    connect( this, SIGNAL(askCallerIds()),
-             m_engine, SLOT(askCallerIds()) );
-    connect( m_engine, SIGNAL(delogged()),
-             this, SLOT(removePeers()) );
+    connect(m_engine, SIGNAL(userUpdated(UserInfo *)),
+            this, SLOT(updateUser(UserInfo *)) );
+    connect(m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
+            this, SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)));
+    connect(m_engine, SIGNAL(peersReceived()),
+            this, SLOT(updateDisplay()));
+    connect(this, SIGNAL(askCallerIds()),
+            m_engine, SLOT(askCallerIds()));
+    connect(m_engine, SIGNAL(delogged()),
+            this, SLOT(removePeers()));
 }
 
 SearchPanel::~SearchPanel()
@@ -186,15 +187,13 @@ void SearchPanel::updateUser(UserInfo * ui)
 {
     const QString & userid = ui->userid();
     PeerItem * peeritem = NULL;
-    if(m_peerhash.contains(userid))
-        {
-            peeritem = m_peerhash.value(userid);
-        }
-    else
-        {
-            peeritem = new PeerItem(ui);
-            m_peerhash.insert(userid, peeritem);
-        }
+
+    if(m_peerhash.contains(userid)) {
+        peeritem = m_peerhash.value(userid);
+    } else {
+        peeritem = new PeerItem(ui);
+        m_peerhash.insert(userid, peeritem);
+    }
     peeritem->updateStatus();
 }
 

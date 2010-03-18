@@ -56,21 +56,26 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     setLayout(vLayout);
+    vLayout->setSpacing(0);
+    vLayout->setMargin(0);
 
     QHBoxLayout *hLayout = new QHBoxLayout;
+    hLayout->setSpacing(0);
     QWidget *peer = new QWidget(this);
     vLayout->addWidget(peer);
-    peer->setStyleSheet(".QWidget {border-style: solid; border-left-width: 2px; border-color: #000000;}");
+    peer->setStyleSheet(".QWidget { border-style: dotted; border-left-width: 1px; border-color: #000000; }");
 
 
     QGridLayout *layout = new QGridLayout(peer);
     peer->setLayout(layout);
+    layout->setMargin(10);
+    layout->setSpacing(0);
     
-    m_textlbl = new QLabel(this);
+    m_textlbl = new QLabel(peer);
     setName(m_ui->fullname());
     
     foreach (QString phone, ui->phonelist()) {
-        m_lblphones[phone] = new QLabel(this);
+        m_lblphones[phone] = new QLabel(peer);
         m_lblphones[phone]->setAlignment(Qt::AlignCenter);
         m_lblphones[phone]->setMinimumSize(fsize, fsize);
         m_lblphones[phone]->setProperty("kind", "term");
@@ -79,7 +84,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     }
 
     if(! m_ui->ctilogin().isEmpty()) {
-        m_user_status = new QPushButton(this);
+        m_user_status = new QPushButton(peer);
         m_user_status->setMinimumSize(fsize, fsize);
         m_user_status->setProperty("userid", ui->userid());
         m_user_status->setProperty("astid", ui->astid());
@@ -90,7 +95,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     }
         
     if(! m_ui->mobilenumber().isEmpty()) {
-        m_mobilelbl = new QLabel(this);
+        m_mobilelbl = new QLabel(peer);
         m_mobilelbl->setPixmap(QPixmap(":/images/mobile-grey.png"));
         m_mobilelbl->setAlignment(Qt::AlignCenter);
         m_mobilelbl->setMinimumSize(fsize, fsize);
@@ -101,8 +106,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     }
 
     if(! ui->agentnumber().isEmpty()) {
-        m_agentlbl = new QLabel(this);
-        m_agentlbl->setPixmap(QPixmap(":/images/agent-grey.png"));
+        m_agentlbl = new QLabel(peer);
         m_agentlbl->setAlignment(Qt::AlignCenter);
         m_agentlbl->setMinimumSize(fsize, fsize);
         m_agentlbl->setToolTip(tr("Agent %1").arg(ui->agentnumber()));
@@ -113,7 +117,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     }
     hLayout->addStretch(1);
     
-    layout->addWidget(m_textlbl, 0, 2, 1, 6, Qt::AlignLeft);
+    layout->addWidget(m_textlbl, 0, 2, 1, 1, Qt::AlignLeft);
     layout->addLayout(hLayout, 1, 2);
     
     reloadSavedName();
@@ -122,8 +126,8 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
 void PeerWidget::setAgentState(const QString &  color)
 {
     if(m_agentlbl) {
-        QString qss =  QString(".QLabel {border-style: solid; border-bottom-width: 3px; border-color: %1; }").arg(color);
-        m_agentlbl->setStyleSheet(qss);
+        QColor c = QColor(color);
+        m_agentlbl->setPixmap(TaintedPixmap(QString(":/images/agent-trans.png"), c).getPixmap());
     }
 }
 
