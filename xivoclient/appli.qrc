@@ -10,27 +10,10 @@
 	<file>../images/xivoicon-black.png</file>
 	<file>../images/xivo-login.png</file>
 	<file>../images/sipphone.png</file>
-	<file>../images/agent-blue.png</file>
-	<file>../images/agent-red.png</file>
-	<file>../images/agent-grey.png</file>
-	<file>../images/agent-green.png</file>
-	<file>../images/agent-orange.png</file>
-	<file>../images/agent-yellow.png</file>
-	<file>../images/phone-blue.png</file>
-	<file>../images/phone-green.png</file>
-	<file>../images/phone-grey.png</file>
-	<file>../images/phone-orange.png</file>
-	<file>../images/phone-red.png</file>
+	<file>../images/agent-trans.png</file>
 	<file>../images/phone-trans.png</file>
 	<file>../images/personal-trans.png</file>
-	<file>../images/personal-blue.png</file>
-	<file>../images/personal-trans.png</file>
-	<file>../images/personal-green.png</file>
-	<file>../images/personal-grey.png</file>
-	<file>../images/personal-orange.png</file>
-	<file>../images/personal-red.png</file>
-	<file>../images/personal-yellow.png</file>
-    <file>../images/mobile-grey.png</file>
+	<file>../images/mobile-grey.png</file>
 	<file>../images/player_play.png</file>
 	<file>../images/player_stop.png</file>
 	<file>../images/red_down.png</file>

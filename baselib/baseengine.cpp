@@ -207,6 +207,18 @@ void BaseEngine::loadSettings()
     } catch(JsonQt::ParseException) {
         qDebug() << "BaseEngine::loadSettings() exception catched for" << defaultguioptions;
     }
+    QVariantMap guisetting_map = data.toMap();
+    guisetting_map.insert("xlet_operator_keyanswer"        , QVariant(Qt::Key_F1));
+    guisetting_map.insert("xlet_operator_keyhangup"        , QVariant(Qt::Key_F2));
+    guisetting_map.insert("xlet_operator_keydtransfer"     , QVariant(Qt::Key_F3));
+    guisetting_map.insert("xlet_operator_keyitransfer"     , QVariant(Qt::Key_F4));
+    guisetting_map.insert("xlet_operator_keyilink"         , QVariant(Qt::Key_F5));
+    guisetting_map.insert("xlet_operator_keyicancel"       , QVariant(Qt::Key_F6));
+    guisetting_map.insert("xlet_operator_keypark"          , QVariant(Qt::Key_F7));
+    guisetting_map.insert("xlet_operator_keyatxferfinalize", QVariant(Qt::Key_F8));
+    guisetting_map.insert("xlet_operator_keyatxfercancel"  , QVariant(Qt::Key_F9));
+    data.setValue(guisetting_map);
+
     
     m_guioptions["client_gui"] = m_settings->value("guisettings", data);
     m_loginkind = m_guioptions.value("client_gui").toMap().value("loginkind").toInt();
@@ -2235,7 +2247,7 @@ void BaseEngine::loadQueueOrder()
  * Return NULL if not available */
 UserInfo * BaseEngine::getXivoClientUser()
 {
-    qDebug() << "BaseEngine::getXivoClientUser()" << m_astid << m_xivo_userid << "aaaa" << m_fullid;
+    //qDebug() << "BaseEngine::getXivoClientUser()" << m_astid << m_xivo_userid << "aaaa" << m_fullid;
     if( m_users.contains( m_fullid ) )
         return m_users.value( m_fullid );
     return NULL;

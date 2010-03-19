@@ -597,7 +597,9 @@ void QueuesPanel::updateLongestWaitWidgets()
                 time_label += QString("%0 Sec ").arg(sec,2);
         }
 
-        if(new_time <= greenlevel)
+        if(new_time == 0)
+            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #ffffff;");
+        else if(new_time <= greenlevel)
             longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #00ff00;");
         else if(new_time <= orangelevel)
             longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #f38402;");

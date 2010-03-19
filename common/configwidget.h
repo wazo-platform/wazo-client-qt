@@ -37,6 +37,7 @@
 #include <QDialog>
 #include <QHash>
 #include <QVariantMap>
+#include <QMessageBox>
 
 class QCheckBox;
 class QComboBox;

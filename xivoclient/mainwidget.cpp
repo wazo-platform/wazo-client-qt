@@ -958,6 +958,7 @@ void MainWidget::changeEvent(QEvent * /* event */)
 
 void MainWidget::keyPressEvent(QKeyEvent * event)
 {
+#if 0
     if((event->key() >= Qt::Key_F1) && (event->key() <= Qt::Key_F35))
         qDebug() << QString("MainWidget::keyPressEvent() F%1").arg(event->key() - Qt::Key_F1 + 1);
     else if(event->key() == Qt::Key_Up)
@@ -967,6 +968,7 @@ void MainWidget::keyPressEvent(QKeyEvent * event)
     if(((event->key() >= Qt::Key_F1) && (event->key() <= Qt::Key_F35))
        || (event->key() == Qt::Key_Up)
        || (event->key() == Qt::Key_Down))
+#endif
         functionKeyPressed(event->key());
 }
 

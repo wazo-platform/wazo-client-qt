@@ -51,7 +51,7 @@
 #include "baseengine.h"
 #include "xivoconsts.h"
 
-QStringList queuelevel_colors = (QStringList() << "green" << "orange" << "red");
+QStringList queuelevel_colors = (QStringList() << "green" << "orange");// << "red");
 
 
 /*! \brief constructor */
@@ -369,7 +369,7 @@ void ConfigWidget::_insert_operatorxlet_tab()
     glayout->addWidget(new QLabel(tr("Operator action")), 0, 1);
     glayout->addWidget(new QLabel(tr("Key binding")), 0, 2);
 
-    for(i=0;i<9;i++) {
+    for (i=0;i<9;i++) {
         selectKey = new QPushButton(tr("(current: %0) click to change")
                           .arg(QKeySequence(opts["xlet_operator_key" + m_operator_action[i].action].toInt()).toString()),
                           root_widget);
@@ -381,6 +381,7 @@ void ConfigWidget::_insert_operatorxlet_tab()
 
         connect(selectKey, SIGNAL(toggled(bool)), this, SLOT(changeOperatorKey(bool)));
     }
+    glayout->addWidget(new QLabel(tr("any change there sadly require an application restart to be in effect")), i + 1, 1, 1, 2);
     
     m_tabwidget->addTab(root_widget, tr("Operator Xlet"));
 }
@@ -394,8 +395,27 @@ ConfigWidget::~ConfigWidget()
 
 void ConfigWidget::keyPressEvent(QKeyEvent *e)
 {
-    if (m_currentKeyChange == -1 )
+    if ((m_currentKeyChange == -1) || (e->modifiers() != Qt::NoModifier))
         return;
+
+    int i, already_binded = -1;
+
+    for (i=0;i<9;i++) {
+        if ((opts["xlet_operator_key" + m_operator_action[i].action].toInt() == e->key()) &&
+            (i != m_currentKeyChange)) {
+            already_binded = i;
+            break;
+        }
+    }
+
+    if (already_binded != -1) {
+        QMessageBox::information(this,
+            tr("this key is already binded"),
+            tr("please press another key, this one has already been binded for action '%0'")
+                .arg(m_operator_action[i].translation));
+
+        return ;
+    }
 
     opts["xlet_operator_key" + m_operator_action[m_currentKeyChange].action] = e->key();
     m_operator_action[m_currentKeyChange].button->toggle();
@@ -421,7 +441,7 @@ void ConfigWidget::loginKindChanged(int index)
  */
 void ConfigWidget::saveAndClose()
 {
-    int i, e;
+    int i;
     // qDebug() << "ConfigWidget::saveAndClose()";
     m_engine->setAddress(m_serverhost->text(), m_ctiport->value());
     m_engine->setServerip(m_serverhost->text());
