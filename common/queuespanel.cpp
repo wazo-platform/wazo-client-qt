@@ -52,7 +52,7 @@ const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 
  */
 QueuesPanel::QueuesPanel(BaseEngine * engine,
                          QWidget * parent)
-    : XLet(engine, parent)
+    : XLet(engine, parent), m_show_display_queue_toggle(0)
 {
     // qDebug() << "QueuesPanel::QueuesPanel()" << options;
     setTitle( tr("Queues' List") );
@@ -109,7 +109,9 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     
     m_qtitle = new QLabel(tr("Queues"), this);
     m_busytitle = new QLabel(tr("Busy"), this);
-    m_longestwait = new QLabel(tr("Longest Wait"), this);
+    m_longestwaittitle = new QLabel(tr("Longest Wait"), this);
+    m_displaytitle = new QLabel(tr("Hide queue"), this);
+    m_displaytitle->hide();
     
 
     QTimer *timer = new QTimer(this);
@@ -126,42 +128,43 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     }
     
     int colnum = 1;
-    m_gridlayout->addWidget( m_qtitle, 1, colnum++, Qt::AlignLeft );
+    m_gridlayout->addWidget(m_displaytitle, 0, colnum++, Qt::AlignLeft);
+    m_gridlayout->addWidget(m_qtitle, 0, colnum++, Qt::AlignLeft);
     colnum++;
     colnum++;
     
-    m_gridlayout->addWidget( m_busytitle, 0, colnum++, Qt::AlignCenter );
-    m_gridlayout->addWidget( m_longestwait, 0, colnum++, Qt::AlignCenter );
+    m_gridlayout->addWidget(m_busytitle, 0, colnum++, Qt::AlignCenter);
+    m_gridlayout->addWidget(m_longestwaittitle, 0, colnum++, Qt::AlignCenter);
     
     foreach (QString statitem, m_statitems)
-        m_gridlayout->addWidget( m_title_infos[statitem],
-                                 0,
-                                 m_statitems.indexOf(statitem) + colnum,
-                                 Qt::AlignCenter );
+        m_gridlayout->addWidget(m_title_infos[statitem],
+                                0,
+                                m_statitems.indexOf(statitem) + colnum,
+                                Qt::AlignCenter );
     //          m_gridlayout->setColumnStretch( 0, 1 );
-    m_gridlayout->setColumnStretch( 100, 1 );
-    m_gridlayout->setRowStretch( 100, 1 );
+    m_gridlayout->setColumnStretch(100, 1);
+    m_gridlayout->setRowStretch(100, 1);
     m_gridlayout->setVerticalSpacing(0);
     
     setGuiOptions(optionsMap);
     // connect signal/slots to engine
-    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
-             this, SLOT(newAgentList(const QStringList &)) );
-    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
-             this, SLOT(newQueueList(const QStringList &)) );
+    connect(m_engine, SIGNAL(newAgentList(const QStringList &)),
+            this, SLOT(newAgentList(const QStringList &)));
+    connect(m_engine, SIGNAL(newQueueList(const QStringList &)),
+            this, SLOT(newQueueList(const QStringList &)));
     
-    connect( m_engine, SIGNAL(updateCounter(const QVariant &)),
-             this, SLOT(updateCounter(const QVariant &)) );
-    connect( m_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
-             this, SLOT(removeQueues(const QString &, const QStringList &)) );
-    connect( this, SIGNAL(changeWatchedQueue(const QString &)),
-             m_engine, SLOT(changeWatchedQueueSlot(const QString &)) );
-    connect( this, SIGNAL(saveQueueOrder(const QVariant &)),
-             m_engine, SLOT(saveQueueOrder(const QVariant &)) );
-    connect( this, SIGNAL(loadQueueOrder()),
-             m_engine, SLOT(loadQueueOrder()) );
-    connect( m_engine, SIGNAL(setQueueOrder(const QVariant &)),
-             this, SLOT(setQueueOrder(const QVariant &)) );
+    connect(m_engine, SIGNAL(updateCounter(const QVariant &)),
+            this, SLOT(updateCounter(const QVariant &)));
+    connect(m_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
+            this, SLOT(removeQueues(const QString &, const QStringList &)));
+    connect(this, SIGNAL(changeWatchedQueue(const QString &)),
+            m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
+    connect(this, SIGNAL(saveQueueOrder(const QVariant &)),
+            m_engine, SLOT(saveQueueOrder(const QVariant &)));
+    connect(this, SIGNAL(loadQueueOrder()),
+            m_engine, SLOT(loadQueueOrder()));
+    connect(m_engine, SIGNAL(setQueueOrder(const QVariant &)),
+            this, SLOT(setQueueOrder(const QVariant &)));
 }
 
 /*! \brief Destructor
@@ -221,16 +224,19 @@ void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues
     foreach (QString queuename, queues) {
         QString queueid = QString("queue:%1/%2").arg(astid).arg(queuename);
         if(m_queuelabels.contains(queueid)) {
+            m_gridlayout->removeWidget(m_queuedisplay[queueid]);
             m_gridlayout->removeWidget(m_queuelabels[queueid]);
             m_gridlayout->removeWidget(m_queuemore[queueid]);
             m_gridlayout->removeWidget(m_queuebusies[queueid]);
             m_gridlayout->removeWidget(m_queuelongestwait[queueid]);
             // TODO : used ->deleteLater() ?
+            delete m_queuedisplay[queueid];
             delete m_queuelabels[queueid];
             delete m_queuemore[queueid];
             delete m_queuebusies[queueid];
             delete m_queuelongestwait[queueid];
 
+            m_queuedisplay.remove(queueid);
             m_queuelabels.remove(queueid);
             m_queuemore.remove(queueid);
             m_queuebusies.remove(queueid);
@@ -252,10 +258,22 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     // qDebug() << "QueuesPanel::addQueue()" << astid << queuename << queuecontext;
     // UserInfo * userinfo = m_engine->getXivoClientUser();
     // if(userinfo == NULL) return;
+
+    m_queuedisplay[queueid] = new QCheckBox(this);
+    m_queuedisplay[queueid]->setProperty("queueid", queueid);
+    m_queuedisplay[queueid]->setProperty("queuecontext", queuecontext);
+    m_queuedisplay[queueid]->hide();
+    m_queuedisplay[queueid]->setProperty("queuecontext", queuecontext);
+
+    QVariantMap v = m_engine->getGuiOptions("client_gui");
+    int hideQueue = v[queueid].toBool();
+    m_queuedisplay[queueid]->setChecked(hideQueue);
+
     
     m_queuelabels[queueid] = new QLabel(queuename, this);
     m_queuelabels[queueid]->setFont(m_gui_font);
     m_queuelabels[queueid]->setToolTip(tr("Server: %1\nContext: %2").arg(astid).arg(queuecontext));
+
     m_queuemore[queueid] = new QPushButton(this);
     m_queuemore[queueid]->setProperty("queueid", queueid);
     m_queuemore[queueid]->setProperty("queuecontext", queuecontext);
@@ -285,8 +303,8 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     m_queuelongestwait[queueid] = new QLabel(this);
     m_queuelongestwait[queueid]->setText(">)-|-/('>");
     m_queuelongestwait[queueid]->setStyleSheet("border-radius: 3px;background-color:red;border: 2px solid black;");
-    m_queuelongestwait[queueid]->setAlignment(Qt::AlignCenter); // can't set size & text alignment of Qlabel widget
-    m_queuelongestwait[queueid]->setFixedSize(100,19);          // through css blah
+    m_queuelongestwait[queueid]->setAlignment(Qt::AlignCenter);
+    m_queuelongestwait[queueid]->setFixedSize(100, 19);
 
 
     foreach (QString statitem, m_statitems) {
@@ -303,6 +321,15 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     connect( m_queuemove[queueid], SIGNAL(clicked()),
              this, SLOT(queueClicked()));
     m_queue_lines << queueid;
+    if (hideQueue) {
+        m_queuelabels[queueid]->hide();
+        m_queuemore[queueid]->hide();
+        m_queuelongestwait[queueid]->hide();
+        m_queuemove[queueid]->hide();
+        m_queuebusies[queueid]->hide();
+        foreach (QString statitem, m_statitems)
+            m_queueinfos[queueid][statitem]->hide();
+    }
 }
 
 /*! \brief add all necessaries widgets
@@ -317,16 +344,17 @@ void QueuesPanel::affWidgets()
     foreach(QString queueid, m_queuelabels.keys()) {
         int colnum = 1;
         int linenum = m_queuemove[queueid]->property("position").toInt() + 1;
-        m_gridlayout->addWidget( m_queuelabels[queueid], delta + linenum, colnum++, Qt::AlignLeft);
-        m_gridlayout->addWidget( m_queuemore[queueid], delta + linenum, colnum++, Qt::AlignCenter);
-        m_gridlayout->addWidget( m_queuemove[queueid], delta + linenum, colnum++, Qt::AlignCenter);
-        m_gridlayout->addWidget( m_queuebusies[queueid], delta + linenum, colnum++, Qt::AlignCenter);
-        m_gridlayout->addWidget( m_queuelongestwait[queueid], delta + linenum, colnum++, Qt::AlignCenter );
+        m_gridlayout->addWidget(m_queuedisplay[queueid], delta + linenum, colnum++, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_queuelabels[queueid], delta + linenum, colnum++, Qt::AlignLeft);
+        m_gridlayout->addWidget(m_queuemore[queueid], delta + linenum, colnum++, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_queuemove[queueid], delta + linenum, colnum++, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_queuebusies[queueid], delta + linenum, colnum++, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_queuelongestwait[queueid], delta + linenum, colnum++, Qt::AlignCenter);
         foreach (QString statitem, m_statitems)
-            m_gridlayout->addWidget( m_queueinfos[queueid][statitem],
-                                     delta + linenum,
-                                     m_statitems.indexOf(statitem) + colnum,
-                                     Qt::AlignCenter);
+            m_gridlayout->addWidget(m_queueinfos[queueid][statitem],
+                                    delta + linenum,
+                                    m_statitems.indexOf(statitem) + colnum,
+                                    Qt::AlignCenter);
     }
 }
 
@@ -337,7 +365,7 @@ void QueuesPanel::newQueueList(const QStringList & qsl)
     bool addedNewQueue = false;
     // qDebug() << "QueuesPanel::newQueueList()" << qsl;
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
-    while( iter.hasNext() ) {
+    while (iter.hasNext()) {
         iter.next();
         if(qsl.contains(iter.key())) {
             QueueInfo * qinfo = iter.value();
@@ -533,8 +561,6 @@ void QueuesPanel::queueClicked()
  */
 void QueuesPanel::updateLongestWaitWidgets()
 {
-
-
     uint greenlevel = m_optionsMap["queuelevels_wait"].toMap()["green"].toUInt() - 1;
     uint orangelevel = m_optionsMap["queuelevels_wait"].toMap()["orange"].toUInt() - 1;
 
@@ -542,7 +568,7 @@ void QueuesPanel::updateLongestWaitWidgets()
     int display_column = m_optionsMap["queue_longestwait"].toBool();
 
     if (!display_column) { 
-        if (m_longestwait->isVisible()) {
+        if (m_longestwaittitle->isVisible()) {
             QHashIterator<QString, QLabel *> i(m_queuelongestwait);
 
             while (i.hasNext()) {
@@ -551,11 +577,11 @@ void QueuesPanel::updateLongestWaitWidgets()
                 longestwait->hide();
             }
 
-            m_longestwait->hide();
+            m_longestwaittitle->hide();
         }
         return ;
     } else {
-        if (!m_longestwait->isVisible()) {
+        if (!m_longestwaittitle->isVisible()) {
             QHashIterator<QString, QLabel *> i(m_queuelongestwait);
 
             while (i.hasNext()) {
@@ -564,7 +590,7 @@ void QueuesPanel::updateLongestWaitWidgets()
                 longestwait->show();
             }
 
-            m_longestwait->show();
+            m_longestwaittitle->show();
         }
     }
 
@@ -607,5 +633,70 @@ void QueuesPanel::updateLongestWaitWidgets()
             longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #ff0000;");
 
         longestwait->setText(time_label);
+    }
+}
+
+
+
+/*! \brief mousePressEvent
+ *
+ *  if it is a right click, allow the user to hide / show queues
+ */
+void QueuesPanel::mousePressEvent(QMouseEvent *ev)
+{
+    int display_longuestwait = m_optionsMap["queue_longestwait"].toBool();
+    QVariantMap v = m_engine->getGuiOptions("client_gui");
+
+    if ((!m_show_display_queue_toggle)&&(ev->button()&Qt::RightButton)) {
+        QHashIterator<QString, QCheckBox *> i(m_queuedisplay);
+
+        m_displaytitle->show();
+
+        while (i.hasNext()) {
+            i.next();
+            QCheckBox *queuedisplay = i.value();
+            QString queueid = queuedisplay->property("queueid").toString();
+            
+            m_queuedisplay[queueid]->show();
+            m_queuelabels[queueid]->show();
+            m_queuemore[queueid]->show();
+            m_queuemove[queueid]->show();
+            m_queuebusies[queueid]->show();
+            if (display_longuestwait)
+                m_queuelongestwait[queueid]->show();
+            foreach (QString statitem, m_statitems)
+                m_queueinfos[queueid][statitem]->show();
+        }
+
+        m_show_display_queue_toggle = !m_show_display_queue_toggle;
+
+    } else {
+        QHashIterator<QString, QCheckBox *> i(m_queuedisplay);
+
+        m_displaytitle->hide();
+
+
+        while (i.hasNext()) {
+            i.next();
+            QCheckBox *queuedisplay = i.value();
+            QString queueid = queuedisplay->property("queueid").toString();
+            
+            m_queuedisplay[queueid]->hide();
+            v[queueid] = m_queuedisplay[queueid]->isChecked();
+            if (m_queuedisplay[queueid]->isChecked()) {
+                m_queuelabels[queueid]->hide();
+                m_queuemore[queueid]->hide();
+                m_queuelongestwait[queueid]->hide();
+                m_queuemove[queueid]->hide();
+                m_queuebusies[queueid]->hide();
+                foreach (QString statitem, m_statitems)
+                    m_queueinfos[queueid][statitem]->hide();
+            }
+        }
+
+        m_show_display_queue_toggle = !m_show_display_queue_toggle;
+
+        m_engine->setGuiOption("client_gui", v);
+        m_engine->saveSettings();
     }
 }

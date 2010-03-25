@@ -39,6 +39,7 @@
 #include <QList>
 #include <QObject>
 #include <QVariant>
+#include <QMouseEvent>
 #include "xlet.h"
 
 class QCheckBox;
@@ -60,6 +61,7 @@ public:
     ~QueuesPanel();
 protected:
     void update(const QStringList &);
+    virtual void mousePressEvent(QMouseEvent *);
 private:
     void addQueue(const QString &, const QString &, const QString &, const QString &);
 signals:
@@ -80,6 +82,8 @@ private:
     bool updateQueue(const QString &, const QString &, const QString &, const QVariant &);
     void affWidgets();
     
+    int m_show_display_queue_toggle;
+
     QFont m_gui_font;
     quint32 m_gui_buttonsize;
     bool m_gui_showqueuenames;
@@ -90,6 +94,7 @@ private:
     QHash<QString, QString> m_statlegends_short;  //!< text displayed on top of each column
     QHash<QString, QString> m_statlegends_long;  //!< text displayed on top of each column
     
+    QHash<QString, QCheckBox *> m_queuedisplay;  //!<  should this queue be shown ?
     QHash<QString, QLabel *> m_queuelabels; //!< QLabel used to display the names of queues
     QHash<QString, QPushButton *> m_queuemore;  //!< Button to display queue details
     QHash<QString, QLabel *> m_queuelongestwait;    //!< Widget to display the longuest waiting time for each queue
@@ -100,9 +105,10 @@ private:
     
     quint32 m_maxbusy;  //!< Maximum value for busy level
     
-    QLabel * m_longestwait; //!< displayed on top of the column where we display the longuest waiting time for each queue
+    QLabel * m_longestwaittitle; //!< displayed on top of the column where we display the longuest waiting time for each queue
     QLabel * m_busytitle;   //!< displayed on top of the column of busy levels
     QLabel * m_qtitle;      //!< global title
+    QLabel * m_displaytitle;  //!< displayed on top of the column of display column
     QHash<QString, QLabel *> m_title_infos; //!< To display text on top of each column
     QVariantMap m_optionsMap;
 };
