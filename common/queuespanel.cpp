@@ -461,7 +461,7 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
     QString queuecontext = queueprops.toMap()["context"].toString();
     // qDebug() << "QueuesPanel::newQueue()" << astid << queuename << queuecontext;
     
-    QStringList irrelevant; irrelevant << "Holdtime" << "Qos";
+    QStringList irrelevant; irrelevant << "Holdtime" << "Qos" << "Xivo-Join" << "Xivo-Lost" << "Xivo-Chat" << "Xivo-Rate";
     
     QHash <QString, QString> infos;
     infos["Calls"] = "0";
