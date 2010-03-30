@@ -76,6 +76,8 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     
     m_gridlayout = new QGridLayout(this);
     
+    not_realtime_stat << "Holdtime" << "Qos" << "Xivo-Join" << "Xivo-Lost" << "Xivo-Chat" << "Xivo-Rate" << "Xivo-Link";
+
     m_statlegends_short["Completed"] = tr("Cmptd");
     m_statlegends_short["Abandoned"] = tr("Abdnd");
     m_statlegends_short["Holdtime"] = tr("HT\n(s)");
@@ -90,7 +92,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_short["Xivo-Lost"] = tr("Lst");
     m_statlegends_short["Xivo-Rate"] = tr("PR\n(%)");
     m_statlegends_short["Xivo-Chat"] = tr("Conv.\n(s)");
-    m_statlegends_short["Qos"] = tr("Qos)");
+    m_statlegends_short["Qos"] = tr("QoS");
     
     m_statlegends_long["Completed"] = tr("Completed");
     m_statlegends_long["Abandoned"] = tr("Abandoned");
@@ -106,22 +108,42 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_long["Xivo-Lost"] = tr("Lost");
     m_statlegends_long["Xivo-Rate"] = tr("Pickup rate(%)");
     m_statlegends_long["Xivo-Chat"] = tr("Conversation(s)");
-    m_statlegends_long["Qos"] = tr("Quality of service");
+    m_statlegends_long["Qos"] = tr("Quality of Service");
     
+    m_statlegends_tooltip["Completed"] = tr("Completed");
+    m_statlegends_tooltip["Abandoned"] = tr("Abandoned");
+    m_statlegends_tooltip["Holdtime"] = tr("The average waiting time before getting an agent");
+    m_statlegends_tooltip["ServicelevelPerf"] = tr("ServicelevelPerf(%)");
+    m_statlegends_tooltip["ServiceLevel"] = tr("ServiceLevel");
+    m_statlegends_tooltip["Max"] = tr("Max");
+    m_statlegends_tooltip["Weight"] = tr("Weight");
+    m_statlegends_tooltip["Xivo-Conn"] = tr("Number of agent in this queue");
+    m_statlegends_tooltip["Xivo-Avail"] = tr("Available agents");
+    m_statlegends_tooltip["Xivo-Join"] = tr("Number of call this queue received");
+    m_statlegends_tooltip["Xivo-Link"] = tr("Number of call that were answered");
+    m_statlegends_tooltip["Xivo-Lost"] = tr("Number of call where the caller has left before getting an answer from an agent");
+    m_statlegends_tooltip["Xivo-Rate"] = tr("( Linked / Joined ) in %") ;
+    m_statlegends_tooltip["Xivo-Chat"] = tr("The average lenght of a conversation");
+    m_statlegends_tooltip["Qos"] = tr("( Number of call answered in less than X sec / total of call answered ) in %");
+
     foreach(QString statcol, statscols.split(","))
         if(m_statlegends_long.contains(statcol))
             m_statitems << statcol;
     m_maxbusy = 0;
     
     m_qtitle = new QLabel(tr("Queues"), this);
+    m_qtitle->setAlignment(Qt::AlignLeft);
+
     m_busytitle = new QLabel(tr("Busy"), this);
     m_longestwaittitle = new QLabel(tr("Longest Wait"), this);
-    m_displaytitle = new QLabel(tr("Hide queue"), this);
+    m_displaytitle = new QLabel(tr("Hide"), this);
+    m_displaytitle->setStyleSheet("QLabel { padding-right:10px }");
+    m_displaytitle->setAlignment(Qt::AlignLeft);
+    m_displaytitle->hide();
     m_stats_windowtitle = new QLabel(tr("Window"), this);
     m_stats_xqostitle = new QLabel(tr("Qos - X"), this);
     m_stats_windowtitle->hide();
     m_stats_xqostitle->hide();
-    m_displaytitle->hide();
     
 
     QTimer *timer = new QTimer(this);
@@ -133,32 +155,55 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     timer->start(1000);
 
     
+    int colnum = 0, i = 0;
     foreach (QString statitem, m_statitems) {
-        if(shortlegends) {
+        if(shortlegends)
             m_title_infos[statitem] = new QLabel(m_statlegends_short[statitem], this);
-            m_title_infos[statitem]->setToolTip(m_statlegends_long[statitem]);
-        } else
+        else
             m_title_infos[statitem] = new QLabel(m_statlegends_long[statitem], this);
+
+        m_title_infos[statitem]->setStyleSheet("QLabel { background-color: darkgrey; padding-right:10px; padding-left:10px;margin-bottom:2px; }");
+        m_title_infos[statitem]->setToolTip(m_statlegends_tooltip[statitem]);
+
+        if ((not_realtime_stat.contains(statitem))&&(colnum==0))
+            colnum = i;
+        i++;
+    }
+
+    if ((colnum!=i)&&(colnum!=0)) {
+        QLabel *stat_title;
+
+        stat_title = new QLabel(tr("Live state"), this);
+        stat_title->setAlignment(Qt::AlignCenter);
+        stat_title->setStyleSheet("QLabel { font-weight:bold; background-color: #444; color:white; }");
+        m_gridlayout->addWidget(stat_title, 0, 5, 1, colnum+2);
+
+        stat_title = new QLabel(tr("Stats on slice"), this);
+        stat_title->setAlignment(Qt::AlignCenter);
+        stat_title->setStyleSheet("QLabel { font-weight:bold; background-color: #333; color:white; margin-left:1px;}");
+        m_gridlayout->addWidget(stat_title, 0, 5+colnum+2, 1, i-colnum);
+        //stat_title = new QLabel(tr("stats on slice"), this);
     }
     
-    int colnum = 1;
-    m_gridlayout->addWidget(m_displaytitle, 0, colnum++, Qt::AlignLeft);
-    m_gridlayout->addWidget(m_qtitle, 0, colnum++, Qt::AlignLeft);
+    colnum = 1;
+    m_gridlayout->addWidget(m_displaytitle, 1, colnum++, Qt::AlignCenter);
+    m_gridlayout->addWidget(m_qtitle, 1, colnum++);
 
     colnum++; colnum++; // the + - widget
     
-    m_gridlayout->addWidget(m_busytitle, 0, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_longestwaittitle, 0, colnum++, Qt::AlignCenter);
+    m_gridlayout->addWidget(m_busytitle, 1, colnum++, Qt::AlignCenter);
+    m_gridlayout->addWidget(m_longestwaittitle, 1, colnum++, Qt::AlignCenter);
     
     foreach (QString statitem, m_statitems)
-        m_gridlayout->addWidget(m_title_infos[statitem], 0, colnum++, Qt::AlignCenter);
+        m_gridlayout->addWidget(m_title_infos[statitem], 1, colnum++, Qt::AlignCenter);
 
-    m_gridlayout->addWidget(m_stats_xqostitle, 0, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_stats_windowtitle, 0, colnum++, Qt::AlignCenter);
-    //          m_gridlayout->setColumnStretch( 0, 1 );
+    m_gridlayout->addWidget(m_stats_xqostitle, 1, colnum++, Qt::AlignCenter);
+    m_gridlayout->addWidget(m_stats_windowtitle, 1, colnum++, Qt::AlignCenter);
+
     m_gridlayout->setColumnStretch(100, 1);
     m_gridlayout->setRowStretch(100, 1);
-    m_gridlayout->setVerticalSpacing(0);
+    //m_gridlayout->setVerticalSpacing(0);
+    m_gridlayout->setSpacing(0);
     
     setGuiOptions(optionsMap);
     // connect signal/slots to engine
@@ -186,7 +231,6 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
 
 void QueuesPanel::eatQueuesStats(QVariantMap p)
 {
-    qDebug() << p;
     foreach (QString queueid, p["stats"].toMap().keys()) {
         foreach (QString stats, p["stats"].toMap()[queueid].toMap().keys()) {
             self->m_queueinfos[self->m_queueid_map[queueid]][stats]->setText(p["stats"].toMap()[queueid].toMap()[stats].toString());
@@ -296,7 +340,6 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     m_queuedisplay[queueid]->setProperty("queueid", queueid);
     m_queuedisplay[queueid]->setProperty("queuecontext", queuecontext);
     m_queuedisplay[queueid]->hide();
-    m_queuedisplay[queueid]->setProperty("queuecontext", queuecontext);
 
     QVariantMap v = m_engine->getGuiOptions("client_gui");
     int hideQueue = v[queueid].toBool();
@@ -313,6 +356,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     m_queuemore[queueid]->setProperty("function", "more");
     m_queuemore[queueid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
     m_queuemore[queueid]->setIcon(QIcon(":/images/add.png"));
+    m_queuemore[queueid]->setStyleSheet("QPushButton { height:20px;width:20px;margin-left:20px;margin-right:5px; }");
     
     if(m_gui_showqueuenames) {
         m_queuelabels[queueid]->show();
@@ -377,6 +421,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     m_queuemove[queueid]->setProperty("position", m_queuelabels.size() - 1);
     m_queuemove[queueid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
     m_queuemove[queueid]->setIcon(QIcon(":/images/red_up.png"));
+    m_queuemove[queueid]->setStyleSheet("QPushButton { height:20px;width:20px;margin-right:10px; }");
     connect( m_queuemove[queueid], SIGNAL(clicked()),
              this, SLOT(queueClicked()));
     m_queue_lines << queueid;
@@ -461,7 +506,6 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
     QString queuecontext = queueprops.toMap()["context"].toString();
     // qDebug() << "QueuesPanel::newQueue()" << astid << queuename << queuecontext;
     
-    QStringList irrelevant; irrelevant << "Holdtime" << "Qos" << "Xivo-Join" << "Xivo-Lost" << "Xivo-Chat" << "Xivo-Rate";
     
     QHash <QString, QString> infos;
     infos["Calls"] = "0";
@@ -474,7 +518,7 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
     if(m_queuebusies.contains(queueid)) {
         m_queuebusies[queueid]->setProperty("value", infos["Calls"]);
         foreach (QString statitem, m_statitems)
-            if(infos.contains(statitem)&&!irrelevant.contains(statitem))
+            if(infos.contains(statitem)&&!not_realtime_stat.contains(statitem))
                 m_queueinfos[queueid][statitem]->setText(infos[statitem]);
     }
 

@@ -98,6 +98,7 @@ private:
     QStringList m_statitems;    //!< list of stats items which are reported for each queue
     QHash<QString, QString> m_statlegends_short;  //!< text displayed on top of each column
     QHash<QString, QString> m_statlegends_long;  //!< text displayed on top of each column
+    QHash<QString, QString> m_statlegends_tooltip;  //!< text displayed on top of each column
     
     QHash<QString, QCheckBox *> m_queuedisplay;  //!<  should this queue be shown ?
     QHash<QString, QLabel *> m_queuelabels; //!< QLabel used to display the names of queues
@@ -122,6 +123,7 @@ private:
     QLabel * m_stats_windowtitle;  //!< displayed on top of the column to choose the queue window
     QHash<QString, QLabel *> m_title_infos; //!< To display text on top of each column
     QVariantMap m_optionsMap;
+    QStringList not_realtime_stat; //
 };
 
 #endif /* __QUEUESPANEL_H__ */
