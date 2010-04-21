@@ -179,6 +179,11 @@ void ConfigWidget::_insert_function_tab()
         gridlayout2->addWidget(m_queuelevels_wait[color], line, ncol++);
     }
 
+    line++;
+    m_queue_displaynu = new QCheckBox(tr("Queue Display number"), this);
+    m_queue_displaynu->setCheckState(opts["queue_displaynu"].toBool() ? Qt::Checked : Qt::Unchecked);
+    gridlayout2->addWidget(m_queue_displaynu, line, 0);
+
     m_tabwidget->addTab(widget_functions, tr("Functions"));
 }
 
@@ -492,6 +497,7 @@ void ConfigWidget::saveAndClose()
     opts_saved["sheet-tablimit"] = m_tablimit_sbox->value();
     opts_saved["autourl_allowed"] = m_autourl_allowed->checkState();
     opts_saved["queue_longestwait"] = m_queue_longestwait->checkState() == Qt::Checked;
+    opts_saved["queue_displaynu"] = m_queue_displaynu->checkState() == Qt::Checked;
     opts_saved["switchboard-elt-type"] = m_comboswitchboard->itemData(m_comboswitchboard->currentIndex()).toString();
     opts_saved["maxwidthwanted"] = m_maxWidthWanted->value();
     opts_saved["presenceindicatorsize"] = m_presenceIndicatorSize->value();

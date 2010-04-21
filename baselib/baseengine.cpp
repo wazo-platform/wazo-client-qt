@@ -279,6 +279,8 @@ void BaseEngine::saveSettings()
     foreach (QString function, CheckFunctions)
         m_settings->setValue(function, m_checked_function[function]);
     m_settings->endGroup();
+
+    emit settingChanged(getGuiOptions("client_gui"));
 }
 
 /*!

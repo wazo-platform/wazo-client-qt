@@ -4,189 +4,189 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="baseengine.cpp" line="1215"/>
         <location filename="baseengine.cpp" line="1217"/>
+        <location filename="baseengine.cpp" line="1219"/>
         <source> said : </source>
         <translation> a dit : </translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1940"/>
+        <location filename="baseengine.cpp" line="1942"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="687"/>
+        <location filename="baseengine.cpp" line="689"/>
         <source>Connection refused</source>
         <translation>Connexion refusée</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1240"/>
+        <location filename="baseengine.cpp" line="1242"/>
         <source>Could not modify the Services data.</source>
         <translation>Impossible de modifier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1583"/>
+        <location filename="baseengine.cpp" line="1585"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="699"/>
+        <location filename="baseengine.cpp" line="701"/>
         <source>Host not found</source>
         <translation>Hôte non trouvé</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1542"/>
+        <location filename="baseengine.cpp" line="1544"/>
         <source>Max number (%1) of XIVO Clients already reached.</source>
         <translation>Le nombre maximal (%1) de XIVO Clients est déjà connecté.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1240"/>
+        <location filename="baseengine.cpp" line="1242"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Asterisk est peut-être arrêté.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1545"/>
+        <location filename="baseengine.cpp" line="1547"/>
         <source>Missing Argument(s)</source>
         <translation>Argument(s) manquant(s)</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1538"/>
+        <location filename="baseengine.cpp" line="1540"/>
         <source>No capability allowed.</source>
         <translation>Aucune capacité autorisée.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1481"/>
+        <location filename="baseengine.cpp" line="1483"/>
         <source>Server has sent an Error.</source>
         <translation>Le serveur a renvoyé une Erreur.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1488"/>
+        <location filename="baseengine.cpp" line="1490"/>
         <source>The number of arguments sent is incorrect.
 Maybe a version issue ?</source>
         <translation>Le nombre d&apos;arguments envoyés est incorrect.
 Peut-être un problème de version ?</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1217"/>
+        <location filename="baseengine.cpp" line="1219"/>
         <source>Unknown</source>
         <translation>Inconnue</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1534"/>
+        <location filename="baseengine.cpp" line="1536"/>
         <source>You are already connected from %1:%2.</source>
         <translation>Vous êtes déjà connecté depuis %1:%2.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1506"/>
+        <location filename="baseengine.cpp" line="1508"/>
         <source>You entered a wrong login / password.</source>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1550"/>
+        <location filename="baseengine.cpp" line="1552"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1555"/>
+        <location filename="baseengine.cpp" line="1557"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1569"/>
+        <location filename="baseengine.cpp" line="1571"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1574"/>
+        <location filename="baseengine.cpp" line="1576"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1498"/>
+        <location filename="baseengine.cpp" line="1500"/>
         <source>Your session has expired.</source>
         <translation>Votre session a expiré.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1521"/>
+        <location filename="baseengine.cpp" line="1523"/>
         <source>Socket Error number %1.</source>
         <translation>Erreur de Socket %1.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1502"/>
+        <location filename="baseengine.cpp" line="1504"/>
         <source>Your profile name &lt;%1&gt; is not defined.</source>
         <translation>Votre nom de profil &lt;%1&gt; n&apos;est pas défini.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1517"/>
+        <location filename="baseengine.cpp" line="1519"/>
         <source>An error occurred with the network (network cable accidentally plugged out ?).</source>
         <translation>Une erreur s&apos;est produite sur le réseau (câble accidentellement débranché ?).</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1561"/>
+        <location filename="baseengine.cpp" line="1563"/>
         <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>La version majeure de votre client (%1)
 est différente de celle du serveur (%2).</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1577"/>
+        <location filename="baseengine.cpp" line="1579"/>
         <source>You were disconnected by the server.</source>
         <translation>Vous avez été déconnecté par le serveur.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1579"/>
+        <location filename="baseengine.cpp" line="1581"/>
         <source>You were forced to disconnect by the server.</source>
         <translation>Vous avez été déconnecté de force par le serveur.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1232"/>
+        <location filename="baseengine.cpp" line="1234"/>
         <source>Received Services Data</source>
         <translation>Reçu les Informations de Services</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="665"/>
+        <location filename="baseengine.cpp" line="667"/>
         <source>Connection lost with XiVO CTI server</source>
         <translation>Connexion perdue avec le serveur CTI XiVO</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1483"/>
+        <location filename="baseengine.cpp" line="1485"/>
         <source>You are not allowed to connect
 to the XiVO CTI server on %1:%2.</source>
         <translation>Vous n&apos;êtes pas autorisé à vous connecter
 au serveur CTI XiVO sur %1:%2.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1492"/>
+        <location filename="baseengine.cpp" line="1494"/>
         <source>Your registration name &lt;%1@%2&gt;
 is not known by the XiVO CTI server on %3:%4.</source>
         <translation>Votre nom &lt;%1@%2&gt; est inconnu
 par le serveur CTI XiVO sur %3:%4.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1509"/>
+        <location filename="baseengine.cpp" line="1511"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 n&apos;a pas répondu au dernier keepalive.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1513"/>
+        <location filename="baseengine.cpp" line="1515"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient de fermer la connexion.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1525"/>
+        <location filename="baseengine.cpp" line="1527"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient d&apos;être arrêté.</translation>
     </message>
     <message>
-        <location filename="baseengine.cpp" line="1529"/>
+        <location filename="baseengine.cpp" line="1531"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient d&apos;être rechargé.</translation>
     </message>

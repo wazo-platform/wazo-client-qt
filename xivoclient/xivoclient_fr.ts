@@ -2039,7 +2039,6 @@ Etes vous sur ?</translation>
 %n Queue(s) %2</source>
         <translation>
             <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2407,7 +2406,12 @@ Service</translation>
         <translation>Cache</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="351"/>
+        <location filename="../common/queuespanel.cpp" line="181"/>
+        <source>Stats on slice &lt;sup&gt; ( right click to configure ) &lt;/sup&gt;</source>
+        <translation>Statistiques sur fenêtre &lt;sup&gt; ( click droit pour configurer )&lt;/sup&gt;</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="353"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
@@ -2585,18 +2589,17 @@ Service(%)</translation>
         <translation>États actuels</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="181"/>
         <source>Stats on slice</source>
-        <translation>Statistiques sur fenêtre</translation>
+        <translation type="obsolete">Statistiques sur fenêtre</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="400"/>
-        <location filename="../common/queuespanel.cpp" line="409"/>
+        <location filename="../common/queuespanel.cpp" line="402"/>
+        <location filename="../common/queuespanel.cpp" line="411"/>
         <source>(s) </source>
         <translation>(s)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="568"/>
+        <location filename="../common/queuespanel.cpp" line="570"/>
         <source>Available agents : %1</source>
         <translation>Agents disponibles : %1</translation>
     </message>

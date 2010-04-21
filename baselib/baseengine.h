@@ -270,6 +270,7 @@ private slots:
     void filetransferSocketConnected();
     void actionFromFiche(const QVariant &);
 signals:
+    void settingChanged(const QVariantMap &); //!< signal emitted when the setting are changed 
     void logged();      //!< signal emitted when the state becomes ELogged
     void delogged();    //!< signal emitted when the state becomes ENotLogged
     void availAllowChanged(bool);           //!< signal

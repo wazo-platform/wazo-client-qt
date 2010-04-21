@@ -130,6 +130,7 @@ class ConfigWidget: public QDialog
     QDialogButtonBox * m_btnbox;        //!< Buttons box
     QTabWidget * m_tabwidget;       //!< Tabs to access configuration widgets
     QCheckBox * m_queue_longestwait;  //!< should we display the longest wait in the queue xlet ?
+    QCheckBox * m_queue_displaynu;  //!< should we display the queue number in queue name ?
 
     struct {
       QString action;

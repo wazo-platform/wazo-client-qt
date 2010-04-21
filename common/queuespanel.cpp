@@ -50,7 +50,7 @@
 QueuesPanel* QueuesPanel::self = NULL;
 
 
-const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 100px; height: 15px}";
+const QString commonqss = "QProgressBar {border: 2px solid black;border-radius: 3px;text-align: center;width: 100px; height: 15px; margin-right:5px;}";
 
 /*! \brief Constructor
  */
@@ -59,18 +59,18 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     : XLet(engine, parent), m_show_display_queue_toggle(0)
 {
     // qDebug() << "QueuesPanel::QueuesPanel()" << options;
-    setTitle( tr("Queues' List") );
+    setTitle(tr("Queues' List"));
     m_gui_buttonsize = 10;
     m_gui_showqueuenames = true;
     
-    // statscols = "Xivo-Conn,Xivo-Avail,Xivo-Rate";
+    // statscols = "Xivo-Conn, Xivo-Avail, Xivo-Rate";
     QVariantMap optionsMap = m_engine->getGuiOptions("merged_gui");
     QString statscols = optionsMap.value("queues-statscolumns",
                                          "Xivo-Conn,Xivo-Avail,Xivo-Rate,Xivo-Join,Xivo-Link,Xivo-Lost,Xivo-Chat,Holdtime,Qos").toString();
     bool shortlegends = optionsMap.value("queues-shortlegends",
                                          false).toBool();
     QStringList xletlist;
-    foreach(QString xletdesc, m_engine->getCapaXlets())
+    foreach (QString xletdesc, m_engine->getCapaXlets())
         xletlist.append(xletdesc.split("-")[0]);
     m_gui_showmore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
     
@@ -126,8 +126,8 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_tooltip["Xivo-Chat"] = tr("The average lenght of a conversation");
     m_statlegends_tooltip["Qos"] = tr("( Number of call answered in less than X sec / total of call answered ) in %");
 
-    foreach(QString statcol, statscols.split(","))
-        if(m_statlegends_long.contains(statcol))
+    foreach (QString statcol, statscols.split(","))
+        if (m_statlegends_long.contains(statcol))
             m_statitems << statcol;
     m_maxbusy = 0;
     
@@ -157,7 +157,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     
     int colnum = 0, i = 0;
     foreach (QString statitem, m_statitems) {
-        if(shortlegends)
+        if (shortlegends)
             m_title_infos[statitem] = new QLabel(m_statlegends_short[statitem], this);
         else
             m_title_infos[statitem] = new QLabel(m_statlegends_long[statitem], this);
@@ -165,22 +165,22 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
         m_title_infos[statitem]->setStyleSheet("QLabel { background-color: darkgrey; padding-right:10px; padding-left:10px;margin-bottom:2px; }");
         m_title_infos[statitem]->setToolTip(m_statlegends_tooltip[statitem]);
 
-        if ((not_realtime_stat.contains(statitem))&&(colnum==0))
+        if ((not_realtime_stat.contains(statitem)) && (colnum==0))
             colnum = i;
         i++;
     }
 
-    if ((colnum!=i)&&(colnum!=0)) {
+    if ((colnum != i) && (!colnum)) {
         QLabel *stat_title;
 
         stat_title = new QLabel(tr("Live state"), this);
         stat_title->setAlignment(Qt::AlignCenter);
-        stat_title->setStyleSheet("QLabel { font-weight:bold; background-color: #444; color:white; }");
+        stat_title->setStyleSheet("QLabel { font-weight:bold;background-color:#444;color:white;padding:2px}");
         m_gridlayout->addWidget(stat_title, 0, 5, 1, colnum+2);
 
-        stat_title = new QLabel(tr("Stats on slice"), this);
+        stat_title = new QLabel(tr("Stats on slice <sup> ( right click to configure ) </sup>"), this);
         stat_title->setAlignment(Qt::AlignCenter);
-        stat_title->setStyleSheet("QLabel { font-weight:bold; background-color: #333; color:white; margin-left:1px;}");
+        stat_title->setStyleSheet("QLabel { font-weight:bold;background-color:#333;color:white;margin-left:1px;padding:2px}");
         m_gridlayout->addWidget(stat_title, 0, 5+colnum+2, 1, i-colnum);
         //stat_title = new QLabel(tr("stats on slice"), this);
     }
@@ -224,6 +224,8 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
             m_engine, SLOT(loadQueueOrder()));
     connect(m_engine, SIGNAL(setQueueOrder(const QVariant &)),
             this, SLOT(setQueueOrder(const QVariant &)));
+    connect(m_engine, SIGNAL(settingChanged(const QVariantMap &)),
+            this, SLOT(setGuiOptions(const QVariantMap &)));
 
     self = this;
     m_engine->registerClassEvent("queuestats", QueuesPanel::eatQueuesStats);
@@ -254,12 +256,12 @@ void QueuesPanel::setGuiOptions(const QVariantMap & optionsMap)
 {
     m_optionsMap = optionsMap;
     
-    if(m_optionsMap.contains("fontname") && m_optionsMap.contains("fontsize"))
+    if (m_optionsMap.contains("fontname") && m_optionsMap.contains("fontsize"))
         m_gui_font = QFont(m_optionsMap["fontname"].toString(),
                            m_optionsMap["fontsize"].toInt());
-    if(m_optionsMap.contains("iconsize"))
+    if (m_optionsMap.contains("iconsize"))
         m_gui_buttonsize = m_optionsMap["iconsize"].toInt();
-    if(m_optionsMap.contains("queues-showqueuenames"))
+    if (m_optionsMap.contains("queues-showqueuenames"))
         m_gui_showqueuenames = m_optionsMap["queues-showqueuenames"].toBool();
     
     m_busytitle->setFont(m_gui_font);
@@ -267,7 +269,7 @@ void QueuesPanel::setGuiOptions(const QVariantMap & optionsMap)
     foreach (QString statitem, m_statitems)
         m_title_infos[statitem]->setFont(m_gui_font);
     
-    if(m_gui_showqueuenames)
+    if (m_gui_showqueuenames)
         m_qtitle->show();
     else
         m_qtitle->hide();
@@ -282,7 +284,7 @@ void QueuesPanel::updateCounter(const QVariant & counters)
     QVariantMap countersmap = counters.toMap();
     int ntot = countersmap["connected"].toInt();
     foreach (QString queueid, m_queueinfos.keys()) {
-        if(m_queueinfos[queueid].contains("Xivo-Conn"))
+        if (m_queueinfos[queueid].contains("Xivo-Conn"))
             m_queueinfos[queueid]["Xivo-Conn"]->setText(QString::number(ntot));
     }
 }
@@ -294,7 +296,7 @@ void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues
     // qDebug() << "QueuesPanel::removeQueues()" << astid << queues;
     foreach (QString queuename, queues) {
         QString queueid = QString("queue:%1/%2").arg(astid).arg(queuename);
-        if(m_queuelabels.contains(queueid)) {
+        if (m_queuelabels.contains(queueid)) {
             m_gridlayout->removeWidget(m_queuedisplay[queueid]);
             m_gridlayout->removeWidget(m_queuelabels[queueid]);
             m_gridlayout->removeWidget(m_queuemore[queueid]);
@@ -319,7 +321,7 @@ void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues
             m_queuewindow.remove(queueid);
             m_queuexqos.remove(queueid);
             foreach (QString statitem, m_statitems) {
-                m_gridlayout->removeWidget( m_queueinfos[queueid][statitem]);
+                m_gridlayout->removeWidget(m_queueinfos[queueid][statitem]);
                 delete m_queueinfos[queueid][statitem];
                 m_queueinfos[queueid].remove(statitem);
             }
@@ -330,11 +332,11 @@ void QueuesPanel::removeQueues(const QString & astid, const QStringList & queues
 
 /*! \brief Add a new queue
  */
-void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const QString & queuename, const QString & queuecontext)
+void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const QString & queuename, const QString & queuecontext, const QString & number)
 {
     // qDebug() << "QueuesPanel::addQueue()" << astid << queuename << queuecontext;
     // UserInfo * userinfo = m_engine->getXivoClientUser();
-    // if(userinfo == NULL) return;
+    // if (userinfo == NULL) return;
 
     m_queuedisplay[queueid] = new QCheckBox(this);
     m_queuedisplay[queueid]->setProperty("queueid", queueid);
@@ -346,7 +348,7 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     m_queuedisplay[queueid]->setChecked(hideQueue);
 
     
-    m_queuelabels[queueid] = new QLabel(queuename, this);
+    m_queuelabels[queueid] = new QLabel(queuename + (m_optionsMap["queue_displaynu"].toBool()?" (" + number +") ":""), this);
     m_queuelabels[queueid]->setFont(m_gui_font);
     m_queuelabels[queueid]->setToolTip(tr("Server: %1\nContext: %2").arg(astid).arg(queuecontext));
 
@@ -358,9 +360,9 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     m_queuemore[queueid]->setIcon(QIcon(":/images/add.png"));
     m_queuemore[queueid]->setStyleSheet("QPushButton { height:20px;width:20px;margin-left:20px;margin-right:5px; }");
     
-    if(m_gui_showqueuenames) {
+    if (m_gui_showqueuenames) {
         m_queuelabels[queueid]->show();
-        if(m_gui_showmore)
+        if (m_gui_showmore)
             m_queuemore[queueid]->show();
         else
             m_queuemore[queueid]->hide();
@@ -368,12 +370,12 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
         m_queuelabels[queueid]->hide();
         m_queuemore[queueid]->hide();
     }
-    connect( m_queuemore[queueid], SIGNAL(clicked()),
-             this, SLOT(queueClicked()));
+    connect(m_queuemore[queueid], SIGNAL(clicked()),
+            this, SLOT(queueClicked()));
     m_queuebusies[queueid] = new QProgressBar(this);
     m_queuebusies[queueid]->setFont(m_gui_font);
     m_queuebusies[queueid]->setProperty("queueid", queueid);
-    m_queuebusies[queueid]->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ffffff;}");
+    m_queuebusies[queueid]->setStyleSheet(commonqss + "QProgressBar::chunk { background-color: #ffffff; }");
     m_queuebusies[queueid]->setFormat("%v");
 
 
@@ -422,8 +424,8 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     m_queuemove[queueid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
     m_queuemove[queueid]->setIcon(QIcon(":/images/red_up.png"));
     m_queuemove[queueid]->setStyleSheet("QPushButton { height:20px;width:20px;margin-right:10px; }");
-    connect( m_queuemove[queueid], SIGNAL(clicked()),
-             this, SLOT(queueClicked()));
+    connect(m_queuemove[queueid], SIGNAL(clicked()),
+            this, SLOT(queueClicked()));
     m_queue_lines << queueid;
     if (hideQueue) {
         m_queuelabels[queueid]->hide();
@@ -445,7 +447,7 @@ void QueuesPanel::affWidgets()
 {
     //qDebug() << "QueuesPanel::affWidgets()";
     int delta = 1;
-    foreach(QString queueid, m_queuelabels.keys()) {
+    foreach (QString queueid, m_queuelabels.keys()) {
         int colnum = 1;
         int linenum = m_queuemove[queueid]->property("position").toInt() + 1;
         m_gridlayout->addWidget(m_queuedisplay[queueid], delta + linenum, colnum++, Qt::AlignCenter);
@@ -474,13 +476,13 @@ void QueuesPanel::newQueueList(const QStringList & qsl)
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
     while (iter.hasNext()) {
         iter.next();
-        if(qsl.contains(iter.key())) {
+        if (qsl.contains(iter.key())) {
             QueueInfo * qinfo = iter.value();
-            if(updateQueue(qinfo->astid(), iter.key(), qinfo->queuename(), qinfo->properties()))
+            if (updateQueue(qinfo->astid(), iter.key(), qinfo->queuename(), qinfo->number(), qinfo->properties()))
                 addedNewQueue = true;
         }
     }
-    if(addedNewQueue) {
+    if (addedNewQueue) {
         //affWidgets();
         loadQueueOrder();
     }
@@ -499,7 +501,7 @@ void QueuesPanel::newAgentList(const QStringList &)
  * update m_queueinfos
  */
 bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
-                              const QString & queuename, const QVariant & queueprops)
+                              const QString & queuename, const QString & number, const QVariant & queueprops)
 {
     bool newQueue = false;
     QVariantMap queuestatcontents = queueprops.toMap()["queuestats"].toMap();
@@ -511,23 +513,23 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
     infos["Calls"] = "0";
     foreach (QString statname, queuestatcontents.keys())
         infos[statname] = queuestatcontents[statname].toString();
-    if(! m_queuelabels.contains(queueid)) {
-        addQueue(astid, queueid, queuename, queuecontext);
+    if (! m_queuelabels.contains(queueid)) {
+        addQueue(astid, queueid, queuename, queuecontext, number);
         newQueue = true;
     }
-    if(m_queuebusies.contains(queueid)) {
+    if (m_queuebusies.contains(queueid)) {
         m_queuebusies[queueid]->setProperty("value", infos["Calls"]);
         foreach (QString statitem, m_statitems)
-            if(infos.contains(statitem)&&!not_realtime_stat.contains(statitem))
+            if (infos.contains(statitem) && (!not_realtime_stat.contains(statitem)))
                 m_queueinfos[queueid][statitem]->setText(infos[statitem]);
     }
 
     if (infos["Calls"].toInt() == 0) {
-        if(m_queuelongestwait.contains(queueid)) {
+        if (m_queuelongestwait.contains(queueid)) {
             m_queuelongestwait[queueid]->setProperty("running_time", 0);
             m_queuelongestwait[queueid]->setProperty("time", 0);
         }
-    } else if(m_queuelongestwait.contains(queueid)) {
+    } else if (m_queuelongestwait.contains(queueid)) {
         QueueInfo * qinfo = m_engine->queues()[queueid];
         QVariantMap properties = qinfo->properties();
         QVariantMap channel_list = properties["channels"].toMap();
@@ -554,17 +556,17 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
     QVariantMap queueagents = queueprops.toMap()["agents_in_queue"].toMap();
     QStringList queueagents_list;
     int navail = 0;
-    foreach(QString agentname, queueagents.keys()) {
+    foreach (QString agentname, queueagents.keys()) {
         QVariantMap qaprops = queueagents[agentname].toMap();
-        if((qaprops["Status"].toString() == "1") && (qaprops["Paused"].toString() == "0")) {
+        if ((qaprops["Status"].toString() == "1") && (qaprops["Paused"].toString() == "0")) {
             navail ++;
             queueagents_list << agentname;
         }
     }
 
-    if(m_queueinfos[queueid].contains("Xivo-Avail")) {
+    if (m_queueinfos[queueid].contains("Xivo-Avail")) {
         m_queueinfos[queueid]["Xivo-Avail"]->setText(QString::number(navail));
-        if(navail)
+        if (navail)
             m_queueinfos[queueid]["Xivo-Avail"]->setToolTip(tr("Available agents : %1").arg(queueagents_list.join(", ")));
         else
             m_queueinfos[queueid]["Xivo-Avail"]->setToolTip("");
@@ -584,29 +586,29 @@ void QueuesPanel::update(const QStringList & list)
     bool maxbusychanged;
     foreach (QProgressBar * qpb, m_queuebusies) {
         quint32 val = qpb->property("value").toUInt();
-        if(val > maxbusy)
+        if (val > maxbusy)
             maxbusy = val;
     }
-    if( (maxbusychanged = (maxbusy != m_maxbusy)) )
+    if ((maxbusychanged = (maxbusy != m_maxbusy)))
         m_maxbusy = maxbusy;
     
     quint32 greenlevel = m_optionsMap.value("queuelevels").toMap().value("green").toUInt();
     quint32 orangelevel = m_optionsMap.value("queuelevels").toMap().value("orange").toUInt();
     QHashIterator<QString, QProgressBar *> it(m_queuebusies);
-    while(it.hasNext()) {
+    while (it.hasNext()) {
         it.next();
         QProgressBar * qpb = it.value();
         QString queueid = it.key();
-        if(maxbusychanged || list.contains(queueid)) {
+        if (maxbusychanged || list.contains(queueid)) {
             quint32 val = qpb->property("value").toUInt();
             //qDebug() << "QueuesPanel::update()" << queueid;
             qpb->setRange(0, m_maxbusy + 1);
             // qpb->setValue(0); // trick in order to refresh
             qpb->setValue(val);
             
-            if(val <= greenlevel)
+            if (val <= greenlevel)
                 qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #00ff00;}");
-            else if(val <= orangelevel)
+            else if (val <= orangelevel)
                 qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #f38402;}");
             else
                 qpb->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #ff0000;}");
@@ -646,11 +648,11 @@ void QueuesPanel::queueClicked()
     // qDebug() << "QueuesPanel::queueClicked()" << sender()->property("queueid");
     QString function = sender()->property("function").toString();
     QString queueid = sender()->property("queueid").toString();
-    if(function == "more")
+    if (function == "more")
         changeWatchedQueue(queueid);
-    else if(function == "display_up") {
+    else if (function == "display_up") {
         int nold = m_queuemove[queueid]->property("position").toInt();
-        if(nold > 0) {
+        if (nold > 0) {
             int nnew = nold - 1;
             m_queuemove[m_queue_lines[nold]]->setProperty("position", nnew);
             m_queuemove[m_queue_lines[nnew]]->setProperty("position", nold);
@@ -709,36 +711,36 @@ void QueuesPanel::updateLongestWaitWidgets()
         QLabel *longestwait = i.value();
         uint new_time = longestwait->property("time").toUInt();
 
-        if(longestwait->property("running_time").toInt()) {
+        if (longestwait->property("running_time").toInt()) {
             new_time += 1;
             longestwait->setProperty("time", new_time);
         }
 
-        int sec =   ( new_time % 60);
+        int sec =   ( new_time % 60 );
         int min =   ( new_time - sec ) / 60 % 60;
         int hou = ( ( new_time - sec - min * 60 ) / 60 ) / 60;
 
         QString time_label;
         
         if (hou) {
-            time_label += QString("%0:%1:%2").arg(hou,2).arg(min,2,10,QChar('0')).arg(sec,2,10,QChar('0'));
+            time_label += QString("%0:%1:%2").arg(hou, 2).arg(min, 2, 10, QChar('0')).arg(sec, 2, 10, QChar('0'));
         } else {
-            time_label += QString("%0 Min ").arg(min,2);
+            time_label += QString("%0 Min ").arg(min, 2);
 
-            if(longestwait->property("running_time").toInt())
-                time_label += QString("%0 Sec ").arg(sec,2,10,QChar('0'));
+            if (longestwait->property("running_time").toInt())
+                time_label += QString("%0 Sec ").arg(sec, 2, 10, QChar('0'));
             else
-                time_label += QString("%0 Sec ").arg(sec,2);
+                time_label += QString("%0 Sec ").arg(sec, 2);
         }
 
-        if(new_time == 0)
-            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #ffffff;");
-        else if(new_time <= greenlevel)
-            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #00ff00;");
-        else if(new_time <= orangelevel)
-            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #f38402;");
+        if (new_time == 0)
+            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #ffffff;width:105px;margin-right:5px;");
+        else if (new_time <= greenlevel)
+            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #00ff00;width:105px;margin-right:5px;");
+        else if (new_time <= orangelevel)
+            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #f38402;width:105px;margin-right:5px;");
         else
-            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #ff0000;");
+            longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #ff0000;width:105px;margin-right:5px;");
 
         longestwait->setText(time_label);
     }
@@ -750,9 +752,7 @@ void QueuesPanel::updateLongestWaitWidgets()
 void QueuesPanel::updateQueueStats()
 {
     QHashIterator<QString, QCheckBox *> i(m_queuedisplay);
-
     QVariantMap _for;
-
     
     while (i.hasNext()) {
         i.next();
@@ -763,7 +763,7 @@ void QueuesPanel::updateQueueStats()
         _param["window"] = m_queuewindow[queueid]->value();
         _param["xqos"] = m_queuexqos[queueid]->value();
 
-        QString serverQueueId = QString(queueid).replace(QRegExp("queue:[^/]*/"),"");
+        QString serverQueueId = QString(queueid).replace(QRegExp("queue:[^/]*/"), "");
         m_queueid_map[serverQueueId] = queueid;
         _for[serverQueueId] = _param;
     }
@@ -784,7 +784,7 @@ void QueuesPanel::mousePressEvent(QMouseEvent *ev)
     int display_longuestwait = m_optionsMap["queue_longestwait"].toBool();
     QVariantMap v = m_engine->getGuiOptions("client_gui");
 
-    if ((!m_show_display_queue_toggle)&&(ev->button()&Qt::RightButton)) {
+    if ((!m_show_display_queue_toggle) && (ev->button()&Qt::RightButton)) {
         QHashIterator<QString, QCheckBox *> i(m_queuedisplay);
 
         m_displaytitle->show();
