@@ -243,6 +243,22 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_engine->registerClassEvent("queuestats", QueuesPanel::eatQueuesStats);
 }
 
+void __format_duration(QString *field, int duration)
+{
+    int sec =   ( duration % 60 );
+    int min =   ( duration - sec ) / 60 % 60;
+    int hou = ( ( duration - sec - min * 60 ) / 60 ) / 60;
+
+    if (hou)
+        *field = QString(QString("%0:%1:%2").arg(hou, 2)
+                                 .arg(min, 2, 10, QChar('0'))
+                                 .arg(sec, 2, 10, QChar('0')));
+    else
+        *field = QString(QString("%0:%1").arg(min, 2, 10, QChar('0'))
+                                 .arg(sec, 2, 10, QChar('0')));
+}
+
+
 void QueuesPanel::eatQueuesStats(QVariantMap p)
 {
     QStringList duration_stats;
@@ -255,16 +271,7 @@ void QueuesPanel::eatQueuesStats(QVariantMap p)
             if (duration_stats.contains(stats)) {
                 if (p["stats"].toMap()[queueid].toMap()[stats].toString() != "na") {
                     int sec_total = qRound(p["stats"].toMap()[queueid].toMap()[stats].toFloat());
-                    int sec =   ( sec_total % 60 );
-                    int min =   ( sec_total - sec ) / 60 % 60;
-                    int hou = ( ( sec_total - sec - min * 60 ) / 60 ) / 60;
-                    if (hou)
-                        field = QString("%0:%1:%2").arg(hou, 2)
-                                                   .arg(min, 2, 10, QChar('0'))
-                                                   .arg(sec, 2, 10, QChar('0'));
-                    else
-                        field = QString("%0:%1").arg(min, 2, 10, QChar('0'))
-                                                .arg(sec, 2, 10, QChar('0'));
+                    __format_duration(&field, sec_total);
                 } else {
                     field = p["stats"].toMap()[queueid].toMap()[stats].toString();
                 }
@@ -563,16 +570,7 @@ bool QueuesPanel::updateQueue(const QString & astid, const QString & queueid,
                         text = "na";
                     else {
                         int sec_total = infos[statitem].toInt();
-                        int sec =   ( sec_total % 60 );
-                        int min =   ( sec_total - sec ) / 60 % 60;
-                        int hou = ( ( sec_total - sec - min * 60 ) / 60 ) / 60;
-                        if (hou)
-                            text = QString("%0:%1:%2").arg(hou, 2)
-                                                      .arg(min, 2, 10, QChar('0'))
-                                                      .arg(sec, 2, 10, QChar('0'));
-                        else
-                            text = QString("%0:%1").arg(min, 2, 10, QChar('0'))
-                                                   .arg(sec, 2, 10, QChar('0'));
+                        __format_duration(&text, sec_total);
                     }
                 } else
                     text = infos[statitem];
@@ -795,17 +793,9 @@ void QueuesPanel::updateLongestWaitWidgets()
             longestwait->setProperty("time", new_time);
         }
 
-        int sec =   ( new_time % 60 );
-        int min =   ( new_time - sec ) / 60 % 60;
-        int hou = ( ( new_time - sec - min * 60 ) / 60 ) / 60;
 
         QString time_label;
-        
-        if (hou) {
-            time_label = QString("%0:%1:%2").arg(hou, 2).arg(min, 2, 10, QChar('0')).arg(sec, 2, 10, QChar('0'));
-        } else {
-            time_label = QString("%0:%1").arg(min, 2,10, QChar('0')).arg(sec, 2, 10, QChar('0'));
-        }
+        __format_duration(&time_label, new_time);
 
         if (new_time == 0)
             longestwait->setStyleSheet("border-radius: 3px;background-color: #fff;border: 2px solid black;background-color: #ffffff;width:105px;margin-right:5px;");
