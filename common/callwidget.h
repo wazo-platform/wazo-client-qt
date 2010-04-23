@@ -39,6 +39,8 @@
 #include <QObject>
 #include <QWidget>
 
+#include "phoneinfo.h"
+
 class QLabel;
 
 class UserInfo;
@@ -63,12 +65,16 @@ public:
                const QString &,
                const QString &,
                const QString &,
-               QWidget * parent = 0);
+               QWidget * parent,
+               const PhoneInfo * pi
+               );
     void updateWidget(const QString &,
                       uint,
                       const QString &,
                       const QString &,
-                      const QString &);
+                      const QString &,
+                      const PhoneInfo *
+                      );
     const QString & channel() const;
 protected:
     void mousePressEvent(QMouseEvent *);
@@ -103,15 +109,12 @@ private:
     QLabel * m_lbl_channelpeer;        //!< sub widget
     QLabel * m_lbl_exten;        //!< sub widget
     QPixmap m_square;                //!< QPixmap used to display the status square
-    static QPixmap * m_call_yellow; //!< yellow phone icon
-    static QPixmap * m_call_blue;   //!< blue phone icon
-    static QPixmap * m_call_red;    //!< red phone icon
-    static QPixmap * m_call_gray;   //!< gray phone icon
     QDateTime m_startTime;        //!< call start date/time
     QAction * m_hangUpAction;        //!< Hang Up Action
     QAction * m_transferToNumberAction;        //!< Transfer to Number Action
     QAction * m_parkCall;        //!< Park the Call Action
     bool m_parkedCall;          //!< Is it a parked call ?
+    const PhoneInfo * pi;
 };
 
 #endif

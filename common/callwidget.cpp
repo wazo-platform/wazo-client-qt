@@ -45,12 +45,7 @@
 #include "callwidget.h"
 #include "userinfo.h"
 #include "xivoconsts.h"
-
-// Static members initialization
-QPixmap * CallWidget::m_call_yellow = NULL;
-QPixmap * CallWidget::m_call_blue   = NULL;
-QPixmap * CallWidget::m_call_red    = NULL;
-QPixmap * CallWidget::m_call_gray   = NULL;
+#include "taintedpixmap.h"
 
 /*! \brief Constructor
  *
@@ -60,18 +55,13 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
                        const QString & status, uint ts,
                        const QString & channelpeer, const QString & callerid,
                        const QString & calleridname,
-                       QWidget * parent)
+                       QWidget * parent,
+                       const PhoneInfo * _pi)
     : QWidget(parent), m_square(16,16), m_parkedCall(false)
 {
     // qDebug() << "CallWidget::CallWidget()" << channelme;
-    if(m_call_yellow == NULL)
-    {
-        m_call_yellow = new QPixmap(":/images/phone-yellow.png");
-        m_call_blue   = new QPixmap(":/images/phone-blue.png");
-        m_call_red    = new QPixmap(":/images/phone-red.png");
-        m_call_gray   = new QPixmap(":/images/phone-grey.png");
-    }
     m_ui = ui;
+    pi = _pi;
     QGridLayout * gridlayout = new QGridLayout(this);
     
     m_channelme = channelme;
@@ -100,7 +90,7 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channelme,
     gridlayout->addWidget(m_lbl_exten, 0, 2);
         
     //updateWidget(status, ts, "cpeer", callerid, calleridname);
-    updateWidget(status, ts, channelpeer, callerid, calleridname);
+    updateWidget(status, ts, channelpeer, callerid, calleridname, pi);
         
     m_hangUpAction = new QAction( tr("&Hangup"), this);
     m_hangUpAction->setStatusTip( tr("Hang up/Close the channel") );
@@ -150,8 +140,11 @@ void CallWidget::updateWidget(const QString & status,
                               uint ts,
                               const QString & channelpeer,
                               const QString & callerid,
-                              const QString & calleridname)
+                              const QString & calleridname,
+                              const PhoneInfo * _pi
+                              )
 {
+    pi = _pi;
     qDebug() << "CallWidget::updateWidget()" << status << ts << channelpeer << callerid << calleridname;
     m_parkedCall = (callerid == QString("<parked>")) || (calleridname == QString("<parked>"));
     setActionPixmap(status);
@@ -185,20 +178,9 @@ void CallWidget::updateWidget(const QString & status,
  */
 void CallWidget::setActionPixmap(const QString & status)
 {
-    if (status == CHAN_STATUS_CALLING)
-        m_lbl_status->setPixmap( *m_call_yellow );
-    else if (status == CHAN_STATUS_RINGING)
-        m_lbl_status->setPixmap( *m_call_blue );
-    else if ((status == "On the phone") || (status == "Up"))
-        m_lbl_status->setPixmap( *m_call_red );
-    else if (status == CHAN_STATUS_LINKED_CALLER)
-        m_lbl_status->setPixmap( *m_call_red );
-    else if (status == CHAN_STATUS_LINKED_CALLED)
-        m_lbl_status->setPixmap( *m_call_red );
-    else {
-        m_lbl_status->setPixmap( *m_call_gray );
-        qDebug() << "CallWidget::setActionPixmap() : status unknown" << status;
-    }
+    QColor color = QColor(pi->hintstatus("color"));
+    m_lbl_status->setPixmap(TaintedPixmap(QString(":/images/phone-trans.png"),
+                                          color).getPixmap());
 }
 
 /*! \brief mouse press event

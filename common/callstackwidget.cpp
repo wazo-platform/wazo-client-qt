@@ -179,7 +179,8 @@ void CallStackWidget::updateDisplay()
 //                qDebug() << "CallStackWidget::updateDisplay() adding/updating" << channelme;
                 if( m_affhash.contains( /*channelme*/it.key() ) )
                 {
-                    m_affhash[it.key()/*channelme*/]->updateWidget( status, ts, channelpeer, callerid, calleridname );
+                    m_affhash[it.key()/*channelme*/]->updateWidget( status, ts, channelpeer,
+                                                                    callerid, calleridname, pi);
                 }
                 else
                 {
@@ -190,7 +191,8 @@ void CallStackWidget::updateDisplay()
                                                 channelpeer,
                                                 callerid,
                                                 calleridname,
-                                                this);
+                                                this,
+                                                pi);
                     connect( callwidget, SIGNAL(doHangUp(const QString &)),
                              this, SLOT(hupchan(const QString &)) );
                     connect( callwidget, SIGNAL(doTransferToNumber(const QString &)),
