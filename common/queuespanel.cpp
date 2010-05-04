@@ -270,7 +270,7 @@ void QueuesPanel::eatQueuesStats(QVariantMap p)
 
             if (duration_stats.contains(stats)) {
                 if (p["stats"].toMap()[queueid].toMap()[stats].toString() != "na") {
-                    int sec_total = qRound(p["stats"].toMap()[queueid].toMap()[stats].toFloat());
+                    int sec_total = qRound(p["stats"].toMap()[queueid].toMap()[stats].toDouble());
                     __format_duration(&field, sec_total);
                 } else {
                     field = p["stats"].toMap()[queueid].toMap()[stats].toString();
