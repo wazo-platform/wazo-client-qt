@@ -231,7 +231,7 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout(groupBox);
-    QHBoxLayout *hBox2 = new QHBoxLayout(groupBox);
+    QHBoxLayout *hBox2 = new QHBoxLayout;
     layoutMarginSpacingTo0(layout);
     layoutMarginSpacingTo0(hBox);
 

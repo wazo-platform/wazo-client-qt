@@ -61,8 +61,6 @@ ServicePanel::ServicePanel(BaseEngine * engine,
     m_capalegend["fwdunc"]  = tr("&Unconditional Forward");
     
     m_capas = m_engine->getGuiOptions("merged_gui").value("services").toStringList();
-    // NOTE : we dont get anything here in 1.1
-    qDebug() << "ServicePanel::ServicePanel" << m_capas;
     
     int line = 0;
     m_status = new ServiceStatus();

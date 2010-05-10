@@ -163,7 +163,7 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
 #ifdef Q_WS_MAC
         QString fileName = "lib" + id + "plugin.dylib"; // TODO : check for correctness
 #endif
-        qDebug() << "Trying to load pluging" << fileName << m_pluginsDir.absoluteFilePath(fileName);
+        qDebug() << "Trying to load plugin" << fileName << m_pluginsDir.absoluteFilePath(fileName);
         QPluginLoader pluginLoader(m_pluginsDir.absoluteFilePath(fileName));
         QObject * plugin = pluginLoader.instance();
 

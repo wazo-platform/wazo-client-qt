@@ -582,16 +582,15 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
         m_docks[name]->setWidget(widget);
         m_docks[name]->hide();
     } else if(m_gridnames.contains(name)) {
-        qDebug() << "MainWidget::addPanel() (grid)" << name << m_dockoptions[name];
+        qDebug() << "MainWidget::addPanel() (grid)" << name << m_dockoptions[name] << title << m_dockoptions[name].toInt() ;
         m_gridlayout->addWidget(widget, m_dockoptions[name].toInt(), 0);
     } else if(m_tabnames.contains(name)) {
-        qDebug() << "MainWidget::addPanel() (tab) " << name << m_dockoptions[name] << m_tabwidget->count();
+        qDebug() << "MainWidget::addPanel() (tab) " << name << m_dockoptions[name] << m_tabwidget->count() << title;
         if(m_dockoptions[name].size() > 0) 
             m_tabwidget->insertTab(m_dockoptions[name].toInt(), widget, extraspace + title + extraspace);
         else
             m_tabwidget->addTab(widget, extraspace + title + extraspace);
     }
-    qDebug() << "adding" << name << title;
 }
 
 void MainWidget::updatePresence(const QVariant & presence)

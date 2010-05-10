@@ -719,7 +719,7 @@ void BaseEngine::ctiSocketError(QAbstractSocket::SocketError socketError)
  */
 void BaseEngine::ctiSocketStateChanged(QAbstractSocket::SocketState socketState)
 {
-    qDebug() << Q_FUNC_INFO << socketState;
+    //qDebug() << Q_FUNC_INFO << socketState;
     if(socketState == QAbstractSocket::ConnectedState) {
         if(m_timer != -1) {
             killTimer(m_timer);
@@ -1388,10 +1388,12 @@ void BaseEngine::parseCommand(const QString & line)
             m_guioptions["server_funcs"] = tmp;
             
             //qDebug() << "clientXlets" << XletList;
+            qDebug() << "\n";
             qDebug() << "m_capaxlets" << m_capaxlets;
             qDebug() << "m_capafuncs" << m_capafuncs;
             qDebug() << "m_appliname" << m_appliname;
             qDebug() << "m_counters"  << m_counters;
+            qDebug() << "\n";
             
             // XXXX m_capafuncs => config file
             // m_enabled_function's purposes are :
