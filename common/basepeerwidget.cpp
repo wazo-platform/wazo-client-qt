@@ -69,6 +69,12 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
     m_dialAction->setStatusTip(tr("Call this peer"));
     connect(m_dialAction, SIGNAL(triggered()),
              this, SLOT(dial()));
+
+    m_chitchatAction = new QAction(tr("&Open a dialog window"), this);
+    m_chitchatAction->setStatusTip(tr("Open a chatting windows with this user"));
+    m_chitchatAction->setProperty("userid", ui->userid());
+    m_chitchatAction->setProperty("astid", ui->astid());
+    connect(m_chitchatAction, SIGNAL(triggered()), ChitChatWindow::chitchat_instance, SLOT(WriteMessageTo()));
     
     m_interceptAction = new QAction(tr("&Intercept"), this);
     m_interceptAction->setStatusTip(tr("Intercept call"));
@@ -80,6 +86,7 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
         m_maxWidthWanted = 200;
     setMaximumWidth(m_maxWidthWanted);
     setAcceptDrops(true);
+
 }
 
 void BasePeerWidget::reloadSavedName()
@@ -349,6 +356,10 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
     QMenu * parkMenu = NULL;
     if(m_ui)
     {
+        if(! m_ui->ctilogin().isEmpty()) {
+            contextMenu.addAction(m_chitchatAction);
+        }
+
         //qDebug() << m_ui->phonelist();
         // TODO : upgrade this when several phones per user will be supported
         // or at least check it's working as expected

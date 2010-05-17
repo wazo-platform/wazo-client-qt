@@ -89,8 +89,12 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
         m_user_status->setProperty("userid", ui->userid());
         m_user_status->setProperty("astid", ui->astid());
         m_user_status->setFlat(true);
-        if (m_engine->enabledFunction("chitchat"))
-            connect(m_user_status, SIGNAL(pressed()), ChitChatWindow::chitchat_instance ,SLOT(WriteMessageTo()) );
+        m_user_status->setFocusPolicy(Qt::NoFocus);
+
+        if (m_engine->enabledFunction("chitchat")) {
+            if (m_engine->getFullId() != ui->userid())
+                connect(m_user_status, SIGNAL(pressed()), ChitChatWindow::chitchat_instance ,SLOT(WriteMessageTo()) );
+        }
         hLayout->addWidget(m_user_status);
     }
         

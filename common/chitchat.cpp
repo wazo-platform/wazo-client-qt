@@ -40,9 +40,11 @@ BaseEngine * ChitChatWindow::m_engine = NULL;
 
 void ChitChatWindow::addMessage(QString mcolor, QString message, QString ucolor="", QString username="")
 {
-    m_message_history->insertHtml("<span style=\"color:" + ucolor + "\">" +
-                                  username + "</span><pre style=\"padding:0;margin:0;color:" + mcolor +
-                                  "\">" + message + "\n\n</pre>");
+    QString time = QTime::currentTime().toString("[ HH:mm:ss ]  ");
+    m_message_history->insertHtml("<span style=\"color:black\">" + time + "</span>" +
+                                  "<span style=\"color:" + ucolor + "\">" + username + "</span>" +
+                                  "<pre style=\"padding:0;margin:0;color:" + mcolor + "\">" +
+                                  message + "\n\n</pre>");
 
     QScrollBar *sb = m_message_history->verticalScrollBar();
     sb->setValue(sb->maximum());
@@ -66,15 +68,15 @@ ChitChatWindow::ChitChatWindow(QString with) : QWidget(NULL)
     m_message_history = new QTextEdit(this);
     m_message_history->setReadOnly(true);
 
-    QPushButton *button[3];
-    button[0]= new QPushButton(tr("&clear history"));
-    button[1]= new QPushButton(tr("s&hare file"));
-    button[2]= new QPushButton(tr("&send"));
+    QPushButton *button[2];
+    button[0]= new QPushButton(tr("&Clear history"));
+    button[1]= new QPushButton(tr("&Send"));
 
-    connect(button[2], SIGNAL(pressed()), m_message, SLOT(send_message()));
+    connect(button[1], SIGNAL(pressed()), m_message, SLOT(send_message()));
     connect(button[0], SIGNAL(pressed()), this, SLOT(clear_message_history()));
 
-    for(i=0;i<3;i++) {
+    v_layout2->addStretch(1);
+    for(i=0;i<2;i++) {
         button[i]->setMaximumHeight(message_height/3);
         v_layout2->addWidget(button[i]);
     }
@@ -132,7 +134,7 @@ void ChitChatWindow::clear_message_history()
 
 void ChitChatWindow::send_message(QString message)
 {
-    addMessage("blue", message, "green", "you said: ");
+    addMessage("blue", message, "green", tr("you said: "));
 
     QVariantMap command;
 
@@ -161,7 +163,7 @@ void ChitChatWindow::WriteMessageTo()
 
     if (opened || (!m_chat_window_opened[chat_key]->isVisible()))
         m_chat_window_opened[chat_key]->addMessage("purple",
-            tr("chat window opened with user - ") +  m_engine->users()[userid]->fullname(), "gray", "system: ");
+            tr("chat window opened with user - ") +  m_engine->users()[userid]->fullname(), "gray", tr("system: "));
 }
 
 
@@ -169,6 +171,9 @@ void ChitChatWindow::WriteMessageTo()
 
 void MessageEdit::send_message()
 {
+    if (toPlainText().trimmed() == "")
+        return ;
+
     m_dad->send_message(toPlainText());
     setPlainText("");
     setFocus(Qt::OtherFocusReason);
