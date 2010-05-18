@@ -79,7 +79,6 @@ all-win32:
 # to be executed under a bash/cygwin-like terminal
 versions-%:
 	@${ECHO} -n "version (before update) : " && make -s displayversions
-	@svn up
 	@touch baselib/xivoconsts.h $*/mainwidget.cpp
 	@rm -f $*/versions.pri
 	@${ECHO} -n "_SVNVER_ = " >> $*/versions.pri

@@ -66,7 +66,9 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     // statscols = "Xivo-Conn, Xivo-Avail, Xivo-Rate";
     QVariantMap optionsMap = m_engine->getGuiOptions("merged_gui");
     QString statscols = optionsMap.value("queues-statscolumns",
-                                         "Holdtime,Xivo-Conn,Xivo-Avail,Xivo-Talking,Xivo-Rate,Xivo-Join,Xivo-Link,Xivo-Lost,Xivo-Chat,Holdtime-avg,Holdtime-max,Qos").toString();
+                                         "Holdtime,Xivo-Conn,Xivo-Avail,Xivo-Talking,"
+                                         "Xivo-Rate,Xivo-Join,Xivo-Link,Xivo-Lost,"
+                                         "Xivo-Chat,Holdtime-avg,Holdtime-max,Qos").toString();
     bool shortlegends = optionsMap.value("queues-shortlegends",
                                          false).toBool();
 
@@ -120,7 +122,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     
     m_statlegends_tooltip["Completed"] = tr("Completed");
     m_statlegends_tooltip["Abandoned"] = tr("Abandoned");
-    m_statlegends_tooltip["Holdtime"] = tr("The average waiting time before getting an agent calculed by asterisk");
+    m_statlegends_tooltip["Holdtime"] = tr("The average waiting time before getting an agent, calculated by asterisk");
     m_statlegends_tooltip["Holdtime-avg"] = tr("The average waiting time before getting an agent");
     m_statlegends_tooltip["Holdtime-max"] = tr("The maximum waiting time before getting an agent");
     m_statlegends_tooltip["ServicelevelPerf"] = tr("ServicelevelPerf(%)");
@@ -129,13 +131,13 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_tooltip["Weight"] = tr("Weight");
     m_statlegends_tooltip["Xivo-Conn"] = tr("Number of agents in this queue");
     m_statlegends_tooltip["Xivo-Avail"] = tr("Available agents");
-    m_statlegends_tooltip["Xivo-Join"] = tr("Number of calls this queue received");
+    m_statlegends_tooltip["Xivo-Join"] = tr("Number of calls this queue has received");
     m_statlegends_tooltip["Xivo-Link"] = tr("Number of calls that were answered");
     m_statlegends_tooltip["Xivo-Lost"] = tr("Number of calls where the caller has left before getting an answer from an agent");
     m_statlegends_tooltip["Xivo-Rate"] = tr("( Linked / Joined ) in %") ;
     m_statlegends_tooltip["Xivo-Chat"] = tr("The average lenght of a conversation");
     m_statlegends_tooltip["Xivo-Talking"] = tr("Number of agents in this queue, currently talking");
-    m_statlegends_tooltip["Qos"] = tr("( Number of calls answered in less than X sec / total of call answered ) in %");
+    m_statlegends_tooltip["Qos"] = tr("( Number of calls answered in less than X sec / total of calls answered ) in %");
 
     foreach (QString statcol, statscols.split(","))
         if (m_statlegends_long.contains(statcol))
@@ -152,8 +154,8 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_displaytitle->setStyleSheet("QLabel { padding-right:10px }");
     m_displaytitle->setAlignment(Qt::AlignLeft);
     m_displaytitle->hide();
-    m_stats_windowtitle = new QLabel(tr("Window"), this);
-    m_stats_xqostitle = new QLabel(tr("Qos - X"), this);
+    m_stats_windowtitle = new QLabel(tr("Window (s)"), this);
+    m_stats_xqostitle = new QLabel(tr("Qos - X (s)"), this);
     m_stats_windowtitle->hide();
     m_stats_xqostitle->hide();
     
@@ -442,7 +444,6 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     m_queuewindow[queueid]->setFrame(false);
     m_queuewindow[queueid]->setAlignment(Qt::AlignCenter);
     m_queuewindow[queueid]->hide();
-    m_queuewindow[queueid]->setPrefix(tr("(s) "));
     m_queuewindow[queueid]->setMaximum(3600*24);
     //m_queuewindow[queueid]->setStyleSheet("background: transparent;");
     m_queuewindow[queueid]->setValue(queuewindow);
@@ -451,7 +452,6 @@ void QueuesPanel::addQueue(const QString & astid, const QString & queueid, const
     m_queuexqos[queueid]->setFrame(false);
     m_queuexqos[queueid]->setAlignment(Qt::AlignCenter);
     m_queuexqos[queueid]->hide();
-    m_queuexqos[queueid]->setPrefix(tr("(s) "));
     m_queuexqos[queueid]->setMaximum(240);
     int queuexqos = v[queueid + "xqos"].toInt();
     if (queuexqos == 0)
