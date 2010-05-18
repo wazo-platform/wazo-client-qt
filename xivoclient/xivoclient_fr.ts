@@ -2394,7 +2394,7 @@ Contexte: %2</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="105"/>
-        <source>Holdtime Moy</source>
+        <source>Holdtime Avg</source>
         <translation>~ Temps d&apos;attente</translation>
     </message>
     <message>
