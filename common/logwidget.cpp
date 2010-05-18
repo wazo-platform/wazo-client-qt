@@ -220,6 +220,18 @@ static inline void layoutMarginSpacingTo0(QBoxLayout *l)
     l->setSpacing(0);
 }
 
+void LogWidget::onViewClick(const QModelIndex &model)
+{
+    QString caller = model.sibling(model.row(), 0).data().toString();
+
+    if (caller.indexOf("<") != -1) {
+        caller.remove(QRegExp("[^<]*<"));
+        caller.remove(">");
+    }
+    caller.remove(QRegExp("[^0-9]"));
+    
+    m_engine->pasteToDial(caller);
+}
 
 LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
     : XLet(engine, parent)
@@ -244,8 +256,10 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
     m_view->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
     m_view->horizontalHeader()->setResizeMode(1,QHeaderView::Stretch);
     m_view->horizontalHeader()->setResizeMode(2,QHeaderView::Stretch);
-    //m_view->horizontalHeader()->setStretchLastSection(true);
     m_view->setStyleSheet("QTableView { border: none; background:transparent; color:black; }");
+
+    connect(m_view, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onViewClick(const QModelIndex &)));
+    
 
     hBox->addStretch(1);
 

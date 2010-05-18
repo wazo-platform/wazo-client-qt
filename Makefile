@@ -53,7 +53,7 @@ all-linux:
 	@make linux-baselib
 	@make linux-xivoclient
 	@make linux-plugins
-	@make stripandpack-xivoclient
+	#@make stripandpack-xivoclient
 
 distclean:
 	@make clean-xivoclient

@@ -108,6 +108,8 @@ class LogWidget : public XLet
     Q_OBJECT
   public:
     LogWidget(BaseEngine *, QWidget *parent=0);
+  private slots:
+    void onViewClick(const QModelIndex &);
   private:
     QTableView *m_view;
 };

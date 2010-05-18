@@ -297,6 +297,11 @@ void BaseEngine::setCheckedFunction(const QString & function, bool b)
     }
 }
 
+void BaseEngine::pasteToDial(QString toPaste)
+{
+    emit pasteToDialPanel(toPaste);
+}
+
 bool BaseEngine::checkedFunction(const QString & function)
 {
     return m_checked_function[function];

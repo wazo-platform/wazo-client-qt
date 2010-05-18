@@ -216,9 +216,11 @@ public:
     int m_historysize;              //!< Number of elements when requestion call log
     
 
+    void pasteToDial(QString);
 public:
     void registerClassEvent(QString class_function, void (*)(QVariantMap map));
     void sendJsonCommand(const QVariantMap &);
+
 private:
     int callClassEventCallback(QString className, QVariantMap map);
     QMultiHash<QString, void (*)(QVariantMap) > m_class_event_cb;
