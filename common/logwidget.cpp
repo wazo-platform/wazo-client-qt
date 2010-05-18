@@ -119,11 +119,11 @@ QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
                 int min =   ( duration - sec ) / 60 % 60;
                 int hou = ( ( duration - sec - min * 60 ) / 60 ) / 60;
                 if (hou)
-                    return QString("%0 hou %1 min %2 sec").arg(hou).arg(min).arg(sec);
+                    return tr("%1 hr %2 min %3 s").arg(hou).arg(min).arg(sec);
                 else if (min) 
-                  return tr("%0 min %1 sec").arg(min).arg(sec);
+                    return tr("%1 min %2 s").arg(min).arg(sec);
                 else
-                  return tr("%0 sec").arg(sec);
+                    return tr("%1 s").arg(sec);
             }
         }
     } 

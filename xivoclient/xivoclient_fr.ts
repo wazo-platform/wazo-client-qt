@@ -1640,14 +1640,19 @@ a été envoyé à %2.</translation>
 <context>
     <name>LogWidgetModel</name>
     <message>
+        <location filename="../common/logwidget.cpp" line="122"/>
+        <source>%1 hr %2 min %3 s</source>
+        <translation>%1 h %2 min %3 s</translation>
+    </message>
+    <message>
         <location filename="../common/logwidget.cpp" line="124"/>
-        <source>%0 min %1 sec</source>
-        <translation>%1 min %2 sec {0 ?} {1 ?}</translation>
+        <source>%1 min %2 s</source>
+        <translation>%1 min %2 s</translation>
     </message>
     <message>
         <location filename="../common/logwidget.cpp" line="126"/>
-        <source>%0 sec</source>
-        <translation>%1 sec {0 ?}</translation>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
     </message>
     <message>
         <location filename="../common/logwidget.cpp" line="188"/>
@@ -2059,6 +2064,7 @@ Etes vous sur ?</translation>
 %n Queue(s) %2</source>
         <translation>
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2356,7 +2362,22 @@ Contexte: %2</translation>
         <translation>Abandonnés</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="151"/>
+        <location filename="../common/queuespanel.cpp" line="135"/>
+        <source>Number of calls that were answered on this queue</source>
+        <translation>Nombre d&apos;appels répondus sur cette file</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="138"/>
+        <source>Ratio (Linked) / (Joined) (%)</source>
+        <translation>Rapport (Appels aboutis) / (Appels reçus) (%)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="141"/>
+        <source>Ratio (Number of calls answered in less than X sec) / (Number of calls answered) (%)</source>
+        <translation>Rapport (Nombre d&apos;appels répondus avant X sec) / (Nombre d&apos;appels répondus) (%)</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="153"/>
         <source>Busy</source>
         <translation>Occupation</translation>
     </message>
@@ -2372,11 +2393,6 @@ Contexte: %2</translation>
         <translation>TA</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="88"/>
-        <source>~ HT</source>
-        <translation>TA Moy</translation>
-    </message>
-    <message>
         <location filename="../common/queuespanel.cpp" line="89"/>
         <source>HT Max</source>
         <translation>TA Max</translation>
@@ -2386,6 +2402,11 @@ Contexte: %2</translation>
         <location filename="../common/queuespanel.cpp" line="120"/>
         <source>Talking</source>
         <translation>Conversation</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="102"/>
+        <source>QoS(%)</source>
+        <translation>QoS(%)</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="106"/>
@@ -2442,25 +2463,12 @@ Service</translation>
         <translation>Conversation</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="121"/>
-        <source>Quality of Service</source>
-        <translation>Qualité de Service</translation>
-    </message>
-    <message>
-        <source>The average waiting time before getting an agent calculed by asterisk</source>
-        <translation type="obsolete"> Temps moyen d&apos;attente avant d&apos;obtenir un agent ( calculé par Asterisk )</translation>
-    </message>
-    <message>
         <location filename="../common/queuespanel.cpp" line="127"/>
         <source>The maximum waiting time before getting an agent</source>
         <translation>Plus grand temps d&apos;attente avant d&apos;obtenir un agent</translation>
     </message>
     <message>
-        <source>Number of agent in this queue, currently talking</source>
-        <translation type="obsolete">Nombre d&apos;agents dans la queue actuellement en conversation</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="147"/>
+        <location filename="../common/queuespanel.cpp" line="149"/>
         <source>Queues</source>
         <translation>Files d&apos;attente</translation>
     </message>
@@ -2480,9 +2488,19 @@ Service</translation>
         <translation>Disponibles</translation>
     </message>
     <message>
+        <location filename="../common/queuespanel.cpp" line="121"/>
+        <source>Quality of Service (%)</source>
+        <translation>Qualité de Service (%)</translation>
+    </message>
+    <message>
         <location filename="../common/queuespanel.cpp" line="132"/>
         <source>Number of agents in this queue</source>
         <translation>Nombre d&apos;agents dans cette file</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="133"/>
+        <source>Number of available agents in this queue</source>
+        <translation>Nombre d&apos;agents disponibles dans cette file</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="134"/>
@@ -2490,47 +2508,37 @@ Service</translation>
         <translation>Nombre d&apos;appels reçus sur cette file</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="135"/>
-        <source>Number of calls that were answered</source>
-        <translation>Nombre d&apos;appels répondus sur cette file</translation>
-    </message>
-    <message>
         <location filename="../common/queuespanel.cpp" line="136"/>
         <source>Number of calls where the caller has left before getting an answer from an agent</source>
         <translation>Nombre d&apos;appels pour lesquels l&apos;appelant a quitté sans obtenir de réponse de la part d&apos;un agent</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="139"/>
+        <location filename="../common/queuespanel.cpp" line="140"/>
         <source>Number of agents in this queue, currently talking</source>
         <translation>Nombre d&apos;agents dans cette file actuellement en conversation</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="140"/>
-        <source>( Number of calls answered in less than X sec / total of calls answered ) in %</source>
-        <translation>Nombre d&apos;appels traités et répondus dans un délai inférieur à « x » sec par rapport aux appels traités exprimé en %</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="153"/>
+        <location filename="../common/queuespanel.cpp" line="155"/>
         <source>Hide</source>
         <translation>Cache</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="157"/>
+        <location filename="../common/queuespanel.cpp" line="159"/>
         <source>Window (s)</source>
         <translation>Fenêtre (s)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="158"/>
+        <location filename="../common/queuespanel.cpp" line="160"/>
         <source>Qos - X (s)</source>
         <translation>Qos - X (s)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="195"/>
+        <location filename="../common/queuespanel.cpp" line="197"/>
         <source>Stats on slice &lt;sup&gt; ( right click to configure ) &lt;/sup&gt;</source>
         <translation>Statistiques sur fenêtre &lt;sup&gt; ( click droit pour configurer )&lt;/sup&gt;</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="398"/>
+        <location filename="../common/queuespanel.cpp" line="400"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
@@ -2554,12 +2562,17 @@ Contexte: %2</translation>
     <message>
         <location filename="../common/queuespanel.cpp" line="85"/>
         <source>Cmptd</source>
-        <translation>Réus.</translation>
+        <translation>Réus</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="86"/>
         <source>Abdnd</source>
-        <translation>Abd.</translation>
+        <translation>Aband</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="88"/>
+        <source>HT Avg</source>
+        <translation>TA Moy</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="90"/>
@@ -2581,12 +2594,12 @@ Contexte: %2</translation>
     <message>
         <location filename="../common/queuespanel.cpp" line="96"/>
         <source>Jnd</source>
-        <translation>Prés.</translation>
+        <translation>Prés</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="97"/>
         <source>Lnkd</source>
-        <translation>Abt.</translation>
+        <translation>Abt</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="98"/>
@@ -2608,11 +2621,6 @@ Contexte: %2</translation>
 (s)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="102"/>
-        <source>QoS</source>
-        <translation>QdS</translation>
-    </message>
-    <message>
         <location filename="../common/queuespanel.cpp" line="109"/>
         <location filename="../common/queuespanel.cpp" line="128"/>
         <source>ServicelevelPerf(%)</source>
@@ -2631,64 +2639,22 @@ Service(%)</translation>
         <translation>Le temps moyen attendu avant d&apos;obtenir un agent</translation>
     </message>
     <message>
-        <source>Number of agent in this queue</source>
-        <translation type="obsolete">Le nombre d&apos;agent dans cette queue</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="133"/>
-        <source>Available agents</source>
-        <translation>Nombre d&apos;agents disponibles</translation>
-    </message>
-    <message>
-        <source>Number of call this queue received</source>
-        <translation type="obsolete">Nombre d&apos;appel reçus dans cette file</translation>
-    </message>
-    <message>
-        <source>Number of call that were answered</source>
-        <translation type="obsolete">Nombre d&apos;appel(s) traité(s)</translation>
-    </message>
-    <message>
-        <source>Number of call where the caller has left before getting an answer from an agent</source>
-        <translation type="obsolete">Numbre d&apos;appel(s) ou l&apos;appelant a quitté sans obtenir de réponse de la part d&apos;un agent</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="137"/>
-        <source>( Linked / Joined ) in %</source>
-        <translation>( appels aboutis / appels reçus ) en %</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="138"/>
+        <location filename="../common/queuespanel.cpp" line="139"/>
         <source>The average lenght of a conversation</source>
         <translation>La durée moyenne d&apos;une conversation</translation>
     </message>
     <message>
-        <source>( Number of call answered in less than X sec / total of call answered ) in %</source>
-        <translation type="obsolete">Nombre d&apos;appels traités et répondus dans un délai inférieur à « x » seconde par rapport aux appels traités exprimé en %</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="152"/>
+        <location filename="../common/queuespanel.cpp" line="154"/>
         <source>Longest Wait</source>
         <translation>plus grande attente dans la file</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation type="obsolete">Fenêtre</translation>
-    </message>
-    <message>
-        <source>Qos - X</source>
-        <translation type="obsolete">Qos (x)</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="190"/>
+        <location filename="../common/queuespanel.cpp" line="192"/>
         <source>Live state</source>
         <translation>États actuels</translation>
     </message>
     <message>
-        <source>(s) </source>
-        <translation type="obsolete">(s)</translation>
-    </message>
-    <message>
-        <location filename="../common/queuespanel.cpp" line="625"/>
+        <location filename="../common/queuespanel.cpp" line="627"/>
         <source>Available agents : %1</source>
         <translation>Agents disponibles : %1</translation>
     </message>

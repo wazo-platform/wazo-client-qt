@@ -123,7 +123,7 @@ XLetFactory::XLetFactory(BaseEngine * engine, QObject * parent)
         }
     }
 #else
-    if (m_pluginsDir.cd("../Resources/plugins"))
+    if (m_pluginsDir.cd("../Resources/plugins")) {
         m_pluginsDirFound = true;
     } else {
         qDebug() << "cannot find plugins directory";

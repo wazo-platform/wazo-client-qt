@@ -85,7 +85,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_short["Completed"] = tr("Cmptd");
     m_statlegends_short["Abandoned"] = tr("Abdnd");
     m_statlegends_short["Holdtime"] = tr("HT");
-    m_statlegends_short["Holdtime-avg"] = tr("~ HT");
+    m_statlegends_short["Holdtime-avg"] = tr("HT Avg");
     m_statlegends_short["Holdtime-max"] = tr("HT Max");
     m_statlegends_short["ServicelevelPerf"] = tr("SLPerf\n(%)");
     m_statlegends_short["ServiceLevel"] = tr("SL");
@@ -99,7 +99,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_short["Xivo-Rate"] = tr("PR\n(%)");
     m_statlegends_short["Xivo-Chat"] = tr("Conv.\n(s)");
     m_statlegends_short["Xivo-Talking"] = tr("Talking");
-    m_statlegends_short["Qos"] = tr("QoS");
+    m_statlegends_short["Qos"] = tr("QoS(%)");
     
     m_statlegends_long["Completed"] = tr("Completed");
     m_statlegends_long["Abandoned"] = tr("Abandoned");
@@ -118,7 +118,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_long["Xivo-Rate"] = tr("Pickup rate");
     m_statlegends_long["Xivo-Chat"] = tr("Conversation");
     m_statlegends_long["Xivo-Talking"] = tr("Talking");
-    m_statlegends_long["Qos"] = tr("Quality of Service");
+    m_statlegends_long["Qos"] = tr("Quality of Service (%)");
     
     m_statlegends_tooltip["Completed"] = tr("Completed");
     m_statlegends_tooltip["Abandoned"] = tr("Abandoned");
@@ -130,15 +130,17 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_tooltip["Max"] = tr("Max");
     m_statlegends_tooltip["Weight"] = tr("Weight");
     m_statlegends_tooltip["Xivo-Conn"] = tr("Number of agents in this queue");
-    m_statlegends_tooltip["Xivo-Avail"] = tr("Available agents");
+    m_statlegends_tooltip["Xivo-Avail"] = tr("Number of available agents in this queue");
     m_statlegends_tooltip["Xivo-Join"] = tr("Number of calls this queue has received");
-    m_statlegends_tooltip["Xivo-Link"] = tr("Number of calls that were answered");
-    m_statlegends_tooltip["Xivo-Lost"] = tr("Number of calls where the caller has left before getting an answer from an agent");
-    m_statlegends_tooltip["Xivo-Rate"] = tr("( Linked / Joined ) in %") ;
+    m_statlegends_tooltip["Xivo-Link"] = tr("Number of calls that were answered on this queue");
+    m_statlegends_tooltip["Xivo-Lost"] = tr("Number of calls where the caller has left "
+                                            "before getting an answer from an agent");
+    m_statlegends_tooltip["Xivo-Rate"] = tr("Ratio (Linked) / (Joined) (%)");
     m_statlegends_tooltip["Xivo-Chat"] = tr("The average lenght of a conversation");
     m_statlegends_tooltip["Xivo-Talking"] = tr("Number of agents in this queue, currently talking");
-    m_statlegends_tooltip["Qos"] = tr("( Number of calls answered in less than X sec / total of calls answered ) in %");
-
+    m_statlegends_tooltip["Qos"] = tr("Ratio (Number of calls answered in less than X sec) / "
+                                      "(Number of calls answered) (%)");
+    
     foreach (QString statcol, statscols.split(","))
         if (m_statlegends_long.contains(statcol))
             m_statitems << statcol;
