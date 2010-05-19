@@ -2640,7 +2640,7 @@ Service(%)</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="139"/>
-        <source>The average lenght of a conversation</source>
+        <source>The average length of a conversation</source>
         <translation>La durée moyenne d&apos;une conversation</translation>
     </message>
     <message>

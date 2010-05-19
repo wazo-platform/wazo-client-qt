@@ -136,7 +136,7 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_tooltip["Xivo-Lost"] = tr("Number of calls where the caller has left "
                                             "before getting an answer from an agent");
     m_statlegends_tooltip["Xivo-Rate"] = tr("Ratio (Linked) / (Joined) (%)");
-    m_statlegends_tooltip["Xivo-Chat"] = tr("The average lenght of a conversation");
+    m_statlegends_tooltip["Xivo-Chat"] = tr("The average length of a conversation");
     m_statlegends_tooltip["Xivo-Talking"] = tr("Number of agents in this queue, currently talking");
     m_statlegends_tooltip["Qos"] = tr("Ratio (Number of calls answered in less than X sec) / "
                                       "(Number of calls answered) (%)");

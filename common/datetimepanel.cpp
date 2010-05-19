@@ -46,15 +46,16 @@
 DatetimePanel::DatetimePanel(BaseEngine * engine, QWidget * parent)
     : XLet(engine, parent)
 {
+    setTitle(tr("Date and Time"));
     m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocaleDate));
     m_gridlayout = new QGridLayout(this);
-        
+    
     m_gridlayout->addWidget( m_datetime, 1, 1, Qt::AlignCenter);
     m_gridlayout->setColumnStretch( 0, 1 );
     m_gridlayout->setColumnStretch( 2, 1 );
     m_gridlayout->setRowStretch( 0, 1 );
     m_gridlayout->setRowStretch( 2, 1 );
-        
+    
     startTimer(1000);
 }
 
@@ -66,4 +67,3 @@ void DatetimePanel::timerEvent(QTimerEvent *)
 {
     m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
 }
-
