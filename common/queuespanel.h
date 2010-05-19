@@ -96,7 +96,7 @@ private:
     
     QGridLayout * m_gridlayout; //!< Layout
     QStringList m_statitems;    //!< list of stats items which are reported for each queue
-    QHash<QString, QString> m_statlegends_short;  //!< text displayed on top of each column
+    // QHash<QString, QString> m_statlegends_short;  //!< text displayed on top of each column
     QHash<QString, QString> m_statlegends_long;  //!< text displayed on top of each column
     QHash<QString, QString> m_statlegends_tooltip;  //!< text displayed on top of each column
     

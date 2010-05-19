@@ -403,20 +403,20 @@ void ConfigWidget::keyPressEvent(QKeyEvent *e)
     if ((m_currentKeyChange == -1) || (e->modifiers() != Qt::NoModifier))
         return;
 
-    int i, already_binded = -1;
+    int i, already_bound = -1;
 
     for (i=0;i<9;i++) {
         if ((opts["xlet_operator_key" + m_operator_action[i].action].toInt() == e->key()) &&
             (i != m_currentKeyChange)) {
-            already_binded = i;
+            already_bound = i;
             break;
         }
     }
 
-    if (already_binded != -1) {
+    if (already_bound != -1) {
         QMessageBox::information(this,
-            tr("this key is already binded"),
-            tr("please press another key, this one has already been binded for action '%0'")
+            tr("This key is already bound"),
+            tr("Please press another key, this one has already been bound for action '%0'")
                 .arg(m_operator_action[i].translation));
 
         return ;

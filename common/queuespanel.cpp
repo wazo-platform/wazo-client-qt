@@ -67,12 +67,11 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     QVariantMap optionsMap = m_engine->getGuiOptions("merged_gui");
     QString statscols = optionsMap.value("queues-statscolumns",
                                          "Holdtime,Xivo-Conn,Xivo-Avail,Xivo-Talking,"
-                                         "Xivo-Rate,Xivo-Join,Xivo-Link,Xivo-Lost,"
-                                         "Xivo-Chat,Holdtime-avg,Holdtime-max,Qos").toString();
+                                         "Xivo-Join,Xivo-Link,Xivo-Lost,Xivo-Holdtime-max,"
+                                         "Xivo-Rate,Xivo-QoS").toString();
     bool shortlegends = optionsMap.value("queues-shortlegends",
                                          false).toBool();
-
-
+    
     QStringList xletlist;
     foreach (QString xletdesc, m_engine->getCapaXlets())
         xletlist.append(xletdesc.split("-")[0]);
@@ -80,55 +79,40 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     
     m_gridlayout = new QGridLayout(this);
     
-    not_realtime_stat << "Holdtime-max" << "Holdtime-avg" << "Qos" << "Xivo-Join" << "Xivo-Lost" << "Xivo-Chat" << "Xivo-Rate" << "Xivo-Link";
-
-    m_statlegends_short["Completed"] = tr("Cmptd");
-    m_statlegends_short["Abandoned"] = tr("Abdnd");
-    m_statlegends_short["Holdtime"] = tr("HT");
-    m_statlegends_short["Holdtime-avg"] = tr("HT Avg");
-    m_statlegends_short["Holdtime-max"] = tr("HT Max");
-    m_statlegends_short["ServicelevelPerf"] = tr("SLPerf\n(%)");
-    m_statlegends_short["ServiceLevel"] = tr("SL");
-    m_statlegends_short["Max"] = tr("Mx");
-    m_statlegends_short["Weight"] = tr("Wght");
-    m_statlegends_short["Xivo-Conn"] = tr("Conn.");
-    m_statlegends_short["Xivo-Avail"] = tr("Avail.");
-    m_statlegends_short["Xivo-Join"] = tr("Jnd");
-    m_statlegends_short["Xivo-Link"] = tr("Lnkd");
-    m_statlegends_short["Xivo-Lost"] = tr("Lst");
-    m_statlegends_short["Xivo-Rate"] = tr("PR\n(%)");
-    m_statlegends_short["Xivo-Chat"] = tr("Conv.\n(s)");
-    m_statlegends_short["Xivo-Talking"] = tr("Talking");
-    m_statlegends_short["Qos"] = tr("QoS(%)");
+    not_realtime_stat << "Xivo-Holdtime-max" << "Xivo-Holdtime-avg" << "Xivo-QoS" << "Xivo-Join" << "Xivo-Lost" << "Xivo-TalkingTime" << "Xivo-Rate" << "Xivo-Link";
     
+    // m_statlegends_short[] = ;
+    
+    // Asterisk-given indicators, kept for the record, just in case
     m_statlegends_long["Completed"] = tr("Completed");
     m_statlegends_long["Abandoned"] = tr("Abandoned");
-    m_statlegends_long["Holdtime"] = tr("Estimated Holdtime");
-    m_statlegends_long["Holdtime-avg"] = tr("Holdtime Avg");
-    m_statlegends_long["Holdtime-max"] = tr("Holdtime Max");
     m_statlegends_long["ServicelevelPerf"] = tr("ServicelevelPerf(%)");
     m_statlegends_long["ServiceLevel"] = tr("ServiceLevel");
     m_statlegends_long["Max"] = tr("Max");
     m_statlegends_long["Weight"] = tr("Weight");
+    m_statlegends_tooltip["Completed"] = tr("Completed");
+    m_statlegends_tooltip["Abandoned"] = tr("Abandoned");
+    m_statlegends_tooltip["ServicelevelPerf"] = tr("ServicelevelPerf(%)");
+    m_statlegends_tooltip["ServiceLevel"] = tr("ServiceLevel");
+    m_statlegends_tooltip["Max"] = tr("Max");
+    m_statlegends_tooltip["Weight"] = tr("Weight");
+    
+    m_statlegends_long["Holdtime"] = tr("Estimated\nHoldtime");
+    m_statlegends_long["Xivo-Holdtime-avg"] = tr("Average\nHoldtime");
+    m_statlegends_long["Xivo-Holdtime-max"] = tr("Max\nHoldtime");
     m_statlegends_long["Xivo-Conn"] = tr("Connected");
     m_statlegends_long["Xivo-Avail"] = tr("Available");
     m_statlegends_long["Xivo-Join"] = tr("Joined");
     m_statlegends_long["Xivo-Link"] = tr("Linked");
     m_statlegends_long["Xivo-Lost"] = tr("Lost");
-    m_statlegends_long["Xivo-Rate"] = tr("Pickup rate");
-    m_statlegends_long["Xivo-Chat"] = tr("Conversation");
-    m_statlegends_long["Xivo-Talking"] = tr("Talking");
-    m_statlegends_long["Qos"] = tr("Quality of Service (%)");
+    m_statlegends_long["Xivo-Rate"] = tr("Efficiency\n(%)");
+    m_statlegends_long["Xivo-TalkingTime"] = tr("Conversation\nTime");
+    m_statlegends_long["Xivo-Talking"] = tr("Currently\nTalking");
+    m_statlegends_long["Xivo-Qos"] = tr("Quality of Service (%)");
     
-    m_statlegends_tooltip["Completed"] = tr("Completed");
-    m_statlegends_tooltip["Abandoned"] = tr("Abandoned");
     m_statlegends_tooltip["Holdtime"] = tr("The average waiting time before getting an agent, calculated by asterisk");
-    m_statlegends_tooltip["Holdtime-avg"] = tr("The average waiting time before getting an agent");
-    m_statlegends_tooltip["Holdtime-max"] = tr("The maximum waiting time before getting an agent");
-    m_statlegends_tooltip["ServicelevelPerf"] = tr("ServicelevelPerf(%)");
-    m_statlegends_tooltip["ServiceLevel"] = tr("ServiceLevel");
-    m_statlegends_tooltip["Max"] = tr("Max");
-    m_statlegends_tooltip["Weight"] = tr("Weight");
+    m_statlegends_tooltip["Xivo-Holdtime-avg"] = tr("The average waiting time before getting an agent");
+    m_statlegends_tooltip["Xivo-Holdtime-max"] = tr("The maximum waiting time before getting an agent");
     m_statlegends_tooltip["Xivo-Conn"] = tr("Number of agents in this queue");
     m_statlegends_tooltip["Xivo-Avail"] = tr("Number of available agents in this queue");
     m_statlegends_tooltip["Xivo-Join"] = tr("Number of calls this queue has received");
@@ -136,9 +120,9 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_statlegends_tooltip["Xivo-Lost"] = tr("Number of calls where the caller has left "
                                             "before getting an answer from an agent");
     m_statlegends_tooltip["Xivo-Rate"] = tr("Ratio (Linked) / (Joined) (%)");
-    m_statlegends_tooltip["Xivo-Chat"] = tr("The average length of a conversation");
+    m_statlegends_tooltip["Xivo-TalkingTime"] = tr("The average length of a conversation");
     m_statlegends_tooltip["Xivo-Talking"] = tr("Number of agents in this queue, currently talking");
-    m_statlegends_tooltip["Qos"] = tr("Ratio (Number of calls answered in less than X sec) / "
+    m_statlegends_tooltip["Xivo-Qos"] = tr("Ratio (Number of calls answered in less than X sec) / "
                                       "(Number of calls answered) (%)");
     
     foreach (QString statcol, statscols.split(","))
@@ -149,9 +133,11 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_qtitle = new QLabel(tr("Queues"), this);
     m_qtitle->setMinimumWidth(100);
     m_qtitle->setAlignment(Qt::AlignLeft);
-
+    
     m_busytitle = new QLabel(tr("Busy"), this);
+    m_busytitle->setAlignment(Qt::AlignCenter);
     m_longestwaittitle = new QLabel(tr("Longest Wait"), this);
+    m_longestwaittitle->setAlignment(Qt::AlignCenter);
     m_displaytitle = new QLabel(tr("Hide"), this);
     m_displaytitle->setStyleSheet("QLabel { padding-right:10px }");
     m_displaytitle->setAlignment(Qt::AlignLeft);
@@ -161,34 +147,34 @@ QueuesPanel::QueuesPanel(BaseEngine * engine,
     m_stats_windowtitle->hide();
     m_stats_xqostitle->hide();
     
-
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateLongestWaitWidgets()));
-    timer->start(1000);
-
-    timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateQueueStats()));
     timer->start(1000);
-
     
     int colnum = 0, i = 0;
+    int padding_width = 5;
+    QString stattitle_qss = QString("QLabel { background-color: darkgrey;"
+                                    "padding-right:%1px;"
+                                    "padding-left:%2px;"
+                                    "margin-bottom:2px; }").arg(padding_width).arg(padding_width);
+    
     foreach (QString statitem, m_statitems) {
-        if (shortlegends)
-            m_title_infos[statitem] = new QLabel(m_statlegends_short[statitem], this);
-        else
-            m_title_infos[statitem] = new QLabel(m_statlegends_long[statitem], this);
-
-        m_title_infos[statitem]->setStyleSheet("QLabel { background-color: darkgrey; padding-right:10px; padding-left:10px;margin-bottom:2px; }");
+        // if (shortlegends) m_title_infos[statitem] = new QLabel(m_statlegends_short[statitem], this); else
+        
+        m_title_infos[statitem] = new QLabel(m_statlegends_long[statitem], this);
+        m_title_infos[statitem]->setAlignment(Qt::AlignCenter);
+        m_title_infos[statitem]->setStyleSheet(stattitle_qss);
         m_title_infos[statitem]->setToolTip(m_statlegends_tooltip[statitem]);
-
+        
         if ((not_realtime_stat.contains(statitem)) && (colnum==0))
             colnum = i;
         i++;
     }
-
+    
     if ((colnum != i) && (colnum)) {
         QLabel *stat_title;
-
+        
         stat_title = new QLabel(tr("Live state"), this);
         stat_title->setAlignment(Qt::AlignCenter);
         stat_title->setStyleSheet("QLabel { font-weight:bold;background-color:#444;color:white;padding:2px}");
@@ -266,23 +252,23 @@ void __format_duration(QString *field, int duration)
 void QueuesPanel::eatQueuesStats(QVariantMap p)
 {
     QStringList duration_stats;
-    duration_stats << "Xivo-Chat" << "Holdtime-max" << "Holdtime-avg";
-
+    duration_stats << "Xivo-TalkingTime" << "Xivo-Holdtime-max" << "Xivo-Holdtime-avg";
     foreach (QString queueid, p["stats"].toMap().keys()) {
-        foreach (QString stats, p["stats"].toMap()[queueid].toMap().keys()) {
+        QVariantMap qvm = p["stats"].toMap()[queueid].toMap();
+        foreach (QString stats, qvm.keys()) {
             QString field;
-
             if (duration_stats.contains(stats)) {
-                if (p["stats"].toMap()[queueid].toMap()[stats].toString() != "na") {
-                    int sec_total = qRound(p["stats"].toMap()[queueid].toMap()[stats].toDouble());
+                if (qvm[stats].toString() != "na") {
+                    int sec_total = qRound(qvm[stats].toDouble());
                     __format_duration(&field, sec_total);
                 } else {
-                    field = p["stats"].toMap()[queueid].toMap()[stats].toString();
+                    field = qvm[stats].toString();
                 }
             } else {
-                field = p["stats"].toMap()[queueid].toMap()[stats].toString();
+                field = qvm[stats].toString();
             }
-            self->m_queueinfos[self->m_queueid_map[queueid]][stats]->setText(field);
+            if (self->m_queueinfos[self->m_queueid_map[queueid]].contains(stats))
+                self->m_queueinfos[self->m_queueid_map[queueid]][stats]->setText(field);
         }
     }
 }
@@ -850,7 +836,7 @@ void QueuesPanel::mousePressEvent(QMouseEvent *ev)
     int display_longuestwait = m_optionsMap["queue_longestwait"].toBool();
     QVariantMap v = m_engine->getGuiOptions("client_gui");
 
-    if ((!m_show_display_queue_toggle) && (ev->button()&Qt::RightButton)) {
+    if ((!m_show_display_queue_toggle) && (ev->button() & Qt::RightButton)) {
         QHashIterator<QString, QCheckBox *> i(m_queuedisplay);
 
         m_displaytitle->show();
