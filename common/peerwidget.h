@@ -68,7 +68,7 @@ class PeerWidget : public BasePeerWidget
     private:
         QHash<QString, QLabel *> m_lblphones; //!< phone labels
             
-        QPushButton *m_user_status;  //!< Peer state display from XIVO CTI Client
+        QPushButton *m_user_status;  //!< Peer state display from XiVO CTI Client
         QLabel *m_agentlbl;       //!< agent state label
         QLabel *m_mobilelbl;      //!< mobile phone label
         QLabel *m_textlbl;        //!< text label : to display peer name

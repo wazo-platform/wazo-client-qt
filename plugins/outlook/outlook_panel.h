@@ -1,4 +1,4 @@
-/* XIVO CTI clients
+/* XiVO CTI clients
  * Copyright (C) 2007-2010  Proformatique
  *
  * This program is free software; you can redistribute it and/or modify

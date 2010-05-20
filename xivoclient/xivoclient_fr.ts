@@ -448,8 +448,8 @@ Contexte: %2</translation>
     </message>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="672"/>
-        <source>Xivo Client - Removing %1 %2</source>
-        <translation>Xivo Client - Enlever %1 %2</translation>
+        <source>XiVO Client - Removing %1 %2</source>
+        <translation>XiVO Client - Enlever %1 %2</translation>
     </message>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="673"/>
@@ -1580,8 +1580,8 @@ a été envoyé à %2.</translation>
     <name>MainWidget</name>
     <message>
         <location filename="mainwidget.cpp" line="1009"/>
-        <source>The XIVO CTI applications, once connected to the proper server, complete the XIVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
-        <translation>Les applications CTI XIVO, une fois connectées au serveur adéquat, complètent le système téléphonique XIVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
+        <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
+        <translation>Les applications CTI XiVO, une fois connectées au serveur adéquat, complètent le système téléphonique XiVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="431"/>
@@ -1590,8 +1590,8 @@ a été envoyé à %2.</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="430"/>
-        <source>&amp;About XIVO Client</source>
-        <translation>A propos de &amp;XIVO Client</translation>
+        <source>&amp;About XiVO Client</source>
+        <translation>A propos de &amp;XiVO Client</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="1017"/>
@@ -1755,8 +1755,8 @@ a été envoyé à %2.</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="541"/>
-        <source>XIVO CTI Error</source>
-        <translation>XIVO CTI Erreur</translation>
+        <source>XiVO CTI Error</source>
+        <translation>XiVO CTI Erreur</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="1041"/>
@@ -1770,8 +1770,8 @@ a été envoyé à %2.</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="1007"/>
-        <source>About XIVO Client</source>
-        <translation>A propos de XIVO Client</translation>
+        <source>About XiVO Client</source>
+        <translation>A propos de XiVO Client</translation>
     </message>
     <message>
         <location filename="mainwidget.cpp" line="1023"/>
@@ -1969,7 +1969,6 @@ Etes vous sur ?</translation>
         <source>Agent %1
 %n Queue(s) %2</source>
         <translation>
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>

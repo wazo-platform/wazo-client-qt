@@ -94,7 +94,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     statusBar()->addPermanentWidget(m_status);
     statusBar()->clearMessage();
     
-    setWindowTitle("XIVO " + m_appliname);
+    setWindowTitle("XiVO " + m_appliname);
     setDockOptions(QMainWindow::AllowNestedDocks);
     //setWindowFlags(Qt::Dialog);
     //layout->setSizeConstraint(QLayout::SetFixedSize);        // remove minimize and maximize button
@@ -144,7 +144,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     m_login_layout->setRowStretch(6, 1);
     
     if(m_settings->value("display/logtofile", false).toBool())
-        m_engine->setLogFile(m_settings->value("display/logfilename", "XIVO_Client.log").toString());
+        m_engine->setLogFile(m_settings->value("display/logfilename", "XiVO_Client.log").toString());
     m_engine->logAction("application started on " + m_engine->osname());
     
     m_xivobg = new QLabel();
@@ -410,7 +410,7 @@ void MainWidget::checksAvailState()
 
 void MainWidget::createMenus()
 {
-    m_filemenu = menuBar()->addMenu("&XIVO Client"); // + m_appliname too heavy
+    m_filemenu = menuBar()->addMenu("&XiVO Client"); // + m_appliname too heavy
     m_filemenu->addAction(m_cfgact);
     if(m_withsystray)
         m_filemenu->addAction(m_systraymin);
@@ -427,17 +427,17 @@ void MainWidget::createMenus()
              m_avail, SLOT(setEnabled(bool)));
 
     m_helpmenu = menuBar()->addMenu(tr("&Help"));
-    m_helpmenu->addAction(tr("&About XIVO Client"), this, SLOT(about()));
+    m_helpmenu->addAction(tr("&About XiVO Client"), this, SLOT(about()));
     m_helpmenu->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
     m_helpmenu->addAction(tr("&Credits"), this, SLOT(showCredits()));
 }
 
 void MainWidget::updateAppliName()
 {
-    setWindowTitle("XIVO " + m_appliname);
+    setWindowTitle("XiVO " + m_appliname);
     if(m_withsystray && m_systrayIcon)
-        m_systrayIcon->setToolTip("XIVO " + m_appliname);
-    // m_filemenu->setTitle("&XIVO Client");
+        m_systrayIcon->setToolTip("XiVO " + m_appliname);
+    // m_filemenu->setTitle("&XiVO Client");
 }
 
 /*! \brief create and show the system tray icon
@@ -449,7 +449,7 @@ void MainWidget::createSystrayIcon()
 {
     m_systrayIcon = new QSystemTrayIcon(this);
     setSystrayIcon("xivo-black");
-    m_systrayIcon->setToolTip("XIVO " + m_appliname);
+    m_systrayIcon->setToolTip("XiVO " + m_appliname);
     QMenu * menu = new QMenu(QString("SystrayMenu"), this);
     menu->addAction(m_cfgact);
     menu->addSeparator();
@@ -538,7 +538,7 @@ void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 
 void MainWidget::showMessageBox(const QString & message)
 {
-    QMessageBox::critical(NULL, tr("XIVO CTI Error"), message);
+    QMessageBox::critical(NULL, tr("XiVO CTI Error"), message);
 }
 
 /*!
@@ -1004,10 +1004,10 @@ void MainWidget::about()
     
     // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
     QMessageBox::about(this,
-                       tr("About XIVO Client"),
-                       "<h3>XIVO " + m_appliname + "</h3>" +
-                       tr("The XIVO CTI applications, once connected to the proper server, "
-                          "complete the XIVO telephony system, by providing computer tools, "
+                       tr("About XiVO Client"),
+                       "<h3>XiVO " + m_appliname + "</h3>" +
+                       tr("The XiVO CTI applications, once connected to the proper server, "
+                          "complete the XiVO telephony system, by providing computer tools, "
                           "such as customer information display, directory searches, or various "
                           "supervision 'X-lets' for call centers.") +
                        "<p>"

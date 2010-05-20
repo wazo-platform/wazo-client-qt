@@ -31,20 +31,20 @@
  * $Date$
  */
 
-#ifndef __XIVOCONSTS_H__
-#define __XIVOCONSTS_H__
+#ifndef __XiVOCONSTS_H__
+#define __XiVOCONSTS_H__
 
 #include "baselib_export.h"
 #include <QString>
 #include <QStringList>
 
-#define CHANNEL_MIMETYPE  "XIVO_ASTERISK_CHANNEL"
-#define PEER_MIMETYPE     "XIVO_ASTERISK_PEER"
-#define NUMBER_MIMETYPE   "XIVO_ASTERISK_NUMBER"
-#define USERID_MIMETYPE   "XIVO_ASTERISK_USERID"
-#define NAME_MIMETYPE     "XIVO_ASTERISK_NAME"
+#define CHANNEL_MIMETYPE  "XiVO_ASTERISK_CHANNEL"
+#define PEER_MIMETYPE     "XiVO_ASTERISK_PEER"
+#define NUMBER_MIMETYPE   "XiVO_ASTERISK_NUMBER"
+#define USERID_MIMETYPE   "XiVO_ASTERISK_USERID"
+#define NAME_MIMETYPE     "XiVO_ASTERISK_NAME"
 
-#define XIVO_COMMAND_ROOT "XIVO_COMMAND_ROOT"
+#define XiVO_COMMAND_ROOT "XiVO_COMMAND_ROOT"
 
 #define CHAN_STATUS_READY "ready"
 #define CHAN_STATUS_HANGUP "hangup"
@@ -64,5 +64,5 @@ BASELIB_EXPORT extern const QString __xivo_version__;
 BASELIB_EXPORT extern const QString __nopresence__;
 BASELIB_EXPORT extern const QStringList CheckFunctions;
 
-#endif /* __XIVOCONSTS_H__ */
+#endif /* __XiVOCONSTS_H__ */
 

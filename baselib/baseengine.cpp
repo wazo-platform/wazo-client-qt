@@ -1549,7 +1549,7 @@ void BaseEngine::popupError(const QString & errorid)
     
     else if(errorid.startsWith("toomuchusers:")) {
         QStringList userslist = errorid.split(":")[1].split(";");
-        errormsg = tr("Max number (%1) of XIVO Clients already reached.").arg(userslist[0]);
+        errormsg = tr("Max number (%1) of XiVO Clients already reached.").arg(userslist[0]);
     }
     else if(errorid.startsWith("missing:")) {
         errormsg = tr("Missing Argument(s)");

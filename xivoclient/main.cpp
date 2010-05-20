@@ -57,7 +57,7 @@
 int main(int argc, char ** argv)
 {
     QString locale = QLocale::system().name();
-    // QApplication::setStyle(new XIVOCTIStyle());
+    // QApplication::setStyle(new XiVOCTIStyle());
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.fr");
     QCoreApplication::setApplicationName("XIVO_Client");

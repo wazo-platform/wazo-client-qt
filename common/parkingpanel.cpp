@@ -62,7 +62,7 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
     m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
     m_table->setColumnCount( 4 );
-    QStringList labels = (QStringList() << /*tr("XIVO Id") << */tr("Number") << tr("Time") << tr("Parked") << tr("Parker"));
+    QStringList labels = (QStringList() << /*tr("XiVO Id") << */tr("Number") << tr("Time") << tr("Parked") << tr("Parker"));
     m_table->setHorizontalHeaderLabels(labels);
     
     connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),

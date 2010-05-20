@@ -8,10 +8,10 @@
 !define REG_UNINST Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient
 !include settings.nsh
 !define FULLVERSION "${XIVOVER} (svn ${SVNVER})"
-Name "XIVO Client ${FULLVERSION}"
+Name "XiVO Client ${FULLVERSION}"
 OutFile "xivoclient-setup-win32.exe"
 InstallDirRegKey HKLM "Software\XIVO\xivoclient" "Install_Dir" 
-LicenseText "XIVO Client est distribué sous licence GNU General Public License v2 avec une exception spéciale vous autorisant à le lier à OpenSSL, sous certaines conditions."
+LicenseText "XiVO Client est distribué sous licence GNU General Public License v2 avec une exception spéciale vous autorisant à le lier à OpenSSL, sous certaines conditions."
 # ComponentText "(Choix des composants / sections)"
 # DirText "(Choix du répertoire d'installation)"
 
@@ -20,7 +20,7 @@ LicenseData "LICENSE"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\French.nlf"
 
 Page directory
-DirText "Spécifier l'emplacement d'installation de XIVO Client."
+DirText "Spécifier l'emplacement d'installation de XiVO Client."
 InstallDir "$PROGRAMFILES\XIVO"
 
 Page instfiles
@@ -56,7 +56,7 @@ File ..\bin\plugins\xletnullplugin.dll
 File ..\bin\plugins\xletwebplugin.dll
 # Write keys in Registry in order for the applications to appear in Add/Remove Programs
 WriteRegStr HKLM "Software\XIVO\xivoclient" "Install_Dir" "$INSTDIR"
-WriteRegStr HKLM ${REG_UNINST} "DisplayName" "XIVO Client"
+WriteRegStr HKLM ${REG_UNINST} "DisplayName" "XiVO Client"
 WriteRegStr HKLM ${REG_UNINST} "UninstallString" '"$INSTDIR\uninstall-xivoclient.exe"'
 WriteRegDWORD HKLM ${REG_UNINST} "NoModify" 1
 WriteRegDWORD HKLM ${REG_UNINST} "NoRepair" 1

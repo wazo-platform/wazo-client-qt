@@ -216,9 +216,9 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
     static QMessageBox msgbox;
     QMessageBox::Icon icon;
     QString text;
-        
+    
     // qDebug() << "FaxPanel::popupMsg()" << status << reason;
-        
+    
     if(status == "ok") {
         icon = QMessageBox::Information;
         text = tr("Your Fax (file %1)\n"
@@ -249,7 +249,7 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
         m_openFileNameLabel->setText(m_file_string);
     }
     
-    msgbox.setWindowTitle("XIVO CTI (Fax)");
+    msgbox.setWindowTitle("XiVO CTI (Fax)");
     msgbox.setIcon(icon);
     msgbox.setText(text);
     msgbox.show();

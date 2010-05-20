@@ -119,7 +119,7 @@ struct e_callback {
 };
 
 
-/*! \brief Class which handles connection with the XIVO CTI server
+/*! \brief Class which handles connection with the XiVO CTI server
  *
  *  The engine object contains all the code to
  *  handle network connection and requests */
@@ -392,7 +392,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, AgentInfo *> m_agents;  //!< List of Agent informations
         QHash<QString, QueueInfo *> m_queues;  //!< List of Queue informations
         int m_version_server;           //!< Version issued by the server after a successful login
-        QString m_xivover_server;       //!< Server's XIVO version
+        QString m_xivover_server;       //!< Server's XiVO version
         
         // Status variables
         EngineState m_state;            //!< State of the engine (Logged/Not Logged)

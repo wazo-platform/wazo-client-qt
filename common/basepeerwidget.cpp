@@ -669,10 +669,10 @@ void BasePeerWidget::tryRemoveFromPanel()
         _number = "("+_number+")";
     int ret;
     ret = QMessageBox::question(this,
-                tr("Xivo Client - Removing %1 %2").arg(name()).arg(_number),
-                tr("Removing %1 %2.\nAre you sure ?").arg(name()).arg(_number),
-                QMessageBox::Yes | QMessageBox::Cancel,
-                QMessageBox::Cancel);
+                                tr("XiVO Client - Removing %1 %2").arg(name()).arg(_number),
+                                tr("Removing %1 %2.\nAre you sure ?").arg(name()).arg(_number),
+                                QMessageBox::Yes | QMessageBox::Cancel,
+                                QMessageBox::Cancel);
     if(ret == QMessageBox::Yes) {
         emit removeFromPanel();
     }
