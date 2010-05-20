@@ -35,30 +35,31 @@
 #define __EXTENDEDLINEEDIT_H__
 
 #include <QLineEdit>
-
-class QDropEvent;
-class QLineEdit;
+#include <QDropEvent>
+#include <QLineEdit>
 
 /*! \brief Table class inheriting QLineEdit with contextMenu added.
  */
 class ExtendedLineEdit : public QLineEdit
 {
     Q_OBJECT
-        public:
-    ExtendedLineEdit(QWidget * parent = 0);
-    ExtendedLineEdit(int rows, int columns, QWidget * parent = 0);
- protected:
-    void dropEvent(QDropEvent *event);
+
+    public:
+        ExtendedLineEdit(QWidget * parent = 0);
+        ExtendedLineEdit(int rows, int columns, QWidget * parent = 0);
+    protected:
+        void dropEvent(QDropEvent *event);
 };
 
 class FileNameLineEdit : public QLineEdit
 {
     Q_OBJECT
-        public:
-    FileNameLineEdit(QWidget *);
- protected:
-    virtual void dropEvent( QDropEvent * );
-    virtual void dragEnterEvent( QDragEnterEvent * );
+
+    public:
+        FileNameLineEdit(QWidget *);
+    protected:
+        virtual void dropEvent(QDropEvent *);
+        virtual void dragEnterEvent(QDragEnterEvent *);
 };
 
 #endif

@@ -53,34 +53,34 @@ class UserInfo;
 class DirectoryPanel : public XLet
 {
     Q_OBJECT
-public:
-    DirectoryPanel(BaseEngine * engine, QWidget * parent = 0);
-    ~DirectoryPanel();
-protected:
-    void dropEvent(QDropEvent *);
-    void focusInEvent(QFocusEvent *);
-//    void contextMenuEvent(QContextMenuEvent *);
-signals:
-    //! start a search
-    void searchDirectory(const QString &);
-    void copyNumber(const QString &);
-    void actionCall(const QString &,
-                    const QString &,
-                    const QString &);
-private slots:
-    void startSearch();
-    void itemClicked(QTableWidgetItem *);
-    void itemDoubleClicked(QTableWidgetItem *);
-public slots:
-    void setSearchResponse(const QStringList &, const QStringList &);
-    void stop();
-private:
-    ExtendedLineEdit * m_searchText;        //!< search text input
-    ExtendedTableWidget * m_table;                //!< table to display results
-    QPushButton * m_searchButton;        //!< button
-    QString m_numberToDial;                //!< used to store number to dial or to transfer to
-    QString m_mailAddr;                //!< used to store email address
-    QRegExp m_re_number;    //!< regexp used to recognize phone numbers
+
+    public:
+        DirectoryPanel(BaseEngine * engine, QWidget *parent=0);
+
+    protected:
+        void dropEvent(QDropEvent *);
+        void focusInEvent(QFocusEvent *);
+    signals:
+        void searchDirectory(const QString &);  //! start a search
+        void copyNumber(const QString &);
+        void actionCall(const QString &, const QString &, const QString &);
+
+    private slots:
+        void startSearch();
+        void itemClicked(QTableWidgetItem *);
+        void itemDoubleClicked(QTableWidgetItem *);
+
+    public slots:
+        void setSearchResponse(const QStringList &, const QStringList &);
+        void stop();
+
+    private:
+        ExtendedLineEdit *m_searchText;  //!< search text input
+        ExtendedTableWidget *m_table;  //!< table to display results
+        QPushButton *m_searchButton;  //!< button
+        QString m_numberToDial;  //!< used to store number to dial or to transfer to
+        QString m_mailAddr;  //!< used to store email address
+        QRegExp m_re_number;  //!< regexp used to recognize phone numbers
 };
 
 #endif

@@ -58,61 +58,56 @@ class IdentityVoiceMail;
 class IdentityDisplay : public XLet
 {
     Q_OBJECT
-public:
-    IdentityDisplay(BaseEngine *,
-                    QWidget * parent = 0);
-    void doGUIConnects(QWidget *);
-public slots:
-    void setGuiOptions(const QVariantMap &);
-    void setUserInfo(const UserInfo *);
-    void newAgentList(const QStringList &);
-    void newQueueList(const QStringList &);
-    void idxChanged(const QString &);
-    void updatePresence(const QVariant &);
-    void setOpt(const QString &, bool);
-    void setForward(const QString &, const QVariant &);
-    void updateUser(UserInfo *);
-signals:
-    void setAvailState(const QString &, bool);
-    void changeWatchedAgent(const QString &, bool);
-    void setSystrayIcon(const QString &);
-    void actionCall(const QString &,
-                    const QString &,
-                    const QString & dst = "");   //!< to hangup
-private:
-    void svcSummary();
-    void setupIcons();
-    
-    QGridLayout * m_glayout;
-    
-    QLabel * m_icon_user;
-    
-    QFrame * m_qvline1;
-    QFrame * m_qvline2;
-    
-    QLabel * m_user;
-    QLabel * m_phonenum;
-    QComboBox * m_presencevalue;
 
-    IdentityAgent * m_agent;
-    IdentityPhone * m_phone;
-    IdentityVoiceMail * m_voicemail;
-    
-    QHash<QString, QString> m_presence_names;
-    const UserInfo * m_ui;
-    
-    int m_col_user;
-    int m_col_agent;
-    int m_col_phone;
-    int m_col_vm;
-    int m_col_last;
-    Qt::Alignment m_iconAlign;
-    Qt::Alignment m_textAlignVCenter;
-    QFont m_gui_font;
-    quint32 m_gui_buttonsize;
-    quint32 m_loginkind;
-    QStringList m_functions;
-    QMap<QString, QVariant> m_svcstatus;
+    public:
+        IdentityDisplay(BaseEngine *, QWidget *parent=0);
+        void doGUIConnects(QWidget *);
+
+    public slots:
+        void setGuiOptions(const QVariantMap &);
+        void setUserInfo(const UserInfo *);
+        void newAgentList(const QStringList &);
+        void newQueueList(const QStringList &);
+        void idxChanged(const QString &);
+        void updatePresence(const QVariant &);
+        void setOpt(const QString &, bool);
+        void setForward(const QString &, const QVariant &);
+        void updateUser(UserInfo *);
+
+    signals:
+        void setAvailState(const QString &, bool);
+        void changeWatchedAgent(const QString &, bool);
+        void setSystrayIcon(const QString &);
+        void actionCall(const QString &, const QString &, const QString &dst = "");  //!< to hangup
+
+    private:
+        void svcSummary();
+        void setupIcons();
+
+        QGridLayout *m_glayout;
+        QLabel *m_icon_user;
+        QFrame *m_qvline1;
+        QFrame *m_qvline2;
+        QLabel *m_user;
+        QLabel *m_phonenum;
+        QComboBox *m_presencevalue;
+        IdentityAgent *m_agent;
+        IdentityPhone *m_phone;
+        IdentityVoiceMail *m_voicemail;
+        QHash<QString, QString> m_presence_names;
+        const UserInfo *m_ui;
+        int m_col_user;
+        int m_col_agent;
+        int m_col_phone;
+        int m_col_vm;
+        int m_col_last;
+        Qt::Alignment m_iconAlign;
+        Qt::Alignment m_textAlignVCenter;
+        QFont m_gui_font;
+        quint32 m_gui_buttonsize;
+        quint32 m_loginkind;
+        QStringList m_functions;
+        QMap<QString, QVariant> m_svcstatus;
 };
 
 #endif

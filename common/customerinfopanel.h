@@ -50,31 +50,33 @@ class Popup;
 class CustomerInfoPanel : public XLet
 {
     Q_OBJECT
-public:
-    CustomerInfoPanel(BaseEngine *,
-                      QWidget * parent = 0);
-    ~CustomerInfoPanel();
-    void doGUIConnects(QWidget * mainwindow);
-signals:
-    void newPopup(const QString &,
-                  const QHash<QString, QString> &,
-                  const QString &);
-    void actionFromFiche(const QVariant &);
-    void showWidgetOnTop(QWidget *);
-public slots:
-    void showNewProfile(Popup *);
-    void popupDestroyed(QObject * obj);
-    void addToDataBase(const QString &);
-    void displayFiche(const QString &, bool, const QString &);
-    void actionFromPopup(const QString &, const QVariant &);
-    void activateRemarkArea(const QString & id);
-    void desactivateRemarkArea(const QString & id);
-    void addNewRemark(const QString & id, const QVariantMap & entry);
-private:
-    QTabWidget * m_tabs;
-    QList<Popup *> m_popups;
-    quint32 m_tablimit;
-    bool m_autourl_allowed;
+
+    public:
+        CustomerInfoPanel(BaseEngine *, QWidget *parent=0);
+        ~CustomerInfoPanel();
+
+        void doGUIConnects(QWidget *mainwindow);
+
+    signals:
+        void newPopup(const QString &, const QHash<QString, QString> &, const QString &);
+        void actionFromFiche(const QVariant &);
+        void showWidgetOnTop(QWidget *);
+
+    public slots:
+        void showNewProfile(Popup *);
+        void popupDestroyed(QObject *obj);
+        void addToDataBase(const QString &);
+        void displayFiche(const QString &, bool, const QString &);
+        void actionFromPopup(const QString &, const QVariant &);
+        void activateRemarkArea(const QString &id);
+        void desactivateRemarkArea(const QString &id);
+        void addNewRemark(const QString &id, const QVariantMap &entry);
+
+    private:
+        QTabWidget *m_tabs;
+        QList<Popup *> m_popups;
+        quint32 m_tablimit;
+        bool m_autourl_allowed;
 };
 
 #endif /* __CUSTOMERINFOPANEL_H__ */

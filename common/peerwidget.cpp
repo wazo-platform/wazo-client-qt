@@ -92,8 +92,10 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
         m_user_status->setFocusPolicy(Qt::NoFocus);
 
         if (m_engine->enabledFunction("chitchat")) {
-            if (m_engine->getFullId() != ui->userid())
-                connect(m_user_status, SIGNAL(pressed()), ChitChatWindow::chitchat_instance ,SLOT(WriteMessageTo()) );
+            if (m_engine->getFullId() != ui->userid()) {
+                connect(m_user_status, SIGNAL(pressed()),
+                        ChitChatWindow::chitchat_instance, SLOT(WriteMessageTo()));
+            }
         }
         hLayout->addWidget(m_user_status);
     }
@@ -153,7 +155,6 @@ void PeerWidget::updatePresence()
 
 void PeerWidget::updatePhonesStates()
 {
-    //qDebug() << "PeerWidget::updatePhonesStates()" << m_ui->phonelist();
     foreach(QString phone, m_ui->phonelist()) {
         const PhoneInfo * pi = m_ui->getPhoneInfo(phone);
         if(pi) {
@@ -170,9 +171,10 @@ void PeerWidget::updatePhonesStates()
 
 void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & queues)
 {
-    if((m_agentlbl) && (agentnum != ""))
+    if((m_agentlbl) && (agentnum != "")) {
         m_agentlbl->setToolTip(tr("Agent %1\n%n Queue(s) %2", "",
-                                  queues.size()).arg(agentnum).arg(queues.join(",")));
+                               queues.size()).arg(agentnum).arg(queues.join(",")));
+    }
 }
 
 /*! \brief change displayed name
@@ -180,12 +182,15 @@ void PeerWidget::setAgentToolTip(const QString & agentnum, const QStringList & q
 void PeerWidget::setName(const QString & /*name*/)
 {
     QString text = tr("(No callerid yet)");
-    if(!m_ui->fullname().isEmpty() && !m_ui->phonenumber().isEmpty())
+
+    if(!m_ui->fullname().isEmpty() && !m_ui->phonenumber().isEmpty()) {
         text = tr("%1 <%2>").arg(m_ui->fullname()).arg(m_ui->phonenumber());
-    else if(!m_ui->fullname().isEmpty())
+    } else if(!m_ui->fullname().isEmpty()) {
         text = m_ui->fullname();
-    else if(!m_ui->phonenumber().isEmpty())
+    } else if(!m_ui->phonenumber().isEmpty()) {
         text = m_ui->phonenumber();
+    }
+
     m_textlbl->setText(text);
 }
 

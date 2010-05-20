@@ -45,10 +45,6 @@ QueueInfo::QueueInfo(const QString & astid,
     update(prop);
 }
 
-QueueInfo::~QueueInfo()
-{
-}
-
 bool QueueInfo::update(const QMap<QString, QVariant> & prop)
 {
     bool haschanged = false;

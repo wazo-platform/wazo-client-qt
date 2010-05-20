@@ -54,67 +54,51 @@ class UserInfo;
 class CallWidget : public QWidget
 {
     Q_OBJECT
-public:
-    //! Default constructor
-    CallWidget(QWidget * parent = 0);
-    ~CallWidget();
-    CallWidget(UserInfo *,
-               const QString &,
-               const QString &,
-               uint,
-               const QString &,
-               const QString &,
-               const QString &,
-               QWidget * parent,
-               const PhoneInfo * pi
-               );
-    void updateWidget(const QString &,
-                      uint,
-                      const QString &,
-                      const QString &,
-                      const QString &,
-                      const PhoneInfo *
-                      );
-    const QString & channel() const;
-protected:
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    //void mouseDoubleClickEvent(QMouseEvent * event);
-    //void dragEnterEvent(QDragEnterEvent * event);
-    //        void dragMoveEvent(QDragMoveEvent * event);
-    //        void dropEvent(QDropEvent * event);
-    void timerEvent(QTimerEvent *);
-    void contextMenuEvent(QContextMenuEvent *);
-private:
-    void setActionPixmap(const QString &);
-    void updateCallTimeLabel();
-signals:
-    void doHangUp(const QString &);        //!< hang up the channel
-    void doTransferToNumber(const QString &);        //!< transfers the channel
-    void doParkCall(const QString &);        //!< parks the channel
-public slots:
-    void hangUp();
-    void transferToNumber();
-    void parkCall();
-private:
-    UserInfo * m_ui;            //!< monitored user infos
-    QPoint m_dragstartpos;        //!< used for drag
-    QString m_channelme;        //!< channel identifier
-    QString m_channelpeer;      //!< peer channel identifier
-    QString m_callerid;                //!< caller id
-    QString m_calleridname;        //!< caller id name
-    QLabel * m_lbl_status;        //!< sub widget
-    QLabel * m_lbl_time;        //!< sub widget
-    QLabel * m_lbl_direction;        //!< sub widget
-    QLabel * m_lbl_channelpeer;        //!< sub widget
-    QLabel * m_lbl_exten;        //!< sub widget
-    QPixmap m_square;                //!< QPixmap used to display the status square
-    QDateTime m_startTime;        //!< call start date/time
-    QAction * m_hangUpAction;        //!< Hang Up Action
-    QAction * m_transferToNumberAction;        //!< Transfer to Number Action
-    QAction * m_parkCall;        //!< Park the Call Action
-    bool m_parkedCall;          //!< Is it a parked call ?
-    const PhoneInfo * pi;
+
+    public:
+        CallWidget(QWidget * parent = 0); //! Default constructor
+        ~CallWidget();
+    
+        CallWidget(UserInfo *, const QString &, const QString &, uint, const QString &, const QString &, const QString &, QWidget * parent, const PhoneInfo * pi);
+    
+        void updateWidget(const QString &, uint, const QString &, const QString &, const QString &, const PhoneInfo *);
+    
+        const QString& channel() const;
+    protected:
+        void mousePressEvent(QMouseEvent *);
+        void mouseMoveEvent(QMouseEvent *);
+        void timerEvent(QTimerEvent *);
+        void contextMenuEvent(QContextMenuEvent *);
+    private:
+        void setActionPixmap(const QString &);
+        void updateCallTimeLabel();
+    signals:
+        void doHangUp(const QString &);  //!< hang up the channel
+        void doTransferToNumber(const QString &);  //!< transfers the channel
+        void doParkCall(const QString &);  //!< parks the channel
+    public slots:
+        void hangUp();
+        void transferToNumber();
+        void parkCall();
+    private:
+        UserInfo *m_ui;  //!< monitored user infos
+        QPoint m_dragstartpos;  //!< used for drag
+        QString m_channelme;  //!< channel identifier
+        QString m_channelpeer;  //!< peer channel identifier
+        QString m_callerid;  //!< caller id
+        QString m_calleridname;  //!< caller id name
+        QLabel *m_lbl_status;  //!< sub widget
+        QLabel *m_lbl_time;  //!< sub widget
+        QLabel *m_lbl_direction;  //!< sub widget
+        QLabel *m_lbl_channelpeer;  //!< sub widget
+        QLabel *m_lbl_exten;  //!< sub widget
+        QPixmap m_square;  //!< QPixmap used to display the status square
+        QDateTime m_startTime;  //!< call start date/time
+        QAction *m_hangUpAction;  //!< Hang Up Action
+        QAction *m_transferToNumberAction;  //!< Transfer to Number Action
+        QAction *m_parkCall;  //!< Park the Call Action
+        bool m_parkedCall;  //!< Is it a parked call ?
+        const PhoneInfo *pi;
 };
 
 #endif

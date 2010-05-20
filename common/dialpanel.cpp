@@ -100,12 +100,6 @@ DialPanel::DialPanel(BaseEngine * engine,
              m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
 }
 
-/*! \brief Destructor
- */
-DialPanel::~DialPanel()
-{
-}
-
 /*! \brief fills the input field
  */
 void DialPanel::setNumberToDial(const QString & text)
@@ -161,9 +155,9 @@ void DialPanel::dropEvent(QDropEvent * event)
         for(int i=1; i<m_input->count(); ) {
             if(ext == m_input->itemText(i)) {
                 m_input->removeItem(i);
-            }
-            else
+            } else {
                 i++;
+            }
         }
         m_input->clearEditText();
     }
@@ -178,18 +172,19 @@ void DialPanel::inputValidated()
     QString ext;
     if(m_input->lineEdit()) {
         ext = m_input->lineEdit()->text();
-        ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
-        if(ext.length() == 0)        // do nothing if the string is empty
+        ext.remove(QRegExp("[\\s\\.]"));  // remove spaces and full stop characters
+        if(ext.length() == 0) {  // do nothing if the string is empty
             return;
+        }
         emit actionCall("originate", "user:special:me", "ext:" + ext); // Call
         m_input->insertItem(0, ext); // add to history
         // remove the older items related to the same number
         for(int i=1; i<m_input->count(); ) {
             if(ext == m_input->itemText(i)) {
                 m_input->removeItem(i);
-            }
-            else
+            } else {
                 i++;
+            }
         }
         m_input->clearEditText();
     }

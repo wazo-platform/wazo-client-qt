@@ -43,21 +43,25 @@
 class ExternalPhonePeerWidget : public BasePeerWidget
 {
     Q_OBJECT
-public:
-    ExternalPhonePeerWidget(BaseEngine *, const QString &, const QString &);
-    void setAgentToolTip(const QString &, const QStringList &) { };
-    void setAgentState(const QString &) { };
-    void updatePresence() { };
-    void updatePhonesStates() { };
-    void setName(const QString & name) { setText(name); };
-    void setText(const QString & text);
-    QString name() const { return m_text; };
-public slots:
-    void edit();
-protected:
-    void paintEvent(QPaintEvent *);
-private:
-    QString m_text; //!< text displayed
+
+    public:
+        ExternalPhonePeerWidget(BaseEngine *, const QString &, const QString &);
+        void setAgentToolTip(const QString &, const QStringList &) { };
+        void setAgentState(const QString &) { };
+        void updatePresence() { };
+        void updatePhonesStates() { };
+        void setName(const QString & name) { setText(name); };
+        void setText(const QString & text);
+        QString name() const { return m_text; };
+
+    public slots:
+        void edit();
+
+    protected:
+        void paintEvent(QPaintEvent *);
+
+    private:
+        QString m_text; //!< text displayed
 };
 
 #endif

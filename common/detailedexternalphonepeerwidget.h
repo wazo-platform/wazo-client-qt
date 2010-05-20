@@ -42,21 +42,24 @@
 class DetailedExternalPhonePeerWidget : public BasePeerWidget
 {
     Q_OBJECT
-public:
-    DetailedExternalPhonePeerWidget(BaseEngine *, const QString &, const QString &);
-    void setAgentToolTip(const QString &, const QStringList &) { };
-    void setAgentState(const QString &) { };
-    void updatePresence() { };
-    void updatePhonesStates() { };
-    void setName(const QString & name) { setText(name); };
-    void setText(const QString & text);
-    QString name() const { return m_textlbl->text(); };
-public slots:
-    void edit();
-private:
-    QLabel * m_textlbl;         //!< text label
-    QLabel * m_lblphone;        //!< phone icon
-    QLabel * m_lblphonenum;     //!< phone number (text)
+
+    public:
+        DetailedExternalPhonePeerWidget(BaseEngine *, const QString &, const QString &);
+        void setAgentToolTip(const QString &, const QStringList &) { };
+        void setAgentState(const QString &) { };
+        void updatePresence() { };
+        void updatePhonesStates() { };
+        void setName(const QString &name) { setText(name); };
+        void setText(const QString &text);
+        QString name() const { return m_textlbl->text(); };
+
+    public slots:
+        void edit();
+
+    private:
+        QLabel *m_textlbl;         //!< text label
+        QLabel *m_lblphone;        //!< phone icon
+        QLabel *m_lblphonenum;     //!< phone number (text)
 };
 
 #endif

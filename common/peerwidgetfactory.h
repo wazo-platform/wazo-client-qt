@@ -44,13 +44,14 @@ class UserInfo;
 /*! \brief Factory for Peer Widgets (to be used in SwitchBoard)
  */
 class PeerWidgetFactory : public QObject {
-public:
-    PeerWidgetFactory(BaseEngine * engine, QObject * parent = 0);
-    BasePeerWidget * newExternalPhonePeerWidget(const QString & label, const QString & number);
-    BasePeerWidget * newPeerWidget(UserInfo * ui);
-private:
-    QString getSwitchBoardEltType() const;
-    BaseEngine * m_engine;  //!< base engine
+    public:
+        PeerWidgetFactory(BaseEngine *engine, QObject *parent=0);
+        BasePeerWidget* newExternalPhonePeerWidget(const QString &label, const QString &number);
+        BasePeerWidget* newPeerWidget(UserInfo *ui);
+
+    private:
+        QString getSwitchBoardEltType() const;
+        BaseEngine *m_engine;  //!< base engine
 };
 
 #endif

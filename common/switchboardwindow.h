@@ -56,53 +56,53 @@ class Group;
 class SwitchBoardWindow : public XLet
 {
     Q_OBJECT
-public:
-    SwitchBoardWindow(BaseEngine *, QWidget * parent = 0);
-    ~SwitchBoardWindow();        //!< Destructor
-protected:
-    // event handlers
-    void mousePressEvent(QMouseEvent *); //!< Catch mouse press events
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void paintEvent(QPaintEvent *event);
-    void dragEnterEvent(QDragEnterEvent *);
-    void dropEvent(QDropEvent *);
-    void dragMoveEvent(QDragMoveEvent *);
-    void contextMenuEvent(QContextMenuEvent *);
-public slots:
-    //! does nothing
-    void updateUser(UserInfo *);
-    void updatePeerAgent(double,
-                         const QString &,
-                         const QString &,
-                         const QVariant &);
-    void removePeer(const QString &);
-    void removePeers();
-private slots:
-    void removePeerFromLayout();
-    void removeGroup();
-    void changeGroupColor();
-    void changeGroupName();
-    void addPhoneNumberEntry();
-private:
-    void saveGroups() const;
-    void savePositions() const;
-    void reloadGroups();
-    void reloadExternalPhones();
-    BasePeerWidget * getExternalPhonePeerWidget(const QString & number);
-    BasePeerWidget * addPeerWidget(PeerItem * peeritem, const QPoint & pos);
-    Group * getGroup( const QPoint & ) const;
 
-    QHash<QString, PeerItem *> m_peerhash;        //!< PeerItem hash
-    PeersLayout * m_layout;                        //!< Grid Layout for displaying peers
-    PeerWidgetFactory * m_peerwidgetfactory;    //!< to build *PeerWidget objects
-    // for the groups of people :
-    bool m_trace_box;   //!< is box drawing enable
-    QPoint m_first_corner;  //!< first corner of the box being drawn
-    QPoint m_second_corner; //!< second corner of the box being drawn
-    QList<Group *> m_group_list;    //!< list of the groups
-    Group * m_group_to_resize;  //!< group being moved/resized
-    enum {ETop=1, EBottom, ERight, ELeft, EMove} m_group_resize_mode;
+    public:
+        SwitchBoardWindow(BaseEngine *, QWidget *parent=0);
+        ~SwitchBoardWindow();
+
+    protected:
+        void mousePressEvent(QMouseEvent *);
+        void mouseMoveEvent(QMouseEvent *);
+        void mouseReleaseEvent(QMouseEvent *);
+        void paintEvent(QPaintEvent *event);
+        void dragEnterEvent(QDragEnterEvent *);
+        void dropEvent(QDropEvent *);
+        void dragMoveEvent(QDragMoveEvent *);
+        void contextMenuEvent(QContextMenuEvent *);
+
+    public slots:
+        void updateUser(UserInfo *);
+        void updatePeerAgent(double, const QString &, const QString &, const QVariant &);
+        void removePeer(const QString &);
+        void removePeers();
+
+    private slots:
+        void removePeerFromLayout();
+        void removeGroup();
+        void changeGroupColor();
+        void changeGroupName();
+        void addPhoneNumberEntry();
+
+    private:
+        void saveGroups() const;
+        void savePositions() const;
+        void reloadGroups();
+        void reloadExternalPhones();
+        BasePeerWidget * getExternalPhonePeerWidget(const QString & number);
+        BasePeerWidget * addPeerWidget(PeerItem * peeritem, const QPoint & pos);
+        Group* getGroup(const QPoint &) const;
+    
+        QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
+        PeersLayout * m_layout;  //!< Grid Layout for displaying peers
+        PeerWidgetFactory * m_peerwidgetfactory;  //!< to build *PeerWidget objects
+        // for the groups of people :
+        bool m_trace_box;  //!< is box drawing enable
+        QPoint m_first_corner;  //!< first corner of the box being drawn
+        QPoint m_second_corner;  //!< second corner of the box being drawn
+        QList<Group *> m_group_list;  //!< list of the groups
+        Group * m_group_to_resize;  //!< group being moved/resized
+        enum {ETop=1, EBottom, ERight, ELeft, EMove} m_group_resize_mode;
 };
 
 #endif

@@ -41,13 +41,14 @@
  */
 class CsvStream : public QTextStream
 {
-public:
-    CsvStream(QIODevice * device);
-    QStringList readRecords();
-    CsvStream & operator<< (const QStringList);
-private:
-    QChar fieldSeparator;   //!< separator between fields (coma by default)
-    QChar textDelimiter;    //!< string delimiter (double quote by default)
+    public:
+        CsvStream(QIODevice *device);
+        QStringList readRecords();
+        CsvStream& operator<< (const QStringList);
+
+    private:
+        QChar fieldSeparator;   //!< separator between fields (coma by default)
+        QChar textDelimiter;    //!< string delimiter (double quote by default)
 };
 
 #endif

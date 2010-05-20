@@ -43,45 +43,34 @@
  */
 class BASELIB_EXPORT AgentInfo
 {
-public:
-    //! constructor
-    AgentInfo(const QString &,
-              const QString &,
-              const QMap<QString, QVariant> &);
-    //! destructor
-    ~AgentInfo();
-    //! update attribute members
-    bool update(const QMap<QString, QVariant> &);
-    //! update attribute members
-    bool updateQueue(const QMap<QString, QVariant> &);
-    //! asterisk this agent belongs to
-    const QString & astid() const;
-    //! reference id of this agent on the server
-    const QString & id() const;
-    //! context this agent belongs to
-    const QString & context() const;
-    //! access to the status values of this agent
-    const QString hintstatus(const QString & key) const {
-        return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
-    };
-    //! agent number
-    const QString & agentnumber() const;
-    //! agent fullname
-    const QString & fullname() const;
-    //! agent properties
-    const QVariantMap & properties() const;
-    //! current communications of this agent
-    const QMap<QString, QVariant> & comms() const { return m_comms; };
- private:
-    QString m_astid;
-    QString m_id;
-    QString m_context;
-    QString m_agentname;
-    QString m_agentnumber;
-    QString m_fullname;
-    QMap<QString, QString> m_hintstatus;
-    QMap<QString, QVariant> m_comms;
-    QVariantMap m_properties;
+    public:
+        AgentInfo(const QString &, const QString &, const QMap<QString, QVariant> &); //! constructor
+
+        bool update(const QMap<QString, QVariant> &);  //! update attribute members
+        bool updateQueue(const QMap<QString, QVariant> &);
+        const QString &astid() const;  //! asterisk this agent belongs to
+        const QString &id() const;  //! reference id of this agent on the server
+        const QString &context() const;  //! context this agent belongs to
+        const QString hintstatus(const QString &key) const {
+            return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
+        };  //! access to the status values of this agent
+        const QString &agentnumber() const;  //! agent number
+        const QString &fullname() const;  //! agent fullname
+        //! agent properties
+        const QVariantMap& properties() const;
+        //! current communications of this agent
+        const QMap<QString, QVariant>& comms() const { return m_comms; };
+
+    private:
+        QString m_astid;
+        QString m_id;
+        QString m_context;
+        QString m_agentname;
+        QString m_agentnumber;
+        QString m_fullname;
+        QMap<QString, QString> m_hintstatus;
+        QMap<QString, QVariant> m_comms;
+        QVariantMap m_properties;
 };
 
 #endif

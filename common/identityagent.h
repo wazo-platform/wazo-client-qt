@@ -47,35 +47,36 @@ class QLabel;
 class IdentityAgent : public QFrame
 {
     Q_OBJECT
-public:
-    IdentityAgent(QWidget * parent = 0);
-    void setText(const QString &);
-    void updateStatus(const QVariantMap & properties);
-    void setAllowedActions(bool allow_logagent, bool allow_pauseagent);
-protected:
-    void contextMenuEvent(QContextMenuEvent *);
-signals:
-    void setSystrayIcon(const QString &);
-    void ipbxCommand(const QVariantMap &);
-private slots:
-    void logout();
-    void login();
-    void pause();
-    void unpause();
-private:
-    void setStatusColors(const QString &);
-    void setPausedColors(int, int);
- 
-    QGridLayout * m_layout;
-    QLabel * m_icon;
-    QLabel * m_text;
-    QLabel * m_status;
-    QLabel * m_statustxt;
-    QLabel * m_pause;
-    QLabel * m_pausetxt;
-    QString m_agstatus; //!< agent status string
-    bool m_allow_logagent;
-    bool m_allow_pauseagent;
+
+    public:
+        IdentityAgent(QWidget *parent=0);
+        void setText(const QString &);
+        void updateStatus(const QVariantMap &properties);
+        void setAllowedActions(bool allow_logagent, bool allow_pauseagent);
+    protected:
+        void contextMenuEvent(QContextMenuEvent *);
+    signals:
+        void setSystrayIcon(const QString &);
+        void ipbxCommand(const QVariantMap &);
+    private slots:
+        void logout();
+        void login();
+        void pause();
+        void unpause();
+    private:
+        void setStatusColors(const QString &);
+        void setPausedColors(int, int);
+
+        QGridLayout *m_layout;
+        QLabel *m_icon;
+        QLabel *m_text;
+        QLabel *m_status;
+        QLabel *m_statustxt;
+        QLabel *m_pause;
+        QLabel *m_pausetxt;
+        QString m_agstatus; //!< agent status string
+        bool m_allow_logagent;
+        bool m_allow_pauseagent;
 };
 
 #endif

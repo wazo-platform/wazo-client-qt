@@ -52,58 +52,61 @@ class UserInfo;
 class AgentsPanel : public XLet
 {
     Q_OBJECT
-public:
-    AgentsPanel(BaseEngine *,
-                QWidget * parent = 0);
-    ~AgentsPanel();
-signals:
-    void changeWatchedAgent(const QString &, bool);
-public slots:
-    void setGuiOptions(const QVariantMap &);
-    void newAgentList(const QStringList &);
-    void newQueueList(const QStringList &);
-    void updateAgentPresence(const QString &, const QString &, const QVariant &);
-    void statusRecord(const QString &, const QString &, const QString &);
-    void statusListen(const QString &, const QString &, const QString &);
-private slots:
-    void agentClicked();
-private:
-    void newAgentLine(const QString &);
-    void updateAgentLineAdmin(const QString &, const QString &, const QString &);
-    void updateAgentLineEvent(const QString &);
-    void displayLine(const QString &, int);
-    void updateAgentStatus(const QString &, const QVariantMap &);
-    
-    QFont m_gui_font;   //!< font
-    quint32 m_gui_buttonsize;   //!< button size
-    
-    QGridLayout * m_gridlayout;     //!< Layout
-    
-    QHash<QString, QLabel *>      m_agent_labels;
-    QHash<QString, QPushButton *> m_agent_more;
-    QHash<QString, QPushButton *> m_agent_record;
-    QHash<QString, QPushButton *> m_agent_listen;
-    QHash<QString, QLabel *>      m_agent_busy;
-    QHash<QString, QLabel *>      m_agent_presence;
-    QHash<QString, QLabel *>      m_agent_logged_status;
-    QHash<QString, QPushButton *> m_agent_logged_action;
-    QHash<QString, QLabel *>      m_agent_joined_number;
-    QHash<QString, QLabel *>      m_agent_paused_status;
-    QHash<QString, QPushButton *> m_agent_paused_action;
-    QHash<QString, QLabel *>      m_agent_paused_number;
-    
-    QHash<QString, QStringList> m_agent_joined_list;
-    QHash<QString, QStringList> m_agent_paused_list;
-    
-    QLabel * m_title1;  //!< "Agent"
-    QLabel * m_title2;  //!< "Record"
-    QLabel * m_title3;  //!< "Listen"
-    QLabel * m_title4;  //!< "On Line"
-    QLabel * m_title5;  //!< "Presence"
-    QLabel * m_title_logged;    //!< "Logged"
-    QLabel * m_title_paused;    //!< "Paused"
-    QLabel * m_title_njoined;   //!< "Joined queues"
-    QLabel * m_title_npaused;   //!< "paused queues"
+    public:
+        AgentsPanel(BaseEngine *, QWidget *parent=0);
+        ~AgentsPanel();
+
+    signals:
+        void changeWatchedAgent(const QString &, bool);
+
+    public slots:
+        void setGuiOptions(const QVariantMap &);
+        void newAgentList(const QStringList &);
+        void newQueueList(const QStringList &);
+        void updateAgentPresence(const QString &, const QString &, const QVariant &);
+        void statusRecord(const QString &, const QString &, const QString &);
+        void statusListen(const QString &, const QString &, const QString &);
+
+    private slots:
+        void agentClicked();
+
+    private:
+        void newAgentLine(const QString &);
+        void updateAgentLineAdmin(const QString &, const QString &, const QString &);
+        void updateAgentLineEvent(const QString &);
+        void displayLine(const QString &, int);
+        void updateAgentStatus(const QString &, const QVariantMap &);
+        
+        QFont m_gui_font;  //!< font
+        quint32 m_gui_buttonsize;  //!< button size
+        
+        QGridLayout *m_gridlayout;  //!< Layout
+        
+        QHash<QString, QLabel *>      m_agent_labels;
+        QHash<QString, QPushButton *> m_agent_more;
+        QHash<QString, QPushButton *> m_agent_record;
+        QHash<QString, QPushButton *> m_agent_listen;
+        QHash<QString, QLabel *>      m_agent_busy;
+        QHash<QString, QLabel *>      m_agent_presence;
+        QHash<QString, QLabel *>      m_agent_logged_status;
+        QHash<QString, QPushButton *> m_agent_logged_action;
+        QHash<QString, QLabel *>      m_agent_joined_number;
+        QHash<QString, QLabel *>      m_agent_paused_status;
+        QHash<QString, QPushButton *> m_agent_paused_action;
+        QHash<QString, QLabel *>      m_agent_paused_number;
+        
+        QHash<QString, QStringList> m_agent_joined_list;
+        QHash<QString, QStringList> m_agent_paused_list;
+        
+        QLabel *m_title1;  //!< "Agent"
+        QLabel *m_title2;  //!< "Record"
+        QLabel *m_title3;  //!< "Listen"
+        QLabel *m_title4;  //!< "On Line"
+        QLabel *m_title5;  //!< "Presence"
+        QLabel *m_title_logged;    //!< "Logged"
+        QLabel *m_title_paused;    //!< "Paused"
+        QLabel *m_title_njoined;   //!< "Joined queues"
+        QLabel *m_title_npaused;   //!< "paused queues"
 };
 
 #endif /* __AGENTSPANEL_H__ */

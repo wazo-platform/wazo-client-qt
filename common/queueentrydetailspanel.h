@@ -53,33 +53,37 @@ class UserInfo;
 class QueueentrydetailsPanel : public XLet
 {
     Q_OBJECT
-public:
-    QueueentrydetailsPanel(BaseEngine *,
-                           QWidget * parent = 0);
-    ~QueueentrydetailsPanel();
-signals:
-    void changeWatchedAgent(const QString &);   //!< change watched agent
-protected:
-    void timerEvent(QTimerEvent *);
-public slots:
-    void setGuiOptions(const QVariantMap &) {};
-    void newAgentList(const QStringList &);
-    void newQueueList(const QStringList &);
-    void monitorThisQueue(const QString &);
-private:
-    void updateEntryChannel(const QString &);
-    void clearPanel();
-    void updatePanel();
-    
-    QGridLayout * m_gridlayout; //!< Layout
-    
-    QString m_monitored_queueid;  //!< queue id
-    QString m_monitored_astid;    //!< asterisk id
-    QString m_monitored_context;  //!< context
-    QString m_monitored_queuename;  //!< queue name
-    QLabel * m_queuedescription;   //!< label for displaying queue name
-    QHash<QString, QLabel *> m_entrypos;    //!< display entry
-    QHash<QString, QLabel *> m_entrytime;   //!< display call duration ?
+
+    public:
+        QueueentrydetailsPanel(BaseEngine *, QWidget *parent=0);
+        ~QueueentrydetailsPanel();
+
+    signals:
+        void changeWatchedAgent(const QString &);   //!< change watched agent
+
+    protected:
+        void timerEvent(QTimerEvent *);
+
+    public slots:
+        void setGuiOptions(const QVariantMap &) {};
+        void newAgentList(const QStringList &);
+        void newQueueList(const QStringList &);
+        void monitorThisQueue(const QString &);
+
+    private:
+        void updateEntryChannel(const QString &);
+        void clearPanel();
+        void updatePanel();
+        
+        QGridLayout * m_gridlayout; //!< Layout
+
+        QString m_monitored_queueid;  //!< queue id
+        QString m_monitored_astid;    //!< asterisk id
+        QString m_monitored_context;  //!< context
+        QString m_monitored_queuename;  //!< queue name
+        QLabel * m_queuedescription;   //!< label for displaying queue name
+        QHash<QString, QLabel *> m_entrypos;    //!< display entry
+        QHash<QString, QLabel *> m_entrytime;   //!< display call duration ?
 };
 
 #endif /* __QUEUEENTRYDETAILSPANEL_H__ */

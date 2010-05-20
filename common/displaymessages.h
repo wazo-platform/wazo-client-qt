@@ -48,13 +48,15 @@ class QTableWidget;
 class DisplayMessagesPanel : public XLet
 {
     Q_OBJECT
-public:
-    DisplayMessagesPanel(BaseEngine * engine, QWidget * parent = 0);
-public slots:
-    void addMessage(const QString &);
-private:
-    //! Table
-    QTableWidget * m_table;
+
+    public:
+        DisplayMessagesPanel(BaseEngine *engine, QWidget *parent=0);
+
+    public slots:
+        void addMessage(const QString &);
+
+    private:
+        QTableWidget * m_table; //! Table
 };
 
 #endif

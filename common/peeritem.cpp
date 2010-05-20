@@ -53,7 +53,7 @@ PeerItem::PeerItem()
 
 /*! \brief Copy constructor
  */
-PeerItem::PeerItem(const PeerItem & peer)
+PeerItem::PeerItem(const PeerItem &peer)
 {
     m_ui = peer.m_ui;
     m_peerwidget = peer.m_peerwidget;
@@ -69,30 +69,13 @@ void PeerItem::updateStatus()
         updateDisplayedStatus();
 }
 
-void PeerItem::updateAgentStatus(const QVariant & agentstatus)
+void PeerItem::updateAgentStatus(const QVariant &agentstatus)
 {
-    // qDebug() << "PeerItem::updateAgentStatus()" << agentstatus;
     m_agentstatus = agentstatus;
-    if(m_peerwidget != NULL)
+    if(m_peerwidget != NULL) {
         updateDisplayedStatus();
-}
-
-/*! \brief update channel list
- */
-#if 0
-void PeerItem::updateChans(const QVariant & chanlist)
-{
-    QVariantMap tmpchanlist;
-    foreach(QString ref, chanlist.toMap().keys()) {
-        QString status = chanlist.toMap()[ref].toMap()["status"].toString();
-        if(status != CHAN_STATUS_HANGUP)
-            tmpchanlist[ref] = chanlist.toMap()[ref];
     }
-    m_chanlist = tmpchanlist;
-    if(m_peerwidget != NULL)
-        updateDisplayedChans();
 }
-#endif
 
 /*! \brief update name if changed
  */
@@ -114,7 +97,6 @@ void PeerItem::updateDisplayedStatus()
     if(m_peerwidget == NULL)
         return;
         
-    // qDebug() << "PeerItem::updateDisplayedStatus()";
     m_peerwidget->updatePresence();
     m_peerwidget->updatePhonesStates();      
     
@@ -174,8 +156,9 @@ void PeerItem::updateDisplayedStatus()
  */
 void PeerItem::updateDisplayedName()
 {
-    if(m_peerwidget == NULL)
+    if(m_peerwidget == NULL) {
         return;
+    }
 
     m_peerwidget->setName(m_ui->fullname());
     return;

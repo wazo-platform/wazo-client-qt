@@ -43,44 +43,30 @@
  */
 class BASELIB_EXPORT QueueInfo
 {
- public:
-    //! constructor
-    QueueInfo(const QString &,
-              const QString &,
-              const QMap<QString, QVariant> &);
-    //! destructor
-    ~QueueInfo();
-    //! update attribute members
-    bool update(const QMap<QString, QVariant> &);
-    //! update attribute members
-    bool updateAgent(const QMap<QString, QVariant> &);
-    //! asterisk this queue belongs to
-    const QString & astid() const;
-    //! reference id of this queue on the server
-    const QString & id() const;
-    //! context this queue belongs to
-    const QString & context() const;
-    //! access to the status values of this queue
-    const QString hintstatus(const QString & key) const {
-        return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
-    };
-    //! queue number
-    const QString & number() const { return m_number; };
-    //! queuename
-    const QString & queuename() const;
-    //! queue properties
-    const QVariantMap & properties() const;
-    //! current communications of this queue
-    const QMap<QString, QVariant> & comms() const { return m_comms; };
- private:
-    QString m_astid;
-    QString m_id;
-    QString m_context;
-    QString m_queuename;
-    QString m_number;
-    QMap<QString, QString> m_hintstatus;
-    QMap<QString, QVariant> m_comms;
-    QVariantMap m_properties;
+    public:
+        QueueInfo(const QString &, const QString &, const QMap<QString, QVariant> &);  //! constructor
+        bool update(const QMap<QString, QVariant> &);  //! update attribute members
+        bool updateAgent(const QMap<QString, QVariant> &);  //! update attribute members
+        const QString& astid() const;  //! asterisk this queue belongs to
+        const QString& id() const;  //! reference id of this queue on the server
+        const QString& context() const;  //! context this queue belongs to
+        const QString hintstatus(const QString & key) const {  //! access to the status values of this queue
+            return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
+        };
+        const QString& number() const { return m_number; };  //! queue number
+        const QString& queuename() const;  //! queuename
+        const QVariantMap & properties() const;  //! queue properties
+        const QMap<QString, QVariant>& comms() const { return m_comms; };  //! current communications of this queue
+
+    private:
+        QString m_astid;
+        QString m_id;
+        QString m_context;
+        QString m_queuename;
+        QString m_number;
+        QMap<QString, QString> m_hintstatus;
+        QMap<QString, QVariant> m_comms;
+        QVariantMap m_properties;
 };
 
 #endif

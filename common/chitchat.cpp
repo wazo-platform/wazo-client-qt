@@ -38,7 +38,11 @@ QHash<QString, ChitChatWindow*> ChitChatWindow::m_chat_window_opened = QHash <QS
 ChitChatWindow * ChitChatWindow::chitchat_instance = NULL;
 BaseEngine * ChitChatWindow::m_engine = NULL;
 
-void ChitChatWindow::addMessage(QString mcolor, QString message, QString ucolor="", QString username="")
+void ChitChatWindow::addMessage(
+        const QString &mcolor,
+        const QString &message,
+        const QString &ucolor="",
+        const QString &username="")
 {
     QString time = QTime::currentTime().toString("[ HH:mm:ss ]  ");
     m_message_history->insertHtml("<span style=\"color:black\">" + time + "</span>" +
@@ -51,7 +55,7 @@ void ChitChatWindow::addMessage(QString mcolor, QString message, QString ucolor=
 }
 
 
-ChitChatWindow::ChitChatWindow(QString with) : QWidget(NULL)
+ChitChatWindow::ChitChatWindow(const QString &with) : QWidget(NULL)
 {
     QVBoxLayout *v_layout = new QVBoxLayout;
     QHBoxLayout *h_layout = new QHBoxLayout;
@@ -97,11 +101,11 @@ ChitChatWindow::ChitChatWindow(QString with) : QWidget(NULL)
 ChitChatWindow::ChitChatWindow(BaseEngine *b)
 {
     m_engine = b;
-    b->registerClassEvent("chitchat", ChitChatWindow::receive_message);
+    b->registerClassEvent("chitchat", ChitChatWindow::receive_message_t, this);
 }
 
 
-void ChitChatWindow::receive_message(QVariantMap p)
+void ChitChatWindow::receive_message(const QVariantMap &p)
 {
     QString from = p["from"].toString();
     QString text = p["text"].toString();
@@ -132,7 +136,7 @@ void ChitChatWindow::clear_message_history()
 }
 
 
-void ChitChatWindow::send_message(QString message)
+void ChitChatWindow::send_message(const QString &message)
 {
     addMessage("blue", message, "green", tr("you said: "));
 
@@ -161,9 +165,10 @@ void ChitChatWindow::WriteMessageTo()
         opened = 1;
     }
 
-    if (opened || (!m_chat_window_opened[chat_key]->isVisible()))
+    if (opened || (!m_chat_window_opened[chat_key]->isVisible())) {
         m_chat_window_opened[chat_key]->addMessage("purple",
             tr("chat window opened with user - ") +  m_engine->users()[userid]->fullname(), "gray", tr("system: "));
+    }
 }
 
 
@@ -171,8 +176,9 @@ void ChitChatWindow::WriteMessageTo()
 
 void MessageEdit::send_message()
 {
-    if (toPlainText().trimmed() == "")
+    if (toPlainText().trimmed() == "") {
         return ;
+    }
 
     m_dad->send_message(toPlainText());
     setPlainText("");

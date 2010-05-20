@@ -46,27 +46,30 @@ class DirectoryPanel;
 class DirDialog: public QDialog
 {
     Q_OBJECT
-public:
-    /*! \brief Constructor
-     *
-     * Construct the widget and its layout.
-     * Fill widgets with values got from the BaseEngine object.
-     * Once constructed, the Widget is ready to be shown.
-     * \param engine        related BaseEngine object where parameters will be modified
-     * \param parent        parent QWidget
-     */
-    DirDialog(BaseEngine *, QWidget *);
-    ~DirDialog();
-    const QString & faxnumber() const;
-private slots:
-    void saveAndClose();
-    void copyNumber(const QString &);
-    void copyNumberAndQuit(const QString &, bool);
-private:
-    BaseEngine * m_engine;          //!< base engine
-    DirectoryPanel * m_directory;   //!< Directory panel
-    QDialogButtonBox * m_btnbox;    //!< Buttons box
-    QString m_faxnumber;            //!< fax number
-    QString m_retfaxnumber;         //!< fax number to return
+
+    public:
+        /*! \brief Constructor
+         *
+         * Construct the widget and its layout.
+         * Fill widgets with values got from the BaseEngine object.
+         * Once constructed, the Widget is ready to be shown.
+         * \param engine        related BaseEngine object where parameters will be modified
+         * \param parent        parent QWidget
+         */
+        DirDialog(BaseEngine *, QWidget *);
+        ~DirDialog();
+        const QString & faxnumber() const;
+
+    private slots:
+        void saveAndClose();
+        void copyNumber(const QString &);
+        void copyNumberAndQuit(const QString &, bool);
+
+    private:
+        BaseEngine *m_engine;          //!< base engine
+        DirectoryPanel *m_directory;   //!< Directory panel
+        QDialogButtonBox *m_btnbox;    //!< Buttons box
+        QString m_faxnumber;            //!< fax number
+        QString m_retfaxnumber;         //!< fax number to return
 };
 #endif

@@ -46,13 +46,6 @@ UserInfo::UserInfo(const QString & userid)
     m_userid = userid;
 }
 
-
-/*! \brief Destructor */
-UserInfo::~UserInfo()
-{
-    //qDebug() << "UserInfo::~UserInfo()" << m_userid;
-}
-
 /*! \brief set full name */
 void UserInfo::setFullName(const QString & fullname)
 {
@@ -100,12 +93,12 @@ void UserInfo::setPhones(const QString & astid,
 {
     //qDebug() << "UserInfo::setPhones" << astid << termlist;
     m_astid = astid;
-    foreach(const QString term, termlist)
-    {
+    foreach(const QString term, termlist) {
         PhoneInfo * pi = NULL;
         QString key = astid + "." + term;
-        if(phones.contains(key))
+        if(phones.contains(key)) {
             pi = phones.value(key);
+        }
         m_phones[term] = pi;
     }
 }
@@ -115,8 +108,7 @@ void UserInfo::setAvailState(const QVariant & availstate)
 {
     m_availstate.clear();
     const QMap<QString, QVariant> map = availstate.toMap();
-    foreach(const QString key, map.keys())
-    {
+    foreach(const QString key, map.keys()) {
         m_availstate[key] = map.value(key).toString();
     }
 }
@@ -228,11 +220,15 @@ QList<QString> UserInfo::phonelist() const
  */
 const PhoneInfo * UserInfo::getPhoneInfo(const QString & id) const
 {
-    if(m_phones.contains(id))
+    if(m_phones.contains(id)) {
         return m_phones.value(id);
+    }
+
     QString key = m_astid + "." + id;
-    if(m_phones.contains(key))
+    if(m_phones.contains(key)) {
         return m_phones.value(key);
+    }
+
     return NULL;
 }
 
@@ -241,8 +237,7 @@ const PhoneInfo * UserInfo::getPhoneInfo(const QString & id) const
 void UserInfo::updatePhone( PhoneInfo * pi )
 {
     //qDebug() << "UserInfo::updatePhone before" << m_phones;
-    if(pi)
-    {
+    if(pi) {
         QString key = pi->tech() + "." + pi->context() + "." + pi->phoneid() + "." + pi->number();
         m_phones[key] = pi;
     }
@@ -257,14 +252,11 @@ QList<QString> UserInfo::channelList() const
 {
     QList<QString> list;
     QMapIterator<QString, PhoneInfo *> it = QMapIterator<QString, PhoneInfo *>(m_phones);
-    while(it.hasNext())
-    {
+    while(it.hasNext()) {
         it.next();
-        if(it.value())
-        {
+        if(it.value()) {
             QMapIterator<QString, QVariant> itphone( it.value()->comms() );
-            while( itphone.hasNext() )
-            {
+            while(itphone.hasNext()) {
                 itphone.next();
                 QVariantMap qvm = itphone.value().toMap();
                 list << qvm.value("thischannel").toString();
@@ -294,11 +286,11 @@ QString UserInfo::toString() const
 int UserInfo::commsCount() const
 {
     int c = 0;
-    foreach(const QString phone, phonelist())
-    {
-        const PhoneInfo * pi = getPhoneInfo( phone );
-        if( pi )
+    foreach(const QString phone, phonelist()) {
+        const PhoneInfo * pi = getPhoneInfo(phone);
+        if(pi) {
             c += pi->comms().count();
+        }
     }
     return c;
 }

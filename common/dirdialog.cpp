@@ -51,15 +51,15 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
     setWindowTitle(tr("Directory"));
 
     QVBoxLayout * vlayout = new QVBoxLayout(this);
-    m_directory = new DirectoryPanel( m_engine, this);
-    connect( m_directory, SIGNAL(searchDirectory(const QString &)),
-             m_engine, SLOT(searchDirectory(const QString &)) );
-    connect( m_engine, SIGNAL(directoryResponse(const QString &)),
-             m_directory, SLOT(setSearchResponse(const QString &)) );
-    connect( m_directory, SIGNAL(copyNumber(const QString &)),
-             this, SLOT(copyNumber(const QString &)) );
-    connect( m_directory, SIGNAL(emitDial(const QString &, bool)),
-             this, SLOT(copyNumberAndQuit(const QString &, bool)) );
+    m_directory = new DirectoryPanel(m_engine, this);
+    connect(m_directory, SIGNAL(searchDirectory(const QString &)),
+            m_engine, SLOT(searchDirectory(const QString &)));
+    connect(m_engine, SIGNAL(directoryResponse(const QString &)),
+            m_directory, SLOT(setSearchResponse(const QString &)));
+    connect(m_directory, SIGNAL(copyNumber(const QString &)),
+            this, SLOT(copyNumber(const QString &)));
+    connect(m_directory, SIGNAL(emitDial(const QString &, bool)),
+            this, SLOT(copyNumberAndQuit(const QString &, bool)));
 
     m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     connect(m_btnbox, SIGNAL(accepted()),

@@ -297,7 +297,7 @@ void BaseEngine::setCheckedFunction(const QString & function, bool b)
     }
 }
 
-void BaseEngine::pasteToDial(QString toPaste)
+void BaseEngine::pasteToDial(const QString &toPaste)
 {
     emit pasteToDialPanel(toPaste);
 }
@@ -1757,7 +1757,7 @@ const QString & BaseEngine::serverip() const
 }
 
 /*! \brief get server port */
-const quint16 & BaseEngine::sbPort() const
+quint16 BaseEngine::sbPort()
 {
     return m_ctiport;
 }
@@ -1806,7 +1806,7 @@ void BaseEngine::setAgentPhoneNumber(const QString & agentphonenumber)
     m_agentphonenumber = agentphonenumber;
 }
 
-const int & BaseEngine::loginkind() const
+int BaseEngine::loginkind()
 {
     return m_loginkind;
 }
@@ -1822,7 +1822,7 @@ void BaseEngine::setLoginKind(const int loginkind)
     }
 }
 
-const int & BaseEngine::showagselect() const
+int BaseEngine::showagselect()
 {
     return m_showagselect;
 }
@@ -1832,7 +1832,7 @@ void BaseEngine::setShowAgentSelect(const int showagselect)
     m_showagselect = showagselect;
 }
 
-const int & BaseEngine::keeppass() const
+int BaseEngine::keeppass()
 {
     return m_keeppass;
 }
@@ -2101,7 +2101,7 @@ void BaseEngine::setKeepaliveinterval(uint i)
     }
 }
 
-const BaseEngine::EngineState & BaseEngine::state() const
+BaseEngine::EngineState BaseEngine::state()
 {
     return m_state;
 }
@@ -2293,18 +2293,32 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
 }
 
 
-int BaseEngine::callClassEventCallback(QString class_event, QVariantMap map)
-{
-    QList<void (*)(QVariantMap)> values = m_class_event_cb.values(class_event);
 
-    for (int i = 0; i < values.size(); ++i)
-        (values.at(i))(map);
+
+
+int BaseEngine::callClassEventCallback(QString class_event, const QVariantMap &map)
+{
+    QList< e_callback* > values = m_class_event_cb.values(class_event);
+    e_callback *p;
+    int i;
+
+    for (i=0;i<values.size();++i) {
+        p = values.at(i);
+        p->cb(map, p->udata);
+    }
 
     return values.size();
 }
 
 
-void BaseEngine::registerClassEvent(QString class_event, void (*cb)(QVariantMap) )
+void BaseEngine::registerClassEvent(const QString &class_event,
+                                    void (*cb)(const QVariantMap &, void *),
+                                    void *udata)
 {
-    m_class_event_cb.insert(class_event, cb);
+    e_callback *e_call = new e_callback;
+
+    e_call->cb = cb;
+    e_call->udata = udata;
+
+    m_class_event_cb.insert(class_event, e_call);
 }

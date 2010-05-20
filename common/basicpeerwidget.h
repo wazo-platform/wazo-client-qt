@@ -49,22 +49,26 @@
 class BasicPeerWidget : public BasePeerWidget
 {
     Q_OBJECT
-public:
-    BasicPeerWidget(BaseEngine *, UserInfo *);
-    void setAgentToolTip(const QString &, const QStringList &);
-    void setAgentState(const QString & color);
-    void updatePresence();
-    void updatePhonesStates();
-    void setName(const QString & name) { setText(name); };
-protected:
-    void paintEvent(QPaintEvent *);
-private:
-    void setText(const QString &);  //!< Set displayed text
-private:    // attributes
-    QString m_text; //!< Text to display
-    QColor m_color; //!< color
-    QColor m_presenceColor; //!< color of presence indicator
-    int m_presenceSquareSize;   //!< size of the presence indicator
+
+    public:
+        BasicPeerWidget(BaseEngine *, UserInfo *);
+        void setAgentToolTip(const QString &, const QStringList &);
+        void setAgentState(const QString &color);
+        void updatePresence();
+        void updatePhonesStates();
+        void setName(const QString &name) { setText(name); };
+
+    protected:
+        void paintEvent(QPaintEvent *);
+
+    private:
+        void setText(const QString &);  //!< Set displayed text
+
+    private:
+        QString m_text;  //!< Text to display
+        QColor m_color;  //!< color
+        QColor m_presenceColor;  //!< color of presence indicator
+        int m_presenceSquareSize;  //!< size of the presence indicator
 };
 
 #endif

@@ -38,7 +38,7 @@ QHash<QString, QPixmap*> TaintedPixmap::m_pixmap_cache = QHash <QString, QPixmap
 
 /*! \brief Constructor create if needed a tainted pixmap
  */
-TaintedPixmap::TaintedPixmap(QString pixmap_path, QColor &bg_color)
+TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &bg_color)
 {
     m_pixmap_hash = pixmap_path + bg_color.name();
 

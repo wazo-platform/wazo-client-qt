@@ -47,28 +47,33 @@ class BaseEngine;
 class BASELIB_EXPORT ExtendedTableWidget : public QTableWidget
 {
     Q_OBJECT
-public:
-    ExtendedTableWidget(BaseEngine * engine, QWidget * parent = 0);
-    ExtendedTableWidget(int rows, int columns, QWidget * parent = 0);
-    void setEditable(bool editable) { m_editable = editable; };
-protected:
-    void contextMenuEvent(QContextMenuEvent *);
-    void dragEnterEvent(QDragEnterEvent *);
-    void dragMoveEvent(QDragMoveEvent *);
-    void dropEvent(QDropEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-signals:
-    void actionCall(const QString &, const QString &, const QString &);        //!< transfer/originate/... a call
-private slots:
-    void dialNumber();
-    void sendMail();
-    void itransfer();
-    void dtransfer();
-    void remove();
-private:
-    BaseEngine * m_engine;
-    QRegExp m_re_number;    //!< regexp used to recognize phone numbers
-    bool m_editable;
+
+    public:
+        ExtendedTableWidget(BaseEngine *engine, QWidget *parent=0);
+        ExtendedTableWidget(int rows, int columns, QWidget *parent=0);
+        void setEditable(bool editable) { m_editable = editable; };
+
+    protected:
+        void contextMenuEvent(QContextMenuEvent *);
+        void dragEnterEvent(QDragEnterEvent *);
+        void dragMoveEvent(QDragMoveEvent *);
+        void dropEvent(QDropEvent *);
+        void mouseMoveEvent(QMouseEvent *);
+
+    signals:
+        void actionCall(const QString &, const QString &, const QString &);  //!< transfer/originate/... a call
+
+    private slots:
+        void dialNumber();
+        void sendMail();
+        void itransfer();
+        void dtransfer();
+        void remove();
+
+    private:
+        BaseEngine *m_engine;
+        QRegExp m_re_number;  //!< regexp used to recognize phone numbers
+        bool m_editable;
 };
 
 #endif

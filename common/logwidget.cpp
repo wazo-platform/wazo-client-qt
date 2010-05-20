@@ -44,14 +44,11 @@
 #include "baseengine.h"
 #include "logwidget.h"
 
-LogWidgetModel* LogWidgetModel::self = NULL;
-
 LogWidgetModel::LogWidgetModel(BaseEngine *b, int initialMode)
     : QAbstractTableModel(NULL), engine(b)
 {
-    b->registerClassEvent("history", LogWidgetModel::updateHistory);
+    b->registerClassEvent("history", LogWidgetModel::updateHistory_t, this);
     mode = initialMode;
-    self = this;
     history << QVariant() << QVariant() << QVariant();
 }
 
@@ -133,12 +130,12 @@ QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
 
 /*! \brief parse history command response
  */
-void LogWidgetModel::updateHistory(QVariantMap p)
+void LogWidgetModel::updateHistory(const QVariantMap &p)
 {
     QVariant payload = p["payload"] ;
     
-    self->history[self->mode] = payload;
-    self->reset();
+    history[mode] = payload;
+    reset();
 }
 
 Qt::ItemFlags LogWidgetModel::flags(const QModelIndex &) const
@@ -147,7 +144,7 @@ Qt::ItemFlags LogWidgetModel::flags(const QModelIndex &) const
 }
 
 /*! \brief ask history for an extension */
-void LogWidgetModel::requestHistory(QString peer, int mode, QDateTime moreRecent, int forceEntry)
+void LogWidgetModel::requestHistory(const QString &peer, int mode, const QDateTime &moreRecent, int forceEntry)
 {
     /* mode = 0 : Out calls
      * mode = 1 : In calls
@@ -177,8 +174,8 @@ void LogWidgetModel::changeMode(bool active)
 }
 
 QVariant LogWidgetModel::headerData(int section,
-                                     Qt::Orientation orientation,
-                                     int role = Qt::DisplayRole) const
+                                    Qt::Orientation orientation,
+                                    int role = Qt::DisplayRole) const
 {
     if (role != Qt::DisplayRole)
         return QVariant();
@@ -229,7 +226,7 @@ void LogWidget::onViewClick(const QModelIndex &model)
         caller.remove(">");
     }
     caller.remove(QRegExp("[^0-9]"));
-    
+
     m_engine->pasteToDial(caller);
 }
 

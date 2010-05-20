@@ -103,10 +103,6 @@ DirectoryPanel::DirectoryPanel(BaseEngine * engine, QWidget * parent)
              m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
 }
 
-DirectoryPanel::~DirectoryPanel()
-{
-}
-
 /*! \brief does nothing for the moment */
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
 {

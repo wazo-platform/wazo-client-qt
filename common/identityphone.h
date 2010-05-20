@@ -47,24 +47,29 @@ class UserInfo;
 class IdentityPhoneLine : public QWidget
 {
     Q_OBJECT
-public:
-    IdentityPhoneLine(int linenum, QWidget * parent = 0);
-    void setPixmap(const QPixmap & pixmap);
-    void setText(const QString & text);
-signals:
-    void actionCall(const QString & action, const QString &, const QString &);
-public slots:
-    void setUserInfo(const UserInfo *);
-    void hangup();
-    void answer();
-    void refuse();
-protected:
-    void contextMenuEvent(QContextMenuEvent *);
-private:
-    const UserInfo * m_ui;  //!< pointer to UserInfo
-    int m_linenum;
-    QLabel * m_action;
-    QLabel * m_status;
+
+    public:
+        IdentityPhoneLine(int linenum, QWidget *parent=0);
+        void setPixmap(const QPixmap &pixmap);
+        void setText(const QString &text);
+
+    signals:
+        void actionCall(const QString &action, const QString &, const QString &);
+
+    public slots:
+        void setUserInfo(const UserInfo *);
+        void hangup();
+        void answer();
+        void refuse();
+
+    protected:
+        void contextMenuEvent(QContextMenuEvent *);
+
+    private:
+        const UserInfo * m_ui;  //!< pointer to UserInfo
+        int m_linenum;
+        QLabel * m_action;
+        QLabel * m_status;
 };
 
 /*! \brief Display Phone informations
@@ -74,24 +79,26 @@ private:
 class IdentityPhone : public QWidget
 {
     Q_OBJECT
-public:
-    IdentityPhone(QWidget * parent = 0);
-    void svcSummary(QMap<QString, QVariant> & svcstatus);
-signals:
-    void actionCall(const QString & action, const QString & src, const QString & dst);
-public slots:
-    void setUserInfo(const UserInfo *);
-    void updateUser(UserInfo *);
-private:
-    void setPhoneLines();
-    const UserInfo * m_ui;  //!< pointer to UserInfo
-    QGridLayout * m_layout; //!< layout
-    QLabel * m_icon;        //!< icon
-    QLabel * m_phone;       //!< Phone name label
-    QLabel * m_phonecall;
-    QLabel * m_phonecalltxt;
-    QLabel * m_phonestatustxt;
-    QList<IdentityPhoneLine *> m_lines;
+
+    public:
+        IdentityPhone(QWidget *parent=0);
+        void svcSummary(QMap<QString, QVariant> &svcstatus);
+    signals:
+        void actionCall(const QString &action, const QString &src, const QString &dst);
+    public slots:
+        void setUserInfo(const UserInfo *);
+        void updateUser(UserInfo *);
+    private:
+        void setPhoneLines();
+        const UserInfo *m_ui;  //!< pointer to UserInfo
+
+        QGridLayout *m_layout;  //!< layout
+        QLabel *m_icon;  //!< icon
+        QLabel *m_phone;  //!< Phone name label
+        QLabel *m_phonecall;
+        QLabel *m_phonecalltxt;
+        QLabel *m_phonestatustxt;
+        QList<IdentityPhoneLine *> m_lines;
 };
 
 #endif

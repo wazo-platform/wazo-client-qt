@@ -42,8 +42,9 @@
 class UrlLabel : public QLabel
 {
     Q_OBJECT
-        public:
-    UrlLabel(const QString & url, QWidget *parent=0);
+
+    public:
+        UrlLabel(const QString & url, QWidget *parent=0);
 };
 
 #endif

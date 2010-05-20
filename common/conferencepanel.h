@@ -57,57 +57,47 @@ class UserInfo;
 class ConferencePanel : public XLet
 {
     Q_OBJECT
-public:
-    ConferencePanel(BaseEngine *,
-                    QWidget * parent = 0);
-    ~ConferencePanel();
-protected:
-    void timerEvent(QTimerEvent *);
-public slots:
-    void setGuiOptions(const QVariantMap &);
-    void meetmeEvent(double, const QVariant &);
-    void meetmeInit(double, const QVariant &);
-    void doMeetMeAction();
-    void changeRoomPauseState();
-    void doMeetMeAdminOnlyAction(QTreeWidgetItem *, int );
-signals:
-    void meetmeAction(const QString &, const QString &);    //!< action
-private:
-    void setProperties(double,
-                       const QString &,
-                       const QString &,
-                       const QString &,
-                       const QString &,
-                       const QString &,
-                       const QVariantMap &,
-                       const QString &,
-                       const bool &
-                       );
-    void addRoomTab(const QString &,
-                    const QString &,
-                    const QString &,
-                    const QString &,
-                    int are_we_inside=1);
-    void delRoomTab(const QString &,
-                    const QString &);
-    void updateSummary();
-    QWidget * createLeftUserList(QWidget *parent, const QString &,const QString &);
-    void updateButtons(const QString &, const QString &);
-    
-    QHash<QString, QLabel *> m_infos;   //!< widgets for displaying name and phone number
-    QHash<QString, QLabel *> m_timespent;   //!< call durations
-    QHash<QString, QPushButton *> m_action_kick;      //!< kick buttons
-    QHash<QString, QPushButton *> m_action_record;    //!< record buttons
-    QHash<QString, QPushButton *> m_action_mute;      //!< mute buttons
-    QHash<QString, QGridLayout *> m_layout;           //!< layouts
-    QHash<QString, QTreeWidget *> m_user_not_authed_list;  //!< list of user not authed by admin
-    QHash<QString, QPushButton *> m_action_chamber_toggle_pause;  //!< button to pause a conf chamber
-    QHash<QString, QTreeWidgetItem *> m_user_not_authed;   //!< list of user not authed by admin
 
-    QTabWidget * m_tw;              //!< Tab container
-    QGridLayout * m_glayout;        //!< gridlayout
-    QLabel * m_summary;
-    bool m_show_record;
+    public:
+        ConferencePanel(BaseEngine *, QWidget *parent=0);
+        ~ConferencePanel();
+
+    protected:
+        void timerEvent(QTimerEvent *);
+
+    public slots:
+        void setGuiOptions(const QVariantMap &);
+        void meetmeEvent(double, const QVariant &);
+        void meetmeInit(double, const QVariant &);
+        void doMeetMeAction();
+        void changeRoomPauseState();
+        void doMeetMeAdminOnlyAction(QTreeWidgetItem *, int);
+
+    signals:
+        void meetmeAction(const QString &, const QString &);  //!< action
+
+    private:
+        void setProperties(double, const QString &, const QString &, const QString &, const QString &, const QString &, const QVariantMap &, const QString &, const bool &);
+        void addRoomTab(const QString &, const QString &, const QString &, const QString &, int are_we_inside=1);
+        void delRoomTab(const QString &, const QString &);
+        void updateSummary();
+        QWidget * createLeftUserList(QWidget *parent, const QString &,const QString &);
+        void updateButtons(const QString &, const QString &);
+        
+        QHash<QString, QLabel *> m_infos;  //!< widgets for displaying name and phone number
+        QHash<QString, QLabel *> m_timespent;  //!< call durations
+        QHash<QString, QPushButton *> m_action_kick;  //!< kick buttons
+        QHash<QString, QPushButton *> m_action_record;  //!< record buttons
+        QHash<QString, QPushButton *> m_action_mute;  //!< mute buttons
+        QHash<QString, QGridLayout *> m_layout;  //!< layouts
+        QHash<QString, QTreeWidget *> m_user_not_authed_list;  //!< list of user not authed by admin
+        QHash<QString, QPushButton *> m_action_chamber_toggle_pause;  //!< button to pause a conf chamber
+        QHash<QString, QTreeWidgetItem *> m_user_not_authed;  //!< list of user not authed by admin
+    
+        QTabWidget * m_tw;  //!< Tab container
+        QGridLayout * m_glayout;  //!< gridlayout
+        QLabel * m_summary;
+        bool m_show_record;
 };
 
 #endif

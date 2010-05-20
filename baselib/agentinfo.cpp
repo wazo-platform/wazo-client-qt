@@ -43,10 +43,6 @@ AgentInfo::AgentInfo(const QString & astid,
     update(prop);
 }
 
-AgentInfo::~AgentInfo()
-{
-}
-
 bool AgentInfo::update(const QMap<QString, QVariant> & prop)
 {
     bool haschanged = false;
@@ -89,32 +85,32 @@ bool AgentInfo::updateQueue(const QMap<QString, QVariant> & prop)
     return haschanged;
 }
 
-const QString & AgentInfo::astid() const
+const QString& AgentInfo::astid() const
 {
     return m_astid;
 }
 
-const QString & AgentInfo::id() const
+const QString& AgentInfo::id() const
 {
     return m_id;
 }
 
-const QString & AgentInfo::context() const
+const QString& AgentInfo::context() const
 {
     return m_context;
 }
 
-const QString & AgentInfo::agentnumber() const
+const QString& AgentInfo::agentnumber() const
 {
     return m_agentnumber;
 }
 
-const QString & AgentInfo::fullname() const
+const QString& AgentInfo::fullname() const
 {
     return m_fullname;
 }
 
-const QVariantMap & AgentInfo::properties() const
+const QVariantMap& AgentInfo::properties() const
 {
     return m_properties;
 }

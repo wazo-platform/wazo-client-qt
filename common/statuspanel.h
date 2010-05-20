@@ -56,45 +56,46 @@ class BaseEngine;
 class StatusPanel : public XLet
 {
     Q_OBJECT
-public:
-    StatusPanel(BaseEngine * engine, QWidget * parent = 0);
-    ~StatusPanel();
-    enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
-    void doGUIConnects(QWidget * mainwindow);
-public slots:
-    void functionKeyPressed(int);
-    void xferPressed();
-    void clicked();
-    void updateUser(UserInfo *);
-signals:
-    void actionCall(const QString &,
-                    const QString & src = "",
-                    const QString & dst = "");
-private:
-    void updateLine(const QString &, const QStringList &);
-    void newCall(const QString &);
-    void dtransfer();
-    void itransfer();
-    void changeCurrentChannel(const QString &, const QString &);
-    QString getPeerChan(const QString & chan) const;
-    void removeLine(const QString &);
-    
-    QGridLayout * m_glayout;
-    QLabel * m_lbl;
-    
-    QHash<QString, QFrame *> m_vlinesl;
-    QHash<QString, QFrame *> m_vlinesr;
-    QHash<QString, QLabel *> m_statuses;
-    QHash<QString, QHash<QString, QPushButton *> > m_actions;
-    QHash<QString, QLineEdit *> m_tnums;
-    QHash<QString, Line> m_linestatuses;
-    QHash<QString, int> m_row;
-    
-    QMap<int, QStringList> m_actionkey;
-    
-    QString m_currentchannel;
-    QStringList m_callchannels;
-    //QString m_tferchannel;
+
+    public:
+        StatusPanel(BaseEngine *engine, QWidget *parent=0);
+        ~StatusPanel();
+        enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
+        void doGUIConnects(QWidget *mainwindow);
+
+    public slots:
+        void functionKeyPressed(int);
+        void xferPressed();
+        void clicked();
+        void updateUser(UserInfo *);
+
+    signals:
+        void actionCall(const QString &, const QString &src="", const QString &dst="");
+
+    private:
+        void updateLine(const QString &, const QStringList &);
+        void newCall(const QString &);
+        void dtransfer();
+        void itransfer();
+        void changeCurrentChannel(const QString &, const QString &);
+        QString getPeerChan(const QString &chan) const;
+        void removeLine(const QString &);
+        
+        QGridLayout * m_glayout;
+        QLabel * m_lbl;
+        
+        QHash<QString, QFrame *> m_vlinesl;
+        QHash<QString, QFrame *> m_vlinesr;
+        QHash<QString, QLabel *> m_statuses;
+        QHash<QString, QHash<QString, QPushButton *> > m_actions;
+        QHash<QString, QLineEdit *> m_tnums;
+        QHash<QString, Line> m_linestatuses;
+        QHash<QString, int> m_row;
+        
+        QMap<int, QStringList> m_actionkey;
+        
+        QString m_currentchannel;
+        QStringList m_callchannels;
 };
 
 #endif

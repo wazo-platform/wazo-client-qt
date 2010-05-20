@@ -46,40 +46,30 @@ class UserInfo;
 
 /*! \brief PeerItem object, linking to a PeerWidget
  */
-class PeerItem// : public QObject
+class PeerItem
 {
- public:
-    //PeerItem( const QString & ext, QObject * parent = 0 );
-    PeerItem( UserInfo * );
-    PeerItem( const PeerItem & );
-    PeerItem( );
-    UserInfo * userinfo();
-    // PeerItem & operator=(const PeerItem & peer);
-    //! set m_peerwidget
-    //void setWidget(PeerWidget * widget) { m_peerwidget = widget; };
-    void setWidget(BasePeerWidget * widget) { m_peerwidget = widget; };
-    //! get m_peerwidget
-    //PeerWidget * getWidget() { return m_peerwidget; };
-    BasePeerWidget * getWidget() { return m_peerwidget; };
-        
-    void updateStatus();
-    void updateAgentStatus(const QVariant &);
-    void updateName(const QString &);
-        
-    void updateDisplayedStatus();
-    void updateDisplayedName();
- private:
-    //PeerWidget * m_peerwidget;        //!< related PeerWidget
-    BasePeerWidget * m_peerwidget;        //!< related PeerWidget
+    public:
+        PeerItem(UserInfo *);
+        PeerItem(const PeerItem &);
+        PeerItem();
 
-    // Properties of each peer
-    UserInfo * m_ui;
-    // QString m_name;                //!< Person name
-    QString m_vmstatus;
-    QVariant m_agentstatus;
-    QString m_pausestatus;
-    //        QVariant m_chanlist;
-    QStringList m_queuelist;
+        UserInfo * userinfo();
+
+        void setWidget(BasePeerWidget * widget) { m_peerwidget = widget; };
+        BasePeerWidget * getWidget() { return m_peerwidget; };
+        void updateStatus();
+        void updateAgentStatus(const QVariant &);
+        void updateName(const QString &);
+        void updateDisplayedStatus();
+        void updateDisplayedName();
+    private:
+        BasePeerWidget * m_peerwidget;  //!< related PeerWidget
+
+        UserInfo * m_ui;  // Properties of each peer
+        QString m_vmstatus;
+        QVariant m_agentstatus;
+        QString m_pausestatus;
+        QStringList m_queuelist;
 };
 
 #endif

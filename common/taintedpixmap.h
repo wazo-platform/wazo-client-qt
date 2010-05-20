@@ -31,8 +31,8 @@
  * $Date$
  */
 
-#ifndef __PAINTEDPIXMAP_H__
-#define __PAINTEDPIXMAP_H__
+#ifndef __TAINTEDPIXMAP_H__
+#define __TAINTEDPIXMAP_H__
 
 #include <QPixmap>
 #include <QPainter>
@@ -45,7 +45,7 @@
 class TaintedPixmap : public QPixmap
 {
     public:
-        TaintedPixmap(QString , QColor &);
+        TaintedPixmap(const QString &, const QColor &);
         QPixmap getPixmap();
     private:
         static QHash<QString, QPixmap*> m_pixmap_cache;

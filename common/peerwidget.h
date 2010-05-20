@@ -55,22 +55,23 @@ class UserInfo;
 class PeerWidget : public BasePeerWidget
 {
     Q_OBJECT
-public:
-    PeerWidget(BaseEngine *, UserInfo *);
-    void setName(const QString &);
-    void setEngine(BaseEngine *);
-    void setAgentToolTip(const QString &, const QStringList &);
-    void setAgentState(const QString & color);
-    void setMobileState(const QString & color);
-    void updatePresence();  //!< update presence information displayed
-    void updatePhonesStates();
-private:
-    QHash<QString, QLabel *> m_lblphones; //!< phone labels
-        
-    QPushButton *m_user_status;  //!< Peer state display from XIVO CTI Client
-    QLabel *m_agentlbl;       //!< agent state label
-    QLabel *m_mobilelbl;      //!< mobile phone label
-    QLabel *m_textlbl;        //!< text label : to display peer name
+
+    public:
+        PeerWidget(BaseEngine *, UserInfo *);
+        void setName(const QString &);
+        void setEngine(BaseEngine *);
+        void setAgentToolTip(const QString &, const QStringList &);
+        void setAgentState(const QString &color);
+        void setMobileState(const QString &color);
+        void updatePresence();  //!< update presence information displayed
+        void updatePhonesStates();
+    private:
+        QHash<QString, QLabel *> m_lblphones; //!< phone labels
+            
+        QPushButton *m_user_status;  //!< Peer state display from XIVO CTI Client
+        QLabel *m_agentlbl;       //!< agent state label
+        QLabel *m_mobilelbl;      //!< mobile phone label
+        QLabel *m_textlbl;        //!< text label : to display peer name
 };
 
 #endif

@@ -44,10 +44,6 @@ PhoneInfo::PhoneInfo(const QString & astid,
     update(prop);
 }
 
-PhoneInfo::~PhoneInfo()
-{
-}
-
 void PhoneInfo::update(const QMap<QString, QVariant> & prop)
 {
     if(prop.contains("initialized"))

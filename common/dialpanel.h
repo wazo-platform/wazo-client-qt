@@ -51,25 +51,26 @@ class UserInfo;
 class DialPanel : public XLet
 {
     Q_OBJECT
-public:
-    DialPanel(BaseEngine *,
-              QWidget * parent = 0);
-    ~DialPanel();
-protected:
-    void dragEnterEvent(QDragEnterEvent *);
-    void dropEvent(QDropEvent *);
-public slots:
-    void inputValidated();
-    void clearlist();
-    void setNumberToDial(const QString &);
-signals:
-    void textEdited(const QString &);   //!< text has changed
-    void actionCall(const QString &,
-                    const QString &,
-                    const QString &);   //!< originates a number
-private:
-    QLabel * m_lbl;             //!< label
-    QComboBox * m_input;        //!< input widget
+
+    public:
+        DialPanel(BaseEngine *, QWidget *parent=0);
+
+    protected:
+        void dragEnterEvent(QDragEnterEvent *);
+        void dropEvent(QDropEvent *);
+
+    public slots:
+        void inputValidated();
+        void clearlist();
+        void setNumberToDial(const QString &);
+
+    signals:
+        void textEdited(const QString &);   //!< text has changed
+        void actionCall(const QString &, const QString &, const QString &);  //!< originates a number
+
+    private:
+        QLabel *m_lbl;             //!< label
+        QComboBox *m_input;        //!< input widget
 };
 
 #endif

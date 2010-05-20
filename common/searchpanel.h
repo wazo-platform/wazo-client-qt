@@ -53,32 +53,28 @@ class UserInfo;
 class SearchPanel : public XLet
 {
     Q_OBJECT
-public:
-    SearchPanel(BaseEngine *,
-                QWidget * parent = 0);
-    ~SearchPanel();        //!< Destructor
-public slots:
-    void affTextChanged(const QString &);
-    void updatePeerAgent(double,
-                         const QString &,
-                         const QString &,
-                         const QVariant &);
-    void removePeer(const QString &);
-    void removePeers();
-    void updateDisplay();
-    void updateUser(UserInfo *);
-signals:
-    void askCallerIds();
-private:
-    QHash<QString, PeerItem *> m_peerhash;        //!< PeerItem hash
-    QGridLayout * m_peerlayout;        //!< layout object
-    ExtendedLineEdit * m_input;        //!< widget for search string input
-        
-    int m_maxdisplay;        //!< max number of peers displayed on the search panel
-    int m_ncolumns;
-    QString m_searchpattern;
-protected:
-    virtual void paintEvent(QPaintEvent * event);
+    public:
+        SearchPanel(BaseEngine *, QWidget *parent=0);
+        ~SearchPanel();        //!< Destructor
+    public slots:
+        void affTextChanged(const QString &);
+        void updatePeerAgent(double, const QString &, const QString &, const QVariant &);
+        void removePeer(const QString &);
+        void removePeers();
+        void updateDisplay();
+        void updateUser(UserInfo *);
+    signals:
+        void askCallerIds();
+    private:
+        QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
+        QGridLayout *m_peerlayout; //!< layout object
+        ExtendedLineEdit *m_input; //!< widget for search string input
+            
+        int m_maxdisplay;  //!< max number of peers displayed on the search panel
+        int m_ncolumns;
+        QString m_searchpattern;
+    protected:
+        virtual void paintEvent(QPaintEvent *event);
 };
 
 #endif

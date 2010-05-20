@@ -53,32 +53,36 @@ class UserInfo;
 class CallCampaignPanel : public XLet
 {
     Q_OBJECT
-public:
-    CallCampaignPanel(BaseEngine * engine, QWidget * parent = 0);
-signals:
-    void requestFileList(const QString &);
-public slots:
-    void setGuiOptions(const QVariant &) {};
-    void setOpenFileName();
-    void fileNameChanged(const QString &);
-    void getCalls();
-    void startCalls();
-    void stopCalls();
-    void clearCalls();
-    void loadFileClicked();
-    void requestFileListResult(const QVariant &);
-private:
-    void addNumber(const QString &);
-    void checkStatuses();
-    
-    QLineEdit * m_openFileNameLabel;
-    QVBoxLayout * m_vlayout;
-    QHBoxLayout * m_hlayout1;
-    QHBoxLayout * m_hlayout2;
-    QGridLayout * m_glayout;
-    QHash<QString, QString> m_numbers;
-    QHash<QString, QLabel *> m_numlabel;
-    QHash<QString, QPushButton *> m_qpbstart;
+
+    public:
+        CallCampaignPanel(BaseEngine *engine, QWidget *parent=0);
+
+    signals:
+        void requestFileList(const QString &);
+
+    public slots:
+        void setGuiOptions(const QVariant &) {};
+        void setOpenFileName();
+        void fileNameChanged(const QString &);
+        void getCalls();
+        void startCalls();
+        void stopCalls();
+        void clearCalls();
+        void loadFileClicked();
+        void requestFileListResult(const QVariant &);
+
+    private:
+        void addNumber(const QString &);
+        void checkStatuses();
+        
+        QLineEdit * m_openFileNameLabel;
+        QVBoxLayout * m_vlayout;
+        QHBoxLayout * m_hlayout1;
+        QHBoxLayout * m_hlayout2;
+        QGridLayout * m_glayout;
+        QHash<QString, QString> m_numbers;
+        QHash<QString, QLabel *> m_numlabel;
+        QHash<QString, QPushButton *> m_qpbstart;
 };
 
 #endif /* __CALLCAMPAIGNPANEL_H__ */

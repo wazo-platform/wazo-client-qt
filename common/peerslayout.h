@@ -43,50 +43,40 @@
 class PeersLayout : public QLayout
 {
     Q_OBJECT
-public:
-    //! constructor
-    PeersLayout(QWidget * parent = 0);
-    //! destructor
-    virtual ~PeersLayout();
-    //! set geometry
-    void setGeometry( const QRect & );
-    //! return size Hint (prefered size)
-    QSize sizeHint() const;
-    QSize minimumSize() const;
-    QSize maximumSize() const;
-    void addWidget(QWidget *, QPoint);
-    //! add the Item at a specific emplacement
-    void addItem(QLayoutItem *, QPoint);
-    //! default addItem implementation
-    void addItem(QLayoutItem *);
-    //! return the number of items
-    int count() const;
-    QLayoutItem* itemAt(int) const;
-    QLayoutItem* takeAt(int);
-    //! get m_nb_rows
-    int nbRows() const { return m_nb_rows; };
-    //! set m_nb_rows
-    void setNbRows(int rows) { m_nb_rows = rows; };
-    //! get m_nb_columns
-    int nbColumns() const { return m_nb_columns; };
-    //! set m_nb_columns
-    void setNbColumns(int cols) { m_nb_columns = cols; };
-    QPoint getPosInGrid(const QPoint &) const;
-    QPoint getPosFromGrid(const QPoint &) const;
-    void setItemPosition(int i, QPoint pos);
-    void setItemPosition(QWidget * widget, QPoint pos);
-    QPoint getItemPosition(int i) const;
-    QPoint getItemPosition(QWidget * widget) const;
-    QRect getGridRect( const QRect & ) const;
-private:
-    int itemIndex(QWidget * widget) const;
-    QPoint freePosition() const;
-    QSize size() const;
-    QSize maxItemSize() const;
-    QList<QLayoutItem *> m_list;        //!< layout items list
-    QList<QPoint> m_listPos;            //!< positions list
-    int m_nb_rows;                      //!< height
-    int m_nb_columns;                   //!< width
+    public:
+        PeersLayout(QWidget *parent = 0); //! constructor
+        virtual ~PeersLayout(); //! destructor
+        void setGeometry(const QRect &); //! set geometry
+        QSize sizeHint() const; //! return size Hint (prefered size)
+        QSize minimumSize() const;
+        QSize maximumSize() const;
+        void addWidget(QWidget *, QPoint); 
+        void addItem(QLayoutItem *, QPoint); //! add the Item at a specific emplacement
+        void addItem(QLayoutItem *); //! default addItem implementation
+        int count() const; //! return the number of items
+        QLayoutItem* itemAt(int) const;
+        QLayoutItem* takeAt(int);
+        int nbRows() const { return m_nb_rows; }; //! get m_nb_rows
+        void setNbRows(int rows) { m_nb_rows = rows; }; //! set m_nb_rows
+        int nbColumns() const { return m_nb_columns; }; //! get m_nb_columns
+        void setNbColumns(int cols) { m_nb_columns = cols; }; //! set m_nb_columns
+        QPoint getPosInGrid(const QPoint &) const;
+        QPoint getPosFromGrid(const QPoint &) const;
+        void setItemPosition(int i, QPoint pos);
+        void setItemPosition(QWidget * widget, QPoint pos);
+        QPoint getItemPosition(int i) const;
+        QPoint getItemPosition(QWidget * widget) const;
+        QRect getGridRect(const QRect &) const;
+    
+    private:
+        int itemIndex(QWidget * widget) const;
+        QPoint freePosition() const;
+        QSize size() const;
+        QSize maxItemSize() const;
+        QList<QLayoutItem *> m_list;        //!< layout items list
+        QList<QPoint> m_listPos;            //!< positions list
+        int m_nb_rows;                      //!< height
+        int m_nb_columns;                   //!< width
 };
 
 #endif

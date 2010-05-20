@@ -57,10 +57,3 @@ ExternalPhoneDialog::ExternalPhoneDialog(QWidget * parent)
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     layout->addRow( buttonBox );
 }
-
-/*! \brief Destructor
- */
-ExternalPhoneDialog::~ExternalPhoneDialog()
-{
-    qDebug() << "~ExternalPhoneDialog()";
-}

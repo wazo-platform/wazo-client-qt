@@ -52,52 +52,59 @@ class UserInfo;
 class LogWidgetModel;
 
 
+/*! \brief cdr model
+ */
 class LogWidgetModel : public QAbstractTableModel
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    LogWidgetModel(BaseEngine *, int);
-    static void updateHistory(QVariantMap p);
-  protected:
-    virtual int rowCount(const QModelIndex&) const;
-    virtual int columnCount(const QModelIndex&) const;
-    virtual QVariant data(const QModelIndex&, int) const;
-    virtual Qt::ItemFlags flags(const QModelIndex &) const;
-    virtual void sort(int, Qt::SortOrder);
-    virtual QVariant headerData(int , Qt::Orientation, int) const;
-  public slots:
-    void changeMode(bool);
-  private:
-    static int ascendingOrderByDuration(QVariant a, QVariant b) {
-      return a.toMap()["duration"].toInt() <  b.toMap()["duration"].toInt();
-    }
-    static int descendingOrderByDuration(QVariant a, QVariant b) {
-      return a.toMap()["duration"].toInt() >  b.toMap()["duration"].toInt();
-    }
-    static int ascendingOrderByNumber(QVariant a, QVariant b) {
-      return a.toMap()["fullname"].toString() <  b.toMap()["fullname"].toString();
-    }
-    static int descendingOrderByNumber(QVariant a, QVariant b) {
-      return a.toMap()["fullname"].toString() >  b.toMap()["fullname"].toString();
-    }
-    static int ascendingOrderByDate(QVariant a, QVariant b) {
-      return 
-        QDateTime::fromString(a.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t() <
-        QDateTime::fromString(b.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t();
-    }
-    static int descendingOrderByDate(QVariant a, QVariant b) {
-      return 
-        QDateTime::fromString(a.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t() >
-        QDateTime::fromString(b.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t();
-    }
+    public:
+        LogWidgetModel(BaseEngine *, int);
+        void updateHistory(const QVariantMap &p);
+        static void updateHistory_t(const QVariantMap &p, void *udata) {
+            return ((LogWidgetModel*)udata)->updateHistory(p);
+        };
 
-    void requestHistory(QString , int, QDateTime since = QDateTime(), int f = 0);
-    BaseEngine *engine;
-    QVariantList history;
-    int mode;
-    static LogWidgetModel *self;
+    protected:
+        virtual int rowCount(const QModelIndex&) const;
+        virtual int columnCount(const QModelIndex&) const;
+        virtual QVariant data(const QModelIndex&, int) const;
+        virtual Qt::ItemFlags flags(const QModelIndex &) const;
+        virtual void sort(int, Qt::SortOrder);
+        virtual QVariant headerData(int , Qt::Orientation, int) const;
 
+    public slots:
+        void changeMode(bool);
+
+    private:
+        static int ascendingOrderByDuration(const QVariant &a, const QVariant &b) {
+            return a.toMap()["duration"].toInt() <  b.toMap()["duration"].toInt();
+        }
+        static int descendingOrderByDuration(const QVariant &a, const QVariant &b) {
+            return a.toMap()["duration"].toInt() >  b.toMap()["duration"].toInt();
+        }
+        static int ascendingOrderByNumber(const QVariant &a, const QVariant &b) {
+            return a.toMap()["fullname"].toString() <  b.toMap()["fullname"].toString();
+        }
+        static int descendingOrderByNumber(const QVariant &a, const QVariant &b) {
+            return a.toMap()["fullname"].toString() >  b.toMap()["fullname"].toString();
+        }
+        static int ascendingOrderByDate(const QVariant &a, const QVariant &b) {
+            return 
+                QDateTime::fromString(a.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t() <
+                QDateTime::fromString(b.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t();
+        }
+        static int descendingOrderByDate(const QVariant &a, const QVariant &b) {
+            return 
+                QDateTime::fromString(a.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t() >
+                QDateTime::fromString(b.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t();
+        }
+
+        void requestHistory(const QString &, int, const QDateTime &since = QDateTime(), int f = 0);
+
+        BaseEngine *engine;
+        QVariantList history;
+        int mode;
 };
 
 
@@ -105,7 +112,8 @@ class LogWidgetModel : public QAbstractTableModel
  */
 class LogWidget : public XLet
 {
-    Q_OBJECT
+  Q_OBJECT
+
   public:
     LogWidget(BaseEngine *, QWidget *parent=0);
   private slots:

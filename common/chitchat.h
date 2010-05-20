@@ -63,11 +63,14 @@ class ChitChatWindow : public QWidget
         static ChitChatWindow *chitchat_instance;
 
         ChitChatWindow(BaseEngine *e);
-        ChitChatWindow(QString);
+        ChitChatWindow(const QString &);
         
-        void send_message(QString message);
-        void addMessage(QString, QString, QString, QString);
-        static void receive_message(QVariantMap message);
+        void send_message(const QString &message);
+        void addMessage(const QString &, const QString &, const QString &, const QString &);
+        void receive_message(const QVariantMap &message);
+        static void receive_message_t(const QVariantMap &message, void *udata) {
+            return ((ChitChatWindow*)udata)->receive_message(message);
+        };
 
     public slots:
         void WriteMessageTo();

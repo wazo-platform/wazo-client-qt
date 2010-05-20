@@ -53,33 +53,33 @@ class BaseEngine;
 class CallStackWidget : public XLet
 {
     Q_OBJECT
-public:
-    CallStackWidget(BaseEngine * engine, QWidget * parent = 0); //!< Constructor
-public slots:
-    void updateUser(UserInfo *);
-    void updateDisplay();
-    void hupchan(const QString &);
-    void transftonumberchan(const QString &);
-    void parkcall(const QString &);
-    void reset();
-    void monitorPeer(UserInfo *);
-protected:
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
-private:
-    //        void emptyList();        //!< remove all calls from the list
-signals:
-    //! originate, transfer & atxfer signals
-    void actionCall(const QString &,
-                    const QString &,
-                    const QString & dst = "");
-    void changeTitle(const QString &);                //!< change Title
-    void monitorPeerRequest(const QString &);        //!< send the userid of the new monitored peer
-private:
-    UserInfo * m_monitored_ui;  //!< user currently monitored
-    QVBoxLayout * m_layout;        //!< Vertical Layout used
-        
-    QHash<QString, CallWidget *> m_affhash;        //!< List of CallWidget Widgets
+
+    public:
+        CallStackWidget(BaseEngine *engine, QWidget *parent=0); //!< Constructor
+
+    public slots:
+        void updateUser(UserInfo *);
+        void updateDisplay();
+        void hupchan(const QString &);
+        void transftonumberchan(const QString &);
+        void parkcall(const QString &);
+        void reset();
+        void monitorPeer(UserInfo *);
+
+    protected:
+        void dragEnterEvent(QDragEnterEvent *event);
+        void dropEvent(QDropEvent *event);
+
+    signals:
+        //! originate, transfer & atxfer signals
+        void actionCall(const QString &, const QString &, const QString & dst = "");
+        void changeTitle(const QString &);  //!< change Title
+        void monitorPeerRequest(const QString &);  //!< send the userid of the new monitored peer
+
+    private:
+        UserInfo * m_monitored_ui;  //!< user currently monitored
+        QVBoxLayout * m_layout;  //!< Vertical Layout used
+        QHash<QString, CallWidget *> m_affhash;  //!< List of CallWidget Widgets
 };
 
 #endif

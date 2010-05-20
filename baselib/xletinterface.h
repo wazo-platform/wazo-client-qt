@@ -46,14 +46,12 @@ class XLet;
  */
 class XLetInterface
 {
-public:
-    virtual ~XLetInterface() {};
-    //! Return a XLet of the type of the plugin loaded 
-    virtual XLet * newXLetInstance(BaseEngine * engine = 0, QWidget * parent = 0) = 0;
+    public:
+        virtual ~XLetInterface() {};
+        virtual XLet* newXLetInstance(BaseEngine *, QWidget *) = 0; //! Return a XLet of the type of the plugin loaded 
 };
 
-Q_DECLARE_INTERFACE(XLetInterface,
-                    "com.proformatique.Plugin.XLetInterface/1.0");
+Q_DECLARE_INTERFACE(XLetInterface, "com.proformatique.Plugin.XLetInterface/1.1");
 
 #endif
 

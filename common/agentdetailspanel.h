@@ -53,61 +53,66 @@ class QueueInfo;
 class AgentdetailsPanel : public XLet
 {
     Q_OBJECT
-public:
-    AgentdetailsPanel(BaseEngine *,
-                      QWidget * parent = 0);
-    ~AgentdetailsPanel();
-protected:
-    void contextMenuEvent(QContextMenuEvent *);
-signals:
-    void changeWatchedQueue(const QString &);
-    void setFileName(const QString &);
-public slots:
-    void setGuiOptions(const QVariantMap &);
-    void newAgentList(const QStringList &);
-    void newQueueList(const QStringList &);
-    void monitorThisAgent(const QString &);
-    void saveToFile();
-    void statusRecord(const QString &, const QString &, const QString &);
-    void statusListen(const QString &, const QString &, const QString &);
-private slots:
-    void queueClicked();
-    void actionClicked();
-    void serverFileList(const QStringList &);
-    void getFile();
-private:
-    void clearPanel();
-    void updatePanel();
-    void setQueueLookProps(const QString &);
-    void setQueueAgentProps(const QString &, const QVariant &);
-    void setQueueProps(const QString &, const QueueInfo *);
-    void setQueueAgentSignals(const QString &);
-    void fillQueue(int, const QString &);
-    
-    QGridLayout * m_gridlayout; //!< layout
-    int m_linenum;  //!< line number ?
-    
-    QString m_monitored_astid;    //!< asterisk id
-    QString m_monitored_context;    //!< context
-    QString m_monitored_agentid;    //!< monitored agent id
-    QLabel * m_agentstatus; //!< to display agent name and status
-    QLabel * m_agentlegend_qname;   //!< "Queues"
-    QLabel * m_agentlegend_joined;  //!< "Joined"
-    QLabel * m_agentlegend_paused;  //!< "Paused"
-    QLabel * m_agentlegend_njoined; //!< number joined
-    QLabel * m_agentlegend_npaused; //!< number paused
-    QHash<QString, QLabel *> m_actionlegends;   //!< Label Login/Logout
-    QHash<QString, QPushButton *> m_action; //!< buttons cancel/ok
-    
-    QHash<QString, QLabel *> m_queue_labels;
-    QHash<QString, QPushButton *> m_queue_more;
-    QHash<QString, QPushButton *> m_queue_join_action;
-    QHash<QString, QPushButton *> m_queue_pause_action;
-    QHash<QString, QLabel *> m_queue_join_status;
-    QHash<QString, QLabel *> m_queue_pause_status;
-    
-    QPoint m_eventpoint;
-    QVariantMap m_optionsMap;
+
+    public:
+        AgentdetailsPanel(BaseEngine *, QWidget *parent=0);
+        ~AgentdetailsPanel();
+
+    protected:
+        void contextMenuEvent(QContextMenuEvent *);
+
+    signals:
+        void changeWatchedQueue(const QString &);
+        void setFileName(const QString &);
+
+    public slots:
+        void setGuiOptions(const QVariantMap &);
+        void newAgentList(const QStringList &);
+        void newQueueList(const QStringList &);
+        void monitorThisAgent(const QString &);
+        void saveToFile();
+        void statusRecord(const QString &, const QString &, const QString &);
+        void statusListen(const QString &, const QString &, const QString &);
+
+    private slots:
+        void queueClicked();
+        void actionClicked();
+        void serverFileList(const QStringList &);
+        void getFile();
+
+    private:
+        void clearPanel();
+        void updatePanel();
+        void setQueueLookProps(const QString &);
+        void setQueueAgentProps(const QString &, const QVariant &);
+        void setQueueProps(const QString &, const QueueInfo *);
+        void setQueueAgentSignals(const QString &);
+        void fillQueue(int, const QString &);
+        
+        QGridLayout *m_gridlayout; //!< layout
+        int m_linenum;  //!< line number ?
+        
+        QString m_monitored_astid;    //!< asterisk id
+        QString m_monitored_context;    //!< context
+        QString m_monitored_agentid;    //!< monitored agent id
+        QLabel *m_agentstatus; //!< to display agent name and status
+        QLabel *m_agentlegend_qname;   //!< "Queues"
+        QLabel *m_agentlegend_joined;  //!< "Joined"
+        QLabel *m_agentlegend_paused;  //!< "Paused"
+        QLabel *m_agentlegend_njoined; //!< number joined
+        QLabel *m_agentlegend_npaused; //!< number paused
+        QHash<QString, QLabel *> m_actionlegends;   //!< Label Login/Logout
+        QHash<QString, QPushButton *> m_action; //!< buttons cancel/ok
+        
+        QHash<QString, QLabel *> m_queue_labels;
+        QHash<QString, QPushButton *> m_queue_more;
+        QHash<QString, QPushButton *> m_queue_join_action;
+        QHash<QString, QPushButton *> m_queue_pause_action;
+        QHash<QString, QLabel *> m_queue_join_status;
+        QHash<QString, QLabel *> m_queue_pause_status;
+        
+        QPoint m_eventpoint;
+        QVariantMap m_optionsMap;
 };
 
 #endif /* __AGENTDETAILSPANEL_H__ */

@@ -49,13 +49,14 @@ class UserInfo;
 class DatetimePanel : public XLet
 {
     Q_OBJECT
-public:
-    DatetimePanel(BaseEngine * engine, QWidget * parent = 0);
-protected:
-    void timerEvent(QTimerEvent *);                //!< receive timer events
-private:
-    QGridLayout * m_gridlayout;
-    QLabel * m_datetime;
+
+    public:
+        DatetimePanel(BaseEngine *engine, QWidget *parent=0);
+    protected:
+        void timerEvent(QTimerEvent *);  //!< receive timer events
+    private:
+        QGridLayout * m_gridlayout;
+        QLabel * m_datetime;
 };
 
 #endif /* __DATETIMEPANEL_H__ */

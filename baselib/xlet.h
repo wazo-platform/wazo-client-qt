@@ -53,31 +53,29 @@ class BaseEngine;
 class BASELIB_EXPORT XLet : public QWidget
 {
     Q_OBJECT
-public:
-    //! Constructor
-    XLet(BaseEngine * engine, QWidget * parent = 0);
-    //! title accessor
-    QString title() const { return m_title; };
-    /*! \brief connects signals/slots to the main GUI window
-     *
-     * Reimplement this method for connecting signals/slots to the
-     * top level window.
-     * The default implementation does nothing.
-     * \see MainWidget
-     */
-    virtual void doGUIConnects(QWidget *) {};
-signals:
-    void ipbxCommand(const QVariantMap &);
-    void logAction(const QString &);
-    void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
-protected:
-    void connectDials();
-    //! set title of the XLet
-    void setTitle(const QString & title) { m_title = title; };
-    //! BaseEngine pointer
-    BaseEngine * m_engine;
-private:
-    QString m_title;    //!< title of the XLet
+
+    public:
+        XLet(BaseEngine * engine, QWidget * parent = 0);  //! Constructor
+        const QString& title() const { return m_title; };  //! title accessor
+
+        /*! \brief connects signals/slots to the main GUI window
+         *
+         * Reimplement this method for connecting signals/slots to the
+         * top level window.
+         * The default implementation does nothing.
+         * \see MainWidget
+         */
+        virtual void doGUIConnects(QWidget *) {};
+    signals:
+        void ipbxCommand(const QVariantMap &);
+        void logAction(const QString &);
+        void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
+    protected:
+        void connectDials();
+        void setTitle(const QString & title) { m_title = title; }; //! set title of the XLet
+        BaseEngine *m_engine; //! BaseEngine pointer
+    private:
+        QString m_title;    //!< title of the XLet
 };
 #endif
 
