@@ -366,96 +366,70 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
     
     QString oldsstatus = m_queue_join_status[queueid]->property("Status").toString();
     QString oldpstatus = m_queue_pause_status[queueid]->property("Paused").toString();
-    
     QPixmap square(12, 12);
+    
+    QString display_s_status_queue;
+    QString display_s_status_logged;
+    QString display_s_status_membership;
+    QString display_p_status;
+    QColor display_s_status_color;
+    int dfactor = 100;
+    
+    if(dynstatus == "") {
+        m_queue_join_action[queueid]->setIcon(QIcon(":/images/button_ok.png"));
+        m_queue_join_action[queueid]->show();
+        display_s_status_membership = "";
+        dfactor = 100;
+    } else if (dynstatus == "dynamic") {
+        m_queue_join_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
+        m_queue_join_action[queueid]->show();
+        display_s_status_membership = tr("Dynamic membership");
+        dfactor = 100;
+    } else if ((dynstatus == "static") || (dynstatus == "realtime")) {
+        // XXX common handling, before finding out why there is actually 2 memberships
+        m_queue_join_action[queueid]->hide();
+        display_s_status_membership = tr("Static/RT membership");
+        dfactor = 150;
+    } else {
+        m_queue_join_action[queueid]->hide();
+        display_s_status_membership = QString("unknown membership : %1").arg(dynstatus);
+        dfactor = 300;
+    }
+    
     if(sstatus != oldsstatus) {
         if (sstatus == "") {
-            square.fill(Qt::gray);
-            m_queue_join_status[queueid]->setToolTip(tr("Agent not in Queue"));
-            m_queue_join_action[queueid]->setIcon(QIcon(":/images/button_ok.png"));
-            m_queue_join_action[queueid]->show();
+            display_s_status_color = Qt::gray;
+            display_s_status_queue = tr("Agent not in Queue");
+            display_s_status_logged = "";
         } else if (sstatus == "1") {
-            if(dynstatus == "dynamic") {
-                square.fill(Qt::green);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue"));
-                m_queue_join_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
-                m_queue_join_action[queueid]->show();
-            } else if(dynstatus == "static") {
-                square.fill(Qt::darkGreen);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (statically)"));
-                m_queue_join_action[queueid]->hide();
-            } else if(dynstatus == "realtime") {
-                square.fill(Qt::darkGreen);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (realtime)"));
-                m_queue_join_action[queueid]->hide();
-            } else {
-                square.fill(Qt::black);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (%1)").arg(dynstatus));
-                m_queue_join_action[queueid]->hide();
-            }
+            display_s_status_color = Qt::green;
+            display_s_status_queue = tr("Agent in Queue");
+            display_s_status_logged = tr("Logged in");
         } else if (sstatus == "3") {
-            if(dynstatus == "dynamic") {
-                square.fill(Qt::yellow);
-                m_queue_join_status[queueid]->setToolTip(tr("Called/Busy"));
-                m_queue_join_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
-                m_queue_join_action[queueid]->show();
-            } else if(dynstatus == "static") {
-                square.fill(Qt::darkYellow);
-                m_queue_join_status[queueid]->setToolTip(tr("Called/Busy (statically)"));
-                m_queue_join_action[queueid]->hide();
-            } else if(dynstatus == "realtime") {
-                square.fill(Qt::darkYellow);
-                m_queue_join_status[queueid]->setToolTip(tr("Called/Busy (realtime)"));
-                m_queue_join_action[queueid]->hide();
-            } else {
-                square.fill(Qt::black);
-                m_queue_join_status[queueid]->setToolTip(tr("Called/Busy (%1)").arg(dynstatus));
-                m_queue_join_action[queueid]->hide();
-            }
+            display_s_status_color = Qt::yellow;
+            display_s_status_queue = tr("Agent Called or Busy");
+            display_s_status_logged = tr("Logged in");
         } else if (sstatus == "4") {
-            if(dynstatus == "dynamic") {
-                square.fill(Qt::red);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue but Invalid"));
-                m_queue_join_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
-                m_queue_join_action[queueid]->show();
-            } else if(dynstatus == "static") {
-                square.fill(Qt::darkRed);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue but Invalid (statically)"));
-                m_queue_join_action[queueid]->hide();
-            } else if(dynstatus == "realtime") {
-                square.fill(Qt::darkRed);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue but Invalid (realtime)"));
-                m_queue_join_action[queueid]->hide();
-            } else {
-                square.fill(Qt::black);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue but Invalid (%1)").arg(dynstatus));
-                m_queue_join_action[queueid]->hide();
-            }
+            display_s_status_color = Qt::red;
+            display_s_status_queue = tr("Agent in Queue but Invalid");
+            display_s_status_logged = "";
         } else if (sstatus == "5") {
-            if(dynstatus == "dynamic") {
-                square.fill(Qt::blue);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue but NOT logged"));
-                m_queue_join_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
-                m_queue_join_action[queueid]->show();
-            } else if(dynstatus == "static") {
-                square.fill(Qt::darkBlue);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (statically) but NOT logged"));
-                m_queue_join_action[queueid]->hide();
-            } else if(dynstatus == "realtime") {
-                square.fill(Qt::darkBlue);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (realtime) but NOT logged"));
-                m_queue_join_action[queueid]->hide();
-            } else {
-                square.fill(Qt::black);
-                m_queue_join_status[queueid]->setToolTip(tr("Agent in Queue (%1) but NOT logged").arg(dynstatus));
-                m_queue_join_action[queueid]->hide();
-            }
+            display_s_status_color = Qt::blue;
+            display_s_status_queue = tr("Agent in Queue");
+            display_s_status_logged = tr("Logged out");
         } else {
-            square.fill(Qt::black);
-            m_queue_join_status[queueid]->setToolTip(tr("Unknown %1").arg(sstatus));
-            m_queue_join_action[queueid]->hide();
+            display_s_status_color = Qt::black;
+            display_s_status_queue = QString("unknown-%1").arg(sstatus);
+            display_s_status_logged = "";
         }
+        
+        QColor true_display_s_status_color = display_s_status_color.darker(dfactor);
+        square.fill(true_display_s_status_color);
         m_queue_join_status[queueid]->setPixmap(square);
+        m_queue_join_status[queueid]->setToolTip(QString("%1\n%2\n%3")
+                                                 .arg(display_s_status_queue)
+                                                 .arg(display_s_status_logged)
+                                                 .arg(display_s_status_membership));
         m_queue_join_status[queueid]->setProperty("Status", sstatus);
     }
     

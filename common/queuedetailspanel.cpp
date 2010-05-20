@@ -253,62 +253,77 @@ void QueuedetailsPanel::setAgentQueueProps(const QString & agentid, const QVaria
     QString oldsstatus = m_agent_join_status[agentid]->property("Status").toString();
     QString oldpstatus = m_agent_pause_status[agentid]->property("Paused").toString();
     
-    QString displaysstatus;
-    QString displaypstatus;
+    QString display_s_status_queue;
+    QString display_s_status_logged;
+    QString display_s_status_membership;
+    QString display_p_status;
+    QColor display_s_status_color;
+    int dfactor = 100;
+    
+    if(dynstatus == "") {
+        display_s_status_membership = "";
+        dfactor = 100;
+    } else if (dynstatus == "dynamic") {
+        display_s_status_membership = tr("Dynamic membership");
+        dfactor = 100;
+    } else if ((dynstatus == "static") || (dynstatus == "realtime")) {
+        // XXX common handling, before finding out why there is actually 2 memberships
+        display_s_status_membership = tr("Static/RT membership");
+        dfactor = 150;
+    } else {
+        display_s_status_membership = QString("unknown membership : %1").arg(dynstatus);
+        dfactor = 300;
+    }
     
     if(sstatus != oldsstatus) {
         if (sstatus == "") {
-            displaysstatus = tr("Not in Queue");
+            display_s_status_color = Qt::gray;
+            display_s_status_queue = tr("Agent not in Queue");
+            display_s_status_logged = "";
         } else if (sstatus == "1") {
-            if(dynstatus == "dynamic") {
-                displaysstatus = tr("In Queue");
-            } else if(dynstatus == "static") {
-                displaysstatus = tr("In Queue (stat)");
-            } else {
-                displaysstatus = tr("In Queue (%1)").arg(dynstatus);
-            }
+            display_s_status_color = Qt::green;
+            display_s_status_queue = tr("Agent in Queue");
+            display_s_status_logged = tr("Logged in");
         } else if (sstatus == "3") {
-            if(dynstatus == "dynamic") {
-                displaysstatus = tr("Called/Busy");
-            } else if(dynstatus == "static") {
-                displaysstatus = tr("Called/Busy (stat)");
-            } else {
-                displaysstatus = tr("Called/Busy (%1)").arg(dynstatus);
-            }
+            display_s_status_color = Qt::yellow;
+            display_s_status_queue = tr("Agent Called or Busy");
+            display_s_status_logged = tr("Logged in");
         } else if (sstatus == "4") {
-            if(dynstatus == "dynamic") {
-                displaysstatus = tr("Invalid");
-            } else if(dynstatus == "static") {
-                displaysstatus = tr("Invalid (stat)");
-            } else {
-                displaysstatus = tr("Invalid (%1)").arg(dynstatus);
-            }
+            display_s_status_color = Qt::red;
+            display_s_status_queue = tr("Agent in Queue but Invalid");
+            display_s_status_logged = "";
         } else if (sstatus == "5") {
-            if(dynstatus == "dynamic") {
-                displaysstatus = tr("In Queue NOT logged");
-            } else if(dynstatus == "static") {
-                displaysstatus = tr("In Queue (stat) NOT logged");
-            } else {
-                displaysstatus = tr("In Queue (%1) NOT logged").arg(dynstatus);
-            }
+            display_s_status_color = Qt::blue;
+            display_s_status_queue = tr("Agent in Queue");
+            display_s_status_logged = tr("Logged out");
         } else {
-            displaysstatus = tr("Unknown %1").arg(sstatus);
+            display_s_status_color = Qt::black;
+            display_s_status_queue = QString("unknown-%1").arg(sstatus);
+            display_s_status_logged = "";
         }
-        m_agent_join_status[agentid]->setText(displaysstatus);
+        
+        QColor true_display_s_status_color = display_s_status_color.darker(dfactor);
+        QPixmap square(12, 12);
+        square.fill(true_display_s_status_color);
+        m_agent_join_status[agentid]->setPixmap(square);
+        m_agent_join_status[agentid]->setToolTip(QString("%1\n%2\n%3")
+                                                 .arg(display_s_status_queue)
+                                                 .arg(display_s_status_logged)
+                                                 .arg(display_s_status_membership));
         m_agent_join_status[agentid]->setProperty("Status", sstatus);
     }
     
     if(pstatus != oldpstatus) {
         if(pstatus == "0") {
-            displaypstatus = tr("Not paused");
+            display_p_status = tr("Not paused");
         } else if(pstatus == "1") {
-            displaypstatus = tr("Paused");
+            display_p_status = tr("Paused");
         } else if(pstatus == "") {
-            displaypstatus = tr("Not relevant");
+            display_p_status = tr("Not relevant");
         } else {
-            displaypstatus = tr("Unknown %1").arg(pstatus);
+            display_p_status = tr("Unknown %1").arg(pstatus);
         }
-        m_agent_pause_status[agentid]->setText(displaypstatus);
+        m_agent_pause_status[agentid]->setText(display_p_status);
         m_agent_pause_status[agentid]->setProperty("Paused", pstatus);
     }
     
