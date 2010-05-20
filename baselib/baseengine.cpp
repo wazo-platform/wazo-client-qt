@@ -1381,6 +1381,7 @@ void BaseEngine::parseCommand(const QString & line)
                 cg2.next();
                 tmpa[cg2.key()] = cg2.value();
             }
+            tmpa["services"] = datamap["capaservices"];
             m_guioptions["merged_gui"] = tmpa;
             
             QVariantMap tmp;
