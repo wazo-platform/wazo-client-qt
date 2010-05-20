@@ -38,14 +38,6 @@ const QColor Orange = QColor(255, 128, 0);
 
 QueueAgentStatus::QueueAgentStatus()
 {
-//     m_context = prop.value("context").toString();
-//     m_queuename = prop.value("queuename").toString();
-//     m_number = prop.value("number").toString();
-//     update(prop);
-}
-
-QueueAgentStatus::~QueueAgentStatus()
-{
 }
 
 bool QueueAgentStatus::update(const QString & dynstatus,
@@ -71,28 +63,29 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         m_display_action_join = "";
     }
     
+    QColor basecolor;
     if (sstatus == "") {
-        m_display_status_basecolor = Qt::gray;
+        basecolor = Qt::gray;
         m_display_status_queue = tr("Agent not in Queue");
         m_display_status_logged = "";
     } else if (sstatus == "1") {
-        m_display_status_basecolor = Qt::green;
+        basecolor = Qt::green;
         m_display_status_queue = tr("Agent in Queue");
         m_display_status_logged = tr("Logged in");
     } else if (sstatus == "3") {
-        m_display_status_basecolor = Qt::yellow;
+        basecolor = Qt::yellow;
         m_display_status_queue = tr("Agent Called or Busy");
         m_display_status_logged = tr("Logged in");
     } else if (sstatus == "4") {
-        m_display_status_basecolor = Qt::red;
+        basecolor = Qt::red;
         m_display_status_queue = tr("Agent in Queue but Invalid");
         m_display_status_logged = "";
     } else if (sstatus == "5") {
-        m_display_status_basecolor = Qt::blue;
+        basecolor = Qt::blue;
         m_display_status_queue = tr("Agent in Queue");
         m_display_status_logged = tr("Logged out");
     } else {
-        m_display_status_basecolor = Qt::black;
+        basecolor = Qt::black;
         m_display_status_queue = QString("unknown-%1").arg(sstatus);
         m_display_status_logged = "";
     }
@@ -115,7 +108,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         m_display_action_pause = "";
     }
     
-    m_display_status_color = m_display_status_basecolor.darker(m_display_status_darkfactor);
+    m_display_status_color = basecolor.darker(m_display_status_darkfactor);
     return true;
 }
 

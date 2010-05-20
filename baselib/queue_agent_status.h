@@ -37,25 +37,18 @@
 #include "baselib_export.h"
 #include <QColor>
 #include <QString>
-#include <QVariant>
-#include <QMap>
 
-/*! \brief Store Queue information
+/*! \brief Store Queue Membership information
  */
 class BASELIB_EXPORT QueueAgentStatus: public QObject
 {
-        Q_OBJECT
-public:
-        //! constructor
+    Q_OBJECT
+
+    public:
         QueueAgentStatus();
-        //! destructor
-        ~QueueAgentStatus();
+        
         //! update attribute members
-        bool update(const QString &,
-                    const QString &,
-                    const QString &);
-        //! update attribute members
-        bool updateAgent(const QMap<QString, QVariant> &);
+        bool update(const QString &, const QString &, const QString &);
         //! asterisk this queue belongs to
         const QString & astid() const;
         //! reference id of this queue on the server
@@ -66,8 +59,6 @@ public:
         const QString & number() const { return m_number; };
         //! queuename
         const QString & queuename() const;
-        //! queue properties
-        const QVariantMap & properties() const;
         
         const QColor & display_status_color() const;
         const QString & display_status_queue() const;
@@ -77,7 +68,8 @@ public:
         const QColor & display_status_paused_color() const;
         const QString & display_action_join() const;
         const QString & display_action_pause() const;
- private:
+
+    private:
         QString m_astid;
         QString m_id;
         QString m_context;
@@ -91,7 +83,6 @@ public:
         QString m_display_action_join;
         QString m_display_action_pause;
         
-        QColor m_display_status_basecolor;
         QColor m_display_status_color;
         QColor m_display_status_paused_color;
         int m_display_status_darkfactor;
