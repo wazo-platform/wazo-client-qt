@@ -246,4 +246,64 @@ par le serveur CTI XiVO sur %3:%4.</translation>
 	À : %3</translation>
     </message>
 </context>
+<context>
+    <name>QueueAgentStatus</name>
+    <message>
+        <location filename="queue_agent_status.cpp" line="60"/>
+        <source>Dynamic membership</source>
+        <translation>Adhésion dynamique</translation>
+    </message>
+    <message>
+        <location filename="queue_agent_status.cpp" line="65"/>
+        <source>Static/RT membership</source>
+        <translation>Adhésion statique/RT</translation>
+    </message>
+    <message>
+        <location filename="queue_agent_status.cpp" line="76"/>
+        <source>Agent not in Queue</source>
+        <translation>Agent pas dans la File</translation>
+    </message>
+    <message>
+        <location filename="queue_agent_status.cpp" line="80"/>
+        <location filename="queue_agent_status.cpp" line="92"/>
+        <source>Agent in Queue</source>
+        <translation>Agent dans la File</translation>
+    </message>
+    <message>
+        <location filename="queue_agent_status.cpp" line="81"/>
+        <location filename="queue_agent_status.cpp" line="85"/>
+        <source>Logged in</source>
+        <translation>Loggé</translation>
+    </message>
+    <message>
+        <location filename="queue_agent_status.cpp" line="84"/>
+        <source>Agent Called or Busy</source>
+        <translation>Agent Appelé ou Occupé</translation>
+    </message>
+    <message>
+        <location filename="queue_agent_status.cpp" line="88"/>
+        <source>Agent in Queue but Invalid</source>
+        <translation>Agent dans la File mais Invalide</translation>
+    </message>
+    <message>
+        <location filename="queue_agent_status.cpp" line="93"/>
+        <source>Logged out</source>
+        <translation>Dé-loggé</translation>
+    </message>
+    <message>
+        <location filename="queue_agent_status.cpp" line="101"/>
+        <source>Not paused</source>
+        <translation>Prêt</translation>
+    </message>
+    <message>
+        <location filename="queue_agent_status.cpp" line="105"/>
+        <source>Paused</source>
+        <translation>En retrait</translation>
+    </message>
+    <message>
+        <location filename="queue_agent_status.cpp" line="109"/>
+        <source>Not relevant</source>
+        <translation>Non pertinent</translation>
+    </message>
+</context>
 </TS>

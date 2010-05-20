@@ -4,143 +4,85 @@
 <context>
     <name>AgentdetailsPanel</name>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="64"/>
+        <location filename="../common/agentdetailspanel.cpp" line="63"/>
         <source>Joined</source>
         <translation>Jointes</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="69"/>
+        <location filename="../common/agentdetailspanel.cpp" line="68"/>
         <source>Record</source>
         <translation>Enregistre</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="627"/>
+        <location filename="../common/agentdetailspanel.cpp" line="574"/>
         <source>Save Sound File</source>
         <translation>Sauve un Fichier Son</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="629"/>
+        <location filename="../common/agentdetailspanel.cpp" line="576"/>
         <source>All Files (*)</source>
         <translation>Tous les Fichiers (*)</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="65"/>
-        <location filename="../common/agentdetailspanel.cpp" line="444"/>
+        <location filename="../common/agentdetailspanel.cpp" line="64"/>
         <source>Paused</source>
-        <translation>En pause</translation>
+        <translation>En retrait</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="70"/>
-        <location filename="../common/agentdetailspanel.cpp" line="230"/>
+        <location filename="../common/agentdetailspanel.cpp" line="69"/>
+        <location filename="../common/agentdetailspanel.cpp" line="229"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="235"/>
-        <location filename="../common/agentdetailspanel.cpp" line="242"/>
+        <location filename="../common/agentdetailspanel.cpp" line="234"/>
+        <location filename="../common/agentdetailspanel.cpp" line="241"/>
         <source>Logout</source>
         <translation>Logout</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="63"/>
+        <location filename="../common/agentdetailspanel.cpp" line="62"/>
         <source>Queues</source>
         <translation>Files d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="232"/>
-        <location filename="../common/agentdetailspanel.cpp" line="239"/>
+        <location filename="../common/agentdetailspanel.cpp" line="231"/>
+        <location filename="../common/agentdetailspanel.cpp" line="238"/>
         <source>logged on phone number &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>loggé sur le téléphone &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="227"/>
+        <location filename="../common/agentdetailspanel.cpp" line="226"/>
         <source>logged off &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>déloggé de &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="402"/>
-        <source>Agent not in Queue</source>
-        <translation>Agent pas dans la File</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="406"/>
-        <location filename="../common/agentdetailspanel.cpp" line="418"/>
-        <source>Agent in Queue</source>
-        <translation>Agent dans la File</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="414"/>
-        <source>Agent in Queue but Invalid</source>
-        <translation>Agent dans la File mais Invalide</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="453"/>
-        <source>Unknown %1</source>
-        <translation>Inconnu %1</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="439"/>
-        <source>Not paused</source>
-        <translation>Prêt</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="449"/>
-        <source>Not relevant</source>
-        <translation>Non pertinent</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="216"/>
+        <location filename="../common/agentdetailspanel.cpp" line="215"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>sur &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="325"/>
+        <location filename="../common/agentdetailspanel.cpp" line="324"/>
         <source>Server: %1</source>
         <translation>Serveur: %1</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="327"/>
+        <location filename="../common/agentdetailspanel.cpp" line="326"/>
         <source>Context: %1</source>
         <translation>Contexte: %1</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="386"/>
-        <source>Dynamic membership</source>
-        <translation>Adhésion dynamique</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="391"/>
-        <source>Static/RT membership</source>
-        <translation>Adhésion statique/RT</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="407"/>
-        <location filename="../common/agentdetailspanel.cpp" line="411"/>
-        <source>Logged in</source>
-        <translation>Loggé</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="410"/>
-        <source>Agent Called or Busy</source>
-        <translation>Agent Appelé ou Occupé</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="419"/>
-        <source>Logged out</source>
-        <translation>Dé-loggé</translation>
-    </message>
-    <message>
-        <location filename="../common/agentdetailspanel.cpp" line="561"/>
+        <location filename="../common/agentdetailspanel.cpp" line="508"/>
         <source>Record files for this agent</source>
         <translation>Fichiers enregistrés pour cet agent</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="574"/>
+        <location filename="../common/agentdetailspanel.cpp" line="521"/>
         <source>No Record for this agent</source>
         <translation>Pas d&apos;enregistrement pour cet agent</translation>
     </message>
     <message>
-        <location filename="../common/agentdetailspanel.cpp" line="58"/>
+        <location filename="../common/agentdetailspanel.cpp" line="57"/>
         <source>Agent Details</source>
         <translation>Détails des Agents</translation>
     </message>
@@ -676,33 +618,33 @@ Are you sure ?</source>
 <context>
     <name>ChitChatWindow</name>
     <message>
-        <location filename="../common/chitchat.cpp" line="72"/>
+        <location filename="../common/chitchat.cpp" line="76"/>
         <source>&amp;Clear history</source>
         <translation>E&amp;ffacer le dialogue</translation>
     </message>
     <message>
-        <location filename="../common/chitchat.cpp" line="73"/>
+        <location filename="../common/chitchat.cpp" line="77"/>
         <source>&amp;Send</source>
         <translation>&amp;Envoyer</translation>
     </message>
     <message>
-        <location filename="../common/chitchat.cpp" line="91"/>
+        <location filename="../common/chitchat.cpp" line="95"/>
         <source>chitchat - %0</source>
         <translation>chitchat - %0</translation>
     </message>
     <message>
-        <location filename="../common/chitchat.cpp" line="121"/>
-        <location filename="../common/chitchat.cpp" line="166"/>
+        <location filename="../common/chitchat.cpp" line="125"/>
+        <location filename="../common/chitchat.cpp" line="170"/>
         <source>chat window opened with user - </source>
         <translation>fenêtre de chat ouverte avec - </translation>
     </message>
     <message>
-        <location filename="../common/chitchat.cpp" line="137"/>
+        <location filename="../common/chitchat.cpp" line="141"/>
         <source>you said: </source>
         <translation>Vous avez dit:</translation>
     </message>
     <message>
-        <location filename="../common/chitchat.cpp" line="166"/>
+        <location filename="../common/chitchat.cpp" line="170"/>
         <source>system: </source>
         <translation>système: </translation>
     </message>
@@ -1204,12 +1146,12 @@ que celles ci-dessous) en première page</translation>
         <translation>&amp;Répertoire</translation>
     </message>
     <message>
-        <location filename="../common/directorypanel.cpp" line="182"/>
+        <location filename="../common/directorypanel.cpp" line="178"/>
         <source>Double-click to call</source>
         <translation>Double-cliquer pour appeler</translation>
     </message>
     <message>
-        <location filename="../common/directorypanel.cpp" line="180"/>
+        <location filename="../common/directorypanel.cpp" line="176"/>
         <source>Double-click to send an E-mail to</source>
         <translation>Double-cliquer pour envoyer un E-mail à</translation>
     </message>
@@ -1581,22 +1523,22 @@ a été envoyé à %2.</translation>
 <context>
     <name>LogWidget</name>
     <message>
-        <location filename="../common/logwidget.cpp" line="267"/>
+        <location filename="../common/logwidget.cpp" line="264"/>
         <source>Incoming calls</source>
         <translation>Appels entrants</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="268"/>
+        <location filename="../common/logwidget.cpp" line="265"/>
         <source>Missed calls</source>
         <translation>Appels manqués</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="266"/>
+        <location filename="../common/logwidget.cpp" line="263"/>
         <source>Outgoing calls</source>
         <translation>Appels sortants</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="239"/>
+        <location filename="../common/logwidget.cpp" line="236"/>
         <source>History</source>
         <translation>Historique</translation>
     </message>
@@ -1604,32 +1546,32 @@ a été envoyé à %2.</translation>
 <context>
     <name>LogWidgetModel</name>
     <message>
-        <location filename="../common/logwidget.cpp" line="122"/>
+        <location filename="../common/logwidget.cpp" line="119"/>
         <source>%1 hr %2 min %3 s</source>
         <translation>%1 h %2 min %3 s</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="124"/>
+        <location filename="../common/logwidget.cpp" line="121"/>
         <source>%1 min %2 s</source>
         <translation>%1 min %2 s</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="126"/>
+        <location filename="../common/logwidget.cpp" line="123"/>
         <source>%1 s</source>
         <translation>%1 s</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="188"/>
+        <location filename="../common/logwidget.cpp" line="185"/>
         <source>Number</source>
         <translation>Numéro</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="190"/>
+        <location filename="../common/logwidget.cpp" line="187"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="193"/>
+        <location filename="../common/logwidget.cpp" line="190"/>
         <source>Duration</source>
         <translation>Durée</translation>
     </message>
@@ -2018,40 +1960,41 @@ Etes vous sur ?</translation>
 <context>
     <name>PeerWidget</name>
     <message>
-        <location filename="../common/peerwidget.cpp" line="182"/>
+        <location filename="../common/peerwidget.cpp" line="184"/>
         <source>(No callerid yet)</source>
         <translation>(Callerid en attente)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../common/peerwidget.cpp" line="174"/>
+        <location filename="../common/peerwidget.cpp" line="175"/>
         <source>Agent %1
 %n Queue(s) %2</source>
         <translation>
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../common/peerwidget.cpp" line="184"/>
+        <location filename="../common/peerwidget.cpp" line="187"/>
         <source>%1 &lt;%2&gt;</source>
         <translation>%1 &lt;%2&gt;</translation>
     </message>
     <message>
-        <location filename="../common/peerwidget.cpp" line="116"/>
+        <location filename="../common/peerwidget.cpp" line="118"/>
         <source>Agent %1</source>
         <translation>Agent %1</translation>
     </message>
     <message>
-        <location filename="../common/peerwidget.cpp" line="141"/>
+        <location filename="../common/peerwidget.cpp" line="143"/>
         <source>Mobile number : %1</source>
         <translation>Numéro de mobile : %1</translation>
     </message>
     <message>
-        <location filename="../common/peerwidget.cpp" line="150"/>
+        <location filename="../common/peerwidget.cpp" line="152"/>
         <source>User : %1</source>
         <translation>Utilisateur : %1</translation>
     </message>
     <message>
-        <location filename="../common/peerwidget.cpp" line="164"/>
+        <location filename="../common/peerwidget.cpp" line="165"/>
         <source>Phone %1 : %2</source>
         <translation>Téléphone %1 : %2</translation>
     </message>
@@ -2170,111 +2113,49 @@ Etes vous sur ?</translation>
 <context>
     <name>QueuedetailsPanel</name>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="58"/>
+        <location filename="../common/queuedetailspanel.cpp" line="59"/>
         <source>Status</source>
         <translation>Statut</translation>
     </message>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="60"/>
+        <location filename="../common/queuedetailspanel.cpp" line="61"/>
         <source>Calls Taken</source>
         <translation>Appels pris</translation>
     </message>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="57"/>
+        <location filename="../common/queuedetailspanel.cpp" line="58"/>
         <source>Agent</source>
         <translation>Agent</translation>
     </message>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="267"/>
-        <source>Dynamic membership</source>
-        <translation>Adhésion dynamique</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="271"/>
-        <source>Static/RT membership</source>
-        <translation>Adhésion statique/RT</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="281"/>
-        <source>Agent not in Queue</source>
-        <translation>Agent pas dans la File</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="285"/>
-        <location filename="../common/queuedetailspanel.cpp" line="297"/>
-        <source>Agent in Queue</source>
-        <translation>Agent dans la File</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="286"/>
-        <location filename="../common/queuedetailspanel.cpp" line="290"/>
-        <source>Logged in</source>
-        <translation>Loggé</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="289"/>
-        <source>Agent Called or Busy</source>
-        <translation>Agent Appelé ou Occupé</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="293"/>
-        <source>Agent in Queue but Invalid</source>
-        <translation>Agent dans la File mais Invalide</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="298"/>
-        <source>Logged out</source>
-        <translation>Dé-loggé</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="320"/>
-        <source>Paused</source>
-        <translation>En retrait</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="59"/>
+        <location filename="../common/queuedetailspanel.cpp" line="60"/>
         <source>Paused ?</source>
         <translation>En retrait ?</translation>
     </message>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="166"/>
+        <location filename="../common/queuedetailspanel.cpp" line="167"/>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt; (%3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; sur &lt;b&gt;%2&lt;/b&gt; (%3)</translation>
     </message>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="324"/>
-        <source>Unknown %1</source>
-        <translation>Inconnu %1</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="318"/>
-        <source>Not paused</source>
-        <translation>Prêt</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="322"/>
-        <source>Not relevant</source>
-        <translation>Non pertinent</translation>
-    </message>
-    <message>
-        <location filename="../common/queuedetailspanel.cpp" line="61"/>
+        <location filename="../common/queuedetailspanel.cpp" line="62"/>
         <source>Last Call</source>
         <translation>Dernier Appel</translation>
     </message>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="62"/>
+        <location filename="../common/queuedetailspanel.cpp" line="63"/>
         <source>Penalty</source>
         <translation>Pénalité</translation>
     </message>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="231"/>
+        <location filename="../common/queuedetailspanel.cpp" line="232"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
 Contexte: %2</translation>
     </message>
     <message>
-        <location filename="../common/queuedetailspanel.cpp" line="53"/>
+        <location filename="../common/queuedetailspanel.cpp" line="54"/>
         <source>Agents of a Queue</source>
         <translation>Agents d&apos;une File d&apos;Attente</translation>
     </message>
@@ -2295,232 +2176,232 @@ Contexte: %2</translation>
 <context>
     <name>QueuesPanel</name>
     <message>
-        <location filename="../common/queuespanel.cpp" line="88"/>
-        <location filename="../common/queuespanel.cpp" line="94"/>
+        <location filename="../common/queuespanel.cpp" line="83"/>
+        <location filename="../common/queuespanel.cpp" line="89"/>
         <source>Abandoned</source>
         <translation>Abandonnés</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="119"/>
+        <location filename="../common/queuespanel.cpp" line="114"/>
         <source>Number of calls that were answered on this queue</source>
         <translation>Nombre d&apos;appels répondus sur cette file</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="122"/>
+        <location filename="../common/queuespanel.cpp" line="117"/>
         <source>Ratio (Linked) / (Joined) (%)</source>
         <translation>Rapport (Appels aboutis) / (Appels reçus) (%)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="125"/>
+        <location filename="../common/queuespanel.cpp" line="120"/>
         <source>Ratio (Number of calls answered in less than X sec) / (Number of calls answered) (%)</source>
         <translation>Rapport (Nombre d&apos;appels répondus avant X sec) / (Nombre d&apos;appels répondus) (%)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="137"/>
+        <location filename="../common/queuespanel.cpp" line="132"/>
         <source>Busy</source>
         <translation>Appels en
 attente</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="87"/>
-        <location filename="../common/queuespanel.cpp" line="93"/>
+        <location filename="../common/queuespanel.cpp" line="82"/>
+        <location filename="../common/queuespanel.cpp" line="88"/>
         <source>Completed</source>
         <translation>Réussis</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="90"/>
-        <location filename="../common/queuespanel.cpp" line="96"/>
+        <location filename="../common/queuespanel.cpp" line="85"/>
+        <location filename="../common/queuespanel.cpp" line="91"/>
         <source>ServiceLevel</source>
         <translation>Niveau de
 Service</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="91"/>
-        <location filename="../common/queuespanel.cpp" line="97"/>
+        <location filename="../common/queuespanel.cpp" line="86"/>
+        <location filename="../common/queuespanel.cpp" line="92"/>
         <source>Max</source>
         <translation>Max</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="92"/>
-        <location filename="../common/queuespanel.cpp" line="98"/>
+        <location filename="../common/queuespanel.cpp" line="87"/>
+        <location filename="../common/queuespanel.cpp" line="93"/>
         <source>Weight</source>
         <translation>Poids</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="105"/>
+        <location filename="../common/queuespanel.cpp" line="100"/>
         <source>Joined</source>
         <translation>Présentés</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="106"/>
+        <location filename="../common/queuespanel.cpp" line="101"/>
         <source>Linked</source>
         <translation>Aboutis</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="115"/>
+        <location filename="../common/queuespanel.cpp" line="110"/>
         <source>The maximum waiting time before getting an agent</source>
         <translation>Plus grand temps d&apos;attente avant d&apos;obtenir un agent</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="133"/>
+        <location filename="../common/queuespanel.cpp" line="128"/>
         <source>Queues</source>
         <translation>Files d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="107"/>
+        <location filename="../common/queuespanel.cpp" line="102"/>
         <source>Lost</source>
         <translation>Perdus</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="100"/>
+        <location filename="../common/queuespanel.cpp" line="95"/>
         <source>Estimated
 Holdtime</source>
         <translation>Attente
 prévisible</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="101"/>
+        <location filename="../common/queuespanel.cpp" line="96"/>
         <source>Average
 Holdtime</source>
         <translation>Attente
 Moyenne</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="102"/>
+        <location filename="../common/queuespanel.cpp" line="97"/>
         <source>Max
 Holdtime</source>
         <translation>Attente
 Max</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="103"/>
+        <location filename="../common/queuespanel.cpp" line="98"/>
         <source>Connected</source>
         <translation>Connectés</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="104"/>
+        <location filename="../common/queuespanel.cpp" line="99"/>
         <source>Available</source>
         <translation>Disponibles</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="108"/>
+        <location filename="../common/queuespanel.cpp" line="103"/>
         <source>Efficiency
 (%)</source>
         <translation>Efficacité
 (%)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="109"/>
+        <location filename="../common/queuespanel.cpp" line="104"/>
         <source>Conversation
 Time</source>
         <translation>Temps de
 Conversation</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="110"/>
+        <location filename="../common/queuespanel.cpp" line="105"/>
         <source>Currently
 Talking</source>
         <translation>En
 Conversation</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="111"/>
+        <location filename="../common/queuespanel.cpp" line="106"/>
         <source>Quality of Service (%)</source>
         <translation>Qualité de Service (%)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="116"/>
+        <location filename="../common/queuespanel.cpp" line="111"/>
         <source>Number of agents in this queue</source>
         <translation>Nombre d&apos;agents dans cette file</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="117"/>
+        <location filename="../common/queuespanel.cpp" line="112"/>
         <source>Number of available agents in this queue</source>
         <translation>Nombre d&apos;agents disponibles dans cette file</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="118"/>
+        <location filename="../common/queuespanel.cpp" line="113"/>
         <source>Number of calls this queue has received</source>
         <translation>Nombre d&apos;appels reçus sur cette file</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="120"/>
+        <location filename="../common/queuespanel.cpp" line="115"/>
         <source>Number of calls where the caller has left before getting an answer from an agent</source>
         <translation>Nombre d&apos;appels pour lesquels l&apos;appelant a quitté sans obtenir de réponse de la part d&apos;un agent</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="124"/>
+        <location filename="../common/queuespanel.cpp" line="119"/>
         <source>Number of agents in this queue, currently talking</source>
         <translation>Nombre d&apos;agents dans cette file actuellement en conversation</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="141"/>
+        <location filename="../common/queuespanel.cpp" line="136"/>
         <source>Hide</source>
         <translation>Cache</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="145"/>
+        <location filename="../common/queuespanel.cpp" line="140"/>
         <source>Window (s)</source>
         <translation>Fenêtre (s)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="146"/>
+        <location filename="../common/queuespanel.cpp" line="141"/>
         <source>Qos - X (s)</source>
         <translation>Qos - X (s)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="183"/>
+        <location filename="../common/queuespanel.cpp" line="176"/>
         <source>Stats on slice &lt;sup&gt; ( right click to configure ) &lt;/sup&gt;</source>
         <translation>Statistiques sur fenêtre &lt;sup&gt; ( click droit pour configurer )&lt;/sup&gt;</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="386"/>
+        <location filename="../common/queuespanel.cpp" line="365"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
 Contexte: %2</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="89"/>
-        <location filename="../common/queuespanel.cpp" line="95"/>
+        <location filename="../common/queuespanel.cpp" line="84"/>
+        <location filename="../common/queuespanel.cpp" line="90"/>
         <source>ServicelevelPerf(%)</source>
         <translation>Perf. de
 Niveau de
 Service(%)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="113"/>
+        <location filename="../common/queuespanel.cpp" line="108"/>
         <source>The average waiting time before getting an agent, calculated by asterisk</source>
         <translation>Temps moyen d&apos;attente avant d&apos;obtenir un agent, calculé par asterisk</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="114"/>
+        <location filename="../common/queuespanel.cpp" line="109"/>
         <source>The average waiting time before getting an agent</source>
         <translation>Le temps moyen attendu avant d&apos;obtenir un agent</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="123"/>
+        <location filename="../common/queuespanel.cpp" line="118"/>
         <source>The average length of a conversation</source>
         <translation>La durée moyenne d&apos;une conversation</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="139"/>
+        <location filename="../common/queuespanel.cpp" line="134"/>
         <source>Longest Wait</source>
         <translation>Attente max
 en cours</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="178"/>
+        <location filename="../common/queuespanel.cpp" line="171"/>
         <source>Live state</source>
         <translation>Etat instantané</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="613"/>
+        <location filename="../common/queuespanel.cpp" line="595"/>
         <source>Available agents : %1</source>
         <translation>Agents disponibles : %1</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="62"/>
+        <location filename="../common/queuespanel.cpp" line="59"/>
         <source>Queues&apos; List</source>
         <translation>Liste des Files d&apos;attente</translation>
     </message>

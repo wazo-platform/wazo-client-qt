@@ -43,11 +43,10 @@
 #include "xlet.h"
 #include "baseengine.h"
 #include "agentdetailspanel.h"
+#include "queue_agent_status.h"
 #include "agentinfo.h"
 #include "queueinfo.h"
 #include "userinfo.h"
-
-const QColor Orange = QColor(255, 128, 0);
 
 /*! \brief Constructor
  */
@@ -358,104 +357,52 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
     m_queue_join_status[queueid]->show();
     m_queue_pause_status[queueid]->show();
     
+    QString oldsstatus = m_queue_join_status[queueid]->property("Status").toString();
+    QString oldpstatus = m_queue_pause_status[queueid]->property("Paused").toString();
+    
     QString pstatus = qv.toMap()["Paused"].toString();
     QString sstatus = qv.toMap()["Status"].toString();
     QString dynstatus = qv.toMap()["Membership"].toString();
-    // dynstatus @ app_queue.c : cur->dynamic ? "dynamic" : cur->realtime ? "realtime" : "static"
     // CallsTaken, LastCall, Penalty
     
-    QString oldsstatus = m_queue_join_status[queueid]->property("Status").toString();
-    QString oldpstatus = m_queue_pause_status[queueid]->property("Paused").toString();
-    QPixmap square(12, 12);
+    QueueAgentStatus * qas = new QueueAgentStatus();
+    qas->update(dynstatus, sstatus, pstatus);
     
-    QString display_s_status_queue;
-    QString display_s_status_logged;
-    QString display_s_status_membership;
-    QString display_p_status;
-    QColor display_s_status_color;
-    int dfactor = 100;
-    
-    if(dynstatus == "") {
-        m_queue_join_action[queueid]->setIcon(QIcon(":/images/button_ok.png"));
-        m_queue_join_action[queueid]->show();
-        display_s_status_membership = "";
-        dfactor = 100;
-    } else if (dynstatus == "dynamic") {
-        m_queue_join_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
-        m_queue_join_action[queueid]->show();
-        display_s_status_membership = tr("Dynamic membership");
-        dfactor = 100;
-    } else if ((dynstatus == "static") || (dynstatus == "realtime")) {
-        // XXX common handling, before finding out why there is actually 2 memberships
+    QString joinicon = qas->display_action_join();
+    if (joinicon.isEmpty())
         m_queue_join_action[queueid]->hide();
-        display_s_status_membership = tr("Static/RT membership");
-        dfactor = 150;
-    } else {
-        m_queue_join_action[queueid]->hide();
-        display_s_status_membership = QString("unknown membership : %1").arg(dynstatus);
-        dfactor = 300;
+    else {
+        m_queue_join_action[queueid]->setIcon(QIcon(joinicon));
+        m_queue_join_action[queueid]->show();
     }
     
     if(sstatus != oldsstatus) {
-        if (sstatus == "") {
-            display_s_status_color = Qt::gray;
-            display_s_status_queue = tr("Agent not in Queue");
-            display_s_status_logged = "";
-        } else if (sstatus == "1") {
-            display_s_status_color = Qt::green;
-            display_s_status_queue = tr("Agent in Queue");
-            display_s_status_logged = tr("Logged in");
-        } else if (sstatus == "3") {
-            display_s_status_color = Qt::yellow;
-            display_s_status_queue = tr("Agent Called or Busy");
-            display_s_status_logged = tr("Logged in");
-        } else if (sstatus == "4") {
-            display_s_status_color = Qt::red;
-            display_s_status_queue = tr("Agent in Queue but Invalid");
-            display_s_status_logged = "";
-        } else if (sstatus == "5") {
-            display_s_status_color = Qt::blue;
-            display_s_status_queue = tr("Agent in Queue");
-            display_s_status_logged = tr("Logged out");
-        } else {
-            display_s_status_color = Qt::black;
-            display_s_status_queue = QString("unknown-%1").arg(sstatus);
-            display_s_status_logged = "";
-        }
-        
-        QColor true_display_s_status_color = display_s_status_color.darker(dfactor);
-        square.fill(true_display_s_status_color);
+        QPixmap square(12, 12);
+        square.fill(qas->display_status_color());
         m_queue_join_status[queueid]->setPixmap(square);
         m_queue_join_status[queueid]->setToolTip(QString("%1\n%2\n%3")
-                                                 .arg(display_s_status_queue)
-                                                 .arg(display_s_status_logged)
-                                                 .arg(display_s_status_membership));
+                                                 .arg(qas->display_status_queue())
+                                                 .arg(qas->display_status_logged())
+                                                 .arg(qas->display_status_membership()));
         m_queue_join_status[queueid]->setProperty("Status", sstatus);
     }
     
     if(pstatus != oldpstatus) {
-        if(pstatus == "0") {
-            square.fill(Qt::green);
-            m_queue_pause_status[queueid]->setToolTip(tr("Not paused"));
-            m_queue_pause_action[queueid]->setIcon(QIcon(":/images/cancel.png"));
-            m_queue_pause_action[queueid]->show();
-        } else if(pstatus == "1") {
-            square.fill(Orange);
-            m_queue_pause_status[queueid]->setToolTip(tr("Paused"));
-            m_queue_pause_action[queueid]->setIcon(QIcon(":/images/button_ok.png"));
-            m_queue_pause_action[queueid]->show();
-        } else if(pstatus == "") {
-            square.fill(Qt::gray);
-            m_queue_pause_status[queueid]->setToolTip(tr("Not relevant"));
+        QString pauseicon = qas->display_action_pause();
+        if (pauseicon.isEmpty())
             m_queue_pause_action[queueid]->hide();
-        } else {
-            square.fill(Qt::black);
-            m_queue_pause_status[queueid]->setToolTip(tr("Unknown %1").arg(pstatus));
-            m_queue_pause_action[queueid]->hide();
+        else {
+            m_queue_pause_action[queueid]->setIcon(QIcon(pauseicon));
+            m_queue_pause_action[queueid]->show();
         }
+        m_queue_pause_status[queueid]->setToolTip(qas->display_status_paused());
+        QPixmap square(12, 12);
+        square.fill(qas->display_status_paused_color());
         m_queue_pause_status[queueid]->setPixmap(square);
         m_queue_pause_status[queueid]->setProperty("Paused", pstatus);
     }
+    
+    delete qas;
 }
 
 /*! \brief 

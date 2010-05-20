@@ -40,6 +40,7 @@
 
 #include "baseengine.h"
 #include "queuedetailspanel.h"
+#include "queue_agent_status.h"
 #include "userinfo.h"
 #include "queueinfo.h"
 #include "agentinfo.h"
@@ -245,85 +246,29 @@ void QueuedetailsPanel::setAgentQueueSignals(const QString & agentid)
  */
 void QueuedetailsPanel::setAgentQueueProps(const QString & agentid, const QVariant & qv)
 {
-    QString pstatus = qv.toMap()["Paused"].toString();
-    QString sstatus = qv.toMap()["Status"].toString();
-    QString dynstatus = qv.toMap()["Membership"].toString();
-    // LastCall, Penalty
-    
     QString oldsstatus = m_agent_join_status[agentid]->property("Status").toString();
     QString oldpstatus = m_agent_pause_status[agentid]->property("Paused").toString();
     
-    QString display_s_status_queue;
-    QString display_s_status_logged;
-    QString display_s_status_membership;
-    QString display_p_status;
-    QColor display_s_status_color;
-    int dfactor = 100;
+    QString pstatus = qv.toMap()["Paused"].toString();
+    QString sstatus = qv.toMap()["Status"].toString();
+    QString dynstatus = qv.toMap()["Membership"].toString();
     
-    if(dynstatus == "") {
-        display_s_status_membership = "";
-        dfactor = 100;
-    } else if (dynstatus == "dynamic") {
-        display_s_status_membership = tr("Dynamic membership");
-        dfactor = 100;
-    } else if ((dynstatus == "static") || (dynstatus == "realtime")) {
-        // XXX common handling, before finding out why there is actually 2 memberships
-        display_s_status_membership = tr("Static/RT membership");
-        dfactor = 150;
-    } else {
-        display_s_status_membership = QString("unknown membership : %1").arg(dynstatus);
-        dfactor = 300;
-    }
+    QueueAgentStatus * qas = new QueueAgentStatus();
+    qas->update(dynstatus, sstatus, pstatus);
     
     if(sstatus != oldsstatus) {
-        if (sstatus == "") {
-            display_s_status_color = Qt::gray;
-            display_s_status_queue = tr("Agent not in Queue");
-            display_s_status_logged = "";
-        } else if (sstatus == "1") {
-            display_s_status_color = Qt::green;
-            display_s_status_queue = tr("Agent in Queue");
-            display_s_status_logged = tr("Logged in");
-        } else if (sstatus == "3") {
-            display_s_status_color = Qt::yellow;
-            display_s_status_queue = tr("Agent Called or Busy");
-            display_s_status_logged = tr("Logged in");
-        } else if (sstatus == "4") {
-            display_s_status_color = Qt::red;
-            display_s_status_queue = tr("Agent in Queue but Invalid");
-            display_s_status_logged = "";
-        } else if (sstatus == "5") {
-            display_s_status_color = Qt::blue;
-            display_s_status_queue = tr("Agent in Queue");
-            display_s_status_logged = tr("Logged out");
-        } else {
-            display_s_status_color = Qt::black;
-            display_s_status_queue = QString("unknown-%1").arg(sstatus);
-            display_s_status_logged = "";
-        }
-        
-        QColor true_display_s_status_color = display_s_status_color.darker(dfactor);
         QPixmap square(12, 12);
-        square.fill(true_display_s_status_color);
+        square.fill(qas->display_status_color());
         m_agent_join_status[agentid]->setPixmap(square);
         m_agent_join_status[agentid]->setToolTip(QString("%1\n%2\n%3")
-                                                 .arg(display_s_status_queue)
-                                                 .arg(display_s_status_logged)
-                                                 .arg(display_s_status_membership));
+                                                 .arg(qas->display_status_queue())
+                                                 .arg(qas->display_status_logged())
+                                                 .arg(qas->display_status_membership()));
         m_agent_join_status[agentid]->setProperty("Status", sstatus);
     }
     
     if(pstatus != oldpstatus) {
-        if(pstatus == "0") {
-            display_p_status = tr("Not paused");
-        } else if(pstatus == "1") {
-            display_p_status = tr("Paused");
-        } else if(pstatus == "") {
-            display_p_status = tr("Not relevant");
-        } else {
-            display_p_status = tr("Unknown %1").arg(pstatus);
-        }
-        m_agent_pause_status[agentid]->setText(display_p_status);
+        m_agent_pause_status[agentid]->setText(qas->display_status_paused());
         m_agent_pause_status[agentid]->setProperty("Paused", pstatus);
     }
     
@@ -331,6 +276,8 @@ void QueuedetailsPanel::setAgentQueueProps(const QString & agentid, const QVaria
         m_agent_callstaken[agentid]->setText(qv.toMap()["CallsTaken"].toString());
     else
         m_agent_callstaken[agentid]->setText("0");
+    
+    delete qas;
     
     QString slastcall = "-";
     if(qv.toMap().contains("LastCall")) {
