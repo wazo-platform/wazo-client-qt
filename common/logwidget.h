@@ -41,6 +41,7 @@
 #include <QHeaderView>
 #include <QList>
 #include <QDebug>
+#include <QMouseEvent>
 
 #include "xlet.h"
 
@@ -107,19 +108,42 @@ class LogWidgetModel : public QAbstractTableModel
         int mode;
 };
 
+/* class reason:
+ *   You can't know which mouse button caused the onViewClick to be called
+ *   through QApplication::mouseButtons or through filtering event from
+ *   QTableView
+ */
+class LogTableView : public QTableView
+{
+    Q_OBJECT
+
+    public:
+        LogTableView(QWidget *parent, LogWidgetModel *model, BaseEngine* engine);
+
+    private slots:
+        void onViewClick(const QModelIndex &);
+        void callOnClick(bool);
+
+    protected:
+        virtual void mousePressEvent(QMouseEvent *event);
+
+    private:
+        int lastPressed;
+        BaseEngine *m_engine;
+};
+
 
 /*! \brief Call Log display widget
  */
 class LogWidget : public XLet
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    LogWidget(BaseEngine *, QWidget *parent=0);
-  private slots:
-    void onViewClick(const QModelIndex &);
-  private:
-    QTableView *m_view;
+    public:
+        LogWidget(BaseEngine *, QWidget *parent=0);
+
+    private:
+        LogTableView *m_view;
 };
 
 #endif

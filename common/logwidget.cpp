@@ -40,6 +40,11 @@
 #include <QScrollArea>
 #include <QTabWidget>
 #include <QVBoxLayout>
+#include <QApplication>
+#include <QMouseEvent>
+#include <QCursor>
+#include <QMenu>
+#include <QCursor>
 
 #include "baseengine.h"
 #include "logwidget.h"
@@ -144,7 +149,7 @@ Qt::ItemFlags LogWidgetModel::flags(const QModelIndex &) const
 }
 
 /*! \brief ask history for an extension */
-void LogWidgetModel::requestHistory(const QString &peer, int mode, const QDateTime &moreRecent, int forceEntry)
+void LogWidgetModel::requestHistory(const QString &peer, int mode, const QDateTime &moreRecent, int /* forceEntry*/)
 {
     /* mode = 0 : Out calls
      * mode = 1 : In calls
@@ -217,18 +222,6 @@ static inline void layoutMarginSpacingTo0(QBoxLayout *l)
     l->setSpacing(0);
 }
 
-void LogWidget::onViewClick(const QModelIndex &model)
-{
-    QString caller = model.sibling(model.row(), 0).data().toString();
-
-    if (caller.indexOf("<") != -1) {
-        caller.remove(QRegExp("[^<]*<"));
-        caller.remove(">");
-    }
-    caller.remove(QRegExp("[^0-9]"));
-
-    m_engine->pasteToDial(caller);
-}
 
 LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
     : XLet(engine, parent)
@@ -246,18 +239,10 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
 
     LogWidgetModel *viewmodel = new LogWidgetModel(engine, 0);
 
-    m_view = new QTableView(this);
-    m_view->setSortingEnabled(true);
-    m_view->setModel(viewmodel);
-    m_view->verticalHeader()->hide();
-    m_view->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
-    m_view->horizontalHeader()->setResizeMode(1,QHeaderView::Stretch);
-    m_view->horizontalHeader()->setResizeMode(2,QHeaderView::Stretch);
-    m_view->setStyleSheet("QTableView { border: none; background:transparent; color:black; }");
+    m_view = new LogTableView(this, viewmodel, m_engine);
+    m_view->installEventFilter(this);
 
-    connect(m_view, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onViewClick(const QModelIndex &)));
     
-
     hBox->addStretch(1);
 
     buildRadioButton(tr("Outgoing calls"), "green_up.png",   0, groupBox, hBox, viewmodel)->setChecked(true);
@@ -271,4 +256,65 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
     hBox2->addWidget(m_view, 4);
     hBox2->addStretch(1);
     layout->addLayout(hBox2);
+
+}
+
+LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model, BaseEngine* engine)
+    : QTableView(parent), m_engine(engine)
+{
+    setSortingEnabled(true);
+    setModel(model);
+    verticalHeader()->hide();
+    horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
+    horizontalHeader()->setResizeMode(1,QHeaderView::Stretch);
+    horizontalHeader()->setResizeMode(2,QHeaderView::Stretch);
+    setStyleSheet("QTableView { border: none; background:transparent; color:black; }");
+
+    connect(this, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(onViewClick(const QModelIndex &)));
+}
+
+/*
+ *   You can't know which mouse button caused the onViewClick to be called
+ *   through QApplication::mouseButtons or through event filtering the
+ *   QTableView
+ */
+void LogTableView::mousePressEvent(QMouseEvent *event)
+{
+    lastPressed = event->button();
+    QTableView::mousePressEvent(event);
+}
+
+void LogTableView::callOnClick(bool)
+{
+    QAction *calling_action = qobject_cast<QAction *>(sender());
+    QString num_to_call = calling_action->property("num_to_call").toString();
+    m_engine->actionCall("originate", "user:special:me", "ext:" + num_to_call);
+}
+
+void LogTableView::onViewClick(const QModelIndex &model)
+{
+    QString caller = model.sibling(model.row(), 0).data().toString();
+
+    if (caller.indexOf("<") != -1) {
+        caller.remove(QRegExp("[^<]*<"));
+        caller.remove(">");
+    }
+    caller.remove(QRegExp("[^0-9]"));
+
+    if (caller != "") {
+        if (lastPressed&Qt::LeftButton) {
+            m_engine->pasteToDial(caller);
+        } else {
+            QMenu *menu = new QMenu(this);
+
+            QAction *action = new QAction(tr("Call %1").arg(caller), menu);
+            action->setProperty("num_to_call", caller);
+            connect(action, SIGNAL(triggered(bool)),
+                    this, SLOT(callOnClick(bool)));
+
+            menu->addAction(action);
+            menu->exec(QCursor::pos());
+        }
+    }
 }

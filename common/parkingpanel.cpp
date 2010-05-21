@@ -53,34 +53,34 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
                            QWidget * parent)
     : XLet(engine, parent)
 {
-    setTitle( tr("Parking") );
+    setTitle(tr("Parking"));
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
-    m_table = new ExtendedTableWidget( m_engine, this );
+    m_table = new ExtendedTableWidget(m_engine, this);
     qDebug() << m_table;
     m_table->setAlternatingRowColors(true);
     m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-    m_table->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
-    m_table->setColumnCount( 4 );
+    m_table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    m_table->setColumnCount(4);
     QStringList labels = (QStringList() << /*tr("XiVO Id") << */tr("Number") << tr("Time") << tr("Parked") << tr("Parker"));
     m_table->setHorizontalHeaderLabels(labels);
     
-    connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
-             this, SLOT(itemClicked(QTableWidgetItem *)) );
-    connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
-             this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
+    connect(m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
+            this, SLOT(itemClicked(QTableWidgetItem *)));
+    connect(m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
+            this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
     // forward SIGNAL
-    connect( m_table, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-             this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
+    connect(m_table, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+            this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
     vlayout->addWidget( m_table, 0 );
     m_table->resizeColumnsToContents();
     m_timerid = 0;
     m_deltasec = 2;
     // connect signal / slots
-    connect( m_engine, SIGNAL(parkingEvent(const QVariant &)),
-             this, SLOT(parkingEvent(const QVariant &)) );
-    connect( this, SIGNAL(copyNumber(const QString &)),
-             m_engine, SIGNAL(pasteToDialPanel(const QString &)) );
+    connect(m_engine, SIGNAL(parkingEvent(const QVariant &)),
+            this, SLOT(parkingEvent(const QVariant &)));
+    connect(this, SIGNAL(copyNumber(const QString &)),
+            m_engine, SIGNAL(pasteToDialPanel(const QString &)));
     connectDials();
 }
 

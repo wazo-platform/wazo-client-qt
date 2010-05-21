@@ -92,12 +92,12 @@ DialPanel::DialPanel(BaseEngine * engine,
     vlayout->addStretch(1);
     
     // connect signals/slots
-    connect( m_engine, SIGNAL(pasteToDialPanel(const QString &)),
-             this, SLOT(setNumberToDial(const QString &)) );
-    connect( this, SIGNAL(textEdited(const QString &)),
-             m_engine, SLOT(textEdited(const QString &)) );
-    connect( this, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-             m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
+    connect(m_engine, SIGNAL(pasteToDialPanel(const QString &)),
+            this, SLOT(setNumberToDial(const QString &)));
+    connect(this, SIGNAL(textEdited(const QString &)),
+            m_engine, SLOT(textEdited(const QString &)));
+    connect(this, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+            m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)));
 }
 
 /*! \brief fills the input field
