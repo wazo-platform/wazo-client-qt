@@ -415,6 +415,19 @@ void BaseEngine::stop()
                  << (elapsed?QString::number((1000*m_byte_counter)/elapsed):QString("infinite"))
                  << "Bytes/Second";
     }
+
+    /* cleaning the registred callback */
+    {
+        QHashIterator<QString, e_callback*> i(m_class_event_cb);
+
+            while (i.hasNext()) {
+                i.next();
+                delete i.value();
+            }
+
+        m_class_event_cb.clear();
+    }
+
 }
 
 
