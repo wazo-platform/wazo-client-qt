@@ -117,7 +117,7 @@ class QueuesPanel : public XLet
         QHash<QString, QSpinBox *> m_queuexqos;  //!< the x for this queue qos
         QStringList m_queue_lines;  //!< store the order of queues
         
-        QHash<QString, QString > m_queueid_map;  //!< cause some genius did'nt bothered to give an UID to identify a queue here & on the server
+        QHash<QString, QString > m_queueid_map;  //!< cause some genius didn't bother to give an UID to identify a queue here & on the server
         
         quint32 m_maxbusy;  //!< Maximum value for busy level
         

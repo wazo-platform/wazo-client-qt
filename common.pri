@@ -1,21 +1,21 @@
 XIVOVER = 1.1
 
 SVNVER = $$system(LANG= svn info | sed -n \"s/Revision: //p\")
-DATEBUILD =  $$system(LANG= date)
+DATEBUILD = $$system(LANG= date)
 
 # take care of inferior(s) system(s) {
 
-  isEmpty( SVNVER ) {
-    SVNVER = 9999
-  }
+isEmpty( SVNVER ) {
+  SVNVER = 9999
+}
   
-  isEmpty( DATEBUILD ) {
-    DATEBUILD = "ice age"
-  }
+isEmpty( DATEBUILD ) {
+  DATEBUILD = "ice age"
+}
 
 # }
 
-!build_pass:message('XIVO version:' $${XIVOVER})
+!build_pass:message('XiVO version:' $${XIVOVER})
 !build_pass:message('svn version:' $${SVNVER})
 !build_pass:message('build date:'  $${DATEBUILD})
 

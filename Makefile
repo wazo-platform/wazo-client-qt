@@ -131,7 +131,7 @@ all-macos:
 	@make macos-xivoclient
 
 macos-%:
-	@cd $* && ${QMAKE} -spec macx-g++ $*.pro -o Makefile && ${LRELEASE} $*_fr.ts qt_fr.ts && make ${JOPT}
+	@cd $* && ${QMAKE} -spec macx-g++ $*.pro -o Makefile && ${LRELEASE} $*.pro && make ${JOPT}
 	@strip $*/$*.app/Contents/MacOS/$*
 	@${UPXRUN} $*/$*.app/Contents/MacOS/$*
 	@mkdir -p $*/$*.app/Contents/Resources/French.lproj

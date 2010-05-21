@@ -96,14 +96,15 @@ int main(int argc, char ** argv)
     app.setStyleSheet(qssStr);
     app.setWindowIcon(QIcon(":/images/xivo-login.png"));
     
-    QTranslator qtTranslator_xivo, qtTranslator_qt;
+    QTranslator qtTranslator_xivo, qtTranslator_baselib, qtTranslator_qt;
     QString forcelocale = settings->value("display/forcelocale", "").toString();
     if(forcelocale.size() > 0)
         locale = forcelocale;
     qtTranslator_xivo.load(QString(":/xivoclient_%1").arg(locale));
+    qtTranslator_baselib.load(QString(":/baselib/baselib_%1").arg(locale));
     qtTranslator_qt.load(QString(":/qt_%1").arg(locale));
-    // QLibraryInfo::location(QLibraryInfo::TranslationsPath)
     app.installTranslator(&qtTranslator_xivo);
+    app.installTranslator(&qtTranslator_baselib);
     app.installTranslator(&qtTranslator_qt);
     app.setQuitOnLastWindowClosed(false);
     
