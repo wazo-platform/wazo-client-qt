@@ -65,7 +65,7 @@ ServicePanel::ServicePanel(BaseEngine * engine,
     int line = 0;
     m_status = new ServiceStatus();
     
-    QGroupBox * groupBox1 = new QGroupBox( tr("Services") );
+    QGroupBox * groupBox1 = new QGroupBox(tr("Services"), this);
     groupBox1->setAlignment( Qt::AlignLeft );
     groupBox1->hide();
     QGridLayout * gridlayout1 = new QGridLayout(groupBox1);
@@ -90,6 +90,7 @@ ServicePanel::ServicePanel(BaseEngine * engine,
             m_forward[capa]->setObjectName("service");
             m_forward[capa]->setProperty("capa", capa);
             gridlayout2->addWidget(m_forward[capa], line++, 0, 1, 0);
+            
             label[capa] = new QLabel(tr("Destination"), this);
             gridlayout2->addWidget(label[capa], line, 0);
             m_forwarddest[capa] = new QLineEdit(this);
@@ -117,13 +118,13 @@ ServicePanel::ServicePanel(BaseEngine * engine,
                     this, SLOT(toggleIfAllowed(const QString &)));
         }
     Connect();
-
+    
     // connect signals/slots
     connect( this, SIGNAL(askFeatures()),
              m_engine, SLOT(askFeatures()) );
     connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
              this, SLOT(monitorPeer(UserInfo *)) );
-                
+    
     connect( m_engine, SIGNAL(disconnectFeatures()),
              this, SLOT(DisConnect()) );
     connect( m_engine, SIGNAL(connectFeatures()),
@@ -134,10 +135,10 @@ ServicePanel::ServicePanel(BaseEngine * engine,
              this, SLOT(getRecordedStatus()) );
     connect( m_engine, SIGNAL(featurePutIsOK()),
              this, SLOT(setRecordedStatus()) );
-                
+    
     connect( this, SIGNAL(chkoptChanged(const QString &, bool)),
              m_engine, SLOT(featurePutOpt(const QString &, bool)) );
-                
+    
     connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
              this, SLOT(setOpt(const QString &, bool)) );
     connect( this, SIGNAL(forwardChanged(const QString &, bool, const QString &)),
