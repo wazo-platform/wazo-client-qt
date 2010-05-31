@@ -354,12 +354,12 @@ Contexte: %2</translation>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="73"/>
         <source>&amp;Open a dialog window</source>
-        <translation>&amp;Ouvrir une fenêtre de chat</translation>
+        <translation>&amp;Ouvrir une fenêtre de discussion</translation>
     </message>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="74"/>
         <source>Open a chatting windows with this user</source>
-        <translation>Ouvrir une fenêtre de chat avec cet utilisateur</translation>
+        <translation>Ouvrir une fenêtre de discussion avec cet utilisateur</translation>
     </message>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="394"/>
@@ -636,7 +636,7 @@ Are you sure ?</source>
         <location filename="../common/chitchat.cpp" line="125"/>
         <location filename="../common/chitchat.cpp" line="170"/>
         <source>chat window opened with user - </source>
-        <translation>fenêtre de chat ouverte avec - </translation>
+        <translation>fenêtre de discussion ouverte avec - </translation>
     </message>
     <message>
         <location filename="../common/chitchat.cpp" line="141"/>
