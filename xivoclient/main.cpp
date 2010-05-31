@@ -81,34 +81,44 @@ int main(int argc, char ** argv)
                                          QCoreApplication::organizationName(),
                                          QCoreApplication::applicationName());
     qDebug() << "style" << app.style() << settings->fileName();
+
+    QString profile = "default-user";
     if(argc > 1) {
-        QString argv1(argv[1]);
-        if(!argv1.startsWith("tel:", Qt::CaseInsensitive) && !argv1.startsWith("callto:", Qt::CaseInsensitive))
-            settings->setValue("profile/default", argv1);
+        QString arg1(argv[1]);
+
+        if((!arg1.startsWith("tel:", Qt::CaseInsensitive)) &&
+           (!arg1.startsWith("callto:", Qt::CaseInsensitive))) {
+            profile = arg1;
+        }
     }
+    settings->setValue("profile/lastused", profile);
+
     QString qsskind = settings->value("display/qss", "none").toString();
+
     QFile qssFile(QString(":/common/%1.qss").arg(qsskind));
-    QString qssStr;
-    if(qssFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qssStr = qssFile.readAll();
-        qssFile.close();
+    if(qssFile.open(QIODevice::ReadOnly)) {
+        app.setStyleSheet(qssFile.readAll());
     }
-    app.setStyleSheet(qssStr);
+
     app.setWindowIcon(QIcon(":/images/xivo-login.png"));
     
-    QTranslator qtTranslator_xivo, qtTranslator_baselib, qtTranslator_qt;
-    QString forcelocale = settings->value("display/forcelocale", "").toString();
-    if(forcelocale.size() > 0)
+
+    QString forcelocale = settings->value(profile + "/forcelocale", "").toString();
+    if(forcelocale.length())
         locale = forcelocale;
-    qtTranslator_xivo.load(QString(":/xivoclient_%1").arg(locale));
-    qtTranslator_baselib.load(QString(":/baselib/baselib_%1").arg(locale));
-    qtTranslator_qt.load(QString(":/qt_%1").arg(locale));
-    app.installTranslator(&qtTranslator_xivo);
-    app.installTranslator(&qtTranslator_baselib);
-    app.installTranslator(&qtTranslator_qt);
+
+    QTranslator *translator;
+    QStringList translationFiles; 
+    translationFiles << ":/xivoclient_%1" << ":/baselib/baselib_%1" << ":/qt_%1";
+
+    int i;
+    for(i=0;i<translationFiles.size();++i) {
+        translator = new QTranslator;
+        translator->load(translationFiles.at(i));
+        app.installTranslator(translator);
+    }
+
     app.setQuitOnLastWindowClosed(false);
-    
-    BaseEngine * engine = new BaseEngine(settings);
     
     QString info_osname;
     QString info_endianness;
@@ -127,9 +137,10 @@ int main(int argc, char ** argv)
 #endif
     qDebug() << "main() osname=" << info_osname << "locale=" << locale;
     
-    engine->setOSInfos(info_osname);
+    BaseEngine *engine = new BaseEngine(settings, info_osname);
+
     MainWidget main(engine);
-    app.setActivationWindow( &main );
+    app.setActivationWindow(&main);
     
     //main.dumpObjectTree();
     app.setProperty("stopper", "lastwindow");
@@ -141,15 +152,14 @@ int main(int argc, char ** argv)
     // QObject::connect( &app, SIGNAL(lastWindowClosed()),
     // engine, SLOT(stop()) );
     
-    QObject::connect( &app, SIGNAL(standBy()),
-                      engine, SLOT(stop()) );
-    QObject::connect( &app, SIGNAL(resume()),
-                      engine, SLOT(start()) );
-    QObject::connect( &app, SIGNAL(powerEvent(const QString &)),
-                      engine, SLOT(powerEvent(const QString &)) );
-    QObject::connect( &app, SIGNAL(messageReceived(const QString &)),
-                      engine, SLOT(handleOtherInstanceMessage(const QString &)) );
+    QObject::connect(&app, SIGNAL(standBy()),
+                     engine, SLOT(stop()));
+    QObject::connect(&app, SIGNAL(resume()),
+                     engine, SLOT(start()));
+    QObject::connect(&app, SIGNAL(powerEvent(const QString &)),
+                     engine, SLOT(powerEvent(const QString &)));
+    QObject::connect(&app, SIGNAL(messageReceived(const QString &)),
+                     engine, SLOT(handleOtherInstanceMessage(const QString &)));
     
-    //engine.startTimer(1000);
     return app.exec();
 }

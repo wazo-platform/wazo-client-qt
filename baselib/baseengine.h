@@ -130,10 +130,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         //! Enum for BaseEngine state logged/not logged
         typedef enum {ENotLogged, ELogged } EngineState;
 
-        BaseEngine(QSettings *, QObject *parent=0); //! Constructor
+        BaseEngine(QSettings *, const QString &); //! Constructor
         ~BaseEngine(); //! Destructor
         
-        QSettings * getSettings();
+        QSettings * getSettings(); 
         void loadSettings();                      //!< load server settings
         // setter/getter for properties
         //! set address used to connect to the server
@@ -190,15 +190,16 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QStringList& getCapabilities() const;  //!< returns capabilities
         const QStringList& getCapaXlets() const;
         const QVariantMap& getCapaPresence() const;
+
+        void setGuiOption(const QString &, const QVariant &);
         const QVariantMap getGuiOptions(const QString &) const;
+
         void updateCapaPresence(const QVariant &);
         const QString& getCapaApplication() const;
         void config_and_start(const QString &, const QString &, const QString &);
-        void setOSInfos(const QString &);
         QString osname() const { return m_osname; };
         UserInfo* findUserFromPhone(const QString &, const QString &);
         UserInfo* findUserFromAgent(const QString &, const QString &);
-        void setGuiOption(const QString &, const QVariant &);
         
         void setLogFile(const QString &);
 
@@ -222,6 +223,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);
         QMultiHash<QString, e_callback* > m_class_event_cb;
+        void setOSInfos(const QString &);
     
     public slots:
         void start();  //!< start the connection process.
@@ -439,6 +441,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, QHash<QString, MeetmeInfo> > m_meetme; //! meet me (conference rooms)
 };
 
-//#include <stdio.h>
+extern BASELIB_EXPORT BaseEngine *b_engine;
 
 #endif

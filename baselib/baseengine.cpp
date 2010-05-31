@@ -62,9 +62,12 @@
  * It also connects signals with the right slots.
  * Take ownership of settings object.
  */
-BaseEngine::BaseEngine(QSettings * settings,
-                       QObject * parent)
-    : QObject(parent),
+
+BASELIB_EXPORT BaseEngine *b_engine;
+
+BaseEngine::BaseEngine(QSettings *settings,
+                       const QString &osInfo)
+    : QObject(NULL),
       m_serverhost(""), m_ctiport(0),
       m_userid(""), m_useridopt(""), m_company(""), m_password(""), m_agentphonenumber(""),
       m_sessionid(""), m_state(ENotLogged),
@@ -73,76 +76,46 @@ BaseEngine::BaseEngine(QSettings * settings,
       m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
       m_forced_to_disconnect(false)
 {
-    settings->setParent( this );
+    settings->setParent(this);
     m_timerid_keepalive = 0;
     m_timerid_changestate = 0;
     m_timerid_tryreconnect = 0;
     m_timer = -1;
+    setOSInfos(osInfo);
     m_settings = settings;
     loadSettings();
+    b_engine = this;
     
-    /*  QTcpSocket signals :
-        void connected ()
-        void disconnected ()
-        void error ( QAbstractSocket::SocketError socketError )
-        void hostFound ()
-        void stateChanged ( QAbstractSocket::SocketState socketState )
-    */
-    /* Signals inherited from QIODevice :
-       void aboutToClose ()
-       void bytesWritten ( qint64 bytes )
-       void readyRead ()
-    */
-        
-    //         m_eventdevice = new QFile("/dev/input/event1");
-    //         m_eventdevice->open(QIODevice::ReadOnly);
-    //         m_notifier = new QSocketNotifier(m_eventdevice->handle(), QSocketNotifier::Read, this);
-    //         connect(m_notifier, SIGNAL(activated(int)),
-    //                 this, SLOT(readInputEvent(int)));
-        
     // TCP connection with CTI Server
     m_ctiserversocket = new QTcpSocket(this);
-    connect( m_ctiserversocket, SIGNAL(connected()),
-             this, SLOT(ctiSocketConnected()));
-    connect( m_ctiserversocket, SIGNAL(disconnected()),
-             this, SLOT(ctiSocketDisconnected()));
-    connect( m_ctiserversocket, SIGNAL(error(QAbstractSocket::SocketError)),
-             this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
-    connect( m_ctiserversocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
-             this, SLOT(ctiSocketStateChanged(QAbstractSocket::SocketState)));
-    connect( m_ctiserversocket, SIGNAL(readyRead()),
-             this, SLOT(ctiSocketReadyRead()));
+    connect(m_ctiserversocket, SIGNAL(connected()),
+            this, SLOT(ctiSocketConnected()));
+    connect(m_ctiserversocket, SIGNAL(disconnected()),
+            this, SLOT(ctiSocketDisconnected()));
+    connect(m_ctiserversocket, SIGNAL(error(QAbstractSocket::SocketError)),
+            this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
+    connect(m_ctiserversocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
+            this, SLOT(ctiSocketStateChanged(QAbstractSocket::SocketState)));
+    connect(m_ctiserversocket, SIGNAL(readyRead()),
+            this, SLOT(ctiSocketReadyRead()));
 
     // TCP connection for file transfer
     // (this could be moved to some other class)
     m_filetransfersocket = new QTcpSocket(this);
-    connect( m_filetransfersocket, SIGNAL(readyRead()),
-             this, SLOT(filetransferSocketReadyRead()) );
-    connect( m_filetransfersocket, SIGNAL(connected()),
-             this, SLOT(filetransferSocketConnected()) );
+    connect(m_filetransfersocket, SIGNAL(readyRead()),
+            this, SLOT(filetransferSocketReadyRead()));
+    connect(m_filetransfersocket, SIGNAL(connected()),
+            this, SLOT(filetransferSocketConnected()));
     
     if(m_autoconnect)
         start();
 }
-
-#if 0
-/*! */
-void BaseEngine::readInputEvent(int) {
-    // does nothing ??
-    // qDebug() << "BaseEngine::readInputEvent()" << r;
-    if(m_eventdevice->isReadable()) {
-        QByteArray qba = m_eventdevice->read(1024);
-        qDebug() << "BaseEngine::readInputEvent()" << qba.size();
-    }
-}
-#endif
 
 /*! \brief Destructor
  */
 BaseEngine::~BaseEngine()
 {
     qDebug() << "BaseEngine::~BaseEngine()";
-    // clean m_users and m_phones
     clearUserList();
     clearPhoneList();
     clearAgentList();
@@ -162,71 +135,70 @@ void BaseEngine::loadSettings()
 {
     //qDebug() << "BaseEngine::loadSettings()";
     m_systrayed = m_settings->value("display/systrayed", false).toBool();
-    QString profile = m_settings->value("profile/default", "").toString();
-    if(profile.isEmpty())
-        m_profilename = "engine";
-    else
-        m_profilename = "engine-" + profile;
-    m_settings->beginGroup(m_profilename);
-    m_serverhost = m_settings->value("serverhost", "demo.xivo.fr").toString();
-    m_ctiport    = m_settings->value("serverport", 5003).toUInt();
-    
-    m_userid      = m_settings->value("userid").toString().trimmed();
-    m_useridopt   = m_settings->value("useridopt").toString().trimmed();
-    if(m_useridopt.size() > 0)
-        m_useridwithopt = m_userid + "%" + m_useridopt;
-    else
-        m_useridwithopt = m_userid;
-    m_company      = m_settings->value("company", "default").toString();
-    m_password     = m_settings->value("password").toString();
-    m_keeppass     = m_settings->value("keeppass", 0).toUInt();
-    m_showagselect = m_settings->value("showagselect", 2).toUInt();
-    m_agentphonenumber  = m_settings->value("agentphonenumber").toString();
-    
-    m_autoconnect = m_settings->value("autoconnect", false).toBool();
-    m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
-    m_trytoreconnectinterval = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
-    m_keepaliveinterval = m_settings->value("keepaliveinterval", 20*1000).toUInt();
-    m_checked_lastconnwins = m_settings->value("lastconnwins", false).toBool();
-    m_availstate = m_settings->value("availstate", "available").toString();
-    m_settings->endGroup();
-    
-    m_settings->beginGroup("user-gui");
-    m_historysize = m_settings->value("historysize", 8).toUInt();
-    
-    QString defaultguioptions;
-    QFile defaultguioptions_file(":/common/guioptions.json");
-    if(defaultguioptions_file.exists()) {
-        defaultguioptions_file.open(QFile::ReadOnly);
-        defaultguioptions = defaultguioptions_file.readAll();
-        defaultguioptions_file.close();
-    }
-    QVariant data;
-    try {
-        data = JsonQt::JsonToVariant::parse(defaultguioptions);
-    } catch(JsonQt::ParseException) {
-        qDebug() << "BaseEngine::loadSettings() exception catched for" << defaultguioptions;
-    }
-    QVariantMap guisetting_map = data.toMap();
-    guisetting_map.insert("xlet_operator_keyanswer"        , QVariant(Qt::Key_F1));
-    guisetting_map.insert("xlet_operator_keyhangup"        , QVariant(Qt::Key_F2));
-    guisetting_map.insert("xlet_operator_keydtransfer"     , QVariant(Qt::Key_F3));
-    guisetting_map.insert("xlet_operator_keyitransfer"     , QVariant(Qt::Key_F4));
-    guisetting_map.insert("xlet_operator_keyilink"         , QVariant(Qt::Key_F5));
-    guisetting_map.insert("xlet_operator_keyicancel"       , QVariant(Qt::Key_F6));
-    guisetting_map.insert("xlet_operator_keypark"          , QVariant(Qt::Key_F7));
-    guisetting_map.insert("xlet_operator_keyatxferfinalize", QVariant(Qt::Key_F8));
-    guisetting_map.insert("xlet_operator_keyatxfercancel"  , QVariant(Qt::Key_F9));
-    data.setValue(guisetting_map);
+    QString profile = m_settings->value("profile/lastused").toString();
 
-    
-    m_guioptions["client_gui"] = m_settings->value("guisettings", data);
-    m_loginkind = m_guioptions.value("client_gui").toMap().value("loginkind").toInt();
+    m_profilename = "engine-" + profile;
+
+    m_settings->beginGroup(m_profilename);
+        m_serverhost = m_settings->value("serverhost", "demo.xivo.fr").toString();
+        m_ctiport    = m_settings->value("serverport", 5003).toUInt();
+        
+        m_userid      = m_settings->value("userid").toString().trimmed();
+        m_useridopt   = m_settings->value("useridopt").toString().trimmed();
+        if(m_useridopt.size() > 0)
+            m_useridwithopt = m_userid + "%" + m_useridopt;
+        else
+            m_useridwithopt = m_userid;
+        m_company      = m_settings->value("company", "default").toString();
+        m_password     = m_settings->value("password").toString();
+        m_keeppass     = m_settings->value("keeppass", 0).toUInt();
+        m_showagselect = m_settings->value("showagselect", 2).toUInt();
+        m_agentphonenumber  = m_settings->value("agentphonenumber").toString();
+        
+        m_autoconnect = m_settings->value("autoconnect", false).toBool();
+        m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
+        m_trytoreconnectinterval = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
+        m_keepaliveinterval = m_settings->value("keepaliveinterval", 20*1000).toUInt();
+        m_checked_lastconnwins = m_settings->value("lastconnwins", false).toBool();
+        m_availstate = m_settings->value("availstate", "available").toString();
+
+        m_settings->beginGroup("user-gui");
+            m_historysize = m_settings->value("historysize", 8).toUInt();
+            
+            QString defaultguioptions;
+            QFile defaultguioptions_file(":/common/guioptions.json");
+            if(defaultguioptions_file.exists()) {
+                defaultguioptions_file.open(QFile::ReadOnly);
+                defaultguioptions = defaultguioptions_file.readAll();
+                defaultguioptions_file.close();
+            }
+            QVariant data;
+            try {
+                data = JsonQt::JsonToVariant::parse(defaultguioptions);
+            } catch(JsonQt::ParseException) {
+                qDebug() << "BaseEngine::loadSettings() exception catched for" << defaultguioptions;
+            }
+
+            QVariantMap guisetting_map = data.toMap();
+            guisetting_map.insert("xlet_operator_keyanswer"        , QVariant(Qt::Key_F1));
+            guisetting_map.insert("xlet_operator_keyhangup"        , QVariant(Qt::Key_F2));
+            guisetting_map.insert("xlet_operator_keydtransfer"     , QVariant(Qt::Key_F3));
+            guisetting_map.insert("xlet_operator_keyitransfer"     , QVariant(Qt::Key_F4));
+            guisetting_map.insert("xlet_operator_keyilink"         , QVariant(Qt::Key_F5));
+            guisetting_map.insert("xlet_operator_keyicancel"       , QVariant(Qt::Key_F6));
+            guisetting_map.insert("xlet_operator_keypark"          , QVariant(Qt::Key_F7));
+            guisetting_map.insert("xlet_operator_keyatxferfinalize", QVariant(Qt::Key_F8));
+            guisetting_map.insert("xlet_operator_keyatxfercancel"  , QVariant(Qt::Key_F9));
+            data.setValue(guisetting_map);
+        
+            m_guioptions["client_gui"] = m_settings->value("guisettings", data);
+            m_loginkind = m_guioptions.value("client_gui").toMap().value("loginkind").toInt();
+        m_settings->endGroup();
     m_settings->endGroup();
-    
+
     m_settings->beginGroup("user-functions");
-    foreach (QString function, CheckFunctions)
-        m_checked_function[function] = m_settings->value(function, false).toBool();
+        foreach (QString function, CheckFunctions)
+            m_checked_function[function] = m_settings->value(function, false).toBool();
     m_settings->endGroup();
 }
 
@@ -235,49 +207,45 @@ void BaseEngine::loadSettings()
  */
 void BaseEngine::saveSettings()
 {
-    if(m_settings->value(m_profilename + "/userid").toString() != m_userid) {
+    if(m_settings->value("userid").toString() != m_userid) {
         m_settings->setValue("monitor/userid", QString(""));
     }
 
-    //qDebug() << "BaseEngine::saveSettings()";
-    // information
     m_settings->setValue("version/xivo", __xivo_version__);
     m_settings->setValue("version/svn", __current_client_version__);
-    
     m_settings->setValue("display/systrayed", m_systrayed);
     
     m_settings->beginGroup(m_profilename);
-    m_settings->setValue("serverhost", m_serverhost);
-    m_settings->setValue("serverport", m_ctiport);
-    
-    m_settings->setValue("userid",     m_userid);
-    m_settings->setValue("useridopt",  m_useridopt);
-    m_settings->setValue("company",    m_company);
-    if(m_keeppass > 0)
-        m_settings->setValue("password", m_password);
-    else
-        m_settings->remove("password");
-    m_settings->setValue("keeppass",   m_keeppass);
-    m_settings->setValue("showagselect", m_showagselect);
-    m_settings->setValue("agentphonenumber", m_agentphonenumber);
-    
-    m_settings->setValue("autoconnect", m_autoconnect);
-    m_settings->setValue("trytoreconnect", m_trytoreconnect);
-    m_settings->setValue("trytoreconnectinterval", m_trytoreconnectinterval);
-    m_settings->setValue("keepaliveinterval", m_keepaliveinterval);
-    m_settings->setValue("lastconnwins", m_checked_lastconnwins);
-    m_settings->setValue("availstate", m_availstate);
+        m_settings->setValue("serverhost", m_serverhost);
+        m_settings->setValue("serverport", m_ctiport);
+        m_settings->setValue("userid", m_userid);
+        m_settings->setValue("useridopt", m_useridopt);
+        m_settings->setValue("company", m_company);
+        m_settings->setValue("keeppass", m_keeppass);
+        m_settings->setValue("showagselect", m_showagselect);
+        m_settings->setValue("agentphonenumber", m_agentphonenumber);
+        m_settings->setValue("autoconnect", m_autoconnect);
+        m_settings->setValue("trytoreconnect", m_trytoreconnect);
+        m_settings->setValue("trytoreconnectinterval", m_trytoreconnectinterval);
+        m_settings->setValue("keepaliveinterval", m_keepaliveinterval);
+        m_settings->setValue("lastconnwins", m_checked_lastconnwins);
+        m_settings->setValue("availstate", m_availstate);
+
+        if(m_keeppass > 0)
+            m_settings->setValue("password", m_password);
+        else
+            m_settings->remove("password");
+
+        m_settings->beginGroup("user-gui");
+            m_settings->setValue("historysize", m_historysize);
+            m_settings->setValue("guisettings", m_guioptions.value("client_gui"));
+        m_settings->endGroup();
     m_settings->endGroup();
-    
-    m_settings->beginGroup("user-gui");
-    m_settings->setValue("historysize", m_historysize);
-    
-    m_settings->setValue("guisettings", m_guioptions.value("client_gui"));
-    m_settings->endGroup();
+
     
     m_settings->beginGroup("user-functions");
-    foreach (QString function, CheckFunctions)
-        m_settings->setValue(function, m_checked_function[function]);
+        foreach (QString function, CheckFunctions)
+            m_settings->setValue(function, m_checked_function[function]);
     m_settings->endGroup();
 
     emit settingChanged(getGuiOptions("client_gui"));
@@ -516,8 +484,7 @@ QHash<QString, UserInfo *> BaseEngine::users()
  */
 void BaseEngine::connectSocket()
 {
-    if( !m_userid.isEmpty() ) {
-        qDebug() << "BaseEngine::connectSocket()" << m_serverhost << m_ctiport;
+    if(m_userid.length()) {
         m_ctiserversocket->connectToHost(m_serverhost, m_ctiport);
     }
 }
@@ -556,9 +523,15 @@ const QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
     return m_guioptions.value(arg).toMap();
 }
 
-void BaseEngine::setGuiOption(const QString & arg, const QVariant & opt)
+void BaseEngine::setGuiOption(const QString &arg, const QVariant &opt)
 {
     m_guioptions[arg] = opt;
+
+    m_settings->beginGroup(m_profilename);
+        m_settings->beginGroup("user-gui");
+            m_settings->setValue("guisettings", m_guioptions.value("client_gui"));
+        m_settings->endGroup();
+    m_settings->endGroup();
 }
 
 void BaseEngine::updateCapaPresence(const QVariant & presence)

@@ -55,7 +55,8 @@ class BASELIB_EXPORT QueueInfo
         };
         const QString& number() const { return m_number; };  //! queue number
         const QString& queuename() const;  //! queuename
-        const QVariantMap & properties() const;  //! queue properties
+        const QString& queueName() const  { return queuename(); };
+        const QVariantMap& properties() const;  //! queue properties
         const QMap<QString, QVariant>& comms() const { return m_comms; };  //! current communications of this queue
 
     private:

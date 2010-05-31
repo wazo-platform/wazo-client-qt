@@ -72,7 +72,7 @@ class BASELIB_EXPORT XLet : public QWidget
         void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
     protected:
         void connectDials();
-        void setTitle(const QString & title) { m_title = title; }; //! set title of the XLet
+        void setTitle(const QString &title) { m_title = title; }; //! set title of the XLet
         BaseEngine *m_engine; //! BaseEngine pointer
     private:
         QString m_title;    //!< title of the XLet
