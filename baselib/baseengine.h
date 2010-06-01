@@ -170,8 +170,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void saveSettings();                    //!< save server settings
         
-        void sendMessage(const QString &);      //!< Sends an instant message
-        
         EngineState state();      //!< Engine state (Logged/Not Logged)
         void setState(EngineState state);       //!< see state()
         

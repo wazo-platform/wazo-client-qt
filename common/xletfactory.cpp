@@ -49,7 +49,6 @@
 #include "datetimepanel.h"
 #include "dialpanel.h"
 #include "directorypanel.h"
-#include "displaymessages.h"
 #include "identitydisplay.h"
 #include "faxpanel.h"
 #include "logwidget.h"
@@ -88,7 +87,6 @@ static const struct {
     { "datetime"          ,newXLet<DatetimePanel>          },
     { "dial"              ,newXLet<DialPanel>              },
     { "operator"          ,newXLet<StatusPanel>            },
-    { "messages"          ,newXLet<DisplayMessagesPanel>   },
     { "switchboard"       ,newXLet<SwitchBoardWindow>      },
     { "parking"           ,newXLet<ParkingPanel>           },
     { "fax"               ,newXLet<FaxPanel>               },

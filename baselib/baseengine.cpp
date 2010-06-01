@@ -1201,14 +1201,6 @@ void BaseEngine::parseCommand(const QString & line)
                 }
             }
             
-        } else if (thisclass == "message") {
-            QStringList message = datamap["payload"].toStringList();
-            // message[0] : emitter name
-            if(message.size() == 2)
-                emitTextMessage(message[0] + tr(" said : ") + message[1]);
-            else
-                emitTextMessage(tr("Unknown") + tr(" said : ") + message[0]);
-                        
         } else if (thisclass == "features") {
             if (function == "update") {
                 QVariantMap featuresupdate_map = datamap["payload"].toMap();
@@ -2186,19 +2178,6 @@ void BaseEngine::changeState()
     command["class"] = "availstate";
     command["direction"] = "xivoserver";
     command["availstate"] = m_availstate;
-    sendJsonCommand(command);
-}
-
-/*!
- * Send a keep alive message to the login server.
- * The message is sent in a datagram through m_udpsocket
- */
-void BaseEngine::sendMessage(const QString & message)
-{
-    QVariantMap command;
-    command["class"] = "message";
-    command["direction"] = "xivoserver";
-    command["message"] = message;
     sendJsonCommand(command);
 }
 

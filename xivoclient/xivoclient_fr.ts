@@ -1010,7 +1010,7 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../common/configwidget.cpp" line="374"/>
         <source>Operator action</source>
-        <translation>Action de l&apos;operateur</translation>
+        <translation>Action de l&apos;opérateur</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="375"/>
@@ -1025,7 +1025,7 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../common/configwidget.cpp" line="391"/>
         <source>Operator Xlet</source>
-        <translation>Xlet Operateur</translation>
+        <translation>Xlet Opérateur</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="418"/>
@@ -1174,14 +1174,12 @@ que celles ci-dessous) en première page</translation>
 <context>
     <name>DisplayMessagesPanel</name>
     <message>
-        <location filename="../common/displaymessages.cpp" line="60"/>
         <source>Message</source>
-        <translation>Message</translation>
+        <translation type="obsolete">Message</translation>
     </message>
     <message>
-        <location filename="../common/displaymessages.cpp" line="59"/>
         <source>Time Stamp</source>
-        <translation>Horodatage</translation>
+        <translation type="obsolete">Horodatage</translation>
     </message>
 </context>
 <context>
@@ -1521,24 +1519,40 @@ a été envoyé à %2.</translation>
     </message>
 </context>
 <context>
+    <name>LogTableView</name>
+    <message>
+        <location filename="../common/logwidget.cpp" line="311"/>
+        <source>Call %1</source>
+        <translation>Appel %1</translation>
+    </message>
+</context>
+<context>
     <name>LogWidget</name>
     <message>
-        <location filename="../common/logwidget.cpp" line="264"/>
         <source>Incoming calls</source>
-        <translation>Appels entrants</translation>
+        <translation type="obsolete">Appels entrants</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="265"/>
+        <location filename="../common/logwidget.cpp" line="248"/>
+        <source>Sent calls</source>
+        <translation>Appels émis</translation>
+    </message>
+    <message>
+        <location filename="../common/logwidget.cpp" line="249"/>
+        <source>Received calls</source>
+        <translation>Appels reçus</translation>
+    </message>
+    <message>
+        <location filename="../common/logwidget.cpp" line="250"/>
         <source>Missed calls</source>
         <translation>Appels manqués</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="263"/>
         <source>Outgoing calls</source>
-        <translation>Appels sortants</translation>
+        <translation type="obsolete">Appels sortants</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="236"/>
+        <location filename="../common/logwidget.cpp" line="229"/>
         <source>History</source>
         <translation>Historique</translation>
     </message>
@@ -1546,32 +1560,32 @@ a été envoyé à %2.</translation>
 <context>
     <name>LogWidgetModel</name>
     <message>
-        <location filename="../common/logwidget.cpp" line="119"/>
+        <location filename="../common/logwidget.cpp" line="124"/>
         <source>%1 hr %2 min %3 s</source>
         <translation>%1 h %2 min %3 s</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="121"/>
+        <location filename="../common/logwidget.cpp" line="126"/>
         <source>%1 min %2 s</source>
         <translation>%1 min %2 s</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="123"/>
+        <location filename="../common/logwidget.cpp" line="128"/>
         <source>%1 s</source>
         <translation>%1 s</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="185"/>
+        <location filename="../common/logwidget.cpp" line="190"/>
         <source>Number</source>
         <translation>Numéro</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="187"/>
+        <location filename="../common/logwidget.cpp" line="192"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../common/logwidget.cpp" line="190"/>
+        <location filename="../common/logwidget.cpp" line="195"/>
         <source>Duration</source>
         <translation>Durée</translation>
     </message>
@@ -1970,6 +1984,7 @@ Etes vous sur ?</translation>
 %n Queue(s) %2</source>
         <translation>
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2334,27 +2349,25 @@ Conversation</translation>
         <translation>Nombre d&apos;agents dans cette file actuellement en conversation</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="136"/>
         <source>Hide</source>
-        <translation>Cache</translation>
+        <translation type="obsolete">Cache</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="140"/>
+        <location filename="../common/queuespanel.cpp" line="298"/>
         <source>Window (s)</source>
         <translation>Fenêtre (s)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="141"/>
+        <location filename="../common/queuespanel.cpp" line="297"/>
         <source>Qos - X (s)</source>
         <translation>Qos - X (s)</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="176"/>
         <source>Stats on slice &lt;sup&gt; ( right click to configure ) &lt;/sup&gt;</source>
-        <translation>Statistiques sur fenêtre &lt;sup&gt; ( click droit pour configurer )&lt;/sup&gt;</translation>
+        <translation type="obsolete">Statistiques sur fenêtre &lt;sup&gt; ( click droit pour configurer )&lt;/sup&gt;</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="365"/>
+        <location filename="../common/queuespanel.cpp" line="413"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
@@ -2390,12 +2403,37 @@ Service(%)</translation>
 en cours</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="171"/>
+        <location filename="../common/queuespanel.cpp" line="168"/>
         <source>Live state</source>
         <translation>Etat instantané</translation>
     </message>
     <message>
-        <location filename="../common/queuespanel.cpp" line="595"/>
+        <location filename="../common/queuespanel.cpp" line="173"/>
+        <source>Stats on slice</source>
+        <translation>Statistiques sur fenêtre</translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="296"/>
+        <source>Display Queue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="347"/>
+        <source>Queues configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="348"/>
+        <source>Configure queues settings:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="358"/>
+        <source>Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/queuespanel.cpp" line="609"/>
         <source>Available agents : %1</source>
         <translation>Agents disponibles : %1</translation>
     </message>
@@ -2452,7 +2490,7 @@ en cours</translation>
         <translation>Enre&amp;gistrement d&apos;Appel</translation>
     </message>
     <message>
-        <location filename="../common/servicepanel.cpp" line="93"/>
+        <location filename="../common/servicepanel.cpp" line="94"/>
         <source>Destination</source>
         <translation>Destination</translation>
     </message>

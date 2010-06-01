@@ -245,8 +245,8 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
     
     hBox->addStretch(1);
 
-    buildRadioButton(tr("Outgoing calls"), "green_up.png",   0, groupBox, hBox, viewmodel)->setChecked(true);
-    buildRadioButton(tr("Incoming calls"), "green_down.png", 1, groupBox, hBox, viewmodel);
+    buildRadioButton(tr("Sent calls"), "green_up.png",   0, groupBox, hBox, viewmodel)->setChecked(true);
+    buildRadioButton(tr("Received calls"), "green_down.png", 1, groupBox, hBox, viewmodel);
     buildRadioButton(tr("Missed calls"),   "red_down.png",   2, groupBox, hBox, viewmodel);
 
     hBox->addStretch(1);
