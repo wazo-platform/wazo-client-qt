@@ -74,9 +74,8 @@ class MeetmeInfo
         //! Copy constructor. Just copy all attributes
         MeetmeInfo(const MeetmeInfo & other) {
             m_context = other.m_context;
-            m_name = other.m_name;
-            m_confno = other.m_confno;
-            m_number = other.m_number;
+            m_roomname = other.m_roomname;
+            m_roomnumber = other.m_roomnumber;
             m_pin = other.m_pin;
             m_paused = other.m_paused;
             m_adminpin = other.m_adminpin;
@@ -88,9 +87,9 @@ class MeetmeInfo
         //! cast to QString operator for debugging
         operator QString() const {
             QString str("MeetmeInfo(");
-            str.append(m_number);
+            str.append(m_roomnumber);
             str.append(", ");
-            str.append(m_name);
+            str.append(m_roomname);
             str.append(", [");
             foreach(QString uid, m_uniqueids.keys()) {
                 str.append(uid);
@@ -101,9 +100,8 @@ class MeetmeInfo
         };
         
         QString m_context;  //!< room context
-        QString m_name;     //!< room name
-        QString m_confno;   //!< room access confno (name or number)
-        QString m_number;   //!< room access number (if any)
+        QString m_roomname;     //!< room access name
+        QString m_roomnumber;   //!< room access number (if any)
         QString m_pin;      //!< room pin number (if any)
         QString m_adminpin; //!< room admin pin number (if any) 
         QString m_adminid;  //!< admin id ??? (global)

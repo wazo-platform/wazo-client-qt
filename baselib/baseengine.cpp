@@ -1010,11 +1010,8 @@ void BaseEngine::parseCommand(const QString & line)
         } else if (thisclass == "endinit") {
             qDebug() << "I should have received everything";
 
-#if 0
         } else if (thisclass == "meetme") {
-            //qDebug() << "**** MEETME **** " << function << datamap["payload"];
-            if (function == "sendlist")
-            {
+            if (function == "sendlist") {
                 QVariantMap map1 = datamap["payload"].toMap();
                 foreach(QString astid, map1.keys()) {
                     m_meetme[astid].clear();
@@ -1022,9 +1019,8 @@ void BaseEngine::parseCommand(const QString & line)
                     foreach(QString meetmeid, map2.keys()) {
                         QVariantMap map3 = map2[meetmeid].toMap();
                         m_meetme[astid][meetmeid].m_context = map3["context"].toString();
-                        m_meetme[astid][meetmeid].m_name = map3["name"].toString();
-                        m_meetme[astid][meetmeid].m_confno = map3["confno"].toString();
-                        m_meetme[astid][meetmeid].m_number = map3["number"].toString();
+                        m_meetme[astid][meetmeid].m_roomname = map3["name"].toString();
+                        m_meetme[astid][meetmeid].m_roomnumber = map3["number"].toString();
                         m_meetme[astid][meetmeid].m_pin = map3["pin"].toString();
                         m_meetme[astid][meetmeid].m_adminpin = map3["pinadmin"].toString();
                         m_meetme[astid][meetmeid].m_adminid = map3["adminid"].toString();
@@ -1034,7 +1030,7 @@ void BaseEngine::parseCommand(const QString & line)
                         m_meetme[astid][meetmeid].m_paused = map3["paused"].toBool();
                     }
                 }
-                meetmeInit(m_timesrv, datamap["payload"]);
+                emit meetmeInit(m_timesrv, datamap["payload"]);
             }
             else if (function == "update") {
                 QVariantMap map = datamap["payload"].toMap();
@@ -1057,10 +1053,9 @@ void BaseEngine::parseCommand(const QString & line)
                         
                     }
                 }
-                meetmeEvent(m_timesrv, datamap["payload"]);
+                emit meetmeEvent(m_timesrv, datamap["payload"]);
             }
-            //qDebug() << "**** MEETME " << m_meetme;
-#endif
+            
         } else if (thisclass == "serverdown") {
             qDebug() << thisclass << datamap["mode"].toString();
             
