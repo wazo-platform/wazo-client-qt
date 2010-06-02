@@ -42,8 +42,7 @@ TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &bg_color)
 {
     m_pixmap_hash = pixmap_path + bg_color.name();
 
-    if (!m_pixmap_cache.contains(m_pixmap_hash))
-    {
+    if (!m_pixmap_cache.contains(m_pixmap_hash)) {
       QPixmap pix = QPixmap(pixmap_path);
       QPixmap pixa = pix.alphaChannel();
       QPixmap *pixs = new QPixmap(pix);

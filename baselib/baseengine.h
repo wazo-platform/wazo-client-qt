@@ -249,8 +249,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void saveToFile(const QString &);
         void saveQueueGroups(const QVariant &);
         void loadQueueGroups();
-        void saveQueueOrder(const QVariant &);
-        void loadQueueOrder();
         void logAction(const QString &);
         void shouldNotOccur(const QString &, const QString &);  //!< log tricky situations
         void sendNewRemark(const QString &, const QString &);
@@ -292,7 +290,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void statusListen(const QString &, const QString &, const QString &);
         void emitMessageBox(const QString &);
         void setQueueGroups(const QVariant &);
-        void setQueueOrder(const QVariant &);
         
         //! call list is updated
         //void callsUpdated();

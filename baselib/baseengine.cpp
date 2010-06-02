@@ -532,6 +532,7 @@ void BaseEngine::setGuiOption(const QString &arg, const QVariant &opt)
             m_settings->setValue("guisettings", m_guioptions.value("client_gui"));
         m_settings->endGroup();
     m_settings->endGroup();
+    saveSettings();
 }
 
 void BaseEngine::updateCapaPresence(const QVariant & presence)
@@ -2123,7 +2124,6 @@ void BaseEngine::changeWatchedAgentSlot(const QString & agentid, bool force)
 
 void BaseEngine::changeWatchedQueueSlot(const QString & queueid)
 {
-    // qDebug() << "BaseEngine::changeWatchedQueueSlot" << queueid;
     m_queue_watched_queueid = queueid;
     emit changeWatchedQueueSignal(queueid);
 }
@@ -2203,18 +2203,6 @@ void BaseEngine::saveQueueGroups(const QVariant & queuegroups)
 void BaseEngine::loadQueueGroups()
 {
     emit setQueueGroups(m_settings->value("agentpanel/queuegroups"));
-}
-
-/*! \brief save queue order in settings (.ini file) */
-void BaseEngine::saveQueueOrder(const QVariant & queueorder)
-{
-    m_settings->setValue("queuepanel/queueorder", queueorder);
-}
-
-/*! \brief load queue order from settings */
-void BaseEngine::loadQueueOrder()
-{
-    emit setQueueOrder(m_settings->value("queuepanel/queueorder"));
 }
 
 /*! \brief get pointer to the currently logged user

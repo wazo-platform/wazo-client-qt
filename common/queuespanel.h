@@ -34,10 +34,11 @@
 #ifndef __QUEUESPANEL_H__
 #define __QUEUESPANEL_H__
 
+#include <QObject>
 #include <QHash>
 #include <QLabel>
 #include <QList>
-#include <QObject>
+#include <QMap>
 #include <QVariant>
 #include <QMouseEvent>
 #include <QMenu>
@@ -45,16 +46,61 @@
 #include <QContextMenuEvent>
 #include <QLineEdit>
 #include <QSpinBox>
+#include <QScrollArea>
+#include <QVBoxLayout>
+#include <QSpacerItem>
+#include <QCheckBox>
+#include <QGridLayout>
+#include <QProgressBar>
+#include <QPushButton>
 
 #include "xlet.h"
+#include "queueinfo.h"
 
-class QCheckBox;
-class QGridLayout;
-class QLabel;
-class QProgressBar;
-class QPushButton;
 
 class UserInfo;
+class QueuesPanel;
+
+/*! \brief to configure if the queue should be shown and the queue 
+ *  stats parameters
+ */
+class QueuesPanelConfigure : public QWidget
+{
+    Q_OBJECT
+
+    public:
+        QueuesPanelConfigure(QueuesPanel *xlet);
+        QWidget* buildConfigureQueueList(QWidget *);
+
+    protected:
+        virtual void closeEvent(QCloseEvent *);
+
+    private slots:
+        void changeQueueStatParam(int);
+};
+
+class QueueRow : public QWidget {
+    Q_OBJECT
+
+    public:
+        QueueRow(const QueueInfo *info, QueuesPanel *parent);
+        void update(const QueueInfo *info);
+        void updateSliceStat(const QString &stat, const QString &value);
+        void updateLongestWaitWidget(int display, uint greenlevel, uint orangelevel);
+        void updateBusyWidget(int display, uint greenlevel, uint orangelevel);
+
+        static QWidget* makeTitleRow(QWidget *parent);
+        static void setLayoutColumnWidth(QGridLayout *layout, int nbStat);
+
+    private:
+        QLabel *m_name;  //!< to display the name of queue
+        QPushButton *m_more;  //!< to display queue details
+        QLabel *m_longestWait;  //!< to display the longuest waiting time for each queue
+        QPushButton *m_move;  //!< to change the order in which the queue are displayed
+        QProgressBar *m_busy;  //!< to display the queues busy level
+        QHash<QString, QLabel *> m_infoList; //!< the stats info
+        static uint m_maxbusy;  //!< Maximum value for busy level
+};
 
 /*! \brief Displays queues and their status
  */
@@ -69,70 +115,35 @@ class QueuesPanel : public XLet
             ((QueuesPanel*)udata)->eatQueuesStats(p);
         };
 
+        bool shouldShowMoreQueueDetailButton() { return m_showMore; };
+
     protected:
-        void update(const QStringList &);
-        virtual void mousePressEvent(QMouseEvent *);
         virtual void contextMenuEvent(QContextMenuEvent *);
 
     private:
-        void addQueue(const QString &, const QString &, const QString &, const QString &, const QString &);
         void openConfigureWindow();
-        QWidget* buildConfigureQueueList(QWidget *);
+        void saveQueueOrder(const QVariant &);      //!< Save Queue order (in settings)
+        void loadQueueOrder();                      //!< request load of queue order
+        void setQueueOrder(const QStringList &);
 
     signals:
         void changeWatchedQueue(const QString &);   //!< Watch this queue
-        void saveQueueOrder(const QVariant &);      //!< Save Queue order (in settings)
-        void loadQueueOrder();                      //!< request load of queue order
 
     public slots:
-        void setGuiOptions(const QVariantMap &);
         void removeQueues(const QString &, const QStringList &);
         void newQueueList(const QStringList &);
-        void setQueueOrder(const QVariant &);
 
     private slots:
         void updateLongestWaitWidgets();
-        void updateQueueStats();
+        void askForQueueStats();
         void queueClicked();
-        void changeQueueStatParam(int);
 
     private:
-        bool updateQueue(const QString &, const QString &, const QString &, const QString &, const QVariant &);
-        void affWidgets();
+        bool m_showMore;
+        QueuesPanelConfigure *m_configureWindow;
         
-        int m_show_display_queue_toggle;
-        
-        QFont m_gui_font;
-        quint32 m_gui_buttonsize;
-        bool m_gui_showqueuenames;
-        bool m_gui_showmore;
-        
-        QGridLayout *m_gridlayout; //!< Layout
-        QStringList m_statitems;  //!< list of stats items which are reported for each queue
-        QHash<QString, QString> m_statlegends_long;  //!< text displayed on top of each column
-        QHash<QString, QString> m_statlegends_tooltip;  //!< text displayed on top of each column
-        
-        QHash<QString, QLabel *> m_queuelabels;  //!< QLabel used to display the names of queues
-        QHash<QString, QPushButton *> m_queuemore;  //!< Button to display queue details
-        QHash<QString, QLabel *> m_queuelongestwait;  //!< Widget to display the longuest waiting time for each queue
-        QHash<QString, QPushButton *> m_queuemove;  //!< Button to change the order in which the queues are displayed
-        QHash<QString, QProgressBar *> m_queuebusies;  //!< Widgets to display the queues busy level
-        QHash<QString, QHash<QString, QLabel *> > m_queueinfos; //!< display details about queues
-        QHash<QString, QSpinBox *> m_queuewindow;  //!< the window indicator for this queue
-        QHash<QString, QSpinBox *> m_queuexqos;  //!< the x for this queue qos
-        QStringList m_queue_lines;  //!< store the order of queues
-        
-        QHash<QString, QString > m_queueid_map;  //!< cause some genius didn't bother to give an UID to identify a queue here & on the server
-        
-        quint32 m_maxbusy;  //!< Maximum value for busy level
-        
-        QLabel *m_longestwaittitle; //!< displayed on top of the column where we display the longuest waiting time for each queue
-        QLabel *m_busytitle;  //!< displayed on top of the column of busy levels
-        QLabel *m_qtitle;  //!< global title
-        QHash<QString, QLabel *> m_title_infos;  //!< To display text on top of each column
-        QVariantMap m_optionsMap;
-        QStringList not_realtime_stat;
-        QWidget *m_configureWindow;
+        QVBoxLayout *m_layout;
+        QHash<QString, QueueRow *> m_queueList;
 };
 
-#endif /* __QUEUESPANEL_H__ */
+#endif
