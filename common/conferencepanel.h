@@ -68,7 +68,7 @@ class ConferencePanel : public XLet
     public slots:
         void setGuiOptions(const QVariantMap &);
         void meetmeEvent(double, const QVariant &);
-        void meetmeInit(double, const QVariant &);
+        void meetmeInit(double);
         void doMeetMeAction();
         void changeRoomPauseState();
         void doMeetMeAdminOnlyAction(QTreeWidgetItem *, int);

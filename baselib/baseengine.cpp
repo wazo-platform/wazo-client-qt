@@ -50,6 +50,7 @@
 #include "phoneinfo.h"
 #include "agentinfo.h"
 #include "queueinfo.h"
+#include "meetmeinfo.h"
 
 /*! \brief Constructor.
  *
@@ -1019,42 +1020,26 @@ void BaseEngine::parseCommand(const QString & line)
                     QVariantMap map2 = map1[astid].toMap();
                     foreach(QString meetmeid, map2.keys()) {
                         QVariantMap map3 = map2[meetmeid].toMap();
-                        m_meetme[astid][meetmeid].m_context = map3["context"].toString();
-                        m_meetme[astid][meetmeid].m_roomname = map3["name"].toString();
-                        m_meetme[astid][meetmeid].m_roomnumber = map3["number"].toString();
-                        m_meetme[astid][meetmeid].m_pin = map3["pin"].toString();
-                        m_meetme[astid][meetmeid].m_adminpin = map3["pinadmin"].toString();
-                        m_meetme[astid][meetmeid].m_adminid = map3["adminid"].toString();
-                        m_meetme[astid][meetmeid].m_uniqueids = map3["uniqueids"].toMap();
-                        m_meetme[astid][meetmeid].m_adminlist = map3["adminlist"].toStringList();
-                        m_meetme[astid][meetmeid].m_adminnum = map3["adminnum"].toString();
-                        m_meetme[astid][meetmeid].m_paused = map3["paused"].toBool();
+                        if(!meetmeid.isEmpty() && !astid.isEmpty()) {
+                            if (m_meetme[astid].contains(meetmeid) == false)
+                                m_meetme[astid][meetmeid] = new MeetmeInfo();
+                            m_meetme[astid][meetmeid]->setProperties(map3);
+                        }
                     }
                 }
-                emit meetmeInit(m_timesrv, datamap["payload"]);
+                emit meetmeInit(m_timesrv);
             }
             else if (function == "update") {
                 QVariantMap map = datamap["payload"].toMap();
-                QString action = map["action"].toString();
                 QString astid = map["astid"].toString();
                 QString meetmeid = map["meetmeid"].toString();
-                QString uniqueid = map["uniqueid"].toString();
-                if(!meetmeid.isEmpty() && !astid.isEmpty()) {
-                    if ( !map["adminid"].toString().isNull()) {
-                        m_meetme[astid][meetmeid].m_adminid = map["adminid"].toString();
-                    }
-                    m_meetme[astid][meetmeid].m_adminnum = map["adminnum"].toString();
-                    m_meetme[astid][meetmeid].m_adminlist = map["adminlist"].toStringList();
-                    if((action == QString("join"))||(action == QString("auth"))) {
-                        m_meetme[astid][meetmeid].m_uniqueids[uniqueid] = map["details"].toMap();
-                    } else if(action == "leave") {
-                        m_meetme[astid][meetmeid].m_uniqueids.remove(uniqueid);
-                    } else if(action == "changeroompausedstate") {
-                        m_meetme[astid][meetmeid].m_paused = map["paused"].toBool();
-                        
-                    }
-                }
+                if (m_meetme.contains(astid) && m_meetme[astid].contains(meetmeid))
+                    m_meetme[astid][meetmeid]->update(map);
                 emit meetmeEvent(m_timesrv, datamap["payload"]);
+            } else if (function == "add") {
+                qDebug() << thisclass << function << datamap;
+            } else if (function == "del") {
+                qDebug() << thisclass << function << datamap;
             }
             
         } else if (thisclass == "serverdown") {

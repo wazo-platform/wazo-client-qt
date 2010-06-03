@@ -53,6 +53,7 @@ class UserInfo;
 class PhoneInfo;
 class AgentInfo;
 class QueueInfo;
+class MeetmeInfo;
 
 class QFile;
 class QSettings;
@@ -60,62 +61,10 @@ class QSocketNotifier;
 class QTcpSocket;
 class QTimerEvent;
 
-
-/*! \brief for storing meetme (conference room) infos
- *
- * All attributes use implicitly shared data
- * so it would be not too costy to copy/return this
- * class.
- */
-class MeetmeInfo
-{
-    public:
-        MeetmeInfo() {};
-        //! Copy constructor. Just copy all attributes
-        MeetmeInfo(const MeetmeInfo & other) {
-            m_context = other.m_context;
-            m_roomname = other.m_roomname;
-            m_roomnumber = other.m_roomnumber;
-            m_pin = other.m_pin;
-            m_paused = other.m_paused;
-            m_adminpin = other.m_adminpin;
-            m_adminid = other.m_adminid;
-            m_adminnum = other.m_adminnum;
-            m_adminlist = other.m_adminlist;
-            m_uniqueids = other.m_uniqueids;
-        };
-        //! cast to QString operator for debugging
-        operator QString() const {
-            QString str("MeetmeInfo(");
-            str.append(m_roomnumber);
-            str.append(", ");
-            str.append(m_roomname);
-            str.append(", [");
-            foreach(QString uid, m_uniqueids.keys()) {
-                str.append(uid);
-                str.append(" ");
-            }
-            str.append("])");
-            return str;
-        };
-        
-        QString m_context;  //!< room context
-        QString m_roomname;     //!< room access name
-        QString m_roomnumber;   //!< room access number (if any)
-        QString m_pin;      //!< room pin number (if any)
-        QString m_adminpin; //!< room admin pin number (if any) 
-        QString m_adminid;  //!< admin id ??? (global)
-        QString m_adminnum;  //!< admin num ( local in the meetme room )
-        bool m_paused;
-        QStringList m_adminlist;    //!< admin list (user ids)
-        QMap<QString, QVariant> m_uniqueids;    //!< people in this conference room
-};
-
 struct e_callback {
     void (*cb)(const QVariantMap &, void *);
     void *udata;
 };
-
 
 /*! \brief Class which handles connection with the XiVO CTI server
  *
@@ -209,7 +158,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         double timeServer() const;
         const QDateTime& timeClient() const;
         double timeDeltaServerClient() const;
-        const QHash<QString, QHash<QString, MeetmeInfo> > meetme() const { return m_meetme; };
+        const QHash<QString, QHash<QString, MeetmeInfo *> > meetme() const { return m_meetme; };
         int m_historysize;  //!< Number of elements when requestion call log
         
         void pasteToDial(const QString &);
@@ -278,7 +227,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
         void meetmeEvent(double, const QVariant &);
-        void meetmeInit(double, const QVariant &);
+        void meetmeInit(double);
         void requestFileListResult(const QVariant &);
         void updatePresence(const QVariant &);
         void updateCounter(const QVariant &);
@@ -430,10 +379,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_rate_msec;    //!< time counter to calculate Json decode throughput
         int m_rate_samples; //!< number of Json decode
         bool m_forced_to_disconnect;    //!< set to true when disconnected by server
-    
-        QHash<QString, QHash<QString, MeetmeInfo> > m_meetme; //! meet me (conference rooms)
+        
+        QHash<QString, QHash<QString, MeetmeInfo *> > m_meetme; //! meet me (conference rooms)
 };
 
 extern BASELIB_EXPORT BaseEngine *b_engine;
 
-#endif
+#endif /* __BASEENGINE_H__ */

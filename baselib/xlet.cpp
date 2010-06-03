@@ -57,4 +57,3 @@ void XLet::connectDials()
                                        const QString &,
                                        const QString &)) );
 }
-
