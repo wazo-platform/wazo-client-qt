@@ -75,15 +75,41 @@ void __format_duration(QString *field, int duration)
                                  .arg(sec, 2, 10, QChar('0')));
 }
 
-void QueuesPanel::loadQueueOrder()
+void QueuesPanel::settingChanged(const QVariantMap &)
 {
-    setQueueOrder(b_engine->getGuiOptions("client_gui")
-                  .value("queuespanel").toMap()
-                  .value("queue_order").toStringList());
+    m_showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
+
+    QHashIterator<QString, QueueRow *> i(m_queueList);
+
+    QVariantMap statConfig = b_engine->getGuiOptions("client_gui").value("queuespanel").toMap();
+
+    while (i.hasNext()) {
+        i.next();
+        i.value()->updateName();
+        QString queueid = i.value()->property("id").toString();
+
+        if (statConfig.value("visible" + queueid, true).toBool()) {
+            i.value()->show();
+        } else {
+            i.value()->hide();
+        }
+    }
 }
 
-void QueuesPanel::saveQueueOrder(const QVariant &queueOrder)
+void QueuesPanel::loadQueueOrder()
 {
+    QStringList order = b_engine->getGuiOptions("client_gui")
+                            .value("queuespanel").toMap()
+                            .value("queue_order").toStringList();
+
+    qDebug() << "ORDER=" << order;
+
+    setQueueOrder(order);
+}
+
+void QueuesPanel::saveQueueOrder(const QStringList &queueOrder)
+{
+    qDebug() << "SAVEORDER=" << queueOrder;
     QVariantMap clientGui = b_engine->getGuiOptions("client_gui");
     QVariantMap queuesPanelConfig = clientGui.value("queuespanel").toMap();
 
@@ -105,6 +131,7 @@ QueuesPanel::QueuesPanel(BaseEngine *engine,
     foreach (QString xletdesc, b_engine->getCapaXlets())
         xletlist.append(xletdesc.split("-")[0]);
     m_showMore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
+    m_showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
 
     QVBoxLayout *xletLayout = new QVBoxLayout(this);
     xletLayout->setSpacing(0);
@@ -115,7 +142,7 @@ QueuesPanel::QueuesPanel(BaseEngine *engine,
     m_layout->addWidget(QueueRow::makeTitleRow(this));
 
     xletLayout->addWidget(ListWidget);
-    xletLayout->insertStretch(-1,1);
+    xletLayout->insertStretch(-1, 1);
 
     setLayout(xletLayout);
 
@@ -124,21 +151,20 @@ QueuesPanel::QueuesPanel(BaseEngine *engine,
     connect(timer, SIGNAL(timeout()), this, SLOT(askForQueueStats()));
     timer->start(1000);
 
-    connect(m_engine, SIGNAL(newQueueList(const QStringList &)),
+    connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
             this, SLOT(newQueueList(const QStringList &)));
-    connect(m_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
+    connect(b_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
             this, SLOT(removeQueues(const QString &, const QStringList &)));
+    connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
+            this, SLOT(settingChanged(const QVariantMap &)));
     connect(this, SIGNAL(changeWatchedQueue(const QString &)),
-            m_engine, SLOT(changeWatchedQueueSlot(const QString &)));
-    connect(m_engine, SIGNAL(settingChanged(const QVariantMap &)),
-            this, SLOT(setGuiOptions(const QVariantMap &)));
+            b_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 
     b_engine->registerClassEvent("queuestats", QueuesPanel::eatQueuesStats_t, this);
 }
 
 void QueuesPanel::eatQueuesStats(const QVariantMap &p)
 {
-    qDebug() << p;
     foreach (QString queueid, p["stats"].toMap().keys()) {
         QVariantMap qvm = p["stats"].toMap()[queueid].toMap();
         foreach (QString stats, qvm.keys()) {
@@ -178,20 +204,15 @@ void QueuesPanel::contextMenuEvent(QContextMenuEvent *event)
         openConfigureWindow();
 }
 
-void QueuesPanel::removeQueues(const QString &astid, const QStringList &queues)
+void QueuesPanel::removeQueues(const QString &, const QStringList &queues)
 {
-#if 0
-    QString queueId;
-
-    foreach (QString queueName, queues) {
-        queueId = QString("queue:%1/%2").arg(astid).arg(queueName);
+    foreach (QString queueId, queues) {
         if (m_queueList.contains(queueId)) {
             QueueRow *to_remove = m_queueList[queueId];
             m_queueList.remove(queueId);
             delete to_remove;
         }
     }
-#endif
 }
 
 /*! \brief update display once the queues have been received
@@ -211,39 +232,48 @@ void QueuesPanel::newQueueList(const QStringList & qsl)
                 m_queueList[queueId] = new QueueRow(qinfo, this);
                 m_layout->addWidget(m_queueList[queueId]);
             } else {
-                m_queueList.value(queueId)->update(qinfo);
+                m_queueList.value(queueId)->update();
             }
         }
     }
+    loadQueueOrder();
 }
 
 /*! \brief set queue order
  *
- * Set new order un m_queue_lines and then call affWidget()
  * to update display.
  */
 void QueuesPanel::setQueueOrder(const QStringList &queueOrder)
 {
-#if 0
-    QStringList qlist;
-    foreach (QString qname, queueOrder) {
-        if (m_queue_lines.contains(qname) && (! qlist.contains(qname))) {
-            qlist << qname;
+    QueueRow *rowAtPos;
+    QueueRow *rowAtWrongPos;
+    int rowMovedIndex;
+    int index = 1;
+    foreach(QString queue, queueOrder) {
+        rowAtPos = qobject_cast<QueueRow *>(m_layout->itemAt(index)->widget());
+        if (rowAtPos!= NULL) {
+            if (rowAtPos->property("id").toString() != queue ) {
+                QHashIterator<QString, QueueRow *> i(m_queueList);
+                rowAtWrongPos = NULL;
+                while (i.hasNext()) {
+                    i.next();
+                    if (i.value()->property("id").toString() == queue) {
+                        rowAtWrongPos = i.value();
+                        break;
+                    }
+                }
+                if (rowAtWrongPos != NULL) {
+                    rowMovedIndex = m_layout->indexOf(rowAtWrongPos);
+                    m_layout->removeWidget(rowAtPos);
+                    m_layout->removeWidget(rowAtWrongPos);
+
+                    m_layout->insertWidget(rowMovedIndex, rowAtPos);
+                    m_layout->insertWidget(index, rowAtWrongPos);
+                }
+            }
+            index++;
         }
     }
-    foreach (QString qname, m_queue_lines) {
-        if (! qlist.contains(qname)) {
-            qlist << qname;
-        }
-    }
-    m_queue_lines = qlist;
-    int num = 0;
-    foreach (QString qname, m_queue_lines) {
-        m_queuemove[qname]->setProperty("position", num++);
-    }
-    saveQueueOrder(QVariant(m_queue_lines));
-    affWidgets();
-#endif
 }
 
 /*! \brief triggered when a queue is clicked
@@ -252,24 +282,34 @@ void QueuesPanel::setQueueOrder(const QStringList &queueOrder)
  */
 void QueuesPanel::queueClicked()
 {
+    QueueRow *row = qobject_cast<QueueRow *>(qobject_cast<QPushButton *>(sender())->parentWidget());
+    QueueRow *prevRow;
     QString function = sender()->property("function").toString();
     QString queueid = sender()->property("queueid").toString();
+
     if (function == "more") {
         changeWatchedQueue(queueid);
     } else if (function == "display_up") {
-#if 0
-        int nold = m_queuemove[queueid]->property("position").toInt();
-        if (nold > 0) {
-            int nnew = nold - 1;
-            m_queuemove[m_queue_lines[nold]]->setProperty("position", nnew);
-            m_queuemove[m_queue_lines[nnew]]->setProperty("position", nold);
-            m_queue_lines[nold] = m_queue_lines[nnew];
-            m_queue_lines[nnew] = queueid;
-            affWidgets();
-            saveQueueOrder(QVariant(m_queue_lines));
+        int index = m_layout->indexOf(row);
+        if (index > 1) {
+            prevRow = qobject_cast<QueueRow *>(m_layout->itemAt(index-1)->widget());
+            m_layout->removeWidget(prevRow);
+            m_layout->removeWidget(row);
+            m_layout->insertWidget(index - 1, row);
+            m_layout->insertWidget(index, prevRow);
         }
-#endif
     }
+
+    QStringList queueOrder;
+    int nbItem = m_layout->count();
+
+    int i;
+    for(i=1;i<nbItem;i++) {
+        row = qobject_cast<QueueRow *>(m_layout->itemAt(i)->widget());
+        queueOrder.append(row->property("id").toString());
+    }
+
+    saveQueueOrder(queueOrder);
 }
 
 
@@ -279,12 +319,23 @@ void QueuesPanel::queueClicked()
  */
 void QueuesPanel::updateLongestWaitWidgets()
 {
-    QVariantMap optionMap = b_engine->getGuiOptions("merged_gui");
+    QVariantMap optionMap = b_engine->getGuiOptions("client_gui");
     uint greenlevel = optionMap["queuelevels_wait"].toMap()["green"].toUInt() - 1;
     uint orangelevel = optionMap["queuelevels_wait"].toMap()["orange"].toUInt() - 1;
 
     // if we don't want this widget displayed
     int display_column = optionMap["queue_longestwait"].toBool();
+
+    QGridLayout *titleLayout = static_cast<QGridLayout*>(m_layout->itemAt(0)->widget()->layout());
+    QWidget *longestWaitTitle = titleLayout->itemAtPosition(1, 4)->widget();
+
+    if (!display_column) {
+        longestWaitTitle->hide();
+        titleLayout->setColumnMinimumWidth(4, 0);
+    } else {
+        titleLayout->setColumnMinimumWidth(4, 100);
+        longestWaitTitle->show();
+    }
 
     QHashIterator<QString, QueueRow *> i(m_queueList);
 
@@ -373,8 +424,7 @@ QWidget* QueuesPanelConfigure::buildConfigureQueueList(QWidget *parent)
         column = 0;
         i.next();
         QueueInfo *qinfo = i.value();
-        queueid = QString("queue:%1/%2").arg(qinfo->astid())
-                                        .arg(qinfo->id());
+        queueid = qinfo->id();
 
         displayQueue = new QCheckBox(qinfo->queueName(), root);
         displayQueue->setProperty("queueid", queueid);
@@ -403,6 +453,8 @@ QWidget* QueuesPanelConfigure::buildConfigureQueueList(QWidget *parent)
         layout->addWidget(spinBox, row, column++);
         connect(spinBox, SIGNAL(valueChanged(int)),
                 this, SLOT(changeQueueStatParam(int)));
+
+        row++;
     }
 
     return root;
@@ -426,19 +478,20 @@ void QueuesPanelConfigure::closeEvent(QCloseEvent *)
     hide();
 }
 
-
-QueueRow::QueueRow(const QueueInfo *qinfo, QueuesPanel *parent)
-    : QWidget(parent)
+QueueRow::QueueRow(const QueueInfo *qInfo, QueuesPanel *parent)
+    : QWidget(parent), qinfo(qInfo), xlet(parent)
 {
     setProperty("id", qinfo->id());
-    QGridLayout *m_layout = new QGridLayout(this);
+    m_layout = new QGridLayout(this);
     m_layout->setSpacing(0);
-    QString queueId = QString("queue:%1/%2").arg(qinfo->astid())
-                                            .arg(qinfo->id());
+    QString queueId = qinfo->id();
 
-    int hideQueue = b_engine->getGuiOptions("client_gui")
-                        .value("queuespanel").toMap()
-                        .value("visible"+queueId, true).toBool();
+    int visible = b_engine->getGuiOptions("client_gui")
+                  .value("queuespanel").toMap()
+                  .value("visible"+queueId, true).toBool();
+
+    if (!visible)
+        hide();
 
     int col = 0;
     m_name = new QLabel(this);
@@ -451,7 +504,11 @@ QueueRow::QueueRow(const QueueInfo *qinfo, QueuesPanel *parent)
     m_more->setFixedSize(20, 20);
     m_more->setFlat(true);
     m_layout->addWidget(m_more, 0, col++);
-    connect(m_more, SIGNAL(clicked()), parent, SLOT(queueClicked()));
+    connect(m_more, SIGNAL(clicked()), xlet, SLOT(queueClicked()));
+
+    if (!xlet->showMoreQueueDetailButton()) {
+        m_more->hide();
+    }
 
     m_move = new QPushButton(this);
     m_move->setProperty("queueid", queueId);
@@ -461,7 +518,7 @@ QueueRow::QueueRow(const QueueInfo *qinfo, QueuesPanel *parent)
     m_move->setFixedSize(20, 20);
     m_move->setFlat(true);
     m_layout->addWidget(m_move, 0, col++);
-    connect(m_move, SIGNAL(clicked()), parent, SLOT(queueClicked()));
+    connect(m_move, SIGNAL(clicked()), xlet, SLOT(queueClicked()));
 
 
     m_busy = new QProgressBar(this);
@@ -487,7 +544,12 @@ QueueRow::QueueRow(const QueueInfo *qinfo, QueuesPanel *parent)
     }
 
     setLayoutColumnWidth(m_layout, statItems.length());
-    update(qinfo);
+
+    QSpacerItem *spacer = new QSpacerItem(1, 1);
+    m_layout->addItem(spacer, 1, col, 1,-1);
+    m_layout->setColumnStretch(col, 1);
+
+    update();
 }
 
 void QueueRow::setLayoutColumnWidth(QGridLayout *layout, int nbStat)
@@ -505,7 +567,6 @@ void QueueRow::setLayoutColumnWidth(QGridLayout *layout, int nbStat)
 
 void QueueRow::updateSliceStat(const QString &stat, const QString &value)
 {
-    qDebug() << stat << value ;
     if (m_infoList.contains(stat)) {
         m_infoList[stat]->setText(value);
     } else {
@@ -515,8 +576,11 @@ void QueueRow::updateSliceStat(const QString &stat, const QString &value)
 
 uint QueueRow::m_maxbusy = 0;
 
-void QueueRow::updateBusyWidget(int display, uint greenlevel, uint orangelevel)
+void QueueRow::updateBusyWidget()
 {
+    QVariantMap optionMap = b_engine->getGuiOptions("client_gui");
+    uint greenlevel = optionMap["queuelevels"].toMap()["green"].toUInt() - 1;
+    uint orangelevel = optionMap["queuelevels"].toMap()["orange"].toUInt() - 1;
     uint val = m_busy->property("value").toUInt();
 
     if (m_maxbusy < val) {
@@ -537,6 +601,14 @@ void QueueRow::updateBusyWidget(int display, uint greenlevel, uint orangelevel)
 
 void QueueRow::updateLongestWaitWidget(int display, uint greenlevel, uint orangelevel)
 {
+    if (display) {
+        m_layout->setColumnMinimumWidth(4, 100); // queue longest waiting time
+        m_longestWait->show();
+    } else {
+        m_layout->setColumnMinimumWidth(4, 0); 
+        m_longestWait->hide();
+    }
+
     uint new_time = m_longestWait->property("time").toUInt();
     
     if (m_longestWait->property("running_time").toInt()) {
@@ -560,16 +632,17 @@ void QueueRow::updateLongestWaitWidget(int display, uint greenlevel, uint orange
     }
     
     m_longestWait->setText(time_label);
+
+    if (!display) {
+        m_longestWait->hide();
+    }
 }
 
-void QueueRow::update(const QueueInfo* qinfo)
+void QueueRow::update()
 {
     QVariantMap queueStats = qinfo->properties()["queuestats"].toMap();
     QString queueName = qinfo->queueName();
-    QString queueId = QString("queue:%1/%2").arg(qinfo->astid())
-                                            .arg(qinfo->id());
 
-    m_name->setText(queueName);
 
     QHash <QString, QString> infos;
     infos["Calls"] = "0";
@@ -610,7 +683,7 @@ void QueueRow::update(const QueueInfo* qinfo)
     foreach (QString agentname, queueagents.keys()) {
         QVariantMap qaprops = queueagents[agentname].toMap();
         if ((qaprops["Status"].toString() == "1") && (qaprops["Paused"].toString() == "0")) {
-            navail ++;
+            navail++;
             queueagents_list << agentname;
         }
     }
@@ -666,6 +739,23 @@ void QueueRow::update(const QueueInfo* qinfo)
     
     m_longestWait->setProperty("time", oldest_waiting_time);
     m_longestWait->setProperty("running_time", !first_item);
+
+    updateName();
+    updateBusyWidget();
+
+
+}
+
+void QueueRow::updateName()
+{
+    QString queueName;
+    if (xlet->showNumber()) {
+        queueName = qinfo->queueName() + " (" + qinfo->number() + ")";
+    } else {
+        queueName = qinfo->queueName();
+    }
+
+    m_name->setText(queueName);
 }
 
 QWidget* QueueRow::makeTitleRow(QWidget *parent)
@@ -772,17 +862,19 @@ QWidget* QueueRow::makeTitleRow(QWidget *parent)
     label->setStyleSheet("QLabel { background-color:#333;color:#eee; } ");
     layout->addWidget(label, 0, 9, 1, nelem(stats_detail)-4);
     
-    spacer = new QSpacerItem(25, 1);
+    spacer = new QSpacerItem(25, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
     layout->addItem(spacer, 1, col++);
-    spacer = new QSpacerItem(25, 1);
+    spacer = new QSpacerItem(25, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
     layout->addItem(spacer, 1, col++);
 
     label = new QLabel(row);
     label->setText(tr("Busy"));
+    label->setFixedSize(100, 20);
     label->setAlignment(Qt::AlignCenter);
     layout->addWidget(label, 1, col++);
 
     label = new QLabel(row);
+    label->setFixedSize(100, 20);
     label->setText(tr("Longest Wait"));
     label->setAlignment(Qt::AlignCenter);
     layout->addWidget(label, 1, col++);
@@ -798,6 +890,10 @@ QWidget* QueueRow::makeTitleRow(QWidget *parent)
         layout->addWidget(label, 1, col++);
     }
     setLayoutColumnWidth(layout, nelem(stats_detail));
+
+    spacer = new QSpacerItem(1, 1);
+    layout->addItem(spacer, 1, col, 1,-1);
+    layout->setColumnStretch(col, 1);
 
 
     return row;

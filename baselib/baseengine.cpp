@@ -525,11 +525,12 @@ const QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
 
 void BaseEngine::setGuiOption(const QString &arg, const QVariant &opt)
 {
+    m_guioptions[arg].clear();
     m_guioptions[arg] = opt;
 
     m_settings->beginGroup(m_profilename);
         m_settings->beginGroup("user-gui");
-            m_settings->setValue("guisettings", m_guioptions.value("client_gui"));
+            m_settings->setValue("guisettings", m_guioptions.value(arg));
         m_settings->endGroup();
     m_settings->endGroup();
     saveSettings();

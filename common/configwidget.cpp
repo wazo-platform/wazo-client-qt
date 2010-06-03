@@ -475,9 +475,10 @@ void ConfigWidget::saveAndClose()
     QVariantMap opts_saved;
     QVariantMap qvm, qvm2;
 
-    for(i=0;i<9;i++)
-        opts_saved["xlet_operator_key" + m_operator_action[i].action] = opts["xlet_operator_key" + m_operator_action[i].action].toInt();
-        
+    for(i=0;i<9;i++) {
+        opts_saved["xlet_operator_key" + m_operator_action[i].action] = \
+            opts["xlet_operator_key" + m_operator_action[i].action].toInt();
+    }
 
 
     foreach(QString color, queuelevel_colors)
@@ -488,7 +489,6 @@ void ConfigWidget::saveAndClose()
         qvm2[color] = QVariant(m_queuelevels_wait[color]->value());
     opts_saved["queuelevels_wait"] = qvm2;
     
-    // BaseEngine::setLoginKind() sets the user option if needed.
     m_engine->setLoginKind(m_loginkind->currentIndex());
     opts_saved["loginkind"] = m_loginkind->currentIndex();
     
@@ -503,7 +503,6 @@ void ConfigWidget::saveAndClose()
     opts_saved["presenceindicatorsize"] = m_presenceIndicatorSize->value();
     m_engine->setGuiOption("client_gui", opts_saved);
     
-    m_engine->saveSettings();
     emit confUpdated();
     close();
 }

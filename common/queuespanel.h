@@ -83,11 +83,12 @@ class QueueRow : public QWidget {
     Q_OBJECT
 
     public:
-        QueueRow(const QueueInfo *info, QueuesPanel *parent);
-        void update(const QueueInfo *info);
+        QueueRow(const QueueInfo *info, QueuesPanel *xlet);
+        void update();
         void updateSliceStat(const QString &stat, const QString &value);
         void updateLongestWaitWidget(int display, uint greenlevel, uint orangelevel);
-        void updateBusyWidget(int display, uint greenlevel, uint orangelevel);
+        void updateBusyWidget();
+        void updateName();
 
         static QWidget* makeTitleRow(QWidget *parent);
         static void setLayoutColumnWidth(QGridLayout *layout, int nbStat);
@@ -100,6 +101,10 @@ class QueueRow : public QWidget {
         QProgressBar *m_busy;  //!< to display the queues busy level
         QHash<QString, QLabel *> m_infoList; //!< the stats info
         static uint m_maxbusy;  //!< Maximum value for busy level
+        QGridLayout *m_layout;
+        const QueueInfo *qinfo;
+        QueuesPanel *xlet;
+
 };
 
 /*! \brief Displays queues and their status
@@ -115,16 +120,17 @@ class QueuesPanel : public XLet
             ((QueuesPanel*)udata)->eatQueuesStats(p);
         };
 
-        bool shouldShowMoreQueueDetailButton() { return m_showMore; };
+        bool showMoreQueueDetailButton() { return m_showMore; };
+        bool showNumber() { return m_showNumber; };
 
     protected:
         virtual void contextMenuEvent(QContextMenuEvent *);
 
     private:
         void openConfigureWindow();
-        void saveQueueOrder(const QVariant &);      //!< Save Queue order (in settings)
-        void loadQueueOrder();                      //!< request load of queue order
+        void saveQueueOrder(const QStringList &);
         void setQueueOrder(const QStringList &);
+        void loadQueueOrder();                      //!< request load of queue order
 
     signals:
         void changeWatchedQueue(const QString &);   //!< Watch this queue
@@ -132,14 +138,14 @@ class QueuesPanel : public XLet
     public slots:
         void removeQueues(const QString &, const QStringList &);
         void newQueueList(const QStringList &);
-
-    private slots:
+        void settingChanged(const QVariantMap &);
         void updateLongestWaitWidgets();
         void askForQueueStats();
         void queueClicked();
 
     private:
         bool m_showMore;
+        bool m_showNumber;
         QueuesPanelConfigure *m_configureWindow;
         
         QVBoxLayout *m_layout;
