@@ -193,7 +193,6 @@ QWidget* ConferencePanel::createLeftUserList(QWidget * parent,
 
     vlayout->addWidget(m_action_chamber_toggle_pause[idxroom]);
 
-
     return w;
 }
 
@@ -317,7 +316,6 @@ void ConferencePanel::updateButtons(const QString & astid,
                 }
             }
             
-            qDebug() << "A" << idxroom << m_user_not_authed_list.keys() << m_action_chamber_toggle_pause.keys();
             // non admin don't have to see the list of user not yet allowed
             if (!isAdmin) {
                 m_user_not_authed_list[idxroom]->hide();
@@ -326,12 +324,10 @@ void ConferencePanel::updateButtons(const QString & astid,
                 m_user_not_authed_list[idxroom]->show();
                 m_action_chamber_toggle_pause[idxroom]->show();
             }
-
-            qDebug() << "B";
+            
             QMapIterator<QString, QVariant> j(meetmeinfo.m_uniqueids);
             while(j.hasNext()) {
                 j.next();
-                qDebug() << "C" << j.key();
                 QString ref = QString("%1-%2-%3").arg(astid).arg(roomname).arg(j.key());
                 // We have the right to kick and mute if
                 //    1) we are the admin (userinfo->userid() == adminid)
@@ -365,7 +361,6 @@ void ConferencePanel::updateButtons(const QString & astid,
             }
         }
     }
-    qDebug() << "ConferencePanel::updateButtons() end";
 }
 
 /*! \brief create/update widgets which display person info
