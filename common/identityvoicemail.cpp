@@ -34,6 +34,7 @@
 #include <QGridLayout>
 #include <QPixmap>
 #include <QLabel>
+#include "baseengine.h"
 #include "identityvoicemail.h"
 #include "userinfo.h"
 
@@ -44,25 +45,28 @@ IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
 {
     m_layout = new QGridLayout( this );
 
-    // setContentsMargins() ???
-
-    m_icon = new QLabel(this);
-    m_icon->setPixmap(QPixmap(":/images/kthememgr.png"));
-    m_layout->addWidget( m_icon, 0, 0, 3, 1, Qt::AlignHCenter | Qt::AlignTop );
+    m_iconButton = new QPushButton(this);
+    QPixmap icon = QPixmap(":/images/kthememgr.png");
+    m_iconButton->setIcon(icon);
+    m_iconButton->setFlat(true);
+    m_iconButton->setIconSize(icon.size());
+    m_layout->addWidget(m_iconButton, 0, 0, 3, 1, Qt::AlignHCenter|Qt::AlignTop);
+    connect(m_iconButton, SIGNAL(clicked()), this, SLOT(callVoiceMail()));
 
     m_name = new QLabel(this);
-    m_layout->addWidget( m_name, 0, 1, Qt::AlignLeft | Qt::AlignVCenter );
+    m_layout->addWidget(m_name, 0, 1, Qt::AlignLeft|Qt::AlignVCenter);
 
     m_old = new QLabel(this);
-    m_layout->addWidget( m_old, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
+    m_layout->addWidget(m_old, 1, 1, Qt::AlignLeft|Qt::AlignVCenter);
 
     m_new = new QLabel(this);
-    m_layout->addWidget( m_new, 2, 1, Qt::AlignLeft | Qt::AlignVCenter );
+    m_layout->addWidget(m_new, 2, 1, Qt::AlignLeft|Qt::AlignVCenter);
+    m_layout->setColumnStretch(2, 1);
 }
 
 /*! \brief update voicemail box name.
  */
-void IdentityVoiceMail::svcSummary(QVariantMap & svcstatus, const UserInfo * ui)
+void IdentityVoiceMail::svcSummary(QVariantMap &svcstatus, const UserInfo * ui)
 {
     if(svcstatus["enablevm"].toBool()) {
         m_name->setText(tr("<b>VoiceMailBox %1</b>").arg(ui->voicemailnumber()));
@@ -81,3 +85,9 @@ void IdentityVoiceMail::setOldNew(const QString & _old, const QString & _new)
     m_new->setText(tr("%1 new").arg(_new));
 }
 
+/*! \brief call voicemail on click
+ */
+void IdentityVoiceMail::callVoiceMail()
+{
+    b_engine->actionCall("originate", "user:special:me", "user:special:myvoicemail");
+}

@@ -36,9 +36,10 @@
 
 #include <QWidget>
 #include <QVariant>
+#include <QPushButton>
+#include <QLabel>
 
 class QGridLayout;
-class QLabel;
 class UserInfo;
 
 /*! \brief Identity Voice mail display
@@ -46,16 +47,20 @@ class UserInfo;
 class IdentityVoiceMail : public QWidget
 {
     Q_OBJECT
-public:
-    IdentityVoiceMail(QWidget * parent = 0);
-    void svcSummary(QVariantMap & svcstatus, const UserInfo * ui);
-    void setOldNew(const QString & _old, const QString & _new);
-private:
-    QGridLayout * m_layout; //!< layout
-    QLabel * m_icon;        //!< icon
-    QLabel * m_name;        //!< box name
-    QLabel * m_old;         //!< number of old messages
-    QLabel * m_new;         //!< number of new messages
+
+    public:
+        IdentityVoiceMail(QWidget *parent);
+        void svcSummary(QVariantMap &svcstatus, const UserInfo *ui);
+        void setOldNew(const QString &_old, const QString &_new);
+    private slots:
+        void callVoiceMail();
+
+    private:
+        QGridLayout *m_layout;       //!< layout
+        QPushButton *m_iconButton;   //!< icon
+        QLabel *m_name;              //!< box name
+        QLabel *m_old;               //!< number of old messages
+        QLabel *m_new;               //!< number of new messages
 };
 
 #endif

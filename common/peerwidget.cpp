@@ -88,6 +88,7 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
         m_user_status->setMinimumSize(fsize, fsize);
         m_user_status->setProperty("userid", ui->userid());
         m_user_status->setProperty("astid", ui->astid());
+        m_user_status->setIconSize(QSize(20,20));
         m_user_status->setFlat(true);
         m_user_status->setFocusPolicy(Qt::NoFocus);
 

@@ -85,8 +85,8 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_icon_user->setContentsMargins(0, 0, 5, 0);
     
     m_agent = new IdentityAgent(this);
-    connect( m_agent, SIGNAL(setSystrayIcon(const QString &)),
-             this, SIGNAL(setSystrayIcon(const QString &)) );
+    connect(m_agent, SIGNAL(setSystrayIcon(const QString &)),
+            this, SIGNAL(setSystrayIcon(const QString &)));
     m_agent->setContentsMargins(5, 0, 5, 0);
 
     m_phone = new IdentityPhone(this);
@@ -103,76 +103,62 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     m_col_vm = 4;
     m_col_last = 5;
     
-    m_iconAlign = Qt::AlignHCenter | Qt::AlignTop; // Qt::AlignVCenter
+    m_iconAlign = Qt::AlignHCenter | Qt::AlignTop;
     m_textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
-    // m_textAlignTop = Qt::AlignLeft | Qt::AlignTop;
     
     setupIcons();
-    m_glayout->addWidget( m_agent, 0, m_col_agent, 3, 1 );
-    m_glayout->addWidget( m_phone, 0, m_col_phone, 3, 1 );
-    m_glayout->addWidget( m_voicemail, 0, m_col_vm, 3, 1 );
-    
-    // although it might be convenient in some cases (prevent some expansions),
-    // in the basic xivoclient/grid case, it fills too much room without no resizing available
-    //m_glayout->setRowStretch( idline, 1 );
+    m_glayout->addWidget(m_agent, 0, m_col_agent, 3, 1);
+    m_glayout->addWidget(m_phone, 0, m_col_phone, 3, 1);
+    m_glayout->addWidget(m_voicemail, 0, m_col_vm, 3, 1);
     
     m_agent->hide();
     
     m_functions = m_engine->getGuiOptions("server_funcs").value("functions").toStringList();
     setGuiOptions(m_engine->getGuiOptions("merged_gui"));
-    // m_glayout->setColumnStretch( 0, 1 );
 
     // connect signals/slots
     connectDials();
-    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
-             this, SLOT(newAgentList(const QStringList &)) );
-    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
-             this, SLOT(newQueueList(const QStringList &)) );
+    connect(m_engine, SIGNAL(newAgentList(const QStringList &)),
+            this, SLOT(newAgentList(const QStringList &)));
     
-    connect( m_engine, SIGNAL(updatePresence(const QVariant &)),
-             this, SLOT(updatePresence(const QVariant &)) );
-    connect( this, SIGNAL(setAvailState(const QString &, bool)),
-             m_engine, SLOT(setAvailState(const QString &, bool)) );
-    connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
-             m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
+    connect(m_engine, SIGNAL(updatePresence(const QVariant &)),
+            this, SLOT(updatePresence(const QVariant &)));
+    connect(this, SIGNAL(setAvailState(const QString &, bool)),
+            m_engine, SLOT(setAvailState(const QString &, bool)));
+    connect(this, SIGNAL(changeWatchedAgent(const QString &, bool)),
+            m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)));
     
-    connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
-             this, SLOT(setOpt(const QString &, bool)) );
-    connect( m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
-             this, SLOT(setForward(const QString &, const QVariant &)) );
-    connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
-             this, SLOT(updateUser(UserInfo *)) );
-    connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
-             m_phone, SLOT(updateUser(UserInfo *)) );
-    connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-             this, SLOT(setUserInfo(const UserInfo *)) );
-    connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-             m_phone, SLOT(setUserInfo(const UserInfo *)) );
+    connect(m_engine, SIGNAL(optChanged(const QString &, bool)),
+            this, SLOT(setOpt(const QString &, bool)));
+    connect(m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
+            this, SLOT(setForward(const QString &, const QVariant &)));
+    connect(m_engine, SIGNAL(userUpdated(UserInfo *)),
+            this, SLOT(updateUser(UserInfo *)) );
+    connect(m_engine, SIGNAL(userUpdated(UserInfo *)),
+            m_phone, SLOT(updateUser(UserInfo *)));
+    connect(m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+            this, SLOT(setUserInfo(const UserInfo *)));
+    connect(m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+            m_phone, SLOT(setUserInfo(const UserInfo *)));
 
-    connect( m_phone, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-             m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
+    connect(m_phone, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+            m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)));
 }
 
 void IdentityDisplay::setupIcons()
 {
 
-    m_glayout->addWidget( m_icon_user, 0, m_col_user, 3, 1, m_iconAlign );
+    m_glayout->addWidget(m_icon_user, 0, m_col_user, 3, 1, m_iconAlign);
     int idline = 0;
-    m_glayout->addWidget( m_user, idline, m_col_user + 1, m_textAlignVCenter );
+    m_glayout->addWidget(m_user, idline, m_col_user + 1, m_textAlignVCenter);
     idline ++;
-    m_glayout->addWidget( m_phonenum, idline, m_col_user + 1, m_textAlignVCenter );
+    m_glayout->addWidget(m_phonenum, idline, m_col_user + 1, m_textAlignVCenter);
     idline ++;
-    m_glayout->addWidget( m_presencevalue, idline, m_col_user + 1, m_textAlignVCenter );
+    m_glayout->addWidget(m_presencevalue, idline, m_col_user + 1, m_textAlignVCenter);
 
     m_glayout->setColumnStretch(0, 0);
     m_glayout->setColumnStretch(1, 0);
     m_glayout->setColumnStretch(4, 1);
-    /*
-    for(int i = 0; i < m_col_last; i++)
-        if(m_glayout->columnStretch(i) == 1)
-            m_glayout->setColumnStretch(i, 0);
-    m_glayout->setColumnStretch( m_col_last, 1 );
-    */
 }
 
 void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
@@ -277,18 +263,6 @@ void IdentityDisplay::newAgentList(const QStringList &)
     }
 }
 
-/*! \brief slot when one or more queues have been updated
- */
-void IdentityDisplay::newQueueList(const QStringList &)
-{
-/*
-    if (m_loginkind == 0)
-        return;
-    if (m_ui == NULL)
-        return;
-*/
-    // qDebug() << "IdentityDisplay::newQueueList()";
-}
 
 /*! \brief updates the boolean services
  */
