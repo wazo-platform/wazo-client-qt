@@ -67,7 +67,9 @@ class ConferencePanel : public XLet
 
     public slots:
         void setGuiOptions(const QVariantMap &);
-        void meetmeEvent(double, const QVariant &);
+        void meetmeEvent(double,
+                         const QString &, const QString &,
+                         const QString &, const QString &);
         void meetmeInit(double);
         void doMeetMeAction();
         void changeRoomPauseState();
@@ -77,8 +79,9 @@ class ConferencePanel : public XLet
         void meetmeAction(const QString &, const QString &);  //!< action
 
     private:
-        void setProperties(double, const QString &, const QString &, const QString &, const QString &, const QString &, const QVariantMap &, const QString &, const bool &);
-        void addRoomTab(const QString &, const QString &, const QString &, int are_we_inside=1);
+        void setProperties(double, const QString &,
+                           const QString &, const QString &, const QString &, const QVariantMap &);
+        void addRoomTab(const QString &, const QString &, int are_we_inside=1);
         void delRoomTab(const QString &, const QString &);
         void updateSummary();
         QWidget * createLeftUserList(QWidget *parent, const QString &,const QString &);

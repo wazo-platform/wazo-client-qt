@@ -1033,15 +1033,25 @@ void BaseEngine::parseCommand(const QString & line)
                 QVariantMap map = datamap["payload"].toMap();
                 QString astid = map["astid"].toString();
                 QString meetmeid = map["meetmeid"].toString();
+                QString action = map["action"].toString();
+                QString uniqueid = map["uniqueid"].toString();
                 if (m_meetme.contains(astid) && m_meetme[astid].contains(meetmeid))
                     m_meetme[astid][meetmeid]->update(map);
-                emit meetmeEvent(m_timesrv, datamap["payload"]);
+                emit meetmeEvent(m_timesrv, action, astid, meetmeid, uniqueid);
             } else if (function == "add") {
-                qDebug() << thisclass << function << datamap;
+                QVariantMap command;
+                command["class"] = "meetme";
+                command["direction"] = "xivoserver";
+                command["function"] = "getlist";
+                sendJsonCommand(command);
+                QString astid = datamap["astid"].toString();
+                QStringList meetmeids = datamap["deltalist"].toStringList();
+                qDebug() << "meetme" << "add" << astid << meetmeids;
             } else if (function == "del") {
-                qDebug() << thisclass << function << datamap;
+                QString astid = datamap["astid"].toString();
+                QStringList meetmeids = datamap["deltalist"].toStringList();
+                qDebug() << "meetme" << "del" << astid << meetmeids;
             }
-            
         } else if (thisclass == "serverdown") {
             qDebug() << thisclass << datamap["mode"].toString();
             

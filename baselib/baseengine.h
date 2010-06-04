@@ -226,7 +226,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void featurePutIsKO();
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
-        void meetmeEvent(double, const QVariant &);
+        void meetmeEvent(double, const QString &, const QString &, const QString &, const QString &);
         void meetmeInit(double);
         void requestFileListResult(const QVariant &);
         void updatePresence(const QVariant &);

@@ -101,15 +101,18 @@ bool MeetmeInfo::paused() const
 
 bool MeetmeInfo::setProperties(const QVariantMap & properties)
 {
+    // fixed-by-config stuff
     m_context = properties["context"].toString();
     m_roomname = properties["roomname"].toString();
     m_roomnumber = properties["roomnumber"].toString();
     m_pin = properties["pin"].toString();
     m_adminpin = properties["pinadmin"].toString();
+    
+    // variable stuff
     m_adminid = properties["adminid"].toString();
-    m_uniqueids = properties["uniqueids"].toMap();
-    m_adminlist = properties["adminlist"].toStringList();
     m_adminnum = properties["adminnum"].toString();
+    m_adminlist = properties["adminlist"].toStringList();
+    m_uniqueids = properties["uniqueids"].toMap();
     m_paused = properties["paused"].toBool();
     return true;
 }
@@ -118,14 +121,16 @@ bool MeetmeInfo::update(const QVariantMap & map)
 {
     QString action = map["action"].toString();
     QString uniqueid = map["uniqueid"].toString();
+    
     if ( !map["adminid"].toString().isNull()) {
         m_adminid = map["adminid"].toString();
     }
     m_adminnum = map["adminnum"].toString();
     m_adminlist = map["adminlist"].toStringList();
-    if ( (action == QString("join")) || (action == QString("auth"))) {
+    if (map.contains("details"))
         m_uniqueids[uniqueid] = map["details"].toMap();
-    } else if(action == "leave") {
+
+    if(action == "leave") {
         m_uniqueids.remove(uniqueid);
     } else if(action == "changeroompausedstate") {
         m_paused = map["paused"].toBool();
