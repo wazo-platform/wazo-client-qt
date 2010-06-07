@@ -62,7 +62,7 @@ class ChitChatWindow : public QWidget
     public:
         static ChitChatWindow *chitchat_instance;
 
-        ChitChatWindow(BaseEngine *e);
+        ChitChatWindow();
         ChitChatWindow(const QString &);
         
         void send_message(const QString &message);
@@ -78,7 +78,6 @@ class ChitChatWindow : public QWidget
 
     private:
         QString m_userid;
-        static BaseEngine *m_engine;
         static QHash<QString, ChitChatWindow*> m_chat_window_opened;
         MessageEdit *m_message;
         QTextEdit *m_message_history;

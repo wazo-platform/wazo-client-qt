@@ -49,7 +49,7 @@ SearchPanel::SearchPanel(BaseEngine * engine,
 {
     // qDebug() << "SearchPanel::SearchPanel()";
     setTitle( tr("Contacts") );
-    ChitChatWindow::chitchat_instance = new ChitChatWindow(m_engine);
+    ChitChatWindow::chitchat_instance = new ChitChatWindow;
     QVariantMap optionsMap = m_engine->getGuiOptions("merged_gui");
     m_maxdisplay = optionsMap.value("contacts-max").toUInt();
     m_ncolumns = optionsMap.value("contacts-width").toUInt();

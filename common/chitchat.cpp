@@ -36,7 +36,6 @@
 
 QHash<QString, ChitChatWindow*> ChitChatWindow::m_chat_window_opened = QHash <QString, ChitChatWindow*>();
 ChitChatWindow * ChitChatWindow::chitchat_instance = NULL;
-BaseEngine * ChitChatWindow::m_engine = NULL;
 
 void ChitChatWindow::addMessage(
         const QString &mcolor,
@@ -92,16 +91,15 @@ ChitChatWindow::ChitChatWindow(const QString &with) : QWidget(NULL)
     v_layout->addWidget(m_message_history, 3);
     v_layout->addLayout(h_layout);
 
-    setWindowTitle(tr("chitchat - %0").arg(m_engine->users()[with]->fullname()));
+    setWindowTitle(tr("chitchat - %0").arg(b_engine->users()[with]->fullname()));
     m_userid = with;
     show();
 }
 
 
-ChitChatWindow::ChitChatWindow(BaseEngine *b)
+ChitChatWindow::ChitChatWindow()
 {
-    m_engine = b;
-    b->registerClassEvent("chitchat", ChitChatWindow::receive_message_t, this);
+    b_engine->registerClassEvent("chitchat", ChitChatWindow::receive_message_t, this);
 }
 
 
@@ -122,11 +120,11 @@ void ChitChatWindow::receive_message(const QVariantMap &p)
 
     if (opened || (!m_chat_window_opened[chat_key]->isVisible()))
         m_chat_window_opened[chat_key]->addMessage("purple",
-            tr("chat window opened with user - ") + m_engine->users()[from]->fullname(), "gray", "system: ");
+            tr("chat window opened with user - ") + b_engine->users()[from]->fullname(), "gray", "system: ");
 
 
     m_chat_window_opened[chat_key]->addMessage("black",
-        text, "red", m_engine->users()[from]->fullname() + ": ");
+        text, "red", b_engine->users()[from]->fullname() + ": ");
 }
 
 
@@ -146,7 +144,7 @@ void ChitChatWindow::send_message(const QString &message)
     command["to"] = m_userid;
     command["text"] = message;
 
-    m_engine->sendJsonCommand(command);
+    b_engine->sendJsonCommand(command);
 }
 
 
@@ -167,7 +165,7 @@ void ChitChatWindow::WriteMessageTo()
 
     if (opened || (!m_chat_window_opened[chat_key]->isVisible())) {
         m_chat_window_opened[chat_key]->addMessage("purple",
-            tr("chat window opened with user - ") +  m_engine->users()[userid]->fullname(), "gray", tr("system: "));
+            tr("chat window opened with user - ") +  b_engine->users()[userid]->fullname(), "gray", tr("system: "));
     }
 }
 
