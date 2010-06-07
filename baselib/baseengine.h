@@ -80,20 +80,20 @@ class BASELIB_EXPORT BaseEngine: public QObject
         BaseEngine(QSettings *, const QString &); //! Constructor
         ~BaseEngine(); //! Destructor
         
-        QSettings * getSettings(); 
+        QSettings* getSettings(); 
         void loadSettings();                      //!< load server settings
         // setter/getter for properties
         //! set address used to connect to the server
         void setAddress(const QString &, quint16);
         void setServerip(const QString &);        //!< see serverip()
         quint16 sbPort();
-        const QString & serverip() const;         //!< Host of the login server
+        const QString& serverip() const;         //!< Host of the login server
         
-        const QString & company() const;        //!< name of the user's company
+        const QString& company() const;        //!< name of the user's company
         void setCompany(const QString &);       //!< see company()
-        const QString & userId() const;         //!< userid to identify to the server
+        const QString& userId() const;         //!< userid to identify to the server
         void setUserId(const QString &);        //!< see userid()
-        const QString & agentphonenumber() const;  //!< agent's phone number
+        const QString& agentphonenumber() const;  //!< agent's phone number
         void setAgentPhoneNumber(const QString &); //!< see agentphonenumber()
         int loginkind();                        //!< loginkind to identify to the server
         void setLoginKind(const int);           //!< see loginkind()

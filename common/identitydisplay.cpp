@@ -133,9 +133,10 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     connect(m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
             this, SLOT(setForward(const QString &, const QVariant &)));
     connect(m_engine, SIGNAL(userUpdated(UserInfo *)),
-            this, SLOT(updateUser(UserInfo *)) );
+            this, SLOT(updateUser(UserInfo *)));
     connect(m_engine, SIGNAL(userUpdated(UserInfo *)),
             m_phone, SLOT(updateUser(UserInfo *)));
+
     connect(m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
             this, SLOT(setUserInfo(const UserInfo *)));
     connect(m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),

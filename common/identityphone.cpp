@@ -46,8 +46,7 @@
 IdentityPhoneLine::IdentityPhoneLine(int linenum, QWidget * parent)
     : QWidget(parent), m_ui(0), m_linenum(linenum)
 {
-    QHBoxLayout * layout = new QHBoxLayout(this);
-    //QGridLayout * layout = new QGridLayout(this);
+    QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     m_action = new QLabel(this);
     m_status = new QLabel(this);
@@ -60,8 +59,6 @@ IdentityPhoneLine::IdentityPhoneLine(int linenum, QWidget * parent)
 
     layout->addWidget(m_action);
     layout->addWidget(m_status);
-    //layout->addWidget(m_action, 0, 0);
-    //layout->addWidget(m_status, 0, 1);
 }
 
 void IdentityPhoneLine::setPixmap(const QPixmap & pixmap)
@@ -161,8 +158,7 @@ void IdentityPhoneLine::refuse()
 /*! \brief Constructor
  */
 IdentityPhone::IdentityPhone(QWidget * parent)
-    : QWidget(parent),
-    m_ui(0)
+    : QWidget(parent), m_ui(0)
 {
     m_layout = new QGridLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
@@ -185,19 +181,22 @@ IdentityPhone::IdentityPhone(QWidget * parent)
     m_phonestatustxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_phonestatustxt->setContentsMargins(0, 0, 10, 0);
 
-    m_layout->addWidget(m_icon, 0, 0, 3, 1);    // check alignment
+    m_layout->addWidget(m_icon, 0, 0, 3, 1);
     m_layout->addWidget(m_phone, 0, 1, 1, 2, Qt::AlignLeft | Qt::AlignVCenter);
     m_layout->addWidget(m_phonecall, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
     m_layout->addWidget(m_phonecalltxt, 1, 2, Qt::AlignLeft | Qt::AlignVCenter);
     m_layout->addWidget(m_phonestatustxt, 2, 1, 1, 2, Qt::AlignLeft | Qt::AlignVCenter);
-
 }
 
-void IdentityPhone::setUserInfo(const UserInfo * ui)
+void IdentityPhone::setUserInfo(const UserInfo *ui)
 {
     m_ui = ui;
     m_phone->setText(tr("Phone %1").arg(m_ui->phonenumber()));
     setPhoneLines();
+    qDebug() << "phonnu=" << ui->phonenumber();
+    if (ui->phonenumber()=="") {
+        hide();
+    }
 }
 
 void IdentityPhone::updateUser(UserInfo * ui)

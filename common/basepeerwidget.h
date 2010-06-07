@@ -89,14 +89,14 @@ class BasePeerWidget : public QWidget
         void rename();
 
     protected:
-        BaseEngine * m_engine;      //!< Xivo CTI Client Engine
-        UserInfo * m_ui;            //!< user infos
+        BaseEngine *m_engine;      //!< Xivo CTI Client Engine
+        UserInfo *m_ui;            //!< user infos
         QPoint m_dragstartpos;            //!< drag start position
-        QAction * m_dialAction;     //!< action to dial this number
-        QAction * m_removeAction;   //!< action to remove this peer from the window
-        QAction * m_interceptAction;    //!< action to intercept ringing calls to this number
-        QAction * m_renameAction;   //<! action to rename the user
-        QAction * m_chitchatAction;   //!< action to speak with an user
+        QAction *m_dialAction;     //!< action to dial this number
+        QAction *m_removeAction;   //!< action to remove this peer from the window
+        QAction *m_interceptAction;    //!< action to intercept ringing calls to this number
+        QAction *m_renameAction;   //<! action to rename the user
+        QAction *m_chitchatAction;   //!< action to speak with an user
         QString m_number;   //!< phone number (filled if m_ui is NULL)
         bool m_editable;    //!< editable from a user point of view
         int m_maxWidthWanted;   //!< maximum width for "small" items

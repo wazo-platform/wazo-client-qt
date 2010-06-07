@@ -49,7 +49,7 @@
 
 /*! \brief Constructor
  */
-PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
+PeerWidget::PeerWidget(BaseEngine *engine, UserInfo *ui)
     : BasePeerWidget(engine, ui), m_user_status(NULL), m_agentlbl(NULL), m_mobilelbl(NULL)
 {
     int fsize = 25;
@@ -73,22 +73,13 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
     
     m_textlbl = new QLabel(peer);
     setName(m_ui->fullname());
-    
-    foreach (QString phone, ui->phonelist()) {
-        m_lblphones[phone] = new QLabel(peer);
-        m_lblphones[phone]->setAlignment(Qt::AlignCenter);
-        m_lblphones[phone]->setMinimumSize(fsize, fsize);
-        m_lblphones[phone]->setProperty("kind", "term");
-
-        hLayout->addWidget(m_lblphones[phone]);
-    }
 
     if(! m_ui->ctilogin().isEmpty()) {
         m_user_status = new QPushButton(peer);
-        m_user_status->setMinimumSize(fsize, fsize);
         m_user_status->setProperty("userid", ui->userid());
         m_user_status->setProperty("astid", ui->astid());
         m_user_status->setIconSize(QSize(20,20));
+        ((QPushButton*)m_user_status)->setFixedWidth(20);
         m_user_status->setFlat(true);
         m_user_status->setFocusPolicy(Qt::NoFocus);
 
@@ -99,7 +90,19 @@ PeerWidget::PeerWidget(BaseEngine * engine, UserInfo * ui)
             }
         }
         hLayout->addWidget(m_user_status);
+    } else {
+        hLayout->addSpacing(20);
     }
+    
+    foreach (QString phone, ui->phonelist()) {
+        m_lblphones[phone] = new QLabel(peer);
+        m_lblphones[phone]->setAlignment(Qt::AlignCenter);
+        m_lblphones[phone]->setMinimumSize(fsize, fsize);
+        m_lblphones[phone]->setProperty("kind", "term");
+
+        hLayout->addWidget(m_lblphones[phone]);
+    }
+
         
     if(! m_ui->mobilenumber().isEmpty()) {
         m_mobilelbl = new QLabel(peer);

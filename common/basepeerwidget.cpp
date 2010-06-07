@@ -48,7 +48,7 @@
  *
  * initialize members.
  */
-BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
+BasePeerWidget::BasePeerWidget(BaseEngine *engine, UserInfo *ui)
     : m_engine(engine), m_ui(ui), m_editable(false)
 {
     if(m_ui)
@@ -81,9 +81,12 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
     connect(m_dialAction, SIGNAL(triggered()),
              this, SLOT(intercept2()));
     
-    m_maxWidthWanted = m_engine->getGuiOptions("merged_gui").value("maxwidthwanted").toInt();
-    if(m_maxWidthWanted < 50)
-        m_maxWidthWanted = 200;
+    m_maxWidthWanted = 200;
+    if (b_engine->enabledFunction("switchboard")) {
+        m_maxWidthWanted = b_engine->getGuiOptions("merged_gui").value("maxwidthwanted").toInt();
+        if(m_maxWidthWanted < 50)
+            m_maxWidthWanted = 200;
+    }
     setMaximumWidth(m_maxWidthWanted);
     setAcceptDrops(true);
 
@@ -92,7 +95,7 @@ BasePeerWidget::BasePeerWidget(BaseEngine * engine, UserInfo * ui)
 void BasePeerWidget::reloadSavedName()
 {
     // retrieve saved name
-    QSettings * settings = m_engine->getSettings();
+    QSettings * settings = b_engine->getSettings();
     settings->beginGroup("renamed_items");
     QVariant value = settings->value(id());
     if(!value.isNull()) {
@@ -173,7 +176,7 @@ void BasePeerWidget::intercept2()
  */
 void BasePeerWidget::transfer()
 {
-    const UserInfo * ui = m_engine->getXivoClientUser();
+    const UserInfo * ui = b_engine->getXivoClientUser();
     if(m_ui) {
         emit actionCall("transfer",
                         "chan:" + ui->userid() + ":" + sender()->property("peerchannel").toString(),
@@ -189,7 +192,7 @@ void BasePeerWidget::transfer()
  */
 void BasePeerWidget::itransfer()
 {
-    const UserInfo * ui = m_engine->getXivoClientUser();
+    const UserInfo * ui = b_engine->getXivoClientUser();
     if(m_ui) {
         emit actionCall("atxfer",
                         "chan:" + ui->userid() + ":" + sender()->property("thischannel").toString(),
@@ -218,7 +221,7 @@ void BasePeerWidget::parkcall()
 void BasePeerWidget::vmtransfer()
 {
     if(m_ui) {
-        const UserInfo * ui = m_engine->getXivoClientUser();
+        const UserInfo * ui = b_engine->getXivoClientUser();
         emit actionCall("transfer",
                         "chan:" + ui->userid() + ":" + sender()->property("peerchannel").toString(),
                         "voicemail:" + m_ui->userid());
@@ -237,7 +240,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
         if(w)
             subwidgetkind = w->property("kind").toString();
         // check if we are in communication
-        const UserInfo * ui = m_engine->getXivoClientUser();
+        const UserInfo * ui = b_engine->getXivoClientUser();
         if(ui && !ui->phonelist().isEmpty()) {
             foreach(const QString phone, ui->phonelist()) {
                 const PhoneInfo * pi = ui->getPhoneInfo(phone);
@@ -335,7 +338,7 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
  */
 void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
 {
-    const UserInfo * ui = m_engine->getXivoClientUser();
+    const UserInfo * ui = b_engine->getXivoClientUser();
     // Construct and display the context menu
     QMenu contextMenu(this);
     if(true) {
@@ -410,7 +413,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
                      (status == CHAN_STATUS_LINKED_CALLED)) &&
                      (comm["calleridnum"] != QString("<parked>")) &&
                      (comm["calleridname"] != QString("<parked>")) &&
-                     (m_engine->enabledFunction("switchboard"))) {
+                     (b_engine->enabledFunction("switchboard"))) {
 
                     if(!interceptMenu && commsCount > 1)
                         interceptMenu = new QMenu(tr("&Intercept"), &contextMenu);
@@ -641,7 +644,7 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
 
             } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
                 event->acceptProposedAction();
-                if (m_engine->enabledFunction("switchboard")) {
+                if (b_engine->enabledFunction("switchboard")) {
                     actionCall("originate", "user:" + userid_from, to); // Call
                 }
             } else if(event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
@@ -689,7 +692,7 @@ void BasePeerWidget::rename()
     if(ok && !text.isEmpty()) {
         setName(text);
         // save the name
-        QSettings * settings = m_engine->getSettings();
+        QSettings * settings = b_engine->getSettings();
         settings->beginGroup("renamed_items");
         settings->setValue(id(), text);
         settings->endGroup();
