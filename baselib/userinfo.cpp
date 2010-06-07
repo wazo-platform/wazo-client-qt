@@ -151,18 +151,18 @@ const QString & UserInfo::fullname() const
 }
 
 /*! \brief return m_phonenumber */
-const QString & UserInfo::phonenumber() const
+const QString & UserInfo::phoneNumber() const
 {
     return m_phonenumber;
 }
 
 /*! \brief return m_mobilenumber */
-const QString & UserInfo::mobilenumber() const
+const QString & UserInfo::mobileNumber() const
 {
     return m_mobilenumber;
 }
 
-const QString & UserInfo::voicemailnumber() const
+const QString & UserInfo::voicemailNumber() const
 {
     return m_voicemailnumber;
 }
@@ -183,7 +183,7 @@ const QStringList & UserInfo::mwi() const
     return m_mwi;
 }
 
-const QString & UserInfo::agentnumber() const
+const QString & UserInfo::agentNumber() const
 {
     return m_agentnumber;
 }

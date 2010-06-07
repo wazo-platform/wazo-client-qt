@@ -54,7 +54,7 @@ class BASELIB_EXPORT AgentInfo
         const QString hintstatus(const QString &key) const {
             return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
         };  //! access to the status values of this agent
-        const QString &agentnumber() const;  //! agent number
+        const QString &agentNumber() const;  //! agent number
         const QString &fullname() const;  //! agent fullname
         //! agent properties
         const QVariantMap& properties() const;

@@ -210,13 +210,12 @@ void AgentdetailsPanel::updatePanel()
 {
     AgentInfo * ainfo = m_engine->agents()[m_monitored_agentid];
     QStringList agent_descriptions;
-    agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->agentnumber()).arg(ainfo->fullname());
+    agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->agentNumber()).arg(ainfo->fullname());
     if(! m_optionsMap["hideastid"].toBool())
         agent_descriptions << tr("on <b>%1</b>").arg(ainfo->astid());
     if(! m_optionsMap["hidecontext"].toBool())
         agent_descriptions << QString("(%1)").arg(ainfo->context());
     QVariantMap properties = ainfo->properties();
-    // qDebug() << "AgentdetailsPanel::updatePanel()" << ainfo->astid() << ainfo->agentnumber();
     QVariant agentstats = properties["agentstats"];
     QString lstatus = agentstats.toMap()["status"].toString();
     QString phonenum = agentstats.toMap()["agent_phone_number"].toString();

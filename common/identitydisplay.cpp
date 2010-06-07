@@ -231,7 +231,7 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
     m_ui = ui;
     
     m_user->setText(m_ui->fullname());
-    m_phonenum->setText(m_ui->phonenumber());
+    m_phonenum->setText(m_ui->phoneNumber());
     QStringList vm = m_ui->mwi();
     if(vm.size() > 2) {
         m_voicemail->show();
@@ -255,9 +255,8 @@ void IdentityDisplay::newAgentList(const QStringList &)
         iter.next();
         AgentInfo * ainfo = iter.value();
         QString agentid = iter.key();
-        // qDebug() << "IdentityDisplay::newAgentList" << m_ui->astid() << ainfo->astid() << m_ui->agentnumber() << ainfo->agentnumber();
-        if((m_ui->astid() == ainfo->astid()) && (m_ui->agentnumber() == ainfo->agentnumber())) {
-            m_agent->setText(QString("Agent %1").arg(ainfo->agentnumber()));
+        if((m_ui->astid() == ainfo->astid()) && (m_ui->agentNumber() == ainfo->agentNumber())) {
+            m_agent->setText(QString("Agent %1").arg(ainfo->agentNumber()));
             m_agent->show();
             m_agent->updateStatus(ainfo->properties());
         }

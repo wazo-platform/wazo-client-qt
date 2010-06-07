@@ -75,8 +75,8 @@ ChitChatWindow::ChitChatWindow(const QString &with) : QWidget(NULL)
     button[0]= new QPushButton(tr("&Clear history"));
     button[1]= new QPushButton(tr("&Send"));
 
-    connect(button[1], SIGNAL(pressed()), m_message, SLOT(send_message()));
-    connect(button[0], SIGNAL(pressed()), this, SLOT(clear_message_history()));
+    connect(button[1], SIGNAL(pressed()), m_message, SLOT(sendMessage()));
+    connect(button[0], SIGNAL(pressed()), this, SLOT(clearMessageHistory()));
 
     v_layout2->addStretch(1);
     for(i=0;i<2;i++) {
@@ -99,11 +99,11 @@ ChitChatWindow::ChitChatWindow(const QString &with) : QWidget(NULL)
 
 ChitChatWindow::ChitChatWindow()
 {
-    b_engine->registerClassEvent("chitchat", ChitChatWindow::receive_message_t, this);
+    b_engine->registerClassEvent("chitchat", ChitChatWindow::receiveMessage_t, this);
 }
 
 
-void ChitChatWindow::receive_message(const QVariantMap &p)
+void ChitChatWindow::receiveMessage(const QVariantMap &p)
 {
     QString from = p["from"].toString();
     QString text = p["text"].toString();
@@ -128,13 +128,13 @@ void ChitChatWindow::receive_message(const QVariantMap &p)
 }
 
 
-void ChitChatWindow::clear_message_history()
+void ChitChatWindow::clearMessageHistory()
 {
     m_message_history->setPlainText("");
 }
 
 
-void ChitChatWindow::send_message(const QString &message)
+void ChitChatWindow::sendMessage(const QString &message)
 {
     addMessage("blue", message, "green", tr("you said: "));
 
@@ -148,7 +148,7 @@ void ChitChatWindow::send_message(const QString &message)
 }
 
 
-void ChitChatWindow::WriteMessageTo()
+void ChitChatWindow::writeMessageTo()
 {
     QString astid = sender()->property("astid").toString();
     QString userid = sender()->property("userid").toString();
@@ -172,13 +172,13 @@ void ChitChatWindow::WriteMessageTo()
 
 
 
-void MessageEdit::send_message()
+void MessageEdit::sendMessage()
 {
     if (toPlainText().trimmed() == "") {
         return ;
     }
 
-    m_dad->send_message(toPlainText());
+    m_dad->sendMessage(toPlainText());
     setPlainText("");
     setFocus(Qt::OtherFocusReason);
 }
@@ -190,7 +190,7 @@ void MessageEdit::keyPressEvent(QKeyEvent * event)
         if (event->modifiers() == Qt::ControlModifier) {
             event = new QKeyEvent(event->type(), event->key(), Qt::NoModifier, "\r");
         } else {
-            send_message();
+            sendMessage();
             return ;
         }
     }

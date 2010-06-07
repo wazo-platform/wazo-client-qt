@@ -74,7 +74,7 @@ BasePeerWidget::BasePeerWidget(BaseEngine *engine, UserInfo *ui)
     m_chitchatAction->setStatusTip(tr("Open a chatting windows with this user"));
     m_chitchatAction->setProperty("userid", ui->userid());
     m_chitchatAction->setProperty("astid", ui->astid());
-    connect(m_chitchatAction, SIGNAL(triggered()), ChitChatWindow::chitchat_instance, SLOT(WriteMessageTo()));
+    connect(m_chitchatAction, SIGNAL(triggered()), ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
     
     m_interceptAction = new QAction(tr("&Intercept"), this);
     m_interceptAction->setStatusTip(tr("Intercept call"));
@@ -252,10 +252,11 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
                     const QString status = comm["status"].toString();
                     if(status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED) {
                         QString to;
-                        if(m_ui)
-                            to = "user:" + m_ui->userid();//"ext:" + m_ui->phonenumber();
-                        else
+                        if(m_ui) {
+                            to = "user:" + m_ui->userid();
+                        } else {
                             to = "ext:" + m_number;
+                        }
                         // Initiate an indirect transfer.
                         emit actionCall("atxfer",
                                         "chan:special:me:" + comm["thischannel"].toString(),
@@ -287,7 +288,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent * event)
         if ((subwidgetkind == "mobile") && (m_ui != NULL)) {
             emit actionCall("originate",
                             "user:special:me",
-                            QString("ext:%1").arg(m_ui->mobilenumber()));
+                            QString("ext:%1").arg(m_ui->mobileNumber()));
         } else {
             // just dial the person
             dial();
@@ -319,7 +320,7 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
     QDrag *drag = new QDrag(this);
     QMimeData *mimeData = new QMimeData;
     if(m_ui) {
-        mimeData->setText(m_ui->phonenumber());
+        mimeData->setText(m_ui->phoneNumber());
         mimeData->setData(PEER_MIMETYPE, m_ui->userid().toAscii());
         mimeData->setData(USERID_MIMETYPE, m_ui->userid().toAscii());
         mimeData->setData(NAME_MIMETYPE, m_ui->fullname().toUtf8());

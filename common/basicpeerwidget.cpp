@@ -53,7 +53,7 @@ BasicPeerWidget::BasicPeerWidget(BaseEngine * engine, UserInfo * ui)
     setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
     QString name = (!ui || ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
     setText( name );
-    setToolTip( ui->phonenumber() );
+    setToolTip( ui->phoneNumber() );
     m_presenceSquareSize = m_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
     if(m_presenceSquareSize<=0||m_presenceSquareSize>20)
         m_presenceSquareSize = 5;
@@ -123,7 +123,7 @@ void BasicPeerWidget::setAgentState(const QString & /*color*/)
 
 void BasicPeerWidget::updatePresence()
 {
-    QString text = m_ui->phonenumber();
+    QString text = m_ui->phoneNumber();
     if(! m_ui->ctilogin().isEmpty())
         {
             text.append(" ");

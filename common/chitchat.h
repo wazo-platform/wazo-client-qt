@@ -65,16 +65,16 @@ class ChitChatWindow : public QWidget
         ChitChatWindow();
         ChitChatWindow(const QString &);
         
-        void send_message(const QString &message);
+        void sendMessage(const QString &message);
         void addMessage(const QString &, const QString &, const QString &, const QString &);
-        void receive_message(const QVariantMap &message);
-        static void receive_message_t(const QVariantMap &message, void *udata) {
-            return ((ChitChatWindow*)udata)->receive_message(message);
+        void receiveMessage(const QVariantMap &message);
+        static void receiveMessage_t(const QVariantMap &message, void *udata) {
+            return ((ChitChatWindow*)udata)->receiveMessage(message);
         };
 
     public slots:
-        void WriteMessageTo();
-        void clear_message_history();
+        void writeMessageTo();
+        void clearMessageHistory();
 
     private:
         QString m_userid;
@@ -92,7 +92,7 @@ class MessageEdit : public QTextEdit
         MessageEdit(ChitChatWindow *parent) : QTextEdit((QWidget*) parent) { m_dad = parent; };
 
     public slots:
-        void send_message();
+        void sendMessage();
 
     private:
         ChitChatWindow *m_dad;

@@ -396,7 +396,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
             displayedtime = tr("%1 sec").arg(dsec);
     }
     
-    QString disptext = QString("%1 %2 %3 %4").arg(ainfo->fullname()).arg(ainfo->agentnumber()).arg(calldirection).arg(displayedtime);
+    QString disptext = QString("%1 %2 %3 %4").arg(ainfo->fullname()).arg(ainfo->agentNumber()).arg(calldirection).arg(displayedtime);
     
     m_agent_labels[idx]->setStyleSheet(QString("QLabel {border: 5px solid %1; border-radius: 0px; background: %1};").arg(colorqss));
     m_agent_labels[idx]->setText(disptext);
@@ -507,7 +507,7 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
         QPoint where = event->globalPos();
         
         QString astid = ainfo->astid();
-        QString agentnumber = ainfo->agentnumber();
+        QString agentnumber = ainfo->agentNumber();
         changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentnumber), true);
         
         QGridLayout * gl = new QGridLayout();
@@ -617,7 +617,7 @@ void AgentsPanelNext::actionclicked()
         return;
     AgentInfo * ainfo = m_engine->agents()[agentid];
     QString astid = ainfo->astid();
-    QString agentnumber = ainfo->agentnumber();
+    QString agentnumber = ainfo->agentNumber();
     QVariantMap ipbxcommand;
     
     if(action == "transfer") {
@@ -653,7 +653,7 @@ void AgentsPanelNext::refreshContents()
         QString agentid = iter.key();
         AgentInfo * ainfo = iter.value();
         
-        QString agentnumber = ainfo->agentnumber();
+        QString agentnumber = ainfo->agentNumber();
         QString agstatus = ainfo->properties()["agentstats"].toMap()["status"].toString();
         QVariantMap agqjoined = ainfo->properties()["queues_by_agent"].toMap();
         
@@ -731,7 +731,7 @@ void AgentsPanelNext::newAgentList(const QStringList &)
         QString agentid = iter.key();
         
         QString astid = ainfo->astid();
-        QString agentnumber = ainfo->agentnumber();
+        QString agentnumber = ainfo->agentNumber();
         QString idxa = QString("%1-%2").arg(astid).arg(agentnumber);
     }
 #endif

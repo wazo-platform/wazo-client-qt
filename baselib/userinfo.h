@@ -66,14 +66,14 @@ class BASELIB_EXPORT UserInfo
         bool hasPhone(const QString &, const QString &);
         bool hasAgentNumber(const QString &, const QString &);
 
-        const QString & phonenumber() const;
-        const QString & mobilenumber() const;
-        const QString & voicemailnumber() const;
+        const QString & phoneNumber() const;
+        const QString & mobileNumber() const;
+        const QString & voicemailNumber() const;
         const QString & fullname() const;
         const QStringList & mwi() const;
         const QString & userid() const;
         const QString & ctilogin() const;
-        const QString & agentnumber() const;
+        const QString & agentNumber() const;
         const QString & agentid() const;
         const QString & astid() const;
         const QString & context() const;

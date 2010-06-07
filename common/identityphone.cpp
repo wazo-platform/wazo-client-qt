@@ -191,10 +191,9 @@ IdentityPhone::IdentityPhone(QWidget * parent)
 void IdentityPhone::setUserInfo(const UserInfo *ui)
 {
     m_ui = ui;
-    m_phone->setText(tr("Phone %1").arg(m_ui->phonenumber()));
+    m_phone->setText(tr("Phone %1").arg(m_ui->phoneNumber()));
     setPhoneLines();
-    qDebug() << "phonnu=" << ui->phonenumber();
-    if (ui->phonenumber()=="") {
+    if (ui->phoneNumber()=="") {
         hide();
     }
 }

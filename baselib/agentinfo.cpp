@@ -100,7 +100,7 @@ const QString& AgentInfo::context() const
     return m_context;
 }
 
-const QString& AgentInfo::agentnumber() const
+const QString& AgentInfo::agentNumber() const
 {
     return m_agentnumber;
 }

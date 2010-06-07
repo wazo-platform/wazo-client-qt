@@ -166,7 +166,7 @@ void AgentsPanel::newAgentList(const QStringList & list)
             newAgentLine(agentid);
             newagentid = true;
         }
-        updateAgentLineAdmin(agentid, ainfo->fullname(), ainfo->agentnumber());
+        updateAgentLineAdmin(agentid, ainfo->fullname(), ainfo->agentNumber());
         updateAgentLineEvent(agentid);
         if(newagentid)
             displayLine(agentid, m_agent_labels.size());
@@ -410,7 +410,7 @@ void AgentsPanel::agentClicked()
     
     AgentInfo * ainfo = m_engine->agents()[agentid];
     QString astid = ainfo->astid();
-    QString agentnumber = ainfo->agentnumber();
+    QString agentnumber = ainfo->agentNumber();
     QVariantMap ipbxcommand;
     
     if(action == "changeagent")

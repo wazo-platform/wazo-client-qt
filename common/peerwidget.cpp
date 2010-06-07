@@ -86,7 +86,7 @@ PeerWidget::PeerWidget(BaseEngine *engine, UserInfo *ui)
         if (m_engine->enabledFunction("chitchat")) {
             if (m_engine->getFullId() != ui->userid()) {
                 connect(m_user_status, SIGNAL(pressed()),
-                        ChitChatWindow::chitchat_instance, SLOT(WriteMessageTo()));
+                        ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
             }
         }
         hLayout->addWidget(m_user_status);
@@ -104,7 +104,7 @@ PeerWidget::PeerWidget(BaseEngine *engine, UserInfo *ui)
     }
 
         
-    if(! m_ui->mobilenumber().isEmpty()) {
+    if(! m_ui->mobileNumber().isEmpty()) {
         m_mobilelbl = new QLabel(peer);
         m_mobilelbl->setPixmap(QPixmap(":/images/mobile-grey.png"));
         m_mobilelbl->setAlignment(Qt::AlignCenter);
@@ -115,11 +115,11 @@ PeerWidget::PeerWidget(BaseEngine *engine, UserInfo *ui)
         hLayout->addWidget(m_mobilelbl);
     }
 
-    if(! ui->agentnumber().isEmpty()) {
+    if(! ui->agentNumber().isEmpty()) {
         m_agentlbl = new QLabel(peer);
         m_agentlbl->setAlignment(Qt::AlignCenter);
         m_agentlbl->setMinimumSize(fsize, fsize);
-        m_agentlbl->setToolTip(tr("Agent %1").arg(ui->agentnumber()));
+        m_agentlbl->setToolTip(tr("Agent %1").arg(ui->agentNumber()));
         m_agentlbl->setProperty("kind", "agent");
         setAgentState("grey");
 
@@ -144,7 +144,7 @@ void PeerWidget::setAgentState(const QString &  color)
 void PeerWidget::setMobileState(const QString & /* color*/)
 {
     if(m_mobilelbl) {
-        m_mobilelbl->setToolTip(tr("Mobile number : %1").arg(m_ui->mobilenumber()));
+        m_mobilelbl->setToolTip(tr("Mobile number : %1").arg(m_ui->mobileNumber()));
     }
 }
 
@@ -187,12 +187,12 @@ void PeerWidget::setName(const QString & /*name*/)
 {
     QString text = tr("(No callerid yet)");
 
-    if(!m_ui->fullname().isEmpty() && !m_ui->phonenumber().isEmpty()) {
-        text = tr("%1 <%2>").arg(m_ui->fullname()).arg(m_ui->phonenumber());
+    if(!m_ui->fullname().isEmpty() && !m_ui->phoneNumber().isEmpty()) {
+        text = tr("%1 <%2>").arg(m_ui->fullname()).arg(m_ui->phoneNumber());
     } else if(!m_ui->fullname().isEmpty()) {
         text = m_ui->fullname();
-    } else if(!m_ui->phonenumber().isEmpty()) {
-        text = m_ui->phonenumber();
+    } else if(!m_ui->phoneNumber().isEmpty()) {
+        text = m_ui->phoneNumber();
     }
 
     m_textlbl->setText(text);

@@ -205,7 +205,7 @@ void QueuedetailsPanel::updatePanel()
             
             setAgentLookProps(agentid);
             setAgentProps(agentid, ainfo);
-            QString agentname = "Agent/" + ainfo->agentnumber();
+            QString agentname = "Agent/" + ainfo->agentNumber();
             if(qinfo->astid() == ainfo->astid()) {
                 setAgentQueueProps(agentid, agentstats[agentname]);
             }
@@ -228,7 +228,7 @@ void QueuedetailsPanel::setAgentLookProps(const QString & agentid)
  */
 void QueuedetailsPanel::setAgentProps(const QString & agentid, const AgentInfo * ainfo)
 {
-    m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(ainfo->fullname()).arg(ainfo->agentnumber()));
+    m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber()));
     m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->astid()).arg(ainfo->context()));
     // qDebug() << "QueuedetailsPanel::setAgentProps" << agentid << ainfo->properties()["agentstats"].toMap()["loggedintime"].toInt();
 }
