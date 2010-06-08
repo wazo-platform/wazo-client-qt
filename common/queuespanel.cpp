@@ -57,7 +57,6 @@ const static QString commonqss = "QProgressBar { "
                                     "border-radius: 3px;" 
                                     "text-align: center;" 
                                     "margin-left: 5px;" 
-                                    "height: 15px;" 
                                  "}";
 
 void __format_duration(QString *field, int duration)
@@ -101,15 +100,11 @@ void QueuesPanel::loadQueueOrder()
     QStringList order = b_engine->getGuiOptions("client_gui")
                             .value("queuespanel").toMap()
                             .value("queue_order").toStringList();
-
-    qDebug() << "ORDER=" << order;
-
     setQueueOrder(order);
 }
 
 void QueuesPanel::saveQueueOrder(const QStringList &queueOrder)
 {
-    qDebug() << "SAVEORDER=" << queueOrder;
     QVariantMap clientGui = b_engine->getGuiOptions("client_gui");
     QVariantMap queuesPanelConfig = clientGui.value("queuespanel").toMap();
 
@@ -288,7 +283,7 @@ void QueuesPanel::queueClicked()
     QString queueid = sender()->property("queueid").toString();
 
     if (function == "more") {
-        changeWatchedQueue(queueid);
+        emit changeWatchedQueue(queueid);
     } else if (function == "display_up") {
         int index = m_layout->indexOf(row);
         if (index > 1) {
@@ -498,7 +493,9 @@ QueueRow::QueueRow(const QueueInfo *qInfo, QueuesPanel *parent)
     m_layout->addWidget(m_name, 0, col++);
 
     m_more = new QPushButton(this);
-    m_more->setProperty("queueid", queueId);
+    m_more->setProperty("queueid", QString("queue:%1/%2")
+                                    .arg(qinfo->astid())
+                                    .arg(qinfo->id()));
     m_more->setProperty("function", "more");
     m_more->setIcon(QIcon(":/images/add.png"));
     m_more->setFixedSize(20, 20);
@@ -526,6 +523,7 @@ QueueRow::QueueRow(const QueueInfo *qInfo, QueuesPanel *parent)
     m_busy->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     m_busy->setStyleSheet(commonqss + "QProgressBar::chunk { background-color: #fff; }");
     m_busy->setFormat("%v");
+    m_busy->setMinimumHeight(20);
     m_layout->addWidget(m_busy, 0, col++);
 
 
@@ -549,6 +547,7 @@ QueueRow::QueueRow(const QueueInfo *qInfo, QueuesPanel *parent)
     m_layout->addItem(spacer, 1, col, 1,-1);
     m_layout->setColumnStretch(col, 1);
 
+    setMaximumHeight(30);
     update();
 }
 
