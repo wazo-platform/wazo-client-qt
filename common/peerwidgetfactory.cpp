@@ -33,22 +33,14 @@
 
 
 #include "peerwidgetfactory.h"
-#include "baseengine.h"
 #include "basicpeerwidget.h"
 #include "peerwidget.h"
 #include "detailedexternalphonepeerwidget.h"
 #include "externalphonepeerwidget.h"
 
-/*! \brief Constructor */
-PeerWidgetFactory::PeerWidgetFactory(BaseEngine * engine, QObject * parent)
-    : QObject(parent), m_engine(engine)
+QString PeerWidgetFactory::getSwitchBoardEltType()
 {
-}
-
-/*! \brief Destructor */
-QString PeerWidgetFactory::getSwitchBoardEltType() const
-{
-    return m_engine->getGuiOptions("merged_gui").value("switchboard-elt-type").toString();
+    return b_engine->getGuiOptions("merged_gui").value("switchboard-elt-type").toString();
 }
 
 /*! \brief return an "External phone" widget
@@ -57,23 +49,24 @@ QString PeerWidgetFactory::getSwitchBoardEltType() const
  * depending on the value of the "switchboard-elt-type" gui setting of the BaseEngine.
  * The actionCall() signal is already connected to the BaseEngine.
  */
-BasePeerWidget * PeerWidgetFactory::newExternalPhonePeerWidget(const QString & label, const QString & number)
+BasePeerWidget* PeerWidgetFactory::newExternalPhonePeerWidget(
+    const QString &label,
+    const QString &number)
 {
-    BasePeerWidget * w;
-    if(getSwitchBoardEltType() == "small")
-    {
-        w = new ExternalPhonePeerWidget( m_engine, label, number );
+    BasePeerWidget *w;
+
+    if(getSwitchBoardEltType() == "small"){
+        w = new ExternalPhonePeerWidget(label, number);
+    }else{
+        w = new DetailedExternalPhonePeerWidget(b_engine, label, number);
     }
-    else
-    {
-        w = new DetailedExternalPhonePeerWidget( m_engine, label, number );
-    }
-    connect( w, SIGNAL(actionCall(const QString &,
-                                  const QString &,
-                                  const QString &)),
-             m_engine, SLOT(actionCall(const QString &,
-                                       const QString &,
-                                       const QString &)) );
+    
+    QObject::connect(w, SIGNAL(actionCall(const QString &,
+                                          const QString &,
+                                          const QString &)),
+                     b_engine, SLOT(actionCall(const QString &,
+                                               const QString &,
+                                               const QString &)));
     return w;
 }
 
@@ -83,21 +76,22 @@ BasePeerWidget * PeerWidgetFactory::newExternalPhonePeerWidget(const QString & l
  * depending on the value of the "switchboard-elt-type" gui setting of the BaseEngine.
  * The actionCall() signal is already connected to the BaseEngine.
  */
-BasePeerWidget * PeerWidgetFactory::newPeerWidget(UserInfo * ui)
+BasePeerWidget* PeerWidgetFactory::newPeerWidget(UserInfo * ui)
 {
-    BasePeerWidget * w;
-    if(getSwitchBoardEltType() == "small") {
-        w = new BasicPeerWidget(m_engine, ui);
-    } else {
-        w = new PeerWidget(m_engine, ui);
+    BasePeerWidget *w;
+
+    if(getSwitchBoardEltType() == "small"){
+        w = new BasicPeerWidget(b_engine, ui);
+    }else{
+        w = new PeerWidget(b_engine, ui);
     }
 
-    connect( w, SIGNAL(actionCall(const QString &,
-                                  const QString &,
-                                  const QString &)),
-             m_engine, SLOT(actionCall(const QString &,
-                                       const QString &,
-                                       const QString &)) );
+    QObject::connect(w, SIGNAL(actionCall(const QString &,
+                                          const QString &,
+                                          const QString &)),
+                     b_engine, SLOT(actionCall(const QString &,
+                                               const QString &,
+                                               const QString &)));
     return w;
 }
 

@@ -51,36 +51,39 @@
 BasePeerWidget::BasePeerWidget(BaseEngine *engine, UserInfo *ui)
     : m_engine(engine), m_ui(ui), m_editable(false)
 {
-    if(m_ui)
+    if(m_ui){
         setProperty("userid", m_ui->userid());
+
+        m_chitchatAction = new QAction(tr("&Open a chat window"), this);
+        m_chitchatAction->setStatusTip(tr("Open a chat window with this user"));
+        m_chitchatAction->setProperty("userid", ui->userid());
+        m_chitchatAction->setProperty("astid", ui->astid());
+        connect(m_chitchatAction, SIGNAL(triggered()),
+                ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
+    }
+
     
     m_removeAction = new QAction(tr("&Remove"), this);
     m_removeAction->setStatusTip(tr("Remove this peer from the panel"));
     connect(m_removeAction, SIGNAL(triggered()),
-             this, SLOT(tryRemoveFromPanel()));
-//             this, SIGNAL(removeFromPanel()));
+            this, SLOT(tryRemoveFromPanel()));
 
     m_renameAction = new QAction(tr("Re&name"), this);
     m_renameAction->setStatusTip(tr("Rename this peer"));
     connect(m_renameAction, SIGNAL(triggered()),
-             this, SLOT(rename()));
+            this, SLOT(rename()));
     
     m_dialAction = new QAction(tr("&Call"), this);
     m_dialAction->setStatusTip(tr("Call this peer"));
     connect(m_dialAction, SIGNAL(triggered()),
-             this, SLOT(dial()));
+            this, SLOT(dial()));
 
-    m_chitchatAction = new QAction(tr("&Open a chat window"), this);
-    m_chitchatAction->setStatusTip(tr("Open a chat window with this user"));
-    m_chitchatAction->setProperty("userid", ui->userid());
-    m_chitchatAction->setProperty("astid", ui->astid());
-    connect(m_chitchatAction, SIGNAL(triggered()), ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
-    
     m_interceptAction = new QAction(tr("&Intercept"), this);
     m_interceptAction->setStatusTip(tr("Intercept call"));
     connect(m_dialAction, SIGNAL(triggered()),
-             this, SLOT(intercept2()));
+            this, SLOT(intercept2()));
     
+
     m_maxWidthWanted = 200;
     if (b_engine->enabledFunction("switchboard")) {
         m_maxWidthWanted = b_engine->getGuiOptions("merged_gui").value("maxwidthwanted").toInt();

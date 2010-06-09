@@ -63,7 +63,6 @@ class CallStackWidget : public XLet
         void hupchan(const QString &);
         void transftonumberchan(const QString &);
         void parkcall(const QString &);
-        void reset();
         void monitorPeer(UserInfo *);
 
     protected:
@@ -77,8 +76,8 @@ class CallStackWidget : public XLet
         void monitorPeerRequest(const QString &);  //!< send the userid of the new monitored peer
 
     private:
-        UserInfo * m_monitored_ui;  //!< user currently monitored
-        QVBoxLayout * m_layout;  //!< Vertical Layout used
+        UserInfo *m_monitored_ui;  //!< user currently monitored
+        QVBoxLayout *m_layout;  //!< Vertical Layout used
         QHash<QString, CallWidget *> m_affhash;  //!< List of CallWidget Widgets
 };
 

@@ -67,12 +67,12 @@ class PeersLayout : public QLayout
         QPoint getItemPosition(int i) const;
         QPoint getItemPosition(QWidget * widget) const;
         QRect getGridRect(const QRect &) const;
+        QSize maxItemSize() const;
     
     private:
         int itemIndex(QWidget * widget) const;
         QPoint freePosition() const;
         QSize size() const;
-        QSize maxItemSize() const;
         QList<QLayoutItem *> m_list;        //!< layout items list
         QList<QPoint> m_listPos;            //!< positions list
         int m_nb_rows;                      //!< height

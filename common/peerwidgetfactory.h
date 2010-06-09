@@ -37,21 +37,20 @@
 #include <QObject>
 #include <QString>
 
-class BaseEngine;
+#include "baseengine.h"
 class BasePeerWidget;
 class UserInfo;
 
 /*! \brief Factory for Peer Widgets (to be used in SwitchBoard)
  */
-class PeerWidgetFactory : public QObject {
+class PeerWidgetFactory {
+
     public:
-        PeerWidgetFactory(BaseEngine *engine, QObject *parent=0);
-        BasePeerWidget* newExternalPhonePeerWidget(const QString &label, const QString &number);
-        BasePeerWidget* newPeerWidget(UserInfo *ui);
+        static BasePeerWidget* newExternalPhonePeerWidget(const QString &label, const QString &number);
+        static BasePeerWidget* newPeerWidget(UserInfo *ui);
 
     private:
-        QString getSwitchBoardEltType() const;
-        BaseEngine *m_engine;  //!< base engine
+        static QString getSwitchBoardEltType();
 };
 
 #endif

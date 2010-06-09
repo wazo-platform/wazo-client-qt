@@ -36,14 +36,17 @@
 #include <QLabel>
 #include "externalphonepeerwidget.h"
 #include "externalphonedialog.h"
+#include "baseengine.h"
 
-ExternalPhonePeerWidget::ExternalPhonePeerWidget(BaseEngine * engine, const QString & label, const QString & number)
-    : BasePeerWidget(engine, 0)
+ExternalPhonePeerWidget::ExternalPhonePeerWidget(
+    const QString & label,
+    const QString & number)
+    : BasePeerWidget(b_engine, NULL)
 {
     m_number = number;
-    setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
-    setText( label );
-    setToolTip( number );
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+    setText(label);
+    setToolTip(number);
     m_editable = true;  // allow "edit" option in context menu
 }
 
@@ -88,11 +91,8 @@ void ExternalPhonePeerWidget::paintEvent(QPaintEvent * /*event*/)
  */
 void ExternalPhonePeerWidget::edit()
 {
-    ExternalPhoneDialog dialog;
-    dialog.setNumber( m_number );
-    dialog.setLabel( m_text );
-    if(dialog.exec())
-    {
+    ExternalPhoneDialog dialog(this,m_number, m_text);
+    if(dialog.exec()) {
         if(!dialog.number().isEmpty())
             m_number = dialog.number();
         if(!dialog.label().isEmpty())

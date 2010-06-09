@@ -75,8 +75,6 @@ CallStackWidget::CallStackWidget(BaseEngine * engine, QWidget * parent)
              this, SLOT(updateUser(UserInfo *)) );
     connect( this, SIGNAL(changeTitle(const QString &)),
              titleLabel, SLOT(setText(const QString &)) );
-    connect( m_engine, SIGNAL(delogged()),
-             this, SLOT(reset()) );
                 
     connect( this, SIGNAL(monitorPeerRequest(const QString &)),
              m_engine, SLOT(monitorPeerRequest(const QString &)) );
@@ -84,8 +82,6 @@ CallStackWidget::CallStackWidget(BaseEngine * engine, QWidget * parent)
              this, SLOT(monitorPeer(UserInfo *)) );
                 
     connectDials();
-    connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-             this, SLOT(setUserInfo(const UserInfo *)) );
 }
 
 /*! \brief update display if needed
@@ -121,13 +117,6 @@ void CallStackWidget::transftonumberchan(const QString & chan)
 void CallStackWidget::parkcall(const QString & chan)
 {
     actionCall("transfer", "chan:" + m_monitored_ui->userid() + ":" + chan, "ext:special:parkthecall"); // Call
-}
-
-/*! \brief Reset the Widget
- *
- * currently does nothing */
-void CallStackWidget::reset()
-{
 }
 
 /*! \brief update display according to call list

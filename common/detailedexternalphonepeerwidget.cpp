@@ -98,19 +98,15 @@ void DetailedExternalPhonePeerWidget::setText(const QString & text)
  */
 void DetailedExternalPhonePeerWidget::edit()
 {
-    ExternalPhoneDialog dialog;
-    dialog.setNumber( m_number );
-    dialog.setLabel( m_textlbl->text() );
-    if(dialog.exec())
-    {
-        if(!dialog.number().isEmpty())
-        {
+    ExternalPhoneDialog dialog(this, m_number, m_textlbl->text());
+    if(dialog.exec()){
+        if(!dialog.number().isEmpty()){
             m_number = dialog.number();
-            m_lblphone->setToolTip( m_number );
-            m_lblphonenum->setText( m_number );
+            m_lblphone->setToolTip(m_number);
+            m_lblphonenum->setText(m_number);
         }
         if(!dialog.label().isEmpty())
-            setText( dialog.label() );
+            setText(dialog.label());
     }
 }
 

@@ -129,6 +129,7 @@ PeerWidget::PeerWidget(BaseEngine *engine, UserInfo *ui)
     
     layout->addWidget(m_textlbl, 0, 2, 1, 1, Qt::AlignLeft);
     layout->addLayout(hLayout, 1, 2);
+    setMaximumWidth(200);
     
     reloadSavedName();
 }
