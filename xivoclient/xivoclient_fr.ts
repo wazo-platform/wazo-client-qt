@@ -353,12 +353,12 @@ Contexte: %2</translation>
     </message>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="73"/>
-        <source>&amp;Open a dialog window</source>
+        <source>&amp;Open a chat window</source>
         <translation>&amp;Ouvrir une fenêtre de discussion</translation>
     </message>
     <message>
         <location filename="../common/basepeerwidget.cpp" line="74"/>
-        <source>Open a chatting windows with this user</source>
+        <source>Open a chat window with this user</source>
         <translation>Ouvrir une fenêtre de discussion avec cet utilisateur</translation>
     </message>
     <message>

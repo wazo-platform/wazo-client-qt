@@ -70,8 +70,8 @@ BasePeerWidget::BasePeerWidget(BaseEngine *engine, UserInfo *ui)
     connect(m_dialAction, SIGNAL(triggered()),
              this, SLOT(dial()));
 
-    m_chitchatAction = new QAction(tr("&Open a dialog window"), this);
-    m_chitchatAction->setStatusTip(tr("Open a chatting windows with this user"));
+    m_chitchatAction = new QAction(tr("&Open a chat window"), this);
+    m_chitchatAction->setStatusTip(tr("Open a chat window with this user"));
     m_chitchatAction->setProperty("userid", ui->userid());
     m_chitchatAction->setProperty("astid", ui->astid());
     connect(m_chitchatAction, SIGNAL(triggered()), ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));

@@ -487,8 +487,8 @@ void ConferencePanel::setProperties(double timeref,
         }
     } else if(action == "leave") {
         if(m_user_not_authed.contains(ref)) {
-          delete m_user_not_authed[ref];
-          m_user_not_authed.remove(ref);
+            delete m_user_not_authed[ref];
+            m_user_not_authed.remove(ref);
         }
         if(m_infos.contains(ref)) {
             m_layout[idxroom]->removeWidget( m_infos[ref] );
