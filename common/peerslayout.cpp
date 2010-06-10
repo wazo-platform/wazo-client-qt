@@ -282,3 +282,14 @@ QRect PeersLayout::getGridRect( const QRect & rect ) const
                   getPosInGrid(rect.bottomRight() + add) );
 
 }
+
+int PeersLayout::indexOfItemAtPosition(const QPoint &pos)
+{
+    int i;
+    for(i=0;i<count();i++){
+        if(getItemPosition(i) == pos){
+            return i;
+        }
+    }
+    return -1;
+}

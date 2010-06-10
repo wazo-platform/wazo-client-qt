@@ -32,9 +32,89 @@
  */
 
 #include "group.h"
+#include <QDebug>
 
 Group::Group(QObject * parent)
     : QObject(parent)
 {
 }
 
+int Group::move(QList<Group *> &groups, PeersLayout *layout_on, QPoint &deltaGrid)
+{
+    QRect r = rect().adjusted(0, 0, -1, -1);
+    QRect nr = r;
+    nr.translate(deltaGrid);
+
+    /* is there any group at the place where we intend to move ? */
+    bool group_collision = false;
+    foreach(Group *group, groups){
+        if(group != this){
+            if(group->rect().adjusted(0, 0, -1, -1).intersects(nr)){
+                group_collision = true;
+                break;
+            }
+        }
+    }
+    if(group_collision)
+        return 0;
+
+    /* is there any item that would collide with our, where we intend to move ? */
+    bool item_collision = false;
+    int i;
+
+    for(i=0;i<layout_on->count();i++){
+        QPoint itemPos = layout_on->getItemPosition(i);
+        if((!r.contains(itemPos))&&(nr.contains(itemPos))){
+            /* An item is not contained by the current group, but he will be contained 
+             * if the group is moved. */
+            if(layout_on->indexOfItemAtPosition(itemPos - deltaGrid) != -1){
+                item_collision = true;
+                break;
+            }
+        }
+    }
+    if(item_collision)
+        return 0;
+
+    for(i=0;i<layout_on->count();i++){
+        /* move items inside the group with the group */
+        if(r.contains(layout_on->getItemPosition(i))){
+            layout_on->setItemPosition(i, layout_on->getItemPosition(i) + deltaGrid);
+        }
+    }
+
+    m_rect.translate(deltaGrid);
+
+    return 1;
+}
+
+int Group::resize(QList<Group *> &groups, PeersLayout *on, QPoint &deltaGrid, int resize_direction)
+{
+    int update = 0;
+
+    if(resize_direction&ETop){
+        if(rect().height() - deltaGrid.y() > 1){
+            m_rect.adjust(0, deltaGrid.y(), 0, 0);
+            update |= 1;
+        }
+    }else if(resize_direction&EBottom){
+        if(rect().height() + deltaGrid.y() > 1){
+            m_rect.adjust(0, 0, 0, deltaGrid.y());
+            update |= 1;
+        }
+    }
+
+    if(resize_direction&ELeft){
+        if(rect().width() - deltaGrid.x() > 1){
+            m_rect.adjust(deltaGrid.x(), 0, 0, 0);
+            update |= 1;
+        }
+    }else if(resize_direction&ERight){
+        if(rect().width() + deltaGrid.x() > 1){
+            m_rect.adjust(0, 0, deltaGrid.x(), 0);
+            update |= 1;
+        }
+    }
+
+    return update;
+}

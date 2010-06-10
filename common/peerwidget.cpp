@@ -134,7 +134,7 @@ PeerWidget::PeerWidget(BaseEngine *engine, UserInfo *ui)
     reloadSavedName();
 }
 
-void PeerWidget::setAgentState(const QString &  color)
+void PeerWidget::setAgentState(const QString &color)
 {
     if(m_agentlbl) {
         QColor c = QColor(color);

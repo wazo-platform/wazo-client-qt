@@ -102,7 +102,12 @@ class SwitchBoardWindow : public XLet
         QPoint m_second_corner;  //!< second corner of the box being drawn
         QList<Group *> m_group_list;  //!< list of the groups
         Group *m_group_to_resize;  //!< group being moved/resized
-        enum {ETop=1, EBottom, ERight, ELeft, EMove} m_group_resize_mode;
+        int m_group_resize_mode;
+#define ETop             1
+#define EBottom   (ETop<<2)
+#define ERight    (ETop<<3)
+#define ELeft     (ETop<<4)
+#define EMove     (ETop<<5)
 };
 
 #endif

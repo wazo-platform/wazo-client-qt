@@ -37,6 +37,13 @@
 #include <QRect>
 #include <QString>
 #include <QColor>
+#include <QPoint>
+#include <QList>
+
+#include "peerslayout.h"
+#include "switchboardwindow.h"
+
+class Group ;
 
 class Group : public QObject
 {
@@ -49,6 +56,9 @@ class Group : public QObject
         QRect& rect() { return m_rect; };
         void setColor(const QColor &color) { m_color = color; };
         const QColor& color() const { return m_color; };
+
+        int move(QList<Group *> &groups, PeersLayout *on, QPoint &deltaGrid);
+        int resize(QList<Group *> &groups, PeersLayout *on, QPoint &deltaGrid, int direction);
 
     private:
         QString m_name;
