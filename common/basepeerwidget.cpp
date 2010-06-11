@@ -342,10 +342,10 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
  */
 void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
 {
-    const UserInfo * ui = b_engine->getXivoClientUser();
+    const UserInfo *ui = b_engine->getXivoClientUser();
     // Construct and display the context menu
     QMenu contextMenu(this);
-    if(true) {
+    if (parentWidget()->metaObject()->className() == QString("SwitchBoardWindow")) {
         contextMenu.addAction(m_removeAction);
         contextMenu.addAction(m_renameAction);
         contextMenu.addSeparator();
@@ -355,16 +355,16 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
         contextMenu.addAction(m_dialAction);
     if(m_editable)
         contextMenu.addAction(tr("&Edit"), this, SLOT(edit()));
-    QMenu * interceptMenu = NULL;
-    QMenu * hangupMenu = NULL;
-    QMenu * transferMenu = NULL;
-    QMenu * itransferMenu = NULL;
-    QMenu * vmtransferMenu = NULL;
-    QMenu * parkMenu = NULL;
-    if(m_ui)
-    {
-        if(! m_ui->ctilogin().isEmpty()) {
-            contextMenu.addAction(m_chitchatAction);
+    QMenu *interceptMenu = NULL;
+    QMenu *hangupMenu = NULL;
+    QMenu *transferMenu = NULL;
+    QMenu *itransferMenu = NULL;
+    QMenu *vmtransferMenu = NULL;
+    QMenu *parkMenu = NULL;
+    if(m_ui) {
+        if(!m_ui->ctilogin().isEmpty()&&(b_engine->enabledFunction("chitchat"))) {
+            if (b_engine->getFullId() != m_ui->userid())
+                contextMenu.addAction(m_chitchatAction);
         }
 
         //qDebug() << m_ui->phonelist();
@@ -383,9 +383,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent * event)
             //qDebug() << pi->phoneid() << pi->comms();
             //if((commsCount == 0) && (hintstatuscode & 8))
             //    contextMenu.addAction( m_interceptAction);
-            const QMap<QString, QVariant> & comms = pi->comms();
-            foreach(const QString ts, comms.keys())
-            {
+            const QMap<QString, QVariant> &comms = pi->comms();
+            foreach(const QString ts, comms.keys()) {
                 const QMap<QString, QVariant> & comm = comms[ts].toMap();
                 qDebug() << "BasePeerWidget::contextMenuEvent" << pi->phoneid() << ts << comm;
                 const QString status = comm["status"].toString();
