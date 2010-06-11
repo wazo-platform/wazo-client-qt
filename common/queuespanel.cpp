@@ -541,7 +541,7 @@ QueueRow::QueueRow(const QueueInfo *qInfo, QueuesPanel *parent)
         m_layout->addWidget(m_infoList[stat], 0, col++, 1, 1, Qt::AlignCenter);
     }
 
-    setLayoutColumnWidth(m_layout, statItems.length());
+    setLayoutColumnWidth(m_layout, statItems.count());
 
     QSpacerItem *spacer = new QSpacerItem(1, 1);
     m_layout->addItem(spacer, 1, col, 1,-1);
