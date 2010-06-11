@@ -59,7 +59,10 @@ protected:
     void timerEvent(QTimerEvent *);                //!< receive timer events
 public slots:
     void setGuiOptions(const QVariantMap &) {};
-    void parkingEvent(const QVariant &);
+    void parkingEvent(const QString &,
+                      const QString &,
+                      const QString &,
+                      const QVariant &);
 private slots:
     void itemClicked(QTableWidgetItem *);
     void itemDoubleClicked(QTableWidgetItem *);

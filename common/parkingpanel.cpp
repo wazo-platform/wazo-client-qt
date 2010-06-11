@@ -77,8 +77,14 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
     m_timerid = 0;
     m_deltasec = 2;
     // connect signal / slots
-    connect(m_engine, SIGNAL(parkingEvent(const QVariant &)),
-            this, SLOT(parkingEvent(const QVariant &)));
+    connect(m_engine, SIGNAL(parkingEvent(const QString &,
+                                          const QString &,
+                                          const QString &,
+                                          const QVariant &)),
+            this, SLOT(parkingEvent(const QString &,
+                                    const QString &,
+                                    const QString &,
+                                    const QVariant &)));
     connect(this, SIGNAL(copyNumber(const QString &)),
             m_engine, SIGNAL(pasteToDialPanel(const QString &)));
     connectDials();
@@ -94,15 +100,14 @@ ParkingPanel::~ParkingPanel()
  *
  * add a new message.
  */
-void ParkingPanel::parkingEvent(const QVariant & subcommand)
+void ParkingPanel::parkingEvent(const QString & eventkind,
+                                const QString & astid,
+                                const QString & parkingbay,
+                                const QVariant & subcommand)
 {
     QVariantMap map = subcommand.toMap();
-    qDebug() << "ParkingPanel::parkingEvent()" << map;
-    QString eventkind = map["status"].toString();
-    QString astid = map["astid"].toString();
     QString channel = map["channel"].toString();
     QString fromchannel = map["fromchannel"].toString();
-    QString parkplacenum = map["exten"].toString();
     QString seconds = map["timeout"].toString();
     QStringList newpark = map["args"].toStringList();
     QString calleridnum = map["calleridnum"].toString();
@@ -116,10 +121,10 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
     //    return;
     
     //QString parkedpeer = channel.split("-")[0];
-    QString parkedpeer = calleridname + " (" + calleridnum + ")";
+    QString parkedpeer = QString("%1 (%2)").arg(calleridname).arg(calleridnum);
     QString parkedby = fromchannel.split("-")[0];
     if(!fromcalleridnum.isEmpty())
-        parkedby = fromcalleridname + " (" + fromcalleridnum + ")";
+        parkedby = QString("%1 (%2)").arg(fromcalleridname).arg(fromcalleridnum);
     
     if(eventkind == "parkedcall") {
         for(int m = 0; m < m_table->rowCount(); m++) {
@@ -134,7 +139,7 @@ void ParkingPanel::parkingEvent(const QVariant & subcommand)
         //QTableWidgetItem * item0 = new QTableWidgetItem( astid );
         //item0->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         //m_table->setItem( 0, 0, item0 );
-        QTableWidgetItem * item1 = new QTableWidgetItem( parkplacenum );
+        QTableWidgetItem * item1 = new QTableWidgetItem( parkingbay );
         item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         item1->setData(Qt::UserRole+0, channel);
         item1->setData(Qt::UserRole+1, astid);
@@ -203,4 +208,3 @@ void ParkingPanel::timerEvent(QTimerEvent * event)
             m_table->setItem( i, 1, item );
         }
 }
-

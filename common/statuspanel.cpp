@@ -528,4 +528,3 @@ void StatusPanel::doGUIConnects(QWidget * mainwindow)
     connect( mainwindow, SIGNAL(functionKeyPressed(int)),
              this, SLOT(functionKeyPressed(int)) );
 }
-

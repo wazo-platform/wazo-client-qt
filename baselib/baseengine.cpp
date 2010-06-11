@@ -46,11 +46,13 @@
 
 #include "baseengine.h"
 #include "xivoconsts.h"
+
 #include "userinfo.h"
 #include "phoneinfo.h"
 #include "agentinfo.h"
 #include "queueinfo.h"
 #include "meetmeinfo.h"
+#include "parkinginfo.h"
 
 /*! \brief Constructor.
  *
@@ -413,7 +415,6 @@ void BaseEngine::clearUserList()
             delete iter.value();
         }
     m_users.clear();
-
 }
 
 /*! \brief clear the content of m_phones
@@ -459,26 +460,6 @@ void BaseEngine::clearQueueList()
             delete iter.value();
         }
     m_queues.clear();
-}
-
-QHash<QString, AgentInfo *> BaseEngine::agents()
-{
-    return m_agents;
-}
-
-QHash<QString, QueueInfo *> BaseEngine::queues()
-{
-    return m_queues;
-}
-
-QHash<QString, PhoneInfo *> BaseEngine::phones()
-{
-    return m_phones;
-}
-
-QHash<QString, UserInfo *> BaseEngine::users()
-{
-    return m_users;
 }
 
 /*! \brief initiate connection to the server
@@ -885,7 +866,11 @@ void BaseEngine::parseCommand(const QString & line)
             requestFileListResult(datamap["payload"]);
             
         } else if (thisclass == "parkcall") {
-            parkingEvent(datamap["payload"]);
+            QString eventkind = datamap["eventkind"].toString();
+            QString astid = datamap["astid"].toString();
+            QString parkingbay = datamap["parkingbay"].toString();
+            // update local list for astid & parkingbay according to eventkind
+            parkingEvent(eventkind, astid, parkingbay, datamap["payload"]);
             
         } else if (thisclass == "sheet") {
             // TODO : use id better than just channel name

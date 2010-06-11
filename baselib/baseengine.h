@@ -54,6 +54,7 @@ class PhoneInfo;
 class AgentInfo;
 class QueueInfo;
 class MeetmeInfo;
+class ParkingInfo;
 
 class QFile;
 class QSettings;
@@ -151,20 +152,22 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QString& xivoUserId() const { return m_xivo_userid; };
         const QString& getFullId() const { return m_fullid; };
         UserInfo* getXivoClientUser();  //!< Return the user of the Xivo CTI Client
-        QHash<QString, AgentInfo *> agents();  //!< Return the agents to any Xlet
-        QHash<QString, QueueInfo *> queues();  //!< Return the queues to any Xlet
-        QHash<QString, PhoneInfo *> phones();  //!< Return the phones to any Xlet
-        QHash<QString, UserInfo *> users();  //!< Return the users to any Xlet
         double timeServer() const;
         const QDateTime& timeClient() const;
         double timeDeltaServerClient() const;
-        const QHash<QString, QHash<QString, MeetmeInfo *> > meetme() const { return m_meetme; };
         int m_historysize;  //!< Number of elements when requestion call log
         
         void pasteToDial(const QString &);
         void registerClassEvent(const QString &class_function, void (*)(const QVariantMap &map, void *udata), void *udata);
         void sendJsonCommand(const QVariantMap &);
-    
+        
+        const QHash<QString, AgentInfo *> agents() const { return m_agents; }; //!< Return the agents to any Xlet
+        const QHash<QString, QueueInfo *> queues() const { return m_queues; }; //!< Return the queues to any Xlet
+        const QHash<QString, PhoneInfo *> phones() const { return m_phones; }; //!< Return the phones to any Xlet
+        const QHash<QString, UserInfo *>  users()  const { return m_users; };  //!< Return the users  to any Xlet
+        const QHash<QString, QHash<QString, MeetmeInfo *> >  meetme()  const { return m_meetme; };  //!< Return the meetme  to any Xlet
+        const QHash<QString, QHash<QString, ParkingInfo *> > parking() const { return m_parking; }; //!< Return the parking to any Xlet
+        
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);
         QMultiHash<QString, e_callback* > m_class_event_cb;
@@ -221,7 +224,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void availAllowChanged(bool);            //!< signal
         void emitTextMessage(const QString &);   //!< message to be displayed to the user.
         void pasteToDialPanel(const QString &);  //!< send the number to the dial panel
-        void parkingEvent(const QVariant &);
+        void parkingEvent(const QString &,
+                          const QString &,
+                          const QString &,
+                          const QVariant &);
         void ackFax(const QString &, const QString &);
         void featurePutIsKO();
         void featurePutIsOK();
@@ -331,10 +337,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_sessionid;            //!< Session id obtained after a successful login
         QString m_clientid;             //!< Client Identifier
         QString m_forced_state;         //!< Forced state sent by the server
-        QHash<QString, UserInfo *> m_users;    //!< List of User Informations
-        QHash<QString, PhoneInfo *> m_phones;  //!< List of Phone informations
-        QHash<QString, AgentInfo *> m_agents;  //!< List of Agent informations
-        QHash<QString, QueueInfo *> m_queues;  //!< List of Queue informations
         int m_version_server;           //!< Version issued by the server after a successful login
         QString m_xivover_server;       //!< Server's XiVO version
         
@@ -380,7 +382,14 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_rate_samples; //!< number of Json decode
         bool m_forced_to_disconnect;    //!< set to true when disconnected by server
         
-        QHash<QString, QHash<QString, MeetmeInfo *> > m_meetme; //! meet me (conference rooms)
+        // miscellaneous statuses to share between xlets
+        
+        QHash<QString, UserInfo *> m_users;    //!< List of User Informations
+        QHash<QString, PhoneInfo *> m_phones;  //!< List of Phone informations
+        QHash<QString, AgentInfo *> m_agents;  //!< List of Agent informations
+        QHash<QString, QueueInfo *> m_queues;  //!< List of Queue informations
+        QHash<QString, QHash<QString, MeetmeInfo *> >  m_meetme; //! meet me (conference rooms)
+        QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 };
 
 extern BASELIB_EXPORT BaseEngine *b_engine;

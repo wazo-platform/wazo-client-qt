@@ -11,13 +11,13 @@ VERSION     = 1.1
 
 INCLUDEPATH += $${COMMONDIR} $${JSON_JSONQT_DIR}
 HEADERS     = xlet.h   baseengine.h
-HEADERS     += phoneinfo.h userinfo.h meetmeinfo.h agentinfo.h queueinfo.h
+HEADERS     += *info.h
 HEADERS     += queue_agent_status.h
 HEADERS     += extendedtablewidget.h
 HEADERS     += xivoconsts.h
 HEADERS     += $${JSON_JSONQT_DIR}/*.h
 SOURCES     = xlet.cpp baseengine.cpp
-SOURCES     += phoneinfo.cpp userinfo.cpp meetmeinfo.cpp agentinfo.cpp queueinfo.cpp
+SOURCES     += *info.cpp
 SOURCES     += queue_agent_status.cpp
 SOURCES     += extendedtablewidget.cpp
 SOURCES     += xivoconsts.cpp
