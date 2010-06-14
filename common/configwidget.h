@@ -140,6 +140,8 @@ class ConfigWidget: public QDialog
             QPushButton *button;
         } m_operator_action[9];
 
+        QCheckBox *m_operator_answer_work;  //!< should we display the answer key in operator xlet ?
+
         int m_currentKeyChange;
 };
 #endif

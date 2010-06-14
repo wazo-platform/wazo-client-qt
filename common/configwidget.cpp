@@ -374,7 +374,7 @@ void ConfigWidget::_insert_operatorxlet_tab()
     glayout->addWidget(new QLabel(tr("Operator action")), 0, 1);
     glayout->addWidget(new QLabel(tr("Key binding")), 0, 2);
 
-    for (i=0;i<9;i++) {
+    for(i=0;i<9;i++){
         selectKey = new QPushButton(tr("(current: %0) click to change")
                           .arg(QKeySequence(opts["xlet_operator_key" + m_operator_action[i].action].toInt()).toString()),
                           root_widget);
@@ -386,7 +386,14 @@ void ConfigWidget::_insert_operatorxlet_tab()
 
         connect(selectKey, SIGNAL(toggled(bool)), this, SLOT(changeOperatorKey(bool)));
     }
-    glayout->addWidget(new QLabel(tr("any change there sadly require an application restart to be in effect")), i + 1, 1, 1, 2);
+
+
+    m_operator_answer_work = new QCheckBox(tr("Display an answer action"));
+    m_operator_answer_work->setCheckState((b_engine->getGuiOptions("client_gui").value("xlet_operator_answer_work", 1).toInt())?Qt::Checked:Qt::Unchecked);
+    glayout->addWidget(m_operator_answer_work, ++i , 1, 1, 2);
+
+    glayout->addWidget(new QLabel(tr("Any change there sadly require an application restart to be in effect")), ++i, 1, 1, 2);
+    
     
     m_tabwidget->addTab(root_widget, tr("Operator Xlet"));
 }
@@ -479,6 +486,7 @@ void ConfigWidget::saveAndClose()
         opts_saved["xlet_operator_key" + m_operator_action[i].action] = \
             opts["xlet_operator_key" + m_operator_action[i].action].toInt();
     }
+    opts_saved["xlet_operator_answer_work"] = m_operator_answer_work->checkState() == Qt::Checked;
 
 
     foreach(QString color, queuelevel_colors)
