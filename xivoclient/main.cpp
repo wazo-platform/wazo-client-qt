@@ -109,7 +109,9 @@ int main(int argc, char ** argv)
 
     QTranslator *translator;
     QStringList translationFiles; 
-    translationFiles << ":/xivoclient_%1" << ":/baselib/baselib_%1" << ":/qt_%1";
+    translationFiles << QString(":/xivoclient_%1").arg(locale)
+                     << QString(":/baselib/baselib_%1").arg(locale)
+                     << QString(":/qt_%1").arg(locale);
 
     int i;
     for(i=0;i<translationFiles.size();++i) {
