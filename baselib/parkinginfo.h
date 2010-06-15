@@ -51,41 +51,12 @@ class BASELIB_EXPORT ParkingInfo
         ParkingInfo() {};
         //! Copy constructor. Just copy all attributes
         ParkingInfo(const ParkingInfo &);
-        //! cast to QString operator for debugging
-        operator QString() const {
-                QString str("ParkingInfo(");
-                str.append(m_roomnumber);
-                str.append(", ");
-                str.append(m_roomname);
-                str.append(", [");
-                foreach(QString uid, m_uniqueids.keys()) {
-                        str.append(uid);
-                        str.append(" ");
-                }
-                str.append("])");
-                return str;
-        }
-        bool setProperties(const QVariantMap &);
-        bool update(const QVariantMap &);
         const QString &roomname() const;  //! conference room name
         const QString &roomnumber() const;  //! conference room number
-        const QString &adminid() const;  //! conference room admin id
-        const QString &adminnum() const;  //! conference room admin num
-        bool paused() const;  //! conference room paused status
-        const QStringList &adminlist() const;  //! conference room admin list
-        const QVariantMap &uniqueids() const;  //! conference room uniqueids
-        
+
     private:
-        QString m_context;  //!< room context
         QString m_roomname;     //!< room access name
         QString m_roomnumber;   //!< room access number (if any)
-        QString m_pin;      //!< room pin number (if any)
-        QString m_adminpin; //!< room admin pin number (if any) 
-        QString m_adminid;  //!< admin id ??? (global)
-        QString m_adminnum;  //!< admin num ( local in the parking room )
-        bool m_paused;
-        QStringList m_adminlist;    //!< admin list (user ids)
-        QVariantMap m_uniqueids;    //!< people in this conference room
 };
 
 #endif /* __PARKINGINFO_H__ */

@@ -1988,7 +1988,7 @@ void BaseEngine::askCallerIds()
     QVariantMap command;
     command["direction"] = "xivoserver";
     command["function"] = "getlist";
-    QStringList getlists = (QStringList() << "users" << "queues" << "agents" << "phones" << "meetme" << "users" << "endinit");
+    QStringList getlists = (QStringList() << "users" << "queues" << "agents" << "phones" << "meetme" << "users" << "parking" << "endinit");
     foreach(QString kind, getlists) {
         command.remove("class");
         command["class"] = kind;
@@ -2213,6 +2213,7 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
 {
     qDebug() << "BaseEngine::handleOtherInstanceMessage()" << msg;
     QRegExp re("^(tel|callto):([-0-9\\. +]*[0-9])", Qt::CaseInsensitive);
+    // todo : handle also other commands
     int pos = re.indexIn(msg);
     if(pos >= 0) {
         QString phonenum = re.cap(2);

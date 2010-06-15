@@ -37,32 +37,9 @@
 
 ParkingInfo::ParkingInfo(const ParkingInfo & other)
 {
-    m_context = other.m_context;
     m_roomname = other.m_roomname;
     m_roomnumber = other.m_roomnumber;
-    m_pin = other.m_pin;
-    m_paused = other.m_paused;
-    m_adminpin = other.m_adminpin;
-    m_adminid = other.m_adminid;
-    m_adminnum = other.m_adminnum;
-    m_adminlist = other.m_adminlist;
-    m_uniqueids = other.m_uniqueids;
 }
-
-// const QString& ParkingInfo::astid() const
-// {
-//     return m_astid;
-// }
-
-// const QString& ParkingInfo::id() const
-// {
-//     return m_id;
-// }
-
-// const QString& ParkingInfo::context() const
-// {
-//     return m_context;
-// }
 
 const QString& ParkingInfo::roomname() const
 {
@@ -72,68 +49,4 @@ const QString& ParkingInfo::roomname() const
 const QString& ParkingInfo::roomnumber() const
 {
     return m_roomnumber;
-}
-
-const QString& ParkingInfo::adminid() const
-{
-    return m_adminid;
-}
-
-const QStringList& ParkingInfo::adminlist() const
-{
-    return m_adminlist;
-}
-
-const QVariantMap& ParkingInfo::uniqueids() const
-{
-    return m_uniqueids;
-}
-
-const QString& ParkingInfo::adminnum() const
-{
-    return m_adminnum;
-}
-
-bool ParkingInfo::paused() const
-{
-    return m_paused;
-}
-
-bool ParkingInfo::setProperties(const QVariantMap & properties)
-{
-    // fixed-by-config stuff
-    m_context = properties["context"].toString();
-    m_roomname = properties["roomname"].toString();
-    m_roomnumber = properties["roomnumber"].toString();
-    m_pin = properties["pin"].toString();
-    m_adminpin = properties["pinadmin"].toString();
-    
-    // variable stuff
-    m_adminid = properties["adminid"].toString();
-    m_adminnum = properties["adminnum"].toString();
-    m_adminlist = properties["adminlist"].toStringList();
-    m_uniqueids = properties["uniqueids"].toMap();
-    m_paused = properties["paused"].toBool();
-    return true;
-}
-
-bool ParkingInfo::update(const QVariantMap & map)
-{
-    QString action = map["action"].toString();
-    QString uniqueid = map["uniqueid"].toString();
-    
-    if ( !map["adminid"].toString().isNull()) {
-        m_adminid = map["adminid"].toString();
-    }
-    m_adminnum = map["adminnum"].toString();
-    m_adminlist = map["adminlist"].toStringList();
-    if (map.contains("details"))
-        m_uniqueids[uniqueid] = map["details"].toMap();
-
-    if(action == "leave") {
-        m_uniqueids.remove(uniqueid);
-    } else if(action == "changeroompausedstate") {
-        m_paused = map["paused"].toBool();
-    }
-    return true;
 }
