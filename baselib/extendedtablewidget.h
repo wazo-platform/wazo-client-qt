@@ -37,10 +37,15 @@
 #include "baselib_export.h"
 
 #include <QTableWidget>
+#include <QContextMenuEvent>
+#include <QMouseEvent>
+#include <QDesktopServices>
+#include <QHeaderView>
+#include <QMenu>
+#include <QUrl>
 
-class QContextMenuEvent;
-class QMouseEvent;
-class BaseEngine;
+#include <baseengine.h>
+
 
 /*! \brief Table class inheriting QTableWidget with contextMenu added.
  */
@@ -49,7 +54,7 @@ class BASELIB_EXPORT ExtendedTableWidget : public QTableWidget
     Q_OBJECT
 
     public:
-        ExtendedTableWidget(BaseEngine *engine, QWidget *parent=0);
+        ExtendedTableWidget(QWidget *parent=0);
         ExtendedTableWidget(int rows, int columns, QWidget *parent=0);
         void setEditable(bool editable) { m_editable = editable; };
 
@@ -71,7 +76,6 @@ class BASELIB_EXPORT ExtendedTableWidget : public QTableWidget
         void remove();
 
     private:
-        BaseEngine *m_engine;
         QRegExp m_re_number;  //!< regexp used to recognize phone numbers
         bool m_editable;
 };

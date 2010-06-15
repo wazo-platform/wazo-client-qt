@@ -31,30 +31,15 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QHBoxLayout>
-#include <QGroupBox>
-#include <QCheckBox>
-#include <QFileDialog>
-#include <QLabel>
-#include <QLineEdit>
-#include <QMessageBox>
-#include <QPushButton>
-#include <QSettings>
-#include <QVBoxLayout>
 
-#include "baseengine.h"
-#include "dirdialog.h"
-#include "extendedlineedit.h"
 #include "faxpanel.h"
 
-FaxPanel::FaxPanel(BaseEngine * engine,
-                   QWidget * parent)
-    : XLet(engine, parent), m_mainwindow(parent)
+FaxPanel::FaxPanel(QWidget *parent)
+    : XLet(parent), m_mainwindow(parent)
 {
     // qDebug() << "FaxPanel::FaxPanel()" << parent;
     setTitle( tr("Fax") );
-    Qt::CheckState previous_hide = (Qt::CheckState) m_engine->getSettings()->value("faxhistory/hidenumber", 0).toInt();
+    Qt::CheckState previous_hide = (Qt::CheckState) b_engine->getSettings()->value("faxhistory/hidenumber", 0).toInt();
 
     QVBoxLayout * vlayout = new QVBoxLayout(this);
 
@@ -122,8 +107,8 @@ FaxPanel::FaxPanel(BaseEngine * engine,
 
     // connect signals / slots
     connect( this, SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
-             m_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
-    connect( m_engine, SIGNAL(ackFax(const QString &, const QString &)),
+             b_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
+    connect( b_engine, SIGNAL(ackFax(const QString &, const QString &)),
              this, SLOT(popupMsg(const QString &, const QString &)) );
 }
 
@@ -182,7 +167,7 @@ void FaxPanel::setOpenFileName()
 
 void FaxPanel::sendFax()
 {
-    m_engine->getSettings()->setValue("faxhistory/hidenumber", m_maskornot->checkState());
+    b_engine->getSettings()->setValue("faxhistory/hidenumber", m_maskornot->checkState());
     if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
         // qDebug() << "FaxPanel::sendFax()"
         // << m_openFileNameLabel->text()
@@ -202,7 +187,7 @@ void FaxPanel::sendFax()
 void FaxPanel::dirLookup()
 {
     // qDebug() << "FaxPanel::dirLookup()";
-    m_dirw = new DirDialog(m_engine, m_mainwindow);
+    m_dirw = new DirDialog(m_mainwindow);
     m_dirw->exec();
     // qDebug() << "FaxPanel::dirLookup() DirDialog exec'ed";
     QString retstr = m_dirw->faxnumber();

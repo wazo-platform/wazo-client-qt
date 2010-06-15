@@ -51,31 +51,32 @@ class UserInfo;
 class ParkingPanel : public XLet
 {
     Q_OBJECT
-public:
-    ParkingPanel(BaseEngine *,
-                 QWidget * parent = 0);
-    ~ParkingPanel();
-protected:
-    void timerEvent(QTimerEvent *);                //!< receive timer events
-public slots:
-    void setGuiOptions(const QVariantMap &) {};
-    void parkingEvent(const QString &,
-                      const QString &,
-                      const QString &,
-                      const QVariant &);
-private slots:
-    void itemClicked(QTableWidgetItem *);
-    void itemDoubleClicked(QTableWidgetItem *);
-signals:
-    void copyNumber(const QString &);
-    void actionCall(const QString &,
-                    const QString &,
-                    const QString &);
-private:
-    ExtendedTableWidget * m_table;        //!< Table
-    int m_timerid;  //!< id of the timer
-    int m_deltasec; //!< timer period
-    QList<PeerChannel *> m_mychannels;    //!< "my channels" list for transfer menu
+
+    public:
+        ParkingPanel(QWidget *parent=0);
+
+    protected:
+        void timerEvent(QTimerEvent *);  //!< receive timer events
+
+    public slots:
+        void setGuiOptions(const QVariantMap &) {};
+        void parkingEvent(const QString &,
+                          const QString &,
+                          const QString &,
+                          const QVariant &);
+    private slots:
+        void itemClicked(QTableWidgetItem *);
+        void itemDoubleClicked(QTableWidgetItem *);
+    signals:
+        void copyNumber(const QString &);
+        void actionCall(const QString &,
+                        const QString &,
+                        const QString &);
+    private:
+        ExtendedTableWidget *m_table;  //!< Table
+        int m_timerid;  //!< id of the timer
+        int m_deltasec;  //!< timer period
+        QList<PeerChannel *> m_mychannels;  //!< "my channels" list for transfer menu
 };
 
 #endif

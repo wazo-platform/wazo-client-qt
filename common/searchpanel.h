@@ -54,7 +54,7 @@ class SearchPanel : public XLet
 {
     Q_OBJECT
     public:
-        SearchPanel(BaseEngine *, QWidget *parent=0);
+        SearchPanel(QWidget *parent=0);
         ~SearchPanel();        //!< Destructor
     public slots:
         void affTextChanged(const QString &);

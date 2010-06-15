@@ -34,18 +34,23 @@
 #ifndef __FAXPANEL_H__
 #define __FAXPANEL_H__
 
+#include <QDebug>
+#include <QHBoxLayout>
+#include <QGroupBox>
+#include <QCheckBox>
+#include <QFileDialog>
+#include <QLabel>
 #include <QLineEdit>
-#include "xlet.h"
+#include <QMessageBox>
+#include <QPushButton>
+#include <QSettings>
+#include <QVBoxLayout>
+#include <QLineEdit>
 
-class QCheckBox;
-class QLabel;
-class QLineEdit;
-class QPushButton;
-
-class DirDialog;
-class FileNameLineEdit;
-class MainWidget;
-class UserInfo;
+#include <xlet.h>
+#include <baseengine.h>
+#include <dirdialog.h>
+#include <extendedlineedit.h>
 
 /*! \brief Panel used to send an receive fax
  */
@@ -54,7 +59,7 @@ class FaxPanel : public XLet
     Q_OBJECT
 
     public:
-        FaxPanel(BaseEngine * engine, QWidget * parent = 0);
+        FaxPanel(QWidget *parent=0);
         ~FaxPanel();
 
     signals:

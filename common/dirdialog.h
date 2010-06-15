@@ -34,12 +34,17 @@
 #ifndef __DIRDIALOG_H__
 #define __DIRDIALOG_H__
 
+#include <QDebug>
 #include <QDialog>
+#include <QDialogButtonBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSettings>
+#include <QVBoxLayout>
 
-class QDialogButtonBox;
-
-class BaseEngine;
-class DirectoryPanel;
+#include <baseengine.h>
+#include <directorypanel.h>
 
 /*! \brief Directory dialog used for fax
  */
@@ -56,7 +61,7 @@ class DirDialog: public QDialog
          * \param engine        related BaseEngine object where parameters will be modified
          * \param parent        parent QWidget
          */
-        DirDialog(BaseEngine *, QWidget *);
+        DirDialog(QWidget *);
         ~DirDialog();
         const QString & faxnumber() const;
 
@@ -66,7 +71,6 @@ class DirDialog: public QDialog
         void copyNumberAndQuit(const QString &, bool);
 
     private:
-        BaseEngine *m_engine;          //!< base engine
         DirectoryPanel *m_directory;   //!< Directory panel
         QDialogButtonBox *m_btnbox;    //!< Buttons box
         QString m_faxnumber;            //!< fax number

@@ -53,8 +53,7 @@ class AgentsPanel : public XLet
 {
     Q_OBJECT
     public:
-        AgentsPanel(BaseEngine *, QWidget *parent=0);
-        ~AgentsPanel();
+        AgentsPanel(QWidget *parent=0);
 
     signals:
         void changeWatchedAgent(const QString &, bool);

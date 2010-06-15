@@ -115,9 +115,8 @@ void QueuesPanel::saveQueueOrder(const QStringList &queueOrder)
 }
 
 
-QueuesPanel::QueuesPanel(BaseEngine *engine,
-                         QWidget *parent)
-    : XLet(engine, parent), 
+QueuesPanel::QueuesPanel(QWidget *parent)
+    : XLet(parent), 
       m_configureWindow(NULL)
 {
     setTitle(tr("Queues' List"));
@@ -215,7 +214,7 @@ void QueuesPanel::removeQueues(const QString &, const QStringList &queues)
 void QueuesPanel::newQueueList(const QStringList & qsl)
 {
     QHashIterator<QString, QueueInfo *> iter = \
-        QHashIterator<QString, QueueInfo *>(m_engine->queues());
+        QHashIterator<QString, QueueInfo *>(b_engine->queues());
 
     while (iter.hasNext()) {
         iter.next();
@@ -365,7 +364,7 @@ void QueuesPanel::askForQueueStats()
     command["class"] = "getqueuesstats";
     command["on"] = _for;
 
-    m_engine->sendJsonCommand(command);
+    b_engine->sendJsonCommand(command);
 }
 
 QueuesPanelConfigure::QueuesPanelConfigure(QueuesPanel *)

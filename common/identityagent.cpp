@@ -31,12 +31,6 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QLabel>
-#include <QGridLayout>
-#include <QAction>
-#include <QMenu>
-#include <QContextMenuEvent>
 #include "identityagent.h"
 
 const QString icon_color_red = "xivo-red";
@@ -45,7 +39,7 @@ const QString icon_color_green = "xivo-green";
 
 const QColor Orange = QColor(255, 128, 0);
 
-IdentityAgent::IdentityAgent(QWidget * parent)
+IdentityAgent::IdentityAgent(QWidget *parent)
     : QFrame(parent),
       m_allow_logagent(false),
       m_allow_pauseagent(false)

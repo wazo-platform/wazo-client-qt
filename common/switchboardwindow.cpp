@@ -60,9 +60,8 @@
  *
  * initialize layout, attributes, etc.
  */
-SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine,
-                                     QWidget * parent)
-    : XLet(engine, parent), m_drawGrid(false),
+SwitchBoardWindow::SwitchBoardWindow(QWidget * parent)
+    : XLet(parent), m_drawGrid(false),
       m_trace_box(false), m_group_to_resize(0)
 {
     setTitle(tr("Switchboard"));
@@ -73,13 +72,13 @@ SwitchBoardWindow::SwitchBoardWindow(BaseEngine * engine,
     reloadGroups();
     reloadExternalPhones();
 
-    connect(m_engine, SIGNAL(userUpdated(UserInfo *)),
+    connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
             this, SLOT(updateUser(UserInfo *)));
-    connect(m_engine, SIGNAL(updatePeerAgent(double, const QString &,
+    connect(b_engine, SIGNAL(updatePeerAgent(double, const QString &,
                                              const QString &, const QVariant &)),
             this, SLOT(updatePeerAgent(double, const QString &,
                                        const QString &, const QVariant &)));
-    connect(m_engine, SIGNAL(delogged()),
+    connect(b_engine, SIGNAL(delogged()),
             this, SLOT(removePeers()));
 
     setMouseTracking(true);
@@ -111,7 +110,7 @@ void SwitchBoardWindow::updateUser(UserInfo * ui)
     }else{
         peeritem = new PeerItem(ui);
         m_peerhash.insert(userid, peeritem);
-        QSettings * settings = m_engine->getSettings();
+        QSettings * settings = b_engine->getSettings();
         settings->beginGroup("layout");
         QPoint pos = settings->value(userid, QPoint(-1, -1)).toPoint();
         settings->endGroup();
@@ -165,7 +164,7 @@ void SwitchBoardWindow::removePeerFromLayout()
         disconnect(peerwidget, SIGNAL(actionCall(const QString &,
                                                  const QString &,
                                                  const QString &)),
-                   m_engine, SLOT(actionCall(const QString &,
+                   b_engine, SLOT(actionCall(const QString &,
                                              const QString &,
                                              const QString &)));
         disconnect(peerwidget, SIGNAL(removeFromPanel()),
@@ -277,7 +276,7 @@ void SwitchBoardWindow::removePeers(void)
             disconnect(peerwidget, SIGNAL(actionCall(const QString &,
                                                      const QString &,
                                                      const QString &)),
-                       m_engine, SLOT(actionCall(const QString &,
+                       b_engine, SLOT(actionCall(const QString &,
                                                  const QString &,
                                                  const QString &)));
             disconnect(peerwidget, SIGNAL(removeFromPanel()),
@@ -372,7 +371,7 @@ BasePeerWidget* SwitchBoardWindow::getExternalPhonePeerWidget(const QString &num
 void SwitchBoardWindow::savePositions() const
 {
     // qDebug() << "SwitchBoardWindow::savePositions()";
-    QSettings * settings = m_engine->getSettings();
+    QSettings * settings = b_engine->getSettings();
     settings->beginGroup("layout");
     QHashIterator<QString, PeerItem *> it(m_peerhash);
     while(it.hasNext()){
@@ -409,7 +408,7 @@ void SwitchBoardWindow::savePositions() const
  */
 void SwitchBoardWindow::reloadExternalPhones()
 {
-    QSettings *settings = m_engine->getSettings();
+    QSettings *settings = b_engine->getSettings();
     settings->beginGroup("layout");
     int i, size = settings->beginReadArray("externalphone");
     for(i=0;i<size;i++){
@@ -715,7 +714,7 @@ void SwitchBoardWindow::drawTheGrid(bool drawGrid)
  */
 void SwitchBoardWindow::saveGroups() const
 {
-    QSettings *settings = m_engine->getSettings();
+    QSettings *settings = b_engine->getSettings();
     settings->beginGroup("groups");
     settings->beginWriteArray("groups");
     int i;
@@ -736,7 +735,7 @@ void SwitchBoardWindow::saveGroups() const
 void SwitchBoardWindow::reloadGroups()
 {
     m_group_list.clear();
-    QSettings *settings = m_engine->getSettings();
+    QSettings *settings = b_engine->getSettings();
     settings->beginGroup("groups");
     Group *group;
     int i, size = settings->beginReadArray("groups");

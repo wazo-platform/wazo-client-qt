@@ -54,7 +54,7 @@ BasicPeerWidget::BasicPeerWidget(BaseEngine * engine, UserInfo * ui)
     QString name = (!ui || ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
     setText( name );
     setToolTip( ui->phoneNumber() );
-    m_presenceSquareSize = m_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
+    m_presenceSquareSize = b_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
     if(m_presenceSquareSize<=0||m_presenceSquareSize>20)
         m_presenceSquareSize = 5;
     reloadSavedName();

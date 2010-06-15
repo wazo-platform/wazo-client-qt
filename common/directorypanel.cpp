@@ -31,57 +31,39 @@
  * $Date$
  */
 
-#include <QContextMenuEvent>
-#include <QDebug>
-#include <QDesktopServices>
-#include <QDropEvent>
-#include <QFocusEvent>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QMenu>
-#include <QPushButton>
-#include <QUrl>
-#include <QVBoxLayout>
-
 #include "directorypanel.h"
-#include "baseengine.h"
-#include "extendedtablewidget.h"
-#include "extendedlineedit.h"
-#include "userinfo.h"
-#include "phoneinfo.h"
-#include "xivoconsts.h"
 
 /*! \brief Constructor
  *
  *  Build layout and child widgets, connect signals/slots.
  */
-DirectoryPanel::DirectoryPanel(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent), m_re_number("\\+?[0-9\\s\\.]+")
+DirectoryPanel::DirectoryPanel(QWidget *parent)
+    : XLet(parent), m_re_number("\\+?[0-9\\s\\.]+")
 {
-    setTitle( tr("Directory") );
-    setAccessibleName( tr("Directory Panel") );
+    setTitle(tr("Directory"));
+    setAccessibleName(tr("Directory Panel"));
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
-    QLabel * titleLbl = new QLabel( tr("Di&rectory"), this );
-    vlayout->addWidget( titleLbl, 0, Qt::AlignCenter );
+    QLabel * titleLbl = new QLabel(tr("Di&rectory"), this);
+    vlayout->addWidget(titleLbl, 0, Qt::AlignCenter);
     QHBoxLayout * hlayout = new QHBoxLayout();
     m_searchText = new ExtendedLineEdit(this);
     titleLbl->setBuddy(m_searchText);
-    connect( m_searchText, SIGNAL(returnPressed()),
-             this, SLOT(startSearch()) );
-    hlayout->addWidget( m_searchText );
-    m_searchButton = new QPushButton( tr("Search"), this );
+    connect(m_searchText, SIGNAL(returnPressed()),
+            this, SLOT(startSearch()));
+    hlayout->addWidget(m_searchText);
+    m_searchButton = new QPushButton(tr("Search"), this);
     connect( m_searchButton, SIGNAL(clicked()),
-             this, SLOT(startSearch()) );
-    hlayout->addWidget( m_searchButton );
-    vlayout->addLayout( hlayout );
-    m_table = new ExtendedTableWidget( m_engine, this );
-    connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
-             this, SLOT(itemClicked(QTableWidgetItem *)) );
-    connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
-             this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-    connect( m_table, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-             this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
+             this, SLOT(startSearch()));
+    hlayout->addWidget(m_searchButton);
+    vlayout->addLayout(hlayout);
+    m_table = new ExtendedTableWidget(this);
+    connect(m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
+            this, SLOT(itemClicked(QTableWidgetItem *)));
+    connect(m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
+            this, SLOT(itemDoubleClicked(QTableWidgetItem *)));
+    connect(m_table, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+            this, SIGNAL(actionCall(const QString &, const QString &, const QString &)));
         
     vlayout->addWidget(m_table);
     setAcceptDrops(true);
@@ -92,15 +74,15 @@ DirectoryPanel::DirectoryPanel(BaseEngine * engine, QWidget * parent)
 
     // connect signal/slots
     connect( this, SIGNAL(searchDirectory(const QString &)),
-             m_engine, SLOT(searchDirectory(const QString &)) );
-    connect( m_engine, SIGNAL(directoryResponse(const QStringList &, const QStringList &)),
+             b_engine, SLOT(searchDirectory(const QString &)) );
+    connect( b_engine, SIGNAL(directoryResponse(const QStringList &, const QStringList &)),
              this, SLOT(setSearchResponse(const QStringList &, const QStringList &)) );
     connect( this, SIGNAL(copyNumber(const QString &)),
-             m_engine, SIGNAL(pasteToDialPanel(const QString &)) );
-    connect( m_engine, SIGNAL(delogged()),
+             b_engine, SIGNAL(pasteToDialPanel(const QString &)) );
+    connect( b_engine, SIGNAL(delogged()),
              this, SLOT(stop()) );
     connect( this, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-             m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
+             b_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
 }
 
 /*! \brief does nothing for the moment */

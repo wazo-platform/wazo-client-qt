@@ -58,8 +58,8 @@ class StatusPanel : public XLet
     Q_OBJECT
 
     public:
-        StatusPanel(BaseEngine *engine, QWidget *parent=0);
-        ~StatusPanel();
+        StatusPanel(QWidget *parent=0);
+
         enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
         void doGUIConnects(QWidget *mainwindow);
 

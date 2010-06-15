@@ -43,33 +43,25 @@
 
 /*! \brief Constructor
  */
-QueueentrydetailsPanel::QueueentrydetailsPanel(BaseEngine * engine,
-                                               QWidget * parent)
-    : XLet(engine, parent)
+QueueentrydetailsPanel::QueueentrydetailsPanel(QWidget *parent)
+    : XLet(parent)
 {
-    setTitle( tr("Calls of a Queue") );
+    setTitle(tr("Calls of a Queue"));
     m_gridlayout = new QGridLayout(this);
     
     m_queuedescription = new QLabel("", this);
-    m_gridlayout->setColumnStretch( 5, 1 );
-    m_gridlayout->setRowStretch( 100, 1 );
+    m_gridlayout->setColumnStretch(5, 1);
+    m_gridlayout->setRowStretch(100, 1);
     m_gridlayout->addWidget(m_queuedescription, 0, 0);
     startTimer(1000);
     // connect signal slots to engine
-    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
-             this, SLOT(newAgentList(const QStringList &)) );
-    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
-             this, SLOT(newQueueList(const QStringList &)) );
+    connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
+            this, SLOT(newAgentList(const QStringList &)));
+    connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
+            this, SLOT(newQueueList(const QStringList &)));
 
-    connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
-             this, SLOT(monitorThisQueue(const QString &)) );
-}
-
-/*! \brief Destructor
- */
-QueueentrydetailsPanel::~QueueentrydetailsPanel()
-{
-    // qDebug() << "QueueentrydetailsPanel::~QueueentrydetailsPanel()";
+    connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
+            this, SLOT(monitorThisQueue(const QString &)));
 }
 
 /*! \brief 
@@ -77,7 +69,7 @@ QueueentrydetailsPanel::~QueueentrydetailsPanel()
 void QueueentrydetailsPanel::newQueueList(const QStringList &)
 {
     // qDebug() << "QueuedetailsPanel::newQueueList()";
-    if(m_engine->queues().contains(m_monitored_queueid))
+    if(b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
@@ -86,7 +78,7 @@ void QueueentrydetailsPanel::newQueueList(const QStringList &)
 void QueueentrydetailsPanel::newAgentList(const QStringList &)
 {
     // qDebug() << "QueuedetailsPanel::newAgentList()";
-    if(m_engine->queues().contains(m_monitored_queueid))
+    if(b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
@@ -95,11 +87,11 @@ void QueueentrydetailsPanel::newAgentList(const QStringList &)
 void QueueentrydetailsPanel::monitorThisQueue(const QString & queueid)
 {
     // qDebug() << "QueueentrydetailsPanel::monitorThisQueue" << queueid;
-    if(m_engine->queues().contains(queueid)) {
+    if(b_engine->queues().contains(queueid)) {
         m_monitored_queueid = queueid;
-        m_monitored_astid = m_engine->queues()[queueid]->astid();
-        m_monitored_context = m_engine->queues()[queueid]->context();
-        m_monitored_queuename = m_engine->queues()[queueid]->queuename();
+        m_monitored_astid = b_engine->queues()[queueid]->astid();
+        m_monitored_context = b_engine->queues()[queueid]->context();
+        m_monitored_queuename = b_engine->queues()[queueid]->queuename();
         updatePanel();
     }
 }
@@ -121,7 +113,7 @@ void QueueentrydetailsPanel::clearPanel()
  */
 void QueueentrydetailsPanel::updatePanel()
 {
-    QueueInfo * qinfo = m_engine->queues()[m_monitored_queueid];
+    QueueInfo * qinfo = b_engine->queues()[m_monitored_queueid];
     QVariantMap properties = qinfo->properties();
     QVariantMap channels = properties["channels"].toMap();
     
@@ -138,14 +130,14 @@ void QueueentrydetailsPanel::updatePanel()
 
 void QueueentrydetailsPanel::updateEntryChannel(const QString & channel)
 {
-    QueueInfo * qinfo = m_engine->queues()[m_monitored_queueid];
+    QueueInfo * qinfo = b_engine->queues()[m_monitored_queueid];
     QVariantMap properties = qinfo->properties();
     QVariantMap channels = properties["channels"].toMap();
     
     if(m_entrypos.contains(channel)) {
         QVariantMap entryinfos = channels[channel].toMap();
-        int time_spent = m_engine->timeServer() - entryinfos["entrytime"].toDouble(); // from the server point of view
-        QDateTime inittime = m_engine->timeClient().addSecs(- time_spent); // from the client point of view
+        int time_spent = b_engine->timeServer() - entryinfos["entrytime"].toDouble(); // from the server point of view
+        QDateTime inittime = b_engine->timeClient().addSecs(- time_spent); // from the client point of view
         int nsec = inittime.secsTo(QDateTime::currentDateTime());
         int position = entryinfos["position"].toInt();
         

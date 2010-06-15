@@ -81,7 +81,7 @@ MainWidget::MainWidget(BaseEngine * engine,
       m_icon_green(":/images/xivoicon-green.png"),
       m_icon_black(":/images/xivoicon-black.png")
 {
-    m_xletfactory = new XLetFactory(m_engine, this);
+    m_xletfactory = new XLetFactory(this);
     m_engine->setParent(this); // take ownership of the engine object
     m_appliname = "Client";
     m_withsystray = true;

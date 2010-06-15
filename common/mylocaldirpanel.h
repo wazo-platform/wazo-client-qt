@@ -52,26 +52,28 @@ class SearchDialog;
 class MyLocalDirPanel : public XLet
 {
     Q_OBJECT
-public:
-    MyLocalDirPanel(BaseEngine *, QWidget * parent = 0);
-    ~MyLocalDirPanel();
-public slots:
-    void openNewContactDialog();
-    void importContacts();
-    void exportContacts();
-    void findNext();
-    void itemSelectionChanged();
-    void removeAllContacts();
-signals:
-    void actionCall(const QString &, const QString &, const QString &);
-private:
-    void loadFromFile(QFile & file);
-    void saveToFile(QFile & file);
-    int findCol(QStringList, QStringList);
-    QString getSaveFile() const;
 
-    ExtendedTableWidget * m_table;  //!< Table widget to display contacts
-    SearchDialog * m_searchBox; //!< Search dialog box
+    public:
+        MyLocalDirPanel(QWidget *parent=0);
+        ~MyLocalDirPanel();
+
+    public slots:
+        void openNewContactDialog();
+        void importContacts();
+        void exportContacts();
+        void findNext();
+        void removeAllContacts();
+
+    signals:
+        void actionCall(const QString &, const QString &, const QString &);
+
+    private:
+        void loadFromFile(QFile & file);
+        void saveToFile(QFile & file);
+        int findCol(QStringList, QStringList);
+        QString getSaveFile() const;
+        ExtendedTableWidget *m_table;  //!< Table widget to display contacts
+        SearchDialog *m_searchBox;  //!< Search dialog box
 };
 
 #endif /* __MYLOCALDIRPANEL_H__ */

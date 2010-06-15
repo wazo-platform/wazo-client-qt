@@ -50,7 +50,7 @@ class ServicePanel : public XLet
     Q_OBJECT
 
     public:
-        ServicePanel(BaseEngine * engine, QWidget * parent = 0);
+        ServicePanel(QWidget *parent=0);
         ~ServicePanel();
 
     signals:

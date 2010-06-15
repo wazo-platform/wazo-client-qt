@@ -31,36 +31,23 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QDragEnterEvent>
-#include <QSettings>
-#include <QVariant>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QScrollArea>
-
-#include "baseengine.h"
 #include "callstackwidget.h"
-#include "callwidget.h"
-#include "userinfo.h"
-#include "phoneinfo.h"
-#include "xivoconsts.h"
 
 /*! \brief Constructor
  */
-CallStackWidget::CallStackWidget(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent), m_monitored_ui(0)
+CallStackWidget::CallStackWidget(QWidget * parent)
+    : XLet(parent), m_monitored_ui(0)
 {
     setTitle(tr("Calls"));
     qDebug() << "CallStackWidget::CallStackWidget()";
-    QVBoxLayout * toplayout = new QVBoxLayout(this);
+    QVBoxLayout *toplayout = new QVBoxLayout(this);
     toplayout->setMargin(0);
-    QLabel * titleLabel = new QLabel("                     ", this);
+    QLabel *titleLabel = new QLabel("                     ", this);
     toplayout->addWidget( titleLabel, 0, Qt::AlignCenter);
 
-    QScrollArea * scrollarea = new QScrollArea(this);
+    QScrollArea *scrollarea = new QScrollArea(this);
     scrollarea->setWidgetResizable(true);
-    QWidget * w = new QWidget(scrollarea);
+    QWidget *w = new QWidget(scrollarea);
     scrollarea->setWidget(w);
     m_layout = new QVBoxLayout(w);
     //m_layout->setMargin();
@@ -71,14 +58,14 @@ CallStackWidget::CallStackWidget(BaseEngine * engine, QWidget * parent)
     toplayout->addWidget(scrollarea);
 
     // connect signals/slots
-    connect( m_engine, SIGNAL(userUpdated(UserInfo *)),
+    connect( b_engine, SIGNAL(userUpdated(UserInfo *)),
              this, SLOT(updateUser(UserInfo *)) );
     connect( this, SIGNAL(changeTitle(const QString &)),
              titleLabel, SLOT(setText(const QString &)) );
                 
     connect( this, SIGNAL(monitorPeerRequest(const QString &)),
-             m_engine, SLOT(monitorPeerRequest(const QString &)) );
-    connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
+             b_engine, SLOT(monitorPeerRequest(const QString &)) );
+    connect( b_engine, SIGNAL(monitorPeer(UserInfo *)),
              this, SLOT(monitorPeer(UserInfo *)) );
                 
     connectDials();
@@ -151,11 +138,11 @@ void CallStackWidget::updateDisplay()
                 if(map.contains("time-dial"))
                     ts = map["time-dial"].toUInt() + current_ts;
                 if(map.contains("timestamp-dial"))
-                    ts = map["timestamp-dial"].toDouble() + m_engine->timeDeltaServerClient();
+                    ts = map["timestamp-dial"].toDouble() + b_engine->timeDeltaServerClient();
                 if(map.contains("time-link"))
                     ts = map["time-link"].toUInt() + current_ts;
                 if(map.contains("timestamp-link"))
-                    ts = map["timestamp-link"].toDouble() + m_engine->timeDeltaServerClient();
+                    ts = map["timestamp-link"].toDouble() + b_engine->timeDeltaServerClient();
                 QString channelpeer = map["peerchannel"].toString();
                 QString callerid = map["calleridnum"].toString();
                 QString calleridname = map["calleridname"].toString();
@@ -232,10 +219,10 @@ void CallStackWidget::dragEnterEvent(QDragEnterEvent * event)
  */
 void CallStackWidget::monitorPeer(UserInfo * ui)
 {
-    qDebug() << "CallStackWidget::monitorPeer()" << m_engine->getFullId()<< ui->astid() << ui->userid();
+    qDebug() << "CallStackWidget::monitorPeer()" << b_engine->getFullId()<< ui->astid() << ui->userid();
     //emptyList();
-    if ((m_engine->getFullId() == ui->userid()) ||
-        (m_engine->enabledFunction("switchboard"))) {
+    if ((b_engine->getFullId() == ui->userid()) ||
+        (b_engine->enabledFunction("switchboard"))) {
         m_monitored_ui = ui;
         changeTitle(tr("Monitoring : %1").arg(ui->fullname()));
         updateDisplay();

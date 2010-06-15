@@ -42,13 +42,26 @@
 #include <QList>
 #include <QDebug>
 #include <QMouseEvent>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLayoutItem>
+#include <QGroupBox>
+#include <QRadioButton>
+#include <QScrollArea>
+#include <QTabWidget>
+#include <QVBoxLayout>
+#include <QApplication>
+#include <QMouseEvent>
+#include <QCursor>
+#include <QMenu>
+#include <QCursor>
 
 #include "xlet.h"
+#include <baseengine.h>
 
 class QVBoxLayout;
 class QRadioButton;
 
-class BaseEngine;
 class UserInfo;
 class LogWidgetModel;
 
@@ -60,7 +73,7 @@ class LogWidgetModel : public QAbstractTableModel
     Q_OBJECT
 
     public:
-        LogWidgetModel(BaseEngine *, int);
+        LogWidgetModel(int);
         void updateHistory(const QVariantMap &p);
         static void updateHistory_t(const QVariantMap &p, void *udata) {
             return ((LogWidgetModel*)udata)->updateHistory(p);
@@ -103,7 +116,6 @@ class LogWidgetModel : public QAbstractTableModel
 
         void requestHistory(const QString &, int, const QDateTime &since = QDateTime(), int f = 0);
 
-        BaseEngine *engine;
         QVariantList history;
         int mode;
 };
@@ -118,7 +130,7 @@ class LogTableView : public QTableView
     Q_OBJECT
 
     public:
-        LogTableView(QWidget *parent, LogWidgetModel *model, BaseEngine* engine);
+        LogTableView(QWidget *parent, LogWidgetModel *model);
 
     private slots:
         void onViewClick(const QModelIndex &);
@@ -129,7 +141,6 @@ class LogTableView : public QTableView
 
     private:
         int lastPressed;
-        BaseEngine *m_engine;
 };
 
 
@@ -140,7 +151,7 @@ class LogWidget : public XLet
     Q_OBJECT
 
     public:
-        LogWidget(BaseEngine *, QWidget *parent=0);
+        LogWidget(QWidget *parent=0);
 
     private:
         LogTableView *m_view;

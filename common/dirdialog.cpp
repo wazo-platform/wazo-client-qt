@@ -31,30 +31,20 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QDialogButtonBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QSettings>
-#include <QVBoxLayout>
-
-#include "baseengine.h"
 #include "dirdialog.h"
-#include "directorypanel.h"
 
-DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
-    : QDialog(parent), m_engine(engine)
+DirDialog::DirDialog(QWidget *parent)
+    : QDialog(parent)
 {
-    restoreGeometry(m_engine->getSettings()->value("faxhistory/geometry").toByteArray());
+    restoreGeometry(b_engine->getSettings()->value("faxhistory/geometry").toByteArray());
     // the object will be destroyed when closed
     setWindowTitle(tr("Directory"));
 
-    QVBoxLayout * vlayout = new QVBoxLayout(this);
-    m_directory = new DirectoryPanel(m_engine, this);
+    QVBoxLayout *vlayout = new QVBoxLayout(this);
+    m_directory = new DirectoryPanel(this);
     connect(m_directory, SIGNAL(searchDirectory(const QString &)),
-            m_engine, SLOT(searchDirectory(const QString &)));
-    connect(m_engine, SIGNAL(directoryResponse(const QString &)),
+            b_engine, SLOT(searchDirectory(const QString &)));
+    connect(b_engine, SIGNAL(directoryResponse(const QString &)),
             m_directory, SLOT(setSearchResponse(const QString &)));
     connect(m_directory, SIGNAL(copyNumber(const QString &)),
             this, SLOT(copyNumber(const QString &)));
@@ -80,7 +70,7 @@ DirDialog::DirDialog(BaseEngine * engine, QWidget * parent)
 DirDialog::~DirDialog()
 {
     // qDebug() << "DirDialog::~DirDialog()";
-    m_engine->getSettings()->setValue("faxhistory/geometry", saveGeometry() );
+    b_engine->getSettings()->setValue("faxhistory/geometry", saveGeometry() );
 }
 
 const QString & DirDialog::faxnumber() const

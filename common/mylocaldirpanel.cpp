@@ -52,69 +52,63 @@
 
 /*! \brief Constructor
  */
-MyLocalDirPanel::MyLocalDirPanel(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent)
+MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
+    : XLet(parent)
 {
     setTitle( tr("Personal Directory") );
         
     m_searchBox = new SearchDialog(this);
     connect(m_searchBox, SIGNAL(findNext()), this, SLOT(findNext()));
 
-    QVBoxLayout * vlayout = new QVBoxLayout(this);
+    QVBoxLayout *vlayout = new QVBoxLayout(this);
     // button line
-    QHBoxLayout * hlayout = new QHBoxLayout();
-    QPushButton * addNewBtn = new QPushButton( tr("&New Contact") );
-    connect( addNewBtn, SIGNAL(clicked()),
-             this, SLOT(openNewContactDialog()) );
+    QHBoxLayout *hlayout = new QHBoxLayout();
+    QPushButton *addNewBtn = new QPushButton(tr("&New Contact"));
+    connect(addNewBtn, SIGNAL(clicked()),
+            this, SLOT(openNewContactDialog()));
     hlayout->addWidget( addNewBtn );
-    QPushButton * exportBtn = new QPushButton( tr("&Export Contacts") );
-    connect( exportBtn, SIGNAL(clicked()),
-             this, SLOT(exportContacts()) );
+    QPushButton *exportBtn = new QPushButton(tr("&Export Contacts"));
+    connect(exportBtn, SIGNAL(clicked()),
+            this, SLOT(exportContacts()) );
     hlayout->addWidget( exportBtn );
-    QPushButton * importBtn = new QPushButton( tr("&Import Contacts") );
-    connect( importBtn, SIGNAL(clicked()),
-             this, SLOT(importContacts()) );
+    QPushButton *importBtn = new QPushButton(tr("&Import Contacts"));
+    connect(importBtn, SIGNAL(clicked()),
+            this, SLOT(importContacts()) );
     hlayout->addWidget( importBtn );
-    QPushButton * searchBtn = new QPushButton( tr("&Search") );
-    connect( searchBtn, SIGNAL(clicked()),
-             m_searchBox, SLOT(show()) );
+    QPushButton *searchBtn = new QPushButton(tr("&Search"));
+    connect(searchBtn, SIGNAL(clicked()),
+            m_searchBox, SLOT(show()) );
     hlayout->addWidget( searchBtn );
-    QPushButton * removeAllBtn = new QPushButton( tr("&Remove all Contacts") );
-    connect( removeAllBtn, SIGNAL(clicked()),
-             this, SLOT(removeAllContacts()) );
+    QPushButton *removeAllBtn = new QPushButton(tr("&Remove all Contacts"));
+    connect(removeAllBtn, SIGNAL(clicked()),
+            this, SLOT(removeAllContacts()) );
     hlayout->addWidget( removeAllBtn );
 
     vlayout->addLayout(hlayout);
 
-    m_table = new ExtendedTableWidget( m_engine );
+    m_table = new ExtendedTableWidget;
     m_table->setEditable( true );
     connect( m_table, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
              this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
-    connect( m_table, SIGNAL(itemSelectionChanged()),
-             this, SLOT(itemSelectionChanged()) );
     QStringList columnNames;
-    columnNames.append( tr("First Name") );
-    columnNames.append( tr("Last Name") );
-    columnNames.append( tr("Phone Number") );
-    columnNames.append( tr("Email Address") );
-    columnNames.append( tr("Company") );
-    columnNames.append( tr("Fax Number") );
-    columnNames.append( tr("Mobile Number") );
-    m_table->setColumnCount( 7 );
-    m_table->setHorizontalHeaderLabels( columnNames );
-    m_table->setSortingEnabled( true );
+    columnNames.append(tr("First Name"));
+    columnNames.append(tr("Last Name"));
+    columnNames.append(tr("Phone Number"));
+    columnNames.append(tr("Email Address"));
+    columnNames.append(tr("Company"));
+    columnNames.append(tr("Fax Number"));
+    columnNames.append(tr("Mobile Number"));
+    m_table->setColumnCount(7);
+    m_table->setHorizontalHeaderLabels(columnNames);
+    m_table->setSortingEnabled(true);
     vlayout->addWidget(m_table);
     QFile file(getSaveFile());
-    loadFromFile( file );
+    loadFromFile(file);
 
     // connects signals/slots with engine
     connectDials();
 }
 
-void MyLocalDirPanel::itemSelectionChanged()
-{
-    // loop over m_table->selectedItems() to know which ones to remove (for instance)
-}
 
 /*! \brief Destructor
  */
@@ -129,9 +123,9 @@ MyLocalDirPanel::~MyLocalDirPanel()
  */
 QString MyLocalDirPanel::getSaveFile() const
 {
-    qDebug() << "MyLocalDirPanel::getSaveFile()" << qApp->applicationDirPath() << m_engine->getSettings()->fileName();
+    qDebug() << "MyLocalDirPanel::getSaveFile()" << qApp->applicationDirPath() << b_engine->getSettings()->fileName();
     //QDir dir( qApp->applicationDirPath() );
-    QFileInfo fi( m_engine->getSettings()->fileName() );
+    QFileInfo fi( b_engine->getSettings()->fileName() );
     QDir dir( fi.canonicalPath() );
     return dir.absoluteFilePath("localdir.csv");
 }

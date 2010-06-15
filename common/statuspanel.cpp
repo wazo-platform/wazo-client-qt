@@ -46,8 +46,8 @@
 
 /*! \brief Constructor
  */
-StatusPanel::StatusPanel(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent)
+StatusPanel::StatusPanel(QWidget * parent)
+    : XLet(parent)
 {
     m_glayout = new QGridLayout(this);
     m_lbl = new QLabel( "", this );
@@ -74,14 +74,6 @@ StatusPanel::StatusPanel(BaseEngine * engine, QWidget * parent)
     connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
             this, SLOT(updateUser(UserInfo *)));
     connectDials();
-}
-
-
-/*! \brief destructor */
-StatusPanel::~StatusPanel()
-{
-    qDebug() << "StatusPanel::~StatusPanel()"
-             << m_actions;
 }
 
 /*! \brief add a line of widgets for a call

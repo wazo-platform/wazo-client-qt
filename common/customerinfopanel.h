@@ -37,11 +37,18 @@
 #include <QHash>
 #include <QList>
 #include <QObject>
+#include <QBuffer>
+#include <QDateTime>
+#include <QDebug>
+#include <QLabel>
+#include <QGridLayout>
+#include <QTabWidget>
+#include <QVariant>
 
-#include "xlet.h"
-#include "popup.h"
+#include <xlet.h>
+#include <popup.h>
+#include <baseengine.h>
 
-class QTabWidget;
 
 class Popup;
 
@@ -52,8 +59,7 @@ class CustomerInfoPanel : public XLet
     Q_OBJECT
 
     public:
-        CustomerInfoPanel(BaseEngine *, QWidget *parent=0);
-        ~CustomerInfoPanel();
+        CustomerInfoPanel(QWidget *parent=0);
 
         void doGUIConnects(QWidget *mainwindow);
 

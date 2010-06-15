@@ -57,7 +57,7 @@ class SwitchBoardWindow : public XLet
     Q_OBJECT
 
     public:
-        SwitchBoardWindow(BaseEngine *, QWidget *parent=0);
+        SwitchBoardWindow(QWidget *parent=0);
         ~SwitchBoardWindow();
 
     protected:

@@ -36,15 +36,19 @@
 
 #include <QObject>
 #include <QList>
-#include "xlet.h"
+#include <QComboBox>
+#include <QDebug>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMouseEvent>
+#include <QPushButton>
+#include <QRegExp>
 
-class QComboBox;
-class QLabel;
-class QMouseEvent;
-class QVBoxLayout;
-
-class BaseEngine;
-class UserInfo;
+#include <xlet.h>
+#include <xivoconsts.h> // for PEER_MIMETYPE
+#include <userinfo.h>
+#include <baseengine.h>
 
 /*! \brief Simple widget to enter a number and dial it
  */
@@ -53,7 +57,7 @@ class DialPanel : public XLet
     Q_OBJECT
 
     public:
-        DialPanel(BaseEngine *, QWidget *parent=0);
+        DialPanel(QWidget *parent=0);
 
     protected:
         void dragEnterEvent(QDragEnterEvent *);

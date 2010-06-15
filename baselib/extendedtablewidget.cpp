@@ -31,13 +31,7 @@
  * $Date$
  */
 
-#include <QContextMenuEvent>
 #include <QDebug>
-#include <QDesktopServices>
-#include <QHeaderView>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QUrl>
 
 #include "extendedtablewidget.h"
 #include "xivoconsts.h"
@@ -47,9 +41,8 @@
 
 /*! \brief Constructor
  */
-ExtendedTableWidget::ExtendedTableWidget(BaseEngine * engine, QWidget * parent)
+ExtendedTableWidget::ExtendedTableWidget(QWidget * parent)
     : QTableWidget(parent),
-      m_engine(engine),
       m_re_number("\\+?[0-9\\s\\.]+"),
       m_editable(false)
 {
@@ -93,8 +86,8 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
             QMenu * transferMenu = new QMenu(tr("Direct &Transfer"), &contextMenu);
             QMenu * indirectTransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
             UserInfo * ui = NULL;
-            if(m_engine)
-                ui = m_engine->getXivoClientUser();
+            if(b_engine)
+                ui = b_engine->getXivoClientUser();
             if(ui)
             {
                 foreach( const QString phone, ui->phonelist() )

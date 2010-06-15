@@ -83,8 +83,8 @@ PeerWidget::PeerWidget(BaseEngine *engine, UserInfo *ui)
         m_user_status->setFlat(true);
         m_user_status->setFocusPolicy(Qt::NoFocus);
 
-        if (m_engine->enabledFunction("chitchat")) {
-            if (m_engine->getFullId() != ui->userid()) {
+        if (b_engine->enabledFunction("chitchat")) {
+            if (b_engine->getFullId() != ui->userid()) {
                 connect(m_user_status, SIGNAL(pressed()),
                         ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
             }

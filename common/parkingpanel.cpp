@@ -49,14 +49,13 @@
  *
  * Set up the layout and the table widget.
  */
-ParkingPanel::ParkingPanel(BaseEngine * engine,
-                           QWidget * parent)
-    : XLet(engine, parent)
+ParkingPanel::ParkingPanel(QWidget *parent)
+    : XLet(parent)
 {
     setTitle(tr("Parking"));
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
-    m_table = new ExtendedTableWidget(m_engine, this);
+    m_table = new ExtendedTableWidget(this);
     qDebug() << m_table;
     m_table->setAlternatingRowColors(true);
     m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
@@ -77,7 +76,7 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
     m_timerid = 0;
     m_deltasec = 2;
     // connect signal / slots
-    connect(m_engine, SIGNAL(parkingEvent(const QString &,
+    connect(b_engine, SIGNAL(parkingEvent(const QString &,
                                           const QString &,
                                           const QString &,
                                           const QVariant &)),
@@ -86,14 +85,8 @@ ParkingPanel::ParkingPanel(BaseEngine * engine,
                                     const QString &,
                                     const QVariant &)));
     connect(this, SIGNAL(copyNumber(const QString &)),
-            m_engine, SIGNAL(pasteToDialPanel(const QString &)));
+            b_engine, SIGNAL(pasteToDialPanel(const QString &)));
     connectDials();
-}
-
-ParkingPanel::~ParkingPanel()
-{
-    // qDebug() << "ParkingPanel::~ParkingPanel()";
-    //delete m_table;
 }
 
 /*! \brief add a message to the list
@@ -183,7 +176,7 @@ void ParkingPanel::itemClicked(QTableWidgetItem * item)
     QString astid    = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
     QString placenum = m_table->item(rown, 0)->text();
     //qDebug() << "ParkingPanel::itemClicked" << rown << astid << placenum;
-    if(m_engine && m_engine->getXivoClientUser() && astid == m_engine->getXivoClientUser()->astid())
+    if(b_engine && b_engine->getXivoClientUser() && astid == b_engine->getXivoClientUser()->astid())
         emit copyNumber(placenum);
 }
 
@@ -193,7 +186,7 @@ void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
     QString astid    = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
     QString placenum = m_table->item(rown, 0)->text();
     //qDebug() << "ParkingPanel::itemDoubleClicked" << rown << astid << placenum;
-    if(m_engine && m_engine->getXivoClientUser() && astid == m_engine->getXivoClientUser()->astid())
+    if(b_engine && b_engine->getXivoClientUser() && astid == b_engine->getXivoClientUser()->astid())
         emit actionCall("originate", "user:special:me", "ext:" + placenum); // Call
 }
 

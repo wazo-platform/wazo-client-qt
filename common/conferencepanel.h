@@ -41,16 +41,18 @@
 #include <QHeaderView>
 #include <QObject>
 #include <QVariant>
-#include "xlet.h"
-#include <stdio.h>
+#include <QDateTime>
+#include <QGridLayout>
+#include <QLabel>
+#include <QPushButton>
+#include <QScrollArea>
+#include <QTabWidget>
 
-class QGridLayout;
-class QProgressBar;
-class QPushButton;
-class QTabWidget;
-class QTimerEvent;
+#include <baseengine.h>
+#include <userinfo.h>
+#include <meetmeinfo.h>
+#include <xlet.h>
 
-class UserInfo;
 
 /*! \brief Conference Panel
  */
@@ -59,7 +61,7 @@ class ConferencePanel : public XLet
     Q_OBJECT
 
     public:
-        ConferencePanel(BaseEngine *, QWidget *parent=0);
+        ConferencePanel(QWidget *parent=0);
         ~ConferencePanel();
 
     protected:

@@ -31,35 +31,25 @@
  * $Date$
  */
 
-#include <QBuffer>
-#include <QDateTime>
-#include <QDebug>
-#include <QLabel>
-#include <QGridLayout>
-#include <QTabWidget>
-#include <QVariant>
 
 #include "customerinfopanel.h"
-#include "popup.h"
-#include "baseengine.h"
 
 /*! \brief Constructor
  */
-CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
-                                     QWidget * parent)
-    : XLet(engine, parent)
+CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
+    : XLet(parent)
 {
-    setTitle( tr("Sheets") );
-    connect( m_engine, SIGNAL(displayFiche(const QString &, bool, const QString &)),
-             this, SLOT(displayFiche(const QString &, bool, const QString &)) );
-    connect( m_engine, SIGNAL(gotSheetOwnership(const QString &)),
-             this, SLOT(activateRemarkArea(const QString &)) );
-    connect( m_engine, SIGNAL(lostSheetOwnership(const QString &)),
-             this, SLOT(desactivateRemarkArea(const QString &)) );
-    connect( m_engine, SIGNAL(sheetEntryAdded(const QString &, const QVariantMap &)),
-             this, SLOT(addNewRemark(const QString &, const QVariantMap &)) );
-    connect( this, SIGNAL(actionFromFiche(const QVariant &)),
-             m_engine, SLOT(actionFromFiche(const QVariant &)) );
+    setTitle(tr("Sheets"));
+    connect(b_engine, SIGNAL(displayFiche(const QString &, bool, const QString &)),
+            this, SLOT(displayFiche(const QString &, bool, const QString &)));
+    connect(b_engine, SIGNAL(gotSheetOwnership(const QString &)),
+            this, SLOT(activateRemarkArea(const QString &)));
+    connect(b_engine, SIGNAL(lostSheetOwnership(const QString &)),
+            this, SLOT(desactivateRemarkArea(const QString &)));
+    connect(b_engine, SIGNAL(sheetEntryAdded(const QString &, const QVariantMap &)),
+            this, SLOT(addNewRemark(const QString &, const QVariantMap &)));
+    connect(this, SIGNAL(actionFromFiche(const QVariant &)),
+            b_engine, SLOT(actionFromFiche(const QVariant &)));
     //connectDials();
 
     // qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
@@ -68,13 +58,9 @@ CustomerInfoPanel::CustomerInfoPanel(BaseEngine * engine,
     glayout->addWidget( m_tabs, 0, 0 );
     glayout->setRowStretch(0, 1);
     glayout->setColumnStretch(0, 1);
-    QVariantMap optionsMap = m_engine->getGuiOptions("merged_gui");
+    QVariantMap optionsMap = b_engine->getGuiOptions("merged_gui");
     m_tablimit = optionsMap["sheet-tablimit"].toUInt();
     m_autourl_allowed = optionsMap["autourl_allowed"].toBool();
-}
-
-CustomerInfoPanel::~CustomerInfoPanel()
-{
 }
 
 /*!
@@ -89,8 +75,8 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
              << popup->callAstid() << popup->callContext()
              << popup->callUniqueid() << popup->callChannel();
     if(popup->sheetpopup()) {
-        Popup * already_popup = NULL;
-        foreach(Popup * mpopup, m_popups)
+        Popup *already_popup = NULL;
+        foreach(Popup *mpopup, m_popups)
             if ( (mpopup->callAstid() == popup->callAstid()) &&
                  (mpopup->callContext() == popup->callContext()) &&
                  (mpopup->callUniqueid() == popup->callUniqueid()) ) {
@@ -151,25 +137,25 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
             qDebug() << " fiche id already there";
         }
     }
-    QBuffer * inputstream = new QBuffer(this);
+    QBuffer *inputstream = new QBuffer(this);
     inputstream->open(QIODevice::ReadWrite);
     inputstream->write(fichecontent.toUtf8());
     inputstream->close();
     // Get Data and Popup the profile if ok
-    Popup * popup = new Popup(m_autourl_allowed, m_engine);
+    Popup *popup = new Popup(m_autourl_allowed);
     popup->setId(id);
-    connect( popup, SIGNAL(destroyed(QObject *)),
-             this, SLOT(popupDestroyed(QObject *)) );
-    connect( popup, SIGNAL(wantsToBeShown(Popup *)),
-             this, SLOT(showNewProfile(Popup *)) );
-    connect( popup, SIGNAL(save(const QString &)),
-             this, SLOT(addToDataBase(const QString &)) );
-    connect( popup, SIGNAL(actionFromPopup(const QString &, const QVariant &)),
-             this, SLOT(actionFromPopup(const QString &, const QVariant &)) );
-    connect( popup, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-             m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)) );
-    connect( popup, SIGNAL(newRemarkSubmitted(const QString &, const QString &)),
-             m_engine, SLOT(sendNewRemark(const QString &, const QString &)) );
+    connect(popup, SIGNAL(destroyed(QObject *)),
+            this, SLOT(popupDestroyed(QObject *)));
+    connect(popup, SIGNAL(wantsToBeShown(Popup *)),
+            this, SLOT(showNewProfile(Popup *)));
+    connect(popup, SIGNAL(save(const QString &)),
+            this, SLOT(addToDataBase(const QString &)));
+    connect(popup, SIGNAL(actionFromPopup(const QString &, const QVariant &)),
+            this, SLOT(actionFromPopup(const QString &, const QVariant &)));
+    connect(popup, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
+            b_engine, SLOT(actionCall(const QString &, const QString &, const QString &)));
+    connect(popup, SIGNAL(newRemarkSubmitted(const QString &, const QString &)),
+            b_engine, SLOT(sendNewRemark(const QString &, const QString &)));
     popup->feed(inputstream, qtui);
 }
 
@@ -178,8 +164,8 @@ void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVaria
     QString astid = sender()->property("astid").toString();
     QString uniqueid = sender()->property("uniqueid").toString();
     QString context = sender()->property("context").toString();
-    Popup * thispopup = NULL;
-    foreach(Popup * mpopup, m_popups)
+    Popup *thispopup = NULL;
+    foreach(Popup *mpopup, m_popups)
         if ( (mpopup->callUniqueid() == uniqueid) &&
              (mpopup->callContext() == context) &&
              (mpopup->callAstid() == astid) ) {
@@ -200,7 +186,7 @@ void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVaria
 
 void CustomerInfoPanel::activateRemarkArea(const QString & id)
 {
-    foreach(Popup * mpopup, m_popups) {
+    foreach(Popup *mpopup, m_popups) {
         if(mpopup->id() == id)
             mpopup->activateRemarkArea();
     }
@@ -208,7 +194,7 @@ void CustomerInfoPanel::activateRemarkArea(const QString & id)
 
 void CustomerInfoPanel::desactivateRemarkArea(const QString & id)
 {
-    foreach(Popup * mpopup, m_popups) {
+    foreach(Popup *mpopup, m_popups) {
         if(mpopup->id() == id)
             mpopup->desactivateRemarkArea();
     }
@@ -217,7 +203,7 @@ void CustomerInfoPanel::desactivateRemarkArea(const QString & id)
 void CustomerInfoPanel::addNewRemark(const QString & id, const QVariantMap & entry)
 {
     qDebug() << "CustomerInfoPanel::addNewRemark" << id << entry;
-    foreach(Popup * mpopup, m_popups) {
+    foreach(Popup *mpopup, m_popups) {
         if(mpopup->id() == id)
             mpopup->addRemark(entry);
     }
@@ -225,9 +211,9 @@ void CustomerInfoPanel::addNewRemark(const QString & id, const QVariantMap & ent
 
 void CustomerInfoPanel::doGUIConnects(QWidget * mainwindow)
 {
-    connect( this, SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
-             mainwindow, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)) );
-    connect( this, SIGNAL(showWidgetOnTop(QWidget *)),
-             mainwindow, SLOT(showWidgetOnTop(QWidget *)) );
+    connect(this, SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
+            mainwindow, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)));
+    connect(this, SIGNAL(showWidgetOnTop(QWidget *)),
+            mainwindow, SLOT(showWidgetOnTop(QWidget *)));
 }
 

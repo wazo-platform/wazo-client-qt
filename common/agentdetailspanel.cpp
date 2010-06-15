@@ -50,9 +50,8 @@
 
 /*! \brief Constructor
  */
-AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
-                                     QWidget * parent)
-    : XLet(engine, parent)
+AgentdetailsPanel::AgentdetailsPanel(QWidget *parent)
+    : XLet(parent)
 {
     setTitle( tr("Agent Details") );
     m_linenum = 0;
@@ -110,36 +109,29 @@ AgentdetailsPanel::AgentdetailsPanel(BaseEngine * engine,
         connect( m_action[function], SIGNAL(clicked()),
                  this, SLOT(actionClicked()));
     }
-    setGuiOptions(m_engine->getGuiOptions("merged_gui"));
+    setGuiOptions(b_engine->getGuiOptions("merged_gui"));
     
     // connect signal/slots with engine
-    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
-             this, SLOT(newAgentList(const QStringList &)) );
-    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
-             this, SLOT(newQueueList(const QStringList &)) );
+    connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
+            this, SLOT(newAgentList(const QStringList &)));
+    connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
+            this, SLOT(newQueueList(const QStringList &)));
     
-    connect( m_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
-             this, SLOT(monitorThisAgent(const QString &)) );
-    connect( this, SIGNAL(changeWatchedQueue(const QString &)),
-             m_engine, SLOT(changeWatchedQueueSlot(const QString &)) );
+    connect(b_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
+            this, SLOT(monitorThisAgent(const QString &)));
+    connect(this, SIGNAL(changeWatchedQueue(const QString &)),
+            b_engine, SLOT(changeWatchedQueueSlot(const QString &)));
     
-    connect( m_engine, SIGNAL(serverFileList(const QStringList &)),
-             this, SLOT(serverFileList(const QStringList &)) );
-    connect( m_engine, SIGNAL(fileReceived()),
-             this, SLOT(saveToFile()) );
-    connect( this, SIGNAL(setFileName(const QString &)),
-             m_engine, SLOT(saveToFile(const QString &)) );
-    connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
-             this, SLOT(statusRecord(const QString &, const QString &, const QString &)) );
-    connect( m_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
-             this, SLOT(statusListen(const QString &, const QString &, const QString &)) );
-}
-
-/*! \brief Destructor
- */
-AgentdetailsPanel::~AgentdetailsPanel()
-{
-    // qDebug() << "AgentdetailsPanel::~AgentdetailsPanel()";
+    connect(b_engine, SIGNAL(serverFileList(const QStringList &)),
+            this, SLOT(serverFileList(const QStringList &)));
+    connect(b_engine, SIGNAL(fileReceived()),
+            this, SLOT(saveToFile()));
+    connect(this, SIGNAL(setFileName(const QString &)),
+            b_engine, SLOT(saveToFile(const QString &)));
+    connect(b_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
+            this, SLOT(statusRecord(const QString &, const QString &, const QString &)));
+    connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
+            this, SLOT(statusListen(const QString &, const QString &, const QString &)));
 }
 
 /*! \brief set options
@@ -161,7 +153,7 @@ void AgentdetailsPanel::newQueueList(const QStringList &)
 void AgentdetailsPanel::newAgentList(const QStringList & qsl)
 {
     // qDebug() << "AgentdetailsPanel::newAgentList()" << qsl;
-    if(qsl.contains(m_monitored_agentid) && m_engine->agents().contains(m_monitored_agentid))
+    if(qsl.contains(m_monitored_agentid) && b_engine->agents().contains(m_monitored_agentid))
         updatePanel();
 }
 
@@ -169,10 +161,10 @@ void AgentdetailsPanel::newAgentList(const QStringList & qsl)
  */
 void AgentdetailsPanel::monitorThisAgent(const QString & agentid)
 {
-    if(m_engine->agents().contains(agentid)) {
+    if(b_engine->agents().contains(agentid)) {
         m_monitored_agentid = agentid;
-        m_monitored_astid = m_engine->agents()[agentid]->astid();
-        m_monitored_context = m_engine->agents()[agentid]->context();
+        m_monitored_astid = b_engine->agents()[agentid]->astid();
+        m_monitored_context = b_engine->agents()[agentid]->context();
         clearPanel();
         updatePanel();
     }
@@ -208,7 +200,7 @@ void AgentdetailsPanel::clearPanel()
  */
 void AgentdetailsPanel::updatePanel()
 {
-    AgentInfo * ainfo = m_engine->agents()[m_monitored_agentid];
+    AgentInfo * ainfo = b_engine->agents()[m_monitored_agentid];
     QStringList agent_descriptions;
     agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->agentNumber()).arg(ainfo->fullname());
     if(! m_optionsMap["hideastid"].toBool())
@@ -257,7 +249,7 @@ void AgentdetailsPanel::updatePanel()
     m_agentlegend_njoined->setText(agentstats.toMap()["Xivo-NQJoined"].toString());
     m_agentlegend_npaused->setText(agentstats.toMap()["Xivo-NQPaused"].toString());
     
-    QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
+    QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(b_engine->queues());
     while( iter.hasNext() ) {
         iter.next();
         QueueInfo * qinfo = iter.value();
@@ -426,10 +418,10 @@ void AgentdetailsPanel::queueClicked()
     QString queueid = sender()->property("queueid").toString();
     QString action  = sender()->property("action").toString();
     
-    QString astid = m_engine->queues()[queueid]->astid();
-    QString qid = m_engine->queues()[queueid]->id();
-    QString queuename = m_engine->queues()[queueid]->queuename();
-    QVariant mstatus = m_engine->agents()[m_monitored_agentid]->properties()["queues_by_agent"].toMap()[qid];
+    QString astid = b_engine->queues()[queueid]->astid();
+    QString qid = b_engine->queues()[queueid]->id();
+    QString queuename = b_engine->queues()[queueid]->queuename();
+    QVariant mstatus = b_engine->agents()[m_monitored_agentid]->properties()["queues_by_agent"].toMap()[qid];
     QString smstatus = mstatus.toMap()["Status"].toString();
     QString pmstatus = mstatus.toMap()["Paused"].toString();
     

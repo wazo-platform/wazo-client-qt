@@ -114,7 +114,7 @@ class QueuesPanel : public XLet
     Q_OBJECT
 
     public:
-        QueuesPanel(BaseEngine *, QWidget *parent=0);
+        QueuesPanel(QWidget *parent=0);
         void eatQueuesStats(const QVariantMap &p);
         static void eatQueuesStats_t(const QVariantMap &p, void *udata) {
             ((QueuesPanel*)udata)->eatQueuesStats(p);

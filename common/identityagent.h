@@ -34,11 +34,14 @@
 #ifndef __IDENTITYAGENT_H__
 #define __IDENTITYAGENT_H__
 
+#include <QDebug>
 #include <QFrame>
 #include <QVariant>
-
-class QGridLayout;
-class QLabel;
+#include <QLabel>
+#include <QGridLayout>
+#include <QAction>
+#include <QMenu>
+#include <QContextMenuEvent>
 
 /*! \brief Display Agent information
  *

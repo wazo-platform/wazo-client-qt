@@ -47,11 +47,10 @@
 
 /*! \brief Constructor
  */
-AgentsPanel::AgentsPanel(BaseEngine * engine,
-                         QWidget * parent)
-    : XLet(engine, parent)
+AgentsPanel::AgentsPanel(QWidget *parent)
+    : XLet(parent)
 {
-    setTitle( tr("Agents' List (plain)") );
+    setTitle(tr("Agents' List (plain)"));
     m_gui_buttonsize = 10;
     
     m_gridlayout = new QGridLayout(this);
@@ -78,26 +77,20 @@ AgentsPanel::AgentsPanel(BaseEngine * engine,
     m_gridlayout->setRowStretch( 100, 1 );
     m_gridlayout->setVerticalSpacing(0);
     
-    setGuiOptions(m_engine->getGuiOptions("merged_gui"));
+    setGuiOptions(b_engine->getGuiOptions("merged_gui"));
     // connect signals/slots with engine
-    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
+    connect( b_engine, SIGNAL(newAgentList(const QStringList &)),
              this, SLOT(newAgentList(const QStringList &)) );
-    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
+    connect( b_engine, SIGNAL(newQueueList(const QStringList &)),
              this, SLOT(newQueueList(const QStringList &)) );
     connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
-             m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
-    connect( m_engine, SIGNAL(updateAgentPresence(const QString &, const QString &, const QVariant &)),
+             b_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
+    connect( b_engine, SIGNAL(updateAgentPresence(const QString &, const QString &, const QVariant &)),
              this, SLOT(updateAgentPresence(const QString &, const QString &, const QVariant &)) );
-    connect( m_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
+    connect( b_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
              this, SLOT(statusRecord(const QString &, const QString &, const QString &)) );
-    connect( m_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
+    connect( b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
              this, SLOT(statusListen(const QString &, const QString &, const QString &)) );
-}
-
-/*! \brief Destructor */
-AgentsPanel::~AgentsPanel()
-{
-    // qDebug() << "AgentsPanel::~AgentsPanel()";
 }
 
 /*! \brief set font
@@ -128,7 +121,7 @@ void AgentsPanel::updateAgentPresence(const QString & astid, const QString & age
 {
     // qDebug() << "AgentsPanel::updateAgentPresence()" << astid << agent_number << presencestatus;
     QString agentid = QString("agent:%1/%2").arg(astid).arg(agent_number);
-    if(m_engine->agents().contains(agentid))
+    if(b_engine->agents().contains(agentid))
         if(m_agent_presence.contains(agentid)) {
             QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
             square.fill(QColor(presencestatus.toMap()["color"].toString()));
@@ -149,8 +142,8 @@ void AgentsPanel::newQueueList(const QStringList &)
 void AgentsPanel::newAgentList(const QStringList & list)
 {
     //qDebug() << "AgentsPanel::newAgentList()" << list;
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
-    // qDebug() << "AgentsPanel::newAgentList()" << m_engine->agents();
+    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
+    // qDebug() << "AgentsPanel::newAgentList()" << b_engine->agents();
     while( iter.hasNext() ) {
         iter.next();
         AgentInfo * ainfo = iter.value();
@@ -205,7 +198,7 @@ void AgentsPanel::newAgentLine(const QString & agentid)
 // update according to admin-defined parameters
 void AgentsPanel::updateAgentLineAdmin(const QString & agentid, const QString & agfullname, const QString & agentnumber)
 {
-    AgentInfo * ainfo = m_engine->agents()[agentid];
+    AgentInfo * ainfo = b_engine->agents()[agentid];
     m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(agfullname).arg(agentnumber));
     m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->astid()).arg(ainfo->context()));
     m_agent_more[agentid]->setProperty("agentid", agentid);
@@ -271,7 +264,7 @@ void AgentsPanel::displayLine(const QString & agentid, int linenum)
 
 void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap & properties)
 {
-    AgentInfo * ainfo = m_engine->agents()[agentid];
+    AgentInfo * ainfo = b_engine->agents()[agentid];
     if(ainfo == NULL)
         return;
     QString context_agent = ainfo->context();
@@ -295,7 +288,7 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
     QStringList ttips;
     if(link) {
         square.fill(Qt::green);
-        QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(m_engine->phones());
+        QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(b_engine->phones());
         while( iter.hasNext() ) {
             iter.next();
             if((iter.value()->number() == phonenum) && (iter.value()->astid() == ainfo->astid())) {
@@ -339,7 +332,7 @@ void AgentsPanel::updateAgentStatus(const QString & agentid, const QVariantMap &
     QStringList paused_queues;
     foreach (QString qname, agqjoined.keys()) {
         QString queueid = QString("queue:%1/%2").arg(ainfo->astid()).arg(qname);
-        QueueInfo * qinfo = m_engine->queues()[queueid];
+        QueueInfo * qinfo = b_engine->queues()[queueid];
         if(qinfo != NULL) {
             // if(qinfo->context() == context_agent) {
             QVariant qv = agqjoined[qname];
@@ -405,10 +398,10 @@ void AgentsPanel::agentClicked()
     QString agentid = sender()->property("agentid").toString();
     QString action  = sender()->property("action").toString();
     
-    if(! m_engine->agents().keys().contains(agentid))
+    if(! b_engine->agents().keys().contains(agentid))
         return;
     
-    AgentInfo * ainfo = m_engine->agents()[agentid];
+    AgentInfo * ainfo = b_engine->agents()[agentid];
     QString astid = ainfo->astid();
     QString agentnumber = ainfo->agentNumber();
     QVariantMap ipbxcommand;

@@ -32,28 +32,26 @@
  */
 
 #include "xlet.h"
-#include "baseengine.h"
 
-XLet::XLet(BaseEngine * engine, QWidget * parent)
-    : QWidget(parent),
-      m_engine(engine)
+XLet::XLet(QWidget *parent)
+    : QWidget(parent)
 {
-    connect( this, SIGNAL(logAction(const QString &)),
-             m_engine, SLOT(logAction(const QString &)) );
-    connect( this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
-             m_engine, SLOT(shouldNotOccur(const QString &, const QString &)) );
-    connect( this, SIGNAL(ipbxCommand(const QVariantMap &)),
-             m_engine, SLOT(ipbxCommand(const QVariantMap &)) );
+    connect(this, SIGNAL(logAction(const QString &)),
+            b_engine, SLOT(logAction(const QString &)));
+    connect(this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
+            b_engine, SLOT(shouldNotOccur(const QString &, const QString &)));
+    connect(this, SIGNAL(ipbxCommand(const QVariantMap &)),
+            b_engine, SLOT(ipbxCommand(const QVariantMap &)));
 }
 
 /*! \brief connect actionCall signal to the engine
  */
 void XLet::connectDials()
 {
-    connect( this, SIGNAL(actionCall(const QString &,
-                                     const QString &,
-                                     const QString &)),
-             m_engine, SLOT(actionCall(const QString &,
-                                       const QString &,
-                                       const QString &)) );
+    connect(this, SIGNAL(actionCall(const QString &,
+                                    const QString &,
+                                    const QString &)),
+            b_engine, SLOT(actionCall(const QString &,
+                                      const QString &,
+                                      const QString &)));
 }

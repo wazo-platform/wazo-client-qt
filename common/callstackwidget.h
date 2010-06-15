@@ -38,9 +38,19 @@
 #include <QList>
 #include <QString>
 #include <QDateTime>
+#include <QDragEnterEvent>
+#include <QSettings>
+#include <QVariant>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QScrollArea>
 
 #include "xlet.h"
 #include "callwidget.h"
+#include "baseengine.h"
+#include "callwidget.h"
+#include "userinfo.h"
+#include "phoneinfo.h"
 #include "xivoconsts.h"
 
 class QVBoxLayout;
@@ -55,7 +65,7 @@ class CallStackWidget : public XLet
     Q_OBJECT
 
     public:
-        CallStackWidget(BaseEngine *engine, QWidget *parent=0); //!< Constructor
+        CallStackWidget(QWidget *parent=0); //!< Constructor
 
     public slots:
         void updateUser(UserInfo *);

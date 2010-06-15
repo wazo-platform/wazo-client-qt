@@ -37,8 +37,8 @@
 #include "baselib_export.h"
 #include <QVariantMap>
 #include <QWidget>
+#include <baseengine.h>
 
-class BaseEngine;
 
 /*! \brief base class for all XLets
  *
@@ -55,7 +55,7 @@ class BASELIB_EXPORT XLet : public QWidget
     Q_OBJECT
 
     public:
-        XLet(BaseEngine * engine, QWidget * parent = 0);  //! Constructor
+        XLet(QWidget *parent=0);  //! Constructor
         const QString& title() const { return m_title; };  //! title accessor
 
         /*! \brief connects signals/slots to the main GUI window
@@ -73,7 +73,6 @@ class BASELIB_EXPORT XLet : public QWidget
     protected:
         void connectDials();
         void setTitle(const QString &title) { m_title = title; }; //! set title of the XLet
-        BaseEngine *m_engine; //! BaseEngine pointer
     private:
         QString m_title;    //!< title of the XLet
 };

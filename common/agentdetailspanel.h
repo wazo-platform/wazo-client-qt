@@ -55,8 +55,7 @@ class AgentdetailsPanel : public XLet
     Q_OBJECT
 
     public:
-        AgentdetailsPanel(BaseEngine *, QWidget *parent=0);
-        ~AgentdetailsPanel();
+        AgentdetailsPanel(QWidget *parent=0);
 
     protected:
         void contextMenuEvent(QContextMenuEvent *);

@@ -55,8 +55,7 @@ class QueueentrydetailsPanel : public XLet
     Q_OBJECT
 
     public:
-        QueueentrydetailsPanel(BaseEngine *, QWidget *parent=0);
-        ~QueueentrydetailsPanel();
+        QueueentrydetailsPanel(QWidget *parent=0);
 
     signals:
         void changeWatchedAgent(const QString &);   //!< change watched agent

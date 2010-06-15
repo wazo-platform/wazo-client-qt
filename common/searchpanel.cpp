@@ -43,17 +43,16 @@
 #include "userinfo.h"
 #include "chitchat.h"
 
-SearchPanel::SearchPanel(BaseEngine * engine,
-                         QWidget * parent)
-    : XLet(engine, parent)
+SearchPanel::SearchPanel(QWidget *parent)
+    : XLet(parent)
 {
     // qDebug() << "SearchPanel::SearchPanel()";
     setTitle( tr("Contacts") );
     ChitChatWindow::chitchat_instance = new ChitChatWindow;
-    QVariantMap optionsMap = m_engine->getGuiOptions("merged_gui");
+    QVariantMap optionsMap = b_engine->getGuiOptions("merged_gui");
     m_maxdisplay = optionsMap.value("contacts-max").toUInt();
     m_ncolumns = optionsMap.value("contacts-width").toUInt();
-    // m_engine->askCallerIds();
+    // b_engine->askCallerIds();
     
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
@@ -79,15 +78,15 @@ SearchPanel::SearchPanel(BaseEngine * engine,
     m_searchpattern = "";
 
     // connect signal/slots
-    connect(m_engine, SIGNAL(userUpdated(UserInfo *)),
+    connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
             this, SLOT(updateUser(UserInfo *)) );
-    connect(m_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
+    connect(b_engine, SIGNAL(updatePeerAgent(double, const QString &, const QString &, const QVariant &)),
             this, SLOT(updatePeerAgent(double, const QString &, const QString &, const QVariant &)));
-    connect(m_engine, SIGNAL(peersReceived()),
+    connect(b_engine, SIGNAL(peersReceived()),
             this, SLOT(updateDisplay()));
     connect(this, SIGNAL(askCallerIds()),
-            m_engine, SLOT(askCallerIds()));
-    connect(m_engine, SIGNAL(delogged()),
+            b_engine, SLOT(askCallerIds()));
+    connect(b_engine, SIGNAL(delogged()),
             this, SLOT(removePeers()));
 }
 
@@ -127,7 +126,7 @@ void SearchPanel::updateDisplay()
                     disconnect( peerwidget, SIGNAL(actionCall(const QString &,
                                                               const QString &,
                                                               const QString &)),
-                                m_engine, SLOT(actionCall(const QString &,
+                                b_engine, SLOT(actionCall(const QString &,
                                                           const QString &,
                                                           const QString &)) );
                     peeritem->setWidget(NULL);
@@ -152,8 +151,8 @@ void SearchPanel::updateDisplay()
                     if(peerwidget == NULL)
                         {
                             // qDebug() << "SearchPanel::affTextChanged()" << peeritem->userinfo() << peeritem->userinfo()->termstatus();
-                            peerwidget = new PeerWidget(m_engine, peeritem->userinfo());
-                            //peerwidget->setEngine(m_engine);
+                            peerwidget = new PeerWidget(b_engine, peeritem->userinfo());
+                            //peerwidget->setEngine(b_engine);
                             peeritem->setWidget(peerwidget);
                             peeritem->updateDisplayedStatus();
                             peeritem->updateDisplayedName();
@@ -173,7 +172,7 @@ void SearchPanel::updateDisplay()
                             connect( peerwidget, SIGNAL(actionCall(const QString &,
                                                                    const QString &,
                                                                    const QString &)),
-                                     m_engine, SLOT(actionCall(const QString &,
+                                     b_engine, SLOT(actionCall(const QString &,
                                                                const QString &,
                                                                const QString &)) );
                         }

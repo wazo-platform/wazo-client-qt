@@ -31,51 +31,39 @@
  * $Date$
  */
 
-#include <QComboBox>
-#include <QDebug>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QMouseEvent>
-#include <QPushButton>
-#include <QRegExp>
 
-#include "baseengine.h"
 #include "dialpanel.h"
-#include "userinfo.h"
-#include "xivoconsts.h" // for PEER_MIMETYPE
 
 /*! \brief Constructor
  */
-DialPanel::DialPanel(BaseEngine * engine,
-                     QWidget * parent)
-    : XLet(engine, parent)
+DialPanel::DialPanel(QWidget *parent)
+    : XLet(parent)
 {
-    setTitle( tr("Dial") );
-    setAccessibleName( tr("Dial Panel") );
+    setTitle(tr("Dial"));
+    setAccessibleName(tr("Dial Panel"));
     QHBoxLayout * vlayout = new QHBoxLayout(this);
     vlayout->setMargin(0);
-    m_lbl = new QLabel( tr("Enter &Number :"), this );
-    m_input = new QComboBox( this );
+    m_lbl = new QLabel(tr("Enter &Number :"), this);
+    m_input = new QComboBox(this);
     m_lbl->setBuddy(m_input);
-    m_input->setToolTip( tr("Input here the phone number to dial") );
-    m_input->setEditable( true );
-    m_input->setDuplicatesEnabled( false );
-    m_input->setInsertPolicy( QComboBox::InsertAlphabetically );
-    m_input->setMinimumContentsLength( 15 );
+    m_input->setToolTip(tr("Input here the phone number to dial"));
+    m_input->setEditable(true);
+    m_input->setDuplicatesEnabled(false);
+    m_input->setInsertPolicy(QComboBox::InsertAlphabetically);
+    m_input->setMinimumContentsLength(15);
     //m_input->setSizeAdjustPolicy( QComboBox::AdjustToContents );
-    connect( m_input->lineEdit(), SIGNAL(returnPressed()),
-             this, SLOT(inputValidated()) );
-    connect( m_input, SIGNAL(editTextChanged(const QString &)),
-             this, SIGNAL(textEdited(const QString &)) );
+    connect(m_input->lineEdit(), SIGNAL(returnPressed()),
+            this, SLOT(inputValidated()));
+    connect(m_input, SIGNAL(editTextChanged(const QString &)),
+            this, SIGNAL(textEdited(const QString &)));
     
     QPixmap pmphone = QPixmap(":/images/sipphone.png");
     QPushButton * dialButton = new QPushButton(this);
     // dialButton->setStyleSheet("QPushButton {border: 0px}");
     dialButton->setIcon(pmphone);
     dialButton->setIconSize(pmphone.size());
-    connect( dialButton, SIGNAL(clicked()),
-             this, SLOT(inputValidated()) );
+    connect(dialButton, SIGNAL(clicked()),
+            this, SLOT(inputValidated()));
     
     // QPushButton * clearButton = new QPushButton(this);
     // clearButton->setIcon(QIcon(":/images/cancel.png"));
@@ -86,18 +74,18 @@ DialPanel::DialPanel(BaseEngine * engine,
     
     vlayout->addStretch(1);
     // vlayout->addWidget( clearButton, 0, Qt::AlignCenter );
-    vlayout->addWidget( m_lbl, 0, Qt::AlignCenter );
-    vlayout->addWidget( m_input, 0, Qt::AlignCenter );
-    vlayout->addWidget( dialButton, 0, Qt::AlignCenter );
+    vlayout->addWidget(m_lbl, 0, Qt::AlignCenter);
+    vlayout->addWidget(m_input, 0, Qt::AlignCenter);
+    vlayout->addWidget(dialButton, 0, Qt::AlignCenter);
     vlayout->addStretch(1);
     
     // connect signals/slots
-    connect(m_engine, SIGNAL(pasteToDialPanel(const QString &)),
+    connect(b_engine, SIGNAL(pasteToDialPanel(const QString &)),
             this, SLOT(setNumberToDial(const QString &)));
     connect(this, SIGNAL(textEdited(const QString &)),
-            m_engine, SLOT(textEdited(const QString &)));
+            b_engine, SLOT(textEdited(const QString &)));
     connect(this, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-            m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)));
+            b_engine, SLOT(actionCall(const QString &, const QString &, const QString &)));
 }
 
 /*! \brief fills the input field

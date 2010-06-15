@@ -56,58 +56,59 @@ class UserInfo;
 class QueuedetailsPanel : public XLet
 {
     Q_OBJECT
-public:
-    QueuedetailsPanel(BaseEngine *,
-                      QWidget * parent = 0);
-    ~QueuedetailsPanel();
-signals:
-    void changeWatchedAgent(const QString &, bool); //!< select an agent to watch
-protected:
-    void timerEvent(QTimerEvent *);
-public slots:
-    void newAgentList(const QStringList &);
-    void newQueueList(const QStringList &);
-    void monitorThisQueue(const QString &);
-private slots:
-    void agentClicked();
-private:
-    void clearPanel();
-    void updatePanel();
-    void update();
-    void setAgentLookProps(const QString &);
-    void setAgentQueueProps(const QString &, const QVariant &);
-    void setAgentProps(const QString &, const AgentInfo *);
-    void setAgentQueueSignals(const QString &);
-    void fillAgent(int, const QString &);
-    
-    double m_timesrv;
-    QDateTime m_timeclt;
-    
-    const UserInfo * m_ui;    //!< user info
-    QGridLayout * m_gridlayout; //!< Layout
-    //QVBoxLayout * m_layout; //
-    //    QScrollArea * m_scrollarea;
-    //QWidget * m_widget;
-    
-    QString m_monitored_queueid;  //!< queue id
-    QString m_monitored_astid;    //!< asterisk id
-    QString m_monitored_context;  //!< context
-    QString m_monitored_queuename;  //!< queue name
-    QLabel * m_queuelegend_agentid; //!< "Agent" label
-    QLabel * m_queuelegend_status;  //!< "Status" label
-    QLabel * m_queuelegend_paused;  //!< "Paused" label
-    QLabel * m_queuelegend_callstaken;  //!< "Call Taken" label
-    QLabel * m_queuelegend_lastcall;  //!< "Call Taken" label
-    QLabel * m_queuelegend_penalty;  //!< "Call Taken" label
-    QLabel * m_queuedescription;       //!< queue name label
-    
-    QHash<QString, QLabel *> m_agent_labels; //!< agents name
-    QHash<QString, QPushButton *> m_agent_more;  //!< "+" buttons
-    QHash<QString, QLabel *> m_agent_join_status; //!< agents status
-    QHash<QString, QLabel *> m_agent_pause_status; //!< agents paused
-    QHash<QString, QLabel *> m_agent_callstaken; //!< agents number of calls
-    QHash<QString, QLabel *> m_agent_lastcall; //!< agents last call
-    QHash<QString, QLabel *> m_agent_penalty; //!< agents penalty
+
+    public:
+        QueuedetailsPanel(QWidget *parent=0);
+
+    signals:
+        void changeWatchedAgent(const QString &, bool); //!< select an agent to watch
+
+    protected:
+        void timerEvent(QTimerEvent *);
+
+    public slots:
+        void newAgentList(const QStringList &);
+        void newQueueList(const QStringList &);
+        void monitorThisQueue(const QString &);
+
+    private slots:
+        void agentClicked();
+
+    private:
+        void clearPanel();
+        void updatePanel();
+        void update();
+        void setAgentLookProps(const QString &);
+        void setAgentQueueProps(const QString &, const QVariant &);
+        void setAgentProps(const QString &, const AgentInfo *);
+        void setAgentQueueSignals(const QString &);
+        void fillAgent(int, const QString &);
+        
+        double m_timesrv;
+        QDateTime m_timeclt;
+        
+        const UserInfo * m_ui;    //!< user info
+        QGridLayout * m_gridlayout; //!< Layout
+        
+        QString m_monitored_queueid;  //!< queue id
+        QString m_monitored_astid;    //!< asterisk id
+        QString m_monitored_context;  //!< context
+        QString m_monitored_queuename;  //!< queue name
+        QLabel *m_queuelegend_agentid; //!< "Agent" label
+        QLabel *m_queuelegend_status;  //!< "Status" label
+        QLabel *m_queuelegend_paused;  //!< "Paused" label
+        QLabel *m_queuelegend_callstaken;  //!< "Call Taken" label
+        QLabel *m_queuelegend_lastcall;  //!< "Call Taken" label
+        QLabel *m_queuelegend_penalty;  //!< "Call Taken" label
+        QLabel *m_queuedescription;       //!< queue name label
+        
+        QHash<QString, QLabel *> m_agent_labels; //!< agents name
+        QHash<QString, QPushButton *> m_agent_more;  //!< "+" buttons
+        QHash<QString, QLabel *> m_agent_join_status; //!< agents status
+        QHash<QString, QLabel *> m_agent_pause_status; //!< agents paused
+        QHash<QString, QLabel *> m_agent_callstaken; //!< agents number of calls
+        QHash<QString, QLabel *> m_agent_lastcall; //!< agents last call
+        QHash<QString, QLabel *> m_agent_penalty; //!< agents penalty
 };
 
 #endif /* __QUEUEDETAILSPANEL_H__ */

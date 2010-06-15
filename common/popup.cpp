@@ -68,12 +68,9 @@ QStringList g_formbuttonnames = (QStringList()
  * to slots.
  * \param parent                parent widget
  */
-Popup::Popup(const bool & urlautoallow,
-             BaseEngine * engine,
-             QWidget * parent)
+Popup::Popup(const bool urlautoallow, QWidget *parent)
     : QWidget(parent),
       m_xmlInputSource(0),
-      m_engine(engine),
       m_handler(0),
       m_sheetpopup(false),
       m_systraypopup(true),
@@ -712,8 +709,8 @@ void Popup::addRemark(const QVariantMap & entry)
         QDateTime datetime;
         datetime.setTime_t( entry["time"].toUInt() );
         QString user = entry["user"].toString();
-        if(m_engine) {
-            UserInfo * ui = m_engine->users()[user];
+        if(b_engine) {
+            UserInfo * ui = b_engine->users()[user];
             if(ui)
                 user = ui->fullname();
         }

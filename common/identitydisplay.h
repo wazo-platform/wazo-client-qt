@@ -60,7 +60,7 @@ class IdentityDisplay : public XLet
     Q_OBJECT
 
     public:
-        IdentityDisplay(BaseEngine *, QWidget *parent=0);
+        IdentityDisplay(QWidget *parent=0);
         void doGUIConnects(QWidget *);
 
     public slots:

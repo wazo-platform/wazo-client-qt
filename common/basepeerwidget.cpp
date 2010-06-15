@@ -49,7 +49,7 @@
  * initialize members.
  */
 BasePeerWidget::BasePeerWidget(BaseEngine *engine, UserInfo *ui)
-    : m_engine(engine), m_ui(ui), m_editable(false)
+    : m_ui(ui), m_editable(false)
 {
     if(m_ui){
         setProperty("userid", m_ui->userid());

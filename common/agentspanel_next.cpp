@@ -58,9 +58,8 @@
 
 /*! \brief Constructor
  */
-AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
-                                 QWidget * parent)
-    : XLet(engine, parent)
+AgentsPanelNext::AgentsPanelNext(QWidget *parent)
+    : XLet(parent)
 {
     setTitle( tr("Agents' List (queue groups)") );
     m_glayout = new QGridLayout(this);
@@ -69,30 +68,25 @@ AgentsPanelNext::AgentsPanelNext(BaseEngine * engine,
     // m_gridlayout->setVerticalSpacing(0);
     m_blinktime = 300;
     
-    setGuiOptions(m_engine->getGuiOptions("merged_gui"));
+    setGuiOptions(b_engine->getGuiOptions("merged_gui"));
     startTimer(1000);
     
     // connect signal/slots with engine
-    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
-             this, SLOT(newAgentList(const QStringList &)) );
-    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
-             this, SLOT(newQueueList(const QStringList &)) );
-                
-    connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
-             m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
-    connect( this, SIGNAL(saveQueueGroups(const QVariant &)),
-             m_engine, SLOT(saveQueueGroups(const QVariant &)) );
-    connect( this, SIGNAL(loadQueueGroups()),
-             m_engine, SLOT(loadQueueGroups()) );
-    connect( m_engine, SIGNAL(setQueueGroups(const QVariant &)),
-             this, SLOT(setQueueGroups(const QVariant &)) );
-    connect( m_engine, SIGNAL(setQueueOrder(const QVariant &)),
-             this, SLOT(setQueueOrder(const QVariant &)) );
-}
-
-AgentsPanelNext::~AgentsPanelNext()
-{
-    // qDebug() << "AgentsPanelNext::~AgentsPanelNext()";
+    connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
+            this, SLOT(newAgentList(const QStringList &)));
+    connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
+            this, SLOT(newQueueList(const QStringList &)));
+               
+    connect(this, SIGNAL(changeWatchedAgent(const QString &, bool)),
+            b_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)));
+    connect(this, SIGNAL(saveQueueGroups(const QVariant &)),
+            b_engine, SLOT(saveQueueGroups(const QVariant &)));
+    connect(this, SIGNAL(loadQueueGroups()),
+            b_engine, SLOT(loadQueueGroups()));
+    connect(b_engine, SIGNAL(setQueueGroups(const QVariant &)),
+            this, SLOT(setQueueGroups(const QVariant &)));
+    connect(b_engine, SIGNAL(setQueueOrder(const QVariant &)),
+            this, SLOT(setQueueOrder(const QVariant &)));
 }
 
 void AgentsPanelNext::setGuiOptions(const QVariantMap & optionsMap)
@@ -282,7 +276,7 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
 {
     QString agentid = m_agent_labels[idx]->property("agentid").toString();
     QString groupid = m_agent_labels[idx]->property("groupid").toString();
-    AgentInfo * ainfo = m_engine->agents()[agentid];
+    AgentInfo * ainfo = b_engine->agents()[agentid];
     
     QVariantMap properties = ainfo->properties();
     QString agstatus = properties["agentstats"].toMap()["status"].toString();
@@ -349,8 +343,8 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
         
         if(doshowtime) {
             QDateTime now = QDateTime::currentDateTime();
-            int d1 = m_engine->timeClient().secsTo(now);
-            double d2 = m_engine->timeServer() - statetime;
+            int d1 = b_engine->timeClient().secsTo(now);
+            double d2 = b_engine->timeServer() - statetime;
             dsec = d1 + d2;
             // if(dsec) dsec = 0;
         }
@@ -368,8 +362,8 @@ void AgentsPanelNext::setAgentProps(const QString & idx)
                 colorqss = "#ff8080";
                 
                 QDateTime now = QDateTime::currentDateTime();
-                int d1 = m_engine->timeClient().secsTo(now);
-                double d2 = m_engine->timeServer() - qvm[qname_group].toMap()["Xivo-QueueMember-StateTime"].toDouble();
+                int d1 = b_engine->timeClient().secsTo(now);
+                double d2 = b_engine->timeServer() - qvm[qname_group].toMap()["Xivo-QueueMember-StateTime"].toDouble();
                 doshowtime = true;
                 dsec = d1 + d2;
                 
@@ -503,7 +497,7 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
     if(event->button() == Qt::LeftButton) {
         QString agentid = sender()->property("agentid").toString();
         QString groupid = sender()->property("groupid").toString();
-        AgentInfo * ainfo = m_engine->agents()[agentid];
+        AgentInfo * ainfo = b_engine->agents()[agentid];
         QPoint where = event->globalPos();
         
         QString astid = ainfo->astid();
@@ -525,8 +519,8 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
         
         QPushButton * q_pause;
         bool isinpause = false;
-        foreach (QString queueid, m_engine->queues().keys()) {
-            QueueInfo * qinfo = m_engine->queues()[queueid];
+        foreach (QString queueid, b_engine->queues().keys()) {
+            QueueInfo * qinfo = b_engine->queues()[queueid];
             QString queuename = qinfo->queuename();
             if(m_title[groupid]->property("queues").toStringList().contains(queuename)) {
                 QVariantMap qvm = ainfo->properties()["queues_by_agent"].toMap()[queuename].toMap();
@@ -613,9 +607,9 @@ void AgentsPanelNext::actionclicked()
     QString agentid = sender()->property("agentid").toString();
     QString groupid = sender()->property("groupid").toString();
     
-    if(! m_engine->agents().keys().contains(agentid))
+    if(! b_engine->agents().keys().contains(agentid))
         return;
-    AgentInfo * ainfo = m_engine->agents()[agentid];
+    AgentInfo * ainfo = b_engine->agents()[agentid];
     QString astid = ainfo->astid();
     QString agentnumber = ainfo->agentNumber();
     QVariantMap ipbxcommand;
@@ -647,7 +641,7 @@ void AgentsPanelNext::refreshContents()
         m_agent_labels.remove(idx);
     }
     
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
+    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
     while( iter.hasNext() ) {
         iter.next();
         QString agentid = iter.key();
@@ -724,7 +718,7 @@ void AgentsPanelNext::newAgentList(const QStringList &)
 {
     //qDebug() << "AgentsPanelNext::newAgentList" << list;
 #if 0
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
+    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
     while( iter.hasNext() ) {
         iter.next();
         AgentInfo * ainfo = iter.value();
@@ -741,7 +735,7 @@ void AgentsPanelNext::newAgentList(const QStringList &)
 void AgentsPanelNext::newQueueList(const QStringList &)
 {
     //qDebug() << "AgentsPanelNext::newQueueList" << list;
-    QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_engine->queues());
+    QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(b_engine->queues());
     while( iter.hasNext() ) {
         iter.next();
         QString queueid = iter.key();
@@ -756,7 +750,7 @@ void AgentsPanelNext::newQueue(const QString & /*astid*/, const QString & queuen
 {
     QString queuecontext = queueprops.toMap()["context"].toString();
     // qDebug() << "AgentsPanelNext::newQueue()" << astid << queuename << queuecontext;
-    UserInfo * userinfo = m_engine->getXivoClientUser();
+    UserInfo * userinfo = b_engine->getXivoClientUser();
     
     if(userinfo == NULL)
         return;

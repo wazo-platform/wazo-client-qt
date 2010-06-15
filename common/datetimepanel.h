@@ -35,14 +35,12 @@
 #define __DATETIMEPANEL_H__
 
 #include <QObject>
+#include <QDateTime>
+#include <QDebug>
+#include <QGridLayout>
+#include <QLabel>
+#include <QTimerEvent>
 #include "xlet.h"
-
-class QGridLayout;
-class QLabel;
-class QProgressBar;
-class QTimerEvent;
-
-class UserInfo;
 
 /*! \brief Panel displaying the date and time
  */
@@ -51,12 +49,14 @@ class DatetimePanel : public XLet
     Q_OBJECT
 
     public:
-        DatetimePanel(BaseEngine *engine, QWidget *parent=0);
+        DatetimePanel(QWidget *parent=0);
+
     protected:
         void timerEvent(QTimerEvent *);  //!< receive timer events
+
     private:
-        QGridLayout * m_gridlayout;
-        QLabel * m_datetime;
+        QGridLayout *m_gridlayout;
+        QLabel *m_datetime;
 };
 
 #endif /* __DATETIMEPANEL_H__ */

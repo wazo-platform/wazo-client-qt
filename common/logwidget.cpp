@@ -31,28 +31,13 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QLayoutItem>
-#include <QGroupBox>
-#include <QRadioButton>
-#include <QScrollArea>
-#include <QTabWidget>
-#include <QVBoxLayout>
-#include <QApplication>
-#include <QMouseEvent>
-#include <QCursor>
-#include <QMenu>
-#include <QCursor>
+#include <baseengine.h>
+#include <logwidget.h>
 
-#include "baseengine.h"
-#include "logwidget.h"
-
-LogWidgetModel::LogWidgetModel(BaseEngine *b, int initialMode)
-    : QAbstractTableModel(NULL), engine(b)
+LogWidgetModel::LogWidgetModel(int initialMode)
+    : QAbstractTableModel(NULL)
 {
-    b->registerClassEvent("history", LogWidgetModel::updateHistory_t, this);
+    b_engine->registerClassEvent("history", LogWidgetModel::updateHistory_t, this);
     mode = initialMode;
     history << QVariant() << QVariant() << QVariant();
 }
@@ -159,12 +144,12 @@ void LogWidgetModel::requestHistory(const QString &peer, int mode, const QDateTi
         command["class"] = "history";
         command["direction"] = "xivoserver";
         command["peer"] = peer;
-        command["size"] = QString::number(engine->historySize());
+        command["size"] = QString::number(b_engine->historySize());
         command["mode"] = QString::number(mode);
         if(moreRecent.isValid()) {
             command["morerecentthan"] = moreRecent.toString(Qt::ISODate);
         }
-        engine->sendJsonCommand(command);
+        b_engine->sendJsonCommand(command);
     }
 }
 
@@ -172,7 +157,7 @@ void LogWidgetModel::changeMode(bool active)
 {
     if (active) {
         mode = qobject_cast<QRadioButton *>(sender())->property("mode").toInt();
-        requestHistory(engine->getFullId(), mode);
+        requestHistory(b_engine->getFullId(), mode);
         emit headerDataChanged(Qt::Horizontal, 0, 3);
         reset();
     }
@@ -223,8 +208,8 @@ static inline void layoutMarginSpacingTo0(QBoxLayout *l)
 }
 
 
-LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent)
+LogWidget::LogWidget(QWidget *parent)
+    : XLet(parent)
 {
     setTitle(tr("History"));
 
@@ -237,9 +222,9 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
     layoutMarginSpacingTo0(layout);
     layoutMarginSpacingTo0(hBox);
 
-    LogWidgetModel *viewmodel = new LogWidgetModel(engine, 0);
+    LogWidgetModel *viewmodel = new LogWidgetModel(0);
 
-    m_view = new LogTableView(this, viewmodel, m_engine);
+    m_view = new LogTableView(this, viewmodel);
     m_view->installEventFilter(this);
 
     
@@ -259,8 +244,8 @@ LogWidget::LogWidget(BaseEngine * engine, QWidget * parent)
 
 }
 
-LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model, BaseEngine* engine)
-    : QTableView(parent), m_engine(engine)
+LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)
+    : QTableView(parent)
 {
     setSortingEnabled(true);
     setModel(model);
@@ -289,7 +274,7 @@ void LogTableView::callOnClick(bool)
 {
     QAction *calling_action = qobject_cast<QAction *>(sender());
     QString num_to_call = calling_action->property("num_to_call").toString();
-    m_engine->actionCall("originate", "user:special:me", "ext:" + num_to_call);
+    b_engine->actionCall("originate", "user:special:me", "ext:" + num_to_call);
 }
 
 void LogTableView::onViewClick(const QModelIndex &model)
@@ -304,7 +289,7 @@ void LogTableView::onViewClick(const QModelIndex &model)
 
     if (caller != "") {
         if (lastPressed&Qt::LeftButton) {
-            m_engine->pasteToDial(caller);
+            b_engine->pasteToDial(caller);
         } else {
             QMenu *menu = new QMenu(this);
 

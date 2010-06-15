@@ -47,9 +47,8 @@
 
 /*! \brief Constructor
  */
-QueuedetailsPanel::QueuedetailsPanel(BaseEngine * engine,
-                                     QWidget * parent)
-    : XLet(engine, parent)
+QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
+    : XLet(parent)
 {
     setTitle( tr("Agents of a Queue") );
     m_gridlayout = new QGridLayout(this);
@@ -77,24 +76,17 @@ QueuedetailsPanel::QueuedetailsPanel(BaseEngine * engine,
     m_queuelegend_callstaken->hide();
     m_queuelegend_lastcall->hide();
     m_queuelegend_penalty->hide();
-    // startTimer(1000);
-    // connect signals/slots to engine
-    connect( m_engine, SIGNAL(newAgentList(const QStringList &)),
-             this, SLOT(newAgentList(const QStringList &)) );
-    connect( m_engine, SIGNAL(newQueueList(const QStringList &)),
-             this, SLOT(newQueueList(const QStringList &)) );
-    
-    connect( m_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
-             this, SLOT(monitorThisQueue(const QString &)) );
-    connect( this, SIGNAL(changeWatchedAgent(const QString &, bool)),
-             m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
-}
 
-/*! \brief destructor
- */
-QueuedetailsPanel::~QueuedetailsPanel()
-{
-    // qDebug() << "QueuedetailsPanel::~QueuedetailsPanel()";
+    // connect signals/slots to engine
+    connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
+            this, SLOT(newAgentList(const QStringList &)) );
+    connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
+            this, SLOT(newQueueList(const QStringList &)) );
+    
+    connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
+            this, SLOT(monitorThisQueue(const QString &)) );
+    connect(this, SIGNAL(changeWatchedAgent(const QString &, bool)),
+            b_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)) );
 }
 
 /*! \brief 
@@ -102,7 +94,7 @@ QueuedetailsPanel::~QueuedetailsPanel()
 void QueuedetailsPanel::newQueueList(const QStringList & qsl)
 {
     // qDebug() << "QueuedetailsPanel::newQueueList()" << qsl;
-    if(qsl.contains(m_monitored_queueid) && m_engine->queues().contains(m_monitored_queueid))
+    if(qsl.contains(m_monitored_queueid) && b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
@@ -111,7 +103,7 @@ void QueuedetailsPanel::newQueueList(const QStringList & qsl)
 void QueuedetailsPanel::newAgentList(const QStringList &)
 {
     // qDebug() << "QueuedetailsPanel::newAgentList()" << qsl;
-    if(m_engine->queues().contains(m_monitored_queueid))
+    if(b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
@@ -120,11 +112,11 @@ void QueuedetailsPanel::newAgentList(const QStringList &)
 void QueuedetailsPanel::monitorThisQueue(const QString & queueid)
 {
     // qDebug() << "QueuedetailsPanel::monitorThisQueue" << queueid;
-    if(m_engine->queues().contains(queueid)) {
+    if(b_engine->queues().contains(queueid)) {
         m_monitored_queueid = queueid;
-        m_monitored_astid = m_engine->queues()[queueid]->astid();
-        m_monitored_context = m_engine->queues()[queueid]->context();
-        m_monitored_queuename = m_engine->queues()[queueid]->queuename();
+        m_monitored_astid = b_engine->queues()[queueid]->astid();
+        m_monitored_context = b_engine->queues()[queueid]->context();
+        m_monitored_queuename = b_engine->queues()[queueid]->queuename();
         clearPanel();
         updatePanel();
     }
@@ -163,7 +155,7 @@ void QueuedetailsPanel::clearPanel()
  */
 void QueuedetailsPanel::updatePanel()
 {
-    QueueInfo * qinfo = m_engine->queues()[m_monitored_queueid];
+    QueueInfo * qinfo = b_engine->queues()[m_monitored_queueid];
     m_queuedescription->setText(tr("<b>%1</b> on <b>%2</b> (%3)").arg(qinfo->queuename()).arg(qinfo->astid()).arg(qinfo->context()));
     QVariantMap properties = qinfo->properties();
     QVariant queuestats = properties["queuestats"];
@@ -177,7 +169,7 @@ void QueuedetailsPanel::updatePanel()
     m_queuelegend_penalty->show();
     
     int i = 0;
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
+    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
     while( iter.hasNext() )
         {
             iter.next();
@@ -316,7 +308,7 @@ void QueuedetailsPanel::fillAgent(int ii, const QString & agentid)
 void QueuedetailsPanel::update()
 {
     // qDebug() << "QueuedetailsPanel::update()";
-    // UserInfo * ui = m_engine->findUserFromPhone(m_monitored_astid, agent_channel);
+    // UserInfo * ui = b_engine->findUserFromPhone(m_monitored_astid, agent_channel);
 }
 
 /*! \brief emit changeWatchedAgent signal

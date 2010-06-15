@@ -37,16 +37,18 @@
 #include <QHash>
 #include <QObject>
 #include <QVariant>
-#include "xlet.h"
+#include <QDebug>
+#include <QFileDialog>
+#include <QGridLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QVBoxLayout>
 
-class QGridLayout;
-class QHBoxLayout;
-class QLabel;
-class QLineEdit;
-class QPushButton;
-class QVBoxLayout;
-
-class UserInfo;
+#include <xlet.h>
+#include <userinfo.h>
+#include <baseengine.h>
 
 /*! \brief CallCampaign Panel
  */
@@ -55,7 +57,7 @@ class CallCampaignPanel : public XLet
     Q_OBJECT
 
     public:
-        CallCampaignPanel(BaseEngine *engine, QWidget *parent=0);
+        CallCampaignPanel(QWidget *parent=0);
 
     signals:
         void requestFileList(const QString &);

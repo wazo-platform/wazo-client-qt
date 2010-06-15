@@ -34,19 +34,27 @@
 #ifndef __DIRECTORYPANEL_H__
 #define __DIRECTORYPANEL_H__
 
+#include <QContextMenuEvent>
+#include <QDebug>
+#include <QDesktopServices>
+#include <QDropEvent>
+#include <QFocusEvent>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QMenu>
+#include <QPushButton>
+#include <QUrl>
+#include <QVBoxLayout>
+
+#include "directorypanel.h"
+#include "baseengine.h"
+#include "extendedtablewidget.h"
+#include "extendedlineedit.h"
+#include "userinfo.h"
+#include "phoneinfo.h"
+#include "xivoconsts.h"
 #include "xlet.h"
 
-class QDropEvent;
-class QFocusEvent;
-class QPushButton;
-class QTableWidget;
-class QTableWidgetItem;
-
-class BaseEngine;
-class ExtendedLineEdit;
-class ExtendedTableWidget;
-class PeerChannel;
-class UserInfo;
 
 /*! \brief Directory allowing search
  */
@@ -55,7 +63,7 @@ class DirectoryPanel : public XLet
     Q_OBJECT
 
     public:
-        DirectoryPanel(BaseEngine * engine, QWidget *parent=0);
+        DirectoryPanel(QWidget *parent=0);
 
     protected:
         void dropEvent(QDropEvent *);

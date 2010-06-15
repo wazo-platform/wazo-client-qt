@@ -31,11 +31,6 @@
  * $Date$
  */
 
-#include <QDateTime>
-#include <QDebug>
-#include <QGridLayout>
-#include <QLabel>
-#include <QTimerEvent>
 
 #include "datetimepanel.h"
 
@@ -43,8 +38,8 @@
  *
  * Creates layout, subwidgets and starts the timer.
  */
-DatetimePanel::DatetimePanel(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent)
+DatetimePanel::DatetimePanel(QWidget *parent)
+    : XLet(parent)
 {
     setTitle(tr("Date and Time"));
     m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocaleDate));

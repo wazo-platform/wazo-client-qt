@@ -42,7 +42,7 @@ class QWidget;
 class BaseEngine;
 
 /*! xlet creator function prototype */
-typedef XLet* (*newXLetProto)(BaseEngine *, QWidget *);
+typedef XLet* (*newXLetProto)(QWidget *);
 
 /*! \brief XLet Factory
  *
@@ -52,11 +52,10 @@ typedef XLet* (*newXLetProto)(BaseEngine *, QWidget *);
 class XLetFactory : public QObject
 {
     public:
-        XLetFactory(BaseEngine *engine, QObject *parent);
+        XLetFactory(QObject *parent);
         XLet* newXLet(const QString &id, QWidget *topwindow) const;
 
     private:
-        BaseEngine * m_engine;  //!< BaseEngine reference
         QHash<QString, newXLetProto> m_xlets;  //!< built in XLets constuctors
         QDir m_pluginsDir;  //!< directory where to find plugins
         bool m_pluginsDirFound; //!< Is plugins directory found.

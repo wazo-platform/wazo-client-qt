@@ -31,23 +31,12 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QFileDialog>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QVBoxLayout>
-
 #include "callcampaignpanel.h"
-#include "userinfo.h"
-#include "baseengine.h"
 
 /*! \brief Constructor
  */
-CallCampaignPanel::CallCampaignPanel(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent)
+CallCampaignPanel::CallCampaignPanel(QWidget *parent)
+    : XLet(parent)
 {
     qDebug() << "CallCampaignPanel::CallCampaignPanel()";
     setTitle(tr("Call Campaign"));
@@ -61,18 +50,18 @@ CallCampaignPanel::CallCampaignPanel(BaseEngine * engine, QWidget * parent)
     m_openFileNameLabel = new QLineEdit("", this);
     //         connect(m_openFileNameLabel, SIGNAL(textChanged(const QString &)),
     //                 this, SLOT(fileNameChanged(const QString &)));
-    QPushButton * openFileNamesButton = new QPushButton( tr("Browse"), this);
+    QPushButton *openFileNamesButton = new QPushButton(tr("Browse"), this);
     connect(openFileNamesButton, SIGNAL(clicked()),
             this, SLOT(setOpenFileName()));
-    QPushButton * loadFile = new QPushButton( tr("Load"), this);
+    QPushButton *loadFile = new QPushButton(tr("Load"), this);
     connect(loadFile, SIGNAL(clicked()),
             this, SLOT(loadFileClicked()));
 
-    QLabel * label2 = new QLabel(tr("Server"), this);
-    QPushButton * getCallsButton = new QPushButton( tr("Get"), this);
-    QPushButton * startCallsButton = new QPushButton( tr("Start"), this);
-    QPushButton * stopCallsButton = new QPushButton( tr("Stop"), this);
-    QPushButton * clearCallsButton = new QPushButton( tr("Clear"), this);
+    QLabel *label2 = new QLabel(tr("Server"), this);
+    QPushButton *getCallsButton = new QPushButton(tr("Get"), this);
+    QPushButton *startCallsButton = new QPushButton(tr("Start"), this);
+    QPushButton *stopCallsButton = new QPushButton(tr("Stop"), this);
+    QPushButton *clearCallsButton = new QPushButton(tr("Clear"), this);
     connect(getCallsButton, SIGNAL(clicked()),
             this, SLOT(getCalls()));
     connect(startCallsButton, SIGNAL(clicked()),
@@ -101,10 +90,10 @@ CallCampaignPanel::CallCampaignPanel(BaseEngine * engine, QWidget * parent)
     m_glayout->setColumnStretch(2, 1);
 
     // connects signals/slots with engine
-    connect( this, SIGNAL(requestFileList(const QString &)),
-             m_engine, SLOT(requestFileList(const QString &)) );
-    connect( m_engine, SIGNAL(requestFileListResult(const QVariant &)),
-             this, SLOT(requestFileListResult(const QVariant &)) );
+    connect(this, SIGNAL(requestFileList(const QString &)),
+            b_engine, SLOT(requestFileList(const QString &)));
+    connect(b_engine, SIGNAL(requestFileListResult(const QVariant &)),
+            this, SLOT(requestFileListResult(const QVariant &)));
 }
 
 void CallCampaignPanel::setOpenFileName()

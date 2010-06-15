@@ -37,9 +37,9 @@
 #include <QWidget>
 #include <QMouseEvent>
 #include "chitchat.h"
+#include "baseengine.h"
 
 class UserInfo;
-class BaseEngine;
 
 /*! \brief Abstract class for "Peer" Widgets
  *
@@ -89,7 +89,6 @@ class BasePeerWidget : public QWidget
         void rename();
 
     protected:
-        BaseEngine *m_engine;      //!< Xivo CTI Client Engine
         UserInfo *m_ui;            //!< user infos
         QPoint m_dragstartpos;            //!< drag start position
         QAction *m_dialAction;     //!< action to dial this number

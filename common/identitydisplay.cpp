@@ -53,9 +53,8 @@
 
 /*! \brief Constructor
  */
-IdentityDisplay::IdentityDisplay(BaseEngine * engine,
-                                 QWidget * parent)
-    : XLet(engine, parent),
+IdentityDisplay::IdentityDisplay(QWidget * parent)
+    : XLet(parent),
       m_ui(NULL)
 {
     setTitle( tr("Identity") );
@@ -113,37 +112,37 @@ IdentityDisplay::IdentityDisplay(BaseEngine * engine,
     
     m_agent->hide();
     
-    m_functions = m_engine->getGuiOptions("server_funcs").value("functions").toStringList();
-    setGuiOptions(m_engine->getGuiOptions("merged_gui"));
+    m_functions = b_engine->getGuiOptions("server_funcs").value("functions").toStringList();
+    setGuiOptions(b_engine->getGuiOptions("merged_gui"));
 
     // connect signals/slots
     connectDials();
-    connect(m_engine, SIGNAL(newAgentList(const QStringList &)),
+    connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
             this, SLOT(newAgentList(const QStringList &)));
     
-    connect(m_engine, SIGNAL(updatePresence(const QVariant &)),
+    connect(b_engine, SIGNAL(updatePresence(const QVariant &)),
             this, SLOT(updatePresence(const QVariant &)));
     connect(this, SIGNAL(setAvailState(const QString &, bool)),
-            m_engine, SLOT(setAvailState(const QString &, bool)));
+            b_engine, SLOT(setAvailState(const QString &, bool)));
     connect(this, SIGNAL(changeWatchedAgent(const QString &, bool)),
-            m_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)));
+            b_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)));
     
-    connect(m_engine, SIGNAL(optChanged(const QString &, bool)),
+    connect(b_engine, SIGNAL(optChanged(const QString &, bool)),
             this, SLOT(setOpt(const QString &, bool)));
-    connect(m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
+    connect(b_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
             this, SLOT(setForward(const QString &, const QVariant &)));
-    connect(m_engine, SIGNAL(userUpdated(UserInfo *)),
+    connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
             this, SLOT(updateUser(UserInfo *)));
-    connect(m_engine, SIGNAL(userUpdated(UserInfo *)),
+    connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
             m_phone, SLOT(updateUser(UserInfo *)));
 
-    connect(m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+    connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
             this, SLOT(setUserInfo(const UserInfo *)));
-    connect(m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+    connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
             m_phone, SLOT(setUserInfo(const UserInfo *)));
 
     connect(m_phone, SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-            m_engine, SLOT(actionCall(const QString &, const QString &, const QString &)));
+            b_engine, SLOT(actionCall(const QString &, const QString &, const QString &)));
 }
 
 void IdentityDisplay::setupIcons()
@@ -246,10 +245,10 @@ void IdentityDisplay::setUserInfo(const UserInfo * ui)
  */
 void IdentityDisplay::newAgentList(const QStringList &)
 {
-    // qDebug() << "IdentityDisplay::newAgentList()" << m_loginkind << list << m_engine->agents();
+    // qDebug() << "IdentityDisplay::newAgentList()" << m_loginkind << list << b_engine->agents();
     if (m_loginkind == 0 || ! m_ui)
         return;
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_engine->agents());
+    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
     while( iter.hasNext() )
     {
         iter.next();

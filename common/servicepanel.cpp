@@ -47,9 +47,8 @@
 const QStringList fwdcapas = (QStringList() << "fwdrna" << "fwdbusy" << "fwdunc");
 const QStringList chkcapas = (QStringList() << "enablevm" << "callrecord" << "incallfilter" << "enablednd");
 
-ServicePanel::ServicePanel(BaseEngine * engine,
-                           QWidget * parent)
-    : XLet(engine, parent)
+ServicePanel::ServicePanel(QWidget * parent)
+    : XLet(parent)
 {
     setTitle( tr("Services") );
     m_capalegend["enablevm"]     = tr("Voice &Mail");
@@ -60,7 +59,7 @@ ServicePanel::ServicePanel(BaseEngine * engine,
     m_capalegend["fwdbusy"] = tr("Forward on &Busy");
     m_capalegend["fwdunc"]  = tr("&Unconditional Forward");
     
-    m_capas = m_engine->getGuiOptions("merged_gui").value("services").toStringList();
+    m_capas = b_engine->getGuiOptions("merged_gui").value("services").toStringList();
     
     int line = 0;
     m_status = new ServiceStatus();
@@ -121,31 +120,31 @@ ServicePanel::ServicePanel(BaseEngine * engine,
     
     // connect signals/slots
     connect( this, SIGNAL(askFeatures()),
-             m_engine, SLOT(askFeatures()) );
-    connect( m_engine, SIGNAL(monitorPeer(UserInfo *)),
+             b_engine, SLOT(askFeatures()) );
+    connect( b_engine, SIGNAL(monitorPeer(UserInfo *)),
              this, SLOT(monitorPeer(UserInfo *)) );
     
-    connect( m_engine, SIGNAL(disconnectFeatures()),
+    connect( b_engine, SIGNAL(disconnectFeatures()),
              this, SLOT(DisConnect()) );
-    connect( m_engine, SIGNAL(connectFeatures()),
+    connect( b_engine, SIGNAL(connectFeatures()),
              this, SLOT(Connect()) );
-    connect( m_engine, SIGNAL(resetFeatures()),
+    connect( b_engine, SIGNAL(resetFeatures()),
              this, SLOT(Reset()) );
-    connect( m_engine, SIGNAL(featurePutIsKO()),
+    connect( b_engine, SIGNAL(featurePutIsKO()),
              this, SLOT(getRecordedStatus()) );
-    connect( m_engine, SIGNAL(featurePutIsOK()),
+    connect( b_engine, SIGNAL(featurePutIsOK()),
              this, SLOT(setRecordedStatus()) );
     
     connect( this, SIGNAL(chkoptChanged(const QString &, bool)),
-             m_engine, SLOT(featurePutOpt(const QString &, bool)) );
+             b_engine, SLOT(featurePutOpt(const QString &, bool)) );
     
-    connect( m_engine, SIGNAL(optChanged(const QString &, bool)),
+    connect( b_engine, SIGNAL(optChanged(const QString &, bool)),
              this, SLOT(setOpt(const QString &, bool)) );
     connect( this, SIGNAL(forwardChanged(const QString &, bool, const QString &)),
-             m_engine, SLOT(featurePutForward(const QString &, bool, const QString &)) );
-    connect( m_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
+             b_engine, SLOT(featurePutForward(const QString &, bool, const QString &)) );
+    connect( b_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
              this, SLOT(setForward(const QString &, const QVariant &)) );
-    connect( m_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+    connect( b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
              this, SLOT(setUserInfo(const UserInfo *)) );
 }
 

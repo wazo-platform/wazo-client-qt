@@ -57,8 +57,7 @@ class AgentsPanelNext : public XLet
     Q_OBJECT
 
     public:
-        AgentsPanelNext(BaseEngine *, QWidget *parent=0);
-        ~AgentsPanelNext();
+        AgentsPanelNext(QWidget *parent=0);
 
     signals:
         void changeWatchedAgent(const QString &, bool);

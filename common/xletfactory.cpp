@@ -64,9 +64,9 @@
 
 /*! \brief templates for returning a new XLet */
 template <class T>
-XLet * newXLet(BaseEngine * engine, QWidget * parent)
+XLet* newXLet(QWidget *parent)
 {
-    return new T(engine, parent);
+    return new T(parent);
 }
 
 /*! \brief list of XLets */
@@ -103,8 +103,8 @@ static const struct {
  * Find and initialize plugins directory,
  * populate the m_xlets hash table.
  */
-XLetFactory::XLetFactory(BaseEngine * engine, QObject * parent)
-    : QObject(parent), m_engine(engine),
+XLetFactory::XLetFactory(QObject * parent)
+    : QObject(parent),
       m_pluginsDir(qApp->applicationDirPath()),
       m_pluginsDirFound(false)
 {
@@ -145,12 +145,12 @@ XLetFactory::XLetFactory(BaseEngine * engine, QObject * parent)
  *
  *  \return a pointer to the XLet or NULL if it was not found
  */
-XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
+XLet* XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
 {
-    XLet * xlet = 0;
+    XLet *xlet = 0;
     newXLetProto construct = m_xlets.value(id);
     if(construct) {
-        xlet = construct(m_engine, topwindow);
+        xlet = construct(topwindow);
     } else if(m_pluginsDirFound) {
 #ifdef Q_WS_WIN
         QString fileName = id + "plugin.dll";
@@ -163,12 +163,12 @@ XLet * XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
 #endif
         qDebug() << "Trying to load plugin" << fileName << m_pluginsDir.absoluteFilePath(fileName);
         QPluginLoader pluginLoader(m_pluginsDir.absoluteFilePath(fileName));
-        QObject * plugin = pluginLoader.instance();
+        QObject *plugin = pluginLoader.instance();
 
         if (plugin) {
             XLetInterface *xleti = qobject_cast<XLetInterface *>(plugin);
             if(xleti) {
-                xlet = xleti->newXLetInstance(m_engine, topwindow);
+                xlet = xleti->newXLetInstance(topwindow);
             } else {
                 qDebug() << "failed to cast plugin loaded to XLetInterface";
             }
