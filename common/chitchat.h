@@ -35,7 +35,6 @@
 #define __CHITCHAT_H__
 
 #include <QWidget>
-#include <QDebug>
 #include <QVariant>
 #include <QVBoxLayout>
 #include <QHBoxLayout>

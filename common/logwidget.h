@@ -51,8 +51,6 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QApplication>
-#include <QMouseEvent>
-#include <QCursor>
 #include <QMenu>
 #include <QCursor>
 

@@ -40,7 +40,6 @@
 #include <QCheckBox>
 #include <QFileDialog>
 #include <QLabel>
-#include <QLineEdit>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSettings>

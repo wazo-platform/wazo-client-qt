@@ -2,7 +2,6 @@
 # $Date$
 
 QMAKE?=qmake
-LRELEASE?=lrelease
 UPXRUN?=upx
 ECHO?=/bin/echo
 JOPT?=-j1
@@ -57,12 +56,13 @@ all-linux:
 
 distclean:
 	@make clean-xivoclient
+	@make clean-baselib
 
 clean-%:
 	@make -C $* distclean || true
 
 linux-%:
-	@cd $* && ${QMAKE} && ${LRELEASE} *.pro && make ${JOPT}
+	@cd $* && ${QMAKE} && make ${JOPT}
 
 stripandpack-%:
 	@strip bin/$* || true
@@ -102,7 +102,7 @@ forceversions-%:
 
 # to be executed under a mingw/dos-like terminal
 win32-%:
-	@cd $* && ${QMAKE} && ${LRELEASE} $*.pro && make release
+	@cd $* && ${QMAKE} && make release
 
 # to be executed under a bash/cygwin-like terminal
 win32pack-%:
@@ -131,7 +131,7 @@ all-macos:
 	@make macos-xivoclient
 
 macos-%:
-	@cd $* && ${QMAKE} -spec macx-g++ $*.pro -o Makefile && ${LRELEASE} $*.pro && make ${JOPT}
+	@cd $* && ${QMAKE} -spec macx-g++ $*.pro -o Makefile && make ${JOPT}
 	@strip $*/$*.app/Contents/MacOS/$*
 	@${UPXRUN} $*/$*.app/Contents/MacOS/$*
 	@mkdir -p $*/$*.app/Contents/Resources/French.lproj

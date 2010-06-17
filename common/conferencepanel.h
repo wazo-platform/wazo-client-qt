@@ -35,7 +35,6 @@
 #define __CONFERENCEPANEL_H__
 
 #include <QHash>
-#include <QLabel>
 #include <QList>
 #include <QTreeWidget>
 #include <QHeaderView>

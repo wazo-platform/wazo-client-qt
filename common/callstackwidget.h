@@ -46,7 +46,6 @@
 #include <QScrollArea>
 
 #include "xlet.h"
-#include "callwidget.h"
 #include "baseengine.h"
 #include "callwidget.h"
 #include "userinfo.h"

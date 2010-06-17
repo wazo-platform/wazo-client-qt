@@ -34,7 +34,6 @@
 #ifndef __EXTENDEDLINEEDIT_H__
 #define __EXTENDEDLINEEDIT_H__
 
-#include <QLineEdit>
 #include <QDropEvent>
 #include <QLineEdit>
 

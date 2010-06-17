@@ -90,7 +90,7 @@ class QueueRow : public QWidget {
         void updateBusyWidget();
         void updateName();
 
-        static QWidget* makeTitleRow(QWidget *parent);
+        static QWidget* makeTitleRow(QueuesPanel *parent);
         static void setLayoutColumnWidth(QGridLayout *layout, int nbStat);
 
     private:

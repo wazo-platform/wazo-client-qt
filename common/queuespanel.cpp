@@ -155,6 +155,7 @@ QueuesPanel::QueuesPanel(QWidget *parent)
             b_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 
     b_engine->registerClassEvent("queuestats", QueuesPanel::eatQueuesStats_t, this);
+    updateLongestWaitWidgets();
 }
 
 void QueuesPanel::eatQueuesStats(const QVariantMap &p)
@@ -211,8 +212,9 @@ void QueuesPanel::removeQueues(const QString &, const QStringList &queues)
 
 /*! \brief update display once the queues have been received
  */
-void QueuesPanel::newQueueList(const QStringList & qsl)
+void QueuesPanel::newQueueList(const QStringList &qsl)
 {
+    qDebug() << "newQueueList" << qsl ;
     QHashIterator<QString, QueueInfo *> iter = \
         QHashIterator<QString, QueueInfo *>(b_engine->queues());
 
@@ -222,9 +224,11 @@ void QueuesPanel::newQueueList(const QStringList & qsl)
             QueueInfo *qinfo = iter.value();
             QString queueId = qinfo->id();
 
+            qDebug() << "newQueueList hay" <<this->parentWidget()<<m_queueList.size()<< queueId ;
             if (!m_queueList.contains(queueId)) {
                 m_queueList[queueId] = new QueueRow(qinfo, this);
                 m_layout->addWidget(m_queueList[queueId]);
+                updateLongestWaitWidgets();
             } else {
                 m_queueList.value(queueId)->update();
             }
@@ -533,7 +537,6 @@ QueueRow::QueueRow(const QueueInfo *qInfo, QueuesPanel *parent)
     m_longestWait->setFixedSize(100, 20);
     m_layout->addWidget(m_longestWait, 0, col++);
 
-
     foreach (QString stat, statItems) {
         m_infoList[stat] = new QLabel(tr("na"), this);
         m_infoList[stat]->setAlignment(Qt::AlignCenter);
@@ -756,7 +759,7 @@ void QueueRow::updateName()
     m_name->setText(queueName);
 }
 
-QWidget* QueueRow::makeTitleRow(QWidget *parent)
+QWidget* QueueRow::makeTitleRow(QueuesPanel *parent)
 {
     QWidget *row = new QWidget(parent);
     QGridLayout *layout = new QGridLayout(row);
@@ -832,16 +835,18 @@ QWidget* QueueRow::makeTitleRow(QWidget *parent)
 #undef nelem
 #define nelem(x)    (sizeof (x)/sizeof (x)[0])
     int i;
-    for (i=0;(uint)i<nelem(stats_detail);i++) {
-        statItems << stats_detail[i].hashname;
+    if (statItems.empty()) {
+        for (i=0;(uint)i<nelem(stats_detail);i++) {
+            statItems << stats_detail[i].hashname;
+        }
+
+        statsOfDurationType << "Xivo-TalkingTime" << "Xivo-Holdtime-max"
+                            << "Xivo-Holdtime-avg";
+
+        statsToRequest << "Xivo-Holdtime-max" << "Xivo-Holdtime-avg" << "Xivo-QoS"
+                       << "Xivo-Join" << "Xivo-Lost" << "Xivo-TalkingTime" 
+                       << "Xivo-Rate" << "Xivo-Link";
     }
-
-    statsOfDurationType << "Xivo-TalkingTime" << "Xivo-Holdtime-max"
-                        << "Xivo-Holdtime-avg";
-
-    statsToRequest << "Xivo-Holdtime-max" << "Xivo-Holdtime-avg" << "Xivo-QoS"
-                   << "Xivo-Join" << "Xivo-Lost" << "Xivo-TalkingTime" 
-                   << "Xivo-Rate" << "Xivo-Link";
 
     int col = 0;
     label = new QLabel(row);
@@ -876,7 +881,6 @@ QWidget* QueueRow::makeTitleRow(QWidget *parent)
     label->setText(tr("Longest Wait"));
     label->setAlignment(Qt::AlignCenter);
     layout->addWidget(label, 1, col++);
-
 
     QString detailCss = "QLabel { background-color:#666; }";
     for (i=0;(uint)i<nelem(stats_detail);i++) {
