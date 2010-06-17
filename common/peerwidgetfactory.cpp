@@ -58,7 +58,7 @@ BasePeerWidget* PeerWidgetFactory::newExternalPhonePeerWidget(
     if(getSwitchBoardEltType() == "small"){
         w = new ExternalPhonePeerWidget(label, number);
     }else{
-        w = new DetailedExternalPhonePeerWidget(b_engine, label, number);
+        w = new DetailedExternalPhonePeerWidget(label, number);
     }
     
     QObject::connect(w, SIGNAL(actionCall(const QString &,
@@ -81,9 +81,9 @@ BasePeerWidget* PeerWidgetFactory::newPeerWidget(UserInfo * ui)
     BasePeerWidget *w;
 
     if(getSwitchBoardEltType() == "small"){
-        w = new BasicPeerWidget(b_engine, ui);
+        w = new BasicPeerWidget(ui);
     }else{
-        w = new PeerWidget(b_engine, ui);
+        w = new PeerWidget(ui);
     }
 
     QObject::connect(w, SIGNAL(actionCall(const QString &,

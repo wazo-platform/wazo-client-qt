@@ -51,7 +51,7 @@ class BasicPeerWidget : public BasePeerWidget
     Q_OBJECT
 
     public:
-        BasicPeerWidget(BaseEngine *, UserInfo *);
+        BasicPeerWidget(UserInfo *);
         void setAgentToolTip(const QString &, const QStringList &);
         void setAgentState(const QString &color);
         void updatePresence();

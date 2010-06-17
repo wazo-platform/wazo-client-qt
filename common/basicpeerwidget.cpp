@@ -45,8 +45,8 @@
  *
  * initialize members and tooltip
  */
-BasicPeerWidget::BasicPeerWidget(BaseEngine * engine, UserInfo * ui)
-    : BasePeerWidget(engine, ui), m_color(0xcc, 0xcc, 0xcc),
+BasicPeerWidget::BasicPeerWidget(UserInfo * ui)
+    : BasePeerWidget(ui), m_color(0xcc, 0xcc, 0xcc),
       m_presenceColor(0xcc, 0xcc, 0xcc)
 {
     // can grow horizontaly but not verticaly

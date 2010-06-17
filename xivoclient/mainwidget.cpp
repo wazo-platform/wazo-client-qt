@@ -71,7 +71,6 @@ const QString extraspace("  ");
  * The geometry is restored from settings.
  * engine object ownership is taken
  */
-//        : QMainWindow(parent, Qt::FramelessWindowHint),
 MainWidget::MainWidget(BaseEngine * engine,
                        QWidget * parent)
     : QMainWindow(parent),
@@ -96,8 +95,6 @@ MainWidget::MainWidget(BaseEngine * engine,
     
     setWindowTitle("XiVO " + m_appliname);
     setDockOptions(QMainWindow::AllowNestedDocks);
-    //setWindowFlags(Qt::Dialog);
-    //layout->setSizeConstraint(QLayout::SetFixedSize);        // remove minimize and maximize button
     setAnimated(false);
     
     createActions();
@@ -580,16 +577,18 @@ void MainWidget::addPanel(const QString & name, const QString & title, QWidget *
         m_docks[name]->setObjectName(name); // compulsory to allow a proper state's saving
         addDockWidget(Qt::BottomDockWidgetArea, m_docks[name]);
         m_docks[name]->setWidget(widget);
+        m_docks[name]->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         m_docks[name]->hide();
-    } else if(m_gridnames.contains(name)) {
+    } else if (m_gridnames.contains(name)) {
         qDebug() << "MainWidget::addPanel() (grid)" << name << m_dockoptions[name] << title << m_dockoptions[name].toInt() ;
         m_gridlayout->addWidget(widget, m_dockoptions[name].toInt(), 0);
-    } else if(m_tabnames.contains(name)) {
+    } else if (m_tabnames.contains(name)) {
         qDebug() << "MainWidget::addPanel() (tab) " << name << m_dockoptions[name] << m_tabwidget->count() << title;
-        if(m_dockoptions[name].size() > 0) 
+        if (m_dockoptions[name].size() > 0) {
             m_tabwidget->insertTab(m_dockoptions[name].toInt(), widget, extraspace + title + extraspace);
-        else
+        } else {
             m_tabwidget->addTab(widget, extraspace + title + extraspace);
+        }
     }
 }
 

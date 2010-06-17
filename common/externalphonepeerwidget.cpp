@@ -41,7 +41,7 @@
 ExternalPhonePeerWidget::ExternalPhonePeerWidget(
     const QString & label,
     const QString & number)
-    : BasePeerWidget(b_engine, NULL)
+    : BasePeerWidget(NULL)
 {
     m_number = number;
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);

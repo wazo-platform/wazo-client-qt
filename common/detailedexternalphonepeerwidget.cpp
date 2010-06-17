@@ -40,8 +40,8 @@
 
 /*! \brief constructor
  */
-DetailedExternalPhonePeerWidget::DetailedExternalPhonePeerWidget(BaseEngine * engine, const QString & label, const QString & number)
-    : BasePeerWidget(engine, 0)
+DetailedExternalPhonePeerWidget::DetailedExternalPhonePeerWidget(const QString & label, const QString & number)
+    : BasePeerWidget(0)
 {
     m_number = number;
     m_editable = true;

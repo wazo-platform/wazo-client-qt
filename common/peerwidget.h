@@ -57,7 +57,7 @@ class PeerWidget : public BasePeerWidget
     Q_OBJECT
 
     public:
-        PeerWidget(BaseEngine *, UserInfo *);
+        PeerWidget(UserInfo *);
         void setName(const QString &);
         void setEngine(BaseEngine *);
         void setAgentToolTip(const QString &, const QStringList &);

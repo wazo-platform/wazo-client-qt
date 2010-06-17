@@ -48,7 +48,7 @@
  *
  * initialize members.
  */
-BasePeerWidget::BasePeerWidget(BaseEngine *engine, UserInfo *ui)
+BasePeerWidget::BasePeerWidget(UserInfo *ui)
     : m_ui(ui), m_editable(false)
 {
     if(m_ui){

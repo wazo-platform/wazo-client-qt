@@ -44,7 +44,7 @@ class DetailedExternalPhonePeerWidget : public BasePeerWidget
     Q_OBJECT
 
     public:
-        DetailedExternalPhonePeerWidget(BaseEngine *, const QString &, const QString &);
+        DetailedExternalPhonePeerWidget(const QString &, const QString &);
         void setAgentToolTip(const QString &, const QStringList &) { };
         void setAgentState(const QString &) { };
         void updatePresence() { };

@@ -151,8 +151,7 @@ void SearchPanel::updateDisplay()
                     if(peerwidget == NULL)
                         {
                             // qDebug() << "SearchPanel::affTextChanged()" << peeritem->userinfo() << peeritem->userinfo()->termstatus();
-                            peerwidget = new PeerWidget(b_engine, peeritem->userinfo());
-                            //peerwidget->setEngine(b_engine);
+                            peerwidget = new PeerWidget(peeritem->userinfo());
                             peeritem->setWidget(peerwidget);
                             peeritem->updateDisplayedStatus();
                             peeritem->updateDisplayedName();

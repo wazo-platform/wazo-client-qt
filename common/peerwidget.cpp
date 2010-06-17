@@ -49,8 +49,8 @@
 
 /*! \brief Constructor
  */
-PeerWidget::PeerWidget(BaseEngine *engine, UserInfo *ui)
-    : BasePeerWidget(engine, ui), m_user_status(NULL), m_agentlbl(NULL), m_mobilelbl(NULL)
+PeerWidget::PeerWidget(UserInfo *ui)
+    : BasePeerWidget(ui), m_user_status(NULL), m_agentlbl(NULL), m_mobilelbl(NULL)
 {
     int fsize = 25;
     
