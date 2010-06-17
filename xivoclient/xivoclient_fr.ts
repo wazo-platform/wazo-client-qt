@@ -2374,8 +2374,8 @@ Contexte: %2</translation>
         <location filename="../common/queuespanel.cpp" line="381"/>
         <source>Choose which queue should be displayed, and the
 queues parameters for the Stats on slice:</source>
-        <translation>Choisissez quelles files d&apos;attente doivent être affiché, 
-ainsi que les paramètre pour les statistiques sur fenêtre:</translation>
+        <translation>Choisissez quelles files d&apos;attente doivent être affichées, 
+ainsi que les paramètres pour les statistiques sur fenêtre:</translation>
     </message>
     <message>
         <location filename="../common/queuespanel.cpp" line="391"/>

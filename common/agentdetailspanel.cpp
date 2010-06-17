@@ -163,8 +163,6 @@ void AgentdetailsPanel::monitorThisAgent(const QString & agentid)
 {
     if(b_engine->agents().contains(agentid)) {
         m_monitored_agentid = agentid;
-        m_monitored_astid = b_engine->agents()[agentid]->astid();
-        m_monitored_context = b_engine->agents()[agentid]->context();
         clearPanel();
         updatePanel();
     }
@@ -202,7 +200,7 @@ void AgentdetailsPanel::updatePanel()
 {
     AgentInfo * ainfo = b_engine->agents()[m_monitored_agentid];
     QStringList agent_descriptions;
-    agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->agentNumber()).arg(ainfo->fullname());
+    agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber());
     if(! m_optionsMap["hideastid"].toBool())
         agent_descriptions << tr("on <b>%1</b>").arg(ainfo->astid());
     if(! m_optionsMap["hidecontext"].toBool())
@@ -253,7 +251,7 @@ void AgentdetailsPanel::updatePanel()
     while( iter.hasNext() ) {
         iter.next();
         QueueInfo * qinfo = iter.value();
-        // newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
+        // newQueue(qinfo->astid(), qinfo->queueName(), qinfo->properties());
         QString queueid = iter.key();
         queueids << queueid;
         bool isnewqueue = false;
@@ -309,7 +307,13 @@ void AgentdetailsPanel::setQueueLookProps(const QString & queueid)
  */
 void AgentdetailsPanel::setQueueProps(const QString & queueid, const QueueInfo * qinfo)
 {
-    m_queue_labels[queueid]->setText(qinfo->queuename());
+    bool showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
+    if(showNumber)
+        m_queue_labels[queueid]->setText(QString("%1 (%2)")
+                                         .arg(qinfo->queueName())
+                                         .arg(qinfo->queueNumber()));
+    else
+        m_queue_labels[queueid]->setText(qinfo->queueName());
     QStringList tooltips;
     if(! m_optionsMap["hideastid"].toBool())
         tooltips << tr("Server: %1").arg(qinfo->astid());
@@ -420,7 +424,7 @@ void AgentdetailsPanel::queueClicked()
     
     QString astid = b_engine->queues()[queueid]->astid();
     QString qid = b_engine->queues()[queueid]->id();
-    QString queuename = b_engine->queues()[queueid]->queuename();
+    QString queuename = b_engine->queues()[queueid]->queueName();
     QVariant mstatus = b_engine->agents()[m_monitored_agentid]->properties()["queues_by_agent"].toMap()[qid];
     QString smstatus = mstatus.toMap()["Status"].toString();
     QString pmstatus = mstatus.toMap()["Paused"].toString();

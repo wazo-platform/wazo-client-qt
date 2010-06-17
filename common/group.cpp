@@ -88,7 +88,10 @@ int Group::move(QList<Group *> &groups, PeersLayout *layout_on, QPoint &deltaGri
     return 1;
 }
 
-int Group::resize(QList<Group *> &groups, PeersLayout *on, QPoint &deltaGrid, int resize_direction)
+int Group::resize(QList<Group *> & /*groups*/,
+                  PeersLayout */*on*/,
+                  QPoint &deltaGrid,
+                  int resize_direction)
 {
     int update = 0;
 

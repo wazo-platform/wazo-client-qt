@@ -41,7 +41,7 @@ QueueInfo::QueueInfo(const QString & astid,
 {
     m_context = prop.value("context").toString();
     m_queuename = prop.value("queuename").toString();
-    m_number = prop.value("number").toString();
+    m_queuenumber = prop.value("number").toString();
     update(prop);
 }
 
@@ -94,11 +94,6 @@ const QString & QueueInfo::id() const
 const QString & QueueInfo::context() const
 {
     return m_context;
-}
-
-const QString & QueueInfo::queuename() const
-{
-    return m_queuename;
 }
 
 const QVariantMap & QueueInfo::properties() const

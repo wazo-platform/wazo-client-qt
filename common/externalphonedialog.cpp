@@ -43,7 +43,8 @@
  * A QFormLayout is used.
  */
 ExternalPhoneDialog::ExternalPhoneDialog(QWidget * parent,
-    const QString &number, const QString &label)
+                                         const QString & number,
+                                         const QString & /*label*/)
     : QDialog(parent)
 {
     setWindowTitle(tr("External phone number"));

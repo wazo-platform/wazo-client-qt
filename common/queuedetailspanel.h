@@ -91,9 +91,6 @@ class QueuedetailsPanel : public XLet
         QGridLayout * m_gridlayout; //!< Layout
         
         QString m_monitored_queueid;  //!< queue id
-        QString m_monitored_astid;    //!< asterisk id
-        QString m_monitored_context;  //!< context
-        QString m_monitored_queuename;  //!< queue name
         QLabel *m_queuelegend_agentid; //!< "Agent" label
         QLabel *m_queuelegend_status;  //!< "Status" label
         QLabel *m_queuelegend_paused;  //!< "Paused" label

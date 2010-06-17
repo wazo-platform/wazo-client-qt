@@ -79,6 +79,7 @@ bool XmlHandler::startElement( const QString & /*namespaceURI*/,
     } else if( localName == "sheet_qtui" ) {
         m_isParsingInfo = true;
         m_infoName  = atts.value("name");
+        m_infoType  = atts.value("type");
         m_infoValue = "";
     } else if( localName == "internal" ) {
         m_isParsingInfo = true;
@@ -115,7 +116,7 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
         m_popup->addDefForm(m_infoName, m_infoValue);
     else if( localName == "profile" )
         m_popup->finishAndShow();
-        
+    
     return true;
 }
 

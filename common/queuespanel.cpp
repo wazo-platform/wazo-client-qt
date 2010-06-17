@@ -120,13 +120,13 @@ QueuesPanel::QueuesPanel(QWidget *parent)
       m_configureWindow(NULL)
 {
     setTitle(tr("Queues' List"));
-
+    
     QStringList xletlist;
     foreach (QString xletdesc, b_engine->getCapaXlets())
         xletlist.append(xletdesc.split("-")[0]);
     m_showMore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
     m_showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
-
+    
     QVBoxLayout *xletLayout = new QVBoxLayout(this);
     xletLayout->setSpacing(0);
 
@@ -751,7 +751,7 @@ void QueueRow::updateName()
 {
     QString queueName;
     if (xlet->showNumber()) {
-        queueName = qinfo->queueName() + " (" + qinfo->number() + ")";
+        queueName = qinfo->queueName() + " (" + qinfo->queueNumber() + ")";
     } else {
         queueName = qinfo->queueName();
     }

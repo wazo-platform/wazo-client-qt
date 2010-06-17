@@ -167,7 +167,7 @@ const QString & QueueAgentStatus::context() const
     return m_context;
 }
 
-const QString & QueueAgentStatus::queuename() const
+const QString & QueueAgentStatus::queueName() const
 {
     return m_queuename;
 }

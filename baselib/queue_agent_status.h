@@ -55,10 +55,7 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         const QString & id() const;
         //! context this queue belongs to
         const QString & context() const;
-        //! queue number
-        const QString & number() const { return m_number; };
-        //! queuename
-        const QString & queuename() const;
+        const QString & queueName() const;        //! queuename
         
         const QColor & display_status_color() const;
         const QString & display_status_queue() const;
@@ -74,7 +71,6 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         QString m_id;
         QString m_context;
         QString m_queuename;
-        QString m_number;
         
         QString m_display_status_queue;
         QString m_display_status_logged;

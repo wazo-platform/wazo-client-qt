@@ -91,8 +91,6 @@ class AgentdetailsPanel : public XLet
         QGridLayout *m_gridlayout; //!< layout
         int m_linenum;  //!< line number ?
         
-        QString m_monitored_astid;    //!< asterisk id
-        QString m_monitored_context;    //!< context
         QString m_monitored_agentid;    //!< monitored agent id
         QLabel *m_agentstatus; //!< to display agent name and status
         QLabel *m_agentlegend_qname;   //!< "Queues"

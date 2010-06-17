@@ -53,18 +53,17 @@ class BASELIB_EXPORT QueueInfo
         const QString hintstatus(const QString & key) const {  //! access to the status values of this queue
             return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
         };
-        const QString& number() const { return m_number; };  //! queue number
-        const QString& queuename() const;  //! queuename
-        const QString& queueName() const  { return queuename(); };
+        const QString& queueNumber() const { return m_queuenumber; };  //! queue number
+        const QString& queueName() const  { return m_queuename; };  //! queue name
         const QVariantMap& properties() const;  //! queue properties
         const QMap<QString, QVariant>& comms() const { return m_comms; };  //! current communications of this queue
-
+        
     private:
         QString m_astid;
         QString m_id;
         QString m_context;
         QString m_queuename;
-        QString m_number;
+        QString m_queuenumber;
         QMap<QString, QString> m_hintstatus;
         QMap<QString, QVariant> m_comms;
         QVariantMap m_properties;

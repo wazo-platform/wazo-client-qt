@@ -521,7 +521,7 @@ void AgentsPanelNext::agentClicked(QMouseEvent * event)
         bool isinpause = false;
         foreach (QString queueid, b_engine->queues().keys()) {
             QueueInfo * qinfo = b_engine->queues()[queueid];
-            QString queuename = qinfo->queuename();
+            QString queuename = qinfo->queueName();
             if(m_title[groupid]->property("queues").toStringList().contains(queuename)) {
                 QVariantMap qvm = ainfo->properties()["queues_by_agent"].toMap()[queuename].toMap();
                 if(! qvm.isEmpty())
@@ -741,7 +741,7 @@ void AgentsPanelNext::newQueueList(const QStringList &)
         QString queueid = iter.key();
         // if(list.contains(queueid)) {
         QueueInfo * qinfo = iter.value();
-        newQueue(qinfo->astid(), qinfo->queuename(), qinfo->properties());
+        newQueue(qinfo->astid(), qinfo->queueName(), qinfo->properties());
         // }
     }
 }

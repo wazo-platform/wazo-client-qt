@@ -271,17 +271,17 @@ void Popup::addAnyInfo(const QString & localName,
             addInfoForm( where, infoValue );
         } else
             m_orders.removeAll(infoOrder);
-                
+        
     } else if( localName == "systray_info" ) {
         if ( infoType == "title" )
             setMessageTitle( infoValue );
         else if ( infoType == "body" )
             setMessage( infoOrder, infoValue );
-                
+        
     } else if( localName == "action_info" ) {
         if ( infoType == "urlauto" )
             addInfoLinkAuto( infoName, infoValue );
-                
+        
     } else if( localName == "internal" ) {
         addInfoInternal( infoName, infoValue );
     }

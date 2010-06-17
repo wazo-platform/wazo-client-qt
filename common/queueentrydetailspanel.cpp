@@ -89,9 +89,6 @@ void QueueentrydetailsPanel::monitorThisQueue(const QString & queueid)
     // qDebug() << "QueueentrydetailsPanel::monitorThisQueue" << queueid;
     if(b_engine->queues().contains(queueid)) {
         m_monitored_queueid = queueid;
-        m_monitored_astid = b_engine->queues()[queueid]->astid();
-        m_monitored_context = b_engine->queues()[queueid]->context();
-        m_monitored_queuename = b_engine->queues()[queueid]->queuename();
         updatePanel();
     }
 }
@@ -117,7 +114,11 @@ void QueueentrydetailsPanel::updatePanel()
     QVariantMap properties = qinfo->properties();
     QVariantMap channels = properties["channels"].toMap();
     
-    m_queuedescription->setText(tr("<b>%1</b> on <b>%2</b> (%3)").arg(qinfo->queuename()).arg(qinfo->astid()).arg(qinfo->context()));
+    m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4)")
+                                .arg(qinfo->queueName())
+                                .arg(qinfo->queueNumber())
+                                .arg(qinfo->astid())
+                                .arg(qinfo->context()));
     
     // queue legends
     clearPanel();

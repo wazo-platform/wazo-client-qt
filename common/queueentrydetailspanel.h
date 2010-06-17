@@ -75,11 +75,8 @@ class QueueentrydetailsPanel : public XLet
         void updatePanel();
         
         QGridLayout * m_gridlayout; //!< Layout
-
+        
         QString m_monitored_queueid;  //!< queue id
-        QString m_monitored_astid;    //!< asterisk id
-        QString m_monitored_context;  //!< context
-        QString m_monitored_queuename;  //!< queue name
         QLabel * m_queuedescription;   //!< label for displaying queue name
         QHash<QString, QLabel *> m_entrypos;    //!< display entry
         QHash<QString, QLabel *> m_entrytime;   //!< display call duration ?
