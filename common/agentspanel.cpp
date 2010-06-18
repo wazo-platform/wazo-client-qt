@@ -59,9 +59,9 @@ AgentsPanel::AgentsPanel(QWidget *parent)
     m_title3 = new QLabel(tr("Listen"), this);
     m_title4 = new QLabel(tr("On Line"), this);
     m_title5 = new QLabel(tr("Presence"), this);
-    m_title_logged = new QLabel(tr("Logged"), this);
-    m_title_paused = new QLabel(tr("Paused"), this);
+    m_title_logged  = new QLabel(tr("Logged"), this);
     m_title_njoined = new QLabel(tr("Joined\nqueues"), this);
+    m_title_paused  = new QLabel(tr("Paused"), this);
     m_title_npaused = new QLabel(tr("Paused\nqueues"), this);
     
     m_gridlayout->addWidget(m_title1, 0, 0, 1, 2, Qt::AlignLeft );
@@ -110,8 +110,8 @@ void AgentsPanel::setGuiOptions(const QVariantMap & optionsMap)
     m_title4->setFont(m_gui_font);
     m_title5->setFont(m_gui_font);
     m_title_logged->setFont(m_gui_font);
-    m_title_paused->setFont(m_gui_font);
     m_title_njoined->setFont(m_gui_font);
+    m_title_paused->setFont(m_gui_font);
     m_title_npaused->setFont(m_gui_font);
 }
 

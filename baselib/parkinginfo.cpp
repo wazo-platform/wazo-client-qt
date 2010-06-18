@@ -37,16 +37,12 @@
 
 ParkingInfo::ParkingInfo(const ParkingInfo & other)
 {
-    m_roomname = other.m_roomname;
-    m_roomnumber = other.m_roomnumber;
+    m_timeout = other.m_timeout;
+    m_parkingtime = other.m_parkingtime;
 }
 
-const QString& ParkingInfo::roomname() const
+bool ParkingInfo::update(const QVariantMap & map)
 {
-    return m_roomname;
-}
-
-const QString& ParkingInfo::roomnumber() const
-{
-    return m_roomnumber;
+    m_timeout = map["timeout"].toInt();
+    m_parkingtime = map["parkingtime"].toDouble();
 }

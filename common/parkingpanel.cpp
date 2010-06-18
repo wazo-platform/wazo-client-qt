@@ -43,6 +43,7 @@
 #include "baseengine.h"
 #include "extendedtablewidget.h"
 #include "parkingpanel.h"
+#include "parkinginfo.h"
 #include "userinfo.h"
 
 /*! \brief Constructor
@@ -98,19 +99,17 @@ void ParkingPanel::parkingEvent(const QString & eventkind,
                                 const QString & parkingbay,
                                 const QVariant & subcommand)
 {
+    ParkingInfo * pi = b_engine->parking()[astid][parkingbay];
     QVariantMap map = subcommand.toMap();
     QString channel = map["channel"].toString();
     QString fromchannel = map["fromchannel"].toString();
-    QString seconds = map["timeout"].toString();
-    QStringList newpark = map["args"].toStringList();
     QString calleridnum = map["calleridnum"].toString();
     QString calleridname = map["calleridname"].toString();
     QString fromcalleridnum = map["fromcalleridnum"].toString();
     QString fromcalleridname = map["fromcalleridname"].toString();
-    
     // ignore buggy events
     if(fromchannel == channel)
-        qDebug() << " *** WARNING channel==fromchannel ***" << channel;
+        qDebug() << " *** WARNING channel == fromchannel ***" << channel;
     //    return;
     
     //QString parkedpeer = channel.split("-")[0];
@@ -121,8 +120,8 @@ void ParkingPanel::parkingEvent(const QString & eventkind,
     
     if(eventkind == "parkedcall") {
         for(int m = 0; m < m_table->rowCount(); m++) {
-            if (m_table->item(m, 0)->data(Qt::UserRole+0).toString() == astid
-               && m_table->item(m, 0)->data(Qt::UserRole+1).toString() == parkingbay) {
+            if ((m_table->item(m, 0)->data(Qt::UserRole+0).toString() == astid) &&
+                (m_table->item(m, 0)->data(Qt::UserRole+1).toString() == parkingbay)) {
                 // do not add the same entry twice !
                 return;
             }
@@ -137,7 +136,12 @@ void ParkingPanel::parkingEvent(const QString & eventkind,
         item1->setData(Qt::UserRole+0, astid);
         item1->setData(Qt::UserRole+1, parkingbay);
         m_table->setItem( 0, i++, item1 );
-        QTableWidgetItem * item2 = new QTableWidgetItem( seconds + " s" );
+        
+        double remaining = pi->timeout() + pi->parkingtime() - QDateTime::currentDateTime().toTime_t() + b_engine->timeDeltaServerClient();
+        int leftsec = int(remaining + 0.5);
+        
+        QTableWidgetItem * item2 = new QTableWidgetItem(QString("%1 s").arg(leftsec));
+        item2->setText(QString("%1 s").arg(leftsec));
         item2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         m_table->setItem( 0, i++, item2 );
         QTableWidgetItem * item3 = new QTableWidgetItem( parkedpeer );
@@ -146,7 +150,7 @@ void ParkingPanel::parkingEvent(const QString & eventkind,
         QTableWidgetItem * item4 = new QTableWidgetItem( parkedby );
         item4->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         m_table->setItem( 0, i++, item4 );
-
+        
         // do not start another timer if there is already one running
         if(m_timerid == 0)
             m_timerid = startTimer(m_deltasec * 1000);
@@ -195,11 +199,16 @@ void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
 void ParkingPanel::timerEvent(QTimerEvent * event)
 {
     int timerId = event->timerId();
-    if (timerId == m_timerid)
+    if (timerId == m_timerid) {
         for(int i = 0; i < m_table->rowCount(); i++) {
             QTableWidgetItem * item = m_table->takeItem(i, 1);
-            int leftsec = item->text().split(" ")[0].toInt() - m_deltasec;
+            QString astid      = m_table->item(i, 0)->data(Qt::UserRole+0).toString();
+            QString parkingbay = m_table->item(i, 0)->data(Qt::UserRole+1).toString();
+            ParkingInfo * pi = b_engine->parking()[astid][parkingbay];
+            double remaining = pi->timeout() + pi->parkingtime() - QDateTime::currentDateTime().toTime_t() + b_engine->timeDeltaServerClient();
+            int leftsec = int(remaining + 0.5);
             item->setText( QString::number(leftsec) + " s" );
             m_table->setItem( i, 1, item );
         }
+    }
 }

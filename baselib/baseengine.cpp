@@ -825,7 +825,7 @@ const QDateTime & BaseEngine::timeClient() const
 
 double BaseEngine::timeDeltaServerClient() const
 {
-    return m_timeclt.toTime_t()-m_timesrv;
+    return (m_timeclt.toTime_t() - m_timesrv);
 }
 
 /*! \brief parse JSON and then process command */
@@ -870,6 +870,15 @@ void BaseEngine::parseCommand(const QString & line)
             QString astid = datamap["astid"].toString();
             QString parkingbay = datamap["parkingbay"].toString();
             // update local list for astid & parkingbay according to eventkind
+            if (eventkind == "parkedcall") {
+                if (m_parking.contains(astid) == false)
+                    m_parking[astid].clear();
+                if (! astid.isEmpty() && ! parkingbay.isEmpty()) {
+                    if (m_parking[astid].contains(parkingbay) == false)
+                        m_parking[astid][parkingbay] = new ParkingInfo();
+                    m_parking[astid][parkingbay]->update(datamap["payload"].toMap());
+                }
+            }
             parkingEvent(eventkind, astid, parkingbay, datamap["payload"]);
             
         } else if (thisclass == "sheet") {

@@ -51,12 +51,13 @@ class BASELIB_EXPORT ParkingInfo
         ParkingInfo() {};
         //! Copy constructor. Just copy all attributes
         ParkingInfo(const ParkingInfo &);
-        const QString &roomname() const;  //! conference room name
-        const QString &roomnumber() const;  //! conference room number
-
+        const int & timeout() const { return m_timeout; };  //! parking timeout
+        const double & parkingtime() const { return m_parkingtime; };  //! parking starting time
+        bool update(const QVariantMap &);
+        
     private:
-        QString m_roomname;     //!< room access name
-        QString m_roomnumber;   //!< room access number (if any)
+        int m_timeout;     //!< parking timeout
+        double m_parkingtime;   //!< parking starting time
 };
 
 #endif /* __PARKINGINFO_H__ */
