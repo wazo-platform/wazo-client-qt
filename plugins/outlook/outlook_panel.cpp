@@ -124,10 +124,10 @@ OutlookPanel::OutlookPanel(QWidget * parent)
     connect( &(OLEngine()->m_OLThread), SIGNAL(contactsLoaded()),
              this, SLOT(contactsLoaded()) );
     connect( this, SIGNAL(searchOutlook(const QString &)),
-             m_engine, SLOT(searchOutlook(const QString &)) );
+             b_engine, SLOT(searchOutlook(const QString &)) );
     connect( this, SIGNAL(copyNumber(const QString &)),
-             m_engine, SLOT(copyNumber(const QString &)) );
-    connect( m_engine, SIGNAL(outlookResponse(const QString &)),
+             b_engine, SLOT(copyNumber(const QString &)) );
+    connect( b_engine, SIGNAL(outlookResponse(const QString &)),
              this, SLOT(setSearchResponse(const QString &)) );
 }
 
