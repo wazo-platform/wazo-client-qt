@@ -52,11 +52,11 @@ static QStringList statsOfDurationType;
 
 static QStringList statsToRequest;
 
-const static QString commonqss = "QProgressBar { " 
-                                    "border: 2px solid black;" 
-                                    "border-radius: 3px;" 
-                                    "text-align: center;" 
-                                    "margin-left: 5px;" 
+const static QString commonqss = "QProgressBar { "
+                                    "border: 2px solid black;"
+                                    "border-radius: 3px;"
+                                    "text-align: center;"
+                                    "margin-left: 5px;"
                                  "}";
 
 void __format_duration(QString *field, int duration)
@@ -116,17 +116,17 @@ void QueuesPanel::saveQueueOrder(const QStringList &queueOrder)
 
 
 QueuesPanel::QueuesPanel(QWidget *parent)
-    : XLet(parent), 
+    : XLet(parent),
       m_configureWindow(NULL)
 {
     setTitle(tr("Queues' List"));
-    
+
     QStringList xletlist;
     foreach (QString xletdesc, b_engine->getCapaXlets())
         xletlist.append(xletdesc.split("-")[0]);
     m_showMore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
     m_showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
-    
+
     QVBoxLayout *xletLayout = new QVBoxLayout(this);
     xletLayout->setSpacing(0);
 
@@ -193,7 +193,7 @@ void QueuesPanel::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *menu = new QMenu(this);
     QAction *configure = new QAction(tr("Configure"), menu);
-    
+
     menu->addAction(configure);
     if (menu->exec(event->globalPos()) == configure)
         openConfigureWindow();
@@ -214,7 +214,7 @@ void QueuesPanel::removeQueues(const QString &, const QStringList &queues)
  */
 void QueuesPanel::newQueueList(const QStringList &qsl)
 {
-    qDebug() << "newQueueList" << qsl ;
+    // qDebug() << "newQueueList" << qsl;
     QHashIterator<QString, QueueInfo *> iter = \
         QHashIterator<QString, QueueInfo *>(b_engine->queues());
 
@@ -224,7 +224,7 @@ void QueuesPanel::newQueueList(const QStringList &qsl)
             QueueInfo *qinfo = iter.value();
             QString queueId = qinfo->id();
 
-            qDebug() << "newQueueList hay" <<this->parentWidget()<<m_queueList.size()<< queueId ;
+            // qDebug() << "newQueueList hay" << this->parentWidget() << m_queueList.size() << queueId;
             if (!m_queueList.contains(queueId)) {
                 m_queueList[queueId] = new QueueRow(qinfo, this);
                 m_layout->addWidget(m_queueList[queueId]);
@@ -350,14 +350,14 @@ void QueuesPanel::askForQueueStats()
 {
     QHashIterator<QString, QueueRow *> i(m_queueList);
     QVariantMap _for;
-    
+
     QVariantMap statConfig = b_engine->getGuiOptions("client_gui").value("queuespanel").toMap();
 
     while (i.hasNext()) {
         i.next();
         QueueRow *row = i.value();
         QString queueid = row->property("id").toString();
-        
+
         QVariantMap _param;
         _param["window"] = statConfig.value("window" + queueid, 3600).toString();
         _param["xqos"] = statConfig.value("xqos" + queueid, 60).toString();
@@ -556,7 +556,7 @@ QueueRow::QueueRow(const QueueInfo *qInfo, QueuesPanel *parent)
 void QueueRow::setLayoutColumnWidth(QGridLayout *layout, int nbStat)
 {
     layout->setColumnMinimumWidth(0, 150); // queue name
-    layout->setColumnMinimumWidth(1, 25);  // queue more 
+    layout->setColumnMinimumWidth(1, 25);  // queue more
     layout->setColumnMinimumWidth(2, 25);  // queue move
     layout->setColumnMinimumWidth(3, 100); // queue busy
     layout->setColumnMinimumWidth(4, 100); // queue longest waiting time
@@ -590,7 +590,7 @@ void QueueRow::updateBusyWidget()
 
     m_busy->setRange(0, m_maxbusy + 1);
     m_busy->setValue(val);
-    
+
     if (val <= greenlevel) {
         m_busy->setStyleSheet(commonqss + "QProgressBar::chunk {background-color: #0f0;}");
     } else if (val <= orangelevel) {
@@ -606,22 +606,22 @@ void QueueRow::updateLongestWaitWidget(int display, uint greenlevel, uint orange
         m_layout->setColumnMinimumWidth(4, 100); // queue longest waiting time
         m_longestWait->show();
     } else {
-        m_layout->setColumnMinimumWidth(4, 0); 
+        m_layout->setColumnMinimumWidth(4, 0);
         m_longestWait->hide();
     }
 
     uint new_time = m_longestWait->property("time").toUInt();
-    
+
     if (m_longestWait->property("running_time").toInt()) {
         new_time += 1;
         m_longestWait->setProperty("time", new_time);
     }
-    
-    
+
+
     QString time_label;
     __format_duration(&time_label, new_time);
     QString base_css = "margin-left:5px;border-radius: 3px;border: 2px solid black;";
-    
+
     if (new_time == 0) {
         m_longestWait->setStyleSheet(base_css + "background-color: #fff;");
     } else if (new_time <= greenlevel) {
@@ -631,7 +631,7 @@ void QueueRow::updateLongestWaitWidget(int display, uint greenlevel, uint orange
     } else {
         m_longestWait->setStyleSheet(base_css + "background-color: #f00;");
     }
-    
+
     m_longestWait->setText(time_label);
 
     if (!display) {
@@ -643,7 +643,6 @@ void QueueRow::update()
 {
     QVariantMap queueStats = qinfo->properties()["queuestats"].toMap();
     QString queueName = qinfo->queueName();
-
 
     QHash <QString, QString> infos;
     infos["Calls"] = "0";
@@ -672,11 +671,11 @@ void QueueRow::update()
             } else {
                 qDebug() << "ERR received stats for: " << stat;
             }
-        } 
+        }
     }
-    
+
     /* stat cols who aren't made by server */
-    QVariantMap queueagents = queueStats["agents_in_queue"].toMap();
+    QVariantMap queueagents = qinfo->properties()["agents_in_queue"].toMap();
     QStringList queueagents_list;
 
     int navail = 0;
@@ -722,11 +721,11 @@ void QueueRow::update()
 
     QVariantMap properties = qinfo->properties();
     QVariantMap channel_list = properties["channels"].toMap();
-    
+
     uint oldest = 0;
     int first_item = 1;
     uint current_entrytime;
-    
+
     foreach (QString channel_name, channel_list.keys()) {
       current_entrytime = channel_list[channel_name].toMap()["entrytime"].toUInt();
       if (first_item) {
@@ -735,9 +734,9 @@ void QueueRow::update()
       }
       oldest = (oldest < current_entrytime) ? oldest : current_entrytime ;
     }
-    
+
     uint oldest_waiting_time = (oldest == 0 ) ? oldest : (b_engine->timeServer() - oldest);
-    
+
     m_longestWait->setProperty("time", oldest_waiting_time);
     m_longestWait->setProperty("running_time", !first_item);
 
@@ -844,7 +843,7 @@ QWidget* QueueRow::makeTitleRow(QueuesPanel *parent)
                             << "Xivo-Holdtime-avg";
 
         statsToRequest << "Xivo-Holdtime-max" << "Xivo-Holdtime-avg" << "Xivo-QoS"
-                       << "Xivo-Join" << "Xivo-Lost" << "Xivo-TalkingTime" 
+                       << "Xivo-Join" << "Xivo-Lost" << "Xivo-TalkingTime"
                        << "Xivo-Rate" << "Xivo-Link";
     }
 
@@ -864,7 +863,7 @@ QWidget* QueueRow::makeTitleRow(QueuesPanel *parent)
     label->setAlignment(Qt::AlignCenter);
     label->setStyleSheet("QLabel { background-color:#333;color:#eee; } ");
     layout->addWidget(label, 0, 9, 1, nelem(stats_detail)-4);
-    
+
     spacer = new QSpacerItem(25, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
     layout->addItem(spacer, 1, col++);
     spacer = new QSpacerItem(25, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -896,7 +895,6 @@ QWidget* QueueRow::makeTitleRow(QueuesPanel *parent)
     spacer = new QSpacerItem(1, 1);
     layout->addItem(spacer, 1, col, 1,-1);
     layout->setColumnStretch(col, 1);
-
 
     return row;
 }
