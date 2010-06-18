@@ -48,8 +48,8 @@ XLetWebPlugin::~XLetWebPlugin()
 /*! \brief instanciate XletWeb
  *
  * \return a new instance of XletWeb */
-XLet * XLetWebPlugin::newXLetInstance(BaseEngine * engine, QWidget * parent)
+XLet * XLetWebPlugin::newXLetInstance(QWidget * parent)
 {
-    return new XletWeb(engine, parent);
+    return new XletWeb(parent);
 }
 

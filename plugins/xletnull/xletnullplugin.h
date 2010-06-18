@@ -46,7 +46,7 @@ class XLetNullPlugin : public QObject, XLetInterface
     Q_OBJECT
     Q_INTERFACES(XLetInterface)
 public:
-    XLet * newXLetInstance(BaseEngine * engine = 0, QWidget * parent = 0);
+    XLet *newXLetInstance(QWidget *parent=0);
 };
 
 #endif

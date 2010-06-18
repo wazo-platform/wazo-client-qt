@@ -47,16 +47,16 @@ class XletWeb : public XLet
 {
     Q_OBJECT
 public:
-    XletWeb(BaseEngine * engine, QWidget * parent = 0);
+    XletWeb(QWidget *parent = 0);
     ~XletWeb();
 public slots:
     void loadAddress();
     void displayUrl(const QUrl &);
     void displayIcon();
 private:
-    QWebView * web;
-    QLineEdit * urlLine;
-    QLabel * icon;
+    QWebView *web;
+    QLineEdit *urlLine;
+    QLabel *icon;
 };
 
 #endif /* __XLETWEB_H__ */

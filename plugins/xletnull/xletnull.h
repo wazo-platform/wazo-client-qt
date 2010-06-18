@@ -47,11 +47,11 @@ class XletNull : public XLet
 {
     Q_OBJECT
 public:
-    XletNull(BaseEngine * engine, QWidget * parent = 0);
+    XletNull(QWidget *parent=0);
     ~XletNull();
 public slots:
 private:
-    QLabel * m_label;
+    QLabel *m_label;
 };
 
 #endif /* __XLETNULL_H__ */

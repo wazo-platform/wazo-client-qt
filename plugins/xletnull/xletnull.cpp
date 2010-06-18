@@ -42,12 +42,12 @@
  * In this example, we just set a simple layout for 
  * the widget and add a label displaying "Hello world !" in it.
  */
-XletNull::XletNull(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent)
+XletNull::XletNull(QWidget *parent)
+    : XLet(parent)
 {
     // set title for the XLet.
     setTitle(tr("Sample"));
-    QHBoxLayout * layout = new QHBoxLayout( this );
+    QHBoxLayout *layout = new QHBoxLayout(this);
     m_label = new QLabel(tr("Hello world !"));
     layout->addWidget(m_label);
 }

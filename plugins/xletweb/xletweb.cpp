@@ -44,8 +44,8 @@
 
 /*! \brief Constructor
  */
-XletWeb::XletWeb(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent)
+XletWeb::XletWeb(QWidget *parent)
+    : XLet(parent)
 {
     qDebug() << "XletWeb::XletWeb()";
     setTitle( tr("Web Browser") );

@@ -48,8 +48,8 @@ VideoXLetPlugin::~VideoXLetPlugin()
 /*! \brief instanciate XletWeb
  *
  * \return a new instance of XletWeb */
-XLet * VideoXLetPlugin::newXLetInstance(BaseEngine * engine, QWidget * parent)
+XLet *VideoXLetPlugin::newXLetInstance(QWidget *parent)
 {
-    return new PlayerWidget(engine, parent);
+    return new PlayerWidget(parent);
 }
 

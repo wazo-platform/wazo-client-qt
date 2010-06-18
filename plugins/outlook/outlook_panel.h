@@ -71,7 +71,7 @@ class OutlookPanel : public XLet
 {
 	Q_OBJECT
 public:
-	OutlookPanel(BaseEngine * engine, QWidget * parent = 0);
+	OutlookPanel(QWidget *parent=0);
 protected:
         void dropEvent(QDropEvent *);
         void focusInEvent(QFocusEvent *);

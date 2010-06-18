@@ -56,32 +56,33 @@
  */
 class PlayerWidget: public XLet
 {
-Q_OBJECT
-    public:
-    PlayerWidget(BaseEngine * engine, QWidget * parent = 0);
-protected:
-    virtual void closeEvent(QCloseEvent *);
-private:
-    bool startMPlayer();
-    bool stopMPlayer();
+    Q_OBJECT
 
+    public:
+        PlayerWidget(QWidget *parent=0);
+    protected:
+        virtual void closeEvent(QCloseEvent *);
+    private:
+        bool startMPlayer();
+        bool stopMPlayer();
+    
     private slots:
-    void catchOutput();
-    void pollCurrentTime();
-    // Dirige la timeline
-    void timeLineChanged(int);
-    // Play/stop
-    void switchPlayState();
-    void mplayerEnded(int, QProcess::ExitStatus);
-private:
-    QPushButton *controller;
-    QWidget *renderTarget;
-    QProcess *mplayerProcess;
-    bool isPlaying;
-    QSlider *timeLine;
-    QTimer *poller;
-    QTextEdit *log;
-    QString m_movie_url;
+        void catchOutput();
+        void pollCurrentTime();
+        // Dirige la timeline
+        void timeLineChanged(int);
+        // Play/stop
+        void switchPlayState();
+        void mplayerEnded(int, QProcess::ExitStatus);
+    private:
+        QPushButton *controller;
+        QWidget *renderTarget;
+        QProcess *mplayerProcess;
+        bool isPlaying;
+        QSlider *timeLine;
+        QTimer *poller;
+        QTextEdit *log;
+        QString m_movie_url;
 };
 
 #endif /* __VIDEOPLAYERWIDGET_H__ */

@@ -1,6 +1,7 @@
 include(../../common.pri)
 TEMPLATE    = lib
 CONFIG      += plugin
+QT += network
 
 win32 {
   CONFIG -= plugin

@@ -57,8 +57,8 @@ const QString mplayerPath("path/to/mplayer.exe");
 const QString mplayerPath("mplayer");
 #endif
 
-PlayerWidget::PlayerWidget(BaseEngine * engine, QWidget * parent)
-    : XLet(engine, parent),
+PlayerWidget::PlayerWidget(QWidget * parent)
+    : XLet(parent),
     isPlaying(false),
     m_movie_url("")
 {

@@ -47,7 +47,7 @@ class VideoXLetPlugin : public QObject, XLetInterface
     Q_INTERFACES(XLetInterface)
 public:
     ~VideoXLetPlugin();
-    XLet * newXLetInstance(BaseEngine * engine = 0, QWidget * parent = 0);
+    XLet *newXLetInstance(QWidget * parent = 0);
 };
 
 #endif

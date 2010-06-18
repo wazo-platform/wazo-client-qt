@@ -42,8 +42,8 @@ Q_EXPORT_PLUGIN2(xletnullplugin, XLetNullPlugin);
 /*! \brief instanciate XletNull
  *
  * \return a new instance of XletNull */
-XLet * XLetNullPlugin::newXLetInstance(BaseEngine * engine, QWidget * parent)
+XLet * XLetNullPlugin::newXLetInstance(QWidget *parent)
 {
-    return new XletNull(engine, parent);
+    return new XletNull(parent);
 }
 
