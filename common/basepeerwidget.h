@@ -35,6 +35,7 @@
 #define __BASEPEERWIDGET_H__
 
 #include <QWidget>
+#include <QList>
 #include <QMouseEvent>
 #include "chitchat.h"
 #include "baseengine.h"
