@@ -39,29 +39,29 @@ ConferencePanel::ConferencePanel(QWidget *parent)
     : XLet(parent)
 {
     // qDebug() << "ConferencePanel::ConferencePanel()";
-    setTitle( tr("Conference") );
+    setTitle(tr("Conference"));
     m_glayout = new QGridLayout(this);
     m_tw = new QTabWidget(this);
-    m_glayout->addWidget( m_tw, 0, 0 );
+    m_glayout->addWidget(m_tw, 0, 0);
     QScrollArea * scrollarea = new QScrollArea(this);
     scrollarea->setWidgetResizable(true);
-    m_summary = new QLabel( scrollarea );
+    m_summary = new QLabel(scrollarea);
     scrollarea->setWidget(m_summary);
-    m_glayout->addWidget( scrollarea, 1, 0 );
-    m_glayout->setRowStretch( 0, 1 );
-    m_glayout->setColumnStretch( 0, 1 );
+    m_glayout->addWidget(scrollarea, 1, 0);
+    m_glayout->setRowStretch(0, 1);
+    m_glayout->setColumnStretch(0, 1);
     m_show_record = false;
     
     setGuiOptions(b_engine->getGuiOptions("merged_gui"));
     startTimer(1000);
     
     // connect signal/slots
-    connect( b_engine, SIGNAL(meetmeEvent(double, const QString &, const QString &, const QString &, const QString &)),
-             this, SLOT(meetmeEvent(double, const QString &, const QString &, const QString &, const QString &)) );
-    connect( b_engine, SIGNAL(meetmeInit(double)),
-             this, SLOT(meetmeInit(double)) );
-    connect( this, SIGNAL(meetmeAction(const QString &, const QString &)),
-             b_engine, SLOT(meetmeAction(const QString &, const QString &)) );
+    connect(b_engine, SIGNAL(meetmeEvent(double, const QString &, const QString &, const QString &, const QString &)),
+            this, SLOT(meetmeEvent(double, const QString &, const QString &, const QString &, const QString &)));
+    connect(b_engine, SIGNAL(meetmeInit(double)),
+            this, SLOT(meetmeInit(double)));
+    connect(this, SIGNAL(meetmeAction(const QString &, const QString &)),
+            b_engine, SLOT(meetmeAction(const QString &, const QString &)));
 }
 
 /*! \brief Destructor */
@@ -86,39 +86,38 @@ void ConferencePanel::meetmeInit(double timeref)
     QString our_userid = b_engine->getXivoClientUser()->userid();
     //qDebug() << "ConferencePanel::meetmeInit()" << meetme;
     
-    foreach (QString astid, b_engine->meetme().keys()) {
-        QHashIterator<QString, MeetmeInfo *> i(b_engine->meetme()[astid]);
-        while(i.hasNext()) {
-            i.next();
-            const MeetmeInfo * meetmeinfo = i.value();
-            QString meetmeid = i.key();
-            QVariantMap uniqueids = meetmeinfo->uniqueids();
-            bool are_we_in_room = false;
-            
-            foreach (QString uniqueid, uniqueids.keys()) {
-                //qDebug()<< "Conf::" << uniqueids[uniqueid].toMap()["userid"].toString() << "\n";
-                if (uniqueids[uniqueid].toMap()["userid"].toString() == our_userid) {
-                    are_we_in_room = true;
-                    break;
-                }
+    QHashIterator<QString, MeetmeInfo *> i(b_engine->meetme());
+    while (i.hasNext()) {
+        i.next();
+        const MeetmeInfo *meetmeinfo = i.value();
+        QString meetmeid = i.key();
+        QString astid = meetmeinfo->astId();
+        QVariantMap uniqueids = meetmeinfo->uniqueids();
+        bool are_we_in_room = false;
+        
+        foreach (QString uniqueid, uniqueids.keys()) {
+            //qDebug()<< "Conf::" << uniqueids[uniqueid].toMap()["userid"].toString() << "\n";
+            if (uniqueids[uniqueid].toMap()["userid"].toString() == our_userid) {
+                are_we_in_room = true;
+                break;
             }
-            
-            if(uniqueids.size() > 0) {
-                addRoomTab(astid, meetmeid, are_we_in_room);
-                foreach (QString uid, uniqueids.keys()) {
-                    setProperties(timeref, "join",
-                                  astid, meetmeid, uid, uniqueids[uid].toMap());
-                    setProperties(timeref, "mutestatus",
-                                  astid, meetmeid, uid, uniqueids[uid].toMap());
-                    setProperties(timeref, "recordstatus",
-                                  astid, meetmeid, uid, uniqueids[uid].toMap());
-                    setProperties(timeref, "changeroompausedstate",
-                                  astid, meetmeid, uid, uniqueids[uid].toMap());
-                }
-                updateButtons(astid, meetmeid);
-            } else {
-                delRoomTab(astid, meetmeid);
+        }
+        
+        if (uniqueids.size() > 0) {
+            addRoomTab(astid, meetmeid, are_we_in_room);
+            foreach (QString uid, uniqueids.keys()) {
+                setProperties(timeref, "join",
+                              astid, meetmeid, uid, uniqueids[uid].toMap());
+                setProperties(timeref, "mutestatus",
+                              astid, meetmeid, uid, uniqueids[uid].toMap());
+                setProperties(timeref, "recordstatus",
+                              astid, meetmeid, uid, uniqueids[uid].toMap());
+                setProperties(timeref, "changeroompausedstate",
+                              astid, meetmeid, uid, uniqueids[uid].toMap());
             }
+            updateButtons(astid, meetmeid);
+        } else {
+            delRoomTab(astid, meetmeid);
         }
     }
     updateSummary();
@@ -126,16 +125,17 @@ void ConferencePanel::meetmeInit(double timeref)
 
 /*! \brief delete a Tab
  */
-void ConferencePanel::delRoomTab(const QString & astid,
-                                 const QString & meetmeid)
+void ConferencePanel::delRoomTab(const QString &astid,
+                                 const QString &meetmeid)
 {
-    const MeetmeInfo * meetmeinfo = b_engine->meetme()[astid][meetmeid];
+    const MeetmeInfo * meetmeinfo = b_engine->meetme()[meetmeid];
     QString roomname = meetmeinfo->roomname();
     QString idxroom = QString("%1-%2").arg(astid).arg(roomname);
-    if(m_layout.contains(idxroom)) {
+    if (m_layout.contains(idxroom)) {
         QWidget * w = qobject_cast<QWidget *>(m_layout[idxroom]->parent()->parent());
-        if(w)
+        if (w) {
             m_tw->removeTab(m_tw->indexOf(w));
+        }
         m_layout[idxroom]->deleteLater();
         m_layout.remove(idxroom);
     }
@@ -143,12 +143,12 @@ void ConferencePanel::delRoomTab(const QString & astid,
 
 /*! \brief make the not authed user list and the button to pause the room on the left part of ui
  */
-QWidget* ConferencePanel::createLeftUserList(QWidget * parent,
-                                             const QString & astid,
-                                             const QString & roomname)
+QWidget* ConferencePanel::createLeftUserList(QWidget *parent,
+                                             const QString &astid,
+                                             const QString &roomname)
 {
-    QWidget * w = new QWidget(parent);
-    QVBoxLayout * vlayout = new QVBoxLayout(w);
+    QWidget *w = new QWidget(parent);
+    QVBoxLayout *vlayout = new QVBoxLayout(w);
     QString idxroom = QString("%1-%2").arg(astid).arg(roomname);
 
     m_user_not_authed_list[idxroom] = new QTreeWidget(w);
@@ -187,13 +187,13 @@ void ConferencePanel::addRoomTab(const QString & astid,
                                  const QString & meetmeid,
                                  int are_we_inside)
 {
-    const MeetmeInfo * meetmeinfo = b_engine->meetme()[astid][meetmeid];
+    const MeetmeInfo * meetmeinfo = b_engine->meetme()[meetmeid];
     QString roomname = meetmeinfo->roomname();
     QString roomnumber = meetmeinfo->roomnumber();
     QString idxroom = QString("%1-%2").arg(astid).arg(roomname);
     QString addtabformat;
     QString tabtooltipformat;
-    if(roomnumber.isEmpty()) {
+    if (roomnumber.isEmpty()) {
         addtabformat = QString("%1").arg(roomname);
         tabtooltipformat = tr("Room %1 on %2").arg(roomname).arg(astid);
     } else {
@@ -201,7 +201,7 @@ void ConferencePanel::addRoomTab(const QString & astid,
         tabtooltipformat = tr("Room %1 (%2) on %3").arg(roomname).arg(roomnumber).arg(astid);
     }
     
-    if(! m_layout.contains(idxroom)) {
+    if (! m_layout.contains(idxroom)) {
         QWidget * w = new QWidget();
         QHBoxLayout * hlayout = new QHBoxLayout(w);
         QWidget * shown_to_everyone = new QWidget(w);
@@ -217,7 +217,7 @@ void ConferencePanel::addRoomTab(const QString & astid,
         m_layout[idxroom]->setColumnStretch(6, 1);
         m_layout[idxroom]->setRowStretch(100, 1);
         
-        if(are_we_inside) {
+        if (are_we_inside) {
             int i = m_tw->addTab(w, addtabformat);
             m_tw->setTabToolTip(i, tabtooltipformat);
         }
@@ -227,7 +227,7 @@ void ConferencePanel::addRoomTab(const QString & astid,
             QWidget * shown_to_everyone = m_layout[idxroom]->parentWidget();
             QWidget * w = shown_to_everyone->parentWidget();
 
-            if(w->parentWidget()!=m_tw) {
+            if (w->parentWidget()!=m_tw) {
                 int i = m_tw->addTab(w, addtabformat);
                 m_tw->setTabToolTip(i, tabtooltipformat);
             }
@@ -238,15 +238,15 @@ void ConferencePanel::addRoomTab(const QString & astid,
 /*! \brief Process meetme events
  */
 void ConferencePanel::meetmeEvent(double timeref,
-                                  const QString & action,
-                                  const QString & astid,
-                                  const QString & meetmeid,
-                                  const QString & uniqueid)
+                                  const QString &action,
+                                  const QString &astid,
+                                  const QString &meetmeid,
+                                  const QString &uniqueid)
 {
     qDebug() << "ConferencePanel::meetmeEvent()" << action << astid << meetmeid << uniqueid;
-    if (! b_engine->meetme()[astid].contains(meetmeid))
+    if (! b_engine->meetme().contains(meetmeid))
         return;
-    const MeetmeInfo * meetmeinfo = b_engine->meetme()[astid][meetmeid];
+    const MeetmeInfo * meetmeinfo = b_engine->meetme()[meetmeid];
     
     QVariantMap uniqueids = meetmeinfo->uniqueids();
     bool is_this_us = false;
@@ -270,19 +270,17 @@ void ConferencePanel::meetmeEvent(double timeref,
 
 /*! \brief Update the Kick/mute buttons
  */
-void ConferencePanel::updateButtons(const QString & astid,
-                                    const QString & meetmeid)
+void ConferencePanel::updateButtons(const QString &astid,
+                                    const QString &meetmeid)
 {
-    if(!b_engine)
-        return;
-    const MeetmeInfo * thismeetmeinfo = b_engine->meetme()[astid][meetmeid];
+    const MeetmeInfo * thismeetmeinfo = b_engine->meetme()[meetmeid];
     QString roomnumber = thismeetmeinfo->roomnumber();
     QString roomname = thismeetmeinfo->roomname();
     
     QString idxroom = QString("%1-%2").arg(astid).arg(roomname);
     UserInfo * userinfo = b_engine->getXivoClientUser();
     QString userid = (userinfo ? userinfo->userid() : QString(""));
-    QHashIterator<QString, MeetmeInfo *> i(b_engine->meetme()[astid]);
+    QHashIterator<QString, MeetmeInfo *> i(b_engine->meetme());
     while(i.hasNext()) {
         i.next();
         const MeetmeInfo * meetmeinfo = i.value();
@@ -354,13 +352,13 @@ void ConferencePanel::updateButtons(const QString & astid,
 /*! \brief create/update widgets which display person info
  */
 void ConferencePanel::setProperties(double timeref,
-                                    const QString & action,
-                                    const QString & astid,
-                                    const QString & meetmeid,
-                                    const QString & uniqueid,
-                                    const QVariantMap & details)
+                                    const QString &action,
+                                    const QString &astid,
+                                    const QString &meetmeid,
+                                    const QString &uniqueid,
+                                    const QVariantMap &details)
 {
-    const MeetmeInfo * meetmeinfo = b_engine->meetme()[astid][meetmeid];
+    const MeetmeInfo * meetmeinfo = b_engine->meetme()[meetmeid];
     QString roomname = meetmeinfo->roomname();
     qDebug() << "ConferencePanel::setProperties()" << action << astid << roomname << uniqueid << details;
     QString idxroom = QString("%1-%2").arg(astid).arg(roomname);
@@ -375,7 +373,7 @@ void ConferencePanel::setProperties(double timeref,
         bool authed = details["authed"].toBool();
         
         if (!authed) {
-            if(! m_user_not_authed.contains(ref)) {
+            if (! m_user_not_authed.contains(ref)) {
                 m_user_not_authed[ref] = new QTreeWidgetItem(m_user_not_authed_list[idxroom]->topLevelItem(0));
                 
                 m_user_not_authed[ref]->setText(0, details["fullname"].toString() + "<" + details["phonenum"].toString() + ">");
@@ -392,7 +390,7 @@ void ConferencePanel::setProperties(double timeref,
         }
         
         int time_spent = int(timeref - details["time_start"].toDouble() + 0.5);
-        if(! m_infos.contains(ref)) {
+        if (! m_infos.contains(ref)) {
             //UserInfo * userinfo = b_engine ? b_engine->getXivoClientUser() : NULL;
             
             m_infos[ref] = new QLabel(QString("%1 <%2>").arg(fullname).arg(phonenum));
@@ -473,12 +471,12 @@ void ConferencePanel::setProperties(double timeref,
             m_layout[idxroom]->addWidget( m_timespent[ref], usernum.toInt(), 5 );
             // glayout->addWidget( qp2, 0, 3 );
         }
-    } else if(action == "leave") {
+    } else if (action == "leave") {
         if(m_user_not_authed.contains(ref)) {
             delete m_user_not_authed[ref];
             m_user_not_authed.remove(ref);
         }
-        if(m_infos.contains(ref)) {
+        if (m_infos.contains(ref)) {
             m_layout[idxroom]->removeWidget( m_infos[ref] );
             m_layout[idxroom]->removeWidget( m_action_kick[ref] );
             m_layout[idxroom]->removeWidget( m_action_record[ref] );
@@ -501,20 +499,20 @@ void ConferencePanel::setProperties(double timeref,
                 count ++;
             }
         }
-        if(count == 0)
+        if (count == 0)
             delRoomTab(astid, meetmeid);
-    } else if(action == "auth") {
+    } else if (action == "auth") {
         delete m_user_not_authed[ref];
         m_user_not_authed.remove(ref);
-    } else if(action == "mutestatus") {
+    } else if (action == "mutestatus") {
         QString mutestatus = details["mutestatus"].toString();
-        if(m_infos.contains(ref)) {
-            if(mutestatus == "on") {
+        if (m_infos.contains(ref)) {
+            if (mutestatus == "on") {
                 if (m_action_mute[ref]->property("mutestatus").toString() == "off") {
                     m_action_mute[ref]->setText(tr("Unmute"));
                     m_action_mute[ref]->setProperty("mutestatus", "on");
                 }
-            } else if(mutestatus == "off") {
+            } else if (mutestatus == "off") {
                 if (m_action_mute[ref]->property("mutestatus").toString() == "on") {
                     m_action_mute[ref]->setText(tr("Mute"));
                     m_action_mute[ref]->setProperty("mutestatus", "off");
@@ -524,22 +522,22 @@ void ConferencePanel::setProperties(double timeref,
             }
             m_action_mute[ref]->setIconSize(QSize(16, 16));
         }
-    } else if(action == "recordstatus") {
+    } else if (action == "recordstatus") {
         QString recordstatus = details["recordstatus"].toString();
-        if(m_infos.contains(ref)) {
-            if(recordstatus == "on") {
+        if (m_infos.contains(ref)) {
+            if (recordstatus == "on") {
                 m_action_record[ref]->setText(tr("Stop Record"));
                 m_action_record[ref]->setProperty("recordstatus", "on");
-            } else if(recordstatus == "off") {
+            } else if (recordstatus == "off") {
                 m_action_record[ref]->setText(tr("Record"));
                 m_action_record[ref]->setProperty("recordstatus", "off");
             } else {
                 qDebug() << "ConferencePanel::meetmeEvent() unknown recordstatus" << recordstatus << ref;
             }
         }
-    } else if(action == "changeroompausedstate") {
+    } else if (action == "changeroompausedstate") {
         QString pause_state_label;
-        bool paused = b_engine->meetme()[astid][meetmeid]->paused();
+        bool paused = b_engine->meetme()[meetmeid]->paused();
         if (paused) {
             pause_state_label = tr("&Start/Continue the conference");
         } else {
@@ -608,11 +606,11 @@ void ConferencePanel::doMeetMeAction()
         .arg(sender()->property("usernum").toString())
         .arg(sender()->property("uniqueid").toString());
     
-    if(action == "kick") {
+    if (action == "kick") {
         meetmeAction(action, meetmeidentity);
         m_action_kick[ref]->setIconSize(QSize(8, 8));
-    } else if(action == "record") {
-        if(m_action_record[ref]->property("recordstatus").toString() == "off") {
+    } else if (action == "record") {
+        if (m_action_record[ref]->property("recordstatus").toString() == "off") {
             meetmeAction("record", meetmeidentity);
             m_action_record[ref]->setProperty("recordstatus", "on");
             m_action_record[ref]->setText(tr("Stop Record"));
@@ -621,11 +619,11 @@ void ConferencePanel::doMeetMeAction()
             m_action_record[ref]->setProperty("recordstatus", "off");
             m_action_record[ref]->setText(tr("Record"));
         }
-    } else if(action == "mute") {
+    } else if (action == "mute") {
         QString mutestatus = m_action_mute[ref]->property("mutestatus").toString();
-        if(mutestatus == "off") {
+        if (mutestatus == "off") {
             meetmeAction("mute", meetmeidentity);
-        } else if(mutestatus == "on") {
+        } else if (mutestatus == "on") {
             meetmeAction("unmute", meetmeidentity);
         } else {
             qDebug() << "ConferencePanel::doMeetMeAction() unknown mutestatus" << mutestatus << ref;
@@ -683,22 +681,21 @@ void ConferencePanel::updateSummary()
         summary.append(tr("%1 (%2) : %3\n").arg(m_layout[idxroom]->property("roomname").toString()).arg(m_layout[idxroom]->property("roomnum").toString()).arg(tr("%n member(s)", "", count)));
     }
 */
-    if(!b_engine)
-        return;
-    foreach(QString astid, b_engine->meetme().keys()) {
-        foreach(QString meetmeid, b_engine->meetme()[astid].keys()) {
-            //qDebug() << astid << meetmeid << b_engine->meetme()[astid][meetmeid];
-            QString roomname = b_engine->meetme()[astid][meetmeid]->roomname();
-            QString roomnumber = b_engine->meetme()[astid][meetmeid]->roomnumber();
-            count = b_engine->meetme()[astid][meetmeid]->uniqueids().count();
-            membercountformat = tr("%n member(s)", "", count);
-            
-            if(roomnumber.isEmpty())
-                summaryformat = tr("%1 : %2\n").arg(roomname).arg(membercountformat);
-            else
-                summaryformat = tr("%1 (%2) : %3\n").arg(roomname).arg(roomnumber).arg(membercountformat);
-            summary.append(summaryformat);
-        }
+
+    foreach(QString meetmeid, b_engine->meetme().keys()) {
+        //qDebug() << astid << meetmeid << b_engine->meetme()[astid][meetmeid];
+        const MeetmeInfo *meetmeinfo = b_engine->meetme()[meetmeid];
+        QString roomname = b_engine->meetme()[meetmeid]->roomname();
+        QString roomnumber = b_engine->meetme()[meetmeid]->roomnumber();
+        QString astid = b_engine->meetme()[meetmeid]->astId();
+        count = b_engine->meetme()[meetmeid]->uniqueids().count();
+        membercountformat = tr("%n member(s)", "", count);
+        
+        if(roomnumber.isEmpty())
+            summaryformat = tr("%1 : %2\n").arg(roomname).arg(membercountformat);
+        else
+            summaryformat = tr("%1 (%2) : %3\n").arg(roomname).arg(roomnumber).arg(membercountformat);
+        summary.append(summaryformat);
     }
-    m_summary->setText( summary );
+    m_summary->setText(summary);
 }

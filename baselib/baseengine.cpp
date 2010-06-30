@@ -1018,7 +1018,7 @@ void BaseEngine::parseCommand(const QString & line)
                             if (m_meetme.contains(meetmeid) == false) {
                                 m_meetme[meetmeid] = new MeetmeInfo();
                             }
-                            m_meetme[meetmeid]->setProperties(map3);
+                            m_meetme[meetmeid]->setProperties(astid, map3);
                         }
                     }
                 }

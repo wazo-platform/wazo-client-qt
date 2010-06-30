@@ -99,7 +99,12 @@ bool MeetmeInfo::paused() const
     return m_paused;
 }
 
-bool MeetmeInfo::setProperties(const QVariantMap & properties)
+const QString& MeetmeInfo::astId() const
+{
+    return m_astid;
+}
+
+void MeetmeInfo::setProperties(const QString &astid, const QVariantMap & properties)
 {
     // fixed-by-config stuff
     m_context = properties["context"].toString();
@@ -107,6 +112,7 @@ bool MeetmeInfo::setProperties(const QVariantMap & properties)
     m_roomnumber = properties["roomnumber"].toString();
     m_pin = properties["pin"].toString();
     m_adminpin = properties["pinadmin"].toString();
+    m_astid = astid;
     
     // variable stuff
     m_adminid = properties["adminid"].toString();
@@ -114,7 +120,6 @@ bool MeetmeInfo::setProperties(const QVariantMap & properties)
     m_adminlist = properties["adminlist"].toStringList();
     m_uniqueids = properties["uniqueids"].toMap();
     m_paused = properties["paused"].toBool();
-    return true;
 }
 
 bool MeetmeInfo::update(const QVariantMap & map)
