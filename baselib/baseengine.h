@@ -75,6 +75,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 {
     Q_OBJECT
     public:
+
+
         //! Enum for BaseEngine state logged/not logged
         typedef enum {ENotLogged, ELogged } EngineState;
 
@@ -164,15 +166,15 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QHash<QString, AgentInfo *> agents() const { return m_agents; }; //!< Return the agents to any Xlet
         const QHash<QString, QueueInfo *> queues() const { return m_queues; }; //!< Return the queues to any Xlet
         const QHash<QString, PhoneInfo *> phones() const { return m_phones; }; //!< Return the phones to any Xlet
-        const QHash<QString, UserInfo *>  users()  const { return m_users; };  //!< Return the users  to any Xlet
-        const QHash<QString, QHash<QString, MeetmeInfo *> >  meetme()  const { return m_meetme; };  //!< Return the meetme  to any Xlet
+        const QHash<QString, UserInfo *>  users() const { return m_users; };  //!< Return the users  to any Xlet
+        const QHash<QString, MeetmeInfo *>  meetme() const { return m_meetme; };  //!< Return the meetme  to any Xlet
         const QHash<QString, QHash<QString, ParkingInfo *> > parking() const { return m_parking; }; //!< Return the parking to any Xlet
         
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);
         QMultiHash<QString, e_callback* > m_class_event_cb;
         void setOSInfos(const QString &);
-    
+
     public slots:
         void start();  //!< start the connection process.
         void stop();   //!< stop the engine
@@ -388,8 +390,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, PhoneInfo *> m_phones;  //!< List of Phone informations
         QHash<QString, AgentInfo *> m_agents;  //!< List of Agent informations
         QHash<QString, QueueInfo *> m_queues;  //!< List of Queue informations
-        QHash<QString, QHash<QString, MeetmeInfo *> >  m_meetme; //! meet me (conference rooms)
+        QHash<QString, MeetmeInfo *> m_meetme; //! List of Conference rooms
         QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
+
+        QVariantMap tree;
 };
 
 extern BASELIB_EXPORT BaseEngine *b_engine;

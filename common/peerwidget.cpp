@@ -75,7 +75,7 @@ PeerWidget::PeerWidget(UserInfo *ui)
     setName(m_ui->fullname());
 
     if(! m_ui->ctilogin().isEmpty()) {
-        m_user_status = new QPushButton(peer);
+        m_user_status = new ChitchatButton(peer, &m_ui);
         m_user_status->setProperty("userid", ui->userid());
         m_user_status->setProperty("astid", ui->astid());
         m_user_status->setIconSize(QSize(20,20));
@@ -84,10 +84,8 @@ PeerWidget::PeerWidget(UserInfo *ui)
         m_user_status->setFocusPolicy(Qt::NoFocus);
 
         if (b_engine->enabledFunction("chitchat")) {
-            if (b_engine->getFullId() != ui->userid()) {
-                connect(m_user_status, SIGNAL(pressed()),
-                        ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
-            }
+            connect(m_user_status, SIGNAL(pressed()),
+                    ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
         }
         hLayout->addWidget(m_user_status);
     } else {
@@ -199,3 +197,22 @@ void PeerWidget::setName(const QString & /*name*/)
     m_textlbl->setText(text);
 }
 
+ChitchatButton::ChitchatButton(QWidget *parent, UserInfo **peerUi)
+    : QPushButton(parent), m_ui(peerUi)
+{
+}
+
+bool ChitchatButton::event(QEvent *e)
+{
+    /* Don't allow an user to open a chitchat windows
+     * with someone non connected or with himself */
+    if ((e->type() == QEvent::MouseButtonPress) ||
+        (e->type() == QEvent::MouseButtonDblClick)) {
+        if (((*m_ui)->availstate().value("stateid") == "xivo_unknown") ||
+             (b_engine->getFullId() == (*m_ui)->userid())) {
+            return true;
+        }
+    }
+
+    return QPushButton::event(e);
+}

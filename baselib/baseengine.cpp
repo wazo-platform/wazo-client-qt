@@ -77,7 +77,7 @@ BaseEngine::BaseEngine(QSettings *settings,
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
       m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
-      m_forced_to_disconnect(false)
+      m_forced_to_disconnect(false), tree(QVariantMap())
 {
     settings->setParent(this);
     m_timerid_keepalive = 0;
@@ -1010,14 +1010,15 @@ void BaseEngine::parseCommand(const QString & line)
             if (function == "sendlist") {
                 QVariantMap map1 = datamap["payload"].toMap();
                 foreach(QString astid, map1.keys()) {
-                    m_meetme[astid].clear();
+                    m_meetme.clear();
                     QVariantMap map2 = map1[astid].toMap();
                     foreach(QString meetmeid, map2.keys()) {
                         QVariantMap map3 = map2[meetmeid].toMap();
-                        if(!meetmeid.isEmpty() && !astid.isEmpty()) {
-                            if (m_meetme[astid].contains(meetmeid) == false)
-                                m_meetme[astid][meetmeid] = new MeetmeInfo();
-                            m_meetme[astid][meetmeid]->setProperties(map3);
+                        if(!meetmeid.isEmpty()) {
+                            if (m_meetme.contains(meetmeid) == false) {
+                                m_meetme[meetmeid] = new MeetmeInfo();
+                            }
+                            m_meetme[meetmeid]->setProperties(map3);
                         }
                     }
                 }
@@ -1029,8 +1030,8 @@ void BaseEngine::parseCommand(const QString & line)
                 QString meetmeid = map["meetmeid"].toString();
                 QString action = map["action"].toString();
                 QString uniqueid = map["uniqueid"].toString();
-                if (m_meetme.contains(astid) && m_meetme[astid].contains(meetmeid))
-                    m_meetme[astid][meetmeid]->update(map);
+                if (m_meetme.contains(meetmeid))
+                    m_meetme[meetmeid]->update(map);
                 emit meetmeEvent(m_timesrv, action, astid, meetmeid, uniqueid);
             } else if (function == "add") {
                 QVariantMap command;
@@ -1531,6 +1532,7 @@ void BaseEngine::popupError(const QString & errorid)
     }
     else if(errorid.startsWith("xivoversion_client:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
+
         if(versionslist.size() >= 2)
             errormsg = tr("Your client's major version (%1)\n"
                           "is not the same as the server's (%2).")

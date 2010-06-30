@@ -47,6 +47,7 @@
 class BaseEngine;
 class PeerChannel;
 class UserInfo;
+class ChitchatButton;
 
 /*! \brief Widget to display a Peer status
  *
@@ -65,13 +66,29 @@ class PeerWidget : public BasePeerWidget
         void setMobileState(const QString &color);
         void updatePresence();  //!< update presence information displayed
         void updatePhonesStates();
+
     private:
         QHash<QString, QLabel *> m_lblphones; //!< phone labels
             
-        QPushButton *m_user_status;  //!< Peer state display from XiVO CTI Client
+        ChitchatButton *m_user_status;  //!< Peer state display from XiVO CTI Client
         QLabel *m_agentlbl;       //!< agent state label
         QLabel *m_mobilelbl;      //!< mobile phone label
         QLabel *m_textlbl;        //!< text label : to display peer name
+};
+
+class ChitchatButton : public QPushButton
+{
+    Q_OBJECT
+
+    public:
+        ChitchatButton(QWidget *parent, UserInfo **m_ui);
+
+    protected:
+        bool event(QEvent *event);
+
+    private:
+        UserInfo **m_ui;
+
 };
 
 #endif

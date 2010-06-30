@@ -72,6 +72,7 @@ class BasePeerWidget : public QWidget
         void dragEnterEvent(QDragEnterEvent *);
         void dragMoveEvent(QDragMoveEvent *);
         void dropEvent(QDropEvent *);
+        bool event(QEvent *e);
 
     signals:
         void actionCall(const QString &, const QString &, const QString &dst = ""); //! originate, transfer, etc...

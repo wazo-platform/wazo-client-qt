@@ -320,6 +320,9 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
          < QApplication::startDragDistance())
         return;
 
+    if (!b_engine->enabledFunction("switchboard"))
+        return;
+
     QDrag *drag = new QDrag(this);
     QMimeData *mimeData = new QMimeData;
     if(m_ui) {
@@ -736,3 +739,16 @@ QString BasePeerWidget::id() const
         return (QString("number-") + number());
 }
 
+bool BasePeerWidget::event(QEvent *e)
+{
+    if (!b_engine->enabledFunction("switchboard")) {
+        if ((e->type() == QEvent::DragMove) ||
+            (e->type() == QEvent::DragEnter) ||
+            (e->type() == QEvent::DragLeave) ||
+            (e->type() == QEvent::DragResponse )) {
+            return 1;
+        }
+    }
+
+    return QWidget::event(e);
+}
