@@ -774,7 +774,7 @@ QWidget* QueueRow::makeTitleRow(QueuesPanel *parent)
     } stats_detail[] =  {
         {   "Holdtime",
             tr("Estimated\nHoldtime"),
-            tr("The average waiting time before getting an agent,"
+            tr("Average waiting time before getting an agent,"
                "calculated by asterisk") },
         {   "Xivo-Conn",
             tr("Connected"),
@@ -787,10 +787,10 @@ QWidget* QueueRow::makeTitleRow(QueuesPanel *parent)
             tr("Number of agents in this queue, currently talking") },
         {   "Xivo-Holdtime-avg",
             tr("Average\nHoldtime"),
-            tr("The average waiting time before getting an agent") },
+            tr("Average waiting time before getting an agent") },
         {   "Xivo-Holdtime-max",
             tr("Max\nHoldtime"),
-            tr("The maximum waiting time before getting an agent") },
+            tr("Maximum waiting time before getting an agent") },
      /* {   "Completed",
             tr("Completed"),
             tr("Completed") },
@@ -824,7 +824,7 @@ QWidget* QueueRow::makeTitleRow(QueuesPanel *parent)
             tr("Ratio (Linked) / (Joined) (%)") },
         {   "Xivo-TalkingTime",
             tr("Conversation\nTime"),
-            tr("The average length of a conversation") },
+            tr("Average length of a conversation") },
         {   "Xivo-Qos",
             tr("Quality of\nService\n(%)"),
             tr("Ratio (Number of calls answered in less than X sec) / "

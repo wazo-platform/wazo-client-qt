@@ -93,7 +93,7 @@ MainWidget::MainWidget(BaseEngine * engine,
     statusBar()->addPermanentWidget(m_status);
     statusBar()->clearMessage();
     
-    setWindowTitle("XiVO " + m_appliname);
+    setWindowTitle(QString("XiVO %1").arg(m_appliname));
     setDockOptions(QMainWindow::AllowNestedDocks);
     setAnimated(false);
     
@@ -431,9 +431,9 @@ void MainWidget::createMenus()
 
 void MainWidget::updateAppliName()
 {
-    setWindowTitle("XiVO " + m_appliname);
+    setWindowTitle(QString("XiVO %1").arg(m_appliname));
     if(m_withsystray && m_systrayIcon)
-        m_systrayIcon->setToolTip("XiVO " + m_appliname);
+        m_systrayIcon->setToolTip(QString("XiVO %1").arg(m_appliname));
     // m_filemenu->setTitle("&XiVO Client");
 }
 
@@ -446,7 +446,7 @@ void MainWidget::createSystrayIcon()
 {
     m_systrayIcon = new QSystemTrayIcon(this);
     setSystrayIcon("xivo-black");
-    m_systrayIcon->setToolTip("XiVO " + m_appliname);
+    m_systrayIcon->setToolTip(QString("XiVO %1").arg(m_appliname));
     QMenu * menu = new QMenu(QString("SystrayMenu"), this);
     menu->addAction(m_cfgact);
     menu->addSeparator();
