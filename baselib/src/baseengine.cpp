@@ -77,7 +77,7 @@ BaseEngine::BaseEngine(QSettings *settings,
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
       m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
-      m_forced_to_disconnect(false), tree(QVariantMap())
+      m_forced_to_disconnect(false), tree(DStore())
 {
     settings->setParent(this);
     m_timerid_keepalive = 0;

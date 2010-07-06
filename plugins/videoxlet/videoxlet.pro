@@ -1,20 +1,6 @@
-include(../../common.pri)
-TEMPLATE    = lib
-CONFIG      += plugin
-QT += network
+include(../plugins-global.pri)
 
-win32 {
-  CONFIG -= plugin
-  CONFIG += dll
-}
+HEADERS     = src/*.h
+SOURCES     = src/*.cpp
 
-INCLUDEPATH += ../../baselib
-HEADERS     = videopanel.h   videoxletplugin.h
-SOURCES     = videopanel.cpp videoxletplugin.cpp
 TARGET      = $$qtLibraryTarget(videoxletplugin)
-DESTDIR     = ../../bin/plugins
-
-LIBS         += -L../../bin/
-unix:LIBS    += -lxivoclientbaselib
-win32:LIBS   += -lxivoclientbaselib1
-

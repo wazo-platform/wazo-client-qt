@@ -35,7 +35,7 @@
 #define __XLETWEB_H__
 
 #include <QObject>
-#include "xlet.h"
+#include <xlet.h>
 
 class QWebView;
 class QLineEdit;

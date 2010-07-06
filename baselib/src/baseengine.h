@@ -46,15 +46,16 @@
 #include <QDateTime>
 #include <QVariant>
 #include <QVariantMap>
+#include "dstore/src/dstore.h"
 
 class Xlet;
 
-class UserInfo;
-class PhoneInfo;
-class AgentInfo;
-class QueueInfo;
-class MeetmeInfo;
-class ParkingInfo;
+#include <userinfo.h>
+#include <phoneinfo.h>
+#include <agentinfo.h>
+#include <queueinfo.h>
+#include <meetmeinfo.h>
+#include <parkinginfo.h>
 
 class QFile;
 class QSettings;
@@ -393,7 +394,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, MeetmeInfo *> m_meetme; //! List of Conference rooms
         QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 
-        QVariantMap tree;
+        DStore tree;
 };
 
 extern BASELIB_EXPORT BaseEngine *b_engine;

@@ -7,7 +7,7 @@ win32 {
   CONFIG += dll
 }
 
-INCLUDEPATH += ../../baselib
+INCLUDEPATH += ../../baselib/src
 HEADERS     = outlook_*.h   outlookplugin.h
 SOURCES     = outlook_*.cpp outlookplugin.cpp
 TARGET      = $$qtLibraryTarget(outlookplugin)

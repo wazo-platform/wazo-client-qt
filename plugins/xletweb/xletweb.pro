@@ -1,21 +1,8 @@
-include(../../common.pri)
-TEMPLATE     = lib
-CONFIG += plugin
+include(../plugins-global.pri)
 
-win32 {
-  CONFIG -= plugin
-  CONFIG += dll
-}
+HEADERS     = src/*.h
+SOURCES     = src/*.cpp
 
-INCLUDEPATH  += ../../baselib
-HEADERS      = xletweb.h   xletwebplugin.h
-SOURCES      = xletweb.cpp xletwebplugin.cpp
-TARGET       = $$qtLibraryTarget(xletwebplugin)
-DESTDIR      = ../../bin/plugins
-LIBS         += -L../../bin/
-unix:LIBS    += -lxivoclientbaselib
-win32:LIBS   += -lxivoclientbaselib1
+TARGET      = $$qtLibraryTarget(xletwebplugin)
 
-QT += network
 QT += webkit
-

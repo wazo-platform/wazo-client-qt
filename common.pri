@@ -24,3 +24,13 @@ isEmpty( DATEBUILD ) {
 QMAKE_CXXFLAGS += -DXIVOVER=\"\\\"$${XIVOVER}\\\"\"
 QMAKE_CXXFLAGS += -DSVNVER=\"\\\"$${SVNVER}\\\"\"
 QMAKE_CXXFLAGS += -DDATEBUILD=\"\\\"$${DATEBUILD}\\\"\"
+
+# regenerate qm when needed
+
+QMAKE_EXTRA_COMPILERS += updateqm
+updateqm.input = TRANSLATIONS
+updateqm.output = ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
+updateqm.commands = lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
+updateqm.CONFIG += no_link
+PRE_TARGETDEPS += compiler_updateqm_make_all
+
