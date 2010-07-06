@@ -27,10 +27,10 @@ win32 {
   LIBS += -L../bin/ -lxivoclientbaselib1
 }
 
-INCLUDEPATH += . $${COMMON_DIR}  $${XIVOCLIENT_DIR}  $${BASELIB_DIR}
+INCLUDEPATH += . $${COMMON_DIR}  $${XIVOCLIENT_DIR}/src  $${BASELIB_DIR}/src
 
-HEADERS += $${XIVOCLIENT_DIR}/*.h
+HEADERS += $${XIVOCLIENT_DIR}/src/*.h
 HEADERS += $${COMMON_DIR}/*.h
 
-SOURCES += $${XIVOCLIENT_DIR}/*.cpp
+SOURCES += $${XIVOCLIENT_DIR}/src/*.cpp
 SOURCES += $${COMMON_DIR}/*.cpp 
