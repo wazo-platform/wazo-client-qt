@@ -853,7 +853,7 @@ QWidget* QueueRow::makeTitleRow(QueuesPanel *parent)
     layout->addWidget(label, 1, col++);
 
     label = new QLabel(row);
-    label->setText(tr("Number of agent"));
+    label->setText(tr("Number of agents"));
     label->setAlignment(Qt::AlignCenter);
     label->setStyleSheet("background-color:#333;color:#eee;margin-right:1px;");
     layout->addWidget(label, 0, 6, 1, 3);
