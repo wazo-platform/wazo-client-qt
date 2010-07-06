@@ -1,8 +1,8 @@
 include(../common.pri)
 
 TEMPLATE     = lib
-win32:CONFIG = dll
-unix:CONFIG  = plugin
+win32:CONFIG += dll
+unix:CONFIG  += plugin
 
 # plugin shouldn't have to have require network normaly
 # way to make plugin have to be reworked
