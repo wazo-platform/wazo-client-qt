@@ -91,6 +91,16 @@ AgentsPanel::AgentsPanel(QWidget *parent)
              this, SLOT(statusRecord(const QString &, const QString &, const QString &)) );
     connect( b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
              this, SLOT(statusListen(const QString &, const QString &, const QString &)) );
+    
+//     m_title1->hide();
+//     m_title2->hide();
+//     m_title3->hide();
+//     m_title4->hide();
+//     m_title5->hide();
+//     m_title_logged->hide();
+//     m_title_njoined->hide();
+//     m_title_paused->hide();
+//     m_title_npaused->hide();
 }
 
 /*! \brief set font
@@ -144,6 +154,20 @@ void AgentsPanel::newAgentList(const QStringList & list)
     //qDebug() << "AgentsPanel::newAgentList()" << list;
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
     // qDebug() << "AgentsPanel::newAgentList()" << b_engine->agents();
+
+    // if(! b_engine->agents().isEmpty())
+    // XXX : when this condition is set, what is shown is "too" empty ...
+    //       we should try to display something like "no agent" instead.
+    //     m_title1->show();
+    //     m_title2->show();
+    //     m_title3->show();
+    //     m_title4->show();
+    //     m_title5->show();
+    //     m_title_logged->show();
+    //     m_title_njoined->show();
+    //     m_title_paused->show();
+    //     m_title_npaused->show();
+    
     while( iter.hasNext() ) {
         iter.next();
         AgentInfo * ainfo = iter.value();

@@ -57,8 +57,8 @@ QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
     m_queuelegend_agentid = new QLabel(tr("Agent"), this);
     m_queuelegend_status = new QLabel(tr("Status"), this);
     m_queuelegend_paused = new QLabel(tr("Paused ?"), this);
-    m_queuelegend_callstaken = new QLabel(tr("Calls Taken"), this);
-    m_queuelegend_lastcall = new QLabel(tr("Last Call"), this);
+    m_queuelegend_callstaken = new QLabel(tr("Calls\nTaken"), this);
+    m_queuelegend_lastcall = new QLabel(tr("Last\nCall"), this);
     m_queuelegend_penalty = new QLabel(tr("Penalty"), this);
     m_gridlayout->setRowStretch( 100, 1 );
     m_gridlayout->addWidget(m_queuedescription, 0, 0);
@@ -76,7 +76,7 @@ QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
     m_queuelegend_callstaken->hide();
     m_queuelegend_lastcall->hide();
     m_queuelegend_penalty->hide();
-
+    
     // connect signals/slots to engine
     connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
             this, SLOT(newAgentList(const QStringList &)) );
@@ -162,12 +162,14 @@ void QueuedetailsPanel::updatePanel()
     QVariant queuestats = properties["queuestats"];
     QVariantMap agentstats = properties["agents_in_queue"].toMap();
     
-    m_queuelegend_agentid->show();
-    m_queuelegend_status->show();
-    m_queuelegend_paused->show();
-    m_queuelegend_callstaken->show();
-    m_queuelegend_lastcall->show();
-    m_queuelegend_penalty->show();
+    if(! b_engine->agents().isEmpty()) {
+        m_queuelegend_agentid->show();
+        m_queuelegend_status->show();
+        m_queuelegend_paused->show();
+        m_queuelegend_callstaken->show();
+        m_queuelegend_lastcall->show();
+        m_queuelegend_penalty->show();
+    }
     
     int i = 0;
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());

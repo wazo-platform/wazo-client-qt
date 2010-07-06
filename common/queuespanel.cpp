@@ -678,18 +678,19 @@ void QueueRow::update()
     QVariantMap queueagents = qinfo->properties()["agents_in_queue"].toMap();
     QStringList queueagents_list;
 
-    int navail = 0;
+    int nagents;
 
+    nagents = 0; // count the number of Available agents
     foreach (QString agentname, queueagents.keys()) {
         QVariantMap qaprops = queueagents[agentname].toMap();
         if ((qaprops["Status"].toString() == "1") && (qaprops["Paused"].toString() == "0")) {
-            navail++;
+            nagents++;
             queueagents_list << agentname;
         }
     }
     if (m_infoList.contains("Xivo-Avail")) {
-        m_infoList["Xivo-Avail"]->setText(QString::number(navail));
-        if (navail) {
+        m_infoList["Xivo-Avail"]->setText(QString::number(nagents));
+        if (nagents) {
             m_infoList["Xivo-Avail"]->setToolTip(
                 tr("Available agents : %1").arg(queueagents_list.join(", ")));
         } else {
@@ -697,27 +698,27 @@ void QueueRow::update()
         }
     }
 
-    navail = 0;
+    nagents = 0; // count the number of Connected agents
     foreach (QString agentname, queueagents.keys()) {
         QVariantMap qaprops = queueagents[agentname].toMap();
         if ((qaprops["Status"].toString() == "3") || (qaprops["Status"].toString() == "1")) {
-            navail ++;
+            nagents ++;
         }
     }
     if (m_infoList.contains("Xivo-Conn"))
-        m_infoList["Xivo-Conn"]->setText(QString::number(navail));
+        m_infoList["Xivo-Conn"]->setText(QString::number(nagents));
 
 
-    navail = 0;
+    nagents = 0; // count the number of Talking agents
     foreach (QString agentname, queueagents.keys()) {
         QVariantMap qaprops = queueagents[agentname].toMap();
         if ((qaprops["Status"].toString() == "3") && (qaprops["Paused"].toString() == "0")) {
-            navail ++;
+            nagents ++;
         }
     }
 
     if (m_infoList.contains("Xivo-Talking"))
-        m_infoList["Xivo-Talking"]->setText(QString::number(navail));
+        m_infoList["Xivo-Talking"]->setText(QString::number(nagents));
 
     QVariantMap properties = qinfo->properties();
     QVariantMap channel_list = properties["channels"].toMap();
