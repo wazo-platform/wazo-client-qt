@@ -18,9 +18,11 @@ VERSION     = $${XIVOVER}
 INCLUDEPATH += $${COMMON_DIR} $${JSON_JSONQT_DIR} $${BASELIB_DIR}/src
 
 HEADERS     += $${BASELIB_DIR}/src/*.h
+HEADERS     += $${BASELIB_DIR}/dstore/src/*.h
 HEADERS     += $${JSON_JSONQT_DIR}/*.h
 
 SOURCES     += $${BASELIB_DIR}/src/*.cpp
+SOURCES     += $${BASELIB_DIR}/dstore/src/*.cpp
 SOURCES     += $${JSON_JSONQT_DIR}/*.cpp
 
 DEFINES     += BASELIB_LIBRARY

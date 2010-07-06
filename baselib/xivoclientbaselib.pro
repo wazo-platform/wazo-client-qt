@@ -7,7 +7,8 @@ JSON_JSONQT_DIR = ../3rdparty/json_jsonqt/lib
 include(../common.pri)
 
 # Library version
-VERSION     = 1.1
+VERSION     = $${XIVOVER}
+DEFINES     += BASELIB_LIBRARY
 
 INCLUDEPATH += $${COMMONDIR} $${JSON_JSONQT_DIR} src
 
@@ -20,6 +21,7 @@ SOURCES     += src/dstore/src/*.cpp
 SOURCES     += $${JSON_JSONQT_DIR}/*.cpp
 
 DESTDIR     = ../bin
+DEFINES     += BASELIB_LIBRARY
 
 QT += network
 
