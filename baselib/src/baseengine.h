@@ -34,21 +34,23 @@
 #ifndef __BASEENGINE_H__
 #define __BASEENGINE_H__
 
-#include "baselib_export.h"
-// QT includes.
-#include <QAbstractSocket>
+#include <baselib_export.h>
+
 #include <QHash>
-#include <QHostAddress>
 #include <QObject>
+#include <QSettings>
 #include <QStringList>
 #include <QMultiHash>
 #include <QTime>
+#include <QFile>
 #include <QDateTime>
 #include <QVariant>
 #include <QVariantMap>
-#include "dstore/src/dstore.h"
+#include <QTimerEvent>
+
 
 class Xlet;
+
 
 #include <userinfo.h>
 #include <phoneinfo.h>
@@ -57,16 +59,15 @@ class Xlet;
 #include <meetmeinfo.h>
 #include <parkinginfo.h>
 
-class QFile;
-class QSettings;
-class QSocketNotifier;
-class QTcpSocket;
-class QTimerEvent;
+#include <dstore/src/dstore.h>
 
 struct e_callback {
     void (*cb)(const QVariantMap &, void *);
     void *udata;
 };
+
+class QSocketNotifier;
+class QTcpSocket;
 
 /*! \brief Class which handles connection with the XiVO CTI server
  *
@@ -75,9 +76,8 @@ struct e_callback {
 class BASELIB_EXPORT BaseEngine: public QObject
 {
     Q_OBJECT
+
     public:
-
-
         //! Enum for BaseEngine state logged/not logged
         typedef enum {ENotLogged, ELogged } EngineState;
 
@@ -212,9 +212,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void keepLoginAlive();  //!< Keep session alive
         void changeState();  //!< Change the presence status
         void ctiSocketConnected();
-        void ctiSocketDisconnected();
-        void ctiSocketError(QAbstractSocket::SocketError);
-        void ctiSocketStateChanged(QAbstractSocket::SocketState);
         void ctiSocketReadyRead();
         void filetransferSocketReadyRead();
         void filetransferSocketConnected();
@@ -280,13 +277,13 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
     private:
         void stopKeepAliveTimer();  //!< Stop the keep alive timer if running
+        void popupError(const QString &);
         void startTryAgainTimer();  //!< Start the "try to reconnect" timer
         void stopTryAgainTimer();   //!< Stop the "try to reconnect" timer
         void initFeatureFields(const QString &, const QVariant &);
         void connectSocket();
         void sendCommand(const QString &);
         void parseCommand(const QString &);
-        void popupError(const QString &);
         void updatePhone(const QString &, const QString &, const QMap<QString, QVariant> &);
         QStringList updateQueue(const QString &, const QString &, const QMap<QString, QVariant> &);
         QStringList updateQueueAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
@@ -348,10 +345,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_availstate;           //!< Availability state to send to the server
         
         // Internal management
-        QHostAddress m_serveraddress;   //!< Resolved address of the login server
         QTcpSocket *m_ctiserversocket;     //!< Connection to the CTI server
         QTcpSocket *m_filetransfersocket;  //!< TCP connection for File transfer.
-        int m_timer;                    //!< timer id for ???
         int m_timerid_keepalive;        //!< timer id for keep alive
         int m_timerid_tryreconnect;     //!< timer id for try to reconnect
         int m_timerid_changestate;      //!< timer id for changing state automatically
@@ -386,7 +381,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         bool m_forced_to_disconnect;    //!< set to true when disconnected by server
         
         // miscellaneous statuses to share between xlets
-        
         QHash<QString, UserInfo *> m_users;    //!< List of User Informations
         QHash<QString, PhoneInfo *> m_phones;  //!< List of Phone informations
         QHash<QString, AgentInfo *> m_agents;  //!< List of Agent informations
@@ -395,6 +389,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 
         DStore tree;
+
+    friend class CtiConn;
 };
 
 extern BASELIB_EXPORT BaseEngine *b_engine;

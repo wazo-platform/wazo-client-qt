@@ -57,6 +57,7 @@ all-linux:
 distclean:
 	@make clean-xivoclient
 	@make clean-baselib
+	@make clean-plugins
 
 clean-%:
 	@make -C $* distclean || true

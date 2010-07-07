@@ -35,24 +35,15 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QDir>
-#include <QFile>
-#include <QSettings>
-//#include <QSocketNotifier>
 #include <QTcpSocket>
-#include <QTimerEvent>
 
 #include "JsonToVariant.h"
 #include "VariantToJson.h"
-
-#include "baseengine.h"
 #include "xivoconsts.h"
 
-#include "userinfo.h"
-#include "phoneinfo.h"
-#include "agentinfo.h"
-#include "queueinfo.h"
-#include "meetmeinfo.h"
-#include "parkinginfo.h"
+#include "baseengine.h"
+#include <cticonn.h>
+
 
 /*! \brief Constructor.
  *
@@ -68,6 +59,11 @@
 
 BASELIB_EXPORT BaseEngine *b_engine;
 
+
+
+static CtiConn *m_ctiConn;
+
+
 BaseEngine::BaseEngine(QSettings *settings,
                        const QString &osInfo)
     : QObject(NULL),
@@ -79,26 +75,21 @@ BaseEngine::BaseEngine(QSettings *settings,
       m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
       m_forced_to_disconnect(false), tree(DStore())
 {
+    b_engine = this;
     settings->setParent(this);
     m_timerid_keepalive = 0;
     m_timerid_changestate = 0;
     m_timerid_tryreconnect = 0;
-    m_timer = -1;
     setOSInfos(osInfo);
     m_settings = settings;
     loadSettings();
-    b_engine = this;
     
     // TCP connection with CTI Server
     m_ctiserversocket = new QTcpSocket(this);
+    m_ctiConn = new CtiConn(m_ctiserversocket);
+
     connect(m_ctiserversocket, SIGNAL(connected()),
             this, SLOT(ctiSocketConnected()));
-    connect(m_ctiserversocket, SIGNAL(disconnected()),
-            this, SLOT(ctiSocketDisconnected()));
-    connect(m_ctiserversocket, SIGNAL(error(QAbstractSocket::SocketError)),
-            this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
-    connect(m_ctiserversocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
-            this, SLOT(ctiSocketStateChanged(QAbstractSocket::SocketState)));
     connect(m_ctiserversocket, SIGNAL(readyRead()),
             this, SLOT(ctiSocketReadyRead()));
 
@@ -634,76 +625,6 @@ void BaseEngine::filetransferSocketConnected()
         m_filetransfersocket->write((jsoncommand + "\n").toAscii());
 }
 
-/*! \brief called when the socket is disconnected from the server
- */
-void BaseEngine::ctiSocketDisconnected()
-{
-    setState(ENotLogged); // calls delogged();
-    emitTextMessage(tr("Connection lost with XiVO CTI server"));
-    startTryAgainTimer();
-}
-
-/*! \brief cat host found socket signal
- *
- * This slot is connected to the hostFound() signal of the m_tcpsocket.value("cticommands")
- */
-/*
-void BaseEngine::socketHostFound()
-{
-    qDebug() << "BaseEngine::socketHostFound()";
-}
-*/
-
-/*! \brief catch socket errors
- */
-void BaseEngine::ctiSocketError(QAbstractSocket::SocketError socketError)
-{
-    qDebug() << Q_FUNC_INFO << socketError;
-    switch(socketError) {
-    case QAbstractSocket::ConnectionRefusedError:
-        emitTextMessage(tr("Connection refused"));
-        if(m_timer != -1) {
-            killTimer(m_timer);
-            m_timer = -1;
-        }
-        //m_timer = startTimer(2000);
-        break;
-    case QAbstractSocket::RemoteHostClosedError:
-        stopKeepAliveTimer();
-        popupError("connection_closed");
-        break;
-    case QAbstractSocket::HostNotFoundError:
-        emitTextMessage(tr("Host not found"));
-        break;
-    case QAbstractSocket::NetworkError:
-        popupError("network_error");
-        break;
-    case QAbstractSocket::UnknownSocketError:
-        popupError("socket_error:" + QString::number(socketError));
-        break;
-    default:
-        popupError("socket_error:" + QString::number(socketError));
-        break;
-    }
-}
-
-/*! \brief receive signals of socket state change
- *
- * kills timer if connected.
- * \todo check if this can be safely removed
- */
-void BaseEngine::ctiSocketStateChanged(QAbstractSocket::SocketState socketState)
-{
-    //qDebug() << Q_FUNC_INFO << socketState;
-    if(socketState == QAbstractSocket::ConnectedState) {
-        if(m_timer != -1) {
-            killTimer(m_timer);
-            m_timer = -1;
-        }
-        //startTimer(3000);
-    }
-}
-
 UserInfo * BaseEngine::findUserFromPhone(const QString & astid,
                                          const QString & phoneid)
 {
@@ -829,7 +750,7 @@ double BaseEngine::timeDeltaServerClient() const
 }
 
 /*! \brief parse JSON and then process command */
-void BaseEngine::parseCommand(const QString & line)
+void BaseEngine::parseCommand(const QString &line)
 {
     QVariant data;
     try {
@@ -1454,101 +1375,85 @@ void BaseEngine::sendFaxCommand(const QString & filename,
 void BaseEngine::popupError(const QString & errorid)
 {
     QString errormsg = QString(tr("Server has sent an Error."));
-    if(errorid.toLower() == "connection_refused")
+    if (errorid.toLower() == "connection_refused") {
         errormsg = tr("You are not allowed to connect\n"
                       "to the XiVO CTI server on %1:%2.")
             .arg(m_serverhost).arg(m_ctiport);
-    
-    else if(errorid.toLower() == "number_of_arguments")
+    } else if (errorid.toLower() == "number_of_arguments") {
         errormsg = tr("The number of arguments sent is incorrect.\n"
                       "Maybe a version issue ?");
-    
-    else if(errorid.toLower() == "user_not_found")
+    } else if (errorid.toLower() == "user_not_found") {
         errormsg = tr("Your registration name <%1@%2>\n"
                       "is not known by the XiVO CTI server on %3:%4.")
             .arg(m_userid).arg(m_company)
             .arg(m_serverhost).arg(m_ctiport);
-    
-    else if(errorid.toLower() == "session_expired")
+    } else if (errorid.toLower() == "session_expired") {
         errormsg = tr("Your session has expired.");
-    
-    else if(errorid.startsWith("capaid_undefined:")) {
+    } else if (errorid.startsWith("capaid_undefined:")) {
         QStringList capainfo = errorid.split(":");
         errormsg = tr("Your profile name <%1> is not defined.").arg(capainfo[1]);
-    }
-    
-    else if(errorid.toLower() == "login_password")
+    } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
     
-    else if(errorid.toLower() == "no_keepalive_from_server")
+    } else if (errorid.toLower() == "no_keepalive_from_server") {
         errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.")
             .arg(m_serverhost).arg(m_ctiport);
     
-    else if(errorid.toLower() == "connection_closed")
+    } else if (errorid.toLower() == "connection_closed") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.")
             .arg(m_serverhost).arg(m_ctiport);
-    
-    else if(errorid.toLower() == "network_error")
-        errormsg = tr("An error occurred with the network (network cable accidentally plugged out ?).");
-    
-    else if(errorid.startsWith("socket_error:")) {
+    } else if (errorid.toLower() == "network_error") {
+        errormsg = tr("An error occurred with the network "
+                      "(network cable accidentally plugged out ?).");
+    } else if (errorid.startsWith("socket_error:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("Socket Error number %1.").arg(ipinfo[1]);
-    }
-    
-    else if(errorid.toLower() == "server_stopped")
+    } else if (errorid.toLower() == "server_stopped") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.")
             .arg(m_serverhost).arg(m_ctiport);
-    
-    else if(errorid.toLower() == "server_reloaded")
+    } else if (errorid.toLower() == "server_reloaded") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been reloaded.")
             .arg(m_serverhost).arg(m_ctiport);
-    
-    else if(errorid.startsWith("already_connected:")) {
+    } else if (errorid.startsWith("already_connected:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);
-    }
-    
-    else if(errorid.toLower() == "no_capability")
+    } else if (errorid.toLower() == "no_capability") {
         errormsg = tr("No capability allowed.");
-    
-    else if(errorid.startsWith("toomuchusers:")) {
+    } else if (errorid.startsWith("toomuchusers:")) {
         QStringList userslist = errorid.split(":")[1].split(";");
         errormsg = tr("Max number (%1) of XiVO Clients already reached.").arg(userslist[0]);
-    }
-    else if(errorid.startsWith("missing:")) {
+    } else if (errorid.startsWith("missing:")) {
         errormsg = tr("Missing Argument(s)");
-    }
-    else if(errorid.startsWith("version_client:")) {
+    } else if (errorid.startsWith("version_client:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
-        if(versionslist.size() >= 2)
+        if (versionslist.size() >= 2) {
             errormsg = tr("Your client version (%1) is too old for this server.\n"
                           "Please upgrade it to %2 at least.")
                 .arg(__current_client_version__)
                 .arg(versionslist[1]);
-        else
+        } else {
             errormsg = tr("Your client version (%1) is too old for this server.\n"
                           "Please upgrade it.").arg(__current_client_version__);
-    }
-    else if(errorid.startsWith("xivoversion_client:")) {
+        }
+    } else if (errorid.startsWith("xivoversion_client:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
 
-        if(versionslist.size() >= 2)
+        if (versionslist.size() >= 2)
             errormsg = tr("Your client's major version (%1)\n"
                           "is not the same as the server's (%2).")
                 .arg(__xivo_version__)
                 .arg(versionslist[1]);
-    }
-    else if(errorid.startsWith("version_server:")) {
+    } else if (errorid.startsWith("version_server:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
-        if(versionslist.size() >= 2)
+        if (versionslist.size() >= 2) {
             errormsg = tr("Your server version (%1) is too old for this client.\n"
                           "Please upgrade it to %2 at least.")
                 .arg(versionslist[0])
                 .arg(__current_client_version__);
-        else
+        } else {
             errormsg = tr("Your server version (%1) is too old for this client.\n"
                           "Please upgrade it.").arg(versionslist[0]);
+        }
     } else if (errorid == "disconnected") {
         errormsg = tr("You were disconnected by the server.");
     } else if (errorid == "forcedisconnected") {
@@ -1557,7 +1462,7 @@ void BaseEngine::popupError(const QString & errorid)
     
     // logs a message before sending any popup that would block
     emitTextMessage(tr("Error") + " : " + errormsg);
-    if(!m_trytoreconnect || m_forced_to_disconnect)
+    if (!m_trytoreconnect || m_forced_to_disconnect)
         emitMessageBox(errormsg);
 }
 
@@ -1585,7 +1490,7 @@ void BaseEngine::ctiSocketReadyRead()
         // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
         QString line = QString::fromUtf8(data);
             
-        if(line.startsWith("<ui version=")) {
+        if (line.startsWith("<ui version=")) {
             // we get here when receiving a sheet as a Qt4 .ui form
             qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
             displayFiche(line, true, QString());
@@ -1610,15 +1515,15 @@ void BaseEngine::filetransferSocketReadyRead()
             qDebug() << "BaseEngine::socketReadyRead() exception catched for" << line.trimmed();
         }
         QVariantMap jsondatamap = jsondata.toMap();
-        if(jsondatamap["class"].toString() == "fileref") {
-            if(m_filedir == "download") {
+        if (jsondatamap["class"].toString() == "fileref") {
+            if (m_filedir == "download") {
                 m_downloaded = QByteArray::fromBase64(jsondatamap["payload"].toByteArray());
                 qDebug() << jsondatamap["filename"].toString() << m_downloaded.size();
                 fileReceived();
             } else {
                 QByteArray fax64 = m_filedata.toBase64();
                 qDebug() << "sending fax contents" << jsondatamap["fileid"].toString() << m_faxsize << fax64.size();
-                if(m_faxsize > 0) {
+                if (m_faxsize > 0) {
                     m_filetransfersocket->write(fax64 + "\n");
                     m_filetransfersocket->flush();
                 }

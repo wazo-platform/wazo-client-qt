@@ -45,8 +45,7 @@
 #include <QScrollBar>
 #include <QDebug>
 
-#include "baseengine.h"
-#include "userinfo.h"
+#include <baseengine.h>
 
 
 class MessageEdit;
