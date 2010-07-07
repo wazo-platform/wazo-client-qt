@@ -1375,7 +1375,14 @@ a été envoyé à %2.</translation>
         <translation>Panneau des détails utilisateur</translation>
     </message>
     <message>
-        <location filename="../common/identitydisplay.cpp" line="326"/>
+        <location filename="../common/identitydisplay.cpp" line="234"/>
+        <source>Server: %1
+Context: %2</source>
+        <translation>Serveur: %1
+Contexte: %2</translation>
+    </message>
+    <message>
+        <location filename="../common/identitydisplay.cpp" line="329"/>
         <source>(Line %1)</source>
         <translation>(Ligne %1)</translation>
     </message>
@@ -1389,8 +1396,8 @@ a été envoyé à %2.</translation>
     <name>IdentityPhone</name>
     <message>
         <location filename="../common/identityphone.cpp" line="179"/>
-        <location filename="../common/identityphone.cpp" line="293"/>
-        <location filename="../common/identityphone.cpp" line="294"/>
+        <location filename="../common/identityphone.cpp" line="296"/>
+        <location filename="../common/identityphone.cpp" line="297"/>
         <source>No option</source>
         <translation>Pas d&apos;option</translation>
     </message>
@@ -1400,58 +1407,65 @@ a été envoyé à %2.</translation>
         <translation>Téléphone %1</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="231"/>
-        <location filename="../common/identityphone.cpp" line="245"/>
+        <location filename="../common/identityphone.cpp" line="195"/>
+        <source>Server: %1
+Context: %2</source>
+        <translation>Serveur: %1
+Contexte: %2</translation>
+    </message>
+    <message>
+        <location filename="../common/identityphone.cpp" line="234"/>
+        <location filename="../common/identityphone.cpp" line="248"/>
         <source>(Line %1)</source>
         <translation>(Ligne %1)</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="276"/>
+        <location filename="../common/identityphone.cpp" line="279"/>
         <source>DND</source>
         <translation>NPD</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="277"/>
+        <location filename="../common/identityphone.cpp" line="280"/>
         <source>Do Not Disturb</source>
         <translation>Ne Pas Déranger</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="280"/>
+        <location filename="../common/identityphone.cpp" line="283"/>
         <source>UNC %1</source>
         <translation>INC %1</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="281"/>
+        <location filename="../common/identityphone.cpp" line="284"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Renvoi Inconditionnel vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="283"/>
+        <location filename="../common/identityphone.cpp" line="286"/>
         <source>Busy %1</source>
         <translation>Occ %1</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="284"/>
+        <location filename="../common/identityphone.cpp" line="287"/>
         <source>Busy Forward towards %1</source>
         <translation>Renvoi sur Occupation vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="286"/>
+        <location filename="../common/identityphone.cpp" line="289"/>
         <source>RNA %1</source>
         <translation>RNR %1</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="287"/>
+        <location filename="../common/identityphone.cpp" line="290"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Renvoi sur Non-Réponse vers %1</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="289"/>
+        <location filename="../common/identityphone.cpp" line="292"/>
         <source>Call Rec</source>
         <translation>Enr Appel</translation>
     </message>
     <message>
-        <location filename="../common/identityphone.cpp" line="291"/>
+        <location filename="../common/identityphone.cpp" line="294"/>
         <source>Call Filter</source>
         <translation>Filtre Appel</translation>
     </message>
