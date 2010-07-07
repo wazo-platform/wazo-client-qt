@@ -102,13 +102,13 @@ void IdentityPhoneLine::contextMenuEvent(QContextMenuEvent * event)
         connect(hangupMe, SIGNAL(triggered()),
                 this, SLOT(hangup()) );
         contextMenu.addAction(hangupMe);
-                            
+        
         QAction * replyMe = new QAction(tr("Reply"), &contextMenu);
         replyMe->setProperty("channel", thischannel);
         connect(replyMe, SIGNAL(triggered()),
                 this, SLOT(answer()) );
         contextMenu.addAction(replyMe);
-                            
+        
         QAction * refuseMe = new QAction(tr("Refuse"), &contextMenu);
         refuseMe->setProperty("channel", thischannel);
         connect(refuseMe, SIGNAL(triggered()),
@@ -192,8 +192,11 @@ void IdentityPhone::setUserInfo(const UserInfo *ui)
 {
     m_ui = ui;
     m_phone->setText(tr("Phone %1").arg(m_ui->phoneNumber()));
+    m_phone->setToolTip(tr("Server: %1\nContext: %2")
+                        .arg(m_ui->astid())
+                        .arg(m_ui->context()));
     setPhoneLines();
-    if (ui->phoneNumber()=="") {
+    if (ui->phoneNumber() == "") {
         hide();
     }
 }
