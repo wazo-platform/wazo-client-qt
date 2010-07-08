@@ -160,41 +160,85 @@ void DStore::rmPath(const QString &path)
     }
 }
 
-DStore* DStore::filter(Op0p op, const QString &filter, const QVariant &with)
+void DStore::filter(Op0p op, const QString &filter, const QVariant &with)
 {
-    /*
     VMapNode *r = root();
-
     foreach(QString nodeName, r->nodeNames()) {
         DStoreNode *dnode = r->node(nodeName);
-        if (dnode->type()==INNER) {
-            VNode *node = static_cast<VMapNode *>(dnode)->getVNode(filter);
-            if ((node)&&(node->variant() == with)) {
+        if (dnode->type() == INNER) {
+            QVariant value = static_cast<VMapNode *>(dnode)->variant(filter);
+            if ((value == with) ^ (op == IS_EQUAL)) {
+                rmPath(nodeName);
             }
         }
     }
-    */
+}
 
-    return NULL;
+// path      = nodepath, { "/*[", filter, "]"}? ;
+// filter    = nodepath, test, ( nodepath | value ) ;
+// test      = ("=" | "~") ;
+// value     = "@", [^]]*;
+// quote     = "'" ;
+// nodepath  = nodename, { "/", nodename } ;
+// nodename  = [^/*=~]+ ;
+
+
+
+QString readNodePath(const QString &s)
+{
+    QString nodePath = s;
+    int i, e;
+    for (i=0,e=s.size();i<e;i++) {
+        if ((s[i] == QChar('*')) ||
+            (s[i] == QChar('=')) ||
+            (s[i] == QChar('~')))
+            break;
+    }
+    if (i<e) {
+        if ((i)&&(s[i-1]==QChar('/'))) {
+            nodePath = nodePath.left(i-1);
+        } else {
+            nodePath = nodePath.left(i);
+        }
+    }
+    return nodePath;
 }
 
 DStore* DStore::extract(const QString &path)
 {
-    QString baseNodePath = sanitize(path);
+    QString cleanPath = sanitize(path);
+    QString baseNodePath = readNodePath(cleanPath);
     DStore *tree = new DStore();
-    int index;
-    
-    if ((index = baseNodePath.indexOf("*")) != -1) {
-      baseNodePath = baseNodePath.left(index-1);
-    }
-    
+
     DStoreNode *node = getNode(baseNodePath);
-    
+
     if (node != NULL) {
         node->clone(tree, tree->root(), 1);
     }
-    
+
+    if (cleanPath.indexOf("[") != -1) {
+        QString filter = path.right(cleanPath.size() -
+                                    baseNodePath.size() - 3);
+        QString path = readNodePath(filter);
+        QVariant with;
+
+        if (filter[path.size()+1] == QChar('@')) {
+            with = QVariant(filter.mid(path.size()+2, filter.size()-path.size()-3));
+        } else { 
+            with = root()->variant(filter.mid(path.size()+1, filter.size()-path.size()-2));
+        }
+        tree->filter(((filter[path.size()] == QChar('='))?
+                       IS_EQUAL:IS_DIFFERENT), path, with);
+    }
     return tree;
+}
+
+QVariant DStore::extractVariant(const QString &path)
+{
+    DStore *tree = extract(path);
+    QVariant ret = tree->root()->variantMap();
+    delete tree;
+    return ret;
 }
 
 void DStore::onChange(const QString &path, QObject *target, const char *slot)

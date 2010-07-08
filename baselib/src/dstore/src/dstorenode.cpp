@@ -116,7 +116,7 @@ static QString _pp(const VMapNode *map, int lvl, int tc, int showUid)
                            ":" + nodeName + " " + var.toString() + "\n");
             } else {
                 ret.append(QString().fill(' ', nspace) + uid +
-                           ":" + nodeName + " ¿" + var.toString() + "?\n");
+                           ":" + nodeName + " ^" + var.toString() + "$\n");
             }
         } else {
             VMapNode *var(static_cast<VMapNode*>(node));

@@ -73,7 +73,7 @@ BaseEngine::BaseEngine(QSettings *settings,
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
       m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
-      m_forced_to_disconnect(false), tree(DStore())
+      m_forced_to_disconnect(false), m_tree(DStore())
 {
     b_engine = this;
     settings->setParent(this);
@@ -245,9 +245,6 @@ void BaseEngine::saveSettings()
     emit settingChanged(getGuiOptions("client_gui"));
 }
 
-/*!
- *
- */
 void BaseEngine::setCheckedFunction(const QString & function, bool b)
 {
     if(b != m_checked_function[function]) {
@@ -430,11 +427,10 @@ void BaseEngine::clearPhoneList()
 void BaseEngine::clearAgentList()
 {
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_agents);
-    while( iter.hasNext() )
-        {
-            iter.next();
-            delete iter.value();
-        }
+    while (iter.hasNext()) {
+        iter.next();
+        delete iter.value();
+    }
     m_agents.clear();
 }
 
@@ -445,11 +441,10 @@ void BaseEngine::clearAgentList()
 void BaseEngine::clearQueueList()
 {
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_queues);
-    while( iter.hasNext() )
-        {
-            iter.next();
-            delete iter.value();
-        }
+    while (iter.hasNext()) {
+        iter.next();
+        delete iter.value();
+    }
     m_queues.clear();
 }
 
@@ -457,7 +452,7 @@ void BaseEngine::clearQueueList()
  */
 void BaseEngine::connectSocket()
 {
-    if(m_userid.length()) {
+    if (m_userid.length()) {
         m_ctiserversocket->connectToHost(m_serverhost, m_ctiport);
     }
 }
@@ -480,13 +475,13 @@ bool BaseEngine::hasCapaFun(QString & capa)
 
 
 /*! \brief gets m_capaxlets */
-const QStringList & BaseEngine::getCapaXlets() const
+const QStringList& BaseEngine::getCapaXlets() const
 {
     return m_capaxlets;
 }
 
 /*! \brief gets m_capapresence */
-const QVariantMap & BaseEngine::getCapaPresence() const
+const QVariantMap& BaseEngine::getCapaPresence() const
 {
     return m_capapresence;
 }
@@ -506,15 +501,41 @@ void BaseEngine::setGuiOption(const QString &arg, const QVariant &opt)
             m_settings->setValue("guisettings", m_guioptions.value(arg));
         m_settings->endGroup();
     m_settings->endGroup();
+
     saveSettings();
 }
 
 void BaseEngine::updateCapaPresence(const QVariant & presence)
 {
     QVariantMap presencemap = presence.toMap();
-    foreach (QString field, presencemap.keys())
-        if(presencemap.contains(field))
+    foreach (QString field, presencemap.keys()) {
+        if (presencemap.contains(field)) {
             m_capapresence[field] = presencemap[field];
+        }
+
+        if (field == "names") {
+            QVariantMap crap = presencemap[field].toMap();
+            foreach (QString stateName, crap.keys()) {
+                QVariantMap fill = crap[stateName].toMap();
+                fill["id"] = fill["stateid"];
+                fill.remove("stateid");
+                m_tree.populate(QString("statedetails/%0").arg(stateName),fill);
+            }
+        } else if (field == "allowed") {
+            QVariantMap map = presencemap[field].toMap();
+            QVariantMap fill;
+            foreach (QString stateName, map.keys()) {
+                if (map[stateName].toBool()) {
+                    fill[stateName] = QVariant();
+                }
+            }
+
+            m_tree.populate(QString("statedetails/%0/allowed")
+                            .arg(presencemap["state"].toMap()["stateid"].toString()),
+                            fill);
+        }
+    }
+    qDebug() << DStoreNode::pp(*m_tree.root());
 }
 
 const QString & BaseEngine::getCapaApplication() const
@@ -749,6 +770,57 @@ double BaseEngine::timeDeltaServerClient() const
     return (m_timeclt.toTime_t() - m_timesrv);
 }
 
+/* until cti protocol get changed the following function 
+ * function are there to fill the tree manually 
+ * { */
+
+
+void addMobilePhone(DStore *tree, const QString &userId, const QString &number)
+{
+    if (number.isEmpty())
+        return ;
+
+    QVariantMap mobilePhoneList = 
+        tree->extractVariant(QString("mobilephones/*[user-id=@%0]")
+                             .arg(userId)).toMap();
+
+    if (mobilePhoneList.size() == 0) {
+        int id = tree->extractVariant(QString("mobilephones")).toMap().size();
+        QVariantMap info;
+        info["user-id"] = userId;
+        info["number"] = number;
+        tree->populate(QString("mobilephones/%0").arg(id), info);
+    }
+}
+
+void addUpdateUserInTree(DStore *tree, const QVariantMap &uinfo)
+{
+    QVariantMap info;
+    info["id"] = uinfo["xivo_userid"];
+    info["fullname"] = uinfo["fullname"];
+    info["state-id"] = uinfo["statedetails"].toMap()["stateid"];
+    tree->populate(QString("users/%0").arg(info["id"].toString()), info);
+    addMobilePhone(tree, info["id"].toString(), uinfo["mobilephone"].toString());
+    info.clear();
+}
+
+void addUpdateConfRoomInTree(DStore *tree, const QVariantMap &cinfo)
+{
+    if (tree->extractVariant(QString("confroom/*[name=@%0]").arg(cinfo["name"].toString()))
+                            .toMap().size() == 0) {
+        int id = tree->extractVariant(QString("confroom")).toMap().size();
+        QVariantMap info;
+        info["id"] = id;
+        info["name"] = cinfo["roomname"];
+        info["number"] = cinfo["roomnumber"];
+        tree->populate(QString("confroom/%0").arg(id), info);
+    }
+}
+
+/* } */
+
+
+
 /*! \brief parse JSON and then process command */
 void BaseEngine::parseCommand(const QString &line)
 {
@@ -926,7 +998,6 @@ void BaseEngine::parseCommand(const QString &line)
                          datamap["status"].toString());
         } else if (thisclass == "endinit") {
             qDebug() << "I should have received everything";
-
         } else if (thisclass == "meetme") {
             if (function == "sendlist") {
                 QVariantMap map1 = datamap["payload"].toMap();
@@ -935,6 +1006,7 @@ void BaseEngine::parseCommand(const QString &line)
                     QVariantMap map2 = map1[astid].toMap();
                     foreach(QString meetmeid, map2.keys()) {
                         QVariantMap map3 = map2[meetmeid].toMap();
+                        addUpdateConfRoomInTree(&m_tree, map3);
                         if(!meetmeid.isEmpty()) {
                             if (m_meetme.contains(meetmeid) == false) {
                                 m_meetme[meetmeid] = new MeetmeInfo();
@@ -1029,8 +1101,13 @@ void BaseEngine::parseCommand(const QString &line)
                 foreach(QVariant userprops, listusers) {
                     QVariantMap uinfo = userprops.toMap();
                     //qDebug() << "-------------" << uinfo;
-                    QString iduser = uinfo["astid"].toString() + "/" + uinfo["xivo_userid"].toString();
+
+
+                    addUpdateUserInTree(&m_tree, uinfo);
+                        
                     
+
+                    QString iduser = uinfo["astid"].toString() + "/" + uinfo["xivo_userid"].toString();
                     if(! m_users.contains(iduser)) {
                         m_users[iduser] = new UserInfo(iduser);
                         m_users[iduser]->setCtiLogin(uinfo["user"].toString());
@@ -1090,10 +1167,6 @@ void BaseEngine::parseCommand(const QString &line)
                     }
                 }
                 monitorPeerRequest(fullid_watched);
-                
-                
-                // emitTextMessage(tr("Received status for %1 users").arg(m_users.size()));
-                // XXX this information might not be relevant (to be filtered according to context, ...)
             } else if (function == "update") {
                 QStringList userupdate = datamap["user"].toStringList();
                 if(userupdate.size() == 2) {

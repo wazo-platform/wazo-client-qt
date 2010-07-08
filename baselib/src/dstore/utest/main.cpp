@@ -62,6 +62,9 @@ void addState(DStore *tree, int id)
 int main(int argc, char *argv[])
 {
     DStore *tree = new DStore();
+
+    
+
     WatchChange *dog = new WatchChange;
     
     int i, i2;
@@ -88,9 +91,11 @@ int main(int argc, char *argv[])
     DStore *result = tree->extract(argv[1]);
 
     qDebug() << DStoreNode::pp(*result->root(), 2, 0);
+
+    qDebug() << tree->extractVariant(argv[1]);
     
     delete result;
-    delete tree;
     delete dog;
+    delete tree;
     return 0;
 }

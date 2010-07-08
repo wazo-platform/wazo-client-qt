@@ -121,10 +121,11 @@ class VMapNode : public DStoreNode
                   - 0: no
                   - 1: yes
         */
-        int nodeExist(const QString &nodeName);
-        DStoreNode* node(const QString &) const;
-        VNode* getVNode(const QString &path);
+        int nodeExist(const QString &nodeName) const;
+        DStoreNode* node(const QString &path) const;
+        QVariant variant(const QString &path);
         //~VMapNode() { qDebug() << "~VMapNode" << this; }
+        QVariantMap variantMap() const;
 
     private:
         virtual DStoreNode* clone(DStore* tree, VMapNode *parent=NULL, int ripDad=0);
@@ -177,17 +178,25 @@ class DStore
         DStore* extract(const QString &path);
 
         /*!
+          \param  path  a request to extract a tree part
+          \return QVariantMap as a tree part
+         */
+        QVariant extractVariant(const QString &path);
+
+        /*!
           This method is there to allow you to create some inner node
           A shell command equivalent, would be mkdir -p
           \param path   the path be created
           \param from   specify from where the path should be created
          */
         VMapNode* mkPath(const QString &path, VMapNode *from=NULL);
+
         /*!
           This method is there to allow you to remove a tree part
           \param path   the path to be removed
          */
         void rmPath(const QString &path);
+
         /*!
           This method is there to allow you to add/replace a bunch of data in your 
           DStore
@@ -199,10 +208,18 @@ class DStore
                         
          */
         void populate(const QString &path, const QVariant &value);
+
         /*! 
           \return VMapNode * DStore root node
          */
         VMapNode* root() const { return m_root; };
+
+        /*! 
+          \param  path from the DStore root node
+          \return QVariant
+         */
+        QVariant variant(const QString &path) const { return root()->variant(path); };
+
         /*!
           When you are initially filling or destroying a DStore, you probably don't 
           want to call every QObject slots you might have binded to monitor change
@@ -212,6 +229,7 @@ class DStore
                              - 1: yes (default when called without argument)
          */
         void blockSignal(int block=1) { m_blockSignal = block; };
+
         /*!
           This method is there to allow you to monitor tree changes
           ( a node was removed/added or changed ).\n
@@ -233,9 +251,8 @@ class DStore
 
     private:
         void dynamicInvocation(const QString &path, DStoreEvent event);
-
-        enum Op0p { IS_EQUAL };
-        DStore* filter(Op0p op, const QString &path, const QVariant &value=QVariant());
+        enum Op0p { IS_EQUAL, IS_DIFFERENT };
+        void filter(Op0p op, const QString &path, const QVariant &value=QVariant());
         void registerNode(DStoreNode *);
         void unregisterNode(DStoreNode *);
         DStoreNode* getNode(qlonglong uid);

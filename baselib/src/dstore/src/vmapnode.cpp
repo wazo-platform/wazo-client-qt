@@ -74,14 +74,33 @@ int VMapNode::count()
     return m_nodeMap->count();
 }
 
-int VMapNode::nodeExist(const QString &name)
+int VMapNode::nodeExist(const QString &name) const
 {
     return m_nodeMap->contains(name);
 }
 
-DStoreNode* VMapNode::node(const QString &name) const
+DStoreNode* VMapNode::node(const QString &path) const
 {
-    return *m_nodeMap->value(name);
+    QStringList traverseList = DStore::sanitize(path).split("/");
+    const VMapNode *traverse = this;
+
+    int i, e, lastNode;
+    for (i=0, e=traverseList.count(), lastNode=e-1;i<e;i++) {
+        if (traverse->nodeExist(traverseList[i])) {
+            DStoreNode *cnode = *traverse->m_nodeMap->value(traverseList[i]);
+            if (i == lastNode) {
+                return cnode;
+            } else {
+                if (cnode->type() == INNER) {
+                    traverse = static_cast<VMapNode*>(cnode);
+                } else {
+                    return NULL;
+                }
+            }
+        }
+    }
+
+    return NULL;
 }
 
 int VMapNode::remove(const QString &nodeName)
@@ -140,8 +159,6 @@ DStoreNode* VMapNode::clone(DStore* tree, VMapNode *parent, int ripDad)
 {
     VMapNode *cnode;
 
-    //qDebug() << "clone" << name() << this;
-
     if (ripDad) {
         cnode = parent;
     } else {
@@ -155,32 +172,33 @@ DStoreNode* VMapNode::clone(DStore* tree, VMapNode *parent, int ripDad)
     return cnode;
 }
 
-VNode* VMapNode::getVNode(const QString &path)
+QVariantMap VMapNode::variantMap() const
 {
-    QStringList traverseList = DStore::sanitize(path).split("/");
-    QString baseName = traverseList.takeLast();
-    QString dirName = traverseList.join("/");
+    QVariantMap map;
 
-    VMapNode *traverse = this;
-    int i, e;
-    for (i=0, e=traverseList.count();i<e;i++) {
-        if (traverse->nodeExist(traverseList[i])) {
-            DStoreNode *cnode = traverse->node(traverseList[i]);
-            if (i==e-1) {
-                if (cnode->type() == LEAF) {
-                    return static_cast<VNode*>(cnode);
-                } else {
-                    return NULL;
-                }
-            } else {
-                if (cnode->type() == INNER) {
-                  traverse = static_cast<VMapNode*>(cnode);
-                } else {
-                  return NULL;
-                }
-            }
+    foreach(QString nodeName, nodeNames()) {
+        DStoreNode *dnode = node(nodeName);
+        if (dnode->type() == INNER) {
+            map[nodeName] = static_cast<VMapNode*>(dnode)->variantMap();
+        } else {
+            map[nodeName] =  static_cast<VNode*>(dnode)->variant();
         }
     }
 
-    return NULL;
+    return map;
+}
+
+QVariant VMapNode::variant(const QString &path)
+{
+    DStoreNode *vnode = node(path);
+
+    if (vnode != NULL) {
+        if (vnode->type()==LEAF) {
+            return static_cast<VNode*>(vnode)->variant();
+        } else {
+            return QVariant(static_cast<VMapNode*>(vnode)->variantMap());
+        }
+    } else {
+        return QVariant();
+    }
 }
