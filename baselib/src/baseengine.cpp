@@ -781,11 +781,11 @@ void addMobilePhone(DStore *tree, const QString &userId, const QString &number)
         return ;
 
     QVariantMap mobilePhoneList = 
-        tree->extractVariant(QString("mobilephones/*[user-id=@%0]")
-                             .arg(userId)).toMap();
+        tree->extractVMap(QString("mobilephones/*[user-id=@%0]")
+                             .arg(userId));
 
     if (mobilePhoneList.size() == 0) {
-        int id = tree->extractVariant(QString("mobilephones")).toMap().size();
+        int id = tree->extractVMap(QString("mobilephones")).size();
         QVariantMap info;
         info["user-id"] = userId;
         info["number"] = number;
@@ -806,14 +806,14 @@ void addUpdateUserInTree(DStore *tree, const QVariantMap &uinfo)
 
 void addUpdateConfRoomInTree(DStore *tree, const QVariantMap &cinfo)
 {
-    if (tree->extractVariant(QString("confroom/*[name=@%0]").arg(cinfo["name"].toString()))
-                            .toMap().size() == 0) {
-        int id = tree->extractVariant(QString("confroom")).toMap().size();
+    if (tree->extractVMap(QString("confrooms/*[name=@%0]").arg(cinfo["name"].toString()))
+                          .size() == 0) {
+        int id = tree->extractVMap(QString("confrooms")).size();
         QVariantMap info;
         info["id"] = id;
         info["name"] = cinfo["roomname"];
         info["number"] = cinfo["roomnumber"];
-        tree->populate(QString("confroom/%0").arg(id), info);
+        tree->populate(QString("confrooms/%0").arg(id), info);
     }
 }
 

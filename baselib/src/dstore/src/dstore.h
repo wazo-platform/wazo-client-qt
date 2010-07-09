@@ -124,7 +124,6 @@ class VMapNode : public DStoreNode
         int nodeExist(const QString &nodeName) const;
         DStoreNode* node(const QString &path) const;
         QVariant variant(const QString &path);
-        //~VMapNode() { qDebug() << "~VMapNode" << this; }
         QVariantMap variantMap() const;
 
     private:
@@ -180,6 +179,12 @@ class DStore
         /*!
           \param  path  a request to extract a tree part
           \return QVariantMap as a tree part
+         */
+        QVariantMap extractVMap(const QString &path);
+
+        /*!
+          \param  path  a request to extract a tree end value
+          \return QVariant as a tree part
          */
         QVariant extractVariant(const QString &path);
 
@@ -251,8 +256,7 @@ class DStore
 
     private:
         void dynamicInvocation(const QString &path, DStoreEvent event);
-        enum Op0p { IS_EQUAL, IS_DIFFERENT };
-        void filter(Op0p op, const QString &path, const QVariant &value=QVariant());
+        void filter(int op, const QString &path, const QVariant &value=QVariant());
         void registerNode(DStoreNode *);
         void unregisterNode(DStoreNode *);
         DStoreNode* getNode(qlonglong uid);

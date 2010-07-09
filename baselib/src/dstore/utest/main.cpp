@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 
     qDebug() << DStoreNode::pp(*result->root(), 2, 0);
 
-    qDebug() << tree->extractVariant(argv[1]);
+    qDebug() << tree->extractVMap(argv[1]);
     
     delete result;
     delete dog;

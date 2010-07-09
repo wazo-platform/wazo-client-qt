@@ -388,8 +388,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, MeetmeInfo *> m_meetme; //! List of Conference rooms
         QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 
-    public:
         DStore m_tree;
+    public:
+        DStore* tree() { return &m_tree; };
 
     friend class CtiConn;
 };

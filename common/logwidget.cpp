@@ -134,7 +134,10 @@ Qt::ItemFlags LogWidgetModel::flags(const QModelIndex &) const
 }
 
 /*! \brief ask history for an extension */
-void LogWidgetModel::requestHistory(const QString &peer, int mode, const QDateTime &moreRecent, int /* forceEntry*/)
+void LogWidgetModel::requestHistory(const QString &peer,
+                                    int mode,
+                                    const QDateTime &moreRecent,
+                                    int)
 {
     /* mode = 0 : Out calls
      * mode = 1 : In calls
@@ -186,8 +189,13 @@ QVariant LogWidgetModel::headerData(int section,
 
 
 
-
-static inline QRadioButton* buildRadioButton(QString text, QString icon, int mode, QGroupBox *groupBox, QHBoxLayout *hbox, LogWidgetModel *m_viewmodel)
+static inline 
+QRadioButton* buildRadioButton(QString text,
+                               QString icon,
+                               int mode,
+                               QGroupBox *groupBox,
+                               QHBoxLayout *hbox,
+                               LogWidgetModel *m_viewmodel)
 {
     QRadioButton *build = new QRadioButton(text, groupBox);
 
@@ -230,7 +238,8 @@ LogWidget::LogWidget(QWidget *parent)
     
     hBox->addStretch(1);
 
-    buildRadioButton(tr("Sent calls"), "green_up.png",   0, groupBox, hBox, viewmodel)->setChecked(true);
+    buildRadioButton(tr("Sent calls"), "green_up.png",   0, groupBox, hBox, viewmodel)
+                    ->setChecked(true);
     buildRadioButton(tr("Received calls"), "green_down.png", 1, groupBox, hBox, viewmodel);
     buildRadioButton(tr("Missed calls"),   "red_down.png",   2, groupBox, hBox, viewmodel);
 
