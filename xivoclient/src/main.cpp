@@ -71,8 +71,8 @@ int main(int argc, char ** argv)
             // see http://people.w3.org/~dom/archives/2005/09/integrating-a-new-uris-scheme-handler-to-gnome-and-firefox/
             // to learn how to handle "tel:0123456" uri scheme
             msg.append(argv[1]);
-            qDebug() << "sending" << msg;
-            qDebug() << app.sendMessage(msg);
+            bool sentmsg = app.sendMessage(msg);
+            qDebug() << "sent message" << msg << sentmsg;
         }
         return 0;
     }

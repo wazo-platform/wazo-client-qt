@@ -80,7 +80,7 @@ all-win32:
 # to be executed under a bash/cygwin-like terminal
 versions-%:
 	@${ECHO} -n "version (before update) : " && make -s displayversions
-	@touch baselib/xivoconsts.h $*/mainwidget.cpp
+	@touch baselib/src/xivoconsts.h $*/src/mainwidget.cpp
 	@rm -f $*/versions.pri
 	@${ECHO} -n "_SVNVER_ = " >> $*/versions.pri
 	@LANG=C svn info | sed -n "/Last Changed Rev/s/.*: //p" >> $*/versions.pri
@@ -95,7 +95,7 @@ displayversions:
 # to be used with care
 forceversions-%:
 	@${ECHO} -n "version (before force) : " && make -s displayversions
-	@touch common/xivoconsts.h $*/mainwidget.cpp
+	@touch baselib/src/xivoconsts.h $*/src/mainwidget.cpp
 	@rm -f $*/versions.pri
 	@${ECHO} "_SVNVER_ =" ${FORCEVERSION} >> $*/versions.pri
 	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
