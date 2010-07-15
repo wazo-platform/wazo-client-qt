@@ -41,7 +41,7 @@ ParkingInfo::ParkingInfo(const ParkingInfo & other)
     m_parkingtime = other.m_parkingtime;
 }
 
-bool ParkingInfo::update(const QVariantMap & map)
+void ParkingInfo::update(const QVariantMap &map)
 {
     m_timeout = map["timeout"].toInt();
     m_parkingtime = map["parkingtime"].toDouble();

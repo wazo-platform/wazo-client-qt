@@ -31,7 +31,7 @@
  * $Date$
  */
 
-#include "dstore.h"
+#include "dstore_private.h"
 
 static QRegExp finalSlash, leadingSlash;
 
@@ -167,6 +167,27 @@ void DStore::rmPath(const QString &path)
     }
 }
 
+void DStore::filter(int op, const QString &filter, const QVariantList &with)
+{
+    VMapNode *r = root();
+
+    if (op&IS_INFERIOR) {
+        op = IS_INFERIOR | ((op&IS_EQUAL)?0:IS_EQUAL);
+    }
+
+    foreach(QString nodeName, r->nodeNames()) {
+        DStoreNode *dnode = r->node(nodeName);
+        if (dnode->type() == INNER) {
+            QVariant value = static_cast<VMapNode *>(dnode)->variant(filter);
+            if (!(op&ORDER_KIND)) {
+                if ((with.count(value)) ^ (op == IS_EQUAL)) {
+                    rmPath(nodeName);
+                }
+            }
+        }
+    }
+}
+
 void DStore::filter(int op, const QString &filter, const QVariant &with)
 {
     VMapNode *r = root();
@@ -184,7 +205,6 @@ void DStore::filter(int op, const QString &filter, const QVariant &with)
                     rmPath(nodeName);
                 }
             } else {
-
                 if (op&IS_EQUAL) {
                     if ((value.toInt() < with.toInt()) ^ ((op&IS_INFERIOR)?1:0)) {
                         rmPath(nodeName);
@@ -296,7 +316,7 @@ DStore* DStore::extract(const QString &path)
 
 QVariantMap DStore::extractVMap(const QString &path)
 {
-    DStore *tree = extract(path);
+    DStore *tree = extractb(path);
     QVariantMap ret = tree->root()->variantMap();
     delete tree;
     return ret;
@@ -304,7 +324,7 @@ QVariantMap DStore::extractVMap(const QString &path)
 
 QVariant DStore::extractVariant(const QString &path)
 {
-    DStore *tree = extract(path);
+    DStore *tree = extractb(path);
     QVariantMap map = tree->root()->variantMap();
     delete tree;
 
@@ -338,4 +358,65 @@ void DStore::dynamicInvocation(const QString &path, DStoreEvent event)
         triggerPath = traverseList.join("/");
 
     } while (traverseList.count());
+}
+
+#include "grammar.h"
+#define ParseARG_PDECL ParserRet*
+#define ParseTOKENTYPE int
+void* ParseAlloc(void* (*)(size_t )); 
+void ParseFree(void *, void (*)(void *));                  
+void Parse(void *, int, ParseTOKENTYPE, ParseARG_PDECL);
+
+DStore* DStore::extractb(const QString &path)
+{
+    ParserRet list;
+    list.origin = this;
+    list.ret = NULL;
+    list.req = path;
+    list.abort = 0;
+    
+    void *pParser = ParseAlloc(malloc);        
+    
+    int i, e;
+    char c;
+    for (i=0, e=path.size();(i<e)&&(list.abort==0);i++) {
+        c = path[i].toAscii();
+
+        if (c == '\\') {
+            i += 1;
+            if (i>e) {
+                break;
+            }
+            c = path[i].toAscii();
+            Parse(pParser, CHARACTER, c, &list);                
+        } else if ((c == '>')||(c== '<')) {
+            int op = (c == '<') ? IS_INFERIOR : IS_SUPERIOR;
+            if (i+1>e) {
+                break;
+            }
+            if (path[i+1].toAscii() == '=') {
+                op |= IS_EQUAL;
+                i += 1;
+            }
+            Parse(pParser, TEST, op, &list);
+        } else if (c == '/') {
+            Parse(pParser, SLASH, 0, &list);                
+        } else if (c == '@') {
+            Parse(pParser, AT, 0, &list);                
+        } else if (c == '=') {
+            Parse(pParser, TEST, IS_EQUAL, &list);                
+        } else if (c == '~') {
+            Parse(pParser, TEST, IS_DIFFERENT, &list);                
+        } else if (c == '[') {
+            Parse(pParser, LC, 0, &list);                
+        } else if (c == ']') {
+            Parse(pParser, RC, 0, &list);                
+        } else {
+            Parse(pParser, CHARACTER, c, &list);                
+        }
+    }
+    Parse(pParser, 0, 0, &list);
+    ParseFree(pParser, free);                  
+
+    return list.ret;
 }

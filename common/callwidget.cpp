@@ -176,7 +176,7 @@ void CallWidget::updateWidget(const QString & status,
 
 /*! \brief set icon depending on status
  */
-void CallWidget::setActionPixmap(const QString & status)
+void CallWidget::setActionPixmap(const QString &)
 {
     QColor color = QColor(pi->hintstatus("color"));
     m_lbl_status->setPixmap(TaintedPixmap(QString(":/images/phone-trans.png"),

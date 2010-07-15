@@ -8,6 +8,7 @@ DEPENDPATH += . src
 INCLUDEPATH += . src utest
 LIBS +=
 
+system(lemon src/grammar.ly;mv src/grammar.c src/grammar.cpp)
 # Input
 HEADERS += src/*.h utest/*.h
 SOURCES += src/*.cpp utest/*.cpp

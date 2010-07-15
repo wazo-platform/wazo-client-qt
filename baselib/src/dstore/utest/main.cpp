@@ -1,5 +1,6 @@
 #include <QApplication>
 
+
 #include "dstore.h"
 #include "main.h"
 
@@ -62,9 +63,6 @@ void addState(DStore *tree, int id)
 int main(int argc, char *argv[])
 {
     DStore *tree = new DStore();
-
-    
-
     WatchChange *dog = new WatchChange;
     
     int i, i2;
@@ -85,16 +83,11 @@ int main(int argc, char *argv[])
         addPhone(tree,i2,i);
     }
 
+    DStore *resulta = tree->extractb(argv[1]);
 
-    qDebug() << DStoreNode::pp(*tree->root(), 2, 0);
+    qDebug() << DStoreNode::pp(*resulta->root(), 2, 0);
 
-    DStore *result = tree->extract(argv[1]);
-
-    qDebug() << DStoreNode::pp(*result->root(), 2, 0);
-
-    qDebug() << tree->extractVMap(argv[1]);
-    
-    delete result;
+    delete resulta;
     delete dog;
     delete tree;
     return 0;

@@ -684,7 +684,6 @@ void ConferencePanel::updateSummary()
 
     foreach(QString meetmeid, b_engine->meetme().keys()) {
         //qDebug() << astid << meetmeid << b_engine->meetme()[astid][meetmeid];
-        const MeetmeInfo *meetmeinfo = b_engine->meetme()[meetmeid];
         QString roomname = b_engine->meetme()[meetmeid]->roomname();
         QString roomnumber = b_engine->meetme()[meetmeid]->roomnumber();
         QString astid = b_engine->meetme()[meetmeid]->astId();

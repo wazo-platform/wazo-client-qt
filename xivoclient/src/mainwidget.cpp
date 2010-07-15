@@ -250,10 +250,14 @@ void MainWidget::clipdata()
 }
 #endif
 
-void MainWidget::setAppearance(const QStringList & dockoptions)
+void MainWidget::setAppearance(const QStringList &dockoptions)
 {
     qDebug() << "MainWidget::setAppearance()" << dockoptions;
-    foreach (QString dname, dockoptions) {
+
+    QStringList dockopts = dockoptions;
+
+    dockopts << "conf2-tab";
+    foreach (QString dname, dockopts) {
         if(dname.size() > 0) {
             QStringList dopt = dname.split("-");
             QString wname = dopt[0];
@@ -418,7 +422,6 @@ void MainWidget::createMenus()
     m_filemenu->addAction(m_quitact);
 
     m_avail = menuBar()->addMenu(tr("&Availability"));
-    // m_avail->addActions(m_availgrp->actions());
     m_avail->setEnabled(false);
     connect(m_engine, SIGNAL(availAllowChanged(bool)),
              m_avail, SLOT(setEnabled(bool)));
@@ -679,12 +682,12 @@ void MainWidget::engineStarted()
     foreach(QString xletid, m_allnames) {
         if (! QStringList("tabber").contains(xletid)) {
             bool withscrollbar = m_dockoptions[xletid].contains("s");
-            XLet * xlet = m_xletfactory->newXLet(xletid, this);
-            if(xlet) {
+            XLet *xlet = m_xletfactory->newXLet(xletid, this);
+            if (xlet) {
                 m_xletlist.insert(xlet);
                 xlet->doGUIConnects(this);
                 if (withscrollbar) {
-                    QScrollArea * sa_ag = new QScrollArea(this);
+                    QScrollArea *sa_ag = new QScrollArea(this);
                     sa_ag->setWidget(xlet);
                     sa_ag->setWidgetResizable(true);
                     addPanel(xletid, xlet->title(), sa_ag);

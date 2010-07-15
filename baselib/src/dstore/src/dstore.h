@@ -79,7 +79,7 @@ class DStoreNode
           \param  showUid should we also display every unique node id ?
           \return QString, a string representation of the tree
          */
-        static QString pp(const DStoreNode &node, int tc=4, int showUid=0);
+         static QString pp(const DStoreNode &node, int tc=4, int showUid=0);
 
     private:
         virtual DStoreNode* clone(DStore* tree, VMapNode *parent=NULL, int ripDad=0) = 0;
@@ -176,6 +176,7 @@ class DStore
          */
         DStore* extract(const QString &path);
 
+        DStore* extractb(const QString &path);
         /*!
           \param  path  a request to extract a tree part
           \return QVariantMap as a tree part
@@ -254,9 +255,10 @@ class DStore
         
 
 
+        void filter(int op, const QString &path, const QVariantList &value);
+        void filter(int op, const QString &path, const QVariant &value=QVariant());
     private:
         void dynamicInvocation(const QString &path, DStoreEvent event);
-        void filter(int op, const QString &path, const QVariant &value=QVariant());
         void registerNode(DStoreNode *);
         void unregisterNode(DStoreNode *);
         DStoreNode* getNode(qlonglong uid);
