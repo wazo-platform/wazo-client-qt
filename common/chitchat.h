@@ -79,6 +79,7 @@ class ChitChatWindow : public QWidget
         static QHash<QString, ChitChatWindow*> m_chat_window_opened;
         MessageEdit *m_message;
         QTextEdit *m_message_history;
+        QTextCursor lastCursor;
 };
 
 

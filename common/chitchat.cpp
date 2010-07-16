@@ -44,12 +44,16 @@ void ChitChatWindow::addMessage(
         const QString &username="")
 {
     QString time = QTime::currentTime().toString("[ HH:mm:ss ]  ");
+    QTextCursor recentCursor = m_message_history->textCursor();
+    m_message_history->setTextCursor(lastCursor);
     m_message_history->insertHtml("<span style=\"color:black\">" + time + "</span>" +
                                   "<span style=\"color:" + ucolor + "\">" + username + "</span>" +
                                   "<pre style=\"padding:0;margin:0;color:" + mcolor + "\">" +
                                   message + "\n\n</pre>");
 
     QScrollBar *sb = m_message_history->verticalScrollBar();
+    lastCursor = m_message_history->textCursor();
+    m_message_history->setTextCursor(recentCursor);
     sb->setValue(sb->maximum());
 }
 
@@ -70,6 +74,9 @@ ChitChatWindow::ChitChatWindow(const QString &with) : QWidget(NULL)
     m_message->setMaximumHeight(message_height);
     m_message_history = new QTextEdit(this);
     m_message_history->setReadOnly(true);
+    m_message_history->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    lastCursor = m_message_history->textCursor();
+
 
     QPushButton *button[2];
     button[0]= new QPushButton(tr("&Clear history"));

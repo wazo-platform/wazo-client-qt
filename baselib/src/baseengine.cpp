@@ -806,7 +806,7 @@ void addUpdateUserInTree(DStore *tree, const QVariantMap &uinfo)
 
 void addUpdateConfRoomInTree(DStore *tree, const QVariantMap &cinfo)
 {
-    if (tree->extractVMap(QString("confrooms/*[name=@%0]").arg(cinfo["name"].toString()))
+    if (tree->extractVMap(QString("confrooms/*[name=@%0]").arg(cinfo["roomname"].toString()))
                           .size() == 0) {
         int id = tree->extractVMap(QString("confrooms")).size();
         QVariantMap info;
