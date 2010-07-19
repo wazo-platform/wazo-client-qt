@@ -1,5 +1,5 @@
-#ifndef __XLET_CONFLIST
-#define __XLET_CONFLIST
+#ifndef _CONFERENCE2_CONFLIST_H_
+#define _CONFERENCE2_CONFLIST_H_
 
 #include <QLabel>
 #include <QVBoxLayout>
@@ -14,21 +14,25 @@
 
 #include <baseengine.h>
 
+#include "conference.h"
+
 class ConfListModel : public QAbstractTableModel
 {
     public:
         ConfListModel();
         enum ColOrder {
-            ID, NUMBER, NAME, MEMBER_COUNT, ADMIN_COUNT, STARTED_SINCE, NB_COL
+            ID, NAME, NUMBER, PIN_REQUIRED, MODERATED, MEMBER_COUNT, STARTED_SINCE, NB_COL
         };
 
     private:
+        void sort(int, Qt::SortOrder);
         void timerEvent(QTimerEvent *);
         int rowCount(const QModelIndex&) const;
         int columnCount(const QModelIndex&) const;
         QVariant data(const QModelIndex&, int) const;
         QVariant headerData(int , Qt::Orientation, int) const;
         Qt::ItemFlags flags(const QModelIndex &) const;
+        QMap<int, QString> m_row2id;
 
 };
 
@@ -42,8 +46,6 @@ class ConfListView : public QTableView
         void onViewClick(const QModelIndex &);
     protected:
         virtual void mousePressEvent(QMouseEvent *event);
-    signals:
-        void openConfRoom();
     private:
         int lastPressed;
 };
@@ -54,7 +56,11 @@ class ConfList : public QWidget
     Q_OBJECT
 
     public:
-        ConfList(QWidget *parent);
+        ConfList(XletConference *parent);
+    private slots:
+        void openConfRoom();
+    private:
+        XletConference *manager;
 };
 
 #endif

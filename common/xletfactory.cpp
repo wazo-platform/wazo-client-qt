@@ -145,7 +145,7 @@ XLetFactory::XLetFactory(QObject * parent)
  *
  *  \return a pointer to the XLet or NULL if it was not found
  */
-XLet* XLetFactory::newXLet(const QString & id, QWidget * topwindow) const
+XLet* XLetFactory::newXLet(const QString &id, QWidget *topwindow) const
 {
     XLet *xlet = 0;
     newXLetProto construct = m_xlets.value(id);

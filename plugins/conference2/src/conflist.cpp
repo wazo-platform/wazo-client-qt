@@ -1,11 +1,12 @@
 #include "conflist.h"
 
-ConfList::ConfList(QWidget *parent)
-    : QWidget(parent)
+ConfList::ConfList(XletConference *parent)
+    : QWidget(), manager(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout(parent);
     QHBoxLayout *hBox = new QHBoxLayout();
     ConfListView *view = new ConfListView(this, new ConfListModel());
+
     view->setStyleSheet("QTableView { border: none; background:transparent; color:black; }");
     view->verticalHeader()->hide();
 
@@ -15,6 +16,11 @@ ConfList::ConfList(QWidget *parent)
 
     layout->addLayout(hBox);
     setLayout(layout);
+}
+
+void ConfList::openConfRoom()
+{
+    manager->openConfRoom(sender()->property("id").toString());
 }
 
 ConfListModel::ConfListModel()
@@ -52,6 +58,9 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
 
     int row = index.row(), col = index.column();
 
+    if (m_row2id.contains(row))
+        row = m_row2id[row].toInt();
+
     switch (col) {
         case ID:
             return b_engine->tree()->extractVariant(QString("confrooms/%0/id").arg(row));
@@ -59,6 +68,13 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
             return b_engine->tree()->extractVariant(QString("confrooms/%0/number").arg(row));
         case NAME:
             return b_engine->tree()->extractVariant(QString("confrooms/%0/name").arg(row));
+        case PIN_REQUIRED:
+            return b_engine->tree()->extractVariant(
+                        QString("confrooms/%0/pin").arg(row));
+        case MODERATED:
+            return b_engine->tree()->extractVariant(
+                        QString("confrooms/%0/moderated").arg(row))
+                        .toBool() ? tr("Yes") : tr("No") ;
         default:
             break;
     }
@@ -77,17 +93,54 @@ QVariant ConfListModel::headerData(int section, Qt::Orientation orientation, int
             return QVariant(tr("Number"));
         } else if (section == NAME) {
             return QVariant(tr("Name"));
+        } else if (section == PIN_REQUIRED) {
+            return QVariant(tr("pin code"));
         } else if (section == MEMBER_COUNT) {
             return QVariant(tr("Member count"));
-        } else if (section == ADMIN_COUNT) {
-            return QVariant(tr("Admin count"));
+        } else if (section == MODERATED) {
+            return QVariant(tr("Moderated"));
         } else if (section == STARTED_SINCE) {
             return QVariant(tr("Started since"));
         }
     }
 
     return QVariant();
+}
 
+
+void ConfListModel::sort(int column, Qt::SortOrder order)
+{
+    QList<QPair<int, QString> > toSort;
+
+    struct {
+        static bool ascending(const QPair<int, QString> &a,
+                              const QPair<int, QString> &b) {
+            return QString::localeAwareCompare(a.second, b.second) < 0 ?
+                                               true :
+                                               false;
+        }
+        static bool descending(const QPair<int, QString> &a,
+                                 const QPair<int, QString> &b) {
+            return QString::localeAwareCompare(a.second, b.second) < 0 ?
+                                               false :
+                                               true;
+        }
+    } sorting;
+
+    int i, e;
+    for (i=0,e=rowCount(QModelIndex());i<e;i++) {
+        toSort.append(QPair<int, QString>(index(i, ID).data().toInt(),
+                                          index(i, column).data().toString()));
+    }
+
+    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ? 
+                                         sorting.ascending :
+                                         sorting.descending);
+
+    for (i=0;i<e;i++) {
+        m_row2id.insert(i, QString::number(toSort[i].first));
+    }
+    reset();
 }
 
 
@@ -114,15 +167,16 @@ void ConfListView::onViewClick(const QModelIndex &model)
 
     if (roomId != "") {
         if (lastPressed&Qt::LeftButton) {
-            b_engine->pasteToDial(roomId);
+            b_engine->pasteToDial(roomNumber);
         } else {
             QMenu *menu = new QMenu(this);
 
-            QAction *action = new QAction(tr("Go in room %1 (%2)")
+            QAction *action = new QAction(tr("Get in room %1 (%2)")
                                              .arg(roomName).arg(roomNumber), menu);
+
             action->setProperty("id", roomId);
             connect(action, SIGNAL(triggered(bool)),
-                    this, SIGNAL(openConfRoom()));
+                    parentWidget(), SLOT(openConfRoom()));
 
             menu->addAction(action);
             menu->exec(QCursor::pos());

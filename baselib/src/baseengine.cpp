@@ -812,6 +812,7 @@ void addUpdateConfRoomInTree(DStore *tree, const QVariantMap &cinfo)
         QVariantMap info;
         info["id"] = id;
         info["name"] = cinfo["roomname"];
+        info["pin"] = cinfo["pin"];
         info["number"] = cinfo["roomnumber"];
         tree->populate(QString("confrooms/%0").arg(id), info);
     }
