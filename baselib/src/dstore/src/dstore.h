@@ -171,7 +171,7 @@ class DStore
         ~DStore();
 
         /*!
-          \param  path  a request to extract a tree part
+          \param  path a request to extract a tree part
           \return DStore *, a tree part
          */
         DStore* extract(const QString &path);

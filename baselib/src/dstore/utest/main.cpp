@@ -39,6 +39,7 @@ void addPhone(DStore *tree, int pid, int uid)
     phone.insert("id", pid);
     phone.insert("connected", ((qrand()&2)?1:0));
     phone.insert("user-id", uid);
+
     tree->populate(QString("phone/%1").arg(pid), phone);
 }
 
@@ -86,6 +87,7 @@ int main(int argc, char *argv[])
     DStore *resulta = tree->extractb(argv[1]);
 
     qDebug() << DStoreNode::pp(*resulta->root(), 2, 0);
+    qDebug() << tree->extractVariant(argv[1]);
 
     delete resulta;
     delete dog;

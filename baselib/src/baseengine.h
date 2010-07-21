@@ -391,6 +391,12 @@ class BASELIB_EXPORT BaseEngine: public QObject
         DStore m_tree;
     public:
         DStore* tree() { return &m_tree; };
+        QVariant eV(const QString &req) {
+            return tree()->extractVariant(req);
+        }
+        QVariant eVM(const QString &req) {
+            return tree()->extractVMap(req);
+        }
 
     friend class CtiConn;
 };
