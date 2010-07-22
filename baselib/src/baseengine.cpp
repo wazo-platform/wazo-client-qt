@@ -103,6 +103,7 @@ BaseEngine::BaseEngine(QSettings *settings,
     
     if(m_autoconnect)
         start();
+
 }
 
 /*! \brief Destructor
@@ -804,17 +805,49 @@ void addUpdateUserInTree(DStore *tree, const QVariantMap &uinfo)
     info.clear();
 }
 
+void addUpdateConfMemberInTree(DStore *tree, const QVariantMap &cinfo)
+{
+    QString id = cinfo["uniqueid"].toString();
+    QString confId = cinfo["meetmeid"].toString();
+    QString path = QString("confrooms/%0/in/%1").arg(confId).arg(id);
+    QVariantMap info;
+    if (cinfo["action"] == "join") {
+        info["id"] = id;
+        info["phonenum"] = cinfo["details"].toMap()["phonenum"];
+        info["time-start"] = cinfo["details"].toMap()["time_start"];
+        info["user-id"] = cinfo["details"].toMap()["userid"].toString().remove(QRegExp("[^/]*/"));
+        tree->populate(path ,info);
+    } else if (cinfo["action"] == "leave") {
+        tree->rmPath(path);
+    }
+ 
+
+}
+
 void addUpdateConfRoomInTree(DStore *tree, const QVariantMap &cinfo)
 {
-    if (tree->extractVMap(QString("confrooms/*[name=@%0]").arg(cinfo["roomname"].toString()))
+    if (tree->extractVMap(QString("confrooms[name=@%0]").arg(cinfo["roomname"].toString()))
                           .size() == 0) {
-        int id = tree->extractVMap(QString("confrooms")).size();
+
+        int id = tree->extractVMap(QString("confrooms")).size() + 1;
         QVariantMap info;
         info["id"] = id;
         info["name"] = cinfo["roomname"];
         info["pin"] = cinfo["pin"];
+        info["in"] = QVariantMap();
         info["number"] = cinfo["roomnumber"];
         tree->populate(QString("confrooms/%0").arg(id), info);
+
+        QVariantMap userIn = cinfo["uniqueids"].toMap();
+        foreach (QString uniqueId , userIn.keys()) {
+            QVariantMap userToInsert;
+            userToInsert["details"] = userIn[uniqueId].toMap();
+            userToInsert["meetmeid"] = id;
+            userToInsert["action"] = "join";
+            userToInsert["uniqueid"] = uniqueId;
+            addUpdateConfMemberInTree(tree, userToInsert);
+        }
+
     }
 }
 
@@ -1027,6 +1060,7 @@ void BaseEngine::parseCommand(const QString &line)
                 if (m_meetme.contains(meetmeid))
                     m_meetme[meetmeid]->update(map);
                 emit meetmeEvent(m_timesrv, action, astid, meetmeid, uniqueid);
+                addUpdateConfMemberInTree(&m_tree, map);
             } else if (function == "add") {
                 QVariantMap command;
                 command["class"] = "meetme";

@@ -883,9 +883,9 @@ static void yy_syntax_error(
 
     QString emsg = "syntax error in: ";
     qDebug((emsg + arg->req).toUtf8().constData());
-    qDebug((QString(" ").repeated(emsg.size()) +
-            QString("_").repeated(arg->count) + "^ after..")
-                        .toUtf8().constData());
+    //qDebug((QString(" ").repeated(emsg.size()) +
+    //        QString("_").repeated(arg->count) + "^ after..")
+    //                    .toUtf8().constData());
     arg->abort = 1;
 #line 891 "src/grammar.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */

@@ -1,12 +1,12 @@
 #include "confchamber.h"
 
-ConfChamberModel::ConfChamberModel()
-    : QAbstractTableModel()
+ConfChamberModel::ConfChamberModel(const QString &id)
+    : QAbstractTableModel(), m_id(id)
 {
-}
-
-void ConfChamberModel::sort(int, Qt::SortOrder)
-{
+    b_engine->tree()->onChange(QString("confrooms/%0").arg(id), this,
+        SLOT(confRoomChange(const QString &, DStoreEvent)));
+    extractRow2IdMap();
+    startTimer(1000);
 }
 
 void ConfChamberModel::timerEvent(QTimerEvent *)
@@ -14,9 +14,33 @@ void ConfChamberModel::timerEvent(QTimerEvent *)
     reset();
 }
 
+void ConfChamberModel::confRoomChange(const QString &path, DStoreEvent event)
+{
+    extractRow2IdMap();
+}
+
+void ConfChamberModel::extractRow2IdMap()
+{
+    QVariantMap roomInList = b_engine->eVM(QString("confrooms/%0/in").arg(m_id));
+
+    int row = 0;
+    if (roomInList.size() != m_row2id.size()) {
+        foreach(QString roomId, roomInList.keys()) {
+            m_row2id.insert(row++, roomId);
+        }
+    }
+    reset();
+}
+
+void ConfChamberModel::sort(int, Qt::SortOrder)
+{
+    reset();
+}
+
+
 int ConfChamberModel::rowCount(const QModelIndex&) const
 {
-    return 1;
+    return b_engine->eVM(QString("confrooms/%0/in").arg(m_id)).size();
 }
 
 int ConfChamberModel::columnCount(const QModelIndex&) const
@@ -28,6 +52,30 @@ QVariant
 ConfChamberModel::data(const QModelIndex &index,
                        int role) const
 {
+    if (role != Qt::DisplayRole) {
+        if (role == Qt::TextAlignmentRole)
+            return Qt::AlignCenter;
+        return QVariant();
+    }
+
+    int row = index.row(), col = index.column();
+    QString rowId;
+
+    rowId = m_row2id[row];
+
+    QString in = QString("confrooms/%0/in/%1/").arg(m_id).arg(rowId);
+    switch (col) {
+        case ID:
+            return b_engine->eV(in + "id");
+        case NUMBER:
+            return b_engine->eV(in + "phonenum");
+        case SINCE:
+            return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
+                                         b_engine->eV(in + "time-start").toDouble()).toUTC()
+                                         .toString("hh:mm:ss");
+        default:
+            break;
+    }
     return QVariant();
 }
 
@@ -94,7 +142,7 @@ ConfChamber::ConfChamber(const QString &id)
 {
     QVBoxLayout *vBox = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout();
-    ConfChamberView *view = new ConfChamberView(this, new ConfChamberModel());
+    ConfChamberView *view = new ConfChamberView(this, new ConfChamberModel(id));
 
     view->setStyleSheet("ConfChamberView { border: none; background:transparent; color:black; }");
     view->verticalHeader()->hide();

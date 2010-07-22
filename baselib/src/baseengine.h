@@ -394,7 +394,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QVariant eV(const QString &req) {
             return tree()->extractVariant(req);
         }
-        QVariant eVM(const QString &req) {
+        QVariantMap eVM(const QString &req) {
             return tree()->extractVMap(req);
         }
 

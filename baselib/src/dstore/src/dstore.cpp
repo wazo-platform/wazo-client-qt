@@ -337,13 +337,16 @@ QVariant DStore::extractVariant(const QString &path)
 
 void DStore::onChange(const QString &path, QObject *target, const char *slot)
 {
-    m_callbackList.insert(sanitize(path), new DStoreCallback(target, slot));
+    QString cb = QString(slot).remove(QRegExp("\\(.*$"));
+    m_callbackList.insert(sanitize(path),
+                          new DStoreCallback(target, cb.toAscii().constData()));
 }
 
 void DStore::dynamicInvocation(const QString &path, DStoreEvent event)
 {
     QString triggerPath = sanitize(path);
     QStringList traverseList = triggerPath.split("/");
+
 
     do {
         if (m_callbackList.contains(triggerPath)) {

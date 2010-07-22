@@ -2,6 +2,7 @@
 #define _CONFERENCE2_CONFLIST_H_
 
 #include <QLabel>
+#include <QTimer>
 #include <QVBoxLayout>
 #include <QTableView>
 #include <QModelIndex>
@@ -18,15 +19,18 @@
 
 class ConfListModel : public QAbstractTableModel
 {
+    Q_OBJECT
+
     public:
         ConfListModel();
         enum ColOrder {
             ID, NAME, NUMBER, PIN_REQUIRED, MODERATED, MEMBER_COUNT, STARTED_SINCE, NB_COL
         };
 
+    private slots:
+        void confRoomsChange(const QString &path, DStoreEvent event);
     private:
         void sort(int, Qt::SortOrder);
-        void timerEvent(QTimerEvent *);
         int rowCount(const QModelIndex&) const;
         int columnCount(const QModelIndex&) const;
         QVariant data(const QModelIndex&, int) const;

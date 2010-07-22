@@ -44,9 +44,9 @@ QVariantList flatResult(const QVariantMap &map, const QString &path)
 %syntax_error {
     QString emsg = "syntax error in: ";
     qDebug((emsg + arg->req).toUtf8().constData());
-    qDebug((QString(" ").repeated(emsg.size()) +
-            QString("_").repeated(arg->count) + "^ after..")
-                        .toUtf8().constData());
+    //qDebug((QString(" ").repeated(emsg.size()) +
+    //        QString("_").repeated(arg->count) + "^ after..")
+    //                    .toUtf8().constData());
     arg->abort = 1;
 }  
   

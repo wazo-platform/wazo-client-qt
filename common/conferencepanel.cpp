@@ -243,7 +243,7 @@ void ConferencePanel::meetmeEvent(double timeref,
                                   const QString &meetmeid,
                                   const QString &uniqueid)
 {
-    qDebug() << "ConferencePanel::meetmeEvent()" << action << astid << meetmeid << uniqueid;
+    //qDebug() << "ConferencePanel::meetmeEvent()" << action << astid << meetmeid << uniqueid;
     if (! b_engine->meetme().contains(meetmeid))
         return;
     const MeetmeInfo * meetmeinfo = b_engine->meetme()[meetmeid];
@@ -287,7 +287,7 @@ void ConferencePanel::updateButtons(const QString &astid,
         if(meetmeinfo->roomname() == roomname) {
             //qDebug() << "ConferencePanel::updateButtons" << meetmeinfo->m_uniqueids;
             bool isAdmin = (userid == meetmeinfo->adminid()) || meetmeinfo->adminlist().contains(userid);
-            qDebug() << "ConferencePanel::updateButtons" << roomname << "userid" << userid << "=?" << "isAdmin:" << isAdmin;
+            //qDebug() << "ConferencePanel::updateButtons" << roomname << "userid" << userid << "=?" << "isAdmin:" << isAdmin;
             
             bool isAuthed = false;
             {
@@ -360,7 +360,7 @@ void ConferencePanel::setProperties(double timeref,
 {
     const MeetmeInfo * meetmeinfo = b_engine->meetme()[meetmeid];
     QString roomname = meetmeinfo->roomname();
-    qDebug() << "ConferencePanel::setProperties()" << action << astid << roomname << uniqueid << details;
+    //qDebug() << "ConferencePanel::setProperties()" << action << astid << roomname << uniqueid << details;
     QString idxroom = QString("%1-%2").arg(astid).arg(roomname);
     QString ref = QString("%1-%2-%3").arg(astid).arg(roomname).arg(uniqueid);
     
@@ -518,7 +518,7 @@ void ConferencePanel::setProperties(double timeref,
                     m_action_mute[ref]->setProperty("mutestatus", "off");
                 }
             } else {
-                qDebug() << "ConferencePanel::meetmeEvent() unknown mutestatus" << mutestatus << ref;
+                //qDebug() << "ConferencePanel::meetmeEvent() unknown mutestatus" << mutestatus << ref;
             }
             m_action_mute[ref]->setIconSize(QSize(16, 16));
         }
@@ -532,7 +532,7 @@ void ConferencePanel::setProperties(double timeref,
                 m_action_record[ref]->setText(tr("Record"));
                 m_action_record[ref]->setProperty("recordstatus", "off");
             } else {
-                qDebug() << "ConferencePanel::meetmeEvent() unknown recordstatus" << recordstatus << ref;
+                //qDebug() << "ConferencePanel::meetmeEvent() unknown recordstatus" << recordstatus << ref;
             }
         }
     } else if (action == "changeroompausedstate") {
@@ -598,7 +598,7 @@ void ConferencePanel::doMeetMeAction()
 {
     QString action = sender()->property("action").toString();
     QString ref = sender()->property("reference").toString();
-    qDebug() << "ConferencePanel::doMeetMeAction()" << action << ref;
+    //qDebug() << "ConferencePanel::doMeetMeAction()" << action << ref;
     
     QString meetmeidentity = QString("%1 %2 %3 %4")
         .arg(sender()->property("astid").toString())
@@ -626,7 +626,7 @@ void ConferencePanel::doMeetMeAction()
         } else if (mutestatus == "on") {
             meetmeAction("unmute", meetmeidentity);
         } else {
-            qDebug() << "ConferencePanel::doMeetMeAction() unknown mutestatus" << mutestatus << ref;
+            //qDebug() << "ConferencePanel::doMeetMeAction() unknown mutestatus" << mutestatus << ref;
         }
         m_action_mute[ref]->setIconSize(QSize(8, 8));
     }

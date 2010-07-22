@@ -3,11 +3,20 @@
 ConfListModel::ConfListModel()
     : QAbstractTableModel()
 {
-    startTimer(1000);
+    b_engine->tree()->onChange("confrooms", this,
+        SLOT(confRoomsChange(const QString &, DStoreEvent)));
 }
 
-void ConfListModel::timerEvent(QTimerEvent *)
+void ConfListModel::confRoomsChange(const QString &, DStoreEvent)
 {
+    QVariantMap roomList = b_engine->eVM("confrooms");
+
+    int row = 0;
+    if (roomList.size() != m_row2id.size()) {
+        foreach(QString roomId, roomList.keys()) {
+            m_row2id.insert(row++, roomId);
+        }
+    }
     reset();
 }
 
@@ -18,7 +27,7 @@ Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
 
 int ConfListModel::rowCount(const QModelIndex&) const
 {
-    return b_engine->tree()->extractVMap("confrooms/*").size();
+    return b_engine->eVM("confrooms").size();
 }
 
 int ConfListModel::columnCount(const QModelIndex&) const
@@ -54,6 +63,8 @@ ConfListModel::data(const QModelIndex &index,
         case MODERATED:
             return b_engine->eV(room + "moderated").toBool() ?
                        tr("Yes") : tr("No");
+        case MEMBER_COUNT:
+            return b_engine->eVM(room + "in").size();
         default:
             break;
     }
@@ -146,6 +157,11 @@ void ConfListView::onViewClick(const QModelIndex &model)
     if (roomId != "") {
         if (lastPressed&Qt::LeftButton) {
             b_engine->pasteToDial(roomNumber);
+            QTimer *timer = new QTimer(this);
+            timer->setSingleShot(true);
+            timer->setProperty("id", roomId);
+            connect(timer, SIGNAL(timeout()), parentWidget(), SLOT(openConfRoom()));
+            timer->start(10);
         } else {
             QMenu *menu = new QMenu(this);
 
