@@ -6,10 +6,12 @@
 #include <QTableView>
 #include <QModelIndex>
 #include <QVBoxLayout>
+#include <QMouseEvent>
 #include <QMap>
 #include <QHeaderView>
 
 #include "baseengine.h"
+class ConfChamberView;
 
 class ConfChamberModel : public QAbstractTableModel
 {
@@ -18,8 +20,13 @@ class ConfChamberModel : public QAbstractTableModel
     public:
         ConfChamberModel(const QString &);
         enum ColOrder {
-            ID, NAME, NUMBER, SINCE, ADMIN, ACTION_KICK, ACTION_MUTE, NB_COL
+            ID, ACTION_MUTE, ACTION_KICK,
+            ACTION_TALK_TO, ACTION_ALLOW_IN, ADMIN,
+            NUMBER, SINCE,  NAME, NB_COL
         };
+        void setView(ConfChamberView *m_view);
+        QString id() const;
+        QString row2participantId(int) const;
     private slots:
         void confRoomChange(const QString &path, DStoreEvent event);
     protected:
@@ -32,7 +39,9 @@ class ConfChamberModel : public QAbstractTableModel
         QVariant data(const QModelIndex&, int) const;
         QVariant headerData(int , Qt::Orientation, int) const;
         Qt::ItemFlags flags(const QModelIndex &) const;
+        int m_admin;
         QString m_id;
+        ConfChamberView *m_view;
         QMap<int, QString> m_row2id;
 
 };

@@ -31,6 +31,7 @@
  * $Date$
  */
 
+#include "baseengine.h"
 #include "identityagent.h"
 
 const QString icon_color_red = "xivo-red";
@@ -77,7 +78,7 @@ void IdentityAgent::setText(const QString & text)
 void IdentityAgent::updateStatus(const QVariantMap & properties)
 {
     QVariantMap agqjoined = properties["queues_by_agent"].toMap();
-    QVariantMap agentstats =  properties["agentstats"].toMap();
+    QVariantMap agentstats = properties["agentstats"].toMap();
     QString agstatus = agentstats["status"].toString();
     QString phonenum = agentstats["agent_phone_number"].toString();
     
@@ -163,7 +164,7 @@ void IdentityAgent::setPausedColors(int nj, int np)
 
 void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
 {
-    qDebug() << "IdentityAgent::contextMenuEvent";
+    // qDebug() << "IdentityAgent::contextMenuEvent()";
     QMenu contextMenu(this);
     
     if(m_allow_logagent) {
@@ -214,21 +215,24 @@ void IdentityAgent::logout()
 void IdentityAgent::pause()
 {
     QVariantMap ipbxcommand;
+    QString astid = b_engine->getXivoClientUser()->astid();
     ipbxcommand["command"] = "agentpausequeue";
-    ipbxcommand["queueids"] = QString("queue:%1/special:all").arg("xivo");
+    ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
     emit ipbxCommand(ipbxcommand);
 }
 
 void IdentityAgent::unpause()
 {
     QVariantMap ipbxcommand;
+    QString astid = b_engine->getXivoClientUser()->astid();
     ipbxcommand["command"] = "agentunpausequeue";
-    ipbxcommand["queueids"] = QString("queue:%1/special:all").arg("xivo");
+    ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
     emit ipbxCommand(ipbxcommand);
 }
 
 void IdentityAgent::setAllowedActions(bool allow_logagent, bool allow_pauseagent)
 {
+    // qDebug() << "IdentityAgent::setAllowedActions()" << allow_logagent << allow_pauseagent;
     m_allow_logagent = allow_logagent;
     m_allow_pauseagent = allow_pauseagent;
 }

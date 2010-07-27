@@ -4,3 +4,5 @@ HEADERS     = src/*.h
 SOURCES     = src/*.cpp
 
 TARGET      = $$qtLibraryTarget(conf2plugin)
+
+RESOURCES = res.qrc

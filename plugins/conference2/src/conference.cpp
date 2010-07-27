@@ -32,9 +32,12 @@ int ConfTab::addClosableTab(QWidget *w, const QString &title)
 void ConfTab::showConfRoom(const QString &id)
 {
     if (!m_id2index.contains(id)) {
-        QString roomName = b_engine->tree()->extractVariant(
+        if (b_engine->eVM(QString("confrooms/%0/in").arg(id)).size() == 0)
+            return ;
+
+        QString roomName = b_engine->eV(
                                 QString("confrooms/%0/name").arg(id)).toString();
-        QString roomNumber = b_engine->tree()->extractVariant(
+        QString roomNumber = b_engine->eV(
                                 QString("confrooms/%0/number").arg(id)).toString();
 
         int index = \

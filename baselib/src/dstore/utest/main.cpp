@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 
     DStore *resulta = tree->extractb(argv[1]);
 
-    //qDebug() << DStoreNode::pp(*resulta->root(), 2, 0);
+    qDebug() << DStoreNode::pp(*resulta->root(), 2, 0);
     qDebug() << tree->extractVariant(argv[1]);
 
     delete resulta;

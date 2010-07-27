@@ -169,7 +169,8 @@ void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
     if(optionsMap.contains("iconsize"))
         m_gui_buttonsize = optionsMap["iconsize"].toInt();
     
-    m_agent->setAllowedActions( optionsMap["logagent"].toBool(), optionsMap["pauseagent"].toBool() );
+    m_agent->setAllowedActions(optionsMap["logagent"].toBool(),
+                               optionsMap["pauseagent"].toBool());
     
     setFont(m_gui_font);
     
@@ -224,10 +225,10 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
     m_presencevalue->show();
 }
 
-void IdentityDisplay::setUserInfo(const UserInfo * ui)
+void IdentityDisplay::setUserInfo(const UserInfo */* ui */)
 {
     // qDebug() << "IdentityDisplay::setUserInfo()";
-    m_ui = ui;
+    m_ui = b_engine->getXivoClientUser();
     
     m_user->setText(m_ui->fullname());
     m_phonenum->setText(m_ui->phoneNumber());
@@ -350,4 +351,3 @@ void IdentityDisplay::doGUIConnects(QWidget * mainwindow)
     connect( this, SIGNAL(setSystrayIcon(const QString &)),
              mainwindow, SLOT(setSystrayIcon(const QString &)) );
 }
-

@@ -53,6 +53,12 @@ QVariantList flatResult(const QVariantMap &map, const QString &path)
 treepart ::= expr(A). {
     arg->ret = A;
 }
+
+treepart ::= expr(A) SLASH path(B). {
+    arg->ret = A->extract(*B);
+    delete A;
+}
+
 treepart ::= path(B) . {
     arg->ret = arg->origin->extract(*B);
 }

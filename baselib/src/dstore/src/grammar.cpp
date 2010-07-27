@@ -107,8 +107,8 @@ typedef union {
 #define ParseARG_PDECL , ParserRet* arg 
 #define ParseARG_FETCH  ParserRet* arg  = yypParser->arg 
 #define ParseARG_STORE yypParser->arg  = arg 
-#define YYNSTATE 21
-#define YYNRULE 14
+#define YYNSTATE 23
+#define YYNRULE 15
 #define YYERRORSYMBOL 7
 #define YYERRSYMDT yy29
 #define YY_NO_ACTION      (YYNSTATE+YYNRULE+2)
@@ -180,32 +180,32 @@ static const YYMINORTYPE yyzerominor = { 0 };
 **  yy_default[]       Default action for each state.
 */
 static const YYACTIONTYPE yy_action[] = {
- /*     0 */    11,   15,    8,   13,   14,    9,   18,    6,   13,   23,
- /*    10 */    36,   22,    4,    2,   10,   18,   16,    5,   18,   21,
- /*    20 */     7,   13,   17,   12,   13,    4,    3,    1,    4,    4,
- /*    30 */     2,   37,   37,   19,   20,
+ /*     0 */    14,   17,   11,   13,   16,    8,   20,    7,   13,   26,
+ /*    10 */    39,   25,    5,    3,   12,   20,   18,    6,   20,    4,
+ /*    20 */     9,   13,    5,   10,   13,   19,   15,   13,   23,    2,
+ /*    30 */    24,    5,    5,   21,    1,   40,    5,    3,   22,
 };
 static const YYCODETYPE yy_lookahead[] = {
  /*     0 */     8,    9,   10,   11,   12,    8,    6,   10,   11,    0,
- /*    10 */    13,    0,    1,    2,   11,    6,   11,    5,    6,    0,
- /*    20 */    10,   11,    6,   10,   11,    1,    1,    3,    1,    1,
- /*    30 */     2,   14,   14,    4,    4,
+ /*    10 */    13,    0,    1,    2,   11,    6,   11,    5,    6,    1,
+ /*    20 */    10,   11,    1,   10,   11,    6,   10,   11,    0,    1,
+ /*    30 */     0,    1,    1,    4,    3,   14,    1,    2,    4,
 };
 #define YY_SHIFT_USE_DFLT (-1)
-#define YY_SHIFT_MAX 16
+#define YY_SHIFT_MAX 18
 static const signed char yy_shift_ofst[] = {
- /*     0 */     9,   12,    0,    0,    0,    0,   11,   24,   28,   19,
- /*    10 */    16,   25,   27,   16,   29,   30,   16,
+ /*     0 */     9,   12,    0,    0,    0,    0,    0,   11,   28,   30,
+ /*    10 */    31,   35,   19,   19,   18,   21,   29,   34,   19,
 };
 #define YY_REDUCE_USE_DFLT (-9)
-#define YY_REDUCE_MAX 5
+#define YY_REDUCE_MAX 6
 static const signed char yy_reduce_ofst[] = {
- /*     0 */    -3,   -8,   10,   13,    3,    5,
+ /*     0 */    -3,   -8,   10,   13,   16,    3,    5,
 };
 static const YYACTIONTYPE yy_default[] = {
- /*     0 */    35,   35,   35,   35,   35,   35,   35,   35,   25,   35,
- /*    10 */    32,   26,   27,   31,   35,   35,   30,   34,   33,   28,
- /*    20 */    29,
+ /*     0 */    38,   38,   38,   38,   38,   38,   38,   38,   38,   38,
+ /*    10 */    38,   28,   35,   34,   29,   30,   38,   38,   33,   37,
+ /*    20 */    36,   31,   32,
 };
 #define YY_SZ_ACTTAB (int)(sizeof(yy_action)/sizeof(yy_action[0]))
 
@@ -311,19 +311,20 @@ static const char *const yyTokenName[] = {
 */
 static const char *const yyRuleName[] = {
  /*   0 */ "treepart ::= expr",
- /*   1 */ "treepart ::= path",
- /*   2 */ "treepart ::=",
- /*   3 */ "error ::=",
- /*   4 */ "midexpr ::= path",
- /*   5 */ "midexpr ::= expr",
- /*   6 */ "midexpr ::= expr SLASH path",
- /*   7 */ "expr ::= path LC path TEST value RC",
- /*   8 */ "expr ::= path LC path TEST midexpr RC",
- /*   9 */ "value ::= AT pathfrag",
- /*  10 */ "path ::= pathfrag",
- /*  11 */ "path ::= path SLASH pathfrag",
- /*  12 */ "pathfrag ::= CHARACTER",
- /*  13 */ "pathfrag ::= pathfrag CHARACTER",
+ /*   1 */ "treepart ::= expr SLASH path",
+ /*   2 */ "treepart ::= path",
+ /*   3 */ "treepart ::=",
+ /*   4 */ "error ::=",
+ /*   5 */ "midexpr ::= path",
+ /*   6 */ "midexpr ::= expr",
+ /*   7 */ "midexpr ::= expr SLASH path",
+ /*   8 */ "expr ::= path LC path TEST value RC",
+ /*   9 */ "expr ::= path LC path TEST midexpr RC",
+ /*  10 */ "value ::= AT pathfrag",
+ /*  11 */ "path ::= pathfrag",
+ /*  12 */ "path ::= path SLASH pathfrag",
+ /*  13 */ "pathfrag ::= CHARACTER",
+ /*  14 */ "pathfrag ::= pathfrag CHARACTER",
 };
 #endif /* NDEBUG */
 
@@ -629,6 +630,7 @@ static const struct {
   unsigned char nrhs;     /* Number of right-hand side symbols in the rule */
 } yyRuleInfo[] = {
   { 13, 1 },
+  { 13, 3 },
   { 13, 1 },
   { 13, 0 },
   { 7, 0 },
@@ -701,31 +703,39 @@ static void yy_reduce(
 {
     arg->ret = yymsp[0].minor.yy28;
 }
-#line 705 "src/grammar.c"
+#line 707 "src/grammar.c"
         break;
-      case 1: /* treepart ::= path */
-#line 56 "src/grammar.ly"
+      case 1: /* treepart ::= expr SLASH path */
+#line 57 "src/grammar.ly"
+{
+    arg->ret = yymsp[-2].minor.yy28->extract(*yymsp[0].minor.yy19);
+    delete yymsp[-2].minor.yy28;
+}
+#line 715 "src/grammar.c"
+        break;
+      case 2: /* treepart ::= path */
+#line 62 "src/grammar.ly"
 {
     arg->ret = arg->origin->extract(*yymsp[0].minor.yy19);
 }
-#line 712 "src/grammar.c"
+#line 722 "src/grammar.c"
         break;
-      case 2: /* treepart ::= */
-#line 59 "src/grammar.ly"
+      case 3: /* treepart ::= */
+#line 65 "src/grammar.ly"
 {
     arg->ret = arg->origin->extract("");
 }
-#line 719 "src/grammar.c"
+#line 729 "src/grammar.c"
         break;
-      case 3: /* error ::= */
-#line 63 "src/grammar.ly"
+      case 4: /* error ::= */
+#line 69 "src/grammar.ly"
 {
   ;
 }
-#line 726 "src/grammar.c"
+#line 736 "src/grammar.c"
         break;
-      case 4: /* midexpr ::= path */
-#line 67 "src/grammar.ly"
+      case 5: /* midexpr ::= path */
+#line 73 "src/grammar.ly"
 {
     DStore *tree = arg->origin->extract(*yymsp[0].minor.yy19);
     yygotominor.yy1 = new QVariantList();
@@ -733,29 +743,29 @@ static void yy_reduce(
     delete tree;
     delete yymsp[0].minor.yy19;
 }
-#line 737 "src/grammar.c"
+#line 747 "src/grammar.c"
         break;
-      case 5: /* midexpr ::= expr */
-#line 75 "src/grammar.ly"
+      case 6: /* midexpr ::= expr */
+#line 81 "src/grammar.ly"
 {
     yygotominor.yy1 = new QVariantList();
     yygotominor.yy1->append(yymsp[0].minor.yy28->extractVariant(""));
     delete yymsp[0].minor.yy28;
 }
-#line 746 "src/grammar.c"
+#line 756 "src/grammar.c"
         break;
-      case 6: /* midexpr ::= expr SLASH path */
-#line 80 "src/grammar.ly"
+      case 7: /* midexpr ::= expr SLASH path */
+#line 86 "src/grammar.ly"
 {
     yygotominor.yy1 = new QVariantList(flatResult(yymsp[-2].minor.yy28->extractVMap(""), "*/" + *yymsp[0].minor.yy19));
     delete yymsp[-2].minor.yy28;
     delete yymsp[0].minor.yy19;
     arg->count += 1;
 }
-#line 756 "src/grammar.c"
+#line 766 "src/grammar.c"
         break;
-      case 7: /* expr ::= path LC path TEST value RC */
-#line 87 "src/grammar.ly"
+      case 8: /* expr ::= path LC path TEST value RC */
+#line 93 "src/grammar.ly"
 {
     yygotominor.yy28 = arg->origin->extract(*yymsp[-5].minor.yy19);
     yygotominor.yy28->filter(yymsp[-2].minor.yy0, *yymsp[-3].minor.yy19, *yymsp[-1].minor.yy2);
@@ -764,10 +774,10 @@ static void yy_reduce(
     delete yymsp[-1].minor.yy2;
     arg->count += 3;
 }
-#line 768 "src/grammar.c"
+#line 778 "src/grammar.c"
         break;
-      case 8: /* expr ::= path LC path TEST midexpr RC */
-#line 95 "src/grammar.ly"
+      case 9: /* expr ::= path LC path TEST midexpr RC */
+#line 101 "src/grammar.ly"
 {
     yygotominor.yy28 = arg->origin->extract(*yymsp[-5].minor.yy19);
     yygotominor.yy28->filter(yymsp[-2].minor.yy0, *yymsp[-3].minor.yy19, *yymsp[-1].minor.yy1);
@@ -776,48 +786,48 @@ static void yy_reduce(
     delete yymsp[-1].minor.yy1;
     arg->count += 3;
 }
-#line 780 "src/grammar.c"
+#line 790 "src/grammar.c"
         break;
-      case 9: /* value ::= AT pathfrag */
-#line 105 "src/grammar.ly"
+      case 10: /* value ::= AT pathfrag */
+#line 111 "src/grammar.ly"
 {
     yygotominor.yy2 = new QVariant(*yymsp[0].minor.yy19);
     delete yymsp[0].minor.yy19;
 }
-#line 788 "src/grammar.c"
+#line 798 "src/grammar.c"
         break;
-      case 10: /* path ::= pathfrag */
-#line 110 "src/grammar.ly"
+      case 11: /* path ::= pathfrag */
+#line 116 "src/grammar.ly"
 {
     yygotominor.yy19 = yymsp[0].minor.yy19;
 }
-#line 795 "src/grammar.c"
+#line 805 "src/grammar.c"
         break;
-      case 11: /* path ::= path SLASH pathfrag */
-#line 113 "src/grammar.ly"
+      case 12: /* path ::= path SLASH pathfrag */
+#line 119 "src/grammar.ly"
 {
     yygotominor.yy19 = new QString(*yymsp[-2].minor.yy19 + "/" + *yymsp[0].minor.yy19);
     delete yymsp[-2].minor.yy19;
     delete yymsp[0].minor.yy19;
     arg->count += 1;
 }
-#line 805 "src/grammar.c"
+#line 815 "src/grammar.c"
         break;
-      case 12: /* pathfrag ::= CHARACTER */
-#line 120 "src/grammar.ly"
+      case 13: /* pathfrag ::= CHARACTER */
+#line 126 "src/grammar.ly"
 {
     yygotominor.yy19 = new QString((char)yymsp[0].minor.yy0);
 }
-#line 812 "src/grammar.c"
+#line 822 "src/grammar.c"
         break;
-      case 13: /* pathfrag ::= pathfrag CHARACTER */
-#line 123 "src/grammar.ly"
+      case 14: /* pathfrag ::= pathfrag CHARACTER */
+#line 129 "src/grammar.ly"
 {
     yygotominor.yy19 = new QString(*yymsp[-1].minor.yy19 + yymsp[0].minor.yy0);
     delete yymsp[-1].minor.yy19;
     arg->count += 1;
 }
-#line 821 "src/grammar.c"
+#line 831 "src/grammar.c"
         break;
       default:
         break;
@@ -887,7 +897,7 @@ static void yy_syntax_error(
     //        QString("_").repeated(arg->count) + "^ after..")
     //                    .toUtf8().constData());
     arg->abort = 1;
-#line 891 "src/grammar.c"
+#line 901 "src/grammar.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 

@@ -5,6 +5,13 @@ ConfListModel::ConfListModel()
 {
     b_engine->tree()->onChange("confrooms", this,
         SLOT(confRoomsChange(const QString &, DStoreEvent)));
+
+    startTimer(1000);
+}
+
+void ConfListModel::timerEvent(QTimerEvent *)
+{
+    reset();
 }
 
 void ConfListModel::confRoomsChange(const QString &, DStoreEvent)
@@ -61,10 +68,29 @@ ConfListModel::data(const QModelIndex &index,
         case PIN_REQUIRED:
             return b_engine->eV(room + "pin");
         case MODERATED:
-            return b_engine->eV(room + "moderated").toBool() ?
+            return b_engine->eV(room + "admin-id").toInt() ?
                        tr("Yes") : tr("No");
         case MEMBER_COUNT:
             return b_engine->eVM(room + "in").size();
+        case STARTED_SINCE:
+        {
+            QVariantMap UserIn = b_engine->eVM(room + "in");
+            double time = 0;
+            QString displayed = QString::fromUtf8("Ø");
+            foreach (QString uid, UserIn.keys()) {
+                double utime = UserIn[uid].toMap()["time-start"].toDouble();
+                if ((time == 0) || (time > utime)) {
+                    time = utime;
+                }
+            }
+            if (time != 0) {
+                displayed = 
+                    QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() - time)
+                                         .toUTC().toString("hh:mm:ss");
+            }
+
+            return displayed;
+        }
         default:
             break;
     }
@@ -139,8 +165,10 @@ ConfListView::ConfListView(QWidget *parent, ConfListModel *model)
 {
     setSortingEnabled(true);
     setModel(model);
+    setShowGrid(0);
     verticalHeader()->hide();
     horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    horizontalHeader()->setMovable(true);
     setStyleSheet("ConfListView { border: none; background:transparent; color:black; }");
     hideColumn(0);
 

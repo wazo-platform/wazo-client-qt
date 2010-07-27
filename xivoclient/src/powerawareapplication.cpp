@@ -61,6 +61,7 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
  - only since windows 2000:
  PBT_APMQUERYSUSPEND Request for permission to suspend
  PBT_APMQUERYSUSPENDFAILED Suspension request denied.
+ PBT_APMPOWERSTATUSCHANGE Power status has changed. (switch battery/AC or battery under threshold)
 */
 /*      if(msg->wParam == PBT_APMQUERYSUSPEND) {
             standBy();
