@@ -129,9 +129,9 @@ void IdentityPhoneLine::hangup()
     qDebug() << Q_FUNC_INFO << sender() << m_ui;
     if(sender() && m_ui) {
         QString channel = sender()->property("channel").toString();
-        emit actionCall(QString("hangup"),
-                        QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
-                        QString());
+        b_engine->actionCall(QString("hangup"),
+                             QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
+                             QString());
     }
 }
 
@@ -139,9 +139,9 @@ void IdentityPhoneLine::answer()
 {
     if(sender() && m_ui) {
         QString channel = sender()->property("channel").toString();
-        emit actionCall(QString("answer"),
-                        QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
-                        QString());
+        b_engine->actionCall(QString("answer"),
+                             QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
+                             QString());
     }
 }
 
@@ -149,9 +149,9 @@ void IdentityPhoneLine::refuse()
 {
     if(sender()) {
         QString channel = sender()->property("channel").toString();
-        emit actionCall(QString("refuse"),
-                        QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
-                        QString());
+        b_engine->actionCall(QString("refuse"),
+                             QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
+                             QString());
     }
 }
 
@@ -264,8 +264,6 @@ void IdentityPhone::setPhoneLines()
         if(jj >= m_lines.size()) {
             m_lines.insert(jj, new IdentityPhoneLine(jj + 1, this));
             m_lines[jj]->setUserInfo(m_ui);
-            connect(m_lines[jj], SIGNAL(actionCall(const QString &, const QString &, const QString &)),
-                    this, SIGNAL(actionCall(const QString &, const QString &, const QString &)) );
             int ix = jj / 3;
             int iy = jj % 3;
             m_layout->addWidget( m_lines[jj], iy, 3 + ix );

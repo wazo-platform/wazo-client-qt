@@ -40,6 +40,7 @@
 #include <QStyle>
 #include <QSysInfo>
 #include <QTranslator>
+#include <QLibraryInfo>
 
 #include "baseengine.h"
 #include "mainwidget.h"
@@ -76,10 +77,10 @@ int main(int argc, char ** argv)
         }
         return 0;
     }
-    QSettings * settings = new QSettings(QSettings::IniFormat,
-                                         QSettings::UserScope,
-                                         QCoreApplication::organizationName(),
-                                         QCoreApplication::applicationName());
+    QSettings *settings = new QSettings(QSettings::IniFormat,
+                                        QSettings::UserScope,
+                                        QCoreApplication::organizationName(),
+                                        QCoreApplication::applicationName());
     qDebug() << "style" << app.style() << settings->fileName();
 
     QString profile = "default-user";
@@ -108,26 +109,22 @@ int main(int argc, char ** argv)
         locale = forcelocale;
 
     QTranslator *translator;
-    QStringList translationFiles; 
-    translationFiles << QString(":/xivoclient_%1").arg(locale)
-                     << QString(":/baselib/baselib_%1").arg(locale)
-                     << QString(":/qt_%1").arg(locale);
+    QStringList translationFiles = \
+        (QStringList() << ":/xivoclient_%1"
+                       << ":/baselib/baselib_%1"
+                       << QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_%1" );
 
     int i;
     for(i=0;i<translationFiles.size();++i) {
         translator = new QTranslator;
-        translator->load(translationFiles.at(i));
+        translator->load(translationFiles.at(i).arg(locale));
         app.installTranslator(translator);
     }
 
-    app.setQuitOnLastWindowClosed(false);
     
     QString info_osname;
-    QString info_endianness;
-    if(QSysInfo::ByteOrder == 0)
-        info_endianness = "BE";
-    else
-        info_endianness = "LE";
+    QString info_endianness = QSysInfo::ByteOrder ? "LE" : "BE";
+
 #if defined(Q_WS_X11)
     info_osname = QString("X11-%1-%2").arg(info_endianness).arg(app.applicationPid());
 #elif defined(Q_WS_WIN)
@@ -141,18 +138,11 @@ int main(int argc, char ** argv)
     
     BaseEngine *engine = new BaseEngine(settings, info_osname);
 
-    MainWidget main(engine);
-    app.setActivationWindow(&main);
-    
-    //main.dumpObjectTree();
+    MainWidget window;
+    app.setActivationWindow(&window);
+
+    app.setQuitOnLastWindowClosed(false);
     app.setProperty("stopper", "lastwindow");
-    
-    // setting this connection breeds the following behaviour :
-    //  * exit of config window when systray-only => disconnects from server
-    // there seemed to be a case when this was useful however ...
-    //    we let this commented until a relevant use case is met again
-    // QObject::connect( &app, SIGNAL(lastWindowClosed()),
-    // engine, SLOT(stop()) );
     
     QObject::connect(&app, SIGNAL(standBy()),
                      engine, SLOT(stop()));

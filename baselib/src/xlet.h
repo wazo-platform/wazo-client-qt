@@ -34,7 +34,7 @@
 #ifndef __XLET_H__
 #define __XLET_H__
 
-#include "baselib_export.h"
+#include <baselib_export.h>
 #include <QVariantMap>
 #include <QWidget>
 #include <baseengine.h>
@@ -71,7 +71,6 @@ class BASELIB_EXPORT XLet : public QWidget
         void logAction(const QString &);
         void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
     protected:
-        void connectDials();
         void setTitle(const QString &title) { m_title = title; }; //! set title of the XLet
     private:
         QString m_title;    //!< title of the XLet

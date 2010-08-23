@@ -151,6 +151,10 @@ void DStore::rmPath(const QString &path)
     QStringList traverseList = sanitize(path).split("/");
     QString baseName = traverseList.takeLast();
 
+    if (!m_blockSignal) {
+        dynamicInvocation(path, NODE_REMOVED);
+    }
+
     if (node) {
         if (node->parent()) {
             node->parent()->remove(baseName);
@@ -160,10 +164,6 @@ void DStore::rmPath(const QString &path)
         } else {
             static_cast<VNode*>(node)->destroy(this, 1);
         }
-    }
-
-    if (!m_blockSignal) {
-        dynamicInvocation(path, NODE_REMOVED);
     }
 }
 
@@ -340,6 +340,25 @@ void DStore::onChange(const QString &path, QObject *target, const char *slot)
     QString cb = QString(slot).remove(QRegExp("\\(.*$"));
     m_callbackList.insert(sanitize(path),
                           new DStoreCallback(target, cb.toAscii().constData()));
+}
+
+void DStore::unregisterAllCb(QObject *on)
+{
+    int i, e;
+    QList<QPair<QString, DStoreCallback*> > listToRemove;
+
+    foreach (QString cb, m_callbackList.keys()) {
+        QList<DStoreCallback*> list = m_callbackList.values(cb);
+        for (i=0,e=list.size();i<e;i++) {
+            if (on == list[i]->on()) {
+                listToRemove.append(QPair<QString, DStoreCallback*>(cb, list[i]));
+            }
+        }
+    }
+
+    for (i=0, e=listToRemove.size();i<e;i++) {
+        m_callbackList.remove(listToRemove[i].first, listToRemove[i].second);
+    }
 }
 
 void DStore::dynamicInvocation(const QString &path, DStoreEvent event)

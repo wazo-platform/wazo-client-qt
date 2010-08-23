@@ -31,35 +31,19 @@
  * $Date$
  */
 
-#ifndef __XLETFACTORY_H__
-#define __XLETFACTORY_H__
+#ifndef _XLET_FACTORY_H_
+#define _XLET_FACTORY_H_
 
-#include <QObject>
-#include <QHash>
-#include <QDir>
+#include <QWidget>
 #include "xlet.h"
-class QWidget;
-class BaseEngine;
-
-/*! xlet creator function prototype */
-typedef XLet* (*newXLetProto)(QWidget *);
 
 /*! \brief XLet Factory
  *
- * Use this class to instanciate a XLet.
- * XLet would be first searched in built-in XLet list
- * and then in plugins directory if not built-in. */
-class XLetFactory : public QObject
-{
-    public:
-        XLetFactory(QObject *parent);
-        XLet* newXLet(const QString &id, QWidget *topwindow) const;
-
-    private:
-        QHash<QString, newXLetProto> m_xlets;  //!< built in XLets constuctors
-        QDir m_pluginsDir;  //!< directory where to find plugins
-        bool m_pluginsDirFound; //!< Is plugins directory found.
-};
+ * Use spawn to instanciate an XLet.
+ * XLet are spawned from a built in xlet list, or if this fail from a plugin */
+namespace XLetFactory {
+    XLet* spawn(const QString &id, QWidget *parent);
+}
 
 #endif
 

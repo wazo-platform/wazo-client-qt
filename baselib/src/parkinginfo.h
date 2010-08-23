@@ -56,8 +56,8 @@ class BASELIB_EXPORT ParkingInfo
         void update(const QVariantMap &);
         
     private:
-        int m_timeout;     //!< parking timeout
-        double m_parkingtime;   //!< parking starting time
+        int m_timeout;  //!< parking timeout
+        double m_parkingtime;  //!< parking starting time
 };
 
 #endif /* __PARKINGINFO_H__ */

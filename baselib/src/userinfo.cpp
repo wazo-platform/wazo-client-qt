@@ -93,10 +93,10 @@ void UserInfo::setPhones(const QString &astid,
 {
     //qDebug() << "UserInfo::setPhones" << astid << termlist;
     m_astid = astid;
-    foreach(const QString term, termlist) {
-        PhoneInfo * pi = NULL;
+    foreach (const QString term, termlist) {
+        PhoneInfo *pi = NULL;
         QString key = astid + "." + term;
-        if(phones.contains(key)) {
+        if (phones.contains(key)) {
             pi = phones.value(key);
         }
         m_phones[term] = pi;
@@ -108,7 +108,7 @@ void UserInfo::setAvailState(const QVariant &availstate)
 {
     m_availstate.clear();
     const QMap<QString, QVariant> map = availstate.toMap();
-    foreach(const QString key, map.keys()) {
+    foreach (const QString key, map.keys()) {
         m_availstate[key] = map.value(key).toString();
     }
 }
@@ -145,62 +145,62 @@ bool UserInfo::hasAgentNumber(const QString &astid,
 }
 
 /*! \brief return m_fullname */
-const QString & UserInfo::fullname() const
+const QString& UserInfo::fullname() const
 {
     return m_fullname;
 }
 
 /*! \brief return m_phonenumber */
-const QString & UserInfo::phoneNumber() const
+const QString& UserInfo::phoneNumber() const
 {
     return m_phonenumber;
 }
 
 /*! \brief return m_mobilenumber */
-const QString & UserInfo::mobileNumber() const
+const QString& UserInfo::mobileNumber() const
 {
     return m_mobilenumber;
 }
 
-const QString & UserInfo::voicemailNumber() const
+const QString& UserInfo::voicemailNumber() const
 {
     return m_voicemailnumber;
 }
 
-const QString & UserInfo::userid() const
+const QString& UserInfo::userid() const
 {
     return m_userid;
 }
 
-const QString & UserInfo::ctilogin() const
+const QString& UserInfo::ctilogin() const
 {
     return m_ctilogin;
 }
 
 /*! \brief return Message Waiting Indicator */
-const QStringList & UserInfo::mwi() const
+const QStringList& UserInfo::mwi() const
 {
     return m_mwi;
 }
 
-const QString & UserInfo::agentNumber() const
+const QString& UserInfo::agentNumber() const
 {
     return m_agentnumber;
 }
 
-const QString & UserInfo::agentid() const
+const QString& UserInfo::agentid() const
 {
     return m_agentid;
 }
 
 /*! \brief return a list of contexts where this user has its phones
  */
-const QString & UserInfo::context() const
+const QString& UserInfo::context() const
 {
     return m_context;
 }
 
-const QString & UserInfo::astid() const
+const QString& UserInfo::astid() const
 {
     return m_astid;
 }
@@ -218,14 +218,14 @@ QList<QString> UserInfo::phonelist() const
 
 /*! \brief return phone info
  */
-const PhoneInfo * UserInfo::getPhoneInfo(const QString & id) const
+const PhoneInfo* UserInfo::getPhoneInfo(const QString & id) const
 {
-    if(m_phones.contains(id)) {
+    if (m_phones.contains(id)) {
         return m_phones.value(id);
     }
 
     QString key = m_astid + "." + id;
-    if(m_phones.contains(key)) {
+    if (m_phones.contains(key)) {
         return m_phones.value(key);
     }
 
@@ -236,12 +236,10 @@ const PhoneInfo * UserInfo::getPhoneInfo(const QString & id) const
  */
 void UserInfo::updatePhone(PhoneInfo * pi)
 {
-    //qDebug() << "UserInfo::updatePhone before" << m_phones;
     if(pi) {
         QString key = pi->tech() + "." + pi->context() + "." + pi->phoneid() + "." + pi->number();
         m_phones[key] = pi;
     }
-    //qDebug() << "UserInfo::updatePhone after " << m_phones;
 }
 
 /*! \brief list channels of this user
@@ -253,11 +251,11 @@ QList<QString> UserInfo::channelList() const
     QList<QString> list;
     QMapIterator<QString, PhoneInfo *> it = QMapIterator<QString, PhoneInfo *>(m_phones);
 
-    while(it.hasNext()) {
+    while (it.hasNext()) {
         it.next();
-        if(it.value()) {
+        if (it.value()) {
             QMapIterator<QString, QVariant> itphone( it.value()->comms() );
-            while(itphone.hasNext()) {
+            while (itphone.hasNext()) {
                 itphone.next();
                 QVariantMap qvm = itphone.value().toMap();
                 list << qvm.value("thischannel").toString();
@@ -291,9 +289,9 @@ int UserInfo::commsCount() const
 {
     int c = 0;
 
-    foreach(const QString phone, phonelist()) {
+    foreach (const QString phone, phonelist()) {
         const PhoneInfo * pi = getPhoneInfo(phone);
-        if(pi) {
+        if (pi) {
             c += pi->comms().count();
         }
     }

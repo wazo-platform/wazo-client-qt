@@ -35,7 +35,7 @@
 
 #include "parkinginfo.h"
 
-ParkingInfo::ParkingInfo(const ParkingInfo & other)
+ParkingInfo::ParkingInfo(const ParkingInfo &other)
 {
     m_timeout = other.m_timeout;
     m_parkingtime = other.m_parkingtime;

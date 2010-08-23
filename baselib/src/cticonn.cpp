@@ -40,5 +40,9 @@ void CtiConn::ctiSocketDisconnected()
     b_engine->setState(BaseEngine::ENotLogged);
     b_engine->emitTextMessage(tr("Connection lost with XiVO CTI server"));
     b_engine->startTryAgainTimer();
-    b_engine->stop();
+    QTimer *timer = new QTimer(this);
+    timer->setProperty("stopper", "connection_lost");
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), b_engine, SLOT(stop()));
+    timer->start();
 }

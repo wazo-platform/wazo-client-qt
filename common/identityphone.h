@@ -37,6 +37,8 @@
 #include <QWidget>
 #include <QList>
 
+#include <baseengine.h>
+
 class QGridLayout;
 class QLabel;
 class QPixmap;
@@ -53,9 +55,6 @@ class IdentityPhoneLine : public QWidget
         void setPixmap(const QPixmap &pixmap);
         void setText(const QString &text);
 
-    signals:
-        void actionCall(const QString &action, const QString &, const QString &);
-
     public slots:
         void setUserInfo(const UserInfo *);
         void hangup();
@@ -66,10 +65,10 @@ class IdentityPhoneLine : public QWidget
         void contextMenuEvent(QContextMenuEvent *);
 
     private:
-        const UserInfo * m_ui;  //!< pointer to UserInfo
+        const UserInfo *m_ui;  //!< pointer to UserInfo
         int m_linenum;
-        QLabel * m_action;
-        QLabel * m_status;
+        QLabel *m_action;
+        QLabel *m_status;
 };
 
 /*! \brief Display Phone informations
@@ -83,8 +82,6 @@ class IdentityPhone : public QWidget
     public:
         IdentityPhone(QWidget *parent=0);
         void svcSummary(QMap<QString, QVariant> &svcstatus);
-    signals:
-        void actionCall(const QString &action, const QString &src, const QString &dst);
     public slots:
         void setUserInfo(const UserInfo *);
         void updateUser(UserInfo *);

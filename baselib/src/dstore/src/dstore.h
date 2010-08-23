@@ -44,6 +44,7 @@
 #include <QRegExp>
 #include <QHash>
 #include <stdio.h>
+#include "baselib_export.h"
 
 /*! Represent the kind of event that happened on a node monitored */
 enum DStoreEvent { NODE_POPULATED, /*!< node or descendant has changed */
@@ -58,7 +59,7 @@ class VMapNode;
 class VNode;
 
 //! A DStoreNode this is the base type of every node
-class DStoreNode
+class BASELIB_EXPORT DStoreNode
 {
     public:
         /*! \return node unique identifier */
@@ -104,7 +105,7 @@ class DStoreNode
 };
 
 //! A VMapNode is a node, made to contain other node
-class VMapNode : public DStoreNode
+class BASELIB_EXPORT VMapNode : public DStoreNode
 {
     public:
         /*!
@@ -144,7 +145,7 @@ class VMapNode : public DStoreNode
 };
 
 //! A VNode is a leaf node, a node which isn't made to hold any other node
-class VNode : public DStoreNode
+class BASELIB_EXPORT VNode : public DStoreNode
 {
     public:
         /*!
@@ -164,7 +165,7 @@ class VNode : public DStoreNode
 };
 
 //! A DStore, stand for Data Store help you to keep and manage you data in a tree
-class DStore
+class BASELIB_EXPORT DStore
 {
     public:
         DStore();
@@ -254,6 +255,7 @@ class DStore
         void onChange(const QString &path, QObject *receiver, const char *method);
         
 
+        void unregisterAllCb(QObject *on);
 
         void filter(int op, const QString &path, const QVariantList &value);
         void filter(int op, const QString &path, const QVariant &value=QVariant());
@@ -277,17 +279,5 @@ class DStore
     friend class VMap;
 };
 
-// INTERNAL & PRIVATE (structure to manage callback on QObject)
-class DStoreCallback
-{
-    public:
-        DStoreCallback(QObject *on, const char *slot);
-        ~DStoreCallback();
-        void call(const QString &path, DStoreEvent event);
-
-    private:
-        QObject *on;
-        char *slot;
-};
 
 #endif

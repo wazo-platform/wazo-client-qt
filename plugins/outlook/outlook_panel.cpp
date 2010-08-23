@@ -74,53 +74,52 @@ OutlookPanel::OutlookPanel(QWidget * parent)
 {
 	OLEngine()->start_thread();
     setTitle( tr("Outlook") );
-        
-	QVBoxLayout * vlayout = new QVBoxLayout(this);
-	vlayout->setMargin(0);
-	QLabel * titleLbl = new QLabel( tr("Di&rectory"), this );
-	vlayout->addWidget( titleLbl, 0, Qt::AlignCenter );
-	QHBoxLayout * hlayout = new QHBoxLayout();
-	//m_input = new ExtendedLineEdit(this);
-	m_input = new QLineEdit(this);
-	titleLbl->setBuddy(m_input);
-	connect( m_input, SIGNAL(textChanged(const QString &)),
-	         this, SLOT(affTextChanged(const QString &)) );
-	hlayout->addWidget( m_input );
-	vlayout->addLayout( hlayout );
-	m_table = new ExtendedTableWidget( this );
-	connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
-	         this, SLOT(itemClicked(QTableWidgetItem *)) );
-	connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
-	         this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
-	connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
-	         this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
-        connect( m_table, SIGNAL(actionCall(const QString &, const QString &)),
-                 this, SLOT(proxyCallRequests(const QString &, const QString &)) );
-        
-	vlayout->addWidget(m_table);
-        setAcceptDrops(true);
-        m_numberToDial = "";
-        
-        setFocusPolicy(Qt::StrongFocus);
-        setFocusProxy(m_input);
-        
-	COLPropsDef props_def;
-	OLEngine()->get_props_def(props_def);
-
-	COLPropsDef::iterator i;
-
-	for ( i = props_def.begin() ; i != props_def.end() ; ++i ) {
-		COLCol * pCol;
-		m_cols.append(pCol=new COLCol());
-		pCol->m_def=i.value();
-	}
-
-	m_table->setSortingEnabled(true);
-	m_table->sortByColumn(0, Qt::AscendingOrder);
-
-	refresh_table();
+    
+    QVBoxLayout * vlayout = new QVBoxLayout(this);
+    vlayout->setMargin(0);
+    QLabel * titleLbl = new QLabel( tr("Di&rectory"), this );
+    vlayout->addWidget( titleLbl, 0, Qt::AlignCenter );
+    QHBoxLayout * hlayout = new QHBoxLayout();
+    //m_input = new ExtendedLineEdit(this);
+    m_input = new QLineEdit(this);
+    titleLbl->setBuddy(m_input);
+    connect( m_input, SIGNAL(textChanged(const QString &)),
+             this, SLOT(affTextChanged(const QString &)) );
+    hlayout->addWidget( m_input );
+    vlayout->addLayout( hlayout );
+    m_table = new ExtendedTableWidget( this );
+    connect( m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
+             this, SLOT(itemClicked(QTableWidgetItem *)) );
+    connect( m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
+             this, SLOT(itemDoubleClicked(QTableWidgetItem *)) );
+    connect( m_table, SIGNAL(ContextMenuEvent(QContextMenuEvent *)),
+             this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
+    connect( m_table, SIGNAL(actionCall(const QString &, const QString &)),
+             this, SLOT(proxyCallRequests(const QString &, const QString &)) );
+    
+    vlayout->addWidget(m_table);
+    setAcceptDrops(true);
+    m_numberToDial = "";
+    
+    setFocusPolicy(Qt::StrongFocus);
+    setFocusProxy(m_input);
+    
+    COLPropsDef props_def;
+    OLEngine()->get_props_def(props_def);
+    
+    COLPropsDef::iterator i;
+    
+    for ( i = props_def.begin() ; i != props_def.end() ; ++i ) {
+        COLCol * pCol;
+        m_cols.append(pCol=new COLCol());
+        pCol->m_def=i.value();
+    }
+    
+    m_table->setSortingEnabled(true);
+    m_table->sortByColumn(0, Qt::AscendingOrder);
+    
+    refresh_table();
     // connect signals/slots to engine
-    connectDials();
     connect( &(OLEngine()->m_OLThread), SIGNAL(contactsLoaded()),
              this, SLOT(contactsLoaded()) );
     connect( this, SIGNAL(searchOutlook(const QString &)),
@@ -204,7 +203,7 @@ void OutlookPanel::refresh_table() {
 
 void OutlookPanel::proxyCallRequests(const QString & src, const QString & dst)
 {
-        actionCall(sender()->property("action").toString(), src, dst); // Call
+    b_engine->actionCall(sender()->property("action").toString(), src, dst); // Call
 }
 
 void OutlookPanel::setGuiOptions(const QVariant &)
@@ -254,13 +253,13 @@ void OutlookPanel::itemDoubleClicked(QTableWidgetItem * item)
 	}
 
 	if(re_number.exactMatch(str)) {
-                actionCall("originate", "user:special:me", "ext:" + str); // Call
-                
-                // 0.3 actions :
-                // if(item->text().size() >= m_calllength)
-                // emitDial(m_callprefix + str);
-                // else
-                // emitDial(str);
+            b_engine->actionCall("originate", "user:special:me", "ext:" + str); // Call
+            
+            // 0.3 actions :
+            // if(item->text().size() >= m_calllength)
+            // emitDial(m_callprefix + str);
+            // else
+            // emitDial(str);
         }
 
  	if(item && item->text().contains("@")) {
@@ -511,10 +510,7 @@ void OutlookPanel::updatePeer(UserInfo *,
  */
 void OutlookPanel::transfer()
 {
-	QString chan = sender()->property( "chan" ).toString();
-	if( !chan.isEmpty() && !m_numberToDial.isEmpty() )
-	{
-		actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial);
-	}
+    QString chan = sender()->property( "chan" ).toString();
+    if( !chan.isEmpty() && !m_numberToDial.isEmpty() )
+        b_engine->actionCall("transfer", "chan:special:me:" + chan, "ext:" + m_numberToDial);
 }
-

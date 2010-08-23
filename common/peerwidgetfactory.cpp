@@ -47,7 +47,6 @@ QString PeerWidgetFactory::getSwitchBoardEltType()
  *
  * return an instance of ExternalPhonePeerWidget or DetailedExternalPhonePeerWidget
  * depending on the value of the "switchboard-elt-type" gui setting of the BaseEngine.
- * The actionCall() signal is already connected to the BaseEngine.
  */
 BasePeerWidget* PeerWidgetFactory::newExternalPhonePeerWidget(
     const QString &label,
@@ -61,12 +60,6 @@ BasePeerWidget* PeerWidgetFactory::newExternalPhonePeerWidget(
         w = new DetailedExternalPhonePeerWidget(label, number);
     }
     
-    QObject::connect(w, SIGNAL(actionCall(const QString &,
-                                          const QString &,
-                                          const QString &)),
-                     b_engine, SLOT(actionCall(const QString &,
-                                               const QString &,
-                                               const QString &)));
     return w;
 }
 
@@ -74,7 +67,6 @@ BasePeerWidget* PeerWidgetFactory::newExternalPhonePeerWidget(
  *
  * return an instance of BasicPeerWidget or PeerWidget
  * depending on the value of the "switchboard-elt-type" gui setting of the BaseEngine.
- * The actionCall() signal is already connected to the BaseEngine.
  */
 BasePeerWidget* PeerWidgetFactory::newPeerWidget(UserInfo * ui)
 {
@@ -86,12 +78,6 @@ BasePeerWidget* PeerWidgetFactory::newPeerWidget(UserInfo * ui)
         w = new PeerWidget(ui);
     }
 
-    QObject::connect(w, SIGNAL(actionCall(const QString &,
-                                          const QString &,
-                                          const QString &)),
-                     b_engine, SLOT(actionCall(const QString &,
-                                               const QString &,
-                                               const QString &)));
     return w;
 }
 

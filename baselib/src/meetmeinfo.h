@@ -78,15 +78,15 @@ class BASELIB_EXPORT MeetmeInfo
         
     private:
         QString m_context;  //!< room context
-        QString m_roomname;     //!< room access name
-        QString m_roomnumber;   //!< room access number (if any)
-        QString m_pin;      //!< room pin number (if any)
-        QString m_adminpin; //!< room admin pin number (if any) 
+        QString m_roomname;  //!< room access name
+        QString m_roomnumber;  //!< room access number (if any)
+        QString m_pin;  //!< room pin number (if any)
+        QString m_adminpin;  //!< room admin pin number (if any) 
         QString m_adminid;  //!< admin id ??? (global)
         QString m_adminnum;  //!< admin num ( local in the meetme room )
         bool m_paused;
-        QStringList m_adminlist;    //!< admin list (user ids)
-        QVariantMap m_uniqueids;    //!< people in this conference room
+        QStringList m_adminlist;  //!< admin list (user ids)
+        QVariantMap m_uniqueids;  //!< people in this conference room
         QString m_astid;  //!< asterisk id
 };
 

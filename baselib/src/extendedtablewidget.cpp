@@ -32,6 +32,7 @@
  */
 
 #include <QDebug>
+#include <QMessageBox>
 
 #include "extendedtablewidget.h"
 #include "xivoconsts.h"
@@ -66,81 +67,64 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
 {
     qDebug() << "ExtendedTableWidget::contextMenuEvent()" << event;
     qDebug() << "   " << event->pos();
-    QTableWidgetItem * item = itemAt( event->pos() );
-    if(item)
-    {
+    QTableWidgetItem *item = itemAt(event->pos());
+    QAction *action;
+    if (item) {
         event->accept();
         QMenu contextMenu( this );
-        if( m_editable )
-        {
-            QAction * removeAction
-                = contextMenu.addAction( tr("&Remove"), this, SLOT(remove()));
-            removeAction->setProperty("rowNumber", row(item));
-        }   
-        if( m_re_number.exactMatch( item->text() ) )
-        {
-            qDebug() << "phone number detection :" << item->text();
-            QAction * dialAction
-                = contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
-            dialAction->setProperty("number", item->text());
-            QMenu * transferMenu = new QMenu(tr("Direct &Transfer"), &contextMenu);
-            QMenu * indirectTransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
-            UserInfo * ui = NULL;
-            if(b_engine)
-                ui = b_engine->getXivoClientUser();
-            if(ui)
-            {
-                foreach( const QString phone, ui->phonelist() )
-                {
+        if (m_editable) {
+            action = contextMenu.addAction(tr("&Remove"), this, SLOT(remove()));
+            action->setProperty("row", row(item));
+        }
+        if (m_re_number.exactMatch(item->text())) {
+            action = contextMenu.addAction(tr("&Dial"), this, SLOT(dialNumber()));
+            action->setProperty("number", item->text());
+
+            QMenu *transferMenu = new QMenu(tr("Direct &Transfer"), &contextMenu);
+            QMenu *indirectTransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
+            UserInfo *ui = b_engine->getXivoClientUser();
+            if (ui) {
+                foreach (const QString phone, ui->phonelist()) {
                     const PhoneInfo * pi = ui->getPhoneInfo( phone );
-                    if( pi )
-                    {
+                    if (pi) {
                         QMapIterator<QString, QVariant> it( pi->comms() );
-                        while( it.hasNext() )
-                        {
+                        while(it.hasNext()) {
                             it.next();
                             QMap<QString, QVariant> call = it.value().toMap();
                             // Add the transfer entry with the callerid name and num
                             QString text;
-                            if( call.contains("calleridname") )
-                            {
+                            if (call.contains("calleridname")) {
                                 text.append( call["calleridname"].toString() );
                                 text.append(" : ");
                             }
-                            text.append( call["calleridnum"].toString() );
-                            QAction * transferAction =
-                                transferMenu->addAction( text,
-                                                         this, SLOT(dtransfer()) );
-                            transferAction->setProperty( "chan", call["peerchannel"] );
-                            transferAction->setProperty("number", item->text());
-                            QAction * indirectTransferAction =
-                                indirectTransferMenu->addAction( text,
-                                                                 this, SLOT(itransfer()) );
-                            indirectTransferAction->setProperty("chan", call["thischannel"] );
-                            indirectTransferAction->setProperty("number", item->text());
+                            text.append(call["calleridnum"].toString() );
+
+                            action = transferMenu->addAction(text, this, SLOT(dtransfer()));
+                            action->setProperty("chan", call["peerchannel"]);
+                            action->setProperty("number", item->text());
+
+                            action = indirectTransferMenu->addAction(text, this, SLOT(itransfer()));
+                            action->setProperty("chan", call["thischannel"]);
+                            action->setProperty("number", item->text());
                         }
                     }
                 }
             }
-            if( !transferMenu->isEmpty() )
+            if (!transferMenu->isEmpty()) {
                 contextMenu.addMenu(transferMenu);
-            if( !indirectTransferMenu->isEmpty() )
+            }
+            if (!indirectTransferMenu->isEmpty()) {
                 contextMenu.addMenu(indirectTransferMenu);
+            }
+        } else if(item->text().contains("@")) { // this is an email address
+            action = contextMenu.addAction(tr("Send an E-mail"),
+                                           this, SLOT(sendMail()) );
+            action->setProperty("email", item->text());
         }
-        else if(item->text().contains("@"))
-        {
-            // this is an email address
-            qDebug() << "email addr detection :" << item->text();
-            QAction * sendMailAction
-                = contextMenu.addAction( tr("Send an E-mail"),
-                                         this, SLOT(sendMail()) );
-            sendMailAction->setProperty("email", item->text());
+        if(!contextMenu.isEmpty()) {
+            contextMenu.exec(event->globalPos());
         }
-        if(!contextMenu.isEmpty())
-            contextMenu.exec( event->globalPos() );
-    }
-    else
-    {
+    } else {
         event->ignore();
     }
 }
@@ -148,8 +132,8 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
 void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
 {
     // qDebug() << "ExtendedTableWidget::mouseMoveEvent()" << event << event->pos();
-    QTableWidgetItem * item = itemAt( event->pos() );
-    if(item) {
+    QTableWidgetItem *item = itemAt(event->pos());
+    if (item) {
         QDrag *drag = new QDrag(this);
         QMimeData *mimeData = new QMimeData;
         mimeData->setText(item->text());
@@ -164,9 +148,9 @@ void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
 void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
     // qDebug() << "ExtendedTableWidget::dragEnterEvent" << event->mimeData()->formats() << event->pos();
-    if(  event->mimeData()->hasFormat(PEER_MIMETYPE) ||
-         event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
-         event->mimeData()->hasFormat(CHANNEL_MIMETYPE) ) {
+    if (event->mimeData()->hasFormat(PEER_MIMETYPE) ||
+        event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
+        event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
         event->acceptProposedAction();
     }
 }
@@ -178,16 +162,19 @@ void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
 {
     // qDebug() << "ExtendedTableWidget::dragMoveEvent()" << event->pos();
-    if(event->proposedAction() & ( Qt::CopyAction | Qt::MoveAction ))
+    if (event->proposedAction() & (Qt::CopyAction | Qt::MoveAction)) {
         event->acceptProposedAction();
-    QTableWidgetItem * item = itemAt( event->pos() );
-    if(item) {
-        if(m_re_number.exactMatch( item->text() ))
+    }
+    QTableWidgetItem *item = itemAt(event->pos());
+    if (item) {
+        if (m_re_number.exactMatch(item->text())) {
             event->accept(visualItemRect(item));
-        else
+        } else {
             event->ignore(visualItemRect(item));
-    } else
+        }
+    } else {
         event->ignore();
+    }
 }
 
 /*! \brief receive drop event
@@ -195,63 +182,67 @@ void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
 void ExtendedTableWidget::dropEvent(QDropEvent *event)
 {
     // qDebug() << "ExtendedTableWidget::dropEvent()" << event->mimeData()->text() << event->pos();
-    QTableWidgetItem * item = itemAt( event->pos() );
-    if(item && m_re_number.exactMatch( item->text() )) {
+    QTableWidgetItem *item = itemAt(event->pos());
+    if ((item) && (m_re_number.exactMatch(item->text()))) {
         QString userid_from = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
         QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
-        if(event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
+        if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
             event->acceptProposedAction();
-            emit actionCall("transfer",
-                            "chan:" + userid_from + ":" + channel_from,
-                            "ext:" + item->text());
-        } else if(event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+            b_engine->actionCall("transfer",
+                                 "chan:" + userid_from + ":" + channel_from,
+                                 "ext:" + item->text());
+        } else if (event->mimeData()->hasFormat(PEER_MIMETYPE)) {
             event->acceptProposedAction();
-            emit actionCall("originate",
-                            "user:" + userid_from,
-                            "ext:" + item->text());
+            b_engine->actionCall("originate",
+                                 "user:" + userid_from,
+                                 "ext:" + item->text());
         } else {
             event->ignore();
         }
-    }
-    else
+    } else {
         event->ignore();
+    }
 }
 
 void ExtendedTableWidget::dialNumber()
 {
     QString number = sender()->property("number").toString();
-    if(!number.isEmpty())
-    {
-        emit actionCall("originate",
-                        "user:special:me",
-                        "ext:" + number);
+    if (!number.isEmpty()) {
+        b_engine->actionCall("originate",
+                             "user:special:me",
+                             "ext:" + number);
     }
 }
 
 void ExtendedTableWidget::sendMail()
 {
     QString email = sender()->property("email").toString();
-    if(!email.isEmpty())
-    {
+    if (!email.isEmpty()) {
         QDesktopServices::openUrl(QUrl("mailto:" + email));
     }
 }
 
 void ExtendedTableWidget::remove()
 {
-    int _row = sender()->property("rowNumber").toInt();
-    removeRow(_row);
+    int _row = sender()->property("row").toInt();
+    int ret = QMessageBox::warning(this, tr("Removing this contact"),
+                                   tr("Removing this contact.\n"
+                                      "Are you sure ?"),
+                                   QMessageBox::Yes|QMessageBox::No);
+
+    if (ret == QMessageBox::Yes) {
+        removeRow(_row);
+    }
 }
 
 void ExtendedTableWidget::dtransfer()
 {
     QString chan = sender()->property("chan").toString();
     QString number = sender()->property("number").toString();
-    if( !chan.isEmpty() && !number.isEmpty() )
-    {
-        emit actionCall("transfer",
-                        "chan:special:me:" + chan,
-                        "ext:" + number); 
+    if ((!chan.isEmpty())&&(!number.isEmpty())) {
+        b_engine->actionCall("transfer",
+                             "chan:special:me:" + chan,
+                             "ext:" + number); 
     }
 }
 
@@ -259,10 +250,9 @@ void ExtendedTableWidget::itransfer()
 {
     QString chan = sender()->property("chan").toString();
     QString number = sender()->property("number").toString();
-    if( !chan.isEmpty() && !number.isEmpty() )
-    {
-        emit actionCall("atxfer",
-                        "chan:special:me:" + chan,
-                        "ext:" + number); 
+    if ((!chan.isEmpty()) && (!number.isEmpty())) {
+        b_engine->actionCall("atxfer",
+                             "chan:special:me:" + chan,
+                             "ext:" + number); 
     }
 }

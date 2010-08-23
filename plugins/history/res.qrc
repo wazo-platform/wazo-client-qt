@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>in/sent_call.png</file>
+	<file>in/received_call.png</file>
+	<file>in/missed_call.png</file>
+	<file>history_fr.qm</file>
+</qresource>
+</RCC>

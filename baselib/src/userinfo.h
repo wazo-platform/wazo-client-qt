@@ -66,46 +66,46 @@ class BASELIB_EXPORT UserInfo
         bool hasPhone(const QString &, const QString &);
         bool hasAgentNumber(const QString &, const QString &);
 
-        const QString & phoneNumber() const;
-        const QString & mobileNumber() const;
-        const QString & voicemailNumber() const;
-        const QString & fullname() const;
-        const QStringList & mwi() const;
-        const QString & userid() const;
-        const QString & ctilogin() const;
-        const QString & agentNumber() const;
-        const QString & agentid() const;
-        const QString & astid() const;
-        const QString & context() const;
+        const QString &phoneNumber() const;
+        const QString &mobileNumber() const;
+        const QString &voicemailNumber() const;
+        const QString &fullname() const;
+        const QStringList &mwi() const;
+        const QString &userid() const;
+        const QString &ctilogin() const;
+        const QString &agentNumber() const;
+        const QString &agentid() const;
+        const QString &astid() const;
+        const QString &context() const;
         int simultcalls() const { return m_simultcalls; };
 
-        const QHash<QString, QString> & availstate() const;
+        const QHash<QString, QString>& availstate() const;
         QList<QString> phonelist() const;
-        const PhoneInfo * getPhoneInfo(const QString &) const;
-        void updatePhone( PhoneInfo * );
+        const PhoneInfo* getPhoneInfo(const QString &) const;
+        void updatePhone(PhoneInfo *);
         QList<QString> channelList() const;
         QString toString() const;
         int commsCount() const;
 
     private:
-        QString m_userid;   //!< user id
+        QString m_userid;  //!< user id
         QString m_company;  //!< user company
-        QString m_ctilogin; //!< user login on cti
-        QString m_fullname; //!< user full name
+        QString m_ctilogin;  //!< user login on cti
+        QString m_fullname;  //!< user full name
         QString m_context;  //!< user context
 
         QHash<QString, QString> m_availstate;   //!< availability state properties
 
-        QString m_astid;    //!< asterisk id (for main phone)
-        QString m_phonenumber; //!< main phone number
-        QString m_mobilenumber; //!< mobile phone number
-        QString m_voicemailnumber; //!< voice mail box number
+        QString m_astid;  //!< asterisk id (for main phone)
+        QString m_phonenumber;  //!< main phone number
+        QString m_mobilenumber;  //!< mobile phone number
+        QString m_voicemailnumber;  //!< voice mail box number
         QString m_agentnumber; //!< agent number
         QString m_agentid; //!< agent id
         QString m_agentphonenumber;    //!< agent phone number
         QStringList m_mwi;  //!< message waiting indicator
         int m_simultcalls;
-        QMap<QString, PhoneInfo *> m_phones;    //!< map to phones
+        QMap<QString, PhoneInfo *> m_phones;  //!< map to phones
 };
 
 #endif

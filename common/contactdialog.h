@@ -46,7 +46,6 @@ class ContactDialog : public QDialog
 
     public:
         ContactDialog(QWidget *parent=0);
-        ~ContactDialog();
         QString firstname() const { return m_firstname?m_firstname->text():QString(); };
         QString lastname() const { return m_lastname?m_lastname->text():QString(); };
         QString phonenumber() const { return m_phonenumber?m_phonenumber->text():QString(); };
@@ -56,13 +55,13 @@ class ContactDialog : public QDialog
         QString mobilenumber() const { return m_mobilenumber?m_mobilenumber->text():QString(); };
 
     private:
-        QLineEdit * m_firstname;
-        QLineEdit * m_lastname;
-        QLineEdit * m_phonenumber;
-        QLineEdit * m_email;
-        QLineEdit * m_company;
-        QLineEdit * m_faxnumber;
-        QLineEdit * m_mobilenumber;
+        QLineEdit *m_firstname;
+        QLineEdit *m_lastname;
+        QLineEdit *m_phonenumber;
+        QLineEdit *m_email;
+        QLineEdit *m_company;
+        QLineEdit *m_faxnumber;
+        QLineEdit *m_mobilenumber;
 };
 #endif
 

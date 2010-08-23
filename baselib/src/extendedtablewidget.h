@@ -65,9 +65,6 @@ class BASELIB_EXPORT ExtendedTableWidget : public QTableWidget
         void dropEvent(QDropEvent *);
         void mouseMoveEvent(QMouseEvent *);
 
-    signals:
-        void actionCall(const QString &, const QString &, const QString &);  //!< transfer/originate/... a call
-
     private slots:
         void dialNumber();
         void sendMail();

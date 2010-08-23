@@ -38,24 +38,24 @@
 #include <QString>
 #include <QStringList>
 #include <QVariant>
-#include <QMap>
+#include <QVariantMap>
 
 /*! \brief Store Phone information
  */
 class BASELIB_EXPORT PhoneInfo
 {
     public:
-        PhoneInfo(const QString &astid, const QMap<QString, QVariant> &prop);  //! constructor
-        void update(const QMap<QString, QVariant> & prop);  //! update attribute members
-        const QString & context() const { return m_context; };  //! context this phone belongs to
-        const QString hintstatus(const QString & key) const {  //! access to the status values of this phone
+        PhoneInfo(const QString &astid, const QVariantMap &prop);  //! constructor
+        void update(const QVariantMap &prop);  //! update attribute members
+        const QString& context() const { return m_context; };  //! context this phone belongs to
+        const QString hintstatus(const QString &key) const {  //! access to the status values of this phone
             return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
         };
-        const QString & astid() const { return m_astid; };  //! asterisk id
-        const QString & number() const { return m_number; };  //! phone number
-        const QString & tech() const { return m_tech; };  //! phone technology (sip, iax, etc...)
-        const QString & phoneid() const { return m_phoneid; };  //! phone id
-        const QMap<QString, QVariant>& comms() const { return m_comms; };  //! current communications of this phone
+        const QString& astid() const { return m_astid; };  //! asterisk id
+        const QString& number() const { return m_number; };  //! phone number
+        const QString& tech() const { return m_tech; };  //! phone technology (sip, iax, etc...)
+        const QString& phoneid() const { return m_phoneid; };  //! phone id
+        const QVariantMap& comms() const { return m_comms; };  //! current communications of this phone
 
     private:
         QString m_astid;
@@ -66,7 +66,7 @@ class BASELIB_EXPORT PhoneInfo
         bool m_initialized;
         bool m_enable_hint;
         QMap<QString, QString> m_hintstatus;
-        QMap<QString, QVariant> m_comms;
+        QVariantMap m_comms;
 };
 
 #endif

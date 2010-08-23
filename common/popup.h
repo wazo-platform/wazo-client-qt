@@ -102,7 +102,6 @@ class Popup: public QWidget
 
     signals:
         void wantsToBeShown(Popup *);  //!< sent when the widget want to show itself
-        void actionCall(const QString &, const QString &, const QString &);  //!< sent when the widget wants to dial
         void actionFromPopup(const QString &, const QVariant &);
         void save(const QString &);
         void newRemarkSubmitted(const QString &, const QString &);

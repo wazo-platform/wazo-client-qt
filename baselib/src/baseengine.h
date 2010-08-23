@@ -47,6 +47,7 @@
 #include <QVariant>
 #include <QVariantMap>
 #include <QTimerEvent>
+#include <QApplication>
 
 
 class Xlet;
@@ -168,8 +169,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QHash<QString, QueueInfo *> queues() const { return m_queues; }; //!< Return the queues to any Xlet
         const QHash<QString, PhoneInfo *> phones() const { return m_phones; }; //!< Return the phones to any Xlet
         const QHash<QString, UserInfo *>  users() const { return m_users; };  //!< Return the users  to any Xlet
-        const QHash<QString, MeetmeInfo *>  meetme() const { return m_meetme; };  //!< Return the meetme  to any Xlet
         const QHash<QString, QHash<QString, ParkingInfo *> > parking() const { return m_parking; }; //!< Return the parking to any Xlet
+
+        void registerTranslation(const QString &path);
         
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);
@@ -182,7 +184,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void powerEvent(const QString &);
         //! set m_availstate
         void setAvailState(const QString &, bool);
-        void actionCall(const QString &, const QString &, const QString &);
+        void actionCall(const QString &, const QString &src="", const QString &dst="");
         
         void searchDirectory(const QString &);
         void textEdited(const QString &);
@@ -223,7 +225,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void delogged();  //!< signal emitted when the state becomes ENotLogged
         void availAllowChanged(bool);            //!< signal
         void emitTextMessage(const QString &);   //!< message to be displayed to the user.
-        void pasteToDialPanel(const QString &);  //!< send the number to the dial panel
+        void pasteToDialPanel(const QString &);  //!< the dial panel intercept this signal if he exist
         void parkingEvent(const QString &,
                           const QString &,
                           const QString &,
@@ -233,7 +235,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
         void meetmeEvent(double, const QString &, const QString &, const QString &, const QString &);
-        void meetmeInit(double);
         void requestFileListResult(const QVariant &);
         void updatePresence(const QVariant &);
         void updateCounter(const QVariant &);
@@ -295,7 +296,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void clearQueueList();
         
         // Class Members
-        
         // Parameters given by the User at Login time
         QString m_serverhost;           //!< Host to the login server
         quint16 m_ctiport;              //!< TCP port to connect to server
@@ -385,12 +385,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, PhoneInfo *> m_phones;  //!< List of Phone informations
         QHash<QString, AgentInfo *> m_agents;  //!< List of Agent informations
         QHash<QString, QueueInfo *> m_queues;  //!< List of Queue informations
-        QHash<QString, MeetmeInfo *> m_meetme; //! List of Conference rooms
         QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 
-        DStore m_tree;
+        DStore *m_tree;
     public:
-        DStore* tree() { return &m_tree; };
+        DStore* tree() { return m_tree; };
         QVariant eV(const QString &req) {
             return tree()->extractVariant(req);
         }
@@ -402,5 +401,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 };
 
 extern BASELIB_EXPORT BaseEngine *b_engine;
+#define nelem(x)    static_cast<int>(sizeof(x)/sizeof(x)[0])
 
 #endif /* __BASEENGINE_H__ */

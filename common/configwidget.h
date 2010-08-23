@@ -60,16 +60,8 @@ class ConfigWidget: public QDialog
     Q_OBJECT
 
     public:
-    /*! \brief Constructor
-     *
-     * Construct the widget and its layout.
-     * Fill widgets with values got from the BaseEngine object.
-     * Once constructed, the Widget is ready to be shown.
-     * \param engine        related BaseEngine object where parameters will be modified
-     * \param parent        parent QWidget
-     */
-    ConfigWidget(BaseEngine *engine, QWidget *parent=0);
-    ~ConfigWidget();
+        ConfigWidget(QWidget *parent=0);
+        ~ConfigWidget();
 
     signals:
         void confUpdated();

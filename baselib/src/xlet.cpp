@@ -43,15 +43,3 @@ XLet::XLet(QWidget *parent)
     connect(this, SIGNAL(ipbxCommand(const QVariantMap &)),
             b_engine, SLOT(ipbxCommand(const QVariantMap &)));
 }
-
-/*! \brief connect actionCall signal to the engine
- */
-void XLet::connectDials()
-{
-    connect(this, SIGNAL(actionCall(const QString &,
-                                    const QString &,
-                                    const QString &)),
-            b_engine, SLOT(actionCall(const QString &,
-                                      const QString &,
-                                      const QString &)));
-}

@@ -36,6 +36,8 @@
 #include <QDebug>
 #include <QDir>
 #include <QTcpSocket>
+#include <QLocale>
+#include <QTranslator>
 
 #include "JsonToVariant.h"
 #include "VariantToJson.h"
@@ -73,7 +75,7 @@ BaseEngine::BaseEngine(QSettings *settings,
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
       m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
-      m_forced_to_disconnect(false), m_tree(DStore())
+      m_forced_to_disconnect(false), m_tree(new DStore())
 {
     b_engine = this;
     settings->setParent(this);
@@ -389,9 +391,8 @@ void BaseEngine::stop()
     }
     
 
-    m_tree.rmPath("statedetails");
-    m_tree.rmPath("users");
-    m_tree.rmPath("confrooms");
+    delete m_tree;
+    m_tree = new DStore();
 
 }
 
@@ -523,7 +524,7 @@ void BaseEngine::updateCapaPresence(const QVariant & presence)
                 QVariantMap fill = crap[stateName].toMap();
                 fill["id"] = fill["stateid"];
                 fill.remove("stateid");
-                m_tree.populate(QString("statedetails/%0").arg(stateName),fill);
+                tree()->populate(QString("statedetails/%0").arg(stateName), fill);
             }
         } else if (field == "allowed") {
             QVariantMap map = presencemap[field].toMap();
@@ -534,12 +535,12 @@ void BaseEngine::updateCapaPresence(const QVariant & presence)
                 }
             }
 
-            m_tree.populate(QString("statedetails/%0/allowed")
+            tree()->populate(QString("statedetails/%0/allowed")
                             .arg(presencemap["state"].toMap()["stateid"].toString()),
                             fill);
         }
     }
-    qDebug() << DStoreNode::pp(*m_tree.root());
+    qDebug() << DStoreNode::pp(*tree()->root());
 }
 
 const QString & BaseEngine::getCapaApplication() const
@@ -814,53 +815,52 @@ void addUpdateConfMemberInTree(DStore *tree, const QVariantMap &cinfo)
     QString confId = cinfo["meetmeid"].toString();
     QString path = QString("confrooms/%0/in/%1").arg(confId).arg(id);
     QVariantMap info;
-    if (cinfo["action"] == "join") {
+
+    if ((cinfo["action"] == "join") || (cinfo["action"] == "mutestatus")||(cinfo["action"] == "auth")) {
         info["id"] = id;
         info["phonenum"] = cinfo["details"].toMap()["phonenum"];
         info["time-start"] = cinfo["details"].toMap()["time_start"];
-        info["user-id"] = cinfo["details"].toMap()["userid"].toString().remove(QRegExp("[^/]*/"));
+        info["user-id"] = cinfo["details"].toMap()["userid"].toString();
         info["authed"] = cinfo["details"].toMap()["authed"].toBool();
-        if (id == tree->extractVariant(QString("confrooms/%0/admin-id")
-                                       .arg(confId)).toString()) {
-            info["admin"] = true;
-
-        }
+        info["mute"] = (cinfo["details"].toMap()["mutestatus"].toString() == "on");
+        info["admin"] = cinfo["details"].toMap()["admin"].toBool();
         tree->populate(path ,info);
     } else if (cinfo["action"] == "leave") {
         tree->rmPath(path);
+    } else if (cinfo["action"] == "changeroompausedstate") {
+        path = QString("confrooms/%0").arg(confId);
+        info["paused"] = cinfo["paused"];
+        tree->populate(path ,info);
+    } else {
+        qDebug() << "unknown meetme action: " << cinfo["action"];
     }
  
 
 }
 
-void addUpdateConfRoomInTree(DStore *tree, const QVariantMap &cinfo)
+void addUpdateConfRoomInTree(DStore *tree,
+                             const QString &id,
+                             const QVariantMap &cinfo)
 {
-    if (tree->extractVMap(QString("confrooms[name=@%0]").arg(cinfo["roomname"].toString()))
-                          .size() == 0) {
-
-        int id = tree->extractVMap(QString("confrooms")).size() + 1;
-        QVariantMap info;
-        info["id"] = id;
-        info["name"] = cinfo["roomname"];
-        info["pin"] = cinfo["pin"];
-        info["in"] = QVariantMap();
-        info["number"] = cinfo["roomnumber"];
-        info["admin-id"] = cinfo["adminnum"];
-
-        tree->populate(QString("confrooms/%0").arg(id), info);
-
-        QVariantMap userIn = cinfo["uniqueids"].toMap();
-        foreach (QString uniqueId , userIn.keys()) {
-            QVariantMap userToInsert;
-            userToInsert["details"] = userIn[uniqueId].toMap();
-            userToInsert["meetmeid"] = id;
-            userToInsert["action"] = "join";
-            userToInsert["uniqueid"] = uniqueId;
-
-            
-            addUpdateConfMemberInTree(tree, userToInsert);
-        }
-
+    QVariantMap info;
+    info["id"] = id;
+    info["name"] = cinfo["roomname"];
+    info["pin"] = cinfo["pin"];
+    info["in"] = QVariantMap();
+    info["number"] = cinfo["roomnumber"];
+    info["moderated"] = cinfo["moderated"];
+    
+    tree->populate(QString("confrooms/%0").arg(id), info);
+    
+    QVariantMap userIn = cinfo["uniqueids"].toMap();
+    foreach (QString uniqueId , userIn.keys()) {
+        QVariantMap userToInsert;
+        userToInsert["details"] = userIn[uniqueId].toMap();
+        userToInsert["meetmeid"] = id;
+        userToInsert["action"] = "join";
+        userToInsert["uniqueid"] = uniqueId;
+    
+        addUpdateConfMemberInTree(tree, userToInsert);
     }
 }
 
@@ -1049,44 +1049,15 @@ void BaseEngine::parseCommand(const QString &line)
             if (function == "sendlist") {
                 QVariantMap map1 = datamap["payload"].toMap();
                 foreach(QString astid, map1.keys()) {
-                    m_meetme.clear();
                     QVariantMap map2 = map1[astid].toMap();
                     foreach(QString meetmeid, map2.keys()) {
                         QVariantMap map3 = map2[meetmeid].toMap();
-                        addUpdateConfRoomInTree(&m_tree, map3);
-                        if(!meetmeid.isEmpty()) {
-                            if (m_meetme.contains(meetmeid) == false) {
-                                m_meetme[meetmeid] = new MeetmeInfo();
-                            }
-                            m_meetme[meetmeid]->setProperties(astid, map3);
-                        }
+                        addUpdateConfRoomInTree(tree(), meetmeid, map3);
                     }
                 }
-                emit meetmeInit(m_timesrv);
-            }
-            else if (function == "update") {
+            } else if (function == "update") {
                 QVariantMap map = datamap["payload"].toMap();
-                QString astid = map["astid"].toString();
-                QString meetmeid = map["meetmeid"].toString();
-                QString action = map["action"].toString();
-                QString uniqueid = map["uniqueid"].toString();
-                if (m_meetme.contains(meetmeid))
-                    m_meetme[meetmeid]->update(map);
-                emit meetmeEvent(m_timesrv, action, astid, meetmeid, uniqueid);
-                addUpdateConfMemberInTree(&m_tree, map);
-            } else if (function == "add") {
-                QVariantMap command;
-                command["class"] = "meetme";
-                command["direction"] = "xivoserver";
-                command["function"] = "getlist";
-                sendJsonCommand(command);
-                QString astid = datamap["astid"].toString();
-                QStringList meetmeids = datamap["deltalist"].toStringList();
-                qDebug() << "meetme" << "add" << astid << meetmeids;
-            } else if (function == "del") {
-                QString astid = datamap["astid"].toString();
-                QStringList meetmeids = datamap["deltalist"].toStringList();
-                qDebug() << "meetme" << "del" << astid << meetmeids;
+                addUpdateConfMemberInTree(tree(), map);
             }
         } else if (thisclass == "serverdown") {
             qDebug() << thisclass << datamap["mode"].toString();
@@ -1119,11 +1090,7 @@ void BaseEngine::parseCommand(const QString &line)
                 QString stateid = datamap.value("capapresence").toMap().value("state").toMap().value("stateid").toString();
                 QVariantMap changeme = m_guioptions.value("server_gui").toMap().value("autochangestate").toMap();
                 if(changeme.count() && (id == m_fullid)) {
-                    if(stateid == changeme["statesrc"].toString()) {
-                        // QTimer::singleShot() could be used.
-                        m_timerid_changestate = startTimer(changeme["seconds"].toInt() * 1000);
-                        m_changestate_newstate = changeme["statedst"].toString();
-                    } else if(changeme.contains(stateid)) {
+                    if(changeme.contains(stateid)) {
                         // if(stateid == changeme["statesrc"].toString()) {
                         m_timerid_changestate = startTimer(changeme[stateid].toMap()["delaymsec"].toInt());
                         m_changestate_newstate = changeme[stateid].toMap()["newstate"].toString();
@@ -1151,7 +1118,7 @@ void BaseEngine::parseCommand(const QString &line)
                     //qDebug() << "-------------" << uinfo;
 
 
-                    addUpdateUserInTree(&m_tree, uinfo);
+                    addUpdateUserInTree(tree(), uinfo);
                         
                     
 
@@ -1934,6 +1901,8 @@ void BaseEngine::setTrytoreconnectinterval(uint i)
  */
 void BaseEngine::timerEvent(QTimerEvent * event)
 {
+    m_timesrv += 1;
+
     int timerId = event->timerId();
     // qDebug() << "BaseEngine::timerEvent() timerId's" << timerId << m_timerid_keepalive << m_timerid_tryreconnect;
     if(timerId == m_timerid_keepalive) {
@@ -2285,4 +2254,12 @@ void BaseEngine::registerClassEvent(const QString &class_event,
     e_call->udata = udata;
 
     m_class_event_cb.insert(class_event, e_call);
+}
+
+void BaseEngine::registerTranslation(const QString &path)
+{
+    QString locale = QLocale::system().name();
+    QTranslator *translator = new QTranslator;
+    translator->load(path.arg(locale));
+    qApp->installTranslator(translator);
 }

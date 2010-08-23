@@ -16,14 +16,12 @@ TEMPLATE = app
 TARGET = 
 CONFIG += uitools
 DEPENDPATH += .
-INCLUDEPATH += . $${COMMONDIR} ../baselib/src
+INCLUDEPATH += . $${COMMONDIR} $${COMMONDIR}/built-in-xlet ../baselib/src
 
 # Input
-HEADERS += src/*.h
-HEADERS += $${COMMONDIR}/*.h
+HEADERS += src/*.h $${COMMONDIR}/*.h $${COMMONDIR}/built-in-xlet/*.h
 
-SOURCES += src/*.cpp
-SOURCES += $${COMMONDIR}/*.cpp
+SOURCES += src/*.cpp $${COMMONDIR}/*.cpp $${COMMONDIR}/built-in-xlet/*.cpp
 
 unix:LIBS += -L../bin -lxivoclientbaselib
 win32:LIBS += -L../bin -lxivoclientbaselib1
@@ -36,8 +34,8 @@ QT += xml
 
 RESOURCES += appli.qrc
 
-# this should just tell lrelease to compile these files
-TRANSLATIONS = xivoclient_fr.ts qt_fr.ts
+# this should just tell lrelease to compile this file
+TRANSLATIONS = xivoclient_fr.ts
 
 RC_FILE = appli.rc
 

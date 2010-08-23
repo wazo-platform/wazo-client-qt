@@ -33,34 +33,35 @@
 
 #include "phoneinfo.h"
 
-PhoneInfo::PhoneInfo(const QString & astid,
-                     const QMap<QString, QVariant> & prop)
-    : m_astid(astid), m_initialized(false), m_enable_hint(false)
+PhoneInfo::PhoneInfo(const QString &astid,
+                     const QVariantMap &prop)
+    : m_astid(astid),
+    m_tech(prop.value("tech").toString()),
+    m_context(prop.value("context").toString()),
+    m_phoneid(prop.value("phoneid").toString()),
+    m_number(prop.value("number").toString()),
+    m_initialized(false),
+    m_enable_hint(false)
 {
-    m_tech = prop.value("tech").toString();
-    m_context = prop.value("context").toString();
-    m_phoneid = prop.value("phoneid").toString();
-    m_number = prop.value("number").toString();
     update(prop);
 }
 
-void PhoneInfo::update(const QMap<QString, QVariant> & prop)
+void PhoneInfo::update(const QVariantMap &prop)
 {
-    if(prop.contains("initialized"))
+    if (prop.contains("initialized")) {
         m_initialized = prop.value("initialized").toBool();
-    if(prop.contains("enable_hint"))
+    }
+    if (prop.contains("enable_hint")) {
         m_enable_hint = prop.value("enable_hint").toBool();
-    if(prop.contains("hintstatus"))
-    {
+    }
+    if (prop.contains("hintstatus")) {
         m_hintstatus.clear();
-        QMap<QString, QVariant> hintstatus = prop.value("hintstatus").toMap();
-        foreach(const QString key, hintstatus.keys())
-        {
+        QVariantMap hintstatus = prop.value("hintstatus").toMap();
+        foreach (const QString key, hintstatus.keys()) {
             m_hintstatus[key] = hintstatus.value(key).toString();
         }
     }
-    if(prop.contains("comms"))
-    {
+    if(prop.contains("comms")) {
         m_comms = prop.value("comms").toMap();
     }
 }

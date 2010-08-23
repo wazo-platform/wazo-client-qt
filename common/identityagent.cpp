@@ -68,6 +68,8 @@ IdentityAgent::IdentityAgent(QWidget *parent)
     // setLineWidth(3);
     // m_layout->setSpacing(0);
     // m_layout->setMargin(0);
+    connect(this, SIGNAL(ipbxCommand(const QVariantMap &)),
+            b_engine, SLOT(ipbxCommand(const QVariantMap &)));
 }
 
 void IdentityAgent::setText(const QString & text)
@@ -202,6 +204,7 @@ void IdentityAgent::login()
 {
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = "agentlogin";
+    ipbxcommand["agentids"] = "agent:special:me";
     emit ipbxCommand(ipbxcommand);
 }
 
@@ -209,6 +212,7 @@ void IdentityAgent::logout()
 {
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = "agentlogout";
+    ipbxcommand["agentids"] = "agent:special:me";
     emit ipbxCommand(ipbxcommand);
 }
 
@@ -217,6 +221,7 @@ void IdentityAgent::pause()
     QVariantMap ipbxcommand;
     QString astid = b_engine->getXivoClientUser()->astid();
     ipbxcommand["command"] = "agentpausequeue";
+    ipbxcommand["agentids"] = "agent:special:me";
     ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
     emit ipbxCommand(ipbxcommand);
 }
@@ -226,6 +231,7 @@ void IdentityAgent::unpause()
     QVariantMap ipbxcommand;
     QString astid = b_engine->getXivoClientUser()->astid();
     ipbxcommand["command"] = "agentunpausequeue";
+    ipbxcommand["agentids"] = "agent:special:me";
     ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
     emit ipbxCommand(ipbxcommand);
 }

@@ -50,27 +50,28 @@ BasicPeerWidget::BasicPeerWidget(UserInfo * ui)
       m_presenceColor(0xcc, 0xcc, 0xcc)
 {
     // can grow horizontaly but not verticaly
-    setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
     QString name = (!ui || ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
-    setText( name );
-    setToolTip( ui->phoneNumber() );
+    setText(name);
+    setToolTip(ui->phoneNumber());
     m_presenceSquareSize = b_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
-    if(m_presenceSquareSize<=0||m_presenceSquareSize>20)
+    if ((m_presenceSquareSize<=0)||(m_presenceSquareSize>20)) {
         m_presenceSquareSize = 5;
+    }
     reloadSavedName();
 }
 
-void BasicPeerWidget::setText(const QString & text)
+void BasicPeerWidget::setText(const QString &text)
 {
     m_text = text;
-    // calculate size
-    QFontMetrics fontMetrics( font() );
+    QFontMetrics fontMetrics(font());
     QSize size = fontMetrics.size(0, m_text);
     size.rwidth() += m_presenceSquareSize;
     // maximum width for PeerWidget
-    if(size.width() > maxWidthWanted())
+    if (size.width() > maxWidthWanted()) {
         size.setWidth(maxWidthWanted());
-    setMinimumSize( size );
+    }
+    setMinimumSize(size);
     update();
 }
 
@@ -81,17 +82,17 @@ void BasicPeerWidget::setText(const QString & text)
  * Draw a small square for user presence indicator
  * Then write the name of the user.
  */
-void BasicPeerWidget::paintEvent(QPaintEvent * /*event*/)
+void BasicPeerWidget::paintEvent(QPaintEvent *)
 {
     bool hasPresenceIndicator = !m_ui->ctilogin().isEmpty();
     QRect rectangle = contentsRect();
-    QPainter painter( this );
+    QPainter painter(this);
     // draw the color rectangle
-    painter.setBrush( m_color );
-    painter.setPen( Qt::NoPen );
-    painter.drawRect( QRect( 1, 0, rectangle.width() - 2, 1 ) );
-    painter.drawRect( rectangle.adjusted( 0, 1, 0, -1 ) );
-    painter.drawRect( QRect( 1, rectangle.height() - 1, rectangle.width() - 2, 1 ) );
+    painter.setBrush(m_color);
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(QRect( 1, 0, rectangle.width() - 2, 1));
+    painter.drawRect(rectangle.adjusted( 0, 1, 0, -1 ));
+    painter.drawRect(QRect( 1, rectangle.height() - 1, rectangle.width() - 2, 1));
     // draw presence indicator
     if(hasPresenceIndicator) {
         painter.setBrush( m_presenceColor );
@@ -100,23 +101,25 @@ void BasicPeerWidget::paintEvent(QPaintEvent * /*event*/)
 //                                rectangle.height() - m_presenceSquareSize - 1,
 //                                m_presenceSquareSize, m_presenceSquareSize) );
         // vertical bar
-        painter.drawRect( QRect( 1, 0, m_presenceSquareSize + 1, rectangle.height() ) );
+        painter.drawRect(QRect( 1, 0, m_presenceSquareSize + 1, rectangle.height()));
     }
     // write the text
     painter.setPen(Qt::SolidLine);
-    if(m_color.value() < 128)
-        painter.setPen( QColor(0xcc, 0xcc, 0xcc) );
-    if(hasPresenceIndicator)
-        rectangle.adjust( m_presenceSquareSize + 1, 0, 0, 0 );
+    if(m_color.value() < 128) {
+        painter.setPen(QColor(0xcc, 0xcc, 0xcc));
+    }
+    if(hasPresenceIndicator) {
+        rectangle.adjust(m_presenceSquareSize + 1, 0, 0, 0);
+    }
     painter.drawText( rectangle, Qt::AlignVCenter | Qt::AlignHCenter, m_text );
 }
 
-void BasicPeerWidget::setAgentToolTip(const QString & /*agentnum*/, const QStringList & /*queues*/)
+void BasicPeerWidget::setAgentToolTip(const QString &, const QStringList &)
 {
     // do nothing !
 }
  
-void BasicPeerWidget::setAgentState(const QString & /*color*/)
+void BasicPeerWidget::setAgentState(const QString &)
 {
     // do nothing !
 }
@@ -124,26 +127,23 @@ void BasicPeerWidget::setAgentState(const QString & /*color*/)
 void BasicPeerWidget::updatePresence()
 {
     QString text = m_ui->phoneNumber();
-    if(! m_ui->ctilogin().isEmpty())
-        {
-            text.append(" ");
-            text.append(m_ui->availstate()["longname"]);
-        }
-    setToolTip( text );
-    m_presenceColor.setNamedColor( m_ui->availstate()["color"] );
+    if (!m_ui->ctilogin().isEmpty()) {
+        text.append(" ");
+        text.append(m_ui->availstate()["longname"]);
+    }
+    setToolTip(text);
+    m_presenceColor.setNamedColor(m_ui->availstate()["color"]);
 }
 
 void BasicPeerWidget::updatePhonesStates()
 {
     // set the color according to the 1st phone
-    if( !m_ui->phonelist().isEmpty() )
-        {
-            const PhoneInfo * pi = m_ui->getPhoneInfo(m_ui->phonelist()[0]);
-            if(pi)
-                {
-                    m_color.setNamedColor( pi->hintstatus("color") );
-                    update();
-                }
+    if (!m_ui->phonelist().isEmpty()) {
+        const PhoneInfo *pi = m_ui->getPhoneInfo(m_ui->phonelist()[0]);
+        if (pi) {
+            m_color.setNamedColor(pi->hintstatus("color"));
+            update();
         }
+    }
 }
 

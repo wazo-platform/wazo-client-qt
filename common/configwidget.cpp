@@ -55,8 +55,7 @@ QStringList queuelevel_colors = (QStringList() << "green" << "orange");// << "re
 
 
 /*! \brief constructor */
-ConfigWidget::ConfigWidget(BaseEngine * engine,
-                           QWidget * parent)
+ConfigWidget::ConfigWidget(QWidget *parent)
     : QDialog(parent),
       m_history_sbox(NULL), m_currentKeyChange(-1)
 {
@@ -68,7 +67,6 @@ ConfigWidget::ConfigWidget(BaseEngine * engine,
     opts = b_engine->getGuiOptions("client_gui");
     forcedopts = b_engine->getGuiOptions("server_gui");
     
-
     _insert_connection_tab();
     _insert_function_tab();
     _insert_account_tab();

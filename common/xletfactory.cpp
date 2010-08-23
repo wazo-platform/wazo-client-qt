@@ -35,51 +35,51 @@
 #include <QApplication>
 #include <QPluginLoader>
 #include <QDir>
+#include <QHash>
 
 #include "xletfactory.h"
 #include "xletinterface.h"
 
-#include "agentspanel.h"
-#include "agentspanel_next.h"
-#include "agentdetailspanel.h"
-#include "callcampaignpanel.h"
-#include "callstackwidget.h"
-#include "conferencepanel.h"
-#include "customerinfopanel.h"
-#include "datetimepanel.h"
-#include "dialpanel.h"
-#include "directorypanel.h"
-#include "identitydisplay.h"
-#include "faxpanel.h"
-#include "logwidget.h"
-#include "mylocaldirpanel.h"
-#include "parkingpanel.h"
-#include "queuespanel.h"
-#include "queuedetailspanel.h"
-#include "queueentrydetailspanel.h"
-#include "searchpanel.h"
-#include "servicepanel.h"
-#include "statuspanel.h"
-#include "switchboardwindow.h"
+#include <agentspanel.h>
+#include <agentspanel_next.h>
+#include <agentdetailspanel.h>
+#include <callcampaignpanel.h>
+#include <callstackwidget.h>
+#include <customerinfopanel.h>
+#include <datetimepanel.h>
+#include <dialpanel.h>
+#include <directorypanel.h>
+#include <identitydisplay.h>
+#include <faxpanel.h>
+#include <mylocaldirpanel.h>
+#include <parkingpanel.h>
+#include <queuespanel.h>
+#include <queuedetailspanel.h>
+#include <queueentrydetailspanel.h>
+#include <searchpanel.h>
+#include <servicepanel.h>
+#include <statuspanel.h>
+#include <switchboardwindow.h>
 
-/*! \brief templates for returning a new XLet */
+/*! \brief template to return a new XLet */
 template <class T>
 XLet* newXLet(QWidget *parent)
 {
     return new T(parent);
 }
 
-/*! \brief list of XLets */
+typedef XLet* (*newXLetProto)(QWidget *);
+
+/*! \brief list of the built-in XLets */
 static const struct {
-    const char * name;
+    const char *name;
     const newXLetProto construct;
 } xlets[] = {
-    { "history"           ,newXLet<LogWidget>              },
+    //{ "history"           ,newXLet<LogWidget>              },
     { "identity"          ,newXLet<IdentityDisplay>        },
     { "agents"            ,newXLet<AgentsPanel>            },
     { "agentsnext"        ,newXLet<AgentsPanelNext>        },
     { "agentdetails"      ,newXLet<AgentdetailsPanel>      },
-    { "conference"        ,newXLet<ConferencePanel>        },
     { "customerinfo"      ,newXLet<CustomerInfoPanel>      },
     { "queues"            ,newXLet<QueuesPanel>            },
     { "queuedetails"      ,newXLet<QueuedetailsPanel>      },
@@ -98,85 +98,109 @@ static const struct {
     { "calls"             ,newXLet<CallStackWidget>        },
 };
 
-/*! \brief Constructor 
- *
- * Find and initialize plugins directory,
- * populate the m_xlets hash table.
- */
-XLetFactory::XLetFactory(QObject * parent)
-    : QObject(parent),
-      m_pluginsDir(qApp->applicationDirPath()),
-      m_pluginsDirFound(false)
+/*! xlet creator function prototype */
+    
+static QHash<QString, newXLetProto> xletList;  //!< built-in XLets constuctors
+static QDir pluginDir;  //!< directory where to find plugins
+static bool pluginDirFound = false;  //!< Is the plugins directory found ?
+static bool initied = false;
+
+static void init()
 {
+    int i;
+    for (i=0;i<nelem(xlets);i++) {
+        xletList.insert(xlets[i].name, xlets[i].construct);
+    }
+    initied = true;
+}
+
+
+/*! 
+ * Find a plugins directory,
+ * ./plugins
+ * or 
+ * /usr/share/xivoclient/plugins
+ * and populate the xletList hash table.
+ */
+static bool findPluginDir()
+{
+    pluginDir = qApp->applicationDirPath();
+    pluginDirFound = false;
 #ifndef Q_WS_MAC
-    if(m_pluginsDir.cd("plugins")) {
+    if (pluginDir.cd("plugins")) {
         // if there is a plugins dir next to where, the application remain
-        m_pluginsDirFound = true;
+        pluginDirFound = true;
     } else {
-        if (m_pluginsDir.cd("/usr/share/xivoclient/plugins")) {
+        if (pluginDir.cd("/usr/share/xivoclient/plugins")) {
             //  the xivo_client might be installed properly for all the user on an unix box
-            m_pluginsDirFound = true;
+            pluginDirFound = true;
         } else {
             qDebug() << "cannot find plugins directory";
         }
     }
 #else
-    if (m_pluginsDir.cd("../Resources/plugins")) {
-        m_pluginsDirFound = true;
-    } else {
-        qDebug() << "cannot find plugins directory";
+    QString pluginDirPath = qApp->applicationDirPath() + "/../Resources/plugins";
+    pluginDirFound = pluginDir.cd(pluginDirPath);
+    if (!pluginDirFound) {
+        qDebug() << "cannot find plugins directory (tryed: " << pluginDirPath << ")";
     }
 #endif
 
-    uint i;
-
-    // populate the m_xlets hash table
-    for(i=0;i<(sizeof(xlets)/sizeof(xlets[0]));i++) {
-        m_xlets.insert(QString(xlets[i].name),xlets[i].construct);
-    }
+    return pluginDirFound;
 }
 
 /*! \brief build a new XLet depending on the type wanted
  *
- *  First try to find the XLet into the build in list, then
+ *  First try to find the XLet into the built-in list, then
  *  search for a plugin.
  *  Plugin name is lib<id>plugin.so under Linux, <id>plugin.dll under
- *  Win32.
+ *  Win32, and lib<id>plugin.dylib under Mac Os X.
  *
  *  \return a pointer to the XLet or NULL if it was not found
  */
-XLet* XLetFactory::newXLet(const QString &id, QWidget *topwindow) const
+namespace XLetFactory {
+XLet* spawn(const QString &id, QWidget *parent)
 {
-    XLet *xlet = 0;
-    newXLetProto construct = m_xlets.value(id);
-    if(construct) {
-        xlet = construct(topwindow);
-    } else if(m_pluginsDirFound) {
+    if (initied == false) {
+        init();
+        findPluginDir();
+    }
+
+    XLet *xlet = NULL;
+
+    newXLetProto construct = xletList.value(id);
+
+    if (construct) {
+        xlet = construct(parent);
+    } else {
+        QString fileName =
 #ifdef Q_WS_WIN
-        QString fileName = id + "plugin.dll";
+        id + "plugin.dll";
 #endif
 #ifdef Q_WS_X11
-        QString fileName = "lib" + id + "plugin.so";
+        "lib" + id + "plugin.so";
 #endif
 #ifdef Q_WS_MAC
-        QString fileName = "lib" + id + "plugin.dylib"; // TODO : check for correctness
+        "lib" + id + "plugin.dylib";
 #endif
-        qDebug() << "Trying to load plugin" << fileName << m_pluginsDir.absoluteFilePath(fileName);
-        QPluginLoader pluginLoader(m_pluginsDir.absoluteFilePath(fileName));
-        QObject *plugin = pluginLoader.instance();
+
+        qDebug() << "Trying to load plugin" << fileName << pluginDir.absoluteFilePath(fileName);
+        QPluginLoader loader(pluginDir.absoluteFilePath(fileName));
+        QObject *plugin = loader.instance();
 
         if (plugin) {
             XLetInterface *xleti = qobject_cast<XLetInterface *>(plugin);
-            if(xleti) {
-                xlet = xleti->newXLetInstance(topwindow);
+            if (xleti) {
+                xlet = xleti->newXLetInstance(parent);
             } else {
                 qDebug() << "failed to cast plugin loaded to XLetInterface";
             }
         } else {
-            qDebug() << "failed to load plugin :"<< pluginLoader.errorString();
+            qDebug() << "failed to load plugin :"<< loader.errorString();
         }
     }
 
     return xlet;
+}
 }
 

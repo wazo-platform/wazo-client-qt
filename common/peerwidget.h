@@ -66,6 +66,7 @@ class PeerWidget : public BasePeerWidget
         void setMobileState(const QString &color);
         void updatePresence();  //!< update presence information displayed
         void updatePhonesStates();
+        bool pOverMobileLbl(const QPoint &p);
 
     private:
         QHash<QString, QLabel *> m_lblphones; //!< phone labels
