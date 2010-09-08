@@ -75,6 +75,8 @@ PeerWidget::PeerWidget(UserInfo *ui)
     layout->setSpacing(0);
     
     m_textlbl = new QLabel(peer);
+    m_textlbl->setWordWrap(true);
+    m_textlbl->setMinimumHeight(fsize);
     setName(m_ui->fullname());
 
     if (!m_ui->ctilogin().isEmpty()) {
