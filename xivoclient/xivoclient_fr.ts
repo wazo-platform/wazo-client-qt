@@ -1105,7 +1105,6 @@ que celles ci-dessous) en première page</translation>
     </message>
 </context>
 <context>
-<<<<<<< .courant
     <name>DatetimePanel</name>
     <message>
         <location filename="../common/datetimepanel.cpp" line="44"/>
@@ -1114,8 +1113,6 @@ que celles ci-dessous) en première page</translation>
     </message>
 </context>
 <context>
-=======
->>>>>>> .fusion-droit.r9187
     <name>DialPanel</name>
     <message>
         <location filename="../common/dialpanel.cpp" line="46"/>
@@ -1596,361 +1593,217 @@ Contexte: %2</translation>
 <context>
     <name>MainWidget</name>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1008"/>
-=======
-        <location filename="src/mainwidget.cpp" line="941"/>
->>>>>>> .fusion-droit.r9187
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>Les applications CTI XiVO, une fois connectées au serveur adéquat, complètent le système téléphonique XiVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="428"/>
-=======
-        <location filename="src/mainwidget.cpp" line="403"/>
->>>>>>> .fusion-droit.r9187
         <source>About &amp;Qt</source>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="427"/>
-=======
-        <location filename="src/mainwidget.cpp" line="402"/>
->>>>>>> .fusion-droit.r9187
         <source>&amp;About XiVO Client</source>
         <translation>A propos de &amp;XiVO Client</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1016"/>
-=======
-        <location filename="src/mainwidget.cpp" line="949"/>
->>>>>>> .fusion-droit.r9187
         <source>Advised Server Version : </source>
         <translation>Version Conseillée du Serveur : </translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1020"/>
-=======
-        <location filename="src/mainwidget.cpp" line="953"/>
->>>>>>> .fusion-droit.r9187
         <source>Application Launched on : </source>
         <translation>Application Lancée le : </translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1030"/>
-=======
-        <location filename="src/mainwidget.cpp" line="963"/>
->>>>>>> .fusion-droit.r9187
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="420"/>
-=======
-        <location filename="src/mainwidget.cpp" line="396"/>
->>>>>>> .fusion-droit.r9187
         <source>&amp;Availability</source>
         <translation>&amp;Disponibilité</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="354"/>
-=======
-        <location filename="src/mainwidget.cpp" line="328"/>
->>>>>>> .fusion-droit.r9187
         <source>Close the application</source>
         <translation>Fermer l&apos;application</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="346"/>
-=======
-        <location filename="src/mainwidget.cpp" line="320"/>
->>>>>>> .fusion-droit.r9187
         <source>Confi&amp;gure</source>
         <translation>Confi&amp;gurer</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="348"/>
-=======
-        <location filename="src/mainwidget.cpp" line="322"/>
->>>>>>> .fusion-droit.r9187
         <source>Configure account and connection options</source>
         <translation>Configurer votre compte et vos options de connexion</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="378"/>
-=======
-        <location filename="src/mainwidget.cpp" line="352"/>
->>>>>>> .fusion-droit.r9187
         <source>&amp;Connect</source>
         <translation>&amp;Connecter</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="379"/>
-=======
-        <location filename="src/mainwidget.cpp" line="353"/>
->>>>>>> .fusion-droit.r9187
         <source>Connect to the server</source>
         <translation>Se connecter au serveur</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="716"/>
-=======
-        <location filename="src/mainwidget.cpp" line="699"/>
->>>>>>> .fusion-droit.r9187
         <source>Connected</source>
         <translation>Connecté</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="383"/>
-=======
-        <location filename="src/mainwidget.cpp" line="357"/>
->>>>>>> .fusion-droit.r9187
         <source>&amp;Disconnect</source>
         <translation>&amp;Déconnecter</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="385"/>
-=======
-        <location filename="src/mainwidget.cpp" line="359"/>
->>>>>>> .fusion-droit.r9187
         <source>Disconnect from the server</source>
         <translation>Se déconnecter du serveur</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="819"/>
-=======
-        <location filename="src/mainwidget.cpp" line="791"/>
->>>>>>> .fusion-droit.r9187
         <source>Disconnected</source>
         <translation>Déconnecté</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="362"/>
-=======
-        <location filename="src/mainwidget.cpp" line="336"/>
->>>>>>> .fusion-droit.r9187
         <source>Enter the system tray</source>
         <translation>Minimiser l&apos;application dans la zone de notification système</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="426"/>
-=======
-        <location filename="src/mainwidget.cpp" line="401"/>
->>>>>>> .fusion-droit.r9187
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="168"/>
+        <location filename="src/mainwidget.cpp" line="172"/>
         <source>Keep Password</source>
         <translation>Garder</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="368"/>
-=======
-        <location filename="src/mainwidget.cpp" line="342"/>
->>>>>>> .fusion-droit.r9187
         <source>Leave the system tray</source>
         <translation>Sortir l&apos;application de la zone de notification système</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1032"/>
-=======
-        <location filename="src/mainwidget.cpp" line="965"/>
->>>>>>> .fusion-droit.r9187
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="148"/>
+        <location filename="src/mainwidget.cpp" line="152"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="150"/>
+        <location filename="src/mainwidget.cpp" line="154"/>
         <source>Password</source>
         <translation>Mot de passe</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="152"/>
+        <location filename="src/mainwidget.cpp" line="156"/>
         <source>Phone</source>
         <translation>Tél</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="352"/>
-=======
-        <location filename="src/mainwidget.cpp" line="326"/>
->>>>>>> .fusion-droit.r9187
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="367"/>
-=======
-        <location filename="src/mainwidget.cpp" line="341"/>
->>>>>>> .fusion-droit.r9187
         <source>&amp;Show window</source>
         <translation>&amp;Afficher la fenêtre</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="672"/>
-=======
-        <location filename="src/mainwidget.cpp" line="648"/>
->>>>>>> .fusion-droit.r9187
         <source>Tabs</source>
         <translation>Onglets</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="361"/>
-=======
-        <location filename="src/mainwidget.cpp" line="335"/>
->>>>>>> .fusion-droit.r9187
         <source>To S&amp;ystray</source>
         <translation>&amp;Minimiser</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1013"/>
-=======
-        <location filename="src/mainwidget.cpp" line="946"/>
->>>>>>> .fusion-droit.r9187
         <source>Version : </source>
         <translation>Version : </translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1001"/>
-=======
-        <location filename="src/mainwidget.cpp" line="934"/>
->>>>>>> .fusion-droit.r9187
         <source>last one</source>
         <translation>dernière</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1034"/>
-=======
-        <location filename="src/mainwidget.cpp" line="967"/>
->>>>>>> .fusion-droit.r9187
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>avec une exception particulière vous permettant de le lier avec OpenSSL, sous certaines conditions.</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="172"/>
+        <location filename="src/mainwidget.cpp" line="176"/>
         <source>No Agent</source>
         <translation>Sans Agent</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="173"/>
+        <location filename="src/mainwidget.cpp" line="177"/>
         <source>Agent (unlogged)</source>
         <translation>Agent (non loggé)</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="174"/>
+        <location filename="src/mainwidget.cpp" line="178"/>
         <source>Agent (logged)</source>
         <translation>Agent (loggé)</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="429"/>
-=======
-        <location filename="src/mainwidget.cpp" line="404"/>
->>>>>>> .fusion-droit.r9187
         <source>&amp;Credits</source>
         <translation>&amp;Crédits</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="538"/>
-=======
-        <location filename="src/mainwidget.cpp" line="513"/>
->>>>>>> .fusion-droit.r9187
         <source>XiVO CTI Error</source>
         <translation>XiVO CTI Erreur</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1040"/>
-=======
-        <location filename="src/mainwidget.cpp" line="973"/>
->>>>>>> .fusion-droit.r9187
         <source>Credits</source>
         <translation>Crédits</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="660"/>
-=======
-        <location filename="src/mainwidget.cpp" line="636"/>
->>>>>>> .fusion-droit.r9187
         <source>Client (%1 profile)</source>
         <translation>Client (profil %1)</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1006"/>
-=======
-        <location filename="src/mainwidget.cpp" line="939"/>
->>>>>>> .fusion-droit.r9187
         <source>About XiVO Client</source>
         <translation>A propos de XiVO Client</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1022"/>
-=======
-        <location filename="src/mainwidget.cpp" line="955"/>
->>>>>>> .fusion-droit.r9187
         <source>Config File Location : </source>
         <translation>Fichier de Configuration :</translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1028"/>
-=======
-        <location filename="src/mainwidget.cpp" line="961"/>
->>>>>>> .fusion-droit.r9187
         <source>E-mail : </source>
         <translation>E-mail : </translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1029"/>
-=======
-        <location filename="src/mainwidget.cpp" line="962"/>
->>>>>>> .fusion-droit.r9187
         <source>Phone : </source>
         <translation>Téléphone : </translation>
     </message>
     <message>
-<<<<<<< .courant
         <location filename="src/mainwidget.cpp" line="1018"/>
-=======
-        <location filename="src/mainwidget.cpp" line="951"/>
->>>>>>> .fusion-droit.r9187
         <source>Application Built on : </source>
         <translation>Application Construite le : </translation>
     </message>

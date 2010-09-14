@@ -46,6 +46,7 @@
 #include <callcampaignpanel.h>
 #include <callstackwidget.h>
 #include <customerinfopanel.h>
+#include <datetimepanel.h>
 #include <dialpanel.h>
 #include <directorypanel.h>
 #include <identitydisplay.h>
@@ -83,6 +84,7 @@ static const struct {
     { "queues"            ,newXLet<QueuesPanel>            },
     { "queuedetails"      ,newXLet<QueuedetailsPanel>      },
     { "queueentrydetails" ,newXLet<QueueentrydetailsPanel> },
+    { "datetime"          ,newXLet<DatetimePanel>          },
     { "dial"              ,newXLet<DialPanel>              },
     { "operator"          ,newXLet<StatusPanel>            },
     { "switchboard"       ,newXLet<SwitchBoardWindow>      },

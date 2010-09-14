@@ -31,6 +31,32 @@
  * $Date$
  */
 
+#include <QAction>
+#include <QApplication>
+#include <QCheckBox>
+#include <QClipboard>
+#include <QCloseEvent>
+#include <QComboBox>
+#include <QDateTime>
+#include <QDebug>
+#include <QDockWidget>
+#include <QGridLayout>
+#include <QHideEvent>
+#include <QLabel>
+#include <QMenu>
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QScrollArea>
+#include <QSettings>
+#include <QShowEvent>
+#include <QStatusBar>
+#include <QSystemTrayIcon>
+#include <QTabWidget>
+#include <QVBoxLayout>
+#include <QStackedWidget>
+#include <QLineEdit>
+#include <QPushButton>
+
 #include "mainwidget.h"
 #include "baseengine.h"
 #include "configwidget.h"
@@ -98,20 +124,76 @@ MainWidget::MainWidget()
     resize(500, 440);
     restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
     
-    if (m_settings->value("display/logtofile", false).toBool()) {
-        b_engine->setLogFile(m_settings->value("display/logfilename", "XiVO_Client.log").toString());
-    }
-    b_engine->logAction("application started on " + b_engine->osname());
-    
     setCentralWidget(m_centralWidget);
     
     m_wid = new QWidget(m_centralWidget);
     m_centralWidget->addWidget(m_wid);
     m_vL = new QVBoxLayout(m_wid);
     
+    m_login_widget = new QWidget(m_centralWidget);
+    m_login_widget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    m_centralWidget->addWidget(m_login_widget);
+    m_login_layout = new QGridLayout(m_login_widget);
+    m_login_layout->setRowStretch(0, 1);
+    m_login_layout->setColumnStretch(0, 1);
+    m_login_layout->setColumnStretch(2, 1);
+    m_login_layout->setRowStretch(6, 1);
+    
+    if (m_settings->value("display/logtofile", false).toBool()) {
+        b_engine->setLogFile(m_settings->value("display/logfilename", "XiVO_Client.log").toString());
+    }
+    b_engine->logAction("application started on " + b_engine->osname());
+    
+    m_xivobg = new QLabel();
+    m_xivobg->setPixmap(QPixmap(":/images/xivoicon.png"));
+    m_xivobg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    m_login_layout->addWidget(m_xivobg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
+    
+    m_lab1 = new QLabel(tr("Login"));
+    m_login_layout->addWidget(m_lab1, 2, 0, Qt::AlignRight);
+    m_lab2 = new QLabel(tr("Password"));
+    m_login_layout->addWidget(m_lab2, 3, 0, Qt::AlignRight);
+    m_lab3 = new QLabel(tr("Phone"));
+    m_login_layout->addWidget(m_lab3, 4, 0, Qt::AlignRight);
+    
+    m_qlab1 = new QLineEdit();
+    m_qlab1->setText(b_engine->userId());
+    m_login_layout->addWidget(m_qlab1, 2, 1);
+    m_qlab2 = new QLineEdit();
+    m_qlab2->setText(b_engine->password());
+    m_qlab2->setEchoMode(QLineEdit::Password);
+    m_login_layout->addWidget(m_qlab2, 3, 1);
+    m_qlab3 = new QLineEdit();
+    m_qlab3->setText(b_engine->agentphonenumber());
+    m_login_layout->addWidget(m_qlab3, 4, 1);
+    
+    m_ack = new QPushButton("OK");
+    m_login_layout->addWidget(m_ack, 2, 2, Qt::AlignLeft);
+    m_kpass = new QCheckBox(tr("Keep Password"));
+    m_kpass->setCheckState((b_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
+    m_login_layout->addWidget(m_kpass, 3, 2, Qt::AlignLeft);
+    m_loginkind = new QComboBox();
+    m_loginkind->addItem(QString(tr("No Agent")));
+    m_loginkind->addItem(QString(tr("Agent (unlogged)")));
+    m_loginkind->addItem(QString(tr("Agent (logged)")));
+    m_loginkind->setCurrentIndex(b_engine->loginkind());
+    m_login_layout->addWidget(m_loginkind, 4, 2, Qt::AlignLeft);
+    
+    loginKindChanged(m_loginkind->currentIndex());
+    m_qlab1->setFocus();
+    
+    connect(m_qlab1, SIGNAL(returnPressed()),
+             this, SLOT(config_and_start()));
+    connect(m_qlab2, SIGNAL(returnPressed()),
+             this, SLOT(config_and_start()));
+    connect(m_qlab3, SIGNAL(returnPressed()),
+             this, SLOT(config_and_start()));
+    connect(m_ack, SIGNAL(pressed()),
+             this, SLOT(config_and_start()));
+    connect(m_loginkind, SIGNAL(currentIndexChanged(int)),
+             this, SLOT(loginKindChanged(int)));
     m_launchDateTime = QDateTime::currentDateTime();
     
-    makeLoginWidget();
     showLogin();
     if ((m_withsystray && (b_engine->systrayed() == false)) || (! m_withsystray)) {
         show();
@@ -127,67 +209,6 @@ MainWidget::~MainWidget()
 {
     savePositions();
     b_engine->logAction("application quit");
-}
-
-void MainWidget::makeLoginWidget()
-{
-    m_loginWidget = new QWidget(m_centralWidget);
-    m_loginWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    m_centralWidget->addWidget(m_loginWidget);
-    QGridLayout *loginL = new QGridLayout(m_loginWidget);
-    loginL->setRowStretch(0, 1);
-    loginL->setColumnStretch(0, 1);
-    loginL->setColumnStretch(2, 1);
-    loginL->setRowStretch(6, 1);
-    
-    QLabel *xivoBg = new QLabel();
-    xivoBg->setPixmap(QPixmap(":/images/xivoicon.png"));
-    xivoBg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    loginL->addWidget(xivoBg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
-    
-    m_lab1 = new QLabel(tr("Login"));
-    loginL->addWidget(m_lab1, 2, 0, Qt::AlignRight);
-    m_lab2 = new QLabel(tr("Password"));
-    loginL->addWidget(m_lab2, 3, 0, Qt::AlignRight);
-    m_lab3 = new QLabel(tr("Phone"));
-    loginL->addWidget(m_lab3, 4, 0, Qt::AlignRight);
-    
-    m_qlab1 = new QLineEdit();
-    m_qlab1->setText(b_engine->userId());
-    loginL->addWidget(m_qlab1, 2, 1);
-    m_qlab2 = new QLineEdit();
-    m_qlab2->setText(b_engine->password());
-    m_qlab2->setEchoMode(QLineEdit::Password);
-    loginL->addWidget(m_qlab2, 3, 1);
-    m_qlab3 = new QLineEdit();
-    m_qlab3->setText(b_engine->agentphonenumber());
-    loginL->addWidget(m_qlab3, 4, 1);
-    
-    m_ack = new QPushButton("OK");
-    loginL->addWidget(m_ack, 2, 2, Qt::AlignLeft);
-    m_kpass = new QCheckBox(tr("Keep Password"));
-    m_kpass->setCheckState((b_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
-    loginL->addWidget(m_kpass, 3, 2, Qt::AlignLeft);
-    m_loginkind = new QComboBox();
-    m_loginkind->addItem(QString(tr("No Agent")));
-    m_loginkind->addItem(QString(tr("Agent (unlogged)")));
-    m_loginkind->addItem(QString(tr("Agent (logged)")));
-    m_loginkind->setCurrentIndex(b_engine->loginkind());
-    loginL->addWidget(m_loginkind, 4, 2, Qt::AlignLeft);
-    
-    loginKindChanged(m_loginkind->currentIndex());
-    m_qlab1->setFocus();
-    
-    connect(m_qlab1, SIGNAL(returnPressed()),
-             this, SLOT(setConfigAndStart()));
-    connect(m_qlab2, SIGNAL(returnPressed()),
-             this, SLOT(setConfigAndStart()));
-    connect(m_qlab3, SIGNAL(returnPressed()),
-             this, SLOT(setConfigAndStart()));
-    connect(m_ack, SIGNAL(pressed()),
-             this, SLOT(setConfigAndStart()));
-    connect(m_loginkind, SIGNAL(currentIndexChanged(int)),
-             this, SLOT(loginKindChanged(int)));
 }
 
 #ifndef Q_WS_WIN
@@ -265,15 +286,15 @@ void MainWidget::clearAppearance()
     m_allnames.clear();
 }
 
-void MainWidget::setConfigAndStart()
+void MainWidget::config_and_start()
 {
     b_engine->setKeepPass(m_kpass->checkState());
-    b_engine->configAndStart(m_qlab1->text(),
-                             m_qlab2->text(),
-                             m_qlab3->text());
+    b_engine->config_and_start(m_qlab1->text(),
+                               m_qlab2->text(),
+                               m_qlab3->text());
 }
 
-void MainWidget::logintextChanged(const QString &logintext)
+void MainWidget::logintextChanged(const QString & logintext)
 {
     m_qlab3->setText(logintext);
 }
@@ -304,14 +325,15 @@ void MainWidget::loginKindChanged(int index)
  */
 void MainWidget::showLogin()
 {
-    m_centralWidget->setCurrentWidget(m_loginWidget);
-    m_resizingHelper = 0;
+    m_centralWidget->setCurrentWidget(m_login_widget);
+    m_login_widget->show();
 }
 
 /*! \brief hide login widget and show "Main" window
  */
 void MainWidget::hideLogin()
 {
+    m_login_widget->hide();
     m_centralWidget->setCurrentWidget(m_wid);
 }
 
@@ -810,18 +832,26 @@ void MainWidget::resizeEvent(QResizeEvent *ev)
     int wh = ev->size().height();
     if (m_resizingHelper) {
         int diff  = wh - oldWH;
-        // the window is getting bigger
         if (oldWH < wh) {
             m_resizingHelper->show();
-            int newH = m_resizingHelper->size().height() + diff ;
+            int newH = m_resizingHelper->size().height() + diff;
             m_resizingHelper->setFixedHeight(newH);
             resize(ev->size());
             m_resizingHelper->hide();
-        } else if (oldWH > wh) {
+        } else {
             int newH = m_resizingHelper->size().height() + diff;
             m_resizingHelper->setFixedHeight(newH);
+            resize(ev->size());
         }
     }
+}
+
+/*!
+ * does nothing
+ */
+void MainWidget::dispurl(const QUrl &url)
+{
+    qDebug() << "MainWidget::dispurl()" << url;
 }
 
 void MainWidget::customerInfoPopup(const QString & msgtitle,

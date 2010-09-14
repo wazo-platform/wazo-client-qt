@@ -30,11 +30,11 @@ void ConfListModel::timerEvent(QTimerEvent *)
 
 void ConfListModel::confRoomsChange(const QString &, DStoreEvent)
 {
-    m_roomList = b_engine->eVM("confrooms");
+    QVariantMap roomList = b_engine->eVM("confrooms");
 
     int row = 0;
-    if (m_roomList.size() != m_row2id.size()) {
-        foreach(QString roomId, m_roomList.keys()) {
+    if (roomList.size() != m_row2id.size()) {
+        foreach(QString roomId, roomList.keys()) {
             m_row2id.insert(row++, roomId);
         }
     }
@@ -48,7 +48,7 @@ Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
 
 int ConfListModel::rowCount(const QModelIndex&) const
 {
-    return m_roomList.size();
+    return b_engine->eVM("confrooms").size();
 }
 
 int ConfListModel::columnCount(const QModelIndex&) const

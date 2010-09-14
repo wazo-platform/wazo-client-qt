@@ -50,7 +50,6 @@ class ConfChamberModel : public QAbstractTableModel
         QString m_id;
         ConfChamberView *m_view;
         QMap<int, QString> m_row2id;
-        QVariantMap m_pplInRoom;
 
 };
 
