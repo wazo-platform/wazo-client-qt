@@ -31,34 +31,36 @@
  * $Date$
  */
 
+#ifndef __DATETIMEPANEL_H__
+#define __DATETIMEPANEL_H__
 
-#include "datetimepanel.h"
+#include <QtGui>
+#include <xletinterface.h>
+#include <xlet.h>
 
-/*! \brief Constructor
- *
- * Creates layout, subwidgets and starts the timer.
+/*! \brief Panel displaying the date and time
  */
-DatetimePanel::DatetimePanel(QWidget *parent)
-    : XLet(parent)
+class XletDatetime : public XLet
 {
-    setTitle(tr("Date and Time"));
-    m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocaleDate));
-    m_gridlayout = new QGridLayout(this);
-    
-    m_gridlayout->addWidget( m_datetime, 1, 1, Qt::AlignCenter);
-    m_gridlayout->setColumnStretch( 0, 1 );
-    m_gridlayout->setColumnStretch( 2, 1 );
-    m_gridlayout->setRowStretch( 0, 1 );
-    m_gridlayout->setRowStretch( 2, 1 );
-    
-    startTimer(1000);
-}
+    Q_OBJECT
 
-/*! \brief method called periodically
- *
- * Just update the date/time displayed.
- */
-void DatetimePanel::timerEvent(QTimerEvent *)
+    public:
+        XletDatetime(QWidget *parent=0);
+
+    protected:
+        void timerEvent(QTimerEvent *);  //!< receive timer events
+
+    private:
+        QLabel *m_datetime;
+};
+
+class XLetDatetimePlugin : public QObject, XLetInterface
 {
-    m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
-}
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet* newXLetInstance(QWidget *parent=0);
+};
+
+#endif /* __DATETIMEPANEL_H__ */

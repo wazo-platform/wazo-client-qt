@@ -36,7 +36,7 @@ class ConfListModel : public QAbstractTableModel
         QVariant headerData(int , Qt::Orientation, int) const;
         Qt::ItemFlags flags(const QModelIndex &) const;
         QMap<int, QString> m_row2id;
-
+        QVariantMap m_roomList;
 };
 
 class ConfListView : public QTableView

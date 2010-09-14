@@ -31,32 +31,43 @@
  * $Date$
  */
 
-#ifndef __DATETIMEPANEL_H__
-#define __DATETIMEPANEL_H__
 
-#include <QObject>
-#include <QDateTime>
-#include <QDebug>
-#include <QGridLayout>
-#include <QLabel>
-#include <QTimerEvent>
-#include "xlet.h"
+#include "datetime.h"
 
-/*! \brief Panel displaying the date and time
- */
-class DatetimePanel : public XLet
+Q_EXPORT_PLUGIN2(xletdatetimeplugin, XLetDatetimePlugin);
+
+XLet* XLetDatetimePlugin::newXLetInstance(QWidget *parent)
 {
-    Q_OBJECT
+    b_engine->registerTranslation(":/datetime_%1");
+    return new XletDatetime(parent);
+}
 
-    public:
-        DatetimePanel(QWidget *parent=0);
 
-    protected:
-        void timerEvent(QTimerEvent *);  //!< receive timer events
+/*! \brief Constructor
+ *
+ * Creates layout, subwidgets and starts the timer.
+ */
+XletDatetime::XletDatetime(QWidget *parent)
+    : XLet(parent)
+{
+    setTitle(tr("Date and Time"));
+    m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocaleDate));
+    QGridLayout *layout = new QGridLayout(this);
+    
+    layout->addWidget(m_datetime, 1, 1, Qt::AlignCenter);
+    layout->setColumnStretch(0, 1);
+    layout->setColumnStretch(2, 1);
+    layout->setRowStretch(0, 1);
+    layout->setRowStretch(2, 1);
+    
+    startTimer(1000);
+}
 
-    private:
-        QGridLayout *m_gridlayout;
-        QLabel *m_datetime;
-};
-
-#endif /* __DATETIMEPANEL_H__ */
+/*! \brief method called periodically
+ *
+ * Just update the date/time displayed.
+ */
+void XletDatetime::timerEvent(QTimerEvent *)
+{
+    m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
+}

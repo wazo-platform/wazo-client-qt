@@ -81,7 +81,6 @@ class MainWidget : public QMainWindow
         void setAppearance(const QStringList &);  //!< dock options
         void clearAppearance();
     public slots:
-        void dispurl(const QUrl &url);
         void customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &);
         void setSystrayIcon(const QString &);
     private slots:
@@ -99,7 +98,7 @@ class MainWidget : public QMainWindow
         void checksAvailState();
         void about();
         void showCredits();
-        void config_and_start();
+        void setConfigAndStart();
         void logintextChanged(const QString &);
         void loginKindChanged(int);
         void confUpdated();
@@ -123,6 +122,7 @@ class MainWidget : public QMainWindow
         void savePositions() const;
         void updateAppliName();
         void clearPresence();
+        void makeLoginWidget();
 
         QSystemTrayIcon *m_systrayIcon;  //!< System Tray Icon
         QIcon m_icon_transp;  //!< Icon Objects
@@ -140,14 +140,11 @@ class MainWidget : public QMainWindow
         QDockWidget *m_resizingHelper;
 
         QWidget *m_wid;  //!< "Main" Widget
-        QWidget *m_login_widget;  //!< Central Widget for login
-        QGridLayout *m_login_layout;  //!< layout for login widget
+        QWidget *m_loginWidget;  //!< Central Widget for login
 
         // Widgets for Xlets
         QTabWidget *m_tabwidget;        //!< Area to display messages, services and histories
         QSet<XLet *> m_xletlist;
-
-        QLabel *m_xivobg;
 
         bool m_presence;
 

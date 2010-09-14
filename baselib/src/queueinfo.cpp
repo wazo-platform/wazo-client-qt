@@ -59,19 +59,19 @@ bool QueueInfo::updateAgent(const QMap<QString, QVariant> & prop)
 {
     bool haschanged = false;
     QMapIterator<QString, QVariant> it(prop);
-    while(it.hasNext()) {
+    while (it.hasNext()) {
         it.next();
         QString arg = it.key();
-        if(!m_properties.contains(arg)) {
+        if (!m_properties.contains(arg)) {
             haschanged = true;
             m_properties[arg] = it.value();
-        } else if(m_properties.value(arg) != it.value()) {
+        } else if (m_properties.value(arg) != it.value()) {
             haschanged = true;
             QVariantMap tmp = m_properties.value(arg).toMap();
             QMapIterator<QString, QVariant> it2(it.value().toMap());
-            while(it2.hasNext()) {
+            while (it2.hasNext()) {
                 it2.next();
-                if(tmp.value(it2.key()) != it2.value()) {
+                if (tmp.value(it2.key()) != it2.value()) {
                     tmp[it2.key()] = it2.value();
                 }
             }
