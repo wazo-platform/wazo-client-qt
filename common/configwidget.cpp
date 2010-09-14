@@ -51,7 +51,9 @@
 #include "baseengine.h"
 #include "xivoconsts.h"
 
-QStringList queuelevel_colors = (QStringList() << "green" << "orange");// << "red");
+static const QStringList queuelevel_colors = (QStringList() << "green" << "orange");
+QHash<QString, QString> func_legend;
+
 
 
 /*! \brief constructor */
@@ -119,11 +121,10 @@ void ConfigWidget::_insert_function_tab()
     line = 0;
     int width = 4;
     
-    QHash<QString, QString> func_legend;
     func_legend["presence"] = tr("Presence reporting");
     func_legend["customerinfo"] = tr("Customer Info");
     
-    foreach(QString function, CheckFunctions) {
+    foreach(QString function, func_legend.keys()) {
         m_function[function] = new QCheckBox(func_legend[function]);
         m_function[function]->setCheckState(b_engine->checkedFunction(function) ? Qt::Checked : Qt::Unchecked);
         gridlayout2->addWidget(m_function[function], line++, 0, 1, width);
@@ -470,7 +471,7 @@ void ConfigWidget::saveAndClose()
     b_engine->setTrytoreconnectinterval(m_tryinterval_sbox->value() * 1000);
     b_engine->setKeepaliveinterval(m_kainterval_sbox->value() * 1000);
     
-    foreach(QString function, CheckFunctions)
+    foreach(QString function, func_legend.keys())
         b_engine->setCheckedFunction(function, m_function[function]->checkState() == Qt::Checked);
     if(m_history_sbox)
         b_engine->setHistorySize(m_history_sbox->value());

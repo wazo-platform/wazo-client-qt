@@ -69,7 +69,6 @@ class Popup: public QWidget
         void addInfoText(int, const QString &, const QString &);  //! Add a url field
         void addInfoLink(int, const QString &, const QString &);
         void addInfoLinkX(int, const QString &, const QString &, const QString &);
-        void addInfoLinkAuto(const QString &, const QString &);
         void addInfoPicture(int, const QString &, const QString &);  //! Add a Picture
         void addInfoPhone(int, const QString &, const QString &);  //! Add a Phone number
         void addInfoPhoneURL(int, const QString &, const QString &);

@@ -52,12 +52,15 @@ all-linux:
 	@make linux-baselib
 	@make linux-xivoclient
 	@make linux-plugins
-	#@make stripandpack-xivoclient
+	@if [ -z "${DEBUG}" ] ; then make stripandpack-xivoclient ; fi
 
 distclean:
 	@make clean-xivoclient
 	@make clean-baselib
 	@make clean-plugins
+	find . -name "moc_*" -print0 | xargs -0 rm -f
+	find . -name "*.o" -print0 | xargs -0 rm -f
+	rm -rf bin ; mkdir -p bin/plugins
 
 clean-%:
 	@make -C $* distclean || true

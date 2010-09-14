@@ -48,33 +48,33 @@
 class BASELIB_EXPORT MeetmeInfo
 {
     public:
-        MeetmeInfo() {};
+        //MeetmeInfo() {};
         //! Copy constructor. Just copy all attributes
-        MeetmeInfo(const MeetmeInfo &);
+        //MeetmeInfo(const MeetmeInfo &);
         //! cast to QString operator for debugging
-        operator QString() const {
-                QString str("MeetmeInfo(");
-                str.append(m_roomnumber);
-                str.append(", ");
-                str.append(m_roomname);
-                str.append(", [");
-                foreach(QString uid, m_uniqueids.keys()) {
-                        str.append(uid);
-                        str.append(" ");
-                }
-                str.append("])");
-                return str;
-        }
+        //operator QString() const {
+        //        QString str("MeetmeInfo(");
+        //        str.append(m_roomnumber);
+        //        str.append(", ");
+        //        str.append(m_roomname);
+        //        str.append(", [");
+        //        foreach(QString uid, m_uniqueids.keys()) {
+        //                str.append(uid);
+        //                str.append(" ");
+        //        }
+        //        str.append("])");
+        //        return str;
+        //}
         void setProperties(const QString &astid, const QVariantMap &);
         bool update(const QVariantMap &);
-        const QString &roomname() const;  //! conference room name
-        const QString &roomnumber() const;  //! conference room number
-        const QString &adminid() const;  //! conference room admin id
-        const QString &adminnum() const;  //! conference room admin num
+        const QString& roomname() const;  //! conference room name
+        const QString& roomnumber() const;  //! conference room number
+        const QString& adminid() const;  //! conference room admin id
+        const QString& adminnum() const;  //! conference room admin num
         bool paused() const;  //! conference room paused status
-        const QStringList &adminlist() const;  //! conference room admin list
-        const QVariantMap &uniqueids() const;  //! conference room uniqueids
-        const QString &astId() const;  //! conference room asterisk id
+        const QStringList& adminlist() const;  //! conference room admin list
+        const QVariantMap& uniqueids() const;  //! conference room uniqueids
+        const QString& astId() const;  //! conference room asterisk id
         
     private:
         QString m_context;  //!< room context
@@ -84,7 +84,7 @@ class BASELIB_EXPORT MeetmeInfo
         QString m_adminpin;  //!< room admin pin number (if any) 
         QString m_adminid;  //!< admin id ??? (global)
         QString m_adminnum;  //!< admin num ( local in the meetme room )
-        bool m_paused;
+        bool m_paused;  //!< is the conference room paused ?
         QStringList m_adminlist;  //!< admin list (user ids)
         QVariantMap m_uniqueids;  //!< people in this conference room
         QString m_astid;  //!< asterisk id

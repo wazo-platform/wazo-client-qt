@@ -85,13 +85,13 @@ void ConfChamberModel::confRoomChange(const QString &path, DStoreEvent event)
 
 void ConfChamberModel::extractRow2IdMap()
 {
-    QVariantMap roomInList = b_engine->eVM(QString("confrooms/%0/in").arg(m_id));
+    m_pplInRoom = b_engine->eVM(QString("confrooms/%0/in").arg(m_id));
 
     m_row2id.clear();
 
     int row = 0;
-    if (roomInList.size() != m_row2id.size()) {
-        foreach(QString roomId, roomInList.keys()) {
+    if (m_pplInRoom.size() != m_row2id.size()) {
+        foreach(QString roomId, m_pplInRoom.keys()) {
             m_row2id.insert(row++, roomId);
         }
     }
@@ -138,7 +138,7 @@ int ConfChamberModel::rowCount(const QModelIndex&) const
     if ((b_engine->eV(room + "moderated").toInt()) && (!m_authed))
         return 0;
 
-    return b_engine->eVM(QString("confrooms/%0/in").arg(m_id)).size();
+    return m_pplInRoom.size();
 }
 
 int ConfChamberModel::columnCount(const QModelIndex&) const
@@ -421,6 +421,9 @@ void ConfChamberView::mousePressEvent(QMouseEvent *event)
 ConfChamber::ConfChamber(QWidget *parent, ConfTab *tab, const QString &id)
     : QWidget(parent), m_id(id)
 {
+    QString room = QString("confrooms/%0/").arg(m_id);
+    int moderated = b_engine->eV(room + "moderated").toInt();
+
     QVBoxLayout *vBox = new QVBoxLayout(this);
     setLayout(vBox);
     QHBoxLayout *hBox = new QHBoxLayout();
@@ -438,7 +441,7 @@ ConfChamber::ConfChamber(QWidget *parent, ConfTab *tab, const QString &id)
     hBox->addWidget(redondant, 6);
     hBox->addWidget(roomPause, 2);
     hBox->addStretch(1);
-    if (!m_model->isAdmin()) {
+    if (!m_model->isAdmin()||(!moderated)) {
         roomPause->hide();
         hBox->setStretch(1, 8);
     }
@@ -467,8 +470,7 @@ ConfChamber::ConfChamber(QWidget *parent, ConfTab *tab, const QString &id)
 
 
 
-    QString room = QString("confrooms/%0/").arg(m_id);
-    if ((b_engine->eV(room + "moderated").toInt()) && 
+    if ( moderated && 
         (!m_model->isAuthed())) {
         QTimer *timer = new QTimer(this);
         timer->setSingleShot(true);

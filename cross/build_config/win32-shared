@@ -3,5 +3,4 @@ cd ..
 QMAKE="qmake -spec win32-shared46-g++ -win32 " \
 JOPT=-j3 make all-linux
 
-rm bin/*.a
-find bin -name ".svn" | xargs rm -rf
+find bin -regex ".*\.\(svn\|a\)" | xargs rm -rf

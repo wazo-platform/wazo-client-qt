@@ -1,0 +1,23 @@
+#!/bin/sh
+XIVO_ROOT=/opt/xivoclient-${XIVO_VERSION}-${SVN_VERSION}
+mkdir -p \
+  root/${XIVO_ROOT} \
+  root/usr/bin/ \
+  root/usr/share/{icons,applications}
+
+mv work/* root/${XIVO_ROOT}
+cp -r ${BENDER_RESOURCE}/debian-lenny-qt4.6.3-i386 root/${XIVO_ROOT}/Qt
+cp ${SVN_RESOURCE}/xivoicon.png root/usr/share/icons/
+cp ${SVN_RESOURCE}/xivoclient.desktop root/usr/share/applications/
+
+cat > root/usr/bin/xivoclient <<!
+#!/bin/sh
+cd ${XIVO_ROOT} 
+LD_LIBRARY_PATH=".:./Qt:\$LD_LIBRARY_PATH" ./xivoclient \$@
+!
+chmod 755 root/usr/bin/xivoclient
+
+SRC=$(pwd)/root
+DST=${BUILT_DIR}/xivoclient+Qt4.6.3-shared-i386.deb
+ARCH=i386
+do_a_deb_package

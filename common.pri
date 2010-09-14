@@ -2,8 +2,13 @@ XIVOVER = 1.2
 
 SVNVER = $$system(LANG= svn info | sed -n \"s/Revision: //p\")
 DATEBUILD = $$system(LANG= date +%Y-%m-%dT%H:%M:%S)
+SERVER_VERSION_REQUIRED = 5650
+DEBUGON= $$system(echo -n $DEBUG)
 
-#CONFIG += debug
+contains(DEBUGON, "yes" ) {
+    CONFIG += debug
+    message(">> Debug Build <<")
+}
 
 # take care of inferior(s) system(s) {
 
@@ -26,6 +31,7 @@ isEmpty( DATEBUILD ) {
 QMAKE_CXXFLAGS += -DXIVOVER=\"\\\"$${XIVOVER}\\\"\"
 QMAKE_CXXFLAGS += -DSVNVER=\"\\\"$${SVNVER}\\\"\"
 QMAKE_CXXFLAGS += -DDATEBUILD=\"\\\"$${DATEBUILD}\\\"\"
+QMAKE_CXXFLAGS += -DSERVER_VERSION_REQUIRED=$${SERVER_VERSION_REQUIRED}
 
 # regenerate qm when needed
 

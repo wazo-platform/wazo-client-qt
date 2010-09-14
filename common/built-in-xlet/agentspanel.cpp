@@ -107,11 +107,11 @@ AgentsPanel::AgentsPanel(QWidget *parent)
  */
 void AgentsPanel::setGuiOptions(const QVariantMap & optionsMap)
 {
-    if(optionsMap.contains("fontname") && optionsMap.contains("fontsize"))
-        m_gui_font = QFont(optionsMap["fontname"].toString(),
-                           optionsMap["fontsize"].toInt());
-    if(optionsMap.contains("iconsize"))
-        m_gui_buttonsize = optionsMap["iconsize"].toInt();
+    if(optionsMap.contains("xlet.agents.fontname") && optionsMap.contains("xlet.agents.fontsize"))
+        m_gui_font = QFont(optionsMap["xlet.agents.fontname"].toString(),
+                           optionsMap["xlet.agents.fontsize"].toInt());
+    if(optionsMap.contains("xlet.agents.iconsize"))
+        m_gui_buttonsize = optionsMap["xlet.agents.iconsize"].toInt();
     
     // setFont(m_gui_font);
     m_title1->setFont(m_gui_font);

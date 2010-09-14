@@ -31,24 +31,7 @@
  * $Date$
  */
 
-#include <QDebug>
-
 #include "meetmeinfo.h"
-
-MeetmeInfo::MeetmeInfo(const MeetmeInfo &other)
-{
-    m_context = other.m_context;
-    m_roomname = other.m_roomname;
-    m_roomnumber = other.m_roomnumber;
-    m_pin = other.m_pin;
-    m_adminpin = other.m_adminpin;
-    m_adminid = other.m_adminid;
-    m_adminnum = other.m_adminnum;
-    m_paused = other.m_paused;
-    m_adminlist = other.m_adminlist;
-    m_uniqueids = other.m_uniqueids;
-    m_astid = other.m_astid;
-}
 
 const QString& MeetmeInfo::roomname() const
 {

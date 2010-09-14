@@ -46,10 +46,8 @@
 #include <callcampaignpanel.h>
 #include <callstackwidget.h>
 #include <customerinfopanel.h>
-#include <datetimepanel.h>
 #include <dialpanel.h>
 #include <directorypanel.h>
-#include <identitydisplay.h>
 #include <faxpanel.h>
 #include <mylocaldirpanel.h>
 #include <parkingpanel.h>
@@ -59,7 +57,6 @@
 #include <searchpanel.h>
 #include <servicepanel.h>
 #include <statuspanel.h>
-#include <switchboardwindow.h>
 
 /*! \brief template to return a new XLet */
 template <class T>
@@ -75,8 +72,6 @@ static const struct {
     const char *name;
     const newXLetProto construct;
 } xlets[] = {
-    //{ "history"           ,newXLet<LogWidget>              },
-    { "identity"          ,newXLet<IdentityDisplay>        },
     { "agents"            ,newXLet<AgentsPanel>            },
     { "agentsnext"        ,newXLet<AgentsPanelNext>        },
     { "agentdetails"      ,newXLet<AgentdetailsPanel>      },
@@ -84,10 +79,8 @@ static const struct {
     { "queues"            ,newXLet<QueuesPanel>            },
     { "queuedetails"      ,newXLet<QueuedetailsPanel>      },
     { "queueentrydetails" ,newXLet<QueueentrydetailsPanel> },
-    { "datetime"          ,newXLet<DatetimePanel>          },
     { "dial"              ,newXLet<DialPanel>              },
     { "operator"          ,newXLet<StatusPanel>            },
-    { "switchboard"       ,newXLet<SwitchBoardWindow>      },
     { "parking"           ,newXLet<ParkingPanel>           },
     { "fax"               ,newXLet<FaxPanel>               },
     { "search"            ,newXLet<SearchPanel>            },

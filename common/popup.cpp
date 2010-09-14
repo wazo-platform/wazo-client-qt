@@ -37,13 +37,11 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QDesktopServices>
-#include <QFileInfo>
 #include <QHttp>
 #include <QIcon>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPixmap>
-#include <QProcess>
 #include <QPushButton>
 #include <QSettings>
 #include <QUiLoader>
@@ -202,11 +200,12 @@ void Popup::saveandclose()
     // qDebug() << "Popup::saveandclose()";
     QStringList qsl;
 
+/*
     QList<QLineEdit *> lineedits = m_sheetui_widget->findChildren<QLineEdit *>(QRegExp("^XIVOFORM-"));
     for(int i = 0; i < lineedits.count(); i++) {
         qsl.append(lineedits[i]->objectName() + ":" + lineedits[i]->text());
     }
-
+*/
     save(qsl.join(";"));
 
     close();
@@ -279,8 +278,8 @@ void Popup::addAnyInfo(const QString & localName,
             setMessage( infoOrder, infoValue );
         
     } else if( localName == "action_info" ) {
-        if ( infoType == "urlauto" )
-            addInfoLinkAuto( infoName, infoValue );
+        if ( m_urlautoallow && (infoType == "urlauto") )
+            b_engine->sendUrlToBrowser(infoValue);
         
     } else if( localName == "internal" ) {
         addInfoInternal( infoName, infoValue );
@@ -467,28 +466,6 @@ void Popup::addInfoLink(int where, const QString & name, const QString & value)
     hlayout->addWidget(lblname);
     hlayout->addWidget(lblvalue);
     m_vlayout->insertLayout(where, hlayout);
-}
-
-void Popup::addInfoLinkAuto(const QString &, const QString & value)
-{
-    // qDebug() << "Popup::addInfoLinkAuto()" << value << m_urlautoallow;
-    if(m_urlautoallow) {
-#ifdef Q_WS_WIN
-        QSettings settings("HKEY_CLASSES_ROOT\\HTTP\\shell\\open\\command", QSettings::NativeFormat);
-        QString command = settings.value(".").toString();
-        QRegExp rx("\"(.+)\"");
-        if (rx.indexIn(command) != -1)
-            command = rx.capturedTexts()[1];
-        QUrl url(value);
-        QFileInfo browserFileInfo(command);
-        if (browserFileInfo.fileName() == "iexplore.exe")
-            QProcess::startDetached(browserFileInfo.absoluteFilePath(), QStringList() << "-new" << url.toEncoded());
-        else
-            QDesktopServices::openUrl(url);
-#else
-        QDesktopServices::openUrl(QUrl(value));
-#endif
-    }
 }
 
 void Popup::addInfoLinkX(int where, const QString & name, const QString & value, const QString & dispvalue)

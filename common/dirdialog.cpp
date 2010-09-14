@@ -44,8 +44,6 @@ DirDialog::DirDialog(QWidget *parent)
     m_directory = new DirectoryPanel(this);
     connect(m_directory, SIGNAL(searchDirectory(const QString &)),
             b_engine, SLOT(searchDirectory(const QString &)));
-    connect(b_engine, SIGNAL(directoryResponse(const QString &)),
-            m_directory, SLOT(setSearchResponse(const QString &)));
     connect(m_directory, SIGNAL(copyNumber(const QString &)),
             this, SLOT(copyNumber(const QString &)));
     connect(m_directory, SIGNAL(emitDial(const QString &, bool)),

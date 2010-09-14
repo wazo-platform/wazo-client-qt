@@ -91,11 +91,11 @@ AgentsPanelNext::AgentsPanelNext(QWidget *parent)
 
 void AgentsPanelNext::setGuiOptions(const QVariantMap & optionsMap)
 {
-    if(optionsMap.contains("blinktime"))
-        m_blinktime = optionsMap["blinktime"].toInt();
-    if(optionsMap.contains("fontname") && optionsMap.contains("fontsize"))
-        m_gui_font = QFont(optionsMap["fontname"].toString(),
-                           optionsMap["fontsize"].toInt());
+    if(optionsMap.contains("xlet.agentsnext.blinktime"))
+        m_blinktime = optionsMap["xlet.agentsnext.blinktime"].toInt();
+    if(optionsMap.contains("xlet.agentsnext.fontname") && optionsMap.contains("xlet.agentsnext.fontsize"))
+        m_gui_font = QFont(optionsMap["xlet.agentsnext.fontname"].toString(),
+                           optionsMap["xlet.agentsnext.fontsize"].toInt());
     
     // setFont(m_gui_font);
     foreach (QString groupid, m_title.keys())

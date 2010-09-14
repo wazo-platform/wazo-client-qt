@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+GenericName=xivoclient
+Comment=XiVO CTI Client
+Name=XiVO Client
+Exec=xivoclient
+Icon=/usr/share/icons/xivoclient.png
+Type=Application
+Terminal=false
+Categories=Application;Network;ContactManagement;InstantMessaging;TelephonyTools;Qt

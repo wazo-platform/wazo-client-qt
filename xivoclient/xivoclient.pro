@@ -5,7 +5,6 @@
 #
 
 include(../qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
-include(../qtaddons/qtcolorpicker/src/qtcolorpicker.pri)
 
 COMMONDIR = ../common
 
@@ -16,7 +15,7 @@ TEMPLATE = app
 TARGET = 
 CONFIG += uitools
 DEPENDPATH += .
-INCLUDEPATH += . $${COMMONDIR} $${COMMONDIR}/built-in-xlet ../baselib/src
+INCLUDEPATH += . $${COMMONDIR} $${COMMONDIR}/built-in-xlet ../baselib/src ../baselib/src/gui
 
 # Input
 HEADERS += src/*.h $${COMMONDIR}/*.h $${COMMONDIR}/built-in-xlet/*.h

@@ -8,7 +8,7 @@ cd $(dirname "$(pwd)/$0")
 
 function set_up_build_dir
 {
-if [ -n "${TARGET_SVN_VERSION}" ] ; then
+if [ "${TARGET_SVN_VERSION}" ] ; then
   ( cd ../ ; change-svn-wc-format.py . ${TARGET_SVN_VERSION} )
 fi
 
@@ -29,6 +29,7 @@ function make_the_build
 function fetch_built_files
 {
   cd ..
+  rm -rf bin
   echo "cd ${TEMPDIR}/workdir/ ; tar -zcf - bin/$1" | ssh -T ${TARGET_HOST} | \
   tar -zxvf -
 }

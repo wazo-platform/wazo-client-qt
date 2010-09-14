@@ -1,4 +1,3 @@
-<<<<<<< .courant
 /* XiVO Client
  * Copyright (C) 2007-2010, Proformatique
  *
@@ -28,12 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 9193 $
- * $Date: 2010-09-14 15:02:24 -0400 (mar 14 sep 2010) $
+/* $Revision: 9119 $
+ * $Date: 2010-09-06 05:09:25 -0400 (lun 06 sep 2010) $
  */
 
-=======
->>>>>>> .fusion-droit.r9192
 #ifndef _DSTORE_PRIVATE__
 #define _DSTORE_PRIVATE__
 

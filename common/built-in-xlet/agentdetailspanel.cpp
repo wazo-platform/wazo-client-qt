@@ -201,9 +201,9 @@ void AgentdetailsPanel::updatePanel()
     AgentInfo * ainfo = b_engine->agents()[m_monitored_agentid];
     QStringList agent_descriptions;
     agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber());
-    if(! m_optionsMap["hideastid"].toBool())
+    if(! m_optionsMap["xlet.agentdetails.hideastid"].toBool())
         agent_descriptions << tr("on <b>%1</b>").arg(ainfo->astid());
-    if(! m_optionsMap["hidecontext"].toBool())
+    if(! m_optionsMap["xlet.agentdetails.hidecontext"].toBool())
         agent_descriptions << QString("(%1)").arg(ainfo->context());
     QVariantMap properties = ainfo->properties();
     QVariant agentstats = properties["agentstats"];
@@ -315,9 +315,9 @@ void AgentdetailsPanel::setQueueProps(const QString & queueid, const QueueInfo *
     else
         m_queue_labels[queueid]->setText(qinfo->queueName());
     QStringList tooltips;
-    if(! m_optionsMap["hideastid"].toBool())
+    if(! m_optionsMap["xlet.agentdetails.hideastid"].toBool())
         tooltips << tr("Server: %1").arg(qinfo->astid());
-    if(! m_optionsMap["hidecontext"].toBool())
+    if(! m_optionsMap["xlet.agentdetails.hidecontext"].toBool())
         tooltips << tr("Context: %1").arg(qinfo->context());
     m_queue_labels[queueid]->setToolTip(tooltips.join("\n"));
 }
@@ -331,7 +331,7 @@ void AgentdetailsPanel::setQueueAgentSignals(const QString & queueid)
     
     connect( m_queue_more[queueid], SIGNAL(clicked()),
              this, SLOT(queueClicked()));
-    if(! m_optionsMap["noqueueaction"].toBool()) {
+    if(! m_optionsMap["xlet.agentdetails.noqueueaction"].toBool()) {
         connect( m_queue_join_action[queueid], SIGNAL(clicked()),
                  this, SLOT(queueClicked()));
         connect( m_queue_pause_action[queueid], SIGNAL(clicked()),

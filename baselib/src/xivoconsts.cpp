@@ -33,13 +33,8 @@
 
 #include "xivoconsts.h"
 
-const int REQUIRED_SERVER_VERSION = 5650;
-
-const QString __required_server_version__ = QString::number(REQUIRED_SERVER_VERSION);
-const QString __current_client_version__(SVNVER);
-const QString __datebuild_client__(DATEBUILD);
-const QString __xivo_version__(XIVOVER);
-const QString __nopresence__("nopresence");
-const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
-
-
+BASELIB_EXPORT extern const int REQUIRED_SERVER_VERSION = SERVER_VERSION_REQUIRED;
+const char __current_client_version__[] = SVNVER;
+const char __datebuild_client__[] = DATEBUILD;
+const char __xivo_version__[] = XIVOVER;
+const char __nopresence__[] = "nopresence";
