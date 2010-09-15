@@ -350,7 +350,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     QMenu contextMenu(this);
     QAction *action;
 
-    if (parentWidget()->metaObject()->className() == QString("SwitchBoardWindow")) {
+    if (parentWidget()->metaObject()->className() == QString("XletSwitchBoard")) {
         contextMenu.addAction(m_removeAction);
         contextMenu.addAction(m_renameAction);
         contextMenu.addSeparator();
