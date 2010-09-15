@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 9119 $
- * $Date: 2010-09-06 05:09:25 -0400 (lun 06 sep 2010) $
+/* $Revision$
+ * $Date$
  */
 
 #ifndef _DSTORE_PRIVATE__
