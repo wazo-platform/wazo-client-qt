@@ -40,6 +40,7 @@
 #include <QApplication>
 #include <QMenu>
 #include <QDebug>
+#include <QFontMetrics>
 
 #include "baseengine.h"
 #include "peerwidget.h"
@@ -75,8 +76,7 @@ PeerWidget::PeerWidget(UserInfo *ui)
     layout->setSpacing(0);
     
     m_textlbl = new QLabel(peer);
-    m_textlbl->setWordWrap(true);
-    m_textlbl->setMinimumHeight(fsize);
+    m_textlbl->setMinimumWidth(m_maxWidthWanted);
     setName(m_ui->fullname());
 
     if (!m_ui->ctilogin().isEmpty()) {
@@ -202,7 +202,13 @@ void PeerWidget::setName(const QString &/*name*/)
         text = m_ui->phoneNumber();
     }
 
-    m_textlbl->setText(text);
+    QFontMetrics fm(m_textlbl->font());
+    if (m_textlbl->width() < fm.width(text)) {
+        m_textlbl->setToolTip(text);
+        m_textlbl->setText(m_textlbl->fontMetrics().elidedText(text, Qt::ElideRight, m_textlbl->width()));
+    } else {
+        m_textlbl->setText(text);
+    }
 }
 
 bool PeerWidget::pOverMobileLbl(const QPoint &p)
