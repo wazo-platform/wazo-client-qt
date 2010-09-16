@@ -34,8 +34,8 @@
 #ifndef __SERVICEPANEL_H__
 #define __SERVICEPANEL_H__
 
-#include <QHash>
-#include <QVariant>
+#include <QtGui>
+#include <xletinterface.h>
 #include "xlet.h"
 
 class QCheckBox;
@@ -89,6 +89,15 @@ class ServiceStatus
         void setOpt(const QString &, bool);
         void setForward(const QString &, bool, const QString &);
         void display();
+};
+
+class XLetFeaturePlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet* newXLetInstance(QWidget *parent=0);
 };
 
 #endif

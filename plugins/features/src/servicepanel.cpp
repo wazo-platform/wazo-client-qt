@@ -31,21 +31,22 @@
  * $Date$
  */
 
-#include <QCheckBox>
-#include <QDebug>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QVariant>
-#include <QVBoxLayout>
-
-#include "servicepanel.h"
 #include "baseengine.h"
-#include "userinfo.h"
+#include "servicepanel.h"
 
 const QStringList fwdcapas = (QStringList() << "fwdrna" << "fwdbusy" << "fwdunc");
 const QStringList chkcapas = (QStringList() << "enablevm" << "callrecord" << "incallfilter" << "enablednd");
+
+
+Q_EXPORT_PLUGIN2(xletfeatureplugin, XLetFeaturePlugin);
+
+XLet* XLetFeaturePlugin::newXLetInstance(QWidget *parent)
+{
+    b_engine->registerTranslation(":/features_%1");
+    return new ServicePanel(parent);
+}
+
+
 
 ServicePanel::ServicePanel(QWidget * parent)
     : XLet(parent)

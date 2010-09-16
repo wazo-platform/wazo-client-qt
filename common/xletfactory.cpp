@@ -55,7 +55,6 @@
 #include <queuedetailspanel.h>
 #include <queueentrydetailspanel.h>
 #include <searchpanel.h>
-#include <servicepanel.h>
 #include <statuspanel.h>
 
 /*! \brief template to return a new XLet */
@@ -84,7 +83,6 @@ static const struct {
     { "parking"           ,newXLet<ParkingPanel>           },
     { "fax"               ,newXLet<FaxPanel>               },
     { "search"            ,newXLet<SearchPanel>            },
-    { "features"          ,newXLet<ServicePanel>           },
     { "directory"         ,newXLet<DirectoryPanel>         },
     { "callcampaign"      ,newXLet<CallCampaignPanel>      },
     { "mylocaldir"        ,newXLet<MyLocalDirPanel>        },
