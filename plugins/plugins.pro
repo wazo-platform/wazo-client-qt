@@ -12,5 +12,6 @@ SUBDIRS  = xletweb \
            queues \
            agents \
            agentsnext \
-           agentdetails
+           agentdetails \
+           queuedetails
 win32:SUBDIRS += outlook

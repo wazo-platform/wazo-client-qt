@@ -48,7 +48,6 @@
 #include <faxpanel.h>
 #include <mylocaldirpanel.h>
 #include <parkingpanel.h>
-#include <queuedetailspanel.h>
 #include <queueentrydetailspanel.h>
 #include <searchpanel.h>
 #include <statuspanel.h>
@@ -68,7 +67,6 @@ static const struct {
     const newXLetProto construct;
 } xlets[] = {
     { "customerinfo"      ,newXLet<CustomerInfoPanel>      },
-    { "queuedetails"      ,newXLet<QueuedetailsPanel>      },
     { "queueentrydetails" ,newXLet<QueueentrydetailsPanel> },
     { "dial"              ,newXLet<DialPanel>              },
     { "operator"          ,newXLet<StatusPanel>            },

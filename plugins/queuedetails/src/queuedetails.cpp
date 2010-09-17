@@ -31,26 +31,21 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QGridLayout>
-#include <QLabel>
-#include <QPushButton>
-#include <QScrollArea>
-#include <QVariant>
+#include "queuedetails.h"
 
-#include "baseengine.h"
-#include "queuedetailspanel.h"
-#include "queue_agent_status.h"
-#include "userinfo.h"
-#include "queueinfo.h"
-#include "agentinfo.h"
+Q_EXPORT_PLUGIN2(xletqueuedetailsplugin, XLetQueueDetailsPlugin);
 
-/*! \brief Constructor
- */
-QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
+XLet* XLetQueueDetailsPlugin::newXLetInstance(QWidget *parent)
+{
+    b_engine->registerTranslation(":/queuedetails_%1");
+    return new XletQueueDetails(parent);
+}
+
+
+XletQueueDetails::XletQueueDetails(QWidget *parent)
     : XLet(parent)
 {
-    setTitle( tr("Agents of a Queue") );
+    setTitle(tr("Agents of a Queue"));
     m_gridlayout = new QGridLayout(this);
 
     m_queuedescription = new QLabel(this);
@@ -79,37 +74,31 @@ QueuedetailsPanel::QueuedetailsPanel(QWidget * parent)
 
     // connect signals/slots to engine
     connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
-            this, SLOT(newAgentList(const QStringList &)) );
+            this, SLOT(newAgentList(const QStringList &)));
     connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
-            this, SLOT(newQueueList(const QStringList &)) );
+            this, SLOT(newQueueList(const QStringList &)));
 
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
-            this, SLOT(monitorThisQueue(const QString &)) );
+            this, SLOT(monitorThisQueue(const QString &)));
 }
 
-/*! \brief 
- */
-void QueuedetailsPanel::newQueueList(const QStringList & qsl)
+void XletQueueDetails::newQueueList(const QStringList &qsl)
 {
-    // qDebug() << "QueuedetailsPanel::newQueueList()" << qsl;
+    // qDebug() << "XletQueueDetails::newQueueList()" << qsl;
     if(qsl.contains(m_monitored_queueid) && b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
-/*! \brief 
- */
-void QueuedetailsPanel::newAgentList(const QStringList &)
+void XletQueueDetails::newAgentList(const QStringList &)
 {
-    // qDebug() << "QueuedetailsPanel::newAgentList()" << qsl;
+    // qDebug() << "XletQueueDetails::newAgentList()" << qsl;
     if(b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
-/*! \brief 
- */
-void QueuedetailsPanel::monitorThisQueue(const QString & queueid)
+void XletQueueDetails::monitorThisQueue(const QString &queueid)
 {
-    // qDebug() << "QueuedetailsPanel::monitorThisQueue" << queueid;
+    // qDebug() << "XletQueueDetails::monitorThisQueue" << queueid;
     if (b_engine->queues().contains(queueid)) {
         m_monitored_queueid = queueid;
         clearPanel();
@@ -117,11 +106,9 @@ void QueuedetailsPanel::monitorThisQueue(const QString & queueid)
     }
 }
 
-/*! \brief 
- */
-void QueuedetailsPanel::clearPanel()
+void XletQueueDetails::clearPanel()
 {
-    // qDebug() << "QueuedetailsPanel::update()";
+    // qDebug() << "XletQueueDetails::update()";
     foreach(QString q, m_agent_labels.keys())
         delete m_agent_labels[q];
     foreach(QString q, m_agent_more.keys())
@@ -146,11 +133,9 @@ void QueuedetailsPanel::clearPanel()
     m_agent_penalty.clear();
 }
 
-/*! \brief 
- */
-void QueuedetailsPanel::updatePanel()
+void XletQueueDetails::updatePanel()
 {
-    QueueInfo * qinfo = b_engine->queues()[m_monitored_queueid];
+    QueueInfo *qinfo = b_engine->queues()[m_monitored_queueid];
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4)")
                                 .arg(qinfo->queueName())
                                 .arg(qinfo->queueNumber())
@@ -210,27 +195,27 @@ void QueuedetailsPanel::updatePanel()
     }
 }
 
-void QueuedetailsPanel::setAgentLookProps(const QString & agentid)
+void XletQueueDetails::setAgentLookProps(const QString &agentid)
 {
     m_agent_more[agentid]->setIconSize(QSize(10, 10));
     m_agent_more[agentid]->setIcon(QIcon(":/images/add.png"));
 }
 
-void QueuedetailsPanel::setAgentProps(const QString & agentid, const AgentInfo * ainfo)
+void XletQueueDetails::setAgentProps(const QString &agentid, const AgentInfo *ainfo)
 {
     m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber()));
     m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->astid()).arg(ainfo->context()));
-    // qDebug() << "QueuedetailsPanel::setAgentProps" << agentid << ainfo->properties()["agentstats"].toMap()["loggedintime"].toInt();
+    // qDebug() << "XletQueueDetails::setAgentProps" << agentid << ainfo->properties()["agentstats"].toMap()["loggedintime"].toInt();
 }
 
-void QueuedetailsPanel::setAgentQueueSignals(const QString & agentid)
+void XletQueueDetails::setAgentQueueSignals(const QString &agentid)
 {
     m_agent_more[agentid]->setProperty("agentid", agentid);
     connect(m_agent_more[agentid], SIGNAL(clicked()),
             this, SLOT(agentClicked()));
 }
 
-void QueuedetailsPanel::setAgentQueueProps(const QString & agentid, const QVariant & qv)
+void XletQueueDetails::setAgentQueueProps(const QString &agentid, const QVariant &qv)
 {
     QString oldsstatus = m_agent_join_status[agentid]->property("Status").toString();
     QString oldpstatus = m_agent_pause_status[agentid]->property("Paused").toString();
@@ -239,7 +224,7 @@ void QueuedetailsPanel::setAgentQueueProps(const QString & agentid, const QVaria
     QString sstatus = qv.toMap()["Status"].toString();
     QString dynstatus = qv.toMap()["Membership"].toString();
 
-    QueueAgentStatus * qas = new QueueAgentStatus();
+    QueueAgentStatus *qas = new QueueAgentStatus();
     qas->update(dynstatus, sstatus, pstatus);
 
     if (sstatus != oldsstatus) {
@@ -284,9 +269,7 @@ void QueuedetailsPanel::setAgentQueueProps(const QString & agentid, const QVaria
     }
 }
 
-/*! \brief 
- */
-void QueuedetailsPanel::fillAgent(int ii, const QString & agentid)
+void XletQueueDetails::fillAgent(int ii, const QString &agentid)
 {
     int m_linenum = 3;
     int colnum = 0;
@@ -299,9 +282,9 @@ void QueuedetailsPanel::fillAgent(int ii, const QString & agentid)
     m_gridlayout->addWidget(m_agent_penalty[agentid], ii + m_linenum, colnum++, Qt::AlignRight);
 }
 
-void QueuedetailsPanel::agentClicked()
+void XletQueueDetails::agentClicked()
 {
-    // qDebug() << "QueuedetailsPanel::agentClicked()" << sender()->property("agentid");
+    // qDebug() << "XletQueueDetails::agentClicked()" << sender()->property("agentid");
     QString agentid = sender()->property("agentid").toString();
     b_engine->changeWatchedAgentSlot(agentid, true);
 }

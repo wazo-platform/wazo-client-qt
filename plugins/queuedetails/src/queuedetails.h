@@ -34,31 +34,25 @@
 #ifndef __QUEUEDETAILSPANEL_H__
 #define __QUEUEDETAILSPANEL_H__
 
-#include <QDateTime>
-#include <QHash>
-#include <QObject>
-#include <QVariant>
+#include <QtGui>
+
+#include "xletinterface.h"
 #include "xlet.h"
 
-class QGridLayout;
-class QLabel;
-class QPushButton;
-class QScrollArea;
-class QVBoxLayout;
+#include "baseengine.h"
+#include "queue_agent_status.h"
 
-class AgentInfo;
-class UserInfo;
 
 /*! \brief Display details about a queue
  *
  * The agents in this queue and details are displayed
  */
-class QueuedetailsPanel : public XLet
+class XletQueueDetails : public XLet
 {
     Q_OBJECT
 
     public:
-        QueuedetailsPanel(QWidget *parent=0);
+        XletQueueDetails(QWidget *parent=0);
 
     public slots:
         void newAgentList(const QStringList &);
@@ -95,6 +89,15 @@ class QueuedetailsPanel : public XLet
         QHash<QString, QLabel *> m_agent_callstaken; //!< agents number of calls
         QHash<QString, QLabel *> m_agent_lastcall; //!< agents last call
         QHash<QString, QLabel *> m_agent_penalty; //!< agents penalty
+};
+
+class XLetQueueDetailsPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
 };
 
 #endif /* __QUEUEDETAILSPANEL_H__ */

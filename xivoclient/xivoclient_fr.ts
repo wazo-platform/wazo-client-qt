@@ -1017,60 +1017,6 @@ Etes vous sur ?</translation>
     </message>
 </context>
 <context>
-    <name>QueuedetailsPanel</name>
-    <message>
-        <location filename="../common/built-in-xlet/queuedetailspanel.cpp" line="58"/>
-        <source>Status</source>
-        <translation>Statut</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/queuedetailspanel.cpp" line="57"/>
-        <source>Agent</source>
-        <translation>Agent</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/queuedetailspanel.cpp" line="59"/>
-        <source>Paused ?</source>
-        <translation>En retrait ?</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/queuedetailspanel.cpp" line="60"/>
-        <source>Calls
-Taken</source>
-        <translation>Appels
-pris</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/queuedetailspanel.cpp" line="61"/>
-        <source>Last
-Call</source>
-        <translation>Dernier
-Appel</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/queuedetailspanel.cpp" line="62"/>
-        <source>Penalty</source>
-        <translation>Pénalité</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/queuedetailspanel.cpp" line="154"/>
-        <source>&lt;b&gt;%1&lt;/b&gt; (%2) on &lt;b&gt;%3&lt;/b&gt; (%4)</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; (%2) sur &lt;b&gt;%3&lt;/b&gt; (%4)</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/queuedetailspanel.cpp" line="222"/>
-        <source>Server: %1
-Context: %2</source>
-        <translation>Serveur: %1
-Contexte: %2</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/queuedetailspanel.cpp" line="53"/>
-        <source>Agents of a Queue</source>
-        <translation>Agents d&apos;une File d&apos;Attente</translation>
-    </message>
-</context>
-<context>
     <name>QueueentrydetailsPanel</name>
     <message>
         <location filename="../common/built-in-xlet/queueentrydetailspanel.cpp" line="49"/>
