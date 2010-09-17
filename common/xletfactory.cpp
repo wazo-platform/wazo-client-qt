@@ -51,7 +51,6 @@
 #include <faxpanel.h>
 #include <mylocaldirpanel.h>
 #include <parkingpanel.h>
-#include <queuespanel.h>
 #include <queuedetailspanel.h>
 #include <queueentrydetailspanel.h>
 #include <searchpanel.h>
@@ -75,7 +74,6 @@ static const struct {
     { "agentsnext"        ,newXLet<AgentsPanelNext>        },
     { "agentdetails"      ,newXLet<AgentdetailsPanel>      },
     { "customerinfo"      ,newXLet<CustomerInfoPanel>      },
-    { "queues"            ,newXLet<QueuesPanel>            },
     { "queuedetails"      ,newXLet<QueuedetailsPanel>      },
     { "queueentrydetails" ,newXLet<QueueentrydetailsPanel> },
     { "dial"              ,newXLet<DialPanel>              },

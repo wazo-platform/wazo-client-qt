@@ -8,5 +8,6 @@ SUBDIRS  = xletweb \
            switchboard \
            identity \
            datetime \
-           features
+           features \
+           queues
 win32:SUBDIRS += outlook

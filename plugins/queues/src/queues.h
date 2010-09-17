@@ -34,42 +34,30 @@
 #ifndef __QUEUESPANEL_H__
 #define __QUEUESPANEL_H__
 
-#include <QObject>
-#include <QHash>
-#include <QLabel>
-#include <QList>
-#include <QMap>
-#include <QVariant>
-#include <QMouseEvent>
-#include <QMenu>
-#include <QAction>
-#include <QContextMenuEvent>
-#include <QLineEdit>
-#include <QSpinBox>
-#include <QScrollArea>
-#include <QVBoxLayout>
-#include <QSpacerItem>
-#include <QCheckBox>
-#include <QGridLayout>
-#include <QProgressBar>
-#include <QPushButton>
+#include <QtGui>
 
-#include "xlet.h"
+
+#include <xletinterface.h>
+#include <xlet.h>
+
+#include "queueinfo.h"
+#include "baseengine.h"
+#include "userinfo.h"
 #include "queueinfo.h"
 
 
 class UserInfo;
-class QueuesPanel;
+class XletQueues;
 
 /*! \brief to configure if the queue should be shown and the queue 
  *  stats parameters
  */
-class QueuesPanelConfigure : public QWidget
+class XletQueuesConfigure : public QWidget
 {
     Q_OBJECT
 
     public:
-        QueuesPanelConfigure(QueuesPanel *xlet);
+        XletQueuesConfigure(XletQueues *xlet);
         QWidget* buildConfigureQueueList(QWidget *);
 
     protected:
@@ -83,14 +71,14 @@ class QueueRow : public QWidget {
     Q_OBJECT
 
     public:
-        QueueRow(const QueueInfo *info, QueuesPanel *xlet);
+        QueueRow(const QueueInfo *info, XletQueues *xlet);
         void updateRow();
         void updateSliceStat(const QString &stat, const QString &value);
         void updateLongestWaitWidget(int display, uint greenlevel, uint orangelevel);
         void updateBusyWidget();
         void updateName();
 
-        static QWidget* makeTitleRow(QueuesPanel *parent);
+        static QWidget* makeTitleRow(XletQueues *parent);
         static void getLayoutColumnsWidth(QGridLayout *layout);
         static void setLayoutColumnWidth(QGridLayout *layout, int nbStat);
 
@@ -104,22 +92,22 @@ class QueueRow : public QWidget {
         static uint m_maxbusy;  //!< Maximum value for busy level
         QGridLayout *m_layout;
         const QueueInfo *qinfo;
-        QueuesPanel *xlet;
+        XletQueues *xlet;
         static QList<int> m_colWidth;
 
 };
 
 /*! \brief Displays queues and their status
  */
-class QueuesPanel : public XLet
+class XletQueues : public XLet
 {
     Q_OBJECT
 
     public:
-        QueuesPanel(QWidget *parent=0);
+        XletQueues(QWidget *parent=0);
         void eatQueuesStats(const QVariantMap &p);
         static void eatQueuesStats_t(const QVariantMap &p, void *udata) {
-            ((QueuesPanel*)udata)->eatQueuesStats(p);
+            ((XletQueues*)udata)->eatQueuesStats(p);
         };
         bool showMoreQueueDetailButton() { return m_showMore; };
         bool showNumber() { return m_showNumber; };
@@ -148,11 +136,21 @@ class QueuesPanel : public XLet
     private:
         bool m_showMore;
         bool m_showNumber;
-        QueuesPanelConfigure *m_configureWindow;
+        XletQueuesConfigure *m_configureWindow;
         
         QVBoxLayout *m_layout;
         QWidget *m_titleRow;
         QHash<QString, QueueRow *> m_queueList;
 };
+
+class XLetQueuesPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
+};
+
 
 #endif

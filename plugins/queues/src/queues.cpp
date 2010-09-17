@@ -31,20 +31,17 @@
  * $Date$
  */
 
-#include <QCheckBox>
-#include <QDebug>
-#include <QGridLayout>
-#include <QLabel>
-#include <QPushButton>
-#include <QProgressBar>
-#include <QScrollArea>
-#include <QVariant>
-#include <QTimer>
 
-#include "baseengine.h"
-#include "queuespanel.h"
-#include "userinfo.h"
-#include "queueinfo.h"
+#include "queues.h"
+
+Q_EXPORT_PLUGIN2(xletqueuesplugin, XLetQueuesPlugin);
+
+
+XLet* XLetQueuesPlugin::newXLetInstance(QWidget *parent)
+{
+    b_engine->registerTranslation(":/queues_%1");
+    return new XletQueues(parent);
+}
 
 
 QList<int> QueueRow::m_colWidth = QList<int>();
@@ -75,7 +72,7 @@ void __format_duration(QString *field, int duration)
                                  .arg(sec, 2, 10, QChar('0')));
 }
 
-void QueuesPanel::settingChanged(const QVariantMap &)
+void XletQueues::settingChanged(const QVariantMap &)
 {
     m_showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
 
@@ -96,7 +93,7 @@ void QueuesPanel::settingChanged(const QVariantMap &)
     }
 }
 
-void QueuesPanel::loadQueueOrder()
+void XletQueues::loadQueueOrder()
 {
     QStringList order = b_engine->getGuiOptions("client_gui")
                             .value("queuespanel").toMap()
@@ -104,7 +101,7 @@ void QueuesPanel::loadQueueOrder()
     setQueueOrder(order);
 }
 
-void QueuesPanel::saveQueueOrder(const QStringList &queueOrder)
+void XletQueues::saveQueueOrder(const QStringList &queueOrder)
 {
     QVariantMap clientGui = b_engine->getGuiOptions("client_gui");
     QVariantMap queuesPanelConfig = clientGui.value("queuespanel").toMap();
@@ -116,7 +113,7 @@ void QueuesPanel::saveQueueOrder(const QStringList &queueOrder)
 }
 
 
-QueuesPanel::QueuesPanel(QWidget *parent)
+XletQueues::XletQueues(QWidget *parent)
     : XLet(parent),
       m_configureWindow(NULL)
 {
@@ -156,18 +153,18 @@ QueuesPanel::QueuesPanel(QWidget *parent)
     connect(this, SIGNAL(changeWatchedQueue(const QString &)),
             b_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 
-    b_engine->registerClassEvent("queuestats", QueuesPanel::eatQueuesStats_t, this);
+    b_engine->registerClassEvent("queuestats", XletQueues::eatQueuesStats_t, this);
     updateLongestWaitWidgets();
     QTimer::singleShot(0, this, SLOT(display()));
 }
 
-void QueuesPanel::display()
+void XletQueues::display()
 {
     show();
     QueueRow::getLayoutColumnsWidth(static_cast<QGridLayout*>(m_titleRow->layout()));
 }
 
-void QueuesPanel::eatQueuesStats(const QVariantMap &p)
+void XletQueues::eatQueuesStats(const QVariantMap &p)
 {
     foreach (QString queueid, p["stats"].toMap().keys()) {
         QVariantMap qvm = p["stats"].toMap()[queueid].toMap();
@@ -188,17 +185,17 @@ void QueuesPanel::eatQueuesStats(const QVariantMap &p)
     }
 }
 
-void QueuesPanel::openConfigureWindow()
+void XletQueues::openConfigureWindow()
 {
     if (m_configureWindow) {
         m_configureWindow->show();
         return ;
     }
 
-    m_configureWindow = new QueuesPanelConfigure(this);
+    m_configureWindow = new XletQueuesConfigure(this);
 }
 
-void QueuesPanel::contextMenuEvent(QContextMenuEvent *event)
+void XletQueues::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *menu = new QMenu(this);
     QAction *configure = new QAction(tr("Configure"), menu);
@@ -208,7 +205,7 @@ void QueuesPanel::contextMenuEvent(QContextMenuEvent *event)
         openConfigureWindow();
 }
 
-void QueuesPanel::removeQueues(const QString &, const QStringList &queues)
+void XletQueues::removeQueues(const QString &, const QStringList &queues)
 {
     foreach (QString queueId, queues) {
         if (m_queueList.contains(queueId)) {
@@ -221,7 +218,7 @@ void QueuesPanel::removeQueues(const QString &, const QStringList &queues)
 
 /*! \brief update display once the queues have been received
  */
-void QueuesPanel::newQueueList(const QStringList &qsl)
+void XletQueues::newQueueList(const QStringList &qsl)
 {
     // qDebug() << "newQueueList" << qsl;
     QHashIterator<QString, QueueInfo *> iter = \
@@ -250,7 +247,7 @@ void QueuesPanel::newQueueList(const QStringList &qsl)
  *
  * to update display.
  */
-void QueuesPanel::setQueueOrder(const QStringList &queueOrder)
+void XletQueues::setQueueOrder(const QStringList &queueOrder)
 {
     QueueRow *rowAtPos;
     QueueRow *rowAtWrongPos;
@@ -287,7 +284,7 @@ void QueuesPanel::setQueueOrder(const QStringList &queueOrder)
  *
  * Two possible actions : "more" or "display_up"
  */
-void QueuesPanel::queueClicked()
+void XletQueues::queueClicked()
 {
     QueueRow *row = qobject_cast<QueueRow *>(qobject_cast<QPushButton *>(sender())->parentWidget());
     QueueRow *prevRow;
@@ -324,7 +321,7 @@ void QueuesPanel::queueClicked()
  *
  *  update the longest waiting time label for each queues
  */
-void QueuesPanel::updateLongestWaitWidgets()
+void XletQueues::updateLongestWaitWidgets()
 {
     QVariantMap optionMap = b_engine->getGuiOptions("client_gui");
     uint greenlevel = optionMap["queuelevels_wait"].toMap()["green"].toUInt() - 1;
@@ -355,7 +352,7 @@ void QueuesPanel::updateLongestWaitWidgets()
 /*! \brief askForQueueStats
  * Request queue stats periodicly
  */
-void QueuesPanel::askForQueueStats()
+void XletQueues::askForQueueStats()
 {
     QHashIterator<QString, QueueRow *> i(m_queueList);
     QVariantMap _for;
@@ -380,7 +377,7 @@ void QueuesPanel::askForQueueStats()
     b_engine->sendJsonCommand(command);
 }
 
-QueuesPanelConfigure::QueuesPanelConfigure(QueuesPanel *)
+XletQueuesConfigure::XletQueuesConfigure(XletQueues *)
     : QWidget(NULL)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -404,7 +401,7 @@ QueuesPanelConfigure::QueuesPanelConfigure(QueuesPanel *)
     setMaximumSize(QSize(width(), 600));
 }
 
-QWidget* QueuesPanelConfigure::buildConfigureQueueList(QWidget *parent)
+QWidget* XletQueuesConfigure::buildConfigureQueueList(QWidget *parent)
 {
     QWidget *root = new QWidget(parent);
     QGridLayout *layout = new QGridLayout(root);
@@ -467,7 +464,7 @@ QWidget* QueuesPanelConfigure::buildConfigureQueueList(QWidget *parent)
     return root;
 }
 
-void QueuesPanelConfigure::changeQueueStatParam(int v)
+void XletQueuesConfigure::changeQueueStatParam(int v)
 {
     QString queueid = sender()->property("queueid").toString();
     QString param = sender()->property("param").toString();
@@ -480,12 +477,12 @@ void QueuesPanelConfigure::changeQueueStatParam(int v)
     b_engine->setGuiOption("client_gui", statConfig);
 }
 
-void QueuesPanelConfigure::closeEvent(QCloseEvent *)
+void XletQueuesConfigure::closeEvent(QCloseEvent *)
 {
     hide();
 }
 
-QueueRow::QueueRow(const QueueInfo *qInfo, QueuesPanel *parent)
+QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
     : QWidget(parent), qinfo(qInfo), xlet(parent)
 {
     setProperty("id", qinfo->id());
@@ -787,7 +784,7 @@ void QueueRow::updateName()
     m_name->setText(queueName);
 }
 
-QWidget* QueueRow::makeTitleRow(QueuesPanel *parent)
+QWidget* QueueRow::makeTitleRow(XletQueues *parent)
 {
     QWidget *row = new QWidget(parent);
     QGridLayout *layout = new QGridLayout(row);
