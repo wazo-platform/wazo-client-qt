@@ -112,4 +112,4 @@ class XLetAgentsNextPlugin : public QObject, XLetInterface
 };
 
 
-#endif /* __AGENTSPANEL_H__ */
+#endif

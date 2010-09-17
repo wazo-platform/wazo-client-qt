@@ -34,28 +34,22 @@
 #ifndef __AGENTDETAILSPANEL_H__
 #define __AGENTDETAILSPANEL_H__
 
-#include <QHash>
-#include <QObject>
-#include <QVariant>
+#include <QtGui>
+#include <xletinterface.h>
 #include <xlet.h>
 
-class QContextMenuEvent;
-class QGridLayout;
-class QLabel;
-class QPushButton;
-class QVBoxLayout;
+#include "baseengine.h"
+#include "queue_agent_status.h"
 
-class UserInfo;
-class QueueInfo;
 
 /*! \brief Display details about an agent
  */
-class AgentdetailsPanel : public XLet
+class XletAgentDetails : public XLet
 {
     Q_OBJECT
 
     public:
-        AgentdetailsPanel(QWidget *parent=0);
+        XletAgentDetails(QWidget *parent);
 
     protected:
         void contextMenuEvent(QContextMenuEvent *);
@@ -111,5 +105,15 @@ class AgentdetailsPanel : public XLet
         QPoint m_eventpoint;
         QVariantMap m_optionsMap;
 };
+
+class XLetAgentDetailsPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
+};
+
 
 #endif /* __AGENTDETAILSPANEL_H__ */

@@ -47,24 +47,20 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
     public:
         QueueAgentStatus();
         
-        //! update attribute members
-        bool update(const QString &, const QString &, const QString &);
-        //! asterisk this queue belongs to
-        const QString & astid() const;
-        //! reference id of this queue on the server
-        const QString & id() const;
-        //! context this queue belongs to
-        const QString & context() const;
-        const QString & queueName() const;        //! queuename
+        bool update(const QString &, const QString &, const QString &);  //! update attribute members
+        const QString &astid() const;  //! asterisk this queue belongs to
+        const QString &id() const;  //! reference id of this queue on the server
+        const QString &context() const;  //! context this queue belongs to
+        const QString &queueName() const;  //! queuename
         
-        const QColor & display_status_color() const;
-        const QString & display_status_queue() const;
-        const QString & display_status_logged() const;
-        const QString & display_status_membership() const;
-        const QString & display_status_paused() const;
-        const QColor & display_status_paused_color() const;
-        const QString & display_action_join() const;
-        const QString & display_action_pause() const;
+        const QColor &display_status_color() const;
+        const QString &display_status_queue() const;
+        const QString &display_status_logged() const;
+        const QString &display_status_membership() const;
+        const QString &display_status_paused() const;
+        const QColor &display_status_paused_color() const;
+        const QString &display_action_join() const;
+        const QString &display_action_pause() const;
 
     private:
         QString m_astid;

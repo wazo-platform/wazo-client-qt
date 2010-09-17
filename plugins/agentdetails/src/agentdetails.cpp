@@ -31,26 +31,17 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QContextMenuEvent>
-#include <QFileDialog>
-#include <QGridLayout>
-#include <QLabel>
-#include <QMenu>
-#include <QPushButton>
-#include <QVariant>
+#include "agentdetails.h"
 
-#include "xlet.h"
-#include "baseengine.h"
-#include "agentdetailspanel.h"
-#include "queue_agent_status.h"
-#include "agentinfo.h"
-#include "queueinfo.h"
-#include "userinfo.h"
+Q_EXPORT_PLUGIN2(xletagentdetailsplugin, XLetAgentDetailsPlugin);
 
-/*! \brief Constructor
- */
-AgentdetailsPanel::AgentdetailsPanel(QWidget *parent)
+XLet* XLetAgentDetailsPlugin::newXLetInstance(QWidget *parent)
+{
+    b_engine->registerTranslation(":/agentdetails_%1");
+    return new XletAgentDetails(parent);
+}
+
+XletAgentDetails::XletAgentDetails(QWidget *parent)
     : XLet(parent)
 {
     setTitle( tr("Agent Details") );
@@ -114,8 +105,6 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget *parent)
     // connect signal/slots with engine
     connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
             this, SLOT(newAgentList(const QStringList &)));
-    connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
-            this, SLOT(newQueueList(const QStringList &)));
     
     connect(b_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
             this, SLOT(monitorThisAgent(const QString &)));
@@ -136,54 +125,42 @@ AgentdetailsPanel::AgentdetailsPanel(QWidget *parent)
 
 /*! \brief set options
  */
-void AgentdetailsPanel::setGuiOptions(const QVariantMap & optionsMap)
+void XletAgentDetails::setGuiOptions(const QVariantMap &optionsMap)
 {
     m_optionsMap = optionsMap;
 }
 
-/*! \brief 
- */
-void AgentdetailsPanel::newQueueList(const QStringList &)
-{
-    // qDebug() << "AgentdetailsPanel::newQueueList()";
-}
 
-/*! \brief 
- */
-void AgentdetailsPanel::newAgentList(const QStringList & qsl)
+void XletAgentDetails::newAgentList(const QStringList &qsl)
 {
-    // qDebug() << "AgentdetailsPanel::newAgentList()" << qsl;
-    if(qsl.contains(m_monitored_agentid) && b_engine->agents().contains(m_monitored_agentid))
+    // qDebug() << "XletAgentDetails::newAgentList()" << qsl;
+    if (qsl.contains(m_monitored_agentid) && b_engine->agents().contains(m_monitored_agentid))
         updatePanel();
 }
 
-/*! \brief 
- */
-void AgentdetailsPanel::monitorThisAgent(const QString & agentid)
+void XletAgentDetails::monitorThisAgent(const QString &agentid)
 {
-    if(b_engine->agents().contains(agentid)) {
+    if (b_engine->agents().contains(agentid)) {
         m_monitored_agentid = agentid;
         clearPanel();
         updatePanel();
     }
 }
 
-/*! \brief 
- */
-void AgentdetailsPanel::clearPanel()
+void XletAgentDetails::clearPanel()
 {
-    // qDebug() << "AgentdetailsPanel::clearPanel()";
-    foreach(QString q, m_queue_labels.keys())
+    // qDebug() << "XletAgentDetails::clearPanel()";
+    foreach (QString q, m_queue_labels.keys())
         delete m_queue_labels[q];
-    foreach(QString q, m_queue_more.keys())
+    foreach (QString q, m_queue_more.keys())
         delete m_queue_more[q];
-    foreach(QString q, m_queue_join_status.keys())
+    foreach (QString q, m_queue_join_status.keys())
         delete m_queue_join_status[q];
-    foreach(QString q, m_queue_join_action.keys())
+    foreach (QString q, m_queue_join_action.keys())
         delete m_queue_join_action[q];
-    foreach(QString q, m_queue_pause_status.keys())
+    foreach (QString q, m_queue_pause_status.keys())
         delete m_queue_pause_status[q];
-    foreach(QString q, m_queue_pause_action.keys())
+    foreach (QString q, m_queue_pause_action.keys())
         delete m_queue_pause_action[q];
     
     m_queue_labels.clear();
@@ -194,16 +171,14 @@ void AgentdetailsPanel::clearPanel()
     m_queue_pause_action.clear();
 }
 
-/*! \brief 
- */
-void AgentdetailsPanel::updatePanel()
+void XletAgentDetails::updatePanel()
 {
-    AgentInfo * ainfo = b_engine->agents()[m_monitored_agentid];
+    AgentInfo *ainfo = b_engine->agents()[m_monitored_agentid];
     QStringList agent_descriptions;
     agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber());
-    if(! m_optionsMap["xlet.agentdetails.hideastid"].toBool())
+    if (! m_optionsMap["xlet.agentdetails.hideastid"].toBool())
         agent_descriptions << tr("on <b>%1</b>").arg(ainfo->astid());
-    if(! m_optionsMap["xlet.agentdetails.hidecontext"].toBool())
+    if (! m_optionsMap["xlet.agentdetails.hidecontext"].toBool())
         agent_descriptions << QString("(%1)").arg(ainfo->context());
     QVariantMap properties = ainfo->properties();
     QVariant agentstats = properties["agentstats"];
@@ -211,17 +186,17 @@ void AgentdetailsPanel::updatePanel()
     QString phonenum = agentstats.toMap()["agent_phone_number"].toString();
     QVariantMap queuesstats = properties["queues_by_agent"].toMap();
     
-    if(lstatus == "AGENT_LOGGEDOFF") {
+    if (lstatus == "AGENT_LOGGEDOFF") {
         agent_descriptions << tr("logged off <b>%1</b>").arg(phonenum);
         m_action["agentlogin"]->setProperty("function", "agentlogin");
         m_action["agentlogin"]->setIcon(QIcon(":/images/button_ok.png"));
         m_actionlegends["agentlogin"]->setText(tr("Login"));
-    } else if(lstatus == "AGENT_IDLE") {
+    } else if (lstatus == "AGENT_IDLE") {
         agent_descriptions << tr("logged on phone number <b>%1</b>").arg(phonenum);
         m_action["agentlogin"]->setProperty("function", "agentlogout");
         m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
         m_actionlegends["agentlogin"]->setText(tr("Logout"));
-    } else if(lstatus == "AGENT_ONCALL") {
+    } else if (lstatus == "AGENT_ONCALL") {
         // QString talkingto = agentstats.toMap()["talkingto"].toString();
         // agent_status = tr("logged (busy with %1) on phone number <b>%2</b>").arg(talkingto).arg(phonenum);
         agent_descriptions << tr("logged on phone number <b>%1</b>").arg(phonenum);
@@ -229,7 +204,7 @@ void AgentdetailsPanel::updatePanel()
         m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
         m_actionlegends["agentlogin"]->setText(tr("Logout"));
     } else
-        qDebug() << "AgentdetailsPanel::newAgent() unknown status" << m_monitored_agentid << lstatus;
+        qDebug() << "XletAgentDetails::newAgent() unknown status" << m_monitored_agentid << lstatus;
     
     m_agentstatus->setText(agent_descriptions.join(" "));
     
@@ -250,15 +225,15 @@ void AgentdetailsPanel::updatePanel()
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(b_engine->queues());
     while( iter.hasNext() ) {
         iter.next();
-        QueueInfo * qinfo = iter.value();
+        QueueInfo *qinfo = iter.value();
         // newQueue(qinfo->astid(), qinfo->queueName(), qinfo->properties());
         QString queueid = iter.key();
         queueids << queueid;
         bool isnewqueue = false;
-        if(! m_queue_labels.contains(queueid))
+        if (! m_queue_labels.contains(queueid))
             isnewqueue = true;
         
-        if(isnewqueue) {
+        if (isnewqueue) {
             m_queue_labels[queueid] = new QLabel(this);
             m_queue_more[queueid] = new QPushButton(this);
             m_queue_join_status[queueid] = new QLabel(this);
@@ -278,24 +253,22 @@ void AgentdetailsPanel::updatePanel()
         
         QString qid = qinfo->id();
         setQueueProps(queueid, qinfo);
-        if(qinfo->astid() == ainfo->astid())
+        if (qinfo->astid() == ainfo->astid())
             setQueueAgentProps(queueid, queuesstats[qid]);
         
-        if(isnewqueue)
+        if (isnewqueue)
             setQueueAgentSignals(queueid);
     }
     
     queueids.sort();
     int i = 0;
-    foreach(QString queueid, queueids) {
+    foreach (QString queueid, queueids) {
         fillQueue(i, queueid);
         i ++;
     }
 }
 
-/*! \brief 
- */
-void AgentdetailsPanel::setQueueLookProps(const QString & queueid)
+void XletAgentDetails::setQueueLookProps(const QString &queueid)
 {
     m_queue_more[queueid]->setIconSize(QSize(10, 10));
     m_queue_join_action[queueid]->setIconSize(QSize(8, 8));
@@ -303,35 +276,31 @@ void AgentdetailsPanel::setQueueLookProps(const QString & queueid)
     m_queue_more[queueid]->setIcon(QIcon(":/images/add.png"));
 }
 
-/*! \brief 
- */
-void AgentdetailsPanel::setQueueProps(const QString & queueid, const QueueInfo * qinfo)
+void XletAgentDetails::setQueueProps(const QString &queueid, const QueueInfo *qinfo)
 {
     bool showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
-    if(showNumber)
+    if (showNumber)
         m_queue_labels[queueid]->setText(QString("%1 (%2)")
                                          .arg(qinfo->queueName())
                                          .arg(qinfo->queueNumber()));
     else
         m_queue_labels[queueid]->setText(qinfo->queueName());
     QStringList tooltips;
-    if(! m_optionsMap["xlet.agentdetails.hideastid"].toBool())
+    if (! m_optionsMap["xlet.agentdetails.hideastid"].toBool())
         tooltips << tr("Server: %1").arg(qinfo->astid());
-    if(! m_optionsMap["xlet.agentdetails.hidecontext"].toBool())
+    if (! m_optionsMap["xlet.agentdetails.hidecontext"].toBool())
         tooltips << tr("Context: %1").arg(qinfo->context());
     m_queue_labels[queueid]->setToolTip(tooltips.join("\n"));
 }
 
-/*! \brief 
- */
-void AgentdetailsPanel::setQueueAgentSignals(const QString & queueid)
+void XletAgentDetails::setQueueAgentSignals(const QString &queueid)
 {
     m_queue_more[queueid]->setProperty("queueid", queueid);
     m_queue_more[queueid]->setProperty("action", "changequeue");
     
     connect( m_queue_more[queueid], SIGNAL(clicked()),
              this, SLOT(queueClicked()));
-    if(! m_optionsMap["xlet.agentdetails.noqueueaction"].toBool()) {
+    if (! m_optionsMap["xlet.agentdetails.noqueueaction"].toBool()) {
         connect( m_queue_join_action[queueid], SIGNAL(clicked()),
                  this, SLOT(queueClicked()));
         connect( m_queue_pause_action[queueid], SIGNAL(clicked()),
@@ -339,9 +308,7 @@ void AgentdetailsPanel::setQueueAgentSignals(const QString & queueid)
     }
 }
 
-/*! \brief 
- */
-void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVariant & qv)
+void XletAgentDetails::setQueueAgentProps(const QString &queueid, const QVariant &qv)
 {
     m_queue_join_action[queueid]->setProperty("queueid", queueid);
     m_queue_join_action[queueid]->setProperty("action", "leavejoin");
@@ -360,7 +327,7 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
     QString dynstatus = qv.toMap()["Membership"].toString();
     // CallsTaken, LastCall, Penalty
     
-    QueueAgentStatus * qas = new QueueAgentStatus();
+    QueueAgentStatus *qas = new QueueAgentStatus();
     qas->update(dynstatus, sstatus, pstatus);
     
     QString joinicon = qas->display_action_join();
@@ -371,7 +338,7 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
         m_queue_join_action[queueid]->show();
     }
     
-    if(sstatus != oldsstatus) {
+    if (sstatus != oldsstatus) {
         QPixmap square(12, 12);
         square.fill(qas->display_status_color());
         m_queue_join_status[queueid]->setPixmap(square);
@@ -382,7 +349,7 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
         m_queue_join_status[queueid]->setProperty("Status", sstatus);
     }
     
-    if(pstatus != oldpstatus) {
+    if (pstatus != oldpstatus) {
         QString pauseicon = qas->display_action_pause();
         if (pauseicon.isEmpty())
             m_queue_pause_action[queueid]->hide();
@@ -400,9 +367,7 @@ void AgentdetailsPanel::setQueueAgentProps(const QString & queueid, const QVaria
     delete qas;
 }
 
-/*! \brief 
- */
-void AgentdetailsPanel::fillQueue(int ii, const QString & queueid)
+void XletAgentDetails::fillQueue(int ii, const QString &queueid)
 {
     m_gridlayout->addWidget( m_queue_labels[queueid], ii + m_linenum, 0, Qt::AlignLeft );
     m_gridlayout->addWidget( m_queue_more[queueid], ii + m_linenum, 1, Qt::AlignCenter );
@@ -416,9 +381,9 @@ void AgentdetailsPanel::fillQueue(int ii, const QString & queueid)
  *
  * supports actions "changequeue", "leavejoin", "pause"
  */
-void AgentdetailsPanel::queueClicked()
+void XletAgentDetails::queueClicked()
 {
-    // qDebug() << "AgentdetailsPanel::queueClicked()" << sender()->property("queueid");
+    // qDebug() << "XletAgentDetails::queueClicked()" << sender()->property("queueid");
     QString queueid = sender()->property("queueid").toString();
     QString action  = sender()->property("action").toString();
     
@@ -433,48 +398,48 @@ void AgentdetailsPanel::queueClicked()
     ipbxcommand["agentids"] = m_monitored_agentid;
     ipbxcommand["queueids"] = queueid;
     
-    if(action == "changequeue")
+    if (action == "changequeue")
         changeWatchedQueue(queueid);
-    else if(action == "leavejoin") {
-        if((smstatus == "1") || (smstatus == "3") || (smstatus == "4") || (smstatus == "5")) {
+    else if (action == "leavejoin") {
+        if ((smstatus == "1") || (smstatus == "3") || (smstatus == "4") || (smstatus == "5")) {
             ipbxcommand["command"] = "agentleavequeue";
-        } else if(smstatus == "") {
+        } else if (smstatus == "") {
             ipbxcommand["command"] = "agentjoinqueue";
         } else
-            qDebug() << "AgentdetailsPanel::queueClicked()" << queuename << m_monitored_agentid << smstatus << pmstatus;
+            qDebug() << "XletAgentDetails::queueClicked()" << queuename << m_monitored_agentid << smstatus << pmstatus;
         // join the queue in the previously recorded paused status (to manage on the server side)
-    } else if(action == "pause") {
-        if(pmstatus == "0") {
+    } else if (action == "pause") {
+        if (pmstatus == "0") {
             ipbxcommand["command"] = "agentpausequeue";
-        } else if(pmstatus == "1") {
+        } else if (pmstatus == "1") {
             ipbxcommand["command"] = "agentunpausequeue";
         } else
-            qDebug() << "AgentdetailsPanel::queueClicked()" << queuename << m_monitored_agentid << smstatus << pmstatus;
+            qDebug() << "XletAgentDetails::queueClicked()" << queuename << m_monitored_agentid << smstatus << pmstatus;
     } else
-        qDebug() << "AgentdetailsPanel::queueClicked() : unknown action" << action;
+        qDebug() << "XletAgentDetails::queueClicked() : unknown action" << action;
     
     emit ipbxCommand(ipbxcommand);
 }
 
 /*! \brief left click actions (record, stoprecord, login, logout) */
-void AgentdetailsPanel::actionClicked()
+void XletAgentDetails::actionClicked()
 {
-    // qDebug() << "AgentdetailsPanel::actionClicked()" << sender()->property("function").toString() << m_monitored_agentid;
+    // qDebug() << "XletAgentDetails::actionClicked()" << sender()->property("function").toString() << m_monitored_agentid;
     QString function = sender()->property("function").toString();
     QVariantMap ipbxcommand;
-    if(function == "record") {
+    if (function == "record") {
         ipbxcommand["command"] = "record";
         ipbxcommand["target"] = m_monitored_agentid;
         emit ipbxCommand(ipbxcommand);
-    } else if(function == "stoprecord") {
+    } else if (function == "stoprecord") {
         ipbxcommand["command"] = "stoprecord";
         ipbxcommand["target"] = m_monitored_agentid;
         emit ipbxCommand(ipbxcommand);
-    } else if(function == "agentlogin") {
+    } else if (function == "agentlogin") {
         ipbxcommand["command"] = "agentlogin";
         ipbxcommand["agentids"] = m_monitored_agentid;
         emit ipbxCommand(ipbxcommand);
-    } else if(function == "agentlogout") {
+    } else if (function == "agentlogout") {
         ipbxcommand["command"] = "agentlogout";
         ipbxcommand["agentids"] = m_monitored_agentid;
         emit ipbxCommand(ipbxcommand);
@@ -482,9 +447,9 @@ void AgentdetailsPanel::actionClicked()
 }
 
 /*! \brief triggerred on right click */
-void AgentdetailsPanel::contextMenuEvent(QContextMenuEvent * event)
+void XletAgentDetails::contextMenuEvent(QContextMenuEvent *event)
 {
-    // qDebug() << "AgentdetailsPanel::contextMenuEvent()" << event;
+    // qDebug() << "XletAgentDetails::contextMenuEvent()" << event;
     m_eventpoint = event->globalPos();
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = "getfilelist";
@@ -493,18 +458,18 @@ void AgentdetailsPanel::contextMenuEvent(QContextMenuEvent * event)
 }
 
 /*! \brief display file list */
-void AgentdetailsPanel::serverFileList(const QStringList & qsl)
+void XletAgentDetails::serverFileList(const QStringList &qsl)
 {
-    // qDebug() << "AgentdetailsPanel::serverFileList()" << qsl;
+    // qDebug() << "XletAgentDetails::serverFileList()" << qsl;
     QMenu contextMenu(this);
     QStringList qsl_sorted = qsl;
     qsl_sorted.sort();
-    if(qsl.size() > 0) {
-        QAction * actiontitle = new QAction(tr("Record files for this agent"), this);
+    if (qsl.size() > 0) {
+        QAction *actiontitle = new QAction(tr("Record files for this agent"), this);
         contextMenu.addAction(actiontitle);
         contextMenu.addSeparator();
         foreach (QString filename, qsl_sorted) {
-            QAction * action = new QAction(filename, this);
+            QAction *action = new QAction(filename, this);
             action->setProperty("filename", filename);
             connect( action, SIGNAL(triggered()),
                      this, SLOT(getFile()) );
@@ -513,7 +478,7 @@ void AgentdetailsPanel::serverFileList(const QStringList & qsl)
         }
         delete actiontitle;
     } else {
-        QAction * action = new QAction(tr("No Record for this agent"), this);
+        QAction *action = new QAction(tr("No Record for this agent"), this);
         contextMenu.addAction(action);
         delete action;
     }
@@ -522,15 +487,15 @@ void AgentdetailsPanel::serverFileList(const QStringList & qsl)
 
 /*! \brief update Record/Stop Record buttons
  */
-void AgentdetailsPanel::statusRecord(const QString & astid, const QString & agentid, const QString & status)
+void XletAgentDetails::statusRecord(const QString &astid, const QString &agentid, const QString &status)
 {
-    // qDebug() << "AgentdetailsPanel::statusRecord()" << agentnum << m_monitored_agentid << status;
+    // qDebug() << "XletAgentDetails::statusRecord()" << agentnum << m_monitored_agentid << status;
     QString gagentid = QString("agent:%1/%2").arg(astid).arg(agentid);
-    if(gagentid == m_monitored_agentid) {
-        if(status == "started") {
+    if (gagentid == m_monitored_agentid) {
+        if (status == "started") {
             m_action["record"]->setProperty("function", "stoprecord");
             m_action["record"]->setStyleSheet("QPushButton {background: #fbb638}");
-        } else if(status == "stopped") {
+        } else if (status == "stopped") {
             m_action["record"]->setProperty("function", "record");
             m_action["record"]->setStyleSheet("");
         }
@@ -539,16 +504,16 @@ void AgentdetailsPanel::statusRecord(const QString & astid, const QString & agen
 
 /*! \brief update Listen/Stop Listen buttons
  */
-void AgentdetailsPanel::statusListen(const QString & astid, const QString & agentid, const QString & status)
+void XletAgentDetails::statusListen(const QString &astid, const QString &agentid, const QString &status)
 {
-    qDebug() << "AgentdetailsPanel::statusListen()" << astid << agentid << status;
+    qDebug() << "XletAgentDetails::statusListen()" << astid << agentid << status;
 }
 
 /*! \brief retrieve a sound file
  */
-void AgentdetailsPanel::getFile()
+void XletAgentDetails::getFile()
 {
-    // qDebug() << "AgentdetailsPanel::getFile()";
+    // qDebug() << "XletAgentDetails::getFile()";
     QString filename = sender()->property("filename").toString();
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = "getfile";
@@ -561,9 +526,9 @@ void AgentdetailsPanel::getFile()
  *
  * open a QFileDialog and emit setFileName()
  */
-void AgentdetailsPanel::saveToFile()
+void XletAgentDetails::saveToFile()
 {
-    // qDebug() << "AgentdetailsPanel::saveToFile()";
+    // qDebug() << "XletAgentDetails::saveToFile()";
     QString selectedFilter;
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save Sound File"),

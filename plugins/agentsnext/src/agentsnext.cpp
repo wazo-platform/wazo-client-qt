@@ -702,18 +702,6 @@ void XletAgentsNext::refreshDisplay()
 void XletAgentsNext::newAgentList(const QStringList &)
 {
     //qDebug() << "XletAgentsNext::newAgentList" << list;
-#if 0
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
-    while( iter.hasNext() ) {
-        iter.next();
-        AgentInfo * ainfo = iter.value();
-        QString agentid = iter.key();
-        
-        QString astid = ainfo->astid();
-        QString agentnumber = ainfo->agentNumber();
-        QString idxa = QString("%1-%2").arg(astid).arg(agentnumber);
-    }
-#endif
     emit loadQueueGroups();
 }
 
