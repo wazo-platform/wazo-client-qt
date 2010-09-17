@@ -40,7 +40,6 @@
 #include "xletfactory.h"
 #include "xletinterface.h"
 
-#include <agentspanel.h>
 #include <agentspanel_next.h>
 #include <agentdetailspanel.h>
 #include <callcampaignpanel.h>
@@ -70,7 +69,6 @@ static const struct {
     const char *name;
     const newXLetProto construct;
 } xlets[] = {
-    { "agents"            ,newXLet<AgentsPanel>            },
     { "agentsnext"        ,newXLet<AgentsPanelNext>        },
     { "agentdetails"      ,newXLet<AgentdetailsPanel>      },
     { "customerinfo"      ,newXLet<CustomerInfoPanel>      },

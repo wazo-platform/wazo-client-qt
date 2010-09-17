@@ -34,26 +34,18 @@
 #ifndef __AGENTSPANEL_H__
 #define __AGENTSPANEL_H__
 
-#include <QHash>
-#include <QList>
-#include <QObject>
-#include <QVariant>
-#include "xlet.h"
-
-class QFrame;
-class QGridLayout;
-class QLabel;
-class QPushButton;
-
-class UserInfo;
+#include <QtGui>
+#include "baseengine.h"
+#include <xletinterface.h>
+#include <xlet.h>
 
 /*! \brief Display a list of agents
  */
-class AgentsPanel : public XLet
+class XletAgents : public XLet
 {
     Q_OBJECT
     public:
-        AgentsPanel(QWidget *parent=0);
+        XletAgents(QWidget *parent);
 
     signals:
         void changeWatchedAgent(const QString &, bool);
@@ -107,5 +99,15 @@ class AgentsPanel : public XLet
         QLabel *m_title_njoined;   //!< "Joined queues"
         QLabel *m_title_npaused;   //!< "paused queues"
 };
+
+class XLetAgentsPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
+};
+
 
 #endif /* __AGENTSPANEL_H__ */

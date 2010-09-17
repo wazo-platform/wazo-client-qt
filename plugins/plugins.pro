@@ -9,5 +9,6 @@ SUBDIRS  = xletweb \
            identity \
            datetime \
            features \
-           queues
+           queues \
+           agents
 win32:SUBDIRS += outlook
