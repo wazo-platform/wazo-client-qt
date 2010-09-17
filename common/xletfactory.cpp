@@ -46,7 +46,6 @@
 #include <directorypanel.h>
 #include <faxpanel.h>
 #include <mylocaldirpanel.h>
-#include <parkingpanel.h>
 #include <searchpanel.h>
 
 /*! \brief template to return a new XLet */
@@ -65,7 +64,6 @@ static const struct {
 } xlets[] = {
     { "customerinfo"      ,newXLet<CustomerInfoPanel>      },
     { "dial"              ,newXLet<DialPanel>              },
-    { "parking"           ,newXLet<ParkingPanel>           },
     { "fax"               ,newXLet<FaxPanel>               },
     { "search"            ,newXLet<SearchPanel>            },
     { "directory"         ,newXLet<DirectoryPanel>         },
