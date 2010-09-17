@@ -1,5 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+	<file>in_calls/leftarrow.png</file>
+	<file>in_calls/rightarrow.png</file>
 	<file>calls_fr.qm</file>
 </qresource>
 </RCC>

@@ -171,12 +171,12 @@ ConfChamberModel::data(const QModelIndex &index,
                     return QVariant();
                 }
             } else if (col == ACTION_TALK_TO) {
-                return QPixmap(":in/speak.png").scaledToHeight(16,
+                return QPixmap(":in_conference/speak.png").scaledToHeight(16,
                                Qt::SmoothTransformation);
             } else if (col == ACTION_MUTE) {
                 if ((m_admin) ||
                     (b_engine->eV(in + "user-id").toString() == b_engine->xivoUserId())) {
-                    return QPixmap(":in/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
+                    return QPixmap(":in_conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
                 } else {
                     return QVariant();
                 }

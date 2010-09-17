@@ -141,9 +141,9 @@ void CallWidget::updateWidget(const QString & status,
     m_startTime = QDateTime::fromTime_t(ts);
     updateCallTimeLabel();
     if ((status == CHAN_STATUS_CALLING) || (status == CHAN_STATUS_LINKED_CALLER))
-        m_lbl_direction->setPixmap(QPixmap(":/images/rightarrow.png"));
+        m_lbl_direction->setPixmap(QPixmap(":/in_calls/rightarrow.png"));
     else if ((status == CHAN_STATUS_RINGING) || (status == CHAN_STATUS_LINKED_CALLED))
-        m_lbl_direction->setPixmap(QPixmap(":/images/leftarrow.png"));
+        m_lbl_direction->setPixmap(QPixmap(":/in_calls/leftarrow.png"));
     else
         qDebug() << "CallWidget::updateWidget() : status unknown" << status;
         
