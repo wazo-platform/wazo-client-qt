@@ -34,28 +34,20 @@
 #ifndef __QUEUEENTRYDETAILSPANEL_H__
 #define __QUEUEENTRYDETAILSPANEL_H__
 
-#include <QDateTime>
-#include <QHash>
-#include <QList>
-#include <QObject>
-#include <QVariant>
+#include <QtGui>
 #include "xlet.h"
+#include "xletinterface.h"
 
-class QGridLayout;
-class QLabel;
-class QScrollArea;
-class QVBoxLayout;
-
-class UserInfo;
+#include <baseengine.h>
 
 /*! \brief Display entries of a queue
  */
-class QueueentrydetailsPanel : public XLet
+class XLetQueueEntryDetails : public XLet
 {
     Q_OBJECT
 
     public:
-        QueueentrydetailsPanel(QWidget *parent=0);
+        XLetQueueEntryDetails(QWidget *parent=0);
 
     signals:
         void changeWatchedAgent(const QString &);   //!< change watched agent
@@ -74,12 +66,22 @@ class QueueentrydetailsPanel : public XLet
         void clearPanel();
         void updatePanel();
         
-        QGridLayout * m_gridlayout; //!< Layout
+        QGridLayout *m_gridlayout; //!< Layout
         
         QString m_monitored_queueid;  //!< queue id
-        QLabel * m_queuedescription;   //!< label for displaying queue name
+        QLabel *m_queuedescription;   //!< label for displaying queue name
         QHash<QString, QLabel *> m_entrypos;    //!< display entry
         QHash<QString, QLabel *> m_entrytime;   //!< display call duration ?
 };
+
+class XLetQueueEntryDetailsPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
+};
+
 
 #endif /* __QUEUEENTRYDETAILSPANEL_H__ */

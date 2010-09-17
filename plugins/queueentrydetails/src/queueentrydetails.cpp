@@ -31,19 +31,17 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QGridLayout>
-#include <QLabel>
-#include <QScrollArea>
-#include <QVariant>
+#include "queueentrydetails.h"
 
-#include "baseengine.h"
-#include "queueentrydetailspanel.h"
-#include "queueinfo.h"
+Q_EXPORT_PLUGIN2(xletqueueentrydetailsplugin, XLetQueueEntryDetailsPlugin);
 
-/*! \brief Constructor
- */
-QueueentrydetailsPanel::QueueentrydetailsPanel(QWidget *parent)
+XLet* XLetQueueEntryDetailsPlugin::newXLetInstance(QWidget *parent)
+{
+    b_engine->registerTranslation(":/queueentrydetails_%1");
+    return new XLetQueueEntryDetails(parent);
+}
+
+XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
     : XLet(parent)
 {
     setTitle(tr("Calls of a Queue"));
@@ -64,38 +62,30 @@ QueueentrydetailsPanel::QueueentrydetailsPanel(QWidget *parent)
             this, SLOT(monitorThisQueue(const QString &)));
 }
 
-/*! \brief 
- */
-void QueueentrydetailsPanel::newQueueList(const QStringList &)
+void XLetQueueEntryDetails::newQueueList(const QStringList &)
 {
     // qDebug() << "QueuedetailsPanel::newQueueList()";
     if(b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
-/*! \brief 
- */
-void QueueentrydetailsPanel::newAgentList(const QStringList &)
+void XLetQueueEntryDetails::newAgentList(const QStringList &)
 {
     // qDebug() << "QueuedetailsPanel::newAgentList()";
     if(b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
-/*! \brief 
- */
-void QueueentrydetailsPanel::monitorThisQueue(const QString & queueid)
+void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)
 {
-    // qDebug() << "QueueentrydetailsPanel::monitorThisQueue" << queueid;
+    // qDebug() << "XLetQueueEntryDetails::monitorThisQueue" << queueid;
     if(b_engine->queues().contains(queueid)) {
         m_monitored_queueid = queueid;
         updatePanel();
     }
 }
 
-/*! \brief 
- */
-void QueueentrydetailsPanel::clearPanel()
+void XLetQueueEntryDetails::clearPanel()
 {
     foreach(QString q, m_entrypos.keys())
         delete m_entrypos[q];
@@ -108,7 +98,7 @@ void QueueentrydetailsPanel::clearPanel()
 
 /*! \brief update entries
  */
-void QueueentrydetailsPanel::updatePanel()
+void XLetQueueEntryDetails::updatePanel()
 {
     QueueInfo * qinfo = b_engine->queues()[m_monitored_queueid];
     QVariantMap properties = qinfo->properties();
@@ -129,7 +119,7 @@ void QueueentrydetailsPanel::updatePanel()
     }
 }
 
-void QueueentrydetailsPanel::updateEntryChannel(const QString & channel)
+void XLetQueueEntryDetails::updateEntryChannel(const QString & channel)
 {
     QueueInfo * qinfo = b_engine->queues()[m_monitored_queueid];
     QVariantMap properties = qinfo->properties();
@@ -151,9 +141,9 @@ void QueueentrydetailsPanel::updateEntryChannel(const QString & channel)
     }
 }
 
-void QueueentrydetailsPanel::timerEvent(QTimerEvent *)
+void XLetQueueEntryDetails::timerEvent(QTimerEvent *)
 {
-    // qDebug() << "QueueentrydetailsPanel::timerEvent()";
+    // qDebug() << "XLetQueueEntryDetails::timerEvent()";
     foreach(QString channel, m_entrypos.keys())
         updateEntryChannel(channel);
 }
