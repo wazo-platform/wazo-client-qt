@@ -31,26 +31,19 @@
  * $Date$
  */
 
-#include <QContextMenuEvent>
-#include <QDebug>
-#include <QHeaderView>
-#include <QLabel>
-#include <QMenu>
-#include <QTableWidget>
-#include <QTimerEvent>
-#include <QVBoxLayout>
 
-#include "baseengine.h"
-#include "extendedtablewidget.h"
-#include "parkingpanel.h"
-#include "parkinginfo.h"
-#include "userinfo.h"
+#include "parking.h"
 
-/*! \brief Constructor
- *
- * Set up the layout and the table widget.
- */
-ParkingPanel::ParkingPanel(QWidget *parent)
+Q_EXPORT_PLUGIN2(xletparkingplugin, XLetParkingPlugin);
+
+XLet* XLetParkingPlugin::newXLetInstance(QWidget *parent)
+{
+    b_engine->registerTranslation(":/parking_%1");
+    return new XletParking(parent);
+}
+
+
+XletParking::XletParking(QWidget *parent)
     : XLet(parent)
 {
     setTitle(tr("Parking"));
@@ -90,7 +83,7 @@ ParkingPanel::ParkingPanel(QWidget *parent)
  *
  * add a new message.
  */
-void ParkingPanel::parkingEvent(const QString & eventkind,
+void XletParking::parkingEvent(const QString & eventkind,
                                 const QString & astid,
                                 const QString & parkingbay,
                                 const QVariant & subcommand)
@@ -170,31 +163,31 @@ void ParkingPanel::parkingEvent(const QString & eventkind,
         m_table->resizeColumnsToContents();
 }
 
-void ParkingPanel::itemClicked(QTableWidgetItem * item)
+void XletParking::itemClicked(QTableWidgetItem * item)
 {
     int rown   = m_table->row(item);
     QString astid      = m_table->item(rown, 0)->data(Qt::UserRole+0).toString();
     QString parkingbay = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
-    //qDebug() << "ParkingPanel::itemClicked" << rown << astid << placenum;
+    //qDebug() << "XletParking::itemClicked" << rown << astid << placenum;
     if (((b_engine) && (b_engine->getXivoClientUser())) &&
          (astid == b_engine->getXivoClientUser()->astid())) {
         b_engine->pasteToDial(parkingbay);
     }
 }
 
-void ParkingPanel::itemDoubleClicked(QTableWidgetItem * item)
+void XletParking::itemDoubleClicked(QTableWidgetItem * item)
 {
     int rown   = m_table->row(item);
     QString astid      = m_table->item(rown, 0)->data(Qt::UserRole+0).toString();
     QString parkingbay = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
-    //qDebug() << "ParkingPanel::itemDoubleClicked" << rown << astid << placenum;
+    //qDebug() << "XletParking::itemDoubleClicked" << rown << astid << placenum;
     if(b_engine && b_engine->getXivoClientUser() &&
        (astid == b_engine->getXivoClientUser()->astid())) {
         b_engine->actionCall("originate", "user:special:me", "ext:" + parkingbay);
     }
 }
 
-void ParkingPanel::timerEvent(QTimerEvent * event)
+void XletParking::timerEvent(QTimerEvent * event)
 {
     int timerId = event->timerId();
     if (timerId == m_timerid) {

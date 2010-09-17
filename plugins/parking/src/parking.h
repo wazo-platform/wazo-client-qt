@@ -34,26 +34,23 @@
 #ifndef __PARKINGPANEL_H__
 #define __PARKINGPANEL_H__
 
-#include <QList>
-#include <QVariant>
+#include <QtGui>
 #include "xlet.h"
+#include "xletinterface.h"
 
-class QContextMenuEvent;
-class QTableWidget;
-class QTableWidgetItem;
-
-class ExtendedTableWidget;
+#include "baseengine.h"
+#include "extendedtablewidget.h"
+#include "parkinginfo.h"
 class PeerChannel;
-class UserInfo;
 
 /*! \brief Displays the parking slots.
  */
-class ParkingPanel : public XLet
+class XletParking : public XLet
 {
     Q_OBJECT
 
     public:
-        ParkingPanel(QWidget *parent=0);
+        XletParking(QWidget *parent=0);
 
     protected:
         void timerEvent(QTimerEvent *);  //!< receive timer events
@@ -70,5 +67,15 @@ class ParkingPanel : public XLet
         int m_deltasec;  //!< timer period
         QList<PeerChannel *> m_mychannels;  //!< "my channels" list for transfer menu
 };
+
+class XLetParkingPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
+};
+
 
 #endif

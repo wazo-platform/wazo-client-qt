@@ -918,34 +918,6 @@ Etes vous sur ?</translation>
     </message>
 </context>
 <context>
-    <name>ParkingPanel</name>
-    <message>
-        <location filename="../common/built-in-xlet/parkingpanel.cpp" line="65"/>
-        <source>Number</source>
-        <translation>Numéro</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/parkingpanel.cpp" line="65"/>
-        <source>Parked</source>
-        <translation>Parqué</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/parkingpanel.cpp" line="65"/>
-        <source>Parker</source>
-        <translation>Parqueur</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/parkingpanel.cpp" line="65"/>
-        <source>Time</source>
-        <translation>Temps</translation>
-    </message>
-    <message>
-        <location filename="../common/built-in-xlet/parkingpanel.cpp" line="56"/>
-        <source>Parking</source>
-        <translation>Parking</translation>
-    </message>
-</context>
-<context>
     <name>RemarkArea</name>
     <message>
         <location filename="../common/remarkarea.cpp" line="67"/>
