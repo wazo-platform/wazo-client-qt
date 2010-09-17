@@ -34,30 +34,22 @@
 #ifndef __AGENTSPANELNEXT_H__
 #define __AGENTSPANELNEXT_H__
 
-#include <QDateTime>
-#include <QHash>
-#include <QList>
-#include <QObject>
-#include <QVariant>
+#include <QtGui>
+
+#include "xletinterface.h"
 #include "xlet.h"
+#include <extendedlabel.h>
+#include "baseengine.h"
 
-class QComboBox;
-class QContextMenuEvent;
-class QGridLayout;
-class QLabel;
-class QPushButton;
-
-class ExtendedLabel;
-class UserInfo;
 
 /*! \brief Identity Display
  */
-class AgentsPanelNext : public XLet
+class XletAgentsNext : public XLet
 {
     Q_OBJECT
 
     public:
-        AgentsPanelNext(QWidget *parent=0);
+        XletAgentsNext(QWidget *parent);
 
     signals:
         void changeWatchedAgent(const QString &, bool);
@@ -97,7 +89,7 @@ class AgentsPanelNext : public XLet
         void saveGroups();
         
         QFont m_gui_font;
-        QGridLayout * m_glayout;
+        QGridLayout *m_glayout;
         QMap<QString, ExtendedLabel *> m_title;
         
         int m_blinktime;
@@ -109,5 +101,15 @@ class AgentsPanelNext : public XLet
         
         QComboBox *m_queue_chose;
 };
+
+class XLetAgentsNextPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
+};
+
 
 #endif /* __AGENTSPANEL_H__ */

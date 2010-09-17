@@ -36,7 +36,6 @@
 
 Q_EXPORT_PLUGIN2(xletqueuesplugin, XLetQueuesPlugin);
 
-
 XLet* XLetQueuesPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/queues_%1");

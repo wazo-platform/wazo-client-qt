@@ -35,28 +35,27 @@
 #define __EXTENDEDLABEL_H__
 
 #include <QLabel>
+#include "baselib_export.h"
 
 class QContextMenuEvent;
 class QMouseEvent;
 
 /*! \brief QLabel with context menu and mouse release event forwarding
  */
-class ExtendedLabel : public QLabel
+class BASELIB_EXPORT ExtendedLabel : public QLabel
 {
     Q_OBJECT
-public:
-    ExtendedLabel(const QString & text = "",
-                  QWidget * parent = 0);
-    ExtendedLabel(QWidget * parent = 0);
-protected:
-    //void mouseDoubleClickEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void contextMenuEvent(QContextMenuEvent *);
-signals:
-    //! originate signal
-    //void mouse_doubleclick(QMouseEvent *);
-    void mouse_release(QMouseEvent *);
-    void context_menu(QContextMenuEvent *);
+
+    public:
+        ExtendedLabel(const QString &text="",
+                      QWidget *parent=0);
+        ExtendedLabel(QWidget *parent=0);
+    protected:
+        void mouseReleaseEvent(QMouseEvent *);
+        void contextMenuEvent(QContextMenuEvent *);
+    signals:
+        void mouse_release(QMouseEvent *);
+        void context_menu(QContextMenuEvent *);
 };
 
 #endif
