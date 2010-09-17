@@ -34,31 +34,21 @@
 #ifndef __STATUSPANEL_H__
 #define __STATUSPANEL_H__
 
-#include <QHash>
-#include <QList>
-#include <QMap>
-#include <QObject>
+#include <QtGui>
 
-#include "userinfo.h"
-#include "xlet.h"
-
-class QFrame;
-class QGridLayout;
-class QLabel;
-class QLineEdit;
-class QPushButton;
-
-class UserInfo;
-class BaseEngine;
+#include <xlet.h>
+#include <xletinterface.h>
+#include <baseengine.h>
+#include <xivoconsts.h>
 
 /*! \brief Operator widget used to answer and transfer calls
  */
-class StatusPanel : public XLet
+class XletOperator : public XLet
 {
     Q_OBJECT
 
     public:
-        StatusPanel(QWidget *parent=0);
+        XletOperator(QWidget *parent=0);
 
         enum Line {Ready, Ringing, Hangup, Wait, Transfer, WDTransfer, WITransfer, Online};
         void doGUIConnects(QWidget *mainwindow);
@@ -94,5 +84,15 @@ class StatusPanel : public XLet
         QString m_currentchannel;
         QStringList m_callchannels;
 };
+
+class XLetOperatorPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
+};
+
 
 #endif

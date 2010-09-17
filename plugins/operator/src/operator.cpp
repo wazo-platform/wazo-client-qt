@@ -31,22 +31,17 @@
  * $Date$
  */
 
-#include <QDebug>
-#include <QGridLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QVariant>
+#include "operator.h"
 
-#include "statuspanel.h"
-#include "userinfo.h"
-#include "phoneinfo.h"
-#include "xivoconsts.h"
-#include "baseengine.h"
+Q_EXPORT_PLUGIN2(xletoperatorplugin, XLetOperatorPlugin);
 
-/*! \brief Constructor
- */
-StatusPanel::StatusPanel(QWidget * parent)
+XLet* XLetOperatorPlugin::newXLetInstance(QWidget *parent)
+{
+    b_engine->registerTranslation(":/operator_%1");
+    return new XletOperator(parent);
+}
+
+XletOperator::XletOperator(QWidget * parent)
     : XLet(parent)
 {
     m_glayout = new QGridLayout(this);
@@ -79,7 +74,7 @@ StatusPanel::StatusPanel(QWidget * parent)
  *
  * create all widgets and fill m_vlinesl, m_vlinesr, m_statuses, m_tnums
  */
-void StatusPanel::newCall(const QString & chan)
+void XletOperator::newCall(const QString & chan)
 {
     m_vlinesl[chan] = new QFrame(this);
     m_vlinesr[chan] = new QFrame(this);
@@ -102,12 +97,6 @@ void StatusPanel::newCall(const QString & chan)
         QString actionname = act.value()[0];
         k[actionname] = new QPushButton("", this);
         k[actionname]->hide();
-        //if((act.key() >= Qt::Key_F1) && (act.key() <= Qt::Key_F12))
-        //    k[actionname]->setText(act.value()[1] + " (F" + QString::number(act.key() - Qt::Key_F1 + 1) + ")");
-        //else if(act.key() == Qt::Key_Return)
-        //    k[actionname]->setText(act.value()[1] + " (Return)");
-        //else
-        //    k[actionname]->setText(act.value()[1] + " (?)");
         
         k[actionname]->setText(act.value()[1] + " (" + QKeySequence(act.key()).toString() + ")");
 
@@ -119,10 +108,10 @@ void StatusPanel::newCall(const QString & chan)
     
     m_actions[chan] = k;
     int row = 1;
-    foreach(int r, m_row)
-    {
-        if (r >= row)
+    foreach (int r, m_row) {
+        if (r >= row) {
             row = r + 1;
+        }
     }
     m_row[chan] = row;
 }
@@ -132,11 +121,11 @@ void StatusPanel::newCall(const QString & chan)
  * first clean the line by removing all buttons
  * then add wanted buttons. 
  */
-void StatusPanel::updateLine(const QString & chan, const QStringList & allowed)
+void XletOperator::updateLine(const QString & chan, const QStringList & allowed)
 {
     int row = m_row[chan];
     int colnum = 1;
-    qDebug() << "StatusPanel::updateLine" << row << "allowed=" << allowed;
+    qDebug() << "XletOperator::updateLine" << row << "allowed=" << allowed;
     m_glayout->addWidget( m_vlinesl[chan], row, 0, Qt::AlignLeft );
     m_glayout->addWidget( m_statuses[chan], row, colnum++, Qt::AlignHCenter );
 
@@ -164,21 +153,21 @@ void StatusPanel::updateLine(const QString & chan, const QStringList & allowed)
  *
  * Simultate the press of a function key
  */
-void StatusPanel::clicked()
+void XletOperator::clicked()
 {
     QString channel = sender()->property("channel").toString();
     int function = sender()->property("function").toInt();
-    qDebug() << "StatusPanel::clicked()" << channel << function;
+    qDebug() << "XletOperator::clicked()" << channel << function;
     m_currentchannel = channel;
     functionKeyPressed(function);
 }
 
 /*! \brief setup things for a direct transfer
  */
-void StatusPanel::dtransfer()
+void XletOperator::dtransfer()
 {
     if (m_callchannels.contains(m_currentchannel)) {
-        qDebug() << "StatusPanel::dtransfer() Direct   Transfer" << m_currentchannel;
+        qDebug() << "XletOperator::dtransfer() Direct   Transfer" << m_currentchannel;
         if (m_linestatuses[m_currentchannel] == WDTransfer) {
             m_tnums[m_currentchannel]->hide();
             m_statuses[m_currentchannel]->setFocus();
@@ -197,10 +186,10 @@ void StatusPanel::dtransfer()
 
 /*! \brief set up things for an indirect transfer
  */
-void StatusPanel::itransfer()
+void XletOperator::itransfer()
 {
     if (m_callchannels.contains(m_currentchannel)) {
-        qDebug() << "StatusPanel::itransfer() Indirect Transfer" << m_currentchannel;
+        qDebug() << "XletOperator::itransfer() Indirect Transfer" << m_currentchannel;
         if (m_linestatuses[m_currentchannel] == WITransfer) {
             m_tnums[m_currentchannel]->hide();
             m_statuses[m_currentchannel]->setFocus();
@@ -219,11 +208,11 @@ void StatusPanel::itransfer()
 
 /*! \brief Does the transfer
  */
-void StatusPanel::xferPressed()
+void XletOperator::xferPressed()
 {
     QString num = m_tnums[m_currentchannel]->text();
     QString peerchan = getPeerChan(m_currentchannel);
-    qDebug() << "StatusPanel::xferPressed()" << m_currentchannel << peerchan << m_linestatuses[m_currentchannel] << num;
+    qDebug() << "XletOperator::xferPressed()" << m_currentchannel << peerchan << m_linestatuses[m_currentchannel] << num;
     if (m_linestatuses[m_currentchannel] == WDTransfer) {
         b_engine->actionCall("transfer",
                              "chan:special:me:" + peerchan,
@@ -240,40 +229,45 @@ void StatusPanel::xferPressed()
  *
  * \todo make icancel work
  */
-void StatusPanel::functionKeyPressed(int keynum)
+void XletOperator::functionKeyPressed(int keynum)
 {
-    // qDebug() << "StatusPanel::functionKeyPressed()" << keynum << m_currentchannel;
+    // qDebug() << "XletOperator::functionKeyPressed()" << keynum << m_currentchannel;
                 
     if (keynum == Qt::Key_Up) {
-        if (m_currentchannel.isEmpty())
+        if (m_currentchannel.isEmpty()) {
             return;
+        }
         int ci = m_callchannels.indexOf(m_currentchannel);
         if (ci > 0)
             ci--;
         changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
         m_currentchannel = m_callchannels[ci];
     }else if (keynum == Qt::Key_Down) {
-        if (m_currentchannel.isEmpty())
+        if (m_currentchannel.isEmpty()) {
             return;
+        }
         int ci = m_callchannels.indexOf(m_currentchannel);
-        if (ci < m_callchannels.size() - 1)
+        if (ci < m_callchannels.size() - 1) {
             ci++;
+        }
         changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
         m_currentchannel = m_callchannels[ci];
     }
     QString action;
-    if (m_actionkey.contains(keynum))
+    if (m_actionkey.contains(keynum)) {
         action = m_actionkey[keynum][0];
-    else
+    } else {
         return;
+    }
     
     QString userid;
-    if (b_engine->getXivoClientUser())
+    if (b_engine->getXivoClientUser()) {
         userid = b_engine->getXivoClientUser()->userid();
+    }
 
     if (m_callchannels.contains(m_currentchannel)) {
         Line linestatus = m_linestatuses[m_currentchannel];
-        qDebug() << "StatusPanel::functionKeyPressed()" << keynum << action << m_currentchannel << linestatus;
+        qDebug() << "XletOperator::functionKeyPressed()" << keynum << action << m_currentchannel << linestatus;
         if (action == "answer") {
             b_engine->actionCall("answer", QString("chan:%1:not_relevant_here").arg(userid));
         }else if (action == "hangup") {
@@ -310,7 +304,7 @@ void StatusPanel::functionKeyPressed(int keynum)
               qDebug() << "icancel : currentchannel=" << m_currentchannel
               << ", peerchannel=" << getPeerChan(m_currentchannel)
               << ", m_tferchannel=" << m_tferchannel;
-              if(m_ui)
+              if (m_ui)
                   qDebug() << "  user channels" << m_ui->channelList();
             */
             //emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));  // does nothing
@@ -319,16 +313,16 @@ void StatusPanel::functionKeyPressed(int keynum)
             // command and hangup it. It may involve adding an amievent in asterisk at the right
             // place and doing some work in the xivo_daemon and here.
         }
-//            if(action == "unpark")
-//                qDebug() << "StatusPanel::functionKeyPressed()" << "F1 when Wait : Take back";
+//            if (action == "unpark")
+//                qDebug() << "XletOperator::functionKeyPressed()" << "F1 when Wait : Take back";
     }
 }
 
 /*! \brief set lines width according to current channel
  */
-void StatusPanel::changeCurrentChannel(const QString & before, const QString & after)
+void XletOperator::changeCurrentChannel(const QString & before, const QString & after)
 {
-    // qDebug() << "StatusPanel::changeCurrentChannel()" << before << after;
+    // qDebug() << "XletOperator::changeCurrentChannel()" << before << after;
     if (before != after) {
         if (m_vlinesl.contains(before) && m_vlinesr.contains(before)) {
             m_vlinesl[before]->setLineWidth(1);
@@ -341,9 +335,9 @@ void StatusPanel::changeCurrentChannel(const QString & before, const QString & a
     }
 }
 
-void StatusPanel::updateUser(UserInfo * ui)
+void XletOperator::updateUser(UserInfo * ui)
 {
-    //qDebug() << " StatusPanel::updateUser()" << ui << b_engine->getXivoClientUser();
+    //qDebug() << " XletOperator::updateUser()" << ui << b_engine->getXivoClientUser();
     if (!ui || !b_engine->getXivoClientUser())
         return;
     if (ui == b_engine->getXivoClientUser())
@@ -355,14 +349,14 @@ void StatusPanel::updateUser(UserInfo * ui)
             const PhoneInfo * pi = ui->getPhoneInfo(phone);
             if (pi) {
                 QMapIterator<QString, QVariant> it( pi->comms());
-                while(it.hasNext()) {
+                while (it.hasNext()) {
                     it.next();
                     QVariantMap qvm = it.value().toMap();
                     const QString callchannel = qvm["thischannel"].toString();
                     const QString status = qvm["status"].toString();
                     const QString peerchan = qvm["peerchannel"].toString();
                     const QString num = qvm["calleridnum"].toString();
-                    qDebug() << " StatusPanel::updateUser" << it.key() << status << num << callchannel << peerchan << qvm["atxfer"];
+                    qDebug() << " XletOperator::updateUser" << it.key() << status << num << callchannel << peerchan << qvm["atxfer"];
                     if (callchannel.isEmpty())
                         continue;
                     chanList << callchannel;
@@ -400,54 +394,19 @@ void StatusPanel::updateUser(UserInfo * ui)
                             removeLine(callchannel);
                         }
                     }else{
-                        qDebug() << " StatusPanel::updateUser not processed" << callchannel << peerchan << status;
-//                        if(m_callchannels.contains(callchannel) == true) {
-//                                         m_linestatuses[callchannel] = Ready;
-//                                         m_statuses[callchannel]->setText(status + " " + num);
-//                                         updateLine(callchannel, (QStringList()));
-//                                         m_tnums[callchannel]->hide();
-//                                 }
+                        qDebug() << " XletOperator::updateUser not processed" << callchannel << peerchan << status;
                     }
                 }
             }
         }
         //qDebug() << " StatusPane::updateUser chanList" << chanList << "m_callchannels" << m_callchannels;
         // clean up "ghost" entries...
-        foreach(QString chan, m_callchannels) {
+        foreach (QString chan, m_callchannels) {
             if (!chanList.contains(chan)) {
                 removeLine(chan);
             }
         }
     }
-#if 0
-    else if (ui->astid() == m_engine->getXivoClientUser()->astid())
-    {
-        // another user on the same asterisk instance,
-        // we should look for channels concerning our user !
-        foreach(const QString phone, ui->phonelist())
-        {
-            const PhoneInfo * pi = ui->getPhoneInfo( phone );
-            if( pi )
-            {
-                QMapIterator<QString, QVariant> it( pi->comms() );
-                while( it.hasNext() )
-                {
-                    it.next();
-                    QVariantMap qvm = it.value().toMap();
-                    // qDebug() << "StatusPanel::updatePeer()" << ui->userid() << qvm;
-                    //const QString callchannel = qvm["thischannel"].toString();
-                    //const QString status = qvm["status"].toString();
-                    const QString peerchan = qvm["peerchannel"].toString();
-                    const QString num = qvm["calleridnum"].toString();
-                    if(m_engine->getXivoClientUser()->phonenumber() == num) {
-                        // qDebug() << "not me" << ui->fullname() << chanlist.toMap()[ref];
-                        m_tferchannel = peerchan;
-                    }
-                }
-            }
-        }
-    }
-#endif
 }
 
 /*! \brief get the peer channel linked to channel
@@ -455,15 +414,15 @@ void StatusPanel::updateUser(UserInfo * ui)
  * Iterate through communications of the user to
  * find the peer channel.
  */
-QString StatusPanel::getPeerChan(QString const & chan) const
+QString XletOperator::getPeerChan(QString const & chan) const
 {
     if (!b_engine->getXivoClientUser())
         return QString();
-    foreach(const QString phone, b_engine->getXivoClientUser()->phonelist()) {
+    foreach (const QString phone, b_engine->getXivoClientUser()->phonelist()) {
         const PhoneInfo * pi = b_engine->getXivoClientUser()->getPhoneInfo( phone );
         if (pi) {
             QMapIterator<QString, QVariant> it(pi->comms());
-            while(it.hasNext()) {
+            while (it.hasNext()) {
                 it.next();
                 QVariantMap qvm = it.value().toMap();
                 if (qvm["thischannel"].toString() == chan) {
@@ -483,7 +442,7 @@ QString StatusPanel::getPeerChan(QString const & chan) const
  *
  * clean everything.
  */
-void StatusPanel::removeLine(QString const & chan)
+void XletOperator::removeLine(QString const & chan)
 {
     m_vlinesl.take(chan)->deleteLater();
     m_vlinesr.take(chan)->deleteLater();
@@ -491,7 +450,7 @@ void StatusPanel::removeLine(QString const & chan)
     m_tnums.take(chan)->deleteLater();
     m_linestatuses.remove(chan);
     QHashIterator<QString, QPushButton *> it(m_actions[chan]);
-    while(it.hasNext()) {
+    while (it.hasNext()) {
         it.next();
         it.value()->deleteLater();
     }
@@ -511,7 +470,7 @@ void StatusPanel::removeLine(QString const & chan)
     m_row.remove(chan);
 }
 
-void StatusPanel::doGUIConnects(QWidget *mainwindow)
+void XletOperator::doGUIConnects(QWidget *mainwindow)
 {
     connect(mainwindow, SIGNAL(functionKeyPressed(int)),
             this, SLOT(functionKeyPressed(int)));
