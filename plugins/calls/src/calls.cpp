@@ -31,15 +31,22 @@
  * $Date$
  */
 
-#include "callstackwidget.h"
+#include "calls.h"
 
-/*! \brief Constructor
- */
-CallStackWidget::CallStackWidget(QWidget * parent)
+Q_EXPORT_PLUGIN2(xletcallsplugin, XLetCallsPlugin);
+
+XLet* XLetCallsPlugin::newXLetInstance(QWidget *parent)
+{
+    b_engine->registerTranslation(":/calls_%1");
+    return new XletCalls(parent);
+}
+
+
+XletCalls::XletCalls(QWidget *parent)
     : XLet(parent), m_monitored_ui(0)
 {
     setTitle(tr("Calls"));
-    qDebug() << "CallStackWidget::CallStackWidget()";
+    qDebug() << "XletCalls::XletCalls()";
     QVBoxLayout *toplayout = new QVBoxLayout(this);
     toplayout->setMargin(0);
     QLabel *titleLabel = new QLabel("                     ", this);
@@ -50,8 +57,6 @@ CallStackWidget::CallStackWidget(QWidget * parent)
     QWidget *w = new QWidget(scrollarea);
     scrollarea->setWidget(w);
     m_layout = new QVBoxLayout(w);
-    //m_layout->setMargin();
-    //m_layout->setSpacing(0);
     setObjectName("scroller");
     setAcceptDrops(true);
     m_layout->addStretch(1);
@@ -74,10 +79,9 @@ CallStackWidget::CallStackWidget(QWidget * parent)
  * Check if this is about the monitored user
  * and call updateDisplay().
  */
-void CallStackWidget::updateUser(UserInfo * ui)
+void XletCalls::updateUser(UserInfo *ui)
 {
-    if(ui == m_monitored_ui)
-    {
+    if(ui == m_monitored_ui) {
         // we need to update the display
         updateDisplay();
     }
@@ -85,21 +89,21 @@ void CallStackWidget::updateUser(UserInfo * ui)
 
 /*! \brief hang up channel
  */
-void CallStackWidget::hupchan(const QString & hangupchan)
+void XletCalls::hupchan(const QString &hangupchan)
 {
     b_engine->actionCall("hangup", "chan:" + m_monitored_ui->userid() + ":" + hangupchan); // Call
 }
 
 /*! \brief transfers the channel to a number
  */
-void CallStackWidget::transftonumberchan(const QString & chan)
+void XletCalls::transftonumberchan(const QString &chan)
 {
     b_engine->actionCall("transfer", "chan:" + m_monitored_ui->userid() + ":" + chan, "ext:special:dialxlet"); // Call
 }
 
 /*! \brief transfers the channel to a number
  */
-void CallStackWidget::parkcall(const QString & chan)
+void XletCalls::parkcall(const QString &chan)
 {
     b_engine->actionCall("transfer", "chan:" + m_monitored_ui->userid() + ":" + chan, "ext:special:parkthecall"); // Call
 }
@@ -108,11 +112,11 @@ void CallStackWidget::parkcall(const QString & chan)
  *
  * Read m_calllist and update m_afflist accordingly.
  */
-void CallStackWidget::updateDisplay()
+void XletCalls::updateDisplay()
 {
     uint current_ts = QDateTime::currentDateTime().toTime_t();
-    //qDebug() << "CallStackWidget::updateDisplay()";
-    CallWidget * callwidget = NULL;
+    //qDebug() << "XletCalls::updateDisplay()";
+    CallWidget *callwidget = NULL;
 
     //QStringList activeChannels;  // list of active channels to be displayed
     QStringList activeUids;
@@ -142,14 +146,14 @@ void CallStackWidget::updateDisplay()
                 QString channelpeer = map["peerchannel"].toString();
                 QString callerid = map["calleridnum"].toString();
                 QString calleridname = map["calleridname"].toString();
-                //qDebug() << "CallStackWidget::updateDisplay()" << it.key() << channelme << "status" << status;
+                //qDebug() << "XletCalls::updateDisplay()" << it.key() << channelme << "status" << status;
                 // dont display hangup channels !
                 if (status == CHAN_STATUS_HANGUP) {
                     continue;
                 }
                 //activeChannels << channelme;
                 activeUids << it.key();
-//                qDebug() << "CallStackWidget::updateDisplay() adding/updating" << channelme;
+//                qDebug() << "XletCalls::updateDisplay() adding/updating" << channelme;
                 if (m_affhash.contains(/*channelme*/it.key())) {
                     m_affhash[it.key()/*channelme*/]->updateWidget(status, ts, channelpeer,
                                                                    callerid, calleridname, pi);
@@ -177,27 +181,24 @@ void CallStackWidget::updateDisplay()
         }
     }
 
-    //qDebug() << "CallStackWidget::updateDisplay() activeChannels" << activeChannels;
-//    qDebug() << "CallStackWidget::updateDisplay() activeUids" << activeUids;
-//    qDebug() << "CallStackWidget::updateDisplay() m_affhash" << m_affhash.keys();
+    //qDebug() << "XletCalls::updateDisplay() activeChannels" << activeChannels;
+//    qDebug() << "XletCalls::updateDisplay() activeUids" << activeUids;
+//    qDebug() << "XletCalls::updateDisplay() m_affhash" << m_affhash.keys();
     // remove old channels
-//    foreach(const QString chan, m_affhash.keys())
     foreach (const QString uid, m_affhash.keys()) {
-//        if( !activeChannels.contains( chan ) )
         if( !activeUids.contains(uid)) {
-            //qDebug() << "CallStackWidget::updateDisplay() removing" << chan;
-            //m_affhash.take( chan )->deleteLater();
-            qDebug() << "CallStackWidget::updateDisplay() removing" << uid;
-            m_affhash.take( uid )->deleteLater();
+            //qDebug() << "XletCalls::updateDisplay() removing" << chan;
+            qDebug() << "XletCalls::updateDisplay() removing" << uid;
+            m_affhash.take(uid)->deleteLater();
         }
     }
 }
 
 /*! \brief filter events based on the mimetype
  */
-void CallStackWidget::dragEnterEvent(QDragEnterEvent *event)
+void XletCalls::dragEnterEvent(QDragEnterEvent *event)
 {
-    // qDebug() << "CallStackWidget::dragEnterEvent()" << event->mimeData()->formats();
+    // qDebug() << "XletCalls::dragEnterEvent()" << event->mimeData()->formats();
     if (event->mimeData()->hasFormat(USERID_MIMETYPE)) {
         event->acceptProposedAction();
     }
@@ -208,9 +209,9 @@ void CallStackWidget::dragEnterEvent(QDragEnterEvent *event)
  * can be called from reset(), dropEvent(), or at the beginning
  * of a session
  */
-void CallStackWidget::monitorPeer(UserInfo * ui)
+void XletCalls::monitorPeer(UserInfo *ui)
 {
-    qDebug() << "CallStackWidget::monitorPeer()" << b_engine->getFullId()<< ui->astid() << ui->userid();
+    qDebug() << "XletCalls::monitorPeer()" << b_engine->getFullId()<< ui->astid() << ui->userid();
     //emptyList();
     if ((b_engine->getFullId() == ui->userid()) ||
         (b_engine->enabledFunction("switchboard"))) {
@@ -225,13 +226,13 @@ void CallStackWidget::monitorPeer(UserInfo * ui)
  * check if the dropped "text" is a Peer "id"
  * and start to monitor it
  */
-void CallStackWidget::dropEvent(QDropEvent * event)
+void XletCalls::dropEvent(QDropEvent *event)
 {
     if (!event->mimeData()->hasFormat(USERID_MIMETYPE)) {
         event->ignore();
         return;
     }
-    qDebug() << "CallStackWidget::dropEvent" << event->mimeData()->data(USERID_MIMETYPE);
+    qDebug() << "XletCalls::dropEvent" << event->mimeData()->data(USERID_MIMETYPE);
     monitorPeerRequest(event->mimeData()->data(USERID_MIMETYPE));
     event->acceptProposedAction();
 }

@@ -56,9 +56,6 @@ class CallWidget : public QWidget
     Q_OBJECT
 
     public:
-        CallWidget(QWidget * parent = 0); //! Default constructor
-        ~CallWidget();
-    
         CallWidget(UserInfo *, const QString &, const QString &, uint, const QString &, const QString &, const QString &, QWidget * parent, const PhoneInfo * pi);
     
         void updateWidget(const QString &, uint, const QString &, const QString &, const QString &, const PhoneInfo *);

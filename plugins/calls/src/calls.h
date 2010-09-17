@@ -34,37 +34,23 @@
 #ifndef __CALLSTACKWIDGET_H__
 #define __CALLSTACKWIDGET_H__
 
-#include <QHash>
-#include <QList>
-#include <QString>
-#include <QDateTime>
-#include <QDragEnterEvent>
-#include <QSettings>
-#include <QVariant>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QScrollArea>
+#include <QtGui>
 
 #include "xlet.h"
+#include "xletinterface.h"
 #include "baseengine.h"
 #include "callwidget.h"
-#include "userinfo.h"
-#include "phoneinfo.h"
 #include "xivoconsts.h"
 
-class QVBoxLayout;
-
-class UserInfo;
-class BaseEngine;
 
 /*! \brief Widget displaying the current open channels for a phone line.
  */
-class CallStackWidget : public XLet
+class XletCalls : public XLet
 {
     Q_OBJECT
 
     public:
-        CallStackWidget(QWidget *parent=0); //!< Constructor
+        XletCalls(QWidget *parent=0); //!< Constructor
 
     public slots:
         void updateUser(UserInfo *);
@@ -88,5 +74,15 @@ class CallStackWidget : public XLet
         QVBoxLayout *m_layout;  //!< Vertical Layout used
         QHash<QString, CallWidget *> m_affhash;  //!< List of CallWidget Widgets
 };
+
+class XLetCallsPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
+};
+
 
 #endif

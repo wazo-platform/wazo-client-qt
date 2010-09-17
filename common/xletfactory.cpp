@@ -41,7 +41,6 @@
 #include "xletinterface.h"
 
 #include <callcampaignpanel.h>
-#include <callstackwidget.h>
 #include <customerinfopanel.h>
 #include <dialpanel.h>
 #include <directorypanel.h>
@@ -72,7 +71,6 @@ static const struct {
     { "directory"         ,newXLet<DirectoryPanel>         },
     { "callcampaign"      ,newXLet<CallCampaignPanel>      },
     { "mylocaldir"        ,newXLet<MyLocalDirPanel>        },
-    { "calls"             ,newXLet<CallStackWidget>        },
 };
 
 /*! xlet creator function prototype */
