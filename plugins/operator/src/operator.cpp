@@ -50,7 +50,7 @@ XletOperator::XletOperator(QWidget * parent)
     setTitle( tr("Operator") );
 
     QVariantMap opts = b_engine->getGuiOptions("client_gui");
-        
+
     m_actionkey[opts["xlet_operator_keyanswer"        ].toInt()] = (QStringList() << "answer" << tr("Answer"));
     m_actionkey[opts["xlet_operator_keyhangup"        ].toInt()] = (QStringList() << "hangup" << tr("Hangup"));
     m_actionkey[opts["xlet_operator_keydtransfer"     ].toInt()] = (QStringList() << "dtransfer" << tr("D. Transfer"));
@@ -61,7 +61,7 @@ XletOperator::XletOperator(QWidget * parent)
     m_actionkey[opts["xlet_operator_keyatxferfinalize"].toInt()] = (QStringList() << "atxferfinalize" << tr("Finalize Transfer"));
     m_actionkey[opts["xlet_operator_keyatxfercancel"  ].toInt()] = (QStringList() << "atxfercancel" << tr("Cancel Transfer"));
     // m_actionkey[Qt::Key_Return] = (QStringList() << "numreturn" << tr("Call Number"));
-        
+
     m_glayout->addWidget( m_lbl, 0, 0, 1, m_actionkey.size() + 4, Qt::AlignHCenter | Qt::AlignVCenter );
     m_glayout->setRowStretch(100, 1);
 
@@ -80,16 +80,16 @@ void XletOperator::newCall(const QString & chan)
     m_vlinesr[chan] = new QFrame(this);
     m_statuses[chan] = new QLabel("none", this);
     m_tnums[chan] = new QLineEdit("", this);
-    
+
     m_vlinesl[chan]->setFrameShape(QFrame::VLine);
     m_vlinesl[chan]->setLineWidth(1);
     m_vlinesr[chan]->setFrameShape(QFrame::VLine);
     m_vlinesr[chan]->setLineWidth(1);
     m_tnums[chan]->hide();
-    
+
     changeCurrentChannel(m_currentchannel, chan);
     m_currentchannel = chan;
-    
+
     QHash<QString, QPushButton *> k;
     QMapIterator<int, QStringList> act(m_actionkey);
     while (act.hasNext()) {
@@ -97,7 +97,7 @@ void XletOperator::newCall(const QString & chan)
         QString actionname = act.value()[0];
         k[actionname] = new QPushButton("", this);
         k[actionname]->hide();
-        
+
         k[actionname]->setText(act.value()[1] + " (" + QKeySequence(act.key()).toString() + ")");
 
         k[actionname]->setProperty("channel", chan);
@@ -105,7 +105,7 @@ void XletOperator::newCall(const QString & chan)
         connect(k[actionname], SIGNAL(clicked()),
                 this, SLOT(clicked()));
     }
-    
+
     m_actions[chan] = k;
     int row = 1;
     foreach (int r, m_row) {
@@ -119,7 +119,7 @@ void XletOperator::newCall(const QString & chan)
 /*! \brief update display of a line of buttons
  *
  * first clean the line by removing all buttons
- * then add wanted buttons. 
+ * then add wanted buttons.
  */
 void XletOperator::updateLine(const QString & chan, const QStringList & allowed)
 {
@@ -196,7 +196,7 @@ void XletOperator::itransfer()
             m_linestatuses[m_currentchannel] = Online;
             disconnect(m_tnums[m_currentchannel], SIGNAL(returnPressed()),
                        this, SLOT(xferPressed()) );
-        }else{
+        } else {
             m_tnums[m_currentchannel]->show();
             m_tnums[m_currentchannel]->setFocus();
             m_linestatuses[m_currentchannel] = WITransfer;
@@ -232,7 +232,7 @@ void XletOperator::xferPressed()
 void XletOperator::functionKeyPressed(int keynum)
 {
     // qDebug() << "XletOperator::functionKeyPressed()" << keynum << m_currentchannel;
-                
+
     if (keynum == Qt::Key_Up) {
         if (m_currentchannel.isEmpty()) {
             return;
@@ -242,7 +242,7 @@ void XletOperator::functionKeyPressed(int keynum)
             ci--;
         changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
         m_currentchannel = m_callchannels[ci];
-    }else if (keynum == Qt::Key_Down) {
+    } else if (keynum == Qt::Key_Down) {
         if (m_currentchannel.isEmpty()) {
             return;
         }
@@ -259,7 +259,7 @@ void XletOperator::functionKeyPressed(int keynum)
     } else {
         return;
     }
-    
+
     QString userid;
     if (b_engine->getXivoClientUser()) {
         userid = b_engine->getXivoClientUser()->userid();
@@ -270,13 +270,13 @@ void XletOperator::functionKeyPressed(int keynum)
         qDebug() << "XletOperator::functionKeyPressed()" << keynum << action << m_currentchannel << linestatus;
         if (action == "answer") {
             b_engine->actionCall("answer", QString("chan:%1:not_relevant_here").arg(userid));
-        }else if (action == "hangup") {
+        } else if (action == "hangup") {
             if (linestatus == Ringing || linestatus == WITransfer || linestatus == WDTransfer) {
                 b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
             } else {
                 b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
             }
-        }else if (action == "dtransfer") {
+        } else if (action == "dtransfer") {
             dtransfer();
             if (linestatus == WDTransfer || linestatus == WITransfer)
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
@@ -284,37 +284,32 @@ void XletOperator::functionKeyPressed(int keynum)
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer"));
             else
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
-        }else if (action == "itransfer") {
+        } else if (action == "itransfer") {
             itransfer();
             if (linestatus == WDTransfer || linestatus == WITransfer)
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
             else
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
-        }else if (action == "park") {
+        } else if (action == "park") {
             b_engine->actionCall("transfer", "chan:special:me:" + m_currentchannel, "ext:special:parkthecall");
-        }else if (action == "atxferfinalize") {
+        } else if (action == "atxferfinalize") {
             b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel));
-        }else if (action == "atxfercancel") {
+        } else if (action == "atxfercancel") {
             b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));
             updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
-        }else if (action == "ilink") {
+        } else if (action == "ilink") {
             b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel));
-        }else if (action == "icancel") {
-            /*
-              qDebug() << "icancel : currentchannel=" << m_currentchannel
-              << ", peerchannel=" << getPeerChan(m_currentchannel)
-              << ", m_tferchannel=" << m_tferchannel;
-              if (m_ui)
-                  qDebug() << "  user channels" << m_ui->channelList();
-            */
-            //emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));  // does nothing
-            //emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // finalize the indirect transfer
+        } else if (action == "icancel") {
+            qDebug() << "icancel : currentchannel=" << m_currentchannel
+                     << ", peerchannel=" << getPeerChan(m_currentchannel);
+            // emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));  // does nothing
+            // emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // finalize the indirect transfer
             // @TODO we should retrieve the Local/xxx channel that was created by the atxfer
             // command and hangup it. It may involve adding an amievent in asterisk at the right
             // place and doing some work in the xivo_daemon and here.
         }
-//            if (action == "unpark")
-//                qDebug() << "XletOperator::functionKeyPressed()" << "F1 when Wait : Take back";
+        //            if (action == "unpark")
+        //                qDebug() << "XletOperator::functionKeyPressed()" << "F1 when Wait : Take back";
     }
 }
 
@@ -340,8 +335,7 @@ void XletOperator::updateUser(UserInfo * ui)
     //qDebug() << " XletOperator::updateUser()" << ui << b_engine->getXivoClientUser();
     if (!ui || !b_engine->getXivoClientUser())
         return;
-    if (ui == b_engine->getXivoClientUser())
-    {
+    if (ui == b_engine->getXivoClientUser()) {
         m_lbl->setText(ui->fullname());
         QStringList chanList;
         // it is concerning our user
@@ -375,8 +369,8 @@ void XletOperator::updateUser(UserInfo * ui)
                             m_statuses[callchannel]->setText(tr("%1 Ringing").arg(num));
                             m_statuses[callchannel]->show();
                         }
-                    }else if ((status == CHAN_STATUS_LINKED_CALLED) ||
-                              (status == CHAN_STATUS_LINKED_CALLER)) {
+                    } else if ((status == CHAN_STATUS_LINKED_CALLED) ||
+                               (status == CHAN_STATUS_LINKED_CALLER)) {
                         if (!m_callchannels.contains(callchannel)) {
                             newCall(callchannel);
                             m_callchannels << callchannel;
@@ -389,11 +383,11 @@ void XletOperator::updateUser(UserInfo * ui)
                         updateLine(callchannel, allowed);
                         m_statuses[callchannel]->setText(tr("Link %1").arg(num));
                         m_statuses[callchannel]->show();
-                    }else if (status == CHAN_STATUS_HANGUP) {
+                    } else if (status == CHAN_STATUS_HANGUP) {
                         if (m_callchannels.contains(callchannel)) {
                             removeLine(callchannel);
                         }
-                    }else{
+                    } else {
                         qDebug() << " XletOperator::updateUser not processed" << callchannel << peerchan << status;
                     }
                 }
@@ -463,7 +457,7 @@ void XletOperator::removeLine(QString const & chan)
                 ci --;
             changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
             m_currentchannel = m_callchannels[ci];
-        }else
+        } else
             m_currentchannel = "";
     }
     m_callchannels.removeAll(chan);

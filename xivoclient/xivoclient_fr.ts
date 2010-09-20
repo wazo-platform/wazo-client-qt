@@ -311,21 +311,21 @@ que celles ci-dessous) en première page</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="394"/>
-        <source>Any change there sadly require an application restart to be in effect</source>
-        <translation>Tout changement ici, demande tristement un redémarrage de l&apos;application pour être effectif</translation>
+        <source>Any change here requires an application restart to be effective</source>
+        <translation>Tout changement ici nécessite un redémarrage de l&apos;application pour être effectif</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="397"/>
+        <location filename="../common/configwidget.cpp" line="396"/>
         <source>Operator Xlet</source>
         <translation>Xlet Opérateur</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="424"/>
+        <location filename="../common/configwidget.cpp" line="423"/>
         <source>This key is already bound</source>
         <translation>Cette touche est déjà allouée</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="425"/>
+        <location filename="../common/configwidget.cpp" line="424"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation>Veuillez presser une autre touche, celle ci est déjà alloué pour l&apos;action &apos;%0&apos;</translation>
     </message>
