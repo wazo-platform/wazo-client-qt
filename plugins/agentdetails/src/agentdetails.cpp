@@ -44,7 +44,7 @@ XLet* XLetAgentDetailsPlugin::newXLetInstance(QWidget *parent)
 XletAgentDetails::XletAgentDetails(QWidget *parent)
     : XLet(parent)
 {
-    setTitle( tr("Agent Details") );
+    setTitle(tr("Agent Details"));
     m_linenum = 0;
     m_gridlayout = new QGridLayout(this);
     
@@ -223,7 +223,7 @@ void XletAgentDetails::updatePanel()
     m_agentlegend_npaused->setText(agentstats.toMap()["Xivo-NQPaused"].toString());
     
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(b_engine->queues());
-    while( iter.hasNext() ) {
+    while (iter.hasNext()) {
         iter.next();
         QueueInfo *qinfo = iter.value();
         // newQueue(qinfo->astid(), qinfo->queueName(), qinfo->properties());
@@ -331,9 +331,9 @@ void XletAgentDetails::setQueueAgentProps(const QString &queueid, const QVariant
     qas->update(dynstatus, sstatus, pstatus);
     
     QString joinicon = qas->display_action_join();
-    if (joinicon.isEmpty())
+    if (joinicon.isEmpty()) {
         m_queue_join_action[queueid]->hide();
-    else {
+    } else {
         m_queue_join_action[queueid]->setIcon(QIcon(joinicon));
         m_queue_join_action[queueid]->show();
     }
@@ -351,9 +351,9 @@ void XletAgentDetails::setQueueAgentProps(const QString &queueid, const QVariant
     
     if (pstatus != oldpstatus) {
         QString pauseicon = qas->display_action_pause();
-        if (pauseicon.isEmpty())
+        if (pauseicon.isEmpty()) {
             m_queue_pause_action[queueid]->hide();
-        else {
+        } else {
             m_queue_pause_action[queueid]->setIcon(QIcon(pauseicon));
             m_queue_pause_action[queueid]->show();
         }
