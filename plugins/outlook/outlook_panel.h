@@ -113,6 +113,7 @@ private:
         int m_calllength;
         QString m_callprefix;
 	QList<COLCol*> m_cols;
+        QHash<QString, QString> displayname;
 private:
 	void doColumnsMenu(QContextMenuEvent * event);
 	void refresh_table();
@@ -120,4 +121,3 @@ private:
 };
 
 #endif
-

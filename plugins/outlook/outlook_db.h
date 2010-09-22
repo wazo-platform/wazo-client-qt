@@ -33,10 +33,8 @@ private:
 	bool update_contact(COLContact & contact, const COLPropsDef & props_def);
 	bool update_contact_props(COLContact & contact, const COLPropsDef & props_def);
 
-
 public:
 	QSqlDatabase m_db;	// Database object
 };
 
 #endif /* OUTLOOK_DB_H_INCLUDED */
-

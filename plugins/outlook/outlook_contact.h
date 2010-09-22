@@ -63,10 +63,9 @@ typedef QList<COLContact>	COLContacts;
 class COLPropDef {
 public:
 	COLPropDef(){}
-	COLPropDef(__int64 nID, const QString & name, const QString & display, bool displayable=false) :
+	COLPropDef(__int64 nID, const QString & name, bool displayable = false) :
 		m_nID(nID),
 		m_strName(name),
-		m_strDisplayName(display),
 		m_bDisplayable(displayable)
 		{}
 	virtual ~COLPropDef(void) {}
@@ -77,7 +76,6 @@ public:
 	COLPropDef & operator=(const COLPropDef & def) {
 		m_nID=def.m_nID;
 		m_strName=def.m_strName;
-		m_strDisplayName=def.m_strDisplayName;
 		m_bDisplayable=def.m_bDisplayable;
 		return *this;
 	}
@@ -85,11 +83,9 @@ public:
 public:
 	__int64 m_nID;
 	QString m_strName;
-	QString m_strDisplayName;
 	bool	m_bDisplayable;
 };
 
 typedef QHash<QString, COLPropDef>	COLPropsDef;
 
 #endif
-
