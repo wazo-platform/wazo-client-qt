@@ -6,7 +6,7 @@
     <message>
         <location filename="src/operator.cpp" line="49"/>
         <source>Operator panel</source>
-        <translation>Paneau opérateur</translation>
+        <translation>Opérateur</translation>
     </message>
     <message>
         <location filename="src/operator.cpp" line="50"/>

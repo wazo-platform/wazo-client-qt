@@ -44,6 +44,6 @@ Q_EXPORT_PLUGIN2(outlookplugin, OutlookPlugin);
  * \return a new instance of XletNull */
 XLet *OutlookPlugin::newXLetInstance(QWidget *parent)
 {
+    b_engine->registerTranslation(":/outlook_%1");
     return new OutlookPanel(parent);
 }
-

@@ -61,7 +61,7 @@ FaxPanel::FaxPanel(QWidget *parent)
     hbox1->addWidget(m_destination);
     hbox1->addWidget(directory);
     lblfax->setObjectName("fax");
-        
+
     //
     QGroupBox * groupBox2 = new QGroupBox( tr("2. Choose File to Send") );
     groupBox2->setAlignment( Qt::AlignLeft );
