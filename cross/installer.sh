@@ -27,7 +27,7 @@ function do_a_deb_package
 Package: xivocticlient
 Version: ${XIVO_VERSION}-${SVN_VERSION}
 Architecture: ${ARCH}
-Maintainer: sheep <sheep@proformatique.com>
+Maintainer: Proformatique Maintainance Team <technique@proformatique.com>
 Installed-Size: $PKGSIZE
 Depends: libc6 (>= 2.7-1), libgcc1 (>= 1:4.1.1-21), libstdc++6 (>= 4.1.1-21)
 Section: graphics

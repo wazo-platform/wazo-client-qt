@@ -55,7 +55,7 @@ Var CheckboxShortcutStartState
 Page custom installMiscPage installMiscPageLeave ;Custom page
 
 Function installMiscPage
-  !insertmacro MUI_HEADER_TEXT \$(MISC_PAGE_TITLE) \$(MISC_PAGE_SUBTITLE)
+  !insertmacro MUI_HEADER_TEXT \$(SHORTCUT_PAGE_TITLE) ""
   nsDialogs::Create 1018
   Pop \$Dialog
   
@@ -63,10 +63,10 @@ Function installMiscPage
   	Abort
   \${EndIf}
 
-  \${NSD_CreateCheckbox} 0 10u 100% 10u "&Add a Shortcut on desktop"
+  \${NSD_CreateCheckbox} 0 10u 100% 10u \$(SHORTCUT_DESKTOP)
   Pop \$CheckboxShortcutDesktop
 
-  \${NSD_CreateCheckbox} 0 25u 100% 10u "&Add a Shortcut in start menu"
+  \${NSD_CreateCheckbox} 0 25u 100% 10u \$(SHORTCUT_STARTMENU)
   Pop \$CheckboxShortcutStart
 
   \${NSD_Check} \$CheckboxShortcutDesktop
@@ -112,7 +112,7 @@ Section "OpenSSL libraries" OpensslLib ; components page
   File /r win32-shared-openssl\*
 SectionEnd ; end the section
 
-Section "Xivoclient executable" XivoclientExe ; components page
+Section "XiVO client executable" XivoclientExe ; components page
   SectionIn RO
   SetOutPath \$INSTDIR
   
@@ -133,13 +133,15 @@ Section "Xivoclient executable" XivoclientExe ; components page
   WriteRegStr HKCR "callto\shell\open\command" "" "\$INSTDIR\xivoclient.exe %1"
 
   \${If} \$CheckboxShortcutDesktopState == \${BST_CHECKED}
-    CreateShortCut "\$DESKTOP\xivoclient.lnk"  "\$INSTDIR\xivoclient.exe"
+  \${OrIf} \${Silent}
+    CreateShortCut "\$DESKTOP\xivoclient.lnk" "\$INSTDIR\xivoclient.exe"
   \${EndIf}
 
   \${If} \$CheckboxShortcutStartState == \${BST_CHECKED}
+  \${OrIf} \${Silent}
      CreateDirectory "\$SMPROGRAMS\XiVO"
-     CreateShortCut "\$SMPROGRAMS\XiVO\\\$(START_XIVOCLIENT)"  "\$INSTDIR\xivoclient.exe"
-     CreateShortCut "\$SMPROGRAMS\XiVO\\\$(REMOVE_XIVOCLIENT)"  "\$INSTDIR\uninstall.exe"
+     CreateShortCut  "\$SMPROGRAMS\XiVO\\\$(START_XIVOCLIENT)"  "\$INSTDIR\xivoclient.exe"
+     CreateShortCut  "\$SMPROGRAMS\XiVO\\\$(REMOVE_XIVOCLIENT)" "\$INSTDIR\uninstall.exe"
   \${EndIf}
 SectionEnd ; end the section
 
@@ -175,8 +177,8 @@ Function un.onInit
   !insertmacro MUI_UNGETLANGUAGE
 FunctionEnd
 
-LangString SuccessInstall \${LANG_ENGLISH}  "The installation was successful, do you want to start the xivoclient right now ?"
-LangString SuccessInstall \${LANG_FRENCH}  "L'installation a réussi, voulez-vous lancer le xivoclient maintenant ?"
+LangString SuccessInstall \${LANG_ENGLISH}  "The installation was successful, do you want to start the XiVO client right now ?"
+LangString SuccessInstall \${LANG_FRENCH}  "L'installation a réussi, voulez-vous lancer le XiVO client maintenant ?"
 
 Function .onInstSuccess
   MessageBox MB_YESNO  \$(SuccessInstall) /SD IDNO IDNO NoReadme
@@ -192,26 +194,29 @@ LangString XIVO_LICENSE_TEXT \${LANG_FRENCH}  "XiVO Client est distribué sous l
 LangString OPENSSL_LICENSE_TEXT \${LANG_ENGLISH} "OpenSSL license"
 LangString OPENSSL_LICENSE_TEXT \${LANG_FRENCH}  "Licence d'OpenSSL"
 
-LangString DESC_QtLib \${LANG_ENGLISH} "Qt libraries ( cross-platform application and UI framework )"
-LangString DESC_QtLib \${LANG_FRENCH}  "Bibliothèque Qt (framework multi platforme gérant l'IHM, le réseau, ...) "
+LangString DESC_QtLib \${LANG_ENGLISH} "Qt libraries (cross-platform application and UI framework)"
+LangString DESC_QtLib \${LANG_FRENCH}  "Bibliothèque Qt (framework multi plateforme gérant l'IHM, le réseau, ...) "
 
-LangString DESC_xivoclientExe \${LANG_ENGLISH} "Xivoclient executable"
-LangString DESC_xivoclientExe \${LANG_FRENCH}  "Éxecutable xivoclient"
+LangString DESC_xivoclientExe \${LANG_ENGLISH} "XiVO client executable"
+LangString DESC_xivoclientExe \${LANG_FRENCH}  "Exécutable XiVO client"
 
-LangString DESC_OpensslLib \${LANG_ENGLISH} "OpenSSL libraries ( cryptography )"
-LangString DESC_OpensslLib \${LANG_FRENCH}  "Bibliothèque OpenSSL ( cryptographie )"
+LangString DESC_OpensslLib \${LANG_ENGLISH} "OpenSSL libraries (cryptography)"
+LangString DESC_OpensslLib \${LANG_FRENCH}  "Bibliothèque OpenSSL (cryptographie)"
 
-LangString MISC_PAGE_TITLE \${LANG_ENGLISH} "Miscellaneous.."
-LangString MISC_PAGE_TITLE \${LANG_FRENCH}  "Divers.."
+LangString SHORTCUT_PAGE_TITLE \${LANG_ENGLISH} "Shortcuts"
+LangString SHORTCUT_PAGE_TITLE \${LANG_FRENCH}  "Raccourcis"
 
-LangString MISC_PAGE_SUBTITLE \${LANG_ENGLISH} "Glory to the hypnotoad"
-LangString MISC_PAGE_SUBTITLE \${LANG_FRENCH}  "Gloire au crapaud hypnotiseur"
+LangString SHORTCUT_DESKTOP \${LANG_ENGLISH} "Add a Shortcut on &Desktop"
+LangString SHORTCUT_DESKTOP \${LANG_FRENCH}  "Ajouter un raccourci sur le &Bureau"
 
-LangString START_XIVOCLIENT \${LANG_ENGLISH} "start xivoclient \${FULLVERSION}.lnk"
-LangString START_XIVOCLIENT \${LANG_FRENCH}  "lancer xivoclient \${FULLVERSION}.lnk"
+LangString SHORTCUT_STARTMENU \${LANG_ENGLISH} "Add a Shortcut in Start &Menu"
+LangString SHORTCUT_STARTMENU \${LANG_FRENCH}  "Ajouter un raccourci dans le &Menu Démarrer"
 
-LangString REMOVE_XIVOCLIENT \${LANG_ENGLISH} "Remove xivoclient \${FULLVERSION}.lnk"
-LangString REMOVE_XIVOCLIENT \${LANG_FRENCH}  "Désinstaller xivoclient \${FULLVERSION}.lnk"
+LangString START_XIVOCLIENT \${LANG_ENGLISH} "Start XiVO Client \${FULLVERSION}.lnk"
+LangString START_XIVOCLIENT \${LANG_FRENCH}  "Lancer XiVO Client \${FULLVERSION}.lnk"
+
+LangString REMOVE_XIVOCLIENT \${LANG_ENGLISH} "Remove XiVO Client \${FULLVERSION}.lnk"
+LangString REMOVE_XIVOCLIENT \${LANG_FRENCH}  "Désinstaller XiVO Client \${FULLVERSION}.lnk"
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -220,14 +225,13 @@ LangString REMOVE_XIVOCLIENT \${LANG_FRENCH}  "Désinstaller xivoclient \${FULLV
   !insertmacro MUI_DESCRIPTION_TEXT \${OpensslLib} \$(DESC_OpensslLib)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
-VIProductVersion "1.0.0.33"
-VIAddVersionKey /LANG=\${LANG_ENGLISH} "ProductName" "Xivoclient installer"
-VIAddVersionKey /LANG=\${LANG_ENGLISH} "Comments" "Xivoclient, phone helper"
-VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileDescription" "Xivoclient, phone helper installer"
-VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileVersion" "1"
-VIAddVersionKey /LANG=\${LANG_ENGLISH} "LegalCopyright" "© Bender Bending Rodríguez"
+VIProductVersion "9.4.8.6"
+VIAddVersionKey /LANG=\${LANG_ENGLISH} "ProductName" "XiVO client"
+VIAddVersionKey /LANG=\${LANG_ENGLISH} "Comments" "Computer Telephony Integration (CTI) client for XiVO"
+VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileDescription" "XiVO client installer"
+VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileVersion" "${XIVO_VERSION}-${SVN_VERSION}"
+VIAddVersionKey /LANG=\${LANG_ENGLISH} "LegalCopyright" "© 2007-2010, Proformatique"
 !
 
 wine /woot/Unicode/makensis.exe installer.nsi
 cp xivoclient-inst.exe ${BUILT_DIR}/xivoclient-${XIVO_VERSION}-${SVN_VERSION}.exe
-

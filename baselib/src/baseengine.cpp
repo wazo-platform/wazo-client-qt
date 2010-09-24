@@ -100,10 +100,10 @@ BaseEngine::BaseEngine(QSettings *settings,
     // TCP connection for file transfer
     // (this could be moved to some other class)
     m_filetransfersocket = new QTcpSocket(this);
-    connect(m_filetransfersocket, SIGNAL(readyRead()),
-            this, SLOT(filetransferSocketReadyRead()));
     connect(m_filetransfersocket, SIGNAL(connected()),
             this, SLOT(filetransferSocketConnected()));
+    connect(m_filetransfersocket, SIGNAL(readyRead()),
+            this, SLOT(filetransferSocketReadyRead()));
 
     if (m_autoconnect)
         start();
@@ -1485,39 +1485,55 @@ void BaseEngine::sendFaxCommand(const QString & filename,
 void BaseEngine::popupError(const QString & errorid)
 {
     QString errormsg = QString(tr("Server has sent an Error."));
-    if (errorid.toLower() == "connection_refused") {
-        errormsg = tr("You are not allowed to connect\n"
-                      "to the XiVO CTI server on %1:%2.")
-            .arg(m_serverhost).arg(m_ctiport);
-    } else if (errorid.toLower() == "number_of_arguments") {
-        errormsg = tr("The number of arguments sent is incorrect.\n"
-                      "Maybe a version issue ?");
-    } else if (errorid.toLower() == "user_not_found") {
-        errormsg = tr("Your registration name <%1@%2>\n"
+
+    // errors sent by the server (login phase)
+    if (errorid.toLower() == "user_not_found") {
+        errormsg = tr("Your registration name <%1@%2> "
                       "is not known by the XiVO CTI server on %3:%4.")
             .arg(m_userid).arg(m_company)
             .arg(m_serverhost).arg(m_ctiport);
-    } else if (errorid.toLower() == "session_expired") {
-        errormsg = tr("Your session has expired.");
-    } else if (errorid.startsWith("capaid_undefined:")) {
-        QStringList capainfo = errorid.split(":");
-        errormsg = tr("Your profile name <%1> is not defined.").arg(capainfo[1]);
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
+    } else if (errorid.startsWith("capaid_undefined:")) {
+        QStringList capainfo = errorid.split(":");
+        errormsg = tr("Your profile identifier <%1> is not defined.").arg(capainfo[1]);
 
+    // keepalive (internal)
     } else if (errorid.toLower() == "no_keepalive_from_server") {
         errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.")
             .arg(m_serverhost).arg(m_ctiport);
 
-    } else if (errorid.toLower() == "connection_closed") {
+    // socket errors - while attempting to connect
+    } else if (errorid.toLower() == "socket_error_hostnotfound") {
+        errormsg = tr("You defined an IP address %1 that is probably an unresolved host name.")
+            .arg(m_serverhost);
+    } else if (errorid.toLower() == "socket_error_timeout") {
+        errormsg = tr("Socket timeout (~ 60 s) : you probably attempted to reach, "
+                      "via a gateway, an IP address %1 that does not exist.")
+            .arg(m_serverhost);
+    } else if (errorid.toLower() == "socket_error_connectionrefused") {
+        errormsg = tr("There seems to be a machine running on this IP address %1, "
+                      "and either no CTI server is running, or your port %2 is wrong.")
+            .arg(m_serverhost).arg(m_ctiport);
+    } else if (errorid.toLower() == "socket_error_network") {
+        errormsg = tr("An error occurred on the network while attempting to join the IP address %1 :\n"
+                      "- no external route defined to access this IP address (~ no timeout)\n"
+                      "- this IP address is routed but there is no machine (~ 5 s timeout)\n"
+                      "- a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).")
+            .arg(m_serverhost);
+    } else if (errorid.toLower() == "socket_error_unknown") {
+        errormsg = tr("An unknown socket error has occured while attempting to join the IP address:port %1:%2.")
+            .arg(m_serverhost).arg(m_ctiport);
+    } else if (errorid.startsWith("socket_error_unmanagedyet:")) {
+        QStringList ipinfo = errorid.split(":");
+        errormsg = tr("An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.")
+            .arg(ipinfo[1]).arg(m_serverhost).arg(m_ctiport);
+
+    // socket errors - once connected
+    } else if (errorid.toLower() == "socket_error_remotehostclosed") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.")
             .arg(m_serverhost).arg(m_ctiport);
-    } else if (errorid.toLower() == "network_error") {
-        errormsg = tr("An error occurred with the network "
-                      "(network cable accidentally plugged out ?).");
-    } else if (errorid.startsWith("socket_error:")) {
-        QStringList ipinfo = errorid.split(":");
-        errormsg = tr("Socket Error number %1.").arg(ipinfo[1]);
+
     } else if (errorid.toLower() == "server_stopped") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.")
             .arg(m_serverhost).arg(m_ctiport);
@@ -1571,7 +1587,7 @@ void BaseEngine::popupError(const QString & errorid)
     }
 
     // logs a message before sending any popup that would block
-    emitTextMessage(tr("Error") + " : " + errormsg);
+    emitTextMessage(tr("ERROR") + " : " + errormsg);
     if (!m_trytoreconnect || m_forced_to_disconnect)
         emitMessageBox(errormsg);
 }
