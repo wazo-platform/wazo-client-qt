@@ -41,7 +41,7 @@ ShowUninstDetails show
 !insertmacro MUI_PAGE_LICENSE gpl.txt
 
 !define MUI_PAGE_HEADER_TEXT \$(OPENSSL_LICENSE_TEXT)
-!define MUI_PAGE_HEADER_SUBTEXT 
+!define MUI_PAGE_HEADER_SUBTEXT
 
 !insertmacro MUI_PAGE_LICENSE win32-shared-openssl\openssl-license.txt
 !insertmacro MUI_PAGE_COMPONENTS
@@ -58,9 +58,9 @@ Function installMiscPage
   !insertmacro MUI_HEADER_TEXT \$(SHORTCUT_PAGE_TITLE) ""
   nsDialogs::Create 1018
   Pop \$Dialog
-  
+
   \${If} \$Dialog == error
-  	Abort
+    Abort
   \${EndIf}
 
   \${NSD_CreateCheckbox} 0 10u 100% 10u \$(SHORTCUT_DESKTOP)
@@ -101,7 +101,7 @@ FunctionEnd
 Section "Qt libraries" QtLib ; components page
   SectionIn RO
   SetOutPath \$INSTDIR
-  
+
   File /r win32-shared-qt\*
 SectionEnd ; end the section
 
@@ -115,7 +115,7 @@ SectionEnd ; end the section
 Section "XiVO client executable" XivoclientExe ; components page
   SectionIn RO
   SetOutPath \$INSTDIR
-  
+
   File /r win32-shared\*
 
   WriteRegStr HKLM "Software\XiVO\xivoclient" "Install_Dir" "\$INSTDIR"
@@ -154,7 +154,7 @@ Section "Uninstall"
   Delete "\$SMPROGRAMS\XiVO\*"
   RmDir "\$SMPROGRAMS\XiVO"
   ; remove the uri association
-  DeleteRegKey HKLM \${REG_UNINST} 
+  DeleteRegKey HKLM \${REG_UNINST}
   DeleteRegKey HKLM "Software\XiVO\xivoclient"
   DeleteRegKey HKCR "tel"
   DeleteRegKey HKCR "callto"

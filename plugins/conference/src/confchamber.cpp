@@ -46,7 +46,7 @@ ConfChamberModel::ConfChamberModel(ConfTab *tab, QWidget *parent, const QString 
       m_authed(0), m_id(id), m_view(NULL)
 {
     b_engine->tree()->onChange(QString("confrooms/%0").arg(id), this,
-        SLOT(confRoomChange(const QString &, DStoreEvent)));
+                               SLOT(confRoomChange(const QString &, DStoreEvent)));
     extractRow2IdMap();
     startTimer(1000);
     timerEvent(NULL);

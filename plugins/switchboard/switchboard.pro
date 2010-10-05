@@ -2,10 +2,9 @@ include(../plugins-global.pri)
 
 HEADERS     = src/*.h
 SOURCES     = src/*.cpp
+TRANSLATIONS = switchboard_fr.ts
 
 include(../../qtaddons/qtcolorpicker/src/qtcolorpicker.pri)
-
-TRANSLATIONS = switchboard_fr.ts
 
 TARGET      = $$qtLibraryTarget(switchboardplugin)
 

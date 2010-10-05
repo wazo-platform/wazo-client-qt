@@ -59,12 +59,12 @@
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="src/operator.cpp" line="375"/>
+        <location filename="src/operator.cpp" line="369"/>
         <source>%1 Ringing</source>
         <translation>%1 Sonne</translation>
     </message>
     <message>
-        <location filename="src/operator.cpp" line="390"/>
+        <location filename="src/operator.cpp" line="384"/>
         <source>Link %1</source>
         <translation>Etabli %1</translation>
     </message>

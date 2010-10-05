@@ -567,8 +567,8 @@ void QueueRow::setLayoutColumnWidth(QGridLayout *layout, int nbStat)
     layout->setColumnMinimumWidth(4, 100); // queue longest waiting time
 
     int i;
-    for(i=0;i<nbStat;i++) {
-        if (m_colWidth[i]!=-1) {
+    for (i = 0 ; i < nbStat ; i++) {
+        if (m_colWidth[i] != -1) {
             layout->setColumnMinimumWidth(i+5, m_colWidth[i]);
         } else {
             layout->setColumnMinimumWidth(i+5, 55);
@@ -582,6 +582,11 @@ void QueueRow::getLayoutColumnsWidth(QGridLayout *layout)
     for(i=0;i<m_colWidth.size();i++) {
         m_colWidth[i] = layout->itemAtPosition(1, i+5)->widget()->width();
     }
+    // warning : it seems that m_colWidth is set only here,
+    // so that if the xlet is hidden these values are wrong
+    // - 3 when in a tab
+    // - 100 when starting in systray
+    // qDebug() << Q_FUNC_INFO << m_colWidth;
 }
 
 void QueueRow::updateSliceStat(const QString &stat, const QString &value)
@@ -906,7 +911,7 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
     layout->addWidget(label, 1, col++);
 
     QString detailCss = "QLabel { background-color:#666; }";
-    for (i=0;i<nelem(stats_detail);i++) {
+    for (i=0 ; i<nelem(stats_detail) ; i++) {
         label = new QLabel(row);
         label->setText(stats_detail[i].name);
         label->setAlignment(Qt::AlignCenter);

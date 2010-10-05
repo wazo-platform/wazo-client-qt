@@ -93,11 +93,11 @@ bool QueueAgentStatus::update(const QString & dynstatus,
     if(pstatus == "0") {
         m_display_status_paused = tr("Not paused");
         m_display_status_paused_color = Qt::green;
-        m_display_action_pause = ":/images/button_ok.png";
+        m_display_action_pause = ":/images/cancel.png";
     } else if(pstatus == "1") {
         m_display_status_paused = tr("Paused");
         m_display_status_paused_color = Orange;
-        m_display_action_pause = ":/images/cancel.png";
+        m_display_action_pause = ":/images/button_ok.png";
     } else if(pstatus == "") {
         m_display_status_paused = tr("Not relevant");
         m_display_status_paused_color = Qt::gray;

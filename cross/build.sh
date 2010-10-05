@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 TARGET_SVN_VERSION=1.6
 cd $(dirname "$(pwd)/$0")
 

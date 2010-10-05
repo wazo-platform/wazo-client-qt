@@ -96,7 +96,7 @@ void CtiConn::ctiSocketDisconnected()
 void CtiConn::ctiSocketStateChanged(QAbstractSocket::SocketState socketState)
 {
     // qDebug() << Q_FUNC_INFO << socketState;
-    // QAbstractSocket::HostLookupState 
+    // QAbstractSocket::HostLookupState
     // QAbstractSocket::ConnectingState
     // QAbstractSocket::ConnectedState
     // ...

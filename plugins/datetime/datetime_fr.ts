@@ -2,9 +2,9 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="fr_FR">
 <context>
-    <name>DatetimePanel</name>
+    <name>XletDatetime</name>
     <message>
-        <location filename="src/datetimepanel.cpp" line="44"/>
+        <location filename="src/datetime.cpp" line="53"/>
         <source>Date and Time</source>
         <translation>Date et Heure</translation>
     </message>

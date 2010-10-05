@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 INSTALLER_PATH=$(dirname "$(pwd)/$0")
 cd ${INSTALLER_PATH}
 
@@ -33,11 +33,9 @@ Depends: libc6 (>= 2.7-1), libgcc1 (>= 1:4.1.1-21), libstdc++6 (>= 4.1.1-21)
 Section: graphics
 Priority: optional
 Homepage: http://www.xivo.fr/
-Description: control you workplace phone from you desktop
- XiVO Client is a software that allow you to do automatic calling,
- switch your status ( available, away, busy,.. ), call recording,
- call transfer, and to consult the message people left on your phone while
- you was away..
+Description: CTI client for XiVO
+ XiVO CTI (Computer Telephony Integration) client is the graphical
+ front-end to the XiVO CTI services.
 !
   find ./ -type f -name "*" | sed "s/.*/md5sum &/g" | sh | sed "s/\([^ ]*\)[ \t]*\(.*\)/\1  \2/g" > ../control/md5sums
 

@@ -121,81 +121,81 @@
     </message>
 </context>
 <context>
-    <name>SwitchBoardWindow</name>
+    <name>XletSwitchBoard</name>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="575"/>
-        <source>Please enter a name for the new group</source>
-        <translation>Veuillez saisir un nom pour le nouveau groupe</translation>
-    </message>
-    <message>
-        <location filename="src/switchboardwindow.cpp" line="674"/>
-        <source>Remove group %1</source>
-        <translation>Supprimer le groupe %1</translation>
-    </message>
-    <message>
-        <location filename="src/switchboardwindow.cpp" line="678"/>
-        <source>Change color of group %1</source>
-        <translation>Changer la couleur du groupe %1</translation>
-    </message>
-    <message>
-        <location filename="src/switchboardwindow.cpp" line="687"/>
-        <source>Add Phone number entry</source>
-        <translation>Ajouter un numéro de téléphone</translation>
-    </message>
-    <message>
-        <location filename="src/switchboardwindow.cpp" line="228"/>
-        <source>Name for group</source>
-        <translation>Nom du groupe</translation>
-    </message>
-    <message>
-        <location filename="src/switchboardwindow.cpp" line="682"/>
-        <source>Rename group %1</source>
-        <translation>Renommer le groupe %1</translation>
-    </message>
-    <message>
-        <location filename="src/switchboardwindow.cpp" line="75"/>
-        <location filename="src/switchboardwindow.cpp" line="78"/>
+        <location filename="src/switchboardwindow.cpp" line="61"/>
+        <location filename="src/switchboardwindow.cpp" line="64"/>
         <source>Switchboard</source>
         <translation>Switchboard</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="227"/>
-        <source>Edit group name</source>
-        <translation>Changer le nom du groupe</translation>
-    </message>
-    <message>
-        <location filename="src/switchboardwindow.cpp" line="573"/>
-        <source>New group</source>
-        <translation>Nouveau groupe</translation>
-    </message>
-    <message>
-        <location filename="src/switchboardwindow.cpp" line="578"/>
-        <source>Please choose a color for the new group</source>
-        <translation>Veuillez choisir une couleur pour le nouveau groupe</translation>
-    </message>
-    <message>
-        <location filename="src/switchboardwindow.cpp" line="192"/>
+        <location filename="src/switchboardwindow.cpp" line="178"/>
         <source>Removing group %1</source>
         <translation>Suppression du groupe %1</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="193"/>
+        <location filename="src/switchboardwindow.cpp" line="179"/>
         <source>Removing group %1.
 Are you sure ?</source>
         <translation>Suppression du groupe %1.Etes vous sur ?</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="691"/>
+        <location filename="src/switchboardwindow.cpp" line="213"/>
+        <source>Edit group name</source>
+        <translation>Changer le nom du groupe</translation>
+    </message>
+    <message>
+        <location filename="src/switchboardwindow.cpp" line="214"/>
+        <source>Name for group</source>
+        <translation>Nom du groupe</translation>
+    </message>
+    <message>
+        <location filename="src/switchboardwindow.cpp" line="559"/>
+        <source>New group</source>
+        <translation>Nouveau groupe</translation>
+    </message>
+    <message>
+        <location filename="src/switchboardwindow.cpp" line="561"/>
+        <source>Please enter a name for the new group</source>
+        <translation>Veuillez saisir un nom pour le nouveau groupe</translation>
+    </message>
+    <message>
+        <location filename="src/switchboardwindow.cpp" line="564"/>
+        <source>Please choose a color for the new group</source>
+        <translation>Veuillez choisir une couleur pour le nouveau groupe</translation>
+    </message>
+    <message>
+        <location filename="src/switchboardwindow.cpp" line="659"/>
+        <source>Remove group %1</source>
+        <translation>Supprimer le groupe %1</translation>
+    </message>
+    <message>
+        <location filename="src/switchboardwindow.cpp" line="663"/>
+        <source>Change color of group %1</source>
+        <translation>Changer la couleur du groupe %1</translation>
+    </message>
+    <message>
+        <location filename="src/switchboardwindow.cpp" line="667"/>
+        <source>Rename group %1</source>
+        <translation>Renommer le groupe %1</translation>
+    </message>
+    <message>
+        <location filename="src/switchboardwindow.cpp" line="672"/>
+        <source>Add Phone number entry</source>
+        <translation>Ajouter un numéro de téléphone</translation>
+    </message>
+    <message>
+        <location filename="src/switchboardwindow.cpp" line="676"/>
         <source>Draw the grid</source>
         <translation>Tracer la grille</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="799"/>
+        <location filename="src/switchboardwindow.cpp" line="784"/>
         <source>Duplicate number</source>
         <translation>Doublon de numéro</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="800"/>
+        <location filename="src/switchboardwindow.cpp" line="785"/>
         <source>Phone number %1 is already present in the switchboard panel.</source>
         <translation>Le numéro de téléphone %1 est déjà présent dans le panneau du switchboard.</translation>
     </message>
