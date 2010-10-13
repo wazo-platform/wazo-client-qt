@@ -2252,6 +2252,10 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
 void BaseEngine::handleOtherInstanceMessage(const QString & msg)
 {
     qDebug() << "BaseEngine::handleOtherInstanceMessage()" << msg;
+    // callto://number is unofficial and used by Skype
+    // tel:number is in RFC 3966
+    // callto:number is unofficial (read 7.3. in RFC 3966)
+    // we support tel:number and callto:number
     QRegExp re("^(tel|callto):([-0-9\\. +]*[0-9])", Qt::CaseInsensitive);
     // todo : handle also other commands
     int pos = re.indexIn(msg);

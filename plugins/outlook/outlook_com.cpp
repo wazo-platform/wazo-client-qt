@@ -275,5 +275,3 @@ COLNameSpace	COLApp::GetNamespace(const char * szName) {
 	if ( FAILED(res) ) return NULL;
 	return COLNameSpace(result.pdispVal, FALSE);
 }
-
-
