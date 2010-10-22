@@ -75,7 +75,7 @@
         <location filename="src/baseengine.cpp" line="1519"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
-- this IP address is routed but there is no machine (~ 5 s timeout)
+- this IP address is routed but there is no machine (~ 5 s timeout)
 - a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).</source>
         <translation type="unfinished">Une erreur s&apos;est produite sur le réseau en essayant de joindre l&apos;adresse IP %1 :
 - aucune route externe n&apos;est définie pour accéder à cette adresse IP (~ pas de timeout)

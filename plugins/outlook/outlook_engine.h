@@ -4,7 +4,7 @@
 #include "outlook_thread.h"
 
 class COLEngine {
-public:
+ public:
 	COLEngine();
 	virtual ~COLEngine();
 
@@ -19,13 +19,13 @@ public:
 
 	void update_contacts(COLContacts & contacts);
 
-private:
+ private:
 	int find_contact_by_entry_id(const COLContact & contact);
 
-public:
+ public:
 	COLThread		m_OLThread;
 
-private:
+ private:
 	COLPropsDef	m_props_def;
 	COLContacts			m_contacts;
 	COLDB				m_db;
@@ -36,4 +36,3 @@ COLEngine * OLEngine();
 void OLEngineEnd();
 
 #endif /* OUTLOOK_ENGINE_H_INCLUDED */
-

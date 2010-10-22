@@ -20,26 +20,26 @@ bool OLPathExist(const QString & strPath);
 bool OLCreateDirectory(const QString & strPath);
 
 #ifdef _DEBUG
-#	define ASSERTRETV(expr, value) \
-	do { \
-		assert(expr); \
+#	define ASSERTRETV(expr, value)          \
+	do {                                    \
+		assert(expr);                   \
 	}while (0) 
 
-#	define ASSERTCONTINUE(expr) \
-	do { \
-		assert(expr); \
+#	define ASSERTCONTINUE(expr)             \
+	do {                                    \
+		assert(expr);                   \
 	}while (0) 
 
 #else
 // TODO: add logging of failure
-#	define ASSERTRETV(expr, value) \
-	do { \
-		if (!(expr)) \
-			return value; \
+#	define ASSERTRETV(expr, value)          \
+	do {                                    \
+		if (!(expr))                    \
+			return value;           \
 	}while (0) 
 
-#	define ASSERTCONTINUE(expr) \
-		if ( !(expr) ) continue 
+#	define ASSERTCONTINUE(expr)             \
+        if ( !(expr) ) continue 
 #endif
 
 

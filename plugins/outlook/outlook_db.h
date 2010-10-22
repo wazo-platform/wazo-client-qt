@@ -7,7 +7,7 @@
 #include <QtSql>
 
 class COLDB {
-public:
+ public:
 	COLDB();
 	virtual ~COLDB();
 
@@ -27,13 +27,13 @@ public:
 	bool table_exist(const QString & strTableName);
 	//operator sqlite3 *()const{return m_pDB;}
 
-private:
+ private:
 	bool create_contact(COLContact & contact, const COLPropsDef & props_def);
 	bool delete_contact(COLContact & contact);
 	bool update_contact(COLContact & contact, const COLPropsDef & props_def);
 	bool update_contact_props(COLContact & contact, const COLPropsDef & props_def);
 
-public:
+ public:
 	QSqlDatabase m_db;	// Database object
 };
 

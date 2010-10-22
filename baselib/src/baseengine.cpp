@@ -67,7 +67,6 @@ BASELIB_EXPORT BaseEngine *b_engine;
 static const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
 static CtiConn *m_ctiConn;
 
-
 BaseEngine::BaseEngine(QSettings *settings,
                        const QString &osInfo)
     : QObject(NULL),
@@ -1518,7 +1517,7 @@ void BaseEngine::popupError(const QString & errorid)
     } else if (errorid.toLower() == "socket_error_network") {
         errormsg = tr("An error occurred on the network while attempting to join the IP address %1 :\n"
                       "- no external route defined to access this IP address (~ no timeout)\n"
-                      "- this IP address is routed but there is no machine (~ 5 s timeout)\n"
+                      "- this IP address is routed but there is no machine (~ 5 s timeout)\n"
                       "- a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).")
             .arg(m_serverhost);
     } else if (errorid.toLower() == "socket_error_unknown") {

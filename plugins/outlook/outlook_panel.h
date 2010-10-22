@@ -33,7 +33,7 @@
  * version 2 for the Licensed Program and the licenses of the other code
  * concerned, provided that you include the source code of that other code
  * when and as the GNU GPL version 2 requires distribution of source code.
-*/
+ */
 
 /* $Revision$
  * $Date$
@@ -57,11 +57,11 @@ class ExtendedTableWidget;
 class UserInfo;
 
 class COLCol {
-public:
+ public:
 	COLCol() {m_bEnable=true;}
 	virtual ~COLCol() {}
 
-public:
+ public:
 	COLPropDef m_def;
 	bool	m_bEnable;
 };
@@ -70,12 +70,12 @@ public:
 class OutlookPanel : public XLet
 {
 	Q_OBJECT
-public:
+                public:
 	OutlookPanel(QWidget *parent=0);
-protected:
+ protected:
         void dropEvent(QDropEvent *);
         void focusInEvent(QFocusEvent *);
-signals:
+ signals:
 	//! start a search
 	void searchOutlook(const QString &);
 	//! dial selected number
@@ -84,7 +84,7 @@ signals:
 	void actionCall(const QString &,
                         const QString &,
                         const QString &);
-private slots:
+        private slots:
 	void dialNumber();
         void sendMail();
         void itemClicked(QTableWidgetItem *);
@@ -92,17 +92,17 @@ private slots:
 	void transfer();
 	void setCol(int);
         void proxyCallRequests(const QString &, const QString &);
-public slots:
+        public slots:
 	void setGuiOptions(const QVariant &);
 	void setUserInfo(const UserInfo *);
         void contextMenuEvent(QContextMenuEvent *);
 	void setSearchResponse(const QString &);
 	void stop();
 	void updatePeer(UserInfo *, const QString &, const QVariant &);
-    void contactsLoaded();
+        void contactsLoaded();
 	void affTextChanged(const QString &);
 
-private:
+ private:
         const UserInfo * m_userinfo;
 	//ExtendedLineEdit * m_input;	//!< search text input
 	QLineEdit * m_input;	//!< search text input
@@ -114,7 +114,7 @@ private:
         QString m_callprefix;
 	QList<COLCol*> m_cols;
         QHash<QString, QString> displayname;
-private:
+ private:
 	void doColumnsMenu(QContextMenuEvent * event);
 	void refresh_table();
 	void apply_filter();

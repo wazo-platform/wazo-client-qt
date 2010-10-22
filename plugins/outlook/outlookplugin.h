@@ -43,11 +43,10 @@
  */
 class OutlookPlugin : public QObject, XLetInterface
 {
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
+Q_OBJECT
+        Q_INTERFACES(XLetInterface)
 public:
-    XLet* newXLetInstance(QWidget *parent=0);
+        XLet* newXLetInstance(QWidget *parent=0);
 };
 
 #endif
-

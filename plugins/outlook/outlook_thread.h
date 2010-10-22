@@ -11,26 +11,25 @@
 #define OL_REFRESH_INTERVAL (2*60*1000)
 
 class COLThread : public QThread {
-     Q_OBJECT
+        Q_OBJECT
 
-public:
+                public:
 	COLThread();
 	virtual ~COLThread();
 
-protected:
-     void run();
+ protected:
+        void run();
 
-signals:
-    void contactsLoaded();
+ signals:
+        void contactsLoaded();
 
-private:
-	 bool load_contacts_from_outlook(COLContacts & contacts);
-	 void update_contacts(COLContacts & contacts);
+ private:
+        bool load_contacts_from_outlook(COLContacts & contacts);
+        void update_contacts(COLContacts & contacts);
 
-public:
+ public:
 	bool m_bStop;
 };
 
 
 #endif /* OUTLOOK_THREAD_H_INCLUDED */
-
