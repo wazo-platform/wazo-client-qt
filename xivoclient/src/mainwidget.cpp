@@ -675,12 +675,11 @@ void MainWidget::engineStarted()
     
     qDebug() << "MainWidget::engineStarted() : the xlets have been created";
     m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
-    
-    restoreState(m_settings->value("display/mainwindowstate").toByteArray());
 
-    foreach (QString name, m_docks.keys()) {
+    foreach (QString name, m_docks.keys())
         m_docks[name]->show();
-    }
+    // restore the saved state AFTER showing the docks
+    restoreState(m_settings->value("display/mainwindowstate").toByteArray());
 
     if ((m_resizingHelper == 0)&&(m_docks.size())) {
         // we gonna resize this widget in resizeEvent
@@ -890,8 +889,8 @@ void MainWidget::hideEvent(QHideEvent *event)
 void MainWidget::closeEvent(QCloseEvent *event)
 {
     qDebug() << "MainWidget::closeEvent()"
-    << "spontaneous =" << event->spontaneous()
-    << "type =" << event->type();
+             << "spontaneous =" << event->spontaneous()
+             << "type =" << event->type();
     // << "isMinimized =" << isMinimized()
     // << "isVisible ="   << isVisible()
     // << "isActiveWindow =" << isActiveWindow();

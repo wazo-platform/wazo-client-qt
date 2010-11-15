@@ -700,55 +700,73 @@ void QueueRow::updateRow()
     /* stat cols who aren't made by server */
     QVariantMap queueagents = qinfo->properties()["agents_in_queue"].toMap();
     QStringList queueagents_list;
-
     int nagents;
 
-    QRegExp filter = QRegExp("Agent/[0-9]*");
+    QRegExp agentfilter = QRegExp("Agent/[0-9]*");
 
-    nagents = 0; // count the number of Available agents
-    foreach (QString in, queueagents.keys()) {
-        if (filter.exactMatch(in)) {
-            QVariantMap qaprops = queueagents[in].toMap();
+    // number of Available agents
+    nagents = 0;
+    queueagents_list.clear();
+    foreach (QString queuemember, queueagents.keys()) {
+        if (agentfilter.exactMatch(queuemember)) {
+            QVariantMap qaprops = queueagents[queuemember].toMap();
             if ((qaprops["Status"].toString() == "1") &&
                 (qaprops["Paused"].toString() == "0")) {
                 nagents++;
-                queueagents_list << in;
+                queueagents_list << queuemember.mid(6);
             }
         }
     }
-
     if (m_infoList.contains("Xivo-Avail")) {
         m_infoList["Xivo-Avail"]->setText(QString::number(nagents));
-        if (nagents) {
-            m_infoList["Xivo-Avail"]->setToolTip(
-                tr("Available agents : %1").arg(queueagents_list.join(", ")));
-        } else {
-            m_infoList["Xivo-Avail"]->setToolTip("");
-        }
+        QString todisp;
+        if (nagents)
+            todisp = tr("Available agents : %1").arg(queueagents_list.join(", "));
+        m_infoList["Xivo-Avail"]->setToolTip(todisp);
     }
 
-    nagents = 0; // count the number of Connected agents
-    foreach (QString agentname, queueagents_list) {
-        QVariantMap qaprops = queueagents[agentname].toMap();
-        if ((qaprops["Status"].toString() == "3") ||
-            (qaprops["Status"].toString() == "1")) {
-            nagents++;
+
+    // number of Connected agents
+    nagents = 0;
+    queueagents_list.clear();
+    foreach (QString queuemember, queueagents.keys()) {
+        if (agentfilter.exactMatch(queuemember)) {
+            QVariantMap qaprops = queueagents[queuemember].toMap();
+            if ((qaprops["Status"].toString() == "3") ||
+                (qaprops["Status"].toString() == "1")) {
+                nagents++;
+                queueagents_list << queuemember.mid(6);
+            }
         }
     }
-    if (m_infoList.contains("Xivo-Conn"))
+    if (m_infoList.contains("Xivo-Conn")) {
         m_infoList["Xivo-Conn"]->setText(QString::number(nagents));
-
-
-    nagents = 0; // count the number of Talking agents
-    foreach (QString agentname, queueagents_list) {
-        QVariantMap qaprops = queueagents[agentname].toMap();
-        if ((qaprops["Status"].toString() == "3") && (qaprops["Paused"].toString() == "0")) {
-            nagents++;
-        }
+        QString todisp;
+        if (nagents)
+            todisp = tr("Connected agents : %1").arg(queueagents_list.join(", "));
+        m_infoList["Xivo-Conn"]->setToolTip(todisp);
     }
 
+
+    // number of Talking agents
+    nagents = 0;
+    queueagents_list.clear();
+    foreach (QString queuemember, queueagents_list) {
+        if (agentfilter.exactMatch(queuemember)) {
+            QVariantMap qaprops = queueagents[queuemember].toMap();
+            if ((qaprops["Status"].toString() == "3") &&
+                (qaprops["Paused"].toString() == "0")) {
+                nagents++;
+                queueagents_list << queuemember.mid(6);
+            }
+        }
+    }
     if (m_infoList.contains("Xivo-Talking")) {
         m_infoList["Xivo-Talking"]->setText(QString::number(nagents));
+        QString todisp;
+        if (nagents)
+            todisp = tr("Talking agents : %1").arg(queueagents_list.join(", "));
+        m_infoList["Xivo-Talking"]->setToolTip(todisp);
     }
 
     QVariantMap properties = qinfo->properties();
