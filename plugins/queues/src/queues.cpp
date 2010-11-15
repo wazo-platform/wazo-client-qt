@@ -751,7 +751,7 @@ void QueueRow::updateRow()
     // number of Talking agents
     nagents = 0;
     queueagents_list.clear();
-    foreach (QString queuemember, queueagents_list) {
+    foreach (QString queuemember, queueagents.keys()) {
         if (agentfilter.exactMatch(queuemember)) {
             QVariantMap qaprops = queueagents[queuemember].toMap();
             if ((qaprops["Status"].toString() == "3") &&
