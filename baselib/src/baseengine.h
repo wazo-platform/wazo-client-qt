@@ -162,7 +162,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_historysize;  //!< Number of elements when requestion call log
 
         void pasteToDial(const QString &);
-        void registerClassEvent(const QString &class_function, void (*)(const QVariantMap &map, void *udata), void *udata);
+        void registerClassEvent(const QString &class_function,
+                                void (*)(const QVariantMap &map, void *udata), void *udata);
         void sendJsonCommand(const QVariantMap &);
 
         const QHash<QString, AgentInfo *> agents() const { return m_agents; }; //!< Return the agents to any Xlet
@@ -171,8 +172,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QHash<QString, UserInfo *>  users() const { return m_users; };  //!< Return the users  to any Xlet
         const QHash<QString, QHash<QString, ParkingInfo *> > parking() const { return m_parking; }; //!< Return the parking to any Xlet
 
-        void registerTranslation(const QString &path);
+        void registerTranslation(const QString &);
         void sendUrlToBrowser(const QString &);
+        void addToDataBase(QVariantMap &);
 
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);

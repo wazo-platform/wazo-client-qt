@@ -102,8 +102,8 @@ void Popup::feed(QIODevice * inputstream,
     // qDebug() << "Popup::feed()" << inputstream;
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString currentDateTimeStr = currentDateTime.toString(Qt::LocalDate);
-    qDebug() << "Popup::feed()" << currentDateTime;
-    
+    qDebug() << "Popup::feed()" << currentDateTime << sheetui;
+
     setAttribute(Qt::WA_DeleteOnClose);
     m_reader.setContentHandler(m_handler);
     m_reader.setErrorHandler(m_handler);
@@ -134,7 +134,7 @@ void Popup::feed(QIODevice * inputstream,
     qf->setLineWidth(0);
     m_vlayout->addWidget(qf);
     m_vlayout->addStretch();
-    
+
     QUiLoader loader;
     if(sheetui) {
         m_sheetui_widget = loader.load(m_inputstream, this);
@@ -149,20 +149,18 @@ void Popup::feed(QIODevice * inputstream,
             }
         }
         setEnablesOnForms();
-        QRegExp re_status("^XIVO_CALL_STATUS-");
-        qDebug() << "Popup::feed() found" << m_sheetui_widget->findChildren<QPushButton *>(re_status);
-        
-        QLineEdit   * datetime    = m_sheetui_widget->findChild<QLineEdit *>("datetime");
-        QLineEdit   * year        = m_sheetui_widget->findChild<QLineEdit *>("year");
+
+        QLineEdit   * datetime = m_sheetui_widget->findChild<QLineEdit *>("datetime");
+        QLineEdit   * year     = m_sheetui_widget->findChild<QLineEdit *>("year");
         if(datetime)
             datetime->setText(currentDateTimeStr);
         if(year)
             year->setText(currentDateTime.toString("yyyy"));
     }
-    
+
     setWindowIcon(QIcon(":/images/xivoicon.png"));
     QDesktopServices::setUrlHandler(QString("dial"), this, "dispurl");
-    
+
     qDebug() << "Popup::feed()" << m_inputstream->bytesAvailable() << "bytes available";
     if(m_inputstream->bytesAvailable() > 0) {
         streamNewData();
@@ -199,15 +197,14 @@ void Popup::saveandclose()
 {
     // qDebug() << "Popup::saveandclose()";
     QStringList qsl;
+    QRegExp re_formentry("^XIVOFORM-");
 
-/*
-    QList<QLineEdit *> lineedits = m_sheetui_widget->findChildren<QLineEdit *>(QRegExp("^XIVOFORM-"));
-    for(int i = 0; i < lineedits.count(); i++) {
-        qsl.append(lineedits[i]->objectName() + ":" + lineedits[i]->text());
-    }
-*/
-    save(qsl.join(";"));
+    QVariantMap qv;
+    QList<QLineEdit *> lineedits = m_sheetui_widget->findChildren<QLineEdit *>(re_formentry);
+    for(int i = 0; i < lineedits.count(); i++)
+        qv[lineedits[i]->objectName()] = lineedits[i]->text();
 
+    b_engine->addToDataBase(qv);
     close();
 }
 
@@ -276,11 +273,11 @@ void Popup::addAnyInfo(const QString & localName,
             setMessageTitle( infoValue );
         else if ( infoType == "body" )
             setMessage( infoOrder, infoValue );
-        
+
     } else if( localName == "action_info" ) {
         if ( m_urlautoallow && (infoType == "urlauto") )
             b_engine->sendUrlToBrowser(infoValue);
-        
+
     } else if( localName == "internal" ) {
         addInfoInternal( infoName, infoValue );
     }
@@ -304,34 +301,34 @@ void Popup::addInfoForm(int where, const QString & value)
 {
     // qDebug() << "Popup::addInfoForm()" << where << value << m_kind;
     QUiLoader loader;
-    QWidget * form;
     if(m_remoteforms.contains(value)) {
         QBuffer * inputstream = new QBuffer(this);
         inputstream->open(QIODevice::ReadWrite);
         inputstream->write(m_remoteforms[value].toUtf8());
         inputstream->close();
-        form = loader.load(inputstream, this);
+        m_sheetui_widget = loader.load(inputstream, this);
     } else {
         QFile file(value);
         file.open(QFile::ReadOnly);
-        form = loader.load(&file, this);
+        m_sheetui_widget = loader.load(&file, this);
         file.close();
     }
-    
+
     foreach(QString formbuttonname, g_formbuttonnames) {
         if(! m_form_buttons[formbuttonname]) {
-            m_form_buttons[formbuttonname] = form->findChild<QPushButton *>(formbuttonname);
+            m_form_buttons[formbuttonname] = m_sheetui_widget->findChild<QPushButton *>(formbuttonname);
             if(m_form_buttons[formbuttonname]) {
                 m_form_buttons[formbuttonname]->setProperty("buttonname", formbuttonname);
                 connect( m_form_buttons[formbuttonname], SIGNAL(clicked()),
                          this, SLOT(actionFromForm()) );
             }
         } else {
-            qDebug() << "Popup::addInfoForm()" << "already ?" << formbuttonname << form->findChild<QPushButton *>(formbuttonname);
+            qDebug() << "Popup::addInfoForm()" << "already ?" << formbuttonname << m_sheetui_widget->findChild<QPushButton *>(formbuttonname);
         }
     }
+
     QRegExp re_callstatus("^XIVO_CALL_STATUS-");
-    foreach(QPushButton * callstatusbutton, form->findChildren<QPushButton *>(re_callstatus)) {
+    foreach(QPushButton * callstatusbutton, m_sheetui_widget->findChildren<QPushButton *>(re_callstatus)) {
         QString formbuttonname = callstatusbutton->objectName();
         m_form_buttons[formbuttonname] = callstatusbutton;
         m_form_buttons[formbuttonname]->setProperty("buttonname", formbuttonname);
@@ -339,8 +336,8 @@ void Popup::addInfoForm(int where, const QString & value)
                  this, SLOT(actionFromForm()) );
     }
     setEnablesOnForms();
-    if(form != NULL)
-        m_vlayout->insertWidget(where, form);
+    if(m_sheetui_widget != NULL)
+        m_vlayout->insertWidget(where, m_sheetui_widget);
 }
 
 void Popup::addInfoText(int where, const QString & name, const QString & value)
@@ -372,7 +369,7 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
     } else if(name == "uniqueid") {
         m_uniqueid = value;
         setProperty("uniqueid", m_uniqueid);
-        
+
     } else if(name == "nosystraypopup")
         m_systraypopup = false;
     else if(name == "nofocus")

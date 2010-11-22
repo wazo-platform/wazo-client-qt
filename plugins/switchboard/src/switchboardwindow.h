@@ -79,10 +79,10 @@ class XletSwitchBoard : public XLet
         void changeGroupName();
         void addPhoneNumberEntry();
         void drawTheGrid(bool yes=true);
+        void savePositions() const;
 
     private:
         void saveGroups() const;
-        void savePositions() const;
         void reloadGroups();
         void reloadExternalPhones();
         BasePeerWidget *getExternalPhonePeerWidget(const QString & number);

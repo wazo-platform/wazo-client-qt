@@ -102,7 +102,6 @@ class Popup: public QWidget
     signals:
         void wantsToBeShown(Popup *);  //!< sent when the widget want to show itself
         void actionFromPopup(const QString &, const QVariant &);
-        void save(const QString &);
         void newRemarkSubmitted(const QString &, const QString &);
 
     public slots:
@@ -123,7 +122,7 @@ class Popup: public QWidget
         void addInfoForm(int, const QString &);
         void saveandclose();
         void setEnablesOnForms();
-        
+
         QIODevice *m_inputstream;  //!< input stream where the XML is read from
         /* the following properties are for XML parsing */
         //! QXmlInputSource constructed from m_inputstream
@@ -136,13 +135,13 @@ class Popup: public QWidget
         QString m_messagetitle;  //! Message title
         QLabel *m_title;  //! Sheet Title
         QPushButton *m_closesheet;
-        
+
         QString m_astid;
         QString m_context;
         QString m_uniqueid;
         QString m_channel;
         QString m_kind;
-        
+
         bool m_sheetpopup;
         bool m_systraypopup;
         bool m_focus;

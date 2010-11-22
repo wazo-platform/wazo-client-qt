@@ -72,6 +72,10 @@ XletSwitchBoard::XletSwitchBoard(QWidget *parent)
                                              const QString &, const QVariant &)),
             this, SLOT(updatePeerAgent(double, const QString &,
                                        const QString &, const QVariant &)));
+    // savePositions() needs m_peerhash to be non-empty in order to be useful,
+    // thus we call it before removePeers()
+    connect(b_engine, SIGNAL(delogged()),
+            this, SLOT(savePositions()));
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(removePeers()));
 
@@ -96,7 +100,7 @@ XletSwitchBoard::~XletSwitchBoard()
  */
 void XletSwitchBoard::updateUser(UserInfo *ui)
 {
-    //qDebug() << "XletSwitchBoard::updateUser()" << ui->toString();
+    // qDebug() << "XletSwitchBoard::updateUser()" << ui->toString();
     QString userid = ui->userid();
     PeerItem *peeritem = NULL;
     if (m_peerhash.contains(userid)) {
@@ -145,7 +149,7 @@ void XletSwitchBoard::updatePeerAgent(double,
 void XletSwitchBoard::removePeerFromLayout()
 {
     const QString userid = sender()->property("userid" ).toString();
-    qDebug() << "XletSwitchBoard::removePeerFromLayout" << userid << m_peerhash.keys();
+    // qDebug() << "XletSwitchBoard::removePeerFromLayout" << userid << m_peerhash.keys();
     if (m_peerhash.contains(userid)) {
         PeerItem *peeritem = m_peerhash[userid];
         BasePeerWidget *peerwidget = peeritem->getWidget();
@@ -171,7 +175,7 @@ void XletSwitchBoard::removePeerFromLayout()
 void XletSwitchBoard::removeGroup()
 {
     int ret;
-    qDebug() << "removeGroup" << sender()->property("group");
+    // qDebug() << "removeGroup" << sender()->property("group");
     Group *group = (Group *)(sender()->property("group").value<void *>());
     if (group) {
         ret = QMessageBox::question(this,
@@ -299,6 +303,7 @@ void XletSwitchBoard::dragEnterEvent(QDragEnterEvent *event)
  */
 void XletSwitchBoard::dropEvent(QDropEvent *event)
 {
+    // qDebug() << "XletSwitchBoard::dropEvent()";
     if (event->mimeData()->hasFormat(USERID_MIMETYPE)) {
         QString userid = event->mimeData()->data(USERID_MIMETYPE);
         if (m_peerhash.contains(userid)) {
@@ -352,7 +357,7 @@ BasePeerWidget* XletSwitchBoard::getExternalPhonePeerWidget(const QString &numbe
  */
 void XletSwitchBoard::savePositions() const
 {
-    // qDebug() << "XletSwitchBoard::savePositions()";
+    // qDebug() << "XletSwitchBoard::savePositions()" << m_peerhash.count();
     QSettings * settings = b_engine->getSettings();
     settings->beginGroup("layout");
     QHashIterator<QString, PeerItem *> it(m_peerhash);
@@ -548,6 +553,7 @@ void XletSwitchBoard::mousePressEvent(QMouseEvent *event)
 
 void XletSwitchBoard::mouseReleaseEvent(QMouseEvent *)
 {
+    // qDebug() << "XletSwitchBoard::mouseReleaseEvent()";
     if (m_trace_box) {
         QRect rect = QRect(m_first_corner, m_second_corner).normalized();
 
@@ -566,7 +572,8 @@ void XletSwitchBoard::mouseReleaseEvent(QMouseEvent *)
             colorpicker->setStandardColors();
             colorpicker->setCurrentColor(QColor(63, 63, 255));
             layout->addWidget(colorpicker);
-            QDialogButtonBox *buttonbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &dialog);
+            QDialogButtonBox *buttonbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                                                               Qt::Horizontal, &dialog);
             layout->addWidget(buttonbox);
             connect(buttonbox, SIGNAL(accepted()),
                     &dialog, SLOT(accept()) );
@@ -695,6 +702,7 @@ void XletSwitchBoard::drawTheGrid(bool drawGrid)
  */
 void XletSwitchBoard::saveGroups() const
 {
+    // qDebug() << "XletSwitchBoard::saveGroups()";
     QSettings *settings = b_engine->getSettings();
     settings->beginGroup("groups");
     settings->beginWriteArray("groups");
@@ -769,7 +777,7 @@ BasePeerWidget* XletSwitchBoard::addPeerWidget(PeerItem *peeritem, const QPoint 
 void XletSwitchBoard::addPhoneNumberEntry()
 {
     QPoint pos = sender()->property("pos" ).toPoint();
-    qDebug() << "XletSwitchBoard::addPhoneNumberEntry()";
+    // qDebug() << "XletSwitchBoard::addPhoneNumberEntry()";
     ExternalPhoneDialog dialog;
     int rDialog = dialog.exec();
     if (rDialog && !dialog.number().isEmpty()) {
@@ -793,4 +801,3 @@ void XletSwitchBoard::addPhoneNumberEntry()
         }
     }
 }
-

@@ -45,6 +45,9 @@ int Group::move(QList<Group *> &groups, PeersLayout *layout_on, QPoint &deltaGri
     QRect nr = r;
     nr.translate(deltaGrid);
 
+    if((nr.left() < 0) || (nr.top() < 0))
+        return 0;
+
     /* is there any group at the place where we intend to move ? */
     bool group_collision = false;
     foreach(Group *group, groups){

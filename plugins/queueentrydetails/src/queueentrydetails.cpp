@@ -103,16 +103,18 @@ void XLetQueueEntryDetails::updatePanel()
     QueueInfo * qinfo = b_engine->queues()[m_monitored_queueid];
     QVariantMap properties = qinfo->properties();
     QVariantMap channels = properties["channels"].toMap();
-    
-    m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4)")
+
+    m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) (%5 call(s))")
                                 .arg(qinfo->queueName())
                                 .arg(qinfo->queueNumber())
                                 .arg(qinfo->astid())
-                                .arg(qinfo->context()));
-    
+                                .arg(qinfo->context())
+                                .arg(channels.count())
+                                );
+
     // queue legends
     clearPanel();
-    
+
     foreach(QString channel, channels.keys()) {
         m_entrypos[channel] = new QLabel(this);
         updateEntryChannel(channel);
@@ -124,14 +126,14 @@ void XLetQueueEntryDetails::updateEntryChannel(const QString & channel)
     QueueInfo * qinfo = b_engine->queues()[m_monitored_queueid];
     QVariantMap properties = qinfo->properties();
     QVariantMap channels = properties["channels"].toMap();
-    
+
     if(m_entrypos.contains(channel)) {
         QVariantMap entryinfos = channels[channel].toMap();
         int time_spent = b_engine->timeServer() - entryinfos["entrytime"].toDouble(); // from the server point of view
         QDateTime inittime = b_engine->timeClient().addSecs(- time_spent); // from the client point of view
         int nsec = inittime.secsTo(QDateTime::currentDateTime());
         int position = entryinfos["position"].toInt();
-        
+
         m_entrypos[channel]->setText(QString("%1 : %2 %3 : %4 sec")
                                      .arg(position)
                                      .arg(entryinfos["calleridname"].toString())

@@ -123,6 +123,9 @@ XletQueues::XletQueues(QWidget *parent)
         xletlist.append(xletdesc.split("-")[0]);
     m_showMore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
     m_showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
+    int nsecs = 30;
+    if (b_engine->getGuiOptions("server_gui").contains("xlet.queues.statsfetchperiod"))
+        nsecs = b_engine->getGuiOptions("server_gui").value("xlet.queues.statsfetchperiod").toInt();
 
     QVBoxLayout *xletLayout = new QVBoxLayout(this);
     xletLayout->setSpacing(0);
@@ -141,7 +144,7 @@ XletQueues::XletQueues(QWidget *parent)
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateLongestWaitWidgets()));
     connect(timer, SIGNAL(timeout()), this, SLOT(askForQueueStats()));
-    timer->start(1000);
+    timer->start(nsecs * 1000);
 
     connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
             this, SLOT(newQueueList(const QStringList &)));

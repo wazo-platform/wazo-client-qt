@@ -85,7 +85,6 @@ class DirectoryPanel : public XLet
         ExtendedLineEdit *m_searchText;  //!< search text input
         ExtendedTableWidget *m_table;  //!< table to display results
         QPushButton *m_searchButton;  //!< button
-        QString m_numberToDial;  //!< used to store number to dial or to transfer to
         QString m_mailAddr;  //!< used to store email address
         QRegExp m_re_number;  //!< regexp used to recognize phone numbers
 };

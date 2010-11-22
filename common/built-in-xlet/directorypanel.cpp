@@ -62,11 +62,10 @@ DirectoryPanel::DirectoryPanel(QWidget *parent)
             this, SLOT(itemClicked(QTableWidgetItem *)));
     connect(m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
             this, SLOT(itemDoubleClicked(QTableWidgetItem *)));
-        
+
     vlayout->addWidget(m_table);
     setAcceptDrops(true);
-    m_numberToDial = "";
-        
+
     setFocusPolicy(Qt::StrongFocus);
     setFocusProxy(m_searchText);
 

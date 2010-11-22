@@ -121,13 +121,6 @@ void CustomerInfoPanel::popupDestroyed(QObject * obj)
             m_popups.removeAll(mpopup);
 }
 
-void CustomerInfoPanel::addToDataBase(const QString & dbdetails)
-{
-    qDebug() << "CustomerInfoPanel::addToDataBase()" << dbdetails;
-    // if (dbdetails.size() > 0)
-    // sendCommand("database " + dbdetails);
-}
-
 void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, const QString & id)
 {
     qDebug() << "CustomerInfoPanel::displayFiche id=" << id;
@@ -147,8 +140,6 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
             this, SLOT(popupDestroyed(QObject *)));
     connect(popup, SIGNAL(wantsToBeShown(Popup *)),
             this, SLOT(showNewProfile(Popup *)));
-    connect(popup, SIGNAL(save(const QString &)),
-            this, SLOT(addToDataBase(const QString &)));
     connect(popup, SIGNAL(actionFromPopup(const QString &, const QVariant &)),
             this, SLOT(actionFromPopup(const QString &, const QVariant &)));
     connect(popup, SIGNAL(newRemarkSubmitted(const QString &, const QString &)),

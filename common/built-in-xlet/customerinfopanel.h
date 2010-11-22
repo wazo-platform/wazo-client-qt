@@ -71,7 +71,6 @@ class CustomerInfoPanel : public XLet
     public slots:
         void showNewProfile(Popup *);
         void popupDestroyed(QObject *obj);
-        void addToDataBase(const QString &);
         void displayFiche(const QString &, bool, const QString &);
         void actionFromPopup(const QString &, const QVariant &);
         void activateRemarkArea(const QString &id);
