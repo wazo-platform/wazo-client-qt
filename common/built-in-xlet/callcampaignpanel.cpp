@@ -38,7 +38,7 @@
 CallCampaignPanel::CallCampaignPanel(QWidget *parent)
     : XLet(parent)
 {
-    qDebug() << "CallCampaignPanel::CallCampaignPanel()";
+    qDebug() << Q_FUNC_INFO;
     setTitle(tr("Call Campaign"));
         
     m_vlayout = new QVBoxLayout(this);
@@ -98,7 +98,7 @@ CallCampaignPanel::CallCampaignPanel(QWidget *parent)
 
 void CallCampaignPanel::setOpenFileName()
 {
-    // qDebug() << "CallCampaignPanel::setOpenFileName()";
+    // qDebug() << Q_FUNC_INFO;
     QString selectedFilter;
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open PhoneList File"),
@@ -138,7 +138,7 @@ void CallCampaignPanel::fileNameChanged(const QString &)
 
 void CallCampaignPanel::requestFileListResult(const QVariant & result)
 {
-    // qDebug() << "CallCampaignPanel::requestFileListResult()" << result;
+    // qDebug() << Q_FUNC_INFO << result;
     QString action = result.toMap()["command"].toString();
         
     if(action == "fetchlist") {
@@ -174,27 +174,27 @@ void CallCampaignPanel::checkStatuses()
         }
     }
     if(toexec.size() > 0) {
-        qDebug() << "CallCampaignPanel::checkStatuses()" << toexec;
+        qDebug() << Q_FUNC_INFO << toexec;
         requestFileList("startcall " + toexec);
     }
 }
 
 void CallCampaignPanel::getCalls()
 {
-    // qDebug() << "CallCampaignPanel::getCalls()";
+    // qDebug() << Q_FUNC_INFO;
     requestFileList("fetchlist");
 }
 
 void CallCampaignPanel::startCalls()
 {
-    // qDebug() << "CallCampaignPanel::startCalls()";
+    // qDebug() << Q_FUNC_INFO;
     checkStatuses();
     // requestFileList("fetchlist");
 }
 
 void CallCampaignPanel::stopCalls()
 {
-    // qDebug() << "CallCampaignPanel::stopCalls()";
+    // qDebug() << Q_FUNC_INFO;
     QString toexec;
     QStringList keys = m_numbers.keys();
     keys.sort();
@@ -211,7 +211,7 @@ void CallCampaignPanel::stopCalls()
 
 void CallCampaignPanel::clearCalls()
 {
-    // qDebug() << "CallCampaignPanel::clearCalls()";
+    // qDebug() << Q_FUNC_INFO;
     QStringList keys = m_numbers.keys();
     foreach(QString key, m_numbers.keys()) {
         if(m_numbers[key] == "stopped") {
@@ -226,7 +226,7 @@ void CallCampaignPanel::clearCalls()
 
 void CallCampaignPanel::loadFileClicked()
 {
-    qDebug() << "CallCampaignPanel::loadFileClicked()" << m_openFileNameLabel->text();
+    qDebug() << Q_FUNC_INFO << m_openFileNameLabel->text();
     if(m_openFileNameLabel->text().size() == 0)
         return;
         
@@ -240,10 +240,10 @@ void CallCampaignPanel::loadFileClicked()
         addNumber(line);
         nlines ++;
     }
-    qDebug() << nlines << "read";
+    qDebug() << Q_FUNC_INFO << nlines << "read";
         
     //         QByteArray * filedata = new QByteArray();
     //         filedata->append(qf->readAll());
     qf->close();
-    //        qDebug() << "CallCampaignPanel::fileNameChanged() size = " << filedata->size();
+    //        qDebug() << Q_FUNC_INFO << "size = " << filedata->size();
 }

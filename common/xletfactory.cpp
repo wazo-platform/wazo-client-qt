@@ -108,14 +108,14 @@ static bool findPluginDir()
             //  the xivo_client might be installed properly for all the user on an unix box
             pluginDirFound = true;
         } else {
-            qDebug() << "cannot find plugins directory";
+            qDebug() << Q_FUNC_INFO << "cannot find plugins directory";
         }
     }
 #else
     QString pluginDirPath = qApp->applicationDirPath() + "/../Resources/plugins";
     pluginDirFound = pluginDir.cd(pluginDirPath);
     if (!pluginDirFound) {
-        qDebug() << "cannot find plugins directory (tryed: " << pluginDirPath << ")";
+        qDebug() << Q_FUNC_INFO << "cannot find plugins directory (tryed: " << pluginDirPath << ")";
     }
 #endif
 
@@ -157,7 +157,8 @@ XLet* spawn(const QString &id, QWidget *parent)
         "lib" + id + "plugin.dylib";
 #endif
 
-        qDebug() << "Trying to load plugin" << fileName << pluginDir.absoluteFilePath(fileName);
+        qDebug() << Q_FUNC_INFO << "Trying to load plugin" << fileName;
+        qDebug() << Q_FUNC_INFO << "location" << pluginDir.absoluteFilePath(fileName);
         QPluginLoader loader(pluginDir.absoluteFilePath(fileName));
         QObject *plugin = loader.instance();
 
@@ -166,10 +167,10 @@ XLet* spawn(const QString &id, QWidget *parent)
             if (xleti) {
                 xlet = xleti->newXLetInstance(parent);
             } else {
-                qDebug() << "failed to cast plugin loaded to XLetInterface";
+                qDebug() << Q_FUNC_INFO << "failed to cast plugin loaded to XLetInterface";
             }
         } else {
-            qDebug() << "failed to load plugin :"<< loader.errorString();
+            qDebug() << Q_FUNC_INFO << "failed to load plugin :"<< loader.errorString();
         }
     }
 

@@ -42,7 +42,7 @@ enum ColOrder {
 static QVariant COL_TITLE[NB_COL];
 
 ConfChamberModel::ConfChamberModel(ConfTab *tab, QWidget *parent, const QString &id)
-    : QAbstractTableModel(parent), m_tab(tab), m_parent(parent), m_admin(0), 
+    : QAbstractTableModel(parent), m_tab(tab), m_parent(parent), m_admin(0),
       m_authed(0), m_id(id), m_view(NULL)
 {
     b_engine->tree()->onChange(QString("confrooms/%0").arg(id), this,
@@ -231,7 +231,7 @@ ConfChamberModel::data(const QModelIndex &index,
                 if (b_engine->eV(in + "recorded").toBool()) {
                     return tr("User already recorded");
                 }
-                return tr("Record conference untill this user leave");
+                return tr("Record conference until this user leaves");
             } else if (col == ACTION_MUTE) {
                 if ((m_admin) ||
                     (b_engine->eV(in + "user-id").toString() == b_engine->xivoUserId())) {

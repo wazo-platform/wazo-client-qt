@@ -224,7 +224,7 @@ void MainWidget::clipdata()
 
 void MainWidget::setAppearance(const QStringList &dockoptions)
 {
-    qDebug() << "MainWidget::setAppearance()" << dockoptions;
+    qDebug() << Q_FUNC_INFO << dockoptions;
 
     QStringList dockopts = dockoptions;
 
@@ -280,7 +280,7 @@ void MainWidget::logintextChanged(const QString &logintext)
 
 void MainWidget::loginKindChanged(int index)
 {
-    // qDebug() << "MainWidget::loginKindChanged()" << index;
+    // qDebug() << Q_FUNC_INFO << index;
     b_engine->setLoginKind(index);
     if (index == 0) {
         m_lab3->hide();
@@ -444,7 +444,7 @@ void MainWidget::createSystrayIcon()
     connect(m_systrayIcon, SIGNAL(messageClicked()),
              this, SLOT(systrayMsgClicked()));
     // QSystemTrayIcon::ActivationReason
-    // qDebug() << "QSystemTrayIcon::supportsMessages() = "
+    // qDebug() << Q_FUNC_INFO << "QSystemTrayIcon::supportsMessages() = "
     //          << QSystemTrayIcon::supportsMessages();
 }
 
@@ -462,7 +462,7 @@ void MainWidget::showConfDialog()
 
 void MainWidget::confUpdated()
 {
-    // qDebug() << "MainWidget::confUpdated()";
+    // qDebug() << Q_FUNC_INFO;
     m_qlab1->setText(b_engine->userId());
     m_qlab2->setText(b_engine->password());
     m_qlab3->setText(b_engine->agentphonenumber());
@@ -478,7 +478,7 @@ void MainWidget::confUpdated()
  * of the MainWidget on a simple left click. */
 void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    qDebug() << "MainWidget::systrayActivated()"
+    qDebug() << Q_FUNC_INFO
              << "reason =" << reason
              << "isMinimized =" << isMinimized()
              << "isVisible =" << isVisible()
@@ -519,7 +519,7 @@ void MainWidget::showMessageBox(const QString & message)
  */
 void MainWidget::systrayMsgClicked()
 {
-    qDebug() << "MainWidget::systrayMsgClicked()";
+    qDebug() << Q_FUNC_INFO;
     setVisible(true);
     activateWindow();
     raise();
@@ -538,7 +538,7 @@ void MainWidget::showWidgetOnTop(QWidget * widget)
 void MainWidget::addPanel(const QString &name, const QString &title, QWidget *widget)
 {
     if (m_docknames.contains(name)) {
-        qDebug() << "MainWidget::addPanel() (dock)" << name << m_dockoptions[name];
+        qDebug() << Q_FUNC_INFO << "(dock)" << name << m_dockoptions[name];
         QDockWidget::DockWidgetFeatures features = QDockWidget::NoDockWidgetFeatures;
         if (m_dockoptions[name].contains("c"))
             features |= QDockWidget::DockWidgetClosable;
@@ -554,11 +554,11 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
         m_docks[name]->hide();
         m_docks[name]->setWidget(widget);
     } else if (m_gridnames.contains(name)) {
-        qDebug() << "MainWidget::addPanel() (grid)" << name << m_dockoptions[name] << title << m_dockoptions[name].toInt();
-        qDebug() << "inserting" << m_dockoptions[name].toInt();
+        qDebug() << Q_FUNC_INFO << "(grid)" << name << m_dockoptions[name] << title << m_dockoptions[name].toInt();
+        qDebug() << Q_FUNC_INFO << "inserting" << m_dockoptions[name].toInt();
         m_vL->insertWidget(m_dockoptions[name].toInt(), widget);
     } else if (m_tabnames.contains(name)) {
-        qDebug() << "MainWidget::addPanel() (tab) " << name << m_dockoptions[name] << m_tabwidget->count() << title;
+        qDebug() << Q_FUNC_INFO << "(tab) " << name << m_dockoptions[name] << m_tabwidget->count() << title;
         QString tabTitle = "  " + title + "  ";
         if (m_dockoptions[name].size() > 0) {
             m_tabwidget->insertTab(m_dockoptions[name].toInt(), widget, tabTitle);
@@ -570,7 +570,7 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
 
 void MainWidget::updatePresence(const QVariant &presence)
 {
-    // qDebug() << "MainWidget::updatePresence()" << presence;
+    // qDebug() << Q_FUNC_INFO << presence;
     QVariantMap presencemap = presence.toMap();
     if (presencemap.contains("names")) {
         foreach (QString avstate, presencemap["names"].toMap().keys()) {
@@ -668,12 +668,12 @@ void MainWidget::engineStarted()
                     addPanel(xletid, xlet->title(), xlet);
                 }
             } else {
-                qDebug() << "cannot instanciate XLet" << xletid;
+                qDebug() << Q_FUNC_INFO << "cannot instantiate XLet" << xletid;
             }
         }
     }
     
-    qDebug() << "MainWidget::engineStarted() : the xlets have been created";
+    qDebug() << Q_FUNC_INFO << "the xlets have been created";
     m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
 
     foreach (QString name, m_docks.keys())
@@ -728,7 +728,7 @@ void MainWidget::setSystrayIcon(const QString & def)
 
 void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
-//    qDebug() << "MainWidget::removePanel" << name << widget;
+//    qDebug() << Q_FUNC_INFO << name << widget;
     if (m_docknames.contains(name)) {
         removeDockWidget(m_docks[name]);
         m_docks[name]->deleteLater();
@@ -737,7 +737,7 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
     if (m_tabnames.contains(name)) {
         int thisindex = m_tabwidget->indexOf(widget);
         if (thisindex > -1) {
-            qDebug() << "removing tab" << name << thisindex;
+            qDebug() << Q_FUNC_INFO << "removing tab" << name << thisindex;
             m_tabwidget->removeTab(thisindex);
         }
     }
@@ -755,7 +755,7 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
  */
 void MainWidget::engineStopped()
 {
-    // qDebug() << "MainWidget::engineStopped()";
+    // qDebug() << Q_FUNC_INFO;
     m_settings->setValue("display/mainwindowstate", saveState());
     if (m_tabwidget->currentIndex() > -1) {
         m_settings->setValue("display/lastfocusedtab", m_tabwidget->currentIndex());
@@ -800,7 +800,7 @@ void MainWidget::engineStopped()
 
 void MainWidget::savePositions() const
 {
-    // qDebug() << "MainWidget::savePositions()";
+    // qDebug() << Q_FUNC_INFO;
     m_settings->setValue("display/mainwingeometry", saveGeometry());
 }
 
@@ -830,7 +830,7 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
                                    const QHash<QString, QString> & msgs,
                                    const QString & options)
 {
-    qDebug() << "MainWidget::customerInfoPopup()";
+    qDebug() << Q_FUNC_INFO;
     // systray popup
     // to be customisable (yes or no)
     if (m_withsystray && m_systrayIcon && options.contains("s") && (msgtitle.size() > 0)) {
@@ -860,7 +860,7 @@ void MainWidget::hideEvent(QHideEvent *event)
 {
     // called when minimized
     // if systray available
-    // qDebug() << "MainWidget::hideEvent()";
+    // qDebug() << Q_FUNC_INFO;
     // << "spontaneous =" << event->spontaneous()
     // << "isMinimized =" << isMinimized()
     // << "isVisible ="   << isVisible()
@@ -888,7 +888,7 @@ void MainWidget::hideEvent(QHideEvent *event)
  */
 void MainWidget::closeEvent(QCloseEvent *event)
 {
-    qDebug() << "MainWidget::closeEvent()"
+    qDebug() << Q_FUNC_INFO
              << "spontaneous =" << event->spontaneous()
              << "type =" << event->type();
     // << "isMinimized =" << isMinimized()

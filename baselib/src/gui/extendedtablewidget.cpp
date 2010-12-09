@@ -65,7 +65,7 @@ ExtendedTableWidget::ExtendedTableWidget(int rows, int columns, QWidget * parent
  */
 void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
 {
-    qDebug() << "ExtendedTableWidget::contextMenuEvent()" << event;
+    qDebug() << Q_FUNC_INFO << event;
     qDebug() << "   " << event->pos();
     QTableWidgetItem *item = itemAt(event->pos());
     QAction *action;
@@ -131,7 +131,7 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
 
 void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
 {
-    // qDebug() << "ExtendedTableWidget::mouseMoveEvent()" << event << event->pos();
+    // qDebug() << Q_FUNC_INFO << event << event->pos();
     QTableWidgetItem *item = itemAt(event->pos());
     if (item) {
         QDrag *drag = new QDrag(this);
@@ -147,7 +147,7 @@ void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
  */
 void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    // qDebug() << "ExtendedTableWidget::dragEnterEvent" << event->mimeData()->formats() << event->pos();
+    // qDebug() << Q_FUNC_INFO << event->mimeData()->formats() << event->pos();
     if (event->mimeData()->hasFormat(PEER_MIMETYPE) ||
         event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
         event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
@@ -161,7 +161,7 @@ void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
  */
 void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-    // qDebug() << "ExtendedTableWidget::dragMoveEvent()" << event->pos();
+    // qDebug() << Q_FUNC_INFO << event->pos();
     if (event->proposedAction() & (Qt::CopyAction | Qt::MoveAction)) {
         event->acceptProposedAction();
     }
@@ -181,7 +181,7 @@ void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
  */
 void ExtendedTableWidget::dropEvent(QDropEvent *event)
 {
-    // qDebug() << "ExtendedTableWidget::dropEvent()" << event->mimeData()->text() << event->pos();
+    // qDebug() << Q_FUNC_INFO << event->mimeData()->text() << event->pos();
     QTableWidgetItem *item = itemAt(event->pos());
     if ((item) && (m_re_number.exactMatch(item->text()))) {
         QString userid_from = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));

@@ -37,7 +37,7 @@
 FaxPanel::FaxPanel(QWidget *parent)
     : XLet(parent), m_mainwindow(parent)
 {
-    // qDebug() << "FaxPanel::FaxPanel()" << parent;
+    // qDebug() << Q_FUNC_INFO << parent;
     setTitle( tr("Fax") );
     Qt::CheckState previous_hide = (Qt::CheckState) b_engine->getSettings()->value("faxhistory/hidenumber", 0).toInt();
 
@@ -115,7 +115,7 @@ FaxPanel::FaxPanel(QWidget *parent)
 
 FaxPanel::~FaxPanel()
 {
-    // qDebug() << "FaxPanel::~FaxPanel()";
+    // qDebug() << Q_FUNC_INFO;
 }
 
 void FaxPanel::destSelectionChanged()
@@ -130,7 +130,7 @@ void FaxPanel::destSelectionChanged()
 
 void FaxPanel::destNumberChanged(const QString &/* ext*/)
 {
-    // qDebug() << "FaxPanel::destNumberChanged()" << ext;
+    // qDebug() << Q_FUNC_INFO << ext;
     if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
         m_sendButton->setEnabled(true);
     } else {
@@ -140,7 +140,7 @@ void FaxPanel::destNumberChanged(const QString &/* ext*/)
 
 void FaxPanel::fileNameChanged(const QString &)
 {
-    // qDebug() << "FaxPanel::fileNameChanged()" << ext;
+    // qDebug() << Q_FUNC_INFO << ext;
     if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
         m_sendButton->setEnabled(true);
     } else {
@@ -169,7 +169,7 @@ void FaxPanel::sendFax()
 {
     b_engine->getSettings()->setValue("faxhistory/hidenumber", m_maskornot->checkState());
     if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
-        // qDebug() << "FaxPanel::sendFax()"
+        // qDebug() << Q_FUNC_INFO
         // << m_openFileNameLabel->text()
         // << m_destination->text()
         // << m_maskornot->checkState();
@@ -186,10 +186,10 @@ void FaxPanel::sendFax()
 
 void FaxPanel::dirLookup()
 {
-    // qDebug() << "FaxPanel::dirLookup()";
+    // qDebug() << Q_FUNC_INFO;
     m_dirw = new DirDialog(m_mainwindow);
     m_dirw->exec();
-    // qDebug() << "FaxPanel::dirLookup() DirDialog exec'ed";
+    // qDebug() << Q_FUNC_INFO << "DirDialog exec'ed";
     QString retstr = m_dirw->faxnumber();
     if(retstr.size() > 0)
         m_destination->setText(retstr);
@@ -202,7 +202,7 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
     QMessageBox::Icon icon;
     QString text;
     
-    // qDebug() << "FaxPanel::popupMsg()" << status << reason;
+    // qDebug() << Q_FUNC_INFO << status << reason;
     
     if(status == "ok") {
         icon = QMessageBox::Information;

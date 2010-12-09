@@ -47,7 +47,7 @@
 XletWeb::XletWeb(QWidget *parent)
     : XLet(parent)
 {
-    qDebug() << "XletWeb::XletWeb()";
+    qDebug() << Q_FUNC_INFO;
     setTitle( tr("Web Browser") );
         
     QVBoxLayout * layout = new QVBoxLayout(this);
@@ -102,7 +102,7 @@ XletWeb::XletWeb(QWidget *parent)
 
 XletWeb::~XletWeb()
 {
-    qDebug() << "XletWeb::~XletWeb()";
+    qDebug() << Q_FUNC_INFO;
 }
 
 void XletWeb::loadAddress()
@@ -127,9 +127,8 @@ void XletWeb::displayIcon()
 {
     const QIcon & _icon = web->icon();
 #if QT_VERSION >= 0x040500
-    qDebug() << "XletWeb::displayIcon() available sizes"
+    qDebug() << Q_FUNC_INFO << "available sizes"
              << _icon.availableSizes(); //Qt 4.5
 #endif
     icon->setPixmap(_icon.pixmap(32));
 }
-

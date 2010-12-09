@@ -84,8 +84,9 @@
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="234"/>
-        <source>Record conference untill this user leave</source>
-        <translation>Enregistrer la conférence jusqu&apos;a ce que l&apos;utilsateur quitte</translation>
+        <source>Record conference until this user leaves</source>
+        <oldsource>Record conference untill this user leave</oldsource>
+        <translation>Enregistrer la conférence jusqu&apos;à ce que l&apos;utilisateur la quitte</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="239"/>
@@ -118,7 +119,7 @@
     <message>
         <location filename="src/confchamber.cpp" line="54"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="55"/>
@@ -138,7 +139,7 @@
     <message>
         <location filename="src/confchamber.cpp" line="58"/>
         <source>Admin</source>
-        <translation type="unfinished"></translation>
+        <translation>Admin</translation>
     </message>
 </context>
 <context>
@@ -204,7 +205,7 @@
     <message>
         <location filename="src/conference.cpp" line="111"/>
         <source>Conference</source>
-        <translation type="unfinished"></translation>
+        <translation>Conférences</translation>
     </message>
     <message>
         <location filename="src/conference.cpp" line="117"/>

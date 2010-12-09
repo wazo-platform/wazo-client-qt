@@ -106,7 +106,7 @@ void BasePeerWidget::reloadSavedName()
  */
 void BasePeerWidget::dial()
 {
-    // qDebug() << "PeerWidget::dial()" << m_ui->userid() << sender();
+    // qDebug() << Q_FUNC_INFO << m_ui->userid() << sender();
     if (m_ui) {
         b_engine->actionCall("originate", "user:special:me", "user:" + m_ui->userid());
     } else {
@@ -166,7 +166,7 @@ void BasePeerWidget::intercept()
 void BasePeerWidget::intercept2()
 {
     if (m_ui) {
-        qDebug() << "BasePeerWidget::intercept2()" << m_ui->userid();
+        qDebug() << Q_FUNC_INFO << m_ui->userid();
     }
 }
 
@@ -338,7 +338,7 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
     drag->setMimeData(mimeData);
         
     drag->start(Qt::CopyAction | Qt::MoveAction);
-    //qDebug() << "PeerWidget::mouseMoveEvent : dropAction=" << dropAction;
+    //qDebug() << Q_FUNC_INFO << "dropAction=" << dropAction;
 }
 
 /*! \brief open a context menu
@@ -432,7 +432,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 
             foreach (const QString ts, comms.keys()) {
                 const QMap<QString, QVariant> & comm = comms[ts].toMap();
-                //qDebug() << "BasePeerWidget::contextMenuEvent" << pi->phoneid() << ts << comm;
+                //qDebug() << Q_FUNC_INFO << pi->phoneid() << ts << comm;
                 const QString status = comm["status"].toString();
                 QString text = comm["calleridnum"].toString();
 
@@ -511,7 +511,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
             //qDebug() << pi->phoneid() << pi->comms();
             foreach (const QString ts, comms.keys()) {
                 const QMap<QString, QVariant> & comm = comms[ts].toMap();
-                qDebug() << "BasePeerWidget::contextMenuEvent my comms : " << pi->phoneid() << ts << comm;
+                qDebug() << Q_FUNC_INFO << "my comms : " << pi->phoneid() << ts << comm;
                 const QString status = comm["status"].toString();
                 QString calleridnum = comm["calleridnum"].toString();
                 QString calleridname = calleridnum;
@@ -638,7 +638,7 @@ QString BasePeerWidget::name() const
  */
 void BasePeerWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    // qDebug() << "PeerWidget::dragEnterEvent()" << event->mimeData()->formats();
+    // qDebug() << Q_FUNC_INFO << event->mimeData()->formats();
     if (event->mimeData()->hasFormat(PEER_MIMETYPE)   ||
        event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
        event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
@@ -654,7 +654,7 @@ void BasePeerWidget::dragEnterEvent(QDragEnterEvent *event)
  */
 void BasePeerWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-    //qDebug() << "PeerWidget::dragMoveEvent()" << event->mimeData()->formats() << event->po
+    //qDebug() << Q_FUNC_INFO << event->mimeData()->formats() << event->po
     event->accept(rect());
     if (event->proposedAction() & (Qt::CopyAction | Qt::MoveAction)) {
         event->acceptProposedAction();
@@ -675,16 +675,16 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
     } else {
         to = "ext:" + m_number;
     }
-    qDebug() << "PeerWidget::dropEvent()"
+    qDebug() << Q_FUNC_INFO
              << event << event->keyboardModifiers()
              << event->mimeData() << event->proposedAction();
 
     if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
-        qDebug() << "PeerWidget::dropEvent()" << "CHANNEL_MIMETYPE";
+        qDebug() << Q_FUNC_INFO << "CHANNEL_MIMETYPE";
     } else if (event->mimeData()->hasFormat(PEER_MIMETYPE)) {
-        qDebug() << "PeerWidget::dropEvent()" << "PEER_MIMETYPE";
+        qDebug() << Q_FUNC_INFO << "PEER_MIMETYPE";
     } else if (event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
-        qDebug() << "PeerWidget::dropEvent()" << "NUMBER_MIMETYPE";
+        qDebug() << Q_FUNC_INFO << "NUMBER_MIMETYPE";
     }
         
     switch(event->proposedAction()) {
@@ -710,7 +710,7 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
             b_engine->actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, to); 
             break;
         default:
-            qDebug() << "PeerWidget::dropEvent() Unrecognized action" << event->proposedAction();
+            qDebug() << Q_FUNC_INFO << "Unrecognized action" << event->proposedAction();
             break;
     }
 }

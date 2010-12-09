@@ -125,7 +125,7 @@ void XletOperator::updateLine(const QString & chan, const QStringList & allowed)
 {
     int row = m_row[chan];
     int colnum = 1;
-    qDebug() << "XletOperator::updateLine" << row << "allowed=" << allowed;
+    qDebug() << Q_FUNC_INFO << row << "allowed=" << allowed;
     m_glayout->addWidget( m_vlinesl[chan], row, 0, Qt::AlignLeft );
     m_glayout->addWidget( m_statuses[chan], row, colnum++, Qt::AlignHCenter );
 
@@ -157,7 +157,7 @@ void XletOperator::clicked()
 {
     QString channel = sender()->property("channel").toString();
     int function = sender()->property("function").toInt();
-    qDebug() << "XletOperator::clicked()" << channel << function;
+    qDebug() << Q_FUNC_INFO << channel << function;
     m_currentchannel = channel;
     functionKeyPressed(function);
 }
@@ -167,7 +167,7 @@ void XletOperator::clicked()
 void XletOperator::dtransfer()
 {
     if (m_callchannels.contains(m_currentchannel)) {
-        qDebug() << "XletOperator::dtransfer() Direct   Transfer" << m_currentchannel;
+        qDebug() << Q_FUNC_INFO << "Direct   Transfer" << m_currentchannel;
         if (m_linestatuses[m_currentchannel] == WDTransfer) {
             m_tnums[m_currentchannel]->hide();
             m_statuses[m_currentchannel]->setFocus();
@@ -189,7 +189,7 @@ void XletOperator::dtransfer()
 void XletOperator::itransfer()
 {
     if (m_callchannels.contains(m_currentchannel)) {
-        qDebug() << "XletOperator::itransfer() Indirect Transfer" << m_currentchannel;
+        qDebug() << Q_FUNC_INFO << "Indirect Transfer" << m_currentchannel;
         if (m_linestatuses[m_currentchannel] == WITransfer) {
             m_tnums[m_currentchannel]->hide();
             m_statuses[m_currentchannel]->setFocus();
@@ -212,7 +212,7 @@ void XletOperator::xferPressed()
 {
     QString num = m_tnums[m_currentchannel]->text();
     QString peerchan = getPeerChan(m_currentchannel);
-    qDebug() << "XletOperator::xferPressed()" << m_currentchannel << peerchan << m_linestatuses[m_currentchannel] << num;
+    qDebug() << Q_FUNC_INFO << m_currentchannel << peerchan << m_linestatuses[m_currentchannel] << num;
     if (m_linestatuses[m_currentchannel] == WDTransfer) {
         b_engine->actionCall("transfer",
                              "chan:special:me:" + peerchan,
@@ -231,7 +231,7 @@ void XletOperator::xferPressed()
  */
 void XletOperator::functionKeyPressed(int keynum)
 {
-    // qDebug() << "XletOperator::functionKeyPressed()" << keynum << m_currentchannel;
+    // qDebug() << Q_FUNC_INFO << keynum << m_currentchannel;
 
     if (keynum == Qt::Key_Up) {
         if (m_currentchannel.isEmpty()) {
@@ -267,7 +267,7 @@ void XletOperator::functionKeyPressed(int keynum)
 
     if (m_callchannels.contains(m_currentchannel)) {
         Line linestatus = m_linestatuses[m_currentchannel];
-        qDebug() << "XletOperator::functionKeyPressed()" << keynum << action << m_currentchannel << linestatus;
+        qDebug() << Q_FUNC_INFO << keynum << action << m_currentchannel << linestatus;
         if (action == "answer") {
             b_engine->actionCall("answer", QString("chan:%1:not_relevant_here").arg(userid));
         } else if (action == "hangup") {
@@ -309,7 +309,7 @@ void XletOperator::functionKeyPressed(int keynum)
             // place and doing some work in the xivo_daemon and here.
         }
         //            if (action == "unpark")
-        //                qDebug() << "XletOperator::functionKeyPressed()" << "F1 when Wait : Take back";
+        //                qDebug() << Q_FUNC_INFO << "F1 when Wait : Take back";
     }
 }
 
@@ -317,7 +317,7 @@ void XletOperator::functionKeyPressed(int keynum)
  */
 void XletOperator::changeCurrentChannel(const QString & before, const QString & after)
 {
-    // qDebug() << "XletOperator::changeCurrentChannel()" << before << after;
+    // qDebug() << Q_FUNC_INFO << before << after;
     if (before != after) {
         if (m_vlinesl.contains(before) && m_vlinesr.contains(before)) {
             m_vlinesl[before]->setLineWidth(1);

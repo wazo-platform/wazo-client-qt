@@ -106,7 +106,7 @@ ChitChatWindow::ChitChatWindow(const QString &with) : QWidget(NULL)
 
 ChitChatWindow::ChitChatWindow()
 {
-    qDebug() << "registred";
+    qDebug() << Q_FUNC_INFO << "registered";
     b_engine->registerClassEvent("chitchat", ChitChatWindow::receiveMessage_t, this);
 }
 

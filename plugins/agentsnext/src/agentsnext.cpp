@@ -214,12 +214,12 @@ void XletAgentsNext::newGroup()
 
 void XletAgentsNext::mouseReleasedEvent(QMouseEvent *event)
 {
-    qDebug() << "XletAgentsNext::mouseReleasedEvent()" << event << event->pos();
+    qDebug() << Q_FUNC_INFO << event << event->pos();
 }
 
 void XletAgentsNext::setQueueGroups(const QVariant &groups)
 {
-    // qDebug() << "XletAgentsNext::setQueueGroups()" << groups;
+    // qDebug() << Q_FUNC_INFO << groups;
     foreach (QString groupid, groups.toMap().keys()) {
         if (! m_title.contains(groupid)) {
             m_title[groupid] = new ExtendedLabel(groups.toMap()[groupid].toMap()["label"].toString(), this);
@@ -253,7 +253,7 @@ void XletAgentsNext::saveGroups()
 
 void XletAgentsNext::setQueueOrder(const QVariant &queueorder)
 {
-    // qDebug() << "XletAgentsNext::setQueueOrder()" << queueorder;
+    // qDebug() << Q_FUNC_INFO << queueorder;
     m_queueorder = queueorder;
 }
 
@@ -442,7 +442,7 @@ void XletAgentsNext::removeQueueFromGroup()
 {
     QString groupid = sender()->property("groupid").toString();
     QString queuename = sender()->property("queuename").toString();
-    // qDebug() << "XletAgentsNext::removeQueueFromGroup()" << groupid << queuename;
+    // qDebug() << Q_FUNC_INFO << groupid << queuename;
     QStringList qlist = m_title[groupid]->property("queues").toStringList();
     if (qlist.contains(queuename)) {
         qlist.removeAll(queuename);
@@ -466,7 +466,7 @@ void XletAgentsNext::addQueueToGroup()
 {
     QString groupid = sender()->property("groupid").toString();
     QString queuename = sender()->property("queuename").toString();
-    // qDebug() << "XletAgentsNext::addQueueToGroup()" << groupid << queuename;
+    // qDebug() << Q_FUNC_INFO << groupid << queuename;
     QStringList qlist = m_title[groupid]->property("queues").toStringList();
     if (! qlist.contains(queuename)) {
         qlist.append(queuename);
@@ -620,7 +620,7 @@ void XletAgentsNext::actionclicked()
 
 void XletAgentsNext::refreshContents()
 {
-    // qDebug() << "XletAgentsNext::refreshContents()";
+    // qDebug() << Q_FUNC_INFO;
     foreach (QString idx, m_agent_labels.keys()) {
         delete m_agent_labels[idx];
         m_agent_labels.remove(idx);
@@ -639,7 +639,7 @@ void XletAgentsNext::refreshContents()
         if (agstatus != "AGENT_LOGGEDOFF") foreach (QString qname, agqjoined.keys()) {
             if (! agqjoined[qname].toMap().isEmpty()) {
                 QString sstatus = agqjoined[qname].toMap()["Status"].toString();
-                // qDebug() << "XletAgentsNext::refreshContents()" << qname << idxa << sstatus;
+                // qDebug() << Q_FUNC_INFO << qname << idxa << sstatus;
                 if ((sstatus == "1") || (sstatus == "3") || (sstatus == "4") || (sstatus == "5")) {
                     foreach (QString groupid, m_title.keys()) {
                         QStringList lqueues = m_title[groupid]->property("queues").toStringList();
@@ -668,7 +668,7 @@ void XletAgentsNext::refreshDisplay()
 {
     int nmax = 1;
     QHash<QString, QMap<QString, QString> > columns_sorter;
-    // qDebug() << "XletAgentsNext::refreshDisplay()";
+    // qDebug() << Q_FUNC_INFO;
     
     foreach (QString groupid, m_title.keys()) {
         QMap<QString, QString> map;
@@ -701,13 +701,13 @@ void XletAgentsNext::refreshDisplay()
 
 void XletAgentsNext::newAgentList(const QStringList &)
 {
-    //qDebug() << "XletAgentsNext::newAgentList" << list;
+    //qDebug() << Q_FUNC_INFO << list;
     emit loadQueueGroups();
 }
 
 void XletAgentsNext::newQueueList(const QStringList &)
 {
-    //qDebug() << "XletAgentsNext::newQueueList" << list;
+    //qDebug() << Q_FUNC_INFO << list;
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(b_engine->queues());
     while (iter.hasNext()) {
         iter.next();
@@ -724,7 +724,7 @@ void XletAgentsNext::newQueue(const QString & /*astid*/,
                               const QVariant &queueprops)
 {
     QString queuecontext = queueprops.toMap()["context"].toString();
-    // qDebug() << "XletAgentsNext::newQueue()" << astid << queuename << queuecontext;
+    // qDebug() << Q_FUNC_INFO << astid << queuename << queuecontext;
     UserInfo * userinfo = b_engine->getXivoClientUser();
     
     if (userinfo == NULL)
@@ -736,7 +736,7 @@ void XletAgentsNext::newQueue(const QString & /*astid*/,
 
 void XletAgentsNext::timerEvent(QTimerEvent *)
 {
-    // qDebug() << "XletAgentsNext::timerEvent()";
+    // qDebug() << Q_FUNC_INFO;
     foreach (QString idx, m_agent_labels.keys())
         setAgentProps(idx);
 }

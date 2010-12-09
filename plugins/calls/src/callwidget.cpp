@@ -58,45 +58,44 @@ CallWidget::CallWidget(UserInfo *ui, const QString &channelme,
                        const PhoneInfo *_pi)
     : QWidget(parent), m_square(16,16), m_parkedCall(false)
 {
-    // qDebug() << "CallWidget::CallWidget()" << channelme;
+    // qDebug() << Q_FUNC_INFO << channelme;
     m_ui = ui;
     pi = _pi;
     QGridLayout * gridlayout = new QGridLayout(this);
-    
+
     m_channelme = channelme;
     m_channelpeer = channelpeer;
-    
-    
+
     gridlayout->setColumnStretch(3, 1);
     m_lbl_status = new QLabel(this);
     gridlayout->addWidget(m_lbl_status, 0, 0);
-        
+
     m_lbl_time = new QLabel(this);
     m_lbl_time->setFont(QFont("", 8, QFont::Bold));
     m_startTime = QDateTime::fromTime_t(ts);
     startTimer(1000);
     gridlayout->addWidget(m_lbl_time, 1, 0, 1, 3);
-        
+
     m_lbl_direction = new QLabel(this);
     gridlayout->addWidget(m_lbl_direction, 0, 1);
-        
+
     m_lbl_exten = new QLabel(this);
     m_lbl_exten->setFont(QFont("courier", 10, QFont::Light));
     gridlayout->addWidget(m_lbl_exten, 0, 2);
-        
+
     //updateWidget(status, ts, "cpeer", callerid, calleridname);
     updateWidget(status, ts, channelpeer, callerid, calleridname, pi);
-        
+
     m_hangUpAction = new QAction(tr("&Hangup"), this);
     m_hangUpAction->setStatusTip(tr("Hang up/Close the channel"));
     connect(m_hangUpAction, SIGNAL(triggered()),
              this, SLOT(hangUp()));
-        
+
     m_transferToNumberAction = new QAction(tr("&Transfer to number"), this);
     m_transferToNumberAction->setStatusTip(tr("Transfer the channel to the dialed number") );
     connect(m_transferToNumberAction, SIGNAL(triggered()),
              this, SLOT(transferToNumber()));
-        
+
     m_parkCall = new QAction(tr("&Park the call"), this);
     m_parkCall->setStatusTip(tr("Park this call") );
     connect(m_parkCall, SIGNAL(triggered()),
@@ -132,7 +131,7 @@ void CallWidget::updateWidget(const QString & status,
                               )
 {
     pi = _pi;
-    qDebug() << "CallWidget::updateWidget()" << status << ts << channelpeer << callerid << calleridname;
+    qDebug() << Q_FUNC_INFO << status << ts << channelpeer << callerid << calleridname;
     m_parkedCall = (callerid == QString("<parked>")) || (calleridname == QString("<parked>"));
     setActionPixmap(status);
     m_channelpeer = channelpeer;
@@ -145,8 +144,8 @@ void CallWidget::updateWidget(const QString & status,
     else if ((status == CHAN_STATUS_RINGING) || (status == CHAN_STATUS_LINKED_CALLED))
         m_lbl_direction->setPixmap(QPixmap(":/in_calls/leftarrow.png"));
     else
-        qDebug() << "CallWidget::updateWidget() : status unknown" << status;
-        
+        qDebug() << Q_FUNC_INFO << "status unknown" << status;
+
     QString text = tr("Unknown");
     if(calleridname == "<meetme>")
         text = tr("Conference room number %1").arg(callerid);
@@ -194,7 +193,7 @@ void CallWidget::mouseMoveEvent(QMouseEvent *event)
         < QApplication::startDragDistance())
         return;
 
-    qDebug() << "CallWidget::mouseMoveEvent() starting DRAG" << m_channelme ;
+    qDebug() << Q_FUNC_INFO << "starting DRAG" << m_channelme ;
 
     QDrag *drag = new QDrag(this);
     QMimeData *mimeData = new QMimeData();
@@ -211,7 +210,7 @@ void CallWidget::mouseMoveEvent(QMouseEvent *event)
  */
 void CallWidget::hangUp()
 {
-    qDebug() << "CallWidget::hangUp()" << m_channelme;
+    qDebug() << Q_FUNC_INFO << m_channelme;
     doHangUp( m_channelme );
 }
 
@@ -219,7 +218,7 @@ void CallWidget::hangUp()
  */
 void CallWidget::transferToNumber()
 {
-    qDebug() << "CallWidget::transferToNumber()" << m_channelpeer;
+    qDebug() << Q_FUNC_INFO << m_channelpeer;
     doTransferToNumber( m_channelpeer);
 }
 
@@ -227,7 +226,7 @@ void CallWidget::transferToNumber()
  */
 void CallWidget::parkCall()
 {
-    qDebug() << "CallWidget::parkCall()" << m_channelme;
+    qDebug() << Q_FUNC_INFO << m_channelme;
     doParkCall( m_channelme );
 }
 
@@ -251,4 +250,3 @@ const QString& CallWidget::channel() const
 {
     return m_channelme;
 }
-

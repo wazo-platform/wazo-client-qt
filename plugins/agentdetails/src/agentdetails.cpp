@@ -133,7 +133,7 @@ void XletAgentDetails::setGuiOptions(const QVariantMap &optionsMap)
 
 void XletAgentDetails::newAgentList(const QStringList &qsl)
 {
-    // qDebug() << "XletAgentDetails::newAgentList()" << qsl;
+    // qDebug() << Q_FUNC_INFO << qsl;
     if (qsl.contains(m_monitored_agentid) && b_engine->agents().contains(m_monitored_agentid))
         updatePanel();
 }
@@ -149,7 +149,7 @@ void XletAgentDetails::monitorThisAgent(const QString &agentid)
 
 void XletAgentDetails::clearPanel()
 {
-    // qDebug() << "XletAgentDetails::clearPanel()";
+    // qDebug() << Q_FUNC_INFO;
     foreach (QString q, m_queue_labels.keys())
         delete m_queue_labels[q];
     foreach (QString q, m_queue_more.keys())
@@ -204,7 +204,7 @@ void XletAgentDetails::updatePanel()
         m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
         m_actionlegends["agentlogin"]->setText(tr("Logout"));
     } else
-        qDebug() << "XletAgentDetails::newAgent() unknown status" << m_monitored_agentid << lstatus;
+        qDebug() << Q_FUNC_INFO << "unknown status" << m_monitored_agentid << lstatus;
     
     m_agentstatus->setText(agent_descriptions.join(" "));
     
@@ -383,7 +383,7 @@ void XletAgentDetails::fillQueue(int ii, const QString &queueid)
  */
 void XletAgentDetails::queueClicked()
 {
-    // qDebug() << "XletAgentDetails::queueClicked()" << sender()->property("queueid");
+    // qDebug() << Q_FUNC_INFO << sender()->property("queueid");
     QString queueid = sender()->property("queueid").toString();
     QString action  = sender()->property("action").toString();
     
@@ -406,7 +406,7 @@ void XletAgentDetails::queueClicked()
         } else if (smstatus == "") {
             ipbxcommand["command"] = "agentjoinqueue";
         } else
-            qDebug() << "XletAgentDetails::queueClicked()" << queuename << m_monitored_agentid << smstatus << pmstatus;
+            qDebug() << Q_FUNC_INFO << queuename << m_monitored_agentid << smstatus << pmstatus;
         // join the queue in the previously recorded paused status (to manage on the server side)
     } else if (action == "pause") {
         if (pmstatus == "0") {
@@ -414,9 +414,9 @@ void XletAgentDetails::queueClicked()
         } else if (pmstatus == "1") {
             ipbxcommand["command"] = "agentunpausequeue";
         } else
-            qDebug() << "XletAgentDetails::queueClicked()" << queuename << m_monitored_agentid << smstatus << pmstatus;
+            qDebug() << Q_FUNC_INFO << queuename << m_monitored_agentid << smstatus << pmstatus;
     } else
-        qDebug() << "XletAgentDetails::queueClicked() : unknown action" << action;
+        qDebug() << Q_FUNC_INFO << "unknown action" << action;
     
     emit ipbxCommand(ipbxcommand);
 }
@@ -424,7 +424,7 @@ void XletAgentDetails::queueClicked()
 /*! \brief left click actions (record, stoprecord, login, logout) */
 void XletAgentDetails::actionClicked()
 {
-    // qDebug() << "XletAgentDetails::actionClicked()" << sender()->property("function").toString() << m_monitored_agentid;
+    // qDebug() << Q_FUNC_INFO << sender()->property("function").toString() << m_monitored_agentid;
     QString function = sender()->property("function").toString();
     QVariantMap ipbxcommand;
     if (function == "record") {
@@ -449,7 +449,7 @@ void XletAgentDetails::actionClicked()
 /*! \brief triggerred on right click */
 void XletAgentDetails::contextMenuEvent(QContextMenuEvent *event)
 {
-    // qDebug() << "XletAgentDetails::contextMenuEvent()" << event;
+    // qDebug() << Q_FUNC_INFO << event;
     m_eventpoint = event->globalPos();
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = "getfilelist";
@@ -460,7 +460,7 @@ void XletAgentDetails::contextMenuEvent(QContextMenuEvent *event)
 /*! \brief display file list */
 void XletAgentDetails::serverFileList(const QStringList &qsl)
 {
-    // qDebug() << "XletAgentDetails::serverFileList()" << qsl;
+    // qDebug() << Q_FUNC_INFO << qsl;
     QMenu contextMenu(this);
     QStringList qsl_sorted = qsl;
     qsl_sorted.sort();
@@ -489,7 +489,7 @@ void XletAgentDetails::serverFileList(const QStringList &qsl)
  */
 void XletAgentDetails::statusRecord(const QString &astid, const QString &agentid, const QString &status)
 {
-    // qDebug() << "XletAgentDetails::statusRecord()" << agentnum << m_monitored_agentid << status;
+    // qDebug() << Q_FUNC_INFO << agentnum << m_monitored_agentid << status;
     QString gagentid = QString("agent:%1/%2").arg(astid).arg(agentid);
     if (gagentid == m_monitored_agentid) {
         if (status == "started") {
@@ -506,14 +506,14 @@ void XletAgentDetails::statusRecord(const QString &astid, const QString &agentid
  */
 void XletAgentDetails::statusListen(const QString &astid, const QString &agentid, const QString &status)
 {
-    qDebug() << "XletAgentDetails::statusListen()" << astid << agentid << status;
+    qDebug() << Q_FUNC_INFO << astid << agentid << status;
 }
 
 /*! \brief retrieve a sound file
  */
 void XletAgentDetails::getFile()
 {
-    // qDebug() << "XletAgentDetails::getFile()";
+    // qDebug() << Q_FUNC_INFO;
     QString filename = sender()->property("filename").toString();
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = "getfile";
@@ -528,7 +528,7 @@ void XletAgentDetails::getFile()
  */
 void XletAgentDetails::saveToFile()
 {
-    // qDebug() << "XletAgentDetails::saveToFile()";
+    // qDebug() << Q_FUNC_INFO;
     QString selectedFilter;
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save Sound File"),

@@ -108,16 +108,16 @@ bool PlayerWidget::startMPlayer()
 
     QStringList args;
         
-    // On demande à utiliser mplayer comme backend
+    // On demande Ã  utiliser mplayer comme backend
     args << "-slave";
-    // Et on veut ne pas avoir trop de chose à parser :)
+    // Et on veut ne pas avoir trop de chose Ã  parser :)
     args << "-quiet";
 #ifdef Q_WS_WIN
     // reinterpret_cast<qlonglong> obligatoire, winId() ne se laissant pas convertir gentiment ;)
     args << "-wid" << QString::number(reinterpret_cast<qlonglong>(renderTarget->winId()));
     args << "-vo" << "directx:noaccel";
 #else
-    // Sur linux, aucun driver n'a été nécessaire et pas de manip pour Wid :)
+    // Sur linux, aucun driver n'a Ã©tÃ© nÃ©cessaire et pas de manip pour Wid :)
     // args << "-vf" << "dsize=300:200:0";
     args << "-wid" << QString::number(renderTarget->winId());
 
@@ -129,7 +129,7 @@ bool PlayerWidget::startMPlayer()
 #endif
     args << m_movie_url;
 
-    // On parse la stdout et stderr au même endroit, donc on demande à "fusionnner" les 2 flux
+    // On parse la stdout et stderr au mÃªme endroit, donc on demande Ã  "fusionnner" les 2 flux
     mplayerProcess->setProcessChannelMode(QProcess::MergedChannels);
     mplayerProcess->start(mplayerPath, args);
     if(!mplayerProcess->waitForStarted(3000)) {
@@ -137,7 +137,7 @@ bool PlayerWidget::startMPlayer()
         return false;
     }
 
-    // On récupère les infos de base
+    // On rÃ©cupÃ¨re les infos de base
     mplayerProcess->write("get_video_resolution\n");
     mplayerProcess->write("get_time_length\n");
 
@@ -156,7 +156,7 @@ bool PlayerWidget::stopMPlayer()
     mplayerProcess->write("quit\n");
     renderTarget->setMinimumSize(176, 144);
     if(!mplayerProcess->waitForFinished(3000)) {
-        qDebug("ZOMG, ça plante :(");
+        qDebug("ZOMG, Ã§a plante :(");
         return false;
     }
 
@@ -169,9 +169,9 @@ void PlayerWidget::catchOutput()
         QByteArray buffer(mplayerProcess->readLine());
         //log->append(QString(buffer));
                         
-        // On vérifie si on a eu des réponses
+        // On vÃ©rifie si on a eu des rÃ©ponses
         if(buffer.startsWith("ANS_VIDEO_RESOLUTION")) {
-            // réponse à get_video_resolution : ANS_VIDEO_RESOLUTION='<width> x <height>'
+            // rÃ©ponse Ã  get_video_resolution : ANS_VIDEO_RESOLUTION='<width> x <height>'
             buffer.remove(0, 21); // vire ANS_VIDEO_RESOLUTION=
             buffer.replace(QByteArray("'"), QByteArray(""));
             buffer.replace(QByteArray(" "), QByteArray(""));
@@ -182,7 +182,7 @@ void PlayerWidget::catchOutput()
             int resY = buffer.mid(sepIndex+1).toInt();
             renderTarget->setMinimumSize(resX, resY);
         } else if(buffer.startsWith("ANS_LENGTH")) {
-            // réponse à get_time_length : ANS_LENGTH=xx.yy
+            // rÃ©ponse Ã  get_time_length : ANS_LENGTH=xx.yy
             buffer.remove(0, 11); // vire ANS_LENGTH=
             buffer.replace(QByteArray("'"), QByteArray(""));
             buffer.replace(QByteArray(" "), QByteArray(""));
@@ -191,7 +191,7 @@ void PlayerWidget::catchOutput()
             float maxTime = buffer.toFloat();
             timeLine->setMaximum(static_cast<int>(maxTime+1));
         } else if(buffer.startsWith("ANS_TIME_POSITION")) {
-            // réponse à get_time_pos : ANS_TIME_POSITION=xx.y
+            // rÃ©ponse Ã  get_time_pos : ANS_TIME_POSITION=xx.y
             buffer.remove(0, 18); // vire ANS_TIME_POSITION=
             buffer.replace(QByteArray("'"), QByteArray(""));
             buffer.replace(QByteArray(" "), QByteArray(""));

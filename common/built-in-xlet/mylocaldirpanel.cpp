@@ -120,7 +120,7 @@ MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
  */
 MyLocalDirPanel::~MyLocalDirPanel()
 {
-    // qDebug() << "MyLocalDirPanel::~MyLocalDirPanel()";
+    // qDebug() << Q_FUNC_INFO;
     QFile file(getSaveFile());
     saveToFile( file );
 }
@@ -129,7 +129,7 @@ MyLocalDirPanel::~MyLocalDirPanel()
  */
 QString MyLocalDirPanel::getSaveFile() const
 {
-    // qDebug() << "MyLocalDirPanel::getSaveFile()" << qApp->applicationDirPath() << b_engine->getSettings()->fileName();
+    // qDebug() << Q_FUNC_INFO << qApp->applicationDirPath() << b_engine->getSettings()->fileName();
     // QDir dir( qApp->applicationDirPath() );
     QFileInfo fi( b_engine->getSettings()->fileName() );
     QDir dir( fi.canonicalPath() );
@@ -140,7 +140,7 @@ QString MyLocalDirPanel::getSaveFile() const
  */
 QString MyLocalDirPanel::getBackupFile() const
 {
-    // qDebug() << "MyLocalDirPanel::getSaveFile()" << qApp->applicationDirPath() << b_engine->getSettings()->fileName();
+    // qDebug() << Q_FUNC_INFO << qApp->applicationDirPath() << b_engine->getSettings()->fileName();
     // QDir dir( qApp->applicationDirPath() );
     QFileInfo fi( b_engine->getSettings()->fileName() );
     QDir dir( fi.canonicalPath() );
@@ -186,7 +186,7 @@ void MyLocalDirPanel::openNewContactDialog()
  */
 void MyLocalDirPanel::importContacts()
 {
-    //qDebug() << "MyLocalDirPanel::importContacts()";
+    //qDebug() << Q_FUNC_INFO;
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open Contacts File"),
                                                     QString(),
@@ -203,7 +203,7 @@ void MyLocalDirPanel::importContacts()
  */
 void MyLocalDirPanel::exportContacts()
 {
-    // qDebug() << "MyLocalDirPanel::exportContacts()";
+    // qDebug() << Q_FUNC_INFO;
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save Contacts File"),
                                                     QString(),
                                                     tr("Comma Separated Value (*.csv)"));
@@ -296,7 +296,7 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
                                   << QString("Mobile Number")
                                   << QString("Mobile") );
     maxCol = qMax(maxCol, mobilenumberCol);
-    qDebug() << "MyLocalDirPanel::loadFromFile"
+    qDebug() << Q_FUNC_INFO
              << firstNameCol << lastNameCol << phonenumberCol
              << emailCol << companyCol << faxnumberCol << mobilenumberCol;
     if(maxCol < 0) {
@@ -378,7 +378,7 @@ void MyLocalDirPanel::findNext()
     if(!m_searchBox)
         return;
     QString searchText = m_searchBox->text();
-    qDebug() << "MyLocalDirPanel::findNext()" << searchText;
+    qDebug() << Q_FUNC_INFO << searchText;
     QTableWidgetItem * currentItem = m_table->currentItem();
     QList<QTableWidgetItem *> items
         = m_table->findItems( searchText, Qt::MatchContains | Qt::MatchFixedString);

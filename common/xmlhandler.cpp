@@ -43,7 +43,7 @@
 XmlHandler::XmlHandler( Popup *popup )
     : m_popup(popup), m_isParsingInfo(false)
 {
-    qDebug() << "XmlHandler::XmlHandler()";
+    qDebug() << Q_FUNC_INFO;
 }
 
 /*!
@@ -57,7 +57,7 @@ bool XmlHandler::startElement( const QString & /*namespaceURI*/,
                                const QString & /*qName*/,
                                const QXmlAttributes & atts )
 {
-    // qDebug() << "XmlHandler::startElement()" << localName << namespaceURI << qName;
+    // qDebug() << Q_FUNC_INFO << localName << namespaceURI << qName;
     if( localName == "sheet_info" ) {
         m_isParsingInfo = true;
         m_infoOrder = atts.value("order");
@@ -102,7 +102,7 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
                              const QString & localName,
                              const QString & /*qName*/)
 {
-    // qDebug() << "XmlHandler::endElement()" << localName << m_infoOrder << m_infoType << m_infoName << m_infoValue;
+    // qDebug() << Q_FUNC_INFO << localName << m_infoOrder << m_infoType << m_infoName << m_infoValue;
     m_isParsingInfo = false;
     if(m_popup == NULL)
         return true;
@@ -122,7 +122,7 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
 
 bool XmlHandler::characters( const QString & ch )
 {
-    //qDebug() << "chars=" << ch;
+    // qDebug() << Q_FUNC_INFO << "chars=" << ch;
     if(m_isParsingInfo)
         m_infoValue.append(ch);
     return true;
@@ -130,7 +130,7 @@ bool XmlHandler::characters( const QString & ch )
 
 bool XmlHandler::endDocument()
 {
-    qDebug() << "XmlHandler::endDocument()";
+    qDebug() << Q_FUNC_INFO;
     //if(m_popup)
     //        m_popup->finishAndShow();
     return true;
@@ -139,18 +139,23 @@ bool XmlHandler::endDocument()
 // QXmlErrorHandler
 bool XmlHandler::warning( const QXmlParseException & exception )
 {
-    qDebug() << "XmlHandler::warning() " << exception.message();
+    qDebug() << Q_FUNC_INFO
+             << exception.message();
     return true;
 }
 
 bool XmlHandler::error( const QXmlParseException & exception )
 {
-    qDebug() << "XmlHandler::error() " << exception.message();
+    qDebug() << Q_FUNC_INFO
+             << exception.message();
     return true;
 }
 
 bool XmlHandler::fatalError( const QXmlParseException & exception )
 {
-    qDebug() << "XmlHandler::fatalError() " << exception.message() << exception.columnNumber() << exception.lineNumber();
+    qDebug() << Q_FUNC_INFO
+             << exception.message()
+             << exception.columnNumber()
+             << exception.lineNumber();
     return true;
 }

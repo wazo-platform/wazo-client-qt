@@ -89,8 +89,8 @@ class LogWidgetModel : public QAbstractTableModel
 
         void requestHistory(const QString &, int, const QDateTime &since = QDateTime(), int f = 0);
 
-        QVariantList history;
-        int mode;
+        QVariantList m_history;
+        int m_mode;
 };
 
 /* class reason:
@@ -113,7 +113,7 @@ class LogTableView : public QTableView
         virtual void mousePressEvent(QMouseEvent *event);
 
     private:
-        int lastPressed;
+        int m_lastPressed;
 };
 
 
@@ -127,7 +127,7 @@ class LogWidget : public XLet
         LogWidget(QWidget *parent=0);
 
     private:
-        LogTableView *m_view;
+        LogTableView * m_view;
 };
 
 class XLetHistoryPlugin : public QObject, XLetInterface

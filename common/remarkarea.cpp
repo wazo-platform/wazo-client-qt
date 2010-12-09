@@ -117,7 +117,7 @@ void RemarkArea::addRemark(const QString & header, const QString & text)
 void RemarkArea::submitClicked()
 {
     QString text = m_inputline->text();
-    qDebug() << "RemarkArea::submitClicked()" << text;
+    qDebug() << Q_FUNC_INFO << text;
     if(!text.isEmpty()) {
         emit textSubmitted( text );
     }
@@ -127,7 +127,7 @@ void RemarkArea::submitClicked()
 /*! \brief scroll to the bottom of the scroll area in order to show last entry */
 void RemarkArea::scrollToLastEntry()
 {
-    qDebug() << "RemarkArea::autoScroll()";
+    qDebug() << Q_FUNC_INFO;
     if(m_scrollarea->verticalScrollBar()) {
         //qDebug() << " vScrollBar" << m_scrollarea->verticalScrollBar();
         //qDebug() << m_scrollarea->verticalScrollBar()->value() << m_scrollarea->verticalScrollBar()->maximum();

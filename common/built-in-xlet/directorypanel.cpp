@@ -83,23 +83,23 @@ DirectoryPanel::DirectoryPanel(QWidget *parent)
 /*! \brief does nothing for the moment */
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
 {
-    qDebug() << "DirectoryPanel::focusInEvent()" << event;
+    qDebug() << Q_FUNC_INFO << event;
 }
 
 /*! \brief does nothing for the moment */
 void DirectoryPanel::dropEvent(QDropEvent * event)
 {
-    qDebug() << "DirectoryPanel::dropEvent()" << event;
+    qDebug() << Q_FUNC_INFO << event;
 }
 
 /*! \brief copy number in clicked cell to clipboard
  */
 void DirectoryPanel::itemClicked(QTableWidgetItem * item)
 {
-    //qDebug() << item << item->text();
+    //qDebug() << Q_FUNC_INFO << item << item->text();
     // check if the string is a phone number
     if( m_re_number.exactMatch(item->text()) ) {
-        //qDebug() << "DirectoryPanel::itemClicked()" << "preparing to dial" << item->text();
+        //qDebug() << Q_FUNC_INFO << "preparing to dial" << item->text();
         copyNumber(item->text());
     }
 }
@@ -116,7 +116,7 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
     if(item && item->text().contains("@")) {
         QString mailAddr = item->text();
         if(mailAddr.length() > 0) {
-            //qDebug() << "DirectoryPanel::itemDoubleClicked() : mail" << mailAddr;
+            //qDebug() << Q_FUNC_INFO << "mail" << mailAddr;
             QDesktopServices::openUrl(QUrl("mailto:" + mailAddr));
         }
     }
@@ -130,7 +130,7 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStringList & resp)
 {
     int x, y;
-    //qDebug() << "DirectoryPanel::setSearchResponse()" << headers << resp;
+    //qDebug() << Q_FUNC_INFO << headers << resp;
     int ncolumns = headers.size();
     int nrows = resp.size();
     
@@ -159,6 +159,7 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
             }
         }
         m_table->setSortingEnabled(true);
+        m_table->resizeColumnsToContents();
         
         // to remove the headers if ever ...
         // (they are useful to know that a reply has been received)

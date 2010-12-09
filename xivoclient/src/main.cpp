@@ -102,9 +102,8 @@ int main(int argc, char ** argv)
     }
 
     app.setWindowIcon(QIcon(":/images/xivo-login.png"));
-    
 
-    QString forcelocale = settings->value(profile + "/forcelocale", "").toString();
+    QString forcelocale = settings->value("engine-" + profile + "/forcelocale", "").toString();
     if(forcelocale.length())
         locale = forcelocale;
 
@@ -121,7 +120,6 @@ int main(int argc, char ** argv)
         app.installTranslator(translator);
     }
 
-    
     QString info_osname;
     QString info_endianness = QSysInfo::ByteOrder ? "LE" : "BE";
 

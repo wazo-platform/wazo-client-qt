@@ -46,7 +46,7 @@ XletCalls::XletCalls(QWidget *parent)
     : XLet(parent), m_monitored_ui(0)
 {
     setTitle(tr("Calls"));
-    qDebug() << "XletCalls::XletCalls()";
+    qDebug() << Q_FUNC_INFO;
     QVBoxLayout *toplayout = new QVBoxLayout(this);
     toplayout->setMargin(0);
     QLabel *titleLabel = new QLabel("                     ", this);
@@ -115,7 +115,7 @@ void XletCalls::parkcall(const QString &chan)
 void XletCalls::updateDisplay()
 {
     uint current_ts = QDateTime::currentDateTime().toTime_t();
-    //qDebug() << "XletCalls::updateDisplay()";
+    //qDebug() << Q_FUNC_INFO;
     CallWidget *callwidget = NULL;
 
     //QStringList activeChannels;  // list of active channels to be displayed
@@ -131,7 +131,7 @@ void XletCalls::updateDisplay()
             while (it.hasNext()) {
                 it.next();
                 QMap<QString, QVariant> map = it.value().toMap();
-                //qDebug() << it.key() << map;
+                // qDebug() << it.key() << map;
                 QString channelme = map["thischannel"].toString();
                 QString status = map["status"].toString();
                 uint ts = current_ts;
@@ -146,14 +146,14 @@ void XletCalls::updateDisplay()
                 QString channelpeer = map["peerchannel"].toString();
                 QString callerid = map["calleridnum"].toString();
                 QString calleridname = map["calleridname"].toString();
-                //qDebug() << "XletCalls::updateDisplay()" << it.key() << channelme << "status" << status;
+                // qDebug() << Q_FUNC_INFO << it.key() << channelme << "status" << status;
                 // dont display hangup channels !
                 if (status == CHAN_STATUS_HANGUP) {
                     continue;
                 }
                 //activeChannels << channelme;
                 activeUids << it.key();
-//                qDebug() << "XletCalls::updateDisplay() adding/updating" << channelme;
+//                qDebug() << Q_FUNC_INFO << "adding/updating" << channelme;
                 if (m_affhash.contains(/*channelme*/it.key())) {
                     m_affhash[it.key()/*channelme*/]->updateWidget(status, ts, channelpeer,
                                                                    callerid, calleridname, pi);
@@ -181,14 +181,14 @@ void XletCalls::updateDisplay()
         }
     }
 
-    //qDebug() << "XletCalls::updateDisplay() activeChannels" << activeChannels;
-//    qDebug() << "XletCalls::updateDisplay() activeUids" << activeUids;
-//    qDebug() << "XletCalls::updateDisplay() m_affhash" << m_affhash.keys();
+    // qDebug() << Q_FUNC_INFO << "activeChannels" << activeChannels;
+    // qDebug() << Q_FUNC_INFO << "activeUids" << activeUids;
+    // qDebug() << Q_FUNC_INFO << "m_affhash" << m_affhash.keys();
     // remove old channels
     foreach (const QString uid, m_affhash.keys()) {
         if( !activeUids.contains(uid)) {
-            //qDebug() << "XletCalls::updateDisplay() removing" << chan;
-            qDebug() << "XletCalls::updateDisplay() removing" << uid;
+            // qDebug() << Q_FUNC_INFO << "removing" << chan;
+            qDebug() << Q_FUNC_INFO << "removing" << uid;
             m_affhash.take(uid)->deleteLater();
         }
     }
@@ -198,7 +198,7 @@ void XletCalls::updateDisplay()
  */
 void XletCalls::dragEnterEvent(QDragEnterEvent *event)
 {
-    // qDebug() << "XletCalls::dragEnterEvent()" << event->mimeData()->formats();
+    // qDebug() << Q_FUNC_INFO << event->mimeData()->formats();
     if (event->mimeData()->hasFormat(USERID_MIMETYPE)) {
         event->acceptProposedAction();
     }
@@ -211,7 +211,7 @@ void XletCalls::dragEnterEvent(QDragEnterEvent *event)
  */
 void XletCalls::monitorPeer(UserInfo *ui)
 {
-    qDebug() << "XletCalls::monitorPeer()" << b_engine->getFullId()<< ui->astid() << ui->userid();
+    qDebug() << Q_FUNC_INFO << b_engine->getFullId()<< ui->astid() << ui->userid();
     //emptyList();
     if ((b_engine->getFullId() == ui->userid()) ||
         (b_engine->enabledFunction("switchboard"))) {
@@ -232,8 +232,7 @@ void XletCalls::dropEvent(QDropEvent *event)
         event->ignore();
         return;
     }
-    qDebug() << "XletCalls::dropEvent" << event->mimeData()->data(USERID_MIMETYPE);
+    qDebug() << Q_FUNC_INFO << event->mimeData()->data(USERID_MIMETYPE);
     monitorPeerRequest(event->mimeData()->data(USERID_MIMETYPE));
     event->acceptProposedAction();
 }
-

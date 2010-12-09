@@ -97,7 +97,7 @@ void RemotePicWidget::startHttpRequest(const QString & urlstr)
 
 void RemotePicWidget::httpSslErrors(const QList<QSslError> & errors)
 {
-    qDebug() << "RemotePicWidget::httpSslErrors()" << errors;
+    qDebug() << Q_FUNC_INFO << errors;
     m_http->ignoreSslErrors();
 }
 
@@ -115,7 +115,8 @@ void RemotePicWidget::httpDataReadProgress(int , int)
 void RemotePicWidget::httpRequestFinished(int requestId, bool error)
 {
     if(requestId == m_httpGetId) {
-        qDebug() << "RemotePicWidget::httpRequestFinished()" << requestId << error << m_tempFile->fileName() << m_tempFile->size();
+        qDebug() << Q_FUNC_INFO
+                 << requestId << error << m_tempFile->fileName() << m_tempFile->size();
         m_tempFile->close();
         QPixmap pixmap(m_tempFile->fileName());
         m_label->setPixmap(pixmap);
@@ -125,6 +126,6 @@ void RemotePicWidget::httpRequestFinished(int requestId, bool error)
 
 void RemotePicWidget::httpReadResponseHeader(const QHttpResponseHeader &responseHeader)
 {
-    qDebug() << "RemotePicWidget::httpReadResponseHeader()"
+    qDebug() << Q_FUNC_INFO
              << responseHeader.statusCode();
 }

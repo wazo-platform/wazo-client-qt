@@ -91,7 +91,7 @@ DialPanel::DialPanel(QWidget *parent)
 void DialPanel::setNumberToDial(const QString & text)
 {
     QString oldtext = m_input->lineEdit()->text();
-    // qDebug() << "DialPanel::setNumberToDial()" << text;
+    // qDebug() << Q_FUNC_INFO << text;
     // adds the item to the list
     QString texttmp = text.trimmed();
     // remove . and " " because we don't need them
@@ -115,7 +115,7 @@ void DialPanel::setNumberToDial(const QString & text)
 
 void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 {
-    // qDebug() << "DialPanel::dragEnterEvent()" << event;
+    // qDebug() << Q_FUNC_INFO << event;
     if(event->mimeData()->hasFormat(PEER_MIMETYPE))
         event->acceptProposedAction();
 }
@@ -128,9 +128,9 @@ void DialPanel::dropEvent(QDropEvent * event)
 {
     QString ext;
     QString originator = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
-    qDebug() << "DialPanel::dropEvent()" << originator << m_input->lineEdit();
+    qDebug() << Q_FUNC_INFO << originator << m_input->lineEdit();
     if(m_input->lineEdit()) {
-        qDebug() << "DialPanel::dropEvent()" << event << originator << m_input->lineEdit()->text();
+        qDebug() << Q_FUNC_INFO << event << originator << m_input->lineEdit()->text();
         ext = m_input->lineEdit()->text();
         ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
         if (ext.length() == 0)        // do nothing if the string is empty

@@ -51,7 +51,7 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
     connect(this, SIGNAL(actionFromFiche(const QVariant &)),
             b_engine, SLOT(actionFromFiche(const QVariant &)));
 
-    // qDebug() << "CustomerInfoPanel::CustomerInfoPanel()";
+    // qDebug() << Q_FUNC_INFO;
     QGridLayout * glayout = new QGridLayout(this);
     m_tabs = new QTabWidget(this);
     glayout->addWidget( m_tabs, 0, 0 );
@@ -69,7 +69,7 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
 void CustomerInfoPanel::showNewProfile(Popup * popup)
 {
     QString opt = "";
-    qDebug() << "CustomerInfoPanel::showNewProfile()"
+    qDebug() << Q_FUNC_INFO
              << popup->callKind()
              << popup->callAstid() << popup->callContext()
              << popup->callUniqueid() << popup->callChannel();
@@ -83,13 +83,13 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
                 break;
             }
         if(already_popup) {
-            qDebug() << "CustomerInfoPanel::showNewProfile()" << "found a match for"
+            qDebug() << Q_FUNC_INFO << "found a match for"
                      << popup->callAstid() << popup->callContext() << popup->callUniqueid();
             already_popup->update(popup->sheetlines());
         } else {
             QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm:ss");
             quint32 index = m_tabs->addTab(popup, currentTimeStr);
-            qDebug() << "CustomerInfoPanel::showNewProfile() : added tab" << index;
+            qDebug() << Q_FUNC_INFO << "added tab" << index;
             m_popups.append(popup);
             m_tabs->setCurrentIndex(index);
             if (index >= m_tablimit)
@@ -112,7 +112,7 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
 
 void CustomerInfoPanel::popupDestroyed(QObject * obj)
 {
-    qDebug() << "CustomerInfoPanel::popupDestroyed()"
+    qDebug() << Q_FUNC_INFO
              << obj->property("astid") << obj->property("uniqueid") << obj->property("context");
     foreach(Popup * mpopup, m_popups)
         if ( (mpopup->callAstid() == obj->property("astid").toString()) &&
@@ -123,7 +123,7 @@ void CustomerInfoPanel::popupDestroyed(QObject * obj)
 
 void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, const QString & id)
 {
-    qDebug() << "CustomerInfoPanel::displayFiche id=" << id;
+    qDebug() << Q_FUNC_INFO << id;
     for(int i = m_popups.size() - 1; --i > 0; ) {
         if(id == m_popups[i]->id()) {
             qDebug() << " fiche id already there";
@@ -190,7 +190,7 @@ void CustomerInfoPanel::desactivateRemarkArea(const QString & id)
 
 void CustomerInfoPanel::addNewRemark(const QString & id, const QVariantMap & entry)
 {
-    qDebug() << "CustomerInfoPanel::addNewRemark" << id << entry;
+    qDebug() << Q_FUNC_INFO << id << entry;
     foreach(Popup *mpopup, m_popups) {
         if(mpopup->id() == id)
             mpopup->addRemark(entry);
@@ -204,4 +204,3 @@ void CustomerInfoPanel::doGUIConnects(QWidget * mainwindow)
     connect(this, SIGNAL(showWidgetOnTop(QWidget *)),
             mainwindow, SLOT(showWidgetOnTop(QWidget *)));
 }
-

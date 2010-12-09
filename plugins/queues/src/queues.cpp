@@ -123,7 +123,7 @@ XletQueues::XletQueues(QWidget *parent)
         xletlist.append(xletdesc.split("-")[0]);
     m_showMore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
     m_showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
-    int nsecs = 30;
+    uint nsecs = 30;
     if (b_engine->getGuiOptions("server_gui").contains("xlet.queues.statsfetchperiod"))
         nsecs = b_engine->getGuiOptions("server_gui").value("xlet.queues.statsfetchperiod").toInt();
 
@@ -141,10 +141,12 @@ XletQueues::XletQueues(QWidget *parent)
 
     setLayout(xletLayout);
 
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateLongestWaitWidgets()));
-    connect(timer, SIGNAL(timeout()), this, SLOT(askForQueueStats()));
-    timer->start(nsecs * 1000);
+    QTimer * timer_display = new QTimer(this);
+    QTimer * timer_request = new QTimer(this);
+    connect(timer_display, SIGNAL(timeout()), this, SLOT(updateLongestWaitWidgets()));
+    connect(timer_request, SIGNAL(timeout()), this, SLOT(askForQueueStats()));
+    timer_display->start(1000);
+    timer_request->start(nsecs * 1000);
 
     connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
             this, SLOT(newQueueList(const QStringList &)));
@@ -379,6 +381,9 @@ void XletQueues::askForQueueStats()
     b_engine->sendJsonCommand(command);
 }
 
+
+
+
 XletQueuesConfigure::XletQueuesConfigure(XletQueues *)
     : QWidget(NULL)
 {
@@ -483,6 +488,9 @@ void XletQueuesConfigure::closeEvent(QCloseEvent *)
 {
     hide();
 }
+
+
+
 
 QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
     : QWidget(parent), qinfo(qInfo), xlet(parent)
@@ -642,7 +650,6 @@ void QueueRow::updateLongestWaitWidget(int display, uint greenlevel, uint orange
         new_time += 1;
         m_longestWait->setProperty("time", new_time);
     }
-
 
     QString time_label;
     __format_duration(&time_label, new_time);

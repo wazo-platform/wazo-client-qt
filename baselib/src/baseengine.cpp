@@ -112,7 +112,7 @@ BaseEngine::BaseEngine(QSettings *settings,
  */
 BaseEngine::~BaseEngine()
 {
-    qDebug() << "BaseEngine::~BaseEngine()";
+    qDebug() << Q_FUNC_INFO;
     clearUserList();
     clearPhoneList();
     clearAgentList();
@@ -130,7 +130,7 @@ QSettings* BaseEngine::getSettings()
  */
 void BaseEngine::loadSettings()
 {
-    //qDebug() << "BaseEngine::loadSettings()";
+    // qDebug() << Q_FUNC_INFO;
     m_systrayed = m_settings->value("display/systrayed", false).toBool();
     QString profile = m_settings->value("profile/lastused").toString();
     m_profilename_write = "engine-" + profile;
@@ -180,7 +180,7 @@ void BaseEngine::loadSettings()
             try {
                 data = JsonQt::JsonToVariant::parse(defaultguioptions);
             } catch(JsonQt::ParseException) {
-                qDebug() << "BaseEngine::loadSettings() exception catched for" << defaultguioptions;
+                qDebug() << Q_FUNC_INFO << "exception catched for" << defaultguioptions;
             }
 
             QVariantMap guisetting_map = data.toMap();
@@ -344,7 +344,7 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << "BaseEngine::start()" << m_serverhost << m_checked_function;
+    qDebug() << Q_FUNC_INFO << m_serverhost << m_checked_function;
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
@@ -360,7 +360,7 @@ void BaseEngine::start()
 void BaseEngine::stop()
 {
     QString stopper = sender()->property("stopper").toString();
-    qDebug() << "BaseEngine::stop()" << sender() << stopper;
+    qDebug() << Q_FUNC_INFO << sender() << stopper;
     if (m_attempt_loggedin) {
         QVariantMap command;
         command["class"] = "logout";
@@ -387,7 +387,8 @@ void BaseEngine::stop()
     if (m_time.isValid())
     {
         int elapsed = m_time.elapsed();
-        qDebug() << m_byte_counter << "bytes received in" << elapsed << "ms : "
+        qDebug() << Q_FUNC_INFO
+                 << m_byte_counter << "bytes received in" << elapsed << "ms : "
                  << (elapsed?QString::number((1000*m_byte_counter)/elapsed):QString("infinite"))
                  << "Bytes/Second";
     }
@@ -556,7 +557,7 @@ void BaseEngine::updateCapaPresence(const QVariant & presence)
                             fill);
         }
     }
-    qDebug() << DStoreNode::pp(*tree()->root());
+    // qDebug() << DStoreNode::pp(*tree()->root());
 }
 
 const QString & BaseEngine::getCapaApplication() const
@@ -569,7 +570,7 @@ const QString & BaseEngine::getCapaApplication() const
  */
 void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
 {
-    // qDebug() << "BaseEngine::setAvailState() from" << m_availstate << "to" << newstate << comesFromServer;
+    // qDebug() << Q_FUNC_INFO << "from" << m_availstate << "to" << newstate << comesFromServer;
     if (m_availstate != newstate) {
         m_availstate = newstate;
         //m_settings->setValue("engine/availstate", m_availstate);
@@ -594,7 +595,7 @@ const QString & BaseEngine::getAvailState() const
 /*! \brief set availability */
 void BaseEngine::setAvailability()
 {
-    // qDebug() << "BaseEngine::setAvailability()" << sender();
+    // qDebug() << Q_FUNC_INFO << sender();
     QString availstate = sender()->property("availstate").toString();
     setAvailState(availstate, false);
 }
@@ -616,7 +617,7 @@ void BaseEngine::sendJsonCommand(const QVariantMap & command)
 /*! \brief set monitored peer id */
 void BaseEngine::monitorPeerRequest(const QString & userid)
 {
-    // qDebug() << "BaseEngine::monitorPeerRequest()" << userid;
+    // qDebug() << Q_FUNC_INFO << userid;
     if (m_users.contains(userid)) {
         m_monitored_userid = userid;
         emit monitorPeer(m_users[userid]);
@@ -631,7 +632,6 @@ void BaseEngine::monitorPeerRequest(const QString & userid)
  */
 void BaseEngine::ctiSocketConnected()
 {
-    qDebug() << Q_FUNC_INFO;
     stopTryAgainTimer();
     /* do the login/identification */
     m_attempt_loggedin = false;
@@ -691,8 +691,8 @@ void BaseEngine::updatePhone(const QString & astid,
                              const QMap<QString, QVariant> & properties)
 {
     //if (phoneid == "sip.default.121.121")
-    // qDebug() << "BaseEngine::updatePhone()" << astid << phoneid << properties;
-    //qDebug() << map.keys();
+    // qDebug() << Q_FUNC_INFO << astid << phoneid << properties;
+    // qDebug() << map.keys();
     QString key = astid + "." + phoneid;
     UserInfo * ui = findUserFromPhone(astid, phoneid);
     if (! m_phones.contains(key)) {
@@ -712,7 +712,7 @@ QStringList BaseEngine::updateQueue(const QString & astid,
                                     const QString & queueid,
                                     const QMap<QString, QVariant> & properties)
 {
-    // qDebug() << "BaseEngine::updateQueue" << astid << queueid << properties;
+    // qDebug() << Q_FUNC_INFO << astid << queueid << properties;
     QStringList keychanges;
     QString key = QString("queue:%1/%2").arg(astid).arg(queueid);
     if (!m_queues.contains(key)) {
@@ -848,10 +848,8 @@ void addUpdateConfMemberInTree(DStore *tree, const QVariantMap &cinfo)
         info["paused"] = cinfo["paused"];
         tree->populate(path ,info);
     } else {
-        qDebug() << "unknown meetme action: " << cinfo["action"];
+        qDebug() << Q_FUNC_INFO << "unknown meetme action: " << cinfo["action"];
     }
-
-
 }
 
 void addUpdateConfRoomInTree(DStore *tree,
@@ -896,7 +894,7 @@ void BaseEngine::parseCommand(const QString &line)
         m_rate_bytes += line.trimmed().size();
         m_rate_samples ++;
     } catch(JsonQt::ParseException) {
-        qDebug() << "BaseEngine::parseCommand() exception catched for" << line.trimmed();
+        qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
         data = QVariant(QVariant::Invalid);
     }
 
@@ -915,7 +913,7 @@ void BaseEngine::parseCommand(const QString &line)
         if (callClassEventCallback(thisclass, datamap))  // a class callback was called,
             return;                                      // so zap the 500 loc of if-else soup
 
-        // qDebug() << datamap["timenow"].toString() << "BaseEngine message received"
+        // qDebug() << Q_FUNC_INFO << datamap["timenow"].toString() << "BaseEngine message received"
         // << thisclass << datamap["function"].toString()
         // << datamap["phoneid"].toString();
         if (thisclass == "callcampaign") {
@@ -939,7 +937,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "sheet") {
             // TODO : use id better than just channel name
-            qDebug() << "** sheet" << datamap;
+            // qDebug() << Q_FUNC_INFO << "sheet" << datamap;
             QString channel = datamap["channel"].toString();
             if (function == "getownership") {
                 gotSheetOwnership(channel);
@@ -964,7 +962,7 @@ void BaseEngine::parseCommand(const QString &line)
                 }
             }
         } else if (thisclass == "queues") {
-            //qDebug() << "*** queues !!!" << function << line.length();
+            // qDebug() << Q_FUNC_INFO << "queues" << function << line.length();
             if (function == "sendlist") {
                 QStringList kk;
                 QMap<QString, QVariant> payload = datamap["payload"].toMap();
@@ -1060,7 +1058,7 @@ void BaseEngine::parseCommand(const QString &line)
                          datamap["agentid"].toString(),
                          datamap["status"].toString());
         } else if (thisclass == "endinit") {
-            qDebug() << "I should have received everything";
+            qDebug() << Q_FUNC_INFO << "I should have received everything";
         } else if (thisclass == "meetme") {
             if (function == "sendlist") {
                 QVariantMap map1 = datamap["payload"].toMap();
@@ -1076,10 +1074,10 @@ void BaseEngine::parseCommand(const QString &line)
                 addUpdateConfMemberInTree(tree(), map);
             }
         } else if (thisclass == "serverdown") {
-            qDebug() << thisclass << datamap["mode"].toString();
+            qDebug() << Q_FUNC_INFO << thisclass << datamap["mode"].toString();
 
         } else if (thisclass == "disconn") {
-            qDebug() << thisclass;
+            qDebug() << Q_FUNC_INFO << thisclass;
 
         } else if (thisclass == "directory") {
             emit directoryResponse(datamap["headers"].toStringList(),
@@ -1089,7 +1087,7 @@ void BaseEngine::parseCommand(const QString &line)
             m_filedir = datamap["tdirection"].toString();
             m_fileid = datamap["fileid"].toString();
             m_filetransfersocket->connectToHost(m_serverhost, m_ctiport);
-            qDebug() << m_filedir << m_fileid;
+            qDebug() << Q_FUNC_INFO << m_filedir << m_fileid;
 
         } else if (thisclass == "faxprogress") {
             ackFax(datamap["status"].toString(),
@@ -1101,7 +1099,7 @@ void BaseEngine::parseCommand(const QString &line)
         } else if (thisclass == "presence") {
             // QString id = datamap["company"].toString() + "/" + datamap["userid"].toString();
             QString id = datamap["astid"].toString() + "/" + datamap["xivo_userid"].toString();
-            // qDebug() << thisclass << m_users.size() << id;
+            // qDebug() << Q_FUNC_INFO << thisclass << m_users.size() << id;
             if (m_users.contains(id)) {
                 QString stateid = datamap.value("capapresence").toMap().value("state").toMap().value("stateid").toString();
                 QVariantMap changeme = m_guioptions.value("server_gui").toMap().value("presence.autochangestate").toMap();
@@ -1284,7 +1282,7 @@ void BaseEngine::parseCommand(const QString &line)
             // updatePhone(astid, trunkid, value);
             // callsUpdated();
             // }
-            qDebug() << "BaseEngine::parseQVariantCommand()" << thisclass << "not yet supported";
+            qDebug() << Q_FUNC_INFO << thisclass << "not yet supported";
 
         } else if (thisclass == "login_id_ok") {
 
@@ -1429,7 +1427,7 @@ void BaseEngine::parseCommand(const QString &line)
                 popupError("disconnected");
             }
         } else {
-            qDebug() << "BaseEngine::parseQVariantCommand() : unknown server command class" << thisclass << datamap;
+            qDebug() << Q_FUNC_INFO << "unknown server command class" << thisclass << datamap;
         }
     }
 }
@@ -1600,7 +1598,7 @@ void BaseEngine::popupError(const QString & errorid)
  */
 void BaseEngine::saveToFile(const QString & filename)
 {
-    qDebug() << "BaseEngine::saveToFile()" << filename << m_downloaded.size();
+    qDebug() << Q_FUNC_INFO << filename << m_downloaded.size();
     QFile outputfile(filename);
     outputfile.open(QIODevice::WriteOnly);
     outputfile.write(m_downloaded);
@@ -1616,12 +1614,12 @@ void BaseEngine::ctiSocketReadyRead()
     while(m_ctiserversocket->canReadLine()) {
         QByteArray data  = m_ctiserversocket->readLine();
         m_byte_counter += data.size();
-        // qDebug() << "BaseEngine::socketReadyRead() data.size() = " << data.size();
+        // qDebug() << Q_FUNC_INFO << "data.size() = " << data.size();
         QString line = QString::fromUtf8(data);
 
         if (line.startsWith("<ui version=")) {
             // we get here when receiving a sheet as a Qt4 .ui form
-            qDebug() << "BaseEngine::socketReadyRead() (Customer Info)" << line.size();
+            qDebug() << Q_FUNC_INFO << "(Customer Info)" << line.size();
             displayFiche(line, true, QString());
         } else
             parseCommand(line);
@@ -1641,7 +1639,7 @@ void BaseEngine::filetransferSocketReadyRead()
         try {
             jsondata = JsonQt::JsonToVariant::parse(line.trimmed());
         } catch(JsonQt::ParseException) {
-            qDebug() << "BaseEngine::socketReadyRead() exception catched for" << line.trimmed();
+            qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
         }
         QVariantMap jsondatamap = jsondata.toMap();
         if (jsondatamap["class"].toString() == "fileref") {
@@ -1671,7 +1669,7 @@ void BaseEngine::filetransferSocketReadyRead()
  */
 void BaseEngine::actionFromFiche(const QVariant & infos)
 {
-    // qDebug() << "BaseEngine::actionFromFiche()" << infos;
+    // qDebug() << Q_FUNC_INFO << infos;
     QVariantMap command;
     command["class"] = "actionfiche";
     command["direction"] = "xivoserver";
@@ -1694,7 +1692,7 @@ void BaseEngine::actionCall(const QString & action,
                             const QString & src,
                             const QString & dst)
 {
-    qDebug() << "BaseEngine::actionCall()" << action << src << dst;
+    qDebug() << Q_FUNC_INFO << action << src << dst;
 
     QVariantMap command;
     command["direction"] = "xivoserver";
@@ -1731,7 +1729,7 @@ void BaseEngine::actionCall(const QString & action,
  */
 void BaseEngine::searchDirectory(const QString & text)
 {
-    // qDebug() << "BaseEngine::searchDirectory()" << text;
+    // qDebug() << Q_FUNC_INFO << text;
     QVariantMap command;
     command["class"] = "directory-search";
     command["direction"] = "xivoserver";
@@ -1746,7 +1744,7 @@ void BaseEngine::searchDirectory(const QString & text)
  */
 void BaseEngine::setAddress(const QString & host, quint16 port)
 {
-    qDebug() << "BaseEngine::setAddress()" << port;
+    qDebug() << Q_FUNC_INFO << port;
     m_serverhost = host;
     m_ctiport = port;
 }
@@ -1952,7 +1950,7 @@ void BaseEngine::timerEvent(QTimerEvent *event)
         killTimer(timerId);
         m_timerid_changestate = 0;
     } else {
-        qDebug() << "BaseEngine::timerEvent() ghost timer" << timerId << "will be stopped";
+        qDebug() << Q_FUNC_INFO << "ghost timer" << timerId << "will be stopped";
         killTimer(timerId);
     }
 }
@@ -2002,7 +2000,7 @@ void BaseEngine::featurePutForward(const QString & capa, bool b, const QString &
 /*! \brief send a featursget command to the cti server */
 void BaseEngine::askFeatures()
 {
-    qDebug() << "BaseEngine::askFeatures()" << m_monitored_userid;
+    qDebug() << Q_FUNC_INFO << m_monitored_userid;
     QString featurestoget = "user:special:me";
     if (! m_monitored_userid.isEmpty()) {
         featurestoget = m_monitored_userid;
@@ -2024,7 +2022,7 @@ void BaseEngine::askFeatures()
  */
 void BaseEngine::askCallerIds()
 {
-    // qDebug() << "BaseEngine::askCallerIds()";
+    // qDebug() << Q_FUNC_INFO;
     QVariantMap command;
     command["direction"] = "xivoserver";
     command["function"] = "getlist";
@@ -2133,7 +2131,7 @@ void BaseEngine::setState(EngineState state)
 
 void BaseEngine::changeWatchedAgentSlot(const QString & agentid, bool force)
 {
-    // qDebug() << "BaseEngine::changeWatchedAgentSlot" << agentid << force;
+    // qDebug() << Q_FUNC_INFO << agentid << force;
     if ((force || (agentid.size() > 0)) && (m_agents.contains(agentid))) {
         m_agent_watched_agentid = agentid;
         emit changeWatchedAgentSignal(agentid);
@@ -2162,7 +2160,7 @@ void BaseEngine::setOSInfos(const QString & osname)
  */
 void BaseEngine::keepLoginAlive()
 {
-    // qDebug() << "BaseEngine::keepLoginAlive()" << m_availstate;
+    // qDebug() << Q_FUNC_INFO << m_availstate;
     // got to disconnected state if more than xx keepalive messages
     // have been left without response.
     if (m_pendingkeepalivemsg > 1) {
@@ -2202,7 +2200,7 @@ void BaseEngine::changeState()
 /*! \brief send error message to the CTI Server */
 void BaseEngine::shouldNotOccur(const QString & classmethod, const QString & message)
 {
-    qDebug() << "BE::sNO" << classmethod << message;
+    qDebug() << Q_FUNC_INFO << classmethod << message;
     QVariantMap command;
     command["class"] = "logclienterror";
     command["direction"] = "xivoserver";
@@ -2228,7 +2226,7 @@ void BaseEngine::loadQueueGroups()
  * Return NULL if not available */
 UserInfo* BaseEngine::getXivoClientUser()
 {
-    //qDebug() << "BaseEngine::getXivoClientUser()" << m_astid << m_xivo_userid << "aaaa" << m_fullid;
+    // qDebug() << Q_FUNC_INFO << m_astid << m_xivo_userid << "aaaa" << m_fullid;
     if (m_users.contains(m_fullid)) {
         return m_users.value(m_fullid);
     }
@@ -2254,7 +2252,7 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
  */
 void BaseEngine::handleOtherInstanceMessage(const QString & msg)
 {
-    qDebug() << "BaseEngine::handleOtherInstanceMessage()" << msg;
+    qDebug() << Q_FUNC_INFO << msg;
     // callto://number is unofficial and used by Skype
     // tel:number is in RFC 3966
     // callto:number is unofficial (read 7.3. in RFC 3966)
@@ -2306,7 +2304,7 @@ void BaseEngine::registerTranslation(const QString &path)
 
 void BaseEngine::sendUrlToBrowser(const QString & value)
 {
-    // qDebug() << "BaseEngine::sendUrlToBrowser()" << value;
+    // qDebug() << Q_FUNC_INFO << value;
 #ifdef Q_WS_WIN
     QSettings settings("HKEY_CLASSES_ROOT\\HTTP\\shell\\open\\command", QSettings::NativeFormat);
     QString command = settings.value(".").toString();

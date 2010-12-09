@@ -46,13 +46,13 @@
 SearchPanel::SearchPanel(QWidget *parent)
     : XLet(parent)
 {
-    // qDebug() << "SearchPanel::SearchPanel()";
+    // qDebug() << Q_FUNC_INFO;
     setTitle(tr("Contacts"));
     ChitChatWindow::chitchat_instance = new ChitChatWindow();
     QVariantMap optionsMap = b_engine->getGuiOptions("merged_gui");
     m_maxdisplay = optionsMap.value("contacts-max").toUInt();
     m_ncolumns = optionsMap.value("contacts-width").toUInt();
-    
+
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
     QLabel *lbl = new QLabel(tr("N&ame or number to search :"), this);
@@ -62,6 +62,7 @@ SearchPanel::SearchPanel(QWidget *parent)
     connect(m_input, SIGNAL(textChanged(const QString &)),
             this, SLOT(affTextChanged(const QString &)));
     vlayout->addWidget(m_input);
+
     QScrollArea *scrollarea = new QScrollArea(this);
     scrollarea->setWidgetResizable(true);
     QWidget *widget = new QWidget(scrollarea);
@@ -94,7 +95,7 @@ SearchPanel::SearchPanel(QWidget *parent)
 
 SearchPanel::~SearchPanel()
 {
-    // qDebug() << "SearchPanel::~SearchPanel()";
+    // qDebug() << Q_FUNC_INFO;
     removePeers();
 }
 
@@ -176,7 +177,7 @@ void SearchPanel::updatePeerAgent(double,
                                   const QString &what,
                                   const QVariant &statuslist)
 {
-    // qDebug() << "SearchPanel::updatePeerAgent()";
+    // qDebug() << Q_FUNC_INFO;
     if (m_peerhash.contains(id)) {
         if (what == "agentstatus") {
             m_peerhash.value(id)->updateAgentStatus(statuslist);
@@ -191,7 +192,7 @@ void SearchPanel::updatePeerAgent(double,
  */
 void SearchPanel::removePeer(const QString &ext)
 {
-    // qDebug() << "SearchPanel::removePeer()" << ext;
+    // qDebug() << Q_FUNC_INFO << ext;
     if (m_peerhash.contains(ext)) {
         PeerItem *peeritem = m_peerhash.value(ext);
         BasePeerWidget *peerwidget = peeritem->getWidget();
@@ -208,7 +209,7 @@ void SearchPanel::removePeer(const QString &ext)
  */
 void SearchPanel::removePeers()
 {
-    // qDebug() << "SearchPanel::removePeers()";
+    // qDebug() << Q_FUNC_INFO;
     foreach(QString peerkey, m_peerhash.keys()) {
         PeerItem *peeritem = m_peerhash[peerkey];
         BasePeerWidget *peerwidget = peeritem->getWidget();
@@ -237,5 +238,3 @@ void SearchPanel::paintEvent(QPaintEvent *)
         i = 1;
     }
 }
-
-
