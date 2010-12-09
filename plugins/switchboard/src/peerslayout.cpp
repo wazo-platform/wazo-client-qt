@@ -39,8 +39,8 @@
 PeersLayout::PeersLayout(QWidget * parent)
     : QLayout(parent), m_nb_rows(0), m_nb_columns(0)
 {
-    //qDebug() << "PeersLayout::PeersLayout(" << parent << ")";
-    //qDebug() << "PeersLayout::spacing" << spacing();
+    //qDebug() << Q_FUNC_INFO << parent;
+    //qDebug() << Q_FUNC_INFO << spacing();
 }
 
 PeersLayout::~PeersLayout()
@@ -54,7 +54,7 @@ PeersLayout::~PeersLayout()
  */
 QSize PeersLayout::sizeHint() const
 {
-    //qDebug() << "PeersLayout::sizeHints()";
+    //qDebug() << Q_FUNC_INFO;
     return size();
 }
 
@@ -62,7 +62,7 @@ QSize PeersLayout::sizeHint() const
  */
 QSize PeersLayout::minimumSize() const
 {
-    //qDebug() << "PeersLayout::minimumSize()";
+    //qDebug() << Q_FUNC_INFO;
     return size();
 }
 
@@ -70,7 +70,7 @@ QSize PeersLayout::minimumSize() const
  */
 QSize PeersLayout::maximumSize() const
 {
-    //qDebug() << "PeersLayout::maximumSize()";
+    //qDebug() << Q_FUNC_INFO;
     return size();
 }
 
@@ -126,7 +126,7 @@ void PeersLayout::addItem(QLayoutItem * item)
  */
 void PeersLayout::setGeometry(const QRect &/* r*/)
 {
-    //qDebug() << "PeersLayout::setGeometry" << r;
+    //qDebug() << Q_FUNC_INFO << r;
     QSize itemSize = maxItemSize();
     int i, x, y;
     for(i = 0; i<m_list.size(); i++) {
@@ -145,7 +145,7 @@ void PeersLayout::setGeometry(const QRect &/* r*/)
  */
 QLayoutItem* PeersLayout::itemAt(int i) const
 {
-    //qDebug() << "PeersLayout::itemAt" << i;
+    //qDebug() << Q_FUNC_INFO << i;
     return m_list.value(i);
 }
 
@@ -153,7 +153,7 @@ QLayoutItem* PeersLayout::itemAt(int i) const
  */
 QLayoutItem* PeersLayout::takeAt(int i)
 {
-    //qDebug() << "PeersLayout::takeAt" << i;
+    //qDebug() << Q_FUNC_INFO << i;
     m_listPos.takeAt(i);
     return m_list.takeAt(i);
 }
@@ -162,7 +162,7 @@ QLayoutItem* PeersLayout::takeAt(int i)
  */
 int PeersLayout::count() const
 {
-    //qDebug() << "PeersLayout::count()";
+    //qDebug() << Q_FUNC_INFO;
     return m_list.size();
 }
 

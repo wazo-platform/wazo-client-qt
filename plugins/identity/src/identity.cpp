@@ -180,7 +180,7 @@ void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
 
 void IdentityDisplay::updatePresence(const QVariant & presence)
 {
-    // qDebug() << "IdentityDisplay::updatePresence()" << presence;
+    // qDebug() << Q_FUNC_INFO << presence;
     m_presencevalue->hide();
     if(! m_functions.contains("presence"))
         return;
@@ -228,7 +228,7 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
 
 void IdentityDisplay::setUserInfo(const UserInfo */* ui */)
 {
-    // qDebug() << "IdentityDisplay::setUserInfo()";
+    // qDebug() << Q_FUNC_INFO;
     m_ui = b_engine->getXivoClientUser();
     
     m_user->setText(m_ui->fullname());
@@ -250,7 +250,7 @@ void IdentityDisplay::setUserInfo(const UserInfo */* ui */)
  */
 void IdentityDisplay::newAgentList(const QStringList &)
 {
-    // qDebug() << "IdentityDisplay::newAgentList()" << m_loginkind << list << b_engine->agents();
+    // qDebug() << Q_FUNC_INFO << m_loginkind << list << b_engine->agents();
     if (m_loginkind == 0 || ! m_ui)
         return;
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
@@ -339,7 +339,7 @@ void IdentityDisplay::updateUser(UserInfo * ui)
 void IdentityDisplay::idxChanged(const QString & newidx)
 {
     QString function = sender()->property("function").toString();
-    // qDebug() << "IdentityDisplay::idxChanged" << newidx << sender() << function;
+    // qDebug() << Q_FUNC_INFO << newidx << sender() << function;
     if(function == "presence") {
         foreach (QString avstate, m_presence_names.keys())
             if(m_presence_names[avstate] == newidx)

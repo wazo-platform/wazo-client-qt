@@ -332,7 +332,7 @@ void XletOperator::changeCurrentChannel(const QString & before, const QString & 
 
 void XletOperator::updateUser(UserInfo * ui)
 {
-    //qDebug() << " XletOperator::updateUser()" << ui << b_engine->getXivoClientUser();
+    //qDebug() << Q_FUNC_INFO << ui << b_engine->getXivoClientUser();
     if (!ui || !b_engine->getXivoClientUser())
         return;
     if (ui == b_engine->getXivoClientUser()) {
@@ -350,7 +350,7 @@ void XletOperator::updateUser(UserInfo * ui)
                     const QString status = qvm["status"].toString();
                     const QString peerchan = qvm["peerchannel"].toString();
                     const QString num = qvm["calleridnum"].toString();
-                    qDebug() << " XletOperator::updateUser" << it.key() << status << num << callchannel << peerchan << qvm["atxfer"];
+                    qDebug() << Q_FUNC_INFO << it.key() << status << num << callchannel << peerchan << qvm["atxfer"];
                     if (callchannel.isEmpty())
                         continue;
                     chanList << callchannel;
@@ -388,12 +388,12 @@ void XletOperator::updateUser(UserInfo * ui)
                             removeLine(callchannel);
                         }
                     } else {
-                        qDebug() << " XletOperator::updateUser not processed" << callchannel << peerchan << status;
+                        qDebug() << Q_FUNC_INFO << "not processed" << callchannel << peerchan << status;
                     }
                 }
             }
         }
-        //qDebug() << " StatusPane::updateUser chanList" << chanList << "m_callchannels" << m_callchannels;
+        //qDebug() << Q_FUNC_INFO << "chanList" << chanList << "m_callchannels" << m_callchannels;
         // clean up "ghost" entries...
         foreach (QString chan, m_callchannels) {
             if (!chanList.contains(chan)) {

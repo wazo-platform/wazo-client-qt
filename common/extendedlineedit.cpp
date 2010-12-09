@@ -50,7 +50,7 @@ ExtendedLineEdit::ExtendedLineEdit(QWidget * parent)
  */
 void ExtendedLineEdit::dropEvent(QDropEvent *)
 {
-    // qDebug() << "ExtendedLineEdit::dropEvent()" << event->mimeData()->text() << event->pos();
+    // qDebug() << Q_FUNC_INFO << event->mimeData()->text() << event->pos();
 }
 
 
@@ -61,7 +61,7 @@ FileNameLineEdit::FileNameLineEdit(QWidget * parent)
 
 void FileNameLineEdit::dropEvent(QDropEvent * event)
 {
-    // qDebug() << "FileNameLineEdit::dropEvent" << event;
+    // qDebug() << Q_FUNC_INFO << event;
     QList<QUrl> urls = event->mimeData()->urls();
     if (urls.size() > 0) {
         QUrl url = urls[0];
@@ -72,6 +72,6 @@ void FileNameLineEdit::dropEvent(QDropEvent * event)
 
 void FileNameLineEdit::dragEnterEvent(QDragEnterEvent * event)
 {
-    // qDebug() << "FileNameLineEdit::dragEnterEvent" << event;
+    // qDebug() << Q_FUNC_INFO << event;
     event->acceptProposedAction();
 }

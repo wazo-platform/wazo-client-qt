@@ -113,7 +113,7 @@ void XletAgents::setGuiOptions(const QVariantMap & optionsMap)
  */
 void XletAgents::updateAgentPresence(const QString & astid, const QString & agent_number, const QVariant & presencestatus)
 {
-    // qDebug() << "XletAgents::updateAgentPresence()" << astid << agent_number << presencestatus;
+    // qDebug() << Q_FUNC_INFO << astid << agent_number << presencestatus;
     QString agentid = QString("agent:%1/%2").arg(astid).arg(agent_number);
     if (b_engine->agents().contains(agentid))
         if (m_agent_presence.contains(agentid)) {
@@ -128,16 +128,16 @@ void XletAgents::updateAgentPresence(const QString & astid, const QString & agen
  */
 void XletAgents::newQueueList(const QStringList &)
 {
-    // qDebug() << "XletAgents::newQueueList()";
+    // qDebug() << Q_FUNC_INFO;
 }
 
 /*! \brief slot when one or more agents have been updated
  */
 void XletAgents::newAgentList(const QStringList & list)
 {
-    //qDebug() << "XletAgents::newAgentList()" << list;
+    //qDebug() << Q_FUNC_INFO << list;
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
-    // qDebug() << "XletAgents::newAgentList()" << b_engine->agents();
+    // qDebug() << Q_FUNC_INFO << b_engine->agents();
 
     
     while (iter.hasNext()) {
@@ -447,7 +447,7 @@ void XletAgents::agentClicked()
  */
 void XletAgents::statusRecord(const QString & astid, const QString & agentid, const QString & status)
 {
-    // qDebug() << "XletAgents::statusRecord()" << astid << agentid << status;
+    // qDebug() << Q_FUNC_INFO << astid << agentid << status;
     QString gagentid = QString("agent:%1/%2").arg(astid).arg(agentid);
     if (! m_agent_record.contains(gagentid))
         return;
@@ -465,7 +465,7 @@ void XletAgents::statusRecord(const QString & astid, const QString & agentid, co
  */
 void XletAgents::statusListen(const QString & astid, const QString & agentid, const QString & status)
 {
-    // qDebug() << "XletAgents::statusListen()" << astid << agentid << status;
+    // qDebug() << Q_FUNC_INFO << astid << agentid << status;
     QString gagentid = QString("agent:%1/%2").arg(astid).arg(agentid);
     if (! m_agent_listen.contains(gagentid))
         return;

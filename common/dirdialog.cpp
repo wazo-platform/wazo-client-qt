@@ -67,7 +67,7 @@ DirDialog::DirDialog(QWidget *parent)
 /*! \brief Destructor */
 DirDialog::~DirDialog()
 {
-    // qDebug() << "DirDialog::~DirDialog()";
+    // qDebug() << Q_FUNC_INFO;
     b_engine->getSettings()->setValue("faxhistory/geometry", saveGeometry() );
 }
 

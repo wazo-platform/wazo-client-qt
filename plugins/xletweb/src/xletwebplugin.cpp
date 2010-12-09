@@ -42,7 +42,7 @@ Q_EXPORT_PLUGIN2(xletwebplugin, XLetWebPlugin);
 /*! \brief Destructor */
 XLetWebPlugin::~XLetWebPlugin()
 {
-    qDebug() << "XLetWebPlugin::~XLetWebPlugin()";
+    qDebug() << Q_FUNC_INFO;
 }
 
 /*! \brief instanciate XletWeb

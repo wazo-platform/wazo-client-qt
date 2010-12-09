@@ -83,7 +83,7 @@ void IdentityAgent::updateStatus(const QVariantMap & properties)
     QVariantMap agentstats = properties["agentstats"].toMap();
     QString agstatus = agentstats["status"].toString();
     QString phonenum = agentstats["agent_phone_number"].toString();
-    
+
     if(agstatus != m_agstatus) {
         m_agstatus = agstatus;
         if(agstatus == "AGENT_LOGGEDOFF") {
@@ -99,9 +99,9 @@ void IdentityAgent::updateStatus(const QVariantMap & properties)
             m_statustxt->setProperty("connected", true);
             setStatusColors(phonenum);
         } else
-            qDebug() << "IdentityAgent::updateStatus unknown status" << agstatus;
+            qDebug() << Q_FUNC_INFO << "unknown status" << agstatus;
     }
-    
+
     QStringList joined_queues;
     QStringList unpaused_queues;
     foreach (QString qname, agqjoined.keys()) {
@@ -114,7 +114,7 @@ void IdentityAgent::updateStatus(const QVariantMap & properties)
                 unpaused_queues << qname;
         }
     }
-    
+
     int njoined = joined_queues.size();
     int nunpaused = unpaused_queues.size();
     setPausedColors(njoined, njoined - nunpaused);
@@ -166,7 +166,7 @@ void IdentityAgent::setPausedColors(int nj, int np)
 
 void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
 {
-    // qDebug() << "IdentityAgent::contextMenuEvent()";
+    // qDebug() << Q_FUNC_INFO;
     QMenu contextMenu(this);
     
     if(m_allow_logagent) {
@@ -238,7 +238,7 @@ void IdentityAgent::unpause()
 
 void IdentityAgent::setAllowedActions(bool allow_logagent, bool allow_pauseagent)
 {
-    // qDebug() << "IdentityAgent::setAllowedActions()" << allow_logagent << allow_pauseagent;
+    // qDebug() << Q_FUNC_INFO << allow_logagent << allow_pauseagent;
     m_allow_logagent = allow_logagent;
     m_allow_pauseagent = allow_pauseagent;
 }

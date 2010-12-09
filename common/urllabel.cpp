@@ -56,7 +56,7 @@ UrlLabel::UrlLabel(const QString & url, QWidget * parent)
         displaytext = url.mid(5);
     else
         displaytext = url;
-    //qDebug() << "UrlLabel::UrlLabel()" << url << displaytext;
+    //qDebug() << Q_FUNC_INFO << url << displaytext;
     text = "<a href=\"";
     text.append(url);
     text.append("\">");

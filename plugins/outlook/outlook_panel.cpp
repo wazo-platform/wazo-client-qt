@@ -225,12 +225,12 @@ void OutlookPanel::setUserInfo(const UserInfo * ui)
 
 void OutlookPanel::focusInEvent(QFocusEvent * event)
 {
-    qDebug() << "OutlookPanel::focusInEvent()" << event;
+    qDebug() << Q_FUNC_INFO << event;
 }
 
 void OutlookPanel::dropEvent(QDropEvent * event)
 {
-    qDebug() << "OutlookPanel::dropEvent()" << event;
+    qDebug() << Q_FUNC_INFO << event;
 }
 
 void OutlookPanel::itemClicked(QTableWidgetItem * item)
@@ -240,7 +240,7 @@ void OutlookPanel::itemClicked(QTableWidgetItem * item)
     QRegExp re_number("\\+?[0-9\\s\\.]+");
     QString str=callnum(item->text());
     if(re_number.exactMatch(str)) {
-        // qDebug() << "OutlookPanel::itemClicked()" << "preparing to dial" << item->text();
+        // qDebug() << Q_FUNC_INFO << "preparing to dial" << item->text();
         if(str.size() >= m_calllength)
             copyNumber(m_callprefix + str);
         else
@@ -273,7 +273,7 @@ void OutlookPanel::itemDoubleClicked(QTableWidgetItem * item)
     if(item && item->text().contains("@")) {
         QString mailAddr = item->text();
         if(mailAddr.length() > 0) {
-            //qDebug() << "OutlookPanel::itemDoubleClicked() : mail" << mailAddr;
+            //qDebug() << Q_FUNC_INFO << "mail" << mailAddr;
             QDesktopServices::openUrl(QUrl("mailto:" + mailAddr));
         }
     }
@@ -287,7 +287,7 @@ void OutlookPanel::itemDoubleClicked(QTableWidgetItem * item)
 void OutlookPanel::setSearchResponse(const QString & resp)
 {
     int i, x, y;
-    //qDebug() << "setSearchResponse()" << resp;
+    //qDebug() << Q_FUNC_INFO << resp;
     QStringList items = resp.split(";");
     int ncolumns = items[0].toInt();
     if(ncolumns > 0) {
@@ -386,7 +386,7 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
             m_numberToDial = cleanup_num(m_callprefix + item->text());
         else
             m_numberToDial = strVal;
-        // qDebug() << "OutlookPanel::contextMenuEvent()" << "preparing to dial" << m_numberToDial;
+        // qDebug() << Q_FUNC_INFO << "preparing to dial" << m_numberToDial;
         QMenu contextMenu(this);
         contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
         QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
@@ -488,7 +488,7 @@ void OutlookPanel::dialNumber()
 void OutlookPanel::sendMail()
 {
     if(m_mailAddr.length() > 0) {
-        qDebug() << "ExtendedTableWidget::sendMail()" << m_mailAddr;
+        qDebug() << Q_FUNC_INFO << m_mailAddr;
         QDesktopServices::openUrl(QUrl("mailto:" + m_mailAddr));
     }
 }

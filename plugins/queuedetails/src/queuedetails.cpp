@@ -84,21 +84,21 @@ XletQueueDetails::XletQueueDetails(QWidget *parent)
 
 void XletQueueDetails::newQueueList(const QStringList &qsl)
 {
-    // qDebug() << "XletQueueDetails::newQueueList()" << qsl;
+    // qDebug() << Q_FUNC_INFO << qsl;
     if(qsl.contains(m_monitored_queueid) && b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
 void XletQueueDetails::newAgentList(const QStringList &)
 {
-    // qDebug() << "XletQueueDetails::newAgentList()" << qsl;
+    // qDebug() << Q_FUNC_INFO << qsl;
     if(b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
 void XletQueueDetails::monitorThisQueue(const QString &queueid)
 {
-    // qDebug() << "XletQueueDetails::monitorThisQueue" << queueid;
+    // qDebug() << Q_FUNC_INFO << queueid;
     if (b_engine->queues().contains(queueid)) {
         m_monitored_queueid = queueid;
         clearPanel();
@@ -108,7 +108,7 @@ void XletQueueDetails::monitorThisQueue(const QString &queueid)
 
 void XletQueueDetails::clearPanel()
 {
-    // qDebug() << "XletQueueDetails::update()";
+    // qDebug() << Q_FUNC_INFO;
     foreach(QString q, m_agent_labels.keys())
         delete m_agent_labels[q];
     foreach(QString q, m_agent_more.keys())
@@ -205,7 +205,7 @@ void XletQueueDetails::setAgentProps(const QString &agentid, const AgentInfo *ai
 {
     m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber()));
     m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->astid()).arg(ainfo->context()));
-    // qDebug() << "XletQueueDetails::setAgentProps" << agentid << ainfo->properties()["agentstats"].toMap()["loggedintime"].toInt();
+    // qDebug() << Q_FUNC_INFO << agentid << ainfo->properties()["agentstats"].toMap()["loggedintime"].toInt();
 }
 
 void XletQueueDetails::setAgentQueueSignals(const QString &agentid)
@@ -284,7 +284,7 @@ void XletQueueDetails::fillAgent(int ii, const QString &agentid)
 
 void XletQueueDetails::agentClicked()
 {
-    // qDebug() << "XletQueueDetails::agentClicked()" << sender()->property("agentid");
+    // qDebug() << Q_FUNC_INFO << sender()->property("agentid");
     QString agentid = sender()->property("agentid").toString();
     b_engine->changeWatchedAgentSlot(agentid, true);
 }

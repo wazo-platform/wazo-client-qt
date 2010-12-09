@@ -399,7 +399,7 @@ void ConfigWidget::_insert_operatorxlet_tab()
 
 ConfigWidget::~ConfigWidget()
 {
-//    qDebug() << "ConfigWidget::~ConfigWidget()" << b_engine;
+//    qDebug() << Q_FUNC_INFO << b_engine;
     b_engine->getSettings()->setValue("display/configtab", m_tabwidget->currentIndex());
 }
 
@@ -434,7 +434,7 @@ void ConfigWidget::keyPressEvent(QKeyEvent *e)
 /*! \brief hide/show agentphonenumber input according to loginKind */
 void ConfigWidget::loginKindChanged(int index)
 {
-    // qDebug() << "ConfigWidget::loginKindChanged()" << index;
+    // qDebug() << Q_FUNC_INFO << index;
     if (index == 0) {
         m_lblphone->hide();
         m_agentphonenumber->hide();
@@ -452,7 +452,7 @@ void ConfigWidget::loginKindChanged(int index)
 void ConfigWidget::saveAndClose()
 {
     int i;
-    // qDebug() << "ConfigWidget::saveAndClose()";
+    // qDebug() << Q_FUNC_INFO;
     b_engine->setAddress(m_serverhost->text(), m_ctiport->value());
     b_engine->setServerip(m_serverhost->text());
     

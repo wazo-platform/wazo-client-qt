@@ -42,7 +42,7 @@ Q_EXPORT_PLUGIN2(videoxletplugin, VideoXLetPlugin);
 /*! \brief Destructor */
 VideoXLetPlugin::~VideoXLetPlugin()
 {
-    qDebug() << "VideoXLetPlugin::~VideoXLetPlugin()";
+    qDebug() << Q_FUNC_INFO;
 }
 
 /*! \brief instanciate XletWeb

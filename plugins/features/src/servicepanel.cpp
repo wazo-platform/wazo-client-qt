@@ -166,7 +166,7 @@ void ServicePanel::setUserInfo(const UserInfo * ui)
 
 void ServicePanel::Connect()
 {
-    //qDebug() << "ServicePanel::Connect()";
+    //qDebug() << Q_FUNC_INFO;
     foreach (QString capa, chkcapas) {
         if (m_capas.contains(capa)) {
             connect(m_chkopt[capa], SIGNAL(clicked(bool)),
@@ -183,7 +183,7 @@ void ServicePanel::Connect()
 
 void ServicePanel::DisConnect()
 {
-    //qDebug() << "ServicePanel::DisConnect()";
+    //qDebug() << Q_FUNC_INFO;
     foreach (QString capa, chkcapas) {
         if (m_capas.contains(capa)) {
             disconnect(m_chkopt[capa], SIGNAL(clicked(bool)),
@@ -204,7 +204,7 @@ void ServicePanel::DisConnect()
 
 void ServicePanel::Reset()
 {
-    //qDebug() << "ServicePanel::Reset()";
+    //qDebug() << Q_FUNC_INFO;
     foreach (QString capa, chkcapas) {
         if (m_capas.contains(capa))
             m_chkopt[capa]->setChecked(false);
@@ -278,13 +278,13 @@ void ServicePanel::setForward(const QString & capa, const QVariant & value)
  */
 void ServicePanel::monitorPeer(UserInfo * /*ui*/)
 {
-    // qDebug() << "ServicePanel::monitorPeer()" << peer;
+    // qDebug() << Q_FUNC_INFO << peer;
     b_engine->askFeatures();
 }
 
 void ServicePanel::setRecordedStatus()
 {
-    // qDebug() << "ServicePanel::setRecordedStatus()";
+    // qDebug() << Q_FUNC_INFO;
     foreach (QString capa, chkcapas) {
         if (m_capas.contains(capa)) {
             m_status->m_chkopt[capa] = m_chkopt[capa]->isChecked();
@@ -299,7 +299,7 @@ void ServicePanel::setRecordedStatus()
 
 void ServicePanel::getRecordedStatus()
 {
-    // qDebug() << "ServicePanel::getRecordedStatus()";
+    // qDebug() << Q_FUNC_INFO;
     foreach (QString capa, chkcapas) {
         if (m_capas.contains(capa)) {
             m_chkopt[capa]->setChecked(m_status->m_chkopt[capa]);

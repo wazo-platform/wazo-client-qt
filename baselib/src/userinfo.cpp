@@ -91,7 +91,7 @@ void UserInfo::setPhones(const QString &astid,
                          const QStringList &termlist,
                          const QHash<QString, PhoneInfo *> &phones)
 {
-    //qDebug() << "UserInfo::setPhones" << astid << termlist;
+    //qDebug() << Q_FUNC_INFO << astid << termlist;
     m_astid = astid;
     foreach (const QString term, termlist) {
         PhoneInfo *pi = NULL;
@@ -133,7 +133,7 @@ void UserInfo::setMWI(const QStringList &mwi)
 bool UserInfo::hasPhone(const QString &astid,
                         const QString &term)
 {
-    //    qDebug() << "UserInfo::hasPhone" << term << m_phones;
+    // qDebug() << Q_FUNC_INFO << term << m_phones;
     return ((m_astid == astid) && m_phones.keys().contains(term));
 }
 

@@ -88,7 +88,7 @@ DetailedExternalPhonePeerWidget::DetailedExternalPhonePeerWidget(const QString &
  */
 void DetailedExternalPhonePeerWidget::setText(const QString & text)
 {
-//    qDebug() << "DetailedExternalPhonePeerWidget::setText()" << text;
+    // qDebug() << Q_FUNC_INFO << text;
     m_textlbl->setText( text );
 }
 

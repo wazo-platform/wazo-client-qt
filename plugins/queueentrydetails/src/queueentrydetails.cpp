@@ -64,21 +64,21 @@ XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
 
 void XLetQueueEntryDetails::newQueueList(const QStringList &)
 {
-    // qDebug() << "QueuedetailsPanel::newQueueList()";
+    // qDebug() << Q_FUNC_INFO;
     if(b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
 void XLetQueueEntryDetails::newAgentList(const QStringList &)
 {
-    // qDebug() << "QueuedetailsPanel::newAgentList()";
+    // qDebug() << Q_FUNC_INFO;
     if(b_engine->queues().contains(m_monitored_queueid))
         updatePanel();
 }
 
 void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)
 {
-    // qDebug() << "XLetQueueEntryDetails::monitorThisQueue" << queueid;
+    // qDebug() << Q_FUNC_INFO << queueid;
     if(b_engine->queues().contains(queueid)) {
         m_monitored_queueid = queueid;
         updatePanel();
@@ -145,7 +145,7 @@ void XLetQueueEntryDetails::updateEntryChannel(const QString & channel)
 
 void XLetQueueEntryDetails::timerEvent(QTimerEvent *)
 {
-    // qDebug() << "XLetQueueEntryDetails::timerEvent()";
+    // qDebug() << Q_FUNC_INFO;
     foreach(QString channel, m_entrypos.keys())
         updateEntryChannel(channel);
 }

@@ -146,7 +146,7 @@ void PeerItem::updateDisplayedStatus()
                 
         // ("agentstatus", "xivo", "6102", "0", "qcb_00003,qcb_00000")
         //         } else {
-        //                 qDebug() << "UNKNOWN in PeerItem::updateDisplayedStatus()" << m_agentstatus;
+        //                 qDebug() << Q_FUNC_INFO << "UNKNOWN" << m_agentstatus;
         // m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
         // m_peerwidget->setBlue("agent");
     }
