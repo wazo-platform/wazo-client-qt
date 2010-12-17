@@ -1,4 +1,4 @@
-# $Id$
+# $Id: xivoclientbaselib.pro 9722 2010-12-09 09:53:51Z kaou $
 TEMPLATE    = lib
 CONFIG      += dll
 COMMONDIR = ../common

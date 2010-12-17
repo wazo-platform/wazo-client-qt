@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 8993 $
- * $Date: 2010-08-24 06:41:39 -0400 (mar 24 aoû 2010) $
+/* $Revision$
+ * $Date$
  */
 
 #ifndef __IDENTITYDISPLAY_H__

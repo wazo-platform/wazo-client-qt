@@ -258,28 +258,32 @@ void XletQueues::setQueueOrder(const QStringList &queueOrder)
     int rowMovedIndex;
     int index = 1;
     foreach(QString queue, queueOrder) {
-        rowAtPos = qobject_cast<QueueRow *>(m_layout->itemAt(index)->widget());
-        if (rowAtPos!= NULL) {
-            if (rowAtPos->property("id").toString() != queue ) {
-                QHashIterator<QString, QueueRow *> i(m_queueList);
-                rowAtWrongPos = NULL;
-                while (i.hasNext()) {
-                    i.next();
-                    if (i.value()->property("id").toString() == queue) {
-                        rowAtWrongPos = i.value();
-                        break;
+        QLayoutItem * qli = m_layout->itemAt(index);
+        if(qli != NULL) {
+            rowAtPos = qobject_cast<QueueRow *>(qli->widget());
+            if (rowAtPos!= NULL) {
+                if (rowAtPos->property("id").toString() != queue ) {
+                    QHashIterator<QString, QueueRow *> i(m_queueList);
+                    rowAtWrongPos = NULL;
+                    while (i.hasNext()) {
+                        i.next();
+                        if (i.value()->property("id").toString() == queue) {
+                            rowAtWrongPos = i.value();
+                            break;
+                        }
+                    }
+                    if (rowAtWrongPos != NULL) {
+                        rowMovedIndex = m_layout->indexOf(rowAtWrongPos);
+                        m_layout->removeWidget(rowAtPos);
+                        m_layout->removeWidget(rowAtWrongPos);
+                        m_layout->insertWidget(rowMovedIndex, rowAtPos);
+                        m_layout->insertWidget(index, rowAtWrongPos);
                     }
                 }
-                if (rowAtWrongPos != NULL) {
-                    rowMovedIndex = m_layout->indexOf(rowAtWrongPos);
-                    m_layout->removeWidget(rowAtPos);
-                    m_layout->removeWidget(rowAtWrongPos);
-
-                    m_layout->insertWidget(rowMovedIndex, rowAtPos);
-                    m_layout->insertWidget(index, rowAtWrongPos);
-                }
+                index++;
             }
-            index++;
+        } else {
+            qDebug() << "WARNING qli is NULL for queue" << queue << "and index" << index;
         }
     }
 }

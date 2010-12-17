@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 9154 $
- * $Date: 2010-09-13 05:01:30 -0400 (lun 13 sep 2010) $
+/* $Revision$
+ * $Date$
  */
 
 

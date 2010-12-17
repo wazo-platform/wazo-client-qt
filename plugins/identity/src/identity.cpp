@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 9072 $
- * $Date: 2010-08-31 12:03:24 -0400 (mar 31 aoû 2010) $
+/* $Revision$
+ * $Date$
  */
 
 #include <QAction>

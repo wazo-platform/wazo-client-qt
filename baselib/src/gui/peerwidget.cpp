@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 9130 $
- * $Date: 2010-09-08 08:45:48 -0400 (mer 08 sep 2010) $
+/* $Revision$
+ * $Date$
  */
 
 #include <QGridLayout>

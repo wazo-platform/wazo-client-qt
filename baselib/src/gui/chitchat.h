@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 9022 $
- * $Date: 2010-08-26 05:40:10 -0400 (jeu 26 aoû 2010) $
+/* $Revision$
+ * $Date$
  */
 
 #ifndef __CHITCHAT_H__

@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision: 9114 $
- * $Date: 2010-09-03 10:40:35 -0400 (ven 03 sep 2010) $
+/* $Revision$
+ * $Date$
  */
 
 #include "basepeerwidget.h"
