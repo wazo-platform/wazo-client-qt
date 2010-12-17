@@ -52,13 +52,13 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
 
     public:
         BasePeerWidget(UserInfo *);
-        
+
         virtual void setName(const QString &) = 0;  //! change username to be displayed
         virtual void setAgentToolTip(const QString &, const QStringList &) = 0;  //! set Tooltip for agent
         virtual void setAgentState(const QString & color) = 0;  //! set agent state
         virtual void updatePresence() = 0;  //! update presence information displayed
         virtual void updatePhonesStates() = 0;  //! update phones information displayed
-    
+
         virtual const QString& number() const { return m_number; };  //! Phone number
         virtual QString name() const;  //! Name
         virtual QString id() const;  //! return a unique id for the item

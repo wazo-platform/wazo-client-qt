@@ -37,4 +37,4 @@ namespace JsonQt
 	};
 }
 
-#endif 
+#endif

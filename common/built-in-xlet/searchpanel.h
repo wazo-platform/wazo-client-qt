@@ -69,7 +69,7 @@ class SearchPanel : public XLet
         QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
         QGridLayout *m_peerlayout; //!< layout object
         ExtendedLineEdit *m_input; //!< widget for search string input
-            
+
         int m_maxdisplay;  //!< max number of peers displayed on the search panel
         int m_ncolumns;
         QString m_searchpattern;

@@ -133,7 +133,7 @@ int main(int argc, char ** argv)
     info_osname = QString("unknown-%1-%2").arg(info_endianness).arg(app.applicationPid());
 #endif
     qDebug() << "main() osname=" << info_osname << "locale=" << locale;
-    
+
     BaseEngine *engine = new BaseEngine(settings, info_osname);
 
     MainWidget window;
@@ -141,7 +141,7 @@ int main(int argc, char ** argv)
 
     app.setQuitOnLastWindowClosed(false);
     app.setProperty("stopper", "lastwindow");
-    
+
     QObject::connect(&app, SIGNAL(standBy()),
                      engine, SLOT(stop()));
     QObject::connect(&app, SIGNAL(resume()),
@@ -150,6 +150,6 @@ int main(int argc, char ** argv)
                      engine, SLOT(powerEvent(const QString &)));
     QObject::connect(&app, SIGNAL(messageReceived(const QString &)),
                      engine, SLOT(handleOtherInstanceMessage(const QString &)));
-    
+
     return app.exec();
 }

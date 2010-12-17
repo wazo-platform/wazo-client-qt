@@ -132,7 +132,7 @@ class JsonRpc : public QObject
 
 		void testJsonRpcVersion()
 		{
-			QString testString = 
+			QString testString =
 				"{"
 				"\"jsonrpc\": \"9001\","
 				"\"method\": \"ping\""

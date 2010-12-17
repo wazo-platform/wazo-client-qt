@@ -38,7 +38,7 @@
 #include "identityvoicemail.h"
 #include "userinfo.h"
 
-/*! \brief Constructor 
+/*! \brief Constructor
  */
 IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
     : QWidget(parent)

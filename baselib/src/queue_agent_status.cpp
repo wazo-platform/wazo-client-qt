@@ -62,7 +62,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         m_display_status_darkfactor = 300;
         m_display_action_join = "";
     }
-    
+
     QColor basecolor;
     if (sstatus == "") {
         basecolor = Qt::gray;
@@ -89,7 +89,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         m_display_status_queue = QString("unknown-%1").arg(sstatus);
         m_display_status_logged = "";
     }
-    
+
     if(pstatus == "0") {
         m_display_status_paused = tr("Not paused");
         m_display_status_paused_color = Qt::green;
@@ -107,7 +107,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         m_display_status_paused_color = Qt::black;
         m_display_action_pause = "";
     }
-    
+
     m_display_status_color = basecolor.darker(m_display_status_darkfactor);
     return true;
 }

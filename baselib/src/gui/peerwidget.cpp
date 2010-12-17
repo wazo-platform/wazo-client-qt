@@ -54,7 +54,7 @@ PeerWidget::PeerWidget(UserInfo *ui)
     : BasePeerWidget(ui), m_user_status(NULL), m_agentlbl(NULL), m_mobilelbl(NULL)
 {
     int fsize = 25;
-    
+
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     setLayout(vLayout);
     vLayout->setSpacing(0);
@@ -74,7 +74,7 @@ PeerWidget::PeerWidget(UserInfo *ui)
     peer->setLayout(layout);
     layout->setMargin(3);
     layout->setSpacing(0);
-    
+
     m_textlbl = new QLabel(peer);
     m_textlbl->setMinimumWidth(m_maxWidthWanted);
     setName(m_ui->fullname());
@@ -96,7 +96,7 @@ PeerWidget::PeerWidget(UserInfo *ui)
     } else {
         hLayout->addSpacing(fsize);
     }
-    
+
     foreach (QString phone, ui->phonelist()) {
         m_lblphones[phone] = new QLabel(peer);
         m_lblphones[phone]->setAlignment(Qt::AlignCenter);
@@ -106,7 +106,7 @@ PeerWidget::PeerWidget(UserInfo *ui)
         hLayout->addWidget(m_lblphones[phone]);
     }
 
-        
+
     if (!m_ui->mobileNumber().isEmpty()) {
         m_mobilelbl = new QLabel(peer);
         m_mobilelbl->setPixmap(QPixmap(":/images/mobile-grey.png"));
@@ -129,11 +129,11 @@ PeerWidget::PeerWidget(UserInfo *ui)
         hLayout->addWidget(m_agentlbl);
     }
     hLayout->addStretch(1);
-    
+
     layout->addWidget(m_textlbl, 0, 2, 1, 1, Qt::AlignLeft);
     layout->addLayout(hLayout, 1, 2);
     setMaximumWidth(200);
-    
+
     reloadSavedName();
 }
 
@@ -172,7 +172,7 @@ void PeerWidget::updatePhonesStates()
             m_lblphones[phone]->setPixmap( \
                 TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
 
-            
+
             m_lblphones[phone]->setToolTip(tr("Phone %1 : %2")
                                             .arg(pi->number())
                                             .arg(pi->hintstatus("longname")));

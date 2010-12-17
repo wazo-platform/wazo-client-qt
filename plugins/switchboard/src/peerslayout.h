@@ -50,7 +50,7 @@ class PeersLayout : public QLayout
         QSize sizeHint() const; //! return size Hint (prefered size)
         QSize minimumSize() const;
         QSize maximumSize() const;
-        void addWidget(QWidget *, QPoint); 
+        void addWidget(QWidget *, QPoint);
         void addItem(QLayoutItem *, QPoint); //! add the Item at a specific emplacement
         void addItem(QLayoutItem *); //! default addItem implementation
         int count() const; //! return the number of items
@@ -69,7 +69,7 @@ class PeersLayout : public QLayout
         QRect getGridRect(const QRect &) const;
         QSize maxItemSize() const;
         int indexOfItemAtPosition(const QPoint &pos);
-    
+
     private:
         int itemIndex(QWidget * widget) const;
         QPoint freePosition() const;

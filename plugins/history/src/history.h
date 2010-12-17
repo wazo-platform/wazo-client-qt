@@ -77,12 +77,12 @@ class LogWidgetModel : public QAbstractTableModel
             return a.toMap()["fullname"].toString() >  b.toMap()["fullname"].toString();
         }
         static int ascendingOrderByDate(const QVariant &a, const QVariant &b) {
-            return 
+            return
                 QDateTime::fromString(a.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t() <
                 QDateTime::fromString(b.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t();
         }
         static int descendingOrderByDate(const QVariant &a, const QVariant &b) {
-            return 
+            return
                 QDateTime::fromString(a.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t() >
                 QDateTime::fromString(b.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t();
         }

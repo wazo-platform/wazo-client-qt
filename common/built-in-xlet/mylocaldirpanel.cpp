@@ -66,7 +66,7 @@ MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
     : XLet(parent)
 {
     setTitle( tr("Personal Directory") );
-        
+
     m_searchBox = new SearchDialog(this);
     connect(m_searchBox, SIGNAL(findNext()), this, SLOT(findNext()));
 
@@ -224,7 +224,7 @@ void MyLocalDirPanel::saveToFile(QFile & file)
     CsvStream out(&file);
     // write header line
     out << contacts_index;
-    
+
     // write all entries
     for(int i = 0; i < m_table->rowCount(); i++)
     {

@@ -62,21 +62,21 @@ ConfigWidget::ConfigWidget(QWidget *parent)
       m_history_sbox(NULL), m_currentKeyChange(-1)
 {
     setWindowTitle(tr("Configuration"));
-    
+
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     m_tabwidget = new QTabWidget();
 
     opts = b_engine->getGuiOptions("client_gui");
     forcedopts = b_engine->getGuiOptions("server_gui");
-    
+
     _insert_connection_tab();
     _insert_function_tab();
     _insert_account_tab();
     _insert_guisetting_tab();
     _insert_operatorxlet_tab();
-    
+
     m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
-    
+
     vlayout->addWidget(m_tabwidget);
     vlayout->addWidget(m_btnbox);
 }
@@ -90,12 +90,12 @@ void ConfigWidget::_insert_connection_tab()
     QWidget *widget_connection = new QWidget;
 
     widget_connection->setLayout(grid);
-    
+
     QLabel *lblhost = new QLabel(tr("Server Host"), this);
     m_serverhost = new QLineEdit(b_engine->serverip(), this);
     grid->addWidget(lblhost, line, 0);
     grid->addWidget(m_serverhost, line++, 1);
-    
+
     QLabel *lblsbport = new QLabel(tr("Login Port"), this);
 
     m_ctiport = new QSpinBox(this);
@@ -103,7 +103,7 @@ void ConfigWidget::_insert_connection_tab()
     m_ctiport->setValue(b_engine->sbPort());
     grid->addWidget(lblsbport, line, 0);
     grid->addWidget(m_ctiport, line++, 1);
-    
+
     grid->setRowStretch(line, 1);
     grid->setColumnStretch(2, 1);
 
@@ -120,39 +120,39 @@ void ConfigWidget::_insert_function_tab()
     widget_functions->setLayout(gridlayout2);
     line = 0;
     int width = 4;
-    
+
     func_legend["presence"] = tr("Presence reporting");
     func_legend["customerinfo"] = tr("Customer Info");
-    
+
     foreach(QString function, func_legend.keys()) {
         m_function[function] = new QCheckBox(func_legend[function]);
         m_function[function]->setCheckState(b_engine->checkedFunction(function) ? Qt::Checked : Qt::Unchecked);
         gridlayout2->addWidget(m_function[function], line++, 0, 1, width);
     }
-    
+
     m_autourl_allowed = new QCheckBox(tr("Allow the Automatic Opening of URL's"));
     m_autourl_allowed->setCheckState(opts["autourl_allowed"].toUInt() == 2 ? Qt::Checked : Qt::Unchecked);
     gridlayout2->addWidget(m_autourl_allowed, line++, 0, 1, width);
-    
+
     gridlayout2->addWidget(new QLabel(tr("History size"), this), line, 0);
     m_history_sbox = new QSpinBox(this);
     m_history_sbox->setRange(1, 20);
     m_history_sbox->setValue(b_engine->historySize());
     gridlayout2->addWidget(m_history_sbox, line++, 1);
-    
+
     qDebug() << forcedopts;
     gridlayout2->addWidget(new QLabel(tr("Contacts' max number"), this), line, 0);
     m_contactssize_sbox = new QSpinBox(this);
     m_contactssize_sbox->setRange(1, 500);
     m_contactssize_sbox->setValue(opts.value("contacts-max").toUInt());
     gridlayout2->addWidget(m_contactssize_sbox, line++, 1);
-    
+
     gridlayout2->addWidget(new QLabel(tr("Contacts' width"), this), line, 0);
     m_contactswidth_sbox = new QSpinBox(this);
     m_contactswidth_sbox->setRange(1, 20);
     m_contactswidth_sbox->setValue(opts["contacts-width"].toUInt());
     gridlayout2->addWidget(m_contactswidth_sbox, line++, 1);
-    
+
     gridlayout2->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
     int ncol = 1;
     foreach(QString color, queuelevel_colors) {
@@ -162,7 +162,7 @@ void ConfigWidget::_insert_function_tab()
         gridlayout2->addWidget(m_queuelevels[color], line, ncol++);
     }
     line++;
-    
+
     gridlayout2->setRowStretch(line, 1);
     gridlayout2->setColumnStretch(width, 1);
 
@@ -195,32 +195,32 @@ void ConfigWidget::_insert_account_tab()
     QWidget *widget_user = new QWidget();
     widget_user->setLayout(gridlayout3);
     line = 0;
-    
+
     m_context = new QLineEdit(b_engine->company(), this);
     gridlayout3->addWidget(new QLabel(tr("Context"), this), line, 0);
     gridlayout3->addWidget(m_context, line++, 1);
-    
+
     m_userid = new QLineEdit(b_engine->userId(), this);
     gridlayout3->addWidget(new QLabel(tr("User Login"), this), line, 0);
     gridlayout3->addWidget(m_userid, line++, 1);
-    
+
     m_password = new QLineEdit(b_engine->password(), this);
     m_password->setEchoMode(QLineEdit::Password);
     gridlayout3->addWidget(new QLabel(tr("Password"), this), line, 0);
     gridlayout3->addWidget(m_password, line++, 1);
-    
+
     m_keeppass = new QCheckBox(tr("Keep Password"));
     m_keeppass->setCheckState((b_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
     gridlayout3->addWidget(m_keeppass, line++, 0, 1, 2);
-    
+
     m_showagselect = new QCheckBox(tr("Show the Agent options (like the\nones beneath) on first window"));
     m_showagselect->setCheckState((b_engine->showagselect() == 2) ? Qt::Checked : Qt::Unchecked);
     gridlayout3->addWidget(m_showagselect, line++, 0, 1, 2);
-    
+
     QFrame *qhline3 = new QFrame(this);
     qhline3->setFrameShape(QFrame::HLine);
     gridlayout3->addWidget(qhline3, line++, 0, 1, 2);
-    
+
     m_loginkind = new QComboBox(this);
     m_loginkind->addItem(QString(tr("No Agent")));
     m_loginkind->addItem(QString(tr("Agent (unlogged)")));
@@ -229,14 +229,14 @@ void ConfigWidget::_insert_account_tab()
     gridlayout3->addWidget(m_loginkind, line++, 0, 1, 2);
     connect(m_loginkind, SIGNAL(currentIndexChanged(int)),
             this, SLOT(loginKindChanged(int)));
-    
+
     m_lblphone = new QLabel(tr("Phone Number"), this);
     m_agentphonenumber = new QLineEdit(b_engine->agentphonenumber(), this);
     gridlayout3->addWidget(m_lblphone, line, 0);
     gridlayout3->addWidget(m_agentphonenumber, line++, 1);
-    
+
     loginKindChanged(m_loginkind->currentIndex());
-    
+
     gridlayout3->setRowStretch(line, 1);
     gridlayout3->setColumnStretch(2, 1);
 
@@ -249,39 +249,39 @@ void ConfigWidget::_insert_guisetting_tab()
     QFormLayout *layout4 = new QFormLayout();
     QWidget *widget_gui = new QWidget();
     widget_gui->setLayout(layout4);
-    
+
     m_autoconnect = new QCheckBox(tr("Autoconnect at startup"), this);
     m_autoconnect->setCheckState(b_engine->autoconnect() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow(m_autoconnect);
-    
+
     m_trytoreconnect = new QCheckBox(tr("Try to reconnect") + "\n" + \
                                      tr("Checking this box disables the Error Popups"), this);
     m_trytoreconnect->setCheckState(b_engine->trytoreconnect() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow(m_trytoreconnect);
-    
+
     m_tryinterval_sbox = new QSpinBox(this);
     m_tryinterval_sbox->setRange(1, 120);
     m_tryinterval_sbox->setValue(b_engine->trytoreconnectinterval() / 1000);
     layout4->addRow(tr("Try to reconnect interval"), m_tryinterval_sbox);
-    
+
     m_kainterval_sbox = new QSpinBox(this);
     m_kainterval_sbox->setRange(1, 120);
     m_kainterval_sbox->setValue(b_engine->keepaliveinterval() / 1000);
     layout4->addRow(tr("Keep alive interval"), m_kainterval_sbox);
-    
+
     QFrame *qhline5 = new QFrame(this);
     qhline5->setFrameShape(QFrame::HLine);
     layout4->addRow(qhline5);
-    
+
     m_tablimit_sbox = new QSpinBox(this);
     m_tablimit_sbox->setRange(0, 99);
     m_tablimit_sbox->setValue(opts["sheet-tablimit"].toUInt());
     layout4->addRow(tr("Tab limit"), m_tablimit_sbox);
-    
+
     m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
     m_systrayed->setCheckState(b_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow(m_systrayed);
-    
+
     m_comboswitchboard = new QComboBox(this);
     m_comboswitchboard->addItem(tr("Small"), QString("small"));
     m_comboswitchboard->addItem(tr("Detailed"), QString("detailed"));
@@ -290,7 +290,7 @@ void ConfigWidget::_insert_guisetting_tab()
             m_comboswitchboard->setCurrentIndex(i);
     }
     layout4->addRow(tr("Apparence of SwitchBoard elements"), m_comboswitchboard);
-    
+
     m_maxWidthWanted = new QSpinBox(this);
     m_maxWidthWanted->setRange(50, 250);
     int maxwidthwanted = opts["maxwidthwanted"].toInt();
@@ -306,7 +306,7 @@ void ConfigWidget::_insert_guisetting_tab()
         presenceIndicatorSize = 5;
     m_presenceIndicatorSize->setValue(presenceIndicatorSize);
     layout4->addRow(tr("Presence indicator size (in pixels)"), m_presenceIndicatorSize);
-    
+
     m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     connect(m_btnbox, SIGNAL(accepted()), this, SLOT(saveAndClose()));
     connect(m_btnbox, SIGNAL(rejected()), this, SLOT(close()));
@@ -368,7 +368,7 @@ void ConfigWidget::_insert_operatorxlet_tab()
     root_widget->setLayout(glayout);
     QPushButton *selectKey;
 
-    
+
 
     glayout->addWidget(new QLabel(tr("Operator action")), 0, 1);
     glayout->addWidget(new QLabel(tr("Key binding")), 0, 2);
@@ -455,28 +455,28 @@ void ConfigWidget::saveAndClose()
     // qDebug() << Q_FUNC_INFO;
     b_engine->setAddress(m_serverhost->text(), m_ctiport->value());
     b_engine->setServerip(m_serverhost->text());
-    
+
     b_engine->setCompany(m_context->text());
     b_engine->setKeepPass(m_keeppass->checkState());
     b_engine->setShowAgentSelect(m_showagselect->checkState());
-    
+
     b_engine->setUserId(m_userid->text());
     b_engine->setAgentPhoneNumber(m_agentphonenumber->text());
-    
+
     b_engine->setPassword(m_password->text());
-    
+
     b_engine->setAutoconnect(m_autoconnect->checkState() == Qt::Checked);
     b_engine->setTrytoreconnect(m_trytoreconnect->checkState() == Qt::Checked);
     b_engine->setTrytoreconnectinterval(m_tryinterval_sbox->value() * 1000);
     b_engine->setKeepaliveinterval(m_kainterval_sbox->value() * 1000);
-    
+
     foreach(QString function, func_legend.keys())
         b_engine->setCheckedFunction(function, m_function[function]->checkState() == Qt::Checked);
     if(m_history_sbox)
         b_engine->setHistorySize(m_history_sbox->value());
-    
+
     b_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
-    
+
     QVariantMap opts_saved;
     QVariantMap qvm, qvm2;
 
@@ -494,10 +494,10 @@ void ConfigWidget::saveAndClose()
     foreach(QString color, queuelevel_colors)
         qvm2[color] = QVariant(m_queuelevels_wait[color]->value());
     opts_saved["queuelevels_wait"] = qvm2;
-    
+
     b_engine->setLoginKind(m_loginkind->currentIndex());
     opts_saved["loginkind"] = m_loginkind->currentIndex();
-    
+
     opts_saved["contacts-max"] = m_contactssize_sbox->value();
     opts_saved["contacts-width"] = m_contactswidth_sbox->value();
     opts_saved["sheet-tablimit"] = m_tablimit_sbox->value();
@@ -508,7 +508,7 @@ void ConfigWidget::saveAndClose()
     opts_saved["maxwidthwanted"] = m_maxWidthWanted->value();
     opts_saved["presenceindicatorsize"] = m_presenceIndicatorSize->value();
     b_engine->setGuiOption("client_gui", opts_saved);
-    
+
     emit confUpdated();
     close();
 }

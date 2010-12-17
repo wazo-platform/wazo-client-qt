@@ -49,7 +49,7 @@
 class UserInfo;
 class XletQueues;
 
-/*! \brief to configure if the queue should be shown and the queue 
+/*! \brief to configure if the queue should be shown and the queue
  *  stats parameters
  */
 class XletQueuesConfigure : public QWidget
@@ -137,7 +137,7 @@ class XletQueues : public XLet
         bool m_showMore;
         bool m_showNumber;
         XletQueuesConfigure *m_configureWindow;
-        
+
         QVBoxLayout *m_layout;
         QWidget *m_titleRow;
         QHash<QString, QueueRow *> m_queueList;

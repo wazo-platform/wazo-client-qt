@@ -72,7 +72,7 @@ static const struct {
 };
 
 /*! xlet creator function prototype */
-    
+
 static QHash<QString, newXLetProto> xletList;  //!< built-in XLets constuctors
 static QDir pluginDir;  //!< directory where to find plugins
 static bool pluginDirFound = false;  //!< Is the plugins directory found ?
@@ -88,10 +88,10 @@ static void init()
 }
 
 
-/*! 
+/*!
  * Find a plugins directory,
  * ./plugins
- * or 
+ * or
  * /usr/share/xivoclient/plugins
  * and populate the xletList hash table.
  */

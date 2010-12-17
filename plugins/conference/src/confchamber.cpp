@@ -154,7 +154,7 @@ void ConfChamberModel::sort(int column, Qt::SortOrder order)
                                           index(i, column).data().toString()));
     }
 
-    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ? 
+    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
                                          sFun.ascending :
                                          sFun.descending);
 
@@ -270,8 +270,8 @@ ConfChamberModel::data(const QModelIndex &index,
             break;
         case SINCE:
             return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
-                                         b_engine->eV(in + "time-start").toDouble() - 
-                                         b_engine->timeDeltaServerClient()).toUTC() 
+                                         b_engine->eV(in + "time-start").toDouble() -
+                                         b_engine->timeDeltaServerClient()).toUTC()
                                          .toString("hh:mm:ss");
         default:
             break;
@@ -286,7 +286,7 @@ ConfChamberModel::headerData(int section,
 {
     if (role != Qt::DisplayRole)
         return QVariant();
-    
+
     if (orientation == Qt::Horizontal) {
         return COL_TITLE[section];
     }
@@ -319,7 +319,7 @@ Qt::ItemFlags ConfChamberModel::flags(const QModelIndex &index) const
                 if (b_engine->eV(in + "mute").toBool()) {
                     return Qt::ItemIsEnabled;
                 }
-            } 
+            }
         }
     }
 
@@ -503,7 +503,7 @@ ConfChamber::ConfChamber(QWidget *parent, ConfTab *tab, const QString &id)
 
 
 
-    if ( moderated && 
+    if ( moderated &&
         (!m_model->isAuthed())) {
         QTimer *timer = new QTimer(this);
         timer->setSingleShot(true);

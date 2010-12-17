@@ -69,7 +69,7 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
             return true;
         } */
         powerEvent(QString("pbt-%1").arg(msg->wParam));
-        
+
         if(msg->wParam == PBT_APMSUSPEND) {
             setProperty("stopper", "standby");
             emit standBy();

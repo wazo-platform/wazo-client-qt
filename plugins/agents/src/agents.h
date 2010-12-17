@@ -67,12 +67,12 @@ class XletAgents : public XLet
         void updateAgentLineEvent(const QString &);
         void displayLine(const QString &, int);
         void updateAgentStatus(const QString &, const QVariantMap &);
-        
+
         QFont m_gui_font;  //!< font
         quint32 m_gui_buttonsize;  //!< button size
-        
+
         QGridLayout *m_gridlayout;  //!< Layout
-        
+
         QHash<QString, QLabel *>      m_agent_labels;
         QHash<QString, QPushButton *> m_agent_more;
         QHash<QString, QPushButton *> m_agent_record;
@@ -85,10 +85,10 @@ class XletAgents : public XLet
         QHash<QString, QLabel *>      m_agent_paused_status;
         QHash<QString, QPushButton *> m_agent_paused_action;
         QHash<QString, QLabel *>      m_agent_paused_number;
-        
+
         QHash<QString, QStringList> m_agent_joined_list;
         QHash<QString, QStringList> m_agent_paused_list;
-        
+
         QLabel *m_title1;  //!< "Agent"
         QLabel *m_title2;  //!< "Record"
         QLabel *m_title3;  //!< "Listen"

@@ -75,13 +75,13 @@ class BASELIB_EXPORT MeetmeInfo
         const QStringList& adminlist() const;  //! conference room admin list
         const QVariantMap& uniqueids() const;  //! conference room uniqueids
         const QString& astId() const;  //! conference room asterisk id
-        
+
     private:
         QString m_context;  //!< room context
         QString m_roomname;  //!< room access name
         QString m_roomnumber;  //!< room access number (if any)
         QString m_pin;  //!< room pin number (if any)
-        QString m_adminpin;  //!< room admin pin number (if any) 
+        QString m_adminpin;  //!< room admin pin number (if any)
         QString m_adminid;  //!< admin id ??? (global)
         QString m_adminnum;  //!< admin num ( local in the meetme room )
         bool m_paused;  //!< is the conference room paused ?

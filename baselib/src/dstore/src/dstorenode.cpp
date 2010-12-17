@@ -67,12 +67,12 @@ void DStoreNode::construct(DStore *tree)
                 existingNode->destroy(tree, 1);
             }
             parent()->remove(name());
-        } 
-    } 
+        }
+    }
 
     if (getNewUid) {
         m_uid = tree->getUid();
-    } 
+    }
 
     tree->registerNode(this);
 
@@ -125,7 +125,7 @@ static QString _pp(const VMapNode *map, int lvl, int tc, int showUid)
         }
     }
     ret.append(QString().fill(' ', ((lvl>1)?lvl-1:0) * tc) + ")");
-    
+
     return ret;
 }
 

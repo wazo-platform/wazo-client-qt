@@ -49,7 +49,7 @@ XletWeb::XletWeb(QWidget *parent)
 {
     qDebug() << Q_FUNC_INFO;
     setTitle( tr("Web Browser") );
-        
+
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
 
@@ -61,7 +61,7 @@ XletWeb::XletWeb(QWidget *parent)
 
     icon = new QLabel(this);
     hlayout->addWidget(icon);
-    
+
     urlLine = new QLineEdit(this);
     hlayout->addWidget(urlLine, 3);
 
@@ -73,7 +73,7 @@ XletWeb::XletWeb(QWidget *parent)
 
     QPushButton * forward = new QPushButton(tr("Forward"), this);
     hlayout->addWidget(forward);
-    
+
     layout->addLayout(hlayout);
 
     web = new QWebView(this);

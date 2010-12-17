@@ -57,9 +57,9 @@ class CallWidget : public QWidget
 
     public:
         CallWidget(UserInfo *, const QString &, const QString &, uint, const QString &, const QString &, const QString &, QWidget * parent, const PhoneInfo * pi);
-    
+
         void updateWidget(const QString &, uint, const QString &, const QString &, const QString &, const PhoneInfo *);
-    
+
         const QString& channel() const;
     protected:
         void mousePressEvent(QMouseEvent *);

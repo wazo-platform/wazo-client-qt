@@ -88,7 +88,7 @@ class XletSwitchBoard : public XLet
         BasePeerWidget *getExternalPhonePeerWidget(const QString & number);
         BasePeerWidget *addPeerWidget(PeerItem * peeritem, const QPoint & pos);
         Group* getGroup(const QPoint &) const;
-    
+
         QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
         PeersLayout *m_layout;  //!< Grid Layout for displaying peers
         int m_drawGrid; //!< display a grid ?

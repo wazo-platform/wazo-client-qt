@@ -113,7 +113,7 @@ ConfListModel::data(const QModelIndex &index,
         case NAME:
             return b_engine->eV(room + "name");
         case PIN_REQUIRED:
-            return b_engine->eV(room + "pin").toString().isEmpty() ? 
+            return b_engine->eV(room + "pin").toString().isEmpty() ?
                        tr("No") : tr("Yes");
         case MODERATED:
             return b_engine->eV(room + "moderated").toInt() ?
@@ -132,7 +132,7 @@ ConfListModel::data(const QModelIndex &index,
                 }
             }
             if (time != 0) {
-                displayed = 
+                displayed =
                     QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
                                           b_engine->timeDeltaServerClient() -
                                           time)
@@ -154,7 +154,7 @@ ConfListModel::headerData(int section,
 {
     if (role != Qt::DisplayRole)
         return QVariant();
-    
+
     if (orientation == Qt::Horizontal) {
         return COL_TITLE[section];
     }
@@ -185,7 +185,7 @@ void ConfListModel::sort(int column, Qt::SortOrder order)
                                           index(i, column).data().toString()));
     }
 
-    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ? 
+    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
                                          sFun.ascending :
                                          sFun.descending);
 

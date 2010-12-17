@@ -137,7 +137,7 @@ void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
         QDrag *drag = new QDrag(this);
         QMimeData *mimeData = new QMimeData;
         mimeData->setText(item->text());
-        mimeData->setData(NUMBER_MIMETYPE, ""); // ??? 
+        mimeData->setData(NUMBER_MIMETYPE, ""); // ???
         drag->setMimeData(mimeData);
         drag->start(Qt::CopyAction | Qt::MoveAction);
     }
@@ -243,7 +243,7 @@ void ExtendedTableWidget::dtransfer()
     if ((!chan.isEmpty())&&(!number.isEmpty())) {
         b_engine->actionCall("transfer",
                              "chan:special:me:" + chan,
-                             "ext:" + number); 
+                             "ext:" + number);
     }
 }
 
@@ -254,6 +254,6 @@ void ExtendedTableWidget::itransfer()
     if ((!chan.isEmpty()) && (!number.isEmpty())) {
         b_engine->actionCall("atxfer",
                              "chan:special:me:" + chan,
-                             "ext:" + number); 
+                             "ext:" + number);
     }
 }

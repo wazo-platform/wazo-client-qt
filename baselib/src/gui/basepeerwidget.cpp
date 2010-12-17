@@ -60,7 +60,7 @@ BasePeerWidget::BasePeerWidget(UserInfo *ui)
                 ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
     }
 
-    
+
     m_removeAction = new QAction(tr("&Remove"), this);
     m_removeAction->setStatusTip(tr("Remove this peer from the panel"));
     connect(m_removeAction, SIGNAL(triggered()),
@@ -70,13 +70,13 @@ BasePeerWidget::BasePeerWidget(UserInfo *ui)
     m_renameAction->setStatusTip(tr("Rename this peer"));
     connect(m_renameAction, SIGNAL(triggered()),
             this, SLOT(rename()));
-    
+
 
     m_interceptAction = new QAction(tr("&Intercept"), this);
     m_interceptAction->setStatusTip(tr("Intercept call"));
     connect(m_interceptAction, SIGNAL(triggered()),
             this, SLOT(intercept2()));
-    
+
 
     m_maxWidthWanted = 200;
     if (b_engine->enabledFunction("switchboard")) {
@@ -336,7 +336,7 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
         mimeData->setData(NUMBER_MIMETYPE, m_number.toAscii());
     }
     drag->setMimeData(mimeData);
-        
+
     drag->start(Qt::CopyAction | Qt::MoveAction);
     //qDebug() << Q_FUNC_INFO << "dropAction=" << dropAction;
 }
@@ -459,7 +459,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                                         comm["peerchannel"],
                                         this, SLOT(hangup()));
                 }
-                if ((m_ui != ui) && 
+                if ((m_ui != ui) &&
                     ((status == CHAN_STATUS_RINGING) ||
                      (status == CHAN_STATUS_LINKED_CALLER) ||
                      (status == CHAN_STATUS_LINKED_CALLED)) &&
@@ -500,7 +500,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     }
     // get "my" currently open channels
     //qDebug() << m_ui->userid() << ui;
-    if (ui && ui != m_ui) {       
+    if (ui && ui != m_ui) {
         int commsCount = ui->commsCount();    // number of current comms
         foreach (const QString phone, ui->phonelist()) {
             const PhoneInfo *pi = ui->getPhoneInfo(phone);
@@ -611,7 +611,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
             contextMenu.addMenu(menu);
         }
     }
-        
+
 
     if (!contextMenu.isEmpty()) {
         contextMenu.exec(event->globalPos());
@@ -632,7 +632,7 @@ QString BasePeerWidget::name() const
     }
 }
 
-/*! \brief  
+/*! \brief
  *
  * filters the acceptable drag on the mime type.
  */
@@ -686,7 +686,7 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
     } else if (event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
         qDebug() << Q_FUNC_INFO << "NUMBER_MIMETYPE";
     }
-        
+
     switch(event->proposedAction()) {
         case Qt::CopyAction:
             // transfer the call to the peer "to"
@@ -707,7 +707,7 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
         case Qt::MoveAction:
             // can be reached with the shift button
             event->acceptProposedAction();
-            b_engine->actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, to); 
+            b_engine->actionCall("atxfer", "chan:" + userid_from + ":" + channel_from, to);
             break;
         default:
             qDebug() << Q_FUNC_INFO << "Unrecognized action" << event->proposedAction();

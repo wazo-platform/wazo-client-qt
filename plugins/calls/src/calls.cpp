@@ -67,7 +67,7 @@ XletCalls::XletCalls(QWidget *parent)
             this, SLOT(updateUser(UserInfo *)));
     connect(this, SIGNAL(changeTitle(const QString &)),
             titleLabel, SLOT(setText(const QString &)));
-               
+
     connect(this, SIGNAL(monitorPeerRequest(const QString &)),
             b_engine, SLOT(monitorPeerRequest(const QString &)));
     connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),

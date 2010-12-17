@@ -65,7 +65,7 @@ class PlayerWidget: public XLet
     private:
         bool startMPlayer();
         bool stopMPlayer();
-    
+
     private slots:
         void catchOutput();
         void pollCurrentTime();

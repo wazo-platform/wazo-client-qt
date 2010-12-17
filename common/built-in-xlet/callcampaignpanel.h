@@ -76,7 +76,7 @@ class CallCampaignPanel : public XLet
     private:
         void addNumber(const QString &);
         void checkStatuses();
-        
+
         QLineEdit * m_openFileNameLabel;
         QVBoxLayout * m_vlayout;
         QHBoxLayout * m_hlayout1;

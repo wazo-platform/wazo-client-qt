@@ -106,7 +106,7 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
     m_isParsingInfo = false;
     if(m_popup == NULL)
         return true;
-        
+
     if( (localName == "sheet_info") ||
         (localName == "systray_info") ||
         (localName == "action_info" ) ||
@@ -116,7 +116,7 @@ bool XmlHandler::endElement( const QString & /*namespaceURI*/,
         m_popup->addDefForm(m_infoName, m_infoValue);
     else if( localName == "profile" )
         m_popup->finishAndShow();
-    
+
     return true;
 }
 

@@ -39,7 +39,7 @@
 
 /*! \brief Constructor
  *
- * In this example, we just set a simple layout for 
+ * In this example, we just set a simple layout for
  * the widget and add a label displaying "Hello world !" in it.
  */
 XletNull::XletNull(QWidget *parent)

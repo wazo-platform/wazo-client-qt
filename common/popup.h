@@ -87,7 +87,7 @@ class Popup: public QWidget
         bool systraypopup();
         bool focus();
         void setTitle(const QString &);
-            
+
         void addAnyInfo(const QString &, const QString &, const QString &, const QString &, const QString &);
         void addDefForm(const QString &, const QString &);
         void update(QList<QStringList> &);

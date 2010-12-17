@@ -71,7 +71,7 @@ void ConfTab::showConfRoom(const QString &id, bool force)
 {
     int index;
     if ((index = indexOf(id)) == -1) {
-        if ((!force) && 
+        if ((!force) &&
             (b_engine->eVM(QString("confrooms/%0/in").arg(id)).size() == 0)) {
             return ;
         }

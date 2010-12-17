@@ -49,7 +49,7 @@ bool AgentInfo::update(const QMap<QString, QVariant> & prop)
     if (m_properties != prop) {
         m_properties = prop;
         haschanged = true;
-        
+
         m_context = prop.value("context").toString();
         m_agentnumber = prop.value("number").toString();
         QString firstname = prop.value("firstname").toString();

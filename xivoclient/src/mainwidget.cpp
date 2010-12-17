@@ -65,17 +65,17 @@ MainWidget::MainWidget()
     m_status->setPixmap(m_pixmap_disconnected);
 
     statusBar()->addPermanentWidget(m_status);
-    
+
     setWindowTitle(QString("XiVO %1").arg(m_appliname));
     setDockOptions(QMainWindow::AllowNestedDocks);
     setAnimated(false);
-    
+
     createActions();
     createMenus();
 
     if (m_withsystray && QSystemTrayIcon::isSystemTrayAvailable())
         createSystrayIcon();
-    
+
     connect(b_engine, SIGNAL(logged()),
             this, SLOT(engineStarted()));
     connect(b_engine, SIGNAL(delogged()),
@@ -85,7 +85,7 @@ MainWidget::MainWidget()
     connect(b_engine, SIGNAL(emitMessageBox(const QString &)),
             this, SLOT(showMessageBox(const QString &)),
             Qt::QueuedConnection);
-    
+
 #ifndef Q_WS_WIN
     m_clipboard = QApplication::clipboard();
     connect(m_clipboard, SIGNAL(selectionChanged()),
@@ -94,23 +94,23 @@ MainWidget::MainWidget()
             this, SLOT(clipdata()));
     m_clipboard->setText("", QClipboard::Selection); // see comment in MainWidget::clipselection()
 #endif
-    
+
     resize(500, 440);
     restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
-    
+
     if (m_settings->value("display/logtofile", false).toBool()) {
         b_engine->setLogFile(m_settings->value("display/logfilename", "XiVO_Client.log").toString());
     }
     b_engine->logAction("application started on " + b_engine->osname());
-    
+
     setCentralWidget(m_centralWidget);
-    
+
     m_wid = new QWidget(m_centralWidget);
     m_centralWidget->addWidget(m_wid);
     m_vL = new QVBoxLayout(m_wid);
-    
+
     m_launchDateTime = QDateTime::currentDateTime();
-    
+
     makeLoginWidget();
     showLogin();
     if ((m_withsystray && (b_engine->systrayed() == false)) || (! m_withsystray)) {
@@ -139,19 +139,19 @@ void MainWidget::makeLoginWidget()
     loginL->setColumnStretch(0, 1);
     loginL->setColumnStretch(2, 1);
     loginL->setRowStretch(6, 1);
-    
+
     QLabel *xivoBg = new QLabel();
     xivoBg->setPixmap(QPixmap(":/images/xivoicon.png"));
     xivoBg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     loginL->addWidget(xivoBg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
-    
+
     m_lab1 = new QLabel(tr("Login"));
     loginL->addWidget(m_lab1, 2, 0, Qt::AlignRight);
     m_lab2 = new QLabel(tr("Password"));
     loginL->addWidget(m_lab2, 3, 0, Qt::AlignRight);
     m_lab3 = new QLabel(tr("Phone"));
     loginL->addWidget(m_lab3, 4, 0, Qt::AlignRight);
-    
+
     m_qlab1 = new QLineEdit();
     m_qlab1->setText(b_engine->userId());
     loginL->addWidget(m_qlab1, 2, 1);
@@ -162,7 +162,7 @@ void MainWidget::makeLoginWidget()
     m_qlab3 = new QLineEdit();
     m_qlab3->setText(b_engine->agentphonenumber());
     loginL->addWidget(m_qlab3, 4, 1);
-    
+
     m_ack = new QPushButton("OK");
     loginL->addWidget(m_ack, 2, 2, Qt::AlignLeft);
     m_kpass = new QCheckBox(tr("Keep Password"));
@@ -174,10 +174,10 @@ void MainWidget::makeLoginWidget()
     m_loginkind->addItem(QString(tr("Agent (logged)")));
     m_loginkind->setCurrentIndex(b_engine->loginkind());
     loginL->addWidget(m_loginkind, 4, 2, Qt::AlignLeft);
-    
+
     loginKindChanged(m_loginkind->currentIndex());
     m_qlab1->setFocus();
-    
+
     connect(m_qlab1, SIGNAL(returnPressed()),
              this, SLOT(setConfigAndStart()));
     connect(m_qlab2, SIGNAL(returnPressed()),
@@ -195,14 +195,14 @@ void MainWidget::clipselection()
 {
     QString selected = m_clipboard->text(QClipboard::Selection);
     b_engine->pasteToDial(selected);
-    
+
     // X11 : when a pattern is selected on (seemingly) any KDE(QT) application on Linux
     // X11 (non-KDE) : we don't get the signal, but the data can be retrieved anyway (the question "when ?" remains)
-    
+
     // X11 (non-KDE) : force a selection to be owned, so that the next not-owned one will be catched
     // if(selected.size() > 0) // avoid infinite loop, however
     // m_clipboard->setText("", QClipboard::Selection);
-    
+
     // might be boring anyway, since the selected texts disappear at once wherever you are
     // the following does not fix it :
     // if((selected.size() > 0) && (! m_clipboard->ownsSelection()))
@@ -212,12 +212,12 @@ void MainWidget::clipselection()
 void MainWidget::clipdata()
 {
     b_engine->pasteToDial(m_clipboard->text(QClipboard::Clipboard));
-    
+
     // WIN : we fall here in any Ctrl-C/Ctrl-X/"copy"/... action
     // X11 : same actions, on (seemingly) any KDE(QT) application
-    // X11 (non-KDE) : we don't get the signal, but the data can 
+    // X11 (non-KDE) : we don't get the signal, but the data can
     //                 be retrieved anyway (the question "when ?" remains)
-    //                 however, the xclipboard application seems to be 
+    //                 however, the xclipboard application seems to be
     //                 able to catch such signals ...
 }
 #endif
@@ -286,7 +286,7 @@ void MainWidget::loginKindChanged(int index)
         m_lab3->hide();
         m_qlab3->hide();
     }
-    
+
     if (b_engine->showagselect()) {
         if (index > 0) {
             m_lab3->show();
@@ -322,7 +322,7 @@ void MainWidget::createActions()
     m_cfgact->setStatusTip(tr("Configure account and connection options"));
     connect(m_cfgact, SIGNAL(triggered()),
              this, SLOT(showConfDialog()));
-    
+
     m_quitact = new QAction(tr("&Quit"), this);
     m_quitact->setProperty("stopper", "quit");
     m_quitact->setStatusTip(tr("Close the application"));
@@ -330,14 +330,14 @@ void MainWidget::createActions()
             b_engine, SLOT(stop()));
     connect(m_quitact, SIGNAL(triggered()),
             qApp, SLOT(quit()));
-    
+
     if (m_withsystray) {
         m_systraymin = new QAction(tr("To S&ystray"), this);
         m_systraymin->setStatusTip(tr("Enter the system tray"));
         connect(m_systraymin, SIGNAL(triggered()),
                  this, SLOT(hide()));
         m_systraymin->setEnabled(QSystemTrayIcon::isSystemTrayAvailable());
-        
+
         m_systraymax = new QAction(tr("&Show window"), this);
         m_systraymax->setStatusTip(tr("Leave the system tray"));
         connect(m_systraymax, SIGNAL(triggered()),
@@ -348,28 +348,28 @@ void MainWidget::createActions()
                 this, SLOT(raise()));
         m_systraymax->setEnabled(QSystemTrayIcon::isSystemTrayAvailable());
     }
-    
+
     m_connectact = new QAction(tr("&Connect"), this);
     m_connectact->setStatusTip(tr("Connect to the server"));
     connect(m_connectact, SIGNAL(triggered()),
             b_engine, SLOT(start()));
-    
+
     m_disconnectact = new QAction(tr("&Disconnect"), this);
     m_disconnectact->setProperty("stopper", "disconnect");
     m_disconnectact->setStatusTip(tr("Disconnect from the server"));
     connect(m_disconnectact, SIGNAL(triggered()),
             b_engine, SLOT(stop()));
-    
+
     m_connectact->setEnabled(true);
     m_disconnectact->setEnabled(false);
-    
+
     // Availability actions :
     m_availgrp = new QActionGroup(this);
     m_availgrp->setExclusive(true);
-    
+
     connect(b_engine, SIGNAL(changesAvailChecks()),
             this, SLOT(checksAvailState()));
-    
+
     checksAvailState();
 }
 
@@ -415,7 +415,7 @@ void MainWidget::updateAppliName()
 /*! \brief create and show the system tray icon
  *
  * Create the system tray icon, show it and connect its
- * activated() signal to some slot 
+ * activated() signal to some slot
  */
 void MainWidget::createSystrayIcon()
 {
@@ -632,17 +632,17 @@ void MainWidget::clearPresence()
 void MainWidget::engineStarted()
 {
     setAppearance(b_engine->getCapaXlets());
-    
+
     m_appliname = tr("Client (%1 profile)").arg(b_engine->getCapaApplication());
-    
+
     connect(b_engine, SIGNAL(updatePresence(const QVariant &)),
             this, SLOT(updatePresence(const QVariant &)));
     updateAppliName();
     hideLogin();
-    
+
     m_tabwidget = new QTabWidget(this);
     m_tabwidget->hide();
-    
+
     if (m_docknames.contains("tabber")) {
         m_tabwidget->show();
         addPanel("tabber", tr("Tabs"), m_tabwidget);
@@ -651,7 +651,7 @@ void MainWidget::engineStarted()
         m_tabwidget->show();
         m_vL->addWidget(m_tabwidget);
     }
-    
+
     foreach (QString xletid, m_allnames) {
         if (! QStringList("tabber").contains(xletid)) {
             bool withscrollbar = m_dockoptions[xletid].contains("s");
@@ -672,7 +672,7 @@ void MainWidget::engineStarted()
             }
         }
     }
-    
+
     qDebug() << Q_FUNC_INFO << "the xlets have been created";
     m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
 
@@ -687,14 +687,14 @@ void MainWidget::engineStarted()
         m_resizingHelper =  new QDockWidget(this);
         m_resizingHelper->setFixedWidth(1);
         addDockWidget(Qt::BottomDockWidgetArea, m_resizingHelper);
-        m_resizingHelper->show(); // not a no-op, show is needed, to force Qt to calc 
+        m_resizingHelper->show(); // not a no-op, show is needed, to force Qt to calc
         m_resizingHelper->hide(); // the widget size!
         removeDockWidget(m_resizingHelper);
     }
-    
+
     if (m_withsystray && m_systrayIcon)
         setSystrayIcon("xivo-transp");
-    
+
     statusBar()->showMessage(tr("Connected"));
     m_connectact->setEnabled(false);
     m_disconnectact->setEnabled(true);
@@ -719,7 +719,7 @@ void MainWidget::setSystrayIcon(const QString & def)
         square.fill(def);
         icon = QIcon(square);
     }
-    
+
     if (m_systrayIcon) {
         m_systrayIcon->setIcon(icon);
     }
@@ -760,12 +760,12 @@ void MainWidget::engineStopped()
     if (m_tabwidget->currentIndex() > -1) {
         m_settings->setValue("display/lastfocusedtab", m_tabwidget->currentIndex());
     }
-    
+
     foreach (QString dname, m_docknames) {
         removePanel(dname, m_docks.value(dname));
     }
     clearPresence();
-    
+
     // delete all xlets
     //qDebug() << "m_xletlist" << m_xletlist;
     QSetIterator<XLet *> i(m_xletlist);
@@ -773,7 +773,7 @@ void MainWidget::engineStopped()
         i.next()->deleteLater();
     }
     m_xletlist.clear();
-    
+
     if (m_docknames.contains("tabber")) {
         removePanel("tabber", m_tabwidget);
     }
@@ -781,12 +781,12 @@ void MainWidget::engineStopped()
         m_vL->removeWidget(m_tabwidget);
         m_tabwidget->deleteLater();
     }
-    
+
     showLogin();
-    
+
     if (m_withsystray && m_systrayIcon)
         setSystrayIcon("xivo-black");
-    
+
     statusBar()->showMessage(tr("Disconnected"));
     m_connectact->setEnabled(true);
     m_disconnectact->setEnabled(false);
@@ -847,7 +847,7 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
                                    QSystemTrayIcon::Information,
                                    5000);
     }
-    
+
     // to be customisable, if the user wants the window to popup
     if (options.contains("p")) {
         setVisible(true);
@@ -932,7 +932,7 @@ void MainWidget::about()
 #endif
         "/" + __xivo_version__ + ">" + tr("last one") + "</a>";
     QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
-    
+
     // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
     QMessageBox::about(this,
                        tr("About XiVO Client"),

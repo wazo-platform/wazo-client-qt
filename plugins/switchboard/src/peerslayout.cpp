@@ -79,7 +79,7 @@ QSize PeersLayout::maximumSize() const
 QSize PeersLayout::size() const
 {
     QSize itemSize = maxItemSize();
-    return QSize( (itemSize.width() + 2 ) * m_nb_columns, 
+    return QSize( (itemSize.width() + 2 ) * m_nb_columns,
                   (itemSize.height() + 2 ) * m_nb_rows );
 }
 
@@ -133,7 +133,7 @@ void PeersLayout::setGeometry(const QRect &/* r*/)
         x = m_listPos[i].x();
         y = m_listPos[i].y();
         if((x >= 0) && (y >= 0)) {
-            m_list[i]->setGeometry(QRect( x*(itemSize.width()+2)+1/*left*/, 
+            m_list[i]->setGeometry(QRect( x*(itemSize.width()+2)+1/*left*/,
                                           y*(itemSize.height()+2)+1/*top*/,
                                           itemSize.width()/*width*/,
                                           itemSize.height()/*height*/ ) );
@@ -259,7 +259,7 @@ QPoint PeersLayout::getItemPosition(QWidget * widget) const
 
 /*! \brief get item index
  */
-int PeersLayout::itemIndex(QWidget * widget) const 
+int PeersLayout::itemIndex(QWidget * widget) const
 {
     int i = m_list.size();
     while(--i >= 0)

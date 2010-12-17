@@ -68,7 +68,7 @@ class BASELIB_EXPORT PeerWidget : public BasePeerWidget
 
     private:
         QHash<QString, QLabel *> m_lblphones; //!< phone labels
-            
+
         ChitchatButton *m_user_status;  //!< Peer state display from XiVO CTI Client
         QLabel *m_agentlbl;       //!< agent state label
         QLabel *m_mobilelbl;      //!< mobile phone label

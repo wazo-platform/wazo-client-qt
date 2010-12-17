@@ -267,7 +267,7 @@ void Popup::addAnyInfo(const QString & localName,
             addInfoForm( where, infoValue );
         } else
             m_orders.removeAll(infoOrder);
-        
+
     } else if( localName == "systray_info" ) {
         if ( infoType == "title" )
             setMessageTitle( infoValue );
@@ -513,7 +513,7 @@ void Popup::streamNewData()
         }
     else
         finishAndShow();
-    
+
     // qDebug() << Q_FUNC_INFO << "parse returned" << b;
 }
 

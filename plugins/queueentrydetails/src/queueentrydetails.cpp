@@ -46,7 +46,7 @@ XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
 {
     setTitle(tr("Calls of a Queue"));
     m_gridlayout = new QGridLayout(this);
-    
+
     m_queuedescription = new QLabel("", this);
     m_gridlayout->setColumnStretch(5, 1);
     m_gridlayout->setRowStretch(100, 1);
@@ -91,7 +91,7 @@ void XLetQueueEntryDetails::clearPanel()
         delete m_entrypos[q];
     foreach(QString q, m_entrytime.keys())
         delete m_entrytime[q];
-    
+
     m_entrypos.clear();
     m_entrytime.clear();
 }

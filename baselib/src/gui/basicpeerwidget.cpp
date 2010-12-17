@@ -118,7 +118,7 @@ void BasicPeerWidget::setAgentToolTip(const QString &, const QStringList &)
 {
     // do nothing !
 }
- 
+
 void BasicPeerWidget::setAgentState(const QString &)
 {
     // do nothing !

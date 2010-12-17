@@ -57,7 +57,7 @@ class XmlHandler: public QXmlDefaultHandler
         bool endElement(const QString &namespaceURI, const QString &localName, const QString &qName);  //! allways called at the close of an element.
         bool characters(const QString &ch);  //! used to handle characters data within elements.
         bool endDocument();  //! called when XML parsing is finished
-        
+
         // The following methods are inherited from QXmlErrorHandler
         //! called by the XML parser for warnings
         bool warning(const QXmlParseException &exception);

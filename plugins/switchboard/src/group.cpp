@@ -68,7 +68,7 @@ int Group::move(QList<Group *> &groups, PeersLayout *layout_on, QPoint &deltaGri
     for(i=0;i<layout_on->count();i++){
         QPoint itemPos = layout_on->getItemPosition(i);
         if((!r.contains(itemPos))&&(nr.contains(itemPos))){
-            /* An item is not contained by the current group, but he will be contained 
+            /* An item is not contained by the current group, but he will be contained
              * if the group is moved. */
             if(layout_on->indexOfItemAtPosition(itemPos - deltaGrid) != -1){
                 item_collision = true;

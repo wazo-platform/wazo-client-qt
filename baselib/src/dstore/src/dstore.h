@@ -73,7 +73,7 @@ class BASELIB_EXPORT DStoreNode
         /*! \return the fullpath of this node constructed */
         QString path() const;
 
-        /*! make a pretty printed representation of a node and its 
+        /*! make a pretty printed representation of a node and its
            possible descendants
           \param  node  the node to represent
           \param  tc tab count, number of space to prepend at each level
@@ -205,34 +205,34 @@ class BASELIB_EXPORT DStore
         void rmPath(const QString &path);
 
         /*!
-          This method is there to allow you to add/replace a bunch of data in your 
+          This method is there to allow you to add/replace a bunch of data in your
           DStore
 
           \param path   the base path where your tree fragment
                         should be put
           \param value  a tree fragment, you can of course insert multiple node at once
                         at different tree level by using QVariantMap properly nested.
-                        
+
          */
         void populate(const QString &path, const QVariant &value);
 
-        /*! 
+        /*!
           \return VMapNode * DStore root node
          */
         VMapNode* root() const { return m_root; };
 
-        /*! 
+        /*!
           \param  path from the DStore root node
           \return QVariant
          */
         QVariant variant(const QString &path) const { return root()->variant(path); };
 
         /*!
-          When you are initially filling or destroying a DStore, you probably don't 
+          When you are initially filling or destroying a DStore, you probably don't
           want to call every QObject slots you might have binded to monitor change
           for a performance reason, isn't it?
           \param block  should signals be blocked ?
-                             - 0: no 
+                             - 0: no
                              - 1: yes (default when called without argument)
          */
         void blockSignal(int block=1) { m_blockSignal = block; };
@@ -242,7 +242,7 @@ class BASELIB_EXPORT DStore
           ( a node was removed/added or changed ).\n
           A same path can be monitored by multiple QObject
 
-          \param path     the base path from where you need to be informed 
+          \param path     the base path from where you need to be informed
                           if your node or a subnode was
                               - added / modified
                               - removed
@@ -253,7 +253,7 @@ class BASELIB_EXPORT DStore
           \sa #DStoreEvent
          */
         void onChange(const QString &path, QObject *receiver, const char *method);
-        
+
 
         void unregisterAllCb(QObject *on);
 

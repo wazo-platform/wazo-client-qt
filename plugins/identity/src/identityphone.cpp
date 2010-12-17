@@ -96,25 +96,25 @@ void IdentityPhoneLine::contextMenuEvent(QContextMenuEvent * event)
 
     if(!thischannel.isEmpty()) {
         QMenu contextMenu(this);
-                            
+
         QAction * hangupMe = new QAction(tr("Hangup"), &contextMenu);
         hangupMe->setProperty("channel", thischannel);
         connect(hangupMe, SIGNAL(triggered()),
                 this, SLOT(hangup()) );
         contextMenu.addAction(hangupMe);
-        
+
         QAction * replyMe = new QAction(tr("Reply"), &contextMenu);
         replyMe->setProperty("channel", thischannel);
         connect(replyMe, SIGNAL(triggered()),
                 this, SLOT(answer()) );
         contextMenu.addAction(replyMe);
-        
+
         QAction * refuseMe = new QAction(tr("Refuse"), &contextMenu);
         refuseMe->setProperty("channel", thischannel);
         connect(refuseMe, SIGNAL(triggered()),
                 this, SLOT(refuse()) );
         contextMenu.addAction(refuseMe);
-        
+
         contextMenu.exec(event->globalPos());
     }
 }
@@ -227,7 +227,7 @@ void IdentityPhone::updateUser(UserInfo * ui)
                 QString todisplay = callprops["calleridname"].toString();
                 bool isholded = callprops.contains("time-hold");
                 busylines << ic;
-                
+
                 QPixmap square_comm(25, 3);
                 square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
                 if(status == "hangup") {

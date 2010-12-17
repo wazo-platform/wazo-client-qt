@@ -65,29 +65,29 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     setTitle( tr("Identity") );
     setAccessibleName( tr("Current User Panel") );
     m_gui_buttonsize = 16;
-    
+
     m_glayout = new QGridLayout(this);
     // m_glayout->setMargin(0);
     m_user = new QLabel(this);
     m_user->setObjectName("fullname");
     //m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-    
+
     m_phonenum = new QLabel(this);
     m_presencevalue = new QComboBox(this);
     m_presencevalue->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     m_presencevalue->setProperty("function", "presence");
     m_presencevalue->setContentsMargins(0, 0, 10, 0);
-    
+
     connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
             this, SLOT(idxChanged(const QString &)));
-    
+
     m_icon_user = new QLabel(this);
-    
+
     m_icon_user->setPixmap(QPixmap(":/in/identity-user.png"));
-    
+
     m_icon_user->setContentsMargins(0, 0, 5, 0);
-    
+
     m_agent = new IdentityAgent(this);
     connect(m_agent, SIGNAL(setSystrayIcon(const QString &)),
             this, SIGNAL(setSystrayIcon(const QString &)));
@@ -97,40 +97,40 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
 
     m_voicemail = new IdentityVoiceMail(this);
     m_voicemail->hide();
-    
+
     m_glayout->setSpacing(0);
     m_glayout->setMargin(0);
-    
+
     m_col_user = 0;
     m_col_agent = 2;
     m_col_phone = 3;
     m_col_vm = 4;
     m_col_last = 5;
-    
+
     m_iconAlign = Qt::AlignHCenter | Qt::AlignTop;
     m_textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
-    
+
     setupIcons();
     m_glayout->addWidget(m_agent, 0, m_col_agent, 3, 1);
     m_glayout->addWidget(m_phone, 0, m_col_phone, 3, 1);
     m_glayout->addWidget(m_voicemail, 0, m_col_vm, 3, 1);
-    
+
     m_agent->hide();
-    
+
     m_functions = b_engine->getGuiOptions("server_funcs").value("functions").toStringList();
     setGuiOptions(b_engine->getGuiOptions("merged_gui"));
 
     // connect signals/slots
     connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
             this, SLOT(newAgentList(const QStringList &)));
-    
+
     connect(b_engine, SIGNAL(updatePresence(const QVariant &)),
             this, SLOT(updatePresence(const QVariant &)));
     connect(this, SIGNAL(setAvailState(const QString &, bool)),
             b_engine, SLOT(setAvailState(const QString &, bool)));
     connect(this, SIGNAL(changeWatchedAgent(const QString &, bool)),
             b_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)));
-    
+
     connect(b_engine, SIGNAL(optChanged(const QString &, bool)),
             this, SLOT(setOpt(const QString &, bool)));
     connect(b_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
@@ -174,7 +174,7 @@ void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
                                optionsMap["xlet.identity.pauseagent"].toBool());
 
     setFont(m_gui_font);
-    
+
     m_loginkind = optionsMap["loginkind"].toUInt();
 }
 
@@ -184,7 +184,7 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
     m_presencevalue->hide();
     if(! m_functions.contains("presence"))
         return;
-    
+
     disconnect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
                this, SLOT(idxChanged(const QString &)));
     QVariantMap presencemap = presence.toMap();
@@ -230,7 +230,7 @@ void IdentityDisplay::setUserInfo(const UserInfo */* ui */)
 {
     // qDebug() << Q_FUNC_INFO;
     m_ui = b_engine->getXivoClientUser();
-    
+
     m_user->setText(m_ui->fullname());
     m_phonenum->setText(m_ui->phoneNumber());
     m_phonenum->setToolTip(tr("Server: %1\nContext: %2")
@@ -324,7 +324,7 @@ void IdentityDisplay::updateUser(UserInfo * ui)
                 QString todisplay = callprops["calleridname"].toString();
                 bool isholded = callprops.contains("time-hold");
                 busylines << ics;
-                
+
                 QPixmap square_comm(25, 3);
                 square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
                 if(status == "hangup") {

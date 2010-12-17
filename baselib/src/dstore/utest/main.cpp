@@ -79,7 +79,7 @@ void addState(DStore *tree, int id)
 {
     QString name = QString("ee");
     stateNameList << name;
-    
+
     QVariantMap state;
     state.insert("id", id);
     state.insert("name", name);
@@ -97,12 +97,12 @@ int main(int argc, char *argv[])
 {
     DStore *tree = new DStore();
     WatchChange *dog = new WatchChange;
-    
+
     int i, i2;
 
     tree->mkPath("phone");
     tree->onChange("phone", dog, SLOT(specificTreeChange(const QString &, DStoreEvent)));
-    
+
     for(i=0;i<3;i++) {
         addState(tree, i);
     }

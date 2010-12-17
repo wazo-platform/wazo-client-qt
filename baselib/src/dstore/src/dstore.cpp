@@ -48,7 +48,7 @@ DStore::DStore()
       m_uid2node(QHash<qlonglong, DStoreNode*>()),
       m_blockSignal(0),
       m_root(new VMapNode("", NULL, this))
-{ 
+{
     leadingSlash = QRegExp("^/*");
     finalSlash = QRegExp("/*$");
 }
@@ -71,7 +71,7 @@ void DStore::populate(const QString &path, const QVariant &value)
     QString baseName = traverseList.takeLast();
     QString dirName = traverseList.join("/");
     VMapNode *dadNode = mkPath(dirName);
-  
+
     if (value.type() == QVariant::Map) {
         VMapNode *node = new VMapNode(baseName, dadNode, this);
         node->populate(value.toMap(), this);
@@ -304,7 +304,7 @@ DStore* DStore::extract(const QString &path)
             with = QVariant(filter.mid(path.size() + 1 + testOffset,
                             filter.size() - path.size() -  2 - testOffset));
 
-        } else { 
+        } else {
             with = root()->variant(filter.mid(path.size() + testOffset,
                                    filter.size() - path.size() -  1 - testOffset ));
         }
@@ -385,8 +385,8 @@ void DStore::dynamicInvocation(const QString &path, DStoreEvent event)
 #include "grammar.h"
 #define ParseARG_PDECL ParserRet*
 #define ParseTOKENTYPE int
-void* ParseAlloc(void* (*)(size_t )); 
-void ParseFree(void *, void (*)(void *));                  
+void* ParseAlloc(void* (*)(size_t ));
+void ParseFree(void *, void (*)(void *));
 void Parse(void *, int, ParseTOKENTYPE, ParseARG_PDECL);
 
 DStore* DStore::extractb(const QString &path)
@@ -396,9 +396,9 @@ DStore* DStore::extractb(const QString &path)
     list.ret = NULL;
     list.req = path;
     list.abort = 0;
-    
-    void *pParser = ParseAlloc(malloc);        
-    
+
+    void *pParser = ParseAlloc(malloc);
+
     int i, e;
     char c;
     for (i=0, e=path.size();(i<e)&&(list.abort==0);i++) {
@@ -410,7 +410,7 @@ DStore* DStore::extractb(const QString &path)
                 break;
             }
             c = path[i].toAscii();
-            Parse(pParser, CHARACTER, c, &list);                
+            Parse(pParser, CHARACTER, c, &list);
         } else if ((c == '>')||(c== '<')) {
             int op = (c == '<') ? IS_INFERIOR : IS_SUPERIOR;
             if (i+1>e) {
@@ -422,23 +422,23 @@ DStore* DStore::extractb(const QString &path)
             }
             Parse(pParser, TEST, op, &list);
         } else if (c == '/') {
-            Parse(pParser, SLASH, 0, &list);                
+            Parse(pParser, SLASH, 0, &list);
         } else if (c == '@') {
-            Parse(pParser, AT, 0, &list);                
+            Parse(pParser, AT, 0, &list);
         } else if (c == '=') {
-            Parse(pParser, TEST, IS_EQUAL, &list);                
+            Parse(pParser, TEST, IS_EQUAL, &list);
         } else if (c == '~') {
-            Parse(pParser, TEST, IS_DIFFERENT, &list);                
+            Parse(pParser, TEST, IS_DIFFERENT, &list);
         } else if (c == '[') {
-            Parse(pParser, LC, 0, &list);                
+            Parse(pParser, LC, 0, &list);
         } else if (c == ']') {
-            Parse(pParser, RC, 0, &list);                
+            Parse(pParser, RC, 0, &list);
         } else {
-            Parse(pParser, CHARACTER, c, &list);                
+            Parse(pParser, CHARACTER, c, &list);
         }
     }
     Parse(pParser, 0, 0, &list);
-    ParseFree(pParser, free);                  
+    ParseFree(pParser, free);
 
     return list.ret;
 }

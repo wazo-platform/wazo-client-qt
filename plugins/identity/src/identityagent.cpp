@@ -46,7 +46,7 @@ IdentityAgent::IdentityAgent(QWidget *parent)
       m_allow_pauseagent(false)
 {
     m_layout = new QGridLayout(this);
-    
+
     m_icon = new QLabel(this);
     m_icon->setPixmap(QPixmap(":/in/applixware.png"));
     m_icon->setContentsMargins(0, 0, 5, 0);
@@ -55,14 +55,14 @@ IdentityAgent::IdentityAgent(QWidget *parent)
     m_statustxt = new QLabel(this);
     m_pause = new QLabel(this);
     m_pausetxt = new QLabel(this);
-    
+
     m_layout->addWidget(m_icon, 0, 0, 3, 1, Qt::AlignHCenter | Qt::AlignTop);
     m_layout->addWidget(m_text, 0, 1, 1, 2);
     m_layout->addWidget(m_status, 1, 1);
     m_layout->addWidget(m_statustxt, 1, 2);
     m_layout->addWidget(m_pause, 2, 1);
     m_layout->addWidget(m_pausetxt, 2, 2);
-    
+
     setStyleSheet("QFrame {background: white;}");
     // setFrameStyle(QFrame::Panel | QFrame::Raised);
     // setLineWidth(3);
@@ -168,7 +168,7 @@ void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
 {
     // qDebug() << Q_FUNC_INFO;
     QMenu contextMenu(this);
-    
+
     if(m_allow_logagent) {
         QAction * logAction = new QAction(this);
         bool connected = m_statustxt->property("connected").toBool();
@@ -183,19 +183,19 @@ void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
         }
         contextMenu.addAction(logAction);
     }
-    
+
     if(m_allow_pauseagent) {
         QAction * pauseAction = new QAction(tr("Pause"), this);
         connect(pauseAction, SIGNAL(triggered()),
                 this, SLOT(pause()) );
         contextMenu.addAction(pauseAction);
-        
+
         QAction * unpauseAction = new QAction(tr("Unpause"), this);
         connect(unpauseAction, SIGNAL(triggered()),
                 this, SLOT(unpause()) );
         contextMenu.addAction(unpauseAction);
     }
-    
+
     if(m_allow_logagent || m_allow_pauseagent)
         contextMenu.exec(event->globalPos());
 }

@@ -57,7 +57,7 @@ XletParking::XletParking(QWidget *parent)
     m_table->setColumnCount(4);
     QStringList labels = (QStringList() << /*tr("XiVO Id") << */tr("Number") << tr("Time") << tr("Parked") << tr("Parker"));
     m_table->setHorizontalHeaderLabels(labels);
-    
+
     connect(m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
             this, SLOT(itemClicked(QTableWidgetItem *)));
     connect(m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
@@ -100,13 +100,13 @@ void XletParking::parkingEvent(const QString & eventkind,
     if(fromchannel == channel)
         qDebug() << " *** WARNING channel == fromchannel ***" << channel;
     //    return;
-    
+
     //QString parkedpeer = channel.split("-")[0];
     QString parkedpeer = QString("%1 (%2)").arg(calleridname).arg(calleridnum);
     QString parkedby = fromchannel.split("-")[0];
     if(!fromcalleridnum.isEmpty())
         parkedby = QString("%1 (%2)").arg(fromcalleridname).arg(fromcalleridnum);
-    
+
     if(eventkind == "parkedcall") {
         for(int m = 0; m < m_table->rowCount(); m++) {
             if ((m_table->item(m, 0)->data(Qt::UserRole+0).toString() == astid) &&
@@ -125,10 +125,10 @@ void XletParking::parkingEvent(const QString & eventkind,
         item1->setData(Qt::UserRole+0, astid);
         item1->setData(Qt::UserRole+1, parkingbay);
         m_table->setItem( 0, i++, item1 );
-        
+
         double remaining = pi->timeout() + pi->parkingtime() - QDateTime::currentDateTime().toTime_t() + b_engine->timeDeltaServerClient();
         int leftsec = int(remaining + 0.5);
-        
+
         QTableWidgetItem * item2 = new QTableWidgetItem(QString("%1 s").arg(leftsec));
         item2->setText(QString("%1 s").arg(leftsec));
         item2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
@@ -139,7 +139,7 @@ void XletParking::parkingEvent(const QString & eventkind,
         QTableWidgetItem * item4 = new QTableWidgetItem( parkedby );
         item4->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         m_table->setItem( 0, i++, item4 );
-        
+
         // do not start another timer if there is already one running
         if(m_timerid == 0)
             m_timerid = startTimer(m_deltasec * 1000);

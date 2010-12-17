@@ -40,7 +40,7 @@ CallCampaignPanel::CallCampaignPanel(QWidget *parent)
 {
     qDebug() << Q_FUNC_INFO;
     setTitle(tr("Call Campaign"));
-        
+
     m_vlayout = new QVBoxLayout(this);
     m_hlayout1 = new QHBoxLayout();
     m_hlayout2 = new QHBoxLayout();
@@ -70,23 +70,23 @@ CallCampaignPanel::CallCampaignPanel(QWidget *parent)
             this, SLOT(stopCalls()));
     connect(clearCallsButton, SIGNAL(clicked()),
             this, SLOT(clearCalls()));
-        
+
     m_hlayout1->addWidget(label1);
     m_hlayout1->addWidget(m_openFileNameLabel);
     m_hlayout1->addWidget(openFileNamesButton);
     m_hlayout1->addWidget(loadFile);
-        
+
     m_hlayout2->addWidget(label2);
     m_hlayout2->addWidget(getCallsButton);
     m_hlayout2->addWidget(startCallsButton);
     m_hlayout2->addWidget(stopCallsButton);
     m_hlayout2->addWidget(clearCallsButton);
-        
+
     m_vlayout->addLayout(m_hlayout1);
     m_vlayout->addLayout(m_hlayout2);
     m_vlayout->addLayout(m_glayout);
     m_vlayout->addStretch();
-        
+
     m_glayout->setColumnStretch(2, 1);
 
     // connects signals/slots with engine
@@ -140,7 +140,7 @@ void CallCampaignPanel::requestFileListResult(const QVariant & result)
 {
     // qDebug() << Q_FUNC_INFO << result;
     QString action = result.toMap()["command"].toString();
-        
+
     if(action == "fetchlist") {
         foreach(QString number, result.toMap()["list"].toStringList())
             addNumber(number);
@@ -229,7 +229,7 @@ void CallCampaignPanel::loadFileClicked()
     qDebug() << Q_FUNC_INFO << m_openFileNameLabel->text();
     if(m_openFileNameLabel->text().size() == 0)
         return;
-        
+
     QFile * qf = new QFile(m_openFileNameLabel->text());
     qf->open(QFile::ReadOnly);
     QString line = "dummy";
@@ -241,7 +241,7 @@ void CallCampaignPanel::loadFileClicked()
         nlines ++;
     }
     qDebug() << Q_FUNC_INFO << nlines << "read";
-        
+
     //         QByteArray * filedata = new QByteArray();
     //         filedata->append(qf->readAll());
     qf->close();

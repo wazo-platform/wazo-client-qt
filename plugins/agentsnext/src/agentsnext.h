@@ -87,18 +87,18 @@ class XletAgentsNext : public XLet
         void refreshContents();
         void refreshDisplay();
         void saveGroups();
-        
+
         QFont m_gui_font;
         QGridLayout *m_glayout;
         QMap<QString, ExtendedLabel *> m_title;
-        
+
         int m_blinktime;
-        
+
         QHash<QString, QString> m_groups;
         QHash<QString, ExtendedLabel *> m_agent_labels;
         QStringList m_queuelist;
         QVariant m_queueorder;
-        
+
         QComboBox *m_queue_chose;
 };
 

@@ -64,14 +64,14 @@ PlayerWidget::PlayerWidget(QWidget * parent)
 {
     setTitle( tr("Video") );
     controller = new QPushButton("Play");
-        
+
     renderTarget = new QWidget(this);
     renderTarget->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
     renderTarget->setAttribute(Qt::WA_PaintOnScreen);
     renderTarget->setMinimumSize(176, 144);
-        
+
     timeLine = new QSlider(Qt::Horizontal);
-        
+
     //log = new QTextEdit;
     //log->setReadOnly(true);
 
@@ -107,7 +107,7 @@ bool PlayerWidget::startMPlayer()
         return true;
 
     QStringList args;
-        
+
     // On demande à utiliser mplayer comme backend
     args << "-slave";
     // Et on veut ne pas avoir trop de chose à parser :)
@@ -168,7 +168,7 @@ void PlayerWidget::catchOutput()
     while(mplayerProcess->canReadLine()) {
         QByteArray buffer(mplayerProcess->readLine());
         //log->append(QString(buffer));
-                        
+
         // On vérifie si on a eu des réponses
         if(buffer.startsWith("ANS_VIDEO_RESOLUTION")) {
             // réponse à get_video_resolution : ANS_VIDEO_RESOLUTION='<width> x <height>'
@@ -220,7 +220,7 @@ void PlayerWidget::switchPlayState()
     if(!isPlaying) {
         if(!startMPlayer())
             return;
-                
+
         // log->clear();
         controller->setText("Stop");
         isPlaying = true;

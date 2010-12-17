@@ -80,10 +80,10 @@ class XletAgentDetails : public XLet
         void setQueueProps(const QString &, const QueueInfo *);
         void setQueueAgentSignals(const QString &);
         void fillQueue(int, const QString &);
-        
+
         QGridLayout *m_gridlayout; //!< layout
         int m_linenum;  //!< line number ?
-        
+
         QString m_monitored_agentid;    //!< monitored agent id
         QLabel *m_agentstatus; //!< to display agent name and status
         QLabel *m_agentlegend_qname;   //!< "Queues"
@@ -93,14 +93,14 @@ class XletAgentDetails : public XLet
         QLabel *m_agentlegend_npaused; //!< number paused
         QHash<QString, QLabel *> m_actionlegends;   //!< Label Login/Logout
         QHash<QString, QPushButton *> m_action; //!< buttons cancel/ok
-        
+
         QHash<QString, QLabel *> m_queue_labels;
         QHash<QString, QPushButton *> m_queue_more;
         QHash<QString, QPushButton *> m_queue_join_action;
         QHash<QString, QPushButton *> m_queue_pause_action;
         QHash<QString, QLabel *> m_queue_join_status;
         QHash<QString, QLabel *> m_queue_pause_status;
-        
+
         QPoint m_eventpoint;
         QVariantMap m_optionsMap;
 };

@@ -82,7 +82,7 @@ XletSwitchBoard::XletSwitchBoard(QWidget *parent)
     setMouseTracking(true);
 }
 
-/*! 
+/*!
  * Save the positions in the grid of the peer widgets.
  */
 XletSwitchBoard::~XletSwitchBoard()
@@ -210,7 +210,7 @@ void XletSwitchBoard::changeGroupColor()
 /*! \brief change group name
  */
 void XletSwitchBoard::changeGroupName()
-{    
+{
     Group *group = (Group *)(sender()->property("group" ).value<void *>());
     if (group) {
         QString newName
@@ -295,8 +295,8 @@ void XletSwitchBoard::dragEnterEvent(QDragEnterEvent *event)
 }
 
 /*! \brief Receives drop events
- * 
- * This method recieve drop events. It is currently used to 
+ *
+ * This method recieve drop events. It is currently used to
  * move PeerWidgets arount :)
  *
  * \sa dragEnterEvent()
@@ -405,7 +405,7 @@ void XletSwitchBoard::reloadExternalPhones()
                                                             settings->value("number").toString());
         connect(pw, SIGNAL(removeFromPanel()),
                 this, SLOT(removePeerFromLayout()));
-        
+
         QPoint  pos = settings->value("position", QPoint(-1, -1)).toPoint();
         if (pos.x()>=0)
             m_layout->addWidget(pw, pos);
@@ -672,7 +672,7 @@ void XletSwitchBoard::contextMenuEvent(QContextMenuEvent *event)
         action->setProperty("group", QVariant::fromValue((void *)group));
 
         action = contextMenu.addAction(tr("Rename group %1").arg(group->name()),
-                                       this, SLOT(changeGroupName())); 
+                                       this, SLOT(changeGroupName()));
         action->setProperty("group", QVariant::fromValue((void *)group));
     }
 

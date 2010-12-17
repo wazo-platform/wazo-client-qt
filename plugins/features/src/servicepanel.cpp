@@ -59,17 +59,17 @@ ServicePanel::ServicePanel(QWidget * parent)
     m_capalegend["fwdrna"]  = tr("Forward on &No Reply");
     m_capalegend["fwdbusy"] = tr("Forward on &Busy");
     m_capalegend["fwdunc"]  = tr("&Unconditional Forward");
-    
+
     m_capas = b_engine->getGuiOptions("merged_gui").value("services").toStringList();
-    
+
     int line = 0;
     m_status = new ServiceStatus();
-    
+
     QGroupBox *groupBox1 = new QGroupBox(tr("Services"), this);
     groupBox1->setAlignment( Qt::AlignLeft );
     groupBox1->hide();
     QGridLayout *gridlayout1 = new QGridLayout(groupBox1);
-    
+
     foreach (QString capa, chkcapas) {
         if (m_capas.contains(capa)) {
             m_chkopt[capa] = new QCheckBox(m_capalegend[capa], this);
@@ -78,20 +78,20 @@ ServicePanel::ServicePanel(QWidget * parent)
             gridlayout1->addWidget(m_chkopt[capa], line++, 0, 1, 0);
         }
     }
-    
+
     QGroupBox *groupBox2 = new QGroupBox(tr("Call Forwards"), this);
     groupBox2->setAlignment(Qt::AlignLeft);
     groupBox2->hide();
     QGridLayout *gridlayout2 = new QGridLayout(groupBox2);
     QHash<QString, QLabel *> label;
-    
+
     foreach (QString capa, fwdcapas) {
         if (m_capas.contains(capa)) {
             m_forward[capa] = new QCheckBox(m_capalegend[capa], this);
             m_forward[capa]->setObjectName("service");
             m_forward[capa]->setProperty("capa", capa);
             gridlayout2->addWidget(m_forward[capa], line++, 0, 1, 0);
-            
+
             label[capa] = new QLabel(tr("Destination"), this);
             gridlayout2->addWidget(label[capa], line, 0);
             m_forwarddest[capa] = new QLineEdit(this);
@@ -101,7 +101,7 @@ ServicePanel::ServicePanel(QWidget * parent)
             label[capa]->setObjectName("service");
         }
     }
-    
+
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     if (m_capas.contains("enablevm") ||
         m_capas.contains("callrecord") ||
@@ -117,7 +117,7 @@ ServicePanel::ServicePanel(QWidget * parent)
         vlayout->addWidget(groupBox2);
     }
     vlayout->addStretch(1);
-    
+
     Reset();
     foreach (QString capa, fwdcapas)
         if (m_capas.contains(capa)) {
@@ -125,11 +125,11 @@ ServicePanel::ServicePanel(QWidget * parent)
                     this, SLOT(toggleIfAllowed(const QString &)));
         }
     Connect();
-    
+
     // connect signals/slots
     connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
             this, SLOT(monitorPeer(UserInfo *)));
-    
+
     connect(b_engine, SIGNAL(disconnectFeatures()),
             this, SLOT(DisConnect()));
     connect(b_engine, SIGNAL(connectFeatures()),
@@ -140,7 +140,7 @@ ServicePanel::ServicePanel(QWidget * parent)
             this, SLOT(getRecordedStatus()));
     connect(b_engine, SIGNAL(featurePutIsOK()),
             this, SLOT(setRecordedStatus()));
-    
+
     connect(b_engine, SIGNAL(optChanged(const QString &, bool)),
             this, SLOT(setOpt(const QString &, bool)));
     connect(b_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),

@@ -105,7 +105,7 @@ QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
         if (((m_history[m_mode].toList().count()) &&
              ((m_history[m_mode].toList()).value(row).toMap().count()))) {
             if (column == 0) {
-                return ((m_history[m_mode].toList()).value(row).toMap())["fullname"]; 
+                return ((m_history[m_mode].toList()).value(row).toMap())["fullname"];
             } else if (column == 1) {
                 QString qsd = ((m_history[m_mode].toList()).value(row).toMap())["ts"].toString();
                 QDateTime qdt = QDateTime::fromString(qsd, Qt::ISODate);
@@ -118,13 +118,13 @@ QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
                 int hou = ( ( duration - sec - min * 60 ) / 60 ) / 60;
                 if (hou)
                     return tr("%1 hr %2 min %3 s").arg(hou).arg(min).arg(sec);
-                else if (min) 
+                else if (min)
                     return tr("%1 min %2 s").arg(min).arg(sec);
                 else
                     return tr("%1 s").arg(sec);
             }
         }
-    } 
+    }
 
     return QVariant();
 }
@@ -134,7 +134,7 @@ QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
 void LogWidgetModel::updateHistory(const QVariantMap &p)
 {
     QVariant payload = p["payload"] ;
-    
+
     m_history[m_mode] = payload;
     reset();
 }
@@ -183,7 +183,7 @@ QVariant LogWidgetModel::headerData(int section,
 {
     if (role != Qt::DisplayRole)
         return QVariant();
-    
+
     if (orientation == Qt::Horizontal) {
         if (section == 0)
             return QVariant(tr("Number"));
@@ -200,7 +200,7 @@ QVariant LogWidgetModel::headerData(int section,
 
 
 
-static inline 
+static inline
 QRadioButton* buildRadioButton(QString text,
                                QString icon,
                                int mode,
@@ -246,7 +246,7 @@ LogWidget::LogWidget(QWidget *parent)
     m_view = new LogTableView(this, viewmodel);
     m_view->installEventFilter(this);
 
-    
+
     hBox->addStretch(1);
 
     buildRadioButton(tr("Sent calls"), "sent_call.png",   0, groupBox, hBox, viewmodel)

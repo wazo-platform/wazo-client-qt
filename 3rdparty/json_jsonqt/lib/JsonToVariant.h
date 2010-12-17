@@ -137,7 +137,7 @@ namespace JsonQt
 
 			/** Return the next symbol.
 			 * Optionally skips whitespace.
-			 * 
+			 *
 			 * @param skipWhitespace sets the whitespace handling.
 			 * @returns the next symbol.
 			 * @throws ParseException if the end of the string is

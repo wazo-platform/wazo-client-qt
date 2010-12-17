@@ -118,7 +118,7 @@ void ChitChatWindow::receiveMessage(const QVariantMap &p)
 
     QString chat_key = from;
     int opened = 0;
-    
+
     if (m_chat_window_opened.contains(chat_key)) {
         m_chat_window_opened[chat_key]->show();
     } else {
@@ -160,10 +160,10 @@ void ChitChatWindow::writeMessageTo()
 {
     QString astid = sender()->property("astid").toString();
     QString userid = sender()->property("userid").toString();
-    
+
     QString chat_key = userid;
     int opened = 0;
-    
+
     if (m_chat_window_opened.contains(chat_key)) {
         m_chat_window_opened[chat_key]->show();
     } else {

@@ -12,7 +12,7 @@ include(../common.pri)
 
 TEMPLATE = app
 # CONFIG += console # uncomment to get console on Win32
-TARGET = 
+TARGET =
 CONFIG += uitools
 DEPENDPATH += .
 INCLUDEPATH += . $${COMMONDIR} $${COMMONDIR}/built-in-xlet ../baselib/src ../baselib/src/gui

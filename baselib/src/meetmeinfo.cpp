@@ -82,7 +82,7 @@ void MeetmeInfo::setProperties(const QString &astid, const QVariantMap &properti
     m_pin = properties["pin"].toString();
     m_adminpin = properties["pinadmin"].toString();
     m_astid = astid;
-    
+
     // variable stuff
     m_adminid = properties["adminid"].toString();
     m_adminnum = properties["adminnum"].toString();
@@ -95,7 +95,7 @@ bool MeetmeInfo::update(const QVariantMap &map)
 {
     QString action = map["action"].toString();
     QString uniqueid = map["uniqueid"].toString();
-    
+
     if (!map["adminid"].toString().isNull()) {
         m_adminid = map["adminid"].toString();
     }

@@ -38,7 +38,7 @@ class BaseEngine;
 class QWidget;
 class XLet;
 
-/*! \brief inteface class for xlets 
+/*! \brief inteface class for xlets
  *
  * Only one method which return a XLet of the selected type.
  * Inherited classes could implement also constructor or destructor
@@ -48,7 +48,7 @@ class XLetInterface
 {
     public:
         virtual ~XLetInterface() {};
-        virtual XLet* newXLetInstance(QWidget *) = 0; //! Return a XLet of the type of the plugin loaded 
+        virtual XLet* newXLetInstance(QWidget *) = 0; //! Return a XLet of the type of the plugin loaded
 };
 
 Q_DECLARE_INTERFACE(XLetInterface, "com.proformatique.Plugin.XLetInterface/1.1");

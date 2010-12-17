@@ -80,21 +80,21 @@ class ConfigWidget: public QDialog
         void _insert_account_tab();
         void _insert_guisetting_tab();
         void _insert_operatorxlet_tab();
-        
+
         QVariantMap opts;
         QVariantMap forcedopts;
-        
+
         BaseEngine *m_engine;          //!< BaseEngine object parameters are commited to
 
         QLineEdit *m_serverhost;       //!< IP/hostname of the server
         QSpinBox  *m_ctiport;          //!< server port (switchboard)
-        
+
         QCheckBox *m_autoconnect;      //!< "Auto connect" checkbox
         QCheckBox *m_trytoreconnect;   //!< "Try to reconnect" Checkbox
         QCheckBox *m_systrayed;        //!< "Systray at startup" Checkbox
         QSpinBox  *m_tryinterval_sbox; //!< "Try to reconnect" interval
         QSpinBox  *m_kainterval_sbox;  //!< Keep alive interval
-        
+
         QLineEdit *m_context;          //!< context name (related to the company)
         QLineEdit *m_password;         //!< user password
         QCheckBox *m_keeppass;         //!< keep password ?
@@ -102,25 +102,25 @@ class ConfigWidget: public QDialog
         QLineEdit *m_userid;           //!< user login
         QComboBox *m_loginkind;        //!< login kind (user or agent)
         QLineEdit *m_agentphonenumber; //!< agent's phone number
-        
+
         QLabel *m_lblphone;    //!< label "Phone Number"
-        
+
         QHash<QString, QCheckBox *> m_function;        //!< connect to functions checkboxes
         QCheckBox *m_autourl_allowed;  //!< Allow automatic opening of urls
         QSpinBox  *m_history_sbox;        //!< History size
-        
+
         QHash<QString, QSpinBox *> m_queuelevels;   //!< For queue display
         QHash<QString, QSpinBox *> m_queuelevels_wait;   //!< For queue display
-        
+
         QSpinBox  *m_contactssize_sbox;        //!< Displayed contacts' size
         QSpinBox  *m_contactswidth_sbox;        //!< Displayed contacts' width
         QSpinBox  *m_tablimit_sbox;        //!< Maximum number of tabs
         QCheckBox *m_lastconnwins;        //!< The last connected user wins => disconnects the other
-        
+
         QComboBox *m_comboswitchboard; //!< Apparence of SwitchBoard
         QSpinBox *m_maxWidthWanted;    //!< maximum width for small items in swich board
         QSpinBox *m_presenceIndicatorSize; //<! size of the presence indicator for basic peer widgets
-        
+
         QDialogButtonBox * m_btnbox;        //!< Buttons box
         QTabWidget *m_tabwidget;       //!< Tabs to access configuration widgets
         QCheckBox *m_queue_longestwait;  //!< should we display the longest wait in the queue xlet ?

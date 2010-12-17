@@ -59,7 +59,7 @@ BasePeerWidget* PeerWidgetFactory::newExternalPhonePeerWidget(
     }else{
         w = new DetailedExternalPhonePeerWidget(label, number);
     }
-    
+
     return w;
 }
 

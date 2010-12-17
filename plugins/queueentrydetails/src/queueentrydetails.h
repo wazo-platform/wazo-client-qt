@@ -65,9 +65,9 @@ class XLetQueueEntryDetails : public XLet
         void updateEntryChannel(const QString &);
         void clearPanel();
         void updatePanel();
-        
+
         QGridLayout *m_gridlayout; //!< Layout
-        
+
         QString m_monitored_queueid;  //!< queue id
         QLabel *m_queuedescription;   //!< label for displaying queue name
         QHash<QString, QLabel *> m_entrypos;    //!< display entry

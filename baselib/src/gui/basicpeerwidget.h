@@ -41,7 +41,7 @@
 #include "basepeerwidget.h"
 
 /*! \brief Simple widget to display a Peer
- * 
+ *
  * Only display the name of the user in a color rectangle
  * which gives the status of its telephone :
  * Green for available, blue for ringing, red for online.

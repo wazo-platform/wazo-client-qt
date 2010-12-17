@@ -74,7 +74,7 @@ FaxPanel::FaxPanel(QWidget *parent)
             this, SLOT(setOpenFileName()));
     hbox2->addWidget(m_openFileNameLabel);
     hbox2->addWidget(openFileNamesButton);
-        
+
     //
     QGroupBox * groupBox3 = new QGroupBox( tr("3. Hide the Number ?") );
     groupBox3->setAlignment( Qt::AlignLeft );
@@ -201,9 +201,9 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
     static QMessageBox msgbox;
     QMessageBox::Icon icon;
     QString text;
-    
+
     // qDebug() << Q_FUNC_INFO << status << reason;
-    
+
     if(status == "ok") {
         icon = QMessageBox::Information;
         text = tr("Your Fax (file %1)\n"
@@ -233,7 +233,7 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
         m_destination->setText(m_dest_string);
         m_openFileNameLabel->setText(m_file_string);
     }
-    
+
     msgbox.setWindowTitle("XiVO CTI (Fax)");
     msgbox.setIcon(icon);
     msgbox.setText(text);

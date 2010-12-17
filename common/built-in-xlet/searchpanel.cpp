@@ -75,7 +75,7 @@ SearchPanel::SearchPanel(QWidget *parent)
     scrollarealayout->addLayout(m_peerlayout);
     scrollarealayout->addStretch(1);
     vlayout->addWidget(scrollarea);
-    
+
     m_searchpattern = "";
 
     // connect signal/slots
@@ -230,7 +230,7 @@ void SearchPanel::removePeers()
 void SearchPanel::paintEvent(QPaintEvent *)
 {
     static int i = 0;
-    
+
     if (i) {
         i = 0;
     } else {

@@ -112,7 +112,7 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
     if( m_re_number.exactMatch(item->text()) ) {
         b_engine->actionCall("originate", "user:special:me", "ext:" + item->text()); // Call
     }
-        
+
     if(item && item->text().contains("@")) {
         QString mailAddr = item->text();
         if(mailAddr.length() > 0) {
@@ -133,11 +133,11 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
     //qDebug() << Q_FUNC_INFO << headers << resp;
     int ncolumns = headers.size();
     int nrows = resp.size();
-    
+
     m_table->setColumnCount(ncolumns);
     m_table->setRowCount(nrows);
     m_table->setHorizontalHeaderLabels(headers);
-    
+
     if((ncolumns > 0) && (nrows > 0)) {
         m_table->setSortingEnabled(false);
         for(y = 0; y < nrows; y++) {
@@ -146,7 +146,7 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
                 QString it = items[x];
                 QTableWidgetItem * item = new QTableWidgetItem(it);
                 item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
-                
+
                 //QRegExp re_number("\\+?[0-9\\s\\.]+");
                 if(it.contains("@"))
                     item->setToolTip(tr("Double-click to send an E-mail to") + "\n" + it);
@@ -160,7 +160,7 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
         }
         m_table->setSortingEnabled(true);
         m_table->resizeColumnsToContents();
-        
+
         // to remove the headers if ever ...
         // (they are useful to know that a reply has been received)
         // } else {

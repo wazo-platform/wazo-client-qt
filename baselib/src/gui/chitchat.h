@@ -54,7 +54,7 @@ class BASELIB_EXPORT ChitChatWindow : public QWidget
 
         ChitChatWindow();
         ChitChatWindow(const QString &);
-        
+
         void sendMessage(const QString &message);
         void addMessage(const QString &, const QString &, const QString &, const QString &);
         void receiveMessage(const QVariantMap &message);

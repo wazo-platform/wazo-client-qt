@@ -46,13 +46,13 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
 
     public:
         QueueAgentStatus();
-        
+
         bool update(const QString &, const QString &, const QString &);  //! update attribute members
         const QString &astid() const;  //! asterisk this queue belongs to
         const QString &id() const;  //! reference id of this queue on the server
         const QString &context() const;  //! context this queue belongs to
         const QString &queueName() const;  //! queuename
-        
+
         const QColor &display_status_color() const;
         const QString &display_status_queue() const;
         const QString &display_status_logged() const;
@@ -67,14 +67,14 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         QString m_id;
         QString m_context;
         QString m_queuename;
-        
+
         QString m_display_status_queue;
         QString m_display_status_logged;
         QString m_display_status_membership;
         QString m_display_status_paused;
         QString m_display_action_join;
         QString m_display_action_pause;
-        
+
         QColor m_display_status_color;
         QColor m_display_status_paused_color;
         int m_display_status_darkfactor;

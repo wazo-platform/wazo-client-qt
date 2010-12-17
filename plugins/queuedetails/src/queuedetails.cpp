@@ -237,12 +237,12 @@ void XletQueueDetails::setAgentQueueProps(const QString &agentid, const QVariant
                                                  .arg(qas->display_status_membership()));
         m_agent_join_status[agentid]->setProperty("Status", sstatus);
     }
-    
+
     if (pstatus != oldpstatus) {
         m_agent_pause_status[agentid]->setText(qas->display_status_paused());
         m_agent_pause_status[agentid]->setProperty("Paused", pstatus);
     }
-    
+
     if (qv.toMap().contains("CallsTaken")) {
         m_agent_callstaken[agentid]->setText(qv.toMap()["CallsTaken"].toString());
     } else {

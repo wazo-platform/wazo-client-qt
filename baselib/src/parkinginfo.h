@@ -54,7 +54,7 @@ class BASELIB_EXPORT ParkingInfo
         const int & timeout() const { return m_timeout; };  //! parking timeout
         const double & parkingtime() const { return m_parkingtime; };  //! parking starting time
         void update(const QVariantMap &);
-        
+
     private:
         int m_timeout;  //!< parking timeout
         double m_parkingtime;  //!< parking starting time

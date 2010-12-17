@@ -70,9 +70,9 @@ class XletQueueDetails : public XLet
         void setAgentProps(const QString &, const AgentInfo *);
         void setAgentQueueSignals(const QString &);
         void fillAgent(int, const QString &);
-        
+
         QGridLayout *m_gridlayout; //!< Layout
-        
+
         QString m_monitored_queueid;  //!< queue id
         QLabel *m_queuelegend_agentid; //!< "Agent" label
         QLabel *m_queuelegend_status;  //!< "Status" label
@@ -81,7 +81,7 @@ class XletQueueDetails : public XLet
         QLabel *m_queuelegend_lastcall;  //!< "Call Taken" label
         QLabel *m_queuelegend_penalty;  //!< "Call Taken" label
         QLabel *m_queuedescription;       //!< queue name label
-        
+
         QHash<QString, QLabel *> m_agent_labels; //!< agents name
         QHash<QString, QPushButton *> m_agent_more;  //!< "+" buttons
         QHash<QString, QLabel *> m_agent_join_status; //!< agents status

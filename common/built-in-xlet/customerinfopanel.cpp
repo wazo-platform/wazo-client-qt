@@ -96,12 +96,12 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
                 // close the first widget
                 m_tabs->removeTab(0);
         }
-        
+
         // no need to focus if there is no sheet popup
         if(popup->focus())
             opt += "fp";
     }
-    
+
     // tells the main widget that a new popup has arrived here
     if(popup->systraypopup())
         opt += "s";

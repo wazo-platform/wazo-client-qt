@@ -56,7 +56,7 @@ DialPanel::DialPanel(QWidget *parent)
             this, SLOT(inputValidated()));
     connect(m_input, SIGNAL(editTextChanged(const QString &)),
             this, SIGNAL(textEdited(const QString &)));
-    
+
     QPixmap pmphone = QPixmap(":/images/sipphone.png");
     QPushButton * dialButton = new QPushButton(this);
     // dialButton->setStyleSheet("QPushButton {border: 0px}");
@@ -64,21 +64,21 @@ DialPanel::DialPanel(QWidget *parent)
     dialButton->setIconSize(pmphone.size());
     connect(dialButton, SIGNAL(clicked()),
             this, SLOT(inputValidated()));
-    
+
     // QPushButton * clearButton = new QPushButton(this);
     // clearButton->setIcon(QIcon(":/images/cancel.png"));
     // connect( clearButton, SIGNAL(clicked()),
     // this, SLOT(clearlist()) );
-    
+
     setAcceptDrops(true);
-    
+
     vlayout->addStretch(1);
     // vlayout->addWidget( clearButton, 0, Qt::AlignCenter );
     vlayout->addWidget(m_lbl, 0, Qt::AlignCenter);
     vlayout->addWidget(m_input, 0, Qt::AlignCenter);
     vlayout->addWidget(dialButton, 0, Qt::AlignCenter);
     vlayout->addStretch(1);
-    
+
     // connect signals/slots
     connect(b_engine, SIGNAL(pasteToDialPanel(const QString &)),
             this, SLOT(setNumberToDial(const QString &)));
@@ -97,7 +97,7 @@ void DialPanel::setNumberToDial(const QString & text)
     // remove . and " " because we don't need them
     // remove "+" to avoid matching the "\\D"
     texttmp.remove(QRegExp("[. +]"));
-    
+
     if((! texttmp.isEmpty()) && (! texttmp.contains(QRegExp("\\D")))) {
         // if there was a "+", put it back
         if(text.trimmed()[0] == '+')
@@ -120,7 +120,7 @@ void DialPanel::dragEnterEvent(QDragEnterEvent * event)
         event->acceptProposedAction();
 }
 
-/*! \brief handle drop events 
+/*! \brief handle drop events
  *
  * This method processes data from the drop event and makes the call
  */
