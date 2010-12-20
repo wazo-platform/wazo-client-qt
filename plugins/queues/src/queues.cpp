@@ -251,7 +251,7 @@ void XletQueues::newQueueList(const QStringList &qsl)
  *
  * to update display.
  */
-void XletQueues::setQueueOrder(const QStringList &queueOrder)
+void XletQueues::setQueueOrder(const QStringList & queueOrder)
 {
     QueueRow *rowAtPos;
     QueueRow *rowAtWrongPos;
@@ -261,7 +261,7 @@ void XletQueues::setQueueOrder(const QStringList &queueOrder)
         QLayoutItem * qli = m_layout->itemAt(index);
         if(qli != NULL) {
             rowAtPos = qobject_cast<QueueRow *>(qli->widget());
-            if (rowAtPos!= NULL) {
+            if (rowAtPos != NULL) {
                 if (rowAtPos->property("id").toString() != queue ) {
                     QHashIterator<QString, QueueRow *> i(m_queueList);
                     rowAtWrongPos = NULL;
@@ -276,6 +276,7 @@ void XletQueues::setQueueOrder(const QStringList &queueOrder)
                         rowMovedIndex = m_layout->indexOf(rowAtWrongPos);
                         m_layout->removeWidget(rowAtPos);
                         m_layout->removeWidget(rowAtWrongPos);
+
                         m_layout->insertWidget(rowMovedIndex, rowAtPos);
                         m_layout->insertWidget(index, rowAtWrongPos);
                     }

@@ -31,8 +31,8 @@
  * $Date$
  */
 
-#ifndef _CONFERENCE2_CONFLIST_H_
-#define _CONFERENCE2_CONFLIST_H_
+#ifndef _ETVNG_H_
+#define _ETVNG_H_
 
 #include <QLabel>
 #include <QTimer>
@@ -48,17 +48,34 @@
 
 #include <baseengine.h>
 
-#include "conference.h"
+#include "records.h"
 
-class ConfListModel : public QAbstractTableModel
+class ETVListProperties
+{
+    public:
+        ETVListProperties();
+        QString title(int) const;
+        QString eventfield(int) const;
+        QString qssdisplay() const;
+        int ncolumns() const;
+        void addProperty(const QString &,
+                         const QString &,
+                         const QString &,
+                         const QString &);
+    private:
+        QVariantMap m_properties;
+};
+
+class ETVListModel : public QAbstractTableModel
 {
     Q_OBJECT
 
     public:
-        ConfListModel();
+        ETVListModel(const ETVListProperties * const);
+        QString qssdisplay() const;
 
     private slots:
-        void confRoomsChange(const QString &path, DStoreEvent event);
+        void mylistChange(const QString &path, DStoreEvent event);
     protected:
         void timerEvent(QTimerEvent *event);
     private:
@@ -66,18 +83,21 @@ class ConfListModel : public QAbstractTableModel
         int rowCount(const QModelIndex&) const;
         int columnCount(const QModelIndex&) const;
         QVariant data(const QModelIndex&, int) const;
-        QVariant headerData(int , Qt::Orientation, int) const;
+        QVariant headerData(int, Qt::Orientation, int) const;
         Qt::ItemFlags flags(const QModelIndex &) const;
+
         QMap<int, QString> m_row2id;
-        QVariantMap m_roomList;
+        QVariantMap m_myList;
+        const ETVListProperties * m_fieldoptions;
 };
 
-class ConfListView : public QTableView
+class ETVListView : public QTableView
 {
     Q_OBJECT
 
     public:
-        ConfListView(QWidget *parent, ConfListModel *model);
+        ETVListView(QWidget * parent,
+                    ETVListModel * model);
     private slots:
         void onViewClick(const QModelIndex &);
     protected:
@@ -87,17 +107,18 @@ class ConfListView : public QTableView
 };
 
 
-class ConfList : public QWidget
+class ETVListWidget : public QWidget
 {
     Q_OBJECT
 
     public:
-        ConfList(XletConference *parent);
+        ETVListWidget(const ETVListProperties * const,
+                      XletRecords * parent);
     private slots:
         void openConfRoom();
         void phoneConfRoom();
     private:
-        XletConference * m_manager;
+        XletRecords * m_manager;
 };
 
 #endif

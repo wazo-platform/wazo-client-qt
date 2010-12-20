@@ -1,6 +1,6 @@
 # Short reminder for configure options when building a new Qt static version
-# $Date$
-# $Revision$
+# $Date: 2008-11-10 17:23:39 +0100 (Mon, 10 Nov 2008) $
+# $Revision: 4637 $
 
 * Linux
 -------

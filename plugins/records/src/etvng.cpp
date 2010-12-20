@@ -31,67 +31,114 @@
  * $Date$
  */
 
-#include "conflist.h"
+#include "etvng.h"
 
 enum ColOrder {
     ID, NAME, NUMBER, PIN_REQUIRED, MODERATED,
     MEMBER_COUNT, STARTED_SINCE, NB_COL
 };
 
-static QVariant COL_TITLE[NB_COL];
+static QString braourk = "confrooms";
 
-ConfListModel::ConfListModel()
-    : QAbstractTableModel()
+//
+// ETVListProperties class
+//
+
+ETVListProperties::ETVListProperties()
 {
-    b_engine->tree()->onChange("confrooms", this,
-        SLOT(confRoomsChange(const QString &, DStoreEvent)));
-
-    startTimer(1000);
-    COL_TITLE[ID] = tr("Room UID");
-    COL_TITLE[NUMBER] = tr("Number");
-    COL_TITLE[NAME] = tr("Name");
-    COL_TITLE[PIN_REQUIRED] = tr("Pin code");
-    COL_TITLE[MEMBER_COUNT] = tr("Member count");
-    COL_TITLE[MODERATED] = tr("Moderated");
-    COL_TITLE[STARTED_SINCE] = tr("Started since");
+    m_properties.clear();
+    m_properties["display"] = "border: none; background:transparent; color:black;";
+    m_properties["columns"] = "";
 }
 
-void ConfListModel::timerEvent(QTimerEvent *)
+// to define, per column : "id" for "eV", type (boolean, date/time, phone)
+void ETVListProperties::addProperty(const QString & title,
+                                    const QString & eventfield,
+                                    const QString & qttype,
+                                    const QString & xivotype)
+{
+    QVariantList columns = m_properties.value("columns").toList();
+    QVariantMap u;
+    u["title"] = title;
+    u["eventfield"] = eventfield;
+    u["qttype"] = qttype;
+    u["xivotype"] = xivotype;
+    columns << u;
+    m_properties["columns"] = columns;
+}
+
+QString ETVListProperties::title(int index) const
+{
+    return m_properties.value("columns").toList()[index].toMap().value("title").toString();
+}
+
+QString ETVListProperties::eventfield(int index) const
+{
+    return m_properties.value("columns").toList()[index].toMap().value("eventfield").toString();
+}
+
+QString ETVListProperties::qssdisplay() const
+{
+    return m_properties.value("display").toString();
+}
+
+int ETVListProperties::ncolumns() const
+{
+    return m_properties.value("columns").toList().size();
+}
+
+//
+// ETVListModel class
+//
+
+ETVListModel::ETVListModel(const ETVListProperties * const qv)
+    : QAbstractTableModel()
+{
+    m_fieldoptions = qv;
+    b_engine->tree()->onChange(braourk, this,
+                               SLOT(mylistChange(const QString &, DStoreEvent)));
+    // startTimer(1000);
+}
+
+QString ETVListModel::qssdisplay() const
+{
+    return m_fieldoptions->qssdisplay();
+}
+
+void ETVListModel::timerEvent(QTimerEvent *)
 {
     reset();
 }
 
-void ConfListModel::confRoomsChange(const QString &, DStoreEvent)
+void ETVListModel::mylistChange(const QString &, DStoreEvent)
 {
-    m_roomList = b_engine->eVM("confrooms");
+    m_myList = b_engine->eVM(braourk);
 
     int row = 0;
-    if (m_roomList.size() != m_row2id.size()) {
-        foreach(QString roomId, m_roomList.keys()) {
-            m_row2id.insert(row++, roomId);
+    if (m_myList.size() != m_row2id.size()) {
+        foreach(QString myId, m_myList.keys()) {
+            m_row2id.insert(row++, myId);
         }
     }
     reset();
 }
 
-Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
+Qt::ItemFlags ETVListModel::flags(const QModelIndex &) const
 {
     return Qt::NoItemFlags;
 }
 
-int ConfListModel::rowCount(const QModelIndex&) const
+int ETVListModel::rowCount(const QModelIndex&) const
 {
-    return m_roomList.size();
+    return m_myList.size();
 }
 
-int ConfListModel::columnCount(const QModelIndex&) const
+int ETVListModel::columnCount(const QModelIndex &) const
 {
-    return NB_COL;
+    return m_fieldoptions->ncolumns();
 }
 
-QVariant
-ConfListModel::data(const QModelIndex &index,
-                    int role) const
+QVariant ETVListModel::data(const QModelIndex & index, int role) const
 {
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole)
@@ -99,34 +146,33 @@ ConfListModel::data(const QModelIndex &index,
         return QVariant();
     }
 
-    int row = index.row(), col = index.column();
+    int row = index.row();
+    int col = index.column();
 
     if (m_row2id.contains(row))
         row = m_row2id[row].toInt();
 
-    QString room = QString("confrooms/%0/").arg(row);
+    QString eventfield = m_fieldoptions->eventfield(col);
+    QString request = QString("%1/%2/%3").arg(braourk).arg(row).arg(eventfield);
+
     switch (col) {
         case ID:
-            return b_engine->eV(room + "id");
         case NUMBER:
-            return b_engine->eV(room + "number");
         case NAME:
-            return b_engine->eV(room + "name");
+            return b_engine->eV(request);
         case PIN_REQUIRED:
-            return b_engine->eV(room + "pin").toString().isEmpty() ?
-                       tr("No") : tr("Yes");
+            return b_engine->eV(request).toString().isEmpty() ? tr("No") : tr("Yes");
         case MODERATED:
-            return b_engine->eV(room + "moderated").toInt() ?
-                       tr("Yes") : tr("No");
+            return b_engine->eV(request).toInt() ? tr("Yes") : tr("No");
         case MEMBER_COUNT:
-            return b_engine->eVM(room + "in").size();
+            return b_engine->eVM(request).size();
         case STARTED_SINCE:
         {
-            QVariantMap UserIn = b_engine->eVM(room + "in");
+            QVariantMap UserIn = b_engine->eVM(request);
             double time = 0;
             QString displayed = QString::fromUtf8("Ø");
             foreach (QString uid, UserIn.keys()) {
-                double utime = UserIn[uid].toMap().value("time-start").toDouble();
+                double utime = UserIn.value(uid).toMap().value("time-start").toDouble();
                 if ((time == 0) || (time > utime)) {
                     time = utime;
                 }
@@ -147,22 +193,19 @@ ConfListModel::data(const QModelIndex &index,
     return QVariant();
 }
 
-QVariant
-ConfListModel::headerData(int section,
-                          Qt::Orientation orientation,
-                          int role) const
+QVariant ETVListModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role != Qt::DisplayRole)
         return QVariant();
 
     if (orientation == Qt::Horizontal) {
-        return COL_TITLE[section];
+        return m_fieldoptions->title(section);
     }
 
     return QVariant();
 }
 
-void ConfListModel::sort(int column, Qt::SortOrder order)
+void ETVListModel::sort(int column, Qt::SortOrder order)
 {
     struct {
         static bool ascending(const QPair<int, QString> &a,
@@ -180,7 +223,7 @@ void ConfListModel::sort(int column, Qt::SortOrder order)
     QList<QPair<int, QString> > toSort;
 
     int i, e;
-    for (i=0,e=rowCount(QModelIndex());i<e;i++) {
+    for (i = 0, e = rowCount(QModelIndex()); i < e; i++) {
         toSort.append(QPair<int, QString>(index(i, ID).data().toInt(),
                                           index(i, column).data().toString()));
     }
@@ -189,14 +232,17 @@ void ConfListModel::sort(int column, Qt::SortOrder order)
                                          sFun.ascending :
                                          sFun.descending);
 
-    for (i=0;i<e;i++) {
+    for (i = 0; i < e; i++) {
         m_row2id.insert(i, QString::number(toSort[i].first));
     }
     reset();
 }
 
+//
+// ETVListView class
+//
 
-ConfListView::ConfListView(QWidget *parent, ConfListModel *model)
+ETVListView::ETVListView(QWidget * parent, ETVListModel * model)
     : QTableView(parent)
 {
     setSortingEnabled(true);
@@ -205,25 +251,21 @@ ConfListView::ConfListView(QWidget *parent, ConfListModel *model)
     verticalHeader()->hide();
     horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     horizontalHeader()->setMovable(true);
-    setStyleSheet("ConfListView {"
-                    "border: none;"
-                    "background: transparent;"
-                    "color:black;"
-                  "}");
+    setStyleSheet("ETVListView {" + model->qssdisplay() + "}");
     hideColumn(0);
 
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
 }
 
-void ConfListView::onViewClick(const QModelIndex &model)
+void ETVListView::onViewClick(const QModelIndex & model)
 {
     QString roomId = model.sibling(model.row(), ID).data().toString();
     QString roomName = model.sibling(model.row(), NAME).data().toString();
     QString roomNumber = model.sibling(model.row(), NUMBER).data().toString();
 
     if (roomId != "") {
-        if (lastPressed&Qt::LeftButton) {
+        if (lastPressed & Qt::LeftButton) {
             b_engine->pasteToDial(roomNumber);
             QTimer *timer = new QTimer(this);
             timer->setSingleShot(true);
@@ -248,25 +290,26 @@ void ConfListView::onViewClick(const QModelIndex &model)
     }
 }
 
-void ConfListView::mousePressEvent(QMouseEvent *event)
+void ETVListView::mousePressEvent(QMouseEvent *event)
 {
     lastPressed = event->button();
     QTableView::mousePressEvent(event);
 }
 
+//
+// ETVListWidget class
+//
 
-ConfList::ConfList(XletConference *parent)
+ETVListWidget::ETVListWidget(const ETVListProperties * const qv,
+                             XletRecords * parent)
     : QWidget(), m_manager(parent)
 {
-    QVBoxLayout *vBox = new QVBoxLayout(this);
-    QHBoxLayout *hBox = new QHBoxLayout();
-    ConfListView *view = new ConfListView(this, new ConfListModel());
+    QVBoxLayout  * vBox = new QVBoxLayout(this);
+    QHBoxLayout  * hBox = new QHBoxLayout();
+    ETVListModel * model = new ETVListModel(qv);
+    ETVListView  * view = new ETVListView(this, model);
 
-    view->setStyleSheet("ConfListView {"
-                            "border: none;"
-                            "background:transparent;"
-                            "color:black;"
-                        "}");
+    view->setStyleSheet("ETVListView {" + model->qssdisplay() + "}");
     view->verticalHeader()->hide();
 
     hBox->addStretch(1);
@@ -277,16 +320,16 @@ ConfList::ConfList(XletConference *parent)
     setLayout(vBox);
 }
 
-void ConfList::phoneConfRoom()
+void ETVListWidget::phoneConfRoom()
 {
     QString roomId = sender()->property("id").toString();
-    QString roomNumber = b_engine->eV(QString("confrooms/%0/number").arg(roomId)).toString();
+    QString roomNumber = b_engine->eV(QString("%1/%2/number").arg(braourk).arg(roomId)).toString();
 
     b_engine->actionCall("originate", "user:special:me", "ext:" + roomNumber);
-    m_manager->openConfRoom(roomId, true);
+    // m_manager->openConfRoom(roomId, true);
 }
 
-void ConfList::openConfRoom()
+void ETVListWidget::openConfRoom()
 {
-    m_manager->openConfRoom(sender()->property("id").toString());
+    // m_manager->openConfRoom(sender()->property("id").toString());
 }

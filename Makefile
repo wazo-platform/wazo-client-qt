@@ -1,5 +1,5 @@
-# $Revision$
-# $Date$
+# $Revision: 8994 $
+# $Date: 2010-08-24 12:53:00 +0200 (Tue, 24 Aug 2010) $
 
 QMAKE?=qmake
 UPXRUN?=upx

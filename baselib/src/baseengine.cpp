@@ -393,11 +393,12 @@ void BaseEngine::stop()
                  << "Bytes/Second";
     }
 
-    /* cleaning the registred callback */
+    /* cleaning the registered callbacks */
     {
         QHashIterator<QString, e_callback*> i(m_class_event_cb);
         while (i.hasNext()) {
             i.next();
+            qDebug() << Q_FUNC_INFO << "cleaning callback" << i.key();
             delete i.value();
         }
         m_class_event_cb.clear();

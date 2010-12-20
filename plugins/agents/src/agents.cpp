@@ -93,10 +93,10 @@ XletAgents::XletAgents(QWidget *parent)
 void XletAgents::setGuiOptions(const QVariantMap & optionsMap)
 {
     if (optionsMap.contains("xlet.agents.fontname") && optionsMap.contains("xlet.agents.fontsize"))
-        m_gui_font = QFont(optionsMap["xlet.agents.fontname"].toString(),
-                           optionsMap["xlet.agents.fontsize"].toInt());
+        m_gui_font = QFont(optionsMap.value("xlet.agents.fontname").toString(),
+                           optionsMap.value("xlet.agents.fontsize").toInt());
     if (optionsMap.contains("xlet.agents.iconsize"))
-        m_gui_buttonsize = optionsMap["xlet.agents.iconsize"].toInt();
+        m_gui_buttonsize = optionsMap.value("xlet.agents.iconsize").toInt();
 
     m_title1->setFont(m_gui_font);
     m_title2->setFont(m_gui_font);
@@ -118,9 +118,9 @@ void XletAgents::updateAgentPresence(const QString & astid, const QString & agen
     if (b_engine->agents().contains(agentid))
         if (m_agent_presence.contains(agentid)) {
             QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
-            square.fill(QColor(presencestatus.toMap()["color"].toString()));
+            square.fill(QColor(presencestatus.toMap().value("color").toString()));
             m_agent_presence[agentid]->setPixmap(square);
-            m_agent_presence[agentid]->setToolTip(presencestatus.toMap()["longname"].toString());
+            m_agent_presence[agentid]->setToolTip(presencestatus.toMap().value("longname").toString());
         }
 }
 
@@ -262,12 +262,12 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
     if (ainfo == NULL)
         return;
     QString context_agent = ainfo->context();
-    QVariantMap agqjoined = properties["queues_by_agent"].toMap();
-    QVariantMap aggjoined = properties["groups_by_agent"].toMap();
-    QString agstatus = properties["agentstats"].toMap()["status"].toString();
-    QString phonenum = properties["agentstats"].toMap()["agent_phone_number"].toString();
+    QVariantMap agqjoined = properties.value("queues_by_agent").toMap();
+    QVariantMap aggjoined = properties.value("groups_by_agent").toMap();
+    QString agstatus = properties.value("agentstats").toMap()["status"].toString();
+    QString phonenum = properties.value("agentstats").toMap()["agent_phone_number"].toString();
 
-    QVariantMap slink = properties["agentstats"].toMap()["Xivo-Agent-Status-Link"].toMap();
+    QVariantMap slink = properties.value("agentstats").toMap()["Xivo-Agent-Status-Link"].toMap();
     bool link = false;
     if (! slink.isEmpty()) {
         QString linkmode = slink["linkmode"].toString();

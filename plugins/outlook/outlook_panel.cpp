@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
  */
 
-/* $Revision$
- * $Date$
+/* $Revision: 9746 $
+ * $Date: 2010-12-09 18:50:58 +0100 (Thu, 09 Dec 2010) $
  */
 
 #include <QContextMenuEvent>
