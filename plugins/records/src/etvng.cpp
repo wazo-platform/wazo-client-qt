@@ -38,7 +38,7 @@ enum ColOrder {
     MEMBER_COUNT, STARTED_SINCE, NB_COL
 };
 
-static QString braourk = "confrooms";
+static QString braourk = "records";
 
 //
 // ETVListProperties class
@@ -47,21 +47,22 @@ static QString braourk = "confrooms";
 ETVListProperties::ETVListProperties()
 {
     m_properties.clear();
-    m_properties["display"] = "border: none; background:transparent; color:black;";
+    m_properties["display_qss"] = "border: none; color:black;";
+    m_properties["display_grid"] = 1;
     m_properties["columns"] = "";
 }
 
 // to define, per column : "id" for "eV", type (boolean, date/time, phone)
 void ETVListProperties::addProperty(const QString & title,
                                     const QString & eventfield,
-                                    const QString & qttype,
+                                    const QVariant::Type & qttype,
                                     const QString & xivotype)
 {
     QVariantList columns = m_properties.value("columns").toList();
     QVariantMap u;
     u["title"] = title;
     u["eventfield"] = eventfield;
-    u["qttype"] = qttype;
+    u["qttype"] = int(qttype);
     u["xivotype"] = xivotype;
     columns << u;
     m_properties["columns"] = columns;
@@ -77,9 +78,19 @@ QString ETVListProperties::eventfield(int index) const
     return m_properties.value("columns").toList()[index].toMap().value("eventfield").toString();
 }
 
-QString ETVListProperties::qssdisplay() const
+QVariant::Type ETVListProperties::qttype(int index) const
 {
-    return m_properties.value("display").toString();
+    return QVariant::Type(m_properties.value("columns").toList()[index].toMap().value("qttype").toInt());
+}
+
+int ETVListProperties::displayOptionShowGrid() const
+{
+    return m_properties.value("display_grid").toInt();
+}
+
+QString ETVListProperties::displayOptionStyleSheet() const
+{
+    return m_properties.value("display_qss").toString();
 }
 
 int ETVListProperties::ncolumns() const
@@ -100,9 +111,14 @@ ETVListModel::ETVListModel(const ETVListProperties * const qv)
     // startTimer(1000);
 }
 
-QString ETVListModel::qssdisplay() const
+int ETVListModel::displayOptionShowGrid() const
 {
-    return m_fieldoptions->qssdisplay();
+    return m_fieldoptions->displayOptionShowGrid();
+}
+
+QString ETVListModel::displayOptionStyleSheet() const
+{
+    return m_fieldoptions->displayOptionStyleSheet();
 }
 
 void ETVListModel::timerEvent(QTimerEvent *)
@@ -113,7 +129,6 @@ void ETVListModel::timerEvent(QTimerEvent *)
 void ETVListModel::mylistChange(const QString &, DStoreEvent)
 {
     m_myList = b_engine->eVM(braourk);
-
     int row = 0;
     if (m_myList.size() != m_row2id.size()) {
         foreach(QString myId, m_myList.keys()) {
@@ -125,7 +140,8 @@ void ETVListModel::mylistChange(const QString &, DStoreEvent)
 
 Qt::ItemFlags ETVListModel::flags(const QModelIndex &) const
 {
-    return Qt::NoItemFlags;
+    // return Qt::NoItemFlags;
+    return (Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 }
 
 int ETVListModel::rowCount(const QModelIndex&) const
@@ -153,44 +169,47 @@ QVariant ETVListModel::data(const QModelIndex & index, int role) const
         row = m_row2id[row].toInt();
 
     QString eventfield = m_fieldoptions->eventfield(col);
+    QVariant::Type qttype = m_fieldoptions->qttype(col);
     QString request = QString("%1/%2/%3").arg(braourk).arg(row).arg(eventfield);
 
-    switch (col) {
-        case ID:
-        case NUMBER:
-        case NAME:
-            return b_engine->eV(request);
-        case PIN_REQUIRED:
-            return b_engine->eV(request).toString().isEmpty() ? tr("No") : tr("Yes");
-        case MODERATED:
-            return b_engine->eV(request).toInt() ? tr("Yes") : tr("No");
-        case MEMBER_COUNT:
-            return b_engine->eVM(request).size();
-        case STARTED_SINCE:
-        {
-            QVariantMap UserIn = b_engine->eVM(request);
-            double time = 0;
-            QString displayed = QString::fromUtf8("Ø");
-            foreach (QString uid, UserIn.keys()) {
-                double utime = UserIn.value(uid).toMap().value("time-start").toDouble();
-                if ((time == 0) || (time > utime)) {
-                    time = utime;
-                }
-            }
-            if (time != 0) {
-                displayed =
-                    QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
-                                          b_engine->timeDeltaServerClient() -
-                                          time)
-                                         .toUTC().toString("hh:mm:ss");
-            }
+    if (qttype == QVariant::String)
+        return b_engine->eV(request).toString();
+    else if (qttype == QVariant::Int)
+        return b_engine->eV(request).toInt();
+    else if (qttype == QVariant::DateTime) {
+        uint ii = int(b_engine->eV(request).toDouble());
+        QDateTime qdt = QDateTime::fromTime_t(ii);
+        return qdt.toString();
+    } else
+        return "zzz";
 
-            return displayed;
-        }
-        default:
-            break;
-    }
-    return QVariant();
+    // return b_engine->eV(request).toString().isEmpty() ? tr("No") : tr("Yes");
+    // return b_engine->eV(request).toInt() ? tr("Yes") : tr("No");
+    // return b_engine->eVM(request).size();
+
+//             QVariantMap UserIn = b_engine->eVM(request);
+//             double time = 0;
+//             QString displayed = QString::fromUtf8("Ø");
+//             foreach (QString uid, UserIn.keys()) {
+//                 double utime = UserIn.value(uid).toMap().value("time-start").toDouble();
+//                 if ((time == 0) || (time > utime)) {
+//                     time = utime;
+//                 }
+//             }
+//             if (time != 0) {
+//                 displayed =
+//                     QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
+//                                           b_engine->timeDeltaServerClient() -
+//                                           time)
+//                                          .toUTC().toString("hh:mm:ss");
+//             }
+
+//             return displayed;
+//         }
+//         default:
+//             break;
+//     }
+//     return QVariant();
 }
 
 QVariant ETVListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -210,13 +229,11 @@ void ETVListModel::sort(int column, Qt::SortOrder order)
     struct {
         static bool ascending(const QPair<int, QString> &a,
                               const QPair<int, QString> &b) {
-            return QString::localeAwareCompare(a.second, b.second) < 0 ?
-                                               true : false;
+            return QString::localeAwareCompare(a.second, b.second) < 0 ? true : false;
         }
         static bool descending(const QPair<int, QString> &a,
                                const QPair<int, QString> &b) {
-            return QString::localeAwareCompare(a.second, b.second) < 0 ?
-                                               false : true;
+            return QString::localeAwareCompare(a.second, b.second) < 0 ? false : true;
         }
     } sFun;
 
@@ -247,15 +264,29 @@ ETVListView::ETVListView(QWidget * parent, ETVListModel * model)
 {
     setSortingEnabled(true);
     setModel(model);
-    setShowGrid(0);
+    setShowGrid(model->displayOptionShowGrid());
     verticalHeader()->hide();
-    horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    horizontalHeader()->setResizeMode(QHeaderView::Interactive); // ::Stretch, ::ResizeToContents
+    horizontalHeader()->setStretchLastSection(true);
     horizontalHeader()->setMovable(true);
-    setStyleSheet("ETVListView {" + model->qssdisplay() + "}");
-    hideColumn(0);
+    setStyleSheet("ETVListView {" + model->displayOptionStyleSheet() + "}");
+    setSelectionBehavior(QAbstractItemView::SelectItems);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    // hideColumn(0);
 
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
+}
+
+void ETVListView::selectionChanged(const QItemSelection & selected,
+                                   const QItemSelection & deselected)
+{
+    QAbstractItemView::selectionChanged(selected, deselected);
+    // foreach (QModelIndex qmi, deselected.indexes());
+    // qDebug() << Q_FUNC_INFO;
+    // foreach (QModelIndex qmi, selected.indexes())
+    // qDebug() << Q_FUNC_INFO << "selected" << qmi.row() << qmi.column();
 }
 
 void ETVListView::onViewClick(const QModelIndex & model)
@@ -309,12 +340,12 @@ ETVListWidget::ETVListWidget(const ETVListProperties * const qv,
     ETVListModel * model = new ETVListModel(qv);
     ETVListView  * view = new ETVListView(this, model);
 
-    view->setStyleSheet("ETVListView {" + model->qssdisplay() + "}");
+    view->setStyleSheet("ETVListView {" + model->displayOptionStyleSheet() + "}");
     view->verticalHeader()->hide();
 
-    hBox->addStretch(1);
-    hBox->addWidget(view, 8);
-    hBox->addStretch(1);
+    // hBox->addStretch(1);
+    hBox->addWidget(view, Qt::AlignJustify);
+    // hBox->addStretch(1);
 
     vBox->addLayout(hBox);
     setLayout(vBox);

@@ -533,29 +533,29 @@ void BaseEngine::updateCapaPresence(const QVariant & presence)
     QVariantMap presencemap = presence.toMap();
     foreach (QString field, presencemap.keys()) {
         if (presencemap.contains(field)) {
-            m_capapresence[field] = presencemap[field];
+            m_capapresence[field] = presencemap.value(field);
         }
 
         if (field == "names") {
-            QVariantMap crap = presencemap[field].toMap();
+            QVariantMap crap = presencemap.value(field).toMap();
             foreach (QString stateName, crap.keys()) {
-                QVariantMap fill = crap[stateName].toMap();
-                fill["id"] = fill["stateid"];
+                QVariantMap fill = crap.value(stateName).toMap();
+                fill["id"] = fill.value("stateid");
                 fill.remove("stateid");
                 tree()->populate(QString("statedetails/%0").arg(stateName), fill);
             }
         } else if (field == "allowed") {
-            QVariantMap map = presencemap[field].toMap();
+            QVariantMap map = presencemap.value(field).toMap();
             QVariantMap fill;
             foreach (QString stateName, map.keys()) {
-                if (map[stateName].toBool()) {
+                if (map.value(stateName).toBool()) {
                     fill[stateName] = QVariant();
                 }
             }
 
             tree()->populate(QString("statedetails/%0/allowed")
-                            .arg(presencemap["state"].toMap()["stateid"].toString()),
-                            fill);
+                             .arg(presencemap.value("state").toMap().value("stateid").toString()),
+                             fill);
         }
     }
     // qDebug() << DStoreNode::pp(*tree()->root());
@@ -815,62 +815,64 @@ void addMobilePhone(DStore *tree, const QString &userId, const QString &number)
     }
 }
 
-void addUpdateUserInTree(DStore *tree, const QVariantMap &uinfo)
+void addUpdateUserInTree(DStore *tree, const QVariantMap & uinfo)
 {
     QVariantMap info;
-    info["id"] = uinfo["xivo_userid"];
-    info["fullname"] = uinfo["fullname"];
-    info["state-id"] = uinfo["statedetails"].toMap()["stateid"];
-    tree->populate(QString("users/%0").arg(info["id"].toString()), info);
-    addMobilePhone(tree, info["id"].toString(), uinfo["mobilephone"].toString());
+    info["id"] = uinfo.value("xivo_userid");
+    info["fullname"] = uinfo.value("fullname");
+    info["state-id"] = uinfo.value("statedetails").toMap().value("stateid");
+    tree->populate(QString("users/%0").arg(info.value("id").toString()), info);
+    addMobilePhone(tree, info.value("id").toString(), uinfo.value("mobilephone").toString());
     info.clear();
 }
 
-void addUpdateConfMemberInTree(DStore *tree, const QVariantMap &cinfo)
+void addUpdateConfMemberInTree(DStore *tree, const QVariantMap & cinfo)
 {
-    QString id = cinfo["details"].toMap()["usernum"].toString();
-    QString confId = cinfo["meetmeid"].toString();
+    QString id = cinfo.value("details").toMap().value("usernum").toString();
+    QString confId = cinfo.value("meetmeid").toString();
     QString path = QString("confrooms/%0/in/%1").arg(confId).arg(id);
+    QString action = cinfo.value("action").toString();
     QVariantMap info;
 
-    if ((cinfo["action"] == "join") || (cinfo["action"] == "mutestatus")||(cinfo["action"] == "auth")) {
+    if ( (action == "join") || (action == "mutestatus") || (action == "auth") ) {
         info["id"] = id;
-        info["phonenum"] = cinfo["details"].toMap()["phonenum"];
-        info["time-start"] = cinfo["details"].toMap()["time_start"];
-        info["user-id"] = cinfo["details"].toMap()["userid"].toString();
-        info["authed"] = cinfo["details"].toMap()["authed"].toBool();
-        info["mute"] = (cinfo["details"].toMap()["mutestatus"].toString() == "on");
-        info["admin"] = cinfo["details"].toMap()["admin"].toBool();
+        QVariantMap details = cinfo.value("details").toMap();
+        info["phonenum"] = details.value("phonenum");
+        info["time-start"] = details.value("time_start");
+        info["user-id"] = details.value("userid").toString();
+        info["authed"] = details.value("authed").toBool();
+        info["mute"] = (details.value("mutestatus").toString() == "on");
+        info["admin"] = details.value("admin").toBool();
         tree->populate(path ,info);
-    } else if (cinfo["action"] == "leave") {
+    } else if (action == "leave") {
         tree->rmPath(path);
-    } else if (cinfo["action"] == "changeroompausedstate") {
+    } else if (action == "changeroompausedstate") {
         path = QString("confrooms/%0").arg(confId);
-        info["paused"] = cinfo["paused"];
+        info["paused"] = cinfo.value("paused");
         tree->populate(path ,info);
     } else {
-        qDebug() << Q_FUNC_INFO << "unknown meetme action: " << cinfo["action"];
+        qDebug() << Q_FUNC_INFO << "unknown meetme action: " << action;
     }
 }
 
 void addUpdateConfRoomInTree(DStore *tree,
-                             const QString &id,
-                             const QVariantMap &cinfo)
+                             const QString & id,
+                             const QVariantMap & cinfo)
 {
     QVariantMap info;
     info["id"] = id;
-    info["name"] = cinfo["roomname"];
-    info["pin"] = cinfo["pin"];
+    info["name"] = cinfo.value("roomname");
+    info["pin"] = cinfo.value("pin");
     info["in"] = QVariantMap();
-    info["number"] = cinfo["roomnumber"];
-    info["moderated"] = cinfo["moderated"];
+    info["number"] = cinfo.value("roomnumber");
+    info["moderated"] = cinfo.value("moderated");
 
     tree->populate(QString("confrooms/%0").arg(id), info);
 
-    QVariantMap userIn = cinfo["uniqueids"].toMap();
+    QVariantMap userIn = cinfo.value("uniqueids").toMap();
     foreach (QString uniqueId , userIn.keys()) {
         QVariantMap userToInsert;
-        userToInsert["details"] = userIn[uniqueId].toMap();
+        userToInsert["details"] = userIn.value(uniqueId).toMap();
         userToInsert["meetmeid"] = id;
         userToInsert["action"] = "join";
         userToInsert["uniqueid"] = uniqueId;
@@ -903,12 +905,12 @@ void BaseEngine::parseCommand(const QString &line)
         return;
 
     QVariantMap datamap = data.toMap();
-    QString direction = datamap["direction"].toString();
-    QString function = datamap["function"].toString();
+    QString direction = datamap.value("direction").toString();
+    QString function = datamap.value("function").toString();
 
     if (direction == "client") {
-        QString thisclass = datamap["class"].toString();
-        m_timesrv = datamap["timenow"].toDouble();
+        QString thisclass = datamap.value("class").toString();
+        m_timesrv = datamap.value("timenow").toDouble();
         m_timeclt = QDateTime::currentDateTime();
 
         if (callClassEventCallback(thisclass, datamap))  // a class callback was called,
@@ -918,11 +920,11 @@ void BaseEngine::parseCommand(const QString &line)
         // << thisclass << datamap["function"].toString()
         // << datamap["phoneid"].toString();
         if (thisclass == "callcampaign") {
-            requestFileListResult(datamap["payload"]);
+            requestFileListResult(datamap.value("payload"));
 
         } else if (thisclass == "parkcall") {
-            QString eventkind = datamap["eventkind"].toString();
-            QString astid = datamap["astid"].toString();
+            QString eventkind = datamap.value("eventkind").toString();
+            QString astid = datamap.value("astid").toString();
             QString parkingbay = datamap["parkingbay"].toString();
             // update local list for astid & parkingbay according to eventkind
             if (eventkind == "parkedcall") {
@@ -931,10 +933,10 @@ void BaseEngine::parseCommand(const QString &line)
                 if (! astid.isEmpty() && ! parkingbay.isEmpty()) {
                     if (m_parking[astid].contains(parkingbay) == false)
                         m_parking[astid][parkingbay] = new ParkingInfo();
-                    m_parking[astid][parkingbay]->update(datamap["payload"].toMap());
+                    m_parking[astid][parkingbay]->update(datamap.value("payload").toMap());
                 }
             }
-            parkingEvent(eventkind, astid, parkingbay, datamap["payload"]);
+            parkingEvent(eventkind, astid, parkingbay, datamap.value("payload"));
 
         } else if (thisclass == "sheet") {
             // TODO : use id better than just channel name
@@ -948,7 +950,7 @@ void BaseEngine::parseCommand(const QString &line)
                 sheetEntryAdded(channel, datamap["entry"].toMap());
             } if (datamap.contains("payload")) {
                 QString payload;
-                QByteArray qba = QByteArray::fromBase64(datamap["payload"].toString().toAscii());
+                QByteArray qba = QByteArray::fromBase64(datamap.value("payload").toString().toAscii());
                 if (datamap["compressed"].toBool())
                     payload = QString::fromUtf8(qUncompress(qba));
                 else
@@ -966,7 +968,7 @@ void BaseEngine::parseCommand(const QString &line)
             // qDebug() << Q_FUNC_INFO << "queues" << function << line.length();
             if (function == "sendlist") {
                 QStringList kk;
-                QMap<QString, QVariant> payload = datamap["payload"].toMap();
+                QMap<QString, QVariant> payload = datamap.value("payload").toMap();
                 foreach (QString astid, payload.keys()) {
                     QMap<QString, QVariant> values = payload[astid].toMap();
                     foreach (QString queueid, values.keys()) {
@@ -977,7 +979,7 @@ void BaseEngine::parseCommand(const QString &line)
                     emit newQueueList(kk);
             } else if (function == "update") {
                 QStringList kk;
-                QMap<QString, QVariant> payload = datamap["payload"].toMap();
+                QMap<QString, QVariant> payload = datamap.value("payload").toMap();
                 foreach (QString astid, payload.keys()) {
                     QMap<QString, QVariant> values = payload[astid].toMap();
                     foreach (QString queueid, values.keys()) {
@@ -987,7 +989,7 @@ void BaseEngine::parseCommand(const QString &line)
                 if (! kk.isEmpty())
                     emit newQueueList(kk);
             } else if (function == "del") {
-                removeQueues(datamap["astid"].toString(),
+                removeQueues(datamap.value("astid").toString(),
                              datamap["deltalist"].toStringList());
             } else if (function == "add") {
                 QVariantMap command;
@@ -995,7 +997,7 @@ void BaseEngine::parseCommand(const QString &line)
                 command["direction"] = "xivoserver";
                 command["function"] = "getlist";
                 sendJsonCommand(command);
-                // qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["deltalist"].toStringList();
+                // qDebug() << thisclass << "add" << datamap.value("astid").toString() << datamap["deltalist"].toStringList();
             }
 
         } else if (thisclass == "groups") {
@@ -1028,7 +1030,7 @@ void BaseEngine::parseCommand(const QString &line)
                     emit newAgentList(kk);
 
             } else if (function == "update-old") {
-                QVariant params = datamap["payload"];
+                QVariant params = datamap.value("payload");
                 QString action = params.toMap()["action"].toString();
                 QString astid = params.toMap()["astid"].toString();
                 QString agentid = params.toMap()["agent_id"].toString();
@@ -1044,25 +1046,27 @@ void BaseEngine::parseCommand(const QString &line)
                 } else
                     qDebug() << "update-agents agentnum" << astid << agent_channel;
             } else if (function == "del") {
-                qDebug() << thisclass << "del" << datamap["astid"].toString() << datamap["deltalist"].toStringList();
+                qDebug() << thisclass << "del" << datamap.value("astid").toString() << datamap["deltalist"].toStringList();
             } else if (function == "add") {
-                qDebug() << thisclass << "add" << datamap["astid"].toString() << datamap["deltalist"].toStringList();
+                qDebug() << thisclass << "add" << datamap.value("astid").toString() << datamap["deltalist"].toStringList();
             }
 
         } else if (thisclass == "agentrecord") {
-            statusRecord(datamap["astid"].toString(),
+            statusRecord(datamap.value("astid").toString(),
                          datamap["agentid"].toString(),
                          datamap["status"].toString());
 
         } else if (thisclass == "agentlisten") {
-            statusListen(datamap["astid"].toString(),
+            statusListen(datamap.value("astid").toString(),
                          datamap["agentid"].toString(),
                          datamap["status"].toString());
+
         } else if (thisclass == "endinit") {
             qDebug() << Q_FUNC_INFO << "I should have received everything";
+
         } else if (thisclass == "meetme") {
             if (function == "sendlist") {
-                QVariantMap map1 = datamap["payload"].toMap();
+                QVariantMap map1 = datamap.value("payload").toMap();
                 foreach (QString astid, map1.keys()) {
                     QVariantMap map2 = map1[astid].toMap();
                     foreach (QString meetmeid, map2.keys()) {
@@ -1071,7 +1075,7 @@ void BaseEngine::parseCommand(const QString &line)
                     }
                 }
             } else if (function == "update") {
-                QVariantMap map = datamap["payload"].toMap();
+                QVariantMap map = datamap.value("payload").toMap();
                 addUpdateConfMemberInTree(tree(), map);
             }
         } else if (thisclass == "serverdown") {
@@ -1099,7 +1103,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "presence") {
             // QString id = datamap["company"].toString() + "/" + datamap["userid"].toString();
-            QString id = datamap["astid"].toString() + "/" + datamap["xivo_userid"].toString();
+            QString id = datamap.value("astid").toString() + "/" + datamap["xivo_userid"].toString();
             // qDebug() << Q_FUNC_INFO << thisclass << m_users.size() << id;
             if (m_users.contains(id)) {
                 QString stateid = datamap.value("capapresence").toMap().value("state").toMap().value("stateid").toString();
@@ -1127,14 +1131,16 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "users") {
             if (function == "sendlist") {
-                QVariantList listusers = datamap["payload"].toList();
+                QVariantList listusers = datamap.value("payload").toList();
                 foreach (QVariant userprops, listusers) {
                     QVariantMap uinfo = userprops.toMap();
                     //qDebug() << "-------------" << uinfo;
 
                     addUpdateUserInTree(tree(), uinfo);
 
-                    QString iduser = uinfo["astid"].toString() + "/" + uinfo["xivo_userid"].toString();
+                    QString iduser = QString("%1/%2")
+                        .arg(uinfo.value("astid").toString())
+                        .arg(uinfo.value("xivo_userid").toString());
                     if (! m_users.contains(iduser)) {
                         m_users[iduser] = new UserInfo(iduser);
                         m_users[iduser]->setCtiLogin(uinfo["user"].toString());
@@ -1203,7 +1209,7 @@ void BaseEngine::parseCommand(const QString &line)
                     if (m_users.contains(iduser) && (iduser == m_fullid)) {
                         QString subclass = datamap["subclass"].toString();
                         if (subclass == "mwi") {
-                            m_users[iduser]->setMWI(datamap["payload"].toStringList());
+                            m_users[iduser]->setMWI(datamap.value("payload").toStringList());
                             emit localUserInfoDefined(m_users[m_fullid]);
                         }
                         emit userUpdated(m_users[iduser]);
@@ -1213,13 +1219,13 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "features") {
             if (function == "update") {
-                QVariantMap featuresupdate_map = datamap["payload"].toMap();
+                QVariantMap featuresupdate_map = datamap.value("payload").toMap();
                 if (m_monitored_userid == datamap["userid"].toString())
                     foreach (QString featurekey, featuresupdate_map.keys())
                         initFeatureFields(featurekey, featuresupdate_map[featurekey]);
 
             } else if (function == "get") {
-                QVariantMap featuresget_map = datamap["payload"].toMap();
+                QVariantMap featuresget_map = datamap.value("payload").toMap();
                 if (m_monitored_userid == datamap["userid"].toString()) {
                     resetFeatures();
                     foreach (QString featurekey, featuresget_map.keys()) {
@@ -1229,7 +1235,7 @@ void BaseEngine::parseCommand(const QString &line)
                 }
 
             } else if (function == "put") {
-                QVariantMap featuresput_map = datamap["payload"].toMap();
+                QVariantMap featuresput_map = datamap.value("payload").toMap();
                 if (m_monitored_userid == datamap["userid"].toString()) {
                     if (featuresput_map.isEmpty()) {
                         featurePutIsKO();
@@ -1246,7 +1252,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "phones") {
             if (function == "sendlist") {
-                QMap<QString, QVariant> payload = datamap["payload"].toMap();
+                QMap<QString, QVariant> payload = datamap.value("payload").toMap();
                 foreach (QString astid, payload.keys()) {
                     QMap<QString, QVariant> values = payload[astid].toMap();
                     foreach (QString phoneid, values.keys())
@@ -1255,17 +1261,17 @@ void BaseEngine::parseCommand(const QString &line)
                 //emit callsUpdated();
                 emit peersReceived();
             } else if (function == "update") {
-                QString astid = datamap["astid"].toString();
+                QString astid = datamap.value("astid").toString();
                 QString phoneid = datamap["phoneid"].toString();
                 QVariantMap value = datamap["status"].toMap();
                 updatePhone(astid, phoneid, value);
                 //callsUpdated();
             } else if (function == "add") {
-                qDebug() << thisclass << function << datamap["astid"].toString() << datamap["deltalist"].toStringList();
+                qDebug() << thisclass << function << datamap.value("astid").toString() << datamap["deltalist"].toStringList();
             } else if (function == "del") {
-                qDebug() << thisclass << function << datamap["astid"].toString() << datamap["deltalist"].toStringList();
+                qDebug() << thisclass << function << datamap.value("astid").toString() << datamap["deltalist"].toStringList();
             } else if (function == "signal-deloradd") {
-                QStringList listpeers = datamap["payload"].toStringList();
+                QStringList listpeers = datamap.value("payload").toStringList();
                 // qDebug() << "phones-signal-deloradd" << listpeers;
                 //emitTextMessage(tr("New phone list on %1 : - %2 + %3 = %4 total").arg(listpeers[0],
                 //listpeers ));
@@ -1277,7 +1283,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "trunks") {
             // if (function == "update") {
-            // QString astid = datamap["astid"].toString();
+            // QString astid = datamap.value("astid").toString();
             // QString trunkid = datamap["trunkid"].toString();
             // QVariant value = datamap["status"];
             // updatePhone(astid, trunkid, value);
@@ -1346,7 +1352,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "login_capas_ok") {
             //qDebug() << "login_capas_ok" << datamap.keys();
-            m_astid = datamap["astid"].toString();
+            m_astid = datamap.value("astid").toString();
             m_xivo_userid = datamap["xivo_userid"].toString();
             m_fullid = m_astid + "/" + m_xivo_userid;
             m_capafuncs = datamap["capafuncs"].toStringList();
@@ -1643,9 +1649,9 @@ void BaseEngine::filetransferSocketReadyRead()
             qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
         }
         QVariantMap jsondatamap = jsondata.toMap();
-        if (jsondatamap["class"].toString() == "fileref") {
+        if (jsondatamap.value("class").toString() == "fileref") {
             if (m_filedir == "download") {
-                m_downloaded = QByteArray::fromBase64(jsondatamap["payload"].toByteArray());
+                m_downloaded = QByteArray::fromBase64(jsondatamap.value("payload").toByteArray());
                 qDebug() << jsondatamap["filename"].toString() << m_downloaded.size();
                 fileReceived();
             } else {

@@ -50,7 +50,7 @@ XletParking::XletParking(QWidget *parent)
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
     m_table = new ExtendedTableWidget(this);
-    qDebug() << m_table;
+    qDebug() << Q_FUNC_INFO << m_table;
     m_table->setAlternatingRowColors(true);
     m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     m_table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -90,12 +90,12 @@ void XletParking::parkingEvent(const QString & eventkind,
 {
     ParkingInfo * pi = b_engine->parking()[astid][parkingbay];
     QVariantMap map = subcommand.toMap();
-    QString channel = map["channel"].toString();
-    QString fromchannel = map["fromchannel"].toString();
-    QString calleridnum = map["calleridnum"].toString();
-    QString calleridname = map["calleridname"].toString();
-    QString fromcalleridnum = map["fromcalleridnum"].toString();
-    QString fromcalleridname = map["fromcalleridname"].toString();
+    QString channel = map.value("channel").toString();
+    QString fromchannel = map.value("fromchannel").toString();
+    QString calleridnum = map.value("calleridnum").toString();
+    QString calleridname = map.value("calleridname").toString();
+    QString fromcalleridnum = map.value("fromcalleridnum").toString();
+    QString fromcalleridname = map.value("fromcalleridname").toString();
     // ignore buggy events
     if(fromchannel == channel)
         qDebug() << " *** WARNING channel == fromchannel ***" << channel;

@@ -93,31 +93,10 @@ class ResultsWidget : public QWidget
     public:
         ResultsWidget(QWidget * parent = 0);
         ~ResultsWidget();
-    signals:
-        void updategrid();
     private slots:
         void update();
     private:
         QLabel * m_summary;
-};
-
-class ResultsGrid : public QWidget
-{
-    Q_OBJECT
-    public:
-        ResultsGrid(QWidget * parent = 0);
-        ~ResultsGrid();
-    private slots:
-        void updategrid();
-        void modifyStatus();
-    private:
-        QGridLayout * m_resultsgrid;
-        QHash<QString, QLabel *> m_datetime;
-        QHash<QString, QLabel *> m_duration;
-        QHash<QString, QLabel *> m_queuenames;
-        QHash<QString, QLabel *> m_calleridnum;
-        QHash<QString, QLabel *> m_agentnames;
-        QHash<QString, QLabel *> m_recordstatus;
 };
 
 #endif

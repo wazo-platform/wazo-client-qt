@@ -74,17 +74,24 @@ XletRecords::XletRecords(QWidget *parent)
             m_resultswidget, SLOT(update()));
 
     ETVListProperties * elp = new ETVListProperties();
-    elp->addProperty(tr("AA"), "id",        "string", "id");
-    elp->addProperty(tr("BB"), "number",    "string", "id");
-    elp->addProperty(tr("CC"), "name",      "string", "id");
-    elp->addProperty(tr("DD"), "pin",       "bool",   "id");
-    elp->addProperty(tr("EE"), "moderated", "bool",   "id");
-    elp->addProperty(tr("FF"), "in",        "string", "id");
-    elp->addProperty(tr("GG"), "in",        "string", "id");
+    elp->addProperty(tr("ID"), "id", QVariant::Int, "id");
+    elp->addProperty(tr("Start Date"), "callstart", QVariant::DateTime, "id");
+    elp->addProperty(tr("Duration"), "callduration", QVariant::Int, "id");
+    elp->addProperty(tr("CallerIdNum"), "calleridnum", QVariant::String, "id");
+    elp->addProperty(tr("Queues"), "queuenames", QVariant::String, "id");
+    elp->addProperty(tr("Agents"), "agentnames", QVariant::String,   "id");
+    elp->addProperty(tr("Records"), "recordstatus", QVariant::String, "id");
+    elp->addProperty(tr("Actions"), "in", QVariant::String, "id");
     ETVListWidget * el = new ETVListWidget(elp, this);
     m_xletLayout->addWidget(el);
 
-    m_xletLayout->insertStretch(-1, 1);
+// ( "channel" ,  QVariant(QString, "SIP/hpueygdepcqbew-0000009e") )
+//  ( "id" ,  QVariant(int, 16) )
+//  ( "queuenames" ,  QVariant(QString, "q_2rubnbr") )
+//  ( "recordstatus" ,  QVariant(QString, "recorded_tokeep") 
+// ) ( "uniqueid" ,  QVariant(QString, "1291592887.368") ) )  
+
+    // m_xletLayout->insertStretch(-1, 1);
 
     b_engine->registerClassEvent("records-campaign",
                                  XletRecords::recordResults_t, this);
@@ -107,10 +114,12 @@ void XletRecords::clientrequest()
 void XletRecords::recordResults(const QVariantMap & p)
 {
     // qDebug() << Q_FUNC_INFO << p["function"];
-    QVariantList qvl = p["payload"].toList();
+    QVariantList qvl = p.value("payload").toList();
     foreach (QVariant r, qvl) {
-        QString id = r.toMap()["id"].toString();
+        QString id = r.toMap().value("id").toString();
         g_results[id] = r.toMap();
+        // qDebug() << g_results[id];
+        b_engine->tree()->populate(QString("records/%1").arg(id), r.toMap());
     }
     emit update();
 }
@@ -191,12 +200,6 @@ ResultsWidget::ResultsWidget(QWidget * parent)
 
     resultslayout->addLayout(summarylayout);
 
-    ResultsGrid * resultsgrid = new ResultsGrid(this);
-    resultslayout->addWidget(resultsgrid);
-
-    connect(this, SIGNAL(updategrid()),
-            resultsgrid, SLOT(updategrid()));
-
     update();
 }
 
@@ -209,124 +212,14 @@ void ResultsWidget::update()
 {
     int nresults = g_results.count();
     m_summary->setText(QString("%1 results").arg(nresults));
-    emit updategrid();
 }
 
 
-ResultsGrid::ResultsGrid(QWidget * parent)
-    : QWidget(parent)
-{
-    m_resultsgrid = new QGridLayout(this);
-    m_resultsgrid->setSpacing(0);
+// QString id = this->sender()->property("id").toString();
+// QString action = this->sender()->property("action").toString();
 
-    updategrid();
-}
-
-ResultsGrid::~ResultsGrid()
-{
-    qDebug() << Q_FUNC_INFO;
-}
-
-void ResultsGrid::updategrid()
-{
-    int i = 0;
-    foreach(QString id, g_results.keys()) {
-        QString uid = g_results[id]["uniqueid"].toString();
-
-        int ncol = 0;
-        if (! m_datetime.contains(id)) {
-            m_datetime[id] = new QLabel(this);
-            m_duration[id] = new QLabel(this);
-            m_queuenames[id] = new QLabel(this);
-            m_calleridnum[id] = new QLabel(this);
-            m_agentnames[id] = new QLabel(this);
-            m_recordstatus[id] = new QLabel(this);
-
-            QFrame * qframe1 = new QFrame(this);
-            QFrame * qframe2 = new QFrame(this);
-            QFrame * qframe3 = new QFrame(this);
-            qframe1->setFrameShape(QFrame::VLine);
-            qframe2->setFrameShape(QFrame::VLine);
-            qframe3->setFrameShape(QFrame::VLine);
-
-            m_resultsgrid->addWidget(m_datetime[id], i, ncol++);
-            m_resultsgrid->addWidget(m_duration[id], i, ncol++);
-            m_resultsgrid->addWidget(qframe1, i, ncol++);
-            m_resultsgrid->addWidget(m_calleridnum[id], i, ncol++);
-            m_resultsgrid->addWidget(m_queuenames[id], i, ncol++);
-            m_resultsgrid->addWidget(qframe2, i, ncol++);
-            m_resultsgrid->addWidget(m_agentnames[id], i, ncol++);
-            m_resultsgrid->addWidget(qframe3, i, ncol++);
-            m_resultsgrid->addWidget(m_recordstatus[id], i, ncol++);
-        }
-
-        m_datetime[id]->setAlignment(Qt::AlignHCenter);
-        m_duration[id]->setAlignment(Qt::AlignHCenter);
-        m_queuenames[id]->setAlignment(Qt::AlignHCenter);
-        m_calleridnum[id]->setAlignment(Qt::AlignHCenter);
-        m_agentnames[id]->setAlignment(Qt::AlignHCenter);
-        m_recordstatus[id]->setAlignment(Qt::AlignHCenter);
-
-        m_datetime[id]->setProperty("id", id);
-        m_duration[id]->setProperty("id", id);
-        m_queuenames[id]->setProperty("id", id);
-        m_calleridnum[id]->setProperty("id", id);
-        m_agentnames[id]->setProperty("id", id);
-        m_recordstatus[id]->setProperty("id", id);
-
-        QHash<QString, QPushButton *> action;
-        QStringList actionlist;
-        actionlist << "marktosave" << "marktopurge" << "tag";
-        foreach(QString actionname, actionlist) {
-            action[actionname] = new QPushButton(this);
-            m_resultsgrid->addWidget(action[actionname], i, ncol++);
-            action[actionname]->setIconSize(QSize(10, 10));
-            action[actionname]->setIcon(QIcon(":/images/player_stop.png"));
-            action[actionname]->setProperty("id", id);
-            action[actionname]->setProperty("action", actionname);
-            connect(action[actionname], SIGNAL(clicked()),
-                    this, SLOT(modifyStatus()));
-        }
-
-        QCheckBox * select = new QCheckBox(this);
-        m_resultsgrid->addWidget(select, i, ncol++);
-        m_resultsgrid->setColumnStretch( ncol++, 1 );
-
-        uint ii = int(g_results[id]["callstart"].toDouble());
-        QDateTime qdt = QDateTime::fromTime_t(ii);
-        m_datetime[id]->setText(qdt.toString());
-        m_duration[id]->setText(g_results[id]["callduration"].toString());
-        m_queuenames[id]->setText(g_results[id]["queuenames"].toString());
-        m_calleridnum[id]->setText(g_results[id]["calleridnum"].toString());
-        m_agentnames[id]->setText(g_results[id]["agentnames"].toString());
-        m_recordstatus[id]->setText(g_results[id]["recordstatus"].toString());
-
-        QString idtooltip = QString("Duration : %1\n"
-                                    "Queuenames : %2\n"
-                                    "Calleridnum : %3\n"
-                                    "Agentnames : %4\n"
-                                    "Record Status : %5")
-            .arg(g_results[id]["callduration"].toString())
-            .arg(g_results[id]["queuenames"].toString())
-            .arg(g_results[id]["calleridnum"].toString())
-            .arg(g_results[id]["agentnames"].toString())
-            .arg(g_results[id]["recordstatus"].toString());
-
-        m_recordstatus[id]->setToolTip(idtooltip);
-
-        i ++;
-    }
-}
-
-void ResultsGrid::modifyStatus()
-{
-    qDebug() << Q_FUNC_INFO;
-    QString id = this->sender()->property("id").toString();
-    QString action = this->sender()->property("action").toString();
-
-    QVariantMap command;
-    command["class"] = "records-campaign";
-    command["function"] = action;
-    command["id"] = id;
-    b_engine->sendJsonCommand(command);
-}
+// QVariantMap command;
+// command["class"] = "records-campaign";
+// command["function"] = action;
+// command["id"] = id;
+// b_engine->sendJsonCommand(command);

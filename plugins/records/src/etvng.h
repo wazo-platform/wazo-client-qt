@@ -56,11 +56,13 @@ class ETVListProperties
         ETVListProperties();
         QString title(int) const;
         QString eventfield(int) const;
-        QString qssdisplay() const;
+        QVariant::Type qttype(int) const;
+        int displayOptionShowGrid() const;
+        QString displayOptionStyleSheet() const;
         int ncolumns() const;
         void addProperty(const QString &,
                          const QString &,
-                         const QString &,
+                         const QVariant::Type &,
                          const QString &);
     private:
         QVariantMap m_properties;
@@ -72,7 +74,8 @@ class ETVListModel : public QAbstractTableModel
 
     public:
         ETVListModel(const ETVListProperties * const);
-        QString qssdisplay() const;
+        int displayOptionShowGrid() const;
+        QString displayOptionStyleSheet() const;
 
     private slots:
         void mylistChange(const QString &path, DStoreEvent event);
@@ -101,6 +104,8 @@ class ETVListView : public QTableView
     private slots:
         void onViewClick(const QModelIndex &);
     protected:
+        virtual void selectionChanged(const QItemSelection &,
+                                      const QItemSelection &);
         virtual void mousePressEvent(QMouseEvent *event);
     private:
         int lastPressed;
