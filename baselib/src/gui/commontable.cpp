@@ -31,13 +31,13 @@
  * $Date$
  */
 
-#include "etvng.h"
+#include "commontable.h"
 
 //
-// ETVListProperties class
+// CommonTableProperties class
 //
 
-ETVListProperties::ETVListProperties()
+CommonTableProperties::CommonTableProperties()
 {
     m_properties.clear();
     m_properties["display_qss"] = "border: none; color:black;";
@@ -47,7 +47,7 @@ ETVListProperties::ETVListProperties()
 }
 
 // to define, per column : "id" for "eV", type (boolean, date/time, phone)
-void ETVListProperties::addProperty(const QString & title,
+void CommonTableProperties::addProperty(const QString & title,
                                     const QString & eventfield,
                                     const QVariant::Type & qttype,
                                     const QString & xivotype)
@@ -62,46 +62,46 @@ void ETVListProperties::addProperty(const QString & title,
     m_properties["columns"] = columns;
 }
 
-int ETVListProperties::displayOptionShowGrid() const
+int CommonTableProperties::displayOptionShowGrid() const
 {
     return m_properties.value("display_grid").toInt();
 }
 
-QString ETVListProperties::displayOptionStyleSheet() const
+QString CommonTableProperties::displayOptionStyleSheet() const
 {
     return m_properties.value("display_qss").toString();
 }
 
-int ETVListProperties::ncolumns() const
+int CommonTableProperties::ncolumns() const
 {
     return m_properties.value("columns").toList().size();
 }
 
-QString ETVListProperties::treebase() const
+QString CommonTableProperties::treebase() const
 {
     return m_properties.value("treebase").toString();
 }
 
-QString ETVListProperties::title(int index) const
+QString CommonTableProperties::title(int index) const
 {
     return m_properties.value("columns").toList()[index].toMap().value("title").toString();
 }
 
-QString ETVListProperties::eventfield(int index) const
+QString CommonTableProperties::eventfield(int index) const
 {
     return m_properties.value("columns").toList()[index].toMap().value("eventfield").toString();
 }
 
-QVariant::Type ETVListProperties::qttype(int index) const
+QVariant::Type CommonTableProperties::qttype(int index) const
 {
     return QVariant::Type(m_properties.value("columns").toList()[index].toMap().value("qttype").toInt());
 }
 
 //
-// ETVListModel class
+// CommonTableModel class
 //
 
-ETVListModel::ETVListModel(const ETVListProperties * const qv)
+CommonTableModel::CommonTableModel(const CommonTableProperties * const qv)
     : QAbstractTableModel()
 {
     m_fieldoptions = qv;
@@ -112,22 +112,22 @@ ETVListModel::ETVListModel(const ETVListProperties * const qv)
     // startTimer(1000);
 }
 
-int ETVListModel::displayOptionShowGrid() const
+int CommonTableModel::displayOptionShowGrid() const
 {
     return m_fieldoptions->displayOptionShowGrid();
 }
 
-QString ETVListModel::displayOptionStyleSheet() const
+QString CommonTableModel::displayOptionStyleSheet() const
 {
     return m_fieldoptions->displayOptionStyleSheet();
 }
 
-void ETVListModel::timerEvent(QTimerEvent *)
+void CommonTableModel::timerEvent(QTimerEvent *)
 {
     reset();
 }
 
-void ETVListModel::mylistChange(const QString &, DStoreEvent)
+void CommonTableModel::mylistChange(const QString &, DStoreEvent)
 {
     m_myList = b_engine->eVM(m_fieldoptions->treebase());
     int row = 0;
@@ -139,23 +139,23 @@ void ETVListModel::mylistChange(const QString &, DStoreEvent)
     reset();
 }
 
-Qt::ItemFlags ETVListModel::flags(const QModelIndex &) const
+Qt::ItemFlags CommonTableModel::flags(const QModelIndex &) const
 {
     // return Qt::NoItemFlags;
     return (Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable);
 }
 
-int ETVListModel::rowCount(const QModelIndex&) const
+int CommonTableModel::rowCount(const QModelIndex&) const
 {
     return m_myList.size();
 }
 
-int ETVListModel::columnCount(const QModelIndex &) const
+int CommonTableModel::columnCount(const QModelIndex &) const
 {
     return m_fieldoptions->ncolumns();
 }
 
-QVariant ETVListModel::data(const QModelIndex & index, int role) const
+QVariant CommonTableModel::data(const QModelIndex & index, int role) const
 {
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole)
@@ -213,7 +213,7 @@ QVariant ETVListModel::data(const QModelIndex & index, int role) const
 //     return QVariant();
 }
 
-QVariant ETVListModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant CommonTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role != Qt::DisplayRole)
         return QVariant();
@@ -225,7 +225,7 @@ QVariant ETVListModel::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
-void ETVListModel::sort(int column, Qt::SortOrder order)
+void CommonTableModel::sort(int column, Qt::SortOrder order)
 {
     struct {
         static bool ascending(const QPair<int, QString> &a,
@@ -257,12 +257,12 @@ void ETVListModel::sort(int column, Qt::SortOrder order)
 }
 
 //
-// ETVListView class
+// CommonTableView class
 //
 
-ETVListView::ETVListView(QWidget * parent,
-                         XLet * parentxlet,
-                         ETVListModel * model)
+CommonTableView::CommonTableView(QWidget * parent,
+                             XLet * parentxlet,
+                             CommonTableModel * model)
     : QTableView(parent)
 {
     setSortingEnabled(true);
@@ -272,20 +272,20 @@ ETVListView::ETVListView(QWidget * parent,
     horizontalHeader()->setResizeMode(QHeaderView::Interactive); // ::Stretch, ::ResizeToContents
     horizontalHeader()->setStretchLastSection(true);
     horizontalHeader()->setMovable(true);
-    setStyleSheet("ETVListView {" + model->displayOptionStyleSheet() + "}");
+    setStyleSheet("CommonTableView {" + model->displayOptionStyleSheet() + "}");
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     // hideColumn(0);
 
-    connect(this, SIGNAL(pevent(QMouseEvent *)),
-            parentxlet, SLOT(pevent(QMouseEvent *)));
+    connect(this, SIGNAL(signalMousePressEvent(QMouseEvent *)),
+            parentxlet, SLOT(mousePressEvent(QMouseEvent *)));
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             parentxlet, SLOT(onViewClick(const QModelIndex &)));
     connect(this, SIGNAL(doubleClicked(const QModelIndex &)),
             parentxlet, SLOT(onViewDoubleClick(const QModelIndex &)));
 }
 
-void ETVListView::selectionChanged(const QItemSelection & selected,
+void CommonTableView::selectionChanged(const QItemSelection & selected,
                                    const QItemSelection & deselected)
 {
     QAbstractItemView::selectionChanged(selected, deselected);
@@ -295,26 +295,26 @@ void ETVListView::selectionChanged(const QItemSelection & selected,
     // qDebug() << Q_FUNC_INFO << "selected" << qmi.row() << qmi.column();
 }
 
-void ETVListView::mousePressEvent(QMouseEvent *event)
+void CommonTableView::mousePressEvent(QMouseEvent *event)
 {
-    emit pevent(event);
+    emit signalMousePressEvent(event);
     QTableView::mousePressEvent(event);
 }
 
 //
-// ETVListWidget class
+// CommonTableWidget class
 //
 
-ETVListWidget::ETVListWidget(const ETVListProperties * const qv,
-                             XLet * parentxlet)
+CommonTableWidget::CommonTableWidget(const CommonTableProperties * const qv,
+                                     XLet * parentxlet)
     : QWidget()
 {
     QVBoxLayout  * vBox = new QVBoxLayout(this);
     QHBoxLayout  * hBox = new QHBoxLayout();
-    ETVListModel * model = new ETVListModel(qv);
-    ETVListView  * view = new ETVListView(this, parentxlet, model);
+    CommonTableModel * model = new CommonTableModel(qv);
+    CommonTableView * view = new CommonTableView(this, parentxlet, model);
 
-    view->setStyleSheet("ETVListView {" + model->displayOptionStyleSheet() + "}");
+    view->setStyleSheet("CommonTableView {" + model->displayOptionStyleSheet() + "}");
     view->verticalHeader()->hide();
 
     // hBox->addStretch(1);

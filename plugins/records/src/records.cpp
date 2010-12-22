@@ -32,7 +32,7 @@
  */
 
 #include "records.h"
-#include "etvng.h"
+#include "commontable.h"
 
 Q_EXPORT_PLUGIN2(xletrecordsplugin, XLetRecordsPlugin);
 
@@ -41,8 +41,6 @@ XLet* XLetRecordsPlugin::newXLetInstance(QWidget *parent)
     b_engine->registerTranslation(":/records_%1");
     return new XletRecords(parent);
 }
-
-QHash<QString, QVariantMap> g_results;
 
 XletRecords::XletRecords(QWidget *parent)
     : XLet(parent)
@@ -73,20 +71,17 @@ XletRecords::XletRecords(QWidget *parent)
     connect(this, SIGNAL(update()),
             m_resultswidget, SLOT(update()));
 
-    ETVListProperties * elp = new ETVListProperties();
+    CommonTableProperties * elp = new CommonTableProperties();
     elp->addProperty(tr("ID"), "id", QVariant::Int, "id");
     elp->addProperty(tr("Start Date"), "callstart", QVariant::DateTime, "id");
+    elp->addProperty(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
     elp->addProperty(tr("Duration"), "callduration", QVariant::Int, "id");
     elp->addProperty(tr("CallerIdNum"), "calleridnum", QVariant::String, "id");
     elp->addProperty(tr("Queues"), "queuenames", QVariant::String, "id");
     elp->addProperty(tr("Agents"), "agentnames", QVariant::String,   "id");
     elp->addProperty(tr("Records"), "recordstatus", QVariant::String, "id");
-    elp->addProperty(tr("Actions"), "in", QVariant::String, "id");
-    ETVListWidget * el = new ETVListWidget(elp, this);
+    CommonTableWidget * el = new CommonTableWidget(elp, this);
     m_xletLayout->addWidget(el);
-
-    // ( "channel" ,  QVariant(QString, "SIP/hpueygdepcqbew-0000009e") )
-    // ) ( "uniqueid" ,  QVariant(QString, "1291592887.368") ) )  
 
     // m_xletLayout->insertStretch(-1, 1);
 
@@ -97,7 +92,6 @@ XletRecords::XletRecords(QWidget *parent)
 XletRecords::~XletRecords()
 {
     qDebug() << Q_FUNC_INFO;
-    g_results.clear();
 }
 
 void XletRecords::clientrequest()
@@ -114,14 +108,12 @@ void XletRecords::recordResults(const QVariantMap & p)
     QVariantList qvl = p.value("payload").toList();
     foreach (QVariant r, qvl) {
         QString id = r.toMap().value("id").toString();
-        g_results[id] = r.toMap();
-        // qDebug() << g_results[id];
         b_engine->tree()->populate(QString("records/%1").arg(id), r.toMap());
     }
     emit update();
 }
 
-void XletRecords::pevent(QMouseEvent *event)
+void XletRecords::mousePressEvent(QMouseEvent * event)
 {
     m_lastPressed = event->button();
 }
@@ -131,28 +123,29 @@ void XletRecords::onViewClick(const QModelIndex & model)
     qDebug() << Q_FUNC_INFO;
     QString id = model.sibling(model.row(), 0).data().toString();
     QString startdate = model.sibling(model.row(), 1).data().toString();
-    QString xx = model.sibling(model.row(), 4).data().toString();
+    QString xx = model.sibling(model.row(), 5).data().toString();
     qDebug() << id << startdate << xx;
     if (m_lastPressed & Qt::LeftButton)
         qDebug() << "left";
-    else if (m_lastPressed & Qt::RightButton)
-        qDebug() << "right";
-
-    QMenu * menu = new QMenu(this);
-    QAction * action = new QAction(tr("Remove call %1 (%2)")
-                                  .arg(xx).arg(startdate), menu);
-    action->setProperty("id", id);
-//     connect(action, SIGNAL(triggered(bool)),
-//             parentWidget(), SLOT(openConfRoom()));
-//     connect(action, SIGNAL(triggered(bool)),
-//             parentWidget(), SLOT(phoneConfRoom()));
-    menu->addAction(action);
-    menu->exec(QCursor::pos());
+    else if (m_lastPressed & Qt::RightButton) {
+        QMenu * menu = new QMenu(this);
+        QAction * action = new QAction(tr("Remove call %1 (%2)")
+                                       .arg(xx).arg(startdate), menu);
+        action->setProperty("id", id);
+        //     connect(action, SIGNAL(triggered(bool)),
+        //             parentWidget(), SLOT(openConfRoom()));
+        //     connect(action, SIGNAL(triggered(bool)),
+        //             parentWidget(), SLOT(phoneConfRoom()));
+        menu->addAction(action);
+        menu->exec(QCursor::pos());
+        delete action;
+        delete menu;
+    }
 }
 
 void XletRecords::onViewDoubleClick(const QModelIndex & model)
 {
-    // qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
 }
 
 SearchWidget::SearchWidget(QWidget * parent)
@@ -241,8 +234,7 @@ ResultsWidget::~ResultsWidget()
 
 void ResultsWidget::update()
 {
-    int nresults = g_results.count();
-    m_summary->setText(QString("%1 results").arg(nresults));
+    m_summary->setText(QString("%1 results").arg(666));
 }
 
 

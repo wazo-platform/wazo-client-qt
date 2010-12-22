@@ -58,7 +58,7 @@ class XletRecords : public XLet
     private slots:
         void onViewClick(const QModelIndex &);
         void onViewDoubleClick(const QModelIndex &);
-        void pevent(QMouseEvent *);
+        void mousePressEvent(QMouseEvent *);
     private:
         int m_lastPressed;
 

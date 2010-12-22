@@ -31,8 +31,8 @@
  * $Date$
  */
 
-#ifndef _ETVNG_H_
-#define _ETVNG_H_
+#ifndef _COMMONTABLE_H_
+#define _COMMONTABLE_H_
 
 #include <QLabel>
 #include <QTimer>
@@ -50,10 +50,10 @@
 
 #include "xlet.h"
 
-class ETVListProperties
+class CommonTableProperties
 {
     public:
-        ETVListProperties();
+        CommonTableProperties();
 
         int displayOptionShowGrid() const;
         QString displayOptionStyleSheet() const;
@@ -72,12 +72,12 @@ class ETVListProperties
         QVariantMap m_properties;
 };
 
-class ETVListModel : public QAbstractTableModel
+class CommonTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 
     public:
-        ETVListModel(const ETVListProperties * const);
+        CommonTableModel(const CommonTableProperties * const);
         int displayOptionShowGrid() const;
         QString displayOptionStyleSheet() const;
 
@@ -95,33 +95,32 @@ class ETVListModel : public QAbstractTableModel
 
         QMap<int, QString> m_row2id;
         QVariantMap m_myList;
-        const ETVListProperties * m_fieldoptions;
+        const CommonTableProperties * m_fieldoptions;
 };
 
-class ETVListView : public QTableView
+class CommonTableView : public QTableView
 {
     Q_OBJECT
 
     public:
-        ETVListView(QWidget * parent,
-                    XLet * parentxlet,
-                    ETVListModel * model);
+        CommonTableView(QWidget * parent,
+                        XLet * parentxlet,
+                        CommonTableModel * model);
     signals:
-        void pevent(QMouseEvent *);
+        void signalMousePressEvent (QMouseEvent *);
     protected:
         virtual void selectionChanged(const QItemSelection &,
                                       const QItemSelection &);
         virtual void mousePressEvent(QMouseEvent *event);
 };
 
-
-class ETVListWidget : public QWidget
+class CommonTableWidget : public QWidget
 {
     Q_OBJECT
 
     public:
-        ETVListWidget(const ETVListProperties * const,
-                      XLet * parent);
+        CommonTableWidget(const CommonTableProperties * const,
+                          XLet * parent);
 };
 
 #endif
