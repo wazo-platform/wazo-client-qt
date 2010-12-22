@@ -573,8 +573,8 @@ void MainWidget::updatePresence(const QVariant &presence)
     // qDebug() << Q_FUNC_INFO << presence;
     QVariantMap presencemap = presence.toMap();
     if (presencemap.contains("names")) {
-        foreach (QString avstate, presencemap["names"].toMap().keys()) {
-            QString name = presencemap["names"].toMap()[avstate].toMap()["longname"].toString();
+        foreach (QString avstate, presencemap.value("names").toMap().keys()) {
+            QString name = presencemap.value("names").toMap().value(avstate).toMap().value("longname").toString();
             if (! m_avact.contains(avstate)) {
                 m_avact[avstate] = new QAction(name, this);
                 m_avact[avstate]->setCheckable(false);
@@ -588,7 +588,7 @@ void MainWidget::updatePresence(const QVariant &presence)
         m_avail->addActions(m_availgrp->actions());
     }
     if (presencemap.contains("allowed")) {
-        QMapIterator<QString, QVariant> capapres(presencemap["allowed"].toMap());
+        QMapIterator<QString, QVariant> capapres(presencemap.value("allowed").toMap());
         while (capapres.hasNext()) {
             capapres.next();
             QString avstate = capapres.key();
@@ -600,7 +600,7 @@ void MainWidget::updatePresence(const QVariant &presence)
         }
     }
     if (presencemap.contains("state")) {
-        b_engine->setAvailState(presencemap["state"].toMap()["stateid"].toString(), true);
+        b_engine->setAvailState(presencemap.value("state").toMap().value("stateid").toString(), true);
     }
 }
 
@@ -608,13 +608,13 @@ void MainWidget::clearPresence()
 {
     QVariantMap presence = b_engine->getCapaPresence();
     if (presence.contains("names")) {
-        QMapIterator<QString, QVariant> capapres(presence["names"].toMap());
+        QMapIterator<QString, QVariant> capapres(presence.value("names").toMap());
         while (capapres.hasNext()) {
             capapres.next();
             QString avstate = capapres.key();
             if (m_avact.contains(avstate)) {
                 disconnect(m_avact[avstate], SIGNAL(triggered()),
-                            b_engine, SLOT(setAvailability()));
+                           b_engine, SLOT(setAvailability()));
                 m_availgrp->removeAction(m_avact[avstate]);
                 delete m_avact[avstate];
             }

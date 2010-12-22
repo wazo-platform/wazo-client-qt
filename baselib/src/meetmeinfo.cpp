@@ -76,38 +76,38 @@ const QString& MeetmeInfo::astId() const
 void MeetmeInfo::setProperties(const QString &astid, const QVariantMap &properties)
 {
     // fixed-by-config stuff
-    m_context = properties["context"].toString();
-    m_roomname = properties["roomname"].toString();
-    m_roomnumber = properties["roomnumber"].toString();
-    m_pin = properties["pin"].toString();
-    m_adminpin = properties["pinadmin"].toString();
+    m_context = properties.value("context").toString();
+    m_roomname = properties.value("roomname").toString();
+    m_roomnumber = properties.value("roomnumber").toString();
+    m_pin = properties.value("pin").toString();
+    m_adminpin = properties.value("pinadmin").toString();
     m_astid = astid;
 
     // variable stuff
-    m_adminid = properties["adminid"].toString();
-    m_adminnum = properties["adminnum"].toString();
-    m_adminlist = properties["adminlist"].toStringList();
-    m_uniqueids = properties["uniqueids"].toMap();
-    m_paused = properties["paused"].toBool();
+    m_adminid = properties.value("adminid").toString();
+    m_adminnum = properties.value("adminnum").toString();
+    m_adminlist = properties.value("adminlist").toStringList();
+    m_uniqueids = properties.value("uniqueids").toMap();
+    m_paused = properties.value("paused").toBool();
 }
 
 bool MeetmeInfo::update(const QVariantMap &map)
 {
-    QString action = map["action"].toString();
-    QString uniqueid = map["uniqueid"].toString();
+    QString action = map.value("action").toString();
+    QString uniqueid = map.value("uniqueid").toString();
 
-    if (!map["adminid"].toString().isNull()) {
-        m_adminid = map["adminid"].toString();
+    if (! map.value("adminid").toString().isNull()) {
+        m_adminid = map.value("adminid").toString();
     }
-    m_adminnum = map["adminnum"].toString();
-    m_adminlist = map["adminlist"].toStringList();
+    m_adminnum = map.value("adminnum").toString();
+    m_adminlist = map.value("adminlist").toStringList();
     if (map.contains("details"))
-        m_uniqueids[uniqueid] = map["details"].toMap();
+        m_uniqueids[uniqueid] = map.value("details").toMap();
 
     if (action == "leave") {
         m_uniqueids.remove(uniqueid);
     } else if(action == "changeroompausedstate") {
-        m_paused = map["paused"].toBool();
+        m_paused = map.value("paused").toBool();
     }
     return true;
 }

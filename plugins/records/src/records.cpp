@@ -72,14 +72,22 @@ XletRecords::XletRecords(QWidget *parent)
             m_resultswidget, SLOT(update()));
 
     CommonTableProperties * elp = new CommonTableProperties();
+    // last property : should define : editable or not, in tooltip or not, hidden or not ...
     elp->addProperty(tr("ID"), "id", QVariant::Int, "id");
     elp->addProperty(tr("Start Date"), "callstart", QVariant::DateTime, "id");
+    elp->addProperty(tr("Filename"), "filename", QVariant::String, "id");
     elp->addProperty(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
     elp->addProperty(tr("Duration"), "callduration", QVariant::Int, "id");
+    elp->addProperty(tr("Direction"), "direction", QVariant::String, "id");
     elp->addProperty(tr("CallerIdNum"), "calleridnum", QVariant::String, "id");
     elp->addProperty(tr("Queues"), "queuenames", QVariant::String, "id");
-    elp->addProperty(tr("Agents"), "agentnames", QVariant::String,   "id");
-    elp->addProperty(tr("Records"), "recordstatus", QVariant::String, "id");
+    elp->addProperty(tr("Agents"), "agentnames", QVariant::String, "id");
+    elp->addProperty(tr("RecStatus"), "recordstatus", QVariant::String, "id");
+    elp->addProperty(tr("Tag"), "callrecordtag", QVariant::String, "id");
+    elp->addProperty(tr("Comment"), "callrecordcomment", QVariant::String, "id");
+    elp->addProperty(tr("SVI e"), "svientries", QVariant::String, "id");
+    elp->addProperty(tr("SVI v"), "svivariables", QVariant::String, "id");
+    elp->addProperty(tr("SVI c"), "svichoices", QVariant::String, "id");
     CommonTableWidget * el = new CommonTableWidget(elp, this);
     m_xletLayout->addWidget(el);
 
@@ -118,32 +126,39 @@ void XletRecords::mousePressEvent(QMouseEvent * event)
     m_lastPressed = event->button();
 }
 
-void XletRecords::onViewClick(const QModelIndex & model)
+void XletRecords::onViewClick(const QModelIndex & modelindex)
 {
-    qDebug() << Q_FUNC_INFO;
-    QString id = model.sibling(model.row(), 0).data().toString();
-    QString startdate = model.sibling(model.row(), 1).data().toString();
-    QString xx = model.sibling(model.row(), 5).data().toString();
-    qDebug() << id << startdate << xx;
-    if (m_lastPressed & Qt::LeftButton)
-        qDebug() << "left";
-    else if (m_lastPressed & Qt::RightButton) {
-        QMenu * menu = new QMenu(this);
-        QAction * action = new QAction(tr("Remove call %1 (%2)")
-                                       .arg(xx).arg(startdate), menu);
-        action->setProperty("id", id);
-        //     connect(action, SIGNAL(triggered(bool)),
-        //             parentWidget(), SLOT(openConfRoom()));
-        //     connect(action, SIGNAL(triggered(bool)),
-        //             parentWidget(), SLOT(phoneConfRoom()));
-        menu->addAction(action);
-        menu->exec(QCursor::pos());
-        delete action;
-        delete menu;
+    int row = modelindex.row();
+    int column = modelindex.column();
+
+    QString id = modelindex.sibling(row, 0).data().toString();
+    QString startdate = modelindex.sibling(row, 1).data().toString();
+    QString xx = modelindex.sibling(row, 5).data().toString();
+
+    // if (m_lastPressed & Qt::LeftButton)
+    if (m_lastPressed & Qt::RightButton) {
+        if (column != 5) {
+            QMenu * menu = new QMenu(this);
+            QAction * action1 = new QAction(tr("Remove call %1 (%2)")
+                                            .arg(xx).arg(startdate), menu);
+            QAction * action2 = new QAction(tr("Change comment"), menu);
+            action1->setProperty("id", id);
+            action2->setProperty("id", id);
+            //     connect(action, SIGNAL(triggered(bool)),
+            //             parentWidget(), SLOT(openConfRoom()));
+            //     connect(action, SIGNAL(triggered(bool)),
+            //             parentWidget(), SLOT(phoneConfRoom()));
+            menu->addAction(action1);
+            menu->addAction(action2);
+            menu->exec(QCursor::pos());
+            delete action1;
+            delete action2;
+            delete menu;
+        }
     }
 }
 
-void XletRecords::onViewDoubleClick(const QModelIndex & model)
+void XletRecords::onViewDoubleClick(const QModelIndex &)
 {
     qDebug() << Q_FUNC_INFO;
 }

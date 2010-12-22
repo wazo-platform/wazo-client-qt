@@ -139,10 +139,14 @@ void CommonTableModel::mylistChange(const QString &, DStoreEvent)
     reset();
 }
 
-Qt::ItemFlags CommonTableModel::flags(const QModelIndex &) const
+Qt::ItemFlags CommonTableModel::flags(const QModelIndex & index) const
 {
+    Qt::ItemFlags itemflags;
     // return Qt::NoItemFlags;
-    return (Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable);
+    itemflags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    if (index.column() == 4)
+        itemflags |= Qt::ItemIsEditable;
+    return itemflags;
 }
 
 int CommonTableModel::rowCount(const QModelIndex&) const
@@ -155,74 +159,59 @@ int CommonTableModel::columnCount(const QModelIndex &) const
     return m_fieldoptions->ncolumns();
 }
 
-QVariant CommonTableModel::data(const QModelIndex & index, int role) const
+QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
 {
-    if (role != Qt::DisplayRole) {
-        if (role == Qt::TextAlignmentRole)
-            return Qt::AlignCenter;
-        return QVariant();
+    QVariant ret = QVariant();
+    int row = modelindex.row();
+    int column = modelindex.column();
+
+    switch(role) {
+    case Qt::TextAlignmentRole:
+        ret = Qt::AlignCenter;
+        break;
+    case Qt::ToolTipRole:
+        ret = QString("%1\n"
+                      "%2 : %3")
+            .arg(modelindex.sibling(row, 2).data().toString())
+            .arg("svi entries")
+            .arg(modelindex.sibling(row, 12).data().toString());
+        break;
+    case Qt::DisplayRole:
+    case Qt::UserRole:
+        if (m_row2id.contains(row))
+            row = m_row2id[row].toInt();
+
+        QString eventfield = m_fieldoptions->eventfield(column);
+        QVariant::Type qttype = m_fieldoptions->qttype(column);
+        QString request = QString("%1/%2/%3").arg(m_fieldoptions->treebase()).arg(row).arg(eventfield);
+
+        if ((qttype == QVariant::String) || (qttype == QVariant::Int))
+            ret = b_engine->eV(request);
+        else if (qttype == QVariant::DateTime) {
+            uint ii = int(b_engine->eV(request).toDouble());
+            QDateTime qdt = QDateTime::fromTime_t(ii);
+            if (role == Qt::DisplayRole)
+                ret = qdt.toString();
+            else if (role == Qt::UserRole)
+                ret = ii;
+        }
+        break;
     }
 
-    int row = index.row();
-    int col = index.column();
-
-    if (m_row2id.contains(row))
-        row = m_row2id[row].toInt();
-
-    QString eventfield = m_fieldoptions->eventfield(col);
-    QVariant::Type qttype = m_fieldoptions->qttype(col);
-    QString request = QString("%1/%2/%3").arg(m_fieldoptions->treebase()).arg(row).arg(eventfield);
-
-    if (qttype == QVariant::String)
-        return b_engine->eV(request).toString();
-    else if (qttype == QVariant::Int)
-        return b_engine->eV(request).toInt();
-    else if (qttype == QVariant::DateTime) {
-        uint ii = int(b_engine->eV(request).toDouble());
-        QDateTime qdt = QDateTime::fromTime_t(ii);
-        return qdt.toString();
-    } else
-        return "zzz";
-
-    // return b_engine->eV(request).toString().isEmpty() ? tr("No") : tr("Yes");
-    // return b_engine->eV(request).toInt() ? tr("Yes") : tr("No");
-    // return b_engine->eVM(request).size();
-
-//             QVariantMap UserIn = b_engine->eVM(request);
-//             double time = 0;
-//             QString displayed = QString::fromUtf8("Ø");
-//             foreach (QString uid, UserIn.keys()) {
-//                 double utime = UserIn.value(uid).toMap().value("time-start").toDouble();
-//                 if ((time == 0) || (time > utime)) {
-//                     time = utime;
-//                 }
-//             }
-//             if (time != 0) {
-//                 displayed =
-//                     QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
-//                                           b_engine->timeDeltaServerClient() -
-//                                           time)
-//                                          .toUTC().toString("hh:mm:ss");
-//             }
-
-//             return displayed;
-//         }
-//         default:
-//             break;
-//     }
-//     return QVariant();
+    return ret;
 }
 
 QVariant CommonTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role != Qt::DisplayRole)
-        return QVariant();
+    QVariant ret = QVariant();
 
-    if (orientation == Qt::Horizontal) {
-        return m_fieldoptions->title(section);
+    switch(role) {
+    case Qt::DisplayRole:
+        if (orientation == Qt::Horizontal)
+            ret = m_fieldoptions->title(section);
     }
 
-    return QVariant();
+    return ret;
 }
 
 void CommonTableModel::sort(int column, Qt::SortOrder order)
@@ -242,8 +231,8 @@ void CommonTableModel::sort(int column, Qt::SortOrder order)
 
     int i, e;
     for (i = 0, e = rowCount(QModelIndex()); i < e; i++) {
-        toSort.append(QPair<int, QString>(index(i, 0).data().toInt(),
-                                          index(i, column).data().toString()));
+        toSort.append(QPair<int, QString>(index(i, 0).data(Qt::UserRole).toInt(),
+                                          index(i, column).data(Qt::UserRole).toString()));
     }
 
     qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
@@ -286,13 +275,19 @@ CommonTableView::CommonTableView(QWidget * parent,
 }
 
 void CommonTableView::selectionChanged(const QItemSelection & selected,
-                                   const QItemSelection & deselected)
+                                       const QItemSelection & deselected)
 {
+    QList<QModelIndex> mil;
+    mil.clear();
+    int prevrow = -1;
+    foreach (QModelIndex qmi, QAbstractItemView::selectedIndexes()) {
+        if (qmi.column() == 0) {
+            mil.append(qmi);
+            prevrow = qmi.row();
+        }
+    }
+    qDebug() << Q_FUNC_INFO << "selected" << mil << mil.count();
     QAbstractItemView::selectionChanged(selected, deselected);
-    // foreach (QModelIndex qmi, deselected.indexes());
-    // qDebug() << Q_FUNC_INFO;
-    // foreach (QModelIndex qmi, selected.indexes())
-    // qDebug() << Q_FUNC_INFO << "selected" << qmi.row() << qmi.column();
 }
 
 void CommonTableView::mousePressEvent(QMouseEvent *event)
