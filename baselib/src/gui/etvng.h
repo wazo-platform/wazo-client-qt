@@ -104,15 +104,14 @@ class ETVListView : public QTableView
 
     public:
         ETVListView(QWidget * parent,
+                    XLet * parentxlet,
                     ETVListModel * model);
-    private slots:
-        void onViewClick(const QModelIndex &);
+    signals:
+        void pevent(QMouseEvent *);
     protected:
         virtual void selectionChanged(const QItemSelection &,
                                       const QItemSelection &);
         virtual void mousePressEvent(QMouseEvent *event);
-    private:
-        int lastPressed;
 };
 
 
@@ -123,11 +122,6 @@ class ETVListWidget : public QWidget
     public:
         ETVListWidget(const ETVListProperties * const,
                       XLet * parent);
-    private slots:
-        void openConfRoom();
-        void phoneConfRoom();
-    private:
-        XLet * m_manager;
 };
 
 #endif

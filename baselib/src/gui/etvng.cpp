@@ -260,7 +260,9 @@ void ETVListModel::sort(int column, Qt::SortOrder order)
 // ETVListView class
 //
 
-ETVListView::ETVListView(QWidget * parent, ETVListModel * model)
+ETVListView::ETVListView(QWidget * parent,
+                         XLet * parentxlet,
+                         ETVListModel * model)
     : QTableView(parent)
 {
     setSortingEnabled(true);
@@ -273,11 +275,14 @@ ETVListView::ETVListView(QWidget * parent, ETVListModel * model)
     setStyleSheet("ETVListView {" + model->displayOptionStyleSheet() + "}");
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
-
     // hideColumn(0);
 
+    connect(this, SIGNAL(pevent(QMouseEvent *)),
+            parentxlet, SLOT(pevent(QMouseEvent *)));
     connect(this, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(onViewClick(const QModelIndex &)));
+            parentxlet, SLOT(onViewClick(const QModelIndex &)));
+    connect(this, SIGNAL(doubleClicked(const QModelIndex &)),
+            parentxlet, SLOT(onViewDoubleClick(const QModelIndex &)));
 }
 
 void ETVListView::selectionChanged(const QItemSelection & selected,
@@ -290,41 +295,9 @@ void ETVListView::selectionChanged(const QItemSelection & selected,
     // qDebug() << Q_FUNC_INFO << "selected" << qmi.row() << qmi.column();
 }
 
-void ETVListView::onViewClick(const QModelIndex & model)
-{
-    QString roomId = model.sibling(model.row(), 0).data().toString();
-    QString roomName = model.sibling(model.row(), 1).data().toString();
-    QString roomNumber = model.sibling(model.row(), 2).data().toString();
-
-    if (roomId != "") {
-        if (lastPressed & Qt::LeftButton) {
-            b_engine->pasteToDial(roomNumber);
-            QTimer *timer = new QTimer(this);
-            timer->setSingleShot(true);
-            timer->setProperty("id", roomId);
-            connect(timer, SIGNAL(timeout()), parentWidget(), SLOT(openConfRoom()));
-            timer->start(10);
-        } else {
-            QMenu *menu = new QMenu(this);
-
-            QAction *action = new QAction(tr("Get in room %1 (%2)")
-                                             .arg(roomName).arg(roomNumber), menu);
-
-            action->setProperty("id", roomId);
-            connect(action, SIGNAL(triggered(bool)),
-                    parentWidget(), SLOT(openConfRoom()));
-            connect(action, SIGNAL(triggered(bool)),
-                    parentWidget(), SLOT(phoneConfRoom()));
-
-            menu->addAction(action);
-            menu->exec(QCursor::pos());
-        }
-    }
-}
-
 void ETVListView::mousePressEvent(QMouseEvent *event)
 {
-    lastPressed = event->button();
+    emit pevent(event);
     QTableView::mousePressEvent(event);
 }
 
@@ -333,13 +306,13 @@ void ETVListView::mousePressEvent(QMouseEvent *event)
 //
 
 ETVListWidget::ETVListWidget(const ETVListProperties * const qv,
-                             XLet * parent)
-    : QWidget(), m_manager(parent)
+                             XLet * parentxlet)
+    : QWidget()
 {
     QVBoxLayout  * vBox = new QVBoxLayout(this);
     QHBoxLayout  * hBox = new QHBoxLayout();
     ETVListModel * model = new ETVListModel(qv);
-    ETVListView  * view = new ETVListView(this, model);
+    ETVListView  * view = new ETVListView(this, parentxlet, model);
 
     view->setStyleSheet("ETVListView {" + model->displayOptionStyleSheet() + "}");
     view->verticalHeader()->hide();
@@ -350,19 +323,4 @@ ETVListWidget::ETVListWidget(const ETVListProperties * const qv,
 
     vBox->addLayout(hBox);
     setLayout(vBox);
-}
-
-
-void ETVListWidget::phoneConfRoom()
-{
-    QString roomId = sender()->property("id").toString();
-    QString roomNumber = b_engine->eV(QString("%1/%2/number").arg("records").arg(roomId)).toString();
-
-    b_engine->actionCall("originate", "user:special:me", "ext:" + roomNumber);
-    // m_manager->openConfRoom(roomId, true);
-}
-
-void ETVListWidget::openConfRoom()
-{
-    // m_manager->openConfRoom(sender()->property("id").toString());
 }

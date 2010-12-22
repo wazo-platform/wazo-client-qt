@@ -55,7 +55,13 @@ class XletRecords : public XLet
 
     signals:
         void update();
+    private slots:
+        void onViewClick(const QModelIndex &);
+        void onViewDoubleClick(const QModelIndex &);
+        void pevent(QMouseEvent *);
     private:
+        int m_lastPressed;
+
         QVBoxLayout * m_xletLayout;
         QLabel * m_titlewidget;
         QFrame * m_qhline1;

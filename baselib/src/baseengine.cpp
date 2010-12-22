@@ -2275,10 +2275,10 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
     }
 }
 
-int BaseEngine::callClassEventCallback(QString class_event, const QVariantMap &map)
+int BaseEngine::callClassEventCallback(QString class_event, const QVariantMap & map)
 {
     QList< e_callback* > values = m_class_event_cb.values(class_event);
-    e_callback *p;
+    e_callback * p;
     int i;
 
     for (i=0;i<values.size();++i) {
@@ -2289,11 +2289,11 @@ int BaseEngine::callClassEventCallback(QString class_event, const QVariantMap &m
     return values.size();
 }
 
-void BaseEngine::registerClassEvent(const QString &class_event,
+void BaseEngine::registerClassEvent(const QString & class_event,
                                     void (*cb)(const QVariantMap &, void *),
-                                    void *udata)
+                                    void * udata)
 {
-    e_callback *e_call = new e_callback;
+    e_callback * e_call = new e_callback;
 
     e_call->cb = cb;
     e_call->udata = udata;

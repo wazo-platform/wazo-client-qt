@@ -121,6 +121,40 @@ void XletRecords::recordResults(const QVariantMap & p)
     emit update();
 }
 
+void XletRecords::pevent(QMouseEvent *event)
+{
+    m_lastPressed = event->button();
+}
+
+void XletRecords::onViewClick(const QModelIndex & model)
+{
+    qDebug() << Q_FUNC_INFO;
+    QString id = model.sibling(model.row(), 0).data().toString();
+    QString startdate = model.sibling(model.row(), 1).data().toString();
+    QString xx = model.sibling(model.row(), 4).data().toString();
+    qDebug() << id << startdate << xx;
+    if (m_lastPressed & Qt::LeftButton)
+        qDebug() << "left";
+    else if (m_lastPressed & Qt::RightButton)
+        qDebug() << "right";
+
+    QMenu * menu = new QMenu(this);
+    QAction * action = new QAction(tr("Remove call %1 (%2)")
+                                  .arg(xx).arg(startdate), menu);
+    action->setProperty("id", id);
+//     connect(action, SIGNAL(triggered(bool)),
+//             parentWidget(), SLOT(openConfRoom()));
+//     connect(action, SIGNAL(triggered(bool)),
+//             parentWidget(), SLOT(phoneConfRoom()));
+    menu->addAction(action);
+    menu->exec(QCursor::pos());
+}
+
+void XletRecords::onViewDoubleClick(const QModelIndex & model)
+{
+    // qDebug() << Q_FUNC_INFO;
+}
+
 SearchWidget::SearchWidget(QWidget * parent)
     : QWidget(parent)
 {
