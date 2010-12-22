@@ -33,13 +33,6 @@
 
 #include "etvng.h"
 
-enum ColOrder {
-    ID, NAME, NUMBER, PIN_REQUIRED, MODERATED,
-    MEMBER_COUNT, STARTED_SINCE, NB_COL
-};
-
-static QString braourk = "records";
-
 //
 // ETVListProperties class
 //
@@ -49,6 +42,7 @@ ETVListProperties::ETVListProperties()
     m_properties.clear();
     m_properties["display_qss"] = "border: none; color:black;";
     m_properties["display_grid"] = 1;
+    m_properties["treebase"] = "records";
     m_properties["columns"] = "";
 }
 
@@ -68,21 +62,6 @@ void ETVListProperties::addProperty(const QString & title,
     m_properties["columns"] = columns;
 }
 
-QString ETVListProperties::title(int index) const
-{
-    return m_properties.value("columns").toList()[index].toMap().value("title").toString();
-}
-
-QString ETVListProperties::eventfield(int index) const
-{
-    return m_properties.value("columns").toList()[index].toMap().value("eventfield").toString();
-}
-
-QVariant::Type ETVListProperties::qttype(int index) const
-{
-    return QVariant::Type(m_properties.value("columns").toList()[index].toMap().value("qttype").toInt());
-}
-
 int ETVListProperties::displayOptionShowGrid() const
 {
     return m_properties.value("display_grid").toInt();
@@ -98,6 +77,26 @@ int ETVListProperties::ncolumns() const
     return m_properties.value("columns").toList().size();
 }
 
+QString ETVListProperties::treebase() const
+{
+    return m_properties.value("treebase").toString();
+}
+
+QString ETVListProperties::title(int index) const
+{
+    return m_properties.value("columns").toList()[index].toMap().value("title").toString();
+}
+
+QString ETVListProperties::eventfield(int index) const
+{
+    return m_properties.value("columns").toList()[index].toMap().value("eventfield").toString();
+}
+
+QVariant::Type ETVListProperties::qttype(int index) const
+{
+    return QVariant::Type(m_properties.value("columns").toList()[index].toMap().value("qttype").toInt());
+}
+
 //
 // ETVListModel class
 //
@@ -106,8 +105,10 @@ ETVListModel::ETVListModel(const ETVListProperties * const qv)
     : QAbstractTableModel()
 {
     m_fieldoptions = qv;
-    b_engine->tree()->onChange(braourk, this,
-                               SLOT(mylistChange(const QString &, DStoreEvent)));
+    b_engine->tree()->onChange(m_fieldoptions->treebase(),
+                               this,
+                               SLOT(mylistChange(const QString &,
+                                                 DStoreEvent)));
     // startTimer(1000);
 }
 
@@ -128,7 +129,7 @@ void ETVListModel::timerEvent(QTimerEvent *)
 
 void ETVListModel::mylistChange(const QString &, DStoreEvent)
 {
-    m_myList = b_engine->eVM(braourk);
+    m_myList = b_engine->eVM(m_fieldoptions->treebase());
     int row = 0;
     if (m_myList.size() != m_row2id.size()) {
         foreach(QString myId, m_myList.keys()) {
@@ -141,7 +142,7 @@ void ETVListModel::mylistChange(const QString &, DStoreEvent)
 Qt::ItemFlags ETVListModel::flags(const QModelIndex &) const
 {
     // return Qt::NoItemFlags;
-    return (Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+    return (Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable);
 }
 
 int ETVListModel::rowCount(const QModelIndex&) const
@@ -170,7 +171,7 @@ QVariant ETVListModel::data(const QModelIndex & index, int role) const
 
     QString eventfield = m_fieldoptions->eventfield(col);
     QVariant::Type qttype = m_fieldoptions->qttype(col);
-    QString request = QString("%1/%2/%3").arg(braourk).arg(row).arg(eventfield);
+    QString request = QString("%1/%2/%3").arg(m_fieldoptions->treebase()).arg(row).arg(eventfield);
 
     if (qttype == QVariant::String)
         return b_engine->eV(request).toString();
@@ -241,7 +242,7 @@ void ETVListModel::sort(int column, Qt::SortOrder order)
 
     int i, e;
     for (i = 0, e = rowCount(QModelIndex()); i < e; i++) {
-        toSort.append(QPair<int, QString>(index(i, ID).data().toInt(),
+        toSort.append(QPair<int, QString>(index(i, 0).data().toInt(),
                                           index(i, column).data().toString()));
     }
 
@@ -270,7 +271,7 @@ ETVListView::ETVListView(QWidget * parent, ETVListModel * model)
     horizontalHeader()->setStretchLastSection(true);
     horizontalHeader()->setMovable(true);
     setStyleSheet("ETVListView {" + model->displayOptionStyleSheet() + "}");
-    setSelectionBehavior(QAbstractItemView::SelectItems);
+    setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     // hideColumn(0);
@@ -291,9 +292,9 @@ void ETVListView::selectionChanged(const QItemSelection & selected,
 
 void ETVListView::onViewClick(const QModelIndex & model)
 {
-    QString roomId = model.sibling(model.row(), ID).data().toString();
-    QString roomName = model.sibling(model.row(), NAME).data().toString();
-    QString roomNumber = model.sibling(model.row(), NUMBER).data().toString();
+    QString roomId = model.sibling(model.row(), 0).data().toString();
+    QString roomName = model.sibling(model.row(), 1).data().toString();
+    QString roomNumber = model.sibling(model.row(), 2).data().toString();
 
     if (roomId != "") {
         if (lastPressed & Qt::LeftButton) {
@@ -332,7 +333,7 @@ void ETVListView::mousePressEvent(QMouseEvent *event)
 //
 
 ETVListWidget::ETVListWidget(const ETVListProperties * const qv,
-                             XletRecords * parent)
+                             XLet * parent)
     : QWidget(), m_manager(parent)
 {
     QVBoxLayout  * vBox = new QVBoxLayout(this);
@@ -351,10 +352,11 @@ ETVListWidget::ETVListWidget(const ETVListProperties * const qv,
     setLayout(vBox);
 }
 
+
 void ETVListWidget::phoneConfRoom()
 {
     QString roomId = sender()->property("id").toString();
-    QString roomNumber = b_engine->eV(QString("%1/%2/number").arg(braourk).arg(roomId)).toString();
+    QString roomNumber = b_engine->eV(QString("%1/%2/number").arg("records").arg(roomId)).toString();
 
     b_engine->actionCall("originate", "user:special:me", "ext:" + roomNumber);
     // m_manager->openConfRoom(roomId, true);

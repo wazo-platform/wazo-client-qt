@@ -85,11 +85,8 @@ XletRecords::XletRecords(QWidget *parent)
     ETVListWidget * el = new ETVListWidget(elp, this);
     m_xletLayout->addWidget(el);
 
-// ( "channel" ,  QVariant(QString, "SIP/hpueygdepcqbew-0000009e") )
-//  ( "id" ,  QVariant(int, 16) )
-//  ( "queuenames" ,  QVariant(QString, "q_2rubnbr") )
-//  ( "recordstatus" ,  QVariant(QString, "recorded_tokeep") 
-// ) ( "uniqueid" ,  QVariant(QString, "1291592887.368") ) )  
+    // ( "channel" ,  QVariant(QString, "SIP/hpueygdepcqbew-0000009e") )
+    // ) ( "uniqueid" ,  QVariant(QString, "1291592887.368") ) )  
 
     // m_xletLayout->insertStretch(-1, 1);
 

@@ -48,18 +48,22 @@
 
 #include <baseengine.h>
 
-#include "records.h"
+#include "xlet.h"
 
 class ETVListProperties
 {
     public:
         ETVListProperties();
-        QString title(int) const;
-        QString eventfield(int) const;
-        QVariant::Type qttype(int) const;
+
         int displayOptionShowGrid() const;
         QString displayOptionStyleSheet() const;
         int ncolumns() const;
+        QString treebase() const;
+
+        QString title(int) const;
+        QString eventfield(int) const;
+        QVariant::Type qttype(int) const;
+
         void addProperty(const QString &,
                          const QString &,
                          const QVariant::Type &,
@@ -118,12 +122,12 @@ class ETVListWidget : public QWidget
 
     public:
         ETVListWidget(const ETVListProperties * const,
-                      XletRecords * parent);
+                      XLet * parent);
     private slots:
         void openConfRoom();
         void phoneConfRoom();
     private:
-        XletRecords * m_manager;
+        XLet * m_manager;
 };
 
 #endif
