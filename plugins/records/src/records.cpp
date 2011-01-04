@@ -71,24 +71,24 @@ XletRecords::XletRecords(QWidget *parent)
     connect(this, SIGNAL(update()),
             m_resultswidget, SLOT(update()));
 
-    CommonTableProperties * elp = new CommonTableProperties();
+    CommonTableProperties * ctp = new CommonTableProperties("records");
     // last property : should define : editable or not, in tooltip or not, hidden or not ...
-    elp->addProperty(tr("ID"), "id", QVariant::Int, "id");
-    elp->addProperty(tr("Start Date"), "callstart", QVariant::DateTime, "id");
-    elp->addProperty(tr("Filename"), "filename", QVariant::String, "id");
-    elp->addProperty(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
-    elp->addProperty(tr("Duration"), "callduration", QVariant::Int, "id");
-    elp->addProperty(tr("Direction"), "direction", QVariant::String, "id");
-    elp->addProperty(tr("CallerIdNum"), "calleridnum", QVariant::String, "id");
-    elp->addProperty(tr("Queues"), "queuenames", QVariant::String, "id");
-    elp->addProperty(tr("Agents"), "agentnames", QVariant::String, "id");
-    elp->addProperty(tr("RecStatus"), "recordstatus", QVariant::String, "id");
-    elp->addProperty(tr("Tag"), "callrecordtag", QVariant::String, "id");
-    elp->addProperty(tr("Comment"), "callrecordcomment", QVariant::String, "id");
-    elp->addProperty(tr("SVI e"), "svientries", QVariant::String, "id");
-    elp->addProperty(tr("SVI v"), "svivariables", QVariant::String, "id");
-    elp->addProperty(tr("SVI c"), "svichoices", QVariant::String, "id");
-    CommonTableWidget * el = new CommonTableWidget(elp, this);
+    ctp->addProperty(tr("ID"), "id", QVariant::Int, "id");
+    ctp->addProperty(tr("Start Date"), "callstart", QVariant::DateTime, "id");
+    ctp->addProperty(tr("Filename"), "filename", QVariant::String, "id");
+    ctp->addProperty(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
+    ctp->addProperty(tr("Duration"), "callduration", QVariant::Int, "id");
+    ctp->addProperty(tr("Direction"), "direction", QVariant::String, "id");
+    ctp->addProperty(tr("CallerIdNum"), "calleridnum", QVariant::String, "id");
+    ctp->addProperty(tr("Queues"), "queuenames", QVariant::String, "id");
+    ctp->addProperty(tr("Agents"), "agentnames", QVariant::String, "id");
+    ctp->addProperty(tr("RecStatus"), "recordstatus", QVariant::String, "id");
+    ctp->addProperty(tr("Tag"), "callrecordtag", QVariant::String, "id");
+    ctp->addProperty(tr("Comment"), "callrecordcomment", QVariant::String, "edit");
+    ctp->addProperty(tr("SVI e"), "svientries", QVariant::String, "id");
+    ctp->addProperty(tr("SVI v"), "svivariables", QVariant::String, "id");
+    ctp->addProperty(tr("SVI c"), "svichoices", QVariant::String, "id");
+    CommonTableWidget * el = new CommonTableWidget(ctp, this);
     m_xletLayout->addWidget(el);
 
     // m_xletLayout->insertStretch(-1, 1);

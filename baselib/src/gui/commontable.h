@@ -53,7 +53,7 @@
 class CommonTableProperties
 {
     public:
-        CommonTableProperties();
+        CommonTableProperties(const QString &);
 
         int displayOptionShowGrid() const;
         QString displayOptionStyleSheet() const;
@@ -63,6 +63,7 @@ class CommonTableProperties
         QString title(int) const;
         QString eventfield(int) const;
         QVariant::Type qttype(int) const;
+        QString xivotype(int) const;
 
         void addProperty(const QString &,
                          const QString &,
@@ -82,14 +83,15 @@ class CommonTableModel : public QAbstractTableModel
         QString displayOptionStyleSheet() const;
 
     private slots:
-        void mylistChange(const QString &path, DStoreEvent event);
+        void mylistChange(const QString &, DStoreEvent);
     protected:
         void timerEvent(QTimerEvent *event);
     private:
         void sort(int, Qt::SortOrder);
-        int rowCount(const QModelIndex&) const;
-        int columnCount(const QModelIndex&) const;
-        QVariant data(const QModelIndex&, int) const;
+        int rowCount(const QModelIndex &) const;
+        int columnCount(const QModelIndex &) const;
+        bool setData(const QModelIndex &, const QVariant &, int);
+        QVariant data(const QModelIndex &, int) const;
         QVariant headerData(int, Qt::Orientation, int) const;
         Qt::ItemFlags flags(const QModelIndex &) const;
 
@@ -107,11 +109,11 @@ class CommonTableView : public QTableView
                         XLet * parentxlet,
                         CommonTableModel * model);
     signals:
-        void signalMousePressEvent (QMouseEvent *);
+        void signalMousePressEvent(QMouseEvent *);
     protected:
-        virtual void selectionChanged(const QItemSelection &,
-                                      const QItemSelection &);
-        virtual void mousePressEvent(QMouseEvent *event);
+        void selectionChanged(const QItemSelection &,
+                              const QItemSelection &);
+        void mousePressEvent(QMouseEvent *event);
 };
 
 class CommonTableWidget : public QWidget

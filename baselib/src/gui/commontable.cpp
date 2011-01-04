@@ -37,12 +37,12 @@
 // CommonTableProperties class
 //
 
-CommonTableProperties::CommonTableProperties()
+CommonTableProperties::CommonTableProperties(const QString & treebase)
 {
     m_properties.clear();
     m_properties["display_qss"] = "border: none; color:black;";
     m_properties["display_grid"] = 1;
-    m_properties["treebase"] = "records";
+    m_properties["treebase"] = treebase;
     m_properties["columns"] = "";
 }
 
@@ -97,6 +97,11 @@ QVariant::Type CommonTableProperties::qttype(int index) const
     return QVariant::Type(m_properties.value("columns").toList()[index].toMap().value("qttype").toInt());
 }
 
+QString CommonTableProperties::xivotype(int index) const
+{
+    return m_properties.value("columns").toList()[index].toMap().value("xivotype").toString();
+}
+
 //
 // CommonTableModel class
 //
@@ -144,7 +149,7 @@ Qt::ItemFlags CommonTableModel::flags(const QModelIndex & index) const
     Qt::ItemFlags itemflags;
     // return Qt::NoItemFlags;
     itemflags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-    if (index.column() == 4)
+    if(m_fieldoptions->xivotype(index.column()) == "edit")
         itemflags |= Qt::ItemIsEditable;
     return itemflags;
 }
@@ -159,12 +164,23 @@ int CommonTableModel::columnCount(const QModelIndex &) const
     return m_fieldoptions->ncolumns();
 }
 
+bool CommonTableModel::setData(const QModelIndex & modelindex, const QVariant & value, int)
+{
+    int row = modelindex.row();
+    int column = modelindex.column();
+    if (m_row2id.contains(row))
+        row = m_row2id[row].toInt();
+    QString eventfield = m_fieldoptions->eventfield(column);
+    QString request = QString("%1/%2/%3").arg(m_fieldoptions->treebase()).arg(row).arg(eventfield);
+    b_engine->tree()->populate(request, value);
+    return false;
+}
+
 QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
 {
     QVariant ret = QVariant();
     int row = modelindex.row();
     int column = modelindex.column();
-
     switch(role) {
     case Qt::TextAlignmentRole:
         ret = Qt::AlignCenter;
@@ -176,6 +192,7 @@ QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
             .arg("svi entries")
             .arg(modelindex.sibling(row, 12).data().toString());
         break;
+    case Qt::EditRole:
     case Qt::DisplayRole:
     case Qt::UserRole:
         if (m_row2id.contains(row))
@@ -250,8 +267,8 @@ void CommonTableModel::sort(int column, Qt::SortOrder order)
 //
 
 CommonTableView::CommonTableView(QWidget * parent,
-                             XLet * parentxlet,
-                             CommonTableModel * model)
+                                 XLet * parentxlet,
+                                 CommonTableModel * model)
     : QTableView(parent)
 {
     setSortingEnabled(true);
@@ -311,7 +328,6 @@ CommonTableWidget::CommonTableWidget(const CommonTableProperties * const qv,
 
     view->setStyleSheet("CommonTableView {" + model->displayOptionStyleSheet() + "}");
     view->verticalHeader()->hide();
-
     // hBox->addStretch(1);
     hBox->addWidget(view, Qt::AlignJustify);
     // hBox->addStretch(1);
