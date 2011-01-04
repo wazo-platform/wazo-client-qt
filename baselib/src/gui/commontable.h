@@ -65,10 +65,10 @@ class CommonTableProperties
         QVariant::Type qttype(int) const;
         QString xivotype(int) const;
 
-        void addProperty(const QString &,
-                         const QString &,
-                         const QVariant::Type &,
-                         const QString &);
+        void addColumn(const QString &,
+                       const QString &,
+                       const QVariant::Type &,
+                       const QString &);
     private:
         QVariantMap m_properties;
 };

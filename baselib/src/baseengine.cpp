@@ -925,7 +925,7 @@ void BaseEngine::parseCommand(const QString &line)
         } else if (thisclass == "parkcall") {
             QString eventkind = datamap.value("eventkind").toString();
             QString astid = datamap.value("astid").toString();
-            QString parkingbay = datamap["parkingbay"].toString();
+            QString parkingbay = datamap.value("parkingbay").toString();
             // update local list for astid & parkingbay according to eventkind
             if (eventkind == "parkedcall") {
                 if (m_parking.contains(astid) == false)
@@ -941,24 +941,24 @@ void BaseEngine::parseCommand(const QString &line)
         } else if (thisclass == "sheet") {
             // TODO : use id better than just channel name
             // qDebug() << Q_FUNC_INFO << "sheet" << datamap;
-            QString channel = datamap["channel"].toString();
+            QString channel = datamap.value("channel").toString();
             if (function == "getownership") {
                 gotSheetOwnership(channel);
             } else if (function == "loseownership") {
                 lostSheetOwnership(channel);
             } else if (function == "entryadded") {
-                sheetEntryAdded(channel, datamap["entry"].toMap());
+                sheetEntryAdded(channel, datamap.value("entry").toMap());
             } if (datamap.contains("payload")) {
                 QString payload;
                 QByteArray qba = QByteArray::fromBase64(datamap.value("payload").toString().toAscii());
-                if (datamap["compressed"].toBool())
+                if (datamap.value("compressed").toBool())
                     payload = QString::fromUtf8(qUncompress(qba));
                 else
                     payload = QString::fromUtf8(qba);
                 // will eventually call the XML parser
                 displayFiche(payload, false, channel);
                 if (datamap.contains("entries")) {
-                    QVariantList entries = datamap["entries"].toList();
+                    QVariantList entries = datamap.value("entries").toList();
                     foreach (QVariant entry, entries) {
                         sheetEntryAdded(channel, entry.toMap());
                     }
@@ -990,7 +990,7 @@ void BaseEngine::parseCommand(const QString &line)
                     emit newQueueList(kk);
             } else if (function == "del") {
                 removeQueues(datamap.value("astid").toString(),
-                             datamap["deltalist"].toStringList());
+                             datamap.value("deltalist").toStringList());
             } else if (function == "add") {
                 QVariantMap command;
                 command["class"] = "queues";
@@ -1053,13 +1053,13 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "agentrecord") {
             statusRecord(datamap.value("astid").toString(),
-                         datamap["agentid"].toString(),
-                         datamap["status"].toString());
+                         datamap.value("agentid").toString(),
+                         datamap.value("status").toString());
 
         } else if (thisclass == "agentlisten") {
             statusListen(datamap.value("astid").toString(),
-                         datamap["agentid"].toString(),
-                         datamap["status"].toString());
+                         datamap.value("agentid").toString(),
+                         datamap.value("status").toString());
 
         } else if (thisclass == "endinit") {
             qDebug() << Q_FUNC_INFO << "I should have received everything";
@@ -1079,7 +1079,7 @@ void BaseEngine::parseCommand(const QString &line)
                 addUpdateConfMemberInTree(tree(), map);
             }
         } else if (thisclass == "serverdown") {
-            qDebug() << Q_FUNC_INFO << thisclass << datamap["mode"].toString();
+            qDebug() << Q_FUNC_INFO << thisclass << datamap.value("mode").toString();
 
         } else if (thisclass == "disconn") {
             qDebug() << Q_FUNC_INFO << thisclass;
@@ -1119,7 +1119,7 @@ void BaseEngine::parseCommand(const QString &line)
                 emit updatePeerAgent(m_timesrv, id, "imstatus", QStringList());
                 emit updateAgentPresence(m_users[id]->astid(),
                                          m_users[id]->agentid(),
-                                         datamap["capapresence"].toMap()["state"]);
+                                         datamap.value("capapresence").toMap()["state"]);
                 m_counters = datamap["presencecounter"];
                 emit updateCounter(m_counters);
                 if (id == m_fullid) {
@@ -1353,11 +1353,11 @@ void BaseEngine::parseCommand(const QString &line)
         } else if (thisclass == "login_capas_ok") {
             //qDebug() << "login_capas_ok" << datamap.keys();
             m_astid = datamap.value("astid").toString();
-            m_xivo_userid = datamap["xivo_userid"].toString();
+            m_xivo_userid = datamap.value("xivo_userid").toString();
             m_fullid = m_astid + "/" + m_xivo_userid;
-            m_capafuncs = datamap["capafuncs"].toStringList();
-            m_capaxlets = datamap["capaxlets"].toStringList();
-            m_appliname = datamap["appliname"].toString();
+            m_capafuncs = datamap.value("capafuncs").toStringList();
+            m_capaxlets = datamap.value("capaxlets").toStringList();
+            m_appliname = datamap.value("appliname").toString();
             updateCapaPresence(datamap["capapresence"]);
             m_forced_state = datamap["capapresence"].toMap()["state"].toString();
             m_counters = datamap["presencecounter"];

@@ -47,10 +47,10 @@ CommonTableProperties::CommonTableProperties(const QString & treebase)
 }
 
 // to define, per column : "id" for "eV", type (boolean, date/time, phone)
-void CommonTableProperties::addProperty(const QString & title,
-                                    const QString & eventfield,
-                                    const QVariant::Type & qttype,
-                                    const QString & xivotype)
+void CommonTableProperties::addColumn(const QString & title,
+                                      const QString & eventfield,
+                                      const QVariant::Type & qttype,
+                                      const QString & xivotype)
 {
     QVariantList columns = m_properties.value("columns").toList();
     QVariantMap u;
@@ -173,6 +173,14 @@ bool CommonTableModel::setData(const QModelIndex & modelindex, const QVariant & 
     QString eventfield = m_fieldoptions->eventfield(column);
     QString request = QString("%1/%2/%3").arg(m_fieldoptions->treebase()).arg(row).arg(eventfield);
     b_engine->tree()->populate(request, value);
+
+    QVariantMap command;
+    command["class"] = "records-campaign";
+    command["function"] = "comment";
+    command["id"] = row;
+    command["comment"] = value.toString();
+    b_engine->sendJsonCommand(command);
+
     return false;
 }
 
@@ -193,6 +201,7 @@ QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
             .arg(modelindex.sibling(row, 12).data().toString());
         break;
     case Qt::EditRole:
+        break;
     case Qt::DisplayRole:
     case Qt::UserRole:
         if (m_row2id.contains(row))
@@ -207,10 +216,10 @@ QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
         else if (qttype == QVariant::DateTime) {
             uint ii = int(b_engine->eV(request).toDouble());
             QDateTime qdt = QDateTime::fromTime_t(ii);
-            if (role == Qt::DisplayRole)
-                ret = qdt.toString();
-            else if (role == Qt::UserRole)
+            if (role == Qt::UserRole)
                 ret = ii;
+            else
+                ret = qdt.toString();
         }
         break;
     }

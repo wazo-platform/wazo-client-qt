@@ -72,22 +72,22 @@ XletRecords::XletRecords(QWidget *parent)
             m_resultswidget, SLOT(update()));
 
     CommonTableProperties * ctp = new CommonTableProperties("records");
-    // last property : should define : editable or not, in tooltip or not, hidden or not ...
-    ctp->addProperty(tr("ID"), "id", QVariant::Int, "id");
-    ctp->addProperty(tr("Start Date"), "callstart", QVariant::DateTime, "id");
-    ctp->addProperty(tr("Filename"), "filename", QVariant::String, "id");
-    ctp->addProperty(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
-    ctp->addProperty(tr("Duration"), "callduration", QVariant::Int, "id");
-    ctp->addProperty(tr("Direction"), "direction", QVariant::String, "id");
-    ctp->addProperty(tr("CallerIdNum"), "calleridnum", QVariant::String, "id");
-    ctp->addProperty(tr("Queues"), "queuenames", QVariant::String, "id");
-    ctp->addProperty(tr("Agents"), "agentnames", QVariant::String, "id");
-    ctp->addProperty(tr("RecStatus"), "recordstatus", QVariant::String, "id");
-    ctp->addProperty(tr("Tag"), "callrecordtag", QVariant::String, "id");
-    ctp->addProperty(tr("Comment"), "callrecordcomment", QVariant::String, "edit");
-    ctp->addProperty(tr("SVI e"), "svientries", QVariant::String, "id");
-    ctp->addProperty(tr("SVI v"), "svivariables", QVariant::String, "id");
-    ctp->addProperty(tr("SVI c"), "svichoices", QVariant::String, "id");
+    // last item : should define : editable or not, in tooltip or not, hidden or not ...
+    ctp->addColumn(tr("ID"), "id", QVariant::Int, "id");
+    ctp->addColumn(tr("Start Date"), "callstart", QVariant::DateTime, "id");
+    ctp->addColumn(tr("Filename"), "filename", QVariant::String, "id");
+    ctp->addColumn(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
+    ctp->addColumn(tr("Duration"), "callduration", QVariant::Int, "id");
+    ctp->addColumn(tr("Direction"), "direction", QVariant::String, "id");
+    ctp->addColumn(tr("CallerIdNum"), "calleridnum", QVariant::String, "id");
+    ctp->addColumn(tr("Queues"), "queuenames", QVariant::String, "id");
+    ctp->addColumn(tr("Agents"), "agentnames", QVariant::String, "id");
+    ctp->addColumn(tr("RecStatus"), "recordstatus", QVariant::String, "id");
+    ctp->addColumn(tr("Tag"), "callrecordtag", QVariant::String, "id");
+    ctp->addColumn(tr("Comment"), "callrecordcomment", QVariant::String, "edit");
+    ctp->addColumn(tr("SVI e"), "svientries", QVariant::String, "id");
+    ctp->addColumn(tr("SVI v"), "svivariables", QVariant::String, "id");
+    ctp->addColumn(tr("SVI c"), "svichoices", QVariant::String, "id");
     CommonTableWidget * el = new CommonTableWidget(ctp, this);
     m_xletLayout->addWidget(el);
 
@@ -158,9 +158,32 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
     }
 }
 
-void XletRecords::onViewDoubleClick(const QModelIndex &)
+void XletRecords::onViewDoubleClick(const QModelIndex & modelindex)
 {
-    qDebug() << Q_FUNC_INFO;
+    int row = modelindex.row();
+    int column = modelindex.column();
+    QString id = modelindex.sibling(row, 0).data().toString();
+    QString startdate = modelindex.sibling(row, 1).data().toString();
+    QString xx = modelindex.sibling(row, 5).data().toString();
+
+    if (m_lastPressed & Qt::LeftButton) {
+        QMenu * menu = new QMenu(this);
+        QAction * action1 = new QAction(tr("Tzzzz call %1 (%2)")
+                                        .arg(xx).arg(startdate), menu);
+        QAction * action2 = new QAction(tr("Change comment"), menu);
+        action1->setProperty("id", id);
+        action2->setProperty("id", id);
+        //     connect(action, SIGNAL(triggered(bool)),
+        //             parentWidget(), SLOT(openConfRoom()));
+        //     connect(action, SIGNAL(triggered(bool)),
+        //             parentWidget(), SLOT(phoneConfRoom()));
+        menu->addAction(action1);
+        menu->addAction(action2);
+        menu->exec(QCursor::pos());
+        delete action1;
+        delete action2;
+        delete menu;
+    }
 }
 
 SearchWidget::SearchWidget(QWidget * parent)
@@ -191,7 +214,7 @@ SearchWidget::SearchWidget(QWidget * parent)
     m_researchkind->addItem(tr("Queue"));
     m_researchkind->addItem(tr("Skill"));
     m_researchkind->addItem(tr("Direction"));
-    m_searchwidget->setText("search zone");
+    m_searchwidget->setText("");
     remove->setText("-");
     add->setText("+");
     requestwidget->setText("lookup");
@@ -211,6 +234,13 @@ void SearchWidget::lookup()
     QVariantMap command;
     command["class"] = "records-campaign";
     command["function"] = "search";
+
+    QVariantList searchitems;
+    QVariantMap searchitem;
+    searchitem["searchkind"] = m_researchkind->currentIndex();
+    searchitem["searchfield"] = m_searchwidget->text();
+    searchitems << searchitem;
+    command["searchitems"] = searchitems;
     b_engine->sendJsonCommand(command);
 }
 
