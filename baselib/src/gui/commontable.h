@@ -54,6 +54,7 @@ class CommonTableProperties
 {
     public:
         CommonTableProperties(const QString &);
+        ~CommonTableProperties() {};
 
         int displayOptionShowGrid() const;
         QString displayOptionStyleSheet() const;
@@ -79,6 +80,8 @@ class CommonTableModel : public QAbstractTableModel
 
     public:
         CommonTableModel(const CommonTableProperties * const);
+        ~CommonTableModel() {};
+
         int displayOptionShowGrid() const;
         QString displayOptionStyleSheet() const;
 
@@ -108,6 +111,7 @@ class CommonTableView : public QTableView
         CommonTableView(QWidget * parent,
                         XLet * parentxlet,
                         CommonTableModel * model);
+        ~CommonTableView() {};
     signals:
         void signalMousePressEvent(QMouseEvent *);
     protected:
@@ -123,6 +127,7 @@ class CommonTableWidget : public QWidget
     public:
         CommonTableWidget(const CommonTableProperties * const,
                           XLet * parent);
+        ~CommonTableWidget() {};
 };
 
 #endif

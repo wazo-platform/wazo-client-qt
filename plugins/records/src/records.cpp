@@ -71,28 +71,27 @@ XletRecords::XletRecords(QWidget *parent)
     connect(this, SIGNAL(update()),
             m_resultswidget, SLOT(update()));
 
-    CommonTableProperties * ctp = new CommonTableProperties("records");
+    m_ctp = new CommonTableProperties("records");
     // last item : should define : editable or not, in tooltip or not, hidden or not ...
-    ctp->addColumn(tr("ID"), "id", QVariant::Int, "id");
-    ctp->addColumn(tr("Start Date"), "callstart", QVariant::DateTime, "id");
-    ctp->addColumn(tr("Filename"), "filename", QVariant::String, "id");
-    ctp->addColumn(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
-    ctp->addColumn(tr("Duration"), "callduration", QVariant::Int, "id");
-    ctp->addColumn(tr("Direction"), "direction", QVariant::String, "id");
-    ctp->addColumn(tr("CallerIdNum"), "calleridnum", QVariant::String, "id");
-    ctp->addColumn(tr("Queues"), "queuenames", QVariant::String, "id");
-    ctp->addColumn(tr("Agents"), "agentnames", QVariant::String, "id");
-    ctp->addColumn(tr("RecStatus"), "recordstatus", QVariant::String, "id");
-    ctp->addColumn(tr("Tag"), "callrecordtag", QVariant::String, "id");
-    ctp->addColumn(tr("Comment"), "callrecordcomment", QVariant::String, "edit");
-    ctp->addColumn(tr("SVI e"), "svientries", QVariant::String, "id");
-    ctp->addColumn(tr("SVI v"), "svivariables", QVariant::String, "id");
-    ctp->addColumn(tr("SVI c"), "svichoices", QVariant::String, "id");
-    CommonTableWidget * el = new CommonTableWidget(ctp, this);
+    m_ctp->addColumn(tr("ID"), "id", QVariant::Int, "id");
+    m_ctp->addColumn(tr("Start Date"), "callstart", QVariant::DateTime, "id");
+    m_ctp->addColumn(tr("Filename"), "filename", QVariant::String, "id");
+    m_ctp->addColumn(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
+    m_ctp->addColumn(tr("Duration"), "callduration", QVariant::Int, "id");
+    m_ctp->addColumn(tr("Direction"), "direction", QVariant::String, "id");
+    m_ctp->addColumn(tr("CallerIdNum"), "calleridnum", QVariant::String, "id");
+    m_ctp->addColumn(tr("Queues"), "queuenames", QVariant::String, "id");
+    m_ctp->addColumn(tr("Agents"), "agentnames", QVariant::String, "id");
+    m_ctp->addColumn(tr("RecStatus"), "recordstatus", QVariant::String, "id");
+    m_ctp->addColumn(tr("Tag"), "callrecordtag", QVariant::String, "id");
+    m_ctp->addColumn(tr("Comment"), "callrecordcomment", QVariant::String, "edit");
+    m_ctp->addColumn(tr("SVI e"), "svientries", QVariant::String, "id");
+    m_ctp->addColumn(tr("SVI v"), "svivariables", QVariant::String, "id");
+    m_ctp->addColumn(tr("SVI c"), "svichoices", QVariant::String, "id");
+    CommonTableWidget * el = new CommonTableWidget(m_ctp, this);
     m_xletLayout->addWidget(el);
 
     // m_xletLayout->insertStretch(-1, 1);
-
     b_engine->registerClassEvent("records-campaign",
                                  XletRecords::recordResults_t, this);
 }
@@ -114,6 +113,7 @@ void XletRecords::recordResults(const QVariantMap & p)
 {
     // qDebug() << Q_FUNC_INFO << p["function"];
     QVariantList qvl = p.value("payload").toList();
+    // b_engine->tree()->rmPath("records");
     foreach (QVariant r, qvl) {
         QString id = r.toMap().value("id").toString();
         b_engine->tree()->populate(QString("records/%1").arg(id), r.toMap());
@@ -132,15 +132,27 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
     int column = modelindex.column();
 
     QString id = modelindex.sibling(row, 0).data().toString();
-    QString startdate = modelindex.sibling(row, 1).data().toString();
-    QString xx = modelindex.sibling(row, 5).data().toString();
+//     for(int y = 2 ; y < 10 ; y++)
+//         qDebug() << y << modelindex.sibling(row, y).data() << m_ctp->eventfield(y) << m_ctp->title(y);
+
+    QString callstart = modelindex.sibling(row, 1).data().toString();
+//     QString filename = modelindex.sibling(row, 2).data().toString();
+//     QString callstop = modelindex.sibling(row, 3).data().toString();
+//     QString callduration = modelindex.sibling(row, 4).data().toString();
+    QString direction = modelindex.sibling(row, 5).data().toString();
+//     QString calleridnum = modelindex.sibling(row, 6).data().toString();
+//     QString queuenames = modelindex.sibling(row, 7).data().toString();
+//     QString agentnames = modelindex.sibling(row, 8).data().toString();
+//     QString recordstatus = modelindex.sibling(row, 9).data().toString();
+
+    QString c_eventfield = m_ctp->eventfield(column);
 
     // if (m_lastPressed & Qt::LeftButton)
     if (m_lastPressed & Qt::RightButton) {
-        if (column != 5) {
+        if (c_eventfield != "queuenames") {
             QMenu * menu = new QMenu(this);
             QAction * action1 = new QAction(tr("Remove call %1 (%2)")
-                                            .arg(xx).arg(startdate), menu);
+                                            .arg(direction).arg(callstart), menu);
             QAction * action2 = new QAction(tr("Change comment"), menu);
             action1->setProperty("id", id);
             action2->setProperty("id", id);

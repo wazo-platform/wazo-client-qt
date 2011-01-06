@@ -41,6 +41,7 @@
 
 class SearchWidget;
 class ResultsWidget;
+class CommonTableProperties;
 
 class XletRecords : public XLet
 {
@@ -68,6 +69,7 @@ class XletRecords : public XLet
         QFrame * m_qhline2;
         SearchWidget * m_searchwidget;
         ResultsWidget * m_resultswidget;
+        CommonTableProperties * m_ctp;
 
         void clientrequest();
 };
