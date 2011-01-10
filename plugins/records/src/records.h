@@ -60,6 +60,7 @@ class XletRecords : public XLet
         void onViewClick(const QModelIndex &);
         void onViewDoubleClick(const QModelIndex &);
         void mousePressEvent(QMouseEvent *);
+        void changeTag();
     private:
         int m_lastPressed;
 
@@ -70,6 +71,7 @@ class XletRecords : public XLet
         SearchWidget * m_searchwidget;
         ResultsWidget * m_resultswidget;
         CommonTableProperties * m_ctp;
+        QVariantMap m_tags;
 
         void clientrequest();
 };

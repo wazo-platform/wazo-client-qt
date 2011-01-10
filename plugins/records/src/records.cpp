@@ -111,14 +111,19 @@ void XletRecords::clientrequest()
 
 void XletRecords::recordResults(const QVariantMap & p)
 {
-    // qDebug() << Q_FUNC_INFO << p["function"];
-    QVariantList qvl = p.value("payload").toList();
-    // b_engine->tree()->rmPath("records");
-    foreach (QVariant r, qvl) {
-        QString id = r.toMap().value("id").toString();
-        b_engine->tree()->populate(QString("records/%1").arg(id), r.toMap());
+    QString function = p.value("function").toString();
+    if (function == "search") {
+        QVariantList qvl = p.value("payload").toList();
+        // b_engine->tree()->rmPath("records");
+        foreach (QVariant r, qvl) {
+            QString id = r.toMap().value("id").toString();
+            b_engine->tree()->populate(QString("records/%1").arg(id), r.toMap());
+        }
+        emit update();
+    } else if (function == "getprops") {
+        m_tags = p.value("tags").toMap();
+        m_tags.remove("notag");
     }
-    emit update();
 }
 
 void XletRecords::mousePressEvent(QMouseEvent * event)
@@ -144,12 +149,32 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
 //     QString queuenames = modelindex.sibling(row, 7).data().toString();
 //     QString agentnames = modelindex.sibling(row, 8).data().toString();
 //     QString recordstatus = modelindex.sibling(row, 9).data().toString();
+    QString callrecordtag = modelindex.sibling(row, 10).data().toString();
 
     QString c_eventfield = m_ctp->eventfield(column);
 
     // if (m_lastPressed & Qt::LeftButton)
     if (m_lastPressed & Qt::RightButton) {
-        if (c_eventfield != "queuenames") {
+        if (c_eventfield == "callrecordtag") {
+            QMenu * menu = new QMenu(this);
+            QAction * actionm = new QAction(tr("Change tag to"), menu);
+            menu->addAction(actionm);
+            QVariantMap validtags = m_tags;
+            validtags.remove(callrecordtag);
+            foreach (QString ti, validtags.keys()) {
+                QString itemname = validtags[ti].toMap().value("label").toString();
+                QAction * action = new QAction(tr("%1").arg(itemname), menu);
+                action->setProperty("id", id);
+                action->setProperty("tag", ti);
+                menu->addAction(action);
+                connect(action, SIGNAL(triggered()),
+                        this, SLOT(changeTag()) );
+            }
+            menu->exec(QCursor::pos());
+            // delete action;
+            delete menu;
+
+        } else if (c_eventfield != "queuenames") {
             QMenu * menu = new QMenu(this);
             QAction * action1 = new QAction(tr("Remove call %1 (%2)")
                                             .arg(direction).arg(callstart), menu);
@@ -168,6 +193,16 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
             delete menu;
         }
     }
+}
+
+void XletRecords::changeTag()
+{
+    QVariantMap command;
+    command["class"] = "records-campaign";
+    command["function"] = "tag";
+    command["id"] = sender()->property("id").toString();
+    command["tag"] = sender()->property("tag").toString();
+    b_engine->sendJsonCommand(command);
 }
 
 void XletRecords::onViewDoubleClick(const QModelIndex & modelindex)
@@ -253,6 +288,11 @@ void SearchWidget::lookup()
     searchitem["searchfield"] = m_searchwidget->text();
     searchitems << searchitem;
     command["searchitems"] = searchitems;
+    b_engine->sendJsonCommand(command);
+
+    command.clear();
+    command["class"] = "records-campaign";
+    command["function"] = "getprops";
     b_engine->sendJsonCommand(command);
 }
 
