@@ -201,7 +201,6 @@ QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
             .arg(modelindex.sibling(row, 12).data().toString());
         break;
     case Qt::EditRole:
-        break;
     case Qt::DisplayRole:
     case Qt::UserRole:
         if (m_row2id.contains(row))

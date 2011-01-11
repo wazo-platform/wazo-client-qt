@@ -135,8 +135,9 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
 {
     int row = modelindex.row();
     int column = modelindex.column();
-
     QString id = modelindex.sibling(row, 0).data().toString();
+    QString c_eventfield = m_ctp->eventfield(column);
+
 //     for(int y = 2 ; y < 10 ; y++)
 //         qDebug() << y << modelindex.sibling(row, y).data() << m_ctp->eventfield(y) << m_ctp->title(y);
 
@@ -150,8 +151,6 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
 //     QString agentnames = modelindex.sibling(row, 8).data().toString();
 //     QString recordstatus = modelindex.sibling(row, 9).data().toString();
     QString callrecordtag = modelindex.sibling(row, 10).data().toString();
-
-    QString c_eventfield = m_ctp->eventfield(column);
 
     // if (m_lastPressed & Qt::LeftButton)
     if (m_lastPressed & Qt::RightButton) {
@@ -210,26 +209,36 @@ void XletRecords::onViewDoubleClick(const QModelIndex & modelindex)
     int row = modelindex.row();
     int column = modelindex.column();
     QString id = modelindex.sibling(row, 0).data().toString();
+    QString c_eventfield = m_ctp->eventfield(column);
+
     QString startdate = modelindex.sibling(row, 1).data().toString();
     QString xx = modelindex.sibling(row, 5).data().toString();
 
     if (m_lastPressed & Qt::LeftButton) {
-        QMenu * menu = new QMenu(this);
-        QAction * action1 = new QAction(tr("Tzzzz call %1 (%2)")
-                                        .arg(xx).arg(startdate), menu);
-        QAction * action2 = new QAction(tr("Change comment"), menu);
-        action1->setProperty("id", id);
-        action2->setProperty("id", id);
-        //     connect(action, SIGNAL(triggered(bool)),
-        //             parentWidget(), SLOT(openConfRoom()));
-        //     connect(action, SIGNAL(triggered(bool)),
-        //             parentWidget(), SLOT(phoneConfRoom()));
-        menu->addAction(action1);
-        menu->addAction(action2);
-        menu->exec(QCursor::pos());
-        delete action1;
-        delete action2;
-        delete menu;
+        if (c_eventfield != "callrecordcomment") {
+            QMenu * menu = new QMenu(this);
+            QAction * action1 = new QAction(tr("Tzzzz call %1 (%2)")
+                                            .arg(xx).arg(startdate), menu);
+            QAction * action2 = new QAction(tr("Change comment"), menu);
+            QAction * action3 = new QAction(tr("Change tag"), menu);
+            action1->setProperty("id", id);
+            action2->setProperty("id", id);
+            action2->setProperty("action", "changecomment");
+            action3->setProperty("id", id);
+            action3->setProperty("action", "changetag");
+            //     connect(action, SIGNAL(triggered(bool)),
+            //             parentWidget(), SLOT(openConfRoom()));
+            //     connect(action, SIGNAL(triggered(bool)),
+            //             parentWidget(), SLOT(phoneConfRoom()));
+            menu->addAction(action1);
+            menu->addAction(action2);
+            menu->addAction(action3);
+            menu->exec(QCursor::pos());
+            delete action1;
+            delete action2;
+            delete action3;
+            delete menu;
+        }
     }
 }
 
