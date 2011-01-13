@@ -102,6 +102,18 @@ QString CommonTableProperties::xivotype(int index) const
     return m_properties.value("columns").toList()[index].toMap().value("xivotype").toString();
 }
 
+void CommonTableProperties::setTooltipCallBack(QString (* tooltip_cb)(const QModelIndex &, void *),
+                                               void * tooltip_xlet)
+{
+    m_tooltip_cb = tooltip_cb;
+    m_tooltip_xlet = tooltip_xlet;
+}
+
+QString CommonTableProperties::tooltip(const QModelIndex & modelindex) const
+{
+    return m_tooltip_cb(modelindex, m_tooltip_xlet);
+}
+
 //
 // CommonTableModel class
 //
@@ -184,6 +196,11 @@ bool CommonTableModel::setData(const QModelIndex & modelindex, const QVariant & 
     return false;
 }
 
+QString CommonTableModel::tooltip(const QModelIndex & modelindex) const
+{
+    return m_fieldoptions->tooltip(modelindex);
+}
+
 QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
 {
     QVariant ret = QVariant();
@@ -195,11 +212,7 @@ QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
         ret = Qt::AlignCenter;
         break;
     case Qt::ToolTipRole:
-        ret = QString("%1\n"
-                      "%2 : %3")
-            .arg(modelindex.sibling(row, 2).data().toString())
-            .arg("svi entries")
-            .arg(modelindex.sibling(row, 12).data().toString());
+        ret = tooltip(modelindex);
         break;
     case Qt::EditRole:
     case Qt::DisplayRole:
@@ -214,10 +227,10 @@ QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
         if ((qttype == QVariant::String) || (qttype == QVariant::Int))
             ret = b_engine->eV(request);
         else if (qttype == QVariant::DateTime) {
-            uint ii = int(b_engine->eV(request).toDouble());
-            QDateTime qdt = QDateTime::fromTime_t(ii);
+            uint idate = int(b_engine->eV(request).toDouble());
+            QDateTime qdt = QDateTime::fromTime_t(idate);
             if (role == Qt::UserRole)
-                ret = ii;
+                ret = idate;
             else
                 ret = qdt.toString();
         }
@@ -244,6 +257,7 @@ void CommonTableModel::sort(int column, Qt::SortOrder order)
 {
     QVariant::Type qttype = m_fieldoptions->qttype(column);
     int nrows = rowCount(QModelIndex());
+    int idcolumn = 0;
 
     struct {
         static bool s_ascending(const QPair<int, QString> &a,
@@ -267,7 +281,7 @@ void CommonTableModel::sort(int column, Qt::SortOrder order)
     if (qttype == QVariant::String) {
         QList<QPair<int, QString> > toSort;
         for (int i = 0; i < nrows; i++) {
-            toSort.append(QPair<int, QString>(index(i, 0).data(Qt::UserRole).toInt(),
+            toSort.append(QPair<int, QString>(index(i, idcolumn).data(Qt::UserRole).toInt(),
                                               index(i, column).data(Qt::UserRole).toString()));
         }
         qSort(toSort.begin(), toSort.end(),
@@ -282,7 +296,7 @@ void CommonTableModel::sort(int column, Qt::SortOrder order)
                (qttype == QVariant::Int)) {
         QList<QPair<int, int> > toSort;
         for (int i = 0; i < nrows; i++) {
-            toSort.append(QPair<int, int>(index(i, 0).data(Qt::UserRole).toInt(),
+            toSort.append(QPair<int, int>(index(i, idcolumn).data(Qt::UserRole).toInt(),
                                           index(i, column).data(Qt::UserRole).toInt()));
         }
         qSort(toSort.begin(), toSort.end(),
@@ -306,6 +320,7 @@ CommonTableView::CommonTableView(QWidget * parent,
                                  CommonTableModel * model)
     : QTableView(parent)
 {
+    int idcolumn = 0;
     setSortingEnabled(true);
     setModel(model);
     setShowGrid(model->displayOptionShowGrid());
@@ -316,7 +331,8 @@ CommonTableView::CommonTableView(QWidget * parent,
     setStyleSheet("CommonTableView {" + model->displayOptionStyleSheet() + "}");
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
-    // hideColumn(0);
+    hideColumn(idcolumn);
+    // sortByColumn(0);
 
     connect(this, SIGNAL(signalMousePressEvent(QMouseEvent *)),
             parentxlet, SLOT(mousePressEvent(QMouseEvent *)));
@@ -329,20 +345,19 @@ CommonTableView::CommonTableView(QWidget * parent,
 void CommonTableView::selectionChanged(const QItemSelection & selected,
                                        const QItemSelection & deselected)
 {
-    QList<QModelIndex> mil;
-    mil.clear();
+    m_modelindexlist.clear();
     int prevrow = -1;
+    int columntomatch = 1; // XXX first unhidden column actually
     foreach (QModelIndex qmi, QAbstractItemView::selectedIndexes()) {
-        if (qmi.column() == 0) {
-            mil.append(qmi);
+        if (qmi.column() == columntomatch) {
+            m_modelindexlist.append(qmi);
             prevrow = qmi.row();
         }
     }
-    qDebug() << Q_FUNC_INFO << "selected" << mil << mil.count();
     QAbstractItemView::selectionChanged(selected, deselected);
 }
 
-void CommonTableView::mousePressEvent(QMouseEvent *event)
+void CommonTableView::mousePressEvent(QMouseEvent * event)
 {
     emit signalMousePressEvent(event);
     QTableView::mousePressEvent(event);

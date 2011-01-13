@@ -79,6 +79,7 @@ XletRecords::XletRecords(QWidget *parent)
     m_ctp->addColumn(tr("SVI e"), "svientries", QVariant::String, "id");
     m_ctp->addColumn(tr("SVI v"), "svivariables", QVariant::String, "id");
     m_ctp->addColumn(tr("SVI c"), "svichoices", QVariant::String, "id");
+    m_ctp->setTooltipCallBack(XletRecords::tooltip_t, this);
     CommonTableWidget * el = new CommonTableWidget(m_ctp, this);
     m_xletLayout->addWidget(el);
 
@@ -90,6 +91,17 @@ XletRecords::XletRecords(QWidget *parent)
 XletRecords::~XletRecords()
 {
     qDebug() << Q_FUNC_INFO;
+}
+
+QString XletRecords::tooltip(const QModelIndex & modelindex)
+{
+    int row = modelindex.row();
+    int column = modelindex.column();
+
+    return QString("%1\n"
+                   "svi entries : %2")
+        .arg(modelindex.sibling(row, 2).data().toString())
+        .arg(modelindex.sibling(row, 12).data().toString());
 }
 
 void XletRecords::recordResults(const QVariantMap & p)
@@ -131,7 +143,8 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
 {
     int row = modelindex.row();
     int column = modelindex.column();
-    QString id = modelindex.sibling(row, 0).data().toString();
+    int idcolumn = 0;
+    QString id = modelindex.sibling(row, idcolumn).data().toString();
     QString c_eventfield = m_ctp->eventfield(column);
 
 //     for(int y = 2 ; y < 10 ; y++)
@@ -190,16 +203,6 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
     }
 }
 
-void XletRecords::changeTag()
-{
-    QVariantMap command;
-    command["class"] = "records-campaign";
-    command["function"] = "tag";
-    command["id"] = sender()->property("id").toString();
-    command["tag"] = sender()->property("tag").toString();
-    b_engine->sendJsonCommand(command);
-}
-
 void XletRecords::onViewDoubleClick(const QModelIndex & modelindex)
 {
     int row = modelindex.row();
@@ -238,6 +241,16 @@ void XletRecords::onViewDoubleClick(const QModelIndex & modelindex)
     }
 }
 
+void XletRecords::changeTag()
+{
+    QVariantMap command;
+    command["class"] = "records-campaign";
+    command["function"] = "tag";
+    command["id"] = sender()->property("id").toString();
+    command["tag"] = sender()->property("tag").toString();
+    b_engine->sendJsonCommand(command);
+}
+
 SearchWidget::SearchWidget(QWidget * parent)
     : QWidget(parent)
 {
@@ -268,6 +281,10 @@ SearchWidget::SearchWidget(QWidget * parent)
     connect(addbutton, SIGNAL(clicked()),
             this, SLOT(AddSearchField()));
 }
+
+
+
+
 
 SearchWidget::~SearchWidget()
 {
@@ -368,15 +385,6 @@ ResultsWidget::ResultsWidget(QWidget * parent)
     m_summary = new QLabel(this);
     summarylayout->addWidget(m_summary);
     summarylayout->addStretch(true);
-//     QLabel * resperpage = new QLabel(this);
-//     summarylayout->addWidget(resperpage);
-//     resperpage->setText("N results / page");
-//     QPushButton * prev = new QPushButton(this);
-//     summarylayout->addWidget(prev);
-//     prev->setText("<");
-//     QPushButton * next = new QPushButton(this);
-//     summarylayout->addWidget(next);
-//     next->setText(">");
 
     resultslayout->addLayout(summarylayout);
 

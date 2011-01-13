@@ -51,7 +51,10 @@ class XletRecords : public XLet
         ~XletRecords();
         void recordResults(const QVariantMap &);
         static void recordResults_t(const QVariantMap & p, void * udata) {
-                ((XletRecords*)udata)->recordResults(p);
+                ((XletRecords *) udata)->recordResults(p);
+        };
+        static QString tooltip_t(const QModelIndex & modelindex, void * xlet) {
+                return ((XletRecords *) xlet)->tooltip(modelindex);
         };
 
     signals:
@@ -62,6 +65,8 @@ class XletRecords : public XLet
         void mousePressEvent(QMouseEvent *);
         void changeTag();
     private:
+        QString tooltip(const QModelIndex &);
+
         int m_lastPressed;
 
         QVBoxLayout * m_xletLayout;

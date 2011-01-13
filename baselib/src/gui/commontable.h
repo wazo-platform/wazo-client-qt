@@ -66,12 +66,18 @@ class CommonTableProperties
         QVariant::Type qttype(int) const;
         QString xivotype(int) const;
 
+        void setTooltipCallBack(QString (*cb)(const QModelIndex &, void *),
+                                void *);
+        QString tooltip(const QModelIndex &) const;
+
         void addColumn(const QString &,
                        const QString &,
                        const QVariant::Type &,
                        const QString &);
     private:
         QVariantMap m_properties;
+        QString (* m_tooltip_cb)(const QModelIndex &, void *);
+        void * m_tooltip_xlet;
 };
 
 class CommonTableModel : public QAbstractTableModel
@@ -93,6 +99,7 @@ class CommonTableModel : public QAbstractTableModel
         void sort(int, Qt::SortOrder);
         int rowCount(const QModelIndex &) const;
         int columnCount(const QModelIndex &) const;
+        QString tooltip(const QModelIndex &) const;
         bool setData(const QModelIndex &, const QVariant &, int);
         QVariant data(const QModelIndex &, int) const;
         QVariant headerData(int, Qt::Orientation, int) const;
@@ -108,9 +115,7 @@ class CommonTableView : public QTableView
     Q_OBJECT
 
     public:
-        CommonTableView(QWidget * parent,
-                        XLet * parentxlet,
-                        CommonTableModel * model);
+        CommonTableView(QWidget *, XLet *, CommonTableModel *);
         ~CommonTableView() {};
     signals:
         void signalMousePressEvent(QMouseEvent *);
@@ -118,6 +123,8 @@ class CommonTableView : public QTableView
         void selectionChanged(const QItemSelection &,
                               const QItemSelection &);
         void mousePressEvent(QMouseEvent *event);
+    private:
+        QList<QModelIndex> m_modelindexlist;
 };
 
 class CommonTableWidget : public QWidget
