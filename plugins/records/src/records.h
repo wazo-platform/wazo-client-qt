@@ -65,15 +65,13 @@ class XletRecords : public XLet
         int m_lastPressed;
 
         QVBoxLayout * m_xletLayout;
-        QLabel * m_titlewidget;
-        QFrame * m_qhline1;
-        QFrame * m_qhline2;
+        QFrame * m_qhline;
+
         SearchWidget * m_searchwidget;
+
         ResultsWidget * m_resultswidget;
         CommonTableProperties * m_ctp;
         QVariantMap m_tags;
-
-        void clientrequest();
 };
 
 class XLetRecordsPlugin : public QObject, XLetInterface
@@ -90,11 +88,20 @@ class SearchWidget : public QWidget
     public:
         SearchWidget(QWidget *parent=0);
         ~SearchWidget();
+
     private:
-        QComboBox * m_researchkind;
-        QLineEdit * m_searchwidget;
+        void DrawSearchFields();
+        int m_nfilterlines;
+
+        QGridLayout * m_searchlayout;
+        QList<QComboBox *> m_researchkind;
+        QList<QLineEdit *> m_searchwidget;
+        QList<QPushButton *> m_removebutton;
+
     private slots:
-        void lookup();
+        void Lookup();
+        void AddSearchField();
+        void RemoveSearchField();
 };
 
 class ResultsWidget : public QWidget

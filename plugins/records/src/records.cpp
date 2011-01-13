@@ -48,23 +48,14 @@ XletRecords::XletRecords(QWidget *parent)
     setTitle(tr("Records Management"));
 
     m_xletLayout = new QVBoxLayout(this);
-    m_xletLayout->setSpacing(0);
-
-    m_titlewidget = new QLabel(this);
-    m_xletLayout->addWidget(m_titlewidget);
-    m_titlewidget->setText("title zone");
-    m_titlewidget->setAlignment(Qt::AlignHCenter);
-
-    m_qhline1 = new QFrame(this);
-    m_qhline1->setFrameShape(QFrame::HLine);
-    m_xletLayout->addWidget(m_qhline1);
+    // m_xletLayout->setSpacing(0);
 
     m_searchwidget = new SearchWidget(this);
     m_xletLayout->addWidget(m_searchwidget);
 
-    m_qhline2 = new QFrame(this);
-    m_qhline2->setFrameShape(QFrame::HLine);
-    m_xletLayout->addWidget(m_qhline2);
+    m_qhline = new QFrame(this);
+    m_qhline->setFrameShape(QFrame::HLine);
+    m_xletLayout->addWidget(m_qhline);
 
     m_resultswidget = new ResultsWidget(this);
     m_xletLayout->addWidget(m_resultswidget);
@@ -75,14 +66,14 @@ XletRecords::XletRecords(QWidget *parent)
     // last item : should define : editable or not, in tooltip or not, hidden or not ...
     m_ctp->addColumn(tr("ID"), "id", QVariant::Int, "id");
     m_ctp->addColumn(tr("Start Date"), "callstart", QVariant::DateTime, "id");
-    m_ctp->addColumn(tr("Filename"), "filename", QVariant::String, "id");
     m_ctp->addColumn(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
+    m_ctp->addColumn(tr("Filename"), "filename", QVariant::String, "id");
     m_ctp->addColumn(tr("Duration"), "callduration", QVariant::Int, "id");
     m_ctp->addColumn(tr("Direction"), "direction", QVariant::String, "id");
     m_ctp->addColumn(tr("CallerIdNum"), "calleridnum", QVariant::String, "id");
     m_ctp->addColumn(tr("Queues"), "queuenames", QVariant::String, "id");
     m_ctp->addColumn(tr("Agents"), "agentnames", QVariant::String, "id");
-    m_ctp->addColumn(tr("RecStatus"), "recordstatus", QVariant::String, "id");
+    // m_ctp->addColumn(tr("RecStatus"), "recordstatus", QVariant::String, "id");
     m_ctp->addColumn(tr("Tag"), "callrecordtag", QVariant::String, "id");
     m_ctp->addColumn(tr("Comment"), "callrecordcomment", QVariant::String, "edit");
     m_ctp->addColumn(tr("SVI e"), "svientries", QVariant::String, "id");
@@ -101,14 +92,6 @@ XletRecords::~XletRecords()
     qDebug() << Q_FUNC_INFO;
 }
 
-void XletRecords::clientrequest()
-{
-    QVariantMap command;
-    command["class"] = "records-campaign";
-    command["function"] = "search";
-    b_engine->sendJsonCommand(command);
-}
-
 void XletRecords::recordResults(const QVariantMap & p)
 {
     QString function = p.value("function").toString();
@@ -123,6 +106,10 @@ void XletRecords::recordResults(const QVariantMap & p)
     } else if (function == "getprops") {
         m_tags = p.value("tags").toMap();
         m_tags.remove("notag");
+    } else {
+        QString id = p.value("id").toString();
+        QString returncode = p.value("returncode").toString();
+        qDebug() << function << id << returncode;
     }
 }
 
@@ -245,38 +232,32 @@ void XletRecords::onViewDoubleClick(const QModelIndex & modelindex)
 SearchWidget::SearchWidget(QWidget * parent)
     : QWidget(parent)
 {
-    QHBoxLayout * searchlayout = new QHBoxLayout(this);
-    searchlayout->setSpacing(0);
+    m_searchlayout = new QGridLayout(this);
+    // m_searchlayout->setSpacing(0);
+    // m_searchlayout->setMargin(0);
 
     // fetch last
 
-    QLabel * ll = new QLabel(this);
-    QPushButton * add = new QPushButton(this);
-    m_researchkind = new QComboBox(this);
-    m_searchwidget = new QLineEdit(this);
-    QPushButton * remove = new QPushButton(this);
+    QLabel * filterstitle = new QLabel(this);
+    QPushButton * addbutton = new QPushButton(this);
     QPushButton * requestwidget = new QPushButton(this);
     // "clear" button
 
-    searchlayout->addWidget(ll);
-    searchlayout->addWidget(add);
-    searchlayout->addWidget(m_researchkind);
-    searchlayout->addWidget(m_searchwidget);
-    searchlayout->addWidget(remove);
-    searchlayout->addWidget(requestwidget);
+    m_nfilterlines = 0;
+    AddSearchField();
 
-    ll->setText("filter");
-    m_researchkind->addItem(tr("Agent"));
-    m_researchkind->addItem(tr("Queue"));
-    m_researchkind->addItem(tr("Skill"));
-    m_researchkind->addItem(tr("Direction"));
-    m_searchwidget->setText("");
-    remove->setText("-");
-    add->setText("+");
-    requestwidget->setText("lookup");
+    m_searchlayout->addWidget(filterstitle, 0, 0);
+    m_searchlayout->addWidget(addbutton, 0, 1);
+    m_searchlayout->addWidget(requestwidget, 0, 5);
+
+    filterstitle->setText(tr("Search Filter(s)"));
+    addbutton->setIcon(QIcon(":/images/add.png"));
+    requestwidget->setText(tr("Lookup"));
 
     connect(requestwidget, SIGNAL(clicked()),
-            this, SLOT(lookup()));
+            this, SLOT(Lookup()));
+    connect(addbutton, SIGNAL(clicked()),
+            this, SLOT(AddSearchField()));
 }
 
 SearchWidget::~SearchWidget()
@@ -284,18 +265,74 @@ SearchWidget::~SearchWidget()
     qDebug() << Q_FUNC_INFO;
 }
 
-void SearchWidget::lookup()
+void SearchWidget::DrawSearchFields()
 {
-    qDebug() << Q_FUNC_INFO << m_searchwidget->text() << m_researchkind->currentIndex();
+    for(int z = 0 ; z < m_nfilterlines ; z++) {
+        m_searchlayout->addWidget(m_researchkind[z], z, 2);
+        m_searchlayout->addWidget(m_searchwidget[z], z, 3);
+        m_searchlayout->addWidget(m_removebutton[z], z, 4);
+        m_removebutton[z]->setProperty("linenumber", z);
+    }
+}
+
+void SearchWidget::AddSearchField()
+{
+    if (m_nfilterlines < 10) {
+        int linenumber = m_nfilterlines;
+        QComboBox * qc = new QComboBox(this);
+        QLineEdit * ql = new QLineEdit(this);
+        QPushButton * qp = new QPushButton(this);
+        m_researchkind << qc;
+        m_searchwidget << ql;
+        m_removebutton << qp;
+
+        m_researchkind[linenumber]->addItem(tr("Agent"));
+        m_researchkind[linenumber]->addItem(tr("Queue"));
+        m_researchkind[linenumber]->addItem(tr("Skill"));
+        m_researchkind[linenumber]->addItem(tr("Direction"));
+        m_searchwidget[linenumber]->setText("");
+        m_removebutton[linenumber]->setText("-");
+
+        connect(m_removebutton[linenumber], SIGNAL(clicked()),
+                this, SLOT(RemoveSearchField()));
+
+        m_nfilterlines ++;
+        DrawSearchFields();
+    }
+}
+
+void SearchWidget::RemoveSearchField()
+{
+    if (m_nfilterlines > 1) {
+        int linenumber = sender()->property("linenumber").toInt();
+        disconnect(m_removebutton[linenumber], SIGNAL(clicked()),
+                   this, SLOT(RemoveSearchField()));
+        delete m_researchkind[linenumber];
+        delete m_searchwidget[linenumber];
+        delete m_removebutton[linenumber];
+        m_researchkind.removeAt(linenumber);
+        m_searchwidget.removeAt(linenumber);
+        m_removebutton.removeAt(linenumber);
+        m_nfilterlines --;
+        DrawSearchFields();
+    }
+}
+
+void SearchWidget::Lookup()
+{
+    // qDebug() << Q_FUNC_INFO << m_searchwidget[0]->text() << m_researchkind[0]->currentIndex();
+
     QVariantMap command;
     command["class"] = "records-campaign";
     command["function"] = "search";
 
     QVariantList searchitems;
-    QVariantMap searchitem;
-    searchitem["searchkind"] = m_researchkind->currentIndex();
-    searchitem["searchfield"] = m_searchwidget->text();
-    searchitems << searchitem;
+    for(int z = 0 ; z < m_nfilterlines ; z ++) {
+        QVariantMap searchitem;
+        searchitem["searchkind"] = m_researchkind[z]->currentIndex();
+        searchitem["searchfield"] = m_searchwidget[z]->text();
+        searchitems << searchitem;
+    }
     command["searchitems"] = searchitems;
     b_engine->sendJsonCommand(command);
 
@@ -310,23 +347,23 @@ ResultsWidget::ResultsWidget(QWidget * parent)
     : QWidget(parent)
 {
     QVBoxLayout * resultslayout = new QVBoxLayout(this);
-    resultslayout->setSpacing(0);
+    // resultslayout->setSpacing(0);
 
     QHBoxLayout * summarylayout = new QHBoxLayout(this);
-    summarylayout->setSpacing(0);
+    // summarylayout->setSpacing(0);
 
     m_summary = new QLabel(this);
     summarylayout->addWidget(m_summary);
     summarylayout->addStretch(true);
-    QLabel * resperpage = new QLabel(this);
-    summarylayout->addWidget(resperpage);
-    resperpage->setText("N results / page");
-    QPushButton * prev = new QPushButton(this);
-    summarylayout->addWidget(prev);
-    prev->setText("<");
-    QPushButton * next = new QPushButton(this);
-    summarylayout->addWidget(next);
-    next->setText(">");
+//     QLabel * resperpage = new QLabel(this);
+//     summarylayout->addWidget(resperpage);
+//     resperpage->setText("N results / page");
+//     QPushButton * prev = new QPushButton(this);
+//     summarylayout->addWidget(prev);
+//     prev->setText("<");
+//     QPushButton * next = new QPushButton(this);
+//     summarylayout->addWidget(next);
+//     next->setText(">");
 
     resultslayout->addLayout(summarylayout);
 
@@ -340,15 +377,6 @@ ResultsWidget::~ResultsWidget()
 
 void ResultsWidget::update()
 {
-    m_summary->setText(QString("%1 results").arg(666));
+    qDebug() << Q_FUNC_INFO;
+    m_summary->setText(tr("Results : %1 found").arg(666));
 }
-
-
-// QString id = this->sender()->property("id").toString();
-// QString action = this->sender()->property("action").toString();
-
-// QVariantMap command;
-// command["class"] = "records-campaign";
-// command["function"] = action;
-// command["id"] = id;
-// b_engine->sendJsonCommand(command);
