@@ -59,8 +59,8 @@ XletRecords::XletRecords(QWidget *parent)
 
     m_resultswidget = new ResultsWidget(this);
     m_xletLayout->addWidget(m_resultswidget);
-    connect(this, SIGNAL(update()),
-            m_resultswidget, SLOT(update()));
+    connect(this, SIGNAL(update(int)),
+            m_resultswidget, SLOT(update(int)));
 
     m_ctp = new CommonTableProperties("records");
     // last item : should define : editable or not, in tooltip or not, hidden or not ...
@@ -97,19 +97,28 @@ void XletRecords::recordResults(const QVariantMap & p)
     QString function = p.value("function").toString();
     if (function == "search") {
         QVariantList qvl = p.value("payload").toList();
-        // b_engine->tree()->rmPath("records");
+        b_engine->tree()->rmPath("records");
+        b_engine->tree()->populate("records", QVariantMap());
         foreach (QVariant r, qvl) {
             QString id = r.toMap().value("id").toString();
             b_engine->tree()->populate(QString("records/%1").arg(id), r.toMap());
         }
-        emit update();
+        emit update(qvl.size());
     } else if (function == "getprops") {
         m_tags = p.value("tags").toMap();
         m_tags.remove("notag");
-    } else {
+    } else if (function == "tag") {
         QString id = p.value("id").toString();
         QString returncode = p.value("returncode").toString();
         qDebug() << function << id << returncode;
+        if (returncode == "ok")
+            m_searchwidget->Lookup();
+    } else if (function == "comment") {
+        QString id = p.value("id").toString();
+        QString returncode = p.value("returncode").toString();
+        qDebug() << function << id << returncode;
+    } else {
+        qDebug() << function << p;
     }
 }
 
@@ -295,6 +304,8 @@ void SearchWidget::AddSearchField()
 
         connect(m_removebutton[linenumber], SIGNAL(clicked()),
                 this, SLOT(RemoveSearchField()));
+        connect(m_searchwidget[linenumber], SIGNAL(returnPressed()),
+                this, SLOT(Lookup()));
 
         m_nfilterlines ++;
         DrawSearchFields();
@@ -307,6 +318,8 @@ void SearchWidget::RemoveSearchField()
         int linenumber = sender()->property("linenumber").toInt();
         disconnect(m_removebutton[linenumber], SIGNAL(clicked()),
                    this, SLOT(RemoveSearchField()));
+        disconnect(m_searchwidget[linenumber], SIGNAL(returnPressed()),
+                   this, SLOT(Lookup()));
         delete m_researchkind[linenumber];
         delete m_searchwidget[linenumber];
         delete m_removebutton[linenumber];
@@ -320,7 +333,7 @@ void SearchWidget::RemoveSearchField()
 
 void SearchWidget::Lookup()
 {
-    // qDebug() << Q_FUNC_INFO << m_searchwidget[0]->text() << m_researchkind[0]->currentIndex();
+    // qDebug() << Q_FUNC_INFO << sender();
 
     QVariantMap command;
     command["class"] = "records-campaign";
@@ -367,7 +380,7 @@ ResultsWidget::ResultsWidget(QWidget * parent)
 
     resultslayout->addLayout(summarylayout);
 
-    update();
+    update(0);
 }
 
 ResultsWidget::~ResultsWidget()
@@ -375,8 +388,8 @@ ResultsWidget::~ResultsWidget()
     qDebug() << Q_FUNC_INFO;
 }
 
-void ResultsWidget::update()
+void ResultsWidget::update(int nresults)
 {
     qDebug() << Q_FUNC_INFO;
-    m_summary->setText(tr("Results : %1 found").arg(666));
+    m_summary->setText(tr("Results : %1 found").arg(nresults));
 }

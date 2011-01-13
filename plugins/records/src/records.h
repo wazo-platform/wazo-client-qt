@@ -55,7 +55,7 @@ class XletRecords : public XLet
         };
 
     signals:
-        void update();
+        void update(int);
     private slots:
         void onViewClick(const QModelIndex &);
         void onViewDoubleClick(const QModelIndex &);
@@ -98,8 +98,9 @@ class SearchWidget : public QWidget
         QList<QLineEdit *> m_searchwidget;
         QList<QPushButton *> m_removebutton;
 
-    private slots:
+    public slots:
         void Lookup();
+    private slots:
         void AddSearchField();
         void RemoveSearchField();
 };
@@ -111,7 +112,7 @@ class ResultsWidget : public QWidget
         ResultsWidget(QWidget * parent = 0);
         ~ResultsWidget();
     private slots:
-        void update();
+        void update(int);
     private:
         QLabel * m_summary;
 };
