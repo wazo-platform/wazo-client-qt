@@ -91,6 +91,8 @@ class CommonTableModel : public QAbstractTableModel
         int displayOptionShowGrid() const;
         QString displayOptionStyleSheet() const;
 
+    signals:
+        void setDataEdit(const QModelIndex &, const QVariant &);
     private slots:
         void mylistChange(const QString &, DStoreEvent);
     protected:
@@ -106,7 +108,7 @@ class CommonTableModel : public QAbstractTableModel
         Qt::ItemFlags flags(const QModelIndex &) const;
 
         QMap<int, QString> m_row2id;
-        QVariantMap m_myList;
+        QStringList m_myList;
         const CommonTableProperties * m_fieldoptions;
 };
 

@@ -90,7 +90,7 @@ XletRecords::XletRecords(QWidget *parent)
 
 XletRecords::~XletRecords()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
 }
 
 QString XletRecords::tooltip(const QModelIndex & modelindex)
@@ -122,16 +122,32 @@ void XletRecords::recordResults(const QVariantMap & p)
     } else if (function == "tag") {
         QString id = p.value("id").toString();
         QString returncode = p.value("returncode").toString();
-        qDebug() << function << id << returncode;
         if (returncode == "ok")
             m_searchwidget->Lookup();
     } else if (function == "comment") {
         QString id = p.value("id").toString();
         QString returncode = p.value("returncode").toString();
-        qDebug() << function << id << returncode;
+        if (returncode == "ok")
+            m_searchwidget->Lookup();
     } else {
         qDebug() << function << p;
     }
+}
+
+void XletRecords::setDataEdit(const QModelIndex & modelindex,
+                              const QVariant & value)
+{
+    int row = modelindex.row();
+    int column = modelindex.column();
+    int idcolumn = 0;
+    int truerow = modelindex.sibling(row, idcolumn).data().toInt();
+
+    QVariantMap command;
+    command["class"] = "records-campaign";
+    command["function"] = "comment";
+    command["id"] = truerow;
+    command["comment"] = value.toString();
+    b_engine->sendJsonCommand(command);
 }
 
 void XletRecords::mousePressEvent(QMouseEvent * event)
@@ -393,11 +409,11 @@ ResultsWidget::ResultsWidget(QWidget * parent)
 
 ResultsWidget::~ResultsWidget()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
 }
 
 void ResultsWidget::update(int nresults)
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     m_summary->setText(tr("Results : %1 found").arg(nresults));
 }

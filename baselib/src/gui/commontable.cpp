@@ -146,10 +146,11 @@ void CommonTableModel::timerEvent(QTimerEvent *)
 
 void CommonTableModel::mylistChange(const QString &, DStoreEvent)
 {
-    m_myList = b_engine->eVM(m_fieldoptions->treebase());
-    int row = 0;
+    m_myList = b_engine->eVM(m_fieldoptions->treebase()).keys();
+    m_row2id.clear();
     if (m_myList.size() != m_row2id.size()) {
-        foreach(QString myId, m_myList.keys()) {
+        int row = 0;
+        foreach(QString myId, m_myList) {
             m_row2id.insert(row++, myId);
         }
     }
@@ -176,22 +177,22 @@ int CommonTableModel::columnCount(const QModelIndex &) const
     return m_fieldoptions->ncolumns();
 }
 
-bool CommonTableModel::setData(const QModelIndex & modelindex, const QVariant & value, int)
+bool CommonTableModel::setData(const QModelIndex & modelindex, const QVariant & value, int /*role*/)
 {
     int row = modelindex.row();
     int column = modelindex.column();
-    if (m_row2id.contains(row))
-        row = m_row2id[row].toInt();
-    QString eventfield = m_fieldoptions->eventfield(column);
-    QString request = QString("%1/%2/%3").arg(m_fieldoptions->treebase()).arg(row).arg(eventfield);
-    b_engine->tree()->populate(request, value);
+    int idcolumn = 0;
+    int truerow = modelindex.sibling(row, idcolumn).data().toInt();
 
-    QVariantMap command;
-    command["class"] = "records-campaign";
-    command["function"] = "comment";
-    command["id"] = row;
-    command["comment"] = value.toString();
-    b_engine->sendJsonCommand(command);
+    // it is important to make modelindex used before proceeding, since the order will change
+    // afterwards
+    emit setDataEdit(modelindex, value);
+
+    // these lines are not compulsory for the value to be taken into account,
+    // but they make the user interaction a little bit friendlier
+    QString eventfield = m_fieldoptions->eventfield(column);
+    QString request = QString("%1/%2/%3").arg(m_fieldoptions->treebase()).arg(truerow).arg(eventfield);
+    b_engine->tree()->populate(request, value);
 
     return false;
 }
@@ -331,7 +332,7 @@ CommonTableView::CommonTableView(QWidget * parent,
     setStyleSheet("CommonTableView {" + model->displayOptionStyleSheet() + "}");
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
-    hideColumn(idcolumn);
+    // hideColumn(idcolumn);
     // sortByColumn(0);
 
     connect(this, SIGNAL(signalMousePressEvent(QMouseEvent *)),
@@ -340,6 +341,8 @@ CommonTableView::CommonTableView(QWidget * parent,
             parentxlet, SLOT(onViewClick(const QModelIndex &)));
     connect(this, SIGNAL(doubleClicked(const QModelIndex &)),
             parentxlet, SLOT(onViewDoubleClick(const QModelIndex &)));
+    connect(model, SIGNAL(setDataEdit(const QModelIndex &, const QVariant &)),
+            parentxlet, SLOT(setDataEdit(const QModelIndex &, const QVariant &)));
 }
 
 void CommonTableView::selectionChanged(const QItemSelection & selected,

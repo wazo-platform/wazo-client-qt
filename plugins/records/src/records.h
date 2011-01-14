@@ -59,6 +59,8 @@ class XletRecords : public XLet
 
     signals:
         void update(int);
+    public slots:
+        void setDataEdit(const QModelIndex &, const QVariant &);
     private slots:
         void onViewClick(const QModelIndex &);
         void onViewDoubleClick(const QModelIndex &);
