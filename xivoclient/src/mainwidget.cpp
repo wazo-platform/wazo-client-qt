@@ -930,8 +930,10 @@ void MainWidget::about()
 #elif defined(Q_WS_MAC)
         "macos"
 #endif
-        "/" + __xivo_version__ + ">" + tr("last one") + "</a>";
+        "/" + __xivo_version__ + ">" + tr("Fetch the last one") + "</a>";
     QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
+    QString gitdate_qs(__git_date__);
+    QString gitdate(QDateTime::fromTime_t(gitdate_qs.toUInt()).toString());
 
     // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
     QMessageBox::about(this,
@@ -941,23 +943,22 @@ void MainWidget::about()
                           "complete the XiVO telephony system, by providing computer tools, "
                           "such as customer information display, directory searches, or various "
                           "supervision 'X-lets' for call centers.") +
-                       "<p>"
-                       "<b>" + tr("Version : ") + QString("</b>%1 (").arg(applicationVersion) +
-                       "<b>git : " + QString("</b>%1 - %2)<br>").arg(__rcs_version__,
-                                                                     fetchlastone) +
-                       "(" + tr("Application Built on : ") + datebuild + ")"
+                       "<p>" +
+                       tr("<u>Version Information</u>") + "<br>" +
+                       tr("Major : <b>%1</b> (XiVO branch)").arg(applicationVersion) + "<br>" +
+                       tr("Minor : git hash <b>%1</b> from : %2").arg(__git_hash__).arg(gitdate) + "<br>" +
+                       fetchlastone + "<br>" +
                        "<br>" +
-                       "(" + tr("Application Launched on : ") + m_launchDateTime.toString() + ")"
-                       "<br>" +
-                       "(" + tr("Config File Location : ") + m_settings->fileName() + ")" +
-                       "<hr>"
+                       tr("(Application Built on : %1)").arg(datebuild) + "<br>" +
+                       tr("(Application Launched on : %1)").arg(m_launchDateTime.toString()) + "<br>" +
+                       tr("(Config File Location : %1)").arg(m_settings->fileName()) + "<hr>" +
                        "Copyright (C) 2007-2011 <a href=http://www.proformatique.com><b>Proformatique</b></a>"
                        "<br>"
-                       "10 bis, rue Lucien VOILIN 92800 Puteaux FRANCE"
+                       "10 bis rue Lucien Voilin - 92800 Puteaux - FRANCE"
                        "<p>"
                        "<b>" + tr("E-mail : ") + "</b><a href=mailto:technique@proformatique.com>technique@proformatique.com</a><br>"
                        "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
-                       "<b>" + tr("Authors : ") + "</b>Proformatique Development Team" +
+                       "<b>" + tr("Authors : ") + "</b>" + tr("Proformatique Development Team") +
                        "<hr>"
                        "<b>" + tr("License : ") + "</b>" +
                        "<a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GNU General Public License v3</a><br>"

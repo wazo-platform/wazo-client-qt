@@ -35,5 +35,6 @@
 
 const char __datebuild_client__[] = DATEBUILD;
 const char __xivo_version__[] = XIVOVER;
-const char __rcs_version__[] = GITVER;
+const char __git_hash__[] = GIT_HASH;
+const char __git_date__[] = GIT_DATE;
 const char __nopresence__[] = "nopresence";

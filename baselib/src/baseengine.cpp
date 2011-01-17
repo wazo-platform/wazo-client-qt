@@ -224,7 +224,8 @@ void BaseEngine::saveSettings()
     }
 
     m_settings->setValue("version/xivo", __xivo_version__);
-    m_settings->setValue("version/rcs", __rcs_version__);
+    m_settings->setValue("version/git_hash", __git_hash__);
+    m_settings->setValue("version/git_date", __git_date__);
     m_settings->setValue("display/systrayed", m_systrayed);
 
     m_settings->beginGroup(m_profilename_write);
@@ -644,7 +645,8 @@ void BaseEngine::ctiSocketConnected()
     command["ident"] = m_clientid;
     command["version"] = "9999";
     command["xivoversion"] = __xivo_version__;
-    command["rcsversion"] = __rcs_version__;
+    command["git_hash"] = __git_hash__;
+    command["git_date"] = __git_date__;
     // for debuging purposes :
     command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
     command["lastlogout-datetime"] = m_settings->value("lastlogout/datetime").toString();
@@ -1555,11 +1557,11 @@ void BaseEngine::popupError(const QString & errorid)
         if (versionslist.size() >= 2) {
             errormsg = tr("Your client version (%1) is too old for this server.\n"
                           "Please upgrade it to %2 at least.")
-                .arg(__rcs_version__)
+                .arg(__git_hash__)
                 .arg(versionslist[1]);
         } else {
             errormsg = tr("Your client version (%1) is too old for this server.\n"
-                          "Please upgrade it.").arg(__rcs_version__);
+                          "Please upgrade it.").arg(__git_hash__);
         }
     } else if (errorid.startsWith("xivoversion_client:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
@@ -1575,7 +1577,7 @@ void BaseEngine::popupError(const QString & errorid)
             errormsg = tr("Your server version (%1) is too old for this client.\n"
                           "Please upgrade it to %2 at least.")
                 .arg(versionslist[0])
-                .arg(__rcs_version__);
+                .arg(__git_hash__);
         } else {
             errormsg = tr("Your server version (%1) is too old for this client.\n"
                           "Please upgrade it.").arg(versionslist[0]);

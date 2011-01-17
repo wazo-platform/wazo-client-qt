@@ -1,6 +1,8 @@
 XIVOVER = 1.1
-GITVER = to_fill
-GITDATE = to_fill
+GIT_HASH = to_fill
+GIT_DATE = to_fill
+GIT_HASH = afafafa
+GIT_DATE = 1234567890
 
 DATEBUILD = $$system(LANG= date +%Y-%m-%dT%H:%M:%S)
 SERVER_VERSION_REQUIRED = 5650
@@ -20,15 +22,15 @@ isEmpty( DATEBUILD ) {
 # }
 
 !build_pass:message('XiVO version    :' $${XIVOVER})
-!build_pass:message('git commit hash :' $${GITVER})
-!build_pass:message('git commit date :' $${GITDATE})
+!build_pass:message('git commit hash :' $${GIT_HASH})
+!build_pass:message('git commit date :' $${GIT_DATE})
 !build_pass:message('build date      :' $${DATEBUILD})
 
 # add everything correctly escaped as a string
 
 QMAKE_CXXFLAGS += -DXIVOVER=\"\\\"$${XIVOVER}\\\"\"
-QMAKE_CXXFLAGS += -DGITVER=\"\\\"$${GITVER}\\\"\"
-QMAKE_CXXFLAGS += -DGITDATE=\"\\\"$${GITDATE}\\\"\"
+QMAKE_CXXFLAGS += -DGIT_HASH=\"\\\"$${GIT_HASH}\\\"\"
+QMAKE_CXXFLAGS += -DGIT_DATE=\"\\\"$${GIT_DATE}\\\"\"
 QMAKE_CXXFLAGS += -DDATEBUILD=\"\\\"$${DATEBUILD}\\\"\"
 
 # regenerate qm when needed
