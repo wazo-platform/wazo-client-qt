@@ -430,12 +430,12 @@ que celles ci-dessous) en première page</translation>
         <translation>&amp;Répertoire</translation>
     </message>
     <message>
-        <location filename="../common/built-in-xlet/directorypanel.cpp" line="155"/>
+        <location filename="../common/built-in-xlet/directorypanel.cpp" line="154"/>
         <source>Double-click to call</source>
         <translation>Double-cliquer pour appeler</translation>
     </message>
     <message>
-        <location filename="../common/built-in-xlet/directorypanel.cpp" line="153"/>
+        <location filename="../common/built-in-xlet/directorypanel.cpp" line="152"/>
         <source>Double-click to send an E-mail to</source>
         <translation>Double-cliquer pour envoyer un E-mail à</translation>
     </message>
@@ -574,7 +574,7 @@ a été envoyé à %2.</translation>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="src/mainwidget.cpp" line="941"/>
+        <location filename="src/mainwidget.cpp" line="942"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>Les applications CTI XiVO, une fois connectées au serveur adéquat, complètent le système téléphonique XiVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
@@ -589,17 +589,17 @@ a été envoyé à %2.</translation>
         <translation>A propos de &amp;XiVO Client</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="949"/>
         <source>Advised Server Version : </source>
-        <translation>Version Conseillée du Serveur : </translation>
+        <translation type="obsolete">Version Conseillée du Serveur : </translation>
     </message>
     <message>
         <location filename="src/mainwidget.cpp" line="953"/>
-        <source>Application Launched on : </source>
-        <translation>Application Lancée le : </translation>
+        <source>(Application Launched on : %1)</source>
+        <oldsource>Application Launched on : </oldsource>
+        <translation>(Application Lancée le : %1)</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="963"/>
+        <location filename="src/mainwidget.cpp" line="961"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
@@ -634,7 +634,7 @@ a été envoyé à %2.</translation>
         <translation>Se connecter au serveur</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="699"/>
+        <location filename="src/mainwidget.cpp" line="698"/>
         <source>Connected</source>
         <translation>Connecté</translation>
     </message>
@@ -649,7 +649,7 @@ a été envoyé à %2.</translation>
         <translation>Se déconnecter du serveur</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="791"/>
+        <location filename="src/mainwidget.cpp" line="790"/>
         <source>Disconnected</source>
         <translation>Déconnecté</translation>
     </message>
@@ -674,7 +674,7 @@ a été envoyé à %2.</translation>
         <translation>Sortir l&apos;application de la zone de notification système</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="965"/>
+        <location filename="src/mainwidget.cpp" line="963"/>
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
@@ -714,17 +714,15 @@ a été envoyé à %2.</translation>
         <translation>&amp;Minimiser</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="946"/>
         <source>Version : </source>
-        <translation>Version : </translation>
+        <translation type="obsolete">Version : </translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="934"/>
         <source>last one</source>
-        <translation>dernière</translation>
+        <translation type="obsolete">dernière</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="967"/>
+        <location filename="src/mainwidget.cpp" line="965"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>avec une exception particulière vous permettant de le lier avec OpenSSL, sous certaines conditions.</translation>
     </message>
@@ -754,7 +752,42 @@ a été envoyé à %2.</translation>
         <translation>XiVO CTI Erreur</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="973"/>
+        <location filename="src/mainwidget.cpp" line="933"/>
+        <source>Fetch the last one</source>
+        <translation>Récupérer la dernière</translation>
+    </message>
+    <message>
+        <location filename="src/mainwidget.cpp" line="947"/>
+        <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
+        <translation>&lt;u&gt;Information de Version&lt;/u&gt;</translation>
+    </message>
+    <message>
+        <location filename="src/mainwidget.cpp" line="948"/>
+        <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
+        <translation>Majeure : &lt;b&gt;%1&lt;/b&gt; (branche XiVO)</translation>
+    </message>
+    <message>
+        <location filename="src/mainwidget.cpp" line="949"/>
+        <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
+        <translation>Mineure : hash git &lt;b&gt;%1&lt;/b&gt; du : %2</translation>
+    </message>
+    <message>
+        <location filename="src/mainwidget.cpp" line="952"/>
+        <source>(Application Built on : %1)</source>
+        <translation>(Application Construite le : %1)</translation>
+    </message>
+    <message>
+        <location filename="src/mainwidget.cpp" line="954"/>
+        <source>(Config File Location : %1)</source>
+        <translation>(Fichier de Configuration : %1)</translation>
+    </message>
+    <message>
+        <location filename="src/mainwidget.cpp" line="961"/>
+        <source>Proformatique Development Team</source>
+        <translation>Equipe de Développement Proformatique</translation>
+    </message>
+    <message>
+        <location filename="src/mainwidget.cpp" line="971"/>
         <source>Credits</source>
         <translation>Crédits</translation>
     </message>
@@ -764,29 +797,27 @@ a été envoyé à %2.</translation>
         <translation>Client (profil %1)</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="939"/>
+        <location filename="src/mainwidget.cpp" line="940"/>
         <source>About XiVO Client</source>
         <translation>A propos de XiVO Client</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="955"/>
         <source>Config File Location : </source>
-        <translation>Fichier de Configuration :</translation>
+        <translation type="obsolete">Fichier de Configuration :</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="961"/>
+        <location filename="src/mainwidget.cpp" line="959"/>
         <source>E-mail : </source>
         <translation>E-mail : </translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="962"/>
+        <location filename="src/mainwidget.cpp" line="960"/>
         <source>Phone : </source>
         <translation>Téléphone : </translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="951"/>
         <source>Application Built on : </source>
-        <translation>Application Construite le : </translation>
+        <translation type="obsolete">Application Construite le : </translation>
     </message>
 </context>
 <context>
