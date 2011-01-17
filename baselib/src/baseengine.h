@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -341,8 +341,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_sessionid;            //!< Session id obtained after a successful login
         QString m_clientid;             //!< Client Identifier
         QString m_forced_state;         //!< Forced state sent by the server
-        int m_version_server;           //!< Version issued by the server after a successful login
-        QString m_xivover_server;       //!< Server's XiVO version
 
         // Status variables
         EngineState m_state;            //!< State of the engine (Logged/Not Logged)
