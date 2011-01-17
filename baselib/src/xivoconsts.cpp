@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -33,8 +33,7 @@
 
 #include "xivoconsts.h"
 
-BASELIB_EXPORT extern const int REQUIRED_SERVER_VERSION = SERVER_VERSION_REQUIRED;
-const char __current_client_version__[] = SVNVER;
 const char __datebuild_client__[] = DATEBUILD;
 const char __xivo_version__[] = XIVOVER;
+const char __rcs_version__[] = GITVER;
 const char __nopresence__[] = "nopresence";

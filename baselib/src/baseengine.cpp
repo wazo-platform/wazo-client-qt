@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -224,7 +224,7 @@ void BaseEngine::saveSettings()
     }
 
     m_settings->setValue("version/xivo", __xivo_version__);
-    m_settings->setValue("version/svn", __current_client_version__);
+    m_settings->setValue("version/rcs", __rcs_version__);
     m_settings->setValue("display/systrayed", m_systrayed);
 
     m_settings->beginGroup(m_profilename_write);
@@ -642,8 +642,9 @@ void BaseEngine::ctiSocketConnected()
     command["userid"] = m_userid;
     command["company"] = m_company;
     command["ident"] = m_clientid;
-    command["version"] = __current_client_version__;
+    command["version"] = "9999";
     command["xivoversion"] = __xivo_version__;
+    command["rcsversion"] = __rcs_version__;
     // for debuging purposes :
     command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
     command["lastlogout-datetime"] = m_settings->value("lastlogout/datetime").toString();
@@ -1292,23 +1293,14 @@ void BaseEngine::parseCommand(const QString &line)
             qDebug() << Q_FUNC_INFO << thisclass << "not yet supported";
 
         } else if (thisclass == "login_id_ok") {
-
-            m_version_server = datamap["version"].toInt();
-            m_xivover_server = datamap["xivoversion"].toString();
-
-            if (m_version_server < REQUIRED_SERVER_VERSION) {
-                stop();
-                popupError(QString("version_server:%1;%2").arg(m_version_server).arg(REQUIRED_SERVER_VERSION));
-            } else {
-                QString tohash = datamap["sessionid"].toString() + ":" + m_password;
-                QCryptographicHash hidepass(QCryptographicHash::Sha1);
-                QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
-                QVariantMap command;
-                command["class"] = "login_pass";
-                command["direction"] = "xivoserver";
-                command["hashedpassword"] = QString(res);
-                sendJsonCommand(command);
-            }
+            QString tohash = datamap.value("sessionid").toString() + ":" + m_password;
+            QCryptographicHash hidepass(QCryptographicHash::Sha1);
+            QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
+            QVariantMap command;
+            command["class"] = "login_pass";
+            command["direction"] = "xivoserver";
+            command["hashedpassword"] = QString(res);
+            sendJsonCommand(command);
 
         } else if (thisclass == "loginko") {
             stop();
@@ -1563,11 +1555,11 @@ void BaseEngine::popupError(const QString & errorid)
         if (versionslist.size() >= 2) {
             errormsg = tr("Your client version (%1) is too old for this server.\n"
                           "Please upgrade it to %2 at least.")
-                .arg(__current_client_version__)
+                .arg(__rcs_version__)
                 .arg(versionslist[1]);
         } else {
             errormsg = tr("Your client version (%1) is too old for this server.\n"
-                          "Please upgrade it.").arg(__current_client_version__);
+                          "Please upgrade it.").arg(__rcs_version__);
         }
     } else if (errorid.startsWith("xivoversion_client:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
@@ -1583,7 +1575,7 @@ void BaseEngine::popupError(const QString & errorid)
             errormsg = tr("Your server version (%1) is too old for this client.\n"
                           "Please upgrade it to %2 at least.")
                 .arg(versionslist[0])
-                .arg(__current_client_version__);
+                .arg(__rcs_version__);
         } else {
             errormsg = tr("Your server version (%1) is too old for this client.\n"
                           "Please upgrade it.").arg(versionslist[0]);

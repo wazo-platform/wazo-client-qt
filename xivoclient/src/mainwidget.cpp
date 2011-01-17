@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -943,23 +943,21 @@ void MainWidget::about()
                           "supervision 'X-lets' for call centers.") +
                        "<p>"
                        "<b>" + tr("Version : ") + QString("</b>%1 (").arg(applicationVersion) +
-                       "<b>svn : " + QString("</b>%1 - %2)<br>").arg(__current_client_version__,
+                       "<b>git : " + QString("</b>%1 - %2)<br>").arg(__rcs_version__,
                                                                      fetchlastone) +
-                       "(" + tr("Advised Server Version : ") + QString::number(SERVER_VERSION_REQUIRED) + ")"
-                       "<br>" +
                        "(" + tr("Application Built on : ") + datebuild + ")"
                        "<br>" +
                        "(" + tr("Application Launched on : ") + m_launchDateTime.toString() + ")"
                        "<br>" +
                        "(" + tr("Config File Location : ") + m_settings->fileName() + ")" +
                        "<hr>"
-                       "Copyright (C) 2007-2010 <a href=http://www.proformatique.com><b>Proformatique</b></a>"
+                       "Copyright (C) 2007-2011 <a href=http://www.proformatique.com><b>Proformatique</b></a>"
                        "<br>"
                        "10 bis, rue Lucien VOILIN 92800 Puteaux FRANCE"
                        "<p>"
                        "<b>" + tr("E-mail : ") + "</b><a href=mailto:technique@proformatique.com>technique@proformatique.com</a><br>"
                        "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
-                       "<b>" + tr("Authors : ") + "</b>Ralph Aug&eacute;, Thomas Bernard, Corentin Le Gall" +
+                       "<b>" + tr("Authors : ") + "</b>Proformatique Development Team" +
                        "<hr>"
                        "<b>" + tr("License : ") + "</b>" +
                        "<a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GNU General Public License v3</a><br>"
