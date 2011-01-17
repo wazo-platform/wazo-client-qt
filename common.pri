@@ -1,8 +1,6 @@
 XIVOVER = 1.1
 GIT_HASH = to_fill
 GIT_DATE = to_fill
-GIT_HASH = afafafa
-GIT_DATE = 1234567890
 
 DATEBUILD = $$system(LANG= date +%Y-%m-%dT%H:%M:%S)
 SERVER_VERSION_REQUIRED = 5650
