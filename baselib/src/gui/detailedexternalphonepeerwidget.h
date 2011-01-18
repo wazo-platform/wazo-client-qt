@@ -65,4 +65,3 @@ class BASELIB_EXPORT DetailedExternalPhonePeerWidget : public BasePeerWidget
 };
 
 #endif
-

@@ -45,7 +45,9 @@ class BASELIB_EXPORT ExternalPhoneDialog : public QDialog
     Q_OBJECT
 
     public:
-        ExternalPhoneDialog(QWidget *parent=0,const QString &number="",const QString &label="");
+        ExternalPhoneDialog(QWidget * parent = 0,
+                            const QString & label = "",
+                            const QString & number = "");
 
         QString label() const { return m_label->text(); };  //! return text label
         QString number() const { return m_number->text(); };  //! return phone number text
