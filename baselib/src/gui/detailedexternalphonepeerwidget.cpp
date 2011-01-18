@@ -98,7 +98,7 @@ void DetailedExternalPhonePeerWidget::setText(const QString & text)
  */
 void DetailedExternalPhonePeerWidget::edit()
 {
-    ExternalPhoneDialog dialog(this, m_number, m_textlbl->text());
+    ExternalPhoneDialog dialog(this, m_textlbl->text(), m_number);
     if(dialog.exec()){
         if(!dialog.number().isEmpty()){
             m_number = dialog.number();
@@ -109,4 +109,3 @@ void DetailedExternalPhonePeerWidget::edit()
             setText(dialog.label());
     }
 }
-

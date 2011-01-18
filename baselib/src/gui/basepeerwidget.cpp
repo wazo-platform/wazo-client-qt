@@ -60,7 +60,6 @@ BasePeerWidget::BasePeerWidget(UserInfo *ui)
                 ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
     }
 
-
     m_removeAction = new QAction(tr("&Remove"), this);
     m_removeAction->setStatusTip(tr("Remove this peer from the panel"));
     connect(m_removeAction, SIGNAL(triggered()),
@@ -71,12 +70,10 @@ BasePeerWidget::BasePeerWidget(UserInfo *ui)
     connect(m_renameAction, SIGNAL(triggered()),
             this, SLOT(rename()));
 
-
     m_interceptAction = new QAction(tr("&Intercept"), this);
     m_interceptAction->setStatusTip(tr("Intercept call"));
     connect(m_interceptAction, SIGNAL(triggered()),
             this, SLOT(intercept2()));
-
 
     m_maxWidthWanted = 200;
     if (b_engine->enabledFunction("switchboard")) {
@@ -87,7 +84,6 @@ BasePeerWidget::BasePeerWidget(UserInfo *ui)
     }
     setMaximumWidth(m_maxWidthWanted);
     setAcceptDrops(true);
-
 }
 
 void BasePeerWidget::reloadSavedName()
@@ -244,13 +240,13 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
         const UserInfo *ui = b_engine->getXivoClientUser();
         if (ui && !ui->phonelist().isEmpty()) {
             foreach (const QString phone, ui->phonelist()) {
-                const PhoneInfo *pi = ui->getPhoneInfo(phone);
-                const QMap<QString, QVariant> & comms = pi->comms();
+                const PhoneInfo * pi = ui->getPhoneInfo(phone);
+                const QVariantMap & comms = pi->comms();
                 //qDebug() << pi->phoneid() << pi->comms();
                 foreach (const QString ts, comms.keys()) {
-                    const QMap<QString, QVariant> & comm = comms[ts].toMap();
+                    const QVariantMap & comm = comms.value(ts).toMap();
                     //qDebug() << pi->phoneid() << ts << comm;
-                    const QString status = comm["status"].toString();
+                    const QString status = comm.value("status").toString();
                     if (status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED) {
                         QString to;
                         if (m_ui) {
@@ -260,7 +256,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                         }
                         // Initiate an indirect transfer.
                         b_engine->actionCall("atxfer",
-                                             "chan:special:me:" + comm["thischannel"].toString(),
+                                             "chan:special:me:" + comm.value("thischannel").toString(),
                                              to);
                         return;
                     }
@@ -274,12 +270,12 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                 const QMap<QString, QVariant> & comms = pi->comms();
                 //qDebug() << pi->phoneid() << pi->comms();
                 foreach (const QString ts, comms.keys()) {
-                    const QMap<QString, QVariant> & comm = comms[ts].toMap();
+                    const QMap<QString, QVariant> & comm = comms.value(ts).toMap();
                     //qDebug() << pi->phoneid() << ts << comm;
-                    const QString status = comm["status"].toString();
+                    const QString status = comm.value("status").toString();
                     if (status == CHAN_STATUS_RINGING) {
                         b_engine->actionCall("transfer",
-                                             "chan:" + m_ui->userid() + ":" + comm["peerchannel"].toString(),
+                                             "chan:" + m_ui->userid() + ":" + comm.value("peerchannel").toString(),
                                              "user:special:me");
                         return;
                     }
@@ -431,15 +427,15 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
             const QMap<QString, QVariant> &comms = pi->comms();
 
             foreach (const QString ts, comms.keys()) {
-                const QMap<QString, QVariant> & comm = comms[ts].toMap();
+                const QMap<QString, QVariant> & comm = comms.value(ts).toMap();
                 //qDebug() << Q_FUNC_INFO << pi->phoneid() << ts << comm;
-                const QString status = comm["status"].toString();
-                QString text = comm["calleridnum"].toString();
+                const QString status = comm.value("status").toString();
+                QString text = comm.value("calleridnum").toString();
 
                 if ((comm.contains("calleridname") &&
-                    (comm["calleridname"] != comm["calleridnum"]))) {
+                     (comm.value("calleridname") != comm.value("calleridnum")))) {
                     text.append(" : ");
-                    text.append(comm["calleridname"].toString());
+                    text.append(comm.value("calleridname").toString());
                 }
 
                 /* hanging up others communication doesn't make much sense
@@ -455,28 +451,30 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                     build.aQActionMenu((hangupMenu) ? hangupMenu : &contextMenu,
                                         commsCount > 1 ? text : tr("&Hangup"),
                                         tr("Hangup this communication"),
-                                        comm["thischannel"],
-                                        comm["peerchannel"],
+                                       comm.value("thischannel"),
+                                       comm.value("peerchannel"),
                                         this, SLOT(hangup()));
                 }
                 if ((m_ui != ui) &&
                     ((status == CHAN_STATUS_RINGING) ||
                      (status == CHAN_STATUS_LINKED_CALLER) ||
                      (status == CHAN_STATUS_LINKED_CALLED)) &&
-                     (comm["calleridnum"] != QString("<parked>")) &&
-                     (comm["calleridname"] != QString("<parked>")) &&
+                    (comm.value("calleridnum") != QString("<parked>")) &&
+                    (comm.value("calleridname") != QString("<parked>")) &&
                      (b_engine->enabledFunction("switchboard"))) {
+
+                    qDebug() << Q_FUNC_INFO << interceptMenu << commsCount;
 
                     if (!interceptMenu && (commsCount > 1)) {
                         interceptMenu = new QMenu(tr("&Intercept"), &contextMenu);
                     }
 
                     build.aQActionMenu((interceptMenu)?interceptMenu:&contextMenu,
-                                        commsCount > 1 ? text : tr("&Intercept"),
-                                        tr("Intercept this communication"),
-                                        comm["thischannel"],
-                                        comm["peerchannel"],
-                                        this, SLOT(intercept()));
+                                       commsCount > 1 ? text : tr("&Intercept"),
+                                       tr("Intercept this communication"),
+                                       comm.value("thischannel"),
+                                       comm.value("peerchannel"),
+                                       this, SLOT(intercept()));
                 }
                 /* Parking doesn't make much sense here : people usually park their
                  * correspondants, not someone random on the switchboard */
@@ -491,8 +489,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                     build.aQActionMenu(parkMenu?parkMenu:&contextMenu,
                                        commsCount > 1 ? text : tr("&Park"),
                                        tr("Park this call"),
-                                       comm["thischannel"],
-                                       comm["peerchannel"],
+                                       comm.value("thischannel"),
+                                       comm.value("peerchannel"),
                                        this, SLOT(parkcall()));
                 }
             }
@@ -502,24 +500,25 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     //qDebug() << m_ui->userid() << ui;
     if (ui && ui != m_ui) {
         int commsCount = ui->commsCount();    // number of current comms
+        qDebug() << Q_FUNC_INFO << "commsCount" << commsCount;
         foreach (const QString phone, ui->phonelist()) {
             const PhoneInfo *pi = ui->getPhoneInfo(phone);
             if (!pi) {
                 continue;
             }
             const QMap<QString, QVariant> & comms = pi->comms();
-            //qDebug() << pi->phoneid() << pi->comms();
+            // qDebug() << Q_FUNC_INFO << pi->phoneid() << pi->comms();
             foreach (const QString ts, comms.keys()) {
-                const QMap<QString, QVariant> & comm = comms[ts].toMap();
+                const QMap<QString, QVariant> & comm = comms.value(ts).toMap();
                 qDebug() << Q_FUNC_INFO << "my comms : " << pi->phoneid() << ts << comm;
-                const QString status = comm["status"].toString();
-                QString calleridnum = comm["calleridnum"].toString();
+                const QString status = comm.value("status").toString();
+                QString calleridnum = comm.value("calleridnum").toString();
                 QString calleridname = calleridnum;
                 QString text = calleridnum;
 
                 if (comm.contains("calleridname") &&
-                    comm["calleridname"] != calleridnum) {
-                    calleridname = comm["calleridname"].toString();
+                    comm.value("calleridname") != calleridnum) {
+                    calleridname = comm.value("calleridname").toString();
                     text.append(" : ");
                     text.append(calleridname);
                 }
@@ -541,8 +540,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                         transferAction = new QAction(tr("Direct &Transfer"), &contextMenu);
                         transferAction->setStatusTip(tr("Transfer to this person"));
                     }
-                    transferAction->setProperty("thischannel", comm["thischannel"]);
-                    transferAction->setProperty("peerchannel", comm["peerchannel"]);
+                    transferAction->setProperty("thischannel", comm.value("thischannel"));
+                    transferAction->setProperty("peerchannel", comm.value("peerchannel"));
                     connect(transferAction, SIGNAL(triggered()),
                              this, SLOT(transfer()));
                     if (transferMenu) {
@@ -564,8 +563,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                         itransferAction = new QAction(tr("&Indirect Transfer"), &contextMenu);
                         itransferAction->setStatusTip(tr("Transfer to this person"));
                     }
-                    itransferAction->setProperty("thischannel", comm["thischannel"]);
-                    itransferAction->setProperty("peerchannel", comm["peerchannel"]);
+                    itransferAction->setProperty("thischannel", comm.value("thischannel"));
+                    itransferAction->setProperty("peerchannel", comm.value("peerchannel"));
                     connect(itransferAction, SIGNAL(triggered()),
                             this, SLOT(itransfer()));
                     if (itransferMenu) {
@@ -586,8 +585,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                         vmtransferAction = new QAction(tr("Transfer to &voice mail"), &contextMenu);
                         vmtransferAction->setStatusTip(tr("Transfer to voice mail"));
                     }
-                    vmtransferAction->setProperty("thischannel", comm["thischannel"]);
-                    vmtransferAction->setProperty("peerchannel", comm["peerchannel"]);
+                    vmtransferAction->setProperty("thischannel", comm.value("thischannel"));
+                    vmtransferAction->setProperty("peerchannel", comm.value("peerchannel"));
                     connect(vmtransferAction, SIGNAL(triggered()),
                              this, SLOT(vmtransfer()));
                     if (vmtransferMenu) {

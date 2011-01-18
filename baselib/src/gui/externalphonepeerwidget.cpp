@@ -91,7 +91,7 @@ void ExternalPhonePeerWidget::paintEvent(QPaintEvent * /*event*/)
  */
 void ExternalPhonePeerWidget::edit()
 {
-    ExternalPhoneDialog dialog(this,m_number, m_text);
+    ExternalPhoneDialog dialog(this, m_text, m_number);
     if(dialog.exec()) {
         if(!dialog.number().isEmpty())
             m_number = dialog.number();

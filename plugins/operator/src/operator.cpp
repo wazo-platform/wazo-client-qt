@@ -167,7 +167,7 @@ void XletOperator::clicked()
 void XletOperator::dtransfer()
 {
     if (m_callchannels.contains(m_currentchannel)) {
-        qDebug() << Q_FUNC_INFO << "Direct   Transfer" << m_currentchannel;
+        // qDebug() << Q_FUNC_INFO << "Direct Transfer" << m_currentchannel;
         if (m_linestatuses[m_currentchannel] == WDTransfer) {
             m_tnums[m_currentchannel]->hide();
             m_statuses[m_currentchannel]->setFocus();
@@ -189,7 +189,7 @@ void XletOperator::dtransfer()
 void XletOperator::itransfer()
 {
     if (m_callchannels.contains(m_currentchannel)) {
-        qDebug() << Q_FUNC_INFO << "Indirect Transfer" << m_currentchannel;
+        // qDebug() << Q_FUNC_INFO << "Indirect Transfer" << m_currentchannel;
         if (m_linestatuses[m_currentchannel] == WITransfer) {
             m_tnums[m_currentchannel]->hide();
             m_statuses[m_currentchannel]->setFocus();
