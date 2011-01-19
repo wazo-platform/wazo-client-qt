@@ -74,28 +74,14 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
              << popup->callAstid() << popup->callContext()
              << popup->callUniqueid() << popup->callChannel();
     if(popup->sheetpopup()) {
-        Popup *already_popup = NULL;
-        foreach(Popup *mpopup, m_popups)
-            if ( (mpopup->callAstid() == popup->callAstid()) &&
-                 (mpopup->callContext() == popup->callContext()) &&
-                 (mpopup->callUniqueid() == popup->callUniqueid()) ) {
-                already_popup = mpopup;
-                break;
-            }
-        if(already_popup) {
-            qDebug() << Q_FUNC_INFO << "found a match for"
-                     << popup->callAstid() << popup->callContext() << popup->callUniqueid();
-            already_popup->update(popup->sheetlines());
-        } else {
-            QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm:ss");
-            quint32 index = m_tabs->addTab(popup, currentTimeStr);
-            qDebug() << Q_FUNC_INFO << "added tab" << index;
-            m_popups.append(popup);
-            m_tabs->setCurrentIndex(index);
-            if (index >= m_tablimit)
-                // close the first widget
-                m_tabs->removeTab(0);
-        }
+        // removed the "already_popup" stuff, since it is already handled in displayFiche()
+        QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm:ss");
+        quint32 index = m_tabs->addTab(popup, currentTimeStr);
+        qDebug() << Q_FUNC_INFO << "added tab" << index;
+        m_tabs->setCurrentIndex(index);
+        if (index >= m_tablimit)
+            // close the first widget
+            m_tabs->removeTab(0);
 
         // no need to focus if there is no sheet popup
         if(popup->focus())
@@ -105,7 +91,7 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
     // tells the main widget that a new popup has arrived here
     if(popup->systraypopup())
         opt += "s";
-    newPopup(popup->messagetitle(), popup->message(), opt);
+    emit newPopup(popup->messagetitle(), popup->message(), opt);
     // set this widget to be the current tab in XiVO Client
     emit showWidgetOnTop(this);
 }
@@ -123,9 +109,11 @@ void CustomerInfoPanel::popupDestroyed(QObject * obj)
 
 void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, const QString & id)
 {
+    Popup * popup = NULL;
     for(int i = m_popups.size() - 1; i >= 0; i --) {
         if(id == m_popups[i]->id()) {
             qDebug() << Q_FUNC_INFO << "fiche id already there" << i << id;
+            popup = m_popups[i];
             break;
         }
     }
@@ -134,17 +122,22 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
     inputstream->open(QIODevice::ReadWrite);
     inputstream->write(fichecontent.toUtf8());
     inputstream->close();
+
     // Get Data and Popup the profile if ok
-    Popup *popup = new Popup(m_autourl_allowed);
-    popup->setId(id);
-    connect(popup, SIGNAL(destroyed(QObject *)),
-            this, SLOT(popupDestroyed(QObject *)));
-    connect(popup, SIGNAL(wantsToBeShown(Popup *)),
-            this, SLOT(showNewProfile(Popup *)));
-    connect(popup, SIGNAL(actionFromPopup(const QString &, const QVariant &)),
-            this, SLOT(actionFromPopup(const QString &, const QVariant &)));
-    connect(popup, SIGNAL(newRemarkSubmitted(const QString &, const QString &)),
-            b_engine, SLOT(sendNewRemark(const QString &, const QString &)));
+    if (popup == NULL) {
+        popup = new Popup(m_autourl_allowed);
+        m_popups.append(popup);
+        popup->setId(id);
+        connect(popup, SIGNAL(destroyed(QObject *)),
+                this, SLOT(popupDestroyed(QObject *)));
+        connect(popup, SIGNAL(wantsToBeShown(Popup *)),
+                this, SLOT(showNewProfile(Popup *)));
+        connect(popup, SIGNAL(actionFromPopup(const QString &, const QVariant &)),
+                this, SLOT(actionFromPopup(const QString &, const QVariant &)));
+        connect(popup, SIGNAL(newRemarkSubmitted(const QString &, const QString &)),
+                b_engine, SLOT(sendNewRemark(const QString &, const QString &)));
+    }
+
     popup->feed(inputstream, qtui);
 }
 
