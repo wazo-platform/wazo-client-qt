@@ -12,7 +12,7 @@ HRESULT AutoWrap(int autoType, VARIANT *pvResult, IDispatch *pDisp, LPOLESTR ptN
     va_list marker;
     va_start(marker, cArgs);
 
-    if(!pDisp) {
+    if(! pDisp) {
         qDebug() << "NULL IDispatch passed to AutoWrap()";
         return -1;
     }
@@ -220,28 +220,27 @@ COLApp::COLApp()
 {
 }
 
-bool COLApp::init() {
+bool COLApp::init()
+{
     // Initialize COM for this thread...
     HRESULT hr = CoInitialize(NULL);
     if(FAILED(hr)) {
-
-        qDebug() << "Unable to initialize COM?!?";
+        qDebug() << Q_FUNC_INFO << "Unable to initialize COM" << hr;
         return false;
     }
 
     // Get CLSID for our server...
-    hr = CLSIDFromProgID(L"Outlook.Application", &clsid);
+    hr = CLSIDFromProgID(L"Outlook.Application", & clsid);
 
     if(FAILED(hr)) {
-
-        qDebug() << "Are you sure outlook is installed on this station?!?";
+        qDebug() << Q_FUNC_INFO << "Outlook does not seem to be installed" << hr;
         return false;
     }
 
     // Start server and get IDispatch...
     hr = CoCreateInstance(clsid, NULL, CLSCTX_LOCAL_SERVER, IID_IDispatch, (void **)&m_pOutlookApp);
     if(FAILED(hr)) {
-        qDebug() << "Outlook is not registered properly";
+        qDebug() << Q_FUNC_INFO << "Outlook is not registered properly" << hr;
         return false;
     }
 

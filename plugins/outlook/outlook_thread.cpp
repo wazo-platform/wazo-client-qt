@@ -13,8 +13,8 @@ COLThread::COLThread() {
 COLThread::~COLThread() {
 }
 
-void COLThread::run() {
-
+void COLThread::run()
+{
     while ( !m_bStop ) {
         DWORD nStart = GetTickCount();
 
@@ -35,16 +35,17 @@ void COLThread::run() {
     }
 }
 
-bool COLThread::load_contacts_from_outlook(COLContacts & contacts) {
-    int nFolder=OL_FOLDER_CONTACTS;
+bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
+{
+    int nFolder = OL_FOLDER_CONTACTS;
     COLApp pApp;
-	
-    if ( !pApp.init() )
+
+    if ( ! pApp.init() )
         return false;
 
     COLNameSpace pNS = pApp.GetNamespace("MAPI");
-    if ( !pNS ) {
-        // bla bla bla
+    if ( ! pNS ) {
+        qDebug() << Q_FUNC_INFO << "could not get MAPI namespace";
         return false;
     }
 
