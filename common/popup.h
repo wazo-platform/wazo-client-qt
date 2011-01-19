@@ -155,7 +155,8 @@ class Popup: public QWidget
         QHash<QString, QPushButton *> m_form_buttons;
         QHash<QString, QString> m_remoteforms;
         QVariantMap m_timestamps;
-        RemarkArea *m_remarkarea;  //!< user editable area
+        RemarkArea * m_remarkarea;  //!< user editable area
+        int m_nfeeds;
         QString m_id;
 };
 
