@@ -149,7 +149,7 @@ class Popup: public QWidget
         bool m_toupdate;
         bool m_sheetui;
         int m_firstline;
-        QWidget *m_sheetui_widget;
+        QWidget * m_sheetui_widget;
         QStringList m_orders;
         QList<QStringList> m_sheetlines;
         QHash<QString, QPushButton *> m_form_buttons;

@@ -77,10 +77,11 @@ XletAgentsNext::XletAgentsNext(QWidget *parent)
 void XletAgentsNext::setGuiOptions(const QVariantMap &optionsMap)
 {
     if (optionsMap.contains("xlet.agentsnext.blinktime"))
-        m_blinktime = optionsMap["xlet.agentsnext.blinktime"].toInt();
-    if (optionsMap.contains("xlet.agentsnext.fontname") && optionsMap.contains("xlet.agentsnext.fontsize"))
-        m_gui_font = QFont(optionsMap["xlet.agentsnext.fontname"].toString(),
-                           optionsMap["xlet.agentsnext.fontsize"].toInt());
+        m_blinktime = optionsMap.value("xlet.agentsnext.blinktime").toInt();
+    if (optionsMap.contains("xlet.agentsnext.fontname") &&
+        optionsMap.contains("xlet.agentsnext.fontsize"))
+        m_gui_font = QFont(optionsMap.value("xlet.agentsnext.fontname").toString(),
+                           optionsMap.value("xlet.agentsnext.fontsize").toInt());
 
     // setFont(m_gui_font);
     foreach (QString groupid, m_title.keys())
@@ -222,14 +223,14 @@ void XletAgentsNext::setQueueGroups(const QVariant &groups)
     // qDebug() << Q_FUNC_INFO << groups;
     foreach (QString groupid, groups.toMap().keys()) {
         if (! m_title.contains(groupid)) {
-            m_title[groupid] = new ExtendedLabel(groups.toMap()[groupid].toMap()["label"].toString(), this);
+            m_title[groupid] = new ExtendedLabel(groups.toMap().value(groupid).toMap().value("label").toString(), this);
             m_title[groupid]->setProperty("groupid", groupid);
             m_title[groupid]->setAlignment(Qt::AlignCenter);
             connect( m_title[groupid], SIGNAL(context_menu(QContextMenuEvent *)),
                      this, SLOT(contextMenuEvent(QContextMenuEvent *)) );
         }
-        m_title[groupid]->setProperty("queues", groups.toMap()[groupid].toMap()["queues"].toStringList());
-        m_title[groupid]->setToolTip(groups.toMap()[groupid].toMap()["queues"].toStringList().join(", "));
+        m_title[groupid]->setProperty("queues", groups.toMap().value(groupid).toMap().value("queues").toStringList());
+        m_title[groupid]->setToolTip(groups.toMap().value(groupid).toMap().value("queues").toStringList().join(", "));
         int ix = m_title.keys().indexOf(groupid);
         m_title[groupid]->setStyleSheet("QLabel {background: #ffff80};");
         m_glayout->addWidget(m_title[groupid], 0, ix * NCOLS, 1, NCOLS, Qt::AlignCenter);
@@ -264,24 +265,24 @@ void XletAgentsNext::setAgentProps(const QString &idx)
     AgentInfo *ainfo = b_engine->agents()[agentid];
 
     QVariantMap properties = ainfo->properties();
-    QString agstatus = properties["agentstats"].toMap()["status"].toString();
-    QString phonenum = properties["agentstats"].toMap()["agent_phone_number"].toString();
-    QVariant queues = properties["queues_by_agent"];
+    QString agstatus = properties.value("agentstats").toMap().value("status").toString();
+    QString phonenum = properties.value("agentstats").toMap().value("agent_phone_number").toString();
+    QVariant queues = properties.value("queues_by_agent");
     m_agent_labels[idx]->setProperty("sorter", ainfo->fullname());
 
-    double statetime = properties["agentstats"].toMap()["Xivo-Agent-StateTime"].toDouble();
-    QVariantMap slink = properties["agentstats"].toMap()["Xivo-Agent-Status-Link"].toMap();
+    double statetime = properties.value("agentstats").toMap().value("Xivo-Agent-StateTime").toDouble();
+    QVariantMap slink = properties.value("agentstats").toMap().value("Xivo-Agent-Status-Link").toMap();
     bool link = false;
     bool isdid = false;
     bool isoutcall = false;
     QString queuename;
     if (! slink.isEmpty()) {
-        QString linkmode = slink["linkmode"].toString();
+        QString linkmode = slink.value("linkmode").toString();
         if ((linkmode == "phonelink") || (linkmode == "agentlink")) {
             link = true;
-            isdid = slink["did"].toBool();
-            isoutcall = slink["outcall"].toBool();
-            queuename = slink["linkqueue"].toString();
+            isdid = slink.value("did").toBool();
+            isoutcall = slink.value("outcall").toBool();
+            queuename = slink.value("linkqueue").toString();
         } else
             shouldNotOccur("XletAgentsNext::setAgentProps",
                            QString("slink: agentid %1 linkmode %2").arg(agentid).arg(linkmode));
@@ -338,17 +339,17 @@ void XletAgentsNext::setAgentProps(const QString &idx)
     QVariantMap qvm = queues.toMap();
     if (calldirection.isEmpty()) foreach (QString qname_group, groupqueues) {
         if (qvm.contains(qname_group)) {
-            QString pstatus = qvm[qname_group].toMap()["Paused"].toString();
+            QString pstatus = qvm.value(qname_group).toMap().value("Paused").toString();
             // qDebug() << idx << idxa << qname_group
-            // << qvm[qname_group].toMap()["Status"].toString()
-            // << qvm[qname_group].toMap()["Paused"].toString()
-            // << qvm[qname_group].toMap()["PausedTime"].toString();
+            // << qvm[qname_group].toMap().value("Status").toString()
+            // << qvm[qname_group].toMap().value("Paused").toString()
+            // << qvm[qname_group].toMap().value("PausedTime").toString();
             if (pstatus == "1") {
                 colorqss = "#ff8080";
 
                 QDateTime now = QDateTime::currentDateTime();
                 int d1 = b_engine->timeClient().secsTo(now);
-                double d2 = b_engine->timeServer() - qvm[qname_group].toMap()["Xivo-QueueMember-StateTime"].toDouble();
+                double d2 = b_engine->timeServer() - qvm.value(qname_group).toMap().value("Xivo-QueueMember-StateTime").toDouble();
                 doshowtime = true;
                 dsec = d1 + d2;
 
@@ -497,8 +498,8 @@ void XletAgentsNext::agentClicked(QMouseEvent *event)
         QLabel *q_name = new QLabel(ainfo->fullname(), this);
         QLabel *q_agentid = new QLabel(agentnumber, this);
 
-        QString nreceived = ainfo->properties()["agentstats"].toMap()["Xivo-ReceivedCalls"].toString();
-        QString nlost = ainfo->properties()["agentstats"].toMap()["Xivo-LostCalls"].toString();
+        QString nreceived = ainfo->properties().value("agentstats").toMap().value("Xivo-ReceivedCalls").toString();
+        QString nlost = ainfo->properties().value("agentstats").toMap().value("Xivo-LostCalls").toString();
         QLabel *q_received = new QLabel(tr("%1 calls received since connection").arg(nreceived), this);
         QLabel *q_lost = new QLabel(tr("%1 calls lost since connection").arg(nlost), this);
 
@@ -508,9 +509,9 @@ void XletAgentsNext::agentClicked(QMouseEvent *event)
             QueueInfo *qinfo = b_engine->queues()[queueid];
             QString queuename = qinfo->queueName();
             if (m_title[groupid]->property("queues").toStringList().contains(queuename)) {
-                QVariantMap qvm = ainfo->properties()["queues_by_agent"].toMap()[queuename].toMap();
+                QVariantMap qvm = ainfo->properties().value("queues_by_agent").toMap().value(queuename).toMap();
                 if (! qvm.isEmpty())
-                    if (qvm["Paused"].toString() == "1")
+                    if (qvm.value("Paused").toString() == "1")
                         isinpause = true;
             }
         }
@@ -633,12 +634,12 @@ void XletAgentsNext::refreshContents()
         AgentInfo *ainfo = iter.value();
 
         QString agentnumber = ainfo->agentNumber();
-        QString agstatus = ainfo->properties()["agentstats"].toMap()["status"].toString();
-        QVariantMap agqjoined = ainfo->properties()["queues_by_agent"].toMap();
+        QString agstatus = ainfo->properties().value("agentstats").toMap().value("status").toString();
+        QVariantMap agqjoined = ainfo->properties().value("queues_by_agent").toMap();
 
         if (agstatus != "AGENT_LOGGEDOFF") foreach (QString qname, agqjoined.keys()) {
-            if (! agqjoined[qname].toMap().isEmpty()) {
-                QString sstatus = agqjoined[qname].toMap()["Status"].toString();
+            if (! agqjoined.value(qname).toMap().isEmpty()) {
+                QString sstatus = agqjoined.value(qname).toMap().value("Status").toString();
                 // qDebug() << Q_FUNC_INFO << qname << idxa << sstatus;
                 if ((sstatus == "1") || (sstatus == "3") || (sstatus == "4") || (sstatus == "5")) {
                     foreach (QString groupid, m_title.keys()) {
@@ -723,7 +724,7 @@ void XletAgentsNext::newQueue(const QString & /*astid*/,
                               const QString &queuename,
                               const QVariant &queueprops)
 {
-    QString queuecontext = queueprops.toMap()["context"].toString();
+    QString queuecontext = queueprops.toMap().value("context").toString();
     // qDebug() << Q_FUNC_INFO << astid << queuename << queuecontext;
     UserInfo * userinfo = b_engine->getXivoClientUser();
 

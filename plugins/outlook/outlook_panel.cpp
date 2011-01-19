@@ -401,18 +401,18 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
                                 while( it.hasNext() )
                                     {
                                         it.next();
-                                        QMap<QString, QVariant> call = it.value().toMap();
+                                        QVariantMap call = it.value().toMap();
                                         QString text;
                                         if( call.contains("calleridname") )
                                             {
-                                                text.append( call["calleridname"].toString() );
+                                                text.append( call.value("calleridname").toString() );
                                                 text.append( " : " );
                                             }
-                                        text.append( call["calleridnum"].toString() );
+                                        text.append( call.value("calleridnum").toString() );
                                         QAction * transferAction =
                                             transferMenu->addAction( text,
                                                                      this, SLOT(transfer()) );
-                                        transferAction->setProperty( "chan", call["peerchannel"] );
+                                        transferAction->setProperty( "chan", call.value("peerchannel") );
                                     }
                             }
                     }
@@ -503,8 +503,8 @@ void OutlookPanel::updatePeer(UserInfo *,
     while(!m_mychannels.isEmpty())
         delete m_mychannels.takeFirst();
     foreach(QString ref, chanlist.toMap().keys()) {
-        QVariant chanprops = chanlist.toMap()[ref];
-        if(chanprops.toMap()["status"].toString() != CHAN_STATUS_HANGUP) {
+        QVariant chanprops = chanlist.toMap().value(ref);
+        if(chanprops.toMap().value("status").toString() != CHAN_STATUS_HANGUP) {
             PeerChannel * ch = new PeerChannel(chanprops);
             connect(ch, SIGNAL(transferChan(const QString &)),
                     this, SLOT(transferChan(const QString &)) );

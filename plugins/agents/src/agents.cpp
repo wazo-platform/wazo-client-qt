@@ -264,13 +264,13 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
     QString context_agent = ainfo->context();
     QVariantMap agqjoined = properties.value("queues_by_agent").toMap();
     QVariantMap aggjoined = properties.value("groups_by_agent").toMap();
-    QString agstatus = properties.value("agentstats").toMap()["status"].toString();
-    QString phonenum = properties.value("agentstats").toMap()["agent_phone_number"].toString();
+    QString agstatus = properties.value("agentstats").toMap().value("status").toString();
+    QString phonenum = properties.value("agentstats").toMap().value("agent_phone_number").toString();
 
-    QVariantMap slink = properties.value("agentstats").toMap()["Xivo-Agent-Status-Link"].toMap();
+    QVariantMap slink = properties.value("agentstats").toMap().value("Xivo-Agent-Status-Link").toMap();
     bool link = false;
     if (! slink.isEmpty()) {
-        QString linkmode = slink["linkmode"].toString();
+        QString linkmode = slink.value("linkmode").toString();
         if ((linkmode == "phonelink") || (linkmode == "agentlink"))
             link = true;
         else
@@ -287,8 +287,10 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
             iter.next();
             if ((iter.value()->number() == phonenum) && (iter.value()->astid() == ainfo->astid())) {
                 foreach(QString uniqueid, iter.value()->comms().keys()) {
-                    QVariantMap commval = iter.value()->comms()[uniqueid].toMap();
-                    ttips << tr("online with %1 (%2)").arg(commval["calleridname"].toString()).arg(commval["calleridnum"].toString());
+                    QVariantMap commval = iter.value()->comms().value(uniqueid).toMap();
+                    ttips << tr("online with %1 (%2)")
+                        .arg(commval.value("calleridname").toString())
+                        .arg(commval.value("calleridnum").toString());
                 }
             }
         }
@@ -328,10 +330,10 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
         QString queueid = QString("queue:%1/%2").arg(ainfo->astid()).arg(qname);
         QueueInfo * qinfo = b_engine->queues()[queueid];
         if (qinfo != NULL) {
-            QVariant qv = agqjoined[qname];
+            QVariant qv = agqjoined.value(qname);
             if (qv.toMap().contains("Status")) {
-                QString pstatus = qv.toMap()["Paused"].toString();
-                QString sstatus = qv.toMap()["Status"].toString();
+                QString pstatus = qv.toMap().value("Paused").toString();
+                QString sstatus = qv.toMap().value("Status").toString();
                 if ((sstatus == "1") || (sstatus == "3") || (sstatus == "4") || (sstatus == "5"))
                     joined_queues << qname;
                 if (pstatus == "1")
@@ -404,7 +406,7 @@ void XletAgents::agentClicked()
     }
 
     else if (action == "loginoff") {
-        QString status = ainfo->properties()["agentstats"].toMap()["status"].toString();
+        QString status = ainfo->properties().value("agentstats").toMap().value("status").toString();
         ipbxcommand["agentids"] = agentid;
         if (status == "AGENT_IDLE")
             ipbxcommand["command"] = "agentlogout";
