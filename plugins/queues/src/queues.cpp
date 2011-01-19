@@ -170,19 +170,19 @@ void XletQueues::display()
 
 void XletQueues::eatQueuesStats(const QVariantMap &p)
 {
-    foreach (QString queueid, p["stats"].toMap().keys()) {
-        QVariantMap qvm = p["stats"].toMap()[queueid].toMap();
+    foreach (QString queueid, p.value("stats").toMap().keys()) {
+        QVariantMap qvm = p.value("stats").toMap().value(queueid).toMap();
         foreach (QString stats, qvm.keys()) {
             QString field;
             if (statsOfDurationType.contains(stats)) {
-                if (qvm[stats].toString() != "na") {
-                    int sec_total = qRound(qvm[stats].toDouble());
+                if (qvm.value(stats).toString() != "na") {
+                    int sec_total = qRound(qvm.value(stats).toDouble());
                     __format_duration(&field, sec_total);
                 } else {
-                    field = qvm[stats].toString();
+                    field = qvm.value(stats).toString();
                 }
             } else {
-                field = qvm[stats].toString();
+                field = qvm.value(stats).toString();
             }
             m_queueList[queueid]->updateSliceStat(stats, field);
         }
@@ -251,7 +251,7 @@ void XletQueues::newQueueList(const QStringList &qsl)
  *
  * to update display.
  */
-void XletQueues::setQueueOrder(const QStringList &queueOrder)
+void XletQueues::setQueueOrder(const QStringList & queueOrder)
 {
     QueueRow *rowAtPos;
     QueueRow *rowAtWrongPos;
@@ -261,7 +261,7 @@ void XletQueues::setQueueOrder(const QStringList &queueOrder)
         QLayoutItem * qli = m_layout->itemAt(index);
         if(qli != NULL) {
             rowAtPos = qobject_cast<QueueRow *>(qli->widget());
-            if (rowAtPos!= NULL) {
+            if (rowAtPos != NULL) {
                 if (rowAtPos->property("id").toString() != queue ) {
                     QHashIterator<QString, QueueRow *> i(m_queueList);
                     rowAtWrongPos = NULL;
@@ -276,6 +276,7 @@ void XletQueues::setQueueOrder(const QStringList &queueOrder)
                         rowMovedIndex = m_layout->indexOf(rowAtWrongPos);
                         m_layout->removeWidget(rowAtPos);
                         m_layout->removeWidget(rowAtWrongPos);
+
                         m_layout->insertWidget(rowMovedIndex, rowAtPos);
                         m_layout->insertWidget(index, rowAtWrongPos);
                     }
@@ -332,11 +333,11 @@ void XletQueues::queueClicked()
 void XletQueues::updateLongestWaitWidgets()
 {
     QVariantMap optionMap = b_engine->getGuiOptions("client_gui");
-    uint greenlevel = optionMap["queuelevels_wait"].toMap()["green"].toUInt() - 1;
-    uint orangelevel = optionMap["queuelevels_wait"].toMap()["orange"].toUInt() - 1;
+    uint greenlevel = optionMap.value("queuelevels_wait").toMap().value("green").toUInt() - 1;
+    uint orangelevel = optionMap.value("queuelevels_wait").toMap().value("orange").toUInt() - 1;
 
     // if we don't want this widget displayed
-    int display_column = optionMap["queue_longestwait"].toBool();
+    int display_column = optionMap.value("queue_longestwait").toBool();
 
     QGridLayout *titleLayout = static_cast<QGridLayout*>(m_layout->itemAt(0)->widget()->layout());
     QWidget *longestWaitTitle = titleLayout->itemAtPosition(1, 4)->widget();
@@ -618,8 +619,8 @@ uint QueueRow::m_maxbusy = 0;
 void QueueRow::updateBusyWidget()
 {
     QVariantMap optionMap = b_engine->getGuiOptions("client_gui");
-    uint greenlevel = optionMap["queuelevels"].toMap()["green"].toUInt() - 1;
-    uint orangelevel = optionMap["queuelevels"].toMap()["orange"].toUInt() - 1;
+    uint greenlevel = optionMap.value("queuelevels").toMap().value("green").toUInt() - 1;
+    uint orangelevel = optionMap.value("queuelevels").toMap().value("orange").toUInt() - 1;
     uint val = m_busy->property("value").toUInt();
 
     if (m_maxbusy < val) {
@@ -678,7 +679,7 @@ void QueueRow::updateLongestWaitWidget(int display, uint greenlevel, uint orange
 
 void QueueRow::updateRow()
 {
-    QVariantMap queueStats = qinfo->properties()["queuestats"].toMap();
+    QVariantMap queueStats = qinfo->properties().value("queuestats").toMap();
     QString queueName = qinfo->queueName();
 
     QHash <QString, QString> infos;
@@ -712,7 +713,7 @@ void QueueRow::updateRow()
     }
 
     /* stat cols who aren't made by server */
-    QVariantMap queueagents = qinfo->properties()["agents_in_queue"].toMap();
+    QVariantMap queueagents = qinfo->properties().value("agents_in_queue").toMap();
     QStringList queueagents_list;
     int nagents;
 
@@ -723,9 +724,9 @@ void QueueRow::updateRow()
     queueagents_list.clear();
     foreach (QString queuemember, queueagents.keys()) {
         if (agentfilter.exactMatch(queuemember)) {
-            QVariantMap qaprops = queueagents[queuemember].toMap();
-            if ((qaprops["Status"].toString() == "1") &&
-                (qaprops["Paused"].toString() == "0")) {
+            QVariantMap qaprops = queueagents.value(queuemember).toMap();
+            if ((qaprops.value("Status").toString() == "1") &&
+                (qaprops.value("Paused").toString() == "0")) {
                 nagents++;
                 queueagents_list << queuemember.mid(6);
             }
@@ -745,9 +746,9 @@ void QueueRow::updateRow()
     queueagents_list.clear();
     foreach (QString queuemember, queueagents.keys()) {
         if (agentfilter.exactMatch(queuemember)) {
-            QVariantMap qaprops = queueagents[queuemember].toMap();
-            if ((qaprops["Status"].toString() == "3") ||
-                (qaprops["Status"].toString() == "1")) {
+            QVariantMap qaprops = queueagents.value(queuemember).toMap();
+            if ((qaprops.value("Status").toString() == "3") ||
+                (qaprops.value("Status").toString() == "1")) {
                 nagents++;
                 queueagents_list << queuemember.mid(6);
             }
@@ -767,9 +768,9 @@ void QueueRow::updateRow()
     queueagents_list.clear();
     foreach (QString queuemember, queueagents.keys()) {
         if (agentfilter.exactMatch(queuemember)) {
-            QVariantMap qaprops = queueagents[queuemember].toMap();
-            if ((qaprops["Status"].toString() == "3") &&
-                (qaprops["Paused"].toString() == "0")) {
+            QVariantMap qaprops = queueagents.value(queuemember).toMap();
+            if ((qaprops.value("Status").toString() == "3") &&
+                (qaprops.value("Paused").toString() == "0")) {
                 nagents++;
                 queueagents_list << queuemember.mid(6);
             }
@@ -784,19 +785,19 @@ void QueueRow::updateRow()
     }
 
     QVariantMap properties = qinfo->properties();
-    QVariantMap channel_list = properties["channels"].toMap();
+    QVariantMap channel_list = properties.value("channels").toMap();
 
     uint oldest = 0;
     int first_item = 1;
     uint current_entrytime;
 
     foreach (QString channel_name, channel_list.keys()) {
-      current_entrytime = channel_list[channel_name].toMap()["entrytime"].toUInt();
-      if (first_item) {
-        oldest = current_entrytime;
-        first_item = 0;
-      }
-      oldest = (oldest < current_entrytime) ? oldest : current_entrytime ;
+        current_entrytime = channel_list.value(channel_name).toMap().value("entrytime").toUInt();
+        if (first_item) {
+            oldest = current_entrytime;
+            first_item = 0;
+        }
+        oldest = (oldest < current_entrytime) ? oldest : current_entrytime ;
     }
 
     uint oldest_waiting_time = (oldest == 0 ) ? oldest : (b_engine->timeServer() - oldest);

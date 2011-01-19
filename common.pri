@@ -2,19 +2,20 @@ XIVOVER = 1.1
 GIT_HASH = to_fill
 GIT_DATE = to_fill
 
+include(versions.pri)
+
 DATEBUILD = $$system(LANG= date +%Y-%m-%dT%H:%M:%S)
-SERVER_VERSION_REQUIRED = 5650
-DEBUGON= $$system(echo -n $DEBUG)
+DEBUGON = $$system(echo -n $DEBUG)
 
 contains(DEBUGON, "yes" ) {
-    CONFIG += debug
-    message(">> Debug Build <<")
+        CONFIG += debug
+        message(">> Debug Build <<")
 }
 
 # take care of inferior(s) system(s) {
 
 isEmpty( DATEBUILD ) {
-  DATEBUILD = "ice age"
+        DATEBUILD = "ice age"
 }
 
 # }

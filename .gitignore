@@ -1,7 +1,11 @@
+*.mak
+*.moc
 *.o
 *.qm
+*/Makefile
+*~
+bin
 moc_*.cpp
 plugins/*/Makefile
 plugins/*/qrc_res.cpp
-*/Makefile
 xivoclient/qrc_appli.cpp

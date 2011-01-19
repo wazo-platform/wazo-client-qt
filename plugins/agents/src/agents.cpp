@@ -93,10 +93,10 @@ XletAgents::XletAgents(QWidget *parent)
 void XletAgents::setGuiOptions(const QVariantMap & optionsMap)
 {
     if (optionsMap.contains("xlet.agents.fontname") && optionsMap.contains("xlet.agents.fontsize"))
-        m_gui_font = QFont(optionsMap["xlet.agents.fontname"].toString(),
-                           optionsMap["xlet.agents.fontsize"].toInt());
+        m_gui_font = QFont(optionsMap.value("xlet.agents.fontname").toString(),
+                           optionsMap.value("xlet.agents.fontsize").toInt());
     if (optionsMap.contains("xlet.agents.iconsize"))
-        m_gui_buttonsize = optionsMap["xlet.agents.iconsize"].toInt();
+        m_gui_buttonsize = optionsMap.value("xlet.agents.iconsize").toInt();
 
     m_title1->setFont(m_gui_font);
     m_title2->setFont(m_gui_font);
@@ -118,9 +118,9 @@ void XletAgents::updateAgentPresence(const QString & astid, const QString & agen
     if (b_engine->agents().contains(agentid))
         if (m_agent_presence.contains(agentid)) {
             QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
-            square.fill(QColor(presencestatus.toMap()["color"].toString()));
+            square.fill(QColor(presencestatus.toMap().value("color").toString()));
             m_agent_presence[agentid]->setPixmap(square);
-            m_agent_presence[agentid]->setToolTip(presencestatus.toMap()["longname"].toString());
+            m_agent_presence[agentid]->setToolTip(presencestatus.toMap().value("longname").toString());
         }
 }
 
@@ -262,15 +262,15 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
     if (ainfo == NULL)
         return;
     QString context_agent = ainfo->context();
-    QVariantMap agqjoined = properties["queues_by_agent"].toMap();
-    QVariantMap aggjoined = properties["groups_by_agent"].toMap();
-    QString agstatus = properties["agentstats"].toMap()["status"].toString();
-    QString phonenum = properties["agentstats"].toMap()["agent_phone_number"].toString();
+    QVariantMap agqjoined = properties.value("queues_by_agent").toMap();
+    QVariantMap aggjoined = properties.value("groups_by_agent").toMap();
+    QString agstatus = properties.value("agentstats").toMap().value("status").toString();
+    QString phonenum = properties.value("agentstats").toMap().value("agent_phone_number").toString();
 
-    QVariantMap slink = properties["agentstats"].toMap()["Xivo-Agent-Status-Link"].toMap();
+    QVariantMap slink = properties.value("agentstats").toMap().value("Xivo-Agent-Status-Link").toMap();
     bool link = false;
     if (! slink.isEmpty()) {
-        QString linkmode = slink["linkmode"].toString();
+        QString linkmode = slink.value("linkmode").toString();
         if ((linkmode == "phonelink") || (linkmode == "agentlink"))
             link = true;
         else
@@ -287,8 +287,10 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
             iter.next();
             if ((iter.value()->number() == phonenum) && (iter.value()->astid() == ainfo->astid())) {
                 foreach(QString uniqueid, iter.value()->comms().keys()) {
-                    QVariantMap commval = iter.value()->comms()[uniqueid].toMap();
-                    ttips << tr("online with %1 (%2)").arg(commval["calleridname"].toString()).arg(commval["calleridnum"].toString());
+                    QVariantMap commval = iter.value()->comms().value(uniqueid).toMap();
+                    ttips << tr("online with %1 (%2)")
+                        .arg(commval.value("calleridname").toString())
+                        .arg(commval.value("calleridnum").toString());
                 }
             }
         }
@@ -328,10 +330,10 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
         QString queueid = QString("queue:%1/%2").arg(ainfo->astid()).arg(qname);
         QueueInfo * qinfo = b_engine->queues()[queueid];
         if (qinfo != NULL) {
-            QVariant qv = agqjoined[qname];
+            QVariant qv = agqjoined.value(qname);
             if (qv.toMap().contains("Status")) {
-                QString pstatus = qv.toMap()["Paused"].toString();
-                QString sstatus = qv.toMap()["Status"].toString();
+                QString pstatus = qv.toMap().value("Paused").toString();
+                QString sstatus = qv.toMap().value("Status").toString();
                 if ((sstatus == "1") || (sstatus == "3") || (sstatus == "4") || (sstatus == "5"))
                     joined_queues << qname;
                 if (pstatus == "1")
@@ -404,7 +406,7 @@ void XletAgents::agentClicked()
     }
 
     else if (action == "loginoff") {
-        QString status = ainfo->properties()["agentstats"].toMap()["status"].toString();
+        QString status = ainfo->properties().value("agentstats").toMap().value("status").toString();
         ipbxcommand["agentids"] = agentid;
         if (status == "AGENT_IDLE")
             ipbxcommand["command"] = "agentlogout";

@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
  */
 
-/* $Revision$
- * $Date$
+/* $Revision: 9461 $
+ * $Date: 2010-10-22 14:20:32 +0200 (Fri, 22 Oct 2010) $
  */
 
 #ifndef __OUTLOOKPANEL_H__

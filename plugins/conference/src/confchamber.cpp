@@ -73,8 +73,8 @@ void ConfChamberModel::timerEvent(QTimerEvent *)
     QString req = QString("confrooms/%0/in[user-id=@%1]").arg(m_id)
                                                          .arg(b_engine->xivoUserId());
     QVariantMap self = b_engine->eV(req).toMap();
-    m_admin = self["admin"].toBool();
-    m_authed = self["authed"].toBool();
+    m_admin = self.value("admin").toBool();
+    m_authed = self.value("authed").toBool();
     updateView();
     reset();
 }
@@ -257,7 +257,7 @@ ConfChamberModel::data(const QModelIndex &index,
         case NAME:
         {
             QString name = b_engine->eV(QString("users/*[id=%0user-id]").arg(in))
-                                       .toMap()["fullname"].toString();
+                .toMap().value("fullname").toString();
             if (name.isEmpty()) {
                 return tr("nobody");
             }

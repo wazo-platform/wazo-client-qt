@@ -1,5 +1,5 @@
-# $Revision$
-# $Date$
+# $Revision: 8994 $
+# $Date: 2010-08-24 12:53:00 +0200 (Tue, 24 Aug 2010) $
 
 QMAKE?=qmake
 UPXRUN?=upx
@@ -45,10 +45,10 @@ allbyos:
 	@make all-${_UNAME_}
 
 # LINUX targets
-# kind of dirtier than "all-linux: versions-xivoclient linux-xivoclient"
+# kind of dirtier than "all-linux: versions linux-xivoclient"
 # but allows the 'include versions.mak' to be reloaded once it has been set
 all-linux:
-	@make versions-xivoclient
+	@make versions
 	@make linux-baselib
 	@make linux-xivoclient
 	@make linux-plugins
@@ -73,7 +73,7 @@ stripandpack-%:
 	@${UPXRUN} bin/$* || true
 
 all-win32:
-	@make -s versions-xivoclient
+	@make -s versions
 	@echo "   (under Qt prompt) :"
 	@pwd | sed "s#/#\\\\#g;s#^#      cd C:\\\\cygwin#"
 	@echo "      make win32-baselib win32-xivoclient win32-plugins"
@@ -81,27 +81,19 @@ all-win32:
 	@echo "      make win32pack-xivoclient"
 
 # to be executed under a bash/cygwin-like terminal
-versions-%:
+versions:
 	@${ECHO} -n "version (before update) : " && make -s displayversions
-	@rm -f $*/versions.pri
-	@${ECHO} -n "_SVNVER_ = " >> $*/versions.pri
-	@LANG=C svn info | sed -n "/Last Changed Rev/s/.*: //p" >> $*/versions.pri
-	@grep -h "VER_ =" $*/*.pri | sort -r | head -2 > versions.mak
-	@${ECHO} -n "_DATEBUILD_ = " >> $*/versions.pri
-	@date +%Y-%m-%dT%H:%M:%S >> $*/versions.pri
+	@rm -f versions.pri
+	@${ECHO} -n "GIT_HASH = " >> versions.pri
+	@git log -1 --pretty=%h $(git rev-list HEAD --max-count=1) >> versions.pri
+	@${ECHO} -n "GIT_DATE = " >> versions.pri
+	@git log -1 --pretty=%ct $(git rev-list HEAD --max-count=1) >> versions.pri
+	@cp versions.pri versions.mak
+	@grep ^XIVOVER common.pri >> versions.mak
 	@${ECHO} -n "version (after update) : " && make -s displayversions
 
 displayversions:
-	@${ECHO} ${_XIVOVER_}-${_SVNVER_}
-
-# to be used with care
-forceversions-%:
-	@${ECHO} -n "version (before force) : " && make -s displayversions
-	@touch baselib/src/xivoconsts.h $*/src/mainwidget.cpp
-	@rm -f $*/versions.pri
-	@${ECHO} "_SVNVER_ =" ${FORCEVERSION} >> $*/versions.pri
-	@grep -h "VER_ =" $*/*.pro | sort -r | head -2 > versions.mak
-	@${ECHO} -n "version (after force) : " && make -s displayversions
+	@${ECHO} ${XIVOVER}-${GIT_DATE}-${GIT_HASH}
 
 # to be executed under a mingw/dos-like terminal
 win32-%:
@@ -130,7 +122,7 @@ win32packdyn-%:
 # export UPXRUN=/Users/proformatique/upx-3.01-src/src/upx.out
 
 all-macos:
-	@make versions-xivoclient
+	@make versions
 	@make macos-xivoclient
 
 macos-%:

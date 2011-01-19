@@ -130,22 +130,22 @@ void XletCalls::updateDisplay()
             QMapIterator<QString, QVariant> it = QMapIterator<QString, QVariant>( pi->comms() );
             while (it.hasNext()) {
                 it.next();
-                QMap<QString, QVariant> map = it.value().toMap();
+                QVariantMap map = it.value().toMap();
                 // qDebug() << it.key() << map;
-                QString channelme = map["thischannel"].toString();
-                QString status = map["status"].toString();
+                QString channelme = map.value("thischannel").toString();
+                QString status = map.value("status").toString();
                 uint ts = current_ts;
                 if(map.contains("time-dial"))
-                    ts = map["time-dial"].toUInt() + current_ts;
+                    ts = map.value("time-dial").toUInt() + current_ts;
                 if(map.contains("timestamp-dial"))
-                    ts = map["timestamp-dial"].toDouble() + b_engine->timeDeltaServerClient();
+                    ts = map.value("timestamp-dial").toDouble() + b_engine->timeDeltaServerClient();
                 if(map.contains("time-link"))
-                    ts = map["time-link"].toUInt() + current_ts;
+                    ts = map.value("time-link").toUInt() + current_ts;
                 if(map.contains("timestamp-link"))
-                    ts = map["timestamp-link"].toDouble() + b_engine->timeDeltaServerClient();
-                QString channelpeer = map["peerchannel"].toString();
-                QString callerid = map["calleridnum"].toString();
-                QString calleridname = map["calleridname"].toString();
+                    ts = map.value("timestamp-link").toDouble() + b_engine->timeDeltaServerClient();
+                QString channelpeer = map.value("peerchannel").toString();
+                QString callerid = map.value("calleridnum").toString();
+                QString calleridname = map.value("calleridname").toString();
                 // qDebug() << Q_FUNC_INFO << it.key() << channelme << "status" << status;
                 // dont display hangup channels !
                 if (status == CHAN_STATUS_HANGUP) {

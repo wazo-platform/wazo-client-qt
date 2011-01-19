@@ -126,7 +126,7 @@ ConfListModel::data(const QModelIndex &index,
             double time = 0;
             QString displayed = QString::fromUtf8("Ø");
             foreach (QString uid, UserIn.keys()) {
-                double utime = UserIn[uid].toMap()["time-start"].toDouble();
+                double utime = UserIn[uid].toMap().value("time-start").toDouble();
                 if ((time == 0) || (time > utime)) {
                     time = utime;
                 }
@@ -256,7 +256,7 @@ void ConfListView::mousePressEvent(QMouseEvent *event)
 
 
 ConfList::ConfList(XletConference *parent)
-    : QWidget(), manager(parent)
+    : QWidget(), m_manager(parent)
 {
     QVBoxLayout *vBox = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout();
@@ -283,10 +283,10 @@ void ConfList::phoneConfRoom()
     QString roomNumber = b_engine->eV(QString("confrooms/%0/number").arg(roomId)).toString();
 
     b_engine->actionCall("originate", "user:special:me", "ext:" + roomNumber);
-    manager->openConfRoom(roomId, true);
+    m_manager->openConfRoom(roomId, true);
 }
 
 void ConfList::openConfRoom()
 {
-    manager->openConfRoom(sender()->property("id").toString());
+    m_manager->openConfRoom(sender()->property("id").toString());
 }

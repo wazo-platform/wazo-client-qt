@@ -97,7 +97,7 @@ class ConfList : public QWidget
         void openConfRoom();
         void phoneConfRoom();
     private:
-        XletConference *manager;
+        XletConference * m_manager;
 };
 
 #endif

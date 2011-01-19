@@ -75,7 +75,8 @@ Popup::Popup(const bool urlautoallow, QWidget *parent)
       m_focus(true),
       m_urlautoallow(urlautoallow),
       m_toupdate(false),
-      m_firstline(3)
+      m_firstline(3),
+      m_sheetui_widget(NULL)
 {
     // qDebug() << Q_FUNC_INFO;
     m_remarkarea = 0;
@@ -102,7 +103,7 @@ void Popup::feed(QIODevice * inputstream,
     // qDebug() << Q_FUNC_INFO << inputstream;
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString currentDateTimeStr = currentDateTime.toString(Qt::LocalDate);
-    qDebug() << Q_FUNC_INFO << currentDateTime << sheetui;
+    qDebug() << Q_FUNC_INFO << this << currentDateTime << sheetui;
 
     setAttribute(Qt::WA_DeleteOnClose);
     m_reader.setContentHandler(m_handler);
@@ -293,13 +294,13 @@ void Popup::setTitle(const QString & title)
 
 void Popup::addDefForm(const QString & name, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << name << value;
+    qDebug() << Q_FUNC_INFO << this << name << value.size();
     m_remoteforms[name] = value;
 }
 
 void Popup::addInfoForm(int where, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << where << value << m_kind;
+    qDebug() << Q_FUNC_INFO << this << where << value << m_kind << m_remoteforms.keys();
     QUiLoader loader;
     if(m_remoteforms.contains(value)) {
         QBuffer * inputstream = new QBuffer(this);
@@ -309,9 +310,14 @@ void Popup::addInfoForm(int where, const QString & value)
         m_sheetui_widget = loader.load(inputstream, this);
     } else {
         QFile file(value);
-        file.open(QFile::ReadOnly);
-        m_sheetui_widget = loader.load(&file, this);
-        file.close();
+        if (file.exists()) {
+            file.open(QFile::ReadOnly);
+            m_sheetui_widget = loader.load(&file, this);
+            file.close();
+        } else {
+            qDebug() << Q_FUNC_INFO << "file does not exist" << value;
+            return;
+        }
     }
 
     foreach(QString formbuttonname, g_formbuttonnames) {
@@ -435,7 +441,7 @@ QList<QStringList> & Popup::sheetlines()
 
 void Popup::update(QList<QStringList> & newsheetlines)
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << this << newsheetlines;
     m_toupdate = true;
     foreach(QStringList qsl, newsheetlines)
         addAnyInfo(qsl[0], qsl[1], qsl[2], qsl[3], qsl[4]);
@@ -558,7 +564,7 @@ void Popup::socketError(QAbstractSocket::SocketError err)
  */
 void Popup::finishAndShow()
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << this << Q_FUNC_INFO;
     addRemarkArea();
     //dumpObjectInfo();
     //dumpObjectTree();

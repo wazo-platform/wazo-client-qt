@@ -142,8 +142,8 @@ void XletQueueDetails::updatePanel()
                                 .arg(qinfo->astid())
                                 .arg(qinfo->context()));
     QVariantMap properties = qinfo->properties();
-    QVariant queuestats = properties["queuestats"];
-    QVariantMap agentstats = properties["agents_in_queue"].toMap();
+    QVariant queuestats = properties.value("queuestats");
+    QVariantMap agentstats = properties.value("agents_in_queue").toMap();
 
     if (! b_engine->agents().isEmpty()) {
         m_queuelegend_agentid->show();
@@ -184,7 +184,7 @@ void XletQueueDetails::updatePanel()
         setAgentProps(agentid, ainfo);
         QString agentname = "Agent/" + ainfo->agentNumber();
         if(qinfo->astid() == ainfo->astid()) {
-            setAgentQueueProps(agentid, agentstats[agentname]);
+            setAgentQueueProps(agentid, agentstats.value(agentname));
         }
 
         if(isnewagent) {
@@ -205,7 +205,7 @@ void XletQueueDetails::setAgentProps(const QString &agentid, const AgentInfo *ai
 {
     m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber()));
     m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->astid()).arg(ainfo->context()));
-    // qDebug() << Q_FUNC_INFO << agentid << ainfo->properties()["agentstats"].toMap()["loggedintime"].toInt();
+    // qDebug() << Q_FUNC_INFO << agentid << ainfo->properties().value("agentstats").toMap().value("loggedintime").toInt();
 }
 
 void XletQueueDetails::setAgentQueueSignals(const QString &agentid)
@@ -220,9 +220,9 @@ void XletQueueDetails::setAgentQueueProps(const QString &agentid, const QVariant
     QString oldsstatus = m_agent_join_status[agentid]->property("Status").toString();
     QString oldpstatus = m_agent_pause_status[agentid]->property("Paused").toString();
 
-    QString pstatus = qv.toMap()["Paused"].toString();
-    QString sstatus = qv.toMap()["Status"].toString();
-    QString dynstatus = qv.toMap()["Membership"].toString();
+    QString pstatus = qv.toMap().value("Paused").toString();
+    QString sstatus = qv.toMap().value("Status").toString();
+    QString dynstatus = qv.toMap().value("Membership").toString();
 
     QueueAgentStatus *qas = new QueueAgentStatus();
     qas->update(dynstatus, sstatus, pstatus);
@@ -244,7 +244,7 @@ void XletQueueDetails::setAgentQueueProps(const QString &agentid, const QVariant
     }
 
     if (qv.toMap().contains("CallsTaken")) {
-        m_agent_callstaken[agentid]->setText(qv.toMap()["CallsTaken"].toString());
+        m_agent_callstaken[agentid]->setText(qv.toMap().value("CallsTaken").toString());
     } else {
         m_agent_callstaken[agentid]->setText("0");
     }
@@ -254,7 +254,7 @@ void XletQueueDetails::setAgentQueueProps(const QString &agentid, const QVariant
     QString slastcall = "-";
     if(qv.toMap().contains("LastCall")) {
         QDateTime lastcall;
-        int epoch = qv.toMap()["LastCall"].toInt();
+        int epoch = qv.toMap().value("LastCall").toInt();
         if(epoch > 0) {
             lastcall.setTime_t(epoch);
             slastcall = lastcall.toString("hh:mm:ss");
@@ -263,7 +263,7 @@ void XletQueueDetails::setAgentQueueProps(const QString &agentid, const QVariant
     m_agent_lastcall[agentid]->setText(slastcall);
 
     if(qv.toMap().contains("Penalty")) {
-        m_agent_penalty[agentid]->setText(qv.toMap()["Penalty"].toString());
+        m_agent_penalty[agentid]->setText(qv.toMap().value("Penalty").toString());
     } else {
         m_agent_penalty[agentid]->setText("0");
     }

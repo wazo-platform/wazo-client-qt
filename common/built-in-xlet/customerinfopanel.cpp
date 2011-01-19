@@ -58,8 +58,8 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
     glayout->setRowStretch(0, 1);
     glayout->setColumnStretch(0, 1);
     QVariantMap optionsMap = b_engine->getGuiOptions("merged_gui");
-    m_tablimit = optionsMap["sheet-tablimit"].toUInt();
-    m_autourl_allowed = optionsMap["autourl_allowed"].toBool();
+    m_tablimit = optionsMap.value("sheet-tablimit").toUInt();
+    m_autourl_allowed = optionsMap.value("autourl_allowed").toBool();
 }
 
 /*!
@@ -123,12 +123,13 @@ void CustomerInfoPanel::popupDestroyed(QObject * obj)
 
 void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, const QString & id)
 {
-    qDebug() << Q_FUNC_INFO << id;
-    for(int i = m_popups.size() - 1; --i > 0; ) {
+    for(int i = m_popups.size() - 1; i >= 0; i --) {
         if(id == m_popups[i]->id()) {
-            qDebug() << " fiche id already there";
+            qDebug() << Q_FUNC_INFO << "fiche id already there" << i << id;
+            break;
         }
     }
+
     QBuffer *inputstream = new QBuffer(this);
     inputstream->open(QIODevice::ReadWrite);
     inputstream->write(fichecontent.toUtf8());

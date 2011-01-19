@@ -329,7 +329,7 @@ QVariant DStore::extractVariant(const QString &path)
     delete tree;
 
     foreach(QString key, map.keys()) {
-        return map[key];
+        return map.value(key);
     }
 
     return QVariant();
