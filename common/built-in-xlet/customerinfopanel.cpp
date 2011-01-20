@@ -52,11 +52,11 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
             b_engine, SLOT(actionFromFiche(const QVariant &)));
 
     // qDebug() << Q_FUNC_INFO;
-    QGridLayout * glayout = new QGridLayout(this);
+    m_glayout = new QGridLayout(this);
     m_tabs = new QTabWidget(this);
-    glayout->addWidget( m_tabs, 0, 0 );
-    glayout->setRowStretch(0, 1);
-    glayout->setColumnStretch(0, 1);
+    m_glayout->addWidget( m_tabs, 0, 0 );
+    m_glayout->setRowStretch(0, 1);
+    m_glayout->setColumnStretch(0, 1);
     QVariantMap optionsMap = b_engine->getGuiOptions("merged_gui");
     m_tablimit = optionsMap.value("sheet-tablimit").toUInt();
     m_autourl_allowed = optionsMap.value("autourl_allowed").toBool();
@@ -118,7 +118,7 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
         }
     }
 
-    QBuffer *inputstream = new QBuffer(this);
+    QBuffer * inputstream = new QBuffer(this);
     inputstream->open(QIODevice::ReadWrite);
     inputstream->write(fichecontent.toUtf8());
     inputstream->close();
@@ -139,6 +139,7 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
     }
 
     popup->feed(inputstream, qtui);
+    delete inputstream;
 }
 
 void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVariant & timestamps)

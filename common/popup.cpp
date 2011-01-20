@@ -122,20 +122,20 @@ void Popup::feed(QIODevice * inputstream,
         m_vlayout = new QVBoxLayout(this);
         m_title = new QLabel(this);
         m_title->setAlignment(Qt::AlignHCenter);
-        QHBoxLayout * hlayout = new QHBoxLayout();
+        m_hlayout = new QHBoxLayout();
         m_closesheet = new QPushButton(this);
         m_closesheet->setIcon(QIcon(":/images/cancel.png"));
         m_closesheet->setIconSize(QSize(10, 10));
         connect( m_closesheet, SIGNAL(clicked()),
                  this, SLOT(close()) );
-        hlayout->addStretch();
-        hlayout->addWidget(m_closesheet);
-        m_vlayout->addLayout(hlayout);
+        m_hlayout->addStretch();
+        m_hlayout->addWidget(m_closesheet);
+        m_vlayout->addLayout(m_hlayout);
         m_vlayout->addWidget(m_title);
-        QFrame * qf = new QFrame(this);
-        qf->setFrameStyle(QFrame::HLine | QFrame::Plain);
-        qf->setLineWidth(0);
-        m_vlayout->addWidget(qf);
+        m_qf = new QFrame(this);
+        m_qf->setFrameStyle(QFrame::HLine | QFrame::Plain);
+        m_qf->setLineWidth(0);
+        m_vlayout->addWidget(m_qf);
         m_vlayout->addStretch();
     }
 
@@ -308,11 +308,11 @@ void Popup::addInfoForm(int where, const QString & value)
     // qDebug() << Q_FUNC_INFO << this << where << value << m_kind << m_remoteforms.keys();
     QUiLoader loader;
     if(m_remoteforms.contains(value)) {
-        QBuffer * inputstream = new QBuffer(this);
-        inputstream->open(QIODevice::ReadWrite);
-        inputstream->write(m_remoteforms[value].toUtf8());
-        inputstream->close();
-        m_sheetui_widget = loader.load(inputstream, this);
+        m_buffer = new QBuffer(this);
+        m_buffer->open(QIODevice::ReadWrite);
+        m_buffer->write(m_remoteforms[value].toUtf8());
+        m_buffer->close();
+        m_sheetui_widget = loader.load(m_buffer, this);
     } else {
         QFile file(value);
         if (file.exists()) {

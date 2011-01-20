@@ -78,7 +78,8 @@ class CustomerInfoPanel : public XLet
         void addNewRemark(const QString &id, const QVariantMap &entry);
 
     private:
-        QTabWidget *m_tabs;
+        QGridLayout * m_glayout;
+        QTabWidget * m_tabs;
         QList<Popup *> m_popups;
         quint32 m_tablimit;
         bool m_autourl_allowed;
