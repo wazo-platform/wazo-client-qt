@@ -41,13 +41,16 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
     COLApp pApp;
 
     if ( ! pApp.init() ) {
-        qDebug() << Q_FUNC_INFO << pApp.init_failure << pApp.init_hresult;
+        sleep(1);
+        emit errorMessage(QString("OutlookErr:%1:%2").arg(pApp.init_failure).arg(pApp.init_hresult, 0, 16));
         return false;
     }
 
     COLNameSpace pNS = pApp.GetNamespace("MAPI");
     if ( ! pNS ) {
         qDebug() << Q_FUNC_INFO << "could not get MAPI namespace";
+        sleep(1);
+        emit errorMessage("OutlookErr:MAPI");
         return false;
     }
 
@@ -61,8 +64,8 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
 
       COLFolder pFolder=pNS.GetFolderFromID(entryID, storeID);*/
 
-    if ( !pFolder ) {
-        // bla bla bla
+    if ( ! pFolder ) {
+        emit errorMessage("OutlookErr:NoFolder");
         return false;
     }
 
@@ -78,12 +81,12 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
 
     COLComContactItems pItems = pFolder.GetItems();
 
-    if ( !pItems ) {
-        // bla bla bla
+    if ( ! pItems ) {
+        emit errorMessage("OutlookErr:NoItems");
         return false;
     }
 
-    COLComContact pContact=pItems.GetFirst();
+    COLComContact pContact = pItems.GetFirst();
 
     while(pContact && !m_bStop)
 	{
@@ -91,7 +94,7 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
             if ( !pContact.Load(&contact) )
                 return false;
             contacts.append(contact);
-            pContact=pItems.GetNext();
+            pContact = pItems.GetNext();
 	}
 
     return true;

@@ -225,21 +225,21 @@ bool COLApp::init()
     // Initialize COM for this thread...
     init_hresult = CoInitialize(NULL);
     if(FAILED(init_hresult)) {
-        init_failure = "Unable to initialize COM";
+        init_failure = "com_init";
         return false;
     }
 
     // Get CLSID for our server...
     init_hresult = CLSIDFromProgID(L"Outlook.Application", & clsid);
     if(FAILED(init_hresult)) {
-        init_failure = "Outlook does not seem to be installed";
+        init_failure = "outlook_install";
         return false;
     }
 
     // Start server and get IDispatch...
     init_hresult = CoCreateInstance(clsid, NULL, CLSCTX_LOCAL_SERVER, IID_IDispatch, (void **)&m_pOutlookApp);
     if(FAILED(init_hresult)) {
-        init_failure = "Outlook is not registered properly";
+        init_failure = "outlook_register";
         return false;
     }
 
