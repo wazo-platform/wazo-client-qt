@@ -131,6 +131,8 @@ OutlookPanel::OutlookPanel(QWidget * parent)
     // connect signals/slots to engine
     connect( &(OLEngine()->m_OLThread), SIGNAL(contactsLoaded()),
              this, SLOT(contactsLoaded()) );
+    connect( &(OLEngine()->m_OLThread), SIGNAL(errorMessage(const QString &)),
+             b_engine, SLOT(emitMessage(const QString &)) );
     connect( this, SIGNAL(searchOutlook(const QString &)),
              b_engine, SLOT(searchOutlook(const QString &)) );
     connect( this, SIGNAL(copyNumber(const QString &)),
@@ -390,33 +392,28 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
         QMenu contextMenu(this);
         contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
         QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
-        if(m_userinfo)
-            {
-                foreach( const QString phone, m_userinfo->phonelist() )
-                    {
-                        const PhoneInfo * pi = m_userinfo->getPhoneInfo( phone );
-                        if( pi )
-                            {
-                                QMapIterator<QString, QVariant> it( pi->comms() );
-                                while( it.hasNext() )
-                                    {
-                                        it.next();
-                                        QVariantMap call = it.value().toMap();
-                                        QString text;
-                                        if( call.contains("calleridname") )
-                                            {
-                                                text.append( call.value("calleridname").toString() );
-                                                text.append( " : " );
-                                            }
-                                        text.append( call.value("calleridnum").toString() );
-                                        QAction * transferAction =
-                                            transferMenu->addAction( text,
-                                                                     this, SLOT(transfer()) );
-                                        transferAction->setProperty( "chan", call.value("peerchannel") );
-                                    }
-                            }
+        if(m_userinfo) {
+            foreach( const QString phone, m_userinfo->phonelist() ) {
+                const PhoneInfo * pi = m_userinfo->getPhoneInfo( phone );
+                if( pi ) {
+                    QMapIterator<QString, QVariant> it( pi->comms() );
+                    while( it.hasNext() ) {
+                        it.next();
+                        QVariantMap call = it.value().toMap();
+                        QString text;
+                        if( call.contains("calleridname") ) {
+                            text.append( call.value("calleridname").toString() );
+                            text.append( " : " );
+                        }
+                        text.append( call.value("calleridnum").toString() );
+                        QAction * transferAction =
+                            transferMenu->addAction( text,
+                                                     this, SLOT(transfer()) );
+                        transferAction->setProperty( "chan", call.value("peerchannel") );
                     }
+                }
             }
+        }
 #if 0
         if(false) { //!m_mychannels.empty()) {
             QListIterator<PeerChannel *> i(m_mychannels);

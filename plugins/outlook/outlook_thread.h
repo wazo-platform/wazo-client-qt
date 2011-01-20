@@ -12,24 +12,23 @@
 
 class COLThread : public QThread {
         Q_OBJECT
-
-                public:
+    public:
 	COLThread();
 	virtual ~COLThread();
 
- protected:
+    protected:
         void run();
 
- signals:
+    signals:
         void contactsLoaded();
+        void errorMessage(const QString &);
 
- private:
+    private:
         bool load_contacts_from_outlook(COLContacts & contacts);
         void update_contacts(COLContacts & contacts);
 
- public:
+    public:
 	bool m_bStop;
 };
-
 
 #endif /* OUTLOOK_THREAD_H_INCLUDED */

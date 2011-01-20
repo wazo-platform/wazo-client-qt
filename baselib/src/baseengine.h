@@ -212,6 +212,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void sendNewRemark(const QString &, const QString &);
         void handleOtherInstanceMessage(const QString &);
         void ipbxCommand(const QVariantMap &);
+        void emitMessage(const QString &);
 
     private slots:
         void keepLoginAlive();  //!< Keep session alive

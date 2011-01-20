@@ -886,7 +886,10 @@ void addUpdateConfRoomInTree(DStore *tree,
 
 /* } */
 
-
+void BaseEngine::emitMessage(const QString & msg)
+{
+    emit emitTextMessage(msg);
+}
 
 /*! \brief parse JSON and then process command */
 void BaseEngine::parseCommand(const QString &line)
@@ -1235,7 +1238,7 @@ void BaseEngine::parseCommand(const QString &line)
                     foreach (QString featurekey, featuresget_map.keys()) {
                         initFeatureFields(featurekey, featuresget_map.value(featurekey));
                     }
-                    emitTextMessage(tr("Received Services Data"));
+                    emit emitTextMessage(tr("Received Services Data"));
                 }
 
             } else if (function == "put") {
@@ -1243,13 +1246,13 @@ void BaseEngine::parseCommand(const QString &line)
                 if (m_monitored_userid == datamap.value("userid").toString()) {
                     if (featuresput_map.isEmpty()) {
                         featurePutIsKO();
-                        emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
+                        emit emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
                     } else {
                         featurePutIsOK();
                         foreach (QString featurekey, featuresput_map.keys()) {
                             initFeatureFields(featurekey, featuresput_map.value(featurekey));
                         }
-                        emitTextMessage("");
+                        emit emitTextMessage("");
                     }
                 }
             }
@@ -1277,7 +1280,7 @@ void BaseEngine::parseCommand(const QString &line)
             } else if (function == "signal-deloradd") {
                 QStringList listpeers = datamap.value("payload").toStringList();
                 // qDebug() << "phones-signal-deloradd" << listpeers;
-                //emitTextMessage(tr("New phone list on %1 : - %2 + %3 = %4 total").arg(listpeers[0],
+                //emit emitTextMessage(tr("New phone list on %1 : - %2 + %3 = %4 total").arg(listpeers[0],
                 //listpeers ));
                 if (listpeers[1].toInt() > 0)
                     sendCommand("phones-del");
@@ -1590,7 +1593,7 @@ void BaseEngine::popupError(const QString & errorid)
     }
 
     // logs a message before sending any popup that would block
-    emitTextMessage(tr("ERROR") + " : " + errormsg);
+    emit emitTextMessage(tr("ERROR") + " : " + errormsg);
     if (!m_trytoreconnect || m_forced_to_disconnect)
         emitMessageBox(errormsg);
 }
@@ -1945,7 +1948,7 @@ void BaseEngine::timerEvent(QTimerEvent *event)
     if (timerId == m_timerid_keepalive) {
         keepLoginAlive();
     } else if (timerId == m_timerid_tryreconnect) {
-        emitTextMessage(tr("Attempting to reconnect to server"));
+        emit emitTextMessage(tr("Attempting to reconnect to server"));
         start();
     } else if (timerId == m_timerid_changestate) {
         setAvailState(m_changestate_newstate, false);
