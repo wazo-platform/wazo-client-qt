@@ -223,24 +223,23 @@ COLApp::COLApp()
 bool COLApp::init()
 {
     // Initialize COM for this thread...
-    HRESULT hr = CoInitialize(NULL);
-    if(FAILED(hr)) {
-        qDebug() << Q_FUNC_INFO << "Unable to initialize COM" << hr;
+    init_hresult = CoInitialize(NULL);
+    if(FAILED(init_hresult)) {
+        init_failure = "Unable to initialize COM";
         return false;
     }
 
     // Get CLSID for our server...
-    hr = CLSIDFromProgID(L"Outlook.Application", & clsid);
-
-    if(FAILED(hr)) {
-        qDebug() << Q_FUNC_INFO << "Outlook does not seem to be installed" << hr;
+    init_hresult = CLSIDFromProgID(L"Outlook.Application", & clsid);
+    if(FAILED(init_hresult)) {
+        init_failure = "Outlook does not seem to be installed";
         return false;
     }
 
     // Start server and get IDispatch...
-    hr = CoCreateInstance(clsid, NULL, CLSCTX_LOCAL_SERVER, IID_IDispatch, (void **)&m_pOutlookApp);
-    if(FAILED(hr)) {
-        qDebug() << Q_FUNC_INFO << "Outlook is not registered properly" << hr;
+    init_hresult = CoCreateInstance(clsid, NULL, CLSCTX_LOCAL_SERVER, IID_IDispatch, (void **)&m_pOutlookApp);
+    if(FAILED(init_hresult)) {
+        init_failure = "Outlook is not registered properly";
         return false;
     }
 

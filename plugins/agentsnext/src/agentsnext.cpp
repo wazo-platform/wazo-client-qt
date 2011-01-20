@@ -274,7 +274,7 @@ void XletAgentsNext::setAgentProps(const QString & idx)
 {
     QString agentid = m_agent_labels[idx]->property("agentid").toString();
     QString groupid = m_agent_labels[idx]->property("groupid").toString();
-    AgentInfo *ainfo = b_engine->agents()[agentid];
+    AgentInfo * ainfo = b_engine->agents()[agentid];
 
     QVariantMap properties = ainfo->properties();
     QString agstatus = properties.value("agentstats").toMap().value("status").toString();
@@ -348,28 +348,36 @@ void XletAgentsNext::setAgentProps(const QString & idx)
     }
 
     QVariantMap qvm = queues.toMap();
-    if (calldirection.isEmpty()) foreach (QString qname_group, groupqueues) {
-        if (qvm.contains(qname_group)) {
-            QString pstatus = qvm.value(qname_group).toMap().value("Paused").toString();
-            // qDebug() << idx << idxa << qname_group
-            // << qvm[qname_group].toMap().value("Status").toString()
-            // << qvm[qname_group].toMap().value("Paused").toString()
-            // << qvm[qname_group].toMap().value("PausedTime").toString();
-            if (pstatus == "1") {
-                colorqss = COLOR_AGENT_PAUSED_A;
+    if (calldirection.isEmpty())
+        foreach (QString qname_group, groupqueues) {
+            QString trueqid = "";
+            foreach (QString qid, b_engine->queues().keys())
+                if(qname_group == b_engine->queues()[qid]->queueName()) {
+                    trueqid = qid;
+                    break;
+                }
+            if (! trueqid.isEmpty()) {
+                QString id = b_engine->queues()[trueqid]->id();
+                QString pstatus = qvm.value(id).toMap().value("Paused").toString();
+                // qDebug() << idx << idxa << qname_group
+                // << qvm[qname_group].toMap().value("Status").toString()
+                // << qvm[qname_group].toMap().value("Paused").toString()
+                // << qvm[qname_group].toMap().value("PausedTime").toString();
+                if (pstatus == "1") {
+                    colorqss = COLOR_AGENT_PAUSED_A;
+                    QDateTime now = QDateTime::currentDateTime();
+                    int d1 = b_engine->timeClient().secsTo(now);
+                    double d2 = b_engine->timeServer()
+                        - qvm.value(id).toMap().value("Xivo-QueueMember-StateTime").toDouble();
+                    doshowtime = true;
+                    dsec = d1 + d2;
 
-                QDateTime now = QDateTime::currentDateTime();
-                int d1 = b_engine->timeClient().secsTo(now);
-                double d2 = b_engine->timeServer() - qvm.value(qname_group).toMap().value("Xivo-QueueMember-StateTime").toDouble();
-                doshowtime = true;
-                dsec = d1 + d2;
-
-                // rounding quite often leads to a "-1" value
-                // in order not to hurt sensitivities, set it to zero
-                // if (dsec) dsec = 0;
+                    // rounding quite often leads to a "-1" value
+                    // in order not to hurt sensitivities, set it to zero
+                    // if (dsec) dsec = 0;
+                }
             }
         }
-    }
 
     QString displayedtime;
     if (doshowtime) {

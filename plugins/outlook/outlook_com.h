@@ -92,6 +92,8 @@ class COLApp {
  public:
 	IDispatch *m_pOutlookApp;
 	CLSID clsid;
+        HRESULT init_hresult;
+        QString init_failure;
 };
 
 /*

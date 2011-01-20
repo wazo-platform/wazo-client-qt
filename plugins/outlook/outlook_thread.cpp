@@ -40,8 +40,10 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
     int nFolder = OL_FOLDER_CONTACTS;
     COLApp pApp;
 
-    if ( ! pApp.init() )
+    if ( ! pApp.init() ) {
+        qDebug() << Q_FUNC_INFO << pApp.init_failure << pApp.init_hresult;
         return false;
+    }
 
     COLNameSpace pNS = pApp.GetNamespace("MAPI");
     if ( ! pNS ) {
