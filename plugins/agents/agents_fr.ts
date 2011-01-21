@@ -71,43 +71,43 @@ Contexte: %2</translation>
         <translation>en ligne avec %1 (%2)</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="304"/>
-        <location filename="src/agents.cpp" line="310"/>
+        <location filename="src/agents.cpp" line="306"/>
+        <location filename="src/agents.cpp" line="312"/>
         <source>Agent logged on %1</source>
         <translation>Agent loggé sur %1</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="314"/>
+        <location filename="src/agents.cpp" line="316"/>
         <source>Agent NOT logged</source>
         <translation>Agent NON loggé</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="318"/>
+        <location filename="src/agents.cpp" line="320"/>
         <source>Unknown %1</source>
         <translation>Inconnu %1</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="352"/>
+        <location filename="src/agents.cpp" line="354"/>
         <source>Joined queues : %1</source>
         <translation>Files jointes : %1</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="361"/>
+        <location filename="src/agents.cpp" line="363"/>
         <source>Paused queues : %1</source>
         <translation>Files en pause : %1</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="363"/>
+        <location filename="src/agents.cpp" line="365"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="369"/>
+        <location filename="src/agents.cpp" line="371"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="375"/>
+        <location filename="src/agents.cpp" line="377"/>
         <source>Partial</source>
         <translation>Partielle</translation>
     </message>

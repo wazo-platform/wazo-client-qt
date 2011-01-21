@@ -54,29 +54,29 @@
         <translation>&amp;Répertoire</translation>
     </message>
     <message>
-        <location filename="outlook_panel.cpp" line="200"/>
-        <location filename="outlook_panel.cpp" line="311"/>
+        <location filename="outlook_panel.cpp" line="202"/>
+        <location filename="outlook_panel.cpp" line="313"/>
         <source>Double-click to send an E-mail to</source>
         <translation>Double-cliquer pour envoyer un e-mail à</translation>
     </message>
     <message>
-        <location filename="outlook_panel.cpp" line="202"/>
-        <location filename="outlook_panel.cpp" line="313"/>
+        <location filename="outlook_panel.cpp" line="204"/>
+        <location filename="outlook_panel.cpp" line="315"/>
         <source>Double-click to call</source>
         <translation>Double-cliquer pour appeler</translation>
     </message>
     <message>
-        <location filename="outlook_panel.cpp" line="391"/>
+        <location filename="outlook_panel.cpp" line="393"/>
         <source>&amp;Dial</source>
         <translation>&amp;Numéroter</translation>
     </message>
     <message>
-        <location filename="outlook_panel.cpp" line="392"/>
+        <location filename="outlook_panel.cpp" line="394"/>
         <source>&amp;Transfer</source>
         <translation>&amp;Transférer</translation>
     </message>
     <message>
-        <location filename="outlook_panel.cpp" line="439"/>
+        <location filename="outlook_panel.cpp" line="436"/>
         <source>Send an E-mail</source>
         <translation>Envoyer un e-mail</translation>
     </message>
