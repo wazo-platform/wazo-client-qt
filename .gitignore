@@ -6,6 +6,7 @@
 *~
 bin
 moc_*.cpp
+*.moc
 *.mak
 bin
 plugins/*/Makefile
