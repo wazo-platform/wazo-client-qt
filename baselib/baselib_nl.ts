@@ -459,8 +459,11 @@ Bent u zeker?</translation>
         <location filename="src/gui/peerwidget.cpp" line="186"/>
         <source>Agent %1
 %n Queue(s) %2</source>
-        <translation>Agent %1
-%n Wachtrij(en) %2</translation>
+        <translation>
+            <numerusform>Agent %1
+    %n Wachtrij(en) %2</numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <location filename="src/gui/peerwidget.cpp" line="195"/>
