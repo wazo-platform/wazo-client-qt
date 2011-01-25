@@ -6,6 +6,9 @@
 *~
 bin
 moc_*.cpp
+*.mak
+bin
 plugins/*/Makefile
 plugins/*/qrc_res.cpp
 xivoclient/qrc_appli.cpp
+xivoclient/versions.pri
