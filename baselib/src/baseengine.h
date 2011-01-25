@@ -48,7 +48,7 @@
 #include <QVariantMap>
 #include <QTimerEvent>
 #include <QApplication>
-
+#include <QLibraryInfo>
 
 class Xlet;
 
@@ -109,6 +109,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QString & password() const;       //!< password to identify to the sever
         void setPassword(const QString &);      //!< see password()
 
+        QString forcelocale() const;               //!< force locale string
+        void setForcelocale(QString);              //!< set force locale
         bool autoconnect() const;               //!< auto connect flag
         void setAutoconnect(bool);              //!< set auto connect flag
         bool trytoreconnect() const;            //!< try to reconnect flag
@@ -173,6 +175,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QHash<QString, QHash<QString, ParkingInfo *> > parking() const { return m_parking; }; //!< Return the parking to any Xlet
 
         void registerTranslation(const QString &);
+        void changeTranslation(const QString &);
         void sendUrlToBrowser(const QString &);
         void addToDataBase(QVariantMap &);
 
@@ -322,6 +325,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QDateTime m_timeclt;
         double m_timesrv;
 
+        QString m_forcelocale;          //!< Force locale string
+        QStringList translationFiles;   //!< List of translation files
+        QVector<QTranslator *> translators;   //!< Vector of translators
         bool m_autoconnect;             //!< Autoconnect to server at startup
         bool m_trytoreconnect;          //!< "try to reconnect" flag
         bool m_systrayed;               //!< "systrayed at startup" flag
