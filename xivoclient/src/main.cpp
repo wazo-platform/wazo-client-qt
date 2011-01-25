@@ -107,19 +107,6 @@ int main(int argc, char ** argv)
     if(forcelocale.length())
         locale = forcelocale;
 
-    QTranslator *translator;
-    QStringList translationFiles = \
-        (QStringList() << ":/xivoclient_%1"
-                       << ":/baselib/baselib_%1"
-                       << QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_%1" );
-
-    int i;
-    for(i=0;i<translationFiles.size();++i) {
-        translator = new QTranslator;
-        translator->load(translationFiles.at(i).arg(locale));
-        app.installTranslator(translator);
-    }
-
     QString info_osname;
     QString info_endianness = QSysInfo::ByteOrder ? "LE" : "BE";
 
@@ -135,6 +122,8 @@ int main(int argc, char ** argv)
     qDebug() << "main() osname=" << info_osname << "locale=" << locale;
 
     BaseEngine *engine = new BaseEngine(settings, info_osname);
+
+    engine->changeTranslation(locale);
 
     MainWidget window;
     app.setActivationWindow(&window);

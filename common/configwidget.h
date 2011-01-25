@@ -89,6 +89,7 @@ class ConfigWidget: public QDialog
         QLineEdit *m_serverhost;       //!< IP/hostname of the server
         QSpinBox  *m_ctiport;          //!< server port (switchboard)
 
+        QComboBox *m_locale_cbox;         //!< Locale selectbox
         QCheckBox *m_autoconnect;      //!< "Auto connect" checkbox
         QCheckBox *m_trytoreconnect;   //!< "Try to reconnect" Checkbox
         QCheckBox *m_systrayed;        //!< "Systray at startup" Checkbox
