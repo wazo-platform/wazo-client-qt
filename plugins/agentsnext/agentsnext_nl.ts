@@ -5,131 +5,131 @@
     <name>XletAgentsNext</name>
     <message>
         <location filename="src/agentsnext.cpp" line="49"/>
-        <source>Agents&apos; List (queue groups)</source>
-        <translation type="unfinished"></translation>
+        <source>Agents' List (queue groups)</source>
+        <translation>Agentenlijst (wachtrijgroepen)</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="94"/>
         <location filename="src/agentsnext.cpp" line="182"/>
         <source>New Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe groep</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="109"/>
         <source>Rename this Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze groep  herbenoemen</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="117"/>
         <source>Remove this Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze groep verwijderen</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="127"/>
         <source>Remove a Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Een wachtrij verwijderen</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="139"/>
         <source>Remove them all</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles verwijderen?</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="151"/>
         <source>Add a Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Een wachtrij toevoegen</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="163"/>
         <source>Add them all</source>
-        <translation type="unfinished"></translation>
+        <translation>Allen toevoegen</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="184"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Naam</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="186"/>
         <location filename="src/agentsnext.cpp" line="395"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="187"/>
         <location filename="src/agentsnext.cpp" line="396"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="371"/>
         <source>%1 hr %2 min %3 sec</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 u %2 min %3 sec</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="373"/>
         <source>%1 min %2 sec</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 min %2 sec</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="375"/>
         <source>%1 sec</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sec</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="390"/>
         <source>Rename a Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Een groep  herbenoemen</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="392"/>
         <source>New Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe naam</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="494"/>
         <source>Agent %1 on %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent %1 op %2</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="502"/>
         <source>%1 calls received since connection</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 oproepen ontvangen sinds de verbinding</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="503"/>
         <source>%1 calls lost since connection</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 oproepen verloren sinds de verbinding</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="518"/>
         <source>Cancel Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Pauze annuleren</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="521"/>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Pauzeren</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="532"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitloggen</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="540"/>
         <source>Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Doorschakelen</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="546"/>
         <source>Available Queues</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschikbare wachtrijen</translation>
     </message>
     <message>
         <location filename="src/agentsnext.cpp" line="554"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten</translation>
     </message>
 </context>
 </TS>

@@ -6,79 +6,79 @@
     <message>
         <location filename="outlook_panel.cpp" line="76"/>
         <source>Outlook</source>
-        <translation type="unfinished"></translation>
+        <translation>Outlook</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="78"/>
         <source>First Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Voornaam</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="79"/>
         <source>Last Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Familienaam</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="80"/>
         <source>Full Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Volledige naam</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="81"/>
         <source>Business Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Zakelijk nummer</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="82"/>
         <source>Mobile Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Gsm nummer</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="83"/>
         <source>Home Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Thuisnummer</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="84"/>
         <source>Email Address</source>
-        <translation type="unfinished"></translation>
+        <translation>E-mailadres</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="85"/>
         <source>EntryID</source>
-        <translation type="unfinished"></translation>
+        <translation>ToegangsID</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="89"/>
         <source>Di&amp;rectory</source>
-        <translation type="unfinished"></translation>
+        <translation>Di&amp;rectory</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="200"/>
         <location filename="outlook_panel.cpp" line="311"/>
         <source>Double-click to send an E-mail to</source>
-        <translation type="unfinished"></translation>
+        <translation>Dubbelklikken om een e-mail te verzenden aan</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="202"/>
         <location filename="outlook_panel.cpp" line="313"/>
         <source>Double-click to call</source>
-        <translation type="unfinished"></translation>
+        <translation>Dubbelklikken om te bellen</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="391"/>
         <source>&amp;Dial</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Bellen</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="392"/>
         <source>&amp;Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Doorschakelen</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="439"/>
         <source>Send an E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Een e-mail verzenden</translation>
     </message>
 </context>
 </TS>

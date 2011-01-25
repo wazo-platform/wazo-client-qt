@@ -6,7 +6,7 @@
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="897"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Gepersonaliseerd</translation>
     </message>
 </context>
 <context>
@@ -16,108 +16,108 @@
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="405"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="508"/>
         <source>Black</source>
-        <translation type="unfinished"></translation>
+        <translation>Zwart</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="406"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="509"/>
         <source>White</source>
-        <translation type="unfinished"></translation>
+        <translation>Wit</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="407"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="510"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rood</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="408"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="511"/>
         <source>Dark red</source>
-        <translation type="unfinished"></translation>
+        <translation>Donkerrood</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="409"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="512"/>
         <source>Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Groen</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="410"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="513"/>
         <source>Dark green</source>
-        <translation type="unfinished"></translation>
+        <translation>Donkergroen</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="411"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="514"/>
         <source>Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Blauw</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="412"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="515"/>
         <source>Dark blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Donkerblauw</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="413"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="516"/>
         <source>Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Cyaan</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="414"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="517"/>
         <source>Dark cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Donkercyaan</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="415"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="518"/>
         <source>Magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Magenta</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="416"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="519"/>
         <source>Dark magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Donkermagenta</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="417"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="520"/>
         <source>Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Geel</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="418"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="521"/>
         <source>Dark yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Donkergeel</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="419"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="522"/>
         <source>Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Grijs</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="420"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="523"/>
         <source>Dark gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Donkergrijs</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="421"/>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="524"/>
         <source>Light gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Lichtgrijs</translation>
     </message>
     <message>
         <location filename="../../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="439"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Gepersonaliseerd</translation>
     </message>
 </context>
 <context>
@@ -126,78 +126,79 @@
         <location filename="src/switchboardwindow.cpp" line="61"/>
         <location filename="src/switchboardwindow.cpp" line="64"/>
         <source>Switchboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Schakelbord</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="182"/>
         <source>Removing group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijdering van groep %1</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="183"/>
         <source>Removing group %1.
 Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijdering van groep %1.
+Bent u zeker?</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="217"/>
         <source>Edit group name</source>
-        <translation type="unfinished"></translation>
+        <translation>De naam van de groep wijzigen</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="218"/>
         <source>Name for group</source>
-        <translation type="unfinished"></translation>
+        <translation>Naam van voor de groep</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="565"/>
         <source>New group</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe groep</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="567"/>
         <source>Please enter a name for the new group</source>
-        <translation type="unfinished"></translation>
+        <translation>Gelieve een naam in te voeren voor de nieuwe groep</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="570"/>
         <source>Please choose a color for the new group</source>
-        <translation type="unfinished"></translation>
+        <translation>Gelieve een kleur te kiezen voor de nieuwe groep</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="666"/>
         <source>Remove group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep %1 verwijderen</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="670"/>
         <source>Change color of group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>De kleur van groep %1 wijzigen</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="674"/>
         <source>Rename group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep %1 herbenoemen</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="679"/>
         <source>Add Phone number entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoonnummer toevoegen </translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="683"/>
         <source>Draw the grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Het rooster tekenen</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="792"/>
         <source>Duplicate number</source>
-        <translation type="unfinished"></translation>
+        <translation>Het nummer dupliceren</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="793"/>
         <source>Phone number %1 is already present in the switchboard panel.</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoonnummer %1 is reeds aanwezig op het schakelbord.</translation>
     </message>
 </context>
 </TS>
