@@ -1,7 +1,10 @@
 *.o
 *.qm
 moc_*.cpp
+*.mak
+bin
 plugins/*/Makefile
 plugins/*/qrc_res.cpp
 */Makefile
 xivoclient/qrc_appli.cpp
+xivoclient/versions.pri
