@@ -110,11 +110,12 @@ void XletRecords::recordResults(const QVariantMap & p)
     if (function == "search") {
         QVariantList qvl = p.value("payload").toList();
         b_engine->tree()->rmPath("records");
-        b_engine->tree()->populate("records", QVariantMap());
+        QVariantMap qvm;
         foreach (QVariant r, qvl) {
             QString id = r.toMap().value("id").toString();
-            b_engine->tree()->populate(QString("records/%1").arg(id), r.toMap());
+            qvm[id] = r.toMap();
         }
+        b_engine->tree()->populate("records", qvm);
         emit update(qvl.size());
     } else if (function == "getprops") {
         m_tags = p.value("tags").toMap();
