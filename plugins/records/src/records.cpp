@@ -64,7 +64,7 @@ XletRecords::XletRecords(QWidget *parent)
 
     m_ctp = new CommonTableProperties("records");
     // last item : should define : editable or not, in tooltip or not, hidden or not ...
-    m_ctp->addColumn(tr("ID"), "id", QVariant::Int, "id");
+    m_ctp->addColumn(tr("ID"), "id", QVariant::String, "id");
     m_ctp->addColumn(tr("Start Date"), "callstart", QVariant::DateTime, "id");
     m_ctp->addColumn(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
     m_ctp->addColumn(tr("Filename"), "filename", QVariant::String, "id");
@@ -97,11 +97,14 @@ QString XletRecords::tooltip(const QModelIndex & modelindex)
 {
     int row = modelindex.row();
     int column = modelindex.column();
+    QString ttip = "";
 
-    return QString("%1\n"
-                   "svi entries : %2")
-        .arg(modelindex.sibling(row, 2).data().toString())
-        .arg(modelindex.sibling(row, 12).data().toString());
+    if (column < 7)
+        ttip = QString("%1\n"
+                       "svi entries : %2")
+            .arg(modelindex.sibling(row, 2).data().toString())
+            .arg(modelindex.sibling(row, 12).data().toString());
+    return ttip;
 }
 
 void XletRecords::recordResults(const QVariantMap & p)
@@ -139,9 +142,9 @@ void XletRecords::setDataEdit(const QModelIndex & modelindex,
                               const QVariant & value)
 {
     int row = modelindex.row();
-    int column = modelindex.column();
+    // int column = modelindex.column(); // the column should match with an editable item anyway
     int idcolumn = 0;
-    int truerow = modelindex.sibling(row, idcolumn).data().toInt();
+    QString truerow = modelindex.sibling(row, idcolumn).data().toString();
 
     QVariantMap command;
     command["class"] = "records-campaign";

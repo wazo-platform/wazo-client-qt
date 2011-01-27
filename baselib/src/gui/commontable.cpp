@@ -182,7 +182,7 @@ bool CommonTableModel::setData(const QModelIndex & modelindex, const QVariant & 
     int row = modelindex.row();
     int column = modelindex.column();
     int idcolumn = 0;
-    int truerow = modelindex.sibling(row, idcolumn).data().toInt();
+    QString truerow = modelindex.sibling(row, idcolumn).data().toString();
 
     // it is important to make modelindex used before proceeding, since the order will change
     // afterwards
@@ -207,6 +207,7 @@ QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
     QVariant ret = QVariant();
     int row = modelindex.row();
     int column = modelindex.column();
+    QString truerow = "";
 
     switch(role) {
     case Qt::TextAlignmentRole:
@@ -219,11 +220,11 @@ QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
     case Qt::DisplayRole:
     case Qt::UserRole:
         if (m_row2id.contains(row))
-            row = m_row2id[row].toInt();
+            truerow = m_row2id[row];
 
         QString eventfield = m_fieldoptions->eventfield(column);
         QVariant::Type qttype = m_fieldoptions->qttype(column);
-        QString request = QString("%1/%2/%3").arg(m_fieldoptions->treebase()).arg(row).arg(eventfield);
+        QString request = QString("%1/%2/%3").arg(m_fieldoptions->treebase()).arg(truerow).arg(eventfield);
 
         if ((qttype == QVariant::String) || (qttype == QVariant::Int))
             ret = b_engine->eV(request);
@@ -261,51 +262,51 @@ void CommonTableModel::sort(int column, Qt::SortOrder order)
     int idcolumn = 0;
 
     struct {
-        static bool s_ascending(const QPair<int, QString> &a,
-                                const QPair<int, QString> &b) {
+        static bool s_ascending(const QPair<QString, QString> &a,
+                                const QPair<QString, QString> &b) {
             return QString::localeAwareCompare(a.second, b.second) < 0 ? true : false;
         }
-        static bool s_descending(const QPair<int, QString> &a,
-                                 const QPair<int, QString> &b) {
+        static bool s_descending(const QPair<QString, QString> &a,
+                                 const QPair<QString, QString> &b) {
             return QString::localeAwareCompare(a.second, b.second) < 0 ? false : true;
         }
-        static bool i_ascending(const QPair<int, int> & a,
-                                const QPair<int, int> & b) {
+        static bool i_ascending(const QPair<QString, int> & a,
+                                const QPair<QString, int> & b) {
             return (a.second < b.second);
         }
-        static bool i_descending(const QPair<int, int> & a,
-                                 const QPair<int, int> & b) {
+        static bool i_descending(const QPair<QString, int> & a,
+                                 const QPair<QString, int> & b) {
             return (a.second > b.second);
         }
     } sFun;
 
     if (qttype == QVariant::String) {
-        QList<QPair<int, QString> > toSort;
+        QList<QPair<QString, QString> > toSort;
         for (int i = 0; i < nrows; i++) {
-            toSort.append(QPair<int, QString>(index(i, idcolumn).data(Qt::UserRole).toInt(),
-                                              index(i, column).data(Qt::UserRole).toString()));
+            toSort.append(QPair<QString, QString>(index(i, idcolumn).data(Qt::UserRole).toString(),
+                                                  index(i, column).data(Qt::UserRole).toString()));
         }
         qSort(toSort.begin(), toSort.end(),
               (order == Qt::AscendingOrder) ?
               sFun.s_ascending :
               sFun.s_descending);
         for (int i = 0; i < nrows; i++) {
-            m_row2id.insert(i, QString::number(toSort[i].first));
+            m_row2id.insert(i, QString(toSort[i].first));
         }
 
     } else if ((qttype == QVariant::DateTime) ||
                (qttype == QVariant::Int)) {
-        QList<QPair<int, int> > toSort;
+        QList<QPair<QString, int> > toSort;
         for (int i = 0; i < nrows; i++) {
-            toSort.append(QPair<int, int>(index(i, idcolumn).data(Qt::UserRole).toInt(),
-                                          index(i, column).data(Qt::UserRole).toInt()));
+            toSort.append(QPair<QString, int>(index(i, idcolumn).data(Qt::UserRole).toString(),
+                                              index(i, column).data(Qt::UserRole).toInt()));
         }
         qSort(toSort.begin(), toSort.end(),
               (order == Qt::AscendingOrder) ?
               sFun.i_ascending :
               sFun.i_descending);
         for (int i = 0; i < nrows; i++) {
-            m_row2id.insert(i, QString::number(toSort[i].first));
+            m_row2id.insert(i, QString(toSort[i].first));
         }
     }
 
@@ -332,7 +333,7 @@ CommonTableView::CommonTableView(QWidget * parent,
     setStyleSheet("CommonTableView {" + model->displayOptionStyleSheet() + "}");
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
-    // hideColumn(idcolumn);
+    hideColumn(idcolumn);
     // sortByColumn(0);
 
     connect(this, SIGNAL(signalMousePressEvent(QMouseEvent *)),
