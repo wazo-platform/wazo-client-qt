@@ -56,6 +56,9 @@ class CommonTableProperties
         CommonTableProperties(const QString &);
         ~CommonTableProperties() {};
 
+        void setMatches(const QString &, const QString &, const QString &);
+        bool hasMatchFor(const QString &) const;
+        QString match(const QString &, const QString &) const;
         int displayOptionShowGrid() const;
         QString displayOptionStyleSheet() const;
         int ncolumns() const;

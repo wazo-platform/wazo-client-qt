@@ -123,6 +123,10 @@ void XletRecords::recordResults(const QVariantMap & p)
     } else if (function == "getprops") {
         m_tags = p.value("tags").toMap();
         m_tags.remove("notag");
+        foreach (QString ti, m_tags.keys()) {
+            QString itemname = m_tags[ti].toMap().value("label").toString();
+            m_ctp->setMatches("callrecordtag", ti, itemname);
+        }
     } else if (function == "tag") {
         QString id = p.value("id").toString();
         QString returncode = p.value("returncode").toString();

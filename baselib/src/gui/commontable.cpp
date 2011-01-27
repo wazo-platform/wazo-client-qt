@@ -44,6 +44,7 @@ CommonTableProperties::CommonTableProperties(const QString & treebase)
     m_properties["display_grid"] = 1;
     m_properties["treebase"] = treebase;
     m_properties["columns"] = "";
+    m_properties["matches"] = "";
 }
 
 // to define, per column : "id" for "eV", type (boolean, date/time, phone)
@@ -60,6 +61,27 @@ void CommonTableProperties::addColumn(const QString & title,
     u["xivotype"] = xivotype;
     columns << u;
     m_properties["columns"] = columns;
+}
+
+void CommonTableProperties::setMatches(const QString & eventfield,
+                                       const QString & key,
+                                       const QString & value)
+{
+    QVariantMap u = m_properties.value("matches").toMap();
+    QVariantMap k = u.value(eventfield).toMap();
+    k[key] = value;
+    u[eventfield] = k;
+    m_properties["matches"] = u;
+}
+
+bool CommonTableProperties::hasMatchFor(const QString & eventfield) const
+{
+    return m_properties.value("matches").toMap().contains(eventfield);
+}
+
+QString CommonTableProperties::match(const QString & eventfield, const QString & key) const
+{
+    return m_properties.value("matches").toMap().value(eventfield).toMap().value(key).toString();
 }
 
 int CommonTableProperties::displayOptionShowGrid() const
@@ -226,15 +248,23 @@ QVariant CommonTableModel::data(const QModelIndex & modelindex, int role) const
         QVariant::Type qttype = m_fieldoptions->qttype(column);
         QString request = QString("%1/%2/%3").arg(m_fieldoptions->treebase()).arg(truerow).arg(eventfield);
 
-        if ((qttype == QVariant::String) || (qttype == QVariant::Int))
-            ret = b_engine->eV(request);
-        else if (qttype == QVariant::DateTime) {
+        if ((qttype == QVariant::String) || (qttype == QVariant::Int)) {
+            QString dataval = b_engine->eV(request).toString();
+            if (m_fieldoptions->hasMatchFor(eventfield))
+                ret = m_fieldoptions->match(eventfield, dataval);
+            else
+                ret = dataval;
+        } else if (qttype == QVariant::DateTime) {
             uint idate = int(b_engine->eV(request).toDouble());
             QDateTime qdt = QDateTime::fromTime_t(idate);
-            if (role == Qt::UserRole)
+            if (role == Qt::UserRole) // when sorting
                 ret = idate;
-            else
-                ret = qdt.toString();
+            else {
+                if (idate > 0)
+                    ret = qdt.toString();
+                else
+                    ret = "-";
+            }
         }
         break;
     }
