@@ -85,8 +85,12 @@ Popup::Popup(const bool urlautoallow, QWidget *parent)
 
 Popup::~Popup()
 {
+    // qDebug() << Q_FUNC_INFO;
     delete m_xmlInputSource;
     delete m_handler;
+    delete m_reader;
+    delete m_sheetui_widget;
+    delete m_uiloader;
 }
 
 /*!
@@ -97,16 +101,19 @@ void Popup::feed(QIODevice * inputstream,
 {
     m_nfeeds ++;
     m_inputstream = inputstream;
+
     m_xmlInputSource = new QXmlInputSource(m_inputstream);
     m_handler = new XmlHandler(this);
+    m_reader = new QXmlSimpleReader();
+
     m_sheetui = sheetui;
 
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString currentDateTimeStr = currentDateTime.toString(Qt::LocalDate);
     qDebug() << Q_FUNC_INFO << this << m_nfeeds << inputstream << currentDateTime << sheetui << m_handler;
 
-    m_reader.setContentHandler(m_handler);
-    m_reader.setErrorHandler(m_handler);
+    m_reader->setContentHandler(m_handler);
+    m_reader->setErrorHandler(m_handler);
     m_parsingStarted = false;
 
     if(m_nfeeds == 1) {
@@ -139,9 +146,9 @@ void Popup::feed(QIODevice * inputstream,
         m_vlayout->addStretch();
     }
 
-    QUiLoader loader;
+    m_uiloader = new QUiLoader();
     if(sheetui) {
-        m_sheetui_widget = loader.load(m_inputstream, this);
+        m_sheetui_widget = m_uiloader->load(m_inputstream, this);
         m_vlayout->insertWidget(m_vlayout->count() - 1, m_sheetui_widget, 0, 0);
         foreach(QString formbuttonname, g_formbuttonnames) {
             m_form_buttons[formbuttonname] = m_sheetui_widget->findChild<QPushButton *>(formbuttonname);
@@ -181,7 +188,7 @@ void Popup::dispurl(const QUrl &url)
 void Popup::actionFromForm()
 {
     QString buttonname = sender()->property("buttonname").toString();
-    qDebug() << Q_FUNC_INFO << buttonname << m_astid << m_context << m_uniqueid << m_channel;
+    // qDebug() << Q_FUNC_INFO << buttonname << m_astid << m_context << m_uniqueid << m_channel;
     if(buttonname == "close")
         close();
     else if(buttonname == "save")
@@ -299,7 +306,7 @@ void Popup::setTitle(const QString & title)
 
 void Popup::addDefForm(const QString & name, const QString & value)
 {
-    qDebug() << Q_FUNC_INFO << this << name << value.size();
+    // qDebug() << Q_FUNC_INFO << this << name << value.size();
     m_remoteforms[name] = value;
 }
 
@@ -446,7 +453,7 @@ QList<QStringList> & Popup::sheetlines()
 
 void Popup::update(QList<QStringList> & newsheetlines)
 {
-    qDebug() << Q_FUNC_INFO << this << newsheetlines;
+    // qDebug() << Q_FUNC_INFO << this << newsheetlines;
     m_toupdate = true;
     foreach(QStringList qsl, newsheetlines)
         addAnyInfo(qsl[0], qsl[1], qsl[2], qsl[3], qsl[4]);
@@ -514,12 +521,12 @@ void Popup::addInfoPicture(int where, const QString & name, const QString & valu
 void Popup::streamNewData()
 {
     bool b = false;
-    qDebug() << Q_FUNC_INFO << this << m_sheetui << m_inputstream->bytesAvailable() << "bytes available";
+    // qDebug() << Q_FUNC_INFO << this << m_sheetui << m_inputstream->bytesAvailable() << "bytes available";
     if(!m_sheetui)
         if(m_parsingStarted)
-            b = m_reader.parseContinue();
+            b = m_reader->parseContinue();
         else {
-            b = m_reader.parse(m_xmlInputSource, false);
+            b = m_reader->parse(m_xmlInputSource, false);
             m_parsingStarted = b;
         }
     else
@@ -537,7 +544,7 @@ void Popup::dialThisNumber()
 void Popup::httpGetNoreply()
 {
     QString urlx = sender()->property("urlx").toString();
-    qDebug() << Q_FUNC_INFO << urlx;
+    // qDebug() << Q_FUNC_INFO << urlx;
     QUrl url = QUrl(urlx);
     QHttp * http = new QHttp();
     http->setHost(url.host(), url.port());
@@ -546,15 +553,15 @@ void Popup::httpGetNoreply()
 
 void Popup::streamAboutToClose()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     finishAndShow();
 }
 
 void Popup::socketDisconnected()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     /* finish the parsing */
-    m_reader.parseContinue();
+    m_reader->parseContinue();
 }
 
 /*
@@ -569,7 +576,7 @@ void Popup::socketError(QAbstractSocket::SocketError err)
  */
 void Popup::finishAndShow()
 {
-    qDebug() << Q_FUNC_INFO << this;
+    // qDebug() << Q_FUNC_INFO << this;
     if(m_nfeeds == 1)
         addRemarkArea();
     //dumpObjectInfo();
