@@ -100,6 +100,10 @@ class SearchWidget : public QWidget
         void DrawSearchFields();
         int m_nfilterlines;
 
+        QLabel * m_filterstitle;
+        QPushButton * m_addbutton;
+        QPushButton * m_andorbutton;
+        QPushButton * m_requestbutton;
         QGridLayout * m_searchlayout;
         QList<QComboBox *> m_researchkind;
         QList<QLineEdit *> m_searchwidget;
@@ -110,6 +114,7 @@ class SearchWidget : public QWidget
     private slots:
         void AddSearchField();
         void RemoveSearchField();
+        void SwitchAndOrMode();
 };
 
 class ResultsWidget : public QWidget

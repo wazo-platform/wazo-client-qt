@@ -284,30 +284,33 @@ SearchWidget::SearchWidget(QWidget * parent)
 
     // fetch last
 
-    QLabel * filterstitle = new QLabel(this);
-    QPushButton * addbutton = new QPushButton(this);
-    QPushButton * requestwidget = new QPushButton(this);
+    m_filterstitle = new QLabel(this);
+    m_addbutton = new QPushButton(this);
+    m_andorbutton = new QPushButton(this);
+    m_requestbutton = new QPushButton(this);
     // "clear" button
 
     m_nfilterlines = 0;
     AddSearchField();
 
-    m_searchlayout->addWidget(filterstitle, 0, 0);
-    m_searchlayout->addWidget(addbutton, 0, 1);
-    m_searchlayout->addWidget(requestwidget, 0, 5);
+    m_searchlayout->addWidget(m_filterstitle, 0, 0);
+    m_searchlayout->addWidget(m_addbutton, 0, 1);
+    m_searchlayout->addWidget(m_andorbutton, 1, 1);
+    m_searchlayout->addWidget(m_requestbutton, 0, 5);
 
-    filterstitle->setText(tr("Search Filter(s)"));
-    addbutton->setIcon(QIcon(":/images/add.png"));
-    requestwidget->setText(tr("Lookup"));
+    m_filterstitle->setText(tr("Search Filter(s)"));
+    m_addbutton->setIcon(QIcon(":/images/add.png"));
+    m_andorbutton->setFont(QFont("", 12));
+    m_andorbutton->setText("|");
+    m_requestbutton->setText(tr("Lookup"));
 
-    connect(requestwidget, SIGNAL(clicked()),
+    connect(m_requestbutton, SIGNAL(clicked()),
             this, SLOT(Lookup()));
-    connect(addbutton, SIGNAL(clicked()),
+    connect(m_addbutton, SIGNAL(clicked()),
             this, SLOT(AddSearchField()));
+    connect(m_andorbutton, SIGNAL(clicked()),
+            this, SLOT(SwitchAndOrMode()));
 }
-
-
-
 
 
 SearchWidget::~SearchWidget()
@@ -323,6 +326,14 @@ void SearchWidget::DrawSearchFields()
         m_searchlayout->addWidget(m_removebutton[z], z, 4);
         m_removebutton[z]->setProperty("linenumber", z);
     }
+}
+
+void SearchWidget::SwitchAndOrMode()
+{
+    if(m_andorbutton->text() == "|")
+        m_andorbutton->setText("&&");
+    else
+        m_andorbutton->setText("|");
 }
 
 void SearchWidget::AddSearchField()
@@ -341,7 +352,7 @@ void SearchWidget::AddSearchField()
         m_researchkind[linenumber]->addItem(tr("Skill"));
         m_researchkind[linenumber]->addItem(tr("Direction"));
         m_searchwidget[linenumber]->setText("");
-        m_removebutton[linenumber]->setText("-");
+        m_removebutton[linenumber]->setIcon(QIcon(":/images/cancel.png"));
 
         connect(m_removebutton[linenumber], SIGNAL(clicked()),
                 this, SLOT(RemoveSearchField()));
