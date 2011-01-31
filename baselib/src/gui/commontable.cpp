@@ -380,15 +380,17 @@ void CommonTableView::selectionChanged(const QItemSelection & selected,
                                        const QItemSelection & deselected)
 {
     m_modelindexlist.clear();
-    int prevrow = -1;
-    int columntomatch = 1; // XXX first unhidden column actually
+    int columntomatch = 2; // XXX first unhidden column actually
     foreach (QModelIndex qmi, QAbstractItemView::selectedIndexes()) {
-        if (qmi.column() == columntomatch) {
+        if (qmi.column() == columntomatch)
             m_modelindexlist.append(qmi);
-            prevrow = qmi.row();
-        }
     }
     QAbstractItemView::selectionChanged(selected, deselected);
+}
+
+QList<QModelIndex> CommonTableView::currentSelection() const
+{
+    return m_modelindexlist;
 }
 
 void CommonTableView::mousePressEvent(QMouseEvent * event)
@@ -408,14 +410,19 @@ CommonTableWidget::CommonTableWidget(const CommonTableProperties * const qv,
     QVBoxLayout  * vBox = new QVBoxLayout(this);
     QHBoxLayout  * hBox = new QHBoxLayout();
     CommonTableModel * model = new CommonTableModel(qv);
-    CommonTableView * view = new CommonTableView(this, parentxlet, model);
+    m_view = new CommonTableView(this, parentxlet, model);
 
-    view->setStyleSheet("CommonTableView {" + model->displayOptionStyleSheet() + "}");
-    view->verticalHeader()->hide();
+    m_view->setStyleSheet("CommonTableView {" + model->displayOptionStyleSheet() + "}");
+    m_view->verticalHeader()->hide();
     // hBox->addStretch(1);
-    hBox->addWidget(view, Qt::AlignJustify);
+    hBox->addWidget(m_view, Qt::AlignJustify);
     // hBox->addStretch(1);
 
     vBox->addLayout(hBox);
     setLayout(vBox);
+}
+
+QList<QModelIndex> CommonTableWidget::currentSelection() const
+{
+    return m_view->currentSelection();
 }

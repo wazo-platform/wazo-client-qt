@@ -42,6 +42,7 @@
 class SearchWidget;
 class ResultsWidget;
 class CommonTableProperties;
+class CommonTableWidget;
 
 class XletRecords : public XLet
 {
@@ -78,6 +79,7 @@ class XletRecords : public XLet
 
         ResultsWidget * m_resultswidget;
         CommonTableProperties * m_ctp;
+        CommonTableWidget * m_ctwidget;
         QVariantMap m_tags;
 };
 

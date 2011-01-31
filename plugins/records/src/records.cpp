@@ -80,8 +80,8 @@ XletRecords::XletRecords(QWidget *parent)
     m_ctp->addColumn(tr("SVI v"), "svivariables", QVariant::String, "id");
     m_ctp->addColumn(tr("SVI c"), "svichoices", QVariant::String, "id");
     m_ctp->setTooltipCallBack(XletRecords::tooltip_t, this);
-    CommonTableWidget * el = new CommonTableWidget(m_ctp, this);
-    m_xletLayout->addWidget(el);
+    m_ctwidget = new CommonTableWidget(m_ctp, this);
+    m_xletLayout->addWidget(m_ctwidget);
 
     // m_xletLayout->insertStretch(-1, 1);
     b_engine->registerClassEvent("records-campaign",
@@ -173,9 +173,17 @@ void XletRecords::mousePressEvent(QMouseEvent * event)
 
 void XletRecords::onViewClick(const QModelIndex & modelindex)
 {
+    int idcolumn = 0;
+    if (m_ctwidget->currentSelection().count() > 1) {
+        // multiline selection
+        foreach (QModelIndex qmi, m_ctwidget->currentSelection()) {
+            QString id = qmi.sibling(qmi.row(), idcolumn).data().toString();
+        }
+        return;
+    }
+
     int row = modelindex.row();
     int column = modelindex.column();
-    int idcolumn = 0;
     QString id = modelindex.sibling(row, idcolumn).data().toString();
     QString c_eventfield = m_ctp->eventfield(column);
 

@@ -122,6 +122,7 @@ class CommonTableView : public QTableView
     public:
         CommonTableView(QWidget *, XLet *, CommonTableModel *);
         ~CommonTableView() {};
+        QList<QModelIndex> currentSelection() const;
     signals:
         void signalMousePressEvent(QMouseEvent *);
     protected:
@@ -140,6 +141,9 @@ class CommonTableWidget : public QWidget
         CommonTableWidget(const CommonTableProperties * const,
                           XLet * parent);
         ~CommonTableWidget() {};
+        QList<QModelIndex> currentSelection() const;
+    private:
+        CommonTableView * m_view;
 };
 
 #endif
