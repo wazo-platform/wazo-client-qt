@@ -132,11 +132,19 @@ void XletRecords::recordResults(const QVariantMap & p)
         QString returncode = p.value("returncode").toString();
         if (returncode == "ok")
             m_searchwidget->Lookup();
+        else
+            QMessageBox::warning(NULL, tr("Tag"),
+                                 tr("You attempted to change tag for id %1.\n"
+                                    "The return code is %2.").arg(id).arg(returncode));
     } else if (function == "comment") {
         QString id = p.value("id").toString();
         QString returncode = p.value("returncode").toString();
         if (returncode == "ok")
             m_searchwidget->Lookup();
+        else
+            QMessageBox::warning(NULL, tr("Comment"),
+                                 tr("You attempted to change tag for id %1.\n"
+                                    "The return code is %2.").arg(id).arg(returncode));
     } else {
         qDebug() << function << p;
     }
@@ -182,8 +190,7 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
 //     QString calleridnum = modelindex.sibling(row, 6).data().toString();
 //     QString queuenames = modelindex.sibling(row, 7).data().toString();
 //     QString agentnames = modelindex.sibling(row, 8).data().toString();
-//     QString recordstatus = modelindex.sibling(row, 9).data().toString();
-    QString callrecordtag = modelindex.sibling(row, 10).data().toString();
+    QString callrecordtag = modelindex.sibling(row, 9).data().toString();
 
     // if (m_lastPressed & Qt::LeftButton)
     if (m_lastPressed & Qt::RightButton) {
@@ -191,16 +198,16 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
             QMenu * menu = new QMenu(this);
             QAction * actionm = new QAction(tr("Change tag to"), menu);
             menu->addAction(actionm);
-            QVariantMap validtags = m_tags;
-            validtags.remove(callrecordtag);
-            foreach (QString ti, validtags.keys()) {
-                QString itemname = validtags[ti].toMap().value("label").toString();
-                QAction * action = new QAction(tr("%1").arg(itemname), menu);
-                action->setProperty("id", id);
-                action->setProperty("tag", ti);
-                menu->addAction(action);
-                connect(action, SIGNAL(triggered()),
-                        this, SLOT(changeTag()) );
+            foreach (QString ti, m_tags.keys()) {
+                QString taglabel = m_tags[ti].toMap().value("label").toString();
+                if(callrecordtag != taglabel) {
+                    QAction * action = new QAction(tr("%1").arg(taglabel), menu);
+                    action->setProperty("id", id);
+                    action->setProperty("tag", ti);
+                    menu->addAction(action);
+                    connect(action, SIGNAL(triggered()),
+                            this, SLOT(changeTag()) );
+                }
             }
             menu->exec(QCursor::pos());
             // delete action;
@@ -302,6 +309,7 @@ SearchWidget::SearchWidget(QWidget * parent)
     m_addbutton->setIcon(QIcon(":/images/add.png"));
     m_andorbutton->setFont(QFont("", 12));
     m_andorbutton->setText("|");
+    m_andorbutton->setProperty("operator", "or");
     m_requestbutton->setText(tr("Lookup"));
 
     connect(m_requestbutton, SIGNAL(clicked()),
@@ -330,10 +338,13 @@ void SearchWidget::DrawSearchFields()
 
 void SearchWidget::SwitchAndOrMode()
 {
-    if(m_andorbutton->text() == "|")
+    if(m_andorbutton->text() == "|") {
         m_andorbutton->setText("&&");
-    else
+        m_andorbutton->setProperty("operator", "and");
+    } else {
         m_andorbutton->setText("|");
+        m_andorbutton->setProperty("operator", "or");
+    }
 }
 
 void SearchWidget::AddSearchField()
@@ -399,6 +410,7 @@ void SearchWidget::Lookup()
         searchitems << searchitem;
     }
     command["searchitems"] = searchitems;
+    command["searchoperator"] = m_andorbutton->property("operator").toString();
     b_engine->sendJsonCommand(command);
 
     command.clear();
