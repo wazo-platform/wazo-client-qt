@@ -69,6 +69,7 @@ class XletRecords : public XLet
         void changeTag();
     private:
         QString tooltip(const QModelIndex &);
+        void commonMenuDisplay(const QModelIndex &);
 
         int m_lastPressed;
 

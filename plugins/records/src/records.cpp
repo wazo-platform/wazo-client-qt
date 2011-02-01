@@ -96,19 +96,23 @@ XletRecords::~XletRecords()
 QString XletRecords::tooltip(const QModelIndex & modelindex)
 {
     int row = modelindex.row();
-    // int column = modelindex.column();
+    int column = modelindex.column();
     QString ttip = "";
 
     ttip = tr("call start : %1 (duration %2 s, direction %3)\n"
               "filename : %4\n"
-              "svi entries : %5\n"
-              "svi variables : %6")
+              "current tag : %5\n"
+              "svi entries : %6\n"
+              "svi variables : %7\n"
+              "(this column : %8)")
         .arg(modelindex.sibling(row, m_ctp->revindex("callstart")).data().toString())
         .arg(modelindex.sibling(row, m_ctp->revindex("callduration")).data().toString())
         .arg(modelindex.sibling(row, m_ctp->revindex("direction")).data().toString())
         .arg(modelindex.sibling(row, m_ctp->revindex("filename")).data().toString())
+        .arg(modelindex.sibling(row, m_ctp->revindex("callrecordtag")).data().toString())
         .arg(modelindex.sibling(row, m_ctp->revindex("svientries")).data().toString())
-        .arg(modelindex.sibling(row, m_ctp->revindex("svivariables")).data().toString());
+        .arg(modelindex.sibling(row, m_ctp->revindex("svivariables")).data().toString())
+        .arg(m_ctp->eventfield(column));
     return ttip;
 }
 
@@ -199,6 +203,7 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
             QMenu * menu = new QMenu(this);
             QAction * actionm = new QAction(tr("Change tag to"), menu);
             menu->addAction(actionm);
+            menu->addSeparator();
             foreach (QString ti, m_tags.keys()) {
                 QString taglabel = m_tags[ti].toMap().value("label").toString();
                 if(callrecordtag != taglabel) {
@@ -211,69 +216,53 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
                 }
             }
             menu->exec(QCursor::pos());
-            // delete action;
+            // XXX delete action;
             delete menu;
 
-        } else if (c_eventfield != "queuenames") {
-            QString callstart = modelindex.sibling(row, m_ctp->revindex("callstart")).data().toString();
-            QString direction = modelindex.sibling(row, m_ctp->revindex("direction")).data().toString();
-            QMenu * menu = new QMenu(this);
-            QAction * action1 = new QAction(tr("Remove call %1 (%2)")
-                                            .arg(direction).arg(callstart), menu);
-            QAction * action2 = new QAction(tr("Change comment"), menu);
-            action1->setProperty("id", id);
-            action2->setProperty("id", id);
-            //     connect(action, SIGNAL(triggered(bool)),
-            //             parentWidget(), SLOT(openConfRoom()));
-            //     connect(action, SIGNAL(triggered(bool)),
-            //             parentWidget(), SLOT(phoneConfRoom()));
-            menu->addAction(action1);
-            menu->addAction(action2);
-            menu->exec(QCursor::pos());
-            delete action1;
-            delete action2;
-            delete menu;
+        } else {
+            commonMenuDisplay(modelindex);
         }
     }
 }
 
-void XletRecords::onViewDoubleClick(const QModelIndex & modelindex)
+void XletRecords::commonMenuDisplay(const QModelIndex & modelindex)
 {
     int row = modelindex.row();
-    int column = modelindex.column();
     int idcolumn = 0;
     QString id = modelindex.sibling(row, idcolumn).data().toString();
-    QString c_eventfield = m_ctp->eventfield(column);
+
+    QString callstart = modelindex.sibling(row, m_ctp->revindex("callstart")).data().toString();
+    QString filename = modelindex.sibling(row, m_ctp->revindex("filename")).data().toString();
+    QString idv = modelindex.sibling(row, m_ctp->revindex("id")).data().toString();
+
+    QMenu * menu = new QMenu(this);
+    QAction * action2 = new QAction(tr("Change comment"), menu);
+    QAction * action3 = new QAction(tr("Change tag"), menu);
+    action2->setProperty("id", id);
+    action3->setProperty("id", id);
+    action2->setProperty("action", "changecomment");
+    action3->setProperty("action", "changetag");
+
+    menu->addAction(tr("Call starting on %1 (id %2)").arg(callstart).arg(idv));
+    menu->addAction(tr("(%1)").arg(filename));
+    menu->addSeparator();
+    menu->addAction(action2);
+    menu->addAction(action3);
+
+    menu->exec(QCursor::pos());
+
+    delete action2;
+    delete action3;
+    delete menu;
+}
+
+void XletRecords::onViewDoubleClick(const QModelIndex & modelindex)
+{
+    QString c_eventfield = m_ctp->eventfield(modelindex.column());
 
     if (m_lastPressed & Qt::LeftButton) {
-        if (c_eventfield != "callrecordcomment") {
-            QString callstart = modelindex.sibling(row, m_ctp->revindex("callstart")).data().toString();
-            QString direction = modelindex.sibling(row, m_ctp->revindex("direction")).data().toString();
-            QMenu * menu = new QMenu(this);
-            QAction * action1 = new QAction(tr("Tzzzz call %1 (%2)")
-                                            .arg(direction)
-                                            .arg(callstart),
-                                            menu);
-            QAction * action2 = new QAction(tr("Change comment"), menu);
-            QAction * action3 = new QAction(tr("Change tag"), menu);
-            action1->setProperty("id", id);
-            action2->setProperty("id", id);
-            action2->setProperty("action", "changecomment");
-            action3->setProperty("id", id);
-            action3->setProperty("action", "changetag");
-            //     connect(action, SIGNAL(triggered(bool)),
-            //             parentWidget(), SLOT(openConfRoom()));
-            //     connect(action, SIGNAL(triggered(bool)),
-            //             parentWidget(), SLOT(phoneConfRoom()));
-            menu->addAction(action1);
-            menu->addAction(action2);
-            menu->addAction(action3);
-            menu->exec(QCursor::pos());
-            delete action1;
-            delete action2;
-            delete action3;
-            delete menu;
-        }
+        if (c_eventfield != "callrecordcomment")
+            commonMenuDisplay(modelindex);
     }
 }
 
