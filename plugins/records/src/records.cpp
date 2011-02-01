@@ -191,38 +191,41 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
         return;
     }
 
-    int row = modelindex.row();
-    int column = modelindex.column();
-    QString id = modelindex.sibling(row, idcolumn).data().toString();
-    QString c_eventfield = m_ctp->eventfield(column);
+    QString c_eventfield = m_ctp->eventfield(modelindex.column());
 
-    // if (m_lastPressed & Qt::LeftButton)
     if (m_lastPressed & Qt::RightButton) {
         if (c_eventfield == "callrecordtag") {
-            QString callrecordtag = modelindex.sibling(row, m_ctp->revindex("callrecordtag")).data().toString();
             QMenu * menu = new QMenu(this);
-            QAction * actionm = new QAction(tr("Change tag to"), menu);
-            menu->addAction(actionm);
+            menu->addAction(tr("Change tag to"));
             menu->addSeparator();
-            foreach (QString ti, m_tags.keys()) {
-                QString taglabel = m_tags[ti].toMap().value("label").toString();
-                if(callrecordtag != taglabel) {
-                    QAction * action = new QAction(tr("%1").arg(taglabel), menu);
-                    action->setProperty("id", id);
-                    action->setProperty("tag", ti);
-                    menu->addAction(action);
-                    connect(action, SIGNAL(triggered()),
-                            this, SLOT(changeTag()) );
-                }
-            }
+            showAvailableTags(modelindex, menu);
             menu->exec(QCursor::pos());
-            // XXX delete action;
             delete menu;
-
         } else {
             commonMenuDisplay(modelindex);
         }
     }
+}
+
+void XletRecords::showAvailableTags(const QModelIndex & modelindex, QMenu * menu)
+{
+    int row = modelindex.row();
+    int idcolumn = 0;
+    QString id = modelindex.sibling(row, idcolumn).data().toString();
+
+    QString callrecordtag = modelindex.sibling(row, m_ctp->revindex("callrecordtag")).data().toString();
+    foreach (QString ti, m_tags.keys()) {
+        QString taglabel = m_tags[ti].toMap().value("label").toString();
+        if(callrecordtag != taglabel) {
+            QAction * action = new QAction(tr("%1").arg(taglabel), menu);
+            action->setProperty("id", id);
+            action->setProperty("tag", ti);
+            menu->addAction(action);
+            connect(action, SIGNAL(triggered()),
+                    this, SLOT(changeTag()) );
+        }
+    }
+    // XXX delete + disconnect action;
 }
 
 void XletRecords::commonMenuDisplay(const QModelIndex & modelindex)
@@ -236,23 +239,25 @@ void XletRecords::commonMenuDisplay(const QModelIndex & modelindex)
     QString idv = modelindex.sibling(row, m_ctp->revindex("id")).data().toString();
 
     QMenu * menu = new QMenu(this);
-    QAction * action2 = new QAction(tr("Change comment"), menu);
-    QAction * action3 = new QAction(tr("Change tag"), menu);
-    action2->setProperty("id", id);
-    action3->setProperty("id", id);
-    action2->setProperty("action", "changecomment");
-    action3->setProperty("action", "changetag");
+    // QAction * action2 = new QAction(tr("Change comment"), menu);
+    QMenu * submenu_tag = new QMenu(tr("Change tag"), menu);
+    submenu_tag->addAction(tr("Change tag to"));
+    submenu_tag->addSeparator();
+    showAvailableTags(modelindex, submenu_tag);
+
+    // action2->setProperty("id", id);
+    // action2->setProperty("action", "changecomment");
 
     menu->addAction(tr("Call starting on %1 (id %2)").arg(callstart).arg(idv));
     menu->addAction(tr("(%1)").arg(filename));
     menu->addSeparator();
-    menu->addAction(action2);
-    menu->addAction(action3);
+    // menu->addAction(action2);
+    menu->addMenu(submenu_tag);
 
     menu->exec(QCursor::pos());
 
-    delete action2;
-    delete action3;
+    delete submenu_tag;
+    // delete action2;
     delete menu;
 }
 
