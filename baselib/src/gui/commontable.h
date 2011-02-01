@@ -66,6 +66,7 @@ class CommonTableProperties
 
         QString title(int) const;
         QString eventfield(int) const;
+        int revindex(const QString &) const;
         QVariant::Type qttype(int) const;
         QString xivotype(int) const;
 

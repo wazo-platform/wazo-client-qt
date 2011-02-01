@@ -96,14 +96,19 @@ XletRecords::~XletRecords()
 QString XletRecords::tooltip(const QModelIndex & modelindex)
 {
     int row = modelindex.row();
-    int column = modelindex.column();
+    // int column = modelindex.column();
     QString ttip = "";
 
-    if (column < 7)
-        ttip = QString("%1\n"
-                       "svi entries : %2")
-            .arg(modelindex.sibling(row, 2).data().toString())
-            .arg(modelindex.sibling(row, 12).data().toString());
+    ttip = tr("call start : %1 (duration %2 s, direction %3)\n"
+              "filename : %4\n"
+              "svi entries : %5\n"
+              "svi variables : %6")
+        .arg(modelindex.sibling(row, m_ctp->revindex("callstart")).data().toString())
+        .arg(modelindex.sibling(row, m_ctp->revindex("callduration")).data().toString())
+        .arg(modelindex.sibling(row, m_ctp->revindex("direction")).data().toString())
+        .arg(modelindex.sibling(row, m_ctp->revindex("filename")).data().toString())
+        .arg(modelindex.sibling(row, m_ctp->revindex("svientries")).data().toString())
+        .arg(modelindex.sibling(row, m_ctp->revindex("svivariables")).data().toString());
     return ttip;
 }
 
@@ -187,22 +192,10 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
     QString id = modelindex.sibling(row, idcolumn).data().toString();
     QString c_eventfield = m_ctp->eventfield(column);
 
-//     for(int y = 2 ; y < 10 ; y++)
-//         qDebug() << y << modelindex.sibling(row, y).data() << m_ctp->eventfield(y) << m_ctp->title(y);
-
-    QString callstart = modelindex.sibling(row, 1).data().toString();
-//     QString filename = modelindex.sibling(row, 2).data().toString();
-//     QString callstop = modelindex.sibling(row, 3).data().toString();
-//     QString callduration = modelindex.sibling(row, 4).data().toString();
-    QString direction = modelindex.sibling(row, 5).data().toString();
-//     QString calleridnum = modelindex.sibling(row, 6).data().toString();
-//     QString queuenames = modelindex.sibling(row, 7).data().toString();
-//     QString agentnames = modelindex.sibling(row, 8).data().toString();
-    QString callrecordtag = modelindex.sibling(row, 9).data().toString();
-
     // if (m_lastPressed & Qt::LeftButton)
     if (m_lastPressed & Qt::RightButton) {
         if (c_eventfield == "callrecordtag") {
+            QString callrecordtag = modelindex.sibling(row, m_ctp->revindex("callrecordtag")).data().toString();
             QMenu * menu = new QMenu(this);
             QAction * actionm = new QAction(tr("Change tag to"), menu);
             menu->addAction(actionm);
@@ -222,6 +215,8 @@ void XletRecords::onViewClick(const QModelIndex & modelindex)
             delete menu;
 
         } else if (c_eventfield != "queuenames") {
+            QString callstart = modelindex.sibling(row, m_ctp->revindex("callstart")).data().toString();
+            QString direction = modelindex.sibling(row, m_ctp->revindex("direction")).data().toString();
             QMenu * menu = new QMenu(this);
             QAction * action1 = new QAction(tr("Remove call %1 (%2)")
                                             .arg(direction).arg(callstart), menu);
@@ -246,17 +241,19 @@ void XletRecords::onViewDoubleClick(const QModelIndex & modelindex)
 {
     int row = modelindex.row();
     int column = modelindex.column();
-    QString id = modelindex.sibling(row, 0).data().toString();
+    int idcolumn = 0;
+    QString id = modelindex.sibling(row, idcolumn).data().toString();
     QString c_eventfield = m_ctp->eventfield(column);
-
-    QString startdate = modelindex.sibling(row, 1).data().toString();
-    QString xx = modelindex.sibling(row, 5).data().toString();
 
     if (m_lastPressed & Qt::LeftButton) {
         if (c_eventfield != "callrecordcomment") {
+            QString callstart = modelindex.sibling(row, m_ctp->revindex("callstart")).data().toString();
+            QString direction = modelindex.sibling(row, m_ctp->revindex("direction")).data().toString();
             QMenu * menu = new QMenu(this);
             QAction * action1 = new QAction(tr("Tzzzz call %1 (%2)")
-                                            .arg(xx).arg(startdate), menu);
+                                            .arg(direction)
+                                            .arg(callstart),
+                                            menu);
             QAction * action2 = new QAction(tr("Change comment"), menu);
             QAction * action3 = new QAction(tr("Change tag"), menu);
             action1->setProperty("id", id);

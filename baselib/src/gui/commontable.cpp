@@ -43,7 +43,9 @@ CommonTableProperties::CommonTableProperties(const QString & treebase)
     m_properties["display_qss"] = "border: none; color:black;";
     m_properties["display_grid"] = 1;
     m_properties["treebase"] = treebase;
+
     m_properties["columns"] = "";
+    m_properties["revindex"] = "";
     m_properties["matches"] = "";
 }
 
@@ -61,6 +63,10 @@ void CommonTableProperties::addColumn(const QString & title,
     u["xivotype"] = xivotype;
     columns << u;
     m_properties["columns"] = columns;
+
+    QVariantMap revindex = m_properties.value("revindex").toMap();
+    revindex[eventfield] = columns.count() - 1;
+    m_properties["revindex"] = revindex;
 }
 
 void CommonTableProperties::setMatches(const QString & eventfield,
@@ -112,6 +118,11 @@ QString CommonTableProperties::title(int index) const
 QString CommonTableProperties::eventfield(int index) const
 {
     return m_properties.value("columns").toList()[index].toMap().value("eventfield").toString();
+}
+
+int CommonTableProperties::revindex(const QString & eventfield) const
+{
+    return m_properties.value("revindex").toMap().value(eventfield).toInt();
 }
 
 QVariant::Type CommonTableProperties::qttype(int index) const
