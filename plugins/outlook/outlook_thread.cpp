@@ -41,8 +41,10 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
     COLApp pApp;
 
     if ( ! pApp.init() ) {
+        QString msgtoemit = QString("OutlookErr:%1:%2").arg(pApp.init_failure).arg(pApp.init_hresult, 0, 16);
+        qDebug() << Q_FUNC_INFO << "init error" << msgtoemit;
         sleep(1);
-        emit errorMessage(QString("OutlookErr:%1:%2").arg(pApp.init_failure).arg(pApp.init_hresult, 0, 16));
+        emit errorMessage(msgtoemit);
         return false;
     }
 
