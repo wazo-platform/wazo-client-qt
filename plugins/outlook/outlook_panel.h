@@ -70,21 +70,19 @@ class COLCol {
 class OutlookPanel : public XLet
 {
 	Q_OBJECT
-                public:
+    public:
 	OutlookPanel(QWidget *parent=0);
- protected:
+    protected:
         void dropEvent(QDropEvent *);
         void focusInEvent(QFocusEvent *);
- signals:
-	//! start a search
-	void searchOutlook(const QString &);
+    signals:
 	//! dial selected number
 	void emitDial(const QString &);
 	void copyNumber(const QString &);
 	void actionCall(const QString &,
                         const QString &,
                         const QString &);
-        private slots:
+    private slots:
 	void dialNumber();
         void sendMail();
         void itemClicked(QTableWidgetItem *);
@@ -92,7 +90,7 @@ class OutlookPanel : public XLet
 	void transfer();
 	void setCol(int);
         void proxyCallRequests(const QString &, const QString &);
-        public slots:
+    public slots:
 	void setGuiOptions(const QVariant &);
 	void setUserInfo(const UserInfo *);
         void contextMenuEvent(QContextMenuEvent *);
@@ -102,7 +100,11 @@ class OutlookPanel : public XLet
         void contactsLoaded();
 	void affTextChanged(const QString &);
 
- private:
+    private:
+	void doColumnsMenu(QContextMenuEvent * event);
+	void refresh_table();
+	void apply_filter();
+
         const UserInfo * m_userinfo;
 	//ExtendedLineEdit * m_input;	//!< search text input
 	QLineEdit * m_input;	//!< search text input
@@ -114,10 +116,6 @@ class OutlookPanel : public XLet
         QString m_callprefix;
 	QList<COLCol*> m_cols;
         QHash<QString, QString> displayname;
- private:
-	void doColumnsMenu(QContextMenuEvent * event);
-	void refresh_table();
-	void apply_filter();
 };
 
 #endif

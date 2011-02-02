@@ -133,12 +133,8 @@ OutlookPanel::OutlookPanel(QWidget * parent)
              this, SLOT(contactsLoaded()) );
     connect( &(OLEngine()->m_OLThread), SIGNAL(errorMessage(const QString &)),
              b_engine, SLOT(emitMessage(const QString &)) );
-    connect( this, SIGNAL(searchOutlook(const QString &)),
-             b_engine, SLOT(searchOutlook(const QString &)) );
     connect( this, SIGNAL(copyNumber(const QString &)),
              b_engine, SLOT(copyNumber(const QString &)) );
-    connect( b_engine, SIGNAL(outlookResponse(const QString &)),
-             this, SLOT(setSearchResponse(const QString &)) );
 }
 
 class QTableWidgetItemExt : public QTableWidgetItem {
@@ -154,6 +150,7 @@ public:
 };
 
 void OutlookPanel::refresh_table() {
+    qDebug() << Q_FUNC_INFO;
     int col_count = 0;
     QStringList labelList;
     for ( int i = 0, c = m_cols.count() ; i < c ; i++ ) {
@@ -168,6 +165,7 @@ void OutlookPanel::refresh_table() {
 
     COLContacts contacts;
     OLEngine()->get_contacts(contacts);
+    qDebug() << Q_FUNC_INFO << contacts.count();
 
     // static int first=true;
     int sort_col = 0;
@@ -244,9 +242,9 @@ void OutlookPanel::itemClicked(QTableWidgetItem * item)
     if(re_number.exactMatch(str)) {
         // qDebug() << Q_FUNC_INFO << "preparing to dial" << item->text();
         if(str.size() >= m_calllength)
-            copyNumber(m_callprefix + str);
+            emit copyNumber(m_callprefix + str);
         else
-            copyNumber(str);
+            emit copyNumber(str);
     }
 }
 
@@ -289,7 +287,7 @@ void OutlookPanel::itemDoubleClicked(QTableWidgetItem * item)
 void OutlookPanel::setSearchResponse(const QString & resp)
 {
     int i, x, y;
-    //qDebug() << Q_FUNC_INFO << resp;
+    qDebug() << Q_FUNC_INFO << resp;
     QStringList items = resp.split(";");
     int ncolumns = items[0].toInt();
     if(ncolumns > 0) {
@@ -367,6 +365,7 @@ void OutlookPanel::doColumnsMenu(QContextMenuEvent * event) {
 }
 
 void OutlookPanel::contactsLoaded() {
+    qDebug() << Q_FUNC_INFO;
     refresh_table();
     apply_filter();
 }
@@ -466,7 +465,7 @@ void OutlookPanel::apply_filter() {
 }
 
 void OutlookPanel::affTextChanged(const QString & searched) {
-    m_strFilter=searched;
+    m_strFilter = searched;
     apply_filter();
 }
 
@@ -477,7 +476,7 @@ void OutlookPanel::affTextChanged(const QString & searched) {
 void OutlookPanel::dialNumber()
 {
     if(m_numberToDial.length() > 0)
-        emitDial(m_numberToDial);
+        emit emitDial(m_numberToDial);
 }
 
 /*! \brief dial the number (when context menu item is toggled)
