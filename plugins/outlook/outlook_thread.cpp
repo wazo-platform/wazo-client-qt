@@ -44,8 +44,8 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
         QString msgtoemit = QString("OutlookErr:%1:%2")
             .arg(pApp.m_init_failure).arg(pApp.m_init_hresult, 0, 16);
         qDebug() << Q_FUNC_INFO << "init error" << msgtoemit;
-        emit logClientWarning("COLThread::load_contacts_from_outlook", msgtoemit);
         sleep(1);
+        emit logClientWarning("COLThread::load_contacts_from_outlook", msgtoemit);
         emit errorMessage(msgtoemit);
         return false;
     }
@@ -56,8 +56,8 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
     if ( ! pNS ) {
         QString msgtoemit = "OutlookErr:MAPI";
         qDebug() << Q_FUNC_INFO << "could not get MAPI namespace";
-        emit logClientWarning("COLThread::load_contacts_from_outlook", msgtoemit);
         sleep(1);
+        emit logClientWarning("COLThread::load_contacts_from_outlook", msgtoemit);
         emit errorMessage(msgtoemit);
         return false;
     }
