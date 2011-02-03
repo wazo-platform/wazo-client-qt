@@ -52,6 +52,7 @@
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QLineEdit>
+#include <QSignalMapper>
 
 #include "baseengine.h"
 #include "extendedtablewidget.h"
@@ -137,7 +138,8 @@ OutlookPanel::OutlookPanel(QWidget * parent)
              b_engine, SLOT(copyNumber(const QString &)) );
 }
 
-class QTableWidgetItemExt : public QTableWidgetItem {
+class QTableWidgetItemExt : public QTableWidgetItem
+{
 public:
     QTableWidgetItemExt(const QString &text, int type = Type) : QTableWidgetItem(text, type) {}
     virtual ~QTableWidgetItemExt() {}
@@ -149,7 +151,8 @@ public:
     }
 };
 
-void OutlookPanel::refresh_table() {
+void OutlookPanel::refresh_table()
+{
     qDebug() << Q_FUNC_INFO;
     int col_count = 0;
     QStringList labelList;
@@ -279,48 +282,6 @@ void OutlookPanel::itemDoubleClicked(QTableWidgetItem * item)
     }
 }
 
-/*! \brief receive and process search response
- *
- * Parses the response, sets column and row headers,
- * set table cells.
- */
-void OutlookPanel::setSearchResponse(const QString & resp)
-{
-    int i, x, y;
-    qDebug() << Q_FUNC_INFO << resp;
-    QStringList items = resp.split(";");
-    int ncolumns = items[0].toInt();
-    if(ncolumns > 0) {
-        int nrows = ((items.size() - 1) / ncolumns) - 1;
-        if(nrows >= 0) {
-            m_table->setColumnCount(ncolumns);
-            m_table->setRowCount(nrows);
-            // qDebug() << items.size() << nrows << ncolumns ;
-            QStringList labelList;
-            for(i = 1; i <= ncolumns; i++)
-                labelList << items[i];
-            m_table->setHorizontalHeaderLabels( labelList );
-            for(y = 0; y < nrows; y++) {
-                for(x = 0; x < ncolumns; x++) {
-                    QString it = items[1+(1+y)*ncolumns+x];
-                    QTableWidgetItem * item = new QTableWidgetItem(it);
-                    item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
-
-                    QRegExp re_number("\\+?[0-9\\s\\.]+");
-                    if(it.contains("@"))
-                        item->setToolTip(tr("Double-click to send an E-mail to") + "\n" + it);
-                    else if(re_number.exactMatch(it))
-                        item->setToolTip(tr("Double-click to call") + "\n" + it);
-                    //item->setStatusTip();
-                    // qDebug() << x << y << item->flags();
-                    m_table->setItem( y, x, item );
-                    //qDebug() << m_table->cellWidget( y, x );
-                }
-            }
-        }
-    }
-}
-
 /*! \brief stop
  *
  * clear everything.
@@ -332,7 +293,8 @@ void OutlookPanel::stop()
     m_input->setText("");
 }
 
-void OutlookPanel::setCol(int col) {
+void OutlookPanel::setCol(int col)
+{
     if ( col >= 0 && col < m_cols.count() ) {
         COLCol * pCol = m_cols[col];
         pCol->m_bEnable=!pCol->m_bEnable;
@@ -340,12 +302,11 @@ void OutlookPanel::setCol(int col) {
     }
 }
 
-#include <QSignalMapper>
-
-void OutlookPanel::doColumnsMenu(QContextMenuEvent * event) {
+void OutlookPanel::doColumnsMenu(QContextMenuEvent * event)
+{
     QMenu contextMenu(this);
 
-    QSignalMapper *signalMapper = new QSignalMapper(this);
+    QSignalMapper * signalMapper = new QSignalMapper(this);
 
     QAction * a;
     for ( int i = 0, c = m_cols.count() ; i < c ; i++ ) {
@@ -364,7 +325,8 @@ void OutlookPanel::doColumnsMenu(QContextMenuEvent * event) {
     contextMenu.exec( event->globalPos() );
 }
 
-void OutlookPanel::contactsLoaded() {
+void OutlookPanel::contactsLoaded()
+{
     qDebug() << Q_FUNC_INFO;
     refresh_table();
     apply_filter();
@@ -437,7 +399,8 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
     }
 }
 
-void OutlookPanel::apply_filter() {
+void OutlookPanel::apply_filter()
+{
     bool is_empty=m_strFilter.isEmpty();
     for ( int i = 0, c = m_table->rowCount() ; i < c ; i++ ) {
         bool bShow=is_empty;
@@ -464,7 +427,8 @@ void OutlookPanel::apply_filter() {
     }
 }
 
-void OutlookPanel::affTextChanged(const QString & searched) {
+void OutlookPanel::affTextChanged(const QString & searched)
+{
     m_strFilter = searched;
     apply_filter();
 }
