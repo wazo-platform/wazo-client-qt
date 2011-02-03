@@ -7,7 +7,6 @@
 
 #define OL_FOLDER_CONTACTS 10
 
-
 class CIDispatch
 {
  public:
@@ -78,22 +77,23 @@ class COLNameSpace : public CIDispatch
 };
 
 class COLApp {
- public:
+    public:
         COLApp();
         virtual ~COLApp();
 
-	bool	init();
-	void	term();
+	bool init();
+	void term();
 
         // properties	
-	void          SetVisible(BOOL bVisible);
+	void SetVisible(BOOL bVisible);
 
-	COLNameSpace	GetNamespace(const char * szName);
- public:
-	IDispatch *m_pOutlookApp;
-	CLSID clsid;
-        HRESULT init_hresult;
-        QString init_failure;
+	COLNameSpace GetNamespace(const char * szName);
+    public:
+	IDispatch * m_pOutlookApp;
+	CLSID m_clsid;
+        QString m_clsid_string;
+        HRESULT m_init_hresult;
+        QString m_init_failure;
 };
 
 /*

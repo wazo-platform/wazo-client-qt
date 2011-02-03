@@ -274,8 +274,9 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
         if ((linkmode == "phonelink") || (linkmode == "agentlink"))
             link = true;
         else
-            shouldNotOccur("XletAgents::updateAgentStatus",
-                           QString("agentid %1 linkmode %2").arg(agentid).arg(linkmode));
+            b_engine->logClientWarning("XletAgents::updateAgentStatus",
+                                       QString("agentid %1 linkmode %2")
+                                       .arg(agentid).arg(linkmode));
     }
 
     QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
@@ -318,8 +319,9 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
         square.fill(Qt::gray);
         m_agent_logged_action[agentid]->setIcon(QIcon(square));
         tooltip = tr("Unknown %1").arg(agstatus);
-        shouldNotOccur("XletAgents::updateAgentStatus",
-                       QString("agentid %1 agstatus %2").arg(agentid).arg(agstatus));
+        b_engine->logClientWarning("XletAgents::updateAgentStatus",
+                                   QString("agentid %1 agstatus %2")
+                                   .arg(agentid).arg(agstatus));
     }
     m_agent_logged_status[agentid]->setPixmap(square);
     m_agent_logged_status[agentid]->setToolTip(tooltip);
@@ -415,8 +417,9 @@ void XletAgents::agentClicked()
         else if (status == "AGENT_LOGGEDOFF")
             ipbxcommand["command"] = "agentlogin";
         else
-            shouldNotOccur("XletAgents::agentClicked",
-                           QString("agentid %1 action %2 status %3").arg(agentid).arg(action).arg(status));
+            b_engine->logClientWarning("XletAgents::agentClicked",
+                                       QString("agentid %1 action %2 status %3")
+                                       .arg(agentid).arg(action).arg(status));
     } else if (action == "unpause") {
         ipbxcommand["command"] = "agentunpausequeue";
         ipbxcommand["agentids"] = agentid;

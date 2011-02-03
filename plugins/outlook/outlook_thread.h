@@ -22,6 +22,7 @@ class COLThread : public QThread {
     signals:
         void contactsLoaded();
         void errorMessage(const QString &);
+        void logClientWarning(const QString &, const QString &);
 
     private:
         bool load_contacts_from_outlook(COLContacts & contacts);

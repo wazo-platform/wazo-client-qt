@@ -2203,7 +2203,8 @@ void BaseEngine::changeState()
 }
 
 /*! \brief send error message to the CTI Server */
-void BaseEngine::shouldNotOccur(const QString & classmethod, const QString & message)
+void BaseEngine::logClientWarning(const QString & classmethod,
+                                  const QString & message)
 {
     qDebug() << Q_FUNC_INFO << classmethod << message;
     QVariantMap command;
