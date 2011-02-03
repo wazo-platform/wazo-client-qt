@@ -134,6 +134,8 @@ OutlookPanel::OutlookPanel(QWidget * parent)
              this, SLOT(contactsLoaded()) );
     connect( &(OLEngine()->m_OLThread), SIGNAL(errorMessage(const QString &)),
              b_engine, SLOT(emitMessage(const QString &)) );
+    connect( &(OLEngine()->m_OLThread), SIGNAL(logClientWarning(const QString &, const QString &)),
+             b_engine, SLOT(logClientWarning(const QString &, const QString &)) );
     connect( this, SIGNAL(copyNumber(const QString &)),
              b_engine, SLOT(copyNumber(const QString &)) );
 }

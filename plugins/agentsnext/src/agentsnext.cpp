@@ -296,8 +296,9 @@ void XletAgentsNext::setAgentProps(const QString & idx)
             isoutcall = slink.value("outcall").toBool();
             queuename = slink.value("linkqueue").toString();
         } else
-            shouldNotOccur("XletAgentsNext::setAgentProps",
-                           QString("slink: agentid %1 linkmode %2").arg(agentid).arg(linkmode));
+            b_engine->logClientWarning("XletAgentsNext::setAgentProps",
+                                       QString("slink: agentid %1 linkmode %2")
+                                       .arg(agentid).arg(linkmode));
     }
 
     QString calldirection;
@@ -314,12 +315,14 @@ void XletAgentsNext::setAgentProps(const QString & idx)
         // colorqss = "green";
         // calldirection = "I";
     } else if (agstatus == "AGENT_LOGGEDOFF") {
-        shouldNotOccur("XletAgentsNext::setAgentProps",
-                       QString("agentid %1 agstatus %2").arg(agentid).arg(agstatus));
+        b_engine->logClientWarning("XletAgentsNext::setAgentProps",
+                                   QString("agentid %1 agstatus %2")
+                                   .arg(agentid).arg(agstatus));
         colorqss = COLOR_AGENT_LOGGEDOFF;
     } else {
-        shouldNotOccur("XletAgentsNext::setAgentProps",
-                       QString("agentid %1 agstatus %2").arg(agentid).arg(agstatus));
+        b_engine->logClientWarning("XletAgentsNext::setAgentProps",
+                                   QString("agentid %1 agstatus %2")
+                                   .arg(agentid).arg(agstatus));
         colorqss = COLOR_AGENT_UNKNOWN;
     }
 

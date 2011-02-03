@@ -208,7 +208,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void saveQueueGroups(const QVariant &);
         void loadQueueGroups();
         void logAction(const QString &);
-        void shouldNotOccur(const QString &, const QString &);  //!< log tricky situations
+        void logClientWarning(const QString &,
+                              const QString &);  //!< log tricky situations
         void sendNewRemark(const QString &, const QString &);
         void handleOtherInstanceMessage(const QString &);
         void ipbxCommand(const QVariantMap &);
