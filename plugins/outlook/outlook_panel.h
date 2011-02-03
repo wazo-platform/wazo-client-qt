@@ -57,64 +57,63 @@ class ExtendedTableWidget;
 class UserInfo;
 
 class COLCol {
- public:
-	COLCol() {m_bEnable=true;}
-	virtual ~COLCol() {}
+    public:
+        COLCol() {m_bEnable=true;}
+        virtual ~COLCol() {}
 
- public:
-	COLPropDef m_def;
-	bool	m_bEnable;
+    public:
+        COLPropDef m_def;
+        bool    m_bEnable;
 };
 /*! \brief Outlook allowing search
  */
 class OutlookPanel : public XLet
 {
-	Q_OBJECT
+        Q_OBJECT
     public:
-	OutlookPanel(QWidget *parent=0);
+        OutlookPanel(QWidget *parent=0);
     protected:
         void dropEvent(QDropEvent *);
         void focusInEvent(QFocusEvent *);
     signals:
-	//! dial selected number
-	void emitDial(const QString &);
-	void copyNumber(const QString &);
-	void actionCall(const QString &,
+        //! dial selected number
+        void emitDial(const QString &);
+        void copyNumber(const QString &);
+        void actionCall(const QString &,
                         const QString &,
                         const QString &);
     private slots:
-	void dialNumber();
+        void dialNumber();
         void sendMail();
         void itemClicked(QTableWidgetItem *);
-	void itemDoubleClicked(QTableWidgetItem *);
-	void transfer();
-	void setCol(int);
+        void itemDoubleClicked(QTableWidgetItem *);
+        void transfer();
+        void setCol(int);
         void proxyCallRequests(const QString &, const QString &);
     public slots:
-	void setGuiOptions(const QVariant &);
-	void setUserInfo(const UserInfo *);
+        void setGuiOptions(const QVariant &);
+        void setUserInfo(const UserInfo *);
         void contextMenuEvent(QContextMenuEvent *);
-	void setSearchResponse(const QString &);
-	void stop();
-	void updatePeer(UserInfo *, const QString &, const QVariant &);
+        void stop();
+        void updatePeer(UserInfo *, const QString &, const QVariant &);
         void contactsLoaded();
-	void affTextChanged(const QString &);
+        void affTextChanged(const QString &);
 
     private:
-	void doColumnsMenu(QContextMenuEvent * event);
-	void refresh_table();
-	void apply_filter();
+        void doColumnsMenu(QContextMenuEvent * event);
+        void refresh_table();
+        void apply_filter();
 
         const UserInfo * m_userinfo;
-	//ExtendedLineEdit * m_input;	//!< search text input
-	QLineEdit * m_input;	//!< search text input
-	QString m_strFilter; //!< searched text
-	ExtendedTableWidget * m_table;		//!< table to display results
-	QString m_numberToDial;		//!< used to store number to dial or to transfer to
-	QString m_mailAddr;		//!< used to store email address
+        //ExtendedLineEdit * m_input; //!< search text input
+        QLineEdit * m_input;  //!< search text input
+        QString m_strFilter; //!< searched text
+        ExtendedTableWidget * m_table;  //!< table to display results
+        QString m_numberToDial;         //!< used to store number to dial or to transfer to
+        QString m_mailAddr;             //!< used to store email address
         int m_calllength;
         QString m_callprefix;
-	QList<COLCol*> m_cols;
+        QList<COLCol*> m_cols;
         QHash<QString, QString> displayname;
 };
 
