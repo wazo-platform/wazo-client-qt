@@ -1120,6 +1120,7 @@ void BaseEngine::parseCommand(const QString &line)
                         QVariantMap changemeconf = changeme[stateid].toMap();
                         m_timerid_changestate = startTimer(changemeconf.value("delaymsec").toInt());
                         m_changestate_newstate = changemeconf.value("newstate").toString();
+                        m_changestate_oldstate = stateid;
                     }
                 }
                 m_users[id]->setAvailState(datamap.value("capapresence").toMap().value("state"));
@@ -1951,7 +1952,8 @@ void BaseEngine::timerEvent(QTimerEvent *event)
         emit emitTextMessage(tr("Attempting to reconnect to server"));
         start();
     } else if (timerId == m_timerid_changestate) {
-        setAvailState(m_changestate_newstate, false);
+        if (m_availstate == m_changestate_oldstate)
+            setAvailState(m_changestate_newstate, false);
         killTimer(timerId);
         m_timerid_changestate = 0;
     } else {
