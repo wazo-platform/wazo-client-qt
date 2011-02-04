@@ -50,7 +50,7 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
         return false;
     }
 
-    emit logClientWarning("COLThread::load_contacts_from_outlook", pApp.m_clsid_string);
+    emit logClientWarning("clsid value", pApp.m_clsid_string);
 
     COLNameSpace pNS = pApp.GetNamespace("MAPI");
     if ( ! pNS ) {

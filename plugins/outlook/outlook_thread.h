@@ -6,9 +6,8 @@
 
 #include "outlook_db.h"
 
-// refresh interval for addresse book (in ms)
-// one hour for now
-#define OL_REFRESH_INTERVAL (2*60*1000)
+// refresh interval for address book (in ms)
+#define OL_REFRESH_INTERVAL (5 * 60 * 1000)
 
 class COLThread : public QThread {
         Q_OBJECT
