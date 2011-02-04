@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -55,11 +55,10 @@
 #define CHAN_STATUS_UNLINKED_CALLER "unlinked-caller"
 #define CHAN_STATUS_UNLINKED_CALLED "unlinked-called"
 
-BASELIB_EXPORT extern const int REQUIRED_SERVER_VERSION;
-BASELIB_EXPORT extern const char __current_client_version__[];
 BASELIB_EXPORT extern const char __datebuild_client__[];
 BASELIB_EXPORT extern const char __xivo_version__[];
+BASELIB_EXPORT extern const char __git_hash__[];
+BASELIB_EXPORT extern const char __git_date__[];
 BASELIB_EXPORT extern const char __nopresence__[];
 
 #endif /* __XiVOCONSTS_H__ */
-

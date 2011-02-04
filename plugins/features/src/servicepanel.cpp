@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -257,11 +257,11 @@ void ServicePanel::setOpt(const QString & capa, bool b)
 
 void ServicePanel::setForward(const QString & capa, const QVariant & value)
 {
-    bool b = value.toMap()["enabled"].toBool();
+    bool b = value.toMap().value("enabled").toBool();
     QString thiscapa = "fwd" + capa;
     if (m_capas.contains(thiscapa)) {
         if (value.toMap().keys().contains("number")) {
-            QString dest = value.toMap()["number"].toString();
+            QString dest = value.toMap().value("number").toString();
             m_status->setForward(thiscapa, b, dest);
             m_forward[thiscapa]->setChecked(b);
             m_forwarddest[thiscapa]->setText(dest);

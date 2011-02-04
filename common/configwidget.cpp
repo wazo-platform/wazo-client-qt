@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -66,8 +66,8 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     m_tabwidget = new QTabWidget();
 
-    opts = b_engine->getGuiOptions("client_gui");
-    forcedopts = b_engine->getGuiOptions("server_gui");
+    m_opts = b_engine->getGuiOptions("client_gui");
+    m_forcedopts = b_engine->getGuiOptions("server_gui");
 
     _insert_connection_tab();
     _insert_function_tab();
@@ -131,7 +131,8 @@ void ConfigWidget::_insert_function_tab()
     }
 
     m_autourl_allowed = new QCheckBox(tr("Allow the Automatic Opening of URL's"));
-    m_autourl_allowed->setCheckState(opts["autourl_allowed"].toUInt() == 2 ? Qt::Checked : Qt::Unchecked);
+    m_autourl_allowed->setCheckState(m_opts.value("autourl_allowed").toUInt() == 2 ?
+                                     Qt::Checked : Qt::Unchecked);
     gridlayout2->addWidget(m_autourl_allowed, line++, 0, 1, width);
 
     gridlayout2->addWidget(new QLabel(tr("History size"), this), line, 0);
@@ -140,17 +141,17 @@ void ConfigWidget::_insert_function_tab()
     m_history_sbox->setValue(b_engine->historySize());
     gridlayout2->addWidget(m_history_sbox, line++, 1);
 
-    qDebug() << forcedopts;
+    qDebug() << m_forcedopts;
     gridlayout2->addWidget(new QLabel(tr("Contacts' max number"), this), line, 0);
     m_contactssize_sbox = new QSpinBox(this);
     m_contactssize_sbox->setRange(1, 500);
-    m_contactssize_sbox->setValue(opts.value("contacts-max").toUInt());
+    m_contactssize_sbox->setValue(m_opts.value("contacts-max").toUInt());
     gridlayout2->addWidget(m_contactssize_sbox, line++, 1);
 
     gridlayout2->addWidget(new QLabel(tr("Contacts' width"), this), line, 0);
     m_contactswidth_sbox = new QSpinBox(this);
     m_contactswidth_sbox->setRange(1, 20);
-    m_contactswidth_sbox->setValue(opts["contacts-width"].toUInt());
+    m_contactswidth_sbox->setValue(m_opts.value("contacts-width").toUInt());
     gridlayout2->addWidget(m_contactswidth_sbox, line++, 1);
 
     gridlayout2->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
@@ -158,7 +159,7 @@ void ConfigWidget::_insert_function_tab()
     foreach(QString color, queuelevel_colors) {
         m_queuelevels[color] = new QSpinBox(this);
         m_queuelevels[color]->setRange(0, 100);
-        m_queuelevels[color]->setValue(opts["queuelevels"].toMap()[color].toUInt());
+        m_queuelevels[color]->setValue(m_opts.value("queuelevels").toMap().value(color).toUInt());
         gridlayout2->addWidget(m_queuelevels[color], line, ncol++);
     }
     line++;
@@ -168,19 +169,19 @@ void ConfigWidget::_insert_function_tab()
 
 
     m_queue_longestwait = new QCheckBox(tr("Queue Display (Longest Wait)"), this);
-    m_queue_longestwait->setCheckState(opts["queue_longestwait"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_queue_longestwait->setCheckState(m_opts.value("queue_longestwait").toBool() ? Qt::Checked : Qt::Unchecked);
     gridlayout2->addWidget(m_queue_longestwait, line, 0);
     ncol = 1;
     foreach(QString color, queuelevel_colors) {
         m_queuelevels_wait[color] = new QSpinBox(this);
         m_queuelevels_wait[color]->setRange(0, 3600);
-        m_queuelevels_wait[color]->setValue(opts["queuelevels_wait"].toMap()[color].toUInt());
+        m_queuelevels_wait[color]->setValue(m_opts.value("queuelevels_wait").toMap().value(color).toUInt());
         gridlayout2->addWidget(m_queuelevels_wait[color], line, ncol++);
     }
 
     line++;
     m_queue_displaynu = new QCheckBox(tr("Queue Display number"), this);
-    m_queue_displaynu->setCheckState(opts["queue_displaynu"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_queue_displaynu->setCheckState(m_opts.value("queue_displaynu").toBool() ? Qt::Checked : Qt::Unchecked);
     gridlayout2->addWidget(m_queue_displaynu, line, 0);
 
     m_tabwidget->addTab(widget_functions, tr("Functions"));
@@ -225,7 +226,7 @@ void ConfigWidget::_insert_account_tab()
     m_loginkind->addItem(QString(tr("No Agent")));
     m_loginkind->addItem(QString(tr("Agent (unlogged)")));
     m_loginkind->addItem(QString(tr("Agent (logged)")));
-    m_loginkind->setCurrentIndex(opts["loginkind"].toUInt());
+    m_loginkind->setCurrentIndex(m_opts.value("loginkind").toUInt());
     gridlayout3->addWidget(m_loginkind, line++, 0, 1, 2);
     connect(m_loginkind, SIGNAL(currentIndexChanged(int)),
             this, SLOT(loginKindChanged(int)));
@@ -286,7 +287,7 @@ void ConfigWidget::_insert_guisetting_tab()
 
     m_tablimit_sbox = new QSpinBox(this);
     m_tablimit_sbox->setRange(0, 99);
-    m_tablimit_sbox->setValue(opts["sheet-tablimit"].toUInt());
+    m_tablimit_sbox->setValue(m_opts.value("sheet-tablimit").toUInt());
     layout4->addRow(tr("Tab limit"), m_tablimit_sbox);
 
     m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
@@ -297,14 +298,14 @@ void ConfigWidget::_insert_guisetting_tab()
     m_comboswitchboard->addItem(tr("Small"), QString("small"));
     m_comboswitchboard->addItem(tr("Detailed"), QString("detailed"));
     for(int i = 0; i < m_comboswitchboard->count(); i++) {
-        if(opts["switchboard-elt-type"] == m_comboswitchboard->itemData(i))
+        if(m_opts.value("switchboard-elt-type") == m_comboswitchboard->itemData(i))
             m_comboswitchboard->setCurrentIndex(i);
     }
     layout4->addRow(tr("Apparence of SwitchBoard elements"), m_comboswitchboard);
 
     m_maxWidthWanted = new QSpinBox(this);
     m_maxWidthWanted->setRange(50, 250);
-    int maxwidthwanted = opts["maxwidthwanted"].toInt();
+    int maxwidthwanted = m_opts.value("maxwidthwanted").toInt();
     if(maxwidthwanted < 50)
         maxwidthwanted = 200;
     m_maxWidthWanted->setValue(maxwidthwanted);
@@ -312,7 +313,7 @@ void ConfigWidget::_insert_guisetting_tab()
 
     m_presenceIndicatorSize = new QSpinBox(this);
     m_presenceIndicatorSize->setRange(1, 20);
-    int presenceIndicatorSize = opts["presenceindicatorsize"].toInt();
+    int presenceIndicatorSize = m_opts.value("presenceindicatorsize").toInt();
     if ((presenceIndicatorSize <= 0) || (presenceIndicatorSize > 20))
         presenceIndicatorSize = 5;
     m_presenceIndicatorSize->setValue(presenceIndicatorSize);
@@ -340,11 +341,11 @@ void ConfigWidget::changeOperatorKey(bool a)
           old->toggle();
       old = button;
       button->setText(tr("(current: %0) use your keyboard")
-                      .arg(QKeySequence(opts["xlet_operator_key" + m_operator_action[index].action].toInt()).toString()));
+                      .arg(QKeySequence(m_opts.value("xlet_operator_key" + m_operator_action[index].action).toInt()).toString()));
       m_currentKeyChange = index;
   } else {
     button->setText(tr("(current: %0) click to change")
-                    .arg(QKeySequence(opts["xlet_operator_key" + m_operator_action[index].action].toInt()).toString()));
+                    .arg(QKeySequence(m_opts.value("xlet_operator_key" + m_operator_action[index].action).toInt()).toString()));
     old = NULL;
   }
 
@@ -386,7 +387,7 @@ void ConfigWidget::_insert_operatorxlet_tab()
 
     for(i=0;i<9;i++) {
         selectKey = new QPushButton(tr("(current: %0) click to change")
-                                    .arg(QKeySequence(opts["xlet_operator_key" + m_operator_action[i].action].toInt()).toString()),
+                                    .arg(QKeySequence(m_opts.value("xlet_operator_key" + m_operator_action[i].action).toInt()).toString()),
                                     root_widget);
         selectKey->setCheckable(true);
         selectKey->setProperty("i", i);
@@ -422,7 +423,7 @@ void ConfigWidget::keyPressEvent(QKeyEvent *e)
     int i, already_bound = -1;
 
     for (i=0;i<9;i++) {
-        if ((opts["xlet_operator_key" + m_operator_action[i].action].toInt() == e->key()) &&
+        if ((m_opts.value("xlet_operator_key" + m_operator_action[i].action).toInt() == e->key()) &&
             (i != m_currentKeyChange)) {
             already_bound = i;
             break;
@@ -438,7 +439,7 @@ void ConfigWidget::keyPressEvent(QKeyEvent *e)
         return ;
     }
 
-    opts["xlet_operator_key" + m_operator_action[m_currentKeyChange].action] = e->key();
+    m_opts["xlet_operator_key" + m_operator_action[m_currentKeyChange].action] = e->key();
     m_operator_action[m_currentKeyChange].button->toggle();
 }
 
@@ -493,8 +494,8 @@ void ConfigWidget::saveAndClose()
     QVariantMap qvm, qvm2;
 
     for(i=0;i<9;i++) {
-        opts_saved["xlet_operator_key" + m_operator_action[i].action] = \
-            opts["xlet_operator_key" + m_operator_action[i].action].toInt();
+        opts_saved["xlet_operator_key" + m_operator_action[i].action] =
+            m_opts.value("xlet_operator_key" + m_operator_action[i].action).toInt();
     }
     opts_saved["xlet_operator_answer_work"] = m_operator_answer_work->checkState() == Qt::Checked;
 

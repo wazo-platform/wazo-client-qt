@@ -13,8 +13,8 @@ COLThread::COLThread() {
 COLThread::~COLThread() {
 }
 
-void COLThread::run() {
-
+void COLThread::run()
+{
     while ( !m_bStop ) {
         DWORD nStart = GetTickCount();
 
@@ -35,16 +35,30 @@ void COLThread::run() {
     }
 }
 
-bool COLThread::load_contacts_from_outlook(COLContacts & contacts) {
-    int nFolder=OL_FOLDER_CONTACTS;
+bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
+{
+    int nFolder = OL_FOLDER_CONTACTS;
     COLApp pApp;
-	
-    if ( !pApp.init() )
+
+    if ( ! pApp.init() ) {
+        QString msgtoemit = QString("OutlookErr:%1:%2")
+            .arg(pApp.m_init_failure).arg(pApp.m_init_hresult, 0, 16);
+        qDebug() << Q_FUNC_INFO << "init error" << msgtoemit;
+        sleep(1);
+        emit logClientWarning("COLThread::load_contacts_from_outlook", msgtoemit);
+        emit errorMessage(msgtoemit);
         return false;
+    }
+
+    emit logClientWarning("clsid value", pApp.m_clsid_string);
 
     COLNameSpace pNS = pApp.GetNamespace("MAPI");
-    if ( !pNS ) {
-        // bla bla bla
+    if ( ! pNS ) {
+        QString msgtoemit = "OutlookErr:MAPI";
+        qDebug() << Q_FUNC_INFO << "could not get MAPI namespace";
+        sleep(1);
+        emit logClientWarning("COLThread::load_contacts_from_outlook", msgtoemit);
+        emit errorMessage(msgtoemit);
         return false;
     }
 
@@ -58,8 +72,8 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts) {
 
       COLFolder pFolder=pNS.GetFolderFromID(entryID, storeID);*/
 
-    if ( !pFolder ) {
-        // bla bla bla
+    if ( ! pFolder ) {
+        emit errorMessage("OutlookErr:NoFolder");
         return false;
     }
 
@@ -75,12 +89,12 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts) {
 
     COLComContactItems pItems = pFolder.GetItems();
 
-    if ( !pItems ) {
-        // bla bla bla
+    if ( ! pItems ) {
+        emit errorMessage("OutlookErr:NoItems");
         return false;
     }
 
-    COLComContact pContact=pItems.GetFirst();
+    COLComContact pContact = pItems.GetFirst();
 
     while(pContact && !m_bStop)
 	{
@@ -88,7 +102,7 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts) {
             if ( !pContact.Load(&contact) )
                 return false;
             contacts.append(contact);
-            pContact=pItems.GetNext();
+            pContact = pItems.GetNext();
 	}
 
     return true;

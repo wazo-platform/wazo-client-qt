@@ -19,7 +19,7 @@
     <message>
         <location filename="src/history.cpp" line="252"/>
         <source>Sent calls</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/history.cpp" line="254"/>

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -69,11 +69,10 @@ class BASELIB_EXPORT XLet : public QWidget
     signals:
         void ipbxCommand(const QVariantMap &);
         void logAction(const QString &);
-        void shouldNotOccur(const QString &, const QString &); //!< signal to log tricky situations
     protected:
         void setTitle(const QString &title) { m_title = title; }; //! set title of the XLet
     private:
         QString m_title;    //!< title of the XLet
 };
-#endif
 
+#endif

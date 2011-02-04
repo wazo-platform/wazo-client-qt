@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -329,7 +329,7 @@ QVariant DStore::extractVariant(const QString &path)
     delete tree;
 
     foreach(QString key, map.keys()) {
-        return map[key];
+        return map.value(key);
     }
 
     return QVariant();

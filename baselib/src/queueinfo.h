@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -47,15 +47,15 @@ class BASELIB_EXPORT QueueInfo
         QueueInfo(const QString &, const QString &, const QMap<QString, QVariant> &);  //! constructor
         bool update(const QMap<QString, QVariant> &);  //! update attribute members
         bool updateAgent(const QMap<QString, QVariant> &);  //! update attribute members
-        const QString& astid() const;  //! asterisk this queue belongs to
-        const QString& id() const;  //! reference id of this queue on the server
-        const QString& context() const;  //! context this queue belongs to
+        const QString & astid() const;  //! asterisk this queue belongs to
+        const QString & id() const;  //! reference id of this queue on the server
+        const QString & context() const;  //! context this queue belongs to
         const QString hintstatus(const QString & key) const {  //! access to the status values of this queue
             return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
         };
-        const QString& queueNumber() const { return m_queuenumber; };  //! queue number
-        const QString& queueName() const  { return m_queuename; };  //! queue name
-        const QVariantMap& properties() const;  //! queue properties
+        const QString & queueNumber() const { return m_queuenumber; };  //! queue number
+        const QString & queueName() const  { return m_queuename; };  //! queue name
+        const QVariantMap & properties() const;  //! queue properties
         const QMap<QString, QVariant>& comms() const { return m_comms; };  //! current communications of this queue
 
     private:

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -51,21 +51,21 @@ RemarkArea::RemarkArea(QWidget * parent)
     m_layout->addWidget( m_scrollarea );
     m_layout->setStretchFactor( m_scrollarea, 1 );
 
-    QWidget * scrolledwidget = new QWidget( m_scrollarea );
-    m_scrollarea->setWidget( scrolledwidget );
+    m_scrolledwidget = new QWidget(m_scrollarea);
+    m_scrollarea->setWidget(m_scrolledwidget);
     //m_scrollarea->setWidgetResizable( true );
-    m_gridlayout = new QGridLayout( scrolledwidget );
+    m_gridlayout = new QGridLayout(m_scrolledwidget);
     m_gridlayout->setSizeConstraint( QLayout::SetFixedSize );
     m_gridlayout->setVerticalSpacing(0);
     m_gridlayout->setColumnStretch(1, 1);
 
     // bottom : one HBoxLayout containing a QLineEdit and a QPushButton
-    QHBoxLayout * hlayout = new QHBoxLayout();
-    m_layout->addLayout( hlayout );
+    m_hlayout = new QHBoxLayout();
+    m_layout->addLayout(m_hlayout);
     m_inputline = new QLineEdit( this );
-    hlayout->addWidget( m_inputline );
+    m_hlayout->addWidget(m_inputline);
     m_submitbutton = new QPushButton( tr("&Submit"), this );
-    hlayout->addWidget( m_submitbutton );
+    m_hlayout->addWidget( m_submitbutton );
     connect( m_submitbutton, SIGNAL(clicked()),
              this, SLOT(submitClicked()) );
     connect( m_inputline, SIGNAL(returnPressed()),
@@ -73,7 +73,7 @@ RemarkArea::RemarkArea(QWidget * parent)
     m_inputline->hide();
     m_submitbutton->hide();
 
-    scrolledwidget->show();
+    m_scrolledwidget->show();
     // automatically scroll to last entry when the size of the scroll area change
     connect( m_scrollarea->verticalScrollBar(), SIGNAL(rangeChanged(int, int)),
              this, SLOT(scrollToLastEntry()) );

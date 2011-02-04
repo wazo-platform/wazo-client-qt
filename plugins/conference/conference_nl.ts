@@ -15,7 +15,7 @@
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="513"/>
-        <source>This room is moderated. You can't see any participant, until an admin allow you in.</source>
+        <source>This room is moderated. You can&apos;t see any participant, until an admin allow you in.</source>
         <translation>Deze kamer wordt gemodereerd. U ziet geen deelnemers tot een admin u toegang verleent. </translation>
     </message>
     <message>
@@ -110,7 +110,7 @@
     <message>
         <location filename="src/confchamber.cpp" line="234"/>
         <source>Record conference until this user leaves</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="239"/>

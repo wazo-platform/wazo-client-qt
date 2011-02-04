@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -100,10 +100,10 @@ void PeerItem::updateDisplayedStatus()
     m_peerwidget->updatePresence();
     m_peerwidget->updatePhonesStates();
 
-    QString action = m_agentstatus.toMap()["action"].toString();
-    QString astid = m_agentstatus.toMap()["astid"].toString();
-    QString agentnum = m_agentstatus.toMap()["agent_channel"].toString().mid(6);
-    QString queuename = m_agentstatus.toMap()["queuename"].toString();
+    QString action = m_agentstatus.toMap().value("action").toString();
+    QString astid = m_agentstatus.toMap().value("astid").toString();
+    QString agentnum = m_agentstatus.toMap().value("agent_channel").toString().mid(6);
+    QString queuename = m_agentstatus.toMap().value("queuename").toString();
 
     if(action == "agentlogin") {
         m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
@@ -120,7 +120,7 @@ void PeerItem::updateDisplayedStatus()
             m_queuelist.removeAll(queuename);
         m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
     } else if(action == "queuememberstatus") {
-        QString joinedstatus = m_agentstatus.toMap()["joinedstatus"].toString();
+        QString joinedstatus = m_agentstatus.toMap().value("joinedstatus").toString();
         if(joinedstatus == "1") {
             m_peerwidget->setAgentState("green");
         } else if(joinedstatus == "3") {

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -176,15 +176,15 @@ void XletAgentDetails::updatePanel()
     AgentInfo *ainfo = b_engine->agents()[m_monitored_agentid];
     QStringList agent_descriptions;
     agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber());
-    if (! m_optionsMap["xlet.agentdetails.hideastid"].toBool())
+    if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
         agent_descriptions << tr("on <b>%1</b>").arg(ainfo->astid());
-    if (! m_optionsMap["xlet.agentdetails.hidecontext"].toBool())
+    if (! m_optionsMap.value("xlet.agentdetails.hidecontext").toBool())
         agent_descriptions << QString("(%1)").arg(ainfo->context());
     QVariantMap properties = ainfo->properties();
     QVariant agentstats = properties["agentstats"];
-    QString lstatus = agentstats.toMap()["status"].toString();
-    QString phonenum = agentstats.toMap()["agent_phone_number"].toString();
-    QVariantMap queuesstats = properties["queues_by_agent"].toMap();
+    QString lstatus = agentstats.toMap().value("status").toString();
+    QString phonenum = agentstats.toMap().value("agent_phone_number").toString();
+    QVariantMap queuesstats = properties.value("queues_by_agent").toMap();
 
     if (lstatus == "AGENT_LOGGEDOFF") {
         agent_descriptions << tr("logged off <b>%1</b>").arg(phonenum);
@@ -197,7 +197,7 @@ void XletAgentDetails::updatePanel()
         m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
         m_actionlegends["agentlogin"]->setText(tr("Logout"));
     } else if (lstatus == "AGENT_ONCALL") {
-        // QString talkingto = agentstats.toMap()["talkingto"].toString();
+        // QString talkingto = agentstats.toMap().value("talkingto").toString();
         // agent_status = tr("logged (busy with %1) on phone number <b>%2</b>").arg(talkingto).arg(phonenum);
         agent_descriptions << tr("logged on phone number <b>%1</b>").arg(phonenum);
         m_action["agentlogin"]->setProperty("function", "agentlogout");
@@ -219,8 +219,8 @@ void XletAgentDetails::updatePanel()
     }
 
     QStringList queueids;
-    m_agentlegend_njoined->setText(agentstats.toMap()["Xivo-NQJoined"].toString());
-    m_agentlegend_npaused->setText(agentstats.toMap()["Xivo-NQPaused"].toString());
+    m_agentlegend_njoined->setText(agentstats.toMap().value("Xivo-NQJoined").toString());
+    m_agentlegend_npaused->setText(agentstats.toMap().value("Xivo-NQPaused").toString());
 
     QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(b_engine->queues());
     while (iter.hasNext()) {
@@ -286,9 +286,9 @@ void XletAgentDetails::setQueueProps(const QString &queueid, const QueueInfo *qi
     else
         m_queue_labels[queueid]->setText(qinfo->queueName());
     QStringList tooltips;
-    if (! m_optionsMap["xlet.agentdetails.hideastid"].toBool())
+    if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
         tooltips << tr("Server: %1").arg(qinfo->astid());
-    if (! m_optionsMap["xlet.agentdetails.hidecontext"].toBool())
+    if (! m_optionsMap.value("xlet.agentdetails.hidecontext").toBool())
         tooltips << tr("Context: %1").arg(qinfo->context());
     m_queue_labels[queueid]->setToolTip(tooltips.join("\n"));
 }
@@ -300,7 +300,7 @@ void XletAgentDetails::setQueueAgentSignals(const QString &queueid)
 
     connect( m_queue_more[queueid], SIGNAL(clicked()),
              this, SLOT(queueClicked()));
-    if (! m_optionsMap["xlet.agentdetails.noqueueaction"].toBool()) {
+    if (! m_optionsMap.value("xlet.agentdetails.noqueueaction").toBool()) {
         connect( m_queue_join_action[queueid], SIGNAL(clicked()),
                  this, SLOT(queueClicked()));
         connect( m_queue_pause_action[queueid], SIGNAL(clicked()),
@@ -322,9 +322,9 @@ void XletAgentDetails::setQueueAgentProps(const QString &queueid, const QVariant
     QString oldsstatus = m_queue_join_status[queueid]->property("Status").toString();
     QString oldpstatus = m_queue_pause_status[queueid]->property("Paused").toString();
 
-    QString pstatus = qv.toMap()["Paused"].toString();
-    QString sstatus = qv.toMap()["Status"].toString();
-    QString dynstatus = qv.toMap()["Membership"].toString();
+    QString pstatus = qv.toMap().value("Paused").toString();
+    QString sstatus = qv.toMap().value("Status").toString();
+    QString dynstatus = qv.toMap().value("Membership").toString();
     // CallsTaken, LastCall, Penalty
 
     QueueAgentStatus *qas = new QueueAgentStatus();
@@ -390,9 +390,9 @@ void XletAgentDetails::queueClicked()
     QString astid = b_engine->queues()[queueid]->astid();
     QString qid = b_engine->queues()[queueid]->id();
     QString queuename = b_engine->queues()[queueid]->queueName();
-    QVariant mstatus = b_engine->agents()[m_monitored_agentid]->properties()["queues_by_agent"].toMap()[qid];
-    QString smstatus = mstatus.toMap()["Status"].toString();
-    QString pmstatus = mstatus.toMap()["Paused"].toString();
+    QVariant mstatus = b_engine->agents()[m_monitored_agentid]->properties().value("queues_by_agent").toMap().value(qid);
+    QString smstatus = mstatus.toMap().value("Status").toString();
+    QString pmstatus = mstatus.toMap().value("Paused").toString();
 
     QVariantMap ipbxcommand;
     ipbxcommand["agentids"] = m_monitored_agentid;

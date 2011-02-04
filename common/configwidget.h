@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -81,8 +81,8 @@ class ConfigWidget: public QDialog
         void _insert_guisetting_tab();
         void _insert_operatorxlet_tab();
 
-        QVariantMap opts;
-        QVariantMap forcedopts;
+        QVariantMap m_opts;
+        QVariantMap m_forcedopts;
 
         BaseEngine *m_engine;          //!< BaseEngine object parameters are commited to
 

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -139,21 +139,21 @@ void CallCampaignPanel::fileNameChanged(const QString &)
 void CallCampaignPanel::requestFileListResult(const QVariant & result)
 {
     // qDebug() << Q_FUNC_INFO << result;
-    QString action = result.toMap()["command"].toString();
+    QString action = result.toMap().value("command").toString();
 
     if(action == "fetchlist") {
-        foreach(QString number, result.toMap()["list"].toStringList())
+        foreach(QString number, result.toMap().value("list").toStringList())
             addNumber(number);
     } else if(action == "callstarted") {
-        QString number = result.toMap()["number"].toString();
+        QString number = result.toMap().value("number").toString();
         m_qpbstart[number]->setIcon(QIcon(":/images/reload.png"));
         m_numbers[number] = "ongoing";
     } else if(action == "callstopped") {
-        QString number = result.toMap()["number"].toString();
+        QString number = result.toMap().value("number").toString();
         m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
         m_numbers[number] = "stopped";
     } else if(action == "callnext") {
-        QString number = result.toMap()["number"].toString();
+        QString number = result.toMap().value("number").toString();
         m_qpbstart[number]->setIcon(QIcon(":/images/button_ok.png"));
         m_numbers[number] = "stopped";
         checkStatuses();

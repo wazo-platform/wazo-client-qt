@@ -231,7 +231,7 @@ VIAddVersionKey /LANG=\${LANG_ENGLISH} "Comments" "Computer Telephony Integratio
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "CompanyName" "Proformatique"
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileDescription" "XiVO client installer"
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileVersion" "${XIVO_VERSION}-${SVN_VERSION}"
-VIAddVersionKey /LANG=\${LANG_ENGLISH} "LegalCopyright" "© 2007-2010, Proformatique"
+VIAddVersionKey /LANG=\${LANG_ENGLISH} "LegalCopyright" "© 2007-2011, Proformatique"
 !
 
 wine /woot/Unicode/makensis.exe installer.nsi

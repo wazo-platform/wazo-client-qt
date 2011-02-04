@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -97,7 +97,7 @@ class ConfList : public QWidget
         void openConfRoom();
         void phoneConfRoom();
     private:
-        XletConference *manager;
+        XletConference * m_manager;
 };
 
 #endif

@@ -1,5 +1,5 @@
 /* XiVO CTI clients
- * Copyright (C) 2007-2010  Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
  */
 
-/* $Revision$
- * $Date$
+/* $Revision: 9746 $
+ * $Date: 2010-12-09 18:50:58 +0100 (Thu, 09 Dec 2010) $
  */
 
 #include <QContextMenuEvent>
@@ -52,6 +52,7 @@
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QLineEdit>
+#include <QSignalMapper>
 
 #include "baseengine.h"
 #include "extendedtablewidget.h"
@@ -131,15 +132,16 @@ OutlookPanel::OutlookPanel(QWidget * parent)
     // connect signals/slots to engine
     connect( &(OLEngine()->m_OLThread), SIGNAL(contactsLoaded()),
              this, SLOT(contactsLoaded()) );
-    connect( this, SIGNAL(searchOutlook(const QString &)),
-             b_engine, SLOT(searchOutlook(const QString &)) );
+    connect( &(OLEngine()->m_OLThread), SIGNAL(errorMessage(const QString &)),
+             b_engine, SLOT(emitMessage(const QString &)) );
+    connect( &(OLEngine()->m_OLThread), SIGNAL(logClientWarning(const QString &, const QString &)),
+             b_engine, SLOT(logClientWarning(const QString &, const QString &)) );
     connect( this, SIGNAL(copyNumber(const QString &)),
              b_engine, SLOT(copyNumber(const QString &)) );
-    connect( b_engine, SIGNAL(outlookResponse(const QString &)),
-             this, SLOT(setSearchResponse(const QString &)) );
 }
 
-class QTableWidgetItemExt : public QTableWidgetItem {
+class QTableWidgetItemExt : public QTableWidgetItem
+{
 public:
     QTableWidgetItemExt(const QString &text, int type = Type) : QTableWidgetItem(text, type) {}
     virtual ~QTableWidgetItemExt() {}
@@ -151,7 +153,9 @@ public:
     }
 };
 
-void OutlookPanel::refresh_table() {
+void OutlookPanel::refresh_table()
+{
+    qDebug() << Q_FUNC_INFO;
     int col_count = 0;
     QStringList labelList;
     for ( int i = 0, c = m_cols.count() ; i < c ; i++ ) {
@@ -166,6 +170,7 @@ void OutlookPanel::refresh_table() {
 
     COLContacts contacts;
     OLEngine()->get_contacts(contacts);
+    qDebug() << Q_FUNC_INFO << contacts.count();
 
     // static int first=true;
     int sort_col = 0;
@@ -242,9 +247,9 @@ void OutlookPanel::itemClicked(QTableWidgetItem * item)
     if(re_number.exactMatch(str)) {
         // qDebug() << Q_FUNC_INFO << "preparing to dial" << item->text();
         if(str.size() >= m_calllength)
-            copyNumber(m_callprefix + str);
+            emit copyNumber(m_callprefix + str);
         else
-            copyNumber(str);
+            emit copyNumber(str);
     }
 }
 
@@ -279,48 +284,6 @@ void OutlookPanel::itemDoubleClicked(QTableWidgetItem * item)
     }
 }
 
-/*! \brief receive and process search response
- *
- * Parses the response, sets column and row headers,
- * set table cells.
- */
-void OutlookPanel::setSearchResponse(const QString & resp)
-{
-    int i, x, y;
-    //qDebug() << Q_FUNC_INFO << resp;
-    QStringList items = resp.split(";");
-    int ncolumns = items[0].toInt();
-    if(ncolumns > 0) {
-        int nrows = ((items.size() - 1) / ncolumns) - 1;
-        if(nrows >= 0) {
-            m_table->setColumnCount(ncolumns);
-            m_table->setRowCount(nrows);
-            // qDebug() << items.size() << nrows << ncolumns ;
-            QStringList labelList;
-            for(i = 1; i <= ncolumns; i++)
-                labelList << items[i];
-            m_table->setHorizontalHeaderLabels( labelList );
-            for(y = 0; y < nrows; y++) {
-                for(x = 0; x < ncolumns; x++) {
-                    QString it = items[1+(1+y)*ncolumns+x];
-                    QTableWidgetItem * item = new QTableWidgetItem(it);
-                    item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
-
-                    QRegExp re_number("\\+?[0-9\\s\\.]+");
-                    if(it.contains("@"))
-                        item->setToolTip(tr("Double-click to send an E-mail to") + "\n" + it);
-                    else if(re_number.exactMatch(it))
-                        item->setToolTip(tr("Double-click to call") + "\n" + it);
-                    //item->setStatusTip();
-                    // qDebug() << x << y << item->flags();
-                    m_table->setItem( y, x, item );
-                    //qDebug() << m_table->cellWidget( y, x );
-                }
-            }
-        }
-    }
-}
-
 /*! \brief stop
  *
  * clear everything.
@@ -332,7 +295,8 @@ void OutlookPanel::stop()
     m_input->setText("");
 }
 
-void OutlookPanel::setCol(int col) {
+void OutlookPanel::setCol(int col)
+{
     if ( col >= 0 && col < m_cols.count() ) {
         COLCol * pCol = m_cols[col];
         pCol->m_bEnable=!pCol->m_bEnable;
@@ -340,12 +304,11 @@ void OutlookPanel::setCol(int col) {
     }
 }
 
-#include <QSignalMapper>
-
-void OutlookPanel::doColumnsMenu(QContextMenuEvent * event) {
+void OutlookPanel::doColumnsMenu(QContextMenuEvent * event)
+{
     QMenu contextMenu(this);
 
-    QSignalMapper *signalMapper = new QSignalMapper(this);
+    QSignalMapper * signalMapper = new QSignalMapper(this);
 
     QAction * a;
     for ( int i = 0, c = m_cols.count() ; i < c ; i++ ) {
@@ -364,7 +327,9 @@ void OutlookPanel::doColumnsMenu(QContextMenuEvent * event) {
     contextMenu.exec( event->globalPos() );
 }
 
-void OutlookPanel::contactsLoaded() {
+void OutlookPanel::contactsLoaded()
+{
+    qDebug() << Q_FUNC_INFO;
     refresh_table();
     apply_filter();
 }
@@ -390,33 +355,28 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
         QMenu contextMenu(this);
         contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
         QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
-        if(m_userinfo)
-            {
-                foreach( const QString phone, m_userinfo->phonelist() )
-                    {
-                        const PhoneInfo * pi = m_userinfo->getPhoneInfo( phone );
-                        if( pi )
-                            {
-                                QMapIterator<QString, QVariant> it( pi->comms() );
-                                while( it.hasNext() )
-                                    {
-                                        it.next();
-                                        QMap<QString, QVariant> call = it.value().toMap();
-                                        QString text;
-                                        if( call.contains("calleridname") )
-                                            {
-                                                text.append( call["calleridname"].toString() );
-                                                text.append( " : " );
-                                            }
-                                        text.append( call["calleridnum"].toString() );
-                                        QAction * transferAction =
-                                            transferMenu->addAction( text,
-                                                                     this, SLOT(transfer()) );
-                                        transferAction->setProperty( "chan", call["peerchannel"] );
-                                    }
-                            }
+        if(m_userinfo) {
+            foreach( const QString phone, m_userinfo->phonelist() ) {
+                const PhoneInfo * pi = m_userinfo->getPhoneInfo( phone );
+                if( pi ) {
+                    QMapIterator<QString, QVariant> it( pi->comms() );
+                    while( it.hasNext() ) {
+                        it.next();
+                        QVariantMap call = it.value().toMap();
+                        QString text;
+                        if( call.contains("calleridname") ) {
+                            text.append( call.value("calleridname").toString() );
+                            text.append( " : " );
+                        }
+                        text.append( call.value("calleridnum").toString() );
+                        QAction * transferAction =
+                            transferMenu->addAction( text,
+                                                     this, SLOT(transfer()) );
+                        transferAction->setProperty( "chan", call.value("peerchannel") );
                     }
+                }
             }
+        }
 #if 0
         if(false) { //!m_mychannels.empty()) {
             QListIterator<PeerChannel *> i(m_mychannels);
@@ -441,7 +401,8 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
     }
 }
 
-void OutlookPanel::apply_filter() {
+void OutlookPanel::apply_filter()
+{
     bool is_empty=m_strFilter.isEmpty();
     for ( int i = 0, c = m_table->rowCount() ; i < c ; i++ ) {
         bool bShow=is_empty;
@@ -468,8 +429,9 @@ void OutlookPanel::apply_filter() {
     }
 }
 
-void OutlookPanel::affTextChanged(const QString & searched) {
-    m_strFilter=searched;
+void OutlookPanel::affTextChanged(const QString & searched)
+{
+    m_strFilter = searched;
     apply_filter();
 }
 
@@ -480,7 +442,7 @@ void OutlookPanel::affTextChanged(const QString & searched) {
 void OutlookPanel::dialNumber()
 {
     if(m_numberToDial.length() > 0)
-        emitDial(m_numberToDial);
+        emit emitDial(m_numberToDial);
 }
 
 /*! \brief dial the number (when context menu item is toggled)
@@ -503,8 +465,8 @@ void OutlookPanel::updatePeer(UserInfo *,
     while(!m_mychannels.isEmpty())
         delete m_mychannels.takeFirst();
     foreach(QString ref, chanlist.toMap().keys()) {
-        QVariant chanprops = chanlist.toMap()[ref];
-        if(chanprops.toMap()["status"].toString() != CHAN_STATUS_HANGUP) {
+        QVariant chanprops = chanlist.toMap().value(ref);
+        if(chanprops.toMap().value("status").toString() != CHAN_STATUS_HANGUP) {
             PeerChannel * ch = new PeerChannel(chanprops);
             connect(ch, SIGNAL(transferChan(const QString &)),
                     this, SLOT(transferChan(const QString &)) );

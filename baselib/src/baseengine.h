@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -211,10 +211,12 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void saveQueueGroups(const QVariant &);
         void loadQueueGroups();
         void logAction(const QString &);
-        void shouldNotOccur(const QString &, const QString &);  //!< log tricky situations
+        void logClientWarning(const QString &,
+                              const QString &);  //!< log tricky situations
         void sendNewRemark(const QString &, const QString &);
         void handleOtherInstanceMessage(const QString &);
         void ipbxCommand(const QVariantMap &);
+        void emitMessage(const QString &);
 
     private slots:
         void keepLoginAlive();  //!< Keep session alive
@@ -347,8 +349,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_sessionid;            //!< Session id obtained after a successful login
         QString m_clientid;             //!< Client Identifier
         QString m_forced_state;         //!< Forced state sent by the server
-        int m_version_server;           //!< Version issued by the server after a successful login
-        QString m_xivover_server;       //!< Server's XiVO version
 
         // Status variables
         EngineState m_state;            //!< State of the engine (Logged/Not Logged)
@@ -360,6 +360,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_timerid_keepalive;        //!< timer id for keep alive
         int m_timerid_tryreconnect;     //!< timer id for try to reconnect
         int m_timerid_changestate;      //!< timer id for changing state automatically
+        QString m_changestate_oldstate; //!< old state when changing state automatically
         QString m_changestate_newstate; //!< new state when changing state automatically
         int m_pendingkeepalivemsg;      //!< number of keepalivemsg sent without response
         QString m_numbertodial;         //!< Number dialed in
@@ -401,10 +402,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
     public:
         DStore* tree() { return m_tree; };
         QVariant eV(const QString &req) {
-            return tree()->extractVariant(req);
+                return tree()->extractVariant(req);
         }
         QVariantMap eVM(const QString &req) {
-            return tree()->extractVMap(req);
+                return tree()->extractVMap(req);
         }
 
     friend class CtiConn;

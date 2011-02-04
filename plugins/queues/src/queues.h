@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -105,9 +105,9 @@ class XletQueues : public XLet
 
     public:
         XletQueues(QWidget *parent=0);
-        void eatQueuesStats(const QVariantMap &p);
-        static void eatQueuesStats_t(const QVariantMap &p, void *udata) {
-            ((XletQueues*)udata)->eatQueuesStats(p);
+        void eatQueuesStats(const QVariantMap &);
+        static void eatQueuesStats_t(const QVariantMap & p, void * udata) {
+                ((XletQueues*)udata)->eatQueuesStats(p);
         };
         bool showMoreQueueDetailButton() { return m_showMore; };
         bool showNumber() { return m_showNumber; };

@@ -1,5 +1,5 @@
 /* XiVO CTI clients
- * Copyright (C) 2007-2010  Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@
  * when and as the GNU GPL version 2 requires distribution of source code.
  */
 
-/* $Revision$
- * $Date$
+/* $Revision: 9461 $
+ * $Date: 2010-10-22 14:20:32 +0200 (Fri, 22 Oct 2010) $
  */
 
 #ifndef __OUTLOOKPANEL_H__
@@ -57,67 +57,64 @@ class ExtendedTableWidget;
 class UserInfo;
 
 class COLCol {
- public:
-	COLCol() {m_bEnable=true;}
-	virtual ~COLCol() {}
+    public:
+        COLCol() {m_bEnable=true;}
+        virtual ~COLCol() {}
 
- public:
-	COLPropDef m_def;
-	bool	m_bEnable;
+    public:
+        COLPropDef m_def;
+        bool    m_bEnable;
 };
 /*! \brief Outlook allowing search
  */
 class OutlookPanel : public XLet
 {
-	Q_OBJECT
-                public:
-	OutlookPanel(QWidget *parent=0);
- protected:
+        Q_OBJECT
+    public:
+        OutlookPanel(QWidget *parent=0);
+    protected:
         void dropEvent(QDropEvent *);
         void focusInEvent(QFocusEvent *);
- signals:
-	//! start a search
-	void searchOutlook(const QString &);
-	//! dial selected number
-	void emitDial(const QString &);
-	void copyNumber(const QString &);
-	void actionCall(const QString &,
+    signals:
+        //! dial selected number
+        void emitDial(const QString &);
+        void copyNumber(const QString &);
+        void actionCall(const QString &,
                         const QString &,
                         const QString &);
-        private slots:
-	void dialNumber();
+    private slots:
+        void dialNumber();
         void sendMail();
         void itemClicked(QTableWidgetItem *);
-	void itemDoubleClicked(QTableWidgetItem *);
-	void transfer();
-	void setCol(int);
+        void itemDoubleClicked(QTableWidgetItem *);
+        void transfer();
+        void setCol(int);
         void proxyCallRequests(const QString &, const QString &);
-        public slots:
-	void setGuiOptions(const QVariant &);
-	void setUserInfo(const UserInfo *);
+    public slots:
+        void setGuiOptions(const QVariant &);
+        void setUserInfo(const UserInfo *);
         void contextMenuEvent(QContextMenuEvent *);
-	void setSearchResponse(const QString &);
-	void stop();
-	void updatePeer(UserInfo *, const QString &, const QVariant &);
+        void stop();
+        void updatePeer(UserInfo *, const QString &, const QVariant &);
         void contactsLoaded();
-	void affTextChanged(const QString &);
+        void affTextChanged(const QString &);
 
- private:
+    private:
+        void doColumnsMenu(QContextMenuEvent * event);
+        void refresh_table();
+        void apply_filter();
+
         const UserInfo * m_userinfo;
-	//ExtendedLineEdit * m_input;	//!< search text input
-	QLineEdit * m_input;	//!< search text input
-	QString m_strFilter; //!< searched text
-	ExtendedTableWidget * m_table;		//!< table to display results
-	QString m_numberToDial;		//!< used to store number to dial or to transfer to
-	QString m_mailAddr;		//!< used to store email address
+        //ExtendedLineEdit * m_input; //!< search text input
+        QLineEdit * m_input;  //!< search text input
+        QString m_strFilter; //!< searched text
+        ExtendedTableWidget * m_table;  //!< table to display results
+        QString m_numberToDial;         //!< used to store number to dial or to transfer to
+        QString m_mailAddr;             //!< used to store email address
         int m_calllength;
         QString m_callprefix;
-	QList<COLCol*> m_cols;
+        QList<COLCol*> m_cols;
         QHash<QString, QString> displayname;
- private:
-	void doColumnsMenu(QContextMenuEvent * event);
-	void refresh_table();
-	void apply_filter();
 };
 
 #endif

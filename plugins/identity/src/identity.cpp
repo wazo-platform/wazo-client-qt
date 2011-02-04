@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -165,17 +165,17 @@ void IdentityDisplay::setupIcons()
 void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
 {
     if(optionsMap.contains("xlet.identity.fontname") && optionsMap.contains("xlet.identity.fontsize"))
-        m_gui_font = QFont(optionsMap["xlet.identity.fontname"].toString(),
-                           optionsMap["xlet.identity.fontsize"].toInt());
+        m_gui_font = QFont(optionsMap.value("xlet.identity.fontname").toString(),
+                           optionsMap.value("xlet.identity.fontsize").toInt());
     if(optionsMap.contains("xlet.identity.iconsize"))
-        m_gui_buttonsize = optionsMap["xlet.identity.iconsize"].toInt();
+        m_gui_buttonsize = optionsMap.value("xlet.identity.iconsize").toInt();
 
-    m_agent->setAllowedActions(optionsMap["xlet.identity.logagent"].toBool(),
-                               optionsMap["xlet.identity.pauseagent"].toBool());
+    m_agent->setAllowedActions(optionsMap.value("xlet.identity.logagent").toBool(),
+                               optionsMap.value("xlet.identity.pauseagent").toBool());
 
     setFont(m_gui_font);
 
-    m_loginkind = optionsMap["loginkind"].toUInt();
+    m_loginkind = optionsMap.value("loginkind").toUInt();
 }
 
 void IdentityDisplay::updatePresence(const QVariant & presence)
@@ -189,8 +189,8 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
                this, SLOT(idxChanged(const QString &)));
     QVariantMap presencemap = presence.toMap();
     if(presencemap.contains("names")) {
-        foreach (QString avstate, presencemap["names"].toMap().keys()) {
-            QString name = presencemap["names"].toMap()[avstate].toMap()["longname"].toString();
+        foreach (QString avstate, presencemap.value("names").toMap().keys()) {
+            QString name = presencemap.value("names").toMap().value(avstate).toMap().value("longname").toString();
             if(m_presencevalue->findText(name) == -1) {
                 m_presencevalue->addItem(name);
                 m_presence_names[avstate] = name;
@@ -198,7 +198,7 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
         }
     }
     if(presencemap.contains("allowed")) {
-        QMapIterator<QString, QVariant> capapres(presencemap["allowed"].toMap());
+        QMapIterator<QString, QVariant> capapres(presencemap.value("allowed").toMap());
         while (capapres.hasNext()) {
             capapres.next();
             QString avstate = capapres.key();
@@ -214,7 +214,7 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
         }
     }
     if(presencemap.contains("state")) {
-        QString avstate = presencemap["state"].toMap()["stateid"].toString();
+        QString avstate = presencemap.value("state").toMap().value("stateid").toString();
         if(m_presence_names.contains(avstate)) {
             QString name = m_presence_names[avstate];
             int idx = m_presencevalue->findText(name);
@@ -282,8 +282,8 @@ void IdentityDisplay::setOpt(const QString & capa, bool b)
 void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
 {
     if((capa == "unc") || (capa == "busy") || (capa == "rna")) {
-        m_svcstatus[capa + "-enabled"] = value.toMap()["enabled"];
-        m_svcstatus[capa + "-number"] = value.toMap()["number"];
+        m_svcstatus[capa + "-enabled"] = value.toMap().value("enabled");
+        m_svcstatus[capa + "-number"] = value.toMap().value("number");
     }
     svcSummary();
 }
@@ -319,9 +319,9 @@ void IdentityDisplay::updateUser(UserInfo * ui)
             iter.next();
             QVariantMap callprops = iter.value().toMap();
             if(callprops.contains("linenum")) {
-                QString ics = callprops["linenum"].toString();
-                QString status = callprops["status"].toString();
-                QString todisplay = callprops["calleridname"].toString();
+                QString ics = callprops.value("linenum").toString();
+                QString status = callprops.value("status").toString();
+                QString todisplay = callprops.value("calleridname").toString();
                 bool isholded = callprops.contains("time-hold");
                 busylines << ics;
 

@@ -12,7 +12,7 @@ HRESULT AutoWrap(int autoType, VARIANT *pvResult, IDispatch *pDisp, LPOLESTR ptN
     va_list marker;
     va_start(marker, cArgs);
 
-    if(!pDisp) {
+    if(! pDisp) {
         qDebug() << "NULL IDispatch passed to AutoWrap()";
         return -1;
     }
@@ -68,7 +68,8 @@ HRESULT AutoWrap(int autoType, VARIANT *pvResult, IDispatch *pDisp, LPOLESTR ptN
     return hr;
 }
 
-bool COLComContact::Load(COLContact * contact) {
+bool COLComContact::Load(COLContact * contact)
+{
     HRESULT res;
     QString strPropVal;
     QByteArray array;
@@ -78,27 +79,31 @@ bool COLComContact::Load(COLContact * contact) {
     COLPropsDef::iterator i;
 
     for ( i = props_def.begin() ; i != props_def.end() ; ++i ) {
-        const COLPropDef & prop=i.value();
-        array=prop.m_strName.toAscii();
-        WCHAR * wszProp=wchar_dup(array.constData());
+        const COLPropDef & prop = i.value();
+        array = prop.m_strName.toAscii();
+        WCHAR * wszProp = wchar_dup(array.constData());
         res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, wszProp, 0);
         free(wszProp);
 
         wchar_to_qstr(result.bstrVal, strPropVal);
         VariantClear(&result);
 
-        if ( FAILED(res) )	return false;
+        if ( FAILED(res) )
+            // strPropVal = "(failed)";
+            return false;
 
         contact->m_properties.insert(prop.m_strName, strPropVal);
     }
 
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"CreationTime", 0);
-    if ( FAILED(res) ) return false;
+    if ( FAILED(res) )
+        return false;
     contact->m_dtCreate = result.dblVal;
     VariantClear(&result);
 
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"LastModificationTime", 0);
-    if ( FAILED(res) ) return false;
+    if ( FAILED(res) )
+        return false;
     contact->m_dtLastModified = result.dblVal;
     VariantClear(&result);
 
@@ -110,7 +115,8 @@ COLComContact COLComContactItems::GetFirst() {
     VARIANT result;
     HRESULT res;
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetFirst", 0);
-    if ( FAILED(res) ) return NULL;
+    if ( FAILED(res) )
+        return NULL;
     return COLComContact(result.pdispVal, FALSE);
 }
 
@@ -118,7 +124,8 @@ COLComContact COLComContactItems::GetNext() {
     VARIANT result;
     HRESULT res;
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetNext", 0);
-    if ( FAILED(res) ) return NULL;
+    if ( FAILED(res) )
+        return NULL;
     return COLComContact(result.pdispVal, FALSE);
 }
 
@@ -126,7 +133,8 @@ COLComContactItems	COLFolder::GetItems() {
     VARIANT result;
     HRESULT res;
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"Items", 0);
-    if ( FAILED(res) ) return NULL;
+    if ( FAILED(res) )
+        return NULL;
     return COLComContactItems(result.pdispVal, FALSE);
 }
 
@@ -139,7 +147,8 @@ QString COLFolder::Name() {
     wchar_to_qstr(result.bstrVal, str);
     VariantClear(&result);
 
-    if ( FAILED(res) ) return "";
+    if ( FAILED(res) )
+        return "";
     return str;
 }
 
@@ -152,7 +161,8 @@ QString COLFolder::StoreID() {
     wchar_to_qstr(result.bstrVal, str);
     VariantClear(&result);
 
-    if ( FAILED(res) ) return "";
+    if ( FAILED(res) )
+        return "";
     return str;
 }
 
@@ -165,7 +175,8 @@ QString COLFolder::EntryID() {
     wchar_to_qstr(result.bstrVal, str);
     VariantClear(&result);
 
-    if ( FAILED(res) ) return "";
+    if ( FAILED(res) )
+        return "";
     return str;
 }
 
@@ -180,7 +191,8 @@ COLFolder COLNameSpace::GetDefaultFolder(UINT nFolder) {
 
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetDefaultFolder", 1, parm);
     VariantClear(&parm);
-    if ( FAILED(res) ) return NULL;
+    if ( FAILED(res) )
+        return NULL;
 
     return COLFolder(result.pdispVal, FALSE);
 }
@@ -190,7 +202,8 @@ COLFolder COLNameSpace::PickFolder() {
 
     HRESULT res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"PickFolder", 0);
 
-    if ( FAILED(res) ) return NULL;
+    if ( FAILED(res) )
+        return NULL;
     return COLFolder(result.pdispVal, FALSE);
 }
 
@@ -212,7 +225,8 @@ COLFolder COLNameSpace::GetFolderFromID(const QString & strEntryID, const QStrin
     VariantClear(&folderID);
     VariantClear(&storeID);
 
-    if ( FAILED(res) ) return NULL;
+    if ( FAILED(res) )
+        return NULL;
     return COLFolder(result.pdispVal, FALSE);
 }
 
@@ -220,28 +234,32 @@ COLApp::COLApp()
 {
 }
 
-bool COLApp::init() {
+bool COLApp::init()
+{
     // Initialize COM for this thread...
-    HRESULT hr = CoInitialize(NULL);
-    if(FAILED(hr)) {
-
-        qDebug() << "Unable to initialize COM?!?";
+    m_init_hresult = CoInitialize(NULL);
+    if(FAILED(m_init_hresult)) {
+        m_init_failure = "com_init";
         return false;
     }
 
     // Get CLSID for our server...
-    hr = CLSIDFromProgID(L"Outlook.Application", &clsid);
-
-    if(FAILED(hr)) {
-
-        qDebug() << "Are you sure outlook is installed on this station?!?";
+    m_init_hresult = CLSIDFromProgID(L"Outlook.Application", & m_clsid);
+    if(FAILED(m_init_hresult)) {
+        m_init_failure = "outlook_install";
         return false;
     }
 
+    m_clsid_string = QUuid(m_clsid).toString();
+    qDebug() << Q_FUNC_INFO << "successful clsid match" << m_clsid_string;
+
     // Start server and get IDispatch...
-    hr = CoCreateInstance(clsid, NULL, CLSCTX_LOCAL_SERVER, IID_IDispatch, (void **)&m_pOutlookApp);
-    if(FAILED(hr)) {
-        qDebug() << "Outlook is not registered properly";
+    m_init_hresult = CoCreateInstance(m_clsid, NULL,
+                                      CLSCTX_LOCAL_SERVER, // vs. CLSCTX_ALL ?
+                                      IID_IDispatch,
+                                      (void **)&m_pOutlookApp);
+    if(FAILED(m_init_hresult)) {
+        m_init_failure = QString("outlook_register_%1").arg(QUuid(m_clsid).toString());
         return false;
     }
 
@@ -270,6 +288,7 @@ COLNameSpace COLApp::GetNamespace(const char * szName) {
     HRESULT res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pOutlookApp, L"GetNamespace", 1, parm);
     VariantClear(&parm);
 
-    if ( FAILED(res) ) return NULL;
+    if ( FAILED(res) )
+        return NULL;
     return COLNameSpace(result.pdispVal, FALSE);
 }

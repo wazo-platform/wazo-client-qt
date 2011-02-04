@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -75,18 +75,23 @@ Popup::Popup(const bool urlautoallow, QWidget *parent)
       m_focus(true),
       m_urlautoallow(urlautoallow),
       m_toupdate(false),
-      m_firstline(3)
+      m_firstline(3),
+      m_sheetui_widget(NULL)
 {
     // qDebug() << Q_FUNC_INFO;
     m_remarkarea = 0;
+    m_nfeeds = 0;
 }
 
 Popup::~Popup()
 {
+    // qDebug() << Q_FUNC_INFO;
     delete m_xmlInputSource;
     delete m_handler;
+    delete m_reader;
+    delete m_sheetui_widget;
+    delete m_uiloader;
 }
-
 
 /*!
  * \param inputstream        inputstream to read the XML
@@ -94,51 +99,56 @@ Popup::~Popup()
 void Popup::feed(QIODevice * inputstream,
                  const bool & sheetui)
 {
+    m_nfeeds ++;
     m_inputstream = inputstream;
+
     m_xmlInputSource = new QXmlInputSource(m_inputstream);
     m_handler = new XmlHandler(this);
+    m_reader = new QXmlSimpleReader();
+
     m_sheetui = sheetui;
 
-    // qDebug() << Q_FUNC_INFO << inputstream;
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString currentDateTimeStr = currentDateTime.toString(Qt::LocalDate);
-    qDebug() << Q_FUNC_INFO << currentDateTime << sheetui;
+    qDebug() << Q_FUNC_INFO << this << m_nfeeds << inputstream << currentDateTime << sheetui << m_handler;
 
-    setAttribute(Qt::WA_DeleteOnClose);
-    m_reader.setContentHandler(m_handler);
-    m_reader.setErrorHandler(m_handler);
-    connect( m_inputstream, SIGNAL(readyRead()),
-             this, SLOT(streamNewData()) );
-    connect( m_inputstream, SIGNAL(aboutToClose()),
-             this, SLOT(streamAboutToClose()) );
-    //         connect( inputstream, SIGNAL(disconnected()),
-    //                  this, SLOT(socketDisconnected()) );
-    //         connect( inputstream, SIGNAL(error(QAbstractSocket::SocketError)),
-    //                  this, SLOT(socketError(QAbstractSocket::SocketError)));
+    m_reader->setContentHandler(m_handler);
+    m_reader->setErrorHandler(m_handler);
     m_parsingStarted = false;
-    m_vlayout = new QVBoxLayout(this);
-    m_title = new QLabel(this);
-    m_title->setAlignment(Qt::AlignHCenter);
-    QHBoxLayout * hlayout = new QHBoxLayout();
-    m_closesheet = new QPushButton(this);
-    m_closesheet->setIcon(QIcon(":/images/cancel.png"));
-    m_closesheet->setIconSize(QSize(10, 10));
-    connect( m_closesheet, SIGNAL(clicked()),
-             this, SLOT(close()) );
-    hlayout->addStretch();
-    hlayout->addWidget(m_closesheet);
-    m_vlayout->addLayout(hlayout);
-    m_vlayout->addWidget(m_title);
-    QFrame * qf = new QFrame(this);
-    qf->setFrameStyle(QFrame::HLine | QFrame::Plain);
-    qf->setLineWidth(0);
-    m_vlayout->addWidget(qf);
-    m_vlayout->addStretch();
 
-    QUiLoader loader;
+    if(m_nfeeds == 1) {
+        setAttribute(Qt::WA_DeleteOnClose);
+        connect( m_inputstream, SIGNAL(readyRead()),
+                 this, SLOT(streamNewData()) );
+        connect( m_inputstream, SIGNAL(aboutToClose()),
+                 this, SLOT(streamAboutToClose()) );
+        //         connect( inputstream, SIGNAL(disconnected()),
+        //                  this, SLOT(socketDisconnected()) );
+        //         connect( inputstream, SIGNAL(error(QAbstractSocket::SocketError)),
+        //                  this, SLOT(socketError(QAbstractSocket::SocketError)));
+        m_vlayout = new QVBoxLayout(this);
+        m_title = new QLabel(this);
+        m_title->setAlignment(Qt::AlignHCenter);
+        m_hlayout = new QHBoxLayout();
+        m_closesheet = new QPushButton(this);
+        m_closesheet->setIcon(QIcon(":/images/cancel.png"));
+        m_closesheet->setIconSize(QSize(10, 10));
+        connect( m_closesheet, SIGNAL(clicked()),
+                 this, SLOT(close()) );
+        m_hlayout->addStretch();
+        m_hlayout->addWidget(m_closesheet);
+        m_vlayout->addLayout(m_hlayout);
+        m_vlayout->addWidget(m_title);
+        m_qf = new QFrame(this);
+        m_qf->setFrameStyle(QFrame::HLine | QFrame::Plain);
+        m_qf->setLineWidth(0);
+        m_vlayout->addWidget(m_qf);
+        m_vlayout->addStretch();
+    }
+
+    m_uiloader = new QUiLoader();
     if(sheetui) {
-        m_sheetui_widget = loader.load(m_inputstream, this);
-        // qDebug() << Q_FUNC_INFO << "m_vlayout->count()" << m_vlayout->count();
+        m_sheetui_widget = m_uiloader->load(m_inputstream, this);
         m_vlayout->insertWidget(m_vlayout->count() - 1, m_sheetui_widget, 0, 0);
         foreach(QString formbuttonname, g_formbuttonnames) {
             m_form_buttons[formbuttonname] = m_sheetui_widget->findChild<QPushButton *>(formbuttonname);
@@ -161,7 +171,7 @@ void Popup::feed(QIODevice * inputstream,
     setWindowIcon(QIcon(":/images/xivoicon.png"));
     QDesktopServices::setUrlHandler(QString("dial"), this, "dispurl");
 
-    qDebug() << Q_FUNC_INFO << m_inputstream->bytesAvailable() << "bytes available";
+    qDebug() << Q_FUNC_INFO << this << m_inputstream->bytesAvailable() << "bytes available";
     if(m_inputstream->bytesAvailable() > 0) {
         streamNewData();
     }
@@ -178,15 +188,15 @@ void Popup::dispurl(const QUrl &url)
 void Popup::actionFromForm()
 {
     QString buttonname = sender()->property("buttonname").toString();
-    qDebug() << Q_FUNC_INFO << buttonname << m_astid << m_context << m_uniqueid << m_channel;
+    // qDebug() << Q_FUNC_INFO << buttonname << m_astid << m_context << m_uniqueid << m_channel;
     if(buttonname == "close")
         close();
     else if(buttonname == "save")
         saveandclose();
     else if((buttonname == "hangup") || (buttonname == "answer") || (buttonname == "refuse"))
-        actionFromPopup(buttonname, QVariant(m_timestamps));
+        emit actionFromPopup(buttonname, QVariant(m_timestamps));
     else if(buttonname.startsWith("XIVO_CALL_STATUS-")) {
-        actionFromPopup(buttonname, QVariant(m_timestamps));
+        emit actionFromPopup(buttonname, QVariant(m_timestamps));
         close();
     }
 }
@@ -214,6 +224,7 @@ void Popup::addAnyInfo(const QString & localName,
                        const QString & infoName,
                        const QString & infoValue)
 {
+    // qDebug() << Q_FUNC_INFO << this << m_vlayout->count();
     QStringList z  = (QStringList() << localName << infoOrder << infoType << infoName << infoValue);
     m_sheetlines.append(z);
     if( localName == "sheet_info" ) {
@@ -223,18 +234,20 @@ void Popup::addAnyInfo(const QString & localName,
             // removes the layout and widgets there
             where = m_orders.indexOf(infoOrder) + m_firstline;
             QLayoutItem * qli = m_vlayout->itemAt(where);
-            if(qli->layout()) {
-                QLayoutItem * child;
-                while ((child = qli->layout()->takeAt(0)) != 0) {
-                    if(child->widget())
-                        delete child->widget();
-                    delete child;
+            if(qli != NULL) {
+                if(qli->layout()) {
+                    QLayoutItem * child;
+                    while ((child = qli->layout()->takeAt(0)) != 0) {
+                        if(child->widget())
+                            delete child->widget();
+                        delete child;
+                    }
+                    delete qli->layout();
                 }
-                delete qli->layout();
+                if(qli->widget())
+                    delete qli->widget();
+                m_vlayout->removeItem(qli);
             }
-            if(qli->widget())
-                delete qli->widget();
-            m_vlayout->removeItem(qli);
         } else {
             m_orders.append(infoOrder);
             m_orders.sort();
@@ -293,25 +306,30 @@ void Popup::setTitle(const QString & title)
 
 void Popup::addDefForm(const QString & name, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << name << value;
+    // qDebug() << Q_FUNC_INFO << this << name << value.size();
     m_remoteforms[name] = value;
 }
 
 void Popup::addInfoForm(int where, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << where << value << m_kind;
+    // qDebug() << Q_FUNC_INFO << this << where << value << m_kind << m_remoteforms.keys();
     QUiLoader loader;
     if(m_remoteforms.contains(value)) {
-        QBuffer * inputstream = new QBuffer(this);
-        inputstream->open(QIODevice::ReadWrite);
-        inputstream->write(m_remoteforms[value].toUtf8());
-        inputstream->close();
-        m_sheetui_widget = loader.load(inputstream, this);
+        m_buffer = new QBuffer(this);
+        m_buffer->open(QIODevice::ReadWrite);
+        m_buffer->write(m_remoteforms[value].toUtf8());
+        m_buffer->close();
+        m_sheetui_widget = loader.load(m_buffer, this);
     } else {
         QFile file(value);
-        file.open(QFile::ReadOnly);
-        m_sheetui_widget = loader.load(&file, this);
-        file.close();
+        if (file.exists()) {
+            file.open(QFile::ReadOnly);
+            m_sheetui_widget = loader.load(&file, this);
+            file.close();
+        } else {
+            qDebug() << Q_FUNC_INFO << "file does not exist" << value;
+            return;
+        }
     }
 
     foreach(QString formbuttonname, g_formbuttonnames) {
@@ -435,7 +453,7 @@ QList<QStringList> & Popup::sheetlines()
 
 void Popup::update(QList<QStringList> & newsheetlines)
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO << this << newsheetlines;
     m_toupdate = true;
     foreach(QStringList qsl, newsheetlines)
         addAnyInfo(qsl[0], qsl[1], qsl[2], qsl[3], qsl[4]);
@@ -503,12 +521,12 @@ void Popup::addInfoPicture(int where, const QString & name, const QString & valu
 void Popup::streamNewData()
 {
     bool b = false;
-    //qDebug() << Q_FUNC_INFO << m_inputstream->bytesAvailable() << "bytes available";
+    // qDebug() << Q_FUNC_INFO << this << m_sheetui << m_inputstream->bytesAvailable() << "bytes available";
     if(!m_sheetui)
         if(m_parsingStarted)
-            b = m_reader.parseContinue();
+            b = m_reader->parseContinue();
         else {
-            b = m_reader.parse(m_xmlInputSource, false);
+            b = m_reader->parse(m_xmlInputSource, false);
             m_parsingStarted = b;
         }
     else
@@ -526,7 +544,7 @@ void Popup::dialThisNumber()
 void Popup::httpGetNoreply()
 {
     QString urlx = sender()->property("urlx").toString();
-    qDebug() << Q_FUNC_INFO << urlx;
+    // qDebug() << Q_FUNC_INFO << urlx;
     QUrl url = QUrl(urlx);
     QHttp * http = new QHttp();
     http->setHost(url.host(), url.port());
@@ -535,15 +553,15 @@ void Popup::httpGetNoreply()
 
 void Popup::streamAboutToClose()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     finishAndShow();
 }
 
 void Popup::socketDisconnected()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     /* finish the parsing */
-    m_reader.parseContinue();
+    m_reader->parseContinue();
 }
 
 /*
@@ -558,13 +576,14 @@ void Popup::socketError(QAbstractSocket::SocketError err)
  */
 void Popup::finishAndShow()
 {
-    qDebug() << Q_FUNC_INFO;
-    addRemarkArea();
+    // qDebug() << Q_FUNC_INFO << this;
+    if(m_nfeeds == 1)
+        addRemarkArea();
     //dumpObjectInfo();
     //dumpObjectTree();
     // ...
     //show();
-    wantsToBeShown( this );
+    emit wantsToBeShown(this);
 }
 
 

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -65,4 +65,3 @@ class BASELIB_EXPORT DetailedExternalPhonePeerWidget : public BasePeerWidget
 };
 
 #endif
-

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -78,7 +78,8 @@ class CustomerInfoPanel : public XLet
         void addNewRemark(const QString &id, const QVariantMap &entry);
 
     private:
-        QTabWidget *m_tabs;
+        QGridLayout * m_glayout;
+        QTabWidget * m_tabs;
         QList<Popup *> m_popups;
         quint32 m_tablimit;
         bool m_autourl_allowed;

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -167,7 +167,7 @@ void XletOperator::clicked()
 void XletOperator::dtransfer()
 {
     if (m_callchannels.contains(m_currentchannel)) {
-        qDebug() << Q_FUNC_INFO << "Direct   Transfer" << m_currentchannel;
+        // qDebug() << Q_FUNC_INFO << "Direct Transfer" << m_currentchannel;
         if (m_linestatuses[m_currentchannel] == WDTransfer) {
             m_tnums[m_currentchannel]->hide();
             m_statuses[m_currentchannel]->setFocus();
@@ -189,7 +189,7 @@ void XletOperator::dtransfer()
 void XletOperator::itransfer()
 {
     if (m_callchannels.contains(m_currentchannel)) {
-        qDebug() << Q_FUNC_INFO << "Indirect Transfer" << m_currentchannel;
+        // qDebug() << Q_FUNC_INFO << "Indirect Transfer" << m_currentchannel;
         if (m_linestatuses[m_currentchannel] == WITransfer) {
             m_tnums[m_currentchannel]->hide();
             m_statuses[m_currentchannel]->setFocus();
@@ -300,13 +300,10 @@ void XletOperator::functionKeyPressed(int keynum)
         } else if (action == "ilink") {
             b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel));
         } else if (action == "icancel") {
-            qDebug() << "icancel : currentchannel=" << m_currentchannel
-                     << ", peerchannel=" << getPeerChan(m_currentchannel);
+            // the CTI server will find the appropriate related channel to hangup
+            b_engine->actionCall("transfercancel", QString("chan:%1:%2").arg(userid).arg(m_currentchannel));
             // emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));  // does nothing
             // emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // finalize the indirect transfer
-            // @TODO we should retrieve the Local/xxx channel that was created by the atxfer
-            // command and hangup it. It may involve adding an amievent in asterisk at the right
-            // place and doing some work in the xivo_daemon and here.
         }
         //            if (action == "unpark")
         //                qDebug() << Q_FUNC_INFO << "F1 when Wait : Take back";

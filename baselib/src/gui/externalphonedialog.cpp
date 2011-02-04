@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -43,13 +43,13 @@
  * A QFormLayout is used.
  */
 ExternalPhoneDialog::ExternalPhoneDialog(QWidget * parent,
-                                         const QString & number,
-                                         const QString & /*label*/)
+                                         const QString & label,
+                                         const QString & number)
     : QDialog(parent)
 {
     setWindowTitle(tr("External phone number"));
     QFormLayout *layout = new QFormLayout(this);
-    m_label = new QLineEdit(number, this);
+    m_label = new QLineEdit(label, this);
     layout->addRow(tr("Label"), m_label);
     m_number = new QLineEdit(number, this);
     layout->addRow(tr("Phone number"), m_number);

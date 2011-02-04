@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -573,8 +573,8 @@ void MainWidget::updatePresence(const QVariant &presence)
     // qDebug() << Q_FUNC_INFO << presence;
     QVariantMap presencemap = presence.toMap();
     if (presencemap.contains("names")) {
-        foreach (QString avstate, presencemap["names"].toMap().keys()) {
-            QString name = presencemap["names"].toMap()[avstate].toMap()["longname"].toString();
+        foreach (QString avstate, presencemap.value("names").toMap().keys()) {
+            QString name = presencemap.value("names").toMap().value(avstate).toMap().value("longname").toString();
             if (! m_avact.contains(avstate)) {
                 m_avact[avstate] = new QAction(name, this);
                 m_avact[avstate]->setCheckable(false);
@@ -588,7 +588,7 @@ void MainWidget::updatePresence(const QVariant &presence)
         m_avail->addActions(m_availgrp->actions());
     }
     if (presencemap.contains("allowed")) {
-        QMapIterator<QString, QVariant> capapres(presencemap["allowed"].toMap());
+        QMapIterator<QString, QVariant> capapres(presencemap.value("allowed").toMap());
         while (capapres.hasNext()) {
             capapres.next();
             QString avstate = capapres.key();
@@ -600,7 +600,7 @@ void MainWidget::updatePresence(const QVariant &presence)
         }
     }
     if (presencemap.contains("state")) {
-        b_engine->setAvailState(presencemap["state"].toMap()["stateid"].toString(), true);
+        b_engine->setAvailState(presencemap.value("state").toMap().value("stateid").toString(), true);
     }
 }
 
@@ -608,13 +608,13 @@ void MainWidget::clearPresence()
 {
     QVariantMap presence = b_engine->getCapaPresence();
     if (presence.contains("names")) {
-        QMapIterator<QString, QVariant> capapres(presence["names"].toMap());
+        QMapIterator<QString, QVariant> capapres(presence.value("names").toMap());
         while (capapres.hasNext()) {
             capapres.next();
             QString avstate = capapres.key();
             if (m_avact.contains(avstate)) {
                 disconnect(m_avact[avstate], SIGNAL(triggered()),
-                            b_engine, SLOT(setAvailability()));
+                           b_engine, SLOT(setAvailability()));
                 m_availgrp->removeAction(m_avact[avstate]);
                 delete m_avact[avstate];
             }
@@ -930,8 +930,10 @@ void MainWidget::about()
 #elif defined(Q_WS_MAC)
         "macos"
 #endif
-        "/" + __xivo_version__ + ">" + tr("last one") + "</a>";
+        "/" + __xivo_version__ + ">" + tr("Fetch the last one") + "</a>";
     QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
+    QString gitdate_qs(__git_date__);
+    QString gitdate(QDateTime::fromTime_t(gitdate_qs.toUInt()).toString());
 
     // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
     QMessageBox::about(this,
@@ -941,25 +943,22 @@ void MainWidget::about()
                           "complete the XiVO telephony system, by providing computer tools, "
                           "such as customer information display, directory searches, or various "
                           "supervision 'X-lets' for call centers.") +
-                       "<p>"
-                       "<b>" + tr("Version : ") + QString("</b>%1 (").arg(applicationVersion) +
-                       "<b>svn : " + QString("</b>%1 - %2)<br>").arg(__current_client_version__,
-                                                                     fetchlastone) +
-                       "(" + tr("Advised Server Version : ") + QString::number(SERVER_VERSION_REQUIRED) + ")"
+                       "<p>" +
+                       tr("<u>Version Information</u>") + "<br>" +
+                       tr("Major : <b>%1</b> (XiVO branch)").arg(applicationVersion) + "<br>" +
+                       tr("Minor : git hash <b>%1</b> from : %2").arg(__git_hash__).arg(gitdate) + "<br>" +
+                       fetchlastone + "<br>" +
                        "<br>" +
-                       "(" + tr("Application Built on : ") + datebuild + ")"
-                       "<br>" +
-                       "(" + tr("Application Launched on : ") + m_launchDateTime.toString() + ")"
-                       "<br>" +
-                       "(" + tr("Config File Location : ") + m_settings->fileName() + ")" +
-                       "<hr>"
-                       "Copyright (C) 2007-2010 <a href=http://www.proformatique.com><b>Proformatique</b></a>"
+                       tr("(Application Built on : %1)").arg(datebuild) + "<br>" +
+                       tr("(Application Launched on : %1)").arg(m_launchDateTime.toString()) + "<br>" +
+                       tr("(Config File Location : %1)").arg(m_settings->fileName()) + "<hr>" +
+                       "Copyright (C) 2007-2011 <a href=http://www.proformatique.com><b>Proformatique</b></a>"
                        "<br>"
-                       "10 bis, rue Lucien VOILIN 92800 Puteaux FRANCE"
+                       "10 bis rue Lucien Voilin - 92800 Puteaux - FRANCE"
                        "<p>"
                        "<b>" + tr("E-mail : ") + "</b><a href=mailto:technique@proformatique.com>technique@proformatique.com</a><br>"
                        "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
-                       "<b>" + tr("Authors : ") + "</b>Ralph Aug&eacute;, Thomas Bernard, Corentin Le Gall" +
+                       "<b>" + tr("Authors : ") + "</b>" + tr("Proformatique Development Team") +
                        "<hr>"
                        "<b>" + tr("License : ") + "</b>" +
                        "<a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GNU General Public License v3</a><br>"

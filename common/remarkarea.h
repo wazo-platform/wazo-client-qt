@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -37,6 +37,7 @@
 #include <QWidget>
 
 class QGridLayout;
+class QHBoxLayout;
 class QLineEdit;
 class QPushButton;
 class QScrollArea;
@@ -66,12 +67,13 @@ class RemarkArea : public QWidget
 
     private:
         int m_currentline;  //<! last line where the form is
-        QVBoxLayout *m_layout;  //!< Layout for this widget
-        QGridLayout *m_gridlayout;  //!< Layout for m_scrollarea
-        QScrollArea *m_scrollarea;  //!< Scroll Area
-        QLineEdit *m_inputline;  //!< input field for text
-        QPushButton *m_submitbutton;  //!< submit button
+        QVBoxLayout * m_layout;  //!< Layout for this widget
+        QGridLayout * m_gridlayout;  //!< Layout for m_scrollarea
+        QScrollArea * m_scrollarea;  //!< Scroll Area
+        QLineEdit * m_inputline;  //!< input field for text
+        QPushButton * m_submitbutton;  //!< submit button
+        QWidget * m_scrolledwidget;
+        QHBoxLayout * m_hlayout;
 };
 
 #endif
-

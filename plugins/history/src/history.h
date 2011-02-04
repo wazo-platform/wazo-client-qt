@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2010, Proformatique
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -65,29 +65,36 @@ class LogWidgetModel : public QAbstractTableModel
 
     private:
         static int ascendingOrderByDuration(const QVariant &a, const QVariant &b) {
-            return a.toMap()["duration"].toInt() <  b.toMap()["duration"].toInt();
+                return a.toMap().value("duration").toInt() <
+                        b.toMap().value("duration").toInt();
         }
         static int descendingOrderByDuration(const QVariant &a, const QVariant &b) {
-            return a.toMap()["duration"].toInt() >  b.toMap()["duration"].toInt();
+                return a.toMap().value("duration").toInt() >
+                        b.toMap().value("duration").toInt();
         }
         static int ascendingOrderByNumber(const QVariant &a, const QVariant &b) {
-            return a.toMap()["fullname"].toString() <  b.toMap()["fullname"].toString();
+                return a.toMap().value("fullname").toString() <
+                        b.toMap().value("fullname").toString();
         }
         static int descendingOrderByNumber(const QVariant &a, const QVariant &b) {
-            return a.toMap()["fullname"].toString() >  b.toMap()["fullname"].toString();
+                return a.toMap().value("fullname").toString() >
+                        b.toMap().value("fullname").toString();
         }
         static int ascendingOrderByDate(const QVariant &a, const QVariant &b) {
-            return
-                QDateTime::fromString(a.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t() <
-                QDateTime::fromString(b.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t();
+                return QDateTime::fromString(a.toMap().value("ts").toString(),
+                                             "yyyy-MM-dd hh:mm:ss").toTime_t() <
+                        QDateTime::fromString(b.toMap().value("ts").toString(),
+                                              "yyyy-MM-dd hh:mm:ss").toTime_t();
         }
         static int descendingOrderByDate(const QVariant &a, const QVariant &b) {
-            return
-                QDateTime::fromString(a.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t() >
-                QDateTime::fromString(b.toMap()["ts"].toString(),"yyyy-MM-dd hh:mm:ss").toTime_t();
+                return QDateTime::fromString(a.toMap().value("ts").toString(),
+                                             "yyyy-MM-dd hh:mm:ss").toTime_t() >
+                        QDateTime::fromString(b.toMap().value("ts").toString(),
+                                              "yyyy-MM-dd hh:mm:ss").toTime_t();
         }
 
-        void requestHistory(const QString &, int, const QDateTime &since = QDateTime(), int f = 0);
+        void requestHistory(const QString &, int,
+                            const QDateTime &since = QDateTime(), int f = 0);
 
         QVariantList m_history;
         int m_mode;

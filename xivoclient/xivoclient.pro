@@ -1,7 +1,7 @@
 ######################################################################
 #
-# $Revision$
-# $Date$
+# $Revision: 9722 $
+# $Date: 2010-12-09 10:53:51 +0100 (Thu, 09 Dec 2010) $
 #
 
 include(../qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
@@ -12,7 +12,7 @@ include(../common.pri)
 
 TEMPLATE = app
 # CONFIG += console # uncomment to get console on Win32
-TARGET =
+TARGET = 
 CONFIG += uitools
 DEPENDPATH += .
 INCLUDEPATH += . $${COMMONDIR} $${COMMONDIR}/built-in-xlet ../baselib/src ../baselib/src/gui
