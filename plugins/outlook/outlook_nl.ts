@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.0" language="nl_NL">
 <context>
     <name>OutlookPanel</name>
     <message>
@@ -11,72 +11,72 @@
     <message>
         <location filename="outlook_panel.cpp" line="79"/>
         <source>First Name</source>
-        <translation>Prénom</translation>
+        <translation>Voornaam</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="80"/>
         <source>Last Name</source>
-        <translation>Nom</translation>
+        <translation>Familienaam</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="81"/>
         <source>Full Name</source>
-        <translation>Nom complet</translation>
+        <translation>Volledige naam</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="82"/>
         <source>Business Phone</source>
-        <translation>Tél. Bureau</translation>
+        <translation>Zakelijk nummer</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="83"/>
         <source>Mobile Phone</source>
-        <translation>Tél. Mobile</translation>
+        <translation>Gsm nummer</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="84"/>
         <source>Home Phone</source>
-        <translation>Tél. Domicile</translation>
+        <translation>Thuisnummer</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="85"/>
         <source>Email Address</source>
-        <translation>Adresse e-mail</translation>
+        <translation>E-mailadres</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="86"/>
         <source>EntryID</source>
-        <translation>ID</translation>
+        <translation>ToegangsID</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="90"/>
         <source>Di&amp;rectory</source>
-        <translation>&amp;Répertoire</translation>
+        <translation>Di&amp;rectory</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="205"/>
         <source>Double-click to send an E-mail to</source>
-        <translation>Double-cliquer pour envoyer un e-mail à</translation>
+        <translation>Dubbelklikken om een e-mail te verzenden aan</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="207"/>
         <source>Double-click to call</source>
-        <translation>Double-cliquer pour appeler</translation>
+        <translation>Dubbelklikken om te bellen</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="356"/>
         <source>&amp;Dial</source>
-        <translation>&amp;Numéroter</translation>
+        <translation>&amp;Bellen</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="357"/>
         <source>&amp;Transfer</source>
-        <translation>&amp;Transférer</translation>
+        <translation>&amp;Doorschakelen</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="399"/>
         <source>Send an E-mail</source>
-        <translation>Envoyer un e-mail</translation>
+        <translation>Een e-mail verzenden</translation>
     </message>
 </context>
 </TS>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.0" language="nl_NL">
 <context>
     <name>XletAgents</name>
     <message>
         <location filename="src/agents.cpp" line="47"/>
         <source>Agents&apos; List (plain)</source>
-        <translation>Liste des Agents (classique)</translation>
+        <translation>Agentenlijst (standaard)</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="51"/>
@@ -16,100 +16,99 @@
     <message>
         <location filename="src/agents.cpp" line="52"/>
         <source>Record</source>
-        <translation>Enregistre</translation>
+        <translation> Opname</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="53"/>
         <source>Listen</source>
-        <translation>Ecoute
-discrète</translation>
+        <translation>Luisteren</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="54"/>
         <source>On Line</source>
-        <translation>En ligne</translation>
+        <translation>Online</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="55"/>
         <source>Presence</source>
-        <translation>Présence</translation>
+        <translation>Aanwezigheid</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="56"/>
         <source>Logged</source>
-        <translation>Loggé</translation>
+        <translation>Gelogd</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="57"/>
         <source>Joined
 queues</source>
-        <translation>Files
-jointes</translation>
+        <translation>Gegroepeerde
+wachtrijen</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="58"/>
         <source>Paused</source>
-        <translation>En pause</translation>
+        <translation>Gepauzeerd</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="59"/>
         <source>Paused
 queues</source>
-        <translation>Files
-en pause</translation>
+        <translation>Gepauzeerde
+wachtrijen</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="197"/>
         <source>Server: %1
 Context: %2</source>
-        <translation>Serveur: %1
-Contexte: %2</translation>
+        <translation>Server: %1
+Context: %2</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="292"/>
         <source>online with %1 (%2)</source>
-        <translation>en ligne avec %1 (%2)</translation>
+        <translation>online met %1 (%2)</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="307"/>
         <location filename="src/agents.cpp" line="313"/>
         <source>Agent logged on %1</source>
-        <translation>Agent loggé sur %1</translation>
+        <translation>Agent ingelogd op %1</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="317"/>
         <source>Agent NOT logged</source>
-        <translation>Agent NON loggé</translation>
+        <translation>Agent NIET ingelogd</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="321"/>
         <source>Unknown %1</source>
-        <translation>Inconnu %1</translation>
+        <translation>Onbekend %1</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="356"/>
         <source>Joined queues : %1</source>
-        <translation>Files jointes : %1</translation>
+        <translation>Gegroepeerde wachtrijen: %1</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="365"/>
         <source>Paused queues : %1</source>
-        <translation>Files en pause : %1</translation>
+        <translation>Gepauzeerde wachtrijen: %1</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="367"/>
         <source>No</source>
-        <translation>Non</translation>
+        <translation>Nee</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="373"/>
         <source>Yes</source>
-        <translation>Oui</translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <location filename="src/agents.cpp" line="379"/>
         <source>Partial</source>
-        <translation>Partielle</translation>
+        <translation>Gedeeltelijk Onvolledig?</translation>
     </message>
 </context>
 </TS>
