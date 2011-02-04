@@ -1710,7 +1710,7 @@ void BaseEngine::actionCall(const QString & action,
         else
             command["destination"] = dst;
         sendJsonCommand(command);
-    } else if (action == "hangup") {
+    } else if ((action == "hangup") || (action == "transfercancel")) {
         QVariantMap ipbxcommand;
         ipbxcommand["command"] = action;
         ipbxcommand["channelids"] = src;
