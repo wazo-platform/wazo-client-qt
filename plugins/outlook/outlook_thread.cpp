@@ -10,7 +10,8 @@ COLThread::COLThread() {
     gpThread = this;
 }
 
-COLThread::~COLThread() {
+COLThread::~COLThread()
+{
 }
 
 void COLThread::run()
@@ -96,14 +97,13 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
 
     COLComContact pContact = pItems.GetFirst();
 
-    while(pContact && !m_bStop)
-	{
-            COLContact contact;
-            if ( !pContact.Load(&contact) )
-                return false;
-            contacts.append(contact);
-            pContact = pItems.GetNext();
-	}
+    while(pContact && !m_bStop) {
+        COLContact contact;
+        if ( !pContact.Load(&contact) )
+            return false;
+        contacts.append(contact);
+        pContact = pItems.GetNext();
+    }
 
     return true;
 }

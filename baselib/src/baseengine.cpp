@@ -352,7 +352,7 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << Q_FUNC_INFO << m_serverhost << m_checked_function;
+    qDebug() << Q_FUNC_INFO << m_serverhost << m_ctiport << m_checked_function;
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
@@ -1757,7 +1757,7 @@ void BaseEngine::searchDirectory(const QString & text)
  */
 void BaseEngine::setAddress(const QString & host, quint16 port)
 {
-    qDebug() << Q_FUNC_INFO << port;
+    // qDebug() << Q_FUNC_INFO << host << port;
     m_serverhost = host;
     m_ctiport = port;
 }
@@ -2226,7 +2226,7 @@ void BaseEngine::changeState()
 void BaseEngine::logClientWarning(const QString & classmethod,
                                   const QString & message)
 {
-    qDebug() << Q_FUNC_INFO << classmethod << message;
+    // qDebug() << Q_FUNC_INFO << classmethod << message;
     QVariantMap command;
     command["class"] = "logclienterror";
     command["direction"] = "xivoserver";
