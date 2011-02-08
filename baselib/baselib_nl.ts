@@ -4,62 +4,62 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="src/baseengine.cpp" line="1242"/>
+        <location filename="src/baseengine.cpp" line="1249"/>
         <source>Received Services Data</source>
         <translation>Gegevens ontvangen van Services</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1250"/>
+        <location filename="src/baseengine.cpp" line="1257"/>
         <source>Could not modify the Services data.</source>
         <translation>De gegevens voor Services konden niet worden gewijzigd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1250"/>
+        <location filename="src/baseengine.cpp" line="1257"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Misschien werkt Asterisk momenteel niet.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1494"/>
+        <location filename="src/baseengine.cpp" line="1501"/>
         <source>Server has sent an Error.</source>
         <translation>De server heeft een foutmelding teruggestuurd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1498"/>
+        <location filename="src/baseengine.cpp" line="1505"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
         <translation>Uw registratienaam &lt;%1@%2&gt; wordt niet herkend door de XiVO CTI server op %3:%4.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1503"/>
+        <location filename="src/baseengine.cpp" line="1510"/>
         <source>You entered a wrong login / password.</source>
         <translation>U hebt een verkeerd(e) login/paswoord ingevoerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1506"/>
+        <location filename="src/baseengine.cpp" line="1513"/>
         <source>Your profile identifier &lt;%1&gt; is not defined.</source>
         <translation>Uw profielidentificatie &lt;%1&gt; is niet gedefinieerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1510"/>
+        <location filename="src/baseengine.cpp" line="1517"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
         <translation>De XiVO CTI-server op %1:%2 heeft de laatste keepalive niet beantwoord.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1515"/>
+        <location filename="src/baseengine.cpp" line="1522"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
         <translation>U hebt een IP-adres %1 gedefinieerd dat waarschijnlijk een onbekende hostnaam is.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1518"/>
+        <location filename="src/baseengine.cpp" line="1525"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
         <translation>Socket time-out (~ 60 s): u hebt waarschijnlijk via een gateway, een onbestaand IP-adres %1 proberen te bereiken.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1522"/>
+        <location filename="src/baseengine.cpp" line="1529"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
         <translation>Er lijkt een machine te werken op dit IP-adres %1, maar ofwel is er geen CTI-server actief, ofwel is uw poort %2 verkeerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1526"/>
+        <location filename="src/baseengine.cpp" line="1533"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
@@ -70,102 +70,102 @@
 - er is een kabel losgeraakt op uw LAN op weg naar dit IP-adres (time-out ~ 30 s).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1532"/>
+        <location filename="src/baseengine.cpp" line="1539"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Er heeft zich een onbekende socketfout voorgedaan tijdens de poging om het IP-adres te bereiken:poort %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1536"/>
+        <location filename="src/baseengine.cpp" line="1543"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Er heeft zich een onbeheerde socketfout (nummer %1) voorgedaan tijdens de poging om het IP-adres te bereiken: poort %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1541"/>
+        <location filename="src/baseengine.cpp" line="1548"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation>De XiVO CTI-server op %1:%2 heeft net de verbinding verbroken.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1545"/>
+        <location filename="src/baseengine.cpp" line="1552"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation>De XiVO CTI-server op %1:%2 werd net stopgezet.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1548"/>
+        <location filename="src/baseengine.cpp" line="1555"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation>De XiVO CTI-server op %1:%2 werd net terug opgeladen.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1552"/>
+        <location filename="src/baseengine.cpp" line="1559"/>
         <source>You are already connected from %1:%2.</source>
         <translation>U bent al verbonden sinds %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1554"/>
+        <location filename="src/baseengine.cpp" line="1561"/>
         <source>No capability allowed.</source>
         <translation>Geen capaciteit toegestaan.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1557"/>
+        <location filename="src/baseengine.cpp" line="1564"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
         <translation>Max. aantal (%1) XiVO Clients bereikt.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1559"/>
+        <location filename="src/baseengine.cpp" line="1566"/>
         <source>Missing Argument(s)</source>
         <translation>Ontbrekend(e) argument(en)</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1563"/>
+        <location filename="src/baseengine.cpp" line="1570"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>Uw klantversie (%1) is te oud voor deze server.
 Gelieve op z&apos;n minst naar versie %2 te upgraden. </translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1568"/>
+        <location filename="src/baseengine.cpp" line="1575"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>Uw klantversie (%1) is te oud voor deze server.
 Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1575"/>
+        <location filename="src/baseengine.cpp" line="1582"/>
         <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>De hoofdversie  (%1) van uw klant
 is niet dezelfde als deze van de server (%2).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1582"/>
+        <location filename="src/baseengine.cpp" line="1589"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>Uw serverversie (%1) is te oud voor deze klant.
 Gelieve op z&apos;n minst naar versie %2 te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1587"/>
+        <location filename="src/baseengine.cpp" line="1594"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>Uw serverversie (%1) is te oud voor deze klant.
 Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1591"/>
+        <location filename="src/baseengine.cpp" line="1598"/>
         <source>You were disconnected by the server.</source>
         <translation>Uw verbinding werd verbroken door de server.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1593"/>
+        <location filename="src/baseengine.cpp" line="1600"/>
         <source>You were forced to disconnect by the server.</source>
         <translation>Uw verbinding werd gedwongen afgebroken door de server.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1597"/>
+        <location filename="src/baseengine.cpp" line="1604"/>
         <source>ERROR</source>
         <translation>FOUT</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1952"/>
+        <location filename="src/baseengine.cpp" line="1959"/>
         <source>Attempting to reconnect to server</source>
         <translation>Poging tot herverbinden met de server</translation>
     </message>
@@ -204,8 +204,8 @@ Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="73"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="469"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="473"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="485"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="489"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Onderscheppen</translation>
     </message>
@@ -215,112 +215,117 @@ Gelieve uw versie te upgraden.</translation>
         <translation>Oproep onderscheppen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="358"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="374"/>
         <source>Call this peer</source>
         <translation>Bel deze gesprekspartner</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="362"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="378"/>
         <source>&amp;Call mobile</source>
         <translation>&amp;Gsm bellen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="368"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="384"/>
         <source>&amp;Call</source>
         <translation>&amp;Bellen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="375"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="391"/>
         <source>&amp;Edit</source>
         <translation>&amp;Bewerken</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="448"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="452"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="464"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="468"/>
         <source>&amp;Hangup</source>
         <translation>&amp;Ophangen &amp;gesprek beëindigen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="453"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="469"/>
         <source>Hangup this communication</source>
         <translation>Beëindig dit gesprek</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="474"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="490"/>
         <source>Intercept this communication</source>
         <translation>Onderschep dit gesprek</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="486"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="490"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="502"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="506"/>
         <source>&amp;Park</source>
         <translation>&amp;Parkeren</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="491"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="507"/>
         <source>Park this call</source>
         <translation>Deze oproep parkeren</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="527"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="543"/>
         <source>Invite in meetme room %1</source>
         <translation>Uitnodigen in de MMR %1</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="534"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="540"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="550"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="556"/>
         <source>Direct &amp;Transfer</source>
         <translation>Rechtstreeks &amp;Doorschakelen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="538"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="561"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="554"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="578"/>
         <source>Transfer this communication</source>
         <translation>Schakel dit gesprek door</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="541"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="564"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="557"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="583"/>
         <source>Transfer to this person</source>
         <translation>Doorschakelen naar deze persoon</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="556"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="563"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="572"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="582"/>
         <source>&amp;Indirect Transfer</source>
         <translation>&amp;Onrechtstreeks Doorschakelen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="579"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="585"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="584"/>
+        <source>&amp;Cancel the Transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/gui/basepeerwidget.cpp" line="607"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="613"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Doorschakelen naar &amp;voicemail</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="583"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="586"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="611"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="614"/>
         <source>Transfer to voice mail</source>
         <translation>Doorschakelen naar voicemail</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="727"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="755"/>
         <source>XiVO Client - Removing %1 %2</source>
         <translation>XiVO Client - %1 %2 verwijderen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="728"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="756"/>
         <source>Removing %1 %2.
 Are you sure ?</source>
         <translation> %1 %2 verwijderen
 Bent u zeker?</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="742"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="770"/>
         <source>Rename Item</source>
         <translation>Dit item herbenoemen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="742"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="770"/>
         <source>Rename %1 :</source>
         <translation>%1 herbenoemen:</translation>
     </message>
