@@ -86,6 +86,7 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
         void intercept2();
         void transfer();
         void itransfer();
+        void itransfercancel();
         void vmtransfer();
         void parkcall();
         void tryRemoveFromPanel();

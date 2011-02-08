@@ -210,17 +210,17 @@ void XletOperator::itransfer()
  */
 void XletOperator::xferPressed()
 {
-    QString num = m_tnums[m_currentchannel]->text();
+    QString number = m_tnums[m_currentchannel]->text();
     QString peerchan = getPeerChan(m_currentchannel);
-    qDebug() << Q_FUNC_INFO << m_currentchannel << peerchan << m_linestatuses[m_currentchannel] << num;
+    QString dst = QString("ext:%1").arg(number);
+    // qDebug() << Q_FUNC_INFO << m_currentchannel << peerchan << m_linestatuses[m_currentchannel] << number;
+
     if (m_linestatuses[m_currentchannel] == WDTransfer) {
-        b_engine->actionCall("transfer",
-                             "chan:special:me:" + peerchan,
-                             "ext:" + num);
+        QString src = QString("chan:special:me:%1").arg(peerchan);
+        b_engine->actionCall("transfer", src, dst);
     } else if (m_linestatuses[m_currentchannel] == WITransfer) {
-        b_engine->actionCall("atxfer",
-                             "chan:special:me:" + m_currentchannel,
-                             "ext:" + num);
+        QString src = QString("chan:special:me:%1").arg(m_currentchannel);
+        b_engine->actionCall("atxfer", src, dst);
         updateLine(m_currentchannel, (QStringList() << "hangup" << "ilink" << "icancel"));
     }
 }

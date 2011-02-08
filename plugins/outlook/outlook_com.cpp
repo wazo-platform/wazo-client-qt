@@ -7,7 +7,8 @@
 #include <QDebug>
 
 
-HRESULT AutoWrap(int autoType, VARIANT *pvResult, IDispatch *pDisp, LPOLESTR ptName, int cArgs...) {
+HRESULT AutoWrap(int autoType, VARIANT *pvResult, IDispatch *pDisp, LPOLESTR ptName, int cArgs...)
+{
     // Begin variable-argument list...
     va_list marker;
     va_start(marker, cArgs);
@@ -111,7 +112,8 @@ bool COLComContact::Load(COLContact * contact)
 }
 
 
-COLComContact COLComContactItems::GetFirst() {
+COLComContact COLComContactItems::GetFirst()
+{
     VARIANT result;
     HRESULT res;
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetFirst", 0);
@@ -120,7 +122,8 @@ COLComContact COLComContactItems::GetFirst() {
     return COLComContact(result.pdispVal, FALSE);
 }
 
-COLComContact COLComContactItems::GetNext() {
+COLComContact COLComContactItems::GetNext()
+{
     VARIANT result;
     HRESULT res;
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"GetNext", 0);
@@ -129,7 +132,8 @@ COLComContact COLComContactItems::GetNext() {
     return COLComContact(result.pdispVal, FALSE);
 }
 
-COLComContactItems	COLFolder::GetItems() {
+COLComContactItems	COLFolder::GetItems()
+{
     VARIANT result;
     HRESULT res;
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"Items", 0);
@@ -138,7 +142,8 @@ COLComContactItems	COLFolder::GetItems() {
     return COLComContactItems(result.pdispVal, FALSE);
 }
 
-QString COLFolder::Name() {
+QString COLFolder::Name()
+{
     VARIANT result;
     HRESULT res;
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"Name", 0);
@@ -152,7 +157,8 @@ QString COLFolder::Name() {
     return str;
 }
 
-QString COLFolder::StoreID() {
+QString COLFolder::StoreID()
+{
     VARIANT result;
     HRESULT res;
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"StoreID", 0);
@@ -166,7 +172,8 @@ QString COLFolder::StoreID() {
     return str;
 }
 
-QString COLFolder::EntryID() {
+QString COLFolder::EntryID()
+{
     VARIANT result;
     HRESULT res;
     res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"EntryID", 0);
@@ -182,7 +189,8 @@ QString COLFolder::EntryID() {
 
 
 
-COLFolder COLNameSpace::GetDefaultFolder(UINT nFolder) {
+COLFolder COLNameSpace::GetDefaultFolder(UINT nFolder)
+{
     HRESULT res;
     VARIANT result;
     VARIANT parm;
@@ -197,7 +205,8 @@ COLFolder COLNameSpace::GetDefaultFolder(UINT nFolder) {
     return COLFolder(result.pdispVal, FALSE);
 }
 
-COLFolder COLNameSpace::PickFolder() {
+COLFolder COLNameSpace::PickFolder()
+{
     VARIANT result;
 
     HRESULT res = AutoWrap(DISPATCH_PROPERTYGET, &result, m_pIDisp, L"PickFolder", 0);
@@ -207,7 +216,8 @@ COLFolder COLNameSpace::PickFolder() {
     return COLFolder(result.pdispVal, FALSE);
 }
 
-COLFolder COLNameSpace::GetFolderFromID(const QString & strEntryID, const QString & strStoreID) {
+COLFolder COLNameSpace::GetFolderFromID(const QString & strEntryID, const QString & strStoreID)
+{
     VARIANT result;
     VARIANT folderID, storeID;
     HRESULT res;
@@ -266,7 +276,8 @@ bool COLApp::init()
     return true;
 }
 
-void COLApp::term() {
+void COLApp::term()
+{
     if ( m_pOutlookApp )
         m_pOutlookApp->Release();
     m_pOutlookApp = NULL;
@@ -279,7 +290,8 @@ COLApp::~COLApp()
 {
 }
 
-COLNameSpace COLApp::GetNamespace(const char * szName) {
+COLNameSpace COLApp::GetNamespace(const char * szName)
+{
     VARIANT result;
     VARIANT parm;
     parm.vt = VT_BSTR;

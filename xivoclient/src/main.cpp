@@ -111,13 +111,23 @@ int main(int argc, char ** argv)
     QString info_endianness = QSysInfo::ByteOrder ? "LE" : "BE";
 
 #if defined(Q_WS_X11)
-    info_osname = QString("X11-%1-%2").arg(info_endianness).arg(app.applicationPid());
+    info_osname = QString("X11-%1-%2")
+        .arg(info_endianness)
+        .arg(app.applicationPid());
 #elif defined(Q_WS_WIN)
-    info_osname = QString("WIN-%1-0x%2-%3").arg(info_endianness).arg(QSysInfo::WindowsVersion, 2, 16, QChar('0')).arg(app.applicationPid());
+    info_osname = QString("WIN-%1-0x%2-%3")
+        .arg(info_endianness)
+        .arg(QSysInfo::WindowsVersion, 2, 16, QChar('0'))
+        .arg(app.applicationPid());
 #elif defined(Q_WS_MAC)
-    info_osname = QString("MAC-%1-0x%2-%3").arg(info_endianness).arg(QSysInfo::MacintoshVersion, 2, 16, QChar('0')).arg(app.applicationPid());
+    info_osname = QString("MAC-%1-0x%2-%3")
+        .arg(info_endianness)
+        .arg(QSysInfo::MacintoshVersion, 2, 16, QChar('0'))
+        .arg(app.applicationPid());
 #else
-    info_osname = QString("unknown-%1-%2").arg(info_endianness).arg(app.applicationPid());
+    info_osname = QString("unknown-%1-%2")
+        .arg(info_endianness)
+        .arg(app.applicationPid());
 #endif
     qDebug() << "main() osname=" << info_osname << "locale=" << locale;
 

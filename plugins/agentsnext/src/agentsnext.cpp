@@ -137,7 +137,7 @@ void XletAgentsNext::contextMenuEvent(QContextMenuEvent * event)
             contextMenu.addSeparator();
 
             if (thisqueuelist.size() > 0) {
-                QMenu *menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
+                QMenu * menu_remove = contextMenu.addMenu(tr("Remove a Queue"));
                 foreach (QString qname, thisqueuelist) {
                     QAction * p_qremove = new QAction(qname, this);
                     p_qremove->setProperty("groupid", thisgroupid);

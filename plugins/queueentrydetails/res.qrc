@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-	<file>queueentrydetails_fr.qm</file>
+    <file>queueentrydetails_fr.qm</file>
     <file>queueentrydetails_nl.qm</file>
 </qresource>
 </RCC>

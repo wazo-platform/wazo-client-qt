@@ -1,6 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file>agents_fr.qm</file>
-    <file>agents_nl.qm</file>
+    <file>records_fr.qm</file>
 </qresource>
 </RCC>

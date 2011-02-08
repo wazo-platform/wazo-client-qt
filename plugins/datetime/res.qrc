@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-	<file>datetime_fr.qm</file>
+    <file>datetime_fr.qm</file>
     <file>datetime_nl.qm</file>
 </qresource>
 </RCC>
