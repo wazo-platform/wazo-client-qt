@@ -198,6 +198,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void featurePutOpt(const QString &, bool);
         void featurePutForward(const QString &, bool, const QString &);
         void askFeatures();
+        void askCallerIds0();
         void askCallerIds();
         void setKeepaliveinterval(uint);  //!< set keep alive interval
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);

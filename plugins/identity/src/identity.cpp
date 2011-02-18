@@ -232,8 +232,10 @@ void IdentityDisplay::setUserInfo(const UserInfo */* ui */)
     m_ui = b_engine->getXivoClientUser();
 
     m_user->setText(m_ui->fullname());
+    qDebug() << Q_FUNC_INFO << m_ui->phoneNumber();
     m_phonenum->setText(m_ui->phoneNumber());
-    m_phonenum->setToolTip(tr("Server: %1\nContext: %2")
+    m_phonenum->setToolTip(tr("Server: %1\n"
+                              "Context: %2")
                            .arg(m_ui->astid())
                            .arg(m_ui->context()));
     QStringList vm = m_ui->mwi();

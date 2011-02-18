@@ -64,7 +64,7 @@ int main(int argc, char ** argv)
     QCoreApplication::setApplicationName("XIVO_Client");
     PowerAwareApplication app(argc, argv);
     if(app.isRunning()) {
-        qDebug() << "application is already running";
+        qDebug() << Q_FUNC_INFO << "application is already running";
         // do not create a new application, just activate the currently running one
         QString msg;
         if(argc > 1) {
@@ -73,7 +73,7 @@ int main(int argc, char ** argv)
             // to learn how to handle "tel:0123456" uri scheme
             msg.append(argv[1]);
             bool sentmsg = app.sendMessage(msg);
-            qDebug() << "sent message" << msg << sentmsg;
+            qDebug() << Q_FUNC_INFO << "sent message" << msg << sentmsg;
         }
         return 0;
     }
@@ -81,7 +81,7 @@ int main(int argc, char ** argv)
                                         QSettings::UserScope,
                                         QCoreApplication::organizationName(),
                                         QCoreApplication::applicationName());
-    qDebug() << "style" << app.style() << settings->fileName();
+    qDebug() << Q_FUNC_INFO << "style" << app.style() << settings->fileName();
 
     QString profile = "default-user";
     if(argc > 1) {
@@ -129,7 +129,7 @@ int main(int argc, char ** argv)
         .arg(info_endianness)
         .arg(app.applicationPid());
 #endif
-    qDebug() << "main() osname=" << info_osname << "locale=" << locale;
+    qDebug() << Q_FUNC_INFO << "osname=" << info_osname << "locale=" << locale;
 
     BaseEngine *engine = new BaseEngine(settings, info_osname);
 
