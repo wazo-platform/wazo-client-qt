@@ -156,7 +156,6 @@ void LogWidgetModel::requestHistory(const QString &peer,
     if(mode >= 0) {
         QVariantMap command;
         command["class"] = "history";
-        command["direction"] = "xivoserver";
         command["peer"] = peer;
         command["size"] = QString::number(b_engine->historySize());
         command["mode"] = QString::number(mode);

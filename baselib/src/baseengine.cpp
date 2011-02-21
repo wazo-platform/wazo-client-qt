@@ -341,7 +341,6 @@ void BaseEngine::powerEvent(const QString & eventinfo)
 {
     QVariantMap command;
     command["class"] = "powerevent";
-    command["direction"] = "xivoserver";
     command["value"] = eventinfo;
     sendJsonCommand(command);
 }
@@ -372,7 +371,6 @@ void BaseEngine::stop()
     if (m_attempt_loggedin) {
         QVariantMap command;
         command["class"] = "logout";
-        command["direction"] = "xivoserver";
         command["stopper"] = stopper;
         sendJsonCommand(command);
         m_settings->setValue("lastlogout/stopper", stopper);
@@ -420,7 +418,6 @@ void BaseEngine::addToDataBase(QVariantMap & qv)
 {
     QVariantMap command;
     command["class"] = "database";
-    command["direction"] = "xivoserver";
     command["items"] = qv;
     sendJsonCommand(command);
 }
@@ -617,10 +614,25 @@ void BaseEngine::sendCommand(const QString & command)
 }
 
 /*! \brief encode json and then send command to XiVO CTI server */
-void BaseEngine::sendJsonCommand(const QVariantMap & command)
+void BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
 {
-    QString jsoncommand(JsonQt::VariantToJson::parse(command));
+    if (! cticommand.contains("class"))
+        return;
+    QVariantMap fullcommand = cticommand;
+    fullcommand["onbehalf"] = "user:special:me";
+    fullcommand["commandid"] = qrand();
+    QString jsoncommand(JsonQt::VariantToJson::parse(fullcommand));
     sendCommand(jsoncommand);
+}
+
+/*! \brief send an ipbxcommand command to the cti server */
+void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
+{
+    if (! ipbxcommand.contains("command"))
+        return;
+    QVariantMap cticommand = ipbxcommand;
+    cticommand["class"] = "ipbxcommand";
+    sendJsonCommand(cticommand);
 }
 
 /*! \brief set monitored peer id */
@@ -646,7 +658,6 @@ void BaseEngine::ctiSocketConnected()
     m_attempt_loggedin = false;
     QVariantMap command;
     command["class"] = "login_id";
-    command["direction"] = "xivoserver";
     command["userid"] = m_userid;
     command["company"] = m_company;
     command["ident"] = m_clientid;
@@ -669,7 +680,6 @@ void BaseEngine::filetransferSocketConnected()
 {
     QVariantMap command;
     command["class"] = "filetransfer";
-    command["direction"] = "xivoserver";
     command["tdirection"] = m_filedir;
     command["fileid"] = m_fileid;
     QString jsoncommand(JsonQt::VariantToJson::parse(command));
@@ -1005,7 +1015,6 @@ void BaseEngine::parseCommand(const QString &line)
             } else if (function == "add") {
                 QVariantMap command;
                 command["class"] = "queues";
-                command["direction"] = "xivoserver";
                 command["function"] = "getlist";
                 sendJsonCommand(command);
                 // qDebug() << thisclass << "add" << datamap.value("astid").toString() << datamap.value("deltalist"].toStringList();
@@ -1349,7 +1358,6 @@ void BaseEngine::parseCommand(const QString &line)
             QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
             QVariantMap command;
             command["class"] = "login_pass";
-            command["direction"] = "xivoserver";
             command["hashedpassword"] = QString(res);
             sendJsonCommand(command);
 
@@ -1361,7 +1369,6 @@ void BaseEngine::parseCommand(const QString &line)
             QStringList capas = datamap.value("capalist").toStringList();
             QVariantMap command;
             command["class"] = "login_capas";
-            command["direction"] = "xivoserver";
             if (capas.size() == 1)
                 command["capaid"] = capas[0];
             else if (capas.size() == 0) {
@@ -1491,7 +1498,6 @@ void BaseEngine::meetmeAction(const QString &function, const QString &functionar
     qDebug() <<"meetmeAction" << function << " -- arg: " << functionargs;
     QVariantMap command;
     command["class"] = "meetme";
-    command["direction"] = "xivoserver";
     command["function"] = function;
     command["functionargs"] = functionargs.split(" ");
     sendJsonCommand(command);
@@ -1502,7 +1508,6 @@ void BaseEngine::requestFileList(const QString & action)
 {
     QVariantMap command;
     command["class"] = "callcampaign";
-    command["direction"] = "xivoserver";
     command["command"] = action.split(" ");
     sendJsonCommand(command);
 }
@@ -1523,7 +1528,6 @@ void BaseEngine::sendFaxCommand(const QString & filename,
     if (m_filedata.size() > 0) {
         QVariantMap command;
         command["class"] = "faxsend";
-        command["direction"] = "xivoserver";
         command["size"] = QString::number(m_faxsize);
         command["number"] = number;
         command["hide"] = QString::number(hide);
@@ -1725,7 +1729,6 @@ void BaseEngine::actionFromFiche(const QVariant & infos)
     // qDebug() << Q_FUNC_INFO << infos;
     QVariantMap command;
     command["class"] = "actionfiche";
-    command["direction"] = "xivoserver";
     command["infos"] = infos;
     sendJsonCommand(command);
 }
@@ -1747,33 +1750,28 @@ void BaseEngine::actionCall(const QString & action,
 {
     qDebug() << Q_FUNC_INFO << action << src << dst;
 
-    QVariantMap command;
-    command["direction"] = "xivoserver";
-    command["class"] = action;
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = action;
 
     if ((action == "originate") || (action == "transfer") || (action == "atxfer")) {
-        command["source"] = src;
+        ipbxcommand["command"] = action;
+        ipbxcommand["source"] = src;
         if ((dst == "ext:special:dialxlet") && (! m_numbertodial.isEmpty()))
-            command["destination"] = "ext:" + m_numbertodial;
+            ipbxcommand["destination"] = "ext:" + m_numbertodial;
         else
-            command["destination"] = dst;
-        sendJsonCommand(command);
+            ipbxcommand["destination"] = dst;
     } else if ((action == "hangup") || (action == "transfercancel")) {
-        QVariantMap ipbxcommand;
         ipbxcommand["command"] = action;
         ipbxcommand["channelids"] = src;
-        ipbxCommand(ipbxcommand);
     } else if (action == "answer") {
-        QVariantMap ipbxcommand;
         ipbxcommand["command"] = action;
         ipbxcommand["phoneids"] = src;
-        ipbxCommand(ipbxcommand);
     } else if (action == "refuse") {
-        QVariantMap ipbxcommand;
         ipbxcommand["command"] = action;
         ipbxcommand["channelids"] = src;
-        ipbxCommand(ipbxcommand);
     }
+
+    ipbxCommand(ipbxcommand);
 }
 
 /*! \brief send the directory search command to the server
@@ -1785,7 +1783,6 @@ void BaseEngine::searchDirectory(const QString & text)
     // qDebug() << Q_FUNC_INFO << text;
     QVariantMap command;
     command["class"] = "directory-search";
-    command["direction"] = "xivoserver";
     command["pattern"] = text;
     sendJsonCommand(command);
 }
@@ -2017,7 +2014,6 @@ void BaseEngine::featurePutOpt(const QString &capa, bool b)
 {
     QVariantMap command;
     command["class"] = "featuresput";
-    command["direction"] = "xivoserver";
     command["userid"] = m_monitored_userid;
     if (capa == "enablevm")
         command["function"] = "enablevoicemail";
@@ -2038,7 +2034,6 @@ void BaseEngine::featurePutForward(const QString & capa, bool b, const QString &
 {
     QVariantMap command;
     command["class"] = "featuresput";
-    command["direction"] = "xivoserver";
     command["userid"] = m_monitored_userid;
     if (capa == "fwdunc")
         command["function"] = "enableunc";
@@ -2061,7 +2056,6 @@ void BaseEngine::askFeatures()
     }
     QVariantMap command;
     command["class"] = "featuresget";
-    command["direction"] = "xivoserver";
     command["userid"] = featurestoget;
     sendJsonCommand(command);
 }
@@ -2104,19 +2098,6 @@ void BaseEngine::askCallerIds()
         ipbxcommand["agentphonenumber"] = m_agentphonenumber;
         ipbxCommand(ipbxcommand);
     }
-}
-
-/*! \brief send an ipbxcommand command to the cti server */
-void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
-{
-    if (! ipbxcommand.contains("command")) {
-        return ;
-    }
-    QVariantMap command;
-    command["class"] = "ipbxcommand";
-    command["direction"] = "xivoserver";
-    command["details"] = ipbxcommand;
-    sendJsonCommand(command);
 }
 
 void BaseEngine::setSystrayed(bool b)
@@ -2251,7 +2232,6 @@ void BaseEngine::keepLoginAlive()
 
     QVariantMap command;
     command["class"] = "keepalive";
-    command["direction"] = "xivoserver";
     if (m_rate_bytes > 100000) {
         command["rate-bytes"] = m_rate_bytes;
         command["rate-msec"] = m_rate_msec;
@@ -2268,7 +2248,6 @@ void BaseEngine::changeState()
 {
     QVariantMap command;
     command["class"] = "availstate";
-    command["direction"] = "xivoserver";
     command["availstate"] = m_availstate;
     sendJsonCommand(command);
 }
@@ -2280,7 +2259,6 @@ void BaseEngine::logClientWarning(const QString & classmethod,
     // qDebug() << Q_FUNC_INFO << classmethod << message;
     QVariantMap command;
     command["class"] = "logclienterror";
-    command["direction"] = "xivoserver";
     command["classmethod"] = classmethod;
     command["message"] = message;
     sendJsonCommand(command);
@@ -2315,7 +2293,6 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
 {
     QVariantMap command;
     command["class"] = "sheet";
-    command["direction"] = "xivoserver";
     command["function"] = "addentry";
     command["channel"] = id;
     command["text"] = text;
@@ -2340,7 +2317,7 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
     if (pos >= 0) {
         QString phonenum = re.cap(2);
         phonenum.remove('.').remove(' ').remove('-');
-        qDebug() << "  trying to dial" << phonenum;
+        qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
         actionCall("originate", "user:special:me", "ext:"+phonenum);
     }
 }
