@@ -508,7 +508,7 @@ void XletAgentsNext::agentClicked(QMouseEvent *event)
         AgentInfo *ainfo = b_engine->agents()[agentid];
         QPoint where = event->globalPos();
 
-        QString astid = ainfo->astid();
+        QString astid = ainfo->ipbxid();
         QString agentnumber = ainfo->agentNumber();
         changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentnumber), true);
 
@@ -618,7 +618,7 @@ void XletAgentsNext::actionclicked()
     if (! b_engine->agents().keys().contains(agentid))
         return;
     AgentInfo * ainfo = b_engine->agents()[agentid];
-    QString astid = ainfo->astid();
+    QString astid = ainfo->ipbxid();
     QVariantMap ipbxcommand;
 
     if (action == "transfer") {
@@ -659,7 +659,7 @@ void XletAgentsNext::refreshContents()
 
         if (agstatus != "AGENT_LOGGEDOFF")
             foreach (QString qid, agqjoined.keys()) {
-                QString fullqid = QString("queue:%1/%2").arg(ainfo->astid()).arg(qid);
+                QString fullqid = QString("queue:%1/%2").arg(ainfo->ipbxid()).arg(qid);
                 QString qname = b_engine->queues().value(fullqid)->queueName();
 
                 if (! agqjoined.value(qid).toMap().isEmpty()) {
@@ -738,7 +738,7 @@ void XletAgentsNext::newQueueList(const QStringList & /*qlist*/)
         QString queueid = iter.key();
         // if (list.contains(queueid)) {
         QueueInfo *qinfo = iter.value();
-        newQueue(qinfo->astid(), qinfo->queueName(), qinfo->properties());
+        newQueue(qinfo->ipbxid(), qinfo->queueName(), qinfo->properties());
         // }
     }
 }

@@ -236,7 +236,7 @@ void IdentityDisplay::setUserInfo(const UserInfo */* ui */)
     m_phonenum->setText(m_ui->phoneNumber());
     m_phonenum->setToolTip(tr("Server: %1\n"
                               "Context: %2")
-                           .arg(m_ui->astid())
+                           .arg(m_ui->ipbxid())
                            .arg(m_ui->context()));
     QStringList vm = m_ui->mwi();
     if(vm.size() > 2) {
@@ -245,7 +245,7 @@ void IdentityDisplay::setUserInfo(const UserInfo */* ui */)
         m_voicemail->setOldNew(vm[1], vm[2]);
     }
     // changes the "watched agent" only if no one else has done it before
-    changeWatchedAgent(QString("agent:%1/%2").arg(m_ui->astid()).arg(m_ui->agentid()), false);
+    changeWatchedAgent(QString("agent:%1/%2").arg(m_ui->ipbxid()).arg(m_ui->agentid()), false);
 }
 
 /*! \brief slot when one or more agents have been updated
@@ -261,7 +261,7 @@ void IdentityDisplay::newAgentList(const QStringList &)
         iter.next();
         AgentInfo * ainfo = iter.value();
         QString agentid = iter.key();
-        if((m_ui->astid() == ainfo->astid()) && (m_ui->agentNumber() == ainfo->agentNumber())) {
+        if((m_ui->ipbxid() == ainfo->ipbxid()) && (m_ui->agentNumber() == ainfo->agentNumber())) {
             m_agent->setText(QString("Agent %1").arg(ainfo->agentNumber()));
             m_agent->show();
             m_agent->updateStatus(ainfo->properties());
@@ -311,8 +311,10 @@ void IdentityDisplay::updateUser(UserInfo * ui)
 {
     if(m_ui != ui)
         return;
+    QString ipbxid = m_ui->ipbxid();
     foreach(QString phoneid, m_ui->phonelist()) {
-        const PhoneInfo * p_pi = m_ui->getPhoneInfo(phoneid);
+        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+        const PhoneInfo * p_pi = b_engine->phones().value(xphoneid);
         if(p_pi == NULL)
             continue;
         QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(p_pi->comms());

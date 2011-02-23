@@ -55,7 +55,7 @@ BasePeerWidget::BasePeerWidget(UserInfo *ui)
         m_chitchatAction = new QAction(tr("&Open a chat window"), this);
         m_chitchatAction->setStatusTip(tr("Open a chat window with this user"));
         m_chitchatAction->setProperty("userid", ui->userid());
-        m_chitchatAction->setProperty("astid", ui->astid());
+        m_chitchatAction->setProperty("astid", ui->ipbxid());
         connect(m_chitchatAction, SIGNAL(triggered()),
                 ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
     }
@@ -251,10 +251,14 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
             subwidgetkind = w->property("kind").toString();
         }
         // check if we are in communication
-        const UserInfo *ui = b_engine->getXivoClientUser();
+        const UserInfo * ui = b_engine->getXivoClientUser();
         if (ui && !ui->phonelist().isEmpty()) {
-            foreach (const QString phone, ui->phonelist()) {
-                const PhoneInfo * pi = ui->getPhoneInfo(phone);
+            QString ipbxid = ui->ipbxid();
+            foreach (const QString phoneid, ui->phonelist()) {
+                QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+                const PhoneInfo * pi = b_engine->phones().value(xphoneid);
+                if (!pi)
+                    continue;
                 const QVariantMap & comms = pi->comms();
                 //qDebug() << pi->phoneid() << pi->comms();
                 foreach (const QString ts, comms.keys()) {
@@ -279,8 +283,12 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
         }
         // "I" have no current communications, intercept if the person is being called
         if (m_ui && !m_ui->phonelist().isEmpty()) {
-            foreach (const QString phone, m_ui->phonelist()) {
-                const PhoneInfo *pi = m_ui->getPhoneInfo(phone);
+            QString ipbxid = m_ui->ipbxid();
+            foreach (const QString phoneid, m_ui->phonelist()) {
+                QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+                const PhoneInfo * pi = b_engine->phones().value(xphoneid);
+                if (!pi)
+                    continue;
                 const QMap<QString, QVariant> & comms = pi->comms();
                 //qDebug() << pi->phoneid() << pi->comms();
                 foreach (const QString ts, comms.keys()) {
@@ -355,10 +363,10 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
  */
 void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-    const UserInfo *ui = b_engine->getXivoClientUser();
+    const UserInfo * ui = b_engine->getXivoClientUser();
     // Construct and display the context menu
     QMenu contextMenu(this);
-    QAction *action;
+    QAction * action;
 
     if (parentWidget()->metaObject()->className() == QString("XletSwitchBoard")) {
         contextMenu.addAction(m_removeAction);
@@ -430,16 +438,15 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
         //qDebug() << m_ui->phonelist();
         // TODO : upgrade this when several phones per user will be supported
         // or at least check it's working as expected
-        int commsCount = m_ui->commsCount();    // number of current comms
-        foreach (const QString phone, m_ui->phonelist()) {
-            const PhoneInfo *pi = m_ui->getPhoneInfo(phone);
-
-            if (!pi) {
-                continue ;
-            }
-
+        // int commsCount = m_ui->commsCount();
+        int commsCount = 0;    // number of current comms
+        QString ipbxid = m_ui->ipbxid();
+        foreach (const QString phoneid, m_ui->phonelist()) {
+            QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+            const PhoneInfo * pi = b_engine->phones().value(xphoneid);
+            if (!pi)
+                continue;
             const QMap<QString, QVariant> &comms = pi->comms();
-
             foreach (const QString ts, comms.keys()) {
                 const QMap<QString, QVariant> & comm = comms.value(ts).toMap();
                 //qDebug() << Q_FUNC_INFO << pi->phoneid() << ts << comm;
@@ -513,13 +520,14 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     // get "my" currently open channels
     //qDebug() << m_ui->userid() << ui;
     if (ui && ui != m_ui) {
-        int commsCount = ui->commsCount();    // number of current comms
+        int commsCount = 0; // ui->commsCount();    // number of current comms
+        QString ipbxid = ui->ipbxid();
         qDebug() << Q_FUNC_INFO << "commsCount" << commsCount;
-        foreach (const QString phone, ui->phonelist()) {
-            const PhoneInfo *pi = ui->getPhoneInfo(phone);
-            if (!pi) {
+        foreach (const QString phoneid, ui->phonelist()) {
+            QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+            const PhoneInfo * pi = b_engine->phones().value(xphoneid);
+            if (!pi)
                 continue;
-            }
             const QMap<QString, QVariant> & comms = pi->comms();
             // qDebug() << Q_FUNC_INFO << pi->phoneid() << pi->comms();
             foreach (const QString ts, comms.keys()) {

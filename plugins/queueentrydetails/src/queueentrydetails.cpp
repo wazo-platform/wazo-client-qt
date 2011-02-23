@@ -107,7 +107,7 @@ void XLetQueueEntryDetails::updatePanel()
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) (%5 call(s))")
                                 .arg(qinfo->queueName())
                                 .arg(qinfo->queueNumber())
-                                .arg(qinfo->astid())
+                                .arg(qinfo->ipbxid())
                                 .arg(qinfo->context())
                                 .arg(channels.count())
                                 );

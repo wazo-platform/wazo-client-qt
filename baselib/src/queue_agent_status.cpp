@@ -152,9 +152,9 @@ const QString & QueueAgentStatus::display_action_pause() const
     return m_display_action_pause;
 }
 
-const QString & QueueAgentStatus::astid() const
+const QString & QueueAgentStatus::ipbxid() const
 {
-    return m_astid;
+    return m_ipbxid;
 }
 
 const QString & QueueAgentStatus::id() const

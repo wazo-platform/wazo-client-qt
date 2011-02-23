@@ -47,7 +47,7 @@ class BASELIB_EXPORT QueueInfo
         QueueInfo(const QString &, const QString &, const QMap<QString, QVariant> &);  //! constructor
         bool update(const QMap<QString, QVariant> &);  //! update attribute members
         bool updateAgent(const QMap<QString, QVariant> &);  //! update attribute members
-        const QString & astid() const;  //! asterisk this queue belongs to
+        const QString & ipbxid() const;  //! asterisk this queue belongs to
         const QString & id() const;  //! reference id of this queue on the server
         const QString & context() const;  //! context this queue belongs to
         const QString hintstatus(const QString & key) const {  //! access to the status values of this queue
@@ -59,7 +59,7 @@ class BASELIB_EXPORT QueueInfo
         const QMap<QString, QVariant>& comms() const { return m_comms; };  //! current communications of this queue
 
     private:
-        QString m_astid;
+        QString m_ipbxid;
         QString m_id;
         QString m_context;
         QString m_queuename;

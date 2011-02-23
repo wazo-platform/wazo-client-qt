@@ -77,8 +77,10 @@ void IdentityPhoneLine::contextMenuEvent(QContextMenuEvent * event)
     if(!m_ui)
         return;
     QString thischannel;
+    QString ipbxid = m_ui->ipbxid();
     foreach(QString phoneid, m_ui->phonelist()) {
-        const PhoneInfo * p_pi = m_ui->getPhoneInfo(phoneid);
+        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+        const PhoneInfo * p_pi = b_engine->phones().value(xphoneid);
         if(p_pi == NULL)
             continue;
         QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(p_pi->comms());
@@ -193,7 +195,7 @@ void IdentityPhone::setUserInfo(const UserInfo *ui)
     m_ui = ui;
     m_phone->setText(tr("Phone %1").arg(m_ui->phoneNumber()));
     m_phone->setToolTip(tr("Server: %1\nContext: %2")
-                        .arg(m_ui->astid())
+                        .arg(m_ui->ipbxid())
                         .arg(m_ui->context()));
     setPhoneLines();
     if (ui->phoneNumber() == "") {
@@ -206,9 +208,11 @@ void IdentityPhone::updateUser(UserInfo * ui)
     if(m_ui != ui)
         return;
     //qDebug() << Q_FUNC_INFO;
+    QString ipbxid = m_ui->ipbxid();
     foreach(QString phoneid, m_ui->phonelist()) {
         QPixmap square(10, 10);
-        const PhoneInfo * p_pi = m_ui->getPhoneInfo(phoneid);
+        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+        const PhoneInfo * p_pi = b_engine->phones().value(xphoneid);
         if(p_pi == NULL)
             continue;
         square.fill(p_pi->hintstatus("color"));

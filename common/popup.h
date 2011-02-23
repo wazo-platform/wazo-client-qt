@@ -142,7 +142,7 @@ class Popup: public QWidget
         QHBoxLayout * m_hlayout;
         QFrame * m_qf;
 
-        QString m_astid;
+        QString m_ipbxid;
         QString m_context;
         QString m_uniqueid;
         QString m_channel;

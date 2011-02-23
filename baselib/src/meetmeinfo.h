@@ -87,7 +87,7 @@ class BASELIB_EXPORT MeetmeInfo
         bool m_paused;  //!< is the conference room paused ?
         QStringList m_adminlist;  //!< admin list (user ids)
         QVariantMap m_uniqueids;  //!< people in this conference room
-        QString m_astid;  //!< asterisk id
+        QString m_ipbxid;  //!< asterisk id
 };
 
 #endif /* __MEETMEINFO_H__ */

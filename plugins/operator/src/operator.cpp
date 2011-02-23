@@ -336,8 +336,10 @@ void XletOperator::updateUser(UserInfo * ui)
         m_lbl->setText(ui->fullname());
         QStringList chanList;
         // it is concerning our user
-        foreach(const QString phone, ui->phonelist()) {
-            const PhoneInfo * pi = ui->getPhoneInfo(phone);
+        QString ipbxid = ui->ipbxid();
+        foreach(const QString phoneid, ui->phonelist()) {
+            QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+            const PhoneInfo * pi = b_engine->phones().value(xphoneid);
             if (pi) {
                 QMapIterator<QString, QVariant> it( pi->comms());
                 while (it.hasNext()) {
@@ -407,10 +409,13 @@ void XletOperator::updateUser(UserInfo * ui)
  */
 QString XletOperator::getPeerChan(QString const & chan) const
 {
-    if (!b_engine->getXivoClientUser())
+    UserInfo * ui = b_engine->getXivoClientUser();
+    if (! ui)
         return QString();
-    foreach (const QString phone, b_engine->getXivoClientUser()->phonelist()) {
-        const PhoneInfo * pi = b_engine->getXivoClientUser()->getPhoneInfo( phone );
+    QString ipbxid = ui->ipbxid();
+    foreach (const QString phoneid, ui->phonelist()) {
+        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+        const PhoneInfo * pi = b_engine->phones().value(xphoneid);
         if (pi) {
             QMapIterator<QString, QVariant> it(pi->comms());
             while (it.hasNext()) {

@@ -138,12 +138,13 @@ void BasicPeerWidget::updatePresence()
 void BasicPeerWidget::updatePhonesStates()
 {
     // set the color according to the 1st phone
-    if (!m_ui->phonelist().isEmpty()) {
-        const PhoneInfo *pi = m_ui->getPhoneInfo(m_ui->phonelist()[0]);
+    QString ipbxid = m_ui->ipbxid();
+    if (! m_ui->phonelist().isEmpty()) {
+        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(m_ui->phonelist()[0]);
+        const PhoneInfo * pi = b_engine->phones().value(xphoneid);
         if (pi) {
             m_color.setNamedColor(pi->hintstatus("color"));
             update();
         }
     }
 }
-

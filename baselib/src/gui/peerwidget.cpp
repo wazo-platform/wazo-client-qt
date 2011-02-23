@@ -82,7 +82,7 @@ PeerWidget::PeerWidget(UserInfo *ui)
     if (!m_ui->ctilogin().isEmpty()) {
         m_user_status = new ChitchatButton(peer, &m_ui);
         m_user_status->setProperty("userid", ui->userid());
-        m_user_status->setProperty("astid", ui->astid());
+        m_user_status->setProperty("astid", ui->ipbxid());
         m_user_status->setIconSize(QSize(fsize, fsize));
         m_user_status->setFixedWidth(fsize);
         m_user_status->setFlat(true);
@@ -165,17 +165,17 @@ void PeerWidget::updatePresence()
 
 void PeerWidget::updatePhonesStates()
 {
-    foreach(QString phone, m_ui->phonelist()) {
-        const PhoneInfo *pi = m_ui->getPhoneInfo(phone);
+    QString ipbxid = m_ui->ipbxid();
+    foreach(QString phoneid, m_ui->phonelist()) {
+        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+        const PhoneInfo * pi = b_engine->phones().value(xphoneid);
         if (pi) {
             QColor c = QColor(pi->hintstatus("color"));
-            m_lblphones[phone]->setPixmap( \
+            m_lblphones[phoneid]->setPixmap( \
                 TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
-
-
-            m_lblphones[phone]->setToolTip(tr("Phone %1 : %2")
-                                            .arg(pi->number())
-                                            .arg(pi->hintstatus("longname")));
+            m_lblphones[phoneid]->setToolTip(tr("Phone %1 : %2")
+                                             .arg(pi->number())
+                                             .arg(pi->hintstatus("longname")));
         }
     }
 }

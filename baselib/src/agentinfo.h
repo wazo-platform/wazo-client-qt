@@ -48,9 +48,9 @@ class BASELIB_EXPORT AgentInfo
 
         bool update(const QMap<QString, QVariant> &);  //! update attribute members
         bool updateQueue(const QMap<QString, QVariant> &);
-        const QString &astid() const;  //! asterisk this agent belongs to
-        const QString &id() const;  //! reference id of this agent on the server
-        const QString &context() const;  //! context this agent belongs to
+        const QString & ipbxid() const;  //! asterisk this agent belongs to
+        const QString & id() const;  //! reference id of this agent on the server
+        const QString & context() const;  //! context this agent belongs to
         const QString hintstatus(const QString &key) const {
             return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
         };  //! access to the status values of this agent
@@ -62,7 +62,7 @@ class BASELIB_EXPORT AgentInfo
         const QMap<QString, QVariant>& comms() const { return m_comms; };
 
     private:
-        QString m_astid;
+        QString m_ipbxid;
         QString m_id;
         QString m_context;
         QString m_agentname;

@@ -45,23 +45,24 @@
 class BASELIB_EXPORT PhoneInfo
 {
     public:
-        PhoneInfo(const QString &astid, const QVariantMap &prop);  //! constructor
+        PhoneInfo(const QString &, const QString &);  //! constructor
         void update(const QVariantMap &prop);  //! update attribute members
         const QString& context() const { return m_context; };  //! context this phone belongs to
         const QString hintstatus(const QString &key) const {  //! access to the status values of this phone
             return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
         };
-        const QString& astid() const { return m_astid; };  //! asterisk id
+        const QString& ipbxid() const { return m_ipbxid; };  //! asterisk id
         const QString& number() const { return m_number; };  //! phone number
         const QString& tech() const { return m_tech; };  //! phone technology (sip, iax, etc...)
         const QString& phoneid() const { return m_phoneid; };  //! phone id
         const QVariantMap& comms() const { return m_comms; };  //! current communications of this phone
 
     private:
-        QString m_astid;
+        QString m_ipbxid;
+        QString m_phoneid;
+
         QString m_tech;
         QString m_context;
-        QString m_phoneid;
         QString m_number;
         bool m_initialized;
         bool m_enable_hint;

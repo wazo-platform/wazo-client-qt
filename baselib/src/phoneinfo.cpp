@@ -33,21 +33,22 @@
 
 #include "phoneinfo.h"
 
-PhoneInfo::PhoneInfo(const QString &astid,
-                     const QVariantMap &prop)
-    : m_astid(astid),
-    m_tech(prop.value("tech").toString()),
-    m_context(prop.value("context").toString()),
-    m_phoneid(prop.value("phoneid").toString()),
-    m_number(prop.value("number").toString()),
-    m_initialized(false),
-    m_enable_hint(false)
+PhoneInfo::PhoneInfo(const QString & ipbxid,
+                     const QString & phoneid)
 {
-    update(prop);
+    m_ipbxid = ipbxid;
+    m_phoneid = phoneid;
+    m_initialized = false;
+    m_enable_hint = false;
 }
 
-void PhoneInfo::update(const QVariantMap &prop)
+void PhoneInfo::update(const QVariantMap & prop)
 {
+    m_tech = prop.value("tech").toString();
+    m_context = prop.value("context").toString();
+    m_phoneid = prop.value("phoneid").toString();
+    m_number = prop.value("number").toString();
+
     if (prop.contains("initialized")) {
         m_initialized = prop.value("initialized").toBool();
     }

@@ -139,7 +139,7 @@ void XletQueueDetails::updatePanel()
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4)")
                                 .arg(qinfo->queueName())
                                 .arg(qinfo->queueNumber())
-                                .arg(qinfo->astid())
+                                .arg(qinfo->ipbxid())
                                 .arg(qinfo->context()));
     QVariantMap properties = qinfo->properties();
     QVariant queuestats = properties.value("queuestats");
@@ -183,7 +183,7 @@ void XletQueueDetails::updatePanel()
         setAgentLookProps(agentid);
         setAgentProps(agentid, ainfo);
         QString agentname = "Agent/" + ainfo->agentNumber();
-        if(qinfo->astid() == ainfo->astid()) {
+        if(qinfo->ipbxid() == ainfo->ipbxid()) {
             setAgentQueueProps(agentid, agentstats.value(agentname));
         }
 
@@ -204,7 +204,7 @@ void XletQueueDetails::setAgentLookProps(const QString &agentid)
 void XletQueueDetails::setAgentProps(const QString &agentid, const AgentInfo *ainfo)
 {
     m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber()));
-    m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->astid()).arg(ainfo->context()));
+    m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->ipbxid()).arg(ainfo->context()));
     // qDebug() << Q_FUNC_INFO << agentid << ainfo->properties().value("agentstats").toMap().value("loggedintime").toInt();
 }
 

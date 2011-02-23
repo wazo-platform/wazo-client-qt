@@ -34,10 +34,10 @@
 #include <QDebug>
 #include "queueinfo.h"
 
-QueueInfo::QueueInfo(const QString & astid,
+QueueInfo::QueueInfo(const QString & ipbxid,
                      const QString & id,
                      const QMap<QString, QVariant> & prop)
-    : m_astid(astid), m_id(id)
+    : m_ipbxid(ipbxid), m_id(id)
 {
     m_context = prop.value("context").toString();
     m_queuename = prop.value("queuename").toString();
@@ -81,9 +81,9 @@ bool QueueInfo::updateAgent(const QMap<QString, QVariant> & prop)
     return haschanged;
 }
 
-const QString & QueueInfo::astid() const
+const QString & QueueInfo::ipbxid() const
 {
-    return m_astid;
+    return m_ipbxid;
 }
 
 const QString & QueueInfo::id() const

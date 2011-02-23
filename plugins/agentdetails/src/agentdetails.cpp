@@ -177,7 +177,7 @@ void XletAgentDetails::updatePanel()
     QStringList agent_descriptions;
     agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber());
     if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
-        agent_descriptions << tr("on <b>%1</b>").arg(ainfo->astid());
+        agent_descriptions << tr("on <b>%1</b>").arg(ainfo->ipbxid());
     if (! m_optionsMap.value("xlet.agentdetails.hidecontext").toBool())
         agent_descriptions << QString("(%1)").arg(ainfo->context());
     QVariantMap properties = ainfo->properties();
@@ -226,7 +226,7 @@ void XletAgentDetails::updatePanel()
     while (iter.hasNext()) {
         iter.next();
         QueueInfo *qinfo = iter.value();
-        // newQueue(qinfo->astid(), qinfo->queueName(), qinfo->properties());
+        // newQueue(qinfo->ipbxid(), qinfo->queueName(), qinfo->properties());
         QString queueid = iter.key();
         queueids << queueid;
         bool isnewqueue = false;
@@ -253,7 +253,7 @@ void XletAgentDetails::updatePanel()
 
         QString qid = qinfo->id();
         setQueueProps(queueid, qinfo);
-        if (qinfo->astid() == ainfo->astid())
+        if (qinfo->ipbxid() == ainfo->ipbxid())
             setQueueAgentProps(queueid, queuesstats[qid]);
 
         if (isnewqueue)
@@ -287,7 +287,7 @@ void XletAgentDetails::setQueueProps(const QString &queueid, const QueueInfo *qi
         m_queue_labels[queueid]->setText(qinfo->queueName());
     QStringList tooltips;
     if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
-        tooltips << tr("Server: %1").arg(qinfo->astid());
+        tooltips << tr("Server: %1").arg(qinfo->ipbxid());
     if (! m_optionsMap.value("xlet.agentdetails.hidecontext").toBool())
         tooltips << tr("Context: %1").arg(qinfo->context());
     m_queue_labels[queueid]->setToolTip(tooltips.join("\n"));
@@ -387,7 +387,7 @@ void XletAgentDetails::queueClicked()
     QString queueid = sender()->property("queueid").toString();
     QString action  = sender()->property("action").toString();
 
-    QString astid = b_engine->queues()[queueid]->astid();
+    QString astid = b_engine->queues()[queueid]->ipbxid();
     QString qid = b_engine->queues()[queueid]->id();
     QString queuename = b_engine->queues()[queueid]->queueName();
     QVariant mstatus = b_engine->agents()[m_monitored_agentid]->properties().value("queues_by_agent").toMap().value(qid);

@@ -188,7 +188,7 @@ void Popup::dispurl(const QUrl &url)
 void Popup::actionFromForm()
 {
     QString buttonname = sender()->property("buttonname").toString();
-    // qDebug() << Q_FUNC_INFO << buttonname << m_astid << m_context << m_uniqueid << m_channel;
+    // qDebug() << Q_FUNC_INFO << buttonname << m_ipbxid << m_context << m_uniqueid << m_channel;
     if(buttonname == "close")
         close();
     else if(buttonname == "save")
@@ -379,8 +379,8 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
         m_channel = value;
         setProperty("channel", m_channel);
     } else if(name == "astid") {
-        m_astid = value;
-        setProperty("astid", m_astid);
+        m_ipbxid = value;
+        setProperty("astid", m_ipbxid);
     } else if(name == "context") {
         m_context = value;
         setProperty("context", m_context);
@@ -625,7 +625,7 @@ void Popup::setSheetPopup(const bool & sheetpopup)
 
 const QString & Popup::callAstid() const
 {
-    return m_astid;
+    return m_ipbxid;
 }
 
 const QString & Popup::callContext() const

@@ -122,8 +122,10 @@ void XletCalls::updateDisplay()
     QStringList activeUids;
 
     if (m_monitored_ui) {
-        foreach (const QString phone, m_monitored_ui->phonelist()) {
-            const PhoneInfo * pi = m_monitored_ui->getPhoneInfo(phone);
+        QString ipbxid = m_monitored_ui->ipbxid();
+        foreach (const QString phoneid, m_monitored_ui->phonelist()) {
+            QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+            const PhoneInfo * pi = b_engine->phones().value(xphoneid);
             if (!pi) {
                 continue;
             }
@@ -211,7 +213,7 @@ void XletCalls::dragEnterEvent(QDragEnterEvent *event)
  */
 void XletCalls::monitorPeer(UserInfo *ui)
 {
-    qDebug() << Q_FUNC_INFO << b_engine->getFullId()<< ui->astid() << ui->userid();
+    qDebug() << Q_FUNC_INFO << b_engine->getFullId()<< ui->ipbxid() << ui->userid();
     //emptyList();
     if ((b_engine->getFullId() == ui->userid()) ||
         (b_engine->enabledFunction("switchboard"))) {

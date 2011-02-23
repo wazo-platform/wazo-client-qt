@@ -150,8 +150,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QString& getCapaApplication() const;
         void configAndStart(const QString &, const QString &, const QString &);
         QString osname() const { return m_osname; };
-        UserInfo* findUserFromPhone(const QString &, const QString &);
-        UserInfo* findUserFromAgent(const QString &, const QString &);
 
         void setLogFile(const QString &);
 
@@ -294,11 +292,17 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void connectSocket();
         void sendCommand(const QString &);
         void parseCommand(const QString &);
-        void updatePhone(const QString &, const QString &, const QMap<QString, QVariant> &);
-        QStringList updateQueue(const QString &, const QString &, const QMap<QString, QVariant> &);
-        QStringList updateQueueAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
-        QStringList updateAgent(const QString &, const QString &, const QMap<QString, QVariant> &);
-        QStringList updateAgentQueue(const QString &, const QString &, const QMap<QString, QVariant> &);
+        void configsLists(const QString &, const QString &, const QVariantMap &);
+        void updatePhone(const QString &, const QString &,
+                         const QMap<QString, QVariant> &);
+        QStringList updateQueue(const QString &, const QString &,
+                                const QMap<QString, QVariant> &);
+        QStringList updateQueueAgent(const QString &, const QString &,
+                                     const QMap<QString, QVariant> &);
+        QStringList updateAgent(const QString &, const QString &,
+                                const QMap<QString, QVariant> &);
+        QStringList updateAgentQueue(const QString &, const QString &,
+                                     const QMap<QString, QVariant> &);
         void clearUserList();
         void clearPhoneList();
         void clearAgentList();
@@ -320,7 +324,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_keeppass;                 //!< Keep password ?
         int m_showagselect;             //!< Show agent selection ?
         QString m_fullid;               //!< Full Id (userid + company)
-        QString m_astid;                //!< asterisk id of the current user
+        QString m_ipbxid;               //!< asterisk id of the current user
         QString m_xivo_userid;          //!< xivo user id of the current user
         QString m_profilename_read;     //!< CTI profile name of the current user
         QString m_profilename_write;    //!< CTI profile name of the current user

@@ -194,7 +194,7 @@ void XletAgents::updateAgentLineAdmin(const QString & agentid, const QString & a
 {
     AgentInfo * ainfo = b_engine->agents()[agentid];
     m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(agfullname).arg(agentnumber));
-    m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->astid()).arg(ainfo->context()));
+    m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->ipbxid()).arg(ainfo->context()));
     m_agent_more[agentid]->setProperty("agentid", agentid);
     m_agent_more[agentid]->setProperty("action", "changeagent");
     m_agent_record[agentid]->setProperty("agentid", agentid);
@@ -286,7 +286,7 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
         QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(b_engine->phones());
         while (iter.hasNext()) {
             iter.next();
-            if ((iter.value()->number() == phonenum) && (iter.value()->astid() == ainfo->astid())) {
+            if ((iter.value()->number() == phonenum) && (iter.value()->ipbxid() == ainfo->ipbxid())) {
                 foreach(QString uniqueid, iter.value()->comms().keys()) {
                     QVariantMap commval = iter.value()->comms().value(uniqueid).toMap();
                     ttips << tr("online with %1 (%2)")
@@ -329,7 +329,7 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
     QStringList joined_queues;
     QStringList paused_queues;
     foreach (QString qname, agqjoined.keys()) {
-        QString queueid = QString("queue:%1/%2").arg(ainfo->astid()).arg(qname);
+        QString queueid = QString("queue:%1/%2").arg(ainfo->ipbxid()).arg(qname);
         QueueInfo * qinfo = b_engine->queues()[queueid];
         if (qinfo != NULL) {
             QVariant qv = agqjoined.value(qname);
@@ -399,7 +399,7 @@ void XletAgents::agentClicked()
         return;
 
     AgentInfo * ainfo = b_engine->agents()[agentid];
-    QString astid = ainfo->astid();
+    QString astid = ainfo->ipbxid();
     QString agentnumber = ainfo->agentNumber();
     QVariantMap ipbxcommand;
 

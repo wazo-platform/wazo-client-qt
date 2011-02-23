@@ -518,7 +518,7 @@ QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
 
     m_more = new QPushButton(this);
     m_more->setProperty("queueid", QString("queue:%1/%2")
-                                    .arg(qinfo->astid())
+                                    .arg(qinfo->ipbxid())
                                     .arg(qinfo->id()));
     m_more->setProperty("function", "more");
     m_more->setIcon(QIcon(":/images/add.png"));

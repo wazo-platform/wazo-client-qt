@@ -48,7 +48,7 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         QueueAgentStatus();
 
         bool update(const QString &, const QString &, const QString &);  //! update attribute members
-        const QString &astid() const;  //! asterisk this queue belongs to
+        const QString &ipbxid() const;  //! asterisk this queue belongs to
         const QString &id() const;  //! reference id of this queue on the server
         const QString &context() const;  //! context this queue belongs to
         const QString &queueName() const;  //! queuename
@@ -63,7 +63,7 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         const QString &display_action_pause() const;
 
     private:
-        QString m_astid;
+        QString m_ipbxid;
         QString m_id;
         QString m_context;
         QString m_queuename;

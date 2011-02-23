@@ -84,8 +84,10 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
             QMenu *indirectTransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
             UserInfo *ui = b_engine->getXivoClientUser();
             if (ui) {
-                foreach (const QString phone, ui->phonelist()) {
-                    const PhoneInfo * pi = ui->getPhoneInfo( phone );
+                QString ipbxid = ui->ipbxid();
+                foreach (const QString phoneid, ui->phonelist()) {
+                    QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+                    const PhoneInfo * pi = b_engine->phones().value(xphoneid);
                     if (pi) {
                         QMapIterator<QString, QVariant> it( pi->comms() );
                         while(it.hasNext()) {

@@ -219,7 +219,7 @@ void IdentityAgent::logout()
 void IdentityAgent::pause()
 {
     QVariantMap ipbxcommand;
-    QString astid = b_engine->getXivoClientUser()->astid();
+    QString astid = b_engine->getXivoClientUser()->ipbxid();
     ipbxcommand["command"] = "agentpausequeue";
     ipbxcommand["agentids"] = "agent:special:me";
     ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
@@ -229,7 +229,7 @@ void IdentityAgent::pause()
 void IdentityAgent::unpause()
 {
     QVariantMap ipbxcommand;
-    QString astid = b_engine->getXivoClientUser()->astid();
+    QString astid = b_engine->getXivoClientUser()->ipbxid();
     ipbxcommand["command"] = "agentunpausequeue";
     ipbxcommand["agentids"] = "agent:special:me";
     ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);

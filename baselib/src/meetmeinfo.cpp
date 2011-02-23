@@ -70,7 +70,7 @@ bool MeetmeInfo::paused() const
 
 const QString& MeetmeInfo::astId() const
 {
-    return m_astid;
+    return m_ipbxid;
 }
 
 void MeetmeInfo::setProperties(const QString &astid, const QVariantMap &properties)
@@ -81,7 +81,7 @@ void MeetmeInfo::setProperties(const QString &astid, const QVariantMap &properti
     m_roomnumber = properties.value("roomnumber").toString();
     m_pin = properties.value("pin").toString();
     m_adminpin = properties.value("pinadmin").toString();
-    m_astid = astid;
+    m_ipbxid = astid;
 
     // variable stuff
     m_adminid = properties.value("adminid").toString();

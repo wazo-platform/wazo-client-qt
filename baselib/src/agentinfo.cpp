@@ -38,7 +38,7 @@
 AgentInfo::AgentInfo(const QString & astid,
                      const QString & id,
                      const QMap<QString, QVariant> & prop)
-    : m_astid(astid), m_id(id)
+    : m_ipbxid(astid), m_id(id)
 {
     update(prop);
 }
@@ -85,9 +85,9 @@ bool AgentInfo::updateQueue(const QMap<QString, QVariant> & prop)
     return haschanged;
 }
 
-const QString& AgentInfo::astid() const
+const QString& AgentInfo::ipbxid() const
 {
-    return m_astid;
+    return m_ipbxid;
 }
 
 const QString& AgentInfo::id() const
