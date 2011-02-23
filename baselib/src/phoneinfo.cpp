@@ -42,11 +42,11 @@ PhoneInfo::PhoneInfo(const QString & ipbxid,
     m_enable_hint = false;
 }
 
-void PhoneInfo::update(const QVariantMap & prop)
+bool PhoneInfo::updateConfig(const QVariantMap & prop)
 {
+    bool haschanged = true;
     m_tech = prop.value("tech").toString();
     m_context = prop.value("context").toString();
-    m_phoneid = prop.value("phoneid").toString();
     m_number = prop.value("number").toString();
 
     if (prop.contains("initialized")) {
@@ -55,14 +55,17 @@ void PhoneInfo::update(const QVariantMap & prop)
     if (prop.contains("enable_hint")) {
         m_enable_hint = prop.value("enable_hint").toBool();
     }
+    return haschanged;
+}
+
+bool PhoneInfo::updateStatus(const QVariantMap & prop)
+{
+    bool haschanged = true;
     if (prop.contains("hintstatus")) {
-        m_hintstatus.clear();
-        QVariantMap hintstatus = prop.value("hintstatus").toMap();
-        foreach (const QString key, hintstatus.keys()) {
-            m_hintstatus[key] = hintstatus.value(key).toString();
-        }
+        m_hintstatus = prop.value("hintstatus").toString();
     }
     if(prop.contains("comms")) {
         m_comms = prop.value("comms").toMap();
     }
+    return haschanged;
 }

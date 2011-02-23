@@ -289,10 +289,10 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                 const PhoneInfo * pi = b_engine->phones().value(xphoneid);
                 if (!pi)
                     continue;
-                const QMap<QString, QVariant> & comms = pi->comms();
+                const QVariantMap & comms = pi->comms();
                 //qDebug() << pi->phoneid() << pi->comms();
                 foreach (const QString ts, comms.keys()) {
-                    const QMap<QString, QVariant> & comm = comms.value(ts).toMap();
+                    const QVariantMap & comm = comms.value(ts).toMap();
                     //qDebug() << pi->phoneid() << ts << comm;
                     const QString status = comm.value("status").toString();
                     if (status == CHAN_STATUS_RINGING) {
@@ -446,9 +446,9 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
             const PhoneInfo * pi = b_engine->phones().value(xphoneid);
             if (!pi)
                 continue;
-            const QMap<QString, QVariant> &comms = pi->comms();
+            const QVariantMap &comms = pi->comms();
             foreach (const QString ts, comms.keys()) {
-                const QMap<QString, QVariant> & comm = comms.value(ts).toMap();
+                const QVariantMap & comm = comms.value(ts).toMap();
                 //qDebug() << Q_FUNC_INFO << pi->phoneid() << ts << comm;
                 const QString status = comm.value("status").toString();
                 QString text = comm.value("calleridnum").toString();
@@ -528,10 +528,10 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
             const PhoneInfo * pi = b_engine->phones().value(xphoneid);
             if (!pi)
                 continue;
-            const QMap<QString, QVariant> & comms = pi->comms();
+            const QVariantMap & comms = pi->comms();
             // qDebug() << Q_FUNC_INFO << pi->phoneid() << pi->comms();
             foreach (const QString ts, comms.keys()) {
-                const QMap<QString, QVariant> & comm = comms.value(ts).toMap();
+                const QVariantMap & comm = comms.value(ts).toMap();
                 qDebug() << Q_FUNC_INFO << "my comms : " << pi->phoneid() << ts << comm;
                 const QString status = comm.value("status").toString();
                 QString calleridnum = comm.value("calleridnum").toString();

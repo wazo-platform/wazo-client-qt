@@ -81,13 +81,14 @@ class IdentityPhone : public QWidget
 
     public:
         IdentityPhone(QWidget *parent=0);
-        void svcSummary(QMap<QString, QVariant> &svcstatus);
+        void svcSummary(QVariantMap &svcstatus);
     public slots:
         void setUserInfo(const UserInfo *);
+        void updatePhoneStatus(const QString &);
         void updateUser(UserInfo *);
     private:
         void setPhoneLines();
-        const UserInfo *m_ui;  //!< pointer to UserInfo
+        const UserInfo * m_ui;  //!< pointer to UserInfo
 
         QGridLayout *m_layout;  //!< layout
         QLabel *m_icon;  //!< icon

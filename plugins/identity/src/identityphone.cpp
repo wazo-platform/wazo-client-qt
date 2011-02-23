@@ -203,6 +203,17 @@ void IdentityPhone::setUserInfo(const UserInfo *ui)
     }
 }
 
+void IdentityPhone::updatePhoneStatus(const QString & xphoneid)
+{
+    if (m_ui == NULL)
+        return;
+    if (m_ui->hasPhone(xphoneid) == false)
+        return;
+    const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+    if (phoneinfo == NULL)
+        return;
+}
+
 void IdentityPhone::updateUser(UserInfo * ui)
 {
     if(m_ui != ui)
@@ -210,15 +221,17 @@ void IdentityPhone::updateUser(UserInfo * ui)
     //qDebug() << Q_FUNC_INFO;
     QString ipbxid = m_ui->ipbxid();
     foreach(QString phoneid, m_ui->phonelist()) {
-        QPixmap square(10, 10);
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
         const PhoneInfo * p_pi = b_engine->phones().value(xphoneid);
         if(p_pi == NULL)
             continue;
-        square.fill(p_pi->hintstatus("color"));
+        QPixmap square(10, 10);
+        QString color = "white"; // XXXX function of p_pi->hintstatus();
+        QString longname = "Here"; // XXXX function of p_pi->hintstatus();
+        square.fill(color);
         m_phonecall->setPixmap(square);
-        m_phonecall->setToolTip(p_pi->hintstatus("longname"));
-        m_phonecalltxt->setText(p_pi->hintstatus("longname"));
+        m_phonecall->setToolTip(longname);
+        m_phonecalltxt->setText(longname);
         QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(p_pi->comms());
         QList<int> busylines;
         while( iter.hasNext() ) {
@@ -275,7 +288,7 @@ void IdentityPhone::setPhoneLines()
     }
 }
 
-void IdentityPhone::svcSummary(QMap<QString, QVariant> & svcstatus)
+void IdentityPhone::svcSummary(QVariantMap & svcstatus)
 {
     if(svcstatus["enablednd"].toBool()) {
         m_phonestatustxt->setText(tr("DND"));

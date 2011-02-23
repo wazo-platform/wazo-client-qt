@@ -164,7 +164,8 @@ void CallWidget::updateWidget(const QString & status,
  */
 void CallWidget::setActionPixmap(const QString &)
 {
-    QColor color = QColor(pi->hintstatus("color"));
+    QString scolor = "white"; // XXXX function of pi->hintstatus();
+    QColor color = QColor(scolor);
     m_lbl_status->setPixmap(TaintedPixmap(QString(":/images/phone-trans.png"),
                                           color).getPixmap());
 }

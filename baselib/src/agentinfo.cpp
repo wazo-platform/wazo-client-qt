@@ -35,15 +35,13 @@
 
 #include "agentinfo.h"
 
-AgentInfo::AgentInfo(const QString & astid,
-                     const QString & id,
-                     const QMap<QString, QVariant> & prop)
-    : m_ipbxid(astid), m_id(id)
+AgentInfo::AgentInfo(const QString & ipbxid,
+                     const QString & id)
+    : m_ipbxid(ipbxid), m_id(id)
 {
-    update(prop);
 }
 
-bool AgentInfo::update(const QMap<QString, QVariant> & prop)
+bool AgentInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
     if (m_properties != prop) {
@@ -59,7 +57,13 @@ bool AgentInfo::update(const QMap<QString, QVariant> & prop)
     return haschanged;
 }
 
-bool AgentInfo::updateQueue(const QMap<QString, QVariant> & prop)
+bool AgentInfo::updateStatus(const QVariantMap &)
+{
+    bool haschanged = true;
+    return haschanged;
+}
+
+bool AgentInfo::updateQueue(const QVariantMap & prop)
 {
     bool haschanged = false;
     QMapIterator<QString, QVariant> it(prop);

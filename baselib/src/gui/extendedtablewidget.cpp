@@ -92,7 +92,7 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
                         QMapIterator<QString, QVariant> it( pi->comms() );
                         while(it.hasNext()) {
                             it.next();
-                            QMap<QString, QVariant> call = it.value().toMap();
+                            QVariantMap call = it.value().toMap();
                             // Add the transfer entry with the callerid name and num
                             QString text;
                             if (call.contains("calleridname")) {

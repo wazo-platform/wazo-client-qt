@@ -35,19 +35,17 @@
 #include "queueinfo.h"
 
 QueueInfo::QueueInfo(const QString & ipbxid,
-                     const QString & id,
-                     const QMap<QString, QVariant> & prop)
+                     const QString & id)
     : m_ipbxid(ipbxid), m_id(id)
 {
-    m_context = prop.value("context").toString();
-    m_queuename = prop.value("queuename").toString();
-    m_queuenumber = prop.value("number").toString();
-    update(prop);
 }
 
-bool QueueInfo::update(const QMap<QString, QVariant> & prop)
+bool QueueInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
+    m_context = prop.value("context").toString();
+    m_queuename = prop.value("name").toString();
+    m_queuenumber = prop.value("number").toString();
     if (m_properties != prop) {
         m_properties = prop;
         haschanged = true;
@@ -55,7 +53,13 @@ bool QueueInfo::update(const QMap<QString, QVariant> & prop)
     return haschanged;
 }
 
-bool QueueInfo::updateAgent(const QMap<QString, QVariant> & prop)
+bool QueueInfo::updateStatus(const QVariantMap &)
+{
+    bool haschanged = true;
+    return haschanged;
+}
+
+bool QueueInfo::updateAgent(const QVariantMap & prop)
 {
     bool haschanged = false;
     QMapIterator<QString, QVariant> it(prop);

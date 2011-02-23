@@ -153,8 +153,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void setLogFile(const QString &);
 
-        const QString& xivoUserId() const { return m_xivo_userid; };
-        const QString& getFullId() const { return m_fullid; };
+        const QString& xivoUserId() const { return m_userid; };
+        const QString& getFullId() const { return m_xuserid; };
         UserInfo* getXivoClientUser();  //!< Return the user of the Xivo CTI Client
         double timeServer() const;
         const QDateTime& timeClient() const;
@@ -294,15 +294,15 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void parseCommand(const QString &);
         void configsLists(const QString &, const QString &, const QVariantMap &);
         void updatePhone(const QString &, const QString &,
-                         const QMap<QString, QVariant> &);
+                         const QVariantMap &);
         QStringList updateQueue(const QString &, const QString &,
-                                const QMap<QString, QVariant> &);
+                                const QVariantMap &);
         QStringList updateQueueAgent(const QString &, const QString &,
-                                     const QMap<QString, QVariant> &);
+                                     const QVariantMap &);
         QStringList updateAgent(const QString &, const QString &,
-                                const QMap<QString, QVariant> &);
+                                const QVariantMap &);
         QStringList updateAgentQueue(const QString &, const QString &,
-                                     const QMap<QString, QVariant> &);
+                                     const QVariantMap &);
         void clearUserList();
         void clearPhoneList();
         void clearAgentList();
@@ -313,9 +313,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_serverhost;           //!< Host to the login server
         quint16 m_ctiport;              //!< TCP port to connect to server
 
-        QString m_userid;               //!< User Id
-        QString m_useridopt;            //!< User Id Option (kind of login)
-        QString m_useridwithopt;        //!< User Id Option (kind of login)
+        QString m_userlogin;            //!< User Id
+        QString m_userloginopt;         //!< User Id Option (kind of login)
+        QString m_userloginwithopt;     //!< User Id Option (kind of login)
         QString m_company;
         QString m_password;             //!< User password for account
         QString m_agentid;              //!< Agent Id
@@ -323,9 +323,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_loginkind;                //!< Login Kind
         int m_keeppass;                 //!< Keep password ?
         int m_showagselect;             //!< Show agent selection ?
-        QString m_fullid;               //!< Full Id (userid + company)
+        QString m_xuserid;              //!< Full Id (userid + company)
         QString m_ipbxid;               //!< asterisk id of the current user
-        QString m_xivo_userid;          //!< xivo user id of the current user
+        QString m_userid;               //!< xivo user id of the current user
         QString m_profilename_read;     //!< CTI profile name of the current user
         QString m_profilename_write;    //!< CTI profile name of the current user
 

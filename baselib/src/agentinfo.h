@@ -44,10 +44,10 @@
 class BASELIB_EXPORT AgentInfo
 {
     public:
-        AgentInfo(const QString &, const QString &, const QMap<QString, QVariant> &); //! constructor
-
-        bool update(const QMap<QString, QVariant> &);  //! update attribute members
-        bool updateQueue(const QMap<QString, QVariant> &);
+        AgentInfo(const QString &, const QString &); //! constructor
+        bool updateConfig(const QVariantMap &);  //! update config members
+        bool updateStatus(const QVariantMap &);  //! update status members
+        bool updateQueue(const QVariantMap &);
         const QString & ipbxid() const;  //! asterisk this agent belongs to
         const QString & id() const;  //! reference id of this agent on the server
         const QString & context() const;  //! context this agent belongs to
@@ -59,7 +59,7 @@ class BASELIB_EXPORT AgentInfo
         //! agent properties
         const QVariantMap& properties() const;
         //! current communications of this agent
-        const QMap<QString, QVariant>& comms() const { return m_comms; };
+        const QVariantMap& comms() const { return m_comms; };
 
     private:
         QString m_ipbxid;
@@ -69,7 +69,7 @@ class BASELIB_EXPORT AgentInfo
         QString m_agentnumber;
         QString m_fullname;
         QMap<QString, QString> m_hintstatus;
-        QMap<QString, QVariant> m_comms;
+        QVariantMap m_comms;
         QVariantMap m_properties;
 };
 

@@ -95,7 +95,7 @@ class IdentityDisplay : public XLet
         quint32 m_gui_buttonsize;
         quint32 m_loginkind;
         QStringList m_functions;
-        QMap<QString, QVariant> m_svcstatus;
+        QVariantMap m_svcstatus;
 };
 
 class XLetIdentityPlugin : public QObject, XLetInterface

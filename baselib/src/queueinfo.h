@@ -44,9 +44,10 @@
 class BASELIB_EXPORT QueueInfo
 {
     public:
-        QueueInfo(const QString &, const QString &, const QMap<QString, QVariant> &);  //! constructor
-        bool update(const QMap<QString, QVariant> &);  //! update attribute members
-        bool updateAgent(const QMap<QString, QVariant> &);  //! update attribute members
+        QueueInfo(const QString &, const QString &);  //! constructor
+        bool updateConfig(const QVariantMap &);  //! update config members
+        bool updateStatus(const QVariantMap &);  //! update status members
+        bool updateAgent(const QVariantMap &);  //! update attribute members
         const QString & ipbxid() const;  //! asterisk this queue belongs to
         const QString & id() const;  //! reference id of this queue on the server
         const QString & context() const;  //! context this queue belongs to
@@ -56,7 +57,7 @@ class BASELIB_EXPORT QueueInfo
         const QString & queueNumber() const { return m_queuenumber; };  //! queue number
         const QString & queueName() const  { return m_queuename; };  //! queue name
         const QVariantMap & properties() const;  //! queue properties
-        const QMap<QString, QVariant>& comms() const { return m_comms; };  //! current communications of this queue
+        const QVariantMap& comms() const { return m_comms; };  //! current communications of this queue
 
     private:
         QString m_ipbxid;
@@ -65,7 +66,7 @@ class BASELIB_EXPORT QueueInfo
         QString m_queuename;
         QString m_queuenumber;
         QMap<QString, QString> m_hintstatus;
-        QMap<QString, QVariant> m_comms;
+        QVariantMap m_comms;
         QVariantMap m_properties;
 };
 

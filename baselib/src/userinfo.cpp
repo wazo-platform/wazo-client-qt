@@ -48,6 +48,28 @@ UserInfo::UserInfo(const QString & ipbxid,
     m_userid = id;
 }
 
+bool UserInfo::updateConfig(const QVariantMap & qvm)
+{
+    bool haschanged = true;
+    this->setCtiLogin(qvm.value("loginclient").toString());
+    this->setFullName(qvm.value("fullname").toString());
+    this->setPhones(qvm.value("techlist").toStringList());
+    this->setPhoneNumber(qvm.value("number").toString());
+    this->setMobileNumber(qvm.value("mobilephonenumber").toString());
+    this->setAgentId(qvm.value("agentid").toString());
+    this->setContext(qvm.value("context").toString());
+    this->setSimultCalls(qvm.value("simultcalls").toInt());
+    this->setVoiceMailNumber(qvm.value("voicemailnum").toString());
+    this->setAgentNumber(qvm.value("agentnumber").toString());
+    return haschanged;
+}
+
+bool UserInfo::updateStatus(const QVariantMap &)
+{
+    bool haschanged = true;
+    return haschanged;
+}
+
 /*! \brief set full name */
 void UserInfo::setFullName(const QString &fullname)
 {
@@ -98,7 +120,7 @@ void UserInfo::setPhones(const QStringList & termlist)
 void UserInfo::setAvailState(const QVariant & availstate)
 {
     m_availstate.clear();
-    const QMap<QString, QVariant> map = availstate.toMap();
+    const QVariantMap map = availstate.toMap();
     foreach (const QString key, map.keys()) {
         m_availstate[key] = map.value(key).toString();
     }
@@ -121,13 +143,13 @@ void UserInfo::setMWI(const QStringList &mwi)
 }
 
 /*! \brief check if this user has this phone */
-bool UserInfo::hasPhone(const QString & term)
+bool UserInfo::hasPhone(const QString & term) const
 {
     return m_phones.contains(term);
 }
 
 /*! \brief check if this user has this agent */
-bool UserInfo::hasAgentNumber(const QString & agentnumber)
+bool UserInfo::hasAgentNumber(const QString & agentnumber) const
 {
     return (m_agentnumber == agentnumber);
 }

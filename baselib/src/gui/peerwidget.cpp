@@ -170,12 +170,14 @@ void PeerWidget::updatePhonesStates()
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
         const PhoneInfo * pi = b_engine->phones().value(xphoneid);
         if (pi) {
-            QColor c = QColor(pi->hintstatus("color"));
+            QString color = "white"; // XXXX function of p_pi->hintstatus();
+            QString longname = "Here"; // XXXX function of p_pi->hintstatus();
+            QColor c = QColor(color);
             m_lblphones[phoneid]->setPixmap( \
                 TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
             m_lblphones[phoneid]->setToolTip(tr("Phone %1 : %2")
                                              .arg(pi->number())
-                                             .arg(pi->hintstatus("longname")));
+                                             .arg(longname));
         }
     }
 }

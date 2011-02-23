@@ -46,11 +46,10 @@ class BASELIB_EXPORT PhoneInfo
 {
     public:
         PhoneInfo(const QString &, const QString &);  //! constructor
-        void update(const QVariantMap &prop);  //! update attribute members
+        bool updateConfig(const QVariantMap &);  //! update config members
+        bool updateStatus(const QVariantMap &);  //! update status members
         const QString& context() const { return m_context; };  //! context this phone belongs to
-        const QString hintstatus(const QString &key) const {  //! access to the status values of this phone
-            return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
-        };
+        const QString& hintstatus() const { return m_hintstatus; }; //! hint status value
         const QString& ipbxid() const { return m_ipbxid; };  //! asterisk id
         const QString& number() const { return m_number; };  //! phone number
         const QString& tech() const { return m_tech; };  //! phone technology (sip, iax, etc...)
@@ -64,9 +63,10 @@ class BASELIB_EXPORT PhoneInfo
         QString m_tech;
         QString m_context;
         QString m_number;
+
         bool m_initialized;
         bool m_enable_hint;
-        QMap<QString, QString> m_hintstatus;
+        QString m_hintstatus;
         QVariantMap m_comms;
 };
 

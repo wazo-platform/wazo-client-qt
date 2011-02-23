@@ -143,7 +143,8 @@ void BasicPeerWidget::updatePhonesStates()
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(m_ui->phonelist()[0]);
         const PhoneInfo * pi = b_engine->phones().value(xphoneid);
         if (pi) {
-            m_color.setNamedColor(pi->hintstatus("color"));
+            QString color = "white"; // XXXX function of pi->hintstatus();
+            m_color.setNamedColor(color);
             update();
         }
     }

@@ -46,6 +46,8 @@ class BASELIB_EXPORT UserInfo
 {
     public:
         UserInfo(const QString &, const QString &);
+        bool updateConfig(const QVariantMap &);
+        bool updateStatus(const QVariantMap &);
 
         void setAvailState(const QVariant &);
         void setFullName(const QString &);
@@ -61,8 +63,8 @@ class BASELIB_EXPORT UserInfo
         void setMWI(const QStringList &);
         void setContext(const QString &);
 
-        bool hasPhone(const QString &);
-        bool hasAgentNumber(const QString &);
+        bool hasPhone(const QString &) const;
+        bool hasAgentNumber(const QString &) const;
 
         const QString &phoneNumber() const;
         const QString &mobileNumber() const;
