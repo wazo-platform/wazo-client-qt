@@ -84,11 +84,11 @@ XletParking::XletParking(QWidget *parent)
  * add a new message.
  */
 void XletParking::parkingEvent(const QString & eventkind,
-                                const QString & astid,
+                                const QString & ipbxid,
                                 const QString & parkingbay,
                                 const QVariant & subcommand)
 {
-    ParkingInfo * pi = b_engine->parking()[astid][parkingbay];
+    ParkingInfo * pi = b_engine->parking()[ipbxid][parkingbay];
     QVariantMap map = subcommand.toMap();
     QString channel = map.value("channel").toString();
     QString fromchannel = map.value("fromchannel").toString();
@@ -109,7 +109,7 @@ void XletParking::parkingEvent(const QString & eventkind,
 
     if(eventkind == "parkedcall") {
         for(int m = 0; m < m_table->rowCount(); m++) {
-            if ((m_table->item(m, 0)->data(Qt::UserRole+0).toString() == astid) &&
+            if ((m_table->item(m, 0)->data(Qt::UserRole+0).toString() == ipbxid) &&
                 (m_table->item(m, 0)->data(Qt::UserRole+1).toString() == parkingbay)) {
                 // do not add the same entry twice !
                 return;
@@ -117,12 +117,12 @@ void XletParking::parkingEvent(const QString & eventkind,
         }
         int i = 0;
         m_table->insertRow( 0 );
-        //QTableWidgetItem * item0 = new QTableWidgetItem( astid );
+        //QTableWidgetItem * item0 = new QTableWidgetItem( ipbxid );
         //item0->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         //m_table->setItem( 0, 0, item0 );
         QTableWidgetItem * item1 = new QTableWidgetItem( parkingbay );
         item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        item1->setData(Qt::UserRole+0, astid);
+        item1->setData(Qt::UserRole+0, ipbxid);
         item1->setData(Qt::UserRole+1, parkingbay);
         m_table->setItem( 0, i++, item1 );
 
@@ -147,7 +147,7 @@ void XletParking::parkingEvent(const QString & eventkind,
                (eventkind == "parkedcalltimeout") ||
                (eventkind == "parkedcallgiveup")) {
         for(int m = 0; m < m_table->rowCount(); m++) {
-            if ( (m_table->item(m, 0)->data(Qt::UserRole+0).toString() == astid) &&
+            if ( (m_table->item(m, 0)->data(Qt::UserRole+0).toString() == ipbxid) &&
                  (m_table->item(m, 0)->data(Qt::UserRole+1).toString() == parkingbay)) {
                 m_table->removeRow(m);
                 // kills the timer only if there are no parked calls left
@@ -166,11 +166,11 @@ void XletParking::parkingEvent(const QString & eventkind,
 void XletParking::itemClicked(QTableWidgetItem * item)
 {
     int rown   = m_table->row(item);
-    QString astid      = m_table->item(rown, 0)->data(Qt::UserRole+0).toString();
+    QString ipbxid     = m_table->item(rown, 0)->data(Qt::UserRole+0).toString();
     QString parkingbay = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
-    //qDebug() << Q_FUNC_INFO << rown << astid << placenum;
+    //qDebug() << Q_FUNC_INFO << rown << ipbxid << placenum;
     if (((b_engine) && (b_engine->getXivoClientUser())) &&
-         (astid == b_engine->getXivoClientUser()->ipbxid())) {
+         (ipbxid == b_engine->getXivoClientUser()->ipbxid())) {
         b_engine->pasteToDial(parkingbay);
     }
 }
@@ -178,11 +178,11 @@ void XletParking::itemClicked(QTableWidgetItem * item)
 void XletParking::itemDoubleClicked(QTableWidgetItem * item)
 {
     int rown   = m_table->row(item);
-    QString astid      = m_table->item(rown, 0)->data(Qt::UserRole+0).toString();
+    QString ipbxid     = m_table->item(rown, 0)->data(Qt::UserRole+0).toString();
     QString parkingbay = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
-    //qDebug() << Q_FUNC_INFO << rown << astid << placenum;
+    //qDebug() << Q_FUNC_INFO << rown << ipbxid << placenum;
     if(b_engine && b_engine->getXivoClientUser() &&
-       (astid == b_engine->getXivoClientUser()->ipbxid())) {
+       (ipbxid == b_engine->getXivoClientUser()->ipbxid())) {
         b_engine->actionCall("originate", "user:special:me", "ext:" + parkingbay);
     }
 }
@@ -193,9 +193,9 @@ void XletParking::timerEvent(QTimerEvent * event)
     if (timerId == m_timerid) {
         for (int i = 0; i < m_table->rowCount(); i++) {
             QTableWidgetItem * item = m_table->takeItem(i, 1);
-            QString astid      = m_table->item(i, 0)->data(Qt::UserRole+0).toString();
+            QString ipbxid     = m_table->item(i, 0)->data(Qt::UserRole+0).toString();
             QString parkingbay = m_table->item(i, 0)->data(Qt::UserRole+1).toString();
-            ParkingInfo * pi = b_engine->parking()[astid][parkingbay];
+            ParkingInfo * pi = b_engine->parking()[ipbxid][parkingbay];
             double remaining = pi->timeout() + pi->parkingtime() - QDateTime::currentDateTime().toTime_t() + b_engine->timeDeltaServerClient();
             int leftsec = int(remaining + 0.5);
             item->setText( QString::number(leftsec) + " s" );

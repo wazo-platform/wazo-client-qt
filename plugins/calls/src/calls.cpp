@@ -68,10 +68,14 @@ XletCalls::XletCalls(QWidget *parent)
     connect(this, SIGNAL(changeTitle(const QString &)),
             titleLabel, SLOT(setText(const QString &)));
 
-    connect(this, SIGNAL(monitorPeerRequest(const QString &)),
-            b_engine, SLOT(monitorPeerRequest(const QString &)));
     connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
             this, SLOT(monitorPeer(UserInfo *)));
+    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
+            this, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            this, SLOT(updatePhoneStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
+            this, SLOT(updateChannelStatus(const QString &)));
 }
 
 /*! \brief update display if needed
@@ -108,6 +112,90 @@ void XletCalls::parkcall(const QString &chan)
     b_engine->actionCall("transfer", "chan:" + m_monitored_ui->userid() + ":" + chan, "ext:special:parkthecall"); // Call
 }
 
+void XletCalls::updatePhoneConfig(const QString & xphoneid)
+{
+}
+
+void XletCalls::updatePhoneStatus(const QString & xphoneid)
+{
+    if (m_monitored_ui == NULL)
+        return;
+    if (! m_monitored_ui->phonelist().contains(xphoneid))
+        return;
+    const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+    if (phoneinfo == NULL)
+        return;
+
+    foreach (const QString channel, phoneinfo->channels()) {
+        QString xchannel = QString("%1/%2").arg(phoneinfo->ipbxid()).arg(channel);
+        qDebug() << Q_FUNC_INFO << xchannel;
+        uint current_ts = QDateTime::currentDateTime().toTime_t();
+        uint ts = current_ts;
+        if (m_affhash.contains(xchannel))
+            {}
+        // m_affhash[xchannel]->updateWidget(xchannel, ts);
+        else {
+            CallWidget * callwidget = new CallWidget(m_monitored_ui,
+                                                     xchannel,
+                                                     ts,
+                                                     this);
+            connect(callwidget, SIGNAL(doHangUp(const QString &)),
+                    this, SLOT(hupchan(const QString &)));
+            connect(callwidget, SIGNAL(doTransferToNumber(const QString &)),
+                    this, SLOT(transftonumberchan(const QString &)));
+            connect(callwidget, SIGNAL(doParkCall(const QString &)),
+                    this, SLOT(parkcall(const QString &)));
+            m_layout->insertWidget(m_layout->count() - 1, callwidget,
+                                   0, Qt::AlignTop);
+            m_affhash[xchannel] = callwidget;
+        }
+    }
+}
+
+void XletCalls::updateChannelStatus(const QString & xchannel)
+{
+    qDebug() << Q_FUNC_INFO << xchannel;
+    const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
+    if(channelinfo == NULL)
+        return;
+    QString status = channelinfo->status();
+    uint current_ts = QDateTime::currentDateTime().toTime_t();
+    uint ts = current_ts;
+    //                 if(map.contains("time-dial"))
+    //                     ts = map.value("time-dial").toUInt() + current_ts;
+    //                 if(map.contains("timestamp-dial"))
+    //                     ts = map.value("timestamp-dial").toDouble() + b_engine->timeDeltaServerClient();
+    //                 if(map.contains("time-link"))
+    //                     ts = map.value("time-link").toUInt() + current_ts;
+    //                 if(map.contains("timestamp-link"))
+    //                     ts = map.value("timestamp-link").toDouble() + b_engine->timeDeltaServerClient();
+    // qDebug() << Q_FUNC_INFO << it.key() << channelme << "status" << status;
+    // dont display hangup channels !
+    if (status == CHAN_STATUS_HANGUP)
+        return;
+    // activeChannels << channelme;
+    // activeUids << it.key(); XXX
+    qDebug() << Q_FUNC_INFO << "adding/updating" << xchannel << m_affhash;
+    if (m_affhash.contains(xchannel))
+        m_affhash[xchannel]->updateWidget(xchannel, ts);
+    else {
+//         CallWidget * callwidget = new CallWidget(m_monitored_ui,
+//                                                  xchannel,
+//                                                  ts,
+//                                                  this,
+//                                                  phoneinfo);
+//         connect(callwidget, SIGNAL(doHangUp(const QString &)),
+//                 this, SLOT(hupchan(const QString &)));
+//         connect(callwidget, SIGNAL(doTransferToNumber(const QString &)),
+//                 this, SLOT(transftonumberchan(const QString &)));
+//         connect(callwidget, SIGNAL(doParkCall(const QString &)),
+//                 this, SLOT(parkcall(const QString &)));
+//         m_layout->insertWidget(m_layout->count() - 1, callwidget,
+//                                0, Qt::AlignTop);
+//         m_affhash[xchannel] = callwidget;
+    }
+}
+
 /*! \brief update display according to call list
  *
  * Read m_calllist and update m_afflist accordingly.
@@ -116,7 +204,7 @@ void XletCalls::updateDisplay()
 {
     uint current_ts = QDateTime::currentDateTime().toTime_t();
     //qDebug() << Q_FUNC_INFO;
-    CallWidget *callwidget = NULL;
+    CallWidget * callwidget = NULL;
 
     //QStringList activeChannels;  // list of active channels to be displayed
     QStringList activeUids;
@@ -150,13 +238,12 @@ void XletCalls::updateDisplay()
                 // activeUids << it.key(); XXX
                 // qDebug() << Q_FUNC_INFO << "adding/updating" << channelme;
                 if (m_affhash.contains(channel))
-                    m_affhash[channel]->updateWidget(channel, ts, phoneinfo);
+                    m_affhash[channel]->updateWidget(channel, ts);
                 else {
                     callwidget = new CallWidget(m_monitored_ui,
                                                 channel,
                                                 ts,
-                                                this,
-                                                phoneinfo);
+                                                this);
                     connect(callwidget, SIGNAL(doHangUp(const QString &)),
                             this, SLOT(hupchan(const QString &)));
                     connect(callwidget, SIGNAL(doTransferToNumber(const QString &)),
@@ -223,6 +310,6 @@ void XletCalls::dropEvent(QDropEvent *event)
         return;
     }
     qDebug() << Q_FUNC_INFO << event->mimeData()->data(XUSERID_MIMETYPE);
-    monitorPeerRequest(event->mimeData()->data(XUSERID_MIMETYPE));
+    b_engine->monitorPeerRequest(event->mimeData()->data(XUSERID_MIMETYPE));
     event->acceptProposedAction();
 }

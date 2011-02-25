@@ -59,9 +59,6 @@ class CallCampaignPanel : public XLet
     public:
         CallCampaignPanel(QWidget *parent=0);
 
-    signals:
-        void requestFileList(const QString &);
-
     public slots:
         void setGuiOptions(const QVariant &) {};
         void setOpenFileName();

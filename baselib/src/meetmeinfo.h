@@ -65,16 +65,16 @@ class BASELIB_EXPORT MeetmeInfo
         //        str.append("])");
         //        return str;
         //}
-        void setProperties(const QString &astid, const QVariantMap &);
+        void setProperties(const QString &, const QVariantMap &);
         bool update(const QVariantMap &);
-        const QString& roomname() const;  //! conference room name
-        const QString& roomnumber() const;  //! conference room number
-        const QString& adminid() const;  //! conference room admin id
-        const QString& adminnum() const;  //! conference room admin num
+        const QString & roomname() const;  //! conference room name
+        const QString & roomnumber() const;  //! conference room number
+        const QString & adminid() const;  //! conference room admin id
+        const QString & adminnum() const;  //! conference room admin num
         bool paused() const;  //! conference room paused status
-        const QStringList& adminlist() const;  //! conference room admin list
-        const QVariantMap& uniqueids() const;  //! conference room uniqueids
-        const QString& astId() const;  //! conference room asterisk id
+        const QStringList & adminlist() const;  //! conference room admin list
+        const QVariantMap & uniqueids() const;  //! conference room uniqueids
+        const QString & ipbxid() const;  //! conference room IPBX id
 
     private:
         QString m_context;  //!< room context
@@ -87,7 +87,7 @@ class BASELIB_EXPORT MeetmeInfo
         bool m_paused;  //!< is the conference room paused ?
         QStringList m_adminlist;  //!< admin list (user ids)
         QVariantMap m_uniqueids;  //!< people in this conference room
-        QString m_ipbxid;  //!< asterisk id
+        QString m_ipbxid;  //!< IPBX id
 };
 
 #endif /* __MEETMEINFO_H__ */

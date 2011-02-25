@@ -49,7 +49,7 @@ class BASELIB_EXPORT PhoneInfo
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
         const QString & context() const { return m_context; };  //! context this phone belongs to
-        const QString & ipbxid() const { return m_ipbxid; };  //! asterisk id
+        const QString & ipbxid() const { return m_ipbxid; };  //! IPBX id
         const QString & number() const { return m_number; };  //! phone number
         const QString & protocol() const { return m_protocol; };  //! phone technology (sip, iax, etc...)
         const QString & phoneid() const { return m_phoneid; };  //! phone id

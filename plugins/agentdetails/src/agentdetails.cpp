@@ -108,15 +108,11 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
 
     connect(b_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
             this, SLOT(monitorThisAgent(const QString &)));
-    connect(this, SIGNAL(changeWatchedQueue(const QString &)),
-            b_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 
     connect(b_engine, SIGNAL(serverFileList(const QStringList &)),
             this, SLOT(serverFileList(const QStringList &)));
     connect(b_engine, SIGNAL(fileReceived()),
             this, SLOT(saveToFile()));
-    connect(this, SIGNAL(setFileName(const QString &)),
-            b_engine, SLOT(saveToFile(const QString &)));
     connect(b_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
             this, SLOT(statusRecord(const QString &, const QString &, const QString &)));
     connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
@@ -399,7 +395,7 @@ void XletAgentDetails::queueClicked()
     ipbxcommand["queueids"] = queueid;
 
     if (action == "changequeue")
-        changeWatchedQueue(queueid);
+        b_engine->changeWatchedQueue(queueid);
     else if (action == "leavejoin") {
         if ((smstatus == "1") || (smstatus == "3") || (smstatus == "4") || (smstatus == "5")) {
             ipbxcommand["command"] = "agentleavequeue";
@@ -536,5 +532,5 @@ void XletAgentDetails::saveToFile()
                                                     tr("All Files (*)"),
                                                     &selectedFilter);
     if (!fileName.isEmpty())
-        setFileName(fileName);
+        b_engine->saveToFile(fileName);
 }

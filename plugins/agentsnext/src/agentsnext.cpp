@@ -74,12 +74,6 @@ XletAgentsNext::XletAgentsNext(QWidget *parent)
     connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
             this, SLOT(newQueueList(const QStringList &)));
 
-    connect(this, SIGNAL(changeWatchedAgent(const QString &, bool)),
-            b_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)));
-    connect(this, SIGNAL(saveQueueGroups(const QVariant &)),
-            b_engine, SLOT(saveQueueGroups(const QVariant &)));
-    connect(this, SIGNAL(loadQueueGroups()),
-            b_engine, SLOT(loadQueueGroups()));
     connect(b_engine, SIGNAL(setQueueGroups(const QVariant &)),
             this, SLOT(setQueueGroups(const QVariant &)));
     connect(b_engine, SIGNAL(setQueueOrder(const QVariant &)),
@@ -261,7 +255,7 @@ void XletAgentsNext::saveGroups()
         tmp["label"] = m_title[groupid]->text();
         save[groupid] = tmp;
     }
-    emit saveQueueGroups(save);
+    b_engine->saveQueueGroups(save);
 }
 
 void XletAgentsNext::setQueueOrder(const QVariant & queueorder)
@@ -508,13 +502,13 @@ void XletAgentsNext::agentClicked(QMouseEvent *event)
         AgentInfo *ainfo = b_engine->agents()[agentid];
         QPoint where = event->globalPos();
 
-        QString astid = ainfo->ipbxid();
+        QString ipbxid = ainfo->ipbxid();
         QString agentnumber = ainfo->agentNumber();
-        changeWatchedAgent(QString("%1 %2").arg(astid).arg(agentnumber), true);
+        b_engine->changeWatchedAgent(QString("%1 %2").arg(ipbxid).arg(agentnumber), true);
 
         QGridLayout *gl = new QGridLayout();
         QDialog *dialog = new QDialog(this);
-        dialog->setWindowTitle(tr("Agent %1 on %2").arg(agentnumber, astid));
+        dialog->setWindowTitle(tr("Agent %1 on %2").arg(agentnumber, ipbxid));
         dialog->setLayout(gl);
 
         QLabel *q_name = new QLabel(ainfo->fullname(), this);
@@ -618,21 +612,21 @@ void XletAgentsNext::actionclicked()
     if (! b_engine->agents().keys().contains(agentid))
         return;
     AgentInfo * ainfo = b_engine->agents()[agentid];
-    QString astid = ainfo->ipbxid();
+    QString ipbxid = ainfo->ipbxid();
     QVariantMap ipbxcommand;
 
     if (action == "transfer") {
         ipbxcommand["command"] = "transfer";
         ipbxcommand["source"] = agentid;
-        ipbxcommand["destination"] = QString("queue:%1/%2").arg(astid).arg(m_queue_chose->currentText());
+        ipbxcommand["destination"] = QString("queue:%1/%2").arg(ipbxid).arg(m_queue_chose->currentText());
     } else if (action == "unpause") {
         ipbxcommand["command"] = "agentunpausequeue";
         ipbxcommand["agentids"] = agentid;
-        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
+        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(ipbxid);
     } else if (action == "pause") {
         ipbxcommand["command"] = "agentpausequeue";
         ipbxcommand["agentids"] = agentid;
-        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
+        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(ipbxid);
     } else if (action == "agentlogout") {
         ipbxcommand["command"] = "agentlogout";
         ipbxcommand["agentids"] = agentid;
@@ -726,7 +720,7 @@ void XletAgentsNext::refreshDisplay()
 void XletAgentsNext::newAgentList(const QStringList &)
 {
     // qDebug() << Q_FUNC_INFO << alist;
-    emit loadQueueGroups();
+    b_engine->loadQueueGroups();
 }
 
 void XletAgentsNext::newQueueList(const QStringList & /*qlist*/)
@@ -743,12 +737,12 @@ void XletAgentsNext::newQueueList(const QStringList & /*qlist*/)
     }
 }
 
-void XletAgentsNext::newQueue(const QString & /*astid*/,
+void XletAgentsNext::newQueue(const QString & /*ipbxid*/,
                               const QString & queuename,
                               const QVariant & queueprops)
 {
     QString queuecontext = queueprops.toMap().value("context").toString();
-    // qDebug() << Q_FUNC_INFO << astid << queuename << queuecontext;
+    // qDebug() << Q_FUNC_INFO << ipbxid << queuename << queuecontext;
     UserInfo * userinfo = b_engine->getXivoClientUser();
 
     if (userinfo == NULL)

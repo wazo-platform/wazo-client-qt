@@ -32,7 +32,6 @@
  */
 
 #include <QDebug>
-
 #include "userinfo.h"
 #include "phoneinfo.h"
 

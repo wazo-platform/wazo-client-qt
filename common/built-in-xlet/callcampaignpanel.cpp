@@ -90,8 +90,6 @@ CallCampaignPanel::CallCampaignPanel(QWidget *parent)
     m_glayout->setColumnStretch(2, 1);
 
     // connects signals/slots with engine
-    connect(this, SIGNAL(requestFileList(const QString &)),
-            b_engine, SLOT(requestFileList(const QString &)));
     connect(b_engine, SIGNAL(requestFileListResult(const QVariant &)),
             this, SLOT(requestFileListResult(const QVariant &)));
 }
@@ -175,21 +173,21 @@ void CallCampaignPanel::checkStatuses()
     }
     if(toexec.size() > 0) {
         qDebug() << Q_FUNC_INFO << toexec;
-        requestFileList("startcall " + toexec);
+        b_engine->requestFileList("startcall " + toexec);
     }
 }
 
 void CallCampaignPanel::getCalls()
 {
     // qDebug() << Q_FUNC_INFO;
-    requestFileList("fetchlist");
+    b_engine->requestFileList("fetchlist");
 }
 
 void CallCampaignPanel::startCalls()
 {
     // qDebug() << Q_FUNC_INFO;
     checkStatuses();
-    // requestFileList("fetchlist");
+    // b_engine->requestFileList("fetchlist");
 }
 
 void CallCampaignPanel::stopCalls()
@@ -205,7 +203,7 @@ void CallCampaignPanel::stopCalls()
         }
     }
     if(toexec.size() > 0) {
-        requestFileList("stopcall " + toexec);
+        b_engine->requestFileList("stopcall " + toexec);
     }
 }
 

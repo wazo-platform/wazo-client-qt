@@ -52,19 +52,13 @@
  * set up the widget, start timer.
  */
 CallWidget::CallWidget(UserInfo * ui, const QString & channel,
-                       uint ts, QWidget *parent,
-                       const PhoneInfo *_pi)
+                       uint ts, QWidget *parent)
     : QWidget(parent), m_square(16,16), m_parkedCall(false)
 {
     qDebug() << Q_FUNC_INFO << channel;
-    const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-    if(channelinfo == NULL)
-        return;
-    QString status = channelinfo->status();
 
     m_ui = ui;
-    pi = _pi;
-    QGridLayout * gridlayout = new QGridLayout(this);
+    gridlayout = new QGridLayout(this);
 
     m_channel = channel;
 
@@ -86,7 +80,7 @@ CallWidget::CallWidget(UserInfo * ui, const QString & channel,
     gridlayout->addWidget(m_lbl_exten, 0, 2);
 
     //updateWidget(status, ts, "cpeer", callerid, calleridname);
-    updateWidget(channel, ts, pi);
+    updateWidget(channel, ts);
 
     m_hangUpAction = new QAction(tr("&Hangup"), this);
     m_hangUpAction->setStatusTip(tr("Hang up/Close the channel"));
@@ -124,14 +118,13 @@ void CallWidget::timerEvent(QTimerEvent * /*event*/)
 
 /*! \brief update displayed stuff
  */
-void CallWidget::updateWidget(const QString & channel, uint ts,
-                              const PhoneInfo * _pi)
+void CallWidget::updateWidget(const QString & xchannel, uint ts)
 {
-    const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+    qDebug() << Q_FUNC_INFO << xchannel;
+    const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
     if(channelinfo == NULL)
         return;
     QString status = channelinfo->status();
-    pi = _pi;
     m_parkedCall = channelinfo->isparked();
     setActionPixmap(status);
     //qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
@@ -161,8 +154,8 @@ void CallWidget::setActionPixmap(const QString &)
 {
     QString scolor = "white"; // XXXX function of pi->hintstatus();
     QColor color = QColor(scolor);
-    m_lbl_status->setPixmap(TaintedPixmap(QString(":/images/phone-trans.png"),
-                                          color).getPixmap());
+    TaintedPixmap tp = TaintedPixmap(QString(":/images/phone-trans.png"), color);
+    m_lbl_status->setPixmap(tp.getPixmap());
 }
 
 /*! \brief mouse press event

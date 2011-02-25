@@ -126,10 +126,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
 
     connect(b_engine, SIGNAL(updatePresence(const QVariant &)),
             this, SLOT(updatePresence(const QVariant &)));
-    connect(this, SIGNAL(setAvailState(const QString &, bool)),
-            b_engine, SLOT(setAvailState(const QString &, bool)));
-    connect(this, SIGNAL(changeWatchedAgent(const QString &, bool)),
-            b_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)));
 
     connect(b_engine, SIGNAL(optChanged(const QString &, bool)),
             this, SLOT(setOpt(const QString &, bool)));
@@ -138,10 +134,10 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
             this, SLOT(updateUser(UserInfo *)));
 
-    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
-            m_phone, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             m_phone, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            m_phone, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
             m_phone, SLOT(updateChannelStatus(const QString &)));
 
@@ -247,7 +243,7 @@ void IdentityDisplay::setUserInfo(const UserInfo */* ui */)
         m_voicemail->setOldNew(vm[1], vm[2]);
     }
     // changes the "watched agent" only if no one else has done it before
-    changeWatchedAgent(QString("agent:%1/%2").arg(m_ui->ipbxid()).arg(m_ui->agentid()), false);
+    b_engine->changeWatchedAgent(QString("agent:%1/%2").arg(m_ui->ipbxid()).arg(m_ui->agentid()), false);
 }
 
 /*! \brief slot when one or more agents have been updated
@@ -347,7 +343,7 @@ void IdentityDisplay::idxChanged(const QString & newidx)
     if(function == "presence") {
         foreach (QString avstate, m_presence_names.keys())
             if(m_presence_names[avstate] == newidx)
-                setAvailState(avstate, false);
+                b_engine->setAvailState(avstate, false);
     }
 }
 

@@ -321,7 +321,7 @@ void MainWidget::createActions()
     m_cfgact->setMenuRole(QAction::PreferencesRole);
     m_cfgact->setStatusTip(tr("Configure account and connection options"));
     connect(m_cfgact, SIGNAL(triggered()),
-             this, SLOT(showConfDialog()));
+            this, SLOT(showConfDialog()));
 
     m_quitact = new QAction(tr("&Quit"), this);
     m_quitact->setProperty("stopper", "quit");

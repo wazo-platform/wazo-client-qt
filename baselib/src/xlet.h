@@ -68,7 +68,6 @@ class BASELIB_EXPORT XLet : public QWidget
         virtual void doGUIConnects(QWidget *) {};
     signals:
         void ipbxCommand(const QVariantMap &);
-        void logAction(const QString &);
     protected:
         void setTitle(const QString &title) { m_title = title; }; //! set title of the XLet
     private:

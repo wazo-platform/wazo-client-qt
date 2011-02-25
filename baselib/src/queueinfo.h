@@ -48,7 +48,7 @@ class BASELIB_EXPORT QueueInfo
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
         bool updateAgent(const QVariantMap &);  //! update attribute members
-        const QString & ipbxid() const;  //! asterisk this queue belongs to
+        const QString & ipbxid() const;  //! IPBX this queue belongs to
         const QString & id() const;  //! reference id of this queue on the server
         const QString & context() const;  //! context this queue belongs to
         const QString hintstatus(const QString & key) const {  //! access to the status values of this queue

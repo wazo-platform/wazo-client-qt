@@ -106,8 +106,6 @@ FaxPanel::FaxPanel(QWidget *parent)
     vlayout->addStretch(1);
 
     // connect signals / slots
-    connect( this, SIGNAL(faxSend(const QString &, const QString &, Qt::CheckState)),
-             b_engine, SLOT(sendFaxCommand(const QString &, const QString &, Qt::CheckState)) );
     connect( b_engine, SIGNAL(ackFax(const QString &, const QString &)),
              this, SLOT(popupMsg(const QString &, const QString &)) );
 }
@@ -178,9 +176,9 @@ void FaxPanel::sendFax()
         m_file_string = m_openFileNameLabel->text();
         m_destination->setText("");
         m_openFileNameLabel->setText("");
-        faxSend(m_file_string,
-                m_dest_string,
-                m_maskornot->checkState());
+        b_engine->sendFaxCommand(m_file_string,
+                                 m_dest_string,
+                                 m_maskornot->checkState());
     }
 }
 

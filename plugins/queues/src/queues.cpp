@@ -154,8 +154,6 @@ XletQueues::XletQueues(QWidget *parent)
             this, SLOT(removeQueues(const QString &, const QStringList &)));
     connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
             this, SLOT(settingChanged(const QVariantMap &)));
-    connect(this, SIGNAL(changeWatchedQueue(const QString &)),
-            b_engine, SLOT(changeWatchedQueueSlot(const QString &)));
 
     b_engine->registerClassEvent("queuestats", XletQueues::eatQueuesStats_t, this);
     updateLongestWaitWidgets();
@@ -296,7 +294,7 @@ void XletQueues::queueClicked()
     QString queueid = sender()->property("queueid").toString();
 
     if (function == "more") {
-        emit changeWatchedQueue(queueid);
+        b_engine->changeWatchedQueue(queueid);
     } else if (function == "display_up") {
         int index = m_layout->indexOf(row);
         if (index > 1) {

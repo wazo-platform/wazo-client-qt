@@ -48,8 +48,6 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
             this, SLOT(desactivateRemarkArea(const QString &)));
     connect(b_engine, SIGNAL(sheetEntryAdded(const QString &, const QVariantMap &)),
             this, SLOT(addNewRemark(const QString &, const QVariantMap &)));
-    connect(this, SIGNAL(actionFromFiche(const QVariant &)),
-            b_engine, SLOT(actionFromFiche(const QVariant &)));
 
     // qDebug() << Q_FUNC_INFO;
     m_glayout = new QGridLayout(this);
@@ -165,7 +163,7 @@ void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVaria
         data["context"] = thispopup->callContext();
         data["channel"] = thispopup->callChannel();
         data["timestamps"] = timestamps;
-        actionFromFiche(QVariant(data));
+        b_engine->actionFromFiche(QVariant(data));
     }
 }
 

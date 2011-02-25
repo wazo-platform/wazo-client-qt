@@ -77,8 +77,6 @@ XletAgents::XletAgents(QWidget *parent)
             this, SLOT(newAgentList(const QStringList &)));
     connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
             this, SLOT(newQueueList(const QStringList &)));
-    connect(this, SIGNAL(changeWatchedAgent(const QString &, bool)),
-            b_engine, SLOT(changeWatchedAgentSlot(const QString &, bool)));
     connect(b_engine, SIGNAL(updateAgentPresence(const QString &, const QString &, const QVariant &)),
             this, SLOT(updateAgentPresence(const QString &, const QString &, const QVariant &)));
     connect(b_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
@@ -111,10 +109,10 @@ void XletAgents::setGuiOptions(const QVariantMap & optionsMap)
 
 /*! \brief set agent presence status
  */
-void XletAgents::updateAgentPresence(const QString & astid, const QString & agent_number, const QVariant & presencestatus)
+void XletAgents::updateAgentPresence(const QString & ipbxid, const QString & agent_number, const QVariant & presencestatus)
 {
-    // qDebug() << Q_FUNC_INFO << astid << agent_number << presencestatus;
-    QString agentid = QString("agent:%1/%2").arg(astid).arg(agent_number);
+    // qDebug() << Q_FUNC_INFO << ipbxid << agent_number << presencestatus;
+    QString agentid = QString("agent:%1/%2").arg(ipbxid).arg(agent_number);
     if (b_engine->agents().contains(agentid))
         if (m_agent_presence.contains(agentid)) {
             QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
@@ -400,12 +398,12 @@ void XletAgents::agentClicked()
         return;
 
     AgentInfo * ainfo = b_engine->agents()[agentid];
-    QString astid = ainfo->ipbxid();
+    QString ipbxid = ainfo->ipbxid();
     QString agentnumber = ainfo->agentNumber();
     QVariantMap ipbxcommand;
 
     if (action == "changeagent") {
-        emit changeWatchedAgent(agentid, true);
+        b_engine->changeWatchedAgent(agentid, true);
     }
 
     else if (action == "loginoff") {
@@ -424,11 +422,11 @@ void XletAgents::agentClicked()
     } else if (action == "unpause") {
         ipbxcommand["command"] = "agentunpausequeue";
         ipbxcommand["agentids"] = agentid;
-        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
+        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(ipbxid);
     } else if (action == "pause") {
         ipbxcommand["command"] = "agentpausequeue";
         ipbxcommand["agentids"] = agentid;
-        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(astid);
+        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(ipbxid);
     } else if (action == "listen") {
         ipbxcommand["command"] = "listen";
         ipbxcommand["source"] = "user:special:me";
@@ -451,10 +449,10 @@ void XletAgents::agentClicked()
 
 /*! \brief update Record/Stop Record buttons
  */
-void XletAgents::statusRecord(const QString & astid, const QString & agentid, const QString & status)
+void XletAgents::statusRecord(const QString & ipbxid, const QString & agentid, const QString & status)
 {
-    // qDebug() << Q_FUNC_INFO << astid << agentid << status;
-    QString gagentid = QString("agent:%1/%2").arg(astid).arg(agentid);
+    // qDebug() << Q_FUNC_INFO << ipbxid << agentid << status;
+    QString gagentid = QString("agent:%1/%2").arg(ipbxid).arg(agentid);
     if (! m_agent_record.contains(gagentid))
         return;
 
@@ -469,10 +467,10 @@ void XletAgents::statusRecord(const QString & astid, const QString & agentid, co
 
 /*! \brief update Listen/Stop Listen buttons
  */
-void XletAgents::statusListen(const QString & astid, const QString & agentid, const QString & status)
+void XletAgents::statusListen(const QString & ipbxid, const QString & agentid, const QString & status)
 {
-    // qDebug() << Q_FUNC_INFO << astid << agentid << status;
-    QString gagentid = QString("agent:%1/%2").arg(astid).arg(agentid);
+    // qDebug() << Q_FUNC_INFO << ipbxid << agentid << status;
+    QString gagentid = QString("agent:%1/%2").arg(ipbxid).arg(agentid);
     if (! m_agent_listen.contains(gagentid))
         return;
 

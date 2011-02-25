@@ -31,6 +31,7 @@
  * $Date$
  */
 
+#include <QDebug>
 #include "phoneinfo.h"
 
 PhoneInfo::PhoneInfo(const QString & ipbxid,

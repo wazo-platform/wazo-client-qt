@@ -68,7 +68,7 @@ bool MeetmeInfo::paused() const
     return m_paused;
 }
 
-const QString& MeetmeInfo::astId() const
+const QString & MeetmeInfo::ipbxid() const
 {
     return m_ipbxid;
 }

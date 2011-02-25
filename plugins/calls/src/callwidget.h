@@ -42,6 +42,7 @@
 #include "phoneinfo.h"
 
 class QLabel;
+class QGridLayout;
 
 class UserInfo;
 
@@ -56,9 +57,8 @@ class CallWidget : public QWidget
     Q_OBJECT
 
     public:
-        CallWidget(UserInfo *, const QString &, uint, QWidget * parent, const PhoneInfo * pi);
-
-        void updateWidget(const QString &, uint, const PhoneInfo *);
+        CallWidget(UserInfo *, const QString &, uint, QWidget * parent);
+        void updateWidget(const QString &, uint);
 
         const QString& channel() const;
     protected:
@@ -79,6 +79,7 @@ class CallWidget : public QWidget
         void parkCall();
     private:
         UserInfo * m_ui;  //!< monitored user infos
+        QGridLayout * gridlayout;  //!< monitored user infos
         QPoint m_dragstartpos;  //!< used for drag
         QString m_channel;  //!< channel identifier
         QLabel * m_lbl_status;  //!< sub widget
@@ -91,7 +92,6 @@ class CallWidget : public QWidget
         QAction * m_transferToNumberAction;  //!< Transfer to Number Action
         QAction * m_parkCall;  //!< Park the Call Action
         bool m_parkedCall;  //!< Is it a parked call ?
-        const PhoneInfo * pi;
 };
 
 #endif

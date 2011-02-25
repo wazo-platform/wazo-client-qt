@@ -48,10 +48,10 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         QueueAgentStatus();
 
         bool update(const QString &, const QString &, const QString &);  //! update attribute members
-        const QString &ipbxid() const;  //! asterisk this queue belongs to
-        const QString &id() const;  //! reference id of this queue on the server
-        const QString &context() const;  //! context this queue belongs to
-        const QString &queueName() const;  //! queuename
+        const QString & ipbxid() const;  //! IPBX this queue/agent belongs to
+        const QString & id() const;  //! reference id of this queue/agent on the server
+        const QString & context() const;  //! context this queue/agent belongs to
+        const QString & queueName() const;  //! queuename
 
         const QColor &display_status_color() const;
         const QString &display_status_queue() const;

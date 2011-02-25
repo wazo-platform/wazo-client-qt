@@ -48,7 +48,7 @@ class BASELIB_EXPORT AgentInfo
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
         bool updateQueue(const QVariantMap &);
-        const QString & ipbxid() const;  //! asterisk this agent belongs to
+        const QString & ipbxid() const;  //! IPBX this agent belongs to
         const QString & id() const;  //! reference id of this agent on the server
         const QString & context() const;  //! context this agent belongs to
         const QString hintstatus(const QString &key) const {

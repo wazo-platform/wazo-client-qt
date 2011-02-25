@@ -286,5 +286,5 @@ void XletQueueDetails::agentClicked()
 {
     // qDebug() << Q_FUNC_INFO << sender()->property("agentid");
     QString agentid = sender()->property("agentid").toString();
-    b_engine->changeWatchedAgentSlot(agentid, true);
+    b_engine->changeWatchedAgent(agentid, true);
 }

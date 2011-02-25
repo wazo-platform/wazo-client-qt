@@ -55,6 +55,9 @@ class XletCalls : public XLet
     public slots:
         void updateUser(UserInfo *);
         void updateDisplay();
+        void updatePhoneConfig(const QString &);
+        void updatePhoneStatus(const QString &);
+        void updateChannelStatus(const QString &);
         void hupchan(const QString &);
         void transftonumberchan(const QString &);
         void parkcall(const QString &);

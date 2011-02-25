@@ -65,6 +65,8 @@ class BASELIB_EXPORT ChannelInfo
         QString m_ipbxid;  //!< IPBX id (for main phone)
         QString m_channel;  //!< Channel name
 
+        // XXX timing informations
+
         QString m_status;
         QString m_talkingto_kind;
         QString m_talkingto_id;

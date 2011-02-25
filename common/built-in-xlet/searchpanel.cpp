@@ -87,8 +87,6 @@ SearchPanel::SearchPanel(QWidget *parent)
                                        const QString &, const QVariant &)));
     connect(b_engine, SIGNAL(peersReceived()),
             this, SLOT(updateDisplay()));
-    connect(this, SIGNAL(askCallerIds()),
-            b_engine, SLOT(askCallerIds()));
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(removePeers()));
 }

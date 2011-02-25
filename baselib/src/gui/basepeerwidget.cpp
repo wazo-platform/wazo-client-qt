@@ -396,7 +396,6 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
         contextMenu.addAction(tr("&Edit"), this, SLOT(edit()));
     }
 
-
     QMenu *interceptMenu = NULL;
     QMenu *hangupMenu = NULL;
     QMenu *transferMenu = NULL;

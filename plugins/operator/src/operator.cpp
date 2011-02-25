@@ -70,8 +70,12 @@ XletOperator::XletOperator(QWidget * parent)
             this, SLOT(updateUser(UserInfo *)));
     connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
             this, SLOT(setUserInfo(const UserInfo *)));
+    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
+            this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
             this, SLOT(updatePhoneStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
+            this, SLOT(updateChannelStatus(const QString &)));
 }
 
 void XletOperator::setUserInfo(const UserInfo *)
@@ -333,6 +337,10 @@ void XletOperator::changeCurrentChannel(const QString & before, const QString & 
     }
 }
 
+void XletOperator::updatePhoneConfig(const QString & xphoneid)
+{
+}
+
 void XletOperator::updatePhoneStatus(const QString & xphoneid)
 {
     if (xphoneid != m_xphoneid)
@@ -392,6 +400,10 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
     }
 }
 
+void XletOperator::updateChannelStatus(const QString & xchannelid)
+{
+}
+
 void XletOperator::updateUser(UserInfo * ui)
 {
     if (! m_ui)
@@ -407,7 +419,7 @@ void XletOperator::updateUser(UserInfo * ui)
  * Iterate through communications of the user to
  * find the peer channel.
  */
-QString XletOperator::getPeerChan(QString const & chan) const
+QString XletOperator::getPeerChan(QString const &) const
 {
 //     if (! m_ui)
 //         return QString();

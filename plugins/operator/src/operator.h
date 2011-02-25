@@ -58,8 +58,10 @@ class XletOperator : public XLet
         void xferPressed();
         void clicked();
         void updateUser(UserInfo *);
-        void updatePhoneStatus(const QString &);
         void setUserInfo(const UserInfo *);
+        void updatePhoneConfig(const QString &);
+        void updatePhoneStatus(const QString &);
+        void updateChannelStatus(const QString &);
 
     private:
         void updateLine(const QString &, const QStringList &);

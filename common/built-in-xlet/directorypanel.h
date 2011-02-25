@@ -68,10 +68,6 @@ class DirectoryPanel : public XLet
     protected:
         void dropEvent(QDropEvent *);
         void focusInEvent(QFocusEvent *);
-    signals:
-        void searchDirectory(const QString &);  //! start a search
-        void copyNumber(const QString &);
-
     private slots:
         void startSearch();
         void itemClicked(QTableWidgetItem *);

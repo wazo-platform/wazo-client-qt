@@ -54,7 +54,7 @@ DirectoryPanel::DirectoryPanel(QWidget *parent)
     hlayout->addWidget(m_searchText);
     m_searchButton = new QPushButton(tr("Search"), this);
     connect(m_searchButton, SIGNAL(clicked()),
-             this, SLOT(startSearch()));
+            this, SLOT(startSearch()));
     hlayout->addWidget(m_searchButton);
     vlayout->addLayout(hlayout);
     m_table = new ExtendedTableWidget(this);
@@ -70,12 +70,8 @@ DirectoryPanel::DirectoryPanel(QWidget *parent)
     setFocusProxy(m_searchText);
 
     // connect signal/slots
-    connect(this, SIGNAL(searchDirectory(const QString &)),
-            b_engine, SLOT(searchDirectory(const QString &)) );
     connect(b_engine, SIGNAL(directoryResponse(const QStringList &, const QStringList &)),
             this, SLOT(setSearchResponse(const QStringList &, const QStringList &)) );
-    connect(this, SIGNAL(copyNumber(const QString &)),
-            b_engine, SIGNAL(pasteToDialPanel(const QString &)) );
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(stop()) );
 }
@@ -100,7 +96,7 @@ void DirectoryPanel::itemClicked(QTableWidgetItem * item)
     // check if the string is a phone number
     if( m_re_number.exactMatch(item->text()) ) {
         //qDebug() << Q_FUNC_INFO << "preparing to dial" << item->text();
-        copyNumber(item->text());
+        b_engine->pasteToDial(item->text());
     }
 }
 
@@ -178,7 +174,7 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
  */
 void DirectoryPanel::startSearch()
 {
-    searchDirectory( m_searchText->text() );
+    b_engine->searchDirectory( m_searchText->text() );
 }
 
 /*! \brief stop

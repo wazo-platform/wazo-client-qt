@@ -281,7 +281,7 @@ void BaseEngine::setCheckedFunction(const QString & function, bool b)
     }
 }
 
-void BaseEngine::pasteToDial(const QString &toPaste)
+void BaseEngine::pasteToDial(const QString & toPaste)
 {
     emit pasteToDialPanel(toPaste);
 }
@@ -951,8 +951,8 @@ void BaseEngine::parseCommand(const QString &line)
         } else if (thisclass == "meetme") {
             if (function == "sendlist") {
                 QVariantMap map1 = datamap.value("payload").toMap();
-                foreach (QString astid, map1.keys()) {
-                    QVariantMap map2 = map1[astid].toMap();
+                foreach (QString ipbxid, map1.keys()) {
+                    QVariantMap map2 = map1[ipbxid].toMap();
                     foreach (QString meetmeid, map2.keys()) {
                         QVariantMap map3 = map2[meetmeid].toMap();
                         addUpdateConfRoomInTree(tree(), meetmeid, map3);
@@ -1273,9 +1273,9 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
             qDebug() << function << listname << xid << haschanged;
             if (listname == "phones")
-                updatePhoneConfig(xid);
+                emit updatePhoneConfig(xid);
             else if (listname == "queues")
-                updateQueueConfig(xid);
+                emit updateQueueConfig(xid);
 
             QVariantMap command;
             command["class"] = "getlist";
@@ -1308,21 +1308,22 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 if (m_queues.contains(xid))
                     haschanged = m_queues[xid]->updateStatus(status);
             }
+
             // qDebug() << function << listname << xid << haschanged << status;
             if (listname == "phones")
-                updatePhoneStatus(xid);
+                emit updatePhoneStatus(xid);
             else if (listname == "channels")
-                updateChannelStatus(xid);
+                emit updateChannelStatus(xid);
         }
     } else if (thisclass == "queues") {
         // qDebug() << Q_FUNC_INFO << "queues" << function << line.length();
         if (function == "sendlist") {
         } else if (function == "update") {
             QStringList kk;
-            foreach (QString astid, payload.keys()) {
-                QVariantMap values = payload[astid].toMap();
+            foreach (QString ipbxid, payload.keys()) {
+                QVariantMap values = payload[ipbxid].toMap();
                 foreach (QString queueid, values.keys()) {
-                    kk += updateQueueAgent(astid, queueid, values[queueid].toMap());
+                    kk += updateQueueAgent(ipbxid, queueid, values[queueid].toMap());
                 }
             }
             if (! kk.isEmpty())
@@ -1341,10 +1342,10 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
     } else if (thisclass == "agents") {
         if (function == "sendlist") {
             QStringList kk;
-            foreach (QString astid, payload.keys()) {
-                QVariantMap values = payload[astid].toMap();
+            foreach (QString ipbxid, payload.keys()) {
+                QVariantMap values = payload[ipbxid].toMap();
                 foreach (QString agentid, values.keys()) {
-                    kk += updateAgent(astid, agentid, values[agentid].toMap());
+                    kk += updateAgent(ipbxid, agentid, values[agentid].toMap());
                 }
             }
             if (! kk.isEmpty())
@@ -1352,10 +1353,10 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
         } else if (function == "update") {
             QStringList kk;
-            foreach (QString astid, payload.keys()) {
-                QVariantMap values = payload[astid].toMap();
+            foreach (QString ipbxid, payload.keys()) {
+                QVariantMap values = payload[ipbxid].toMap();
                 foreach (QString agentid, values.keys()) {
-                    kk += updateAgentQueue(astid, agentid, values[agentid].toMap());
+                    kk += updateAgentQueue(ipbxid, agentid, values[agentid].toMap());
                 }
             }
             if (! kk.isEmpty())
@@ -1363,7 +1364,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
             // QString agentid = params.toMap().value("agent_id").toString();
             // QString agent_channel = params.toMap().value("agent_channel").toString();
-            // UserInfo * ui = findUserFromAgent(astid, agent_channel.mid(6));
+            // UserInfo * ui = findUserFromAgent(ipbxid, agent_channel.mid(6));
             // emit updatePeerAgent(m_timesrv, ui->userid(), "agentstatus", params);
         }
 
@@ -2152,24 +2153,20 @@ void BaseEngine::setState(EngineState state)
             availAllowChanged(false);
             emit delogged();
             // reset some variables when disconnecting
-            m_agent_watched_astid = "";
-            m_agent_watched_agentid = "";
         }
     }
 }
 
-void BaseEngine::changeWatchedAgentSlot(const QString & agentid, bool force)
+void BaseEngine::changeWatchedAgent(const QString & agentid, bool force)
 {
     // qDebug() << Q_FUNC_INFO << agentid << force;
     if ((force || (agentid.size() > 0)) && (m_agents.contains(agentid))) {
-        m_agent_watched_agentid = agentid;
         emit changeWatchedAgentSignal(agentid);
     }
 }
 
-void BaseEngine::changeWatchedQueueSlot(const QString & queueid)
+void BaseEngine::changeWatchedQueue(const QString & queueid)
 {
-    m_queue_watched_queueid = queueid;
     emit changeWatchedQueueSignal(queueid);
 }
 

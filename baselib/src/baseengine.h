@@ -182,6 +182,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void changeTranslation(const QString &);
         void sendUrlToBrowser(const QString &);
         void addToDataBase(QVariantMap &);
+        void changeWatchedAgent(const QString &, bool);
+        void changeWatchedQueue(const QString &);
 
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);
@@ -210,8 +212,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void requestFileList(const QString &);
 
         void monitorPeerRequest(const QString &);
-        void changeWatchedAgentSlot(const QString &, bool);
-        void changeWatchedQueueSlot(const QString &);
         void saveToFile(const QString &);
         void saveQueueGroups(const QVariant &);
         void loadQueueGroups();
@@ -222,6 +222,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void handleOtherInstanceMessage(const QString &);
         void ipbxCommand(const QVariantMap &);
         void emitMessage(const QString &);
+        void actionFromFiche(const QVariant &);
 
     private slots:
         void keepLoginAlive();  //!< Keep session alive
@@ -230,7 +231,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void ctiSocketReadyRead();
         void filetransferSocketReadyRead();
         void filetransferSocketConnected();
-        void actionFromFiche(const QVariant &);
 
     signals:
         void settingChanged(const QVariantMap &);  //!< signal emitted when the setting are changed
@@ -284,7 +284,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QString &);
         void changeWatchedQueueSignal(const QString &);
-        void changeWatchedQueueSignal(double, const QString &, const QString &, const QVariant &);
         void updateAgentPresence(const QString &, const QString &, const QVariant &);
         void displayFiche(const QString &, bool, const QString &);
         void gotSheetOwnership(const QString &id);  //! the user logged has now ownership of the sheet
@@ -335,7 +334,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_keeppass;                 //!< Keep password ?
         int m_showagselect;             //!< Show agent selection ?
         QString m_xuserid;              //!< Full Id (userid + company)
-        QString m_ipbxid;               //!< asterisk id of the current user
+        QString m_ipbxid;               //!< IPBX id of the current user
         QString m_userid;               //!< xivo user id of the current user
         QString m_profilename_read;     //!< CTI profile name of the current user
         QString m_profilename_write;    //!< CTI profile name of the current user
@@ -382,11 +381,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_numbertodial;         //!< Number dialed in
         QString m_osname;               //!< OS informations
         QVariant m_counters;
-
-        QString m_agent_watched_astid;
-        QString m_agent_watched_agentid;
-        QString m_queue_watched_astid;
-        QString m_queue_watched_queueid;
 
         QString m_fileid;
         QString m_filedir;

@@ -136,8 +136,6 @@ OutlookPanel::OutlookPanel(QWidget * parent)
              b_engine, SLOT(emitMessage(const QString &)) );
     connect( &(OLEngine()->m_OLThread), SIGNAL(logClientWarning(const QString &, const QString &)),
              b_engine, SLOT(logClientWarning(const QString &, const QString &)) );
-    connect( this, SIGNAL(copyNumber(const QString &)),
-             b_engine, SLOT(copyNumber(const QString &)) );
 }
 
 class QTableWidgetItemExt : public QTableWidgetItem
@@ -247,9 +245,9 @@ void OutlookPanel::itemClicked(QTableWidgetItem * item)
     if(re_number.exactMatch(str)) {
         // qDebug() << Q_FUNC_INFO << "preparing to dial" << item->text();
         if(str.size() >= m_calllength)
-            emit copyNumber(m_callprefix + str);
+            b_engine->copyNumber(m_callprefix + str);
         else
-            emit copyNumber(str);
+            b_engine->copyNumber(str);
     }
 }
 

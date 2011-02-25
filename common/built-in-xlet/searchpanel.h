@@ -63,8 +63,6 @@ class SearchPanel : public XLet
         void removePeers();
         void updateDisplay();
         void updateUser(UserInfo *);
-    signals:
-        void askCallerIds();
     private:
         QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
         QGridLayout *m_peerlayout; //!< layout object
