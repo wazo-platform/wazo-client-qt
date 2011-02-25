@@ -137,13 +137,16 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             this, SLOT(setForward(const QString &, const QVariant &)));
     connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
             this, SLOT(updateUser(UserInfo *)));
-    connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
-            m_phone, SLOT(updateUser(UserInfo *)));
+
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            m_phone, SLOT(updatePhoneStatus(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
+            m_phone, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
+            m_phone, SLOT(updateChannelStatus(const QString &)));
 
     connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
             this, SLOT(setUserInfo(const UserInfo *)));
-    connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-            m_phone, SLOT(setUserInfo(const UserInfo *)));
 }
 
 void IdentityDisplay::setupIcons()
@@ -230,14 +233,13 @@ void IdentityDisplay::setUserInfo(const UserInfo */* ui */)
 {
     // qDebug() << Q_FUNC_INFO;
     m_ui = b_engine->getXivoClientUser();
-
     m_user->setText(m_ui->fullname());
-    qDebug() << Q_FUNC_INFO << m_ui->phoneNumber();
     m_phonenum->setText(m_ui->phoneNumber());
     m_phonenum->setToolTip(tr("Server: %1\n"
                               "Context: %2")
                            .arg(m_ui->ipbxid())
                            .arg(m_ui->context()));
+    m_phone->setPhoneId(m_ui->phonelist().join(""));
     QStringList vm = m_ui->mwi();
     if(vm.size() > 2) {
         m_voicemail->show();
@@ -309,6 +311,10 @@ void IdentityDisplay::svcSummary()
  */
 void IdentityDisplay::updateUser(UserInfo * ui)
 {
+    if(! m_ui)
+        return;
+    if(! ui)
+        return;
     if(m_ui != ui)
         return;
     QString ipbxid = m_ui->ipbxid();

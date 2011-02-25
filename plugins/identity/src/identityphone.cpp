@@ -44,9 +44,9 @@
 /*! \brief Constructor
  */
 IdentityPhoneLine::IdentityPhoneLine(int linenum, QWidget * parent)
-    : QWidget(parent), m_ui(0), m_linenum(linenum)
+    : QWidget(parent), m_linenum(linenum)
 {
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    QHBoxLayout * layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     m_action = new QLabel(this);
     m_status = new QLabel(this);
@@ -61,6 +61,11 @@ IdentityPhoneLine::IdentityPhoneLine(int linenum, QWidget * parent)
     layout->addWidget(m_status);
 }
 
+void IdentityPhoneLine::setPhoneId(const QString & xphoneid)
+{
+    m_xphoneid = xphoneid;
+}
+
 void IdentityPhoneLine::setPixmap(const QPixmap & pixmap)
 {
     m_action->setPixmap(pixmap);
@@ -73,25 +78,18 @@ void IdentityPhoneLine::setText(const QString & text)
 
 void IdentityPhoneLine::contextMenuEvent(QContextMenuEvent * event)
 {
-    qDebug() << Q_FUNC_INFO;
-    if(!m_ui)
-        return;
     QString thischannel;
-    QString ipbxid = m_ui->ipbxid();
-    foreach(QString phoneid, m_ui->phonelist()) {
-        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-        const PhoneInfo * p_pi = b_engine->phones().value(xphoneid);
-        if(p_pi == NULL)
-            continue;
-        QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(p_pi->comms());
-        while( iter.hasNext() ) {
-            iter.next();
-            QVariantMap callprops = iter.value().toMap();
-            if(callprops.contains("linenum")) {
-                int ic = callprops["linenum"].toInt();
-                if(ic == m_linenum) {
-                    thischannel = callprops["thischannel"].toString();
-                }
+    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    if(phoneinfo == NULL)
+        return;
+    QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(phoneinfo->comms());
+    while( iter.hasNext() ) {
+        iter.next();
+        QVariantMap callprops = iter.value().toMap();
+        if(callprops.contains("linenum")) {
+            int ic = callprops["linenum"].toInt();
+            if(ic == m_linenum) {
+                thischannel = callprops["thischannel"].toString();
             }
         }
     }
@@ -121,46 +119,55 @@ void IdentityPhoneLine::contextMenuEvent(QContextMenuEvent * event)
     }
 }
 
-void IdentityPhoneLine::setUserInfo(const UserInfo * ui)
-{
-    m_ui = ui;
-}
-
 void IdentityPhoneLine::hangup()
 {
-    qDebug() << Q_FUNC_INFO << sender() << m_ui;
-    if(sender() && m_ui) {
+    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    if (phoneinfo == NULL)
+        return;
+    if (sender()) {
         QString channel = sender()->property("channel").toString();
-        b_engine->actionCall(QString("hangup"),
-                             QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
-                             QString());
+        b_engine->actionCall("hangup",
+                             QString("chan:%1/%2:%3")
+                             .arg(phoneinfo->ipbxid())
+                             .arg(phoneinfo->phoneid())
+                             .arg(channel));
     }
 }
 
 void IdentityPhoneLine::answer()
 {
-    if(sender() && m_ui) {
+    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    if (phoneinfo == NULL)
+        return;
+    if (sender()) {
         QString channel = sender()->property("channel").toString();
-        b_engine->actionCall(QString("answer"),
-                             QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
-                             QString());
+        b_engine->actionCall("answer",
+                             QString("chan:%1/%2:%3")
+                             .arg(phoneinfo->ipbxid())
+                             .arg(phoneinfo->phoneid())
+                             .arg(channel));
     }
 }
 
 void IdentityPhoneLine::refuse()
 {
-    if(sender()) {
+    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    if (phoneinfo == NULL)
+        return;
+    if (sender()) {
         QString channel = sender()->property("channel").toString();
-        b_engine->actionCall(QString("refuse"),
-                             QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
-                             QString());
+        b_engine->actionCall("refuse",
+                             QString("chan:%1/%2:%3")
+                             .arg(phoneinfo->ipbxid())
+                             .arg(phoneinfo->phoneid())
+                             .arg(channel));
     }
 }
 
 /*! \brief Constructor
  */
 IdentityPhone::IdentityPhone(QWidget * parent)
-    : QWidget(parent), m_ui(0)
+    : QWidget(parent)
 {
     m_layout = new QGridLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
@@ -190,81 +197,97 @@ IdentityPhone::IdentityPhone(QWidget * parent)
     m_layout->addWidget(m_phonestatustxt, 2, 1, 1, 2, Qt::AlignLeft | Qt::AlignVCenter);
 }
 
-void IdentityPhone::setUserInfo(const UserInfo *ui)
+void IdentityPhone::setPhoneId(const QString & xphoneid)
 {
-    m_ui = ui;
-    m_phone->setText(tr("Phone %1").arg(m_ui->phoneNumber()));
-    m_phone->setToolTip(tr("Server: %1\nContext: %2")
-                        .arg(m_ui->ipbxid())
-                        .arg(m_ui->context()));
+    m_xphoneid = xphoneid;
+    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    if (phoneinfo == NULL)
+        return;
+    m_phone->setText(tr("Phone %1").arg(phoneinfo->number()));
+    m_phone->setToolTip(tr("Protocol: %1\n"
+                           "Server: %2\n"
+                           "Context: %3")
+                        .arg(phoneinfo->protocol())
+                        .arg(phoneinfo->ipbxid())
+                        .arg(phoneinfo->context()));
     setPhoneLines();
-    if (ui->phoneNumber() == "") {
+    if (phoneinfo->number().isEmpty())
         hide();
-    }
+    else
+        show();
+}
+
+void IdentityPhone::updateChannelStatus(const QString & xchannelid)
+{
+    const ChannelInfo * channelinfo = b_engine->channels().value(xchannelid);
+    if (channelinfo == NULL)
+        return;
+    qDebug() << Q_FUNC_INFO << channelinfo->channel() << channelinfo->talkingto_kind();
+}
+
+void IdentityPhone::updatePhoneConfig(const QString & xphoneid)
+{
+    if (xphoneid != m_xphoneid)
+        return;
+    setPhoneId(xphoneid);
 }
 
 void IdentityPhone::updatePhoneStatus(const QString & xphoneid)
 {
-    if (m_ui == NULL)
-        return;
-    if (m_ui->hasPhone(xphoneid) == false)
+    if (xphoneid != m_xphoneid)
         return;
     const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
     if (phoneinfo == NULL)
         return;
+
+    QPixmap square(10, 10);
+    QString color = "blue"; // XXXX function of phoneinfo->hintstatus();
+    QString longname = "There"; // XXXX function of phoneinfo->hintstatus();
+    square.fill(color);
+    m_phonecall->setPixmap(square);
+    m_phonecall->setToolTip(longname);
+    m_phonecalltxt->setText(longname);
+
+    updateLines(phoneinfo->comms());
 }
 
-void IdentityPhone::updateUser(UserInfo * ui)
+void IdentityPhone::updateLines(const QVariantMap & comms)
 {
-    if(m_ui != ui)
+    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    if (phoneinfo == NULL)
         return;
-    //qDebug() << Q_FUNC_INFO;
-    QString ipbxid = m_ui->ipbxid();
-    foreach(QString phoneid, m_ui->phonelist()) {
-        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-        const PhoneInfo * p_pi = b_engine->phones().value(xphoneid);
-        if(p_pi == NULL)
-            continue;
-        QPixmap square(10, 10);
-        QString color = "white"; // XXXX function of p_pi->hintstatus();
-        QString longname = "Here"; // XXXX function of p_pi->hintstatus();
-        square.fill(color);
-        m_phonecall->setPixmap(square);
-        m_phonecall->setToolTip(longname);
-        m_phonecalltxt->setText(longname);
-        QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(p_pi->comms());
-        QList<int> busylines;
-        while( iter.hasNext() ) {
-            iter.next();
-            QVariantMap callprops = iter.value().toMap();
-            if(callprops.contains("linenum")) {
-                //qDebug() << callprops;
-                int ic = callprops["linenum"].toInt() - 1;
-                QString status = callprops["status"].toString();
-                QString todisplay = callprops["calleridname"].toString();
-                bool isholded = callprops.contains("time-hold");
-                busylines << ic;
+    QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(comms);
+    QList<int> busylines;
+    while( iter.hasNext() ) {
+        iter.next();
+        QVariantMap callprops = iter.value().toMap();
+        if(callprops.contains("linenum")) {
+            //qDebug() << callprops;
+            int ic = callprops.value("linenum").toInt() - 1;
+            QString status = callprops.value("status").toString();
+            QString todisplay = callprops.value("calleridname").toString();
+            bool isholded = callprops.contains("time-hold");
+            busylines << ic;
 
-                QPixmap square_comm(25, 3);
-                square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
-                if(status == "hangup") {
-                    todisplay = tr("(Line %1)").arg(callprops["linenum"].toString());
-                    square_comm.fill(Qt::black);
-                }
-                if(ic < m_lines.size() && m_lines[ic]) {
-                    m_lines[ic]->setPixmap(square_comm);
-                    m_lines[ic]->setText(QString("  %1  ").arg(todisplay));
-                }
+            QPixmap square_comm(25, 3);
+            square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
+            if(status == "hangup") {
+                todisplay = tr("(Line %1)").arg(callprops.value("linenum").toString());
+                square_comm.fill(Qt::black);
+            }
+            if(ic < m_lines.size() && m_lines[ic]) {
+                m_lines[ic]->setPixmap(square_comm);
+                m_lines[ic]->setText(QString("  %1  ").arg(todisplay));
             }
         }
-        QPixmap square_black(25, 3);
-        square_black.fill(Qt::black);
-        for(int jj = 0 ; jj < m_ui->simultcalls() ; jj ++) {
-            if(!busylines.contains(jj) && jj < m_lines.size()) {
-                m_lines[jj]->setPixmap(square_black);
-                QString todisplay = tr("(Line %1)").arg(jj + 1);
-                m_lines[jj]->setText(QString("  %1  ").arg(todisplay));
-            }
+    }
+    QPixmap square_black(25, 3);
+    square_black.fill(Qt::black);
+    for(int jj = 0 ; jj < phoneinfo->simultcalls() ; jj ++) {
+        if(!busylines.contains(jj) && jj < m_lines.size()) {
+            m_lines[jj]->setPixmap(square_black);
+            QString todisplay = tr("(Line %1)").arg(jj + 1);
+            m_lines[jj]->setText(QString("  %1  ").arg(todisplay));
         }
     }
 }
@@ -273,14 +296,14 @@ void IdentityPhone::updateUser(UserInfo * ui)
  */
 void IdentityPhone::setPhoneLines()
 {
-    //qDebug() << Q_FUNC_INFO;
-    if(!m_ui)
+    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    if (phoneinfo == NULL)
         return;
-    for(int jj = 0 ; jj < m_ui->simultcalls() ; jj ++) {
-        //qDebug() << " --- " << jj << m_lines.value(jj);
+    for(int jj = 0 ; jj < phoneinfo->simultcalls() ; jj ++) {
+        qDebug() << " --- " << jj << m_lines.value(jj);
         if(jj >= m_lines.size()) {
             m_lines.insert(jj, new IdentityPhoneLine(jj + 1, this));
-            m_lines[jj]->setUserInfo(m_ui);
+            m_lines[jj]->setPhoneId(m_xphoneid);
             int ix = jj / 3;
             int iy = jj % 3;
             m_layout->addWidget( m_lines[jj], iy, 3 + ix );
@@ -313,4 +336,3 @@ void IdentityPhone::svcSummary(QVariantMap & svcstatus)
         }
     }
 }
-

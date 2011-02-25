@@ -156,10 +156,11 @@ void PeerWidget::setMobileState(const QString &/* color*/)
 void PeerWidget::updatePresence()
 {
     if (m_user_status) {
-        QColor c = QColor(m_ui->availstate()["color"]);
+        QString availstate = m_ui->availstate();
+        QColor c = QColor("green"); // XXX replace with dependency on m_ui->availstate()
         m_user_status->setIcon(TaintedPixmap( \
             QString(":/images/personal-trans.png"), c).getPixmap());
-        m_user_status->setToolTip(tr("User : %1").arg(m_ui->availstate()["longname"]));
+        m_user_status->setToolTip(tr("User : %1").arg("La")); // XXX replace with dependency on m_ui->availstate()
     }
 }
 
@@ -232,8 +233,8 @@ bool ChitchatButton::event(QEvent *e)
      * with someone non connected or with himself */
     if ((e->type() == QEvent::MouseButtonPress) ||
         (e->type() == QEvent::MouseButtonDblClick)) {
-        if (((*m_ui)->availstate().value("stateid") == "xivo_unknown") ||
-             (b_engine->getFullId() == (*m_ui)->userid())) {
+        if (((*m_ui)->availstate() == "xivo_unknown") ||
+            (b_engine->getFullId() == (*m_ui)->userid())) {
             return true;
         }
     }

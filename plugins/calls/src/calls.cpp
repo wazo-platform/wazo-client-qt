@@ -201,7 +201,7 @@ void XletCalls::updateDisplay()
 void XletCalls::dragEnterEvent(QDragEnterEvent *event)
 {
     // qDebug() << Q_FUNC_INFO << event->mimeData()->formats();
-    if (event->mimeData()->hasFormat(USERID_MIMETYPE)) {
+    if (event->mimeData()->hasFormat(XUSERID_MIMETYPE)) {
         event->acceptProposedAction();
     }
 }
@@ -230,11 +230,11 @@ void XletCalls::monitorPeer(UserInfo *ui)
  */
 void XletCalls::dropEvent(QDropEvent *event)
 {
-    if (!event->mimeData()->hasFormat(USERID_MIMETYPE)) {
+    if (!event->mimeData()->hasFormat(XUSERID_MIMETYPE)) {
         event->ignore();
         return;
     }
-    qDebug() << Q_FUNC_INFO << event->mimeData()->data(USERID_MIMETYPE);
-    monitorPeerRequest(event->mimeData()->data(USERID_MIMETYPE));
+    qDebug() << Q_FUNC_INFO << event->mimeData()->data(XUSERID_MIMETYPE);
+    monitorPeerRequest(event->mimeData()->data(XUSERID_MIMETYPE));
     event->acceptProposedAction();
 }

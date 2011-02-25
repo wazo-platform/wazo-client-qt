@@ -343,12 +343,11 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
     }
 
     QDrag *drag = new QDrag(this);
-    QMimeData *mimeData = new QMimeData;
+    QMimeData * mimeData = new QMimeData;
     if (m_ui) {
         mimeData->setText(m_ui->phoneNumber());
-        mimeData->setData(PEER_MIMETYPE, m_ui->userid().toAscii());
-        mimeData->setData(USERID_MIMETYPE, m_ui->userid().toAscii());
-        mimeData->setData(NAME_MIMETYPE, m_ui->fullname().toUtf8());
+        mimeData->setData(XUSERID_MIMETYPE, m_ui->xuserid().toAscii());
+        mimeData->setData(XPHONEID_MIMETYPE, m_ui->phonelist().join("").toAscii());
     } else {
         mimeData->setText(m_number);
         mimeData->setData(NUMBER_MIMETYPE, m_number.toAscii());
@@ -672,9 +671,10 @@ QString BasePeerWidget::name() const
 void BasePeerWidget::dragEnterEvent(QDragEnterEvent *event)
 {
     // qDebug() << Q_FUNC_INFO << event->mimeData()->formats();
-    if (event->mimeData()->hasFormat(PEER_MIMETYPE)   ||
-       event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
-       event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
+    if (event->mimeData()->hasFormat(XUSERID_MIMETYPE)  ||
+        event->mimeData()->hasFormat(XPHONEID_MIMETYPE) ||
+        event->mimeData()->hasFormat(NUMBER_MIMETYPE)   ||
+        event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
         if (event->proposedAction() & (Qt::CopyAction|Qt::MoveAction)) {
             event->acceptProposedAction();
         }
@@ -700,7 +700,7 @@ void BasePeerWidget::dragMoveEvent(QDragMoveEvent *event)
  */
 void BasePeerWidget::dropEvent(QDropEvent *event)
 {
-    QString userid_from = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
+    QString userid_from = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
     QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
     QString to;
     if (m_ui) {
@@ -712,13 +712,14 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
              << event << event->keyboardModifiers()
              << event->mimeData() << event->proposedAction();
 
-    if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
+    if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE))
         qDebug() << Q_FUNC_INFO << "CHANNEL_MIMETYPE";
-    } else if (event->mimeData()->hasFormat(PEER_MIMETYPE)) {
-        qDebug() << Q_FUNC_INFO << "PEER_MIMETYPE";
-    } else if (event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
+    if (event->mimeData()->hasFormat(XUSERID_MIMETYPE))
+        qDebug() << Q_FUNC_INFO << "XUSERID_MIMETYPE";
+    if (event->mimeData()->hasFormat(XPHONEID_MIMETYPE))
+        qDebug() << Q_FUNC_INFO << "XPHONEID_MIMETYPE";
+    if (event->mimeData()->hasFormat(NUMBER_MIMETYPE))
         qDebug() << Q_FUNC_INFO << "NUMBER_MIMETYPE";
-    }
 
     switch(event->proposedAction()) {
         case Qt::CopyAction:
@@ -727,7 +728,7 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
                 event->acceptProposedAction();
                 b_engine->actionCall("transfer", "chan:" + userid_from + ":" + channel_from, to); // Call
 
-            } else if (event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+            } else if (event->mimeData()->hasFormat(XUSERID_MIMETYPE)) {
                 event->acceptProposedAction();
                 if (b_engine->enabledFunction("switchboard")) {
                     b_engine->actionCall("originate", "user:" + userid_from, to);

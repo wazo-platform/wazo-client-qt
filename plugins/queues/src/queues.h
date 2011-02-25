@@ -127,6 +127,8 @@ class XletQueues : public XLet
     public slots:
         void removeQueues(const QString &, const QStringList &);
         void newQueueList(const QStringList &);
+        void updateQueueConfig(const QString &);
+        void updateQueueStatus(const QString &);
         void settingChanged(const QVariantMap &);
         void updateLongestWaitWidgets();
         void askForQueueStats();

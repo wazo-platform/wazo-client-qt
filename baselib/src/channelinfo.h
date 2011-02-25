@@ -31,46 +31,40 @@
  * $Date$
  */
 
-#ifndef __PHONEINFO_H__
-#define __PHONEINFO_H__
+#ifndef __CHANNELINFO_H__
+#define __CHANNELINFO_H__
 
 #include "baselib_export.h"
-#include <QString>
 #include <QStringList>
 #include <QVariant>
-#include <QVariantMap>
+#include <QMap>
 
-/*! \brief Store Phone information
+/*! \brief Store informations on a user
  */
-class BASELIB_EXPORT PhoneInfo
+class BASELIB_EXPORT ChannelInfo
 {
     public:
-        PhoneInfo(const QString &, const QString &);  //! constructor
-        bool updateConfig(const QVariantMap &);  //! update config members
-        bool updateStatus(const QVariantMap &);  //! update status members
-        const QString & context() const { return m_context; };  //! context this phone belongs to
-        const QString & ipbxid() const { return m_ipbxid; };  //! asterisk id
-        const QString & number() const { return m_number; };  //! phone number
-        const QString & protocol() const { return m_protocol; };  //! phone technology (sip, iax, etc...)
-        const QString & phoneid() const { return m_phoneid; };  //! phone id
-        int simultcalls() const { return m_simultcalls; };  //! phone simultcalls
-
-        const QVariantMap & comms() const { return m_comms; };  //! current communications of this phone
-        const QString & hintstatus() const { return m_hintstatus; }; //! hint status value
+        ChannelInfo(const QString &, const QString &);
+        // bool updateConfig(const QVariantMap &);
+        bool updateStatus(const QVariantMap &);
+        const QString & ipbxid() const;
+        const QString & channel() const;
+        const QString & talkingto_kind() const;
+        const QString & talkingto_id() const;
+        const QString & direction() const;
+        bool monitored() const;
+        bool spied() const;
+        bool holded() const;
+        bool parked() const;
+        const QString & agent() const;
 
     private:
-        QString m_ipbxid;
-        QString m_phoneid;
+        QString m_ipbxid;  //!< IPBX id (for main phone)
+        QString m_channel;  //!< Channel name
 
-        QString m_protocol;
-        QString m_context;
-        QString m_number;
-        int m_simultcalls;
-
-        bool m_initialized;
-        bool m_enable_hint;
-        QString m_hintstatus;
-        QVariantMap m_comms;
+        QString m_talkingto_kind;
+        QString m_talkingto_id;
+        QString m_direction;
 };
 
 #endif

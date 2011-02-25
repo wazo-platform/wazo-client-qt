@@ -127,12 +127,13 @@ void BasicPeerWidget::setAgentState(const QString &)
 void BasicPeerWidget::updatePresence()
 {
     QString text = m_ui->phoneNumber();
+    QString availstate = m_ui->availstate();
     if (!m_ui->ctilogin().isEmpty()) {
         text.append(" ");
-        text.append(m_ui->availstate()["longname"]);
+        text.append("Ici"); // XXX replace with dependency on m_ui->availstate()
     }
     setToolTip(text);
-    m_presenceColor.setNamedColor(m_ui->availstate()["color"]);
+    m_presenceColor.setNamedColor("green"); // XXX replace with dependency on m_ui->availstate()
 }
 
 void BasicPeerWidget::updatePhonesStates()

@@ -101,16 +101,16 @@ XletSwitchBoard::~XletSwitchBoard()
 void XletSwitchBoard::updateUser(UserInfo *ui)
 {
     // qDebug() << Q_FUNC_INFO << ui->toString();
-    QString userid = ui->userid();
+    QString xuserid = ui->xuserid();
     PeerItem *peeritem = NULL;
-    if (m_peerhash.contains(userid)) {
-        peeritem = m_peerhash.value(userid);
+    if (m_peerhash.contains(xuserid)) {
+        peeritem = m_peerhash.value(xuserid);
     } else {
         peeritem = new PeerItem(ui);
-        m_peerhash.insert(userid, peeritem);
+        m_peerhash.insert(xuserid, peeritem);
         QSettings *settings = b_engine->getSettings();
         settings->beginGroup("layout");
-        QPoint pos = settings->value(userid, QPoint(-1, -1)).toPoint();
+        QPoint pos = settings->value(xuserid, QPoint(-1, -1)).toPoint();
         settings->endGroup();
         if (pos.x() >= 0) {
             addPeerWidget(peeritem, pos);
@@ -148,10 +148,10 @@ void XletSwitchBoard::updatePeerAgent(double,
  */
 void XletSwitchBoard::removePeerFromLayout()
 {
-    const QString userid = sender()->property("userid" ).toString();
-    // qDebug() << Q_FUNC_INFO << userid << m_peerhash.keys();
-    if (m_peerhash.contains(userid)) {
-        PeerItem *peeritem = m_peerhash[userid];
+    const QString xuserid = sender()->property("xuserid").toString();
+    // qDebug() << Q_FUNC_INFO << xuserid << m_peerhash.keys();
+    if (m_peerhash.contains(xuserid)) {
+        PeerItem *peeritem = m_peerhash[xuserid];
         BasePeerWidget *peerwidget = peeritem->getWidget();
         m_layout->removeWidget(peerwidget);
 
@@ -232,19 +232,18 @@ void XletSwitchBoard::changeGroupName()
  * \sa updatePeer
  * \sa removePeers
  */
-void XletSwitchBoard::removePeer(const QString &userid)
+void XletSwitchBoard::removePeer(const QString & xuserid)
 {
-    // qDebug() << Q_FUNC_INFO << userid;
-    if (m_peerhash.contains(userid)) {
-        PeerItem *peeritem = m_peerhash.value(userid);
-        BasePeerWidget *peerwidget = peeritem->getWidget();
+    // qDebug() << Q_FUNC_INFO << xuserid;
+    if (m_peerhash.contains(xuserid)) {
+        PeerItem * peeritem = m_peerhash.value(xuserid);
+        BasePeerWidget * peerwidget = peeritem->getWidget();
         m_layout->removeWidget(peerwidget);
         peerwidget->deleteLater();
-        delete m_peerhash.take(userid);
+        delete m_peerhash.take(xuserid);
         update();
     }
 }
-
 
 /*! \brief remove all peers
  *
@@ -288,8 +287,9 @@ void XletSwitchBoard::dragMoveEvent(QDragMoveEvent *event)
 void XletSwitchBoard::dragEnterEvent(QDragEnterEvent *event)
 {
     // qDebug() << Q_FUNC_INFO << event->mimeData()->formats();
-    if (event->mimeData()->hasFormat(USERID_MIMETYPE) ||
-       event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
+    if (event->mimeData()->hasFormat(XUSERID_MIMETYPE)  ||
+        event->mimeData()->hasFormat(XPHONEID_MIMETYPE) ||
+        event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
         event->acceptProposedAction();
     }
 }
@@ -303,11 +303,11 @@ void XletSwitchBoard::dragEnterEvent(QDragEnterEvent *event)
  */
 void XletSwitchBoard::dropEvent(QDropEvent *event)
 {
-    // qDebug() << Q_FUNC_INFO;
-    if (event->mimeData()->hasFormat(USERID_MIMETYPE)) {
-        QString userid = event->mimeData()->data(USERID_MIMETYPE);
-        if (m_peerhash.contains(userid)) {
-            PeerItem *peeritem = m_peerhash[userid];
+    if (event->mimeData()->hasFormat(XUSERID_MIMETYPE)) {
+        qDebug() << Q_FUNC_INFO << event->mimeData()->data(XUSERID_MIMETYPE);
+        QString xuserid = event->mimeData()->data(XUSERID_MIMETYPE);
+        if (m_peerhash.contains(xuserid)) {
+            PeerItem *peeritem = m_peerhash[xuserid];
             BasePeerWidget *peerwidget = peeritem->getWidget();
             if (peerwidget) {
                 m_layout->setItemPosition(peerwidget, m_layout->getPosInGrid(event->pos()));

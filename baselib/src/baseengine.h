@@ -52,13 +52,13 @@
 
 class Xlet;
 
-
 #include <userinfo.h>
 #include <phoneinfo.h>
 #include <agentinfo.h>
 #include <queueinfo.h>
 #include <meetmeinfo.h>
 #include <parkinginfo.h>
+#include <channelinfo.h>
 
 #include <dstore/src/dstore.h>
 
@@ -139,9 +139,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         bool hasCapaFun(QString &);                //!< 0 we don't have the fun, 1 we got it
 
-        const QStringList& getCapabilities() const;  //!< returns capabilities
-        const QStringList& getCapaXlets() const;
-        const QVariantMap& getCapaPresence() const;
+        const QStringList & getCapaXlets() const;
+        const QVariantMap & getCapaPresence() const;
 
         void setGuiOption(const QString &, const QVariant &);
         const QVariantMap getGuiOptions(const QString &) const;
@@ -153,8 +152,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void setLogFile(const QString &);
 
-        const QString& xivoUserId() const { return m_userid; };
-        const QString& getFullId() const { return m_xuserid; };
+        const QString & xivoUserId() const { return m_userid; };
+        const QString & getFullId() const { return m_xuserid; };
         UserInfo* getXivoClientUser();  //!< Return the user of the Xivo CTI Client
         double timeServer() const;
         const QDateTime& timeClient() const;
@@ -166,11 +165,18 @@ class BASELIB_EXPORT BaseEngine: public QObject
                                 void (*)(const QVariantMap &map, void *udata), void *udata);
         void sendJsonCommand(const QVariantMap &);
 
-        const QHash<QString, AgentInfo *> agents() const { return m_agents; }; //!< Return the agents to any Xlet
-        const QHash<QString, QueueInfo *> queues() const { return m_queues; }; //!< Return the queues to any Xlet
-        const QHash<QString, PhoneInfo *> phones() const { return m_phones; }; //!< Return the phones to any Xlet
-        const QHash<QString, UserInfo *>  users() const { return m_users; };  //!< Return the users  to any Xlet
-        const QHash<QString, QHash<QString, ParkingInfo *> > parking() const { return m_parking; }; //!< Return the parking to any Xlet
+        const QHash<QString, AgentInfo *> agents() const
+                { return m_agents; }; //!< Return the agents to any Xlet
+        const QHash<QString, QueueInfo *> queues() const
+                { return m_queues; }; //!< Return the queues to any Xlet
+        const QHash<QString, PhoneInfo *> phones() const
+                { return m_phones; }; //!< Return the phones to any Xlet
+        const QHash<QString, UserInfo *>  users() const
+                { return m_users; };  //!< Return the users to any Xlet
+        const QHash<QString, ChannelInfo *>  channels() const
+                { return m_channels; };  //!< Return the channels to any Xlet
+        const QHash<QString, QHash<QString, ParkingInfo *> > parking() const
+                { return m_parking; }; //!< Return the parking to any Xlet
 
         void registerTranslation(const QString &);
         void changeTranslation(const QString &);
@@ -259,6 +265,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
         //! the server requested a peer remove
         //void removePeer(const QString &);
         void userUpdated(UserInfo *);
+        void updatePhoneConfig(const QString &);
+        void updatePhoneStatus(const QString &);
+        void updateChannelStatus(const QString &);
+        void updateQueueConfig(const QString &);
+        void updateQueueStatus(const QString &);
         void updatePeerAgent(double, const QString &, const QString &, const QVariant &);
         void directoryResponse(const QStringList &, const QStringList &);  //! the directory search response has been received.
         void disconnectFeatures();
@@ -399,8 +410,13 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // miscellaneous statuses to share between xlets
         QHash<QString, UserInfo *> m_users;    //!< List of User Informations
         QHash<QString, PhoneInfo *> m_phones;  //!< List of Phone informations
+        QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
+
         QHash<QString, AgentInfo *> m_agents;  //!< List of Agent informations
         QHash<QString, QueueInfo *> m_queues;  //!< List of Queue informations
+/*         QHash<QString, GroupInfo *> m_groups;  //!< List of Group informations */
+/*         QHash<QString, VoicemailInfo *> m_voicemails;  //!< List of Queue informations */
+/*         QHash<QString, TrunkInfo *> m_trunks;  //!< List of Queue informations */
         QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 
         DStore *m_tree;

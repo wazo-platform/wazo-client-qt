@@ -58,6 +58,8 @@ class XletOperator : public XLet
         void xferPressed();
         void clicked();
         void updateUser(UserInfo *);
+        void updatePhoneStatus(const QString &);
+        void setUserInfo(const UserInfo *);
 
     private:
         void updateLine(const QString &, const QStringList &);
@@ -68,8 +70,10 @@ class XletOperator : public XLet
         QString getPeerChan(const QString &chan) const;
         void removeLine(const QString &);
 
-        QGridLayout *m_glayout;
-        QLabel *m_lbl;
+        UserInfo * m_ui;
+        QString m_xphoneid;
+        QGridLayout * m_glayout;
+        QLabel * m_lbl;
 
         QHash<QString, QFrame *> m_vlinesl;
         QHash<QString, QFrame *> m_vlinesr;

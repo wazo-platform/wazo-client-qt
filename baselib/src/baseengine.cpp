@@ -503,13 +503,13 @@ bool BaseEngine::hasCapaFun(QString & capa)
 }
 
 /*! \brief gets m_capaxlets */
-const QStringList& BaseEngine::getCapaXlets() const
+const QStringList & BaseEngine::getCapaXlets() const
 {
     return m_capaxlets;
 }
 
 /*! \brief gets m_capapresence */
-const QVariantMap& BaseEngine::getCapaPresence() const
+const QVariantMap & BaseEngine::getCapaPresence() const
 {
     return m_capapresence;
 }
@@ -990,7 +990,8 @@ void BaseEngine::parseCommand(const QString &line)
             QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
             // qDebug() << Q_FUNC_INFO << thisclass << m_users.size() << id;
             if (m_users.contains(id)) {
-                QString stateid = datamap.value("capapresence").toMap().value("state").toMap().value("stateid").toString();
+                QVariantMap state = datamap.value("capapresence").toMap().value("state").toMap();
+                QString stateid = state.value("stateid").toString();
                 QVariantMap changeme = m_guioptions.value("server_gui").toMap().value("presence.autochangestate").toMap();
                 if (changeme.count() && (id == m_xuserid)) {
                     if (changeme.contains(stateid)) {
@@ -1001,11 +1002,11 @@ void BaseEngine::parseCommand(const QString &line)
                         m_changestate_oldstate = stateid;
                     }
                 }
-                m_users[id]->setAvailState(datamap.value("capapresence").toMap().value("state"));
+                m_users[id]->setAvailState(stateid);
                 emit updatePeerAgent(m_timesrv, id, "imstatus", QStringList());
                 emit updateAgentPresence(m_users[id]->ipbxid(),
                                          m_users[id]->agentid(),
-                                         datamap.value("capapresence").toMap().value("state"));
+                                         state);
                 m_counters = datamap.value("presencecounter");
                 emit updateCounter(m_counters);
                 if (id == m_xuserid) {
@@ -1103,9 +1104,11 @@ void BaseEngine::parseCommand(const QString &line)
             m_ipbxid = datamap.value("ipbxid").toString();
             m_userid = datamap.value("userid").toString();
             m_xuserid = QString("%1/%2").arg(m_ipbxid).arg(m_userid);
+
+            m_appliname = datamap.value("appliname").toString();
             m_capafuncs = datamap.value("capafuncs").toStringList();
             m_capaxlets = datamap.value("capaxlets").toStringList();
-            m_appliname = datamap.value("appliname").toString();
+
             updateCapaPresence(datamap.value("capapresence"));
             m_forced_state = datamap.value("capapresence").toMap().value("state").toString();
             m_counters = datamap.value("presencecounter");
@@ -1236,6 +1239,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QString id = datamap.value("id").toString();
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
             QVariantMap config = datamap.value("config").toMap();
+            bool haschanged = false;
             if(listname == "users") {
                 if (! m_users.contains(xid))
                     m_users[xid] = new UserInfo(ipbxid, id);
@@ -1243,17 +1247,35 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit userUpdated(m_users[xid]);
                 if(xid == m_xuserid)
                     emit localUserInfoDefined(m_users[m_xuserid]);
+
+//             m_users[xuserid]->setAvailState(uinfo.value("statedetails"));
+//             m_users[xuserid]->setMWI(uinfo.value("mwi").toStringList());
+
+//             emit updatePeerAgent(m_timesrv, xuserid, "imstatus", QStringList());
+//             emit updateAgentPresence(m_users[xuserid]->ipbxid(),
+//                                      m_users[xuserid]->agentid(),
+//                                      uinfo.value("statedetails"));
+//             emit userUpdated(m_users[xuserid]);
+//             emit localUserInfoDefined(m_users[m_xuserid]);
+
+
             } else if(listname == "phones") {
                 if (m_phones.contains(xid))
-                    m_phones[xid]->updateConfig(config);
+                    haschanged = m_phones[xid]->updateConfig(config);
             } else if(listname == "agents") {
                 if (m_agents.contains(xid))
-                    m_agents[xid]->updateConfig(config);
+                    haschanged = m_agents[xid]->updateConfig(config);
             } else if(listname == "groups") {
             } else if(listname == "queues") {
                 if (m_queues.contains(xid))
-                    m_queues[xid]->updateConfig(config);
+                    haschanged = m_queues[xid]->updateConfig(config);
             }
+
+            qDebug() << function << listname << xid << haschanged;
+            if (listname == "phones")
+                updatePhoneConfig(xid);
+            else if (listname == "queues")
+                updateQueueConfig(xid);
 
             QVariantMap command;
             command["class"] = "getlist";
@@ -1267,21 +1289,30 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QString id = datamap.value("id").toString();
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
             QVariantMap status = datamap.value("status").toMap();
+            bool haschanged = false;
             if(listname == "users") {
                 if (m_users.contains(xid))
-                    m_users[xid]->updateStatus(status);
+                    haschanged = m_users[xid]->updateStatus(status);
             } else if(listname == "phones") {
                 if (m_phones.contains(xid))
-                    m_phones[xid]->updateStatus(status);
+                    haschanged = m_phones[xid]->updateStatus(status);
             } else if(listname == "agents") {
                 if (m_agents.contains(xid))
-                    m_agents[xid]->updateStatus(status);
+                    haschanged = m_agents[xid]->updateStatus(status);
             } else if(listname == "groups") {
+            } else if(listname == "channels") {
+                if (! m_channels.contains(xid))
+                    m_channels[xid] = new ChannelInfo(ipbxid, id);
+                haschanged = m_channels[xid]->updateStatus(status);
             } else if(listname == "queues") {
                 if (m_queues.contains(xid))
-                    m_queues[xid]->updateStatus(status);
+                    haschanged = m_queues[xid]->updateStatus(status);
             }
-            qDebug() << xid << listname << status;
+            // qDebug() << function << listname << xid << haschanged << status;
+            if (listname == "phones")
+                updatePhoneStatus(xid);
+            else if (listname == "channels")
+                updateChannelStatus(xid);
         }
     } else if (thisclass == "queues") {
         // qDebug() << Q_FUNC_INFO << "queues" << function << line.length();
@@ -1352,14 +1383,9 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     m_users[xuserid] = new UserInfo(ipbxid, userid);
 
                 m_users[xuserid]->updateConfig(uinfo);
+                m_users[xuserid]->updateStatus(uinfo);
 
                 //emit newUser(m_users[xuserid]);
-
-                // status
-                m_users[xuserid]->setAvailState(uinfo.value("statedetails"));
-                m_users[xuserid]->setMWI(uinfo.value("mwi").toStringList()); // to move to phone
-
-                // config
 
                 emit updatePeerAgent(m_timesrv, xuserid, "imstatus", QStringList());
                 emit updateAgentPresence(m_users[xuserid]->ipbxid(),
@@ -1399,29 +1425,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     fullid_watched = m_xuserid;
             }
             monitorPeerRequest(fullid_watched);
-
-
-        } else if (function == "getone") {
-            QString ipbxid = datamap.value("ipbxid").toString();
-            QString userid = datamap.value("userid").toString();
-            QString xuserid = QString("%1/%2").arg(ipbxid).arg(userid);
-            QVariantMap uinfo = datamap.value("payload").toMap();
-            if (! m_users.contains(xuserid))
-                m_users[xuserid] = new UserInfo(ipbxid, userid);
-
-            // config
-            m_users[xuserid]->updateConfig(uinfo);
-
-            // status
-            m_users[xuserid]->setAvailState(uinfo.value("statedetails"));
-            m_users[xuserid]->setMWI(uinfo.value("mwi").toStringList());
-
-            emit updatePeerAgent(m_timesrv, xuserid, "imstatus", QStringList());
-            emit updateAgentPresence(m_users[xuserid]->ipbxid(),
-                                     m_users[xuserid]->agentid(),
-                                     uinfo.value("statedetails"));
-            emit userUpdated(m_users[xuserid]);
-            emit localUserInfoDefined(m_users[m_xuserid]);
 
         } else if (function == "update") {
             QStringList userupdate = datamap.value("user").toStringList();

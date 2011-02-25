@@ -46,27 +46,31 @@ UserInfo::UserInfo(const QString & ipbxid,
 {
     m_ipbxid = ipbxid;
     m_userid = id;
+    m_xuserid = QString("%1/%2").arg(ipbxid).arg(id);
 }
 
 bool UserInfo::updateConfig(const QVariantMap & qvm)
 {
     bool haschanged = true;
-    this->setCtiLogin(qvm.value("loginclient").toString());
-    this->setFullName(qvm.value("fullname").toString());
-    this->setPhones(qvm.value("techlist").toStringList());
-    this->setPhoneNumber(qvm.value("number").toString());
-    this->setMobileNumber(qvm.value("mobilephonenumber").toString());
-    this->setAgentId(qvm.value("agentid").toString());
-    this->setContext(qvm.value("context").toString());
-    this->setSimultCalls(qvm.value("simultcalls").toInt());
-    this->setVoiceMailNumber(qvm.value("voicemailnum").toString());
-    this->setAgentNumber(qvm.value("agentnumber").toString());
+    setCtiLogin(qvm.value("loginclient").toString());
+    setFullName(qvm.value("fullname").toString());
+    setPhoneNumber(qvm.value("number").toString());
+    setMobileNumber(qvm.value("mobilephonenumber").toString());
+    setContext(qvm.value("context").toString());
+    setSimultCalls(qvm.value("simultcalls").toInt());
+    QStringList lid;
+    foreach (QString id, qvm.value("id").toStringList())
+        lid << QString("%1/%2").arg(m_ipbxid).arg(id);
+    setPhoneIdList(lid);
+    setAgentId(qvm.value("agentid").toString());
+    setVoiceMailId(qvm.value("voicemailid").toString());
     return haschanged;
 }
 
-bool UserInfo::updateStatus(const QVariantMap &)
+bool UserInfo::updateStatus(const QVariantMap & qvm)
 {
     bool haschanged = true;
+    setAvailState(qvm.value("availstate").toString());
     return haschanged;
 }
 
@@ -97,38 +101,14 @@ void UserInfo::setSimultCalls(int simultcalls)
     m_simultcalls = simultcalls;
 }
 
-void UserInfo::setVoiceMailNumber(const QString &voicemailnum)
-{
-    m_voicemailnumber = voicemailnum;
-}
-
-void UserInfo::setContext(const QString &context)
-{
-    m_context = context;
-}
-
-/*! \brief set phone list
- *
- * fill m_phones Hash with pointers to PhoneInfo objects
- */
-void UserInfo::setPhones(const QStringList & termlist)
-{
-    m_phones = termlist;
-}
-
-/*! \brief update availability state */
-void UserInfo::setAvailState(const QVariant & availstate)
-{
-    m_availstate.clear();
-    const QVariantMap map = availstate.toMap();
-    foreach (const QString key, map.keys()) {
-        m_availstate[key] = map.value(key).toString();
-    }
-}
-
 void UserInfo::setAgentNumber(const QString & agentnumber)
 {
     m_agentnumber = agentnumber;
+}
+
+void UserInfo::setPhoneIdList(const QStringList & phoneidlist)
+{
+    m_phoneidlist = phoneidlist;
 }
 
 void UserInfo::setAgentId(const QString & agentid)
@@ -136,16 +116,32 @@ void UserInfo::setAgentId(const QString & agentid)
     m_agentid = agentid;
 }
 
+void UserInfo::setVoiceMailId(const QString & voicemailid)
+{
+    m_voicemailid = voicemailid;
+}
+
+void UserInfo::setContext(const QString & context)
+{
+    m_context = context;
+}
+
+/*! \brief update availability state */
+void UserInfo::setAvailState(const QString & availstate)
+{
+    m_availstate = availstate;
+}
+
 /*! \brief set Message Waiting indicator */
-void UserInfo::setMWI(const QStringList &mwi)
+void UserInfo::setMWI(const QStringList & mwi)
 {
     m_mwi = mwi;
 }
 
 /*! \brief check if this user has this phone */
-bool UserInfo::hasPhone(const QString & term) const
+bool UserInfo::hasPhoneId(const QString & xphoneid) const
 {
-    return m_phones.contains(term);
+    return m_phoneidlist.contains(xphoneid);
 }
 
 /*! \brief check if this user has this agent */
@@ -155,40 +151,45 @@ bool UserInfo::hasAgentNumber(const QString & agentnumber) const
 }
 
 /*! \brief return m_fullname */
-const QString& UserInfo::fullname() const
+const QString & UserInfo::fullname() const
 {
     return m_fullname;
 }
 
 /*! \brief return m_phonenumber */
-const QString& UserInfo::phoneNumber() const
+const QString & UserInfo::phoneNumber() const
 {
     return m_phonenumber;
 }
 
 /*! \brief return m_mobilenumber */
-const QString& UserInfo::mobileNumber() const
+const QString & UserInfo::mobileNumber() const
 {
     return m_mobilenumber;
 }
 
-const QString& UserInfo::voicemailNumber() const
+const QString & UserInfo::voicemailNumber() const
 {
     return m_voicemailnumber;
 }
 
-const QString& UserInfo::userid() const
+const QString & UserInfo::userid() const
 {
     return m_userid;
 }
 
-const QString& UserInfo::ctilogin() const
+const QString & UserInfo::xuserid() const
+{
+    return m_xuserid;
+}
+
+const QString & UserInfo::ctilogin() const
 {
     return m_ctilogin;
 }
 
 /*! \brief return Message Waiting Indicator */
-const QStringList& UserInfo::mwi() const
+const QStringList & UserInfo::mwi() const
 {
     return m_mwi;
 }
@@ -215,15 +216,15 @@ const QString& UserInfo::ipbxid() const
     return m_ipbxid;
 }
 
-const QHash<QString, QString> & UserInfo::availstate() const
+const QString & UserInfo::availstate() const
 {
     return m_availstate;
 }
 
 /*! \brief return list of phones identifier */
-QStringList UserInfo::phonelist() const
+const QStringList & UserInfo::phonelist() const
 {
-    return m_phones;
+    return m_phoneidlist;
 }
 
 /*! \brief return a String representation of the object
@@ -237,8 +238,8 @@ QString UserInfo::toString() const
     str = "Userid=" + m_userid + " company=" + m_company + " fullname=" + m_fullname;
     str += " phonenum=" + m_phonenumber + " mobile=" + m_mobilenumber;
     str += " m_voicemailnum=" + m_voicemailnumber;
-    str += " nphones=" + QString::number(m_phones.size());
-    str += " phonesids=" + m_phones.join(",");
+    str += " nphones=" + QString::number(m_phoneidlist.size());
+    str += " phonesids=" + m_phoneidlist.join(",");
 
     return str;
 }

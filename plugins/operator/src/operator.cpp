@@ -68,6 +68,16 @@ XletOperator::XletOperator(QWidget * parent)
     // connect signal/SLOTS
     connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
             this, SLOT(updateUser(UserInfo *)));
+    connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
+            this, SLOT(setUserInfo(const UserInfo *)));
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            this, SLOT(updatePhoneStatus(const QString &)));
+}
+
+void XletOperator::setUserInfo(const UserInfo *)
+{
+    m_ui = b_engine->getXivoClientUser();
+    m_xphoneid = m_ui->phonelist().join("");
 }
 
 /*! \brief add a line of widgets for a call
@@ -253,6 +263,7 @@ void XletOperator::functionKeyPressed(int keynum)
         changeCurrentChannel(m_currentchannel, m_callchannels[ci]);
         m_currentchannel = m_callchannels[ci];
     }
+
     QString action;
     if (m_actionkey.contains(keynum)) {
         action = m_actionkey[keynum][0];
@@ -260,21 +271,16 @@ void XletOperator::functionKeyPressed(int keynum)
         return;
     }
 
-    QString userid;
-    if (b_engine->getXivoClientUser()) {
-        userid = b_engine->getXivoClientUser()->userid();
-    }
-
     if (m_callchannels.contains(m_currentchannel)) {
         Line linestatus = m_linestatuses[m_currentchannel];
         qDebug() << Q_FUNC_INFO << keynum << action << m_currentchannel << linestatus;
         if (action == "answer") {
-            b_engine->actionCall("answer", QString("chan:%1:not_relevant_here").arg(userid));
+            b_engine->actionCall("answer", QString("chan:%1:not_relevant_here").arg(m_xphoneid));
         } else if (action == "hangup") {
             if (linestatus == Ringing || linestatus == WITransfer || linestatus == WDTransfer) {
-                b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel))); // Call
+                b_engine->actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(getPeerChan(m_currentchannel))); // Call
             } else {
-                b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // Call
+                b_engine->actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(m_currentchannel)); // Call
             }
         } else if (action == "dtransfer") {
             dtransfer();
@@ -293,17 +299,17 @@ void XletOperator::functionKeyPressed(int keynum)
         } else if (action == "park") {
             b_engine->actionCall("transfer", "chan:special:me:" + m_currentchannel, "ext:special:parkthecall");
         } else if (action == "atxferfinalize") {
-            b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel));
+            b_engine->actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(m_currentchannel));
         } else if (action == "atxfercancel") {
-            b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));
+            b_engine->actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(getPeerChan(m_currentchannel)));
             updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
         } else if (action == "ilink") {
-            b_engine->actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel));
+            b_engine->actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(m_currentchannel));
         } else if (action == "icancel") {
             // the CTI server will find the appropriate related channel to hangup
-            b_engine->actionCall("transfercancel", QString("chan:%1:%2").arg(userid).arg(m_currentchannel));
-            // emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(getPeerChan(m_currentchannel)));  // does nothing
-            // emit actionCall("hangup", QString("chan:%1:%2").arg(userid).arg(m_currentchannel)); // finalize the indirect transfer
+            b_engine->actionCall("transfercancel", QString("chan:%1:%2").arg(m_xphoneid).arg(m_currentchannel));
+            // emit actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(getPeerChan(m_currentchannel)));  // does nothing
+            // emit actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(m_currentchannel)); // finalize the indirect transfer
         }
         //            if (action == "unpark")
         //                qDebug() << Q_FUNC_INFO << "F1 when Wait : Take back";
@@ -327,79 +333,80 @@ void XletOperator::changeCurrentChannel(const QString & before, const QString & 
     }
 }
 
-void XletOperator::updateUser(UserInfo * ui)
+void XletOperator::updatePhoneStatus(const QString & xphoneid)
 {
-    //qDebug() << Q_FUNC_INFO << ui << b_engine->getXivoClientUser();
-    if (!ui || !b_engine->getXivoClientUser())
+    if (xphoneid != m_xphoneid)
         return;
-    if (ui == b_engine->getXivoClientUser()) {
-        m_lbl->setText(ui->fullname());
-        QStringList chanList;
-        // it is concerning our user
-        QString ipbxid = ui->ipbxid();
-        foreach(const QString phoneid, ui->phonelist()) {
-            QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-            const PhoneInfo * pi = b_engine->phones().value(xphoneid);
-            if (pi) {
-                QMapIterator<QString, QVariant> it( pi->comms());
-                while (it.hasNext()) {
-                    it.next();
-                    QVariantMap qvm = it.value().toMap();
-                    const QString callchannel = qvm["thischannel"].toString();
-                    const QString status = qvm["status"].toString();
-                    const QString peerchan = qvm["peerchannel"].toString();
-                    const QString num = qvm["calleridnum"].toString();
-                    qDebug() << Q_FUNC_INFO << it.key() << status << num << callchannel << peerchan << qvm["atxfer"];
-                    if (callchannel.isEmpty())
-                        continue;
-                    chanList << callchannel;
-                    if (status == CHAN_STATUS_RINGING) {
-                        if (!m_callchannels.contains(callchannel)) {
-                            newCall(callchannel);
-                            m_callchannels << callchannel;
-                            m_linestatuses[callchannel] = Ringing;
-                            QStringList action = QStringList() << "hangup"
-                                                               << "dtransfer"
-                                                               << "park";
-                            if (b_engine->getGuiOptions("client_gui").value("xlet_operator_answer_work", 1).toInt()) {
-                                action << "answer";
-                            }
-                            updateLine(callchannel, action);
-                            m_statuses[callchannel]->setText(tr("%1 Ringing").arg(num));
-                            m_statuses[callchannel]->show();
-                        }
-                    } else if ((status == CHAN_STATUS_LINKED_CALLED) ||
-                               (status == CHAN_STATUS_LINKED_CALLER)) {
-                        if (!m_callchannels.contains(callchannel)) {
-                            newCall(callchannel);
-                            m_callchannels << callchannel;
-                        }
-                        m_linestatuses[callchannel] = Online;
-                        QStringList allowed;
-                        allowed << "hangup" << "dtransfer" << "itransfer" << "park";
-                        if (qvm["atxfer"].toBool())
-                            allowed << "atxferfinalize" << "atxfercancel";
-                        updateLine(callchannel, allowed);
-                        m_statuses[callchannel]->setText(tr("Link %1").arg(num));
-                        m_statuses[callchannel]->show();
-                    } else if (status == CHAN_STATUS_HANGUP) {
-                        if (m_callchannels.contains(callchannel)) {
-                            removeLine(callchannel);
-                        }
-                    } else {
-                        qDebug() << Q_FUNC_INFO << "not processed" << callchannel << peerchan << status;
-                    }
+    const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+    if (phoneinfo == NULL)
+        return;
+
+    QStringList chanList;
+    QMapIterator<QString, QVariant> it(phoneinfo->comms());
+    while (it.hasNext()) {
+        it.next();
+        QVariantMap qvm = it.value().toMap();
+        const QString callchannel = qvm["thischannel"].toString();
+        const QString status = qvm["status"].toString();
+        const QString peerchan = qvm["peerchannel"].toString();
+        const QString num = qvm["calleridnum"].toString();
+        qDebug() << Q_FUNC_INFO << it.key() << status << num << callchannel << peerchan << qvm["atxfer"];
+        if (callchannel.isEmpty())
+            continue;
+        chanList << callchannel;
+        if (status == CHAN_STATUS_RINGING) {
+            if (!m_callchannels.contains(callchannel)) {
+                newCall(callchannel);
+                m_callchannels << callchannel;
+                m_linestatuses[callchannel] = Ringing;
+                QStringList action = QStringList() << "hangup"
+                                                   << "dtransfer"
+                                                   << "park";
+                if (b_engine->getGuiOptions("client_gui").value("xlet_operator_answer_work", 1).toInt()) {
+                    action << "answer";
                 }
+                updateLine(callchannel, action);
+                m_statuses[callchannel]->setText(tr("%1 Ringing").arg(num));
+                m_statuses[callchannel]->show();
             }
-        }
-        //qDebug() << Q_FUNC_INFO << "chanList" << chanList << "m_callchannels" << m_callchannels;
-        // clean up "ghost" entries...
-        foreach (QString chan, m_callchannels) {
-            if (!chanList.contains(chan)) {
-                removeLine(chan);
+        } else if ((status == CHAN_STATUS_LINKED_CALLED) ||
+                   (status == CHAN_STATUS_LINKED_CALLER)) {
+            if (!m_callchannels.contains(callchannel)) {
+                newCall(callchannel);
+                m_callchannels << callchannel;
             }
+            m_linestatuses[callchannel] = Online;
+            QStringList allowed;
+            allowed << "hangup" << "dtransfer" << "itransfer" << "park";
+            if (qvm["atxfer"].toBool())
+                allowed << "atxferfinalize" << "atxfercancel";
+            updateLine(callchannel, allowed);
+            m_statuses[callchannel]->setText(tr("Link %1").arg(num));
+            m_statuses[callchannel]->show();
+        } else if (status == CHAN_STATUS_HANGUP) {
+            if (m_callchannels.contains(callchannel)) {
+                removeLine(callchannel);
+            }
+        } else {
+            qDebug() << Q_FUNC_INFO << "not processed" << callchannel << peerchan << status;
         }
     }
+
+    foreach (QString chan, m_callchannels) {
+        if (!chanList.contains(chan)) {
+            removeLine(chan);
+        }
+    }
+}
+
+void XletOperator::updateUser(UserInfo * ui)
+{
+    if (! m_ui)
+        return;
+    if (m_ui != ui)
+        return;
+
+    m_lbl->setText(ui->fullname());
 }
 
 /*! \brief get the peer channel linked to channel
@@ -409,11 +416,10 @@ void XletOperator::updateUser(UserInfo * ui)
  */
 QString XletOperator::getPeerChan(QString const & chan) const
 {
-    UserInfo * ui = b_engine->getXivoClientUser();
-    if (! ui)
+    if (! m_ui)
         return QString();
-    QString ipbxid = ui->ipbxid();
-    foreach (const QString phoneid, ui->phonelist()) {
+    QString ipbxid = m_ui->ipbxid();
+    foreach (const QString phoneid, m_ui->phonelist()) {
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
         const PhoneInfo * pi = b_engine->phones().value(xphoneid);
         if (pi) {

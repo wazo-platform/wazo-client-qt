@@ -115,8 +115,8 @@ void DialPanel::setNumberToDial(const QString & text)
 
 void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 {
-    // qDebug() << Q_FUNC_INFO << event;
-    if(event->mimeData()->hasFormat(PEER_MIMETYPE))
+    qDebug() << Q_FUNC_INFO << event;
+    if(event->mimeData()->hasFormat(XPHONEID_MIMETYPE))
         event->acceptProposedAction();
 }
 
@@ -127,7 +127,7 @@ void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 void DialPanel::dropEvent(QDropEvent * event)
 {
     QString ext;
-    QString originator = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
+    QString originator = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
     qDebug() << Q_FUNC_INFO << originator << m_input->lineEdit();
     if(m_input->lineEdit()) {
         qDebug() << Q_FUNC_INFO << event << originator << m_input->lineEdit()->text();

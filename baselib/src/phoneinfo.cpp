@@ -38,6 +38,7 @@ PhoneInfo::PhoneInfo(const QString & ipbxid,
 {
     m_ipbxid = ipbxid;
     m_phoneid = phoneid;
+    m_simultcalls = 0;
     m_initialized = false;
     m_enable_hint = false;
 }
@@ -45,9 +46,10 @@ PhoneInfo::PhoneInfo(const QString & ipbxid,
 bool PhoneInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = true;
-    m_tech = prop.value("tech").toString();
+    m_protocol = prop.value("protocol").toString();
     m_context = prop.value("context").toString();
     m_number = prop.value("number").toString();
+    m_simultcalls = prop.value("simultcalls").toInt();
 
     if (prop.contains("initialized")) {
         m_initialized = prop.value("initialized").toBool();

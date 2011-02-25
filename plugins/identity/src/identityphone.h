@@ -52,9 +52,9 @@ class IdentityPhoneLine : public QWidget
 
     public:
         IdentityPhoneLine(int linenum, QWidget *parent=0);
-        void setPixmap(const QPixmap &pixmap);
-        void setText(const QString &text);
-
+        void setPixmap(const QPixmap &);
+        void setText(const QString &);
+        void setPhoneId(const QString &);
     public slots:
         void setUserInfo(const UserInfo *);
         void hangup();
@@ -65,10 +65,10 @@ class IdentityPhoneLine : public QWidget
         void contextMenuEvent(QContextMenuEvent *);
 
     private:
-        const UserInfo *m_ui;  //!< pointer to UserInfo
+        QString m_xphoneid;
         int m_linenum;
-        QLabel *m_action;
-        QLabel *m_status;
+        QLabel * m_action;
+        QLabel * m_status;
 };
 
 /*! \brief Display Phone informations
@@ -81,23 +81,24 @@ class IdentityPhone : public QWidget
 
     public:
         IdentityPhone(QWidget *parent=0);
-        void svcSummary(QVariantMap &svcstatus);
+        void svcSummary(QVariantMap &);
+        void setPhoneId(const QString &);
     public slots:
-        void setUserInfo(const UserInfo *);
+        void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
-        void updateUser(UserInfo *);
+        void updateChannelStatus(const QString &);
+        void updateLines(const QVariantMap &);
     private:
         void setPhoneLines();
-        const UserInfo * m_ui;  //!< pointer to UserInfo
+        QString m_xphoneid;
 
-        QGridLayout *m_layout;  //!< layout
-        QLabel *m_icon;  //!< icon
-        QLabel *m_phone;  //!< Phone name label
-        QLabel *m_phonecall;
-        QLabel *m_phonecalltxt;
-        QLabel *m_phonestatustxt;
+        QGridLayout * m_layout;  //!< layout
+        QLabel * m_icon;  //!< icon
+        QLabel * m_phone;  //!< Phone name label
+        QLabel * m_phonecall;
+        QLabel * m_phonecalltxt;
+        QLabel * m_phonestatustxt;
         QList<IdentityPhoneLine *> m_lines;
 };
 
 #endif
-

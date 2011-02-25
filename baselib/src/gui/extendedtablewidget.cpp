@@ -150,7 +150,7 @@ void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
 void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
     // qDebug() << Q_FUNC_INFO << event->mimeData()->formats() << event->pos();
-    if (event->mimeData()->hasFormat(PEER_MIMETYPE) ||
+    if (event->mimeData()->hasFormat(XPHONEID_MIMETYPE) ||
         event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
         event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
         event->acceptProposedAction();
@@ -186,14 +186,14 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
     // qDebug() << Q_FUNC_INFO << event->mimeData()->text() << event->pos();
     QTableWidgetItem *item = itemAt(event->pos());
     if ((item) && (m_re_number.exactMatch(item->text()))) {
-        QString userid_from = QString::fromAscii(event->mimeData()->data(USERID_MIMETYPE));
+        QString userid_from = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
         QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
         if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
             event->acceptProposedAction();
             b_engine->actionCall("transfer",
                                  "chan:" + userid_from + ":" + channel_from,
                                  "ext:" + item->text());
-        } else if (event->mimeData()->hasFormat(PEER_MIMETYPE)) {
+        } else if (event->mimeData()->hasFormat(XPHONEID_MIMETYPE)) {
             event->acceptProposedAction();
             b_engine->actionCall("originate",
                                  "user:" + userid_from,

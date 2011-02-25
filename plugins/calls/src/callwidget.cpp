@@ -199,7 +199,7 @@ void CallWidget::mouseMoveEvent(QMouseEvent *event)
     QDrag *drag = new QDrag(this);
     QMimeData *mimeData = new QMimeData();
     mimeData->setText(m_channelpeer);
-    mimeData->setData(USERID_MIMETYPE, m_ui->userid().toAscii());
+    mimeData->setData(XUSERID_MIMETYPE, m_ui->xuserid().toAscii());
     mimeData->setData(CHANNEL_MIMETYPE, m_channelpeer.toAscii());
     drag->setMimeData(mimeData);
 

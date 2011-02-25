@@ -148,8 +148,8 @@ XletQueues::XletQueues(QWidget *parent)
     timer_display->start(1000);
     timer_request->start(nsecs * 1000);
 
-    connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
-            this, SLOT(newQueueList(const QStringList &)));
+    connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
+            this, SLOT(updateQueueConfig(const QString &)));
     connect(b_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
             this, SLOT(removeQueues(const QString &, const QStringList &)));
     connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
@@ -220,31 +220,26 @@ void XletQueues::removeQueues(const QString &, const QStringList &queues)
     }
 }
 
-/*! \brief update display once the queues have been received
- */
-void XletQueues::newQueueList(const QStringList &qsl)
+void XletQueues::updateQueueConfig(const QString & xqueueid)
 {
-    // qDebug() << "newQueueList" << qsl;
-    QHashIterator<QString, QueueInfo *> iter = \
-        QHashIterator<QString, QueueInfo *>(b_engine->queues());
+    qDebug() << Q_FUNC_INFO << xqueueid;
+    QueueInfo * queueinfo = b_engine->queues().value(xqueueid);
+    if (queueinfo == NULL)
+        return;
 
-    while (iter.hasNext()) {
-        iter.next();
-        if (qsl.contains(iter.key())) {
-            QueueInfo *qinfo = iter.value();
-            QString queueId = qinfo->id();
-
-            // qDebug() << "newQueueList hay" << this->parentWidget() << m_queueList.size() << queueId;
-            if (!m_queueList.contains(queueId)) {
-                m_queueList[queueId] = new QueueRow(qinfo, this);
-                m_layout->addWidget(m_queueList[queueId]);
-                updateLongestWaitWidgets();
-            } else {
-                m_queueList.value(queueId)->updateRow();
-            }
-        }
+    if (! m_queueList.contains(xqueueid)) {
+        m_queueList[xqueueid] = new QueueRow(queueinfo, this);
+        m_layout->addWidget(m_queueList[xqueueid]);
+        updateLongestWaitWidgets();
+    } else {
+        m_queueList.value(xqueueid)->updateRow();
     }
     loadQueueOrder();
+}
+
+void XletQueues::updateQueueStatus(const QString & xqueueid)
+{
+    qDebug() << Q_FUNC_INFO << xqueueid;
 }
 
 /*! \brief set queue order

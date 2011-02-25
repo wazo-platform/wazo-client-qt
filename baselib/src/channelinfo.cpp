@@ -31,33 +31,46 @@
  * $Date$
  */
 
-#ifndef __XiVOCONSTS_H__
-#define __XiVOCONSTS_H__
+#include <QDebug>
 
-#include "baselib_export.h"
-#include <QString>
-#include <QStringList>
+#include "channelinfo.h"
 
-#define XUSERID_MIMETYPE  "XiVO_IPBX_XUSERID"
-#define XPHONEID_MIMETYPE "XiVO_IPBX_XPHONEID"
-#define NUMBER_MIMETYPE   "XiVO_IPBX_NUMBER"
-#define CHANNEL_MIMETYPE  "XiVO_IPBX_CHANNEL"
+/*! \brief Constructor
+ *
+ * just set userid
+ */
+ChannelInfo::ChannelInfo(const QString & ipbxid,
+                         const QString & id)
+{
+    m_ipbxid = ipbxid;
+    m_channel = id;
+}
 
-#define XiVO_COMMAND_ROOT "XiVO_COMMAND_ROOT"
+// bool ChannelInfo::updateConfig(const QVariantMap &)
+// {
+//     bool haschanged = true;
+//     return haschanged;
+// }
 
-#define CHAN_STATUS_READY "ready"
-#define CHAN_STATUS_HANGUP "hangup"
-#define CHAN_STATUS_CALLING "calling"
-#define CHAN_STATUS_RINGING "ringing"
-#define CHAN_STATUS_LINKED_CALLER "linked-caller"
-#define CHAN_STATUS_LINKED_CALLED "linked-called"
-#define CHAN_STATUS_UNLINKED_CALLER "unlinked-caller"
-#define CHAN_STATUS_UNLINKED_CALLED "unlinked-called"
+bool ChannelInfo::updateStatus(const QVariantMap & qvm)
+{
+    bool haschanged = true;
+    m_talkingto_kind = qvm.value("talkingto_kind").toString();
+    m_talkingto_id = qvm.value("talkingto_id").toString();
+    return haschanged;
+}
 
-BASELIB_EXPORT extern const char __datebuild_client__[];
-BASELIB_EXPORT extern const char __xivo_version__[];
-BASELIB_EXPORT extern const char __git_hash__[];
-BASELIB_EXPORT extern const char __git_date__[];
-BASELIB_EXPORT extern const char __nopresence__[];
+const QString & ChannelInfo::talkingto_kind() const
+{
+    return m_talkingto_kind;
+}
 
-#endif /* __XiVOCONSTS_H__ */
+const QString & ChannelInfo::talkingto_id() const
+{
+    return m_talkingto_id;
+}
+
+const QString & ChannelInfo::channel() const
+{
+    return m_channel;
+}
