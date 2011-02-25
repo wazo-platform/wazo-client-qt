@@ -185,4 +185,3 @@ void DialPanel::clearlist()
 {
     m_input->clear();
 }
-

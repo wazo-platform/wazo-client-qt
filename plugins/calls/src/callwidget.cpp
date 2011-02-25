@@ -51,20 +51,22 @@
  *
  * set up the widget, start timer.
  */
-CallWidget::CallWidget(UserInfo *ui, const QString &channelme,
-                       const QString &status, uint ts,
-                       const QString &channelpeer, const QString & callerid,
-                       const QString &calleridname, QWidget *parent,
+CallWidget::CallWidget(UserInfo * ui, const QString & channel,
+                       uint ts, QWidget *parent,
                        const PhoneInfo *_pi)
     : QWidget(parent), m_square(16,16), m_parkedCall(false)
 {
-    // qDebug() << Q_FUNC_INFO << channelme;
+    qDebug() << Q_FUNC_INFO << channel;
+    const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+    if(channelinfo == NULL)
+        return;
+    QString status = channelinfo->status();
+
     m_ui = ui;
     pi = _pi;
     QGridLayout * gridlayout = new QGridLayout(this);
 
-    m_channelme = channelme;
-    m_channelpeer = channelpeer;
+    m_channel = channel;
 
     gridlayout->setColumnStretch(3, 1);
     m_lbl_status = new QLabel(this);
@@ -84,7 +86,7 @@ CallWidget::CallWidget(UserInfo *ui, const QString &channelme,
     gridlayout->addWidget(m_lbl_exten, 0, 2);
 
     //updateWidget(status, ts, "cpeer", callerid, calleridname);
-    updateWidget(status, ts, channelpeer, callerid, calleridname, pi);
+    updateWidget(channel, ts, pi);
 
     m_hangUpAction = new QAction(tr("&Hangup"), this);
     m_hangUpAction->setStatusTip(tr("Hang up/Close the channel"));
@@ -122,19 +124,16 @@ void CallWidget::timerEvent(QTimerEvent * /*event*/)
 
 /*! \brief update displayed stuff
  */
-void CallWidget::updateWidget(const QString & status,
-                              uint ts,
-                              const QString & channelpeer,
-                              const QString & callerid,
-                              const QString & calleridname,
-                              const PhoneInfo * _pi
-                              )
+void CallWidget::updateWidget(const QString & channel, uint ts,
+                              const PhoneInfo * _pi)
 {
+    const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+    if(channelinfo == NULL)
+        return;
+    QString status = channelinfo->status();
     pi = _pi;
-    qDebug() << Q_FUNC_INFO << status << ts << channelpeer << callerid << calleridname;
-    m_parkedCall = (callerid == QString("<parked>")) || (calleridname == QString("<parked>"));
+    m_parkedCall = channelinfo->isparked();
     setActionPixmap(status);
-    m_channelpeer = channelpeer;
     //qDebug() << time << m_startTime << m_startTime.secsTo(QDateTime::currentDateTime());
     //m_startTime = QDateTime::currentDateTime().addSecs(-time);
     m_startTime = QDateTime::fromTime_t(ts);
@@ -147,16 +146,12 @@ void CallWidget::updateWidget(const QString & status,
         qDebug() << Q_FUNC_INFO << "status unknown" << status;
 
     QString text = tr("Unknown");
-    if(calleridname == "<meetme>")
-        text = tr("Conference room number %1").arg(callerid);
-    else if(calleridname == "<parked>")
-        text = tr("Parked call in %1").arg(callerid);
-    else if(callerid == "<parked>")
-        text = tr("Parked call");
-    else if(calleridname != "<unknown>" && !calleridname.isEmpty() && calleridname != callerid)
-        text = tr("%1 : %2").arg(callerid).arg(calleridname);
-    else if(!callerid.isEmpty())
-        text = callerid;
+    if(channelinfo->talkingto_kind() == "<meetme>")
+        text = tr("Conference room number %1").arg(channelinfo->talkingto_id());
+    else if(channelinfo->isparked())
+        text = tr("Parked call in %1").arg("767");
+    else
+        text = channelinfo->peerdisplay();
     m_lbl_exten->setText(text);
 }
 
@@ -194,13 +189,13 @@ void CallWidget::mouseMoveEvent(QMouseEvent *event)
         < QApplication::startDragDistance())
         return;
 
-    qDebug() << Q_FUNC_INFO << "starting DRAG" << m_channelme ;
+    qDebug() << Q_FUNC_INFO << "starting DRAG" << m_channel ;
 
     QDrag *drag = new QDrag(this);
     QMimeData *mimeData = new QMimeData();
-    mimeData->setText(m_channelpeer);
+    mimeData->setText(m_channel); // XXX was m_channelpeer --- why ??
     mimeData->setData(XUSERID_MIMETYPE, m_ui->xuserid().toAscii());
-    mimeData->setData(CHANNEL_MIMETYPE, m_channelpeer.toAscii());
+    mimeData->setData(CHANNEL_MIMETYPE, m_channel.toAscii()); // XXX was m_channelpeer --- what for ??
     drag->setMimeData(mimeData);
 
     Qt::DropAction dropAction = drag->start(Qt::CopyAction | Qt::MoveAction);
@@ -211,24 +206,23 @@ void CallWidget::mouseMoveEvent(QMouseEvent *event)
  */
 void CallWidget::hangUp()
 {
-    qDebug() << Q_FUNC_INFO << m_channelme;
-    doHangUp( m_channelme );
+    qDebug() << Q_FUNC_INFO << m_channel;
+    doHangUp( m_channel );
 }
 
 /*! \brief transfers the channel to a number
  */
 void CallWidget::transferToNumber()
 {
-    qDebug() << Q_FUNC_INFO << m_channelpeer;
-    doTransferToNumber( m_channelpeer);
+    doTransferToNumber(m_channel);
 }
 
 /*! \brief transfers the channel to a number
  */
 void CallWidget::parkCall()
 {
-    qDebug() << Q_FUNC_INFO << m_channelme;
-    doParkCall( m_channelme );
+    qDebug() << Q_FUNC_INFO << m_channel;
+    doParkCall( m_channel );
 }
 
 /*! \brief open the context menu
@@ -245,9 +239,9 @@ void CallWidget::contextMenuEvent(QContextMenuEvent *event)
     contextMenu.exec(event->globalPos());
 }
 
-/*! \brief return m_channelme
+/*! \brief return m_channel
  */
 const QString& CallWidget::channel() const
 {
-    return m_channelme;
+    return m_channel;
 }

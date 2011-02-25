@@ -256,16 +256,17 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
             QString ipbxid = ui->ipbxid();
             foreach (const QString phoneid, ui->phonelist()) {
                 QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-                const PhoneInfo * pi = b_engine->phones().value(xphoneid);
-                if (!pi)
+                const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+                if (phoneinfo == NULL)
                     continue;
-                const QVariantMap & comms = pi->comms();
-                //qDebug() << pi->phoneid() << pi->comms();
-                foreach (const QString ts, comms.keys()) {
-                    const QVariantMap & comm = comms.value(ts).toMap();
-                    //qDebug() << pi->phoneid() << ts << comm;
-                    const QString status = comm.value("status").toString();
-                    if (status == CHAN_STATUS_LINKED_CALLER || status == CHAN_STATUS_LINKED_CALLED) {
+                foreach (const QString channel, phoneinfo->channels()) {
+                    const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+                    if(channelinfo == NULL)
+                        continue;
+                    //qDebug() << phoneinfo->phoneid() << ts << comm;
+                    const QString status = channelinfo->status();
+                    if ((status == CHAN_STATUS_LINKED_CALLER) ||
+                        (status == CHAN_STATUS_LINKED_CALLED)) {
                         QString to;
                         if (m_ui) {
                             to = "user:" + m_ui->userid();
@@ -274,7 +275,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                         }
                         // Initiate an indirect transfer.
                         b_engine->actionCall("atxfer",
-                                             "chan:special:me:" + comm.value("thischannel").toString(),
+                                             QString("chan:special:me:%1").arg(channel),
                                              to);
                         return;
                     }
@@ -286,18 +287,17 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
             QString ipbxid = m_ui->ipbxid();
             foreach (const QString phoneid, m_ui->phonelist()) {
                 QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-                const PhoneInfo * pi = b_engine->phones().value(xphoneid);
-                if (!pi)
+                const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+                if (phoneinfo == NULL)
                     continue;
-                const QVariantMap & comms = pi->comms();
-                //qDebug() << pi->phoneid() << pi->comms();
-                foreach (const QString ts, comms.keys()) {
-                    const QVariantMap & comm = comms.value(ts).toMap();
-                    //qDebug() << pi->phoneid() << ts << comm;
-                    const QString status = comm.value("status").toString();
+                foreach (const QString channel, phoneinfo->channels()) {
+                    const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+                    if(channelinfo == NULL)
+                        continue;
+                    const QString status = channelinfo->status();
                     if (status == CHAN_STATUS_RINGING) {
                         b_engine->actionCall("transfer",
-                                             "chan:" + m_ui->userid() + ":" + comm.value("peerchannel").toString(),
+                                             QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
                                              "user:special:me");
                         return;
                     }
@@ -437,51 +437,43 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
         //qDebug() << m_ui->phonelist();
         // TODO : upgrade this when several phones per user will be supported
         // or at least check it's working as expected
-        // int commsCount = m_ui->commsCount();
-        int commsCount = 0;    // number of current comms
+
         QString ipbxid = m_ui->ipbxid();
         foreach (const QString phoneid, m_ui->phonelist()) {
             QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-            const PhoneInfo * pi = b_engine->phones().value(xphoneid);
-            if (!pi)
+            const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+            if (phoneinfo == NULL)
                 continue;
-            const QVariantMap &comms = pi->comms();
-            foreach (const QString ts, comms.keys()) {
-                const QVariantMap & comm = comms.value(ts).toMap();
-                //qDebug() << Q_FUNC_INFO << pi->phoneid() << ts << comm;
-                const QString status = comm.value("status").toString();
-                QString text = comm.value("calleridnum").toString();
-
-                if ((comm.contains("calleridname") &&
-                     (comm.value("calleridname") != comm.value("calleridnum")))) {
-                    text.append(" : ");
-                    text.append(comm.value("calleridname").toString());
-                }
-
+            int commsCount = phoneinfo->channels().count();
+            foreach (const QString channel, phoneinfo->channels()) {
+                const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+                if(channelinfo == NULL)
+                    continue;
+                const QString status = channelinfo->status();
+                QString text = channelinfo->peerdisplay();
                 /* hanging up others communication doesn't make much sense
                  * excepting in test environment or in special cases. */
                 if ((m_ui == ui) &&
                     ((status == CHAN_STATUS_LINKED_CALLER) ||
                      (status == CHAN_STATUS_LINKED_CALLED))) {
-
+                    
                     if (!hangupMenu && (commsCount > 1)) {
                         hangupMenu = new QMenu(tr("&Hangup"), &contextMenu);
                     }
-
+                    
                     build.aQActionMenu((hangupMenu) ? hangupMenu : &contextMenu,
-                                        commsCount > 1 ? text : tr("&Hangup"),
-                                        tr("Hangup this communication"),
-                                       comm.value("thischannel"),
-                                       comm.value("peerchannel"),
-                                        this, SLOT(hangup()));
+                                       commsCount > 1 ? text : tr("&Hangup"),
+                                       tr("Hangup this communication"),
+                                       channel,
+                                       channel /*XXXX was peerchannel*/,
+                                       this, SLOT(hangup()));
                 }
                 if ((m_ui != ui) &&
                     ((status == CHAN_STATUS_RINGING) ||
                      (status == CHAN_STATUS_LINKED_CALLER) ||
                      (status == CHAN_STATUS_LINKED_CALLED)) &&
-                    (comm.value("calleridnum") != QString("<parked>")) &&
-                    (comm.value("calleridname") != QString("<parked>")) &&
-                     (b_engine->enabledFunction("switchboard"))) {
+                    (! channelinfo->isparked()) &&
+                    b_engine->enabledFunction("switchboard")) {
 
                     qDebug() << Q_FUNC_INFO << interceptMenu << commsCount;
 
@@ -492,8 +484,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                     build.aQActionMenu((interceptMenu)?interceptMenu:&contextMenu,
                                        commsCount > 1 ? text : tr("&Intercept"),
                                        tr("Intercept this communication"),
-                                       comm.value("thischannel"),
-                                       comm.value("peerchannel"),
+                                       channel,
+                                       channel /*XXXX was peerchannel*/,
                                        this, SLOT(intercept()));
                 }
                 /* Parking doesn't make much sense here : people usually park their
@@ -509,8 +501,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                     build.aQActionMenu(parkMenu?parkMenu:&contextMenu,
                                        commsCount > 1 ? text : tr("&Park"),
                                        tr("Park this call"),
-                                       comm.value("thischannel"),
-                                       comm.value("peerchannel"),
+                                       channel,
+                                       channel /*XXXX was peerchannel*/,
                                        this, SLOT(parkcall()));
                 }
             }
@@ -519,36 +511,27 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     // get "my" currently open channels
     //qDebug() << m_ui->userid() << ui;
     if (ui && ui != m_ui) {
-        int commsCount = 0; // ui->commsCount();    // number of current comms
         QString ipbxid = ui->ipbxid();
-        qDebug() << Q_FUNC_INFO << "commsCount" << commsCount;
         foreach (const QString phoneid, ui->phonelist()) {
             QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-            const PhoneInfo * pi = b_engine->phones().value(xphoneid);
-            if (!pi)
+            const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+            if (phoneinfo == NULL)
                 continue;
-            const QVariantMap & comms = pi->comms();
-            // qDebug() << Q_FUNC_INFO << pi->phoneid() << pi->comms();
-            foreach (const QString ts, comms.keys()) {
-                const QVariantMap & comm = comms.value(ts).toMap();
-                qDebug() << Q_FUNC_INFO << "my comms : " << pi->phoneid() << ts << comm;
-                const QString status = comm.value("status").toString();
-                QString calleridnum = comm.value("calleridnum").toString();
-                QString calleridname = calleridnum;
-                QString text = calleridnum;
+            int commsCount = phoneinfo->channels().count();
+            foreach (const QString channel, phoneinfo->channels()) {
+                const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+                if(channelinfo == NULL)
+                    continue;
+                const QString status = channelinfo->status();
+                QString text = channelinfo->peerdisplay();
 
-                if (comm.contains("calleridname") &&
-                    comm.value("calleridname") != calleridnum) {
-                    calleridname = comm.value("calleridname").toString();
-                    text.append(" : ");
-                    text.append(calleridname);
-                }
-
-                if (calleridname == QString("<meetme>")) {
-                    QAction *meetmeAction = new QAction(tr("Invite in meetme room %1").arg(calleridnum), &contextMenu);
-                    meetmeAction->setProperty("number", calleridnum);
+                if (channelinfo->talkingto_kind() == QString("<meetme>")) {
+                    QAction *meetmeAction = new QAction(tr("Invite in meetme room %1")
+                                                        .arg(channelinfo->talkingto_id()),
+                                                        & contextMenu);
+                    meetmeAction->setProperty("number", channelinfo->talkingto_id());
                     connect(meetmeAction, SIGNAL(triggered()),
-                             this, SLOT(peerdial()));
+                            this, SLOT(peerdial()));
                     contextMenu.addAction(meetmeAction);
                 } else {
                     if (!transferMenu && commsCount > 1)
@@ -561,8 +544,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                         transferAction = new QAction(tr("Direct &Transfer"), &contextMenu);
                         transferAction->setStatusTip(tr("Transfer to this person"));
                     }
-                    transferAction->setProperty("thischannel", comm.value("thischannel"));
-                    transferAction->setProperty("peerchannel", comm.value("peerchannel"));
+                    transferAction->setProperty("thischannel", channel);
+                    // transferAction->setProperty("peerchannel", peerchannel); // XXXX we should manage it on the server
                     connect(transferAction, SIGNAL(triggered()),
                              this, SLOT(transfer()));
                     if (transferMenu) {
@@ -572,7 +555,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                     }
                 }
 
-                if (calleridname != QString("<meetme>")) {
+                if (channelinfo->talkingto_kind() != QString("<meetme>")) {
                     if (!itransferMenu && commsCount > 1) {
                         itransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
                     }
@@ -589,9 +572,9 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                         itransferCancelAction = new QAction(tr("&Cancel the Transfer"), &contextMenu);
                         itransferCancelAction->setStatusTip(tr("Cancel the Transfer"));
                     }
-                    itransferAction->setProperty("thischannel", comm.value("thischannel"));
-                    itransferAction->setProperty("peerchannel", comm.value("peerchannel"));
-                    itransferCancelAction->setProperty("thischannel", comm.value("thischannel"));
+                    itransferAction->setProperty("thischannel", channel);
+                    // itransferAction->setProperty("peerchannel", peerchannel); // XXXX we should manage it on the server
+                    itransferCancelAction->setProperty("thischannel", channel);
 
                     connect(itransferAction, SIGNAL(triggered()),
                             this, SLOT(itransfer()));
@@ -606,7 +589,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                         contextMenu.addAction(itransferCancelAction);
                     }
                 }
-                if (m_ui && calleridname != QString("<meetme>")) {
+                if (m_ui && channelinfo->talkingto_kind() != QString("<meetme>")) {
                     // TODO : check if this really has a Voice Mail
                     if (!vmtransferMenu && commsCount > 1)
                         vmtransferMenu = new QMenu(tr("Transfer to &voice mail"), &contextMenu);
@@ -618,8 +601,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                         vmtransferAction = new QAction(tr("Transfer to &voice mail"), &contextMenu);
                         vmtransferAction->setStatusTip(tr("Transfer to voice mail"));
                     }
-                    vmtransferAction->setProperty("thischannel", comm.value("thischannel"));
-                    vmtransferAction->setProperty("peerchannel", comm.value("peerchannel"));
+                    vmtransferAction->setProperty("thischannel", channel);
+                    // vmtransferAction->setProperty("peerchannel", peerchannel)); // XXXX we should manage it on the server
                     connect(vmtransferAction, SIGNAL(triggered()),
                              this, SLOT(vmtransfer()));
                     if (vmtransferMenu) {
@@ -639,15 +622,12 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                                               << transferMenu
                                               << itransferMenu
                                               << vmtransferMenu)) {
-        if (menu) {
+        if (menu)
             contextMenu.addMenu(menu);
-        }
     }
 
-
-    if (!contextMenu.isEmpty()) {
+    if (!contextMenu.isEmpty())
         contextMenu.exec(event->globalPos());
-    }
 }
 
 /*!

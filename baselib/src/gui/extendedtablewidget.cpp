@@ -88,27 +88,21 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
                 foreach (const QString phoneid, ui->phonelist()) {
                     QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
                     const PhoneInfo * pi = b_engine->phones().value(xphoneid);
-                    if (pi) {
-                        QMapIterator<QString, QVariant> it( pi->comms() );
-                        while(it.hasNext()) {
-                            it.next();
-                            QVariantMap call = it.value().toMap();
-                            // Add the transfer entry with the callerid name and num
-                            QString text;
-                            if (call.contains("calleridname")) {
-                                text.append( call["calleridname"].toString() );
-                                text.append(" : ");
-                            }
-                            text.append(call["calleridnum"].toString() );
+                    if (! pi)
+                        continue;
+                    foreach (const QString channel, pi->channels()) {
+                        const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+                        if (! channelinfo)
+                            continue;
+                        QString text = channelinfo->peerdisplay();
 
-                            action = transferMenu->addAction(text, this, SLOT(dtransfer()));
-                            action->setProperty("chan", call["peerchannel"]);
-                            action->setProperty("number", item->text());
+                        action = transferMenu->addAction(text, this, SLOT(dtransfer()));
+                        action->setProperty("chan", channel);
+                        action->setProperty("number", item->text());
 
-                            action = indirectTransferMenu->addAction(text, this, SLOT(itransfer()));
-                            action->setProperty("chan", call["thischannel"]);
-                            action->setProperty("number", item->text());
-                        }
+                        action = indirectTransferMenu->addAction(text, this, SLOT(itransfer()));
+                        action->setProperty("chan", channel);
+                        action->setProperty("number", item->text());
                     }
                 }
             }
@@ -242,6 +236,8 @@ void ExtendedTableWidget::dtransfer()
 {
     QString chan = sender()->property("chan").toString();
     QString number = sender()->property("number").toString();
+    // XXX as of today 2011/02/25, chan is not the right one here,
+    // we should make it so that the server fetches the proper peerchannel
     if ((!chan.isEmpty())&&(!number.isEmpty())) {
         b_engine->actionCall("transfer",
                              "chan:special:me:" + chan,

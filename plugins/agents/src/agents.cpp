@@ -286,12 +286,13 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
         QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(b_engine->phones());
         while (iter.hasNext()) {
             iter.next();
-            if ((iter.value()->number() == phonenum) && (iter.value()->ipbxid() == ainfo->ipbxid())) {
-                foreach(QString uniqueid, iter.value()->comms().keys()) {
-                    QVariantMap commval = iter.value()->comms().value(uniqueid).toMap();
-                    ttips << tr("online with %1 (%2)")
-                        .arg(commval.value("calleridname").toString())
-                        .arg(commval.value("calleridnum").toString());
+            if ((iter.value()->number() == phonenum) &&
+                (iter.value()->ipbxid() == ainfo->ipbxid())) {
+                foreach (const QString channel, iter.value()->channels()) {
+                    const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+                    if(channelinfo == NULL)
+                        continue;
+                    ttips << tr("online with %1").arg(channelinfo->peerdisplay());
                 }
             }
         }

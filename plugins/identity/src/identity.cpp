@@ -320,27 +320,21 @@ void IdentityDisplay::updateUser(UserInfo * ui)
     QString ipbxid = m_ui->ipbxid();
     foreach(QString phoneid, m_ui->phonelist()) {
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-        const PhoneInfo * p_pi = b_engine->phones().value(xphoneid);
-        if(p_pi == NULL)
+        const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+        if(phoneinfo == NULL)
             continue;
-        QMapIterator<QString, QVariant> iter = QMapIterator<QString, QVariant>(p_pi->comms());
-        QStringList busylines;
-        while( iter.hasNext() ) {
-            iter.next();
-            QVariantMap callprops = iter.value().toMap();
-            if(callprops.contains("linenum")) {
-                QString ics = callprops.value("linenum").toString();
-                QString status = callprops.value("status").toString();
-                QString todisplay = callprops.value("calleridname").toString();
-                bool isholded = callprops.contains("time-hold");
-                busylines << ics;
+        foreach (const QString channel, phoneinfo->channels()) {
+            const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+            if(channelinfo == NULL)
+                continue;
+            QString status = channelinfo->status();
+            QString todisplay = channelinfo->peerdisplay();
 
-                QPixmap square_comm(25, 3);
-                square_comm.fill(isholded ? Qt::darkGreen : Qt::green);
-                if(status == "hangup") {
-                    todisplay = tr("(Line %1)").arg(ics);
-                    square_comm.fill(Qt::black);
-                }
+            QPixmap square_comm(25, 3);
+            square_comm.fill(channelinfo->isholded() ? Qt::darkGreen : Qt::green);
+            if(status == "hangup") {
+                todisplay = tr("(Line %1)").arg(channelinfo->linenumber());
+                square_comm.fill(Qt::black);
             }
         }
     }

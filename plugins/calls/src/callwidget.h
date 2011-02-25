@@ -56,9 +56,9 @@ class CallWidget : public QWidget
     Q_OBJECT
 
     public:
-        CallWidget(UserInfo *, const QString &, const QString &, uint, const QString &, const QString &, const QString &, QWidget * parent, const PhoneInfo * pi);
+        CallWidget(UserInfo *, const QString &, uint, QWidget * parent, const PhoneInfo * pi);
 
-        void updateWidget(const QString &, uint, const QString &, const QString &, const QString &, const PhoneInfo *);
+        void updateWidget(const QString &, uint, const PhoneInfo *);
 
         const QString& channel() const;
     protected:
@@ -78,24 +78,20 @@ class CallWidget : public QWidget
         void transferToNumber();
         void parkCall();
     private:
-        UserInfo *m_ui;  //!< monitored user infos
+        UserInfo * m_ui;  //!< monitored user infos
         QPoint m_dragstartpos;  //!< used for drag
-        QString m_channelme;  //!< channel identifier
-        QString m_channelpeer;  //!< peer channel identifier
-        QString m_callerid;  //!< caller id
-        QString m_calleridname;  //!< caller id name
-        QLabel *m_lbl_status;  //!< sub widget
-        QLabel *m_lbl_time;  //!< sub widget
-        QLabel *m_lbl_direction;  //!< sub widget
-        QLabel *m_lbl_channelpeer;  //!< sub widget
-        QLabel *m_lbl_exten;  //!< sub widget
+        QString m_channel;  //!< channel identifier
+        QLabel * m_lbl_status;  //!< sub widget
+        QLabel * m_lbl_time;  //!< sub widget
+        QLabel * m_lbl_direction;  //!< sub widget
+        QLabel * m_lbl_exten;  //!< sub widget
         QPixmap m_square;  //!< QPixmap used to display the status square
         QDateTime m_startTime;  //!< call start date/time
-        QAction *m_hangUpAction;  //!< Hang Up Action
-        QAction *m_transferToNumberAction;  //!< Transfer to Number Action
-        QAction *m_parkCall;  //!< Park the Call Action
+        QAction * m_hangUpAction;  //!< Hang Up Action
+        QAction * m_transferToNumberAction;  //!< Transfer to Number Action
+        QAction * m_parkCall;  //!< Park the Call Action
         bool m_parkedCall;  //!< Is it a parked call ?
-        const PhoneInfo *pi;
+        const PhoneInfo * pi;
 };
 
 #endif

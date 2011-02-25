@@ -52,19 +52,29 @@ class BASELIB_EXPORT ChannelInfo
         const QString & talkingto_kind() const;
         const QString & talkingto_id() const;
         const QString & direction() const;
-        bool monitored() const;
-        bool spied() const;
-        bool holded() const;
-        bool parked() const;
+        const QString & status() const;
+        const QString peerdisplay() const;
+        int linenumber() const;
+        bool ismonitored() const;
+        bool isspied() const;
+        bool isholded() const;
+        bool isparked() const;
         const QString & agent() const;
 
     private:
         QString m_ipbxid;  //!< IPBX id (for main phone)
         QString m_channel;  //!< Channel name
 
+        QString m_status;
         QString m_talkingto_kind;
         QString m_talkingto_id;
         QString m_direction;
+        int m_linenumber;
+        bool m_ismonitored;
+        bool m_isspied;
+        bool m_isholded;
+        bool m_isparked;
+        // XXX atxfer currently in progress ?
 };
 
 #endif

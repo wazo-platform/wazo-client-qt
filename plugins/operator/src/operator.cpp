@@ -341,60 +341,53 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
     if (phoneinfo == NULL)
         return;
 
-    QStringList chanList;
-    QMapIterator<QString, QVariant> it(phoneinfo->comms());
-    while (it.hasNext()) {
-        it.next();
-        QVariantMap qvm = it.value().toMap();
-        const QString callchannel = qvm["thischannel"].toString();
-        const QString status = qvm["status"].toString();
-        const QString peerchan = qvm["peerchannel"].toString();
-        const QString num = qvm["calleridnum"].toString();
-        qDebug() << Q_FUNC_INFO << it.key() << status << num << callchannel << peerchan << qvm["atxfer"];
-        if (callchannel.isEmpty())
+    foreach (const QString channel, phoneinfo->channels()) {
+        const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+        if(channelinfo == NULL)
             continue;
-        chanList << callchannel;
+        const QString status = channelinfo->status();
+        const QString todisplay = channelinfo->peerdisplay();
         if (status == CHAN_STATUS_RINGING) {
-            if (!m_callchannels.contains(callchannel)) {
-                newCall(callchannel);
-                m_callchannels << callchannel;
-                m_linestatuses[callchannel] = Ringing;
+            if (!m_callchannels.contains(channel)) {
+                newCall(channel);
+                m_callchannels << channel;
+                m_linestatuses[channel] = Ringing;
                 QStringList action = QStringList() << "hangup"
                                                    << "dtransfer"
                                                    << "park";
                 if (b_engine->getGuiOptions("client_gui").value("xlet_operator_answer_work", 1).toInt()) {
                     action << "answer";
                 }
-                updateLine(callchannel, action);
-                m_statuses[callchannel]->setText(tr("%1 Ringing").arg(num));
-                m_statuses[callchannel]->show();
+                updateLine(channel, action);
+                m_statuses[channel]->setText(tr("%1 Ringing").arg(todisplay));
+                m_statuses[channel]->show();
             }
         } else if ((status == CHAN_STATUS_LINKED_CALLED) ||
                    (status == CHAN_STATUS_LINKED_CALLER)) {
-            if (!m_callchannels.contains(callchannel)) {
-                newCall(callchannel);
-                m_callchannels << callchannel;
+            if (!m_callchannels.contains(channel)) {
+                newCall(channel);
+                m_callchannels << channel;
             }
-            m_linestatuses[callchannel] = Online;
+            m_linestatuses[channel] = Online;
             QStringList allowed;
             allowed << "hangup" << "dtransfer" << "itransfer" << "park";
-            if (qvm["atxfer"].toBool())
-                allowed << "atxferfinalize" << "atxfercancel";
-            updateLine(callchannel, allowed);
-            m_statuses[callchannel]->setText(tr("Link %1").arg(num));
-            m_statuses[callchannel]->show();
+            // if (qvm["atxfer"].toBool()) XXXX
+            // allowed << "atxferfinalize" << "atxfercancel";
+            updateLine(channel, allowed);
+            m_statuses[channel]->setText(tr("Link %1").arg(todisplay));
+            m_statuses[channel]->show();
         } else if (status == CHAN_STATUS_HANGUP) {
-            if (m_callchannels.contains(callchannel)) {
-                removeLine(callchannel);
+            if (m_callchannels.contains(channel)) {
+                removeLine(channel);
             }
         } else {
-            qDebug() << Q_FUNC_INFO << "not processed" << callchannel << peerchan << status;
+            qDebug() << Q_FUNC_INFO << "not processed" << channel << status;
         }
     }
 
-    foreach (QString chan, m_callchannels) {
-        if (!chanList.contains(chan)) {
-            removeLine(chan);
+    foreach (const QString channel, m_callchannels) {
+        if (! phoneinfo->channels().contains(channel)) {
+            removeLine(channel);
         }
     }
 }
@@ -416,27 +409,33 @@ void XletOperator::updateUser(UserInfo * ui)
  */
 QString XletOperator::getPeerChan(QString const & chan) const
 {
-    if (! m_ui)
-        return QString();
-    QString ipbxid = m_ui->ipbxid();
-    foreach (const QString phoneid, m_ui->phonelist()) {
-        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-        const PhoneInfo * pi = b_engine->phones().value(xphoneid);
-        if (pi) {
-            QMapIterator<QString, QVariant> it(pi->comms());
-            while (it.hasNext()) {
-                it.next();
-                QVariantMap qvm = it.value().toMap();
-                if (qvm["thischannel"].toString() == chan) {
-                    QString peerchan = qvm["peerchannel"].toString();
-                    // ugly workaround...
-                    if (peerchan.endsWith("<MASQ>"))
-                        peerchan.remove("<MASQ>");
-                    return peerchan;
-                }
-            }
-        }
-    }
+//     if (! m_ui)
+//         return QString();
+//     QString ipbxid = m_ui->ipbxid();
+//     foreach (const QString phoneid, m_ui->phonelist()) {
+//         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+//         const PhoneInfo * pi = b_engine->phones().value(xphoneid);
+//         if (pi == NULL)
+//             continue;
+//         foreach (const QString channel, pi->channels()) {
+//             const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+//             if(channelinfo == NULL)
+//                 continue;
+
+//             QMapIterator<QString, QVariant> it(pi->comms());
+//             while (it.hasNext()) {
+//                 it.next();
+//                 QVariantMap qvm = it.value().toMap();
+//                 if (qvm["thischannel"].toString() == chan) {
+//                     QString peerchan = qvm["peerchannel"].toString();
+//                     // ugly workaround...
+//                     if (peerchan.endsWith("<MASQ>"))
+//                         peerchan.remove("<MASQ>");
+//                     return peerchan;
+//                 }
+//             }
+//         }
+//     }
     return QString();
 }
 

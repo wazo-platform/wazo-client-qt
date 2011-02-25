@@ -74,3 +74,39 @@ const QString & ChannelInfo::channel() const
 {
     return m_channel;
 }
+
+const QString & ChannelInfo::status() const
+{
+    return m_status;
+}
+
+const QString ChannelInfo::peerdisplay() const
+{
+    // go fetch information about 'talking to'
+    return "who";
+}
+
+int ChannelInfo::linenumber() const
+{
+    return m_linenumber;
+}
+
+bool ChannelInfo::ismonitored() const
+{
+    return m_ismonitored;
+}
+
+bool ChannelInfo::isspied() const
+{
+    return m_isspied;
+}
+
+bool ChannelInfo::isholded() const
+{
+    return m_isholded;
+}
+
+bool ChannelInfo::isparked() const
+{
+    return m_isparked;
+}

@@ -55,7 +55,7 @@ class BASELIB_EXPORT PhoneInfo
         const QString & phoneid() const { return m_phoneid; };  //! phone id
         int simultcalls() const { return m_simultcalls; };  //! phone simultcalls
 
-        const QVariantMap & comms() const { return m_comms; };  //! current communications of this phone
+        const QStringList & channels() const { return m_channels; };  //! current communications of this phone
         const QString & hintstatus() const { return m_hintstatus; }; //! hint status value
 
     private:
@@ -70,7 +70,7 @@ class BASELIB_EXPORT PhoneInfo
         bool m_initialized;
         bool m_enable_hint;
         QString m_hintstatus;
-        QVariantMap m_comms;
+        QStringList m_channels;
 };
 
 #endif

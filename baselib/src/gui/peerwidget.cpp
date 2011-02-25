@@ -169,15 +169,15 @@ void PeerWidget::updatePhonesStates()
     QString ipbxid = m_ui->ipbxid();
     foreach(QString phoneid, m_ui->phonelist()) {
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-        const PhoneInfo * pi = b_engine->phones().value(xphoneid);
-        if (pi) {
-            QString color = "white"; // XXXX function of p_pi->hintstatus();
-            QString longname = "Here"; // XXXX function of p_pi->hintstatus();
+        const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+        if (phoneinfo != NULL) {
+            QString color = "white"; // XXXX function of phoneinfo->hintstatus();
+            QString longname = "Here"; // XXXX function of phoneinfo->hintstatus();
             QColor c = QColor(color);
-            m_lblphones[phoneid]->setPixmap( \
-                TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
+            m_lblphones[phoneid]->setPixmap(                            \
+                    TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
             m_lblphones[phoneid]->setToolTip(tr("Phone %1 : %2")
-                                             .arg(pi->number())
+                                             .arg(phoneinfo->number())
                                              .arg(longname));
         }
     }

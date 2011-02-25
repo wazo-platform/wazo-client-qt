@@ -125,50 +125,38 @@ void XletCalls::updateDisplay()
         QString ipbxid = m_monitored_ui->ipbxid();
         foreach (const QString phoneid, m_monitored_ui->phonelist()) {
             QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-            const PhoneInfo * pi = b_engine->phones().value(xphoneid);
-            if (!pi) {
+            const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+            if (phoneinfo == NULL)
                 continue;
-            }
-            QMapIterator<QString, QVariant> it = QMapIterator<QString, QVariant>( pi->comms() );
-            while (it.hasNext()) {
-                it.next();
-                QVariantMap map = it.value().toMap();
-                // qDebug() << it.key() << map;
-                QString channelme = map.value("thischannel").toString();
-                QString status = map.value("status").toString();
+            foreach (const QString channel, phoneinfo->channels()) {
+                const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+                if(channelinfo == NULL)
+                    continue;
+                QString status = channelinfo->status();
                 uint ts = current_ts;
-                if(map.contains("time-dial"))
-                    ts = map.value("time-dial").toUInt() + current_ts;
-                if(map.contains("timestamp-dial"))
-                    ts = map.value("timestamp-dial").toDouble() + b_engine->timeDeltaServerClient();
-                if(map.contains("time-link"))
-                    ts = map.value("time-link").toUInt() + current_ts;
-                if(map.contains("timestamp-link"))
-                    ts = map.value("timestamp-link").toDouble() + b_engine->timeDeltaServerClient();
-                QString channelpeer = map.value("peerchannel").toString();
-                QString callerid = map.value("calleridnum").toString();
-                QString calleridname = map.value("calleridname").toString();
+//                 if(map.contains("time-dial"))
+//                     ts = map.value("time-dial").toUInt() + current_ts;
+//                 if(map.contains("timestamp-dial"))
+//                     ts = map.value("timestamp-dial").toDouble() + b_engine->timeDeltaServerClient();
+//                 if(map.contains("time-link"))
+//                     ts = map.value("time-link").toUInt() + current_ts;
+//                 if(map.contains("timestamp-link"))
+//                     ts = map.value("timestamp-link").toDouble() + b_engine->timeDeltaServerClient();
                 // qDebug() << Q_FUNC_INFO << it.key() << channelme << "status" << status;
                 // dont display hangup channels !
-                if (status == CHAN_STATUS_HANGUP) {
+                if (status == CHAN_STATUS_HANGUP)
                     continue;
-                }
-                //activeChannels << channelme;
-                activeUids << it.key();
-//                qDebug() << Q_FUNC_INFO << "adding/updating" << channelme;
-                if (m_affhash.contains(/*channelme*/it.key())) {
-                    m_affhash[it.key()/*channelme*/]->updateWidget(status, ts, channelpeer,
-                                                                   callerid, calleridname, pi);
-                } else {
+                // activeChannels << channelme;
+                // activeUids << it.key(); XXX
+                // qDebug() << Q_FUNC_INFO << "adding/updating" << channelme;
+                if (m_affhash.contains(channel))
+                    m_affhash[channel]->updateWidget(channel, ts, phoneinfo);
+                else {
                     callwidget = new CallWidget(m_monitored_ui,
-                                                channelme,
-                                                status,
+                                                channel,
                                                 ts,
-                                                channelpeer,
-                                                callerid,
-                                                calleridname,
                                                 this,
-                                                pi);
+                                                phoneinfo);
                     connect(callwidget, SIGNAL(doHangUp(const QString &)),
                             this, SLOT(hupchan(const QString &)));
                     connect(callwidget, SIGNAL(doTransferToNumber(const QString &)),
@@ -177,7 +165,7 @@ void XletCalls::updateDisplay()
                             this, SLOT(parkcall(const QString &)));
                     m_layout->insertWidget(m_layout->count() - 1, callwidget,
                                            0, Qt::AlignTop);
-                    m_affhash[it.key()/*channelme*/] = callwidget;
+                    m_affhash[channel] = callwidget;
                 }
             }
         }

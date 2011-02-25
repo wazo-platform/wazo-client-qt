@@ -66,8 +66,8 @@ bool PhoneInfo::updateStatus(const QVariantMap & prop)
     if (prop.contains("hintstatus")) {
         m_hintstatus = prop.value("hintstatus").toString();
     }
-    if(prop.contains("comms")) {
-        m_comms = prop.value("comms").toMap();
+    if(prop.contains("channels")) {
+        m_channels = prop.value("channels").toStringList();
     }
     return haschanged;
 }
