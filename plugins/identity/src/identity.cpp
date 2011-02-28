@@ -124,8 +124,8 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
             this, SLOT(newAgentList(const QStringList &)));
 
-    connect(b_engine, SIGNAL(updatePresence(const QVariant &)),
-            this, SLOT(updatePresence(const QVariant &)));
+    connect(b_engine, SIGNAL(updatePresence(const QString &)),
+            this, SLOT(updatePresence(const QString &)));
 
     connect(b_engine, SIGNAL(optChanged(const QString &, bool)),
             this, SLOT(setOpt(const QString &, bool)));
@@ -142,6 +142,7 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             m_phone, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
             m_phone, SLOT(updateChannelStatus(const QString &)));
+    updatePresence("available");
 }
 
 void IdentityDisplay::setupIcons()
@@ -175,49 +176,35 @@ void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
     m_loginkind = optionsMap.value("loginkind").toUInt();
 }
 
-void IdentityDisplay::updatePresence(const QVariant & presence)
+void IdentityDisplay::updatePresence(const QString & presence)
 {
-    // qDebug() << Q_FUNC_INFO << presence;
+    qDebug() << Q_FUNC_INFO << presence;
+    QVariantMap presencemap = b_engine->getCapaPresence();
     m_presencevalue->hide();
     if(! m_functions.contains("presence"))
         return;
 
     disconnect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
                this, SLOT(idxChanged(const QString &)));
-    QVariantMap presencemap = presence.toMap();
-    if(presencemap.contains("names")) {
-        foreach (QString avstate, presencemap.value("names").toMap().keys()) {
-            QString name = presencemap.value("names").toMap().value(avstate).toMap().value("longname").toString();
-            if(m_presencevalue->findText(name) == -1) {
-                m_presencevalue->addItem(name);
-                m_presence_names[avstate] = name;
-            }
+
+    m_presencevalue->clear();
+    m_presence_names.clear();
+
+    if (presencemap.contains(presence)) {
+        QVariantMap details = presencemap.value(presence).toMap();
+        QStringList allowedlist = details.value("allowed").toStringList();
+        int idx = 0;
+        foreach (QString ll, allowedlist) {
+            QVariantMap pdetails = presencemap.value(ll).toMap();
+            QString longname = pdetails.value("longname").toString();
+            m_presencevalue->addItem(longname);
+            m_presence_names[ll] = longname;
+            if(presence == ll)
+                m_presencevalue->setCurrentIndex(idx);
+            idx ++;
         }
     }
-    if(presencemap.contains("allowed")) {
-        QMapIterator<QString, QVariant> capapres(presencemap.value("allowed").toMap());
-        while (capapres.hasNext()) {
-            capapres.next();
-            QString avstate = capapres.key();
-            bool allow = capapres.value().toBool();
-            if(m_presence_names.contains(avstate)) {
-                QString name = m_presence_names[avstate];
-                int idx = m_presencevalue->findText(name);
-                if(idx != -1) {
-                    if(! allow)
-                        m_presencevalue->removeItem(idx);
-                }
-            }
-        }
-    }
-    if(presencemap.contains("state")) {
-        QString avstate = presencemap.value("state").toMap().value("stateid").toString();
-        if(m_presence_names.contains(avstate)) {
-            QString name = m_presence_names[avstate];
-            int idx = m_presencevalue->findText(name);
-            m_presencevalue->setCurrentIndex(idx);
-        }
-    }
+
     connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
             this, SLOT(idxChanged(const QString &)));
     m_presencevalue->show();
@@ -331,12 +318,16 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
 void IdentityDisplay::updateUserStatus(const QString & xuserid)
 {
     qDebug() << Q_FUNC_INFO << xuserid;
+    UserInfo * userinfo = b_engine->users().value(xuserid);
+    if (userinfo == NULL)
+        return;
+    qDebug() << Q_FUNC_INFO << xuserid << userinfo->availstate();
 }
 
 void IdentityDisplay::idxChanged(const QString & newidx)
 {
     QString function = sender()->property("function").toString();
-    // qDebug() << Q_FUNC_INFO << newidx << sender() << function;
+    qDebug() << Q_FUNC_INFO << newidx << sender() << function << m_presence_names;
     if(function == "presence") {
         foreach (QString avstate, m_presence_names.keys())
             if(m_presence_names[avstate] == newidx)

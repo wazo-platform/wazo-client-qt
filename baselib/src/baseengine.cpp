@@ -533,39 +533,6 @@ void BaseEngine::setGuiOption(const QString &arg, const QVariant &opt)
     saveSettings();
 }
 
-void BaseEngine::updateCapaPresence(const QVariant & presence)
-{
-    QVariantMap presencemap = presence.toMap();
-    foreach (QString field, presencemap.keys()) {
-        if (presencemap.contains(field)) {
-            m_capapresence[field] = presencemap.value(field);
-        }
-
-        if (field == "names") {
-            QVariantMap crap = presencemap.value(field).toMap();
-            foreach (QString stateName, crap.keys()) {
-                QVariantMap fill = crap.value(stateName).toMap();
-                fill["id"] = fill.value("stateid");
-                fill.remove("stateid");
-                tree()->populate(QString("statedetails/%1").arg(stateName), fill);
-            }
-        } else if (field == "allowed") {
-            QVariantMap map = presencemap.value(field).toMap();
-            QVariantMap fill;
-            foreach (QString stateName, map.keys()) {
-                if (map.value(stateName).toBool()) {
-                    fill[stateName] = QVariant();
-                }
-            }
-
-            tree()->populate(QString("statedetails/%1/allowed")
-                             .arg(presencemap.value("state").toMap().value("stateid").toString()),
-                             fill);
-        }
-    }
-    // qDebug() << DStoreNode::pp(*tree()->root());
-}
-
 const QString & BaseEngine::getCapaApplication() const
 {
     return m_appliname;
@@ -660,7 +627,7 @@ void BaseEngine::ctiSocketConnected()
     command["class"] = "login_id";
     command["userid"] = m_userlogin;
     command["company"] = m_company;
-    command["ident"] = m_clientid;
+    command["ident"] = m_osname;
     command["version"] = "9999";
     command["xivoversion"] = __xivo_version__;
     command["git_hash"] = __git_hash__;
@@ -1003,12 +970,9 @@ void BaseEngine::parseCommand(const QString &line)
                 }
                 m_users[id]->setAvailState(stateid);
                 emit updatePeerAgent(id, "imstatus", QStringList());
-                emit updateAgentPresence(m_users[id]->ipbxid(),
-                                         m_users[id]->agentid(),
-                                         state);
+                // emit updateAgentPresence(); to be updated through updateAgentStatus, the server shall manage the agent's presence
                 if (id == m_xuserid) {
-                    updateCapaPresence(datamap.value("capapresence"));
-                    emit updatePresence(m_capapresence);
+                    emit updatePresence(stateid);
                     // emit localUserInfoDefined(m_users[m_xuserid]);
                 }
             }
@@ -1105,9 +1069,10 @@ void BaseEngine::parseCommand(const QString &line)
             m_appliname = datamap.value("appliname").toString();
             m_capafuncs = datamap.value("capafuncs").toStringList();
             m_capaxlets = datamap.value("capaxlets").toStringList();
+            m_capapresence = datamap.value("capapresence").toMap();
 
-            updateCapaPresence(datamap.value("capapresence"));
-            m_forced_state = datamap.value("capapresence").toMap().value("state").toString();
+            m_forced_state = datamap.value("presence").toString();
+            updatePresence(m_forced_state);
             m_guioptions["server_gui"] = datamap.value("guisettings");
             //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
 
@@ -1138,9 +1103,9 @@ void BaseEngine::parseCommand(const QString &line)
 
             //qDebug() << "clientXlets" << XletList;
             qDebug() << "\n";
-            qDebug() << "m_capaxlets" << m_capaxlets;
-            qDebug() << "m_capafuncs" << m_capafuncs;
-            qDebug() << "m_appliname" << m_appliname;
+            qDebug() << "capaxlets" << m_capaxlets;
+            qDebug() << "capafuncs" << m_capafuncs;
+            qDebug() << "appliname" << m_appliname;
             qDebug() << "\n";
 
             QString urltolaunch = m_guioptions.value("merged_gui").toMap().value("loginwindow.url").toString();
@@ -1242,13 +1207,10 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 // if(xid == m_xuserid)
                 // emit localUserInfoDefined(m_users[m_xuserid]);
 
-//             m_users[xuserid]->setAvailState(uinfo.value("statedetails"));
 //             m_users[xuserid]->setMWI(uinfo.value("mwi").toStringList());
 
 //             emit updatePeerAgent(xuserid, "imstatus", QStringList());
-//             emit updateAgentPresence(m_users[xuserid]->ipbxid(),
-//                                      m_users[xuserid]->agentid(),
-//                                      uinfo.value("statedetails"));
+// emit updateAgentPresence(); to be updated through updateAgentStatus, the server shall manage the agent's presence
 //             emit localUserInfoDefined(m_users[m_xuserid]);
 
 
@@ -1264,7 +1226,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     haschanged = m_queues[xid]->updateConfig(config);
             }
 
-            qDebug() << function << listname << xid << haschanged;
+            // qDebug() << function << listname << xid << haschanged;
             if (listname == "phones")
                 emit updatePhoneConfig(xid);
             else if (listname == "users")
@@ -1306,7 +1268,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     haschanged = m_queues[xid]->updateStatus(status);
             }
 
-            // qDebug() << function << listname << xid << haschanged << status;
+            qDebug() << function << listname << xid << haschanged << status;
             if (listname == "phones")
                 emit updatePhoneStatus(xid);
             else if (listname == "users")
@@ -1390,9 +1352,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 m_users[xuserid]->updateStatus(uinfo);
 
                 emit updatePeerAgent(xuserid, "imstatus", QStringList());
-                emit updateAgentPresence(m_users[xuserid]->ipbxid(),
-                                         m_users[xuserid]->agentid(),
-                                         uinfo.value("statedetails"));
+                // emit updateAgentPresence(); to be updated through updateAgentStatus, the server shall manage the agent's presence
             }
 
             emit peersReceived();
@@ -2147,7 +2107,7 @@ void BaseEngine::setState(EngineState state)
                 emit availAllowChanged(true);
             }
             emit logged();
-            emit updatePresence(m_capapresence);
+            // emit updatePresence(m_capapresence);
         } else if (state == ENotLogged) {
             emit availAllowChanged(false);
             emit delogged();
@@ -2166,18 +2126,17 @@ void BaseEngine::changeWatchedAgent(const QString & agentid, bool force)
 
 void BaseEngine::changeWatchedQueue(const QString & queueid)
 {
-    qDebug() << Q_FUNC_INFO << queueid;
+    // qDebug() << Q_FUNC_INFO << queueid;
     emit changeWatchedQueueSignal(queueid);
 }
 
 /*! \brief sets m_osname
  *
- * also builds a string defining who is the client (SB or XC @ osname)
+ * also builds a string defining who is the client (osname)
  */
 void BaseEngine::setOSInfos(const QString & osname)
 {
     m_osname = osname;
-    m_clientid = m_osname;
 }
 
 /*!
@@ -2218,6 +2177,8 @@ void BaseEngine::changeState()
     QVariantMap command;
     command["class"] = "availstate";
     command["availstate"] = m_availstate;
+    command["ipbxid"] = m_ipbxid;
+    command["userid"] = m_userid;
     sendJsonCommand(command);
 }
 
@@ -2275,7 +2236,7 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
  */
 void BaseEngine::handleOtherInstanceMessage(const QString & msg)
 {
-    qDebug() << Q_FUNC_INFO << msg;
+    qDebug() << Q_FUNC_INFO << m_osname << "got" << msg;
     // callto://number is unofficial and used by Skype
     // tel:number is in RFC 3966
     // callto:number is unofficial (read 7.3. in RFC 3966)
@@ -2287,7 +2248,7 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
         QString phonenum = re.cap(2);
         phonenum.remove('.').remove(' ').remove('-');
         qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
-        actionCall("originate", "user:special:me", "ext:"+phonenum);
+        actionCall("originate", "user:special:me", QString("ext:%1").arg(phonenum));
     }
 }
 

@@ -568,10 +568,10 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
     }
 }
 
-void MainWidget::updatePresence(const QVariant &presence)
+void MainWidget::updatePresence(const QString & presence)
 {
     // qDebug() << Q_FUNC_INFO << presence;
-    QVariantMap presencemap = presence.toMap();
+    QVariantMap presencemap = b_engine->getCapaPresence();
     if (presencemap.contains("names")) {
         foreach (QString avstate, presencemap.value("names").toMap().keys()) {
             QString name = presencemap.value("names").toMap().value(avstate).toMap().value("longname").toString();
@@ -635,8 +635,8 @@ void MainWidget::engineStarted()
 
     m_appliname = tr("Client (%1 profile)").arg(b_engine->getCapaApplication());
 
-    connect(b_engine, SIGNAL(updatePresence(const QVariant &)),
-            this, SLOT(updatePresence(const QVariant &)));
+    connect(b_engine, SIGNAL(updatePresence(const QString &)),
+            this, SLOT(updatePresence(const QString &)));
     updateAppliName();
     hideLogin();
 

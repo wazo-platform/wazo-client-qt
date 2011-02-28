@@ -69,12 +69,11 @@ void PeerItem::updateStatus()
         updateDisplayedStatus();
 }
 
-void PeerItem::updateAgentStatus(const QVariant &agentstatus)
+void PeerItem::updateAgentStatus(const QVariant & agentstatus)
 {
     m_agentstatus = agentstatus;
-    if(m_peerwidget != NULL) {
+    if(m_peerwidget != NULL)
         updateDisplayedStatus();
-    }
 }
 
 /*! \brief update name if changed

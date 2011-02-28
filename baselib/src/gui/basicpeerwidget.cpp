@@ -46,7 +46,8 @@
  * initialize members and tooltip
  */
 BasicPeerWidget::BasicPeerWidget(UserInfo * ui)
-    : BasePeerWidget(ui), m_color(0xcc, 0xcc, 0xcc),
+    : BasePeerWidget(ui),
+      m_color(0xcc, 0xcc, 0xcc),
       m_presenceColor(0xcc, 0xcc, 0xcc)
 {
     // can grow horizontaly but not verticaly
@@ -128,12 +129,13 @@ void BasicPeerWidget::updatePresence()
 {
     QString text = m_ui->phoneNumber();
     QString availstate = m_ui->availstate();
-    if (!m_ui->ctilogin().isEmpty()) {
+    QVariantMap presencedetails = b_engine->getCapaPresence().value(availstate).toMap();
+    if (! m_ui->ctilogin().isEmpty()) {
         text.append(" ");
-        text.append("Ici"); // XXX replace with dependency on m_ui->availstate()
+        text.append(presencedetails.value("longname").toString());
     }
     setToolTip(text);
-    m_presenceColor.setNamedColor("green"); // XXX replace with dependency on m_ui->availstate()
+    m_presenceColor.setNamedColor(presencedetails.value("color").toString());
 }
 
 void BasicPeerWidget::updatePhonesStates()

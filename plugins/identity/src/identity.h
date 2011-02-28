@@ -57,7 +57,7 @@ class IdentityDisplay : public XLet
         void setGuiOptions(const QVariantMap &);
         void newAgentList(const QStringList &);
         void idxChanged(const QString &);
-        void updatePresence(const QVariant &);
+        void updatePresence(const QString &);
         void setOpt(const QString &, bool);
         void setForward(const QString &, const QVariant &);
         void updateUserConfig(const QString &);
@@ -79,7 +79,7 @@ class IdentityDisplay : public XLet
         QFrame *m_qvline2;
         QLabel *m_user;
         QLabel *m_phonenum;
-        QComboBox *m_presencevalue;
+        QComboBox * m_presencevalue;
         IdentityAgent *m_agent;
         IdentityPhone *m_phone;
         IdentityVoiceMail *m_voicemail;

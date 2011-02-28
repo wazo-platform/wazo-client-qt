@@ -73,7 +73,7 @@ class MainWidget : public QMainWindow
         void logintextChanged(const QString &);
         void loginKindChanged(int);
         void confUpdated();
-        void updatePresence(const QVariant &);
+        void updatePresence(const QString &);
         void showMessageBox(const QString &);
         void showWidgetOnTop(QWidget *);
     signals:

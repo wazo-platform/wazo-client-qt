@@ -172,6 +172,11 @@ void SearchPanel::updateUserConfig(const QString & xuserid)
 
 void SearchPanel::updateUserStatus(const QString & xuserid)
 {
+    PeerItem *peeritem = NULL;
+    if (m_peerhash.contains(xuserid)) {
+        peeritem = m_peerhash.value(xuserid);
+        peeritem->updateStatus();
+    }
 }
 
 void SearchPanel::updatePeerAgent(const QString &id,

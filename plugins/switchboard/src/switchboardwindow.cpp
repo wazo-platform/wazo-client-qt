@@ -122,6 +122,12 @@ void XletSwitchBoard::updateUserConfig(const QString & xuserid)
 
 void XletSwitchBoard::updateUserStatus(const QString & xuserid)
 {
+    PeerItem * peeritem = NULL;
+    if (m_peerhash.contains(xuserid)) {
+        peeritem = m_peerhash.value(xuserid);
+        peeritem->updateStatus();
+        update();
+    }
 }
 
 /*! \brief update agent status

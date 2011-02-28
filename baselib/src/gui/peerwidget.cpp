@@ -157,10 +157,12 @@ void PeerWidget::updatePresence()
 {
     if (m_user_status) {
         QString availstate = m_ui->availstate();
-        QColor c = QColor("green"); // XXX replace with dependency on m_ui->availstate()
+        QVariantMap presencedetails = b_engine->getCapaPresence().value(availstate).toMap();
+        QString colorstring = presencedetails.value("color").toString();
+        QColor c = QColor(colorstring);
         m_user_status->setIcon(TaintedPixmap( \
             QString(":/images/personal-trans.png"), c).getPixmap());
-        m_user_status->setToolTip(tr("User : %1").arg("La")); // XXX replace with dependency on m_ui->availstate()
+        m_user_status->setToolTip(tr("User : %1").arg(presencedetails.value("longname").toString()));
     }
 }
 

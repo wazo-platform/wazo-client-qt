@@ -145,7 +145,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void setGuiOption(const QString &, const QVariant &);
         const QVariantMap getGuiOptions(const QString &) const;
 
-        void updateCapaPresence(const QVariant &);
         const QString& getCapaApplication() const;
         void configAndStart(const QString &, const QString &, const QString &);
         QString osname() const { return m_osname; };
@@ -248,7 +247,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
         void requestFileListResult(const QVariant &);
-        void updatePresence(const QVariant &);
+        void updatePresence(const QString &);
         void serverFileList(const QStringList &);
         void fileReceived();
         void statusRecord(const QString &, const QString &, const QString &);
@@ -365,7 +364,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QVariantMap m_guioptions;       //!< List of GUI options
         QString m_appliname;            //!< Application name to be displayed
         QString m_sessionid;            //!< Session id obtained after a successful login
-        QString m_clientid;             //!< Client Identifier
         QString m_forced_state;         //!< Forced state sent by the server
 
         // Status variables
