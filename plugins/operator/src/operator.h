@@ -57,8 +57,9 @@ class XletOperator : public XLet
         void functionKeyPressed(int);
         void xferPressed();
         void clicked();
-        void updateUser(UserInfo *);
-        void setUserInfo(const UserInfo *);
+
+        void updateUserConfig(const QString &);
+        void updateUserStatus(const QString &);
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
         void updateChannelStatus(const QString &);
@@ -73,6 +74,7 @@ class XletOperator : public XLet
         void removeLine(const QString &);
 
         UserInfo * m_ui;
+        QString m_xuserid;
         QString m_xphoneid;
         QGridLayout * m_glayout;
         QLabel * m_lbl;

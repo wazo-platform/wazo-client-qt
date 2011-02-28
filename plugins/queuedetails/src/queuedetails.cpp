@@ -96,9 +96,9 @@ void XletQueueDetails::newAgentList(const QStringList &)
         updatePanel();
 }
 
-void XletQueueDetails::monitorThisQueue(const QString &queueid)
+void XletQueueDetails::monitorThisQueue(const QString & queueid)
 {
-    // qDebug() << Q_FUNC_INFO << queueid;
+    qDebug() << Q_FUNC_INFO << queueid;
     if (b_engine->queues().contains(queueid)) {
         m_monitored_queueid = queueid;
         clearPanel();

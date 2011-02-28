@@ -247,10 +247,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void featurePutIsKO();
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
-        void meetmeEvent(double, const QString &, const QString &, const QString &, const QString &);
         void requestFileListResult(const QVariant &);
         void updatePresence(const QVariant &);
-        void updateCounter(const QVariant &);
         void serverFileList(const QStringList &);
         void fileReceived();
         void statusRecord(const QString &, const QString &, const QString &);
@@ -264,21 +262,26 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void peersReceived();
         //! the server requested a peer remove
         //void removePeer(const QString &);
-        void userUpdated(UserInfo *);
+
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
-        void updateChannelStatus(const QString &);
+        void updateUserConfig(const QString &);
+        void updateUserStatus(const QString &);
+        void updateAgentConfig(const QString &);
+        void updateAgentStatus(const QString &);
         void updateQueueConfig(const QString &);
         void updateQueueStatus(const QString &);
-        void updatePeerAgent(double, const QString &, const QString &, const QVariant &);
+        void updateChannelStatus(const QString &);
+
+        void newQueueList(const QStringList &);
+        void newAgentList(const QStringList &);
+        void updatePeerAgent(const QString &, const QString &, const QVariant &);
         void directoryResponse(const QStringList &, const QStringList &);  //! the directory search response has been received.
         void disconnectFeatures();
         void connectFeatures();
         void resetFeatures();
         void localUserInfoDefined(const UserInfo *);
         void removeQueues(const QString &, const QStringList &);
-        void newQueueList(const QStringList &);
-        void newAgentList(const QStringList &);
         void optChanged(const QString &, bool);
         void forwardUpdated(const QString &, const QVariant &);
         void changesAvailChecks();
@@ -380,7 +383,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_pendingkeepalivemsg;      //!< number of keepalivemsg sent without response
         QString m_numbertodial;         //!< Number dialed in
         QString m_osname;               //!< OS informations
-        QVariant m_counters;
 
         QString m_fileid;
         QString m_filedir;

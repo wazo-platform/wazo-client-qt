@@ -296,6 +296,10 @@ void IdentityPhone::setPhoneLines()
     const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
     if (phoneinfo == NULL)
         return;
+    int nphones = phoneinfo->simultcalls();
+    qDebug() << Q_FUNC_INFO << phoneinfo->simultcalls();
+    if(nphones > 100)
+        nphones = 100;
     for(int jj = 0 ; jj < phoneinfo->simultcalls() ; jj ++) {
         qDebug() << " --- " << jj << m_lines.value(jj);
         if(jj >= m_lines.size()) {

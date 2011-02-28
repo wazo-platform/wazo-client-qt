@@ -53,8 +53,9 @@ class XletCalls : public XLet
         XletCalls(QWidget *parent=0); //!< Constructor
 
     public slots:
-        void updateUser(UserInfo *);
         void updateDisplay();
+        void updateUserConfig(const QString &);
+        void updateUserStatus(const QString &);
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
         void updateChannelStatus(const QString &);

@@ -55,13 +55,13 @@ class IdentityDisplay : public XLet
 
     public slots:
         void setGuiOptions(const QVariantMap &);
-        void setUserInfo(const UserInfo *);
         void newAgentList(const QStringList &);
         void idxChanged(const QString &);
         void updatePresence(const QVariant &);
         void setOpt(const QString &, bool);
         void setForward(const QString &, const QVariant &);
-        void updateUser(UserInfo *);
+        void updateUserConfig(const QString &);
+        void updateUserStatus(const QString &);
 
     signals:
         void setAvailState(const QString &, bool);
@@ -72,6 +72,7 @@ class IdentityDisplay : public XLet
         void svcSummary();
         void setupIcons();
 
+        QString m_xuserid;
         QGridLayout *m_glayout;
         QLabel *m_icon_user;
         QFrame *m_qvline1;

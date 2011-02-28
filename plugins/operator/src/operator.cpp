@@ -66,22 +66,16 @@ XletOperator::XletOperator(QWidget * parent)
     m_glayout->setRowStretch(100, 1);
 
     // connect signal/SLOTS
-    connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
-            this, SLOT(updateUser(UserInfo *)));
-    connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-            this, SLOT(setUserInfo(const UserInfo *)));
+    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
+            this, SLOT(updateUserConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updateUserStatus(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
             this, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
             this, SLOT(updateChannelStatus(const QString &)));
-}
-
-void XletOperator::setUserInfo(const UserInfo *)
-{
-    m_ui = b_engine->getXivoClientUser();
-    m_xphoneid = m_ui->phonelist().join("");
 }
 
 /*! \brief add a line of widgets for a call
@@ -402,16 +396,30 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
 
 void XletOperator::updateChannelStatus(const QString & xchannelid)
 {
+    qDebug() << Q_FUNC_INFO << xchannelid;
 }
 
-void XletOperator::updateUser(UserInfo * ui)
+void XletOperator::updateUserConfig(const QString & xuserid)
+{
+    m_ui = b_engine->getXivoClientUser();
+    m_xuserid = m_ui->xuserid();
+    m_xphoneid = m_ui->phonelist().join("");
+
+    if (! m_ui)
+        return;
+    if (xuserid != m_xuserid)
+        return;
+    qDebug() << Q_FUNC_INFO << xuserid;
+    m_lbl->setText(m_ui->fullname());
+}
+
+void XletOperator::updateUserStatus(const QString & xuserid)
 {
     if (! m_ui)
         return;
-    if (m_ui != ui)
+    if (xuserid != m_xuserid)
         return;
-
-    m_lbl->setText(ui->fullname());
+    qDebug() << Q_FUNC_INFO << xuserid;
 }
 
 /*! \brief get the peer channel linked to channel

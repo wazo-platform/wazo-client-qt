@@ -63,13 +63,16 @@ XletCalls::XletCalls(QWidget *parent)
     toplayout->addWidget(scrollarea);
 
     // connect signals/slots
-    connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
-            this, SLOT(updateUser(UserInfo *)));
     connect(this, SIGNAL(changeTitle(const QString &)),
             titleLabel, SLOT(setText(const QString &)));
 
     connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
             this, SLOT(monitorPeer(UserInfo *)));
+
+    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
+            this, SLOT(updateUserConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updateUserStatus(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
@@ -83,12 +86,28 @@ XletCalls::XletCalls(QWidget *parent)
  * Check if this is about the monitored user
  * and call updateDisplay().
  */
-void XletCalls::updateUser(UserInfo *ui)
+void XletCalls::updateUserConfig(const QString & xuserid)
 {
-    if(ui == m_monitored_ui) {
-        // we need to update the display
-        updateDisplay();
-    }
+    if (m_monitored_ui)
+        qDebug() << Q_FUNC_INFO << m_monitored_ui->userid() << xuserid;
+    else
+        qDebug() << Q_FUNC_INFO << xuserid;
+//     if(ui == m_monitored_ui) {
+//         // we need to update the display
+//         updateDisplay();
+//     }
+}
+
+void XletCalls::updateUserStatus(const QString & xuserid)
+{
+    if (m_monitored_ui)
+        qDebug() << Q_FUNC_INFO << m_monitored_ui->userid() << xuserid;
+    else
+        qDebug() << Q_FUNC_INFO << xuserid;
+//     if(ui == m_monitored_ui) {
+//         // we need to update the display
+//         updateDisplay();
+//     }
 }
 
 /*! \brief hang up channel
@@ -126,9 +145,9 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
     if (phoneinfo == NULL)
         return;
 
+    qDebug() << Q_FUNC_INFO << xphoneid << phoneinfo->channels();
     foreach (const QString channel, phoneinfo->channels()) {
         QString xchannel = QString("%1/%2").arg(phoneinfo->ipbxid()).arg(channel);
-        qDebug() << Q_FUNC_INFO << xchannel;
         uint current_ts = QDateTime::currentDateTime().toTime_t();
         uint ts = current_ts;
         if (m_affhash.contains(xchannel))

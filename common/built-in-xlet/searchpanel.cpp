@@ -79,12 +79,12 @@ SearchPanel::SearchPanel(QWidget *parent)
     m_searchpattern = "";
 
     // connect signal/slots
-    connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
-            this, SLOT(updateUser(UserInfo *)));
-    connect(b_engine, SIGNAL(updatePeerAgent(double, const QString &,
-                                             const QString &, const QVariant &)),
-            this, SLOT(updatePeerAgent(double, const QString &,
-                                       const QString &, const QVariant &)));
+    connect(b_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QVariant &)),
+            this, SLOT(updatePeerAgent(const QString &, const QString &, const QVariant &)));
+    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
+            this, SLOT(updateUserConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updateUserStatus(const QString &)));
     connect(b_engine, SIGNAL(peersReceived()),
             this, SLOT(updateDisplay()));
     connect(b_engine, SIGNAL(delogged()),
@@ -156,22 +156,25 @@ void SearchPanel::updateDisplay()
 
 /*! \brief update display according to changes
  */
-void SearchPanel::updateUser(UserInfo *ui)
+void SearchPanel::updateUserConfig(const QString & xuserid)
 {
-    const QString &userid = ui->userid();
     PeerItem *peeritem = NULL;
 
-    if (m_peerhash.contains(userid)) {
-        peeritem = m_peerhash.value(userid);
+    if (m_peerhash.contains(xuserid)) {
+        peeritem = m_peerhash.value(xuserid);
     } else {
+        UserInfo * ui = b_engine->users()[xuserid];
         peeritem = new PeerItem(ui);
-        m_peerhash.insert(userid, peeritem);
+        m_peerhash.insert(xuserid, peeritem);
     }
     peeritem->updateStatus();
 }
 
-void SearchPanel::updatePeerAgent(double,
-                                  const QString &id,
+void SearchPanel::updateUserStatus(const QString & xuserid)
+{
+}
+
+void SearchPanel::updatePeerAgent(const QString &id,
                                   const QString &what,
                                   const QVariant &statuslist)
 {

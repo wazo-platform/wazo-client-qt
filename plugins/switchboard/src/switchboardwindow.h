@@ -67,10 +67,11 @@ class XletSwitchBoard : public XLet
         void contextMenuEvent(QContextMenuEvent *);
 
     public slots:
-        void updateUser(UserInfo *);
-        void updatePeerAgent(double, const QString &, const QString &, const QVariant &);
+        void updatePeerAgent(const QString &, const QString &, const QVariant &);
         void removePeer(const QString &);
         void removePeers();
+        void updateUserConfig(const QString &);
+        void updateUserStatus(const QString &);
 
     private slots:
         void removePeerFromLayout();

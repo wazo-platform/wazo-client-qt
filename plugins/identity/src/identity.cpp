@@ -131,23 +131,21 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             this, SLOT(setOpt(const QString &, bool)));
     connect(b_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
             this, SLOT(setForward(const QString &, const QVariant &)));
-    connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
-            this, SLOT(updateUser(UserInfo *)));
 
+    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
+            this, SLOT(updateUserConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updateUserStatus(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             m_phone, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
             m_phone, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
             m_phone, SLOT(updateChannelStatus(const QString &)));
-
-    connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-            this, SLOT(setUserInfo(const UserInfo *)));
 }
 
 void IdentityDisplay::setupIcons()
 {
-
     m_glayout->addWidget(m_icon_user, 0, m_col_user, 3, 1, m_iconAlign);
     int idline = 0;
     m_glayout->addWidget(m_user, idline, m_col_user + 1, m_textAlignVCenter);
@@ -225,27 +223,6 @@ void IdentityDisplay::updatePresence(const QVariant & presence)
     m_presencevalue->show();
 }
 
-void IdentityDisplay::setUserInfo(const UserInfo */* ui */)
-{
-    // qDebug() << Q_FUNC_INFO;
-    m_ui = b_engine->getXivoClientUser();
-    m_user->setText(m_ui->fullname());
-    m_phonenum->setText(m_ui->phoneNumber());
-    m_phonenum->setToolTip(tr("Server: %1\n"
-                              "Context: %2")
-                           .arg(m_ui->ipbxid())
-                           .arg(m_ui->context()));
-    m_phone->setPhoneId(m_ui->phonelist().join(""));
-    QStringList vm = m_ui->mwi();
-    if(vm.size() > 2) {
-        m_voicemail->show();
-        m_voicemail->svcSummary(m_svcstatus, m_ui);
-        m_voicemail->setOldNew(vm[1], vm[2]);
-    }
-    // changes the "watched agent" only if no one else has done it before
-    b_engine->changeWatchedAgent(QString("agent:%1/%2").arg(m_ui->ipbxid()).arg(m_ui->agentid()), false);
-}
-
 /*! \brief slot when one or more agents have been updated
  */
 void IdentityDisplay::newAgentList(const QStringList &)
@@ -305,14 +282,29 @@ void IdentityDisplay::svcSummary()
 
 /*! \brief update user status
  */
-void IdentityDisplay::updateUser(UserInfo * ui)
+void IdentityDisplay::updateUserConfig(const QString & xuserid)
 {
-    if(! m_ui)
+    m_ui = b_engine->getXivoClientUser();
+    m_xuserid = m_ui->xuserid();
+    if(xuserid != m_xuserid)
         return;
-    if(! ui)
-        return;
-    if(m_ui != ui)
-        return;
+    m_user->setText(m_ui->fullname());
+    m_phonenum->setText(m_ui->phoneNumber());
+    m_phonenum->setToolTip(tr("Server: %1\n"
+                              "Context: %2")
+                           .arg(m_ui->ipbxid())
+                           .arg(m_ui->context()));
+    m_phone->setPhoneId(m_ui->phonelist().join(""));
+    QStringList vm = m_ui->mwi();
+    if(vm.size() > 2) {
+        m_voicemail->show();
+        m_voicemail->svcSummary(m_svcstatus, m_ui);
+        m_voicemail->setOldNew(vm[1], vm[2]);
+    }
+    // changes the "watched agent" only if no one else has done it before
+    b_engine->changeWatchedAgent(QString("%1/%2").arg(m_ui->ipbxid()).arg(m_ui->agentid()), false);
+
+
     QString ipbxid = m_ui->ipbxid();
     foreach(QString phoneid, m_ui->phonelist()) {
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
@@ -334,6 +326,11 @@ void IdentityDisplay::updateUser(UserInfo * ui)
             }
         }
     }
+}
+
+void IdentityDisplay::updateUserStatus(const QString & xuserid)
+{
+    qDebug() << Q_FUNC_INFO << xuserid;
 }
 
 void IdentityDisplay::idxChanged(const QString & newidx)

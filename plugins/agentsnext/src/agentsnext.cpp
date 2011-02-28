@@ -653,7 +653,7 @@ void XletAgentsNext::refreshContents()
 
         if (agstatus != "AGENT_LOGGEDOFF")
             foreach (QString qid, agqjoined.keys()) {
-                QString fullqid = QString("queue:%1/%2").arg(ainfo->ipbxid()).arg(qid);
+                QString fullqid = QString("%1/%2").arg(ainfo->ipbxid()).arg(qid);
                 QString qname = b_engine->queues().value(fullqid)->queueName();
 
                 if (! agqjoined.value(qid).toMap().isEmpty()) {

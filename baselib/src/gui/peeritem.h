@@ -64,7 +64,7 @@ class BASELIB_EXPORT PeerItem
     private:
         BasePeerWidget *m_peerwidget;  //!< related PeerWidget
 
-        UserInfo *m_ui;  // Properties of each peer
+        UserInfo * m_ui;  // Properties of each peer
         QString m_vmstatus;
         QVariant m_agentstatus;
         QString m_pausestatus;

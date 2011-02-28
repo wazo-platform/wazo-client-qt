@@ -109,10 +109,12 @@ void XletAgents::setGuiOptions(const QVariantMap & optionsMap)
 
 /*! \brief set agent presence status
  */
-void XletAgents::updateAgentPresence(const QString & ipbxid, const QString & agent_number, const QVariant & presencestatus)
+void XletAgents::updateAgentPresence(const QString & ipbxid,
+                                     const QString & agent_id,
+                                     const QVariant & presencestatus)
 {
-    // qDebug() << Q_FUNC_INFO << ipbxid << agent_number << presencestatus;
-    QString agentid = QString("agent:%1/%2").arg(ipbxid).arg(agent_number);
+    // qDebug() << Q_FUNC_INFO << ipbxid << agent_id << presencestatus;
+    QString agentid = QString("%1/%2").arg(ipbxid).arg(agent_id);
     if (b_engine->agents().contains(agentid))
         if (m_agent_presence.contains(agentid)) {
             QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
@@ -133,10 +135,8 @@ void XletAgents::newQueueList(const QStringList &)
  */
 void XletAgents::newAgentList(const QStringList & list)
 {
-    //qDebug() << Q_FUNC_INFO << list;
+    //qDebug() << Q_FUNC_INFO << list << b_engine->agents();
     QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
-    // qDebug() << Q_FUNC_INFO << b_engine->agents();
-
 
     while (iter.hasNext()) {
         iter.next();
@@ -328,7 +328,7 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
     QStringList joined_queues;
     QStringList paused_queues;
     foreach (QString qname, agqjoined.keys()) {
-        QString queueid = QString("queue:%1/%2").arg(ainfo->ipbxid()).arg(qname);
+        QString queueid = QString("%1/%2").arg(ainfo->ipbxid()).arg(qname);
         QueueInfo * qinfo = b_engine->queues()[queueid];
         if (qinfo != NULL) {
             QVariant qv = agqjoined.value(qname);
@@ -452,7 +452,7 @@ void XletAgents::agentClicked()
 void XletAgents::statusRecord(const QString & ipbxid, const QString & agentid, const QString & status)
 {
     // qDebug() << Q_FUNC_INFO << ipbxid << agentid << status;
-    QString gagentid = QString("agent:%1/%2").arg(ipbxid).arg(agentid);
+    QString gagentid = QString("%1/%2").arg(ipbxid).arg(agentid);
     if (! m_agent_record.contains(gagentid))
         return;
 
@@ -470,7 +470,7 @@ void XletAgents::statusRecord(const QString & ipbxid, const QString & agentid, c
 void XletAgents::statusListen(const QString & ipbxid, const QString & agentid, const QString & status)
 {
     // qDebug() << Q_FUNC_INFO << ipbxid << agentid << status;
-    QString gagentid = QString("agent:%1/%2").arg(ipbxid).arg(agentid);
+    QString gagentid = QString("%1/%2").arg(ipbxid).arg(agentid);
     if (! m_agent_listen.contains(gagentid))
         return;
 

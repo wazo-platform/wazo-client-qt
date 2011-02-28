@@ -58,11 +58,12 @@ class SearchPanel : public XLet
         ~SearchPanel();        //!< Destructor
     public slots:
         void affTextChanged(const QString &);
-        void updatePeerAgent(double, const QString &, const QString &, const QVariant &);
+        void updatePeerAgent(const QString &, const QString &, const QVariant &);
         void removePeer(const QString &);
         void removePeers();
         void updateDisplay();
-        void updateUser(UserInfo *);
+        void updateUserConfig(const QString &);
+        void updateUserStatus(const QString &);
     private:
         QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
         QGridLayout *m_peerlayout; //!< layout object

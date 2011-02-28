@@ -66,12 +66,12 @@ XletSwitchBoard::XletSwitchBoard(QWidget *parent)
     reloadGroups();
     reloadExternalPhones();
 
-    connect(b_engine, SIGNAL(userUpdated(UserInfo *)),
-            this, SLOT(updateUser(UserInfo *)));
-    connect(b_engine, SIGNAL(updatePeerAgent(double, const QString &,
-                                             const QString &, const QVariant &)),
-            this, SLOT(updatePeerAgent(double, const QString &,
-                                       const QString &, const QVariant &)));
+    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
+            this, SLOT(updateUserConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updateUserStatus(const QString &)));
+    connect(b_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QVariant &)),
+            this, SLOT(updatePeerAgent(const QString &, const QString &, const QVariant &)));
     // savePositions() needs m_peerhash to be non-empty in order to be useful,
     // thus we call it before removePeers()
     connect(b_engine, SIGNAL(delogged()),
@@ -98,14 +98,14 @@ XletSwitchBoard::~XletSwitchBoard()
  * PeerItem is created if needed.
  * Display the PeerWidget if needed.
  */
-void XletSwitchBoard::updateUser(UserInfo *ui)
+void XletSwitchBoard::updateUserConfig(const QString & xuserid)
 {
-    // qDebug() << Q_FUNC_INFO << ui->toString();
-    QString xuserid = ui->xuserid();
-    PeerItem *peeritem = NULL;
+    qDebug() << Q_FUNC_INFO << xuserid;
+    PeerItem * peeritem = NULL;
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);
     } else {
+        UserInfo * ui = b_engine->users()[xuserid];
         peeritem = new PeerItem(ui);
         m_peerhash.insert(xuserid, peeritem);
         QSettings *settings = b_engine->getSettings();
@@ -120,11 +120,14 @@ void XletSwitchBoard::updateUser(UserInfo *ui)
     update();
 }
 
+void XletSwitchBoard::updateUserStatus(const QString & xuserid)
+{
+}
+
 /*! \brief update agent status
  *
  */
-void XletSwitchBoard::updatePeerAgent(double,
-                                      const QString &id,
+void XletSwitchBoard::updatePeerAgent(const QString &id,
                                       const QString &what,
                                       const QVariant &statuslist)
 {

@@ -486,7 +486,7 @@ void XletAgentDetails::serverFileList(const QStringList &qsl)
 void XletAgentDetails::statusRecord(const QString &astid, const QString &agentid, const QString &status)
 {
     // qDebug() << Q_FUNC_INFO << agentnum << m_monitored_agentid << status;
-    QString gagentid = QString("agent:%1/%2").arg(astid).arg(agentid);
+    QString gagentid = QString("%1/%2").arg(astid).arg(agentid);
     if (gagentid == m_monitored_agentid) {
         if (status == "started") {
             m_action["record"]->setProperty("function", "stoprecord");
