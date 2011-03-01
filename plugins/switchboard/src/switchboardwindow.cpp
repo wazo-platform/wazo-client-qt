@@ -70,8 +70,15 @@ XletSwitchBoard::XletSwitchBoard(QWidget *parent)
             this, SLOT(updateUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
             this, SLOT(updateUserStatus(const QString &)));
-    connect(b_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QVariant &)),
-            this, SLOT(updatePeerAgent(const QString &, const QString &, const QVariant &)));
+    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
+            this, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            this, SLOT(updatePhoneStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            this, SLOT(updateAgentStatus(const QString &)));
+
     // savePositions() needs m_peerhash to be non-empty in order to be useful,
     // thus we call it before removePeers()
     connect(b_engine, SIGNAL(delogged()),
@@ -130,21 +137,28 @@ void XletSwitchBoard::updateUserStatus(const QString & xuserid)
     }
 }
 
-/*! \brief update agent status
- *
- */
-void XletSwitchBoard::updatePeerAgent(const QString &id,
-                                      const QString &what,
-                                      const QVariant &statuslist)
+void XletSwitchBoard::updateAgentConfig(const QString & xagentid)
 {
-    // qDebug() << Q_FUNC_INFO;
-    if (m_peerhash.contains(id)) {
-        if (what == "agentstatus") {
-            m_peerhash.value(id)->updateAgentStatus(statuslist);
-        } else if (what == "imstatus") {
-            m_peerhash.value(id)->updateStatus();
-        }
-    }
+}
+
+void XletSwitchBoard::updateAgentStatus(const QString & xagentid)
+{
+    // XXXX find xuserid
+//     if (m_peerhash.contains(xuserid))
+//         m_peerhash.value(xuserid)->updateAgentStatus(xagentid);
+    return;
+}
+
+void XletSwitchBoard::updatePhoneConfig(const QString & xphoneid)
+{
+}
+
+void XletSwitchBoard::updatePhoneStatus(const QString & xphoneid)
+{
+    // XXXX find xuserid
+//     if (m_peerhash.contains(xuserid))
+//         m_peerhash.value(xuserid)->updateAgentStatus(xagentid);
+    return;
 }
 
 

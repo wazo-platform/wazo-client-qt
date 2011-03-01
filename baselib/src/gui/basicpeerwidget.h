@@ -52,8 +52,8 @@ class BASELIB_EXPORT BasicPeerWidget : public BasePeerWidget
 
     public:
         BasicPeerWidget(UserInfo *);
-        void setAgentToolTip(const QString &, const QStringList &);
-        void setAgentState(const QString &color);
+        void updateAgentConfig(const QString &) {};
+        void updateAgentStatus(const QString &) {};
         void updatePresence();
         void updatePhonesStates();
         void setName(const QString &name) { setText(name); };

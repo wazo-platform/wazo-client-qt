@@ -514,6 +514,11 @@ const QVariantMap & BaseEngine::getCapaPresence() const
     return m_capapresence;
 }
 
+const QVariantMap & BaseEngine::getCapaTermStates() const
+{
+    return m_capatermstates;
+}
+
 const QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
 {
     return m_guioptions.value(arg).toMap();
@@ -954,7 +959,7 @@ void BaseEngine::parseCommand(const QString &line)
         } else if (thisclass == "presence") {
             // QString id = datamap.value("company").toString() + "/" + datamap.value("userid").toString();
             QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
-            // qDebug() << Q_FUNC_INFO << thisclass << m_users.size() << id;
+            qDebug() << Q_FUNC_INFO << thisclass << m_users.size() << id << datamap;
             if (m_users.contains(id)) {
                 QVariantMap state = datamap.value("capapresence").toMap().value("state").toMap();
                 QString stateid = state.value("stateid").toString();
@@ -969,7 +974,6 @@ void BaseEngine::parseCommand(const QString &line)
                     }
                 }
                 m_users[id]->setAvailState(stateid);
-                emit updatePeerAgent(id, "imstatus", QStringList());
                 // emit updateAgentPresence(); to be updated through updateAgentStatus, the server shall manage the agent's presence
                 if (id == m_xuserid) {
                     emit updatePresence(stateid);
@@ -1070,6 +1074,7 @@ void BaseEngine::parseCommand(const QString &line)
             m_capafuncs = datamap.value("capafuncs").toStringList();
             m_capaxlets = datamap.value("capaxlets").toStringList();
             m_capapresence = datamap.value("capapresence").toMap();
+            m_capatermstates = datamap.value("capatermstates").toMap();
 
             m_forced_state = datamap.value("presence").toString();
             updatePresence(m_forced_state);
@@ -1209,7 +1214,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
 //             m_users[xuserid]->setMWI(uinfo.value("mwi").toStringList());
 
-//             emit updatePeerAgent(xuserid, "imstatus", QStringList());
 // emit updateAgentPresence(); to be updated through updateAgentStatus, the server shall manage the agent's presence
 //             emit localUserInfoDefined(m_users[m_xuserid]);
 
@@ -1326,11 +1330,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             }
             if (! kk.isEmpty())
                 emit newAgentList(kk);
-
-            // QString agentid = params.toMap().value("agent_id").toString();
-            // QString agent_channel = params.toMap().value("agent_channel").toString();
-            // UserInfo * ui = findUserFromAgent(ipbxid, agent_channel.mid(6));
-            // emit updatePeerAgent(ui->userid(), "agentstatus", params);
         }
 
     } else if (thisclass == "users") {
@@ -1351,7 +1350,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 m_users[xuserid]->updateConfig(uinfo);
                 m_users[xuserid]->updateStatus(uinfo);
 
-                emit updatePeerAgent(xuserid, "imstatus", QStringList());
                 // emit updateAgentPresence(); to be updated through updateAgentStatus, the server shall manage the agent's presence
             }
 

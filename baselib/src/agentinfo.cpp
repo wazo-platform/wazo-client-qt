@@ -57,9 +57,10 @@ bool AgentInfo::updateConfig(const QVariantMap & prop)
     return haschanged;
 }
 
-bool AgentInfo::updateStatus(const QVariantMap &)
+bool AgentInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = true;
+    m_status = prop.value("status").toString();
     return haschanged;
 }
 

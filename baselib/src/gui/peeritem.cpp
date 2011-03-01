@@ -98,57 +98,6 @@ void PeerItem::updateDisplayedStatus()
 
     m_peerwidget->updatePresence();
     m_peerwidget->updatePhonesStates();
-
-    QString action = m_agentstatus.toMap().value("action").toString();
-    QString astid = m_agentstatus.toMap().value("astid").toString();
-    QString agentnum = m_agentstatus.toMap().value("agent_channel").toString().mid(6);
-    QString queuename = m_agentstatus.toMap().value("queuename").toString();
-
-    if(action == "agentlogin") {
-        m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-        m_peerwidget->setAgentState("green");
-    } else if(action == "agentlogout") {
-        m_peerwidget->setAgentToolTip("", m_queuelist);
-        m_peerwidget->setAgentState("grey");
-    } else if(action == "joinqueue") {
-        if(! m_queuelist.contains(queuename))
-            m_queuelist.append(queuename);
-        m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-    } else if(action == "leavequeue") {
-        if(m_queuelist.contains(queuename))
-            m_queuelist.removeAll(queuename);
-        m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-    } else if(action == "queuememberstatus") {
-        QString joinedstatus = m_agentstatus.toMap().value("joinedstatus").toString();
-        if(joinedstatus == "1") {
-            m_peerwidget->setAgentState("green");
-        } else if(joinedstatus == "3") {
-            m_peerwidget->setAgentState("blue");
-        } else if(joinedstatus == "5") {
-            m_peerwidget->setAgentState("grey");
-        } else {
-            m_peerwidget->setAgentState("yellow");
-        }
-        m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-    } else if(action == "agentstatus") {
-        //                 if(m_agentstatus[4].size() > 0)
-        //                         m_queuelist = m_agentstatus[4].split(",");
-        //                 else
-        //                         m_queuelist = QStringList();
-        //                 if (m_agentstatus[3] == "0") {
-        //                         m_peerwidget->setAgentToolTip("", m_queuelist);
-        //                         m_peerwidget->setColorAvail("agent", "grey", "");
-        //                 } else {
-        //                         m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-        //                         m_peerwidget->setColorAvail("agent", "green", "");
-        //                 }
-
-        // ("agentstatus", "xivo", "6102", "0", "qcb_00003,qcb_00000")
-        //         } else {
-        //                 qDebug() << Q_FUNC_INFO << "UNKNOWN" << m_agentstatus;
-        // m_peerwidget->setAgentToolTip(agentnum, m_queuelist);
-        // m_peerwidget->setBlue("agent");
-    }
 }
 
 /*! \brief update name if changed

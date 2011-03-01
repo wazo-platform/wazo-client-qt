@@ -47,8 +47,8 @@ class BASELIB_EXPORT DetailedExternalPhonePeerWidget : public BasePeerWidget
 
     public:
         DetailedExternalPhonePeerWidget(const QString &, const QString &);
-        void setAgentToolTip(const QString &, const QStringList &) { };
-        void setAgentState(const QString &) { };
+        void updateAgentConfig(const QString &) {};
+        void updateAgentStatus(const QString &) {};
         void updatePresence() { };
         void updatePhonesStates() { };
         void setName(const QString &name) { setText(name); };

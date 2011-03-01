@@ -77,6 +77,7 @@ class BASELIB_EXPORT UserInfo
         const QString & xuserid() const;
         const QString & ctilogin() const;
         const QString & agentid() const;
+        const QString & xagentid() const;
         const QString & ipbxid() const;
         const QString & context() const;
         int simultcalls() const { return m_simultcalls; };
@@ -105,6 +106,7 @@ class BASELIB_EXPORT UserInfo
         QString m_mobilenumber;  //!< mobile phone number
         QString m_voicemailid;  //!< voice mail box number
         QString m_agentid; //!< agent id
+        QString m_xagentid; //!< agent id
         QStringList m_phoneidlist;  //!< map to phones
 
         QString m_voicemailnumber;  //!< voice mail box number

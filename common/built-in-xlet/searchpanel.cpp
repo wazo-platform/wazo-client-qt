@@ -79,12 +79,19 @@ SearchPanel::SearchPanel(QWidget *parent)
     m_searchpattern = "";
 
     // connect signal/slots
-    connect(b_engine, SIGNAL(updatePeerAgent(const QString &, const QString &, const QVariant &)),
-            this, SLOT(updatePeerAgent(const QString &, const QString &, const QVariant &)));
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
             this, SLOT(updateUserStatus(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
+            this, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            this, SLOT(updatePhoneStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            this, SLOT(updateAgentStatus(const QString &)));
+
     connect(b_engine, SIGNAL(peersReceived()),
             this, SLOT(updateDisplay()));
     connect(b_engine, SIGNAL(delogged()),
@@ -133,11 +140,15 @@ void SearchPanel::updateDisplay()
         i.next();
         PeerItem *peeritem = i.value();
         BasePeerWidget *peerwidget = peeritem->getWidget();
-        if ((peeritem->userinfo()->fullname().contains(m_searchpattern, Qt::CaseInsensitive) ||
-            (peeritem->userinfo()->phoneNumber().contains(m_searchpattern))) &&
+        UserInfo * userinfo = peeritem->userinfo();
+        if ((userinfo->fullname().contains(m_searchpattern, Qt::CaseInsensitive) ||
+            (userinfo->phoneNumber().contains(m_searchpattern))) &&
             (naff < m_maxdisplay)) {
             if (peerwidget == NULL) {
-                peerwidget = new PeerWidget(peeritem->userinfo());
+                peerwidget = new PeerWidget(userinfo);
+                qDebug() << userinfo->fullname() << userinfo->xagentid();
+                peerwidget->updateAgentConfig(userinfo->xagentid());
+                peerwidget->updateAgentStatus(userinfo->xagentid());
                 peeritem->setWidget(peerwidget);
                 peeritem->updateDisplayedStatus();
                 peeritem->updateDisplayedName();
@@ -163,7 +174,7 @@ void SearchPanel::updateUserConfig(const QString & xuserid)
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);
     } else {
-        UserInfo * ui = b_engine->users()[xuserid];
+        UserInfo * ui = b_engine->users().value(xuserid);
         peeritem = new PeerItem(ui);
         m_peerhash.insert(xuserid, peeritem);
     }
@@ -172,25 +183,34 @@ void SearchPanel::updateUserConfig(const QString & xuserid)
 
 void SearchPanel::updateUserStatus(const QString & xuserid)
 {
-    PeerItem *peeritem = NULL;
+    PeerItem * peeritem = NULL;
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);
         peeritem->updateStatus();
     }
 }
 
-void SearchPanel::updatePeerAgent(const QString &id,
-                                  const QString &what,
-                                  const QVariant &statuslist)
+void SearchPanel::updateAgentConfig(const QString & xagentid)
 {
-    // qDebug() << Q_FUNC_INFO;
-    if (m_peerhash.contains(id)) {
-        if (what == "agentstatus") {
-            m_peerhash.value(id)->updateAgentStatus(statuslist);
-        } else if (what == "imstatus") {
-            m_peerhash.value(id)->updateStatus();
-        }
-    }
+}
+
+void SearchPanel::updateAgentStatus(const QString & xagentid)
+{
+    // XXXX find xuserid
+//     if (m_peerhash.contains(xuserid))
+//         m_peerhash.value(xuserid)->updateAgentStatus(xagentid);
+    return;
+}
+
+void SearchPanel::updatePhoneConfig(const QString & xphoneid)
+{
+}
+
+void SearchPanel::updatePhoneStatus(const QString & xphoneid)
+{
+    // XXXX find xuserid
+//     if (m_peerhash.contains(xuserid))
+//         m_peerhash.value(xuserid)->updateAgentStatus(xagentid);
     return;
 }
 

@@ -54,8 +54,8 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
         BasePeerWidget(UserInfo *);
 
         virtual void setName(const QString &) = 0;  //! change username to be displayed
-        virtual void setAgentToolTip(const QString &, const QStringList &) = 0;  //! set Tooltip for agent
-        virtual void setAgentState(const QString & color) = 0;  //! set agent state
+        virtual void updateAgentConfig(const QString &) = 0;
+        virtual void updateAgentStatus(const QString &) = 0;
         virtual void updatePresence() = 0;  //! update presence information displayed
         virtual void updatePhonesStates() = 0;  //! update phones information displayed
 

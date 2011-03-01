@@ -141,6 +141,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         const QStringList & getCapaXlets() const;
         const QVariantMap & getCapaPresence() const;
+        const QVariantMap & getCapaTermStates() const;
 
         void setGuiOption(const QString &, const QVariant &);
         const QVariantMap getGuiOptions(const QString &) const;
@@ -274,7 +275,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void newQueueList(const QStringList &);
         void newAgentList(const QStringList &);
-        void updatePeerAgent(const QString &, const QString &, const QVariant &);
         void directoryResponse(const QStringList &, const QStringList &);  //! the directory search response has been received.
         void disconnectFeatures();
         void connectFeatures();
@@ -361,6 +361,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QStringList m_capafuncs;        //!< List of func capabilities issued by the server after a successful login
         QStringList m_capaxlets;        //!< List of xlet capabilities issued by the server after a successful login
         QVariantMap m_capapresence;     //!< List of capabilities issued by the server for the presence statuses
+        QVariantMap m_capatermstates;   //!< List of capabilities issued by the server for the termination statuses
         QVariantMap m_guioptions;       //!< List of GUI options
         QString m_appliname;            //!< Application name to be displayed
         QString m_sessionid;            //!< Session id obtained after a successful login

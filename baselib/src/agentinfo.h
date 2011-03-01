@@ -51,15 +51,17 @@ class BASELIB_EXPORT AgentInfo
         const QString & ipbxid() const;  //! IPBX this agent belongs to
         const QString & id() const;  //! reference id of this agent on the server
         const QString & context() const;  //! context this agent belongs to
-        const QString hintstatus(const QString &key) const {
-            return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
+        const QString & agentNumber() const;  //! agent number
+        const QString & fullname() const;  //! agent fullname
+
+        //! agent statuses
+        const QString & status() const {
+                return m_status;
         };  //! access to the status values of this agent
-        const QString &agentNumber() const;  //! agent number
-        const QString &fullname() const;  //! agent fullname
-        //! agent properties
-        const QVariantMap& properties() const;
+        const QVariantMap & properties() const;
         //! current communications of this agent
-        const QVariantMap& comms() const { return m_comms; };
+        const QVariantMap & comms() const { return m_comms; };
+        const QList<QString> queuelist() const { return m_comms.keys(); };
 
     private:
         QString m_ipbxid;
@@ -68,7 +70,8 @@ class BASELIB_EXPORT AgentInfo
         QString m_agentname;
         QString m_agentnumber;
         QString m_fullname;
-        QMap<QString, QString> m_hintstatus;
+
+        QString m_status;
         QVariantMap m_comms;
         QVariantMap m_properties;
 };

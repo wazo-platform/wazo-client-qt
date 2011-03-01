@@ -67,11 +67,14 @@ class XletSwitchBoard : public XLet
         void contextMenuEvent(QContextMenuEvent *);
 
     public slots:
-        void updatePeerAgent(const QString &, const QString &, const QVariant &);
         void removePeer(const QString &);
         void removePeers();
         void updateUserConfig(const QString &);
         void updateUserStatus(const QString &);
+        void updateAgentConfig(const QString &);
+        void updateAgentStatus(const QString &);
+        void updatePhoneConfig(const QString &);
+        void updatePhoneStatus(const QString &);
 
     private slots:
         void removePeerFromLayout();
@@ -79,7 +82,7 @@ class XletSwitchBoard : public XLet
         void changeGroupColor();
         void changeGroupName();
         void addPhoneNumberEntry();
-        void drawTheGrid(bool yes=true);
+        void drawTheGrid(bool yes = true);
         void savePositions() const;
 
     private:

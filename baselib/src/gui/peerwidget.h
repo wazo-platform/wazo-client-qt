@@ -59,14 +59,15 @@ class BASELIB_EXPORT PeerWidget : public BasePeerWidget
         PeerWidget(UserInfo *);
         void setName(const QString &);
         void setEngine(BaseEngine *);
-        void setAgentToolTip(const QString &, const QStringList &);
-        void setAgentState(const QString &color);
+        void updateAgentConfig(const QString &);
+        void updateAgentStatus(const QString &);
         void setMobileState(const QString &color);
         void updatePresence();  //!< update presence information displayed
         void updatePhonesStates();
         bool pOverMobileLbl(const QPoint &p);
 
     private:
+        QString m_xagentid;
         QHash<QString, QLabel *> m_lblphones; //!< phone labels
 
         ChitchatButton *m_user_status;  //!< Peer state display from XiVO CTI Client

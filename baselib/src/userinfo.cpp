@@ -113,6 +113,7 @@ void UserInfo::setPhoneIdList(const QStringList & phoneidlist)
 void UserInfo::setAgentId(const QString & agentid)
 {
     m_agentid = agentid;
+    m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(agentid);
 }
 
 void UserInfo::setVoiceMailId(const QString & voicemailid)
@@ -193,14 +194,19 @@ const QStringList & UserInfo::mwi() const
     return m_mwi;
 }
 
-const QString& UserInfo::agentNumber() const
+const QString & UserInfo::agentNumber() const
 {
     return m_agentnumber;
 }
 
-const QString& UserInfo::agentid() const
+const QString & UserInfo::agentid() const
 {
     return m_agentid;
+}
+
+const QString & UserInfo::xagentid() const
+{
+    return m_xagentid;
 }
 
 /*! \brief return a list of contexts where this user has its phones

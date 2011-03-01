@@ -50,6 +50,7 @@ BasicPeerWidget::BasicPeerWidget(UserInfo * ui)
       m_color(0xcc, 0xcc, 0xcc),
       m_presenceColor(0xcc, 0xcc, 0xcc)
 {
+    qDebug() << Q_FUNC_INFO;
     // can grow horizontaly but not verticaly
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
     QString name = (!ui || ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
@@ -115,16 +116,6 @@ void BasicPeerWidget::paintEvent(QPaintEvent *)
     painter.drawText( rectangle, Qt::AlignVCenter | Qt::AlignHCenter, m_text );
 }
 
-void BasicPeerWidget::setAgentToolTip(const QString &, const QStringList &)
-{
-    // do nothing !
-}
-
-void BasicPeerWidget::setAgentState(const QString &)
-{
-    // do nothing !
-}
-
 void BasicPeerWidget::updatePresence()
 {
     QString text = m_ui->phoneNumber();
@@ -141,6 +132,7 @@ void BasicPeerWidget::updatePresence()
 void BasicPeerWidget::updatePhonesStates()
 {
     // set the color according to the 1st phone
+    qDebug() << Q_FUNC_INFO;
     QString ipbxid = m_ui->ipbxid();
     if (! m_ui->phonelist().isEmpty()) {
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(m_ui->phonelist()[0]);
