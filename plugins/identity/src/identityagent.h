@@ -53,9 +53,11 @@ class IdentityAgent : public QFrame
 
     public:
         IdentityAgent(QWidget *parent=0);
-        void setText(const QString &);
-        void updateStatus(const QVariantMap &properties);
+        void setAgentId(const QString &);
         void setAllowedActions(bool allow_logagent, bool allow_pauseagent);
+    public slots:
+        void updateAgentConfig(const QString &);
+        void updateAgentStatus(const QString &);
     protected:
         void contextMenuEvent(QContextMenuEvent *);
     signals:
@@ -69,6 +71,7 @@ class IdentityAgent : public QFrame
     private:
         void setStatusColors(const QString &);
         void setPausedColors(int, int);
+        QString m_xagentid;
 
         QGridLayout *m_layout;
         QLabel *m_icon;

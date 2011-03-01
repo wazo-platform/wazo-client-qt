@@ -115,15 +115,12 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_glayout->addWidget(m_phone, 0, m_col_phone, 3, 1);
     m_glayout->addWidget(m_voicemail, 0, m_col_vm, 3, 1);
 
-    m_agent->hide();
+    // m_agent->hide();
 
     m_functions = b_engine->getGuiOptions("server_funcs").value("functions").toStringList();
     setGuiOptions(b_engine->getGuiOptions("merged_gui"));
 
     // connect signals/slots
-    connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
-            this, SLOT(newAgentList(const QStringList &)));
-
     connect(b_engine, SIGNAL(updatePresence(const QString &)),
             this, SLOT(updatePresence(const QString &)));
 
@@ -136,6 +133,11 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             this, SLOT(updateUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
             this, SLOT(updateUserStatus(const QString &)));
+
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            m_agent, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            m_agent, SLOT(updateAgentStatus(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             m_phone, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
@@ -210,26 +212,8 @@ void IdentityDisplay::updatePresence(const QString & presence)
     m_presencevalue->show();
 }
 
-/*! \brief slot when one or more agents have been updated
- */
-void IdentityDisplay::newAgentList(const QStringList &)
-{
-    // qDebug() << Q_FUNC_INFO << m_loginkind << list << b_engine->agents();
-    if (m_loginkind == 0 || ! m_ui)
-        return;
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
-    while( iter.hasNext() )
-    {
-        iter.next();
-        AgentInfo * ainfo = iter.value();
-        QString agentid = iter.key();
-        if((m_ui->ipbxid() == ainfo->ipbxid()) && (m_ui->agentNumber() == ainfo->agentNumber())) {
-            m_agent->setText(QString("Agent %1").arg(ainfo->agentNumber()));
-            m_agent->show();
-            m_agent->updateStatus(ainfo->properties());
-        }
-    }
-}
+// XXX disable agent update on identityagent when loginkind = 0 ? what if logged in nevertheless ?
+// XXX show() agent
 
 
 /*! \brief updates the boolean services
@@ -289,7 +273,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
         m_voicemail->setOldNew(vm[1], vm[2]);
     }
     // changes the "watched agent" only if no one else has done it before
-    b_engine->changeWatchedAgent(QString("%1/%2").arg(m_ui->ipbxid()).arg(m_ui->agentid()), false);
+    b_engine->changeWatchedAgent(m_ui->xagentid(), false);
 
 
     QString ipbxid = m_ui->ipbxid();
@@ -313,6 +297,8 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
             }
         }
     }
+
+    m_agent->setAgentId(m_ui->xagentid());
 }
 
 void IdentityDisplay::updateUserStatus(const QString & xuserid)

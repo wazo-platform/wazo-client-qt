@@ -70,52 +70,73 @@ IdentityAgent::IdentityAgent(QWidget *parent)
     // m_layout->setMargin(0);
 }
 
-void IdentityAgent::setText(const QString & text)
+void IdentityAgent::setAgentId(const QString & xagentid)
 {
-    m_text->setText(text);
+    m_xagentid = xagentid;
 }
 
-void IdentityAgent::updateStatus(const QVariantMap & properties)
+void IdentityAgent::updateAgentConfig(const QString & xagentid)
 {
-    QVariantMap agqjoined = properties["queues_by_agent"].toMap();
-    QVariantMap agentstats = properties["agentstats"].toMap();
-    QString agstatus = agentstats["status"].toString();
-    QString phonenum = agentstats["agent_phone_number"].toString();
+    if(m_xagentid != xagentid)
+        return;
+    AgentInfo * agentinfo = b_engine->agents().value(m_xagentid);
+    if (agentinfo == NULL)
+        return;
+    QString agentnumber = agentinfo->agentNumber();
+    m_text->setText(QString("Agent %1").arg(agentnumber));
+}
 
-    if(agstatus != m_agstatus) {
-        m_agstatus = agstatus;
-        if(agstatus == "AGENT_LOGGEDOFF") {
-            setSystrayIcon(icon_color_black);
-            m_statustxt->setProperty("connected", false);
-            setStatusColors(phonenum);
-        } else if(agstatus == "AGENT_IDLE") {
-            setSystrayIcon(icon_color_green);
-            m_statustxt->setProperty("connected", true);
-            setStatusColors(phonenum);
-        } else if(agstatus == "AGENT_ONCALL") {
-            setSystrayIcon(icon_color_green);
-            m_statustxt->setProperty("connected", true);
-            setStatusColors(phonenum);
-        } else
-            qDebug() << Q_FUNC_INFO << "unknown status" << agstatus;
-    }
+void IdentityAgent::updateAgentStatus(const QString & xagentid)
+{
+    if(m_xagentid != xagentid)
+        return;
+    AgentInfo * agentinfo = b_engine->agents().value(m_xagentid);
+    if (agentinfo == NULL)
+        return;
 
-    QStringList joined_queues;
-    QStringList unpaused_queues;
-    foreach (QString qname, agqjoined.keys()) {
-        QVariantMap qv = agqjoined[qname].toMap();
-        if(qv.contains("Status")) {
-            QString pstatus = qv["Paused"].toString();
-            //QString sstatus = qv["Status"].toString();
-            joined_queues << qname;
-            if(pstatus == "0")
-                unpaused_queues << qname;
-        }
-    }
+    // agentinfo->status();
+    // QString phonenumber = agentinfo->phoneNumber();
+    // setStatusColors(phonenumber);
 
-    int njoined = joined_queues.size();
-    int nunpaused = unpaused_queues.size();
-    setPausedColors(njoined, njoined - nunpaused);
+//     QVariantMap agqjoined = properties["queues_by_agent"].toMap();
+//     QVariantMap agentstats = properties["agentstats"].toMap();
+//     QString agstatus = agentstats["status"].toString();
+//     QString phonenum = agentstats["agent_phone_number"].toString();
+
+//     if(agstatus != m_agstatus) {
+//         m_agstatus = agstatus;
+//         if(agstatus == "AGENT_LOGGEDOFF") {
+//             setSystrayIcon(icon_color_black);
+//             m_statustxt->setProperty("connected", false);
+//             setStatusColors(phonenum);
+//         } else if(agstatus == "AGENT_IDLE") {
+//             setSystrayIcon(icon_color_green);
+//             m_statustxt->setProperty("connected", true);
+//             setStatusColors(phonenum);
+//         } else if(agstatus == "AGENT_ONCALL") {
+//             setSystrayIcon(icon_color_green);
+//             m_statustxt->setProperty("connected", true);
+//             setStatusColors(phonenum);
+//         } else
+//             qDebug() << Q_FUNC_INFO << "unknown status" << agstatus;
+//     }
+
+//     QStringList joined_queues;
+//     QStringList unpaused_queues;
+//     foreach (QString qname, agqjoined.keys()) {
+//         QVariantMap qv = agqjoined[qname].toMap();
+//         if(qv.contains("Status")) {
+//             QString pstatus = qv["Paused"].toString();
+//             //QString sstatus = qv["Status"].toString();
+//             joined_queues << qname;
+//             if(pstatus == "0")
+//                 unpaused_queues << qname;
+//         }
+//     }
+
+//     int njoined = joined_queues.size();
+//     int nunpaused = unpaused_queues.size();
+//     setPausedColors(njoined, njoined - nunpaused);
 }
 
 void IdentityAgent::setStatusColors(const QString & phonenum)
