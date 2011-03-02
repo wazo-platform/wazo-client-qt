@@ -34,9 +34,9 @@
 #ifndef __DETAILEDEXTERNALPHONEPEERWIDGET_H__
 #define __DETAILEDEXTERNALPHONEPEERWIDGET_H__
 
-#include "baselib_export.h"
-
 #include <QLabel>
+
+#include "baselib_export.h"
 #include "basepeerwidget.h"
 
 /*! \brief External phone widget for detailed switchboard display

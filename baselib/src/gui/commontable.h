@@ -46,11 +46,11 @@
 #include <QAction>
 #include <QMouseEvent>
 
-#include <baseengine.h>
-
 #include "xlet.h"
+#include "baselib_export.h"
+#include "baseengine.h"
 
-class CommonTableProperties
+class BASELIB_EXPORT CommonTableProperties
 {
     public:
         CommonTableProperties(const QString &);
@@ -84,7 +84,7 @@ class CommonTableProperties
         void * m_tooltip_xlet;
 };
 
-class CommonTableModel : public QAbstractTableModel
+class BASELIB_EXPORT CommonTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -116,7 +116,7 @@ class CommonTableModel : public QAbstractTableModel
         const CommonTableProperties * m_fieldoptions;
 };
 
-class CommonTableView : public QTableView
+class BASELIB_EXPORT CommonTableView : public QTableView
 {
     Q_OBJECT
 
@@ -134,7 +134,7 @@ class CommonTableView : public QTableView
         QList<QModelIndex> m_modelindexlist;
 };
 
-class CommonTableWidget : public QWidget
+class BASELIB_EXPORT CommonTableWidget : public QWidget
 {
     Q_OBJECT
 
