@@ -67,10 +67,9 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
 void CustomerInfoPanel::showNewProfile(Popup * popup)
 {
     QString opt = "";
-    qDebug() << Q_FUNC_INFO
-             << popup->callKind()
-             << popup->callAstid() << popup->callContext()
-             << popup->callUniqueid() << popup->callChannel();
+    qDebug() << Q_FUNC_INFO << popup->callWhere()
+             << popup->callIpbxId() << popup->callChannel();
+    qDebug() << Q_FUNC_INFO << b_engine->channels();
     if(popup->sheetpopup()) {
         // removed the "already_popup" stuff, since it is already handled in displayFiche()
         QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm:ss");
@@ -97,11 +96,10 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
 void CustomerInfoPanel::popupDestroyed(QObject * obj)
 {
     qDebug() << Q_FUNC_INFO
-             << obj->property("astid") << obj->property("uniqueid") << obj->property("context");
+             << obj->property("ipbxid") << obj->property("channel");
     foreach(Popup * mpopup, m_popups)
-        if ( (mpopup->callAstid() == obj->property("astid").toString()) &&
-             (mpopup->callContext() == obj->property("context").toString()) &&
-             (mpopup->callUniqueid() == obj->property("uniqueid").toString()) ) {
+        if ( (mpopup->callIpbxId() == obj->property("ipbxid").toString()) &&
+             (mpopup->callChannel() == obj->property("channel").toString()) ) {
             m_popups.removeAll(mpopup);
             mpopup->deleteLater();
         }
@@ -144,23 +142,19 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
 
 void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVariant & timestamps)
 {
-    QString astid = sender()->property("astid").toString();
-    QString uniqueid = sender()->property("uniqueid").toString();
-    QString context = sender()->property("context").toString();
+    QString ipbxid = sender()->property("ipbxid").toString();
+    QString channel = sender()->property("channel").toString();
     Popup *thispopup = NULL;
     foreach(Popup *mpopup, m_popups)
-        if ( (mpopup->callUniqueid() == uniqueid) &&
-             (mpopup->callContext() == context) &&
-             (mpopup->callAstid() == astid) ) {
+        if ( (mpopup->callChannel() == channel) &&
+             (mpopup->callIpbxId() == ipbxid) ) {
             thispopup = mpopup;
             break;
         }
     if(thispopup) {
         QVariantMap data;
         data["buttonname"] = buttonname;
-        data["astid"] = thispopup->callAstid();
-        data["uniqueid"] = thispopup->callUniqueid();
-        data["context"] = thispopup->callContext();
+        data["ipbxid"] = thispopup->callIpbxId();
         data["channel"] = thispopup->callChannel();
         data["timestamps"] = timestamps;
         b_engine->actionFromFiche(QVariant(data));

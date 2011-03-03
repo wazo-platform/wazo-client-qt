@@ -77,8 +77,10 @@ XletAgents::XletAgents(QWidget *parent)
             this, SLOT(newAgentList(const QStringList &)));
     connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
             this, SLOT(newQueueList(const QStringList &)));
-    connect(b_engine, SIGNAL(updateAgentPresence(const QString &, const QString &, const QVariant &)),
-            this, SLOT(updateAgentPresence(const QString &, const QString &, const QVariant &)));
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            this, SLOT(updateAgentStatus(const QString &)));
     connect(b_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
             this, SLOT(statusRecord(const QString &, const QString &, const QString &)));
     connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
@@ -107,21 +109,22 @@ void XletAgents::setGuiOptions(const QVariantMap & optionsMap)
     m_title_npaused->setFont(m_gui_font);
 }
 
+void XletAgents::updateAgentConfig(const QString & xagentid)
+{
+}
+
 /*! \brief set agent presence status
  */
-void XletAgents::updateAgentPresence(const QString & ipbxid,
-                                     const QString & agent_id,
-                                     const QVariant & presencestatus)
+void XletAgents::updateAgentStatus(const QString & xagentid)
 {
     // qDebug() << Q_FUNC_INFO << ipbxid << agent_id << presencestatus;
-    QString agentid = QString("%1/%2").arg(ipbxid).arg(agent_id);
-    if (b_engine->agents().contains(agentid))
-        if (m_agent_presence.contains(agentid)) {
-            QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
-            square.fill(QColor(presencestatus.toMap().value("color").toString()));
-            m_agent_presence[agentid]->setPixmap(square);
-            m_agent_presence[agentid]->setToolTip(presencestatus.toMap().value("longname").toString());
-        }
+//     if (b_engine->agents().contains(xagentid))
+//         if (m_agent_presence.contains(xagentid)) {
+//             QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
+//             square.fill(QColor(presencestatus.toMap().value("color").toString()));
+//             m_agent_presence[agentid]->setPixmap(square);
+//             m_agent_presence[agentid]->setToolTip(presencestatus.toMap().value("longname").toString());
+//         }
 }
 
 /*! \brief slot when one or more queues have been updated

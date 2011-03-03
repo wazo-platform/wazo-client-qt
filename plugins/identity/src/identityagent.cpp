@@ -94,6 +94,11 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
     if (agentinfo == NULL)
         return;
 
+    setSystrayIcon(icon_color_black);
+    m_statustxt->setProperty("connected", false);
+    setStatusColors("345");
+    setPausedColors(7, 3);
+
     // agentinfo->status();
     // QString phonenumber = agentinfo->phoneNumber();
     // setStatusColors(phonenumber);

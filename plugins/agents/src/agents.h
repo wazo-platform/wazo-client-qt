@@ -54,7 +54,8 @@ class XletAgents : public XLet
         void setGuiOptions(const QVariantMap &);
         void newAgentList(const QStringList &);
         void newQueueList(const QStringList &);
-        void updateAgentPresence(const QString &, const QString &, const QVariant &);
+        void updateAgentConfig(const QString &);
+        void updateAgentStatus(const QString &);
         void statusRecord(const QString &, const QString &, const QString &);
         void statusListen(const QString &, const QString &, const QString &);
 

@@ -199,6 +199,20 @@ IdentityPhone::IdentityPhone(QWidget * parent)
 void IdentityPhone::setPhoneId(const QString & xphoneid)
 {
     m_xphoneid = xphoneid;
+}
+
+void IdentityPhone::updateChannelStatus(const QString & xchannelid)
+{
+    const ChannelInfo * channelinfo = b_engine->channels().value(xchannelid);
+    if (channelinfo == NULL)
+        return;
+    qDebug() << Q_FUNC_INFO << channelinfo->channel() << channelinfo->talkingto_kind();
+}
+
+void IdentityPhone::updatePhoneConfig(const QString & xphoneid)
+{
+    if (xphoneid != m_xphoneid)
+        return;
     const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
     if (phoneinfo == NULL)
         return;
@@ -214,21 +228,6 @@ void IdentityPhone::setPhoneId(const QString & xphoneid)
         hide();
     else
         show();
-}
-
-void IdentityPhone::updateChannelStatus(const QString & xchannelid)
-{
-    const ChannelInfo * channelinfo = b_engine->channels().value(xchannelid);
-    if (channelinfo == NULL)
-        return;
-    qDebug() << Q_FUNC_INFO << channelinfo->channel() << channelinfo->talkingto_kind();
-}
-
-void IdentityPhone::updatePhoneConfig(const QString & xphoneid)
-{
-    if (xphoneid != m_xphoneid)
-        return;
-    setPhoneId(xphoneid);
 }
 
 void IdentityPhone::updatePhoneStatus(const QString & xphoneid)

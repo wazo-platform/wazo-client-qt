@@ -364,7 +364,7 @@ void BaseEngine::start()
 /*! \brief Closes the connection to the server
  * This method disconnect the engine from the server
  */
-void BaseEngine::stop()
+void BaseEngine::stopDisplay()
 {
     QString stopper = sender()->property("stopper").toString();
     qDebug() << Q_FUNC_INFO << sender() << stopper;
@@ -378,11 +378,6 @@ void BaseEngine::stop()
         m_attempt_loggedin = false;
     }
 
-    m_ctiserversocket->flush();
-    m_ctiserversocket->disconnectFromHost();
-
-    stopKeepAliveTimer();
-    stopTryAgainTimer();
     setState(ENotLogged);
     m_sessionid = "";
 
@@ -390,8 +385,8 @@ void BaseEngine::stop()
     clearPhoneList();
     clearAgentList();
     clearQueueList();
-    if (m_time.isValid())
-    {
+
+    if (m_time.isValid()) {
         int elapsed = m_time.elapsed();
         qDebug() << Q_FUNC_INFO
                  << m_byte_counter << "bytes received in" << elapsed << "ms : "
@@ -412,6 +407,21 @@ void BaseEngine::stop()
 
     delete m_tree;
     m_tree = new DStore();
+}
+
+void BaseEngine::stop()
+{
+    stopConnection();
+    stopDisplay();
+}
+
+void BaseEngine::stopConnection()
+{
+    m_ctiserversocket->flush();
+    m_ctiserversocket->disconnectFromHost();
+
+    stopKeepAliveTimer();
+    stopTryAgainTimer();
 }
 
 void BaseEngine::addToDataBase(QVariantMap & qv)
@@ -879,7 +889,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "sheet") {
             // TODO : use id better than just channel name
-            // qDebug() << Q_FUNC_INFO << "sheet" << datamap;
+            qDebug() << Q_FUNC_INFO << "sheet" << datamap;
             QString channel = datamap.value("channel").toString();
             if (function == "getownership") {
                 emit gotSheetOwnership(channel);
@@ -887,7 +897,9 @@ void BaseEngine::parseCommand(const QString &line)
                 emit lostSheetOwnership(channel);
             } else if (function == "entryadded") {
                 emit sheetEntryAdded(channel, datamap.value("entry").toMap());
-            } if (datamap.contains("payload")) {
+            }
+
+            if (datamap.contains("payload")) {
                 QString payload;
                 QByteArray qba = QByteArray::fromBase64(datamap.value("payload").toString().toAscii());
                 if (datamap.value("compressed").toBool())
@@ -974,7 +986,6 @@ void BaseEngine::parseCommand(const QString &line)
                     }
                 }
                 m_users[id]->setAvailState(stateid);
-                // emit updateAgentPresence(); to be updated through updateAgentStatus, the server shall manage the agent's presence
                 if (id == m_xuserid) {
                     emit updatePresence(stateid);
                     // emit localUserInfoDefined(m_users[m_xuserid]);
@@ -1024,7 +1035,8 @@ void BaseEngine::parseCommand(const QString &line)
             sendJsonCommand(command);
 
         } else if (thisclass == "loginko") {
-            stop();
+            stopConnection();
+            stopDisplay();
             popupError(datamap.value("errorstring").toString());
 
         } else if (thisclass == "login_pass_ok") {
@@ -1130,21 +1142,23 @@ void BaseEngine::parseCommand(const QString &line)
                     m_enabled_function[function] = false;
 
             if (m_capafuncs.size() == 0) {
-                stop();
+                stopConnection();
+                stopDisplay();
                 popupError("no_capability");
             } else {
+                askCallerIds0();
+                askCallerIds();
                 setState(ELogged); // calls logged()
                 setAvailState(m_forced_state, true);
                 m_timerid_keepalive = startTimer(m_keepaliveinterval);
-                askCallerIds0();
-                askCallerIds();
                 m_attempt_loggedin = true;
             }
 
         } else if (thisclass == "disconnect") {
             qDebug() << "disconnect" << datamap;
             QString type = datamap.value("type").toString();
-            stop();
+            stopConnection();
+            stopDisplay();
             if (type=="force") {
                 m_forced_to_disconnect = true;// disable autoreconnect
                 popupError("forcedisconnected");
@@ -1214,7 +1228,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
 //             m_users[xuserid]->setMWI(uinfo.value("mwi").toStringList());
 
-// emit updateAgentPresence(); to be updated through updateAgentStatus, the server shall manage the agent's presence
 //             emit localUserInfoDefined(m_users[m_xuserid]);
 
 
@@ -1349,8 +1362,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
                 m_users[xuserid]->updateConfig(uinfo);
                 m_users[xuserid]->updateStatus(uinfo);
-
-                // emit updateAgentPresence(); to be updated through updateAgentStatus, the server shall manage the agent's presence
             }
 
             emit peersReceived();

@@ -82,11 +82,9 @@ class Popup: public QWidget
         void finishAndShow();  //! finalize the Construction of the window and show it
         void setSheetPopup(const bool &);
         bool sheetpopup();
-        const QString& callAstid() const;
-        const QString& callUniqueid() const;
-        const QString& callContext() const;
+        const QString& callIpbxId() const;
         const QString& callChannel() const;
-        const QString& callKind() const;
+        const QString& callWhere() const;
         bool systraypopup();
         bool focus();
         void setTitle(const QString &);
@@ -143,10 +141,8 @@ class Popup: public QWidget
         QFrame * m_qf;
 
         QString m_ipbxid;
-        QString m_context;
-        QString m_uniqueid;
         QString m_channel;
-        QString m_kind;
+        QString m_where;
 
         bool m_sheetpopup;
         bool m_systraypopup;

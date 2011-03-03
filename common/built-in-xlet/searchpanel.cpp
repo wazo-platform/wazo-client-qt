@@ -146,7 +146,6 @@ void SearchPanel::updateDisplay()
             (naff < m_maxdisplay)) {
             if (peerwidget == NULL) {
                 peerwidget = new PeerWidget(userinfo);
-                qDebug() << userinfo->fullname() << userinfo->xagentid();
                 peerwidget->updateAgentConfig(userinfo->xagentid());
                 peerwidget->updateAgentStatus(userinfo->xagentid());
                 peeritem->setWidget(peerwidget);
@@ -154,8 +153,8 @@ void SearchPanel::updateDisplay()
                 peeritem->updateDisplayedName();
 
                 m_peerlayout->addWidget(peerwidget,
-                        naff / m_ncolumns,
-                        naff % m_ncolumns);
+                                        naff / m_ncolumns,
+                                        naff % m_ncolumns);
 
                 naff++;
                 peerwidget->show();

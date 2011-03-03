@@ -793,7 +793,7 @@ void MainWidget::engineStopped()
     m_status->setPixmap(m_pixmap_disconnected);
 
     clearAppearance();
-    m_appliname = "Client";
+    m_appliname = tr("Client");
     updateAppliName();
     b_engine->logAction("connection stopped");
 }

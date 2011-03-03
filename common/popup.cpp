@@ -188,7 +188,7 @@ void Popup::dispurl(const QUrl &url)
 void Popup::actionFromForm()
 {
     QString buttonname = sender()->property("buttonname").toString();
-    // qDebug() << Q_FUNC_INFO << buttonname << m_ipbxid << m_context << m_uniqueid << m_channel;
+    // qDebug() << Q_FUNC_INFO << buttonname << m_ipbxid << m_channel;
     if(buttonname == "close")
         close();
     else if(buttonname == "save")
@@ -312,7 +312,7 @@ void Popup::addDefForm(const QString & name, const QString & value)
 
 void Popup::addInfoForm(int where, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << this << where << value << m_kind << m_remoteforms.keys();
+    // qDebug() << Q_FUNC_INFO << this << where << value << m_where << m_remoteforms.keys();
     QUiLoader loader;
     if(m_remoteforms.contains(value)) {
         m_buffer = new QBuffer(this);
@@ -378,24 +378,17 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
     if(name == "channel") {
         m_channel = value;
         setProperty("channel", m_channel);
-    } else if(name == "astid") {
+    } else if(name == "ipbxid") {
         m_ipbxid = value;
-        setProperty("astid", m_ipbxid);
-    } else if(name == "context") {
-        m_context = value;
-        setProperty("context", m_context);
-    } else if(name == "uniqueid") {
-        m_uniqueid = value;
-        setProperty("uniqueid", m_uniqueid);
-
+        setProperty("ipbxid", m_ipbxid);
     } else if(name == "nosystraypopup")
         m_systraypopup = false;
     else if(name == "nofocus")
         m_focus = false;
-    else if(name == "kind") {
+    else if(name == "where") {
         // the form buttons should have been defined when arriving here
-        // ('kind' definition at the end of the sheet on server-side)
-        m_kind = value;
+        // ('where' definition at the end of the sheet on server-side)
+        m_where = value;
         m_timestamps[value] = QDateTime::currentDateTime().toTime_t();
         setEnablesOnForms();
     } else
@@ -406,17 +399,17 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
  */
 void Popup::setEnablesOnForms()
 {
-    if(m_kind == "dial") {
+    if(m_where == "dial") {
         if(m_form_buttons["hangup"])
             m_form_buttons["hangup"]->setEnabled(false);
-    } else if(m_kind == "link") {
+    } else if(m_where == "link") {
         if(m_form_buttons["refuse"])
             m_form_buttons["refuse"]->setEnabled(false);
         if(m_form_buttons["hangup"])
             m_form_buttons["hangup"]->setEnabled(true);
         if(m_form_buttons["answer"])
             m_form_buttons["answer"]->setEnabled(false);
-    } else if(m_kind == "unlink") {
+    } else if(m_where == "unlink") {
         if(m_form_buttons["hangup"])
             m_form_buttons["hangup"]->setEnabled(false);
     } else {
@@ -623,19 +616,9 @@ void Popup::setSheetPopup(const bool & sheetpopup)
 }
 
 
-const QString & Popup::callAstid() const
+const QString & Popup::callIpbxId() const
 {
     return m_ipbxid;
-}
-
-const QString & Popup::callContext() const
-{
-    return m_context;
-}
-
-const QString & Popup::callUniqueid() const
-{
-    return m_uniqueid;
 }
 
 const QString & Popup::callChannel() const
@@ -643,9 +626,9 @@ const QString & Popup::callChannel() const
     return m_channel;
 }
 
-const QString & Popup::callKind() const
+const QString & Popup::callWhere() const
 {
-    return m_kind;
+    return m_where;
 }
 
 

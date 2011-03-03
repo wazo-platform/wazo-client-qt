@@ -54,7 +54,6 @@ PeerWidget::PeerWidget(UserInfo *ui)
     : BasePeerWidget(ui), m_user_status(NULL), m_agentlbl(NULL), m_mobilelbl(NULL)
 {
     int fsize = 25;
-    qDebug() << Q_FUNC_INFO;
 
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     setLayout(vLayout);
@@ -98,7 +97,6 @@ PeerWidget::PeerWidget(UserInfo *ui)
         hLayout->addSpacing(fsize);
     }
 
-    qDebug() << Q_FUNC_INFO << ui->phonelist();
     foreach (QString phone, ui->phonelist()) {
         m_lblphones[phone] = new QLabel(peer);
         m_lblphones[phone]->setAlignment(Qt::AlignCenter);

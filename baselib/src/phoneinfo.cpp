@@ -47,28 +47,27 @@ PhoneInfo::PhoneInfo(const QString & ipbxid,
 bool PhoneInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = true;
-    m_protocol = prop.value("protocol").toString();
-    m_context = prop.value("context").toString();
-    m_number = prop.value("number").toString();
-    m_simultcalls = prop.value("simultcalls").toInt();
-
-    if (prop.contains("initialized")) {
+    if (prop.contains("protocol"))
+        m_protocol = prop.value("protocol").toString();
+    if (prop.contains("context"))
+        m_context = prop.value("context").toString();
+    if (prop.contains("number"))
+        m_number = prop.value("number").toString();
+    if (prop.contains("simultcalls"))
+        m_simultcalls = prop.value("simultcalls").toInt();
+    if (prop.contains("initialized"))
         m_initialized = prop.value("initialized").toBool();
-    }
-    if (prop.contains("enable_hint")) {
+    if (prop.contains("enable_hint"))
         m_enable_hint = prop.value("enable_hint").toBool();
-    }
     return haschanged;
 }
 
 bool PhoneInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = true;
-    if (prop.contains("hintstatus")) {
+    if (prop.contains("hintstatus"))
         m_hintstatus = prop.value("hintstatus").toString();
-    }
-    if(prop.contains("channels")) {
+    if(prop.contains("channels"))
         m_channels = prop.value("channels").toStringList();
-    }
     return haschanged;
 }

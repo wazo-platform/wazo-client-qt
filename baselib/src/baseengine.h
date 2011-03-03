@@ -187,8 +187,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);
-        QMultiHash<QString, e_callback* > m_class_event_cb;
+        void stopConnection();   //!< stop the engine
+        void stopDisplay();   //!< stop the engine
         void setOSInfos(const QString &);
+
+        QMultiHash<QString, e_callback* > m_class_event_cb;
 
     public slots:
         void start();  //!< start the connection process.
@@ -286,7 +289,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QString &);
         void changeWatchedQueueSignal(const QString &);
-        void updateAgentPresence(const QString &, const QString &, const QVariant &);
         void displayFiche(const QString &, bool, const QString &);
         void gotSheetOwnership(const QString &id);  //! the user logged has now ownership of the sheet
         void lostSheetOwnership(const QString &id);  //! the user logged just lost ownership of the sheet

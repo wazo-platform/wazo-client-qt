@@ -51,25 +51,36 @@ UserInfo::UserInfo(const QString & ipbxid,
 bool UserInfo::updateConfig(const QVariantMap & qvm)
 {
     bool haschanged = true;
-    setCtiLogin(qvm.value("loginclient").toString());
-    setFullName(qvm.value("fullname").toString());
-    setPhoneNumber(qvm.value("number").toString());
-    setMobileNumber(qvm.value("mobilephonenumber").toString());
-    setContext(qvm.value("context").toString());
-    setSimultCalls(qvm.value("simultcalls").toInt());
-    QStringList lid;
-    foreach (QString id, qvm.value("id").toStringList())
-        lid << QString("%1/%2").arg(m_ipbxid).arg(id);
-    setPhoneIdList(lid);
-    setAgentId(qvm.value("agentid").toString());
-    setVoiceMailId(qvm.value("voicemailid").toString());
+    if (qvm.contains("loginclient"))
+        setCtiLogin(qvm.value("loginclient").toString());
+    if (qvm.contains("fullname"))
+        setFullName(qvm.value("fullname").toString());
+    if (qvm.contains("number"))
+        setPhoneNumber(qvm.value("number").toString());
+    if (qvm.contains("mobilephonenumber"))
+        setMobileNumber(qvm.value("mobilephonenumber").toString());
+    if (qvm.contains("context"))
+        setContext(qvm.value("context").toString());
+    if (qvm.contains("simultcalls"))
+        setSimultCalls(qvm.value("simultcalls").toInt());
+    if (qvm.contains("id")) {
+        QStringList lid;
+        foreach (QString id, qvm.value("id").toStringList())
+            lid << QString("%1/%2").arg(m_ipbxid).arg(id);
+        setPhoneIdList(lid);
+    }
+    if (qvm.contains("agentid"))
+        setAgentId(qvm.value("agentid").toString());
+    if (qvm.contains("voicemailid"))
+        setVoiceMailId(qvm.value("voicemailid").toString());
     return haschanged;
 }
 
 bool UserInfo::updateStatus(const QVariantMap & qvm)
 {
     bool haschanged = true;
-    setAvailState(qvm.value("availstate").toString());
+    if (qvm.contains("availstate"))
+        setAvailState(qvm.value("availstate").toString());
     return haschanged;
 }
 

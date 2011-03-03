@@ -71,6 +71,11 @@ class BASELIB_EXPORT AgentInfo
         QString m_agentnumber;
         QString m_fullname;
 
+        // XXXX to add
+        // is this agent connected to a phone and which one ?
+        // how much and which queues it is in are in pause/unpause/...
+        // the phonenumber it is related to (connected or not)
+        // is the agent busy or not (AGENT_ONCALL usw ...)
         QString m_status;
         QVariantMap m_comms;
         QVariantMap m_properties;
