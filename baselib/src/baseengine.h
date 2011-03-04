@@ -250,7 +250,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void featurePutIsOK();
         void monitorPeer(UserInfo *);
         void requestFileListResult(const QVariant &);
-        void updatePresence(const QString &);
+        void updatePresence();
         void serverFileList(const QStringList &);
         void fileReceived();
         void statusRecord(const QString &, const QString &, const QString &);

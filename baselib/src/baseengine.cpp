@@ -987,7 +987,8 @@ void BaseEngine::parseCommand(const QString &line)
                 }
                 m_users[id]->setAvailState(stateid);
                 if (id == m_xuserid) {
-                    emit updatePresence(stateid);
+                    setAvailState(stateid, true);
+                    emit updatePresence();
                     // emit localUserInfoDefined(m_users[m_xuserid]);
                 }
             }
@@ -1089,9 +1090,7 @@ void BaseEngine::parseCommand(const QString &line)
             m_capaxlets = datamap.value("capaxlets").toStringList();
             m_capapresence = datamap.value("capapresence").toMap();
             m_capatermstates = datamap.value("capatermstates").toMap();
-
             m_forced_state = datamap.value("presence").toString();
-            updatePresence(m_forced_state);
             m_guioptions["server_gui"] = datamap.value("guisettings");
             //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
 
@@ -1153,6 +1152,7 @@ void BaseEngine::parseCommand(const QString &line)
                 askCallerIds();
                 setState(ELogged); // calls logged()
                 setAvailState(m_forced_state, true);
+                emit updatePresence();
                 m_timerid_keepalive = startTimer(m_keepaliveinterval);
                 m_attempt_loggedin = true;
             }
@@ -2120,7 +2120,7 @@ void BaseEngine::setState(EngineState state)
                 emit availAllowChanged(true);
             }
             emit logged();
-            // emit updatePresence(m_capapresence);
+            // emit updatePresence();
         } else if (state == ENotLogged) {
             emit availAllowChanged(false);
             emit delogged();

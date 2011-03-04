@@ -121,8 +121,8 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     setGuiOptions(b_engine->getGuiOptions("merged_gui"));
 
     // connect signals/slots
-    connect(b_engine, SIGNAL(updatePresence(const QString &)),
-            this, SLOT(updatePresence(const QString &)));
+    connect(b_engine, SIGNAL(updatePresence()),
+            this, SLOT(updatePresence()));
 
     connect(b_engine, SIGNAL(optChanged(const QString &, bool)),
             this, SLOT(setOpt(const QString &, bool)));
@@ -144,7 +144,9 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             m_phone, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
             m_phone, SLOT(updateChannelStatus(const QString &)));
-    updatePresence("available");
+
+    b_engine->setAvailState("available", true);
+    updatePresence();
 }
 
 void IdentityDisplay::setupIcons()
@@ -178,10 +180,12 @@ void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
     m_loginkind = optionsMap.value("loginkind").toUInt();
 }
 
-void IdentityDisplay::updatePresence(const QString & presence)
+void IdentityDisplay::updatePresence()
 {
-    qDebug() << Q_FUNC_INFO << presence;
+    QString presence = b_engine->getAvailState();
     QVariantMap presencemap = b_engine->getCapaPresence();
+    qDebug() << Q_FUNC_INFO;
+
     m_presencevalue->hide();
     if(! m_functions.contains("presence"))
         return;
@@ -196,12 +200,12 @@ void IdentityDisplay::updatePresence(const QString & presence)
         QVariantMap details = presencemap.value(presence).toMap();
         QStringList allowedlist = details.value("allowed").toStringList();
         int idx = 0;
-        foreach (QString ll, allowedlist) {
-            QVariantMap pdetails = presencemap.value(ll).toMap();
+        foreach (QString presencestate, allowedlist) {
+            QVariantMap pdetails = presencemap.value(presencestate).toMap();
             QString longname = pdetails.value("longname").toString();
             m_presencevalue->addItem(longname);
-            m_presence_names[ll] = longname;
-            if(presence == ll)
+            m_presence_names[presencestate] = longname;
+            if(presence == presencestate)
                 m_presencevalue->setCurrentIndex(idx);
             idx ++;
         }

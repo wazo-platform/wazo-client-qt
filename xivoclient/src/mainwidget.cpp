@@ -563,39 +563,31 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
     }
 }
 
-void MainWidget::updatePresence(const QString & presence)
+void MainWidget::updatePresence()
 {
-    // qDebug() << Q_FUNC_INFO << presence;
+    QString presence = b_engine->getAvailState();
     QVariantMap presencemap = b_engine->getCapaPresence();
-    if (presencemap.contains("names")) {
-        foreach (QString avstate, presencemap.value("names").toMap().keys()) {
-            QString name = presencemap.value("names").toMap().value(avstate).toMap().value("longname").toString();
-            if (! m_avact.contains(avstate)) {
-                m_avact[avstate] = new QAction(name, this);
-                m_avact[avstate]->setCheckable(false);
-                m_avact[avstate]->setProperty("availstate", avstate);
-                m_avact[avstate]->setEnabled(false);
-                connect(m_avact[avstate], SIGNAL(triggered()),
+    qDebug() << Q_FUNC_INFO << presence << presencemap;
+
+    if (presencemap.contains(presence)) {
+        QVariantMap details = presencemap.value(presence).toMap();
+        QStringList allowedlist = details.value("allowed").toStringList();
+        foreach (QString presencestate, presencemap.keys()) {
+            QVariantMap pdetails = presencemap.value(presencestate).toMap();
+            QString longname = pdetails.value("longname").toString();
+            if (! m_avact.contains(presencestate)) {
+                qDebug() << Q_FUNC_INFO << presence << presencestate;
+                m_avact[presencestate] = new QAction(longname, this);
+                m_avact[presencestate]->setProperty("availstate", presencestate);
+                bool isenabled = allowedlist.contains(presencestate);
+                m_avact[presencestate]->setCheckable(isenabled);
+                m_avact[presencestate]->setEnabled(isenabled);
+                connect(m_avact[presencestate], SIGNAL(triggered()),
                         b_engine, SLOT(setAvailability()));
-                m_availgrp->addAction(m_avact[avstate]);
+                m_availgrp->addAction(m_avact[presencestate]);
             }
         }
         m_avail->addActions(m_availgrp->actions());
-    }
-    if (presencemap.contains("allowed")) {
-        QMapIterator<QString, QVariant> capapres(presencemap.value("allowed").toMap());
-        while (capapres.hasNext()) {
-            capapres.next();
-            QString avstate = capapres.key();
-            bool allow = capapres.value().toBool();
-            if (m_avact.contains(avstate)) {
-                m_avact[avstate]->setCheckable(allow);
-                m_avact[avstate]->setEnabled(allow);
-            }
-        }
-    }
-    if (presencemap.contains("state")) {
-        b_engine->setAvailState(presencemap.value("state").toMap().value("stateid").toString(), true);
     }
 }
 
@@ -630,8 +622,8 @@ void MainWidget::engineStarted()
 
     m_appliname = tr("Client (%1 profile)").arg(b_engine->getCapaApplication());
 
-    connect(b_engine, SIGNAL(updatePresence(const QString &)),
-            this, SLOT(updatePresence(const QString &)));
+    connect(b_engine, SIGNAL(updatePresence()),
+            this, SLOT(updatePresence()));
     updateAppliName();
     hideLogin();
 

@@ -57,7 +57,7 @@ class IdentityDisplay : public XLet
         void setGuiOptions(const QVariantMap &);
         void newAgentList(const QStringList &);
         void idxChanged(const QString &);
-        void updatePresence(const QString &);
+        void updatePresence();
         void setOpt(const QString &, bool);
         void setForward(const QString &, const QVariant &);
         void updateUserConfig(const QString &);
