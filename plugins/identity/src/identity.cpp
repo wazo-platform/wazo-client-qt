@@ -303,11 +303,10 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
 
 void IdentityDisplay::updateUserStatus(const QString & xuserid)
 {
-    qDebug() << Q_FUNC_INFO << xuserid;
+    // qDebug() << Q_FUNC_INFO << xuserid;
     UserInfo * userinfo = b_engine->users().value(xuserid);
     if (userinfo == NULL)
         return;
-    qDebug() << Q_FUNC_INFO << xuserid << userinfo->availstate();
 }
 
 void IdentityDisplay::idxChanged(const QString & newidx)

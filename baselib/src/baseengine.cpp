@@ -64,14 +64,14 @@
  * Take ownership of settings object.
  */
 
-BASELIB_EXPORT BaseEngine *b_engine;
+BASELIB_EXPORT BaseEngine * b_engine;
 static const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
-static CtiConn *m_ctiConn;
+static CtiConn * m_ctiConn;
 
 BaseEngine::BaseEngine(QSettings *settings,
                        const QString &osInfo)
     : QObject(NULL),
-      m_serverhost(""), m_ctiport(0),
+      m_cti_address(""), m_cti_port(0),
       m_userlogin(""), m_userloginopt(""), m_company(""), m_password(""), m_agentphonenumber(""),
       m_sessionid(""), m_state(ENotLogged),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
@@ -149,8 +149,8 @@ void BaseEngine::loadSettings()
         m_profilename_read = "engine-" + profile;
 
     m_settings->beginGroup(m_profilename_read);
-        m_serverhost = m_settings->value("serverhost", "demo.xivo.fr").toString();
-        m_ctiport    = m_settings->value("serverport", 5003).toUInt();
+        m_cti_address = m_settings->value("serverhost", "demo.xivo.fr").toString();
+        m_cti_port    = m_settings->value("serverport", 5003).toUInt();
 
         m_userlogin      = m_settings->value("userid").toString().trimmed();
         m_userloginopt   = m_settings->value("useridopt").toString().trimmed();
@@ -235,8 +235,8 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/systrayed", m_systrayed);
 
     m_settings->beginGroup(m_profilename_write);
-        m_settings->setValue("serverhost", m_serverhost);
-        m_settings->setValue("serverport", m_ctiport);
+        m_settings->setValue("serverhost", m_cti_address);
+        m_settings->setValue("serverport", m_cti_port);
         m_settings->setValue("userid", m_userlogin);
         m_settings->setValue("useridopt", m_userloginopt);
         m_settings->setValue("company", m_company);
@@ -351,11 +351,10 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << Q_FUNC_INFO << m_serverhost << m_ctiport << m_checked_function;
+    qDebug() << Q_FUNC_INFO << m_cti_address << m_cti_port << m_checked_function;
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
-
     connectSocket();
     m_byte_counter = 0;
     m_time.start();
@@ -364,10 +363,9 @@ void BaseEngine::start()
 /*! \brief Closes the connection to the server
  * This method disconnect the engine from the server
  */
-void BaseEngine::stopDisplay()
+void BaseEngine::clearInternalData()
 {
     QString stopper = sender()->property("stopper").toString();
-    qDebug() << Q_FUNC_INFO << sender() << stopper;
     if (m_attempt_loggedin) {
         QVariantMap command;
         command["class"] = "logout";
@@ -378,7 +376,6 @@ void BaseEngine::stopDisplay()
         m_attempt_loggedin = false;
     }
 
-    setState(ENotLogged);
     m_sessionid = "";
 
     clearUserList();
@@ -411,17 +408,20 @@ void BaseEngine::stopDisplay()
 
 void BaseEngine::stop()
 {
+    QString stopper = sender()->property("stopper").toString();
+    qDebug() << Q_FUNC_INFO << "stopper = " << stopper;
     stopConnection();
-    stopDisplay();
+    // if (stopper != "connection_lost")
+    clearInternalData();
+    setState(ENotLogged);
 }
 
 void BaseEngine::stopConnection()
 {
+    qDebug() << Q_FUNC_INFO;
     m_ctiserversocket->flush();
     m_ctiserversocket->disconnectFromHost();
-
     stopKeepAliveTimer();
-    stopTryAgainTimer();
 }
 
 void BaseEngine::addToDataBase(QVariantMap & qv)
@@ -488,12 +488,12 @@ void BaseEngine::clearQueueList()
     m_queues.clear();
 }
 
-/*! \brief initiate connection to the server
+/*! \brief initiates connection to the server
  */
 void BaseEngine::connectSocket()
 {
     if (m_userlogin.length()) {
-        m_ctiserversocket->connectToHost(m_serverhost, m_ctiport);
+        m_ctiserversocket->connectToHost(m_cti_address, m_cti_port);
     }
 }
 
@@ -959,7 +959,7 @@ void BaseEngine::parseCommand(const QString &line)
         } else if (thisclass == "faxsend") {
             m_filedir = datamap.value("tdirection").toString();
             m_fileid = datamap.value("fileid").toString();
-            m_filetransfersocket->connectToHost(m_serverhost, m_ctiport);
+            m_filetransfersocket->connectToHost(m_cti_address, m_cti_port);
             qDebug() << Q_FUNC_INFO << m_filedir << m_fileid;
 
         } else if (thisclass == "faxprogress") {
@@ -1026,7 +1026,8 @@ void BaseEngine::parseCommand(const QString &line)
             }
 
         } else if (thisclass == "login_id_ok") {
-            QString tohash = datamap.value("sessionid").toString() + ":" + m_password;
+            m_sessionid = datamap.value("sessionid").toString();
+            QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_password);
             QCryptographicHash hidepass(QCryptographicHash::Sha1);
             QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
             QVariantMap command;
@@ -1036,7 +1037,8 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "loginko") {
             stopConnection();
-            stopDisplay();
+            clearInternalData();
+            setState(ENotLogged);
             popupError(datamap.value("errorstring").toString());
 
         } else if (thisclass == "login_pass_ok") {
@@ -1143,7 +1145,8 @@ void BaseEngine::parseCommand(const QString &line)
 
             if (m_capafuncs.size() == 0) {
                 stopConnection();
-                stopDisplay();
+                clearInternalData();
+                setState(ENotLogged);
                 popupError("no_capability");
             } else {
                 askCallerIds0();
@@ -1158,9 +1161,10 @@ void BaseEngine::parseCommand(const QString &line)
             qDebug() << "disconnect" << datamap;
             QString type = datamap.value("type").toString();
             stopConnection();
-            stopDisplay();
+            clearInternalData();
+            setState(ENotLogged);
             if (type=="force") {
-                m_forced_to_disconnect = true;// disable autoreconnect
+                m_forced_to_disconnect = true; // disable autoreconnect
                 popupError("forcedisconnected");
             } else {
                 popupError("disconnected");
@@ -1185,18 +1189,18 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QStringList listid = datamap.value("list").toStringList();
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if(listname == "users") {
+                if (listname == "users") {
                     if (! m_users.contains(xid))
                         m_users[xid] = new UserInfo(ipbxid, id);
-                } else if(listname == "phones") {
+                } else if (listname == "phones") {
                     if (! m_phones.contains(xid))
                         m_phones[xid] = new PhoneInfo(ipbxid, id);
                     // emit peersReceived();
-                } else if(listname == "agents") {
+                } else if (listname == "agents") {
                     if (! m_agents.contains(xid))
                         m_agents[xid] = new AgentInfo(ipbxid, id);
-                } else if(listname == "groups") {
-                } else if(listname == "queues") {
+                } else if (listname == "groups") {
+                } else if (listname == "queues") {
                     if (! m_queues.contains(xid))
                         m_queues[xid] = new QueueInfo(ipbxid, id);
                     // emit newQueueList(kk);
@@ -1219,11 +1223,11 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
             QVariantMap config = datamap.value("config").toMap();
             bool haschanged = false;
-            if(listname == "users") {
+            if (listname == "users") {
                 if (! m_users.contains(xid))
                     m_users[xid] = new UserInfo(ipbxid, id);
                 m_users[xid]->updateConfig(config);
-                // if(xid == m_xuserid)
+                // if (xid == m_xuserid)
                 // emit localUserInfoDefined(m_users[m_xuserid]);
 
 //             m_users[xuserid]->setMWI(uinfo.value("mwi").toStringList());
@@ -1231,14 +1235,14 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 //             emit localUserInfoDefined(m_users[m_xuserid]);
 
 
-            } else if(listname == "phones") {
+            } else if (listname == "phones") {
                 if (m_phones.contains(xid))
                     haschanged = m_phones[xid]->updateConfig(config);
-            } else if(listname == "agents") {
+            } else if (listname == "agents") {
                 if (m_agents.contains(xid))
                     haschanged = m_agents[xid]->updateConfig(config);
-            } else if(listname == "groups") {
-            } else if(listname == "queues") {
+            } else if (listname == "groups") {
+            } else if (listname == "queues") {
                 if (m_queues.contains(xid))
                     haschanged = m_queues[xid]->updateConfig(config);
             }
@@ -1266,21 +1270,21 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
             QVariantMap status = datamap.value("status").toMap();
             bool haschanged = false;
-            if(listname == "users") {
+            if (listname == "users") {
                 if (m_users.contains(xid))
                     haschanged = m_users[xid]->updateStatus(status);
-            } else if(listname == "phones") {
+            } else if (listname == "phones") {
                 if (m_phones.contains(xid))
                     haschanged = m_phones[xid]->updateStatus(status);
-            } else if(listname == "agents") {
+            } else if (listname == "agents") {
                 if (m_agents.contains(xid))
                     haschanged = m_agents[xid]->updateStatus(status);
-            } else if(listname == "groups") {
-            } else if(listname == "channels") {
+            } else if (listname == "groups") {
+            } else if (listname == "channels") {
                 if (! m_channels.contains(xid))
                     m_channels[xid] = new ChannelInfo(ipbxid, id);
                 haschanged = m_channels[xid]->updateStatus(status);
-            } else if(listname == "queues") {
+            } else if (listname == "queues") {
                 if (m_queues.contains(xid))
                     haschanged = m_queues[xid]->updateStatus(status);
             }
@@ -1470,7 +1474,7 @@ void BaseEngine::popupError(const QString & errorid)
         errormsg = tr("Your registration name <%1@%2> "
                       "is not known by the XiVO CTI server on %3:%4.")
             .arg(m_userlogin).arg(m_company)
-            .arg(m_serverhost).arg(m_ctiport);
+            .arg(m_cti_address).arg(m_cti_port);
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
     } else if (errorid.startsWith("capaid_undefined:")) {
@@ -1480,45 +1484,45 @@ void BaseEngine::popupError(const QString & errorid)
     // keepalive (internal)
     } else if (errorid.toLower() == "no_keepalive_from_server") {
         errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.")
-            .arg(m_serverhost).arg(m_ctiport);
+            .arg(m_cti_address).arg(m_cti_port);
 
     // socket errors - while attempting to connect
     } else if (errorid.toLower() == "socket_error_hostnotfound") {
         errormsg = tr("You defined an IP address %1 that is probably an unresolved host name.")
-            .arg(m_serverhost);
+            .arg(m_cti_address);
     } else if (errorid.toLower() == "socket_error_timeout") {
         errormsg = tr("Socket timeout (~ 60 s) : you probably attempted to reach, "
                       "via a gateway, an IP address %1 that does not exist.")
-            .arg(m_serverhost);
+            .arg(m_cti_address);
     } else if (errorid.toLower() == "socket_error_connectionrefused") {
         errormsg = tr("There seems to be a machine running on this IP address %1, "
                       "and either no CTI server is running, or your port %2 is wrong.")
-            .arg(m_serverhost).arg(m_ctiport);
+            .arg(m_cti_address).arg(m_cti_port);
     } else if (errorid.toLower() == "socket_error_network") {
         errormsg = tr("An error occurred on the network while attempting to join the IP address %1 :\n"
                       "- no external route defined to access this IP address (~ no timeout)\n"
                       "- this IP address is routed but there is no machine (~ 5 s timeout)\n"
                       "- a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).")
-            .arg(m_serverhost);
+            .arg(m_cti_address);
     } else if (errorid.toLower() == "socket_error_unknown") {
         errormsg = tr("An unknown socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(m_serverhost).arg(m_ctiport);
+            .arg(m_cti_address).arg(m_cti_port);
     } else if (errorid.startsWith("socket_error_unmanagedyet:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(ipinfo[1]).arg(m_serverhost).arg(m_ctiport);
+            .arg(ipinfo[1]).arg(m_cti_address).arg(m_cti_port);
 
     // socket errors - once connected
     } else if (errorid.toLower() == "socket_error_remotehostclosed") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.")
-            .arg(m_serverhost).arg(m_ctiport);
+            .arg(m_cti_address).arg(m_cti_port);
 
     } else if (errorid.toLower() == "server_stopped") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.")
-            .arg(m_serverhost).arg(m_ctiport);
+            .arg(m_cti_address).arg(m_cti_port);
     } else if (errorid.toLower() == "server_reloaded") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been reloaded.")
-            .arg(m_serverhost).arg(m_ctiport);
+            .arg(m_cti_address).arg(m_cti_port);
     } else if (errorid.startsWith("already_connected:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);
@@ -1589,7 +1593,7 @@ void BaseEngine::saveToFile(const QString & filename)
  */
 void BaseEngine::ctiSocketReadyRead()
 {
-    while(m_ctiserversocket->canReadLine()) {
+    while (m_ctiserversocket->canReadLine()) {
         QByteArray data  = m_ctiserversocket->readLine();
         m_byte_counter += data.size();
         // qDebug() << Q_FUNC_INFO << "data.size() = " << data.size();
@@ -1610,7 +1614,7 @@ void BaseEngine::ctiSocketReadyRead()
  */
 void BaseEngine::filetransferSocketReadyRead()
 {
-    while(m_filetransfersocket->canReadLine()) {
+    while (m_filetransfersocket->canReadLine()) {
         QByteArray data = m_filetransfersocket->readLine();
         QString line = QString::fromUtf8(data);
         QVariant jsondata;
@@ -1713,33 +1717,28 @@ void BaseEngine::searchDirectory(const QString & text)
  *
  * Set server host name and server port
  */
-void BaseEngine::setAddress(const QString & host, quint16 port)
+void BaseEngine::setCTIAddressPort(const QString & address, quint16 port)
 {
-    // qDebug() << Q_FUNC_INFO << host << port;
-    m_serverhost = host;
-    m_ctiport = port;
+    // qDebug() << Q_FUNC_INFO << address << port;
+    m_cti_address = address;
+    m_cti_port = port;
 }
 
 /*! \brief get server IP address */
-const QString & BaseEngine::serverip() const
+const QString & BaseEngine::ctiAddress() const
 {
-    return m_serverhost;
+    return m_cti_address;
 }
 
 /*! \brief get server port */
-quint16 BaseEngine::sbPort()
+quint16 BaseEngine::ctiPort()
 {
-    return m_ctiport;
+    return m_cti_port;
 }
 
 const QString & BaseEngine::company() const
 {
     return m_company;
-}
-
-void BaseEngine::setServerip(const QString & serverip)
-{
-    m_serverhost = serverip;
 }
 
 void BaseEngine::setCompany(const QString & companyname)
@@ -1853,6 +1852,7 @@ void BaseEngine::initFeatureFields(const QString & field, const QVariant & value
 
 void BaseEngine::stopKeepAliveTimer()
 {
+    qDebug() << Q_FUNC_INFO;
     if (m_timerid_keepalive > 0) {
         killTimer(m_timerid_keepalive);
         m_timerid_keepalive = 0;
@@ -1861,6 +1861,7 @@ void BaseEngine::stopKeepAliveTimer()
 
 void BaseEngine::stopTryAgainTimer()
 {
+    qDebug() << Q_FUNC_INFO;
     if (m_timerid_tryreconnect > 0) {
         killTimer(m_timerid_tryreconnect);
         m_timerid_tryreconnect = 0;
@@ -1869,7 +1870,8 @@ void BaseEngine::stopTryAgainTimer()
 
 void BaseEngine::startTryAgainTimer()
 {
-    if (m_timerid_tryreconnect == 0 && m_trytoreconnect && !m_forced_to_disconnect)
+    qDebug() << Q_FUNC_INFO;
+    if (m_timerid_tryreconnect == 0 && m_trytoreconnect && ! m_forced_to_disconnect)
         m_timerid_tryreconnect = startTimer(m_trytoreconnectinterval);
 }
 
@@ -1911,9 +1913,11 @@ void BaseEngine::setTrytoreconnectinterval(uint i)
 void BaseEngine::timerEvent(QTimerEvent *event)
 {
     int timerId = event->timerId();
+    qDebug() << Q_FUNC_INFO << timerId << m_timerid_tryreconnect;
     if (timerId == m_timerid_keepalive) {
         keepLoginAlive();
     } else if (timerId == m_timerid_tryreconnect) {
+        qDebug() << Q_FUNC_INFO << m_timerid_tryreconnect;
         emit emitTextMessage(tr("Attempting to reconnect to server"));
         start();
     } else if (timerId == m_timerid_changestate) {
@@ -2155,17 +2159,18 @@ void BaseEngine::setOSInfos(const QString & osname)
 void BaseEngine::keepLoginAlive()
 {
     // qDebug() << Q_FUNC_INFO << m_availstate;
-    // got to disconnected state if more than xx keepalive messages
-    // have been left without response.
-    if (m_pendingkeepalivemsg > 1) {
-        qDebug() << "m_pendingkeepalivemsg" << m_pendingkeepalivemsg << "=> 0";
-        stopKeepAliveTimer();
-        setState(ENotLogged);
-        m_pendingkeepalivemsg = 0;
-        popupError("no_keepalive_from_server");
-        startTryAgainTimer();
-        return;
-    }
+
+//     // got to disconnected state if more than xx keepalive messages
+//     // have been left without response.
+//     if (m_pendingkeepalivemsg > 1) {
+//         qDebug() << Q_FUNC_INFO << m_pendingkeepalivemsg << "=> 0";
+//         stopKeepAliveTimer();
+//         setState(ENotLogged);
+//         m_pendingkeepalivemsg = 0;
+//         popupError("no_keepalive_from_server");
+//         startTryAgainTimer();
+//         return;
+//     }
 
     QVariantMap command;
     command["class"] = "keepalive";

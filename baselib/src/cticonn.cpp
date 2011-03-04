@@ -27,13 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include <cticonn.h>
 
-CtiConn::CtiConn(QTcpSocket *s)
+CtiConn::CtiConn(QTcpSocket * s)
     : QObject(NULL)
 {
     connect(s, SIGNAL(disconnected()),
@@ -46,12 +42,11 @@ CtiConn::CtiConn(QTcpSocket *s)
 
 void CtiConn::ctiSocketError(QAbstractSocket::SocketError socketError)
 {
-    // qDebug() << Q_FUNC_INFO << socketError;
-    switch(socketError) {
+    qDebug() << Q_FUNC_INFO << socketError;
+    switch (socketError) {
         // ~ once connected
         case QAbstractSocket::RemoteHostClosedError:
-            b_engine->stopKeepAliveTimer();
-            b_engine->popupError("socket_error_remotehostclosed");
+            ctiSocketClosedByRemote();
             break;
 
         // ~ when trying to connect
@@ -79,18 +74,26 @@ void CtiConn::ctiSocketError(QAbstractSocket::SocketError socketError)
     }
 }
 
-/*! \brief called when the socket is disconnected from the server
+void CtiConn::ctiSocketClosedByRemote()
+{
+    qDebug() << Q_FUNC_INFO;
+    b_engine->emitTextMessage(tr("Connection lost with XiVO CTI server"));
+    b_engine->startTryAgainTimer();
+    b_engine->popupError("socket_error_remotehostclosed");
+
+    QTimer * timer = new QTimer(this);
+    timer->setProperty("stopper", "connection_lost");
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()),
+            b_engine, SLOT(stop()));
+    timer->start();
+}
+
+/*! \brief called when the socket is closed, whatever reason
  */
 void CtiConn::ctiSocketDisconnected()
 {
-    b_engine->setState(BaseEngine::ENotLogged);
-    b_engine->emitTextMessage(tr("Connection lost with XiVO CTI server"));
-    b_engine->startTryAgainTimer();
-    QTimer *timer = new QTimer(this);
-    timer->setProperty("stopper", "connection_lost");
-    timer->setSingleShot(true);
-    connect(timer, SIGNAL(timeout()), b_engine, SLOT(stop()));
-    timer->start();
+    qDebug() << Q_FUNC_INFO;
 }
 
 void CtiConn::ctiSocketStateChanged(QAbstractSocket::SocketState socketState)

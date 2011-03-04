@@ -64,6 +64,7 @@ class MainWidget : public QMainWindow
         void hideLogin();
         void engineStopped();
         void engineStarted();
+        void connectionStateChanged();
         void systrayActivated(QSystemTrayIcon::ActivationReason);
         void systrayMsgClicked();
         void checksAvailState();

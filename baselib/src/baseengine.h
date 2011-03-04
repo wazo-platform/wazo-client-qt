@@ -80,24 +80,23 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
     public:
         //! Enum for BaseEngine state logged/not logged
-        typedef enum {ENotLogged, ELogged } EngineState;
+        typedef enum {ENotLogged, ELogged} EngineState;
 
         BaseEngine(QSettings *, const QString &); //! Constructor
         ~BaseEngine(); //! Destructor
 
         QSettings* getSettings();
-        void loadSettings();                      //!< load server settings
+        void loadSettings();                   //!< load server settings
         // setter/getter for properties
         //! set address used to connect to the server
-        void setAddress(const QString &, quint16);
-        void setServerip(const QString &);        //!< see serverip()
-        quint16 sbPort();
-        const QString& serverip() const;         //!< Host of the login server
+        void setCTIAddressPort(const QString &, quint16);
+        const QString& ctiAddress() const;     //!< IP address of the login server
+        quint16 ctiPort();                     //!< TCP port of the login server
 
         const QString& company() const;        //!< name of the user's company
-        void setCompany(const QString &);       //!< see company()
+        void setCompany(const QString &);      //!< see company()
         const QString& userId() const;         //!< userid to identify to the server
-        void setUserId(const QString &);        //!< see userid()
+        void setUserId(const QString &);       //!< see userid()
         const QString& agentphonenumber() const;  //!< agent's phone number
         void setAgentPhoneNumber(const QString &); //!< see agentphonenumber()
         int loginkind();                        //!< loginkind to identify to the server
@@ -188,7 +187,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);
         void stopConnection();   //!< stop the engine
-        void stopDisplay();   //!< stop the engine
+        void clearInternalData();   //!< clear the engine internal data
         void setOSInfos(const QString &);
 
         QMultiHash<QString, e_callback* > m_class_event_cb;
@@ -324,8 +323,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // Class Members
         // Parameters given by the User at Login time
-        QString m_serverhost;           //!< Host to the login server
-        quint16 m_ctiport;              //!< TCP port to connect to server
+        QString m_cti_address;          //!< IP address to the login server
+        quint16 m_cti_port;             //!< TCP port to connect to server
 
         QString m_userlogin;            //!< User Id
         QString m_userloginopt;         //!< User Id Option (kind of login)

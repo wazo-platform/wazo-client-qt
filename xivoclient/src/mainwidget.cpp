@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include "mainwidget.h"
 #include "baseengine.h"
 #include "configwidget.h"
@@ -384,9 +380,8 @@ void MainWidget::createMenus()
 {
     m_filemenu = menuBar()->addMenu("&XiVO Client"); // + m_appliname too heavy
     m_filemenu->addAction(m_cfgact);
-    if (m_withsystray) {
+    if (m_withsystray)
         m_filemenu->addAction(m_systraymin);
-    }
     m_filemenu->addSeparator();
     m_filemenu->addAction(m_connectact);
     m_filemenu->addAction(m_disconnectact);
@@ -396,7 +391,7 @@ void MainWidget::createMenus()
     m_avail = menuBar()->addMenu(tr("&Availability"));
     m_avail->setEnabled(false);
     connect(b_engine, SIGNAL(availAllowChanged(bool)),
-             m_avail, SLOT(setEnabled(bool)));
+            m_avail, SLOT(setEnabled(bool)));
 
     m_helpmenu = menuBar()->addMenu(tr("&Help"));
     m_helpmenu->addAction(tr("&About XiVO Client"), this, SLOT(about()));
@@ -695,11 +690,7 @@ void MainWidget::engineStarted()
     if (m_withsystray && m_systrayIcon)
         setSystrayIcon("xivo-transp");
 
-    statusBar()->showMessage(tr("Connected"));
-    m_connectact->setEnabled(false);
-    m_disconnectact->setEnabled(true);
-    m_status->setPixmap(m_pixmap_connected);
-    b_engine->logAction("connection started");
+    connectionStateChanged();
 }
 
 void MainWidget::setSystrayIcon(const QString & def)
@@ -748,6 +739,23 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
     }
 }
 
+void MainWidget::connectionStateChanged()
+{
+    if (b_engine->state() == BaseEngine::ELogged) {
+        statusBar()->showMessage(tr("Connected"));
+        m_connectact->setEnabled(false);
+        m_disconnectact->setEnabled(true);
+        m_status->setPixmap(m_pixmap_connected);
+        b_engine->logAction("connection started");
+    } else if (b_engine->state() == BaseEngine::ENotLogged) {
+        statusBar()->showMessage(tr("Disconnected"));
+        m_connectact->setEnabled(true);
+        m_disconnectact->setEnabled(false);
+        m_status->setPixmap(m_pixmap_disconnected);
+        b_engine->logAction("connection stopped");
+    }
+}
+
 /*!
  * disables the "Disconnect" action and enables the "Connect" Action.
  * sets the Red indicator
@@ -756,6 +764,7 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
 void MainWidget::engineStopped()
 {
     // qDebug() << Q_FUNC_INFO;
+    connectionStateChanged();
     m_settings->setValue("display/mainwindowstate", saveState());
     if (m_tabwidget->currentIndex() > -1) {
         m_settings->setValue("display/lastfocusedtab", m_tabwidget->currentIndex());
@@ -787,15 +796,9 @@ void MainWidget::engineStopped()
     if (m_withsystray && m_systrayIcon)
         setSystrayIcon("xivo-black");
 
-    statusBar()->showMessage(tr("Disconnected"));
-    m_connectact->setEnabled(true);
-    m_disconnectact->setEnabled(false);
-    m_status->setPixmap(m_pixmap_disconnected);
-
     clearAppearance();
     m_appliname = tr("Client");
     updateAppliName();
-    b_engine->logAction("connection stopped");
 }
 
 void MainWidget::savePositions() const

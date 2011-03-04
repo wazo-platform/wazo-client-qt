@@ -138,9 +138,11 @@ void SearchPanel::updateDisplay()
     i.toFront();
     while (i.hasNext()) {
         i.next();
-        PeerItem *peeritem = i.value();
-        BasePeerWidget *peerwidget = peeritem->getWidget();
+        PeerItem * peeritem = i.value();
+        BasePeerWidget * peerwidget = peeritem->getWidget();
         UserInfo * userinfo = peeritem->userinfo();
+        if (userinfo == NULL)
+            continue;
         if ((userinfo->fullname().contains(m_searchpattern, Qt::CaseInsensitive) ||
             (userinfo->phoneNumber().contains(m_searchpattern))) &&
             (naff < m_maxdisplay)) {

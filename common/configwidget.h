@@ -86,8 +86,8 @@ class ConfigWidget: public QDialog
 
         BaseEngine *m_engine;          //!< BaseEngine object parameters are commited to
 
-        QLineEdit *m_serverhost;       //!< IP/hostname of the server
-        QSpinBox  *m_ctiport;          //!< server port (switchboard)
+        QLineEdit *m_cti_address;      //!< IP/hostname of the server
+        QSpinBox  *m_cti_port;         //!< server port
 
         QComboBox *m_locale_cbox;         //!< Locale selectbox
         QCheckBox *m_autoconnect;      //!< "Auto connect" checkbox

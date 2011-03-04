@@ -92,17 +92,17 @@ void ConfigWidget::_insert_connection_tab()
     widget_connection->setLayout(grid);
 
     QLabel *lblhost = new QLabel(tr("Server Host"), this);
-    m_serverhost = new QLineEdit(b_engine->serverip(), this);
+    m_cti_address = new QLineEdit(b_engine->ctiAddress(), this);
     grid->addWidget(lblhost, line, 0);
-    grid->addWidget(m_serverhost, line++, 1);
+    grid->addWidget(m_cti_address, line++, 1);
 
     QLabel *lblsbport = new QLabel(tr("Login Port"), this);
 
-    m_ctiport = new QSpinBox(this);
-    m_ctiport->setRange(1, 65535);
-    m_ctiport->setValue(b_engine->sbPort());
+    m_cti_port = new QSpinBox(this);
+    m_cti_port->setRange(1, 65535);
+    m_cti_port->setValue(b_engine->ctiPort());
     grid->addWidget(lblsbport, line, 0);
-    grid->addWidget(m_ctiport, line++, 1);
+    grid->addWidget(m_cti_port, line++, 1);
 
     grid->setRowStretch(line, 1);
     grid->setColumnStretch(2, 1);
@@ -465,8 +465,7 @@ void ConfigWidget::saveAndClose()
 {
     int i;
     // qDebug() << Q_FUNC_INFO;
-    b_engine->setAddress(m_serverhost->text(), m_ctiport->value());
-    b_engine->setServerip(m_serverhost->text());
+    b_engine->setCTIAddressPort(m_cti_address->text(), m_cti_port->value());
 
     b_engine->setCompany(m_context->text());
     b_engine->setKeepPass(m_keeppass->checkState());
