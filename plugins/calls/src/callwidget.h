@@ -57,17 +57,19 @@ class CallWidget : public QWidget
     Q_OBJECT
 
     public:
-        CallWidget(UserInfo *, const QString &, uint, QWidget * parent);
-        void updateWidget(const QString &, uint);
+        CallWidget(UserInfo *,
+                   const QString &,
+                   QWidget * parent);
+        void updateWidget(const QString &);
 
-        const QString& channel() const;
+        const QString & channel() const;
     protected:
         void mousePressEvent(QMouseEvent *);
         void mouseMoveEvent(QMouseEvent *);
         void timerEvent(QTimerEvent *);
         void contextMenuEvent(QContextMenuEvent *);
     private:
-        void setActionPixmap(const QString &);
+        void setActionPixmap();
         void updateCallTimeLabel();
     signals:
         void doHangUp(const QString &);  //!< hang up the channel
@@ -79,19 +81,20 @@ class CallWidget : public QWidget
         void parkCall();
     private:
         UserInfo * m_ui;  //!< monitored user infos
-        QGridLayout * gridlayout;  //!< monitored user infos
+        QString m_xchannel;  //!< channel identifier
+        bool m_parkedCall;  //!< Is it a parked call ?
+
         QPoint m_dragstartpos;  //!< used for drag
-        QString m_channel;  //!< channel identifier
+        QGridLayout * m_gridlayout;  //!< monitored user infos
         QLabel * m_lbl_status;  //!< sub widget
         QLabel * m_lbl_time;  //!< sub widget
         QLabel * m_lbl_direction;  //!< sub widget
         QLabel * m_lbl_exten;  //!< sub widget
         QPixmap m_square;  //!< QPixmap used to display the status square
-        QDateTime m_startTime;  //!< call start date/time
+
         QAction * m_hangUpAction;  //!< Hang Up Action
         QAction * m_transferToNumberAction;  //!< Transfer to Number Action
         QAction * m_parkCall;  //!< Park the Call Action
-        bool m_parkedCall;  //!< Is it a parked call ?
 };
 
 #endif

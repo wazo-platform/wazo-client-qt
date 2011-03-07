@@ -44,6 +44,7 @@ ChannelInfo::ChannelInfo(const QString & ipbxid,
 {
     m_ipbxid = ipbxid;
     m_channel = id;
+    m_isparked = false;
 }
 
 // bool ChannelInfo::updateConfig(const QVariantMap &)
@@ -55,8 +56,18 @@ ChannelInfo::ChannelInfo(const QString & ipbxid,
 bool ChannelInfo::updateStatus(const QVariantMap & qvm)
 {
     bool haschanged = true;
-    m_talkingto_kind = qvm.value("talkingto_kind").toString();
-    m_talkingto_id = qvm.value("talkingto_id").toString();
+    if (qvm.contains("direction"))
+        m_direction = qvm.value("direction").toString();
+    if (qvm.contains("talkingto_kind"))
+        m_talkingto_kind = qvm.value("talkingto_kind").toString();
+    if (qvm.contains("talkingto_id"))
+        m_talkingto_id = qvm.value("talkingto_id").toString();
+    if (qvm.contains("commstatus"))
+        m_commstatus = qvm.value("commstatus").toString();
+    if (qvm.contains("peerdisplay"))
+        m_peerdisplay = qvm.value("peerdisplay").toString();
+    if (qvm.contains("timestamp"))
+        m_timestamp = qvm.value("timestamp").toInt();
     return haschanged;
 }
 
@@ -75,15 +86,25 @@ const QString & ChannelInfo::channel() const
     return m_channel;
 }
 
-const QString & ChannelInfo::status() const
+const QString & ChannelInfo::direction() const
 {
-    return m_status;
+    return m_direction;
+}
+
+const QString & ChannelInfo::commstatus() const
+{
+    return m_commstatus;
+}
+
+int ChannelInfo::timestamp() const
+{
+    return m_timestamp;
 }
 
 const QString ChannelInfo::peerdisplay() const
 {
     // go fetch information about 'talking to'
-    return "who";
+    return m_peerdisplay;
 }
 
 int ChannelInfo::linenumber() const

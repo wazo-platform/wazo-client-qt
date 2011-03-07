@@ -261,10 +261,10 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                     continue;
                 foreach (const QString channel, phoneinfo->channels()) {
                     const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-                    if(channelinfo == NULL)
+                    if (channelinfo == NULL)
                         continue;
                     //qDebug() << phoneinfo->phoneid() << ts << comm;
-                    const QString status = channelinfo->status();
+                    const QString status = channelinfo->commstatus();
                     if ((status == CHAN_STATUS_LINKED_CALLER) ||
                         (status == CHAN_STATUS_LINKED_CALLED)) {
                         QString to;
@@ -292,9 +292,9 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                     continue;
                 foreach (const QString channel, phoneinfo->channels()) {
                     const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-                    if(channelinfo == NULL)
+                    if (channelinfo == NULL)
                         continue;
-                    const QString status = channelinfo->status();
+                    const QString status = channelinfo->commstatus();
                     if (status == CHAN_STATUS_RINGING) {
                         b_engine->actionCall("transfer",
                                              QString("chan:%1:%2").arg(m_ui->userid()).arg(channel),
@@ -446,9 +446,9 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
             int commsCount = phoneinfo->channels().count();
             foreach (const QString channel, phoneinfo->channels()) {
                 const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-                if(channelinfo == NULL)
+                if (channelinfo == NULL)
                     continue;
-                const QString status = channelinfo->status();
+                const QString status = channelinfo->commstatus();
                 QString text = channelinfo->peerdisplay();
                 /* hanging up others communication doesn't make much sense
                  * excepting in test environment or in special cases. */
@@ -519,9 +519,9 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
             int commsCount = phoneinfo->channels().count();
             foreach (const QString channel, phoneinfo->channels()) {
                 const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-                if(channelinfo == NULL)
+                if (channelinfo == NULL)
                     continue;
-                const QString status = channelinfo->status();
+                const QString status = channelinfo->commstatus();
                 QString text = channelinfo->peerdisplay();
 
                 if (channelinfo->talkingto_kind() == QString("<meetme>")) {

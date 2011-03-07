@@ -85,13 +85,13 @@ bool UserInfo::updateStatus(const QVariantMap & qvm)
 }
 
 /*! \brief set full name */
-void UserInfo::setFullName(const QString &fullname)
+void UserInfo::setFullName(const QString & fullname)
 {
     m_fullname = fullname;
 }
 
 /*! \brief set CTI Login */
-void UserInfo::setCtiLogin(const QString &ctilogin)
+void UserInfo::setCtiLogin(const QString & ctilogin)
 {
     m_ctilogin = ctilogin;
 }

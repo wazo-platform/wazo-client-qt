@@ -345,9 +345,9 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
 
     foreach (const QString channel, phoneinfo->channels()) {
         const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-        if(channelinfo == NULL)
+        if (channelinfo == NULL)
             continue;
-        const QString status = channelinfo->status();
+        const QString status = channelinfo->commstatus();
         const QString todisplay = channelinfo->peerdisplay();
         if (status == CHAN_STATUS_RINGING) {
             if (!m_callchannels.contains(channel)) {
@@ -439,7 +439,7 @@ QString XletOperator::getPeerChan(QString const &) const
 //             continue;
 //         foreach (const QString channel, pi->channels()) {
 //             const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-//             if(channelinfo == NULL)
+//             if (channelinfo == NULL)
 //                 continue;
 
 //             QMapIterator<QString, QVariant> it(pi->comms());

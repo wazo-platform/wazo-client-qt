@@ -92,7 +92,7 @@ void XletCalls::updateUserConfig(const QString & xuserid)
         qDebug() << Q_FUNC_INFO << m_monitored_ui->userid() << xuserid;
     else
         qDebug() << Q_FUNC_INFO << xuserid;
-//     if(ui == m_monitored_ui) {
+//     if (ui == m_monitored_ui) {
 //         // we need to update the display
 //         updateDisplay();
 //     }
@@ -104,7 +104,7 @@ void XletCalls::updateUserStatus(const QString & xuserid)
         qDebug() << Q_FUNC_INFO << m_monitored_ui->userid() << xuserid;
     else
         qDebug() << Q_FUNC_INFO << xuserid;
-//     if(ui == m_monitored_ui) {
+//     if (ui == m_monitored_ui) {
 //         // we need to update the display
 //         updateDisplay();
 //     }
@@ -145,18 +145,23 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
     if (phoneinfo == NULL)
         return;
 
-    qDebug() << Q_FUNC_INFO << xphoneid << phoneinfo->channels();
+    qDebug() << Q_FUNC_INFO << xphoneid << m_affhash.keys() << phoneinfo->channels();
+    foreach (const QString xchannel, m_affhash.keys()) {
+        CallWidget * callwidget = m_affhash[xchannel];
+        QString channel = callwidget->channel();
+        if (! phoneinfo->channels().contains(channel)) {
+            delete callwidget;
+            m_affhash.remove(xchannel);
+        }
+    }
     foreach (const QString channel, phoneinfo->channels()) {
         QString xchannel = QString("%1/%2").arg(phoneinfo->ipbxid()).arg(channel);
-        uint current_ts = QDateTime::currentDateTime().toTime_t();
-        uint ts = current_ts;
         if (m_affhash.contains(xchannel))
             {}
         // m_affhash[xchannel]->updateWidget(xchannel, ts);
         else {
             CallWidget * callwidget = new CallWidget(m_monitored_ui,
                                                      xchannel,
-                                                     ts,
                                                      this);
             connect(callwidget, SIGNAL(doHangUp(const QString &)),
                     this, SLOT(hupchan(const QString &)));
@@ -175,28 +180,25 @@ void XletCalls::updateChannelStatus(const QString & xchannel)
 {
     qDebug() << Q_FUNC_INFO << xchannel;
     const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
-    if(channelinfo == NULL)
+    if (channelinfo == NULL)
         return;
-    QString status = channelinfo->status();
-    uint current_ts = QDateTime::currentDateTime().toTime_t();
-    uint ts = current_ts;
-    //                 if(map.contains("time-dial"))
+    QString status = channelinfo->commstatus();
+    //                 if (map.contains("time-dial"))
     //                     ts = map.value("time-dial").toUInt() + current_ts;
-    //                 if(map.contains("timestamp-dial"))
+    //                 if (map.contains("timestamp-dial"))
     //                     ts = map.value("timestamp-dial").toDouble() + b_engine->timeDeltaServerClient();
-    //                 if(map.contains("time-link"))
+    //                 if (map.contains("time-link"))
     //                     ts = map.value("time-link").toUInt() + current_ts;
-    //                 if(map.contains("timestamp-link"))
+    //                 if (map.contains("timestamp-link"))
     //                     ts = map.value("timestamp-link").toDouble() + b_engine->timeDeltaServerClient();
     // qDebug() << Q_FUNC_INFO << it.key() << channelme << "status" << status;
     // dont display hangup channels !
     if (status == CHAN_STATUS_HANGUP)
         return;
     // activeChannels << channelme;
-    // activeUids << it.key(); XXX
     qDebug() << Q_FUNC_INFO << "adding/updating" << xchannel << m_affhash;
     if (m_affhash.contains(xchannel))
-        m_affhash[xchannel]->updateWidget(xchannel, ts);
+        m_affhash[xchannel]->updateWidget(xchannel);
     else {
 //         CallWidget * callwidget = new CallWidget(m_monitored_ui,
 //                                                  xchannel,
@@ -221,73 +223,9 @@ void XletCalls::updateChannelStatus(const QString & xchannel)
  */
 void XletCalls::updateDisplay()
 {
-    uint current_ts = QDateTime::currentDateTime().toTime_t();
-    //qDebug() << Q_FUNC_INFO;
-    CallWidget * callwidget = NULL;
-
-    //QStringList activeChannels;  // list of active channels to be displayed
-    QStringList activeUids;
-
-    if (m_monitored_ui) {
-        QString ipbxid = m_monitored_ui->ipbxid();
-        foreach (const QString phoneid, m_monitored_ui->phonelist()) {
-            QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-            const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
-            if (phoneinfo == NULL)
-                continue;
-            foreach (const QString channel, phoneinfo->channels()) {
-                const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-                if(channelinfo == NULL)
-                    continue;
-                QString status = channelinfo->status();
-                uint ts = current_ts;
-//                 if(map.contains("time-dial"))
-//                     ts = map.value("time-dial").toUInt() + current_ts;
-//                 if(map.contains("timestamp-dial"))
-//                     ts = map.value("timestamp-dial").toDouble() + b_engine->timeDeltaServerClient();
-//                 if(map.contains("time-link"))
-//                     ts = map.value("time-link").toUInt() + current_ts;
-//                 if(map.contains("timestamp-link"))
-//                     ts = map.value("timestamp-link").toDouble() + b_engine->timeDeltaServerClient();
-                // qDebug() << Q_FUNC_INFO << it.key() << channelme << "status" << status;
-                // dont display hangup channels !
-                if (status == CHAN_STATUS_HANGUP)
-                    continue;
-                // activeChannels << channelme;
-                // activeUids << it.key(); XXX
-                // qDebug() << Q_FUNC_INFO << "adding/updating" << channelme;
-                if (m_affhash.contains(channel))
-                    m_affhash[channel]->updateWidget(channel, ts);
-                else {
-                    callwidget = new CallWidget(m_monitored_ui,
-                                                channel,
-                                                ts,
-                                                this);
-                    connect(callwidget, SIGNAL(doHangUp(const QString &)),
-                            this, SLOT(hupchan(const QString &)));
-                    connect(callwidget, SIGNAL(doTransferToNumber(const QString &)),
-                            this, SLOT(transftonumberchan(const QString &)));
-                    connect(callwidget, SIGNAL(doParkCall(const QString &)),
-                            this, SLOT(parkcall(const QString &)));
-                    m_layout->insertWidget(m_layout->count() - 1, callwidget,
-                                           0, Qt::AlignTop);
-                    m_affhash[channel] = callwidget;
-                }
-            }
-        }
-    }
-
-    // qDebug() << Q_FUNC_INFO << "activeChannels" << activeChannels;
-    // qDebug() << Q_FUNC_INFO << "activeUids" << activeUids;
-    // qDebug() << Q_FUNC_INFO << "m_affhash" << m_affhash.keys();
-    // remove old channels
-    foreach (const QString uid, m_affhash.keys()) {
-        if( !activeUids.contains(uid)) {
-            // qDebug() << Q_FUNC_INFO << "removing" << chan;
-            qDebug() << Q_FUNC_INFO << "removing" << uid;
-            m_affhash.take(uid)->deleteLater();
-        }
-    }
+    if (m_monitored_ui == NULL)
+        return;
+    updatePhoneStatus(m_monitored_ui->phonelist()[0]);
 }
 
 /*! \brief filter events based on the mimetype
@@ -307,7 +245,7 @@ void XletCalls::dragEnterEvent(QDragEnterEvent *event)
  */
 void XletCalls::monitorPeer(UserInfo *ui)
 {
-    qDebug() << Q_FUNC_INFO << b_engine->getFullId()<< ui->ipbxid() << ui->userid();
+    qDebug() << Q_FUNC_INFO << b_engine->getFullId() << ui->xuserid();
     //emptyList();
     if ((b_engine->getFullId() == ui->userid()) ||
         (b_engine->enabledFunction("switchboard"))) {

@@ -166,10 +166,10 @@ void IdentityDisplay::setupIcons()
 
 void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
 {
-    if(optionsMap.contains("xlet.identity.fontname") && optionsMap.contains("xlet.identity.fontsize"))
+    if (optionsMap.contains("xlet.identity.fontname") && optionsMap.contains("xlet.identity.fontsize"))
         m_gui_font = QFont(optionsMap.value("xlet.identity.fontname").toString(),
                            optionsMap.value("xlet.identity.fontsize").toInt());
-    if(optionsMap.contains("xlet.identity.iconsize"))
+    if (optionsMap.contains("xlet.identity.iconsize"))
         m_gui_buttonsize = optionsMap.value("xlet.identity.iconsize").toInt();
 
     m_agent->setAllowedActions(optionsMap.value("xlet.identity.logagent").toBool(),
@@ -187,7 +187,7 @@ void IdentityDisplay::updatePresence()
     qDebug() << Q_FUNC_INFO;
 
     m_presencevalue->hide();
-    if(! m_functions.contains("presence"))
+    if (! m_functions.contains("presence"))
         return;
 
     disconnect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
@@ -205,7 +205,7 @@ void IdentityDisplay::updatePresence()
             QString longname = pdetails.value("longname").toString();
             m_presencevalue->addItem(longname);
             m_presence_names[presencestate] = longname;
-            if(presence == presencestate)
+            if (presence == presencestate)
                 m_presencevalue->setCurrentIndex(idx);
             idx ++;
         }
@@ -224,7 +224,7 @@ void IdentityDisplay::updatePresence()
  */
 void IdentityDisplay::setOpt(const QString & capa, bool b)
 {
-    if((capa == "enablednd") || (capa == "incallfilter") || (capa == "callrecord") || (capa == "enablevm"))
+    if ((capa == "enablednd") || (capa == "incallfilter") || (capa == "callrecord") || (capa == "enablevm"))
         m_svcstatus[capa] = b;
     svcSummary();
 }
@@ -233,7 +233,7 @@ void IdentityDisplay::setOpt(const QString & capa, bool b)
  */
 void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
 {
-    if((capa == "unc") || (capa == "busy") || (capa == "rna")) {
+    if ((capa == "unc") || (capa == "busy") || (capa == "rna")) {
         m_svcstatus[capa + "-enabled"] = value.toMap().value("enabled");
         m_svcstatus[capa + "-number"] = value.toMap().value("number");
     }
@@ -244,11 +244,11 @@ void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
  */
 void IdentityDisplay::svcSummary()
 {
-    if(m_phone)
+    if (m_phone)
         m_phone->svcSummary(m_svcstatus);
-    if(m_ui) {
+    if (m_ui) {
         QStringList vm = m_ui->mwi();
-        if(vm.size() > 2) {
+        if (vm.size() > 2) {
             m_voicemail->svcSummary(m_svcstatus, m_ui);
         }
     }
@@ -261,7 +261,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
 {
     m_ui = b_engine->getXivoClientUser();
     m_xuserid = m_ui->xuserid();
-    if(xuserid != m_xuserid)
+    if (xuserid != m_xuserid)
         return;
     m_user->setText(m_ui->fullname());
     m_phonenum->setText(m_ui->phoneNumber());
@@ -271,7 +271,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
                            .arg(m_ui->context()));
     m_phone->setPhoneId(m_ui->phonelist().join(""));
     QStringList vm = m_ui->mwi();
-    if(vm.size() > 2) {
+    if (vm.size() > 2) {
         m_voicemail->show();
         m_voicemail->svcSummary(m_svcstatus, m_ui);
         m_voicemail->setOldNew(vm[1], vm[2]);
@@ -284,18 +284,20 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
     foreach(QString phoneid, m_ui->phonelist()) {
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
         const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
-        if(phoneinfo == NULL)
+        if (phoneinfo == NULL)
             continue;
         foreach (const QString channel, phoneinfo->channels()) {
             const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-            if(channelinfo == NULL)
+            if (channelinfo == NULL)
                 continue;
-            QString status = channelinfo->status();
+            QString status = channelinfo->commstatus();
             QString todisplay = channelinfo->peerdisplay();
+            // QString direction = channelinfo->direction();
+            // int timestamp = channelinfo->timestamp();
 
             QPixmap square_comm(25, 3);
             square_comm.fill(channelinfo->isholded() ? Qt::darkGreen : Qt::green);
-            if(status == "hangup") {
+            if (status == "hangup") {
                 todisplay = tr("(Line %1)").arg(channelinfo->linenumber());
                 square_comm.fill(Qt::black);
             }
@@ -317,9 +319,9 @@ void IdentityDisplay::idxChanged(const QString & newidx)
 {
     QString function = sender()->property("function").toString();
     qDebug() << Q_FUNC_INFO << newidx << sender() << function << m_presence_names;
-    if(function == "presence") {
+    if (function == "presence") {
         foreach (QString avstate, m_presence_names.keys())
-            if(m_presence_names[avstate] == newidx)
+            if (m_presence_names[avstate] == newidx)
                 b_engine->setAvailState(avstate, false);
     }
 }

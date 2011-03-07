@@ -80,20 +80,20 @@ void IdentityPhoneLine::contextMenuEvent(QContextMenuEvent * event)
 {
     QString thischannel;
     const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
-    if(phoneinfo == NULL)
+    if (phoneinfo == NULL)
         return;
 
     qDebug() << Q_FUNC_INFO << m_linenum << phoneinfo->channels();
     foreach (const QString channel, phoneinfo->channels()) {
         const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-        if(channelinfo == NULL)
+        if (channelinfo == NULL)
             continue;
-        if(channelinfo->linenumber() == m_linenum) {
+        if (channelinfo->linenumber() == m_linenum) {
             thischannel = channel;
         }
     }
 
-    if(! thischannel.isEmpty()) {
+    if (! thischannel.isEmpty()) {
         QMenu contextMenu(this);
 
         QAction * hangupMe = new QAction(tr("Hangup"), &contextMenu);
@@ -258,20 +258,20 @@ void IdentityPhone::updateLines(const QStringList & channels)
     QList<int> busylines;
     foreach (const QString channel, channels) {
         const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-        if(channelinfo == NULL)
+        if (channelinfo == NULL)
             continue;
         int ic = channelinfo->linenumber();
-        QString status = channelinfo->status();
+        QString status = channelinfo->commstatus();
         QString todisplay = channelinfo->peerdisplay();
         busylines << ic;
 
         QPixmap square_comm(25, 3);
         square_comm.fill(channelinfo->isholded() ? Qt::darkGreen : Qt::green);
-        if(status == "hangup") {
+        if (status == "hangup") {
             todisplay = tr("(Line %1)").arg(channelinfo->linenumber());
             square_comm.fill(Qt::black);
         }
-        if(ic < m_lines.size() && m_lines[ic]) {
+        if (ic < m_lines.size() && m_lines[ic]) {
             m_lines[ic]->setPixmap(square_comm);
             m_lines[ic]->setText(QString("  %1  ").arg(todisplay));
         }
@@ -280,7 +280,7 @@ void IdentityPhone::updateLines(const QStringList & channels)
     QPixmap square_black(25, 3);
     square_black.fill(Qt::black);
     for(int jj = 0 ; jj < phoneinfo->simultcalls() ; jj ++) {
-        if(!busylines.contains(jj) && jj < m_lines.size()) {
+        if (!busylines.contains(jj) && jj < m_lines.size()) {
             m_lines[jj]->setPixmap(square_black);
             QString todisplay = tr("(Line %1)").arg(jj + 1);
             m_lines[jj]->setText(QString("  %1  ").arg(todisplay));
@@ -297,11 +297,11 @@ void IdentityPhone::setPhoneLines()
         return;
     int nphones = phoneinfo->simultcalls();
     qDebug() << Q_FUNC_INFO << phoneinfo->simultcalls();
-    if(nphones > 100)
+    if (nphones > 100)
         nphones = 100;
     for(int jj = 0 ; jj < phoneinfo->simultcalls() ; jj ++) {
         qDebug() << " --- " << jj << m_lines.value(jj);
-        if(jj >= m_lines.size()) {
+        if (jj >= m_lines.size()) {
             m_lines.insert(jj, new IdentityPhoneLine(jj + 1, this));
             m_lines[jj]->setPhoneId(m_xphoneid);
             int ix = jj / 3;
@@ -313,11 +313,11 @@ void IdentityPhone::setPhoneLines()
 
 void IdentityPhone::svcSummary(QVariantMap & svcstatus)
 {
-    if(svcstatus["enablednd"].toBool()) {
+    if (svcstatus["enablednd"].toBool()) {
         m_phonestatustxt->setText(tr("DND"));
         m_phonestatustxt->setToolTip(tr("Do Not Disturb"));
     } else {
-        if(svcstatus["unc-enabled"].toBool()) {
+        if (svcstatus["unc-enabled"].toBool()) {
             m_phonestatustxt->setText(tr("UNC %1").arg(svcstatus["unc-number"].toString()));
             m_phonestatustxt->setToolTip(tr("Unconditional Forward towards %1").arg(svcstatus["unc-number"].toString()));
         } else if (svcstatus["busy-enabled"].toBool()) {

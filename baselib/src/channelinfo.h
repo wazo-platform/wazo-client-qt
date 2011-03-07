@@ -52,7 +52,9 @@ class BASELIB_EXPORT ChannelInfo
         const QString & talkingto_kind() const;
         const QString & talkingto_id() const;
         const QString & direction() const;
-        const QString & status() const;
+        const QString & commstatus() const;
+        int timestamp() const;
+
         const QString peerdisplay() const;
         int linenumber() const;
         bool ismonitored() const;
@@ -67,10 +69,13 @@ class BASELIB_EXPORT ChannelInfo
 
         // XXX timing informations
 
-        QString m_status;
+        QString m_peerdisplay;
+        QString m_direction;
+        QString m_commstatus;
         QString m_talkingto_kind;
         QString m_talkingto_id;
-        QString m_direction;
+        int m_timestamp;
+
         int m_linenumber;
         bool m_ismonitored;
         bool m_isspied;

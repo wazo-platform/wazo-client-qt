@@ -1089,7 +1089,7 @@ void BaseEngine::parseCommand(const QString &line)
             m_capafuncs = datamap.value("capafuncs").toStringList();
             m_capaxlets = datamap.value("capaxlets").toStringList();
             m_capapresence = datamap.value("capapresence").toMap();
-            m_capatermstates = datamap.value("capatermstates").toMap();
+            m_capatermstates = datamap.value("capaterms").toMap();
             m_forced_state = datamap.value("presence").toString();
             m_guioptions["server_gui"] = datamap.value("guisettings");
             //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
@@ -1289,7 +1289,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     haschanged = m_queues[xid]->updateStatus(status);
             }
 
-            qDebug() << function << listname << xid << haschanged << status;
+            // qDebug() << function << listname << xid << haschanged << status;
             if (listname == "phones")
                 emit updatePhoneStatus(xid);
             else if (listname == "users")
@@ -1300,6 +1300,17 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateQueueStatus(xid);
             else if (listname == "channels")
                 emit updateChannelStatus(xid);
+        } else if (function == "del") {
+            QStringList listid = datamap.value("list").toStringList();
+            foreach (QString id, listid) {
+                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+                if (listname == "channels") {
+                    if (m_channels.contains(xid)) {
+                        delete m_channels[xid];
+                        m_channels.remove(xid);
+                    }
+                }
+            }
         }
     } else if (thisclass == "queues") {
         // qDebug() << Q_FUNC_INFO << "queues" << function << line.length();
