@@ -67,7 +67,7 @@ bool ChannelInfo::updateStatus(const QVariantMap & qvm)
     if (qvm.contains("peerdisplay"))
         m_peerdisplay = qvm.value("peerdisplay").toString();
     if (qvm.contains("timestamp"))
-        m_timestamp = qvm.value("timestamp").toInt();
+        m_timestamp = qvm.value("timestamp").toDouble();
     return haschanged;
 }
 
@@ -96,7 +96,7 @@ const QString & ChannelInfo::commstatus() const
     return m_commstatus;
 }
 
-int ChannelInfo::timestamp() const
+double ChannelInfo::timestamp() const
 {
     return m_timestamp;
 }

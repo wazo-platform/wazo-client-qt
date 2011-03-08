@@ -741,6 +741,25 @@ double BaseEngine::timeDeltaServerClient() const
     return (m_timeclt.toTime_t() - m_timesrv);
 }
 
+QString BaseEngine::timeElapsed(double timestamp) const
+{
+    double timespent = QDateTime::fromTime_t(timestamp).secsTo(QDateTime::currentDateTime());
+    int timecorr = int(timespent - timeDeltaServerClient());
+    int sec = timecorr % 60;
+    int min = ((timecorr - sec) / 60) % 60;
+    int hou = ((timecorr - sec - min * 60) / 60) / 60;
+    QString timefmt;
+    if (hou > 0)
+        timefmt = QString("%1:%2:%3").arg(hou, 2, 10, QChar('0'))
+            .arg(min, 2, 10, QChar('0'))
+            .arg(sec, 2, 10, QChar('0'));
+    else
+        timefmt = QString("%1:%2").arg(min, 2, 10, QChar('0'))
+            .arg(sec, 2, 10, QChar('0'));
+    return timefmt;
+    // to bench : this, against .toString("hh:mm:ss") (see confs)
+}
+
 /* until cti protocol get changed the following function
  * function are there to fill the tree manually
  * { */

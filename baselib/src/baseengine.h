@@ -157,6 +157,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         double timeServer() const;
         const QDateTime& timeClient() const;
         double timeDeltaServerClient() const;
+        QString timeElapsed(double) const;
         int m_historysize;  //!< Number of elements when requestion call log
 
         void pasteToDial(const QString &);

@@ -105,11 +105,7 @@ void CallWidget::updateCallTimeLabel()
     const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
     if (channelinfo == NULL)
         return;
-    int timestarted = channelinfo->timestamp();
-    int timespent = QDateTime::fromTime_t(timestarted).secsTo(QDateTime::currentDateTime());
-    m_lbl_time->setText(QString("[%1 min %2 s]")
-                        .arg(timespent / 60)
-                        .arg(timespent % 60));
+    m_lbl_time->setText(b_engine->timeElapsed(channelinfo->timestamp()));
 }
 
 /*! \brief timer event
@@ -251,7 +247,7 @@ void CallWidget::contextMenuEvent(QContextMenuEvent *event)
 
 /*! \brief return m_channel
  */
-const QString & CallWidget::channel() const
+const QString CallWidget::channel() const
 {
     const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
     if (channelinfo == NULL)
