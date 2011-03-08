@@ -122,6 +122,7 @@ BaseEngine::~BaseEngine()
     clearPhoneList();
     clearAgentList();
     clearQueueList();
+    clearChannelList();
 }
 
 QSettings* BaseEngine::getSettings()
@@ -382,6 +383,7 @@ void BaseEngine::clearInternalData()
     clearPhoneList();
     clearAgentList();
     clearQueueList();
+    clearChannelList();
 
     if (m_time.isValid()) {
         int elapsed = m_time.elapsed();
@@ -458,6 +460,16 @@ void BaseEngine::clearPhoneList()
         delete iter.value();
     }
     m_phones.clear();
+}
+
+void BaseEngine::clearChannelList()
+{
+    QHashIterator<QString, ChannelInfo *> iter = QHashIterator<QString, ChannelInfo *>(m_channels);
+    while (iter.hasNext()) {
+        iter.next();
+        delete iter.value();
+    }
+    m_channels.clear();
 }
 
 /*! \brief clear the content of m_agents

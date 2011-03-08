@@ -321,6 +321,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void clearPhoneList();
         void clearAgentList();
         void clearQueueList();
+        void clearChannelList();
 
         // Class Members
         // Parameters given by the User at Login time
