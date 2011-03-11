@@ -2289,8 +2289,8 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
     if (pos >= 0) {
         QString phonenum = re.cap(2);
         phonenum.remove('.').remove(' ').remove('-');
-        qDebug() << "  trying to dial" << phonenum;
-        actionCall("originate", "user:special:me", "ext:"+phonenum);
+        qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
+        actionCall("originate", "user:special:me", QString("ext:%1").arg(phonenum));
     }
 }
 

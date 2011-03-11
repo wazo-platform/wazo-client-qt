@@ -63,35 +63,39 @@ int main(int argc, char ** argv)
     QCoreApplication::setOrganizationDomain("xivo.fr");
     QCoreApplication::setApplicationName("XIVO_Client");
     PowerAwareApplication app(argc, argv);
-    if(app.isRunning()) {
-        qDebug() << "application is already running";
-        // do not create a new application, just activate the currently running one
-        QString msg;
-        if(argc > 1) {
-            // send message if there is an argument.
-            // see http://people.w3.org/~dom/archives/2005/09/integrating-a-new-uris-scheme-handler-to-gnome-and-firefox/
-            // to learn how to handle "tel:0123456" uri scheme
-            msg.append(argv[1]);
-            bool sentmsg = app.sendMessage(msg);
-            qDebug() << "sent message" << msg << sentmsg;
-        }
-        return 0;
-    }
-    QSettings *settings = new QSettings(QSettings::IniFormat,
-                                        QSettings::UserScope,
-                                        QCoreApplication::organizationName(),
-                                        QCoreApplication::applicationName());
-    qDebug() << "style" << app.style() << settings->fileName();
+
+    QSettings * settings = new QSettings(QSettings::IniFormat,
+                                         QSettings::UserScope,
+                                         QCoreApplication::organizationName(),
+                                         QCoreApplication::applicationName());
+    qDebug() << Q_FUNC_INFO << "style" << app.style() << settings->fileName();
+    bool shallbeunique = settings->value("display/unique", true).toBool();
 
     QString profile = "default-user";
-    if(argc > 1) {
-        QString arg1(argv[1]);
-
-        if((!arg1.startsWith("tel:", Qt::CaseInsensitive)) &&
-           (!arg1.startsWith("callto:", Qt::CaseInsensitive))) {
-            profile = arg1;
-        }
+    QString msg = "";
+    for (int argi = 0; argi < argc - 1 ; argi ++) {
+        QString argn(argv[argi + 1]);
+        QRegExp rexp("^(tel|callto):([-0-9\\. +]*[0-9])", Qt::CaseInsensitive);
+        if(rexp.indexIn(argn) < 0)
+            profile = argn;
+        else
+            msg = argn;
     }
+
+    if (! msg.isEmpty()) {
+        // send message if there is an argument.
+        // see http://people.w3.org/~dom/archives/2005/09/integrating-a-new-uris-scheme-handler-to-gnome-and-firefox/
+        // to learn how to handle "tel:0123456" uri scheme
+        bool sentmsg = app.sendMessage(msg);
+        qDebug() << Q_FUNC_INFO << "sent message" << msg << sentmsg;
+    }
+
+    if (shallbeunique && app.isRunning()) {
+        qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
+        // do not create a new application, just activate the currently running one
+        return 0;
+    }
+
     settings->setValue("profile/lastused", profile);
 
     QString qsskind = settings->value("display/qss", "none").toString();
@@ -129,7 +133,7 @@ int main(int argc, char ** argv)
         .arg(info_endianness)
         .arg(app.applicationPid());
 #endif
-    qDebug() << "main() osname=" << info_osname << "locale=" << locale;
+    qDebug() << Q_FUNC_INFO << "main() osname=" << info_osname << "locale=" << locale;
 
     BaseEngine *engine = new BaseEngine(settings, info_osname);
 

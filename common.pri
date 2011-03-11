@@ -1,4 +1,4 @@
-XIVOVER = 1.1
+XIVOVER = 1.2
 GIT_HASH = to_fill
 GIT_DATE = to_fill
 
