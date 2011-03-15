@@ -56,7 +56,6 @@ class IdentityPhoneLine : public QWidget
         void setText(const QString &);
         void setPhoneId(const QString &);
     public slots:
-        void setUserInfo(const UserInfo *);
         void hangup();
         void answer();
         void refuse();

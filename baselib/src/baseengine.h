@@ -47,8 +47,11 @@
 #include <QVariant>
 #include <QVariantMap>
 #include <QTimerEvent>
-#include <QApplication>
-#include <QLibraryInfo>
+class QApplication;
+class QLibraryInfo;
+class QTranslator;
+class QSslSocket;
+class QSslError;
 
 class Xlet;
 
@@ -227,6 +230,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void emitMessage(const QString &);
         void actionFromFiche(const QVariant &);
 
+        // ssl-related slots
+        void encryptedSsl();
+        void sslSocketReadyRead();
+        void sslErrors(const QList<QSslError> &);
+
     private slots:
         void keepLoginAlive();  //!< Keep session alive
         void changeState();  //!< Change the presence status
@@ -373,6 +381,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // Status variables
         EngineState m_state;            //!< State of the engine (Logged/Not Logged)
         QString m_availstate;           //!< Availability state to send to the server
+
+        QSslSocket * m_sslsocket;
 
         // Internal management
         QTcpSocket *m_ctiserversocket;     //!< Connection to the CTI server

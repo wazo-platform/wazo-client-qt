@@ -245,9 +245,9 @@ void OutlookPanel::itemClicked(QTableWidgetItem * item)
     if(re_number.exactMatch(str)) {
         // qDebug() << Q_FUNC_INFO << "preparing to dial" << item->text();
         if(str.size() >= m_calllength)
-            b_engine->copyNumber(m_callprefix + str);
+            b_engine->pasteToDial(m_callprefix + str);
         else
-            b_engine->copyNumber(str);
+            b_engine->pasteToDial(str);
     }
 }
 
@@ -354,24 +354,21 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
         contextMenu.addAction( tr("&Dial"), this, SLOT(dialNumber()) );
         QMenu * transferMenu = new QMenu(tr("&Transfer"), &contextMenu);
         if(m_userinfo) {
-            foreach( const QString phone, m_userinfo->phonelist() ) {
-                const PhoneInfo * pi = m_userinfo->getPhoneInfo( phone );
-                if( pi ) {
-                    QMapIterator<QString, QVariant> it( pi->comms() );
-                    while( it.hasNext() ) {
-                        it.next();
-                        QVariantMap call = it.value().toMap();
-                        QString text;
-                        if( call.contains("calleridname") ) {
-                            text.append( call.value("calleridname").toString() );
-                            text.append( " : " );
-                        }
-                        text.append( call.value("calleridnum").toString() );
-                        QAction * transferAction =
-                            transferMenu->addAction( text,
-                                                     this, SLOT(transfer()) );
-                        transferAction->setProperty( "chan", call.value("peerchannel") );
-                    }
+            QString ipbxid = m_userinfo->ipbxid();
+            foreach (const QString phoneid, m_userinfo->phonelist()) {
+                QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+                const PhoneInfo * pi = b_engine->phones().value(xphoneid);
+                if (pi == NULL)
+                    continue;
+                foreach (const QString channel, pi->channels()) {
+                    const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+                    if (channelinfo == NULL)
+                        continue;
+                    QString text = channelinfo->peerdisplay();
+                    QAction * transferAction =
+                        transferMenu->addAction( text,
+                                                 this, SLOT(transfer()) );
+                    transferAction->setProperty( "chan", channel ); // XXX was peerchannel
                 }
             }
         }

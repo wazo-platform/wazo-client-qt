@@ -13,3 +13,5 @@ plugins/*/Makefile
 plugins/*/qrc_res.cpp
 xivoclient/qrc_appli.cpp
 xivoclient/versions.pri
+Makefile.Debug
+Makefile.Release

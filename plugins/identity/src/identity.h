@@ -55,7 +55,6 @@ class IdentityDisplay : public XLet
 
     public slots:
         void setGuiOptions(const QVariantMap &);
-        void newAgentList(const QStringList &);
         void idxChanged(const QString &);
         void updatePresence();
         void setOpt(const QString &, bool);

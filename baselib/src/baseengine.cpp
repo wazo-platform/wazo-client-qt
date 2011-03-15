@@ -31,6 +31,7 @@
  * $Date$
  */
 
+#include <QApplication>
 #include <QCryptographicHash>
 #include <QDateTime>
 #include <QDebug>
@@ -43,6 +44,8 @@
 #include <QTranslator>
 #include <QUrl>
 #include <QLibraryInfo>
+#include <QSslError>
+#include <QSslSocket>
 
 #include "JsonToVariant.h"
 #include "VariantToJson.h"
@@ -92,6 +95,16 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_ctiserversocket = new QTcpSocket(this);
     m_ctiConn = new CtiConn(m_ctiserversocket);
 
+    m_sslsocket = new QSslSocket(this);
+    m_sslsocket->setProtocol(QSsl::TlsV1);
+    connect(m_sslsocket, SIGNAL(encrypted()),
+            this, SLOT(encryptedSsl()));
+    connect(m_sslsocket, SIGNAL(sslErrors(const QList<QSslError> &)),
+            this, SLOT(sslErrors(const QList<QSslError> & )));
+    connect(m_sslsocket, SIGNAL(readyRead()),
+            this, SLOT(sslSocketReadyRead()));
+    // m_sslsocket->connectToHostEncrypted("127.0.0.1", 10023);
+
     connect(m_ctiserversocket, SIGNAL(connected()),
             this, SLOT(ctiSocketConnected()));
     connect(m_ctiserversocket, SIGNAL(readyRead()),
@@ -111,6 +124,21 @@ BaseEngine::BaseEngine(QSettings *settings,
         (QStringList() << ":/xivoclient_%1"
                        << ":/baselib/baselib_%1"
                        << QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_%1" );
+}
+
+void BaseEngine::encryptedSsl()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
+void BaseEngine::sslSocketReadyRead()
+{
+    qDebug() << Q_FUNC_INFO << m_sslsocket->readLine();
+}
+
+void BaseEngine::sslErrors(const QList<QSslError> &)
+{
+    m_sslsocket->ignoreSslErrors();
 }
 
 /*! \brief Destructor

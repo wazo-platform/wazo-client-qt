@@ -75,8 +75,6 @@ XletParking::XletParking(QWidget *parent)
                                     const QString &,
                                     const QString &,
                                     const QVariant &)));
-    connect(this, SIGNAL(copyNumber(const QString &)),
-            b_engine, SIGNAL(pasteToDialPanel(const QString &)));
 }
 
 /*! \brief add a message to the list
