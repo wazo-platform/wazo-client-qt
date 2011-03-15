@@ -147,6 +147,11 @@ ServicePanel::ServicePanel(QWidget * parent)
             this, SLOT(setForward(const QString &, const QVariant &)) );
     connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
             this, SLOT(setUserInfo(const UserInfo *)));
+
+    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
+            this, SLOT(updateUserConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
+            this, SLOT(updatePhoneConfig(const QString &)));
 }
 
 ServicePanel::~ServicePanel()
@@ -154,19 +159,26 @@ ServicePanel::~ServicePanel()
     delete m_status;
 }
 
+void ServicePanel::updateUserConfig(const QString &)
+{
+}
+
+void ServicePanel::updatePhoneConfig(const QString &)
+{
+}
+
 void ServicePanel::setUserInfo(const UserInfo * ui)
 {
-    if (ui == NULL) {
+    qDebug() << Q_FUNC_INFO;
+    if (ui == NULL)
         return;
-    }
-    if ((ui->mwi().size() < 3) && (m_chkopt.contains("enablevm"))) {
+    if ((ui->mwi().size() < 3) && (m_chkopt.contains("enablevm")))
         m_chkopt["enablevm"]->hide();
-    }
 }
 
 void ServicePanel::Connect()
 {
-    //qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
     foreach (QString capa, chkcapas) {
         if (m_capas.contains(capa)) {
             connect(m_chkopt[capa], SIGNAL(clicked(bool)),
@@ -183,7 +195,7 @@ void ServicePanel::Connect()
 
 void ServicePanel::DisConnect()
 {
-    //qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
     foreach (QString capa, chkcapas) {
         if (m_capas.contains(capa)) {
             disconnect(m_chkopt[capa], SIGNAL(clicked(bool)),
@@ -249,6 +261,7 @@ void ServicePanel::Toggled(bool b)
 
 void ServicePanel::setOpt(const QString & capa, bool b)
 {
+    qDebug() << Q_FUNC_INFO;
     m_status->setOpt(capa, b);
     if (m_capas.contains(capa)) {
         m_chkopt[capa]->setChecked(b);
@@ -278,7 +291,7 @@ void ServicePanel::setForward(const QString & capa, const QVariant & value)
  */
 void ServicePanel::monitorPeer(UserInfo * /*ui*/)
 {
-    // qDebug() << Q_FUNC_INFO << peer;
+    qDebug() << Q_FUNC_INFO;
     b_engine->askFeatures();
 }
 

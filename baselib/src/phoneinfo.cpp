@@ -59,6 +59,33 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
         m_initialized = prop.value("initialized").toBool();
     if (prop.contains("enable_hint"))
         m_enable_hint = prop.value("enable_hint").toBool();
+
+    if (prop.contains("enablerna"))
+        m_enablerna = prop.value("enablerna").toBool();
+    if (prop.contains("enableunc"))
+        m_enableunc = prop.value("enableunc").toBool();
+    if (prop.contains("enablebusy"))
+        m_enablebusy = prop.value("enablebusy").toBool();
+    if (prop.contains("destrna"))
+        m_destrna = prop.value("destrna").toString();
+    if (prop.contains("destunc"))
+        m_destunc = prop.value("destunc").toString();
+    if (prop.contains("destbusy"))
+        m_destbusy = prop.value("destbusy").toString();
+
+    if (prop.contains("enableautomon"))
+        m_enableautomon = prop.value("enableautomon").toBool();
+    if (prop.contains("enablednd"))
+        m_enablednd = prop.value("enablednd").toBool();
+    if (prop.contains("enablevoicemail"))
+        m_enablevoicemail = prop.value("enablevoicemail").toBool();
+    if (prop.contains("enablexfer"))
+        m_enablexfer = prop.value("enablexfer").toBool();
+    if (prop.contains("incallfilter"))
+        m_incallfilter = prop.value("incallfilter").toBool();
+    if (prop.contains("callrecord"))
+        m_callrecord = prop.value("callrecord").toBool();
+
     return haschanged;
 }
 

@@ -58,6 +58,7 @@ class BASELIB_EXPORT PhoneInfo
         const QStringList & channels() const { return m_channels; };  //! current communications of this phone
         const QString & hintstatus() const { return m_hintstatus; }; //! hint status value
 
+        bool enableunc() const { return m_enableunc; };
     private:
         QString m_ipbxid;
         QString m_phoneid;
@@ -71,6 +72,20 @@ class BASELIB_EXPORT PhoneInfo
         bool m_enable_hint;
         QString m_hintstatus;
         QStringList m_channels;
+
+        bool m_enablerna;
+        bool m_enableunc;
+        bool m_enablebusy;
+        QString m_destrna;
+        QString m_destunc;
+        QString m_destbusy;
+
+        bool m_enableautomon;
+        bool m_enablednd;
+        bool m_enablevoicemail;
+        bool m_enablexfer;
+        bool m_incallfilter;
+        bool m_callrecord;
 };
 
 #endif

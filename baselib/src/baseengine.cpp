@@ -1221,8 +1221,10 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
                 if (listname == "users") {
-                    if (! m_users.contains(xid))
+                    if (! m_users.contains(xid)) {
                         m_users[xid] = new UserInfo(ipbxid, id);
+                        qDebug() << "new user" << xid;
+                    }
                 } else if (listname == "phones") {
                     if (! m_phones.contains(xid))
                         m_phones[xid] = new PhoneInfo(ipbxid, id);
@@ -1321,8 +1323,19 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             }
 
             // qDebug() << function << listname << xid << haschanged << status;
-            if (listname == "phones")
+            if (listname == "phones") {
                 emit updatePhoneStatus(xid);
+                QVariantMap command;
+                command["class"] = "getlist";
+                command["function"] = "updatestatus";
+                command["listname"] = "channels";
+                command["ipbxid"] = ipbxid;
+                foreach(QString id, m_phones[xid]->channels()) {
+                    command["id"] = id;
+                    sendJsonCommand(command);
+                }
+            }
+
             else if (listname == "users")
                 emit updateUserStatus(xid);
             else if (listname == "agents")
@@ -2265,9 +2278,9 @@ void BaseEngine::loadQueueGroups()
 /*! \brief get pointer to the currently logged user
  *
  * Return NULL if not available */
-UserInfo* BaseEngine::getXivoClientUser()
+UserInfo * BaseEngine::getXivoClientUser()
 {
-    // qDebug() << Q_FUNC_INFO << m_ipbxid << m_userid << "aaaa" << m_xuserid;
+    // qDebug() << Q_FUNC_INFO << m_ipbxid << m_userid << m_xuserid;
     if (m_users.contains(m_xuserid)) {
         return m_users.value(m_xuserid);
     }

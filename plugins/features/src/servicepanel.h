@@ -63,6 +63,8 @@ class ServicePanel : public XLet
         void Reset();
         void getRecordedStatus();
         void setRecordedStatus();
+        void updateUserConfig(const QString &);
+        void updatePhoneConfig(const QString &);
 
     private slots:
         void chkoptToggled(bool);
