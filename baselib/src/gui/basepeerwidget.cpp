@@ -538,7 +538,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                 }
 
                 if (calleridname == QString("<meetme>")) {
-                    QAction *meetmeAction = new QAction(tr("Invite in meetme room %1").arg(calleridnum), &contextMenu);
+                    QAction *meetmeAction = new QAction(tr("Invite in meetme room %1").arg(calleridnum),
+                                                        &contextMenu);
                     meetmeAction->setProperty("number", calleridnum);
                     connect(meetmeAction, SIGNAL(triggered()),
                              this, SLOT(peerdial()));
@@ -566,7 +567,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                 }
 
                 if (calleridname != QString("<meetme>")) {
-                    if (!itransferMenu && commsCount > 1) {
+                    if (!itransferMenu && (commsCount > 1)) {
                         itransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
                     }
                     QAction * itransferAction;
@@ -574,7 +575,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                     if (itransferMenu) {
                         itransferAction = new QAction(text, itransferMenu);
                         itransferAction->setStatusTip(tr("Transfer this communication"));
-                        itransferCancelAction = new QAction(text, itransferMenu);
+                        itransferCancelAction = new QAction(text + " " + tr("(Cancel)"),
+                                                            itransferMenu);
                         itransferCancelAction->setStatusTip(tr("Cancel the Transfer"));
                     } else {
                         itransferAction = new QAction(tr("&Indirect Transfer"), &contextMenu);

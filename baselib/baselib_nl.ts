@@ -267,65 +267,70 @@ Gelieve uw versie te upgraden.</translation>
         <translation>Uitnodigen in de MMR %1</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="548"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="554"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="549"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="555"/>
         <source>Direct &amp;Transfer</source>
         <translation>Rechtstreeks &amp;Doorschakelen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="552"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="576"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="553"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="577"/>
         <source>Transfer this communication</source>
         <translation>Schakel dit gesprek door</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="555"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="581"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="556"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="583"/>
         <source>Transfer to this person</source>
         <translation>Doorschakelen naar deze persoon</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="570"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="580"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="571"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="582"/>
         <source>&amp;Indirect Transfer</source>
         <translation>&amp;Onrechtstreeks Doorschakelen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="582"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="578"/>
+        <source>(Cancel)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/gui/basepeerwidget.cpp" line="584"/>
         <source>&amp;Cancel the Transfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="605"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="611"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="607"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="613"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Doorschakelen naar &amp;voicemail</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="609"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="612"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="611"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="614"/>
         <source>Transfer to voice mail</source>
         <translation>Doorschakelen naar voicemail</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="753"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="755"/>
         <source>XiVO Client - Removing %1 %2</source>
         <translation>XiVO Client - %1 %2 verwijderen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="754"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="756"/>
         <source>Removing %1 %2.
 Are you sure ?</source>
         <translation> %1 %2 verwijderen
 Bent u zeker?</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="768"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="770"/>
         <source>Rename Item</source>
         <translation>Dit item herbenoemen</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="768"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="770"/>
         <source>Rename %1 :</source>
         <translation>%1 herbenoemen:</translation>
     </message>

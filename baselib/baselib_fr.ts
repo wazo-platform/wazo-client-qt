@@ -240,20 +240,20 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
         <translation>Intercepter la communication</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="552"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="576"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="553"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="577"/>
         <source>Transfer this communication</source>
         <translation>Transférer cette communication</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="548"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="554"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="549"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="555"/>
         <source>Direct &amp;Transfer</source>
         <translation>&amp;Transfert direct</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="570"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="580"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="571"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="582"/>
         <source>&amp;Indirect Transfer</source>
         <translation>Transfert &amp;Indirect</translation>
     </message>
@@ -269,20 +269,20 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
         <translation>&amp;Parquer</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="605"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="611"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="607"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="613"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Transfert vers boite &amp;vocale</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="555"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="581"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="556"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="583"/>
         <source>Transfer to this person</source>
         <translation>Transférer vers ce poste</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="609"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="612"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="611"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="614"/>
         <source>Transfer to voice mail</source>
         <translation>Transférer vers cette messagerie vocale</translation>
     </message>
@@ -302,17 +302,22 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
         <translation>Inviter à la conférence %1</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="582"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="578"/>
+        <source>(Cancel)</source>
+        <translation>(Annuler)</translation>
+    </message>
+    <message>
+        <location filename="src/gui/basepeerwidget.cpp" line="584"/>
         <source>&amp;Cancel the Transfer</source>
         <translation>&amp;Annule le Transfert</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="753"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="755"/>
         <source>XiVO Client - Removing %1 %2</source>
         <translation>XiVO Client - Enlever %1 %2</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="754"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="756"/>
         <source>Removing %1 %2.
 Are you sure ?</source>
         <translation>Enlever %1 %2.Etes vous sur ?</translation>
@@ -328,12 +333,12 @@ Are you sure ?</source>
         <translation>Renommer ce poste</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="768"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="770"/>
         <source>Rename Item</source>
         <translation>Renommer le poste</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="768"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="770"/>
         <source>Rename %1 :</source>
         <translation>Renommer %1 :</translation>
     </message>

@@ -258,7 +258,7 @@ void ConfigWidget::_insert_guisetting_tab()
         if (b_engine->forcelocale() == m_locale_cbox->itemData(i))
             m_locale_cbox->setCurrentIndex(i);
     }
-    layout4->addRow(tr("Language")+ "\n" +                              \
+    layout4->addRow(tr("Language")+ "\n" + \
                     tr("/!\\ You MUST restart the application\n"
                        "when you change this value /!\\"), m_locale_cbox);
 

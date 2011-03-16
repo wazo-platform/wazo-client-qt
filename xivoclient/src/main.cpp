@@ -87,6 +87,7 @@ int main(int argc, char ** argv)
         // see http://people.w3.org/~dom/archives/2005/09/integrating-a-new-uris-scheme-handler-to-gnome-and-firefox/
         // to learn how to handle "tel:0123456" uri scheme
         bool sentmsg = app.sendMessage(msg);
+        // warning : this sends the message only to the first instance, if ever there are >1 instances running
         qDebug() << Q_FUNC_INFO << "sent message" << msg << sentmsg;
     }
 
@@ -133,7 +134,7 @@ int main(int argc, char ** argv)
         .arg(info_endianness)
         .arg(app.applicationPid());
 #endif
-    qDebug() << Q_FUNC_INFO << "main() osname=" << info_osname << "locale=" << locale;
+    qDebug() << Q_FUNC_INFO << "osname=" << info_osname << "locale=" << locale;
 
     BaseEngine *engine = new BaseEngine(settings, info_osname);
 
