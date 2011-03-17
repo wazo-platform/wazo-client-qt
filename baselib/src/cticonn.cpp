@@ -62,6 +62,9 @@ void CtiConn::ctiSocketError(QAbstractSocket::SocketError socketError)
         case QAbstractSocket::SocketTimeoutError:
             b_engine->popupError("socket_error_timeout");
             break;
+        case QAbstractSocket::SslHandshakeFailedError:
+            b_engine->popupError("socket_error_sslhandshake");
+            break;
         case QAbstractSocket::UnknownSocketError:
             b_engine->popupError("socket_error_unknown");
             break;

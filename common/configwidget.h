@@ -86,8 +86,9 @@ class ConfigWidget: public QDialog
 
         BaseEngine *m_engine;          //!< BaseEngine object parameters are commited to
 
-        QLineEdit *m_cti_address;      //!< IP/hostname of the server
-        QSpinBox  *m_cti_port;         //!< server port
+        QLineEdit * m_cti_address;     //!< IP/hostname of the server
+        QSpinBox  * m_cti_port;        //!< server port
+        QCheckBox * m_cti_encrypt;     //!< encrypt connection
 
         QComboBox *m_locale_cbox;         //!< Locale selectbox
         QCheckBox *m_autoconnect;      //!< "Auto connect" checkbox
@@ -133,7 +134,7 @@ class ConfigWidget: public QDialog
             QPushButton *button;
         } m_operator_action[9];
 
-        QCheckBox *m_operator_answer_work;  //!< should we display the answer key in operator xlet ?
+        QCheckBox * m_operator_answer_work;  //!< should we display the answer key in operator xlet ?
 
         int m_currentKeyChange;
 };

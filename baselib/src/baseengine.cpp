@@ -75,6 +75,7 @@ BaseEngine::BaseEngine(QSettings *settings,
                        const QString &osInfo)
     : QObject(NULL),
       m_cti_address(""), m_cti_port(0),
+      m_cti_encrypt(false),
       m_userlogin(""), m_userloginopt(""), m_company(""), m_password(""), m_agentphonenumber(""),
       m_sessionid(""), m_state(ENotLogged),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
@@ -92,19 +93,14 @@ BaseEngine::BaseEngine(QSettings *settings,
     loadSettings();
 
     // TCP connection with CTI Server
-    m_ctiserversocket = new QTcpSocket(this);
+    m_ctiserversocket = new QSslSocket(this);
+    m_ctiserversocket->setProtocol(QSsl::TlsV1);
     m_ctiConn = new CtiConn(m_ctiserversocket);
 
-    m_sslsocket = new QSslSocket(this);
-    m_sslsocket->setProtocol(QSsl::TlsV1);
-    connect(m_sslsocket, SIGNAL(encrypted()),
+    connect(m_ctiserversocket, SIGNAL(encrypted()),
             this, SLOT(encryptedSsl()));
-    connect(m_sslsocket, SIGNAL(sslErrors(const QList<QSslError> &)),
+    connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)),
             this, SLOT(sslErrors(const QList<QSslError> & )));
-    connect(m_sslsocket, SIGNAL(readyRead()),
-            this, SLOT(sslSocketReadyRead()));
-    // m_sslsocket->connectToHostEncrypted("127.0.0.1", 10023);
-
     connect(m_ctiserversocket, SIGNAL(connected()),
             this, SLOT(ctiSocketConnected()));
     connect(m_ctiserversocket, SIGNAL(readyRead()),
@@ -131,14 +127,10 @@ void BaseEngine::encryptedSsl()
     qDebug() << Q_FUNC_INFO;
 }
 
-void BaseEngine::sslSocketReadyRead()
-{
-    qDebug() << Q_FUNC_INFO << m_sslsocket->readLine();
-}
-
 void BaseEngine::sslErrors(const QList<QSslError> &)
 {
-    m_sslsocket->ignoreSslErrors();
+    qDebug() << Q_FUNC_INFO;
+    m_ctiserversocket->ignoreSslErrors();
 }
 
 /*! \brief Destructor
@@ -180,6 +172,7 @@ void BaseEngine::loadSettings()
     m_settings->beginGroup(m_profilename_read);
         m_cti_address = m_settings->value("serverhost", "demo.xivo.fr").toString();
         m_cti_port    = m_settings->value("serverport", 5003).toUInt();
+        m_cti_encrypt = m_settings->value("encryption", false).toBool();
 
         m_userlogin      = m_settings->value("userid").toString().trimmed();
         m_userloginopt   = m_settings->value("useridopt").toString().trimmed();
@@ -266,6 +259,7 @@ void BaseEngine::saveSettings()
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("serverhost", m_cti_address);
         m_settings->setValue("serverport", m_cti_port);
+        m_settings->setValue("encryption", m_cti_encrypt);
         m_settings->setValue("userid", m_userlogin);
         m_settings->setValue("useridopt", m_userloginopt);
         m_settings->setValue("company", m_company);
@@ -380,7 +374,7 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << Q_FUNC_INFO << m_cti_address << m_cti_port << m_checked_function;
+    qDebug() << Q_FUNC_INFO << m_cti_address << m_cti_port << m_cti_encrypt << m_checked_function;
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
@@ -533,7 +527,10 @@ void BaseEngine::clearQueueList()
 void BaseEngine::connectSocket()
 {
     if (m_userlogin.length()) {
-        m_ctiserversocket->connectToHost(m_cti_address, m_cti_port);
+        if (m_cti_encrypt)
+            m_ctiserversocket->connectToHostEncrypted(m_cti_address, m_cti_port);
+        else
+            m_ctiserversocket->connectToHost(m_cti_address, m_cti_port);
     }
 }
 
@@ -1587,6 +1584,10 @@ void BaseEngine::popupError(const QString & errorid)
                       "- this IP address is routed but there is no machine (~ 5 s timeout)\n"
                       "- a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).")
             .arg(m_cti_address);
+    } else if (errorid.toLower() == "socket_error_sslhandshake") {
+        errormsg = tr("It seems that the server with IP address %1 does not accept encryption on "
+                      "its port %2. Please change either your port or your encryption setting.")
+            .arg(m_cti_address).arg(m_cti_port);
     } else if (errorid.toLower() == "socket_error_unknown") {
         errormsg = tr("An unknown socket error has occured while attempting to join the IP address:port %1:%2.")
             .arg(m_cti_address).arg(m_cti_port);
@@ -1790,7 +1791,7 @@ void BaseEngine::searchDirectory(const QString & text)
 {
     // qDebug() << Q_FUNC_INFO << text;
     QVariantMap command;
-    command["class"] = "directory-search";
+    command["class"] = "directory";
     command["pattern"] = text;
     sendJsonCommand(command);
 }
@@ -1800,11 +1801,16 @@ void BaseEngine::searchDirectory(const QString & text)
  *
  * Set server host name and server port
  */
-void BaseEngine::setCTIAddressPort(const QString & address, quint16 port)
+void BaseEngine::setAddressPort(const QString & address, quint16 port)
 {
     // qDebug() << Q_FUNC_INFO << address << port;
     m_cti_address = address;
     m_cti_port = port;
+}
+
+void BaseEngine::setEncryption(bool encrypt)
+{
+    m_cti_encrypt = encrypt;
 }
 
 /*! \brief get server IP address */
@@ -1814,9 +1820,14 @@ const QString & BaseEngine::ctiAddress() const
 }
 
 /*! \brief get server port */
-quint16 BaseEngine::ctiPort()
+quint16 BaseEngine::ctiPort() const
 {
     return m_cti_port;
+}
+
+bool BaseEngine::ctiEncrypt() const
+{
+    return m_cti_encrypt;
 }
 
 const QString & BaseEngine::company() const

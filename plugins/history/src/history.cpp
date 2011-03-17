@@ -145,10 +145,9 @@ Qt::ItemFlags LogWidgetModel::flags(const QModelIndex &) const
 }
 
 /*! \brief ask history for an extension */
-void LogWidgetModel::requestHistory(const QString &peer,
+void LogWidgetModel::requestHistory(const QString & xuserid,
                                     int mode,
-                                    const QDateTime &moreRecent,
-                                    int)
+                                    const QDateTime & moreRecent)
 {
     /* mode = 0 : Out calls
      * mode = 1 : In calls
@@ -156,7 +155,7 @@ void LogWidgetModel::requestHistory(const QString &peer,
     if(mode >= 0) {
         QVariantMap command;
         command["class"] = "history";
-        command["peer"] = peer;
+        command["xuserid"] = xuserid;
         command["size"] = QString::number(b_engine->historySize());
         command["mode"] = QString::number(mode);
         if(moreRecent.isValid()) {

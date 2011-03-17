@@ -94,7 +94,7 @@ class LogWidgetModel : public QAbstractTableModel
         }
 
         void requestHistory(const QString &, int,
-                            const QDateTime &since = QDateTime(), int f = 0);
+                            const QDateTime & since = QDateTime());
 
         QVariantList m_history;
         int m_mode;

@@ -493,12 +493,12 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                     (status == CHAN_STATUS_LINKED_CALLER) ||
                     (status == CHAN_STATUS_LINKED_CALLED))) {
 
-                    if (!parkMenu && commsCount > 1) {
+                    if (!parkMenu && (commsCount > 1)) {
                         parkMenu = new QMenu(tr("&Park"), &contextMenu);
                     }
 
                     build.aQActionMenu(parkMenu?parkMenu:&contextMenu,
-                                       commsCount > 1 ? text : tr("&Park"),
+                                       (commsCount > 1) ? text : tr("&Park"),
                                        tr("Park this call"),
                                        channel,
                                        channel /*XXXX was peerchannel*/,
@@ -533,7 +533,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                             this, SLOT(peerdial()));
                     contextMenu.addAction(meetmeAction);
                 } else {
-                    if (!transferMenu && commsCount > 1)
+                    if (!transferMenu && (commsCount > 1))
                         transferMenu = new QMenu(tr("Direct &Transfer"), &contextMenu);
                     QAction *transferAction;
                     if (transferMenu) {
@@ -563,7 +563,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                     if (itransferMenu) {
                         itransferAction = new QAction(text, itransferMenu);
                         itransferAction->setStatusTip(tr("Transfer this communication"));
-                        itransferCancelAction = new QAction(text, itransferMenu);
+                        itransferCancelAction = new QAction(text + " " + tr("(Cancel)"),
+                                                            itransferMenu);
                         itransferCancelAction->setStatusTip(tr("Cancel the Transfer"));
                     } else {
                         itransferAction = new QAction(tr("&Indirect Transfer"), &contextMenu);
@@ -590,7 +591,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                 }
                 if (m_ui && channelinfo->talkingto_kind() != QString("<meetme>")) {
                     // TODO : check if this really has a Voice Mail
-                    if (!vmtransferMenu && commsCount > 1)
+                    if (!vmtransferMenu && (commsCount > 1))
                         vmtransferMenu = new QMenu(tr("Transfer to &voice mail"), &contextMenu);
                     QAction *vmtransferAction;
                     if (vmtransferMenu) {

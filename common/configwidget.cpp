@@ -89,18 +89,21 @@ void ConfigWidget::_insert_connection_tab()
 
     widget_connection->setLayout(grid);
 
-    QLabel *lblhost = new QLabel(tr("Server Host"), this);
+    QLabel * lblhost = new QLabel(tr("Server Host"), this);
     m_cti_address = new QLineEdit(b_engine->ctiAddress(), this);
     grid->addWidget(lblhost, line, 0);
     grid->addWidget(m_cti_address, line++, 1);
 
-    QLabel *lblsbport = new QLabel(tr("Login Port"), this);
-
+    QLabel * lblsbport = new QLabel(tr("Login Port"), this);
     m_cti_port = new QSpinBox(this);
     m_cti_port->setRange(1, 65535);
     m_cti_port->setValue(b_engine->ctiPort());
     grid->addWidget(lblsbport, line, 0);
     grid->addWidget(m_cti_port, line++, 1);
+
+    m_cti_encrypt = new QCheckBox(tr("Encrypt Connection"));
+    m_cti_encrypt->setCheckState(b_engine->ctiEncrypt() ? Qt::Checked : Qt::Unchecked);
+    grid->addWidget(m_cti_encrypt, line++, 0, 1, 2);
 
     grid->setRowStretch(line, 1);
     grid->setColumnStretch(2, 1);
@@ -465,7 +468,8 @@ void ConfigWidget::saveAndClose()
 {
     int i;
     // qDebug() << Q_FUNC_INFO;
-    b_engine->setCTIAddressPort(m_cti_address->text(), m_cti_port->value());
+    b_engine->setAddressPort(m_cti_address->text(), m_cti_port->value());
+    b_engine->setEncryption(m_cti_encrypt->checkState() == Qt::Checked);
 
     b_engine->setCompany(m_context->text());
     b_engine->setKeepPass(m_keeppass->checkState());

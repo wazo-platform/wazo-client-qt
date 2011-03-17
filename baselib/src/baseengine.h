@@ -42,13 +42,13 @@
 #include <QStringList>
 #include <QMultiHash>
 #include <QTime>
-#include <QFile>
 #include <QDateTime>
 #include <QVariant>
 #include <QVariantMap>
-#include <QTimerEvent>
+
 class QApplication;
-class QLibraryInfo;
+class QFile;
+class QTimerEvent;
 class QTranslator;
 class QSslSocket;
 class QSslError;
@@ -92,15 +92,17 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void loadSettings();                   //!< load server settings
         // setter/getter for properties
         //! set address used to connect to the server
-        void setCTIAddressPort(const QString &, quint16);
+        void setAddressPort(const QString &, quint16);
+        void setEncryption(bool);
         const QString& ctiAddress() const;     //!< IP address of the login server
-        quint16 ctiPort();                     //!< TCP port of the login server
+        quint16 ctiPort() const;               //!< TCP port of the login server
+        bool ctiEncrypt() const;
 
-        const QString& company() const;        //!< name of the user's company
+        const QString & company() const;       //!< name of the user's company
         void setCompany(const QString &);      //!< see company()
-        const QString& userId() const;         //!< userid to identify to the server
+        const QString & userId() const;        //!< userid to identify to the server
         void setUserId(const QString &);       //!< see userid()
-        const QString& agentphonenumber() const;  //!< agent's phone number
+        const QString & agentphonenumber() const;  //!< agent's phone number
         void setAgentPhoneNumber(const QString &); //!< see agentphonenumber()
         int loginkind();                        //!< loginkind to identify to the server
         void setLoginKind(const int);           //!< see loginkind()
@@ -158,7 +160,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QString & getFullId() const { return m_xuserid; };
         UserInfo* getXivoClientUser();  //!< Return the user of the Xivo CTI Client
         double timeServer() const;
-        const QDateTime& timeClient() const;
+        const QDateTime & timeClient() const;
         double timeDeltaServerClient() const;
         QString timeElapsed(double) const;
         int m_historysize;  //!< Number of elements when requestion call log
@@ -232,7 +234,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // ssl-related slots
         void encryptedSsl();
-        void sslSocketReadyRead();
+        // void sslSocketReadyRead();
         void sslErrors(const QList<QSslError> &);
 
     private slots:
@@ -335,6 +337,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // Parameters given by the User at Login time
         QString m_cti_address;          //!< IP address to the login server
         quint16 m_cti_port;             //!< TCP port to connect to server
+        bool m_cti_encrypt;             //!< Encrypt CTI connection ?
 
         QString m_userlogin;            //!< User Id
         QString m_userloginopt;         //!< User Id Option (kind of login)
@@ -382,11 +385,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
         EngineState m_state;            //!< State of the engine (Logged/Not Logged)
         QString m_availstate;           //!< Availability state to send to the server
 
-        QSslSocket * m_sslsocket;
+        // QSslSocket * m_sslsocket;
 
         // Internal management
-        QTcpSocket *m_ctiserversocket;     //!< Connection to the CTI server
-        QTcpSocket *m_filetransfersocket;  //!< TCP connection for File transfer.
+        QSslSocket * m_ctiserversocket;     //!< Connection to the CTI server
+        QTcpSocket * m_filetransfersocket;  //!< TCP connection for File transfer.
         int m_timerid_keepalive;        //!< timer id for keep alive
         int m_timerid_tryreconnect;     //!< timer id for try to reconnect
         int m_timerid_changestate;      //!< timer id for changing state automatically
@@ -402,11 +405,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_faxsize;
 
         QString m_monitored_userid;  //!< UserId of the Monitored Phone (on SB, or one's own on XC)
-        QSettings *m_settings;  //!< Settings (stored in .ini file)
-        QFile *m_eventdevice;
+        QSettings * m_settings;  //!< Settings (stored in .ini file)
+        QFile * m_eventdevice;
     //    QSocketNotifier * m_notifier;
         QByteArray m_downloaded;    //!< downloaded data
-        QFile *m_logfile;
+        QFile * m_logfile;
         int m_byte_counter; //!< byte counter for calculating network throughput
         QTime m_time;       //!< time counter for calculating network throughput
         bool m_attempt_loggedin;
