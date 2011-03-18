@@ -142,8 +142,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void setLastConnWins(bool b);             //!< last connected user wins
 
         const QStringList & getCapaXlets() const;
-        const QVariantMap & getCapaPresence() const;
-        const QVariantMap & getCapaTermStates() const;
+        const QVariantMap & getOptionsUserStatus() const;
+        const QVariantMap & getOptionsPhoneStatus() const;
+        const QVariantMap & getOptionsAgentStatus() const;
+        const QStringList & getCapasRegCommands() const;
+        const QStringList & getCapasIpbxCommands() const;
 
         void setGuiOption(const QString &, const QVariant &);
         const QVariantMap getGuiOptions(const QString &) const;
@@ -372,8 +375,12 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // Replies given by the server
         QStringList m_capafuncs;        //!< List of func capabilities issued by the server after a successful login
         QStringList m_capaxlets;        //!< List of xlet capabilities issued by the server after a successful login
-        QVariantMap m_capapresence;     //!< List of capabilities issued by the server for the presence statuses
-        QVariantMap m_capatermstates;   //!< List of capabilities issued by the server for the termination statuses
+        QVariantMap m_options_userstatus;   //!< Display Options for User statuses (presence)
+        QVariantMap m_options_phonestatus;  //!< Display Options for Phone statuses
+        QVariantMap m_options_agentstatus;  //!< Display Options for Agent statuses
+        QStringList m_capas_regcommands;  //!< Capabilities for regular commands
+        QStringList m_capas_ipbxcommands; //!< Capabilities for IPBX commands
+
         QVariantMap m_guioptions;       //!< List of GUI options
         QString m_appliname;            //!< Application name to be displayed
         QString m_sessionid;            //!< Session id obtained after a successful login

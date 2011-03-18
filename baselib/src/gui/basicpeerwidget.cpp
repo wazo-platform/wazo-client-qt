@@ -120,7 +120,7 @@ void BasicPeerWidget::updatePresence()
 {
     QString text = m_ui->phoneNumber();
     QString availstate = m_ui->availstate();
-    QVariantMap presencedetails = b_engine->getCapaPresence().value(availstate).toMap();
+    QVariantMap presencedetails = b_engine->getOptionsUserStatus().value(availstate).toMap();
     if (! m_ui->ctilogin().isEmpty()) {
         text.append(" ");
         text.append(presencedetails.value("longname").toString());

@@ -282,7 +282,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                 return;
             }
         }
-        if ((subwidgetkind == "mobile") && (m_ui != NULL)) {
+        if (subwidgetkind == "mobile") {
             b_engine->actionCall("originate",
                                  "user:special:me",
                                  QString("ext:%1").arg(m_ui->mobileNumber()));
@@ -316,7 +316,7 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
         return;
     }
 
-    if (!b_engine->enabledFunction("switchboard")) {
+    if (! b_engine->enabledFunction("switchboard")) {
         return;
     }
 
@@ -340,13 +340,13 @@ QList<const ChannelInfo *> BasePeerWidget::loopOverChannels(const UserInfo * use
 {
     QList<const ChannelInfo *> channels;
     QString ipbxid = userinfo->ipbxid();
-    foreach (const QString phoneid, userinfo->phonelist()) {
-        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
+    foreach (const QString xphoneid, userinfo->phonelist()) {
         const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
         if (phoneinfo == NULL)
             continue;
         foreach (const QString channel, phoneinfo->channels()) {
-            const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+            const QString xchannel = QString("%1/%2").arg(ipbxid).arg(channel);
+            const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
             if (channelinfo == NULL)
                 continue;
             channels << channelinfo;
@@ -368,6 +368,11 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     if (ui == m_ui)
         isitme = true;
 
+    QList<const ChannelInfo *> qlci_local = loopOverChannels(ui);
+    QList<const ChannelInfo *> qlci_remote = loopOverChannels(m_ui);
+    qDebug() << Q_FUNC_INFO << b_engine->getCapasIpbxCommands()
+             << qlci_local.count() << qlci_remote.count() << isitme;
+
     // Construct and display the context menu
     QMenu contextMenu(this);
     QAction * action;
@@ -377,7 +382,6 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     QMenu *itransferMenu = NULL;
     QMenu *vmtransferMenu = NULL;
     QMenu *parkMenu = NULL;
-
 
     if (parentWidget()->metaObject()->className() == QString("XletSwitchBoard")) {
         contextMenu.addAction(m_removeAction);
@@ -439,8 +443,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     // TODO : upgrade this when several phones per user will be supported
     // or at least check it's working as expected
 
-    QList<const ChannelInfo *> qlci = loopOverChannels(m_ui);
-    foreach(const ChannelInfo * channelinfo, qlci) {
+    foreach(const ChannelInfo * channelinfo, qlci_local) {
         const QString status = channelinfo->commstatus();
         const QString text = channelinfo->peerdisplay();
         const QString channel = channelinfo->channel();
@@ -451,11 +454,11 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
             if ((status == CHAN_STATUS_LINKED_CALLER) ||
                 (status == CHAN_STATUS_LINKED_CALLED)) {
 
-                if (!hangupMenu && (qlci.count() > 1))
+                if (!hangupMenu && (qlci_local.count() > 1))
                     hangupMenu = new QMenu(tr("&Hangup"), &contextMenu);
 
                 build.aQActionMenu((hangupMenu) ? hangupMenu : &contextMenu,
-                                   qlci.count() > 1 ? text : tr("&Hangup"),
+                                   qlci_local.count() > 1 ? text : tr("&Hangup"),
                                    tr("Hangup this communication"),
                                    channel,
                                    channel /*XXXX was peerchannel*/,
@@ -467,11 +470,11 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                 (status == CHAN_STATUS_LINKED_CALLER) ||
                 (status == CHAN_STATUS_LINKED_CALLED)) {
 
-                if (!parkMenu && (qlci.count() > 1))
+                if (!parkMenu && (qlci_local.count() > 1))
                     parkMenu = new QMenu(tr("&Park"), &contextMenu);
 
                 build.aQActionMenu(parkMenu?parkMenu:&contextMenu,
-                                   (qlci.count() > 1) ? text : tr("&Park"),
+                                   (qlci_local.count() > 1) ? text : tr("&Park"),
                                    tr("Park this call"),
                                    channel,
                                    channel /*XXXX was peerchannel*/,
@@ -482,13 +485,13 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                   (status == CHAN_STATUS_LINKED_CALLER) ||
                   (status == CHAN_STATUS_LINKED_CALLED)) &&
                  (! channelinfo->isparked()) &&
-                 b_engine->enabledFunction("switchboard")) {
+                 b_engine->getCapasIpbxCommands().contains("intercept")) {
 
-                if (!interceptMenu && (qlci.count() > 1))
+                if (!interceptMenu && (qlci_local.count() > 1))
                     interceptMenu = new QMenu(tr("&Intercept"), &contextMenu);
 
                 build.aQActionMenu((interceptMenu)?interceptMenu:&contextMenu,
-                                   qlci.count() > 1 ? text : tr("&Intercept"),
+                                   qlci_local.count() > 1 ? text : tr("&Intercept"),
                                    tr("Intercept this communication"),
                                    channel,
                                    channel /*XXXX was peerchannel*/,
@@ -500,8 +503,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     // get "my" currently open channels
     //qDebug() << m_ui->userid() << ui;
     if (! isitme) {
-        QList<const ChannelInfo *> qlci = loopOverChannels(ui);
-        foreach(const ChannelInfo * channelinfo, qlci) {
+        foreach(const ChannelInfo * channelinfo, qlci_remote) {
             const QString status = channelinfo->commstatus();
             const QString text = channelinfo->peerdisplay();
             const QString channel = channelinfo->channel();
@@ -515,7 +517,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                         this, SLOT(peerdial()));
                 contextMenu.addAction(meetmeAction);
             } else {
-                if (!transferMenu && (qlci.count() > 1))
+                if (!transferMenu && (qlci_remote.count() > 1))
                     transferMenu = new QMenu(tr("Direct &Transfer"), &contextMenu);
                 QAction *transferAction;
                 if (transferMenu) {
@@ -537,7 +539,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
             }
 
             if (channelinfo->talkingto_kind() != QString("<meetme>")) {
-                if (!itransferMenu && qlci.count() > 1) {
+                if (!itransferMenu && qlci_remote.count() > 1) {
                     itransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
                 }
                 QAction * itransferAction;
@@ -573,7 +575,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
             }
             if (m_ui && channelinfo->talkingto_kind() != QString("<meetme>")) {
                 // TODO : check if this really has a Voice Mail
-                if (!vmtransferMenu && (qlci.count() > 1))
+                if (!vmtransferMenu && (qlci_remote.count() > 1))
                     vmtransferMenu = new QMenu(tr("Transfer to &voice mail"), &contextMenu);
                 QAction *vmtransferAction;
                 if (vmtransferMenu) {
@@ -688,12 +690,9 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
         if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
             event->acceptProposedAction();
             b_engine->actionCall("transfer", "chan:" + userid_from + ":" + channel_from, to); // Call
-
         } else if (event->mimeData()->hasFormat(XUSERID_MIMETYPE)) {
             event->acceptProposedAction();
-            if (b_engine->enabledFunction("switchboard")) {
-                b_engine->actionCall("originate", "user:" + userid_from, to);
-            }
+            b_engine->actionCall("originate", "user:" + userid_from, to);
         } else if (event->mimeData()->hasFormat(NUMBER_MIMETYPE)) {
             event->acceptProposedAction();
             b_engine->actionCall("originate", to, "ext:" + event->mimeData()->text());

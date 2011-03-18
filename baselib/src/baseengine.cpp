@@ -556,15 +556,29 @@ const QStringList & BaseEngine::getCapaXlets() const
     return m_capaxlets;
 }
 
-/*! \brief gets m_capapresence */
-const QVariantMap & BaseEngine::getCapaPresence() const
+const QVariantMap & BaseEngine::getOptionsUserStatus() const
 {
-    return m_capapresence;
+    return m_options_userstatus;
 }
 
-const QVariantMap & BaseEngine::getCapaTermStates() const
+const QVariantMap & BaseEngine::getOptionsPhoneStatus() const
 {
-    return m_capatermstates;
+    return m_options_phonestatus;
+}
+
+const QVariantMap & BaseEngine::getOptionsAgentStatus() const
+{
+    return m_options_agentstatus;
+}
+
+const QStringList & BaseEngine::getCapasRegCommands() const
+{
+    return m_capas_regcommands;
+}
+
+const QStringList & BaseEngine::getCapasIpbxCommands() const
+{
+    return m_capas_ipbxcommands;
 }
 
 const QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
@@ -1146,8 +1160,11 @@ void BaseEngine::parseCommand(const QString &line)
             m_capaxlets = datamap.value("capaxlets").toStringList();
 
             QVariantMap capas = datamap.value("capas").toMap();
-            m_capapresence = capas.value("userstatus").toMap();
-            m_capatermstates = capas.value("phonestatus").toMap();
+            m_options_userstatus = capas.value("userstatus").toMap();
+            m_options_phonestatus = capas.value("phonestatus").toMap();
+            m_options_agentstatus = capas.value("agentstatus").toMap();
+            m_capas_regcommands = capas.value("regcommands").toStringList();
+            m_capas_ipbxcommands = capas.value("ipbxcommands").toStringList();
             m_capafuncs = capas.value("functions").toStringList();
             // ("agentstatus", "ipbxcommands", "phonestatus", "regcommands", "services", "functions", "userstatus") 
 
@@ -1760,7 +1777,11 @@ void BaseEngine::actionCall(const QString & action,
                             const QString & src,
                             const QString & dst)
 {
-    qDebug() << Q_FUNC_INFO << action << src << dst;
+    if (! getCapasIpbxCommands().contains(action)) {
+        qDebug() << Q_FUNC_INFO << "IGNORE" << action << src << dst;
+        return;
+    }
+    qDebug() << Q_FUNC_INFO << "ACCEPT" << action << src << dst;
 
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = action;

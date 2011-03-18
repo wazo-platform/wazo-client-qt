@@ -566,7 +566,7 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
 void MainWidget::updatePresence()
 {
     QString presence = b_engine->getAvailState();
-    QVariantMap presencemap = b_engine->getCapaPresence();
+    QVariantMap presencemap = b_engine->getOptionsUserStatus();
     qDebug() << Q_FUNC_INFO << presence << presencemap;
 
     if (presencemap.contains(presence)) {
@@ -593,7 +593,7 @@ void MainWidget::updatePresence()
 
 void MainWidget::clearPresence()
 {
-    QVariantMap presence = b_engine->getCapaPresence();
+    QVariantMap presence = b_engine->getOptionsUserStatus();
     if (presence.contains("names")) {
         QMapIterator<QString, QVariant> capapres(presence.value("names").toMap());
         while (capapres.hasNext()) {

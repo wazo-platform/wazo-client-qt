@@ -159,9 +159,9 @@ void CallWidget::setActionPixmap()
     QString status = channelinfo->commstatus();
     QString color;
     QString tooltip;
-    if (b_engine->getCapaTermStates().contains(status)) {
-        color = b_engine->getCapaTermStates().value(status).toMap().value("color").toString();
-        tooltip = b_engine->getCapaTermStates().value(status).toMap().value("longname").toString();
+    if (b_engine->getOptionsPhoneStatus().contains(status)) {
+        color = b_engine->getOptionsPhoneStatus().value(status).toMap().value("color").toString();
+        tooltip = b_engine->getOptionsPhoneStatus().value(status).toMap().value("longname").toString();
     } else {
         color = "white";
         tooltip = "unknown status";

@@ -114,21 +114,26 @@ void XletCalls::updateUserStatus(const QString & xuserid)
  */
 void XletCalls::hupchan(const QString &hangupchan)
 {
-    b_engine->actionCall("hangup", "chan:" + m_monitored_ui->userid() + ":" + hangupchan); // Call
+    b_engine->actionCall("hangup",
+                         "chan:" + m_monitored_ui->userid() + ":" + hangupchan); // Call
 }
 
 /*! \brief transfers the channel to a number
  */
 void XletCalls::transftonumberchan(const QString &chan)
 {
-    b_engine->actionCall("transfer", "chan:" + m_monitored_ui->userid() + ":" + chan, "ext:special:dialxlet"); // Call
+    b_engine->actionCall("transfer",
+                         "chan:" + m_monitored_ui->userid() + ":" + chan,
+                         "ext:special:dialxlet"); // Call
 }
 
 /*! \brief transfers the channel to a number
  */
 void XletCalls::parkcall(const QString &chan)
 {
-    b_engine->actionCall("transfer", "chan:" + m_monitored_ui->userid() + ":" + chan, "ext:special:parkthecall"); // Call
+    b_engine->actionCall("transfer",
+                         "chan:" + m_monitored_ui->userid() + ":" + chan,
+                         "ext:special:parkthecall"); // Call
 }
 
 void XletCalls::updatePhoneConfig(const QString & xphoneid)

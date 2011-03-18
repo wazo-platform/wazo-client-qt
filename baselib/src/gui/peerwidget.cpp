@@ -174,7 +174,7 @@ void PeerWidget::updatePresence()
 {
     if (m_user_status) {
         QString availstate = m_ui->availstate();
-        QVariantMap presencedetails = b_engine->getCapaPresence().value(availstate).toMap();
+        QVariantMap presencedetails = b_engine->getOptionsUserStatus().value(availstate).toMap();
         QString colorstring = presencedetails.value("color").toString();
         QColor c = QColor(colorstring);
         m_user_status->setIcon(TaintedPixmap( \

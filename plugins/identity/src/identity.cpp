@@ -183,7 +183,7 @@ void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
 void IdentityDisplay::updatePresence()
 {
     QString presence = b_engine->getAvailState();
-    QVariantMap presencemap = b_engine->getCapaPresence();
+    QVariantMap presencemap = b_engine->getOptionsUserStatus();
     qDebug() << Q_FUNC_INFO;
 
     m_presencevalue->hide();
