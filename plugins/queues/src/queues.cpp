@@ -220,7 +220,7 @@ void XletQueues::removeQueues(const QString &, const QStringList &queues)
 
 void XletQueues::updateQueueConfig(const QString & xqueueid)
 {
-    qDebug() << Q_FUNC_INFO << xqueueid;
+    // qDebug() << Q_FUNC_INFO << xqueueid;
     QueueInfo * queueinfo = b_engine->queues().value(xqueueid);
     if (queueinfo == NULL)
         return;

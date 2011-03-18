@@ -127,10 +127,16 @@ void BaseEngine::encryptedSsl()
     qDebug() << Q_FUNC_INFO;
 }
 
-void BaseEngine::sslErrors(const QList<QSslError> &)
+void BaseEngine::sslErrors(const QList<QSslError> & qlse)
 {
     qDebug() << Q_FUNC_INFO;
+    foreach (QSslError qse, qlse)
+        qDebug() << " ssl error" << qse;
     m_ctiserversocket->ignoreSslErrors();
+    // "The host name did not match any of the valid hosts for this certificate"
+    // "The certificate is self-signed, and untrusted"
+    // "The certificate has expired"
+    // see http://doc.trolltech.com/4.6/qsslerror.html for a list
 }
 
 /*! \brief Destructor
@@ -542,11 +548,6 @@ bool BaseEngine::lastconnwins() const
 void BaseEngine::setLastConnWins(bool b)
 {
     m_checked_lastconnwins = b;
-}
-
-bool BaseEngine::hasCapaFun(QString & capa)
-{
-    return m_capafuncs.contains(capa);
 }
 
 /*! \brief gets m_capaxlets */
@@ -1142,10 +1143,14 @@ void BaseEngine::parseCommand(const QString &line)
             m_xuserid = QString("%1/%2").arg(m_ipbxid).arg(m_userid);
 
             m_appliname = datamap.value("appliname").toString();
-            m_capafuncs = datamap.value("capafuncs").toStringList();
             m_capaxlets = datamap.value("capaxlets").toStringList();
-            m_capapresence = datamap.value("capapresence").toMap();
-            m_capatermstates = datamap.value("capaterms").toMap();
+
+            QVariantMap capas = datamap.value("capas").toMap();
+            m_capapresence = capas.value("userstatus").toMap();
+            m_capatermstates = capas.value("phonestatus").toMap();
+            m_capafuncs = capas.value("functions").toStringList();
+            // ("agentstatus", "ipbxcommands", "phonestatus", "regcommands", "services", "functions", "userstatus") 
+
             m_forced_state = datamap.value("presence").toString();
             m_guioptions["server_gui"] = datamap.value("guisettings");
             //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
@@ -1198,20 +1203,19 @@ void BaseEngine::parseCommand(const QString &line)
                 else
                     m_enabled_function[function] = false;
 
-            if (m_capafuncs.size() == 0) {
-                stopConnection();
-                clearInternalData();
-                setState(ENotLogged);
-                popupError("no_capability");
-            } else {
-                askCallerIds0();
-                askCallerIds();
-                setState(ELogged); // calls logged()
-                setAvailState(m_forced_state, true);
-                emit updatePresence();
-                m_timerid_keepalive = startTimer(m_keepaliveinterval);
-                m_attempt_loggedin = true;
-            }
+            // if no capa ?
+            // stopConnection();
+            // clearInternalData();
+            // setState(ENotLogged);
+            // popupError("no_capability");
+
+            askCallerIds0();
+            askCallerIds();
+            setState(ELogged); // calls logged()
+            setAvailState(m_forced_state, true);
+            emit updatePresence();
+            m_timerid_keepalive = startTimer(m_keepaliveinterval);
+            m_attempt_loggedin = true;
 
         } else if (thisclass == "disconnect") {
             qDebug() << "disconnect" << datamap;
@@ -1248,7 +1252,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 if (listname == "users") {
                     if (! m_users.contains(xid)) {
                         m_users[xid] = new UserInfo(ipbxid, id);
-                        qDebug() << "new user" << xid;
                     }
                 } else if (listname == "phones") {
                     if (! m_phones.contains(xid))
@@ -1348,7 +1351,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             }
 
             // qDebug() << function << listname << xid << haschanged << status;
-            if (listname == "phones") {
+            if ((listname == "phones") && m_phones.contains(xid)) {
                 emit updatePhoneStatus(xid);
                 QVariantMap command;
                 command["class"] = "getlist";

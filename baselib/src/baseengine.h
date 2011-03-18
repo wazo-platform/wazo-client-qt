@@ -141,8 +141,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         bool lastconnwins() const;                //!< last connected one wins
         void setLastConnWins(bool b);             //!< last connected user wins
 
-        bool hasCapaFun(QString &);                //!< 0 we don't have the fun, 1 we got it
-
         const QStringList & getCapaXlets() const;
         const QVariantMap & getCapaPresence() const;
         const QVariantMap & getCapaTermStates() const;
