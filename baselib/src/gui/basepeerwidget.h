@@ -74,6 +74,8 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
         void dragMoveEvent(QDragMoveEvent *);
         void dropEvent(QDropEvent *);
         bool event(QEvent *e);
+    private:
+        QList<const ChannelInfo *> loopOverChannels(const UserInfo *);
 
     signals:
         void removeFromPanel(); //! hide the widget from the containing window
