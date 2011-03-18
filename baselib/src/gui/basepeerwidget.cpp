@@ -265,7 +265,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                 } else {
                     to = "ext:" + m_number;
                 }
-                    // Initiate an indirect transfer.
+                // Initiate an indirect transfer.
                 b_engine->actionCall("atxfer",
                                      QString("chan:special:me:%1").arg(channelinfo->channel()),
                                      to);
@@ -424,7 +424,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                                  const char *ASLOT)
         {
             QAction *action = new QAction(parent);
-            
+
             action->setText(text);
             action->setStatusTip(statusTip);
             action->setProperty("thischannel", thisChannel);
@@ -560,39 +560,39 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 
                 connect(itransferAction, SIGNAL(triggered()),
                         this, SLOT(itransfer()));
-                    connect(itransferCancelAction, SIGNAL(triggered()),
-                            this, SLOT(itransfercancel()));
+                connect(itransferCancelAction, SIGNAL(triggered()),
+                        this, SLOT(itransfercancel()));
 
-                    if (itransferMenu) {
-                        itransferMenu->addAction(itransferAction);
-                        itransferMenu->addAction(itransferCancelAction);
-                    } else {
-                        contextMenu.addAction(itransferAction);
-                        contextMenu.addAction(itransferCancelAction);
-                    }
+                if (itransferMenu) {
+                    itransferMenu->addAction(itransferAction);
+                    itransferMenu->addAction(itransferCancelAction);
+                } else {
+                    contextMenu.addAction(itransferAction);
+                    contextMenu.addAction(itransferCancelAction);
                 }
-                if (m_ui && channelinfo->talkingto_kind() != QString("<meetme>")) {
-                    // TODO : check if this really has a Voice Mail
-                    if (!vmtransferMenu && (qlci.count() > 1))
-                        vmtransferMenu = new QMenu(tr("Transfer to &voice mail"), &contextMenu);
-                    QAction *vmtransferAction;
-                    if (vmtransferMenu) {
-                        vmtransferAction = new QAction(text, vmtransferMenu);
-                        vmtransferAction->setStatusTip(tr("Transfer to voice mail"));
-                    } else {
-                        vmtransferAction = new QAction(tr("Transfer to &voice mail"), &contextMenu);
-                        vmtransferAction->setStatusTip(tr("Transfer to voice mail"));
-                    }
-                    vmtransferAction->setProperty("thischannel", channel);
-                    // vmtransferAction->setProperty("peerchannel", peerchannel)); // XXXX we should manage it on the server
-                    connect(vmtransferAction, SIGNAL(triggered()),
-                            this, SLOT(vmtransfer()));
-                    if (vmtransferMenu) {
-                        vmtransferMenu->addAction(vmtransferAction);
-                    } else {
-                        contextMenu.addAction(vmtransferAction);
-                    }
+            }
+            if (m_ui && channelinfo->talkingto_kind() != QString("<meetme>")) {
+                // TODO : check if this really has a Voice Mail
+                if (!vmtransferMenu && (qlci.count() > 1))
+                    vmtransferMenu = new QMenu(tr("Transfer to &voice mail"), &contextMenu);
+                QAction *vmtransferAction;
+                if (vmtransferMenu) {
+                    vmtransferAction = new QAction(text, vmtransferMenu);
+                    vmtransferAction->setStatusTip(tr("Transfer to voice mail"));
+                } else {
+                    vmtransferAction = new QAction(tr("Transfer to &voice mail"), &contextMenu);
+                    vmtransferAction->setStatusTip(tr("Transfer to voice mail"));
                 }
+                vmtransferAction->setProperty("thischannel", channel);
+                // vmtransferAction->setProperty("peerchannel", peerchannel)); // XXXX we should manage it on the server
+                connect(vmtransferAction, SIGNAL(triggered()),
+                        this, SLOT(vmtransfer()));
+                if (vmtransferMenu) {
+                    vmtransferMenu->addAction(vmtransferAction);
+                } else {
+                    contextMenu.addAction(vmtransferAction);
+                }
+            }
         }
     }
 
