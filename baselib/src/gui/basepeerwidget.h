@@ -95,8 +95,10 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
         void rename();
 
     protected:
-        UserInfo *m_ui;  //!< user infos
+        UserInfo * m_ui_local;  //!< user info structure for the current operator
+        UserInfo * m_ui_remote;  //!< user info structure for the widget
         QPoint m_dragstartpos;  //!< drag start position
+
         QAction *m_removeAction;  //!< action to remove this peer from the window
         QAction *m_interceptAction;  //!< action to intercept ringing calls to this number
         QAction *m_renameAction;  //<! action to rename the user

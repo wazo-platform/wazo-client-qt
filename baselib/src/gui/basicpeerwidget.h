@@ -72,4 +72,3 @@ class BASELIB_EXPORT BasicPeerWidget : public BasePeerWidget
 };
 
 #endif
-

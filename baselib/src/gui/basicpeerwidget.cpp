@@ -86,7 +86,7 @@ void BasicPeerWidget::setText(const QString &text)
  */
 void BasicPeerWidget::paintEvent(QPaintEvent *)
 {
-    bool hasPresenceIndicator = !m_ui->ctilogin().isEmpty();
+    bool hasPresenceIndicator = ! m_ui_remote->ctilogin().isEmpty();
     QRect rectangle = contentsRect();
     QPainter painter(this);
     // draw the color rectangle
@@ -118,10 +118,10 @@ void BasicPeerWidget::paintEvent(QPaintEvent *)
 
 void BasicPeerWidget::updatePresence()
 {
-    QString text = m_ui->phoneNumber();
-    QString availstate = m_ui->availstate();
+    QString text = m_ui_remote->phoneNumber();
+    QString availstate = m_ui_remote->availstate();
     QVariantMap presencedetails = b_engine->getOptionsUserStatus().value(availstate).toMap();
-    if (! m_ui->ctilogin().isEmpty()) {
+    if (! m_ui_remote->ctilogin().isEmpty()) {
         text.append(" ");
         text.append(presencedetails.value("longname").toString());
     }
@@ -133,9 +133,9 @@ void BasicPeerWidget::updatePhonesStates()
 {
     // set the color according to the 1st phone
     qDebug() << Q_FUNC_INFO;
-    QString ipbxid = m_ui->ipbxid();
-    if (! m_ui->phonelist().isEmpty()) {
-        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(m_ui->phonelist()[0]);
+    QString ipbxid = m_ui_remote->ipbxid();
+    if (! m_ui_remote->phonelist().isEmpty()) {
+        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(m_ui_remote->phonelist()[0]);
         const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
         if (phoneinfo != NULL) {
             QString color = "white"; // XXXX function of phoneinfo->hintstatus();

@@ -50,7 +50,7 @@
 
 /*! \brief Constructor
  */
-PeerWidget::PeerWidget(UserInfo *ui)
+PeerWidget::PeerWidget(UserInfo * ui)
     : BasePeerWidget(ui), m_user_status(NULL), m_agentlbl(NULL), m_mobilelbl(NULL)
 {
     int fsize = 25;
@@ -77,10 +77,10 @@ PeerWidget::PeerWidget(UserInfo *ui)
 
     m_textlbl = new QLabel(peer);
     m_textlbl->setMinimumWidth(m_maxWidthWanted);
-    setName(m_ui->fullname());
+    setName(m_ui_remote->fullname());
 
-    if (!m_ui->ctilogin().isEmpty()) {
-        m_user_status = new ChitchatButton(peer, &m_ui);
+    if (!m_ui_remote->ctilogin().isEmpty()) {
+        m_user_status = new ChitchatButton(peer, &m_ui_remote);
         m_user_status->setProperty("userid", ui->userid());
         m_user_status->setProperty("astid", ui->ipbxid());
         m_user_status->setIconSize(QSize(fsize, fsize));
@@ -105,7 +105,7 @@ PeerWidget::PeerWidget(UserInfo *ui)
         hLayout->addWidget(m_lblphones[phone]);
     }
 
-    if (!m_ui->mobileNumber().isEmpty()) {
+    if (!m_ui_remote->mobileNumber().isEmpty()) {
         m_mobilelbl = new QLabel(peer);
         m_mobilelbl->setPixmap(QPixmap(":/images/mobile-grey.png"));
         m_mobilelbl->setAlignment(Qt::AlignCenter);
@@ -166,14 +166,14 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
 void PeerWidget::setMobileState(const QString &/* color*/)
 {
     if (m_mobilelbl) {
-        m_mobilelbl->setToolTip(tr("Mobile number : %1").arg(m_ui->mobileNumber()));
+        m_mobilelbl->setToolTip(tr("Mobile number : %1").arg(m_ui_remote->mobileNumber()));
     }
 }
 
 void PeerWidget::updatePresence()
 {
     if (m_user_status) {
-        QString availstate = m_ui->availstate();
+        QString availstate = m_ui_remote->availstate();
         QVariantMap presencedetails = b_engine->getOptionsUserStatus().value(availstate).toMap();
         QString colorstring = presencedetails.value("color").toString();
         QColor c = QColor(colorstring);
@@ -185,7 +185,7 @@ void PeerWidget::updatePresence()
 
 void PeerWidget::updatePhonesStates()
 {
-    foreach(QString xphoneid, m_ui->phonelist()) {
+    foreach(QString xphoneid, m_ui_remote->phonelist()) {
         const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
         if (phoneinfo != NULL) {
             QString color = "red"; // XXXX function of phoneinfo->hintstatus();
@@ -206,12 +206,12 @@ void PeerWidget::setName(const QString &/*name*/)
 {
     QString text = tr("(No callerid yet)");
 
-    if (!m_ui->fullname().isEmpty() && !m_ui->phoneNumber().isEmpty()) {
-        text = tr("%1 <%2>").arg(m_ui->fullname()).arg(m_ui->phoneNumber());
-    } else if (!m_ui->fullname().isEmpty()) {
-        text = m_ui->fullname();
-    } else if (!m_ui->phoneNumber().isEmpty()) {
-        text = m_ui->phoneNumber();
+    if (!m_ui_remote->fullname().isEmpty() && !m_ui_remote->phoneNumber().isEmpty()) {
+        text = tr("%1 <%2>").arg(m_ui_remote->fullname()).arg(m_ui_remote->phoneNumber());
+    } else if (!m_ui_remote->fullname().isEmpty()) {
+        text = m_ui_remote->fullname();
+    } else if (!m_ui_remote->phoneNumber().isEmpty()) {
+        text = m_ui_remote->phoneNumber();
     }
 
     QFontMetrics fm(m_textlbl->font());
