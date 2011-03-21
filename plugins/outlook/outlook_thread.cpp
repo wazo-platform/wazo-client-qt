@@ -46,7 +46,7 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
             .arg(pApp.m_init_failure).arg(pApp.m_init_hresult, 0, 16);
         qDebug() << Q_FUNC_INFO << "init error" << msgtoemit;
         sleep(1);
-        emit logClientWarning("COLThread::load_contacts_from_outlook", msgtoemit);
+        emit logClientWarning("COLThread::lcfo", msgtoemit);
         emit errorMessage(msgtoemit);
         return false;
     }
@@ -58,7 +58,7 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
         QString msgtoemit = "OutlookErr:MAPI";
         qDebug() << Q_FUNC_INFO << "could not get MAPI namespace";
         sleep(1);
-        emit logClientWarning("COLThread::load_contacts_from_outlook", msgtoemit);
+        emit logClientWarning("COLThread::lcfo", msgtoemit);
         emit errorMessage(msgtoemit);
         return false;
     }
@@ -74,24 +74,30 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
       COLFolder pFolder=pNS.GetFolderFromID(entryID, storeID);*/
 
     if ( ! pFolder ) {
-        emit errorMessage("OutlookErr:NoFolder");
+        QString msgtoemit = "OutlookErr:NoFolder";
+        qDebug() << Q_FUNC_INFO << "no folder";
+        sleep(1);
+        emit logClientWarning("COLThread::lcfo", msgtoemit);
+        emit errorMessage(msgtoemit);
         return false;
     }
 
     if ( m_bStop ) return false;
-    OutputDebugStringA(pFolder.Name().toAscii());
-    OutputDebugStringA("\r\n");
 
-    OutputDebugStringA(pFolder.EntryID().toAscii());
-    OutputDebugStringA("\r\n");
-
-    OutputDebugStringA(pFolder.StoreID().toAscii());
-    OutputDebugStringA("\r\n");
+    QString folderinfo = QString("Outlook Folder %1 - %2 - %3")
+        .arg(pFolder.Name())
+        .arg(pFolder.EntryID())
+        .arg(pFolder.StoreID());
+    emit logClientWarning("COLThread::lcfo", folderinfo);
 
     COLComContactItems pItems = pFolder.GetItems();
 
     if ( ! pItems ) {
-        emit errorMessage("OutlookErr:NoItems");
+        QString msgtoemit = "OutlookErr:NoItems";
+        qDebug() << Q_FUNC_INFO << "no item";
+        sleep(1);
+        emit logClientWarning("COLThread::lcfo", msgtoemit);
+        emit errorMessage(msgtoemit);
         return false;
     }
 

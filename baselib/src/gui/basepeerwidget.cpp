@@ -355,7 +355,7 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
  */
 void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-    const UserInfo *ui = b_engine->getXivoClientUser();
+    const UserInfo * ui = b_engine->getXivoClientUser();
     // Construct and display the context menu
     QMenu contextMenu(this);
     QAction *action;

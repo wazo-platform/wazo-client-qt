@@ -37,11 +37,13 @@
 #include "baselib_export.h"
 
 #include <QtGui>
+#include <QList>
 
 #include <baseengine.h>
 #include <chitchat.h>
 
 class UserInfo;
+class ChannelInfo;
 
 /*! \brief Abstract class for "Peer" Widgets
  *
