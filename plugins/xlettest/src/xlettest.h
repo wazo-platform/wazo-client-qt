@@ -54,9 +54,11 @@ public slots:
 private slots:
     void onCallClick();
     void onHangupClick();
+    void onSoftKey();
 private:
     QPushButton *m_button_call;
     QPushButton *m_button_hangup;
+    QPushButton *m_button_dnd;
 };
 
 #endif /* __XLETTEST_H__ */

@@ -41,6 +41,9 @@
 #include "xlettest.h"
 #include "userinfo.h"
 #include "phoneinfo.h"
+#include "aastrasipnotify.h"
+
+#define SPECIAL_ME "user:special:me"
 
 /*! \brief Constructor
  *
@@ -54,40 +57,30 @@ XletTest::XletTest(QWidget *parent)
     QHBoxLayout *layout = new QHBoxLayout(this);
     m_button_call = new QPushButton(tr("Call 1001"));
     m_button_hangup = new QPushButton(tr("hangup"));
+    m_button_dnd = new QPushButton(tr("DnD"));
     layout->addWidget(m_button_call);
     layout->addWidget(m_button_hangup);
+    layout->addWidget(m_button_dnd);
     connect(m_button_call, SIGNAL(clicked()), this, SLOT(onCallClick()));
     connect(m_button_hangup, SIGNAL(clicked()), this, SLOT(onHangupClick()));
+    connect(m_button_dnd, SIGNAL(clicked()), this, SLOT(onSoftKey()));
 }
 
 /*! \brief test button clicked
  */
 void XletTest::onCallClick()
 {
-    qDebug() << "click...";
-    // Send a sipnotify to call 1001 from SIP/ewn1j9
-    QVariantMap ipbxcommand;
-    QVariantMap variables;
-    variables["Event"] = "aastra-xml";
-    variables["Content-type"] = "application/xml";
-    variables["Content"] = "Content=<AastraIPPhoneExecute><ExecuteItem URI=\"Dial:1001\"/></AastraIPPhoneExecute>";
-    ipbxcommand["command"] = "sipnotify";
-    ipbxcommand["variables"] = variables;
-    ipbxcommand["channel"] = "user:special:me";
-    emit ipbxCommand(ipbxcommand);
+    emit ipbxCommand(getAastraDial("1001", SPECIAL_ME));
 }
 
 void XletTest::onHangupClick()
 {
-    QVariantMap ipbxcommand;
-    QVariantMap variables;
-    variables["Event"] = "aastra-xml";
-    variables["Content-type"] = "application/xml";
-    variables["Content"] = "Content=<AastraIPPhoneExecute><ExecuteItem URI=\"Key:Goodbye\"/></AastraIPPhoneExecute>";
-    ipbxcommand["command"] = "sipnotify";
-    ipbxcommand["variables"] = variables;
-    ipbxcommand["channel"] = "user:special:me";
-    emit ipbxCommand(ipbxcommand);
+    emit ipbxCommand(getAastraKeyNotify(GOODBYE, SPECIAL_ME));
+}
+
+void XletTest::onSoftKey()
+{
+    emit ipbxCommand(getAastraKeyNotify(PRG_KEY, SPECIAL_ME, 1));
 }
 
 /*! \brief destructor
