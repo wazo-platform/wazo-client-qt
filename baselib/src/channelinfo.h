@@ -49,6 +49,7 @@ class BASELIB_EXPORT ChannelInfo
         bool updateStatus(const QVariantMap &);
         const QString & ipbxid() const;
         const QString & channel() const;
+        const QString & xchannel() const;
         const QString & talkingto_kind() const;
         const QString & talkingto_id() const;
         const QString & direction() const;
@@ -66,6 +67,7 @@ class BASELIB_EXPORT ChannelInfo
     private:
         QString m_ipbxid;  //!< IPBX id (for main phone)
         QString m_channel;  //!< Channel name
+        QString m_xchannel;  //!< IPBXid/Channel
 
         // XXX timing informations
 

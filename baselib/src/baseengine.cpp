@@ -1796,6 +1796,9 @@ void BaseEngine::actionCall(const QString & action,
     } else if ((action == "hangup") || (action == "transfercancel")) {
         ipbxcommand["command"] = action;
         ipbxcommand["channelids"] = src;
+    } else if (action == "park") {
+        ipbxcommand["command"] = action;
+        ipbxcommand["source"] = src;
     } else if (action == "answer") {
         ipbxcommand["command"] = action;
         ipbxcommand["phoneids"] = src;

@@ -44,6 +44,7 @@ ChannelInfo::ChannelInfo(const QString & ipbxid,
 {
     m_ipbxid = ipbxid;
     m_channel = id;
+    m_xchannel = QString("%1/%2").arg(m_ipbxid).arg(m_channel);
     m_isparked = false;
 }
 
@@ -84,6 +85,11 @@ const QString & ChannelInfo::talkingto_id() const
 const QString & ChannelInfo::channel() const
 {
     return m_channel;
+}
+
+const QString & ChannelInfo::xchannel() const
+{
+    return m_xchannel;
 }
 
 const QString & ChannelInfo::direction() const

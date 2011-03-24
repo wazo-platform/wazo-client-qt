@@ -85,7 +85,6 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
         void peerdial();
         void hangup();
         void intercept();
-        void intercept2();
         void transfer();
         void itransfer();
         void itransfercancel();
@@ -111,4 +110,3 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
 #include "peerwidget.h"
 
 #endif
-
