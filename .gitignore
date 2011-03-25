@@ -9,3 +9,5 @@ moc_*.cpp
 plugins/*/Makefile
 plugins/*/qrc_res.cpp
 xivoclient/qrc_appli.cpp
+versions.pri
+.swp.*
