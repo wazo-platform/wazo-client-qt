@@ -70,7 +70,7 @@ XletTest::XletTest(QWidget *parent)
  */
 void XletTest::onCallClick()
 {
-    emit ipbxCommand(getAastraDial("1001", SPECIAL_ME));
+    emit ipbxCommand(getAastraDial("1001", SPECIAL_ME, true));
 }
 
 void XletTest::onHangupClick()
