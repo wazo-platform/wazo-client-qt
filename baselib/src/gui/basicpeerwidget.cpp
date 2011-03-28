@@ -129,18 +129,21 @@ void BasicPeerWidget::updatePresence()
     m_presenceColor.setNamedColor(presencedetails.value("color").toString());
 }
 
-void BasicPeerWidget::updatePhonesStates()
+void BasicPeerWidget::updatePhoneConfig(const QString & xphoneid)
 {
-    // set the color according to the 1st phone
-    qDebug() << Q_FUNC_INFO;
-    QString ipbxid = m_ui_remote->ipbxid();
-    if (! m_ui_remote->phonelist().isEmpty()) {
-        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(m_ui_remote->phonelist()[0]);
-        const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
-        if (phoneinfo != NULL) {
-            QString color = "white"; // XXXX function of phoneinfo->hintstatus();
-            m_color.setNamedColor(color);
-            update();
-        }
-    }
+//     qDebug() << Q_FUNC_INFO;
+//     QString ipbxid = m_ui_remote->ipbxid();
+//     if (! m_ui_remote->phonelist().isEmpty()) {
+//         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(m_ui_remote->phonelist()[0]);
+//         const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+//         if (phoneinfo != NULL) {
+//             QString color = "white"; // XXXX function of phoneinfo->hintstatus();
+//             m_color.setNamedColor(color);
+//             update();
+//         }
+//     }
+}
+
+void BasicPeerWidget::updatePhoneStatus(const QString & xphoneid)
+{
 }

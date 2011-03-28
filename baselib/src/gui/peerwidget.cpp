@@ -183,21 +183,35 @@ void PeerWidget::updatePresence()
     }
 }
 
-void PeerWidget::updatePhonesStates()
+void PeerWidget::updatePhoneConfig(const QString & xphoneid)
 {
-    foreach(QString xphoneid, m_ui_remote->phonelist()) {
-        const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
-        if (phoneinfo != NULL) {
-            QString color = "red"; // XXXX function of phoneinfo->hintstatus();
-            QString longname = "Here"; // XXXX function of phoneinfo->hintstatus();
-            QColor c = QColor(color);
-            m_lblphones[xphoneid]->setPixmap(                           \
-                    TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
-            m_lblphones[xphoneid]->setToolTip(tr("Phone %1 : %2")
-                                             .arg(phoneinfo->number())
-                                             .arg(longname));
-        }
+    updatePhoneStatus(xphoneid);
+}
+
+void PeerWidget::updatePhoneStatus(const QString & xphoneid)
+{
+    if (! m_ui_remote->phonelist().contains(xphoneid))
+        return;
+    const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+    if (phoneinfo == NULL)
+        return;
+
+    QString hintstatus = phoneinfo->hintstatus();
+    QString color = "black";
+    QString longname;
+    if (b_engine->getOptionsPhoneStatus().contains(hintstatus)) {
+        QVariantMap qvmop = b_engine->getOptionsPhoneStatus().value(hintstatus).toMap();
+        color = qvmop.value("color").toString();
+        longname = qvmop.value("longname").toString();
+    } else {
+        longname = tr("Status:%1").arg(hintstatus);
     }
+    QColor c = QColor(color);
+    m_lblphones[xphoneid]->setPixmap( \
+              TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
+    m_lblphones[xphoneid]->setToolTip(tr("Phone %1 : %2")
+                                      .arg(phoneinfo->number())
+                                      .arg(longname));
 }
 
 /*! \brief change displayed name

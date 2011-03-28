@@ -56,8 +56,9 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
         virtual void setName(const QString &) = 0;  //! change username to be displayed
         virtual void updateAgentConfig(const QString &) = 0;
         virtual void updateAgentStatus(const QString &) = 0;
+        virtual void updatePhoneConfig(const QString &) = 0;
+        virtual void updatePhoneStatus(const QString &) = 0;
         virtual void updatePresence() = 0;  //! update presence information displayed
-        virtual void updatePhonesStates() = 0;  //! update phones information displayed
 
         virtual const QString& number() const { return m_number; };  //! Phone number
         virtual QString name() const;  //! Name
@@ -73,7 +74,7 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
         void dragEnterEvent(QDragEnterEvent *);
         void dragMoveEvent(QDragMoveEvent *);
         void dropEvent(QDropEvent *);
-        bool event(QEvent *e);
+        bool event(QEvent *);
     private:
         QList<const ChannelInfo *> loopOverChannels(const UserInfo *);
 

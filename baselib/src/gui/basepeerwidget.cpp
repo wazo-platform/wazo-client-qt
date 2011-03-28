@@ -74,7 +74,7 @@ BasePeerWidget::BasePeerWidget(UserInfo * ui)
     m_interceptAction = new QAction(tr("&Intercept"), this);
     m_interceptAction->setStatusTip(tr("Intercept call"));
     connect(m_interceptAction, SIGNAL(triggered()),
-            this, SLOT(intercept2()));
+            this, SLOT(intercept()));
 
     m_maxWidthWanted = 200;
     if (b_engine->enabledFunction("switchboard")) {

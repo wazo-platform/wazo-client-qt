@@ -144,6 +144,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QStringList & getCapaXlets() const;
         const QVariantMap & getOptionsUserStatus() const;
         const QVariantMap & getOptionsPhoneStatus() const;
+        const QVariantMap & getOptionsChannelStatus() const;
         const QVariantMap & getOptionsAgentStatus() const;
         const QStringList & getCapasRegCommands() const;
         const QStringList & getCapasIpbxCommands() const;
@@ -375,9 +376,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // Replies given by the server
         QStringList m_capafuncs;        //!< List of func capabilities issued by the server after a successful login
         QStringList m_capaxlets;        //!< List of xlet capabilities issued by the server after a successful login
-        QVariantMap m_options_userstatus;   //!< Display Options for User statuses (presence)
-        QVariantMap m_options_phonestatus;  //!< Display Options for Phone statuses
-        QVariantMap m_options_agentstatus;  //!< Display Options for Agent statuses
+        QVariantMap m_options_userstatus;    //!< Display Options for User statuses (presence)
+        QVariantMap m_options_phonestatus;   //!< Display Options for Phone statuses
+        QVariantMap m_options_channelstatus; //!< Display Options for Channel statuses
+        QVariantMap m_options_agentstatus;   //!< Display Options for Agent statuses
         QStringList m_capas_regcommands;  //!< Capabilities for regular commands
         QStringList m_capas_ipbxcommands; //!< Capabilities for IPBX commands
 

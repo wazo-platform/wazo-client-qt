@@ -66,7 +66,6 @@ class BASELIB_EXPORT PeerItem
 
         UserInfo * m_ui;  // Properties of each peer
         QString m_vmstatus;
-        QVariant m_agentstatus;
         QString m_pausestatus;
         QStringList m_queuelist;
 };

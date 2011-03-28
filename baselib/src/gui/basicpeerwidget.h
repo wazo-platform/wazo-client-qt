@@ -54,8 +54,9 @@ class BASELIB_EXPORT BasicPeerWidget : public BasePeerWidget
         BasicPeerWidget(UserInfo *);
         void updateAgentConfig(const QString &) {};
         void updateAgentStatus(const QString &) {};
+        void updatePhoneConfig(const QString &);
+        void updatePhoneStatus(const QString &);
         void updatePresence();
-        void updatePhonesStates();
         void setName(const QString &name) { setText(name); };
 
     protected:

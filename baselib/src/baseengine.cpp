@@ -566,6 +566,11 @@ const QVariantMap & BaseEngine::getOptionsPhoneStatus() const
     return m_options_phonestatus;
 }
 
+const QVariantMap & BaseEngine::getOptionsChannelStatus() const
+{
+    return m_options_channelstatus;
+}
+
 const QVariantMap & BaseEngine::getOptionsAgentStatus() const
 {
     return m_options_agentstatus;
@@ -1162,6 +1167,7 @@ void BaseEngine::parseCommand(const QString &line)
             QVariantMap capas = datamap.value("capas").toMap();
             m_options_userstatus = capas.value("userstatus").toMap();
             m_options_phonestatus = capas.value("phonestatus").toMap();
+            m_options_channelstatus = capas.value("channelstatus").toMap();
             m_options_agentstatus = capas.value("agentstatus").toMap();
             m_capas_regcommands = capas.value("regcommands").toStringList();
             m_capas_ipbxcommands = capas.value("ipbxcommands").toStringList();

@@ -239,8 +239,16 @@ void IdentityPhone::updatePhoneStatus(const QString & xphoneid)
         return;
 
     QPixmap square(10, 10);
-    QString color = "blue"; // XXXX function of phoneinfo->hintstatus();
-    QString longname = "There"; // XXXX function of phoneinfo->hintstatus();
+    QString hintstatus = phoneinfo->hintstatus();
+    QString color = "black";
+    QString longname;
+    if (b_engine->getOptionsPhoneStatus().contains(hintstatus)) {
+        QVariantMap qvmop = b_engine->getOptionsPhoneStatus().value(hintstatus).toMap();
+        color = qvmop.value("color").toString();
+        longname = qvmop.value("longname").toString();
+    } else {
+        longname = tr("Status:%1").arg(hintstatus);
+    }
     square.fill(color);
     m_phonecall->setPixmap(square);
     m_phonecall->setToolTip(longname);

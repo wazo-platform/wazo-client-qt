@@ -69,9 +69,8 @@ void PeerItem::updateStatus()
         updateDisplayedStatus();
 }
 
-void PeerItem::updateAgentStatus(const QVariant & agentstatus)
+void PeerItem::updateAgentStatus(const QVariant &)
 {
-    m_agentstatus = agentstatus;
     if(m_peerwidget != NULL)
         updateDisplayedStatus();
 }
@@ -95,18 +94,15 @@ void PeerItem::updateDisplayedStatus()
 {
     if(m_peerwidget == NULL)
         return;
-
     m_peerwidget->updatePresence();
-    m_peerwidget->updatePhonesStates();
 }
 
 /*! \brief update name if changed
  */
 void PeerItem::updateDisplayedName()
 {
-    if(m_peerwidget == NULL) {
+    if(m_peerwidget == NULL)
         return;
-    }
 
     m_peerwidget->setName(m_ui->fullname());
     return;
