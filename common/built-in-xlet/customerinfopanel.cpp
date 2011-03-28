@@ -103,8 +103,10 @@ void CustomerInfoPanel::popupDestroyed(QObject * obj)
     foreach(Popup * mpopup, m_popups)
         if ( (mpopup->callAstid() == obj->property("astid").toString()) &&
              (mpopup->callContext() == obj->property("context").toString()) &&
-             (mpopup->callUniqueid() == obj->property("uniqueid").toString()) )
+             (mpopup->callUniqueid() == obj->property("uniqueid").toString()) ) {
             m_popups.removeAll(mpopup);
+            mpopup->deleteLater();
+        }
 }
 
 void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, const QString & id)

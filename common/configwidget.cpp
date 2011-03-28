@@ -54,8 +54,6 @@
 static const QStringList queuelevel_colors = (QStringList() << "green" << "orange");
 QHash<QString, QString> func_legend;
 
-
-
 /*! \brief constructor */
 ConfigWidget::ConfigWidget(QWidget *parent)
     : QDialog(parent),
@@ -250,6 +248,19 @@ void ConfigWidget::_insert_guisetting_tab()
     QFormLayout *layout4 = new QFormLayout();
     QWidget *widget_gui = new QWidget();
     widget_gui->setLayout(layout4);
+
+    m_locale_cbox = new QComboBox(this);
+    m_locale_cbox->addItem(tr("System Language"), QString("default"));
+    m_locale_cbox->addItem(tr("English"), QString("en_US"));
+    m_locale_cbox->addItem(tr("French"), QString("fr_FR"));
+    m_locale_cbox->addItem(tr("Nederlands"), QString("nl_NL"));
+    for (int i = 0; i < m_locale_cbox->count(); i++) {
+        if (b_engine->forcelocale() == m_locale_cbox->itemData(i))
+            m_locale_cbox->setCurrentIndex(i);
+    }
+    layout4->addRow(tr("Language")+ "\n" + \
+                    tr("/!\\ You MUST restart the application\n"
+                       "when you change this value /!\\"), m_locale_cbox);
 
     m_autoconnect = new QCheckBox(tr("Autoconnect at startup"), this);
     m_autoconnect->setCheckState(b_engine->autoconnect() ? Qt::Checked : Qt::Unchecked);
@@ -466,6 +477,7 @@ void ConfigWidget::saveAndClose()
 
     b_engine->setPassword(m_password->text());
 
+    b_engine->setForcelocale(m_locale_cbox->itemData(m_locale_cbox->currentIndex()).toString());
     b_engine->setAutoconnect(m_autoconnect->checkState() == Qt::Checked);
     b_engine->setTrytoreconnect(m_trytoreconnect->checkState() == Qt::Checked);
     b_engine->setTrytoreconnectinterval(m_tryinterval_sbox->value() * 1000);

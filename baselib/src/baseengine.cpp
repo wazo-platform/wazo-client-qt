@@ -42,6 +42,7 @@
 #include <QTcpSocket>
 #include <QTranslator>
 #include <QUrl>
+#include <QLibraryInfo>
 
 #include "JsonToVariant.h"
 #include "VariantToJson.h"
@@ -106,6 +107,10 @@ BaseEngine::BaseEngine(QSettings *settings,
 
     if (m_autoconnect)
         start();
+    translationFiles = \
+        (QStringList() << ":/xivoclient_%1"
+                       << ":/baselib/baselib_%1"
+                       << QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_%1" );
 }
 
 /*! \brief Destructor
@@ -159,6 +164,7 @@ void BaseEngine::loadSettings()
         m_showagselect = m_settings->value("showagselect", 2).toUInt();
         m_agentphonenumber  = m_settings->value("agentphonenumber").toString();
 
+        m_forcelocale = m_settings->value("forcelocale", false).toString();
         m_autoconnect = m_settings->value("autoconnect", false).toBool();
         m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
         m_trytoreconnectinterval = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
@@ -237,6 +243,7 @@ void BaseEngine::saveSettings()
         m_settings->setValue("keeppass", m_keeppass);
         m_settings->setValue("showagselect", m_showagselect);
         m_settings->setValue("agentphonenumber", m_agentphonenumber);
+        m_settings->setValue("forcelocale", m_forcelocale);
         m_settings->setValue("autoconnect", m_autoconnect);
         m_settings->setValue("trytoreconnect", m_trytoreconnect);
         m_settings->setValue("trytoreconnectinterval", m_trytoreconnectinterval);
@@ -345,7 +352,7 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << Q_FUNC_INFO << m_serverhost << m_checked_function;
+    qDebug() << Q_FUNC_INFO << m_serverhost << m_ctiport << m_checked_function;
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
@@ -1120,6 +1127,7 @@ void BaseEngine::parseCommand(const QString &line)
                         QVariantMap changemeconf = changeme[stateid].toMap();
                         m_timerid_changestate = startTimer(changemeconf.value("delaymsec").toInt());
                         m_changestate_newstate = changemeconf.value("newstate").toString();
+                        m_changestate_oldstate = stateid;
                     }
                 }
                 m_users[id]->setAvailState(datamap.value("capapresence").toMap().value("state"));
@@ -1710,7 +1718,7 @@ void BaseEngine::actionCall(const QString & action,
         else
             command["destination"] = dst;
         sendJsonCommand(command);
-    } else if (action == "hangup") {
+    } else if ((action == "hangup") || (action == "transfercancel")) {
         QVariantMap ipbxcommand;
         ipbxcommand["command"] = action;
         ipbxcommand["channelids"] = src;
@@ -1749,7 +1757,7 @@ void BaseEngine::searchDirectory(const QString & text)
  */
 void BaseEngine::setAddress(const QString & host, quint16 port)
 {
-    qDebug() << Q_FUNC_INFO << port;
+    // qDebug() << Q_FUNC_INFO << host << port;
     m_serverhost = host;
     m_ctiport = port;
 }
@@ -1951,7 +1959,8 @@ void BaseEngine::timerEvent(QTimerEvent *event)
         emit emitTextMessage(tr("Attempting to reconnect to server"));
         start();
     } else if (timerId == m_timerid_changestate) {
-        setAvailState(m_changestate_newstate, false);
+        if (m_availstate == m_changestate_oldstate)
+            setAvailState(m_changestate_newstate, false);
         killTimer(timerId);
         m_timerid_changestate = 0;
     } else {
@@ -2079,6 +2088,17 @@ bool BaseEngine::autoconnect() const
     return m_autoconnect;
 }
 
+void BaseEngine::setForcelocale(QString b)
+{
+    m_forcelocale = b;
+    this->changeTranslation(b);
+}
+
+QString BaseEngine::forcelocale() const
+{
+    return m_forcelocale;
+}
+
 uint BaseEngine::keepaliveinterval() const
 {
     return m_keepaliveinterval;
@@ -2203,9 +2223,10 @@ void BaseEngine::changeState()
 }
 
 /*! \brief send error message to the CTI Server */
-void BaseEngine::shouldNotOccur(const QString & classmethod, const QString & message)
+void BaseEngine::logClientWarning(const QString & classmethod,
+                                  const QString & message)
 {
-    qDebug() << Q_FUNC_INFO << classmethod << message;
+    // qDebug() << Q_FUNC_INFO << classmethod << message;
     QVariantMap command;
     command["class"] = "logclienterror";
     command["direction"] = "xivoserver";
@@ -2268,8 +2289,8 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
     if (pos >= 0) {
         QString phonenum = re.cap(2);
         phonenum.remove('.').remove(' ').remove('-');
-        qDebug() << "  trying to dial" << phonenum;
-        actionCall("originate", "user:special:me", "ext:"+phonenum);
+        qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
+        actionCall("originate", "user:special:me", QString("ext:%1").arg(phonenum));
     }
 }
 
@@ -2305,6 +2326,24 @@ void BaseEngine::registerTranslation(const QString &path)
     QTranslator *translator = new QTranslator;
     translator->load(path.arg(locale));
     qApp->installTranslator(translator);
+}
+
+void BaseEngine::changeTranslation(const QString &locale)
+{
+    QVector<QTranslator *> new_translators;
+
+    int i;
+    for(i=0;i<translationFiles.size();++i) {
+        if (locale != "en_US") {
+            new_translators.append(new QTranslator);
+            new_translators.at(i)->load(translationFiles.at(i).arg(locale));
+            qApp->installTranslator(new_translators.at(i));
+        } else if (!translators.isEmpty()) {
+            qApp->removeTranslator(translators.at(i));
+        }
+    }
+
+    translators = new_translators;
 }
 
 void BaseEngine::sendUrlToBrowser(const QString & value)

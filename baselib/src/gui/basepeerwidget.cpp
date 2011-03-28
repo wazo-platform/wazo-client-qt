@@ -188,15 +188,29 @@ void BasePeerWidget::transfer()
  */
 void BasePeerWidget::itransfer()
 {
-    const UserInfo *ui = b_engine->getXivoClientUser();
+    const UserInfo * ui = b_engine->getXivoClientUser();
+    QString src = QString("chan:%1:%2").arg(ui->userid())
+        .arg(sender()->property("thischannel").toString());
+
     if (m_ui) {
-        b_engine->actionCall("atxfer",
-                             "chan:" + ui->userid() + ":" + sender()->property("thischannel").toString(),
-                             "user:" + m_ui->userid());
+        QString dst = QString("user:%1").arg(m_ui->userid());
+        b_engine->actionCall("atxfer", src, dst);
     } else {
-        b_engine->actionCall("atxfer",
-                             "chan:" + ui->userid() + ":" + sender()->property("thischannel").toString(),
-                             "ext:" + m_number);
+        QString dst = QString("ext:%1").arg(m_number);
+        b_engine->actionCall("atxfer", src, dst);
+    }
+}
+
+/*! \brief Cancel an Indirect Transfer
+ */
+void BasePeerWidget::itransfercancel()
+{
+    const UserInfo * ui = b_engine->getXivoClientUser();
+    QString src = QString("chan:%1:%2").arg(ui->userid())
+        .arg(sender()->property("thischannel").toString());
+
+    if (m_ui) {
+        b_engine->actionCall("transfercancel", src);
     }
 }
 
@@ -341,7 +355,7 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
  */
 void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-    const UserInfo *ui = b_engine->getXivoClientUser();
+    const UserInfo * ui = b_engine->getXivoClientUser();
     // Construct and display the context menu
     QMenu contextMenu(this);
     QAction *action;
@@ -524,7 +538,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                 }
 
                 if (calleridname == QString("<meetme>")) {
-                    QAction *meetmeAction = new QAction(tr("Invite in meetme room %1").arg(calleridnum), &contextMenu);
+                    QAction *meetmeAction = new QAction(tr("Invite in meetme room %1").arg(calleridnum),
+                                                        &contextMenu);
                     meetmeAction->setProperty("number", calleridnum);
                     connect(meetmeAction, SIGNAL(triggered()),
                              this, SLOT(peerdial()));
@@ -552,25 +567,38 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                 }
 
                 if (calleridname != QString("<meetme>")) {
-                    if (!itransferMenu && commsCount > 1) {
+                    if (!itransferMenu && (commsCount > 1)) {
                         itransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
                     }
-                    QAction *itransferAction;
+                    QAction * itransferAction;
+                    QAction * itransferCancelAction;
                     if (itransferMenu) {
                         itransferAction = new QAction(text, itransferMenu);
                         itransferAction->setStatusTip(tr("Transfer this communication"));
+                        itransferCancelAction = new QAction(text + " " + tr("(Cancel)"),
+                                                            itransferMenu);
+                        itransferCancelAction->setStatusTip(tr("Cancel the Transfer"));
                     } else {
                         itransferAction = new QAction(tr("&Indirect Transfer"), &contextMenu);
                         itransferAction->setStatusTip(tr("Transfer to this person"));
+                        itransferCancelAction = new QAction(tr("&Cancel the Transfer"), &contextMenu);
+                        itransferCancelAction->setStatusTip(tr("Cancel the Transfer"));
                     }
                     itransferAction->setProperty("thischannel", comm.value("thischannel"));
                     itransferAction->setProperty("peerchannel", comm.value("peerchannel"));
+                    itransferCancelAction->setProperty("thischannel", comm.value("thischannel"));
+
                     connect(itransferAction, SIGNAL(triggered()),
                             this, SLOT(itransfer()));
+                    connect(itransferCancelAction, SIGNAL(triggered()),
+                            this, SLOT(itransfercancel()));
+
                     if (itransferMenu) {
                         itransferMenu->addAction(itransferAction);
+                        itransferMenu->addAction(itransferCancelAction);
                     } else {
                         contextMenu.addAction(itransferAction);
+                        contextMenu.addAction(itransferCancelAction);
                     }
                 }
                 if (m_ui && calleridname != QString("<meetme>")) {

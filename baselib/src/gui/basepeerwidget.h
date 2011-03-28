@@ -37,11 +37,13 @@
 #include "baselib_export.h"
 
 #include <QtGui>
+#include <QList>
 
 #include <baseengine.h>
 #include <chitchat.h>
 
 class UserInfo;
+class ChannelInfo;
 
 /*! \brief Abstract class for "Peer" Widgets
  *
@@ -86,6 +88,7 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
         void intercept2();
         void transfer();
         void itransfer();
+        void itransfercancel();
         void vmtransfer();
         void parkcall();
         void tryRemoveFromPanel();

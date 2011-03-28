@@ -38,8 +38,6 @@ XLet::XLet(QWidget *parent)
 {
     connect(this, SIGNAL(logAction(const QString &)),
             b_engine, SLOT(logAction(const QString &)));
-    connect(this, SIGNAL(shouldNotOccur(const QString &, const QString &)),
-            b_engine, SLOT(shouldNotOccur(const QString &, const QString &)));
     connect(this, SIGNAL(ipbxCommand(const QVariantMap &)),
             b_engine, SLOT(ipbxCommand(const QVariantMap &)));
 }

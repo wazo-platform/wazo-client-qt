@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-	<file>parking_fr.qm</file>
+    <file>parking_fr.qm</file>
+    <file>parking_nl.qm</file>
 </qresource>
 </RCC>

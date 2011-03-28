@@ -48,7 +48,7 @@
 #include <QVariantMap>
 #include <QTimerEvent>
 #include <QApplication>
-
+#include <QLibraryInfo>
 
 class Xlet;
 
@@ -109,6 +109,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QString & password() const;       //!< password to identify to the sever
         void setPassword(const QString &);      //!< see password()
 
+        QString forcelocale() const;               //!< force locale string
+        void setForcelocale(QString);              //!< set force locale
         bool autoconnect() const;               //!< auto connect flag
         void setAutoconnect(bool);              //!< set auto connect flag
         bool trytoreconnect() const;            //!< try to reconnect flag
@@ -173,6 +175,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QHash<QString, QHash<QString, ParkingInfo *> > parking() const { return m_parking; }; //!< Return the parking to any Xlet
 
         void registerTranslation(const QString &);
+        void changeTranslation(const QString &);
         void sendUrlToBrowser(const QString &);
         void addToDataBase(QVariantMap &);
 
@@ -208,7 +211,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void saveQueueGroups(const QVariant &);
         void loadQueueGroups();
         void logAction(const QString &);
-        void shouldNotOccur(const QString &, const QString &);  //!< log tricky situations
+        void logClientWarning(const QString &,
+                              const QString &);  //!< log tricky situations
         void sendNewRemark(const QString &, const QString &);
         void handleOtherInstanceMessage(const QString &);
         void ipbxCommand(const QVariantMap &);
@@ -323,6 +327,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QDateTime m_timeclt;
         double m_timesrv;
 
+        QString m_forcelocale;          //!< Force locale string
+        QStringList translationFiles;   //!< List of translation files
+        QVector<QTranslator *> translators;   //!< Vector of translators
         bool m_autoconnect;             //!< Autoconnect to server at startup
         bool m_trytoreconnect;          //!< "try to reconnect" flag
         bool m_systrayed;               //!< "systrayed at startup" flag
@@ -353,6 +360,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_timerid_keepalive;        //!< timer id for keep alive
         int m_timerid_tryreconnect;     //!< timer id for try to reconnect
         int m_timerid_changestate;      //!< timer id for changing state automatically
+        QString m_changestate_oldstate; //!< old state when changing state automatically
         QString m_changestate_newstate; //!< new state when changing state automatically
         int m_pendingkeepalivemsg;      //!< number of keepalivemsg sent without response
         QString m_numbertodial;         //!< Number dialed in

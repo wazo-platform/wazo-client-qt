@@ -3,7 +3,9 @@
 	<file>../common/xivo.qss</file>
 	<file>../common/guioptions.json</file>
 	<file>xivoclient_fr.qm</file>
+    <file>xivoclient_nl.qm</file>
 	<file>../baselib/baselib_fr.qm</file>
+    <file>../baselib/baselib_nl.qm</file>
 	<file>../images/xivoicon.png</file>
 	<file>../images/xivoicon-red.png</file>
 	<file>../images/xivoicon-green.png</file>

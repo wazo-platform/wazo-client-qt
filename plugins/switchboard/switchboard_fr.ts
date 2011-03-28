@@ -129,73 +129,73 @@
         <translation>Switchboard</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="178"/>
+        <location filename="src/switchboardwindow.cpp" line="182"/>
         <source>Removing group %1</source>
         <translation>Suppression du groupe %1</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="179"/>
+        <location filename="src/switchboardwindow.cpp" line="183"/>
         <source>Removing group %1.
 Are you sure ?</source>
         <translation>Suppression du groupe %1.Etes vous sur ?</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="213"/>
+        <location filename="src/switchboardwindow.cpp" line="217"/>
         <source>Edit group name</source>
         <translation>Changer le nom du groupe</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="214"/>
+        <location filename="src/switchboardwindow.cpp" line="218"/>
         <source>Name for group</source>
         <translation>Nom du groupe</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="559"/>
+        <location filename="src/switchboardwindow.cpp" line="565"/>
         <source>New group</source>
         <translation>Nouveau groupe</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="561"/>
+        <location filename="src/switchboardwindow.cpp" line="567"/>
         <source>Please enter a name for the new group</source>
         <translation>Veuillez saisir un nom pour le nouveau groupe</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="564"/>
+        <location filename="src/switchboardwindow.cpp" line="570"/>
         <source>Please choose a color for the new group</source>
         <translation>Veuillez choisir une couleur pour le nouveau groupe</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="659"/>
+        <location filename="src/switchboardwindow.cpp" line="666"/>
         <source>Remove group %1</source>
         <translation>Supprimer le groupe %1</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="663"/>
+        <location filename="src/switchboardwindow.cpp" line="670"/>
         <source>Change color of group %1</source>
         <translation>Changer la couleur du groupe %1</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="667"/>
+        <location filename="src/switchboardwindow.cpp" line="674"/>
         <source>Rename group %1</source>
         <translation>Renommer le groupe %1</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="672"/>
+        <location filename="src/switchboardwindow.cpp" line="679"/>
         <source>Add Phone number entry</source>
         <translation>Ajouter un numéro de téléphone</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="676"/>
+        <location filename="src/switchboardwindow.cpp" line="683"/>
         <source>Draw the grid</source>
         <translation>Tracer la grille</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="784"/>
+        <location filename="src/switchboardwindow.cpp" line="792"/>
         <source>Duplicate number</source>
         <translation>Doublon de numéro</translation>
     </message>
     <message>
-        <location filename="src/switchboardwindow.cpp" line="785"/>
+        <location filename="src/switchboardwindow.cpp" line="793"/>
         <source>Phone number %1 is already present in the switchboard panel.</source>
         <translation>Le numéro de téléphone %1 est déjà présent dans le panneau du switchboard.</translation>
     </message>

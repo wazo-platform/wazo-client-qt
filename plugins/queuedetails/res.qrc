@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-	<file>queuedetails_fr.qm</file>
+    <file>queuedetails_fr.qm</file>
+    <file>queuedetails_nl.qm</file>
 </qresource>
 </RCC>

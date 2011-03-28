@@ -259,7 +259,8 @@ bool COLDB::delete_contact(COLContact & contact) {
     return true;
 }
 
-bool COLDB::update_contact_props(COLContact & contact, const COLPropsDef & props_def) {
+bool COLDB::update_contact_props(COLContact & contact, const COLPropsDef & props_def)
+{
     //int error;
     QSqlQuery query(m_db);
 
@@ -285,7 +286,8 @@ bool COLDB::update_contact_props(COLContact & contact, const COLPropsDef & props
     return true;
 }
 
-bool COLDB::update_contact(COLContact & contact, const COLPropsDef & props_def) {
+bool COLDB::update_contact(COLContact & contact, const COLPropsDef & props_def)
+{
     // we update properties
     if ( !update_contact_props(contact, props_def) )
         return false;
@@ -300,7 +302,8 @@ bool COLDB::update_contact(COLContact & contact, const COLPropsDef & props_def) 
 }
 
 
-bool COLDB::update_contacts(COLContacts & contacts, const COLPropsDef & props_def) {
+bool COLDB::update_contacts(COLContacts & contacts, const COLPropsDef & props_def)
+{
     for ( int i = 0, c = contacts.count() ; i < c ; i++ ) {
         COLContact & contact=contacts[i];
 
