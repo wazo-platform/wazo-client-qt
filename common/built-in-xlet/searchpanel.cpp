@@ -165,12 +165,12 @@ void SearchPanel::updateUser(UserInfo *ui)
     const QString &fullname = ui->fullname();
     PeerKey *peerkey = new PeerKey(userid, fullname);
     PeerItem *peeritem = NULL;
+// 	PeerKey const &peerkey2 = *peerkey;
 
-    if (m_peerhash.contains(userid)) {
-        peeritem = m_peerhash.value(userid);
+    if (m_peermap.contains(*peerkey)) {
+        peeritem = m_peermap.value(*peerkey);
     } else {
         peeritem = new PeerItem(ui);
-        m_peerhash.insert(userid, peeritem);
         m_peermap.insert(*peerkey, peeritem);		
     }
     peeritem->updateStatus();
@@ -181,12 +181,13 @@ void SearchPanel::updatePeerAgent(double,
                                   const QString &what,
                                   const QVariant &statuslist)
 {
+    PeerKey *peerkey = new PeerKey(id, "");
     // qDebug() << Q_FUNC_INFO;
-    if (m_peerhash.contains(id)) {
+    if (m_peermap.contains(*peerkey)) {
         if (what == "agentstatus") {
-            m_peerhash.value(id)->updateAgentStatus(statuslist);
+            m_peermap.value(*peerkey)->updateAgentStatus(statuslist);
         } else if (what == "imstatus") {
-            m_peerhash.value(id)->updateStatus();
+            m_peermap.value(*peerkey)->updateStatus();
         }
     }
     return;
@@ -196,14 +197,15 @@ void SearchPanel::updatePeerAgent(double,
  */
 void SearchPanel::removePeer(const QString &ext)
 {
+    PeerKey *peerkey = new PeerKey(ext, "");
     // qDebug() << Q_FUNC_INFO << ext;
-    if (m_peerhash.contains(ext)) {
-        PeerItem *peeritem = m_peerhash.value(ext);
+    if (m_peermap.contains(*peerkey)) {
+        PeerItem *peeritem = m_peermap.value(*peerkey);
         BasePeerWidget *peerwidget = peeritem->getWidget();
         if (m_peerlayout->indexOf(peerwidget) > -1) {
             m_peerlayout->removeWidget(peerwidget);
         }
-        m_peerhash.remove(ext);
+        m_peermap.remove(*peerkey);
         delete peerwidget; // peerwidget->deleteLater();
         return;
     }
@@ -214,8 +216,8 @@ void SearchPanel::removePeer(const QString &ext)
 void SearchPanel::removePeers()
 {
     // qDebug() << Q_FUNC_INFO;
-    foreach(QString peerkey, m_peerhash.keys()) {
-        PeerItem *peeritem = m_peerhash[peerkey];
+    foreach(PeerKey peerkey, m_peermap.keys()) {
+        PeerItem *peeritem = m_peermap[peerkey];
         BasePeerWidget *peerwidget = peeritem->getWidget();
         if (peerwidget) {
                 if (m_peerlayout->indexOf(peerwidget) > -1) {
@@ -225,7 +227,7 @@ void SearchPanel::removePeers()
         }
         delete peeritem;
     }
-    m_peerhash.clear();
+    m_peermap.clear();
 }
 
 /*! \brief force the widget to be redrawn a least two time
