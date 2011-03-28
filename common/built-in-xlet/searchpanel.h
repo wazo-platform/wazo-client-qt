@@ -67,7 +67,6 @@ class SearchPanel : public XLet
     signals:
         void askCallerIds();
     private:
-        QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
         QMap<PeerKey, PeerItem *> m_peermap;  //!< PeerItem map
         QGridLayout *m_peerlayout; //!< layout object
         ExtendedLineEdit *m_input; //!< widget for search string input
