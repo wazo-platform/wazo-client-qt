@@ -42,6 +42,7 @@
 #include "extendedlineedit.h"
 #include "userinfo.h"
 #include "chitchat.h"
+#include "peerkey.h"
 
 SearchPanel::SearchPanel(QWidget *parent)
     : XLet(parent)
@@ -112,7 +113,7 @@ void SearchPanel::affTextChanged(const QString & text)
 void SearchPanel::updateDisplay()
 {
     // first hide/delete everyonedisplayed
-    QHashIterator<QString, PeerItem *> i(m_peerhash);
+    QMapIterator<PeerKey, PeerItem *> i(m_peermap);
     while (i.hasNext()) {
         i.next();
         PeerItem *peeritem = i.value();
@@ -161,6 +162,8 @@ void SearchPanel::updateDisplay()
 void SearchPanel::updateUser(UserInfo *ui)
 {
     const QString &userid = ui->userid();
+    const QString &fullname = ui->fullname();
+    PeerKey *peerkey = new PeerKey(userid, fullname);
     PeerItem *peeritem = NULL;
 
     if (m_peerhash.contains(userid)) {
@@ -168,6 +171,7 @@ void SearchPanel::updateUser(UserInfo *ui)
     } else {
         peeritem = new PeerItem(ui);
         m_peerhash.insert(userid, peeritem);
+        m_peermap.insert(*peerkey, peeritem);		
     }
     peeritem->updateStatus();
 }

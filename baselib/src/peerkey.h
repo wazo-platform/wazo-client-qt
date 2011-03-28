@@ -31,52 +31,26 @@
  * $Date$
  */
 
-#ifndef __SEARCHPANEL_H__
-#define __SEARCHPANEL_H__
+#ifndef __PEERKEY_H__
+#define __PEERKEY_H__
 
-#include <QHash>
-#include <QVariant>
+#include "baselib_export.h"
+#include <QString>
 
-#include <QPaintEvent>
-#include "xlet.h"
-#include "peeritem.h"
-#include "peerkey.h"
-
-class QGridLayout;
-class QVBoxLayout;
-
-class BaseEngine;
-class ExtendedLineEdit;
-class UserInfo;
-
-/*! \brief search panel widget
+/*! \brief Store Peer Key
  */
-class SearchPanel : public XLet
+class BASELIB_EXPORT PeerKey
 {
-    Q_OBJECT
     public:
-        SearchPanel(QWidget *parent=0);
-        ~SearchPanel();        //!< Destructor
-    public slots:
-        void affTextChanged(const QString &);
-        void updatePeerAgent(double, const QString &, const QString &, const QVariant &);
-        void removePeer(const QString &);
-        void removePeers();
-        void updateDisplay();
-        void updateUser(UserInfo *);
-    signals:
-        void askCallerIds();
-    private:
-        QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
-        QMap<PeerKey, PeerItem *> m_peermap;  //!< PeerItem map
-        QGridLayout *m_peerlayout; //!< layout object
-        ExtendedLineEdit *m_input; //!< widget for search string input
-
-        int m_maxdisplay;  //!< max number of peers displayed on the search panel
-        int m_ncolumns;
-        QString m_searchpattern;
-    protected:
-        virtual void paintEvent(QPaintEvent *event);
+        PeerKey(const QString &userid, const QString &fullname);  //! constructor
+        const QString& userid() const { return m_userid; };  //! phone number
+        const QString& fullname() const { return m_fullname; };  //! full name
+		bool operator<(const PeerKey &other) const;
+		bool operator==(const PeerKey &other) const;
+		
+	private:
+		QString m_userid;
+  		QString m_fullname;
 };
 
 #endif
