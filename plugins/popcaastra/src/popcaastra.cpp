@@ -39,8 +39,11 @@
 #include "popcaastra.h"
 #include "../ui_popcaastra.h"
 #include "userinfo.h"
+#include "aastrasipnotify.h"
 
+// TODO: make dest_nb_col a config option
 #define DEST_NB_COL 6
+#define SPECIAL_ME "user:special:me"
 
 /*! \brief Constructor
  *
@@ -51,24 +54,36 @@ PopcAastra::PopcAastra(QWidget *parent)
     : XLet(parent), ui(new Ui::PopcAastra)
 {
     ui->setupUi(this);
-    // set title for the XLet.
     setTitle(tr("POPC Aastra operator"));
+
+    // Signals / slots
     connect(ui->destinationGrid, SIGNAL(cellDoubleClicked(int, int)),
             this, SLOT(destinationClicked(int, int)));
-    connect(b_engine, SIGNAL(peersReceived()), this, SLOT(refreshDestination()));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+                this, SLOT(refreshDestination(const QString &)));
+    connect(ui->btn_vol_up, SIGNAL(clicked()), this, SLOT(volUp()));
+    connect(ui->btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
+}
+
+void PopcAastra::volUp()
+{
+    emit ipbxCommand(getAastraKeyNotify(VOL_UP, SPECIAL_ME));
+}
+
+void PopcAastra::volDown()
+{
+    emit ipbxCommand(getAastraKeyNotify(VOL_DOWN, SPECIAL_ME));
 }
 
 void PopcAastra::destinationClicked(int col, int row)
 {
     qDebug() << "Cell clicked " << col << "x" << row;
-    this->refreshDestination();
 }
 
-void PopcAastra::refreshDestination()
+void PopcAastra::refreshDestination(const QString &user)
 {
     QHash<QString, UserInfo*> users = b_engine->users();
     int nb_users = users.size();
-    qDebug() << "Nb users = " << nb_users;
     if (nb_users == 0) return;
     int cols = DEST_NB_COL > nb_users ? nb_users : DEST_NB_COL;
     int rows = nb_users / cols;

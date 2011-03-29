@@ -39,7 +39,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="btn_vol_up">
        <property name="maximumSize">
         <size>
          <width>10000000</width>
@@ -52,7 +52,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="btn_vol_down">
        <property name="maximumSize">
         <size>
          <width>10000000</width>
@@ -65,7 +65,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="btn_toggle_line">
        <property name="maximumSize">
         <size>
          <width>10000000</width>
@@ -99,7 +99,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Number /name</string>
+        <string>Number / name</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -107,7 +107,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="txt_number_name">
        <property name="maximumSize">
         <size>
          <width>10000000</width>

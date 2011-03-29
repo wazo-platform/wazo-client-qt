@@ -37,7 +37,6 @@
 #include <QObject>
 #include "xlet.h"
 
-class QLabel;
 namespace Ui {
     class PopcAastra;
 }
@@ -54,10 +53,15 @@ public:
     PopcAastra(QWidget *parent=0);
     ~PopcAastra();
 public slots:
+    /*! \brief When a name is clicked on the destination list */
     void destinationClicked(int col, int row);
-    void refreshDestination();
+    /*! \brief refresh the list containing call destinations */
+    void refreshDestination(const QString &);
+    /*! \brief turns up the volume of the phone */
+    void volUp();
+    /*! \brief turns down the volume of the phone */
+    void volDown();
 private:
-    QLabel *m_label;
     Ui::PopcAastra *ui;
 };
 
