@@ -394,9 +394,9 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
     }
 }
 
-void XletOperator::updateChannelStatus(const QString & xchannelid)
+void XletOperator::updateChannelStatus(const QString &)
 {
-    qDebug() << Q_FUNC_INFO << xchannelid;
+    // qDebug() << Q_FUNC_INFO << xchannelid;
 }
 
 void XletOperator::updateUserConfig(const QString & xuserid)
@@ -409,7 +409,7 @@ void XletOperator::updateUserConfig(const QString & xuserid)
         return;
     if (xuserid != m_xuserid)
         return;
-    qDebug() << Q_FUNC_INFO << xuserid;
+    // qDebug() << Q_FUNC_INFO << xuserid;
     m_lbl->setText(m_ui->fullname());
 }
 
@@ -419,7 +419,7 @@ void XletOperator::updateUserStatus(const QString & xuserid)
         return;
     if (xuserid != m_xuserid)
         return;
-    qDebug() << Q_FUNC_INFO << xuserid;
+    // qDebug() << Q_FUNC_INFO << xuserid;
 }
 
 /*! \brief get the peer channel linked to channel

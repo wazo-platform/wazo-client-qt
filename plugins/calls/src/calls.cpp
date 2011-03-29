@@ -151,6 +151,7 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
         return;
 
     qDebug() << Q_FUNC_INFO << xphoneid << m_affhash.keys() << phoneinfo->channels();
+
     foreach (const QString xchannel, m_affhash.keys()) {
         CallWidget * callwidget = m_affhash[xchannel];
         QString channel = callwidget->channel();

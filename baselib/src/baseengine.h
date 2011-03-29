@@ -197,7 +197,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const GroupInfo * group(const QString & id) const
                 { return (const GroupInfo *) m_anylist.value("groups").value(id); };  //!< Return the group to any Xlet
 
-        const QHash<QString, ChannelInfo *>  channels() const
+        const QHash<QString, ChannelInfo *> & channels() const
                 { return m_channels; };  //!< Return the channels to any Xlet
 
         const QHash<QString, QHash<QString, ParkingInfo *> > parking() const
