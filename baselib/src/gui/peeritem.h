@@ -65,9 +65,6 @@ class BASELIB_EXPORT PeerItem
         BasePeerWidget *m_peerwidget;  //!< related PeerWidget
 
         UserInfo * m_ui;  // Properties of each peer
-        QString m_vmstatus;
-        QString m_pausestatus;
-        QStringList m_queuelist;
 };
 
 #endif

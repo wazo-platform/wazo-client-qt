@@ -97,15 +97,15 @@ PeerWidget::PeerWidget(UserInfo * ui)
         hLayout->addSpacing(fsize);
     }
 
-    foreach (QString phone, ui->phonelist()) {
-        m_lblphones[phone] = new QLabel(peer);
-        m_lblphones[phone]->setAlignment(Qt::AlignCenter);
-        m_lblphones[phone]->setMinimumSize(fsize, fsize);
-        m_lblphones[phone]->setProperty("kind", "term");
-        hLayout->addWidget(m_lblphones[phone]);
+    foreach (QString xphoneid, ui->phonelist()) {
+        m_lblphones[xphoneid] = new QLabel(peer);
+        m_lblphones[xphoneid]->setAlignment(Qt::AlignCenter);
+        m_lblphones[xphoneid]->setMinimumSize(fsize, fsize);
+        m_lblphones[xphoneid]->setProperty("kind", "term");
+        hLayout->addWidget(m_lblphones[xphoneid]);
     }
 
-    if (!m_ui_remote->mobileNumber().isEmpty()) {
+    if (! m_ui_remote->mobileNumber().isEmpty()) {
         m_mobilelbl = new QLabel(peer);
         m_mobilelbl->setPixmap(QPixmap(":/images/mobile-grey.png"));
         m_mobilelbl->setAlignment(Qt::AlignCenter);
@@ -159,8 +159,9 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
 
     QString agentnumber = agentinfo->agentNumber();
     QStringList queues = agentinfo->queuelist();
-    m_agentlbl->setToolTip(tr("Agent %1\n%n Queue(s) %2", "",
-                              queues.size()).arg(agentnumber).arg(queues.join(",")));
+    m_agentlbl->setToolTip(tr("Agent Number : %1\nIn Queues : %2")
+                           .arg(agentnumber)
+                           .arg(queues.join(",")));
 }
 
 void PeerWidget::setMobileState(const QString &/* color*/)
@@ -179,7 +180,9 @@ void PeerWidget::updatePresence()
         QColor c = QColor(colorstring);
         m_user_status->setIcon(TaintedPixmap( \
             QString(":/images/personal-trans.png"), c).getPixmap());
-        m_user_status->setToolTip(tr("User : %1").arg(presencedetails.value("longname").toString()));
+        m_user_status->setToolTip(tr("User Name : %1\nStatus : %2")
+                                  .arg(m_ui_remote->fullname())
+                                  .arg(presencedetails.value("longname").toString()));
     }
 }
 
@@ -209,9 +212,11 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
     QColor c = QColor(color);
     m_lblphones[xphoneid]->setPixmap( \
               TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
-    m_lblphones[xphoneid]->setToolTip(tr("Phone %1 : %2")
+    m_lblphones[xphoneid]->setToolTip(tr("Phone Number : %1\nStatus : %2\nBusy lines : %3")
                                       .arg(phoneinfo->number())
-                                      .arg(longname));
+                                      .arg(longname)
+                                      .arg(phoneinfo->channels().count())
+                                      );
 }
 
 /*! \brief change displayed name
@@ -244,6 +249,7 @@ bool PeerWidget::pOverMobileLbl(const QPoint &p)
     }
     return false;
 }
+
 
 ChitchatButton::ChitchatButton(QWidget *parent, UserInfo **peerUi)
     : QPushButton(parent), m_ui(peerUi)

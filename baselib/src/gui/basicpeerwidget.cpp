@@ -53,9 +53,9 @@ BasicPeerWidget::BasicPeerWidget(UserInfo * ui)
     qDebug() << Q_FUNC_INFO;
     // can grow horizontaly but not verticaly
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-    QString name = (!ui || ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
+    QString name = (ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
     setText(name);
-    setToolTip(ui->phoneNumber());
+    setToolTip(tr("Phone Number : %1").arg(ui->phoneNumber()));
     m_presenceSquareSize = b_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
     if ((m_presenceSquareSize<=0)||(m_presenceSquareSize>20)) {
         m_presenceSquareSize = 5;
@@ -118,12 +118,14 @@ void BasicPeerWidget::paintEvent(QPaintEvent *)
 
 void BasicPeerWidget::updatePresence()
 {
-    QString text = m_ui_remote->phoneNumber();
+    QString text = tr("User Name : %1\nPhone Number : %2")
+        .arg(m_ui_remote->fullname())
+        .arg(m_ui_remote->phoneNumber());
     QString availstate = m_ui_remote->availstate();
     QVariantMap presencedetails = b_engine->getOptionsUserStatus().value(availstate).toMap();
     if (! m_ui_remote->ctilogin().isEmpty()) {
-        text.append(" ");
-        text.append(presencedetails.value("longname").toString());
+        text.append("\n");
+        text.append(tr("Status : %1").arg(presencedetails.value("longname").toString()));
     }
     setToolTip(text);
     m_presenceColor.setNamedColor(presencedetails.value("color").toString());
