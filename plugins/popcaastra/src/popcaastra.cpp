@@ -84,7 +84,6 @@ void PopcAastra::refreshDestination()
     QHash<QString, UserInfo*>::const_iterator i = users.constBegin();
     int j = 0;
     while (i != users.constEnd()) {
-        qDebug() << "Fullname: " << name;
         grid->setItem(j / cols, j % cols, new QTableWidgetItem(
             QString("%1: %2").arg(j < 26 ? (char)('a' + j) : ' ').arg(i.value()->fullname())));
         ++i;
