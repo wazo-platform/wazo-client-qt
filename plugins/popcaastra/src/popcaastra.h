@@ -57,12 +57,24 @@ public slots:
     void destinationClicked(int col, int row);
     /*! \brief refresh the list containing call destinations */
     void refreshDestination(const QString &);
+    /*! \brief retrieves the channel list from the base engine and refresh the
+     *  lines list
+     */
+    void refreshLines(const QString &);
     /*! \brief turns up the volume of the phone */
     void volUp();
     /*! \brief turns down the volume of the phone */
     void volDown();
+    void updateUserConfig(const QString &);
+    void updatePhoneConfig(const QString &);
 private:
     Ui::PopcAastra *ui;
+    void debugChannels() const;
+    void debugIncomingCalls();
+    QString m_fullname; // my fullname (Pascal Cadotte)
+    QString m_sipuser;  // my sip user id (SIP/ewn1j9)
+    // Channels that should be shown on the incoming call list
+    QHash<QString, ChannelInfo*> m_incoming;
 };
 
 #endif /* __POPCAASTRA_H__ */

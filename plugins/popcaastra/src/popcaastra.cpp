@@ -39,6 +39,7 @@
 #include "popcaastra.h"
 #include "../ui_popcaastra.h"
 #include "userinfo.h"
+#include "channelinfo.h"
 #include "aastrasipnotify.h"
 
 // TODO: make dest_nb_col a config option
@@ -53,16 +54,50 @@
 PopcAastra::PopcAastra(QWidget *parent)
     : XLet(parent), ui(new Ui::PopcAastra)
 {
+    m_fullname = "";
+    m_sipuser = "";
     ui->setupUi(this);
     setTitle(tr("POPC Aastra operator"));
-
     // Signals / slots
+    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
+            this, SLOT(updateUserConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
+            this, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            this, SLOT(updatePhoneStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            this, SLOT(updateAgentStatus(const QString &)));
     connect(ui->destinationGrid, SIGNAL(cellDoubleClicked(int, int)),
-            this, SLOT(destinationClicked(int, int)));
+                this, SLOT(destinationClicked(int, int)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
                 this, SLOT(refreshDestination(const QString &)));
+    connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
+                this, SLOT(refreshLines(const QString &)));
     connect(ui->btn_vol_up, SIGNAL(clicked()), this, SLOT(volUp()));
     connect(ui->btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
+}
+
+void PopcAastra::updateAgentConfig(const QString &agent)
+{
+
+}
+
+
+void PopcAastra::updatePhoneStatus(const QString & phone)
+{
+    qDebug() << "updatePhoneStatus";
+}
+
+void PopcAastra::updatePhoneConfig(const QString & phone)
+{
+    qDebug() << "updatePhoneConfig";
+}
+
+void PopcAastra::updateUserConfig(const QString & user)
+{
+    qDebug() << "updateUserConfig";
 }
 
 void PopcAastra::volUp()
@@ -78,6 +113,77 @@ void PopcAastra::volDown()
 void PopcAastra::destinationClicked(int col, int row)
 {
     qDebug() << "Cell clicked " << col << "x" << row;
+}
+
+void PopcAastra::refreshLines(const QString &chan)
+{
+    if (m_fullname == "") {
+        m_fullname = b_engine->getXivoClientUser()->fullname();
+    }
+    QHash<QString, ChannelInfo*> channels = b_engine->channels();
+    ChannelInfo* chaninfo = channels.value(chan);
+    if (m_sipuser == "" && chaninfo->peerdisplay() == m_fullname) {
+        QStringList parts = chaninfo->xchannel().split("/");
+        for (int i = 0; i < parts.size(); ++i) {
+            qDebug() << QString("%1 is %2").arg(i).arg(parts.at(i));
+        }
+        m_sipuser = QString("SIP/%1").arg(parts.at(2).split("-").at(0));
+    }
+
+    if (m_sipuser != "" && !(chaninfo->channel().startsWith(m_sipuser, Qt::CaseInsensitive))) {
+        qDebug() << "Not my channel, updating...";
+        qDebug() << chaninfo->toString();
+        if (m_incoming.contains(chaninfo->xchannel())) {
+            // update
+            m_incoming[chaninfo->xchannel()] = chaninfo;
+            if (chaninfo->commstatus() == "linked-called") {
+                qDebug() << "Call complete removing";
+                m_incoming.erase(m_incoming.find(chaninfo->xchannel()));
+            }
+        } else {
+            // Add
+            m_incoming[chaninfo->xchannel()] = chaninfo;
+        }
+    }
+    debugIncomingCalls();
+}
+
+void PopcAastra::debugIncomingCalls()
+{
+    qDebug() << "Incoming calls: " << m_incoming.size();
+    QHash<QString, ChannelInfo*>::iterator i = m_incoming.begin();
+    while (i != m_incoming.end()) {
+        //if (! b_engine->channels().contains(i.key())) {
+        //    //qDebug() << "Removing this channel";
+        //    m_incoming.erase(i++);
+        //    continue;
+        //}
+        ChannelInfo* chaninfo = i.value();
+        //qDebug() << chaninfo->toString();
+        qDebug() << "==================================================";
+        ++i;
+    }
+}
+
+void PopcAastra::debugChannels() const
+{
+    UserInfo* me = b_engine->getXivoClientUser();
+    QString myName = me->fullname();
+    qDebug() << "Name: " << myName;
+    int j = 0;
+    QHash<QString, ChannelInfo *>::const_iterator i = b_engine->channels().constBegin();
+    while (i !=  b_engine->channels().constEnd()) {
+        qDebug() << "Key:" << i.key();
+        ChannelInfo* chan = i.value();
+        qDebug() << "Direction: "   << chan->direction();
+        qDebug() << "line number "  << chan->linenumber();
+        qDebug() << "comm status "  << chan->commstatus();
+        qDebug() << "Peer display " << chan->peerdisplay();
+        qDebug() << "xChannel "     << chan->xchannel();
+        qDebug() << "talking to "   << chan->talkingto_id();
+        qDebug() << "talking to kind " << chan->talkingto_kind();
+        ++i;
+    }
 }
 
 void PopcAastra::refreshDestination(const QString &user)
