@@ -357,7 +357,7 @@ void OutlookPanel::contextMenuEvent(QContextMenuEvent * event)
             QString ipbxid = m_userinfo->ipbxid();
             foreach (const QString phoneid, m_userinfo->phonelist()) {
                 QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-                const PhoneInfo * pi = b_engine->phones().value(xphoneid);
+                const PhoneInfo * pi = b_engine->phone(xphoneid);
                 if (pi == NULL)
                     continue;
                 foreach (const QString channel, pi->channels()) {

@@ -56,7 +56,7 @@ class BASELIB_EXPORT PeerWidget : public BasePeerWidget
     Q_OBJECT
 
     public:
-        PeerWidget(UserInfo *);
+        PeerWidget(const UserInfo *);
         void setName(const QString &);
         void setEngine(BaseEngine *);
         void updateAgentConfig(const QString &);
@@ -82,13 +82,13 @@ class ChitchatButton : public QPushButton
     Q_OBJECT
 
     public:
-        ChitchatButton(QWidget *parent, UserInfo **m_ui);
+        ChitchatButton(QWidget *parent, const UserInfo * * m_ui);
 
     protected:
         bool event(QEvent *event);
 
     private:
-        UserInfo **m_ui;
+        const UserInfo **m_ui;
 
 };
 

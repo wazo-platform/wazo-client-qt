@@ -45,7 +45,7 @@
  *
  * initialize members and tooltip
  */
-BasicPeerWidget::BasicPeerWidget(UserInfo * ui)
+BasicPeerWidget::BasicPeerWidget(const UserInfo * ui)
     : BasePeerWidget(ui),
       m_color(0xcc, 0xcc, 0xcc),
       m_presenceColor(0xcc, 0xcc, 0xcc)
@@ -137,7 +137,7 @@ void BasicPeerWidget::updatePhoneConfig(const QString & xphoneid)
 //     QString ipbxid = m_ui_remote->ipbxid();
 //     if (! m_ui_remote->phonelist().isEmpty()) {
 //         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(m_ui_remote->phonelist()[0]);
-//         const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+//         const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
 //         if (phoneinfo != NULL) {
 //             QString color = "white"; // XXXX function of phoneinfo->hintstatus();
 //             m_color.setNamedColor(color);

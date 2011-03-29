@@ -268,7 +268,7 @@ void XletAgentsNext::setAgentProps(const QString & idx)
 {
     QString agentid = m_agent_labels[idx]->property("agentid").toString();
     QString groupid = m_agent_labels[idx]->property("groupid").toString();
-    AgentInfo * ainfo = b_engine->agents()[agentid];
+    const AgentInfo * ainfo = b_engine->agent(agentid);
 
     QVariantMap properties = ainfo->properties();
     QString agstatus = properties.value("agentstats").toMap().value("status").toString();
@@ -348,13 +348,13 @@ void XletAgentsNext::setAgentProps(const QString & idx)
     if (calldirection.isEmpty())
         foreach (QString qname_group, groupqueues) {
             QString trueqid = "";
-            foreach (QString qid, b_engine->queues().keys())
-                if(qname_group == b_engine->queues()[qid]->queueName()) {
+            foreach (QString qid, b_engine->iterover("queues").keys())
+                if(qname_group == b_engine->queue(qid)->queueName()) {
                     trueqid = qid;
                     break;
                 }
             if (! trueqid.isEmpty()) {
-                QString id = b_engine->queues()[trueqid]->id();
+                QString id = b_engine->queue(trueqid)->id();
                 QString pstatus = qvm.value(id).toMap().value("Paused").toString();
                 // qDebug() << idx << idxa << qname_group
                 // << qvm[qname_group].toMap().value("Status").toString()
@@ -499,7 +499,7 @@ void XletAgentsNext::agentClicked(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         QString agentid = sender()->property("agentid").toString();
         QString groupid = sender()->property("groupid").toString();
-        AgentInfo *ainfo = b_engine->agents()[agentid];
+        const AgentInfo * ainfo = b_engine->agent(agentid);
         QPoint where = event->globalPos();
 
         QString ipbxid = ainfo->ipbxid();
@@ -521,8 +521,8 @@ void XletAgentsNext::agentClicked(QMouseEvent *event)
 
         QPushButton *q_pause;
         bool isinpause = false;
-        foreach (QString queueid, b_engine->queues().keys()) {
-            QueueInfo * qinfo = b_engine->queues()[queueid];
+        foreach (QString queueid, b_engine->iterover("queues").keys()) {
+            const QueueInfo * qinfo = b_engine->queue(queueid);
             QString queuename = qinfo->queueName();
             if (m_title[groupid]->property("queues").toStringList().contains(queuename)) {
                 QVariantMap qvm = ainfo->properties().value("queues_by_agent").toMap().value(queuename).toMap();
@@ -609,9 +609,9 @@ void XletAgentsNext::actionclicked()
     QString agentid = sender()->property("agentid").toString();
     QString groupid = sender()->property("groupid").toString();
 
-    if (! b_engine->agents().keys().contains(agentid))
+    const AgentInfo * ainfo = b_engine->agent(agentid);
+    if (ainfo == NULL)
         return;
-    AgentInfo * ainfo = b_engine->agents()[agentid];
     QString ipbxid = ainfo->ipbxid();
     QVariantMap ipbxcommand;
 
@@ -641,11 +641,11 @@ void XletAgentsNext::refreshContents()
         m_agent_labels.remove(idx);
     }
 
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
+    QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(b_engine->iterover("agents"));
     while( iter.hasNext() ) {
         iter.next();
         QString agentid = iter.key();
-        AgentInfo * ainfo = iter.value();
+        AgentInfo * ainfo = (AgentInfo *) iter.value();
 
         QString agentnumber = ainfo->agentNumber();
         QString agstatus = ainfo->properties().value("agentstats").toMap().value("status").toString();
@@ -654,7 +654,7 @@ void XletAgentsNext::refreshContents()
         if (agstatus != "AGENT_LOGGEDOFF")
             foreach (QString qid, agqjoined.keys()) {
                 QString fullqid = QString("%1/%2").arg(ainfo->ipbxid()).arg(qid);
-                QString qname = b_engine->queues().value(fullqid)->queueName();
+                QString qname = b_engine->queue(fullqid)->queueName();
 
                 if (! agqjoined.value(qid).toMap().isEmpty()) {
                     QString sstatus = agqjoined.value(qid).toMap().value("Status").toString();
@@ -726,12 +726,12 @@ void XletAgentsNext::newAgentList(const QStringList &)
 void XletAgentsNext::newQueueList(const QStringList & /*qlist*/)
 {
     // qDebug() << Q_FUNC_INFO << qlist;
-    QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(b_engine->queues());
+    QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(b_engine->iterover("queues"));
     while (iter.hasNext()) {
         iter.next();
         QString queueid = iter.key();
         // if (list.contains(queueid)) {
-        QueueInfo *qinfo = iter.value();
+        QueueInfo * qinfo = (QueueInfo *) iter.value();
         newQueue(qinfo->ipbxid(), qinfo->queueName(), qinfo->properties());
         // }
     }

@@ -265,6 +265,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
         return;
     m_user->setText(m_ui->fullname());
     m_phonenum->setText(m_ui->phoneNumber());
+    qDebug() << Q_FUNC_INFO << "ZZZ" << xuserid << m_xuserid << m_ui->phoneNumber();
     m_phonenum->setToolTip(tr("Server: %1\n"
                               "Context: %2")
                            .arg(m_ui->ipbxid())
@@ -283,7 +284,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
     QString ipbxid = m_ui->ipbxid();
     foreach(QString phoneid, m_ui->phonelist()) {
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-        const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+        const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
         if (phoneinfo == NULL)
             continue;
         foreach (const QString channel, phoneinfo->channels()) {
@@ -310,7 +311,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
 void IdentityDisplay::updateUserStatus(const QString & xuserid)
 {
     // qDebug() << Q_FUNC_INFO << xuserid;
-    UserInfo * userinfo = b_engine->users().value(xuserid);
+    const UserInfo * userinfo = b_engine->user(xuserid);
     if (userinfo == NULL)
         return;
 }

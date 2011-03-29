@@ -55,15 +55,17 @@ class QSslError;
 
 class Xlet;
 
-#include <userinfo.h>
-#include <phoneinfo.h>
-#include <agentinfo.h>
-#include <queueinfo.h>
-#include <meetmeinfo.h>
-#include <parkinginfo.h>
-#include <channelinfo.h>
+#include "userinfo.h"
+#include "phoneinfo.h"
+#include "trunkinfo.h"
+#include "agentinfo.h"
+#include "queueinfo.h"
+#include "groupinfo.h"
+#include "meetmeinfo.h"
+#include "parkinginfo.h"
+#include "channelinfo.h"
 
-#include <dstore/src/dstore.h>
+#include "dstore/src/dstore.h"
 
 struct e_callback {
     void (*cb)(const QVariantMap &, void *);
@@ -172,16 +174,29 @@ class BASELIB_EXPORT BaseEngine: public QObject
                                 void (*)(const QVariantMap &map, void *udata), void *udata);
         void sendJsonCommand(const QVariantMap &);
 
-        const QHash<QString, AgentInfo *> agents() const
-                { return m_agents; }; //!< Return the agents to any Xlet
-        const QHash<QString, QueueInfo *> queues() const
-                { return m_queues; }; //!< Return the queues to any Xlet
-        const QHash<QString, PhoneInfo *> phones() const
-                { return m_phones; }; //!< Return the phones to any Xlet
-        const QHash<QString, UserInfo *>  users() const
-                { return m_users; };  //!< Return the users to any Xlet
+        QHash<QString, newXInfoProto> m_xinfoList;  //!< XInfo constructors
+
+        bool hasAgent(const QString & xid) { return m_anylist.value("agents").contains(xid); };
+        bool hasQueue(const QString & xid) { return m_anylist.value("queues").contains(xid); };
+
+        QHash<QString, XInfo *> iterover(const QString & mode) { return m_anylist.value(mode); };
+
+        const UserInfo * user(const QString & id) const
+                { return (const UserInfo *) m_anylist.value("users").value(id); };  //!< Return the user to any Xlet
+        const PhoneInfo * phone(const QString & id) const
+                { return (const PhoneInfo *) m_anylist.value("phones").value(id); };  //!< Return the phone to any Xlet
+        const TrunkInfo * trunk(const QString & id) const
+                { return (const TrunkInfo *) m_anylist.value("trunks").value(id); };  //!< Return the trunk to any Xlet
+        const AgentInfo * agent(const QString & id) const
+                { return (const AgentInfo *) m_anylist.value("agents").value(id); };  //!< Return the agent to any Xlet
+        const QueueInfo * queue(const QString & id) const
+                { return (const QueueInfo *) m_anylist.value("queues").value(id); };  //!< Return the queue to any Xlet
+        const GroupInfo * group(const QString & id) const
+                { return (const GroupInfo *) m_anylist.value("groups").value(id); };  //!< Return the group to any Xlet
+
         const QHash<QString, ChannelInfo *>  channels() const
                 { return m_channels; };  //!< Return the channels to any Xlet
+
         const QHash<QString, QHash<QString, ParkingInfo *> > parking() const
                 { return m_parking; }; //!< Return the parking to any Xlet
 
@@ -214,8 +229,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void featurePutOpt(const QString &, bool);
         void featurePutForward(const QString &, bool, const QString &);
         void askFeatures();
-        void askCallerIds0();
-        void askCallerIds();
+        void fetchLists();
         void setKeepaliveinterval(uint);  //!< set keep alive interval
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
         void meetmeAction(const QString &, const QString &);
@@ -329,10 +343,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
                                 const QVariantMap &);
         QStringList updateAgentQueue(const QString &, const QString &,
                                      const QVariantMap &);
-        void clearUserList();
-        void clearPhoneList();
-        void clearAgentList();
-        void clearQueueList();
+        void clearLists();
         void clearChannelList();
 
         // Class Members
@@ -426,15 +437,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         bool m_forced_to_disconnect;    //!< set to true when disconnected by server
 
         // miscellaneous statuses to share between xlets
-        QHash<QString, UserInfo *> m_users;    //!< List of User Informations
-        QHash<QString, PhoneInfo *> m_phones;  //!< List of Phone informations
+        QHash<QString, QHash<QString, XInfo *> > m_anylist;
+        /* QHash<QString, VoicemailInfo *> m_voicemails;  //!< List of Queue informations */
         QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
-
-        QHash<QString, AgentInfo *> m_agents;  //!< List of Agent informations
-        QHash<QString, QueueInfo *> m_queues;  //!< List of Queue informations
-/*         QHash<QString, GroupInfo *> m_groups;  //!< List of Group informations */
-/*         QHash<QString, VoicemailInfo *> m_voicemails;  //!< List of Queue informations */
-/*         QHash<QString, TrunkInfo *> m_trunks;  //!< List of Queue informations */
         QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 
         DStore *m_tree;

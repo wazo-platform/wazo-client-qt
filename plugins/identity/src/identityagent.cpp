@@ -79,7 +79,7 @@ void IdentityAgent::updateAgentConfig(const QString & xagentid)
 {
     if(m_xagentid != xagentid)
         return;
-    AgentInfo * agentinfo = b_engine->agents().value(m_xagentid);
+    const AgentInfo * agentinfo = b_engine->agent(m_xagentid);
     if (agentinfo == NULL)
         return;
     QString agentnumber = agentinfo->agentNumber();
@@ -90,7 +90,7 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
 {
     if(m_xagentid != xagentid)
         return;
-    AgentInfo * agentinfo = b_engine->agents().value(m_xagentid);
+    const AgentInfo * agentinfo = b_engine->agent(m_xagentid);
     if (agentinfo == NULL)
         return;
 

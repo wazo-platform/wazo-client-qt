@@ -39,10 +39,11 @@
 #include <QVariant>
 #include <QHash>
 #include <QMap>
+#include "xinfo.h"
 
 /*! \brief Store informations on a user
  */
-class BASELIB_EXPORT UserInfo
+class BASELIB_EXPORT UserInfo : public XInfo
 {
     public:
         UserInfo(const QString &, const QString &);
@@ -78,7 +79,6 @@ class BASELIB_EXPORT UserInfo
         const QString & ctilogin() const;
         const QString & agentid() const;
         const QString & xagentid() const;
-        const QString & ipbxid() const;
         const QString & context() const;
         int simultcalls() const { return m_simultcalls; };
 
@@ -92,9 +92,6 @@ class BASELIB_EXPORT UserInfo
         QString toString() const;
 
     private:
-        QString m_ipbxid;  //!< IPBX id (for main phone)
-        QString m_userid;  //!< user id
-        QString m_xuserid;  //!< user id
         QString m_company;  //!< user company
         QString m_ctilogin;  //!< user login on cti
         QString m_fullname;  //!< user full name

@@ -221,7 +221,7 @@ void XletQueues::removeQueues(const QString &, const QStringList &queues)
 void XletQueues::updateQueueConfig(const QString & xqueueid)
 {
     // qDebug() << Q_FUNC_INFO << xqueueid;
-    QueueInfo * queueinfo = b_engine->queues().value(xqueueid);
+    const QueueInfo * queueinfo = b_engine->queue(xqueueid);
     if (queueinfo == NULL)
         return;
 
@@ -426,13 +426,13 @@ QWidget* XletQueuesConfigure::buildConfigureQueueList(QWidget *parent)
 
     row = 1;
 
-    QHashIterator<QString, QueueInfo *> i = \
-        QHashIterator<QString, QueueInfo *>(b_engine->queues());
+    QHashIterator<QString, XInfo *> i = \
+        QHashIterator<QString, XInfo *>(b_engine->iterover("queues"));
 
     while (i.hasNext()) {
         column = 0;
         i.next();
-        QueueInfo *qinfo = i.value();
+        QueueInfo * qinfo = (QueueInfo *) i.value();
         queueid = qinfo->id();
 
         displayQueue = new QCheckBox(qinfo->queueName(), root);

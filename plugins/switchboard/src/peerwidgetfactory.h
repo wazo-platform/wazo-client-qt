@@ -47,7 +47,7 @@ class PeerWidgetFactory {
 
     public:
         static BasePeerWidget* newExternalPhonePeerWidget(const QString &label, const QString &number);
-        static BasePeerWidget* newPeerWidget(UserInfo *ui);
+        static BasePeerWidget* newPeerWidget(const UserInfo *ui);
 
     private:
         static QString getSwitchBoardEltType();

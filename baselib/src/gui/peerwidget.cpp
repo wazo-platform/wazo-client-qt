@@ -50,7 +50,7 @@
 
 /*! \brief Constructor
  */
-PeerWidget::PeerWidget(UserInfo * ui)
+PeerWidget::PeerWidget(const UserInfo * ui)
     : BasePeerWidget(ui), m_user_status(NULL), m_agentlbl(NULL), m_mobilelbl(NULL)
 {
     int fsize = 25;
@@ -134,7 +134,7 @@ void PeerWidget::updateAgentConfig(const QString & xagentid)
     m_xagentid = xagentid;
     if (m_xagentid.isEmpty())
         return;
-    AgentInfo * agentinfo = b_engine->agents().value(xagentid);
+    const AgentInfo * agentinfo = b_engine->agent(xagentid);
     if (agentinfo == NULL)
         return;
     m_agentlbl->setAlignment(Qt::AlignCenter);
@@ -148,7 +148,7 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
 {
     if (xagentid != m_xagentid)
         return;
-    AgentInfo * agentinfo = b_engine->agents().value(xagentid);
+    const AgentInfo * agentinfo = b_engine->agent(xagentid);
     if (agentinfo == NULL)
         return;
     QString agentstatus = agentinfo->status();
@@ -195,7 +195,7 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
 {
     if (! m_ui_remote->phonelist().contains(xphoneid))
         return;
-    const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
     if (phoneinfo == NULL)
         return;
 
@@ -251,7 +251,7 @@ bool PeerWidget::pOverMobileLbl(const QPoint &p)
 }
 
 
-ChitchatButton::ChitchatButton(QWidget *parent, UserInfo **peerUi)
+ChitchatButton::ChitchatButton(QWidget *parent, const UserInfo * * peerUi)
     : QPushButton(parent), m_ui(peerUi)
 {
 }

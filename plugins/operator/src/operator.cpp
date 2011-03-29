@@ -339,7 +339,7 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
 {
     if (xphoneid != m_xphoneid)
         return;
-    const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
     if (phoneinfo == NULL)
         return;
 
@@ -434,7 +434,7 @@ QString XletOperator::getPeerChan(QString const &) const
 //     QString ipbxid = m_ui->ipbxid();
 //     foreach (const QString phoneid, m_ui->phonelist()) {
 //         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-//         const PhoneInfo * pi = b_engine->phones().value(xphoneid);
+//         const PhoneInfo * pi = b_engine->phone(xphoneid);
 //         if (pi == NULL)
 //             continue;
 //         foreach (const QString channel, pi->channels()) {

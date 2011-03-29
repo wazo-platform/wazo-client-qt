@@ -46,7 +46,7 @@
  *
  * initialize members.
  */
-BasePeerWidget::BasePeerWidget(UserInfo * ui)
+BasePeerWidget::BasePeerWidget(const UserInfo * ui)
     : m_ui_remote(ui), m_editable(false)
 {
     m_ui_local = b_engine->getXivoClientUser();
@@ -330,7 +330,7 @@ QList<const ChannelInfo *> BasePeerWidget::loopOverChannels(const UserInfo * use
     QList<const ChannelInfo *> channels;
     QString ipbxid = userinfo->ipbxid();
     foreach (const QString xphoneid, userinfo->phonelist()) {
-        const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+        const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
         if (phoneinfo == NULL)
             continue;
         foreach (const QString channel, phoneinfo->channels()) {

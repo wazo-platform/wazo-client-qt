@@ -48,23 +48,22 @@ class UserInfo;
 class BASELIB_EXPORT PeerItem
 {
     public:
-        PeerItem(UserInfo *);
+        PeerItem(const UserInfo *);
         PeerItem(const PeerItem &);
         PeerItem();
 
-        UserInfo* userinfo();
+        const UserInfo * userinfo();
 
         void setWidget(BasePeerWidget * widget) { m_peerwidget = widget; };
         BasePeerWidget * getWidget() { return m_peerwidget; };
         void updateStatus();
         void updateAgentStatus(const QVariant &);
-        void updateName(const QString &);
         void updateDisplayedStatus();
         void updateDisplayedName();
     private:
         BasePeerWidget *m_peerwidget;  //!< related PeerWidget
 
-        UserInfo * m_ui;  // Properties of each peer
+        const UserInfo * m_ui;  // Properties of each peer
 };
 
 #endif

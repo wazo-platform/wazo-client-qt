@@ -31,58 +31,40 @@
  * $Date$
  */
 
-#ifndef __PHONEINFO_H__
-#define __PHONEINFO_H__
+#ifndef __GROUPINFO_H__
+#define __GROUPINFO_H__
 
 #include "baselib_export.h"
 #include <QString>
-#include <QStringList>
 #include <QVariant>
-#include <QVariantMap>
+#include <QMap>
 #include "xinfo.h"
 
-/*! \brief Store Phone information
+/*! \brief Store Group information
  */
-class BASELIB_EXPORT PhoneInfo : public XInfo
+class BASELIB_EXPORT GroupInfo : public XInfo
 {
     public:
-        PhoneInfo(const QString &, const QString &);  //! constructor
+        GroupInfo(const QString &, const QString &);  //! constructor
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
-        const QString & context() const { return m_context; };  //! context this phone belongs to
-        const QString & number() const { return m_number; };  //! phone number
-        const QString & protocol() const { return m_protocol; };  //! phone technology (sip, iax, etc...)
-        const QString & phoneid() const { return m_id; };  //! phone id
-        int simultcalls() const { return m_simultcalls; };  //! phone simultcalls
+        bool updateAgent(const QVariantMap &);  //! update attribute members
+        const QString & context() const;  //! context this group belongs to
+        const QString hintstatus(const QString & key) const {  //! access to the status values of this group
+            return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
+        };
+        const QString & groupNumber() const { return m_groupnumber; };  //! group number
+        const QString & groupName() const  { return m_groupname; };  //! group name
+        const QVariantMap & properties() const;  //! group properties
+        const QVariantMap& comms() const { return m_comms; };  //! current communications of this group
 
-        const QStringList & channels() const { return m_channels; };  //! current communications of this phone
-        const QString & hintstatus() const { return m_hintstatus; }; //! hint status value
-
-        bool enableunc() const { return m_enableunc; };
     private:
-        QString m_protocol;
         QString m_context;
-        QString m_number;
-        int m_simultcalls;
-
-        bool m_initialized;
-        bool m_enable_hint;
-        QString m_hintstatus;
-        QStringList m_channels;
-
-        bool m_enablerna;
-        bool m_enableunc;
-        bool m_enablebusy;
-        QString m_destrna;
-        QString m_destunc;
-        QString m_destbusy;
-
-        bool m_enableautomon;
-        bool m_enablednd;
-        bool m_enablevoicemail;
-        bool m_enablexfer;
-        bool m_incallfilter;
-        bool m_callrecord;
+        QString m_groupname;
+        QString m_groupnumber;
+        QMap<QString, QString> m_hintstatus;
+        QVariantMap m_comms;
+        QVariantMap m_properties;
 };
 
 #endif

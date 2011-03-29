@@ -140,11 +140,11 @@ void SearchPanel::updateDisplay()
         i.next();
         PeerItem * peeritem = i.value();
         BasePeerWidget * peerwidget = peeritem->getWidget();
-        UserInfo * userinfo = peeritem->userinfo();
+        const UserInfo * userinfo = peeritem->userinfo();
         if (userinfo == NULL)
             continue;
         if ((userinfo->fullname().contains(m_searchpattern, Qt::CaseInsensitive) ||
-            (userinfo->phoneNumber().contains(m_searchpattern))) &&
+             (userinfo->phoneNumber().contains(m_searchpattern))) &&
             (naff < m_maxdisplay)) {
             if (peerwidget == NULL) {
                 peerwidget = new PeerWidget(userinfo);
@@ -179,7 +179,7 @@ void SearchPanel::updateUserConfig(const QString & xuserid)
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);
     } else {
-        UserInfo * ui = b_engine->users().value(xuserid);
+        const UserInfo * ui = b_engine->user(xuserid);
         peeritem = new PeerItem(ui);
         m_peerhash.insert(xuserid, peeritem);
     }
@@ -217,7 +217,7 @@ void SearchPanel::updatePhoneConfig(const QString & xphoneid)
         BasePeerWidget * peerwidget = peeritem->getWidget();
         if (peerwidget == NULL)
             continue;
-        UserInfo * userinfo = b_engine->users().value(peerkey);
+        const UserInfo * userinfo = b_engine->user(peerkey);
         if (userinfo == NULL)
             continue;
 
@@ -235,7 +235,7 @@ void SearchPanel::updatePhoneStatus(const QString & xphoneid)
         BasePeerWidget * peerwidget = peeritem->getWidget();
         if (peerwidget == NULL)
             continue;
-        UserInfo * userinfo = b_engine->users().value(peerkey);
+        const UserInfo * userinfo = b_engine->user(peerkey);
         if (userinfo == NULL)
             continue;
 

@@ -38,18 +38,17 @@
 #include <QString>
 #include <QVariant>
 #include <QMap>
+#include "xinfo.h"
 
 /*! \brief Store Queue information
  */
-class BASELIB_EXPORT QueueInfo
+class BASELIB_EXPORT QueueInfo : public XInfo
 {
     public:
         QueueInfo(const QString &, const QString &);  //! constructor
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
         bool updateAgent(const QVariantMap &);  //! update attribute members
-        const QString & ipbxid() const;  //! IPBX this queue belongs to
-        const QString & id() const;  //! reference id of this queue on the server
         const QString & context() const;  //! context this queue belongs to
         const QString hintstatus(const QString & key) const {  //! access to the status values of this queue
             return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
@@ -60,8 +59,6 @@ class BASELIB_EXPORT QueueInfo
         const QVariantMap& comms() const { return m_comms; };  //! current communications of this queue
 
     private:
-        QString m_ipbxid;
-        QString m_id;
         QString m_context;
         QString m_queuename;
         QString m_queuenumber;

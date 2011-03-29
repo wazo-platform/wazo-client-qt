@@ -68,7 +68,7 @@ BasePeerWidget* PeerWidgetFactory::newExternalPhonePeerWidget(
  * return an instance of BasicPeerWidget or PeerWidget
  * depending on the value of the "switchboard-elt-type" gui setting of the BaseEngine.
  */
-BasePeerWidget* PeerWidgetFactory::newPeerWidget(UserInfo * ui)
+BasePeerWidget* PeerWidgetFactory::newPeerWidget(const UserInfo * ui)
 {
     BasePeerWidget *w;
 
@@ -80,4 +80,3 @@ BasePeerWidget* PeerWidgetFactory::newPeerWidget(UserInfo * ui)
 
     return w;
 }
-

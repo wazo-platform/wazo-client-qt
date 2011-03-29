@@ -41,11 +41,8 @@
  */
 UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
-    : m_fullname("")
+    : XInfo(ipbxid, id), m_fullname("")
 {
-    m_ipbxid = ipbxid;
-    m_userid = id;
-    m_xuserid = QString("%1/%2").arg(ipbxid).arg(id);
 }
 
 bool UserInfo::updateConfig(const QVariantMap & qvm)
@@ -186,12 +183,12 @@ const QString & UserInfo::voicemailNumber() const
 
 const QString & UserInfo::userid() const
 {
-    return m_userid;
+    return m_id;
 }
 
 const QString & UserInfo::xuserid() const
 {
-    return m_xuserid;
+    return m_xid;
 }
 
 const QString & UserInfo::ctilogin() const
@@ -227,11 +224,6 @@ const QString& UserInfo::context() const
     return m_context;
 }
 
-const QString& UserInfo::ipbxid() const
-{
-    return m_ipbxid;
-}
-
 const QString & UserInfo::availstate() const
 {
     return m_availstate;
@@ -251,7 +243,7 @@ QString UserInfo::toString() const
 {
     QString str;
 
-    str = "Userid=" + m_userid + " company=" + m_company + " fullname=" + m_fullname;
+    str = "Userid=" + m_id + " company=" + m_company + " fullname=" + m_fullname;
     str += " phonenum=" + m_phonenumber + " mobile=" + m_mobilenumber;
     str += " m_voicemailnum=" + m_voicemailnumber;
     str += " nphones=" + QString::number(m_phoneidlist.size());

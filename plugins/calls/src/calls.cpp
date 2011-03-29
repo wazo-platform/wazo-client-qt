@@ -146,7 +146,7 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
         return;
     if (! m_monitored_ui->phonelist().contains(xphoneid))
         return;
-    const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
     if (phoneinfo == NULL)
         return;
 
