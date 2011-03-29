@@ -41,7 +41,7 @@
 #include <QMap>
 #include "xinfo.h"
 
-/*! \brief Store informations on a user
+/*! \brief Store User information
  */
 class BASELIB_EXPORT UserInfo : public XInfo
 {

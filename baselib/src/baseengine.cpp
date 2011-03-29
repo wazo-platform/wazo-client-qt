@@ -69,6 +69,10 @@
 
 BASELIB_EXPORT BaseEngine * b_engine;
 static const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
+static const QStringList GenLists = (QStringList()
+                                     << "users" << "phones" << "trunks"
+                                     << "agents" << "queues" << "groups" << "meetmes"
+                                     << "voicemails" << "incomingcalls");
 static CtiConn * m_ctiConn;
 
 BaseEngine::BaseEngine(QSettings *settings,
@@ -99,6 +103,8 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_xinfoList.insert("queues", newXInfo<QueueInfo>);
     m_xinfoList.insert("groups", newXInfo<GroupInfo>);
     m_xinfoList.insert("meetmes", newXInfo<MeetmeInfo>);
+    m_xinfoList.insert("voicemails", newXInfo<VoiceMailInfo>);
+    m_xinfoList.insert("incomingcalls", newXInfo<IncomingCallsInfo>);
 
     // TCP connection with CTI Server
     m_ctiserversocket = new QSslSocket(this);
@@ -1235,13 +1241,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QStringList listid = datamap.value("list").toStringList();
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if ((listname == "users") ||
-                    (listname == "phones") ||
-                    (listname == "trunks") ||
-                    (listname == "agents") ||
-                    (listname == "queues") ||
-                    (listname == "groups") ||
-                    (listname == "meetmes")) {
+                if (GenLists.contains(listname)) {
                     if (! m_anylist.contains(listname))
                         m_anylist[listname].clear();
                     newXInfoProto construct = m_xinfoList.value(listname);
@@ -1251,7 +1251,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     }
                 }
             }
-            // } else if (function == "fetchstatus") {
 
             QVariantMap command;
             command["class"] = "getlist";
@@ -1268,13 +1267,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
             QVariantMap config = datamap.value("config").toMap();
             bool haschanged = false;
-            if ((listname == "users") ||
-                (listname == "phones") ||
-                (listname == "trunks") ||
-                (listname == "agents") ||
-                (listname == "queues") ||
-                (listname == "groups") ||
-                (listname == "meetmes")) {
+            if (GenLists.contains(listname)) {
                 if (! m_anylist.value(listname).contains(xid)) {
                     newXInfoProto construct = m_xinfoList.value(listname);
                     XInfo * xinfo = construct(ipbxid, id);
@@ -1314,13 +1307,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
             QVariantMap status = datamap.value("status").toMap();
             bool haschanged = false;
-            if ((listname == "users") ||
-                (listname == "phones") ||
-                (listname == "trunks") ||
-                (listname == "agents") ||
-                (listname == "queues") ||
-                (listname == "groups") ||
-                (listname == "meetmes")) {
+            if (GenLists.contains(listname)) {
                 if (m_anylist.value(listname).contains(xid))
                     haschanged = m_anylist.value(listname).value(xid)->updateStatus(status);
             } else if (listname == "channels") {
@@ -2083,13 +2070,12 @@ void BaseEngine::fetchLists()
     QStringList getlists;
     getlists = (QStringList()
                 << "users" << "phones" << "trunks"
-                << "queues" << "groups" << "agents"
-                << "voicemails" << "meetmes" << "incomingcalls");
+                << "agents" << "queues" << "groups" << "meetmes"
+                << "voicemails" << "incomingcalls");
     foreach (QString kind, getlists) {
         command["listname"] = kind;
         sendJsonCommand(command);
     }
-
 
     if (m_loginkind == 2) {
         QVariantMap ipbxcommand;

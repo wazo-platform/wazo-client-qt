@@ -62,6 +62,9 @@ class Xlet;
 #include "queueinfo.h"
 #include "groupinfo.h"
 #include "meetmeinfo.h"
+#include "voicemailinfo.h"
+#include "incomingcallsinfo.h"
+
 #include "parkinginfo.h"
 #include "channelinfo.h"
 
@@ -438,7 +441,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // miscellaneous statuses to share between xlets
         QHash<QString, QHash<QString, XInfo *> > m_anylist;
-        /* QHash<QString, VoicemailInfo *> m_voicemails;  //!< List of Queue informations */
         QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
         QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 
