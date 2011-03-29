@@ -402,7 +402,7 @@ void XletOperator::updateChannelStatus(const QString & xchannelid)
 void XletOperator::updateUserConfig(const QString & xuserid)
 {
     m_ui = b_engine->getXivoClientUser();
-    m_xuserid = m_ui->xuserid();
+    m_xuserid = m_ui->xid();
     m_xphoneid = m_ui->phonelist().join("");
 
     if (! m_ui)

@@ -260,12 +260,11 @@ void IdentityDisplay::svcSummary()
 void IdentityDisplay::updateUserConfig(const QString & xuserid)
 {
     m_ui = b_engine->getXivoClientUser();
-    m_xuserid = m_ui->xuserid();
+    m_xuserid = m_ui->xid();
     if (xuserid != m_xuserid)
         return;
     m_user->setText(m_ui->fullname());
     m_phonenum->setText(m_ui->phoneNumber());
-    qDebug() << Q_FUNC_INFO << "ZZZ" << xuserid << m_xuserid << m_ui->phoneNumber();
     m_phonenum->setToolTip(tr("Server: %1\n"
                               "Context: %2")
                            .arg(m_ui->ipbxid())

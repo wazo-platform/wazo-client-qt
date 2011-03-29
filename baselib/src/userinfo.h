@@ -74,8 +74,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
         const QString & voicemailId() const;
         const QStringList & phonelist() const;
         const QString & fullname() const;
-        const QString & userid() const;
-        const QString & xuserid() const;
         const QString & ctilogin() const;
         const QString & agentid() const;
         const QString & xagentid() const;

@@ -81,8 +81,7 @@ PeerWidget::PeerWidget(const UserInfo * ui)
 
     if (!m_ui_remote->ctilogin().isEmpty()) {
         m_user_status = new ChitchatButton(peer, &m_ui_remote);
-        m_user_status->setProperty("userid", ui->userid());
-        m_user_status->setProperty("astid", ui->ipbxid());
+        m_user_status->setProperty("xuserid", ui->xid());
         m_user_status->setIconSize(QSize(fsize, fsize));
         m_user_status->setFixedWidth(fsize);
         m_user_status->setFlat(true);
@@ -263,7 +262,7 @@ bool ChitchatButton::event(QEvent *e)
     if ((e->type() == QEvent::MouseButtonPress) ||
         (e->type() == QEvent::MouseButtonDblClick)) {
         if (((*m_ui)->availstate() == "xivo_unknown") ||
-            (b_engine->getFullId() == (*m_ui)->userid())) {
+            (b_engine->getFullId() == (*m_ui)->xid())) {
             return true;
         }
     }

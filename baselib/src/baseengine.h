@@ -444,7 +444,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
         QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 
-        DStore *m_tree;
+        DStore * m_tree;
     public:
         DStore* tree() { return m_tree; };
         QVariant eV(const QString &req) {

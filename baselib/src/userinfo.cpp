@@ -181,16 +181,6 @@ const QString & UserInfo::voicemailNumber() const
     return m_voicemailnumber;
 }
 
-const QString & UserInfo::userid() const
-{
-    return m_id;
-}
-
-const QString & UserInfo::xuserid() const
-{
-    return m_xid;
-}
-
 const QString & UserInfo::ctilogin() const
 {
     return m_ctilogin;
