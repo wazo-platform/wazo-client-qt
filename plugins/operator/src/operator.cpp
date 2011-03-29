@@ -339,7 +339,7 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
 {
     if (xphoneid != m_xphoneid)
         return;
-    const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
     if (phoneinfo == NULL)
         return;
 
@@ -394,22 +394,22 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
     }
 }
 
-void XletOperator::updateChannelStatus(const QString & xchannelid)
+void XletOperator::updateChannelStatus(const QString &)
 {
-    qDebug() << Q_FUNC_INFO << xchannelid;
+    // qDebug() << Q_FUNC_INFO << xchannelid;
 }
 
 void XletOperator::updateUserConfig(const QString & xuserid)
 {
     m_ui = b_engine->getXivoClientUser();
-    m_xuserid = m_ui->xuserid();
+    m_xuserid = m_ui->xid();
     m_xphoneid = m_ui->phonelist().join("");
 
     if (! m_ui)
         return;
     if (xuserid != m_xuserid)
         return;
-    qDebug() << Q_FUNC_INFO << xuserid;
+    // qDebug() << Q_FUNC_INFO << xuserid;
     m_lbl->setText(m_ui->fullname());
 }
 
@@ -419,7 +419,7 @@ void XletOperator::updateUserStatus(const QString & xuserid)
         return;
     if (xuserid != m_xuserid)
         return;
-    qDebug() << Q_FUNC_INFO << xuserid;
+    // qDebug() << Q_FUNC_INFO << xuserid;
 }
 
 /*! \brief get the peer channel linked to channel
@@ -434,7 +434,7 @@ QString XletOperator::getPeerChan(QString const &) const
 //     QString ipbxid = m_ui->ipbxid();
 //     foreach (const QString phoneid, m_ui->phonelist()) {
 //         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-//         const PhoneInfo * pi = b_engine->phones().value(xphoneid);
+//         const PhoneInfo * pi = b_engine->phone(xphoneid);
 //         if (pi == NULL)
 //             continue;
 //         foreach (const QString channel, pi->channels()) {

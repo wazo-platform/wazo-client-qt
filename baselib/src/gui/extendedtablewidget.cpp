@@ -87,7 +87,7 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
                 QString ipbxid = ui->ipbxid();
                 foreach (const QString phoneid, ui->phonelist()) {
                     QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-                    const PhoneInfo * pi = b_engine->phones().value(xphoneid);
+                    const PhoneInfo * pi = b_engine->phone(xphoneid);
                     if (! pi)
                         continue;
                     foreach (const QString channel, pi->channels()) {

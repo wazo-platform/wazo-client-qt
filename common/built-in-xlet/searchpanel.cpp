@@ -140,16 +140,20 @@ void SearchPanel::updateDisplay()
         i.next();
         PeerItem * peeritem = i.value();
         BasePeerWidget * peerwidget = peeritem->getWidget();
-        UserInfo * userinfo = peeritem->userinfo();
+        const UserInfo * userinfo = peeritem->userinfo();
         if (userinfo == NULL)
             continue;
         if ((userinfo->fullname().contains(m_searchpattern, Qt::CaseInsensitive) ||
-            (userinfo->phoneNumber().contains(m_searchpattern))) &&
+             (userinfo->phoneNumber().contains(m_searchpattern))) &&
             (naff < m_maxdisplay)) {
             if (peerwidget == NULL) {
                 peerwidget = new PeerWidget(userinfo);
                 peerwidget->updateAgentConfig(userinfo->xagentid());
                 peerwidget->updateAgentStatus(userinfo->xagentid());
+                foreach (QString xphoneid, userinfo->phonelist()) {
+                    peerwidget->updatePhoneConfig(xphoneid);
+                    peerwidget->updatePhoneStatus(xphoneid);
+                }
                 peeritem->setWidget(peerwidget);
                 peeritem->updateDisplayedStatus();
                 peeritem->updateDisplayedName();
@@ -175,7 +179,7 @@ void SearchPanel::updateUserConfig(const QString & xuserid)
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);
     } else {
-        UserInfo * ui = b_engine->users().value(xuserid);
+        const UserInfo * ui = b_engine->user(xuserid);
         peeritem = new PeerItem(ui);
         m_peerhash.insert(xuserid, peeritem);
     }
@@ -193,26 +197,51 @@ void SearchPanel::updateUserStatus(const QString & xuserid)
 
 void SearchPanel::updateAgentConfig(const QString & xagentid)
 {
+    qDebug() << Q_FUNC_INFO << xagentid;
 }
 
 void SearchPanel::updateAgentStatus(const QString & xagentid)
 {
+    qDebug() << Q_FUNC_INFO << xagentid;
     // XXXX find xuserid
 //     if (m_peerhash.contains(xuserid))
 //         m_peerhash.value(xuserid)->updateAgentStatus(xagentid);
-    return;
 }
 
 void SearchPanel::updatePhoneConfig(const QString & xphoneid)
 {
+    foreach (QString peerkey, m_peerhash.keys()) {
+        PeerItem * peeritem = m_peerhash.value(peerkey);
+        if (peeritem == NULL)
+            continue;
+        BasePeerWidget * peerwidget = peeritem->getWidget();
+        if (peerwidget == NULL)
+            continue;
+        const UserInfo * userinfo = b_engine->user(peerkey);
+        if (userinfo == NULL)
+            continue;
+
+        if (userinfo->phonelist().contains(xphoneid))
+            peerwidget->updatePhoneConfig(xphoneid);
+    }
 }
 
 void SearchPanel::updatePhoneStatus(const QString & xphoneid)
 {
-    // XXXX find xuserid
-//     if (m_peerhash.contains(xuserid))
-//         m_peerhash.value(xuserid)->updateAgentStatus(xagentid);
-    return;
+    foreach (QString peerkey, m_peerhash.keys()) {
+        PeerItem * peeritem = m_peerhash.value(peerkey);
+        if (peeritem == NULL)
+            continue;
+        BasePeerWidget * peerwidget = peeritem->getWidget();
+        if (peerwidget == NULL)
+            continue;
+        const UserInfo * userinfo = b_engine->user(peerkey);
+        if (userinfo == NULL)
+            continue;
+
+        if (userinfo->phonelist().contains(xphoneid))
+            peerwidget->updatePhoneStatus(xphoneid);
+    }
 }
 
 /*! \brief remove on peer
@@ -221,8 +250,8 @@ void SearchPanel::removePeer(const QString &ext)
 {
     // qDebug() << Q_FUNC_INFO << ext;
     if (m_peerhash.contains(ext)) {
-        PeerItem *peeritem = m_peerhash.value(ext);
-        BasePeerWidget *peerwidget = peeritem->getWidget();
+        PeerItem * peeritem = m_peerhash.value(ext);
+        BasePeerWidget * peerwidget = peeritem->getWidget();
         if (m_peerlayout->indexOf(peerwidget) > -1) {
             m_peerlayout->removeWidget(peerwidget);
         }
@@ -237,9 +266,9 @@ void SearchPanel::removePeer(const QString &ext)
 void SearchPanel::removePeers()
 {
     // qDebug() << Q_FUNC_INFO;
-    foreach(QString peerkey, m_peerhash.keys()) {
-        PeerItem *peeritem = m_peerhash[peerkey];
-        BasePeerWidget *peerwidget = peeritem->getWidget();
+    foreach (QString peerkey, m_peerhash.keys()) {
+        PeerItem * peeritem = m_peerhash[peerkey];
+        BasePeerWidget * peerwidget = peeritem->getWidget();
         if (peerwidget) {
                 if (m_peerlayout->indexOf(peerwidget) > -1) {
                     m_peerlayout->removeWidget(peerwidget);

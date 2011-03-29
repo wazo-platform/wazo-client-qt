@@ -260,7 +260,7 @@ void IdentityDisplay::svcSummary()
 void IdentityDisplay::updateUserConfig(const QString & xuserid)
 {
     m_ui = b_engine->getXivoClientUser();
-    m_xuserid = m_ui->xuserid();
+    m_xuserid = m_ui->xid();
     if (xuserid != m_xuserid)
         return;
     m_user->setText(m_ui->fullname());
@@ -283,7 +283,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
     QString ipbxid = m_ui->ipbxid();
     foreach(QString phoneid, m_ui->phonelist()) {
         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-        const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+        const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
         if (phoneinfo == NULL)
             continue;
         foreach (const QString channel, phoneinfo->channels()) {
@@ -310,7 +310,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
 void IdentityDisplay::updateUserStatus(const QString & xuserid)
 {
     // qDebug() << Q_FUNC_INFO << xuserid;
-    UserInfo * userinfo = b_engine->users().value(xuserid);
+    const UserInfo * userinfo = b_engine->user(xuserid);
     if (userinfo == NULL)
         return;
 }

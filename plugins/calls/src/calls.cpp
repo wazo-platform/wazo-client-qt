@@ -89,7 +89,7 @@ XletCalls::XletCalls(QWidget *parent)
 void XletCalls::updateUserConfig(const QString & xuserid)
 {
     if (m_monitored_ui)
-        qDebug() << Q_FUNC_INFO << m_monitored_ui->userid() << xuserid;
+        qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
     else
         qDebug() << Q_FUNC_INFO << xuserid;
 //     if (ui == m_monitored_ui) {
@@ -101,7 +101,7 @@ void XletCalls::updateUserConfig(const QString & xuserid)
 void XletCalls::updateUserStatus(const QString & xuserid)
 {
     if (m_monitored_ui)
-        qDebug() << Q_FUNC_INFO << m_monitored_ui->userid() << xuserid;
+        qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
     else
         qDebug() << Q_FUNC_INFO << xuserid;
 //     if (ui == m_monitored_ui) {
@@ -115,7 +115,7 @@ void XletCalls::updateUserStatus(const QString & xuserid)
 void XletCalls::hupchan(const QString &hangupchan)
 {
     b_engine->actionCall("hangup",
-                         "chan:" + m_monitored_ui->userid() + ":" + hangupchan); // Call
+                         "chan:" + m_monitored_ui->id() + ":" + hangupchan); // Call
 }
 
 /*! \brief transfers the channel to a number
@@ -123,7 +123,7 @@ void XletCalls::hupchan(const QString &hangupchan)
 void XletCalls::transftonumberchan(const QString &chan)
 {
     b_engine->actionCall("transfer",
-                         "chan:" + m_monitored_ui->userid() + ":" + chan,
+                         "chan:" + m_monitored_ui->id() + ":" + chan,
                          "ext:special:dialxlet"); // Call
 }
 
@@ -132,7 +132,7 @@ void XletCalls::transftonumberchan(const QString &chan)
 void XletCalls::parkcall(const QString &chan)
 {
     b_engine->actionCall("transfer",
-                         "chan:" + m_monitored_ui->userid() + ":" + chan,
+                         "chan:" + m_monitored_ui->id() + ":" + chan,
                          "ext:special:parkthecall"); // Call
 }
 
@@ -146,11 +146,12 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
         return;
     if (! m_monitored_ui->phonelist().contains(xphoneid))
         return;
-    const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
     if (phoneinfo == NULL)
         return;
 
     qDebug() << Q_FUNC_INFO << xphoneid << m_affhash.keys() << phoneinfo->channels();
+
     foreach (const QString xchannel, m_affhash.keys()) {
         CallWidget * callwidget = m_affhash[xchannel];
         QString channel = callwidget->channel();
@@ -250,9 +251,9 @@ void XletCalls::dragEnterEvent(QDragEnterEvent *event)
  */
 void XletCalls::monitorPeer(UserInfo *ui)
 {
-    qDebug() << Q_FUNC_INFO << b_engine->getFullId() << ui->xuserid();
+    qDebug() << Q_FUNC_INFO << b_engine->getFullId() << ui->xid();
     //emptyList();
-    if ((b_engine->getFullId() == ui->userid()) ||
+    if ((b_engine->getFullId() == ui->xid()) ||
         (b_engine->enabledFunction("switchboard"))) {
         m_monitored_ui = ui;
         changeTitle(tr("Monitoring : %1").arg(ui->fullname()));

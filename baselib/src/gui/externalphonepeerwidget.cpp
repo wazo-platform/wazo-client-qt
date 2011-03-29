@@ -46,7 +46,9 @@ ExternalPhonePeerWidget::ExternalPhonePeerWidget(
     m_number = number;
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
     setText(label);
-    setToolTip(number);
+    setToolTip(tr("Label : %1\nPhone Number : %2")
+               .arg(label)
+               .arg(number));
     m_editable = true;  // allow "edit" option in context menu
 }
 

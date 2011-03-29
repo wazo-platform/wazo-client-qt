@@ -79,7 +79,7 @@ void IdentityPhoneLine::setText(const QString & text)
 void IdentityPhoneLine::contextMenuEvent(QContextMenuEvent * event)
 {
     QString thischannel;
-    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(m_xphoneid);
     if (phoneinfo == NULL)
         return;
 
@@ -120,7 +120,7 @@ void IdentityPhoneLine::contextMenuEvent(QContextMenuEvent * event)
 
 void IdentityPhoneLine::hangup()
 {
-    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(m_xphoneid);
     if (phoneinfo == NULL)
         return;
     if (sender()) {
@@ -135,7 +135,7 @@ void IdentityPhoneLine::hangup()
 
 void IdentityPhoneLine::answer()
 {
-    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(m_xphoneid);
     if (phoneinfo == NULL)
         return;
     if (sender()) {
@@ -150,7 +150,7 @@ void IdentityPhoneLine::answer()
 
 void IdentityPhoneLine::refuse()
 {
-    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(m_xphoneid);
     if (phoneinfo == NULL)
         return;
     if (sender()) {
@@ -213,7 +213,7 @@ void IdentityPhone::updatePhoneConfig(const QString & xphoneid)
 {
     if (xphoneid != m_xphoneid)
         return;
-    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(m_xphoneid);
     if (phoneinfo == NULL)
         return;
     m_phone->setText(tr("Phone %1").arg(phoneinfo->number()));
@@ -234,13 +234,21 @@ void IdentityPhone::updatePhoneStatus(const QString & xphoneid)
 {
     if (xphoneid != m_xphoneid)
         return;
-    const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
     if (phoneinfo == NULL)
         return;
 
     QPixmap square(10, 10);
-    QString color = "blue"; // XXXX function of phoneinfo->hintstatus();
-    QString longname = "There"; // XXXX function of phoneinfo->hintstatus();
+    QString hintstatus = phoneinfo->hintstatus();
+    QString color = "black";
+    QString longname;
+    if (b_engine->getOptionsPhoneStatus().contains(hintstatus)) {
+        QVariantMap qvmop = b_engine->getOptionsPhoneStatus().value(hintstatus).toMap();
+        color = qvmop.value("color").toString();
+        longname = qvmop.value("longname").toString();
+    } else {
+        longname = tr("Status:%1").arg(hintstatus);
+    }
     square.fill(color);
     m_phonecall->setPixmap(square);
     m_phonecall->setToolTip(longname);
@@ -251,7 +259,7 @@ void IdentityPhone::updatePhoneStatus(const QString & xphoneid)
 
 void IdentityPhone::updateLines(const QStringList & channels)
 {
-    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(m_xphoneid);
     if (phoneinfo == NULL)
         return;
 
@@ -292,7 +300,7 @@ void IdentityPhone::updateLines(const QStringList & channels)
  */
 void IdentityPhone::setPhoneLines()
 {
-    const PhoneInfo * phoneinfo = b_engine->phones().value(m_xphoneid);
+    const PhoneInfo * phoneinfo = b_engine->phone(m_xphoneid);
     if (phoneinfo == NULL)
         return;
     int nphones = phoneinfo->simultcalls();

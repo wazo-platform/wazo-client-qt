@@ -45,7 +45,7 @@
  *
  * initialize members and tooltip
  */
-BasicPeerWidget::BasicPeerWidget(UserInfo * ui)
+BasicPeerWidget::BasicPeerWidget(const UserInfo * ui)
     : BasePeerWidget(ui),
       m_color(0xcc, 0xcc, 0xcc),
       m_presenceColor(0xcc, 0xcc, 0xcc)
@@ -53,9 +53,9 @@ BasicPeerWidget::BasicPeerWidget(UserInfo * ui)
     qDebug() << Q_FUNC_INFO;
     // can grow horizontaly but not verticaly
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-    QString name = (!ui || ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
+    QString name = (ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
     setText(name);
-    setToolTip(ui->phoneNumber());
+    setToolTip(tr("Phone Number : %1").arg(ui->phoneNumber()));
     m_presenceSquareSize = b_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
     if ((m_presenceSquareSize<=0)||(m_presenceSquareSize>20)) {
         m_presenceSquareSize = 5;
@@ -118,29 +118,34 @@ void BasicPeerWidget::paintEvent(QPaintEvent *)
 
 void BasicPeerWidget::updatePresence()
 {
-    QString text = m_ui_remote->phoneNumber();
+    QString text = tr("User Name : %1\nPhone Number : %2")
+        .arg(m_ui_remote->fullname())
+        .arg(m_ui_remote->phoneNumber());
     QString availstate = m_ui_remote->availstate();
     QVariantMap presencedetails = b_engine->getOptionsUserStatus().value(availstate).toMap();
     if (! m_ui_remote->ctilogin().isEmpty()) {
-        text.append(" ");
-        text.append(presencedetails.value("longname").toString());
+        text.append("\n");
+        text.append(tr("Status : %1").arg(presencedetails.value("longname").toString()));
     }
     setToolTip(text);
     m_presenceColor.setNamedColor(presencedetails.value("color").toString());
 }
 
-void BasicPeerWidget::updatePhonesStates()
+void BasicPeerWidget::updatePhoneConfig(const QString & xphoneid)
 {
-    // set the color according to the 1st phone
-    qDebug() << Q_FUNC_INFO;
-    QString ipbxid = m_ui_remote->ipbxid();
-    if (! m_ui_remote->phonelist().isEmpty()) {
-        QString xphoneid = QString("%1/%2").arg(ipbxid).arg(m_ui_remote->phonelist()[0]);
-        const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
-        if (phoneinfo != NULL) {
-            QString color = "white"; // XXXX function of phoneinfo->hintstatus();
-            m_color.setNamedColor(color);
-            update();
-        }
-    }
+//     qDebug() << Q_FUNC_INFO;
+//     QString ipbxid = m_ui_remote->ipbxid();
+//     if (! m_ui_remote->phonelist().isEmpty()) {
+//         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(m_ui_remote->phonelist()[0]);
+//         const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
+//         if (phoneinfo != NULL) {
+//             QString color = "white"; // XXXX function of phoneinfo->hintstatus();
+//             m_color.setNamedColor(color);
+//             update();
+//         }
+//     }
+}
+
+void BasicPeerWidget::updatePhoneStatus(const QString & xphoneid)
+{
 }

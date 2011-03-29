@@ -69,6 +69,10 @@
 
 BASELIB_EXPORT BaseEngine * b_engine;
 static const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
+static const QStringList GenLists = (QStringList()
+                                     << "users" << "phones" << "trunks"
+                                     << "agents" << "queues" << "groups" << "meetmes"
+                                     << "voicemails" << "incomingcalls");
 static CtiConn * m_ctiConn;
 
 BaseEngine::BaseEngine(QSettings *settings,
@@ -91,6 +95,16 @@ BaseEngine::BaseEngine(QSettings *settings,
     setOSInfos(osInfo);
     m_settings = settings;
     loadSettings();
+
+    m_xinfoList.insert("users", newXInfo<UserInfo>);
+    m_xinfoList.insert("phones", newXInfo<PhoneInfo>);
+    m_xinfoList.insert("trunks", newXInfo<TrunkInfo>);
+    m_xinfoList.insert("agents", newXInfo<AgentInfo>);
+    m_xinfoList.insert("queues", newXInfo<QueueInfo>);
+    m_xinfoList.insert("groups", newXInfo<GroupInfo>);
+    m_xinfoList.insert("meetmes", newXInfo<MeetmeInfo>);
+    m_xinfoList.insert("voicemails", newXInfo<VoiceMailInfo>);
+    m_xinfoList.insert("incomingcalls", newXInfo<IncomingCallsInfo>);
 
     // TCP connection with CTI Server
     m_ctiserversocket = new QSslSocket(this);
@@ -144,10 +158,7 @@ void BaseEngine::sslErrors(const QList<QSslError> & qlse)
 BaseEngine::~BaseEngine()
 {
     qDebug() << Q_FUNC_INFO;
-    clearUserList();
-    clearPhoneList();
-    clearAgentList();
-    clearQueueList();
+    clearLists();
     clearChannelList();
 }
 
@@ -407,10 +418,7 @@ void BaseEngine::clearInternalData()
 
     m_sessionid = "";
 
-    clearUserList();
-    clearPhoneList();
-    clearAgentList();
-    clearQueueList();
+    clearLists();
     clearChannelList();
 
     if (m_time.isValid()) {
@@ -466,28 +474,16 @@ void BaseEngine::addToDataBase(QVariantMap & qv)
  *
  * Delete all contained UserInfo objects
  */
-void BaseEngine::clearUserList()
+void BaseEngine::clearLists()
 {
-    QHashIterator<QString, UserInfo *> iter = QHashIterator<QString, UserInfo *>(m_users);
-    while (iter.hasNext()) {
-        iter.next();
-        delete iter.value();
+    foreach (QString listname, m_anylist.keys()) {
+        QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(m_anylist.value(listname));
+        while (iter.hasNext()) {
+            iter.next();
+            delete iter.value();
+        }
+        m_anylist[listname].clear();
     }
-    m_users.clear();
-}
-
-/*! \brief clear the content of m_phones
- *
- * Delete all contained PhoneInfo objects
- */
-void BaseEngine::clearPhoneList()
-{
-    QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(m_phones);
-    while (iter.hasNext()) {
-        iter.next();
-        delete iter.value();
-    }
-    m_phones.clear();
 }
 
 void BaseEngine::clearChannelList()
@@ -498,34 +494,6 @@ void BaseEngine::clearChannelList()
         delete iter.value();
     }
     m_channels.clear();
-}
-
-/*! \brief clear the content of m_agents
- *
- * Delete all contained AgentInfo objects
- */
-void BaseEngine::clearAgentList()
-{
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(m_agents);
-    while (iter.hasNext()) {
-        iter.next();
-        delete iter.value();
-    }
-    m_agents.clear();
-}
-
-/*! \brief clear the content of m_queues
- *
- * Delete all contained QueueInfo objects
- */
-void BaseEngine::clearQueueList()
-{
-    QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(m_queues);
-    while (iter.hasNext()) {
-        iter.next();
-        delete iter.value();
-    }
-    m_queues.clear();
 }
 
 /*! \brief initiates connection to the server
@@ -564,6 +532,11 @@ const QVariantMap & BaseEngine::getOptionsUserStatus() const
 const QVariantMap & BaseEngine::getOptionsPhoneStatus() const
 {
     return m_options_phonestatus;
+}
+
+const QVariantMap & BaseEngine::getOptionsChannelStatus() const
+{
+    return m_options_channelstatus;
 }
 
 const QVariantMap & BaseEngine::getOptionsAgentStatus() const
@@ -673,9 +646,9 @@ void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
 void BaseEngine::monitorPeerRequest(const QString & userid)
 {
     // qDebug() << Q_FUNC_INFO << userid;
-    if (m_users.contains(userid)) {
+    if (m_anylist.value("users").contains(userid)) {
         m_monitored_userid = userid;
-        emit monitorPeer(m_users[userid]);
+        emit monitorPeer((UserInfo *)(m_anylist["users"][userid]));
         m_settings->setValue("monitor/userid", userid);
     }
 }
@@ -728,11 +701,11 @@ QStringList BaseEngine::updateQueue(const QString & ipbxid,
 {
     QStringList keychanges;
     QString key = QString("%1/%2").arg(ipbxid).arg(queueid);
-    if (! m_queues.contains(key))
-        m_queues[key] = new QueueInfo(ipbxid, queueid);
-    bool haschanged = m_queues[key]->updateConfig(properties);
-    if (haschanged)
-        keychanges << key;
+//     if (! m_queues.contains(key))
+//         m_queues[key] = new QueueInfo(ipbxid, queueid);
+//     bool haschanged = m_queues[key]->updateConfig(properties);
+//     if (haschanged)
+//         keychanges << key;
     return keychanges;
 }
 
@@ -742,11 +715,11 @@ QStringList BaseEngine::updateQueueAgent(const QString & ipbxid,
 {
     QStringList keychanges;
     QString key = QString("%1/%2").arg(ipbxid).arg(queueid);
-    if (!m_queues.contains(key))
-        m_queues[key] = new QueueInfo(ipbxid, queueid);
-    bool haschanged = m_queues[key]->updateAgent(properties);
-    if (haschanged)
-        keychanges << key;
+//     if (!m_queues.contains(key))
+//         m_queues[key] = new QueueInfo(ipbxid, queueid);
+//     bool haschanged = m_queues[key]->updateAgent(properties);
+//     if (haschanged)
+//         keychanges << key;
     return keychanges;
 }
 
@@ -756,11 +729,11 @@ QStringList BaseEngine::updateAgent(const QString & ipbxid,
 {
     QStringList keychanges;
     QString key = QString("%1/%2").arg(ipbxid).arg(agentid);
-    if (! m_agents.contains(key))
-        m_agents[key] = new AgentInfo(ipbxid, agentid);
-    bool haschanged = m_agents[key]->updateConfig(properties);
-    if (haschanged)
-        keychanges << key;
+//     if (! m_agents.contains(key))
+//         m_agents[key] = new AgentInfo(ipbxid, agentid);
+//     bool haschanged = m_agents[key]->updateConfig(properties);
+//     if (haschanged)
+//         keychanges << key;
     return keychanges;
 }
 
@@ -770,11 +743,11 @@ QStringList BaseEngine::updateAgentQueue(const QString & ipbxid,
 {
     QStringList keychanges;
     QString key = QString("%1/%2").arg(ipbxid).arg(agentid);
-    if (! m_agents.contains(key))
-        m_agents[key] = new AgentInfo(ipbxid, agentid);
-    bool haschanged = m_agents[key]->updateQueue(properties);
-    if (haschanged)
-        keychanges << key;
+//     if (! m_agents.contains(key))
+//         m_agents[key] = new AgentInfo(ipbxid, agentid);
+//     bool haschanged = m_agents[key]->updateQueue(properties);
+//     if (haschanged)
+//         keychanges << key;
     return keychanges;
 }
 
@@ -1042,8 +1015,8 @@ void BaseEngine::parseCommand(const QString &line)
         } else if (thisclass == "presence") {
             // QString id = datamap.value("company").toString() + "/" + datamap.value("userid").toString();
             QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
-            qDebug() << Q_FUNC_INFO << thisclass << m_users.size() << id << datamap;
-            if (m_users.contains(id)) {
+            qDebug() << Q_FUNC_INFO << thisclass << m_anylist.value("users").size() << id << datamap;
+            if (m_anylist.value("users").contains(id)) {
                 QVariantMap state = datamap.value("capapresence").toMap().value("state").toMap();
                 QString stateid = state.value("stateid").toString();
                 QVariantMap changeme = m_guioptions.value("server_gui").toMap().value("presence.autochangestate").toMap();
@@ -1056,11 +1029,12 @@ void BaseEngine::parseCommand(const QString &line)
                         m_changestate_oldstate = stateid;
                     }
                 }
-                m_users[id]->setAvailState(stateid);
+                UserInfo * ui = (UserInfo *) m_anylist.value("users").value(id);
+                ui->setAvailState(stateid);
                 if (id == m_xuserid) {
                     setAvailState(stateid, true);
                     emit updatePresence();
-                    // emit localUserInfoDefined(m_users[m_xuserid]);
+                    // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
                 }
             }
 
@@ -1162,6 +1136,7 @@ void BaseEngine::parseCommand(const QString &line)
             QVariantMap capas = datamap.value("capas").toMap();
             m_options_userstatus = capas.value("userstatus").toMap();
             m_options_phonestatus = capas.value("phonestatus").toMap();
+            m_options_channelstatus = capas.value("channelstatus").toMap();
             m_options_agentstatus = capas.value("agentstatus").toMap();
             m_capas_regcommands = capas.value("regcommands").toStringList();
             m_capas_ipbxcommands = capas.value("ipbxcommands").toStringList();
@@ -1226,8 +1201,7 @@ void BaseEngine::parseCommand(const QString &line)
             // setState(ENotLogged);
             // popupError("no_capability");
 
-            askCallerIds0();
-            askCallerIds();
+            fetchLists();
             setState(ELogged); // calls logged()
             setAvailState(m_forced_state, true);
             emit updatePresence();
@@ -1262,29 +1236,21 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
         // qDebug() << Q_FUNC_INFO << thisclass << function << datamap;
         QString listname = datamap.value("listname").toString();
         QString ipbxid = datamap.value("ipbxid").toString();
+
         if (function == "listid") {
             QStringList listid = datamap.value("list").toStringList();
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (listname == "users") {
-                    if (! m_users.contains(xid)) {
-                        m_users[xid] = new UserInfo(ipbxid, id);
+                if (GenLists.contains(listname)) {
+                    if (! m_anylist.contains(listname))
+                        m_anylist[listname].clear();
+                    newXInfoProto construct = m_xinfoList.value(listname);
+                    XInfo * xinfo = construct(ipbxid, id);
+                    if (! m_anylist[listname].contains(xid)) {
+                        m_anylist[listname][xid] = xinfo;
                     }
-                } else if (listname == "phones") {
-                    if (! m_phones.contains(xid))
-                        m_phones[xid] = new PhoneInfo(ipbxid, id);
-                    // emit peersReceived();
-                } else if (listname == "agents") {
-                    if (! m_agents.contains(xid))
-                        m_agents[xid] = new AgentInfo(ipbxid, id);
-                } else if (listname == "groups") {
-                } else if (listname == "queues") {
-                    if (! m_queues.contains(xid))
-                        m_queues[xid] = new QueueInfo(ipbxid, id);
-                    // emit newQueueList(kk);
                 }
             }
-            // } else if (function == "fetchstatus") {
 
             QVariantMap command;
             command["class"] = "getlist";
@@ -1301,31 +1267,24 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
             QVariantMap config = datamap.value("config").toMap();
             bool haschanged = false;
-            if (listname == "users") {
-                if (! m_users.contains(xid))
-                    m_users[xid] = new UserInfo(ipbxid, id);
-                m_users[xid]->updateConfig(config);
+            if (GenLists.contains(listname)) {
+                if (! m_anylist.value(listname).contains(xid)) {
+                    newXInfoProto construct = m_xinfoList.value(listname);
+                    XInfo * xinfo = construct(ipbxid, id);
+                    m_anylist[listname][xid] = xinfo;
+                }
+                if (m_anylist.value(listname).value(xid) != NULL)
+                    haschanged = m_anylist.value(listname)[xid]->updateConfig(config);
+                else
+                    qDebug() << "null for" << listname << xid;
                 // if (xid == m_xuserid)
-                // emit localUserInfoDefined(m_users[m_xuserid]);
-
-//             m_users[xuserid]->setMWI(uinfo.value("mwi").toStringList());
-
-//             emit localUserInfoDefined(m_users[m_xuserid]);
-
-
-            } else if (listname == "phones") {
-                if (m_phones.contains(xid))
-                    haschanged = m_phones[xid]->updateConfig(config);
-            } else if (listname == "agents") {
-                if (m_agents.contains(xid))
-                    haschanged = m_agents[xid]->updateConfig(config);
-            } else if (listname == "groups") {
-            } else if (listname == "queues") {
-                if (m_queues.contains(xid))
-                    haschanged = m_queues[xid]->updateConfig(config);
+                // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
+                // m_anylist.value("users")[xuserid]->setMWI(uinfo.value("mwi").toStringList());
+                // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
+            } else {
+                qDebug() << function << listname << xid << haschanged;
             }
 
-            // qDebug() << function << listname << xid << haschanged;
             if (listname == "phones")
                 emit updatePhoneConfig(xid);
             else if (listname == "users")
@@ -1348,39 +1307,28 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
             QVariantMap status = datamap.value("status").toMap();
             bool haschanged = false;
-            if (listname == "users") {
-                if (m_users.contains(xid))
-                    haschanged = m_users[xid]->updateStatus(status);
-            } else if (listname == "phones") {
-                if (m_phones.contains(xid))
-                    haschanged = m_phones[xid]->updateStatus(status);
-            } else if (listname == "agents") {
-                if (m_agents.contains(xid))
-                    haschanged = m_agents[xid]->updateStatus(status);
-            } else if (listname == "groups") {
+            if (GenLists.contains(listname)) {
+                if (m_anylist.value(listname).contains(xid))
+                    haschanged = m_anylist.value(listname).value(xid)->updateStatus(status);
             } else if (listname == "channels") {
                 if (! m_channels.contains(xid))
                     m_channels[xid] = new ChannelInfo(ipbxid, id);
                 haschanged = m_channels[xid]->updateStatus(status);
-            } else if (listname == "queues") {
-                if (m_queues.contains(xid))
-                    haschanged = m_queues[xid]->updateStatus(status);
             }
 
             // qDebug() << function << listname << xid << haschanged << status;
-            if ((listname == "phones") && m_phones.contains(xid)) {
+            if ((listname == "phones") && m_anylist.value("phones").contains(xid)) {
                 emit updatePhoneStatus(xid);
                 QVariantMap command;
                 command["class"] = "getlist";
                 command["function"] = "updatestatus";
                 command["listname"] = "channels";
                 command["ipbxid"] = ipbxid;
-                foreach(QString id, m_phones[xid]->channels()) {
+                foreach(QString id, ((PhoneInfo *) m_anylist.value("phones").value(xid))->channels()) {
                     command["id"] = id;
                     sendJsonCommand(command);
                 }
             }
-
             else if (listname == "users")
                 emit updateUserStatus(xid);
             else if (listname == "agents")
@@ -1458,23 +1406,15 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
                 addUpdateUserInTree(tree(), uinfo);
 
-                QString ipbxid = uinfo.value("ipbxid").toString();
-                QString userid = uinfo.value("userid").toString();
-                QString xuserid = QString("%1/%2").arg(ipbxid).arg(userid);
-                if (! m_users.contains(xuserid))
-                    m_users[xuserid] = new UserInfo(ipbxid, userid);
-
-                m_users[xuserid]->updateConfig(uinfo);
-                m_users[xuserid]->updateStatus(uinfo);
             }
 
             emit peersReceived();
             m_monitored_userid = m_xuserid;
             QString fullname_mine = "No One";
-            if (m_users.contains(m_xuserid)) {
-                fullname_mine = m_users[m_xuserid]->fullname();
-                // emit localUserInfoDefined(m_users[m_xuserid]);
-            }
+//             if (m_anylist.value("users").contains(m_xuserid)) {
+//                 fullname_mine = m_anylist.value("users")[m_xuserid]->fullname();
+//                 // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
+//             }
 
             // Who do we monitor ?
             // First look at the last monitored one
@@ -1485,29 +1425,29 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 fullid_watched = "";
             }
 
-            // If there was nobody, let's watch ourselves.
-            if (fullid_watched.isEmpty())
-                fullid_watched = m_xuserid;
-            else {
-                QString fullname_watched = "";
-                if (m_users.contains(fullid_watched))
-                    fullname_watched = m_users[fullid_watched]->fullname();
-                // If the CallerId value is empty, fallback to ourselves.
-                if (fullname_watched.isEmpty())
-                    fullid_watched = m_xuserid;
-            }
+//             // If there was nobody, let's watch ourselves.
+//             if (fullid_watched.isEmpty())
+//                 fullid_watched = m_xuserid;
+//             else {
+//                 QString fullname_watched = "";
+//                 if (m_anylist.value("users").contains(fullid_watched))
+//                     fullname_watched = m_anylist.value("users")[fullid_watched]->fullname();
+//                 // If the CallerId value is empty, fallback to ourselves.
+//                 if (fullname_watched.isEmpty())
+//                     fullid_watched = m_xuserid;
+//             }
             monitorPeerRequest(fullid_watched);
 
         } else if (function == "update") {
             QStringList userupdate = datamap.value("user").toStringList();
             if (userupdate.size() == 2) {
                 QString iduser = userupdate[0] + "/" + userupdate[1];
-                if (m_users.contains(iduser) && (iduser == m_xuserid)) {
+                if (m_anylist.value("users").contains(iduser) && (iduser == m_xuserid)) {
                     QString subclass = datamap.value("subclass").toString();
-                    if (subclass == "mwi") {
-                        m_users[iduser]->setMWI(datamap.value("payload").toStringList());
-                        // emit localUserInfoDefined(m_users[m_xuserid]);
-                    }
+//                     if (subclass == "mwi") {
+//                         m_anylist.value("users")[iduser]->setMWI(datamap.value("payload").toStringList());
+//                         // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
+//                     }
                     emit updateUserConfig(iduser);
                     emit updateUserStatus(iduser);
                 }
@@ -2106,56 +2046,36 @@ void BaseEngine::askFeatures()
     sendJsonCommand(command);
 }
 
-void BaseEngine::askCallerIds0()
+/*! \brief send a lot of getlist commands to the CTI server
+ *
+ * send getlist for "users", "queues", "agents", "phones",
+ * "meetme", "users", "endinit"
+ */
+void BaseEngine::fetchLists()
 {
     // qDebug() << Q_FUNC_INFO;
     QVariantMap command;
-//     command["function"] = "getone";
-//     command["ipbxid"] = m_ipbxid;
-//     command["userid"] = m_userid;
+
     command["class"] = "getlist";
     command["function"] = "updateconfig";
     command["listname"] = "users";
     command["ipbxid"] = m_ipbxid;
     command["id"] = m_userid;
     sendJsonCommand(command);
-}
 
-/*! \brief send a lot of getlist commands to the CTI server
- *
- * send getlist for "users", "queues", "agents", "phones",
- * "meetme", "users", "endinit"
- *
- * \todo rename this method to something more meaningful
- *
- */
-void BaseEngine::askCallerIds()
-{
-    // qDebug() << Q_FUNC_INFO;
-    QVariantMap command;
-    QStringList getlists;
-
-//     command["function"] = "getlist";
-//     getlists = (QStringList() << "users" << "queues" << "agents"
-//                 << "phones" << "meetme" << "users" << "parking" << "endinit");
-//     foreach (QString kind, getlists) {
-//         command.remove("class");
-//         command["class"] = kind;
-//         sendJsonCommand(command);
-//     }
-
+    command.clear();
     command["class"] = "getlist";
     command["function"] = "listid";
     command["ipbxid"] = m_ipbxid;
+    QStringList getlists;
     getlists = (QStringList()
                 << "users" << "phones" << "trunks"
-                << "queues" << "groups" << "agents"
-                << "voicemails" << "meetmes" << "incomingcalls");
+                << "agents" << "queues" << "groups" << "meetmes"
+                << "voicemails" << "incomingcalls");
     foreach (QString kind, getlists) {
         command["listname"] = kind;
         sendJsonCommand(command);
     }
-
 
     if (m_loginkind == 2) {
         QVariantMap ipbxcommand;
@@ -2253,7 +2173,7 @@ void BaseEngine::setState(EngineState state)
 void BaseEngine::changeWatchedAgent(const QString & agentid, bool force)
 {
     // qDebug() << Q_FUNC_INFO << agentid << force;
-    if ((force || (agentid.size() > 0)) && (m_agents.contains(agentid))) {
+    if ((force || (agentid.size() > 0)) && (hasAgent(agentid))) {
         emit changeWatchedAgentSignal(agentid);
     }
 }
@@ -2347,8 +2267,8 @@ void BaseEngine::loadQueueGroups()
 UserInfo * BaseEngine::getXivoClientUser()
 {
     // qDebug() << Q_FUNC_INFO << m_ipbxid << m_userid << m_xuserid;
-    if (m_users.contains(m_xuserid)) {
-        return m_users.value(m_xuserid);
+    if (m_anylist.value("users").contains(m_xuserid)) {
+        return (UserInfo *) m_anylist.value("users").value(m_xuserid);
     }
     return NULL;
 }

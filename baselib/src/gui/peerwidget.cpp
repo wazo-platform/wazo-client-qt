@@ -50,7 +50,7 @@
 
 /*! \brief Constructor
  */
-PeerWidget::PeerWidget(UserInfo * ui)
+PeerWidget::PeerWidget(const UserInfo * ui)
     : BasePeerWidget(ui), m_user_status(NULL), m_agentlbl(NULL), m_mobilelbl(NULL)
 {
     int fsize = 25;
@@ -81,8 +81,7 @@ PeerWidget::PeerWidget(UserInfo * ui)
 
     if (!m_ui_remote->ctilogin().isEmpty()) {
         m_user_status = new ChitchatButton(peer, &m_ui_remote);
-        m_user_status->setProperty("userid", ui->userid());
-        m_user_status->setProperty("astid", ui->ipbxid());
+        m_user_status->setProperty("xuserid", ui->xid());
         m_user_status->setIconSize(QSize(fsize, fsize));
         m_user_status->setFixedWidth(fsize);
         m_user_status->setFlat(true);
@@ -97,15 +96,15 @@ PeerWidget::PeerWidget(UserInfo * ui)
         hLayout->addSpacing(fsize);
     }
 
-    foreach (QString phone, ui->phonelist()) {
-        m_lblphones[phone] = new QLabel(peer);
-        m_lblphones[phone]->setAlignment(Qt::AlignCenter);
-        m_lblphones[phone]->setMinimumSize(fsize, fsize);
-        m_lblphones[phone]->setProperty("kind", "term");
-        hLayout->addWidget(m_lblphones[phone]);
+    foreach (QString xphoneid, ui->phonelist()) {
+        m_lblphones[xphoneid] = new QLabel(peer);
+        m_lblphones[xphoneid]->setAlignment(Qt::AlignCenter);
+        m_lblphones[xphoneid]->setMinimumSize(fsize, fsize);
+        m_lblphones[xphoneid]->setProperty("kind", "term");
+        hLayout->addWidget(m_lblphones[xphoneid]);
     }
 
-    if (!m_ui_remote->mobileNumber().isEmpty()) {
+    if (! m_ui_remote->mobileNumber().isEmpty()) {
         m_mobilelbl = new QLabel(peer);
         m_mobilelbl->setPixmap(QPixmap(":/images/mobile-grey.png"));
         m_mobilelbl->setAlignment(Qt::AlignCenter);
@@ -134,7 +133,7 @@ void PeerWidget::updateAgentConfig(const QString & xagentid)
     m_xagentid = xagentid;
     if (m_xagentid.isEmpty())
         return;
-    AgentInfo * agentinfo = b_engine->agents().value(xagentid);
+    const AgentInfo * agentinfo = b_engine->agent(xagentid);
     if (agentinfo == NULL)
         return;
     m_agentlbl->setAlignment(Qt::AlignCenter);
@@ -148,7 +147,7 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
 {
     if (xagentid != m_xagentid)
         return;
-    AgentInfo * agentinfo = b_engine->agents().value(xagentid);
+    const AgentInfo * agentinfo = b_engine->agent(xagentid);
     if (agentinfo == NULL)
         return;
     QString agentstatus = agentinfo->status();
@@ -159,8 +158,9 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
 
     QString agentnumber = agentinfo->agentNumber();
     QStringList queues = agentinfo->queuelist();
-    m_agentlbl->setToolTip(tr("Agent %1\n%n Queue(s) %2", "",
-                              queues.size()).arg(agentnumber).arg(queues.join(",")));
+    m_agentlbl->setToolTip(tr("Agent Number : %1\nIn Queues : %2")
+                           .arg(agentnumber)
+                           .arg(queues.join(",")));
 }
 
 void PeerWidget::setMobileState(const QString &/* color*/)
@@ -179,25 +179,43 @@ void PeerWidget::updatePresence()
         QColor c = QColor(colorstring);
         m_user_status->setIcon(TaintedPixmap( \
             QString(":/images/personal-trans.png"), c).getPixmap());
-        m_user_status->setToolTip(tr("User : %1").arg(presencedetails.value("longname").toString()));
+        m_user_status->setToolTip(tr("User Name : %1\nStatus : %2")
+                                  .arg(m_ui_remote->fullname())
+                                  .arg(presencedetails.value("longname").toString()));
     }
 }
 
-void PeerWidget::updatePhonesStates()
+void PeerWidget::updatePhoneConfig(const QString & xphoneid)
 {
-    foreach(QString xphoneid, m_ui_remote->phonelist()) {
-        const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
-        if (phoneinfo != NULL) {
-            QString color = "red"; // XXXX function of phoneinfo->hintstatus();
-            QString longname = "Here"; // XXXX function of phoneinfo->hintstatus();
-            QColor c = QColor(color);
-            m_lblphones[xphoneid]->setPixmap(                           \
-                    TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
-            m_lblphones[xphoneid]->setToolTip(tr("Phone %1 : %2")
-                                             .arg(phoneinfo->number())
-                                             .arg(longname));
-        }
+    updatePhoneStatus(xphoneid);
+}
+
+void PeerWidget::updatePhoneStatus(const QString & xphoneid)
+{
+    if (! m_ui_remote->phonelist().contains(xphoneid))
+        return;
+    const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
+    if (phoneinfo == NULL)
+        return;
+
+    QString hintstatus = phoneinfo->hintstatus();
+    QString color = "black";
+    QString longname;
+    if (b_engine->getOptionsPhoneStatus().contains(hintstatus)) {
+        QVariantMap qvmop = b_engine->getOptionsPhoneStatus().value(hintstatus).toMap();
+        color = qvmop.value("color").toString();
+        longname = qvmop.value("longname").toString();
+    } else {
+        longname = tr("Status:%1").arg(hintstatus);
     }
+    QColor c = QColor(color);
+    m_lblphones[xphoneid]->setPixmap( \
+              TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
+    m_lblphones[xphoneid]->setToolTip(tr("Phone Number : %1\nStatus : %2\nBusy lines : %3")
+                                      .arg(phoneinfo->number())
+                                      .arg(longname)
+                                      .arg(phoneinfo->channels().count())
+                                      );
 }
 
 /*! \brief change displayed name
@@ -231,7 +249,8 @@ bool PeerWidget::pOverMobileLbl(const QPoint &p)
     return false;
 }
 
-ChitchatButton::ChitchatButton(QWidget *parent, UserInfo **peerUi)
+
+ChitchatButton::ChitchatButton(QWidget *parent, const UserInfo * * peerUi)
     : QPushButton(parent), m_ui(peerUi)
 {
 }
@@ -243,7 +262,7 @@ bool ChitchatButton::event(QEvent *e)
     if ((e->type() == QEvent::MouseButtonPress) ||
         (e->type() == QEvent::MouseButtonDblClick)) {
         if (((*m_ui)->availstate() == "xivo_unknown") ||
-            (b_engine->getFullId() == (*m_ui)->userid())) {
+            (b_engine->getFullId() == (*m_ui)->xid())) {
             return true;
         }
     }

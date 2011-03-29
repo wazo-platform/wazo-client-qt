@@ -46,17 +46,16 @@
  *
  * initialize members.
  */
-BasePeerWidget::BasePeerWidget(UserInfo * ui)
+BasePeerWidget::BasePeerWidget(const UserInfo * ui)
     : m_ui_remote(ui), m_editable(false)
 {
     m_ui_local = b_engine->getXivoClientUser();
     if (m_ui_remote) {
-        setProperty("userid", m_ui_remote->userid());
+        setProperty("xuserid", m_ui_remote->xid());
 
         m_chitchatAction = new QAction(tr("&Open a chat window"), this);
         m_chitchatAction->setStatusTip(tr("Open a chat window with this user"));
-        m_chitchatAction->setProperty("userid", m_ui_remote->userid());
-        m_chitchatAction->setProperty("astid", m_ui_remote->ipbxid());
+        m_chitchatAction->setProperty("xuserid", m_ui_remote->xid());
         connect(m_chitchatAction, SIGNAL(triggered()),
                 ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
     }
@@ -74,7 +73,7 @@ BasePeerWidget::BasePeerWidget(UserInfo * ui)
     m_interceptAction = new QAction(tr("&Intercept"), this);
     m_interceptAction->setStatusTip(tr("Intercept call"));
     connect(m_interceptAction, SIGNAL(triggered()),
-            this, SLOT(intercept2()));
+            this, SLOT(intercept()));
 
     m_maxWidthWanted = 200;
     if (b_engine->enabledFunction("switchboard")) {
@@ -103,11 +102,11 @@ void BasePeerWidget::reloadSavedName()
  */
 void BasePeerWidget::dial()
 {
-    // qDebug() << Q_FUNC_INFO << m_ui_remote->userid() << sender();
+    // qDebug() << Q_FUNC_INFO << m_ui_remote->xid() << sender();
     if (m_ui_remote) {
         b_engine->actionCall("dial",
                              "user:special:me",
-                             QString("user:%1").arg(m_ui_remote->xuserid()));
+                             QString("user:%1").arg(m_ui_remote->xid()));
     } else {
         b_engine->actionCall("dial",
                              "user:special:me",
@@ -128,7 +127,7 @@ void BasePeerWidget::peerdial()
 {
     if (m_ui_remote) {
         b_engine->actionCall("originate",
-                             QString("user:%1").arg(m_ui_remote->xuserid()),
+                             QString("user:%1").arg(m_ui_remote->xid()),
                              "ext:" + sender()->property("number").toString());
     } else {
         b_engine->actionCall("originate",
@@ -174,7 +173,7 @@ void BasePeerWidget::transfer()
     QString src = QString("chan:%1").arg(xchannel);
     QString dst;
     if (m_ui_remote)
-        dst = QString("user:%1").arg(m_ui_remote->xuserid());
+        dst = QString("user:%1").arg(m_ui_remote->xid());
     else
         dst = QString("ext:%1").arg(m_number);
     b_engine->actionCall("transfer", src, dst);
@@ -188,7 +187,7 @@ void BasePeerWidget::itransfer()
     QString src = QString("chan:%1").arg(xchannel);
     QString dst;
     if (m_ui_remote)
-        dst = QString("user:%1").arg(m_ui_remote->xuserid());
+        dst = QString("user:%1").arg(m_ui_remote->xid());
     else
         dst = QString("ext:%1").arg(m_number);
     b_engine->actionCall("atxfer", src, dst);
@@ -224,7 +223,7 @@ void BasePeerWidget::vmtransfer()
         QString xchannel = sender()->property("xchannel").toString();
         b_engine->actionCall("transfer",
                              QString("chan:%1").arg(xchannel),
-                             "voicemail:" + m_ui_remote->xuserid());
+                             "voicemail:" + m_ui_remote->xid());
     }
 }
 
@@ -250,7 +249,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                 (status == CHAN_STATUS_LINKED_CALLED)) {
                 QString to;
                 if (m_ui_remote) {
-                    to = "user:" + m_ui_remote->xuserid();
+                    to = "user:" + m_ui_remote->xid();
                 } else {
                     to = "ext:" + m_number;
                 }
@@ -266,7 +265,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
             const QString status = channelinfo->commstatus();
             if (status == CHAN_STATUS_RINGING) {
                 b_engine->actionCall("transfer",
-                                     QString("chan:%1:%2").arg(m_ui_remote->xuserid()).arg(channelinfo->channel()),
+                                     QString("chan:%1:%2").arg(m_ui_remote->xid()).arg(channelinfo->channel()),
                                      "user:special:me");
                 return;
             }
@@ -313,7 +312,7 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
     QMimeData * mimeData = new QMimeData;
     if (m_ui_remote) {
         mimeData->setText(m_ui_remote->phoneNumber());
-        mimeData->setData(XUSERID_MIMETYPE, m_ui_remote->xuserid().toAscii());
+        mimeData->setData(XUSERID_MIMETYPE, m_ui_remote->xid().toAscii());
         mimeData->setData(XPHONEID_MIMETYPE, m_ui_remote->phonelist().join("").toAscii());
     } else {
         mimeData->setText(m_number);
@@ -330,7 +329,7 @@ QList<const ChannelInfo *> BasePeerWidget::loopOverChannels(const UserInfo * use
     QList<const ChannelInfo *> channels;
     QString ipbxid = userinfo->ipbxid();
     foreach (const QString xphoneid, userinfo->phonelist()) {
-        const PhoneInfo * phoneinfo = b_engine->phones().value(xphoneid);
+        const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
         if (phoneinfo == NULL)
             continue;
         foreach (const QString channel, phoneinfo->channels()) {
@@ -401,7 +400,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 
     if ((!m_ui_remote->ctilogin().isEmpty()) &&
         (b_engine->enabledFunction("chitchat"))) {
-        if (b_engine->getFullId() != m_ui_remote->xuserid()) {
+        if (b_engine->getFullId() != m_ui_remote->xid()) {
             contextMenu.addAction(m_chitchatAction);
         }
     }
@@ -484,7 +483,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     }
 
     // get "my" currently open channels
-    //qDebug() << m_ui_remote->xuserid() << ui;
+    //qDebug() << m_ui_remote->xid() << ui;
     if (! isitme) {
         foreach(const ChannelInfo * channelinfo, qlci_local) {
             const QString status = channelinfo->commstatus();
@@ -647,7 +646,7 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
     QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
     QString to;
     if (m_ui_remote) {
-        to = "user:" + m_ui_remote->xuserid();
+        to = "user:" + m_ui_remote->xid();
     } else {
         to = "ext:" + m_number;
     }
@@ -733,7 +732,7 @@ void BasePeerWidget::rename()
 QString BasePeerWidget::id() const
 {
     if (m_ui_remote) {
-        return (QString("userid-") + m_ui_remote->xuserid());
+        return (QString("userid-") + m_ui_remote->xid());
     } else {
         return (QString("number-") + number());
     }

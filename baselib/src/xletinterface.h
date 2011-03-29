@@ -54,4 +54,3 @@ class XLetInterface
 Q_DECLARE_INTERFACE(XLetInterface, "com.proformatique.Plugin.XLetInterface/1.1");
 
 #endif
-

@@ -39,7 +39,7 @@
 #include <QVariant>
 #include <QMap>
 
-/*! \brief Store informations on a user
+/*! \brief Store Channel information
  */
 class BASELIB_EXPORT ChannelInfo
 {

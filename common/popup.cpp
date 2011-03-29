@@ -686,7 +686,7 @@ void Popup::addRemark(const QVariantMap & entry)
         datetime.setTime_t( entry["time"].toUInt() );
         QString user = entry["user"].toString();
         if(b_engine) {
-            UserInfo * ui = b_engine->users()[user];
+            const UserInfo * ui = b_engine->user(user);
             if(ui)
                 user = ui->fullname();
         }

@@ -107,12 +107,12 @@ XletSwitchBoard::~XletSwitchBoard()
  */
 void XletSwitchBoard::updateUserConfig(const QString & xuserid)
 {
-    qDebug() << Q_FUNC_INFO << xuserid;
+    // qDebug() << Q_FUNC_INFO << xuserid;
     PeerItem * peeritem = NULL;
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);
     } else {
-        UserInfo * ui = b_engine->users()[xuserid];
+        const UserInfo * ui = b_engine->user(xuserid);
         peeritem = new PeerItem(ui);
         m_peerhash.insert(xuserid, peeritem);
         QSettings *settings = b_engine->getSettings();

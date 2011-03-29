@@ -32,72 +32,13 @@
  */
 
 #include <QDebug>
+#include "xinfo.h"
 
-#include "peeritem.h"
-#include "peerwidget.h"
-#include "userinfo.h"
-#include "xivoconsts.h"
-
-/*! \brief Constructor
- */
-PeerItem::PeerItem(const UserInfo * ui)
-    : m_ui(ui)
+// XInfo::XInfo
+XInfo::XInfo(const QString & ipbxid,
+             const QString & id)
 {
-    m_peerwidget = NULL;
-}
-
-PeerItem::PeerItem()
-{
-    m_peerwidget = NULL;
-}
-
-/*! \brief Copy constructor
- */
-PeerItem::PeerItem(const PeerItem &peer)
-{
-    m_ui = peer.m_ui;
-    m_peerwidget = peer.m_peerwidget;
-}
-
-/*! \brief update status of the peer
- *
- * Change what is displayed according to new status values.
- */
-void PeerItem::updateStatus()
-{
-    if(m_peerwidget != NULL)
-        updateDisplayedStatus();
-}
-
-void PeerItem::updateAgentStatus(const QVariant &)
-{
-    if(m_peerwidget != NULL)
-        updateDisplayedStatus();
-}
-
-/*! \brief update status of the peer
- *
- * Change what is displayed according to new status values.
- */
-void PeerItem::updateDisplayedStatus()
-{
-    if(m_peerwidget == NULL)
-        return;
-    m_peerwidget->updatePresence();
-}
-
-/*! \brief update name if changed
- */
-void PeerItem::updateDisplayedName()
-{
-    if(m_peerwidget == NULL)
-        return;
-
-    m_peerwidget->setName(m_ui->fullname());
-    return;
-}
-
-const UserInfo * PeerItem::userinfo()
-{
-    return m_ui;
+    m_ipbxid = ipbxid;
+    m_id = id;
+    m_xid = QString("%1/%2").arg(ipbxid).arg(id);
 }

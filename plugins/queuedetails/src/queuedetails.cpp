@@ -85,21 +85,21 @@ XletQueueDetails::XletQueueDetails(QWidget *parent)
 void XletQueueDetails::newQueueList(const QStringList &qsl)
 {
     // qDebug() << Q_FUNC_INFO << qsl;
-    if(qsl.contains(m_monitored_queueid) && b_engine->queues().contains(m_monitored_queueid))
+    if(qsl.contains(m_monitored_queueid) && b_engine->hasQueue(m_monitored_queueid))
         updatePanel();
 }
 
 void XletQueueDetails::newAgentList(const QStringList &)
 {
     // qDebug() << Q_FUNC_INFO << qsl;
-    if(b_engine->queues().contains(m_monitored_queueid))
+    if(b_engine->hasQueue(m_monitored_queueid))
         updatePanel();
 }
 
 void XletQueueDetails::monitorThisQueue(const QString & queueid)
 {
     qDebug() << Q_FUNC_INFO << queueid;
-    if (b_engine->queues().contains(queueid)) {
+    if (b_engine->hasQueue(queueid)) {
         m_monitored_queueid = queueid;
         clearPanel();
         updatePanel();
@@ -135,7 +135,7 @@ void XletQueueDetails::clearPanel()
 
 void XletQueueDetails::updatePanel()
 {
-    QueueInfo *qinfo = b_engine->queues()[m_monitored_queueid];
+    const QueueInfo * qinfo = b_engine->queue(m_monitored_queueid);
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4)")
                                 .arg(qinfo->queueName())
                                 .arg(qinfo->queueNumber())
@@ -145,7 +145,7 @@ void XletQueueDetails::updatePanel()
     QVariant queuestats = properties.value("queuestats");
     QVariantMap agentstats = properties.value("agents_in_queue").toMap();
 
-    if (! b_engine->agents().isEmpty()) {
+    if (! b_engine->iterover("agents").isEmpty()) {
         m_queuelegend_agentid->show();
         m_queuelegend_status->show();
         m_queuelegend_paused->show();
@@ -155,11 +155,11 @@ void XletQueueDetails::updatePanel()
     }
 
     int i = 0;
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
+    QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(b_engine->iterover("agents"));
     while (iter.hasNext()) {
         iter.next();
-        AgentInfo *ainfo = iter.value();
         QString agentid = iter.key();
+        AgentInfo * ainfo = (AgentInfo *) iter.value();
 
         bool isnewagent = false;
         if (! m_agent_more.contains(agentid))

@@ -38,34 +38,29 @@
 #include <QString>
 #include <QVariant>
 #include <QMap>
+#include "xinfo.h"
 
 /*! \brief Store Agent information
  */
-class BASELIB_EXPORT AgentInfo
+class BASELIB_EXPORT AgentInfo : public XInfo
 {
     public:
         AgentInfo(const QString &, const QString &); //! constructor
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
         bool updateQueue(const QVariantMap &);
-        const QString & ipbxid() const;  //! IPBX this agent belongs to
-        const QString & id() const;  //! reference id of this agent on the server
         const QString & context() const;  //! context this agent belongs to
         const QString & agentNumber() const;  //! agent number
         const QString & fullname() const;  //! agent fullname
 
         //! agent statuses
-        const QString & status() const {
-                return m_status;
-        };  //! access to the status values of this agent
+        const QString & status() const { return m_status; };  //! access to the status values of this agent
         const QVariantMap & properties() const;
         //! current communications of this agent
         const QVariantMap & comms() const { return m_comms; };
         const QList<QString> queuelist() const { return m_comms.keys(); };
 
     private:
-        QString m_ipbxid;
-        QString m_id;
         QString m_context;
         QString m_agentname;
         QString m_agentnumber;

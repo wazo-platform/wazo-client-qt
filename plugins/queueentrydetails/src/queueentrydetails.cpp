@@ -65,21 +65,21 @@ XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
 void XLetQueueEntryDetails::newQueueList(const QStringList &)
 {
     // qDebug() << Q_FUNC_INFO;
-    if(b_engine->queues().contains(m_monitored_queueid))
+    if(b_engine->hasQueue(m_monitored_queueid))
         updatePanel();
 }
 
 void XLetQueueEntryDetails::newAgentList(const QStringList &)
 {
     // qDebug() << Q_FUNC_INFO;
-    if(b_engine->queues().contains(m_monitored_queueid))
+    if(b_engine->hasQueue(m_monitored_queueid))
         updatePanel();
 }
 
 void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)
 {
     // qDebug() << Q_FUNC_INFO << queueid;
-    if(b_engine->queues().contains(queueid)) {
+    if(b_engine->hasQueue(queueid)) {
         m_monitored_queueid = queueid;
         updatePanel();
     }
@@ -100,7 +100,7 @@ void XLetQueueEntryDetails::clearPanel()
  */
 void XLetQueueEntryDetails::updatePanel()
 {
-    QueueInfo * qinfo = b_engine->queues()[m_monitored_queueid];
+    const QueueInfo * qinfo = b_engine->queue(m_monitored_queueid);
     QVariantMap properties = qinfo->properties();
     QVariantMap channels = properties["channels"].toMap();
 
@@ -123,7 +123,7 @@ void XLetQueueEntryDetails::updatePanel()
 
 void XLetQueueEntryDetails::updateEntryChannel(const QString & channel)
 {
-    QueueInfo * qinfo = b_engine->queues()[m_monitored_queueid];
+    const QueueInfo * qinfo = b_engine->queue(m_monitored_queueid);
     QVariantMap properties = qinfo->properties();
     QVariantMap channels = properties["channels"].toMap();
 

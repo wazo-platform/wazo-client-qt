@@ -31,8 +31,8 @@
  * $Date$
  */
 
-#ifndef __PHONEINFO_H__
-#define __PHONEINFO_H__
+#ifndef __TRUNKINFO_H__
+#define __TRUNKINFO_H__
 
 #include "baselib_export.h"
 #include <QString>
@@ -41,21 +41,21 @@
 #include <QVariantMap>
 #include "xinfo.h"
 
-/*! \brief Store Phone information
+/*! \brief Store Trunk information
  */
-class BASELIB_EXPORT PhoneInfo : public XInfo
+class BASELIB_EXPORT TrunkInfo : public XInfo
 {
     public:
-        PhoneInfo(const QString &, const QString &);  //! constructor
+        TrunkInfo(const QString &, const QString &);  //! constructor
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
-        const QString & context() const { return m_context; };  //! context this phone belongs to
-        const QString & number() const { return m_number; };  //! phone number
-        const QString & protocol() const { return m_protocol; };  //! phone technology (sip, iax, etc...)
-        const QString & phoneid() const { return m_id; };  //! phone id
-        int simultcalls() const { return m_simultcalls; };  //! phone simultcalls
+        const QString & context() const { return m_context; };  //! context this trunk belongs to
+        const QString & number() const { return m_number; };  //! trunk number
+        const QString & protocol() const { return m_protocol; };  //! trunk technology (sip, iax, etc...)
+        const QString & trunkid() const { return m_id; };  //! trunk id
+        int simultcalls() const { return m_simultcalls; };  //! trunk simultcalls
 
-        const QStringList & channels() const { return m_channels; };  //! current communications of this phone
+        const QStringList & channels() const { return m_channels; };  //! current communications of this trunk
         const QString & hintstatus() const { return m_hintstatus; }; //! hint status value
 
         bool enableunc() const { return m_enableunc; };

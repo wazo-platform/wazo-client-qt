@@ -33,12 +33,18 @@
 
 #include "meetmeinfo.h"
 
-const QString& MeetmeInfo::roomname() const
+MeetmeInfo::MeetmeInfo(const QString & ipbxid,
+                       const QString & id)
+    : XInfo(ipbxid, id)
+{
+}
+
+const QString & MeetmeInfo::roomname() const
 {
     return m_roomname;
 }
 
-const QString& MeetmeInfo::roomnumber() const
+const QString & MeetmeInfo::roomnumber() const
 {
     return m_roomnumber;
 }
@@ -68,20 +74,15 @@ bool MeetmeInfo::paused() const
     return m_paused;
 }
 
-const QString & MeetmeInfo::ipbxid() const
+bool MeetmeInfo::updateConfig(const QVariantMap & properties)
 {
-    return m_ipbxid;
-}
-
-void MeetmeInfo::setProperties(const QString &astid, const QVariantMap &properties)
-{
+    bool haschanged = true;
     // fixed-by-config stuff
     m_context = properties.value("context").toString();
     m_roomname = properties.value("roomname").toString();
     m_roomnumber = properties.value("roomnumber").toString();
     m_pin = properties.value("pin").toString();
     m_adminpin = properties.value("pinadmin").toString();
-    m_ipbxid = astid;
 
     // variable stuff
     m_adminid = properties.value("adminid").toString();
@@ -89,10 +90,12 @@ void MeetmeInfo::setProperties(const QString &astid, const QVariantMap &properti
     m_adminlist = properties.value("adminlist").toStringList();
     m_uniqueids = properties.value("uniqueids").toMap();
     m_paused = properties.value("paused").toBool();
+    return haschanged;
 }
 
-bool MeetmeInfo::update(const QVariantMap &map)
+bool MeetmeInfo::updateStatus(const QVariantMap & map)
 {
+    bool haschanged = true;
     QString action = map.value("action").toString();
     QString uniqueid = map.value("uniqueid").toString();
 
@@ -109,5 +112,5 @@ bool MeetmeInfo::update(const QVariantMap &map)
     } else if(action == "changeroompausedstate") {
         m_paused = map.value("paused").toBool();
     }
-    return true;
+    return haschanged;
 }

@@ -38,6 +38,7 @@
 #include <QStringList>
 #include <QHash>
 #include <QVariant>
+#include "xinfo.h"
 
 /*! \brief for storing meetme (conference room) infos
  *
@@ -45,10 +46,10 @@
  * so it would be not too costy to copy/return this
  * class.
  */
-class BASELIB_EXPORT MeetmeInfo
+class BASELIB_EXPORT MeetmeInfo : public XInfo
 {
     public:
-        //MeetmeInfo() {};
+        MeetmeInfo(const QString &, const QString &);
         //! Copy constructor. Just copy all attributes
         //MeetmeInfo(const MeetmeInfo &);
         //! cast to QString operator for debugging
@@ -65,8 +66,8 @@ class BASELIB_EXPORT MeetmeInfo
         //        str.append("])");
         //        return str;
         //}
-        void setProperties(const QString &, const QVariantMap &);
-        bool update(const QVariantMap &);
+        bool updateConfig(const QVariantMap &);
+        bool updateStatus(const QVariantMap &);
         const QString & roomname() const;  //! conference room name
         const QString & roomnumber() const;  //! conference room number
         const QString & adminid() const;  //! conference room admin id
@@ -74,7 +75,6 @@ class BASELIB_EXPORT MeetmeInfo
         bool paused() const;  //! conference room paused status
         const QStringList & adminlist() const;  //! conference room admin list
         const QVariantMap & uniqueids() const;  //! conference room uniqueids
-        const QString & ipbxid() const;  //! conference room IPBX id
 
     private:
         QString m_context;  //!< room context
@@ -87,7 +87,6 @@ class BASELIB_EXPORT MeetmeInfo
         bool m_paused;  //!< is the conference room paused ?
         QStringList m_adminlist;  //!< admin list (user ids)
         QVariantMap m_uniqueids;  //!< people in this conference room
-        QString m_ipbxid;  //!< IPBX id
 };
 
 #endif /* __MEETMEINFO_H__ */

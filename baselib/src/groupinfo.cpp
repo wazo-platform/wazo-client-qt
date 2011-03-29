@@ -32,55 +32,50 @@
  */
 
 #include <QDebug>
+#include "groupinfo.h"
 
-#include "agentinfo.h"
-
-AgentInfo::AgentInfo(const QString & ipbxid,
+GroupInfo::GroupInfo(const QString & ipbxid,
                      const QString & id)
     : XInfo(ipbxid, id)
 {
 }
 
-bool AgentInfo::updateConfig(const QVariantMap & prop)
+bool GroupInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
+    m_context = prop.value("context").toString();
+    m_groupname = prop.value("name").toString();
+    m_groupnumber = prop.value("number").toString();
     if (m_properties != prop) {
         m_properties = prop;
         haschanged = true;
-
-        m_context = prop.value("context").toString();
-        m_agentnumber = prop.value("number").toString();
-        QString firstname = prop.value("firstname").toString();
-        QString lastname = prop.value("lastname").toString();
-        m_fullname = QString("%1 %2").arg(firstname).arg(lastname);
     }
     return haschanged;
 }
 
-bool AgentInfo::updateStatus(const QVariantMap & prop)
+bool GroupInfo::updateStatus(const QVariantMap &)
 {
     bool haschanged = true;
-    m_status = prop.value("status").toString();
     return haschanged;
 }
 
-bool AgentInfo::updateQueue(const QVariantMap & prop)
+bool GroupInfo::updateAgent(const QVariantMap & prop)
 {
     bool haschanged = false;
     QMapIterator<QString, QVariant> it(prop);
-    while(it.hasNext()) {
+    while (it.hasNext()) {
         it.next();
         QString arg = it.key();
-        if(! m_properties.contains(arg)) {
+        if (!m_properties.contains(arg)) {
             haschanged = true;
             m_properties[arg] = it.value();
-        } else if(m_properties.value(arg) != it.value()) {
+        } else if (m_properties.value(arg) != it.value()) {
             haschanged = true;
             QVariantMap tmp = m_properties.value(arg).toMap();
             QMapIterator<QString, QVariant> it2(it.value().toMap());
-            while(it2.hasNext()) {
+            while (it2.hasNext()) {
                 it2.next();
-                if(tmp.value(it2.key()) != it2.value()) {
+                if (tmp.value(it2.key()) != it2.value()) {
                     tmp[it2.key()] = it2.value();
                 }
             }
@@ -90,22 +85,12 @@ bool AgentInfo::updateQueue(const QVariantMap & prop)
     return haschanged;
 }
 
-const QString& AgentInfo::context() const
+const QString & GroupInfo::context() const
 {
     return m_context;
 }
 
-const QString& AgentInfo::agentNumber() const
-{
-    return m_agentnumber;
-}
-
-const QString& AgentInfo::fullname() const
-{
-    return m_fullname;
-}
-
-const QVariantMap& AgentInfo::properties() const
+const QVariantMap & GroupInfo::properties() const
 {
     return m_properties;
 }

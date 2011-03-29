@@ -31,73 +31,38 @@
  * $Date$
  */
 
-#include <QDebug>
+#ifndef __XINFO_H__
+#define __XINFO_H__
 
-#include "peeritem.h"
-#include "peerwidget.h"
-#include "userinfo.h"
-#include "xivoconsts.h"
+#include "baselib_export.h"
+#include <QString>
+#include <QStringList>
+#include <QVariant>
+#include <QVariantMap>
 
-/*! \brief Constructor
- */
-PeerItem::PeerItem(const UserInfo * ui)
-    : m_ui(ui)
+class BASELIB_EXPORT XInfo
 {
-    m_peerwidget = NULL;
+    public:
+        XInfo(const QString &, const QString &);  //! constructor
+        virtual bool updateConfig(const QVariantMap &) { return false; };  //! update config members
+        virtual bool updateStatus(const QVariantMap &) { return false; };  //! update status members
+        const QString & ipbxid() const { return m_ipbxid; };  //! IPBX this object belongs to
+        const QString & id() const { return m_id; };  //! reference id of this object on the server
+        const QString & xid() const { return m_xid; };  //! reference xid of this object
+    protected:
+        QString m_ipbxid;
+        QString m_id;
+        QString m_xid;
+};
+
+
+template <class T>
+XInfo * newXInfo(const QString & ipbxid,
+                 const QString & id)
+{
+        return new T(ipbxid, id);
 }
 
-PeerItem::PeerItem()
-{
-    m_peerwidget = NULL;
-}
+typedef XInfo* (*newXInfoProto)(const QString &, const QString &);
 
-/*! \brief Copy constructor
- */
-PeerItem::PeerItem(const PeerItem &peer)
-{
-    m_ui = peer.m_ui;
-    m_peerwidget = peer.m_peerwidget;
-}
-
-/*! \brief update status of the peer
- *
- * Change what is displayed according to new status values.
- */
-void PeerItem::updateStatus()
-{
-    if(m_peerwidget != NULL)
-        updateDisplayedStatus();
-}
-
-void PeerItem::updateAgentStatus(const QVariant &)
-{
-    if(m_peerwidget != NULL)
-        updateDisplayedStatus();
-}
-
-/*! \brief update status of the peer
- *
- * Change what is displayed according to new status values.
- */
-void PeerItem::updateDisplayedStatus()
-{
-    if(m_peerwidget == NULL)
-        return;
-    m_peerwidget->updatePresence();
-}
-
-/*! \brief update name if changed
- */
-void PeerItem::updateDisplayedName()
-{
-    if(m_peerwidget == NULL)
-        return;
-
-    m_peerwidget->setName(m_ui->fullname());
-    return;
-}
-
-const UserInfo * PeerItem::userinfo()
-{
-    return m_ui;
-}
+#endif

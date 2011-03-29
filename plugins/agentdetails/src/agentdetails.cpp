@@ -130,13 +130,13 @@ void XletAgentDetails::setGuiOptions(const QVariantMap &optionsMap)
 void XletAgentDetails::newAgentList(const QStringList &qsl)
 {
     // qDebug() << Q_FUNC_INFO << qsl;
-    if (qsl.contains(m_monitored_agentid) && b_engine->agents().contains(m_monitored_agentid))
+    if (qsl.contains(m_monitored_agentid) && b_engine->hasAgent(m_monitored_agentid))
         updatePanel();
 }
 
-void XletAgentDetails::monitorThisAgent(const QString &agentid)
+void XletAgentDetails::monitorThisAgent(const QString & agentid)
 {
-    if (b_engine->agents().contains(agentid)) {
+    if (b_engine->hasAgent(agentid)) {
         m_monitored_agentid = agentid;
         clearPanel();
         updatePanel();
@@ -169,7 +169,7 @@ void XletAgentDetails::clearPanel()
 
 void XletAgentDetails::updatePanel()
 {
-    AgentInfo *ainfo = b_engine->agents()[m_monitored_agentid];
+    const AgentInfo * ainfo = b_engine->agent(m_monitored_agentid);
     QStringList agent_descriptions;
     agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber());
     if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
@@ -218,12 +218,12 @@ void XletAgentDetails::updatePanel()
     m_agentlegend_njoined->setText(agentstats.toMap().value("Xivo-NQJoined").toString());
     m_agentlegend_npaused->setText(agentstats.toMap().value("Xivo-NQPaused").toString());
 
-    QHashIterator<QString, QueueInfo *> iter = QHashIterator<QString, QueueInfo *>(b_engine->queues());
+    QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(b_engine->iterover("queues"));
     while (iter.hasNext()) {
         iter.next();
-        QueueInfo *qinfo = iter.value();
-        // newQueue(qinfo->ipbxid(), qinfo->queueName(), qinfo->properties());
         QString queueid = iter.key();
+        QueueInfo * qinfo = (QueueInfo *) iter.value();
+        // newQueue(qinfo->ipbxid(), qinfo->queueName(), qinfo->properties());
         queueids << queueid;
         bool isnewqueue = false;
         if (! m_queue_labels.contains(queueid))
@@ -383,10 +383,10 @@ void XletAgentDetails::queueClicked()
     QString queueid = sender()->property("queueid").toString();
     QString action  = sender()->property("action").toString();
 
-    QString astid = b_engine->queues()[queueid]->ipbxid();
-    QString qid = b_engine->queues()[queueid]->id();
-    QString queuename = b_engine->queues()[queueid]->queueName();
-    QVariant mstatus = b_engine->agents()[m_monitored_agentid]->properties().value("queues_by_agent").toMap().value(qid);
+    QString astid = b_engine->queue(queueid)->ipbxid();
+    QString qid = b_engine->queue(queueid)->id();
+    QString queuename = b_engine->queue(queueid)->queueName();
+    QVariant mstatus = b_engine->agent(m_monitored_agentid)->properties().value("queues_by_agent").toMap().value(qid);
     QString smstatus = mstatus.toMap().value("Status").toString();
     QString pmstatus = mstatus.toMap().value("Paused").toString();
 

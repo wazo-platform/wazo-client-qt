@@ -32,9 +32,9 @@
  */
 
 #include <QDebug>
-#include "phoneinfo.h"
+#include "trunkinfo.h"
 
-PhoneInfo::PhoneInfo(const QString & ipbxid,
+TrunkInfo::TrunkInfo(const QString & ipbxid,
                      const QString & id)
     : XInfo(ipbxid, id)
 {
@@ -43,7 +43,7 @@ PhoneInfo::PhoneInfo(const QString & ipbxid,
     m_enable_hint = false;
 }
 
-bool PhoneInfo::updateConfig(const QVariantMap & prop)
+bool TrunkInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = true;
     if (prop.contains("protocol"))
@@ -88,7 +88,7 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
     return haschanged;
 }
 
-bool PhoneInfo::updateStatus(const QVariantMap & prop)
+bool TrunkInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = true;
     if (prop.contains("hintstatus"))

@@ -36,7 +36,7 @@
 
 QueueInfo::QueueInfo(const QString & ipbxid,
                      const QString & id)
-    : m_ipbxid(ipbxid), m_id(id)
+    : XInfo(ipbxid, id)
 {
 }
 
@@ -83,16 +83,6 @@ bool QueueInfo::updateAgent(const QVariantMap & prop)
         }
     }
     return haschanged;
-}
-
-const QString & QueueInfo::ipbxid() const
-{
-    return m_ipbxid;
-}
-
-const QString & QueueInfo::id() const
-{
-    return m_id;
 }
 
 const QString & QueueInfo::context() const

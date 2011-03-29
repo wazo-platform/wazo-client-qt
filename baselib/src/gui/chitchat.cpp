@@ -94,11 +94,10 @@ ChitChatWindow::ChitChatWindow(const QString &with) : QWidget(NULL)
     h_layout->addWidget(m_message, 1);
     h_layout->addLayout(v_layout2);
 
-
     v_layout->addWidget(m_message_history, 3);
     v_layout->addLayout(h_layout);
 
-    setWindowTitle(tr("chitchat - %0").arg(b_engine->users()[with]->fullname()));
+    setWindowTitle(tr("chitchat - %0").arg(b_engine->user(with)->fullname()));
     m_userid = with;
     show();
 }
@@ -128,11 +127,12 @@ void ChitChatWindow::receiveMessage(const QVariantMap &p)
 
     if (opened || (!m_chat_window_opened[chat_key]->isVisible()))
         m_chat_window_opened[chat_key]->addMessage("purple",
-            tr("chat window opened with user - ") + b_engine->users()[from]->fullname(), "gray", "system: ");
+          tr("chat window opened with user - ") + b_engine->user(from)->fullname(),
+                                                   "gray", "system: ");
 
 
     m_chat_window_opened[chat_key]->addMessage("black",
-        text, "red", b_engine->users()[from]->fullname() + ": ");
+                                               text, "red", b_engine->user(from)->fullname() + ": ");
 }
 
 
@@ -173,7 +173,7 @@ void ChitChatWindow::writeMessageTo()
 
     if (opened || (!m_chat_window_opened[chat_key]->isVisible())) {
         m_chat_window_opened[chat_key]->addMessage("purple",
-            tr("chat window opened with user - ") +  b_engine->users()[userid]->fullname(), "gray", tr("system: "));
+         tr("chat window opened with user - ") +  b_engine->user(userid)->fullname(), "gray", tr("system: "));
     }
 }
 

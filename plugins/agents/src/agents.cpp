@@ -139,12 +139,12 @@ void XletAgents::newQueueList(const QStringList &)
 void XletAgents::newAgentList(const QStringList & list)
 {
     //qDebug() << Q_FUNC_INFO << list << b_engine->agents();
-    QHashIterator<QString, AgentInfo *> iter = QHashIterator<QString, AgentInfo *>(b_engine->agents());
+    QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(b_engine->iterover("agents"));
 
     while (iter.hasNext()) {
         iter.next();
-        AgentInfo * ainfo = iter.value();
         QString agentid = iter.key();
+        AgentInfo * ainfo = (AgentInfo *) iter.value();
         if (!list.contains(agentid))
             continue;
 
@@ -191,9 +191,11 @@ void XletAgents::newAgentLine(const QString & agentid)
 }
 
 // update according to admin-defined parameters
-void XletAgents::updateAgentLineAdmin(const QString & agentid, const QString & agfullname, const QString & agentnumber)
+void XletAgents::updateAgentLineAdmin(const QString & agentid,
+                                      const QString & agfullname,
+                                      const QString & agentnumber)
 {
-    AgentInfo * ainfo = b_engine->agents()[agentid];
+    const AgentInfo * ainfo = b_engine->agent(agentid);
     m_agent_labels[agentid]->setText(QString("%1 (%2)").arg(agfullname).arg(agentnumber));
     m_agent_labels[agentid]->setToolTip(tr("Server: %1\nContext: %2").arg(ainfo->ipbxid()).arg(ainfo->context()));
     m_agent_more[agentid]->setProperty("agentid", agentid);
@@ -259,7 +261,7 @@ void XletAgents::displayLine(const QString & agentid, int linenum)
 
 void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & properties)
 {
-    AgentInfo * ainfo = b_engine->agents()[agentid];
+    const AgentInfo * ainfo = b_engine->agent(agentid);
     if (ainfo == NULL)
         return;
     QString context_agent = ainfo->context();
@@ -284,19 +286,20 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
     QStringList ttips;
     if (link) {
         square.fill(Qt::green);
-        QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(b_engine->phones());
-        while (iter.hasNext()) {
-            iter.next();
-            if ((iter.value()->number() == phonenum) &&
-                (iter.value()->ipbxid() == ainfo->ipbxid())) {
-                foreach (const QString channel, iter.value()->channels()) {
-                    const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-                    if(channelinfo == NULL)
-                        continue;
-                    ttips << tr("online with %1").arg(channelinfo->peerdisplay());
-                }
-            }
-        }
+        // XXX to review : the relation between agent and phones should be made on the server side
+//         QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(b_engine->phones());
+//         while (iter.hasNext()) {
+//             iter.next();
+//             if ((iter.value()->number() == phonenum) &&
+//                 (iter.value()->ipbxid() == ainfo->ipbxid())) {
+//                 foreach (const QString channel, iter.value()->channels()) {
+//                     const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+//                     if(channelinfo == NULL)
+//                         continue;
+//                     ttips << tr("online with %1").arg(channelinfo->peerdisplay());
+//                 }
+//             }
+//         }
     } else
         square.fill(Qt::gray);
     m_agent_busy[agentid]->setPixmap(square);
@@ -332,18 +335,17 @@ void XletAgents::updateAgentStatus(const QString & agentid, const QVariantMap & 
     QStringList paused_queues;
     foreach (QString qname, agqjoined.keys()) {
         QString queueid = QString("%1/%2").arg(ainfo->ipbxid()).arg(qname);
-        QueueInfo * qinfo = b_engine->queues()[queueid];
-        if (qinfo != NULL) {
-            QVariant qv = agqjoined.value(qname);
-            if (qv.toMap().contains("Status")) {
-                QString pstatus = qv.toMap().value("Paused").toString();
-                QString sstatus = qv.toMap().value("Status").toString();
-                if ((sstatus == "1") || (sstatus == "3") || (sstatus == "4") || (sstatus == "5"))
-                    joined_queues << qname;
-                if (pstatus == "1")
-                    paused_queues << qname;
-                }
-            // }
+        const QueueInfo * qinfo = b_engine->queue(queueid);
+        if (qinfo == NULL)
+            continue;
+        QVariant qv = agqjoined.value(qname);
+        if (qv.toMap().contains("Status")) {
+            QString pstatus = qv.toMap().value("Paused").toString();
+            QString sstatus = qv.toMap().value("Status").toString();
+            if ((sstatus == "1") || (sstatus == "3") || (sstatus == "4") || (sstatus == "5"))
+                joined_queues << qname;
+            if (pstatus == "1")
+                paused_queues << qname;
         }
     }
 
@@ -397,10 +399,9 @@ void XletAgents::agentClicked()
     QString agentid = sender()->property("agentid").toString();
     QString action  = sender()->property("action").toString();
 
-    if (! b_engine->agents().keys().contains(agentid))
+    const AgentInfo * ainfo = b_engine->agent(agentid);
+    if (ainfo == NULL)
         return;
-
-    AgentInfo * ainfo = b_engine->agents()[agentid];
     QString ipbxid = ainfo->ipbxid();
     QString agentnumber = ainfo->agentNumber();
     QVariantMap ipbxcommand;
