@@ -63,6 +63,7 @@ class BASELIB_EXPORT ChannelInfo
         bool isholded() const;
         bool isparked() const;
         const QString & agent() const;
+        const QString toString() const;
 
     private:
         QString m_ipbxid;  //!< IPBX id (for main phone)

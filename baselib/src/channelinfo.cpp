@@ -72,6 +72,19 @@ bool ChannelInfo::updateStatus(const QVariantMap & qvm)
     return haschanged;
 }
 
+const QString ChannelInfo::toString() const
+{
+    QString str;
+
+    str = "x channel: " + m_xchannel + "\ndirection: " + m_direction + "\n";
+    str += "Status: " + m_commstatus + "\ntalkingto_kind" + m_talkingto_kind + "\n";
+    str += "talkingto_id: " + m_talkingto_id + " peer: " + m_peerdisplay + "\n";
+    str += "holded: " + QString(m_isholded != 0 ? "true" : "false") + " parked: ";
+    str += QString(m_isparked != 0 ? "true" : "false");
+
+    return str;
+}
+
 const QString & ChannelInfo::talkingto_kind() const
 {
     return m_talkingto_kind;
