@@ -1317,16 +1317,19 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             }
 
             // qDebug() << function << listname << xid << haschanged << status;
-            if ((listname == "phones") && m_anylist.value("phones").contains(xid)) {
+
+            if (listname == "phones") {
                 emit updatePhoneStatus(xid);
-                QVariantMap command;
-                command["class"] = "getlist";
-                command["function"] = "updatestatus";
-                command["listname"] = "channels";
-                command["ipbxid"] = ipbxid;
-                foreach(QString id, ((PhoneInfo *) m_anylist.value("phones").value(xid))->channels()) {
-                    command["id"] = id;
-                    sendJsonCommand(command);
+                if (hasPhone(xid)) {
+                    QVariantMap command;
+                    command["class"] = "getlist";
+                    command["function"] = "updatestatus";
+                    command["listname"] = "channels";
+                    command["ipbxid"] = ipbxid;
+                    foreach(QString id, phone(xid)->channels()) {
+                        command["id"] = id;
+                        sendJsonCommand(command);
+                    }
                 }
             }
             else if (listname == "users")

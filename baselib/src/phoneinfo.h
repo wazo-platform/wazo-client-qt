@@ -56,6 +56,7 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         int simultcalls() const { return m_simultcalls; };  //! phone simultcalls
 
         const QStringList & channels() const { return m_channels; };  //! current communications of this phone
+        const QStringList & xchannels() const { return m_xchannels; };  //! current communications of this phone
         const QString & hintstatus() const { return m_hintstatus; }; //! hint status value
 
         bool enableunc() const { return m_enableunc; };
@@ -69,6 +70,7 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         bool m_enable_hint;
         QString m_hintstatus;
         QStringList m_channels;
+        QStringList m_xchannels;
 
         bool m_enablerna;
         bool m_enableunc;

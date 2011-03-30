@@ -61,8 +61,6 @@ class CallWidget : public QWidget
                    const QString &,
                    QWidget * parent);
         void updateWidget(const QString &);
-
-        const QString channel() const;
     protected:
         void mousePressEvent(QMouseEvent *);
         void mouseMoveEvent(QMouseEvent *);

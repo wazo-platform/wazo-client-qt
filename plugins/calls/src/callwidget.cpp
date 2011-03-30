@@ -245,13 +245,3 @@ void CallWidget::contextMenuEvent(QContextMenuEvent *event)
     }
     contextMenu.exec(event->globalPos());
 }
-
-/*! \brief return m_channel
- */
-const QString CallWidget::channel() const
-{
-    const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
-    if (channelinfo == NULL)
-        return "";
-    return channelinfo->channel();
-}

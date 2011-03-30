@@ -332,8 +332,7 @@ QList<const ChannelInfo *> BasePeerWidget::loopOverChannels(const UserInfo * use
         const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
         if (phoneinfo == NULL)
             continue;
-        foreach (const QString channel, phoneinfo->channels()) {
-            const QString xchannel = QString("%1/%2").arg(ipbxid).arg(channel);
+        foreach (const QString xchannel, phoneinfo->xchannels()) {
             const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
             if (channelinfo == NULL)
                 continue;

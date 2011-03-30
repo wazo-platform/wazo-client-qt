@@ -179,6 +179,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QHash<QString, newXInfoProto> m_xinfoList;  //!< XInfo constructors
 
+        bool hasPhone(const QString & xid) { return m_anylist.value("phones").contains(xid); };
         bool hasAgent(const QString & xid) { return m_anylist.value("agents").contains(xid); };
         bool hasQueue(const QString & xid) { return m_anylist.value("queues").contains(xid); };
 

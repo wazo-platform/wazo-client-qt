@@ -343,53 +343,54 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
     if (phoneinfo == NULL)
         return;
 
-    foreach (const QString channel, phoneinfo->channels()) {
-        const ChannelInfo * channelinfo = b_engine->channels().value(channel);
+    // qDebug() << Q_FUNC_INFO << xphoneid << phoneinfo->xchannels();
+    foreach (const QString xchannel, phoneinfo->xchannels()) {
+        const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
         if (channelinfo == NULL)
             continue;
         const QString status = channelinfo->commstatus();
         const QString todisplay = channelinfo->peerdisplay();
         if (status == CHAN_STATUS_RINGING) {
-            if (!m_callchannels.contains(channel)) {
-                newCall(channel);
-                m_callchannels << channel;
-                m_linestatuses[channel] = Ringing;
+            if (! m_callchannels.contains(xchannel)) {
+                newCall(xchannel);
+                m_callchannels << xchannel;
+                m_linestatuses[xchannel] = Ringing;
                 QStringList action = QStringList() << "hangup"
                                                    << "dtransfer"
                                                    << "park";
                 if (b_engine->getGuiOptions("client_gui").value("xlet_operator_answer_work", 1).toInt()) {
                     action << "answer";
                 }
-                updateLine(channel, action);
-                m_statuses[channel]->setText(tr("%1 Ringing").arg(todisplay));
-                m_statuses[channel]->show();
+                updateLine(xchannel, action);
+                m_statuses[xchannel]->setText(tr("%1 Ringing").arg(todisplay));
+                m_statuses[xchannel]->show();
             }
         } else if ((status == CHAN_STATUS_LINKED_CALLED) ||
                    (status == CHAN_STATUS_LINKED_CALLER)) {
-            if (!m_callchannels.contains(channel)) {
-                newCall(channel);
-                m_callchannels << channel;
+            if (! m_callchannels.contains(xchannel)) {
+                newCall(xchannel);
+                m_callchannels << xchannel;
             }
-            m_linestatuses[channel] = Online;
+            m_linestatuses[xchannel] = Online;
             QStringList allowed;
             allowed << "hangup" << "dtransfer" << "itransfer" << "park";
             // if (qvm["atxfer"].toBool()) XXXX
             // allowed << "atxferfinalize" << "atxfercancel";
-            updateLine(channel, allowed);
-            m_statuses[channel]->setText(tr("Link %1").arg(todisplay));
-            m_statuses[channel]->show();
+            updateLine(xchannel, allowed);
+            m_statuses[xchannel]->setText(tr("Link %1").arg(todisplay));
+            m_statuses[xchannel]->show();
         } else if (status == CHAN_STATUS_HANGUP) {
-            if (m_callchannels.contains(channel)) {
-                removeLine(channel);
+            if (m_callchannels.contains(xchannel)) {
+                removeLine(xchannel);
             }
         } else {
-            qDebug() << Q_FUNC_INFO << "not processed" << channel << status;
+            qDebug() << Q_FUNC_INFO << "not processed" << xchannel << status;
         }
     }
 
-    foreach (const QString channel, m_callchannels) {
-        if (! phoneinfo->channels().contains(channel)) {
-            removeLine(channel);
+    foreach (const QString xchannel, m_callchannels) {
+        if (! phoneinfo->xchannels().contains(xchannel)) {
+            removeLine(xchannel);
         }
     }
 }
