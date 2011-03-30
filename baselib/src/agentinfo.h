@@ -55,7 +55,8 @@ class BASELIB_EXPORT AgentInfo : public XInfo
 
         //! agent statuses
         const QString & status() const { return m_status; };  //! access to the status values of this agent
-        const QVariantMap & properties() const;
+        const QString & phonenumber() const { return m_phonenumber; };  //! access to the phonenumber values of this agent
+        const QVariantMap & properties() const { return m_properties; } ;
         //! current communications of this agent
         const QVariantMap & comms() const { return m_comms; };
         const QList<QString> queuelist() const { return m_comms.keys(); };
@@ -72,6 +73,7 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         // the phonenumber it is related to (connected or not)
         // is the agent busy or not (AGENT_ONCALL usw ...)
         QString m_status;
+        QString m_phonenumber;
         QVariantMap m_comms;
         QVariantMap m_properties;
 };

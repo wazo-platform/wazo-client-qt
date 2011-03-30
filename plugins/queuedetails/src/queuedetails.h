@@ -55,8 +55,10 @@ class XletQueueDetails : public XLet
         XletQueueDetails(QWidget *parent=0);
 
     public slots:
-        void newAgentList(const QStringList &);
-        void newQueueList(const QStringList &);
+        void updateAgentConfig(const QString &);
+        void updateAgentStatus(const QString &);
+        void updateQueueConfig(const QString &);
+        void updateQueueStatus(const QString &);
         void monitorThisQueue(const QString &);
 
     private slots:
@@ -66,7 +68,7 @@ class XletQueueDetails : public XLet
         void clearPanel();
         void updatePanel();
         void setAgentLookProps(const QString &);
-        void setAgentQueueProps(const QString &, const QVariant &);
+        void setAgentQueueProps(const QString &, const QStringList &);
         void setAgentProps(const QString &, const AgentInfo *);
         void setAgentQueueSignals(const QString &);
         void fillAgent(int, const QString &);

@@ -488,12 +488,18 @@ void BaseEngine::clearLists()
 
 void BaseEngine::clearChannelList()
 {
-    QHashIterator<QString, ChannelInfo *> iter = QHashIterator<QString, ChannelInfo *>(m_channels);
-    while (iter.hasNext()) {
-        iter.next();
-        delete iter.value();
+    QHashIterator<QString, ChannelInfo *> iterc = QHashIterator<QString, ChannelInfo *>(m_channels);
+    while (iterc.hasNext()) {
+        iterc.next();
+        delete iterc.value();
     }
     m_channels.clear();
+    QHashIterator<QString, QueueMemberInfo *> iterq = QHashIterator<QString, QueueMemberInfo *>(m_queuemembers);
+    while (iterq.hasNext()) {
+        iterq.next();
+        delete iterq.value();
+    }
+    m_queuemembers.clear();
 }
 
 /*! \brief initiates connection to the server
@@ -693,62 +699,6 @@ void BaseEngine::filetransferSocketConnected()
     // ??? useless test ???
     if (m_filetransfersocket->state() == QAbstractSocket::ConnectedState)
         m_filetransfersocket->write((jsoncommand + "\n").toAscii());
-}
-
-QStringList BaseEngine::updateQueue(const QString & ipbxid,
-                                    const QString & queueid,
-                                    const QVariantMap & properties)
-{
-    QStringList keychanges;
-    QString key = QString("%1/%2").arg(ipbxid).arg(queueid);
-//     if (! m_queues.contains(key))
-//         m_queues[key] = new QueueInfo(ipbxid, queueid);
-//     bool haschanged = m_queues[key]->updateConfig(properties);
-//     if (haschanged)
-//         keychanges << key;
-    return keychanges;
-}
-
-QStringList BaseEngine::updateQueueAgent(const QString & ipbxid,
-                                         const QString & queueid,
-                                         const QVariantMap & properties)
-{
-    QStringList keychanges;
-    QString key = QString("%1/%2").arg(ipbxid).arg(queueid);
-//     if (!m_queues.contains(key))
-//         m_queues[key] = new QueueInfo(ipbxid, queueid);
-//     bool haschanged = m_queues[key]->updateAgent(properties);
-//     if (haschanged)
-//         keychanges << key;
-    return keychanges;
-}
-
-QStringList BaseEngine::updateAgent(const QString & ipbxid,
-                                    const QString & agentid,
-                                    const QVariantMap & properties)
-{
-    QStringList keychanges;
-    QString key = QString("%1/%2").arg(ipbxid).arg(agentid);
-//     if (! m_agents.contains(key))
-//         m_agents[key] = new AgentInfo(ipbxid, agentid);
-//     bool haschanged = m_agents[key]->updateConfig(properties);
-//     if (haschanged)
-//         keychanges << key;
-    return keychanges;
-}
-
-QStringList BaseEngine::updateAgentQueue(const QString & ipbxid,
-                                         const QString & agentid,
-                                         const QVariantMap & properties)
-{
-    QStringList keychanges;
-    QString key = QString("%1/%2").arg(ipbxid).arg(agentid);
-//     if (! m_agents.contains(key))
-//         m_agents[key] = new AgentInfo(ipbxid, agentid);
-//     bool haschanged = m_agents[key]->updateQueue(properties);
-//     if (haschanged)
-//         keychanges << key;
-    return keychanges;
 }
 
 double BaseEngine::timeServer() const
@@ -1266,8 +1216,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QStringList listid = datamap.value("list").toStringList();
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                qDebug() << function << listname << xid;
                 if (GenLists.contains(listname)) {
+                    qDebug() << function << listname << xid;
                     if (m_anylist.value(listname).contains(xid)) {
                         delete m_anylist[listname][xid];
                         m_anylist[listname].remove(xid);
@@ -1276,6 +1226,11 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     if (m_channels.contains(xid)) {
                         delete m_channels[xid];
                         m_channels.remove(xid);
+                    }
+                } else if (listname == "queuemembers") {
+                    if (m_queuemembers.contains(xid)) {
+                        delete m_queuemembers[xid];
+                        m_queuemembers.remove(xid);
                     }
                 }
             }
@@ -1343,6 +1298,10 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 if (! m_channels.contains(xid))
                     m_channels[xid] = new ChannelInfo(ipbxid, id);
                 haschanged = m_channels[xid]->updateStatus(status);
+            } else if (listname == "queuemembers") {
+                if (! m_queuemembers.contains(xid))
+                    m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
+                haschanged = m_queuemembers[xid]->updateStatus(status);
             }
 
             // qDebug() << function << listname << xid << haschanged << status;
@@ -1355,8 +1314,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     command["function"] = "updatestatus";
                     command["listname"] = "channels";
                     command["ipbxid"] = ipbxid;
-                    foreach(QString id, phone(xid)->channels()) {
-                        command["id"] = id;
+                    foreach (QString cid, phone(xid)->channels()) {
+                        command["id"] = cid;
                         sendJsonCommand(command);
                     }
                 }
@@ -1365,8 +1324,20 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateUserStatus(xid);
             else if (listname == "agents")
                 emit updateAgentStatus(xid);
-            else if (listname == "queues")
+            else if (listname == "queues") {
                 emit updateQueueStatus(xid);
+                if (hasQueue(xid)) {
+                    QVariantMap command;
+                    command["class"] = "getlist";
+                    command["function"] = "updatestatus";
+                    command["listname"] = "queuemembers";
+                    command["ipbxid"] = ipbxid;
+                    foreach (QString aid, queue(xid)->agentmembers()) {
+                        command["id"] = aid;
+                        sendJsonCommand(command);
+                    }
+                }
+            }
             else if (listname == "channels")
                 emit updateChannelStatus(xid);
 
@@ -1393,53 +1364,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 command["id"] = id;
                 sendJsonCommand(command);
             }
-        }
-    } else if (thisclass == "queues") {
-        // qDebug() << Q_FUNC_INFO << "queues" << function << line.length();
-        if (function == "sendlist") {
-        } else if (function == "update") {
-            QStringList kk;
-            foreach (QString ipbxid, payload.keys()) {
-                QVariantMap values = payload[ipbxid].toMap();
-                foreach (QString queueid, values.keys()) {
-                    kk += updateQueueAgent(ipbxid, queueid, values[queueid].toMap());
-                }
-            }
-            if (! kk.isEmpty())
-                emit newQueueList(kk);
-        } else if (function == "del") {
-            emit removeQueues(datamap.value("astid").toString(),
-                              datamap.value("deltalist").toStringList());
-        } else if (function == "add") {
-            QVariantMap command;
-            command["class"] = "queues";
-            command["function"] = "getlist";
-            sendJsonCommand(command);
-            // qDebug() << thisclass << "add" << datamap.value("astid").toString() << datamap.value("deltalist"].toStringList();
-        }
-
-    } else if (thisclass == "agents") {
-        if (function == "sendlist") {
-            QStringList kk;
-            foreach (QString ipbxid, payload.keys()) {
-                QVariantMap values = payload[ipbxid].toMap();
-                foreach (QString agentid, values.keys()) {
-                    kk += updateAgent(ipbxid, agentid, values[agentid].toMap());
-                }
-            }
-            if (! kk.isEmpty())
-                emit newAgentList(kk);
-
-        } else if (function == "update") {
-            QStringList kk;
-            foreach (QString ipbxid, payload.keys()) {
-                QVariantMap values = payload[ipbxid].toMap();
-                foreach (QString agentid, values.keys()) {
-                    kk += updateAgentQueue(ipbxid, agentid, values[agentid].toMap());
-                }
-            }
-            if (! kk.isEmpty())
-                emit newAgentList(kk);
         }
 
     } else if (thisclass == "users") {

@@ -53,27 +53,38 @@ XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
     m_gridlayout->addWidget(m_queuedescription, 0, 0);
     startTimer(1000);
     // connect signal slots to engine
-    connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
-            this, SLOT(newAgentList(const QStringList &)));
-    connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
-            this, SLOT(newQueueList(const QStringList &)));
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            this, SLOT(updateAgentStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
+            this, SLOT(updateQueueConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
+            this, SLOT(updateQueueStatus(const QString &)));
 
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(monitorThisQueue(const QString &)));
 }
 
-void XLetQueueEntryDetails::newQueueList(const QStringList &)
+void XLetQueueEntryDetails::updateAgentConfig(const QString & xagentid)
 {
-    // qDebug() << Q_FUNC_INFO;
-    if(b_engine->hasQueue(m_monitored_queueid))
+    qDebug() << Q_FUNC_INFO << xagentid;
+}
+
+void XLetQueueEntryDetails::updateAgentStatus(const QString & xagentid)
+{
+    qDebug() << Q_FUNC_INFO << xagentid;
+}
+
+void XLetQueueEntryDetails::updateQueueConfig(const QString & xqueueid)
+{
+    if (xqueueid == m_monitored_queueid)
         updatePanel();
 }
 
-void XLetQueueEntryDetails::newAgentList(const QStringList &)
+void XLetQueueEntryDetails::updateQueueStatus(const QString & xqueueid)
 {
-    // qDebug() << Q_FUNC_INFO;
-    if(b_engine->hasQueue(m_monitored_queueid))
-        updatePanel();
+    qDebug() << Q_FUNC_INFO << xqueueid << m_monitored_queueid;
 }
 
 void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)

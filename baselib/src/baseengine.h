@@ -65,8 +65,9 @@ class Xlet;
 #include "voicemailinfo.h"
 #include "incomingcallsinfo.h"
 
-#include "parkinginfo.h"
 #include "channelinfo.h"
+#include "queue_agent_status.h"
+#include "parkinginfo.h"
 
 #include "dstore/src/dstore.h"
 
@@ -200,6 +201,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         const QHash<QString, ChannelInfo *> & channels() const
                 { return m_channels; };  //!< Return the channels to any Xlet
+        const QHash<QString, QueueMemberInfo *> & queuemembers() const
+                { return m_queuemembers; };  //!< Return the channels to any Xlet
 
         const QHash<QString, QHash<QString, ParkingInfo *> > parking() const
                 { return m_parking; }; //!< Return the parking to any Xlet
@@ -341,16 +344,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void sendCommand(const QString &);
         void parseCommand(const QString &);
         void configsLists(const QString &, const QString &, const QVariantMap &);
-        void updatePhone(const QString &, const QString &,
-                         const QVariantMap &);
-        QStringList updateQueue(const QString &, const QString &,
-                                const QVariantMap &);
-        QStringList updateQueueAgent(const QString &, const QString &,
-                                     const QVariantMap &);
-        QStringList updateAgent(const QString &, const QString &,
-                                const QVariantMap &);
-        QStringList updateAgentQueue(const QString &, const QString &,
-                                     const QVariantMap &);
+        void updatePhone(const QString &, const QString &, const QVariantMap &);
         void clearLists();
         void clearChannelList();
 
@@ -447,6 +441,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // miscellaneous statuses to share between xlets
         QHash<QString, QHash<QString, XInfo *> > m_anylist;
         QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
+        QHash<QString, QueueMemberInfo *> m_queuemembers;  //!< List of Channel informations
         QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 
         DStore * m_tree;

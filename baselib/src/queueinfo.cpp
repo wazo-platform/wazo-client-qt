@@ -43,9 +43,47 @@ QueueInfo::QueueInfo(const QString & ipbxid,
 bool QueueInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    m_context = prop.value("context").toString();
-    m_queuename = prop.value("name").toString();
-    m_queuenumber = prop.value("number").toString();
+    if (prop.contains("context") && (m_context != prop.value("context").toString())) {
+        m_context = prop.value("context").toString();
+        haschanged = true;
+    }
+    if (prop.contains("name") && (m_name != prop.value("name").toString())) {
+        m_name = prop.value("name").toString();
+        haschanged = true;
+    }
+    if (prop.contains("number") && (m_number != prop.value("number").toString())) {
+        m_number = prop.value("number").toString();
+        haschanged = true;
+    }
+    return haschanged;
+}
+
+bool QueueInfo::updateStatus(const QVariantMap & prop)
+{
+    bool haschanged = false;
+    if (prop.contains("agentmembers")) {
+        // m_agentids = prop.value("agentmembers").toStringList();
+        m_agentmembers.clear();
+        m_xagentmembers.clear();
+        foreach (QString agentid, prop.value("agentmembers").toStringList()) {
+            QString agentmember = QString("qa:%1-%2").arg(m_id).arg(agentid);
+            QString xagentmember = QString("%1/qa:%2-%3").arg(m_ipbxid).arg(m_id).arg(agentid);
+            m_agentmembers.append(agentmember);
+            m_xagentmembers.append(xagentmember);
+        }
+        haschanged = true;
+    }
+    if (prop.contains("phonemembers")) {
+        m_phonemembers.clear();
+        m_xphonemembers.clear();
+        foreach (QString phoneid, prop.value("phonemembers").toStringList()) {
+            QString phonemember = QString("qp:%1-%2").arg(m_id).arg(phoneid);
+            QString xphonemember = QString("%1/qp:%2-%3").arg(m_ipbxid).arg(m_id).arg(phoneid);
+            m_phonemembers.append(phonemember);
+            m_xphonemembers.append(xphonemember);
+        }
+        haschanged = true;
+    }
     if (m_properties != prop) {
         m_properties = prop;
         haschanged = true;
@@ -53,44 +91,7 @@ bool QueueInfo::updateConfig(const QVariantMap & prop)
     return haschanged;
 }
 
-bool QueueInfo::updateStatus(const QVariantMap &)
-{
-    bool haschanged = true;
-    return haschanged;
-}
-
-bool QueueInfo::updateAgent(const QVariantMap & prop)
-{
-    bool haschanged = false;
-    QMapIterator<QString, QVariant> it(prop);
-    while (it.hasNext()) {
-        it.next();
-        QString arg = it.key();
-        if (!m_properties.contains(arg)) {
-            haschanged = true;
-            m_properties[arg] = it.value();
-        } else if (m_properties.value(arg) != it.value()) {
-            haschanged = true;
-            QVariantMap tmp = m_properties.value(arg).toMap();
-            QMapIterator<QString, QVariant> it2(it.value().toMap());
-            while (it2.hasNext()) {
-                it2.next();
-                if (tmp.value(it2.key()) != it2.value()) {
-                    tmp[it2.key()] = it2.value();
-                }
-            }
-            m_properties[arg] = tmp;
-        }
-    }
-    return haschanged;
-}
-
-const QString & QueueInfo::context() const
-{
-    return m_context;
-}
-
-const QVariantMap & QueueInfo::properties() const
-{
-    return m_properties;
-}
+// bool QueueInfo::hasAgentId(const QString & agentid)
+// {
+//     return m_agentids.contains(agentid);
+// }

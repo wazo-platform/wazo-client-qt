@@ -105,6 +105,14 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
     // connect signal/slots with engine
     connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
             this, SLOT(newAgentList(const QStringList &)));
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            this, SLOT(updateAgentStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
+            this, SLOT(updateQueueConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
+            this, SLOT(updateQueueStatus(const QString &)));
 
     connect(b_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
             this, SLOT(monitorThisAgent(const QString &)));
@@ -127,11 +135,26 @@ void XletAgentDetails::setGuiOptions(const QVariantMap &optionsMap)
 }
 
 
-void XletAgentDetails::newAgentList(const QStringList &qsl)
+void XletAgentDetails::updateAgentConfig(const QString & xagentid)
 {
-    // qDebug() << Q_FUNC_INFO << qsl;
-    if (qsl.contains(m_monitored_agentid) && b_engine->hasAgent(m_monitored_agentid))
+    if (xagentid == m_monitored_agentid)
         updatePanel();
+}
+
+void XletAgentDetails::updateAgentStatus(const QString & xagentid)
+{
+    qDebug() << Q_FUNC_INFO << xagentid;
+}
+
+void XletAgentDetails::updateQueueConfig(const QString & xqueueid)
+{
+    if (m_queue_labels.contains(xqueueid))
+        setQueueProps(xqueueid);
+}
+
+void XletAgentDetails::updateQueueStatus(const QString & xqueueid)
+{
+    qDebug() << Q_FUNC_INFO << xqueueid << m_monitored_agentid;
 }
 
 void XletAgentDetails::monitorThisAgent(const QString & agentid)
@@ -170,16 +193,20 @@ void XletAgentDetails::clearPanel()
 void XletAgentDetails::updatePanel()
 {
     const AgentInfo * ainfo = b_engine->agent(m_monitored_agentid);
+    if (ainfo == NULL)
+        return;
+
     QStringList agent_descriptions;
     agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber());
     if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
         agent_descriptions << tr("on <b>%1</b>").arg(ainfo->ipbxid());
     if (! m_optionsMap.value("xlet.agentdetails.hidecontext").toBool())
         agent_descriptions << QString("(%1)").arg(ainfo->context());
+    QString lstatus = ainfo->status();
+    QString phonenum = ainfo->phonenumber();
+
     QVariantMap properties = ainfo->properties();
     QVariant agentstats = properties["agentstats"];
-    QString lstatus = agentstats.toMap().value("status").toString();
-    QString phonenum = agentstats.toMap().value("agent_phone_number").toString();
     QVariantMap queuesstats = properties.value("queues_by_agent").toMap();
 
     if (lstatus == "AGENT_LOGGEDOFF") {
@@ -246,11 +273,9 @@ void XletAgentDetails::updatePanel()
         }
 
         setQueueLookProps(queueid);
-
-        QString qid = qinfo->id();
-        setQueueProps(queueid, qinfo);
+        setQueueProps(queueid);
         if (qinfo->ipbxid() == ainfo->ipbxid())
-            setQueueAgentProps(queueid, queuesstats[qid]);
+            setQueueAgentProps(queueid, queuesstats[queueid]);
 
         if (isnewqueue)
             setQueueAgentSignals(queueid);
@@ -264,59 +289,62 @@ void XletAgentDetails::updatePanel()
     }
 }
 
-void XletAgentDetails::setQueueLookProps(const QString &queueid)
+void XletAgentDetails::setQueueLookProps(const QString & xqueueid)
 {
-    m_queue_more[queueid]->setIconSize(QSize(10, 10));
-    m_queue_join_action[queueid]->setIconSize(QSize(8, 8));
-    m_queue_pause_action[queueid]->setIconSize(QSize(8, 8));
-    m_queue_more[queueid]->setIcon(QIcon(":/images/add.png"));
+    m_queue_more[xqueueid]->setIconSize(QSize(10, 10));
+    m_queue_join_action[xqueueid]->setIconSize(QSize(8, 8));
+    m_queue_pause_action[xqueueid]->setIconSize(QSize(8, 8));
+    m_queue_more[xqueueid]->setIcon(QIcon(":/images/add.png"));
 }
 
-void XletAgentDetails::setQueueProps(const QString &queueid, const QueueInfo *qinfo)
+void XletAgentDetails::setQueueProps(const QString & xqueueid)
 {
+    const QueueInfo * qinfo = b_engine->queue(xqueueid);
+    if (qinfo == NULL)
+        return;
     bool showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
     if (showNumber)
-        m_queue_labels[queueid]->setText(QString("%1 (%2)")
-                                         .arg(qinfo->queueName())
-                                         .arg(qinfo->queueNumber()));
+        m_queue_labels[xqueueid]->setText(QString("%1 (%2)")
+                                          .arg(qinfo->queueName())
+                                          .arg(qinfo->queueNumber()));
     else
-        m_queue_labels[queueid]->setText(qinfo->queueName());
+        m_queue_labels[xqueueid]->setText(qinfo->queueName());
     QStringList tooltips;
     if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
         tooltips << tr("Server: %1").arg(qinfo->ipbxid());
     if (! m_optionsMap.value("xlet.agentdetails.hidecontext").toBool())
         tooltips << tr("Context: %1").arg(qinfo->context());
-    m_queue_labels[queueid]->setToolTip(tooltips.join("\n"));
+    m_queue_labels[xqueueid]->setToolTip(tooltips.join("\n"));
 }
 
-void XletAgentDetails::setQueueAgentSignals(const QString &queueid)
+void XletAgentDetails::setQueueAgentSignals(const QString & xqueueid)
 {
-    m_queue_more[queueid]->setProperty("queueid", queueid);
-    m_queue_more[queueid]->setProperty("action", "changequeue");
+    m_queue_more[xqueueid]->setProperty("queueid", xqueueid);
+    m_queue_more[xqueueid]->setProperty("action", "changequeue");
 
-    connect( m_queue_more[queueid], SIGNAL(clicked()),
+    connect( m_queue_more[xqueueid], SIGNAL(clicked()),
              this, SLOT(queueClicked()));
     if (! m_optionsMap.value("xlet.agentdetails.noqueueaction").toBool()) {
-        connect( m_queue_join_action[queueid], SIGNAL(clicked()),
+        connect( m_queue_join_action[xqueueid], SIGNAL(clicked()),
                  this, SLOT(queueClicked()));
-        connect( m_queue_pause_action[queueid], SIGNAL(clicked()),
+        connect( m_queue_pause_action[xqueueid], SIGNAL(clicked()),
                  this, SLOT(queueClicked()));
     }
 }
 
-void XletAgentDetails::setQueueAgentProps(const QString &queueid, const QVariant &qv)
+void XletAgentDetails::setQueueAgentProps(const QString &xqueueid, const QVariant &qv)
 {
-    m_queue_join_action[queueid]->setProperty("queueid", queueid);
-    m_queue_join_action[queueid]->setProperty("action", "leavejoin");
+    m_queue_join_action[xqueueid]->setProperty("queueid", xqueueid);
+    m_queue_join_action[xqueueid]->setProperty("action", "leavejoin");
 
-    m_queue_pause_action[queueid]->setProperty("queueid", queueid);
-    m_queue_pause_action[queueid]->setProperty("action", "pause");
+    m_queue_pause_action[xqueueid]->setProperty("queueid", xqueueid);
+    m_queue_pause_action[xqueueid]->setProperty("action", "pause");
 
-    m_queue_join_status[queueid]->show();
-    m_queue_pause_status[queueid]->show();
+    m_queue_join_status[xqueueid]->show();
+    m_queue_pause_status[xqueueid]->show();
 
-    QString oldsstatus = m_queue_join_status[queueid]->property("Status").toString();
-    QString oldpstatus = m_queue_pause_status[queueid]->property("Paused").toString();
+    QString oldsstatus = m_queue_join_status[xqueueid]->property("Status").toString();
+    QString oldpstatus = m_queue_pause_status[xqueueid]->property("Paused").toString();
 
     QString pstatus = qv.toMap().value("Paused").toString();
     QString sstatus = qv.toMap().value("Status").toString();
@@ -328,36 +356,36 @@ void XletAgentDetails::setQueueAgentProps(const QString &queueid, const QVariant
 
     QString joinicon = qas->display_action_join();
     if (joinicon.isEmpty()) {
-        m_queue_join_action[queueid]->hide();
+        m_queue_join_action[xqueueid]->hide();
     } else {
-        m_queue_join_action[queueid]->setIcon(QIcon(joinicon));
-        m_queue_join_action[queueid]->show();
+        m_queue_join_action[xqueueid]->setIcon(QIcon(joinicon));
+        m_queue_join_action[xqueueid]->show();
     }
 
     if (sstatus != oldsstatus) {
         QPixmap square(12, 12);
         square.fill(qas->display_status_color());
-        m_queue_join_status[queueid]->setPixmap(square);
-        m_queue_join_status[queueid]->setToolTip(QString("%1\n%2\n%3")
+        m_queue_join_status[xqueueid]->setPixmap(square);
+        m_queue_join_status[xqueueid]->setToolTip(QString("%1\n%2\n%3")
                                                  .arg(qas->display_status_queue())
                                                  .arg(qas->display_status_logged())
                                                  .arg(qas->display_status_membership()));
-        m_queue_join_status[queueid]->setProperty("Status", sstatus);
+        m_queue_join_status[xqueueid]->setProperty("Status", sstatus);
     }
 
     if (pstatus != oldpstatus) {
         QString pauseicon = qas->display_action_pause();
         if (pauseicon.isEmpty()) {
-            m_queue_pause_action[queueid]->hide();
+            m_queue_pause_action[xqueueid]->hide();
         } else {
-            m_queue_pause_action[queueid]->setIcon(QIcon(pauseicon));
-            m_queue_pause_action[queueid]->show();
+            m_queue_pause_action[xqueueid]->setIcon(QIcon(pauseicon));
+            m_queue_pause_action[xqueueid]->show();
         }
-        m_queue_pause_status[queueid]->setToolTip(qas->display_status_paused());
+        m_queue_pause_status[xqueueid]->setToolTip(qas->display_status_paused());
         QPixmap square(12, 12);
         square.fill(qas->display_status_paused_color());
-        m_queue_pause_status[queueid]->setPixmap(square);
-        m_queue_pause_status[queueid]->setProperty("Paused", pstatus);
+        m_queue_pause_status[xqueueid]->setPixmap(square);
+        m_queue_pause_status[xqueueid]->setProperty("Paused", pstatus);
     }
 
     delete qas;

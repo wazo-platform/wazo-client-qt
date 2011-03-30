@@ -171,3 +171,35 @@ const QString & QueueAgentStatus::queueName() const
 {
     return m_queuename;
 }
+
+
+
+QueueMemberInfo::QueueMemberInfo(const QString & ipbxid,
+                                 const QString & id)
+    : XInfo(ipbxid, id)
+{
+}
+
+bool QueueMemberInfo::updateConfig(const QVariantMap & prop)
+{
+    bool haschanged = false;
+    return haschanged;
+}
+
+bool QueueMemberInfo::updateStatus(const QVariantMap & prop)
+{
+    bool haschanged = false;
+    if (prop.contains("status") && (m_status != prop.value("status").toString())) {
+        m_status = prop.value("status").toString();
+        haschanged = true;
+    }
+    if (prop.contains("paused") && (m_paused != prop.value("paused").toString())) {
+        m_paused = prop.value("paused").toString();
+        haschanged = true;
+    }
+    if (prop.contains("membership") && (m_membership != prop.value("membership").toString())) {
+        m_membership = prop.value("membership").toString();
+        haschanged = true;
+    }
+    return haschanged;
+}

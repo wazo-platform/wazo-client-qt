@@ -73,10 +73,6 @@ XletAgents::XletAgents(QWidget *parent)
 
     setGuiOptions(b_engine->getGuiOptions("merged_gui"));
     // connect signals/slots with engine
-    connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
-            this, SLOT(newAgentList(const QStringList &)));
-    connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
-            this, SLOT(newQueueList(const QStringList &)));
     connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
             this, SLOT(updateAgentConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
@@ -111,55 +107,39 @@ void XletAgents::setGuiOptions(const QVariantMap & optionsMap)
 
 void XletAgents::updateAgentConfig(const QString & xagentid)
 {
+    const AgentInfo * ainfo = b_engine->agent(xagentid);
+    if (ainfo == NULL)
+        return;
+
+    bool newagentid = false;
+
+    if (! m_agent_labels.contains(xagentid)) {
+        newAgentLine(xagentid);
+        newagentid = true;
+    }
+    updateAgentLineAdmin(xagentid, ainfo->fullname(), ainfo->agentNumber());
+    updateAgentLineEvent(xagentid);
+    if (newagentid)
+        displayLine(xagentid, m_agent_labels.size());
+    updateAgentStatus(xagentid, ainfo->properties());
 }
 
 /*! \brief set agent presence status
  */
 void XletAgents::updateAgentStatus(const QString & xagentid)
 {
-    // qDebug() << Q_FUNC_INFO << ipbxid << agent_id << presencestatus;
-//     if (b_engine->agents().contains(xagentid))
-//         if (m_agent_presence.contains(xagentid)) {
+    const AgentInfo * ainfo = b_engine->agent(xagentid);
+    if (ainfo == NULL)
+        return;
+
+    qDebug() << Q_FUNC_INFO << xagentid << ainfo->status();
+    qDebug() << Q_FUNC_INFO << b_engine->getOptionsAgentStatus();
+    if (m_agent_presence.contains(xagentid)) {
+    }
 //             QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
 //             square.fill(QColor(presencestatus.toMap().value("color").toString()));
 //             m_agent_presence[agentid]->setPixmap(square);
 //             m_agent_presence[agentid]->setToolTip(presencestatus.toMap().value("longname").toString());
-//         }
-}
-
-/*! \brief slot when one or more queues have been updated
- */
-void XletAgents::newQueueList(const QStringList &)
-{
-    // qDebug() << Q_FUNC_INFO;
-}
-
-/*! \brief slot when one or more agents have been updated
- */
-void XletAgents::newAgentList(const QStringList & list)
-{
-    //qDebug() << Q_FUNC_INFO << list << b_engine->agents();
-    QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(b_engine->iterover("agents"));
-
-    while (iter.hasNext()) {
-        iter.next();
-        QString agentid = iter.key();
-        AgentInfo * ainfo = (AgentInfo *) iter.value();
-        if (!list.contains(agentid))
-            continue;
-
-        bool newagentid = false;
-
-        if (! m_agent_labels.contains(agentid)) {
-            newAgentLine(agentid);
-            newagentid = true;
-        }
-        updateAgentLineAdmin(agentid, ainfo->fullname(), ainfo->agentNumber());
-        updateAgentLineEvent(agentid);
-        if (newagentid)
-            displayLine(agentid, m_agent_labels.size());
-        updateAgentStatus(agentid, ainfo->properties());
-    }
 }
 
 void XletAgents::newAgentLine(const QString & agentid)
