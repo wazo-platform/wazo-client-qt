@@ -305,6 +305,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateQueueConfig(const QString &);
         void updateQueueStatus(const QString &);
         void updateChannelStatus(const QString &);
+        void removePhoneConfig(const QString &);
+        void removeUserConfig(const QString &);
+        void removeAgentConfig(const QString &);
+        void removeQueueConfig(const QString &);
 
         void newQueueList(const QStringList &);
         void newAgentList(const QStringList &);

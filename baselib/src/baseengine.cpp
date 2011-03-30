@@ -1262,6 +1262,35 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 sendJsonCommand(command);
             }
 
+        } else if (function == "delconfig") {
+            QStringList listid = datamap.value("list").toStringList();
+            foreach (QString id, listid) {
+                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+                qDebug() << function << listname << xid;
+                if (GenLists.contains(listname)) {
+                    if (m_anylist.value(listname).contains(xid)) {
+                        delete m_anylist[listname][xid];
+                        m_anylist[listname].remove(xid);
+                    }
+                } else if (listname == "channels") {
+                    if (m_channels.contains(xid)) {
+                        delete m_channels[xid];
+                        m_channels.remove(xid);
+                    }
+                }
+            }
+            foreach (QString id, listid) {
+                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+                if (listname == "phones")
+                    emit removePhoneConfig(xid);
+                else if (listname == "users")
+                    emit removeUserConfig(xid);
+                else if (listname == "agents")
+                    emit removeAgentConfig(xid);
+                else if (listname == "queues")
+                    emit removeQueueConfig(xid);
+            }
+
         } else if (function == "updateconfig") {
             QString id = datamap.value("id").toString();
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
@@ -1340,16 +1369,29 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateQueueStatus(xid);
             else if (listname == "channels")
                 emit updateChannelStatus(xid);
-        } else if (function == "del") {
+
+        } else if (function == "addconfig") {
             QStringList listid = datamap.value("list").toStringList();
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (listname == "channels") {
-                    if (m_channels.contains(xid)) {
-                        delete m_channels[xid];
-                        m_channels.remove(xid);
+                qDebug() << function << listname << xid;
+                if (GenLists.contains(listname)) {
+                    newXInfoProto construct = m_xinfoList.value(listname);
+                    XInfo * xinfo = construct(ipbxid, id);
+                    if (! m_anylist[listname].contains(xid)) {
+                        m_anylist[listname][xid] = xinfo;
                     }
+                } else if (listname == "channels") {
                 }
+            }
+            QVariantMap command;
+            command["class"] = "getlist";
+            command["function"] = "updateconfig";
+            command["listname"] = listname;
+            command["ipbxid"] = ipbxid;
+            foreach (QString id, listid) {
+                command["id"] = id;
+                sendJsonCommand(command);
             }
         }
     } else if (thisclass == "queues") {
