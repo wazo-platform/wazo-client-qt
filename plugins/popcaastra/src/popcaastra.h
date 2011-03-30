@@ -36,6 +36,7 @@
 
 #include <QObject>
 #include "xlet.h"
+#include "callwidget.h"
 
 namespace Ui {
     class PopcAastra;
@@ -53,6 +54,7 @@ public:
     PopcAastra(QWidget *parent=0);
     ~PopcAastra();
 public slots:
+    void updateDisplay();
     /*! \brief When a name is clicked on the destination list */
     void destinationClicked(int col, int row);
     /*! \brief refresh the list containing call destinations */
@@ -65,16 +67,21 @@ public slots:
     void volUp();
     /*! \brief turns down the volume of the phone */
     void volDown();
+    /*!  \brief update the peer to be monitored */
+    void monitorPeer(UserInfo *);
     void updateUserConfig(const QString &);
+    void updateUserStatus(const QString &);
     void updatePhoneConfig(const QString &);
+    void updatePhoneStatus(const QString &);
+    void updateChannelStatus(const QString &);
+    void hupchan(const QString &);
+    void transftonumberchan(const QString &);
+    void parkcall(const QString &);
 private:
-    Ui::PopcAastra *ui;
-    void debugChannels() const;
-    void debugIncomingCalls();
-    QString m_fullname; // my fullname (Pascal Cadotte)
-    QString m_sipuser;  // my sip user id (SIP/ewn1j9)
-    // Channels that should be shown on the incoming call list
-    QHash<QString, ChannelInfo*> m_incoming;
+    UserInfo * m_monitored_ui;  //!< currently monitored user info
+    Ui::PopcAastra * m_ui;
+    QHash<QString, CallWidget *> m_affhash;  //!< List of CallWidget Widgets
+
 };
 
 #endif /* __POPCAASTRA_H__ */

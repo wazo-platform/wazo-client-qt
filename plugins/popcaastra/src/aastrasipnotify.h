@@ -4,6 +4,8 @@
 #include <QString>
 #include <QVariantMap>
 
+#define SPECIAL_ME "user:special:me"
+
 enum AastraKey {
     LINE, KEYPAD, KEYPAD_STAR, KEYPAD_POUND, SOFT_KEY, PRG_KEY,
     TOP_SOFT_KEY, EXP_MOD_SOFT_KEY, VOL_UP, VOL_DOWN, HEADSET, SPEAKER, MUTE,

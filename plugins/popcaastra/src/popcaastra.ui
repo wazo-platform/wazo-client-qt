@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="sizeConstraint">
@@ -132,35 +132,12 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="right_layout" stretch="0,0,0,0">
+    <layout class="QVBoxLayout" name="m_calls_layout" stretch="0,0,0">
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>Appels</string>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QScrollArea" name="callList">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="widgetResizable">
-        <bool>true</bool>
-       </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents_2">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>687</width>
-          <height>208</height>
-         </rect>
-        </property>
-       </widget>
       </widget>
      </item>
      <item>
