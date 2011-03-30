@@ -98,12 +98,13 @@ void XletCalls::updateUserConfig(const QString & xuserid)
 //     }
 }
 
-void XletCalls::updateUserStatus(const QString & xuserid)
+void XletCalls::updateUserStatus(const QString & /*xuserid*/)
 {
-    if (m_monitored_ui)
-        qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
-    else
-        qDebug() << Q_FUNC_INFO << xuserid;
+//     if (m_monitored_ui)
+//         qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
+//     else
+//         qDebug() << Q_FUNC_INFO << xuserid;
+
 //     if (ui == m_monitored_ui) {
 //         // we need to update the display
 //         updateDisplay();
@@ -150,18 +151,16 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
     if (phoneinfo == NULL)
         return;
 
-    qDebug() << Q_FUNC_INFO << xphoneid << m_affhash.keys() << phoneinfo->channels();
+    qDebug() << Q_FUNC_INFO << xphoneid << m_affhash.keys() << phoneinfo->xchannels();
 
     foreach (const QString xchannel, m_affhash.keys()) {
-        CallWidget * callwidget = m_affhash[xchannel];
-        QString channel = callwidget->channel();
-        if (! phoneinfo->channels().contains(channel)) {
+        CallWidget * callwidget = m_affhash.value(xchannel);
+        if (! phoneinfo->xchannels().contains(xchannel)) {
             delete callwidget;
             m_affhash.remove(xchannel);
         }
     }
-    foreach (const QString channel, phoneinfo->channels()) {
-        QString xchannel = QString("%1/%2").arg(phoneinfo->ipbxid()).arg(channel);
+    foreach (const QString xchannel, phoneinfo->xchannels()) {
         if (m_affhash.contains(xchannel))
             {}
         // m_affhash[xchannel]->updateWidget(xchannel, ts);

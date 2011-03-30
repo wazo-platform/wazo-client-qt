@@ -32,7 +32,6 @@
  */
 
 #include <QDebug>
-
 #include "agentinfo.h"
 
 AgentInfo::AgentInfo(const QString & ipbxid,
@@ -60,7 +59,10 @@ bool AgentInfo::updateConfig(const QVariantMap & prop)
 bool AgentInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = true;
-    m_status = prop.value("status").toString();
+    if (prop.contains("status"))
+        m_status = prop.value("status").toString();
+    if (prop.contains("phonenumber"))
+        m_phonenumber = prop.value("phonenumber").toString();
     return haschanged;
 }
 
@@ -90,22 +92,17 @@ bool AgentInfo::updateQueue(const QVariantMap & prop)
     return haschanged;
 }
 
-const QString& AgentInfo::context() const
+const QString & AgentInfo::context() const
 {
     return m_context;
 }
 
-const QString& AgentInfo::agentNumber() const
+const QString & AgentInfo::agentNumber() const
 {
     return m_agentnumber;
 }
 
-const QString& AgentInfo::fullname() const
+const QString & AgentInfo::fullname() const
 {
     return m_fullname;
-}
-
-const QVariantMap& AgentInfo::properties() const
-{
-    return m_properties;
 }

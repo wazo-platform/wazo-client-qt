@@ -48,20 +48,30 @@ class BASELIB_EXPORT QueueInfo : public XInfo
         QueueInfo(const QString &, const QString &);  //! constructor
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
-        bool updateAgent(const QVariantMap &);  //! update attribute members
-        const QString & context() const;  //! context this queue belongs to
+        const QString & context() const { return m_context; };  //! context this queue belongs to
+        const QString & queueNumber() const { return m_number; };  //! queue number
+        const QString & queueName() const  { return m_name; };  //! queue name
+
         const QString hintstatus(const QString & key) const {  //! access to the status values of this queue
             return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
         };
-        const QString & queueNumber() const { return m_queuenumber; };  //! queue number
-        const QString & queueName() const  { return m_queuename; };  //! queue name
-        const QVariantMap & properties() const;  //! queue properties
-        const QVariantMap& comms() const { return m_comms; };  //! current communications of this queue
+        const QVariantMap & properties() const { return m_properties; };  //! queue properties
+        const QVariantMap & comms() const { return m_comms; };  //! current communications of this queue
+        const QStringList & phonemembers() const { return m_phonemembers; };  //! phone members of this queue
+        const QStringList & agentmembers() const { return m_agentmembers; };  //! agent members of this queue
+        const QStringList & xphonemembers() const { return m_xphonemembers; };  //! phone members of this queue
+        const QStringList & xagentmembers() const { return m_xagentmembers; };  //! agent members of this queue
 
     private:
         QString m_context;
-        QString m_queuename;
-        QString m_queuenumber;
+        QString m_name;
+        QString m_number;
+
+        QStringList m_phonemembers;
+        QStringList m_agentmembers;
+        QStringList m_xphonemembers;
+        QStringList m_xagentmembers;
+
         QMap<QString, QString> m_hintstatus;
         QVariantMap m_comms;
         QVariantMap m_properties;

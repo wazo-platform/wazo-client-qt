@@ -83,6 +83,8 @@ SearchPanel::SearchPanel(QWidget *parent)
             this, SLOT(updateUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
             this, SLOT(updateUserStatus(const QString &)));
+    connect(b_engine, SIGNAL(removeUserConfig(const QString &)),
+            this, SLOT(removeUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
@@ -186,6 +188,11 @@ void SearchPanel::updateUserConfig(const QString & xuserid)
     peeritem->updateStatus();
 }
 
+void SearchPanel::removeUserConfig(const QString & xuserid)
+{
+    removePeer(xuserid);
+}
+
 void SearchPanel::updateUserStatus(const QString & xuserid)
 {
     PeerItem * peeritem = NULL;
@@ -244,18 +251,18 @@ void SearchPanel::updatePhoneStatus(const QString & xphoneid)
     }
 }
 
-/*! \brief remove on peer
+/*! \brief remove a peer
  */
-void SearchPanel::removePeer(const QString &ext)
+void SearchPanel::removePeer(const QString & xuserid)
 {
     // qDebug() << Q_FUNC_INFO << ext;
-    if (m_peerhash.contains(ext)) {
-        PeerItem * peeritem = m_peerhash.value(ext);
+    if (m_peerhash.contains(xuserid)) {
+        PeerItem * peeritem = m_peerhash.value(xuserid);
         BasePeerWidget * peerwidget = peeritem->getWidget();
         if (m_peerlayout->indexOf(peerwidget) > -1) {
             m_peerlayout->removeWidget(peerwidget);
         }
-        m_peerhash.remove(ext);
+        m_peerhash.remove(xuserid);
         delete peerwidget; // peerwidget->deleteLater();
         return;
     }

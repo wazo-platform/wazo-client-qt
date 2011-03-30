@@ -57,8 +57,10 @@ class XLetQueueEntryDetails : public XLet
 
     public slots:
         void setGuiOptions(const QVariantMap &) {};
-        void newAgentList(const QStringList &);
-        void newQueueList(const QStringList &);
+        void updateAgentConfig(const QString &);
+        void updateAgentStatus(const QString &);
+        void updateQueueConfig(const QString &);
+        void updateQueueStatus(const QString &);
         void monitorThisQueue(const QString &);
 
     private:

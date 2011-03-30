@@ -73,27 +73,37 @@ XletQueueDetails::XletQueueDetails(QWidget *parent)
     m_queuelegend_penalty->hide();
 
     // connect signals/slots to engine
-    connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
-            this, SLOT(newAgentList(const QStringList &)));
-    connect(b_engine, SIGNAL(newQueueList(const QStringList &)),
-            this, SLOT(newQueueList(const QStringList &)));
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            this, SLOT(updateAgentStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
+            this, SLOT(updateQueueConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
+            this, SLOT(updateQueueStatus(const QString &)));
 
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(monitorThisQueue(const QString &)));
 }
 
-void XletQueueDetails::newQueueList(const QStringList &qsl)
+void XletQueueDetails::updateAgentConfig(const QString & xagentid)
 {
-    // qDebug() << Q_FUNC_INFO << qsl;
-    if(qsl.contains(m_monitored_queueid) && b_engine->hasQueue(m_monitored_queueid))
-        updatePanel();
+    qDebug() << Q_FUNC_INFO << xagentid;
 }
 
-void XletQueueDetails::newAgentList(const QStringList &)
+void XletQueueDetails::updateAgentStatus(const QString & xagentid)
 {
-    // qDebug() << Q_FUNC_INFO << qsl;
-    if(b_engine->hasQueue(m_monitored_queueid))
-        updatePanel();
+    qDebug() << Q_FUNC_INFO << xagentid;
+}
+
+void XletQueueDetails::updateQueueConfig(const QString & xqueueid)
+{
+    qDebug() << Q_FUNC_INFO << xqueueid << m_monitored_queueid;
+}
+
+void XletQueueDetails::updateQueueStatus(const QString & xqueueid)
+{
+    qDebug() << Q_FUNC_INFO << xqueueid << m_monitored_queueid;
 }
 
 void XletQueueDetails::monitorThisQueue(const QString & queueid)
@@ -136,12 +146,20 @@ void XletQueueDetails::clearPanel()
 void XletQueueDetails::updatePanel()
 {
     const QueueInfo * qinfo = b_engine->queue(m_monitored_queueid);
+    if (qinfo == NULL)
+        return;
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4)")
                                 .arg(qinfo->queueName())
                                 .arg(qinfo->queueNumber())
                                 .arg(qinfo->ipbxid())
                                 .arg(qinfo->context()));
     QVariantMap properties = qinfo->properties();
+//     foreach (QString am, qinfo->xagentmembers()) {
+//         if (b_engine->queuemembers().contains(am)) {
+//             QueueMemberInfo * qmi = b_engine->queuemembers().value(am);
+//             qDebug() << Q_FUNC_INFO << am << qmi << qmi->status();
+//         }
+//     }
     QVariant queuestats = properties.value("queuestats");
     QVariantMap agentstats = properties.value("agents_in_queue").toMap();
 
@@ -182,9 +200,9 @@ void XletQueueDetails::updatePanel()
 
         setAgentLookProps(agentid);
         setAgentProps(agentid, ainfo);
-        QString agentname = "Agent/" + ainfo->agentNumber();
         if(qinfo->ipbxid() == ainfo->ipbxid()) {
-            setAgentQueueProps(agentid, agentstats.value(agentname));
+            // if (qinfo->hasAgentId(agentid))
+            setAgentQueueProps(agentid, qinfo->xagentmembers());
         }
 
         if(isnewagent) {
@@ -215,16 +233,20 @@ void XletQueueDetails::setAgentQueueSignals(const QString &agentid)
             this, SLOT(agentClicked()));
 }
 
-void XletQueueDetails::setAgentQueueProps(const QString &agentid, const QVariant &qv)
+void XletQueueDetails::setAgentQueueProps(const QString & agentid, const QStringList & qv)
 {
     QString oldsstatus = m_agent_join_status[agentid]->property("Status").toString();
     QString oldpstatus = m_agent_pause_status[agentid]->property("Paused").toString();
 
-    QString pstatus = qv.toMap().value("Paused").toString();
-    QString sstatus = qv.toMap().value("Status").toString();
-    QString dynstatus = qv.toMap().value("Membership").toString();
+    qDebug() << Q_FUNC_INFO << agentid << qv;
+//     QString pstatus = qv.toMap().value("Paused").toString();
+//     QString sstatus = qv.toMap().value("Status").toString();
+//     QString dynstatus = qv.toMap().value("Membership").toString();
+    QString pstatus;
+    QString sstatus;
+    QString dynstatus;
 
-    QueueAgentStatus *qas = new QueueAgentStatus();
+    QueueAgentStatus * qas = new QueueAgentStatus();
     qas->update(dynstatus, sstatus, pstatus);
 
     if (sstatus != oldsstatus) {
@@ -243,30 +265,30 @@ void XletQueueDetails::setAgentQueueProps(const QString &agentid, const QVariant
         m_agent_pause_status[agentid]->setProperty("Paused", pstatus);
     }
 
-    if (qv.toMap().contains("CallsTaken")) {
-        m_agent_callstaken[agentid]->setText(qv.toMap().value("CallsTaken").toString());
-    } else {
-        m_agent_callstaken[agentid]->setText("0");
-    }
+//     if (qv.toMap().contains("CallsTaken")) {
+//         m_agent_callstaken[agentid]->setText(qv.toMap().value("CallsTaken").toString());
+//     } else {
+//         m_agent_callstaken[agentid]->setText("0");
+//     }
 
     delete qas;
 
     QString slastcall = "-";
-    if(qv.toMap().contains("LastCall")) {
-        QDateTime lastcall;
-        int epoch = qv.toMap().value("LastCall").toInt();
-        if(epoch > 0) {
-            lastcall.setTime_t(epoch);
-            slastcall = lastcall.toString("hh:mm:ss");
-        }
-    }
+//     if(qv.toMap().contains("LastCall")) {
+//         QDateTime lastcall;
+//         int epoch = qv.toMap().value("LastCall").toInt();
+//         if(epoch > 0) {
+//             lastcall.setTime_t(epoch);
+//             slastcall = lastcall.toString("hh:mm:ss");
+//         }
+//     }
     m_agent_lastcall[agentid]->setText(slastcall);
 
-    if(qv.toMap().contains("Penalty")) {
-        m_agent_penalty[agentid]->setText(qv.toMap().value("Penalty").toString());
-    } else {
-        m_agent_penalty[agentid]->setText("0");
-    }
+//     if(qv.toMap().contains("Penalty")) {
+//         m_agent_penalty[agentid]->setText(qv.toMap().value("Penalty").toString());
+//     } else {
+//         m_agent_penalty[agentid]->setText("0");
+//     }
 }
 
 void XletQueueDetails::fillAgent(int ii, const QString &agentid)

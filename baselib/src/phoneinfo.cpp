@@ -93,7 +93,14 @@ bool PhoneInfo::updateStatus(const QVariantMap & prop)
     bool haschanged = true;
     if (prop.contains("hintstatus"))
         m_hintstatus = prop.value("hintstatus").toString();
-    if(prop.contains("channels"))
+    if(prop.contains("channels")) {
         m_channels = prop.value("channels").toStringList();
+        m_xchannels.clear();
+        foreach (QString channel, m_channels) {
+            QString xchannel = QString("%1/%2").arg(m_ipbxid).arg(channel);
+            m_xchannels.append(xchannel);
+        }
+        qDebug() << Q_FUNC_INFO << m_xid << m_xchannels;
+    }
     return haschanged;
 }
