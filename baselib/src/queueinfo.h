@@ -57,19 +57,25 @@ class BASELIB_EXPORT QueueInfo : public XInfo
         };
         const QVariantMap & properties() const { return m_properties; };  //! queue properties
         const QVariantMap & comms() const { return m_comms; };  //! current communications of this queue
-        const QStringList & phonemembers() const { return m_phonemembers; };  //! phone members of this queue
+
+        const QStringList & xagentids() const { return m_xagentids; };  //! agent members of this queue
         const QStringList & agentmembers() const { return m_agentmembers; };  //! agent members of this queue
-        const QStringList & xphonemembers() const { return m_xphonemembers; };  //! phone members of this queue
         const QStringList & xagentmembers() const { return m_xagentmembers; };  //! agent members of this queue
+        const QStringList & phonemembers() const { return m_phonemembers; };  //! phone members of this queue
+        const QStringList & xphonemembers() const { return m_xphonemembers; };  //! phone members of this queue
 
     private:
         QString m_context;
         QString m_name;
         QString m_number;
 
+        QStringList m_phoneids;
+        QStringList m_xphoneids;
         QStringList m_phonemembers;
-        QStringList m_agentmembers;
         QStringList m_xphonemembers;
+        QStringList m_agentids;
+        QStringList m_xagentids;
+        QStringList m_agentmembers;
         QStringList m_xagentmembers;
 
         QMap<QString, QString> m_hintstatus;

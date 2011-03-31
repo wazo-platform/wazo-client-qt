@@ -62,12 +62,15 @@ bool QueueInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
     if (prop.contains("agentmembers")) {
-        // m_agentids = prop.value("agentmembers").toStringList();
+        m_agentids = prop.value("agentmembers").toStringList();
+        m_xagentids.clear();
         m_agentmembers.clear();
         m_xagentmembers.clear();
-        foreach (QString agentid, prop.value("agentmembers").toStringList()) {
-            QString agentmember = QString("qa:%1-%2").arg(m_id).arg(agentid);
-            QString xagentmember = QString("%1/qa:%2-%3").arg(m_ipbxid).arg(m_id).arg(agentid);
+        foreach (QString agentid, m_agentids) {
+            QString xagentid = QString("%1/%2").arg(m_ipbxid).arg(agentid); // to match against agent membership
+            QString agentmember = QString("qa:%1-%2").arg(m_id).arg(agentid); // for requests to server
+            QString xagentmember = QString("%1/qa:%2-%3").arg(m_ipbxid).arg(m_id).arg(agentid); // for link to properties
+            m_xagentids.append(xagentid);
             m_agentmembers.append(agentmember);
             m_xagentmembers.append(xagentmember);
         }
