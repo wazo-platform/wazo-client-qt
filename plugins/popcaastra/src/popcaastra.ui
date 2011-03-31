@@ -132,12 +132,29 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="m_calls_layout" stretch="0,0,0">
+    <layout class="QVBoxLayout" name="right_layout" stretch="0,0,0,0">
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>Appels</string>
        </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="m_calls_layout">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>769</width>
+          <height>208</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
      </item>
      <item>
