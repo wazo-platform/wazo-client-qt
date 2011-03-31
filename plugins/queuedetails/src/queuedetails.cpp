@@ -88,22 +88,26 @@ XletQueueDetails::XletQueueDetails(QWidget *parent)
 
 void XletQueueDetails::updateAgentConfig(const QString & xagentid)
 {
-    qDebug() << Q_FUNC_INFO << xagentid;
+    if (m_agent_labels.contains(xagentid))
+        updatePanel();
 }
 
 void XletQueueDetails::updateAgentStatus(const QString & xagentid)
 {
-    qDebug() << Q_FUNC_INFO << xagentid;
+    if (m_agent_labels.contains(xagentid))
+        updatePanel();
 }
 
 void XletQueueDetails::updateQueueConfig(const QString & xqueueid)
 {
-    qDebug() << Q_FUNC_INFO << xqueueid << m_monitored_queueid;
+    if (xqueueid == m_monitored_queueid)
+        updatePanel();
 }
 
 void XletQueueDetails::updateQueueStatus(const QString & xqueueid)
 {
-    qDebug() << Q_FUNC_INFO << xqueueid << m_monitored_queueid;
+    if (xqueueid == m_monitored_queueid)
+        updatePanel();
 }
 
 void XletQueueDetails::monitorThisQueue(const QString & queueid)

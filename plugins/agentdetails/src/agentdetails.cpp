@@ -143,18 +143,20 @@ void XletAgentDetails::updateAgentConfig(const QString & xagentid)
 
 void XletAgentDetails::updateAgentStatus(const QString & xagentid)
 {
-    qDebug() << Q_FUNC_INFO << xagentid;
+    if (xagentid == m_monitored_agentid)
+        updatePanel();
 }
 
 void XletAgentDetails::updateQueueConfig(const QString & xqueueid)
 {
     if (m_queue_labels.contains(xqueueid))
-        setQueueProps(xqueueid);
+        updatePanel();
 }
 
 void XletAgentDetails::updateQueueStatus(const QString & xqueueid)
 {
-    qDebug() << Q_FUNC_INFO << xqueueid << m_monitored_agentid;
+    if (m_queue_labels.contains(xqueueid))
+        updatePanel();
 }
 
 void XletAgentDetails::monitorThisAgent(const QString & agentid)
