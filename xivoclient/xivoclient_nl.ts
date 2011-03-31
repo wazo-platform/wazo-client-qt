@@ -226,7 +226,7 @@ when you change this value /!\</source>
     <message>
         <location filename="../common/configwidget.cpp" line="270"/>
         <source>Checking this box disables the Error Popups</source>
-        <translation>Dit vakje aanvinken schakelt foutmeldingspop-ups uit.</translation>
+        <translation>Dit vakje aanvinken schakelt foutmeldingspop-ups uit</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="277"/>
@@ -367,7 +367,7 @@ when you change this value /!\</source>
     <message>
         <location filename="../common/configwidget.cpp" line="436"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
-        <translation>Gelieve een andere toets in te drukken, deze toets werd al toegekend</translation>
+        <translation>Gelieve een andere toets in te drukken, deze toets werd al toegekend (&apos;%0&apos;)</translation>
     </message>
 </context>
 <context>
@@ -604,6 +604,12 @@ werd NIET verzonden naar %2.
 <context>
     <name>MainWidget</name>
     <message>
+        <location filename="src/mainwidget.cpp" line="64"/>
+        <location filename="src/mainwidget.cpp" line="797"/>
+        <source>Client %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="src/mainwidget.cpp" line="148"/>
         <source>Login</source>
         <translation>Inloggen</translation>
@@ -729,117 +735,105 @@ werd NIET verzonden naar %2.
         <translation>XiVO CTI-fout</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="636"/>
-        <source>Client (%1 profile)</source>
-        <translation>Klant (profiel %1)</translation>
+        <location filename="src/mainwidget.cpp" line="635"/>
+        <source>Client %1 (%2 profile)</source>
+        <translation>Klant %1 (profiel %2)</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="648"/>
+        <location filename="src/mainwidget.cpp" line="649"/>
         <source>Tabs</source>
         <translation>Tabs</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="698"/>
+        <location filename="src/mainwidget.cpp" line="699"/>
         <source>Connected</source>
         <translation>Verbonden</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="790"/>
+        <location filename="src/mainwidget.cpp" line="791"/>
         <source>Disconnected</source>
         <translation>Verbinding verbroken</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="933"/>
+        <location filename="src/mainwidget.cpp" line="934"/>
         <source>Fetch the last one</source>
         <oldsource>last one</oldsource>
-        <translation type="unfinished">laatste</translation>
+        <translation>laatste</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="940"/>
+        <location filename="src/mainwidget.cpp" line="941"/>
         <source>About XiVO Client</source>
         <translation>Over XiVO Client</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="942"/>
+        <location filename="src/mainwidget.cpp" line="943"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>De XiVO CTI-toepassingen, eens verbonden met de juiste server, vervolledigen het XiVO-telefoonsysteem, door computertools ter beschikking te stellen zoals de weergave van klanteninformatie, opzoekingen in de directory&apos;s, of verschillende supervisie-xlets voor callcenters.</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="947"/>
+        <location filename="src/mainwidget.cpp" line="948"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;u&gt;Versie&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="948"/>
+        <location filename="src/mainwidget.cpp" line="949"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="949"/>
+        <location filename="src/mainwidget.cpp" line="950"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version : </source>
-        <translation type="obsolete">Versie: </translation>
-    </message>
-    <message>
-        <source>Advised Server Version : </source>
-        <translation type="obsolete">Aanbevolen serverversie: </translation>
-    </message>
-    <message>
-        <source>Application Built on : </source>
-        <translation type="obsolete">Toepassing gecreëerd op: </translation>
-    </message>
-    <message>
-        <location filename="src/mainwidget.cpp" line="952"/>
+        <location filename="src/mainwidget.cpp" line="953"/>
         <source>(Application Built on : %1)</source>
         <oldsource>Application Launched on : </oldsource>
-        <translation type="unfinished">Toepassing gestart op: </translation>
-    </message>
-    <message>
-        <location filename="src/mainwidget.cpp" line="953"/>
-        <source>(Application Launched on : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>(Toepassing gecreëerd op: %1)</translation>
     </message>
     <message>
         <location filename="src/mainwidget.cpp" line="954"/>
-        <source>(Config File Location : %1)</source>
-        <oldsource>Config File Location : </oldsource>
-        <translation type="unfinished">Locatie van het configuratiebestand: </translation>
+        <source>(Application Launched on : %1)</source>
+        <translation>(Toepassing gestart op: %1)</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="959"/>
+        <location filename="src/mainwidget.cpp" line="955"/>
+        <source>(Config File Location : %1)</source>
+        <oldsource>Config File Location : </oldsource>
+        <translation>(Locatie van het configuratiebestand: %1)</translation>
+    </message>
+    <message>
+        <location filename="src/mainwidget.cpp" line="960"/>
         <source>E-mail : </source>
         <translation>E-mail: </translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="960"/>
+        <location filename="src/mainwidget.cpp" line="961"/>
         <source>Phone : </source>
         <translation>Tel. : </translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="961"/>
+        <location filename="src/mainwidget.cpp" line="962"/>
         <source>Authors : </source>
         <translation>Auteurs: </translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="961"/>
+        <location filename="src/mainwidget.cpp" line="962"/>
         <source>Proformatique Development Team</source>
-        <translation type="unfinished"></translation>
+        <translation>Proformatique</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="963"/>
+        <location filename="src/mainwidget.cpp" line="964"/>
         <source>License : </source>
         <translation>Licentie: </translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="965"/>
+        <location filename="src/mainwidget.cpp" line="966"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>met een speciale uitzondering om het te koppelen met OpenSSL, onder bepaalde voorwaarden.</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="971"/>
+        <location filename="src/mainwidget.cpp" line="972"/>
         <source>Credits</source>
         <translation>Credits</translation>
     </message>
@@ -983,12 +977,12 @@ Bent u zeker?</translation>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../common/built-in-xlet/searchpanel.cpp" line="50"/>
+        <location filename="../common/built-in-xlet/searchpanel.cpp" line="51"/>
         <source>Contacts</source>
         <translation>Contacten</translation>
     </message>
     <message>
-        <location filename="../common/built-in-xlet/searchpanel.cpp" line="58"/>
+        <location filename="../common/built-in-xlet/searchpanel.cpp" line="59"/>
         <source>N&amp;ame or number to search :</source>
         <translation>Op te zoeken N&amp;aam of nummer:</translation>
     </message>

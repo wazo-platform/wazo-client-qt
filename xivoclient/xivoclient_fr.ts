@@ -606,7 +606,7 @@ a été envoyé à %2.</translation>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="src/mainwidget.cpp" line="942"/>
+        <location filename="src/mainwidget.cpp" line="943"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>Les applications CTI XiVO, une fois connectées au serveur adéquat, complètent le système téléphonique XiVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
@@ -621,17 +621,13 @@ a été envoyé à %2.</translation>
         <translation>A propos de &amp;XiVO Client</translation>
     </message>
     <message>
-        <source>Advised Server Version : </source>
-        <translation type="obsolete">Version Conseillée du Serveur : </translation>
-    </message>
-    <message>
-        <location filename="src/mainwidget.cpp" line="952"/>
+        <location filename="src/mainwidget.cpp" line="953"/>
         <source>(Application Built on : %1)</source>
         <oldsource>Application Launched on : </oldsource>
         <translation>(Application Lancée le : %1)</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="961"/>
+        <location filename="src/mainwidget.cpp" line="962"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
@@ -666,7 +662,7 @@ a été envoyé à %2.</translation>
         <translation>Se connecter au serveur</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="698"/>
+        <location filename="src/mainwidget.cpp" line="699"/>
         <source>Connected</source>
         <translation>Connecté</translation>
     </message>
@@ -681,7 +677,7 @@ a été envoyé à %2.</translation>
         <translation>Se déconnecter du serveur</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="790"/>
+        <location filename="src/mainwidget.cpp" line="791"/>
         <source>Disconnected</source>
         <translation>Déconnecté</translation>
     </message>
@@ -706,7 +702,7 @@ a été envoyé à %2.</translation>
         <translation>Sortir l&apos;application de la zone de notification système</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="963"/>
+        <location filename="src/mainwidget.cpp" line="964"/>
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
@@ -736,7 +732,7 @@ a été envoyé à %2.</translation>
         <translation>&amp;Afficher la fenêtre</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="648"/>
+        <location filename="src/mainwidget.cpp" line="649"/>
         <source>Tabs</source>
         <translation>Onglets</translation>
     </message>
@@ -746,17 +742,13 @@ a été envoyé à %2.</translation>
         <translation>&amp;Minimiser</translation>
     </message>
     <message>
-        <source>Version : </source>
-        <translation type="obsolete">Version : </translation>
-    </message>
-    <message>
-        <location filename="src/mainwidget.cpp" line="933"/>
+        <location filename="src/mainwidget.cpp" line="934"/>
         <source>Fetch the last one</source>
         <oldsource>last one</oldsource>
         <translation>Récupérer la dernière</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="965"/>
+        <location filename="src/mainwidget.cpp" line="966"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>avec une exception particulière vous permettant de le lier avec OpenSSL, sous certaines conditions.</translation>
     </message>
@@ -764,6 +756,12 @@ a été envoyé à %2.</translation>
         <location filename="src/mainwidget.cpp" line="172"/>
         <source>No Agent</source>
         <translation>Sans Agent</translation>
+    </message>
+    <message>
+        <location filename="src/mainwidget.cpp" line="64"/>
+        <location filename="src/mainwidget.cpp" line="797"/>
+        <source>Client %1</source>
+        <translation>Client %1</translation>
     </message>
     <message>
         <location filename="src/mainwidget.cpp" line="173"/>
@@ -786,64 +784,60 @@ a été envoyé à %2.</translation>
         <translation>XiVO CTI Erreur</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="947"/>
+        <location filename="src/mainwidget.cpp" line="635"/>
+        <source>Client %1 (%2 profile)</source>
+        <translation>Client %1 (profil %2)</translation>
+    </message>
+    <message>
+        <location filename="src/mainwidget.cpp" line="948"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Information de Version&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="948"/>
+        <location filename="src/mainwidget.cpp" line="949"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation>Majeure : &lt;b&gt;%1&lt;/b&gt; (Branche XiVO)</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="949"/>
+        <location filename="src/mainwidget.cpp" line="950"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Mineure : hash git &lt;b&gt;%1&lt;/b&gt; du : %2</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="953"/>
+        <location filename="src/mainwidget.cpp" line="954"/>
         <source>(Application Launched on : %1)</source>
         <translation>(Application Lancée le : %1)</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="961"/>
+        <location filename="src/mainwidget.cpp" line="962"/>
         <source>Proformatique Development Team</source>
         <translation>Equipe de Développement Proformatique</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="971"/>
+        <location filename="src/mainwidget.cpp" line="972"/>
         <source>Credits</source>
         <translation>Crédits</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="636"/>
-        <source>Client (%1 profile)</source>
-        <translation>Client (profil %1)</translation>
-    </message>
-    <message>
-        <location filename="src/mainwidget.cpp" line="940"/>
+        <location filename="src/mainwidget.cpp" line="941"/>
         <source>About XiVO Client</source>
         <translation>A propos de XiVO Client</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="954"/>
+        <location filename="src/mainwidget.cpp" line="955"/>
         <source>(Config File Location : %1)</source>
         <oldsource>Config File Location : </oldsource>
         <translation>(Fichier de Configuration : %1)</translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="959"/>
+        <location filename="src/mainwidget.cpp" line="960"/>
         <source>E-mail : </source>
         <translation>E-mail : </translation>
     </message>
     <message>
-        <location filename="src/mainwidget.cpp" line="960"/>
+        <location filename="src/mainwidget.cpp" line="961"/>
         <source>Phone : </source>
         <translation>Téléphone : </translation>
-    </message>
-    <message>
-        <source>Application Built on : </source>
-        <translation type="obsolete">Application Construite le : </translation>
     </message>
 </context>
 <context>
@@ -985,12 +979,12 @@ Etes vous sur ?</translation>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../common/built-in-xlet/searchpanel.cpp" line="58"/>
+        <location filename="../common/built-in-xlet/searchpanel.cpp" line="59"/>
         <source>N&amp;ame or number to search :</source>
         <translation>N&amp;om ou numéro à rechercher :</translation>
     </message>
     <message>
-        <location filename="../common/built-in-xlet/searchpanel.cpp" line="50"/>
+        <location filename="../common/built-in-xlet/searchpanel.cpp" line="51"/>
         <source>Contacts</source>
         <translation>Contacts</translation>
     </message>
