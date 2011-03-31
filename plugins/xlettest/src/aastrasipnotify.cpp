@@ -23,6 +23,7 @@
 #define KEYPAD_URI "Key:KeyPad%1"
 #define KEYPAD_POUND_URI "Key:KeyPadPound"
 #define KEYPAD_STAR_URI "Key:KeyPadStar"
+#define LINE_URI "Key:Line%1"
 #define MUTE_URI "Key:Mute"
 #define NAV_DOWN_URI "Key:NavDown"
 #define NAV_LEFT_URI "Key:NavLeft"
@@ -97,6 +98,7 @@ QString getKeyUri(AastraKey key, int num1, int num2)
     case DELETE:
         return DELETE_URI;
     case DIRECTORY:
+        return DIRECTORY_URI;
     case EXP_MOD_SOFT_KEY:
         return QString(EXP_MOD_SOFT_KEY).arg(num1).arg(num2);
     case GOODBYE:
@@ -113,6 +115,8 @@ QString getKeyUri(AastraKey key, int num1, int num2)
         return KEYPAD_STAR_URI;
     case KEYPAD_POUND:
         return KEYPAD_POUND_URI;
+    case LINE:
+        return QString(LINE_URI).arg(num1);
     case MUTE:
         return MUTE_URI;
     case NAV_DOWN:
