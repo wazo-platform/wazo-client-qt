@@ -50,6 +50,8 @@ PopcAastra::PopcAastra(QWidget *parent)
     m_ui->setupUi(this);
     setTitle(tr("POPC Aastra operator"));
 
+    m_calls_list = new QVBoxLayout(m_ui->m_calls_layout);
+
     // Signals / slots
     connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
             this, SLOT(monitorPeer(UserInfo *)));
@@ -84,8 +86,11 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
 {
     qDebug() << Q_FUNC_INFO << xchannel;
     const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
-    if (channelinfo == NULL)
+    qDebug() << Q_FUNC_INFO << channelinfo->toString();
+    if (channelinfo == NULL) {  // never happens???
+        qDebug() << Q_FUNC_INFO << "null chaninfo";
         return;
+    }
     QString status = channelinfo->commstatus();
     //                 if (map.contains("time-dial"))
     //                     ts = map.value("time-dial").toUInt() + current_ts;
@@ -95,29 +100,32 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
     //                     ts = map.value("time-link").toUInt() + current_ts;
     //                 if (map.contains("timestamp-link"))
     //                     ts = map.value("timestamp-link").toDouble() + b_engine->timeDeltaServerClient();
-    // qDebug() << Q_FUNC_INFO << it.key() << channelme << "status" << status;
-    // dont display hangup channels !
-    if (status == CHAN_STATUS_HANGUP)
+    qDebug() << Q_FUNC_INFO << "Channel: "<< xchannel << " Status: " << status;
+    // Don't show our own channels
+    if (channelinfo->direction() == "out")
         return;
+    // dont display hangup channels !
+    if (status == CHAN_STATUS_HANGUP) { // Never happend??
+        qDebug() << Q_FUNC_INFO << "Hang-up received";
+        return;
+    }
     // activeChannels << channelme;
     qDebug() << Q_FUNC_INFO << "adding/updating" << xchannel << m_affhash;
     if (m_affhash.contains(xchannel))
         m_affhash[xchannel]->updateWidget(xchannel);
     else {
-//         CallWidget * callwidget = new CallWidget(m_monitored_ui,
-//                                                  xchannel,
-//                                                  ts,
-//                                                  this,
-//                                                  phoneinfo);
-//         connect(callwidget, SIGNAL(doHangUp(const QString &)),
-//                 this, SLOT(hupchan(const QString &)));
-//         connect(callwidget, SIGNAL(doTransferToNumber(const QString &)),
-//                 this, SLOT(transftonumberchan(const QString &)));
-//         connect(callwidget, SIGNAL(doParkCall(const QString &)),
-//                 this, SLOT(parkcall(const QString &)));
-//         m_layout->insertWidget(m_layout->count() - 1, callwidget,
-//                                0, Qt::AlignTop);
-//         m_affhash[xchannel] = callwidget;
+         CallWidget * callwidget = new CallWidget(m_monitored_ui,
+                                                  xchannel,
+                                                  this);
+         connect(callwidget, SIGNAL(doHangUp(const QString &)),
+                 this, SLOT(hupchan(const QString &)));
+         connect(callwidget, SIGNAL(doTransferToNumber(const QString &)),
+                 this, SLOT(transftonumberchan(const QString &)));
+         connect(callwidget, SIGNAL(doParkCall(const QString &)),
+                 this, SLOT(parkcall(const QString &)));
+         m_calls_list->insertWidget(m_calls_list->count() - 1, callwidget,
+                                0, Qt::AlignTop);
+         m_affhash[xchannel] = callwidget;
     }
 }
 
@@ -136,6 +144,12 @@ void PopcAastra::monitorPeer(UserInfo * userInfo)
 void PopcAastra::updatePhoneStatus(const QString & xphoneid)
 {
     qDebug() << Q_FUNC_INFO << xphoneid;
+    const PhoneInfo* info = b_engine->phone(xphoneid);
+    if (info == NULL) {
+        qDebug() << Q_FUNC_INFO << "Phone info is null";
+        return;
+    }
+    qDebug() << Q_FUNC_INFO << "Phone: " << xphoneid << " status: " << info->hintstatus() << " channels: " << info->channels();
     if (m_monitored_ui == NULL)
         return;
     if (! m_monitored_ui->phonelist().contains(xphoneid))
@@ -144,9 +158,7 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
     if (phoneinfo == NULL)
         return;
 
-    qDebug() << Q_FUNC_INFO << xphoneid;
-    qDebug() << Q_FUNC_INFO << m_affhash.keys();
-    qDebug() << Q_FUNC_INFO << phoneinfo->channels();
+    qDebug() << Q_FUNC_INFO << xphoneid << m_affhash.keys() << phoneinfo->channels();
 
     foreach (const QString xchannel, m_affhash.keys()) {
         CallWidget * callwidget = m_affhash[xchannel];
@@ -169,10 +181,9 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
                     this, SLOT(transftonumberchan(const QString &)));
             connect(callwidget, SIGNAL(doParkCall(const QString &)),
                     this, SLOT(parkcall(const QString &)));
-            m_ui->m_calls_layout->insertWidget(m_ui->m_calls_layout->count() - 1, callwidget,
+            m_calls_list->insertWidget(m_calls_list->count() - 1, callwidget,
                                    0, Qt::AlignTop);
             m_affhash[xchannel] = callwidget;
-            qDebug() << "NEW CALL ADDED";
         }
     }
 }
