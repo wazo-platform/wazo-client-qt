@@ -60,23 +60,23 @@ class BASELIB_EXPORT QueueInfo : public XInfo
 
         const QStringList & xagentids() const { return m_xagentids; };  //! agent members of this queue
         const QStringList & agentmembers() const { return m_agentmembers; };  //! agent members of this queue
-        const QStringList & xagentmembers() const { return m_xagentmembers; };  //! agent members of this queue
+        const QStringList & xphoneids() const { return m_xphoneids; };  //! phone members of this queue
         const QStringList & phonemembers() const { return m_phonemembers; };  //! phone members of this queue
-        const QStringList & xphonemembers() const { return m_xphonemembers; };  //! phone members of this queue
+        const QStringList & xtrunkids() const { return m_xtrunkids; };  //! trunk members of this queue
+        const QStringList & trunkmembers() const { return m_trunkmembers; };  //! trunk members of this queue
+        QString reference(const QString &, const QString &) const;
 
     private:
         QString m_context;
         QString m_name;
         QString m_number;
 
-        QStringList m_phoneids;
-        QStringList m_xphoneids;
-        QStringList m_phonemembers;
-        QStringList m_xphonemembers;
-        QStringList m_agentids;
         QStringList m_xagentids;
         QStringList m_agentmembers;
-        QStringList m_xagentmembers;
+        QStringList m_xphoneids;
+        QStringList m_phonemembers;
+        QStringList m_xtrunkids;
+        QStringList m_trunkmembers;
 
         QMap<QString, QString> m_hintstatus;
         QVariantMap m_comms;

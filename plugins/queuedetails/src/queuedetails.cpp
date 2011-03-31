@@ -163,6 +163,8 @@ void XletQueueDetails::updatePanel()
         m_queuelegend_penalty->show();
     }
 
+    qDebug() << Q_FUNC_INFO << m_monitored_queueid << qinfo->xagentids() << qinfo->xphoneids();
+
     int i = 0;
     QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(b_engine->iterover("agents"));
     while (iter.hasNext()) {
@@ -192,12 +194,8 @@ void XletQueueDetails::updatePanel()
         setAgentLookProps(xagentid);
         setAgentProps(xagentid, ainfo);
         if(qinfo->ipbxid() == ainfo->ipbxid()) {
-            if (qinfo->xagentids().contains(xagentid)) {
-                QString refmember = xagentid;
-                refmember.replace("/", QString("/qa:%1-").arg(qinfo->id()));
-                setAgentQueueProps(xagentid, refmember);
-            } else
-                setAgentQueueProps(xagentid, "");
+            QString refmember = qinfo->reference("agents", xagentid);
+            setAgentQueueProps(xagentid, refmember);
         }
 
         if(isnewagent) {
