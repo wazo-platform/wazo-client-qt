@@ -55,10 +55,22 @@ private slots:
     void onCallClick();
     void onHangupClick();
     void onSoftKey();
+    void onHoldClick();
+    void onLineOneClick();
+    void onLineTwoClick();
+    void onLineThreeClick();
+    void onLineFourClick();
+    void onPrg2Click();
 private:
     QPushButton *m_button_call;
     QPushButton *m_button_hangup;
     QPushButton *m_button_dnd;
+    QPushButton *m_button_hold;
+    QPushButton *m_button_l1;
+    QPushButton *m_button_l2;
+    QPushButton *m_button_l3;
+    QPushButton *m_button_l4;
+    QPushButton *m_button_prg2;
 };
 
 #endif /* __XLETTEST_H__ */

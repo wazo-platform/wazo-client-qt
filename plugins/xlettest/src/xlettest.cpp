@@ -54,20 +54,62 @@ XletTest::XletTest(QWidget *parent)
 {
     // set title for the XLet.
     setTitle(tr("Testing xlet"));
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
     m_button_call = new QPushButton(tr("Call 1001"));
     m_button_hangup = new QPushButton(tr("hangup"));
     m_button_dnd = new QPushButton(tr("DnD"));
+    m_button_hold = new QPushButton("Hold");
+    m_button_l1 = new QPushButton("line 1");
+    m_button_l2 = new QPushButton("line 2");
+    m_button_l3 = new QPushButton("line 3");
+    m_button_l4 = new QPushButton("line 4");
+    m_button_prg2 = new QPushButton("Prg2 (Directed call pickup)");
     layout->addWidget(m_button_call);
     layout->addWidget(m_button_hangup);
     layout->addWidget(m_button_dnd);
+    layout->addWidget(m_button_hold);
+    layout->addWidget(m_button_l1);
+    layout->addWidget(m_button_l2);
+    layout->addWidget(m_button_l3);
+    layout->addWidget(m_button_l4);
+    layout->addWidget(m_button_prg2);
     connect(m_button_call, SIGNAL(clicked()), this, SLOT(onCallClick()));
     connect(m_button_hangup, SIGNAL(clicked()), this, SLOT(onHangupClick()));
     connect(m_button_dnd, SIGNAL(clicked()), this, SLOT(onSoftKey()));
+    connect(m_button_l1, SIGNAL(clicked()), this, SLOT(onLineOneClick()));
+    connect(m_button_l2, SIGNAL(clicked()), this, SLOT(onLineTwoClick()));
+    connect(m_button_l3, SIGNAL(clicked()), this, SLOT(onLineThreeClick()));
+    connect(m_button_l4, SIGNAL(clicked()), this, SLOT(onLineFourClick()));
+    connect(m_button_hold, SIGNAL(clicked()), this, SLOT(onHoldClick()));
+    connect(m_button_prg2, SIGNAL(clicked()), this, SLOT(onPrg2Click()));
 }
 
-/*! \brief test button clicked
- */
+void XletTest::onHoldClick()
+{
+    emit ipbxCommand(getAastraKeyNotify(HOLD, SPECIAL_ME));
+}
+
+void XletTest::onLineOneClick()
+{
+    emit ipbxCommand(getAastraKeyNotify(LINE, SPECIAL_ME, 1));
+}
+
+void XletTest::onLineTwoClick()
+{
+    emit ipbxCommand(getAastraKeyNotify(LINE, SPECIAL_ME, 2));
+}
+
+void XletTest::onLineThreeClick()
+{
+    emit ipbxCommand(getAastraKeyNotify(LINE, SPECIAL_ME, 3));
+}
+
+void XletTest::onLineFourClick()
+{
+    emit ipbxCommand(getAastraKeyNotify(LINE, SPECIAL_ME, 4));
+}
+
+/*! \brief test button clicked */
 void XletTest::onCallClick()
 {
     emit ipbxCommand(getAastraDial("1001", SPECIAL_ME, true));
@@ -76,6 +118,11 @@ void XletTest::onCallClick()
 void XletTest::onHangupClick()
 {
     emit ipbxCommand(getAastraKeyNotify(GOODBYE, SPECIAL_ME));
+}
+
+void XletTest::onPrg2Click()
+{
+    emit ipbxCommand(getAastraKeyNotify(PRG_KEY, SPECIAL_ME, 2));
 }
 
 void XletTest::onSoftKey()
