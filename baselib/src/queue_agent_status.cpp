@@ -201,5 +201,17 @@ bool QueueMemberInfo::updateStatus(const QVariantMap & prop)
         m_membership = prop.value("membership").toString();
         haschanged = true;
     }
+    if (prop.contains("callstaken") && (m_callstaken != prop.value("callstaken").toString())) {
+        m_callstaken = prop.value("callstaken").toString();
+        haschanged = true;
+    }
+    if (prop.contains("penalty") && (m_penalty != prop.value("penalty").toString())) {
+        m_penalty = prop.value("penalty").toString();
+        haschanged = true;
+    }
+    if (prop.contains("lastcall") && (m_lastcall != prop.value("lastcall").toInt())) {
+        m_lastcall = prop.value("lastcall").toInt();
+        haschanged = true;
+    }
     return haschanged;
 }

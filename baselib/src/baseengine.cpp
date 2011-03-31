@@ -1336,6 +1336,10 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                         command["id"] = aid;
                         sendJsonCommand(command);
                     }
+                    foreach (QString pid, queue(xid)->phonemembers()) {
+                        command["id"] = pid;
+                        sendJsonCommand(command);
+                    }
                 }
             }
             else if (listname == "channels")

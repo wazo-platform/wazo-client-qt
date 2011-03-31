@@ -79,7 +79,7 @@ class XletAgentDetails : public XLet
         void clearPanel();
         void updatePanel();
         void setQueueLookProps(const QString &);
-        void setQueueAgentProps(const QString &, const QVariant &);
+        void setQueueAgentProps(const QString &, const QString &);
         void setQueueProps(const QString &);
         void setQueueAgentSignals(const QString &);
         void fillQueue(int, const QString &);

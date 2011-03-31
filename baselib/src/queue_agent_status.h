@@ -92,13 +92,18 @@ class BASELIB_EXPORT QueueMemberInfo : public XInfo
 
         const QString & status() const { return m_status; };  //! 
         const QString & paused() const { return m_paused; };  //! 
-        const QString & membership() const  { return m_membership; };  //! 
+        const QString & membership() const { return m_membership; };  //! 
+        const QString & callstaken() const { return m_callstaken; };  //! 
+        const QString & penalty() const { return m_penalty; };  //! 
+        int lastcall() const { return m_lastcall; };  //! 
 
     private:
         QString m_status;
         QString m_paused;
         QString m_membership;
+        QString m_callstaken;
+        QString m_penalty;
+        int m_lastcall;
 };
-
 
 #endif // __QUEUE_AGENT_STATUS_H__
