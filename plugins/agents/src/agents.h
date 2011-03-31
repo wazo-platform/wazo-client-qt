@@ -54,18 +54,18 @@ class XletAgents : public XLet
         void setGuiOptions(const QVariantMap &);
         void updateAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
-        void statusRecord(const QString &, const QString &, const QString &);
-        void statusListen(const QString &, const QString &, const QString &);
+        void statusRecord(const QString &, const QString &);
+        void statusListen(const QString &, const QString &);
 
     private slots:
         void agentClicked();
 
     private:
         void newAgentLine(const QString &);
-        void updateAgentLineAdmin(const QString &, const QString &, const QString &);
+        void updateAgentLineAdmin(const QString &);
         void updateAgentLineEvent(const QString &);
         void displayLine(const QString &, int);
-        void updateAgentStatus(const QString &, const QVariantMap &);
+        void updateAgentDisplay(const QString &);
 
         QFont m_gui_font;  //!< font
         quint32 m_gui_buttonsize;  //!< button size

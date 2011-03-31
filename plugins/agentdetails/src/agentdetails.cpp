@@ -207,9 +207,6 @@ void XletAgentDetails::updatePanel()
     QString lstatus = ainfo->status();
     QString phonenum = ainfo->phonenumber();
 
-    QVariantMap properties = ainfo->properties();
-    QVariant agentstats = properties["agentstats"];
-
     if (lstatus == "AGENT_LOGGEDOFF") {
         agent_descriptions << tr("logged off <b>%1</b>").arg(phonenum);
         m_action["agentlogin"]->setProperty("function", "agentlogin");
@@ -243,6 +240,8 @@ void XletAgentDetails::updatePanel()
     }
 
     QStringList xqueueids;
+    QVariantMap properties = ainfo->properties();
+    QVariant agentstats = properties["agentstats"];
     m_agentlegend_njoined->setText(agentstats.toMap().value("Xivo-NQJoined").toString());
     m_agentlegend_npaused->setText(agentstats.toMap().value("Xivo-NQPaused").toString());
 
@@ -322,7 +321,7 @@ void XletAgentDetails::setQueueProps(const QString & xqueueid)
 
 void XletAgentDetails::setQueueAgentSignals(const QString & xqueueid)
 {
-    m_queue_more[xqueueid]->setProperty("queueid", xqueueid);
+    m_queue_more[xqueueid]->setProperty("xqueueid", xqueueid);
     m_queue_more[xqueueid]->setProperty("action", "changequeue");
 
     connect( m_queue_more[xqueueid], SIGNAL(clicked()),
@@ -340,9 +339,9 @@ void XletAgentDetails::setQueueAgentProps(const QString & xqueueid, const QStrin
     const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
     if ((qmi == NULL) && (! xqueuemember.isEmpty()))
         return;
-    m_queue_join_action[xqueueid]->setProperty("queueid", xqueueid);
+    m_queue_join_action[xqueueid]->setProperty("xqueueid", xqueueid);
     m_queue_join_action[xqueueid]->setProperty("action", "leavejoin");
-    m_queue_pause_action[xqueueid]->setProperty("queueid", xqueueid);
+    m_queue_pause_action[xqueueid]->setProperty("xqueueid", xqueueid);
     m_queue_pause_action[xqueueid]->setProperty("action", "pause");
     m_queue_join_status[xqueueid]->show();
     m_queue_pause_status[xqueueid]->show();
@@ -422,24 +421,27 @@ void XletAgentDetails::fillQueue(int ii, const QString & xqueueid)
  */
 void XletAgentDetails::queueClicked()
 {
-    // qDebug() << Q_FUNC_INFO << sender()->property("queueid");
-    QString queueid = sender()->property("queueid").toString();
+    QString xqueueid = sender()->property("xqueueid").toString();
+    const QueueInfo * qinfo = b_engine->queue(xqueueid);
+    if (qinfo == NULL)
+        return;
     QString action  = sender()->property("action").toString();
+    QString queuename = qinfo->queueName();
 
-    QString astid = b_engine->queue(queueid)->ipbxid();
-    QString qid = b_engine->queue(queueid)->id();
-    QString queuename = b_engine->queue(queueid)->queueName();
-    QVariant mstatus = b_engine->agent(m_monitored_agentid)->properties().value("queues_by_agent").toMap().value(qid);
-    QString smstatus = mstatus.toMap().value("Status").toString();
-    QString pmstatus = mstatus.toMap().value("Paused").toString();
+    QString xqueuemember = qinfo->reference("agents", m_monitored_agentid);
+    const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
 
     QVariantMap ipbxcommand;
     ipbxcommand["agentids"] = m_monitored_agentid;
-    ipbxcommand["queueids"] = queueid;
+    ipbxcommand["queueids"] = xqueueid;
 
     if (action == "changequeue")
-        b_engine->changeWatchedQueue(queueid);
+        b_engine->changeWatchedQueue(xqueueid);
     else if (action == "leavejoin") {
+        if (qmi == NULL)
+            return;
+        QString smstatus = qmi->status();
+        QString pmstatus = qmi->paused();
         if ((smstatus == "1") || (smstatus == "3") || (smstatus == "4") || (smstatus == "5")) {
             ipbxcommand["command"] = "agentleavequeue";
         } else if (smstatus == "") {
@@ -448,6 +450,10 @@ void XletAgentDetails::queueClicked()
             qDebug() << Q_FUNC_INFO << queuename << m_monitored_agentid << smstatus << pmstatus;
         // join the queue in the previously recorded paused status (to manage on the server side)
     } else if (action == "pause") {
+        if (qmi == NULL)
+            return;
+        QString smstatus = qmi->status();
+        QString pmstatus = qmi->paused();
         if (pmstatus == "0") {
             ipbxcommand["command"] = "agentpausequeue";
         } else if (pmstatus == "1") {

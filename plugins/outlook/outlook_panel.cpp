@@ -134,8 +134,8 @@ OutlookPanel::OutlookPanel(QWidget * parent)
              this, SLOT(contactsLoaded()) );
     connect( &(OLEngine()->m_OLThread), SIGNAL(errorMessage(const QString &)),
              b_engine, SLOT(emitMessage(const QString &)) );
-    connect( &(OLEngine()->m_OLThread), SIGNAL(logClientWarning(const QString &, const QString &)),
-             b_engine, SLOT(logClientWarning(const QString &, const QString &)) );
+    connect( &(OLEngine()->m_OLThread), SIGNAL(logClient(const QString &, const QString &, const QString &)),
+             b_engine, SLOT(logClient(const QString &, const QString &, const QString &)) );
 }
 
 class QTableWidgetItemExt : public QTableWidgetItem

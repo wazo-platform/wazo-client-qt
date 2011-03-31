@@ -110,11 +110,11 @@ void XletQueueDetails::updateQueueStatus(const QString & xqueueid)
         updatePanel();
 }
 
-void XletQueueDetails::monitorThisQueue(const QString & queueid)
+void XletQueueDetails::monitorThisQueue(const QString & xqueueid)
 {
-    qDebug() << Q_FUNC_INFO << queueid;
-    if (b_engine->hasQueue(queueid)) {
-        m_monitored_queueid = queueid;
+    qDebug() << Q_FUNC_INFO << xqueueid;
+    if (b_engine->hasQueue(xqueueid)) {
+        m_monitored_queueid = xqueueid;
         clearPanel();
         updatePanel();
     }
@@ -167,7 +167,7 @@ void XletQueueDetails::updatePanel()
         m_queuelegend_penalty->show();
     }
 
-    qDebug() << Q_FUNC_INFO << m_monitored_queueid << qinfo->xagentids() << qinfo->xphoneids();
+    // qDebug() << Q_FUNC_INFO << m_monitored_queueid << qinfo->xagentids() << qinfo->xphoneids();
 
     int i = 0;
     QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(b_engine->iterover("agents"));
@@ -231,7 +231,7 @@ void XletQueueDetails::setAgentQueueSignals(const QString & xagentid)
 {
     if (! m_agent_more.contains(xagentid))
         return;
-    m_agent_more[xagentid]->setProperty("agentid", xagentid);
+    m_agent_more[xagentid]->setProperty("xagentid", xagentid);
     connect(m_agent_more[xagentid], SIGNAL(clicked()),
             this, SLOT(agentClicked()));
 }
@@ -311,6 +311,6 @@ void XletQueueDetails::fillAgent(int ii, const QString & xagentid)
 void XletQueueDetails::agentClicked()
 {
     // qDebug() << Q_FUNC_INFO << sender()->property("agentid");
-    QString agentid = sender()->property("agentid").toString();
-    b_engine->changeWatchedAgent(agentid, true);
+    QString xagentid = sender()->property("xagentid").toString();
+    b_engine->changeWatchedAgent(xagentid, true);
 }

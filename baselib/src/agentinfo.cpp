@@ -58,37 +58,35 @@ bool AgentInfo::updateConfig(const QVariantMap & prop)
 
 bool AgentInfo::updateStatus(const QVariantMap & prop)
 {
-    bool haschanged = true;
-    if (prop.contains("status"))
-        m_status = prop.value("status").toString();
-    if (prop.contains("phonenumber"))
-        m_phonenumber = prop.value("phonenumber").toString();
-    return haschanged;
-}
-
-bool AgentInfo::updateQueue(const QVariantMap & prop)
-{
     bool haschanged = false;
-    QMapIterator<QString, QVariant> it(prop);
-    while(it.hasNext()) {
-        it.next();
-        QString arg = it.key();
-        if(! m_properties.contains(arg)) {
-            haschanged = true;
-            m_properties[arg] = it.value();
-        } else if(m_properties.value(arg) != it.value()) {
-            haschanged = true;
-            QVariantMap tmp = m_properties.value(arg).toMap();
-            QMapIterator<QString, QVariant> it2(it.value().toMap());
-            while(it2.hasNext()) {
-                it2.next();
-                if(tmp.value(it2.key()) != it2.value()) {
-                    tmp[it2.key()] = it2.value();
-                }
-            }
-            m_properties[arg] = tmp;
-        }
+
+    if (prop.contains("status") && (m_status != prop.value("status").toString())) {
+        m_status = prop.value("status").toString();
+        haschanged = true;
     }
+    if (prop.contains("phonenumber") && (m_phonenumber != prop.value("phonenumber").toString())) {
+        m_phonenumber = prop.value("phonenumber").toString();
+        haschanged = true;
+    }
+
+    if (prop.contains("queues")) {
+        m_xqueueids.clear();
+        foreach (QString queueid, prop.value("queues").toStringList()) {
+            QString xqueueid = QString("%1/%2").arg(m_ipbxid).arg(queueid); // to match against queue membership
+            m_xqueueids.append(xqueueid);
+        }
+        haschanged = true;
+    }
+
+    if (prop.contains("groups")) {
+        m_xgroupids.clear();
+        foreach (QString groupid, prop.value("groups").toStringList()) {
+            QString xgroupid = QString("%1/%2").arg(m_ipbxid).arg(groupid); // to match against group membership
+            m_xgroupids.append(xgroupid);
+        }
+        haschanged = true;
+    }
+
     return haschanged;
 }
 
