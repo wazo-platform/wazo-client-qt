@@ -90,9 +90,9 @@ class QueueRow : public QWidget {
         QProgressBar *m_busy;  //!< to display the queues busy level
         QHash<QString, QLabel *> m_infoList; //!< the stats info
         static uint m_maxbusy;  //!< Maximum value for busy level
-        QGridLayout *m_layout;
-        const QueueInfo *qinfo;
-        XletQueues *xlet;
+        QGridLayout * m_layout;
+        const QueueInfo * m_queueinfo;
+        XletQueues * m_xlet;
         static QList<int> m_colWidth;
 
 };

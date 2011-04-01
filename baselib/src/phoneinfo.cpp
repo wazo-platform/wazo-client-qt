@@ -43,56 +43,39 @@ PhoneInfo::PhoneInfo(const QString & ipbxid,
     m_enable_hint = false;
 }
 
+
 bool PhoneInfo::updateConfig(const QVariantMap & prop)
 {
-    bool haschanged = true;
-    if (prop.contains("protocol"))
-        m_protocol = prop.value("protocol").toString();
-    if (prop.contains("context"))
-        m_context = prop.value("context").toString();
-    if (prop.contains("number"))
-        m_number = prop.value("number").toString();
-    if (prop.contains("simultcalls"))
-        m_simultcalls = prop.value("simultcalls").toInt();
-    if (prop.contains("initialized"))
-        m_initialized = prop.value("initialized").toBool();
-    if (prop.contains("enable_hint"))
-        m_enable_hint = prop.value("enable_hint").toBool();
+    bool haschanged = false;
+    haschanged |= setIfChangeString(prop, "protocol", & m_protocol);
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "number", & m_number);
 
-    if (prop.contains("enablerna"))
-        m_enablerna = prop.value("enablerna").toBool();
-    if (prop.contains("enableunc"))
-        m_enableunc = prop.value("enableunc").toBool();
-    if (prop.contains("enablebusy"))
-        m_enablebusy = prop.value("enablebusy").toBool();
-    if (prop.contains("destrna"))
-        m_destrna = prop.value("destrna").toString();
-    if (prop.contains("destunc"))
-        m_destunc = prop.value("destunc").toString();
-    if (prop.contains("destbusy"))
-        m_destbusy = prop.value("destbusy").toString();
+    haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
+    haschanged |= setIfChangeBool(prop, "initialized", & m_initialized);
+    haschanged |= setIfChangeBool(prop, "enable_hint", & m_enable_hint);
 
-    if (prop.contains("enableautomon"))
-        m_enableautomon = prop.value("enableautomon").toBool();
-    if (prop.contains("enablednd"))
-        m_enablednd = prop.value("enablednd").toBool();
-    if (prop.contains("enablevoicemail"))
-        m_enablevoicemail = prop.value("enablevoicemail").toBool();
-    if (prop.contains("enablexfer"))
-        m_enablexfer = prop.value("enablexfer").toBool();
-    if (prop.contains("incallfilter"))
-        m_incallfilter = prop.value("incallfilter").toBool();
-    if (prop.contains("callrecord"))
-        m_callrecord = prop.value("callrecord").toBool();
+    haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
+    haschanged |= setIfChangeBool(prop, "enableunc", & m_enableunc);
+    haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
+    haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
+    haschanged |= setIfChangeString(prop, "destunc", & m_destunc);
+    haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
+
+    haschanged |= setIfChangeBool(prop, "enableautomon", & m_enableautomon);
+    haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
+    haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
+    haschanged |= setIfChangeBool(prop, "enablexfer", & m_enablexfer);
+    haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
+    haschanged |= setIfChangeBool(prop, "callrecord", & m_callrecord);
 
     return haschanged;
 }
 
 bool PhoneInfo::updateStatus(const QVariantMap & prop)
 {
-    bool haschanged = true;
-    if (prop.contains("hintstatus"))
-        m_hintstatus = prop.value("hintstatus").toString();
+    bool haschanged = false;
+    haschanged |= setIfChangeString(prop, "hintstatus", & m_hintstatus);
     if(prop.contains("channels")) {
         m_channels = prop.value("channels").toStringList();
         m_xchannels.clear();
@@ -100,7 +83,7 @@ bool PhoneInfo::updateStatus(const QVariantMap & prop)
             QString xchannel = QString("%1/%2").arg(m_ipbxid).arg(channel);
             m_xchannels.append(xchannel);
         }
-        qDebug() << Q_FUNC_INFO << m_xid << m_xchannels;
+        haschanged = true;
     }
     return haschanged;
 }

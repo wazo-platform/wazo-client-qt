@@ -43,52 +43,39 @@ AgentInfo::AgentInfo(const QString & ipbxid,
 bool AgentInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    if (m_properties != prop) {
-        m_properties = prop;
-        haschanged = true;
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "number", & m_agentnumber);
+    haschanged |= setIfChangeString(prop, "firstname", & m_firstname);
+    haschanged |= setIfChangeString(prop, "lastname", & m_lastname);
 
-        m_context = prop.value("context").toString();
-        m_agentnumber = prop.value("number").toString();
-        QString firstname = prop.value("firstname").toString();
-        QString lastname = prop.value("lastname").toString();
-        m_fullname = QString("%1 %2").arg(firstname).arg(lastname);
-    }
+    m_fullname = QString("%1 %2").arg(m_firstname).arg(m_lastname);
     return haschanged;
 }
 
 bool AgentInfo::updateStatus(const QVariantMap & prop)
 {
-    bool haschanged = true;
-    if (prop.contains("status"))
-        m_status = prop.value("status").toString();
-    if (prop.contains("phonenumber"))
-        m_phonenumber = prop.value("phonenumber").toString();
-    return haschanged;
-}
-
-bool AgentInfo::updateQueue(const QVariantMap & prop)
-{
     bool haschanged = false;
-    QMapIterator<QString, QVariant> it(prop);
-    while(it.hasNext()) {
-        it.next();
-        QString arg = it.key();
-        if(! m_properties.contains(arg)) {
-            haschanged = true;
-            m_properties[arg] = it.value();
-        } else if(m_properties.value(arg) != it.value()) {
-            haschanged = true;
-            QVariantMap tmp = m_properties.value(arg).toMap();
-            QMapIterator<QString, QVariant> it2(it.value().toMap());
-            while(it2.hasNext()) {
-                it2.next();
-                if(tmp.value(it2.key()) != it2.value()) {
-                    tmp[it2.key()] = it2.value();
-                }
-            }
-            m_properties[arg] = tmp;
+    haschanged |= setIfChangeString(prop, "status", & m_status);
+    haschanged |= setIfChangeString(prop, "phonenumber", & m_phonenumber);
+
+    if (prop.contains("queues")) {
+        m_xqueueids.clear();
+        foreach (QString queueid, prop.value("queues").toStringList()) {
+            QString xqueueid = QString("%1/%2").arg(m_ipbxid).arg(queueid); // to match against queue membership
+            m_xqueueids.append(xqueueid);
         }
+        haschanged = true;
     }
+
+    if (prop.contains("groups")) {
+        m_xgroupids.clear();
+        foreach (QString groupid, prop.value("groups").toStringList()) {
+            QString xgroupid = QString("%1/%2").arg(m_ipbxid).arg(groupid); // to match against group membership
+            m_xgroupids.append(xgroupid);
+        }
+        haschanged = true;
+    }
+
     return haschanged;
 }
 

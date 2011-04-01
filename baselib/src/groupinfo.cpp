@@ -43,44 +43,18 @@ GroupInfo::GroupInfo(const QString & ipbxid,
 bool GroupInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    m_context = prop.value("context").toString();
-    m_groupname = prop.value("name").toString();
-    m_groupnumber = prop.value("number").toString();
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "name", & m_name);
+    haschanged |= setIfChangeString(prop, "number", & m_number);
+    return haschanged;
+}
+
+bool GroupInfo::updateStatus(const QVariantMap & prop)
+{
+    bool haschanged = false;
     if (m_properties != prop) {
         m_properties = prop;
         haschanged = true;
-    }
-    return haschanged;
-}
-
-bool GroupInfo::updateStatus(const QVariantMap &)
-{
-    bool haschanged = true;
-    return haschanged;
-}
-
-bool GroupInfo::updateAgent(const QVariantMap & prop)
-{
-    bool haschanged = false;
-    QMapIterator<QString, QVariant> it(prop);
-    while (it.hasNext()) {
-        it.next();
-        QString arg = it.key();
-        if (!m_properties.contains(arg)) {
-            haschanged = true;
-            m_properties[arg] = it.value();
-        } else if (m_properties.value(arg) != it.value()) {
-            haschanged = true;
-            QVariantMap tmp = m_properties.value(arg).toMap();
-            QMapIterator<QString, QVariant> it2(it.value().toMap());
-            while (it2.hasNext()) {
-                it2.next();
-                if (tmp.value(it2.key()) != it2.value()) {
-                    tmp[it2.key()] = it2.value();
-                }
-            }
-            m_properties[arg] = tmp;
-        }
     }
     return haschanged;
 }

@@ -73,7 +73,6 @@ class XLetQueueEntryDetails : public XLet
         QString m_monitored_queueid;  //!< queue id
         QLabel *m_queuedescription;   //!< label for displaying queue name
         QHash<QString, QLabel *> m_entrypos;    //!< display entry
-        QHash<QString, QLabel *> m_entrytime;   //!< display call duration ?
 };
 
 class XLetQueueEntryDetailsPlugin : public QObject, XLetInterface

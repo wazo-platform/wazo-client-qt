@@ -42,3 +42,43 @@ XInfo::XInfo(const QString & ipbxid,
     m_id = id;
     m_xid = QString("%1/%2").arg(ipbxid).arg(id);
 }
+
+bool XInfo::setIfChangeString(const QVariantMap & prop, const char * const var, QString * const pp)
+{
+    bool haschanged = false;
+    if (prop.contains(var) && ((* pp) != prop.value(var).toString())) {
+        (* pp) = prop.value(var).toString();
+        haschanged = true;
+    }
+    return haschanged;
+}
+
+bool XInfo::setIfChangeBool(const QVariantMap & prop, const char * const var, bool * const pp)
+{
+    bool haschanged = false;
+    if (prop.contains(var) && ((* pp) != prop.value(var).toBool())) {
+        (* pp) = prop.value(var).toBool();
+        haschanged = true;
+    }
+    return haschanged;
+}
+
+bool XInfo::setIfChangeInt(const QVariantMap & prop, const char * const var, int * const pp)
+{
+    bool haschanged = false;
+    if (prop.contains(var) && ((* pp) != prop.value(var).toInt())) {
+        (* pp) = prop.value(var).toInt();
+        haschanged = true;
+    }
+    return haschanged;
+}
+
+bool XInfo::setIfChangeDouble(const QVariantMap & prop, const char * const var, double * const pp)
+{
+    bool haschanged = false;
+    if (prop.contains(var) && ((* pp) != prop.value(var).toDouble())) {
+        (* pp) = prop.value(var).toDouble();
+        haschanged = true;
+    }
+    return haschanged;
+}

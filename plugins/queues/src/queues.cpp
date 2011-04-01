@@ -150,6 +150,8 @@ XletQueues::XletQueues(QWidget *parent)
 
     connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
             this, SLOT(updateQueueConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
+            this, SLOT(updateQueueStatus(const QString &)));
     connect(b_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
             this, SLOT(removeQueues(const QString &, const QStringList &)));
     connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
@@ -237,7 +239,8 @@ void XletQueues::updateQueueConfig(const QString & xqueueid)
 
 void XletQueues::updateQueueStatus(const QString & xqueueid)
 {
-    qDebug() << Q_FUNC_INFO << xqueueid;
+    // qDebug() << Q_FUNC_INFO << xqueueid;
+    updateQueueConfig(xqueueid);
 }
 
 /*! \brief set queue order
@@ -432,10 +435,10 @@ QWidget* XletQueuesConfigure::buildConfigureQueueList(QWidget *parent)
     while (i.hasNext()) {
         column = 0;
         i.next();
-        QueueInfo * qinfo = (QueueInfo *) i.value();
-        queueid = qinfo->id();
+        QueueInfo * queueinfo = (QueueInfo *) i.value();
+        queueid = queueinfo->id();
 
-        displayQueue = new QCheckBox(qinfo->queueName(), root);
+        displayQueue = new QCheckBox(queueinfo->queueName(), root);
         displayQueue->setProperty("queueid", queueid);
         displayQueue->setProperty("param", "visible");
         displayQueue->setChecked(statConfig.value("visible" + queueid, true).toBool());
@@ -489,14 +492,13 @@ void XletQueuesConfigure::closeEvent(QCloseEvent *)
 
 
 
-
 QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
-    : QWidget(parent), qinfo(qInfo), xlet(parent)
+    : QWidget(parent), m_queueinfo(qInfo), m_xlet(parent)
 {
-    setProperty("id", qinfo->id());
+    setProperty("id", m_queueinfo->id());
     m_layout = new QGridLayout(this);
     m_layout->setSpacing(0);
-    QString queueId = qinfo->id();
+    QString queueId = m_queueinfo->id();
 
     int visible = b_engine->getGuiOptions("client_gui")
                   .value("queuespanel").toMap()
@@ -510,15 +512,15 @@ QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
     m_layout->addWidget(m_name, 0, col++);
 
     m_more = new QPushButton(this);
-    m_more->setProperty("queueid", QString("%1/%2").arg(qinfo->ipbxid()).arg(qinfo->id()));
+    m_more->setProperty("queueid", QString("%1/%2").arg(m_queueinfo->ipbxid()).arg(m_queueinfo->id()));
     m_more->setProperty("function", "more");
     m_more->setIcon(QIcon(":/images/add.png"));
     m_more->setFixedSize(20, 20);
     m_more->setFlat(true);
     m_layout->addWidget(m_more, 0, col++);
-    connect(m_more, SIGNAL(clicked()), xlet, SLOT(queueClicked()));
+    connect(m_more, SIGNAL(clicked()), m_xlet, SLOT(queueClicked()));
 
-    if (!xlet->showMoreQueueDetailButton()) {
+    if (! m_xlet->showMoreQueueDetailButton()) {
         m_more->hide();
     }
 
@@ -530,7 +532,7 @@ QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
     m_move->setFixedSize(20, 20);
     m_move->setFlat(true);
     m_layout->addWidget(m_move, 0, col++);
-    connect(m_move, SIGNAL(clicked()), xlet, SLOT(queueClicked()));
+    connect(m_move, SIGNAL(clicked()), m_xlet, SLOT(queueClicked()));
 
 
     m_busy = new QProgressBar(this);
@@ -670,14 +672,14 @@ void QueueRow::updateLongestWaitWidget(int display, uint greenlevel, uint orange
 
 void QueueRow::updateRow()
 {
-    QVariantMap queueStats = qinfo->properties().value("queuestats").toMap();
-    QString queueName = qinfo->queueName();
+    QVariantMap queueStats = m_queueinfo->properties().value("queuestats").toMap();
+    QString queueName = m_queueinfo->queueName();
 
     QHash <QString, QString> infos;
-    infos["Calls"] = "0";
 
     foreach (QString stat, queueStats.keys())
         infos[stat] = queueStats[stat].toString();
+    infos["Calls"] = QString::number(m_queueinfo->xincalls().count());
 
     m_busy->setProperty("value", infos["Calls"]);
 
@@ -704,25 +706,26 @@ void QueueRow::updateRow()
     }
 
     /* stat cols who aren't made by server */
-    QVariantMap queueagents = qinfo->properties().value("agents_in_queue").toMap();
     QStringList queueagents_list;
     int nagents;
-
-    QRegExp agentfilter = QRegExp("Agent/[0-9]*");
 
     // number of Available agents
     nagents = 0;
     queueagents_list.clear();
-    foreach (QString queuemember, queueagents.keys()) {
-        if (agentfilter.exactMatch(queuemember)) {
-            QVariantMap qaprops = queueagents.value(queuemember).toMap();
-            if ((qaprops.value("Status").toString() == "1") &&
-                (qaprops.value("Paused").toString() == "0")) {
-                nagents++;
-                queueagents_list << queuemember.mid(6);
-            }
+    foreach (QString xagentid, m_queueinfo->xagentids()) {
+        QString xqueuemember = m_queueinfo->reference("agents", xagentid);
+        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
+        if (qmi == NULL)
+            continue;
+        const AgentInfo * agentinfo = b_engine->agent(xagentid);
+        if (agentinfo == NULL)
+            continue;
+        if ((qmi->status() == "1") && (qmi->paused() == "0")) {
+            nagents ++;
+            queueagents_list << agentinfo->agentNumber();
         }
     }
+
     if (m_infoList.contains("Xivo-Avail")) {
         m_infoList["Xivo-Avail"]->setText(QString::number(nagents));
         QString todisp;
@@ -731,20 +734,23 @@ void QueueRow::updateRow()
         m_infoList["Xivo-Avail"]->setToolTip(todisp);
     }
 
-
     // number of Connected agents
     nagents = 0;
     queueagents_list.clear();
-    foreach (QString queuemember, queueagents.keys()) {
-        if (agentfilter.exactMatch(queuemember)) {
-            QVariantMap qaprops = queueagents.value(queuemember).toMap();
-            if ((qaprops.value("Status").toString() == "3") ||
-                (qaprops.value("Status").toString() == "1")) {
-                nagents++;
-                queueagents_list << queuemember.mid(6);
-            }
+    foreach (QString xagentid, m_queueinfo->xagentids()) {
+        QString xqueuemember = m_queueinfo->reference("agents", xagentid);
+        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
+        if (qmi == NULL)
+            continue;
+        const AgentInfo * agentinfo = b_engine->agent(xagentid);
+        if (agentinfo == NULL)
+            continue;
+        if ((qmi->status() == "1") || (qmi->status() == "3")) {
+            nagents ++;
+            queueagents_list << agentinfo->agentNumber();
         }
     }
+
     if (m_infoList.contains("Xivo-Conn")) {
         m_infoList["Xivo-Conn"]->setText(QString::number(nagents));
         QString todisp;
@@ -753,20 +759,23 @@ void QueueRow::updateRow()
         m_infoList["Xivo-Conn"]->setToolTip(todisp);
     }
 
-
     // number of Talking agents
     nagents = 0;
     queueagents_list.clear();
-    foreach (QString queuemember, queueagents.keys()) {
-        if (agentfilter.exactMatch(queuemember)) {
-            QVariantMap qaprops = queueagents.value(queuemember).toMap();
-            if ((qaprops.value("Status").toString() == "3") &&
-                (qaprops.value("Paused").toString() == "0")) {
-                nagents++;
-                queueagents_list << queuemember.mid(6);
-            }
+    foreach (QString xagentid, m_queueinfo->xagentids()) {
+        QString xqueuemember = m_queueinfo->reference("agents", xagentid);
+        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
+        if (qmi == NULL)
+            continue;
+        const AgentInfo * agentinfo = b_engine->agent(xagentid);
+        if (agentinfo == NULL)
+            continue;
+        if ((qmi->status() == "3") && (qmi->paused() == "0")) {
+            nagents ++;
+            queueagents_list << agentinfo->agentNumber();
         }
     }
+
     if (m_infoList.contains("Xivo-Talking")) {
         m_infoList["Xivo-Talking"]->setText(QString::number(nagents));
         QString todisp;
@@ -775,15 +784,15 @@ void QueueRow::updateRow()
         m_infoList["Xivo-Talking"]->setToolTip(todisp);
     }
 
-    QVariantMap properties = qinfo->properties();
-    QVariantMap channel_list = properties.value("channels").toMap();
-
     uint oldest = 0;
     int first_item = 1;
     uint current_entrytime;
 
-    foreach (QString channel_name, channel_list.keys()) {
-        current_entrytime = channel_list.value(channel_name).toMap().value("entrytime").toUInt();
+    foreach (QString xchannel, m_queueinfo->xincalls()) {
+        const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
+        if (channelinfo == NULL)
+            continue;
+        current_entrytime = uint(channelinfo->timestamp());
         if (first_item) {
             oldest = current_entrytime;
             first_item = 0;
@@ -803,10 +812,10 @@ void QueueRow::updateRow()
 void QueueRow::updateName()
 {
     QString queueName;
-    if (xlet->showNumber()) {
-        queueName = qinfo->queueName() + " (" + qinfo->queueNumber() + ")";
+    if (m_xlet->showNumber()) {
+        queueName = m_queueinfo->queueName() + " (" + m_queueinfo->queueNumber() + ")";
     } else {
-        queueName = qinfo->queueName();
+        queueName = m_queueinfo->queueName();
     }
 
     m_name->setText(queueName);

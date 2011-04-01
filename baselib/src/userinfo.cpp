@@ -33,7 +33,6 @@
 
 #include <QDebug>
 #include "userinfo.h"
-#include "phoneinfo.h"
 
 /*! \brief Constructor
  *
@@ -45,99 +44,40 @@ UserInfo::UserInfo(const QString & ipbxid,
 {
 }
 
-bool UserInfo::updateConfig(const QVariantMap & qvm)
+bool UserInfo::updateConfig(const QVariantMap & prop)
 {
-    bool haschanged = true;
-    if (qvm.contains("loginclient"))
-        setCtiLogin(qvm.value("loginclient").toString());
-    if (qvm.contains("fullname"))
-        setFullName(qvm.value("fullname").toString());
-    if (qvm.contains("number"))
-        setPhoneNumber(qvm.value("number").toString());
-    if (qvm.contains("mobilephonenumber"))
-        setMobileNumber(qvm.value("mobilephonenumber").toString());
-    if (qvm.contains("context"))
-        setContext(qvm.value("context").toString());
-    if (qvm.contains("simultcalls"))
-        setSimultCalls(qvm.value("simultcalls").toInt());
-    if (qvm.contains("id")) {
+    bool haschanged = false;
+    haschanged |= setIfChangeString(prop, "loginclient", & m_ctilogin);
+    haschanged |= setIfChangeString(prop, "fullname", & m_fullname);
+    haschanged |= setIfChangeString(prop, "number", & m_phonenumber);
+    haschanged |= setIfChangeString(prop, "mobilephonenumber", & m_mobilenumber);
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "voicemailid", & m_voicemailid);
+    haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
+
+    haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
+    m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(m_agentid);
+
+    if (prop.contains("id")) {
         QStringList lid;
-        foreach (QString id, qvm.value("id").toStringList())
+        foreach (QString id, prop.value("id").toStringList())
             lid << QString("%1/%2").arg(m_ipbxid).arg(id);
         setPhoneIdList(lid);
+        haschanged = true;
     }
-    if (qvm.contains("agentid"))
-        setAgentId(qvm.value("agentid").toString());
-    if (qvm.contains("voicemailid"))
-        setVoiceMailId(qvm.value("voicemailid").toString());
     return haschanged;
 }
 
-bool UserInfo::updateStatus(const QVariantMap & qvm)
+bool UserInfo::updateStatus(const QVariantMap & prop)
 {
-    bool haschanged = true;
-    if (qvm.contains("availstate"))
-        setAvailState(qvm.value("availstate").toString());
+    bool haschanged = false;
+    haschanged |= setIfChangeString(prop, "availstate", & m_availstate);
     return haschanged;
-}
-
-/*! \brief set full name */
-void UserInfo::setFullName(const QString & fullname)
-{
-    m_fullname = fullname;
-}
-
-/*! \brief set CTI Login */
-void UserInfo::setCtiLogin(const QString & ctilogin)
-{
-    m_ctilogin = ctilogin;
-}
-
-void UserInfo::setPhoneNumber(const QString & phonenumber)
-{
-    m_phonenumber = phonenumber;
-}
-
-void UserInfo::setMobileNumber(const QString &mobilenum)
-{
-    m_mobilenumber = mobilenum;
-}
-
-void UserInfo::setSimultCalls(int simultcalls)
-{
-    m_simultcalls = simultcalls;
-}
-
-void UserInfo::setAgentNumber(const QString & agentnumber)
-{
-    m_agentnumber = agentnumber;
 }
 
 void UserInfo::setPhoneIdList(const QStringList & phoneidlist)
 {
     m_phoneidlist = phoneidlist;
-}
-
-void UserInfo::setAgentId(const QString & agentid)
-{
-    m_agentid = agentid;
-    m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(agentid);
-}
-
-void UserInfo::setVoiceMailId(const QString & voicemailid)
-{
-    m_voicemailid = voicemailid;
-}
-
-void UserInfo::setContext(const QString & context)
-{
-    m_context = context;
-}
-
-/*! \brief update availability state */
-void UserInfo::setAvailState(const QString & availstate)
-{
-    m_availstate = availstate;
 }
 
 /*! \brief set Message Waiting indicator */
@@ -150,12 +90,6 @@ void UserInfo::setMWI(const QStringList & mwi)
 bool UserInfo::hasPhoneId(const QString & xphoneid) const
 {
     return m_phoneidlist.contains(xphoneid);
-}
-
-/*! \brief check if this user has this agent */
-bool UserInfo::hasAgentNumber(const QString & agentnumber) const
-{
-    return (m_agentnumber == agentnumber);
 }
 
 /*! \brief return m_fullname */
@@ -190,11 +124,6 @@ const QString & UserInfo::ctilogin() const
 const QStringList & UserInfo::mwi() const
 {
     return m_mwi;
-}
-
-const QString & UserInfo::agentNumber() const
-{
-    return m_agentnumber;
 }
 
 const QString & UserInfo::agentid() const

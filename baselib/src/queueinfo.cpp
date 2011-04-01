@@ -43,18 +43,9 @@ QueueInfo::QueueInfo(const QString & ipbxid,
 bool QueueInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    if (prop.contains("context") && (m_context != prop.value("context").toString())) {
-        m_context = prop.value("context").toString();
-        haschanged = true;
-    }
-    if (prop.contains("name") && (m_name != prop.value("name").toString())) {
-        m_name = prop.value("name").toString();
-        haschanged = true;
-    }
-    if (prop.contains("number") && (m_number != prop.value("number").toString())) {
-        m_number = prop.value("number").toString();
-        haschanged = true;
-    }
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "name", & m_name);
+    haschanged |= setIfChangeString(prop, "number", & m_number);
     return haschanged;
 }
 
@@ -91,6 +82,15 @@ bool QueueInfo::updateStatus(const QVariantMap & prop)
             QString trunkmember = QString("qt:%1-%2").arg(m_id).arg(trunkid); // for requests to server
             m_xtrunkids.append(xtrunkid);
             m_trunkmembers.append(trunkmember);
+        }
+        haschanged = true;
+    }
+    if (prop.contains("incalls")) {
+        m_xincalls.clear();
+        // here it is meaningful to have them set in the right order
+        foreach (QString incall, prop.value("incalls").toStringList()) {
+            QString xincall = QString("%1/%2").arg(m_ipbxid).arg(incall);
+            m_xincalls.append(xincall);
         }
         haschanged = true;
     }

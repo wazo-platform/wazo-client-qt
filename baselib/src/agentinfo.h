@@ -48,7 +48,7 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         AgentInfo(const QString &, const QString &); //! constructor
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
-        bool updateQueue(const QVariantMap &);
+
         const QString & context() const;  //! context this agent belongs to
         const QString & agentNumber() const;  //! agent number
         const QString & fullname() const;  //! agent fullname
@@ -57,14 +57,16 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         const QString & status() const { return m_status; };  //! access to the status values of this agent
         const QString & phonenumber() const { return m_phonenumber; };  //! access to the phonenumber values of this agent
         const QVariantMap & properties() const { return m_properties; } ;
-        //! current communications of this agent
-        const QVariantMap & comms() const { return m_comms; };
-        const QList<QString> queuelist() const { return m_comms.keys(); };
+
+        const QStringList & xqueueids() const { return m_xqueueids; };  //! queues in which this agent is in
+        const QStringList & xgroupids() const { return m_xgroupids; };  //! groups in which this agent is in
 
     private:
         QString m_context;
-        QString m_agentname;
         QString m_agentnumber;
+        QString m_firstname;
+        QString m_lastname;
+
         QString m_fullname;
 
         // XXXX to add
@@ -74,8 +76,10 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         // is the agent busy or not (AGENT_ONCALL usw ...)
         QString m_status;
         QString m_phonenumber;
-        QVariantMap m_comms;
         QVariantMap m_properties;
+
+        QStringList m_xqueueids;
+        QStringList m_xgroupids;
 };
 
 #endif

@@ -157,10 +157,10 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
        QString(":/images/agent-trans.png"), c).getPixmap());
 
     QString agentnumber = agentinfo->agentNumber();
-    QStringList queues = agentinfo->queuelist();
+    // XXX QStringList queues = agentinfo->queuelist();
     m_agentlbl->setToolTip(tr("Agent Number : %1\nIn Queues : %2")
                            .arg(agentnumber)
-                           .arg(queues.join(",")));
+                           .arg(""));
 }
 
 void PeerWidget::setMobileState(const QString &/* color*/)

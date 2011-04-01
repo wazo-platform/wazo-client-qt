@@ -2210,13 +2210,15 @@ void BaseEngine::changeState()
     sendJsonCommand(command);
 }
 
-/*! \brief send error message to the CTI Server */
-void BaseEngine::logClientWarning(const QString & classmethod,
-                                  const QString & message)
+/*! \brief send message to the CTI Server */
+void BaseEngine::logClient(const QString & level,
+                           const QString & classmethod,
+                           const QString & message)
 {
     // qDebug() << Q_FUNC_INFO << classmethod << message;
     QVariantMap command;
-    command["class"] = "logclienterror";
+    command["class"] = "logfromclient";
+    command["level"] = level;
     command["classmethod"] = classmethod;
     command["message"] = message;
     sendJsonCommand(command);
