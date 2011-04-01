@@ -143,15 +143,30 @@ void PopcAastra::monitorPeer(UserInfo * userInfo)
 
 void PopcAastra::updatePhoneStatus(const QString & xphoneid)
 {
+    // Clear orphan callwidgets (callwidgets with NULL channel)
+    foreach (const QString xchannel, m_affhash.keys()) {
+        CallWidget * callwidget = m_affhash[xchannel];
+        const QString channel = callwidget->channel();
+        if (! b_engine->channels().contains(channel)) {
+            delete callwidget;
+            m_affhash.remove(xchannel);
+            qDebug() << Q_FUNC_INFO << "Removed channel " << xchannel;
+        }
+    }
     qDebug() << Q_FUNC_INFO << xphoneid;
     const PhoneInfo* info = b_engine->phone(xphoneid);
     if (info == NULL) {
         qDebug() << Q_FUNC_INFO << "Phone info is null";
         return;
     }
-    qDebug() << Q_FUNC_INFO << "Phone: " << xphoneid << " status: " << info->hintstatus() << " channels: " << info->channels();
-    if (m_monitored_ui == NULL)
+    const QStringList channels = info->xchannels();
+    qDebug() << Q_FUNC_INFO << "Printing channels...";
+    for (int i = 0 ; i < channels.size(); i++) {
+        qDebug() << Q_FUNC_INFO << "Channel: " << channels.at(i);
+    }
+    if (m_monitored_ui == NULL) {
         return;
+    }
     if (! m_monitored_ui->phonelist().contains(xphoneid))
         return;
     const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
@@ -161,11 +176,13 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
     qDebug() << Q_FUNC_INFO << xphoneid << m_affhash.keys() << phoneinfo->channels();
 
     foreach (const QString xchannel, m_affhash.keys()) {
+        qDebug() << Q_FUNC_INFO << "Cleaning up remaining widgets";
         CallWidget * callwidget = m_affhash[xchannel];
         QString channel = callwidget->channel();
         if (! phoneinfo->channels().contains(channel)) {
             delete callwidget;
             m_affhash.remove(xchannel);
+            qDebug() << Q_FUNC_INFO << "Removed: " << xchannel;
         }
     }
 
