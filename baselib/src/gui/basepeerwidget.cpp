@@ -255,7 +255,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                 }
                 // Initiate an indirect transfer.
                 b_engine->actionCall("atxfer",
-                                     QString("chan:%1").arg(channelinfo->xchannel()),
+                                     QString("chan:%1").arg(channelinfo->xid()),
                                      to);
                 return;
             }
@@ -265,7 +265,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
             const QString status = channelinfo->commstatus();
             if (status == CHAN_STATUS_RINGING) {
                 b_engine->actionCall("transfer",
-                                     QString("chan:%1:%2").arg(m_ui_remote->xid()).arg(channelinfo->channel()),
+                                     QString("chan:%1:%2").arg(m_ui_remote->xid()).arg(channelinfo->id()),
                                      "user:special:me");
                 return;
             }
@@ -430,7 +430,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     foreach(const ChannelInfo * channelinfo, qlci_local) {
         const QString status = channelinfo->commstatus();
         const QString text = channelinfo->peerdisplay();
-        const QString xchannel = channelinfo->xchannel();
+        const QString xchannel = channelinfo->xid();
 
         /* hanging up others communication doesn't make much sense
          * excepting in test environment or in special cases. */
@@ -487,7 +487,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
         foreach(const ChannelInfo * channelinfo, qlci_local) {
             const QString status = channelinfo->commstatus();
             const QString text = channelinfo->peerdisplay();
-            const QString xchannel = channelinfo->xchannel();
+            const QString xchannel = channelinfo->xid();
 
             if (channelinfo->talkingto_kind() == QString("<meetme>")) {
                 QAction *meetmeAction = new QAction(tr("Invite in meetme room %1")

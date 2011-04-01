@@ -33,7 +33,6 @@
 
 #include <QDebug>
 #include "userinfo.h"
-#include "phoneinfo.h"
 
 /*! \brief Constructor
  *
@@ -45,23 +44,23 @@ UserInfo::UserInfo(const QString & ipbxid,
 {
 }
 
-bool UserInfo::updateConfig(const QVariantMap & qvm)
+bool UserInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeString(qvm, "loginclient", & m_ctilogin);
-    haschanged |= setIfChangeString(qvm, "fullname", & m_fullname);
-    haschanged |= setIfChangeString(qvm, "number", & m_phonenumber);
-    haschanged |= setIfChangeString(qvm, "mobilephonenumber", & m_mobilenumber);
-    haschanged |= setIfChangeString(qvm, "context", & m_context);
-    haschanged |= setIfChangeString(qvm, "voicemailid", & m_voicemailid);
-    haschanged |= setIfChangeInt(qvm, "simultcalls", & m_simultcalls);
+    haschanged |= setIfChangeString(prop, "loginclient", & m_ctilogin);
+    haschanged |= setIfChangeString(prop, "fullname", & m_fullname);
+    haschanged |= setIfChangeString(prop, "number", & m_phonenumber);
+    haschanged |= setIfChangeString(prop, "mobilephonenumber", & m_mobilenumber);
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "voicemailid", & m_voicemailid);
+    haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
 
-    haschanged |= setIfChangeString(qvm, "agentid", & m_agentid);
+    haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
     m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(m_agentid);
 
-    if (qvm.contains("id")) {
+    if (prop.contains("id")) {
         QStringList lid;
-        foreach (QString id, qvm.value("id").toStringList())
+        foreach (QString id, prop.value("id").toStringList())
             lid << QString("%1/%2").arg(m_ipbxid).arg(id);
         setPhoneIdList(lid);
         haschanged = true;
@@ -69,10 +68,10 @@ bool UserInfo::updateConfig(const QVariantMap & qvm)
     return haschanged;
 }
 
-bool UserInfo::updateStatus(const QVariantMap & qvm)
+bool UserInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeString(qvm, "availstate", & m_availstate);
+    haschanged |= setIfChangeString(prop, "availstate", & m_availstate);
     return haschanged;
 }
 

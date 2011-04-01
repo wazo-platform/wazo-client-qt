@@ -38,18 +38,16 @@
 #include <QStringList>
 #include <QVariant>
 #include <QMap>
+#include "xinfo.h"
 
 /*! \brief Store Channel information
  */
-class BASELIB_EXPORT ChannelInfo
+class BASELIB_EXPORT ChannelInfo : public XInfo
 {
     public:
         ChannelInfo(const QString &, const QString &);
-        // bool updateConfig(const QVariantMap &);
         bool updateStatus(const QVariantMap &);
-        const QString & ipbxid() const;
-        const QString & channel() const;
-        const QString & xchannel() const;
+
         const QString & talkingto_kind() const;
         const QString & talkingto_id() const;
         const QString & direction() const;
@@ -66,13 +64,8 @@ class BASELIB_EXPORT ChannelInfo
         const QString & agent() const;
 
     private:
-        QString m_ipbxid;  //!< IPBX id (for main phone)
-        QString m_channel;  //!< Channel name
-        QString m_xchannel;  //!< IPBXid/Channel
-
-        // XXX timing informations
-
         QString m_thisdisplay;
+
         QString m_peerdisplay;
         QString m_direction;
         QString m_commstatus;
@@ -86,6 +79,8 @@ class BASELIB_EXPORT ChannelInfo
         bool m_isholded;
         bool m_isparked;
         // XXX atxfer currently in progress ?
+
+        // XXX time informations
 };
 
 #endif

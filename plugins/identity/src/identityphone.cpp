@@ -206,7 +206,7 @@ void IdentityPhone::updateChannelStatus(const QString & xchannelid)
     const ChannelInfo * channelinfo = b_engine->channels().value(xchannelid);
     if (channelinfo == NULL)
         return;
-    qDebug() << Q_FUNC_INFO << channelinfo->channel() << channelinfo->talkingto_kind();
+    qDebug() << Q_FUNC_INFO << channelinfo->xid() << channelinfo->talkingto_kind();
 }
 
 void IdentityPhone::updatePhoneConfig(const QString & xphoneid)

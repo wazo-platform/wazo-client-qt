@@ -72,3 +72,13 @@ bool XInfo::setIfChangeInt(const QVariantMap & prop, const char * const var, int
     }
     return haschanged;
 }
+
+bool XInfo::setIfChangeDouble(const QVariantMap & prop, const char * const var, double * const pp)
+{
+    bool haschanged = false;
+    if (prop.contains(var) && ((* pp) != prop.value(var).toDouble())) {
+        (* pp) = prop.value(var).toDouble();
+        haschanged = true;
+    }
+    return haschanged;
+}
