@@ -150,6 +150,8 @@ XletQueues::XletQueues(QWidget *parent)
 
     connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
             this, SLOT(updateQueueConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
+            this, SLOT(updateQueueStatus(const QString &)));
     connect(b_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
             this, SLOT(removeQueues(const QString &, const QStringList &)));
     connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
@@ -220,7 +222,7 @@ void XletQueues::removeQueues(const QString &, const QStringList &queues)
 
 void XletQueues::updateQueueConfig(const QString & xqueueid)
 {
-    // qDebug() << Q_FUNC_INFO << xqueueid;
+    qDebug() << Q_FUNC_INFO << xqueueid;
     const QueueInfo * queueinfo = b_engine->queue(xqueueid);
     if (queueinfo == NULL)
         return;
@@ -238,6 +240,7 @@ void XletQueues::updateQueueConfig(const QString & xqueueid)
 void XletQueues::updateQueueStatus(const QString & xqueueid)
 {
     qDebug() << Q_FUNC_INFO << xqueueid;
+    updateQueueConfig(xqueueid);
 }
 
 /*! \brief set queue order
@@ -674,10 +677,10 @@ void QueueRow::updateRow()
     QString queueName = qinfo->queueName();
 
     QHash <QString, QString> infos;
-    infos["Calls"] = "0";
 
     foreach (QString stat, queueStats.keys())
         infos[stat] = queueStats[stat].toString();
+    infos["Calls"] = QString::number(qinfo->xincalls().count());
 
     m_busy->setProperty("value", infos["Calls"]);
 
@@ -704,25 +707,26 @@ void QueueRow::updateRow()
     }
 
     /* stat cols who aren't made by server */
-    QVariantMap queueagents = qinfo->properties().value("agents_in_queue").toMap();
     QStringList queueagents_list;
     int nagents;
-
-    QRegExp agentfilter = QRegExp("Agent/[0-9]*");
 
     // number of Available agents
     nagents = 0;
     queueagents_list.clear();
-    foreach (QString queuemember, queueagents.keys()) {
-        if (agentfilter.exactMatch(queuemember)) {
-            QVariantMap qaprops = queueagents.value(queuemember).toMap();
-            if ((qaprops.value("Status").toString() == "1") &&
-                (qaprops.value("Paused").toString() == "0")) {
-                nagents++;
-                queueagents_list << queuemember.mid(6);
-            }
+    foreach (QString xagentid, qinfo->xagentids()) {
+        QString xqueuemember = qinfo->reference("agents", xagentid);
+        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
+        if (qmi == NULL)
+            continue;
+        const AgentInfo * ainfo = b_engine->agent(xagentid);
+        if (ainfo == NULL)
+            continue;
+        if ((qmi->status() == "1") && (qmi->paused() == "0")) {
+            nagents ++;
+            queueagents_list << ainfo->agentNumber();
         }
     }
+
     if (m_infoList.contains("Xivo-Avail")) {
         m_infoList["Xivo-Avail"]->setText(QString::number(nagents));
         QString todisp;
@@ -731,20 +735,23 @@ void QueueRow::updateRow()
         m_infoList["Xivo-Avail"]->setToolTip(todisp);
     }
 
-
     // number of Connected agents
     nagents = 0;
     queueagents_list.clear();
-    foreach (QString queuemember, queueagents.keys()) {
-        if (agentfilter.exactMatch(queuemember)) {
-            QVariantMap qaprops = queueagents.value(queuemember).toMap();
-            if ((qaprops.value("Status").toString() == "3") ||
-                (qaprops.value("Status").toString() == "1")) {
-                nagents++;
-                queueagents_list << queuemember.mid(6);
-            }
+    foreach (QString xagentid, qinfo->xagentids()) {
+        QString xqueuemember = qinfo->reference("agents", xagentid);
+        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
+        if (qmi == NULL)
+            continue;
+        const AgentInfo * ainfo = b_engine->agent(xagentid);
+        if (ainfo == NULL)
+            continue;
+        if ((qmi->status() == "1") || (qmi->status() == "3")) {
+            nagents ++;
+            queueagents_list << ainfo->agentNumber();
         }
     }
+
     if (m_infoList.contains("Xivo-Conn")) {
         m_infoList["Xivo-Conn"]->setText(QString::number(nagents));
         QString todisp;
@@ -753,20 +760,23 @@ void QueueRow::updateRow()
         m_infoList["Xivo-Conn"]->setToolTip(todisp);
     }
 
-
     // number of Talking agents
     nagents = 0;
     queueagents_list.clear();
-    foreach (QString queuemember, queueagents.keys()) {
-        if (agentfilter.exactMatch(queuemember)) {
-            QVariantMap qaprops = queueagents.value(queuemember).toMap();
-            if ((qaprops.value("Status").toString() == "3") &&
-                (qaprops.value("Paused").toString() == "0")) {
-                nagents++;
-                queueagents_list << queuemember.mid(6);
-            }
+    foreach (QString xagentid, qinfo->xagentids()) {
+        QString xqueuemember = qinfo->reference("agents", xagentid);
+        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
+        if (qmi == NULL)
+            continue;
+        const AgentInfo * ainfo = b_engine->agent(xagentid);
+        if (ainfo == NULL)
+            continue;
+        if ((qmi->status() == "3") && (qmi->paused() == "0")) {
+            nagents ++;
+            queueagents_list << ainfo->agentNumber();
         }
     }
+
     if (m_infoList.contains("Xivo-Talking")) {
         m_infoList["Xivo-Talking"]->setText(QString::number(nagents));
         QString todisp;
@@ -775,15 +785,15 @@ void QueueRow::updateRow()
         m_infoList["Xivo-Talking"]->setToolTip(todisp);
     }
 
-    QVariantMap properties = qinfo->properties();
-    QVariantMap channel_list = properties.value("channels").toMap();
-
     uint oldest = 0;
     int first_item = 1;
     uint current_entrytime;
 
-    foreach (QString channel_name, channel_list.keys()) {
-        current_entrytime = channel_list.value(channel_name).toMap().value("entrytime").toUInt();
+    foreach (QString xchannel, qinfo->xincalls()) {
+        const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
+        if (channelinfo == NULL)
+            continue;
+        current_entrytime = uint(channelinfo->timestamp());
         if (first_item) {
             oldest = current_entrytime;
             first_item = 0;
