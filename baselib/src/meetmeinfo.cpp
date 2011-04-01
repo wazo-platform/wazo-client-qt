@@ -74,43 +74,41 @@ bool MeetmeInfo::paused() const
     return m_paused;
 }
 
-bool MeetmeInfo::updateConfig(const QVariantMap & properties)
+bool MeetmeInfo::updateConfig(const QVariantMap & prop)
 {
-    bool haschanged = true;
+    bool haschanged = false;
     // fixed-by-config stuff
-    m_context = properties.value("context").toString();
-    m_roomname = properties.value("roomname").toString();
-    m_roomnumber = properties.value("roomnumber").toString();
-    m_pin = properties.value("pin").toString();
-    m_adminpin = properties.value("pinadmin").toString();
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "roomname", & m_roomname);
+    haschanged |= setIfChangeString(prop, "roomnumber", & m_roomnumber);
+
+    haschanged |= setIfChangeString(prop, "pin", & m_pin);
+    haschanged |= setIfChangeString(prop, "pinadmin", & m_adminpin);
+    haschanged |= setIfChangeBool(prop, "paused", & m_paused);
 
     // variable stuff
-    m_adminid = properties.value("adminid").toString();
-    m_adminnum = properties.value("adminnum").toString();
-    m_adminlist = properties.value("adminlist").toStringList();
-    m_uniqueids = properties.value("uniqueids").toMap();
-    m_paused = properties.value("paused").toBool();
+    haschanged = true;
+    m_adminlist = prop.value("adminlist").toStringList();
+    m_uniqueids = prop.value("uniqueids").toMap();
     return haschanged;
 }
 
-bool MeetmeInfo::updateStatus(const QVariantMap & map)
+bool MeetmeInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = true;
-    QString action = map.value("action").toString();
-    QString uniqueid = map.value("uniqueid").toString();
+    QString action = prop.value("action").toString();
+    QString uniqueid = prop.value("uniqueid").toString();
 
-    if (! map.value("adminid").toString().isNull()) {
-        m_adminid = map.value("adminid").toString();
-    }
-    m_adminnum = map.value("adminnum").toString();
-    m_adminlist = map.value("adminlist").toStringList();
-    if (map.contains("details"))
-        m_uniqueids[uniqueid] = map.value("details").toMap();
+    haschanged |= setIfChangeString(prop, "adminid", & m_adminid);
+    haschanged |= setIfChangeString(prop, "adminnum", & m_adminnum);
+    m_adminlist = prop.value("adminlist").toStringList();
+    if (prop.contains("details"))
+        m_uniqueids[uniqueid] = prop.value("details").toMap();
 
     if (action == "leave") {
         m_uniqueids.remove(uniqueid);
     } else if(action == "changeroompausedstate") {
-        m_paused = map.value("paused").toBool();
+        m_paused = prop.value("paused").toBool();
     }
     return haschanged;
 }

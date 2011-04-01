@@ -68,12 +68,12 @@ XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
 
 void XLetQueueEntryDetails::updateAgentConfig(const QString & xagentid)
 {
-    qDebug() << Q_FUNC_INFO << xagentid;
+    // qDebug() << Q_FUNC_INFO << xagentid;
 }
 
 void XLetQueueEntryDetails::updateAgentStatus(const QString & xagentid)
 {
-    qDebug() << Q_FUNC_INFO << xagentid;
+    // qDebug() << Q_FUNC_INFO << xagentid;
 }
 
 void XLetQueueEntryDetails::updateQueueConfig(const QString & xqueueid)
@@ -114,7 +114,7 @@ void XLetQueueEntryDetails::updatePanel()
     if (queueinfo == NULL)
         return;
 
-    qDebug() << Q_FUNC_INFO << queueinfo->queueName() << queueinfo->xincalls();
+    // qDebug() << Q_FUNC_INFO << queueinfo->queueName() << queueinfo->xincalls();
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) (%5 call(s))")
                                 .arg(queueinfo->queueName())
                                 .arg(queueinfo->queueNumber())

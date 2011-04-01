@@ -152,11 +152,13 @@ void XletQueueDetails::updatePanel()
     const QueueInfo * queueinfo = b_engine->queue(m_monitored_queueid);
     if (queueinfo == NULL)
         return;
-    m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4)")
+    m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) : %5 agents and %6 phones")
                                 .arg(queueinfo->queueName())
                                 .arg(queueinfo->queueNumber())
                                 .arg(queueinfo->ipbxid())
-                                .arg(queueinfo->context()));
+                                .arg(queueinfo->context())
+                                .arg(queueinfo->xagentids().count())
+                                .arg(queueinfo->xphoneids().count()));
 
     if (! b_engine->iterover("agents").isEmpty()) {
         m_queuelegend_agentid->show();

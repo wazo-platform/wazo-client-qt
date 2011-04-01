@@ -51,7 +51,7 @@ bool GroupInfo::updateConfig(const QVariantMap & prop)
 
 bool GroupInfo::updateStatus(const QVariantMap & prop)
 {
-    bool haschanged = true;
+    bool haschanged = false;
     if (m_properties != prop) {
         m_properties = prop;
         haschanged = true;
