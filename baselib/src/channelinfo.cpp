@@ -65,6 +65,8 @@ bool ChannelInfo::updateStatus(const QVariantMap & qvm)
         m_talkingto_id = qvm.value("talkingto_id").toString();
     if (qvm.contains("commstatus"))
         m_commstatus = qvm.value("commstatus").toString();
+    if (qvm.contains("thisdisplay"))
+        m_thisdisplay = qvm.value("thisdisplay").toString();
     if (qvm.contains("peerdisplay"))
         m_peerdisplay = qvm.value("peerdisplay").toString();
     if (qvm.contains("timestamp"))
@@ -105,6 +107,12 @@ const QString & ChannelInfo::commstatus() const
 double ChannelInfo::timestamp() const
 {
     return m_timestamp;
+}
+
+const QString ChannelInfo::thisdisplay() const
+{
+    // go fetch information about 'relations ?'
+    return m_thisdisplay;
 }
 
 const QString ChannelInfo::peerdisplay() const

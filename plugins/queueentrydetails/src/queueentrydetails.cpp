@@ -84,7 +84,8 @@ void XLetQueueEntryDetails::updateQueueConfig(const QString & xqueueid)
 
 void XLetQueueEntryDetails::updateQueueStatus(const QString & xqueueid)
 {
-    qDebug() << Q_FUNC_INFO << xqueueid << m_monitored_queueid;
+    if (xqueueid == m_monitored_queueid)
+        updatePanel();
 }
 
 void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)
@@ -98,13 +99,11 @@ void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)
 
 void XLetQueueEntryDetails::clearPanel()
 {
-    foreach(QString q, m_entrypos.keys())
+    foreach(QString q, m_entrypos.keys()) {
+        m_gridlayout->removeWidget(m_entrypos[q]);
         delete m_entrypos[q];
-    foreach(QString q, m_entrytime.keys())
-        delete m_entrytime[q];
-
+    }
     m_entrypos.clear();
-    m_entrytime.clear();
 }
 
 /*! \brief update entries
@@ -112,51 +111,50 @@ void XLetQueueEntryDetails::clearPanel()
 void XLetQueueEntryDetails::updatePanel()
 {
     const QueueInfo * qinfo = b_engine->queue(m_monitored_queueid);
-    QVariantMap properties = qinfo->properties();
-    QVariantMap channels = properties["channels"].toMap();
+    if (qinfo == NULL)
+        return;
 
+    qDebug() << Q_FUNC_INFO << qinfo->queueName() << qinfo->xincalls();
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) (%5 call(s))")
                                 .arg(qinfo->queueName())
                                 .arg(qinfo->queueNumber())
                                 .arg(qinfo->ipbxid())
                                 .arg(qinfo->context())
-                                .arg(channels.count())
+                                .arg(qinfo->xincalls().count())
                                 );
 
     // queue legends
     clearPanel();
 
-    foreach(QString channel, channels.keys()) {
-        m_entrypos[channel] = new QLabel(this);
-        updateEntryChannel(channel);
+    foreach(QString xchannel, qinfo->xincalls()) {
+        m_entrypos[xchannel] = new QLabel(this);
+        updateEntryChannel(xchannel);
     }
 }
 
-void XLetQueueEntryDetails::updateEntryChannel(const QString & channel)
+void XLetQueueEntryDetails::updateEntryChannel(const QString & xchannel)
 {
     const QueueInfo * qinfo = b_engine->queue(m_monitored_queueid);
-    QVariantMap properties = qinfo->properties();
-    QVariantMap channels = properties["channels"].toMap();
+    if (qinfo == NULL)
+        return;
+    const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
+    if (channelinfo == NULL)
+        return;
 
-    if(m_entrypos.contains(channel)) {
-        QVariantMap entryinfos = channels[channel].toMap();
-        int time_spent = b_engine->timeServer() - entryinfos["entrytime"].toDouble(); // from the server point of view
-        QDateTime inittime = b_engine->timeClient().addSecs(- time_spent); // from the client point of view
-        int nsec = inittime.secsTo(QDateTime::currentDateTime());
-        int position = entryinfos["position"].toInt();
-
-        m_entrypos[channel]->setText(QString("%1 : %2 %3 : %4 sec")
-                                     .arg(position)
-                                     .arg(entryinfos["calleridname"].toString())
-                                     .arg(entryinfos["calleridnum"].toString())
-                                     .arg(nsec));
-        m_gridlayout->addWidget( m_entrypos[channel], position, 0, Qt::AlignLeft );
+    if(m_entrypos.contains(xchannel)) {
+        QString timespent = b_engine->timeElapsed(channelinfo->timestamp());
+        int position = qinfo->xincalls().indexOf(xchannel, 0) + 1;
+        m_entrypos[xchannel]->setText(QString("%1 : %2 : %3")
+                                      .arg(position)
+                                      .arg(channelinfo->thisdisplay())
+                                      .arg(timespent));
+        m_gridlayout->addWidget( m_entrypos[xchannel], position, 0, Qt::AlignLeft );
     }
 }
 
 void XLetQueueEntryDetails::timerEvent(QTimerEvent *)
 {
     // qDebug() << Q_FUNC_INFO;
-    foreach(QString channel, m_entrypos.keys())
-        updateEntryChannel(channel);
+    foreach(QString xchannel, m_entrypos.keys())
+        updateEntryChannel(xchannel);
 }

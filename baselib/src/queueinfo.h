@@ -52,11 +52,8 @@ class BASELIB_EXPORT QueueInfo : public XInfo
         const QString & queueNumber() const { return m_number; };  //! queue number
         const QString & queueName() const  { return m_name; };  //! queue name
 
-        const QString hintstatus(const QString & key) const {  //! access to the status values of this queue
-            return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
-        };
         const QVariantMap & properties() const { return m_properties; };  //! queue properties
-        const QVariantMap & comms() const { return m_comms; };  //! current communications of this queue
+        const QStringList & xincalls() const { return m_xincalls; };  //! incoming channel calls
 
         const QStringList & xagentids() const { return m_xagentids; };  //! agent members of this queue
         const QStringList & agentmembers() const { return m_agentmembers; };  //! agent members of this queue
@@ -78,8 +75,7 @@ class BASELIB_EXPORT QueueInfo : public XInfo
         QStringList m_xtrunkids;
         QStringList m_trunkmembers;
 
-        QMap<QString, QString> m_hintstatus;
-        QVariantMap m_comms;
+        QStringList m_xincalls;
         QVariantMap m_properties;
 };
 

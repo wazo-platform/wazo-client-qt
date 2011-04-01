@@ -94,6 +94,15 @@ bool QueueInfo::updateStatus(const QVariantMap & prop)
         }
         haschanged = true;
     }
+    if (prop.contains("incalls")) {
+        m_xincalls.clear();
+        // here it is meaningful to have them set in the right order
+        foreach (QString incall, prop.value("incalls").toStringList()) {
+            QString xincall = QString("%1/%2").arg(m_ipbxid).arg(incall);
+            m_xincalls.append(xincall);
+        }
+        haschanged = true;
+    }
     if (m_properties != prop) {
         m_properties = prop;
         haschanged = true;

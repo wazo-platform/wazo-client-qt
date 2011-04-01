@@ -50,20 +50,16 @@ class BASELIB_EXPORT GroupInfo : public XInfo
         bool updateStatus(const QVariantMap &);  //! update status members
         bool updateAgent(const QVariantMap &);  //! update attribute members
         const QString & context() const;  //! context this group belongs to
-        const QString hintstatus(const QString & key) const {  //! access to the status values of this group
-            return m_hintstatus.contains(key) ? m_hintstatus.value(key) : QString("");
-        };
         const QString & groupNumber() const { return m_groupnumber; };  //! group number
         const QString & groupName() const  { return m_groupname; };  //! group name
         const QVariantMap & properties() const;  //! group properties
-        const QVariantMap& comms() const { return m_comms; };  //! current communications of this group
+        const QStringList & xincalls() const { return m_xincalls; };  //! incoming channel calls
 
     private:
         QString m_context;
         QString m_groupname;
         QString m_groupnumber;
-        QMap<QString, QString> m_hintstatus;
-        QVariantMap m_comms;
+        QStringList m_xincalls;
         QVariantMap m_properties;
 };
 
