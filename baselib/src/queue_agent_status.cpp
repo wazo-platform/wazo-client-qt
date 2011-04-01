@@ -189,29 +189,11 @@ bool QueueMemberInfo::updateConfig(const QVariantMap & prop)
 bool QueueMemberInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
-    if (prop.contains("status") && (m_status != prop.value("status").toString())) {
-        m_status = prop.value("status").toString();
-        haschanged = true;
-    }
-    if (prop.contains("paused") && (m_paused != prop.value("paused").toString())) {
-        m_paused = prop.value("paused").toString();
-        haschanged = true;
-    }
-    if (prop.contains("membership") && (m_membership != prop.value("membership").toString())) {
-        m_membership = prop.value("membership").toString();
-        haschanged = true;
-    }
-    if (prop.contains("callstaken") && (m_callstaken != prop.value("callstaken").toString())) {
-        m_callstaken = prop.value("callstaken").toString();
-        haschanged = true;
-    }
-    if (prop.contains("penalty") && (m_penalty != prop.value("penalty").toString())) {
-        m_penalty = prop.value("penalty").toString();
-        haschanged = true;
-    }
-    if (prop.contains("lastcall") && (m_lastcall != prop.value("lastcall").toInt())) {
-        m_lastcall = prop.value("lastcall").toInt();
-        haschanged = true;
-    }
+    haschanged |= setIfChangeString(prop, "status", & m_status);
+    haschanged |= setIfChangeString(prop, "paused", & m_paused);
+    haschanged |= setIfChangeString(prop, "membership", & m_membership);
+    haschanged |= setIfChangeString(prop, "callstaken", & m_callstaken);
+    haschanged |= setIfChangeString(prop, "penalty", & m_penalty);
+    haschanged |= setIfChangeInt(prop, "lastcall", & m_lastcall);
     return haschanged;
 }

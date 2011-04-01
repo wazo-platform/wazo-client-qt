@@ -48,17 +48,16 @@ class BASELIB_EXPORT GroupInfo : public XInfo
         GroupInfo(const QString &, const QString &);  //! constructor
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
-        bool updateAgent(const QVariantMap &);  //! update attribute members
         const QString & context() const;  //! context this group belongs to
-        const QString & groupNumber() const { return m_groupnumber; };  //! group number
-        const QString & groupName() const  { return m_groupname; };  //! group name
+        const QString & groupNumber() const { return m_number; };  //! group number
+        const QString & groupName() const  { return m_name; };  //! group name
         const QVariantMap & properties() const;  //! group properties
         const QStringList & xincalls() const { return m_xincalls; };  //! incoming channel calls
 
     private:
         QString m_context;
-        QString m_groupname;
-        QString m_groupnumber;
+        QString m_name;
+        QString m_number;
         QStringList m_xincalls;
         QVariantMap m_properties;
 };

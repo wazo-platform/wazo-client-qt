@@ -43,31 +43,20 @@ AgentInfo::AgentInfo(const QString & ipbxid,
 bool AgentInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    if (m_properties != prop) {
-        m_properties = prop;
-        haschanged = true;
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "number", & m_agentnumber);
+    haschanged |= setIfChangeString(prop, "firstname", & m_firstname);
+    haschanged |= setIfChangeString(prop, "lastname", & m_lastname);
 
-        m_context = prop.value("context").toString();
-        m_agentnumber = prop.value("number").toString();
-        QString firstname = prop.value("firstname").toString();
-        QString lastname = prop.value("lastname").toString();
-        m_fullname = QString("%1 %2").arg(firstname).arg(lastname);
-    }
+    m_fullname = QString("%1 %2").arg(m_firstname).arg(m_lastname);
     return haschanged;
 }
 
 bool AgentInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
-
-    if (prop.contains("status") && (m_status != prop.value("status").toString())) {
-        m_status = prop.value("status").toString();
-        haschanged = true;
-    }
-    if (prop.contains("phonenumber") && (m_phonenumber != prop.value("phonenumber").toString())) {
-        m_phonenumber = prop.value("phonenumber").toString();
-        haschanged = true;
-    }
+    haschanged |= setIfChangeString(prop, "status", & m_status);
+    haschanged |= setIfChangeString(prop, "phonenumber", & m_phonenumber);
 
     if (prop.contains("queues")) {
         m_xqueueids.clear();

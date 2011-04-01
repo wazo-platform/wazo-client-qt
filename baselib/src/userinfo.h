@@ -50,24 +50,13 @@ class BASELIB_EXPORT UserInfo : public XInfo
         bool updateConfig(const QVariantMap &);
         bool updateStatus(const QVariantMap &);
 
-        void setAvailState(const QString &);
-        void setFullName(const QString &);
-        void setPhoneNumber(const QString &);
-        void setMobileNumber(const QString &);
-        void setSimultCalls(int);
+        void setAvailState(const QString & availstate) {m_availstate = availstate;};
 
-        void setVoiceMailId(const QString &);
         void setPhoneIdList(const QStringList &);
-        void setAgentId(const QString &);
-        void setUserId(const QString &);
-
         void setAgentNumber(const QString &);
-        void setCtiLogin(const QString &);
         void setMWI(const QStringList &);
-        void setContext(const QString &);
 
         bool hasPhoneId(const QString &) const;
-        bool hasAgentNumber(const QString &) const;
 
         const QString & phoneNumber() const;
         const QString & mobileNumber() const;
@@ -105,7 +94,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
         QStringList m_phoneidlist;  //!< map to phones
 
         QString m_voicemailnumber;  //!< voice mail box number
-        QString m_agentnumber; //!< agent number
 
         QStringList m_mwi;  //!< message waiting indicator
         QString m_availstate;   //!< availability state

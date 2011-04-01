@@ -63,8 +63,10 @@ class BASELIB_EXPORT AgentInfo : public XInfo
 
     private:
         QString m_context;
-        QString m_agentname;
         QString m_agentnumber;
+        QString m_firstname;
+        QString m_lastname;
+
         QString m_fullname;
 
         // XXXX to add

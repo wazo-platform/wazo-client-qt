@@ -44,6 +44,9 @@ class BASELIB_EXPORT XInfo
 {
     public:
         XInfo(const QString &, const QString &);  //! constructor
+        bool setIfChangeString(const QVariantMap &, const char * const, QString * const);
+        bool setIfChangeBool(const QVariantMap &, const char * const, bool * const);
+        bool setIfChangeInt(const QVariantMap &, const char * const, int * const);
         virtual bool updateConfig(const QVariantMap &) { return false; };  //! update config members
         virtual bool updateStatus(const QVariantMap &) { return false; };  //! update status members
         const QString & ipbxid() const { return m_ipbxid; };  //! IPBX this object belongs to

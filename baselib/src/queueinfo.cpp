@@ -43,18 +43,9 @@ QueueInfo::QueueInfo(const QString & ipbxid,
 bool QueueInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    if (prop.contains("context") && (m_context != prop.value("context").toString())) {
-        m_context = prop.value("context").toString();
-        haschanged = true;
-    }
-    if (prop.contains("name") && (m_name != prop.value("name").toString())) {
-        m_name = prop.value("name").toString();
-        haschanged = true;
-    }
-    if (prop.contains("number") && (m_number != prop.value("number").toString())) {
-        m_number = prop.value("number").toString();
-        haschanged = true;
-    }
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "name", & m_name);
+    haschanged |= setIfChangeString(prop, "number", & m_number);
     return haschanged;
 }
 
