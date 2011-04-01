@@ -110,23 +110,23 @@ void XLetQueueEntryDetails::clearPanel()
  */
 void XLetQueueEntryDetails::updatePanel()
 {
-    const QueueInfo * qinfo = b_engine->queue(m_monitored_queueid);
-    if (qinfo == NULL)
+    const QueueInfo * queueinfo = b_engine->queue(m_monitored_queueid);
+    if (queueinfo == NULL)
         return;
 
-    qDebug() << Q_FUNC_INFO << qinfo->queueName() << qinfo->xincalls();
+    qDebug() << Q_FUNC_INFO << queueinfo->queueName() << queueinfo->xincalls();
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) (%5 call(s))")
-                                .arg(qinfo->queueName())
-                                .arg(qinfo->queueNumber())
-                                .arg(qinfo->ipbxid())
-                                .arg(qinfo->context())
-                                .arg(qinfo->xincalls().count())
+                                .arg(queueinfo->queueName())
+                                .arg(queueinfo->queueNumber())
+                                .arg(queueinfo->ipbxid())
+                                .arg(queueinfo->context())
+                                .arg(queueinfo->xincalls().count())
                                 );
 
     // queue legends
     clearPanel();
 
-    foreach(QString xchannel, qinfo->xincalls()) {
+    foreach(QString xchannel, queueinfo->xincalls()) {
         m_entrypos[xchannel] = new QLabel(this);
         updateEntryChannel(xchannel);
     }
@@ -134,8 +134,8 @@ void XLetQueueEntryDetails::updatePanel()
 
 void XLetQueueEntryDetails::updateEntryChannel(const QString & xchannel)
 {
-    const QueueInfo * qinfo = b_engine->queue(m_monitored_queueid);
-    if (qinfo == NULL)
+    const QueueInfo * queueinfo = b_engine->queue(m_monitored_queueid);
+    if (queueinfo == NULL)
         return;
     const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
     if (channelinfo == NULL)
@@ -143,7 +143,7 @@ void XLetQueueEntryDetails::updateEntryChannel(const QString & xchannel)
 
     if(m_entrypos.contains(xchannel)) {
         QString timespent = b_engine->timeElapsed(channelinfo->timestamp());
-        int position = qinfo->xincalls().indexOf(xchannel, 0) + 1;
+        int position = queueinfo->xincalls().indexOf(xchannel, 0) + 1;
         m_entrypos[xchannel]->setText(QString("%1 : %2 : %3")
                                       .arg(position)
                                       .arg(channelinfo->thisdisplay())

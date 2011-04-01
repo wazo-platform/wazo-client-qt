@@ -268,13 +268,13 @@ void XletAgentsNext::setAgentProps(const QString & idx)
 {
     QString agentid = m_agent_labels[idx]->property("agentid").toString();
     QString groupid = m_agent_labels[idx]->property("groupid").toString();
-    const AgentInfo * ainfo = b_engine->agent(agentid);
+    const AgentInfo * agentinfo = b_engine->agent(agentid);
 
-    QVariantMap properties = ainfo->properties();
+    QVariantMap properties = agentinfo->properties();
     QString agstatus = properties.value("agentstats").toMap().value("status").toString();
     QString phonenum = properties.value("agentstats").toMap().value("agent_phone_number").toString();
     QVariant queues = properties.value("queues_by_agent");
-    m_agent_labels[idx]->setProperty("sorter", ainfo->fullname());
+    m_agent_labels[idx]->setProperty("sorter", agentinfo->fullname());
 
     double statetime = properties.value("agentstats").toMap().value("Xivo-Agent-StateTime").toDouble();
     QVariantMap slink = properties.value("agentstats").toMap().value("Xivo-Agent-Status-Link").toMap();
@@ -392,7 +392,7 @@ void XletAgentsNext::setAgentProps(const QString & idx)
             displayedtime = tr("%1 sec").arg(dsec);
     }
 
-    QString disptext = QString("%1 %2 %3 %4").arg(ainfo->fullname()).arg(ainfo->agentNumber()).arg(calldirection).arg(displayedtime);
+    QString disptext = QString("%1 %2 %3 %4").arg(agentinfo->fullname()).arg(agentinfo->agentNumber()).arg(calldirection).arg(displayedtime);
 
     m_agent_labels[idx]->setStyleSheet(QString("QLabel {border: 5px solid %1; border-radius: 0px; background: %1};").arg(colorqss));
     m_agent_labels[idx]->setText(disptext);
@@ -499,11 +499,11 @@ void XletAgentsNext::agentClicked(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         QString agentid = sender()->property("agentid").toString();
         QString groupid = sender()->property("groupid").toString();
-        const AgentInfo * ainfo = b_engine->agent(agentid);
+        const AgentInfo * agentinfo = b_engine->agent(agentid);
         QPoint where = event->globalPos();
 
-        QString ipbxid = ainfo->ipbxid();
-        QString agentnumber = ainfo->agentNumber();
+        QString ipbxid = agentinfo->ipbxid();
+        QString agentnumber = agentinfo->agentNumber();
         b_engine->changeWatchedAgent(QString("%1 %2").arg(ipbxid).arg(agentnumber), true);
 
         QGridLayout *gl = new QGridLayout();
@@ -511,21 +511,21 @@ void XletAgentsNext::agentClicked(QMouseEvent *event)
         dialog->setWindowTitle(tr("Agent %1 on %2").arg(agentnumber, ipbxid));
         dialog->setLayout(gl);
 
-        QLabel *q_name = new QLabel(ainfo->fullname(), this);
+        QLabel *q_name = new QLabel(agentinfo->fullname(), this);
         QLabel *q_agentid = new QLabel(agentnumber, this);
 
-        QString nreceived = ainfo->properties().value("agentstats").toMap().value("Xivo-ReceivedCalls").toString();
-        QString nlost = ainfo->properties().value("agentstats").toMap().value("Xivo-LostCalls").toString();
+        QString nreceived = agentinfo->properties().value("agentstats").toMap().value("Xivo-ReceivedCalls").toString();
+        QString nlost = agentinfo->properties().value("agentstats").toMap().value("Xivo-LostCalls").toString();
         QLabel *q_received = new QLabel(tr("%1 calls received since connection").arg(nreceived), this);
         QLabel *q_lost = new QLabel(tr("%1 calls lost since connection").arg(nlost), this);
 
         QPushButton *q_pause;
         bool isinpause = false;
         foreach (QString queueid, b_engine->iterover("queues").keys()) {
-            const QueueInfo * qinfo = b_engine->queue(queueid);
-            QString queuename = qinfo->queueName();
+            const QueueInfo * queueinfo = b_engine->queue(queueid);
+            QString queuename = queueinfo->queueName();
             if (m_title[groupid]->property("queues").toStringList().contains(queuename)) {
-                QVariantMap qvm = ainfo->properties().value("queues_by_agent").toMap().value(queuename).toMap();
+                QVariantMap qvm = agentinfo->properties().value("queues_by_agent").toMap().value(queuename).toMap();
                 if (! qvm.isEmpty())
                     if (qvm.value("Paused").toString() == "1")
                         isinpause = true;
@@ -609,10 +609,10 @@ void XletAgentsNext::actionclicked()
     QString agentid = sender()->property("agentid").toString();
     QString groupid = sender()->property("groupid").toString();
 
-    const AgentInfo * ainfo = b_engine->agent(agentid);
-    if (ainfo == NULL)
+    const AgentInfo * agentinfo = b_engine->agent(agentid);
+    if (agentinfo == NULL)
         return;
-    QString ipbxid = ainfo->ipbxid();
+    QString ipbxid = agentinfo->ipbxid();
     QVariantMap ipbxcommand;
 
     if (action == "transfer") {
@@ -645,15 +645,15 @@ void XletAgentsNext::refreshContents()
     while( iter.hasNext() ) {
         iter.next();
         QString agentid = iter.key();
-        AgentInfo * ainfo = (AgentInfo *) iter.value();
+        AgentInfo * agentinfo = (AgentInfo *) iter.value();
 
-        QString agentnumber = ainfo->agentNumber();
-        QString agstatus = ainfo->properties().value("agentstats").toMap().value("status").toString();
-        QVariantMap agqjoined = ainfo->properties().value("queues_by_agent").toMap();
+        QString agentnumber = agentinfo->agentNumber();
+        QString agstatus = agentinfo->properties().value("agentstats").toMap().value("status").toString();
+        QVariantMap agqjoined = agentinfo->properties().value("queues_by_agent").toMap();
 
         if (agstatus != "AGENT_LOGGEDOFF")
             foreach (QString qid, agqjoined.keys()) {
-                QString fullqid = QString("%1/%2").arg(ainfo->ipbxid()).arg(qid);
+                QString fullqid = QString("%1/%2").arg(agentinfo->ipbxid()).arg(qid);
                 QString qname = b_engine->queue(fullqid)->queueName();
 
                 if (! agqjoined.value(qid).toMap().isEmpty()) {
@@ -731,8 +731,8 @@ void XletAgentsNext::newQueueList(const QStringList & /*qlist*/)
         iter.next();
         QString queueid = iter.key();
         // if (list.contains(queueid)) {
-        QueueInfo * qinfo = (QueueInfo *) iter.value();
-        newQueue(qinfo->ipbxid(), qinfo->queueName(), qinfo->properties());
+        QueueInfo * queueinfo = (QueueInfo *) iter.value();
+        newQueue(queueinfo->ipbxid(), queueinfo->queueName(), queueinfo->properties());
         // }
     }
 }

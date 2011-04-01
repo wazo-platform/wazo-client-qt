@@ -194,18 +194,18 @@ void XletAgentDetails::clearPanel()
 
 void XletAgentDetails::updatePanel()
 {
-    const AgentInfo * ainfo = b_engine->agent(m_monitored_agentid);
-    if (ainfo == NULL)
+    const AgentInfo * agentinfo = b_engine->agent(m_monitored_agentid);
+    if (agentinfo == NULL)
         return;
 
     QStringList agent_descriptions;
-    agent_descriptions << QString("<b>%1</b> (%2)").arg(ainfo->fullname()).arg(ainfo->agentNumber());
+    agent_descriptions << QString("<b>%1</b> (%2)").arg(agentinfo->fullname()).arg(agentinfo->agentNumber());
     if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
-        agent_descriptions << tr("on <b>%1</b>").arg(ainfo->ipbxid());
+        agent_descriptions << tr("on <b>%1</b>").arg(agentinfo->ipbxid());
     if (! m_optionsMap.value("xlet.agentdetails.hidecontext").toBool())
-        agent_descriptions << QString("(%1)").arg(ainfo->context());
-    QString lstatus = ainfo->status();
-    QString phonenum = ainfo->phonenumber();
+        agent_descriptions << QString("(%1)").arg(agentinfo->context());
+    QString lstatus = agentinfo->status();
+    QString phonenum = agentinfo->phonenumber();
 
     if (lstatus == "AGENT_LOGGEDOFF") {
         agent_descriptions << tr("logged off <b>%1</b>").arg(phonenum);
@@ -240,7 +240,7 @@ void XletAgentDetails::updatePanel()
     }
 
     QStringList xqueueids;
-    QVariantMap properties = ainfo->properties();
+    QVariantMap properties = agentinfo->properties();
     QVariant agentstats = properties["agentstats"];
     m_agentlegend_njoined->setText(agentstats.toMap().value("Xivo-NQJoined").toString());
     m_agentlegend_npaused->setText(agentstats.toMap().value("Xivo-NQPaused").toString());
@@ -249,8 +249,8 @@ void XletAgentDetails::updatePanel()
     while (iter.hasNext()) {
         iter.next();
         QString xqueueid = iter.key();
-        QueueInfo * qinfo = (QueueInfo *) iter.value();
-        // newQueue(qinfo->ipbxid(), qinfo->queueName(), qinfo->properties());
+        QueueInfo * queueinfo = (QueueInfo *) iter.value();
+        // newQueue(queueinfo->ipbxid(), queueinfo->queueName(), queueinfo->properties());
         xqueueids << xqueueid;
         bool isnewqueue = false;
         if (! m_queue_labels.contains(xqueueid))
@@ -274,8 +274,8 @@ void XletAgentDetails::updatePanel()
 
         setQueueLookProps(xqueueid);
         setQueueProps(xqueueid);
-        if (qinfo->ipbxid() == ainfo->ipbxid()) {
-            QString refmember = qinfo->reference("agents", ainfo->xid());
+        if (queueinfo->ipbxid() == agentinfo->ipbxid()) {
+            QString refmember = queueinfo->reference("agents", agentinfo->xid());
             setQueueAgentProps(xqueueid, refmember);
         }
 
@@ -301,21 +301,21 @@ void XletAgentDetails::setQueueLookProps(const QString & xqueueid)
 
 void XletAgentDetails::setQueueProps(const QString & xqueueid)
 {
-    const QueueInfo * qinfo = b_engine->queue(xqueueid);
-    if (qinfo == NULL)
+    const QueueInfo * queueinfo = b_engine->queue(xqueueid);
+    if (queueinfo == NULL)
         return;
     bool showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
     if (showNumber)
         m_queue_labels[xqueueid]->setText(QString("%1 (%2)")
-                                          .arg(qinfo->queueName())
-                                          .arg(qinfo->queueNumber()));
+                                          .arg(queueinfo->queueName())
+                                          .arg(queueinfo->queueNumber()));
     else
-        m_queue_labels[xqueueid]->setText(qinfo->queueName());
+        m_queue_labels[xqueueid]->setText(queueinfo->queueName());
     QStringList tooltips;
     if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
-        tooltips << tr("Server: %1").arg(qinfo->ipbxid());
+        tooltips << tr("Server: %1").arg(queueinfo->ipbxid());
     if (! m_optionsMap.value("xlet.agentdetails.hidecontext").toBool())
-        tooltips << tr("Context: %1").arg(qinfo->context());
+        tooltips << tr("Context: %1").arg(queueinfo->context());
     m_queue_labels[xqueueid]->setToolTip(tooltips.join("\n"));
 }
 
@@ -422,13 +422,13 @@ void XletAgentDetails::fillQueue(int ii, const QString & xqueueid)
 void XletAgentDetails::queueClicked()
 {
     QString xqueueid = sender()->property("xqueueid").toString();
-    const QueueInfo * qinfo = b_engine->queue(xqueueid);
-    if (qinfo == NULL)
+    const QueueInfo * queueinfo = b_engine->queue(xqueueid);
+    if (queueinfo == NULL)
         return;
     QString action  = sender()->property("action").toString();
-    QString queuename = qinfo->queueName();
+    QString queuename = queueinfo->queueName();
 
-    QString xqueuemember = qinfo->reference("agents", m_monitored_agentid);
+    QString xqueuemember = queueinfo->reference("agents", m_monitored_agentid);
     const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
 
     QVariantMap ipbxcommand;

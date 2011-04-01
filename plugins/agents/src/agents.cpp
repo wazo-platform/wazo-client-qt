@@ -107,8 +107,8 @@ void XletAgents::setGuiOptions(const QVariantMap & optionsMap)
 
 void XletAgents::updateAgentConfig(const QString & xagentid)
 {
-    const AgentInfo * ainfo = b_engine->agent(xagentid);
-    if (ainfo == NULL)
+    const AgentInfo * agentinfo = b_engine->agent(xagentid);
+    if (agentinfo == NULL)
         return;
 
     bool newagentid = false;
@@ -129,11 +129,11 @@ void XletAgents::updateAgentConfig(const QString & xagentid)
  */
 void XletAgents::updateAgentStatus(const QString & xagentid)
 {
-    const AgentInfo * ainfo = b_engine->agent(xagentid);
-    if (ainfo == NULL)
+    const AgentInfo * agentinfo = b_engine->agent(xagentid);
+    if (agentinfo == NULL)
         return;
 
-    qDebug() << Q_FUNC_INFO << xagentid << ainfo->status();
+    qDebug() << Q_FUNC_INFO << xagentid << agentinfo->status();
     qDebug() << Q_FUNC_INFO << b_engine->getOptionsAgentStatus();
     if (m_agent_presence.contains(xagentid)) {
     }
@@ -176,17 +176,17 @@ void XletAgents::newAgentLine(const QString & xagentid)
 // update according to admin-defined parameters
 void XletAgents::updateAgentLineAdmin(const QString & xagentid)
 {
-    const AgentInfo * ainfo = b_engine->agent(xagentid);
-    if (ainfo == NULL)
+    const AgentInfo * agentinfo = b_engine->agent(xagentid);
+    if (agentinfo == NULL)
         return;
 
     m_agent_labels[xagentid]->setText(QString("%1 (%2)")
-                                      .arg(ainfo->fullname())
-                                      .arg(ainfo->agentNumber()));
+                                      .arg(agentinfo->fullname())
+                                      .arg(agentinfo->agentNumber()));
     m_agent_labels[xagentid]->setToolTip(tr("Server: %1\n"
                                             "Context: %2")
-                                         .arg(ainfo->ipbxid())
-                                         .arg(ainfo->context()));
+                                         .arg(agentinfo->ipbxid())
+                                         .arg(agentinfo->context()));
     m_agent_more[xagentid]->setProperty("xagentid", xagentid);
     m_agent_more[xagentid]->setProperty("action", "changeagent");
     m_agent_record[xagentid]->setProperty("xagentid", xagentid);
@@ -250,12 +250,12 @@ void XletAgents::displayLine(const QString & xagentid, int linenum)
 
 void XletAgents::updateAgentDisplay(const QString & xagentid)
 {
-    const AgentInfo * ainfo = b_engine->agent(xagentid);
-    if (ainfo == NULL)
+    const AgentInfo * agentinfo = b_engine->agent(xagentid);
+    if (agentinfo == NULL)
         return;
-    QString context_agent = ainfo->context();
-    QString agstatus = ainfo->status();
-    QString phonenum = ainfo->phonenumber();
+    QString context_agent = agentinfo->context();
+    QString agstatus = agentinfo->status();
+    QString phonenum = agentinfo->phonenumber();
 
     QVariantMap slink; // "Xivo-Agent-Status-Link"
     bool link = false;
@@ -278,7 +278,7 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
 //         while (iter.hasNext()) {
 //             iter.next();
 //             if ((iter.value()->number() == phonenum) &&
-//                 (iter.value()->ipbxid() == ainfo->ipbxid())) {
+//                 (iter.value()->ipbxid() == agentinfo->ipbxid())) {
 //                 foreach (const QString channel, iter.value()->channels()) {
 //                     const ChannelInfo * channelinfo = b_engine->channels().value(channel);
 //                     if(channelinfo == NULL)
@@ -321,17 +321,17 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
     QStringList joined_queues;
     QStringList paused_queues;
 
-    foreach (QString xqueueid, ainfo->xqueueids()) {
-        const QueueInfo * qinfo = b_engine->queue(xqueueid);
-        if (qinfo == NULL)
+    foreach (QString xqueueid, agentinfo->xqueueids()) {
+        const QueueInfo * queueinfo = b_engine->queue(xqueueid);
+        if (queueinfo == NULL)
             continue;
-        QString xqueuemember = qinfo->reference("agents", xagentid);
+        QString xqueuemember = queueinfo->reference("agents", xagentid);
         const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
         if (qmi == NULL)
             continue;
-        joined_queues << qinfo->queueName();
+        joined_queues << queueinfo->queueName();
         if (qmi->paused() == "1")
-            paused_queues << qinfo->queueName();
+            paused_queues << queueinfo->queueName();
     }
 
     int njoined = joined_queues.size();
@@ -382,12 +382,12 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
 void XletAgents::agentClicked()
 {
     QString xagentid = sender()->property("xagentid").toString();
-    const AgentInfo * ainfo = b_engine->agent(xagentid);
-    if (ainfo == NULL)
+    const AgentInfo * agentinfo = b_engine->agent(xagentid);
+    if (agentinfo == NULL)
         return;
     QString action  = sender()->property("action").toString();
 
-    QString ipbxid = ainfo->ipbxid();
+    QString ipbxid = agentinfo->ipbxid();
     QVariantMap ipbxcommand;
 
     if (action == "changeagent") {
@@ -395,7 +395,7 @@ void XletAgents::agentClicked()
     }
 
     else if (action == "loginoff") {
-        QString status = ainfo->status();
+        QString status = agentinfo->status();
         ipbxcommand["agentids"] = xagentid;
         if (status == "AGENT_IDLE")
             ipbxcommand["command"] = "agentlogout";
