@@ -33,7 +33,7 @@
 
 #include <QDebug>
 #include <QLabel>
-#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QTableWidget>
 
 #include "popcaastra.h"
@@ -43,6 +43,7 @@
 #include "aastrasipnotify.h"
 #include "callwidget.h"
 #include "xivoconsts.h"
+#include "incoming.h"
 
 PopcAastra::PopcAastra(QWidget *parent)
     : XLet(parent), m_ui(new Ui::PopcAastra), m_monitored_ui(0)
@@ -51,6 +52,11 @@ PopcAastra::PopcAastra(QWidget *parent)
     setTitle(tr("POPC Aastra operator"));
 
     m_calls_list = new QVBoxLayout(m_ui->m_calls_layout);
+    UserInfo *info = new UserInfo("xivotest", "1");
+    info->setFullName("Pascal Cadotte-Michaud");
+    info->setPhoneNumber("1056");
+    Incoming * inc1 = new Incoming(1, info, "sip/1234", this);
+    m_calls_list->addWidget(inc1);
 
     // Signals / slots
     connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
