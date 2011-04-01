@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QWidget>
 
+#include "popcaastra.h"
+
 class QHBoxLayout;
 class QLabel;
 class UserInfo;
@@ -14,9 +16,16 @@ class Incoming : public QWidget
 
     public:
         Incoming(int line_num, UserInfo *, const QString & xchannel, QWidget * parent);
-        void updateWidget(const QString & xchannel);
+        void updateWidget();
     public slots:
+        void doHangUp();    //!< Hang up the line
+        void doTransferToNumber(const QString & number); //!< Transfer to number
+        void doParkCall();  //!< Park the call
     protected:
+        void timerEvent(QTimerEvent *);
+    private:
+        void setActionPixmap();
+        void updateCallTimeLabel();
     signals:
     private:
         UserInfo * m_uinfo;

@@ -37,7 +37,6 @@
 #include <QObject>
 #include <QVBoxLayout>
 #include "xlet.h"
-#include "callwidget.h"
 
 namespace Ui {
     class PopcAastra;
@@ -81,7 +80,7 @@ public slots:
 private:
     UserInfo * m_monitored_ui;  //!< currently monitored user info
     Ui::PopcAastra * m_ui;
-    QHash<QString, CallWidget *> m_affhash;  //!< List of CallWidget Widgets
+    //QHash<QString, CallWidget *> m_affhash;  //!< List of CallWidget Widgets
     QVBoxLayout * m_calls_list; //!< Container layout for the incoming calls widget
 
 };

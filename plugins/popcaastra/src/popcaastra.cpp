@@ -41,7 +41,6 @@
 #include "userinfo.h"
 #include "channelinfo.h"
 #include "aastrasipnotify.h"
-#include "callwidget.h"
 #include "xivoconsts.h"
 #include "incoming.h"
 
@@ -53,8 +52,10 @@ PopcAastra::PopcAastra(QWidget *parent)
 
     m_calls_list = new QVBoxLayout(m_ui->m_calls_layout);
     UserInfo *info = new UserInfo("xivotest", "1");
-    info->setFullName("Pascal Cadotte-Michaud");
-    info->setPhoneNumber("1056");
+    QVariantMap props;
+    props["fullname"] = "Pascal Cadotte-Michaud";
+    props["number"] = "4002";
+    info->updateConfig(props);
     Incoming * inc1 = new Incoming(1, info, "sip/1234", this);
     m_calls_list->addWidget(inc1);
 
@@ -92,7 +93,6 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
 {
     qDebug() << Q_FUNC_INFO << xchannel;
     const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
-    qDebug() << Q_FUNC_INFO << channelinfo->toString();
     if (channelinfo == NULL) {  // never happens???
         qDebug() << Q_FUNC_INFO << "null chaninfo";
         return;
@@ -116,6 +116,7 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
         return;
     }
     // activeChannels << channelme;
+    /*
     qDebug() << Q_FUNC_INFO << "adding/updating" << xchannel << m_affhash;
     if (m_affhash.contains(xchannel))
         m_affhash[xchannel]->updateWidget(xchannel);
@@ -133,6 +134,7 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
                                 0, Qt::AlignTop);
          m_affhash[xchannel] = callwidget;
     }
+    */
 }
 
 void PopcAastra::monitorPeer(UserInfo * userInfo)
@@ -150,6 +152,7 @@ void PopcAastra::monitorPeer(UserInfo * userInfo)
 void PopcAastra::updatePhoneStatus(const QString & xphoneid)
 {
     // Clear orphan callwidgets (callwidgets with NULL channel)
+    /*
     foreach (const QString xchannel, m_affhash.keys()) {
         CallWidget * callwidget = m_affhash[xchannel];
         const QString channel = callwidget->channel();
@@ -209,6 +212,7 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
             m_affhash[xchannel] = callwidget;
         }
     }
+    */
 }
 
 void PopcAastra::hupchan(const QString &chan)
