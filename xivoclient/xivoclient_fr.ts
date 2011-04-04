@@ -548,7 +548,7 @@ quand vous modifiez cette valeur /!\</translation>
         <location filename="../common/built-in-xlet/faxpanel.cpp" line="213"/>
         <source>Your Fax (file %1)
 is being processed and will be sent soon.</source>
-        <translation>Votre Fax (ficher %1)
+        <translation>Votre Fax (fichier %1)
 est en cours de traitement et sera bientôt envoyé.</translation>
     </message>
     <message>
@@ -564,7 +564,7 @@ Raison donnée : %3.</translation>
         <location filename="../common/built-in-xlet/faxpanel.cpp" line="209"/>
         <source>Your Fax (file %1)
 was successfully sent to %2.</source>
-        <translation>Votre Fax (ficher %1)
+        <translation>Votre Fax (fichier %1)
 a été envoyé à %2.</translation>
     </message>
     <message>
@@ -965,7 +965,7 @@ a été envoyé à %2.</translation>
         <source>Removing all contacts.
 Are you sure ?</source>
         <translation>Vous êtes sur le point de supprimer tous les contacts.
-Etes vous sur ?</translation>
+Etes-vous sûr ?</translation>
     </message>
 </context>
 <context>
