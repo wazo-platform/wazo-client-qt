@@ -331,7 +331,8 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
         <location filename="src/gui/basepeerwidget.cpp" line="743"/>
         <source>Removing %1 %2.
 Are you sure ?</source>
-        <translation>Enlever %1 %2.Etes vous sur ?</translation>
+        <translation>Enlever %1 %2.
+Etes-vous sûr ?</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="68"/>
