@@ -238,7 +238,7 @@ auf der ersten Seite</translation>
     <message>
         <location filename="../common/configwidget.cpp" line="254"/>
         <source>English</source>
-        <translation>Anglais</translation>
+        <translation>Englisch</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="255"/>
@@ -248,7 +248,7 @@ auf der ersten Seite</translation>
     <message>
         <location filename="../common/configwidget.cpp" line="256"/>
         <source>Nederlands</source>
-        <translation type="unfinished"></translation>
+        <translation>Niederländisch</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="257"/>
