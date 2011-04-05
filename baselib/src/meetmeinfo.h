@@ -50,43 +50,27 @@ class BASELIB_EXPORT MeetmeInfo : public XInfo
 {
     public:
         MeetmeInfo(const QString &, const QString &);
-        //! Copy constructor. Just copy all attributes
-        //MeetmeInfo(const MeetmeInfo &);
-        //! cast to QString operator for debugging
-        //operator QString() const {
-        //        QString str("MeetmeInfo(");
-        //        str.append(m_roomnumber);
-        //        str.append(", ");
-        //        str.append(m_roomname);
-        //        str.append(", [");
-        //        foreach(QString uid, m_uniqueids.keys()) {
-        //                str.append(uid);
-        //                str.append(" ");
-        //        }
-        //        str.append("])");
-        //        return str;
-        //}
         bool updateConfig(const QVariantMap &);
         bool updateStatus(const QVariantMap &);
-        const QString & roomname() const;  //! conference room name
-        const QString & roomnumber() const;  //! conference room number
-        const QString & adminid() const;  //! conference room admin id
-        const QString & adminnum() const;  //! conference room admin num
+        const QString & name() const;  //! conference room name
+        const QString & number() const;  //! conference room number
+
         bool paused() const;  //! conference room paused status
-        const QStringList & adminlist() const;  //! conference room admin list
-        const QVariantMap & uniqueids() const;  //! conference room uniqueids
+        const QStringList & channels() const;  //! conference room channels
+        const QStringList & xchannels() const;  //! conference room channels
+        bool pin_needed() const { return m_pin_needed; };
+        const QString & admin_moderationmode() const { return m_admin_moderationmode; };
 
     private:
         QString m_context;  //!< room context
-        QString m_roomname;  //!< room access name
-        QString m_roomnumber;  //!< room access number (if any)
-        QString m_pin;  //!< room pin number (if any)
-        QString m_adminpin;  //!< room admin pin number (if any)
-        QString m_adminid;  //!< admin id ??? (global)
-        QString m_adminnum;  //!< admin num ( local in the meetme room )
+        QString m_name;  //!< room access name
+        QString m_number;  //!< room access number (if any)
+        QString m_admin_moderationmode;
+        bool m_pin_needed;
+
         bool m_paused;  //!< is the conference room paused ?
-        QStringList m_adminlist;  //!< admin list (user ids)
-        QVariantMap m_uniqueids;  //!< people in this conference room
+        QStringList m_channels;  //!< channels in this conference room
+        QStringList m_xchannels;  //!< channels in this conference room
 };
 
 #endif /* __MEETMEINFO_H__ */

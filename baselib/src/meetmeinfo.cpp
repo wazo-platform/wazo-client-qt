@@ -39,34 +39,24 @@ MeetmeInfo::MeetmeInfo(const QString & ipbxid,
 {
 }
 
-const QString & MeetmeInfo::roomname() const
+const QString & MeetmeInfo::name() const
 {
-    return m_roomname;
+    return m_name;
 }
 
-const QString & MeetmeInfo::roomnumber() const
+const QString & MeetmeInfo::number() const
 {
-    return m_roomnumber;
+    return m_number;
 }
 
-const QString& MeetmeInfo::adminid() const
+const QStringList & MeetmeInfo::channels() const
 {
-    return m_adminid;
+    return m_channels;
 }
 
-const QStringList& MeetmeInfo::adminlist() const
+const QStringList & MeetmeInfo::xchannels() const
 {
-    return m_adminlist;
-}
-
-const QVariantMap& MeetmeInfo::uniqueids() const
-{
-    return m_uniqueids;
-}
-
-const QString& MeetmeInfo::adminnum() const
-{
-    return m_adminnum;
+    return m_xchannels;
 }
 
 bool MeetmeInfo::paused() const
@@ -79,36 +69,25 @@ bool MeetmeInfo::updateConfig(const QVariantMap & prop)
     bool haschanged = false;
     // fixed-by-config stuff
     haschanged |= setIfChangeString(prop, "context", & m_context);
-    haschanged |= setIfChangeString(prop, "roomname", & m_roomname);
-    haschanged |= setIfChangeString(prop, "roomnumber", & m_roomnumber);
-
-    haschanged |= setIfChangeString(prop, "pin", & m_pin);
-    haschanged |= setIfChangeString(prop, "pinadmin", & m_adminpin);
-    haschanged |= setIfChangeBool(prop, "paused", & m_paused);
-
-    // variable stuff
-    haschanged = true;
-    m_adminlist = prop.value("adminlist").toStringList();
-    m_uniqueids = prop.value("uniqueids").toMap();
+    haschanged |= setIfChangeString(prop, "name", & m_name);
+    haschanged |= setIfChangeString(prop, "number", & m_number);
+    haschanged |= setIfChangeString(prop, "admin_moderationmode", & m_admin_moderationmode);
+    haschanged |= setIfChangeBool(prop, "pin_needed", & m_pin_needed);
     return haschanged;
 }
 
 bool MeetmeInfo::updateStatus(const QVariantMap & prop)
 {
-    bool haschanged = true;
-    QString action = prop.value("action").toString();
-    QString uniqueid = prop.value("uniqueid").toString();
-
-    haschanged |= setIfChangeString(prop, "adminid", & m_adminid);
-    haschanged |= setIfChangeString(prop, "adminnum", & m_adminnum);
-    m_adminlist = prop.value("adminlist").toStringList();
-    if (prop.contains("details"))
-        m_uniqueids[uniqueid] = prop.value("details").toMap();
-
-    if (action == "leave") {
-        m_uniqueids.remove(uniqueid);
-    } else if(action == "changeroompausedstate") {
-        m_paused = prop.value("paused").toBool();
+    bool haschanged = false;
+    haschanged |= setIfChangeBool(prop, "paused", & m_paused);
+    if(prop.contains("channels")) {
+        m_channels = prop.value("channels").toStringList();
+        m_xchannels.clear();
+        foreach (QString channel, m_channels) {
+            QString xchannel = QString("%1/%2").arg(m_ipbxid).arg(channel);
+            m_xchannels.append(xchannel);
+        }
+        haschanged = true;
     }
     return haschanged;
 }

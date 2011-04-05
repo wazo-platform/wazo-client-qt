@@ -16,12 +16,12 @@
     <message>
         <location filename="src/confchamber.cpp" line="513"/>
         <source>This room is moderated. You can&apos;t see any participant, until an admin allow you in.</source>
-        <translation>Cette chambre est modéré. Vous ne pouvez pas voir les participants avant d&apos;y &apos;être admis par un admin.</translation>
+        <translation>Cette chambre est modérée. Vous ne pouvez pas voir les participants avant d&apos;y &apos;être admis par un admin.</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="539"/>
         <source>&amp;Restart the conference</source>
-        <translation>&amp;Redémarrer la conference</translation>
+        <translation>&amp;Redémarrer la conférence</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="541"/>
@@ -65,7 +65,7 @@
         <location filename="src/confchamber.cpp" line="222"/>
         <location filename="src/confchamber.cpp" line="227"/>
         <source>User already authed</source>
-        <translation>Utilisateur déjà a l&apos;interieur</translation>
+        <translation>Utilisateur déjà à l&apos;intérieur</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="224"/>
@@ -80,7 +80,7 @@
     <message>
         <location filename="src/confchamber.cpp" line="232"/>
         <source>User already recorded</source>
-        <translation>User deja en train d&apos;être enregistré</translation>
+        <translation>Utilisateur déjà en train d&apos;être enregistré</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="234"/>

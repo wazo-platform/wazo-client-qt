@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="de">
+<TS version="2.0" language="de_DE">
 <context>
     <name>CallCampaignPanel</name>
     <message>
@@ -283,7 +283,7 @@ when you change this value /!\</source>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="308"/>
-        <source>Apparence of SwitchBoard elements</source>
+        <source>Appearance of SwitchBoard elements</source>
         <translation>Aussehen der Elemente der Switchboard</translation>
     </message>
     <message>
