@@ -23,10 +23,12 @@ class Incoming : public QWidget
         void doParkCall();  //!< Park the call
     protected:
         void timerEvent(QTimerEvent *);
+        void contextMenuEvent(QContextMenuEvent *);
     private:
         void setActionPixmap();
         void updateCallTimeLabel();
     signals:
+        void doHangUp(int);     //!< hang up a line
     private:
         UserInfo * m_uinfo;
         int m_line;
@@ -41,6 +43,9 @@ class Incoming : public QWidget
         QPixmap m_image;
         bool m_parkedCall;
         bool m_holdedCall;
+        QAction * m_hangUpAction;
+        QAction * m_transferToNumberAction;
+        QAction * m_parkCallAction;
 };
 
 #endif

@@ -7,6 +7,8 @@
 #include "incoming.h"
 #include "userinfo.h"
 #include "taintedpixmap.h"
+#include "popcaastra.h"
+#include "aastrasipnotify.h"
 
 Incoming::Incoming(int line_num, UserInfo * u_info, const QString & xchannel, QWidget * parent)
     : QWidget(parent), m_line(line_num), m_uinfo(u_info), m_xchannel(xchannel), m_image(16,16)
@@ -41,6 +43,11 @@ Incoming::Incoming(int line_num, UserInfo * u_info, const QString & xchannel, QW
     m_layout->addWidget(m_lbl_time);
     m_layout->setStretch(5,0);
     updateWidget();
+
+    m_hangUpAction = new QAction(tr("&Hangup"), this);
+    m_hangUpAction->setStatusTip(tr("Hang up/close the channel"));
+    connect(m_hangUpAction, SIGNAL(triggered()),
+            this, SLOT(doHangUp()));
 }
 
 void Incoming::updateWidget()
@@ -117,6 +124,7 @@ void Incoming::timerEvent(QTimerEvent *)
 void Incoming::doHangUp()
 {
     qDebug() << Q_FUNC_INFO;
+    emit doHangUp(1);
 }
 
 void Incoming::doTransferToNumber(const QString & number)
@@ -127,5 +135,13 @@ void Incoming::doTransferToNumber(const QString & number)
 void Incoming::doParkCall()
 {
     qDebug() << Q_FUNC_INFO;
+}
+
+void Incoming::contextMenuEvent(QContextMenuEvent *event)
+{
+    qDebug() << Q_FUNC_INFO;
+    QMenu contextMenu;
+    contextMenu.addAction(m_hangUpAction);
+    contextMenu.exec(event->globalPos());
 }
 
