@@ -775,27 +775,25 @@ void BaseEngine::addUpdateConfMemberInTree(DStore *tree, const QString & xid)
         return;
 
     QString roomid = meetmeinfo->id();
-    int c = 1;
     tree->rmPath(QString("confrooms/%1/in").arg(roomid));
     foreach (QString xchannel, meetmeinfo->xchannels()) {
         const ChannelInfo * channelinfo = m_channels.value(xchannel);
         if (channelinfo == NULL)
             continue;
-        qDebug() << Q_FUNC_INFO << roomid << xchannel << channelinfo->thisdisplay() << channelinfo->timestamp();
-        
+
         QVariantMap info;
-        QString id = QString::number(c);
+        QString id = QString::number(channelinfo->meetme_usernum());
         info["id"] = id;
         info["time-start"] = channelinfo->timestamp();
+        info["displayname"] = channelinfo->thisdisplay();
+        // info["phonenum"] = details.value("phonenum");
+        // info["user-id"] = details.value("userid");
+        info["admin"] = channelinfo->meetme_isadmin();
+        info["authed"] = channelinfo->meetme_isauthed();
+        info["muted"] = channelinfo->meetme_ismuted();
         QString path = QString("confrooms/%1/in/%2").arg(roomid).arg(id);
         tree->populate(path ,info);
-        c ++;
     }
-//     info["user-id"] = details.value("userid").toString();
-//     info["phonenum"] = details.value("phonenum");
-//     info["authed"] = details.value("authed").toBool();
-//     info["mute"] = (details.value("mutestatus").toString() == "on");
-//     info["admin"] = details.value("admin").toBool();
 
     // leave case
     // tree->rmPath(path);
@@ -813,25 +811,12 @@ void BaseEngine::addUpdateConfRoomInTree(DStore *tree,
     info["id"] = roomid;
     info["name"] = meetmeinfo->name();
     info["number"] = meetmeinfo->number();
-
     info["pin_needed"] = meetmeinfo->pin_needed();
     info["admin_moderationmode"] = meetmeinfo->admin_moderationmode();
     info["in"] = QVariantMap();
 
     tree->populate(QString("confrooms/%0").arg(roomid), info);
 }
-
-//     QVariantMap userIn = cinfo.value("uniqueids").toMap();
-//     foreach (QString uniqueId , userIn.keys()) {
-//         QVariantMap userToInsert;
-//         userToInsert["details"] = userIn.value(uniqueId).toMap();
-//         userToInsert["meetmeid"] = id;
-//         userToInsert["action"] = "join";
-//         userToInsert["uniqueid"] = uniqueId;
-
-//         addUpdateConfMemberInTree(tree, userToInsert);
-//     }
-
 
 void BaseEngine::emitMessage(const QString & msg)
 {

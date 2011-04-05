@@ -56,6 +56,12 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "thisdisplay", & m_thisdisplay);
     haschanged |= setIfChangeString(prop, "peerdisplay", & m_peerdisplay);
     haschanged |= setIfChangeDouble(prop, "timestamp", & m_timestamp);
+
+    haschanged |= setIfChangeBool(prop, "meetme_isadmin", & m_meetme_isadmin);
+    haschanged |= setIfChangeBool(prop, "meetme_isauthed", & m_meetme_isauthed);
+    haschanged |= setIfChangeBool(prop, "meetme_ismuted", & m_meetme_ismuted);
+    haschanged |= setIfChangeInt(prop, "meetme_usernum", & m_meetme_usernum);
+
     return haschanged;
 }
 

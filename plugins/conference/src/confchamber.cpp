@@ -235,7 +235,7 @@ ConfChamberModel::data(const QModelIndex &index,
             } else if (col == ACTION_MUTE) {
                 if ((m_admin) ||
                     (b_engine->eV(in + "user-id").toString() == b_engine->xivoUserId())) {
-                    if (b_engine->eV(in + "mute").toBool()) {
+                    if (b_engine->eV(in + "muted").toBool()) {
                         return tr("Unmute");
                     }
                     return tr("Mute");
@@ -246,35 +246,25 @@ ConfChamberModel::data(const QModelIndex &index,
     }
 
     switch (col) {
-        case ID:
-            return b_engine->eV(in + "id");
-        case NUMBER:
-            return b_engine->eV(in + "phonenum");
-        case ACTION_RECORD:
-            return (b_engine->eV(in + "recorded").toBool())? tr("Yes") : tr("No");
-        case ADMIN:
-            return (b_engine->eV(in + "admin").toBool()) ? tr("Yes") : tr("No");
-        case NAME:
-        {
-            QString name = b_engine->eV(QString("users/*[id=%0user-id]").arg(in))
-                .toMap().value("fullname").toString();
-            if (name.isEmpty()) {
-                return tr("nobody");
-            }
-            return name;
-        }
-        case ACTION_ALLOW_IN:
-            if (b_engine->eV(in + "authed").toBool()) {
-                return QString::fromUtf8("?");
-            }
-            break;
-        case SINCE:
-            return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
-                                         b_engine->eV(in + "time-start").toDouble() -
-                                         b_engine->timeDeltaServerClient()).toUTC()
-                                         .toString("hh:mm:ss");
-        default:
-            break;
+    case ID:
+        return b_engine->eV(in + "id");
+    case NUMBER:
+        return b_engine->eV(in + "phonenum");
+    case ACTION_RECORD:
+        return (b_engine->eV(in + "recorded").toBool())? tr("Yes") : tr("No");
+    case ADMIN:
+        return (b_engine->eV(in + "admin").toBool()) ? tr("Yes") : tr("No");
+    case NAME:
+        return b_engine->eV(in + "displayname").toString();
+    case ACTION_ALLOW_IN:
+        return (b_engine->eV(in + "authed").toBool()) ? tr("Yes") : tr("No");
+    case SINCE:
+        return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
+                                     b_engine->eV(in + "time-start").toDouble() -
+                                     b_engine->timeDeltaServerClient()).toUTC()
+            .toString("hh:mm:ss");
+    default:
+        break;
     }
     return QVariant();
 }
@@ -310,13 +300,13 @@ Qt::ItemFlags ConfChamberModel::flags(const QModelIndex &index) const
               && (!b_engine->eV(in + "authed").toBool())) {
             return Qt::ItemIsEnabled;
         }
-        if ( (col == ACTION_MUTE) && (b_engine->eV(in + "mute").toBool())) {
+        if ( (col == ACTION_MUTE) && (b_engine->eV(in + "muted").toBool())) {
             return Qt::ItemIsEnabled;
         }
     } else {
         if (b_engine->eV(in + "user-id").toString() == b_engine->xivoUserId()) {
             if (col == ACTION_MUTE) {
-                if (b_engine->eV(in + "mute").toBool()) {
+                if (b_engine->eV(in + "muted").toBool()) {
                     return Qt::ItemIsEnabled;
                 }
             }
@@ -410,7 +400,7 @@ void ConfChamberView::onViewClick(const QModelIndex &index)
 
     switch (col) {
         case ACTION_MUTE:
-            if (b_engine->eV(in + "mute").toBool()) {
+            if (b_engine->eV(in + "muted").toBool()) {
                 b_engine->meetmeAction("unmute", castId + " " + roomId);
             } else {
                 b_engine->meetmeAction("mute", castId + " " + roomId);
