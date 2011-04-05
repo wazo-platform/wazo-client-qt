@@ -768,62 +768,70 @@ void addUpdateUserInTree(DStore *tree, const QVariantMap & uinfo)
     info.clear();
 }
 
-void addUpdateConfMemberInTree(DStore *tree, const QVariantMap & cinfo)
+void BaseEngine::addUpdateConfMemberInTree(DStore *tree, const QString & xid)
 {
-    QString id = cinfo.value("details").toMap().value("usernum").toString();
-    QString confId = cinfo.value("meetmeid").toString();
-    QString path = QString("confrooms/%0/in/%1").arg(confId).arg(id);
-    QString action = cinfo.value("action").toString();
-    QVariantMap info;
+    const MeetmeInfo * meetmeinfo = meetme(xid);
+    if (meetmeinfo == NULL)
+        return;
 
-    if ( (action == "join") || (action == "mutestatus") || (action == "auth") ) {
+    QString roomid = meetmeinfo->id();
+    int c = 1;
+    tree->rmPath(QString("confrooms/%1/in").arg(roomid));
+    foreach (QString xchannel, meetmeinfo->xchannels()) {
+        const ChannelInfo * channelinfo = m_channels.value(xchannel);
+        if (channelinfo == NULL)
+            continue;
+        qDebug() << Q_FUNC_INFO << roomid << xchannel << channelinfo->thisdisplay() << channelinfo->timestamp();
+        
+        QVariantMap info;
+        QString id = QString::number(c);
         info["id"] = id;
-        QVariantMap details = cinfo.value("details").toMap();
-        info["phonenum"] = details.value("phonenum");
-        info["time-start"] = details.value("time_start");
-        info["user-id"] = details.value("userid").toString();
-        info["authed"] = details.value("authed").toBool();
-        info["mute"] = (details.value("mutestatus").toString() == "on");
-        info["admin"] = details.value("admin").toBool();
+        info["time-start"] = channelinfo->timestamp();
+        QString path = QString("confrooms/%1/in/%2").arg(roomid).arg(id);
         tree->populate(path ,info);
-    } else if (action == "leave") {
-        tree->rmPath(path);
-    } else if (action == "changeroompausedstate") {
-        path = QString("confrooms/%0").arg(confId);
-        info["paused"] = cinfo.value("paused");
-        tree->populate(path ,info);
-    } else {
-        qDebug() << Q_FUNC_INFO << "unknown meetme action: " << action;
+        c ++;
     }
+//     info["user-id"] = details.value("userid").toString();
+//     info["phonenum"] = details.value("phonenum");
+//     info["authed"] = details.value("authed").toBool();
+//     info["mute"] = (details.value("mutestatus").toString() == "on");
+//     info["admin"] = details.value("admin").toBool();
+
+    // leave case
+    // tree->rmPath(path);
 }
 
-void addUpdateConfRoomInTree(DStore *tree,
-                             const QString & id,
-                             const QVariantMap & cinfo)
+void BaseEngine::addUpdateConfRoomInTree(DStore *tree,
+                                         const QString & xid)
 {
+    const MeetmeInfo * meetmeinfo = meetme(xid);
+    if (meetmeinfo == NULL)
+        return;
+
+    QString roomid = meetmeinfo->id();
     QVariantMap info;
-    info["id"] = id;
-    info["name"] = cinfo.value("roomname");
-    info["pin"] = cinfo.value("pin");
+    info["id"] = roomid;
+    info["name"] = meetmeinfo->name();
+    info["number"] = meetmeinfo->number();
+
+    info["pin_needed"] = meetmeinfo->pin_needed();
+    info["admin_moderationmode"] = meetmeinfo->admin_moderationmode();
     info["in"] = QVariantMap();
-    info["number"] = cinfo.value("roomnumber");
-    info["moderated"] = cinfo.value("moderated");
 
-    tree->populate(QString("confrooms/%0").arg(id), info);
-
-    QVariantMap userIn = cinfo.value("uniqueids").toMap();
-    foreach (QString uniqueId , userIn.keys()) {
-        QVariantMap userToInsert;
-        userToInsert["details"] = userIn.value(uniqueId).toMap();
-        userToInsert["meetmeid"] = id;
-        userToInsert["action"] = "join";
-        userToInsert["uniqueid"] = uniqueId;
-
-        addUpdateConfMemberInTree(tree, userToInsert);
-    }
+    tree->populate(QString("confrooms/%0").arg(roomid), info);
 }
 
-/* } */
+//     QVariantMap userIn = cinfo.value("uniqueids").toMap();
+//     foreach (QString uniqueId , userIn.keys()) {
+//         QVariantMap userToInsert;
+//         userToInsert["details"] = userIn.value(uniqueId).toMap();
+//         userToInsert["meetmeid"] = id;
+//         userToInsert["action"] = "join";
+//         userToInsert["uniqueid"] = uniqueId;
+
+//         addUpdateConfMemberInTree(tree, userToInsert);
+//     }
+
 
 void BaseEngine::emitMessage(const QString & msg)
 {
@@ -926,20 +934,6 @@ void BaseEngine::parseCommand(const QString &line)
         } else if (thisclass == "endinit") {
             qDebug() << Q_FUNC_INFO << "I should have received everything";
 
-        } else if (thisclass == "meetme") {
-            if (function == "sendlist") {
-                QVariantMap map1 = datamap.value("payload").toMap();
-                foreach (QString ipbxid, map1.keys()) {
-                    QVariantMap map2 = map1[ipbxid].toMap();
-                    foreach (QString meetmeid, map2.keys()) {
-                        QVariantMap map3 = map2[meetmeid].toMap();
-                        addUpdateConfRoomInTree(tree(), meetmeid, map3);
-                    }
-                }
-            } else if (function == "update") {
-                QVariantMap map = datamap.value("payload").toMap();
-                addUpdateConfMemberInTree(tree(), map);
-            }
         } else if (thisclass == "serverdown") {
             qDebug() << Q_FUNC_INFO << thisclass << datamap.value("mode").toString();
 
@@ -1269,14 +1263,16 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 qDebug() << function << listname << xid << haschanged;
             }
 
-            if (listname == "phones")
-                emit updatePhoneConfig(xid);
-            else if (listname == "users")
+            if (listname == "users")
                 emit updateUserConfig(xid);
+            else if (listname == "phones")
+                emit updatePhoneConfig(xid);
             else if (listname == "agents")
                 emit updateAgentConfig(xid);
             else if (listname == "queues")
                 emit updateQueueConfig(xid);
+            else if (listname == "meetmes")
+                addUpdateConfRoomInTree(tree(), xid);
 
             QVariantMap command;
             command["class"] = "getlist";
@@ -1306,7 +1302,9 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
             // qDebug() << function << listname << xid << haschanged << status;
 
-            if (listname == "phones") {
+            if (listname == "users")
+                emit updateUserStatus(xid);
+            else if (listname == "phones") {
                 emit updatePhoneStatus(xid);
                 if (hasPhone(xid)) {
                     QVariantMap command;
@@ -1320,8 +1318,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     }
                 }
             }
-            else if (listname == "users")
-                emit updateUserStatus(xid);
             else if (listname == "agents")
                 emit updateAgentStatus(xid);
             else if (listname == "queues") {
@@ -1344,19 +1340,19 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             }
             else if (listname == "channels")
                 emit updateChannelStatus(xid);
+            else if (listname == "meetmes")
+                addUpdateConfMemberInTree(tree(), xid);
 
         } else if (function == "addconfig") {
             QStringList listid = datamap.value("list").toStringList();
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                qDebug() << function << listname << xid;
                 if (GenLists.contains(listname)) {
                     newXInfoProto construct = m_xinfoList.value(listname);
                     XInfo * xinfo = construct(ipbxid, id);
                     if (! m_anylist[listname].contains(xid)) {
                         m_anylist[listname][xid] = xinfo;
                     }
-                } else if (listname == "channels") {
                 }
             }
             QVariantMap command;

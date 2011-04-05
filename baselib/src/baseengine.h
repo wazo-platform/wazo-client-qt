@@ -198,6 +198,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
                 { return (const QueueInfo *) m_anylist.value("queues").value(id); };  //!< Return the queue to any Xlet
         const GroupInfo * group(const QString & id) const
                 { return (const GroupInfo *) m_anylist.value("groups").value(id); };  //!< Return the group to any Xlet
+        const MeetmeInfo * meetme(const QString & id) const
+                { return (const MeetmeInfo *) m_anylist.value("meetmes").value(id); };  //!< Return the meetme to any Xlet
 
         const QHash<QString, ChannelInfo *> & channels() const
                 { return m_channels; };  //!< Return the channels to any Xlet
@@ -219,6 +221,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void stopConnection();   //!< stop the engine
         void clearInternalData();   //!< clear the engine internal data
         void setOSInfos(const QString &);
+
+        void addUpdateConfRoomInTree(DStore *, const QString &);
+        void addUpdateConfMemberInTree(DStore *, const QString &);
 
         QMultiHash<QString, e_callback* > m_class_event_cb;
 

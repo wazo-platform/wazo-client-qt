@@ -106,21 +106,21 @@ ConfListModel::data(const QModelIndex &index,
 
     QString room = QString("confrooms/%0/").arg(row);
     switch (col) {
-        case ID:
-            return b_engine->eV(room + "id");
-        case NUMBER:
-            return b_engine->eV(room + "number");
-        case NAME:
-            return b_engine->eV(room + "name");
-        case PIN_REQUIRED:
-            return b_engine->eV(room + "pin").toString().isEmpty() ?
-                       tr("No") : tr("Yes");
-        case MODERATED:
-            return b_engine->eV(room + "moderated").toInt() ?
-                       tr("Yes") : tr("No");
-        case MEMBER_COUNT:
-            return b_engine->eVM(room + "in").size();
-        case STARTED_SINCE:
+    case ID:
+        return b_engine->eV(room + "id");
+    case NUMBER:
+        return b_engine->eV(room + "number");
+    case NAME:
+        return b_engine->eV(room + "name");
+    case PIN_REQUIRED:
+        return b_engine->eV(room + "pin_needed")
+            .toBool() ? tr("Yes") : tr("No");
+    case MODERATED:
+        return b_engine->eV(room + "admin_moderationmode")
+            .toString().isEmpty() ? tr("No") : tr("Yes");
+    case MEMBER_COUNT:
+        return b_engine->eVM(room + "in").size();
+    case STARTED_SINCE:
         {
             QVariantMap UserIn = b_engine->eVM(room + "in");
             double time = 0;
