@@ -74,7 +74,7 @@ public slots:
     void updatePhoneConfig(const QString &);
     void updatePhoneStatus(const QString &);
     void updateChannelStatus(const QString &);
-    void hupchan(const QString &);
+    void hupline(int);
     void transftonumberchan(const QString &);
     void parkcall(const QString &);
 private:
@@ -82,6 +82,10 @@ private:
     Ui::PopcAastra * m_ui;
     //QHash<QString, CallWidget *> m_affhash;  //!< List of CallWidget Widgets
     QVBoxLayout * m_calls_list; //!< Container layout for the incoming calls widget
+
+    QAction * m_hangupAction;
+    QAction * m_transferToNumberAction;
+    QAction * m_parkCallAction;
 
 };
 

@@ -30,5 +30,7 @@ QVariantMap getAastraKeyNotify(AastraKey type, QString channel, int num1=0, int 
     \return the QVariantMap to emit the dial SIPnotify
 */
 QVariantMap getAastraDial(QString number, QString channel, bool interrupt=false);
+QVariantMap getAastraSipNotify(const QList<QString> &, const QString &);
+QString getKeyUri(AastraKey key, int num1=0, int num2=0);
 
 #endif // __AASTRA_SIPNOTIFY__

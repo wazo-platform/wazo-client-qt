@@ -58,6 +58,7 @@ PopcAastra::PopcAastra(QWidget *parent)
     info->updateConfig(props);
     Incoming * inc1 = new Incoming(1, info, "sip/1234", this);
     m_calls_list->addWidget(inc1);
+    connect(inc1, SIGNAL(doHangUp(int)), this, SLOT(hupline(int)));
 
     // Signals / slots
     connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
@@ -215,9 +216,13 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
     */
 }
 
-void PopcAastra::hupchan(const QString &chan)
+void PopcAastra::hupline(int line)
 {
-    qDebug() << Q_FUNC_INFO << chan;
+    qDebug() << Q_FUNC_INFO << line;
+    QList<QString> commands;
+    commands.append(getKeyUri(LINE, line));
+    commands.append(getKeyUri(GOODBYE));
+    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
 void PopcAastra::transftonumberchan(const QString & chan)
@@ -237,6 +242,7 @@ void PopcAastra::updatePhoneConfig(const QString & phone)
 
 void PopcAastra::updateUserConfig(const QString & xuserid)
 {
+    qDebug() << Q_FUNC_INFO << xuserid;
     if (m_monitored_ui)
         qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
     else
@@ -249,6 +255,7 @@ void PopcAastra::updateUserConfig(const QString & xuserid)
 
 void PopcAastra::updateUserStatus(const QString & xuserid)
 {
+    qDebug() << Q_FUNC_INFO << xuserid;
     if (m_monitored_ui)
         qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
     else
@@ -261,11 +268,13 @@ void PopcAastra::updateUserStatus(const QString & xuserid)
 
 void PopcAastra::volUp()
 {
+    qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(VOL_UP, SPECIAL_ME));
 }
 
 void PopcAastra::volDown()
 {
+    qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(VOL_DOWN, SPECIAL_ME));
 }
 

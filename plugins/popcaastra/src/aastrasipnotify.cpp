@@ -24,6 +24,7 @@
 #define KEYPAD_URI "Key:KeyPad%1"
 #define KEYPAD_POUND_URI "Key:KeyPadPound"
 #define KEYPAD_STAR_URI "Key:KeyPadStar"
+#define LINE_URI "Key:Line%1"
 #define MUTE_URI "Key:Mute"
 #define NAV_DOWN_URI "Key:NavDown"
 #define NAV_LEFT_URI "Key:NavLeft"
@@ -46,9 +47,19 @@
 #define INTERRUPT "interruptCall"
 
 QVariantMap getBaseCommand(QString channel, QString content);
-QString getKeyUri(AastraKey key, int num1=0, int num2=0);
 void setEmptyExecuteDoc(QDomDocument &doc);
 void addExecuteElement(QDomDocument &doc, QString uri);
+
+QVariantMap getAastraSipNotify(const QList<QString> & commands, const QString & channel)
+{
+    QDomDocument content;
+    setEmptyExecuteDoc(content);
+    for (int i = 0; i < commands.size(); i++) {
+        addExecuteElement(content, commands.at(i));
+    }
+    QVariantMap ipbxcommand = getBaseCommand(channel, content.toString());
+    return ipbxcommand;
+}
 
 QVariantMap getAastraKeyNotify(AastraKey type, QString channel, int num1, int num2)
 {
@@ -120,6 +131,8 @@ QString getKeyUri(AastraKey key, int num1, int num2)
         return KEYPAD_STAR_URI;
     case KEYPAD_POUND:
         return KEYPAD_POUND_URI;
+    case LINE:
+        return QString(LINE_URI).arg(num1);
     case MUTE:
         return MUTE_URI;
     case NAV_DOWN:
