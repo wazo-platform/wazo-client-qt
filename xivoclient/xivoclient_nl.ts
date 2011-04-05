@@ -265,7 +265,7 @@ when you change this value /!\</source>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="305"/>
-        <source>Apparence of SwitchBoard elements</source>
+        <source>Appearance of SwitchBoard elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -118,7 +118,7 @@ class ConfigWidget: public QDialog
         QSpinBox  *m_tablimit_sbox;        //!< Maximum number of tabs
         QCheckBox *m_lastconnwins;        //!< The last connected user wins => disconnects the other
 
-        QComboBox *m_comboswitchboard; //!< Apparence of SwitchBoard
+        QComboBox *m_comboswitchboard; //!< Appearance of SwitchBoard
         QSpinBox *m_maxWidthWanted;    //!< maximum width for small items in swich board
         QSpinBox *m_presenceIndicatorSize; //<! size of the presence indicator for basic peer widgets
 
