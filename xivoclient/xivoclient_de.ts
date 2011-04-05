@@ -283,7 +283,7 @@ when you change this value /!\</source>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="308"/>
-        <source>Apparence of SwitchBoard elements</source>
+        <source>Appearance of SwitchBoard elements</source>
         <translation>Aussehen der Elemente der Switchboard</translation>
     </message>
     <message>
