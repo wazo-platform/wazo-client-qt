@@ -1,5 +1,5 @@
-#ifndef __INCOMING_H__
-#define __INCOMING_H__
+#ifndef __INCOMINGWIDGET_H__
+#define __INCOMINGWIDGET_H__
 
 #include <QObject>
 #include <QWidget>
@@ -10,13 +10,15 @@ class QHBoxLayout;
 class QLabel;
 class UserInfo;
 
-class Incoming : public QWidget
+class IncomingWidget : public QWidget
 {
     Q_OBJECT
 
     public:
-        Incoming(int line_num, UserInfo *, const QString & xchannel, QWidget * parent);
+        IncomingWidget(int line_num, const UserInfo *, const QString & xchannel, QWidget * parent);
         void updateWidget();
+        int line() const;
+        QString toString() const;
     public slots:
         void doHangUp();    //!< Hang up the line
         void doTransferToNumber(const QString & number); //!< Transfer to number
@@ -30,7 +32,7 @@ class Incoming : public QWidget
     signals:
         void doHangUp(int);     //!< hang up a line
     private:
-        UserInfo * m_uinfo;
+        const UserInfo * m_uinfo;
         int m_line;
         QString m_xchannel;
         QHBoxLayout * m_layout;

@@ -4,13 +4,13 @@
 #include <QDateTime>
 
 #include "channelinfo.h"
-#include "incoming.h"
+#include "incomingwidget.h"
 #include "userinfo.h"
 #include "taintedpixmap.h"
 #include "popcaastra.h"
 #include "aastrasipnotify.h"
 
-Incoming::Incoming(int line_num, UserInfo * u_info, const QString & xchannel, QWidget * parent)
+IncomingWidget::IncomingWidget(int line_num, const UserInfo * u_info, const QString & xchannel, QWidget * parent)
     : QWidget(parent), m_line(line_num), m_uinfo(u_info), m_xchannel(xchannel), m_image(16,16)
 {
     qDebug() << Q_FUNC_INFO;
@@ -50,7 +50,20 @@ Incoming::Incoming(int line_num, UserInfo * u_info, const QString & xchannel, QW
             this, SLOT(doHangUp()));
 }
 
-void Incoming::updateWidget()
+QString IncomingWidget::toString() const
+{
+    QString info = QString("Line: %1 ").arg(m_line);
+    info.append(QString("Fullname: %1 ").arg(m_uinfo->fullname()));
+    info.append(QString("Channel: %1 ").arg(m_xchannel));
+    return info;
+}
+
+int IncomingWidget::line() const
+{
+    return m_line;
+}
+
+void IncomingWidget::updateWidget()
 {
     //const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
     // DEBUG
@@ -86,7 +99,7 @@ void Incoming::updateWidget()
 
 /*! \brief set icon depending on status
  */
-void Incoming::setActionPixmap()
+void IncomingWidget::setActionPixmap()
 {
     const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
     if (channelinfo == NULL)
@@ -108,7 +121,7 @@ void Incoming::setActionPixmap()
 
 /*! \brief update time displayed in m_lbl_time
  */
-void Incoming::updateCallTimeLabel()
+void IncomingWidget::updateCallTimeLabel()
 {
     const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
     if (channelinfo == NULL)
@@ -116,28 +129,28 @@ void Incoming::updateCallTimeLabel()
     m_lbl_time->setText(b_engine->timeElapsed(channelinfo->timestamp()));
 }
 
-void Incoming::timerEvent(QTimerEvent *)
+void IncomingWidget::timerEvent(QTimerEvent *)
 {
     updateCallTimeLabel();
 }
 
-void Incoming::doHangUp()
+void IncomingWidget::doHangUp()
 {
     qDebug() << Q_FUNC_INFO;
     emit doHangUp(1);
 }
 
-void Incoming::doTransferToNumber(const QString & number)
+void IncomingWidget::doTransferToNumber(const QString & number)
 {
     qDebug() << Q_FUNC_INFO << number;
 }
 
-void Incoming::doParkCall()
+void IncomingWidget::doParkCall()
 {
     qDebug() << Q_FUNC_INFO;
 }
 
-void Incoming::contextMenuEvent(QContextMenuEvent *event)
+void IncomingWidget::contextMenuEvent(QContextMenuEvent *event)
 {
     qDebug() << Q_FUNC_INFO;
     QMenu contextMenu;
