@@ -39,6 +39,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="btn_hangup">
+       <property name="text">
+        <string>Hangup</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btn_vol_up">
        <property name="maximumSize">
         <size>

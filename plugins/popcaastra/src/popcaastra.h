@@ -80,12 +80,13 @@ public slots:
     void updatePhoneConfig(const QString &);
     void updatePhoneStatus(const QString &);
     void updateChannelStatus(const QString &);
+    void hangup();
     void hupline(int);
-    void transftonumberchan(const QString &);
+    void attendedTransfer(int);
     void blindTransfer(int);
-    void parkcall(const QString &);
+    void parkcall(int);
+    void selectLine(int);
 private:
-    UserInfo * m_monitored_ui;  //!< currently monitored user info
     Ui::PopcAastra * m_ui;
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget
     QVBoxLayout * m_calls_list; //!< Container layout for the incoming calls widget

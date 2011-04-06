@@ -65,9 +65,13 @@ IncomingWidget::IncomingWidget(int line_num, const QString & xchannel, QWidget *
     m_hangUpAction->setStatusTip(tr("Hang up/close the call"));
     connect(m_hangUpAction, SIGNAL(triggered()),
             this, SLOT(doHangUp()));
+    m_attendedTransferAction = new QAction(tr("Attended transfer"), this);
+    connect(m_attendedTransferAction, SIGNAL(triggered()), this, SLOT(doAttendedTransfer()));
     m_blindTransferAction = new QAction(tr("Blind transfer"), this);
     m_blindTransferAction->setStatusTip(tr("Transfer the call"));
     connect(m_blindTransferAction, SIGNAL(triggered()), this, SLOT(doBlindTransfer()));
+    m_parkCallAction = new QAction(tr("Park call"), this);
+    connect(m_parkCallAction, SIGNAL(triggered()), this, SLOT(doParkCall()));
 }
 
 QString IncomingWidget::toString() const
@@ -157,6 +161,12 @@ void IncomingWidget::doBlindTransfer()
     emit doBlindTransfer(m_line);
 }
 
+void IncomingWidget::doAttendedTransfer()
+{
+    qDebug() << Q_FUNC_INFO;
+    emit doAttendedTransfer(m_line);
+}
+
 void IncomingWidget::doTransferToNumber(const QString & number)
 {
     qDebug() << Q_FUNC_INFO << number;
@@ -165,6 +175,7 @@ void IncomingWidget::doTransferToNumber(const QString & number)
 void IncomingWidget::doParkCall()
 {
     qDebug() << Q_FUNC_INFO;
+    emit doParkCall(m_line);
 }
 
 void IncomingWidget::contextMenuEvent(QContextMenuEvent *event)
@@ -172,7 +183,15 @@ void IncomingWidget::contextMenuEvent(QContextMenuEvent *event)
     qDebug() << Q_FUNC_INFO;
     QMenu contextMenu;
     contextMenu.addAction(m_hangUpAction);
+    contextMenu.addAction(m_attendedTransferAction);
     contextMenu.addAction(m_blindTransferAction);
+    contextMenu.addAction(m_parkCallAction);
     contextMenu.exec(event->globalPos());
+}
+
+void IncomingWidget::mousePressEvent(QMouseEvent * event)
+{
+    qDebug() << Q_FUNC_INFO << m_line;
+    emit selectLine(m_line);
 }
 

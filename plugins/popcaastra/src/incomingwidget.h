@@ -22,17 +22,22 @@ class IncomingWidget : public QWidget
     public slots:
         void doHangUp();    //!< Hang up the line
         void doBlindTransfer();
+        void doAttendedTransfer();
         void doTransferToNumber(const QString & number); //!< Transfer to number
         void doParkCall();  //!< Park the call
     protected:
         void timerEvent(QTimerEvent *);
         void contextMenuEvent(QContextMenuEvent *);
+        void mousePressEvent(QMouseEvent *);
     private:
         void setActionPixmap();
         void updateCallTimeLabel();
     signals:
         void doHangUp(int);     //!< hang up a line
         void doBlindTransfer(int);
+        void doAttendedTransfer(int);
+        void selectLine(int);
+        void doParkCall(int);
     private:
         int m_line;
         QString m_xchannel;
@@ -48,6 +53,7 @@ class IncomingWidget : public QWidget
         bool m_holdedCall;
         double m_start;
         QAction * m_hangUpAction;
+        QAction * m_attendedTransferAction;
         QAction * m_blindTransferAction;
         QAction * m_parkCallAction;
 };
