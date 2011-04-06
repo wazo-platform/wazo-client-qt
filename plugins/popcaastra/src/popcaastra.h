@@ -41,6 +41,7 @@
 namespace Ui {
     class PopcAastra;
 }
+class IncomingWidget;
 
 /*! \brief POPC xlet for Aastra phones
  *
@@ -53,6 +54,10 @@ class PopcAastra : public XLet
 public:
     PopcAastra(QWidget *parent=0);
     ~PopcAastra();
+    int findFirstAvailableLine() const;
+    void debugIncomingCalls() const;
+private:
+    void removeDefuncWidgets();
 public slots:
     void updateDisplay();
     /*! \brief When a name is clicked on the destination list */
@@ -67,6 +72,7 @@ public slots:
     void volUp();
     /*! \brief turns down the volume of the phone */
     void volDown();
+    void navRight();
     /*!  \brief update the peer to be monitored */
     void monitorPeer(UserInfo *);
     void updateUserConfig(const QString &);
@@ -76,11 +82,12 @@ public slots:
     void updateChannelStatus(const QString &);
     void hupline(int);
     void transftonumberchan(const QString &);
+    void blindTransfer(int);
     void parkcall(const QString &);
 private:
     UserInfo * m_monitored_ui;  //!< currently monitored user info
     Ui::PopcAastra * m_ui;
-    //QHash<QString, CallWidget *> m_affhash;  //!< List of CallWidget Widgets
+    QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget
     QVBoxLayout * m_calls_list; //!< Container layout for the incoming calls widget
 
     QAction * m_hangupAction;

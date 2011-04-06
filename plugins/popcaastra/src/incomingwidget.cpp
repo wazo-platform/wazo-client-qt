@@ -10,8 +10,9 @@
 #include "popcaastra.h"
 #include "aastrasipnotify.h"
 
-IncomingWidget::IncomingWidget(int line_num, const UserInfo * u_info, const QString & xchannel, QWidget * parent)
-    : QWidget(parent), m_line(line_num), m_uinfo(u_info), m_xchannel(xchannel), m_image(16,16)
+IncomingWidget::IncomingWidget(int line_num, const QString & xchannel, QWidget * parent)
+    : QWidget(parent), m_line(line_num), m_xchannel(xchannel), m_image(16,16),
+        m_start(b_engine->timeServer())
 {
     qDebug() << Q_FUNC_INFO;
     m_layout = new QHBoxLayout(this);
@@ -23,13 +24,29 @@ IncomingWidget::IncomingWidget(int line_num, const UserInfo * u_info, const QStr
     m_lbl_direction = new QLabel(this);
     m_lbl_status = new QLabel(this);
 
-    m_lbl_line->setText("1");
-    m_lbl_name->setText("Name");
-    m_lbl_exten->setText("5555");
-    m_lbl_time->setText("0:00");
-    m_lbl_status->setText("status");
+    m_lbl_line->setText(QString("%1").arg(m_line));
+    const ChannelInfo * channel = b_engine->channels()[m_xchannel];
+    qDebug() << Q_FUNC_INFO << channel->talkingto_id();
+    const UserInfo * peer;
+    foreach (QString xuserid, b_engine->iterover("users").keys()) {
+        const UserInfo * current = b_engine->user(xuserid);
+        if (current->fullname() == channel->peerdisplay()) {
+            peer = current;
+            break;
+        }
+    }
+    m_lbl_name->setText(channel->peerdisplay());
+    m_lbl_exten->setText(peer->phoneNumber());
+    m_lbl_time->setText(b_engine->timeElapsed(m_start));
+    //m_lbl_status->setText("status");
 
-    m_lbl_direction->setPixmap(QPixmap(":/in_calls/leftarrow.png"));
+    if (channel->direction() == "in") {
+        qDebug() << Q_FUNC_INFO << " Direction in";
+        m_lbl_direction->setPixmap(QPixmap(":/in_calls/leftarrow.png"));
+    } else {
+        qDebug() << Q_FUNC_INFO << " Direction out";
+        m_lbl_direction->setPixmap(QPixmap(":/in_calls/rightarrow.png"));
+    }
     m_layout->addWidget(m_lbl_line);
     m_layout->setStretch(0,0);
     m_layout->addWidget(m_lbl_direction);
@@ -45,15 +62,17 @@ IncomingWidget::IncomingWidget(int line_num, const UserInfo * u_info, const QStr
     updateWidget();
 
     m_hangUpAction = new QAction(tr("&Hangup"), this);
-    m_hangUpAction->setStatusTip(tr("Hang up/close the channel"));
+    m_hangUpAction->setStatusTip(tr("Hang up/close the call"));
     connect(m_hangUpAction, SIGNAL(triggered()),
             this, SLOT(doHangUp()));
+    m_blindTransferAction = new QAction(tr("Blind transfer"), this);
+    m_blindTransferAction->setStatusTip(tr("Transfer the call"));
+    connect(m_blindTransferAction, SIGNAL(triggered()), this, SLOT(doBlindTransfer()));
 }
 
 QString IncomingWidget::toString() const
 {
     QString info = QString("Line: %1 ").arg(m_line);
-    info.append(QString("Fullname: %1 ").arg(m_uinfo->fullname()));
     info.append(QString("Channel: %1 ").arg(m_xchannel));
     return info;
 }
@@ -65,15 +84,7 @@ int IncomingWidget::line() const
 
 void IncomingWidget::updateWidget()
 {
-    //const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
-    // DEBUG
-    ChannelInfo * channelinfo = new ChannelInfo("xivotest", "sip/1234");
-    QVariantMap prop;
-    prop["direction"] = "in";
-    prop["commstatus"] = "ringing";
-    prop["timestamp"] = b_engine->timeServer();
-    channelinfo->updateStatus(prop);
-    // END DEBUG
+    const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
     if (channelinfo == NULL) {
         qDebug() << Q_FUNC_INFO << "Cannot find " << m_xchannel;
         return;
@@ -126,7 +137,7 @@ void IncomingWidget::updateCallTimeLabel()
     const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
     if (channelinfo == NULL)
         return;
-    m_lbl_time->setText(b_engine->timeElapsed(channelinfo->timestamp()));
+    m_lbl_time->setText(b_engine->timeElapsed(m_start));
 }
 
 void IncomingWidget::timerEvent(QTimerEvent *)
@@ -138,6 +149,12 @@ void IncomingWidget::doHangUp()
 {
     qDebug() << Q_FUNC_INFO;
     emit doHangUp(1);
+}
+
+void IncomingWidget::doBlindTransfer()
+{
+    qDebug() << Q_FUNC_INFO;
+    emit doBlindTransfer(m_line);
 }
 
 void IncomingWidget::doTransferToNumber(const QString & number)
@@ -155,6 +172,7 @@ void IncomingWidget::contextMenuEvent(QContextMenuEvent *event)
     qDebug() << Q_FUNC_INFO;
     QMenu contextMenu;
     contextMenu.addAction(m_hangUpAction);
+    contextMenu.addAction(m_blindTransferAction);
     contextMenu.exec(event->globalPos());
 }
 

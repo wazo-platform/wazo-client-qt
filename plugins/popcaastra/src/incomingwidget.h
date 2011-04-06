@@ -15,12 +15,13 @@ class IncomingWidget : public QWidget
     Q_OBJECT
 
     public:
-        IncomingWidget(int line_num, const UserInfo *, const QString & xchannel, QWidget * parent);
+        IncomingWidget(int line_num, const QString & xchannel, QWidget * parent);
         void updateWidget();
         int line() const;
         QString toString() const;
     public slots:
         void doHangUp();    //!< Hang up the line
+        void doBlindTransfer();
         void doTransferToNumber(const QString & number); //!< Transfer to number
         void doParkCall();  //!< Park the call
     protected:
@@ -31,8 +32,8 @@ class IncomingWidget : public QWidget
         void updateCallTimeLabel();
     signals:
         void doHangUp(int);     //!< hang up a line
+        void doBlindTransfer(int);
     private:
-        const UserInfo * m_uinfo;
         int m_line;
         QString m_xchannel;
         QHBoxLayout * m_layout;
@@ -45,8 +46,9 @@ class IncomingWidget : public QWidget
         QPixmap m_image;
         bool m_parkedCall;
         bool m_holdedCall;
+        double m_start;
         QAction * m_hangUpAction;
-        QAction * m_transferToNumberAction;
+        QAction * m_blindTransferAction;
         QAction * m_parkCallAction;
 };
 

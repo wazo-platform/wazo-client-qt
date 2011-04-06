@@ -42,7 +42,9 @@
 #include "channelinfo.h"
 #include "aastrasipnotify.h"
 #include "xivoconsts.h"
-#include "incoming.h"
+#include "incomingwidget.h"
+
+#define MAX_LINES 4
 
 PopcAastra::PopcAastra(QWidget *parent)
     : XLet(parent), m_ui(new Ui::PopcAastra), m_monitored_ui(0)
@@ -51,15 +53,6 @@ PopcAastra::PopcAastra(QWidget *parent)
     setTitle(tr("POPC Aastra operator"));
 
     m_calls_list = new QVBoxLayout(m_ui->m_calls_layout);
-    UserInfo *info = new UserInfo("xivotest", "1");
-    QVariantMap props;
-    props["fullname"] = "Pascal Cadotte-Michaud";
-    props["number"] = "4002";
-    info->updateConfig(props);
-    Incoming * inc1 = new Incoming(1, info, "sip/1234", this);
-    m_calls_list->addWidget(inc1);
-    connect(inc1, SIGNAL(doHangUp(int)), this, SLOT(hupline(int)));
-
     // Signals / slots
     connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
             this, SLOT(monitorPeer(UserInfo *)));
@@ -76,6 +69,7 @@ PopcAastra::PopcAastra(QWidget *parent)
 
     connect(m_ui->btn_vol_up, SIGNAL(clicked()), this, SLOT(volUp()));
     connect(m_ui->btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
+    connect(m_ui->btn_right, SIGNAL(clicked()), this, SLOT(navRight()));
 }
 
 /*! \brief update display according to call list
@@ -92,13 +86,45 @@ void PopcAastra::updateDisplay()
 
 void PopcAastra::updateChannelStatus(const QString & xchannel)
 {
-    qDebug() << Q_FUNC_INFO << xchannel;
+    //qDebug() << Q_FUNC_INFO << xchannel;
+    removeDefuncWidgets();
     const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
-    if (channelinfo == NULL) {  // never happens???
+    if (channelinfo == NULL) {
         qDebug() << Q_FUNC_INFO << "null chaninfo";
         return;
     }
-    QString status = channelinfo->commstatus();
+
+    const UserInfo * me = b_engine->user(b_engine->getFullId());
+    if (me == NULL) {
+        qDebug() << Q_FUNC_INFO << " Null user";
+        return;
+    }
+
+    if (me->fullname() != channelinfo->thisdisplay()) {
+        //qDebug() << Q_FUNC_INFO << " not our channel";
+        return;
+    }
+
+    // Check if this channel is already tracked
+    if (m_incomingcalls.contains(xchannel)) {
+        // Already tracked
+        //qDebug() << Q_FUNC_INFO << " Old channel updating";
+        //qDebug() << Q_FUNC_INFO << " commstatus " << channelinfo->commstatus();
+    } else {
+        // New channel
+        //qDebug() << Q_FUNC_INFO << " New channel adding";
+        int guessedline = findFirstAvailableLine();
+        qDebug() << Q_FUNC_INFO << "The guessed line number for this call is " << guessedline;
+        IncomingWidget * newcall = new IncomingWidget(guessedline, xchannel, this);
+        m_incomingcalls[xchannel] = newcall;
+        m_calls_list->addWidget(newcall);
+        connect(newcall, SIGNAL(doHangUp(int)), this, SLOT(hupline(int)));
+        connect(newcall, SIGNAL(doBlindTransfer(int)), this, SLOT(blindTransfer(int)));
+    }
+    IncomingWidget * current = m_incomingcalls[xchannel];
+    current->updateWidget();
+
+/*    QString status = channelinfo->commstatus();
     //                 if (map.contains("time-dial"))
     //                     ts = map.value("time-dial").toUInt() + current_ts;
     //                 if (map.contains("timestamp-dial"))
@@ -108,17 +134,8 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
     //                 if (map.contains("timestamp-link"))
     //                     ts = map.value("timestamp-link").toDouble() + b_engine->timeDeltaServerClient();
     qDebug() << Q_FUNC_INFO << "Channel: "<< xchannel << " Status: " << status;
-    // Don't show our own channels
-    if (channelinfo->direction() == "out")
-        return;
-    // dont display hangup channels !
-    if (status == CHAN_STATUS_HANGUP) { // Never happend??
-        qDebug() << Q_FUNC_INFO << "Hang-up received";
-        return;
-    }
     // activeChannels << channelme;
-    /*
-    qDebug() << Q_FUNC_INFO << "adding/updating" << xchannel << m_affhash;
+    
     if (m_affhash.contains(xchannel))
         m_affhash[xchannel]->updateWidget(xchannel);
     else {
@@ -138,7 +155,56 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
     */
 }
 
-void PopcAastra::monitorPeer(UserInfo * userInfo)
+/*! \brief check for defunc channels that are still shown in the call list */
+void PopcAastra::removeDefuncWidgets()
+{
+    //qDebug() << Q_FUNC_INFO;
+    int removed = 0;
+    if (m_incomingcalls.size() == 0) return;
+    const QHash<QString, ChannelInfo *> & channels = b_engine->channels();
+    foreach (const QString channel, m_incomingcalls.keys()) {
+        if (! channels.contains(channel)) {
+            delete m_incomingcalls[channel];
+            m_incomingcalls.remove(channel);
+            removed++;
+        }
+    }
+    if (removed)
+        qDebug() << Q_FUNC_INFO << "Removed " << removed << " defunc channel(s)";
+}
+
+/*! \brief prints the content of m_incomingcalls */
+void PopcAastra::debugIncomingCalls() const
+{
+    qDebug() << Q_FUNC_INFO << "Number of incoming calls " << m_incomingcalls.size();
+    for (QHash<QString, IncomingWidget *>::const_iterator i = m_incomingcalls.constBegin();
+        i != m_incomingcalls.constEnd(); ++i) {
+        IncomingWidget * current = i.value();
+        qDebug() << Q_FUNC_INFO << i.key() << current->toString();
+    }
+}
+
+/*! \brief finds the first line available to place this channel
+ *  The goal is to know/guess on which line a call is to avoid
+ *  mistakes when doing operations to a call since we are dealing
+ *  with lines on the phone device when using aastra xml api
+ *  Return -1 when all the lines are taken
+ */
+int PopcAastra::findFirstAvailableLine() const {
+    if (m_incomingcalls.size() == 0) {
+        return 1;
+    }
+    for (int i = 0; i < MAX_LINES; i++) {
+        bool free = true;
+        foreach (QString channel, m_incomingcalls.keys()) {
+            if (m_incomingcalls[channel]->line() == i + 1) free = false;
+        }
+        if (free) return i + 1;
+    }
+    return -1;
+}
+
+/*void PopcAastra::monitorPeer(UserInfo * userInfo)
 {
     qDebug() << Q_FUNC_INFO << b_engine->getFullId() << userInfo->xid();
     //emptyList();
@@ -149,10 +215,11 @@ void PopcAastra::monitorPeer(UserInfo * userInfo)
         updateDisplay();
     }
 }
-
+*/
 void PopcAastra::updatePhoneStatus(const QString & xphoneid)
 {
-    // Clear orphan callwidgets (callwidgets with NULL channel)
+    qDebug() << Q_FUNC_INFO << xphoneid;
+    removeDefuncWidgets();
     /*
     foreach (const QString xchannel, m_affhash.keys()) {
         CallWidget * callwidget = m_affhash[xchannel];
@@ -230,6 +297,24 @@ void PopcAastra::transftonumberchan(const QString & chan)
     qDebug() << Q_FUNC_INFO << chan;
 }
 
+/*! \brief transfer the call on the line to the number in the name/number field */
+void PopcAastra::blindTransfer(int line)
+{
+    //qDebug() << Q_FUNC_INFO << line;
+    QList<QString> commands;
+    commands.append(getKeyUri(LINE, line));
+    commands.append(getKeyUri(XFER));
+    QString number = m_ui->txt_number_name->text();
+    for (int i = 0; i < number.size(); ++i) {
+        const QChar c = number[i];
+        if (c.isDigit()) {
+            commands.append(getKeyUri(KEYPAD, c.digitValue()));
+        }
+    }
+    commands.append(getKeyUri(XFER));
+    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+}
+
 void PopcAastra::parkcall(const QString & chan)
 {
     qDebug() << Q_FUNC_INFO << chan;
@@ -266,16 +351,25 @@ void PopcAastra::updateUserStatus(const QString & xuserid)
 //     }
 }
 
+/*! \brief turns the volume up */
 void PopcAastra::volUp()
 {
     qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(VOL_UP, SPECIAL_ME));
 }
 
+/*! \brief turns the volume down */
 void PopcAastra::volDown()
 {
     qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(VOL_DOWN, SPECIAL_ME));
+}
+
+/*! \brief press the navigation right button of the device */
+void PopcAastra::navRight()
+{
+    qDebug() << Q_FUNC_INFO;
+    emit ipbxCommand(getAastraKeyNotify(NAV_RIGHT, SPECIAL_ME));
 }
 
 /*! \brief destructor
