@@ -19,6 +19,5 @@ SUBDIRS  = xletweb \
            calls \
            records \
            parking \
-           xlettest \
            popcaastra
 win32:SUBDIRS += outlook
