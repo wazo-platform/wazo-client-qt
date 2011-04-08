@@ -35,8 +35,10 @@ IncomingWidget::IncomingWidget(int line_num, const QString & xchannel, QWidget *
             break;
         }
     }
-    m_lbl_name->setText(channel->peerdisplay());
-    m_lbl_exten->setText(peer->phoneNumber());
+    m_peer_name = channel->peerdisplay();
+    m_lbl_name->setText(m_peer_name);
+    m_peer_number = peer->phoneNumber();
+    m_lbl_exten->setText(m_peer_number);
     m_lbl_time->setText(b_engine->timeElapsed(m_start));
     //m_lbl_status->setText("status");
 
@@ -158,7 +160,7 @@ void IncomingWidget::doHangUp()
 void IncomingWidget::doBlindTransfer()
 {
     qDebug() << Q_FUNC_INFO;
-    emit doBlindTransfer(m_line);
+    emit doBlindTransfer(m_line, m_peer_name, m_peer_number);
 }
 
 void IncomingWidget::doAttendedTransfer()

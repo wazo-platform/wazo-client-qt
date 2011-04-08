@@ -37,6 +37,7 @@
 #include <QObject>
 #include <QVBoxLayout>
 #include "xlet.h"
+#include "transferedwidget.h"
 
 namespace Ui {
     class PopcAastra;
@@ -58,6 +59,8 @@ public:
     void debugIncomingCalls() const;
 private:
     void removeDefuncWidgets();
+    /*! \brief starts tracking a number after a transfer */
+    void trackTransfer(QString number, const QString &, const QString &);
 public slots:
     void updateDisplay();
     /*! \brief When a name is clicked on the destination list */
@@ -83,18 +86,16 @@ public slots:
     void hangup();
     void hupline(int);
     void attendedTransfer(int);
-    void blindTransfer(int);
+    void blindTransfer(int, const QString &, const QString &);
     void parkcall(int);
     void selectLine(int);
+    void prgkey1();
 private:
     Ui::PopcAastra * m_ui;
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget
+    QHash<QString, TransferedWidget *> m_transferedcalls; //!< List of transfered calls
     QVBoxLayout * m_calls_list; //!< Container layout for the incoming calls widget
-
-    QAction * m_hangupAction;
-    QAction * m_transferToNumberAction;
-    QAction * m_parkCallAction;
-
+    QVBoxLayout * m_destinations_list;  //!< Container layout for the transfered calls widget
 };
 
 #endif /* __POPCAASTRA_H__ */

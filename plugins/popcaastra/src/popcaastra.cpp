@@ -53,6 +53,8 @@ PopcAastra::PopcAastra(QWidget *parent)
     setTitle(tr("POPC Aastra operator"));
 
     m_calls_list = new QVBoxLayout(m_ui->m_calls_layout);
+    m_destinations_list = new QVBoxLayout(m_ui->m_destinations_layout);
+
     // Signals / slots
     connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
             this, SLOT(monitorPeer(UserInfo *)));
@@ -71,6 +73,7 @@ PopcAastra::PopcAastra(QWidget *parent)
     connect(m_ui->btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
     connect(m_ui->btn_right, SIGNAL(clicked()), this, SLOT(navRight()));
     connect(m_ui->btn_hangup, SIGNAL(clicked()), this, SLOT(hangup()));
+    connect(m_ui->btn_prg_1, SIGNAL(clicked()), this, SLOT(prgkey1()));
 }
 
 /*! \brief update display according to call list
@@ -120,7 +123,8 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
         m_incomingcalls[xchannel] = newcall;
         m_calls_list->addWidget(newcall);
         connect(newcall, SIGNAL(doHangUp(int)), this, SLOT(hupline(int)));
-        connect(newcall, SIGNAL(doBlindTransfer(int)), this, SLOT(blindTransfer(int)));
+        connect(newcall, SIGNAL(doBlindTransfer(int, const QString &, const QString &)),
+                        this, SLOT(blindTransfer(int, const QString &, const QString &)));
         connect(newcall, SIGNAL(doAttendedTransfer(int)), this, SLOT(attendedTransfer(int)));
         connect(newcall, SIGNAL(selectLine(int)), this, SLOT(selectLine(int)));
     }
@@ -181,10 +185,25 @@ int PopcAastra::findFirstAvailableLine() const {
     return -1;
 }
 
+/*! \brief parse new phone status
+ * 0 = Available
+ * 1 = Talking
+ * 4 = Not available
+ * 8 = Ringing
+ * 9 = (On line OR calling) AND ringing
+ * 16 = On hold
+ */
 void PopcAastra::updatePhoneStatus(const QString & xphoneid)
 {
     qDebug() << Q_FUNC_INFO << xphoneid;
     removeDefuncWidgets();
+    const PhoneInfo * phone = b_engine->phone(xphoneid);
+    if (phone == NULL) return;
+    qDebug() << Q_FUNC_INFO << "New phone status - " << 
+        phone->number() << " " << phone->hintstatus();
+    foreach (QString s, phone->xchannels()) {
+        qDebug() << s;
+    }
 }
 
 void PopcAastra::hupline(int line)
@@ -197,7 +216,8 @@ void PopcAastra::hupline(int line)
 }
 
 /*! \brief blind transfer the call on the line to the number in the name/number field */
-void PopcAastra::blindTransfer(int line)
+void PopcAastra::blindTransfer(int line, const QString & transferedname, 
+        const QString & transferednumber)
 {
     //qDebug() << Q_FUNC_INFO << line;
     QList<QString> commands;
@@ -211,7 +231,22 @@ void PopcAastra::blindTransfer(int line)
         }
     }
     commands.append(getKeyUri(XFER));
+    trackTransfer(number, transferedname, transferednumber);
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+}
+
+/*! \brief starts tracking a number after a transfer */
+void PopcAastra::trackTransfer(QString number, const QString & tname, const QString & tnum)
+{
+    qDebug() << Q_FUNC_INFO << number;
+    foreach (QString id, b_engine->iterover("phones").keys()) {
+        const PhoneInfo * p = b_engine->phone(id);
+        if (p->number() == number) {
+            m_transferedcalls[id] = new TransferedWidget(number, tname, tnum, this);
+            m_destinations_list->addWidget(m_transferedcalls[id]);
+            return;
+        }
+    }
 }
 
 /*! \brief attended transfer to the line in the number/name field */
@@ -227,7 +262,7 @@ void PopcAastra::attendedTransfer(int line)
         if (c.isDigit())
             commands.append(getKeyUri(KEYPAD, c.digitValue()));
     }
-    commands.append(getKeyUri(LINE, findFirstAvailableLine()));
+    commands.append(getKeyUri(NAV_RIGHT));
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
@@ -287,6 +322,13 @@ void PopcAastra::hangup()
 {
     qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(GOODBYE, SPECIAL_ME));
+}
+
+/*! \brief simulates a press on the programmable button 1 */
+void PopcAastra::prgkey1()
+{
+    qDebug() << Q_FUNC_INFO;
+    emit ipbxCommand(getAastraKeyNotify(PRG_KEY, SPECIAL_ME, 1));
 }
 
 /*! \brief destructor

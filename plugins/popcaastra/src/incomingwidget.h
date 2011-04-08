@@ -34,13 +34,15 @@ class IncomingWidget : public QWidget
         void updateCallTimeLabel();
     signals:
         void doHangUp(int);     //!< hang up a line
-        void doBlindTransfer(int);
+        void doBlindTransfer(int, const QString &, const QString &);
         void doAttendedTransfer(int);
         void selectLine(int);
         void doParkCall(int);
     private:
         int m_line;
         QString m_xchannel;
+        QString m_peer_name;
+        QString m_peer_number;
         QHBoxLayout * m_layout;
         QLabel * m_lbl_line;
         QLabel * m_lbl_name;

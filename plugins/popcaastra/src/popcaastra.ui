@@ -39,6 +39,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="btn_prg_1">
+       <property name="text">
+        <string>Prog key 1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btn_hangup">
        <property name="text">
         <string>Hangup</string>
@@ -191,17 +198,21 @@
       </widget>
      </item>
      <item>
-      <spacer name="verticalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+      <widget class="QScrollArea" name="scrollArea_2">
+       <property name="widgetResizable">
+        <bool>true</bool>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
+       <widget class="QWidget" name="m_destinations_layout">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>769</width>
+          <height>208</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
      </item>
     </layout>
    </item>
