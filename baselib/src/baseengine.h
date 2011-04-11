@@ -63,7 +63,7 @@ class Xlet;
 #include "groupinfo.h"
 #include "meetmeinfo.h"
 #include "voicemailinfo.h"
-#include "incomingcallsinfo.h"
+#include "incallsinfo.h"
 
 #include "channelinfo.h"
 #include "queue_agent_status.h"
@@ -147,7 +147,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         bool lastconnwins() const;                //!< last connected one wins
         void setLastConnWins(bool b);             //!< last connected user wins
 
-        const QStringList & getCapaXlets() const;
+        const QVariantList & getCapaXlets() const;
         const QVariantMap & getOptionsUserStatus() const;
         const QVariantMap & getOptionsPhoneStatus() const;
         const QVariantMap & getOptionsChannelStatus() const;
@@ -391,8 +391,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         bool m_checked_lastconnwins;           //!< the last connected account "wins"
 
         // Replies given by the server
-        QStringList m_capafuncs;        //!< List of func capabilities issued by the server after a successful login
-        QStringList m_capaxlets;        //!< List of xlet capabilities issued by the server after a successful login
+        QStringList m_capafuncs;         //!< List of func capabilities issued by the server after a successful login
+        QVariantList m_capaxlets;        //!< List of xlet capabilities issued by the server after a successful login
         QVariantMap m_options_userstatus;    //!< Display Options for User statuses (presence)
         QVariantMap m_options_phonestatus;   //!< Display Options for Phone statuses
         QVariantMap m_options_channelstatus; //!< Display Options for Channel statuses

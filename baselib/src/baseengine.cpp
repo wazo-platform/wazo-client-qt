@@ -72,7 +72,7 @@ static const QStringList CheckFunctions = (QStringList() << "presence" << "custo
 static const QStringList GenLists = (QStringList()
                                      << "users" << "phones" << "trunks"
                                      << "agents" << "queues" << "groups" << "meetmes"
-                                     << "voicemails" << "incomingcalls");
+                                     << "voicemails" << "incalls");
 static CtiConn * m_ctiConn;
 
 BaseEngine::BaseEngine(QSettings *settings,
@@ -104,7 +104,7 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_xinfoList.insert("groups", newXInfo<GroupInfo>);
     m_xinfoList.insert("meetmes", newXInfo<MeetmeInfo>);
     m_xinfoList.insert("voicemails", newXInfo<VoiceMailInfo>);
-    m_xinfoList.insert("incomingcalls", newXInfo<IncomingCallsInfo>);
+    m_xinfoList.insert("incalls", newXInfo<InCallsInfo>);
 
     // TCP connection with CTI Server
     m_ctiserversocket = new QSslSocket(this);
@@ -525,7 +525,7 @@ void BaseEngine::setLastConnWins(bool b)
 }
 
 /*! \brief gets m_capaxlets */
-const QStringList & BaseEngine::getCapaXlets() const
+const QVariantList & BaseEngine::getCapaXlets() const
 {
     return m_capaxlets;
 }
@@ -1054,13 +1054,13 @@ void BaseEngine::parseCommand(const QString &line)
             sendJsonCommand(command);
 
         } else if (thisclass == "login_capas_ok") {
-            //qDebug() << "login_capas_ok" << datamap.keys();
+            // qDebug() << "login_capas_ok" << datamap;
             m_ipbxid = datamap.value("ipbxid").toString();
             m_userid = datamap.value("userid").toString();
             m_xuserid = QString("%1/%2").arg(m_ipbxid).arg(m_userid);
 
             m_appliname = datamap.value("appliname").toString();
-            m_capaxlets = datamap.value("capaxlets").toStringList();
+            m_capaxlets = datamap.value("capaxlets").toList();
 
             QVariantMap capas = datamap.value("capas").toMap();
             m_options_userstatus = capas.value("userstatus").toMap();
@@ -2025,7 +2025,7 @@ void BaseEngine::fetchLists()
     getlists = (QStringList()
                 << "users" << "phones" << "trunks"
                 << "agents" << "queues" << "groups" << "meetmes"
-                << "voicemails" << "incomingcalls");
+                << "voicemails" << "incalls");
     foreach (QString kind, getlists) {
         command["listname"] = kind;
         sendJsonCommand(command);

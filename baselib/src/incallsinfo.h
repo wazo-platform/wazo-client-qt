@@ -31,8 +31,8 @@
  * $Date$
  */
 
-#ifndef __INCOMINGCALLSINFO_H__
-#define __INCOMINGCALLSINFO_H__
+#ifndef __INCALLSINFO_H__
+#define __INCALLSINFO_H__
 
 #include "baselib_export.h"
 #include <QString>
@@ -41,12 +41,12 @@
 #include <QVariantMap>
 #include "xinfo.h"
 
-/*! \brief Store IncomingCalls information
+/*! \brief Store InCalls information
  */
-class BASELIB_EXPORT IncomingCallsInfo : public XInfo
+class BASELIB_EXPORT InCallsInfo : public XInfo
 {
     public:
-        IncomingCallsInfo(const QString &, const QString &);  //! constructor
+        InCallsInfo(const QString &, const QString &);  //! constructor
         bool updateConfig(const QVariantMap &);  //! update config members
         bool updateStatus(const QVariantMap &);  //! update status members
 };
