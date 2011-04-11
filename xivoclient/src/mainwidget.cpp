@@ -218,15 +218,11 @@ void MainWidget::clipdata()
 }
 #endif
 
-void MainWidget::setAppearance(const QStringList &dockoptions)
+void MainWidget::setAppearance(const QVariantList & dockoptions)
 {
-    qDebug() << Q_FUNC_INFO << dockoptions;
-
-    QStringList dockopts = dockoptions;
-
-    foreach (QString dname, dockopts) {
-        if (dname.size() > 0) {
-            QStringList dopt = dname.split("-");
+    foreach (QVariant dproperties, dockoptions) {
+        QStringList dopt = dproperties.toStringList();
+        if (dopt.size() > 1) {
             QString wname = dopt[0];
             if ((wname == "customerinfo") && (! b_engine->checkedFunction(wname)))
                 continue;
@@ -242,7 +238,7 @@ void MainWidget::setAppearance(const QStringList &dockoptions)
                 if (dopt.size() > 2)
                     m_dockoptions[wname] = dopt[2];
             } else {
-                m_docknames.append(dname);
+                m_docknames.append(dopt[0]);
             }
         }
     }

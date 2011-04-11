@@ -32,21 +32,21 @@
  */
 
 #include <QDebug>
-#include "incomingcallsinfo.h"
+#include "incallsinfo.h"
 
-IncomingCallsInfo::IncomingCallsInfo(const QString & ipbxid,
-                                     const QString & id)
+InCallsInfo::InCallsInfo(const QString & ipbxid,
+                         const QString & id)
     : XInfo(ipbxid, id)
 {
 }
 
-bool IncomingCallsInfo::updateConfig(const QVariantMap &)
+bool InCallsInfo::updateConfig(const QVariantMap &)
 {
     bool haschanged = true;
     return haschanged;
 }
 
-bool IncomingCallsInfo::updateStatus(const QVariantMap &)
+bool InCallsInfo::updateStatus(const QVariantMap &)
 {
     bool haschanged = true;
     return haschanged;

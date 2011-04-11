@@ -49,7 +49,7 @@ class MainWidget : public QMainWindow
         MainWidget();
         ~MainWidget();
 
-        void setAppearance(const QStringList &);  //!< dock options
+        void setAppearance(const QVariantList &);  //!< dock options
         void clearAppearance();
     public slots:
         void customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &);
