@@ -53,7 +53,6 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         const QString & context() const { return m_context; };  //! context this phone belongs to
         const QString & number() const { return m_number; };  //! phone number
         const QString & protocol() const { return m_protocol; };  //! phone technology (sip, iax, etc...)
-        const QString & phoneid() const { return m_id; };  //! phone id
         int simultcalls() const { return m_simultcalls; };  //! phone simultcalls
 
         const QStringList & channels() const { return m_channels; };  //! current communications of this phone
