@@ -985,12 +985,12 @@ Etes vous sur ?</translation>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../common/built-in-xlet/searchpanel.cpp" line="58"/>
+        <location filename="../common/built-in-xlet/searchpanel.cpp" line="59"/>
         <source>N&amp;ame or number to search :</source>
         <translation>N&amp;om ou numéro à rechercher :</translation>
     </message>
     <message>
-        <location filename="../common/built-in-xlet/searchpanel.cpp" line="50"/>
+        <location filename="../common/built-in-xlet/searchpanel.cpp" line="51"/>
         <source>Contacts</source>
         <translation>Contacts</translation>
     </message>

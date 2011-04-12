@@ -296,6 +296,12 @@ Gelieve uw versie te upgraden.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="src/gui/basepeerwidget.cpp" line="580"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="585"/>
+        <source>Cancel the Transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="src/gui/basepeerwidget.cpp" line="584"/>
         <source>&amp;Cancel the Transfer</source>
         <translation type="unfinished"></translation>

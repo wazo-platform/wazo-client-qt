@@ -307,6 +307,12 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
         <translation>(Annuler)</translation>
     </message>
     <message>
+        <location filename="src/gui/basepeerwidget.cpp" line="580"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="585"/>
+        <source>Cancel the Transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="src/gui/basepeerwidget.cpp" line="584"/>
         <source>&amp;Cancel the Transfer</source>
         <translation>&amp;Annule le Transfert</translation>
