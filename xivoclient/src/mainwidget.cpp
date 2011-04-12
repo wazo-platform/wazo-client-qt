@@ -54,7 +54,6 @@ MainWidget::MainWidget()
                             .scaledToHeight(18, Qt::SmoothTransformation)),
       m_pixmap_connected(QPixmap(":/images/connected.png")
                          .scaledToHeight(18, Qt::SmoothTransformation)),
-      m_appliname("Client"),
       m_withsystray(true),
       m_settings(b_engine->getSettings()),
       m_status(new QLabel(this)),
@@ -62,6 +61,7 @@ MainWidget::MainWidget()
       m_resizingHelper(0)
 {
     b_engine->setParent(this); // take ownership of the engine object
+    m_appliname = tr("Client %1").arg(XIVOVER);
     m_status->setPixmap(m_pixmap_disconnected);
 
     statusBar()->addPermanentWidget(m_status);
@@ -632,8 +632,9 @@ void MainWidget::clearPresence()
 void MainWidget::engineStarted()
 {
     setAppearance(b_engine->getCapaXlets());
-
-    m_appliname = tr("Client (%1 profile)").arg(b_engine->getCapaApplication());
+    m_appliname = tr("Client %1 (%2 profile)")
+        .arg(XIVOVER)
+        .arg(b_engine->getCapaApplication());
 
     connect(b_engine, SIGNAL(updatePresence(const QVariant &)),
             this, SLOT(updatePresence(const QVariant &)));
@@ -793,7 +794,7 @@ void MainWidget::engineStopped()
     m_status->setPixmap(m_pixmap_disconnected);
 
     clearAppearance();
-    m_appliname = "Client";
+    m_appliname = tr("Client %1").arg(XIVOVER);
     updateAppliName();
     b_engine->logAction("connection stopped");
 }

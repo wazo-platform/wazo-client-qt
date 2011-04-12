@@ -254,6 +254,7 @@ void ConfigWidget::_insert_guisetting_tab()
     m_locale_cbox->addItem(tr("English"), QString("en_US"));
     m_locale_cbox->addItem(tr("French"), QString("fr_FR"));
     m_locale_cbox->addItem(tr("Nederlands"), QString("nl_NL"));
+    m_locale_cbox->addItem(tr("German"), QString("de_DE"));
     for (int i = 0; i < m_locale_cbox->count(); i++) {
         if (b_engine->forcelocale() == m_locale_cbox->itemData(i))
             m_locale_cbox->setCurrentIndex(i);
@@ -301,7 +302,7 @@ void ConfigWidget::_insert_guisetting_tab()
         if(m_opts.value("switchboard-elt-type") == m_comboswitchboard->itemData(i))
             m_comboswitchboard->setCurrentIndex(i);
     }
-    layout4->addRow(tr("Apparence of SwitchBoard elements"), m_comboswitchboard);
+    layout4->addRow(tr("Appearance of SwitchBoard elements"), m_comboswitchboard);
 
     m_maxWidthWanted = new QSpinBox(this);
     m_maxWidthWanted->setRange(50, 250);
