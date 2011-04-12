@@ -1248,6 +1248,15 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 qDebug() << function << listname << xid << haschanged;
             }
 
+            if (! haschanged)
+                qDebug() << "got an unchanged" << function << listname << xid;
+
+            // updating relations ...
+            if (listname == "phones") {
+                //
+            }
+
+            // transmission to xlets
             if (listname == "users")
                 emit updateUserConfig(xid);
             else if (listname == "phones")
@@ -2146,6 +2155,24 @@ void BaseEngine::setOSInfos(const QString & osname)
 {
     m_osname = osname;
 }
+
+// method to provide the list of phonenumbers of a given xuserid
+QStringList BaseEngine::phonenumbers(const UserInfo * userinfo)
+{
+    QStringList phonenumbers;
+    if (userinfo != NULL) {
+        foreach (QString xphoneid, userinfo->phonelist()) {
+            const PhoneInfo * phoneinfo = phone(xphoneid);
+            if (phoneinfo == NULL)
+                continue;
+            QString phonenumber = phoneinfo->number();
+            if ((! phonenumber.isEmpty()) && (! phonenumbers.contains(phonenumber)))
+                phonenumbers.append(phonenumber);
+        }
+    }
+    return phonenumbers;
+}
+
 
 /*!
  * Send a keep alive message to the login server.

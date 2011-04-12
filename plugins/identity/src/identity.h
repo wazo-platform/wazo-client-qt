@@ -59,6 +59,7 @@ class IdentityDisplay : public XLet
         void updatePresence();
         void setOpt(const QString &, bool);
         void setForward(const QString &, const QVariant &);
+        void updatePhoneConfig(const QString &);
         void updateUserConfig(const QString &);
         void updateUserStatus(const QString &);
 
@@ -72,16 +73,16 @@ class IdentityDisplay : public XLet
         void setupIcons();
 
         QString m_xuserid;
-        QGridLayout *m_glayout;
+        QGridLayout * m_glayout;
         QLabel *m_icon_user;
         QFrame *m_qvline1;
         QFrame *m_qvline2;
         QLabel *m_user;
         QLabel *m_phonenum;
         QComboBox * m_presencevalue;
-        IdentityAgent *m_agent;
-        IdentityPhone *m_phone;
-        IdentityVoiceMail *m_voicemail;
+        IdentityAgent * m_agent;
+        QHash<QString, IdentityPhone *> m_identityphones;
+        IdentityVoiceMail * m_voicemail;
         QHash<QString, QString> m_presence_names;
         const UserInfo *m_ui;
         int m_col_user;

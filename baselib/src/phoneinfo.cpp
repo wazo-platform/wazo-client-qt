@@ -50,6 +50,7 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "protocol", & m_protocol);
     haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "number", & m_number);
+    haschanged |= setIfChangeString(prop, "iduserfeatures", & m_iduserfeatures);
 
     haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
     haschanged |= setIfChangeBool(prop, "initialized", & m_initialized);

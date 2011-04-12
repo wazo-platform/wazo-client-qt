@@ -55,7 +55,7 @@ BasicPeerWidget::BasicPeerWidget(const UserInfo * ui)
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
     QString name = (ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
     setText(name);
-    setToolTip(tr("Phone Number : %1").arg(ui->phoneNumber()));
+    setToolTip(tr("Phone Numbers : %1").arg(b_engine->phonenumbers(ui).join(", ")));
     m_presenceSquareSize = b_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
     if ((m_presenceSquareSize<=0)||(m_presenceSquareSize>20)) {
         m_presenceSquareSize = 5;
@@ -118,9 +118,9 @@ void BasicPeerWidget::paintEvent(QPaintEvent *)
 
 void BasicPeerWidget::updatePresence()
 {
-    QString text = tr("User Name : %1\nPhone Number : %2")
+    QString text = tr("User Name : %1\nPhone Numbers : %2")
         .arg(m_ui_remote->fullname())
-        .arg(m_ui_remote->phoneNumber());
+        .arg(b_engine->phonenumbers(m_ui_remote).join(", "));
     QString availstate = m_ui_remote->availstate();
     QVariantMap presencedetails = b_engine->getOptionsUserStatus().value(availstate).toMap();
     if (! m_ui_remote->ctilogin().isEmpty()) {
