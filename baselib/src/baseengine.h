@@ -209,6 +209,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QHash<QString, QHash<QString, ParkingInfo *> > parking() const
                 { return m_parking; }; //!< Return the parking to any Xlet
 
+        QStringList phonenumbers(const UserInfo *);
+
         void registerTranslation(const QString &);
         void changeTranslation(const QString &);
         void sendUrlToBrowser(const QString &);

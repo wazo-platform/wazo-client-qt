@@ -311,7 +311,7 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
     QDrag *drag = new QDrag(this);
     QMimeData * mimeData = new QMimeData;
     if (m_ui_remote) {
-        mimeData->setText(m_ui_remote->phoneNumber());
+        // XXX mimeData->setText(m_ui_remote->phoneNumber());
         mimeData->setData(XUSERID_MIMETYPE, m_ui_remote->xid().toAscii());
         mimeData->setData(XPHONEID_MIMETYPE, m_ui_remote->phonelist().join("").toAscii());
     } else {

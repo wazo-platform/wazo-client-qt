@@ -119,9 +119,8 @@ XletQueues::XletQueues(QWidget *parent)
     setTitle(tr("Queues' List"));
 
     QStringList xletlist;
-    foreach (QString xletdesc, b_engine->getCapaXlets())
-        xletlist.append(xletdesc.split("-")[0]);
-    m_showMore = xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
+    // foreach (QString xletdesc, b_engine->getCapaXlets())
+    m_showMore = true; // xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
     m_showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
     uint nsecs = 30;
     if (b_engine->getGuiOptions("server_gui").contains("xlet.queues.statsfetchperiod"))
@@ -512,7 +511,7 @@ QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
     m_layout->addWidget(m_name, 0, col++);
 
     m_more = new QPushButton(this);
-    m_more->setProperty("queueid", QString("%1/%2").arg(m_queueinfo->ipbxid()).arg(m_queueinfo->id()));
+    m_more->setProperty("queueid", m_queueinfo->xid());
     m_more->setProperty("function", "more");
     m_more->setIcon(QIcon(":/images/add.png"));
     m_more->setFixedSize(20, 20);

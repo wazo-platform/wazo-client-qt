@@ -126,9 +126,8 @@ void IdentityPhoneLine::hangup()
     if (sender()) {
         QString channel = sender()->property("channel").toString();
         b_engine->actionCall("hangup",
-                             QString("chan:%1/%2:%3")
-                             .arg(phoneinfo->ipbxid())
-                             .arg(phoneinfo->phoneid())
+                             QString("chan:%1:%2")
+                             .arg(phoneinfo->xid())
                              .arg(channel));
     }
 }
@@ -141,9 +140,8 @@ void IdentityPhoneLine::answer()
     if (sender()) {
         QString channel = sender()->property("channel").toString();
         b_engine->actionCall("answer",
-                             QString("chan:%1/%2:%3")
-                             .arg(phoneinfo->ipbxid())
-                             .arg(phoneinfo->phoneid())
+                             QString("chan:%1:%2")
+                             .arg(phoneinfo->xid())
                              .arg(channel));
     }
 }
@@ -156,9 +154,8 @@ void IdentityPhoneLine::refuse()
     if (sender()) {
         QString channel = sender()->property("channel").toString();
         b_engine->actionCall("refuse",
-                             QString("chan:%1/%2:%3")
-                             .arg(phoneinfo->ipbxid())
-                             .arg(phoneinfo->phoneid())
+                             QString("chan:%1:%2")
+                             .arg(phoneinfo->xid())
                              .arg(channel));
     }
 }

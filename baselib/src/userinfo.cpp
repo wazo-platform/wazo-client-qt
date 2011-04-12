@@ -49,7 +49,6 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "loginclient", & m_ctilogin);
     haschanged |= setIfChangeString(prop, "fullname", & m_fullname);
-    haschanged |= setIfChangeString(prop, "number", & m_phonenumber);
     haschanged |= setIfChangeString(prop, "mobilephonenumber", & m_mobilenumber);
     haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "voicemailid", & m_voicemailid);
@@ -58,9 +57,9 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
     m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(m_agentid);
 
-    if (prop.contains("id")) {
+    if (prop.contains("linelist")) {
         QStringList lid;
-        foreach (QString id, prop.value("id").toStringList())
+        foreach (QString id, prop.value("linelist").toStringList())
             lid << QString("%1/%2").arg(m_ipbxid).arg(id);
         setPhoneIdList(lid);
         haschanged = true;
@@ -98,12 +97,6 @@ const QString & UserInfo::fullname() const
     return m_fullname;
 }
 
-/*! \brief return m_phonenumber */
-const QString & UserInfo::phoneNumber() const
-{
-    return m_phonenumber;
-}
-
 /*! \brief return m_mobilenumber */
 const QString & UserInfo::mobileNumber() const
 {
@@ -138,7 +131,7 @@ const QString & UserInfo::xagentid() const
 
 /*! \brief return a list of contexts where this user has its phones
  */
-const QString& UserInfo::context() const
+const QString & UserInfo::context() const
 {
     return m_context;
 }
@@ -163,7 +156,7 @@ QString UserInfo::toString() const
     QString str;
 
     str = "Userid=" + m_id + " company=" + m_company + " fullname=" + m_fullname;
-    str += " phonenum=" + m_phonenumber + " mobile=" + m_mobilenumber;
+    str += " mobile=" + m_mobilenumber;
     str += " m_voicemailnum=" + m_voicemailnumber;
     str += " nphones=" + QString::number(m_phoneidlist.size());
     str += " phonesids=" + m_phoneidlist.join(",");

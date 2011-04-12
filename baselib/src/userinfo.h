@@ -58,7 +58,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
         bool hasPhoneId(const QString &) const;
 
-        const QString & phoneNumber() const;
         const QString & mobileNumber() const;
         const QString & voicemailId() const;
         const QStringList & phonelist() const;
@@ -86,7 +85,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
         int m_simultcalls;
 
-        QString m_phonenumber;  //!< main phone number
         QString m_mobilenumber;  //!< mobile phone number
         QString m_voicemailid;  //!< voice mail box number
         QString m_agentid; //!< agent id

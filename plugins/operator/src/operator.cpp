@@ -430,33 +430,6 @@ void XletOperator::updateUserStatus(const QString & xuserid)
  */
 QString XletOperator::getPeerChan(QString const &) const
 {
-//     if (! m_ui)
-//         return QString();
-//     QString ipbxid = m_ui->ipbxid();
-//     foreach (const QString phoneid, m_ui->phonelist()) {
-//         QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-//         const PhoneInfo * pi = b_engine->phone(xphoneid);
-//         if (pi == NULL)
-//             continue;
-//         foreach (const QString channel, pi->channels()) {
-//             const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-//             if (channelinfo == NULL)
-//                 continue;
-
-//             QMapIterator<QString, QVariant> it(pi->comms());
-//             while (it.hasNext()) {
-//                 it.next();
-//                 QVariantMap qvm = it.value().toMap();
-//                 if (qvm["thischannel"].toString() == chan) {
-//                     QString peerchan = qvm["peerchannel"].toString();
-//                     // ugly workaround...
-//                     if (peerchan.endsWith("<MASQ>"))
-//                         peerchan.remove("<MASQ>");
-//                     return peerchan;
-//                 }
-//             }
-//         }
-//     }
     return QString();
 }
 

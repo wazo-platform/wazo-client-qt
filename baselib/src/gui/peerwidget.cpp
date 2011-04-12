@@ -224,13 +224,9 @@ void PeerWidget::setName(const QString &/*name*/)
 {
     QString text = tr("(No callerid yet)");
 
-    if (!m_ui_remote->fullname().isEmpty() && !m_ui_remote->phoneNumber().isEmpty()) {
-        text = tr("%1 <%2>").arg(m_ui_remote->fullname()).arg(m_ui_remote->phoneNumber());
-    } else if (!m_ui_remote->fullname().isEmpty()) {
+    // no more phonenumber XXX
+    if (! m_ui_remote->fullname().isEmpty())
         text = m_ui_remote->fullname();
-    } else if (!m_ui_remote->phoneNumber().isEmpty()) {
-        text = m_ui_remote->phoneNumber();
-    }
 
     QFontMetrics fm(m_textlbl->font());
     if (m_textlbl->width() < fm.width(text)) {
