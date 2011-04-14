@@ -25,14 +25,6 @@ import os
 import sys
 import xml.dom.minidom
 
-action = sys.argv[1]
-inputfiles = sys.argv[2:]
-
-# usage :
-# find . -name "*.ts" | xargs ./tools/translation.py makecsv 
-
-fulldict = {}
-
 def parse(language, r):
     for k in r.childNodes[1].childNodes:
         if k.nodeName == 'context':
@@ -60,14 +52,12 @@ def parse(language, r):
     return
 
 def csvout(fulldict):
-    k = open('/tmp/trads.csv', 'w')
+    k = open('summary_translations.csv', 'w')
     x = csv.writer(k, delimiter = ';', quotechar = '"', quoting = csv.QUOTE_ALL)
-    # legend
-    x.writerow(['Fichier', 'Classe',
-                'Anglais (référence)',
-                'Français',
-                'Allemand',
-                'Néerlandais'])
+    legend = ['Fichier', 'Classe', 'Anglais (référence)']
+    for lngval in languages.values():
+        legend.append(lngval)
+    x.writerow(legend)
     x.writerow([])
     for basename, classes in fulldict.iteritems():
         for classname, trads in classes.iteritems():
@@ -75,27 +65,35 @@ def csvout(fulldict):
             for envalue in envalues:
                 otherlanguages = trads.get(envalue)
                 try:
-                    if otherlanguages.get('fr'):
-                        frstr = otherlanguages.get('fr')
-                    else:
-                        frstr = 'UNDEFINED'
-                    if otherlanguages.get('de'):
-                        destr = otherlanguages.get('de')
-                    else:
-                        destr = 'UNDEFINED'
-                    if otherlanguages.get('nl'):
-                        nlstr = otherlanguages.get('nl')
-                    else:
-                        nlstr = 'UNDEFINED'
-                    x.writerow([basename, classname,
-                                envalue.encode('utf8'),
-                                frstr.encode('utf8'),
-                                destr.encode('utf8'),
-                                nlstr.encode('utf8')])
+                    t = {}
+                    args = [basename, classname, envalue.encode('utf8')]
+                    for lngkey in languages.keys():
+                        if otherlanguages.get(lngkey):
+                            t[lngkey] = otherlanguages.get(lngkey)
+                        else:
+                            t[lngkey] = 'UNDEFINED'
+                        args.append(t.get(lngkey).encode('utf8'))
+                    x.writerow(args)
                 except Exception, exc:
                     print '---', exc, otherlanguages
     k.close()
     return
+
+if len(sys.argv) > 1:
+    action = sys.argv[1]
+    inputfiles = sys.argv[2:]
+else:
+    print 'Typical use :'
+    print 'find . -name "*.ts" | xargs ./tools/translation.py makecsv'
+    sys.exit(1)
+
+fulldict = {}
+
+languages = {
+    'fr' : 'Français',
+    'de' : 'Allemand',
+    'nl' : 'Néerlandais',
+    }
 
 if action == 'makecsv':
     for infile in inputfiles:
