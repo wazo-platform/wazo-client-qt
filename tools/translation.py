@@ -63,8 +63,8 @@ def csvout(fulldict):
         for classname, trads in classes.iteritems():
             envalues = sorted(trads.keys())
             for envalue in envalues:
-                otherlanguages = trads.get(envalue)
                 try:
+                    otherlanguages = trads.get(envalue)
                     t = {}
                     args = [basename, classname, envalue.encode('utf8')]
                     for lngkey in languages.keys():
@@ -76,6 +76,32 @@ def csvout(fulldict):
                     x.writerow(args)
                 except Exception, exc:
                     print '---', exc, otherlanguages
+    k.close()
+    return
+
+def csvin(fulldict):
+    k = open('summary_translations.csv', 'r')
+    x = csv.reader(k, delimiter = ';', quotechar = '"')
+    x.next()
+    x.next()
+    for row in x:
+        [basename, classname, envalue] = row[:3]
+        if basename in fulldict:
+            classes = fulldict.get(basename)
+            if classname in classes:
+                trads = classes.get(classname)
+                if envalue in trads:
+                    otherlanguages = trads.get(envalue)
+                    t = {}
+                    args = []
+                    for lngkey in languages.keys():
+                        if otherlanguages.get(lngkey):
+                            t[lngkey] = otherlanguages.get(lngkey)
+                        else:
+                            t[lngkey] = 'UNDEFINED'
+                        args.append(t.get(lngkey).encode('utf8'))
+                    if args != row[3:]:
+                        print basename, classname, envalue, args, row[3:]
     k.close()
     return
 
@@ -105,3 +131,13 @@ if action == 'makecsv':
         parse(language, r)
     # print cjson.encode(fulldict)
     csvout(fulldict)
+
+elif action == 'readcsv':
+    for infile in inputfiles:
+        filename = infile.split('/')[-1]
+        (basename, language) = filename[:-3].split('_')
+        if basename not in fulldict:
+            fulldict[basename] = {}
+        r = xml.dom.minidom.parse(infile)
+        parse(language, r)
+    csvin(fulldict)
