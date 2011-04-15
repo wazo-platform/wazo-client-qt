@@ -4,5 +4,6 @@
     <file>in_calls/rightarrow.png</file>
     <file>calls_fr.qm</file>
     <file>calls_nl.qm</file>
+    <file>calls_de.qm</file>
 </qresource>
 </RCC>

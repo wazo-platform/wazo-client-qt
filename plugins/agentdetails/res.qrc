@@ -2,5 +2,6 @@
 <qresource>
     <file>agentdetails_fr.qm</file>
     <file>agentdetails_nl.qm</file>
+    <file>agentdetails_de.qm</file>
 </qresource>
 </RCC>

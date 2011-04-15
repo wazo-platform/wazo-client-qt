@@ -5,5 +5,6 @@
     <file>in/missed_call.png</file>
     <file>history_fr.qm</file>
     <file>history_nl.qm</file>
+    <file>history_de.qm</file>
 </qresource>
 </RCC>

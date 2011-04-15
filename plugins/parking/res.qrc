@@ -2,5 +2,6 @@
 <qresource>
     <file>parking_fr.qm</file>
     <file>parking_nl.qm</file>
+    <file>parking_de.qm</file>
 </qresource>
 </RCC>

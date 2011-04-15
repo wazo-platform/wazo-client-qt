@@ -4,6 +4,7 @@ HEADERS     = src/*.h
 SOURCES     = src/*.cpp
 TRANSLATIONS = calls_fr.ts
 TRANSLATIONS += calls_nl.ts
+TRANSLATIONS += calls_de.ts
 
 TARGET      = $$qtLibraryTarget(callsplugin)
 

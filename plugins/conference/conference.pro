@@ -4,6 +4,7 @@ HEADERS     = src/*.h
 SOURCES     = src/*.cpp
 TRANSLATIONS = conference_fr.ts
 TRANSLATIONS += conference_nl.ts
+TRANSLATIONS += conference_de.ts
 
 TARGET      = $$qtLibraryTarget(conferenceplugin)
 

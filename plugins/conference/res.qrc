@@ -4,5 +4,6 @@
     <file>in_conference/mute.png</file>
     <file>conference_fr.qm</file>
     <file>conference_nl.qm</file>
+    <file>conference_de.qm</file>
 </qresource>
 </RCC>

@@ -2,5 +2,6 @@
 <qresource>
     <file>switchboard_fr.qm</file>
     <file>switchboard_nl.qm</file>
+    <file>switchboard_de.qm</file>
 </qresource>
 </RCC>

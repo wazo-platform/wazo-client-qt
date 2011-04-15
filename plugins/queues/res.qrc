@@ -2,5 +2,6 @@
 <qresource>
     <file>queues_fr.qm</file>
     <file>queues_nl.qm</file>
+    <file>queues_de.qm</file>
 </qresource>
 </RCC>
