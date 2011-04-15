@@ -486,9 +486,9 @@ Sind Sie sicher?</translation>
         <location filename="src/gui/peerwidget.cpp" line="186"/>
         <source>Agent %1
 %n Queue(s) %2</source>
-        <translation>
+        <translation><numerusform>
 Agent %1
-%n Warteschlange(n) %2</translation>
+%n Warteschlange(n) %2</numerusform></translation>
     </message>
     <message>
         <location filename="src/gui/peerwidget.cpp" line="195"/>
