@@ -6,7 +6,7 @@
     <message>
         <location filename="src/records.cpp" line="448"/>
         <source>Results : %1 found</source>
-        <translation type="unfinished"></translation>
+        <translation>Ergebnisse: %1 gefunden</translation>
     </message>
 </context>
 <context>
@@ -14,32 +14,32 @@
     <message>
         <location filename="src/records.cpp" line="307"/>
         <source>Search Filter(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Suchfilter</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="312"/>
         <source>Lookup</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="360"/>
         <source>Agent</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="361"/>
         <source>Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Warteschlange</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="362"/>
         <source>Skill</source>
-        <translation type="unfinished"></translation>
+        <translation>Qualifikation</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="363"/>
         <source>Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>Richtung</translation>
     </message>
 </context>
 <context>
@@ -47,79 +47,79 @@
     <message>
         <location filename="src/records.cpp" line="48"/>
         <source>Records Management</source>
-        <translation type="unfinished"></translation>
+        <translation>Datensatzverwaltung</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="67"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="68"/>
         <source>Start Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Startdatum</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="69"/>
         <source>Stop Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Enddatum</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="70"/>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiname</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="71"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Dauer</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="72"/>
         <source>Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>Richtung</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="73"/>
         <source>CallerIdNum</source>
-        <translation type="unfinished"></translation>
+        <translation>ID-Nummer des Anrufers</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="74"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation>Warteschlangen</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="75"/>
         <source>Agents</source>
-        <translation type="unfinished"></translation>
+        <translation>Agenten</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="77"/>
         <location filename="src/records.cpp" line="145"/>
         <source>Tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierung</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="78"/>
         <location filename="src/records.cpp" line="154"/>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommentar</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="79"/>
         <source>SVI e</source>
-        <translation type="unfinished"></translation>
+        <translation>SVI e</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="80"/>
         <source>SVI v</source>
-        <translation type="unfinished"></translation>
+        <translation>SVI v</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="81"/>
         <source>SVI c</source>
-        <translation type="unfinished"></translation>
+        <translation>SVI c</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="102"/>
@@ -129,40 +129,51 @@ current tag : %5
 svi entries : %6
 svi variables : %7
 (this column : %8)</source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+
+
+Anrufbeginn: %1 (Dauer %2 s, Richtung %3)
+Dateiname: %4
+Aktuelle Markierung: %5
+svi-Einträge: %6
+svi-Variablen: %7
+(diese Spalte: %8)</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="146"/>
         <location filename="src/records.cpp" line="155"/>
         <source>You attempted to change tag for id %1.
 The return code is %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>
+Sie haben versucht, die Markierung für ID %1 zu ändern.
+Der Rückgabecode ist %2.</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="199"/>
         <location filename="src/records.cpp" line="244"/>
         <source>Change tag to</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierung ändern in</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="220"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="243"/>
         <source>Change tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierung ändern</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="251"/>
         <source>Call starting on %1 (id %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Anruf beginnt auf (%1) (ID %2)</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="252"/>
         <source>(%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>(%1)</translation>
     </message>
 </context>
 </TS>

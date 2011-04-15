@@ -6,7 +6,7 @@
     <message>
         <location filename="src/datetime.cpp" line="53"/>
         <source>Date and Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Datum und Uhrzeit</translation>
     </message>
 </context>
 </TS>
