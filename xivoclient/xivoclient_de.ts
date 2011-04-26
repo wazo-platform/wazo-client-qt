@@ -82,21 +82,9 @@
         <translation>Durch Ankreuzen dieses Kästchens werden die Fehler-Popups deaktiviert</translation>
     </message>
     <message>
-        <source>die Konfiguration</source>
-        <translation type="obsolete">die Konfiguration</translation>
-    </message>
-    <message>
         <location filename="../common/configwidget.cpp" line="108"/>
         <source>Connection</source>
         <translation>Verbindung</translation>
-    </message>
-    <message>
-        <source>Der Kontakts&apos; max number</source>
-        <translation type="obsolete">Maximumsmenge für die Kontakt</translation>
-    </message>
-    <message>
-        <source>Der Kontakts&apos; width</source>
-        <translation type="obsolete">Breite Kontakte</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="123"/>
@@ -398,10 +386,6 @@ MÜSSEN Sie die Anwendung neu starten /!\</translation>
 </context>
 <context>
     <name>ContactDialog</name>
-    <message>
-        <source>Der Kontakt</source>
-        <translation type="obsolete">Der Kontakt</translation>
-    </message>
     <message>
         <location filename="../common/contactdialog.cpp" line="44"/>
         <source>First Name</source>

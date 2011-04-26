@@ -262,7 +262,7 @@ Please upgrade it.</source>
         <location filename="src/gui/basepeerwidget.cpp" line="549"/>
         <location filename="src/gui/basepeerwidget.cpp" line="555"/>
         <source>Direct &amp;Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Пряма &amp;Передача</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="553"/>
@@ -466,6 +466,8 @@ Are you sure ?</source>
         <source>Agent %1
 %n Queue(s) %2</source>
         <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>

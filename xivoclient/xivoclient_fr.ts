@@ -246,7 +246,7 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../common/configwidget.cpp" line="259"/>
         <source>Ukrainian</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukrainien</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="265"/>
