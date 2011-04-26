@@ -227,7 +227,7 @@ nachfolgenden) im ersten Fenster anzeigen
     <message>
         <location filename="../common/configwidget.cpp" line="255"/>
         <source>English</source>
-        <translation>Deutsch</translation>
+        <translation>Englisch</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="256"/>
@@ -247,7 +247,7 @@ nachfolgenden) im ersten Fenster anzeigen
     <message>
         <location filename="../common/configwidget.cpp" line="259"/>
         <source>Ukrainian</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukrainisch</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="265"/>

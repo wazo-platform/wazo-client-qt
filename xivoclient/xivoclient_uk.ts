@@ -210,7 +210,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../common/configwidget.cpp" line="259"/>
         <source>Ukrainian</source>
-        <translation type="unfinished"></translation>
+        <translation>Українська</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="265"/>

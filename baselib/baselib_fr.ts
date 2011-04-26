@@ -512,12 +512,12 @@ Etes-vous sûr(e) ?</translation>
     <message>
         <location filename="../3rdparty/json_jsonqt/lib/JsonToVariant.cpp" line="192"/>
         <source>string, number, object, array, bool, or null</source>
-        <translation></translation>
+        <translation>chaîne, nombre, objet, liste, booléen ou null</translation>
     </message>
     <message>
         <location filename="../3rdparty/json_jsonqt/lib/JsonToVariant.cpp" line="258"/>
         <source>Any unicode character except for &quot; or JSON escape sequences</source>
-        <translation>N&apos;importe quel caractère unicode sauf &quot; ou une séquence d&apos;échapement JSON</translation>
+        <translation>N&apos;importe quel caractère unicode sauf &quot; ou une séquence d&apos;échappement JSON</translation>
     </message>
     <message>
         <location filename="../3rdparty/json_jsonqt/lib/ParseException.cpp" line="35"/>
@@ -525,7 +525,9 @@ Etes-vous sûr(e) ?</translation>
 	Got: &apos;%1&apos;
 	Expected: &apos;%2&apos;
 	At: &apos;%3&apos;</source>
-        <translation>Erreur de parsing :	Attendu :&apos; %2&apos;	Obtenu : &apos;%1&apos;
+        <translation>Erreur de parsing :
+	Obtenu : &apos;%1&apos;
+	Attendu :&apos; %2&apos;
 	À : %3</translation>
     </message>
 </context>

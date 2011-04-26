@@ -119,6 +119,7 @@ languages = {
     'fr' : 'Français',
     'de' : 'Allemand',
     'nl' : 'Néerlandais',
+    'uk' : 'Ukrainien',
     }
 
 if action == 'makecsv':
