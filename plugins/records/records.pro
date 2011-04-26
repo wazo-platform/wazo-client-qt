@@ -5,6 +5,7 @@ SOURCES     = src/*.cpp
 TRANSLATIONS = records_fr.ts
 TRANSLATIONS += records_nl.ts
 TRANSLATIONS += records_de.ts
+TRANSLATIONS += records_uk.ts
 
 TARGET      = $$qtLibraryTarget(recordsplugin)
 

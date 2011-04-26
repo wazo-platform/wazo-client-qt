@@ -37,6 +37,7 @@ RESOURCES += appli.qrc
 TRANSLATIONS = xivoclient_fr.ts
 TRANSLATIONS += xivoclient_nl.ts
 TRANSLATIONS += xivoclient_de.ts
+TRANSLATIONS += xivoclient_uk.ts
 
 RC_FILE = appli.rc
 

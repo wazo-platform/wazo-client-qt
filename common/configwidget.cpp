@@ -251,10 +251,13 @@ void ConfigWidget::_insert_guisetting_tab()
 
     m_locale_cbox = new QComboBox(this);
     m_locale_cbox->addItem(tr("System Language"), QString("default"));
+
     m_locale_cbox->addItem(tr("English"), QString("en_US"));
     m_locale_cbox->addItem(tr("French"), QString("fr_FR"));
     m_locale_cbox->addItem(tr("Nederlands"), QString("nl_NL"));
     m_locale_cbox->addItem(tr("German"), QString("de_DE"));
+    m_locale_cbox->addItem(tr("Ukrainian"), QString("uk_UA"));
+
     for (int i = 0; i < m_locale_cbox->count(); i++) {
         if (b_engine->forcelocale() == m_locale_cbox->itemData(i))
             m_locale_cbox->setCurrentIndex(i);

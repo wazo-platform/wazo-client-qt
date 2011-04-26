@@ -3,5 +3,6 @@
     <file>outlook_fr.qm</file>
     <file>outlook_nl.qm</file>
     <file>outlook_de.qm</file>
+    <file>outlook_uk.qm</file>
 </qresource>
 </RCC>

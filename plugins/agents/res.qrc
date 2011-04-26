@@ -2,5 +2,7 @@
 <qresource>
     <file>agents_fr.qm</file>
     <file>agents_nl.qm</file>
+    <file>agents_de.qm</file>
+    <file>agents_uk.qm</file>
 </qresource>
 </RCC>

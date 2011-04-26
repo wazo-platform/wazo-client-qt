@@ -3,5 +3,6 @@
     <file>datetime_fr.qm</file>
     <file>datetime_nl.qm</file>
     <file>datetime_de.qm</file>
+    <file>datetime_uk.qm</file>
 </qresource>
 </RCC>

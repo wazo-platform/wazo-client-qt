@@ -29,3 +29,4 @@ QT += network
 TRANSLATIONS = baselib_fr.ts
 TRANSLATIONS += baselib_nl.ts
 TRANSLATIONS += baselib_de.ts
+TRANSLATIONS += baselib_uk.ts

@@ -5,6 +5,7 @@ SOURCES     = outlook*.cpp
 TRANSLATIONS = outlook_fr.ts
 TRANSLATIONS += outlook_nl.ts
 TRANSLATIONS += outlook_de.ts
+TRANSLATIONS += outlook_uk.ts
 
 TARGET      = $$qtLibraryTarget(outlookplugin)
 

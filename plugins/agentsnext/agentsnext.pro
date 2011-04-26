@@ -5,6 +5,7 @@ SOURCES     = src/*.cpp
 TRANSLATIONS = agentsnext_fr.ts
 TRANSLATIONS += agentsnext_nl.ts
 TRANSLATIONS += agentsnext_de.ts
+TRANSLATIONS += agentsnext_uk.ts
 
 TARGET      = $$qtLibraryTarget(agentsnextplugin)
 
