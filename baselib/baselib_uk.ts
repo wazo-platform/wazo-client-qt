@@ -6,57 +6,57 @@
     <message>
         <location filename="src/baseengine.cpp" line="1249"/>
         <source>Received Services Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Отрмано системні дані</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1257"/>
         <source>Could not modify the Services data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Неможливо змінити системні дані.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1257"/>
         <source>Maybe Asterisk is down.</source>
-        <translation type="unfinished"></translation>
+        <translation>Можливо Астеріск не працює.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1501"/>
         <source>Server has sent an Error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер надіслав помилку</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1505"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваше реєстраційне ім&apos;я &lt;%1@%2&gt; не знайдено на сервері XiVO CTI %3:%4.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1510"/>
         <source>You entered a wrong login / password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви ввели невірний логін/пароль.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1513"/>
         <source>Your profile identifier &lt;%1&gt; is not defined.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ідентифікатор вашого профілю &lt;%1&gt; не визначено.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1517"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер XiVO CTI на %1:%2 не відповів на останній запит підтримки з&apos;єднання.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1522"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви вказали IP адресу %1 , яка ймовірно має ім&apos;я хоста, що не можна визначити.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1525"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Збіг час очікування сокету (~ 60 сек) : ймовірно, ви спробували долучитися через шлюз до IP адреса %1 , якої не існує.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1529"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
-        <translation type="unfinished"></translation>
+        <translation>Схоже, що на IP адресі %1 запущена машина і чи CTI сервер не працює, чи ваш порт %2 не вірний.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1533"/>
@@ -69,47 +69,47 @@
     <message>
         <location filename="src/baseengine.cpp" line="1539"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невідома помилка сокета виникла при спробі приєднатись до IP адреси:порт %1:%2.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1543"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Некерована (номер %1) помилка сокету виникла при спробі приєднатись до IP адреси:порт %1:%2.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1548"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер XiVO CTI на %1:%2 закрив з&apos;єднання.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1552"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер XiVO CTI на %1:%2 було зупинено.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1555"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер XiVO CTI на %1:%2 було перезавантажено.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1559"/>
         <source>You are already connected from %1:%2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви вже підключені з адреси %1:%2.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1561"/>
         <source>No capability allowed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Функція заборонена</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1564"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальна кількість (%1) XiVO Clients досягнута.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1566"/>
         <source>Missing Argument(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Відсутній параметр(и)</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1570"/>
@@ -144,22 +144,22 @@ Please upgrade it.</source>
     <message>
         <location filename="src/baseengine.cpp" line="1598"/>
         <source>You were disconnected by the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви були відключені сервером</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1600"/>
         <source>You were forced to disconnect by the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви були примусово відключені сервером</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1604"/>
         <source>ERROR</source>
-        <translation type="unfinished"></translation>
+        <translation>ПОМИЛКА</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1959"/>
         <source>Attempting to reconnect to server</source>
-        <translation type="unfinished"></translation>
+        <translation>Спроба знову підключитись до сервера</translation>
     </message>
 </context>
 <context>
@@ -167,7 +167,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="55"/>
         <source>&amp;Open a chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Відкрити вікно чату</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="56"/>
@@ -177,7 +177,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="63"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалити</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="64"/>
@@ -199,7 +199,7 @@ Please upgrade it.</source>
         <location filename="src/gui/basepeerwidget.cpp" line="483"/>
         <location filename="src/gui/basepeerwidget.cpp" line="487"/>
         <source>&amp;Intercept</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Перехопити</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="74"/>
@@ -214,23 +214,23 @@ Please upgrade it.</source>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="376"/>
         <source>&amp;Call mobile</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Подзвонити на мобільний</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="382"/>
         <source>&amp;Call</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Подзвонити</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="389"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Редагувати</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="462"/>
         <location filename="src/gui/basepeerwidget.cpp" line="466"/>
         <source>&amp;Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation>По&amp;вісити слухавку</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="467"/>
@@ -246,7 +246,7 @@ Please upgrade it.</source>
         <location filename="src/gui/basepeerwidget.cpp" line="500"/>
         <location filename="src/gui/basepeerwidget.cpp" line="504"/>
         <source>&amp;Park</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Утримувати</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="505"/>
@@ -280,7 +280,7 @@ Please upgrade it.</source>
         <location filename="src/gui/basepeerwidget.cpp" line="571"/>
         <location filename="src/gui/basepeerwidget.cpp" line="582"/>
         <source>&amp;Indirect Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Опосередкована передача</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="578"/>
@@ -296,7 +296,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="584"/>
         <source>&amp;Cancel the Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Скасувати передачу</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="607"/>
@@ -337,7 +337,7 @@ Are you sure ?</source>
     <message>
         <location filename="src/gui/basicpeerwidget.cpp" line="54"/>
         <source>(No callerid yet)</source>
-        <translation type="unfinished"></translation>
+        <translation>(на данний момент, ідентифікатор телефонуючого відсутній)</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,7 @@ Are you sure ?</source>
     <message>
         <location filename="src/cticonn.cpp" line="87"/>
         <source>Connection lost with XiVO CTI server</source>
-        <translation type="unfinished"></translation>
+        <translation>З&apos;єднання з сервером XiVO CTI втрачено</translation>
     </message>
 </context>
 <context>
@@ -387,32 +387,32 @@ Are you sure ?</source>
     <message>
         <location filename="src/gui/extendedtablewidget.cpp" line="76"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Видалити</translation>
     </message>
     <message>
         <location filename="src/gui/extendedtablewidget.cpp" line="80"/>
         <source>&amp;Dial</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Набрати</translation>
     </message>
     <message>
         <location filename="src/gui/extendedtablewidget.cpp" line="83"/>
         <source>Direct &amp;Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Пряма &amp;Передача</translation>
     </message>
     <message>
         <location filename="src/gui/extendedtablewidget.cpp" line="84"/>
         <source>&amp;Indirect Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Опосередкована передача</translation>
     </message>
     <message>
         <location filename="src/gui/extendedtablewidget.cpp" line="120"/>
         <source>Send an E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Надіслати E-mail</translation>
     </message>
     <message>
         <location filename="src/gui/extendedtablewidget.cpp" line="229"/>
         <source>Removing this contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалення даного контакту</translation>
     </message>
     <message>
         <location filename="src/gui/extendedtablewidget.cpp" line="230"/>
@@ -426,17 +426,17 @@ Are you sure ?</source>
     <message>
         <location filename="src/gui/externalphonedialog.cpp" line="50"/>
         <source>External phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Зовнішній номер телефону</translation>
     </message>
     <message>
         <location filename="src/gui/externalphonedialog.cpp" line="53"/>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Ярлик</translation>
     </message>
     <message>
         <location filename="src/gui/externalphonedialog.cpp" line="55"/>
         <source>Phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Номер телефону</translation>
     </message>
 </context>
 <context>
@@ -444,22 +444,22 @@ Are you sure ?</source>
     <message>
         <location filename="src/gui/peerwidget.cpp" line="125"/>
         <source>Agent %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Агент %1</translation>
     </message>
     <message>
         <location filename="src/gui/peerwidget.cpp" line="152"/>
         <source>Mobile number : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Номер мобільного : %1</translation>
     </message>
     <message>
         <location filename="src/gui/peerwidget.cpp" line="162"/>
         <source>User : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Користувач : %1</translation>
     </message>
     <message>
         <location filename="src/gui/peerwidget.cpp" line="176"/>
         <source>Phone %1 : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Телефон %1: %2</translation>
     </message>
     <message numerus="yes">
         <location filename="src/gui/peerwidget.cpp" line="186"/>
@@ -467,19 +467,17 @@ Are you sure ?</source>
 %n Queue(s) %2</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
         <location filename="src/gui/peerwidget.cpp" line="195"/>
         <source>(No callerid yet)</source>
-        <translation type="unfinished"></translation>
+        <translation>(callerid поки відсутній)</translation>
     </message>
     <message>
         <location filename="src/gui/peerwidget.cpp" line="198"/>
         <source>%1 &lt;%2&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 &lt;%2&gt;</translation>
     </message>
 </context>
 <context>
@@ -492,12 +490,12 @@ Are you sure ?</source>
     <message>
         <location filename="../3rdparty/json_jsonqt/lib/JsonToVariant.cpp" line="192"/>
         <source>string, number, object, array, bool, or null</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">UNDEFINED</translation>
     </message>
     <message>
         <location filename="../3rdparty/json_jsonqt/lib/JsonToVariant.cpp" line="258"/>
         <source>Any unicode character except for &quot; or JSON escape sequences</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">UNDEFINED</translation>
     </message>
     <message>
         <location filename="../3rdparty/json_jsonqt/lib/ParseException.cpp" line="35"/>
@@ -505,7 +503,7 @@ Are you sure ?</source>
 	Got: &apos;%1&apos;
 	Expected: &apos;%2&apos;
 	At: &apos;%3&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">UNDEFINED</translation>
     </message>
 </context>
 <context>
@@ -573,7 +571,7 @@ Are you sure ?</source>
     <message>
         <location filename="src/gui/searchdialog.cpp" line="43"/>
         <source>Search :</source>
-        <translation type="unfinished"></translation>
+        <translation>Пошук :</translation>
     </message>
 </context>
 </TS>

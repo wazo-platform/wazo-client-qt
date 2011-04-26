@@ -6,7 +6,7 @@
     <message>
         <location filename="src/records.cpp" line="448"/>
         <source>Results : %1 found</source>
-        <translation type="unfinished"></translation>
+        <translation>Результати : %1 знайдено</translation>
     </message>
 </context>
 <context>
@@ -14,32 +14,32 @@
     <message>
         <location filename="src/records.cpp" line="307"/>
         <source>Search Filter(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Пошук фільтрів</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="312"/>
         <source>Lookup</source>
-        <translation type="unfinished"></translation>
+        <translation>Пошук</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="360"/>
         <source>Agent</source>
-        <translation type="unfinished"></translation>
+        <translation>Агент</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="361"/>
         <source>Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Черга</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="362"/>
         <source>Skill</source>
-        <translation type="unfinished"></translation>
+        <translation>Навик</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="363"/>
         <source>Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>Напрямок</translation>
     </message>
 </context>
 <context>
@@ -47,79 +47,79 @@
     <message>
         <location filename="src/records.cpp" line="48"/>
         <source>Records Management</source>
-        <translation type="unfinished"></translation>
+        <translation>Управління записами</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="67"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Ідентифікатор</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="68"/>
         <source>Start Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Дата початку</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="69"/>
         <source>Stop Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Дата завершення</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="70"/>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Назва файлу</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="71"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Тривалість</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="72"/>
         <source>Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>Напрямок</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="73"/>
         <source>CallerIdNum</source>
-        <translation type="unfinished"></translation>
+        <translation>CallerIdNum</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="74"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation>Черги</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="75"/>
         <source>Agents</source>
-        <translation type="unfinished"></translation>
+        <translation>Агенти</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="77"/>
         <location filename="src/records.cpp" line="145"/>
         <source>Tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Мітка</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="78"/>
         <location filename="src/records.cpp" line="154"/>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Коментар</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="79"/>
         <source>SVI e</source>
-        <translation type="unfinished"></translation>
+        <translation>SVI e</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="80"/>
         <source>SVI v</source>
-        <translation type="unfinished"></translation>
+        <translation>SVI v</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="81"/>
         <source>SVI c</source>
-        <translation type="unfinished"></translation>
+        <translation>SVI c</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="102"/>
@@ -142,27 +142,27 @@ The return code is %2.</source>
         <location filename="src/records.cpp" line="199"/>
         <location filename="src/records.cpp" line="244"/>
         <source>Change tag to</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити мітку на</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="220"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="243"/>
         <source>Change tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити мітку</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="251"/>
         <source>Call starting on %1 (id %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Дзвінок розпочатий %1 (id %2)</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="252"/>
         <source>(%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>(%1)</translation>
     </message>
 </context>
 </TS>

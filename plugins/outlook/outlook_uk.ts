@@ -6,77 +6,77 @@
     <message>
         <location filename="outlook_panel.cpp" line="77"/>
         <source>Outlook</source>
-        <translation type="unfinished"></translation>
+        <translation>Outlook</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="79"/>
         <source>First Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ім&apos;я</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="80"/>
         <source>Last Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Прізвище</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="81"/>
         <source>Full Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Повне ім&apos;я</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="82"/>
         <source>Business Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Робочий телефон</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="83"/>
         <source>Mobile Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Мобільний телефон</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="84"/>
         <source>Home Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Домашній телефон</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="85"/>
         <source>Email Address</source>
-        <translation type="unfinished"></translation>
+        <translation>E-mail адреса</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="86"/>
         <source>EntryID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="90"/>
         <source>Di&amp;rectory</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Папка</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="205"/>
         <source>Double-click to send an E-mail to</source>
-        <translation type="unfinished"></translation>
+        <translation>Натисніть двічі, щоб відправити e-mail</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="207"/>
         <source>Double-click to call</source>
-        <translation type="unfinished"></translation>
+        <translation>Натисніть двічі для дзвінка</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="356"/>
         <source>&amp;Dial</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Набрати номер</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="357"/>
         <source>&amp;Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Переда&amp;ти</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="399"/>
         <source>Send an E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Надіслати e-mail</translation>
     </message>
 </context>
 </TS>
