@@ -16,7 +16,7 @@
     <message>
         <location filename="src/confchamber.cpp" line="513"/>
         <source>This room is moderated. You can&apos;t see any participant, until an admin allow you in.</source>
-        <translation>Cette chambre est modérée. Vous ne pouvez pas voir les participants avant d&apos;y &apos;être admis par un admin.</translation>
+        <translation>Cette chambre est modérée. Vous ne pouvez pas voir les participants avant d&apos;y être admis par un admin.</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="539"/>
@@ -34,27 +34,27 @@
     <message>
         <location filename="src/confchamber.cpp" line="59"/>
         <source>K</source>
-        <translation type="unfinished"></translation>
+        <translation>X</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="60"/>
         <source>R</source>
-        <translation type="unfinished"></translation>
+        <translation>E</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="61"/>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="62"/>
         <source>T</source>
-        <translation type="unfinished"></translation>
+        <translation>P</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="63"/>
         <source>M</source>
-        <translation type="unfinished"></translation>
+        <translation>M</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="219"/>

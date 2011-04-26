@@ -137,7 +137,8 @@
         <location filename="src/switchboardwindow.cpp" line="183"/>
         <source>Removing group %1.
 Are you sure ?</source>
-        <translation>Suppression du groupe %1.Etes vous sur ?</translation>
+        <translation>Suppression du groupe %1.
+Etes vous sûr ?</translation>
     </message>
     <message>
         <location filename="src/switchboardwindow.cpp" line="217"/>

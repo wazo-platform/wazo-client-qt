@@ -214,7 +214,7 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="376"/>
         <source>&amp;Call mobile</source>
-        <translation>&amp;Apeller sur le mobile</translation>
+        <translation>&amp;Appeler sur le mobile</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="462"/>

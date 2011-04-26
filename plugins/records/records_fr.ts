@@ -82,7 +82,7 @@
     <message>
         <location filename="src/records.cpp" line="73"/>
         <source>CallerIdNum</source>
-        <translation></translation>
+        <translation>CallerIdNum</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="74"/>
