@@ -5,7 +5,7 @@
     <name>IdentityAgent</name>
     <message>
         <location filename="src/identityagent.cpp" line="128"/>
-        <source>Connected on %1</source>
+        <source>Connected to %1</source>
         <translation>Verbunden auf %1</translation>
     </message>
     <message>
@@ -144,7 +144,7 @@ Kontext: %2</translation>
     </message>
     <message>
         <location filename="src/identityphone.cpp" line="287"/>
-        <source>RNA %1</source>
+        <source>FNA %1</source>
         <translation>KAR %1</translation>
     </message>
     <message>
