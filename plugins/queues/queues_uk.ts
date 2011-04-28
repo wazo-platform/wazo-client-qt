@@ -28,7 +28,7 @@
         <location filename="src/queues.cpp" line="840"/>
         <source>Estimated
 Holdtime</source>
-        <translation type="unfinished"></translation>
+        <translation>Приблизний час очікування</translation>
     </message>
     <message>
         <location filename="src/queues.cpp" line="841"/>
@@ -59,7 +59,7 @@ Holdtime</source>
         <location filename="src/queues.cpp" line="850"/>
         <source>Currently
 Talking</source>
-        <translation type="unfinished"></translation>
+        <translation>Розмовляє</translation>
     </message>
     <message>
         <location filename="src/queues.cpp" line="851"/>
@@ -70,7 +70,8 @@ Talking</source>
         <location filename="src/queues.cpp" line="853"/>
         <source>Average
 Holdtime</source>
-        <translation type="unfinished"></translation>
+        <translation>Середній час
+утримування</translation>
     </message>
     <message>
         <location filename="src/queues.cpp" line="854"/>
@@ -81,7 +82,7 @@ Holdtime</source>
         <location filename="src/queues.cpp" line="856"/>
         <source>Max
 Holdtime</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальний час очікування</translation>
     </message>
     <message>
         <location filename="src/queues.cpp" line="857"/>
@@ -122,7 +123,8 @@ Holdtime</source>
         <location filename="src/queues.cpp" line="887"/>
         <source>Efficiency
 (%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ефективність
+(%)</translation>
     </message>
     <message>
         <location filename="src/queues.cpp" line="888"/>
@@ -133,7 +135,7 @@ Holdtime</source>
         <location filename="src/queues.cpp" line="890"/>
         <source>Conversation
 Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Тривалість розмови</translation>
     </message>
     <message>
         <location filename="src/queues.cpp" line="891"/>
@@ -145,7 +147,9 @@ Time</source>
         <source>Quality of
 Service
 (%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Якість
+послуг
+(%)</translation>
     </message>
     <message>
         <location filename="src/queues.cpp" line="894"/>
@@ -202,7 +206,7 @@ Service
         <location filename="src/queues.cpp" line="399"/>
         <source>Choose which queue should be displayed, and the
 queues parameters for the Stats on slice:</source>
-        <translation type="unfinished"></translation>
+        <translation>Оберіть чергу для відображення і параметри черги для висвітлення статистики:</translation>
     </message>
     <message>
         <location filename="src/queues.cpp" line="409"/>

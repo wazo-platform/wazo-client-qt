@@ -21,7 +21,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1501"/>
         <source>Server has sent an Error.</source>
-        <translation>Сервер надіслав помилку</translation>
+        <translation>Сервер надіслав помилку.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1505"/>
@@ -64,7 +64,10 @@
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
 - a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).</source>
-        <translation type="unfinished"></translation>
+        <translation>У мережі виникла помилка при спробі з&apos;єднатись з IP адресою %1 : 
+- для доступу до данної IP адреси не вказано зовнішній маршрут (~ без таймауту) 
+- маршрут для IP адреси є, але відсутня кінцева машина(~ 5 сек таймаут) 
+- було від&apos;єднано ваш мережевий кабель.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1539"/>
@@ -99,7 +102,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1561"/>
         <source>No capability allowed.</source>
-        <translation>Функція заборонена</translation>
+        <translation>Функція заборонена.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1564"/>
@@ -115,41 +118,46 @@
         <location filename="src/baseengine.cpp" line="1570"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
-        <translation type="unfinished"></translation>
+        <translation>Версія вашого клієнту (%1) надто стара для даного серверу.
+Будь ласка, обновіть клієнт хоча б до версії %2.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1575"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Версія вашого клієнту (%1) надто стара для даного серверу.
+Будь ласка, оновіть клієнт.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1582"/>
         <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Основна версія вашого клієнту (%1)
+відрізняється від версії на сервері (%2).</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1589"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
-        <translation type="unfinished"></translation>
+        <translation>Версія вашого сервера (%1) надто стара для цього клієнта.
+Будь ласка, обновіть його хоча б до версії %2.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1594"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Версія вашого сервера (%1) надто стара для цього клієнта.
+Будь ласка, оновіть його.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1598"/>
         <source>You were disconnected by the server.</source>
-        <translation>Ви були відключені сервером</translation>
+        <translation>Ви були відключені сервером.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1600"/>
         <source>You were forced to disconnect by the server.</source>
-        <translation>Ви були примусово відключені сервером</translation>
+        <translation>Ви були примусово відключені сервером.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1604"/>
@@ -172,7 +180,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="56"/>
         <source>Open a chat window with this user</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкрити вікно чату з даним користувачем</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="63"/>
@@ -182,17 +190,17 @@ Please upgrade it.</source>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="64"/>
         <source>Remove this peer from the panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалити цього абонента з панелі</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="68"/>
         <source>Re&amp;name</source>
-        <translation type="unfinished"></translation>
+        <translation>Пере&amp;йменувати</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="69"/>
         <source>Rename this peer</source>
-        <translation type="unfinished"></translation>
+        <translation>Перейменувати цього абонента</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="73"/>
@@ -204,12 +212,12 @@ Please upgrade it.</source>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="74"/>
         <source>Intercept call</source>
-        <translation type="unfinished"></translation>
+        <translation>Перехопити дзвінок</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="372"/>
         <source>Call this peer</source>
-        <translation type="unfinished"></translation>
+        <translation>Подзвонити цьому абоненту</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="376"/>
@@ -235,12 +243,12 @@ Please upgrade it.</source>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="467"/>
         <source>Hangup this communication</source>
-        <translation type="unfinished"></translation>
+        <translation>Припинити це з&apos;єднання</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="488"/>
         <source>Intercept this communication</source>
-        <translation type="unfinished"></translation>
+        <translation>Перехопити це з&apos;єднання</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="500"/>
@@ -251,30 +259,30 @@ Please upgrade it.</source>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="505"/>
         <source>Park this call</source>
-        <translation type="unfinished"></translation>
+        <translation>Поставити дзвінок на утримування</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="541"/>
         <source>Invite in meetme room %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Запросити в конференц-кімнату %1</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="549"/>
         <location filename="src/gui/basepeerwidget.cpp" line="555"/>
         <source>Direct &amp;Transfer</source>
-        <translation type="unfinished">Пряма &amp;Передача</translation>
+        <translation>Пряма &amp;Передача</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="553"/>
         <location filename="src/gui/basepeerwidget.cpp" line="577"/>
         <source>Transfer this communication</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевести це з&apos;єднання</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="556"/>
         <location filename="src/gui/basepeerwidget.cpp" line="583"/>
         <source>Transfer to this person</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевести на цю особу</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="571"/>
@@ -285,13 +293,13 @@ Please upgrade it.</source>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="578"/>
         <source>(Cancel)</source>
-        <translation type="unfinished"></translation>
+        <translation>(Скасувати)</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="580"/>
         <location filename="src/gui/basepeerwidget.cpp" line="585"/>
         <source>Cancel the Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Скасувати передачу</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="584"/>
@@ -302,34 +310,35 @@ Please upgrade it.</source>
         <location filename="src/gui/basepeerwidget.cpp" line="607"/>
         <location filename="src/gui/basepeerwidget.cpp" line="613"/>
         <source>Transfer to &amp;voice mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевести на &amp;голосову пошту</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="611"/>
         <location filename="src/gui/basepeerwidget.cpp" line="614"/>
         <source>Transfer to voice mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевести на голосову пошту</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="755"/>
         <source>XiVO Client - Removing %1 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>XiVO Client - Видаляється %1 %2</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="756"/>
         <source>Removing %1 %2.
 Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Видаляється %1 %2.
+Ви впевнені ?</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="770"/>
         <source>Rename Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Перейменувати запис</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="770"/>
         <source>Rename %1 :</source>
-        <translation type="unfinished"></translation>
+        <translation>Перейменувати %1 :</translation>
     </message>
 </context>
 <context>
@@ -345,33 +354,33 @@ Are you sure ?</source>
     <message>
         <location filename="src/gui/chitchat.cpp" line="82"/>
         <source>&amp;Clear history</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Очистити історію</translation>
     </message>
     <message>
         <location filename="src/gui/chitchat.cpp" line="83"/>
         <source>&amp;Send</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Надіслати</translation>
     </message>
     <message>
         <location filename="src/gui/chitchat.cpp" line="101"/>
         <source>chitchat - %0</source>
-        <translation type="unfinished"></translation>
+        <translation>chitchat - %0</translation>
     </message>
     <message>
         <location filename="src/gui/chitchat.cpp" line="131"/>
         <location filename="src/gui/chitchat.cpp" line="176"/>
         <source>chat window opened with user - </source>
-        <translation type="unfinished"></translation>
+        <translation>відкрито вікно чату з користувачем - </translation>
     </message>
     <message>
         <location filename="src/gui/chitchat.cpp" line="147"/>
         <source>you said: </source>
-        <translation type="unfinished"></translation>
+        <translation>ви сказали: </translation>
     </message>
     <message>
         <location filename="src/gui/chitchat.cpp" line="176"/>
         <source>system: </source>
-        <translation type="unfinished"></translation>
+        <translation>система: </translation>
     </message>
 </context>
 <context>
@@ -418,7 +427,8 @@ Are you sure ?</source>
         <location filename="src/gui/extendedtablewidget.cpp" line="230"/>
         <source>Removing this contact.
 Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалення даного контакту.
+Ви впевнені ?</translation>
     </message>
 </context>
 <context>
@@ -467,8 +477,6 @@ Are you sure ?</source>
 %n Queue(s) %2</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -487,17 +495,17 @@ Are you sure ?</source>
     <message>
         <location filename="../3rdparty/json_jsonqt/lib/JsonToProperties.cpp" line="49"/>
         <source>Found property %1 with incompatible data type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Знайдено властивісь %1 з несумісним видом даних.</translation>
     </message>
     <message>
         <location filename="../3rdparty/json_jsonqt/lib/JsonToVariant.cpp" line="192"/>
         <source>string, number, object, array, bool, or null</source>
-        <translation type="unfinished">UNDEFINED</translation>
+        <translation>рядок, номер, об&apos;єкт, масив, бул, чи порожній покажчик</translation>
     </message>
     <message>
         <location filename="../3rdparty/json_jsonqt/lib/JsonToVariant.cpp" line="258"/>
         <source>Any unicode character except for &quot; or JSON escape sequences</source>
-        <translation type="unfinished">UNDEFINED</translation>
+        <translation>Будь-який символ unicode за виключенням &quot;&quot; чи завершаючих послідовностей JSON</translation>
     </message>
     <message>
         <location filename="../3rdparty/json_jsonqt/lib/ParseException.cpp" line="35"/>
@@ -505,7 +513,10 @@ Are you sure ?</source>
 	Got: &apos;%1&apos;
 	Expected: &apos;%2&apos;
 	At: &apos;%3&apos;</source>
-        <translation type="unfinished">UNDEFINED</translation>
+        <translation>Виникла помилка синтаксичного аналізу:
+	Отримано: &apos;%1&apos;
+	Очікувалось: &apos;%2&apos;
+	При: &apos;%3&apos;</translation>
     </message>
 </context>
 <context>
@@ -513,59 +524,59 @@ Are you sure ?</source>
     <message>
         <location filename="src/queue_agent_status.cpp" line="52"/>
         <source>Dynamic membership</source>
-        <translation type="unfinished"></translation>
+        <translation>Динамічне членство</translation>
     </message>
     <message>
         <location filename="src/queue_agent_status.cpp" line="57"/>
         <source>Static/RT membership</source>
-        <translation type="unfinished"></translation>
+        <translation>Статичне/RT членство</translation>
     </message>
     <message>
         <location filename="src/queue_agent_status.cpp" line="69"/>
         <source>Agent not in Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Агент не в черзі</translation>
     </message>
     <message>
         <location filename="src/queue_agent_status.cpp" line="73"/>
         <location filename="src/queue_agent_status.cpp" line="85"/>
         <source>Agent in Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Агент у черзі</translation>
     </message>
     <message>
         <location filename="src/queue_agent_status.cpp" line="74"/>
         <location filename="src/queue_agent_status.cpp" line="78"/>
         <source>Logged in</source>
-        <translation type="unfinished"></translation>
+        <translation>В системі</translation>
     </message>
     <message>
         <location filename="src/queue_agent_status.cpp" line="77"/>
         <source>Agent Called or Busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Агент зателефонував чи зайнятий</translation>
     </message>
     <message>
         <location filename="src/queue_agent_status.cpp" line="81"/>
         <source>Agent in Queue but Invalid</source>
-        <translation type="unfinished"></translation>
+        <translation>Агент в черзі з помилкою</translation>
     </message>
     <message>
         <location filename="src/queue_agent_status.cpp" line="86"/>
         <source>Logged out</source>
-        <translation type="unfinished"></translation>
+        <translation>Не в системі</translation>
     </message>
     <message>
         <location filename="src/queue_agent_status.cpp" line="94"/>
         <source>Not paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Не на паузі</translation>
     </message>
     <message>
         <location filename="src/queue_agent_status.cpp" line="98"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>На паузі</translation>
     </message>
     <message>
         <location filename="src/queue_agent_status.cpp" line="102"/>
         <source>Not relevant</source>
-        <translation type="unfinished"></translation>
+        <translation>Не релевантно</translation>
     </message>
 </context>
 <context>

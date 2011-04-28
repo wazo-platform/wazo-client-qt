@@ -21,7 +21,7 @@
     <message>
         <location filename="src/confchamber.cpp" line="539"/>
         <source>&amp;Restart the conference</source>
-        <translation>&amp;Пере&amp;запустити конференцію</translation>
+        <translation>&amp;Перезапустити конференцію</translation>
     </message>
     <message>
         <location filename="src/confchamber.cpp" line="541"/>
@@ -165,7 +165,7 @@
     <message>
         <location filename="src/conflist.cpp" line="54"/>
         <source>Member count</source>
-        <translation type="unfinished"></translation>
+        <translation>Кількість користувачів</translation>
     </message>
     <message>
         <location filename="src/conflist.cpp" line="55"/>

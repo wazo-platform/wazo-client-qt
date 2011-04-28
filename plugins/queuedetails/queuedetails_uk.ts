@@ -27,13 +27,15 @@
         <location filename="src/queuedetails.cpp" line="55"/>
         <source>Calls
 Taken</source>
-        <translation type="unfinished"></translation>
+        <translation>Прийнято
+дзвінків</translation>
     </message>
     <message>
         <location filename="src/queuedetails.cpp" line="56"/>
         <source>Last
 Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Останній
+дзвінок</translation>
     </message>
     <message>
         <location filename="src/queuedetails.cpp" line="57"/>
@@ -49,7 +51,8 @@ Call</source>
         <location filename="src/queuedetails.cpp" line="207"/>
         <source>Server: %1
 Context: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер: %1
+Контекст: %2</translation>
     </message>
 </context>
 </TS>

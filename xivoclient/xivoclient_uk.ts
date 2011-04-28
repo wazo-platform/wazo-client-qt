@@ -155,7 +155,7 @@
         <location filename="../common/configwidget.cpp" line="215"/>
         <source>Show the Agent options (like the
 ones beneath) on first window</source>
-        <translation type="unfinished"></translation>
+        <translation>Показувати налаштування агента (як внизу) у першому вікні</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="224"/>
@@ -221,7 +221,7 @@ ones beneath) on first window</source>
         <location filename="../common/configwidget.cpp" line="266"/>
         <source>/!\ You MUST restart the application
 when you change this value /!\</source>
-        <translation type="unfinished"></translation>
+        <translation>/!\ Після зміни цього значення необхідно перезапустити програму /!\</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="269"/>
@@ -428,7 +428,7 @@ when you change this value /!\</source>
     <message>
         <location filename="../common/built-in-xlet/customerinfopanel.cpp" line="42"/>
         <source>Sheets</source>
-        <translation>Аркуші</translation>
+        <translation>Картки</translation>
     </message>
 </context>
 <context>
@@ -446,7 +446,7 @@ when you change this value /!\</source>
     <message>
         <location filename="../common/built-in-xlet/dialpanel.cpp" line="46"/>
         <source>Enter &amp;Number :</source>
-        <translation>Ввести &amp;номер</translation>
+        <translation>Ввести &amp;номер :</translation>
     </message>
     <message>
         <location filename="../common/built-in-xlet/dialpanel.cpp" line="49"/>
@@ -477,7 +477,7 @@ when you change this value /!\</source>
     <message>
         <location filename="../common/built-in-xlet/directorypanel.cpp" line="47"/>
         <source>Di&amp;rectory</source>
-        <translation>Каталог</translation>
+        <translation>&amp;Каталог</translation>
     </message>
     <message>
         <location filename="../common/built-in-xlet/directorypanel.cpp" line="55"/>
@@ -561,13 +561,14 @@ when you change this value /!\</source>
         <location filename="../common/built-in-xlet/faxpanel.cpp" line="209"/>
         <source>Your Fax (file %1)
 was successfully sent to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш факс (файл %1) був успішно надісланий %2.</translation>
     </message>
     <message>
         <location filename="../common/built-in-xlet/faxpanel.cpp" line="213"/>
         <source>Your Fax (file %1)
 is being processed and will be sent soon.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш факс (файл %1)
+обробляється і скоро буде надісланий.</translation>
     </message>
     <message>
         <location filename="../common/built-in-xlet/faxpanel.cpp" line="218"/>
@@ -604,7 +605,7 @@ is being processed and will be sent soon.</source>
         <source>Your Fax (file %1)
 was NOT sent to %2.
 Reason given : %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш факс (файл %1) НЕ був надісланий %2. Причина : %3.</translation>
     </message>
 </context>
 <context>
@@ -673,7 +674,7 @@ Reason given : %3.</source>
     <message>
         <location filename="src/mainwidget.cpp" line="335"/>
         <source>To S&amp;ystray</source>
-        <translation>Згорнути</translation>
+        <translation>&amp;Згорнути</translation>
     </message>
     <message>
         <location filename="src/mainwidget.cpp" line="336"/>
@@ -965,7 +966,8 @@ Reason given : %3.</source>
         <location filename="../common/built-in-xlet/mylocaldirpanel.cpp" line="407"/>
         <source>Removing all contacts.
 Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалення всіх контактів.
+Ви впевнені ?</translation>
     </message>
 </context>
 <context>

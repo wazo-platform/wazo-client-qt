@@ -129,14 +129,20 @@ current tag : %5
 svi entries : %6
 svi variables : %7
 (this column : %8)</source>
-        <translation type="unfinished"></translation>
+        <translation>початок дзвінку : %1 (тривалість %2 сек, напрямок %3) 
+назва файлу : %4 
+поточна мітка : %5 
+значення svi : %6 
+змінні svi : %7 
+(ця колонка : %8)</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="146"/>
         <location filename="src/records.cpp" line="155"/>
         <source>You attempted to change tag for id %1.
 The return code is %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви спробували змінити мітку для ідентифікатора %1.
+Код повернення : %2.</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="199"/>

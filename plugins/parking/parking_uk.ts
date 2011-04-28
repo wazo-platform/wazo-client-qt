@@ -6,27 +6,27 @@
     <message>
         <location filename="src/parking.cpp" line="49"/>
         <source>Parking</source>
-        <translation type="unfinished"></translation>
+        <translation>Утримування</translation>
     </message>
     <message>
         <location filename="src/parking.cpp" line="58"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Номер</translation>
     </message>
     <message>
         <location filename="src/parking.cpp" line="58"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Час</translation>
     </message>
     <message>
         <location filename="src/parking.cpp" line="58"/>
         <source>Parked</source>
-        <translation type="unfinished"></translation>
+        <translation>На утримуванні</translation>
     </message>
     <message>
         <location filename="src/parking.cpp" line="58"/>
         <source>Parker</source>
-        <translation type="unfinished"></translation>
+        <translation>Утримувач</translation>
     </message>
 </context>
 </TS>
