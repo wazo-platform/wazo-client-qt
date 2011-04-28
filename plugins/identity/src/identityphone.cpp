@@ -329,7 +329,7 @@ void IdentityPhone::svcSummary(QVariantMap & svcstatus)
             m_phonestatustxt->setText(tr("Busy %1").arg(svcstatus["busy-number"].toString()));
             m_phonestatustxt->setToolTip(tr("Busy Forward towards %1").arg(svcstatus["busy-number"].toString()));
         } else if (svcstatus["rna-enabled"].toBool()) {
-            m_phonestatustxt->setText(tr("RNA %1").arg(svcstatus["rna-number"].toString()));
+            m_phonestatustxt->setText(tr("FNA %1").arg(svcstatus["rna-number"].toString()));
             m_phonestatustxt->setToolTip(tr("Non-Answer Forward towards %1").arg(svcstatus["rna-number"].toString()));
         } else if (svcstatus["callrecord"].toBool()) {
             m_phonestatustxt->setText(tr("Call Rec"));

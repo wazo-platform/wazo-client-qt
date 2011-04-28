@@ -149,7 +149,7 @@ void IdentityAgent::setStatusColors(const QString & phonenum)
     QPixmap square(10, 10);
     if(m_statustxt->property("connected").toBool()) {
         square.fill("#00ff00");
-        m_statustxt->setText(tr("Connected on %1").arg(phonenum));
+        m_statustxt->setText(tr("Connected to %1").arg(phonenum));
     } else {
         square.fill("#ff0000");
         m_statustxt->setText(tr("Disconnected from %1").arg(phonenum));
