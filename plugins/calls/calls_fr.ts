@@ -41,7 +41,7 @@
     <message>
         <location filename="src/callwidget.cpp" line="151"/>
         <source>Conference room number %1</source>
-        <translation>Chambre de conférence numero %1</translation>
+        <translation>Salle de conférence numero %1</translation>
     </message>
     <message>
         <location filename="src/callwidget.cpp" line="157"/>

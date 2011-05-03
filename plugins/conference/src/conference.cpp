@@ -81,7 +81,7 @@ void ConfTab::showConfRoom(const QString &id, bool force)
         QString roomNumber = \
             b_engine->eV(QString("confrooms/%0/number").arg(id)).toString();
 
-        index = addClosableTab(new ConfChamber(this, this, id),
+        index = addClosableTab(new ConfRoom(this, this, id),
                                QString("%0 (%1)").arg(roomName).arg(roomNumber));
     }
     setCurrentIndex(index);

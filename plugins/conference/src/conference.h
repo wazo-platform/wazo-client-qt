@@ -47,7 +47,7 @@
 class XletConference;
 
 #include "conflist.h"
-#include "confchamber.h"
+#include "confroom.h"
 
 Q_DECLARE_METATYPE(QWidget*);
 

@@ -2,140 +2,140 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="nl_NL">
 <context>
-    <name>ConfChamber</name>
+    <name>ConfRoom</name>
     <message>
-        <location filename="src/confchamber.cpp" line="464"/>
+        <location filename="src/confroom.cpp" line="464"/>
         <source>&amp;Pause conference</source>
         <translation>&amp;Vergadering pauzeren</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="466"/>
+        <location filename="src/confroom.cpp" line="466"/>
         <source> Conference room </source>
         <translation>Vergaderkamer</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="513"/>
+        <location filename="src/confroom.cpp" line="513"/>
         <source>This room is moderated. You can&apos;t see any participant, until an admin allow you in.</source>
         <translation>Deze kamer wordt gemodereerd. U ziet geen deelnemers tot een admin u toegang verleent. </translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="539"/>
+        <location filename="src/confroom.cpp" line="539"/>
         <source>&amp;Restart the conference</source>
         <translation>&amp;De vergadering terug starten</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="541"/>
+        <location filename="src/confroom.cpp" line="541"/>
         <source>&amp;Pause the conference</source>
         <translation>&amp;De vergadering  pauzeren</translation>
     </message>
 </context>
 <context>
-    <name>ConfChamberModel</name>
+    <name>ConfRoomModel</name>
     <message>
-        <location filename="src/confchamber.cpp" line="54"/>
+        <location filename="src/confroom.cpp" line="54"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="55"/>
+        <location filename="src/confroom.cpp" line="55"/>
         <source>Number</source>
         <translation>Nummer</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="56"/>
+        <location filename="src/confroom.cpp" line="56"/>
         <source>Name</source>
         <translation>Naam</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="57"/>
+        <location filename="src/confroom.cpp" line="57"/>
         <source>Since</source>
         <translation>Sinds</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="58"/>
+        <location filename="src/confroom.cpp" line="58"/>
         <source>Admin</source>
         <translation>Admin</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="59"/>
+        <location filename="src/confroom.cpp" line="59"/>
         <source>K</source>
         <translation>K</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="60"/>
+        <location filename="src/confroom.cpp" line="60"/>
         <source>R</source>
         <translation>R</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="61"/>
+        <location filename="src/confroom.cpp" line="61"/>
         <source>A</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="62"/>
+        <location filename="src/confroom.cpp" line="62"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="63"/>
+        <location filename="src/confroom.cpp" line="63"/>
         <source>M</source>
         <translation>M</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="219"/>
+        <location filename="src/confroom.cpp" line="219"/>
         <source>Kick</source>
         <translation>Uitstoten</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="222"/>
-        <location filename="src/confchamber.cpp" line="227"/>
+        <location filename="src/confroom.cpp" line="222"/>
+        <location filename="src/confroom.cpp" line="227"/>
         <source>User already authed</source>
         <translation>Gebruiker al toegelaten</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="224"/>
+        <location filename="src/confroom.cpp" line="224"/>
         <source>Allow in</source>
         <translation>Toegang verlenen</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="229"/>
+        <location filename="src/confroom.cpp" line="229"/>
         <source>Talk to</source>
         <translation>Spreken met</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="232"/>
+        <location filename="src/confroom.cpp" line="232"/>
         <source>User already recorded</source>
         <translation>Gebruiker al ingeschreven</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="234"/>
+        <location filename="src/confroom.cpp" line="234"/>
         <source>Record conference until this user leaves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="239"/>
+        <location filename="src/confroom.cpp" line="239"/>
         <source>Unmute</source>
         <translation>Ruggespraak Geluidsdemping opheffen</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="241"/>
+        <location filename="src/confroom.cpp" line="241"/>
         <source>Mute</source>
         <translation>Ruggespraak Geluidsdemping</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="254"/>
-        <location filename="src/confchamber.cpp" line="256"/>
+        <location filename="src/confroom.cpp" line="254"/>
+        <location filename="src/confroom.cpp" line="256"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="254"/>
-        <location filename="src/confchamber.cpp" line="256"/>
+        <location filename="src/confroom.cpp" line="254"/>
+        <location filename="src/confroom.cpp" line="256"/>
         <source>No</source>
         <translation>Nee</translation>
     </message>
     <message>
-        <location filename="src/confchamber.cpp" line="262"/>
+        <location filename="src/confroom.cpp" line="262"/>
         <source>nobody</source>
         <translation>niemand</translation>
     </message>
