@@ -57,7 +57,6 @@ class ServicePanel : public XLet
         void setUserInfo(const UserInfo *);
         void setOpt(const QString &, bool);
         void setForward(const QString &, const QVariant &);
-        void monitorPeer(UserInfo *);
         void Connect();
         void DisConnect();
         void Reset();

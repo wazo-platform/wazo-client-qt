@@ -1089,7 +1089,7 @@ void BaseEngine::parseCommand(const QString &line)
                 cg2.next();
                 tmpa[cg2.key()] = cg2.value();
             }
-            tmpa["services"] = datamap.value("capaservices");
+            tmpa["services"] = capas.value("services");
             m_guioptions["merged_gui"] = tmpa;
 
             QVariantMap tmp;
@@ -1963,7 +1963,6 @@ void BaseEngine::featurePutOpt(const QString &capa, bool b)
 {
     QVariantMap command;
     command["class"] = "featuresput";
-    command["userid"] = m_monitored_userid;
     if (capa == "enablevm")
         command["function"] = "enablevoicemail";
     else if (capa == "callrecord")
@@ -2005,7 +2004,6 @@ void BaseEngine::askFeatures()
     }
     QVariantMap command;
     command["class"] = "featuresget";
-    command["userid"] = featurestoget;
     sendJsonCommand(command);
 }
 

@@ -51,14 +51,15 @@ XLet* XLetFeaturePlugin::newXLetInstance(QWidget *parent)
 ServicePanel::ServicePanel(QWidget * parent)
     : XLet(parent)
 {
-    setTitle( tr("Services") );
+    setTitle(tr("Services"));
     m_capalegend["enablevm"]     = tr("Voice &Mail");
-    m_capalegend["callrecord"]    = tr("Call &Recording");
+    m_capalegend["callrecord"]   = tr("Call &Recording");
+    // m_capalegend["incallrec"]    = tr("");
     m_capalegend["incallfilter"] = tr("Call &Filtering");
     m_capalegend["enablednd"]    = tr("Do Not &Disturb");
-    m_capalegend["fwdrna"]  = tr("Forward on &No Reply");
-    m_capalegend["fwdbusy"] = tr("Forward on &Busy");
-    m_capalegend["fwdunc"]  = tr("&Unconditional Forward");
+    m_capalegend["fwdrna"]       = tr("Forward on &No Reply");
+    m_capalegend["fwdbusy"]      = tr("Forward on &Busy");
+    m_capalegend["fwdunc"]       = tr("&Unconditional Forward");
 
     m_capas = b_engine->getGuiOptions("merged_gui").value("services").toStringList();
 
@@ -127,8 +128,6 @@ ServicePanel::ServicePanel(QWidget * parent)
     Connect();
 
     // connect signals/slots
-    connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
-            this, SLOT(monitorPeer(UserInfo *)));
 
     connect(b_engine, SIGNAL(disconnectFeatures()),
             this, SLOT(DisConnect()));
@@ -152,6 +151,8 @@ ServicePanel::ServicePanel(QWidget * parent)
             this, SLOT(updateUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
+
+    b_engine->askFeatures();
 }
 
 ServicePanel::~ServicePanel()
@@ -286,14 +287,6 @@ void ServicePanel::setForward(const QString & capa, const QVariant & value)
     }
 }
 
-
-/*! \brief change the monitored peer
- */
-void ServicePanel::monitorPeer(UserInfo * /*ui*/)
-{
-    qDebug() << Q_FUNC_INFO;
-    b_engine->askFeatures();
-}
 
 void ServicePanel::setRecordedStatus()
 {
