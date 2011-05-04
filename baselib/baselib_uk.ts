@@ -6,7 +6,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1249"/>
         <source>Received Services Data</source>
-        <translation>Отрмано системні дані</translation>
+        <translation>Отримано системні дані</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1257"/>

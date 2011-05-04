@@ -261,12 +261,12 @@ when you change this value /!\</source>
     <message>
         <location filename="../common/configwidget.cpp" line="302"/>
         <source>Small</source>
-        <translation>Маленьке</translation>
+        <translation>Маленькі</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="303"/>
         <source>Detailed</source>
-        <translation>Деталізовано</translation>
+        <translation>Деталізовані</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="308"/>
@@ -515,7 +515,7 @@ when you change this value /!\</source>
     <message>
         <location filename="../common/built-in-xlet/faxpanel.cpp" line="53"/>
         <source>Directory</source>
-        <translation>Папка</translation>
+        <translation>Каталог</translation>
     </message>
     <message>
         <location filename="../common/built-in-xlet/faxpanel.cpp" line="66"/>
@@ -593,7 +593,7 @@ is being processed and will be sent soon.</source>
     <message>
         <location filename="../common/built-in-xlet/faxpanel.cpp" line="226"/>
         <source>(Server) missing directory</source>
-        <translation>(Сервер) відсутня папка</translation>
+        <translation>(Сервер) відсутній каталог</translation>
     </message>
     <message>
         <location filename="../common/built-in-xlet/faxpanel.cpp" line="228"/>
@@ -694,7 +694,7 @@ Reason given : %3.</source>
     <message>
         <location filename="src/mainwidget.cpp" line="352"/>
         <source>&amp;Connect</source>
-        <translation>&amp;Connect</translation>
+        <translation>&amp;Підключитись</translation>
     </message>
     <message>
         <location filename="src/mainwidget.cpp" line="353"/>
@@ -774,7 +774,7 @@ Reason given : %3.</source>
     <message>
         <location filename="src/mainwidget.cpp" line="943"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
-        <translation>Додатки XiVO CTI, при підключенні до правильного сервера, доповнюють телефонну систему XiVO і надають такі інструменти, як екран інформації користувача, пошук по папкам та інші додатки для спостереження у кол-центрах.</translation>
+        <translation>Додатки XiVO CTI, при підключенні до правильного сервера, доповнюють телефонну систему XiVO і надають такі інструменти, як екран інформації користувача, пошук по каталогам та інші додатки для спостереження у кол-центрах.</translation>
     </message>
     <message>
         <location filename="src/mainwidget.cpp" line="948"/>

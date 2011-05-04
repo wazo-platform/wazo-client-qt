@@ -51,7 +51,7 @@
     <message>
         <location filename="outlook_panel.cpp" line="90"/>
         <source>Di&amp;rectory</source>
-        <translation>&amp;Папка</translation>
+        <translation>&amp;Каталог</translation>
     </message>
     <message>
         <location filename="outlook_panel.cpp" line="205"/>
