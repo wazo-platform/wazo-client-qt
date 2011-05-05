@@ -133,17 +133,11 @@ ServicePanel::ServicePanel(QWidget * parent)
             this, SLOT(Connect()));
     connect(b_engine, SIGNAL(resetFeatures()),
             this, SLOT(Reset()));
-    connect(b_engine, SIGNAL(featurePutIsKO()),
-            this, SLOT(getRecordedStatus()));
-//     connect(b_engine, SIGNAL(featurePutIsOK()), XXX
-//             this, SLOT(setRecordedStatus()));
 
     connect(b_engine, SIGNAL(optChanged(const QString &)),
             this, SLOT(setOpt(const QString &)));
     connect(b_engine, SIGNAL(forwardUpdated(const QString &)),
             this, SLOT(setForward(const QString &)) );
-    connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
-            this, SLOT(setUserInfo(const UserInfo *)));
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
@@ -153,8 +147,19 @@ ServicePanel::ServicePanel(QWidget * parent)
     b_engine->askFeatures();
 }
 
-void ServicePanel::updateUserConfig(const QString &)
+void ServicePanel::updateUserConfig(const QString & xuserid)
 {
+    const UserInfo * userinfo = b_engine->getXivoClientUser();
+    if (xuserid == userinfo->xid()) {
+        foreach (QString capa, chkcapas)
+            if (m_capas.contains(capa))
+                setOpt(capa);
+        foreach (QString capa, fwdcapas)
+            if (m_capas.contains(capa)) {
+                setForward("enable" + capa.mid(3));
+                setForward("dest" + capa.mid(3));
+            }
+    }
 }
 
 void ServicePanel::updatePhoneConfig(const QString &)
@@ -300,20 +305,4 @@ void ServicePanel::setForward(const QString & capa)
             }
         }
     }
-}
-
-void ServicePanel::getRecordedStatus()
-{
-    qDebug() << Q_FUNC_INFO;
-//     foreach (QString capa, chkcapas) {
-//         if (m_capas.contains(capa)) {
-//             m_chkopt[capa]->setChecked(m_status->m_chkopt[capa]);
-//         }
-//     }
-//     foreach (QString capa, fwdcapas) {
-//         if (m_capas.contains(capa)) {
-//             m_forwarddest[capa]->setText(m_status->m_forwarddest[capa]);
-//             m_forward[capa]->setChecked(m_status->m_forward[capa]);
-//         }
-//     }
 }

@@ -59,10 +59,10 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
     haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
     haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
-    haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
     haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
-    haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
     haschanged |= setIfChangeBool(prop, "enableunc", & m_enableunc);
+    haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
+    haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
     haschanged |= setIfChangeString(prop, "destunc", & m_destunc);
 
     haschanged |= setIfChangeString(prop, "agentid", & m_agentid);

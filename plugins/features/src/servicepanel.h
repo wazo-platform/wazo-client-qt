@@ -58,8 +58,6 @@ class ServicePanel : public XLet
         void Connect();
         void DisConnect();
         void Reset();
-        void getRecordedStatus();
-        void setRecordedStatus();
         void updateUserConfig(const QString &);
         void updatePhoneConfig(const QString &);
 
