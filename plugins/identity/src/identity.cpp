@@ -215,7 +215,7 @@ void IdentityDisplay::updatePresence()
  */
 void IdentityDisplay::setOpt(const QString & capa, bool b)
 {
-    if ((capa == "enablednd") || (capa == "incallfilter") || (capa == "callrecord") || (capa == "enablevm"))
+    if ((capa == "enablednd") || (capa == "incallfilter") || (capa == "callrecord") || (capa == "enablevoicemail"))
         m_svcstatus[capa] = b;
     svcSummary();
 }

@@ -54,6 +54,17 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "voicemailid", & m_voicemailid);
     haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
 
+    haschanged |= setIfChangeBool(prop, "callrecord", & m_callrecord);
+    haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
+    haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
+    haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
+    haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
+    haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
+    haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
+    haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
+    haschanged |= setIfChangeBool(prop, "enableunc", & m_enableunc);
+    haschanged |= setIfChangeString(prop, "destunc", & m_destunc);
+
     haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
     m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(m_agentid);
 

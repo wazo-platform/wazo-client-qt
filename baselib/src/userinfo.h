@@ -72,6 +72,17 @@ class BASELIB_EXPORT UserInfo : public XInfo
         const QString & agentNumber() const;
         const QString & voicemailNumber() const;
 
+        bool callrecord() const { return m_callrecord; };
+        bool enablednd() const { return m_enablednd; };
+        bool enablevoicemail() const { return m_enablevoicemail; };
+        bool incallfilter() const { return m_incallfilter; };
+        bool enablebusy() const { return m_enablebusy; };
+        const QString & destbusy() const { return m_destbusy; };
+        bool enablerna() const { return m_enablerna; };
+        const QString & destrna() const { return m_destrna; };
+        bool enableunc() const { return m_enableunc; };
+        const QString & destunc() const { return m_destunc; };
+
         // methods to fetch statuses
         const QStringList & mwi() const;
         const QString & availstate() const;
@@ -92,6 +103,17 @@ class BASELIB_EXPORT UserInfo : public XInfo
         QStringList m_phoneidlist;  //!< map to phones
 
         QString m_voicemailnumber;  //!< voice mail box number
+
+        bool m_callrecord;
+        bool m_enablednd;
+        bool m_enablevoicemail;
+        bool m_incallfilter;
+        bool m_enablebusy;
+        QString m_destbusy;
+        bool m_enablerna;
+        QString m_destrna;
+        bool m_enableunc;
+        QString m_destunc;
 
         QStringList m_mwi;  //!< message waiting indicator
         QString m_availstate;   //!< availability state

@@ -34,9 +34,8 @@
 #include "baseengine.h"
 #include "servicepanel.h"
 
+const QStringList chkcapas = (QStringList() << "enablevoicemail" << "callrecord" << "incallfilter" << "enablednd");
 const QStringList fwdcapas = (QStringList() << "fwdrna" << "fwdbusy" << "fwdunc");
-const QStringList chkcapas = (QStringList() << "enablevm" << "callrecord" << "incallfilter" << "enablednd");
-
 
 Q_EXPORT_PLUGIN2(xletfeatureplugin, XLetFeaturePlugin);
 
@@ -52,19 +51,18 @@ ServicePanel::ServicePanel(QWidget * parent)
     : XLet(parent)
 {
     setTitle(tr("Services"));
-    m_capalegend["enablevm"]     = tr("Voice &Mail");
-    m_capalegend["callrecord"]   = tr("Call &Recording");
+    m_capalegend["enablevoicemail"] = tr("Voice &Mail");
+    m_capalegend["callrecord"]      = tr("Call &Recording");
     // m_capalegend["incallrec"]    = tr("");
-    m_capalegend["incallfilter"] = tr("Call &Filtering");
-    m_capalegend["enablednd"]    = tr("Do Not &Disturb");
-    m_capalegend["fwdrna"]       = tr("Forward on &No Reply");
-    m_capalegend["fwdbusy"]      = tr("Forward on &Busy");
-    m_capalegend["fwdunc"]       = tr("&Unconditional Forward");
+    m_capalegend["incallfilter"]    = tr("Call &Filtering");
+    m_capalegend["enablednd"]       = tr("Do Not &Disturb");
+    m_capalegend["fwdrna"]          = tr("Forward on &No Reply");
+    m_capalegend["fwdbusy"]         = tr("Forward on &Busy");
+    m_capalegend["fwdunc"]          = tr("&Unconditional Forward");
 
     m_capas = b_engine->getGuiOptions("merged_gui").value("services").toStringList();
 
     int line = 0;
-    m_status = new ServiceStatus();
 
     QGroupBox *groupBox1 = new QGroupBox(tr("Services"), this);
     groupBox1->setAlignment( Qt::AlignLeft );
@@ -104,7 +102,7 @@ ServicePanel::ServicePanel(QWidget * parent)
     }
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
-    if (m_capas.contains("enablevm") ||
+    if (m_capas.contains("enablevoicemail") ||
         m_capas.contains("callrecord") ||
         m_capas.contains("incallfilter") ||
         m_capas.contains("enablednd")) {
@@ -137,13 +135,13 @@ ServicePanel::ServicePanel(QWidget * parent)
             this, SLOT(Reset()));
     connect(b_engine, SIGNAL(featurePutIsKO()),
             this, SLOT(getRecordedStatus()));
-    connect(b_engine, SIGNAL(featurePutIsOK()),
-            this, SLOT(setRecordedStatus()));
+//     connect(b_engine, SIGNAL(featurePutIsOK()), XXX
+//             this, SLOT(setRecordedStatus()));
 
-    connect(b_engine, SIGNAL(optChanged(const QString &, bool)),
-            this, SLOT(setOpt(const QString &, bool)));
-    connect(b_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
-            this, SLOT(setForward(const QString &, const QVariant &)) );
+    connect(b_engine, SIGNAL(optChanged(const QString &)),
+            this, SLOT(setOpt(const QString &)));
+    connect(b_engine, SIGNAL(forwardUpdated(const QString &)),
+            this, SLOT(setForward(const QString &)) );
     connect(b_engine, SIGNAL(localUserInfoDefined(const UserInfo *)),
             this, SLOT(setUserInfo(const UserInfo *)));
 
@@ -153,11 +151,6 @@ ServicePanel::ServicePanel(QWidget * parent)
             this, SLOT(updatePhoneConfig(const QString &)));
 
     b_engine->askFeatures();
-}
-
-ServicePanel::~ServicePanel()
-{
-    delete m_status;
 }
 
 void ServicePanel::updateUserConfig(const QString &)
@@ -170,11 +163,11 @@ void ServicePanel::updatePhoneConfig(const QString &)
 
 void ServicePanel::setUserInfo(const UserInfo * ui)
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << ui;
     if (ui == NULL)
         return;
-    if ((ui->mwi().size() < 3) && (m_chkopt.contains("enablevm")))
-        m_chkopt["enablevm"]->hide();
+    if ((ui->mwi().size() < 3) && (m_chkopt.contains("enablevoicemail")))
+        m_chkopt["enablevoicemail"]->hide();
 }
 
 void ServicePanel::Connect()
@@ -260,89 +253,67 @@ void ServicePanel::Toggled(bool b)
 
 // The following actions are entered in when the status is received from the server (init or update)
 
-void ServicePanel::setOpt(const QString & capa, bool b)
+void ServicePanel::setOpt(const QString & capa)
 {
-    qDebug() << Q_FUNC_INFO;
-    m_status->setOpt(capa, b);
+    const UserInfo * userinfo = b_engine->getXivoClientUser();
     if (m_capas.contains(capa)) {
-        m_chkopt[capa]->setChecked(b);
+        if (capa == "enablednd")
+            m_chkopt[capa]->setChecked(userinfo->enablednd());
+        if (capa == "incallfilter")
+            m_chkopt[capa]->setChecked(userinfo->incallfilter());
+        if (capa == "enablevoicemail")
+            m_chkopt[capa]->setChecked(userinfo->enablevoicemail());
+        if (capa == "callrecord")
+            m_chkopt[capa]->setChecked(userinfo->callrecord());
     }
 }
 
-void ServicePanel::setForward(const QString & capa, const QVariant & value)
+void ServicePanel::setForward(const QString & capa)
 {
-    bool b = value.toMap().value("enabled").toBool();
-    QString thiscapa = "fwd" + capa;
-    if (m_capas.contains(thiscapa)) {
-        if (value.toMap().keys().contains("number")) {
-            QString dest = value.toMap().value("number").toString();
-            m_status->setForward(thiscapa, b, dest);
-            m_forward[thiscapa]->setChecked(b);
-            m_forwarddest[thiscapa]->setText(dest);
-            m_forward[thiscapa]->setEnabled(dest.size() > 0);
-        } else {
-            // m_status->setForward(thiscapa, b, dest);
-            m_forward[thiscapa]->setChecked(b);
+    const UserInfo * userinfo = b_engine->getXivoClientUser();
+    if (capa.startsWith("enable")) {
+        QString thiscapa = "fwd" + capa.mid(6);
+        if (m_capas.contains(thiscapa)) {
+            if (capa == "enablebusy") {
+                m_forward[thiscapa]->setChecked(userinfo->enablebusy());
+                m_forward[thiscapa]->setEnabled(userinfo->destbusy().size() > 0);
+            } else if (capa == "enablerna") {
+                m_forward[thiscapa]->setChecked(userinfo->enablerna());
+                m_forward[thiscapa]->setEnabled(userinfo->destrna().size() > 0);
+            } else if (capa == "enableunc") {
+                m_forward[thiscapa]->setChecked(userinfo->enableunc());
+                m_forward[thiscapa]->setEnabled(userinfo->destunc().size() > 0);
+            }
         }
-    }
-}
-
-
-void ServicePanel::setRecordedStatus()
-{
-    // qDebug() << Q_FUNC_INFO;
-    foreach (QString capa, chkcapas) {
-        if (m_capas.contains(capa)) {
-            m_status->m_chkopt[capa] = m_chkopt[capa]->isChecked();
-        }
-    }
-    foreach (QString capa, fwdcapas) {
-        if (m_capas.contains(capa)) {
-            m_status->m_forward[capa] = m_forward[capa]->isChecked();
+    } else if (capa.startsWith("dest")) {
+        QString thiscapa = "fwd" + capa.mid(4);
+        if (m_capas.contains(thiscapa)) {
+            if (capa == "destbusy") {
+                m_forwarddest[thiscapa]->setText(userinfo->destbusy());
+                m_forwarddest[thiscapa]->setEnabled(userinfo->destbusy().size() > 0);
+            } else if (capa == "destrna") {
+                m_forwarddest[thiscapa]->setText(userinfo->destrna());
+                m_forwarddest[thiscapa]->setEnabled(userinfo->destrna().size() > 0);
+            } else if (capa == "destunc") {
+                m_forwarddest[thiscapa]->setText(userinfo->destunc());
+                m_forwarddest[thiscapa]->setEnabled(userinfo->destunc().size() > 0);
+            }
         }
     }
 }
 
 void ServicePanel::getRecordedStatus()
 {
-    // qDebug() << Q_FUNC_INFO;
-    foreach (QString capa, chkcapas) {
-        if (m_capas.contains(capa)) {
-            m_chkopt[capa]->setChecked(m_status->m_chkopt[capa]);
-        }
-    }
-    foreach (QString capa, fwdcapas) {
-        if (m_capas.contains(capa)) {
-            m_forwarddest[capa]->setText(m_status->m_forwarddest[capa]);
-            m_forward[capa]->setChecked(m_status->m_forward[capa]);
-        }
-    }
-}
-
-
-ServiceStatus::ServiceStatus()
-{
-    foreach (QString capa, chkcapas) {
-        m_chkopt[capa] = false;
-    }
-    foreach (QString capa, fwdcapas) {
-        m_forward[capa] = false;
-        m_forwarddest[capa] = "";
-    }
-}
-
-void ServiceStatus::setOpt(const QString & capa, bool b)
-{
-    m_chkopt[capa] = b;
-}
-
-void ServiceStatus::setForward(const QString & capa, bool b, const QString & dest)
-{
-    m_forward[capa] = b;
-    m_forwarddest[capa] = dest;
-}
-
-void ServiceStatus::display()
-{
-    qDebug() << m_chkopt << "/" << m_forward << m_forwarddest;
+    qDebug() << Q_FUNC_INFO;
+//     foreach (QString capa, chkcapas) {
+//         if (m_capas.contains(capa)) {
+//             m_chkopt[capa]->setChecked(m_status->m_chkopt[capa]);
+//         }
+//     }
+//     foreach (QString capa, fwdcapas) {
+//         if (m_capas.contains(capa)) {
+//             m_forwarddest[capa]->setText(m_status->m_forwarddest[capa]);
+//             m_forward[capa]->setChecked(m_status->m_forward[capa]);
+//         }
+//     }
 }

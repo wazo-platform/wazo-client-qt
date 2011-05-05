@@ -70,7 +70,7 @@ IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
  */
 void IdentityVoiceMail::svcSummary(QVariantMap &svcstatus, const UserInfo * ui)
 {
-    if(svcstatus["enablevm"].toBool()) {
+    if(svcstatus["enablevoicemail"].toBool()) {
         m_name->setText(tr("<b>VoiceMailBox %1</b>").arg(ui->voicemailNumber()));
         m_name->setToolTip(tr("VoiceMail activated on %1").arg(ui->voicemailNumber()));
     } else {

@@ -327,8 +327,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void resetFeatures();
         void localUserInfoDefined(const UserInfo *);
         void removeQueues(const QString &, const QStringList &);
-        void optChanged(const QString &, bool);
-        void forwardUpdated(const QString &, const QVariant &);
+        void optChanged(const QString &);
+        void forwardUpdated(const QString &);
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QString &);
         void changeWatchedQueueSignal(const QString &);
@@ -345,7 +345,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void popupError(const QString &);
         void startTryAgainTimer();  //!< Start the "try to reconnect" timer
         void stopTryAgainTimer();   //!< Stop the "try to reconnect" timer
-        void initFeatureFields(const QString &, const QVariant &);
+        void initFeatureFields(const QString &);
         void connectSocket();
         void sendCommand(const QString &);
         void parseCommand(const QString &);

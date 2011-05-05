@@ -972,17 +972,17 @@ void BaseEngine::parseCommand(const QString &line)
                 QVariantMap featuresupdate_map = datamap.value("payload").toMap();
                 if (m_monitored_userid == datamap.value("userid").toString())
                     foreach (QString featurekey, featuresupdate_map.keys())
-                        initFeatureFields(featurekey, featuresupdate_map.value(featurekey));
+                        initFeatureFields(featurekey);
 
             } else if (function == "get") {
-                QVariantMap featuresget_map = datamap.value("payload").toMap();
-                if (m_monitored_userid == datamap.value("userid").toString()) {
-                    resetFeatures();
-                    foreach (QString featurekey, featuresget_map.keys()) {
-                        initFeatureFields(featurekey, featuresget_map.value(featurekey));
-                    }
-                    emit emitTextMessage(tr("Received Services Data"));
+                QVariantMap featuresget_map = datamap.value("userfeatures").toMap();
+                // if (m_monitored_userid == datamap.value("userid").toString()) {
+                resetFeatures();
+                foreach (QString featurekey, featuresget_map.keys()) {
+                    initFeatureFields(featurekey);
                 }
+                emit emitTextMessage(tr("Received Services Data"));
+                //}
 
             } else if (function == "put") {
                 QVariantMap featuresput_map = datamap.value("payload").toMap();
@@ -993,7 +993,7 @@ void BaseEngine::parseCommand(const QString &line)
                     } else {
                         emit featurePutIsOK();
                         foreach (QString featurekey, featuresput_map.keys()) {
-                            initFeatureFields(featurekey, featuresput_map.value(featurekey));
+                            initFeatureFields(featurekey);
                         }
                         emit emitTextMessage("");
                     }
@@ -1856,22 +1856,22 @@ bool BaseEngine::trytoreconnect() const
     return m_trytoreconnect;
 }
 
-void BaseEngine::initFeatureFields(const QString & field, const QVariant & value)
+void BaseEngine::initFeatureFields(const QString & field)
 {
-    //        qDebug() << field << value;
-    bool isenabled = value.toMap().value("enabled").toBool();
-    if ((field == "enablevoicemail") || (field == "vm"))
-        emit optChanged("enablevm", isenabled);
-    else if ((field == "enablednd") || (field == "dnd"))
-        emit optChanged("enablednd", isenabled);
-    else if (field == "incallfilter")
-        emit optChanged("incallfilter", isenabled);
-    else if (field == "callrecord")
-        emit optChanged("callrecord", isenabled);
-    else if ((field == "unc") || (field == "busy") || (field == "rna"))
-        emit forwardUpdated(field, value);
-    else if ((field == "enableunc") || (field == "enablebusy") || (field == "enablerna"))
-        emit forwardUpdated(field.mid(6), value);
+    if ( (field == "callrecord") ||
+         (field == "enablednd") ||
+         (field == "enablevoicemail") ||
+         (field == "incallfilter") )
+        emit optChanged(field);
+
+    // dnd, vm, unc, rna, busy ... ?
+    else if ( (field == "enableunc") ||
+              (field == "enablebusy") ||
+              (field == "enablerna") ||
+              (field == "destunc") ||
+              (field == "destbusy") ||
+              (field == "destrna"))
+        emit forwardUpdated(field);
 }
 
 void BaseEngine::stopKeepAliveTimer()
@@ -1963,7 +1963,7 @@ void BaseEngine::featurePutOpt(const QString &capa, bool b)
 {
     QVariantMap command;
     command["class"] = "featuresput";
-    if (capa == "enablevm")
+    if (capa == "enablevoicemail")
         command["function"] = "enablevoicemail";
     else if (capa == "callrecord")
         command["function"] = "callrecord";
@@ -1982,16 +1982,28 @@ void BaseEngine::featurePutForward(const QString & capa, bool b, const QString &
 {
     QVariantMap command;
     command["class"] = "featuresput";
-    command["userid"] = m_monitored_userid;
-    if (capa == "fwdunc")
+    if (capa == "fwdunc") {
         command["function"] = "enableunc";
-    else if (capa == "fwdbusy")
+        command["value"] = QString(b ? "1" : "0");
+        sendJsonCommand(command);
+        command["function"] = "destunc";
+        command["value"] = dst;
+        sendJsonCommand(command);
+    } else if (capa == "fwdbusy") {
         command["function"] = "enablebusy";
-    else if (capa == "fwdrna")
+        command["value"] = QString(b ? "1" : "0");
+        sendJsonCommand(command);
+        command["function"] = "destbusy";
+        command["value"] = dst;
+        sendJsonCommand(command);
+    } else if (capa == "fwdrna") {
         command["function"] = "enablerna";
-    command["value"] = QString(b ? "1" : "0");
-    command["destination"] = dst;
-    sendJsonCommand(command);
+        command["value"] = QString(b ? "1" : "0");
+        sendJsonCommand(command);
+        command["function"] = "destrna";
+        command["value"] = dst;
+        sendJsonCommand(command);
+    }
 }
 
 /*! \brief send a featursget command to the cti server */
