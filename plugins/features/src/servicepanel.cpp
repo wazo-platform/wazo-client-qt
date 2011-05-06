@@ -171,8 +171,8 @@ void ServicePanel::setUserInfo(const UserInfo * ui)
     qDebug() << Q_FUNC_INFO << ui;
     if (ui == NULL)
         return;
-    if ((ui->mwi().size() < 3) && (m_chkopt.contains("enablevoicemail")))
-        m_chkopt["enablevoicemail"]->hide();
+//     if ((ui->mwi().size() < 3) && (m_chkopt.contains("enablevoicemail")))
+//         m_chkopt["enablevoicemail"]->hide();
 }
 
 void ServicePanel::Connect()

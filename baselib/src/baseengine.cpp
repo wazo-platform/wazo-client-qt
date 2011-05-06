@@ -1242,8 +1242,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     qDebug() << "null for" << listname << xid;
                 // if (xid == m_xuserid)
                 // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
-                // m_anylist.value("users")[xuserid]->setMWI(uinfo.value("mwi").toStringList());
-                // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
             } else {
                 qDebug() << function << listname << xid << haschanged;
             }
@@ -1265,6 +1263,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateAgentConfig(xid);
             else if (listname == "queues")
                 emit updateQueueConfig(xid);
+            else if (listname == "voicemails")
+                emit updateVoiceMailConfig(xid);
             else if (listname == "meetmes")
                 addUpdateConfRoomInTree(tree(), xid);
 
@@ -1332,6 +1332,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     }
                 }
             }
+            else if (listname == "voicemails")
+                emit updateVoiceMailStatus(xid);
             else if (listname == "channels")
                 emit updateChannelStatus(xid);
             else if (listname == "meetmes")
@@ -1401,20 +1403,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 //             }
             monitorPeerRequest(fullid_watched);
 
-        } else if (function == "update") {
-            QStringList userupdate = datamap.value("user").toStringList();
-            if (userupdate.size() == 2) {
-                QString iduser = userupdate[0] + "/" + userupdate[1];
-                if (m_anylist.value("users").contains(iduser) && (iduser == m_xuserid)) {
-                    QString subclass = datamap.value("subclass").toString();
-//                     if (subclass == "mwi") {
-//                         m_anylist.value("users")[iduser]->setMWI(datamap.value("payload").toStringList());
-//                         // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
-//                     }
-                    emit updateUserConfig(iduser);
-                    emit updateUserStatus(iduser);
-                }
-            }
         }
     }
 }

@@ -130,6 +130,8 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             this, SLOT(updateUserStatus(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateVoiceMailConfig(const QString &)),
+            this, SLOT(updateVoiceMailConfig(const QString &)));
 
     connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
             m_agent, SLOT(updateAgentConfig(const QString &)));
@@ -236,12 +238,12 @@ void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
 void IdentityDisplay::svcSummary()
 {
     // m_phone->svcSummary(m_svcstatus);
-    if (m_ui) {
-        QStringList vm = m_ui->mwi();
-        if (vm.size() > 2) {
-            m_voicemail->svcSummary(m_svcstatus, m_ui);
-        }
-    }
+//     if (m_ui) {
+//         QStringList vm = m_ui->mwi();
+//         if (vm.size() > 2) {
+//             m_voicemail->svcSummary(m_svcstatus, m_ui);
+//         }
+//     }
     return;
 }
 
@@ -292,12 +294,12 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
                            .arg(m_ui->ipbxid())
                            .arg(m_ui->context()));
 
-    QStringList vm = m_ui->mwi();
-    if (vm.size() > 2) {
+//     QStringList vm = m_ui->mwi();
+//     if (vm.size() > 2) {
         m_voicemail->show();
         m_voicemail->svcSummary(m_svcstatus, m_ui);
-        m_voicemail->setOldNew(vm[1], vm[2]);
-    }
+//         m_voicemail->setOldNew(vm[1], vm[2]);
+//     }
     // changes the "watched agent" only if no one else has done it before
     b_engine->changeWatchedAgent(m_ui->xagentid(), false);
 
@@ -324,6 +326,17 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
     }
 
     m_agent->setAgentId(m_ui->xagentid());
+}
+
+void IdentityDisplay::updateVoiceMailConfig(const QString & xvoicemailid)
+{
+    if (xvoicemailid != m_ui->xvoicemailid())
+        return;
+    const VoiceMailInfo * voicemailinfo = b_engine->voicemail(xvoicemailid);
+    if (voicemailinfo == NULL)
+        return;
+
+    qDebug() << Q_FUNC_INFO << xvoicemailid << voicemailinfo << voicemailinfo->mailbox();
 }
 
 void IdentityDisplay::updateUserStatus(const QString & xuserid)

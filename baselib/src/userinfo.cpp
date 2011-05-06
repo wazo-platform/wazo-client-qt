@@ -51,8 +51,12 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "fullname", & m_fullname);
     haschanged |= setIfChangeString(prop, "mobilephonenumber", & m_mobilenumber);
     haschanged |= setIfChangeString(prop, "context", & m_context);
-    haschanged |= setIfChangeString(prop, "voicemailid", & m_voicemailid);
     haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
+
+    haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
+    m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(m_agentid);
+    haschanged |= setIfChangeString(prop, "voicemailid", & m_voicemailid);
+    m_xvoicemailid = QString("%1/%2").arg(m_ipbxid).arg(m_voicemailid);
 
     haschanged |= setIfChangeBool(prop, "callrecord", & m_callrecord);
     haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
@@ -64,9 +68,6 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
     haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
     haschanged |= setIfChangeString(prop, "destunc", & m_destunc);
-
-    haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
-    m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(m_agentid);
 
     if (prop.contains("linelist")) {
         QStringList lid;
@@ -90,72 +91,15 @@ void UserInfo::setPhoneIdList(const QStringList & phoneidlist)
     m_phoneidlist = phoneidlist;
 }
 
-/*! \brief set Message Waiting indicator */
-void UserInfo::setMWI(const QStringList & mwi)
-{
-    m_mwi = mwi;
-}
-
 /*! \brief check if this user has this phone */
 bool UserInfo::hasPhoneId(const QString & xphoneid) const
 {
     return m_phoneidlist.contains(xphoneid);
 }
 
-/*! \brief return m_fullname */
-const QString & UserInfo::fullname() const
-{
-    return m_fullname;
-}
-
-/*! \brief return m_mobilenumber */
-const QString & UserInfo::mobileNumber() const
-{
-    return m_mobilenumber;
-}
-
-const QString & UserInfo::voicemailNumber() const
-{
-    return m_voicemailnumber;
-}
-
-const QString & UserInfo::ctilogin() const
-{
-    return m_ctilogin;
-}
-
-/*! \brief return Message Waiting Indicator */
-const QStringList & UserInfo::mwi() const
-{
-    return m_mwi;
-}
-
-const QString & UserInfo::agentid() const
-{
-    return m_agentid;
-}
-
-const QString & UserInfo::xagentid() const
-{
-    return m_xagentid;
-}
-
-/*! \brief return a list of contexts where this user has its phones
- */
-const QString & UserInfo::context() const
-{
-    return m_context;
-}
-
 const QString & UserInfo::availstate() const
 {
     return m_availstate;
-}
-
-/*! \brief return list of phones identifier */
-const QStringList & UserInfo::phonelist() const
-{
-    return m_phoneidlist;
 }
 
 /*! \brief return a String representation of the object

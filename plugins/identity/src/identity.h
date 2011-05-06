@@ -59,9 +59,10 @@ class IdentityDisplay : public XLet
         void updatePresence();
         void setOpt(const QString &, bool);
         void setForward(const QString &, const QVariant &);
-        void updatePhoneConfig(const QString &);
         void updateUserConfig(const QString &);
         void updateUserStatus(const QString &);
+        void updatePhoneConfig(const QString &);
+        void updateVoiceMailConfig(const QString &);
 
     signals:
         void setAvailState(const QString &, bool);
