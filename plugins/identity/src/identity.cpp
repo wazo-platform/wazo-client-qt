@@ -101,9 +101,9 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_glayout->setMargin(0);
 
     m_col_user = 0;
-    m_col_agent = m_col_user + 2;
+    m_col_vm = m_col_user + 2;
+    m_col_agent = m_col_vm + 1;
     m_col_phone = m_col_agent + 1;
-    m_col_vm = m_col_phone + 1;
 
     m_iconAlign = Qt::AlignHCenter | Qt::AlignTop;
     m_textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
@@ -298,6 +298,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
 //     if (vm.size() > 2) {
         m_voicemail->show();
         m_voicemail->svcSummary(m_svcstatus, m_ui);
+        m_voicemail->setVoiceMailId(m_ui->xvoicemailid());
 //         m_voicemail->setOldNew(vm[1], vm[2]);
 //     }
     // changes the "watched agent" only if no one else has done it before
@@ -337,6 +338,7 @@ void IdentityDisplay::updateVoiceMailConfig(const QString & xvoicemailid)
         return;
 
     qDebug() << Q_FUNC_INFO << xvoicemailid << voicemailinfo << voicemailinfo->mailbox();
+    m_voicemail->setVoiceMailId(xvoicemailid);
 }
 
 void IdentityDisplay::updateUserStatus(const QString & xuserid)

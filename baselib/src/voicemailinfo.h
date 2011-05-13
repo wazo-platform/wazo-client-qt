@@ -55,13 +55,19 @@ class BASELIB_EXPORT VoiceMailInfo : public XInfo
         const QString & mailbox() const { return m_mailbox; };
         const QString & fullname() const { return m_fullname; };
 
+        bool waiting() const { return m_waiting; };
+        int oldMessages() const { return m_old; };
+        int newMessages() const { return m_new; };
+
     private:
         QString m_context;
         QString m_email;
         QString m_mailbox;
         QString m_fullname;
 
-        int m_messages;
+        bool m_waiting;
+        int m_old;
+        int m_new;
 };
 
 #endif

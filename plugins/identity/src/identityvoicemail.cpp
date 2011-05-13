@@ -66,6 +66,18 @@ IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
     m_layout->setColumnStretch(2, 1);
 }
 
+void IdentityVoiceMail::setVoiceMailId(const QString & xvoicemailid)
+{
+    m_xvoicemailid = xvoicemailid;
+    const VoiceMailInfo * voicemailinfo = b_engine->voicemail(xvoicemailid);
+    if (voicemailinfo == NULL)
+        return;
+    qDebug() << Q_FUNC_INFO << xvoicemailid << voicemailinfo->mailbox();
+    m_name->setText(tr("VoiceMailBox %1").arg(voicemailinfo->mailbox()));
+    m_old->setText(tr("%1 old").arg(voicemailinfo->oldMessages()));
+    m_new->setText(tr("%1 new").arg(voicemailinfo->newMessages()));
+}
+
 /*! \brief update voicemail box name.
  */
 void IdentityVoiceMail::svcSummary(QVariantMap &svcstatus, const UserInfo * ui)
