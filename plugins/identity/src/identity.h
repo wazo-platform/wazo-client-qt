@@ -63,6 +63,7 @@ class IdentityDisplay : public XLet
         void updateUserStatus(const QString &);
         void updatePhoneConfig(const QString &);
         void updateVoiceMailConfig(const QString &);
+        void updateVoiceMailStatus(const QString &);
 
     signals:
         void setAvailState(const QString &, bool);
@@ -73,7 +74,6 @@ class IdentityDisplay : public XLet
         void svcSummary();
         void setupIcons();
 
-        QString m_xuserid;
         QGridLayout * m_glayout;
         QLabel *m_icon_user;
         QFrame *m_qvline1;
@@ -85,7 +85,6 @@ class IdentityDisplay : public XLet
         QHash<QString, IdentityPhone *> m_identityphones;
         IdentityVoiceMail * m_voicemail;
         QHash<QString, QString> m_presence_names;
-        const UserInfo *m_ui;
         int m_col_user;
         int m_col_agent;
         int m_col_phone;

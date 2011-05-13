@@ -1240,8 +1240,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     haschanged = m_anylist.value(listname)[xid]->updateConfig(config);
                 else
                     qDebug() << "null for" << listname << xid;
-                // if (xid == m_xuserid)
-                // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
+                if ((xid == m_xuserid) && (listname == "users"))
+                    emit localUserInfoDefined();
             } else {
                 qDebug() << function << listname << xid << haschanged;
             }

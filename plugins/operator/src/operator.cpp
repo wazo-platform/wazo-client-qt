@@ -402,12 +402,7 @@ void XletOperator::updateChannelStatus(const QString &)
 
 void XletOperator::updateUserConfig(const QString & xuserid)
 {
-    m_ui = b_engine->getXivoClientUser();
-    m_xuserid = m_ui->xid();
     m_xphoneid = m_ui->phonelist().join("");
-
-    if (! m_ui)
-        return;
     if (xuserid != m_xuserid)
         return;
     // qDebug() << Q_FUNC_INFO << xuserid;
@@ -416,8 +411,6 @@ void XletOperator::updateUserConfig(const QString & xuserid)
 
 void XletOperator::updateUserStatus(const QString & xuserid)
 {
-    if (! m_ui)
-        return;
     if (xuserid != m_xuserid)
         return;
     // qDebug() << Q_FUNC_INFO << xuserid;

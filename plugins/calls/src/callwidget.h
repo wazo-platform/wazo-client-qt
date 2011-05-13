@@ -78,7 +78,7 @@ class CallWidget : public QWidget
         void transferToNumber();
         void parkCall();
     private:
-        UserInfo * m_ui;  //!< monitored user infos
+        const UserInfo * m_ui;  //!< monitored user infos
         QString m_xchannel;  //!< channel identifier
         bool m_parkedCall;  //!< Is it a parked call ?
 

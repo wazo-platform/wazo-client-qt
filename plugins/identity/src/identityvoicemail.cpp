@@ -69,13 +69,7 @@ IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
 void IdentityVoiceMail::setVoiceMailId(const QString & xvoicemailid)
 {
     m_xvoicemailid = xvoicemailid;
-    const VoiceMailInfo * voicemailinfo = b_engine->voicemail(xvoicemailid);
-    if (voicemailinfo == NULL)
-        return;
-    qDebug() << Q_FUNC_INFO << xvoicemailid << voicemailinfo->mailbox();
-    m_name->setText(tr("VoiceMailBox %1").arg(voicemailinfo->mailbox()));
-    m_old->setText(tr("%1 old").arg(voicemailinfo->oldMessages()));
-    m_new->setText(tr("%1 new").arg(voicemailinfo->newMessages()));
+    m_voicemailinfo = b_engine->voicemail(xvoicemailid);
 }
 
 /*! \brief update voicemail box name.
@@ -91,17 +85,29 @@ void IdentityVoiceMail::svcSummary(QVariantMap &svcstatus, const UserInfo * ui)
     }
 }
 
-/*! \brief update display of old/new messages
- */
-void IdentityVoiceMail::setOldNew(const QString & _old, const QString & _new)
-{
-    m_old->setText(tr("%1 old").arg(_old));
-    m_new->setText(tr("%1 new").arg(_new));
-}
-
 /*! \brief call voicemail on click
  */
 void IdentityVoiceMail::callVoiceMail()
 {
     b_engine->actionCall("originate", "user:special:me", "user:special:myvoicemail");
+}
+
+void IdentityVoiceMail::updateVoiceMailConfig(const QString & xvoicemailid)
+{
+    if (xvoicemailid != m_xvoicemailid)
+        return;
+    m_voicemailinfo = b_engine->voicemail(xvoicemailid);
+    if (m_voicemailinfo == NULL)
+        return;
+    m_name->setText(tr("VoiceMailBox %1").arg(m_voicemailinfo->mailbox()));
+}
+
+void IdentityVoiceMail::updateVoiceMailStatus(const QString & xvoicemailid)
+{
+    if (xvoicemailid != m_xvoicemailid)
+        return;
+    if (m_voicemailinfo == NULL)
+        return;
+    m_old->setText(tr("%1 old").arg(m_voicemailinfo->oldMessages()));
+    m_new->setText(tr("%1 new").arg(m_voicemailinfo->newMessages()));
 }

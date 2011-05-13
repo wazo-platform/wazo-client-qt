@@ -329,7 +329,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void disconnectFeatures();
         void connectFeatures();
         void resetFeatures();
-        void localUserInfoDefined(const UserInfo *);
+        void localUserInfoDefined();
         void removeQueues(const QString &, const QStringList &);
         void optChanged(const QString &);
         void forwardUpdated(const QString &);

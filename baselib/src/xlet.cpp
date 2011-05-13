@@ -38,4 +38,12 @@ XLet::XLet(QWidget *parent)
 {
     connect(this, SIGNAL(ipbxCommand(const QVariantMap &)),
             b_engine, SLOT(ipbxCommand(const QVariantMap &)));
+    connect(b_engine, SIGNAL(localUserInfoDefined()),
+            this, SLOT(localUserInfoDefined()));
+    m_xuserid = b_engine->getFullId();
+}
+
+void XLet::localUserInfoDefined()
+{
+    m_ui = b_engine->getXivoClientUser();
 }

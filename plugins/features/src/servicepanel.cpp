@@ -149,8 +149,7 @@ ServicePanel::ServicePanel(QWidget * parent)
 
 void ServicePanel::updateUserConfig(const QString & xuserid)
 {
-    const UserInfo * userinfo = b_engine->getXivoClientUser();
-    if (xuserid == userinfo->xid()) {
+    if (xuserid == m_xuserid) {
         foreach (QString capa, chkcapas)
             if (m_capas.contains(capa))
                 setOpt(capa);
@@ -166,18 +165,8 @@ void ServicePanel::updatePhoneConfig(const QString &)
 {
 }
 
-void ServicePanel::setUserInfo(const UserInfo * ui)
-{
-    qDebug() << Q_FUNC_INFO << ui;
-    if (ui == NULL)
-        return;
-//     if ((ui->mwi().size() < 3) && (m_chkopt.contains("enablevoicemail")))
-//         m_chkopt["enablevoicemail"]->hide();
-}
-
 void ServicePanel::Connect()
 {
-    qDebug() << Q_FUNC_INFO;
     foreach (QString capa, chkcapas) {
         if (m_capas.contains(capa)) {
             connect(m_chkopt[capa], SIGNAL(clicked(bool)),
@@ -194,7 +183,6 @@ void ServicePanel::Connect()
 
 void ServicePanel::DisConnect()
 {
-    qDebug() << Q_FUNC_INFO;
     foreach (QString capa, chkcapas) {
         if (m_capas.contains(capa)) {
             disconnect(m_chkopt[capa], SIGNAL(clicked(bool)),
@@ -260,48 +248,46 @@ void ServicePanel::Toggled(bool b)
 
 void ServicePanel::setOpt(const QString & capa)
 {
-    const UserInfo * userinfo = b_engine->getXivoClientUser();
     if (m_capas.contains(capa)) {
         if (capa == "enablednd")
-            m_chkopt[capa]->setChecked(userinfo->enablednd());
+            m_chkopt[capa]->setChecked(m_ui->enablednd());
         if (capa == "incallfilter")
-            m_chkopt[capa]->setChecked(userinfo->incallfilter());
+            m_chkopt[capa]->setChecked(m_ui->incallfilter());
         if (capa == "enablevoicemail")
-            m_chkopt[capa]->setChecked(userinfo->enablevoicemail());
+            m_chkopt[capa]->setChecked(m_ui->enablevoicemail());
         if (capa == "callrecord")
-            m_chkopt[capa]->setChecked(userinfo->callrecord());
+            m_chkopt[capa]->setChecked(m_ui->callrecord());
     }
 }
 
 void ServicePanel::setForward(const QString & capa)
 {
-    const UserInfo * userinfo = b_engine->getXivoClientUser();
     if (capa.startsWith("enable")) {
         QString thiscapa = "fwd" + capa.mid(6);
         if (m_capas.contains(thiscapa)) {
             if (capa == "enablebusy") {
-                m_forward[thiscapa]->setChecked(userinfo->enablebusy());
-                m_forward[thiscapa]->setEnabled(userinfo->destbusy().size() > 0);
+                m_forward[thiscapa]->setChecked(m_ui->enablebusy());
+                m_forward[thiscapa]->setEnabled(m_ui->destbusy().size() > 0);
             } else if (capa == "enablerna") {
-                m_forward[thiscapa]->setChecked(userinfo->enablerna());
-                m_forward[thiscapa]->setEnabled(userinfo->destrna().size() > 0);
+                m_forward[thiscapa]->setChecked(m_ui->enablerna());
+                m_forward[thiscapa]->setEnabled(m_ui->destrna().size() > 0);
             } else if (capa == "enableunc") {
-                m_forward[thiscapa]->setChecked(userinfo->enableunc());
-                m_forward[thiscapa]->setEnabled(userinfo->destunc().size() > 0);
+                m_forward[thiscapa]->setChecked(m_ui->enableunc());
+                m_forward[thiscapa]->setEnabled(m_ui->destunc().size() > 0);
             }
         }
     } else if (capa.startsWith("dest")) {
         QString thiscapa = "fwd" + capa.mid(4);
         if (m_capas.contains(thiscapa)) {
             if (capa == "destbusy") {
-                m_forwarddest[thiscapa]->setText(userinfo->destbusy());
-                m_forwarddest[thiscapa]->setEnabled(userinfo->destbusy().size() > 0);
+                m_forwarddest[thiscapa]->setText(m_ui->destbusy());
+                m_forwarddest[thiscapa]->setEnabled(m_ui->destbusy().size() > 0);
             } else if (capa == "destrna") {
-                m_forwarddest[thiscapa]->setText(userinfo->destrna());
-                m_forwarddest[thiscapa]->setEnabled(userinfo->destrna().size() > 0);
+                m_forwarddest[thiscapa]->setText(m_ui->destrna());
+                m_forwarddest[thiscapa]->setEnabled(m_ui->destrna().size() > 0);
             } else if (capa == "destunc") {
-                m_forwarddest[thiscapa]->setText(userinfo->destunc());
-                m_forwarddest[thiscapa]->setEnabled(userinfo->destunc().size() > 0);
+                m_forwarddest[thiscapa]->setText(m_ui->destunc());
+                m_forwarddest[thiscapa]->setEnabled(m_ui->destunc().size() > 0);
             }
         }
     }

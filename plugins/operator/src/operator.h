@@ -73,8 +73,6 @@ class XletOperator : public XLet
         QString getPeerChan(const QString &chan) const;
         void removeLine(const QString &);
 
-        UserInfo * m_ui;
-        QString m_xuserid;
         QString m_xphoneid;
         QGridLayout * m_glayout;
         QLabel * m_lbl;

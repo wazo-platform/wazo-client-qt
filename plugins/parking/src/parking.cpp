@@ -167,10 +167,8 @@ void XletParking::itemClicked(QTableWidgetItem * item)
     QString ipbxid     = m_table->item(rown, 0)->data(Qt::UserRole+0).toString();
     QString parkingbay = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
     //qDebug() << Q_FUNC_INFO << rown << ipbxid << placenum;
-    if (((b_engine) && (b_engine->getXivoClientUser())) &&
-         (ipbxid == b_engine->getXivoClientUser()->ipbxid())) {
+    if (ipbxid == m_ui->ipbxid())
         b_engine->pasteToDial(parkingbay);
-    }
 }
 
 void XletParking::itemDoubleClicked(QTableWidgetItem * item)
@@ -179,10 +177,8 @@ void XletParking::itemDoubleClicked(QTableWidgetItem * item)
     QString ipbxid     = m_table->item(rown, 0)->data(Qt::UserRole+0).toString();
     QString parkingbay = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
     //qDebug() << Q_FUNC_INFO << rown << ipbxid << placenum;
-    if(b_engine && b_engine->getXivoClientUser() &&
-       (ipbxid == b_engine->getXivoClientUser()->ipbxid())) {
+    if (ipbxid == m_ui->ipbxid())
         b_engine->actionCall("originate", "user:special:me", "ext:" + parkingbay);
-    }
 }
 
 void XletParking::timerEvent(QTimerEvent * event)

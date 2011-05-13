@@ -52,7 +52,6 @@ class ServicePanel : public XLet
         ServicePanel(QWidget *parent=0);
 
     public slots:
-        void setUserInfo(const UserInfo *);
         void setOpt(const QString &);
         void setForward(const QString &);
         void Connect();

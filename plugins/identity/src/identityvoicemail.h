@@ -41,6 +41,7 @@
 
 class QGridLayout;
 class UserInfo;
+class VoiceMailInfo;
 
 /*! \brief Identity Voice mail display
  */
@@ -51,18 +52,22 @@ class IdentityVoiceMail : public QWidget
     public:
         IdentityVoiceMail(QWidget *parent);
         void setVoiceMailId(const QString &);
-      void svcSummary(QVariantMap &svcstatus, const UserInfo *ui);
-        void setOldNew(const QString &_old, const QString &_new);
+        void svcSummary(QVariantMap &svcstatus, const UserInfo *ui);
+    public slots:
+        void updateVoiceMailConfig(const QString &);
+        void updateVoiceMailStatus(const QString &);
     private slots:
         void callVoiceMail();
 
     private:
+        QString m_xvoicemailid;
+        const VoiceMailInfo * m_voicemailinfo;
+
         QGridLayout * m_layout;       //!< layout
         QPushButton * m_iconButton;   //!< icon
         QLabel * m_name;              //!< box name
         QLabel * m_old;               //!< number of old messages
         QLabel * m_new;               //!< number of new messages
-        QString m_xvoicemailid;
 };
 
 #endif

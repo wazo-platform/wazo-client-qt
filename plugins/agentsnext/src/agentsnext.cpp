@@ -743,12 +743,7 @@ void XletAgentsNext::newQueue(const QString & /*ipbxid*/,
 {
     QString queuecontext = queueprops.toMap().value("context").toString();
     // qDebug() << Q_FUNC_INFO << ipbxid << queuename << queuecontext;
-    UserInfo * userinfo = b_engine->getXivoClientUser();
-
-    if (userinfo == NULL)
-        return;
-
-    if ((! m_queuelist.contains(queuename)) && (userinfo->context() == queuecontext))
+    if ((! m_queuelist.contains(queuename)) && (m_ui->context() == queuecontext))
         m_queuelist.append(queuename);
 }
 
