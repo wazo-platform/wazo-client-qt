@@ -671,7 +671,7 @@ void BaseEngine::ctiSocketConnected()
     m_attempt_loggedin = false;
     QVariantMap command;
     command["class"] = "login_id";
-    command["userid"] = m_userlogin;
+    command["userlogin"] = m_userlogin;
     command["company"] = m_company;
     command["ident"] = m_osname;
     command["version"] = "9999";
@@ -963,7 +963,6 @@ void BaseEngine::parseCommand(const QString &line)
                 if (id == m_xuserid) {
                     setAvailState(stateid, true);
                     emit updatePresence();
-                    // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
                 }
             }
 
@@ -1000,23 +999,31 @@ void BaseEngine::parseCommand(const QString &line)
                 }
             }
 
-        } else if (thisclass == "login_id_ok") {
-            m_sessionid = datamap.value("sessionid").toString();
-            QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_password);
-            QCryptographicHash hidepass(QCryptographicHash::Sha1);
-            QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
-            QVariantMap command;
-            command["class"] = "login_pass";
-            command["hashedpassword"] = QString(res);
-            sendJsonCommand(command);
+        } else if (thisclass == "login_id") {
+            if (datamap.contains("errorstring")) {
+                stopConnection();
+                clearInternalData();
+                setState(ENotLogged);
+                qDebug() << datamap.value("errorstring").toString();
+                popupError(datamap.value("errorstring").toString());
+            } else {
+                m_sessionid = datamap.value("sessionid").toString();
+                QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_password);
+                QCryptographicHash hidepass(QCryptographicHash::Sha1);
+                QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
+                QVariantMap command;
+                command["class"] = "login_pass";
+                command["hashedpassword"] = QString(res);
+                sendJsonCommand(command);
+            }
 
-        } else if (thisclass == "loginko") {
-            stopConnection();
-            clearInternalData();
-            setState(ENotLogged);
-            popupError(datamap.value("errorstring").toString());
-
-        } else if (thisclass == "login_pass_ok") {
+        } else if (thisclass == "login_pass") {
+            if (datamap.contains("errorstring")) {
+                stopConnection();
+                clearInternalData();
+                setState(ENotLogged);
+                popupError(datamap.value("errorstring").toString());
+            } else {
             QStringList capas = datamap.value("capalist").toStringList();
             QVariantMap command;
             command["class"] = "login_capas";
@@ -1052,8 +1059,9 @@ void BaseEngine::parseCommand(const QString &line)
                 command["state"] = __nopresence__;
             command["lastconnwins"] = m_checked_lastconnwins;
             sendJsonCommand(command);
+            }
 
-        } else if (thisclass == "login_capas_ok") {
+        } else if (thisclass == "login_capas") {
             // qDebug() << "login_capas_ok" << datamap;
             m_ipbxid = datamap.value("ipbxid").toString();
             m_userid = datamap.value("userid").toString();
@@ -1376,10 +1384,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             emit peersReceived();
             m_monitored_userid = m_xuserid;
             QString fullname_mine = "No One";
-//             if (m_anylist.value("users").contains(m_xuserid)) {
-//                 fullname_mine = m_anylist.value("users")[m_xuserid]->fullname();
-//                 // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
-//             }
 
             // Who do we monitor ?
             // First look at the last monitored one
