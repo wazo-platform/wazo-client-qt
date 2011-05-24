@@ -31,7 +31,7 @@
  * $Date$
  */
 
-#include "confchamber.h"
+#include "confroom.h"
 
 enum ColOrder {
     ID, ACTION_MUTE, ACTION_KICK, ACTION_TALK_TO,
@@ -41,7 +41,7 @@ enum ColOrder {
 
 static QVariant COL_TITLE[NB_COL];
 
-ConfChamberModel::ConfChamberModel(ConfTab *tab, QWidget *parent, const QString &id)
+ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &id)
     : QAbstractTableModel(parent), m_tab(tab), m_parent(parent), m_admin(0),
       m_authed(0), m_id(id), m_view(NULL)
 {
@@ -63,12 +63,12 @@ ConfChamberModel::ConfChamberModel(ConfTab *tab, QWidget *parent, const QString 
     COL_TITLE[ACTION_MUTE] = tr("M");
 }
 
-ConfChamberModel::~ConfChamberModel()
+ConfRoomModel::~ConfRoomModel()
 {
     b_engine->tree()->unregisterAllCb(this);
 }
 
-void ConfChamberModel::timerEvent(QTimerEvent *)
+void ConfRoomModel::timerEvent(QTimerEvent *)
 {
     QString req = QString("confrooms/%0/in[user-id=@%1]").arg(m_id)
                                                          .arg(b_engine->xivoUserId());
@@ -79,14 +79,14 @@ void ConfChamberModel::timerEvent(QTimerEvent *)
     reset();
 }
 
-void ConfChamberModel::setView(ConfChamberView *v)
+void ConfRoomModel::setView(ConfRoomView *v)
 {
     m_view = v;
 
     updateView();
 }
 
-void ConfChamberModel::updateView()
+void ConfRoomModel::updateView()
 {
     static int actions[] = { ACTION_RECORD,
                              ACTION_KICK,
@@ -106,7 +106,7 @@ void ConfChamberModel::updateView()
     }
 }
 
-void ConfChamberModel::confRoomChange(const QString &path, DStoreEvent event)
+void ConfRoomModel::confRoomChange(const QString &path, DStoreEvent event)
 {
     if (event == NODE_REMOVED) {
         if (b_engine->eV(path + "/user-id").toString() == b_engine->xivoUserId()) {
@@ -116,7 +116,7 @@ void ConfChamberModel::confRoomChange(const QString &path, DStoreEvent event)
     QTimer::singleShot(0, this, SLOT(extractRow2IdMap()));
 }
 
-void ConfChamberModel::extractRow2IdMap()
+void ConfRoomModel::extractRow2IdMap()
 {
     m_pplInRoom = b_engine->eVM(QString("confrooms/%0/in").arg(m_id));
 
@@ -131,7 +131,7 @@ void ConfChamberModel::extractRow2IdMap()
     reset();
 }
 
-void ConfChamberModel::sort(int column, Qt::SortOrder order)
+void ConfRoomModel::sort(int column, Qt::SortOrder order)
 {
     struct {
         static bool ascending(const QPair<int, QString> &a,
@@ -165,7 +165,7 @@ void ConfChamberModel::sort(int column, Qt::SortOrder order)
 }
 
 
-int ConfChamberModel::rowCount(const QModelIndex&) const
+int ConfRoomModel::rowCount(const QModelIndex&) const
 {
     QString room = QString("confrooms/%0/").arg(m_id);
     if ((b_engine->eV(room + "moderated").toInt()) && (!m_authed))
@@ -174,13 +174,13 @@ int ConfChamberModel::rowCount(const QModelIndex&) const
     return m_pplInRoom.size();
 }
 
-int ConfChamberModel::columnCount(const QModelIndex&) const
+int ConfRoomModel::columnCount(const QModelIndex&) const
 {
     return NB_COL;
 }
 
 QVariant
-ConfChamberModel::data(const QModelIndex &index,
+ConfRoomModel::data(const QModelIndex &index,
                        int role) const
 {
     int row = index.row(), col = index.column();
@@ -270,7 +270,7 @@ ConfChamberModel::data(const QModelIndex &index,
 }
 
 QVariant
-ConfChamberModel::headerData(int section,
+ConfRoomModel::headerData(int section,
                              Qt::Orientation orientation,
                              int role) const
 {
@@ -284,7 +284,7 @@ ConfChamberModel::headerData(int section,
     return QVariant();
 }
 
-Qt::ItemFlags ConfChamberModel::flags(const QModelIndex &index) const
+Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
 {
     int row = index.row(), col = index.column();
 
@@ -316,18 +316,18 @@ Qt::ItemFlags ConfChamberModel::flags(const QModelIndex &index) const
     return Qt::NoItemFlags;
 }
 
-QString ConfChamberModel::row2participantId(int row) const
+QString ConfRoomModel::row2participantId(int row) const
 {
     return m_row2id[row];
 }
 
-QString ConfChamberModel::id() const
+QString ConfRoomModel::id() const
 {
     return m_id;
 }
 
 
-ConfChamberView::ConfChamberView(QWidget *parent, ConfChamberModel *model)
+ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
     : QTableView(parent)
 {
     setSortingEnabled(true);
@@ -366,7 +366,7 @@ ConfChamberView::ConfChamberView(QWidget *parent, ConfChamberModel *model)
             this, SLOT(sectionHeaderClicked(int)));
 }
 
-void ConfChamberView::sectionHeaderClicked(int index)
+void ConfRoomView::sectionHeaderClicked(int index)
 {
     int nonSortable[] = { ACTION_MUTE,
                           ACTION_TALK_TO,
@@ -384,16 +384,16 @@ void ConfChamberView::sectionHeaderClicked(int index)
     setSortingEnabled(true);
 }
 
-void ConfChamberView::onViewClick(const QModelIndex &index)
+void ConfRoomView::onViewClick(const QModelIndex &index)
 {
     int row = index.row(), col = index.column();
 
-    QString roomId = static_cast<ConfChamberModel*>(model())->id();
+    QString roomId = static_cast<ConfRoomModel*>(model())->id();
     QString castId = model()->index(row, ID).data().toString();
 
     QString in = QString("confrooms/%0/in/%1/").arg(roomId).arg(castId);
 
-    if (!(static_cast<ConfChamberModel*>(model())->isAdmin() ||
+    if (!(static_cast<ConfRoomModel*>(model())->isAdmin() ||
           b_engine->eV(in + "user-id").toString() == b_engine->xivoUserId())) {
         return;
     }
@@ -434,14 +434,14 @@ void ConfChamberView::onViewClick(const QModelIndex &index)
     }
 }
 
-void ConfChamberView::mousePressEvent(QMouseEvent *event)
+void ConfRoomView::mousePressEvent(QMouseEvent *event)
 {
     lastPressed = event->button();
     QTableView::mousePressEvent(event);
 }
 
 
-ConfChamber::ConfChamber(QWidget *parent, ConfTab *tab, const QString &id)
+ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &id)
     : QWidget(parent), m_id(id)
 {
     QString room = QString("confrooms/%0/").arg(m_id);
@@ -450,13 +450,12 @@ ConfChamber::ConfChamber(QWidget *parent, ConfTab *tab, const QString &id)
     QVBoxLayout *vBox = new QVBoxLayout(this);
     setLayout(vBox);
     QHBoxLayout *hBox = new QHBoxLayout();
-    m_model = new ConfChamberModel(tab, this, id);
+    m_model = new ConfRoomModel(tab, this, id);
     QPushButton *roomPause = new QPushButton(tr("&Pause conference"), this);
-    QLabel *redondant = new QLabel(
-        tr(" Conference room ") +
-        b_engine->eV(QString("confrooms/%0/name").arg(id)).toString() + " (" +
-        b_engine->eV(QString("confrooms/%0/number").arg(id)).toString() + ") "
-    );
+    QLabel *redondant = new QLabel(tr(" Conference room %1 (%2) ")
+                                   .arg(b_engine->eV(QString("confrooms/%0/name").arg(id)).toString())
+                                   .arg(b_engine->eV(QString("confrooms/%0/number").arg(id)).toString())
+                                   );
     setProperty("id", id);
 
     roomPause->setProperty("state", true);
@@ -473,11 +472,11 @@ ConfChamber::ConfChamber(QWidget *parent, ConfTab *tab, const QString &id)
     hBox = new QHBoxLayout();
     connect(roomPause, SIGNAL(clicked()), this, SLOT(pauseConf()));
 
-    ConfChamberView *view = new ConfChamberView(this, m_model);
+    ConfRoomView *view = new ConfRoomView(this, m_model);
     m_model->setView(view);
 
 
-    view->setStyleSheet("ConfChamberView {"
+    view->setStyleSheet("ConfRoomView {"
                             "border: none;"
                             "background:transparent;"
                             "color:black;"
@@ -511,7 +510,7 @@ ConfChamber::ConfChamber(QWidget *parent, ConfTab *tab, const QString &id)
     }
 }
 
-void ConfChamber::allowedIn()
+void ConfRoom::allowedIn()
 {
     if (m_model->isAuthed()) {
         m_moderatedRoom->hide();
@@ -520,7 +519,7 @@ void ConfChamber::allowedIn()
 
 }
 
-void ConfChamber::pauseConf()
+void ConfRoom::pauseConf()
 {
     QPushButton *button = static_cast<QPushButton*>(sender());
     bool confPaused = button->property("state").toBool();

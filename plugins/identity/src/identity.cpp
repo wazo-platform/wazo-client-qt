@@ -60,7 +60,7 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 }
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
-    : XLet(parent), m_ui(NULL)
+    : XLet(parent)
 {
     setTitle( tr("Identity") );
     setAccessibleName( tr("Current User Panel") );
@@ -101,9 +101,9 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_glayout->setMargin(0);
 
     m_col_user = 0;
-    m_col_agent = m_col_user + 2;
+    m_col_vm = m_col_user + 2;
+    m_col_agent = m_col_vm + 1;
     m_col_phone = m_col_agent + 1;
-    m_col_vm = m_col_phone + 1;
 
     m_iconAlign = Qt::AlignHCenter | Qt::AlignTop;
     m_textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
@@ -135,6 +135,11 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             m_agent, SLOT(updateAgentConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             m_agent, SLOT(updateAgentStatus(const QString &)));
+
+    connect(b_engine, SIGNAL(updateVoiceMailConfig(const QString &)),
+            m_voicemail, SLOT(updateVoiceMailConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateVoiceMailStatus(const QString &)),
+            m_voicemail, SLOT(updateVoiceMailStatus(const QString &)));
 
     b_engine->setAvailState("available", true);
     updatePresence();
@@ -215,7 +220,7 @@ void IdentityDisplay::updatePresence()
  */
 void IdentityDisplay::setOpt(const QString & capa, bool b)
 {
-    if ((capa == "enablednd") || (capa == "incallfilter") || (capa == "callrecord") || (capa == "enablevm"))
+    if ((capa == "enablednd") || (capa == "incallfilter") || (capa == "callrecord") || (capa == "enablevoicemail"))
         m_svcstatus[capa] = b;
     svcSummary();
 }
@@ -236,12 +241,12 @@ void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
 void IdentityDisplay::svcSummary()
 {
     // m_phone->svcSummary(m_svcstatus);
-    if (m_ui) {
-        QStringList vm = m_ui->mwi();
-        if (vm.size() > 2) {
-            m_voicemail->svcSummary(m_svcstatus, m_ui);
-        }
-    }
+//     if (m_ui) {
+//         QStringList vm = m_ui->mwi();
+//         if (vm.size() > 2) {
+//             m_voicemail->svcSummary(m_svcstatus, m_ui);
+//         }
+//     }
     return;
 }
 
@@ -249,14 +254,14 @@ void IdentityDisplay::svcSummary()
  */
 void IdentityDisplay::updatePhoneConfig(const QString & xphoneid)
 {
+    if (m_ui == NULL)
+        return;
     const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
     if (phoneinfo == NULL)
         return;
-    m_ui = b_engine->getXivoClientUser();
     QString iduserfeatures = phoneinfo->iduserfeatures();
     if (iduserfeatures != m_ui->id())
         return;
-
     m_phonenum->setText(b_engine->phonenumbers(m_ui).join(", "));
 }
 
@@ -264,9 +269,9 @@ void IdentityDisplay::updatePhoneConfig(const QString & xphoneid)
  */
 void IdentityDisplay::updateUserConfig(const QString & xuserid)
 {
-    m_ui = b_engine->getXivoClientUser();
-    m_xuserid = m_ui->xid();
     if (xuserid != m_xuserid)
+        return;
+    if (m_ui == NULL)
         return;
     m_user->setText(m_ui->fullname());
 
@@ -292,12 +297,10 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
                            .arg(m_ui->ipbxid())
                            .arg(m_ui->context()));
 
-    QStringList vm = m_ui->mwi();
-    if (vm.size() > 2) {
-        m_voicemail->show();
-        m_voicemail->svcSummary(m_svcstatus, m_ui);
-        m_voicemail->setOldNew(vm[1], vm[2]);
-    }
+    m_voicemail->show();
+    m_voicemail->svcSummary(m_svcstatus, m_ui);
+    m_voicemail->setVoiceMailId(m_ui->xvoicemailid());
+
     // changes the "watched agent" only if no one else has done it before
     b_engine->changeWatchedAgent(m_ui->xagentid(), false);
 
@@ -328,6 +331,8 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
 
 void IdentityDisplay::updateUserStatus(const QString & xuserid)
 {
+    if (m_ui == NULL)
+        return;
     // qDebug() << Q_FUNC_INFO << xuserid;
     const UserInfo * userinfo = b_engine->user(xuserid);
     if (userinfo == NULL)

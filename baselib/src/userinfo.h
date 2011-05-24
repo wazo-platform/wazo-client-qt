@@ -54,26 +54,36 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
         void setPhoneIdList(const QStringList &);
         void setAgentNumber(const QString &);
-        void setMWI(const QStringList &);
 
         bool hasPhoneId(const QString &) const;
 
-        const QString & mobileNumber() const;
-        const QString & voicemailId() const;
-        const QStringList & phonelist() const;
-        const QString & fullname() const;
-        const QString & ctilogin() const;
-        const QString & agentid() const;
-        const QString & xagentid() const;
-        const QString & context() const;
+        const QString & mobileNumber() const { return m_mobilenumber; };
+        const QStringList & phonelist() const { return m_phoneidlist; };
+        const QString & fullname() const { return m_fullname; };
+        const QString & ctilogin() const { return m_ctilogin; };
+        const QString & context() const { return m_context; };
         int simultcalls() const { return m_simultcalls; };
+        const QString & agentid() const { return m_agentid; };
+        const QString & xagentid() const { return m_xagentid; };
+        const QString & voicemailid() const { return m_voicemailid; };
+        const QString & xvoicemailid() const { return m_xvoicemailid; };
 
         // method to fetch config indirectly
-        const QString & agentNumber() const;
-        const QString & voicemailNumber() const;
+        const QString & agentNumber() const { return m_agentnumber; };
+        const QString & voicemailNumber() const { return m_voicemailnumber; };
+
+        bool callrecord() const { return m_callrecord; };
+        bool enablednd() const { return m_enablednd; };
+        bool enablevoicemail() const { return m_enablevoicemail; };
+        bool incallfilter() const { return m_incallfilter; };
+        bool enablebusy() const { return m_enablebusy; };
+        const QString & destbusy() const { return m_destbusy; };
+        bool enablerna() const { return m_enablerna; };
+        const QString & destrna() const { return m_destrna; };
+        bool enableunc() const { return m_enableunc; };
+        const QString & destunc() const { return m_destunc; };
 
         // methods to fetch statuses
-        const QStringList & mwi() const;
         const QString & availstate() const;
         QString toString() const;
 
@@ -86,14 +96,26 @@ class BASELIB_EXPORT UserInfo : public XInfo
         int m_simultcalls;
 
         QString m_mobilenumber;  //!< mobile phone number
-        QString m_voicemailid;  //!< voice mail box number
         QString m_agentid; //!< agent id
-        QString m_xagentid; //!< agent id
+        QString m_xagentid; //!< ipbxid + agent id
+        QString m_voicemailid;  //!< voice mail box id
+        QString m_xvoicemailid;  //!< ipbxid + voice mail box id
         QStringList m_phoneidlist;  //!< map to phones
 
+        QString m_agentnumber;  //!< agent number
         QString m_voicemailnumber;  //!< voice mail box number
 
-        QStringList m_mwi;  //!< message waiting indicator
+        bool m_callrecord;
+        bool m_enablednd;
+        bool m_enablevoicemail;
+        bool m_incallfilter;
+        bool m_enablebusy;
+        QString m_destbusy;
+        bool m_enablerna;
+        QString m_destrna;
+        bool m_enableunc;
+        QString m_destunc;
+
         QString m_availstate;   //!< availability state
 };
 

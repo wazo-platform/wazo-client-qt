@@ -671,7 +671,7 @@ void BaseEngine::ctiSocketConnected()
     m_attempt_loggedin = false;
     QVariantMap command;
     command["class"] = "login_id";
-    command["userid"] = m_userlogin;
+    command["userlogin"] = m_userlogin;
     command["company"] = m_company;
     command["ident"] = m_osname;
     command["version"] = "9999";
@@ -963,7 +963,6 @@ void BaseEngine::parseCommand(const QString &line)
                 if (id == m_xuserid) {
                     setAvailState(stateid, true);
                     emit updatePresence();
-                    // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
                 }
             }
 
@@ -972,17 +971,17 @@ void BaseEngine::parseCommand(const QString &line)
                 QVariantMap featuresupdate_map = datamap.value("payload").toMap();
                 if (m_monitored_userid == datamap.value("userid").toString())
                     foreach (QString featurekey, featuresupdate_map.keys())
-                        initFeatureFields(featurekey, featuresupdate_map.value(featurekey));
+                        initFeatureFields(featurekey);
 
             } else if (function == "get") {
-                QVariantMap featuresget_map = datamap.value("payload").toMap();
-                if (m_monitored_userid == datamap.value("userid").toString()) {
-                    resetFeatures();
-                    foreach (QString featurekey, featuresget_map.keys()) {
-                        initFeatureFields(featurekey, featuresget_map.value(featurekey));
-                    }
-                    emit emitTextMessage(tr("Received Services Data"));
+                QVariantMap featuresget_map = datamap.value("userfeatures").toMap();
+                // if (m_monitored_userid == datamap.value("userid").toString()) {
+                resetFeatures();
+                foreach (QString featurekey, featuresget_map.keys()) {
+                    initFeatureFields(featurekey);
                 }
+                emit emitTextMessage(tr("Received Services Data"));
+                //}
 
             } else if (function == "put") {
                 QVariantMap featuresput_map = datamap.value("payload").toMap();
@@ -993,30 +992,38 @@ void BaseEngine::parseCommand(const QString &line)
                     } else {
                         emit featurePutIsOK();
                         foreach (QString featurekey, featuresput_map.keys()) {
-                            initFeatureFields(featurekey, featuresput_map.value(featurekey));
+                            initFeatureFields(featurekey);
                         }
                         emit emitTextMessage("");
                     }
                 }
             }
 
-        } else if (thisclass == "login_id_ok") {
-            m_sessionid = datamap.value("sessionid").toString();
-            QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_password);
-            QCryptographicHash hidepass(QCryptographicHash::Sha1);
-            QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
-            QVariantMap command;
-            command["class"] = "login_pass";
-            command["hashedpassword"] = QString(res);
-            sendJsonCommand(command);
+        } else if (thisclass == "login_id") {
+            if (datamap.contains("errorstring")) {
+                stopConnection();
+                clearInternalData();
+                setState(ENotLogged);
+                qDebug() << datamap.value("errorstring").toString();
+                popupError(datamap.value("errorstring").toString());
+            } else {
+                m_sessionid = datamap.value("sessionid").toString();
+                QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_password);
+                QCryptographicHash hidepass(QCryptographicHash::Sha1);
+                QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
+                QVariantMap command;
+                command["class"] = "login_pass";
+                command["hashedpassword"] = QString(res);
+                sendJsonCommand(command);
+            }
 
-        } else if (thisclass == "loginko") {
-            stopConnection();
-            clearInternalData();
-            setState(ENotLogged);
-            popupError(datamap.value("errorstring").toString());
-
-        } else if (thisclass == "login_pass_ok") {
+        } else if (thisclass == "login_pass") {
+            if (datamap.contains("errorstring")) {
+                stopConnection();
+                clearInternalData();
+                setState(ENotLogged);
+                popupError(datamap.value("errorstring").toString());
+            } else {
             QStringList capas = datamap.value("capalist").toStringList();
             QVariantMap command;
             command["class"] = "login_capas";
@@ -1052,8 +1059,9 @@ void BaseEngine::parseCommand(const QString &line)
                 command["state"] = __nopresence__;
             command["lastconnwins"] = m_checked_lastconnwins;
             sendJsonCommand(command);
+            }
 
-        } else if (thisclass == "login_capas_ok") {
+        } else if (thisclass == "login_capas") {
             // qDebug() << "login_capas_ok" << datamap;
             m_ipbxid = datamap.value("ipbxid").toString();
             m_userid = datamap.value("userid").toString();
@@ -1089,7 +1097,7 @@ void BaseEngine::parseCommand(const QString &line)
                 cg2.next();
                 tmpa[cg2.key()] = cg2.value();
             }
-            tmpa["services"] = datamap.value("capaservices");
+            tmpa["services"] = capas.value("services");
             m_guioptions["merged_gui"] = tmpa;
 
             QVariantMap tmp;
@@ -1240,10 +1248,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     haschanged = m_anylist.value(listname)[xid]->updateConfig(config);
                 else
                     qDebug() << "null for" << listname << xid;
-                // if (xid == m_xuserid)
-                // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
-                // m_anylist.value("users")[xuserid]->setMWI(uinfo.value("mwi").toStringList());
-                // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
+                if ((xid == m_xuserid) && (listname == "users"))
+                    emit localUserInfoDefined();
             } else {
                 qDebug() << function << listname << xid << haschanged;
             }
@@ -1265,6 +1271,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateAgentConfig(xid);
             else if (listname == "queues")
                 emit updateQueueConfig(xid);
+            else if (listname == "voicemails")
+                emit updateVoiceMailConfig(xid);
             else if (listname == "meetmes")
                 addUpdateConfRoomInTree(tree(), xid);
 
@@ -1332,6 +1340,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     }
                 }
             }
+            else if (listname == "voicemails")
+                emit updateVoiceMailStatus(xid);
             else if (listname == "channels")
                 emit updateChannelStatus(xid);
             else if (listname == "meetmes")
@@ -1374,10 +1384,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             emit peersReceived();
             m_monitored_userid = m_xuserid;
             QString fullname_mine = "No One";
-//             if (m_anylist.value("users").contains(m_xuserid)) {
-//                 fullname_mine = m_anylist.value("users")[m_xuserid]->fullname();
-//                 // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
-//             }
 
             // Who do we monitor ?
             // First look at the last monitored one
@@ -1401,20 +1407,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 //             }
             monitorPeerRequest(fullid_watched);
 
-        } else if (function == "update") {
-            QStringList userupdate = datamap.value("user").toStringList();
-            if (userupdate.size() == 2) {
-                QString iduser = userupdate[0] + "/" + userupdate[1];
-                if (m_anylist.value("users").contains(iduser) && (iduser == m_xuserid)) {
-                    QString subclass = datamap.value("subclass").toString();
-//                     if (subclass == "mwi") {
-//                         m_anylist.value("users")[iduser]->setMWI(datamap.value("payload").toStringList());
-//                         // emit localUserInfoDefined(m_anylist.value("users")[m_xuserid]);
-//                     }
-                    emit updateUserConfig(iduser);
-                    emit updateUserStatus(iduser);
-                }
-            }
         }
     }
 }
@@ -1856,22 +1848,22 @@ bool BaseEngine::trytoreconnect() const
     return m_trytoreconnect;
 }
 
-void BaseEngine::initFeatureFields(const QString & field, const QVariant & value)
+void BaseEngine::initFeatureFields(const QString & field)
 {
-    //        qDebug() << field << value;
-    bool isenabled = value.toMap().value("enabled").toBool();
-    if ((field == "enablevoicemail") || (field == "vm"))
-        emit optChanged("enablevm", isenabled);
-    else if ((field == "enablednd") || (field == "dnd"))
-        emit optChanged("enablednd", isenabled);
-    else if (field == "incallfilter")
-        emit optChanged("incallfilter", isenabled);
-    else if (field == "callrecord")
-        emit optChanged("callrecord", isenabled);
-    else if ((field == "unc") || (field == "busy") || (field == "rna"))
-        emit forwardUpdated(field, value);
-    else if ((field == "enableunc") || (field == "enablebusy") || (field == "enablerna"))
-        emit forwardUpdated(field.mid(6), value);
+    if ( (field == "callrecord") ||
+         (field == "enablednd") ||
+         (field == "enablevoicemail") ||
+         (field == "incallfilter") )
+        emit optChanged(field);
+
+    // dnd, vm, unc, rna, busy ... ?
+    else if ( (field == "enableunc") ||
+              (field == "enablebusy") ||
+              (field == "enablerna") ||
+              (field == "destunc") ||
+              (field == "destbusy") ||
+              (field == "destrna"))
+        emit forwardUpdated(field);
 }
 
 void BaseEngine::stopKeepAliveTimer()
@@ -1963,8 +1955,7 @@ void BaseEngine::featurePutOpt(const QString &capa, bool b)
 {
     QVariantMap command;
     command["class"] = "featuresput";
-    command["userid"] = m_monitored_userid;
-    if (capa == "enablevm")
+    if (capa == "enablevoicemail")
         command["function"] = "enablevoicemail";
     else if (capa == "callrecord")
         command["function"] = "callrecord";
@@ -1983,16 +1974,28 @@ void BaseEngine::featurePutForward(const QString & capa, bool b, const QString &
 {
     QVariantMap command;
     command["class"] = "featuresput";
-    command["userid"] = m_monitored_userid;
-    if (capa == "fwdunc")
+    if (capa == "fwdunc") {
         command["function"] = "enableunc";
-    else if (capa == "fwdbusy")
+        command["value"] = QString(b ? "1" : "0");
+        sendJsonCommand(command);
+        command["function"] = "destunc";
+        command["value"] = dst;
+        sendJsonCommand(command);
+    } else if (capa == "fwdbusy") {
         command["function"] = "enablebusy";
-    else if (capa == "fwdrna")
+        command["value"] = QString(b ? "1" : "0");
+        sendJsonCommand(command);
+        command["function"] = "destbusy";
+        command["value"] = dst;
+        sendJsonCommand(command);
+    } else if (capa == "fwdrna") {
         command["function"] = "enablerna";
-    command["value"] = QString(b ? "1" : "0");
-    command["destination"] = dst;
-    sendJsonCommand(command);
+        command["value"] = QString(b ? "1" : "0");
+        sendJsonCommand(command);
+        command["function"] = "destrna";
+        command["value"] = dst;
+        sendJsonCommand(command);
+    }
 }
 
 /*! \brief send a featursget command to the cti server */
@@ -2005,7 +2008,6 @@ void BaseEngine::askFeatures()
     }
     QVariantMap command;
     command["class"] = "featuresget";
-    command["userid"] = featurestoget;
     sendJsonCommand(command);
 }
 

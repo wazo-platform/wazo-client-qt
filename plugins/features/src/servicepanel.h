@@ -41,7 +41,6 @@
 class QCheckBox;
 class QLineEdit;
 
-class ServiceStatus;
 class UserInfo;
 class BaseEngine;
 
@@ -51,18 +50,13 @@ class ServicePanel : public XLet
 
     public:
         ServicePanel(QWidget *parent=0);
-        ~ServicePanel();
 
     public slots:
-        void setUserInfo(const UserInfo *);
-        void setOpt(const QString &, bool);
-        void setForward(const QString &, const QVariant &);
-        void monitorPeer(UserInfo *);
+        void setOpt(const QString &);
+        void setForward(const QString &);
         void Connect();
         void DisConnect();
         void Reset();
-        void getRecordedStatus();
-        void setRecordedStatus();
         void updateUserConfig(const QString &);
         void updatePhoneConfig(const QString &);
 
@@ -72,25 +66,11 @@ class ServicePanel : public XLet
         void toggleIfAllowed(const QString &);
 
     private:
-        ServiceStatus *m_status;
         QStringList m_capas;
         QHash<QString, QString> m_capalegend;
         QHash<QString, QCheckBox *> m_chkopt;
         QHash<QString, QCheckBox *> m_forward;
         QHash<QString, QLineEdit *> m_forwarddest;
-};
-
-
-class ServiceStatus
-{
-    public:
-        ServiceStatus();
-        QHash<QString, bool> m_chkopt;
-        QHash<QString, bool> m_forward;
-        QHash<QString, QString> m_forwarddest;
-        void setOpt(const QString &, bool);
-        void setForward(const QString &, bool, const QString &);
-        void display();
 };
 
 class XLetFeaturePlugin : public QObject, XLetInterface

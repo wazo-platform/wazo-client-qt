@@ -39,7 +39,6 @@
 #include <QWidget>
 #include <baseengine.h>
 
-
 /*! \brief base class for all XLets
  *
  * To implement a new XLet, you need to inherit from
@@ -56,7 +55,7 @@ class BASELIB_EXPORT XLet : public QWidget
 
     public:
         XLet(QWidget *parent=0);  //! Constructor
-        const QString& title() const { return m_title; };  //! title accessor
+        const QString & title() const { return m_title; };  //! title accessor
 
         /*! \brief connects signals/slots to the main GUI window
          *
@@ -68,8 +67,12 @@ class BASELIB_EXPORT XLet : public QWidget
         virtual void doGUIConnects(QWidget *) {};
     signals:
         void ipbxCommand(const QVariantMap &);
+    public slots:
+        void localUserInfoDefined();
     protected:
         void setTitle(const QString &title) { m_title = title; }; //! set title of the XLet
+        const UserInfo * m_ui;
+        QString m_xuserid;
     private:
         QString m_title;    //!< title of the XLet
 };

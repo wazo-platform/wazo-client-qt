@@ -563,7 +563,7 @@ void MainWidget::updatePresence()
 {
     QString presence = b_engine->getAvailState();
     QVariantMap presencemap = b_engine->getOptionsUserStatus();
-    qDebug() << Q_FUNC_INFO << presence << presencemap;
+    // qDebug() << Q_FUNC_INFO << presence << presencemap;
 
     if (presencemap.contains(presence)) {
         QVariantMap details = presencemap.value(presence).toMap();

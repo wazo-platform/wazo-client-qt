@@ -30,8 +30,8 @@
 /* $Revision$
  * $Date$
  */
-#ifndef _CONFERENCE2_CONFCHAMBER_H_
-#define _CONFERENCE2_CONFCHAMBER_H_
+#ifndef _CONFERENCE2_CONFROOM_H_
+#define _CONFERENCE2_CONFROOM_H_
 #include <QWidget>
 #include <QDebug>
 #include <QLabel>
@@ -47,17 +47,17 @@
 
 #include "conference.h"
 #include "baseengine.h"
-class ConfChamberView;
+class ConfRoomView;
 class ConfTab;
 
-class ConfChamberModel : public QAbstractTableModel
+class ConfRoomModel : public QAbstractTableModel
 {
     Q_OBJECT
 
     public:
-        ConfChamberModel(ConfTab *t, QWidget *parent, const QString &);
-        ~ConfChamberModel();
-        void setView(ConfChamberView *m_view);
+        ConfRoomModel(ConfTab *t, QWidget *parent, const QString &);
+        ~ConfRoomModel();
+        void setView(ConfRoomView *m_view);
         QString id() const;
         QString row2participantId(int) const;
         int isAdmin() { return m_admin; };
@@ -80,18 +80,18 @@ class ConfChamberModel : public QAbstractTableModel
         bool m_admin;
         bool m_authed;
         QString m_id;
-        ConfChamberView *m_view;
+        ConfRoomView *m_view;
         QMap<int, QString> m_row2id;
         QVariantMap m_pplInRoom;
 
 };
 
-class ConfChamberView : public QTableView
+class ConfRoomView : public QTableView
 {
     Q_OBJECT
 
     public:
-        ConfChamberView(QWidget *parent, ConfChamberModel *model);
+        ConfRoomView(QWidget *parent, ConfRoomModel *model);
     private slots:
         void onViewClick(const QModelIndex &);
         void sectionHeaderClicked(int);
@@ -101,18 +101,18 @@ class ConfChamberView : public QTableView
         int lastPressed;
 };
 
-class ConfChamber : public QWidget
+class ConfRoom : public QWidget
 {
     Q_OBJECT
 
     public:
-        ConfChamber(QWidget *parent, ConfTab *tab, const QString &id);
+        ConfRoom(QWidget *parent, ConfTab *tab, const QString &id);
     public slots:
         void pauseConf();
         void allowedIn();
     private:
         QString m_id;
-        ConfChamberModel *m_model;
+        ConfRoomModel *m_model;
         QLabel *m_moderatedRoom;
 };
 

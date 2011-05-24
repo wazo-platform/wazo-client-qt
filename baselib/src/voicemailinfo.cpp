@@ -38,16 +38,27 @@ VoiceMailInfo::VoiceMailInfo(const QString & ipbxid,
                              const QString & id)
     : XInfo(ipbxid, id)
 {
+    m_waiting = false;
+    m_old = 0;
+    m_new = 0;
+
 }
 
-bool VoiceMailInfo::updateConfig(const QVariantMap &)
+bool VoiceMailInfo::updateConfig(const QVariantMap & prop)
 {
-    bool haschanged = true;
+    bool haschanged = false;
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "email", & m_email);
+    haschanged |= setIfChangeString(prop, "mailbox", & m_mailbox);
+    haschanged |= setIfChangeString(prop, "fullname", & m_fullname);
     return haschanged;
 }
 
-bool VoiceMailInfo::updateStatus(const QVariantMap &)
+bool VoiceMailInfo::updateStatus(const QVariantMap & prop)
 {
-    bool haschanged = true;
+    bool haschanged = false;
+    haschanged |= setIfChangeBool(prop, "waiting", & m_waiting);
+    haschanged |= setIfChangeInt(prop, "old", & m_old);
+    haschanged |= setIfChangeInt(prop, "new", & m_new);
     return haschanged;
 }

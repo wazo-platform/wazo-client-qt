@@ -184,7 +184,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         bool hasAgent(const QString & xid) { return m_anylist.value("agents").contains(xid); };
         bool hasQueue(const QString & xid) { return m_anylist.value("queues").contains(xid); };
 
-        QHash<QString, XInfo *> iterover(const QString & mode) { return m_anylist.value(mode); };
+        QHash<QString, XInfo *> iterover(const QString & listname) { return m_anylist.value(listname); };
 
         const UserInfo * user(const QString & id) const
                 { return (const UserInfo *) m_anylist.value("users").value(id); };  //!< Return the user to any Xlet
@@ -200,6 +200,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
                 { return (const GroupInfo *) m_anylist.value("groups").value(id); };  //!< Return the group to any Xlet
         const MeetmeInfo * meetme(const QString & id) const
                 { return (const MeetmeInfo *) m_anylist.value("meetmes").value(id); };  //!< Return the meetme to any Xlet
+        const VoiceMailInfo * voicemail(const QString & id) const
+                { return (const VoiceMailInfo *) m_anylist.value("voicemails").value(id); };  //!< Return the voicemail to any Xlet
 
         const QHash<QString, ChannelInfo *> & channels() const
                 { return m_channels; };  //!< Return the channels to any Xlet
@@ -313,6 +315,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateAgentStatus(const QString &);
         void updateQueueConfig(const QString &);
         void updateQueueStatus(const QString &);
+        void updateVoiceMailConfig(const QString &);
+        void updateVoiceMailStatus(const QString &);
         void updateChannelStatus(const QString &);
         void removePhoneConfig(const QString &);
         void removeUserConfig(const QString &);
@@ -325,10 +329,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void disconnectFeatures();
         void connectFeatures();
         void resetFeatures();
-        void localUserInfoDefined(const UserInfo *);
+        void localUserInfoDefined();
         void removeQueues(const QString &, const QStringList &);
-        void optChanged(const QString &, bool);
-        void forwardUpdated(const QString &, const QVariant &);
+        void optChanged(const QString &);
+        void forwardUpdated(const QString &);
         void changesAvailChecks();
         void changeWatchedAgentSignal(const QString &);
         void changeWatchedQueueSignal(const QString &);
@@ -345,7 +349,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void popupError(const QString &);
         void startTryAgainTimer();  //!< Start the "try to reconnect" timer
         void stopTryAgainTimer();   //!< Stop the "try to reconnect" timer
-        void initFeatureFields(const QString &, const QVariant &);
+        void initFeatureFields(const QString &);
         void connectSocket();
         void sendCommand(const QString &);
         void parseCommand(const QString &);

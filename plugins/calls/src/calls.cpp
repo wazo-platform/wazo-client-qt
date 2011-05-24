@@ -248,11 +248,11 @@ void XletCalls::dragEnterEvent(QDragEnterEvent *event)
  * can be called from reset(), dropEvent(), or at the beginning
  * of a session
  */
-void XletCalls::monitorPeer(UserInfo *ui)
+void XletCalls::monitorPeer(UserInfo * ui)
 {
-    qDebug() << Q_FUNC_INFO << b_engine->getFullId() << ui->xid();
+    qDebug() << Q_FUNC_INFO << m_xuserid << ui->xid();
     //emptyList();
-    if ((b_engine->getFullId() == ui->xid()) ||
+    if ((m_xuserid == ui->xid()) ||
         (b_engine->enabledFunction("switchboard"))) {
         m_monitored_ui = ui;
         changeTitle(tr("Monitoring : %1").arg(ui->fullname()));
