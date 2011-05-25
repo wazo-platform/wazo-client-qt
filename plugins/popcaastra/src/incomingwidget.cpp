@@ -26,18 +26,36 @@ IncomingWidget::IncomingWidget(int line_num, const QString & xchannel, QWidget *
 
     m_lbl_line->setText(QString("%1").arg(m_line));
     const ChannelInfo * channel = b_engine->channels()[m_xchannel];
-    qDebug() << Q_FUNC_INFO << channel->talkingto_id();
-    const UserInfo * peer;
+    if (channel == NULL) {
+        qDebug() << Q_FUNC_INFO << "null channel";
+        return;
+    }
+
+    const QString peerchannel = channel->talkingto_id();
+    qDebug() << Q_FUNC_INFO << "talking to " << peerchannel;
+    QString peerid;
     foreach (QString xuserid, b_engine->iterover("users").keys()) {
+        qDebug() << Q_FUNC_INFO << "User: " << xuserid;
         const UserInfo * current = b_engine->user(xuserid);
-        if (current->fullname() == channel->peerdisplay()) {
-            peer = current;
-            break;
+        foreach (const QString phoneid, current->phonelist()) {
+            qDebug() << Q_FUNC_INFO << "phoneid: " << phoneid;
+            const PhoneInfo * phone = b_engine->phone(phoneid);
+            foreach (QString xchannel, phone->xchannels()) {
+                if (xchannel.endsWith(peerchannel)) {
+                    peerid = xuserid;
+                }
+            }
         }
     }
-    m_peer_name = channel->peerdisplay();
+
+    const UserInfo * peer = b_engine->user(peerid);
+    if (peer == NULL) {
+        qDebug() << Q_FUNC_INFO << "Could not find this peer";
+        return;
+    }
+    m_peer_name = peer->fullname();
     m_lbl_name->setText(m_peer_name);
-    m_peer_number = peer->phoneNumber();
+    m_peer_number = b_engine->phone(peer->phonelist()[0])->number();
     m_lbl_exten->setText(m_peer_number);
     m_lbl_time->setText(b_engine->timeElapsed(m_start));
     //m_lbl_status->setText("status");

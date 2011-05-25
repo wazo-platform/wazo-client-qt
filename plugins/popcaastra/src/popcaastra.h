@@ -47,7 +47,7 @@ class IncomingWidget;
 /*! \brief POPC xlet for Aastra phones
  *
  * This xlet allow the operator to "drive" his phone from an xlet using SIP
- * sotify messages that are available to Aastra
+ * notify messages that are available to Aastra
  */
 class PopcAastra : public XLet
 {
@@ -57,8 +57,10 @@ public:
     ~PopcAastra();
     int findFirstAvailableLine() const;
     void debugIncomingCalls() const;
+protected:
+    void timerEvent(QTimerEvent *);
 private:
-    void removeDefuncWidgets();
+    void removeDefunctWidgets();
     /*! \brief starts tracking a number after a transfer */
     void trackTransfer(QString number, const QString &, const QString &);
 public slots:
@@ -96,6 +98,8 @@ private:
     QHash<QString, TransferedWidget *> m_transferedcalls; //!< List of transfered calls
     QVBoxLayout * m_calls_list; //!< Container layout for the incoming calls widget
     QVBoxLayout * m_destinations_list;  //!< Container layout for the transfered calls widget
+    int m_timerid;
+    int m_deltasec;
 };
 
 #endif /* __POPCAASTRA_H__ */

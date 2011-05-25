@@ -14,6 +14,7 @@ TransferedWidget::TransferedWidget(QString number, const QString & tname,
     qDebug() << Q_FUNC_INFO;
 
     m_time_transfer = b_engine->timeServer();
+    m_readyToBeRemoved = false;
 
     m_layout = new QHBoxLayout(this);
     m_lbl_status = new QLabel(this);
@@ -47,22 +48,31 @@ void TransferedWidget::updateWidget()
         return;
     }
     if (b_engine->getOptionsPhoneStatus().contains(called->hintstatus())) {
-        QVariantMap s = b_engine->getOptionsPhoneStatus().value(called->hintstatus()).toMap();
+        if (called->hintstatus() == "0" && !(m_hintstatus.isEmpty() || m_hintstatus == "0")) {
+            m_readyToBeRemoved = true;
+        }
+        m_hintstatus = called->hintstatus();
+        qDebug() << Q_FUNC_INFO << "Hintstatus " << m_hintstatus;
+        QVariantMap s = b_engine->getOptionsPhoneStatus().value(m_hintstatus).toMap();
         foreach (QString key, s.keys()) {
             qDebug() << Q_FUNC_INFO << key << ":" << s[key];
         }
         QString string = s.value("longname").toString();
         qDebug() << Q_FUNC_INFO << "Status: " << string;
         m_lbl_status->setText(
-            b_engine->getOptionsPhoneStatus().value(called->hintstatus()).toMap()
+            b_engine->getOptionsPhoneStatus().value(m_hintstatus).toMap()
                 .value("longname").toString());
     } else {
         m_lbl_status->setText(tr("Unknown"));
     }
+
     m_lbl_called_name->setText(tr("Unknown"));
     foreach (QString user, b_engine->iterover("users").keys()) {
-        if (b_engine->user(user)->phoneNumber() == m_number) {
-            m_lbl_called_name->setText(b_engine->user(user)->fullname());
+        QStringList phonelist = b_engine->user(user)->phonelist();
+        foreach (QString p, phonelist) {
+            if (b_engine->phone(p)->number() == m_number) {
+                m_lbl_called_name->setText(b_engine->user(user)->fullname());
+            }
         }
     }
     m_lbl_called_number->setText(m_number);
@@ -80,5 +90,11 @@ void TransferedWidget::findXphoneId()
             return;
         }
     }
+}
+
+/*! \brief check if the widget is ready to be removed */
+bool TransferedWidget::readyToBeRemoved() const
+{
+    return m_readyToBeRemoved;
 }
 

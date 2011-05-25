@@ -18,6 +18,7 @@ class TransferedWidget : public QWidget
         TransferedWidget(QString, const QString &, const QString &, QWidget *);
         /*! \brief refresh the widget */
         void updateWidget();
+        bool readyToBeRemoved() const;
     public slots:
     signals:
     protected:
@@ -34,6 +35,8 @@ class TransferedWidget : public QWidget
         /*! time elapsed between the start of the transfer and the last update */
         QLabel * m_lbl_time;
         QString m_called_phone_id;          /*!< xphoneid of the called */
+        QString m_hintstatus;
+        bool m_readyToBeRemoved;
 
         void findXphoneId();
 };
