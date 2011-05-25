@@ -245,6 +245,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void featurePutOpt(const QString &, bool);
         void featurePutForward(const QString &, bool, const QString &);
         void askFeatures();
+        void fetchIPBXList();
         void fetchLists();
         void setKeepaliveinterval(uint);  //!< set keep alive interval
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
@@ -379,6 +380,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_userid;               //!< xivo user id of the current user
         QString m_profilename_read;     //!< CTI profile name of the current user
         QString m_profilename_write;    //!< CTI profile name of the current user
+        QStringList m_ipbxlist;
 
         QDateTime m_timeclt;
         double m_timesrv;

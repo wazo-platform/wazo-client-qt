@@ -34,7 +34,7 @@
 #include "xlet.h"
 
 XLet::XLet(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent), m_ui(NULL)
 {
     connect(this, SIGNAL(ipbxCommand(const QVariantMap &)),
             b_engine, SLOT(ipbxCommand(const QVariantMap &)));

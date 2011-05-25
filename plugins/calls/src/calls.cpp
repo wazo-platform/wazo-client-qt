@@ -86,12 +86,13 @@ XletCalls::XletCalls(QWidget *parent)
  * Check if this is about the monitored user
  * and call updateDisplay().
  */
-void XletCalls::updateUserConfig(const QString & xuserid)
+void XletCalls::updateUserConfig(const QString & /*xuserid*/)
 {
-    if (m_monitored_ui)
-        qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
-    else
-        qDebug() << Q_FUNC_INFO << xuserid;
+//     if (m_monitored_ui)
+//         qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
+//     else
+//         qDebug() << Q_FUNC_INFO << xuserid;
+
 //     if (ui == m_monitored_ui) {
 //         // we need to update the display
 //         updateDisplay();

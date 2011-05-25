@@ -40,7 +40,8 @@
  */
 UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
-    : XInfo(ipbxid, id), m_fullname("")
+    : XInfo(ipbxid, id), m_fullname(""),
+      m_callrecord(false)
 {
 }
 
