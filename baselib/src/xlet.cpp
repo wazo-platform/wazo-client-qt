@@ -47,3 +47,8 @@ void XLet::localUserInfoDefined()
 {
     m_ui = b_engine->getXivoClientUser();
 }
+
+void XLet::monitoredUserInfoDefined()
+{
+    m_monitored_ui = b_engine->getXivoClientMonitored();
+}

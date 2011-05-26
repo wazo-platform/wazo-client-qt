@@ -648,13 +648,14 @@ void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
 }
 
 /*! \brief set monitored peer id */
-void BaseEngine::monitorPeerRequest(const QString & userid)
+void BaseEngine::monitorPeerRequest(const QString & xuserid)
 {
     // qDebug() << Q_FUNC_INFO << userid;
-    if (m_anylist.value("users").contains(userid)) {
-        m_monitored_userid = userid;
-        emit monitorPeer((UserInfo *)(m_anylist["users"][userid]));
-        m_settings->setValue("monitor/userid", userid);
+    if (xuserid == m_monitored_xuserid)
+    if (m_anylist.value("users").contains(xuserid)) {
+        m_monitored_xuserid = xuserid;
+        emit monitorPeerChanged();
+        m_settings->setValue("monitor/userid", xuserid);
     }
 }
 
@@ -851,9 +852,13 @@ void BaseEngine::parseCommand(const QString &line)
     if (callClassEventCallback(thisclass, datamap))  // a class callback was called,
         return;                                      // so zap the 500 loc of if-else soup
 
-        // qDebug() << Q_FUNC_INFO << datamap.value("timenow").toString() << "BaseEngine message received"
-        // << thisclass << datamap.value("function").toString()
-        // << datamap.value("phoneid").toString();
+    // qDebug() << Q_FUNC_INFO << datamap.value("timenow").toString() << "BaseEngine message received"
+    // << thisclass << datamap.value("function").toString()
+    // << datamap.value("phoneid").toString();
+    if ((thisclass == "keepalive") || (thisclass == "availstate"))
+        // ack from the keepalive and availstate commands previously sent
+        return;
+
         if (thisclass == "callcampaign") {
             emit requestFileListResult(datamap.value("payload"));
 
@@ -977,7 +982,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "featuresput") {
             QVariantMap featuresput_map = datamap.value("payload").toMap();
-            if (m_monitored_userid == datamap.value("userid").toString()) {
+            if (m_monitored_xuserid == datamap.value("userid").toString()) {
                 if (featuresput_map.isEmpty()) {
                     emit featurePutIsKO();
                     emit emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
@@ -990,13 +995,13 @@ void BaseEngine::parseCommand(const QString &line)
                 }
             }
 
-        } else if (thisclass == "features") {
-            if (function == "update") {
-                QVariantMap featuresupdate_map = datamap.value("payload").toMap();
-                if (m_monitored_userid == datamap.value("userid").toString())
-                    foreach (QString featurekey, featuresupdate_map.keys())
-                        initFeatureFields(featurekey);
-            }
+//         } else if (thisclass == "features") {
+//             if (function == "update") {
+//                 QVariantMap featuresupdate_map = datamap.value("payload").toMap();
+//                 if (m_monitored_xuserid == datamap.value("userid").toString())
+//                     foreach (QString featurekey, featuresupdate_map.keys())
+//                         initFeatureFields(featurekey);
+//             }
 
         } else if (thisclass == "login_id") {
             if (datamap.contains("error_string")) {
@@ -1386,33 +1391,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 addUpdateUserInTree(tree(), uinfo);
 
             }
-
-            emit peersReceived();
-            m_monitored_userid = m_xuserid;
-            QString fullname_mine = "No One";
-
-            // Who do we monitor ?
-            // First look at the last monitored one
-            QString fullid_watched;
-            if (m_capafuncs.contains("switchboard")) {
-                fullid_watched = m_settings->value("monitor/userid").toString();
-            } else {
-                fullid_watched = "";
-            }
-
-//             // If there was nobody, let's watch ourselves.
-//             if (fullid_watched.isEmpty())
-//                 fullid_watched = m_xuserid;
-//             else {
-//                 QString fullname_watched = "";
-//                 if (m_anylist.value("users").contains(fullid_watched))
-//                     fullname_watched = m_anylist.value("users")[fullid_watched]->fullname();
-//                 // If the CallerId value is empty, fallback to ourselves.
-//                 if (fullname_watched.isEmpty())
-//                     fullid_watched = m_xuserid;
-//             }
-            monitorPeerRequest(fullid_watched);
-
         }
     }
 }
@@ -2007,11 +1985,7 @@ void BaseEngine::featurePutForward(const QString & capa, bool b, const QString &
 /*! \brief send a featursget command to the cti server */
 void BaseEngine::askFeatures()
 {
-    qDebug() << Q_FUNC_INFO << m_monitored_userid;
-    QString featurestoget = "user:special:me";
-    if (! m_monitored_userid.isEmpty()) {
-        featurestoget = m_monitored_userid;
-    }
+    qDebug() << Q_FUNC_INFO;
     QVariantMap command;
     command["class"] = "featuresget";
     sendJsonCommand(command);
@@ -2270,6 +2244,15 @@ UserInfo * BaseEngine::getXivoClientUser()
     // qDebug() << Q_FUNC_INFO << m_ipbxid << m_userid << m_xuserid;
     if (m_anylist.value("users").contains(m_xuserid)) {
         return (UserInfo *) m_anylist.value("users").value(m_xuserid);
+    }
+    return NULL;
+}
+
+UserInfo * BaseEngine::getXivoClientMonitored()
+{
+    // qDebug() << Q_FUNC_INFO << m_ipbxid << m_userid << m_xuserid;
+    if (m_anylist.value("users").contains(m_monitored_xuserid)) {
+        return (UserInfo *) m_anylist.value("users").value(m_monitored_xuserid);
     }
     return NULL;
 }

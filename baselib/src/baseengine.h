@@ -166,7 +166,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         const QString & xivoUserId() const { return m_userid; };
         const QString & getFullId() const { return m_xuserid; };
-        UserInfo* getXivoClientUser();  //!< Return the user of the Xivo CTI Client
+        UserInfo * getXivoClientUser();  //!< Return the user of the XiVO CTI Client
+        UserInfo * getXivoClientMonitored();  //!< Return the monitored user
         double timeServer() const;
         const QDateTime & timeClient() const;
         double timeDeltaServerClient() const;
@@ -291,7 +292,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void ackFax(const QString &, const QString &);
         void featurePutIsKO();
         void featurePutIsOK();
-        void monitorPeer(UserInfo *);
+        void monitorPeerChanged();
         void requestFileListResult(const QVariant &);
         void updatePresence();
         void serverFileList(const QStringList &);
@@ -436,10 +437,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QByteArray m_filedata;
         int m_faxsize;
 
-        QString m_monitored_userid;  //!< UserId of the Monitored Phone (on SB, or one's own on XC)
+        QString m_monitored_xuserid;  //!< UserId of the Monitored user
         QSettings * m_settings;  //!< Settings (stored in .ini file)
         QFile * m_eventdevice;
-    //    QSocketNotifier * m_notifier;
         QByteArray m_downloaded;    //!< downloaded data
         QFile * m_logfile;
         int m_byte_counter; //!< byte counter for calculating network throughput

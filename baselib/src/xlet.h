@@ -69,10 +69,12 @@ class BASELIB_EXPORT XLet : public QWidget
         void ipbxCommand(const QVariantMap &);
     public slots:
         void localUserInfoDefined();
+        void monitoredUserInfoDefined();
     protected:
         void setTitle(const QString &title) { m_title = title; }; //! set title of the XLet
-        const UserInfo * m_ui;
         QString m_xuserid;
+        const UserInfo * m_ui;
+        const UserInfo * m_monitored_ui;
     private:
         QString m_title;    //!< title of the XLet
 };
