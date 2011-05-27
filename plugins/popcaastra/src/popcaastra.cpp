@@ -72,6 +72,8 @@ PopcAastra::PopcAastra(QWidget *parent)
             this, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
             this, SLOT(updateChannelStatus(const QString &)));
+    connect(b_engine, SIGNAL(broadcastNumberSelection(const QStringList &)),
+            this, SLOT(receiveNumberSelection(const QStringList &)));
 
     connect(m_ui->btn_vol_up, SIGNAL(clicked()), this, SLOT(volUp()));
     connect(m_ui->btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
@@ -367,6 +369,20 @@ void PopcAastra::prgkey1()
 {
     qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(PRG_KEY, SPECIAL_ME, 1));
+}
+
+/*! \brief receive a list of numbers for a selected peer or contact */
+void PopcAastra::receiveNumberSelection(QStringList numbers)
+{
+    // qDebug() << Q_FUNC_INFO;
+    if (numbers.isEmpty()) {
+        m_ui->txt_number_name->setText("");
+    } else if (numbers.size() == 1) {
+        m_ui->txt_number_name->setText(numbers.at(0));
+    } else {
+        // FIXME: take multiple numbers into account
+        m_ui->txt_number_name->setText(numbers.at(0));
+    }
 }
 
 /*! \brief destructor

@@ -80,6 +80,7 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
 
     signals:
         void removeFromPanel(); //! hide the widget from the containing window
+        void selectedNumber(QStringList);
     protected slots:
         void dial();
         void dialMobilePhone();

@@ -75,6 +75,9 @@ BasePeerWidget::BasePeerWidget(const UserInfo * ui)
     connect(m_interceptAction, SIGNAL(triggered()),
             this, SLOT(intercept()));
 
+    connect(this, SIGNAL(selectedNumber(const QStringList &)),
+            b_engine, SLOT(receiveNumberSelection(const QStringList &)));
+
     m_maxWidthWanted = 200;
     if (b_engine->enabledFunction("switchboard")) {
         m_maxWidthWanted = b_engine->getGuiOptions("merged_gui").value("maxwidthwanted").toInt();
@@ -287,8 +290,20 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
  */
 void BasePeerWidget::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton)
+    if (event->button() == Qt::LeftButton) {
         m_dragstartpos = event->pos();
+        
+        QStringList numbers;
+        if (m_ui_remote) {
+            foreach (QString xphoneid, m_ui_remote->phonelist()) {
+                const PhoneInfo * phone = b_engine->phone(xphoneid);
+                if (phone) numbers.append(phone->number());
+            }
+        }
+        if (! m_ui_remote->mobileNumber().isEmpty())
+            numbers.append(m_ui_remote->mobileNumber());
+        emit selectedNumber(numbers);
+    }
 }
 
 /*! \brief start drag if necessary

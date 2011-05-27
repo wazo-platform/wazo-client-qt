@@ -1705,6 +1705,15 @@ void BaseEngine::actionCall(const QString & action,
     ipbxCommand(ipbxcommand);
 }
 
+/*! \brief Receive a number list from xlets and signal this list
+ *  to interested xlets
+ */
+void BaseEngine::receiveNumberSelection(QStringList numbers)
+{
+    // qDebug() << Q_FUNC_INFO;
+    emit broadcastNumberSelection(numbers);
+}
+
 /*! \brief send the directory search command to the server
  *
  * \sa directoryResponse()
