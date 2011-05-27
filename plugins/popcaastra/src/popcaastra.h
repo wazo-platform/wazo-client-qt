@@ -95,7 +95,7 @@ public slots:
     /*! \brief intercepts the call to this exten */
     void doIntercept(const QString &);
     /*! \brief receives numbers from a selected peer/contact in other xlets */
-    void receiveNumberSelection(QStringList);
+    void receiveNumberSelection(const QStringList &);
 private:
     Ui::PopcAastra * m_ui;
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget

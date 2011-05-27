@@ -287,6 +287,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
 /*! \brief handle mouse press
  *
  * store mouse position for further processing
+ * signals a QStringList of numbers for the selected peer
  */
 void BasePeerWidget::mousePressEvent(QMouseEvent *event)
 {

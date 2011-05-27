@@ -372,7 +372,7 @@ void PopcAastra::prgkey1()
 }
 
 /*! \brief receive a list of numbers for a selected peer or contact */
-void PopcAastra::receiveNumberSelection(QStringList numbers)
+void PopcAastra::receiveNumberSelection(const QStringList & numbers)
 {
     // qDebug() << Q_FUNC_INFO;
     if (numbers.isEmpty()) {

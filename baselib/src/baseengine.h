@@ -238,7 +238,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         //! set m_availstate
         void setAvailState(const QString &, bool);
         void actionCall(const QString &, const QString &src="", const QString &dst="");
-        void receiveNumberSelection(QStringList);   //!< relay the selection
+        void receiveNumberSelection(const QStringList &);   //!< relay the selection
 
         void searchDirectory(const QString &);
         void textEdited(const QString &);
@@ -342,7 +342,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void lostSheetOwnership(const QString &id);  //! the user logged just lost ownership of the sheet
         void sheetEntryAdded(const QString &id, const QVariantMap &);  //! sheet data added by a user.
         //! numbers for a selected peer
-        void broadcastNumberSelection(QStringList);
+        void broadcastNumberSelection(const QStringList &);
 
     protected:
         void timerEvent(QTimerEvent *);  //!< receive timer events

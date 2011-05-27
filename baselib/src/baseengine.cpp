@@ -1708,7 +1708,7 @@ void BaseEngine::actionCall(const QString & action,
 /*! \brief Receive a number list from xlets and signal this list
  *  to interested xlets
  */
-void BaseEngine::receiveNumberSelection(QStringList numbers)
+void BaseEngine::receiveNumberSelection(const QStringList & numbers)
 {
     // qDebug() << Q_FUNC_INFO;
     emit broadcastNumberSelection(numbers);
