@@ -1,5 +1,6 @@
 #include <QDebug>
 
+#include "aastrasipnotify.h"
 #include "phoneinfo.h"
 #include "popcaastra.h"
 #include "transferedwidget.h"
@@ -11,7 +12,7 @@ TransferedWidget::TransferedWidget(QString number, const QString & tname,
     QWidget(parent),
     m_number(number)
 {
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
 
     m_time_transfer = b_engine->timeServer();
     m_readyToBeRemoved = false;
@@ -33,32 +34,36 @@ TransferedWidget::TransferedWidget(QString number, const QString & tname,
     m_lbl_transfered_name->setText(tname);
     m_lbl_transfered_number->setText(tnum);
 
-    findXphoneId();
+    m_interceptAction = new QAction(tr("&Intercepet"), this);
+    m_interceptAction->setStatusTip(tr("Intercept a transfered call"));
+    connect(m_interceptAction, SIGNAL(triggered()),
+            this, SLOT(doIntercept()));
+
+    setXphoneId();
     updateWidget();
+}
+
+/*! \brief returns the exten number that this called is being transfered to */
+const QString & TransferedWidget::number() const
+{
+    return m_number;
 }
 
 /*! \brief refresh widgets */
 void TransferedWidget::updateWidget()
 {
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
 
     const PhoneInfo * called = b_engine->phone(m_called_phone_id);
-    if (called == NULL) {
-        qDebug() << Q_FUNC_INFO << "Cannot initialize widget, missing phoneinfo";
-        return;
-    }
+    if (called == NULL) return;
+
     if (b_engine->getOptionsPhoneStatus().contains(called->hintstatus())) {
         if (called->hintstatus() == "0" && !(m_hintstatus.isEmpty() || m_hintstatus == "0")) {
             m_readyToBeRemoved = true;
         }
         m_hintstatus = called->hintstatus();
-        qDebug() << Q_FUNC_INFO << "Hintstatus " << m_hintstatus;
         QVariantMap s = b_engine->getOptionsPhoneStatus().value(m_hintstatus).toMap();
-        foreach (QString key, s.keys()) {
-            qDebug() << Q_FUNC_INFO << key << ":" << s[key];
-        }
         QString string = s.value("longname").toString();
-        qDebug() << Q_FUNC_INFO << "Status: " << string;
         m_lbl_status->setText(
             b_engine->getOptionsPhoneStatus().value(m_hintstatus).toMap()
                 .value("longname").toString());
@@ -80,9 +85,9 @@ void TransferedWidget::updateWidget()
 }
 
 /*! \brief set m_called_phone_id */
-void TransferedWidget::findXphoneId()
+void TransferedWidget::setXphoneId()
 {
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
     foreach (QString xphoneid, b_engine->iterover("phones").keys()) {
         const PhoneInfo * phone = b_engine->phone(xphoneid);
         if (phone->number() == m_number) {
@@ -95,6 +100,22 @@ void TransferedWidget::findXphoneId()
 /*! \brief check if the widget is ready to be removed */
 bool TransferedWidget::readyToBeRemoved() const
 {
+    //qDebug() << Q_FUNC_INFO;
     return m_readyToBeRemoved;
+}
+
+/*! \brief cancel a blind transfer and retrieves the call */
+void TransferedWidget::doIntercept()
+{
+    //qDebug() << Q_FUNC_INFO;
+    emit intercept(m_number);
+}
+
+void TransferedWidget::contextMenuEvent(QContextMenuEvent *event)
+{
+    //qDebug() << Q_FUNC_INFO;
+    QMenu contextMenu;
+    contextMenu.addAction(m_interceptAction);
+    contextMenu.exec(event->globalPos());
 }
 

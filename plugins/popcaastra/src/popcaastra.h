@@ -92,6 +92,8 @@ public slots:
     void parkcall(int);
     void selectLine(int);
     void prgkey1();
+    /*! \brief intercepts the call to this exten */
+    void doIntercept(const QString &);
 private:
     Ui::PopcAastra * m_ui;
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget

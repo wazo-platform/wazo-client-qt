@@ -201,12 +201,11 @@ int PopcAastra::findFirstAvailableLine() const {
  */
 void PopcAastra::updatePhoneStatus(const QString & xphoneid)
 {
-    qDebug() << Q_FUNC_INFO << xphoneid;
+    //qDebug() << Q_FUNC_INFO << xphoneid;
     removeDefunctWidgets();
     const PhoneInfo * phone = b_engine->phone(xphoneid);
     if (phone == NULL) return;
-    qDebug() << Q_FUNC_INFO << "New phone status - " << 
-        phone->number() << " " << phone->hintstatus();
+
     foreach (QString xchannel, phone->xchannels()) {
         if (m_transferedcalls.contains(xchannel)) {
             TransferedWidget * w = m_transferedcalls[xchannel];
@@ -228,7 +227,7 @@ void PopcAastra::timerEvent(QTimerEvent * event)
 
 void PopcAastra::hupline(int line)
 {
-    qDebug() << Q_FUNC_INFO << line;
+    //qDebug() << Q_FUNC_INFO << line;
     QList<QString> commands;
     commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(GOODBYE));
@@ -262,9 +261,13 @@ void PopcAastra::trackTransfer(QString number, const QString & tname, const QStr
     foreach (QString id, b_engine->iterover("phones").keys()) {
         const PhoneInfo * p = b_engine->phone(id);
         if (p->number() == number) {
-            m_transferedcalls[id] = new TransferedWidget(number, tname, tnum, this);
-            m_destinations_list->addWidget(m_transferedcalls[id]);
-            return;
+            TransferedWidget * w = new TransferedWidget(number, tname, tnum, this);
+            m_transferedcalls[id] = w;
+            m_destinations_list->addWidget(w);
+            connect(
+                w, SIGNAL(intercept(const QString &)),
+                this, SLOT(doIntercept(const QString &)));
+            break;
         }
     }
 }
@@ -277,6 +280,21 @@ void PopcAastra::attendedTransfer(int line)
     commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(XFER));
     QString number = m_ui->txt_number_name->text();
+    for (int i = 0; i < number.size(); ++i) {
+        const QChar c = number[i];
+        if (c.isDigit())
+            commands.append(getKeyUri(KEYPAD, c.digitValue()));
+    }
+    commands.append(getKeyUri(NAV_RIGHT));
+    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+}
+
+/*! \brief intercept a call using *8 exten */
+void PopcAastra::doIntercept(const QString & number)
+{
+    qDebug() << Q_FUNC_INFO << number;
+    QList<QString> commands;
+    commands.append(getKeyUri(KEYPAD_STAR));
     for (int i = 0; i < number.size(); ++i) {
         const QChar c = number[i];
         if (c.isDigit())
