@@ -297,6 +297,7 @@ void PopcAastra::doIntercept(const QString & number)
     qDebug() << Q_FUNC_INFO << number;
     QList<QString> commands;
     commands.append(getKeyUri(KEYPAD_STAR));
+    commands.append(getKeyUri(KEYPAD, 8));
     for (int i = 0; i < number.size(); ++i) {
         const QChar c = number[i];
         if (c.isDigit())
