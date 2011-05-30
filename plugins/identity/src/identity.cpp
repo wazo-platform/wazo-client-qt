@@ -273,7 +273,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
         return;
     if (m_ui == NULL)
         return;
-    m_user->setText(m_ui->fullname());
+    m_user->setText(QString("%1 (%2)").arg(m_ui->fullname()).arg(m_ui->ipbxid()));
 
     foreach (QString xphoneid, m_ui->phonelist()) {
         const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);

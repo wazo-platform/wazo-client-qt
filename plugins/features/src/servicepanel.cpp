@@ -248,6 +248,8 @@ void ServicePanel::Toggled(bool b)
 
 void ServicePanel::setOpt(const QString & capa)
 {
+    if (m_ui == NULL)
+        return;
     if (m_capas.contains(capa)) {
         if (capa == "enablednd")
             m_chkopt[capa]->setChecked(m_ui->enablednd());
@@ -262,6 +264,8 @@ void ServicePanel::setOpt(const QString & capa)
 
 void ServicePanel::setForward(const QString & capa)
 {
+    if (m_ui == NULL)
+        return;
     if (capa.startsWith("enable")) {
         QString thiscapa = "fwd" + capa.mid(6);
         if (m_capas.contains(thiscapa)) {

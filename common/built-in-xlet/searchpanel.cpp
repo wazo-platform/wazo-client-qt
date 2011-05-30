@@ -195,6 +195,7 @@ void SearchPanel::removeUserConfig(const QString & xuserid)
 
 void SearchPanel::updateUserStatus(const QString & xuserid)
 {
+    // qDebug() << Q_FUNC_INFO << xuserid << m_peerhash.keys();
     PeerItem * peeritem = NULL;
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);

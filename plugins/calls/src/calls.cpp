@@ -66,8 +66,8 @@ XletCalls::XletCalls(QWidget *parent)
     connect(this, SIGNAL(changeTitle(const QString &)),
             titleLabel, SLOT(setText(const QString &)));
 
-    connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
-            this, SLOT(monitorPeer(UserInfo *)));
+    connect(b_engine, SIGNAL(monitorPeerChanged()),
+            this, SLOT(monitorPeerChanged()));
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
@@ -86,12 +86,13 @@ XletCalls::XletCalls(QWidget *parent)
  * Check if this is about the monitored user
  * and call updateDisplay().
  */
-void XletCalls::updateUserConfig(const QString & xuserid)
+void XletCalls::updateUserConfig(const QString & /*xuserid*/)
 {
-    if (m_monitored_ui)
-        qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
-    else
-        qDebug() << Q_FUNC_INFO << xuserid;
+//     if (m_monitored_ui)
+//         qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
+//     else
+//         qDebug() << Q_FUNC_INFO << xuserid;
+
 //     if (ui == m_monitored_ui) {
 //         // we need to update the display
 //         updateDisplay();
@@ -248,16 +249,14 @@ void XletCalls::dragEnterEvent(QDragEnterEvent *event)
  * can be called from reset(), dropEvent(), or at the beginning
  * of a session
  */
-void XletCalls::monitorPeer(UserInfo * ui)
+void XletCalls::monitorPeerChanged()
 {
-    qDebug() << Q_FUNC_INFO << m_xuserid << ui->xid();
+    qDebug() << Q_FUNC_INFO;
     //emptyList();
-    if ((m_xuserid == ui->xid()) ||
-        (b_engine->enabledFunction("switchboard"))) {
-        m_monitored_ui = ui;
-        changeTitle(tr("Monitoring : %1").arg(ui->fullname()));
-        updateDisplay();
-    }
+    if (m_monitored_ui == NULL)
+        return;
+    changeTitle(tr("Monitoring : %1").arg(m_monitored_ui->fullname()));
+    updateDisplay();
 }
 
 /*! \brief receive drop Events.

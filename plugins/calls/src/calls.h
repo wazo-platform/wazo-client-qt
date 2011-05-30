@@ -62,7 +62,7 @@ class XletCalls : public XLet
         void hupchan(const QString &);
         void transftonumberchan(const QString &);
         void parkcall(const QString &);
-        void monitorPeer(UserInfo *);
+        void monitorPeerChanged();
 
     protected:
         void dragEnterEvent(QDragEnterEvent *event);

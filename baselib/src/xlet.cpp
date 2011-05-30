@@ -34,7 +34,7 @@
 #include "xlet.h"
 
 XLet::XLet(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent), m_ui(NULL)
 {
     connect(this, SIGNAL(ipbxCommand(const QVariantMap &)),
             b_engine, SLOT(ipbxCommand(const QVariantMap &)));
@@ -46,4 +46,9 @@ XLet::XLet(QWidget *parent)
 void XLet::localUserInfoDefined()
 {
     m_ui = b_engine->getXivoClientUser();
+}
+
+void XLet::monitoredUserInfoDefined()
+{
+    m_monitored_ui = b_engine->getXivoClientMonitored();
 }
