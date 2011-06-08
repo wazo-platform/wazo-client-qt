@@ -547,15 +547,17 @@ QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
     m_busy->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     m_busy->setStyleSheet(commonqss + "QProgressBar::chunk { background-color: #fff; }");
     m_busy->setFormat("%v");
-    m_busy->setMinimumHeight(20);
+    m_busy->setFixedHeight(20);
     m_layout->addWidget(m_busy, 0, col++);
-
 
     m_longestWait = new QLabel(this);
     m_longestWait->setAlignment(Qt::AlignCenter);
-    m_longestWait->setStyleSheet("margin-left:5px;border-radius: 3px;background-color:red;border: 2px solid black;");
+    m_longestWait->setStyleSheet("margin-left: 5px;"
+                                 "border-radius: 3px;"
+                                 "background-color:red;"
+                                 "border: 2px solid black;");
     m_longestWait->setText(">)-|-/('>");
-    m_longestWait->setFixedSize(100, 20);
+    m_longestWait->setFixedHeight(20);
     m_layout->addWidget(m_longestWait, 0, col++);
 
     foreach (QString stat, statItems) {
@@ -569,8 +571,9 @@ QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
     QSpacerItem *spacer = new QSpacerItem(1, 1);
     m_layout->addItem(spacer, 1, col, 1,-1);
     m_layout->setColumnStretch(col, 1);
+    m_layout->setMargin(0);
 
-    setMaximumHeight(30);
+    // setMaximumHeight(30);
     updateRow();
 }
 
