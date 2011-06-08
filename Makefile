@@ -68,6 +68,9 @@ clean-%:
 linux-%:
 	@cd $* && ${QMAKE} && make ${JOPT}
 
+macos-%:
+	@cd $* && ${QMAKE} && make ${JOPT}
+
 stripandpack-%:
 	@strip bin/$* || true
 	@${UPXRUN} bin/$* || true
@@ -122,8 +125,9 @@ win32packdyn-%:
 # export UPXRUN=/Users/proformatique/upx-3.01-src/src/upx.out
 
 all-macos:
-	@make versions
+	@make macos-baselib
 	@make macos-xivoclient
+	@make macos-plugins
 
 macos-%:
 	@cd $* && ${QMAKE} -spec macx-g++ $*.pro -o Makefile && make ${JOPT}
