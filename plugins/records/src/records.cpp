@@ -99,16 +99,23 @@ QString XletRecords::tooltip(const QModelIndex & modelindex)
     int column = modelindex.column();
     QString ttip = "";
 
+    QString fullfilename = modelindex.sibling(row, m_ctp->revindex("filename")).data().toString();
+    QFileInfo pathInfo(fullfilename);
+    QString pathname = pathInfo.path();
+    QString filename = pathInfo.fileName();
+
     ttip = tr("call start : %1 (duration %2 s, direction %3)\n"
-              "filename : %4\n"
-              "current tag : %5\n"
-              "svi entries : %6\n"
-              "svi variables : %7\n"
-              "(this column : %8)")
+              "path : %4\n"
+              "filename : %5\n"
+              "current tag : %6\n"
+              "svi entries : %7\n"
+              "svi variables : %8\n"
+              "(this column : %9)")
         .arg(modelindex.sibling(row, m_ctp->revindex("callstart")).data().toString())
         .arg(modelindex.sibling(row, m_ctp->revindex("callduration")).data().toString())
         .arg(modelindex.sibling(row, m_ctp->revindex("direction")).data().toString())
-        .arg(modelindex.sibling(row, m_ctp->revindex("filename")).data().toString())
+        .arg(pathname)
+        .arg(filename)
         .arg(modelindex.sibling(row, m_ctp->revindex("callrecordtag")).data().toString())
         .arg(modelindex.sibling(row, m_ctp->revindex("svientries")).data().toString())
         .arg(modelindex.sibling(row, m_ctp->revindex("svivariables")).data().toString())
@@ -235,8 +242,11 @@ void XletRecords::commonMenuDisplay(const QModelIndex & modelindex)
     QString id = modelindex.sibling(row, idcolumn).data().toString();
 
     QString callstart = modelindex.sibling(row, m_ctp->revindex("callstart")).data().toString();
-    QString filename = modelindex.sibling(row, m_ctp->revindex("filename")).data().toString();
+    QString fullfilename = modelindex.sibling(row, m_ctp->revindex("filename")).data().toString();
     QString idv = modelindex.sibling(row, m_ctp->revindex("id")).data().toString();
+
+    QFileInfo pathInfo(fullfilename);
+    QString filename = pathInfo.fileName();
 
     QMenu * menu = new QMenu(this);
     // QAction * action2 = new QAction(tr("Change comment"), menu);

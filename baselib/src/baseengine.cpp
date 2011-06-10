@@ -1614,7 +1614,8 @@ void BaseEngine::filetransferSocketReadyRead()
                 emit fileReceived();
             } else {
                 QByteArray fax64 = m_filedata.toBase64();
-                qDebug() << "sending fax contents" << jsondatamap.value("fileid").toString() << m_faxsize << fax64.size();
+                qDebug() << "sending fax contents" << jsondatamap.value("fileid").toString()
+                         << m_faxsize << fax64.size();
                 if (m_faxsize > 0) {
                     m_filetransfersocket->write(fax64 + "\n");
                     m_filetransfersocket->flush();
