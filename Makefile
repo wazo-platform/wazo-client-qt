@@ -48,7 +48,6 @@ allbyos:
 # kind of dirtier than "all-linux: versions linux-xivoclient"
 # but allows the 'include versions.mak' to be reloaded once it has been set
 all-linux:
-	@make versions
 	@make linux-baselib
 	@make linux-xivoclient
 	@make linux-plugins
@@ -122,15 +121,22 @@ win32packdyn-%:
 # export UPXRUN=/Users/proformatique/upx-3.01-src/src/upx.out
 
 all-macos:
-	@make versions
+	@make macos-baselib
 	@make macos-xivoclient
+	@make macos-plugins
 
 macos-%:
-	@cd $* && ${QMAKE} -spec macx-g++ $*.pro -o Makefile && make ${JOPT}
-	@strip $*/$*.app/Contents/MacOS/$*
-	@${UPXRUN} $*/$*.app/Contents/MacOS/$*
-	@mkdir -p $*/$*.app/Contents/Resources/French.lproj
-	@hdiutil create $*-${_XIVOVER_}-${_SVNVER_}.dmg -srcfolder $*/$*.app -format UDZO
+	@cd $* && ${QMAKE} -macx && make ${JOPT}
+
+packmacos:
+	@./cross/macos_pack.sh
+
+#macos-%:
+#	@strip $*/$*.app/Contents/MacOS/$*
+#	@${UPXRUN} $*/$*.app/Contents/MacOS/$*
+#	@mkdir -p $*/$*.app/Contents/Resources/French.lproj
+#	@hdiutil create $*-${_XIVOVER_}-${_SVNVER_}.dmg -srcfolder $*/$*.app -format UDZO
+
 
 
 # DEBIAN targets
