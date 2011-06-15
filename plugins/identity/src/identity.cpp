@@ -297,9 +297,13 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
                            .arg(m_ui->ipbxid())
                            .arg(m_ui->context()));
 
-    m_voicemail->show();
-    m_voicemail->svcSummary(m_svcstatus, m_ui);
-    m_voicemail->setVoiceMailId(m_ui->xvoicemailid());
+    if (m_ui->voicemailid().isEmpty())
+        m_voicemail->hide();
+    else {
+        m_voicemail->show();
+        m_voicemail->svcSummary(m_svcstatus, m_ui);
+        m_voicemail->setVoiceMailId(m_ui->xvoicemailid());
+    }
 
     // changes the "watched agent" only if no one else has done it before
     b_engine->changeWatchedAgent(m_ui->xagentid(), false);
