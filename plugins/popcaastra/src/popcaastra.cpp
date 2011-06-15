@@ -75,25 +75,33 @@ PopcAastra::PopcAastra(QWidget *parent)
     connect(b_engine, SIGNAL(broadcastNumberSelection(const QStringList &)),
             this, SLOT(receiveNumberSelection(const QStringList &)));
 
-    connect(m_ui->btn_vol_up, SIGNAL(clicked()), this, SLOT(volUp()));
+    connect(m_ui->btn_vol_up,   SIGNAL(clicked()), this, SLOT(volUp()));
     connect(m_ui->btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
-    connect(m_ui->btn_right, SIGNAL(clicked()), this, SLOT(navRight()));
-    connect(m_ui->btn_hangup, SIGNAL(clicked()), this, SLOT(hangup()));
-    connect(m_ui->btn_prg_1, SIGNAL(clicked()), this, SLOT(prgkey1()));
+    connect(m_ui->btn_right,    SIGNAL(clicked()), this, SLOT(navRight()));
+    connect(m_ui->btn_hangup,   SIGNAL(clicked()), this, SLOT(hangup()));
+    connect(m_ui->btn_prg_1,    SIGNAL(clicked()), this, SLOT(prgkey1()));
 }
 
-/*! \brief update display according to call list
+/*! \brief Update status for incoming calls widget list
  *
- * Read m_calllist and update m_afflist accordingly.
+ *  Goes thru each incoming calls in the GUI and update the status of each
+ *  calls
  */
 void PopcAastra::updateDisplay()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     foreach (QString key, m_incomingcalls.keys()) {
         m_incomingcalls[key]->updateWidget();
     }
 }
 
+/*! \brief receives channel status updates from the base engine
+ *
+ *  When ever a channel status changes, the base engine sends a signal that
+ *  we catch to update our incoming and transfered call widgets
+ *
+ *  \param xchannel The pbx/channel id of the updated channel
+*/
 void PopcAastra::updateChannelStatus(const QString & xchannel)
 {
     //qDebug() << Q_FUNC_INFO << xchannel;
@@ -132,7 +140,7 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
         IncomingWidget * newcall = new IncomingWidget(guessedline, xchannel, this);
         m_incomingcalls[xchannel] = newcall;
         m_calls_list->addWidget(newcall);
-        connect(newcall, SIGNAL(doHangUp(int)), this, SLOT(hupline(int)));
+        connect(newcall, SIGNAL(doHangUp(int)), this, SLOT(hangUpLine(int)));
         connect(newcall, SIGNAL(doBlindTransfer(int, const QString &, const QString &)),
                         this, SLOT(blindTransfer(int, const QString &, const QString &)));
         connect(newcall, SIGNAL(doAttendedTransfer(int)), this, SLOT(attendedTransfer(int)));
@@ -142,7 +150,11 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
     current->updateWidget();
 }
 
-/*! \brief check for defunct channels that are still shown in the call and transfer lists */
+/*! \brief Removes defunct call widgets for defunct channels
+ *
+ *  Check the tracked widgets for defunct channels and remove defunct ones
+ *  from the incoming and transfered calls list
+ */
 void PopcAastra::removeDefunctWidgets()
 {
     //qDebug() << Q_FUNC_INFO;
@@ -174,6 +186,7 @@ void PopcAastra::debugIncomingCalls() const
 }
 
 /*! \brief finds the first line available to place this channel
+ *
  *  The goal is to know/guess on which line a call is to avoid
  *  mistakes when doing operations to a call since we are dealing
  *  with lines on the phone device when using aastra xml api
@@ -184,25 +197,25 @@ int PopcAastra::findFirstAvailableLine() const {
         return 1;
     }
     for (int i = 0; i < MAX_LINES; i++) {
-        bool free = true;
+        bool lineFree = true;
         foreach (QString channel, m_incomingcalls.keys()) {
-            if (m_incomingcalls[channel]->line() == i + 1) free = false;
+            if (m_incomingcalls[channel]->line() == i + 1) lineFree = false;
         }
-        if (free) return i + 1;
+        if (lineFree) return i + 1;
     }
     return -1;
 }
 
 /*! \brief parse new phone status
- * 0 = Available
- * 1 = Talking
- * 4 = Not available
- * 8 = Ringing
- * 9 = (On line OR calling) AND ringing
- * 16 = On hold
  */
 void PopcAastra::updatePhoneStatus(const QString & xphoneid)
 {
+    /* 0 = Available
+       1 = Talking
+       4 = Not available
+       8 = Ringing
+       9 = (On line OR calling) AND ringing
+       16 = On hold */
     //qDebug() << Q_FUNC_INFO << xphoneid;
     removeDefunctWidgets();
     const PhoneInfo * phone = b_engine->phone(xphoneid);
@@ -227,7 +240,14 @@ void PopcAastra::timerEvent(QTimerEvent * event)
         removeDefunctWidgets();
 }
 
-void PopcAastra::hupline(int line)
+/*! \brief Hang up a line on our phone
+ *
+ *  Hang up a given line on our phone using Aastra sipnotify, it has the same
+ *  result as pressing the hang up button on the phone
+ *
+ *  \param line the line number to hangup
+ */
+void PopcAastra::hangUpLine(int line)
 {
     //qDebug() << Q_FUNC_INFO << line;
     QList<QString> commands;
@@ -291,15 +311,21 @@ void PopcAastra::attendedTransfer(int line)
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
-/*! \brief intercept a call using *8 exten */
-void PopcAastra::doIntercept(const QString & number)
+/*! \brief Intercept a call ringing at the given number
+ *
+ *  Sends a *8 exten on the phone to intercept a call ringing on a given
+ *  exten
+ *
+ *  \param exten The exten number to intercept
+ */
+void PopcAastra::doIntercept(const QString & exten)
 {
-    qDebug() << Q_FUNC_INFO << number;
+    qDebug() << Q_FUNC_INFO << exten;
     QList<QString> commands;
     commands.append(getKeyUri(KEYPAD_STAR));
     commands.append(getKeyUri(KEYPAD, 8));
-    for (int i = 0; i < number.size(); ++i) {
-        const QChar c = number[i];
+    for (int i = 0; i < exten.size(); ++i) {
+        const QChar c = exten[i];
         if (c.isDigit())
             commands.append(getKeyUri(KEYPAD, c.digitValue()));
     }
@@ -322,7 +348,7 @@ void PopcAastra::parkcall(int line)
 
 void PopcAastra::updatePhoneConfig(const QString & phone)
 {
-    qDebug() << Q_FUNC_INFO << phone;
+    // qDebug() << Q_FUNC_INFO << phone;
 }
 
 void PopcAastra::updateUserConfig(const QString & xuserid)
@@ -340,28 +366,28 @@ void PopcAastra::updateUserStatus(const QString & xuserid)
 /*! \brief turns the volume up */
 void PopcAastra::volUp()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(VOL_UP, SPECIAL_ME));
 }
 
 /*! \brief turns the volume down */
 void PopcAastra::volDown()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(VOL_DOWN, SPECIAL_ME));
 }
 
 /*! \brief press the navigation right button of the device */
 void PopcAastra::navRight()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(NAV_RIGHT, SPECIAL_ME));
 }
 
 /*! \brief hang up the active line */
 void PopcAastra::hangup()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(GOODBYE, SPECIAL_ME));
 }
 
@@ -390,7 +416,7 @@ void PopcAastra::receiveNumberSelection(const QStringList & numbers)
  */
 PopcAastra::~PopcAastra()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     delete m_ui;
 }
 

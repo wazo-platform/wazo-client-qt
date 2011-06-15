@@ -48,6 +48,11 @@ class IncomingWidget;
  *
  * This xlet allow the operator to "drive" his phone from an xlet using SIP
  * notify messages that are available to Aastra
+ *
+ * Since we cannot retrieve the state from the phone, we have to guess some
+ * information about the state of the phone at some moments. This causes some
+ * limitations, for example, a toggle line function would not work since we are
+ * not keeping track of the active line.
  */
 class PopcAastra : public XLet
 {
@@ -86,7 +91,7 @@ public slots:
     void updatePhoneStatus(const QString &);
     void updateChannelStatus(const QString &);
     void hangup();
-    void hupline(int);
+    void hangUpLine(int);
     void attendedTransfer(int);
     void blindTransfer(int, const QString &, const QString &);
     void parkcall(int);
