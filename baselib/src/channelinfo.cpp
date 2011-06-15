@@ -65,6 +65,18 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     return haschanged;
 }
 
+/*! \brief Returns a string representation of a ChannelInfo */
+QString ChannelInfo::toString() const
+{
+    QString s;
+    s += "This display(" + m_thisdisplay + ") ";
+    s += "Peer display(" + m_peerdisplay + ") ";
+    s += "Comm status(" + m_commstatus + ") ";
+    s += "Talking to kind(" + m_talkingto_kind + ") ";
+    s += "Talking to id(" + m_talkingto_id + ") ";
+    return s;
+}
+
 const QString & ChannelInfo::talkingto_kind() const
 {
     return m_talkingto_kind;

@@ -94,11 +94,15 @@ IncomingWidget::IncomingWidget(int line_num, const QString & xchannel, QWidget *
     connect(m_parkCallAction, SIGNAL(triggered()), this, SLOT(doParkCall()));
 }
 
+/*! \brief Returns a string representation of an incoming call widget */
 QString IncomingWidget::toString() const
 {
-    QString info = QString("Line: %1 ").arg(m_line);
-    info.append(QString("Channel: %1 ").arg(m_xchannel));
-    return info;
+    QString s;
+    s += "XChannel(" + m_xchannel + ") ";
+    s += "Peer name(" + m_peer_name + ") ";
+    s += "Peer number(" + m_peer_number + ") ";
+    s += "Line(" + m_lbl_line->text() + ") ";
+    return s;
 }
 
 int IncomingWidget::line() const

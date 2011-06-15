@@ -88,3 +88,18 @@ bool PhoneInfo::updateStatus(const QVariantMap & prop)
     }
     return haschanged;
 }
+
+/*! \brief Returns the string representation of a PhoneInfo */
+QString PhoneInfo::toString() const
+{
+    qDebug() << Q_FUNC_INFO;
+
+    QString s;
+    s += "Protocol(" + m_protocol + ") ";
+    s += "Context(" + m_context + ") ";
+    s += "Number(" + m_number + ") ";
+    s += "Channels(" + QString("%1").arg(m_channels.size()) + ") ";
+
+    return s;
+}
+

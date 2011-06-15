@@ -66,6 +66,7 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         bool meetme_isauthed() const { return m_meetme_isauthed; };
         bool meetme_ismuted() const { return m_meetme_ismuted; };
         int meetme_usernum() const { return m_meetme_usernum; };
+        QString toString() const;
 
     private:
         QString m_thisdisplay;

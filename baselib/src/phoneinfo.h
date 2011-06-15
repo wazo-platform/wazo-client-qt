@@ -61,6 +61,7 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         const QString & hintstatus() const { return m_hintstatus; }; //! hint status value
 
         bool enableunc() const { return m_enableunc; };
+        QString toString() const;
     private:
         QString m_protocol;
         QString m_context;
