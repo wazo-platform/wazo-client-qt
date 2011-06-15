@@ -64,8 +64,11 @@ public:
     void debugIncomingCalls() const;
 protected:
     void timerEvent(QTimerEvent *);
-private:
+    bool isMyChannel(const QString & xchannelid) const;
+    void removeIncomingCall(const QString & xChannelId);
+    void removeCompletedTransfers();
     void removeDefunctWidgets();
+private:
     /*! \brief starts tracking a number after a transfer */
     void trackTransfer(QString number, const QString &, const QString &);
 public slots:
@@ -85,9 +88,6 @@ public slots:
     void navRight();
     /*!  \brief update the peer to be monitored */
     void monitorPeer(UserInfo *);
-    void updateUserConfig(const QString &);
-    void updateUserStatus(const QString &);
-    void updatePhoneConfig(const QString &);
     void updatePhoneStatus(const QString &);
     void updateChannelStatus(const QString &);
     void hangup();
