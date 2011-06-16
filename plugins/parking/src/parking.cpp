@@ -86,6 +86,7 @@ void XletParking::parkingEvent(const QString & eventkind,
                                 const QString & parkingbay,
                                 const QVariant & subcommand)
 {
+    qDebug() << Q_FUNC_INFO << "Event kind(" << eventkind << ") Ipbxid(" << ipbxid << ") Parking bay(" << parkingbay << ")";
     ParkingInfo * pi = b_engine->parking()[ipbxid][parkingbay];
     QVariantMap map = subcommand.toMap();
     QString channel = map.value("channel").toString();
@@ -102,6 +103,7 @@ void XletParking::parkingEvent(const QString & eventkind,
     //QString parkedpeer = channel.split("-")[0];
     QString parkedpeer = QString("%1 (%2)").arg(calleridname).arg(calleridnum);
     QString parkedby = fromchannel.split("-")[0];
+    qDebug() << Q_FUNC_INFO << "Subcommand: " << "Channel(" << channel << ") from channel(" << fromchannel << "calledidnum(" << calleridnum << ") Callerid name(" << calleridname << ")";
     if(!fromcalleridnum.isEmpty())
         parkedby = QString("%1 (%2)").arg(fromcalleridname).arg(fromcalleridnum);
 
@@ -166,17 +168,18 @@ void XletParking::itemClicked(QTableWidgetItem * item)
     int rown   = m_table->row(item);
     QString ipbxid     = m_table->item(rown, 0)->data(Qt::UserRole+0).toString();
     QString parkingbay = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
-    //qDebug() << Q_FUNC_INFO << rown << ipbxid << placenum;
+    qDebug() << Q_FUNC_INFO << rown << ipbxid << parkingbay;
     if (ipbxid == m_ui->ipbxid())
         b_engine->pasteToDial(parkingbay);
 }
 
 void XletParking::itemDoubleClicked(QTableWidgetItem * item)
 {
+    qDebug() << Q_FUNC_INFO;
     int rown   = m_table->row(item);
     QString ipbxid     = m_table->item(rown, 0)->data(Qt::UserRole+0).toString();
     QString parkingbay = m_table->item(rown, 0)->data(Qt::UserRole+1).toString();
-    //qDebug() << Q_FUNC_INFO << rown << ipbxid << placenum;
+    qDebug() << Q_FUNC_INFO << rown << ipbxid << parkingbay;
     if (ipbxid == m_ui->ipbxid())
         b_engine->actionCall("originate", "user:special:me", "ext:" + parkingbay);
 }
