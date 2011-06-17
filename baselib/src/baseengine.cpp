@@ -2267,6 +2267,27 @@ UserInfo * BaseEngine::getXivoClientMonitored()
     return NULL;
 }
 
+/*! \brief Retrieves a UserInfo for a given xchannel id
+ *
+ *  \param xcid The xivo channel id to look for
+ *  \return The UserInfo of the channel's owner
+ */
+const UserInfo * BaseEngine::getUserForXChannelId(const QString & xcid) const
+{
+    qDebug() << Q_FUNC_INFO << xcid;
+    foreach (const QString xuid, b_engine->iterover("users").keys()) {
+        const UserInfo * user = b_engine->user(xuid);
+        foreach (const QString pid, user->phonelist()) {
+            const PhoneInfo * phone = b_engine->phone(pid);
+            foreach (const QString xchan, phone->xchannels()) {
+                if (xchan.endsWith(xcid))
+                    return user;
+            }
+        }
+    }
+    return NULL;
+}
+
 /*! \brief send new remark about a sheet */
 void BaseEngine::sendNewRemark(const QString & id, const QString & text)
 {

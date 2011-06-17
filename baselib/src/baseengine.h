@@ -166,6 +166,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         const QString & xivoUserId() const { return m_userid; };
         const QString & getFullId() const { return m_xuserid; };
+        const UserInfo * getUserForXChannelId(const QString & xcid) const;  //!< Returns a user for a given xchannelid
         UserInfo * getXivoClientUser();  //!< Return the user of the XiVO CTI Client
         UserInfo * getXivoClientMonitored();  //!< Return the monitored user
         double timeServer() const;
@@ -187,6 +188,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QHash<QString, XInfo *> iterover(const QString & listname) { return m_anylist.value(listname); };
 
+        const ChannelInfo * channel(const QString & id) const
+                { return channels().value(id); };    //! < Return the channe to any xlet
         const UserInfo * user(const QString & id) const
                 { return (const UserInfo *) m_anylist.value("users").value(id); };  //!< Return the user to any Xlet
         const PhoneInfo * phone(const QString & id) const
