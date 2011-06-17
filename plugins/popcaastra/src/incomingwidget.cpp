@@ -10,87 +10,79 @@
 #include "popcaastra.h"
 #include "aastrasipnotify.h"
 
-IncomingWidget::IncomingWidget(int line_num, const QString & xchannel, QWidget * parent)
-    : QWidget(parent), m_line(line_num), m_xchannel(xchannel), m_image(16,16),
+IncomingWidget::IncomingWidget(int line, const QString & xchan, QWidget * w)
+    : QWidget(w), m_line(line), m_xchannel(xchan),
         m_start(b_engine->timeServer())
+{
+    qDebug() << Q_FUNC_INFO << "Line(" << line << ") Channel(" << xchan << ")";
+    buildLayout();
+    setSignalsSlots();
+    updateFromChannelInfo(m_xchannel);
+    refreshUI();
+}
+
+void IncomingWidget::buildLayout()
 {
     qDebug() << Q_FUNC_INFO;
     m_layout = new QHBoxLayout(this);
-
     m_lbl_line = new QLabel(this);
     m_lbl_name = new QLabel(this);
     m_lbl_exten = new QLabel(this);
     m_lbl_time = new QLabel(this);
-    m_lbl_direction = new QLabel(this);
-    m_lbl_status = new QLabel(this);
 
-    m_lbl_line->setText(QString("%1").arg(m_line));
-    const ChannelInfo * channel = b_engine->channels()[m_xchannel];
-    if (channel == NULL) {
-        qDebug() << Q_FUNC_INFO << "null channel";
-        return;
-    }
-
-    const QString peerchannel = channel->talkingto_id();
-    qDebug() << Q_FUNC_INFO << "talking to " << peerchannel;
-    QString peerid;
-    foreach (QString xuserid, b_engine->iterover("users").keys()) {
-        qDebug() << Q_FUNC_INFO << "User: " << xuserid;
-        const UserInfo * current = b_engine->user(xuserid);
-        foreach (const QString phoneid, current->phonelist()) {
-            qDebug() << Q_FUNC_INFO << "phoneid: " << phoneid;
-            const PhoneInfo * phone = b_engine->phone(phoneid);
-            foreach (QString xchannel, phone->xchannels()) {
-                if (xchannel.endsWith(peerchannel)) {
-                    peerid = xuserid;
-                }
-            }
-        }
-    }
-
-    const UserInfo * peer = b_engine->user(peerid);
-    if (peer == NULL) {
-        qDebug() << Q_FUNC_INFO << "Could not find this peer";
-        return;
-    }
-    m_peer_name = peer->fullname();
-    m_lbl_name->setText(m_peer_name);
-    m_peer_number = b_engine->phone(peer->phonelist()[0])->number();
-    m_lbl_exten->setText(m_peer_number);
-    m_lbl_time->setText(b_engine->timeElapsed(m_start));
-    //m_lbl_status->setText("status");
-
-    if (channel->direction() == "in") {
-        qDebug() << Q_FUNC_INFO << " Direction in";
-        m_lbl_direction->setPixmap(QPixmap(":/in_calls/leftarrow.png"));
-    } else {
-        qDebug() << Q_FUNC_INFO << " Direction out";
-        m_lbl_direction->setPixmap(QPixmap(":/in_calls/rightarrow.png"));
-    }
     m_layout->addWidget(m_lbl_line);
     m_layout->setStretch(0,0);
-    m_layout->addWidget(m_lbl_direction);
-    m_layout->setStretch(1,0);
-    m_layout->addWidget(m_lbl_status);
-    m_layout->setStretch(2,0);
     m_layout->addWidget(m_lbl_name);
-    m_layout->setStretch(3,0);
+    m_layout->setStretch(1,0);
     m_layout->addWidget(m_lbl_exten);
-    m_layout->setStretch(4,1);
+    m_layout->setStretch(2,1);
     m_layout->addWidget(m_lbl_time);
-    m_layout->setStretch(5,0);
-    updateWidget();
+    m_layout->setStretch(3,0);
 
     m_hangUpAction = new QAction(tr("&Hangup"), this);
-    m_hangUpAction->setStatusTip(tr("Hang up/close the call"));
-    connect(m_hangUpAction, SIGNAL(triggered()),
-            this, SLOT(doHangUp()));
     m_attendedTransferAction = new QAction(tr("Attended transfer"), this);
-    connect(m_attendedTransferAction, SIGNAL(triggered()), this, SLOT(doAttendedTransfer()));
     m_blindTransferAction = new QAction(tr("Blind transfer"), this);
-    m_blindTransferAction->setStatusTip(tr("Transfer the call"));
-    connect(m_blindTransferAction, SIGNAL(triggered()), this, SLOT(doBlindTransfer()));
     m_parkCallAction = new QAction(tr("Park call"), this);
+
+    m_hangUpAction->setStatusTip(tr("Hang up/close the call"));
+    m_blindTransferAction->setStatusTip(tr("Transfer the call"));
+}
+
+void IncomingWidget::refreshUI()
+{
+    qDebug() << Q_FUNC_INFO;
+    m_lbl_line->setText(QString("%1").arg(m_line));
+    m_lbl_name->setText(m_peer_name);
+    m_lbl_exten->setText(m_peer_number);
+    m_lbl_time->setText(b_engine->timeElapsed(m_start));
+    // TODO: Display hold / parked status
+    updateCallTimeLabel();
+}
+
+void IncomingWidget::updateFromChannelInfo(const QString & xcid)
+{
+    qDebug() << Q_FUNC_INFO << xcid;
+    const ChannelInfo * info = b_engine->channel(xcid);
+    if (! info) return;
+    m_parkedCall = info->isparked();
+    m_holdedCall = info->isholded();
+    // TODO: When the caller is not a Xivo user
+    m_peer = b_engine->getUserForXChannelId(info->talkingto_id());
+    if (! m_peer) return;
+    qDebug() << Q_FUNC_INFO << "My peer" << m_peer->toString();
+    m_peer_name = m_peer->fullname();
+    // TODO: Find something better than the first phone
+    m_peer_number = b_engine->phone(m_peer->phonelist()[0])->number();
+}
+
+void IncomingWidget::setSignalsSlots()
+{
+    qDebug() << Q_FUNC_INFO;
+    connect(m_hangUpAction, SIGNAL(triggered()), this, SLOT(doHangUp()));
+    connect(m_attendedTransferAction, SIGNAL(triggered()), this,
+                SLOT(doAttendedTransfer()));
+    connect(m_blindTransferAction, SIGNAL(triggered()), this,
+                SLOT(doBlindTransfer()));
     connect(m_parkCallAction, SIGNAL(triggered()), this, SLOT(doParkCall()));
 }
 
@@ -105,59 +97,6 @@ QString IncomingWidget::toString() const
     return s;
 }
 
-int IncomingWidget::line() const
-{
-    return m_line;
-}
-
-void IncomingWidget::updateWidget()
-{
-    const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
-    if (channelinfo == NULL) {
-        qDebug() << Q_FUNC_INFO << "Cannot find " << m_xchannel;
-        return;
-    }
-    const QString status = channelinfo->commstatus();
-    const QString direction = channelinfo->direction();
-    m_parkedCall = channelinfo->isparked();
-    m_holdedCall = channelinfo->isholded();
-
-    setActionPixmap();
-    updateCallTimeLabel();
-
-    if (direction == "out")
-        m_lbl_direction->setPixmap(QPixmap(":/in_calls/rightarrow.png"));
-    else if (direction == "in")
-        m_lbl_direction->setPixmap(QPixmap(":/in_calls/leftarrow.png"));
-    else
-        qDebug() << Q_FUNC_INFO << "unknown direction" << direction;
-
-    // TODO: Status change depanding on time waited
-    // TODO: Status change depanding on hold/park
-}
-
-/*! \brief set icon depending on status
- */
-void IncomingWidget::setActionPixmap()
-{
-    const ChannelInfo * channelinfo = b_engine->channels().value(m_xchannel);
-    if (channelinfo == NULL)
-        return;
-    const QString status = channelinfo->commstatus();
-    QString color;
-    QString tooltip;
-    if (b_engine->getOptionsPhoneStatus().contains(status)) {
-        color = b_engine->getOptionsPhoneStatus().value(status).toMap().value("color").toString();
-        tooltip = b_engine->getOptionsPhoneStatus().value(status).toMap().value("longname").toString();
-    } else {
-        color = "white";
-        tooltip = "unknown status";
-    }
-    TaintedPixmap tp = TaintedPixmap(QString(":/images/phone-trans.png"), QColor(color));
-    m_lbl_status->setPixmap(tp.getPixmap());
-    setToolTip(tooltip);
-}
-
 /*! \brief update time displayed in m_lbl_time
  */
 void IncomingWidget::updateCallTimeLabel()
@@ -166,6 +105,13 @@ void IncomingWidget::updateCallTimeLabel()
     if (channelinfo == NULL)
         return;
     m_lbl_time->setText(b_engine->timeElapsed(m_start));
+}
+
+void IncomingWidget::updateWidget()
+{
+    qDebug() << Q_FUNC_INFO;
+    updateFromChannelInfo(m_xchannel);
+    refreshUI();
 }
 
 void IncomingWidget::timerEvent(QTimerEvent *)
@@ -213,7 +159,7 @@ void IncomingWidget::contextMenuEvent(QContextMenuEvent *event)
     contextMenu.exec(event->globalPos());
 }
 
-void IncomingWidget::mousePressEvent(QMouseEvent * event)
+void IncomingWidget::mousePressEvent(QMouseEvent * /* event */)
 {
     qDebug() << Q_FUNC_INFO << m_line;
     emit selectLine(m_line);

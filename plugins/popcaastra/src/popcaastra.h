@@ -71,6 +71,7 @@ protected:
 private:
     /*! \brief starts tracking a number after a transfer */
     void trackTransfer(QString number, const QString &, const QString &);
+    QStringList getMyChannels() const;
 public slots:
     void updateDisplay();
     /*! \brief When a name is clicked on the destination list */
