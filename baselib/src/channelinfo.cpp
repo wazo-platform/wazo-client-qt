@@ -74,6 +74,8 @@ QString ChannelInfo::toString() const
     s += "Comm status(" + m_commstatus + ") ";
     s += "Talking to kind(" + m_talkingto_kind + ") ";
     s += "Talking to id(" + m_talkingto_id + ") ";
+    s += "Parked(" + QString(m_isparked ? "true" : "false")  + ")";
+    s += "Held(" + QString(m_isholded ? "true" : "false") + ")";
     return s;
 }
 
