@@ -192,7 +192,7 @@ bool PopcAastra::isMyChannel(const QString & xchannelid) const
     QStringList mychannels = getMyChannels();
     const ChannelInfo * chan = b_engine->channel(xchannelid);
     for (int i = 0; i < mychannels.size(); ++i) {
-        if (mychannels.contains(chan->talkingto_id())) return true;
+        if (mychannels.contains(xchannelid)) return true;
     }
     return false;
 }
@@ -281,7 +281,7 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
         m_transferedcalls[key]->updateWidget();
     if (m_transferedcalls.size() || m_incomingcalls.size()) {
         removeDefunctWidgets();
-        // removeCompletedTransfers();
+        removeCompletedTransfers();
     }
     const QHash<QString, QHash<QString, ParkingInfo *> > parkings = b_engine->parking();
     if (parkings.size() != 0) {
