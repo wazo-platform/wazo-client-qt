@@ -115,6 +115,8 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
                     this, SLOT(attendedTransfer(int)));
             connect(newcall, SIGNAL(doBlindTransfer(int, const QString &, const QString &)),
                     this, SLOT(blindTransfer(int, const QString &, const QString &)));
+            connect(newcall, SIGNAL(doParkCall(int)),
+                    this, SLOT(parkcall(int)));
         } else {
             qDebug() << Q_FUNC_INFO << "Update it...";
             m_incomingcalls[my_channels.at(i)]->updateWidget();
@@ -190,7 +192,6 @@ bool PopcAastra::isMyChannel(const QString & xchannelid) const
 {
     // qDebug() << Q_FUNC_INFO << "Channel id(" << xchannelid << ")";
     QStringList mychannels = getMyChannels();
-    const ChannelInfo * chan = b_engine->channel(xchannelid);
     for (int i = 0; i < mychannels.size(); ++i) {
         if (mychannels.contains(xchannelid)) return true;
     }
@@ -389,10 +390,25 @@ void PopcAastra::selectLine(int line)
     emit ipbxCommand(getAastraKeyNotify(LINE, SPECIAL_ME, line));
 }
 
-/*! \brief park the call on line line */
+/*! \brief transfer the call to a parking lot
+ *  \param line to transfer
+ */
 void PopcAastra::parkcall(int line)
 {
     qDebug() << Q_FUNC_INFO << line;
+    // TODO: Remove the magic value when the base_engine starts working
+    QString number = "700";
+    QList<QString> commands;
+    commands.append(getKeyUri(LINE, line));
+    commands.append(getKeyUri(XFER));
+    for (int i = 0; i < number.size(); ++i) {
+        const QChar c = number[i];
+        if (c.isDigit()) {
+            commands.append(getKeyUri(KEYPAD, c.digitValue()));
+        }
+    }
+    commands.append(getKeyUri(XFER));
+    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
 /*! \brief turns the volume up */
