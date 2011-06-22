@@ -15,6 +15,7 @@ IncomingWidget::IncomingWidget(int line, const QString & xchan, QWidget * w)
         m_start(b_engine->timeServer())
 {
     qDebug() << Q_FUNC_INFO << "Line(" << line << ") Channel(" << xchan << ")";
+    m_small_button_sz = new QSize(20,20);
     buildLayout();
     setSignalsSlots();
     updateFromChannelInfo(m_xchannel);
@@ -30,27 +31,35 @@ void IncomingWidget::buildLayout()
     m_lbl_exten = new QLabel(this);
     m_lbl_time = new QLabel(this);
 
-    m_layout->addWidget(m_lbl_line);
-    m_layout->setStretch(0,0);
-    m_layout->addWidget(m_lbl_name);
-    m_layout->setStretch(1,0);
-    m_layout->addWidget(m_lbl_exten);
-    m_layout->setStretch(2,1);
-    m_layout->addWidget(m_lbl_time);
-    m_layout->setStretch(3,0);
+    m_btn_hangup = new QPushButton("&H", this);
+    m_btn_hold = new QPushButton("&h", this);
+    m_btn_park = new QPushButton("&p", this);
+    m_btn_atxfer = new QPushButton("&a", this);
+    m_btn_xfer = new QPushButton("&t", this);
+    m_btn_conf = new QPushButton("&c", this);
+    
+    m_btn_hangup->setMaximumSize(*m_small_button_sz);
+    m_btn_hold->setMaximumSize(*m_small_button_sz);
+    m_btn_park->setMaximumSize(*m_small_button_sz);
+    m_btn_atxfer->setMaximumSize(*m_small_button_sz);
+    m_btn_xfer->setMaximumSize(*m_small_button_sz);
+    m_btn_conf->setMaximumSize(*m_small_button_sz);
 
-    m_hangUpAction = new QAction(tr("&Hangup"), this);
-    m_attendedTransferAction = new QAction(tr("Attended transfer"), this);
-    m_blindTransferAction = new QAction(tr("Blind transfer"), this);
-    m_parkCallAction = new QAction(tr("Park call"), this);
-
-    m_hangUpAction->setStatusTip(tr("Hang up/close the call"));
-    m_blindTransferAction->setStatusTip(tr("Transfer the call"));
+    m_layout->addWidget(m_lbl_line, 0, Qt::AlignLeft);
+    m_layout->addWidget(m_lbl_name, 0, Qt::AlignLeft);
+    m_layout->addWidget(m_lbl_exten, 1, Qt::AlignLeft);
+    m_layout->addWidget(m_btn_hangup, 0, Qt::AlignLeft);
+    m_layout->addWidget(m_btn_hold, 0, Qt::AlignLeft);
+    m_layout->addWidget(m_btn_atxfer, 0, Qt::AlignLeft);
+    m_layout->addWidget(m_btn_xfer, 0, Qt::AlignLeft);
+    m_layout->addWidget(m_btn_conf, 0, Qt::AlignLeft);
+    m_layout->addWidget(m_btn_park, 0, Qt::AlignLeft);
+    m_layout->addWidget(m_lbl_time, 0, Qt::AlignRight);
 }
 
 void IncomingWidget::refreshUI()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     m_lbl_line->setText(QString("%1").arg(m_line));
     m_lbl_name->setText(m_peer_name);
     m_lbl_exten->setText(m_peer_number);
@@ -61,7 +70,7 @@ void IncomingWidget::refreshUI()
 
 void IncomingWidget::updateFromChannelInfo(const QString & xcid)
 {
-    qDebug() << Q_FUNC_INFO << xcid;
+    // qDebug() << Q_FUNC_INFO << xcid;
     const ChannelInfo * info = b_engine->channel(xcid);
     if (! info) return;
     m_parkedCall = info->isparked();
@@ -77,13 +86,13 @@ void IncomingWidget::updateFromChannelInfo(const QString & xcid)
 
 void IncomingWidget::setSignalsSlots()
 {
-    qDebug() << Q_FUNC_INFO;
-    connect(m_hangUpAction, SIGNAL(triggered()), this, SLOT(doHangUp()));
-    connect(m_attendedTransferAction, SIGNAL(triggered()), this,
-                SLOT(doAttendedTransfer()));
-    connect(m_blindTransferAction, SIGNAL(triggered()), this,
-                SLOT(doBlindTransfer()));
-    connect(m_parkCallAction, SIGNAL(triggered()), this, SLOT(doParkCall()));
+    // qDebug() << Q_FUNC_INFO;
+    connect(m_btn_park, SIGNAL(clicked()), this, SLOT(doParkCall()));
+    connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(doHangUp()));
+    connect(m_btn_atxfer, SIGNAL(clicked()), this, SLOT(doAttendedTransfer()));
+    connect(m_btn_xfer, SIGNAL(clicked()), this, SLOT(doBlindTransfer()));
+    connect(m_btn_conf, SIGNAL(clicked()), this, SLOT(doConf()));
+    connect(m_btn_hold, SIGNAL(clicked()), this, SLOT(doHold()));
 }
 
 /*! \brief Returns a string representation of an incoming call widget */
@@ -109,7 +118,7 @@ void IncomingWidget::updateCallTimeLabel()
 
 void IncomingWidget::updateWidget()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     updateFromChannelInfo(m_xchannel);
     refreshUI();
 }
@@ -121,8 +130,8 @@ void IncomingWidget::timerEvent(QTimerEvent *)
 
 void IncomingWidget::doHangUp()
 {
-    qDebug() << Q_FUNC_INFO;
-    emit doHangUp(1);
+    // qDebug() << Q_FUNC_INFO;
+    emit doHangUp(m_line);
 }
 
 void IncomingWidget::doBlindTransfer()
@@ -137,26 +146,10 @@ void IncomingWidget::doAttendedTransfer()
     emit doAttendedTransfer(m_line);
 }
 
-void IncomingWidget::doTransferToNumber(const QString & number)
-{
-    qDebug() << Q_FUNC_INFO << number;
-}
-
 void IncomingWidget::doParkCall()
 {
     qDebug() << Q_FUNC_INFO;
     emit doParkCall(m_line);
-}
-
-void IncomingWidget::contextMenuEvent(QContextMenuEvent *event)
-{
-    qDebug() << Q_FUNC_INFO;
-    QMenu contextMenu;
-    contextMenu.addAction(m_hangUpAction);
-    contextMenu.addAction(m_attendedTransferAction);
-    contextMenu.addAction(m_blindTransferAction);
-    contextMenu.addAction(m_parkCallAction);
-    contextMenu.exec(event->globalPos());
 }
 
 void IncomingWidget::mousePressEvent(QMouseEvent * /* event */)
@@ -165,3 +158,7 @@ void IncomingWidget::mousePressEvent(QMouseEvent * /* event */)
     emit selectLine(m_line);
 }
 
+IncomingWidget::~IncomingWidget()
+{
+    delete m_small_button_sz;
+}

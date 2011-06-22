@@ -310,11 +310,11 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
  *
  *  \param line the line number to hangup
  */
-void PopcAastra::hangUpLine(int line)
+void PopcAastra::hangUpLine(int /* line */)
 {
-    //qDebug() << Q_FUNC_INFO << line;
+    // qDebug() << Q_FUNC_INFO << line;
     QList<QString> commands;
-    commands.append(getKeyUri(LINE, line));
+    // commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(GOODBYE));
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }

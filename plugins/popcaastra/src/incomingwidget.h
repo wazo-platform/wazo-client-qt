@@ -1,23 +1,21 @@
 #ifndef __INCOMINGWIDGET_H__
 #define __INCOMINGWIDGET_H__
 
-#include <QObject>
-#include <QWidget>
-
 #include "popcaastra.h"
 
 class QHBoxLayout;
 class QLabel;
+class QObject;
+class QPushButton;
+class QSize;
+class QWidget;
 class UserInfo;
 
 /*! \brief A widget to display relevant information about an incoming call
  *
  *  A new widget should be created for each incoming call to the operator'S
  *  phone. The widget will display some information about this call and allow
- *  the user to interact with the call with a set of actions.
- *
- *  Available actions should include hangup, blind transfer, attended transfer
- *  park, send to conference
+ *  the user to interact with the call with a set of buttons.
  */
 class IncomingWidget : public QWidget
 {
@@ -30,6 +28,7 @@ class IncomingWidget : public QWidget
          *  \param parent The parent widget
          */
         IncomingWidget(int line_num, const QString & xchan, QWidget * parent);
+        ~IncomingWidget();
         /*! \brief Get the phone's line number for this call */
         int line() const { return m_line; }
         QString toString() const;
@@ -45,7 +44,6 @@ class IncomingWidget : public QWidget
     protected:
         /*! \brief Build the layout of the widget */
         void buildLayout();
-        void contextMenuEvent(QContextMenuEvent *);
         void mousePressEvent(QMouseEvent *);
         /*! \brief Refresh the UI to reflect a change in the data */
         void refreshUI();
@@ -77,10 +75,13 @@ class IncomingWidget : public QWidget
         bool m_parkedCall;
         bool m_holdedCall;
         double m_start;
-        QAction * m_hangUpAction;
-        QAction * m_attendedTransferAction;
-        QAction * m_blindTransferAction;
-        QAction * m_parkCallAction;
+        QPushButton * m_btn_hangup;
+        QPushButton * m_btn_hold;
+        QPushButton * m_btn_park;
+        QPushButton * m_btn_atxfer;
+        QPushButton * m_btn_xfer;
+        QPushButton * m_btn_conf;
+        QSize * m_small_button_sz;  // Default size for the buttons
 };
 
 #endif
