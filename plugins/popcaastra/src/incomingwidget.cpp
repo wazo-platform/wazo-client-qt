@@ -78,7 +78,6 @@ void IncomingWidget::updateFromChannelInfo(const QString & xcid)
     // TODO: When the caller is not a Xivo user
     m_peer = b_engine->getUserForXChannelId(info->talkingto_id());
     if (! m_peer) return;
-    qDebug() << Q_FUNC_INFO << "My peer" << m_peer->toString();
     m_peer_name = m_peer->fullname();
     // TODO: Find something better than the first phone
     m_peer_number = b_engine->phone(m_peer->phonelist()[0])->number();
@@ -134,27 +133,37 @@ void IncomingWidget::doHangUp()
     emit doHangUp(m_line);
 }
 
+/*! \brief Put this line on hold
+ *
+ * Receives the click from the hold button and ask the POPC xlet to put that
+ * line on hold */
+void IncomingWidget::doHold()
+{
+    // qDebug() << Q_FUNC_INFO;
+    emit doHold(m_line);
+}
+
 void IncomingWidget::doBlindTransfer()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     emit doBlindTransfer(m_line, m_peer_name, m_peer_number);
 }
 
 void IncomingWidget::doAttendedTransfer()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     emit doAttendedTransfer(m_line);
 }
 
 void IncomingWidget::doParkCall()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     emit doParkCall(m_line);
 }
 
 void IncomingWidget::mousePressEvent(QMouseEvent * /* event */)
 {
-    qDebug() << Q_FUNC_INFO << m_line;
+    // qDebug() << Q_FUNC_INFO << m_line;
     emit selectLine(m_line);
 }
 

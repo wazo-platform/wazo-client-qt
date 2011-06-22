@@ -36,10 +36,10 @@ class IncomingWidget : public QWidget
         void updateWidget();
         const QString xChannelId() const { return m_xchannel; }
     public slots:
-        void doHangUp();    //!< Hang up the line
-        void doBlindTransfer();
         void doAttendedTransfer();
-        void doTransferToNumber(const QString & number); //!< Transfer to number
+        void doBlindTransfer();
+        void doHangUp();    //!< Hang up the line
+        void doHold();
         void doParkCall();  //!< Park the call
     protected:
         /*! \brief Build the layout of the widget */
@@ -56,11 +56,12 @@ class IncomingWidget : public QWidget
         /*! \brief Register signals and slots */
         void setSignalsSlots();
     signals:
-        void doHangUp(int);     //!< hang up a line
-        void doBlindTransfer(int, const QString &, const QString &);
         void doAttendedTransfer(int);
-        void selectLine(int);
+        void doBlindTransfer(int, const QString &, const QString &);
+        void doHangUp(int);     //!< hang up a line
+        void doHold(int);
         void doParkCall(int);
+        void selectLine(int);
     private:
         int m_line;                 //!< The phone's line number
         QString m_xchannel;

@@ -114,7 +114,7 @@ void PopcAastra::updateDisplay()
 */
 void PopcAastra::updateChannelStatus(const QString & xchannel)
 {
-    qDebug() << Q_FUNC_INFO << "Channel(" << xchannel << ")";
+    // qDebug() << Q_FUNC_INFO << "Channel(" << xchannel << ")";
     QStringList my_channels = getMyChannels();
     for (int i = 0; i < my_channels.size(); ++i) {
         if (! m_incomingcalls.contains(my_channels.at(i))) {
@@ -122,8 +122,9 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
             IncomingWidget * newcall = new IncomingWidget(guessedline, my_channels.at(i), this);
             m_incomingcalls[my_channels.at(i)] = newcall;
             m_layout->addWidget(newcall);
-            connect(newcall, SIGNAL(doHangUp(int)),     this, SLOT(hangUpLine(int)));
-            connect(newcall, SIGNAL(selectLine(int)),   this, SLOT(selectLine(int)));
+            connect(newcall, SIGNAL(doHangUp(int)), this, SLOT(hangUpLine(int)));
+            connect(newcall, SIGNAL(doHold(int)), this, SLOT(holdLine(int)));
+            connect(newcall, SIGNAL(selectLine(int)), this, SLOT(selectLine(int)));
             connect(newcall, SIGNAL(doAttendedTransfer(int)),
                     this, SLOT(attendedTransfer(int)));
             connect(newcall, SIGNAL(doBlindTransfer(int, const QString &, const QString &)),
@@ -316,6 +317,21 @@ void PopcAastra::hangUpLine(int /* line */)
     QList<QString> commands;
     // commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(GOODBYE));
+    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+}
+
+/*! \brief Put this line on hold
+ *
+ *  Press the hold button on the phone
+ *
+ *  \param line The phone's line to hangup
+ */
+void PopcAastra::holdLine(int line)
+{
+    // qDebug() << Q_FUNC_INFO << line;
+    QList<QString> commands;
+    commands.append(getKeyUri(LINE, line));
+    commands.append(getKeyUri(HOLD));
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 

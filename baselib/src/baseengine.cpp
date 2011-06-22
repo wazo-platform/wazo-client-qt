@@ -2274,7 +2274,7 @@ UserInfo * BaseEngine::getXivoClientMonitored()
  */
 const UserInfo * BaseEngine::getUserForXChannelId(const QString & xcid) const
 {
-    qDebug() << Q_FUNC_INFO << xcid;
+    // qDebug() << Q_FUNC_INFO << xcid;
     foreach (const QString xuid, b_engine->iterover("users").keys()) {
         const UserInfo * user = b_engine->user(xuid);
         foreach (const QString pid, user->phonelist()) {

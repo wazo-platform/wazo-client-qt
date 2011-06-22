@@ -93,6 +93,7 @@ public slots:
     void updateChannelStatus(const QString &);
     void hangup();
     void hangUpLine(int);
+    void holdLine(int);
     void attendedTransfer(int);
     void blindTransfer(int, const QString &, const QString &);
     void parkcall(int);
