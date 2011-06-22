@@ -34,14 +34,14 @@
 #ifndef __POPCAASTRA_H__
 #define __POPCAASTRA_H__
 
+#include <QLineEdit>
 #include <QObject>
+#include <QPushButton>
 #include <QVBoxLayout>
+
 #include "xlet.h"
 #include "transferedwidget.h"
 
-namespace Ui {
-    class PopcAastra;
-}
 class IncomingWidget;
 
 /*! \brief POPC xlet for Aastra phones
@@ -103,13 +103,18 @@ public slots:
     /*! \brief receives numbers from a selected peer/contact in other xlets */
     void receiveNumberSelection(const QStringList &);
 private:
-    Ui::PopcAastra * m_ui;
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget
     QHash<QString, TransferedWidget *> m_transferedcalls; //!< List of transfered calls
-    QVBoxLayout * m_calls_list; //!< Container layout for the incoming calls widget
-    QVBoxLayout * m_destinations_list;  //!< Container layout for the transfered calls widget
+    QVBoxLayout * m_layout;
+    QHBoxLayout * m_top_widget; //!< Container for buttons and other widgets
+    QString m_selected_number;  //!< Number holding the selection in other widgets
     int m_timerid;
     int m_deltasec;
+    QPushButton * m_btn_hangup;
+    QPushButton * m_btn_nav_right;
+    QPushButton * m_btn_vol_down;
+    QPushButton * m_btn_vol_up;
+    QLineEdit * m_target_number;
 };
 
 #endif /* __POPCAASTRA_H__ */

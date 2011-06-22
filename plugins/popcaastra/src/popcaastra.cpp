@@ -37,7 +37,6 @@
 #include <QTableWidget>
 
 #include "popcaastra.h"
-#include "../ui_popcaastra.h"
 #include "userinfo.h"
 #include "channelinfo.h"
 #include "aastrasipnotify.h"
@@ -46,14 +45,29 @@
 
 #define MAX_LINES 4
 
-PopcAastra::PopcAastra(QWidget *parent)
-    : XLet(parent), m_ui(new Ui::PopcAastra)
+PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
 {
-    m_ui->setupUi(this);
     setTitle(tr("POPC Aastra operator"));
 
-    m_calls_list = new QVBoxLayout(m_ui->m_calls_layout);
-    m_destinations_list = new QVBoxLayout(m_ui->m_destinations_layout);
+    m_layout = new QVBoxLayout(this);
+    m_top_widget = new QHBoxLayout(this);
+
+    this->setLayout(m_layout);
+    m_layout->addLayout(m_top_widget);
+    m_layout->setAlignment(Qt::AlignTop);
+
+    m_btn_hangup = new QPushButton("Hangup", this);
+    m_btn_nav_right = new QPushButton("-->", this);
+    m_btn_vol_down = new QPushButton("v", this);
+    m_btn_vol_up = new QPushButton("^", this);
+    m_target_number = new QLineEdit(this);
+
+    m_top_widget->addWidget(m_btn_hangup);
+    m_top_widget->addWidget(m_btn_nav_right);
+    m_top_widget->addWidget(m_btn_vol_down);
+    m_top_widget->addWidget(m_btn_vol_up);
+    m_top_widget->addWidget(m_target_number);
+    m_top_widget->setSizeConstraint(QLayout::SetMinimumSize);
 
     m_timerid = 0;
     m_deltasec = 1;
@@ -69,11 +83,10 @@ PopcAastra::PopcAastra(QWidget *parent)
     connect(b_engine, SIGNAL(broadcastNumberSelection(const QStringList &)),
             this, SLOT(receiveNumberSelection(const QStringList &)));
 
-    connect(m_ui->btn_vol_up,   SIGNAL(clicked()), this, SLOT(volUp()));
-    connect(m_ui->btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
-    connect(m_ui->btn_right,    SIGNAL(clicked()), this, SLOT(navRight()));
-    connect(m_ui->btn_hangup,   SIGNAL(clicked()), this, SLOT(hangup()));
-    connect(m_ui->btn_prg_1,    SIGNAL(clicked()), this, SLOT(prgkey1()));
+    connect(m_btn_vol_up, SIGNAL(clicked()), this, SLOT(volUp()));
+    connect(m_btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
+    connect(m_btn_nav_right, SIGNAL(clicked()), this, SLOT(navRight()));
+    connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(hangup()));
 }
 
 /*! \brief Update status for incoming calls widget list
@@ -108,7 +121,7 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
             int guessedline = findFirstAvailableLine();
             IncomingWidget * newcall = new IncomingWidget(guessedline, my_channels.at(i), this);
             m_incomingcalls[my_channels.at(i)] = newcall;
-            m_calls_list->addWidget(newcall);
+            m_layout->addWidget(newcall);
             connect(newcall, SIGNAL(doHangUp(int)),     this, SLOT(hangUpLine(int)));
             connect(newcall, SIGNAL(selectLine(int)),   this, SLOT(selectLine(int)));
             connect(newcall, SIGNAL(doAttendedTransfer(int)),
@@ -314,7 +327,7 @@ void PopcAastra::blindTransfer(int line, const QString & transferedname,
     QList<QString> commands;
     commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(XFER));
-    QString number = m_ui->txt_number_name->text();
+    QString number = m_selected_number;
     for (int i = 0; i < number.size(); ++i) {
         const QChar c = number[i];
         if (c.isDigit()) {
@@ -335,7 +348,7 @@ void PopcAastra::trackTransfer(QString number, const QString & tname, const QStr
         if (p->number() == number) {
             TransferedWidget * w = new TransferedWidget(number, tname, tnum, this);
             m_transferedcalls[id] = w;
-            m_destinations_list->addWidget(w);
+            m_layout->addWidget(w);
             connect(
                 w, SIGNAL(intercept(const QString &)),
                 this, SLOT(doIntercept(const QString &)));
@@ -351,7 +364,7 @@ void PopcAastra::attendedTransfer(int line)
     QList<QString> commands;
     commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(XFER));
-    QString number = m_ui->txt_number_name->text();
+    QString number = m_selected_number;
     for (int i = 0; i < number.size(); ++i) {
         const QChar c = number[i];
         if (c.isDigit())
@@ -451,13 +464,14 @@ void PopcAastra::receiveNumberSelection(const QStringList & numbers)
 {
     // qDebug() << Q_FUNC_INFO;
     if (numbers.isEmpty()) {
-        m_ui->txt_number_name->setText("");
+        return;
     } else if (numbers.size() == 1) {
-        m_ui->txt_number_name->setText(numbers.at(0));
+        m_selected_number = numbers.at(0);
     } else {
         // FIXME: take multiple numbers into account
-        m_ui->txt_number_name->setText(numbers.at(0));
+        m_selected_number = numbers.at(0);
     }
+    m_target_number->setText(m_selected_number);
 }
 
 /*! \brief destructor
@@ -465,6 +479,5 @@ void PopcAastra::receiveNumberSelection(const QStringList & numbers)
 PopcAastra::~PopcAastra()
 {
     // qDebug() << Q_FUNC_INFO;
-    delete m_ui;
 }
 
