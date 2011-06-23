@@ -264,8 +264,8 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
         if ((linkmode == "phonelink") || (linkmode == "agentlink"))
             link = true;
         else
-            b_engine->logClient("warning", "XletAgents::updateAgentStatus",
-                                QString("agentid %1 linkmode %2")
+            b_engine->logClient("warning", "XletAgents::updateAgentDisplay",
+                                QString("agentid %1 linkmode <%2>")
                                 .arg(xagentid).arg(linkmode));
     }
 
@@ -311,8 +311,8 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
         square.fill(Qt::gray);
         m_agent_logged_action[xagentid]->setIcon(QIcon(square));
         tooltip = tr("Unknown %1").arg(agstatus);
-        b_engine->logClient("warning", "XletAgents::updateAgentStatus",
-                            QString("agentid %1 agstatus %2")
+        b_engine->logClient("warning", "XletAgents::updateAgentDisplay",
+                            QString("agentid %1 agstatus <%2>")
                             .arg(xagentid).arg(agstatus));
     }
     m_agent_logged_status[xagentid]->setPixmap(square);
