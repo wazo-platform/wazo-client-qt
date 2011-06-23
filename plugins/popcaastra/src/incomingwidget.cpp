@@ -86,12 +86,12 @@ void IncomingWidget::updateFromChannelInfo(const QString & xcid)
 void IncomingWidget::setSignalsSlots()
 {
     // qDebug() << Q_FUNC_INFO;
-    connect(m_btn_park, SIGNAL(clicked()), this, SLOT(doParkCall()));
-    connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(doHangUp()));
     connect(m_btn_atxfer, SIGNAL(clicked()), this, SLOT(doAttendedTransfer()));
-    connect(m_btn_xfer, SIGNAL(clicked()), this, SLOT(doBlindTransfer()));
     connect(m_btn_conf, SIGNAL(clicked()), this, SLOT(doConf()));
+    connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(doHangUp()));
     connect(m_btn_hold, SIGNAL(clicked()), this, SLOT(doHold()));
+    connect(m_btn_park, SIGNAL(clicked()), this, SLOT(doParkCall()));
+    connect(m_btn_xfer, SIGNAL(clicked()), this, SLOT(doBlindTransfer()));
 }
 
 /*! \brief Returns a string representation of an incoming call widget */
@@ -143,16 +143,22 @@ void IncomingWidget::doHold()
     emit doHold(m_line);
 }
 
+void IncomingWidget::doAttendedTransfer()
+{
+    // qDebug() << Q_FUNC_INFO;
+    emit doAttendedTransfer(m_line);
+}
+
 void IncomingWidget::doBlindTransfer()
 {
     // qDebug() << Q_FUNC_INFO;
     emit doBlindTransfer(m_line, m_peer_name, m_peer_number);
 }
 
-void IncomingWidget::doAttendedTransfer()
+void IncomingWidget::doConf()
 {
     // qDebug() << Q_FUNC_INFO;
-    emit doAttendedTransfer(m_line);
+    emit doConf(m_line);
 }
 
 void IncomingWidget::doParkCall()

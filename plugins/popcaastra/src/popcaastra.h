@@ -91,6 +91,7 @@ public slots:
     void monitorPeer(UserInfo *);
     void updatePhoneStatus(const QString &);
     void updateChannelStatus(const QString &);
+    void confLine(int);
     void hangup();
     void hangUpLine(int);
     void holdLine(int);

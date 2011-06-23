@@ -112,7 +112,7 @@ void PopcAastra::updateDisplay()
  *
  *  \param xchannel The pbx/channel id of the updated channel
 */
-void PopcAastra::updateChannelStatus(const QString & xchannel)
+void PopcAastra::updateChannelStatus(const QString & /* xchannel */)
 {
     // qDebug() << Q_FUNC_INFO << "Channel(" << xchannel << ")";
     QStringList my_channels = getMyChannels();
@@ -122,6 +122,7 @@ void PopcAastra::updateChannelStatus(const QString & xchannel)
             IncomingWidget * newcall = new IncomingWidget(guessedline, my_channels.at(i), this);
             m_incomingcalls[my_channels.at(i)] = newcall;
             m_layout->addWidget(newcall);
+            connect(newcall, SIGNAL(doConf(int)), this, SLOT(confLine(int)));
             connect(newcall, SIGNAL(doHangUp(int)), this, SLOT(hangUpLine(int)));
             connect(newcall, SIGNAL(doHold(int)), this, SLOT(holdLine(int)));
             connect(newcall, SIGNAL(selectLine(int)), this, SLOT(selectLine(int)));
@@ -302,6 +303,30 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
     if (parkings.size() != 0) {
         qDebug() << Q_FUNC_INFO << "Parking size(" << parkings.size() <<")";
     }
+}
+
+/*! \brief Sends this line in a conference room
+ *
+ *  Sends this call to a default conference room
+ *  The transfer is done using the transfer button, not the conference button
+ *
+ *  \param line The phone's line to transfer to the conference room
+ */
+void PopcAastra::confLine(int line)
+{
+    // qDebug() << Q_FUNC_INFO << line;
+    QList<QString> commands;
+    commands.append(getKeyUri(XFER));
+    // TODO: Remove the magic number
+    QString number = "800";
+    for (int i = 0; i < number.size(); ++i) {
+        const QChar c = number[i];
+        if (c.isDigit()) {
+            commands.append(getKeyUri(KEYPAD, c.digitValue()));
+        }
+    }
+    commands.append(getKeyUri(XFER));
+    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
 /*! \brief Hang up a line on our phone

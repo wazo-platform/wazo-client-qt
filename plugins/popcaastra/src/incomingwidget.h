@@ -38,6 +38,7 @@ class IncomingWidget : public QWidget
     public slots:
         void doAttendedTransfer();
         void doBlindTransfer();
+        void doConf();
         void doHangUp();    //!< Hang up the line
         void doHold();
         void doParkCall();  //!< Park the call
@@ -58,6 +59,7 @@ class IncomingWidget : public QWidget
     signals:
         void doAttendedTransfer(int);
         void doBlindTransfer(int, const QString &, const QString &);
+        void doConf(int);       //!< Transfer this line
         void doHangUp(int);     //!< hang up a line
         void doHold(int);
         void doParkCall(int);
