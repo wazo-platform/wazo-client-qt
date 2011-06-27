@@ -1,21 +1,21 @@
 #ifndef __COMPLETIONEDIT_H__
 #define __COMPLETIONEDIT_H__
- 
+
 #include <QCompleter>
 #include <QLineEdit>
 #include <QString>
 #include <QStringList>
 #include <QStringListModel>
- 
+
 /*! \brief A QCompleter with a filter option
- *  
+ *
  *  This completer add a filter method to remove entries from the completion
  *  list to match the user input
  */
 class FilteredCompleter : public QCompleter
 {
     Q_OBJECT
- 
+
 public:
     /*! \brief Construct a FilterCompleter
      *  \param list The list of words available for completion
@@ -35,7 +35,7 @@ private:
     QStringListModel m_model;   //!< Completion model
     QString m_word;             //!< Current entry
 };
- 
+
 /*! \brief A filtered line edit
  *
  *  A line edit with a content filter based on input
@@ -45,7 +45,7 @@ private:
 class FilteredLineEdit : public QLineEdit
 {
     Q_OBJECT
- 
+
 public:
     FilteredLineEdit(QWidget *parent = 0);
     /*! \brief Set a completer for the line edit
@@ -61,6 +61,6 @@ private slots:
 private:
     QCompleter * c;    //!< Completer
 };
- 
+
 #endif // __COMPLETIONEDIT_H__
 

@@ -27,32 +27,32 @@ FilteredLineEdit::FilteredLineEdit(QWidget *parent)
     : QLineEdit(parent), c(0)
 {
 }
- 
+
 void FilteredLineEdit::setCompleter(QCompleter * completer)
 {
     qDebug() << Q_FUNC_INFO;
 
     if (c)
         QObject::disconnect(c, 0, this, 0);
- 
+
     c = completer;
     c->setCompletionMode(QCompleter::PopupCompletion);
- 
+
     if (!c)
         return;
- 
+
     c->setWidget(this);
     connect(completer, SIGNAL(activated(const QString &)),
             this, SLOT(insertCompletion(const QString &)));
 }
- 
+
 const QCompleter * FilteredLineEdit::completer() const
 {
     qDebug() << Q_FUNC_INFO;
 
     return c;
 }
- 
+
 void FilteredLineEdit::insertCompletion(const QString & completion)
 {
     qDebug() << Q_FUNC_INFO;
@@ -60,8 +60,7 @@ void FilteredLineEdit::insertCompletion(const QString & completion)
     setText(completion);
     selectAll();
 }
- 
- 
+
 void FilteredLineEdit::keyPressEvent(QKeyEvent * e)
 {
     qDebug() << Q_FUNC_INFO;
@@ -80,16 +79,16 @@ void FilteredLineEdit::keyPressEvent(QKeyEvent * e)
             return; // Let the completer do default behavior
         }
     }
-    
+
     bool isShortcut = (e->modifiers() & Qt::ControlModifier)
             && e->key() == Qt::Key_E;
     // Don't send the shortcut (CTRL-E) to the text edit
     if (!isShortcut)
-        QLineEdit::keyPressEvent(e); 
- 
+        QLineEdit::keyPressEvent(e);
+
     if (!c)
         return;
- 
+
     bool ctrlOrShift = e->modifiers() &
             (Qt::ControlModifier | Qt::ShiftModifier);
     if (!isShortcut && !ctrlOrShift && e->modifiers() != Qt::NoModifier)
@@ -97,7 +96,7 @@ void FilteredLineEdit::keyPressEvent(QKeyEvent * e)
         c->popup()->hide();
         return;
     }
- 
+
     try {
         (dynamic_cast<FilteredCompleter *>(c))->update(text());
     } catch (const std::bad_cast & e) {
