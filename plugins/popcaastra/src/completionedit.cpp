@@ -4,8 +4,8 @@
 
 #include "completionedit.h"
 
-FilteredCompleter::FilteredCompleter(const QStringList & list, QObject * parent)
-    : QCompleter(parent), m_list(list), m_model()
+FilteredCompleter::FilteredCompleter(QObject * parent)
+  : QCompleter(parent), m_model()
 {
     setModel(&m_model); // Default is QStringListModel
 }
@@ -16,6 +16,12 @@ void FilteredCompleter::update(const QString & query)
     m_model.setStringList(filtered);
     m_word = query;
     complete(); // Start auto completion
+}
+
+void FilteredCompleter::insertItem(const QString & item)
+{
+    if (m_list.contains(item, Qt::CaseInsensitive)) return;
+    m_list << item;
 }
 
 const QString FilteredCompleter::word() const

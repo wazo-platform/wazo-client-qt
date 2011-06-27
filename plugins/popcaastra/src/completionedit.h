@@ -21,7 +21,7 @@ public:
      *  \param list The list of words available for completion
      *  \param parent The parent widget
      */
-    FilteredCompleter(const QStringList & list, QObject * parent);
+    FilteredCompleter(QObject * parent);
     /*! \brief Update the content of the completer
      *  \param query The term we are looking for
      */
@@ -30,6 +30,10 @@ public:
      *  \return the word that was typed by the user
      */
     const QString word() const;
+    /*! \brief Add an item to the completion list
+     *  \param Item to add to the search field
+     */
+    void insertItem(const QString &);
 private:
     QStringList m_list;         //!< Static content
     QStringListModel m_model;   //!< Completion model

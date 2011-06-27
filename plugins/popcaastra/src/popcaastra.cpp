@@ -33,15 +33,16 @@
 
 #include <QDebug>
 #include <QLabel>
-#include <QVBoxLayout>
 #include <QTableWidget>
+#include <QVBoxLayout>
 
+#include "aastrasipnotify.h"
+#include "channelinfo.h"
+#include "incomingwidget.h"
+#include "completionedit.h"
 #include "popcaastra.h"
 #include "userinfo.h"
-#include "channelinfo.h"
-#include "aastrasipnotify.h"
 #include "xivoconsts.h"
-#include "incomingwidget.h"
 
 #define MAX_LINES 4
 
@@ -60,14 +61,16 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
     m_btn_nav_right = new QPushButton("-->", this);
     m_btn_vol_down = new QPushButton("v", this);
     m_btn_vol_up = new QPushButton("^", this);
-    m_target_number = new QLineEdit(this);
+    m_targets = new FilteredLineEdit(this);
 
     m_top_widget->addWidget(m_btn_hangup);
     m_top_widget->addWidget(m_btn_nav_right);
     m_top_widget->addWidget(m_btn_vol_down);
     m_top_widget->addWidget(m_btn_vol_up);
-    m_top_widget->addWidget(m_target_number);
+    m_top_widget->addWidget(m_targets);
     m_top_widget->setSizeConstraint(QLayout::SetMinimumSize);
+
+    fillCompleter();
 
     m_timerid = 0;
     m_deltasec = 1;
@@ -82,6 +85,8 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
             this, SLOT(updateChannelStatus(const QString &)));
     connect(b_engine, SIGNAL(broadcastNumberSelection(const QStringList &)),
             this, SLOT(receiveNumberSelection(const QStringList &)));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updateUserStatus(const QString &)));
 
     connect(m_btn_vol_up, SIGNAL(clicked()), this, SLOT(volUp()));
     connect(m_btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
@@ -102,6 +107,23 @@ void PopcAastra::updateDisplay()
     }
     foreach (const QString key, m_transferedcalls.keys()) {
         m_transferedcalls[key]->updateWidget();
+    }
+}
+
+/*! \brief Add users to transfer targets
+ *  \param xUId The user's Xivo id
+ */
+void PopcAastra::updateUserStatus(const QString & xUId)
+{
+    qDebug() << Q_FUNC_INFO << xUId;
+    const UserInfo * u = b_engine->user(xUId);
+    if (! u) return;
+    QStringList phones = u->phonelist();
+    for (int i = 0; i < phones.size(); ++i) {
+        const PhoneInfo * p = b_engine->phone(phones.at(i));
+        if (! p || p->number().isEmpty()) continue;
+        m_contact_completer->insertItem(
+            QString("%1 <%2>").arg(u->fullname()).arg(p->number()));
     }
 }
 
@@ -312,7 +334,7 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
  *
  *  \param line The phone's line to transfer to the conference room
  */
-void PopcAastra::confLine(int line)
+void PopcAastra::confLine(int /* line */)
 {
     // qDebug() << Q_FUNC_INFO << line;
     QList<QString> commands;
@@ -496,7 +518,7 @@ void PopcAastra::hangup()
 /*! \brief simulates a press on the programmable button 1 */
 void PopcAastra::prgkey1()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(PRG_KEY, SPECIAL_ME, 1));
 }
 
@@ -512,7 +534,22 @@ void PopcAastra::receiveNumberSelection(const QStringList & numbers)
         // FIXME: take multiple numbers into account
         m_selected_number = numbers.at(0);
     }
-    m_target_number->setText(m_selected_number);
+    m_targets->setText(m_selected_number);
+}
+
+/*! \brief Set the completion list for the completion targets
+ *
+ *   The completer should contain peers, contacts, conference and parkings
+ */
+void PopcAastra::fillCompleter()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    m_contact_completer = new FilteredCompleter(this);
+    m_contact_completer->setCaseSensitivity(Qt::CaseInsensitive);
+    m_contact_completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+
+    m_targets->setCompleter(m_contact_completer);
 }
 
 /*! \brief destructor

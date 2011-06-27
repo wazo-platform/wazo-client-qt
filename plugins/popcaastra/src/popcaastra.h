@@ -34,15 +34,16 @@
 #ifndef __POPCAASTRA_H__
 #define __POPCAASTRA_H__
 
-#include <QLineEdit>
 #include <QObject>
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include "xlet.h"
+#include "completionedit.h"
 #include "transferedwidget.h"
+#include "xlet.h"
 
 class IncomingWidget;
+class QCompleter;
 
 /*! \brief POPC xlet for Aastra phones
  *
@@ -90,6 +91,7 @@ public slots:
     /*!  \brief update the peer to be monitored */
     void monitorPeer(UserInfo *);
     void updatePhoneStatus(const QString &);
+    void updateUserStatus(const QString &);
     void updateChannelStatus(const QString &);
     void confLine(int);
     void hangup();
@@ -105,6 +107,7 @@ public slots:
     /*! \brief receives numbers from a selected peer/contact in other xlets */
     void receiveNumberSelection(const QStringList &);
 private:
+    void fillCompleter();
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget
     QHash<QString, TransferedWidget *> m_transferedcalls; //!< List of transfered calls
     QVBoxLayout * m_layout;
@@ -116,7 +119,8 @@ private:
     QPushButton * m_btn_nav_right;
     QPushButton * m_btn_vol_down;
     QPushButton * m_btn_vol_up;
-    QLineEdit * m_target_number;
+    FilteredLineEdit * m_targets;
+    FilteredCompleter * m_contact_completer;
 };
 
 #endif /* __POPCAASTRA_H__ */
