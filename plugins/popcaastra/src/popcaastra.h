@@ -107,6 +107,8 @@ public slots:
     void doIntercept(const QString &);
     /*! \brief receives numbers from a selected peer/contact in other xlets */
     void receiveNumberSelection(const QStringList &);
+    /*! \brief receive the text from the target field when it changes */
+    void targetChanged(const QString & text);
 private:
     void fillCompleter();
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget

@@ -92,6 +92,8 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
     connect(m_btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
     connect(m_btn_nav_right, SIGNAL(clicked()), this, SLOT(navRight()));
     connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(hangup()));
+    connect(m_targets, SIGNAL(textChanged(const QString &)),
+            this, SLOT(targetChanged(const QString &)));
 
     b_engine->tree()->onChange("confrooms", this,
             SLOT(updateConfRoom(const QString &, DStoreEvent)));
@@ -556,6 +558,26 @@ void PopcAastra::receiveNumberSelection(const QStringList & numbers)
         m_selected_number = numbers.at(0);
     }
     m_targets->setText(m_selected_number);
+}
+
+/*! \brief Receive changes from the target field
+ *
+ *  This event is received when the user type data in the field or when the
+ *  value is changed programmatically
+ *
+ *  \param text The new value
+ */
+void PopcAastra::targetChanged(const QString & text)
+{
+    // qDebug() << Q_FUNC_INFO << text;
+    QRegExp num_regex = QRegExp("[<]?[0-9]+[>]?");
+    int end = text.lastIndexOf(num_regex);
+    int start = text.indexOf(num_regex);
+    if (text[start] == '<') start++;
+    if (start >= 0 && start <= end) {
+        QString tmp = text.left(end + 1);
+        m_selected_number = tmp.right(end - start + 1);
+    }
 }
 
 /*! \brief Set the completion list for the completion targets
