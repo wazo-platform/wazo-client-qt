@@ -70,7 +70,7 @@ bool MeetmeInfo::updateConfig(const QVariantMap & prop)
     // fixed-by-config stuff
     haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "name", & m_name);
-    haschanged |= setIfChangeString(prop, "number", & m_number);
+    haschanged |= setIfChangeString(prop, "confno", & m_number);
     haschanged |= setIfChangeString(prop, "admin_moderationmode", & m_admin_moderationmode);
     haschanged |= setIfChangeBool(prop, "pin_needed", & m_pin_needed);
     return haschanged;
