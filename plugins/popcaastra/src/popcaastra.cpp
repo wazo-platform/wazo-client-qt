@@ -92,6 +92,9 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
     connect(m_btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
     connect(m_btn_nav_right, SIGNAL(clicked()), this, SLOT(navRight()));
     connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(hangup()));
+
+    b_engine->tree()->onChange("confrooms", this,
+            SLOT(updateConfRoom(const QString &, DStoreEvent)));
 }
 
 /*! \brief Update status for incoming calls widget list
@@ -124,6 +127,24 @@ void PopcAastra::updateUserStatus(const QString & xUId)
         if (! p || p->number().isEmpty()) continue;
         m_contact_completer->insertItem(
             QString("%1 <%2>").arg(u->fullname()).arg(p->number()));
+    }
+}
+
+/*! \brief Update the target list with the available conf rooms
+ *  \param id Unused
+ *  \param e Unused
+ */
+void PopcAastra::updateConfRoom(const QString & id, DStoreEvent e)
+{
+    qDebug() << Q_FUNC_INFO;
+    QVariantMap room_list = b_engine->eVM("confrooms");
+    const QString prefix = "Conf";
+    foreach (const QString id, room_list.keys()) {
+        QMap<QString, QVariant> room_map = room_list[id].toMap();
+        m_contact_completer->insertItem(
+            QString("%1: %2 <%3>").arg(prefix)
+            .arg(room_map["name"].toString())
+            .arg(room_map["number"].toString()));
     }
 }
 

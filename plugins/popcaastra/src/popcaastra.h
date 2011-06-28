@@ -93,6 +93,7 @@ public slots:
     void updatePhoneStatus(const QString &);
     void updateUserStatus(const QString &);
     void updateChannelStatus(const QString &);
+    void updateConfRoom(const QString &, DStoreEvent);
     void confLine(int);
     void hangup();
     void hangUpLine(int);
