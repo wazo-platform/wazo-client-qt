@@ -35,10 +35,9 @@
 #define __CHANNELINFO_H__
 
 #include "baselib_export.h"
-#include <QStringList>
-#include <QVariant>
-#include <QMap>
 #include "xinfo.h"
+
+#include <QMap>
 
 /*! \brief Store Channel information
  */
