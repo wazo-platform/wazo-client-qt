@@ -323,7 +323,7 @@ void BaseEngine::setCheckedFunction(const QString & function, bool b)
 
 void BaseEngine::pasteToDial(const QString & toPaste)
 {
-    emit pasteToDialPanel(toPaste);
+    emit pasteToXlets(toPaste);
 }
 
 bool BaseEngine::checkedFunction(const QString & function)

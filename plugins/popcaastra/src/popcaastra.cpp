@@ -84,7 +84,9 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
     connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
             this, SLOT(updateChannelStatus(const QString &)));
     connect(b_engine, SIGNAL(broadcastNumberSelection(const QStringList &)),
-            this, SLOT(receiveNumberSelection(const QStringList &)));
+            this, SLOT(receiveNumberList(const QStringList &)));
+    connect(b_engine, SIGNAL(pasteToXlets(const QString &)),
+            this, SLOT(receiveNumber(const QString &)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
             this, SLOT(updateUserStatus(const QString &)));
 
@@ -120,7 +122,7 @@ void PopcAastra::updateDisplay()
  */
 void PopcAastra::updateUserStatus(const QString & xUId)
 {
-    qDebug() << Q_FUNC_INFO << xUId;
+    // qDebug() << Q_FUNC_INFO << xUId;
     const UserInfo * u = b_engine->user(xUId);
     if (! u) return;
     QStringList phones = u->phonelist();
@@ -138,7 +140,7 @@ void PopcAastra::updateUserStatus(const QString & xUId)
  */
 void PopcAastra::updateConfRoom(const QString & id, DStoreEvent e)
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     QVariantMap room_list = b_engine->eVM("confrooms");
     const QString prefix = "Conf";
     foreach (const QString id, room_list.keys()) {
@@ -178,7 +180,6 @@ void PopcAastra::updateChannelStatus(const QString & /* xchannel */)
             connect(newcall, SIGNAL(doParkCall(int)),
                     this, SLOT(parkcall(int)));
         } else {
-            qDebug() << Q_FUNC_INFO << "Update it...";
             m_incomingcalls[my_channels.at(i)]->updateWidget();
         }
     }
@@ -234,7 +235,7 @@ void PopcAastra::removeCompletedTransfers()
  */
 void PopcAastra::removeIncomingCall(const QString & xCId)
 {
-    qDebug() << Q_FUNC_INFO << "Channel(" << xCId << ")";
+    // qDebug() << Q_FUNC_INFO << "Channel(" << xCId << ")";
     if (m_incomingcalls.contains(xCId)) {
         delete m_incomingcalls[xCId];
         m_incomingcalls.remove(xCId);
@@ -428,7 +429,7 @@ void PopcAastra::blindTransfer(int line, const QString & transferedname,
 /*! \brief starts tracking a number after a transfer */
 void PopcAastra::trackTransfer(QString number, const QString & tname, const QString & tnum)
 {
-    qDebug() << Q_FUNC_INFO << number;
+    // qDebug() << Q_FUNC_INFO << number;
     foreach (QString id, b_engine->iterover("phones").keys()) {
         const PhoneInfo * p = b_engine->phone(id);
         if (p->number() == number) {
@@ -446,7 +447,7 @@ void PopcAastra::trackTransfer(QString number, const QString & tname, const QStr
 /*! \brief attended transfer to the line in the number/name field */
 void PopcAastra::attendedTransfer(int line)
 {
-    qDebug() << Q_FUNC_INFO << line;
+    // qDebug() << Q_FUNC_INFO << line;
     QList<QString> commands;
     commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(XFER));
@@ -469,7 +470,7 @@ void PopcAastra::attendedTransfer(int line)
  */
 void PopcAastra::doIntercept(const QString & exten)
 {
-    qDebug() << Q_FUNC_INFO << exten;
+    // qDebug() << Q_FUNC_INFO << exten;
     QList<QString> commands;
     commands.append(getKeyUri(KEYPAD_STAR));
     commands.append(getKeyUri(KEYPAD, 8));
@@ -485,7 +486,7 @@ void PopcAastra::doIntercept(const QString & exten)
 /*! \brief select the line */
 void PopcAastra::selectLine(int line)
 {
-    qDebug() << Q_FUNC_INFO << line;
+    // qDebug() << Q_FUNC_INFO << line;
     emit ipbxCommand(getAastraKeyNotify(LINE, SPECIAL_ME, line));
 }
 
@@ -494,7 +495,7 @@ void PopcAastra::selectLine(int line)
  */
 void PopcAastra::parkcall(int line)
 {
-    qDebug() << Q_FUNC_INFO << line;
+    // qDebug() << Q_FUNC_INFO << line;
     // TODO: Remove the magic value when the base_engine starts working
     QString number = "700";
     QList<QString> commands;
@@ -546,7 +547,7 @@ void PopcAastra::prgkey1()
 }
 
 /*! \brief receive a list of numbers for a selected peer or contact */
-void PopcAastra::receiveNumberSelection(const QStringList & numbers)
+void PopcAastra::receiveNumberList(const QStringList & numbers)
 {
     // qDebug() << Q_FUNC_INFO;
     if (numbers.isEmpty()) {
@@ -558,6 +559,19 @@ void PopcAastra::receiveNumberSelection(const QStringList & numbers)
         m_selected_number = numbers.at(0);
     }
     m_targets->setText(m_selected_number);
+}
+
+/*! \brief Receive a number from another xlet
+ *
+ *  Receive this number from other xlet and set the selection field to this
+ *  value.
+ *  \param number The received number
+ */
+void PopcAastra::receiveNumber(const QString & number)
+{
+    // qDebug() << Q_FUNC_INFO << number;
+    if (number.isEmpty()) return;
+    m_targets->setText(number);
 }
 
 /*! \brief Receive changes from the target field
@@ -586,7 +600,7 @@ void PopcAastra::targetChanged(const QString & text)
  */
 void PopcAastra::fillCompleter()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
 
     m_contact_completer = new FilteredCompleter(this);
     m_contact_completer->setCaseSensitivity(Qt::CaseInsensitive);

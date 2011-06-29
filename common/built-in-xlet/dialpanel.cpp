@@ -80,7 +80,7 @@ DialPanel::DialPanel(QWidget *parent)
     vlayout->addStretch(1);
 
     // connect signals/slots
-    connect(b_engine, SIGNAL(pasteToDialPanel(const QString &)),
+    connect(b_engine, SIGNAL(pasteToXlets(const QString &)),
             this, SLOT(setNumberToDial(const QString &)));
     connect(this, SIGNAL(textEdited(const QString &)),
             b_engine, SLOT(textEdited(const QString &)));
