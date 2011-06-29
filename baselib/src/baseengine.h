@@ -37,47 +37,42 @@
 #include <baselib_export.h>
 
 #include <QHash>
-#include <QObject>
-#include <QSettings>
-#include <QStringList>
 #include <QMultiHash>
+#include <QObject>
 #include <QTime>
-#include <QDateTime>
-#include <QVariant>
-#include <QVariantMap>
 
+#include "queue_agent_status.h"
+#include "dstore/src/dstore.h"
+
+#include "agentinfo.h"
+#include "groupinfo.h"
+#include "trunkinfo.h"
+#include "voicemailinfo.h"
+
+class ChannelInfo;
+class IncallInfo;
+class MeetmeInfo;
+class ParkingInfo;
+class PhoneInfo;
 class QApplication;
+class QDateTime;
 class QFile;
+class QSettings;
+class QSocketNotifier;
+class QSslError;
+class QSslSocket;
+class QTcpSocket;
 class QTimerEvent;
 class QTranslator;
-class QSslSocket;
-class QSslError;
-
+class QVariant;
+class QueueInfo;
+class UserInfo;
 class Xlet;
-
-#include "userinfo.h"
-#include "phoneinfo.h"
-#include "trunkinfo.h"
-#include "agentinfo.h"
-#include "queueinfo.h"
-#include "groupinfo.h"
-#include "meetmeinfo.h"
-#include "voicemailinfo.h"
-#include "incallsinfo.h"
-
-#include "channelinfo.h"
-#include "queue_agent_status.h"
-#include "parkinginfo.h"
-
-#include "dstore/src/dstore.h"
 
 struct e_callback {
     void (*cb)(const QVariantMap &, void *);
     void *udata;
 };
-
-class QSocketNotifier;
-class QTcpSocket;
 
 /*! \brief Class which handles connection with the XiVO CTI server
  *

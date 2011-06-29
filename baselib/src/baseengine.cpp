@@ -44,10 +44,18 @@
 #include <QTranslator>
 #include <QUrl>
 #include <QLibraryInfo>
+#include <QSettings>
 #include <QSslError>
 #include <QSslSocket>
 
+#include "channelinfo.h"
+#include "incallsinfo.h"
 #include "JsonToVariant.h"
+#include "meetmeinfo.h"
+#include "parkinginfo.h"
+#include "phoneinfo.h"
+#include "queueinfo.h"
+#include "userinfo.h"
 #include "VariantToJson.h"
 #include "xivoconsts.h"
 
