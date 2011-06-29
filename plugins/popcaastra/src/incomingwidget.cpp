@@ -1,14 +1,15 @@
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QDateTime>
+#include <QPushButton>
 
-#include "channelinfo.h"
-#include "incomingwidget.h"
-#include "userinfo.h"
-#include "taintedpixmap.h"
-#include "popcaastra.h"
 #include "aastrasipnotify.h"
+#include "incomingwidget.h"
+#include "popcaastra.h"
+
+class ChannelInfo;
+class QDateTime;
+class UserInfo;
 
 IncomingWidget::IncomingWidget(int line, const QString & xchan, QWidget * w)
     : QWidget(w), m_line(line), m_xchannel(xchan),
@@ -37,7 +38,7 @@ void IncomingWidget::buildLayout()
     m_btn_atxfer = new QPushButton("&a", this);
     m_btn_xfer = new QPushButton("&t", this);
     m_btn_conf = new QPushButton("&c", this);
-    
+
     m_btn_hangup->setMaximumSize(*m_small_button_sz);
     m_btn_hold->setMaximumSize(*m_small_button_sz);
     m_btn_park->setMaximumSize(*m_small_button_sz);

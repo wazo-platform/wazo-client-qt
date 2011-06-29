@@ -32,17 +32,20 @@
  */
 
 #include <QDebug>
-#include <QLabel>
-#include <QTableWidget>
+#include <QPushButton>
 #include <QVBoxLayout>
 
 #include "aastrasipnotify.h"
-#include "channelinfo.h"
-#include "incomingwidget.h"
 #include "completionedit.h"
+#include "incomingwidget.h"
 #include "popcaastra.h"
-#include "userinfo.h"
+#include "transferedwidget.h"
 #include "xivoconsts.h"
+
+class ChannelInfo;
+class QLabel;
+class QTableWidget;
+class UserInfo;
 
 #define MAX_LINES 4
 

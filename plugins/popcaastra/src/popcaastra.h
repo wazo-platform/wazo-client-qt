@@ -35,15 +35,17 @@
 #define __POPCAASTRA_H__
 
 #include <QObject>
-#include <QPushButton>
-#include <QVBoxLayout>
 
-#include "completionedit.h"
-#include "transferedwidget.h"
 #include "xlet.h"
 
 class IncomingWidget;
+class FilteredLineEdit;
+class FilteredCompleter;
 class QCompleter;
+class QHBoxLayout;
+class QPushButton;
+class QVBoxLayout;
+class TransferedWidget;
 
 /*! \brief POPC xlet for Aastra phones
  *

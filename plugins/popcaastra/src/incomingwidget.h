@@ -1,14 +1,14 @@
 #ifndef __INCOMINGWIDGET_H__
 #define __INCOMINGWIDGET_H__
 
-#include "popcaastra.h"
+#include <QWidget>
 
 class QHBoxLayout;
 class QLabel;
+class QMouseEvent;
 class QObject;
 class QPushButton;
 class QSize;
-class QWidget;
 class UserInfo;
 
 /*! \brief A widget to display relevant information about an incoming call
