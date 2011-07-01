@@ -854,6 +854,7 @@ void BaseEngine::parseCommand(const QString &line)
     QString direction = datamap.value("direction").toString();
     QString function = datamap.value("function").toString();
     QString thisclass = datamap.value("class").toString();
+    QString replyid = datamap.value("replyid").toString();
     m_timesrv = datamap.value("timenow").toDouble();
     m_timeclt = QDateTime::currentDateTime();
 
@@ -1177,7 +1178,8 @@ void BaseEngine::parseCommand(const QString &line)
             fetchLists();
 
         } else {
-            qDebug() << Q_FUNC_INFO << "unknown server command class" << thisclass << datamap;
+            if (replyid.isEmpty())
+                qDebug() << Q_FUNC_INFO << "unknown server command class" << thisclass << datamap;
         }
 }
 
