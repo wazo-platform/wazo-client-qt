@@ -9,6 +9,7 @@ class QMouseEvent;
 class QObject;
 class QPushButton;
 class QSize;
+
 class UserInfo;
 
 /*! \brief A widget to display relevant information about an incoming call

@@ -42,10 +42,12 @@
 #include "transferedwidget.h"
 #include "xivoconsts.h"
 
-class ChannelInfo;
 class QLabel;
 class QTableWidget;
-class UserInfo;
+
+#include "channelinfo.h"
+#include "phoneinfo.h"
+#include "userinfo.h"
 
 #define MAX_LINES 4
 

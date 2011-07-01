@@ -6,10 +6,9 @@
 #include "aastrasipnotify.h"
 #include "incomingwidget.h"
 #include "popcaastra.h"
-
-class ChannelInfo;
-class QDateTime;
-class UserInfo;
+#include "channelinfo.h"
+#include "phoneinfo.h"
+#include "userinfo.h"
 
 IncomingWidget::IncomingWidget(int line, const QString & xchan, QWidget * w)
     : QWidget(w), m_line(line), m_xchannel(xchan),

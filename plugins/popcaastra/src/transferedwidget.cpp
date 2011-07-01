@@ -2,6 +2,7 @@
 
 #include "aastrasipnotify.h"
 #include "phoneinfo.h"
+#include "userinfo.h"
 #include "popcaastra.h"
 #include "transferedwidget.h"
 
