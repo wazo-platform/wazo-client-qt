@@ -952,10 +952,13 @@ void BaseEngine::parseCommand(const QString &line)
                                    datamap.value("resultlist").toStringList());
 
         } else if (thisclass == "faxsend") {
-//             m_filedir = datamap.value("tdirection").toString();
-            m_fileid = datamap.value("fileid").toString();
-            m_filetransfersocket->connectToHost(m_cti_address, m_cti_port);
-            qDebug() << Q_FUNC_INFO << datamap;
+            //m_filedir = datamap.value("tdirection").toString();
+            if (datamap.contains("step"))
+                qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
+            else {
+                m_fileid = datamap.value("fileid").toString();
+                m_filetransfersocket->connectToHost(m_cti_address, m_cti_port);
+            }
 
         } else if (thisclass == "filetransfer") {
             qint64 written = m_filetransfersocket->write(m_filedata + "\n");
