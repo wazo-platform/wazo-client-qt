@@ -212,7 +212,11 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
                   "is being processed and will be sent soon.").arg(m_file_string);
     } else {
         QString faxreason;
-        if(reason == "orig")
+        if(reason == "filenotfound")
+            faxreason = tr("File not found");
+        else if(reason == "fileempty")
+            faxreason = tr("Empty file");
+        else if(reason == "orig")
             faxreason = tr("Problem when dialing the number");
         else if(reason == "convert-pdftif")
             faxreason = tr("Unable to convert your PDF to TIFF");
@@ -224,6 +228,8 @@ void FaxPanel::popupMsg(const QString & status, const QString & reason)
             faxreason = tr("(Server) missing directory");
         else if(reason == "unknown")
             faxreason = tr("Unknown");
+        else
+            faxreason = tr("Not given");
         icon = QMessageBox::Critical;
         text = tr("Your Fax (file %1)\n"
                   "was NOT sent to %2.\n"

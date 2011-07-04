@@ -38,6 +38,7 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileInfo>
+#include <QHostAddress>
 #include <QLocale>
 #include <QProcess>
 #include <QTcpSocket>
@@ -701,12 +702,20 @@ void BaseEngine::filetransferSocketConnected()
 {
     QVariantMap command;
     command["class"] = "filetransfer";
-    command["tdirection"] = m_filedir;
+    command["command"] = "put_announce";
+    command["format"] = "base64";
+    command["socketref"] = QString("%1:%2")
+        .arg(m_filetransfersocket->localAddress().toString())
+        .arg(m_filetransfersocket->localPort());
+    command["filename"] = "toto.pdf";
     command["fileid"] = m_fileid;
-    QString jsoncommand(JsonQt::VariantToJson::parse(command));
-    // ??? useless test ???
-    if (m_filetransfersocket->state() == QAbstractSocket::ConnectedState)
-        m_filetransfersocket->write((jsoncommand + "\n").toAscii());
+    command["formatted_size"] = m_filedata.size();
+    command["file_size"] = m_faxsize;
+    sendJsonCommand(command);
+
+//     // ??? useless test ???
+//     if (m_filetransfersocket->state() == QAbstractSocket::ConnectedState)
+//         m_filetransfersocket->write((jsoncommand + "\n").toAscii());
 }
 
 double BaseEngine::timeServer() const
@@ -943,10 +952,17 @@ void BaseEngine::parseCommand(const QString &line)
                                    datamap.value("resultlist").toStringList());
 
         } else if (thisclass == "faxsend") {
-            m_filedir = datamap.value("tdirection").toString();
+//             m_filedir = datamap.value("tdirection").toString();
             m_fileid = datamap.value("fileid").toString();
             m_filetransfersocket->connectToHost(m_cti_address, m_cti_port);
-            qDebug() << Q_FUNC_INFO << m_filedir << m_fileid;
+            qDebug() << Q_FUNC_INFO << datamap;
+
+        } else if (thisclass == "filetransfer") {
+            qint64 written = m_filetransfersocket->write(m_filedata + "\n");
+            qDebug() << Q_FUNC_INFO << written << datamap;
+            m_filetransfersocket->flush();
+            m_filetransfersocket->disconnectFromHost();
+            m_filedata.clear();
 
         } else if (thisclass == "faxprogress") {
             emit ackFax(datamap.value("status").toString(), datamap.value("reason").toString());
@@ -1432,22 +1448,27 @@ void BaseEngine::sendFaxCommand(const QString & filename,
                                 Qt::CheckState hide)
 {
     QFile * qf = new QFile(filename);
-    qf->open(QIODevice::ReadOnly);
-    m_filedata = QByteArray();
-    m_filedata.append(qf->readAll());
+    bool canopen = qf->open(QIODevice::ReadOnly);
+
+    if (canopen) {
+        QByteArray truefiledata = QByteArray();
+        truefiledata.append(qf->readAll());
+        m_faxsize = truefiledata.size();
+
+        if (m_faxsize > 0) {
+            m_filedata = truefiledata.toBase64();
+            QVariantMap command;
+            command["class"] = "faxsend";
+            command["hide"] = QString::number(hide);
+            command["destination"] = number;
+            sendJsonCommand(command);
+        } else
+            emit ackFax("ko", "fileempty");
+    } else
+        emit ackFax("ko", "filenotfound");
+
     qf->close();
     delete qf;
-    qf = NULL;
-    m_faxsize = m_filedata.size();
-    if (m_filedata.size() > 0) {
-        QVariantMap command;
-        command["class"] = "faxsend";
-        command["size"] = QString::number(m_faxsize);
-        command["number"] = number;
-        command["hide"] = QString::number(hide);
-        sendJsonCommand(command);
-    } else
-        emit ackFax("ko", "file");
 }
 
 /*! \brief select message and then display a messagebox
