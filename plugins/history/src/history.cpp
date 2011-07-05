@@ -102,17 +102,18 @@ QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
     int row, column; row = a.row(); column = a.column();
 
     if (role == Qt::DisplayRole) {
-        if (((m_history[m_mode].toList().count()) &&
-             ((m_history[m_mode].toList()).value(row).toMap().count()))) {
+        QVariantList histlist = m_history[m_mode].toList();
+        if (((histlist.count()) &&
+             ((histlist).value(row).toMap().count()))) {
             if (column == 0) {
-                return ((m_history[m_mode].toList()).value(row).toMap())["fullname"];
+                return histlist.value(row).toMap().value("fullname");
             } else if (column == 1) {
-                QString qsd = ((m_history[m_mode].toList()).value(row).toMap())["ts"].toString();
+                QString qsd = histlist.value(row).toMap().value("calldate").toString();
                 QDateTime qdt = QDateTime::fromString(qsd, Qt::ISODate);
                 QString qsf = qdt.toString(Qt::DefaultLocaleLongDate); // Qt::DefaultLocaleShortDate
                 return qsf;
             } else if (column == 2) {
-                int duration = ((m_history[m_mode].toList()).value(row).toMap())["duration"].toInt();
+                int duration = histlist.value(row).toMap().value("duration").toInt();
                 int sec =   ( duration % 60);
                 int min =   ( duration - sec ) / 60 % 60;
                 int hou = ( ( duration - sec - min * 60 ) / 60 ) / 60;
@@ -133,9 +134,10 @@ QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
  */
 void LogWidgetModel::updateHistory(const QVariantMap &p)
 {
-    QVariant payload = p["payload"] ;
-
-    m_history[m_mode] = payload;
+    int mode = p.value("mode").toInt();
+    QVariantList h = p.value("history").toList();
+    if (mode == m_mode)
+        m_history[m_mode] = h;
     reset();
 }
 
