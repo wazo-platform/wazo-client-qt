@@ -44,16 +44,18 @@
 #include "queue_agent_status.h"
 #include "dstore/src/dstore.h"
 
+#include "channelinfo.h"
+#include "incallsinfo.h"
+#include "meetmeinfo.h"
+#include "parkinginfo.h"
+#include "phoneinfo.h"
+#include "queueinfo.h"
 #include "agentinfo.h"
-#include "groupinfo.h"
 #include "trunkinfo.h"
+#include "groupinfo.h"
 #include "voicemailinfo.h"
+#include "userinfo.h"
 
-class ChannelInfo;
-class IncallInfo;
-class MeetmeInfo;
-class ParkingInfo;
-class PhoneInfo;
 class QApplication;
 class QDateTime;
 class QFile;
@@ -65,8 +67,7 @@ class QTcpSocket;
 class QTimerEvent;
 class QTranslator;
 class QVariant;
-class QueueInfo;
-class UserInfo;
+
 class Xlet;
 
 struct e_callback {
