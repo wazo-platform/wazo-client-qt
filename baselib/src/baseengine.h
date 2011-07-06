@@ -216,7 +216,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void registerTranslation(const QString &);
         void changeTranslation(const QString &);
-        void sendUrlToBrowser(const QString &);
+        void urlAuto(const QString &);
         void addToDataBase(QVariantMap &);
         void changeWatchedAgent(const QString &, bool);
         void changeWatchedQueue(const QString &);

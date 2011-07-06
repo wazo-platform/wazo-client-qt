@@ -1145,7 +1145,7 @@ void BaseEngine::parseCommand(const QString &line)
             if (! urltolaunch.isEmpty()) {
                 urltolaunch.replace("{xc-username}", m_userlogin);
                 urltolaunch.replace("{xc-password}", m_password);
-                this->sendUrlToBrowser(urltolaunch);
+                this->urlAuto(urltolaunch);
             }
 
             // XXXX m_capafuncs => config file
@@ -2413,7 +2413,7 @@ void BaseEngine::sheetSocketConnected()
     }
 }
 
-void BaseEngine::sendUrlToBrowser(const QString & value)
+void BaseEngine::urlAuto(const QString & value)
 {
     // a list of URI schemes is available there : http://www.iana.org/assignments/uri-schemes.html
     // 'udp' and 'tcp' do not belong to it, however we'll use them ...

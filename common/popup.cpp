@@ -289,7 +289,7 @@ void Popup::addAnyInfo(const QString & localName,
 
     } else if( localName == "action_info" ) {
         if ( m_urlautoallow && (infoType == "urlauto") )
-            b_engine->sendUrlToBrowser(infoValue);
+            b_engine->urlAuto(infoValue);
 
     } else if( localName == "internal" ) {
         addInfoInternal( infoName, infoValue );
