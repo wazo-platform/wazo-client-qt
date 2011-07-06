@@ -66,6 +66,7 @@ class QSslSocket;
 class QTcpSocket;
 class QTimerEvent;
 class QTranslator;
+class QUdpSocket;
 class QVariant;
 
 class Xlet;
@@ -275,8 +276,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void changeState();  //!< Change the presence status
         void ctiSocketConnected();
         void ctiSocketReadyRead();
-        void filetransferSocketReadyRead();
         void filetransferSocketConnected();
+        void filetransferSocketReadyRead();
+        void sheetSocketConnected();
 
     signals:
         void settingChanged(const QVariantMap &);  //!< signal emitted when the setting are changed
@@ -425,6 +427,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // Internal management
         QSslSocket * m_ctiserversocket;     //!< Connection to the CTI server
         QTcpSocket * m_filetransfersocket;  //!< TCP connection for File transfer.
+        QTcpSocket * m_tcpsheetsocket;  //!< TCP connection for Sheet sockets
+        QUdpSocket * m_udpsheetsocket;  //!< UDP connection for Sheet sockets
         int m_timerid_keepalive;        //!< timer id for keep alive
         int m_timerid_tryreconnect;     //!< timer id for try to reconnect
         int m_timerid_changestate;      //!< timer id for changing state automatically

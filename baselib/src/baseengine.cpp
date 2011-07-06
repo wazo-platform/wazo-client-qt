@@ -48,6 +48,7 @@
 #include <QSettings>
 #include <QSslError>
 #include <QSslSocket>
+#include <QUdpSocket>
 
 #include "JsonToVariant.h"
 #include "VariantToJson.h"
@@ -2401,23 +2402,80 @@ void BaseEngine::changeTranslation(const QString &locale)
     translators = new_translators;
 }
 
+void BaseEngine::sheetSocketConnected()
+{
+    QString kind = sender()->property("kind").toString();
+    QString payload = sender()->property("payload").toString();
+    if (kind == "tcpsheet") {
+        m_tcpsheetsocket->write(payload.toUtf8() + "\n");
+        m_tcpsheetsocket->flush();
+        m_tcpsheetsocket->disconnectFromHost();
+    }
+}
+
 void BaseEngine::sendUrlToBrowser(const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << value;
-#ifdef Q_WS_WIN
-    QSettings settings("HKEY_CLASSES_ROOT\\HTTP\\shell\\open\\command", QSettings::NativeFormat);
-    QString command = settings.value(".").toString();
-    QRegExp rx("\"(.+)\"");
-    if (rx.indexIn(command) != -1)
-        command = rx.capturedTexts()[1];
+    // a list of URI schemes is available there : http://www.iana.org/assignments/uri-schemes.html
+    // 'udp' and 'tcp' do not belong to it, however we'll use them ...
+
     QUrl url(value);
-    QFileInfo browserFileInfo(command);
-    if (browserFileInfo.fileName() == "iexplore.exe") {
-        QProcess::startDetached(browserFileInfo.absoluteFilePath(), QStringList() << "-new" << url.toEncoded());
-    } else {
-        QDesktopServices::openUrl(url);
-    }
+
+    if ((url.scheme() == "tcp") || (url.scheme() == "udp")) {
+        // ability to send a string to any TCP or UDP socket
+        // tcp://host:port/?var1=val1&var2=val2
+        // udp://host:port/?var1=val1&var2=val2
+        // "var1=val1&var2=val2" will be sent through TCP or UDP to host:port
+        QString reserialize = url.path();
+        QStringList tosend;
+        // the reserialize is intended to enable some choice among serialization methods
+        // one could for instance send the pairs into json or whatever ...
+        if (reserialize == "/") {
+            QPair<QString, QString> pair;
+            foreach(pair, url.queryItems())
+                tosend.append(QString("%1=%2").arg(pair.first).arg(pair.second));
+        }
+
+        if (tosend.length() > 0) {
+            if (url.scheme() == "tcp") {
+                m_tcpsheetsocket = new QTcpSocket(this);
+                m_tcpsheetsocket->setProperty("kind", "tcpsheet");
+                m_tcpsheetsocket->setProperty("payload", tosend.join("&"));
+                connect(m_tcpsheetsocket, SIGNAL(connected()),
+                        this, SLOT(sheetSocketConnected()));
+                m_tcpsheetsocket->connectToHost(QHostAddress(url.host()), quint16(url.port()));
+            } else if (url.scheme() == "udp") {
+                m_udpsheetsocket = new QUdpSocket(this);
+                m_udpsheetsocket->writeDatagram(tosend.join("&").toUtf8() + "\n",
+                                                QHostAddress(url.host()),
+                                                quint16(url.port()));
+            }
+        }
+
+    } else if (url.scheme().isEmpty())
+        // Launch a given application, with arguments.
+        // Beware in Windows cases, where there might be a C: appearing in the path ...
+        // Actually, a similar behaviour could be expected by defining a scheme for any
+        // given application, and letting the OS underneath launch this application.
+        QProcess::startDetached(value);
+
+    else {
+        // rely on the system's url opening methods (see xdg-open on linux, for instance)
+#ifdef Q_WS_WIN
+        // in win32 case + iexplore.exe, this should ensure it opens a new tab
+        QString key = QString("HKEY_CLASSES_ROOT\\%1\\shell\\open\\command").arg(url.scheme())
+        QSettings settings(key, QSettings::NativeFormat);
+        QString command = settings.value(".").toString();
+        QRegExp rx("\"(.+)\"");
+        if (rx.indexIn(command) != -1)
+            command = rx.capturedTexts()[1];
+        QFileInfo browserFileInfo(command);
+        if (browserFileInfo.fileName() == "iexplore.exe") {
+            QProcess::startDetached(browserFileInfo.absoluteFilePath(), QStringList() << "-new" << url.toEncoded());
+        } else {
+            QDesktopServices::openUrl(url);
+        }
 #else
-    QDesktopServices::openUrl(QUrl(value));
+        QDesktopServices::openUrl(url);
 #endif
+    }
 }
