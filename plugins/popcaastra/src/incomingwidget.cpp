@@ -149,10 +149,14 @@ void IncomingWidget::doAttendedTransfer()
     emit doAttendedTransfer(m_line);
 }
 
+/*! \brief Sends a blind transfer request to the POPC xlet */
 void IncomingWidget::doBlindTransfer()
 {
     // qDebug() << Q_FUNC_INFO;
-    emit doBlindTransfer(m_line, m_peer_name, m_peer_number);
+    const ChannelInfo * c = b_engine->channel(m_xchannel);
+    QString peer_channel = c->talkingto_id();
+    QString peer_device = peer_channel.split("-").at(0);
+    emit doBlindTransfer(peer_device, m_line, m_peer_name, m_peer_number);
 }
 
 void IncomingWidget::doConf()
@@ -175,5 +179,6 @@ void IncomingWidget::mousePressEvent(QMouseEvent * /* event */)
 
 IncomingWidget::~IncomingWidget()
 {
+    // qDebug() << Q_FUNC_INFO;
     delete m_small_button_sz;
 }

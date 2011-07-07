@@ -19,6 +19,7 @@ class TransferedWidget : public QWidget
     public:
         /*! \brief constructor */
         TransferedWidget(QString, const QString &, const QString &, QWidget *);
+        ~TransferedWidget();
         /*! \brief refresh the widget */
         void updateWidget();
         /*! \brief returns true if the widget can be removed from the list */
@@ -49,5 +50,5 @@ class TransferedWidget : public QWidget
 
         void setXphoneId();
 };
-    
+
 #endif

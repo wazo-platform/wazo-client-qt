@@ -59,7 +59,15 @@ class IncomingWidget : public QWidget
         void setSignalsSlots();
     signals:
         void doAttendedTransfer(int);
-        void doBlindTransfer(int, const QString &, const QString &);
+        /*! \brief Send a blind transfer signal
+         *
+         * Send a request to the Aastra POPC xlet asking for a blind transfer
+         * \param Peer's device technology/id (SIP/abc)
+         * \param number The phone's line number
+         * \param name The peer's name
+         * \param number The peer's number
+         */
+        void doBlindTransfer(const QString &, int, const QString &, const QString &);
         void doConf(int);       //!< Transfer this line
         void doHangUp(int);     //!< hang up a line
         void doHold(int);

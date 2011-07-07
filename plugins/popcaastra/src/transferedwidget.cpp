@@ -120,3 +120,7 @@ void TransferedWidget::contextMenuEvent(QContextMenuEvent *event)
     contextMenu.exec(event->globalPos());
 }
 
+TransferedWidget::~TransferedWidget()
+{
+    // qDebug() << Q_FUNC_INFO;
+}
