@@ -37,7 +37,6 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QDesktopServices>
-#include <QHttp>
 #include <QIcon>
 #include <QLabel>
 #include <QLineEdit>
@@ -72,7 +71,7 @@ Popup::Popup(const bool urlautoallow, QWidget *parent)
       m_handler(0),
       m_sheetpopup(false),
       m_systraypopup(true),
-      m_focus(true),
+      m_focus(false),
       m_urlautoallow(urlautoallow),
       m_toupdate(false),
       m_firstline(3),
@@ -169,7 +168,7 @@ void Popup::feed(QIODevice * inputstream,
     }
 
     setWindowIcon(QIcon(":/images/xivoicon.png"));
-    QDesktopServices::setUrlHandler(QString("dial"), this, "dispurl");
+    QDesktopServices::setUrlHandler(QString("tel"), this, "dispurl");
 
     qDebug() << Q_FUNC_INFO << this << m_inputstream->bytesAvailable() << "bytes available";
     if(m_inputstream->bytesAvailable() > 0) {
@@ -180,8 +179,8 @@ void Popup::feed(QIODevice * inputstream,
 void Popup::dispurl(const QUrl &url)
 {
     // qDebug() << Q_FUNC_INFO << url;
-    // TODO : check if the string starts with "dial:"
-    QString numbertodial = url.toString().mid(5);
+    // TODO : check if the string starts with "tel:"
+    QString numbertodial = url.toString().mid(4);
     b_engine->actionCall("originate", "user:special:me", "ext:" + numbertodial);
 }
 
@@ -262,18 +261,14 @@ void Popup::addAnyInfo(const QString & localName,
                 addInfoText( where, infoName, infoValue );
         } else if( infoType == "url" ) {
             addInfoLink( where, infoName, infoValue );
+        } else if( infoType == "urlx" ) {
+            addInfoLinkX( where, infoName, infoValue );
         } else if( infoType == "picture" ) {
             addInfoPicture( where, infoName, infoValue );
-        } else if( infoType == "urlx" ) {
-            QStringList qsl = infoValue.split("@");
-            if(qsl.size() == 2)
-                addInfoLinkX( where, infoName, qsl[0], qsl[1] );
-            else
-                addInfoLinkX( where, infoName, infoValue, infoValue );
         } else if( infoType == "phone" ) {
             QRegExp re_number("\\+?[0-9\\s\\.]+");
             if(re_number.exactMatch(infoValue))
-                addInfoPhoneURL( where, infoName, infoValue );
+                addInfoLink( where, infoName, "tel:" + infoValue );
             else
                 addInfoText( where, infoName, infoValue );
         } else if( infoType == "form" ) {
@@ -383,9 +378,10 @@ void Popup::addInfoInternal(const QString & name, const QString & value)
         setProperty("ipbxid", m_ipbxid);
     } else if(name == "nosystraypopup")
         m_systraypopup = false;
-    else if(name == "nofocus")
-        m_focus = false;
-    else if(name == "where") {
+    else if(name == "focus") {
+        if (value == "yes")
+            m_focus = true;
+    } else if(name == "where") {
         // the form buttons should have been defined when arriving here
         // ('where' definition at the end of the sheet on server-side)
         m_where = value;
@@ -452,19 +448,6 @@ void Popup::update(QList<QStringList> & newsheetlines)
         addAnyInfo(qsl[0], qsl[1], qsl[2], qsl[3], qsl[4]);
 }
 
-/*! \brief adds phone-like data (as clickable URL) to the sheet
- */
-void Popup::addInfoPhoneURL(int where, const QString & name, const QString & value)
-{
-    // qDebug() << Q_FUNC_INFO << value;
-    QLabel * lblname = new QLabel(name, this);
-    UrlLabel * lblvalue = new UrlLabel("dial:" + value, this);
-    QHBoxLayout * hlayout = new QHBoxLayout();
-    hlayout->addWidget(lblname);
-    hlayout->addWidget(lblvalue);
-    m_vlayout->insertLayout(where, hlayout);
-}
-
 void Popup::addInfoLink(int where, const QString & name, const QString & value)
 {
     // qDebug() << Q_FUNC_INFO << value;
@@ -473,21 +456,30 @@ void Popup::addInfoLink(int where, const QString & name, const QString & value)
     QHBoxLayout * hlayout = new QHBoxLayout();
     hlayout->addWidget(lblname);
     hlayout->addWidget(lblvalue);
+    lblvalue->setToolTip(value);
     m_vlayout->insertLayout(where, hlayout);
 }
 
-void Popup::addInfoLinkX(int where, const QString & name, const QString & value, const QString & dispvalue)
+void Popup::addInfoLinkX(int where, const QString & name, const QString & value)
 {
     // qDebug() << Q_FUNC_INFO << name << value << dispvalue;
+    QString linkvalue = value;
+    QString dispvalue = value;
+    QStringList qsl = value.split("@");
+    if(qsl.size() == 2) {
+        linkvalue = qsl[0];
+        dispvalue = qsl[1];
+    }
     QLabel * lblname = new QLabel(name, this);
     QPushButton * lblvalue = new QPushButton(dispvalue, this);
     // lblvalue->setObjectName("phonenumber");
-    lblvalue->setProperty("urlx", value);
+    lblvalue->setProperty("urlx", linkvalue);
     connect( lblvalue, SIGNAL(clicked()),
              this, SLOT(httpGetNoreply()) );
     QHBoxLayout * hlayout = new QHBoxLayout();
     hlayout->addWidget(lblname);
     hlayout->addWidget(lblvalue);
+    lblvalue->setToolTip(linkvalue);
     m_vlayout->insertLayout(where, hlayout);
 }
 
@@ -537,11 +529,8 @@ void Popup::dialThisNumber()
 void Popup::httpGetNoreply()
 {
     QString urlx = sender()->property("urlx").toString();
+    b_engine->urlAuto(urlx);
     // qDebug() << Q_FUNC_INFO << urlx;
-    QUrl url = QUrl(urlx);
-    QHttp * http = new QHttp();
-    http->setHost(url.host(), url.port());
-    http->get(url.path());
 }
 
 void Popup::streamAboutToClose()

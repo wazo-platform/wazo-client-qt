@@ -71,10 +71,9 @@ class Popup: public QWidget
         void addInfoInternal(const QString &, const QString &);  //! Add a Text field (name, value)
         void addInfoText(int, const QString &, const QString &);  //! Add a url field
         void addInfoLink(int, const QString &, const QString &);
-        void addInfoLinkX(int, const QString &, const QString &, const QString &);
+        void addInfoLinkX(int, const QString &, const QString &);
         void addInfoPicture(int, const QString &, const QString &);  //! Add a Picture
         void addInfoPhone(int, const QString &, const QString &);  //! Add a Phone number
-        void addInfoPhoneURL(int, const QString &, const QString &);
         void setMessage(const QString &, const QString &);  //! access to the message
         const QHash<QString, QString>& message() const;  //! getter for the message
         void setMessageTitle(const QString &);

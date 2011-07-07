@@ -52,8 +52,8 @@ UrlLabel::UrlLabel(const QString & url, QWidget * parent)
     //                        | Qt::TextSelectableByKeyboard );
     if(url.startsWith("mailto:"))
         displaytext = url.mid(7);
-    else if(url.startsWith("dial:"))
-        displaytext = url.mid(5);
+    else if(url.startsWith("tel:"))
+        displaytext = url.mid(4);
     else
         displaytext = url;
     //qDebug() << Q_FUNC_INFO << url << displaytext;
