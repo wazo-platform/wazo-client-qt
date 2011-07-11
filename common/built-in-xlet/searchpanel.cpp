@@ -181,15 +181,15 @@ void SearchPanel::updatePeerAgent(double,
                                   const QString &what,
                                   const QVariant &statuslist)
 {
-    PeerKey *peerkey = new PeerKey(id, "");
-    // qDebug() << Q_FUNC_INFO;
-    if (m_peermap.contains(*peerkey)) {
-        if (what == "agentstatus") {
-            m_peermap.value(*peerkey)->updateAgentStatus(statuslist);
-        } else if (what == "imstatus") {
-            m_peermap.value(*peerkey)->updateStatus();
+    foreach(PeerKey peerkey, m_peermap.keys())
+        if (peerkey.userid() == id) {
+            if (what == "agentstatus") {
+                m_peermap.value(peerkey)->updateAgentStatus(statuslist);
+            } else if (what == "imstatus") {
+                m_peermap.value(peerkey)->updateStatus();
+            }
         }
-    }
+
     return;
 }
 
@@ -217,7 +217,7 @@ void SearchPanel::removePeers()
 {
     // qDebug() << Q_FUNC_INFO;
     foreach(PeerKey peerkey, m_peermap.keys()) {
-        PeerItem *peeritem = m_peermap[peerkey];
+        PeerItem *peeritem = m_peermap.value(peerkey);
         BasePeerWidget *peerwidget = peeritem->getWidget();
         if (peerwidget) {
                 if (m_peerlayout->indexOf(peerwidget) > -1) {

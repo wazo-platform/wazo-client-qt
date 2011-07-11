@@ -34,14 +34,15 @@
 #include "peerkey.h"
 
 PeerKey::PeerKey(const QString &userid, const QString &fullname)
-    : m_fullname(fullname),
-    m_userid(userid)
+    : m_userid(userid),
+      m_fullname(fullname)
 {
 }
 
 bool PeerKey::operator==(const PeerKey &other) const {
-	return (this->m_userid == other.userid());
+    return (this->m_userid == other.userid());
 }
+
 bool PeerKey::operator<(const PeerKey &other) const {
-	return (this->m_fullname < other.fullname());
+    return (this->m_fullname < other.fullname());
 }

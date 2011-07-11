@@ -45,12 +45,12 @@ class BASELIB_EXPORT PeerKey
         PeerKey(const QString &userid, const QString &fullname);  //! constructor
         const QString& userid() const { return m_userid; };  //! phone number
         const QString& fullname() const { return m_fullname; };  //! full name
-		bool operator<(const PeerKey &other) const;
-		bool operator==(const PeerKey &other) const;
-		
-	private:
-		QString m_userid;
-  		QString m_fullname;
+        bool operator<(const PeerKey &other) const;
+        bool operator==(const PeerKey &other) const;
+
+    private:
+        QString m_userid;
+        QString m_fullname;
 };
 
 #endif
