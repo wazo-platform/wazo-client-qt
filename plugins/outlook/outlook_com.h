@@ -5,18 +5,49 @@
 #include <QString>
 #include <QHash>
 
-#define OL_FOLDER_CONTACTS 10
+#define OL_FOLDER_DELETEDITEMS 3
+#define OL_FOLDER_OUTBOX       4
+#define OL_FOLDER_SENTMAIL     5
+#define OL_FOLDER_INBOX        6
+#define OL_FOLDER_CALENDAR     9
+#define OL_FOLDER_CONTACTS    10
+#define OL_FOLDER_JOURNAL     11
+#define OL_FOLDER_NOTES       12
+#define OL_FOLDER_TASK        13
 
 class CIDispatch
 {
  public:
-        CIDispatch(IDispatch * pDisp=NULL, BOOL bAddRef=FALSE){if ( (m_pIDisp=pDisp) && bAddRef ) m_pIDisp->AddRef();}
-        CIDispatch(const CIDispatch & disp){if ( m_pIDisp=disp.m_pIDisp ) m_pIDisp->AddRef();}
+        CIDispatch(IDispatch * pDisp=NULL, BOOL bAddRef=FALSE)
+                {
+                        if ( (m_pIDisp=pDisp) && bAddRef )
+                                m_pIDisp->AddRef();
+                }
+        CIDispatch(const CIDispatch & disp)
+                {
+                        if ( m_pIDisp=disp.m_pIDisp )
+                                m_pIDisp->AddRef();
+                }
         virtual ~CIDispatch(){if ( m_pIDisp ) m_pIDisp->Release();}
 
-        virtual void operator=(const CIDispatch & disp){if ( m_pIDisp ) m_pIDisp->Release();if ( m_pIDisp=disp.m_pIDisp ) m_pIDisp->AddRef();}
-        virtual void operator=(IDispatch * pDisp){if ( m_pIDisp ) m_pIDisp->Release();if ( m_pIDisp=pDisp ) m_pIDisp->AddRef();}
-        operator IDispatch *()const        {return m_pIDisp;}
+        virtual void operator=(const CIDispatch & disp)
+                {
+                        if ( m_pIDisp )
+                                m_pIDisp->Release();
+                        if ( m_pIDisp=disp.m_pIDisp )
+                                m_pIDisp->AddRef();
+                }
+        virtual void operator=(IDispatch * pDisp)
+                {
+                        if ( m_pIDisp )
+                                m_pIDisp->Release();
+                        if ( m_pIDisp=pDisp )
+                                m_pIDisp->AddRef();
+                }
+        operator IDispatch *()const
+        {
+                return m_pIDisp;
+        }
 
 	BOOL	IsValid()const{return m_pIDisp!=NULL;}
  public:
@@ -26,8 +57,8 @@ class CIDispatch
 class COLContact;
 class COLComContact : public CIDispatch {
  public:
-        COLComContact(IDispatch * pDisp=NULL, BOOL bAddRef=FALSE):CIDispatch(pDisp, bAddRef){}
-                COLComContact(const COLComContact & disp):CIDispatch(disp){}
+        COLComContact(IDispatch * pDisp=NULL, BOOL bAddRef=FALSE) : CIDispatch(pDisp, bAddRef) {}
+                COLComContact(const COLComContact & disp):CIDispatch(disp) {}
                         virtual ~COLComContact(){}
 
                         bool Load(COLContact * contact);

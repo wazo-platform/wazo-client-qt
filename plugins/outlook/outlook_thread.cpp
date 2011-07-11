@@ -67,11 +67,7 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
 
     COLFolder pFolder = pNS.GetDefaultFolder(nFolder);
     //	COLFolder pFolder = pNS.PickFolder();
-
-    /*	QString entryID("000000000A8BA4607D4D6040AC4AB3AD73DD80390100BAC11955A683784591695EF73AAA1CFD0000365C00080000");
-      QString storeID("0000000038A1BB1005E5101AA1BB08002B2A56C20000454D534D44422E444C4C00000000000000001B55FA20AA6611CD9BC800AA002FC45A0C000000524F4343414D41494C002F6F3D526F636361205472616E73706F7274732F6F753D5072656D6965722067726F7570652061646D696E69737472617469662F636E3D526563697069656E74732F636E3D626F7200");
-
-      COLFolder pFolder=pNS.GetFolderFromID(entryID, storeID);*/
+    //  COLFolder pFolder=pNS.GetFolderFromID(entryID, storeID);*/
 
     if ( ! pFolder ) {
         QString msgtoemit = "OutlookErr:NoFolder";
@@ -83,12 +79,6 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
     }
 
     if ( m_bStop ) return false;
-
-    QString folderinfo = QString("Outlook Folder %1 - %2 - %3")
-        .arg(pFolder.Name())
-        .arg(pFolder.EntryID())
-        .arg(pFolder.StoreID());
-    emit logClientWarning("COLThread::lcfo", folderinfo);
 
     COLComContactItems pItems = pFolder.GetItems();
 
@@ -103,13 +93,22 @@ bool COLThread::load_contacts_from_outlook(COLContacts & contacts)
 
     COLComContact pContact = pItems.GetFirst();
 
-    while(pContact && !m_bStop) {
+    while(pContact && ! m_bStop) {
         COLContact contact;
-        if ( !pContact.Load(&contact) )
+        if ( ! pContact.Load(& contact) ) {
+            QString msgtoemit = "OutlookErr:LoadContact";
+            qDebug() << Q_FUNC_INFO << "unable to load contact";
+            sleep(1);
+            emit logClientWarning("COLThread::lcfo", msgtoemit);
+            emit errorMessage(msgtoemit);
             return false;
+        }
         contacts.append(contact);
         pContact = pItems.GetNext();
     }
+
+    QString folderinfo = QString("Outlook Folder : %1").arg(pFolder.Name());
+    emit logClientWarning("COLThread::lcfo", folderinfo);
 
     return true;
 }

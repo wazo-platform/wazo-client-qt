@@ -1,7 +1,7 @@
 #include "outlook_engine.h"
 #include "outlook_tools.h"
 
-static COLEngine * gpOLEngine=NULL;
+static COLEngine * gpOLEngine = NULL;
 
 COLEngine * OLEngine() {
     if ( !gpOLEngine ) {

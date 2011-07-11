@@ -132,7 +132,7 @@ COLComContact COLComContactItems::GetNext()
     return COLComContact(result.pdispVal, FALSE);
 }
 
-COLComContactItems	COLFolder::GetItems()
+COLComContactItems COLFolder::GetItems()
 {
     VARIANT result;
     HRESULT res;
