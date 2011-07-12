@@ -201,6 +201,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
                 { return (const GroupInfo *) m_anylist.value("groups").value(id); };  //!< Return the group to any Xlet
         const MeetmeInfo * meetme(const QString & id) const
                 { return (const MeetmeInfo *) m_anylist.value("meetmes").value(id); };  //!< Return the meetme to any Xlet
+        const ParkingInfo * parkinglot(const QString & id) const
+                { return (const ParkingInfo *) m_anylist.value("parkinglots").value(id); }
         const VoiceMailInfo * voicemail(const QString & id) const
                 { return (const VoiceMailInfo *) m_anylist.value("voicemails").value(id); };  //!< Return the voicemail to any Xlet
 
@@ -208,9 +210,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
                 { return m_channels; };  //!< Return the channels to any Xlet
         const QHash<QString, QueueMemberInfo *> & queuemembers() const
                 { return m_queuemembers; };  //!< Return the channels to any Xlet
-
-        const QHash<QString, QHash<QString, ParkingInfo *> > parking() const
-                { return m_parking; }; //!< Return the parking to any Xlet
 
         QStringList phonenumbers(const UserInfo *);
 
@@ -322,6 +321,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateVoiceMailConfig(const QString &);
         void updateVoiceMailStatus(const QString &);
         void updateChannelStatus(const QString &);
+        void updateParkinglotConfig(const QString &);
+        void updateParkinglotStatus(const QString &);
         void removePhoneConfig(const QString &);
         void removeUserConfig(const QString &);
         void removeAgentConfig(const QString &);
@@ -460,7 +461,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, QHash<QString, XInfo *> > m_anylist;
         QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
         QHash<QString, QueueMemberInfo *> m_queuemembers;  //!< List of Channel informations
-        QHash<QString, QHash<QString, ParkingInfo *> > m_parking; //! parking bays
 
         DStore * m_tree;
     public:

@@ -35,14 +35,67 @@
 
 #include "parkinginfo.h"
 
-ParkingInfo::ParkingInfo(const ParkingInfo &other)
+ParkingInfo::ParkingInfo(const QString & ipbxid, const QString & id)
+  :XInfo(ipbxid, id)
 {
-    m_timeout = other.m_timeout;
-    m_parkingtime = other.m_parkingtime;
+    // qDebug() << Q_FUNC_INFO << QString("%1/%2").arg(ipbxid).arg(id);
+}
+
+// ParkingInfo::ParkingInfo(const ParkingInfo &other)
+//   :XInfo(other.ipbxid(), other.id())
+// {
+//     m_timeout = other.m_timeout;
+//     m_parkingtime = other.m_parkingtime;
+// }
+
+int ParkingInfo::countParked() const
+{
+    int count = 0;
+    foreach (const QString bay, m_parking_bays.keys()) {
+        if (m_parking_bays[bay].toMap().count()) {
+            ++count;
+        }
+    }
+    return count;
 }
 
 void ParkingInfo::update(const QVariantMap &map)
 {
     m_timeout = map.value("timeout").toInt();
     m_parkingtime = map.value("parkingtime").toDouble();
+}
+
+bool ParkingInfo::updateConfig(const QVariantMap & prop)
+{
+    // qDebug() << Q_FUNC_INFO << prop;
+    bool haschanged = false;
+
+    haschanged |= setIfChangeString(prop, "context", & m_context);
+    haschanged |= setIfChangeString(prop, "extension", & m_exten);
+    haschanged |= setIfChangeString(prop, "name", & m_name);
+    haschanged |= setIfChangeString(prop, "positions", & m_positions);
+    haschanged |= setIfChangeString(prop, "description", & m_description);
+    haschanged |= setIfChangeInt(prop, "duration", & m_timeout);
+
+    return haschanged;
+}
+
+bool ParkingInfo::updateStatus(const QVariantMap & prop)
+{
+    // qDebug() << Q_FUNC_INFO << prop;
+    bool haschanged = false;
+    foreach (const QString id, prop.keys()) {
+        if (! m_parking_bays.contains(id) ||
+            m_parking_bays[id].toMap() != prop[id].toMap()) {
+            m_parking_bays[id] = prop[id];
+            haschanged = true;
+        }
+    }
+    return haschanged;
+}
+
+/*! \brief returns the string representation of a parkinglot */
+QString ParkingInfo::toString() const
+{
+    return QString("%1 <%2> %3").arg(m_name).arg(m_exten).arg(m_description);
 }

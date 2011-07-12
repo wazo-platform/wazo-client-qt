@@ -75,7 +75,7 @@ static const QStringList CheckFunctions = (QStringList() << "presence" << "custo
 static const QStringList GenLists = (QStringList()
                                      << "users" << "phones" << "trunks"
                                      << "agents" << "queues" << "groups" << "meetmes"
-                                     << "voicemails" << "incalls");
+                                     << "voicemails" << "incalls" << "parkinglots");
 static CtiConn * m_ctiConn;
 
 BaseEngine::BaseEngine(QSettings *settings,
@@ -108,6 +108,7 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_xinfoList.insert("meetmes", newXInfo<MeetmeInfo>);
     m_xinfoList.insert("voicemails", newXInfo<VoiceMailInfo>);
     m_xinfoList.insert("incalls", newXInfo<InCallsInfo>);
+    m_xinfoList.insert("parkinglots", newXInfo<ParkingInfo>);
 
     // TCP connection with CTI Server
     m_ctiserversocket = new QSslSocket(this);
@@ -873,23 +874,6 @@ void BaseEngine::parseCommand(const QString &line)
 
         if (thisclass == "callcampaign") {
             emit requestFileListResult(datamap.value("payload"));
-
-        } else if (thisclass == "parkcall") {
-            QString eventkind = datamap.value("eventkind").toString();
-            QString ipbxid = datamap.value("ipbxid").toString();
-            QString parkingbay = datamap.value("parkingbay").toString();
-            // update local list for ipbxid & parkingbay according to eventkind
-            if (eventkind == "parkedcall") {
-                if (m_parking.contains(ipbxid) == false)
-                    m_parking[ipbxid].clear();
-                if (! ipbxid.isEmpty() && ! parkingbay.isEmpty()) {
-                    if (m_parking[ipbxid].contains(parkingbay) == false)
-                        m_parking[ipbxid][parkingbay] = new ParkingInfo();
-                    m_parking[ipbxid][parkingbay]->update(datamap.value("payload").toMap());
-                }
-            }
-            emit parkingEvent(eventkind, ipbxid, parkingbay, datamap.value("payload"));
-
         } else if (thisclass == "sheet") {
             // TODO : use id better than just channel name
             // qDebug() << Q_FUNC_INFO << "sheet" << datamap;
@@ -1238,7 +1222,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
                 if (GenLists.contains(listname)) {
-                    qDebug() << function << listname << xid;
                     if (m_anylist.value(listname).contains(xid)) {
                         delete m_anylist[listname][xid];
                         m_anylist[listname].remove(xid);
@@ -1278,10 +1261,11 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     XInfo * xinfo = construct(ipbxid, id);
                     m_anylist[listname][xid] = xinfo;
                 }
-                if (m_anylist.value(listname).value(xid) != NULL)
+                if (m_anylist.value(listname).value(xid) != NULL) {
                     haschanged = m_anylist.value(listname)[xid]->updateConfig(config);
-                else
+                } else {
                     qDebug() << "null for" << listname << xid;
+                }
                 if ((xid == m_xuserid) && (listname == "users"))
                     emit localUserInfoDefined();
             } else {
@@ -1309,6 +1293,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateVoiceMailConfig(xid);
             else if (listname == "meetmes")
                 addUpdateConfRoomInTree(tree(), xid);
+            else if (listname == "parkinglots")
+                emit updateParkinglotConfig(xid);
 
             QVariantMap command;
             command["class"] = "getlist";
@@ -1353,8 +1339,9 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                         sendJsonCommand(command);
                     }
                 }
-            }
-            else if (listname == "agents")
+            } else if (haschanged && listname == "parkinglots") {
+                emit updateParkinglotStatus(xid);
+            } else if (listname == "agents")
                 emit updateAgentStatus(xid);
             else if (listname == "queues") {
                 emit updateQueueStatus(xid);
@@ -2060,7 +2047,7 @@ void BaseEngine::fetchLists()
     getlists = (QStringList()
                 << "users" << "phones" << "trunks"
                 << "agents" << "queues" << "groups" << "meetmes"
-                << "voicemails" << "incalls");
+                << "voicemails" << "incalls" << "parkinglots");
 
     foreach (QString ipbxid, m_ipbxlist) {
         command["tipbxid"] = ipbxid;
