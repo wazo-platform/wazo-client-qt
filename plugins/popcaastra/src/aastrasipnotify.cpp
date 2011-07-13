@@ -96,12 +96,6 @@ QVariantMap getBaseCommand(QString channel, QString content)
     ipbxcommand["command"] = "sipnotify";
     ipbxcommand["variables"] = variables;
     ipbxcommand["channel"] = channel;
-    QVariantMap::const_iterator i = ipbxcommand.constBegin();
-    while (i != ipbxcommand.constEnd()) {
-        qDebug() << i.key() << i.value().toString();
-        i++;
-    }
-    qDebug() << variables["Content"];
     return ipbxcommand;
 }
 

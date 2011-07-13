@@ -67,14 +67,18 @@ public:
     void debugIncomingCalls() const;
 protected:
     void timerEvent(QTimerEvent *);
-    bool isMyChannel(const QString & xchannelid) const;
+    /*! \brief Find a matching device for a called number */
+    const PhoneInfo * findCalledDevice(const QString &);
+    bool isMyChannel(const QString & xchannelid);
+    bool isTalkingToMe(const ChannelInfo *) const;
     void removeIncomingCall(const QString & xChannelId);
+    void removeTransferedCall(const QString & xChannelId);
     void removeCompletedTransfers();
     void removeDefunctWidgets();
 private:
     /*! \brief starts tracking a number after a transfer */
-    void trackTransfer(QString number, const QString &, const QString &);
-    QStringList getMyChannels() const;
+    void trackTransfer(const QString &, const QString &, const QString &, const QString &);
+    QStringList getMyChannels();
 public slots:
     void updateDisplay();
     /*! \brief When a name is clicked on the destination list */
@@ -101,7 +105,7 @@ public slots:
     void hangUpLine(int);
     void holdLine(int);
     void attendedTransfer(int);
-    void blindTransfer(int, const QString &, const QString &);
+    void blindTransfer(const QString &, int, const QString &, const QString &);
     void parkcall(int);
     void selectLine(int);
     void prgkey1();
@@ -114,6 +118,7 @@ public slots:
     /*! \brief receive the text from the target field when it changes */
     void targetChanged(const QString &);
 private:
+    QStringList m_my_lines; //!< Our lines (SIP/abc)
     void fillCompleter();
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget
     QHash<QString, TransferedWidget *> m_transferedcalls; //!< List of transfered calls

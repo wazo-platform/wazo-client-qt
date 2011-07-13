@@ -180,8 +180,12 @@ void PopcAastra::updateChannelStatus(const QString & /* xchannel */)
             connect(newcall, SIGNAL(selectLine(int)), this, SLOT(selectLine(int)));
             connect(newcall, SIGNAL(doAttendedTransfer(int)),
                     this, SLOT(attendedTransfer(int)));
-            connect(newcall, SIGNAL(doBlindTransfer(int, const QString &, const QString &)),
-                    this, SLOT(blindTransfer(int, const QString &, const QString &)));
+            connect(newcall, SIGNAL(doBlindTransfer(const QString &, int,
+                                                    const QString &,
+                                                    const QString &)),
+                    this, SLOT(blindTransfer(const QString &, int,
+                                             const QString &,
+                                             const QString &)));
             connect(newcall, SIGNAL(doParkCall(int)),
                     this, SLOT(parkcall(int)));
         } else {
@@ -193,11 +197,11 @@ void PopcAastra::updateChannelStatus(const QString & /* xchannel */)
 /*! \brief Removes defunct call widgets for defunct channels
  *
  *  Check the tracked widgets for defunct channels and remove defunct ones
- *  from the incoming and transfered calls list
+ *  from the incoming list
  */
 void PopcAastra::removeDefunctWidgets()
 {
-    //qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     if (m_incomingcalls.size() == 0 && m_transferedcalls.size() == 0) return;
     const QHash<QString, ChannelInfo *> & channels = b_engine->channels();
     foreach (const QString channel, m_incomingcalls.keys()) {
@@ -205,45 +209,59 @@ void PopcAastra::removeDefunctWidgets()
             removeIncomingCall(channel);
         }
     }
-    foreach (const QString phone, m_transferedcalls.keys()) {
-        if (! b_engine->hasPhone(phone) || m_transferedcalls[phone]->readyToBeRemoved()) {
-            delete m_transferedcalls[phone];
-            m_transferedcalls.remove(phone);
-        }
-    }
 }
 
-/*! \brief Remove completed transfers from the call list
+/*! \brief Remove completed blind transfers from the widget list
  *
- *  When an attended transfer is completed the widget is not removed from the
- *  call list. RemoveCompletedTransfers will check if we still own the channel
- *  for each call and remove the ones that are completed transfers
- *
- *  Should be called after removeDefunctWidgets to avoid comparing to defunct
- *  calls that should be removed anyway
+ * Remove transfered calls that are not in calling state anymore
  */
 void PopcAastra::removeCompletedTransfers()
 {
     // qDebug() << Q_FUNC_INFO;
-    if (0 == m_incomingcalls.size()) return;
-    QHash<QString, ChannelInfo *> channels = b_engine->channels();
-    foreach (QString xCId, m_incomingcalls.keys()) {
-        if ((! channels.contains(xCId)) || (! isMyChannel(xCId)))
-            removeIncomingCall(xCId);
+    if (0 == m_incomingcalls.size() && 0 == m_transferedcalls.size())
+        return;
+    foreach (const QString & key, m_transferedcalls.keys()) {
+        bool matched = false;
+        foreach (const QString xchannelid, b_engine->channels().keys()) {
+            if (xchannelid.contains(key)) {
+                matched = true;
+                const ChannelInfo * c = b_engine->channel(xchannelid);
+                if (isTalkingToMe(c)) continue;
+                // TODO: Remove this constant
+                if (! c || c->commstatus() != "calling") {
+                    removeTransferedCall(key);
+                }
+            }
+        }
+        if (! matched) {
+            removeTransferedCall(key);
+        }
     }
 }
 
 /*! \brief Removes a widget from the incoming call list
  *
  *  Remove a widget from the incoming call list if it's part of the list
- *  \param xCId The Xivo channel id of the call to remove
+ *  \param key The widget's key in the list
  */
-void PopcAastra::removeIncomingCall(const QString & xCId)
+void PopcAastra::removeIncomingCall(const QString & key)
 {
-    // qDebug() << Q_FUNC_INFO << "Channel(" << xCId << ")";
-    if (m_incomingcalls.contains(xCId)) {
-        delete m_incomingcalls[xCId];
-        m_incomingcalls.remove(xCId);
+    // qDebug() << Q_FUNC_INFO << key;
+    if (m_incomingcalls.contains(key)) {
+        delete m_incomingcalls[key];
+        m_incomingcalls.remove(key);
+    }
+}
+
+/*! \brief Removes a widget from the transfered call list
+ * \param key
+ */
+void PopcAastra::removeTransferedCall(const QString & key)
+{
+    // qDebug() << Q_FUNC_INFO << key;
+    if (m_transferedcalls.contains(key)) {
+        delete m_transferedcalls[key];
+        m_transferedcalls.remove(key);
     }
 }
 
@@ -254,18 +272,43 @@ void PopcAastra::removeIncomingCall(const QString & xCId)
  *  \param xchannelid The id of the channel we are checking
  *  \return true if this channel belongs to our phone other wise false
  */
-bool PopcAastra::isMyChannel(const QString & xchannelid) const
+bool PopcAastra::isMyChannel(const QString & xchannelid)
 {
     // qDebug() << Q_FUNC_INFO << "Channel id(" << xchannelid << ")";
+
+    // Quick match against our line id (SIP/abc) when possible
+    foreach (const QString line_id, m_my_lines) {
+        if (xchannelid.contains(line_id)) return true;
+    }
+
+    const ChannelInfo * c = b_engine->channel(xchannelid);
+    QHash<QString, ChannelInfo *> channels = b_engine->channels();
+    if (! c) {
+        return false;
+    }
     QStringList mychannels = getMyChannels();
-    for (int i = 0; i < mychannels.size(); ++i) {
-        if (mychannels.contains(xchannelid)) return true;
+    if (mychannels.contains(xchannelid)) {
+        return true;
+    }
+    return false;
+}
+
+/*! \brief Check if the current user is a channel's peer */
+bool PopcAastra::isTalkingToMe(const ChannelInfo * c) const
+{
+    // qDebug() << Q_FUNC_INFO;
+    if (! c)
+        return false;
+    foreach (const QString line_id, m_my_lines) {
+        if (c->talkingto_id().contains(line_id)) {
+            return true;
+        }
     }
     return false;
 }
 
 /*! \brief Return my channels */
-QStringList PopcAastra::getMyChannels() const
+QStringList PopcAastra::getMyChannels()
 {
     // qDebug() << Q_FUNC_INFO;
     QStringList res;
@@ -273,6 +316,13 @@ QStringList PopcAastra::getMyChannels() const
     foreach (const QString phone_key, me->phonelist()) {
         const PhoneInfo * phone = b_engine->phone(phone_key);
         foreach (const QString channel_key, phone->xchannels()) {
+            QStringList xchannel_parts = channel_key.split("/");
+            QStringList id_parts = xchannel_parts.at(2).split("-");
+            QString line_id = QString("%1/%2")
+                .arg(xchannel_parts.at(1)).arg(id_parts.at(0));
+            if (! m_my_lines.contains(line_id)) {
+                m_my_lines.append(line_id);
+            }
             res.append(channel_key);
         }
     }
@@ -411,11 +461,21 @@ void PopcAastra::holdLine(int line)
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
-/*! \brief blind transfer the call on the line to the number in the name/number field */
-void PopcAastra::blindTransfer(int line, const QString & transferedname, 
-        const QString & transferednumber)
+/*! \brief Sends a blind transfer request to the phone
+ *
+ * Send an aastra xml request to the phone to transfer the call on line \a line
+ * to the selected number
+ * \param peers_device The techno/identifier of our peer's device (SIP/abc)
+ * \param line The phone's line number
+ * \param transferedname The name of the transfered caller
+ * \param transferednumber The number of the transfered caller
+ */
+void PopcAastra::blindTransfer(const QString & peers_device,
+                               int line,
+                               const QString & transferedname,
+                               const QString & transferednumber)
 {
-    //qDebug() << Q_FUNC_INFO << line;
+    // qDebug() << Q_FUNC_INFO;
     QList<QString> commands;
     commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(XFER));
@@ -427,26 +487,31 @@ void PopcAastra::blindTransfer(int line, const QString & transferedname,
         }
     }
     commands.append(getKeyUri(XFER));
-    trackTransfer(number, transferedname, transferednumber);
+    trackTransfer(peers_device, number, transferedname, transferednumber);
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
-/*! \brief starts tracking a number after a transfer */
-void PopcAastra::trackTransfer(QString number, const QString & tname, const QString & tnum)
+/*! \brief Track a call after a blind transfer
+ *
+ * Calls are tracked after blind transfer to allow the interception of
+ * unanswered calls. The key of the transfered call hash is the target number
+ * of the transfer.
+ * \param device The technology/identifier of the transfered call
+ * \param number The number where this call is being transfered
+ * \param tname The transfered person's name
+ * \param tnum The transfered person's number
+ */
+void PopcAastra::trackTransfer(const QString & device,
+                               const QString & number,
+                               const QString & tname,
+                               const QString & tnum)
 {
     // qDebug() << Q_FUNC_INFO << number;
-    foreach (QString id, b_engine->iterover("phones").keys()) {
-        const PhoneInfo * p = b_engine->phone(id);
-        if (p->number() == number) {
-            TransferedWidget * w = new TransferedWidget(number, tname, tnum, this);
-            m_transferedcalls[id] = w;
-            m_layout->addWidget(w);
-            connect(
-                w, SIGNAL(intercept(const QString &)),
-                this, SLOT(doIntercept(const QString &)));
-            break;
-        }
-    }
+    TransferedWidget * w = new TransferedWidget(number, tname, tnum, this);
+    m_transferedcalls[device] = w;
+    m_layout->addWidget(w);
+    connect(w, SIGNAL(intercept(const QString &)),
+            this, SLOT(doIntercept(const QString &)));
 }
 
 /*! \brief attended transfer to the line in the number/name field */
@@ -620,4 +685,3 @@ PopcAastra::~PopcAastra()
 {
     // qDebug() << Q_FUNC_INFO;
 }
-
