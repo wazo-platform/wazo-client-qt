@@ -253,12 +253,12 @@ void Popup::addAnyInfo(const QString & localName,
             where = m_orders.indexOf(infoOrder) + m_firstline;
         }
         setSheetPopup( true );
-        if( infoType == "text" ) {
-            if(infoName == "") {
-                setTitle( infoValue );
-                m_orders.removeAll(infoOrder);
-            } else
-                addInfoText( where, infoName, infoValue );
+        if ( ((infoType == "text") && infoName.isEmpty()) ||
+             (infoType == "title")) {
+            setTitle(infoValue);
+            m_orders.removeAll(infoOrder);
+        } else if (infoType == "text") {
+            addInfoText( where, infoName, infoValue );
         } else if( infoType == "url" ) {
             addInfoLink( where, infoName, infoValue );
         } else if( infoType == "urlx" ) {
