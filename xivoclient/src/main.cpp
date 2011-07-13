@@ -141,7 +141,8 @@ int main(int argc, char ** argv)
     engine->changeTranslation(locale);
 
     MainWidget window;
-    app.setActivationWindow(&window);
+    bool activate_on_tel = settings->value("display/activate_on_tel", false).toBool();
+    app.setActivationWindow(&window, activate_on_tel);
 
     app.setQuitOnLastWindowClosed(false);
     app.setProperty("stopper", "lastwindow");
