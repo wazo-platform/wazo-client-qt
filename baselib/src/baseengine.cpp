@@ -1047,7 +1047,7 @@ void BaseEngine::parseCommand(const QString &line)
                 stopConnection();
                 clearInternalData();
                 setState(ENotLogged);
-                popupError(datamap.value("errorstring").toString());
+                popupError(datamap.value("error_string").toString());
             } else {
             QStringList capas = datamap.value("capalist").toStringList();
             QVariantMap command;
