@@ -230,8 +230,31 @@ void ConfigWidget::_insert_function_tab()
     
     tabwidget_functions->addTab(widget_queues, tr("Queues"));
     
-    layout2->addWidget(tabwidget_functions);
+        QWidget * widget_switchboard = new QWidget() ;
+        QFormLayout * layout26 = new QFormLayout() ;
+        widget_switchboard->setLayout(layout26);
+    
+        m_comboswitchboard = new QComboBox(this);
+        m_comboswitchboard->addItem(tr("Small"), QString("small"));
+        m_comboswitchboard->addItem(tr("Detailed"), QString("detailed"));
+        for(int i = 0; i < m_comboswitchboard->count(); i++) {
+            if(m_opts.value("switchboard-elt-type") == m_comboswitchboard->itemData(i))
+                m_comboswitchboard->setCurrentIndex(i);
+        }
+        layout26->addRow(tr("Appearance of SwitchBoard elements"), m_comboswitchboard);
 
+        m_maxWidthWanted = new QSpinBox(this);
+        m_maxWidthWanted->setRange(50, 250);
+        int maxwidthwanted = m_opts.value("maxwidthwanted").toInt();
+        if(maxwidthwanted < 50)
+            maxwidthwanted = 200;
+        m_maxWidthWanted->setValue(maxwidthwanted);
+        layout26->addRow(tr("Maximum width for small SwitchBoard elements"), m_maxWidthWanted);
+    
+    tabwidget_functions->addTab(widget_switchboard, tr("Switchboard"));
+    
+    layout2->addWidget(tabwidget_functions);
+    
     m_tabwidget->addTab(widget_functions, tr("Functions"));
 }
 
@@ -317,30 +340,13 @@ void ConfigWidget::_insert_guisetting_tab()
     m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
     m_systrayed->setCheckState(b_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow(m_systrayed);
-
-    m_comboswitchboard = new QComboBox(this);
-    m_comboswitchboard->addItem(tr("Small"), QString("small"));
-    m_comboswitchboard->addItem(tr("Detailed"), QString("detailed"));
-    for(int i = 0; i < m_comboswitchboard->count(); i++) {
-        if(m_opts.value("switchboard-elt-type") == m_comboswitchboard->itemData(i))
-            m_comboswitchboard->setCurrentIndex(i);
-    }
-    layout4->addRow(tr("Appearance of SwitchBoard elements"), m_comboswitchboard);
-
-    m_maxWidthWanted = new QSpinBox(this);
-    m_maxWidthWanted->setRange(50, 250);
-    int maxwidthwanted = m_opts.value("maxwidthwanted").toInt();
-    if(maxwidthwanted < 50)
-        maxwidthwanted = 200;
-    m_maxWidthWanted->setValue(maxwidthwanted);
-    layout4->addRow(tr("Maximum width for small SwitchBoard elements"), m_maxWidthWanted);
+    
+    m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
 
     m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     connect(m_btnbox, SIGNAL(accepted()), this, SLOT(saveAndClose()));
     connect(m_btnbox, SIGNAL(rejected()), this, SLOT(close()));
     m_btnbox->button(QDialogButtonBox::Ok)->setDefault(true);
-
-    m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
 }
 
 
