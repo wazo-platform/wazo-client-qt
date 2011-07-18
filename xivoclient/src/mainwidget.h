@@ -157,7 +157,7 @@ class MainWidget : public QMainWindow
 
         QDateTime m_launchDateTime;
 
-        QClipboard *m_clipboard;
+        QClipboard * m_clipboard;
 };
 
 #endif

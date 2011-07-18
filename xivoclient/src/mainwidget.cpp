@@ -54,7 +54,8 @@ MainWidget::MainWidget()
       m_settings(b_engine->getSettings()),
       m_status(new QLabel(this)),
       m_centralWidget(new QStackedWidget(this)),
-      m_resizingHelper(0)
+      m_resizingHelper(0),
+      m_clipboard(NULL)
 {
     b_engine->setParent(this); // take ownership of the engine object
     m_appliname = tr("Client %1").arg(XIVOVER);
@@ -82,14 +83,23 @@ MainWidget::MainWidget()
             this, SLOT(showMessageBox(const QString &)),
             Qt::QueuedConnection);
 
-#ifndef Q_WS_WIN
-    m_clipboard = QApplication::clipboard();
-    connect(m_clipboard, SIGNAL(selectionChanged()),
-            this, SLOT(clipselection()));
-    connect(m_clipboard, SIGNAL(dataChanged()),
-            this, SLOT(clipdata()));
-    m_clipboard->setText("", QClipboard::Selection); // see comment in MainWidget::clipselection()
-#endif
+    // this part had been commented for Win32, see svn 5882 or git 70eb1793
+    // to allow a bit more flexibility, we leave it as a configurable setting,
+    // whose default mode will be 'disabled'
+    bool enableclipboard;
+#ifdef Q_WS_WIN
+    enableclipboard = m_settings->value("display/enableclipboard", false).toBool();
+#else
+    enableclipboard = m_settings->value("display/enableclipboard", true).toBool();
+#endif /* Q_WS_WIN */
+    if (enableclipboard) {
+        m_clipboard = QApplication::clipboard();
+        connect(m_clipboard, SIGNAL(selectionChanged()),
+                this, SLOT(clipselection()));
+        connect(m_clipboard, SIGNAL(dataChanged()),
+                this, SLOT(clipdata()));
+        m_clipboard->setText("", QClipboard::Selection); // see comment in MainWidget::clipselection()
+    }
 
     resize(500, 440);
     restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
@@ -186,7 +196,6 @@ void MainWidget::makeLoginWidget()
              this, SLOT(loginKindChanged(int)));
 }
 
-#ifndef Q_WS_WIN
 void MainWidget::clipselection()
 {
     QString selected = m_clipboard->text(QClipboard::Selection);
@@ -216,7 +225,6 @@ void MainWidget::clipdata()
     //                 however, the xclipboard application seems to be
     //                 able to catch such signals ...
 }
-#endif
 
 void MainWidget::setAppearance(const QVariantList & dockoptions)
 {
