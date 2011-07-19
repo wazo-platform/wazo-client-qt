@@ -53,14 +53,13 @@ class BaseEngine;
  *
  * This Widget enables the user to edit the connection
  * parameters to the identification server */
-/* could be a QDialog instead of QWidget */
-//class ConfigWidget: public QWidget
 class ConfigWidget: public QDialog
 {
     Q_OBJECT
 
     public:
         ConfigWidget(QWidget *parent=0);
+        QSize sizeHint();
         ~ConfigWidget();
 
     signals:
@@ -76,57 +75,63 @@ class ConfigWidget: public QDialog
 
     private:
         void _insert_connection_tab();
-        void _insert_function_tab();
         void _insert_account_tab();
         void _insert_guisetting_tab();
-        void _insert_operatorxlet_tab();
+        void _insert_function_tab();
+        
+        void _insert_operator_functiontab();
 
         QVariantMap m_opts;
         QVariantMap m_forcedopts;
 
-        BaseEngine *m_engine;          //!< BaseEngine object parameters are commited to
+        BaseEngine * m_engine;          //!< BaseEngine object parameters are commited to
 
-        QLineEdit * m_cti_address;     //!< IP/hostname of the server
-        QSpinBox  * m_cti_port;        //!< server port
-        QCheckBox * m_cti_encrypt;     //!< encrypt connection
+        QLineEdit * m_cti_address;      //!< IP/hostname of the server
+        QSpinBox  * m_cti_port;         //!< server port
+        QCheckBox * m_cti_encrypt;      //!< encrypt connection
+        QCheckBox * m_trytoreconnect;   //!< "Try to reconnect" Checkbox
+        QSpinBox  * m_tryinterval_sbox; //!< "Try to reconnect" interval
+        QSpinBox  * m_kainterval_sbox;  //!< Keep alive interval
 
-        QComboBox *m_locale_cbox;         //!< Locale selectbox
-        QCheckBox *m_autoconnect;      //!< "Auto connect" checkbox
-        QCheckBox *m_trytoreconnect;   //!< "Try to reconnect" Checkbox
-        QCheckBox *m_systrayed;        //!< "Systray at startup" Checkbox
-        QSpinBox  *m_tryinterval_sbox; //!< "Try to reconnect" interval
-        QSpinBox  *m_kainterval_sbox;  //!< Keep alive interval
+        QLineEdit * m_context;          //!< context name (related to the company)
+        QLineEdit * m_userid;           //!< user login
+        QLineEdit * m_password;         //!< user password
+        QCheckBox * m_keeppass;         //!< keep password ?
+        QCheckBox * m_autoconnect;      //!< "Auto connect" checkbox
+        QCheckBox * m_showagselect;     //!< show agent select on main window ?
+        QComboBox * m_loginkind;        //!< login kind (user or agent)
+        QLineEdit * m_agentphonenumber; //!< agent's phone number
 
-        QLineEdit *m_context;          //!< context name (related to the company)
-        QLineEdit *m_password;         //!< user password
-        QCheckBox *m_keeppass;         //!< keep password ?
-        QCheckBox *m_showagselect;     //!< show agent select on main window ?
-        QLineEdit *m_userid;           //!< user login
-        QComboBox *m_loginkind;        //!< login kind (user or agent)
-        QLineEdit *m_agentphonenumber; //!< agent's phone number
+        QComboBox * m_locale_cbox;      //!< Locale selectbox
+        QCheckBox * m_systrayed;        //!< "Systray at startup" Checkbox
+        QLabel    * m_lblphone;         //!< label "Phone Number"
 
-        QLabel *m_lblphone;    //!< label "Phone Number"
+        QHash<QString, QCheckBox *> m_function; //!< connect to functions checkboxes
+        
+        QTabWidget * m_function_tabwidget; //!< Contains the settings for the xlets
+        
+        QSpinBox * m_presenceIndicatorSize; //!< size of the presence indicator for basic peer widgets
+        
+        QCheckBox * m_autourl_allowed;  //!< Allow automatic opening of urls
+        QSpinBox  * m_tablimit_sbox;    //!< Maximum number of tabs
+        
+        QSpinBox  * m_history_sbox;     //!< History size
+        
+        QSpinBox  * m_contactssize_sbox;  //!< Displayed contacts' size
+        QSpinBox  * m_contactswidth_sbox; //!< Number of contacts displayed on one line
 
-        QHash<QString, QCheckBox *> m_function;        //!< connect to functions checkboxes
-        QCheckBox *m_autourl_allowed;  //!< Allow automatic opening of urls
-        QSpinBox  *m_history_sbox;        //!< History size
+        QHash<QString, QSpinBox *> m_queuelevels;      //!< For queue display
+        QHash<QString, QSpinBox *> m_queuelevels_wait; //!< For queue display
+        QCheckBox * m_queue_longestwait;               //!< should we display the longest wait in the queue xlet ?
+        QCheckBox * m_queue_displaynu;                 //!< should we display the queue number in queue name ?
+        
+        QCheckBox * m_lastconnwins;     //!< The last connected user wins => disconnects the other
 
-        QHash<QString, QSpinBox *> m_queuelevels;   //!< For queue display
-        QHash<QString, QSpinBox *> m_queuelevels_wait;   //!< For queue display
+        QComboBox * m_comboswitchboard; //!< Appearance of switchboard
+        QSpinBox * m_maxWidthWanted;    //!< Maximum width for small items in switchboard
 
-        QSpinBox  *m_contactssize_sbox;        //!< Displayed contacts' size
-        QSpinBox  *m_contactswidth_sbox;        //!< Displayed contacts' width
-        QSpinBox  *m_tablimit_sbox;        //!< Maximum number of tabs
-        QCheckBox *m_lastconnwins;        //!< The last connected user wins => disconnects the other
-
-        QComboBox *m_comboswitchboard; //!< Appearance of SwitchBoard
-        QSpinBox *m_maxWidthWanted;    //!< maximum width for small items in swich board
-        QSpinBox *m_presenceIndicatorSize; //<! size of the presence indicator for basic peer widgets
-
-        QDialogButtonBox * m_btnbox;        //!< Buttons box
-        QTabWidget *m_tabwidget;       //!< Tabs to access configuration widgets
-        QCheckBox *m_queue_longestwait;  //!< should we display the longest wait in the queue xlet ?
-        QCheckBox *m_queue_displaynu;  //!< should we display the queue number in queue name ?
+        QDialogButtonBox * m_btnbox;    //!< Buttons box
+        QTabWidget * m_tabwidget;       //!< Tabs to access configuration widgets
 
         struct {
             QString action;
@@ -134,7 +139,7 @@ class ConfigWidget: public QDialog
             QPushButton *button;
         } m_operator_action[9];
 
-        QCheckBox * m_operator_answer_work;  //!< should we display the answer key in operator xlet ?
+        QCheckBox * m_operator_answer_work; //!< should we display the answer key in operator xlet ?
 
         int m_currentKeyChange;
 };

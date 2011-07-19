@@ -71,7 +71,6 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     _insert_account_tab();
     _insert_guisetting_tab();
     _insert_function_tab();
-    _insert_operatorxlet_tab();
 
     m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
 
@@ -82,8 +81,6 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 /*! \brief connection config tab */
 void ConfigWidget::_insert_connection_tab()
 {
-    int line = 0;
-
     QFormLayout * layout1 = new QFormLayout;
     QWidget * widget_connection = new QWidget;
 
@@ -122,11 +119,11 @@ void ConfigWidget::_insert_connection_tab()
 /*! \brief function config tab */
 void ConfigWidget::_insert_function_tab()
 {
-
-    QFormLayout *layout2 = new QFormLayout();
+    QVBoxLayout *layout2 = new QVBoxLayout();
     QWidget *widget_functions = new QWidget();
     widget_functions->setLayout(layout2);
-
+    
+    // Please don't split this loop, because it is much simpler to add new functions this way
     func_legend["presence"] = tr("Presence reporting");
     func_legend["customerinfo"] = tr("Customer Info");
 
@@ -136,7 +133,7 @@ void ConfigWidget::_insert_function_tab()
         layout2->addWidget(m_function[function]);
     }
     
-    QTabWidget * tabwidget_functions = new QTabWidget();
+    m_function_tabwidget = new QTabWidget();
     
         QWidget * widget_presence = new QWidget() ;
         QFormLayout * layout21 = new QFormLayout() ;
@@ -150,7 +147,7 @@ void ConfigWidget::_insert_function_tab()
         m_presenceIndicatorSize->setValue(presenceIndicatorSize);
         layout21->addRow(tr("Presence indicator size (in pixels)"), m_presenceIndicatorSize);
         
-    tabwidget_functions->addTab(widget_presence, tr("Presence reporting"));
+    m_function_tabwidget->addTab(widget_presence, tr("Presence reporting"));
     
         QWidget * widget_customerinfo = new QWidget() ;
         QFormLayout * layout22 = new QFormLayout() ;
@@ -159,9 +156,14 @@ void ConfigWidget::_insert_function_tab()
         m_autourl_allowed = new QCheckBox(tr("Allow the Automatic Opening of URL's"));
         m_autourl_allowed->setCheckState(m_opts.value("autourl_allowed").toUInt() == 2 ?
                                          Qt::Checked : Qt::Unchecked);
-        layout22->addWidget(m_autourl_allowed);
+        layout22->addRow(m_autourl_allowed);
         
-    tabwidget_functions->addTab(widget_customerinfo, tr("Customer Info"));
+        m_tablimit_sbox = new QSpinBox(this);
+        m_tablimit_sbox->setRange(0, 99);
+        m_tablimit_sbox->setValue(m_opts.value("sheet-tablimit").toUInt());
+        layout22->addRow(tr("Tab limit"), m_tablimit_sbox);
+        
+    m_function_tabwidget->addTab(widget_customerinfo, tr("Customer Info"));
     
         QWidget * widget_history = new QWidget() ;
         QFormLayout * layout23 = new QFormLayout() ;
@@ -172,7 +174,7 @@ void ConfigWidget::_insert_function_tab()
         m_history_sbox->setValue(b_engine->historySize());
         layout23->addRow(tr("History size"), m_history_sbox);
         
-    tabwidget_functions->addTab(widget_history, tr("History"));
+    m_function_tabwidget->addTab(widget_history, tr("History"));
         
         QWidget * widget_contacts = new QWidget() ;
         QFormLayout * layout24 = new QFormLayout() ;
@@ -189,14 +191,14 @@ void ConfigWidget::_insert_function_tab()
         m_contactswidth_sbox->setValue(m_opts.value("contacts-width").toUInt());
         layout24->addRow(tr("Contacts' width"), m_contactswidth_sbox);
         
-    tabwidget_functions->addTab(widget_contacts, tr("Contacts"));
+    m_function_tabwidget->addTab(widget_contacts, tr("Contacts"));
     
         QWidget * widget_queues = new QWidget() ;
         QGridLayout * layout25 = new QGridLayout() ;
+        layout25->setAlignment(Qt::AlignTop|Qt::AlignHCenter);
         widget_queues->setLayout(layout25);
         
         int line = 0;
-        int width = 4;
 
         layout25->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
         int ncol = 1;
@@ -207,10 +209,6 @@ void ConfigWidget::_insert_function_tab()
             layout25->addWidget(m_queuelevels[color], line, ncol++);
         }
         line++;
-
-        // gridlayout2->setRowStretch(line, 1);
-        // gridlayout2->setColumnStretch(width, 1);
-
 
         m_queue_longestwait = new QCheckBox(tr("Queue Display (Longest Wait)"), this);
         m_queue_longestwait->setCheckState(m_opts.value("queue_longestwait").toBool() ? Qt::Checked : Qt::Unchecked);
@@ -228,7 +226,7 @@ void ConfigWidget::_insert_function_tab()
         m_queue_displaynu->setCheckState(m_opts.value("queue_displaynu").toBool() ? Qt::Checked : Qt::Unchecked);
         layout25->addWidget(m_queue_displaynu, line, 0);
     
-    tabwidget_functions->addTab(widget_queues, tr("Queues"));
+    m_function_tabwidget->addTab(widget_queues, tr("Queues"));
     
         QWidget * widget_switchboard = new QWidget() ;
         QFormLayout * layout26 = new QFormLayout() ;
@@ -251,9 +249,11 @@ void ConfigWidget::_insert_function_tab()
         m_maxWidthWanted->setValue(maxwidthwanted);
         layout26->addRow(tr("Maximum width for small SwitchBoard elements"), m_maxWidthWanted);
     
-    tabwidget_functions->addTab(widget_switchboard, tr("Switchboard"));
+    m_function_tabwidget->addTab(widget_switchboard, tr("Switchboard"));
     
-    layout2->addWidget(tabwidget_functions);
+    _insert_operator_functiontab();
+    
+    layout2->addWidget(m_function_tabwidget);
     
     m_tabwidget->addTab(widget_functions, tr("Functions"));
 }
@@ -261,12 +261,9 @@ void ConfigWidget::_insert_function_tab()
 /*! \brief account config tab */
 void ConfigWidget::_insert_account_tab()
 {
-    int line = 0;
-
     QFormLayout *layout3 = new QFormLayout();
     QWidget *widget_user = new QWidget();
     widget_user->setLayout(layout3);
-    line = 0;
 
     m_context = new QLineEdit(b_engine->company(), this);
     layout3->addRow(tr("Context"), m_context);
@@ -332,11 +329,6 @@ void ConfigWidget::_insert_guisetting_tab()
     qhline5->setFrameShape(QFrame::HLine);
     layout4->addRow(qhline5);
 
-    m_tablimit_sbox = new QSpinBox(this);
-    m_tablimit_sbox->setRange(0, 99);
-    m_tablimit_sbox->setValue(m_opts.value("sheet-tablimit").toUInt());
-    layout4->addRow(tr("Tab limit"), m_tablimit_sbox);
-
     m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
     m_systrayed->setCheckState(b_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow(m_systrayed);
@@ -370,11 +362,10 @@ void ConfigWidget::changeOperatorKey(bool a)
                     .arg(QKeySequence(m_opts.value("xlet_operator_key" + m_operator_action[index].action).toInt()).toString()));
     old = NULL;
   }
-
 }
 
 /*! \brief operator xlet config tab */
-void ConfigWidget::_insert_operatorxlet_tab()
+void ConfigWidget::_insert_operator_functiontab()
 {
     m_operator_action[0].action = QString("answer");
     m_operator_action[0].translation = tr("Answer");
@@ -427,7 +418,7 @@ void ConfigWidget::_insert_operatorxlet_tab()
 
     glayout->addWidget(new QLabel(tr("Any change here requires an application restart to be effective")), ++i, 1, 1, 2);
 
-    m_tabwidget->addTab(root_widget, tr("Operator Xlet"));
+    m_function_tabwidget->addTab(root_widget, tr("Operator Xlet"));
 }
 
 
