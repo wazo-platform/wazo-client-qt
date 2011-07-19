@@ -52,7 +52,16 @@ class BaseEngine;
 /*! \brief Configuration Window
  *
  * This Widget enables the user to edit the connection
- * parameters to the identification server */
+ * parameters to the identification server.
+ * 
+ * If you want to update the settings window, you need to look for every
+ * setting wanted in the application.
+ * First you can get every QSettings variable with a command like :
+ * $ grep -ron '[[:space:]]QSettings[^;]*;' xivoclient common baselib
+ * Then you can get every setting by typing a command like :
+ * $ egrep -ron '(<variables>)->value\("[^)]*\)' xivoclient common baselib
+ * where <variable> stands for the list of the variables obtained by the 
+ * previous command, separated by |*/
 class ConfigWidget: public QDialog
 {
     Q_OBJECT
