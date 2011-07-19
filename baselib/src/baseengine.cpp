@@ -892,7 +892,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "sheet") {
             // TODO : use id better than just channel name
-            qDebug() << Q_FUNC_INFO << "sheet" << datamap;
+            // qDebug() << Q_FUNC_INFO << "sheet" << datamap;
             QString channel = datamap.value("channel").toString();
             if (function == "getownership") {
                 emit gotSheetOwnership(channel);
@@ -1184,7 +1184,7 @@ void BaseEngine::parseCommand(const QString &line)
             }
 
         } else if (thisclass == "ipbxcommand") {
-            qDebug() << thisclass << datamap;
+            qDebug() << Q_FUNC_INFO << thisclass << datamap;
 
         } else if (thisclass == "getipbxlist") {
             m_ipbxlist = datamap.value("ipbxlist").toStringList();
