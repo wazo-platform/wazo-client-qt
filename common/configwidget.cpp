@@ -46,10 +46,42 @@
 #include <QSpinBox>
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <QPixmap>
 
 #include "configwidget.h"
 #include "baseengine.h"
 #include "xivoconsts.h"
+
+/*! \brief Wrapper to display a warning icon beside a QWidget*/
+class WarningWidget : public QWidget
+{
+    //Q_OBJECT
+    private:
+        QHBoxLayout * layout;
+    public:
+    
+        WarningWidget(QWidget * widget = NULL, QString tooltip = "") : QWidget() {
+            
+            layout = new QHBoxLayout();
+            layout->setMargin(0);
+            layout->setSpacing(0);
+            layout->setAlignment(Qt::AlignLeft);
+            setLayout(layout);
+            
+            QLabel * label = new QLabel();
+            label->setPixmap (QPixmap(":/images/warning.png").scaledToHeight(18, Qt::SmoothTransformation));
+            if (tooltip.isEmpty()) {
+                /*!
+                 * \todo the translation doesn't work
+                 */
+                tooltip = tr("You must restart the program for this setting to apply");
+            }
+            label->setToolTip(tooltip);
+            
+            layout->addWidget(widget);
+            layout->addWidget(label);
+        }
+};
 
 static const QStringList queuelevel_colors = (QStringList() << "green" << "orange");
 QHash<QString, QString> func_legend;
@@ -326,9 +358,7 @@ void ConfigWidget::_insert_guisetting_tab()
         if (b_engine->forcelocale() == m_locale_cbox->itemData(i))
             m_locale_cbox->setCurrentIndex(i);
     }
-    layout4->addRow(tr("Language")+ "\n" + \
-                    tr("/!\\ You MUST restart the application\n"
-                       "when you change this value /!\\"), m_locale_cbox);
+    layout4->addRow(tr("Language"), new WarningWidget(m_locale_cbox));
 
     QFrame *qhline5 = new QFrame(this);
     qhline5->setFrameShape(QFrame::HLine);
@@ -341,18 +371,18 @@ void ConfigWidget::_insert_guisetting_tab()
     // The value displayed is the inverse of the bool in memory
     m_unique = new QCheckBox(tr("Allow multiple instances of XiVO Client"), this);
     m_unique->setCheckState(b_engine->uniqueInstance() ? Qt::Unchecked : Qt::Checked);
-    layout4->addRow(m_unique);
+    layout4->addRow(new WarningWidget(m_unique));
     
     /*!
      * \todo make a list of the qss files and fill a combobox ?
      */
     m_qss = new QLineEdit();
     m_qss->setText(b_engine->qss());
-    layout4->addRow(tr("Interface style"), m_qss);
+    layout4->addRow(tr("Interface style"), new WarningWidget(m_qss));
     
     m_clipboard = new QCheckBox(tr("Enable the clipboard")) ;
     m_clipboard->setCheckState(b_engine->enableClipboard() ? Qt::Checked : Qt::Unchecked);
-    layout4->addRow(m_clipboard);
+    layout4->addRow(new WarningWidget(m_clipboard));
     
     m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
 }
@@ -366,11 +396,11 @@ void ConfigWidget::_insert_advanced_tab()
     
     m_logtofile = new QCheckBox(tr("Enable logging of program actions"));
     m_logtofile->setCheckState(b_engine->logToFile() ? Qt::Checked : Qt::Unchecked);
-    layout5->addRow(m_logtofile);
+    layout5->addRow(new WarningWidget(m_logtofile));
     
     m_logfilename = new QLineEdit();
     m_logfilename->setText(b_engine->logFile());
-    layout5->addRow(tr("Logfile name"), m_logfilename);
+    layout5->addRow(tr("Logfile name"), new WarningWidget(m_logfilename));
     
     m_tabwidget->addTab(widget_adv, tr("Advanced"));
 }
