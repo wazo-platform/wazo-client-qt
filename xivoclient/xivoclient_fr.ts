@@ -330,7 +330,7 @@ si vous changez cette valeur</translation>
     <message>
         <location filename="../common/configwidget.cpp" line="373"/>
         <source>Logfile name</source>
-        <translation>Nom du fichier de journalisatin</translation>
+        <translation>Nom du fichier de journalisation</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="375"/>
