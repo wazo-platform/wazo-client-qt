@@ -71,10 +71,15 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     _insert_account_tab();
     _insert_guisetting_tab();
     _insert_function_tab();
+    _insert_advanced_tab();
 
     m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
-
     vlayout->addWidget(m_tabwidget);
+    
+    m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    connect(m_btnbox, SIGNAL(accepted()), this, SLOT(saveAndClose()));
+    connect(m_btnbox, SIGNAL(rejected()), this, SLOT(close()));
+    m_btnbox->button(QDialogButtonBox::Ok)->setDefault(true);
     vlayout->addWidget(m_btnbox);
 }
 
@@ -304,7 +309,7 @@ void ConfigWidget::_insert_account_tab()
     m_tabwidget->addTab(widget_user, tr("Account"));
 }
 
-/*! \brief gui setting config tab */
+/*! \brief gui settings config tab */
 void ConfigWidget::_insert_guisetting_tab()
 {
     QFormLayout *layout4 = new QFormLayout();
@@ -333,16 +338,42 @@ void ConfigWidget::_insert_guisetting_tab()
     m_systrayed->setCheckState(b_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow(m_systrayed);
     
+    // The value displayed is the inverse of the bool in memory
+    m_unique = new QCheckBox(tr("Allow multiple instances of XiVO Client"), this);
+    m_unique->setCheckState(b_engine->uniqueInstance() ? Qt::Unchecked : Qt::Checked);
+    layout4->addRow(m_unique);
+    
+    /*!
+     * \todo make a list of the qss files and fill a combobox ?
+     */
+    m_qss = new QLineEdit();
+    m_qss->setText(b_engine->qss());
+    layout4->addRow(tr("Interface style"), m_qss);
+    
+    m_clipboard = new QCheckBox(tr("Enable the clipboard")) ;
+    m_clipboard->setCheckState(b_engine->enableClipboard() ? Qt::Checked : Qt::Unchecked);
+    layout4->addRow(m_clipboard);
+    
     m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
-
-    m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
-    connect(m_btnbox, SIGNAL(accepted()), this, SLOT(saveAndClose()));
-    connect(m_btnbox, SIGNAL(rejected()), this, SLOT(close()));
-    m_btnbox->button(QDialogButtonBox::Ok)->setDefault(true);
 }
 
-
-
+/*! \brief advanced config tab */
+void ConfigWidget::_insert_advanced_tab()
+{
+    QFormLayout * layout5 = new QFormLayout();
+    QWidget * widget_adv = new QWidget();
+    widget_adv->setLayout(layout5);
+    
+    m_logtofile = new QCheckBox(tr("Enable logging of program actions"));
+    m_logtofile->setCheckState(b_engine->logToFile() ? Qt::Checked : Qt::Unchecked);
+    layout5->addRow(m_logtofile);
+    
+    m_logfilename = new QLineEdit();
+    m_logfilename->setText(b_engine->logFile());
+    layout5->addRow(tr("Logfile name"), m_logfilename);
+    
+    m_tabwidget->addTab(widget_adv, tr("Advanced"));
+}
 
 void ConfigWidget::changeOperatorKey(bool a)
 {
@@ -500,6 +531,13 @@ void ConfigWidget::saveAndClose()
         b_engine->setHistorySize(m_history_sbox->value());
 
     b_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
+    b_engine->setQss(m_qss->text());
+    // UniqueInstance : the value displayed is the opposite of the value in memory
+    b_engine->setUniqueInstance(m_unique->checkState() == Qt::Unchecked);
+    b_engine->setEnableClipboard(m_clipboard->checkState() == Qt::Checked);
+    
+    b_engine->setLogToFile(m_logtofile->checkState() == Qt::Checked);
+    b_engine->setLogFile(m_logfilename->text());
 
     QVariantMap opts_saved;
     QVariantMap qvm, qvm2;
@@ -532,6 +570,9 @@ void ConfigWidget::saveAndClose()
     opts_saved["maxwidthwanted"] = m_maxWidthWanted->value();
     opts_saved["presenceindicatorsize"] = m_presenceIndicatorSize->value();
     b_engine->setGuiOption("client_gui", opts_saved);
+    /*!
+     * \todo Don't put any settings below, fix todo in baseEngine::setGuiSettings() first.
+     */
 
     emit confUpdated();
     close();

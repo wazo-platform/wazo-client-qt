@@ -159,7 +159,17 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void configAndStart(const QString &, const QString &, const QString &);
         QString osname() const { return m_osname; };
 
+        bool logToFile() const;
+        void setLogToFile(bool);
+        QString logFile() const;
         void setLogFile(const QString &);
+        
+        bool uniqueInstance() const;
+        void setUniqueInstance(bool);
+        QString qss() const;
+        void setQss(const QString &);
+        bool enableClipboard() const;
+        void setEnableClipboard(bool);
 
         const QString & xivoUserId() const { return m_userid; };
         const QString & getFullId() const { return m_xuserid; };
@@ -448,6 +458,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QFile * m_eventdevice;
         QByteArray m_downloaded;    //!< downloaded data
         QFile * m_logfile;
+        bool m_logtofile;
+        bool m_uniqueinstance;
+        QString m_qss;
+        bool m_enableclipboard;
         int m_byte_counter; //!< byte counter for calculating network throughput
         QTime m_time;       //!< time counter for calculating network throughput
         bool m_attempt_loggedin;

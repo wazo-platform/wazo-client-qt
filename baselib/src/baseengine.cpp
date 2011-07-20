@@ -178,6 +178,13 @@ void BaseEngine::loadSettings()
 {
     // qDebug() << Q_FUNC_INFO;
     m_systrayed = m_settings->value("display/systrayed", false).toBool();
+    m_uniqueinstance = m_settings->value("display/unique", true).toBool();
+    m_qss = m_settings->value("display/qss", "none").toString();
+    m_enableclipboard = m_settings->value("display/enableclipboard", true).toBool();
+    m_logtofile = m_settings->value("display/logtofile", false).toBool();
+    if (m_logtofile) {
+        setLogFile (m_settings->value("display/logfilename", "XiVO_Client.log").toString());
+    }
     QString profile = m_settings->value("profile/lastused").toString();
     m_profilename_write = "engine-" + profile;
 
@@ -275,6 +282,11 @@ void BaseEngine::saveSettings()
     m_settings->setValue("version/git_hash", __git_hash__);
     m_settings->setValue("version/git_date", __git_date__);
     m_settings->setValue("display/systrayed", m_systrayed);
+    m_settings->setValue("display/unique", m_uniqueinstance);
+    m_settings->setValue("display/qss", m_qss);
+    m_settings->setValue("display/enableclipboard", m_enableclipboard);
+    m_settings->setValue("display/logtofile", m_logtofile);
+    m_settings->setValue("display/logfilename", m_logfile == NULL ? QString("") : m_logfile->fileName());
 
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("serverhost", m_cti_address);
@@ -344,6 +356,25 @@ bool BaseEngine::enabledFunction(const QString & function)
     return m_capafuncs.contains(function);
 }
 
+bool BaseEngine::logToFile() const
+{
+    return m_logtofile;
+}
+
+void BaseEngine::setLogToFile(bool logtofile)
+{
+    m_logtofile = logtofile;
+}
+
+QString BaseEngine::logFile() const
+{
+    if (m_logfile != NULL) {
+        return m_logfile->fileName();
+    } else {
+        return QString();
+    }
+}
+
 void BaseEngine::setLogFile(const QString & logfilename)
 {
     if (! logfilename.isEmpty()) {
@@ -356,11 +387,41 @@ void BaseEngine::setLogFile(const QString & logfilename)
 
 void BaseEngine::logAction(const QString & logstring)
 {
-    if (m_logfile != NULL) {
+    if (m_logtofile && m_logfile != NULL) {
         QString tolog = QDateTime::currentDateTime().toString(Qt::ISODate) + " " + logstring + "\n";
         m_logfile->write(tolog.toUtf8());
         m_logfile->flush();
     }
+}
+
+bool BaseEngine::uniqueInstance() const
+{
+    return m_settings->value("display/unique", true).toBool() ;
+}
+
+void BaseEngine::setUniqueInstance(bool unique)
+{
+    m_uniqueinstance = unique;
+}
+
+QString BaseEngine::qss() const
+{
+    return m_qss;
+}
+
+void BaseEngine::setQss(const QString &qss)
+{
+    m_qss = qss;
+}
+
+bool BaseEngine::enableClipboard() const
+{
+    return m_enableclipboard;
+}
+
+void BaseEngine::setEnableClipboard(bool clipboard)
+{
+    m_enableclipboard = clipboard;
 }
 
 /*! \brief set login/pass and then starts */
@@ -579,6 +640,9 @@ void BaseEngine::setGuiOption(const QString &arg, const QVariant &opt)
         m_settings->endGroup();
     m_settings->endGroup();
 
+    /*!
+     * \todo Can we get saveSettings out of this function? Because we should call it explicitly in ConfigWidget::saveAndClose().
+     */
     saveSettings();
 }
 

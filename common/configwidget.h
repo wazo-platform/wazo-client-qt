@@ -57,9 +57,9 @@ class BaseEngine;
  * If you want to update the settings window, you need to look for every
  * setting wanted in the application.
  * First you can get every QSettings variable with a command like :
- * $ grep -ron '[[:space:]]QSettings[^;]*;' xivoclient common baselib
+ * \code $ grep -ron '[[:space:]]QSettings[^;]*;' xivoclient common baselib \endcode
  * Then you can get every setting by typing a command like :
- * $ egrep -ron '(<variables>)->value\("[^)]*\)' xivoclient common baselib
+ * \code $ egrep -ron '(<variables>)->value\("[^)]*\)' xivoclient common baselib \endcode
  * where <variable> stands for the list of the variables obtained by the 
  * previous command, separated by |*/
 class ConfigWidget: public QDialog
@@ -87,8 +87,8 @@ class ConfigWidget: public QDialog
         void _insert_account_tab();
         void _insert_guisetting_tab();
         void _insert_function_tab();
-        
         void _insert_operator_functiontab();
+        void _insert_advanced_tab();
 
         QVariantMap m_opts;
         QVariantMap m_forcedopts;
@@ -113,7 +113,9 @@ class ConfigWidget: public QDialog
 
         QComboBox * m_locale_cbox;      //!< Locale selectbox
         QCheckBox * m_systrayed;        //!< "Systray at startup" Checkbox
-        QLabel    * m_lblphone;         //!< label "Phone Number"
+        QCheckBox * m_unique;           //!< Can multiple instances of the program run simultaneously?
+        QLineEdit * m_qss;              //!< Qt style sheet file. Only the name of the file, without qss.
+        QCheckBox * m_clipboard;        //!< Clipboard enabled?
 
         QHash<QString, QCheckBox *> m_function; //!< connect to functions checkboxes
         
@@ -151,5 +153,8 @@ class ConfigWidget: public QDialog
         QCheckBox * m_operator_answer_work; //!< should we display the answer key in operator xlet ?
 
         int m_currentKeyChange;
+        
+        QCheckBox * m_logtofile;
+        QLineEdit * m_logfilename;
 };
 #endif

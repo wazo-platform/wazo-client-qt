@@ -104,9 +104,6 @@ MainWidget::MainWidget()
     resize(500, 440);
     restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
 
-    if (m_settings->value("display/logtofile", false).toBool()) {
-        b_engine->setLogFile(m_settings->value("display/logfilename", "XiVO_Client.log").toString());
-    }
     b_engine->logAction("application started on " + b_engine->osname());
 
     setCentralWidget(m_centralWidget);
