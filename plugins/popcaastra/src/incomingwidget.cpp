@@ -14,7 +14,7 @@ IncomingWidget::IncomingWidget(int line, const QString & xchan, QWidget * w)
     : QWidget(w), m_line(line), m_xchannel(xchan),
         m_start(b_engine->timeServer())
 {
-    qDebug() << Q_FUNC_INFO << "Line(" << line << ") Channel(" << xchan << ")";
+    // qDebug() << Q_FUNC_INFO << "Line(" << line << ") Channel(" << xchan << ")";
     m_small_button_sz = new QSize(20,20);
     buildLayout();
     setSignalsSlots();
@@ -24,7 +24,7 @@ IncomingWidget::IncomingWidget(int line, const QString & xchan, QWidget * w)
 
 void IncomingWidget::buildLayout()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     m_layout = new QHBoxLayout(this);
     m_lbl_line = new QLabel(this);
     m_lbl_name = new QLabel(this);

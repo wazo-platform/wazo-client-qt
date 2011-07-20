@@ -58,7 +58,7 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
     m_layout = new QVBoxLayout(this);
     m_top_widget = new QHBoxLayout(this);
 
-    this->setLayout(m_layout);
+    //this->setLayout(m_layout);
     m_layout->addLayout(m_top_widget);
     m_layout->setAlignment(Qt::AlignTop);
 
@@ -399,10 +399,6 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
     if (m_transferedcalls.size() || m_incomingcalls.size()) {
         removeDefunctWidgets();
         removeCompletedTransfers();
-    }
-    const QHash<QString, QHash<QString, ParkingInfo *> > parkings = b_engine->parking();
-    if (parkings.size() != 0) {
-        qDebug() << Q_FUNC_INFO << "Parking size(" << parkings.size() <<")";
     }
 }
 

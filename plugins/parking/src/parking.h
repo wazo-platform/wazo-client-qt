@@ -39,8 +39,9 @@
 #include "xletinterface.h"
 
 #include "baseengine.h"
-#include "extendedtablewidget.h"
-#include "parkinginfo.h"
+
+class ParkingInfo;
+class ParkingWidget;
 class PeerChannel;
 
 /*! \brief Displays the parking slots.
@@ -51,21 +52,22 @@ class XletParking : public XLet
 
     public:
         XletParking(QWidget *parent=0);
-
+        ~XletParking();
     protected:
         void timerEvent(QTimerEvent *);  //!< receive timer events
-
     public slots:
         void setGuiOptions(const QVariantMap &) {};
-        void parkingEvent(const QString &, const QString &, const QString &, const QVariant &);
+        void updateParkinglotConfig(const QString &);
+        void updateParkinglotStatus(const QString &);
     private slots:
-        void itemClicked(QTableWidgetItem *);
-        void itemDoubleClicked(QTableWidgetItem *);
+        void itemClicked(const QString &);
+        void itemDoubleClicked(const QString &);
     private:
-        ExtendedTableWidget *m_table;  //!< Table
+        QVBoxLayout * m_parkinglayout;
         int m_timerid;  //!< id of the timer
         int m_deltasec;  //!< timer period
-        QList<PeerChannel *> m_mychannels;  //!< "my channels" list for transfer menu
+        // QList<PeerChannel *> m_mychannels;  //!< "my channels" list for transfer menu
+        QHash<QString, ParkingWidget *> m_parkinglots; //!< Parkinglots widgets
 };
 
 class XLetParkingPlugin : public QObject, XLetInterface

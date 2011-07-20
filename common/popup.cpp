@@ -362,8 +362,8 @@ void Popup::addInfoText(int where, const QString & name, const QString & value)
     lblvalue->setTextInteractionFlags( Qt::TextSelectableByMouse
                                        | Qt::TextSelectableByKeyboard );
     QHBoxLayout * hlayout = new QHBoxLayout();
-    hlayout->addWidget(lblname);
-    hlayout->addWidget(lblvalue);
+    hlayout->addWidget(lblname, 1, Qt::AlignTop);
+    hlayout->addWidget(lblvalue, 1, Qt::AlignTop);
     m_vlayout->insertLayout(where, hlayout);
 }
 
@@ -422,16 +422,17 @@ void Popup::setEnablesOnForms()
  */
 void Popup::addInfoPhone(int where, const QString & name, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << value;
     QLabel * lblname = new QLabel(name, this);
     QPushButton * lblvalue = new QPushButton(value, this);
+    QHBoxLayout * hlayout = new QHBoxLayout();
+
     lblvalue->setObjectName("phonenumber");
     lblvalue->setProperty("number", value);
     connect( lblvalue, SIGNAL(clicked()),
              this, SLOT(dialThisNumber()) );
-    QHBoxLayout * hlayout = new QHBoxLayout();
-    hlayout->addWidget(lblname);
-    hlayout->addWidget(lblvalue);
+
+    hlayout->addWidget(lblname, 1, Qt::AlignTop);
+    hlayout->addWidget(lblvalue, 1, Qt::AlignTop);
     m_vlayout->insertLayout(where, hlayout);
 }
 
@@ -454,9 +455,10 @@ void Popup::addInfoLink(int where, const QString & name, const QString & value)
     QLabel * lblname = new QLabel(name, this);
     UrlLabel * lblvalue = new UrlLabel(value, this);
     QHBoxLayout * hlayout = new QHBoxLayout();
-    hlayout->addWidget(lblname);
-    hlayout->addWidget(lblvalue);
     lblvalue->setToolTip(value);
+
+    hlayout->addWidget(lblname, 1, Qt::AlignTop);
+    hlayout->addWidget(lblvalue, 1, Qt::AlignTop);
     m_vlayout->insertLayout(where, hlayout);
 }
 
@@ -477,30 +479,48 @@ void Popup::addInfoLinkX(int where, const QString & name, const QString & value)
     connect( lblvalue, SIGNAL(clicked()),
              this, SLOT(httpGetNoreply()) );
     QHBoxLayout * hlayout = new QHBoxLayout();
-    hlayout->addWidget(lblname);
-    hlayout->addWidget(lblvalue);
+    hlayout->addWidget(lblname, 1, Qt::AlignTop);
+    hlayout->addWidget(lblvalue, 1, Qt::AlignTop);
     lblvalue->setToolTip(linkvalue);
     m_vlayout->insertLayout(where, hlayout);
 }
 
 void Popup::addInfoPicture(int where, const QString & name, const QString & value)
 {
-    QUrl url(value);
-    // qDebug() << Q_FUNC_INFO << value << url.scheme();
-    //QUrl url = QUrl::fromEncoded(value);
-    // TODO: faire un widget special qui bouffe des Images HTTP ?
-    if((url.scheme() != QString("http")) &&
-       (url.scheme() != QString("https"))) {
-        QLabel *lbl = new QLabel( name, this );
-        QPixmap *face = new QPixmap( value );
-        // TODO: connect a signal to close() ?
-        lbl->setPixmap( *face );
-        m_vlayout->insertWidget(where, lbl, 0, Qt::AlignCenter);
-    } else {
-        RemotePicWidget * pic = new RemotePicWidget( name, value, this );
-        m_vlayout->insertWidget(where, pic, 0, Qt::AlignCenter);
-    }
+    QLabel * lblname = new QLabel(this);
+    QLabel * lblvalue = new QLabel(this);
+    QHBoxLayout * hlayout = new QHBoxLayout();
+
+    QByteArray imagedata = QByteArray::fromBase64(value.toAscii());
+    QPixmap * picture = new QPixmap();
+    lblname->setText(name);
+    picture->loadFromData(imagedata);
+    lblvalue->setPixmap(* picture);
+    // TODO: connect a signal to close() ?
+
+    hlayout->addWidget(lblname, 1, Qt::AlignTop);
+    hlayout->addWidget(lblvalue, 1, Qt::AlignTop);
+    m_vlayout->insertLayout(where, hlayout);
 }
+
+// void Popup::addInfoPictureHttp(int where, const QString & name, const QString & value)
+// {
+//     QUrl url(value);
+//     // qDebug() << Q_FUNC_INFO << value << url.scheme();
+//     //QUrl url = QUrl::fromEncoded(value);
+//     // TODO: faire un widget special qui bouffe des Images HTTP ?
+//     if((url.scheme() != QString("http")) &&
+//        (url.scheme() != QString("https"))) {
+//         QLabel *lbl = new QLabel( name, this );
+//         QPixmap *face = new QPixmap( value );
+//         // TODO: connect a signal to close() ?
+//         lbl->setPixmap( *face );
+//         m_vlayout->insertWidget(where, lbl, 0, Qt::AlignCenter);
+//     } else {
+//         RemotePicWidget * pic = new RemotePicWidget( name, value, this );
+//         m_vlayout->insertWidget(where, pic, 0, Qt::AlignCenter);
+//     }
+// }
 
 // === SLOTS ===
 void Popup::streamNewData()
