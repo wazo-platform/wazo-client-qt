@@ -81,8 +81,6 @@ static CtiConn * m_ctiConn;
 BaseEngine::BaseEngine(QSettings *settings,
                        const QString &osInfo)
     : QObject(NULL),
-      m_cti_address(""), m_cti_port(0),
-      m_cti_encrypt(false),
       m_userlogin(""), m_userloginopt(""), m_company(""), m_password(""), m_agentphonenumber(""),
       m_sessionid(""), m_state(ENotLogged),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
@@ -132,7 +130,7 @@ BaseEngine::BaseEngine(QSettings *settings,
     connect(m_filetransfersocket, SIGNAL(readyRead()),
             this, SLOT(filetransferSocketReadyRead()));
 
-    if (m_autoconnect)
+    if (m_config["autoconnect"].toBool())
         start();
     translationFiles = \
         (QStringList() << ":/xivoclient_%1"
@@ -178,12 +176,12 @@ QSettings* BaseEngine::getSettings()
 void BaseEngine::loadSettings()
 {
     // qDebug() << Q_FUNC_INFO;
-    m_systrayed = m_settings->value("display/systrayed", false).toBool();
-    m_uniqueinstance = m_settings->value("display/unique", true).toBool();
-    m_qss = m_settings->value("display/qss", "none").toString();
-    m_enableclipboard = m_settings->value("display/enableclipboard", true).toBool();
-    m_logtofile = m_settings->value("display/logtofile", false).toBool();
-    if (m_logtofile) {
+    m_config["systrayed"] = m_settings->value("display/systrayed", false).toBool();
+    m_config["uniqueinstance"] = m_settings->value("display/unique", true).toBool();
+    m_config["qss"] = m_settings->value("display/qss", "none").toString();
+    m_config["enableclipboard"] = m_settings->value("display/enableclipboard", true).toBool();
+    m_config["logtofile"] = m_settings->value("display/logtofile", false).toBool();
+    if (m_config["logtofile"].toBool()) {
         setLogFile (m_settings->value("display/logfilename", "XiVO_Client.log").toString());
     }
     QString profile = m_settings->value("profile/lastused").toString();
@@ -198,32 +196,32 @@ void BaseEngine::loadSettings()
         m_profilename_read = "engine-" + profile;
 
     m_settings->beginGroup(m_profilename_read);
-        m_cti_address = m_settings->value("serverhost", "demo.xivo.fr").toString();
-        m_cti_port    = m_settings->value("serverport", 5003).toUInt();
-        m_cti_encrypt = m_settings->value("encryption", false).toBool();
+        m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.fr").toString();
+        m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
+        m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
 
-        m_userlogin      = m_settings->value("userid").toString().trimmed();
+        m_config["userlogin"]   = m_settings->value("userid").toString().trimmed();
         m_userloginopt   = m_settings->value("useridopt").toString().trimmed();
         if (m_userloginopt.size() > 0)
-            m_userloginwithopt = m_userlogin + "%" + m_userloginopt;
+            m_userloginwithopt = m_config["userlogin"].toString() + "%" + m_userloginopt;
         else
-            m_userloginwithopt = m_userlogin;
-        m_company      = m_settings->value("company", "default").toString();
-        m_password     = m_settings->value("password").toString();
-        m_keeppass     = m_settings->value("keeppass", 0).toUInt();
-        m_showagselect = m_settings->value("showagselect", 2).toUInt();
-        m_agentphonenumber  = m_settings->value("agentphonenumber").toString();
+            m_userloginwithopt = m_config["userlogin"].toString();
+        m_config["company"] = m_settings->value("company", "default").toString();
+        m_config["password"] = m_settings->value("password").toString();
+        m_config["keeppass"] = m_settings->value("keeppass", 0).toUInt();
+        m_config["showagselect"] = m_settings->value("showagselect", 2).toUInt();
+        m_config["agentphonenumber"] = m_settings->value("agentphonenumber").toString();
 
-        m_forcelocale = m_settings->value("forcelocale", false).toString();
-        m_autoconnect = m_settings->value("autoconnect", false).toBool();
-        m_trytoreconnect = m_settings->value("trytoreconnect", false).toBool();
-        m_trytoreconnectinterval = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
-        m_keepaliveinterval = m_settings->value("keepaliveinterval", 20*1000).toUInt();
+        m_config["forcelocale"] = m_settings->value("forcelocale", false).toString();
+        m_config["autoconnect"] = m_settings->value("autoconnect", false).toBool();
+        m_config["trytoreconnect"] = m_settings->value("trytoreconnect", false).toBool();
+        m_config["trytoreconnectinterval"] = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
+        m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 20*1000).toUInt();
         m_checked_lastconnwins = m_settings->value("lastconnwins", false).toBool();
         m_availstate = m_settings->value("availstate", "available").toString();
 
         m_settings->beginGroup("user-gui");
-            m_historysize = m_settings->value("historysize", 8).toUInt();
+            m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
 
             QString defaultguioptions;
             QFile defaultguioptions_file(":/common/guioptions.json");
@@ -275,45 +273,45 @@ void BaseEngine::loadSettings()
  */
 void BaseEngine::saveSettings()
 {
-    if (m_settings->value("userid").toString() != m_userlogin) {
+    if (m_settings->value("userid").toString() != m_config["userlogin"].toString()) {
         m_settings->setValue("monitor/userid", QString(""));
     }
 
     m_settings->setValue("version/xivo", __xivo_version__);
     m_settings->setValue("version/git_hash", __git_hash__);
     m_settings->setValue("version/git_date", __git_date__);
-    m_settings->setValue("display/systrayed", m_systrayed);
-    m_settings->setValue("display/unique", m_uniqueinstance);
-    m_settings->setValue("display/qss", m_qss);
-    m_settings->setValue("display/enableclipboard", m_enableclipboard);
-    m_settings->setValue("display/logtofile", m_logtofile);
+    m_settings->setValue("display/systrayed", m_config["systrayed"].toBool());
+    m_settings->setValue("display/unique", m_config["uniqueinstance"].toBool());
+    m_settings->setValue("display/qss", m_config["qss"].toString());
+    m_settings->setValue("display/enableclipboard", m_config["enableclipboard"].toBool());
+    m_settings->setValue("display/logtofile", m_config["logtofile"].toBool());
     m_settings->setValue("display/logfilename", m_logfile == NULL ? QString("") : m_logfile->fileName());
 
     m_settings->beginGroup(m_profilename_write);
-        m_settings->setValue("serverhost", m_cti_address);
-        m_settings->setValue("serverport", m_cti_port);
-        m_settings->setValue("encryption", m_cti_encrypt);
-        m_settings->setValue("userid", m_userlogin);
+        m_settings->setValue("serverhost", m_config["cti_address"].toString());
+        m_settings->setValue("serverport", m_config["cti_port"].toUInt());
+        m_settings->setValue("encryption", m_config["cti_encrypt"].toBool());
+        m_settings->setValue("userid", m_config["userlogin"].toString());
         m_settings->setValue("useridopt", m_userloginopt);
-        m_settings->setValue("company", m_company);
-        m_settings->setValue("keeppass", m_keeppass);
-        m_settings->setValue("showagselect", m_showagselect);
-        m_settings->setValue("agentphonenumber", m_agentphonenumber);
-        m_settings->setValue("forcelocale", m_forcelocale);
-        m_settings->setValue("autoconnect", m_autoconnect);
-        m_settings->setValue("trytoreconnect", m_trytoreconnect);
-        m_settings->setValue("trytoreconnectinterval", m_trytoreconnectinterval);
-        m_settings->setValue("keepaliveinterval", m_keepaliveinterval);
+        m_settings->setValue("company", m_config["company"].toString());
+        m_settings->setValue("keeppass", m_config["keeppass"].toUInt());
+        m_settings->setValue("showagselect", m_config["showagselect"].toUInt());
+        m_settings->setValue("agentphonenumber", m_config["agentphonenumber"].toString());
+        m_settings->setValue("forcelocale", m_config["forcelocale"].toString());
+        m_settings->setValue("autoconnect", m_config["autoconnect"].toBool());
+        m_settings->setValue("trytoreconnect", m_config["trytoreconnect"].toBool());
+        m_settings->setValue("trytoreconnectinterval", m_config["trytoreconnectinterval"].toUInt());
+        m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
         m_settings->setValue("lastconnwins", m_checked_lastconnwins);
         m_settings->setValue("availstate", m_availstate);
 
-        if (m_keeppass > 0)
-            m_settings->setValue("password", m_password);
+        if (m_config["keeppass"].toUInt() > 0)
+            m_settings->setValue("password", m_config["password"].toString());
         else
             m_settings->remove("password");
 
         m_settings->beginGroup("user-gui");
-            m_settings->setValue("historysize", m_historysize);
+            m_settings->setValue("historysize", m_config["historysize"].toInt());
             m_settings->setValue("guisettings", m_guioptions.value("client_gui"));
         m_settings->endGroup();
     m_settings->endGroup();
@@ -359,12 +357,12 @@ bool BaseEngine::enabledFunction(const QString & function)
 
 bool BaseEngine::logToFile() const
 {
-    return m_logtofile;
+    return m_config["logtofile"].toBool();
 }
 
 void BaseEngine::setLogToFile(bool logtofile)
 {
-    m_logtofile = logtofile;
+    m_config["logtofile"] = logtofile;
 }
 
 QString BaseEngine::logFile() const
@@ -388,7 +386,7 @@ void BaseEngine::setLogFile(const QString & logfilename)
 
 void BaseEngine::logAction(const QString & logstring)
 {
-    if (m_logtofile && m_logfile != NULL) {
+    if (m_config["logtofile"].toBool() && m_logfile != NULL) {
         QString tolog = QDateTime::currentDateTime().toString(Qt::ISODate) + " " + logstring + "\n";
         m_logfile->write(tolog.toUtf8());
         m_logfile->flush();
@@ -402,27 +400,27 @@ bool BaseEngine::uniqueInstance() const
 
 void BaseEngine::setUniqueInstance(bool unique)
 {
-    m_uniqueinstance = unique;
+    m_config["uniqueinstance"] = unique;
 }
 
 QString BaseEngine::qss() const
 {
-    return m_qss;
+    return m_config["qss"].toString();
 }
 
 void BaseEngine::setQss(const QString &qss)
 {
-    m_qss = qss;
+    m_config["qss"] = qss;
 }
 
 bool BaseEngine::enableClipboard() const
 {
-    return m_enableclipboard;
+    return m_config["enableclipboard"].toBool();
 }
 
 void BaseEngine::setEnableClipboard(bool clipboard)
 {
-    m_enableclipboard = clipboard;
+    m_config["enableclipboard"] = clipboard;
 }
 
 /*! \brief set login/pass and then starts */
@@ -431,9 +429,9 @@ void BaseEngine::configAndStart(const QString &login,
                                 const QString &agentphonenumber)
 {
     setUserId(login);
-    m_password = pass;
+    m_config["password"] = pass;
     // if agentphonenumber's size is 0, no login as agent
-    m_agentphonenumber = agentphonenumber;
+    m_config["agentphonenumber"] = agentphonenumber;
     saveSettings();
     start();
 }
@@ -456,7 +454,7 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << Q_FUNC_INFO << m_cti_address << m_cti_port << m_cti_encrypt << m_checked_function;
+    qDebug() << Q_FUNC_INFO << m_config["cti_address"].toString() << m_config["cti_port"].toUInt() << m_config["cti_encrypt"].toBool() << m_checked_function;
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
@@ -571,11 +569,11 @@ void BaseEngine::clearChannelList()
  */
 void BaseEngine::connectSocket()
 {
-    if (m_userlogin.length()) {
-        if (m_cti_encrypt)
-            m_ctiserversocket->connectToHostEncrypted(m_cti_address, m_cti_port);
+    if (m_config["userlogin"].toString().length()) {
+        if (m_config["cti_encrypt"].toBool())
+            m_ctiserversocket->connectToHostEncrypted(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
         else
-            m_ctiserversocket->connectToHost(m_cti_address, m_cti_port);
+            m_ctiserversocket->connectToHost(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
     }
 }
 
@@ -739,8 +737,8 @@ void BaseEngine::ctiSocketConnected()
     m_attempt_loggedin = false;
     QVariantMap command;
     command["class"] = "login_id";
-    command["userlogin"] = m_userlogin;
-    command["company"] = m_company;
+    command["userlogin"] = m_config["userlogin"].toString();
+    command["company"] = m_config["company"].toString();
     command["ident"] = m_osname;
     command["version"] = "9999";
     command["xivoversion"] = __xivo_version__;
@@ -999,7 +997,7 @@ void BaseEngine::parseCommand(const QString &line)
                 qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
             else {
                 m_fileid = datamap.value("fileid").toString();
-                m_filetransfersocket->connectToHost(m_cti_address, m_cti_port);
+                m_filetransfersocket->connectToHost(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
             }
 
         } else if (thisclass == "filetransfer") {
@@ -1081,7 +1079,7 @@ void BaseEngine::parseCommand(const QString &line)
                 popupError(datamap.value("error_string").toString());
             } else {
                 m_sessionid = datamap.value("sessionid").toString();
-                QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_password);
+                QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_config["password"].toString());
                 QCryptographicHash hidepass(QCryptographicHash::Sha1);
                 QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
                 QVariantMap command;
@@ -1122,7 +1120,7 @@ void BaseEngine::parseCommand(const QString &line)
                 command["agentlogin"] = "now";
             case 1:
                 command["loginkind"] = "agent";
-                command["agentphonenumber"] = m_agentphonenumber;
+                command["agentphonenumber"] = m_config["agentphonenumber"].toString();
                 break;
             }
 
@@ -1191,8 +1189,8 @@ void BaseEngine::parseCommand(const QString &line)
 
             QString urltolaunch = m_guioptions.value("merged_gui").toMap().value("loginwindow.url").toString();
             if (! urltolaunch.isEmpty()) {
-                urltolaunch.replace("{xc-username}", m_userlogin);
-                urltolaunch.replace("{xc-password}", m_password);
+                urltolaunch.replace("{xc-username}", m_config["userlogin"].toString());
+                urltolaunch.replace("{xc-password}", m_config["password"].toString());
                 this->urlAuto(urltolaunch);
             }
 
@@ -1215,7 +1213,7 @@ void BaseEngine::parseCommand(const QString &line)
             setState(ELogged); // calls logged()
             setAvailState(m_forced_state, true);
             emit updatePresence();
-            m_timerid_keepalive = startTimer(m_keepaliveinterval);
+            m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
             m_attempt_loggedin = true;
 
         } else if (thisclass == "disconnect") {
@@ -1531,8 +1529,8 @@ void BaseEngine::popupError(const QString & errorid)
     if (errorid.toLower() == "user_not_found") {
         errormsg = tr("Your registration name <%1@%2> "
                       "is not known by the XiVO CTI server on %3:%4.")
-            .arg(m_userlogin).arg(m_company)
-            .arg(m_cti_address).arg(m_cti_port);
+            .arg(m_config["userlogin"].toString()).arg(m_config["company"].toString())
+            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
     } else if (errorid.startsWith("capaid_undefined:")) {
@@ -1542,49 +1540,49 @@ void BaseEngine::popupError(const QString & errorid)
     // keepalive (internal)
     } else if (errorid.toLower() == "no_keepalive_from_server") {
         errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.")
-            .arg(m_cti_address).arg(m_cti_port);
+            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
 
     // socket errors - while attempting to connect
     } else if (errorid.toLower() == "socket_error_hostnotfound") {
         errormsg = tr("You defined an IP address %1 that is probably an unresolved host name.")
-            .arg(m_cti_address);
+            .arg(m_config["cti_address"].toString());
     } else if (errorid.toLower() == "socket_error_timeout") {
         errormsg = tr("Socket timeout (~ 60 s) : you probably attempted to reach, "
                       "via a gateway, an IP address %1 that does not exist.")
-            .arg(m_cti_address);
+            .arg(m_config["cti_address"].toString());
     } else if (errorid.toLower() == "socket_error_connectionrefused") {
         errormsg = tr("There seems to be a machine running on this IP address %1, "
                       "and either no CTI server is running, or your port %2 is wrong.")
-            .arg(m_cti_address).arg(m_cti_port);
+            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
     } else if (errorid.toLower() == "socket_error_network") {
         errormsg = tr("An error occurred on the network while attempting to join the IP address %1 :\n"
                       "- no external route defined to access this IP address (~ no timeout)\n"
                       "- this IP address is routed but there is no machine (~ 5 s timeout)\n"
                       "- a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).")
-            .arg(m_cti_address);
+            .arg(m_config["cti_address"].toString());
     } else if (errorid.toLower() == "socket_error_sslhandshake") {
         errormsg = tr("It seems that the server with IP address %1 does not accept encryption on "
                       "its port %2. Please change either your port or your encryption setting.")
-            .arg(m_cti_address).arg(m_cti_port);
+            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
     } else if (errorid.toLower() == "socket_error_unknown") {
         errormsg = tr("An unknown socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(m_cti_address).arg(m_cti_port);
+            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
     } else if (errorid.startsWith("socket_error_unmanagedyet:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(ipinfo[1]).arg(m_cti_address).arg(m_cti_port);
+            .arg(ipinfo[1]).arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
 
     // socket errors - once connected
     } else if (errorid.toLower() == "socket_error_remotehostclosed") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.")
-            .arg(m_cti_address).arg(m_cti_port);
+            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
 
     } else if (errorid.toLower() == "server_stopped") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.")
-            .arg(m_cti_address).arg(m_cti_port);
+            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
     } else if (errorid.toLower() == "server_reloaded") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been reloaded.")
-            .arg(m_cti_address).arg(m_cti_port);
+            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
     } else if (errorid.startsWith("already_connected:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);
@@ -1633,7 +1631,7 @@ void BaseEngine::popupError(const QString & errorid)
 
     // logs a message before sending any popup that would block
     emit emitTextMessage(tr("ERROR") + " : " + errormsg);
-    if (!m_trytoreconnect || m_forced_to_disconnect)
+    if (!m_config["trytoreconnect"].toBool() || m_forced_to_disconnect)
         emit emitMessageBox(errormsg);
 }
 
@@ -1799,54 +1797,54 @@ void BaseEngine::searchDirectory(const QString & text)
 void BaseEngine::setAddressPort(const QString & address, quint16 port)
 {
     // qDebug() << Q_FUNC_INFO << address << port;
-    m_cti_address = address;
-    m_cti_port = port;
+    m_config["cti_address"] = address;
+    m_config["cti_port"] = port;
 }
 
 void BaseEngine::setEncryption(bool encrypt)
 {
-    m_cti_encrypt = encrypt;
+    m_config["cti_encrypt"] = encrypt;
 }
 
 /*! \brief get server IP address */
-const QString & BaseEngine::ctiAddress() const
+QString BaseEngine::ctiAddress() const
 {
-    return m_cti_address;
+    return m_config["cti_address"].toString();
 }
 
 /*! \brief get server port */
 quint16 BaseEngine::ctiPort() const
 {
-    return m_cti_port;
+    return m_config["cti_port"].toUInt();
 }
 
 bool BaseEngine::ctiEncrypt() const
 {
-    return m_cti_encrypt;
+    return m_config["cti_encrypt"].toBool();
 }
 
-const QString & BaseEngine::company() const
+QString BaseEngine::company() const
 {
-    return m_company;
+    return m_config["company"].toString();
 }
 
 void BaseEngine::setCompany(const QString & companyname)
 {
-    m_company = companyname;
+    m_config["company"] = companyname;
 }
 
-const QString& BaseEngine::userId() const
+QString BaseEngine::userId() const
 {
     if (m_userloginopt.size() > 0)
         return m_userloginwithopt;
     else
-        return m_userlogin;
+        return m_config["userlogin"].toString();
 }
 
 void BaseEngine::setUserId(const QString &userid)
 {
     QStringList useridsplit = userid.split("%");
-    m_userlogin = useridsplit[0].trimmed();
+    m_config["userlogin"] = useridsplit[0].trimmed();
     m_userloginwithopt = userid;
     if (useridsplit.size() > 1) {
         m_userloginopt = useridsplit[1].trimmed();
@@ -1855,14 +1853,14 @@ void BaseEngine::setUserId(const QString &userid)
     }
 }
 
-const QString & BaseEngine::agentphonenumber() const
+QString BaseEngine::agentphonenumber() const
 {
-    return m_agentphonenumber;
+    return m_config["agentphonenumber"].toString();
 }
 
 void BaseEngine::setAgentPhoneNumber(const QString & agentphonenumber)
 {
-    m_agentphonenumber = agentphonenumber;
+    m_config["agentphonenumber"] = agentphonenumber;
 }
 
 int BaseEngine::loginkind()
@@ -1883,42 +1881,42 @@ void BaseEngine::setLoginKind(const int loginkind)
 
 int BaseEngine::showagselect()
 {
-    return m_showagselect;
+    return m_config["showagselect"].toUInt();
 }
 
 void BaseEngine::setShowAgentSelect(const int showagselect)
 {
-    m_showagselect = showagselect;
+    m_config["showagselect"] = showagselect;
 }
 
 int BaseEngine::keeppass()
 {
-    return m_keeppass;
+    return m_config["keeppass"].toUInt();
 }
 
 void BaseEngine::setKeepPass(int keeppass)
 {
-    m_keeppass = keeppass;
+    m_config["keeppass"] = keeppass;
 }
 
-const QString & BaseEngine::password() const
+QString BaseEngine::password() const
 {
-    return m_password;
+    return m_config["password"].toString();
 }
 
 void BaseEngine::setPassword(const QString & password)
 {
-    m_password = password;
+    m_config["password"] = password;
 }
 
 void BaseEngine::setTrytoreconnect(bool b)
 {
-    m_trytoreconnect = b;
+    m_config["trytoreconnect"] = b;
 }
 
 bool BaseEngine::trytoreconnect() const
 {
-    return m_trytoreconnect;
+    return m_config["trytoreconnect"].toBool();
 }
 
 void BaseEngine::initFeatureFields(const QString & field)
@@ -1960,23 +1958,23 @@ void BaseEngine::stopTryAgainTimer()
 void BaseEngine::startTryAgainTimer()
 {
     qDebug() << Q_FUNC_INFO;
-    if (m_timerid_tryreconnect == 0 && m_trytoreconnect && ! m_forced_to_disconnect)
-        m_timerid_tryreconnect = startTimer(m_trytoreconnectinterval);
+    if (m_timerid_tryreconnect == 0 && m_config["trytoreconnect"].toBool() && ! m_forced_to_disconnect)
+        m_timerid_tryreconnect = startTimer(m_config["trytoreconnectinterval"].toUInt());
 }
 
 void BaseEngine::setHistorySize(uint size)
 {
-    m_historysize = size;
+    m_config["historysize"] = size;
 }
 
 uint BaseEngine::historySize() const
 {
-    return m_historysize;
+    return m_config["historysize"].toInt();
 }
 
 uint BaseEngine::trytoreconnectinterval() const
 {
-    return m_trytoreconnectinterval;
+    return m_config["trytoreconnectinterval"].toUInt();
 }
 
 /*!
@@ -1987,11 +1985,11 @@ uint BaseEngine::trytoreconnectinterval() const
  */
 void BaseEngine::setTrytoreconnectinterval(uint i)
 {
-    if (m_trytoreconnectinterval != i) {
-        m_trytoreconnectinterval = i;
+    if (m_config["trytoreconnectinterval"].toUInt() != i) {
+        m_config["trytoreconnectinterval"] = i;
         if (m_timerid_tryreconnect > 0) {
             killTimer(m_timerid_tryreconnect);
-            m_timerid_tryreconnect = startTimer(m_trytoreconnectinterval);
+            m_timerid_tryreconnect = startTimer(m_config["trytoreconnectinterval"].toUInt());
         }
     }
 }
@@ -2125,45 +2123,45 @@ void BaseEngine::fetchLists()
         QVariantMap ipbxcommand;
         ipbxcommand["command"] = "agentlogin";
         ipbxcommand["agentids"] = "agent:special:me";
-        ipbxcommand["agentphonenumber"] = m_agentphonenumber;
+        ipbxcommand["agentphonenumber"] = m_config["agentphonenumber"].toString();
         ipbxCommand(ipbxcommand);
     }
 }
 
 void BaseEngine::setSystrayed(bool b)
 {
-    m_systrayed = b;
+    m_config["systrayed"] = b;
 }
 
 bool BaseEngine::systrayed() const
 {
-    return m_systrayed;
+    return m_config["systrayed"].toBool();
 }
 
 void BaseEngine::setAutoconnect(bool b)
 {
-    m_autoconnect = b;
+    m_config["autoconnect"] = b;
 }
 
 bool BaseEngine::autoconnect() const
 {
-    return m_autoconnect;
+    return m_config["autoconnect"].toBool();
 }
 
 void BaseEngine::setForcelocale(QString b)
 {
-    m_forcelocale = b;
+    m_config["forcelocale"] = b;
     this->changeTranslation(b);
 }
 
 QString BaseEngine::forcelocale() const
 {
-    return m_forcelocale;
+    return m_config["forcelocale"].toString();
 }
 
 uint BaseEngine::keepaliveinterval() const
 {
-    return m_keepaliveinterval;
+    return m_config["keepaliveinterval"].toUInt();
 }
 
 /*!
@@ -2174,11 +2172,11 @@ uint BaseEngine::keepaliveinterval() const
  */
 void BaseEngine::setKeepaliveinterval(uint i)
 {
-    if (i != m_keepaliveinterval) {
-        m_keepaliveinterval = i;
+    if (i != m_config["keepaliveinterval"].toUInt()) {
+        m_config["keepaliveinterval"] = i;
         if (m_timerid_keepalive > 0) {
             killTimer(m_timerid_keepalive);
-            m_timerid_keepalive = startTimer(m_keepaliveinterval);
+            m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
         }
     }
 }

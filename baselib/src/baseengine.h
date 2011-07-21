@@ -97,15 +97,15 @@ class BASELIB_EXPORT BaseEngine: public QObject
         //! set address used to connect to the server
         void setAddressPort(const QString &, quint16);
         void setEncryption(bool);
-        const QString& ctiAddress() const;     //!< IP address of the login server
+        QString ctiAddress() const;     //!< IP address of the login server
         quint16 ctiPort() const;               //!< TCP port of the login server
         bool ctiEncrypt() const;
 
-        const QString & company() const;       //!< name of the user's company
+        QString company() const;       //!< name of the user's company
         void setCompany(const QString &);      //!< see company()
-        const QString & userId() const;        //!< userid to identify to the server
+        QString userId() const;        //!< userid to identify to the server
         void setUserId(const QString &);       //!< see userid()
-        const QString & agentphonenumber() const;  //!< agent's phone number
+        QString agentphonenumber() const;  //!< agent's phone number
         void setAgentPhoneNumber(const QString &); //!< see agentphonenumber()
         int loginkind();                        //!< loginkind to identify to the server
         void setLoginKind(const int);           //!< see loginkind()
@@ -113,7 +113,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void setKeepPass(int);            //!< see keeppass()
         int showagselect();                     //!< showagselect to identify to the server
         void setShowAgentSelect(const int);     //!< see showagselect()
-        const QString & password() const;       //!< password to identify to the sever
+        QString password() const;       //!< password to identify to the sever
         void setPassword(const QString &);      //!< see password()
 
         QString forcelocale() const;               //!< force locale string
@@ -180,7 +180,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QDateTime & timeClient() const;
         double timeDeltaServerClient() const;
         QString timeElapsed(double) const;
-        int m_historysize;  //!< Number of elements when requestion call log
 
         void pasteToDial(const QString &);
         void registerClassEvent(const QString &class_function,
@@ -377,6 +376,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // Class Members
         // Parameters given by the User at Login time
+        QVariantMap m_config;
+        
         QString m_cti_address;          //!< IP address to the login server
         quint16 m_cti_port;             //!< TCP port to connect to server
         bool m_cti_encrypt;             //!< Encrypt CTI connection ?
@@ -413,6 +414,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, bool> m_checked_function;  //!< function checked
         QHash<QString, bool> m_enabled_function;  //!< function enabled
         bool m_checked_lastconnwins;           //!< the last connected account "wins"
+        
+        int m_historysize;  //!< Number of elements when requestion call log
 
         // Replies given by the server
         QStringList m_capafuncs;         //!< List of func capabilities issued by the server after a successful login
