@@ -81,7 +81,7 @@ static CtiConn * m_ctiConn;
 BaseEngine::BaseEngine(QSettings *settings,
                        const QString &osInfo)
     : QObject(NULL),
-      m_userlogin(""), m_userloginopt(""), m_company(""), m_password(""), m_agentphonenumber(""),
+      m_userloginopt(""),
       m_sessionid(""), m_state(ENotLogged),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
@@ -181,8 +181,9 @@ void BaseEngine::loadSettings()
     m_config["qss"] = m_settings->value("display/qss", "none").toString();
     m_config["enableclipboard"] = m_settings->value("display/enableclipboard", true).toBool();
     m_config["logtofile"] = m_settings->value("display/logtofile", false).toBool();
+    m_config["logfilename"] = m_settings->value("display/logfilename", "XiVO_Client.log").toString();
     if (m_config["logtofile"].toBool()) {
-        setLogFile (m_settings->value("display/logfilename", "XiVO_Client.log").toString());
+        openLogFile ();
     }
     QString profile = m_settings->value("profile/lastused").toString();
     m_profilename_write = "engine-" + profile;
@@ -285,7 +286,7 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/qss", m_config["qss"].toString());
     m_settings->setValue("display/enableclipboard", m_config["enableclipboard"].toBool());
     m_settings->setValue("display/logtofile", m_config["logtofile"].toBool());
-    m_settings->setValue("display/logfilename", m_logfile == NULL ? QString("") : m_logfile->fileName());
+    m_settings->setValue("display/logfilename", m_config["logfilename"].toString());
 
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("serverhost", m_config["cti_address"].toString());
@@ -355,27 +356,9 @@ bool BaseEngine::enabledFunction(const QString & function)
     return m_capafuncs.contains(function);
 }
 
-bool BaseEngine::logToFile() const
+void BaseEngine::openLogFile()
 {
-    return m_config["logtofile"].toBool();
-}
-
-void BaseEngine::setLogToFile(bool logtofile)
-{
-    m_config["logtofile"] = logtofile;
-}
-
-QString BaseEngine::logFile() const
-{
-    if (m_logfile != NULL) {
-        return m_logfile->fileName();
-    } else {
-        return QString();
-    }
-}
-
-void BaseEngine::setLogFile(const QString & logfilename)
-{
+    QString logfilename = m_config["logfilename"].toString();
     if (! logfilename.isEmpty()) {
         m_logfile = new QFile(this);
         QDir::setCurrent(QDir::homePath());
@@ -391,36 +374,6 @@ void BaseEngine::logAction(const QString & logstring)
         m_logfile->write(tolog.toUtf8());
         m_logfile->flush();
     }
-}
-
-bool BaseEngine::uniqueInstance() const
-{
-    return m_settings->value("display/unique", true).toBool() ;
-}
-
-void BaseEngine::setUniqueInstance(bool unique)
-{
-    m_config["uniqueinstance"] = unique;
-}
-
-QString BaseEngine::qss() const
-{
-    return m_config["qss"].toString();
-}
-
-void BaseEngine::setQss(const QString &qss)
-{
-    m_config["qss"] = qss;
-}
-
-bool BaseEngine::enableClipboard() const
-{
-    return m_config["enableclipboard"].toBool();
-}
-
-void BaseEngine::setEnableClipboard(bool clipboard)
-{
-    m_config["enableclipboard"] = clipboard;
 }
 
 /*! \brief set login/pass and then starts */
@@ -575,16 +528,6 @@ void BaseEngine::connectSocket()
         else
             m_ctiserversocket->connectToHost(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
     }
-}
-
-bool BaseEngine::lastconnwins() const
-{
-    return m_checked_lastconnwins;
-}
-
-void BaseEngine::setLastConnWins(bool b)
-{
-    m_checked_lastconnwins = b;
 }
 
 /*! \brief gets m_capaxlets */
@@ -1789,49 +1732,20 @@ void BaseEngine::searchDirectory(const QString & text)
     sendJsonCommand(command);
 }
 
+void BaseEngine::setConfig(QVariantMap qvm)
+{
+    if (m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt()) {
+        if (m_timerid_tryreconnect > 0) {
+            killTimer(m_timerid_tryreconnect);
+            m_timerid_tryreconnect = startTimer(qvm["trytoreconnectinterval"].toUInt());
+        }
+    }
+    m_config = qvm;
+    
+    this->changeTranslation(qvm["forcelocale"].toString());
+}
+
 // === Getter and Setters ===
-/* \brief set server address
- *
- * Set server host name and server port
- */
-void BaseEngine::setAddressPort(const QString & address, quint16 port)
-{
-    // qDebug() << Q_FUNC_INFO << address << port;
-    m_config["cti_address"] = address;
-    m_config["cti_port"] = port;
-}
-
-void BaseEngine::setEncryption(bool encrypt)
-{
-    m_config["cti_encrypt"] = encrypt;
-}
-
-/*! \brief get server IP address */
-QString BaseEngine::ctiAddress() const
-{
-    return m_config["cti_address"].toString();
-}
-
-/*! \brief get server port */
-quint16 BaseEngine::ctiPort() const
-{
-    return m_config["cti_port"].toUInt();
-}
-
-bool BaseEngine::ctiEncrypt() const
-{
-    return m_config["cti_encrypt"].toBool();
-}
-
-QString BaseEngine::company() const
-{
-    return m_config["company"].toString();
-}
-
-void BaseEngine::setCompany(const QString & companyname)
-{
-    m_config["company"] = companyname;
-}
 
 QString BaseEngine::userId() const
 {
@@ -1909,14 +1823,9 @@ void BaseEngine::setPassword(const QString & password)
     m_config["password"] = password;
 }
 
-void BaseEngine::setTrytoreconnect(bool b)
+uint BaseEngine::historySize() const
 {
-    m_config["trytoreconnect"] = b;
-}
-
-bool BaseEngine::trytoreconnect() const
-{
-    return m_config["trytoreconnect"].toBool();
+    return m_config["historysize"].toInt();
 }
 
 void BaseEngine::initFeatureFields(const QString & field)
@@ -1960,38 +1869,6 @@ void BaseEngine::startTryAgainTimer()
     qDebug() << Q_FUNC_INFO;
     if (m_timerid_tryreconnect == 0 && m_config["trytoreconnect"].toBool() && ! m_forced_to_disconnect)
         m_timerid_tryreconnect = startTimer(m_config["trytoreconnectinterval"].toUInt());
-}
-
-void BaseEngine::setHistorySize(uint size)
-{
-    m_config["historysize"] = size;
-}
-
-uint BaseEngine::historySize() const
-{
-    return m_config["historysize"].toInt();
-}
-
-uint BaseEngine::trytoreconnectinterval() const
-{
-    return m_config["trytoreconnectinterval"].toUInt();
-}
-
-/*!
- * Setter for property m_trytoreconnectinterval
- * Restart timer if the value changed.
- *
- * \sa trytoreconnectinterval
- */
-void BaseEngine::setTrytoreconnectinterval(uint i)
-{
-    if (m_config["trytoreconnectinterval"].toUInt() != i) {
-        m_config["trytoreconnectinterval"] = i;
-        if (m_timerid_tryreconnect > 0) {
-            killTimer(m_timerid_tryreconnect);
-            m_timerid_tryreconnect = startTimer(m_config["trytoreconnectinterval"].toUInt());
-        }
-    }
 }
 
 /*! \brief implement timer event
@@ -2128,40 +2005,9 @@ void BaseEngine::fetchLists()
     }
 }
 
-void BaseEngine::setSystrayed(bool b)
-{
-    m_config["systrayed"] = b;
-}
-
 bool BaseEngine::systrayed() const
 {
     return m_config["systrayed"].toBool();
-}
-
-void BaseEngine::setAutoconnect(bool b)
-{
-    m_config["autoconnect"] = b;
-}
-
-bool BaseEngine::autoconnect() const
-{
-    return m_config["autoconnect"].toBool();
-}
-
-void BaseEngine::setForcelocale(QString b)
-{
-    m_config["forcelocale"] = b;
-    this->changeTranslation(b);
-}
-
-QString BaseEngine::forcelocale() const
-{
-    return m_config["forcelocale"].toString();
-}
-
-uint BaseEngine::keepaliveinterval() const
-{
-    return m_config["keepaliveinterval"].toUInt();
 }
 
 /*!

@@ -89,7 +89,7 @@ QHash<QString, QString> func_legend;
 /*! \brief constructor */
 ConfigWidget::ConfigWidget(QWidget *parent)
     : QDialog(parent),
-      m_history_sbox(NULL), m_currentKeyChange(-1)
+      m_currentKeyChange(-1)
 {
     setWindowTitle(tr("Configuration"));
 
@@ -98,6 +98,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 
     m_opts = b_engine->getGuiOptions("client_gui");
     m_forcedopts = b_engine->getGuiOptions("server_gui");
+    m_config = b_engine->getConfig();
 
     _insert_connection_tab();
     _insert_account_tab();
@@ -123,31 +124,31 @@ void ConfigWidget::_insert_connection_tab()
 
     widget_connection->setLayout(layout1);
 
-    m_cti_address = new QLineEdit(b_engine->ctiAddress(), this);
+    m_cti_address = new QLineEdit(m_config["cti_address"].toString(), this);
     layout1->addRow(tr("Server Host"), m_cti_address);
 
     m_cti_port = new QSpinBox(this);
     m_cti_port->setRange(1, 65535);
-    m_cti_port->setValue(b_engine->ctiPort());
+    m_cti_port->setValue(m_config["cti_port"].toUInt());
     layout1->addRow(tr("Login Port"), m_cti_port);
 
     m_cti_encrypt = new QCheckBox(tr("Encrypt Connection"));
-    m_cti_encrypt->setCheckState(b_engine->ctiEncrypt() ? Qt::Checked : Qt::Unchecked);
+    m_cti_encrypt->setCheckState(m_config["cti_encrypt"].toBool() ? Qt::Checked : Qt::Unchecked);
     layout1->addRow(m_cti_encrypt);
     
     m_trytoreconnect = new QCheckBox(tr("Try to reconnect") + "\n" + \
                                      tr("Checking this box disables the Error Popups"), this);
-    m_trytoreconnect->setCheckState(b_engine->trytoreconnect() ? Qt::Checked : Qt::Unchecked);
+    m_trytoreconnect->setCheckState(m_config["trytoreconnect"].toBool() ? Qt::Checked : Qt::Unchecked);
     layout1->addRow(m_trytoreconnect);
 
     m_tryinterval_sbox = new QSpinBox(this);
     m_tryinterval_sbox->setRange(1, 120);
-    m_tryinterval_sbox->setValue(b_engine->trytoreconnectinterval() / 1000);
+    m_tryinterval_sbox->setValue(m_config["trytoreconnectinterval"].toUInt() / 1000);
     layout1->addRow(tr("Try to reconnect interval"), m_tryinterval_sbox);
 
     m_kainterval_sbox = new QSpinBox(this);
     m_kainterval_sbox->setRange(1, 120);
-    m_kainterval_sbox->setValue(b_engine->keepaliveinterval() / 1000);
+    m_kainterval_sbox->setValue(m_config["keepaliveinterval"].toUInt() / 1000);
     layout1->addRow(tr("Keep alive interval"), m_kainterval_sbox);
 
     m_tabwidget->addTab(widget_connection, tr("Connection"));
@@ -208,7 +209,7 @@ void ConfigWidget::_insert_function_tab()
         
         m_history_sbox = new QSpinBox(this);
         m_history_sbox->setRange(1, 20);
-        m_history_sbox->setValue(b_engine->historySize());
+        m_history_sbox->setValue(m_config["historysize"].toUInt());
         layout23->addRow(tr("History size"), m_history_sbox);
         
     m_function_tabwidget->addTab(widget_history, tr("History"));
@@ -302,26 +303,26 @@ void ConfigWidget::_insert_account_tab()
     QWidget *widget_user = new QWidget();
     widget_user->setLayout(layout3);
 
-    m_context = new QLineEdit(b_engine->company(), this);
+    m_context = new QLineEdit(m_config["company"].toString(), this);
     layout3->addRow(tr("Context"), m_context);
 
-    m_userid = new QLineEdit(b_engine->userId(), this);
+    m_userid = new QLineEdit(m_config["userlogin"].toString(), this);
     layout3->addRow(tr("User Login"), m_userid);
 
-    m_password = new QLineEdit(b_engine->password(), this);
+    m_password = new QLineEdit(m_config["password"].toString(), this);
     m_password->setEchoMode(QLineEdit::Password);
     layout3->addRow(tr("Password"), m_password);
 
     m_keeppass = new QCheckBox(tr("Keep Password"));
-    m_keeppass->setCheckState((b_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
+    m_keeppass->setCheckState((m_config["keeppass"].toUInt() == 2) ? Qt::Checked : Qt::Unchecked);
     layout3->addRow(m_keeppass);
     
     m_autoconnect = new QCheckBox(tr("Autoconnect at startup"), this);
-    m_autoconnect->setCheckState(b_engine->autoconnect() ? Qt::Checked : Qt::Unchecked);
+    m_autoconnect->setCheckState(m_config["autoconnect"].toBool() ? Qt::Checked : Qt::Unchecked);
     layout3->addRow(m_autoconnect);
 
     m_showagselect = new QCheckBox(tr("Show the Agent options (like the\nones beneath) on first window"));
-    m_showagselect->setCheckState((b_engine->showagselect() == 2) ? Qt::Checked : Qt::Unchecked);
+    m_showagselect->setCheckState((m_config["showagselect"].toUInt() == 2) ? Qt::Checked : Qt::Unchecked);
     layout3->addRow(m_showagselect);
 
     m_loginkind = new QComboBox(this);
@@ -333,7 +334,7 @@ void ConfigWidget::_insert_account_tab()
     connect(m_loginkind, SIGNAL(currentIndexChanged(int)),
             this, SLOT(loginKindChanged(int)));
 
-    m_agentphonenumber = new QLineEdit(b_engine->agentphonenumber(), this);
+    m_agentphonenumber = new QLineEdit(m_config["agentphonenumber"].toString(), this);
     layout3->addRow(tr("Phone Number"), m_agentphonenumber);
 
     loginKindChanged(m_loginkind->currentIndex());
@@ -355,7 +356,7 @@ void ConfigWidget::_insert_guisetting_tab()
     m_locale_cbox->addItem(tr("Nederlands"), QString("nl_NL"));
     m_locale_cbox->addItem(tr("German"), QString("de_DE"));
     for (int i = 0; i < m_locale_cbox->count(); i++) {
-        if (b_engine->forcelocale() == m_locale_cbox->itemData(i))
+        if (m_config["forcelocale"].toString() == m_locale_cbox->itemData(i))
             m_locale_cbox->setCurrentIndex(i);
     }
     layout4->addRow(tr("Language"), new WarningWidget(m_locale_cbox));
@@ -365,23 +366,23 @@ void ConfigWidget::_insert_guisetting_tab()
     layout4->addRow(qhline5);
 
     m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
-    m_systrayed->setCheckState(b_engine->systrayed() ? Qt::Checked : Qt::Unchecked);
+    m_systrayed->setCheckState(m_config["systrayed"].toBool() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow(m_systrayed);
     
     // The value displayed is the inverse of the bool in memory
     m_unique = new QCheckBox(tr("Allow multiple instances of XiVO Client"), this);
-    m_unique->setCheckState(b_engine->uniqueInstance() ? Qt::Unchecked : Qt::Checked);
+    m_unique->setCheckState(m_config["uniqueinstance"].toBool() ? Qt::Unchecked : Qt::Checked);
     layout4->addRow(new WarningWidget(m_unique));
     
     /*!
      * \todo make a list of the qss files and fill a combobox ?
      */
     m_qss = new QLineEdit();
-    m_qss->setText(b_engine->qss());
+    m_qss->setText(m_config["qss"].toString());
     layout4->addRow(tr("Interface style"), new WarningWidget(m_qss));
     
     m_clipboard = new QCheckBox(tr("Enable the clipboard")) ;
-    m_clipboard->setCheckState(b_engine->enableClipboard() ? Qt::Checked : Qt::Unchecked);
+    m_clipboard->setCheckState(m_config["enableclipboard"].toBool() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow(new WarningWidget(m_clipboard));
     
     m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
@@ -395,11 +396,11 @@ void ConfigWidget::_insert_advanced_tab()
     widget_adv->setLayout(layout5);
     
     m_logtofile = new QCheckBox(tr("Enable logging of program actions"));
-    m_logtofile->setCheckState(b_engine->logToFile() ? Qt::Checked : Qt::Unchecked);
+    m_logtofile->setCheckState(m_config["logtofile"].toBool() ? Qt::Checked : Qt::Unchecked);
     layout5->addRow(new WarningWidget(m_logtofile));
     
     m_logfilename = new QLineEdit();
-    m_logfilename->setText(b_engine->logFile());
+    m_logfilename->setText(m_config["logfilename"].toString());
     layout5->addRow(tr("Logfile name"), new WarningWidget(m_logfilename));
     
     m_tabwidget->addTab(widget_adv, tr("Advanced"));
@@ -537,37 +538,34 @@ void ConfigWidget::saveAndClose()
 {
     int i;
     // qDebug() << Q_FUNC_INFO;
-    b_engine->setAddressPort(m_cti_address->text(), m_cti_port->value());
-    b_engine->setEncryption(m_cti_encrypt->checkState() == Qt::Checked);
-
-    b_engine->setCompany(m_context->text());
-    b_engine->setKeepPass(m_keeppass->checkState());
-    b_engine->setShowAgentSelect(m_showagselect->checkState());
-
-    b_engine->setUserId(m_userid->text());
-    b_engine->setAgentPhoneNumber(m_agentphonenumber->text());
-
-    b_engine->setPassword(m_password->text());
-
-    b_engine->setForcelocale(m_locale_cbox->itemData(m_locale_cbox->currentIndex()).toString());
-    b_engine->setAutoconnect(m_autoconnect->checkState() == Qt::Checked);
-    b_engine->setTrytoreconnect(m_trytoreconnect->checkState() == Qt::Checked);
-    b_engine->setTrytoreconnectinterval(m_tryinterval_sbox->value() * 1000);
-    b_engine->setKeepaliveinterval(m_kainterval_sbox->value() * 1000);
+    m_config["cti_address"] = m_cti_address->text();
+    m_config["cti_port"] = m_cti_port->value();
+    m_config["cti_encrypt"] = m_cti_encrypt->checkState() == Qt::Checked;
+    m_config["company"] = m_context->text();
+    m_config["keeppass"] = m_keeppass->checkState();
+    m_config["showagselect"] = m_showagselect->checkState();
+    m_config["userlogin"] = m_userid->text();
+    m_config["agentphonenumber"] = m_agentphonenumber->text();
+    m_config["password"] = m_password->text();
+    /*!
+     * \todo replace with QString::currentText() ?
+     */
+    m_config["forcelocale"] = m_locale_cbox->itemData(m_locale_cbox->currentIndex()).toString();
+    m_config["autoconnect"] = m_autoconnect->checkState() == Qt::Checked;
+    m_config["trytoreconnect"] = m_trytoreconnect->checkState() == Qt::Checked;
+    m_config["trytoreconnectinterval"] = m_tryinterval_sbox->value() * 1000;
+    m_config["keepaliveinterval"] = m_kainterval_sbox->value() * 1000;
+    m_config["historysize"] = m_history_sbox->value();
+    m_config["systrayed"] = m_systrayed->checkState() == Qt::Checked;
+    m_config["uniqueinstance"] = m_unique->checkState() == Qt::Unchecked;
+    m_config["qss"] = m_qss->text();
+    m_config["enableclipboard"] = m_clipboard->checkState() == Qt::Checked;
+    m_config["logtofile"] = m_logtofile->checkState() == Qt::Checked;
+    m_config["logfilename"] = m_logfilename->text();
+    b_engine->setConfig(m_config);
 
     foreach(QString function, func_legend.keys())
         b_engine->setCheckedFunction(function, m_function[function]->checkState() == Qt::Checked);
-    if(m_history_sbox)
-        b_engine->setHistorySize(m_history_sbox->value());
-
-    b_engine->setSystrayed(m_systrayed->checkState() == Qt::Checked);
-    b_engine->setQss(m_qss->text());
-    // UniqueInstance : the value displayed is the opposite of the value in memory
-    b_engine->setUniqueInstance(m_unique->checkState() == Qt::Unchecked);
-    b_engine->setEnableClipboard(m_clipboard->checkState() == Qt::Checked);
-    
-    b_engine->setLogToFile(m_logtofile->checkState() == Qt::Checked);
-    b_engine->setLogFile(m_logfilename->text());
 
     QVariantMap opts_saved;
     QVariantMap qvm, qvm2;

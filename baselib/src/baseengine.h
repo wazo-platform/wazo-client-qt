@@ -93,16 +93,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QSettings* getSettings();
         void loadSettings();                   //!< load server settings
+        
+        QVariantMap getConfig() { return m_config; }
+        void setConfig(QVariantMap qvm);
         // setter/getter for properties
-        //! set address used to connect to the server
-        void setAddressPort(const QString &, quint16);
-        void setEncryption(bool);
-        QString ctiAddress() const;     //!< IP address of the login server
-        quint16 ctiPort() const;               //!< TCP port of the login server
-        bool ctiEncrypt() const;
 
-        QString company() const;       //!< name of the user's company
-        void setCompany(const QString &);      //!< see company()
         QString userId() const;        //!< userid to identify to the server
         void setUserId(const QString &);       //!< see userid()
         QString agentphonenumber() const;  //!< agent's phone number
@@ -116,18 +111,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString password() const;       //!< password to identify to the sever
         void setPassword(const QString &);      //!< see password()
 
-        QString forcelocale() const;               //!< force locale string
-        void setForcelocale(QString);              //!< set force locale
-        bool autoconnect() const;               //!< auto connect flag
-        void setAutoconnect(bool);              //!< set auto connect flag
-        bool trytoreconnect() const;            //!< try to reconnect flag
-        void setTrytoreconnect(bool);           //!< set try to reconnect flag
-        uint trytoreconnectinterval() const;    //!< try to reconnect interval
-        void setTrytoreconnectinterval(uint);   //!< set try to reconnect interval
-        uint historySize() const;               //!< history size
-        void setHistorySize(uint size);         //!< set history size
         bool systrayed() const;                 //!< systrayed flag
-        void setSystrayed(bool);                //!< set systrayed flag
+        uint historySize() const;               //!< history size
 
         void saveSettings();                    //!< save server settings
 
@@ -139,10 +124,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         bool checkedFunction(const QString &);                   //!< get m_checked_function
         void setEnabledFunction(const QString &, bool b);        //!< set m_enabled_function
         bool enabledFunction(const QString &);                   //!< on m_capafuncs
-
-        uint keepaliveinterval() const;           //!< keep alive interval
-        bool lastconnwins() const;                //!< last connected one wins
-        void setLastConnWins(bool b);             //!< last connected user wins
 
         const QVariantList & getCapaXlets() const;
         const QVariantMap & getOptionsUserStatus() const;
@@ -159,17 +140,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void configAndStart(const QString &, const QString &, const QString &);
         QString osname() const { return m_osname; };
 
-        bool logToFile() const;
-        void setLogToFile(bool);
-        QString logFile() const;
-        void setLogFile(const QString &);
-        
-        bool uniqueInstance() const;
-        void setUniqueInstance(bool);
-        QString qss() const;
-        void setQss(const QString &);
-        bool enableClipboard() const;
-        void setEnableClipboard(bool);
+        void openLogFile();
 
         const QString & xivoUserId() const { return m_userid; };
         const QString & getFullId() const { return m_xuserid; };
@@ -378,20 +349,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // Parameters given by the User at Login time
         QVariantMap m_config;
         
-        QString m_cti_address;          //!< IP address to the login server
-        quint16 m_cti_port;             //!< TCP port to connect to server
-        bool m_cti_encrypt;             //!< Encrypt CTI connection ?
-
-        QString m_userlogin;            //!< User Id
         QString m_userloginopt;         //!< User Id Option (kind of login)
         QString m_userloginwithopt;     //!< User Id Option (kind of login)
-        QString m_company;
-        QString m_password;             //!< User password for account
-        QString m_agentid;              //!< Agent Id
-        QString m_agentphonenumber;     //!< Agent's phone number
         int m_loginkind;                //!< Login Kind
-        int m_keeppass;                 //!< Keep password ?
-        int m_showagselect;             //!< Show agent selection ?
         QString m_xuserid;              //!< Full Id (userid + company)
         QString m_ipbxid;               //!< IPBX id of the current user
         QString m_userid;               //!< xivo user id of the current user
@@ -402,14 +362,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QDateTime m_timeclt;
         double m_timesrv;
 
-        QString m_forcelocale;          //!< Force locale string
         QStringList translationFiles;   //!< List of translation files
         QVector<QTranslator *> translators;   //!< Vector of translators
-        bool m_autoconnect;             //!< Autoconnect to server at startup
-        bool m_trytoreconnect;          //!< "try to reconnect" flag
-        bool m_systrayed;               //!< "systrayed at startup" flag
-        uint m_trytoreconnectinterval;  //!< Try to reconnect interval (in msec)
-        uint m_keepaliveinterval;       //!< Keep alive interval (in msec)
 
         QHash<QString, bool> m_checked_function;  //!< function checked
         QHash<QString, bool> m_enabled_function;  //!< function enabled
@@ -462,10 +416,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QFile * m_eventdevice;
         QByteArray m_downloaded;    //!< downloaded data
         QFile * m_logfile;
-        bool m_logtofile;
-        bool m_uniqueinstance;
-        QString m_qss;
-        bool m_enableclipboard;
+        
         int m_byte_counter; //!< byte counter for calculating network throughput
         QTime m_time;       //!< time counter for calculating network throughput
         bool m_attempt_loggedin;

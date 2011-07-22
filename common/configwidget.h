@@ -92,6 +92,7 @@ class ConfigWidget: public QDialog
 
         QVariantMap m_opts;
         QVariantMap m_forcedopts;
+        QVariantMap m_config;
 
         BaseEngine * m_engine;          //!< BaseEngine object parameters are commited to
 
@@ -135,8 +136,6 @@ class ConfigWidget: public QDialog
         QHash<QString, QSpinBox *> m_queuelevels_wait; //!< For queue display
         QCheckBox * m_queue_longestwait;               //!< should we display the longest wait in the queue xlet ?
         QCheckBox * m_queue_displaynu;                 //!< should we display the queue number in queue name ?
-        
-        QCheckBox * m_lastconnwins;     //!< The last connected user wins => disconnects the other
 
         QComboBox * m_comboswitchboard; //!< Appearance of switchboard
         QSpinBox * m_maxWidthWanted;    //!< Maximum width for small items in switchboard
