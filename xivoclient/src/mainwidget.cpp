@@ -156,7 +156,7 @@ void MainWidget::makeLoginWidget()
     loginL->addWidget(m_lab3, 4, 0, Qt::AlignRight);
 
     m_qlab1 = new QLineEdit();
-    m_qlab1->setText(b_engine->userId());
+    m_qlab1->setText(b_engine->userLogin());
     loginL->addWidget(m_qlab1, 2, 1);
     m_qlab2 = new QLineEdit();
     m_qlab2->setText(b_engine->password());
@@ -459,7 +459,7 @@ void MainWidget::showConfDialog()
 void MainWidget::confUpdated()
 {
     // qDebug() << Q_FUNC_INFO;
-    m_qlab1->setText(b_engine->userId());
+    m_qlab1->setText(b_engine->userLogin());
     m_qlab2->setText(b_engine->password());
     m_qlab3->setText(b_engine->agentphonenumber());
     m_kpass->setCheckState((b_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);

@@ -81,7 +81,6 @@ static CtiConn * m_ctiConn;
 BaseEngine::BaseEngine(QSettings *settings,
                        const QString &osInfo)
     : QObject(NULL),
-      m_userloginopt(""),
       m_sessionid(""), m_state(ENotLogged),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
@@ -201,12 +200,7 @@ void BaseEngine::loadSettings()
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
         m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
 
-        m_config["userlogin"]   = m_settings->value("userid").toString().trimmed();
-        m_userloginopt   = m_settings->value("useridopt").toString().trimmed();
-        if (m_userloginopt.size() > 0)
-            m_userloginwithopt = m_config["userlogin"].toString() + "%" + m_userloginopt;
-        else
-            m_userloginwithopt = m_config["userlogin"].toString();
+        setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
         m_config["company"] = m_settings->value("company", "default").toString();
         m_config["password"] = m_settings->value("password").toString();
         m_config["keeppass"] = m_settings->value("keeppass", 0).toUInt();
@@ -293,7 +287,7 @@ void BaseEngine::saveSettings()
         m_settings->setValue("serverport", m_config["cti_port"].toUInt());
         m_settings->setValue("encryption", m_config["cti_encrypt"].toBool());
         m_settings->setValue("userid", m_config["userlogin"].toString());
-        m_settings->setValue("useridopt", m_userloginopt);
+        m_settings->setValue("useridopt", m_config["userloginopt"].toString());
         m_settings->setValue("company", m_config["company"].toString());
         m_settings->setValue("keeppass", m_config["keeppass"].toUInt());
         m_settings->setValue("showagselect", m_config["showagselect"].toUInt());
@@ -381,7 +375,7 @@ void BaseEngine::configAndStart(const QString &login,
                                 const QString &pass,
                                 const QString &agentphonenumber)
 {
-    setUserId(login);
+    setUserLogin(login);
     m_config["password"] = pass;
     // if agentphonenumber's size is 0, no login as agent
     m_config["agentphonenumber"] = agentphonenumber;
@@ -1046,9 +1040,9 @@ void BaseEngine::parseCommand(const QString &line)
             else if (capas.size() == 0) {
                 command["capaid"] = "";
             } else {
-                if (m_userloginopt.size() > 0) {
-                    if (capas.contains(m_userloginopt))
-                        command["capaid"] = m_userloginopt;
+                if (m_config["userloginopt"].toString().size() > 0) {
+                    if (capas.contains(m_config["userloginopt"].toString()))
+                        command["capaid"] = m_config["userloginopt"].toString();
                     else
                         command["capaid"] = capas[0];
                 } else
@@ -1742,29 +1736,32 @@ void BaseEngine::setConfig(QVariantMap qvm)
     }
     m_config = qvm;
     
+    this->setUserLogin (qvm["userlogin"].toString());
     this->changeTranslation(qvm["forcelocale"].toString());
 }
 
 // === Getter and Setters ===
 
-QString BaseEngine::userId() const
+QString BaseEngine::userLogin() const
 {
-    if (m_userloginopt.size() > 0)
-        return m_userloginwithopt;
-    else
-        return m_config["userlogin"].toString();
+    return m_config["userlogin"].toString() + m_config["userloginopt"].toString();
 }
 
-void BaseEngine::setUserId(const QString &userid)
+void BaseEngine::setUserLogin(const QString & userid)
 {
     QStringList useridsplit = userid.split("%");
     m_config["userlogin"] = useridsplit[0].trimmed();
-    m_userloginwithopt = userid;
     if (useridsplit.size() > 1) {
-        m_userloginopt = useridsplit[1].trimmed();
+        m_config["userloginopt"] = useridsplit[1].trimmed();
     } else {
-        m_userloginopt = "";
+        m_config["userloginopt"] = "";
     }
+}
+
+void BaseEngine::setUserLogin(const QString & userid, const QString & opt)
+{
+    m_config["userlogin"] = userid.trimmed();
+    m_config["userloginopt"] = opt.trimmed();
 }
 
 QString BaseEngine::agentphonenumber() const

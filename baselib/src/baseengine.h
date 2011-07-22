@@ -98,8 +98,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void setConfig(QVariantMap qvm);
         // setter/getter for properties
 
-        QString userId() const;        //!< userid to identify to the server
-        void setUserId(const QString &);       //!< see userid()
+        QString userLogin() const;        //!< userid to identify to the server
+        void setUserLogin(const QString &);       //!< see userid()
+        void setUserLogin(const QString &, const QString &); //!< set userid and userid option
         QString agentphonenumber() const;  //!< agent's phone number
         void setAgentPhoneNumber(const QString &); //!< see agentphonenumber()
         int loginkind();                        //!< loginkind to identify to the server
@@ -349,8 +350,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // Parameters given by the User at Login time
         QVariantMap m_config;
         
-        QString m_userloginopt;         //!< User Id Option (kind of login)
-        QString m_userloginwithopt;     //!< User Id Option (kind of login)
         int m_loginkind;                //!< Login Kind
         QString m_xuserid;              //!< Full Id (userid + company)
         QString m_ipbxid;               //!< IPBX id of the current user
