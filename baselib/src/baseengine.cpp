@@ -466,14 +466,6 @@ void BaseEngine::stopConnection()
     stopKeepAliveTimer();
 }
 
-void BaseEngine::addToDataBase(QVariantMap & qv)
-{
-    QVariantMap command;
-    command["class"] = "database";
-    command["items"] = qv;
-    sendJsonCommand(command);
-}
-
 /*! \brief clear the content of m_users
  *
  * Delete all contained UserInfo objects
