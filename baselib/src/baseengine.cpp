@@ -184,8 +184,8 @@ void BaseEngine::loadSettings()
     if (m_config["logtofile"].toBool()) {
         openLogFile ();
     }
-    QString profile = m_settings->value("profile/lastused").toString();
-    m_profilename_write = "engine-" + profile;
+    m_profilename = m_settings->value("profile/lastused").toString();
+    m_profilename_write = "engine-" + m_profilename;
 
     QString settingsversion = m_settings->value("version/xivo", __xivo_version__).toString();
 
@@ -193,7 +193,7 @@ void BaseEngine::loadSettings()
     if (settingsversion == "1.0")
         m_profilename_read = "engine";
     else
-        m_profilename_read = "engine-" + profile;
+        m_profilename_read = "engine-" + m_profilename;
 
     m_settings->beginGroup(m_profilename_read);
         m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.fr").toString();
@@ -1824,6 +1824,11 @@ void BaseEngine::setPassword(const QString & password)
 uint BaseEngine::historySize() const
 {
     return m_config["historysize"].toInt();
+}
+
+QString BaseEngine::profileName() const
+{
+    return m_profilename;
 }
 
 void BaseEngine::initFeatureFields(const QString & field)

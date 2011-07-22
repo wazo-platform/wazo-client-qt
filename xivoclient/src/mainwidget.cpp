@@ -53,6 +53,7 @@ MainWidget::MainWidget()
       m_withsystray(true),
       m_settings(b_engine->getSettings()),
       m_status(new QLabel(this)),
+      m_profilename(new QLabel(this)),
       m_centralWidget(new QStackedWidget(this)),
       m_resizingHelper(0),
       m_clipboard(NULL)
@@ -61,6 +62,7 @@ MainWidget::MainWidget()
     m_appliname = tr("Client %1").arg(XIVOVER);
     m_status->setPixmap(m_pixmap_disconnected);
 
+    statusBar()->addPermanentWidget(m_profilename);
     statusBar()->addPermanentWidget(m_status);
 
     setWindowTitle(QString("XiVO %1").arg(m_appliname));
@@ -740,12 +742,14 @@ void MainWidget::connectionStateChanged()
         m_connectact->setEnabled(false);
         m_disconnectact->setEnabled(true);
         m_status->setPixmap(m_pixmap_connected);
+        m_profilename->setText(b_engine->profileName());
         b_engine->logAction("connection started");
     } else if (b_engine->state() == BaseEngine::ENotLogged) {
         statusBar()->showMessage(tr("Disconnected"));
         m_connectact->setEnabled(true);
         m_disconnectact->setEnabled(false);
         m_status->setPixmap(m_pixmap_disconnected);
+        m_profilename->setText("");
         b_engine->logAction("connection stopped");
     }
 }

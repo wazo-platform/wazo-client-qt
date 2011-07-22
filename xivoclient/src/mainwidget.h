@@ -106,6 +106,7 @@ class MainWidget : public QMainWindow
         QSettings *m_settings;
 
         QLabel *m_status;  //!< status indicator
+        QLabel * m_profilename; //!< profile indicator (status bar)
         QStackedWidget *m_centralWidget;  //!< central widget
         QDockWidget *m_resizingHelper;
 
