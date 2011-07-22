@@ -212,7 +212,6 @@ void BaseEngine::loadSettings()
         m_config["trytoreconnect"] = m_settings->value("trytoreconnect", false).toBool();
         m_config["trytoreconnectinterval"] = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
         m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 20*1000).toUInt();
-        m_checked_lastconnwins = m_settings->value("lastconnwins", false).toBool();
         m_availstate = m_settings->value("availstate", "available").toString();
 
         m_settings->beginGroup("user-gui");
@@ -297,7 +296,6 @@ void BaseEngine::saveSettings()
         m_settings->setValue("trytoreconnect", m_config["trytoreconnect"].toBool());
         m_settings->setValue("trytoreconnectinterval", m_config["trytoreconnectinterval"].toUInt());
         m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
-        m_settings->setValue("lastconnwins", m_checked_lastconnwins);
         m_settings->setValue("availstate", m_availstate);
 
         if (m_config["keeppass"].toUInt() > 0)
@@ -1032,41 +1030,40 @@ void BaseEngine::parseCommand(const QString &line)
                 setState(ENotLogged);
                 popupError(datamap.value("error_string").toString());
             } else {
-            QStringList capas = datamap.value("capalist").toStringList();
-            QVariantMap command;
-            command["class"] = "login_capas";
-            if (capas.size() == 1)
-                command["capaid"] = capas[0];
-            else if (capas.size() == 0) {
-                command["capaid"] = "";
-            } else {
-                if (m_config["userloginopt"].toString().size() > 0) {
-                    if (capas.contains(m_config["userloginopt"].toString()))
-                        command["capaid"] = m_config["userloginopt"].toString();
-                    else
-                        command["capaid"] = capas[0];
-                } else
+                QStringList capas = datamap.value("capalist").toStringList();
+                QVariantMap command;
+                command["class"] = "login_capas";
+                if (capas.size() == 1)
                     command["capaid"] = capas[0];
-            }
+                else if (capas.size() == 0) {
+                    command["capaid"] = "";
+                } else {
+                    if (m_config["userloginopt"].toString().size() > 0) {
+                        if (capas.contains(m_config["userloginopt"].toString()))
+                            command["capaid"] = m_config["userloginopt"].toString();
+                        else
+                            command["capaid"] = capas[0];
+                    } else
+                        command["capaid"] = capas[0];
+                }
 
-            switch(m_loginkind) {
-            case 0:
-                command["loginkind"] = "user";
-                break;
-            case 2:
-                command["agentlogin"] = "now";
-            case 1:
-                command["loginkind"] = "agent";
-                command["agentphonenumber"] = m_config["agentphonenumber"].toString();
-                break;
-            }
+                switch(m_loginkind) {
+                case 0:
+                    command["loginkind"] = "user";
+                    break;
+                case 2:
+                    command["agentlogin"] = "now";
+                case 1:
+                    command["loginkind"] = "agent";
+                    command["agentphonenumber"] = m_config["agentphonenumber"].toString();
+                    break;
+                }
 
-            if (m_checked_function["presence"])
-                command["state"] = m_availstate;
-            else
-                command["state"] = __nopresence__;
-            command["lastconnwins"] = m_checked_lastconnwins;
-            sendJsonCommand(command);
+                if (m_checked_function["presence"])
+                    command["state"] = m_availstate;
+                else
+                    command["state"] = __nopresence__;
+                sendJsonCommand(command);
             }
 
         } else if (thisclass == "login_capas") {

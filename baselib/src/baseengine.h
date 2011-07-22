@@ -366,9 +366,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QHash<QString, bool> m_checked_function;  //!< function checked
         QHash<QString, bool> m_enabled_function;  //!< function enabled
-        bool m_checked_lastconnwins;           //!< the last connected account "wins"
-        
-        int m_historysize;  //!< Number of elements when requestion call log
 
         // Replies given by the server
         QStringList m_capafuncs;         //!< List of func capabilities issued by the server after a successful login
