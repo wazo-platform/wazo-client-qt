@@ -1063,6 +1063,10 @@ void BaseEngine::parseCommand(const QString &line)
                     command["state"] = m_availstate;
                 else
                     command["state"] = __nopresence__;
+                /*!
+                 * \todo To be deleted, when the server will accept it
+                 */
+                command["lastconnwins"] = false;
                 sendJsonCommand(command);
             }
 
