@@ -51,7 +51,7 @@
  *
  * set up the widget, start timer.
  */
-CallWidget::CallWidget(UserInfo * ui,
+CallWidget::CallWidget(const UserInfo * ui,
                        const QString & xchannel,
                        QWidget *parent)
     : QWidget(parent), m_parkedCall(false), m_square(16,16)

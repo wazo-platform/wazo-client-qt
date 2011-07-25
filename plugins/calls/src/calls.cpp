@@ -43,7 +43,7 @@ XLet* XLetCallsPlugin::newXLetInstance(QWidget *parent)
 
 
 XletCalls::XletCalls(QWidget *parent)
-    : XLet(parent), m_monitored_ui(0)
+    : XLet(parent)
 {
     setTitle(tr("Calls"));
     qDebug() << Q_FUNC_INFO;
@@ -251,7 +251,6 @@ void XletCalls::dragEnterEvent(QDragEnterEvent *event)
  */
 void XletCalls::monitorPeerChanged()
 {
-    qDebug() << Q_FUNC_INFO;
     //emptyList();
     if (m_monitored_ui == NULL)
         return;

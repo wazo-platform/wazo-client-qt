@@ -74,8 +74,7 @@ class XletCalls : public XLet
         void monitorPeerRequest(const QString &);  //!< send the userid of the new monitored peer
 
     private:
-        UserInfo *m_monitored_ui;  //!< user currently monitored
-        QVBoxLayout *m_layout;  //!< Vertical Layout used
+        QVBoxLayout * m_layout;  //!< Vertical Layout used
         QHash<QString, CallWidget *> m_affhash;  //!< List of CallWidget Widgets
 };
 
