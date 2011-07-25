@@ -289,7 +289,7 @@ void MainWidget::loginKindChanged(int index)
         m_qlab3->hide();
     }
 
-    if (b_engine->showagselect()) {
+    if (m_config["showagselect"].toBool()) {
         if (index > 0) {
             m_lab3->show();
             m_qlab3->show();

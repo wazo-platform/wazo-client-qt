@@ -99,8 +99,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // setter/getter for properties
 
         QString userLogin() const;        //!< userid to identify to the server
-        void setUserLogin(const QString &);       //!< see userid()
-        void setUserLogin(const QString &, const QString &); //!< set userid and userid option
         QString agentphonenumber() const;  //!< agent's phone number
         void setAgentPhoneNumber(const QString &); //!< see agentphonenumber()
         int loginkind();                        //!< loginkind to identify to the server
@@ -212,6 +210,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void addUpdateConfMemberInTree(DStore *, const QString &);
 
         QMultiHash<QString, e_callback* > m_class_event_cb;
+        
+        void setUserLogin(const QString &);       //!< see userid()
+        void setUserLogin(const QString &, const QString &); //!< set userid and userid option
 
     public slots:
         void start();  //!< start the connection process.

@@ -268,7 +268,7 @@ void BaseEngine::loadSettings()
  */
 void BaseEngine::saveSettings()
 {
-    if (m_settings->value("userid").toString() != m_config["userlogin"].toString()) {
+    if (m_settings->value("userid").toString() != m_config["userloginsimple"].toString()) {
         m_settings->setValue("monitor/userid", QString(""));
     }
 
@@ -286,7 +286,7 @@ void BaseEngine::saveSettings()
         m_settings->setValue("serverhost", m_config["cti_address"].toString());
         m_settings->setValue("serverport", m_config["cti_port"].toUInt());
         m_settings->setValue("encryption", m_config["cti_encrypt"].toBool());
-        m_settings->setValue("userid", m_config["userlogin"].toString());
+        m_settings->setValue("userid", m_config["userloginsimple"].toString());
         m_settings->setValue("useridopt", m_config["userloginopt"].toString());
         m_settings->setValue("company", m_config["company"].toString());
         m_settings->setValue("keeppass", m_config["keeppass"].toUInt());
@@ -516,7 +516,7 @@ void BaseEngine::clearChannelList()
  */
 void BaseEngine::connectSocket()
 {
-    if (m_config["userlogin"].toString().length()) {
+    if (m_config["userloginsimple"].toString().length()) {
         if (m_config["cti_encrypt"].toBool())
             m_ctiserversocket->connectToHostEncrypted(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
         else
@@ -674,7 +674,7 @@ void BaseEngine::ctiSocketConnected()
     m_attempt_loggedin = false;
     QVariantMap command;
     command["class"] = "login_id";
-    command["userlogin"] = m_config["userlogin"].toString();
+    command["userlogin"] = m_config["userloginsimple"].toString();
     command["company"] = m_config["company"].toString();
     command["ident"] = m_osname;
     command["version"] = "9999";
@@ -1129,7 +1129,7 @@ void BaseEngine::parseCommand(const QString &line)
 
             QString urltolaunch = m_guioptions.value("merged_gui").toMap().value("loginwindow.url").toString();
             if (! urltolaunch.isEmpty()) {
-                urltolaunch.replace("{xc-username}", m_config["userlogin"].toString());
+                urltolaunch.replace("{xc-username}", m_config["userloginsimple"].toString());
                 urltolaunch.replace("{xc-password}", m_config["password"].toString());
                 this->urlAuto(urltolaunch);
             }
@@ -1469,7 +1469,7 @@ void BaseEngine::popupError(const QString & errorid)
     if (errorid.toLower() == "user_not_found") {
         errormsg = tr("Your registration name <%1@%2> "
                       "is not known by the XiVO CTI server on %3:%4.")
-            .arg(m_config["userlogin"].toString()).arg(m_config["company"].toString())
+            .arg(m_config["userloginsimple"].toString()).arg(m_config["company"].toString())
             .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
@@ -1745,17 +1745,13 @@ void BaseEngine::setConfig(QVariantMap qvm)
 
 // === Getter and Setters ===
 
-QString BaseEngine::userLogin() const
+void BaseEngine::setUserLogin(const QString & userlogin)
 {
-    return m_config["userlogin"].toString() + m_config["userloginopt"].toString();
-}
-
-void BaseEngine::setUserLogin(const QString & userid)
-{
-    QStringList useridsplit = userid.split("%");
-    m_config["userlogin"] = useridsplit[0].trimmed();
-    if (useridsplit.size() > 1) {
-        m_config["userloginopt"] = useridsplit[1].trimmed();
+    m_config["userlogin"] = userlogin.trimmed();
+    QStringList userloginsplit = userlogin.split("%");
+    m_config["userloginsimple"] = userloginsplit[0].trimmed();
+    if (userloginsplit.size() > 1) {
+        m_config["userloginopt"] = userloginsplit[1].trimmed();
     } else {
         m_config["userloginopt"] = "";
     }
@@ -1763,18 +1759,14 @@ void BaseEngine::setUserLogin(const QString & userid)
 
 void BaseEngine::setUserLogin(const QString & userid, const QString & opt)
 {
-    m_config["userlogin"] = userid.trimmed();
+    m_config["userloginsimple"] = userid.trimmed();
     m_config["userloginopt"] = opt.trimmed();
-}
-
-QString BaseEngine::agentphonenumber() const
-{
-    return m_config["agentphonenumber"].toString();
-}
-
-void BaseEngine::setAgentPhoneNumber(const QString & agentphonenumber)
-{
-    m_config["agentphonenumber"] = agentphonenumber;
+    if (m_config["userloginopt"].toString().isEmpty()) {
+        m_config["userlogin"] = m_config["userloginsimple"].toString();
+    } else {
+        m_config["userlogin"] = m_config["userloginsimple"].toString()
+                                + "%" + m_config["userloginopt"].toString();
+    }
 }
 
 int BaseEngine::loginkind()
@@ -1791,36 +1783,6 @@ void BaseEngine::setLoginKind(const int loginkind)
 
         m_loginkind = loginkind;
     }
-}
-
-int BaseEngine::showagselect()
-{
-    return m_config["showagselect"].toUInt();
-}
-
-void BaseEngine::setShowAgentSelect(const int showagselect)
-{
-    m_config["showagselect"] = showagselect;
-}
-
-int BaseEngine::keeppass()
-{
-    return m_config["keeppass"].toUInt();
-}
-
-void BaseEngine::setKeepPass(int keeppass)
-{
-    m_config["keeppass"] = keeppass;
-}
-
-QString BaseEngine::password() const
-{
-    return m_config["password"].toString();
-}
-
-void BaseEngine::setPassword(const QString & password)
-{
-    m_config["password"] = password;
 }
 
 uint BaseEngine::historySize() const
