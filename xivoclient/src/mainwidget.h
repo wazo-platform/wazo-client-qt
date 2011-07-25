@@ -69,7 +69,6 @@ class MainWidget : public QMainWindow
         void about();
         void showCredits();
         void setConfigAndStart();
-        void logintextChanged(const QString &);
         void loginKindChanged(int);
         void confUpdated();
         void updatePresence();
@@ -104,6 +103,7 @@ class MainWidget : public QMainWindow
         QString m_appliname;
         bool m_withsystray;
         QSettings *m_settings;
+        QVariantMap m_config;
 
         QLabel *m_status;  //!< status indicator
         QLabel * m_profilename; //!< profile indicator (status bar)

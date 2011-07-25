@@ -59,11 +59,13 @@ MainWidget::MainWidget()
       m_clipboard(NULL)
 {
     b_engine->setParent(this); // take ownership of the engine object
+    
+    m_config = b_engine->getConfig();
+    
     m_appliname = tr("Client %1").arg(XIVOVER);
     m_status->setPixmap(m_pixmap_disconnected);
 
-    // Waiting for config import to be changed
-    // if (b_engine->displayProfile())
+    if (m_config["displayprofile"].toBool())
         statusBar()->addPermanentWidget(m_profilename);
     statusBar()->addPermanentWidget(m_status);
 
@@ -160,20 +162,20 @@ void MainWidget::makeLoginWidget()
     loginL->addWidget(m_lab3, 4, 0, Qt::AlignRight);
 
     m_qlab1 = new QLineEdit();
-    m_qlab1->setText(b_engine->userLogin());
+    m_qlab1->setText(m_config["userlogin"].toString());
     loginL->addWidget(m_qlab1, 2, 1);
     m_qlab2 = new QLineEdit();
-    m_qlab2->setText(b_engine->password());
+    m_qlab2->setText(m_config["password"].toString());
     m_qlab2->setEchoMode(QLineEdit::Password);
     loginL->addWidget(m_qlab2, 3, 1);
     m_qlab3 = new QLineEdit();
-    m_qlab3->setText(b_engine->agentphonenumber());
+    m_qlab3->setText(m_config["agentphonenumber"].toString());
     loginL->addWidget(m_qlab3, 4, 1);
 
     m_ack = new QPushButton("OK");
     loginL->addWidget(m_ack, 2, 2, Qt::AlignLeft);
     m_kpass = new QCheckBox(tr("Keep Password"));
-    m_kpass->setCheckState((b_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
+    m_kpass->setCheckState(m_config["keeppass"].toUInt() == Qt::Checked ? Qt::Checked : Qt::Unchecked);
     loginL->addWidget(m_kpass, 3, 2, Qt::AlignLeft);
     m_loginkind = new QComboBox();
     m_loginkind->addItem(QString(tr("No Agent")));
@@ -268,21 +270,20 @@ void MainWidget::clearAppearance()
 
 void MainWidget::setConfigAndStart()
 {
-    b_engine->setKeepPass(m_kpass->checkState());
+    m_config["userlogin"] = m_qlab1->text();
+    m_config["password"] = m_qlab2->text();
+    m_config["agentphonenumber"] = m_qlab3->text();
+    m_config["keeppass"] = m_kpass->checkState();
+    b_engine->setConfig(m_config);
+    b_engine->setLoginKind(m_loginkind->currentIndex());
     b_engine->configAndStart(m_qlab1->text(),
                              m_qlab2->text(),
                              m_qlab3->text());
 }
 
-void MainWidget::logintextChanged(const QString &logintext)
-{
-    m_qlab3->setText(logintext);
-}
-
 void MainWidget::loginKindChanged(int index)
 {
     // qDebug() << Q_FUNC_INFO << index;
-    b_engine->setLoginKind(index);
     if (index == 0) {
         m_lab3->hide();
         m_qlab3->hide();
@@ -463,12 +464,17 @@ void MainWidget::showConfDialog()
 void MainWidget::confUpdated()
 {
     // qDebug() << Q_FUNC_INFO;
-    m_qlab1->setText(b_engine->userLogin());
-    m_qlab2->setText(b_engine->password());
-    m_qlab3->setText(b_engine->agentphonenumber());
-    m_kpass->setCheckState((b_engine->keeppass() == 2) ? Qt::Checked : Qt::Unchecked);
+    m_config = b_engine->getConfig();
+    m_qlab1->setText(m_config["userlogin"].toString());
+    m_qlab2->setText(m_config["password"].toString());
+    m_qlab3->setText(m_config["agentphonenumber"].toString());
+    m_kpass->setCheckState((m_config["keeppass"].toUInt() == 2) ? Qt::Checked : Qt::Unchecked);
     m_loginkind->setCurrentIndex(b_engine->loginkind());
-    loginKindChanged(m_loginkind->currentIndex()); // Hide or Show the phone number
+    
+    // No need to call loginKindChanged because
+    // if the index is the same, no need to do anything
+    // if the index changed, loginKindChanged is automatically called by a QComboBox signal
+    // loginKindChanged(m_loginkind->currentIndex()); // Hide or Show the phone number
 }
 
 /*! \brief process clicks to the systray icon

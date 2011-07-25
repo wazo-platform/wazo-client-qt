@@ -387,7 +387,7 @@ void ConfigWidget::_insert_guisetting_tab()
     
     m_displayprofile = new QCheckBox(tr("Display the configuration profile")) ;
     m_displayprofile->setCheckState(m_config["displayprofile"].toBool() ? Qt::Checked : Qt::Unchecked);
-    layout4->addRow(m_displayprofile);
+    layout4->addRow(new WarningWidget(m_displayprofile));
     
     m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
 }
