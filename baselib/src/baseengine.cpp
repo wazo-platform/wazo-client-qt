@@ -213,6 +213,7 @@ void BaseEngine::loadSettings()
         m_config["trytoreconnectinterval"] = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
         m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 20*1000).toUInt();
         m_availstate = m_settings->value("availstate", "available").toString();
+        m_config["displayprofile"] = m_settings->value("displayprofile", false).toBool();
 
         m_settings->beginGroup("user-gui");
             m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
@@ -297,6 +298,7 @@ void BaseEngine::saveSettings()
         m_settings->setValue("trytoreconnectinterval", m_config["trytoreconnectinterval"].toUInt());
         m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
         m_settings->setValue("availstate", m_availstate);
+        m_settings->setValue("displayprofile", m_config["displayprofile"].toBool());
 
         if (m_config["keeppass"].toUInt() > 0)
             m_settings->setValue("password", m_config["password"].toString());

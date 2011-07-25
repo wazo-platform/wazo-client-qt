@@ -155,5 +155,7 @@ class ConfigWidget: public QDialog
         
         QCheckBox * m_logtofile;
         QLineEdit * m_logfilename;
+        
+        QCheckBox * m_displayprofile;
 };
 #endif

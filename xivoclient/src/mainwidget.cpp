@@ -62,7 +62,9 @@ MainWidget::MainWidget()
     m_appliname = tr("Client %1").arg(XIVOVER);
     m_status->setPixmap(m_pixmap_disconnected);
 
-    statusBar()->addPermanentWidget(m_profilename);
+    // Waiting for config import to be changed
+    // if (b_engine->displayProfile())
+        statusBar()->addPermanentWidget(m_profilename);
     statusBar()->addPermanentWidget(m_status);
 
     setWindowTitle(QString("XiVO %1").arg(m_appliname));

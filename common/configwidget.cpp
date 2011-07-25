@@ -385,6 +385,10 @@ void ConfigWidget::_insert_guisetting_tab()
     m_clipboard->setCheckState(m_config["enableclipboard"].toBool() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow(new WarningWidget(m_clipboard));
     
+    m_displayprofile = new QCheckBox(tr("Display the configuration profile")) ;
+    m_displayprofile->setCheckState(m_config["displayprofile"].toBool() ? Qt::Checked : Qt::Unchecked);
+    layout4->addRow(m_displayprofile);
+    
     m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
 }
 
@@ -562,6 +566,7 @@ void ConfigWidget::saveAndClose()
     m_config["enableclipboard"] = m_clipboard->checkState() == Qt::Checked;
     m_config["logtofile"] = m_logtofile->checkState() == Qt::Checked;
     m_config["logfilename"] = m_logfilename->text();
+    m_config["displayprofile"] = m_displayprofile->checkState() == Qt::Checked;
     b_engine->setConfig(m_config);
 
     foreach(QString function, func_legend.keys())
