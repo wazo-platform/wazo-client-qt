@@ -38,6 +38,7 @@
 #include <QHash>
 #include <QVariantMap>
 #include <QMessageBox>
+#include <QHBoxLayout>
 
 class QCheckBox;
 class QComboBox;
@@ -158,4 +159,16 @@ class ConfigWidget: public QDialog
         
         QCheckBox * m_displayprofile;
 };
+
+/*! \brief Wrapper to display a warning icon beside a QWidget*/
+class WarningWidget : public QWidget
+{
+    Q_OBJECT
+    
+    private:
+        QHBoxLayout * layout;
+    public:
+        WarningWidget(QWidget *, QString s = "");
+};
+
 #endif

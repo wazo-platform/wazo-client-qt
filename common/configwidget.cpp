@@ -52,37 +52,6 @@
 #include "baseengine.h"
 #include "xivoconsts.h"
 
-/*! \brief Wrapper to display a warning icon beside a QWidget*/
-class WarningWidget : public QWidget
-{
-    //Q_OBJECT
-    private:
-        QHBoxLayout * layout;
-    public:
-    
-        WarningWidget(QWidget * widget = NULL, QString tooltip = "") : QWidget() {
-            
-            layout = new QHBoxLayout();
-            layout->setMargin(0);
-            layout->setSpacing(0);
-            layout->setAlignment(Qt::AlignLeft);
-            setLayout(layout);
-            
-            QLabel * label = new QLabel();
-            label->setPixmap (QPixmap(":/images/warning.png").scaledToHeight(18, Qt::SmoothTransformation));
-            if (tooltip.isEmpty()) {
-                /*!
-                 * \todo the translation doesn't work
-                 */
-                tooltip = tr("You must restart the program for this setting to apply");
-            }
-            label->setToolTip(tooltip);
-            
-            layout->addWidget(widget);
-            layout->addWidget(label);
-        }
-};
-
 static const QStringList queuelevel_colors = (QStringList() << "green" << "orange");
 QHash<QString, QString> func_legend;
 
@@ -609,4 +578,23 @@ void ConfigWidget::saveAndClose()
 
     emit confUpdated();
     close();
+}
+
+WarningWidget::WarningWidget(QWidget * widget = NULL, QString tooltip) : QWidget() {
+    
+    layout = new QHBoxLayout();
+    layout->setMargin(0);
+    layout->setSpacing(0);
+    layout->setAlignment(Qt::AlignLeft);
+    setLayout(layout);
+    
+    QLabel * label = new QLabel();
+    label->setPixmap (QPixmap(":/images/warning.png").scaledToHeight(18, Qt::SmoothTransformation));
+    if (tooltip.isEmpty()) {
+        tooltip = tr("You must restart the program for this setting to apply");
+    }
+    label->setToolTip(tooltip);
+    
+    layout->addWidget(widget);
+    layout->addWidget(label);
 }
