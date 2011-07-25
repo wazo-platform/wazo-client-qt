@@ -4,9 +4,9 @@
 #include <QtGui>
 #include <QWidget>
 
+class ExtendedLabel;
 class ExtendedTableWidget;
 class ParkingInfo;
-class QLabel;
 class QTableWidgetItem;
 
 /*! \brief A simple widget to hold parkinglot informations */
@@ -22,9 +22,11 @@ public:
 signals:
     void itemClicked(const QString &);
     void itemDoubleClicked(const QString &);
+    void parkinglotClicked(const QString &);
 public slots:
     void clickListener(QTableWidgetItem * i);
     void doubleClickListener(QTableWidgetItem * i);
+    void headerClicked();
 protected:
     int findRow(const QString &) const;
     void addRow(const QStringList & list);
@@ -33,7 +35,7 @@ protected:
 private:
     QString m_parking_id;
     ExtendedTableWidget * m_table; //!< The table holding the information
-    QLabel * m_header; //!< Where to display the title
+    ExtendedLabel * m_header;
     static QStringList m_labels;
 };
 

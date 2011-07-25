@@ -62,6 +62,7 @@ class XletParking : public XLet
     private slots:
         void itemClicked(const QString &);
         void itemDoubleClicked(const QString &);
+        void parkinglotClicked(const QString &);
     private:
         QVBoxLayout * m_parkinglayout;
         int m_timerid;  //!< id of the timer
