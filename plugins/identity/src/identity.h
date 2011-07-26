@@ -62,8 +62,6 @@ class IdentityDisplay : public XLet
         void updateUserConfig(const QString &);
         void updateUserStatus(const QString &);
         void updatePhoneConfig(const QString &);
-        void updateVoiceMailConfig(const QString &);
-        void updateVoiceMailStatus(const QString &);
 
     signals:
         void setAvailState(const QString &, bool);

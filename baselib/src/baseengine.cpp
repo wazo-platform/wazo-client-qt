@@ -2443,7 +2443,7 @@ void BaseEngine::urlAuto(const QString & value)
         // rely on the system's url opening methods (see xdg-open on linux, for instance)
 #ifdef Q_WS_WIN
         // in win32 case + iexplore.exe, this should ensure it opens a new tab
-        QString key = QString("HKEY_CLASSES_ROOT\\%1\\shell\\open\\command").arg(url.scheme())
+        QString key = QString("HKEY_CLASSES_ROOT\\%1\\shell\\open\\command").arg(url.scheme());
         QSettings settings(key, QSettings::NativeFormat);
         QString command = settings.value(".").toString();
         QRegExp rx("\"(.+)\"");
