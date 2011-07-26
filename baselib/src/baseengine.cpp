@@ -1723,6 +1723,11 @@ void BaseEngine::searchDirectory(const QString & text)
     sendJsonCommand(command);
 }
 
+QVariantMap BaseEngine::getConfig()
+{
+    return m_config.toQVariantMap();
+}
+
 void BaseEngine::setConfig(QVariantMap qvm)
 {
     if (m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt()) {
@@ -1731,7 +1736,7 @@ void BaseEngine::setConfig(QVariantMap qvm)
             m_timerid_tryreconnect = startTimer(qvm["trytoreconnectinterval"].toUInt());
         }
     }
-    m_config = qvm;
+    m_config.merge(qvm);
     
     this->setUserLogin (qvm["userlogin"].toString());
     this->changeTranslation(qvm["forcelocale"].toString());

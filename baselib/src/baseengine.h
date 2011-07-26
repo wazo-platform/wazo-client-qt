@@ -55,6 +55,7 @@
 #include "groupinfo.h"
 #include "voicemailinfo.h"
 #include "userinfo.h"
+#include "baseconfig.h"
 
 class QApplication;
 class QDateTime;
@@ -94,7 +95,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QSettings* getSettings();
         void loadSettings();                   //!< load server settings
         
-        QVariantMap getConfig() { return m_config; }
+        QVariantMap getConfig();
         void setConfig(QVariantMap);
         // setter/getter for properties
 
@@ -350,7 +351,12 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // Class Members
         // Parameters given by the User at Login time
-        QVariantMap m_config;
+        
+        /*! \brief Stores the configuration values.
+         * Only BaseEngine can freeze values in it.
+         * The frozen values are the one given by the server, and should not be overwritten
+         */
+        BaseConfig m_config;
         
         int m_loginkind;                //!< Login Kind
         QString m_xuserid;              //!< Full Id (userid + company)
