@@ -358,6 +358,10 @@ void ConfigWidget::_insert_guisetting_tab()
     m_displayprofile->setCheckState(m_config["displayprofile"].toBool() ? Qt::Checked : Qt::Unchecked);
     layout4->addRow(new WarningWidget(m_displayprofile));
     
+    m_activate_on_tel = new QCheckBox(tr("Activate on incoming call")) ;
+    m_activate_on_tel->setCheckState(m_config["activate_on_tel"].toBool() ? Qt::Checked : Qt::Unchecked);
+    layout4->addRow(new WarningWidget(m_activate_on_tel));
+    
     m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
 }
 
@@ -448,7 +452,7 @@ void ConfigWidget::_insert_operator_functiontab()
 
 
     m_operator_answer_work = new QCheckBox(tr("Display an answer action"));
-    m_operator_answer_work->setCheckState((b_engine->getGuiOptions("client_gui").value("xlet_operator_answer_work", 1).toInt()) ? Qt::Checked : Qt::Unchecked);
+    m_operator_answer_work->setCheckState((m_opts.value("xlet_operator_answer_work", 1).toInt()) ? Qt::Checked : Qt::Unchecked);
     glayout->addWidget(m_operator_answer_work, ++i , 1, 1, 2);
 
     glayout->addWidget(new QLabel(tr("Any change here requires an application restart to be effective")), ++i, 1, 1, 2);
@@ -536,6 +540,7 @@ void ConfigWidget::saveAndClose()
     m_config["logtofile"] = m_logtofile->checkState() == Qt::Checked;
     m_config["logfilename"] = m_logfilename->text();
     m_config["displayprofile"] = m_displayprofile->checkState() == Qt::Checked;
+    m_config["activate_on_tel"] = m_activate_on_tel->checkState() == Qt::Checked;
     b_engine->setConfig(m_config);
 
     foreach(QString function, func_legend.keys())

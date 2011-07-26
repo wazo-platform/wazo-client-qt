@@ -62,22 +62,22 @@
 <context>
     <name>ConfigWidget</name>
     <message>
-        <location filename="../common/configwidget.cpp" line="342"/>
+        <location filename="../common/configwidget.cpp" line="311"/>
         <source>Account</source>
         <translation>das Konto</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="194"/>
+        <location filename="../common/configwidget.cpp" line="163"/>
         <source>Allow the Automatic Opening of URL&apos;s</source>
         <translation>Ein automatische Offnung  berechtigte URL </translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="320"/>
+        <location filename="../common/configwidget.cpp" line="289"/>
         <source>Autoconnect at startup</source>
         <translation>Verbindung in Start</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="140"/>
+        <location filename="../common/configwidget.cpp" line="109"/>
         <source>Checking this box disables the Error Popups</source>
         <translation>Popups Fehler wird nicht gesendet</translation>
     </message>
@@ -86,7 +86,7 @@
         <translation type="obsolete">die Konfiguration</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="154"/>
+        <location filename="../common/configwidget.cpp" line="123"/>
         <source>Connection</source>
         <translation>Die Verbindung</translation>
     </message>
@@ -99,352 +99,357 @@
         <translation type="obsolete">Breite Kontakte</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="166"/>
-        <location filename="../common/configwidget.cpp" line="204"/>
+        <location filename="../common/configwidget.cpp" line="135"/>
+        <location filename="../common/configwidget.cpp" line="173"/>
         <source>Customer Info</source>
         <translation>Bildschirm erscheint</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="296"/>
+        <location filename="../common/configwidget.cpp" line="265"/>
         <source>Functions</source>
         <translation>Funktionen</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="392"/>
+        <location filename="../common/configwidget.cpp" line="365"/>
         <source>GUI Settings</source>
         <translation>IHM Einstellung</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="213"/>
+        <location filename="../common/configwidget.cpp" line="182"/>
         <source>History size</source>
         <translation>chronologischer Überblicksgrösse</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="316"/>
+        <location filename="../common/configwidget.cpp" line="285"/>
         <source>Keep Password</source>
         <translation>Halten Sie das Passwort</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="152"/>
+        <location filename="../common/configwidget.cpp" line="121"/>
         <source>Keep alive interval</source>
         <translation>Zeitmessung der Verbindung</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="133"/>
+        <location filename="../common/configwidget.cpp" line="102"/>
         <source>Login Port</source>
         <translation>Port</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="314"/>
+        <location filename="../common/configwidget.cpp" line="283"/>
         <source>Password</source>
         <translation>Passwort</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="338"/>
+        <location filename="../common/configwidget.cpp" line="307"/>
         <source>Phone Number</source>
         <translation>Telefon</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="165"/>
-        <location filename="../common/configwidget.cpp" line="188"/>
+        <location filename="../common/configwidget.cpp" line="134"/>
+        <location filename="../common/configwidget.cpp" line="157"/>
         <source>Presence reporting</source>
         <translation>Anwesenhaitsrapport</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="241"/>
+        <location filename="../common/configwidget.cpp" line="210"/>
         <source>Queue Display</source>
         <translation>Anzeige Warteschlangen</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="128"/>
+        <location filename="../common/configwidget.cpp" line="97"/>
         <source>Server Host</source>
         <translation>Anbietersadresse</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="368"/>
+        <location filename="../common/configwidget.cpp" line="337"/>
         <source>Systrayed at startup</source>
         <translation>am Start verkleinen</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="202"/>
+        <location filename="../common/configwidget.cpp" line="171"/>
         <source>Tab limit</source>
         <translation>maximum Menge des Falz</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="139"/>
+        <location filename="../common/configwidget.cpp" line="108"/>
         <source>Try to reconnect</source>
         <translation>automatische Verbindung</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="147"/>
+        <location filename="../common/configwidget.cpp" line="116"/>
         <source>Try to reconnect interval</source>
         <translation>Zeit vor Wiederverbindung</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="310"/>
+        <location filename="../common/configwidget.cpp" line="279"/>
         <source>User Login</source>
         <translation>Benutzersname</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="329"/>
+        <location filename="../common/configwidget.cpp" line="298"/>
         <source>No Agent</source>
         <translation>Ohne Agent</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="330"/>
+        <location filename="../common/configwidget.cpp" line="299"/>
         <source>Agent (unlogged)</source>
         <translation>Agent (nicht angemeldet)</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="331"/>
+        <location filename="../common/configwidget.cpp" line="300"/>
         <source>Agent (logged)</source>
         <translation>Agent (angemeldet)</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="324"/>
+        <location filename="../common/configwidget.cpp" line="293"/>
         <source>Show the Agent options (like the
 ones beneath) on first window</source>
         <translation>Agent zeigt die Optionen (wie unten)
 auf der ersten Seite</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="94"/>
+        <location filename="../common/configwidget.cpp" line="63"/>
         <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="135"/>
+        <location filename="../common/configwidget.cpp" line="104"/>
         <source>Encrypt Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="215"/>
+        <location filename="../common/configwidget.cpp" line="184"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="225"/>
+        <location filename="../common/configwidget.cpp" line="194"/>
         <source>Contacts&apos; max number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="230"/>
+        <location filename="../common/configwidget.cpp" line="199"/>
         <source>Contacts&apos; width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="232"/>
+        <location filename="../common/configwidget.cpp" line="201"/>
         <source>Contacts</source>
         <translation type="unfinished">Kontakt</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="251"/>
+        <location filename="../common/configwidget.cpp" line="220"/>
         <source>Queue Display (Longest Wait)</source>
         <translation>Sehen Sie sich die längste Wartezeit in Warteschlangen</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="263"/>
+        <location filename="../common/configwidget.cpp" line="232"/>
         <source>Queue Display number</source>
         <translation>Anzeige der Number auf Warteschlangen</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="267"/>
+        <location filename="../common/configwidget.cpp" line="236"/>
         <source>Queues</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="333"/>
+        <location filename="../common/configwidget.cpp" line="302"/>
         <source>Agent options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="353"/>
+        <location filename="../common/configwidget.cpp" line="322"/>
         <source>System Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="354"/>
+        <location filename="../common/configwidget.cpp" line="323"/>
         <source>English</source>
         <translation>Englisch</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="355"/>
+        <location filename="../common/configwidget.cpp" line="324"/>
         <source>French</source>
         <translation>Französisch</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="356"/>
+        <location filename="../common/configwidget.cpp" line="325"/>
         <source>Nederlands</source>
         <translation>Niederländisch</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="357"/>
+        <location filename="../common/configwidget.cpp" line="326"/>
         <source>German</source>
         <translation>Deutsch</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="362"/>
+        <location filename="../common/configwidget.cpp" line="331"/>
         <source>Language</source>
         <translation>Sprache</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="274"/>
+        <location filename="../common/configwidget.cpp" line="243"/>
         <source>Small</source>
         <translation>klein</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="275"/>
+        <location filename="../common/configwidget.cpp" line="244"/>
         <source>Detailed</source>
         <translation>ausführlich</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="280"/>
+        <location filename="../common/configwidget.cpp" line="249"/>
         <source>Appearance of SwitchBoard elements</source>
         <translation>Aussehen der Elemente der Switchboard</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="288"/>
+        <location filename="../common/configwidget.cpp" line="257"/>
         <source>Maximum width for small SwitchBoard elements</source>
         <translation>maximale Breite von kleinen Elementen von Switchboard</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="290"/>
+        <location filename="../common/configwidget.cpp" line="259"/>
         <source>Switchboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="373"/>
+        <location filename="../common/configwidget.cpp" line="342"/>
         <source>Allow multiple instances of XiVO Client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="382"/>
+        <location filename="../common/configwidget.cpp" line="351"/>
         <source>Interface style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="384"/>
+        <location filename="../common/configwidget.cpp" line="353"/>
         <source>Enable the clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="388"/>
+        <location filename="../common/configwidget.cpp" line="357"/>
         <source>Display the configuration profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="402"/>
+        <location filename="../common/configwidget.cpp" line="361"/>
+        <source>Activate on incoming call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/configwidget.cpp" line="375"/>
         <source>Enable logging of program actions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="408"/>
+        <location filename="../common/configwidget.cpp" line="381"/>
         <source>Logfile name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="410"/>
+        <location filename="../common/configwidget.cpp" line="383"/>
         <source>Advanced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="423"/>
+        <location filename="../common/configwidget.cpp" line="396"/>
         <source>(current: %0) use your keyboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="427"/>
-        <location filename="../common/configwidget.cpp" line="468"/>
+        <location filename="../common/configwidget.cpp" line="400"/>
+        <location filename="../common/configwidget.cpp" line="441"/>
         <source>(current: %0) click to change</source>
         <translation>(%0) klicken um zu wescheln</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="437"/>
+        <location filename="../common/configwidget.cpp" line="410"/>
         <source>Answer</source>
         <translation>antworten</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="439"/>
+        <location filename="../common/configwidget.cpp" line="412"/>
         <source>Hangup</source>
         <translation>auflegen</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="441"/>
+        <location filename="../common/configwidget.cpp" line="414"/>
         <source>D. Transfer</source>
         <translation>direkte Übertragung</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="443"/>
+        <location filename="../common/configwidget.cpp" line="416"/>
         <source>I. Transfer</source>
         <translation>indirekte Übertragung</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="445"/>
+        <location filename="../common/configwidget.cpp" line="418"/>
         <source>I. Link</source>
         <translation>hinzufügen</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="447"/>
+        <location filename="../common/configwidget.cpp" line="420"/>
         <source>I. Cancel</source>
         <translation>abrechen</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="449"/>
+        <location filename="../common/configwidget.cpp" line="422"/>
         <source>Park</source>
         <translation>Park</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="451"/>
+        <location filename="../common/configwidget.cpp" line="424"/>
         <source>Finalize Transfer</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="453"/>
+        <location filename="../common/configwidget.cpp" line="426"/>
         <source>Cancel Transfer</source>
         <translation>abrechen</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="464"/>
+        <location filename="../common/configwidget.cpp" line="437"/>
         <source>Operator action</source>
         <translation>Operator Aktion</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="465"/>
+        <location filename="../common/configwidget.cpp" line="438"/>
         <source>Key binding</source>
         <translation>Allocate Schlüssel</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="481"/>
+        <location filename="../common/configwidget.cpp" line="454"/>
         <source>Display an answer action</source>
         <translation>Ein Knopf um zu antworten zeigen</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="485"/>
+        <location filename="../common/configwidget.cpp" line="458"/>
         <source>Any change here requires an application restart to be effective</source>
         <translation>Jede Änderung hier erfordert Neustart der Anwendung wirksam zu sein</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="487"/>
+        <location filename="../common/configwidget.cpp" line="460"/>
         <source>Operator Xlet</source>
         <translation>Xlet Operator</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="514"/>
+        <location filename="../common/configwidget.cpp" line="487"/>
         <source>This key is already bound</source>
         <translation>Dieser Schlüssel ist bereits allocate</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="515"/>
+        <location filename="../common/configwidget.cpp" line="488"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation>Bitte drücken Sie eine andere Taste, das ist eine bereits zugeordnete Aktion &apos;%0&apos;</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="307"/>
+        <location filename="../common/configwidget.cpp" line="276"/>
         <source>Context</source>
         <translation>der Kontext</translation>
     </message>
     <message>
-        <location filename="../common/configwidget.cpp" line="186"/>
+        <location filename="../common/configwidget.cpp" line="155"/>
         <source>Presence indicator size (in pixels)</source>
         <translation>Größe Präsenz Indikator (Pixel)</translation>
     </message>
@@ -1088,7 +1093,7 @@ Sind Sie sicher?</translation>
 <context>
     <name>WarningWidget</name>
     <message>
-        <location filename="../common/configwidget.cpp" line="77"/>
+        <location filename="../common/configwidget.cpp" line="599"/>
         <source>You must restart the program for this setting to apply</source>
         <translation type="unfinished"></translation>
     </message>

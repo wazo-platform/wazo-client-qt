@@ -158,6 +158,7 @@ class ConfigWidget: public QDialog
         QLineEdit * m_logfilename;
         
         QCheckBox * m_displayprofile;
+        QCheckBox * m_activate_on_tel;
 };
 
 /*! \brief Wrapper to display a warning icon beside a QWidget*/

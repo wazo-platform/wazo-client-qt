@@ -181,6 +181,7 @@ void BaseEngine::loadSettings()
     m_config["enableclipboard"] = m_settings->value("display/enableclipboard", true).toBool();
     m_config["logtofile"] = m_settings->value("display/logtofile", false).toBool();
     m_config["logfilename"] = m_settings->value("display/logfilename", "XiVO_Client.log").toString();
+    m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
     if (m_config["logtofile"].toBool()) {
         openLogFile ();
     }
@@ -281,6 +282,7 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/enableclipboard", m_config["enableclipboard"].toBool());
     m_settings->setValue("display/logtofile", m_config["logtofile"].toBool());
     m_settings->setValue("display/logfilename", m_config["logfilename"].toString());
+    m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
 
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("serverhost", m_config["cti_address"].toString());
