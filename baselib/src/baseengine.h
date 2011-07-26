@@ -135,7 +135,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QStringList & getCapasIpbxCommands() const;
 
         void setGuiOption(const QString &, const QVariant &);
-        const QVariantMap getGuiOptions(const QString &) const;
+        QVariantMap getGuiOptions(const QString &) const;
 
         const QString& getCapaApplication() const;
         void configAndStart(const QString &, const QString &, const QString &);
@@ -386,7 +386,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QStringList m_capas_regcommands;  //!< Capabilities for regular commands
         QStringList m_capas_ipbxcommands; //!< Capabilities for IPBX commands
 
-        QVariantMap m_guioptions;       //!< List of GUI options
+        // QVariantMap m_guioptions;       //!< List of GUI options
         QString m_appliname;            //!< Application name to be displayed
         QString m_sessionid;            //!< Session id obtained after a successful login
         QString m_forced_state;         //!< Forced state sent by the server

@@ -41,31 +41,37 @@
 
 /*! \brief Stores the config of BaseEngine
  * It associates keys to values.
- * These values can be read-write or read-only (frozen).
- * To exchange informations with this class, you can use operator[] or toQVariantMap() and merge().
+ * There are three sets of values : unmasked, mask and masked.
+ * Masked is the result of overwriting unmasked with mask.
+ * You can read unmasked and masked (with value or getSubset).
+ * You can write unmasked with operator[] and merge.
+ * You can read masked with operator[].
+ * Friend classes can write mask with mask() and mergeMask().
  */
 class BASELIB_EXPORT BaseConfig: public QObject
 {
     Q_OBJECT
     
     public:
+    
+        typedef enum {Masked, Unmasked} ReadMode;
         
         BaseConfig();
+        const QVariant value(const QString &, ReadMode rm = Masked) const;
         const QVariant operator[](const QString &) const;
         QVariant & operator[](const QString &);
-        QVariantMap getSubSet (const QString &);
-        bool isFrozen(const QString &);
-        QVariantMap toQVariantMap();
-        void merge (QVariantMap extern_qvm);
+        QVariantMap getSubSet (const QString &, ReadMode rm = Masked) const;
+        bool isMasked(const QString &) const;
+        QVariantMap toQVariantMap() const;
+        void merge(const QVariantMap &, QString = "");
         
     private:
     
-        void setFreezeMode (bool);
+        QVariant & mask(const QString &);
+        void mergeMask(const QVariantMap &, QString = "");
         
         QVariantMap m_qvm;
-        QStringList m_frozen;
-        QVariant m_blackhole;
-        bool m_freezemode;
+        QVariantMap m_qvm_mask;
     
     friend class BaseEngine;
 };

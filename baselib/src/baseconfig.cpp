@@ -8,43 +8,48 @@ BaseConfig::BaseConfig()
 /*!
  * \return the value associated with key
  */
+const QVariant BaseConfig::value(const QString &key, ReadMode rm) const
+{
+    if (rm == Unmasked) {
+        return m_qvm[key];
+    } else {
+        if (m_qvm_mask.keys().contains(key)) {
+            return m_qvm_mask[key];
+        } else {
+            return m_qvm[key];
+        }
+    }
+}
+
+/*!
+ * See value().
+ */
 const QVariant BaseConfig::operator[](const QString &key) const
+{
+    return value(key);
+}
+
+/*!
+ * \return the reference to the value, so that you can assign it
+ * This modifies the unmasked value.
+ */
+QVariant & BaseConfig::operator[](const QString &key)
 {
     return m_qvm[key];
 }
 
 /*!
  * \return the reference to the value, so that you can assign it
- * If the wanted value is frozen, the function will succeed but the value won't be affected (the returned reference will be a dummy one).
+ * This modifies the mask value.
  */
-QVariant & BaseConfig::operator[](const QString &key)
+QVariant & BaseConfig::mask(const QString &key)
 {
-    if (m_freezemode) {
-        m_frozen << key;
-        m_frozen.removeDuplicates();
-    }
-    if (!m_freezemode && m_frozen.contains(key)) {
-        /*! \note Possible "security" hole : a plugin A can know what another B tried to set to the frozen value if A stores the reference and reads it after B tries writing
-         */
-        m_blackhole = QVariant();
-        return m_blackhole;
-    } else {
-        return m_qvm[key];
-    }
-}
-
-/*!
- * \brief enable or disable the freeze mode.
- * When enabled, you can write any value. These values are marked as frozen.
- * When disabled, you can't write the frozen values.
- */
-void BaseConfig::setFreezeMode(bool mode)
-{
-    m_freezemode = mode;
+    return m_qvm_mask[key];
 }
 
 /*!
  * \return a QVariantMap containing all the values below the name parameter.
+ * Hierarchic separator is '.'.
  * Example : 
  * example["x.y.z"] = "a";
  * example["x.z"] = "b";
@@ -52,42 +57,63 @@ void BaseConfig::setFreezeMode(bool mode)
  * example.getSubset("x") will return the QVariantMap :
  * ret["y.z"] = "a";
  * ret["z"] = "b";
+ * \param rm choose the set of value read (masked or unmasked).
  */
-QVariantMap BaseConfig::getSubSet (const QString &name)
+QVariantMap BaseConfig::getSubSet (const QString &name, ReadMode rm) const
 {
     QVariantMap ret;
     foreach (QString key, m_qvm.keys()) {
         if (key.startsWith(name + '.')) {
             QString newKey = key;
-            newKey.remove (0, name.length());
-            ret[newKey] = m_qvm[key];
+            newKey.remove (0, name.length() + 1);
+            ret[newKey] = value(key, rm);
         }
     }
     return ret;
 }
 
 /*!
- * \return true if the key parameter is frozen (read-only)
+ * \return true if the key parameter is masked by a mask value.
  */
-bool BaseConfig::isFrozen(const QString &key)
+bool BaseConfig::isMasked(const QString &key) const
 {
-    return m_frozen.contains(key);
+    return m_qvm_mask.keys().contains(key);
 }
 
 /*!
- * \return the QVariantMap containing stored keys and values
+ * \return the QVariantMap containing all stored keys and values
+ * This returns the unmasked values.
  */
-QVariantMap BaseConfig::toQVariantMap()
+QVariantMap BaseConfig::toQVariantMap() const
 {
     return m_qvm;
 }
 
 /*!
- * Merges extern_qvm into this BaseConfig. All values with the same keys are replaced (if not frozen).
+ * Merges extern_qvm into this BaseConfig. All values already here are replaced.
+ * Prefix adds one hierarchical level.
+ * This modifies unmasked values.
  */
-void BaseConfig::merge (QVariantMap extern_qvm)
+void BaseConfig::merge (const QVariantMap &extern_qvm, QString prefix)
 {
+    if (!prefix.isEmpty() && !prefix.endsWith(".")) {
+        prefix += ".";
+    }
     foreach (QString key, extern_qvm.keys()) {
-        this->operator[](key) = extern_qvm[key];
+        this->operator[](prefix + key) = extern_qvm[key];
+    }
+}
+
+/*!
+ * See merge().
+ * This modifies mask values.
+ */
+void BaseConfig::mergeMask (const QVariantMap &extern_qvm, QString prefix)
+{
+    if (!prefix.isEmpty() && !prefix.endsWith(".")) {
+        prefix += ".";
+    }
+    foreach (QString key, extern_qvm.keys()) {
+        this->mask(prefix + key) = extern_qvm[key];
     }
 }
