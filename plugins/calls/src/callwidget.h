@@ -57,7 +57,7 @@ class CallWidget : public QWidget
     Q_OBJECT
 
     public:
-        CallWidget(UserInfo *,
+        CallWidget(const UserInfo *,
                    const QString &,
                    QWidget * parent);
         void updateWidget(const QString &);

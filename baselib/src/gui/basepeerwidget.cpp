@@ -294,16 +294,16 @@ void BasePeerWidget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_dragstartpos = event->pos();
-        
+
         QStringList numbers;
         if (m_ui_remote) {
             foreach (QString xphoneid, m_ui_remote->phonelist()) {
                 const PhoneInfo * phone = b_engine->phone(xphoneid);
                 if (phone) numbers.append(phone->number());
             }
+            if (! m_ui_remote->mobileNumber().isEmpty())
+                numbers.append(m_ui_remote->mobileNumber());
         }
-        if (! m_ui_remote->mobileNumber().isEmpty())
-            numbers.append(m_ui_remote->mobileNumber());
         emit selectedNumber(numbers);
     }
 }
@@ -373,8 +373,8 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 
     QList<const ChannelInfo *> qlci_local = loopOverChannels(m_ui_local);
     QList<const ChannelInfo *> qlci_remote = loopOverChannels(m_ui_remote);
-    qDebug() << Q_FUNC_INFO << b_engine->getCapasIpbxCommands()
-             << qlci_local.count() << qlci_remote.count() << isitme;
+    // qDebug() << Q_FUNC_INFO << b_engine->getCapasIpbxCommands()
+    // << qlci_local.count() << qlci_remote.count() << isitme;
 
     // Construct and display the context menu
     QMenu contextMenu(this);

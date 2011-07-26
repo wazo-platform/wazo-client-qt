@@ -472,14 +472,6 @@ void BaseEngine::stopConnection()
     stopKeepAliveTimer();
 }
 
-void BaseEngine::addToDataBase(QVariantMap & qv)
-{
-    QVariantMap command;
-    command["class"] = "database";
-    command["items"] = qv;
-    sendJsonCommand(command);
-}
-
 /*! \brief clear the content of m_users
  *
  * Delete all contained UserInfo objects
@@ -653,13 +645,15 @@ void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
 /*! \brief set monitored peer id */
 void BaseEngine::monitorPeerRequest(const QString & xuserid)
 {
-    // qDebug() << Q_FUNC_INFO << userid;
-    if (xuserid == m_monitored_xuserid)
+    // qDebug() << Q_FUNC_INFO << xuserid << m_monitored_xuserid;
+    // if (xuserid == m_monitored_xuserid) {
     if (m_anylist.value("users").contains(xuserid)) {
         m_monitored_xuserid = xuserid;
+        emit monitoredUserInfoDefined();
         emit monitorPeerChanged();
         m_settings->setValue("monitor/userid", xuserid);
     }
+    // }
 }
 
 /*! \brief called when the socket is first connected
@@ -2324,7 +2318,7 @@ void BaseEngine::urlAuto(const QString & value)
         // rely on the system's url opening methods (see xdg-open on linux, for instance)
 #ifdef Q_WS_WIN
         // in win32 case + iexplore.exe, this should ensure it opens a new tab
-        QString key = QString("HKEY_CLASSES_ROOT\\%1\\shell\\open\\command").arg(url.scheme())
+        QString key = QString("HKEY_CLASSES_ROOT\\%1\\shell\\open\\command").arg(url.scheme());
         QSettings settings(key, QSettings::NativeFormat);
         QString command = settings.value(".").toString();
         QRegExp rx("\"(.+)\"");

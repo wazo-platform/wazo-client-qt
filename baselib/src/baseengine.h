@@ -196,7 +196,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void registerTranslation(const QString &);
         void changeTranslation(const QString &);
         void urlAuto(const QString &);
-        void addToDataBase(QVariantMap &);
         void changeWatchedAgent(const QString &, bool);
         void changeWatchedQueue(const QString &);
 
@@ -318,6 +317,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void connectFeatures();
         void resetFeatures();
         void localUserInfoDefined();
+        void monitoredUserInfoDefined();
         void removeQueues(const QString &, const QStringList &);
         void optChanged(const QString &);
         void forwardUpdated(const QString &);

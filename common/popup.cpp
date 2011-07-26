@@ -210,10 +210,16 @@ void Popup::saveandclose()
 
     QVariantMap qv;
     QList<QLineEdit *> lineedits = m_sheetui_widget->findChildren<QLineEdit *>(re_formentry);
-    for(int i = 0; i < lineedits.count(); i++)
+    for(int i = 0; i < lineedits.count(); i++) {
         qv[lineedits[i]->objectName()] = lineedits[i]->text();
+    }
 
-    b_engine->addToDataBase(qv);
+    if (qv.size() > 0) {
+        QVariantMap data;
+        data["buttonname"] = "saveandclose";
+        data["variables"] = qv;
+        b_engine->actionFromFiche(QVariant(data));
+    }
     close();
 }
 

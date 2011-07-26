@@ -34,12 +34,14 @@
 #include "xlet.h"
 
 XLet::XLet(QWidget *parent)
-    : QWidget(parent), m_ui(NULL)
+    : QWidget(parent), m_ui(NULL), m_monitored_ui(NULL)
 {
     connect(this, SIGNAL(ipbxCommand(const QVariantMap &)),
             b_engine, SLOT(ipbxCommand(const QVariantMap &)));
     connect(b_engine, SIGNAL(localUserInfoDefined()),
             this, SLOT(localUserInfoDefined()));
+    connect(b_engine, SIGNAL(monitoredUserInfoDefined()),
+            this, SLOT(monitoredUserInfoDefined()));
     m_xuserid = b_engine->getFullId();
 }
 
