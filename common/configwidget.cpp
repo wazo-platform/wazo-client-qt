@@ -102,12 +102,12 @@ void ConfigWidget::_insert_connection_tab()
     layout1->addRow(tr("Login Port"), m_cti_port);
 
     m_cti_encrypt = new QCheckBox(tr("Encrypt Connection"));
-    m_cti_encrypt->setCheckState(m_config["cti_encrypt"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_cti_encrypt->setChecked(m_config["cti_encrypt"].toBool());
     layout1->addRow(m_cti_encrypt);
     
     m_trytoreconnect = new QCheckBox(tr("Try to reconnect") + "\n" + \
                                      tr("Checking this box disables the Error Popups"), this);
-    m_trytoreconnect->setCheckState(m_config["trytoreconnect"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_trytoreconnect->setChecked(m_config["trytoreconnect"].toBool());
     layout1->addRow(m_trytoreconnect);
 
     m_tryinterval_sbox = new QSpinBox(this);
@@ -136,7 +136,7 @@ void ConfigWidget::_insert_function_tab()
 
     foreach(QString function, func_legend.keys()) {
         m_function[function] = new QCheckBox(func_legend[function]);
-        m_function[function]->setCheckState(b_engine->checkedFunction(function) ? Qt::Checked : Qt::Unchecked);
+        m_function[function]->setChecked(b_engine->checkedFunction(function));
         layout2->addWidget(m_function[function]);
     }
     
@@ -161,8 +161,7 @@ void ConfigWidget::_insert_function_tab()
         widget_customerinfo->setLayout(layout22);
         
         m_autourl_allowed = new QCheckBox(tr("Allow the Automatic Opening of URL's"));
-        m_autourl_allowed->setCheckState(m_opts.value("autourl_allowed").toUInt() == 2 ?
-                                         Qt::Checked : Qt::Unchecked);
+        m_autourl_allowed->setChecked(m_opts.value("autourl_allowed").toUInt() == Qt::Checked);
         layout22->addRow(m_autourl_allowed);
         
         m_tablimit_sbox = new QSpinBox(this);
@@ -218,7 +217,7 @@ void ConfigWidget::_insert_function_tab()
         line++;
 
         m_queue_longestwait = new QCheckBox(tr("Queue Display (Longest Wait)"), this);
-        m_queue_longestwait->setCheckState(m_opts.value("queue_longestwait").toBool() ? Qt::Checked : Qt::Unchecked);
+        m_queue_longestwait->setChecked(m_opts.value("queue_longestwait").toBool());
         layout25->addWidget(m_queue_longestwait, line, 0);
         ncol = 1;
         foreach(QString color, queuelevel_colors) {
@@ -230,7 +229,7 @@ void ConfigWidget::_insert_function_tab()
 
         line++;
         m_queue_displaynu = new QCheckBox(tr("Queue Display number"), this);
-        m_queue_displaynu->setCheckState(m_opts.value("queue_displaynu").toBool() ? Qt::Checked : Qt::Unchecked);
+        m_queue_displaynu->setChecked(m_opts.value("queue_displaynu").toBool());
         layout25->addWidget(m_queue_displaynu, line, 0);
     
     m_function_tabwidget->addTab(widget_queues, tr("Queues"));
@@ -283,15 +282,15 @@ void ConfigWidget::_insert_account_tab()
     layout3->addRow(tr("Password"), m_password);
 
     m_keeppass = new QCheckBox(tr("Keep Password"));
-    m_keeppass->setCheckState(m_config["keeppass"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_keeppass->setChecked(m_config["keeppass"].toBool());
     layout3->addRow(m_keeppass);
     
     m_autoconnect = new QCheckBox(tr("Autoconnect at startup"), this);
-    m_autoconnect->setCheckState(m_config["autoconnect"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_autoconnect->setChecked(m_config["autoconnect"].toBool());
     layout3->addRow(m_autoconnect);
 
     m_showagselect = new QCheckBox(tr("Show the Agent options (like the\nones beneath) on first window"));
-    m_showagselect->setCheckState(m_config["showagselect"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_showagselect->setChecked(m_config["showagselect"].toBool());
     layout3->addRow(m_showagselect);
 
     m_loginkind = new QComboBox(this);
@@ -335,12 +334,12 @@ void ConfigWidget::_insert_guisetting_tab()
     layout4->addRow(qhline5);
 
     m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
-    m_systrayed->setCheckState(m_config["systrayed"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_systrayed->setChecked(m_config["systrayed"].toBool());
     layout4->addRow(m_systrayed);
     
     // The value displayed is the inverse of the bool in memory
     m_unique = new QCheckBox(tr("Allow multiple instances of XiVO Client"), this);
-    m_unique->setCheckState(m_config["uniqueinstance"].toBool() ? Qt::Unchecked : Qt::Checked);
+    m_unique->setChecked(!m_config["uniqueinstance"].toBool());
     layout4->addRow(new WarningWidget(m_unique));
     
     /*!
@@ -351,15 +350,15 @@ void ConfigWidget::_insert_guisetting_tab()
     layout4->addRow(tr("Interface style"), new WarningWidget(m_qss));
     
     m_clipboard = new QCheckBox(tr("Enable the clipboard")) ;
-    m_clipboard->setCheckState(m_config["enableclipboard"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_clipboard->setChecked(m_config["enableclipboard"].toBool());
     layout4->addRow(new WarningWidget(m_clipboard));
     
     m_displayprofile = new QCheckBox(tr("Display the configuration profile")) ;
-    m_displayprofile->setCheckState(m_config["displayprofile"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_displayprofile->setChecked(m_config["displayprofile"].toBool());
     layout4->addRow(new WarningWidget(m_displayprofile));
     
     m_activate_on_tel = new QCheckBox(tr("Activate on incoming call")) ;
-    m_activate_on_tel->setCheckState(m_config["activate_on_tel"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_activate_on_tel->setChecked(m_config["activate_on_tel"].toBool());
     layout4->addRow(new WarningWidget(m_activate_on_tel));
     
     m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
@@ -373,7 +372,7 @@ void ConfigWidget::_insert_advanced_tab()
     widget_adv->setLayout(layout5);
     
     m_logtofile = new QCheckBox(tr("Enable logging of program actions"));
-    m_logtofile->setCheckState(m_config["logtofile"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_logtofile->setChecked(m_config["logtofile"].toBool());
     layout5->addRow(new WarningWidget(m_logtofile));
     
     m_logfilename = new QLineEdit();
@@ -452,7 +451,7 @@ void ConfigWidget::_insert_operator_functiontab()
 
 
     m_operator_answer_work = new QCheckBox(tr("Display an answer action"));
-    m_operator_answer_work->setCheckState((m_opts.value("xlet_operator_answer_work", 1).toInt()) ? Qt::Checked : Qt::Unchecked);
+    m_operator_answer_work->setChecked((m_opts.value("xlet_operator_answer_work", 1).toInt()));
     glayout->addWidget(m_operator_answer_work, ++i , 1, 1, 2);
 
     glayout->addWidget(new QLabel(tr("Any change here requires an application restart to be effective")), ++i, 1, 1, 2);
@@ -517,71 +516,63 @@ void ConfigWidget::saveAndClose()
     // qDebug() << Q_FUNC_INFO;
     m_config["cti_address"] = m_cti_address->text();
     m_config["cti_port"] = m_cti_port->value();
-    m_config["cti_encrypt"] = m_cti_encrypt->checkState() == Qt::Checked;
+    m_config["cti_encrypt"] = m_cti_encrypt->isChecked();
     m_config["company"] = m_context->text();
-    m_config["keeppass"] = m_keeppass->checkState() == Qt::Checked;
-    m_config["showagselect"] = m_showagselect->checkState() == Qt::Checked;
+    m_config["keeppass"] = m_keeppass->isChecked();
+    m_config["showagselect"] = m_showagselect->isChecked();
     m_config["userlogin"] = m_userid->text();
     m_config["agentphonenumber"] = m_agentphonenumber->text();
     m_config["password"] = m_password->text();
-    /*!
-     * \todo replace with QString::currentText() ?
-     */
-    m_config["forcelocale"] = m_locale_cbox->itemData(m_locale_cbox->currentIndex()).toString();
-    m_config["autoconnect"] = m_autoconnect->checkState() == Qt::Checked;
-    m_config["trytoreconnect"] = m_trytoreconnect->checkState() == Qt::Checked;
+    m_config["forcelocale"] = m_locale_cbox->itemData(m_locale_cbox->currentIndex()); // not currentText()
+    m_config["autoconnect"] = m_autoconnect->isChecked();
+    m_config["trytoreconnect"] = m_trytoreconnect->isChecked();
     m_config["trytoreconnectinterval"] = m_tryinterval_sbox->value() * 1000;
     m_config["keepaliveinterval"] = m_kainterval_sbox->value() * 1000;
     m_config["historysize"] = m_history_sbox->value();
-    m_config["systrayed"] = m_systrayed->checkState() == Qt::Checked;
-    m_config["uniqueinstance"] = m_unique->checkState() == Qt::Unchecked;
+    m_config["systrayed"] = m_systrayed->isChecked();
+    m_config["uniqueinstance"] = m_unique->isChecked();
     m_config["qss"] = m_qss->text();
-    m_config["enableclipboard"] = m_clipboard->checkState() == Qt::Checked;
-    m_config["logtofile"] = m_logtofile->checkState() == Qt::Checked;
+    m_config["enableclipboard"] = m_clipboard->isChecked();
+    m_config["logtofile"] = m_logtofile->isChecked();
     m_config["logfilename"] = m_logfilename->text();
-    m_config["displayprofile"] = m_displayprofile->checkState() == Qt::Checked;
-    m_config["activate_on_tel"] = m_activate_on_tel->checkState() == Qt::Checked;
-    b_engine->setConfig(m_config);
+    m_config["displayprofile"] = m_displayprofile->isChecked();
+    m_config["activate_on_tel"] = m_activate_on_tel->isChecked();
 
     foreach(QString function, func_legend.keys())
-        b_engine->setCheckedFunction(function, m_function[function]->checkState() == Qt::Checked);
-
-    QVariantMap opts_saved;
-    QVariantMap qvm, qvm2;
+        m_config["checked_function" + function] = m_function[function]->isChecked();
 
     for(i=0;i<9;i++) {
-        opts_saved["xlet_operator_key" + m_operator_action[i].action] =
+        m_config["guioptions.xlet_operator_key" + m_operator_action[i].action] =
             m_opts.value("xlet_operator_key" + m_operator_action[i].action).toInt();
     }
-    opts_saved["xlet_operator_answer_work"] = m_operator_answer_work->checkState() == Qt::Checked;
+    m_config["guioptions.xlet_operator_answer_work"] = m_operator_answer_work->isChecked();
 
+    QVariantMap qvm, qvm2;
 
     foreach(QString color, queuelevel_colors)
         qvm[color] = QVariant(m_queuelevels[color]->value());
-    opts_saved["queuelevels"] = qvm;
+    m_config["guioptions.queuelevels"] = qvm;
 
     foreach(QString color, queuelevel_colors)
         qvm2[color] = QVariant(m_queuelevels_wait[color]->value());
-    opts_saved["queuelevels_wait"] = qvm2;
+    m_config["guioptions.queuelevels_wait"] = qvm2;
 
-    opts_saved["loginkind"] = m_loginkind->currentIndex();
+    m_config["guioptions.loginkind"] = m_loginkind->currentIndex();
 
-    opts_saved["contacts-max"] = m_contactssize_sbox->value();
-    opts_saved["contacts-width"] = m_contactswidth_sbox->value();
-    opts_saved["sheet-tablimit"] = m_tablimit_sbox->value();
+    m_config["guioptions.contacts-max"] = m_contactssize_sbox->value();
+    m_config["guioptions.contacts-width"] = m_contactswidth_sbox->value();
+    m_config["guioptions.sheet-tablimit"] = m_tablimit_sbox->value();
     /*!
      * \todo Store autourl_allowed as bool in m_config, not int
      */
-    opts_saved["autourl_allowed"] = m_autourl_allowed->checkState();
-    opts_saved["queue_longestwait"] = m_queue_longestwait->checkState() == Qt::Checked;
-    opts_saved["queue_displaynu"] = m_queue_displaynu->checkState() == Qt::Checked;
-    opts_saved["switchboard-elt-type"] = m_comboswitchboard->itemData(m_comboswitchboard->currentIndex()).toString();
-    opts_saved["maxwidthwanted"] = m_maxWidthWanted->value();
-    opts_saved["presenceindicatorsize"] = m_presenceIndicatorSize->value();
-    b_engine->setGuiOption("client_gui", opts_saved);
-    /*!
-     * \todo Don't put any settings below, fix todo in baseEngine::setGuiSettings() first.
-     */
+    m_config["guioptions.autourl_allowed"] = m_autourl_allowed->checkState();
+    m_config["guioptions.queue_longestwait"] = m_queue_longestwait->isChecked();
+    m_config["guioptions.queue_displaynu"] = m_queue_displaynu->isChecked();
+    m_config["guioptions.switchboard-elt-type"] = m_comboswitchboard->itemData(m_comboswitchboard->currentIndex()); // not currentText()
+    m_config["guioptions.maxwidthwanted"] = m_maxWidthWanted->value();
+    m_config["guioptions.presenceindicatorsize"] = m_presenceIndicatorSize->value();
+
+    b_engine->setConfig(m_config);
 
     emit confUpdated();
     close();
