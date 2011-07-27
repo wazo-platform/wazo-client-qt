@@ -369,7 +369,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QStringList translationFiles;   //!< List of translation files
         QVector<QTranslator *> translators;   //!< Vector of translators
 
-        QHash<QString, bool> m_checked_function;  //!< function checked
         QHash<QString, bool> m_enabled_function;  //!< function enabled
 
         // Replies given by the server

@@ -117,3 +117,25 @@ void BaseConfig::mergeMask (const QVariantMap &extern_qvm, QString prefix)
         this->mask(prefix + key) = extern_qvm[key];
     }
 }
+
+/*!
+ * \return true if the value is defined
+ */
+bool BaseConfig::contains(const QString &key)
+{
+    return m_qvm.contains(key) || m_qvm_mask.contains(key);
+}
+
+/*!
+ * \return a string to display nicely the content
+ */
+QString BaseConfig::toString(ReadMode rm)
+{
+    QString ret("\n"), line("%1, %2\n");
+    foreach (QString key, m_qvm.keys()) {
+        ret += line.arg(key, -50).arg(value(key, rm).canConvert(QVariant::String)
+                                      ? value(key, rm).toString()
+                                      : value(key, rm).typeName());
+    }
+    return ret;
+}

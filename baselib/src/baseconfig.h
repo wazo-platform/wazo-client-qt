@@ -64,6 +64,8 @@ class BASELIB_EXPORT BaseConfig: public QObject
         bool isMasked(const QString &) const;
         QVariantMap toQVariantMap() const;
         void merge(const QVariantMap &, QString = "");
+        bool contains(const QString &);
+        QString toString (ReadMode rm = Masked);
         
     private:
     

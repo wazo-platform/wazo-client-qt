@@ -258,7 +258,7 @@ void BaseEngine::loadSettings()
 
     m_settings->beginGroup("user-functions");
         foreach (QString function, CheckFunctions)
-            m_checked_function[function] = m_settings->value(function, false).toBool();
+            m_config["checked_function." + function] = m_settings->value(function, false).toBool();
     m_settings->endGroup();
 }
 
@@ -313,7 +313,7 @@ void BaseEngine::saveSettings()
 
     m_settings->beginGroup("user-functions");
         foreach (QString function, CheckFunctions)
-            m_settings->setValue(function, m_checked_function[function]);
+            m_settings->setValue(function, m_config["checked_function." + function].toBool());
     m_settings->endGroup();
 
     emit settingChanged(getGuiOptions("client_gui"));
@@ -321,8 +321,8 @@ void BaseEngine::saveSettings()
 
 void BaseEngine::setCheckedFunction(const QString & function, bool b)
 {
-    if (b != m_checked_function[function]) {
-        m_checked_function[function] = b;
+    if (b != m_config["checked_function." + function].toBool()) {
+        m_config["checked_function." + function] = b;
         if ((state() == ELogged) && m_enabled_function[function]) {
             if (function == "presence")
                 emit availAllowChanged(b);
@@ -337,7 +337,7 @@ void BaseEngine::pasteToDial(const QString & toPaste)
 
 bool BaseEngine::checkedFunction(const QString & function)
 {
-    return m_checked_function[function];
+    return m_config["checked_function." + function].toBool();
 }
 
 void BaseEngine::setEnabledFunction(const QString & function, bool b)
@@ -388,7 +388,7 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << Q_FUNC_INFO << m_config["cti_address"].toString() << m_config["cti_port"].toUInt() << m_config["cti_encrypt"].toBool() << m_checked_function;
+    qDebug() << Q_FUNC_INFO << m_config["cti_address"].toString() << m_config["cti_port"].toUInt() << m_config["cti_encrypt"].toBool() << m_config.getSubSet("checked_function");
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
@@ -1045,7 +1045,7 @@ void BaseEngine::parseCommand(const QString &line)
                     break;
                 }
 
-                if (m_checked_function["presence"])
+                if (m_config["checked_function.presence"].toBool())
                     command["state"] = m_availstate;
                 else
                     command["state"] = __nopresence__;
@@ -1084,10 +1084,11 @@ void BaseEngine::parseCommand(const QString &line)
              */
             QVariantMap tmp;
             QStringList todisp;
-            m_checked_function["switchboard"] = true;
+            m_config["checked_function.switchboard"] = true;
             foreach (QString function, m_capafuncs)
-                if (m_checked_function.contains(function) && m_checked_function[function])
-                    todisp.append(function);
+                if (m_config.contains("checked_function." + function)
+                    && m_config["checked_function." + function].toBool())
+                        todisp.append(function);
             tmp["functions"] = todisp;
             m_config["guioptions.server_funcs"] = tmp;
 
@@ -1719,6 +1720,8 @@ void BaseEngine::setConfig(QVariantMap qvm)
     setUserLogin (qvm["userlogin"].toString());
     changeTranslation(qvm["forcelocale"].toString());
     
+    qDebug() << m_config.toString();
+    
     saveSettings();
 }
 
@@ -1975,7 +1978,7 @@ void BaseEngine::setState(EngineState state)
         m_state = state;
         if (state == ELogged) {
             stopTryAgainTimer();
-            if (m_checked_function["presence"] && m_enabled_function["presence"]) {
+            if (m_config["checked_function.presence"].toBool() && m_enabled_function["presence"]) {
                 emit availAllowChanged(true);
             }
             emit logged();
