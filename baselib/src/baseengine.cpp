@@ -1685,6 +1685,10 @@ void BaseEngine::actionCall(const QString & action,
     } else if ((action == "hangup") || (action == "transfercancel")) {
         ipbxcommand["command"] = action;
         ipbxcommand["channelids"] = src;
+    } else if (action == "dial") {
+        ipbxcommand["command"] = action;
+        ipbxcommand["source"] = src;
+        ipbxcommand["destination"] = dst;
     } else if (action == "parking") {
         ipbxcommand["command"] = action;
         ipbxcommand["source"] = src;
