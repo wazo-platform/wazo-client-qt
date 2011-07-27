@@ -1271,7 +1271,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
             // updating relations ...
             if (listname == "phones") {
-                //
+                emit peersReceived();
             }
 
             // transmission to xlets
