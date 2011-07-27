@@ -554,17 +554,22 @@ const QStringList & BaseEngine::getCapasIpbxCommands() const
 
 QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
 {
-    if (arg == "gui_client") {
+    if (arg == "client_gui") {
         return m_config.getSubSet("guioptions", BaseConfig::Unmasked);
-    } else {
+    } else if (arg == "merged_gui") {
         return m_config.getSubSet("guioptions");
+    } else {
+        return m_config.getSubSet("guioptions." + arg);
     }
 }
 
-/*! \todo Remove arg parameter */
 void BaseEngine::setGuiOption(const QString &arg, const QVariant &opt)
 {
-    m_config.merge(opt.toMap(), "guioptions");
+    if (arg == "client_gui") {
+        m_config.merge(opt.toMap(), "guioptions");
+    } else {
+        m_config.merge(opt.toMap(), "guioptions." + arg);
+    }
 
     /*!
      * \todo Can we get saveSettings out of this function? Because we should call it explicitly in ConfigWidget::saveAndClose().
