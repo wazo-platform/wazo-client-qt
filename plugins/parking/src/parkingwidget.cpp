@@ -188,7 +188,6 @@ void ParkingWidget::clickListener(QTableWidgetItem * i)
     // qDebug() << Q_FUNC_INFO;
     int row = m_table->row(i);
     QString exten = m_table->item(row,0)->text();
-    qDebug() << "Exten(" << exten << ")";
     emit itemClicked(exten);
 }
 
@@ -197,6 +196,8 @@ void ParkingWidget::doubleClickListener(QTableWidgetItem * i)
     // qDebug() << Q_FUNC_INFO;
     int row = m_table->row(i);
     QString exten = m_table->item(row, 0)->text();
-    qDebug() << "Exten(" << exten << ")";
-    emit itemDoubleClicked(exten);
+    const ParkingInfo * p = b_engine->parkinglot(m_parking_id);
+    if (p) {
+        emit itemDoubleClicked(p->ipbxid(), exten);
+    }
 }
