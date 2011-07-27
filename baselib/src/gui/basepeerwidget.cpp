@@ -214,8 +214,10 @@ void BasePeerWidget::parkcall()
 {
     if (m_ui_remote) {
         QString xchannel = sender()->property("xchannel").toString();
-        b_engine->actionCall("park",
-                             QString("chan:%1").arg(xchannel));
+        QString number = sender()->property("number").toString();
+        b_engine->actionCall("parking",
+                             QString("chan:%1").arg(xchannel),
+                             number);
     }
 }
 
@@ -391,6 +393,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
         contextMenu.addAction(m_renameAction);
         contextMenu.addSeparator();
     }
+
     // allow to dial everyone except me !
     if (! isitme) {
         action = new QAction("",this);
@@ -470,14 +473,19 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                 (status == CHAN_STATUS_LINKED_CALLER) ||
                 (status == CHAN_STATUS_LINKED_CALLED)) {
 
-                if (!parkMenu && (qlci_local.count() > 1))
-                    parkMenu = new QMenu(tr("&Park"), &contextMenu);
-
-                build.aQActionMenu(parkMenu?parkMenu:&contextMenu,
-                                   (qlci_local.count() > 1) ? text : tr("&Park"),
-                                   tr("Park this call"),
-                                   xchannel,
-                                   this, SLOT(parkcall()));
+                if (qlci_local.count() > 0) {
+                    if (! parkMenu) {
+                        parkMenu = new QMenu(tr("&Park"), &contextMenu);
+                    }
+                    foreach (XInfo * x, b_engine->iterover("parkinglots")) {
+                        ParkingInfo * p = static_cast<ParkingInfo *>(x);
+                        QAction * action = new QAction(p->name(), this);
+                        action->setProperty("number", p->number());
+                        action->setProperty("xchannel", xchannel);
+                        connect (action, SIGNAL(triggered()), this, SLOT(parkcall()));
+                        parkMenu->addAction(action);
+                    }
+                }
             }
         } else {
             if ( ((status == CHAN_STATUS_RINGING) ||

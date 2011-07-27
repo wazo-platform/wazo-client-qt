@@ -51,11 +51,13 @@ class BASELIB_EXPORT ExtendedLabel : public QLabel
                       QWidget *parent=0);
         ExtendedLabel(QWidget *parent=0);
     protected:
+        void mousePressEvent(QMouseEvent *);
         void mouseReleaseEvent(QMouseEvent *);
         void contextMenuEvent(QContextMenuEvent *);
     signals:
         void mouse_release(QMouseEvent *);
         void context_menu(QContextMenuEvent *);
+        void clicked();
 };
 
 #endif

@@ -47,12 +47,10 @@ ExtendedLabel::ExtendedLabel(QWidget * parent)
 {
 }
 
-/*
-  void ExtendedLabel::mouseDoubleClickEvent(QMouseEvent * event)
-  {
-  mouse_doubleclick(event);
-  }
-*/
+void ExtendedLabel::mousePressEvent(QMouseEvent *)
+{
+    emit clicked();
+}
 
 void ExtendedLabel::mouseReleaseEvent(QMouseEvent * event)
 {
