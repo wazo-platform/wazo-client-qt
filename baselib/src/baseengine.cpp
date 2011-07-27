@@ -204,8 +204,10 @@ void BaseEngine::loadSettings()
         setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
         m_config["company"] = m_settings->value("company", "default").toString();
         m_config["password"] = m_settings->value("password").toString();
-        m_config["keeppass"] = m_settings->value("keeppass", 0).toUInt();
-        m_config["showagselect"] = m_settings->value("showagselect", 2).toUInt();
+        // keeppass and showagselect are booleans in memory, integers (Qt::checkState) in qsettings/config file (due to compatibility)
+        m_config["keeppass"] = (m_settings->value("keeppass", Qt::Unchecked).toUInt() == Qt::Checked);
+        qDebug() << m_config["keeppass"].toBool();
+        m_config["showagselect"] = (m_settings->value("showagselect", Qt::Checked).toUInt() == Qt::Checked);
         m_config["agentphonenumber"] = m_settings->value("agentphonenumber").toString();
 
         m_config["forcelocale"] = m_settings->value("forcelocale", false).toString();
@@ -289,8 +291,9 @@ void BaseEngine::saveSettings()
         m_settings->setValue("userid", m_config["userloginsimple"].toString());
         m_settings->setValue("useridopt", m_config["userloginopt"].toString());
         m_settings->setValue("company", m_config["company"].toString());
-        m_settings->setValue("keeppass", m_config["keeppass"].toUInt());
-        m_settings->setValue("showagselect", m_config["showagselect"].toUInt());
+        // keeppass and showagselect are booleans in memory, but integers (Qt::checkType) in qsettings/config file (due to compatibility)
+        m_settings->setValue("keeppass", m_config["keeppass"].toBool() ? Qt::Checked : Qt::Unchecked);
+        m_settings->setValue("showagselect", m_config["showagselect"].toBool() ? Qt::Checked : Qt::Unchecked);
         m_settings->setValue("agentphonenumber", m_config["agentphonenumber"].toString());
         m_settings->setValue("forcelocale", m_config["forcelocale"].toString());
         m_settings->setValue("autoconnect", m_config["autoconnect"].toBool());
@@ -300,7 +303,7 @@ void BaseEngine::saveSettings()
         m_settings->setValue("availstate", m_availstate);
         m_settings->setValue("displayprofile", m_config["displayprofile"].toBool());
 
-        if (m_config["keeppass"].toUInt() > 0)
+        if (m_config["keeppass"].toBool())
             m_settings->setValue("password", m_config["password"].toString());
         else
             m_settings->remove("password");
@@ -1720,7 +1723,7 @@ void BaseEngine::setConfig(QVariantMap qvm)
     setUserLogin (qvm["userlogin"].toString());
     changeTranslation(qvm["forcelocale"].toString());
     
-    qDebug() << m_config.toString();
+    // qDebug() << m_config.toString();
     
     saveSettings();
 }

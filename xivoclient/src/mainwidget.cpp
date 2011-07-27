@@ -175,7 +175,7 @@ void MainWidget::makeLoginWidget()
     m_ack = new QPushButton("OK");
     loginL->addWidget(m_ack, 2, 2, Qt::AlignLeft);
     m_kpass = new QCheckBox(tr("Keep Password"));
-    m_kpass->setCheckState(m_config["keeppass"].toUInt() == Qt::Checked ? Qt::Checked : Qt::Unchecked);
+    m_kpass->setCheckState(m_config["keeppass"].toBool() ? Qt::Checked : Qt::Unchecked);
     loginL->addWidget(m_kpass, 3, 2, Qt::AlignLeft);
     m_loginkind = new QComboBox();
     m_loginkind->addItem(QString(tr("No Agent")));
@@ -273,7 +273,7 @@ void MainWidget::setConfig()
     m_config["userlogin"] = m_qlab1->text();
     m_config["password"] = m_qlab2->text();
     m_config["agentphonenumber"] = m_qlab3->text();
-    m_config["keeppass"] = m_kpass->checkState();
+    m_config["keeppass"] = m_kpass->isChecked();
     m_config["guioptions.loginkind"] = m_loginkind->currentIndex();
     b_engine->setConfig(m_config);
 }
@@ -472,7 +472,7 @@ void MainWidget::confUpdated()
     m_qlab1->setText(m_config["userlogin"].toString());
     m_qlab2->setText(m_config["password"].toString());
     m_qlab3->setText(m_config["agentphonenumber"].toString());
-    m_kpass->setCheckState((m_config["keeppass"].toUInt() == 2) ? Qt::Checked : Qt::Unchecked);
+    m_kpass->setCheckState((m_config["keeppass"].toBool()) ? Qt::Checked : Qt::Unchecked);
     m_loginkind->setCurrentIndex(m_config["guioptions.loginkind"].toInt());
     
     // No need to call loginKindChanged because

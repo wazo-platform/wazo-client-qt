@@ -283,7 +283,7 @@ void ConfigWidget::_insert_account_tab()
     layout3->addRow(tr("Password"), m_password);
 
     m_keeppass = new QCheckBox(tr("Keep Password"));
-    m_keeppass->setCheckState((m_config["keeppass"].toUInt() == 2) ? Qt::Checked : Qt::Unchecked);
+    m_keeppass->setCheckState(m_config["keeppass"].toBool() ? Qt::Checked : Qt::Unchecked);
     layout3->addRow(m_keeppass);
     
     m_autoconnect = new QCheckBox(tr("Autoconnect at startup"), this);
@@ -291,7 +291,7 @@ void ConfigWidget::_insert_account_tab()
     layout3->addRow(m_autoconnect);
 
     m_showagselect = new QCheckBox(tr("Show the Agent options (like the\nones beneath) on first window"));
-    m_showagselect->setCheckState((m_config["showagselect"].toUInt() == 2) ? Qt::Checked : Qt::Unchecked);
+    m_showagselect->setCheckState(m_config["showagselect"].toBool() ? Qt::Checked : Qt::Unchecked);
     layout3->addRow(m_showagselect);
 
     m_loginkind = new QComboBox(this);
@@ -519,8 +519,8 @@ void ConfigWidget::saveAndClose()
     m_config["cti_port"] = m_cti_port->value();
     m_config["cti_encrypt"] = m_cti_encrypt->checkState() == Qt::Checked;
     m_config["company"] = m_context->text();
-    m_config["keeppass"] = m_keeppass->checkState();
-    m_config["showagselect"] = m_showagselect->checkState();
+    m_config["keeppass"] = m_keeppass->checkState() == Qt::Checked;
+    m_config["showagselect"] = m_showagselect->checkState() == Qt::Checked;
     m_config["userlogin"] = m_userid->text();
     m_config["agentphonenumber"] = m_agentphonenumber->text();
     m_config["password"] = m_password->text();
@@ -569,6 +569,9 @@ void ConfigWidget::saveAndClose()
     opts_saved["contacts-max"] = m_contactssize_sbox->value();
     opts_saved["contacts-width"] = m_contactswidth_sbox->value();
     opts_saved["sheet-tablimit"] = m_tablimit_sbox->value();
+    /*!
+     * \todo Store autourl_allowed as bool in m_config, not int
+     */
     opts_saved["autourl_allowed"] = m_autourl_allowed->checkState();
     opts_saved["queue_longestwait"] = m_queue_longestwait->checkState() == Qt::Checked;
     opts_saved["queue_displaynu"] = m_queue_displaynu->checkState() == Qt::Checked;
