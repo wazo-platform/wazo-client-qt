@@ -62,10 +62,11 @@ class XletParking : public XLet
     private slots:
         void itemClicked(const QString &);
         void itemDoubleClicked(const QString &);
+        void parkinglotClicked(const QString &);
     private:
         QVBoxLayout * m_parkinglayout;
         int m_timerid;  //!< id of the timer
-        int m_deltasec;  //!< timer period
+        double m_deltasec;  //!< timer period
         // QList<PeerChannel *> m_mychannels;  //!< "my channels" list for transfer menu
         QHash<QString, ParkingWidget *> m_parkinglots; //!< Parkinglots widgets
 };

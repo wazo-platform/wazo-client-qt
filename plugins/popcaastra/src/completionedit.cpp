@@ -34,9 +34,9 @@ FilteredLineEdit::FilteredLineEdit(QWidget *parent)
 {
 }
 
-void FilteredLineEdit::setCompleter(QCompleter * completer)
+void FilteredLineEdit::setCompleter(FilteredCompleter * completer)
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
 
     if (c)
         QObject::disconnect(c, 0, this, 0);
@@ -52,16 +52,16 @@ void FilteredLineEdit::setCompleter(QCompleter * completer)
             this, SLOT(insertCompletion(const QString &)));
 }
 
-const QCompleter * FilteredLineEdit::completer() const
+const FilteredCompleter * FilteredLineEdit::completer() const
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
 
     return c;
 }
 
 void FilteredLineEdit::insertCompletion(const QString & completion)
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
 
     setText(completion);
     selectAll();
@@ -69,7 +69,7 @@ void FilteredLineEdit::insertCompletion(const QString & completion)
 
 void FilteredLineEdit::keyPressEvent(QKeyEvent * e)
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
 
     if (c && c->popup() && c->popup()->isVisible())
     {
@@ -103,11 +103,8 @@ void FilteredLineEdit::keyPressEvent(QKeyEvent * e)
         return;
     }
 
-    try {
-        (dynamic_cast<FilteredCompleter *>(c))->update(text());
-    } catch (const std::bad_cast & e) {
-        qDebug() << Q_FUNC_INFO << "Only FilteredCompleter are updated";
-    }
+    c->update(text());
+
     if (c && c->popup()) {
         c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
     }

@@ -80,6 +80,8 @@ void XletParking::updateParkinglotConfig(const QString & xid)
                     this, SLOT(itemClicked(const QString &)));
             connect(w, SIGNAL(itemDoubleClicked(const QString &)),
                     this, SLOT(itemDoubleClicked(const QString &)));
+            connect(w, SIGNAL(parkinglotClicked(const QString &)),
+                    this, SLOT(parkinglotClicked(const QString &)));
         }
     }
 }
@@ -106,6 +108,12 @@ void XletParking::itemDoubleClicked(const QString & number)
 {
     // qDebug() << Q_FUNC_INFO << number;
     b_engine->actionCall("originate", "user:special:me", "ext:" + number);
+}
+
+void XletParking::parkinglotClicked(const QString & number)
+{
+    // qDebug() << Q_FUNC_INFO << number;
+    b_engine->pasteToDial(number);
 }
 
 void XletParking::timerEvent(QTimerEvent * event)

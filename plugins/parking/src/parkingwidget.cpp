@@ -1,3 +1,4 @@
+#include "extendedlabel.h"
 #include "extendedtablewidget.h"
 #include "parkingwidget.h"
 
@@ -18,8 +19,8 @@ ParkingWidget::ParkingWidget(const QString & parkingid, QWidget * parent)
     if (! p) return;
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->setMargin(0);
-    m_header = new QLabel(this);
-    m_header->setText(QString("%1<%2> %3").arg(p->name()).arg(p->number()).arg(p->description()));
+    QString header = QString("%1 <%2> %3").arg(p->name()).arg(p->number()).arg(p->description());
+    m_header = new ExtendedLabel(header, this);
     m_table = new ExtendedTableWidget(this);
     m_table->setAlternatingRowColors(true);
     m_table->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
@@ -33,7 +34,16 @@ ParkingWidget::ParkingWidget(const QString & parkingid, QWidget * parent)
             this, SLOT(clickListener(QTableWidgetItem *)));
     connect(m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
             this, SLOT(doubleClickListener(QTableWidgetItem *)));
+    connect(m_header, SIGNAL(clicked()), this, SLOT(headerClicked()));
     refresh();
+}
+
+void ParkingWidget::headerClicked()
+{
+    const ParkingInfo * p = b_engine->parkinglot(m_parking_id);
+    if (p) {
+        emit parkinglotClicked(p->number());
+    }
 }
 
 /*! \brief Columns header for the parked call tables */
