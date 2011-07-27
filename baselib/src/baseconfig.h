@@ -40,13 +40,15 @@
 #include <QStringList>
 
 /*! \brief Stores the config of BaseEngine
- * It associates keys to values.
- * There are three sets of values : unmasked, mask and masked.
+ *
+ * BaseConfig is similar to QVariantMap, as it indexes QVariant (values) with QStrings (keys).\n
+ * There are three sets of values with the same keys : unmasked, mask and masked.
  * Masked is the result of overwriting unmasked with mask.
- * You can read unmasked and masked (with value or getSubset).
- * You can write unmasked with operator[] and merge.
- * You can read masked with operator[].
- * Friend classes can write mask with mask() and mergeMask().
+ *
+ * You can read unmasked and masked (with value() or getSubset()).\n
+ * You can write unmasked with operator[]() and merge().\n
+ * You can read masked with operator[]().\n
+ * Friend classes can write mask with mask() and mergeMask().\n
  */
 class BASELIB_EXPORT BaseConfig: public QObject
 {

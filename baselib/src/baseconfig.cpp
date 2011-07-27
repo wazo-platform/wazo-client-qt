@@ -1,12 +1,13 @@
 #include "baseconfig.h"
 
 BaseConfig::BaseConfig()
-    : QObject(NULL)
+    : QObject()
 {
 }
 
 /*!
- * \return the value associated with key
+ * \param rm choose the set of values read
+ * \return the value indexed by key
  */
 const QVariant BaseConfig::value(const QString &key, ReadMode rm) const
 {
@@ -30,8 +31,7 @@ const QVariant BaseConfig::operator[](const QString &key) const
 }
 
 /*!
- * \return the reference to the value, so that you can assign it
- * This modifies the unmasked value.
+ * \return the reference to the unmasked value indexed by key
  */
 QVariant & BaseConfig::operator[](const QString &key)
 {
@@ -39,8 +39,7 @@ QVariant & BaseConfig::operator[](const QString &key)
 }
 
 /*!
- * \return the reference to the value, so that you can assign it
- * This modifies the mask value.
+ * \return the reference to the mask value indexed by key
  */
 QVariant & BaseConfig::mask(const QString &key)
 {
@@ -48,16 +47,21 @@ QVariant & BaseConfig::mask(const QString &key)
 }
 
 /*!
- * \return a QVariantMap containing all the values below the name parameter.
- * Hierarchic separator is '.'.
- * Example : 
+ * \return a QVariantMap containing all the values hierarchically below the name parameter.
+ * \param rm choose the set of value read
+ *
+ * Hierarchic separator is '.'.\n
+ * Example :
+ * \code
  * example["x.y.z"] = "a";
  * example["x.z"] = "b";
  * example["z"] = "c";
+ * \endcode
  * example.getSubset("x") will return the QVariantMap :
+ * \code
  * ret["y.z"] = "a";
  * ret["z"] = "b";
- * \param rm choose the set of value read (masked or unmasked).
+ * \endcode
  */
 QVariantMap BaseConfig::getSubSet (const QString &name, ReadMode rm) const
 {
@@ -73,7 +77,7 @@ QVariantMap BaseConfig::getSubSet (const QString &name, ReadMode rm) const
 }
 
 /*!
- * \return true if the key parameter is masked by a mask value.
+ * \return true if the unmasked value indexed by the key parameter is masked by a mask value.
  */
 bool BaseConfig::isMasked(const QString &key) const
 {
@@ -81,8 +85,7 @@ bool BaseConfig::isMasked(const QString &key) const
 }
 
 /*!
- * \return the QVariantMap containing all stored keys and values
- * This returns the unmasked values.
+ * \return the QVariantMap containing every stored keys and unmasked values
  */
 QVariantMap BaseConfig::toQVariantMap() const
 {
@@ -90,9 +93,9 @@ QVariantMap BaseConfig::toQVariantMap() const
 }
 
 /*!
- * Merges extern_qvm into this BaseConfig. All values already here are replaced.
- * Prefix adds one hierarchical level.
- * This modifies unmasked values.
+ * Merges extern_qvm into this BaseConfig. All existing unmasked values are replaced.
+ *
+ * \param prefix prefixes every key. A '.' will be appended to prefix if not present.
  */
 void BaseConfig::merge (const QVariantMap &extern_qvm, QString prefix)
 {
@@ -119,7 +122,7 @@ void BaseConfig::mergeMask (const QVariantMap &extern_qvm, QString prefix)
 }
 
 /*!
- * \return true if the value is defined
+ * \return true if a value is indexed by key
  */
 bool BaseConfig::contains(const QString &key)
 {
@@ -128,6 +131,7 @@ bool BaseConfig::contains(const QString &key)
 
 /*!
  * \return a string to display nicely the content
+ * \param rm choose the set of values read
  */
 QString BaseConfig::toString(ReadMode rm)
 {

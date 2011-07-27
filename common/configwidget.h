@@ -60,8 +60,8 @@ class BaseEngine;
  * First you can get every QSettings variable with a command like :
  * \code $ grep -ron '[[:space:]]QSettings[^;]*;' xivoclient common baselib \endcode
  * Then you can get every setting by typing a command like :
- * \code $ egrep -ron '(<variables>)->value\("[^)]*\)' xivoclient common baselib \endcode
- * where <variable> stands for the list of the variables obtained by the 
+ * \code $ egrep -ron '(variables)->value\("[^)]*\)' xivoclient common baselib \endcode
+ * where variables stands for the list of the variables obtained by the 
  * previous command, separated by |*/
 class ConfigWidget: public QDialog
 {
