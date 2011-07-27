@@ -218,47 +218,43 @@ void BaseEngine::loadSettings()
 
         m_settings->beginGroup("user-gui");
             m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
-
-            QString defaultguioptions;
-            QFile defaultguioptions_file(":/common/guioptions.json");
-            if (defaultguioptions_file.exists()) {
-                defaultguioptions_file.open(QFile::ReadOnly);
-                defaultguioptions = defaultguioptions_file.readAll();
-                defaultguioptions_file.close();
-            }
-            QVariant data;
-            try {
-                data = JsonQt::JsonToVariant::parse(defaultguioptions);
-            } catch(JsonQt::ParseException) {
-                qDebug() << Q_FUNC_INFO << "exception catched for" << defaultguioptions;
-            }
-
-            QVariantMap guisetting_map = data.toMap();
-            guisetting_map.insert("xlet_operator_keyanswer"        , QVariant(Qt::Key_F1));
-            guisetting_map.insert("xlet_operator_keyhangup"        , QVariant(Qt::Key_F2));
-            guisetting_map.insert("xlet_operator_keydtransfer"     , QVariant(Qt::Key_F3));
-            guisetting_map.insert("xlet_operator_keyitransfer"     , QVariant(Qt::Key_F4));
-            guisetting_map.insert("xlet_operator_keyilink"         , QVariant(Qt::Key_F5));
-            guisetting_map.insert("xlet_operator_keyicancel"       , QVariant(Qt::Key_F6));
-            guisetting_map.insert("xlet_operator_keypark"          , QVariant(Qt::Key_F7));
-            guisetting_map.insert("xlet_operator_keyatxferfinalize", QVariant(Qt::Key_F8));
-            guisetting_map.insert("xlet_operator_keyatxfercancel"  , QVariant(Qt::Key_F9));
-            data.setValue(guisetting_map);
         m_settings->endGroup();
     m_settings->endGroup();
+    
+    QString defaultguioptions;
+    QFile defaultguioptions_file(":/common/guioptions.json");
+    if (defaultguioptions_file.exists()) {
+        defaultguioptions_file.open(QFile::ReadOnly);
+        defaultguioptions = defaultguioptions_file.readAll();
+        defaultguioptions_file.close();
+    }
+    QVariant data;
+    try {
+        data = JsonQt::JsonToVariant::parse(defaultguioptions);
+    } catch(JsonQt::ParseException) {
+        qDebug() << Q_FUNC_INFO << "exception catched for" << defaultguioptions;
+    }
+
+    QVariantMap guisetting_map = data.toMap();
+    guisetting_map.insert("xlet_operator_keyanswer"        , QVariant(Qt::Key_F1));
+    guisetting_map.insert("xlet_operator_keyhangup"        , QVariant(Qt::Key_F2));
+    guisetting_map.insert("xlet_operator_keydtransfer"     , QVariant(Qt::Key_F3));
+    guisetting_map.insert("xlet_operator_keyitransfer"     , QVariant(Qt::Key_F4));
+    guisetting_map.insert("xlet_operator_keyilink"         , QVariant(Qt::Key_F5));
+    guisetting_map.insert("xlet_operator_keyicancel"       , QVariant(Qt::Key_F6));
+    guisetting_map.insert("xlet_operator_keypark"          , QVariant(Qt::Key_F7));
+    guisetting_map.insert("xlet_operator_keyatxferfinalize", QVariant(Qt::Key_F8));
+    guisetting_map.insert("xlet_operator_keyatxfercancel"  , QVariant(Qt::Key_F9));
+    data.setValue(guisetting_map);
 
     // this is used to make a migration from 1.0 to 1.1
     if (settingsversion != "1.0")
         m_settings->beginGroup(m_profilename_read);
-    m_settings->beginGroup("user-gui");
-    // m_guioptions["client_gui"] = m_settings->value("guisettings", data);
-    m_config.merge (m_settings->value("guisettings", data).toMap(), "guioptions");
-    m_settings->endGroup();
+            m_settings->beginGroup("user-gui");
+                m_config.merge (m_settings->value("guisettings", data).toMap(), "guioptions");
+            m_settings->endGroup();
     if (settingsversion != "1.0")
         m_settings->endGroup();
-
-    // m_loginkind = m_guioptions.value("client_gui").toMap().value("loginkind").toInt();
-    m_loginkind = m_config["guioptions.loginkind"].toInt();
 
     m_settings->beginGroup("user-functions");
         foreach (QString function, CheckFunctions)
@@ -311,7 +307,6 @@ void BaseEngine::saveSettings()
 
         m_settings->beginGroup("user-gui");
             m_settings->setValue("historysize", m_config["historysize"].toInt());
-            // m_settings->setValue("guisettings", m_guioptions.value("client_gui"));
             m_settings->setValue("guisettings", m_config.getSubSet("guioptions", BaseConfig::Unmasked));
         m_settings->endGroup();
     m_settings->endGroup();
@@ -559,7 +554,6 @@ const QStringList & BaseEngine::getCapasIpbxCommands() const
 
 QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
 {
-    // return m_guioptions.value(arg).toMap();
     if (arg == "gui_client") {
         return m_config.getSubSet("guioptions", BaseConfig::Unmasked);
     } else {
@@ -567,18 +561,10 @@ QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
     }
 }
 
+/*! \todo Remove arg parameter */
 void BaseEngine::setGuiOption(const QString &arg, const QVariant &opt)
 {
-    // m_guioptions[arg].clear();
-    // m_guioptions[arg] = opt;
     m_config.merge(opt.toMap(), "guioptions");
-
-    m_settings->beginGroup(m_profilename_write);
-        m_settings->beginGroup("user-gui");
-            // m_settings->setValue("guisettings", m_guioptions.value(arg));
-            m_settings->setValue("guisettings", m_config.getSubSet("guioptions", BaseConfig::Unmasked));
-        m_settings->endGroup();
-    m_settings->endGroup();
 
     /*!
      * \todo Can we get saveSettings out of this function? Because we should call it explicitly in ConfigWidget::saveAndClose().
@@ -963,7 +949,6 @@ void BaseEngine::parseCommand(const QString &line)
             if (m_anylist.value("users").contains(id)) {
                 QVariantMap state = datamap.value("capapresence").toMap().value("state").toMap();
                 QString stateid = state.value("stateid").toString();
-                // QVariantMap changeme = m_guioptions.value("server_gui").toMap().value("presence.autochangestate").toMap();
                 QVariantMap changeme = m_config["guioptions.presence.autochangestate"].toMap();
                 if (changeme.count() && (id == m_xuserid)) {
                     if (changeme.contains(stateid)) {
@@ -1056,7 +1041,7 @@ void BaseEngine::parseCommand(const QString &line)
                         command["capaid"] = capas[0];
                 }
 
-                switch(m_loginkind) {
+                switch(m_config["guioptions.loginkind"].toInt()) {
                 case 0:
                     command["loginkind"] = "user";
                     break;
@@ -1099,25 +1084,8 @@ void BaseEngine::parseCommand(const QString &line)
             // ("agentstatus", "ipbxcommands", "phonestatus", "regcommands", "services", "functions", "userstatus") 
 
             m_forced_state = datamap.value("presence").toString();
-            // m_guioptions["server_gui"] = datamap.value("guisettings");
             m_config.mergeMask(datamap.value("guisettings").toMap());
             //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
-
-            // Put the values of client_gui, then those of server_gui into merged_gui.
-            // The first ones are overrided by the second ones.
-            // QVariantMap tmpa;
-            // QMapIterator<QString, QVariant> cg1(m_guioptions.value("client_gui").toMap());
-            // while (cg1.hasNext()) {
-                // cg1.next();
-                // tmpa[cg1.key()] = cg1.value();
-            // }
-            // QMapIterator<QString, QVariant> cg2(m_guioptions.value("server_gui").toMap());
-            // while (cg2.hasNext()) {
-                // cg2.next();
-                // tmpa[cg2.key()] = cg2.value();
-            // }
-            // tmpa["services"] = capas.value("services");
-            // m_guioptions["merged_gui"] = tmpa;
             
             /*!
              * \todo To be simplified
@@ -1129,7 +1097,6 @@ void BaseEngine::parseCommand(const QString &line)
                 if (m_checked_function.contains(function) && m_checked_function[function])
                     todisp.append(function);
             tmp["functions"] = todisp;
-            // m_guioptions["server_funcs"] = tmp;
             m_config["guioptions.server_funcs"] = tmp;
 
             //qDebug() << "clientXlets" << XletList;
@@ -1139,7 +1106,6 @@ void BaseEngine::parseCommand(const QString &line)
             qDebug() << "appliname" << m_appliname;
             qDebug() << "\n";
 
-            // QString urltolaunch = m_guioptions.value("merged_gui").toMap().value("loginwindow.url").toString();
             QString urltolaunch = m_config["guioptions.loginwindow.url"].toString();
             if (! urltolaunch.isEmpty()) {
                 urltolaunch.replace("{xc-username}", m_config["userloginsimple"].toString());
@@ -1788,24 +1754,6 @@ void BaseEngine::setUserLogin(const QString & userid, const QString & opt)
     }
 }
 
-int BaseEngine::loginkind()
-{
-    return m_loginkind;
-}
-
-void BaseEngine::setLoginKind(const int loginkind)
-{
-    // if (loginkind != m_loginkind) {
-        // QVariantMap tmpqvm = m_guioptions.value("client_gui").toMap();
-        // tmpqvm["loginkind"] = loginkind;
-        // m_guioptions["client_gui"] = tmpqvm;
-// 
-        // m_loginkind = loginkind;
-    // }
-    m_config["guioptions.loginkind"] = loginkind;
-    m_loginkind = loginkind;
-}
-
 uint BaseEngine::historySize() const
 {
     return m_config["historysize"].toInt();
@@ -1984,7 +1932,7 @@ void BaseEngine::fetchLists()
         }
     }
 
-    if (m_loginkind == 2) {
+    if (m_config["guioptions.loginkind"].toInt() == 2) {
         QVariantMap ipbxcommand;
         ipbxcommand["command"] = "agentlogin";
         ipbxcommand["agentids"] = "agent:special:me";

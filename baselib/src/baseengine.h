@@ -102,8 +102,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString userLogin() const;        //!< userid to identify to the server
         QString agentphonenumber() const;  //!< agent's phone number
         void setAgentPhoneNumber(const QString &); //!< see agentphonenumber()
-        int loginkind();                        //!< loginkind to identify to the server
-        void setLoginKind(const int);           //!< see loginkind()
         int keeppass();                         //!< keeppass to identify to the server
         void setKeepPass(int);            //!< see keeppass()
         int showagselect();                     //!< showagselect to identify to the server
@@ -358,7 +356,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
          */
         BaseConfig m_config;
         
-        int m_loginkind;                //!< Login Kind
         QString m_xuserid;              //!< Full Id (userid + company)
         QString m_ipbxid;               //!< IPBX id of the current user
         QString m_userid;               //!< xivo user id of the current user
@@ -386,7 +383,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QStringList m_capas_regcommands;  //!< Capabilities for regular commands
         QStringList m_capas_ipbxcommands; //!< Capabilities for IPBX commands
 
-        // QVariantMap m_guioptions;       //!< List of GUI options
         QString m_appliname;            //!< Application name to be displayed
         QString m_sessionid;            //!< Session id obtained after a successful login
         QString m_forced_state;         //!< Forced state sent by the server

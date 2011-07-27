@@ -564,7 +564,6 @@ void ConfigWidget::saveAndClose()
         qvm2[color] = QVariant(m_queuelevels_wait[color]->value());
     opts_saved["queuelevels_wait"] = qvm2;
 
-    b_engine->setLoginKind(m_loginkind->currentIndex());
     opts_saved["loginkind"] = m_loginkind->currentIndex();
 
     opts_saved["contacts-max"] = m_contactssize_sbox->value();

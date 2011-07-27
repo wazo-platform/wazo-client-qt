@@ -181,7 +181,7 @@ void MainWidget::makeLoginWidget()
     m_loginkind->addItem(QString(tr("No Agent")));
     m_loginkind->addItem(QString(tr("Agent (unlogged)")));
     m_loginkind->addItem(QString(tr("Agent (logged)")));
-    m_loginkind->setCurrentIndex(b_engine->loginkind());
+    m_loginkind->setCurrentIndex(m_config["guioptions.loginkind"].toInt());
     loginL->addWidget(m_loginkind, 4, 2, Qt::AlignLeft);
 
     loginKindChanged(m_loginkind->currentIndex());
@@ -274,8 +274,8 @@ void MainWidget::setConfigAndStart()
     m_config["password"] = m_qlab2->text();
     m_config["agentphonenumber"] = m_qlab3->text();
     m_config["keeppass"] = m_kpass->checkState();
+    m_config["guioptions.loginkind"] = m_loginkind->currentIndex();
     b_engine->setConfig(m_config);
-    b_engine->setLoginKind(m_loginkind->currentIndex());
     b_engine->configAndStart(m_qlab1->text(),
                              m_qlab2->text(),
                              m_qlab3->text());
@@ -469,7 +469,7 @@ void MainWidget::confUpdated()
     m_qlab2->setText(m_config["password"].toString());
     m_qlab3->setText(m_config["agentphonenumber"].toString());
     m_kpass->setCheckState((m_config["keeppass"].toUInt() == 2) ? Qt::Checked : Qt::Unchecked);
-    m_loginkind->setCurrentIndex(b_engine->loginkind());
+    m_loginkind->setCurrentIndex(m_config["guioptions.loginkind"].toInt());
     
     // No need to call loginKindChanged because
     // if the index is the same, no need to do anything
