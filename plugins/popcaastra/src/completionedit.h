@@ -55,15 +55,15 @@ public:
     /*! \brief Set a completer for the line edit
      *  \param c a QCompleter
      */
-    void setCompleter(QCompleter * c);
+    void setCompleter(FilteredCompleter * c);
     /*! \brief Retreves the QCompleter */
-    const QCompleter * completer() const;
+    const FilteredCompleter * completer() const;
 protected:
     void keyPressEvent(QKeyEvent * e);
 private slots:
     void insertCompletion(const QString & completion);
 private:
-    QCompleter * c;    //!< Completer
+    FilteredCompleter * c;    //!< Completer
 };
 
 #endif // __COMPLETIONEDIT_H__
