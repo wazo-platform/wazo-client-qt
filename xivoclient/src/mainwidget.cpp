@@ -268,7 +268,7 @@ void MainWidget::clearAppearance()
     m_allnames.clear();
 }
 
-void MainWidget::setConfigAndStart()
+void MainWidget::setConfig()
 {
     m_config["userlogin"] = m_qlab1->text();
     m_config["password"] = m_qlab2->text();
@@ -276,9 +276,12 @@ void MainWidget::setConfigAndStart()
     m_config["keeppass"] = m_kpass->checkState();
     m_config["guioptions.loginkind"] = m_loginkind->currentIndex();
     b_engine->setConfig(m_config);
-    b_engine->configAndStart(m_qlab1->text(),
-                             m_qlab2->text(),
-                             m_qlab3->text());
+}
+
+void MainWidget::setConfigAndStart()
+{
+    setConfig();
+    b_engine->start();
 }
 
 void MainWidget::loginKindChanged(int index)
@@ -455,6 +458,7 @@ void MainWidget::createSystrayIcon()
  */
 void MainWidget::showConfDialog()
 {
+    setConfig();
     ConfigWidget *config = new ConfigWidget();
     connect(config, SIGNAL(confUpdated()),
             this, SLOT(confUpdated()));

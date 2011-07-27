@@ -92,6 +92,7 @@ class MainWidget : public QMainWindow
         void updateAppliName();
         void clearPresence();
         void makeLoginWidget();
+        void setConfig();
 
         QSystemTrayIcon *m_systrayIcon;  //!< System Tray Icon
         QIcon m_icon_transp;  //!< Icon Objects

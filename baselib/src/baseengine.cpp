@@ -370,19 +370,6 @@ void BaseEngine::logAction(const QString & logstring)
     }
 }
 
-/*! \brief set login/pass and then starts */
-void BaseEngine::configAndStart(const QString &login,
-                                const QString &pass,
-                                const QString &agentphonenumber)
-{
-    setUserLogin(login);
-    m_config["password"] = pass;
-    // if agentphonenumber's size is 0, no login as agent
-    m_config["agentphonenumber"] = agentphonenumber;
-    saveSettings();
-    start();
-}
-
 /*! \brief send power event to the server.
  *
  * \todo check if this is usefull. If not, remove it.
@@ -1729,8 +1716,10 @@ void BaseEngine::setConfig(QVariantMap qvm)
     }
     m_config.merge(qvm);
     
-    this->setUserLogin (qvm["userlogin"].toString());
-    this->changeTranslation(qvm["forcelocale"].toString());
+    setUserLogin (qvm["userlogin"].toString());
+    changeTranslation(qvm["forcelocale"].toString());
+    
+    saveSettings();
 }
 
 // === Getter and Setters ===

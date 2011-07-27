@@ -136,7 +136,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QVariantMap getGuiOptions(const QString &) const;
 
         const QString& getCapaApplication() const;
-        void configAndStart(const QString &, const QString &, const QString &);
         QString osname() const { return m_osname; };
 
         void openLogFile();
