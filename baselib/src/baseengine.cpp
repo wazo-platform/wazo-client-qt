@@ -200,8 +200,8 @@ void BaseEngine::loadSettings()
     m_config["mainwindowstate"] = m_settings->value("display/mainwindowstate").toByteArray();
     m_config["configtab"] = m_settings->value("display/configtab", 0).toInt();
     
-    m_profilename = m_settings->value("profile/lastused").toString();
-    m_profilename_write = "engine-" + m_profilename;
+    m_config["profilename"] = m_settings->value("profile/lastused").toString();
+    m_profilename_write = "engine-" + m_config["profilename"].toString();
     
     m_config["faxhistory.geometry"] = m_settings->value("faxhistory/geometry").toByteArray();
     m_config["faxhistory.hidenumber"] = (m_settings->value("faxhistory/hidenumber", 0).toUInt() == Qt::Checked);
@@ -212,7 +212,7 @@ void BaseEngine::loadSettings()
     if (settingsversion == "1.0")
         m_profilename_read = "engine";
     else
-        m_profilename_read = "engine-" + m_profilename;
+        m_profilename_read = "engine-" + m_config["profilename"].toString();
 
     m_settings->beginGroup(m_profilename_read);
         m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.fr").toString();
@@ -1795,14 +1795,12 @@ void BaseEngine::setUserLogin(const QString & userid, const QString & opt)
     }
 }
 
+/*!
+ * \todo Historysize only useful for history plugin. To be replaced by getConfig("historysize")
+ */
 uint BaseEngine::historySize() const
 {
     return m_config["historysize"].toInt();
-}
-
-QString BaseEngine::profileName() const
-{
-    return m_profilename;
 }
 
 void BaseEngine::initFeatureFields(const QString & field)
@@ -1980,11 +1978,6 @@ void BaseEngine::fetchLists()
         ipbxcommand["agentphonenumber"] = m_config["agentphonenumber"].toString();
         ipbxCommand(ipbxcommand);
     }
-}
-
-bool BaseEngine::systrayed() const
-{
-    return m_config["systrayed"].toBool();
 }
 
 /*!

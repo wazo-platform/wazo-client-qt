@@ -99,20 +99,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QVariant getConfig(const QString &) const; //!< one BaseEngine setting
         void setConfig(QVariantMap);
         // setter/getter for properties
-
-        QString userLogin() const;        //!< userid to identify to the server
-        QString agentphonenumber() const;  //!< agent's phone number
-        void setAgentPhoneNumber(const QString &); //!< see agentphonenumber()
-        int keeppass();                         //!< keeppass to identify to the server
-        void setKeepPass(int);            //!< see keeppass()
-        int showagselect();                     //!< showagselect to identify to the server
-        void setShowAgentSelect(const int);     //!< see showagselect()
-        QString password() const;       //!< password to identify to the sever
-        void setPassword(const QString &);      //!< see password()
-
-        bool systrayed() const;                 //!< systrayed flag
+        
         uint historySize() const;               //!< history size
-        QString profileName() const;            //!< Settings profile
 
         void saveSettings();                    //!< save server settings
 
@@ -355,7 +343,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_xuserid;              //!< Full Id (userid + company)
         QString m_ipbxid;               //!< IPBX id of the current user
         QString m_userid;               //!< xivo user id of the current user
-        QString m_profilename;          //!< CTI profile name of the current user
         QString m_profilename_read;     //!< CTI profile name of the current user
         QString m_profilename_write;    //!< CTI profile name of the current user
         QStringList m_ipbxlist;

@@ -115,7 +115,7 @@ MainWidget::MainWidget()
 
     makeLoginWidget();
     showLogin();
-    if ((m_withsystray && (b_engine->systrayed() == false)) || (! m_withsystray)) {
+    if ((m_withsystray && (b_engine->getConfig("systrayed").toBool() == false)) || (! m_withsystray)) {
         show();
     }
     setFocusPolicy(Qt::StrongFocus);
@@ -746,7 +746,7 @@ void MainWidget::connectionStateChanged()
         m_connectact->setEnabled(false);
         m_disconnectact->setEnabled(true);
         m_status->setPixmap(m_pixmap_connected);
-        m_profilename->setText(b_engine->profileName());
+        m_profilename->setText(b_engine->getConfig("profilename").toString());
         b_engine->logAction("connection started");
     } else if (b_engine->state() == BaseEngine::ENotLogged) {
         statusBar()->showMessage(tr("Disconnected"));
