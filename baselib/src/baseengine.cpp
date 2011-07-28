@@ -696,7 +696,7 @@ void BaseEngine::filetransferSocketConnected()
     command["socketref"] = QString("%1:%2")
         .arg(m_filetransfersocket->localAddress().toString())
         .arg(m_filetransfersocket->localPort());
-    command["filename"] = "toto.pdf";
+    command["filename"] = m_filename;
     command["fileid"] = m_fileid;
     command["formatted_size"] = m_filedata.size();
     command["file_size"] = m_faxsize;
@@ -929,6 +929,7 @@ void BaseEngine::parseCommand(const QString &line)
                 qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
             else {
                 m_fileid = datamap.value("fileid").toString();
+                m_filename = datamap.value("filename").toString();
                 m_filetransfersocket->connectToHost(m_cti_address, m_cti_port);
             }
 
@@ -1438,6 +1439,7 @@ void BaseEngine::sendFaxCommand(const QString & filename,
             QVariantMap command;
             command["class"] = "faxsend";
             command["hide"] = QString::number(hide);
+            command["filename"] = filename;
             command["destination"] = number;
             sendJsonCommand(command);
         } else
