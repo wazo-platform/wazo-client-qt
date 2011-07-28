@@ -929,7 +929,6 @@ void BaseEngine::parseCommand(const QString &line)
                 qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
             else {
                 m_fileid = datamap.value("fileid").toString();
-                m_filename = datamap.value("filename").toString();
                 m_filetransfersocket->connectToHost(m_cti_address, m_cti_port);
             }
 
@@ -1426,6 +1425,7 @@ void BaseEngine::sendFaxCommand(const QString & filename,
                                 const QString & number,
                                 Qt::CheckState hide)
 {
+    m_filename = filename;
     QFile * qf = new QFile(filename);
     bool canopen = qf->open(QIODevice::ReadOnly);
 
