@@ -192,7 +192,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QStringList phonenumbers(const UserInfo *);
 
         void registerTranslation(const QString &);
-        void changeTranslation(const QString &);
+        void changeTranslation(QString locale = "");
         void urlAuto(const QString &);
         void changeWatchedAgent(const QString &, bool);
         void changeWatchedQueue(const QString &);
@@ -349,11 +349,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // Class Members
         // Parameters given by the User at Login time
         
-        /*! \brief Stores the configuration values.
-         * Only BaseEngine can freeze values in it.
-         * The frozen values are the one given by the server, and should not be overwritten
-         */
-        BaseConfig m_config;
+        BaseConfig m_config;            //!< Stores the configuration values.
         
         QString m_xuserid;              //!< Full Id (userid + company)
         QString m_ipbxid;               //!< IPBX id of the current user
@@ -366,6 +362,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QDateTime m_timeclt;
         double m_timesrv;
 
+        QString m_locale;
         QStringList translationFiles;   //!< List of translation files
         QVector<QTranslator *> translators;   //!< Vector of translators
 

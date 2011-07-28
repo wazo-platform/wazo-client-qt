@@ -57,7 +57,6 @@
  */
 int main(int argc, char ** argv)
 {
-    QString locale = QLocale::system().name();
     // QApplication::setStyle(new XiVOCTIStyle());
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.fr");
@@ -108,10 +107,6 @@ int main(int argc, char ** argv)
 
     app.setWindowIcon(QIcon(":/images/xivo-login.png"));
 
-    QString forcelocale = settings->value("engine-" + profile + "/forcelocale", "").toString();
-    if (forcelocale.length() && (forcelocale != "default"))
-        locale = forcelocale;
-
     QString info_osname;
     QString info_endianness = QSysInfo::ByteOrder ? "LE" : "BE";
 
@@ -134,11 +129,9 @@ int main(int argc, char ** argv)
         .arg(info_endianness)
         .arg(app.applicationPid());
 #endif
-    qDebug() << Q_FUNC_INFO << "osname=" << info_osname << "locale=" << locale;
+    qDebug() << Q_FUNC_INFO << "osname=" << info_osname;
 
     BaseEngine *engine = new BaseEngine(settings, info_osname);
-
-    engine->changeTranslation(locale);
 
     MainWidget window;
     bool activate_on_tel = settings->value("display/activate_on_tel", false).toBool();

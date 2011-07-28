@@ -135,6 +135,7 @@ BaseEngine::BaseEngine(QSettings *settings,
         (QStringList() << ":/xivoclient_%1"
                        << ":/baselib/baselib_%1"
                        << QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_%1" );
+    changeTranslation();
 }
 
 void BaseEngine::encryptedSsl()
@@ -1727,7 +1728,7 @@ void BaseEngine::setConfig(QVariantMap qvm)
     m_config.merge(qvm);
     
     setUserLogin (qvm["userlogin"].toString());
-    changeTranslation(qvm["forcelocale"].toString());
+    changeTranslation();
     
     // qDebug() << m_config.toString();
     
@@ -2215,14 +2216,23 @@ void BaseEngine::registerClassEvent(const QString & class_event,
 
 void BaseEngine::registerTranslation(const QString &path)
 {
-    QString locale = QLocale::system().name();
+    QString locale = m_locale;
     QTranslator *translator = new QTranslator;
     translator->load(path.arg(locale));
     qApp->installTranslator(translator);
 }
 
-void BaseEngine::changeTranslation(const QString &locale)
+void BaseEngine::changeTranslation(QString locale)
 {
+    if (locale.isEmpty()) {
+        locale = m_config["forcelocale"].toString();
+    }
+    if (locale == "default") {
+        locale = QLocale::system().name();
+    }
+    
+    m_locale = locale;
+
     QVector<QTranslator *> new_translators;
 
     int i;
