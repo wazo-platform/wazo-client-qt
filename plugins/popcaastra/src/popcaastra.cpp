@@ -653,7 +653,9 @@ void PopcAastra::targetChanged(const QString & text)
     QRegExp num_regex = QRegExp("[<]?[0-9]+[>]?");
     int end = text.lastIndexOf(num_regex);
     int start = text.indexOf(num_regex);
-    if (text[start] == '<') start++;
+    if (start >= 0 && text[start] == '<') {
+        start++;
+    }
     if (start >= 0 && start <= end) {
         QString tmp = text.left(end + 1);
         m_selected_number = tmp.right(end - start + 1);
