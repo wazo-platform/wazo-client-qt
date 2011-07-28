@@ -21,7 +21,7 @@ public:
     int count() const;
 signals:
     void itemClicked(const QString &);
-    void itemDoubleClicked(const QString &);
+    void itemDoubleClicked(const QString &, const QString &);
     void parkinglotClicked(const QString &);
 public slots:
     void clickListener(QTableWidgetItem * i);

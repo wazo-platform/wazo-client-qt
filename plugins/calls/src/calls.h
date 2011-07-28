@@ -87,5 +87,4 @@ class XLetCallsPlugin : public QObject, XLetInterface
         XLet *newXLetInstance(QWidget *parent=0);
 };
 
-
 #endif

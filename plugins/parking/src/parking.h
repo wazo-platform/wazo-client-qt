@@ -61,7 +61,7 @@ class XletParking : public XLet
         void updateParkinglotStatus(const QString &);
     private slots:
         void itemClicked(const QString &);
-        void itemDoubleClicked(const QString &);
+        void itemDoubleClicked(const QString &, const QString &);
         void parkinglotClicked(const QString &);
     private:
         QVBoxLayout * m_parkinglayout;

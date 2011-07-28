@@ -688,7 +688,7 @@ void BaseEngine::filetransferSocketConnected()
     command["socketref"] = QString("%1:%2")
         .arg(m_filetransfersocket->localAddress().toString())
         .arg(m_filetransfersocket->localPort());
-    command["filename"] = "toto.pdf";
+    command["filename"] = m_filename;
     command["fileid"] = m_fileid;
     command["formatted_size"] = m_filedata.size();
     command["file_size"] = m_faxsize;
@@ -1254,7 +1254,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
             // updating relations ...
             if (listname == "phones") {
-                //
+                emit peersReceived();
             }
 
             // transmission to xlets
@@ -1408,6 +1408,7 @@ void BaseEngine::sendFaxCommand(const QString & filename,
                                 const QString & number,
                                 Qt::CheckState hide)
 {
+    m_filename = filename;
     QFile * qf = new QFile(filename);
     bool canopen = qf->open(QIODevice::ReadOnly);
 
@@ -1421,6 +1422,7 @@ void BaseEngine::sendFaxCommand(const QString & filename,
             QVariantMap command;
             command["class"] = "faxsend";
             command["hide"] = QString::number(hide);
+            command["filename"] = filename;
             command["destination"] = number;
             sendJsonCommand(command);
         } else
@@ -1668,6 +1670,10 @@ void BaseEngine::actionCall(const QString & action,
     } else if ((action == "hangup") || (action == "transfercancel")) {
         ipbxcommand["command"] = action;
         ipbxcommand["channelids"] = src;
+    } else if (action == "dial") {
+        ipbxcommand["command"] = action;
+        ipbxcommand["source"] = src;
+        ipbxcommand["destination"] = dst;
     } else if (action == "parking") {
         ipbxcommand["command"] = action;
         ipbxcommand["source"] = src;

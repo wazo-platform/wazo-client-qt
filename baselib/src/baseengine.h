@@ -406,6 +406,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_osname;               //!< OS informations
 
         QString m_fileid;
+        QString m_filename;
         QString m_filedir;
         QByteArray m_filedata;
         int m_faxsize;

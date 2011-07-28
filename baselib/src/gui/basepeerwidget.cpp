@@ -214,10 +214,10 @@ void BasePeerWidget::parkcall()
 {
     if (m_ui_remote) {
         QString xchannel = sender()->property("xchannel").toString();
-        QString number = sender()->property("number").toString();
+        QString parking_id = sender()->property("id").toString();
         b_engine->actionCall("parking",
                              QString("chan:%1").arg(xchannel),
-                             number);
+                             QString("parking:%1").arg(parking_id));
     }
 }
 
@@ -480,7 +480,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                     foreach (XInfo * x, b_engine->iterover("parkinglots")) {
                         ParkingInfo * p = static_cast<ParkingInfo *>(x);
                         QAction * action = new QAction(p->name(), this);
-                        action->setProperty("number", p->number());
+                        action->setProperty("id", p->xid());
                         action->setProperty("xchannel", xchannel);
                         connect (action, SIGNAL(triggered()), this, SLOT(parkcall()));
                         parkMenu->addAction(action);
