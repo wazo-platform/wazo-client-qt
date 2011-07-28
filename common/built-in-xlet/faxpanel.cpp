@@ -39,7 +39,7 @@ FaxPanel::FaxPanel(QWidget *parent)
 {
     // qDebug() << Q_FUNC_INFO << parent;
     setTitle( tr("Fax") );
-    Qt::CheckState previous_hide = (Qt::CheckState) b_engine->getSettings()->value("faxhistory/hidenumber", 0).toInt();
+    bool previous_hide = b_engine->getConfig("faxhistory.hidenumber").toBool();
 
     QVBoxLayout * vlayout = new QVBoxLayout(this);
 
@@ -81,7 +81,7 @@ FaxPanel::FaxPanel(QWidget *parent)
     QHBoxLayout * hbox3 = new QHBoxLayout( groupBox3 );
 
     m_maskornot = new QCheckBox(tr("Hide Number"), this);
-    m_maskornot->setCheckState(previous_hide);
+    m_maskornot->setChecked(previous_hide);
     hbox3->addStretch(1);
     hbox3->addWidget(m_maskornot);
     hbox3->addStretch(1);
@@ -165,7 +165,9 @@ void FaxPanel::setOpenFileName()
 
 void FaxPanel::sendFax()
 {
-    b_engine->getSettings()->setValue("faxhistory/hidenumber", m_maskornot->checkState());
+    QVariantMap qvm = b_engine->getConfig();
+    qvm["faxhistory.hidenumber"] = m_maskornot->isChecked();
+    b_engine->setConfig (qvm);
     if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
         // qDebug() << Q_FUNC_INFO
         // << m_openFileNameLabel->text()

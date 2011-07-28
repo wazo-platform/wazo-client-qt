@@ -179,15 +179,32 @@ void BaseEngine::loadSettings()
     m_config["systrayed"] = m_settings->value("display/systrayed", false).toBool();
     m_config["uniqueinstance"] = m_settings->value("display/unique", true).toBool();
     m_config["qss"] = m_settings->value("display/qss", "none").toString();
+    
+    // this part had been commented for Win32, see svn 5882 or git 70eb1793
+    // to allow a bit more flexibility, we leave it as a configurable setting,
+    // whose default mode will be 'disabled'
+#ifdef Q_WS_WIN
+    m_config["enableclipboard"] = m_settings->value("display/enableclipboard", false).toBool();
+#else
     m_config["enableclipboard"] = m_settings->value("display/enableclipboard", true).toBool();
+#endif /* Q_WS_WIN */
+
     m_config["logtofile"] = m_settings->value("display/logtofile", false).toBool();
     m_config["logfilename"] = m_settings->value("display/logfilename", "XiVO_Client.log").toString();
     m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
     if (m_config["logtofile"].toBool()) {
         openLogFile ();
     }
+    m_config["mainwingeometry"] = m_settings->value("display/mainwingeometry").toByteArray();
+    m_config["lastfocusedtab"] = m_settings->value("display/lastfocusedtab").toInt();
+    m_config["mainwindowstate"] = m_settings->value("display/mainwindowstate").toByteArray();
+    m_config["configtab"] = m_settings->value("display/configtab", 0).toInt();
+    
     m_profilename = m_settings->value("profile/lastused").toString();
     m_profilename_write = "engine-" + m_profilename;
+    
+    m_config["faxhistory.geometry"] = m_settings->value("faxhistory/geometry").toByteArray();
+    m_config["faxhistory.hidenumber"] = (m_settings->value("faxhistory/hidenumber", 0).toUInt() == Qt::Checked);
 
     QString settingsversion = m_settings->value("version/xivo", __xivo_version__).toString();
 
@@ -207,7 +224,6 @@ void BaseEngine::loadSettings()
         m_config["password"] = m_settings->value("password").toString();
         // keeppass and showagselect are booleans in memory, integers (Qt::checkState) in qsettings/config file (due to compatibility)
         m_config["keeppass"] = (m_settings->value("keeppass", Qt::Unchecked).toUInt() == Qt::Checked);
-        qDebug() << m_config["keeppass"].toBool();
         m_config["showagselect"] = (m_settings->value("showagselect", Qt::Checked).toUInt() == Qt::Checked);
         m_config["agentphonenumber"] = m_settings->value("agentphonenumber").toString();
 
@@ -284,6 +300,13 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/logtofile", m_config["logtofile"].toBool());
     m_settings->setValue("display/logfilename", m_config["logfilename"].toString());
     m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
+    m_settings->setValue("display/mainwingeometry", m_config["mainwingeometry"].toByteArray());
+    m_settings->setValue("display/lastfocusedtab", m_config["lastfocusedtab"].toInt());
+    m_settings->setValue("display/mainwindowstate", m_config["mainwindowstate"].toByteArray());
+    m_settings->setValue("display/configtab", m_config["configtab"].toInt());
+    
+    m_settings->setValue("faxhistory/hidenumber", m_config["faxhistory.hidenumber"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_settings->setValue("faxhistory/geometry", m_config["faxhistory.geometry"].toByteArray());
 
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("serverhost", m_config["cti_address"].toString());
@@ -1712,9 +1735,20 @@ void BaseEngine::searchDirectory(const QString & text)
     sendJsonCommand(command);
 }
 
-QVariantMap BaseEngine::getConfig()
+/*!
+ * \return all settings
+ */
+QVariantMap BaseEngine::getConfig() const
 {
     return m_config.toQVariantMap();
+}
+
+/*!
+ * \return the setting indexed by the parameter
+ */
+QVariant BaseEngine::getConfig(const QString &setting) const
+{
+    return m_config[setting];
 }
 
 void BaseEngine::setConfig(QVariantMap qvm)

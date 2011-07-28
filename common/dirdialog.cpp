@@ -36,7 +36,7 @@
 DirDialog::DirDialog(QWidget *parent)
     : QDialog(parent)
 {
-    restoreGeometry(b_engine->getSettings()->value("faxhistory/geometry").toByteArray());
+    restoreGeometry(b_engine->getConfig("faxhistory.geometry").toByteArray());
     // the object will be destroyed when closed
     setWindowTitle(tr("Directory"));
 
@@ -68,7 +68,9 @@ DirDialog::DirDialog(QWidget *parent)
 DirDialog::~DirDialog()
 {
     // qDebug() << Q_FUNC_INFO;
-    b_engine->getSettings()->setValue("faxhistory/geometry", saveGeometry() );
+    QVariantMap qvm = b_engine->getConfig();
+    qvm["faxhistory.geometry"] = saveGeometry();
+    b_engine->setConfig(qvm);
 }
 
 const QString & DirDialog::faxnumber() const

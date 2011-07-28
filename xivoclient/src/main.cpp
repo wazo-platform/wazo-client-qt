@@ -68,7 +68,6 @@ int main(int argc, char ** argv)
                                          QCoreApplication::organizationName(),
                                          QCoreApplication::applicationName());
     qDebug() << Q_FUNC_INFO << "style" << app.style() << settings->fileName();
-    bool shallbeunique = settings->value("display/unique", true).toBool();
 
     QString profile = "default-user";
     QString msg = "";
@@ -88,21 +87,6 @@ int main(int argc, char ** argv)
         bool sentmsg = app.sendMessage(msg);
         // warning : this sends the message only to the first instance, if ever there are >1 instances running
         qDebug() << Q_FUNC_INFO << "sent message" << msg << sentmsg;
-    }
-
-    if (shallbeunique && app.isRunning()) {
-        qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
-        // do not create a new application, just activate the currently running one
-        return 0;
-    }
-
-    settings->setValue("profile/lastused", profile);
-
-    QString qsskind = settings->value("display/qss", "none").toString();
-
-    QFile qssFile(QString(":/common/%1.qss").arg(qsskind));
-    if(qssFile.open(QIODevice::ReadOnly)) {
-        app.setStyleSheet(qssFile.readAll());
     }
 
     app.setWindowIcon(QIcon(":/images/xivo-login.png"));
@@ -132,9 +116,25 @@ int main(int argc, char ** argv)
     qDebug() << Q_FUNC_INFO << "osname=" << info_osname;
 
     BaseEngine *engine = new BaseEngine(settings, info_osname);
+    
+    bool shallbeunique = engine->getConfig("uniqueinstance").toBool();
+    if (shallbeunique && app.isRunning()) {
+        qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
+        // do not create a new application, just activate the currently running one
+        return 0;
+    }
+
+    settings->setValue("profile/lastused", profile);
+
+    QString qsskind = engine->getConfig("qss").toString();
+
+    QFile qssFile(QString(":/common/%1.qss").arg(qsskind));
+    if(qssFile.open(QIODevice::ReadOnly)) {
+        app.setStyleSheet(qssFile.readAll());
+    }
 
     MainWidget window;
-    bool activate_on_tel = settings->value("display/activate_on_tel", false).toBool();
+    bool activate_on_tel = engine->getConfig("activate_on_tel").toBool();
     app.setActivationWindow(&window, activate_on_tel);
 
     app.setQuitOnLastWindowClosed(false);

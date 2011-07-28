@@ -42,7 +42,6 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QSettings>
 #include <QSpinBox>
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -75,7 +74,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     _insert_function_tab();
     _insert_advanced_tab();
 
-    m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
+    m_tabwidget->setCurrentIndex(m_config["configtab"].toInt());
     vlayout->addWidget(m_tabwidget);
     
     m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
@@ -463,7 +462,6 @@ void ConfigWidget::_insert_operator_functiontab()
 ConfigWidget::~ConfigWidget()
 {
 //    qDebug() << Q_FUNC_INFO << b_engine;
-    b_engine->getSettings()->setValue("display/configtab", m_tabwidget->currentIndex());
 }
 
 void ConfigWidget::keyPressEvent(QKeyEvent *e)
@@ -571,11 +569,21 @@ void ConfigWidget::saveAndClose()
     m_config["guioptions.switchboard-elt-type"] = m_comboswitchboard->itemData(m_comboswitchboard->currentIndex()); // not currentText()
     m_config["guioptions.maxwidthwanted"] = m_maxWidthWanted->value();
     m_config["guioptions.presenceindicatorsize"] = m_presenceIndicatorSize->value();
-
-    b_engine->setConfig(m_config);
-
-    emit confUpdated();
+    
+    // setConfig is done in close()
+    
     close();
+}
+
+/*!
+ * Save the current tab and close
+ */
+
+bool ConfigWidget::close()
+{
+    m_config["configtab"] = m_tabwidget->currentIndex();
+    b_engine->setConfig (m_config);
+    return QDialog::close();
 }
 
 WarningWidget::WarningWidget(QWidget * widget = NULL, QString tooltip) : QWidget() {

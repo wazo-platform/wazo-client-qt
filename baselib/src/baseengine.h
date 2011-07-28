@@ -95,7 +95,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QSettings* getSettings();
         void loadSettings();                   //!< load server settings
         
-        QVariantMap getConfig();
+        QVariantMap getConfig() const;         //!< all BaseEngine config
+        QVariant getConfig(const QString &) const; //!< one BaseEngine setting
         void setConfig(QVariantMap);
         // setter/getter for properties
 

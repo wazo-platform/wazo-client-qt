@@ -88,7 +88,7 @@ class MainWidget : public QMainWindow
         void createActions();  //!< Create Actions (for menus)
         void createMenus();  //!< Create Menus
         void createSystrayIcon();  //!< Create the systray Icon and its menu
-        void savePositions() const;
+        void savePositions();
         void updateAppliName();
         void clearPresence();
         void makeLoginWidget();
@@ -103,7 +103,6 @@ class MainWidget : public QMainWindow
         QPixmap m_pixmap_connected;
         QString m_appliname;
         bool m_withsystray;
-        QSettings *m_settings;
         QVariantMap m_config;
 
         QLabel *m_status;  //!< status indicator

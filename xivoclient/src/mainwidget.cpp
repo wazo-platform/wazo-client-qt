@@ -51,7 +51,6 @@ MainWidget::MainWidget()
       m_pixmap_connected(QPixmap(":/images/connected.png")
                          .scaledToHeight(18, Qt::SmoothTransformation)),
       m_withsystray(true),
-      m_settings(b_engine->getSettings()),
       m_status(new QLabel(this)),
       m_profilename(new QLabel(this)),
       m_centralWidget(new QStackedWidget(this)),
@@ -88,16 +87,10 @@ MainWidget::MainWidget()
     connect(b_engine, SIGNAL(emitMessageBox(const QString &)),
             this, SLOT(showMessageBox(const QString &)),
             Qt::QueuedConnection);
+    connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
+            this, SLOT(confUpdated()));
 
-    // this part had been commented for Win32, see svn 5882 or git 70eb1793
-    // to allow a bit more flexibility, we leave it as a configurable setting,
-    // whose default mode will be 'disabled'
-    bool enableclipboard;
-#ifdef Q_WS_WIN
-    enableclipboard = m_settings->value("display/enableclipboard", false).toBool();
-#else
-    enableclipboard = m_settings->value("display/enableclipboard", true).toBool();
-#endif /* Q_WS_WIN */
+    bool enableclipboard = m_config["enableclipboard"].toBool();
     if (enableclipboard) {
         m_clipboard = QApplication::clipboard();
         connect(m_clipboard, SIGNAL(selectionChanged()),
@@ -108,7 +101,7 @@ MainWidget::MainWidget()
     }
 
     resize(500, 440);
-    restoreGeometry(m_settings->value("display/mainwingeometry").toByteArray());
+    restoreGeometry(m_config["mainwingeometry"].toByteArray());
 
     b_engine->logAction("application started on " + b_engine->osname());
 
@@ -459,10 +452,9 @@ void MainWidget::createSystrayIcon()
 void MainWidget::showConfDialog()
 {
     setConfig();
-    ConfigWidget *config = new ConfigWidget();
-    connect(config, SIGNAL(confUpdated()),
-            this, SLOT(confUpdated()));
-    config->exec();
+    ConfigWidget *configwindow = new ConfigWidget();
+    configwindow->exec();
+    delete configwindow;
 }
 
 void MainWidget::confUpdated()
@@ -677,12 +669,12 @@ void MainWidget::engineStarted()
     }
 
     qDebug() << Q_FUNC_INFO << "the xlets have been created";
-    m_tabwidget->setCurrentIndex(m_settings->value("display/lastfocusedtab").toInt());
+    m_tabwidget->setCurrentIndex(m_config["lastfocusedtab"].toInt());
 
     foreach (QString name, m_docks.keys())
         m_docks[name]->show();
     // restore the saved state AFTER showing the docks
-    restoreState(m_settings->value("display/mainwindowstate").toByteArray());
+    restoreState(m_config["mainwindowstate"].toByteArray());
 
     if ((m_resizingHelper == 0)&&(m_docks.size())) {
         // we gonna resize this widget in resizeEvent
@@ -775,9 +767,9 @@ void MainWidget::engineStopped()
 {
     // qDebug() << Q_FUNC_INFO;
     connectionStateChanged();
-    m_settings->setValue("display/mainwindowstate", saveState());
+    m_config["mainwindowstate"] = saveState();
     if (m_tabwidget->currentIndex() > -1) {
-        m_settings->setValue("display/lastfocusedtab", m_tabwidget->currentIndex());
+        m_config["lastfocusedtab"] = m_tabwidget->currentIndex();
     }
 
     foreach (QString dname, m_docknames) {
@@ -811,10 +803,11 @@ void MainWidget::engineStopped()
     updateAppliName();
 }
 
-void MainWidget::savePositions() const
+void MainWidget::savePositions()
 {
     // qDebug() << Q_FUNC_INFO;
-    m_settings->setValue("display/mainwingeometry", saveGeometry());
+    m_config["mainwingeometry"] = saveGeometry();
+    b_engine->setConfig(m_config);
 }
 
 void MainWidget::resizeEvent(QResizeEvent *ev)
@@ -964,7 +957,7 @@ void MainWidget::about()
                        "<br>" +
                        tr("(Application Built on : %1)").arg(datebuild) + "<br>" +
                        tr("(Application Launched on : %1)").arg(m_launchDateTime.toString()) + "<br>" +
-                       tr("(Config File Location : %1)").arg(m_settings->fileName()) + "<hr>" +
+                       tr("(Config File Location : %1)").arg(b_engine->getSettings()->fileName()) + "<hr>" +
                        "Copyright (C) 2007-2011 <a href=http://www.proformatique.com><b>Proformatique</b></a>"
                        "<br>"
                        "10 bis rue Lucien Voilin - 92800 Puteaux - FRANCE"

@@ -71,9 +71,9 @@ class ConfigWidget: public QDialog
         ConfigWidget(QWidget *parent=0);
         QSize sizeHint();
         ~ConfigWidget();
-
-    signals:
-        void confUpdated();
+    
+    public slots:
+        bool close();
 
     private slots:
         //! Save the configuration to the BaseEngine object and close
