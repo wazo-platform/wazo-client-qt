@@ -136,7 +136,7 @@ void ConfigWidget::_insert_function_tab()
 
     foreach(QString function, func_legend.keys()) {
         m_function[function] = new QCheckBox(func_legend[function]);
-        m_function[function]->setChecked(b_engine->checkedFunction(function));
+        m_function[function]->setChecked(m_config["checked_function." + function].toBool());
         layout2->addWidget(m_function[function]);
     }
     
@@ -530,7 +530,7 @@ void ConfigWidget::saveAndClose()
     m_config["keepaliveinterval"] = m_kainterval_sbox->value() * 1000;
     m_config["historysize"] = m_history_sbox->value();
     m_config["systrayed"] = m_systrayed->isChecked();
-    m_config["uniqueinstance"] = m_unique->isChecked();
+    m_config["uniqueinstance"] = !m_unique->isChecked();
     m_config["qss"] = m_qss->text();
     m_config["enableclipboard"] = m_clipboard->isChecked();
     m_config["logtofile"] = m_logtofile->isChecked();
@@ -539,7 +539,7 @@ void ConfigWidget::saveAndClose()
     m_config["activate_on_tel"] = m_activate_on_tel->isChecked();
 
     foreach(QString function, func_legend.keys())
-        m_config["checked_function" + function] = m_function[function]->isChecked();
+        m_config["checked_function." + function] = m_function[function]->isChecked();
 
     for(i=0;i<9;i++) {
         m_config["guioptions.xlet_operator_key" + m_operator_action[i].action] =
