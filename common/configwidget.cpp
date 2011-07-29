@@ -356,7 +356,7 @@ void ConfigWidget::_insert_guisetting_tab()
     m_displayprofile->setChecked(m_config["displayprofile"].toBool());
     layout4->addRow(new WarningWidget(m_displayprofile));
     
-    m_activate_on_tel = new QCheckBox(tr("Activate on incoming call")) ;
+    m_activate_on_tel = new QCheckBox(tr("Activate the window when calling from external application")) ;
     m_activate_on_tel->setChecked(m_config["activate_on_tel"].toBool());
     layout4->addRow(new WarningWidget(m_activate_on_tel));
     

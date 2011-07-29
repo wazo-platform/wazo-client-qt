@@ -143,3 +143,13 @@ QString BaseConfig::toString(ReadMode rm)
     }
     return ret;
 }
+
+/*!
+ * \return all keys
+ */
+QStringList BaseConfig::keys()
+{
+    QStringList ret = m_qvm.keys() << m_qvm_mask.keys();
+    ret.removeDuplicates();
+    return ret;
+}
