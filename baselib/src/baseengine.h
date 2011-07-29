@@ -85,7 +85,7 @@ struct e_callback {
  *  Config options (available through getConfig):
  *  - (bool) \b systrayed = main window starts systrayed
  *  - (bool) \b uniqueinstance = forbids multiple clients running simultaneously on the same machine
- *  - (string) \b qss = Qt style sheet, changes appearance of the client. It is the name of a file in \code XIVO_CLIENT/common/*.qss \endcode, without path nor extension.
+ *  - (string) \b qss = Qt style sheet, changes appearance of the client. It is the name of a file in \code XIVO_CLIENT/common/\*.qss \endcode, without path nor extension.
  *  - (bool) \b enableclipboard = enable the clipboard or not
  *  - (bool) \b logtofile = enable events logging
  *  - (string) \b logfilename = log file name
