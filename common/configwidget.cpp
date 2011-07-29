@@ -455,7 +455,7 @@ void ConfigWidget::_insert_operator_functiontab()
 
     glayout->addWidget(new QLabel(tr("Any change here requires an application restart to be effective")), ++i, 1, 1, 2);
 
-    m_function_tabwidget->addTab(root_widget, tr("Operator Xlet"));
+    m_function_tabwidget->addTab(root_widget, tr("Operator"));
 }
 
 
