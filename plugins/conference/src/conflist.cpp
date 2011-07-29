@@ -105,6 +105,7 @@ ConfListModel::data(const QModelIndex &index,
         row = m_row2id[row].toInt();
 
     QString room = QString("confrooms/%0/").arg(row);
+    QString mm = b_engine->eV(room + "admin_moderationmode").toString();
     switch (col) {
     case ID:
         return b_engine->eV(room + "id");
@@ -116,8 +117,7 @@ ConfListModel::data(const QModelIndex &index,
         return b_engine->eV(room + "pin_needed")
             .toBool() ? tr("Yes") : tr("No");
     case MODERATED:
-        return b_engine->eV(room + "admin_moderationmode")
-            .toString().isEmpty() ? tr("No") : tr("Yes");
+        return mm.isEmpty() || mm == "0" ? tr("No") : tr("Yes");
     case MEMBER_COUNT:
         return b_engine->eVM(room + "in").size();
     case STARTED_SINCE:
