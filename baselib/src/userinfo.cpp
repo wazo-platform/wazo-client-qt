@@ -33,6 +33,7 @@
 
 #include <QDebug>
 #include "userinfo.h"
+#include "baseengine.h"
 
 /*! \brief Constructor
  *
@@ -96,6 +97,19 @@ void UserInfo::setPhoneIdList(const QStringList & phoneidlist)
 bool UserInfo::hasPhoneId(const QString & xphoneid) const
 {
     return m_phoneidlist.contains(xphoneid);
+}
+
+/*! \brief check if this user owns this channel */
+bool UserInfo::hasChannelId(const QString & xchannelid) const
+{
+    qDebug() << Q_FUNC_INFO << xchannelid;
+    foreach (const QString & phoneid, m_phoneidlist) {
+        const PhoneInfo * p = b_engine->phone(phoneid);
+        if (p && p->xchannels().contains(xchannelid)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 const QString & UserInfo::availstate() const

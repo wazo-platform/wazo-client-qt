@@ -56,6 +56,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
         void setAgentNumber(const QString &);
 
         bool hasPhoneId(const QString &) const;
+        bool hasChannelId(const QString &) const;
 
         const QString & mobileNumber() const { return m_mobilenumber; };
         const QStringList & phonelist() const { return m_phoneidlist; };
