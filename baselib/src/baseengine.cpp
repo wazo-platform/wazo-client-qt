@@ -726,7 +726,7 @@ QStringList BaseEngine::updateQueue(const QString & astid,
     // qDebug() << Q_FUNC_INFO << astid << queueid << properties;
     QStringList keychanges;
     QString key = QString("queue:%1/%2").arg(astid).arg(queueid);
-    if (!m_queues.contains(key)) {
+    if (! m_queues.contains(key)) {
         m_queues[key] = new QueueInfo(astid, queueid, properties);
         keychanges << key;
     } else {

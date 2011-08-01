@@ -49,6 +49,9 @@ bool QueueInfo::update(const QMap<QString, QVariant> & prop)
 {
     bool haschanged = false;
     if (m_properties != prop) {
+        m_context = prop.value("context").toString();
+        m_queuename = prop.value("queuename").toString();
+        m_queuenumber = prop.value("number").toString();
         m_properties = prop;
         haschanged = true;
     }

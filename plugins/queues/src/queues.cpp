@@ -231,11 +231,11 @@ void XletQueues::newQueueList(const QStringList &qsl)
     while (iter.hasNext()) {
         iter.next();
         if (qsl.contains(iter.key())) {
-            QueueInfo *qinfo = iter.value();
+            QueueInfo * qinfo = iter.value();
             QString queueId = qinfo->id();
 
-            // qDebug() << "newQueueList hay" << this->parentWidget() << m_queueList.size() << queueId;
-            if (!m_queueList.contains(queueId)) {
+            // qDebug() << Q_FUNC_INFO << this->parentWidget() << m_queueList.size() << queueId << qinfo->queueName();
+            if (! m_queueList.contains(queueId)) {
                 m_queueList[queueId] = new QueueRow(qinfo, this);
                 m_layout->addWidget(m_queueList[queueId]);
                 updateLongestWaitWidgets();
@@ -822,6 +822,7 @@ void QueueRow::updateName()
     }
 
     m_name->setText(queueName);
+    setLayoutColumnWidth(m_layout, statItems.count());
 }
 
 QWidget* QueueRow::makeTitleRow(XletQueues *parent)
