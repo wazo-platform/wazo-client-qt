@@ -68,6 +68,7 @@ class SearchPanel : public XLet
         void updateAgentStatus(const QString &);
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
+        void updateConf();
     private:
         QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
         QGridLayout *m_peerlayout; //!< layout object
