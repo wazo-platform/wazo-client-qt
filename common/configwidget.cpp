@@ -46,6 +46,7 @@
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QPixmap>
+#include <QDir>
 
 #include "configwidget.h"
 #include "baseengine.h"
@@ -341,11 +342,18 @@ void ConfigWidget::_insert_guisetting_tab()
     m_unique->setChecked(!m_config["uniqueinstance"].toBool());
     layout4->addRow(new WarningWidget(m_unique));
     
-    /*!
-     * \todo make a list of the qss files and fill a combobox ?
-     */
-    m_qss = new QLineEdit();
-    m_qss->setText(m_config["qss"].toString());
+    m_qss = new QComboBox();
+    m_qss->addItem(tr("Default style"), QString("none"));
+    QDir qss_dir(":/common") ;
+    QStringList qss_files = qss_dir.entryList(QStringList("*.qss"));
+    foreach(QString qss_file, qss_files) {
+        qss_file.truncate(qss_file.length()-4);
+        m_qss->addItem(qss_file, qss_file);
+    }
+    int qss_index = m_qss->findData(m_config["qss"]);
+    if(qss_index != -1) {
+        m_qss->setCurrentIndex(qss_index);
+    }
     layout4->addRow(tr("Interface style"), new WarningWidget(m_qss));
     
     m_clipboard = new QCheckBox(tr("Enable the clipboard")) ;
@@ -529,7 +537,7 @@ void ConfigWidget::saveAndClose()
     m_config["historysize"] = m_history_sbox->value();
     m_config["systrayed"] = m_systrayed->isChecked();
     m_config["uniqueinstance"] = !m_unique->isChecked();
-    m_config["qss"] = m_qss->text();
+    m_config["qss"] = m_qss->itemData(m_qss->currentIndex()); // not currentText()
     m_config["enableclipboard"] = m_clipboard->isChecked();
     m_config["logtofile"] = m_logtofile->isChecked();
     m_config["logfilename"] = m_logfilename->text();

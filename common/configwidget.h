@@ -116,7 +116,7 @@ class ConfigWidget: public QDialog
         QComboBox * m_locale_cbox;      //!< Locale selectbox
         QCheckBox * m_systrayed;        //!< "Systray at startup" Checkbox
         QCheckBox * m_unique;           //!< Can multiple instances of the program run simultaneously?
-        QLineEdit * m_qss;              //!< Qt style sheet file. Only the name of the file, without qss.
+        QComboBox * m_qss;              //!< Qt style sheet file. Only the name of the file, without qss.
         QCheckBox * m_clipboard;        //!< Clipboard enabled?
 
         QHash<QString, QCheckBox *> m_function; //!< connect to functions checkboxes
