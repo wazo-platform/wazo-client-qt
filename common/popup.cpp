@@ -259,8 +259,7 @@ void Popup::addAnyInfo(const QString & localName,
             where = m_orders.indexOf(infoOrder) + m_firstline;
         }
         setSheetPopup( true );
-        if ( ((infoType == "text") && infoName.isEmpty()) ||
-             (infoType == "title")) {
+        if (infoType == "title") {
             setTitle(infoValue);
             m_orders.removeAll(infoOrder);
         } else if (infoType == "text") {
