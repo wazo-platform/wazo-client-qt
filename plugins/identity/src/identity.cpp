@@ -39,7 +39,6 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QSizePolicy>
-#include <QRegExp>
 
 #include "baseengine.h"
 #include "identity.h"

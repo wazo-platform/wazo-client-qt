@@ -33,6 +33,7 @@
 
 #include <baseengine.h>
 #include "history.h"
+#include <phonenumber.h>
 
 Q_EXPORT_PLUGIN2(xlethistoryplugin, XLetHistoryPlugin);
 
@@ -299,11 +300,7 @@ void LogTableView::onViewClick(const QModelIndex &model)
 {
     QString caller = model.sibling(model.row(), 0).data().toString();
 
-    if (caller.indexOf("<") != -1) {
-        caller.remove(QRegExp("[^<]*<"));
-        caller.remove(">");
-    }
-    caller.remove(QRegExp("[^0-9]"));
+    caller = PhoneNumber::extract(caller, "<", ">");
 
     if (caller != "") {
         if (m_lastPressed & Qt::LeftButton) {

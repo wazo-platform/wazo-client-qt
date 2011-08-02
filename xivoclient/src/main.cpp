@@ -45,6 +45,7 @@
 #include "baseengine.h"
 #include "mainwidget.h"
 #include "powerawareapplication.h"
+#include "phonenumber.h"
 
 /*! \fn main
  *
@@ -73,8 +74,7 @@ int main(int argc, char ** argv)
     QString msg = "";
     for (int argi = 0; argi < argc - 1 ; argi ++) {
         QString argn(argv[argi + 1]);
-        QRegExp rexp("^(tel|callto):([-0-9\\. +]*[0-9])", Qt::CaseInsensitive);
-        if(rexp.indexIn(argn) < 0)
+        if(PhoneNumber::isURI(argn))
             profile = argn;
         else
             msg = argn;

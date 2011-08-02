@@ -33,6 +33,7 @@
 
 
 #include "dialpanel.h"
+#include "phonenumber.h"
 
 /*! \brief Constructor
  */
@@ -92,19 +93,9 @@ void DialPanel::setNumberToDial(const QString & text)
 {
     QString oldtext = m_input->lineEdit()->text();
     // qDebug() << Q_FUNC_INFO << text;
-    // adds the item to the list
-    QString texttmp = text.trimmed();
-    // remove . and " " because we don't need them
-    // remove "+" to avoid matching the "\\D"
-    texttmp.remove(QRegExp("[. +]"));
+    QString texttmp = PhoneNumber::extract(text);
 
-    if((! texttmp.isEmpty()) && (! texttmp.contains(QRegExp("\\D")))) {
-        // if there was a "+", put it back
-        if(text.trimmed()[0] == '+')
-            texttmp.insert(0, "+");
-        // stop if the selection is the same as the number already displayed
-        if(texttmp == oldtext)
-            return;
+    if((! texttmp.isEmpty()) && texttmp != oldtext) {
         // put in history if not already there
         if (m_input->findText(texttmp) == -1)
             m_input->insertItem(0, texttmp);
@@ -126,14 +117,12 @@ void DialPanel::dragEnterEvent(QDragEnterEvent * event)
  */
 void DialPanel::dropEvent(QDropEvent * event)
 {
-    QString ext;
     QString originator = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
     qDebug() << Q_FUNC_INFO << originator << m_input->lineEdit();
     if(m_input->lineEdit()) {
         qDebug() << Q_FUNC_INFO << event << originator << m_input->lineEdit()->text();
-        ext = m_input->lineEdit()->text();
-        ext.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
-        if (ext.length() == 0)        // do nothing if the string is empty
+        QString ext = PhoneNumber::extract(m_input->lineEdit()->text());
+        if (ext.isEmpty())        // do nothing if the string is empty
             return;
         b_engine->actionCall("originate",
                              "user:" + originator,
@@ -157,11 +146,10 @@ void DialPanel::dropEvent(QDropEvent * event)
  */
 void DialPanel::inputValidated()
 {
-    QString ext;
+    
     if(m_input->lineEdit()) {
-        ext = m_input->lineEdit()->text();
-        ext.remove(QRegExp("[\\s\\.]"));  // remove spaces and full stop characters
-        if (ext.length() == 0) // do nothing if the string is empty
+        QString ext = PhoneNumber::extract(m_input->lineEdit()->text());
+        if (ext.isEmpty()) // do nothing if the string is empty
             return;
         b_engine->actionCall("originate",
                              "user:special:me",

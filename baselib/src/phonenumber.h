@@ -31,42 +31,24 @@
  * $Date$
  */
 
-#ifndef __EXTENDEDTABLEWIDGET_H__
-#define __EXTENDEDTABLEWIDGET_H__
+#ifndef __PHONENUMBER_H__
+#define __PHONENUMBER_H__
 
-#include "baselib_export.h"
+#include <QString>
 
-#include <QtGui>
-#include <baseengine.h>
-
-
-/*! \brief Table class inheriting QTableWidget with contextMenu added.
- */
-class BASELIB_EXPORT ExtendedTableWidget : public QTableWidget
+namespace PhoneNumber
 {
-    Q_OBJECT
+     /*! the master regexp, the one that recognizes phone numbers in themselves. To be augmented / replaced by  algorithm if necessary\n
+     * Suggestions :
+     * \li [-0-9\\. +]*[0-9]
+     * \li "\\+?[0-9\\s\\.]+"
+     */
+    const QString phone_pattern = "[-0-9\\. +]*[0-9]";
+    
+    QRegExp phone_re();
+    bool isURI(const QString &);
+    QString extract(const QString &, const QString & = "<", const QString & = ">");
+    bool contains(const QString &);
+}
 
-    public:
-        ExtendedTableWidget(QWidget *parent=0);
-        ExtendedTableWidget(int rows, int columns, QWidget *parent=0);
-        void setEditable(bool editable) { m_editable = editable; };
-
-    protected:
-        void contextMenuEvent(QContextMenuEvent *);
-        void dragEnterEvent(QDragEnterEvent *);
-        void dragMoveEvent(QDragMoveEvent *);
-        void dropEvent(QDropEvent *);
-        void mouseMoveEvent(QMouseEvent *);
-
-    private slots:
-        void dialNumber();
-        void sendMail();
-        void itransfer();
-        void dtransfer();
-        void remove();
-
-    private:
-        bool m_editable;
-};
-
-#endif
+#endif /* __PHONENUMBER_H__ */

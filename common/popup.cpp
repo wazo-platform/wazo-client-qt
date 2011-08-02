@@ -55,6 +55,7 @@
 #include "urllabel.h"
 #include "userinfo.h"
 #include "remarkarea.h"
+#include "phonenumber.h"
 
 QStringList g_formbuttonnames = (QStringList()
                                  << "refuse" << "hangup" << "answer"
@@ -271,8 +272,7 @@ void Popup::addAnyInfo(const QString & localName,
         } else if( infoType == "picture" ) {
             addInfoPicture( where, infoName, infoValue );
         } else if( infoType == "phone" ) {
-            QRegExp re_number("\\+?[0-9\\s\\.]+");
-            if(re_number.exactMatch(infoValue))
+            if(PhoneNumber::phone_re().exactMatch(infoValue))
                 addInfoLink( where, infoName, "tel:" + infoValue );
             else
                 addInfoText( where, infoName, infoValue );
