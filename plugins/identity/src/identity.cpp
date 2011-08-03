@@ -168,8 +168,8 @@ void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
     if (optionsMap.contains("xlet.identity.iconsize"))
         m_gui_buttonsize = optionsMap.value("xlet.identity.iconsize").toInt();
 
-    m_agent->setAllowedActions(optionsMap.value("xlet.identity.logagent").toBool(),
-                               optionsMap.value("xlet.identity.pauseagent").toBool());
+    m_agent->setAllowedActions(b_engine->getConfig("xlet.identity.logagent").toBool(),
+                               b_engine->getConfig("xlet.identity.pauseagent").toBool());
 
     setFont(m_gui_font);
 
@@ -180,7 +180,6 @@ void IdentityDisplay::updatePresence()
 {
     QString presence = b_engine->getAvailState();
     QVariantMap presencemap = b_engine->getOptionsUserStatus();
-    qDebug() << Q_FUNC_INFO;
 
     m_presencevalue->hide();
     if (! m_functions.contains("presence"))
