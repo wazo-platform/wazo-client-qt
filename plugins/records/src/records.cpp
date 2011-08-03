@@ -84,7 +84,7 @@ XletRecords::XletRecords(QWidget *parent)
     m_xletLayout->addWidget(m_ctwidget);
 
     // m_xletLayout->insertStretch(-1, 1);
-    b_engine->registerClassEvent("records-campaign",
+    b_engine->registerClassEvent("records_campaign",
                                  XletRecords::recordResults_t, this);
 }
 
@@ -175,7 +175,7 @@ void XletRecords::setDataEdit(const QModelIndex & modelindex,
     QString truerow = modelindex.sibling(row, idcolumn).data().toString();
 
     QVariantMap command;
-    command["class"] = "records-campaign";
+    command["class"] = "records_campaign";
     command["function"] = "comment";
     command["id"] = truerow;
     command["comment"] = value.toString();
@@ -284,7 +284,7 @@ void XletRecords::onViewDoubleClick(const QModelIndex & modelindex)
 void XletRecords::changeTag()
 {
     QVariantMap command;
-    command["class"] = "records-campaign";
+    command["class"] = "records_campaign";
     command["function"] = "tag";
     command["id"] = sender()->property("id").toString();
     command["tag"] = sender()->property("tag").toString();
@@ -408,7 +408,7 @@ void SearchWidget::Lookup()
     // qDebug() << Q_FUNC_INFO << sender();
 
     QVariantMap command;
-    command["class"] = "records-campaign";
+    command["class"] = "records_campaign";
     command["function"] = "search";
 
     QVariantList searchitems;
@@ -423,7 +423,7 @@ void SearchWidget::Lookup()
     b_engine->sendJsonCommand(command);
 
     command.clear();
-    command["class"] = "records-campaign";
+    command["class"] = "records_campaign";
     command["function"] = "getprops";
     b_engine->sendJsonCommand(command);
 }

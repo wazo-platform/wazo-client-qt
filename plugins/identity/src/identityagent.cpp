@@ -95,7 +95,6 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
         return;
 
     setSystrayIcon(icon_color_black);
-    m_statustxt->setProperty("connected", false);
     setStatusColors("345");
     setPausedColors(7, 3);
 
@@ -112,15 +111,12 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
 //         m_agstatus = agstatus;
 //         if(agstatus == "AGENT_LOGGEDOFF") {
 //             setSystrayIcon(icon_color_black);
-//             m_statustxt->setProperty("connected", false);
 //             setStatusColors(phonenum);
 //         } else if(agstatus == "AGENT_IDLE") {
 //             setSystrayIcon(icon_color_green);
-//             m_statustxt->setProperty("connected", true);
 //             setStatusColors(phonenum);
 //         } else if(agstatus == "AGENT_ONCALL") {
 //             setSystrayIcon(icon_color_green);
-//             m_statustxt->setProperty("connected", true);
 //             setStatusColors(phonenum);
 //         } else
 //             qDebug() << Q_FUNC_INFO << "unknown status" << agstatus;
@@ -147,12 +143,13 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
 void IdentityAgent::setStatusColors(const QString & phonenum)
 {
     QPixmap square(10, 10);
-    if(m_statustxt->property("connected").toBool()) {
+    const AgentInfo * agentinfo = b_engine->agent(m_xagentid);
+    if(agentinfo->status() == "AGENT_IDLE") {
         square.fill("#00ff00");
-        m_statustxt->setText(tr("Connected to %1").arg(phonenum));
+        m_statustxt->setText(tr("Connected to %1").arg(agentinfo->phonenumber()));
     } else {
         square.fill("#ff0000");
-        m_statustxt->setText(tr("Disconnected from %1").arg(phonenum));
+        m_statustxt->setText(tr("Disconnected from %1").arg(agentinfo->phonenumber()));
     }
     m_status->setPixmap(square);
 }
@@ -167,11 +164,11 @@ void IdentityAgent::setPausedColors(int nj, int np)
             m_pause->setToolTip(tr("Paused"));
             m_pausetxt->setText(tr("Paused"));
         } else if(np == 0) {
-            bool loggedin = m_statustxt->property("connected").toBool();
+            const AgentInfo * agentinfo = b_engine->agent(m_xagentid);
             square.fill("#00ff00");
             m_pause->setToolTip(tr("Unpaused"));
             m_pausetxt->setText(tr("Unpaused"));
-            if(loggedin)
+            if(agentinfo->status() == "AGENT_IDLE")
                 setSystrayIcon(icon_color_green);
             else
                 setSystrayIcon(icon_color_black);
@@ -195,8 +192,8 @@ void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
 
     if(m_allow_logagent) {
         QAction * logAction = new QAction(this);
-        bool connected = m_statustxt->property("connected").toBool();
-        if(connected) {
+        const AgentInfo * agentinfo = b_engine->agent(m_xagentid);
+        if(agentinfo->status() == "AGENT_IDLE") {
             logAction->setText(tr("Logout"));
             connect(logAction, SIGNAL(triggered()),
                     this, SLOT(logout()) );
@@ -228,7 +225,7 @@ void IdentityAgent::login()
 {
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = "agentlogin";
-    ipbxcommand["agentids"] = "agent:special:me";
+    ipbxcommand["agentphonenumber"] = b_engine->getConfig("agentphonenumber");
     b_engine->ipbxCommand(ipbxcommand);
 }
 
@@ -236,7 +233,6 @@ void IdentityAgent::logout()
 {
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = "agentlogout";
-    ipbxcommand["agentids"] = "agent:special:me";
     b_engine->ipbxCommand(ipbxcommand);
 }
 
@@ -244,9 +240,9 @@ void IdentityAgent::pause()
 {
     QVariantMap ipbxcommand;
     QString ipbxid = b_engine->getXivoClientUser()->ipbxid();
-    ipbxcommand["command"] = "agentpausequeue";
-    ipbxcommand["agentids"] = "agent:special:me";
-    ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(ipbxid);
+    ipbxcommand["command"] = "queuepause";
+    ipbxcommand["member"] = QString("agent:%1/me").arg(ipbxid);
+    ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
     b_engine->ipbxCommand(ipbxcommand);
 }
 
@@ -254,9 +250,9 @@ void IdentityAgent::unpause()
 {
     QVariantMap ipbxcommand;
     QString ipbxid = b_engine->getXivoClientUser()->ipbxid();
-    ipbxcommand["command"] = "agentunpausequeue";
-    ipbxcommand["agentids"] = "agent:special:me";
-    ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(ipbxid);
+    ipbxcommand["command"] = "queueunpause";
+    ipbxcommand["member"] = QString("agent:%1/me").arg(ipbxid);
+    ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
     b_engine->ipbxCommand(ipbxcommand);
 }
 

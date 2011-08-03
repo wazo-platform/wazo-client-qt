@@ -45,7 +45,7 @@ XLet* XLetQueueDetailsPlugin::newXLetInstance(QWidget *parent)
 XletQueueDetails::XletQueueDetails(QWidget *parent)
     : XLet(parent)
 {
-    setTitle(tr("Agents of a Queue"));
+    setTitle(tr("Members of a Queue"));
     m_gridlayout = new QGridLayout(this);
 
     m_queuedescription = new QLabel(this);
@@ -56,7 +56,7 @@ XletQueueDetails::XletQueueDetails(QWidget *parent)
     m_queuelegend_lastcall = new QLabel(tr("Last\nCall"), this);
     m_queuelegend_penalty = new QLabel(tr("Penalty"), this);
     m_gridlayout->setRowStretch(100, 1);
-    m_gridlayout->addWidget(m_queuedescription, 0, 0);
+    m_gridlayout->addWidget(m_queuedescription, 0, 1, 1, 100);
     m_gridlayout->addWidget(m_queuelegend_agentid, 1, 0);
     m_gridlayout->addWidget(m_queuelegend_status, 1, 2);
     m_gridlayout->addWidget(m_queuelegend_paused, 1, 3);

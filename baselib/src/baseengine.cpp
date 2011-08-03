@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
+/* $Format:Commit hash: %h$
+ * $Format:Commit date: %cd$
  */
 
 #include <QApplication>
@@ -1100,12 +1100,12 @@ void BaseEngine::parseCommand(const QString &line)
             m_capas_regcommands = capas.value("regcommands").toStringList();
             m_capas_ipbxcommands = capas.value("ipbxcommands").toStringList();
             m_capafuncs = capas.value("functions").toStringList();
-            // ("agentstatus", "ipbxcommands", "phonestatus", "regcommands", "services", "functions", "userstatus") 
 
+            // ("agentstatus", "ipbxcommands", "phonestatus", "regcommands", "services", "functions", "userstatus")
             m_forced_state = datamap.value("presence").toString();
-            m_config.mergeMask(datamap.value("guisettings").toMap());
+            m_config.merge(capas.value("preferences").toMap());
             //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
-            
+
             /*!
              * \todo To be simplified
              */

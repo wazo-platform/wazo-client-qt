@@ -253,6 +253,9 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
     const AgentInfo * agentinfo = b_engine->agent(xagentid);
     if (agentinfo == NULL)
         return;
+    if (! m_agent_busy.contains(xagentid))
+        return;
+
     QString context_agent = agentinfo->context();
     QString agstatus = agentinfo->status();
     QString phonenum = agentinfo->phonenumber();
@@ -289,6 +292,7 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
 //         }
     } else
         square.fill(Qt::gray);
+
     m_agent_busy[xagentid]->setPixmap(square);
     m_agent_busy[xagentid]->setToolTip(ttips.join("\n"));
 
@@ -409,12 +413,12 @@ void XletAgents::agentClicked()
                                 .arg(xagentid).arg(action).arg(status));
     } else if (action == "unpause") {
         ipbxcommand["command"] = "agentunpausequeue";
-        ipbxcommand["agentids"] = xagentid;
-        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(ipbxid);
+        ipbxcommand["member"] = xagentid;
+        ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
     } else if (action == "pause") {
         ipbxcommand["command"] = "agentpausequeue";
-        ipbxcommand["agentids"] = xagentid;
-        ipbxcommand["queueids"] = QString("queue:%1/special:all").arg(ipbxid);
+        ipbxcommand["member"] = xagentid;
+        ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
     } else if (action == "listen") {
         ipbxcommand["command"] = "listen";
         ipbxcommand["source"] = "user:special:me";

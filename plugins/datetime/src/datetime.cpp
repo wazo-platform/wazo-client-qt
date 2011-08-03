@@ -27,10 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
+/* $Format:Commit hash: %h$
+ * $Format:Commit date: %cd$
  */
-
 
 #include "datetime.h"
 
