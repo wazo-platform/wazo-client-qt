@@ -32,6 +32,7 @@
  */
 
 #include <QRegExp>
+#include <QDebug>
 
 #include "phonenumber.h"
 
@@ -68,6 +69,7 @@ namespace PhoneNumber
         QRegExp re(prefix + phone_pattern + suffix);
         re.indexIn(string);                           // Apply the regexp
         QString ret = re.cap(0);                      // Get the entire match
+        // qDebug() << string << re.pattern() << ret;
         ret.truncate(ret.length() - suffix.length()); // Chop suffix
         ret.remove(0, prefix.length());               // Chop prefix
         ret.remove('.').remove(' ').remove('-');      // Whistle while you work

@@ -47,7 +47,7 @@ namespace PhoneNumber
     
     QRegExp phone_re();
     bool isURI(const QString &);
-    QString extract(const QString &, const QString & = "<", const QString & = ">");
+    QString extract(const QString &, const QString & = "", const QString & = "");
     bool contains(const QString &);
 }
 
