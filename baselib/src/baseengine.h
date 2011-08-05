@@ -40,6 +40,7 @@
 #include <QMultiHash>
 #include <QObject>
 #include <QTime>
+#include <QSettings>
 
 #include "queue_agent_status.h"
 #include "dstore/src/dstore.h"
@@ -90,13 +91,7 @@ struct e_callback {
  *  - (bool) \b logtofile = enable events logging
  *  - (string) \b logfilename = log file name, no path
  *  - (bool) \b activate_on_tel = activate the window when calling from an extern application through the client
- *  - (byteArray) \b mainwingeometry = main window size on last closure (see restoreGeometry)
- *  - (int) \b lastfocusedtab = last focused tab in main window
- *  - (byteArray) \b mainwindowstate = last main window docks state (see restoreState)
- *  - (int) \b configtab = last focused tab in config window
  *  - (string) \b profilename = config profile used
- *  - (bytearray) \b faxhistory.geometry = fax widget size on last closure
- *  - (bool) \b faxhistory.hidenumber = hide the number when sending a fax
  *  - (string) \b cti_address = CTI server address
  *  - (int) \b cti_port = CTI server port
  *  - (bool) \b cti_encrypt = encrypt communication to CTI server

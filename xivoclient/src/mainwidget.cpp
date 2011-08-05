@@ -101,7 +101,7 @@ MainWidget::MainWidget()
     }
 
     resize(500, 440);
-    restoreGeometry(m_config["mainwingeometry"].toByteArray());
+    restoreGeometry(b_engine->getSettings()->value("display/mainwingeometry").toByteArray());
 
     b_engine->logAction("application started on " + b_engine->osname());
 
@@ -127,7 +127,7 @@ MainWidget::MainWidget()
  */
 MainWidget::~MainWidget()
 {
-    savePositions();
+    b_engine->getSettings()->setValue("display/mainwingeometry", saveGeometry());
     b_engine->logAction("application quit");
 }
 
@@ -669,12 +669,12 @@ void MainWidget::engineStarted()
     }
 
     qDebug() << Q_FUNC_INFO << "the xlets have been created";
-    m_tabwidget->setCurrentIndex(m_config["lastfocusedtab"].toInt());
+    m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
 
     foreach (QString name, m_docks.keys())
         m_docks[name]->show();
     // restore the saved state AFTER showing the docks
-    restoreState(m_config["mainwindowstate"].toByteArray());
+    restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
 
     if ((m_resizingHelper == 0)&&(m_docks.size())) {
         // we gonna resize this widget in resizeEvent
@@ -767,9 +767,9 @@ void MainWidget::engineStopped()
 {
     // qDebug() << Q_FUNC_INFO;
     connectionStateChanged();
-    m_config["mainwindowstate"] = saveState();
+    b_engine->getSettings()->setValue("display/mainwindowstate", saveState());
     if (m_tabwidget->currentIndex() > -1) {
-        m_config["lastfocusedtab"] = m_tabwidget->currentIndex();
+        b_engine->getSettings()->setValue("display/lastfocusedtab", m_tabwidget->currentIndex());
     }
 
     foreach (QString dname, m_docknames) {
@@ -801,13 +801,6 @@ void MainWidget::engineStopped()
     clearAppearance();
     m_appliname = tr("Client %1").arg(XIVOVER);
     updateAppliName();
-}
-
-void MainWidget::savePositions()
-{
-    // qDebug() << Q_FUNC_INFO;
-    m_config["mainwingeometry"] = saveGeometry();
-    b_engine->setConfig(m_config);
 }
 
 void MainWidget::resizeEvent(QResizeEvent *ev)

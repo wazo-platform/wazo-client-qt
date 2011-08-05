@@ -75,7 +75,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     _insert_function_tab();
     _insert_advanced_tab();
 
-    m_tabwidget->setCurrentIndex(m_config["configtab"].toInt());
+    m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
     vlayout->addWidget(m_tabwidget);
     
     m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
@@ -589,8 +589,7 @@ void ConfigWidget::saveAndClose()
 
 bool ConfigWidget::close()
 {
-    m_config["configtab"] = m_tabwidget->currentIndex();
-    b_engine->setConfig (m_config);
+    b_engine->getSettings()->setValue("display/configtab", m_tabwidget->currentIndex());
     return QDialog::close();
 }
 

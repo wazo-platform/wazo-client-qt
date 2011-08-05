@@ -88,7 +88,6 @@ class MainWidget : public QMainWindow
         void createActions();  //!< Create Actions (for menus)
         void createMenus();  //!< Create Menus
         void createSystrayIcon();  //!< Create the systray Icon and its menu
-        void savePositions();
         void updateAppliName();
         void clearPresence();
         void makeLoginWidget();

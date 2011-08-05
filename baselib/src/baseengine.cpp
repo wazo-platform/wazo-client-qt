@@ -45,7 +45,6 @@
 #include <QTranslator>
 #include <QUrl>
 #include <QLibraryInfo>
-#include <QSettings>
 #include <QSslError>
 #include <QSslSocket>
 #include <QUdpSocket>
@@ -195,17 +194,10 @@ void BaseEngine::loadSettings()
     if (m_config["logtofile"].toBool()) {
         openLogFile ();
     }
-    m_config["mainwingeometry"] = m_settings->value("display/mainwingeometry").toByteArray();
-    m_config["lastfocusedtab"] = m_settings->value("display/lastfocusedtab").toInt();
-    m_config["mainwindowstate"] = m_settings->value("display/mainwindowstate").toByteArray();
-    m_config["configtab"] = m_settings->value("display/configtab", 0).toInt();
     
     m_config["profilename"] = m_settings->value("profile/lastused").toString();
     m_profilename_write = "engine-" + m_config["profilename"].toString();
     
-    m_config["faxhistory.geometry"] = m_settings->value("faxhistory/geometry").toByteArray();
-    m_config["faxhistory.hidenumber"] = (m_settings->value("faxhistory/hidenumber", 0).toUInt() == Qt::Checked);
-
     QString settingsversion = m_settings->value("version/xivo", __xivo_version__).toString();
 
     // this is used to make a migration from 1.0 to 1.1
@@ -300,14 +292,7 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/logtofile", m_config["logtofile"].toBool());
     m_settings->setValue("display/logfilename", m_config["logfilename"].toString());
     m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
-    m_settings->setValue("display/mainwingeometry", m_config["mainwingeometry"].toByteArray());
-    m_settings->setValue("display/lastfocusedtab", m_config["lastfocusedtab"].toInt());
-    m_settings->setValue("display/mainwindowstate", m_config["mainwindowstate"].toByteArray());
-    m_settings->setValue("display/configtab", m_config["configtab"].toInt());
     
-    m_settings->setValue("faxhistory/hidenumber", m_config["faxhistory.hidenumber"].toBool() ? Qt::Checked : Qt::Unchecked);
-    m_settings->setValue("faxhistory/geometry", m_config["faxhistory.geometry"].toByteArray());
-
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("serverhost", m_config["cti_address"].toString());
         m_settings->setValue("serverport", m_config["cti_port"].toUInt());
@@ -571,7 +556,7 @@ QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
     if (arg == "client_gui") {
         return m_config.getSubSet("guioptions", BaseConfig::Unmasked);
     } else if (arg == "merged_gui") {
-        return m_config.getSubSet("guioptions");
+	    return m_config.getSubSet("guioptions");
     } else {
         return m_config.getSubSet("guioptions." + arg);
     }
