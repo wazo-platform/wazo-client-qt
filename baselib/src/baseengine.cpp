@@ -228,7 +228,7 @@ void BaseEngine::loadSettings()
         m_config["showagselect"] = (m_settings->value("showagselect", Qt::Checked).toUInt() == Qt::Checked);
         m_config["agentphonenumber"] = m_settings->value("agentphonenumber").toString();
 
-        m_config["forcelocale"] = m_settings->value("forcelocale", false).toString();
+        m_config["forcelocale"] = m_settings->value("forcelocale", "default").toString();
         m_config["autoconnect"] = m_settings->value("autoconnect", false).toBool();
         m_config["trytoreconnect"] = m_settings->value("trytoreconnect", false).toBool();
         m_config["trytoreconnectinterval"] = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
