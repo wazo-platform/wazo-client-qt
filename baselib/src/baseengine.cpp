@@ -1688,7 +1688,7 @@ void BaseEngine::actionCall(const QString & action,
         ipbxcommand["command"] = action;
         ipbxcommand["source"] = src;
         if ((dst == "ext:special:dialxlet") && (! m_numbertodial.isEmpty()))
-            ipbxcommand["destination"] = "ext:" + m_numbertodial;
+            ipbxcommand["destination"] = QString("exten:%1/%2").arg(m_ipbxid).arg(m_numbertodial);
         else
             ipbxcommand["destination"] = dst;
     } else if ((action == "hangup") || (action == "transfercancel")) {
@@ -1696,7 +1696,6 @@ void BaseEngine::actionCall(const QString & action,
         ipbxcommand["channelids"] = src;
     } else if (action == "dial") {
         ipbxcommand["command"] = action;
-        ipbxcommand["source"] = src;
         ipbxcommand["destination"] = dst;
     } else if (action == "parking") {
         ipbxcommand["command"] = action;
@@ -1710,6 +1709,18 @@ void BaseEngine::actionCall(const QString & action,
         ipbxcommand["channelids"] = src;
     }
 
+    ipbxCommand(ipbxcommand);
+}
+
+/*! \brief make the user dial a number
+ *
+ * \param action originate/transfer/atxfer/hangup/answer/refuse
+ */
+void BaseEngine::actionDialNumber(const QString & number)
+{
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "dial";
+    ipbxcommand["destination"] = QString("exten:%1/%2").arg(m_ipbxid).arg(number);
     ipbxCommand(ipbxcommand);
 }
 
@@ -2211,7 +2222,8 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
         QString phonenum = re.cap(2);
         phonenum.remove('.').remove(' ').remove('-');
         qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
-        actionCall("originate", "user:special:me", QString("ext:%1").arg(phonenum));
+        actionCall("originate", "user:special:me",
+                   QString("exten:%1/%2").arg(m_ipbxid).arg(phonenum));
     }
 }
 

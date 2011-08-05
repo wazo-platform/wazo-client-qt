@@ -106,7 +106,7 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
     //qDebug() << item << item->text();
     // check if the string is a number
     if( m_re_number.exactMatch(item->text()) ) {
-        b_engine->actionCall("originate", "user:special:me", "ext:" + item->text()); // Call
+        b_engine->actionDialNumber(item->text()); // Call
     }
 
     if(item && item->text().contains("@")) {

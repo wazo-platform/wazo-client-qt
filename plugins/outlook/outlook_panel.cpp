@@ -264,7 +264,7 @@ void OutlookPanel::itemDoubleClicked(QTableWidgetItem * item)
     }
 
     if(re_number.exactMatch(str)) {
-        b_engine->actionCall("originate", "user:special:me", "ext:" + str); // Call
+        b_engine->actionDialNumber(str); // Call
 
         // 0.3 actions :
         // if(item->text().size() >= m_calllength)

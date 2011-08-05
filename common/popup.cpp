@@ -181,7 +181,7 @@ void Popup::dispurl(const QUrl &url)
     // qDebug() << Q_FUNC_INFO << url;
     // TODO : check if the string starts with "tel:"
     QString numbertodial = url.toString().mid(4);
-    b_engine->actionCall("originate", "user:special:me", "ext:" + numbertodial);
+    b_engine->actionDialNumber(numbertodial);
 }
 
 void Popup::actionFromForm()
@@ -548,7 +548,7 @@ void Popup::streamNewData()
 void Popup::dialThisNumber()
 {
     QString numbertodial = sender()->property("number").toString();
-    b_engine->actionCall("originate", "user:special:me", "ext:" + numbertodial);
+    b_engine->actionDialNumber(numbertodial);
 }
 
 void Popup::httpGetNoreply()

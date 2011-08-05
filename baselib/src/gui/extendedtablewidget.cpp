@@ -205,9 +205,7 @@ void ExtendedTableWidget::dialNumber()
     QString number = sender()->property("number").toString();
     number.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
     if (! number.isEmpty()) {
-        b_engine->actionCall("originate",
-                             "user:special:me",
-                             "ext:" + number);
+        b_engine->actionDialNumber(number);
     }
 }
 

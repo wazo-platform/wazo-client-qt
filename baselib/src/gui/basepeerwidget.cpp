@@ -109,20 +109,16 @@ void BasePeerWidget::dial()
     // qDebug() << Q_FUNC_INFO << m_ui_remote->xid() << sender();
     if (m_ui_remote) {
         b_engine->actionCall("dial",
-                             "user:special:me",
+                             "dummy",
                              QString("user:%1").arg(m_ui_remote->xid()));
     } else {
-        b_engine->actionCall("dial",
-                             "user:special:me",
-                             "ext:" + m_number);
+        b_engine->actionDialNumber(m_number);
     }
 }
 
 void BasePeerWidget::dialMobilePhone()
 {
-    b_engine->actionCall("dial",
-                         "user:special:me",
-                         "ext:" + m_ui_remote->mobileNumber());
+    b_engine->actionDialNumber(m_ui_remote->mobileNumber());
 }
 
 /*! \brief make this peer call the number
@@ -277,9 +273,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
             }
         }
         if (subwidgetkind == "mobile") {
-            b_engine->actionCall("originate",
-                                 "user:special:me",
-                                 QString("ext:%1").arg(m_ui_remote->mobileNumber()));
+            b_engine->actionDialNumber(m_ui_remote->mobileNumber());
         } else {
             // just dial the person
             dial();
