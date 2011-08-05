@@ -114,17 +114,17 @@ int main(int argc, char ** argv)
         .arg(app.applicationPid());
 #endif
     qDebug() << Q_FUNC_INFO << "osname=" << info_osname;
-
-    BaseEngine *engine = new BaseEngine(settings, info_osname);
     
-    bool shallbeunique = engine->getConfig("uniqueinstance").toBool();
+    bool shallbeunique = settings->value("display/uniqueinstance").toBool();
     if (shallbeunique && app.isRunning()) {
         qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
         // do not create a new application, just activate the currently running one
         return 0;
     }
-
+    
     settings->setValue("profile/lastused", profile);
+    
+    BaseEngine *engine = new BaseEngine(settings, info_osname);
 
     QString qsskind = engine->getConfig("qss").toString();
 
