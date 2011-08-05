@@ -56,6 +56,7 @@
 
 #include "baseengine.h"
 #include <cticonn.h>
+#include "phonenumber.h"
 
 
 /*! \brief Constructor.
@@ -2211,20 +2212,14 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
 void BaseEngine::handleOtherInstanceMessage(const QString & msg)
 {
     qDebug() << Q_FUNC_INFO << m_osname << "got" << msg;
-    // callto://number is unofficial and used by Skype
     // tel:number is in RFC 3966
     // callto:number is unofficial (read 7.3. in RFC 3966)
+    // callto://number is unofficial and used by Skype
     // we support tel:number and callto:number
-    QRegExp re("^(tel|callto):([-0-9\\. +]*[0-9])", Qt::CaseInsensitive);
     // todo : handle also other commands
-    int pos = re.indexIn(msg);
-    if (pos >= 0) {
-        QString phonenum = re.cap(2);
-        phonenum.remove('.').remove(' ').remove('-');
-        qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
-        actionCall("originate", "user:special:me",
-                   QString("exten:%1/%2").arg(m_ipbxid).arg(phonenum));
-    }
+    QString phonenum = PhoneNumber::extract (msg);
+    qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
+    actionDialNumber(phonenum);
 }
 
 int BaseEngine::callClassEventCallback(QString class_event, const QVariantMap & map)

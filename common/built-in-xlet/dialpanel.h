@@ -43,7 +43,6 @@
 #include <QLineEdit>
 #include <QMouseEvent>
 #include <QPushButton>
-#include <QRegExp>
 
 #include <xlet.h>
 #include <xivoconsts.h> // for PEER_MIMETYPE

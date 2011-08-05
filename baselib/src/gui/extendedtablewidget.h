@@ -66,7 +66,6 @@ class BASELIB_EXPORT ExtendedTableWidget : public QTableWidget
         void remove();
 
     private:
-        QRegExp m_re_number;  //!< regexp used to recognize phone numbers
         bool m_editable;
 };
 

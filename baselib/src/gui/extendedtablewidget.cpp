@@ -39,12 +39,12 @@
 #include "userinfo.h"
 #include "phoneinfo.h"
 #include "baseengine.h"
+#include "phonenumber.h"
 
 /*! \brief Constructor
  */
 ExtendedTableWidget::ExtendedTableWidget(QWidget * parent)
     : QTableWidget(parent),
-      m_re_number("\\+?[0-9\\s\\.]+"),
       m_editable(false)
 {
     setAcceptDrops(true);
@@ -55,7 +55,7 @@ ExtendedTableWidget::ExtendedTableWidget(QWidget * parent)
 /*! \brief Constructor
  */
 ExtendedTableWidget::ExtendedTableWidget(int rows, int columns, QWidget * parent)
-    : QTableWidget(rows, columns, parent), m_re_number("\\+?[0-9\\s\\.]+")
+    : QTableWidget(rows, columns, parent)
 {
     setAcceptDrops(true);
     setAlternatingRowColors(true);
@@ -76,7 +76,7 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
             action = contextMenu.addAction(tr("&Remove"), this, SLOT(remove()));
             action->setProperty("row", row(item));
         }
-        if (m_re_number.exactMatch(item->text())) {
+        if (PhoneNumber::phone_re().exactMatch(item->text())) {
             action = contextMenu.addAction(tr("&Dial"), this, SLOT(dialNumber()));
             action->setProperty("number", item->text());
 
@@ -163,7 +163,7 @@ void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
     }
     QTableWidgetItem *item = itemAt(event->pos());
     if (item) {
-        if (m_re_number.exactMatch(item->text())) {
+        if (PhoneNumber::phone_re().exactMatch(item->text())) {
             event->accept(visualItemRect(item));
         } else {
             event->ignore(visualItemRect(item));
@@ -179,7 +179,7 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
 {
     // qDebug() << Q_FUNC_INFO << event->mimeData()->text() << event->pos();
     QTableWidgetItem *item = itemAt(event->pos());
-    if ((item) && (m_re_number.exactMatch(item->text()))) {
+    if ((item) && (PhoneNumber::phone_re().exactMatch(item->text()))) {
         QString userid_from = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
         QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
         if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
@@ -202,8 +202,7 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
 
 void ExtendedTableWidget::dialNumber()
 {
-    QString number = sender()->property("number").toString();
-    number.remove(QRegExp("[\\s\\.]")); // remove spaces and full stop characters
+    QString number = PhoneNumber::extract(sender()->property("number").toString());
     if (! number.isEmpty()) {
         b_engine->actionDialNumber(number);
     }

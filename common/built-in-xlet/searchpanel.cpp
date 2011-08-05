@@ -49,9 +49,8 @@ SearchPanel::SearchPanel(QWidget *parent)
     // qDebug() << Q_FUNC_INFO;
     setTitle(tr("Contacts"));
     ChitChatWindow::chitchat_instance = new ChitChatWindow();
-    QVariantMap optionsMap = b_engine->getGuiOptions("merged_gui");
-    m_maxdisplay = optionsMap.value("contacts-max").toUInt();
-    m_ncolumns = optionsMap.value("contacts-width").toUInt();
+    
+    updateConf();
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
@@ -98,6 +97,9 @@ SearchPanel::SearchPanel(QWidget *parent)
             this, SLOT(updateDisplay()));
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(removePeers()));
+    
+    connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
+            this, SLOT(updateConf()));
 }
 
 SearchPanel::~SearchPanel()
@@ -301,4 +303,14 @@ void SearchPanel::paintEvent(QPaintEvent *)
         update();
         i = 1;
     }
+}
+
+/*! \brief reads the configuration from BaseEngine
+ */
+void SearchPanel::updateConf()
+{
+    m_maxdisplay = b_engine->getConfig("guioptions.contacts-max").toUInt();
+    m_ncolumns = b_engine->getConfig("guioptions.contacts-width").toUInt();
+    qDebug() << m_ncolumns;
+    updateDisplay();
 }

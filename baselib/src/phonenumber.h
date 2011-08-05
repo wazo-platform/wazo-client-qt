@@ -31,54 +31,24 @@
  * $Date$
  */
 
-#ifndef __SEARCHPANEL_H__
-#define __SEARCHPANEL_H__
+#ifndef __PHONENUMBER_H__
+#define __PHONENUMBER_H__
 
-#include <QHash>
-#include <QVariant>
+#include <QString>
 
-#include <QPaintEvent>
-#include "xlet.h"
-#include "peeritem.h"
-
-class QGridLayout;
-class QVBoxLayout;
-
-class BaseEngine;
-class ExtendedLineEdit;
-class UserInfo;
-
-/*! \brief search panel widget
- */
-class SearchPanel : public XLet
+namespace PhoneNumber
 {
-    Q_OBJECT
-    public:
-        SearchPanel(QWidget *parent=0);
-        ~SearchPanel();        //!< Destructor
-    public slots:
-        void affTextChanged(const QString &);
-        void removePeer(const QString &);
-        void removePeers();
-        void updateDisplay();
-        void updateUserConfig(const QString &);
-        void updateUserStatus(const QString &);
-        void removeUserConfig(const QString &);
-        void updateAgentConfig(const QString &);
-        void updateAgentStatus(const QString &);
-        void updatePhoneConfig(const QString &);
-        void updatePhoneStatus(const QString &);
-        void updateConf();
-    private:
-        QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
-        QGridLayout *m_peerlayout; //!< layout object
-        ExtendedLineEdit *m_input; //!< widget for search string input
+     /*! the master regexp, the one that recognizes phone numbers in themselves. To be augmented / replaced by  algorithm if necessary\n
+     * Suggestions :
+     * \li [-0-9\\. +]*[0-9]
+     * \li "\\+?[0-9\\s\\.]+"
+     */
+    const QString phone_pattern = "[-0-9\\. +]*[0-9]";
+    
+    QRegExp phone_re();
+    bool isURI(const QString &);
+    QString extract(const QString &, const QString & = "", const QString & = "");
+    bool contains(const QString &);
+}
 
-        int m_maxdisplay;  //!< max number of peers displayed on the search panel
-        int m_ncolumns;
-        QString m_searchpattern;
-    protected:
-        virtual void paintEvent(QPaintEvent *event);
-};
-
-#endif
+#endif /* __PHONENUMBER_H__ */

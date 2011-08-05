@@ -82,7 +82,6 @@ class DirectoryPanel : public XLet
         ExtendedTableWidget *m_table;  //!< table to display results
         QPushButton *m_searchButton;  //!< button
         QString m_mailAddr;  //!< used to store email address
-        QRegExp m_re_number;  //!< regexp used to recognize phone numbers
 };
 
 #endif
