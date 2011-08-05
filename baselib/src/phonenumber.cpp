@@ -51,7 +51,8 @@ namespace PhoneNumber
      * to learn how to handle "tel:0123456" uri scheme
      *
      * tel:number is in RFC 3966
-     * callto:number is unofficial (read 7.3. in RFC 3966) and used by Skype
+     * callto:number is unofficial (read 7.3. in RFC 3966)
+     * callto://number is unofficial and used by Skype
      * we support tel:number and callto:number
      * \return true if the parameter matches RFC 3966
      */
