@@ -578,7 +578,7 @@ void ConfigWidget::saveAndClose()
     m_config["guioptions.maxwidthwanted"] = m_maxWidthWanted->value();
     m_config["guioptions.presenceindicatorsize"] = m_presenceIndicatorSize->value();
     
-    // setConfig is done in close()
+    b_engine->setConfig(m_config);
     
     close();
 }

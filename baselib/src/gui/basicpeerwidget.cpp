@@ -53,27 +53,22 @@ BasicPeerWidget::BasicPeerWidget(const UserInfo * ui)
     qDebug() << Q_FUNC_INFO;
     // can grow horizontaly but not verticaly
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+    setToolTip(tr("Phone Numbers : %1").arg(b_engine->phonenumbers(ui).join(", ")));
+    getConfig();
+    
+    // setText must be called after getConfig, as it assigns m_presenceSquareSize
     QString name = (ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
     setText(name);
-    setToolTip(tr("Phone Numbers : %1").arg(b_engine->phonenumbers(ui).join(", ")));
-    m_presenceSquareSize = b_engine->getGuiOptions("merged_gui").value("presenceindicatorsize").toInt();
-    if ((m_presenceSquareSize<=0)||(m_presenceSquareSize>20)) {
-        m_presenceSquareSize = 5;
-    }
     reloadSavedName();
+    connect(b_engine, SIGNAL(settingChanged(QVariantMap)),
+            this, SLOT(updateConfig()));
 }
 
 void BasicPeerWidget::setText(const QString &text)
 {
+    // qDebug() << Q_FUNC_INFO;
     m_text = text;
-    QFontMetrics fontMetrics(font());
-    QSize size = fontMetrics.size(0, m_text);
-    size.rwidth() += m_presenceSquareSize;
-    // maximum width for PeerWidget
-    if (size.width() > maxWidthWanted()) {
-        size.setWidth(maxWidthWanted());
-    }
-    setMinimumSize(size);
+    updateWidth();
     update();
 }
 
@@ -103,7 +98,7 @@ void BasicPeerWidget::paintEvent(QPaintEvent *)
 //                                rectangle.height() - m_presenceSquareSize - 1,
 //                                m_presenceSquareSize, m_presenceSquareSize) );
         // vertical bar
-        painter.drawRect(QRect( 1, 0, m_presenceSquareSize + 1, rectangle.height()));
+        painter.drawRect(QRect( 1, 0, m_presenceSquareSize, rectangle.height()));
     }
     // write the text
     painter.setPen(Qt::SolidLine);
@@ -111,7 +106,8 @@ void BasicPeerWidget::paintEvent(QPaintEvent *)
         painter.setPen(QColor(0xcc, 0xcc, 0xcc));
     }
     if(hasPresenceIndicator) {
-        rectangle.adjust(m_presenceSquareSize + 1, 0, 0, 0);
+        /*                      square        + space between square and text*/
+        rectangle.adjust(m_presenceSquareSize + 2, 0, 0, 0);
     }
     painter.drawText( rectangle, Qt::AlignVCenter | Qt::AlignHCenter, m_text );
 }
@@ -148,4 +144,31 @@ void BasicPeerWidget::updatePhoneConfig(const QString & xphoneid)
 
 void BasicPeerWidget::updatePhoneStatus(const QString & xphoneid)
 {
+}
+
+void BasicPeerWidget::getConfig()
+{
+    m_presenceSquareSize = b_engine->getConfig("guioptions.presenceindicatorsize").toInt();
+    if ((m_presenceSquareSize<=0)||(m_presenceSquareSize>20)) {
+        m_presenceSquareSize = 5;
+    }
+}
+
+void BasicPeerWidget::updateWidth()
+{
+    QFontMetrics fontMetrics(font());
+    QSize size = fontMetrics.size(0, m_text);
+    size.rwidth() += 1 + m_presenceSquareSize + 2;
+    // maximum width for PeerWidget
+    if (size.width() > maxWidthWanted()) {
+        size.setWidth(maxWidthWanted());
+    }
+    setMinimumSize(size);
+}
+
+void BasicPeerWidget::updateConfig()
+{
+    getConfig();
+    updateWidth();
+    update();
 }

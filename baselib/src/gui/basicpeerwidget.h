@@ -58,12 +58,17 @@ class BASELIB_EXPORT BasicPeerWidget : public BasePeerWidget
         void updatePhoneStatus(const QString &);
         void updatePresence();
         void setName(const QString &name) { setText(name); };
+    
+    public slots:
+        void updateConfig();
 
     protected:
         void paintEvent(QPaintEvent *);
 
     private:
         void setText(const QString &);  //!< Set displayed text
+        void getConfig(); //!< Get config from BaseEngine
+        void updateWidth(); //!< Set new width, when text or presence square changed
 
     private:
         QString m_text;  //!< Text to display
