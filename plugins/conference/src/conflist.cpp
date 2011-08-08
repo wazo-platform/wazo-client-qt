@@ -282,7 +282,7 @@ void ConfList::phoneConfRoom()
     QString roomId = sender()->property("id").toString();
     QString roomNumber = b_engine->eV(QString("confrooms/%0/number").arg(roomId)).toString();
 
-    b_engine->actionCall("originate", "user:special:me", "ext:" + roomNumber);
+    b_engine->actionDialNumber(roomNumber);
     m_manager->openConfRoom(roomId, true);
 }
 

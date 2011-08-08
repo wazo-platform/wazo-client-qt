@@ -33,6 +33,7 @@
 
 
 #include "faxpanel.h"
+#include "phonenumber.h"
 
 FaxPanel::FaxPanel(QWidget *parent)
     : XLet(parent), m_mainwindow(parent)
@@ -119,8 +120,7 @@ FaxPanel::~FaxPanel()
 void FaxPanel::destSelectionChanged()
 {
     if(m_destination->selectedText() == m_destination->text()) {
-        QString dt = m_destination->text();
-        dt.remove('.').remove(' ');
+        QString dt = PhoneNumber::extract(m_destination->text());
         if(m_destination->text() != dt)
             m_destination->setText(dt);
     }

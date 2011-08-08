@@ -178,8 +178,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void setGuiOption(const QString &, const QVariant &);
         QVariantMap getGuiOptions(const QString &) const;
 
-        const QString& getCapaApplication() const;
-        QString osname() const { return m_osname; };
+        const QString & getCapaApplication() const;
+        const QString osname() const { return m_osname; };
+        const QString ipbxid() const { return m_ipbxid; };
 
         void openLogFile();
 
@@ -261,6 +262,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         //! set m_availstate
         void setAvailState(const QString &, bool);
         void actionCall(const QString &, const QString &src="", const QString &dst="");
+        void actionDialNumber(const QString &);
         void receiveNumberSelection(const QStringList &);   //!< relay the selection
 
         void searchDirectory(const QString &);

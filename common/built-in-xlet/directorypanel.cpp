@@ -32,13 +32,14 @@
  */
 
 #include "directorypanel.h"
+#include "phonenumber.h"
 
 /*! \brief Constructor
  *
  *  Build layout and child widgets, connect signals/slots.
  */
 DirectoryPanel::DirectoryPanel(QWidget *parent)
-    : XLet(parent), m_re_number("\\+?[0-9\\s\\.]+")
+    : XLet(parent)
 {
     setTitle(tr("Directory"));
     setAccessibleName(tr("Directory Panel"));
@@ -94,7 +95,7 @@ void DirectoryPanel::itemClicked(QTableWidgetItem * item)
 {
     //qDebug() << Q_FUNC_INFO << item << item->text();
     // check if the string is a phone number
-    if( m_re_number.exactMatch(item->text()) ) {
+    if( PhoneNumber::phone_re().exactMatch(item->text()) ) {
         //qDebug() << Q_FUNC_INFO << "preparing to dial" << item->text();
         b_engine->pasteToDial(item->text());
     }
@@ -105,8 +106,8 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 {
     //qDebug() << item << item->text();
     // check if the string is a number
-    if( m_re_number.exactMatch(item->text()) ) {
-        b_engine->actionCall("originate", "user:special:me", "ext:" + item->text()); // Call
+    if( PhoneNumber::phone_re().exactMatch(item->text()) ) {
+        b_engine->actionDialNumber(item->text()); // Call
     }
 
     if(item && item->text().contains("@")) {
@@ -143,10 +144,9 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
                 QTableWidgetItem * item = new QTableWidgetItem(it);
                 item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
 
-                //QRegExp re_number("\\+?[0-9\\s\\.]+");
                 if(it.contains("@"))
                     item->setToolTip(tr("Double-click to send an E-mail to") + "\n" + it);
-                else if(m_re_number.exactMatch(it))
+                else if(PhoneNumber::phone_re().exactMatch(it))
                     item->setToolTip(tr("Double-click to call") + "\n" + it);
                 //item->setStatusTip();
                 // qDebug() << x << y << item->flags();

@@ -39,7 +39,6 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QSizePolicy>
-#include <QRegExp>
 
 #include "baseengine.h"
 #include "identity.h"
@@ -112,7 +111,7 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_glayout->addWidget(m_agent, 0, m_col_agent, 3, 1);
     m_glayout->addWidget(m_voicemail, 0, m_col_vm, 3, 1);
 
-    m_functions = b_engine->getGuiOptions("server_funcs").value("functions").toStringList();
+    m_functions = b_engine->getConfig().keys();
     setGuiOptions(b_engine->getGuiOptions("merged_gui"));
 
     // connect signals/slots
@@ -182,7 +181,7 @@ void IdentityDisplay::updatePresence()
     QVariantMap presencemap = b_engine->getOptionsUserStatus();
 
     m_presencevalue->hide();
-    if (! m_functions.contains("presence"))
+    if (! m_functions.contains("checked_function.presence"))
         return;
 
     disconnect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),

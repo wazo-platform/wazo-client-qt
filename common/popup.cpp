@@ -55,6 +55,7 @@
 #include "urllabel.h"
 #include "userinfo.h"
 #include "remarkarea.h"
+#include "phonenumber.h"
 
 QStringList g_formbuttonnames = (QStringList()
                                  << "refuse" << "hangup" << "answer"
@@ -181,7 +182,7 @@ void Popup::dispurl(const QUrl &url)
     // qDebug() << Q_FUNC_INFO << url;
     // TODO : check if the string starts with "tel:"
     QString numbertodial = url.toString().mid(4);
-    b_engine->actionCall("originate", "user:special:me", "ext:" + numbertodial);
+    b_engine->actionDialNumber(numbertodial);
 }
 
 void Popup::actionFromForm()
@@ -271,8 +272,7 @@ void Popup::addAnyInfo(const QString & localName,
         } else if( infoType == "picture" ) {
             addInfoPicture( where, infoName, infoValue );
         } else if( infoType == "phone" ) {
-            QRegExp re_number("\\+?[0-9\\s\\.]+");
-            if(re_number.exactMatch(infoValue))
+            if(PhoneNumber::phone_re().exactMatch(infoValue))
                 addInfoLink( where, infoName, "tel:" + infoValue );
             else
                 addInfoText( where, infoName, infoValue );
@@ -548,7 +548,7 @@ void Popup::streamNewData()
 void Popup::dialThisNumber()
 {
     QString numbertodial = sender()->property("number").toString();
-    b_engine->actionCall("originate", "user:special:me", "ext:" + numbertodial);
+    b_engine->actionDialNumber(numbertodial);
 }
 
 void Popup::httpGetNoreply()

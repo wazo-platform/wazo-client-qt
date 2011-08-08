@@ -55,6 +55,7 @@
 
 #include "baseengine.h"
 #include <cticonn.h>
+#include "phonenumber.h"
 
 
 /*! \brief Constructor.
@@ -1673,7 +1674,7 @@ void BaseEngine::actionCall(const QString & action,
         ipbxcommand["command"] = action;
         ipbxcommand["source"] = src;
         if ((dst == "ext:special:dialxlet") && (! m_numbertodial.isEmpty()))
-            ipbxcommand["destination"] = "ext:" + m_numbertodial;
+            ipbxcommand["destination"] = QString("exten:%1/%2").arg(m_ipbxid).arg(m_numbertodial);
         else
             ipbxcommand["destination"] = dst;
     } else if ((action == "hangup") || (action == "transfercancel")) {
@@ -1681,7 +1682,6 @@ void BaseEngine::actionCall(const QString & action,
         ipbxcommand["channelids"] = src;
     } else if (action == "dial") {
         ipbxcommand["command"] = action;
-        ipbxcommand["source"] = src;
         ipbxcommand["destination"] = dst;
     } else if (action == "parking") {
         ipbxcommand["command"] = action;
@@ -1695,6 +1695,18 @@ void BaseEngine::actionCall(const QString & action,
         ipbxcommand["channelids"] = src;
     }
 
+    ipbxCommand(ipbxcommand);
+}
+
+/*! \brief make the user dial a number
+ *
+ * \param action originate/transfer/atxfer/hangup/answer/refuse
+ */
+void BaseEngine::actionDialNumber(const QString & number)
+{
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "dial";
+    ipbxcommand["destination"] = QString("exten:%1/%2").arg(m_ipbxid).arg(number);
     ipbxCommand(ipbxcommand);
 }
 
@@ -2185,19 +2197,14 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
 void BaseEngine::handleOtherInstanceMessage(const QString & msg)
 {
     qDebug() << Q_FUNC_INFO << m_osname << "got" << msg;
-    // callto://number is unofficial and used by Skype
     // tel:number is in RFC 3966
     // callto:number is unofficial (read 7.3. in RFC 3966)
+    // callto://number is unofficial and used by Skype
     // we support tel:number and callto:number
-    QRegExp re("^(tel|callto):([-0-9\\. +]*[0-9])", Qt::CaseInsensitive);
     // todo : handle also other commands
-    int pos = re.indexIn(msg);
-    if (pos >= 0) {
-        QString phonenum = re.cap(2);
-        phonenum.remove('.').remove(' ').remove('-');
-        qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
-        actionCall("originate", "user:special:me", QString("ext:%1").arg(phonenum));
-    }
+    QString phonenum = PhoneNumber::extract (msg);
+    qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
+    actionDialNumber(phonenum);
 }
 
 int BaseEngine::callClassEventCallback(QString class_event, const QVariantMap & map)

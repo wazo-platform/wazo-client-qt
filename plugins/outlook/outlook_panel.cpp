@@ -197,11 +197,10 @@ void OutlookPanel::refresh_table()
             QTableWidgetItemExt * item = new QTableWidgetItemExt(val);
             item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
 
-            QRegExp re_number("\\+?[0-9\\s\\.]+");
             QString strTmpVal = cleanup_num(val);
             if(strTmpVal.contains("@"))
                 item->setToolTip(tr("Double-click to send an E-mail to") + "\n" + val);
-            else if(re_number.exactMatch(strTmpVal))
+            else if(PhoneNumber::phone_re().exactMatch(strTmpVal))
                 item->setToolTip(tr("Double-click to call") + "\n" + val);
             //item->setStatusTip();
             // qDebug() << x << y << item->flags();
@@ -264,7 +263,7 @@ void OutlookPanel::itemDoubleClicked(QTableWidgetItem * item)
     }
 
     if(re_number.exactMatch(str)) {
-        b_engine->actionCall("originate", "user:special:me", "ext:" + str); // Call
+        b_engine->actionDialNumber(str); // Call
 
         // 0.3 actions :
         // if(item->text().size() >= m_calllength)
