@@ -143,8 +143,8 @@ void ConfigWidget::_insert_function_tab()
     m_function_tabwidget = new QTabWidget();
     
         QWidget * widget_presence = new QWidget() ;
-        QFormLayout * layout21 = new QFormLayout() ;
-        widget_presence->setLayout(layout21);
+        QFormLayout * layout_presence = new QFormLayout() ;
+        widget_presence->setLayout(layout_presence);
         
         m_presenceIndicatorSize = new QSpinBox(this);
         m_presenceIndicatorSize->setRange(1, 20);
@@ -152,91 +152,105 @@ void ConfigWidget::_insert_function_tab()
         if ((presenceIndicatorSize <= 0) || (presenceIndicatorSize > 20))
             presenceIndicatorSize = 5;
         m_presenceIndicatorSize->setValue(presenceIndicatorSize);
-        layout21->addRow(tr("Presence indicator size (in pixels)"), m_presenceIndicatorSize);
+        layout_presence->addRow(tr("Presence indicator size (in pixels)"), m_presenceIndicatorSize);
         
     m_function_tabwidget->addTab(widget_presence, tr("Presence reporting"));
     
         QWidget * widget_customerinfo = new QWidget() ;
-        QFormLayout * layout22 = new QFormLayout() ;
-        widget_customerinfo->setLayout(layout22);
+        QFormLayout * layout_customerinfo = new QFormLayout() ;
+        widget_customerinfo->setLayout(layout_customerinfo);
         
         m_autourl_allowed = new QCheckBox(tr("Allow the Automatic Opening of URL's"));
         m_autourl_allowed->setChecked(m_opts.value("autourl_allowed").toUInt() == Qt::Checked);
-        layout22->addRow(m_autourl_allowed);
+        layout_customerinfo->addRow(m_autourl_allowed);
         
         m_tablimit_sbox = new QSpinBox(this);
         m_tablimit_sbox->setRange(0, 99);
         m_tablimit_sbox->setValue(m_opts.value("sheet-tablimit").toUInt());
-        layout22->addRow(tr("Tab limit"), m_tablimit_sbox);
+        layout_customerinfo->addRow(tr("Tab limit"), m_tablimit_sbox);
         
     m_function_tabwidget->addTab(widget_customerinfo, tr("Customer Info"));
     
+        QWidget * widget_dial = new QWidget() ;
+        QFormLayout * layout_dial = new QFormLayout() ;
+        widget_dial->setLayout(layout_dial);
+        
+        m_dial_history_size = new QSpinBox(this);
+        m_dial_history_size->setRange(0, 20);
+        int dial_history_size = m_config["dialpanel.history_length"].toInt();
+        if ((dial_history_size < 0) || (dial_history_size > 20))
+            dial_history_size = 5;
+        m_dial_history_size->setValue(dial_history_size);
+        layout_dial->addRow(tr("Lines of call history saved"), m_dial_history_size);
+
+    m_function_tabwidget->addTab(widget_dial, tr("Dialer"));
+    
         QWidget * widget_history = new QWidget() ;
-        QFormLayout * layout23 = new QFormLayout() ;
-        widget_history->setLayout(layout23);
+        QFormLayout * layout_history = new QFormLayout() ;
+        widget_history->setLayout(layout_history);
         
         m_history_sbox = new QSpinBox(this);
         m_history_sbox->setRange(1, 20);
         m_history_sbox->setValue(m_config["historysize"].toUInt());
-        layout23->addRow(tr("History size"), m_history_sbox);
+        layout_history->addRow(tr("History size"), m_history_sbox);
         
     m_function_tabwidget->addTab(widget_history, tr("History"));
         
         QWidget * widget_contacts = new QWidget() ;
-        QFormLayout * layout24 = new QFormLayout() ;
-        widget_contacts->setLayout(layout24);
+        QFormLayout * layout_contacts = new QFormLayout() ;
+        widget_contacts->setLayout(layout_contacts);
         
         qDebug() << m_forcedopts;
         m_contactssize_sbox = new QSpinBox(this);
         m_contactssize_sbox->setRange(1, 500);
         m_contactssize_sbox->setValue(m_opts.value("contacts-max").toUInt());
-        layout24->addRow(tr("Contacts' max number"), m_contactssize_sbox);
+        layout_contacts->addRow(tr("Contacts' max number"), m_contactssize_sbox);
         
         m_contactswidth_sbox = new QSpinBox(this);
         m_contactswidth_sbox->setRange(1, 20);
         m_contactswidth_sbox->setValue(m_opts.value("contacts-width").toUInt());
-        layout24->addRow(tr("Contacts' width"), m_contactswidth_sbox);
+        layout_contacts->addRow(tr("Contacts' width"), m_contactswidth_sbox);
         
     m_function_tabwidget->addTab(widget_contacts, tr("Contacts"));
     
         QWidget * widget_queues = new QWidget() ;
-        QGridLayout * layout25 = new QGridLayout() ;
-        layout25->setAlignment(Qt::AlignTop|Qt::AlignHCenter);
-        widget_queues->setLayout(layout25);
+        QGridLayout * layout_queues = new QGridLayout() ;
+        layout_queues->setAlignment(Qt::AlignTop|Qt::AlignHCenter);
+        widget_queues->setLayout(layout_queues);
         
         int line = 0;
 
-        layout25->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
+        layout_queues->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
         int ncol = 1;
         foreach(QString color, queuelevel_colors) {
             m_queuelevels[color] = new QSpinBox(this);
             m_queuelevels[color]->setRange(0, 100);
             m_queuelevels[color]->setValue(m_opts.value("queuelevels").toMap().value(color).toUInt());
-            layout25->addWidget(m_queuelevels[color], line, ncol++);
+            layout_queues->addWidget(m_queuelevels[color], line, ncol++);
         }
         line++;
 
         m_queue_longestwait = new QCheckBox(tr("Queue Display (Longest Wait)"), this);
         m_queue_longestwait->setChecked(m_opts.value("queue_longestwait").toBool());
-        layout25->addWidget(m_queue_longestwait, line, 0);
+        layout_queues->addWidget(m_queue_longestwait, line, 0);
         ncol = 1;
         foreach(QString color, queuelevel_colors) {
             m_queuelevels_wait[color] = new QSpinBox(this);
             m_queuelevels_wait[color]->setRange(0, 3600);
             m_queuelevels_wait[color]->setValue(m_opts.value("queuelevels_wait").toMap().value(color).toUInt());
-            layout25->addWidget(m_queuelevels_wait[color], line, ncol++);
+            layout_queues->addWidget(m_queuelevels_wait[color], line, ncol++);
         }
 
         line++;
         m_queue_displaynu = new QCheckBox(tr("Queue Display number"), this);
         m_queue_displaynu->setChecked(m_opts.value("queue_displaynu").toBool());
-        layout25->addWidget(m_queue_displaynu, line, 0);
+        layout_queues->addWidget(m_queue_displaynu, line, 0);
     
     m_function_tabwidget->addTab(widget_queues, tr("Queues"));
     
         QWidget * widget_switchboard = new QWidget() ;
-        QFormLayout * layout26 = new QFormLayout() ;
-        widget_switchboard->setLayout(layout26);
+        QFormLayout * layout_switchboard = new QFormLayout() ;
+        widget_switchboard->setLayout(layout_switchboard);
     
         m_comboswitchboard = new QComboBox(this);
         m_comboswitchboard->addItem(tr("Small"), QString("small"));
@@ -245,7 +259,7 @@ void ConfigWidget::_insert_function_tab()
             if(m_opts.value("switchboard-elt-type") == m_comboswitchboard->itemData(i))
                 m_comboswitchboard->setCurrentIndex(i);
         }
-        layout26->addRow(tr("Appearance of SwitchBoard elements"), m_comboswitchboard);
+        layout_switchboard->addRow(tr("Appearance of SwitchBoard elements"), m_comboswitchboard);
 
         m_maxWidthWanted = new QSpinBox(this);
         m_maxWidthWanted->setRange(50, 250);
@@ -253,7 +267,7 @@ void ConfigWidget::_insert_function_tab()
         if(maxwidthwanted < 50)
             maxwidthwanted = 200;
         m_maxWidthWanted->setValue(maxwidthwanted);
-        layout26->addRow(tr("Maximum width for small SwitchBoard elements"), m_maxWidthWanted);
+        layout_switchboard->addRow(tr("Maximum width for small SwitchBoard elements"), m_maxWidthWanted);
     
     m_function_tabwidget->addTab(widget_switchboard, tr("Switchboard"));
     
@@ -543,6 +557,7 @@ void ConfigWidget::saveAndClose()
     m_config["logfilename"] = m_logfilename->text();
     m_config["displayprofile"] = m_displayprofile->isChecked();
     m_config["activate_on_tel"] = m_activate_on_tel->isChecked();
+    m_config["dialpanel.history_length"] = m_dial_history_size->value();
 
     foreach(QString function, func_legend.keys())
         m_config["checked_function." + function] = m_function[function]->isChecked();

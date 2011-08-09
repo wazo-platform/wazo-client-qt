@@ -227,6 +227,7 @@ void BaseEngine::loadSettings()
         m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 20*1000).toUInt();
         m_availstate = m_settings->value("availstate", "available").toString();
         m_config["displayprofile"] = m_settings->value("displayprofile", false).toBool();
+        m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 0).toInt();
 
         m_settings->beginGroup("user-gui");
             m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
@@ -312,6 +313,7 @@ void BaseEngine::saveSettings()
         m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
         m_settings->setValue("availstate", m_availstate);
         m_settings->setValue("displayprofile", m_config["displayprofile"].toBool());
+        m_settings->setValue("dialpanel/history_length", m_config["dialpanel.history_length"].toInt());
 
         if (m_config["keeppass"].toBool())
             m_settings->setValue("password", m_config["password"].toString());
@@ -330,6 +332,21 @@ void BaseEngine::saveSettings()
     m_settings->endGroup();
 
     emit settingChanged(getGuiOptions("client_gui"));
+}
+
+QVariant BaseEngine::getProfileSetting(const QString & key, const QVariant & bydefault) const
+{
+    m_settings->beginGroup(m_profilename_read);
+        QVariant ret = m_settings->value(key, bydefault);
+    m_settings->endGroup();
+    return ret;
+}
+
+void BaseEngine::setProfileSetting(const QString & key, const QVariant & value)
+{
+    m_settings->beginGroup(m_profilename_write);
+        m_settings->setValue(key, value);
+    m_settings->endGroup();
 }
 
 void BaseEngine::setCheckedFunction(const QString & function, bool b)

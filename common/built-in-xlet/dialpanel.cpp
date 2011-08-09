@@ -50,8 +50,10 @@ DialPanel::DialPanel(QWidget *parent)
     m_input->setToolTip(tr("Input here the phone number to dial"));
     m_input->setEditable(true);
     m_input->setDuplicatesEnabled(false);
-    m_input->setInsertPolicy(QComboBox::InsertAlphabetically);
+    m_input->setInsertPolicy(QComboBox::InsertAtTop);
     m_input->setMinimumContentsLength(15);
+    loadHistory();
+    m_input->clearEditText();
     //m_input->setSizeAdjustPolicy( QComboBox::AdjustToContents );
     connect(m_input->lineEdit(), SIGNAL(returnPressed()),
             this, SLOT(inputValidated()));
@@ -63,8 +65,11 @@ DialPanel::DialPanel(QWidget *parent)
     // dialButton->setStyleSheet("QPushButton {border: 0px}");
     dialButton->setIcon(pmphone);
     dialButton->setIconSize(pmphone.size());
+    
+    // That way, we're sure to have the same behavior when enter is pressed and 
+    // when the button is pressed
     connect(dialButton, SIGNAL(clicked()),
-            this, SLOT(inputValidated()));
+            m_input->lineEdit(), SIGNAL(returnPressed()));
 
     // QPushButton * clearButton = new QPushButton(this);
     // clearButton->setIcon(QIcon(":/images/cancel.png"));
@@ -87,20 +92,23 @@ DialPanel::DialPanel(QWidget *parent)
             b_engine, SLOT(textEdited(const QString &)));
 }
 
+DialPanel::~DialPanel()
+{
+    saveHistory();
+}
+
 /*! \brief fills the input field
  */
 void DialPanel::setNumberToDial(const QString & text)
 {
-    QString oldtext = m_input->lineEdit()->text();
     // qDebug() << Q_FUNC_INFO << text;
+    QString oldtext = m_input->currentText();
     QString texttmp = PhoneNumber::extract(text);
 
     if((! texttmp.isEmpty()) && texttmp != oldtext) {
-        // put in history if not already there
-        if (m_input->findText(texttmp) == -1)
-            m_input->insertItem(0, texttmp);
+        addHistory(texttmp);
         // displays it
-        m_input->lineEdit()->setText(texttmp);
+        m_input->setEditText(texttmp);
     }
 }
 
@@ -118,26 +126,15 @@ void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 void DialPanel::dropEvent(QDropEvent * event)
 {
     QString originator = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
-    qDebug() << Q_FUNC_INFO << originator << m_input->lineEdit();
-    if(m_input->lineEdit()) {
-        qDebug() << Q_FUNC_INFO << event << originator << m_input->lineEdit()->text();
-        QString ext = PhoneNumber::extract(m_input->lineEdit()->text());
-        if (ext.isEmpty())        // do nothing if the string is empty
-            return;
-        b_engine->actionCall("originate",
-                             "user:" + originator,
-                             QString("exten:%1/%2").arg(b_engine->ipbxid()).arg(ext));
-        m_input->insertItem(0, ext); // add to history
-        // remove the older items related to the same number
-        for(int i=1; i<m_input->count(); ) {
-            if(ext == m_input->itemText(i)) {
-                m_input->removeItem(i);
-            } else {
-                i++;
-            }
-        }
-        m_input->clearEditText();
-    }
+    qDebug() << Q_FUNC_INFO << event << originator << m_input->currentText();
+    QString ext = PhoneNumber::extract(m_input->currentText());
+    if (ext.isEmpty())        // do nothing if the string is empty
+        return;
+    b_engine->actionCall("originate",
+                         "user:" + originator,
+                         QString("exten:%1/%2").arg(b_engine->ipbxid()).arg(ext));
+    addHistory(ext);
+    m_input->clearEditText();
 }
 
 /*! \brief the input was validated
@@ -146,23 +143,12 @@ void DialPanel::dropEvent(QDropEvent * event)
  */
 void DialPanel::inputValidated()
 {
-    
-    if(m_input->lineEdit()) {
-        QString ext = PhoneNumber::extract(m_input->lineEdit()->text());
-        if (ext.isEmpty()) // do nothing if the string is empty
-            return;
-        b_engine->actionDialNumber(ext);
-        m_input->insertItem(0, ext); // add to history
-        // remove the older items related to the same number
-        for(int i=1; i<m_input->count(); ) {
-            if(ext == m_input->itemText(i)) {
-                m_input->removeItem(i);
-            } else {
-                i++;
-            }
-        }
-        m_input->clearEditText();
-    }
+    QString ext = PhoneNumber::extract(m_input->currentText());
+    if (ext.isEmpty()) // do nothing if the string is empty
+        return;
+    b_engine->actionDialNumber(ext);
+    addHistory(ext);
+    m_input->clearEditText();
 }
 
 /*! \brief clear the input list
@@ -170,4 +156,48 @@ void DialPanel::inputValidated()
 void DialPanel::clearlist()
 {
     m_input->clear();
+}
+
+/*!
+ * \brief Loads the call history from BaseEngine
+ */
+void DialPanel::loadHistory()
+{
+    // qDebug() << Q_FUNC_INFO;
+    m_input->addItems(b_engine->getProfileSetting("dialpanel/history").toStringList());
+}
+
+/*!
+ * \brief Saves the call history in BaseEngine
+ */
+void DialPanel::saveHistory()
+{
+    int nb_to_save = b_engine->getConfig("dialpanel.history_length").toInt();
+    if (m_input->count() < nb_to_save) {
+        nb_to_save = m_input->count();
+    }
+    
+    QStringList savedHistory;
+    for (int i = 0; i < nb_to_save; i++) {
+        savedHistory << m_input->itemText(i);
+    }
+    b_engine->setProfileSetting("dialpanel/history", savedHistory);
+}
+
+/*!
+ * \brief inserts the new entry in the combobox, on top and removes duplicates
+ */
+// It's almost possible to do the same with setInsertPolicy and setDuplicatesEnabled
+// but it lacks the "go on top if already existing" feature
+void DialPanel::addHistory(const QString &ext)
+{
+    m_input->insertItem(0, ext); // add to history
+    // remove the older items related to the same number
+    for(int i=1; i<m_input->count(); ) {
+        if(ext == m_input->itemText(i)) {
+            m_input->removeItem(i);
+        } else {
+            i++;
+        }
+    }
 }

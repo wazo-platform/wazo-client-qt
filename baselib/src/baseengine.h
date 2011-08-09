@@ -147,16 +147,19 @@ class BASELIB_EXPORT BaseEngine: public QObject
         ~BaseEngine(); //! Destructor
 
         QSettings* getSettings();
-        void loadSettings();                   //!< load server settings
+        QVariant getProfileSetting(const QString &, const QVariant & = QVariant()) const; //!< get one setting in current profile
+        void setProfileSetting(const QString &, const QVariant &); //!< set one setting in current profile
+        void loadSettings();                   //!< load server settings from QSettings (conf file)
+        void saveSettings();                    //!< save server settings into QSettings (conf file)
         
-        QVariantMap getConfig() const;         //!< all BaseEngine config
+        QVariantMap getConfig() const;         //!< all BaseEngine settings
         QVariant getConfig(const QString &) const; //!< one BaseEngine setting
         void setConfig(QVariantMap);
-        // setter/getter for properties
-        
-        uint historySize() const;               //!< history size
 
-        void saveSettings();                    //!< save server settings
+
+        // setter/getter for properties
+
+        uint historySize() const;               //!< history size
 
         EngineState state();      //!< Engine state (Logged/Not Logged)
         void setState(EngineState state);       //!< see state()

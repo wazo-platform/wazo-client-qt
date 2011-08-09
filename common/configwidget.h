@@ -128,6 +128,8 @@ class ConfigWidget: public QDialog
         QCheckBox * m_autourl_allowed;  //!< Allow automatic opening of urls
         QSpinBox  * m_tablimit_sbox;    //!< Maximum number of tabs
         
+        QSpinBox  * m_dial_history_size; //!< Dial history saved
+        
         QSpinBox  * m_history_sbox;     //!< History size
         
         QSpinBox  * m_contactssize_sbox;  //!< Displayed contacts' size
