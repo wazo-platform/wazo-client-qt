@@ -809,11 +809,14 @@ void BaseEngine::addUpdateConfMemberInTree(DStore *tree, const QString & xid)
         info["id"] = id;
         info["time-start"] = channelinfo->timestamp();
         info["displayname"] = channelinfo->thisdisplay();
-        // info["phonenum"] = details.value("phonenum");
-        // info["user-id"] = details.value("userid");
         info["admin"] = channelinfo->meetme_isadmin();
         info["authed"] = channelinfo->meetme_isauthed();
         info["muted"] = channelinfo->meetme_ismuted();
+        const UserInfo * u = getUserForXChannelId(xchannel);
+        if (u) {
+            // info["phonenum"] = details.value("phonenum");
+            info["user-id"] = u->xid();
+        }
         QString path = QString("confrooms/%1/in/%2").arg(roomid).arg(id);
         tree->populate(path ,info);
     }
