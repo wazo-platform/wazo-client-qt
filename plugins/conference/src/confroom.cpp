@@ -393,11 +393,21 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
 
     QString roomId = static_cast<ConfRoomModel*>(model())->id();
     QString castId = model()->index(row, ID).data().toString();
-
-    QString in = QString("confrooms/%0/in/%1/").arg(roomId).arg(castId);
+    
+    // Not using the dstore filter since "/" is part or the grammar and of the full id
+    QString in = QString("confrooms/%0/in").arg(roomId);
+    QVariantMap users = b_engine->eVM(in);
+    QString current_user_key;
+    foreach (const QString & k, users.keys()) {
+        if (users.value(k).toMap().value("user-id") == b_engine->getFullId()) {
+            current_user_key = k;
+            break;
+        }
+    }
+    QVariantMap current_user = users.value(current_user_key).toMap();
 
     if (!(static_cast<ConfRoomModel*>(model())->isAdmin() ||
-          b_engine->eV(in + "user-id").toString() == b_engine->xivoUserId())) {
+          current_user.value("id") == castId)) {
         return;
     }
 
