@@ -184,9 +184,7 @@ int ConfRoomModel::columnCount(const QModelIndex&) const
     return NB_COL;
 }
 
-QVariant
-ConfRoomModel::data(const QModelIndex &index,
-                       int role) const
+QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
 {
     int row = index.row(), col = index.column();
     QString rowId;
