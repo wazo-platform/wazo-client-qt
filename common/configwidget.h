@@ -79,6 +79,7 @@ class ConfigWidget: public QDialog
         //! Save the configuration to the BaseEngine object and close
         void saveAndClose();
         void changeOperatorKey(bool);
+        void changeEncrypted(bool);
         void loginKindChanged(int);
     protected:
         virtual void keyPressEvent(QKeyEvent *);

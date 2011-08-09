@@ -257,6 +257,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void setUserLogin(const QString &);       //!< see userid()
         void setUserLogin(const QString &, const QString &); //!< set userid and userid option
+        
+        uint port_to_use() const; //!< gives the right port, according to encryption setting
 
     public slots:
         void start();  //!< start the connection process.

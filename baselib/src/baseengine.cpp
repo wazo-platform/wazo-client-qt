@@ -210,6 +210,7 @@ void BaseEngine::loadSettings()
     m_settings->beginGroup(m_profilename_read);
         m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.fr").toString();
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
+        m_config["cti_port_encrypted"]    = m_settings->value("serverport_encrypted", 5013).toUInt();
         m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
 
         setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
@@ -298,6 +299,7 @@ void BaseEngine::saveSettings()
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("serverhost", m_config["cti_address"].toString());
         m_settings->setValue("serverport", m_config["cti_port"].toUInt());
+        m_settings->setValue("serverport_encrypted", m_config["cti_port_encrypted"].toUInt());
         m_settings->setValue("encryption", m_config["cti_encrypt"].toBool());
         m_settings->setValue("userid", m_config["userloginsimple"].toString());
         m_settings->setValue("useridopt", m_config["userloginopt"].toString());
@@ -418,7 +420,7 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << Q_FUNC_INFO << m_config["cti_address"].toString() << m_config["cti_port"].toUInt() << m_config["cti_encrypt"].toBool() << m_config.getSubSet("checked_function");
+    qDebug() << Q_FUNC_INFO << m_config["cti_address"].toString() << port_to_use() << m_config["cti_encrypt"].toBool() << m_config.getSubSet("checked_function");
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
@@ -527,7 +529,7 @@ void BaseEngine::connectSocket()
 {
     if (m_config["userloginsimple"].toString().length()) {
         if (m_config["cti_encrypt"].toBool())
-            m_ctiserversocket->connectToHostEncrypted(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
+            m_ctiserversocket->connectToHostEncrypted(m_config["cti_address"].toString(), m_config["cti_port_encrypted"].toUInt());
         else
             m_ctiserversocket->connectToHost(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
     }
@@ -948,7 +950,7 @@ void BaseEngine::parseCommand(const QString &line)
                 qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
             else {
                 m_fileid = datamap.value("fileid").toString();
-                m_filetransfersocket->connectToHost(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
+                m_filetransfersocket->connectToHost(m_config["cti_address"].toString(), port_to_use());
             }
 
         } else if (thisclass == "filetransfer") {
@@ -1474,7 +1476,7 @@ void BaseEngine::popupError(const QString & errorid)
         errormsg = tr("Your registration name <%1@%2> "
                       "is not known by the XiVO CTI server on %3:%4.")
             .arg(m_config["userloginsimple"].toString()).arg(m_config["company"].toString())
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
     } else if (errorid.startsWith("capaid_undefined:")) {
@@ -1484,7 +1486,7 @@ void BaseEngine::popupError(const QString & errorid)
     // keepalive (internal)
     } else if (errorid.toLower() == "no_keepalive_from_server") {
         errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
 
     // socket errors - while attempting to connect
     } else if (errorid.toLower() == "socket_error_hostnotfound") {
@@ -1497,7 +1499,7 @@ void BaseEngine::popupError(const QString & errorid)
     } else if (errorid.toLower() == "socket_error_connectionrefused") {
         errormsg = tr("There seems to be a machine running on this IP address %1, "
                       "and either no CTI server is running, or your port %2 is wrong.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.toLower() == "socket_error_network") {
         errormsg = tr("An error occurred on the network while attempting to join the IP address %1 :\n"
                       "- no external route defined to access this IP address (~ no timeout)\n"
@@ -1507,26 +1509,26 @@ void BaseEngine::popupError(const QString & errorid)
     } else if (errorid.toLower() == "socket_error_sslhandshake") {
         errormsg = tr("It seems that the server with IP address %1 does not accept encryption on "
                       "its port %2. Please change either your port or your encryption setting.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.toLower() == "socket_error_unknown") {
         errormsg = tr("An unknown socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.startsWith("socket_error_unmanagedyet:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(ipinfo[1]).arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(ipinfo[1]).arg(m_config["cti_address"].toString()).arg(port_to_use());
 
     // socket errors - once connected
     } else if (errorid.toLower() == "socket_error_remotehostclosed") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
 
     } else if (errorid.toLower() == "server_stopped") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.toLower() == "server_reloaded") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been reloaded.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.startsWith("already_connected:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);
@@ -1806,6 +1808,15 @@ void BaseEngine::setUserLogin(const QString & userid, const QString & opt)
     } else {
         m_config["userlogin"] = m_config["userloginsimple"].toString()
                                 + "%" + m_config["userloginopt"].toString();
+    }
+}
+
+uint BaseEngine::port_to_use() const
+{
+    if (! m_config["cti_encrypt"].toBool()) {
+        return m_config["cti_port"].toUInt();
+    } else {
+        return m_config["cti_port_encrypted"].toUInt();
     }
 }
 

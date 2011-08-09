@@ -98,11 +98,17 @@ void ConfigWidget::_insert_connection_tab()
 
     m_cti_port = new QSpinBox(this);
     m_cti_port->setRange(1, 65535);
-    m_cti_port->setValue(m_config["cti_port"].toUInt());
+    if (! m_config["cti_encrypt"].toBool()) {
+        m_cti_port->setValue(m_config["cti_port"].toUInt());
+    } else {
+        m_cti_port->setValue(m_config["cti_port_encrypted"].toUInt());
+    }
     layout1->addRow(tr("Login Port"), m_cti_port);
 
     m_cti_encrypt = new QCheckBox(tr("Encrypt Connection"));
     m_cti_encrypt->setChecked(m_config["cti_encrypt"].toBool());
+    connect(m_cti_encrypt, SIGNAL(toggled(bool)),
+            this, SLOT(changeEncrypted(bool)));
     layout1->addRow(m_cti_encrypt);
     
     m_trytoreconnect = new QCheckBox(tr("Try to reconnect") + "\n" + \
@@ -525,6 +531,19 @@ void ConfigWidget::loginKindChanged(int index)
     }
 }
 
+/*! \brief change the port value according to cti_encrypted
+*/
+void ConfigWidget::changeEncrypted(bool encrypted)
+{
+    if(encrypted) {
+        m_config["cti_port"] = m_cti_port->value();
+        m_cti_port->setValue(m_config["cti_port_encrypted"].toInt());
+    } else {
+        m_config["cti_port_encrypted"] = m_cti_port->value();
+        m_cti_port->setValue(m_config["cti_port"].toInt());
+    }
+}
+
 /*!
  * This slot saves the configuration (which is stored in displayed
  * widgets) to the BaseEngine object
@@ -535,7 +554,11 @@ void ConfigWidget::saveAndClose()
     int i;
     // qDebug() << Q_FUNC_INFO;
     m_config["cti_address"] = m_cti_address->text();
-    m_config["cti_port"] = m_cti_port->value();
+    if (! m_cti_encrypt->isChecked()) {
+        m_config["cti_port"] = m_cti_port->value();
+    } else {
+        m_config["cti_port_encrypted"] = m_cti_port->value();
+    }
     m_config["cti_encrypt"] = m_cti_encrypt->isChecked();
     m_config["company"] = m_context->text();
     m_config["keeppass"] = m_keeppass->isChecked();
