@@ -71,7 +71,7 @@ ConfRoomModel::~ConfRoomModel()
 void ConfRoomModel::timerEvent(QTimerEvent *)
 {
     QString req = QString("confrooms/%0/in[user-id=@%1]").arg(m_id)
-                                                         .arg(b_engine->xivoUserId());
+                                                         .arg(b_engine->getFullId());
     QVariantMap self = b_engine->eV(req).toMap();
     m_admin = self.value("admin").toBool();
     m_authed = self.value("authed").toBool();
