@@ -818,7 +818,7 @@ void BaseEngine::addUpdateConfMemberInTree(DStore *tree, const QString & xid)
             info["user-id"] = u->xid();
         }
         QString path = QString("confrooms/%1/in/%2").arg(roomid).arg(id);
-        tree->populate(path ,info);
+        tree->populate(path, info);
     }
 
     // leave case

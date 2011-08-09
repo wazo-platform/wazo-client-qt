@@ -70,11 +70,16 @@ ConfRoomModel::~ConfRoomModel()
 
 void ConfRoomModel::timerEvent(QTimerEvent *)
 {
-    QString req = QString("confrooms/%0/in[user-id=@%1]").arg(m_id)
-                                                         .arg(b_engine->getFullId());
-    QVariantMap self = b_engine->eV(req).toMap();
-    m_admin = self.value("admin").toBool();
-    m_authed = self.value("authed").toBool();
+    QString req = QString("confrooms/%0/in").arg(m_id);
+    QVariantMap users = b_engine->eVM(req);
+    foreach (const QString key, users.keys()) {
+        if (users[key].toMap().value("user-id") == b_engine->getFullId()) {
+            QVariantMap self = users[key].toMap();
+            m_admin = self.value("admin").toBool();
+            m_authed = self.value("authed").toBool();
+            break;
+        }
+    }
     updateView();
     reset();
 }
