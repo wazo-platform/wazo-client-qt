@@ -33,6 +33,7 @@
 
 #include <QDebug>
 
+#include "baseengine.h"
 #include "channelinfo.h"
 
 /*! \brief Constructor
@@ -49,6 +50,7 @@ ChannelInfo::ChannelInfo(const QString & ipbxid,
 bool ChannelInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
+    bool meetmechanged = false;
     haschanged |= setIfChangeString(prop, "direction", & m_direction);
     haschanged |= setIfChangeString(prop, "talkingto_kind", & m_talkingto_kind);
     haschanged |= setIfChangeString(prop, "talkingto_id", & m_talkingto_id);
@@ -57,12 +59,22 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "peerdisplay", & m_peerdisplay);
     haschanged |= setIfChangeDouble(prop, "timestamp", & m_timestamp);
 
-    haschanged |= setIfChangeBool(prop, "meetme_isadmin", & m_meetme_isadmin);
-    haschanged |= setIfChangeBool(prop, "meetme_isauthed", & m_meetme_isauthed);
-    haschanged |= setIfChangeBool(prop, "meetme_ismuted", & m_meetme_ismuted);
-    haschanged |= setIfChangeInt(prop, "meetme_usernum", & m_meetme_usernum);
+    meetmechanged |= setIfChangeBool(prop, "meetme_isadmin", & m_meetme_isadmin);
+    meetmechanged |= setIfChangeBool(prop, "meetme_isauthed", & m_meetme_isauthed);
+    meetmechanged |= setIfChangeBool(prop, "meetme_ismuted", & m_meetme_ismuted);
+    meetmechanged |= setIfChangeInt(prop, "meetme_usernum", & m_meetme_usernum);
 
-    return haschanged;
+    // If a meetme* status changed update the meetme tree
+    if (meetmechanged) {
+        foreach (const QString & xmeetmeid, b_engine->iterover("meetmes").keys()) {
+            const MeetmeInfo * m = b_engine->meetme(xmeetmeid);
+            if (m && m->xchannels().contains(xid())) {
+                b_engine->addUpdateConfMemberInTree(b_engine->tree(), m->xid());
+            }
+        }
+    }
+
+    return haschanged || meetmechanged;
 }
 
 /*! \brief Returns a string representation of a ChannelInfo */
