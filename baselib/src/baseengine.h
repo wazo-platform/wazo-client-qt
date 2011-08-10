@@ -350,6 +350,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateVoiceMailConfig(const QString &);
         void updateVoiceMailStatus(const QString &);
         void updateChannelStatus(const QString &);
+        void updateMeetmesConfig(const QString &);
+        void updateMeetmesStatus(const QString &);
         void updateParkinglotConfig(const QString &);
         void updateParkinglotStatus(const QString &);
         void removePhoneConfig(const QString &);

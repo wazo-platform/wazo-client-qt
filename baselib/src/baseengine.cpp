@@ -1298,7 +1298,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             else if (listname == "voicemails")
                 emit updateVoiceMailConfig(xid);
             else if (listname == "meetmes")
-                addUpdateConfRoomInTree(tree(), xid);
+                emit updateMeetmesConfig(xid);
             else if (listname == "parkinglots")
                 emit updateParkinglotConfig(xid);
 
@@ -1372,7 +1372,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             else if (listname == "channels")
                 emit updateChannelStatus(xid);
             else if (listname == "meetmes")
-                addUpdateConfMemberInTree(tree(), xid);
+                emit updateMeetmesStatus(xid);
 
         } else if (function == "addconfig") {
             QStringList listid = datamap.value("list").toStringList();
