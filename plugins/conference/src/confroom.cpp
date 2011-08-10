@@ -414,9 +414,9 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
     switch (col) {
         case ACTION_MUTE:
             if (b_engine->eV(in + "muted").toBool()) {
-                b_engine->meetmeAction("unmute", castId + " " + roomId);
+                b_engine->meetmeAction("MeetmeUnmute", castId + " " + roomId);
             } else {
-                b_engine->meetmeAction("mute", castId + " " + roomId);
+                b_engine->meetmeAction("MeetmeMute", castId + " " + roomId);
             }
             break;
         case ACTION_KICK:
