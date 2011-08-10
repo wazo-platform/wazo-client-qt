@@ -653,6 +653,7 @@ void BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
 /*! \brief send an ipbxcommand command to the cti server */
 void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
 {
+    // qDebug() << Q_FUNC_INFO << ipbxcommand;
     if (! ipbxcommand.contains("command"))
         return;
     QVariantMap cticommand = ipbxcommand;
@@ -1414,12 +1415,12 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 /*! \brief send meetme command to the CTI server */
 void BaseEngine::meetmeAction(const QString &function, const QString &functionargs)
 {
-    qDebug() <<"meetmeAction" << function << " -- arg: " << functionargs;
+    // qDebug() <<"meetmeAction" << function << " -- arg: " << functionargs;
     QVariantMap command;
-    command["class"] = "meetme";
+    command["command"] = "meetme";
     command["function"] = function;
     command["functionargs"] = functionargs.split(" ");
-    sendJsonCommand(command);
+    ipbxCommand(command);
 }
 
 /*! \brief send callcampaign command to the CTI server */
