@@ -43,8 +43,8 @@ static QVariant COL_TITLE[NB_COL];
 ConfListModel::ConfListModel()
     : QAbstractTableModel()
 {
-    b_engine->tree()->onChange("confrooms", this,
-        SLOT(confRoomsChange(const QString &, DStoreEvent)));
+    // b_engine->tree()->onChange("confrooms", this,
+    //     SLOT(confRoomsChange(const QString &, DStoreEvent)));
 
     startTimer(1000);
     COL_TITLE[ID] = tr("Room UID");
@@ -54,6 +54,9 @@ ConfListModel::ConfListModel()
     COL_TITLE[MEMBER_COUNT] = tr("Member count");
     COL_TITLE[MODERATED] = tr("Moderated");
     COL_TITLE[STARTED_SINCE] = tr("Started since");
+
+    connect(b_engine, SIGNAL(updateMeetmesConfig(const QString &)),
+            this, SLOT(updateMeetmesConfig(const QString &)));
 }
 
 void ConfListModel::timerEvent(QTimerEvent *)
@@ -61,18 +64,30 @@ void ConfListModel::timerEvent(QTimerEvent *)
     reset();
 }
 
-void ConfListModel::confRoomsChange(const QString &, DStoreEvent)
+void ConfListModel::updateMeetmesConfig(const QString & meetme_id)
 {
-    m_roomList = b_engine->eVM("confrooms");
-
+    // qDebug() << Q_FUNC_INFO << meetme_id;
     int row = 0;
-    if (m_roomList.size() != m_row2id.size()) {
-        foreach(QString roomId, m_roomList.keys()) {
-            m_row2id.insert(row++, roomId);
+    if (b_engine->iterover("meetmes").size() != m_row2id.size()) {
+        foreach (const QString & key, b_engine->iterover("meetmes").keys()) {
+            m_row2id.insert(row++, key);
         }
     }
     reset();
 }
+
+// void ConfListModel::confRoomsChange(const QString &, DStoreEvent)
+// {
+//     m_roomList = b_engine->eVM("confrooms");
+
+//     int row = 0;
+//     if (m_roomList.size() != m_row2id.size()) {
+//         foreach(QString roomId, m_roomList.keys()) {
+//             m_row2id.insert(row++, roomId);
+//         }
+//     }
+//     reset();
+// }
 
 Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
 {
@@ -89,9 +104,7 @@ int ConfListModel::columnCount(const QModelIndex&) const
     return NB_COL;
 }
 
-QVariant
-ConfListModel::data(const QModelIndex &index,
-                    int role) const
+QVariant ConfListModel::data(const QModelIndex &index, int role) const
 {
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole)

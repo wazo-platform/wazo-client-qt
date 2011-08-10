@@ -58,7 +58,7 @@ class ConfListModel : public QAbstractTableModel
         ConfListModel();
 
     private slots:
-        void confRoomsChange(const QString &path, DStoreEvent event);
+        void updateMeetmesConfig(const QString &);
     protected:
         void timerEvent(QTimerEvent *event);
     private:
