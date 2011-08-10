@@ -67,32 +67,35 @@ int ConfTab::addClosableTab(QWidget *w, const QString &title)
     return index;
 }
 
-void ConfTab::showConfRoom(const QString &id, bool force)
+/*! \brief Create and show a new tab
+ * \param meetme_id The XiVO id of the meetme room
+ * \param force Will add a new if true
+ */
+void ConfTab::showConfRoom(const QString & meetme_id, bool force)
 {
-    int index;
-    if ((index = indexOf(id)) == -1) {
-        if ((!force) &&
-            (b_engine->eVM(QString("confrooms/%0/in").arg(id)).size() == 0)) {
-            return ;
+    qDebug() << Q_FUNC_INFO << meetme_id;
+    int index = indexOf(meetme_id);
+    if (index == -1) {
+        const MeetmeInfo * m = b_engine->meetme(meetme_id);
+        if (m) {
+            if ((! force) && m->channels().size() == 0) {
+                return;
+            }
+            QString title = QString("%0 (%1)").arg(m->name()).arg(m->number());
+            index = addClosableTab(new ConfRoom(this, this, meetme_id), title);
         }
-
-        QString roomName = \
-            b_engine->eV(QString("confrooms/%0/name").arg(id)).toString();
-        QString roomNumber = \
-            b_engine->eV(QString("confrooms/%0/number").arg(id)).toString();
-
-        index = addClosableTab(new ConfRoom(this, this, id),
-                               QString("%0 (%1)").arg(roomName).arg(roomNumber));
     }
     setCurrentIndex(index);
 }
 
-int ConfTab::indexOf(const QString &id)
+/*! \brief Finds the index of a tab for a given meetme XiVO id
+ * \param xid The XiVO id of the meetme room
+ * \return the index of the matching tab or -1
+ */
+int ConfTab::indexOf(const QString & xid)
 {
-    int i, e;
-    for(i=1,
-        e=count();i<e;i++) {
-        if (widget(i)->property("id").toString() == id) {
+    for (int i = 1; i < count(); i++) {
+        if (widget(i)->property("id").toString() == xid) {
             return i;
         }
     }
@@ -108,6 +111,7 @@ XLet* XLetConferencePlugin::newXLetInstance(QWidget *parent)
 XletConference::XletConference(QWidget *parent)
     : XLet(parent)
 {
+    qDebug() << Q_FUNC_INFO;
     setTitle(tr("Conference"));
 
     QVBoxLayout *vLayout = new QVBoxLayout();
@@ -117,8 +121,10 @@ XletConference::XletConference(QWidget *parent)
     m_tab->addTab(new ConfList(this), tr("Conference room list"));
     vLayout->addWidget(m_tab);
 
-    b_engine->tree()->onChange(QString("confrooms"), this,
-        SLOT(checkJoiningPeople(const QString &, DStoreEvent)));
+    // b_engine->tree()->onChange(QString("confrooms"), this,
+    //     SLOT(checkJoiningPeople(const QString &, DStoreEvent)));
+    connect(b_engine, SIGNAL(updateMeetmesStatus(const QString &)),
+            this, SLOT(updateMeetmesStatus(const QString &)));
 }
 
 void XletConference::openConfRoom(const QString &id, bool force)
@@ -126,13 +132,27 @@ void XletConference::openConfRoom(const QString &id, bool force)
     m_tab->showConfRoom(id, force);
 }
 
-void XletConference::checkJoiningPeople(const QString &room, DStoreEvent event)
+void XletConference::updateMeetmesStatus(const QString & meetme_id)
 {
-    if (event == NODE_POPULATED) {
-        QRegExp re = QRegExp("confrooms/([^/]+)/in/[0-9]+");
-        if (re.exactMatch(room) &&
-            b_engine->eVM(room)["user-id"].toString() == b_engine->xivoUserId()) {
-            openConfRoom(re.cap(1));
+    // qDebug() << Q_FUNC_INFO << meetme_id;
+    const MeetmeInfo * m = b_engine->meetme(meetme_id);
+    if (m) {
+        foreach (const QString & xcid, m->channels().keys()) {
+            const UserInfo * chan_owner = b_engine->getUserForXChannelId(xcid);
+            if (chan_owner && chan_owner->xid() == b_engine->getFullId()) {
+                openConfRoom(meetme_id);
+            }
         }
     }
 }
+
+// void XletConference::checkJoiningPeople(const QString &room, DStoreEvent event)
+// {
+//     if (event == NODE_POPULATED) {
+//         QRegExp re = QRegExp("confrooms/([^/]+)/in/[0-9]+");
+//         if (re.exactMatch(room) &&
+//             b_engine->eVM(room)["user-id"].toString() == b_engine->xivoUserId()) {
+//             openConfRoom(re.cap(1));
+//         }
+//     }
+// }
