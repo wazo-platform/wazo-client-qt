@@ -61,10 +61,6 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         bool isholded() const;
         bool isparked() const;
         const QString & agent() const;
-        bool meetme_isadmin() const { return m_meetme_isadmin; };
-        bool meetme_isauthed() const { return m_meetme_isauthed; };
-        bool meetme_ismuted() const { return m_meetme_ismuted; };
-        int meetme_usernum() const { return m_meetme_usernum; };
         QString toString() const;
 
     private:
@@ -83,12 +79,6 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         bool m_isholded;
         bool m_isparked;
         // XXX atxfer currently in progress ?
-
-        bool m_meetme_isadmin;
-        bool m_meetme_isauthed;
-        bool m_meetme_ismuted;
-        int m_meetme_usernum;
-
         // XXX time informations
 };
 
