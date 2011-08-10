@@ -211,7 +211,7 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
                                Qt::SmoothTransformation);
             } else if (col == ACTION_MUTE) {
                 if ((m_admin) ||
-                    (b_engine->eV(in + "user-id").toString() == b_engine->xivoUserId())) {
+                    (b_engine->eV(in + "user-id").toString() == b_engine->getFullId())) {
                     return QPixmap(":in_conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
                 } else {
                     return QVariant();
@@ -237,7 +237,7 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
                 return tr("Record conference until this user leaves");
             } else if (col == ACTION_MUTE) {
                 if ((m_admin) ||
-                    (b_engine->eV(in + "user-id").toString() == b_engine->xivoUserId())) {
+                    (b_engine->eV(in + "user-id").toString() == b_engine->getFullId())) {
                     if (b_engine->eV(in + "muted").toBool()) {
                         return tr("Unmute");
                     }
@@ -307,7 +307,7 @@ Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
             return Qt::ItemIsEnabled;
         }
     } else {
-        if (b_engine->eV(in + "user-id").toString() == b_engine->xivoUserId()) {
+        if (b_engine->eV(in + "user-id").toString() == b_engine->getFullId()) {
             if (col == ACTION_MUTE) {
                 if (b_engine->eV(in + "muted").toBool()) {
                     return Qt::ItemIsEnabled;
