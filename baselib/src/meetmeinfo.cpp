@@ -39,7 +39,6 @@ MeetmeInfo::MeetmeInfo(const QString & ipbxid,
                        const QString & id)
     : XInfo(ipbxid, id)
 {
-    qDebug() << Q_FUNC_INFO << ipbxid;
 }
 
 const QString & MeetmeInfo::name() const
