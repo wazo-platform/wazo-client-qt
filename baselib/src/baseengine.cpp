@@ -1415,7 +1415,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 /*! \brief send meetme command to the CTI server */
 void BaseEngine::meetmeAction(const QString &function, const QString &functionargs)
 {
-    // qDebug() <<"meetmeAction" << function << " -- arg: " << functionargs;
+    // The first argument is the meetme xid and the second is the usernum (for mute)
+    qDebug() << "meetmeAction" << function << " -- arg: " << functionargs;
     QVariantMap command;
     command["command"] = "meetme";
     command["function"] = function;
@@ -1868,7 +1869,7 @@ void BaseEngine::startTryAgainTimer()
 void BaseEngine::timerEvent(QTimerEvent *event)
 {
     int timerId = event->timerId();
-    qDebug() << Q_FUNC_INFO << timerId << m_timerid_tryreconnect;
+    // qDebug() << Q_FUNC_INFO << timerId << m_timerid_tryreconnect;
     if (timerId == m_timerid_keepalive) {
         keepLoginAlive();
     } else if (timerId == m_timerid_tryreconnect) {

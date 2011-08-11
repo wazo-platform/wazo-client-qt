@@ -286,7 +286,7 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
 
     switch (col) {
     case ID:
-        return user_chan.value("id").toString();
+        return chanid;
     case NUMBER:
         return (u ? u->findNumberForXChannel(chanid) : tr("unknown"));
     case ACTION_RECORD:
@@ -435,38 +435,46 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
     bool is_admin = static_cast<ConfRoomModel *>(model())->isAdmin();
     bool is_my_channel = (u && u == b_engine->user(b_engine->getFullId()));
     bool is_muted = user_chan.value("ismuted").toBool();
-    bool is_authed = user_chan.value("is_authed").toBool();
+    bool is_authed = user_chan.value("isauthed").toBool();
     bool is_recorded = (c && c->ismonitored());
 
-    if ((! is_admin) || (! is_my_channel)) return;
+    const QString & usernum = user_chan.value("usernum").toString();
+
+    if ((! is_admin) && (! is_my_channel)) return;
 
     switch (index.column()) {
         case ACTION_MUTE:
+            qDebug() << Q_FUNC_INFO << "Mute/unmute";
             if (is_muted) {
-                b_engine->meetmeAction("MeetmeUnmute", channel_id + " " + meetme_id);
+                b_engine->meetmeAction("MeetmeUnmute", meetme_id + " " + usernum);
             } else {
-                b_engine->meetmeAction("MeetmeMute", channel_id + " " + meetme_id);
+                b_engine->meetmeAction("MeetmeMute", meetme_id + " " + usernum);
             }
             break;
         case ACTION_KICK:
+            qDebug() << Q_FUNC_INFO << "Kick";
             if (! is_authed) {
-                b_engine->meetmeAction("MeetmeKick", channel_id + " " + meetme_id);
+                b_engine->meetmeAction("MeetmeKick", meetme_id + " " + usernum);
             } else {
-                b_engine->meetmeAction("kick", channel_id + " " + meetme_id);
+                b_engine->meetmeAction("kick", meetme_id + " " + usernum);
             }
             break;
         case ACTION_TALK_TO:
-            b_engine->meetmeAction("MeetmeTalk", channel_id + " " + meetme_id);
+            qDebug() << Q_FUNC_INFO << "Talk";
+            b_engine->meetmeAction("MeetmeTalk", meetme_id + " " + usernum);
             break;
         case ACTION_RECORD:
-            b_engine->meetmeAction("record", channel_id + " " +
-                                             meetme_id + " " +
+            qDebug() << Q_FUNC_INFO << "Record";
+            b_engine->meetmeAction("record", meetme_id + " " +
+                                             usernum + " " +
                                              ( is_recorded ? "stop" : "start"));
             break;
         case ACTION_ALLOW_IN:
-            b_engine->meetmeAction("MeetmeAccept", channel_id + " " + meetme_id);
+            qDebug() << Q_FUNC_INFO << "Accept";
+            b_engine->meetmeAction("MeetmeAccept", meetme_id + " " + usernum);
             break;
         default:
+            qDebug() << Q_FUNC_INFO << "No Action";
             break;
     }
 }
