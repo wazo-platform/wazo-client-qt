@@ -353,31 +353,31 @@ Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
 {
     int row = index.row(), col = index.column();
 
-    QString rowId;
-    rowId = m_row2id[row];
-    QString in = QString("confrooms/%0/in/%1/").arg(m_id).arg(rowId);
+    QString chanid = m_row2id[row];
+    // QString in = QString("confrooms/%0/in/%1/").arg(m_id).arg(rowId);
+    const MeetmeInfo * m = b_engine->meetme(m_id);
+    if (! m) return Qt::NoItemFlags;
+    const QVariantMap & user_chan = m->channels().value(chanid).toMap();
+    const UserInfo * u = b_engine->getUserForXChannelId(chanid);
+    bool my_channel =  (u && u == b_engine->user(b_engine->getFullId()));
+    
 
     if (m_admin) {
         if (col == ACTION_KICK) {
             return Qt::ItemIsEnabled;
         }
         if (((col == ACTION_ALLOW_IN) || (col == ACTION_TALK_TO))
-              && (!b_engine->eV(in + "authed").toBool())) {
+            // && (!b_engine->eV(in + "authed").toBool())) {
+            && (user_chan.value("is_authed").toBool())) {
             return Qt::ItemIsEnabled;
         }
-        if ( (col == ACTION_MUTE) && (b_engine->eV(in + "muted").toBool())) {
+        if ((col == ACTION_MUTE) && (user_chan.value("is_muted").toBool())) {
             return Qt::ItemIsEnabled;
         }
-    } else {
-        if (b_engine->eV(in + "user-id").toString() == b_engine->getFullId()) {
-            if (col == ACTION_MUTE) {
-                if (b_engine->eV(in + "muted").toBool()) {
-                    return Qt::ItemIsEnabled;
-                }
-            }
-        }
+    } else if (my_channel && col == ACTION_MUTE
+               && user_chan.value("is_muted").toBool()) {
+        return Qt::ItemIsEnabled;
     }
-
     return Qt::NoItemFlags;
 }
 
@@ -456,7 +456,6 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
     QString roomId = static_cast<ConfRoomModel*>(model())->id();
     QString castId = model()->index(row, ID).data().toString();
     
-    // Not using the dstore filter since "/" is part or the grammar and of the full id
     QString in = QString("confrooms/%0/in").arg(roomId);
     QVariantMap users = b_engine->eVM(in);
     QString current_user_key;
