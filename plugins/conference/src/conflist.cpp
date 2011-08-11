@@ -113,46 +113,59 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
     }
 
     int row = index.row(), col = index.column();
+    QString meetme_id;
 
-    if (m_row2id.contains(row))
-        row = m_row2id[row].toInt();
+    if (m_row2id.contains(row)) {
+        meetme_id = m_row2id[row];
+        // row = m_row2id[row].toInt();
+    }
 
-    QString room = QString("confrooms/%0/").arg(row);
-    QString mm = b_engine->eV(room + "admin_moderationmode").toString();
+    // QString room = QString("confrooms/%0/").arg(row);
+    qDebug() << Q_FUNC_INFO << "Meetme id" << meetme_id;
+    const MeetmeInfo * m = b_engine->meetme(meetme_id);
+    if (!m) return QVariant();
+    // QString mm = b_engine->eV(room + "admin_moderationmode").toString();
+    const QString & mm = m->admin_moderationmode();
     switch (col) {
     case ID:
-        return b_engine->eV(room + "id");
+        // return b_engine->eV(room + "id");
+        return m->xid();
     case NUMBER:
-        return b_engine->eV(room + "number");
+        //return b_engine->eV(room + "number");
+        return m->number();
     case NAME:
-        return b_engine->eV(room + "name");
+        //return b_engine->eV(room + "name");
+        return m->name();
     case PIN_REQUIRED:
-        return b_engine->eV(room + "pin_needed")
-            .toBool() ? tr("Yes") : tr("No");
+        // return b_engine->eV(room + "pin_needed")
+        //     .toBool() ? tr("Yes") : tr("No");
+        return m->pin_needed();
     case MODERATED:
         return mm.isEmpty() || mm == "0" ? tr("No") : tr("Yes");
     case MEMBER_COUNT:
-        return b_engine->eVM(room + "in").size();
+        // return b_engine->eVM(room + "in").size();
+        return m->channels().size();
     case STARTED_SINCE:
         {
-            QVariantMap UserIn = b_engine->eVM(room + "in");
-            double time = 0;
-            QString displayed = QString::fromUtf8("Ø");
-            foreach (QString uid, UserIn.keys()) {
-                double utime = UserIn[uid].toMap().value("time-start").toDouble();
-                if ((time == 0) || (time > utime)) {
-                    time = utime;
-                }
-            }
-            if (time != 0) {
-                displayed =
-                    QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
-                                          b_engine->timeDeltaServerClient() -
-                                          time)
-                                         .toUTC().toString("hh:mm:ss");
-            }
+            // QVariantMap UserIn = b_engine->eVM(room + "in");
+            // double time = 0;
+            // QString displayed = QString::fromUtf8("Ø");
+            // foreach (QString uid, UserIn.keys()) {
+            //     double utime = UserIn[uid].toMap().value("time-start").toDouble();
+            //     if ((time == 0) || (time > utime)) {
+            //         time = utime;
+            //     }
+            // }
+            // if (time != 0) {
+            //     displayed =
+            //         QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
+            //                               b_engine->timeDeltaServerClient() -
+            //                               time)
+            //                              .toUTC().toString("hh:mm:ss");
+            // }
 
-            return displayed;
+            // return displayed;
+            return 0;
         }
         default:
             break;
@@ -160,8 +173,7 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QVariant
-ConfListModel::headerData(int section,
+QVariant ConfListModel::headerData(int section,
                           Qt::Orientation orientation,
                           int role) const
 {
@@ -235,8 +247,10 @@ void ConfListView::onViewClick(const QModelIndex &model)
     QString roomName = model.sibling(model.row(), NAME).data().toString();
     QString roomNumber = model.sibling(model.row(), NUMBER).data().toString();
 
+    qDebug() << Q_FUNC_INFO << roomId << roomName << roomNumber;
+
     if (roomId != "") {
-        if (lastPressed&Qt::LeftButton) {
+        if (lastPressed & Qt::LeftButton) {
             b_engine->pasteToDial(roomNumber);
             QTimer *timer = new QTimer(this);
             timer->setSingleShot(true);
@@ -246,8 +260,8 @@ void ConfListView::onViewClick(const QModelIndex &model)
         } else {
             QMenu *menu = new QMenu(this);
 
-            QAction *action = new QAction(tr("Get in room %1 (%2)")
-                                             .arg(roomName).arg(roomNumber), menu);
+            QAction *action = new QAction(
+                tr("Get in room %1 (%2)").arg(roomName).arg(roomNumber), menu);
 
             action->setProperty("id", roomId);
             connect(action, SIGNAL(triggered(bool)),
@@ -293,13 +307,19 @@ ConfList::ConfList(XletConference *parent)
 void ConfList::phoneConfRoom()
 {
     QString roomId = sender()->property("id").toString();
-    QString roomNumber = b_engine->eV(QString("confrooms/%0/number").arg(roomId)).toString();
+    qDebug() << Q_FUNC_INFO << "Room id" << roomId;
 
-    b_engine->actionDialNumber(roomNumber);
-    m_manager->openConfRoom(roomId, true);
+    // QString roomNumber = b_engine->eV(QString("confrooms/%0/number").arg(roomId)).toString();
+    const MeetmeInfo * m = b_engine->meetme(roomId);
+    if (m) {
+        QString roomNumber = m->number();
+        b_engine->actionDialNumber(roomNumber);
+        m_manager->openConfRoom(roomId, true);
+    }
 }
 
 void ConfList::openConfRoom()
 {
+    qDebug() << Q_FUNC_INFO;
     m_manager->openConfRoom(sender()->property("id").toString());
 }

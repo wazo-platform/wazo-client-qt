@@ -45,8 +45,12 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &id)
     : QAbstractTableModel(parent), m_tab(tab), m_parent(parent), m_admin(0),
       m_authed(0), m_id(id), m_view(NULL)
 {
-    b_engine->tree()->onChange(QString("confrooms/%0").arg(id), this,
-                               SLOT(confRoomChange(const QString &, DStoreEvent)));
+    // b_engine->tree()->onChange(QString("confrooms/%0").arg(id), this,
+    //                            SLOT(confRoomChange(const QString &, DStoreEvent)));
+    connect(b_engine, SIGNAL(updateMeetmesConfig(const QString &)),
+            this, SLOT(updateMeetmesConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateMeetmesStatus(const QString &)),
+            this, SLOT(updateMeetmesStatus(const QString &)));
     extractRow2IdMap();
     startTimer(1000);
     timerEvent(NULL);
@@ -65,29 +69,40 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &id)
 
 ConfRoomModel::~ConfRoomModel()
 {
-    b_engine->tree()->unregisterAllCb(this);
+    // b_engine->tree()->unregisterAllCb(this);
 }
 
 void ConfRoomModel::timerEvent(QTimerEvent *)
 {
-    QString req = QString("confrooms/%0/in").arg(m_id);
-    QVariantMap users = b_engine->eVM(req);
-    foreach (const QString key, users.keys()) {
-        if (users[key].toMap().value("user-id") == b_engine->getFullId()) {
-            QVariantMap self = users[key].toMap();
-            m_admin = self.value("admin").toBool();
-            m_authed = self.value("authed").toBool();
-            break;
+    // QString req = QString("confrooms/%0/in").arg(m_id);
+    const MeetmeInfo * m = b_engine->meetme(m_id);
+    if (m) {
+        foreach (QString key, m->channels().keys()) {
+            const UserInfo * u = b_engine->getUserForXChannelId(key);
+            if (u && u->xid() == b_engine->getFullId()) {
+                QVariantMap self = m->channels().value(key).toMap();
+                m_admin = self.value("isadmin").toBool();
+                m_authed = self.value("authed").toBool();
+                break;
+            }
         }
+        updateView();
+        reset();
     }
-    updateView();
-    reset();
+    // QVariantMap users = b_engine->eVM(req);
+    // foreach (const QString key, users.keys()) {
+    //     if (users[key].toMap().value("user-id") == b_engine->getFullId()) {
+    //         QVariantMap self = users[key].toMap();
+    //         m_admin = self.value("admin").toBool();
+    //         m_authed = self.value("authed").toBool();
+    //         break;
+    //     }
+    // }
 }
 
 void ConfRoomModel::setView(ConfRoomView *v)
 {
     m_view = v;
-
     updateView();
 }
 
@@ -97,43 +112,65 @@ void ConfRoomModel::updateView()
                              ACTION_KICK,
                              ACTION_ALLOW_IN,
                              ACTION_TALK_TO };
-    int i;
     if (m_view) {
         if (m_admin) {
-            for(i=nelem(actions);i--;) {
+            //for (int i = nelem(actions);i--;) {
+            for (int i = 0; i < nelem(actions); ++i) {
                 m_view->showColumn(actions[i]);
             }
         } else {
-            for(i=nelem(actions);i--;) {
+            //for(i=nelem(actions);i--;) {
+            for (int i = 0; i < nelem(actions); ++i) {
                 m_view->hideColumn(actions[i]);
             }
         }
     }
 }
 
-void ConfRoomModel::confRoomChange(const QString &path, DStoreEvent event)
+// void ConfRoomModel::confRoomChange(const QString &path, DStoreEvent event)
+// {
+//     if (event == NODE_REMOVED) {
+//         if (b_engine->eV(path + "/user-id").toString() == b_engine->xivoUserId()) {
+//             m_tab->closeTab(m_parent);
+//         }
+//     }
+//     QTimer::singleShot(0, this, SLOT(extractRow2IdMap()));
+// }
+
+void ConfRoomModel::updateMeetmesConfig(const QString & meetme_id)
 {
-    if (event == NODE_REMOVED) {
-        if (b_engine->eV(path + "/user-id").toString() == b_engine->xivoUserId()) {
-            m_tab->closeTab(m_parent);
-        }
-    }
-    QTimer::singleShot(0, this, SLOT(extractRow2IdMap()));
+    qDebug() << Q_FUNC_INFO << meetme_id;
+}
+
+void ConfRoomModel::updateMeetmesStatus(const QString & meetme_id)
+{
+    qDebug() << Q_FUNC_INFO << meetme_id;
 }
 
 void ConfRoomModel::extractRow2IdMap()
 {
-    m_pplInRoom = b_engine->eVM(QString("confrooms/%0/in").arg(m_id));
-
-    m_row2id.clear();
-
-    int row = 0;
-    if (m_pplInRoom.size() != m_row2id.size()) {
-        foreach(QString roomId, m_pplInRoom.keys()) {
-            m_row2id.insert(row++, roomId);
+    // m_pplInRoom = b_engine->eVM(QString("confrooms/%0/in").arg(m_id));
+    const MeetmeInfo * m = b_engine->meetme(m_id);
+    if (m) {
+        m_row2id.clear();
+        if (m->channels().size() != m_row2id.size()) {
+            int row = 0;
+            foreach (QString xcid, m->channels().keys()) {
+                m_row2id.insert(row++, xcid);
+            }
         }
+        reset();
     }
-    reset();
+
+    // m_row2id.clear();
+
+    // int row = 0;
+    // if (m_pplInRoom.size() != m_row2id.size()) {
+    //     foreach(QString roomId, m_pplInRoom.keys()) {
+    //         m_row2id.insert(row++, roomId);
+    //     }
+    // }
+    // reset();
 }
 
 void ConfRoomModel::sort(int column, Qt::SortOrder order)
@@ -172,11 +209,16 @@ void ConfRoomModel::sort(int column, Qt::SortOrder order)
 
 int ConfRoomModel::rowCount(const QModelIndex&) const
 {
-    QString room = QString("confrooms/%0/").arg(m_id);
-    if ((b_engine->eV(room + "moderated").toInt()) && (!m_authed))
-        return 0;
+    const MeetmeInfo * m = b_engine->meetme(m_id);
+    if (m) {
+        return m->channels().size();
+    }
+    // TODO: Check authed and moderation mode...
+    // QString room = QString("confrooms/%0/").arg(m_id);
+    // if ((b_engine->eV(room + "moderated").toInt()) && (!m_authed))
+    //     return 0;
 
-    return m_pplInRoom.size();
+    // return m_pplInRoom.size();
 }
 
 int ConfRoomModel::columnCount(const QModelIndex&) const
