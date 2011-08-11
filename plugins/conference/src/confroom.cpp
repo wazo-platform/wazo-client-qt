@@ -229,10 +229,20 @@ int ConfRoomModel::columnCount(const QModelIndex&) const
 QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
 {
     int row = index.row(), col = index.column();
-    QString rowId;
+    QString chanid = m_row2id[row];
 
-    rowId = m_row2id[row];
-    QString in = QString("confrooms/%0/in/%1/").arg(m_id).arg(rowId);
+    // QString in = QString("confrooms/%0/in/%1/").arg(m_id).arg(rowId);
+    const MeetmeInfo * m = b_engine->meetme(m_id);
+    if (! m || (m && ! m->channels().contains(chanid))) {
+        qDebug() << Q_FUNC_INFO << m_id << chanid
+                 << "No such channel in this meetme";
+        return QVariant();
+    }
+
+    const QVariantMap & user_chan = m->channels().value(chanid).toMap();
+    const ChannelInfo * c = b_engine->channel(chanid);
+    const UserInfo * u = b_engine->getUserForXChannelId(chanid);
+    bool my_channel = (u && u == b_engine->user(b_engine->getFullId()));
 
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole) {
@@ -242,7 +252,8 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
                 return QPixmap(":images/cancel.png").scaledToHeight(16,
                                Qt::SmoothTransformation);
             } else if (col == ACTION_ALLOW_IN) {
-                if (!b_engine->eV(in + "authed").toBool()) {
+                //if (!b_engine->eV(in + "authed").toBool()) {
+                if (user_chan.value("is_authed").toBool()) {
                     return QPixmap(":images/add.png").scaledToHeight(16,
                                    Qt::SmoothTransformation);
                 } else {
@@ -252,8 +263,7 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
                 return QPixmap(":in_conference/speak.png").scaledToHeight(16,
                                Qt::SmoothTransformation);
             } else if (col == ACTION_MUTE) {
-                if ((m_admin) ||
-                    (b_engine->eV(in + "user-id").toString() == b_engine->getFullId())) {
+                if (m_admin || my_channel) {
                     return QPixmap(":in_conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
                 } else {
                     return QVariant();
@@ -263,24 +273,29 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
             if (col == ACTION_KICK) {
                 return tr("Kick");
             } else if (col == ACTION_ALLOW_IN) {
-                if (b_engine->eV(in + "authed").toBool()) {
+                // if (b_engine->eV(in + "authed").toBool()) {
+                if (user_chan.value("is_authed").toBool()) {
                     return tr("User already authed");
                 }
                 return tr("Allow in");
             } else if (col == ACTION_TALK_TO) {
-                if (b_engine->eV(in + "authed").toBool()) {
+                // if (b_engine->eV(in + "authed").toBool()) {
+                if (user_chan.value("is_authed").toBool()) {
                     return tr("User already authed");
                 }
                 return tr("Talk to");
             } else if (col == ACTION_RECORD) {
-                if (b_engine->eV(in + "recorded").toBool()) {
+                // if (b_engine->eV(in + "recorded").toBool()) {
+                // TODO: Make sure ismonitored means that this channel is being recorded
+                if (c && c->ismonitored()) {
                     return tr("User already recorded");
                 }
                 return tr("Record conference until this user leaves");
             } else if (col == ACTION_MUTE) {
-                if ((m_admin) ||
-                    (b_engine->eV(in + "user-id").toString() == b_engine->getFullId())) {
-                    if (b_engine->eV(in + "muted").toBool()) {
+                if (m_admin || my_channel) {
+                    // (b_engine->eV(in + "user-id").toString() == b_engine->getFullId())) {
+                    //if (b_engine->eV(in + "muted").toBool()) {
+                    if (user_chan.value("is_muted").toBool()) {
                         return tr("Unmute");
                     }
                     return tr("Mute");
@@ -292,32 +307,37 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
 
     switch (col) {
     case ID:
-        return b_engine->eV(in + "id");
+        return user_chan.value("id").toString();
+        // return b_engine->eV(in + "id");
     case NUMBER:
-        return b_engine->eV(in + "phonenum");
+        // return b_engine->eV(in + "phonenum");
+        return (u ? u->findNumberForXChannel(chanid) : tr("unknown"));
     case ACTION_RECORD:
-        return (b_engine->eV(in + "recorded").toBool())? tr("Yes") : tr("No");
+        return (c && c->ismonitored()) ? tr("Yes") : tr("No");
     case ADMIN:
-        return (b_engine->eV(in + "admin").toBool()) ? tr("Yes") : tr("No");
+        return (user_chan.value("is_admin").toBool()) ? tr("Yes") : tr("No");
+        // return (b_engine->eV(in + "admin").toBool()) ? tr("Yes") : tr("No");
     case NAME:
-        return b_engine->eV(in + "displayname").toString();
+        return (u ? u->fullname() : tr("unknown"));
+        // return b_engine->eV(in + "displayname").toString();
     case ACTION_ALLOW_IN:
-        return (b_engine->eV(in + "authed").toBool()) ? tr("Yes") : tr("No");
+        // return (b_engine->eV(in + "authed").toBool()) ? tr("Yes") : tr("No");
+        return (user_chan.value("is_authed").toBool() ? tr("Yes") : tr("No"));
     case SINCE:
-        return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
-                                     b_engine->eV(in + "time-start").toDouble() -
-                                     b_engine->timeDeltaServerClient()).toUTC()
-            .toString("hh:mm:ss");
+        // return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
+        //                              b_engine->eV(in + "time-start").toDouble() -
+        //                              b_engine->timeDeltaServerClient()).toUTC()
+        //     .toString("hh:mm:ss");
+        return "Fix me";
     default:
         break;
     }
     return QVariant();
 }
 
-QVariant
-ConfRoomModel::headerData(int section,
-                             Qt::Orientation orientation,
-                             int role) const
+QVariant ConfRoomModel::headerData(int section,
+                                   Qt::Orientation orientation,
+                                   int role) const
 {
     if (role != Qt::DisplayRole)
         return QVariant();
