@@ -1885,7 +1885,7 @@ void BaseEngine::startTryAgainTimer()
 void BaseEngine::timerEvent(QTimerEvent *event)
 {
     int timerId = event->timerId();
-    qDebug() << Q_FUNC_INFO << timerId << m_timerid_tryreconnect;
+    // qDebug() << Q_FUNC_INFO << timerId << m_timerid_tryreconnect;
     if (timerId == m_timerid_keepalive) {
         keepLoginAlive();
     } else if (timerId == m_timerid_tryreconnect) {
