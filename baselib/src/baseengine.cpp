@@ -278,6 +278,8 @@ void BaseEngine::loadSettings()
 
 /*!
  * Save Settings to the registery/configuration file
+ *
+ * \todo automatize saving of m_config values
  */
 void BaseEngine::saveSettings()
 {
@@ -1826,14 +1828,6 @@ uint BaseEngine::port_to_use() const
     } else {
         return m_config["cti_port_encrypted"].toUInt();
     }
-}
-
-/*!
- * \todo Historysize only useful for history plugin. To be replaced by getConfig("historysize")
- */
-uint BaseEngine::historySize() const
-{
-    return m_config["historysize"].toInt();
 }
 
 void BaseEngine::initFeatureFields(const QString & field)

@@ -159,7 +159,7 @@ void LogWidgetModel::requestHistory(const QString & xuserid,
         QVariantMap command;
         command["class"] = "history";
         command["xuserid"] = xuserid;
-        command["size"] = QString::number(b_engine->historySize());
+        command["size"] = QString::number(b_engine->getConfig("historysize").toUInt());
         command["mode"] = QString::number(mode);
         if(moreRecent.isValid()) {
             command["morerecentthan"] = moreRecent.toString(Qt::ISODate);

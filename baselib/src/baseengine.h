@@ -160,8 +160,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // public setters/getters for properties
 
-        uint historySize() const;  //!< history size
-
         EngineState state();               //!< Engine state (Logged/Not Logged)
         void setState(EngineState state);  //!< see state()
 
