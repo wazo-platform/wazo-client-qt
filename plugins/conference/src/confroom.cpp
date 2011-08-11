@@ -423,57 +423,48 @@ void ConfRoomView::sectionHeaderClicked(int index)
 
 void ConfRoomView::onViewClick(const QModelIndex &index)
 {
-    int row = index.row(), col = index.column();
-
-    QString roomId = static_cast<ConfRoomModel*>(model())->id();
-    QString castId = model()->index(row, ID).data().toString();
+    QString meetme_id = static_cast<ConfRoomModel *>(model())->id();
+    QString channel_id = model()->index(index.row(), ID).data().toString();
     
-    QString in = QString("confrooms/%0/in").arg(roomId);
-    QVariantMap users = b_engine->eVM(in);
-    QString current_user_key;
-    foreach (const QString & k, users.keys()) {
-        if (users.value(k).toMap().value("user-id") == b_engine->getFullId()) {
-            current_user_key = k;
-            break;
-        }
-    }
-    QVariantMap current_user = users.value(current_user_key).toMap();
+    const MeetmeInfo * m = b_engine->meetme(meetme_id);
+    const UserInfo * u = b_engine->getUserForXChannelId(channel_id);
+    const ChannelInfo * c = b_engine->channel(channel_id);
+    const QVariantMap & channels = (m ? m->channels() : QVariantMap());
+    const QVariantMap & user_chan = channels.value(channel_id).toMap();
+    
+    bool is_admin = static_cast<ConfRoomModel *>(model())->isAdmin();
+    bool is_my_channel = (u && u == b_engine->user(b_engine->getFullId()));
+    bool is_muted = user_chan.value("ismuted").toBool();
+    bool is_authed = user_chan.value("is_authed").toBool();
+    bool is_recorded = (c && c->ismonitored());
 
-    if (!(static_cast<ConfRoomModel*>(model())->isAdmin() ||
-          current_user.value("id") == castId)) {
-        return;
-    }
+    if ((! is_admin) || (! is_my_channel)) return;
 
-    switch (col) {
+    switch (index.column()) {
         case ACTION_MUTE:
-            if (b_engine->eV(in + "muted").toBool()) {
-                b_engine->meetmeAction("MeetmeUnmute", castId + " " + roomId);
+            if (is_muted) {
+                b_engine->meetmeAction("MeetmeUnmute", channel_id + " " + meetme_id);
             } else {
-                b_engine->meetmeAction("MeetmeMute", castId + " " + roomId);
+                b_engine->meetmeAction("MeetmeMute", channel_id + " " + meetme_id);
             }
             break;
         case ACTION_KICK:
-            if (!b_engine->eV(in + "authed").toBool()) {
-                b_engine->meetmeAction("MeetmeKick", castId + " " + roomId);
+            if (! is_authed) {
+                b_engine->meetmeAction("MeetmeKick", channel_id + " " + meetme_id);
             } else {
-                b_engine->meetmeAction("kick", castId + " " + roomId);
+                b_engine->meetmeAction("kick", channel_id + " " + meetme_id);
             }
             break;
         case ACTION_TALK_TO:
-            b_engine->meetmeAction("MeetmeTalk", castId + " " + roomId);
+            b_engine->meetmeAction("MeetmeTalk", channel_id + " " + meetme_id);
             break;
         case ACTION_RECORD:
-            {
-            int status = !b_engine->eV(in + "recorded").toBool();
-            b_engine->tree()->populate(in + "recorded", status);
-
-            b_engine->meetmeAction("record", castId + " " +
-                                             roomId + " " +
-                                             ( status ? "stop" : "start"));
-            }
+            b_engine->meetmeAction("record", channel_id + " " +
+                                             meetme_id + " " +
+                                             ( is_recorded ? "stop" : "start"));
             break;
         case ACTION_ALLOW_IN:
-            b_engine->meetmeAction("MeetmeAccept", castId + " " + roomId);
+            b_engine->meetmeAction("MeetmeAccept", channel_id + " " + meetme_id);
             break;
         default:
             break;

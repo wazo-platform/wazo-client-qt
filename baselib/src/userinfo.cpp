@@ -109,7 +109,7 @@ bool UserInfo::hasPhoneId(const QString & xphoneid) const
  */
 QString UserInfo::findNumberForXChannel(const QString & xcid) const
 {
-    qDebug() << Q_FUNC_INFO << xcid;
+    // qDebug() << Q_FUNC_INFO << xcid;
     foreach (const QString & phone_key, phonelist()) {
         const PhoneInfo * p = b_engine->phone(phone_key);
         if (p && p->xchannels().contains(xcid)) {
