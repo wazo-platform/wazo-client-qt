@@ -43,8 +43,7 @@ static QVariant COL_TITLE[NB_COL];
 ConfListModel::ConfListModel()
     : QAbstractTableModel()
 {
-    // b_engine->tree()->onChange("confrooms", this,
-    //     SLOT(confRoomsChange(const QString &, DStoreEvent)));
+    qDebug() << Q_FUNC_INFO;
 
     startTimer(1000);
     COL_TITLE[ID] = tr("Room UID");
@@ -66,7 +65,7 @@ void ConfListModel::timerEvent(QTimerEvent *)
 
 void ConfListModel::updateMeetmesConfig(const QString & meetme_id)
 {
-    // qDebug() << Q_FUNC_INFO << meetme_id;
+    qDebug() << Q_FUNC_INFO << meetme_id;
     int row = 0;
     if (b_engine->iterover("meetmes").size() != m_row2id.size()) {
         foreach (const QString & key, b_engine->iterover("meetmes").keys()) {
@@ -76,19 +75,6 @@ void ConfListModel::updateMeetmesConfig(const QString & meetme_id)
     reset();
 }
 
-// void ConfListModel::confRoomsChange(const QString &, DStoreEvent)
-// {
-//     m_roomList = b_engine->eVM("confrooms");
-
-//     int row = 0;
-//     if (m_roomList.size() != m_row2id.size()) {
-//         foreach(QString roomId, m_roomList.keys()) {
-//             m_row2id.insert(row++, roomId);
-//         }
-//     }
-//     reset();
-// }
-
 Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
 {
     return Qt::NoItemFlags;
@@ -96,7 +82,7 @@ Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
 
 int ConfListModel::rowCount(const QModelIndex&) const
 {
-    return m_roomList.size();
+    return b_engine->iterover("meetmes").size();
 }
 
 int ConfListModel::columnCount(const QModelIndex&) const
@@ -121,7 +107,6 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
     }
 
     // QString room = QString("confrooms/%0/").arg(row);
-    qDebug() << Q_FUNC_INFO << "Meetme id" << meetme_id;
     const MeetmeInfo * m = b_engine->meetme(meetme_id);
     if (!m) return QVariant();
     // QString mm = b_engine->eV(room + "admin_moderationmode").toString();
@@ -139,7 +124,7 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
     case PIN_REQUIRED:
         // return b_engine->eV(room + "pin_needed")
         //     .toBool() ? tr("Yes") : tr("No");
-        return m->pin_needed();
+        return m->pin_needed() ? tr("Yes") : tr("No");
     case MODERATED:
         return mm.isEmpty() || mm == "0" ? tr("No") : tr("Yes");
     case MEMBER_COUNT:
@@ -174,8 +159,8 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
 }
 
 QVariant ConfListModel::headerData(int section,
-                          Qt::Orientation orientation,
-                          int role) const
+                                   Qt::Orientation orientation,
+                                   int role) const
 {
     if (role != Qt::DisplayRole)
         return QVariant();
@@ -189,35 +174,35 @@ QVariant ConfListModel::headerData(int section,
 
 void ConfListModel::sort(int column, Qt::SortOrder order)
 {
-    struct {
-        static bool ascending(const QPair<int, QString> &a,
-                              const QPair<int, QString> &b) {
-            return QString::localeAwareCompare(a.second, b.second) < 0 ?
-                                               true : false;
-        }
-        static bool descending(const QPair<int, QString> &a,
-                               const QPair<int, QString> &b) {
-            return QString::localeAwareCompare(a.second, b.second) < 0 ?
-                                               false : true;
-        }
-    } sFun;
+    // struct {
+    //     static bool ascending(const QPair<int, QString> &a,
+    //                           const QPair<int, QString> &b) {
+    //         return QString::localeAwareCompare(a.second, b.second) < 0 ?
+    //                                            true : false;
+    //     }
+    //     static bool descending(const QPair<int, QString> &a,
+    //                            const QPair<int, QString> &b) {
+    //         return QString::localeAwareCompare(a.second, b.second) < 0 ?
+    //                                            false : true;
+    //     }
+    // } sFun;
 
-    QList<QPair<int, QString> > toSort;
+    // QList<QPair<int, QString> > toSort;
 
-    int i, e;
-    for (i=0,e=rowCount(QModelIndex());i<e;i++) {
-        toSort.append(QPair<int, QString>(index(i, ID).data().toInt(),
-                                          index(i, column).data().toString()));
-    }
+    // int i, e;
+    // for (i=0,e=rowCount(QModelIndex());i<e;i++) {
+    //     toSort.append(QPair<int, QString>(index(i, ID).data().toInt(),
+    //                                       index(i, column).data().toString()));
+    // }
 
-    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
-                                         sFun.ascending :
-                                         sFun.descending);
+    // qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
+    //                                      sFun.ascending :
+    //                                      sFun.descending);
 
-    for (i=0;i<e;i++) {
-        m_row2id.insert(i, QString::number(toSort[i].first));
-    }
-    reset();
+    // for (i=0;i<e;i++) {
+    //     m_row2id.insert(i, QString::number(toSort[i].first));
+    // }
+    // reset();
 }
 
 
@@ -285,6 +270,7 @@ void ConfListView::mousePressEvent(QMouseEvent *event)
 ConfList::ConfList(XletConference *parent)
     : QWidget(), m_manager(parent)
 {
+    qDebug() << Q_FUNC_INFO;
     QVBoxLayout *vBox = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout();
     ConfListView *view = new ConfListView(this, new ConfListModel());

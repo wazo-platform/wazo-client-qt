@@ -45,8 +45,6 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &id)
     : QAbstractTableModel(parent), m_tab(tab), m_parent(parent), m_admin(0),
       m_authed(0), m_id(id), m_view(NULL)
 {
-    // b_engine->tree()->onChange(QString("confrooms/%0").arg(id), this,
-    //                            SLOT(confRoomChange(const QString &, DStoreEvent)));
     connect(b_engine, SIGNAL(updateMeetmesConfig(const QString &)),
             this, SLOT(updateMeetmesConfig(const QString &)));
     connect(b_engine, SIGNAL(updateMeetmesStatus(const QString &)),
@@ -69,12 +67,10 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &id)
 
 ConfRoomModel::~ConfRoomModel()
 {
-    // b_engine->tree()->unregisterAllCb(this);
 }
 
 void ConfRoomModel::timerEvent(QTimerEvent *)
 {
-    // QString req = QString("confrooms/%0/in").arg(m_id);
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (m) {
         foreach (QString key, m->channels().keys()) {
@@ -82,22 +78,13 @@ void ConfRoomModel::timerEvent(QTimerEvent *)
             if (u && u->xid() == b_engine->getFullId()) {
                 QVariantMap self = m->channels().value(key).toMap();
                 m_admin = self.value("isadmin").toBool();
-                m_authed = self.value("authed").toBool();
+                m_authed = self.value("isauthed").toBool();
                 break;
             }
         }
         updateView();
         reset();
     }
-    // QVariantMap users = b_engine->eVM(req);
-    // foreach (const QString key, users.keys()) {
-    //     if (users[key].toMap().value("user-id") == b_engine->getFullId()) {
-    //         QVariantMap self = users[key].toMap();
-    //         m_admin = self.value("admin").toBool();
-    //         m_authed = self.value("authed").toBool();
-    //         break;
-    //     }
-    // }
 }
 
 void ConfRoomModel::setView(ConfRoomView *v)
@@ -114,12 +101,10 @@ void ConfRoomModel::updateView()
                              ACTION_TALK_TO };
     if (m_view) {
         if (m_admin) {
-            //for (int i = nelem(actions);i--;) {
             for (int i = 0; i < nelem(actions); ++i) {
                 m_view->showColumn(actions[i]);
             }
         } else {
-            //for(i=nelem(actions);i--;) {
             for (int i = 0; i < nelem(actions); ++i) {
                 m_view->hideColumn(actions[i]);
             }
@@ -135,6 +120,8 @@ void ConfRoomModel::updateMeetmesConfig(const QString & meetme_id)
 void ConfRoomModel::updateMeetmesStatus(const QString & meetme_id)
 {
     // Check if our channel left the meetme and close the tab
+    // qDebug() << Q_FUNC_INFO << meetme_id;
+    extractRow2IdMap();
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (m) {
         const QVariantMap & channels = m->channels();
@@ -150,78 +137,72 @@ void ConfRoomModel::updateMeetmesStatus(const QString & meetme_id)
     QTimer::singleShot(0, this, SLOT(extractRow2IdMap()));
 }
 
+/*! \brief Refresh the map between row and meetme channel ids */
 void ConfRoomModel::extractRow2IdMap()
 {
-    // m_pplInRoom = b_engine->eVM(QString("confrooms/%0/in").arg(m_id));
+    // qDebug() << Q_FUNC_INFO;
+    m_row2id.clear();
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (m) {
-        m_row2id.clear();
         if (m->channels().size() != m_row2id.size()) {
             int row = 0;
             foreach (QString xcid, m->channels().keys()) {
                 m_row2id.insert(row++, xcid);
             }
         }
-        reset();
-    }
-
-    // m_row2id.clear();
-
-    // int row = 0;
-    // if (m_pplInRoom.size() != m_row2id.size()) {
-    //     foreach(QString roomId, m_pplInRoom.keys()) {
-    //         m_row2id.insert(row++, roomId);
-    //     }
-    // }
-    // reset();
-}
-
-void ConfRoomModel::sort(int column, Qt::SortOrder order)
-{
-    struct {
-        static bool ascending(const QPair<int, QString> &a,
-                              const QPair<int, QString> &b) {
-            return QString::localeAwareCompare(a.second, b.second) < 0 ?
-                                               true : false;
-        }
-        static bool descending(const QPair<int, QString> &a,
-                               const QPair<int, QString> &b) {
-            return QString::localeAwareCompare(a.second, b.second) < 0 ?
-                                               false : true;
-        }
-    } sFun;
-
-    QList<QPair<int, QString> > toSort;
-
-    int i, e;
-    for (i=0,e=rowCount(QModelIndex());i<e;i++) {
-        toSort.append(QPair<int, QString>(index(i, ID).data().toInt(),
-                                          index(i, column).data().toString()));
-    }
-
-    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
-                                         sFun.ascending :
-                                         sFun.descending);
-
-    for (i=0;i<e;i++) {
-        m_row2id.insert(i, QString::number(toSort[i].first));
     }
     reset();
 }
 
+void ConfRoomModel::sort(int column, Qt::SortOrder order)
+{
+    // struct {
+    //     static bool ascending(const QPair<int, QString> &a,
+    //                           const QPair<int, QString> &b) {
+    //         return QString::localeAwareCompare(a.second, b.second) < 0 ?
+    //                                            true : false;
+    //     }
+    //     static bool descending(const QPair<int, QString> &a,
+    //                            const QPair<int, QString> &b) {
+    //         return QString::localeAwareCompare(a.second, b.second) < 0 ?
+    //                                            false : true;
+    //     }
+    // } sFun;
 
-int ConfRoomModel::rowCount(const QModelIndex&) const
+    // QList<QPair<int, QString> > toSort;
+
+    // int i, e;
+    // for (i=0,e=rowCount(QModelIndex());i<e;i++) {
+    //     toSort.append(QPair<int, QString>(index(i, ID).data().toInt(),
+    //                                       index(i, column).data().toString()));
+    // }
+
+    // qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
+    //                                      sFun.ascending :
+    //                                      sFun.descending);
+
+    // for (i=0;i<e;i++) {
+    //     m_row2id.insert(i, QString::number(toSort[i].first));
+    // }
+    // reset();
+}
+
+
+/*! \brief Returns the number of rows in the table
+ * This is not the actual size of the table but the size of the data we have to
+ * fit in it.
+ * \return the number of users in this meetme or 0 if not authorized
+ */
+int ConfRoomModel::rowCount(const QModelIndex &) const
 {
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (m) {
-        return m->channels().size();
+        bool moderated = m->admin_moderationmode() != "0";
+        if ((! moderated) || m_authed) {
+            return m->channels().size();
+        }
     }
-    // TODO: Check authed and moderation mode...
-    // QString room = QString("confrooms/%0/").arg(m_id);
-    // if ((b_engine->eV(room + "moderated").toInt()) && (!m_authed))
-    //     return 0;
-
-    // return m_pplInRoom.size();
+    return 0;
 }
 
 int ConfRoomModel::columnCount(const QModelIndex&) const
@@ -234,11 +215,11 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
     int row = index.row(), col = index.column();
     QString chanid = m_row2id[row];
 
-    // QString in = QString("confrooms/%0/in/%1/").arg(m_id).arg(rowId);
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (! m || (m && ! m->channels().contains(chanid))) {
-        qDebug() << Q_FUNC_INFO << m_id << chanid
-                 << "No such channel in this meetme";
+        qDebug() << Q_FUNC_INFO << m_id << "chanid(" <<  chanid
+                 << ") No such channel in this meetme" << m->channels() << m_row2id;
+        exit(1);
         return QVariant();
     }
 
@@ -255,8 +236,7 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
                 return QPixmap(":images/cancel.png").scaledToHeight(16,
                                Qt::SmoothTransformation);
             } else if (col == ACTION_ALLOW_IN) {
-                //if (!b_engine->eV(in + "authed").toBool()) {
-                if (user_chan.value("is_authed").toBool()) {
+                if (user_chan.value("isauthed").toBool()) {
                     return QPixmap(":images/add.png").scaledToHeight(16,
                                    Qt::SmoothTransformation);
                 } else {
@@ -276,14 +256,12 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
             if (col == ACTION_KICK) {
                 return tr("Kick");
             } else if (col == ACTION_ALLOW_IN) {
-                // if (b_engine->eV(in + "authed").toBool()) {
-                if (user_chan.value("is_authed").toBool()) {
+                if (user_chan.value("isauthed").toBool()) {
                     return tr("User already authed");
                 }
                 return tr("Allow in");
             } else if (col == ACTION_TALK_TO) {
-                // if (b_engine->eV(in + "authed").toBool()) {
-                if (user_chan.value("is_authed").toBool()) {
+                if (user_chan.value("isauthed").toBool()) {
                     return tr("User already authed");
                 }
                 return tr("Talk to");
@@ -296,9 +274,7 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
                 return tr("Record conference until this user leaves");
             } else if (col == ACTION_MUTE) {
                 if (m_admin || my_channel) {
-                    // (b_engine->eV(in + "user-id").toString() == b_engine->getFullId())) {
-                    //if (b_engine->eV(in + "muted").toBool()) {
-                    if (user_chan.value("is_muted").toBool()) {
+                    if (user_chan.value("ismuted").toBool()) {
                         return tr("Unmute");
                     }
                     return tr("Mute");
@@ -311,21 +287,16 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
     switch (col) {
     case ID:
         return user_chan.value("id").toString();
-        // return b_engine->eV(in + "id");
     case NUMBER:
-        // return b_engine->eV(in + "phonenum");
         return (u ? u->findNumberForXChannel(chanid) : tr("unknown"));
     case ACTION_RECORD:
         return (c && c->ismonitored()) ? tr("Yes") : tr("No");
     case ADMIN:
-        return (user_chan.value("is_admin").toBool()) ? tr("Yes") : tr("No");
-        // return (b_engine->eV(in + "admin").toBool()) ? tr("Yes") : tr("No");
+        return (user_chan.value("isadmin").toBool()) ? tr("Yes") : tr("No");
     case NAME:
         return (u ? u->fullname() : tr("unknown"));
-        // return b_engine->eV(in + "displayname").toString();
     case ACTION_ALLOW_IN:
-        // return (b_engine->eV(in + "authed").toBool()) ? tr("Yes") : tr("No");
-        return (user_chan.value("is_authed").toBool() ? tr("Yes") : tr("No"));
+        return (user_chan.value("isauthed").toBool() ? tr("Yes") : tr("No"));
     case SINCE:
         // return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
         //                              b_engine->eV(in + "time-start").toDouble() -
@@ -357,7 +328,6 @@ Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
     int row = index.row(), col = index.column();
 
     QString chanid = m_row2id[row];
-    // QString in = QString("confrooms/%0/in/%1/").arg(m_id).arg(rowId);
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (! m) return Qt::NoItemFlags;
     const QVariantMap & user_chan = m->channels().value(chanid).toMap();
@@ -370,15 +340,14 @@ Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
             return Qt::ItemIsEnabled;
         }
         if (((col == ACTION_ALLOW_IN) || (col == ACTION_TALK_TO))
-            // && (!b_engine->eV(in + "authed").toBool())) {
-            && (user_chan.value("is_authed").toBool())) {
+            && (user_chan.value("isauthed").toBool())) {
             return Qt::ItemIsEnabled;
         }
-        if ((col == ACTION_MUTE) && (user_chan.value("is_muted").toBool())) {
+        if ((col == ACTION_MUTE) && (user_chan.value("ismuted").toBool())) {
             return Qt::ItemIsEnabled;
         }
     } else if (my_channel && col == ACTION_MUTE
-               && user_chan.value("is_muted").toBool()) {
+               && user_chan.value("ismuted").toBool()) {
         return Qt::ItemIsEnabled;
     }
     return Qt::NoItemFlags;
@@ -521,10 +490,8 @@ void ConfRoomView::mousePressEvent(QMouseEvent *event)
 ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &id)
     : QWidget(parent), m_id(id)
 {
-    qDebug() << Q_FUNC_INFO << id;
-    // QString room = QString("confrooms/%0/").arg(m_id);
+    // qDebug() << Q_FUNC_INFO << id;
     const MeetmeInfo * m = b_engine->meetme(m_id);
-    // int moderated = b_engine->eV(room + "moderated").toInt();
     bool moderated = (m ? m->admin_moderationmode() != "0" : false);
 
     QVBoxLayout *vBox = new QVBoxLayout(this);
