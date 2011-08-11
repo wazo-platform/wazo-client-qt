@@ -829,20 +829,20 @@ void BaseEngine::addUpdateConfMemberInTree(DStore *tree, const QString & xid)
 void BaseEngine::addUpdateConfRoomInTree(DStore *tree,
                                          const QString & xid)
 {
-    const MeetmeInfo * meetmeinfo = meetme(xid);
-    if (meetmeinfo == NULL)
-        return;
+    // const MeetmeInfo * meetmeinfo = meetme(xid);
+    // if (meetmeinfo == NULL)
+    //     return;
 
-    QString roomid = meetmeinfo->id();
-    QVariantMap info;
-    info["id"] = roomid;
-    info["name"] = meetmeinfo->name();
-    info["number"] = meetmeinfo->number();
-    info["pin_needed"] = meetmeinfo->pin_needed();
-    info["admin_moderationmode"] = meetmeinfo->admin_moderationmode();
-    info["in"] = QVariantMap();
+    // QString roomid = meetmeinfo->id();
+    // QVariantMap info;
+    // info["id"] = roomid;
+    // info["name"] = meetmeinfo->name();
+    // info["number"] = meetmeinfo->number();
+    // info["pin_needed"] = meetmeinfo->pin_needed();
+    // info["admin_moderationmode"] = meetmeinfo->admin_moderationmode();
+    // info["in"] = QVariantMap();
 
-    tree->populate(QString("confrooms/%0").arg(roomid), info);
+    // tree->populate(QString("confrooms/%0").arg(roomid), info);
 }
 
 void BaseEngine::emitMessage(const QString & msg)
