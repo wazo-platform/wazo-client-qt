@@ -127,24 +127,27 @@ void ConfRoomModel::updateView()
     }
 }
 
-// void ConfRoomModel::confRoomChange(const QString &path, DStoreEvent event)
-// {
-//     if (event == NODE_REMOVED) {
-//         if (b_engine->eV(path + "/user-id").toString() == b_engine->xivoUserId()) {
-//             m_tab->closeTab(m_parent);
-//         }
-//     }
-//     QTimer::singleShot(0, this, SLOT(extractRow2IdMap()));
-// }
-
 void ConfRoomModel::updateMeetmesConfig(const QString & meetme_id)
 {
-    qDebug() << Q_FUNC_INFO << meetme_id;
+    // qDebug() << Q_FUNC_INFO << meetme_id;
 }
 
 void ConfRoomModel::updateMeetmesStatus(const QString & meetme_id)
 {
-    qDebug() << Q_FUNC_INFO << meetme_id;
+    // Check if our channel left the meetme and close the tab
+    const MeetmeInfo * m = b_engine->meetme(m_id);
+    if (m) {
+        const QVariantMap & channels = m->channels();
+        const UserInfo * self = b_engine->user(b_engine->getFullId());
+        foreach (const QString & xcid, channels.keys()) {
+            if (b_engine->getUserForXChannelId(xcid) == self) {
+                // No need to close the tab if we are still in the room
+                return;
+            }
+        }
+    }
+    m_tab->closeTab(m_parent);
+    QTimer::singleShot(0, this, SLOT(extractRow2IdMap()));
 }
 
 void ConfRoomModel::extractRow2IdMap()
@@ -518,8 +521,11 @@ void ConfRoomView::mousePressEvent(QMouseEvent *event)
 ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &id)
     : QWidget(parent), m_id(id)
 {
-    QString room = QString("confrooms/%0/").arg(m_id);
-    int moderated = b_engine->eV(room + "moderated").toInt();
+    qDebug() << Q_FUNC_INFO << id;
+    // QString room = QString("confrooms/%0/").arg(m_id);
+    const MeetmeInfo * m = b_engine->meetme(m_id);
+    // int moderated = b_engine->eV(room + "moderated").toInt();
+    bool moderated = (m ? m->admin_moderationmode() != "0" : false);
 
     QVBoxLayout *vBox = new QVBoxLayout(this);
     setLayout(vBox);
@@ -527,9 +533,8 @@ ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &id)
     m_model = new ConfRoomModel(tab, this, id);
     QPushButton *roomPause = new QPushButton(tr("&Pause conference"), this);
     QLabel *redondant = new QLabel(tr(" Conference room %1 (%2) ")
-                                   .arg(b_engine->eV(QString("confrooms/%0/name").arg(id)).toString())
-                                   .arg(b_engine->eV(QString("confrooms/%0/number").arg(id)).toString())
-                                   );
+                                   .arg(m ? m->name() : tr("unknown"))
+                                   .arg(m ? m->number() : tr("unknown")));
     setProperty("id", id);
 
     roomPause->setProperty("state", true);
@@ -537,7 +542,7 @@ ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &id)
     hBox->addWidget(redondant, 6);
     hBox->addWidget(roomPause, 2);
     hBox->addStretch(1);
-    if (!m_model->isAdmin()||(!moderated)) {
+    if (! m_model->isAdmin() || (!moderated)) {
         roomPause->hide();
         hBox->setStretch(1, 8);
     }
@@ -548,7 +553,6 @@ ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &id)
 
     ConfRoomView *view = new ConfRoomView(this, m_model);
     m_model->setView(view);
-
 
     view->setStyleSheet("ConfRoomView {"
                             "border: none;"
@@ -564,10 +568,7 @@ ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &id)
 
     vBox->addLayout(hBox);
 
-
-
-    if ( moderated &&
-        (!m_model->isAuthed())) {
+    if (m && m->admin_moderationmode() != "0" && (! m_model->isAuthed())) {
         QTimer *timer = new QTimer(this);
         timer->setSingleShot(true);
         connect(timer, SIGNAL(timeout()), this, SLOT(allowedIn()));
