@@ -88,6 +88,9 @@ class BASELIB_EXPORT UserInfo : public XInfo
         const QString & availstate() const;
         QString toString() const;
 
+        // helper methods
+        QString findNumberForXChannel(const QString &) const;
+
     private:
         QString m_company;  //!< user company
         QString m_ctilogin;  //!< user login on cti

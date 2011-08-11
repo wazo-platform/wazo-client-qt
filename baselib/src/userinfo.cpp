@@ -99,6 +99,27 @@ bool UserInfo::hasPhoneId(const QString & xphoneid) const
     return m_phoneidlist.contains(xphoneid);
 }
 
+/*! \brief Returns a phone number for a channel
+ *
+ * If a channel is owned by the one of the user's phone the phone number
+ * is returned.
+ *
+ * \param xcid The channel's XiVO id
+ * \return the phone number or an empty string
+ */
+QString UserInfo::findNumberForXChannel(const QString & xcid) const
+{
+    qDebug() << Q_FUNC_INFO << xcid;
+    qDebug() << "phones" << phonelist();
+    foreach (const QString & phone_key, phonelist()) {
+        const PhoneInfo * p = b_engine->phone(phone_key);
+        if (p && p->xchannels().contains(xcid)) {
+            return p->number();
+        }
+    }
+    return QString();
+}
+
 /*! \brief check if this user owns this channel */
 bool UserInfo::hasChannelId(const QString & xchannelid) const
 {
