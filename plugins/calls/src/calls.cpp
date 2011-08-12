@@ -184,7 +184,7 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
 
 void XletCalls::updateChannelStatus(const QString & xchannel)
 {
-    qDebug() << Q_FUNC_INFO << xchannel;
+    // qDebug() << Q_FUNC_INFO << xchannel;
     const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
     if (channelinfo == NULL)
         return;
