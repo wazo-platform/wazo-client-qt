@@ -184,7 +184,7 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
 
 void XletCalls::updateChannelStatus(const QString & xchannel)
 {
-    qDebug() << Q_FUNC_INFO << xchannel;
+    // qDebug() << Q_FUNC_INFO << xchannel;
     const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
     if (channelinfo == NULL)
         return;
@@ -202,7 +202,7 @@ void XletCalls::updateChannelStatus(const QString & xchannel)
     if (status == CHAN_STATUS_HANGUP)
         return;
     // activeChannels << channelme;
-    qDebug() << Q_FUNC_INFO << "adding/updating" << xchannel << m_affhash;
+    // qDebug() << Q_FUNC_INFO << "adding/updating" << xchannel << m_affhash;
     if (m_affhash.contains(xchannel))
         m_affhash[xchannel]->updateWidget(xchannel);
     else {
