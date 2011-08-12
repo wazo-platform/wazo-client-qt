@@ -421,26 +421,24 @@ void ConfRoomView::sectionHeaderClicked(int index)
 
 void ConfRoomView::onViewClick(const QModelIndex &index)
 {
-    QString meetme_id = static_cast<ConfRoomModel *>(model())->id();
     QString channel_id = model()->index(index.row(), ID).data().toString();
     
-    const MeetmeInfo * m = b_engine->meetme(meetme_id);
+    const ChannelInfo * c = b_engine->channel(channel_id);
     const UserInfo * u = b_engine->getUserForXChannelId(channel_id);
     const UserInfo * my_userinfo = b_engine->user(b_engine->getFullId());
-    const ChannelInfo * c = b_engine->channel(channel_id);
-    const QVariantMap & channels = (m ? m->channels() : QVariantMap());
-    const QVariantMap & user_chan = channels.value(channel_id).toMap();
     
     bool is_admin = static_cast<ConfRoomModel *>(model())->isAdmin();
     bool is_my_channel = (u && my_userinfo && u == my_userinfo);
-    bool is_muted = user_chan.value("ismuted").toBool();
-    bool is_authed = user_chan.value("isauthed").toBool();
-    bool is_recorded = (c && c->ismonitored());
+
+    if ((! is_admin) && (! is_my_channel)) return;
+
+    QString meetme_id = static_cast<ConfRoomModel *>(model())->id();
+    const MeetmeInfo * m = b_engine->meetme(meetme_id);
+    const QVariantMap & channels = (m ? m->channels() : QVariantMap());
+    const QVariantMap & user_chan = channels.value(channel_id).toMap();
 
     const QString & usernum = user_chan.value("usernum").toString();
     QString adminnum;
-
-    if ((! is_admin) && (! is_my_channel)) return;
 
     foreach (const QString & key, channels.keys()) {
         if (my_userinfo && channels.value(key).toMap().value("isadmin").toBool()
@@ -448,6 +446,10 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
             adminnum = channels.value(key).toMap().value("usernum").toString();
         }
     }
+
+    bool is_recorded = (c && c->ismonitored());
+    bool is_muted = user_chan.value("ismuted").toBool();
+    bool is_authed = user_chan.value("isauthed").toBool();
 
     switch (index.column()) {
         case ACTION_MUTE:
