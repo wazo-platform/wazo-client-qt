@@ -226,7 +226,7 @@ void MainWidget::setAppearance(const QVariantList & dockoptions)
 {
     foreach (QVariant dproperties, dockoptions) {
         QStringList dopt = dproperties.toStringList();
-        if (dopt.size() > 1) {
+        if (dopt.size() > 0) {
             QString wname = dopt[0];
             if ((wname == "customerinfo") && (! b_engine->checkedFunction(wname)))
                 continue;

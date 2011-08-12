@@ -170,7 +170,7 @@ QSettings* BaseEngine::getSettings()
 }
 
 /*!
- * Load Settings from the registery/configuration file
+ * Load Settings from the registry/configuration file
  * Use default values when settings are not found.
  */
 void BaseEngine::loadSettings()
