@@ -217,9 +217,9 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
 
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (! m || (m && ! m->channels().contains(chanid))) {
-        qDebug() << Q_FUNC_INFO << m_id << "chanid(" <<  chanid
-                 << ") No such channel in this meetme" << m->channels() << m_row2id;
-        exit(1);
+        // qDebug() << Q_FUNC_INFO << m_id << "chanid(" <<  chanid
+        //          << ") No such channel in this meetme" << m->channels() << m_row2id;
+        // exit(1);
         return QVariant();
     }
 
@@ -236,7 +236,7 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
                 return QPixmap(":images/cancel.png").scaledToHeight(16,
                                Qt::SmoothTransformation);
             } else if (col == ACTION_ALLOW_IN) {
-                if (user_chan.value("isauthed").toBool()) {
+                if (! user_chan.value("isauthed").toBool()) {
                     return QPixmap(":images/add.png").scaledToHeight(16,
                                    Qt::SmoothTransformation);
                 } else {
@@ -340,7 +340,7 @@ Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
             return Qt::ItemIsEnabled;
         }
         if (((col == ACTION_ALLOW_IN) || (col == ACTION_TALK_TO))
-            && (user_chan.value("isauthed").toBool())) {
+            && (! user_chan.value("isauthed").toBool())) {
             return Qt::ItemIsEnabled;
         }
         if ((col == ACTION_MUTE) && (user_chan.value("ismuted").toBool())) {
