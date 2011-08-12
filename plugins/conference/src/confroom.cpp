@@ -266,8 +266,6 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
                 }
                 return tr("Talk to");
             } else if (col == ACTION_RECORD) {
-                // if (b_engine->eV(in + "recorded").toBool()) {
-                // TODO: Make sure ismonitored means that this channel is being recorded
                 if (c && c->ismonitored()) {
                     return tr("User already recorded");
                 }
@@ -428,40 +426,60 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
     
     const MeetmeInfo * m = b_engine->meetme(meetme_id);
     const UserInfo * u = b_engine->getUserForXChannelId(channel_id);
+    const UserInfo * my_userinfo = b_engine->user(b_engine->getFullId());
     const ChannelInfo * c = b_engine->channel(channel_id);
     const QVariantMap & channels = (m ? m->channels() : QVariantMap());
     const QVariantMap & user_chan = channels.value(channel_id).toMap();
     
     bool is_admin = static_cast<ConfRoomModel *>(model())->isAdmin();
-    bool is_my_channel = (u && u == b_engine->user(b_engine->getFullId()));
+    bool is_my_channel = (u && my_userinfo && u == my_userinfo);
     bool is_muted = user_chan.value("ismuted").toBool();
     bool is_authed = user_chan.value("isauthed").toBool();
     bool is_recorded = (c && c->ismonitored());
 
     const QString & usernum = user_chan.value("usernum").toString();
+    QString adminnum;
 
     if ((! is_admin) && (! is_my_channel)) return;
+
+    foreach (const QString & key, channels.keys()) {
+        if (my_userinfo && channels.value(key).toMap().value("isadmin").toBool()
+            && my_userinfo == b_engine->getUserForXChannelId(key)) {
+            adminnum = channels.value(key).toMap().value("usernum").toString();
+        }
+    }
 
     switch (index.column()) {
         case ACTION_MUTE:
             qDebug() << Q_FUNC_INFO << "Mute/unmute";
             if (is_muted) {
-                b_engine->meetmeAction("MeetmeUnmute", meetme_id + " " + usernum);
+                b_engine->meetmeAction("MeetmeUnmute", meetme_id + " "
+                                       + usernum);
             } else {
-                b_engine->meetmeAction("MeetmeMute", meetme_id + " " + usernum);
+                b_engine->meetmeAction("MeetmeMute", meetme_id + " "
+                                       + usernum);
             }
             break;
         case ACTION_KICK:
-            qDebug() << Q_FUNC_INFO << "Kick";
-            if (! is_authed) {
-                b_engine->meetmeAction("MeetmeKick", meetme_id + " " + usernum);
-            } else {
-                b_engine->meetmeAction("kick", meetme_id + " " + usernum);
+            qDebug() << Q_FUNC_INFO << "Kick/MeetmeKick";
+            if (! adminnum.isEmpty()) {
+                b_engine->meetmeAction("MeetmeKick", meetme_id + " " +
+                                       usernum + " " + adminnum);
+                // if (! is_authed) {
+                //     b_engine->meetmeAction("MeetmeKick", meetme_id + " " + 
+                //                            usernum + " " + adminnum);
+                // } else {
+                //     b_engine->meetmeAction("kick", meetme_id + " " +
+                //                            usernum + " " + adminnum);
+                // }
             }
             break;
         case ACTION_TALK_TO:
             qDebug() << Q_FUNC_INFO << "Talk";
-            b_engine->meetmeAction("MeetmeTalk", meetme_id + " " + usernum);
+            if (! adminnum.isEmpty()) {
+                b_engine->meetmeAction("MeetmeTalk", meetme_id + " " + usernum
+                                       + " " + adminnum);
+            }
             break;
         case ACTION_RECORD:
             qDebug() << Q_FUNC_INFO << "Record";
@@ -471,7 +489,10 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
             break;
         case ACTION_ALLOW_IN:
             qDebug() << Q_FUNC_INFO << "Accept";
-            b_engine->meetmeAction("MeetmeAccept", meetme_id + " " + usernum);
+            if (! adminnum.isEmpty()) {
+                b_engine->meetmeAction("MeetmeAccept", meetme_id + " " + usernum
+                                       + " " + adminnum);
+            }
             break;
         default:
             qDebug() << Q_FUNC_INFO << "No Action";
