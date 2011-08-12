@@ -65,9 +65,12 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     m_tabwidget = new QTabWidget();
 
+    //m_opts = masked config values : the only ones the user can change
     m_opts = b_engine->getGuiOptions("client_gui");
-    m_forcedopts = b_engine->getGuiOptions("server_gui");
     m_config = b_engine->getConfig();
+    
+    m_dblclick_actions["call"] = "Call";
+    m_dblclick_actions["atxfer"] = "Indirect transfer";
 
     _insert_connection_tab();
     _insert_account_tab();
@@ -206,7 +209,6 @@ void ConfigWidget::_insert_function_tab()
         QFormLayout * layout_contacts = new QFormLayout() ;
         widget_contacts->setLayout(layout_contacts);
         
-        qDebug() << m_forcedopts;
         m_contactssize_sbox = new QSpinBox(this);
         m_contactssize_sbox->setRange(1, 500);
         m_contactssize_sbox->setValue(m_opts.value("contacts-max").toUInt());
@@ -216,6 +218,14 @@ void ConfigWidget::_insert_function_tab()
         m_contactswidth_sbox->setRange(1, 20);
         m_contactswidth_sbox->setValue(m_opts.value("contacts-width").toUInt());
         layout_contacts->addRow(tr("Contacts' width"), m_contactswidth_sbox);
+        
+        m_contacts_dblclick = new QComboBox(this);
+        foreach (QString key, m_dblclick_actions.keys()) {
+            m_contacts_dblclick->addItem(m_dblclick_actions[key], key);
+        }
+        int i_contacts_dblclick = m_contacts_dblclick->findData (m_config["doubleclick.searchpanel"]);
+        m_contacts_dblclick->setCurrentIndex(i_contacts_dblclick);
+        layout_contacts->addRow(tr("Double-click action"), m_contacts_dblclick);
         
     m_function_tabwidget->addTab(widget_contacts, tr("Contacts"));
     
@@ -274,6 +284,14 @@ void ConfigWidget::_insert_function_tab()
             maxwidthwanted = 200;
         m_maxWidthWanted->setValue(maxwidthwanted);
         layout_switchboard->addRow(tr("Maximum width for small SwitchBoard elements"), m_maxWidthWanted);
+        
+        m_switchboard_dblclick = new QComboBox(this);
+        foreach (QString key, m_dblclick_actions.keys()) {
+            m_switchboard_dblclick->addItem(m_dblclick_actions[key], key);
+        }
+        int i_switchboard_dblclick = m_switchboard_dblclick->findData (m_config["doubleclick.switchboard"].toString());
+        m_switchboard_dblclick->setCurrentIndex(i_switchboard_dblclick);
+        layout_switchboard->addRow(tr("Double-click action"), m_switchboard_dblclick);
     
     m_function_tabwidget->addTab(widget_switchboard, tr("Switchboard"));
     
@@ -581,6 +599,8 @@ void ConfigWidget::saveAndClose()
     m_config["displayprofile"] = m_displayprofile->isChecked();
     m_config["activate_on_tel"] = m_activate_on_tel->isChecked();
     m_config["dialpanel.history_length"] = m_dial_history_size->value();
+    m_config["doubleclick.searchpanel"] = m_contacts_dblclick->itemData(m_contacts_dblclick->currentIndex());
+    m_config["doubleclick.switchboard"] = m_switchboard_dblclick->itemData(m_switchboard_dblclick->currentIndex());
 
     foreach(QString function, func_legend.keys())
         m_config["checked_function." + function] = m_function[function]->isChecked();

@@ -249,17 +249,28 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
             const QString status = channelinfo->commstatus();
             if ((status == CHAN_STATUS_LINKED_CALLER) ||
                 (status == CHAN_STATUS_LINKED_CALLED)) {
-                QString to;
-                if (m_ui_remote) {
-                    to = "user:" + m_ui_remote->xid();
+                QString action ;
+                if (parentWidget()->metaObject()->className() == QString("XletSwitchBoard")) {
+                    action = b_engine->getConfig("doubleclick.switchboard").toString();
                 } else {
-                    to = "ext:" + m_number;
+                    action = b_engine->getConfig("doubleclick.searchpanel").toString();
                 }
-                // Initiate an indirect transfer.
-                b_engine->actionCall("atxfer",
-                                     QString("chan:%1").arg(channelinfo->xid()),
-                                     to);
-                return;
+                if (action == "atxfer") {
+                    QString to;
+                    if (m_ui_remote) {
+                        to = "user:" + m_ui_remote->xid();
+                    } else {
+                        to = "ext:" + m_number;
+                    }
+                    // Initiate an indirect transfer.
+                    b_engine->actionCall("atxfer",
+                                         QString("chan:%1").arg(channelinfo->xid()),
+                                         to);
+                    return;
+                } else {
+                    // Do nothing, get out of the loop, and eventually dial
+                }
+                
             }
         }
         // "I" have no current communications, intercept if the person is being called
