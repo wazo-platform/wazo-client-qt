@@ -53,8 +53,6 @@ class QTableWidget;
 
 PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
 {
-    qDebug() << Q_FUNC_INFO;
-
     setTitle(tr("POPC Aastra operator"));
 
     m_layout = new QVBoxLayout();
@@ -157,34 +155,21 @@ void PopcAastra::updateMeetmesConfig(const QString & mxid)
  *  When ever a channel status changes, the base engine sends a signal that
  *  we catch to update our incoming and transfered call widgets
  *
- *  \param xchannel The pbx/channel id of the updated channel
+ *  \param cxid The pbx/channel id of the updated channel
 */
-void PopcAastra::updateChannelStatus(const QString & /* xchannel */)
+void PopcAastra::updateChannelStatus(const QString & cxid)
 {
-    // qDebug() << Q_FUNC_INFO << "Channel(" << xchannel << ")";
-    QStringList my_channels = getMyChannels();
-    for (int i = 0; i < my_channels.size(); ++i) {
-        if (! m_incomingcalls.contains(my_channels.at(i))) {
-            int guessedline = findFirstAvailableLine();
-            IncomingWidget * newcall = new IncomingWidget(guessedline, my_channels.at(i), this);
-            m_incomingcalls[my_channels.at(i)] = newcall;
-            m_layout->addWidget(newcall);
-            connect(newcall, SIGNAL(doConf(int)), this, SLOT(confLine(int)));
-            connect(newcall, SIGNAL(doHangUp(int)), this, SLOT(hangUpLine(int)));
-            connect(newcall, SIGNAL(doHold(int)), this, SLOT(holdLine(int)));
-            connect(newcall, SIGNAL(selectLine(int)), this, SLOT(selectLine(int)));
-            connect(newcall, SIGNAL(doAttendedTransfer(int)),
-                    this, SLOT(attendedTransfer(int)));
-            connect(newcall, SIGNAL(doBlindTransfer(const QString &, int,
-                                                    const QString &,
-                                                    const QString &)),
-                    this, SLOT(blindTransfer(const QString &, int,
-                                             const QString &,
-                                             const QString &)));
-            connect(newcall, SIGNAL(doParkCall(int)),
-                    this, SLOT(parkcall(int)));
-        } else {
-            m_incomingcalls[my_channels.at(i)]->updateWidget();
+    if (m_incomingcalls.contains(cxid)) {
+        m_incomingcalls[cxid]->updateWidget();
+    } else if (m_transferedcalls.contains(cxid)) {
+        m_transferedcalls[cxid]->updateWidget();
+    } else {
+        const UserInfo * u = b_engine->getUserForXChannelId(cxid);
+        if (u && m_ui && u == m_ui) {
+            IncomingWidget * w = new IncomingWidget(
+                findFirstAvailableLine(), cxid, this);
+            m_incomingcalls[cxid] = w;
+            m_layout->addWidget(w);
         }
     }
 }

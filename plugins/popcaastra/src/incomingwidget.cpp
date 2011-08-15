@@ -85,7 +85,24 @@ void IncomingWidget::updateFromChannelInfo(const QString & xcid)
 
 void IncomingWidget::setSignalsSlots()
 {
-    // qDebug() << Q_FUNC_INFO;
+    connect(this, SIGNAL(doConf(int)), parent(), SLOT(confLine(int)));
+    connect(this, SIGNAL(doHangUp(int)), parent(), SLOT(hangUpLine(int)));
+    connect(this, SIGNAL(doHold(int)), parent(), SLOT(holdLine(int)));
+    connect(this, SIGNAL(selectLine(int)), parent(), SLOT(selectLine(int)));
+    connect(this, SIGNAL(doAttendedTransfer(int)),
+            parent(), SLOT(attendedTransfer(int)));
+    connect(this, SIGNAL(doBlindTransfer(
+                             const QString &,
+                             int, 
+                             const QString &,
+                             const QString &)),
+            parent(), SLOT(blindTransfer(
+                             const QString &,
+                             int,
+                             const QString &,
+                             const QString &)));
+    connect(this, SIGNAL(doParkCall(int)), parent(), SLOT(parkcall(int)));
+
     connect(m_btn_atxfer, SIGNAL(clicked()), this, SLOT(doAttendedTransfer()));
     connect(m_btn_conf, SIGNAL(clicked()), this, SLOT(doConf()));
     connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(doHangUp()));
