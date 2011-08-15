@@ -40,7 +40,7 @@
 
 QString PeerWidgetFactory::getSwitchBoardEltType()
 {
-    return b_engine->getGuiOptions("merged_gui").value("switchboard-elt-type").toString();
+    return b_engine->getConfig("guioptions.switchboard-elt-type").toString();
 }
 
 /*! \brief return an "External phone" widget

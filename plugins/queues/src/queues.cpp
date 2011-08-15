@@ -71,13 +71,13 @@ void __format_duration(QString *field, int duration)
                                  .arg(sec, 2, 10, QChar('0')));
 }
 
-void XletQueues::settingChanged(const QVariantMap &)
+void XletQueues::settingsChanged()
 {
-    m_showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
+    m_showNumber = b_engine->getConfig("guioptions.queue_displaynu").toBool();
 
     QHashIterator<QString, QueueRow *> i(m_queueList);
 
-    QVariantMap statConfig = b_engine->getGuiOptions("client_gui").value("queuespanel").toMap();
+    QVariantMap statConfig = b_engine->getConfig("guioptions.queuespanel").toMap();
 
     while (i.hasNext()) {
         i.next();
@@ -94,21 +94,20 @@ void XletQueues::settingChanged(const QVariantMap &)
 
 void XletQueues::loadQueueOrder()
 {
-    QStringList order = b_engine->getGuiOptions("client_gui")
-                            .value("queuespanel").toMap()
-                            .value("queue_order").toStringList();
+    QStringList order = b_engine->getConfig("guioptions.queuespanel").toMap().value("queue_order").toStringList();
     setQueueOrder(order);
 }
 
 void XletQueues::saveQueueOrder(const QStringList &queueOrder)
 {
-    QVariantMap clientGui = b_engine->getGuiOptions("client_gui");
-    QVariantMap queuesPanelConfig = clientGui.value("queuespanel").toMap();
+    QVariantMap queuesPanelConfig = b_engine->getConfig("guioptions.queuespanel").toMap();
 
     queuesPanelConfig["queue_order"] = queueOrder;
-    clientGui["queuespanel"] = queuesPanelConfig;
+    
+    QVariantMap config;
+    config["guioptions.queuespanel"] = queuesPanelConfig;
 
-    b_engine->setGuiOption("client_gui", clientGui);
+    b_engine->setConfig(config);
 }
 
 
@@ -121,10 +120,10 @@ XletQueues::XletQueues(QWidget *parent)
     QStringList xletlist;
     // foreach (QString xletdesc, b_engine->getCapaXlets())
     m_showMore = true; // xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
-    m_showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
+    m_showNumber = b_engine->getConfig("guioptions.queue_displaynu").toBool();
     uint nsecs = 30;
-    if (b_engine->getGuiOptions("server_gui").contains("xlet.queues.statsfetchperiod"))
-        nsecs = b_engine->getGuiOptions("server_gui").value("xlet.queues.statsfetchperiod").toInt();
+    if (b_engine->getConfig().contains("guioptions.xlet.queues.statsfetchperiod"))
+        nsecs = b_engine->getConfig("guioptions.xlet.queues.statsfetchperiod").toInt();
 
     QVBoxLayout *xletLayout = new QVBoxLayout(this);
     xletLayout->setSpacing(0);
@@ -153,8 +152,8 @@ XletQueues::XletQueues(QWidget *parent)
             this, SLOT(updateQueueStatus(const QString &)));
     connect(b_engine, SIGNAL(removeQueues(const QString &, const QStringList &)),
             this, SLOT(removeQueues(const QString &, const QStringList &)));
-    connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
-            this, SLOT(settingChanged(const QVariantMap &)));
+    connect(b_engine, SIGNAL(settingsChanged()),
+            this, SLOT(settingsChanged()));
 
     b_engine->registerClassEvent("queuestats", XletQueues::eatQueuesStats_t, this);
     updateLongestWaitWidgets();
@@ -327,12 +326,11 @@ void XletQueues::queueClicked()
  */
 void XletQueues::updateLongestWaitWidgets()
 {
-    QVariantMap optionMap = b_engine->getGuiOptions("client_gui");
-    uint greenlevel = optionMap.value("queuelevels_wait").toMap().value("green").toUInt() - 1;
-    uint orangelevel = optionMap.value("queuelevels_wait").toMap().value("orange").toUInt() - 1;
+    uint greenlevel = b_engine->getConfig("guioptions.queuelevels_wait").toMap().value("green").toUInt() - 1;
+    uint orangelevel = b_engine->getConfig("guioptions.queuelevels_wait").toMap().value("orange").toUInt() - 1;
 
     // if we don't want this widget displayed
-    int display_column = optionMap.value("queue_longestwait").toBool();
+    int display_column = b_engine->getConfig("guioptions.queue_longestwait").toBool();
 
     QGridLayout *titleLayout = static_cast<QGridLayout*>(m_layout->itemAt(0)->widget()->layout());
     QWidget *longestWaitTitle = titleLayout->itemAtPosition(1, 4)->widget();
@@ -361,7 +359,7 @@ void XletQueues::askForQueueStats()
     QHashIterator<QString, QueueRow *> i(m_queueList);
     QVariantMap _for;
 
-    QVariantMap statConfig = b_engine->getGuiOptions("client_gui").value("queuespanel").toMap();
+    QVariantMap statConfig = b_engine->getConfig("guioptions.queuespanel").toMap();
 
     while (i.hasNext()) {
         i.next();
@@ -422,8 +420,7 @@ QWidget* XletQueuesConfigure::buildConfigureQueueList(QWidget *parent)
     QSpinBox *spinBox;
     int row;
     int column;
-    QVariantMap statConfig = b_engine->getGuiOptions("client_gui")
-                                .value("queuespanel").toMap();
+    QVariantMap statConfig = b_engine->getConfig("guioptions.queuespanel").toMap();
     QString queueid;
 
     row = 1;
@@ -476,20 +473,19 @@ void XletQueuesConfigure::changeQueueStatParam(int v)
     QString queueid = sender()->property("queueid").toString();
     QString param = sender()->property("param").toString();
 
-    QVariantMap statConfig = b_engine->getGuiOptions("client_gui");
-    QVariantMap qcfg = statConfig.value("queuespanel").toMap();
+    QVariantMap qcfg = b_engine->getConfig("guioptions.queuespanel").toMap();
     qcfg[param + queueid] = v;
-    statConfig["queuespanel"] = qcfg;
+    
+    QVariantMap config;
+    config["guioptions.queuespanel"] = qcfg;
 
-    b_engine->setGuiOption("client_gui", statConfig);
+    b_engine->setConfig(config);
 }
 
 void XletQueuesConfigure::closeEvent(QCloseEvent *)
 {
     hide();
 }
-
-
 
 QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
     : QWidget(parent), m_queueinfo(qInfo), m_xlet(parent)
@@ -499,9 +495,7 @@ QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
     m_layout->setSpacing(0);
     QString queueId = m_queueinfo->id();
 
-    int visible = b_engine->getGuiOptions("client_gui")
-                  .value("queuespanel").toMap()
-                  .value("visible"+queueId, true).toBool();
+    int visible = b_engine->getConfig("guioptions.queuespanel").toMap().value("visible"+queueId, true).toBool();
 
     if (!visible)
         hide();
@@ -613,9 +607,8 @@ uint QueueRow::m_maxbusy = 0;
 
 void QueueRow::updateBusyWidget()
 {
-    QVariantMap optionMap = b_engine->getGuiOptions("client_gui");
-    uint greenlevel = optionMap.value("queuelevels").toMap().value("green").toUInt() - 1;
-    uint orangelevel = optionMap.value("queuelevels").toMap().value("orange").toUInt() - 1;
+    uint greenlevel = b_engine->getConfig("guioptions.queuelevels").toMap().value("green").toUInt() - 1;
+    uint orangelevel = b_engine->getConfig("guioptions.queuelevels").toMap().value("orange").toUInt() - 1;
     uint val = m_busy->property("value").toUInt();
 
     if (m_maxbusy < val) {

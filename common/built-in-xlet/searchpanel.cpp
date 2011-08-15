@@ -98,7 +98,7 @@ SearchPanel::SearchPanel(QWidget *parent)
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(removePeers()));
     
-    connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
+    connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updateConf()));
 }
 

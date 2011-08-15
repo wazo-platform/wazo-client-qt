@@ -70,6 +70,7 @@ class MainWidget : public QMainWindow
         void showCredits();
         void setConfigAndStart();
         void loginKindChanged(int);
+        void fetchConfig();
         void confUpdated();
         void updatePresence();
         void showMessageBox(const QString &);

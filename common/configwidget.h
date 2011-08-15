@@ -92,7 +92,6 @@ class ConfigWidget: public QDialog
         void _insert_operator_functiontab();
         void _insert_advanced_tab();
 
-        QVariantMap m_opts;
         QVariantMap m_config;
         
         QMap<QString, QString> m_dblclick_actions;

@@ -112,7 +112,7 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_glayout->addWidget(m_voicemail, 0, m_col_vm, 3, 1);
 
     m_functions = b_engine->getConfig().keys();
-    setGuiOptions(b_engine->getGuiOptions("merged_gui"));
+    setGuiOptions();
 
     // connect signals/slots
     connect(b_engine, SIGNAL(updatePresence()),
@@ -159,20 +159,20 @@ void IdentityDisplay::setupIcons()
     m_glayout->setColumnStretch(10, 1);
 }
 
-void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
+void IdentityDisplay::setGuiOptions()
 {
-    if (optionsMap.contains("xlet.identity.fontname") && optionsMap.contains("xlet.identity.fontsize"))
-        m_gui_font = QFont(optionsMap.value("xlet.identity.fontname").toString(),
-                           optionsMap.value("xlet.identity.fontsize").toInt());
-    if (optionsMap.contains("xlet.identity.iconsize"))
-        m_gui_buttonsize = optionsMap.value("xlet.identity.iconsize").toInt();
+    if (b_engine->getConfig().contains("xlet.identity.fontname") && b_engine->getConfig().contains("xlet.identity.fontsize"))
+        m_gui_font = QFont(b_engine->getConfig("xlet.identity.fontname").toString(),
+                           b_engine->getConfig("xlet.identity.fontsize").toInt());
+    if (b_engine->getConfig().contains("xlet.identity.iconsize"))
+        m_gui_buttonsize = b_engine->getConfig("xlet.identity.iconsize").toInt();
 
     m_agent->setAllowedActions(b_engine->getConfig("xlet.identity.logagent").toBool(),
                                b_engine->getConfig("xlet.identity.pauseagent").toBool());
 
     setFont(m_gui_font);
 
-    m_loginkind = optionsMap.value("loginkind").toUInt();
+    m_loginkind = b_engine->getConfig("loginkind").toUInt();
 }
 
 void IdentityDisplay::updatePresence()

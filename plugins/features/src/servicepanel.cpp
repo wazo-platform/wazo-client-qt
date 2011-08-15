@@ -60,7 +60,7 @@ ServicePanel::ServicePanel(QWidget * parent)
     m_capalegend["fwdbusy"]         = tr("Forward on &Busy");
     m_capalegend["fwdunc"]          = tr("&Unconditional Forward");
 
-    m_capas = b_engine->getGuiOptions("merged_gui").value("services").toStringList();
+    m_capas = b_engine->getConfig("guioptions.services").toStringList();
 
     int line = 0;
 

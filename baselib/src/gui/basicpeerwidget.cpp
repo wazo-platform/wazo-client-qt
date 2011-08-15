@@ -60,7 +60,7 @@ BasicPeerWidget::BasicPeerWidget(const UserInfo * ui)
     QString name = (ui->fullname().isEmpty()) ? tr("(No callerid yet)") : ui->fullname();
     setText(name);
     reloadSavedName();
-    connect(b_engine, SIGNAL(settingChanged(QVariantMap)),
+    connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updateConfig()));
 }
 

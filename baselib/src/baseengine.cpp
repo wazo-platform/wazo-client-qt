@@ -341,7 +341,7 @@ void BaseEngine::saveSettings()
             m_settings->setValue(function, m_config["checked_function." + function].toBool());
     m_settings->endGroup();
 
-    emit settingChanged(getGuiOptions("client_gui"));
+    emit settingsChanged();
 }
 
 QVariant BaseEngine::getProfileSetting(const QString & key, const QVariant & bydefault) const
@@ -577,31 +577,6 @@ const QStringList & BaseEngine::getCapasRegCommands() const
 const QStringList & BaseEngine::getCapasIpbxCommands() const
 {
     return m_capas_ipbxcommands;
-}
-
-QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
-{
-    if (arg == "client_gui") {
-        return m_config.getSubSet("guioptions", BaseConfig::Unmasked);
-    } else if (arg == "merged_gui") {
-        return m_config.getSubSet("guioptions");
-    } else {
-        return m_config.getSubSet("guioptions." + arg);
-    }
-}
-
-void BaseEngine::setGuiOption(const QString &arg, const QVariant &opt)
-{
-    if (arg == "client_gui") {
-        m_config.merge(opt.toMap(), "guioptions");
-    } else {
-        m_config.merge(opt.toMap(), "guioptions." + arg);
-    }
-
-    /*!
-     * \todo Can we get saveSettings out of this function? Because we should call it explicitly in ConfigWidget::saveAndClose().
-     */
-    saveSettings();
 }
 
 const QString & BaseEngine::getCapaApplication() const
@@ -1772,15 +1747,20 @@ QVariantMap BaseEngine::getConfig() const
 /*!
  * \return the setting indexed by the parameter
  */
-QVariant BaseEngine::getConfig(const QString &setting) const
+QVariant BaseEngine::getConfig(const QString & setting) const
 {
     return m_config[setting];
 }
 
-void BaseEngine::setConfig(QVariantMap qvm)
+// qvm may not contain every key, only the ones that need to be modified
+void BaseEngine::setConfig(const QVariantMap & qvm)
 {
-    bool reload_tryagain = m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt();
-    bool reload_keepalive = m_config["keepaliveinterval"].toUInt() != qvm["keepaliveinterval"].toUInt();
+    bool reload_tryagain = qvm.contains("trytoreconnectinterval") &&
+                           m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt();
+    bool reload_keepalive = qvm.contains("keepaliveinterval") &&
+                            m_config["keepaliveinterval"].toUInt() != qvm["keepaliveinterval"].toUInt();
+    bool change_translation = qvm.contains("forcelocale") &&
+                            m_config["forcelocale"].toUInt() != qvm["forcelocale"].toUInt();
 
     m_config.merge(qvm);
     
@@ -1794,7 +1774,9 @@ void BaseEngine::setConfig(QVariantMap qvm)
     }
     
     setUserLogin (qvm["userlogin"].toString());
-    changeTranslation();
+    
+    if (change_translation)
+        changeTranslation();
     
     // qDebug() << m_config.toString();
     

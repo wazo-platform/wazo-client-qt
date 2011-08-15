@@ -59,7 +59,6 @@ class XletAgentDetails : public XLet
         void setFileName(const QString &);
 
     public slots:
-        void setGuiOptions(const QVariantMap &);
         void updateAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
         void updateQueueConfig(const QString &);
@@ -105,7 +104,6 @@ class XletAgentDetails : public XLet
         QHash<QString, QLabel *> m_queue_pause_status;
 
         QPoint m_eventpoint;
-        QVariantMap m_optionsMap;
 };
 
 class XLetAgentDetailsPlugin : public QObject, XLetInterface

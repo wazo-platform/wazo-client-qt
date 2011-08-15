@@ -54,7 +54,7 @@ class IdentityDisplay : public XLet
         void doGUIConnects(QWidget *);
 
     public slots:
-        void setGuiOptions(const QVariantMap &);
+        void setGuiOptions();
         void idxChanged(const QString &);
         void updatePresence();
         void setOpt(const QString &, bool);

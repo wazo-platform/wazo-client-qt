@@ -153,9 +153,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QVariant getProfileSetting(const QString &, const QVariant & = QVariant()) const;  //!< get one setting in current profile
         void setProfileSetting(const QString &, const QVariant &);  //!< set one setting in current profile
         
-        QVariantMap getConfig() const;              //!< all BaseEngine settings
-        QVariant getConfig(const QString &) const;  //!< one BaseEngine setting
-        void setConfig(QVariantMap);
+        QVariantMap getConfig() const;              //!< all BaseEngine settings.
+        QVariant getConfig(const QString &) const;  //!< one BaseEngine setting. Use to read a setting.
+        void setConfig(const QVariantMap &);                //!< set as many settings as you want
 
 
         // public setters/getters for properties
@@ -179,9 +179,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QVariantMap & getOptionsPhoneStatus() const;
         const QVariantMap & getOptionsChannelStatus() const;
         const QVariantMap & getOptionsAgentStatus() const;
-
-        QVariantMap getGuiOptions(const QString &) const;
-        void setGuiOption(const QString &, const QVariant &);
 
         const QString & getCapaApplication() const;
         const QString osname() const { return m_osname; };
@@ -357,7 +354,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void sheetSocketConnected();
 
     signals:
-        void settingChanged(const QVariantMap &);  //!< signal emitted when the setting are changed
+        void settingsChanged();  //!< signal emitted when the setting are changed
         
         void logged();    //!< signal emitted when the state becomes ELogged
         void delogged();  //!< signal emitted when the state becomes ENotLogged

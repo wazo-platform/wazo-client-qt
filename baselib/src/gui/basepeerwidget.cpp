@@ -81,7 +81,7 @@ BasePeerWidget::BasePeerWidget(const UserInfo * ui)
 
     m_maxWidthWanted = 200;
     if (b_engine->enabledFunction("switchboard")) {
-        m_maxWidthWanted = b_engine->getGuiOptions("merged_gui").value("maxwidthwanted").toInt();
+        m_maxWidthWanted = b_engine->getConfig("guioptions.maxwidthwanted").toInt();
         if (m_maxWidthWanted < 50) {
             m_maxWidthWanted = 200;
         }
