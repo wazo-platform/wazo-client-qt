@@ -112,9 +112,9 @@ void ConfRoomModel::updateView()
     }
 }
 
-void ConfRoomModel::updateMeetmesConfig(const QString & meetme_id)
+void ConfRoomModel::updateMeetmesConfig(const QString &)
 {
-    // qDebug() << Q_FUNC_INFO << meetme_id;
+    // qDebug() << Q_FUNC_INFO;
 }
 
 void ConfRoomModel::updateMeetmesStatus(const QString & meetme_id)
@@ -214,7 +214,6 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
 {
     int row = index.row(), col = index.column();
     QString chanid = m_row2id[row];
-
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (! m || (m && ! m->channels().contains(chanid))) {
         // qDebug() << Q_FUNC_INFO << m_id << "chanid(" <<  chanid
@@ -222,10 +221,11 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
         // exit(1);
         return QVariant();
     }
+    QString chanxid = QString("%0/%1").arg(m->ipbxid()).arg(m_row2id[row]);
 
     const QVariantMap & user_chan = m->channels().value(chanid).toMap();
-    const ChannelInfo * c = b_engine->channel(chanid);
-    const UserInfo * u = b_engine->getUserForXChannelId(chanid);
+    const ChannelInfo * c = b_engine->channel(chanxid);
+    const UserInfo * u = b_engine->getUserForXChannelId(chanxid);
     bool my_channel = (u && u == b_engine->user(b_engine->getFullId()));
 
     if (role != Qt::DisplayRole) {
@@ -296,11 +296,10 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
     case ACTION_ALLOW_IN:
         return (user_chan.value("isauthed").toBool() ? tr("Yes") : tr("No"));
     case SINCE:
-        // return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
-        //                              b_engine->eV(in + "time-start").toDouble() -
-        //                              b_engine->timeDeltaServerClient()).toUTC()
-        //     .toString("hh:mm:ss");
-        return "Fix me";
+        return QDateTime::fromTime_t(
+            QDateTime::currentDateTime().toTime_t()
+            - (c ? c->timestamp() : 0)
+            - b_engine->timeDeltaServerClient()).toUTC().toString("hh:mm:ss");
     default:
         break;
     }
