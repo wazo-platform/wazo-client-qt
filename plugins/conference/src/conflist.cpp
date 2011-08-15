@@ -43,7 +43,7 @@ static QVariant COL_TITLE[NB_COL];
 ConfListModel::ConfListModel()
     : QAbstractTableModel()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
 
     startTimer(1000);
     COL_TITLE[ID] = tr("Room UID");
@@ -65,7 +65,7 @@ void ConfListModel::timerEvent(QTimerEvent *)
 
 void ConfListModel::updateMeetmesConfig(const QString & meetme_id)
 {
-    qDebug() << Q_FUNC_INFO << meetme_id;
+    // qDebug() << Q_FUNC_INFO << meetme_id;
     int row = 0;
     if (b_engine->iterover("meetmes").size() != m_row2id.size()) {
         foreach (const QString & key, b_engine->iterover("meetmes").keys()) {
@@ -103,32 +103,23 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
 
     if (m_row2id.contains(row)) {
         meetme_id = m_row2id[row];
-        // row = m_row2id[row].toInt();
     }
 
-    // QString room = QString("confrooms/%0/").arg(row);
     const MeetmeInfo * m = b_engine->meetme(meetme_id);
     if (!m) return QVariant();
-    // QString mm = b_engine->eV(room + "admin_moderationmode").toString();
     const QString & mm = m->admin_moderationmode();
     switch (col) {
     case ID:
-        // return b_engine->eV(room + "id");
         return m->xid();
     case NUMBER:
-        //return b_engine->eV(room + "number");
         return m->number();
     case NAME:
-        //return b_engine->eV(room + "name");
         return m->name();
     case PIN_REQUIRED:
-        // return b_engine->eV(room + "pin_needed")
-        //     .toBool() ? tr("Yes") : tr("No");
         return m->pin_needed() ? tr("Yes") : tr("No");
     case MODERATED:
         return mm.isEmpty() || mm == "0" ? tr("No") : tr("Yes");
     case MEMBER_COUNT:
-        // return b_engine->eVM(room + "in").size();
         return m->channels().size();
     case STARTED_SINCE:
         {
@@ -232,7 +223,7 @@ void ConfListView::onViewClick(const QModelIndex &model)
     QString roomName = model.sibling(model.row(), NAME).data().toString();
     QString roomNumber = model.sibling(model.row(), NUMBER).data().toString();
 
-    qDebug() << Q_FUNC_INFO << roomId << roomName << roomNumber;
+    // qDebug() << Q_FUNC_INFO << roomId << roomName << roomNumber;
 
     if (roomId != "") {
         if (lastPressed & Qt::LeftButton) {
@@ -270,7 +261,7 @@ void ConfListView::mousePressEvent(QMouseEvent *event)
 ConfList::ConfList(XletConference *parent)
     : QWidget(), m_manager(parent)
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     QVBoxLayout *vBox = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout();
     ConfListView *view = new ConfListView(this, new ConfListModel());
@@ -293,9 +284,8 @@ ConfList::ConfList(XletConference *parent)
 void ConfList::phoneConfRoom()
 {
     QString roomId = sender()->property("id").toString();
-    qDebug() << Q_FUNC_INFO << "Room id" << roomId;
+    // qDebug() << Q_FUNC_INFO << "Room id" << roomId;
 
-    // QString roomNumber = b_engine->eV(QString("confrooms/%0/number").arg(roomId)).toString();
     const MeetmeInfo * m = b_engine->meetme(roomId);
     if (m) {
         QString roomNumber = m->number();
@@ -306,6 +296,6 @@ void ConfList::phoneConfRoom()
 
 void ConfList::openConfRoom()
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     m_manager->openConfRoom(sender()->property("id").toString());
 }

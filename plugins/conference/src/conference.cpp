@@ -73,7 +73,7 @@ int ConfTab::addClosableTab(QWidget *w, const QString &title)
  */
 void ConfTab::showConfRoom(const QString & meetme_id, bool force)
 {
-    qDebug() << Q_FUNC_INFO << meetme_id;
+    // qDebug() << Q_FUNC_INFO << meetme_id;
     int index = indexOf(meetme_id);
     if (index == -1) {
         const MeetmeInfo * m = b_engine->meetme(meetme_id);
@@ -111,7 +111,7 @@ XLet* XLetConferencePlugin::newXLetInstance(QWidget *parent)
 XletConference::XletConference(QWidget *parent)
     : XLet(parent)
 {
-    qDebug() << Q_FUNC_INFO;
+    // qDebug() << Q_FUNC_INFO;
     setTitle(tr("Conference"));
 
     QVBoxLayout *vLayout = new QVBoxLayout();
@@ -121,8 +121,6 @@ XletConference::XletConference(QWidget *parent)
     m_tab->addTab(new ConfList(this), tr("Conference room list"));
     vLayout->addWidget(m_tab);
 
-    // b_engine->tree()->onChange(QString("confrooms"), this,
-    //     SLOT(checkJoiningPeople(const QString &, DStoreEvent)));
     connect(b_engine, SIGNAL(updateMeetmesStatus(const QString &)),
             this, SLOT(updateMeetmesStatus(const QString &)));
 }
@@ -145,14 +143,3 @@ void XletConference::updateMeetmesStatus(const QString & meetme_id)
         }
     }
 }
-
-// void XletConference::checkJoiningPeople(const QString &room, DStoreEvent event)
-// {
-//     if (event == NODE_POPULATED) {
-//         QRegExp re = QRegExp("confrooms/([^/]+)/in/[0-9]+");
-//         if (re.exactMatch(room) &&
-//             b_engine->eVM(room)["user-id"].toString() == b_engine->xivoUserId()) {
-//             openConfRoom(re.cap(1));
-//         }
-//     }
-// }

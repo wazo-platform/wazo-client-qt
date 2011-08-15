@@ -361,7 +361,6 @@ QString ConfRoomModel::id() const
     return m_id;
 }
 
-
 ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
     : QTableView(parent)
 {
@@ -371,7 +370,6 @@ ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
     verticalHeader()->hide();
     horizontalHeader()->setMovable(true);
     horizontalHeader()->setStretchLastSection(true);
-
 
     int ActionCol[] = { ACTION_MUTE,
                         ACTION_TALK_TO,
