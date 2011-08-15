@@ -286,7 +286,7 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
     case ID:
         return chanid;
     case NUMBER:
-        return (u ? u->findNumberForXChannel(chanid) : tr("unknown"));
+        return (u ? u->findNumberForXChannel(chanxid) : tr("unknown"));
     case ACTION_RECORD:
         return (c && c->ismonitored()) ? tr("Yes") : tr("No");
     case ADMIN:
