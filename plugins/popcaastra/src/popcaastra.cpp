@@ -94,6 +94,8 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
             this, SLOT(receiveNumber(const QString &)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
             this, SLOT(updateUserStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateMeetmesConfig(const QString &)),
+            this, SLOT(updateMeetmesConfig(const QString &)));
 
     connect(m_btn_vol_up, SIGNAL(clicked()), this, SLOT(volUp()));
     connect(m_btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
@@ -101,9 +103,6 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
     connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(hangup()));
     connect(m_targets, SIGNAL(textChanged(const QString &)),
             this, SLOT(targetChanged(const QString &)));
-
-    b_engine->tree()->onChange("confrooms", this,
-            SLOT(updateConfRoom(const QString &, DStoreEvent)));
 }
 
 /*! \brief Update status for incoming calls widget list
@@ -113,7 +112,6 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
  */
 void PopcAastra::updateDisplay()
 {
-    // qDebug() << Q_FUNC_INFO;
     foreach (const QString key, m_incomingcalls.keys()) {
         m_incomingcalls[key]->updateWidget();
     }
@@ -127,33 +125,28 @@ void PopcAastra::updateDisplay()
  */
 void PopcAastra::updateUserStatus(const QString & xUId)
 {
-    // qDebug() << Q_FUNC_INFO << xUId;
+    static QString pattern = "%0 <%1>";
     const UserInfo * u = b_engine->user(xUId);
-    if (! u) return;
-    QStringList phones = u->phonelist();
-    for (int i = 0; i < phones.size(); ++i) {
-        const PhoneInfo * p = b_engine->phone(phones.at(i));
-        if (! p || p->number().isEmpty()) continue;
-        m_contact_completer->insertItem(
-            QString("%1 <%2>").arg(u->fullname()).arg(p->number()));
+    if (u) {
+        foreach (const QString & phonexid, u->phonelist()) {
+            const PhoneInfo * p = b_engine->phone(phonexid);
+            if (p && ! p->number().isEmpty()) {
+                QString entry = pattern.arg(u->fullname()).arg(p->number());
+                m_contact_completer->insertItem(entry);
+            }
+        }
     }
 }
 
-/*! \brief Update the target list with the available conf rooms
- *  \param id Unused
- *  \param e Unused
- */
-void PopcAastra::updateConfRoom(const QString & id, DStoreEvent e)
+/*! \brief Update the target list with the available conf rooms */
+void PopcAastra::updateMeetmesConfig(const QString & mxid)
 {
-    // qDebug() << Q_FUNC_INFO;
-    QVariantMap room_list = b_engine->eVM("confrooms");
-    const QString prefix = "Conf";
-    foreach (const QString id, room_list.keys()) {
-        QMap<QString, QVariant> room_map = room_list[id].toMap();
-        m_contact_completer->insertItem(
-            QString("%1: %2 <%3>").arg(prefix)
-            .arg(room_map["name"].toString())
-            .arg(room_map["number"].toString()));
+    static QString prefix = "Conf";
+    static QString pattern = "%0: %1 <%2>"; // "Conf: My meetme <800>"
+    const MeetmeInfo * m = b_engine->meetme(mxid);
+    if (m) {
+        QString entry = pattern.arg(prefix).arg(m->name()).arg(m->number());
+        m_contact_completer->insertItem(entry);
     }
 }
 

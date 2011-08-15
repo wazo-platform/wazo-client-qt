@@ -428,13 +428,11 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
         }
     }
 
-    bool is_recorded = (c && c->ismonitored());
-    bool is_muted = user_chan.value("ismuted").toBool();
-    bool is_authed = user_chan.value("isauthed").toBool();
-
     switch (index.column()) {
         case ACTION_MUTE:
+        {
             qDebug() << Q_FUNC_INFO << "Mute/unmute";
+            bool is_muted = user_chan.value("ismuted").toBool();
             if (is_muted) {
                 b_engine->meetmeAction("MeetmeUnmute", meetme_id + " "
                                        + usernum);
@@ -443,9 +441,11 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
                                        + usernum);
             }
             break;
+        }
         case ACTION_KICK:
             qDebug() << Q_FUNC_INFO << "Kick/MeetmeKick";
             if (! adminnum.isEmpty()) {
+                // bool is_authed = user_chan.value("isauthed").toBool();
                 b_engine->meetmeAction("MeetmeKick", meetme_id + " " +
                                        usernum + " " + adminnum);
                 // if (! is_authed) {
@@ -465,11 +465,14 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
             }
             break;
         case ACTION_RECORD:
+        {
             qDebug() << Q_FUNC_INFO << "Record";
+            bool is_recorded = (c && c->ismonitored());
             b_engine->meetmeAction("record", meetme_id + " " +
                                              usernum + " " +
                                              ( is_recorded ? "stop" : "start"));
             break;
+        }
         case ACTION_ALLOW_IN:
             qDebug() << Q_FUNC_INFO << "Accept";
             if (! adminnum.isEmpty()) {

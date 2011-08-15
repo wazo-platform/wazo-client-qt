@@ -245,14 +245,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void urlAuto(const QString &);
         void changeWatchedAgent(const QString &, bool);
         void changeWatchedQueue(const QString &);
-        void addUpdateConfMemberInTree(DStore *, const QString &);
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);
         void stopConnection();   //!< stop the engine
         void clearInternalData();   //!< clear the engine internal data
         void setOSInfos(const QString &);
-
-        void addUpdateConfRoomInTree(DStore *, const QString &);
 
         QMultiHash<QString, e_callback* > m_class_event_cb;
         

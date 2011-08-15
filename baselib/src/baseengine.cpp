@@ -792,59 +792,6 @@ void addUpdateUserInTree(DStore *tree, const QVariantMap & uinfo)
     info.clear();
 }
 
-void BaseEngine::addUpdateConfMemberInTree(DStore *tree, const QString & xid)
-{
-    // const MeetmeInfo * meetmeinfo = meetme(xid);
-    // if (meetmeinfo == NULL)
-    //     return;
-
-    // QString roomid = meetmeinfo->id();
-    // tree->rmPath(QString("confrooms/%1/in").arg(roomid));
-    // foreach (QString xchannel, meetmeinfo->xchannels()) {
-    //     const ChannelInfo * channelinfo = m_channels.value(xchannel);
-    //     if (channelinfo == NULL)
-    //         continue;
-
-    //     QVariantMap info;
-    //     QString id = QString::number(channelinfo->meetme_usernum());
-    //     info["id"] = id;
-    //     info["time-start"] = channelinfo->timestamp();
-    //     info["displayname"] = channelinfo->thisdisplay();
-    //     info["admin"] = channelinfo->meetme_isadmin();
-    //     info["authed"] = channelinfo->meetme_isauthed();
-    //     info["muted"] = channelinfo->meetme_ismuted();
-    //     const UserInfo * u = getUserForXChannelId(xchannel);
-    //     if (u) {
-    //         // info["phonenum"] = details.value("phonenum");
-    //         info["user-id"] = u->xid();
-    //     }
-    //     QString path = QString("confrooms/%1/in/%2").arg(roomid).arg(id);
-    //     tree->populate(path, info);
-    // }
-
-    // // leave case
-    // // tree->rmPath(path);
-}
-
-void BaseEngine::addUpdateConfRoomInTree(DStore *tree,
-                                         const QString & xid)
-{
-    // const MeetmeInfo * meetmeinfo = meetme(xid);
-    // if (meetmeinfo == NULL)
-    //     return;
-
-    // QString roomid = meetmeinfo->id();
-    // QVariantMap info;
-    // info["id"] = roomid;
-    // info["name"] = meetmeinfo->name();
-    // info["number"] = meetmeinfo->number();
-    // info["pin_needed"] = meetmeinfo->pin_needed();
-    // info["admin_moderationmode"] = meetmeinfo->admin_moderationmode();
-    // info["in"] = QVariantMap();
-
-    // tree->populate(QString("confrooms/%0").arg(roomid), info);
-}
-
 void BaseEngine::emitMessage(const QString & msg)
 {
     emit emitTextMessage(msg);

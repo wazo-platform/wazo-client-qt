@@ -63,9 +63,8 @@ void ConfListModel::timerEvent(QTimerEvent *)
     reset();
 }
 
-void ConfListModel::updateMeetmesConfig(const QString & meetme_id)
+void ConfListModel::updateMeetmesConfig(const QString &)
 {
-    // qDebug() << Q_FUNC_INFO << meetme_id;
     int row = 0;
     if (b_engine->iterover("meetmes").size() != m_row2id.size()) {
         foreach (const QString & key, b_engine->iterover("meetmes").keys()) {
