@@ -69,7 +69,6 @@ protected:
     void timerEvent(QTimerEvent *);
     /*! \brief Find a matching device for a called number */
     const PhoneInfo * findCalledDevice(const QString &);
-    bool isMyChannel(const QString & xchannelid);
     bool isTalkingToMe(const ChannelInfo *) const;
     void removeIncomingCall(const QString & xChannelId);
     void removeTransferedCall(const QString & xChannelId);
@@ -78,7 +77,6 @@ protected:
 private:
     /*! \brief starts tracking a number after a transfer */
     void trackTransfer(const QString &, const QString &, const QString &, const QString &);
-    QStringList getMyChannels();
 public slots:
     void updateDisplay();
     /*! \brief When a name is clicked on the destination list */

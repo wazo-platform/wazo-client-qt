@@ -245,68 +245,16 @@ void PopcAastra::removeTransferedCall(const QString & key)
     }
 }
 
-/*! \brief Check if a xivo channel belongs to our phone
- *
- *  Check each of our phones to see if the channel is owned by one of our
- *  phones
- *  \param xchannelid The id of the channel we are checking
- *  \return true if this channel belongs to our phone other wise false
- */
-bool PopcAastra::isMyChannel(const QString & xchannelid)
-{
-    // qDebug() << Q_FUNC_INFO << "Channel id(" << xchannelid << ")";
-
-    // Quick match against our line id (SIP/abc) when possible
-    foreach (const QString line_id, m_my_lines) {
-        if (xchannelid.contains(line_id)) return true;
-    }
-
-    const ChannelInfo * c = b_engine->channel(xchannelid);
-    QHash<QString, ChannelInfo *> channels = b_engine->channels();
-    if (! c) {
-        return false;
-    }
-    QStringList mychannels = getMyChannels();
-    if (mychannels.contains(xchannelid)) {
-        return true;
-    }
-    return false;
-}
-
 /*! \brief Check if the current user is a channel's peer */
 bool PopcAastra::isTalkingToMe(const ChannelInfo * c) const
 {
-    // qDebug() << Q_FUNC_INFO;
-    if (! c)
-        return false;
-    foreach (const QString line_id, m_my_lines) {
-        if (c->talkingto_id().contains(line_id)) {
+    if (c) {
+        const UserInfo * u = b_engine->getUserForXChannelId(c->xid());
+        if (u && m_ui && m_ui == u) {
             return true;
         }
     }
     return false;
-}
-
-/*! \brief Return my channels */
-QStringList PopcAastra::getMyChannels()
-{
-    // qDebug() << Q_FUNC_INFO;
-    QStringList res;
-    const UserInfo * me = b_engine->user(b_engine->getFullId());
-    foreach (const QString phone_key, me->phonelist()) {
-        const PhoneInfo * phone = b_engine->phone(phone_key);
-        foreach (const QString channel_key, phone->xchannels()) {
-            QStringList xchannel_parts = channel_key.split("/");
-            QStringList id_parts = xchannel_parts.at(2).split("-");
-            QString line_id = QString("%1/%2")
-                .arg(xchannel_parts.at(1)).arg(id_parts.at(0));
-            if (! m_my_lines.contains(line_id)) {
-                m_my_lines.append(line_id);
-            }
-            res.append(channel_key);
-        }
-    }
-    return res;
 }
 
 /*! \brief prints the content of m_incomingcalls */
