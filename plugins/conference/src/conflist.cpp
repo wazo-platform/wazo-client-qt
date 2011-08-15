@@ -108,6 +108,7 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
     const MeetmeInfo * m = b_engine->meetme(meetme_id);
     if (!m) return QVariant();
     const QString & mm = m->admin_moderationmode();
+
     switch (col) {
     case ID:
         return m->xid();
@@ -123,28 +124,15 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
         return m->channels().size();
     case STARTED_SINCE:
         {
-            // QVariantMap UserIn = b_engine->eVM(room + "in");
-            // double time = 0;
-            // QString displayed = QString::fromUtf8("Ø");
-            // foreach (QString uid, UserIn.keys()) {
-            //     double utime = UserIn[uid].toMap().value("time-start").toDouble();
-            //     if ((time == 0) || (time > utime)) {
-            //         time = utime;
-            //     }
-            // }
-            // if (time != 0) {
-            //     displayed =
-            //         QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
-            //                               b_engine->timeDeltaServerClient() -
-            //                               time)
-            //                              .toUTC().toString("hh:mm:ss");
-            // }
-
-            // return displayed;
-            return 0;
+            const ChannelInfo * pseudochan = b_engine->channel(
+                QString("%0/%1").arg(m->ipbxid()).arg(m->pseudochan()));
+            uint now = QDateTime::currentDateTime().toTime_t();
+            return QDateTime::fromTime_t(
+                now - (pseudochan ? pseudochan->timestamp() : now) -
+                b_engine->timeDeltaServerClient()).toUTC().toString("hh:mm:ss");
         }
-        default:
-            break;
+    default:
+        break;
     }
     return QVariant();
 }

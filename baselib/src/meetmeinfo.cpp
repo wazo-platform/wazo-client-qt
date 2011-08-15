@@ -78,6 +78,7 @@ bool MeetmeInfo::updateStatus(const QVariantMap & prop)
     qDebug() << Q_FUNC_INFO << prop;
     bool haschanged = false;
     haschanged |= setIfChangeBool(prop, "paused", & m_paused);
+    haschanged |= setIfChangeString(prop, "pseudochan", & m_pseudochan);
     if (prop.contains("channels")) {
         m_channels = prop.value("channels").toMap();
         haschanged = true;
