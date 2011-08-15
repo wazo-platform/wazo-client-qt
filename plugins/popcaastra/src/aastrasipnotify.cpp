@@ -161,6 +161,8 @@ QString getKeyUri(AastraKey key, int num1, int num2)
         return VOL_DOWN_URI;
     case XFER:
         return XFER_URI;
+    default:
+        return QString();
     }
 }
 
