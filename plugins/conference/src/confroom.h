@@ -56,16 +56,13 @@ class ConfRoomModel : public QAbstractTableModel
 
     public:
         ConfRoomModel(ConfTab *t, QWidget *parent, const QString &);
-        ~ConfRoomModel();
         void setView(ConfRoomView *m_view);
         QString id() const;
         QString row2participantId(int) const;
         int isAdmin() { return m_admin; };
         int isAuthed() { return m_authed; };
     private slots:
-        // void confRoomChange(const QString &path, DStoreEvent event);
         void extractRow2IdMap();
-        void updateMeetmesConfig(const QString &);
         void updateMeetmesStatus(const QString &);
     protected:
         void timerEvent(QTimerEvent *event);
@@ -84,8 +81,6 @@ class ConfRoomModel : public QAbstractTableModel
         QString m_id;
         ConfRoomView *m_view;
         QMap<int, QString> m_row2id;
-        // QVariantMap m_pplInRoom;
-
 };
 
 class ConfRoomView : public QTableView

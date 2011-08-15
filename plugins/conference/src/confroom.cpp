@@ -45,8 +45,6 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &id)
     : QAbstractTableModel(parent), m_tab(tab), m_parent(parent), m_admin(0),
       m_authed(0), m_id(id), m_view(NULL)
 {
-    connect(b_engine, SIGNAL(updateMeetmesConfig(const QString &)),
-            this, SLOT(updateMeetmesConfig(const QString &)));
     connect(b_engine, SIGNAL(updateMeetmesStatus(const QString &)),
             this, SLOT(updateMeetmesStatus(const QString &)));
     extractRow2IdMap();
@@ -65,8 +63,20 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &id)
     COL_TITLE[ACTION_MUTE] = tr("M");
 }
 
-ConfRoomModel::~ConfRoomModel()
+void ConfRoomModel::setView(ConfRoomView *v)
 {
+    m_view = v;
+    updateView();
+}
+
+QString ConfRoomModel::id() const
+{
+    return m_id;
+}
+
+QString ConfRoomModel::row2participantId(int row) const
+{
+    return m_row2id[row];
 }
 
 void ConfRoomModel::timerEvent(QTimerEvent *)
@@ -85,12 +95,6 @@ void ConfRoomModel::timerEvent(QTimerEvent *)
         updateView();
         reset();
     }
-}
-
-void ConfRoomModel::setView(ConfRoomView *v)
-{
-    m_view = v;
-    updateView();
 }
 
 void ConfRoomModel::updateView()
@@ -112,15 +116,9 @@ void ConfRoomModel::updateView()
     }
 }
 
-void ConfRoomModel::updateMeetmesConfig(const QString &)
-{
-    // qDebug() << Q_FUNC_INFO;
-}
-
-void ConfRoomModel::updateMeetmesStatus(const QString & meetme_id)
+void ConfRoomModel::updateMeetmesStatus(const QString &)
 {
     // Check if our channel left the meetme and close the tab
-    // qDebug() << Q_FUNC_INFO << meetme_id;
     extractRow2IdMap();
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (m) {
@@ -140,7 +138,6 @@ void ConfRoomModel::updateMeetmesStatus(const QString & meetme_id)
 /*! \brief Refresh the map between row and meetme channel ids */
 void ConfRoomModel::extractRow2IdMap()
 {
-    // qDebug() << Q_FUNC_INFO;
     m_row2id.clear();
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (m) {
@@ -156,35 +153,35 @@ void ConfRoomModel::extractRow2IdMap()
 
 void ConfRoomModel::sort(int column, Qt::SortOrder order)
 {
-    // struct {
-    //     static bool ascending(const QPair<int, QString> &a,
-    //                           const QPair<int, QString> &b) {
-    //         return QString::localeAwareCompare(a.second, b.second) < 0 ?
-    //                                            true : false;
-    //     }
-    //     static bool descending(const QPair<int, QString> &a,
-    //                            const QPair<int, QString> &b) {
-    //         return QString::localeAwareCompare(a.second, b.second) < 0 ?
-    //                                            false : true;
-    //     }
-    // } sFun;
+    struct {
+        static bool ascending(const QPair<QString, QString> &a,
+                              const QPair<QString, QString> &b) {
+            return QString::localeAwareCompare(a.second, b.second) < 0 ?
+                                               true : false;
+        }
+        static bool descending(const QPair<QString, QString> &a,
+                               const QPair<QString, QString> &b) {
+            return QString::localeAwareCompare(a.second, b.second) < 0 ?
+                                               false : true;
+        }
+    } sFun;
 
-    // QList<QPair<int, QString> > toSort;
+    QList<QPair<QString, QString> > toSort;
 
-    // int i, e;
-    // for (i=0,e=rowCount(QModelIndex());i<e;i++) {
-    //     toSort.append(QPair<int, QString>(index(i, ID).data().toInt(),
-    //                                       index(i, column).data().toString()));
-    // }
+    int count = rowCount(QModelIndex());
+    for (int i = 0; i < count; i++) {
+        toSort.append(QPair<QString, QString>(index(i, ID).data().toString(),
+                                              index(i, column).data().toString()));
+    }
 
-    // qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
-    //                                      sFun.ascending :
-    //                                      sFun.descending);
+    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
+                                         sFun.ascending :
+                                         sFun.descending);
 
-    // for (i=0;i<e;i++) {
-    //     m_row2id.insert(i, QString::number(toSort[i].first));
-    // }
-    // reset();
+    for (int i = 0; i < count; i++) {
+        m_row2id.insert(i, QString(toSort[i].first));
+    }
+    reset();
 }
 
 
@@ -216,14 +213,12 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
     QString chanid = m_row2id[row];
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (! m || (m && ! m->channels().contains(chanid))) {
-        // qDebug() << Q_FUNC_INFO << m_id << "chanid(" <<  chanid
-        //          << ") No such channel in this meetme" << m->channels() << m_row2id;
-        // exit(1);
+        qDebug() << Q_FUNC_INFO << m_id << "chanid(" <<  chanid
+                 << ") No such channel in this meetme" << m->channels() << m_row2id;
         return QVariant();
     }
-    QString chanxid = QString("%0/%1").arg(m->ipbxid()).arg(m_row2id[row]);
-
     const QVariantMap & user_chan = m->channels().value(chanid).toMap();
+    QString chanxid = QString("%0/%1").arg(m->ipbxid()).arg(m_row2id[row]);
     const ChannelInfo * c = b_engine->channel(chanxid);
     const UserInfo * u = b_engine->getUserForXChannelId(chanxid);
     bool my_channel = (u && u == b_engine->user(b_engine->getFullId()));
@@ -322,15 +317,13 @@ QVariant ConfRoomModel::headerData(int section,
 
 Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
 {
-    int row = index.row(), col = index.column();
-
-    QString chanid = m_row2id[row];
+    int col = index.column();
+    QString chanid = m_row2id[index.row()];
     const MeetmeInfo * m = b_engine->meetme(m_id);
     if (! m) return Qt::NoItemFlags;
     const QVariantMap & user_chan = m->channels().value(chanid).toMap();
     const UserInfo * u = b_engine->getUserForXChannelId(chanid);
     bool my_channel =  (u && u == b_engine->user(b_engine->getFullId()));
-    
 
     if (m_admin) {
         if (col == ACTION_KICK) {
@@ -350,15 +343,7 @@ Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
     return Qt::NoItemFlags;
 }
 
-QString ConfRoomModel::row2participantId(int row) const
-{
-    return m_row2id[row];
-}
 
-QString ConfRoomModel::id() const
-{
-    return m_id;
-}
 
 ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
     : QTableView(parent)
@@ -375,8 +360,8 @@ ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
                         ACTION_RECORD,
                         ACTION_ALLOW_IN,
                         ACTION_KICK };
-    int i;
-    for(i=0;i<nelem(ActionCol);i++) {
+
+    for(int i = 0; i < nelem(ActionCol); i++) {
         setColumnWidth(ActionCol[i], 24);
         horizontalHeader()->setResizeMode(ActionCol[i], QHeaderView::Fixed);
     }
@@ -405,14 +390,13 @@ void ConfRoomView::sectionHeaderClicked(int index)
                           ACTION_RECORD,
                           ACTION_ALLOW_IN,
                           ACTION_KICK };
-    int i;
-    for(i=0;i<nelem(nonSortable);i++) {
+
+    for(int i = 0; i < nelem(nonSortable); i++) {
         if (nonSortable[i] == index) {
             setSortingEnabled(false);
             return ;
         }
     }
-
     setSortingEnabled(true);
 }
 
@@ -509,7 +493,6 @@ void ConfRoomView::mousePressEvent(QMouseEvent *event)
 ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &id)
     : QWidget(parent), m_id(id)
 {
-    // qDebug() << Q_FUNC_INFO << id;
     const MeetmeInfo * m = b_engine->meetme(m_id);
     bool moderated = (m ? m->admin_moderationmode() != "0" : false);
 

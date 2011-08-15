@@ -153,35 +153,35 @@ QVariant ConfListModel::headerData(int section,
 
 void ConfListModel::sort(int column, Qt::SortOrder order)
 {
-    // struct {
-    //     static bool ascending(const QPair<int, QString> &a,
-    //                           const QPair<int, QString> &b) {
-    //         return QString::localeAwareCompare(a.second, b.second) < 0 ?
-    //                                            true : false;
-    //     }
-    //     static bool descending(const QPair<int, QString> &a,
-    //                            const QPair<int, QString> &b) {
-    //         return QString::localeAwareCompare(a.second, b.second) < 0 ?
-    //                                            false : true;
-    //     }
-    // } sFun;
+    struct {
+        static bool ascending(const QPair<QString, QString> &a,
+                              const QPair<QString, QString> &b) {
+            return QString::localeAwareCompare(a.second, b.second) < 0 ?
+                                               true : false;
+        }
+        static bool descending(const QPair<QString, QString> &a,
+                               const QPair<QString, QString> &b) {
+            return QString::localeAwareCompare(a.second, b.second) < 0 ?
+                                               false : true;
+        }
+    } sFun;
 
-    // QList<QPair<int, QString> > toSort;
+    QList<QPair<QString, QString> > toSort;
 
-    // int i, e;
-    // for (i=0,e=rowCount(QModelIndex());i<e;i++) {
-    //     toSort.append(QPair<int, QString>(index(i, ID).data().toInt(),
-    //                                       index(i, column).data().toString()));
-    // }
+    int count = rowCount(QModelIndex());
+    for (int i = 0; i < count; i++) {
+        toSort.append(QPair<QString, QString>(index(i, ID).data().toString(),
+                                              index(i, column).data().toString()));
+    }
 
-    // qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
-    //                                      sFun.ascending :
-    //                                      sFun.descending);
+    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
+                                         sFun.ascending :
+                                         sFun.descending);
 
-    // for (i=0;i<e;i++) {
-    //     m_row2id.insert(i, QString::number(toSort[i].first));
-    // }
-    // reset();
+    for (int i = 0; i < count; i++) {
+        m_row2id.insert(i, QString(toSort[i].first));
+    }
+    reset();
 }
 
 

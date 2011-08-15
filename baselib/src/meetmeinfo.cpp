@@ -63,7 +63,6 @@ bool MeetmeInfo::paused() const
 
 bool MeetmeInfo::updateConfig(const QVariantMap & prop)
 {
-    qDebug() << Q_FUNC_INFO << prop;
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "name", & m_name);
@@ -75,7 +74,6 @@ bool MeetmeInfo::updateConfig(const QVariantMap & prop)
 
 bool MeetmeInfo::updateStatus(const QVariantMap & prop)
 {
-    qDebug() << Q_FUNC_INFO << prop;
     bool haschanged = false;
     haschanged |= setIfChangeBool(prop, "paused", & m_paused);
     haschanged |= setIfChangeString(prop, "pseudochan", & m_pseudochan);
