@@ -53,12 +53,14 @@ class QTableWidget;
 
 PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
 {
+    qDebug() << Q_FUNC_INFO;
+
     setTitle(tr("POPC Aastra operator"));
 
-    m_layout = new QVBoxLayout(this);
-    m_top_widget = new QHBoxLayout(this);
+    m_layout = new QVBoxLayout();
+    m_top_widget = new QHBoxLayout();
 
-    //this->setLayout(m_layout);
+    setLayout(m_layout);
     m_layout->addLayout(m_top_widget);
     m_layout->setAlignment(Qt::AlignTop);
 
