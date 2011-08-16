@@ -76,11 +76,17 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
         foreach (QString id, prop.value("linelist").toStringList())
             lid << QString("%1/%2").arg(m_ipbxid).arg(id);
         setPhoneIdList(lid);
-        haschanged = true;
-    }
 
-    if (haschanged) { // Clear cached values
+        // compute identity list
         m_identity_list.clear();
+        foreach (const QString & phonexid, m_phoneidlist) {
+            const PhoneInfo * p = b_engine->phone(phonexid);
+            if (p) {
+                m_identity_list << p->identity();
+            }
+        }
+
+        haschanged = true;
     }
 
     return haschanged;
@@ -122,23 +128,6 @@ QString UserInfo::findNumberForXChannel(const QString & xcid) const
         }
     }
     return QString();
-}
-
-/*! \brief Returns a list of phone identities for this user
- *
- * If a user has one or many lines a QStringList containing each of the lines
- * identities for that user
- * If the user has no lines an empty list is returned */
-const QStringList & UserInfo::identitylist() {
-    if (m_identity_list.size() == 0) {
-        foreach (const QString & phonexid, m_phoneidlist) {
-            const PhoneInfo * p = b_engine->phone(phonexid);
-            if (p) {
-                m_identity_list << p->identity();
-            }
-        }
-    }
-    return m_identity_list;
 }
 
 /*! \brief check if this user owns this channel */
