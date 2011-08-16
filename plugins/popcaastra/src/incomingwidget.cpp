@@ -90,7 +90,8 @@ void IncomingWidget::updateFromChannelInfo()
 
 void IncomingWidget::setSignalsSlots()
 {
-    connect(this, SIGNAL(doConf(int)), parent(), SLOT(confLine(int)));
+    connect(this, SIGNAL(doConf(int, const QString &)),
+            parent(), SLOT(confLine(int, const QString &)));
     connect(this, SIGNAL(doHangUp(int)), parent(), SLOT(hangUpLine(int)));
     connect(this, SIGNAL(doHold(int)), parent(), SLOT(holdLine(int)));
     connect(this, SIGNAL(selectLine(int)), parent(), SLOT(selectLine(int)));
@@ -186,7 +187,34 @@ void IncomingWidget::doBlindTransfer()
 void IncomingWidget::doConf()
 {
     // qDebug() << Q_FUNC_INFO;
-    emit doConf(m_line);
+    QMap<QString, QPushButton *> meetme_map;
+    QMessageBox box;
+    foreach (const QString & mxid, b_engine->iterover("meetmes").keys()) {
+        const MeetmeInfo * m = b_engine->meetme(mxid);
+        if (! m) continue;
+        meetme_map[m->xid()] = box.addButton(QString("%0 - %1")
+                                             .arg(m->number()).arg(m->name()),
+                                             QMessageBox::ActionRole);
+        if (meetme_map.size() == 1) {
+            box.setDefaultButton(meetme_map[m->xid()]);
+        }
+    }
+
+    if (meetme_map.size() > 0) {
+        box.setText(tr("Choose the conference room to transfer this call to"));
+        box.addButton(QMessageBox::Cancel);
+        box.exec();
+        foreach (const QString & mxid, b_engine->iterover("meetmes").keys()) {
+            const MeetmeInfo * m = b_engine->meetme(mxid);
+            if (m && box.clickedButton() == meetme_map[m->xid()]) {
+                return emit doConf(m_line, m->xid());
+            }
+        }
+    } else {
+        qDebug() << Q_FUNC_INFO << "No meetme available";
+        return;
+    }
+    qDebug() << Q_FUNC_INFO << "No meetme selected";
 }
 
 /*! \brief Prompts the user for a parking */
@@ -197,7 +225,9 @@ void IncomingWidget::doParkCall()
     foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
         const ParkingInfo * p = b_engine->parkinglot(pxid);
         if (! p) continue;
-        parking_map[p->xid()] = box.addButton(QString("%0 - %1").arg(p->number()).arg(p->name()), QMessageBox::ActionRole);
+        parking_map[p->xid()] = box.addButton(QString("%0 - %1")
+                                              .arg(p->number()).arg(p->name()),
+                                              QMessageBox::ActionRole);
         if (parking_map.size() == 1) {
             box.setDefaultButton(parking_map[p->xid()]);
         }
@@ -207,15 +237,15 @@ void IncomingWidget::doParkCall()
         box.setText(tr("Choose the parking to park the call to"));
         box.addButton(QMessageBox::Cancel);
         box.exec();
+        foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
+            const ParkingInfo * p = b_engine->parkinglot(pxid);
+            if (p && box.clickedButton() == parking_map[p->xid()]) {
+                return emit doParkCall(m_line, p->xid());
+            }
+        }
     } else {
         qDebug() << Q_FUNC_INFO << "No parking available";
-    }
-
-    foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
-        const ParkingInfo * p = b_engine->parkinglot(pxid);
-        if (p && box.clickedButton() == parking_map[p->xid()]) {
-            return emit doParkCall(m_line, p->xid());
-        }
+        return;
     }
     
     qDebug() << Q_FUNC_INFO << "No parking selected";

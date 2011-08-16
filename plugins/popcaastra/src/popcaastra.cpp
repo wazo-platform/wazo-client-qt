@@ -332,22 +332,24 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
  *  The transfer is done using the transfer button, not the conference button
  *
  *  \param line The phone's line to transfer to the conference room
+ *  \param mxid The meetme's XiVO id
  */
-void PopcAastra::confLine(int /* line */)
+void PopcAastra::confLine(int line, const QString & mxid)
 {
-    // qDebug() << Q_FUNC_INFO << line;
-    QList<QString> commands;
-    commands.append(getKeyUri(XFER));
-    // TODO: Remove the magic number
-    QString number = "800";
-    for (int i = 0; i < number.size(); ++i) {
-        const QChar c = number[i];
-        if (c.isDigit()) {
-            commands.append(getKeyUri(KEYPAD, c.digitValue()));
+    const MeetmeInfo * m = b_engine->meetme(mxid);
+    if (m) {
+        QList<QString> commands;
+        commands.append(getKeyUri(XFER));
+        QString number = m->number();
+        for (int i = 0; i < number.size(); ++i) {
+            const QChar c = number[i];
+            if (c.isDigit()) {
+                commands.append(getKeyUri(KEYPAD, c.digitValue()));
+            }
         }
+        commands.append(getKeyUri(XFER));
+        emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
     }
-    commands.append(getKeyUri(XFER));
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
 /*! \brief Hang up a line on our phone

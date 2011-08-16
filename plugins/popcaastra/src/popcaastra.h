@@ -87,7 +87,7 @@ public slots:
     void updateUserStatus(const QString &);
     void updateChannelStatus(const QString &);
     void updateMeetmesConfig(const QString &);
-    void confLine(int);
+    void confLine(int, const QString &);
     void hangup();
     void hangUpLine(int);
     void holdLine(int);

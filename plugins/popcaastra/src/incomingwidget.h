@@ -68,7 +68,7 @@ class IncomingWidget : public QWidget
          * \param number The peer's number
          */
         void doBlindTransfer(const QString &, int, const QString &, const QString &);
-        void doConf(int);       //!< Transfer this line
+        void doConf(int, const QString &);       //!< Transfer this line
         void doHangUp(int);     //!< hang up a line
         void doHold(int);
         void doParkCall(int, const QString &);
