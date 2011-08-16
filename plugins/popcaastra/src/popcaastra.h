@@ -69,7 +69,6 @@ protected:
     void timerEvent(QTimerEvent *);
     /*! \brief Find a matching device for a called number */
     const PhoneInfo * findCalledDevice(const QString &);
-    bool isTalkingToMe(const ChannelInfo *) const;
     void removeIncomingCall(const QString & xChannelId);
     void removeTransferedCall(const QString & xChannelId);
     void removeCompletedTransfers();

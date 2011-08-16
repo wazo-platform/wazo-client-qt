@@ -72,7 +72,6 @@ void IncomingWidget::updateFromChannelInfo()
 {
     const ChannelInfo * c = b_engine->channel(m_xchannel);
     if (c) {
-        qDebug() << Q_FUNC_INFO << c->toString();
         m_parkedCall = c->isparked();
         m_holdedCall = c->isholded();
         const UserInfo * u = b_engine->getUserForXChannelId(m_xchannel);

@@ -253,18 +253,6 @@ void PopcAastra::removeTransferedCall(const QString & key)
     }
 }
 
-/*! \brief Check if the current user is a channel's peer */
-bool PopcAastra::isTalkingToMe(const ChannelInfo * c) const
-{
-    if (c) {
-        const UserInfo * u = b_engine->getUserForXChannelId(c->xid());
-        if (u && m_ui && m_ui == u) {
-            return true;
-        }
-    }
-    return false;
-}
-
 /*! \brief prints the content of m_incomingcalls */
 void PopcAastra::debugIncomingCalls() const
 {
