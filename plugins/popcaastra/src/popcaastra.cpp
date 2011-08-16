@@ -203,8 +203,10 @@ void PopcAastra::removeCompletedTransfers()
     QStringList to_remove;
 
     foreach (const QString & device_key, m_transferedcalls.keys()) {
+        bool matched = false;
         foreach (const ChannelInfo * c, b_engine->channels()) {
             if (c->xid().contains(device_key)) {
+                matched = true;
                 QString called_device = c->talkingto_id().split("-").at(0);
                 if (! m_ui->identitylist().contains(called_device) && c->direction() == "out") {
                     if (c->commstatus() != "calling") {
@@ -212,6 +214,9 @@ void PopcAastra::removeCompletedTransfers()
                     }
                 }
             }
+        }
+        if (! matched) {
+            to_remove << device_key;
         }
     }
 
