@@ -77,7 +77,7 @@ bool PhoneInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "hintstatus", & m_hintstatus);
-    if(prop.contains("channels")) {
+    if (prop.contains("channels")) {
         m_channels = prop.value("channels").toStringList();
         m_xchannels.clear();
         foreach (QString channel, m_channels) {
