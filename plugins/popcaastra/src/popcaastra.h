@@ -79,21 +79,11 @@ private:
     void trackTransfer(const QString &, const QString &, const QString &, const QString &);
 public slots:
     void updateDisplay();
-    /*! \brief When a name is clicked on the destination list */
-    // void destinationClicked(int col, int row);
-    /*! \brief refresh the list containing call destinations */
-    // void refreshDestination(const QString &);
-    /*! \brief retrieves the channel list from the base engine and refresh the
-     *  lines list
-     */
-    // void refreshLines(const QString &);
     /*! \brief turns up the volume of the phone */
     void volUp();
     /*! \brief turns down the volume of the phone */
     void volDown();
     void navRight();
-    /*!  \brief update the peer to be monitored */
-    // void monitorPeer(UserInfo *);
     void updatePhoneStatus(const QString &);
     void updateUserStatus(const QString &);
     void updateChannelStatus(const QString &);

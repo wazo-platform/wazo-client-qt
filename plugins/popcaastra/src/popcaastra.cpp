@@ -82,8 +82,6 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
     startTimer(1000);
 
     // Signals / slots
-    connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
-            this, SLOT(monitorPeer(UserInfo *)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
             this, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
@@ -181,14 +179,15 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
  */
 void PopcAastra::removeDefunctWidgets()
 {
-    // qDebug() << Q_FUNC_INFO;
     if (m_incomingcalls.size() == 0 && m_transferedcalls.size() == 0) return;
-    const QHash<QString, ChannelInfo *> & channels = b_engine->channels();
-    foreach (const QString channel, m_incomingcalls.keys()) {
-        if (! channels.contains(channel)) {
-            removeIncomingCall(channel);
+
+    foreach (const QString & cxid, m_incomingcalls.keys()) {
+        if (! b_engine->channel(cxid)) {
+            removeIncomingCall(cxid);
         }
     }
+
+    // Remove tracked transfers
 }
 
 /*! \brief Remove completed blind transfers from the widget list
@@ -197,25 +196,27 @@ void PopcAastra::removeDefunctWidgets()
  */
 void PopcAastra::removeCompletedTransfers()
 {
-    // qDebug() << Q_FUNC_INFO;
-    if (0 == m_incomingcalls.size() && 0 == m_transferedcalls.size())
+    if (0 == m_transferedcalls.size())
         return;
-    foreach (const QString & key, m_transferedcalls.keys()) {
-        bool matched = false;
-        foreach (const QString xchannelid, b_engine->channels().keys()) {
-            if (xchannelid.contains(key)) {
-                matched = true;
-                const ChannelInfo * c = b_engine->channel(xchannelid);
-                if (isTalkingToMe(c)) continue;
-                // TODO: Remove this constant
-                if (! c || c->commstatus() != "calling") {
-                    removeTransferedCall(key);
+    // qDebug() << Q_FUNC_INFO;
+    
+    QStringList to_remove;
+
+    foreach (const QString & device_key, m_transferedcalls.keys()) {
+        foreach (const ChannelInfo * c, b_engine->channels()) {
+            if (c->xid().contains(device_key)) {
+                QString called_device = c->talkingto_id().split("-").at(0);
+                if (! m_ui->identitylist().contains(called_device) && c->direction() == "out") {
+                    if (c->commstatus() != "calling") {
+                        to_remove << device_key;
+                    }
                 }
             }
         }
-        if (! matched) {
-            removeTransferedCall(key);
-        }
+    }
+
+    foreach (const QString & device_key, to_remove) {
+        removeTransferedCall(device_key);
     }
 }
 
