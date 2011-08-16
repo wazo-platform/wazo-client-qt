@@ -202,7 +202,7 @@ void XletCalls::updateChannelStatus(const QString & xchannel)
     if (status == CHAN_STATUS_HANGUP)
         return;
     // activeChannels << channelme;
-    qDebug() << Q_FUNC_INFO << "adding/updating" << xchannel << m_affhash;
+    // qDebug() << Q_FUNC_INFO << "adding/updating" << xchannel << m_affhash;
     if (m_affhash.contains(xchannel))
         m_affhash[xchannel]->updateWidget(xchannel);
     else {
