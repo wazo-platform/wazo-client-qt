@@ -76,16 +76,6 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
         foreach (QString id, prop.value("linelist").toStringList())
             lid << QString("%1/%2").arg(m_ipbxid).arg(id);
         setPhoneIdList(lid);
-
-        // compute identity list
-        m_identity_list.clear();
-        foreach (const QString & phonexid, m_phoneidlist) {
-            const PhoneInfo * p = b_engine->phone(phonexid);
-            if (p) {
-                m_identity_list << p->identity();
-            }
-        }
-
         haschanged = true;
     }
 
@@ -140,6 +130,20 @@ bool UserInfo::hasChannelId(const QString & xchannelid) const
         }
     }
     return false;
+}
+
+/*! \brief returns the list of phone's identities for this user */
+QStringList UserInfo::identitylist() const
+{
+    QStringList identities;
+
+    foreach (const QString & phonexid, m_phoneidlist) {
+        const PhoneInfo * p = b_engine->phone(phonexid);
+        if (p) {
+            identities << p->identity();
+        }
+    }
+    return identities;
 }
 
 const QString & UserInfo::availstate() const
