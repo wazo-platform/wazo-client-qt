@@ -65,9 +65,11 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
 QString ChannelInfo::toString() const
 {
     QString s;
+    s += "Xid(" + xid() + ") ";
     s += "This display(" + m_thisdisplay + ") ";
     s += "Peer display(" + m_peerdisplay + ") ";
     s += "Comm status(" + m_commstatus + ") ";
+    s += "Direction(" + m_direction + ") " ;
     s += "Talking to kind(" + m_talkingto_kind + ") ";
     s += "Talking to id(" + m_talkingto_id + ") ";
     s += "Parked(" + QString(m_isparked ? "true" : "false")  + ")";
