@@ -177,9 +177,9 @@ void IncomingWidget::doBlindTransfer()
 {
     // qDebug() << Q_FUNC_INFO;
     const ChannelInfo * c = b_engine->channel(m_xchannel);
-    QString peer_channel = c->talkingto_id();
+    QString peer_channel = c->xid();
     QString peer_device = QString("%0/%1")
-        .arg(c->ipbxid()).arg(peer_channel.split("-").at(0));
+        .arg(peer_channel.split("-").at(0));
     emit doBlindTransfer(peer_device, m_line, m_peer_name, m_peer_number);
 }
 
