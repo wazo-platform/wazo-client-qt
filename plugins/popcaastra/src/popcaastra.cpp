@@ -482,23 +482,28 @@ void PopcAastra::selectLine(int line)
 
 /*! \brief transfer the call to a parking lot
  *  \param line to transfer
+ *  \param pxid the parking's XiVO id
  */
-void PopcAastra::parkcall(int line)
+void PopcAastra::parkcall(int line, const QString & pxid)
 {
     // qDebug() << Q_FUNC_INFO << line;
-    // TODO: Remove the magic value when the base_engine starts working
-    QString number = "700";
-    QList<QString> commands;
-    commands.append(getKeyUri(LINE, line));
-    commands.append(getKeyUri(XFER));
-    for (int i = 0; i < number.size(); ++i) {
-        const QChar c = number[i];
-        if (c.isDigit()) {
-            commands.append(getKeyUri(KEYPAD, c.digitValue()));
+    const ParkingInfo * p = b_engine->parkinglot(pxid);
+    if (p) {
+        QString number = p->number();
+        QList<QString> commands;
+        commands.append(getKeyUri(LINE, line));
+        commands.append(getKeyUri(XFER));
+        for (int i = 0; i < number.size(); ++i) {
+            const QChar c = number[i];
+            if (c.isDigit()) {
+                commands.append(getKeyUri(KEYPAD, c.digitValue()));
+            }
         }
+        commands.append(getKeyUri(XFER));
+        emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+    } else {
+        qDebug() << Q_FUNC_INFO << "Trying to park to a void parkinglot";
     }
-    commands.append(getKeyUri(XFER));
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
 /*! \brief turns the volume up */
@@ -607,3 +612,4 @@ PopcAastra::~PopcAastra()
 {
     // qDebug() << Q_FUNC_INFO;
 }
+

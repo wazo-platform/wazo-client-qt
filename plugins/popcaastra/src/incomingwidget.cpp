@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QMessageBox>
 #include <QPushButton>
 
 #include "aastrasipnotify.h"
@@ -105,7 +106,8 @@ void IncomingWidget::setSignalsSlots()
                              int,
                              const QString &,
                              const QString &)));
-    connect(this, SIGNAL(doParkCall(int)), parent(), SLOT(parkcall(int)));
+    connect(this, SIGNAL(doParkCall(int, const QString &)),
+            parent(), SLOT(parkcall(int, const QString &)));
 
     connect(m_btn_atxfer, SIGNAL(clicked()), this, SLOT(doAttendedTransfer()));
     connect(m_btn_conf, SIGNAL(clicked()), this, SLOT(doConf()));
@@ -187,10 +189,36 @@ void IncomingWidget::doConf()
     emit doConf(m_line);
 }
 
+/*! \brief Prompts the user for a parking */
 void IncomingWidget::doParkCall()
 {
-    // qDebug() << Q_FUNC_INFO;
-    emit doParkCall(m_line);
+    QMap<QString, QPushButton *> parking_map;
+    QMessageBox box;
+    foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
+        const ParkingInfo * p = b_engine->parkinglot(pxid);
+        if (! p) continue;
+        parking_map[p->xid()] = box.addButton(QString("%0 - %1").arg(p->number()).arg(p->name()), QMessageBox::ActionRole);
+        if (parking_map.size() == 1) {
+            box.setDefaultButton(parking_map[p->xid()]);
+        }
+    }
+
+    if (parking_map.size() > 0) {
+        box.setText(tr("Choose the parking to park the call to"));
+        box.addButton(QMessageBox::Cancel);
+        box.exec();
+    } else {
+        qDebug() << Q_FUNC_INFO << "No parking available";
+    }
+
+    foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
+        const ParkingInfo * p = b_engine->parkinglot(pxid);
+        if (p && box.clickedButton() == parking_map[p->xid()]) {
+            return emit doParkCall(m_line, p->xid());
+        }
+    }
+    
+    qDebug() << Q_FUNC_INFO << "No parking selected";
 }
 
 void IncomingWidget::mousePressEvent(QMouseEvent * /* event */)

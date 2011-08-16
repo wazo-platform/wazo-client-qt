@@ -71,7 +71,7 @@ class IncomingWidget : public QWidget
         void doConf(int);       //!< Transfer this line
         void doHangUp(int);     //!< hang up a line
         void doHold(int);
-        void doParkCall(int);
+        void doParkCall(int, const QString &);
         void selectLine(int);
     private:
         int m_line;                 //!< The phone's line number

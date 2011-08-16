@@ -93,7 +93,7 @@ public slots:
     void holdLine(int);
     void attendedTransfer(int);
     void blindTransfer(const QString &, int, const QString &, const QString &);
-    void parkcall(int);
+    void parkcall(int, const QString &);
     void selectLine(int);
     void prgkey1();
     /*! \brief intercepts the call to this exten */
