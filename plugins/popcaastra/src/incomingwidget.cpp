@@ -18,7 +18,7 @@ IncomingWidget::IncomingWidget(int line, const QString & xchan, QWidget * w)
     m_small_button_sz = new QSize(20,20);
     buildLayout();
     setSignalsSlots();
-    updateFromChannelInfo(m_xchannel);
+    updateFromChannelInfo();
     refreshUI();
 }
 
@@ -68,19 +68,24 @@ void IncomingWidget::refreshUI()
     updateCallTimeLabel();
 }
 
-void IncomingWidget::updateFromChannelInfo(const QString & xcid)
+void IncomingWidget::updateFromChannelInfo()
 {
-    // qDebug() << Q_FUNC_INFO << xcid;
-    const ChannelInfo * info = b_engine->channel(xcid);
-    if (! info) return;
-    m_parkedCall = info->isparked();
-    m_holdedCall = info->isholded();
-    // TODO: When the caller is not a Xivo user
-    m_peer = b_engine->getUserForXChannelId(info->talkingto_id());
-    if (! m_peer) return;
-    m_peer_name = m_peer->fullname();
-    // TODO: Find something better than the first phone
-    m_peer_number = b_engine->phone(m_peer->phonelist()[0])->number();
+    const ChannelInfo * c = b_engine->channel(m_xchannel);
+    if (c) {
+        qDebug() << Q_FUNC_INFO << c->toString();
+        m_parkedCall = c->isparked();
+        m_holdedCall = c->isholded();
+        const UserInfo * u = b_engine->getUserForXChannelId(m_xchannel);
+        if (u) {
+            m_peer_name = u->fullname();
+            foreach (const QString & phonexid, u->phonelist()) {
+                const PhoneInfo * p = b_engine->phone(phonexid);
+                if (p && c->xid().contains(p->identity())) {
+                    m_peer_number = p->number();
+                }
+            }
+        }
+    }
 }
 
 void IncomingWidget::setSignalsSlots()
@@ -135,7 +140,7 @@ void IncomingWidget::updateCallTimeLabel()
 void IncomingWidget::updateWidget()
 {
     // qDebug() << Q_FUNC_INFO;
-    updateFromChannelInfo(m_xchannel);
+    updateFromChannelInfo();
     refreshUI();
 }
 

@@ -162,12 +162,15 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
     } else if (m_transferedcalls.contains(cxid)) {
         m_transferedcalls[cxid]->updateWidget();
     } else {
-        const UserInfo * u = b_engine->getUserForXChannelId(cxid);
-        if (u && m_ui && u == m_ui) {
-            IncomingWidget * w = new IncomingWidget(
-                findFirstAvailableLine(), cxid, this);
-            m_incomingcalls[cxid] = w;
-            m_layout->addWidget(w);
+        const ChannelInfo * c = b_engine->channel(cxid);
+        if (c) {
+            const QString & peer_identity = c->talkingto_id().split("-").value(0);
+            if (m_ui && m_ui->identitylist().contains(peer_identity)) {
+                IncomingWidget * w = new IncomingWidget(
+                    findFirstAvailableLine(), cxid, this);
+                m_incomingcalls[cxid] = w;
+                m_layout->addWidget(w);
+            }
         }
     }
 }
@@ -198,7 +201,6 @@ void PopcAastra::removeCompletedTransfers()
 {
     if (0 == m_transferedcalls.size())
         return;
-    // qDebug() << Q_FUNC_INFO;
     
     QStringList to_remove;
 

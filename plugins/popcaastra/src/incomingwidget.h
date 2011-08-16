@@ -52,7 +52,7 @@ class IncomingWidget : public QWidget
         void timerEvent(QTimerEvent *);
         /*! \brief Updates the widgets informations from a channel id
          *  \param xcid Channel key */
-        void updateFromChannelInfo(const QString &);
+        void updateFromChannelInfo();
     private:
         void updateCallTimeLabel();
         /*! \brief Register signals and slots */
