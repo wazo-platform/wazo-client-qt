@@ -247,7 +247,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void changeWatchedAgent(const QString &, bool);
         void changeWatchedQueue(const QString &);
-
     private:
     
         
@@ -270,9 +269,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void stopConnection();     //!< stop the engine
         void clearInternalData();  //!< clear the engine internal data
-
-        void addUpdateConfRoomInTree(DStore *, const QString &);
-        void addUpdateConfMemberInTree(DStore *, const QString &);
         
         void openLogFile();
 
@@ -402,6 +398,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateVoiceMailConfig(const QString &);
         void updateVoiceMailStatus(const QString &);
         void updateChannelStatus(const QString &);
+        void updateMeetmesConfig(const QString &);
+        void updateMeetmesStatus(const QString &);
         void updateParkinglotConfig(const QString &);
         void updateParkinglotStatus(const QString &);
         void removePhoneConfig(const QString &);

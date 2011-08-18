@@ -55,10 +55,10 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
 {
     setTitle(tr("POPC Aastra operator"));
 
-    m_layout = new QVBoxLayout(this);
-    m_top_widget = new QHBoxLayout(this);
+    m_layout = new QVBoxLayout();
+    m_top_widget = new QHBoxLayout();
 
-    //this->setLayout(m_layout);
+    setLayout(m_layout);
     m_layout->addLayout(m_top_widget);
     m_layout->setAlignment(Qt::AlignTop);
 
@@ -82,8 +82,6 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
     startTimer(1000);
 
     // Signals / slots
-    connect(b_engine, SIGNAL(monitorPeer(UserInfo *)),
-            this, SLOT(monitorPeer(UserInfo *)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
             this, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
@@ -94,6 +92,8 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
             this, SLOT(receiveNumber(const QString &)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
             this, SLOT(updateUserStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateMeetmesConfig(const QString &)),
+            this, SLOT(updateMeetmesConfig(const QString &)));
 
     connect(m_btn_vol_up, SIGNAL(clicked()), this, SLOT(volUp()));
     connect(m_btn_vol_down, SIGNAL(clicked()), this, SLOT(volDown()));
@@ -101,9 +101,6 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
     connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(hangup()));
     connect(m_targets, SIGNAL(textChanged(const QString &)),
             this, SLOT(targetChanged(const QString &)));
-
-    b_engine->tree()->onChange("confrooms", this,
-            SLOT(updateConfRoom(const QString &, DStoreEvent)));
 }
 
 /*! \brief Update status for incoming calls widget list
@@ -113,7 +110,6 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
  */
 void PopcAastra::updateDisplay()
 {
-    // qDebug() << Q_FUNC_INFO;
     foreach (const QString key, m_incomingcalls.keys()) {
         m_incomingcalls[key]->updateWidget();
     }
@@ -127,33 +123,28 @@ void PopcAastra::updateDisplay()
  */
 void PopcAastra::updateUserStatus(const QString & xUId)
 {
-    // qDebug() << Q_FUNC_INFO << xUId;
+    static QString pattern = "%0 <%1>";
     const UserInfo * u = b_engine->user(xUId);
-    if (! u) return;
-    QStringList phones = u->phonelist();
-    for (int i = 0; i < phones.size(); ++i) {
-        const PhoneInfo * p = b_engine->phone(phones.at(i));
-        if (! p || p->number().isEmpty()) continue;
-        m_contact_completer->insertItem(
-            QString("%1 <%2>").arg(u->fullname()).arg(p->number()));
+    if (u) {
+        foreach (const QString & phonexid, u->phonelist()) {
+            const PhoneInfo * p = b_engine->phone(phonexid);
+            if (p && ! p->number().isEmpty()) {
+                QString entry = pattern.arg(u->fullname()).arg(p->number());
+                m_contact_completer->insertItem(entry);
+            }
+        }
     }
 }
 
-/*! \brief Update the target list with the available conf rooms
- *  \param id Unused
- *  \param e Unused
- */
-void PopcAastra::updateConfRoom(const QString & id, DStoreEvent e)
+/*! \brief Update the target list with the available conf rooms */
+void PopcAastra::updateMeetmesConfig(const QString & mxid)
 {
-    // qDebug() << Q_FUNC_INFO;
-    QVariantMap room_list = b_engine->eVM("confrooms");
-    const QString prefix = "Conf";
-    foreach (const QString id, room_list.keys()) {
-        QMap<QString, QVariant> room_map = room_list[id].toMap();
-        m_contact_completer->insertItem(
-            QString("%1: %2 <%3>").arg(prefix)
-            .arg(room_map["name"].toString())
-            .arg(room_map["number"].toString()));
+    static QString prefix = "Conf";
+    static QString pattern = "%0: %1 <%2>"; // "Conf: My meetme <800>"
+    const MeetmeInfo * m = b_engine->meetme(mxid);
+    if (m) {
+        QString entry = pattern.arg(prefix).arg(m->name()).arg(m->number());
+        m_contact_completer->insertItem(entry);
     }
 }
 
@@ -162,34 +153,24 @@ void PopcAastra::updateConfRoom(const QString & id, DStoreEvent e)
  *  When ever a channel status changes, the base engine sends a signal that
  *  we catch to update our incoming and transfered call widgets
  *
- *  \param xchannel The pbx/channel id of the updated channel
+ *  \param cxid The pbx/channel id of the updated channel
 */
-void PopcAastra::updateChannelStatus(const QString & /* xchannel */)
+void PopcAastra::updateChannelStatus(const QString & cxid)
 {
-    // qDebug() << Q_FUNC_INFO << "Channel(" << xchannel << ")";
-    QStringList my_channels = getMyChannels();
-    for (int i = 0; i < my_channels.size(); ++i) {
-        if (! m_incomingcalls.contains(my_channels.at(i))) {
-            int guessedline = findFirstAvailableLine();
-            IncomingWidget * newcall = new IncomingWidget(guessedline, my_channels.at(i), this);
-            m_incomingcalls[my_channels.at(i)] = newcall;
-            m_layout->addWidget(newcall);
-            connect(newcall, SIGNAL(doConf(int)), this, SLOT(confLine(int)));
-            connect(newcall, SIGNAL(doHangUp(int)), this, SLOT(hangUpLine(int)));
-            connect(newcall, SIGNAL(doHold(int)), this, SLOT(holdLine(int)));
-            connect(newcall, SIGNAL(selectLine(int)), this, SLOT(selectLine(int)));
-            connect(newcall, SIGNAL(doAttendedTransfer(int)),
-                    this, SLOT(attendedTransfer(int)));
-            connect(newcall, SIGNAL(doBlindTransfer(const QString &, int,
-                                                    const QString &,
-                                                    const QString &)),
-                    this, SLOT(blindTransfer(const QString &, int,
-                                             const QString &,
-                                             const QString &)));
-            connect(newcall, SIGNAL(doParkCall(int)),
-                    this, SLOT(parkcall(int)));
-        } else {
-            m_incomingcalls[my_channels.at(i)]->updateWidget();
+    if (m_incomingcalls.contains(cxid)) {
+        m_incomingcalls[cxid]->updateWidget();
+    } else if (m_transferedcalls.contains(cxid)) {
+        m_transferedcalls[cxid]->updateWidget();
+    } else {
+        const ChannelInfo * c = b_engine->channel(cxid);
+        if (c) {
+            const QString & peer_identity = c->talkingto_id().split("-").value(0);
+            if (m_ui && m_ui->identitylist().contains(peer_identity)) {
+                IncomingWidget * w = new IncomingWidget(
+                    findFirstAvailableLine(), cxid, this);
+                m_incomingcalls[cxid] = w;
+                m_layout->addWidget(w);
+            }
         }
     }
 }
@@ -201,14 +182,15 @@ void PopcAastra::updateChannelStatus(const QString & /* xchannel */)
  */
 void PopcAastra::removeDefunctWidgets()
 {
-    // qDebug() << Q_FUNC_INFO;
     if (m_incomingcalls.size() == 0 && m_transferedcalls.size() == 0) return;
-    const QHash<QString, ChannelInfo *> & channels = b_engine->channels();
-    foreach (const QString channel, m_incomingcalls.keys()) {
-        if (! channels.contains(channel)) {
-            removeIncomingCall(channel);
+
+    foreach (const QString & cxid, m_incomingcalls.keys()) {
+        if (! b_engine->channel(cxid)) {
+            removeIncomingCall(cxid);
         }
     }
+
+    // Remove tracked transfers
 }
 
 /*! \brief Remove completed blind transfers from the widget list
@@ -217,25 +199,31 @@ void PopcAastra::removeDefunctWidgets()
  */
 void PopcAastra::removeCompletedTransfers()
 {
-    // qDebug() << Q_FUNC_INFO;
-    if (0 == m_incomingcalls.size() && 0 == m_transferedcalls.size())
+    if (0 == m_transferedcalls.size())
         return;
-    foreach (const QString & key, m_transferedcalls.keys()) {
+    
+    QStringList to_remove;
+
+    foreach (const QString & device_key, m_transferedcalls.keys()) {
         bool matched = false;
-        foreach (const QString xchannelid, b_engine->channels().keys()) {
-            if (xchannelid.contains(key)) {
+        foreach (const ChannelInfo * c, b_engine->channels()) {
+            if (c->xid().contains(device_key)) {
                 matched = true;
-                const ChannelInfo * c = b_engine->channel(xchannelid);
-                if (isTalkingToMe(c)) continue;
-                // TODO: Remove this constant
-                if (! c || c->commstatus() != "calling") {
-                    removeTransferedCall(key);
+                QString called_device = c->talkingto_id().split("-").at(0);
+                if (! m_ui->identitylist().contains(called_device) && c->direction() == "out") {
+                    if (c->commstatus() != "calling") {
+                        to_remove << device_key;
+                    }
                 }
             }
         }
         if (! matched) {
-            removeTransferedCall(key);
+            to_remove << device_key;
         }
+    }
+
+    foreach (const QString & device_key, to_remove) {
+        removeTransferedCall(device_key);
     }
 }
 
@@ -263,70 +251,6 @@ void PopcAastra::removeTransferedCall(const QString & key)
         delete m_transferedcalls[key];
         m_transferedcalls.remove(key);
     }
-}
-
-/*! \brief Check if a xivo channel belongs to our phone
- *
- *  Check each of our phones to see if the channel is owned by one of our
- *  phones
- *  \param xchannelid The id of the channel we are checking
- *  \return true if this channel belongs to our phone other wise false
- */
-bool PopcAastra::isMyChannel(const QString & xchannelid)
-{
-    // qDebug() << Q_FUNC_INFO << "Channel id(" << xchannelid << ")";
-
-    // Quick match against our line id (SIP/abc) when possible
-    foreach (const QString line_id, m_my_lines) {
-        if (xchannelid.contains(line_id)) return true;
-    }
-
-    const ChannelInfo * c = b_engine->channel(xchannelid);
-    QHash<QString, ChannelInfo *> channels = b_engine->channels();
-    if (! c) {
-        return false;
-    }
-    QStringList mychannels = getMyChannels();
-    if (mychannels.contains(xchannelid)) {
-        return true;
-    }
-    return false;
-}
-
-/*! \brief Check if the current user is a channel's peer */
-bool PopcAastra::isTalkingToMe(const ChannelInfo * c) const
-{
-    // qDebug() << Q_FUNC_INFO;
-    if (! c)
-        return false;
-    foreach (const QString line_id, m_my_lines) {
-        if (c->talkingto_id().contains(line_id)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/*! \brief Return my channels */
-QStringList PopcAastra::getMyChannels()
-{
-    // qDebug() << Q_FUNC_INFO;
-    QStringList res;
-    const UserInfo * me = b_engine->user(b_engine->getFullId());
-    foreach (const QString phone_key, me->phonelist()) {
-        const PhoneInfo * phone = b_engine->phone(phone_key);
-        foreach (const QString channel_key, phone->xchannels()) {
-            QStringList xchannel_parts = channel_key.split("/");
-            QStringList id_parts = xchannel_parts.at(2).split("-");
-            QString line_id = QString("%1/%2")
-                .arg(xchannel_parts.at(1)).arg(id_parts.at(0));
-            if (! m_my_lines.contains(line_id)) {
-                m_my_lines.append(line_id);
-            }
-            res.append(channel_key);
-        }
-    }
-    return res;
 }
 
 /*! \brief prints the content of m_incomingcalls */
@@ -408,22 +332,24 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
  *  The transfer is done using the transfer button, not the conference button
  *
  *  \param line The phone's line to transfer to the conference room
+ *  \param mxid The meetme's XiVO id
  */
-void PopcAastra::confLine(int /* line */)
+void PopcAastra::confLine(int line, const QString & mxid)
 {
-    // qDebug() << Q_FUNC_INFO << line;
-    QList<QString> commands;
-    commands.append(getKeyUri(XFER));
-    // TODO: Remove the magic number
-    QString number = "800";
-    for (int i = 0; i < number.size(); ++i) {
-        const QChar c = number[i];
-        if (c.isDigit()) {
-            commands.append(getKeyUri(KEYPAD, c.digitValue()));
+    const MeetmeInfo * m = b_engine->meetme(mxid);
+    if (m) {
+        QList<QString> commands;
+        commands.append(getKeyUri(XFER));
+        QString number = m->number();
+        for (int i = 0; i < number.size(); ++i) {
+            const QChar c = number[i];
+            if (c.isDigit()) {
+                commands.append(getKeyUri(KEYPAD, c.digitValue()));
+            }
         }
+        commands.append(getKeyUri(XFER));
+        emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
     }
-    commands.append(getKeyUri(XFER));
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
 /*! \brief Hang up a line on our phone
@@ -558,23 +484,28 @@ void PopcAastra::selectLine(int line)
 
 /*! \brief transfer the call to a parking lot
  *  \param line to transfer
+ *  \param pxid the parking's XiVO id
  */
-void PopcAastra::parkcall(int line)
+void PopcAastra::parkcall(int line, const QString & pxid)
 {
     // qDebug() << Q_FUNC_INFO << line;
-    // TODO: Remove the magic value when the base_engine starts working
-    QString number = "700";
-    QList<QString> commands;
-    commands.append(getKeyUri(LINE, line));
-    commands.append(getKeyUri(XFER));
-    for (int i = 0; i < number.size(); ++i) {
-        const QChar c = number[i];
-        if (c.isDigit()) {
-            commands.append(getKeyUri(KEYPAD, c.digitValue()));
+    const ParkingInfo * p = b_engine->parkinglot(pxid);
+    if (p) {
+        QString number = p->number();
+        QList<QString> commands;
+        commands.append(getKeyUri(LINE, line));
+        commands.append(getKeyUri(XFER));
+        for (int i = 0; i < number.size(); ++i) {
+            const QChar c = number[i];
+            if (c.isDigit()) {
+                commands.append(getKeyUri(KEYPAD, c.digitValue()));
+            }
         }
+        commands.append(getKeyUri(XFER));
+        emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+    } else {
+        qDebug() << Q_FUNC_INFO << "Trying to park to a void parkinglot";
     }
-    commands.append(getKeyUri(XFER));
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
 /*! \brief turns the volume up */
@@ -683,3 +614,4 @@ PopcAastra::~PopcAastra()
 {
     // qDebug() << Q_FUNC_INFO;
 }
+

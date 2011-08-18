@@ -69,8 +69,6 @@ protected:
     void timerEvent(QTimerEvent *);
     /*! \brief Find a matching device for a called number */
     const PhoneInfo * findCalledDevice(const QString &);
-    bool isMyChannel(const QString & xchannelid);
-    bool isTalkingToMe(const ChannelInfo *) const;
     void removeIncomingCall(const QString & xChannelId);
     void removeTransferedCall(const QString & xChannelId);
     void removeCompletedTransfers();
@@ -78,35 +76,24 @@ protected:
 private:
     /*! \brief starts tracking a number after a transfer */
     void trackTransfer(const QString &, const QString &, const QString &, const QString &);
-    QStringList getMyChannels();
 public slots:
     void updateDisplay();
-    /*! \brief When a name is clicked on the destination list */
-    // void destinationClicked(int col, int row);
-    /*! \brief refresh the list containing call destinations */
-    // void refreshDestination(const QString &);
-    /*! \brief retrieves the channel list from the base engine and refresh the
-     *  lines list
-     */
-    // void refreshLines(const QString &);
     /*! \brief turns up the volume of the phone */
     void volUp();
     /*! \brief turns down the volume of the phone */
     void volDown();
     void navRight();
-    /*!  \brief update the peer to be monitored */
-    // void monitorPeer(UserInfo *);
     void updatePhoneStatus(const QString &);
     void updateUserStatus(const QString &);
     void updateChannelStatus(const QString &);
-    void updateConfRoom(const QString &, DStoreEvent);
-    void confLine(int);
+    void updateMeetmesConfig(const QString &);
+    void confLine(int, const QString &);
     void hangup();
     void hangUpLine(int);
     void holdLine(int);
     void attendedTransfer(int);
     void blindTransfer(const QString &, int, const QString &, const QString &);
-    void parkcall(int);
+    void parkcall(int, const QString &);
     void selectLine(int);
     void prgkey1();
     /*! \brief intercepts the call to this exten */

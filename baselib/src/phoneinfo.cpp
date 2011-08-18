@@ -50,6 +50,11 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "protocol", & m_protocol);
     haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "number", & m_number);
+    haschanged |= setIfChangeString(prop, "identity", & m_identity);
+    // TODO: fix somewhere else
+    if (m_identity.contains("\\/")) {
+        m_identity.replace("\\/", "/");
+    }
     haschanged |= setIfChangeString(prop, "iduserfeatures", & m_iduserfeatures);
 
     haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
@@ -77,7 +82,7 @@ bool PhoneInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "hintstatus", & m_hintstatus);
-    if(prop.contains("channels")) {
+    if (prop.contains("channels")) {
         m_channels = prop.value("channels").toStringList();
         m_xchannels.clear();
         foreach (QString channel, m_channels) {
@@ -92,12 +97,12 @@ bool PhoneInfo::updateStatus(const QVariantMap & prop)
 /*! \brief Returns the string representation of a PhoneInfo */
 QString PhoneInfo::toString() const
 {
-    qDebug() << Q_FUNC_INFO;
-
     QString s;
+    s += "xid(" + xid() + ") ";
     s += "Protocol(" + m_protocol + ") ";
     s += "Context(" + m_context + ") ";
     s += "Number(" + m_number + ") ";
+    s += "Identity(" + m_identity + ") ";
     s += "Channels(" + QString("%1").arg(m_channels.size()) + ") ";
 
     return s;

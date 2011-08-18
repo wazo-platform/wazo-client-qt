@@ -52,7 +52,7 @@ class IncomingWidget : public QWidget
         void timerEvent(QTimerEvent *);
         /*! \brief Updates the widgets informations from a channel id
          *  \param xcid Channel key */
-        void updateFromChannelInfo(const QString &);
+        void updateFromChannelInfo();
     private:
         void updateCallTimeLabel();
         /*! \brief Register signals and slots */
@@ -68,10 +68,10 @@ class IncomingWidget : public QWidget
          * \param number The peer's number
          */
         void doBlindTransfer(const QString &, int, const QString &, const QString &);
-        void doConf(int);       //!< Transfer this line
+        void doConf(int, const QString &);       //!< Transfer this line
         void doHangUp(int);     //!< hang up a line
         void doHold(int);
-        void doParkCall(int);
+        void doParkCall(int, const QString &);
         void selectLine(int);
     private:
         int m_line;                 //!< The phone's line number

@@ -33,6 +33,7 @@
 
 #include <QDebug>
 
+#include "baseengine.h"
 #include "channelinfo.h"
 
 /*! \brief Constructor
@@ -57,11 +58,6 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "peerdisplay", & m_peerdisplay);
     haschanged |= setIfChangeDouble(prop, "timestamp", & m_timestamp);
 
-    haschanged |= setIfChangeBool(prop, "meetme_isadmin", & m_meetme_isadmin);
-    haschanged |= setIfChangeBool(prop, "meetme_isauthed", & m_meetme_isauthed);
-    haschanged |= setIfChangeBool(prop, "meetme_ismuted", & m_meetme_ismuted);
-    haschanged |= setIfChangeInt(prop, "meetme_usernum", & m_meetme_usernum);
-
     return haschanged;
 }
 
@@ -69,9 +65,11 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
 QString ChannelInfo::toString() const
 {
     QString s;
+    s += "Xid(" + xid() + ") ";
     s += "This display(" + m_thisdisplay + ") ";
     s += "Peer display(" + m_peerdisplay + ") ";
     s += "Comm status(" + m_commstatus + ") ";
+    s += "Direction(" + m_direction + ") " ;
     s += "Talking to kind(" + m_talkingto_kind + ") ";
     s += "Talking to id(" + m_talkingto_id + ") ";
     s += "Parked(" + QString(m_isparked ? "true" : "false")  + ")";

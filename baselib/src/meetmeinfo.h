@@ -56,21 +56,21 @@ class BASELIB_EXPORT MeetmeInfo : public XInfo
         const QString & number() const;  //! conference room number
 
         bool paused() const;  //! conference room paused status
-        const QStringList & channels() const;  //! conference room channels
-        const QStringList & xchannels() const;  //! conference room channels
+        const QVariantMap & channels() const;  //! conference room channels
         bool pin_needed() const { return m_pin_needed; };
         const QString & admin_moderationmode() const { return m_admin_moderationmode; };
+        const QString & pseudochan() const { return m_pseudochan; };
 
     private:
         QString m_context;  //!< room context
         QString m_name;  //!< room access name
         QString m_number;  //!< room access number (if any)
+        QString m_pseudochan;
         QString m_admin_moderationmode;
         bool m_pin_needed;
-
+        
         bool m_paused;  //!< is the conference room paused ?
-        QStringList m_channels;  //!< channels in this conference room
-        QStringList m_xchannels;  //!< channels in this conference room
+        QVariantMap m_channels;  //!< channels in this conference room
 };
 
 #endif /* __MEETMEINFO_H__ */

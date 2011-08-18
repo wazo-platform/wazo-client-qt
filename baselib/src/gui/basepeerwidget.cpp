@@ -486,9 +486,14 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                         ParkingInfo * p = static_cast<ParkingInfo *>(x);
                         QAction * action = new QAction(p->name(), this);
                         action->setProperty("id", p->xid());
-                        action->setProperty("xchannel", xchannel);
-                        connect (action, SIGNAL(triggered()), this, SLOT(parkcall()));
-                        parkMenu->addAction(action);
+                        const ChannelInfo * c = qlci_local.value(0);
+                        if (c) {
+                          QString peers_chan = QString("%1/%2")
+                              .arg(b_engine->ipbxid()).arg(c->talkingto_id());
+                          action->setProperty("xchannel", peers_chan);
+                          connect (action, SIGNAL(triggered()), this, SLOT(parkcall()));
+                          parkMenu->addAction(action);
+                        }
                     }
                 }
             }

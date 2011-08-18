@@ -43,8 +43,7 @@ static QVariant COL_TITLE[NB_COL];
 ConfListModel::ConfListModel()
     : QAbstractTableModel()
 {
-    b_engine->tree()->onChange("confrooms", this,
-        SLOT(confRoomsChange(const QString &, DStoreEvent)));
+    // qDebug() << Q_FUNC_INFO;
 
     startTimer(1000);
     COL_TITLE[ID] = tr("Room UID");
@@ -54,6 +53,9 @@ ConfListModel::ConfListModel()
     COL_TITLE[MEMBER_COUNT] = tr("Member count");
     COL_TITLE[MODERATED] = tr("Moderated");
     COL_TITLE[STARTED_SINCE] = tr("Started since");
+
+    connect(b_engine, SIGNAL(updateMeetmesConfig(const QString &)),
+            this, SLOT(updateMeetmesConfig(const QString &)));
 }
 
 void ConfListModel::timerEvent(QTimerEvent *)
@@ -61,14 +63,12 @@ void ConfListModel::timerEvent(QTimerEvent *)
     reset();
 }
 
-void ConfListModel::confRoomsChange(const QString &, DStoreEvent)
+void ConfListModel::updateMeetmesConfig(const QString &)
 {
-    m_roomList = b_engine->eVM("confrooms");
-
     int row = 0;
-    if (m_roomList.size() != m_row2id.size()) {
-        foreach(QString roomId, m_roomList.keys()) {
-            m_row2id.insert(row++, roomId);
+    if (b_engine->iterover("meetmes").size() != m_row2id.size()) {
+        foreach (const QString & key, b_engine->iterover("meetmes").keys()) {
+            m_row2id.insert(row++, key);
         }
     }
     reset();
@@ -81,7 +81,7 @@ Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
 
 int ConfListModel::rowCount(const QModelIndex&) const
 {
-    return m_roomList.size();
+    return b_engine->iterover("meetmes").size();
 }
 
 int ConfListModel::columnCount(const QModelIndex&) const
@@ -89,9 +89,7 @@ int ConfListModel::columnCount(const QModelIndex&) const
     return NB_COL;
 }
 
-QVariant
-ConfListModel::data(const QModelIndex &index,
-                    int role) const
+QVariant ConfListModel::data(const QModelIndex &index, int role) const
 {
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole)
@@ -100,57 +98,47 @@ ConfListModel::data(const QModelIndex &index,
     }
 
     int row = index.row(), col = index.column();
+    QString meetme_id;
 
-    if (m_row2id.contains(row))
-        row = m_row2id[row].toInt();
+    if (m_row2id.contains(row)) {
+        meetme_id = m_row2id[row];
+    }
 
-    QString room = QString("confrooms/%0/").arg(row);
+    const MeetmeInfo * m = b_engine->meetme(meetme_id);
+    if (!m) return QVariant();
+    const QString & mm = m->admin_moderationmode();
+
     switch (col) {
     case ID:
-        return b_engine->eV(room + "id");
+        return m->xid();
     case NUMBER:
-        return b_engine->eV(room + "number");
+        return m->number();
     case NAME:
-        return b_engine->eV(room + "name");
+        return m->name();
     case PIN_REQUIRED:
-        return b_engine->eV(room + "pin_needed")
-            .toBool() ? tr("Yes") : tr("No");
+        return m->pin_needed() ? tr("Yes") : tr("No");
     case MODERATED:
-        return b_engine->eV(room + "admin_moderationmode")
-            .toString().isEmpty() ? tr("No") : tr("Yes");
+        return mm.isEmpty() || mm == "0" ? tr("No") : tr("Yes");
     case MEMBER_COUNT:
-        return b_engine->eVM(room + "in").size();
+        return m->channels().size();
     case STARTED_SINCE:
         {
-            QVariantMap UserIn = b_engine->eVM(room + "in");
-            double time = 0;
-            QString displayed = QString::fromUtf8("Ø");
-            foreach (QString uid, UserIn.keys()) {
-                double utime = UserIn[uid].toMap().value("time-start").toDouble();
-                if ((time == 0) || (time > utime)) {
-                    time = utime;
-                }
-            }
-            if (time != 0) {
-                displayed =
-                    QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() -
-                                          b_engine->timeDeltaServerClient() -
-                                          time)
-                                         .toUTC().toString("hh:mm:ss");
-            }
-
-            return displayed;
+            const ChannelInfo * pseudochan = b_engine->channel(
+                QString("%0/%1").arg(m->ipbxid()).arg(m->pseudochan()));
+            uint now = QDateTime::currentDateTime().toTime_t();
+            return QDateTime::fromTime_t(
+                now - (pseudochan ? pseudochan->timestamp() : now) -
+                b_engine->timeDeltaServerClient()).toUTC().toString("hh:mm:ss");
         }
-        default:
-            break;
+    default:
+        break;
     }
     return QVariant();
 }
 
-QVariant
-ConfListModel::headerData(int section,
-                          Qt::Orientation orientation,
-                          int role) const
+QVariant ConfListModel::headerData(int section,
+                                   Qt::Orientation orientation,
+                                   int role) const
 {
     if (role != Qt::DisplayRole)
         return QVariant();
@@ -165,32 +153,32 @@ ConfListModel::headerData(int section,
 void ConfListModel::sort(int column, Qt::SortOrder order)
 {
     struct {
-        static bool ascending(const QPair<int, QString> &a,
-                              const QPair<int, QString> &b) {
+        static bool ascending(const QPair<QString, QString> &a,
+                              const QPair<QString, QString> &b) {
             return QString::localeAwareCompare(a.second, b.second) < 0 ?
                                                true : false;
         }
-        static bool descending(const QPair<int, QString> &a,
-                               const QPair<int, QString> &b) {
+        static bool descending(const QPair<QString, QString> &a,
+                               const QPair<QString, QString> &b) {
             return QString::localeAwareCompare(a.second, b.second) < 0 ?
                                                false : true;
         }
     } sFun;
 
-    QList<QPair<int, QString> > toSort;
+    QList<QPair<QString, QString> > toSort;
 
-    int i, e;
-    for (i=0,e=rowCount(QModelIndex());i<e;i++) {
-        toSort.append(QPair<int, QString>(index(i, ID).data().toInt(),
-                                          index(i, column).data().toString()));
+    int count = rowCount(QModelIndex());
+    for (int i = 0; i < count; i++) {
+        toSort.append(QPair<QString, QString>(index(i, ID).data().toString(),
+                                              index(i, column).data().toString()));
     }
 
     qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
                                          sFun.ascending :
                                          sFun.descending);
 
-    for (i=0;i<e;i++) {
-        m_row2id.insert(i, QString::number(toSort[i].first));
+    for (int i = 0; i < count; i++) {
+        m_row2id.insert(i, QString(toSort[i].first));
     }
     reset();
 }
@@ -222,8 +210,10 @@ void ConfListView::onViewClick(const QModelIndex &model)
     QString roomName = model.sibling(model.row(), NAME).data().toString();
     QString roomNumber = model.sibling(model.row(), NUMBER).data().toString();
 
+    // qDebug() << Q_FUNC_INFO << roomId << roomName << roomNumber;
+
     if (roomId != "") {
-        if (lastPressed&Qt::LeftButton) {
+        if (lastPressed & Qt::LeftButton) {
             b_engine->pasteToDial(roomNumber);
             QTimer *timer = new QTimer(this);
             timer->setSingleShot(true);
@@ -233,8 +223,8 @@ void ConfListView::onViewClick(const QModelIndex &model)
         } else {
             QMenu *menu = new QMenu(this);
 
-            QAction *action = new QAction(tr("Get in room %1 (%2)")
-                                             .arg(roomName).arg(roomNumber), menu);
+            QAction *action = new QAction(
+                tr("Get in room %1 (%2)").arg(roomName).arg(roomNumber), menu);
 
             action->setProperty("id", roomId);
             connect(action, SIGNAL(triggered(bool)),
@@ -258,6 +248,7 @@ void ConfListView::mousePressEvent(QMouseEvent *event)
 ConfList::ConfList(XletConference *parent)
     : QWidget(), m_manager(parent)
 {
+    // qDebug() << Q_FUNC_INFO;
     QVBoxLayout *vBox = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout();
     ConfListView *view = new ConfListView(this, new ConfListModel());
@@ -280,13 +271,18 @@ ConfList::ConfList(XletConference *parent)
 void ConfList::phoneConfRoom()
 {
     QString roomId = sender()->property("id").toString();
-    QString roomNumber = b_engine->eV(QString("confrooms/%0/number").arg(roomId)).toString();
+    // qDebug() << Q_FUNC_INFO << "Room id" << roomId;
 
-    b_engine->actionDialNumber(roomNumber);
-    m_manager->openConfRoom(roomId, true);
+    const MeetmeInfo * m = b_engine->meetme(roomId);
+    if (m) {
+        QString roomNumber = m->number();
+        b_engine->actionDialNumber(roomNumber);
+        m_manager->openConfRoom(roomId, true);
+    }
 }
 
 void ConfList::openConfRoom()
 {
+    // qDebug() << Q_FUNC_INFO;
     m_manager->openConfRoom(sender()->property("id").toString());
 }

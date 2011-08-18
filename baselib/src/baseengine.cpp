@@ -640,6 +640,7 @@ void BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
 /*! \brief send an ipbxcommand command to the cti server */
 void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
 {
+    // qDebug() << Q_FUNC_INFO << ipbxcommand;
     if (! ipbxcommand.contains("command"))
         return;
     QVariantMap cticommand = ipbxcommand;
@@ -776,56 +777,6 @@ void addUpdateUserInTree(DStore *tree, const QVariantMap & uinfo)
     tree->populate(QString("users/%0").arg(info.value("id").toString()), info);
     addMobilePhone(tree, info.value("id").toString(), uinfo.value("mobilephone").toString());
     info.clear();
-}
-
-void BaseEngine::addUpdateConfMemberInTree(DStore *tree, const QString & xid)
-{
-    const MeetmeInfo * meetmeinfo = meetme(xid);
-    if (meetmeinfo == NULL)
-        return;
-
-    QString roomid = meetmeinfo->id();
-    tree->rmPath(QString("confrooms/%1/in").arg(roomid));
-    foreach (QString xchannel, meetmeinfo->xchannels()) {
-        const ChannelInfo * channelinfo = m_channels.value(xchannel);
-        if (channelinfo == NULL)
-            continue;
-
-        QVariantMap info;
-        QString id = QString::number(channelinfo->meetme_usernum());
-        info["id"] = id;
-        info["time-start"] = channelinfo->timestamp();
-        info["displayname"] = channelinfo->thisdisplay();
-        // info["phonenum"] = details.value("phonenum");
-        // info["user-id"] = details.value("userid");
-        info["admin"] = channelinfo->meetme_isadmin();
-        info["authed"] = channelinfo->meetme_isauthed();
-        info["muted"] = channelinfo->meetme_ismuted();
-        QString path = QString("confrooms/%1/in/%2").arg(roomid).arg(id);
-        tree->populate(path ,info);
-    }
-
-    // leave case
-    // tree->rmPath(path);
-}
-
-void BaseEngine::addUpdateConfRoomInTree(DStore *tree,
-                                         const QString & xid)
-{
-    const MeetmeInfo * meetmeinfo = meetme(xid);
-    if (meetmeinfo == NULL)
-        return;
-
-    QString roomid = meetmeinfo->id();
-    QVariantMap info;
-    info["id"] = roomid;
-    info["name"] = meetmeinfo->name();
-    info["number"] = meetmeinfo->number();
-    info["pin_needed"] = meetmeinfo->pin_needed();
-    info["admin_moderationmode"] = meetmeinfo->admin_moderationmode();
-    info["in"] = QVariantMap();
-
-    tree->populate(QString("confrooms/%0").arg(roomid), info);
 }
 
 void BaseEngine::emitMessage(const QString & msg)
@@ -1283,7 +1234,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             else if (listname == "voicemails")
                 emit updateVoiceMailConfig(xid);
             else if (listname == "meetmes")
-                addUpdateConfRoomInTree(tree(), xid);
+                emit updateMeetmesConfig(xid);
             else if (listname == "parkinglots")
                 emit updateParkinglotConfig(xid);
 
@@ -1357,7 +1308,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             else if (listname == "channels")
                 emit updateChannelStatus(xid);
             else if (listname == "meetmes")
-                addUpdateConfMemberInTree(tree(), xid);
+                emit updateMeetmesStatus(xid);
 
         } else if (function == "addconfig") {
             QStringList listid = datamap.value("list").toStringList();
@@ -1400,12 +1351,13 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 /*! \brief send meetme command to the CTI server */
 void BaseEngine::meetmeAction(const QString &function, const QString &functionargs)
 {
-    qDebug() <<"meetmeAction" << function << " -- arg: " << functionargs;
+    // The first argument is the meetme xid and the second is the usernum (for mute)
+    qDebug() << "meetmeAction" << function << " -- arg: " << functionargs;
     QVariantMap command;
-    command["class"] = "meetme";
+    command["command"] = "meetme";
     command["function"] = function;
     command["functionargs"] = functionargs.split(" ");
-    sendJsonCommand(command);
+    ipbxCommand(command);
 }
 
 /*! \brief send callcampaign command to the CTI server */

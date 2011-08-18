@@ -33,6 +33,8 @@
 
 #include "meetmeinfo.h"
 
+#include <QDebug>
+
 MeetmeInfo::MeetmeInfo(const QString & ipbxid,
                        const QString & id)
     : XInfo(ipbxid, id)
@@ -49,14 +51,9 @@ const QString & MeetmeInfo::number() const
     return m_number;
 }
 
-const QStringList & MeetmeInfo::channels() const
+const QVariantMap & MeetmeInfo::channels() const
 {
     return m_channels;
-}
-
-const QStringList & MeetmeInfo::xchannels() const
-{
-    return m_xchannels;
 }
 
 bool MeetmeInfo::paused() const
@@ -67,7 +64,6 @@ bool MeetmeInfo::paused() const
 bool MeetmeInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    // fixed-by-config stuff
     haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "name", & m_name);
     haschanged |= setIfChangeString(prop, "confno", & m_number);
@@ -80,13 +76,9 @@ bool MeetmeInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
     haschanged |= setIfChangeBool(prop, "paused", & m_paused);
-    if(prop.contains("channels")) {
-        m_channels = prop.value("channels").toStringList();
-        m_xchannels.clear();
-        foreach (QString channel, m_channels) {
-            QString xchannel = QString("%1/%2").arg(m_ipbxid).arg(channel);
-            m_xchannels.append(xchannel);
-        }
+    haschanged |= setIfChangeString(prop, "pseudochan", & m_pseudochan);
+    if (prop.contains("channels")) {
+        m_channels = prop.value("channels").toMap();
         haschanged = true;
     }
     return haschanged;

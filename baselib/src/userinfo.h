@@ -56,9 +56,11 @@ class BASELIB_EXPORT UserInfo : public XInfo
         void setAgentNumber(const QString &);
 
         bool hasPhoneId(const QString &) const;
+        bool hasChannelId(const QString &) const;
 
         const QString & mobileNumber() const { return m_mobilenumber; };
         const QStringList & phonelist() const { return m_phoneidlist; };
+        QStringList identitylist() const;
         const QString & fullname() const { return m_fullname; };
         const QString & ctilogin() const { return m_ctilogin; };
         const QString & context() const { return m_context; };
@@ -86,6 +88,9 @@ class BASELIB_EXPORT UserInfo : public XInfo
         // methods to fetch statuses
         const QString & availstate() const;
         QString toString() const;
+
+        // helper methods
+        QString findNumberForXChannel(const QString &) const;
 
     private:
         QString m_company;  //!< user company

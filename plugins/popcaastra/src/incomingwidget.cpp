@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QMessageBox>
 #include <QPushButton>
 
 #include "aastrasipnotify.h"
@@ -18,7 +19,7 @@ IncomingWidget::IncomingWidget(int line, const QString & xchan, QWidget * w)
     m_small_button_sz = new QSize(20,20);
     buildLayout();
     setSignalsSlots();
-    updateFromChannelInfo(m_xchannel);
+    updateFromChannelInfo();
     refreshUI();
 }
 
@@ -68,24 +69,47 @@ void IncomingWidget::refreshUI()
     updateCallTimeLabel();
 }
 
-void IncomingWidget::updateFromChannelInfo(const QString & xcid)
+void IncomingWidget::updateFromChannelInfo()
 {
-    // qDebug() << Q_FUNC_INFO << xcid;
-    const ChannelInfo * info = b_engine->channel(xcid);
-    if (! info) return;
-    m_parkedCall = info->isparked();
-    m_holdedCall = info->isholded();
-    // TODO: When the caller is not a Xivo user
-    m_peer = b_engine->getUserForXChannelId(info->talkingto_id());
-    if (! m_peer) return;
-    m_peer_name = m_peer->fullname();
-    // TODO: Find something better than the first phone
-    m_peer_number = b_engine->phone(m_peer->phonelist()[0])->number();
+    const ChannelInfo * c = b_engine->channel(m_xchannel);
+    if (c) {
+        m_parkedCall = c->isparked();
+        m_holdedCall = c->isholded();
+        const UserInfo * u = b_engine->getUserForXChannelId(m_xchannel);
+        if (u) {
+            m_peer_name = u->fullname();
+            foreach (const QString & phonexid, u->phonelist()) {
+                const PhoneInfo * p = b_engine->phone(phonexid);
+                if (p && c->xid().contains(p->identity())) {
+                    m_peer_number = p->number();
+                }
+            }
+        }
+    }
 }
 
 void IncomingWidget::setSignalsSlots()
 {
-    // qDebug() << Q_FUNC_INFO;
+    connect(this, SIGNAL(doConf(int, const QString &)),
+            parent(), SLOT(confLine(int, const QString &)));
+    connect(this, SIGNAL(doHangUp(int)), parent(), SLOT(hangUpLine(int)));
+    connect(this, SIGNAL(doHold(int)), parent(), SLOT(holdLine(int)));
+    connect(this, SIGNAL(selectLine(int)), parent(), SLOT(selectLine(int)));
+    connect(this, SIGNAL(doAttendedTransfer(int)),
+            parent(), SLOT(attendedTransfer(int)));
+    connect(this, SIGNAL(doBlindTransfer(
+                             const QString &,
+                             int, 
+                             const QString &,
+                             const QString &)),
+            parent(), SLOT(blindTransfer(
+                             const QString &,
+                             int,
+                             const QString &,
+                             const QString &)));
+    connect(this, SIGNAL(doParkCall(int, const QString &)),
+            parent(), SLOT(parkcall(int, const QString &)));
+
     connect(m_btn_atxfer, SIGNAL(clicked()), this, SLOT(doAttendedTransfer()));
     connect(m_btn_conf, SIGNAL(clicked()), this, SLOT(doConf()));
     connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(doHangUp()));
@@ -118,7 +142,7 @@ void IncomingWidget::updateCallTimeLabel()
 void IncomingWidget::updateWidget()
 {
     // qDebug() << Q_FUNC_INFO;
-    updateFromChannelInfo(m_xchannel);
+    updateFromChannelInfo();
     refreshUI();
 }
 
@@ -154,21 +178,77 @@ void IncomingWidget::doBlindTransfer()
 {
     // qDebug() << Q_FUNC_INFO;
     const ChannelInfo * c = b_engine->channel(m_xchannel);
-    QString peer_channel = c->talkingto_id();
-    QString peer_device = peer_channel.split("-").at(0);
+    QString peer_channel = c->xid();
+    QString peer_device = QString("%0/%1")
+        .arg(peer_channel.split("-").at(0));
     emit doBlindTransfer(peer_device, m_line, m_peer_name, m_peer_number);
 }
 
 void IncomingWidget::doConf()
 {
     // qDebug() << Q_FUNC_INFO;
-    emit doConf(m_line);
+    QMap<QString, QPushButton *> meetme_map;
+    QMessageBox box;
+    foreach (const QString & mxid, b_engine->iterover("meetmes").keys()) {
+        const MeetmeInfo * m = b_engine->meetme(mxid);
+        if (! m) continue;
+        meetme_map[m->xid()] = box.addButton(QString("%0 - %1")
+                                             .arg(m->number()).arg(m->name()),
+                                             QMessageBox::ActionRole);
+        if (meetme_map.size() == 1) {
+            box.setDefaultButton(meetme_map[m->xid()]);
+        }
+    }
+
+    if (meetme_map.size() > 0) {
+        box.setText(tr("Choose the conference room to transfer this call to"));
+        box.addButton(QMessageBox::Cancel);
+        box.exec();
+        foreach (const QString & mxid, b_engine->iterover("meetmes").keys()) {
+            const MeetmeInfo * m = b_engine->meetme(mxid);
+            if (m && box.clickedButton() == meetme_map[m->xid()]) {
+                return emit doConf(m_line, m->xid());
+            }
+        }
+    } else {
+        qDebug() << Q_FUNC_INFO << "No meetme available";
+        return;
+    }
+    qDebug() << Q_FUNC_INFO << "No meetme selected";
 }
 
+/*! \brief Prompts the user for a parking */
 void IncomingWidget::doParkCall()
 {
-    // qDebug() << Q_FUNC_INFO;
-    emit doParkCall(m_line);
+    QMap<QString, QPushButton *> parking_map;
+    QMessageBox box;
+    foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
+        const ParkingInfo * p = b_engine->parkinglot(pxid);
+        if (! p) continue;
+        parking_map[p->xid()] = box.addButton(QString("%0 - %1")
+                                              .arg(p->number()).arg(p->name()),
+                                              QMessageBox::ActionRole);
+        if (parking_map.size() == 1) {
+            box.setDefaultButton(parking_map[p->xid()]);
+        }
+    }
+
+    if (parking_map.size() > 0) {
+        box.setText(tr("Choose the parking to park the call to"));
+        box.addButton(QMessageBox::Cancel);
+        box.exec();
+        foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
+            const ParkingInfo * p = b_engine->parkinglot(pxid);
+            if (p && box.clickedButton() == parking_map[p->xid()]) {
+                return emit doParkCall(m_line, p->xid());
+            }
+        }
+    } else {
+        qDebug() << Q_FUNC_INFO << "No parking available";
+        return;
+    }
+    
+    qDebug() << Q_FUNC_INFO << "No parking selected";
 }
 
 void IncomingWidget::mousePressEvent(QMouseEvent * /* event */)
