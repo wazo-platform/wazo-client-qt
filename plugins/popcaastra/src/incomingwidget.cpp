@@ -107,8 +107,8 @@ void IncomingWidget::setSignalsSlots()
                              int,
                              const QString &,
                              const QString &)));
-    connect(this, SIGNAL(doParkCall(int, const QString &)),
-            parent(), SLOT(parkcall(int, const QString &)));
+    connect(this, SIGNAL(doParkCall(int, const QString &, const QString &)),
+            parent(), SLOT(parkcall(int, const QString &, const QString &)));
 
     connect(m_btn_atxfer, SIGNAL(clicked()), this, SLOT(doAttendedTransfer()));
     connect(m_btn_conf, SIGNAL(clicked()), this, SLOT(doConf()));
@@ -220,6 +220,11 @@ void IncomingWidget::doConf()
 /*! \brief Prompts the user for a parking */
 void IncomingWidget::doParkCall()
 {
+    QStringList device_info = m_xchannel.split("/");
+    const QString & device_identity = (QString("%0/%1")
+                                       .arg(device_info.value(1))
+                                       .arg(device_info.value(2)
+                                            .split("-").value(0)));
     QMap<QString, QPushButton *> parking_map;
     QMessageBox box;
     foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
@@ -240,14 +245,13 @@ void IncomingWidget::doParkCall()
         foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
             const ParkingInfo * p = b_engine->parkinglot(pxid);
             if (p && box.clickedButton() == parking_map[p->xid()]) {
-                return emit doParkCall(m_line, p->xid());
+                return emit doParkCall(m_line, p->xid(), device_identity);
             }
         }
     } else {
         qDebug() << Q_FUNC_INFO << "No parking available";
         return;
     }
-    
     qDebug() << Q_FUNC_INFO << "No parking selected";
 }
 

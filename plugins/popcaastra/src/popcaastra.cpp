@@ -486,26 +486,34 @@ void PopcAastra::selectLine(int line)
 /*! \brief transfer the call to a parking lot
  *  \param line to transfer
  *  \param pxid the parking's XiVO id
+ *  \param device The device id of the transfered call
  */
-void PopcAastra::parkcall(int line, const QString & pxid)
+void PopcAastra::parkcall(int line, const QString & pxid, const QString & device)
 {
-    // qDebug() << Q_FUNC_INFO << line;
-    const ParkingInfo * p = b_engine->parkinglot(pxid);
-    if (p) {
-        QString number = p->number();
-        QList<QString> commands;
-        commands.append(getKeyUri(LINE, line));
-        commands.append(getKeyUri(XFER));
-        for (int i = 0; i < number.size(); ++i) {
-            const QChar c = number[i];
-            if (c.isDigit()) {
-                commands.append(getKeyUri(KEYPAD, c.digitValue()));
+    foreach (const XInfo * p, b_engine->iterover("phones")) {
+        const PhoneInfo * phone = static_cast<const PhoneInfo *>(p);
+        if (phone->identity() == device) {
+            QString userxid = (QString("%0/%1").arg(phone->ipbxid())
+                               .arg(phone->iduserfeatures()));
+            const UserInfo * u = b_engine->user(userxid);
+            const ParkingInfo * park = b_engine->parkinglot(pxid);
+            if (u && park) {
+                const QString & number = park->number();
+                QStringList commands = QStringList()
+                    << getKeyUri(LINE, line)
+                    << getKeyUri(XFER);
+                for (int i = 0; i < number.size(); ++i) {
+                    const QChar c = number[i];
+                    if (c.isDigit()) {
+                        commands.append(getKeyUri(KEYPAD, c.digitValue()));
+                    }
+                }
+                commands.append(getKeyUri(XFER));
+                emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+                return trackTransfer(device, park->number(),
+                                     u->fullname(), phone->number());
             }
         }
-        commands.append(getKeyUri(XFER));
-        emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
-    } else {
-        qDebug() << Q_FUNC_INFO << "Trying to park to a void parkinglot";
     }
 }
 
