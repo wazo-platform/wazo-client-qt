@@ -39,7 +39,7 @@
 #include "completionedit.h"
 #include "incomingwidget.h"
 #include "popcaastra.h"
-#include "transferedwidget.h"
+#include "pendingwidget.h"
 #include "xivoconsts.h"
 
 class QLabel;
@@ -113,8 +113,8 @@ void PopcAastra::updateDisplay()
     foreach (const QString key, m_incomingcalls.keys()) {
         m_incomingcalls[key]->updateWidget();
     }
-    foreach (const QString key, m_transferedcalls.keys()) {
-        m_transferedcalls[key]->updateWidget();
+    foreach (const QString key, m_pendingcalls.keys()) {
+        m_pendingcalls[key]->updateWidget();
     }
 }
 
@@ -159,8 +159,8 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
 {
     if (m_incomingcalls.contains(cxid)) {
         m_incomingcalls[cxid]->updateWidget();
-    } else if (m_transferedcalls.contains(cxid)) {
-        m_transferedcalls[cxid]->updateWidget();
+    } else if (m_pendingcalls.contains(cxid)) {
+        m_pendingcalls[cxid]->updateWidget();
     } else {
         const ChannelInfo * c = b_engine->channel(cxid);
         if (c) {
@@ -182,7 +182,7 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
  */
 void PopcAastra::removeDefunctWidgets()
 {
-    if (m_incomingcalls.size() == 0 && m_transferedcalls.size() == 0) return;
+    if (m_incomingcalls.size() == 0 && m_pendingcalls.size() == 0) return;
 
     foreach (const QString & cxid, m_incomingcalls.keys()) {
         const ChannelInfo * c = b_engine->channel(cxid);
@@ -200,12 +200,12 @@ void PopcAastra::removeDefunctWidgets()
  */
 void PopcAastra::removeCompletedTransfers()
 {
-    if (0 == m_transferedcalls.size())
+    if (0 == m_pendingcalls.size())
         return;
     
     QStringList to_remove;
 
-    foreach (const QString & device_key, m_transferedcalls.keys()) {
+    foreach (const QString & device_key, m_pendingcalls.keys()) {
         bool matched = false;
         foreach (const ChannelInfo * c, b_engine->channels()) {
             if (c->xid().contains(device_key)) {
@@ -248,9 +248,9 @@ void PopcAastra::removeIncomingCall(const QString & key)
 void PopcAastra::removeTransferedCall(const QString & key)
 {
     // qDebug() << Q_FUNC_INFO << key;
-    if (m_transferedcalls.contains(key)) {
-        delete m_transferedcalls[key];
-        m_transferedcalls.remove(key);
+    if (m_pendingcalls.contains(key)) {
+        delete m_pendingcalls[key];
+        m_pendingcalls.remove(key);
     }
 }
 
@@ -303,8 +303,8 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
     if (phone == NULL) return;
 
     foreach (QString xchannel, phone->xchannels()) {
-        if (m_transferedcalls.contains(xchannel)) {
-            TransferedWidget * w = m_transferedcalls[xchannel];
+        if (m_pendingcalls.contains(xchannel)) {
+            PendingWidget * w = m_pendingcalls[xchannel];
             w->updateWidget();
         }
         if (m_incomingcalls.contains(xchannel)) {
@@ -319,9 +319,9 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
     //qDebug() << Q_FUNC_INFO;
     foreach (QString key, m_incomingcalls.keys())
         m_incomingcalls[key]->updateWidget();
-    foreach (QString key, m_transferedcalls.keys())
-        m_transferedcalls[key]->updateWidget();
-    if (m_transferedcalls.size() || m_incomingcalls.size()) {
+    foreach (QString key, m_pendingcalls.keys())
+        m_pendingcalls[key]->updateWidget();
+    if (m_pendingcalls.size() || m_incomingcalls.size()) {
         removeDefunctWidgets();
         removeCompletedTransfers();
     }
@@ -430,8 +430,8 @@ void PopcAastra::trackTransfer(const QString & device,
                                const QString & tnum)
 {
     // qDebug() << Q_FUNC_INFO << number;
-    TransferedWidget * w = new TransferedWidget(number, tname, tnum, this);
-    m_transferedcalls[device] = w;
+    PendingWidget * w = new PendingWidget(number, tname, tnum, this);
+    m_pendingcalls[device] = w;
     m_layout->addWidget(w);
     connect(w, SIGNAL(intercept(const QString &)),
             this, SLOT(doIntercept(const QString &)));
