@@ -57,6 +57,7 @@ class BASELIB_EXPORT ParkingInfo : public XInfo
         void update(const QVariantMap &);
         bool updateConfig(const QVariantMap &); //! update parking properties
         bool updateStatus(const QVariantMap &); //! update parking status
+        bool parkedHere(const QString &) const; //! Check if a xchannel is parked
         QString toString() const; //! Returns the string representation of a parkinglot
         const QString & description() const;
         const QString & name() const;

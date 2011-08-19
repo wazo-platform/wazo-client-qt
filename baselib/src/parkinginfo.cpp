@@ -72,6 +72,18 @@ bool ParkingInfo::updateConfig(const QVariantMap & prop)
     return haschanged;
 }
 
+/*! \brief Check if a channel is parked in this parking */
+bool ParkingInfo::parkedHere(const QString & cxid) const
+{
+    foreach (const QString & key, m_parking_bays.keys()) {
+        if (cxid.contains(m_parking_bays[key].toMap()
+                          .value("parked").toString())) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool ParkingInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;

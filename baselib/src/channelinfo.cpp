@@ -44,7 +44,6 @@ ChannelInfo::ChannelInfo(const QString & ipbxid,
                          const QString & id)
     : XInfo(ipbxid, id)
 {
-    m_isparked = false;
 }
 
 bool ChannelInfo::updateStatus(const QVariantMap & prop)
@@ -72,7 +71,7 @@ QString ChannelInfo::toString() const
     s += "Direction(" + m_direction + ") " ;
     s += "Talking to kind(" + m_talkingto_kind + ") ";
     s += "Talking to id(" + m_talkingto_id + ") ";
-    s += "Parked(" + QString(m_isparked ? "true" : "false")  + ")";
+    s += "Parked(" + QString(isparked() ? "true" : "false")  + ")";
     s += "Held(" + QString(m_isholded ? "true" : "false") + ")";
     return s;
 }
@@ -134,7 +133,14 @@ bool ChannelInfo::isholded() const
     return m_isholded;
 }
 
+/*! \brief Check if this call is parked */
 bool ChannelInfo::isparked() const
 {
-    return m_isparked;
+    foreach (const XInfo * p, b_engine->iterover("parkinglots")) {
+        const QString & xid = this->xid();
+        if ((static_cast<const ParkingInfo *>(p))->parkedHere(xid)) {
+            return true;
+        }
+    }
+    return false;
 }

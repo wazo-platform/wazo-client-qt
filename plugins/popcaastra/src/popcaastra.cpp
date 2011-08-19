@@ -185,7 +185,8 @@ void PopcAastra::removeDefunctWidgets()
     if (m_incomingcalls.size() == 0 && m_transferedcalls.size() == 0) return;
 
     foreach (const QString & cxid, m_incomingcalls.keys()) {
-        if (! b_engine->channel(cxid)) {
+        const ChannelInfo * c = b_engine->channel(cxid);
+        if (!c || (c && c->isparked())) {
             removeIncomingCall(cxid);
         }
     }
