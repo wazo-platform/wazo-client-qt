@@ -41,8 +41,7 @@
  */
 UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
-    : XInfo(ipbxid, id), m_fullname(""),
-      m_callrecord(false)
+    : XInfo(ipbxid, id), m_fullname(""), m_callrecord(false)
 {
 }
 
@@ -133,17 +132,17 @@ bool UserInfo::hasChannelId(const QString & xchannelid) const
 }
 
 /*! \brief returns the list of phone's identities for this user */
-QStringList UserInfo::identitylist() const
+const QStringList & UserInfo::identitylist() const
 {
-    QStringList identities;
-
-    foreach (const QString & phonexid, m_phoneidlist) {
-        const PhoneInfo * p = b_engine->phone(phonexid);
-        if (p) {
-            identities << p->identity();
+    if (m_identitylist.isEmpty()) {
+        foreach (const QString & phonexid, m_phoneidlist) {
+            const PhoneInfo * p = b_engine->phone(phonexid);
+            if (p) {
+                m_identitylist.append(p->identity());
+            }
         }
     }
-    return identities;
+    return m_identitylist;
 }
 
 const QString & UserInfo::availstate() const

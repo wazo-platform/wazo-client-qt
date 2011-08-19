@@ -60,7 +60,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
         const QString & mobileNumber() const { return m_mobilenumber; };
         const QStringList & phonelist() const { return m_phoneidlist; };
-        QStringList identitylist() const;
+        const QStringList & identitylist() const;
         const QString & fullname() const { return m_fullname; };
         const QString & ctilogin() const { return m_ctilogin; };
         const QString & context() const { return m_context; };
@@ -106,6 +106,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
         QString m_voicemailid;  //!< voice mail box id
         QString m_xvoicemailid;  //!< ipbxid + voice mail box id
         QStringList m_phoneidlist;  //!< map to phones
+        mutable QStringList m_identitylist; //!< Cached identities for this user
 
         QString m_agentnumber;  //!< agent number
         QString m_voicemailnumber;  //!< voice mail box number
