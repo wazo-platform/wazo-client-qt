@@ -82,15 +82,19 @@ bool ParkingInfo::updateConfig(const QVariantMap & prop)
 
 bool ParkingInfo::updateStatus(const QVariantMap & prop)
 {
-    // qDebug() << Q_FUNC_INFO << prop;
     bool haschanged = false;
     foreach (const QString id, prop.keys()) {
-        if (! m_parking_bays.contains(id) ||
-            m_parking_bays[id].toMap() != prop[id].toMap()) {
+        if (prop[id].toMap().size() == 0) {
+            if (m_parking_bays.contains(id)) {
+                m_parking_bays.remove(id);
+                haschanged = true;
+            }
+        } else {
             m_parking_bays[id] = prop[id];
             haschanged = true;
         }
     }
+    qDebug() << Q_FUNC_INFO << "end" << m_parking_bays;
     return haschanged;
 }
 
