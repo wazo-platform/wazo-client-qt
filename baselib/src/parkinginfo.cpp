@@ -38,15 +38,7 @@
 ParkingInfo::ParkingInfo(const QString & ipbxid, const QString & id)
   :XInfo(ipbxid, id)
 {
-    // qDebug() << Q_FUNC_INFO << QString("%1/%2").arg(ipbxid).arg(id);
 }
-
-// ParkingInfo::ParkingInfo(const ParkingInfo &other)
-//   :XInfo(other.ipbxid(), other.id())
-// {
-//     m_timeout = other.m_timeout;
-//     m_parkingtime = other.m_parkingtime;
-// }
 
 int ParkingInfo::countParked() const
 {
@@ -94,7 +86,6 @@ bool ParkingInfo::updateStatus(const QVariantMap & prop)
             haschanged = true;
         }
     }
-    qDebug() << Q_FUNC_INFO << "end" << m_parking_bays;
     return haschanged;
 }
 
