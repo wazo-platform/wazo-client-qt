@@ -39,12 +39,7 @@
 #include "completionedit.h"
 #include "incomingwidget.h"
 #include "popcaastra.h"
-#include "pendingwidget.h"
-#include "xivoconsts.h"
-
-class QLabel;
-class QTableWidget;
-
+#include "transferedwidget.h"
 #include "channelinfo.h"
 #include "phoneinfo.h"
 #include "userinfo.h"
@@ -114,7 +109,7 @@ void PopcAastra::updateDisplay()
         m_incomingcalls[key]->updateWidget();
     }
     foreach (const QString key, m_pendingcalls.keys()) {
-        m_pendingcalls[key]->updateWidget();
+        m_pendingcalls[key]->update();
     }
 }
 
@@ -160,7 +155,7 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
     if (m_incomingcalls.contains(cxid)) {
         m_incomingcalls[cxid]->updateWidget();
     } else if (m_pendingcalls.contains(cxid)) {
-        m_pendingcalls[cxid]->updateWidget();
+        m_pendingcalls[cxid]->update();
     } else {
         const ChannelInfo * c = b_engine->channel(cxid);
         if (c) {
@@ -198,34 +193,34 @@ void PopcAastra::removeDefunctWidgets()
  *
  * Remove transfered calls that are not in calling state anymore
  */
-void PopcAastra::removeCompletedTransfers()
+void PopcAastra::removeCompletedPendings()
 {
     if (0 == m_pendingcalls.size())
         return;
     
-    QStringList to_remove;
+    // QStringList to_remove;
 
-    foreach (const QString & device_key, m_pendingcalls.keys()) {
-        bool matched = false;
-        foreach (const ChannelInfo * c, b_engine->channels()) {
-            if (c->xid().contains(device_key)) {
-                matched = true;
-                QString called_device = c->talkingto_id().split("-").at(0);
-                if (! m_ui->identitylist().contains(called_device) && c->direction() == "out") {
-                    if (c->commstatus() != "calling") {
-                        to_remove << device_key;
-                    }
-                }
-            }
-        }
-        if (! matched) {
-            to_remove << device_key;
-        }
-    }
+    // foreach (const QString & device_key, m_pendingcalls.keys()) {
+    //     bool matched = false;
+    //     foreach (const ChannelInfo * c, b_engine->channels()) {
+    //         if (c->xid().contains(device_key)) {
+    //             matched = true;
+    //             QString called_device = c->talkingto_id().split("-").at(0);
+    //             if (! m_ui->identitylist().contains(called_device) && c->direction() == "out") {
+    //                 if (c->commstatus() != "calling") {
+    //                     to_remove << device_key;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     if (! matched) {
+    //         to_remove << device_key;
+    //     }
+    // }
 
-    foreach (const QString & device_key, to_remove) {
-        removeTransferedCall(device_key);
-    }
+    // foreach (const QString & device_key, to_remove) {
+    //     removeTransferedCall(device_key);
+    // }
 }
 
 /*! \brief Removes a widget from the incoming call list
@@ -298,14 +293,14 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
        16 = On hold */
     // qDebug() << Q_FUNC_INFO << xphoneid;
     removeDefunctWidgets();
-    removeCompletedTransfers();
+    removeCompletedPendings();
     const PhoneInfo * phone = b_engine->phone(xphoneid);
     if (phone == NULL) return;
 
     foreach (QString xchannel, phone->xchannels()) {
         if (m_pendingcalls.contains(xchannel)) {
             PendingWidget * w = m_pendingcalls[xchannel];
-            w->updateWidget();
+            w->update();
         }
         if (m_incomingcalls.contains(xchannel)) {
             IncomingWidget * w = m_incomingcalls[xchannel];
@@ -320,10 +315,10 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
     foreach (QString key, m_incomingcalls.keys())
         m_incomingcalls[key]->updateWidget();
     foreach (QString key, m_pendingcalls.keys())
-        m_pendingcalls[key]->updateWidget();
+        m_pendingcalls[key]->update();
     if (m_pendingcalls.size() || m_incomingcalls.size()) {
         removeDefunctWidgets();
-        removeCompletedTransfers();
+        removeCompletedPendings();
     }
 }
 
@@ -335,7 +330,7 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
  *  \param line The phone's line to transfer to the conference room
  *  \param mxid The meetme's XiVO id
  */
-void PopcAastra::confLine(int line, const QString & mxid)
+void PopcAastra::confLine(int, const QString & mxid)
 {
     const MeetmeInfo * m = b_engine->meetme(mxid);
     if (m) {
@@ -393,12 +388,12 @@ void PopcAastra::holdLine(int line)
  * \param transferedname The name of the transfered caller
  * \param transferednumber The number of the transfered caller
  */
-void PopcAastra::blindTransfer(const QString & peers_device,
+void PopcAastra::blindTransfer(const QString & device_identity,
                                int line,
-                               const QString & transferedname,
-                               const QString & transferednumber)
+                               const QString & t_name,
+                               const QString & t_num)
 {
-    // qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << device_identity << line << t_name << t_num;
     QList<QString> commands;
     commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(XFER));
@@ -410,7 +405,16 @@ void PopcAastra::blindTransfer(const QString & peers_device,
         }
     }
     commands.append(getKeyUri(XFER));
-    trackTransfer(peers_device, number, transferedname, transferednumber);
+
+    QString phonexid;
+    foreach (const QString & key, b_engine->iterover("phones").keys()) {
+        if (b_engine->phone(key)->identity() == device_identity) {
+            phonexid = key;
+            break;
+        }
+    }
+
+    trackTransfer(phonexid, t_name, t_num);
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
@@ -419,22 +423,25 @@ void PopcAastra::blindTransfer(const QString & peers_device,
  * Calls are tracked after blind transfer to allow the interception of
  * unanswered calls. The key of the transfered call hash is the target number
  * of the transfer.
- * \param device The technology/identifier of the transfered call
- * \param number The number where this call is being transfered
+ * \param pxid The transfered device's XiVO id
  * \param tname The transfered person's name
  * \param tnum The transfered person's number
  */
-void PopcAastra::trackTransfer(const QString & device,
-                               const QString & number,
+void PopcAastra::trackTransfer(const QString & pxid,
                                const QString & tname,
                                const QString & tnum)
 {
-    // qDebug() << Q_FUNC_INFO << number;
-    PendingWidget * w = new PendingWidget(number, tname, tnum, this);
-    m_pendingcalls[device] = w;
-    m_layout->addWidget(w);
-    connect(w, SIGNAL(intercept(const QString &)),
-            this, SLOT(doIntercept(const QString &)));
+    qDebug() << Q_FUNC_INFO << pxid << tname << tnum;
+    const PhoneInfo * p = b_engine->phone(pxid);
+    if (p) {
+        TransferedWidget * w = new TransferedWidget(pxid, tname, tnum, this);
+        m_pendingcalls[p->identity()] = w;
+        m_layout->addWidget(w);
+        // connect(w, SIGNAL(intercept(const QString &)),
+        //         this, SLOT(doIntercept(const QString &)));
+    } else {
+        qDebug() << "Cannot track this phone";
+    }
 }
 
 /*! \brief attended transfer to the line in the number/name field */
@@ -510,8 +517,8 @@ void PopcAastra::parkcall(int line, const QString & pxid, const QString & device
                 }
                 commands.append(getKeyUri(XFER));
                 emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
-                return trackTransfer(device, park->number(),
-                                     u->fullname(), phone->number());
+                // return trackTransfer(device, park->number(),
+                //                      u->fullname(), phone->number());
             }
         }
     }

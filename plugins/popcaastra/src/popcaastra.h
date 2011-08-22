@@ -71,11 +71,11 @@ protected:
     const PhoneInfo * findCalledDevice(const QString &);
     void removeIncomingCall(const QString & xChannelId);
     void removeTransferedCall(const QString & xChannelId);
-    void removeCompletedTransfers();
+    void removeCompletedPendings();
     void removeDefunctWidgets();
 private:
     /*! \brief starts tracking a number after a transfer */
-    void trackTransfer(const QString &, const QString &, const QString &, const QString &);
+    void trackTransfer(const QString &, const QString &, const QString &);
 public slots:
     void updateDisplay();
     /*! \brief turns up the volume of the phone */
