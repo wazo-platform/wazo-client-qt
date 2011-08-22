@@ -57,6 +57,22 @@ bool TransferedWidget::toRemove() const
 {
     const PhoneInfo * p = b_engine->phone(phonexid());
     if (! p || ! p->xchannels().size()) return true;
+    const QString & chanxid = p->xchannels().last();
+
+    // Matches my phone's id if it's too early to have the called's info
+    const QStringList & my_identities = 
+        b_engine->user(b_engine->getFullId())->identitylist();
+    const ChannelInfo * c = b_engine->channel(chanxid);
+    bool match = false;
+    foreach (const QString & identity, my_identities) {
+        if (c->talkingto_id().contains(identity)) {
+            match = true;
+            break;
+        }
+    }
+    if (match) return false;
+
+    if (c->commstatus() != "calling") return true;
     return false;
 }
 
