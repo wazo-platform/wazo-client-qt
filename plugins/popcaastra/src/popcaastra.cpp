@@ -105,10 +105,10 @@ PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
  */
 void PopcAastra::updateDisplay()
 {
-    foreach (const QString key, m_incomingcalls.keys()) {
+    foreach (const QString & key, m_incomingcalls.keys()) {
         m_incomingcalls[key]->updateWidget();
     }
-    foreach (const QString key, m_pendingcalls.keys()) {
+    foreach (const QString & key, m_pendingcalls.keys()) {
         m_pendingcalls[key]->update();
     }
 }
@@ -197,30 +197,17 @@ void PopcAastra::removeCompletedPendings()
 {
     if (0 == m_pendingcalls.size())
         return;
-    
-    // QStringList to_remove;
 
-    // foreach (const QString & device_key, m_pendingcalls.keys()) {
-    //     bool matched = false;
-    //     foreach (const ChannelInfo * c, b_engine->channels()) {
-    //         if (c->xid().contains(device_key)) {
-    //             matched = true;
-    //             QString called_device = c->talkingto_id().split("-").at(0);
-    //             if (! m_ui->identitylist().contains(called_device) && c->direction() == "out") {
-    //                 if (c->commstatus() != "calling") {
-    //                     to_remove << device_key;
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     if (! matched) {
-    //         to_remove << device_key;
-    //     }
-    // }
+    QStringList to_remove;
+    foreach (const QString & device_key, m_pendingcalls.keys()) {
+        if (m_pendingcalls[device_key]->toRemove()) {
+            to_remove << device_key;
+        }
+    }
 
-    // foreach (const QString & device_key, to_remove) {
-    //     removeTransferedCall(device_key);
-    // }
+    foreach (const QString & device_key, to_remove) {
+        removeTransferedCall(device_key);
+    }
 }
 
 /*! \brief Removes a widget from the incoming call list
@@ -242,7 +229,6 @@ void PopcAastra::removeIncomingCall(const QString & key)
  */
 void PopcAastra::removeTransferedCall(const QString & key)
 {
-    // qDebug() << Q_FUNC_INFO << key;
     if (m_pendingcalls.contains(key)) {
         delete m_pendingcalls[key];
         m_pendingcalls.remove(key);

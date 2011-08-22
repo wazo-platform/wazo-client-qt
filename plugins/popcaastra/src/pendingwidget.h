@@ -25,9 +25,11 @@ public:
      * \param parent
      */
     PendingWidget(const QString &, QWidget *);
-    virtual ~PendingWidget() = 0;
+    virtual ~PendingWidget() {};
     /*! \brief Refresh the widgets internal data and UI */
     virtual void update() = 0;
+    /*! \brief Check if this widget is ready to be removed */
+    virtual bool toRemove() const = 0;
 public slots:
     /*! \brief Triggered action called when the calls is being picked up */
     virtual void doPickup() = 0;

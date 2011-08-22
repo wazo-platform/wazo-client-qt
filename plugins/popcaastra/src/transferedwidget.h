@@ -10,8 +10,8 @@ Q_OBJECT
 
 public:
     TransferedWidget(const QString &, const QString &, const QString &, QWidget *);
-    ~TransferedWidget();
     void update();
+    bool toRemove() const;
 public slots:
     void doPickup();
 signals:

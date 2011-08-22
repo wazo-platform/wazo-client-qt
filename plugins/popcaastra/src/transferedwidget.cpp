@@ -15,11 +15,6 @@ TransferedWidget::TransferedWidget(const QString & phonexid,
     this->update();
 }
 
-TransferedWidget::~TransferedWidget()
-{
-    qDebug() << Q_FUNC_INFO;
-}
-
 void TransferedWidget::buildui()
 {
     this->PendingWidget::buildui();
@@ -56,6 +51,13 @@ void TransferedWidget::update()
     } else {
         qDebug() << "Cannot generate a string from an empty phone";
     }
+}
+
+bool TransferedWidget::toRemove() const
+{
+    const PhoneInfo * p = b_engine->phone(phonexid());
+    if (! p || ! p->xchannels().size()) return true;
+    return false;
 }
 
 void TransferedWidget::doPickup()
