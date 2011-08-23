@@ -70,9 +70,10 @@ protected:
     /*! \brief Find a matching device for a called number */
     const PhoneInfo * findCalledDevice(const QString &);
     void removeIncomingCall(const QString & xChannelId);
-    void removeTransferedCall(const QString & xChannelId);
+    void removePendingCall(const QString &);
     void removeCompletedPendings();
     void removeDefunctWidgets();
+    void schedule_removal(const QString &);
 private:
     /*! \brief starts tracking a number after a transfer */
     void trackTransfer(const QString &, const QString &,
@@ -103,10 +104,13 @@ public slots:
     void receiveNumberList(const QStringList &);
     /*! \brief Receives a number from other xlets */
     void receiveNumber(const QString &);
+    /*! \brief Removes a pending call widget */
+    void remove_pending(unsigned int);
     /*! \brief receive the text from the target field when it changes */
     void targetChanged(const QString &);
 private:
     QStringList m_my_lines; //!< Our lines (SIP/abc)
+    QStringList m_to_remove;
     void fillCompleter();
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget
     QHash<QString, PendingWidget *> m_pendingcalls; //!< List of transfered calls

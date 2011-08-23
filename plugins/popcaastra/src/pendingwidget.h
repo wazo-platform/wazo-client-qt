@@ -30,20 +30,26 @@ public:
     virtual void update() = 0;
     /*! \brief Check if this widget is ready to be removed */
     virtual bool toRemove() const = 0;
+    unsigned int id() const { return m_id; };
 public slots:
     /*! \brief Triggered action called when the calls is being picked up */
     virtual void doPickup() = 0;
+signals:
+    /*! \brief Notify the popc xlet that this widget should be removed */
+    void remove_me(unsigned int);
 protected:
     virtual void buildui(); //!< Creates inner widgets
     void set_string(const QString &);
     const QString & phonexid() const;
     QString started_since() const;
 private:
+    unsigned int m_id; //!< This call's internal id
     QString m_phonexid; //!< Tracked phone's XiVO id
     double m_time_transfer; //!< When we started tracking
     QLabel * m_lbl_string; //!< The info string for this call
     QPushButton * m_btn_pickup; //!< The button to pickup this call
     QHBoxLayout * m_layout; //!< The layout
+    static unsigned int counted; //!< Used to assign an id to each instance
 };
 
 inline const QString & PendingWidget::phonexid() const

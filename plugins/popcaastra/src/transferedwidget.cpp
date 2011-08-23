@@ -80,6 +80,6 @@ bool TransferedWidget::toRemove() const
 
 void TransferedWidget::doPickup()
 {
-    qDebug() << Q_FUNC_INFO;
     emit pickup(m_called_num);
+    emit remove_me(id());
 }
