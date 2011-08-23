@@ -6,10 +6,12 @@
 #include <QDebug>
 
 TransferedWidget::TransferedWidget(const QString & phonexid,
+                                   const QString & called_num,
                                    const QString & name,
                                    const QString & num,
                                    QWidget * parent)
-    :PendingWidget(phonexid, parent), m_t_name(name), m_t_num(num)
+    :PendingWidget(phonexid, parent), m_called_num(called_num),
+     m_t_name(name), m_t_num(num)
 {
     this->buildui();
     this->update();
@@ -79,4 +81,5 @@ bool TransferedWidget::toRemove() const
 void TransferedWidget::doPickup()
 {
     qDebug() << Q_FUNC_INFO;
+    emit pickup(m_called_num);
 }

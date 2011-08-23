@@ -400,7 +400,7 @@ void PopcAastra::blindTransfer(const QString & device_identity,
         }
     }
 
-    trackTransfer(phonexid, t_name, t_num);
+    trackTransfer(phonexid, number, t_name, t_num);
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
@@ -414,17 +414,16 @@ void PopcAastra::blindTransfer(const QString & device_identity,
  * \param tnum The transfered person's number
  */
 void PopcAastra::trackTransfer(const QString & pxid,
+                               const QString & number,
                                const QString & tname,
                                const QString & tnum)
 {
     qDebug() << Q_FUNC_INFO << pxid << tname << tnum;
     const PhoneInfo * p = b_engine->phone(pxid);
     if (p) {
-        TransferedWidget * w = new TransferedWidget(pxid, tname, tnum, this);
+        PendingWidget * w = new TransferedWidget(pxid, number, tname, tnum, this);
         m_pendingcalls[p->identity()] = w;
         m_layout->addWidget(w);
-        // connect(w, SIGNAL(intercept(const QString &)),
-        //         this, SLOT(doIntercept(const QString &)));
     } else {
         qDebug() << "Cannot track this phone";
     }

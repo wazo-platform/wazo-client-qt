@@ -75,7 +75,8 @@ protected:
     void removeDefunctWidgets();
 private:
     /*! \brief starts tracking a number after a transfer */
-    void trackTransfer(const QString &, const QString &, const QString &);
+    void trackTransfer(const QString &, const QString &,
+                       const QString &, const QString &);
 public slots:
     void updateDisplay();
     /*! \brief turns up the volume of the phone */
