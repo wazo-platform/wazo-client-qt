@@ -38,11 +38,12 @@ signals:
     /*! \brief Notify the popc xlet that this widget should be removed */
     void remove_me(unsigned int);
 protected:
-    virtual void buildui(); //!< Creates inner widgets
+    virtual void buildui(bool); //!< Creates inner widgets
     void set_string(const QString &);
     const QString & phonexid() const;
     QString started_since() const;
     double time_start() const { return m_time_transfer; };
+    QHBoxLayout * layout() { return m_layout; };
 private:
     unsigned int m_id; //!< This call's internal id
     QString m_phonexid; //!< Tracked phone's XiVO id

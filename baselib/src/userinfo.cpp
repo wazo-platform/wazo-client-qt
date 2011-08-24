@@ -124,7 +124,7 @@ bool UserInfo::hasChannelId(const QString & xchannelid) const
 {
     foreach (const QString & phoneid, m_phoneidlist) {
         const PhoneInfo * p = b_engine->phone(phoneid);
-        if (p && p->xchannels().contains(xchannelid)) {
+        if (p && xchannelid.contains(p->identity())) {
             return true;
         }
     }

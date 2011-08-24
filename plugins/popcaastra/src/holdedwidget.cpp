@@ -50,7 +50,7 @@ void HoldedWidget::doPickup()
 
 void HoldedWidget::buildui()
 {
-    this->PendingWidget::buildui();
+    this->PendingWidget::buildui(true);
     connect(this, SIGNAL(pickup(int)), parent(), SLOT(selectLine(int)));
 }
 

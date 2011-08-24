@@ -20,16 +20,16 @@ PendingWidget::PendingWidget(const QString & phonexid, QWidget * parent)
     }
 }
 
-void PendingWidget::buildui()
+void PendingWidget::buildui(bool enable_pick)
 {
     m_layout = new QHBoxLayout(this);
     m_lbl_string = new QLabel(this);
-    m_btn_pickup = new QPushButton(tr("Pick up"), this);
-
     m_layout->addWidget(m_lbl_string);
-    m_layout->addWidget(m_btn_pickup);
-
-    connect(m_btn_pickup, SIGNAL(clicked()), this, SLOT(doPickup()));
+    if (enable_pick) {
+        m_btn_pickup = new QPushButton(tr("Pick up"), this);
+        m_layout->addWidget(m_btn_pickup);
+        connect(m_btn_pickup, SIGNAL(clicked()), this, SLOT(doPickup()));
+    }
     connect(this, SIGNAL(remove_me(unsigned int)),
             parent(), SLOT(remove_pending(unsigned int)));
 }

@@ -19,7 +19,7 @@ TransferedWidget::TransferedWidget(const QString & phonexid,
 
 void TransferedWidget::buildui()
 {
-    this->PendingWidget::buildui();
+    this->PendingWidget::buildui(true);
     connect(this, SIGNAL(pickup(const QString &)),
             parent(), SLOT(doIntercept(const QString &)));
 }

@@ -46,6 +46,7 @@ class QHBoxLayout;
 class QPushButton;
 class QVBoxLayout;
 class PendingWidget;
+class CurrentCallWidget;
 
 /*! \brief POPC xlet for Aastra phones
  *
@@ -116,6 +117,7 @@ private:
     QStringList m_my_lines; //!< Our lines (SIP/abc)
     QStringList m_to_remove;
     void fillCompleter();
+    CurrentCallWidget * m_current_call;
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget
     QHash<QString, PendingWidget *> m_pendingcalls; //!< List of transfered calls
     QVBoxLayout * m_layout;

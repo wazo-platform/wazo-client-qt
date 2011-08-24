@@ -40,6 +40,7 @@
 #include "aastrasipnotify.h"
 #include "channelinfo.h"
 #include "completionedit.h"
+#include "currentcallwidget.h"
 #include "holdedwidget.h"
 #include "incomingwidget.h"
 #include "parkedwidget.h"
@@ -49,7 +50,8 @@
 
 #define MAX_LINES 4
 
-PopcAastra::PopcAastra(QWidget *parent) : XLet(parent)
+PopcAastra::PopcAastra(QWidget *parent)
+    : XLet(parent), m_current_call(0)
 {
     setTitle(tr("POPC Aastra operator"));
 
@@ -169,22 +171,69 @@ void PopcAastra::updateMeetmesConfig(const QString & mxid)
 */
 void PopcAastra::updateChannelStatus(const QString & cxid)
 {
-    if (m_incomingcalls.contains(cxid)) {
-        m_incomingcalls[cxid]->updateWidget();
-    } else if (m_pendingcalls.contains(cxid)) {
-        m_pendingcalls[cxid]->update();
-    } else {
-        const ChannelInfo * c = b_engine->channel(cxid);
-        if (c) {
-            const QString & peer_identity = c->talkingto_id().split("-").value(0);
-            if (m_ui && m_ui->identitylist().contains(peer_identity)) {
-                IncomingWidget * w = new IncomingWidget(
-                    findFirstAvailableLine(), cxid, this);
-                m_incomingcalls[cxid] = w;
-                m_layout->addWidget(w);
+    bool my_channel = (m_ui && m_ui->hasChannelId(cxid));
+    if (! my_channel) return;
+    const ChannelInfo * c = b_engine->channel(cxid);
+    if (c && c->commstatus() == "linked-called") {
+        if (m_current_call && m_current_call->channelid() == cxid) {
+            m_current_call->update();
+        } else {
+            if (m_current_call) {
+                delete m_current_call;
+                m_current_call = 0;
+            }
+            int line = findFirstAvailableLine();
+            foreach (const QString & phonexid,
+                     b_engine->iterover("phones").keys()) {
+                if (b_engine->phone(phonexid)->xchannels().contains(cxid)) {
+                    m_current_call = new CurrentCallWidget(
+                        phonexid, cxid, line, this);
+                    m_layout->addWidget(m_current_call);
+                    break;
+                }
             }
         }
     }
+    // if (m_current_call && cxid == m_current_call->xchannelid()) {
+    //     qDebug() << Q_FUNC_INFO << cxid << "My current channel, updating";
+    //     m_current_call->update();
+    // } else {
+    //     const UserInfo * me = b_enging->user(m_ui);
+    //     if (me && me->hasChannelId(cxid)) {
+    //         const ChannelInfo * c = b_engine->channel(cxid);
+    //         if (c && c->commstatus().isEmpty() == "linked-caller") {
+    //             if (m_current_call) {
+    //                 delete m_current_call;
+    //                 m_current_call = 0;
+    //             }
+    //             m_current_call = new CurrentCallWidget(phonexid, cxid, findFirstAvailableLine(), this);
+    //         } else {
+                
+    //         }
+    //     }
+    // }
+    // return;
+
+    // const ChannelInfo * c = b_engine->channel(cxid);
+    // if (c) {
+    //     qDebug() << Q_FUNC_INFO << cxid << c->toString();
+    // }
+    // if (m_incomingcalls.contains(cxid)) {
+    //     m_incomingcalls[cxid]->updateWidget();
+    // } else if (m_pendingcalls.contains(cxid)) {
+    //     m_pendingcalls[cxid]->update();
+    // } else {
+    //     const ChannelInfo * c = b_engine->channel(cxid);
+    //     if (c) {
+    //         const QString & peer_identity = c->talkingto_id().split("-").value(0);
+    //         if (m_ui && m_ui->identitylist().contains(peer_identity)) {
+    //             IncomingWidget * w = new IncomingWidget(
+    //                 findFirstAvailableLine(), cxid, this);
+    //             m_incomingcalls[cxid] = w;
+    //             m_layout->addWidget(w);
+    //         }
+    //     }
+    // }
 }
 
 /*! \brief Removes defunct call widgets for defunct channels
@@ -194,6 +243,11 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
  */
 void PopcAastra::removeDefunctWidgets()
 {
+    if (m_current_call && m_current_call->toRemove()) {
+        delete m_current_call;
+        m_current_call = 0;
+    }
+
     if (m_to_remove.size()) {
         foreach (const QString & key, m_to_remove) {
             removePendingCall(key);
@@ -321,7 +375,10 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
 
 void PopcAastra::timerEvent(QTimerEvent * /* event */)
 {
-    //qDebug() << Q_FUNC_INFO;
+    if (m_current_call) {
+        m_current_call->update();
+    }
+
     foreach (QString key, m_incomingcalls.keys())
         m_incomingcalls[key]->updateWidget();
     foreach (QString key, m_pendingcalls.keys())
