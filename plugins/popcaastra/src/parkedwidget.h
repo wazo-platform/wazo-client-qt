@@ -18,8 +18,10 @@ signals:
     void pickup(const QString &);
 protected:
     void buildui();
+    QString & get_bay();
 private:
     QString m_parking_id; //!< The parking's XiVO id
+    QString m_parking_bay;
 };
 
 #endif /* _PARKEDWIDGET_H_ */
