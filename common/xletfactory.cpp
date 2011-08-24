@@ -104,7 +104,7 @@ static bool findPluginDir()
         // if there is a plugins dir next to where the application remain
         pluginDirFound = true;
     } else {
-        if (pluginDir.cd("/usr/share/xivoclient/plugins")) {
+        if (pluginDir.cd(PLUGINDIR)) { // PLUGINDIR defined in xivoclient.pro
             //  the xivo_client might be installed properly for all the user on an unix box
             pluginDirFound = true;
         } else {
