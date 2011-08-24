@@ -65,7 +65,6 @@ bool ParkedWidget::toRemove() const
 
 void ParkedWidget::doPickup()
 {
-    qDebug() << Q_FUNC_INFO;
     emit pickup(get_bay());
     emit remove_me(id());
 }

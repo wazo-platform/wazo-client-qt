@@ -116,10 +116,18 @@ void PopcAastra::updateDisplay()
     }
 }
 
+/*! \brief Dial a number using Aastra SIP notify */
 void PopcAastra::dial(const QString & number)
 {
-    qDebug() << Q_FUNC_INFO << number;
-    
+    QStringList commands;
+    for (int i = 0; i < number.size(); ++i) {
+        const QChar & c = number[i];
+        if (c.isDigit()) {
+            commands.append(getKeyUri(KEYPAD, c.digitValue()));
+        }
+    }
+    commands.append(getKeyUri(NAV_RIGHT));
+    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
 
 /*! \brief Add users to transfer targets
