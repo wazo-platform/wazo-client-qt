@@ -38,6 +38,7 @@
 #include "aastrasipnotify.h"
 #include "completionedit.h"
 #include "incomingwidget.h"
+#include "holdedwidget.h"
 #include "popcaastra.h"
 #include "transferedwidget.h"
 #include "channelinfo.h"
@@ -350,7 +351,6 @@ void PopcAastra::confLine(int, const QString & mxid)
  */
 void PopcAastra::hangUpLine(int /* line */)
 {
-    // qDebug() << Q_FUNC_INFO << line;
     QList<QString> commands;
     // commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(GOODBYE));
@@ -361,15 +361,38 @@ void PopcAastra::hangUpLine(int /* line */)
  *
  *  Press the hold button on the phone
  *
- *  \param line The phone's line to hangup
+ * \param device_identity the phone's protocol/id needed for tracking
+ * \param line The phone's line to hangup
  */
-void PopcAastra::holdLine(int line)
+void PopcAastra::holdLine(const QString & device_identity, int line)
 {
-    // qDebug() << Q_FUNC_INFO << line;
     QList<QString> commands;
     commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(HOLD));
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+    foreach (const QString & phonexid, b_engine->iterover("phones").keys()) {
+        if (b_engine->phone(phonexid)->identity() == device_identity) {
+            trackHolded(phonexid, line);
+        }
+    }
+}
+
+/*! \brief Creates a widget for a call on hold and add it to the pending calls
+ * \param phonexid The phone's XiVO id
+ * \param line The line number on the phone
+ */
+void PopcAastra::trackHolded(const QString & phonexid, int line)
+{
+    PendingWidget * w = new HoldedWidget(phonexid, line, this);
+    if (w) {
+        const PhoneInfo * p = b_engine->phone(phonexid);
+        if (p) {
+            m_pendingcalls[p->identity()] = w;
+            m_layout->addWidget(w);
+        } else {
+            delete w;
+        }
+    }
 }
 
 /*! \brief Sends a blind transfer request to the phone

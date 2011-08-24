@@ -70,7 +70,7 @@ class IncomingWidget : public QWidget
         void doBlindTransfer(const QString &, int, const QString &, const QString &);
         void doConf(int, const QString &);       //!< Transfer this line
         void doHangUp(int);     //!< hang up a line
-        void doHold(int);
+        void doHold(const QString &, int);
         void doParkCall(int, const QString &, const QString &);
         void selectLine(int);
     private:

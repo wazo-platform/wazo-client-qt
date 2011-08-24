@@ -78,6 +78,7 @@ private:
     /*! \brief starts tracking a number after a transfer */
     void trackTransfer(const QString &, const QString &,
                        const QString &, const QString &);
+    void trackHolded(const QString &, int);
 public slots:
     void updateDisplay();
     /*! \brief turns up the volume of the phone */
@@ -92,7 +93,7 @@ public slots:
     void confLine(int, const QString &);
     void hangup();
     void hangUpLine(int);
-    void holdLine(int);
+    void holdLine(const QString &, int);
     void attendedTransfer(int);
     void blindTransfer(const QString &, int, const QString &, const QString &);
     void parkcall(int, const QString &, const QString &);

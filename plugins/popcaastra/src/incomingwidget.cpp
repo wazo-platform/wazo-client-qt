@@ -93,7 +93,8 @@ void IncomingWidget::setSignalsSlots()
     connect(this, SIGNAL(doConf(int, const QString &)),
             parent(), SLOT(confLine(int, const QString &)));
     connect(this, SIGNAL(doHangUp(int)), parent(), SLOT(hangUpLine(int)));
-    connect(this, SIGNAL(doHold(int)), parent(), SLOT(holdLine(int)));
+    connect(this, SIGNAL(doHold(const QString &, int)),
+            parent(), SLOT(holdLine(const QString &, int)));
     connect(this, SIGNAL(selectLine(int)), parent(), SLOT(selectLine(int)));
     connect(this, SIGNAL(doAttendedTransfer(int)),
             parent(), SLOT(attendedTransfer(int)));
@@ -163,8 +164,11 @@ void IncomingWidget::doHangUp()
  * line on hold */
 void IncomingWidget::doHold()
 {
-    // qDebug() << Q_FUNC_INFO;
-    emit doHold(m_line);
+    const ChannelInfo * c = b_engine->channel(m_xchannel);
+    if (c) {
+        emit doHold(c->id().split("-").value(0), m_line);
+    }
+    // emit remove
 }
 
 void IncomingWidget::doAttendedTransfer()

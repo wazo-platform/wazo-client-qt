@@ -10,7 +10,7 @@ TransferedWidget::TransferedWidget(const QString & phonexid,
                                    const QString & name,
                                    const QString & num,
                                    QWidget * parent)
-    :PendingWidget(phonexid, parent), m_called_num(called_num),
+    : PendingWidget(phonexid, parent), m_called_num(called_num),
      m_t_name(name), m_t_num(num)
 {
     this->buildui();
