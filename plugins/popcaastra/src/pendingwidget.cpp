@@ -46,42 +46,6 @@ QString PendingWidget::started_since() const
     return b_engine->timeElapsed(m_time_transfer);
 }
 
-// PendingWidget::PendingWidget(QString number, const QString & tname,
-//         const QString & tnum, QWidget * parent):
-//     QWidget(parent),
-//     m_number(number)
-// {
-//     //qDebug() << Q_FUNC_INFO;
-
-//     m_time_transfer = b_engine->timeServer();
-//     m_readyToBeRemoved = false;
-
-//     m_layout = new QHBoxLayout(this);
-//     m_lbl_status = new QLabel(this);
-//     m_layout->addWidget(m_lbl_status);
-//     m_lbl_transfered_name = new QLabel(this);
-//     m_layout->addWidget(m_lbl_transfered_name);
-//     m_lbl_transfered_number = new QLabel(this);
-//     m_layout->addWidget(m_lbl_transfered_number);
-//     m_lbl_called_name = new QLabel(this);
-//     m_layout->addWidget(m_lbl_called_name);
-//     m_lbl_called_number = new QLabel(this);
-//     m_layout->addWidget(m_lbl_called_number);
-//     m_lbl_time = new QLabel(this);
-//     m_layout->addWidget(m_lbl_time);
-
-//     m_lbl_transfered_name->setText(tname);
-//     m_lbl_transfered_number->setText(tnum);
-
-//     m_interceptAction = new QAction(tr("&Intercepet"), this);
-//     m_interceptAction->setStatusTip(tr("Intercept a transfered call"));
-//     connect(m_interceptAction, SIGNAL(triggered()),
-//             this, SLOT(doIntercept()));
-
-//     setXphoneId();
-//     updateWidget();
-// }
-
 /*! \brief returns the exten number that this called is being transfered to */
 // const QString & PendingWidget::number() const
 // {
@@ -121,19 +85,6 @@ QString PendingWidget::started_since() const
 //     }
 //     m_lbl_called_number->setText(m_number);
 //     m_lbl_time->setText(b_engine->timeElapsed(m_time_transfer));
-// }
-
-// /*! \brief set m_called_phone_id */
-// void PendingWidget::setXphoneId()
-// {
-//     //qDebug() << Q_FUNC_INFO;
-//     foreach (QString xphoneid, b_engine->iterover("phones").keys()) {
-//         const PhoneInfo * phone = b_engine->phone(xphoneid);
-//         if (phone->number() == m_number) {
-//             m_called_phone_id = xphoneid;
-//             return;
-//         }
-//     }
 // }
 
 // /*! \brief cancel a blind transfer and retrieves the call */
