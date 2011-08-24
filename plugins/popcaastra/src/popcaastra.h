@@ -79,7 +79,10 @@ private:
     void trackTransfer(const QString &, const QString &,
                        const QString &, const QString &);
     void trackHolded(const QString &, int);
+    void trackParked(const QString &, const QString &);
 public slots:
+    /*! \brief Dial a number using sip notify */
+    void dial(const QString &);
     void updateDisplay();
     /*! \brief turns up the volume of the phone */
     void volUp();

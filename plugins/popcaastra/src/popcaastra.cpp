@@ -31,18 +31,20 @@
  * $Date$
  */
 
+#include "popcaastra.h"
+
 #include <QDebug>
 #include <QPushButton>
 #include <QVBoxLayout>
 
 #include "aastrasipnotify.h"
-#include "completionedit.h"
-#include "incomingwidget.h"
-#include "holdedwidget.h"
-#include "popcaastra.h"
-#include "transferedwidget.h"
 #include "channelinfo.h"
+#include "completionedit.h"
+#include "holdedwidget.h"
+#include "incomingwidget.h"
+#include "parkedwidget.h"
 #include "phoneinfo.h"
+#include "transferedwidget.h"
 #include "userinfo.h"
 
 #define MAX_LINES 4
@@ -112,6 +114,12 @@ void PopcAastra::updateDisplay()
     foreach (const QString & key, m_pendingcalls.keys()) {
         m_pendingcalls[key]->update();
     }
+}
+
+void PopcAastra::dial(const QString & number)
+{
+    qDebug() << Q_FUNC_INFO << number;
+    
 }
 
 /*! \brief Add users to transfer targets
@@ -549,10 +557,20 @@ void PopcAastra::parkcall(int line, const QString & pxid, const QString & device
                 }
                 commands.append(getKeyUri(XFER));
                 emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
-                // return trackTransfer(device, park->number(),
-                //                      u->fullname(), phone->number());
+                trackParked(pxid, p->xid());
             }
         }
+    }
+}
+
+void PopcAastra::trackParked(const QString & parkingxid,
+                             const QString & phonexid)
+{
+    qDebug() << Q_FUNC_INFO << parkingxid << phonexid;
+    PendingWidget * w = new ParkedWidget(phonexid, parkingxid, this);
+    if (w) {
+        m_pendingcalls[phonexid] = w;
+        m_layout->addWidget(w);
     }
 }
 
