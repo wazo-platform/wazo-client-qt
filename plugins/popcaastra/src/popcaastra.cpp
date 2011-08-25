@@ -725,6 +725,15 @@ void PopcAastra::hangup()
 void PopcAastra::hold()
 {
     emit ipbxCommand(getAastraKeyNotify(HOLD, SPECIAL_ME));
+    trackHolded(m_current_call->phonexid(), m_current_call->line());
+}
+
+void PopcAastra::remove_current_call()
+{
+    if (m_current_call) {
+        delete m_current_call;
+        m_current_call = 0;
+    }
 }
 
 /*! \brief simulates a press on the programmable button 1 */

@@ -55,16 +55,19 @@ void CurrentCallWidget::doConf()
 void CurrentCallWidget::doHangup()
 {
     emit hangup();
+    emit remove_me();
 }
 
 void CurrentCallWidget::doHold()
 {
     emit hold();
+    emit remove_me();
 }
 
 void CurrentCallWidget::doPark()
 {
     emit park();
+    emit remove_me();
 }
 
 void CurrentCallWidget::doTxfer()
@@ -101,4 +104,6 @@ void CurrentCallWidget::buildui()
     connect(this, SIGNAL(hangup()), parent(), SLOT(hangup()));
     connect(this, SIGNAL(hold()), parent(), SLOT(hold()));
     connect(this, SIGNAL(park()), parent(), SLOT(park()));
+
+    connect(this, SIGNAL(remove_me()), parent(), SLOT(remove_current_call()));
 }

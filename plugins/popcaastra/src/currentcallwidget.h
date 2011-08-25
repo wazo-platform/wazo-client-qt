@@ -30,6 +30,7 @@ signals:
     void hold();
     void park();
     void selectLine(int);
+    void remove_me();
 protected:
     void buildui();
 private:

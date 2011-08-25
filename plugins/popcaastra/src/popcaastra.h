@@ -113,6 +113,7 @@ public slots:
     void receiveNumber(const QString &);
     /*! \brief Removes a pending call widget */
     void remove_pending(unsigned int);
+    void remove_current_call();
     /*! \brief receive the text from the target field when it changes */
     void targetChanged(const QString &);
 private:
