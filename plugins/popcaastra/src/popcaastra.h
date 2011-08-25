@@ -65,7 +65,6 @@ public:
     PopcAastra(QWidget *parent=0);
     ~PopcAastra();
     int findFirstAvailableLine() const;
-    void debugIncomingCalls() const;
 protected:
     void timerEvent(QTimerEvent *);
     /*! \brief Find a matching device for a called number */

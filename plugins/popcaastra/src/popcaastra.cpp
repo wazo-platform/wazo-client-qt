@@ -112,7 +112,7 @@ PopcAastra::PopcAastra(QWidget *parent)
 void PopcAastra::updateDisplay()
 {
     foreach (const QString & key, m_incomingcalls.keys()) {
-        m_incomingcalls[key]->updateWidget();
+        m_incomingcalls[key]->update();
     }
     foreach (const QString & key, m_pendingcalls.keys()) {
         m_pendingcalls[key]->update();
@@ -314,17 +314,6 @@ void PopcAastra::removePendingCall(const QString & key)
     }
 }
 
-/*! \brief prints the content of m_incomingcalls */
-void PopcAastra::debugIncomingCalls() const
-{
-    qDebug() << Q_FUNC_INFO << "Number of incoming calls " << m_incomingcalls.size();
-    for (QHash<QString, IncomingWidget *>::const_iterator i = m_incomingcalls.constBegin();
-        i != m_incomingcalls.constEnd(); ++i) {
-        IncomingWidget * current = i.value();
-        qDebug() << Q_FUNC_INFO << i.key() << current->toString();
-    }
-}
-
 /*! \brief finds the first line available to place this channel
  *
  *  The goal is to know/guess on which line a call is to avoid
@@ -369,7 +358,7 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
         }
         if (m_incomingcalls.contains(xchannel)) {
             IncomingWidget * w = m_incomingcalls[xchannel];
-            w->updateWidget();
+            w->update();
         }
     }
 }
@@ -381,7 +370,7 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
     }
 
     foreach (QString key, m_incomingcalls.keys())
-        m_incomingcalls[key]->updateWidget();
+        m_incomingcalls[key]->update();
     foreach (QString key, m_pendingcalls.keys())
         m_pendingcalls[key]->update();
     if (m_pendingcalls.size() || m_incomingcalls.size()) {
