@@ -34,6 +34,7 @@
 #include "popcaastra.h"
 
 #include <QDebug>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QVBoxLayout>
 
@@ -183,11 +184,12 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
                 m_current_call = 0;
             }
             int line = findFirstAvailableLine();
-            foreach (const QString & phonexid,
+            const QString & dev = c->talkingto_id().split("-").value(0);
+            foreach (const QString & pxid,
                      b_engine->iterover("phones").keys()) {
-                if (b_engine->phone(phonexid)->xchannels().contains(cxid)) {
+                if (b_engine->phone(pxid)->identity().contains(dev)) {
                     m_current_call = new CurrentCallWidget(
-                        phonexid, cxid, line, this);
+                        pxid, cxid, line, this);
                     m_layout->addWidget(m_current_call);
                     break;
                 }
@@ -533,11 +535,11 @@ void PopcAastra::trackTransfer(const QString & pxid,
 }
 
 /*! \brief attended transfer to the line in the number/name field */
-void PopcAastra::attendedTransfer(int line)
+void PopcAastra::attendedTransfer()
 {
     // qDebug() << Q_FUNC_INFO << line;
     QList<QString> commands;
-    commands.append(getKeyUri(LINE, line));
+    // commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(XFER));
     QString number = m_selected_number;
     for (int i = 0; i < number.size(); ++i) {
@@ -595,38 +597,92 @@ void PopcAastra::selectLine(int line)
     emit ipbxCommand(getAastraKeyNotify(LINE, SPECIAL_ME, line));
 }
 
+void PopcAastra::park()
+{
+    QString pxid = promptParking();
+    const ParkingInfo * parking = b_engine->parkinglot(pxid);
+    if (parking) {
+        const QString & number = parking->number();
+        QStringList commands = QStringList()
+            << getKeyUri(XFER);
+        for (int i = 0; i < number.size(); ++i) {
+            const QChar c = number[i];
+            if (c.isDigit()) {
+                commands.append(getKeyUri(KEYPAD, c.digitValue()));
+            }
+        }
+        commands.append(getKeyUri(XFER));
+        emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+        trackParked(pxid, m_current_call->phonexid());
+    }
+}
+
+/*! \brief Prompt the user for a parking
+ * \return the parkinglot XiVO id */
+QString PopcAastra::promptParking() const
+{
+    QMap<QString, QPushButton *> parking_map;
+    QMessageBox box;
+    foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
+        const ParkingInfo * p = b_engine->parkinglot(pxid);
+        if (! p) continue;
+        parking_map[p->xid()] = box.addButton(QString("%0 - %1")
+                                              .arg(p->number()).arg(p->name()),
+                                              QMessageBox::ActionRole);
+        if (parking_map.size() == 1) {
+            box.setDefaultButton(parking_map[p->xid()]);
+        }
+    }
+
+    if (parking_map.size() > 0) {
+        box.setText(tr("Choose the parking to park the call to"));
+        box.addButton(QMessageBox::Cancel);
+        box.exec();
+        foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
+            const ParkingInfo * p = b_engine->parkinglot(pxid);
+            if (p && box.clickedButton() == parking_map[p->xid()]) {
+                return pxid;
+            }
+        }
+    } else {
+        qDebug() << Q_FUNC_INFO << "No parking available";
+    }
+    qDebug() << Q_FUNC_INFO << "No parking selected";
+    return QString();
+}
+
 /*! \brief transfer the call to a parking lot
  *  \param line to transfer
  *  \param pxid the parking's XiVO id
  *  \param device The device id of the transfered call
  */
-void PopcAastra::parkcall(int line, const QString & pxid, const QString & device)
-{
-    foreach (const XInfo * p, b_engine->iterover("phones")) {
-        const PhoneInfo * phone = static_cast<const PhoneInfo *>(p);
-        if (phone->identity() == device) {
-            QString userxid = (QString("%0/%1").arg(phone->ipbxid())
-                               .arg(phone->iduserfeatures()));
-            const UserInfo * u = b_engine->user(userxid);
-            const ParkingInfo * park = b_engine->parkinglot(pxid);
-            if (u && park) {
-                const QString & number = park->number();
-                QStringList commands = QStringList()
-                    << getKeyUri(LINE, line)
-                    << getKeyUri(XFER);
-                for (int i = 0; i < number.size(); ++i) {
-                    const QChar c = number[i];
-                    if (c.isDigit()) {
-                        commands.append(getKeyUri(KEYPAD, c.digitValue()));
-                    }
-                }
-                commands.append(getKeyUri(XFER));
-                emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
-                trackParked(pxid, p->xid());
-            }
-        }
-    }
-}
+// void PopcAastra::parkcall(int line, const QString & pxid, const QString & device)
+// {
+//     foreach (const XInfo * p, b_engine->iterover("phones")) {
+//         const PhoneInfo * phone = static_cast<const PhoneInfo *>(p);
+//         if (phone->identity() == device) {
+//             QString userxid = (QString("%0/%1").arg(phone->ipbxid())
+//                                .arg(phone->iduserfeatures()));
+//             const UserInfo * u = b_engine->user(userxid);
+//             const ParkingInfo * park = b_engine->parkinglot(pxid);
+//             if (u && park) {
+//                 const QString & number = park->number();
+//                 QStringList commands = QStringList()
+//                     << getKeyUri(LINE, line)
+//                     << getKeyUri(XFER);
+//                 for (int i = 0; i < number.size(); ++i) {
+//                     const QChar c = number[i];
+//                     if (c.isDigit()) {
+//                         commands.append(getKeyUri(KEYPAD, c.digitValue()));
+//                     }
+//                 }
+//                 commands.append(getKeyUri(XFER));
+//                 emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+//                 trackParked(pxid, p->xid());
+//             }
+//         }
+//     }
+// }
 
 void PopcAastra::trackParked(const QString & parkingxid,
                              const QString & phonexid)
@@ -663,8 +719,12 @@ void PopcAastra::navRight()
 /*! \brief hang up the active line */
 void PopcAastra::hangup()
 {
-    // qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(GOODBYE, SPECIAL_ME));
+}
+
+void PopcAastra::hold()
+{
+    emit ipbxCommand(getAastraKeyNotify(HOLD, SPECIAL_ME));
 }
 
 /*! \brief simulates a press on the programmable button 1 */

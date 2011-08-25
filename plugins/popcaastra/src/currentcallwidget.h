@@ -5,6 +5,9 @@
 
 class CurrentCallWidget: public PendingWidget
 {
+
+Q_OBJECT
+
 public:
     CurrentCallWidget(const QString &, const QString &, int, QWidget *);
     ~CurrentCallWidget();
@@ -17,14 +20,15 @@ public slots:
     void doAtxfer();
     void doConf();
     void doHangup();
+    void doHold();
     void doPark();
     void doTxfer();
 signals:
-    void attendedTransfer(int);
+    void atxfer();
     void blindTransfer(const QString &, int, const QString &, const QString &);
-    void hangup(int);
-    void hold(const QString &, int);
-    void park(int, const QString &, const QString &);
+    void hangup();
+    void hold();
+    void park();
     void selectLine(int);
 protected:
     void buildui();

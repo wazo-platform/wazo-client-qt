@@ -96,11 +96,13 @@ public slots:
     void updateMeetmesConfig(const QString &);
     void confLine(int, const QString &);
     void hangup();
+    void hold();
     void hangUpLine(int);
     void holdLine(const QString &, int);
-    void attendedTransfer(int);
+    void attendedTransfer();
     void blindTransfer(const QString &, int, const QString &, const QString &);
-    void parkcall(int, const QString &, const QString &);
+    void park();
+    // void parkcall(int, const QString &, const QString &);
     void selectLine(int);
     void prgkey1();
     /*! \brief intercepts the call to this exten */
@@ -114,6 +116,7 @@ public slots:
     /*! \brief receive the text from the target field when it changes */
     void targetChanged(const QString &);
 private:
+    QString promptParking() const;
     QStringList m_my_lines; //!< Our lines (SIP/abc)
     QStringList m_to_remove;
     void fillCompleter();

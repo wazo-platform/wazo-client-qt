@@ -44,7 +44,7 @@ bool CurrentCallWidget::toRemove() const
 
 void CurrentCallWidget::doAtxfer()
 {
-    qDebug() << Q_FUNC_INFO;
+    emit atxfer();
 }
 
 void CurrentCallWidget::doConf()
@@ -54,12 +54,17 @@ void CurrentCallWidget::doConf()
 
 void CurrentCallWidget::doHangup()
 {
-    qDebug() << Q_FUNC_INFO;
+    emit hangup();
+}
+
+void CurrentCallWidget::doHold()
+{
+    emit hold();
 }
 
 void CurrentCallWidget::doPark()
 {
-    qDebug() << Q_FUNC_INFO;
+    emit park();
 }
 
 void CurrentCallWidget::doTxfer()
@@ -70,6 +75,7 @@ void CurrentCallWidget::doTxfer()
 void CurrentCallWidget::buildui()
 {
     this->PendingWidget::buildui(false);
+
     m_btn_atxfer = new QPushButton(tr("Atxfer"), this);
     m_btn_txfer = new QPushButton(tr("Txfer"), this);
     m_btn_hold = new QPushButton(tr("Hold"), this);
@@ -90,4 +96,9 @@ void CurrentCallWidget::buildui()
     connect(m_btn_hangup, SIGNAL(clicked()), this, SLOT(doHangup()));
     connect(m_btn_conf, SIGNAL(clicked()), this, SLOT(doConf()));
     connect(m_btn_park, SIGNAL(clicked()), this, SLOT(doPark()));
+
+    connect(this, SIGNAL(atxfer()), parent(), SLOT(attendedTransfer()));
+    connect(this, SIGNAL(hangup()), parent(), SLOT(hangup()));
+    connect(this, SIGNAL(hold()), parent(), SLOT(hold()));
+    connect(this, SIGNAL(park()), parent(), SLOT(park()));
 }

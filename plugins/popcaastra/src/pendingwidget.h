@@ -31,6 +31,7 @@ public:
     /*! \brief Check if this widget is ready to be removed */
     virtual bool toRemove() const = 0;
     unsigned int id() const { return m_id; };
+    const QString & phonexid() const;
 public slots:
     /*! \brief Triggered action called when the calls is being picked up */
     virtual void doPickup() = 0;
@@ -40,7 +41,6 @@ signals:
 protected:
     virtual void buildui(bool); //!< Creates inner widgets
     void set_string(const QString &);
-    const QString & phonexid() const;
     QString started_since() const;
     double time_start() const { return m_time_transfer; };
     QHBoxLayout * layout() { return m_layout; };
