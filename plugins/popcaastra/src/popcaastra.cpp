@@ -398,15 +398,34 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
  *  \param line The phone's line to transfer to the conference room
  *  \param mxid The meetme's XiVO id
  */
-void PopcAastra::confLine(int, const QString & mxid)
+// void PopcAastra::confLine(int, const QString & mxid)
+// {
+//     const MeetmeInfo * m = b_engine->meetme(mxid);
+//     if (m) {
+//         QList<QString> commands;
+//         commands.append(getKeyUri(XFER));
+//         QString number = m->number();
+//         for (int i = 0; i < number.size(); ++i) {
+//             const QChar & c = number[i];
+//             if (c.isDigit()) {
+//                 commands.append(getKeyUri(KEYPAD, c.digitValue()));
+//             }
+//         }
+//         commands.append(getKeyUri(XFER));
+//         emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+//     }
+// }
+
+void PopcAastra::conf()
 {
+    QString mxid = promptMeetme();
     const MeetmeInfo * m = b_engine->meetme(mxid);
     if (m) {
-        QList<QString> commands;
-        commands.append(getKeyUri(XFER));
-        QString number = m->number();
-        for (int i = 0; i < number.size(); ++i) {
-            const QChar & c = number[i];
+        QStringList commands = QStringList()
+            << getKeyUri(XFER);
+        const QString & num = m->number();
+        for (int i = 0; i < num.size(); ++i) {
+            const QChar & c = num[i];
             if (c.isDigit()) {
                 commands.append(getKeyUri(KEYPAD, c.digitValue()));
             }
@@ -657,6 +676,37 @@ QString PopcAastra::promptParking() const
     return QString();
 }
 
+QString PopcAastra::promptMeetme() const
+{
+    QMap<QString, QPushButton *> meetme_map;
+    QMessageBox box;
+    foreach (const QString & mxid, b_engine->iterover("meetmes").keys()) {
+        const MeetmeInfo * m = b_engine->meetme(mxid);
+        if (! m) continue;
+        meetme_map[m->xid()] = box.addButton(QString("%0 - %1")
+                                             .arg(m->number()).arg(m->name()),
+                                             QMessageBox::ActionRole);
+        if (meetme_map.size() == 1) {
+            box.setDefaultButton(meetme_map[m->xid()]);
+        }
+    }
+
+    if (meetme_map.size() > 0) {
+        box.setText(tr("Choose the conference room to transfer this call to"));
+        box.addButton(QMessageBox::Cancel);
+        box.exec();
+        foreach (const QString & mxid, b_engine->iterover("meetmes").keys()) {
+            const MeetmeInfo * m = b_engine->meetme(mxid);
+            if (m && box.clickedButton() == meetme_map[m->xid()]) {
+                return m->xid();
+            }
+        }
+    } else {
+        qDebug() << Q_FUNC_INFO << "No meetme available";
+    }
+    qDebug() << Q_FUNC_INFO << "No meetme selected";
+    return QString();
+}
 /*! \brief transfer the call to a parking lot
  *  \param line to transfer
  *  \param pxid the parking's XiVO id

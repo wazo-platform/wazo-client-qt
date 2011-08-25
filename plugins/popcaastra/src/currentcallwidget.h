@@ -32,6 +32,7 @@ signals:
     void selectLine(int);
     void remove_me();
     void txfer();
+    void conf();
 protected:
     void buildui();
 private:

@@ -93,14 +93,15 @@ public slots:
     void updateUserStatus(const QString &);
     void updateChannelStatus(const QString &);
     void updateMeetmesConfig(const QString &);
-    void confLine(int, const QString &);
+    // void confLine(int, const QString &);
+    void conf();
     void hangup();
     void hold();
     void hangUpLine(int);
     void holdLine(const QString &, int);
     void attendedTransfer();
     void transfer();
-    void blindTransfer(const QString &, int, const QString &, const QString &);
+    // void blindTransfer(const QString &, int, const QString &, const QString &);
     void park();
     // void parkcall(int, const QString &, const QString &);
     void selectLine(int);
@@ -118,6 +119,7 @@ public slots:
     void targetChanged(const QString &);
 private:
     QString promptParking() const;
+    QString promptMeetme() const;
     QStringList m_my_lines; //!< Our lines (SIP/abc)
     QStringList m_to_remove;
     void fillCompleter();
