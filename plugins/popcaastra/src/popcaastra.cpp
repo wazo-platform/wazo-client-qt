@@ -173,9 +173,8 @@ void PopcAastra::updateMeetmesConfig(const QString & mxid)
 void PopcAastra::updateChannelStatus(const QString & cxid)
 {
     bool my_channel = (m_ui && m_ui->hasChannelId(cxid));
-    if (! my_channel) return;
     const ChannelInfo * c = b_engine->channel(cxid);
-    if (c && c->commstatus() == "linked-called") {
+    if (my_channel && c && c->commstatus() == "linked-called") {
         if (m_current_call && m_current_call->channelid() == cxid) {
             m_current_call->update();
         } else {
@@ -183,59 +182,30 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
                 delete m_current_call;
                 m_current_call = 0;
             }
-            int line = findFirstAvailableLine();
-            const QString & dev = c->talkingto_id().split("-").value(0);
-            foreach (const QString & pxid,
-                     b_engine->iterover("phones").keys()) {
-                if (b_engine->phone(pxid)->identity().contains(dev)) {
-                    m_current_call = new CurrentCallWidget(
-                        pxid, cxid, line, this);
-                    m_layout->addWidget(m_current_call);
-                    break;
-                }
+            QString dev = c->talkingto_id().split("-").value(0);
+            QString phonexid = findPhoneByIdentity(dev);
+            if (! phonexid.isEmpty()) {
+                m_current_call = new CurrentCallWidget(
+                    phonexid, cxid, nextLine(), this);
+                m_layout->addWidget(m_current_call);
+                return;
+            }
+        }
+    } else if (my_channel && c && c->commstatus() != "linked-called"
+               && c->direction() == "in") {
+        if (m_incomingcalls.contains(cxid)) {
+            m_incomingcalls[cxid]->update();
+        } else {
+            QString identity = c->id().split("-").value(0);
+            QString phonexid = findPhoneByIdentity(identity);
+            if (! phonexid.isEmpty()) {
+                IncomingWidget * w = new IncomingWidget(
+                    nextLine(), cxid, phonexid, this);
+                m_incomingcalls[cxid] = w;
+                m_layout->addWidget(w);
             }
         }
     }
-    // if (m_current_call && cxid == m_current_call->xchannelid()) {
-    //     qDebug() << Q_FUNC_INFO << cxid << "My current channel, updating";
-    //     m_current_call->update();
-    // } else {
-    //     const UserInfo * me = b_enging->user(m_ui);
-    //     if (me && me->hasChannelId(cxid)) {
-    //         const ChannelInfo * c = b_engine->channel(cxid);
-    //         if (c && c->commstatus().isEmpty() == "linked-caller") {
-    //             if (m_current_call) {
-    //                 delete m_current_call;
-    //                 m_current_call = 0;
-    //             }
-    //             m_current_call = new CurrentCallWidget(phonexid, cxid, findFirstAvailableLine(), this);
-    //         } else {
-                
-    //         }
-    //     }
-    // }
-    // return;
-
-    // const ChannelInfo * c = b_engine->channel(cxid);
-    // if (c) {
-    //     qDebug() << Q_FUNC_INFO << cxid << c->toString();
-    // }
-    // if (m_incomingcalls.contains(cxid)) {
-    //     m_incomingcalls[cxid]->updateWidget();
-    // } else if (m_pendingcalls.contains(cxid)) {
-    //     m_pendingcalls[cxid]->update();
-    // } else {
-    //     const ChannelInfo * c = b_engine->channel(cxid);
-    //     if (c) {
-    //         const QString & peer_identity = c->talkingto_id().split("-").value(0);
-    //         if (m_ui && m_ui->identitylist().contains(peer_identity)) {
-    //             IncomingWidget * w = new IncomingWidget(
-    //                 findFirstAvailableLine(), cxid, this);
-    //             m_incomingcalls[cxid] = w;
-    //             m_layout->addWidget(w);
-    //         }
-    //     }
-    // }
 }
 
 /*! \brief Removes defunct call widgets for defunct channels
@@ -321,7 +291,7 @@ void PopcAastra::removePendingCall(const QString & key)
  *  with lines on the phone device when using aastra xml api
  *  Return -1 when all the lines are taken
  */
-int PopcAastra::findFirstAvailableLine() const {
+int PopcAastra::nextLine() const {
     if (m_incomingcalls.size() == 0) {
         return 1;
     }

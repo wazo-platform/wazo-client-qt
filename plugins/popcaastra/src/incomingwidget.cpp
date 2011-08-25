@@ -1,24 +1,30 @@
 #include "incomingwidget.h"
 
+#include "baseengine.h"
+#include "channelinfo.h"
+#include "phoneinfo.h"
+
 #include <QDebug>
 #include <QPushButton>
+#include <QHBoxLayout>
 
 IncomingWidget::IncomingWidget(int line, const QString & channelxid,
                                const QString & phonexid, QWidget * w)
     : PendingWidget(phonexid, w), m_line(line), m_channel_xid(channelxid)
 {
-    qDebug() << Q_FUNC_INFO << phonexid << line;
     buildui();
     update();
 }
 
 void IncomingWidget::buildui()
 {
-    qDebug() << Q_FUNC_INFO;
     this->PendingWidget::buildui(false);
 
     m_btn_answer = new QPushButton(tr("Answer"), this);
     m_btn_ignore = new QPushButton(tr("Ignore"), this);
+
+    layout()->addWidget(m_btn_answer);
+    layout()->addWidget(m_btn_ignore);
 
     connect(m_btn_ignore, SIGNAL(clicked()), this, SLOT(doIgnore()));
     connect(m_btn_answer, SIGNAL(clicked()), this, SLOT(doPickup()));
@@ -26,22 +32,19 @@ void IncomingWidget::buildui()
 
 void IncomingWidget::update()
 {
-    // const ChannelInfo * c = b_engine->channel(m_xchannel);
-    // if (c) {
-    //     m_parkedCall = c->isparked();
-    //     m_holdedCall = c->isholded();
-    //     const UserInfo * u = b_engine->getUserForXChannelId(m_xchannel);
-    //     if (u) {
-    //         m_peer_name = u->fullname();
-    //         foreach (const QString & phonexid, u->phonelist()) {
-    //             const PhoneInfo * p = b_engine->phone(phonexid);
-    //             if (p && c->xid().contains(p->identity())) {
-    //                 m_peer_number = p->number();
-    //             }
-    //         }
-    //     }
-    // }
-    set_string("Info");
+    const ChannelInfo * c = b_engine->channel(m_channel_xid);
+    QString display;
+    if (c) {
+        display = c->peerdisplay();
+    } else {
+        const PhoneInfo * p = b_engine->phone(phonexid());
+        if (p) {
+            display = p->number();
+        } else {
+            display = tr("Incoming call");
+        }
+    }
+    set_string(QString("%0 %1").arg(display).arg(started_since()));
 }
 
 bool IncomingWidget::toRemove() const

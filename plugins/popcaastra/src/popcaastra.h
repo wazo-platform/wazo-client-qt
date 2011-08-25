@@ -64,7 +64,6 @@ class PopcAastra : public XLet
 public:
     PopcAastra(QWidget *parent=0);
     ~PopcAastra();
-    int findFirstAvailableLine() const;
 protected:
     void timerEvent(QTimerEvent *);
     /*! \brief Find a matching device for a called number */
@@ -74,6 +73,7 @@ protected:
     void removeCompletedPendings();
     void removeDefunctWidgets();
     void schedule_removal(const QString &);
+    int nextLine() const;
 private:
     /*! \brief starts tracking a number after a transfer */
     void trackTransfer(const QString &);
