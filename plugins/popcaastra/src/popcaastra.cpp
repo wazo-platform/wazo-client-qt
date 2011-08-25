@@ -390,32 +390,6 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
     }
 }
 
-/*! \brief Sends this line in a conference room
- *
- *  Sends this call to a default conference room
- *  The transfer is done using the transfer button, not the conference button
- *
- *  \param line The phone's line to transfer to the conference room
- *  \param mxid The meetme's XiVO id
- */
-// void PopcAastra::confLine(int, const QString & mxid)
-// {
-//     const MeetmeInfo * m = b_engine->meetme(mxid);
-//     if (m) {
-//         QList<QString> commands;
-//         commands.append(getKeyUri(XFER));
-//         QString number = m->number();
-//         for (int i = 0; i < number.size(); ++i) {
-//             const QChar & c = number[i];
-//             if (c.isDigit()) {
-//                 commands.append(getKeyUri(KEYPAD, c.digitValue()));
-//             }
-//         }
-//         commands.append(getKeyUri(XFER));
-//         emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
-//     }
-// }
-
 void PopcAastra::conf()
 {
     QString mxid = promptMeetme();
@@ -502,45 +476,6 @@ void PopcAastra::transfer()
     trackTransfer(m_current_call->phonexid());
 }
 
-/*! \brief Sends a blind transfer request to the phone
- *
- * Send an aastra xml request to the phone to transfer the call on line \a line
- * to the selected number
- * \param peers_device The techno/identifier of our peer's device (SIP/abc)
- * \param line The phone's line number
- * \param transferedname The name of the transfered caller
- * \param transferednumber The number of the transfered caller
- */
-// void PopcAastra::blindTransfer(const QString & device_identity,
-//                                int line,
-//                                const QString & t_name,
-//                                const QString & t_num)
-// {
-//     qDebug() << Q_FUNC_INFO << device_identity << line << t_name << t_num;
-//     QList<QString> commands;
-//     commands.append(getKeyUri(LINE, line));
-//     commands.append(getKeyUri(XFER));
-//     QString number = m_selected_number;
-//     for (int i = 0; i < number.size(); ++i) {
-//         const QChar & c = number[i];
-//         if (c.isDigit()) {
-//             commands.append(getKeyUri(KEYPAD, c.digitValue()));
-//         }
-//     }
-//     commands.append(getKeyUri(XFER));
-
-//     QString phonexid;
-//     foreach (const QString & key, b_engine->iterover("phones").keys()) {
-//         if (b_engine->phone(key)->identity() == device_identity) {
-//             phonexid = key;
-//             break;
-//         }
-//     }
-
-//     trackTransfer(phonexid, number, t_name, t_num);
-//     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
-// }
-
 /*! \brief Track a call after a blind transfer
  *
  * Calls are tracked after blind transfer to allow the interception of
@@ -585,7 +520,6 @@ void PopcAastra::attendedTransfer()
  */
 void PopcAastra::doIntercept(const QString & exten)
 {
-    // qDebug() << Q_FUNC_INFO << exten;
     QList<QString> commands;
     commands.append(getKeyUri(KEYPAD_STAR));
     commands.append(getKeyUri(KEYPAD, 8));
@@ -618,7 +552,6 @@ void PopcAastra::schedule_removal(const QString & key)
 /*! \brief select the line */
 void PopcAastra::selectLine(int line)
 {
-    // qDebug() << Q_FUNC_INFO << line;
     emit ipbxCommand(getAastraKeyNotify(LINE, SPECIAL_ME, line));
 }
 
@@ -707,38 +640,6 @@ QString PopcAastra::promptMeetme() const
     qDebug() << Q_FUNC_INFO << "No meetme selected";
     return QString();
 }
-/*! \brief transfer the call to a parking lot
- *  \param line to transfer
- *  \param pxid the parking's XiVO id
- *  \param device The device id of the transfered call
- */
-// void PopcAastra::parkcall(int line, const QString & pxid, const QString & device)
-// {
-//     foreach (const XInfo * p, b_engine->iterover("phones")) {
-//         const PhoneInfo * phone = static_cast<const PhoneInfo *>(p);
-//         if (phone->identity() == device) {
-//             QString userxid = (QString("%0/%1").arg(phone->ipbxid())
-//                                .arg(phone->iduserfeatures()));
-//             const UserInfo * u = b_engine->user(userxid);
-//             const ParkingInfo * park = b_engine->parkinglot(pxid);
-//             if (u && park) {
-//                 const QString & number = park->number();
-//                 QStringList commands = QStringList()
-//                     << getKeyUri(LINE, line)
-//                     << getKeyUri(XFER);
-//                 for (int i = 0; i < number.size(); ++i) {
-//                     const QChar c = number[i];
-//                     if (c.isDigit()) {
-//                         commands.append(getKeyUri(KEYPAD, c.digitValue()));
-//                     }
-//                 }
-//                 commands.append(getKeyUri(XFER));
-//                 emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
-//                 trackParked(pxid, p->xid());
-//             }
-//         }
-//     }
-// }
 
 void PopcAastra::trackParked(const QString & parkingxid,
                              const QString & phonexid)
@@ -754,21 +655,18 @@ void PopcAastra::trackParked(const QString & parkingxid,
 /*! \brief turns the volume up */
 void PopcAastra::volUp()
 {
-    // qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(VOL_UP, SPECIAL_ME));
 }
 
 /*! \brief turns the volume down */
 void PopcAastra::volDown()
 {
-    // qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(VOL_DOWN, SPECIAL_ME));
 }
 
 /*! \brief press the navigation right button of the device */
 void PopcAastra::navRight()
 {
-    // qDebug() << Q_FUNC_INFO;
     emit ipbxCommand(getAastraKeyNotify(NAV_RIGHT, SPECIAL_ME));
 }
 
@@ -802,7 +700,6 @@ void PopcAastra::prgkey1()
 /*! \brief receive a list of numbers for a selected peer or contact */
 void PopcAastra::receiveNumberList(const QStringList & numbers)
 {
-    // qDebug() << Q_FUNC_INFO;
     if (numbers.isEmpty()) {
         return;
     } else if (numbers.size() == 1) {
@@ -822,7 +719,6 @@ void PopcAastra::receiveNumberList(const QStringList & numbers)
  */
 void PopcAastra::receiveNumber(const QString & number)
 {
-    // qDebug() << Q_FUNC_INFO << number;
     if (number.isEmpty()) return;
     m_targets->setText(number);
 }
@@ -836,7 +732,6 @@ void PopcAastra::receiveNumber(const QString & number)
  */
 void PopcAastra::targetChanged(const QString & text)
 {
-    // qDebug() << Q_FUNC_INFO << text;
     QRegExp num_regex = QRegExp("[<]?[0-9]+[>]?");
     int end = text.lastIndexOf(num_regex);
     int start = text.indexOf(num_regex);
@@ -855,8 +750,6 @@ void PopcAastra::targetChanged(const QString & text)
  */
 void PopcAastra::fillCompleter()
 {
-    // qDebug() << Q_FUNC_INFO;
-
     m_contact_completer = new FilteredCompleter(this);
     m_contact_completer->setCaseSensitivity(Qt::CaseInsensitive);
     m_contact_completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
@@ -868,6 +761,5 @@ void PopcAastra::fillCompleter()
  */
 PopcAastra::~PopcAastra()
 {
-    // qDebug() << Q_FUNC_INFO;
 }
 

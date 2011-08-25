@@ -15,7 +15,6 @@ IncomingWidget::IncomingWidget(int line, const QString & xchan, QWidget * w)
     : QWidget(w), m_line(line), m_xchannel(xchan),
         m_start(b_engine->timeServer())
 {
-    // qDebug() << Q_FUNC_INFO << "Line(" << line << ") Channel(" << xchan << ")";
     m_small_button_sz = new QSize(20,20);
     buildLayout();
     setSignalsSlots();
@@ -25,7 +24,6 @@ IncomingWidget::IncomingWidget(int line, const QString & xchan, QWidget * w)
 
 void IncomingWidget::buildLayout()
 {
-    // qDebug() << Q_FUNC_INFO;
     m_layout = new QHBoxLayout(this);
     m_lbl_line = new QLabel(this);
     m_lbl_name = new QLabel(this);
@@ -60,7 +58,6 @@ void IncomingWidget::buildLayout()
 
 void IncomingWidget::refreshUI()
 {
-    // qDebug() << Q_FUNC_INFO;
     m_lbl_line->setText(QString("%1").arg(m_line));
     m_lbl_name->setText(m_peer_name);
     m_lbl_exten->setText(m_peer_number);
@@ -142,7 +139,6 @@ void IncomingWidget::updateCallTimeLabel()
 
 void IncomingWidget::updateWidget()
 {
-    // qDebug() << Q_FUNC_INFO;
     updateFromChannelInfo();
     refreshUI();
 }
@@ -154,7 +150,6 @@ void IncomingWidget::timerEvent(QTimerEvent *)
 
 void IncomingWidget::doHangUp()
 {
-    // qDebug() << Q_FUNC_INFO;
     emit doHangUp(m_line);
 }
 
@@ -173,14 +168,12 @@ void IncomingWidget::doHold()
 
 void IncomingWidget::doAttendedTransfer()
 {
-    // qDebug() << Q_FUNC_INFO;
     emit doAttendedTransfer(m_line);
 }
 
 /*! \brief Sends a blind transfer request to the POPC xlet */
 void IncomingWidget::doBlindTransfer()
 {
-    // qDebug() << Q_FUNC_INFO;
     const ChannelInfo * c = b_engine->channel(m_xchannel);
     const QString & peer_channel = c->id();
     QString peer_device = peer_channel.split("-").value(0);
@@ -189,7 +182,6 @@ void IncomingWidget::doBlindTransfer()
 
 void IncomingWidget::doConf()
 {
-    // qDebug() << Q_FUNC_INFO;
     QMap<QString, QPushButton *> meetme_map;
     QMessageBox box;
     foreach (const QString & mxid, b_engine->iterover("meetmes").keys()) {
