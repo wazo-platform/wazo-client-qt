@@ -77,8 +77,7 @@ protected:
     void schedule_removal(const QString &);
 private:
     /*! \brief starts tracking a number after a transfer */
-    void trackTransfer(const QString &, const QString &,
-                       const QString &, const QString &);
+    void trackTransfer(const QString &);
     void trackHolded(const QString &, int);
     void trackParked(const QString &, const QString &);
 public slots:
@@ -100,6 +99,7 @@ public slots:
     void hangUpLine(int);
     void holdLine(const QString &, int);
     void attendedTransfer();
+    void transfer();
     void blindTransfer(const QString &, int, const QString &, const QString &);
     void park();
     // void parkcall(int, const QString &, const QString &);

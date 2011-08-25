@@ -297,7 +297,6 @@ void PopcAastra::removeCompletedPendings()
  */
 void PopcAastra::removeIncomingCall(const QString & key)
 {
-    // qDebug() << Q_FUNC_INFO << key;
     if (m_incomingcalls.contains(key)) {
         delete m_incomingcalls[key];
         m_incomingcalls.remove(key);
@@ -407,7 +406,7 @@ void PopcAastra::confLine(int, const QString & mxid)
         commands.append(getKeyUri(XFER));
         QString number = m->number();
         for (int i = 0; i < number.size(); ++i) {
-            const QChar c = number[i];
+            const QChar & c = number[i];
             if (c.isDigit()) {
                 commands.append(getKeyUri(KEYPAD, c.digitValue()));
             }
@@ -427,7 +426,6 @@ void PopcAastra::confLine(int, const QString & mxid)
 void PopcAastra::hangUpLine(int /* line */)
 {
     QList<QString> commands;
-    // commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(GOODBYE));
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
 }
@@ -470,6 +468,21 @@ void PopcAastra::trackHolded(const QString & phonexid, int line)
     }
 }
 
+void PopcAastra::transfer()
+{
+    QStringList commands = QStringList()
+        << getKeyUri(XFER);
+    for (int i = 0; i < m_selected_number.size(); ++i) {
+        const QChar & c = m_selected_number[i];
+        if (c.isDigit()) {
+            commands.append(getKeyUri(KEYPAD, c.digitValue()));
+        }
+    }
+    commands.append(getKeyUri(XFER));
+    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+    trackTransfer(m_current_call->phonexid());
+}
+
 /*! \brief Sends a blind transfer request to the phone
  *
  * Send an aastra xml request to the phone to transfer the call on line \a line
@@ -479,35 +492,35 @@ void PopcAastra::trackHolded(const QString & phonexid, int line)
  * \param transferedname The name of the transfered caller
  * \param transferednumber The number of the transfered caller
  */
-void PopcAastra::blindTransfer(const QString & device_identity,
-                               int line,
-                               const QString & t_name,
-                               const QString & t_num)
-{
-    qDebug() << Q_FUNC_INFO << device_identity << line << t_name << t_num;
-    QList<QString> commands;
-    commands.append(getKeyUri(LINE, line));
-    commands.append(getKeyUri(XFER));
-    QString number = m_selected_number;
-    for (int i = 0; i < number.size(); ++i) {
-        const QChar c = number[i];
-        if (c.isDigit()) {
-            commands.append(getKeyUri(KEYPAD, c.digitValue()));
-        }
-    }
-    commands.append(getKeyUri(XFER));
+// void PopcAastra::blindTransfer(const QString & device_identity,
+//                                int line,
+//                                const QString & t_name,
+//                                const QString & t_num)
+// {
+//     qDebug() << Q_FUNC_INFO << device_identity << line << t_name << t_num;
+//     QList<QString> commands;
+//     commands.append(getKeyUri(LINE, line));
+//     commands.append(getKeyUri(XFER));
+//     QString number = m_selected_number;
+//     for (int i = 0; i < number.size(); ++i) {
+//         const QChar & c = number[i];
+//         if (c.isDigit()) {
+//             commands.append(getKeyUri(KEYPAD, c.digitValue()));
+//         }
+//     }
+//     commands.append(getKeyUri(XFER));
 
-    QString phonexid;
-    foreach (const QString & key, b_engine->iterover("phones").keys()) {
-        if (b_engine->phone(key)->identity() == device_identity) {
-            phonexid = key;
-            break;
-        }
-    }
+//     QString phonexid;
+//     foreach (const QString & key, b_engine->iterover("phones").keys()) {
+//         if (b_engine->phone(key)->identity() == device_identity) {
+//             phonexid = key;
+//             break;
+//         }
+//     }
 
-    trackTransfer(phonexid, number, t_name, t_num);
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
-}
+//     trackTransfer(phonexid, number, t_name, t_num);
+//     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+// }
 
 /*! \brief Track a call after a blind transfer
  *
@@ -515,18 +528,13 @@ void PopcAastra::blindTransfer(const QString & device_identity,
  * unanswered calls. The key of the transfered call hash is the target number
  * of the transfer.
  * \param pxid The transfered device's XiVO id
- * \param tname The transfered person's name
- * \param tnum The transfered person's number
  */
-void PopcAastra::trackTransfer(const QString & pxid,
-                               const QString & number,
-                               const QString & tname,
-                               const QString & tnum)
+void PopcAastra::trackTransfer(const QString & pxid)
 {
-    qDebug() << Q_FUNC_INFO << pxid << tname << tnum;
     const PhoneInfo * p = b_engine->phone(pxid);
     if (p) {
-        PendingWidget * w = new TransferedWidget(pxid, number, tname, tnum, this);
+        PendingWidget * w = new TransferedWidget(
+            pxid, m_selected_number, this);
         m_pendingcalls[p->identity()] = w;
         m_layout->addWidget(w);
     } else {
@@ -537,9 +545,7 @@ void PopcAastra::trackTransfer(const QString & pxid,
 /*! \brief attended transfer to the line in the number/name field */
 void PopcAastra::attendedTransfer()
 {
-    // qDebug() << Q_FUNC_INFO << line;
     QList<QString> commands;
-    // commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(XFER));
     QString number = m_selected_number;
     for (int i = 0; i < number.size(); ++i) {

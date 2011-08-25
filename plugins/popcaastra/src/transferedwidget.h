@@ -9,8 +9,7 @@ class TransferedWidget: public PendingWidget
 Q_OBJECT
 
 public:
-    TransferedWidget(const QString &, const QString &,
-                     const QString &, const QString &, QWidget *);
+    TransferedWidget(const QString &, const QString &, QWidget *);
     void update();
     bool toRemove() const;
 public slots:
@@ -21,8 +20,6 @@ protected:
     void buildui();
 private:
     QString m_called_num;
-    QString m_t_name;
-    QString m_t_num;
 };
 
 #endif // __TRANSFEREDWIDGET_H__

@@ -72,7 +72,8 @@ void CurrentCallWidget::doPark()
 
 void CurrentCallWidget::doTxfer()
 {
-    qDebug() << Q_FUNC_INFO;
+    emit txfer();
+    emit remove_me();
 }
 
 void CurrentCallWidget::buildui()
@@ -104,6 +105,7 @@ void CurrentCallWidget::buildui()
     connect(this, SIGNAL(hangup()), parent(), SLOT(hangup()));
     connect(this, SIGNAL(hold()), parent(), SLOT(hold()));
     connect(this, SIGNAL(park()), parent(), SLOT(park()));
+    connect(this, SIGNAL(txfer()), parent(), SLOT(transfer()));
 
     connect(this, SIGNAL(remove_me()), parent(), SLOT(remove_current_call()));
 }

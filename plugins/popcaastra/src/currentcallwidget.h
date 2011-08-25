@@ -25,12 +25,13 @@ public slots:
     void doTxfer();
 signals:
     void atxfer();
-    void blindTransfer(const QString &, int, const QString &, const QString &);
+    // void blindTransfer(const QString &, int, const QString &, const QString &);
     void hangup();
     void hold();
     void park();
     void selectLine(int);
     void remove_me();
+    void txfer();
 protected:
     void buildui();
 private:
