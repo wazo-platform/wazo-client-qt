@@ -1722,14 +1722,17 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
     }
     if (reload_keepalive) {
         stopKeepAliveTimer();
-        m_timerid_keepalive = startTimer(qvm["keepaliveinterval"].toUInt());
+        m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
     }
     
-    setUserLogin (qvm["userlogin"].toString());
+    setUserLogin(m_config["userlogin"].toString());
     
     if (change_translation)
         changeTranslation();
     
+    // Update presence combobox in XLet identity
+    emit updatePresence();
+
     // qDebug() << m_config.toString();
     
     saveSettings();

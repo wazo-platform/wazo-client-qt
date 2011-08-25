@@ -55,13 +55,15 @@ class IdentityDisplay : public XLet
 
     public slots:
         void setGuiOptions();
-        void idxChanged(const QString &);
         void updatePresence();
         void setOpt(const QString &, bool);
         void setForward(const QString &, const QVariant &);
         void updateUserConfig(const QString &);
         void updateUserStatus(const QString &);
         void updatePhoneConfig(const QString &);
+
+    private slots:
+        void idxChanged(int);
 
     signals:
         void setAvailState(const QString &, bool);
@@ -82,7 +84,6 @@ class IdentityDisplay : public XLet
         IdentityAgent * m_agent;
         QHash<QString, IdentityPhone *> m_identityphones;
         IdentityVoiceMail * m_voicemail;
-        QHash<QString, QString> m_presence_names;
         int m_col_user;
         int m_col_agent;
         int m_col_phone;
@@ -93,7 +94,6 @@ class IdentityDisplay : public XLet
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
         quint32 m_loginkind;
-        QStringList m_functions;
         QVariantMap m_svcstatus;
 };
 

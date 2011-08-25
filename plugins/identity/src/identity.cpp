@@ -78,8 +78,11 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_presencevalue->setProperty("function", "presence");
     m_presencevalue->setContentsMargins(0, 0, 10, 0);
 
-    connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
-            this, SLOT(idxChanged(const QString &)));
+    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
+    m_presencevalue->setVisible(presenceEnabled);
+
+    connect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(idxChanged(int)));
 
     m_icon_user = new QLabel(this);
 
@@ -111,7 +114,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_glayout->addWidget(m_agent, 0, m_col_agent, 3, 1);
     m_glayout->addWidget(m_voicemail, 0, m_col_vm, 3, 1);
 
-    m_functions = b_engine->getConfig().keys();
     setGuiOptions();
 
     // connect signals/slots
@@ -175,20 +177,25 @@ void IdentityDisplay::setGuiOptions()
     m_loginkind = b_engine->getConfig("loginkind").toUInt();
 }
 
+/*!
+ * Get the new possible presence states list from CTI server
+ */
 void IdentityDisplay::updatePresence()
 {
+    // qDebug() << Q_FUNC_INFO << b_engine->getConfig("checked_function.presence").toBool();
     QString presence = b_engine->getAvailState();
     QVariantMap presencemap = b_engine->getOptionsUserStatus();
 
     m_presencevalue->hide();
-    if (! m_functions.contains("checked_function.presence"))
+
+    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
+    if (! presenceEnabled)
         return;
 
-    disconnect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
-               this, SLOT(idxChanged(const QString &)));
+    disconnect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
+               this, SLOT(idxChanged(int)));
 
     m_presencevalue->clear();
-    m_presence_names.clear();
 
     if (presencemap.contains(presence)) {
         QVariantMap details = presencemap.value(presence).toMap();
@@ -197,16 +204,15 @@ void IdentityDisplay::updatePresence()
         foreach (QString presencestate, allowedlist) {
             QVariantMap pdetails = presencemap.value(presencestate).toMap();
             QString longname = pdetails.value("longname").toString();
-            m_presencevalue->addItem(longname);
-            m_presence_names[presencestate] = longname;
+            m_presencevalue->addItem(longname, presencestate);
             if (presence == presencestate)
                 m_presencevalue->setCurrentIndex(idx);
             idx ++;
         }
     }
 
-    connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
-            this, SLOT(idxChanged(const QString &)));
+    connect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(idxChanged(int)));
     m_presencevalue->show();
 }
 
@@ -341,14 +347,13 @@ void IdentityDisplay::updateUserStatus(const QString & xuserid)
         return;
 }
 
-void IdentityDisplay::idxChanged(const QString & newidx)
+void IdentityDisplay::idxChanged(int newidx)
 {
     QString function = sender()->property("function").toString();
-    qDebug() << Q_FUNC_INFO << newidx << sender() << function << m_presence_names;
+    qDebug() << Q_FUNC_INFO << m_presencevalue->itemData(newidx) << sender() << function;
     if (function == "presence") {
-        foreach (QString avstate, m_presence_names.keys())
-            if (m_presence_names[avstate] == newidx)
-                b_engine->setAvailState(avstate, false);
+        QString newavstate = m_presencevalue->itemData(newidx).toString();
+        b_engine->setAvailState(newavstate, false);
     }
 }
 

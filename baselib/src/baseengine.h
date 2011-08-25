@@ -134,6 +134,8 @@ struct e_callback {
  *  - (int) \b guioptions.xlet_operator_keyilink = key code to join
  *  - (int) \b guioptions.xlet_operator_keyitransfer = key code to indirect transfer
  *  - (int) \b guioptions.xlet_operator_keypark = key code to park
+ *  - (bool) \b checked_function.presence = presence function enabled ?
+ *  - (bool) \b checked_function.customerinfo = customerinfo function enabled ?
  */
 class BASELIB_EXPORT BaseEngine: public QObject
 {

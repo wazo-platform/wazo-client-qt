@@ -311,6 +311,5 @@ void SearchPanel::updateConf()
 {
     m_maxdisplay = b_engine->getConfig("guioptions.contacts-max").toUInt();
     m_ncolumns = b_engine->getConfig("guioptions.contacts-width").toUInt();
-    qDebug() << m_ncolumns;
     updateDisplay();
 }
