@@ -31,8 +31,21 @@
  * $Date$
  */
 
-#include <QDebug>
 #include "phoneinfo.h"
+
+#include "baseengine.h"
+
+QString findPhoneByIdentity(const QString & identity)
+{
+    foreach (const QString & phonexid, b_engine->iterover("phones").keys()) {
+        const PhoneInfo * p = b_engine->phone(phonexid);
+        if (p && p->identity() == identity) {
+            qDebug() << Q_FUNC_INFO << phonexid;
+            return phonexid;
+        }
+    }
+    return QString();
+}
 
 PhoneInfo::PhoneInfo(const QString & ipbxid,
                      const QString & id)

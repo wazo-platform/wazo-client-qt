@@ -92,4 +92,9 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         bool m_callrecord;
 };
 
+/*! \brief Find a phone for a given phone identity
+ * \param identity The phone's protocol/id
+ * \return the phone's XiVO id or an empty QString */
+QString findPhoneByIdentity(const QString & identity);
+
 #endif
