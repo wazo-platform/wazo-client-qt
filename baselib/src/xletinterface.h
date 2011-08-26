@@ -51,6 +51,6 @@ class XLetInterface
         virtual XLet* newXLetInstance(QWidget *) = 0; //! Return a XLet of the type of the plugin loaded
 };
 
-Q_DECLARE_INTERFACE(XLetInterface, "com.proformatique.Plugin.XLetInterface/1.1");
+Q_DECLARE_INTERFACE(XLetInterface, "com.proformatique.Plugin.XLetInterface/1.2");
 
 #endif
