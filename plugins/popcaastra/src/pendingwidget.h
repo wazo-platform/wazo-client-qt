@@ -48,9 +48,9 @@ private:
     unsigned int m_id; //!< This call's internal id
     QString m_phonexid; //!< Tracked phone's XiVO id
     double m_time_transfer; //!< When we started tracking
+    QHBoxLayout * m_layout; //!< The layout
     QLabel * m_lbl_string; //!< The info string for this call
     QPushButton * m_btn_pickup; //!< The button to pickup this call
-    QHBoxLayout * m_layout; //!< The layout
     static unsigned int counted; //!< Used to assign an id to each instance
 };
 

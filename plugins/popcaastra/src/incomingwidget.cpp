@@ -28,7 +28,7 @@ void IncomingWidget::buildui()
     connect(m_btn_ignore, SIGNAL(clicked()), this, SLOT(doIgnore()));
     connect(m_btn_answer, SIGNAL(clicked()), this, SLOT(doPickup()));
 
-    connect(this, SIGNAL(ignore(int)), parent(), SLOT(hangUpLine(int)));
+    connect(this, SIGNAL(ignore(int)), parent(), SLOT(hangupLine(int)));
     connect(this, SIGNAL(pickup(int)), parent(), SLOT(selectLine(int)));
     connect(this, SIGNAL(remove_me(int)), parent(), SLOT(remove_incoming(int)));
 }
