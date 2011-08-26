@@ -47,4 +47,4 @@ PLUGINDIR = $$system(echo -n $XIVOCLIENT_PLUGINDIR)
 isEmpty( PLUGINDIR ) {
     PLUGINDIR = /usr/share/xivoclient/plugins
 }
-DEFINES += PLUGINDIR=\\\"$${PLUGINDIR}\\\"
+DEFINES += PLUGINDIR=\"\\\"$${PLUGINDIR}\\\"\"

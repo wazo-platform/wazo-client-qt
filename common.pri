@@ -27,10 +27,10 @@ isEmpty( DATEBUILD ) {
 
 # add everything correctly escaped as a string
 
-QMAKE_CXXFLAGS += -DXIVOVER=\"\\\"$${XIVOVER}\\\"\"
-QMAKE_CXXFLAGS += -DGIT_HASH=\"\\\"$${GIT_HASH}\\\"\"
-QMAKE_CXXFLAGS += -DGIT_DATE=\"\\\"$${GIT_DATE}\\\"\"
-QMAKE_CXXFLAGS += -DDATEBUILD=\"\\\"$${DATEBUILD}\\\"\"
+DEFINES += XIVOVER=\"\\\"$${XIVOVER}\\\"\"
+DEFINES += GIT_HASH=\"\\\"$${GIT_HASH}\\\"\"
+DEFINES += GIT_DATE=\"\\\"$${GIT_DATE}\\\"\"
+DEFINES += DATEBUILD=\"\\\"$${DATEBUILD}\\\"\"
 
 # regenerate qm when needed
 
@@ -38,5 +38,6 @@ QMAKE_EXTRA_COMPILERS += updateqm
 updateqm.input = TRANSLATIONS
 updateqm.output = ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
 updateqm.commands = lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_OUT}
-updateqm.CONFIG += no_link
-PRE_TARGETDEPS += compiler_updateqm_make_all
+# no_link = not included for linking
+# target_predep = will be compiled before the executable
+updateqm.CONFIG += no_link target_predeps
