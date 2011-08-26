@@ -63,11 +63,8 @@ class PopcAastra : public XLet
     Q_OBJECT
 public:
     PopcAastra(QWidget *parent=0);
-    ~PopcAastra();
 protected:
     void timerEvent(QTimerEvent *);
-    /*! \brief Find a matching device for a called number */
-    const PhoneInfo * findCalledDevice(const QString &);
     void removeIncomingCall(const QString & xChannelId);
     void removePendingCall(const QString &);
     void removeCompletedPendings();
@@ -81,44 +78,41 @@ private:
 public slots:
     /*! \brief Dial a number using sip notify */
     void dial(const QString &);
-    void updateDisplay();
-    /*! \brief turns up the volume of the phone */
+    /* /\*! \brief turns up the volume of the phone *\/ */
     void volUp();
-    /*! \brief turns down the volume of the phone */
+    /* /\*! \brief turns down the volume of the phone *\/ */
     void volDown();
     void navRight();
     void updatePhoneStatus(const QString &);
-    void updateUserStatus(const QString &);
+    void updateUserConfig(const QString &);
     void updateChannelStatus(const QString &);
     void updateMeetmesConfig(const QString &);
-    // void confLine(int, const QString &);
     void conf();
     void hangup();
     void hold();
-    void hangUpLine(int);
+    void hangupLine(int);
     void holdLine(const QString &, int);
     void attendedTransfer();
     void transfer();
-    // void blindTransfer(const QString &, int, const QString &, const QString &);
     void park();
-    // void parkcall(int, const QString &, const QString &);
     void selectLine(int);
     void prgkey1();
-    /*! \brief intercepts the call to this exten */
+    /* /\*! \brief intercepts the call to this exten *\/ */
     void doIntercept(const QString &);
-    /*! \brief receives numbers from a selected peer/contact in other xlets */
+    /* /\*! \brief receives numbers from a selected peer/contact in other xlets *\/ */
     void receiveNumberList(const QStringList &);
-    /*! \brief Receives a number from other xlets */
+    /* /\*! \brief Receives a number from other xlets *\/ */
     void receiveNumber(const QString &);
-    /*! \brief Removes a pending call widget */
+    /* /\*! \brief Removes a pending call widget *\/ */
     void remove_pending(unsigned int);
     void remove_incoming(int);
     void remove_current_call();
-    /*! \brief receive the text from the target field when it changes */
+    /* /\*! \brief receive the text from the target field when it changes *\/ */
     void targetChanged(const QString &);
 private:
     QString promptParking() const;
     QString promptMeetme() const;
+
     QStringList m_pending_to_remove;
     QStringList m_incoming_to_remove;
     void fillCompleter();
