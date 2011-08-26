@@ -35,17 +35,20 @@
 
 #include "baseengine.h"
 
-QString findPhoneByIdentity(const QString & identity)
+namespace phone {
+
+const PhoneInfo * findByIdentity(const QString & identity)
 {
     foreach (const QString & phonexid, b_engine->iterover("phones").keys()) {
         const PhoneInfo * p = b_engine->phone(phonexid);
         if (p && p->identity() == identity) {
-            qDebug() << Q_FUNC_INFO << phonexid;
-            return phonexid;
+            return p;
         }
     }
-    return QString();
+    return NULL;
 }
+
+} // namespace phone
 
 PhoneInfo::PhoneInfo(const QString & ipbxid,
                      const QString & id)
