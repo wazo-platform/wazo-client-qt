@@ -13,7 +13,7 @@ unsigned int PendingWidget::counted = 0;
 
 PendingWidget::PendingWidget(const QString & phonexid, QWidget * parent)
     :QWidget(parent), m_id(PendingWidget::counted++), m_phonexid(phonexid),
-     m_time_transfer(b_engine->timeServer())
+     m_time_transfer(b_engine->timeServer()), m_layout(0), m_lbl_string(0)
 {
     if (PendingWidget::counted == UINT_MAX) {
         PendingWidget::counted = 0;

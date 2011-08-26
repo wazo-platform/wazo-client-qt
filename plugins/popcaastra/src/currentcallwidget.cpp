@@ -10,10 +10,10 @@ class ChannelInfo;
 CurrentCallWidget::CurrentCallWidget(const QString & phonexid,
                                      const QString & chanxid,
                                      int line, QWidget * parent)
-    : PendingWidget(phonexid, parent), m_line(line), m_chan_xid(chanxid)
+    : PendingWidget(phonexid, parent), m_line(line), m_chan_xid(chanxid),
+      m_btn_atxfer(0), m_btn_txfer(0), m_btn_hold(0), m_btn_hangup(0),
+      m_btn_conf(0), m_btn_park(0)
 {
-    buildui();
-    update();
 }
 
 CurrentCallWidget::~CurrentCallWidget()
@@ -21,17 +21,19 @@ CurrentCallWidget::~CurrentCallWidget()
 
 void CurrentCallWidget::update()
 {
-    static const QString s = "%0 %1";
-    const ChannelInfo * c = b_engine->channel(m_chan_xid);
-    QString display;
-    if (c) {
-        display = c->peerdisplay();
-    } else {
-        const PhoneInfo * p = b_engine->phone(phonexid());
-        if (p) {
-            display = p->number();
-        }
+    if (! m_btn_atxfer) {
+        buildui();
     }
+
+    QString display;
+    if (const ChannelInfo * c = b_engine->channel(m_chan_xid)) {
+        display = c->peerdisplay();
+    } else if (const PhoneInfo * p = b_engine->phone(phonexid())) {
+        display = p->number();
+    } else {
+        emit remove_me();
+    }
+    static const QString s = "%0 %1";
     set_string(QString(s).arg(display).arg(started_since()));
 }
 

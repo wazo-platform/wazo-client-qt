@@ -10,8 +10,6 @@ TransferedWidget::TransferedWidget(const QString & phonexid,
                                    QWidget * parent)
     : PendingWidget(phonexid, parent), m_called_num(number)
 {
-    this->buildui();
-    this->update();
 }
 
 void TransferedWidget::buildui()
@@ -23,10 +21,13 @@ void TransferedWidget::buildui()
 
 void TransferedWidget::update()
 {
+    if (! layout()) {
+        buildui();
+    }
+
     static QString base = QString("%0 %1 %2 %3 %4");
     static QString message = tr("transfered to");
-    const PhoneInfo * p = b_engine->phone(phonexid());
-    if (p) {
+    if (const PhoneInfo * p = b_engine->phone(phonexid())) {
         const QStringList & channels = p->xchannels();
         if (channels.size() > 0) {
             const QString & chanxid = channels.last();

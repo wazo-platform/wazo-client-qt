@@ -8,12 +8,14 @@
 HoldedWidget::HoldedWidget(const QString & phonexid, int line, QWidget * parent)
     : PendingWidget(phonexid, parent), m_line(line)
 {
-    this->buildui();
-    this->update();
 }
 
 void HoldedWidget::update()
 {
+    if (!layout()) {
+        buildui();
+    }
+
     static QString base = QString("%0 %1 %2");
     static QString message = tr("on hold");
     const PhoneInfo * p = b_engine->phone(phonexid());

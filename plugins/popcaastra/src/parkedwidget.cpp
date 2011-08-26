@@ -11,12 +11,14 @@ ParkedWidget::ParkedWidget(const QString & phonexid,
                            QWidget * parent)
     : PendingWidget(phonexid, parent), m_parking_id(parkingxid)
 {
-    this->buildui();
-    this->update();
 }
 
 void ParkedWidget::update()
 {
+    if (! layout()) {
+        buildui();
+    }
+
     const PhoneInfo * p = b_engine->phone(phonexid());
     if (! p || ! p->xchannels().size()) {
         emit remove_me(id());
