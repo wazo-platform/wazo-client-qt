@@ -119,7 +119,6 @@ public slots:
 private:
     QString promptParking() const;
     QString promptMeetme() const;
-    QStringList m_my_lines; //!< Our lines (SIP/abc)
     QStringList m_pending_to_remove;
     QStringList m_incoming_to_remove;
     void fillCompleter();

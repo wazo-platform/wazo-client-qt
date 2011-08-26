@@ -52,7 +52,9 @@
 #define MAX_LINES 4
 
 PopcAastra::PopcAastra(QWidget *parent)
-    : XLet(parent), m_current_call(0)
+    : XLet(parent), m_current_call(0), m_layout(0), m_top_widget(0),
+      m_timerid(0), m_deltasec(1), m_btn_hangup(0), m_btn_nav_right(0),
+      m_btn_vol_down(0), m_btn_vol_up(0), m_targets(0), m_contact_completer(0)
 {
     setTitle(tr("POPC Aastra operator"));
 
@@ -77,9 +79,6 @@ PopcAastra::PopcAastra(QWidget *parent)
     m_top_widget->setSizeConstraint(QLayout::SetMinimumSize);
 
     fillCompleter();
-
-    m_timerid = 0;
-    m_deltasec = 1;
     startTimer(1000);
 
     // Signals / slots
@@ -111,6 +110,9 @@ PopcAastra::PopcAastra(QWidget *parent)
  */
 void PopcAastra::updateDisplay()
 {
+    if (m_current_call) {
+        m_current_call->update();
+    }
     foreach (const QString & key, m_incomingcalls.keys()) {
         m_incomingcalls[key]->update();
     }
@@ -123,14 +125,9 @@ void PopcAastra::updateDisplay()
 void PopcAastra::dial(const QString & number)
 {
     QStringList commands;
-    for (int i = 0; i < number.size(); ++i) {
-        const QChar & c = number[i];
-        if (c.isDigit()) {
-            commands.append(getKeyUri(KEYPAD, c.digitValue()));
-        }
-    }
-    commands.append(getKeyUri(NAV_RIGHT));
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+    aastra_notify::AppendNumber(number, commands);
+    commands.append(GetKeyUri(aastra_notify::NAV_RIGHT));
+    emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
 }
 
 /*! \brief Add users to transfer targets
@@ -139,8 +136,7 @@ void PopcAastra::dial(const QString & number)
 void PopcAastra::updateUserStatus(const QString & xUId)
 {
     static QString pattern = "%0 <%1>";
-    const UserInfo * u = b_engine->user(xUId);
-    if (u) {
+    if (const UserInfo * u = b_engine->user(xUId)) {
         foreach (const QString & phonexid, u->phonelist()) {
             const PhoneInfo * p = b_engine->phone(phonexid);
             if (p && ! p->number().isEmpty()) {
@@ -156,8 +152,7 @@ void PopcAastra::updateMeetmesConfig(const QString & mxid)
 {
     static QString prefix = "Conf";
     static QString pattern = "%0: %1 <%2>"; // "Conf: My meetme <800>"
-    const MeetmeInfo * m = b_engine->meetme(mxid);
-    if (m) {
+    if (const MeetmeInfo * m = b_engine->meetme(mxid)) {
         QString entry = pattern.arg(prefix).arg(m->name()).arg(m->number());
         m_contact_completer->insertItem(entry);
     }
@@ -183,10 +178,10 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
                 m_current_call = 0;
             }
             QString dev = c->talkingto_id().split("-").value(0);
-            const PhoneInfo * p = phone::findByIdentity(dev);
-            if (p) {
+            if (const PhoneInfo * p = phone::findByIdentity(dev)) {
                 m_current_call = new CurrentCallWidget(
                     p->xid(), cxid, nextLine(), this);
+                m_current_call->update();
                 m_layout->addWidget(m_current_call);
                 return;
             }
@@ -239,17 +234,6 @@ void PopcAastra::removeDefunctWidgets()
         }
         m_incoming_to_remove.clear();
     }
-
-    if (m_incomingcalls.size() == 0 && m_pendingcalls.size() == 0) return;
-
-    foreach (const QString & cxid, m_incomingcalls.keys()) {
-        const ChannelInfo * c = b_engine->channel(cxid);
-        if (!c || (c && c->isparked())) {
-            removeIncomingCall(cxid);
-        }
-    }
-
-    // Remove tracked transfers
 }
 
 /*! \brief Remove completed blind transfers from the widget list
@@ -310,10 +294,14 @@ int PopcAastra::nextLine() const {
     }
     for (int i = 0; i < MAX_LINES; i++) {
         bool lineFree = true;
-        foreach (QString channel, m_incomingcalls.keys()) {
-            if (m_incomingcalls[channel]->line() == i + 1) lineFree = false;
+        foreach (const QString & key, m_incomingcalls.keys()) {
+            if (m_incomingcalls[key]->line() == i + 1) {
+                lineFree = false;
+            }
         }
-        if (lineFree) return i + 1;
+        if (lineFree) {
+            return i + 1;
+        }
     }
     return -1;
 }
@@ -331,17 +319,16 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
     // qDebug() << Q_FUNC_INFO << xphoneid;
     removeDefunctWidgets();
     removeCompletedPendings();
-    const PhoneInfo * phone = b_engine->phone(xphoneid);
-    if (phone == NULL) return;
-
-    foreach (QString xchannel, phone->xchannels()) {
-        if (m_pendingcalls.contains(xchannel)) {
-            PendingWidget * w = m_pendingcalls[xchannel];
-            w->update();
-        }
-        if (m_incomingcalls.contains(xchannel)) {
-            IncomingWidget * w = m_incomingcalls[xchannel];
-            w->update();
+    if (const PhoneInfo * phone = b_engine->phone(xphoneid)) {
+        foreach (const QString & xchannel, phone->xchannels()) {
+            if (m_pendingcalls.contains(xchannel)) {
+                PendingWidget * w = m_pendingcalls[xchannel];
+                w->update();
+            }
+            if (m_incomingcalls.contains(xchannel)) {
+                IncomingWidget * w = m_incomingcalls[xchannel];
+                w->update();
+            }
         }
     }
 }
@@ -352,9 +339,9 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
         m_current_call->update();
     }
 
-    foreach (QString key, m_incomingcalls.keys())
+    foreach (const QString & key, m_incomingcalls.keys())
         m_incomingcalls[key]->update();
-    foreach (QString key, m_pendingcalls.keys())
+    foreach (const QString & key, m_pendingcalls.keys())
         m_pendingcalls[key]->update();
     if (m_pendingcalls.size() || m_incomingcalls.size()) {
         removeDefunctWidgets();
@@ -365,19 +352,12 @@ void PopcAastra::timerEvent(QTimerEvent * /* event */)
 void PopcAastra::conf()
 {
     QString mxid = promptMeetme();
-    const MeetmeInfo * m = b_engine->meetme(mxid);
-    if (m) {
+    if (const MeetmeInfo * m = b_engine->meetme(mxid)) {
         QStringList commands = QStringList()
-            << getKeyUri(XFER);
-        const QString & num = m->number();
-        for (int i = 0; i < num.size(); ++i) {
-            const QChar & c = num[i];
-            if (c.isDigit()) {
-                commands.append(getKeyUri(KEYPAD, c.digitValue()));
-            }
-        }
-        commands.append(getKeyUri(XFER));
-        emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+            << aastra_notify::GetKeyUri(aastra_notify::XFER);
+        aastra_notify::AppendNumber(m->number(), commands);
+        commands.append(aastra_notify::GetKeyUri(aastra_notify::XFER));
+        emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
     }
 }
 
@@ -390,9 +370,9 @@ void PopcAastra::conf()
  */
 void PopcAastra::hangUpLine(int /* line */)
 {
-    QList<QString> commands;
-    commands.append(getKeyUri(GOODBYE));
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+    QStringList commands;
+    commands.append(GetKeyUri(aastra_notify::GOODBYE));
+    emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
 }
 
 /*! \brief Put this line on hold
@@ -404,12 +384,11 @@ void PopcAastra::hangUpLine(int /* line */)
  */
 void PopcAastra::holdLine(const QString & device_identity, int line)
 {
-    QList<QString> commands;
-    commands.append(getKeyUri(LINE, line));
-    commands.append(getKeyUri(HOLD));
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
-    const PhoneInfo * p = phone::findByIdentity(device_identity);
-    if (p) {
+    QStringList commands;
+    commands.append(aastra_notify::GetKeyUri(aastra_notify::LINE, line));
+    commands.append(aastra_notify::GetKeyUri(aastra_notify::HOLD));
+    emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
+    if (const PhoneInfo * p = phone::findByIdentity(device_identity)) {
         trackHolded(p->xid(), line);
     }
 }
@@ -420,12 +399,11 @@ void PopcAastra::holdLine(const QString & device_identity, int line)
  */
 void PopcAastra::trackHolded(const QString & phonexid, int line)
 {
-    PendingWidget * w = new HoldedWidget(phonexid, line, this);
-    if (w) {
-        const PhoneInfo * p = b_engine->phone(phonexid);
-        if (p) {
+    if (PendingWidget * w = new HoldedWidget(phonexid, line, this)) {
+        if (const PhoneInfo * p = b_engine->phone(phonexid)) {
             m_pendingcalls[p->identity()] = w;
             m_layout->addWidget(w);
+            w->update();
         } else {
             delete w;
         }
@@ -435,15 +413,10 @@ void PopcAastra::trackHolded(const QString & phonexid, int line)
 void PopcAastra::transfer()
 {
     QStringList commands = QStringList()
-        << getKeyUri(XFER);
-    for (int i = 0; i < m_selected_number.size(); ++i) {
-        const QChar & c = m_selected_number[i];
-        if (c.isDigit()) {
-            commands.append(getKeyUri(KEYPAD, c.digitValue()));
-        }
-    }
-    commands.append(getKeyUri(XFER));
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+        << aastra_notify::GetKeyUri(aastra_notify::XFER);
+    aastra_notify::AppendNumber(m_selected_number, commands);
+    commands.append(aastra_notify::GetKeyUri(aastra_notify::XFER));
+    emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
     trackTransfer(m_current_call->phonexid());
 }
 
@@ -456,10 +429,10 @@ void PopcAastra::transfer()
  */
 void PopcAastra::trackTransfer(const QString & pxid)
 {
-    const PhoneInfo * p = b_engine->phone(pxid);
-    if (p) {
+    if (const PhoneInfo * p = b_engine->phone(pxid)) {
         PendingWidget * w = new TransferedWidget(
             pxid, m_selected_number, this);
+        w->update();
         m_pendingcalls[p->identity()] = w;
         m_layout->addWidget(w);
     } else {
@@ -470,16 +443,11 @@ void PopcAastra::trackTransfer(const QString & pxid)
 /*! \brief attended transfer to the line in the number/name field */
 void PopcAastra::attendedTransfer()
 {
-    QList<QString> commands;
-    commands.append(getKeyUri(XFER));
-    QString number = m_selected_number;
-    for (int i = 0; i < number.size(); ++i) {
-        const QChar c = number[i];
-        if (c.isDigit())
-            commands.append(getKeyUri(KEYPAD, c.digitValue()));
-    }
-    commands.append(getKeyUri(NAV_RIGHT));
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+    QStringList commands;
+    commands.append(aastra_notify::GetKeyUri(aastra_notify::XFER));
+    aastra_notify::AppendNumber(m_selected_number, commands);
+    commands.append(aastra_notify::GetKeyUri(aastra_notify::NAV_RIGHT));
+    emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
 }
 
 /*! \brief Intercept a call ringing at the given number
@@ -491,24 +459,19 @@ void PopcAastra::attendedTransfer()
  */
 void PopcAastra::doIntercept(const QString & exten)
 {
-    QList<QString> commands;
-    commands.append(getKeyUri(KEYPAD_STAR));
-    commands.append(getKeyUri(KEYPAD, 8));
-    for (int i = 0; i < exten.size(); ++i) {
-        const QChar c = exten[i];
-        if (c.isDigit())
-            commands.append(getKeyUri(KEYPAD, c.digitValue()));
-    }
-    commands.append(getKeyUri(NAV_RIGHT));
-    emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+    QStringList commands;
+    commands.append(aastra_notify::GetKeyUri(aastra_notify::KEYPAD_STAR));
+    commands.append(aastra_notify::GetKeyUri(aastra_notify::KEYPAD, 8));
+    aastra_notify::AppendNumber(exten, commands);
+    commands.append(aastra_notify::GetKeyUri(aastra_notify::NAV_RIGHT));
+    emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
 }
 
 /*! \brief Add a pending call to the removal list */
 void PopcAastra::remove_pending(unsigned int id)
 {
     foreach (const QString & key, m_pendingcalls.keys()) {
-        if (m_pendingcalls.contains(key)
-            && m_pendingcalls[key]->id() == id) {
+        if (m_pendingcalls[key]->id() == id) {
             m_pending_to_remove.append(key);
         }
     }
@@ -526,25 +489,19 @@ void PopcAastra::remove_incoming(int line)
 /*! \brief select the line */
 void PopcAastra::selectLine(int line)
 {
-    emit ipbxCommand(getAastraKeyNotify(LINE, SPECIAL_ME, line));
+    emit ipbxCommand(aastra_notify::GetKey(
+                         aastra_notify::LINE, SPECIAL_ME, line));
 }
 
 void PopcAastra::park()
 {
     QString pxid = promptParking();
-    const ParkingInfo * parking = b_engine->parkinglot(pxid);
-    if (parking) {
-        const QString & number = parking->number();
+    if (const ParkingInfo * parking = b_engine->parkinglot(pxid)) {
         QStringList commands = QStringList()
-            << getKeyUri(XFER);
-        for (int i = 0; i < number.size(); ++i) {
-            const QChar c = number[i];
-            if (c.isDigit()) {
-                commands.append(getKeyUri(KEYPAD, c.digitValue()));
-            }
-        }
-        commands.append(getKeyUri(XFER));
-        emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
+            << aastra_notify::GetKeyUri(aastra_notify::XFER);
+        aastra_notify::AppendNumber(parking->number(), commands);
+        commands.append(aastra_notify::GetKeyUri(aastra_notify::XFER));
+        emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
         trackParked(pxid, m_current_call->phonexid());
     }
 }
@@ -556,13 +513,13 @@ QString PopcAastra::promptParking() const
     QMap<QString, QPushButton *> parking_map;
     QMessageBox box;
     foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
-        const ParkingInfo * p = b_engine->parkinglot(pxid);
-        if (! p) continue;
-        parking_map[p->xid()] = box.addButton(QString("%0 - %1")
-                                              .arg(p->number()).arg(p->name()),
-                                              QMessageBox::ActionRole);
-        if (parking_map.size() == 1) {
-            box.setDefaultButton(parking_map[p->xid()]);
+        if (const ParkingInfo * p = b_engine->parkinglot(pxid)) {
+            parking_map[p->xid()] = box.addButton(QString("%0 - %1")
+                                                  .arg(p->number()).arg(p->name()),
+                                                  QMessageBox::ActionRole);
+            if (parking_map.size() == 1) {
+                box.setDefaultButton(parking_map[p->xid()]);
+            }
         }
     }
 
@@ -618,9 +575,8 @@ QString PopcAastra::promptMeetme() const
 void PopcAastra::trackParked(const QString & parkingxid,
                              const QString & phonexid)
 {
-    qDebug() << Q_FUNC_INFO << parkingxid << phonexid;
-    PendingWidget * w = new ParkedWidget(phonexid, parkingxid, this);
-    if (w) {
+    if (PendingWidget * w = new ParkedWidget(phonexid, parkingxid, this)) {
+        w->update();
         m_pendingcalls[phonexid] = w;
         m_layout->addWidget(w);
     }
@@ -629,30 +585,30 @@ void PopcAastra::trackParked(const QString & parkingxid,
 /*! \brief turns the volume up */
 void PopcAastra::volUp()
 {
-    emit ipbxCommand(getAastraKeyNotify(VOL_UP, SPECIAL_ME));
+    emit ipbxCommand(aastra_notify::GetKey(aastra_notify::VOL_UP, SPECIAL_ME));
 }
 
 /*! \brief turns the volume down */
 void PopcAastra::volDown()
 {
-    emit ipbxCommand(getAastraKeyNotify(VOL_DOWN, SPECIAL_ME));
+    emit ipbxCommand(aastra_notify::GetKey(aastra_notify::VOL_DOWN, SPECIAL_ME));
 }
 
 /*! \brief press the navigation right button of the device */
 void PopcAastra::navRight()
 {
-    emit ipbxCommand(getAastraKeyNotify(NAV_RIGHT, SPECIAL_ME));
+    emit ipbxCommand(aastra_notify::GetKey(aastra_notify::NAV_RIGHT, SPECIAL_ME));
 }
 
 /*! \brief hang up the active line */
 void PopcAastra::hangup()
 {
-    emit ipbxCommand(getAastraKeyNotify(GOODBYE, SPECIAL_ME));
+    emit ipbxCommand(aastra_notify::GetKey(aastra_notify::GOODBYE, SPECIAL_ME));
 }
 
 void PopcAastra::hold()
 {
-    emit ipbxCommand(getAastraKeyNotify(HOLD, SPECIAL_ME));
+    emit ipbxCommand(GetKey(aastra_notify::HOLD, SPECIAL_ME));
     trackHolded(m_current_call->phonexid(), m_current_call->line());
 }
 
@@ -667,8 +623,7 @@ void PopcAastra::remove_current_call()
 /*! \brief simulates a press on the programmable button 1 */
 void PopcAastra::prgkey1()
 {
-    // qDebug() << Q_FUNC_INFO;
-    emit ipbxCommand(getAastraKeyNotify(PRG_KEY, SPECIAL_ME, 1));
+    emit ipbxCommand(aastra_notify::GetKey(aastra_notify::PRG_KEY, SPECIAL_ME, 1));
 }
 
 /*! \brief receive a list of numbers for a selected peer or contact */
@@ -724,11 +679,11 @@ void PopcAastra::targetChanged(const QString & text)
  */
 void PopcAastra::fillCompleter()
 {
-    m_contact_completer = new FilteredCompleter(this);
-    m_contact_completer->setCaseSensitivity(Qt::CaseInsensitive);
-    m_contact_completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-
-    m_targets->setCompleter(m_contact_completer);
+    if ((m_contact_completer = new FilteredCompleter(this)) != 0) {
+        m_contact_completer->setCaseSensitivity(Qt::CaseInsensitive);
+        m_contact_completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+        m_targets->setCompleter(m_contact_completer);
+    }
 }
 
 /*! \brief destructor
