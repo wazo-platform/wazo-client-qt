@@ -28,6 +28,10 @@ void IncomingWidget::buildui()
 
     connect(m_btn_ignore, SIGNAL(clicked()), this, SLOT(doIgnore()));
     connect(m_btn_answer, SIGNAL(clicked()), this, SLOT(doPickup()));
+
+    connect(this, SIGNAL(ignore(int)), parent(), SLOT(hangUpLine(int)));
+    connect(this, SIGNAL(pickup(int)), parent(), SLOT(selectLine(int)));
+    connect(this, SIGNAL(remove_me(int)), parent(), SLOT(remove_incoming(int)));
 }
 
 void IncomingWidget::update()
@@ -54,10 +58,12 @@ bool IncomingWidget::toRemove() const
 
 void IncomingWidget::doIgnore()
 {
-    qDebug() << Q_FUNC_INFO;
+    emit ignore(m_line);
+    emit remove_me(m_line);
 }
 
 void IncomingWidget::doPickup()
 {
-    qDebug() << Q_FUNC_INFO;
+    emit pickup(m_line);
+    emit remove_me(m_line);
 }

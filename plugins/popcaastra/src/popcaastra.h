@@ -72,7 +72,6 @@ protected:
     void removePendingCall(const QString &);
     void removeCompletedPendings();
     void removeDefunctWidgets();
-    void schedule_removal(const QString &);
     int nextLine() const;
 private:
     /*! \brief starts tracking a number after a transfer */
@@ -113,6 +112,7 @@ public slots:
     void receiveNumber(const QString &);
     /*! \brief Removes a pending call widget */
     void remove_pending(unsigned int);
+    void remove_incoming(int);
     void remove_current_call();
     /*! \brief receive the text from the target field when it changes */
     void targetChanged(const QString &);
@@ -120,7 +120,8 @@ private:
     QString promptParking() const;
     QString promptMeetme() const;
     QStringList m_my_lines; //!< Our lines (SIP/abc)
-    QStringList m_to_remove;
+    QStringList m_pending_to_remove;
+    QStringList m_incoming_to_remove;
     void fillCompleter();
     CurrentCallWidget * m_current_call;
     QHash<QString, IncomingWidget *> m_incomingcalls;  //!< List of IncomingWidget

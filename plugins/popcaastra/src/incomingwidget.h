@@ -28,8 +28,9 @@ public slots:
 protected:
     void buildui();
 signals:
-    void pickup(const QString &);
-    void ignore(const QString &);
+    void pickup(int);
+    void ignore(int);
+    void remove_me(int);
 private:
     int m_line;
     QString m_channel_xid;

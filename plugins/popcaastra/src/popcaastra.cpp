@@ -183,10 +183,10 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
                 m_current_call = 0;
             }
             QString dev = c->talkingto_id().split("-").value(0);
-            QString phonexid = findPhoneByIdentity(dev);
-            if (! phonexid.isEmpty()) {
+            const PhoneInfo * p = phone::findByIdentity(dev);
+            if (p) {
                 m_current_call = new CurrentCallWidget(
-                    phonexid, cxid, nextLine(), this);
+                    p->xid(), cxid, nextLine(), this);
                 m_layout->addWidget(m_current_call);
                 return;
             }
@@ -197,10 +197,10 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
             m_incomingcalls[cxid]->update();
         } else {
             QString identity = c->id().split("-").value(0);
-            QString phonexid = findPhoneByIdentity(identity);
-            if (! phonexid.isEmpty()) {
+            const PhoneInfo * p = phone::findByIdentity(identity);
+            if (p) {
                 IncomingWidget * w = new IncomingWidget(
-                    nextLine(), cxid, phonexid, this);
+                    nextLine(), cxid, p->xid(), this);
                 m_incomingcalls[cxid] = w;
                 m_layout->addWidget(w);
             }
@@ -220,11 +220,24 @@ void PopcAastra::removeDefunctWidgets()
         m_current_call = 0;
     }
 
-    if (m_to_remove.size()) {
-        foreach (const QString & key, m_to_remove) {
-            removePendingCall(key);
+    if (m_pending_to_remove.size()) {
+        foreach (const QString & key, m_pending_to_remove) {
+            if (m_pendingcalls.contains(key)) {
+                delete m_pendingcalls[key];
+                m_pendingcalls.remove(key);
+            }
         }
-        m_to_remove.clear();
+        m_pending_to_remove.clear();
+    }
+
+    if (m_incoming_to_remove.size()) {
+        foreach (const QString & key, m_incoming_to_remove) {
+            if (m_incoming_to_remove.size()) {
+                delete m_incomingcalls[key];
+                m_incomingcalls.remove(key);
+            }
+        }
+        m_incoming_to_remove.clear();
     }
 
     if (m_incomingcalls.size() == 0 && m_pendingcalls.size() == 0) return;
@@ -395,10 +408,9 @@ void PopcAastra::holdLine(const QString & device_identity, int line)
     commands.append(getKeyUri(LINE, line));
     commands.append(getKeyUri(HOLD));
     emit ipbxCommand(getAastraSipNotify(commands, SPECIAL_ME));
-    foreach (const QString & phonexid, b_engine->iterover("phones").keys()) {
-        if (b_engine->phone(phonexid)->identity() == device_identity) {
-            trackHolded(phonexid, line);
-        }
+    const PhoneInfo * p = phone::findByIdentity(device_identity);
+    if (p) {
+        trackHolded(p->xid(), line);
     }
 }
 
@@ -497,15 +509,18 @@ void PopcAastra::remove_pending(unsigned int id)
     foreach (const QString & key, m_pendingcalls.keys()) {
         if (m_pendingcalls.contains(key)
             && m_pendingcalls[key]->id() == id) {
-            schedule_removal(key);
+            m_pending_to_remove.append(key);
         }
     }
 }
 
-/*! \brief Add a key to remove an item from m_pendingcalls */
-void PopcAastra::schedule_removal(const QString & key)
+void PopcAastra::remove_incoming(int line)
 {
-    m_to_remove.append(key);
+    foreach (const QString & key, m_incomingcalls.keys()) {
+        if (m_incomingcalls[key]->line() == line) {
+            m_incoming_to_remove.append(key);
+        }
+    }
 }
 
 /*! \brief select the line */
