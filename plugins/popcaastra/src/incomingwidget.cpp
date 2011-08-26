@@ -10,10 +10,9 @@
 
 IncomingWidget::IncomingWidget(int line, const QString & channelxid,
                                const QString & phonexid, QWidget * w)
-    : PendingWidget(phonexid, w), m_line(line), m_channel_xid(channelxid)
+    : PendingWidget(phonexid, w), m_line(line), m_channel_xid(channelxid),
+      m_btn_answer(0)
 {
-    buildui();
-    update();
 }
 
 void IncomingWidget::buildui()
@@ -36,23 +35,24 @@ void IncomingWidget::buildui()
 
 void IncomingWidget::update()
 {
-    const ChannelInfo * c = b_engine->channel(m_channel_xid);
+    if (! m_btn_answer) {
+        buildui();
+    }
+
     QString display;
-    if (c) {
+    if (const ChannelInfo * c = b_engine->channel(m_channel_xid)) {
         display = c->peerdisplay();
+    } else if (const PhoneInfo * p = b_engine->phone(phonexid())) {
+        display = p->number();
     } else {
-        const PhoneInfo * p = b_engine->phone(phonexid());
-        if (p) {
-            display = p->number();
-        } else {
-            display = tr("Incoming call");
-        }
+        display = tr("Incoming call");
     }
     set_string(QString("%0 %1").arg(display).arg(started_since()));
 }
 
 bool IncomingWidget::toRemove() const
 {
+    if (! b_engine->channel(m_channel_xid)) return true;
     return false;
 }
 

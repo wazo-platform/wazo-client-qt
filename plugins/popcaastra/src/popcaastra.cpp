@@ -197,10 +197,10 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
             m_incomingcalls[cxid]->update();
         } else {
             QString identity = c->id().split("-").value(0);
-            const PhoneInfo * p = phone::findByIdentity(identity);
-            if (p) {
+            if (const PhoneInfo * p = phone::findByIdentity(identity)) {
                 IncomingWidget * w = new IncomingWidget(
                     nextLine(), cxid, p->xid(), this);
+                w->update();
                 m_incomingcalls[cxid] = w;
                 m_layout->addWidget(w);
             }
