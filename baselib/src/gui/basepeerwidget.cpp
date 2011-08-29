@@ -532,7 +532,9 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
                     transferAction = new QAction(tr("Direct &Transfer"), &contextMenu);
                     transferAction->setStatusTip(tr("Transfer to this person"));
                 }
-                transferAction->setProperty("xchannel", xchannel);
+                QString channel_xid = (QString("%0/%1").arg(channelinfo->ipbxid())
+                                       .arg(channelinfo->talkingto_id()));
+                transferAction->setProperty("xchannel", channel_xid);
                 connect(transferAction, SIGNAL(triggered()),
                         this, SLOT(transfer()));
                 if (transferMenu) {
