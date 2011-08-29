@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include "popcaastra.h"
 
 #include <QDebug>
@@ -53,7 +49,7 @@
 
 PopcAastra::PopcAastra(QWidget *parent)
     : XLet(parent), m_current_call(0), m_layout(0), m_top_widget(0),
-      m_timerid(0), m_deltasec(1), m_btn_hangup(0), m_btn_nav_right(0),
+      m_timerid(0), m_btn_hangup(0), m_btn_nav_right(0),
       m_btn_vol_down(0), m_btn_vol_up(0), m_targets(0), m_contact_completer(0)
 {
     setTitle(tr("POPC Aastra operator"));
@@ -103,25 +99,6 @@ PopcAastra::PopcAastra(QWidget *parent)
             this, SLOT(targetChanged(const QString &)));
 }
 
-/*! \brief Update status for incoming calls widget list
- *
- *  Goes thru each incoming calls in the GUI and update the status of each
- *  calls
- */
-// void PopcAastra::updateDisplay()
-// {
-//     if (m_current_call) {
-//         m_current_call->update();
-//     }
-//     foreach (const QString & key, m_incomingcalls.keys()) {
-//         m_incomingcalls[key]->update();
-//     }
-//     foreach (const QString & key, m_pendingcalls.keys()) {
-//         m_pendingcalls[key]->update();
-//     }
-// }
-
-/*! \brief Dial a number using Aastra SIP notify */
 void PopcAastra::dial(const QString & number)
 {
     QStringList commands;
@@ -130,9 +107,6 @@ void PopcAastra::dial(const QString & number)
     emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
 }
 
-/*! \brief Add users to transfer targets
- *  \param xUId The user's Xivo id
- */
 void PopcAastra::updateUserConfig(const QString & userxid)
 {
     static QString pattern = "%0 <%1>";
@@ -147,7 +121,6 @@ void PopcAastra::updateUserConfig(const QString & userxid)
     }
 }
 
-/*! \brief Update the target list with the available conf rooms */
 void PopcAastra::updateMeetmesConfig(const QString & mxid)
 {
     static QString prefix = "Conf";
@@ -158,13 +131,6 @@ void PopcAastra::updateMeetmesConfig(const QString & mxid)
     }
 }
 
-/*! \brief receives channel status updates from the base engine
- *
- *  When ever a channel status changes, the base engine sends a signal that
- *  we catch to update our incoming and transfered call widgets
- *
- *  \param cxid The pbx/channel id of the updated channel
-*/
 void PopcAastra::updateChannelStatus(const QString & cxid)
 {
     bool my_channel = (m_ui && m_ui->hasChannelId(cxid));
@@ -203,11 +169,6 @@ void PopcAastra::updateChannelStatus(const QString & cxid)
     }
 }
 
-/*! \brief Removes defunct call widgets for defunct channels
- *
- *  Check the tracked widgets for defunct channels and remove defunct ones
- *  from the incoming list
- */
 void PopcAastra::removeDefunctWidgets()
 {
     if (m_current_call && m_current_call->toRemove()) {
@@ -236,10 +197,6 @@ void PopcAastra::removeDefunctWidgets()
     }
 }
 
-/*! \brief Remove completed blind transfers from the widget list
- *
- * Remove transfered calls that are not in calling state anymore
- */
 void PopcAastra::removeCompletedPendings()
 {
     if (0 == m_pendingcalls.size())
@@ -257,11 +214,6 @@ void PopcAastra::removeCompletedPendings()
     }
 }
 
-/*! \brief Removes a widget from the incoming call list
- *
- *  Remove a widget from the incoming call list if it's part of the list
- *  \param key The widget's key in the list
- */
 void PopcAastra::removeIncomingCall(const QString & key)
 {
     if (m_incomingcalls.contains(key)) {
@@ -270,9 +222,6 @@ void PopcAastra::removeIncomingCall(const QString & key)
     }
 }
 
-/*! \brief Removes a widget from the pending call list
- * \param key
- */
 void PopcAastra::removePendingCall(const QString & key)
 {
     if (m_pendingcalls.contains(key)) {
@@ -281,13 +230,6 @@ void PopcAastra::removePendingCall(const QString & key)
     }
 }
 
-/*! \brief finds the first line available to place this channel
- *
- *  The goal is to know/guess on which line a call is to avoid
- *  mistakes when doing operations to a call since we are dealing
- *  with lines on the phone device when using aastra xml api
- *  Return -1 when all the lines are taken
- */
 int PopcAastra::nextLine() const {
     if (m_incomingcalls.size() == 0) {
         return 1;
@@ -306,8 +248,6 @@ int PopcAastra::nextLine() const {
     return -1;
 }
 
-/*! \brief parse new phone status
- */
 void PopcAastra::updatePhoneStatus(const QString & xphoneid)
 {
     /* 0 = Available
@@ -316,7 +256,6 @@ void PopcAastra::updatePhoneStatus(const QString & xphoneid)
        8 = Ringing
        9 = (On line OR calling) AND ringing
        16 = On hold */
-    // qDebug() << Q_FUNC_INFO << xphoneid;
     removeDefunctWidgets();
     removeCompletedPendings();
     if (const PhoneInfo * phone = b_engine->phone(xphoneid)) {
@@ -365,14 +304,7 @@ void PopcAastra::conf()
     }
 }
 
-/*! \brief Hang up a line on our phone
- *
- *  Hang up a given line on our phone using Aastra sipnotify, it has the same
- *  result as pressing the hang up button on the phone
- *
- *  \param line the line number to hangup
- */
-void PopcAastra::hangupLine(int)
+void PopcAastra::hangupLine(int line)
 {
     QStringList commands;
     // commands.append(aastra_notify::GetKeyUri(aastra_notify::LINE, line));
@@ -380,13 +312,6 @@ void PopcAastra::hangupLine(int)
     emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
 }
 
-/*! \brief Put this line on hold
- *
- *  Press the hold button on the phone
- *
- * \param device_identity the phone's protocol/id needed for tracking
- * \param line The phone's line to hangup
- */
 void PopcAastra::holdLine(const QString & device_identity, int line)
 {
     QStringList commands;
@@ -398,10 +323,6 @@ void PopcAastra::holdLine(const QString & device_identity, int line)
     }
 }
 
-/*! \brief Creates a widget for a call on hold and add it to the pending calls
- * \param phonexid The phone's XiVO id
- * \param line The line number on the phone
- */
 void PopcAastra::trackHolded(const QString & phonexid, int line)
 {
     if (PendingWidget * w = new HoldedWidget(phonexid, line, this)) {
@@ -425,13 +346,6 @@ void PopcAastra::transfer()
     trackTransfer(m_current_call->phonexid());
 }
 
-/*! \brief Track a call after a blind transfer
- *
- * Calls are tracked after blind transfer to allow the interception of
- * unanswered calls. The key of the transfered call hash is the target number
- * of the transfer.
- * \param pxid The transfered device's XiVO id
- */
 void PopcAastra::trackTransfer(const QString & pxid)
 {
     if (const PhoneInfo * p = b_engine->phone(pxid)) {
@@ -446,7 +360,6 @@ void PopcAastra::trackTransfer(const QString & pxid)
     }
 }
 
-/*! \brief attended transfer to the line in the number/name field */
 void PopcAastra::attendedTransfer()
 {
     QStringList commands;
@@ -456,13 +369,6 @@ void PopcAastra::attendedTransfer()
     emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
 }
 
-/*! \brief Intercept a call ringing at the given number
- *
- *  Sends a *8 exten on the phone to intercept a call ringing on a given
- *  exten
- *
- *  \param exten The exten number to intercept
- */
 void PopcAastra::doIntercept(const QString & exten)
 {
     QStringList commands;
@@ -473,7 +379,6 @@ void PopcAastra::doIntercept(const QString & exten)
     emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
 }
 
-/*! \brief Add a pending call to the removal list */
 void PopcAastra::remove_pending(unsigned int id)
 {
     foreach (const QString & key, m_pendingcalls.keys()) {
@@ -492,7 +397,6 @@ void PopcAastra::remove_incoming(int line)
     }
 }
 
-/*! \brief select the line */
 void PopcAastra::selectLine(int line)
 {
     emit ipbxCommand(aastra_notify::GetKey(
@@ -512,8 +416,6 @@ void PopcAastra::park()
     }
 }
 
-/*! \brief Prompt the user for a parking
- * \return the parkinglot XiVO id */
 QString PopcAastra::promptParking() const
 {
     QMap<QString, QPushButton *> parking_map;
@@ -588,26 +490,22 @@ void PopcAastra::trackParked(const QString & parkingxid,
     }
 }
 
-/*! \brief turns the volume up */
 void PopcAastra::volUp()
 {
     emit ipbxCommand(aastra_notify::GetKey(aastra_notify::VOL_UP, SPECIAL_ME));
 }
 
-/*! \brief turns the volume down */
 void PopcAastra::volDown()
 {
     emit ipbxCommand(aastra_notify::GetKey(aastra_notify::VOL_DOWN, SPECIAL_ME));
 }
 
-/*! \brief press the navigation right button of the device */
 void PopcAastra::navRight()
 {
     emit ipbxCommand(aastra_notify::GetKey(
                          aastra_notify::NAV_RIGHT, SPECIAL_ME));
 }
 
-/*! \brief hang up the active line */
 void PopcAastra::hangup()
 {
     emit ipbxCommand(aastra_notify::GetKey(aastra_notify::GOODBYE, SPECIAL_ME));
@@ -627,14 +525,12 @@ void PopcAastra::remove_current_call()
     }
 }
 
-/*! \brief simulates a press on the programmable button 1 */
 void PopcAastra::prgkey1()
 {
     emit ipbxCommand(aastra_notify::GetKey(
                          aastra_notify::PRG_KEY, SPECIAL_ME, 1));
 }
 
-/*! \brief receive a list of numbers for a selected peer or contact */
 void PopcAastra::receiveNumberList(const QStringList & numbers)
 {
     if (numbers.isEmpty()) {
@@ -648,25 +544,12 @@ void PopcAastra::receiveNumberList(const QStringList & numbers)
     m_targets->setText(m_selected_number);
 }
 
-/*! \brief Receive a number from another xlet
- *
- *  Receive this number from other xlet and set the selection field to this
- *  value.
- *  \param number The received number
- */
 void PopcAastra::receiveNumber(const QString & number)
 {
     if (number.isEmpty()) return;
     m_targets->setText(number);
 }
 
-/*! \brief Receive changes from the target field
- *
- *  This event is received when the user type data in the field or when the
- *  value is changed programmatically
- *
- *  \param text The new value
- */
 void PopcAastra::targetChanged(const QString & text)
 {
     QRegExp num_regex = QRegExp("[<]?[0-9]+[>]?");
@@ -681,10 +564,6 @@ void PopcAastra::targetChanged(const QString & text)
     }
 }
 
-/*! \brief Set the completion list for the completion targets
- *
- *   The completer should contain peers, contacts, conference and parkings
- */
 void PopcAastra::fillCompleter()
 {
     if ((m_contact_completer = new FilteredCompleter(this)) != 0) {
