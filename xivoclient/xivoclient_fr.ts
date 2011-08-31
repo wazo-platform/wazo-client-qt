@@ -98,8 +98,8 @@
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="197"/>
-        <source>Contacts&apos; width</source>
-        <translation>Largeur des contacts</translation>
+        <source>Contacts per row</source>
+        <translation>Nombre de contacts par rangée</translation>
     </message>
     <message>
         <location filename="../common/configwidget.cpp" line="134"/>

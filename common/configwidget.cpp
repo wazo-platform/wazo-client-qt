@@ -195,7 +195,7 @@ void ConfigWidget::_insert_function_tab()
         m_contactswidth_sbox = new QSpinBox(this);
         m_contactswidth_sbox->setRange(1, 20);
         m_contactswidth_sbox->setValue(m_opts.value("contacts-width").toUInt());
-        layout24->addRow(tr("Contacts' width"), m_contactswidth_sbox);
+        layout24->addRow(tr("Contacts per row"), m_contactswidth_sbox);
         
     m_function_tabwidget->addTab(widget_contacts, tr("Contacts"));
     
