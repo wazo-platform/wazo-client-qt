@@ -608,10 +608,11 @@ void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
         //m_settings->setValue("engine/availstate", m_availstate);
         m_settings->setValue(QString("%1/availstate").arg(m_profilename_write),
                              m_availstate);
-        if (comesFromServer)
-            emit changesAvailChecks();
-        else
+
+        emit changesAvailChecks();
+        if (! comesFromServer) {
             changeState();
+        }
         keepLoginAlive();
     } else {
         if (comesFromServer)
