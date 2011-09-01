@@ -147,9 +147,18 @@ void SearchPanel::updateDisplay()
         const UserInfo * userinfo = peeritem->userinfo();
         if (userinfo == NULL)
             continue;
-        // XXX todo : loop over phones to match against phonenumber
-        if (userinfo->fullname().contains(m_searchpattern, Qt::CaseInsensitive) &&
-            (naff < m_maxdisplay)) {
+        bool num_match = false;
+        foreach (const QString & phonexid, userinfo->phonelist()) {
+            if (const PhoneInfo * p = b_engine->phone(phonexid)) {
+                if (p->number().contains(m_searchpattern)) {
+                    num_match = true;
+                    break;
+                }
+            }
+        }
+        bool name_match = userinfo->fullname().contains(
+            m_searchpattern, Qt::CaseInsensitive);
+        if ((name_match || num_match) && (naff < m_maxdisplay)) {
             if (peerwidget == NULL) {
                 peerwidget = new PeerWidget(userinfo);
                 peerwidget->updateAgentConfig(userinfo->xagentid());
