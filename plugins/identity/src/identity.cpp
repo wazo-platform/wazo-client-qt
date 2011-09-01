@@ -331,14 +331,15 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
     m_agent->setAgentId(m_ui->xagentid());
 }
 
+/*!
+ * Update the availability dropdown list when our status is updated
+ * \param xuserid The updated user's XiVO id
+ */
 void IdentityDisplay::updateUserStatus(const QString & xuserid)
 {
-    if (m_ui == NULL)
-        return;
-    // qDebug() << Q_FUNC_INFO << xuserid;
-    const UserInfo * userinfo = b_engine->user(xuserid);
-    if (userinfo == NULL)
-        return;
+    if (m_ui && m_ui->xid() == xuserid) {
+        updatePresence();
+    }
 }
 
 void IdentityDisplay::idxChanged(const QString & newidx)
