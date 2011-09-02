@@ -941,8 +941,6 @@ void BaseEngine::parseCommand(const QString &line)
                 initFeatureFields(featurekey);
             }
             emit emitTextMessage(tr("Received Services Data"));
-            //}
-
         } else if (thisclass == "featuresput") {
             QVariantMap featuresput_map = datamap.value("payload").toMap();
             if (m_monitored_xuserid == datamap.value("userid").toString()) {
