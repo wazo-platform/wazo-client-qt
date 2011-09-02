@@ -163,6 +163,7 @@ QString UserInfo::toString() const
     str += " m_voicemailnum=" + m_voicemailnumber;
     str += " nphones=" + QString::number(m_phoneidlist.size());
     str += " phonesids=" + m_phoneidlist.join(",");
+    str += " status=" + m_availstate;
 
     return str;
 }

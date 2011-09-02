@@ -605,10 +605,6 @@ void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
     // qDebug() << Q_FUNC_INFO << "from" << m_availstate << "to" << newstate << comesFromServer;
     if (m_availstate != newstate) {
         m_availstate = newstate;
-        //m_settings->setValue("engine/availstate", m_availstate);
-        m_settings->setValue(QString("%1/availstate").arg(m_profilename_write),
-                             m_availstate);
-
         emit changesAvailChecks();
         if (! comesFromServer) {
             changeState();
@@ -620,15 +616,22 @@ void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
     }
 }
 
+/*!
+ * Returns the availstate of the current user
+ */
 const QString & BaseEngine::getAvailState() const
 {
+    if (const UserInfo * u = b_engine->user(getFullId())) {
+        return u->availstate();
+    }
+    // If it's too early to have an initialized UserInfo use m_availstate
+    qDebug() << Q_FUNC_INFO << "No user defined at this point using available";
     return m_availstate;
 }
 
 /*! \brief set availability */
 void BaseEngine::setAvailability()
 {
-    // qDebug() << Q_FUNC_INFO << sender();
     QString availstate = sender()->property("availstate").toString();
     setAvailState(availstate, false);
 }
@@ -868,7 +871,6 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "getlist") {
             configsLists(thisclass, function, datamap);
-
         } else if (thisclass == "agentrecord") {
             emit statusRecord(datamap.value("ipbxid").toString(),
                               datamap.value("agentid").toString(),
@@ -878,10 +880,6 @@ void BaseEngine::parseCommand(const QString &line)
             emit statusListen(datamap.value("ipbxid").toString(),
                               datamap.value("agentid").toString(),
                               datamap.value("status").toString());
-
-        } else if (thisclass == "endinit") {
-            qDebug() << Q_FUNC_INFO << "I should have received everything";
-
         } else if (thisclass == "serverdown") {
             qDebug() << Q_FUNC_INFO << thisclass << datamap.value("mode").toString();
 
@@ -915,16 +913,13 @@ void BaseEngine::parseCommand(const QString &line)
             emit serverFileList(datamap.value("filelist").toStringList());
 
         } else if (thisclass == "presence") {
-            // QString id = datamap.value("company").toString() + "/" + datamap.value("userid").toString();
             QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
-            qDebug() << Q_FUNC_INFO << thisclass << m_anylist.value("users").size() << id << datamap;
             if (m_anylist.value("users").contains(id)) {
                 QVariantMap state = datamap.value("capapresence").toMap().value("state").toMap();
                 QString stateid = state.value("stateid").toString();
                 QVariantMap changeme = m_config["guioptions.presence.autochangestate"].toMap();
                 if (changeme.count() && (id == m_xuserid)) {
                     if (changeme.contains(stateid)) {
-                        // if (stateid == changeme["statesrc"].toString()) {
                         QVariantMap changemeconf = changeme[stateid].toMap();
                         m_timerid_changestate = startTimer(changemeconf.value("delaymsec").toInt());
                         m_changestate_newstate = changemeconf.value("newstate").toString();
@@ -941,7 +936,6 @@ void BaseEngine::parseCommand(const QString &line)
 
         } else if (thisclass == "featuresget") {
             QVariantMap featuresget_map = datamap.value("userfeatures").toMap();
-            // if (m_monitored_userid == datamap.value("userid").toString()) {
             resetFeatures();
             foreach (QString featurekey, featuresget_map.keys()) {
                 initFeatureFields(featurekey);
@@ -1055,7 +1049,6 @@ void BaseEngine::parseCommand(const QString &line)
             m_capafuncs = capas.value("functions").toStringList();
 
             // ("agentstatus", "ipbxcommands", "phonestatus", "regcommands", "services", "functions", "userstatus")
-            m_forced_state = datamap.value("presence").toString();
             m_config.merge(capas.value("preferences").toMap());
             //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
 
@@ -1103,8 +1096,6 @@ void BaseEngine::parseCommand(const QString &line)
 
             fetchIPBXList();
             setState(ELogged); // calls logged()
-            setAvailState(m_forced_state, true);
-            emit updatePresence();
             m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
             m_attempt_loggedin = true;
 
@@ -1120,10 +1111,7 @@ void BaseEngine::parseCommand(const QString &line)
             } else {
                 popupError("disconnected");
             }
-
         } else if (thisclass == "ipbxcommand") {
-            qDebug() << Q_FUNC_INFO << thisclass << datamap;
-
         } else if (thisclass == "getipbxlist") {
             m_ipbxlist = datamap.value("ipbxlist").toStringList();
             fetchLists();
@@ -1220,8 +1208,9 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 } else {
                     qDebug() << "null for" << listname << xid;
                 }
-                if ((xid == m_xuserid) && (listname == "users"))
+                if ((xid == m_xuserid) && (listname == "users")) {
                     emit localUserInfoDefined();
+                }
             } else {
                 qDebug() << function << listname << xid << haschanged;
             }
