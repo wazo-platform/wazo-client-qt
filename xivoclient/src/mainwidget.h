@@ -86,6 +86,7 @@ class MainWidget : public QMainWindow
         void addPanel(const QString &, const QString &, QWidget *);
         void removePanel(const QString &, QWidget *);
         void syncPresence();
+        void setEnabledMenus(const QString & state);
     private:
         void createActions();  //!< Create Actions (for menus)
         void createMenus();  //!< Create Menus

@@ -382,6 +382,25 @@ void MainWidget::checksAvailState()
         const QString & state = u->availstate();
         if (! state.isEmpty() && m_avact.contains(state)) {
             m_avact[state]->setChecked(true);
+            setEnabledMenus(state);
+        }
+    }
+}
+
+/*!
+ * Enable or disable menu item according to the state
+ * \param state The new state
+ */
+void MainWidget::setEnabledMenus(const QString & state)
+{
+    const QVariantMap & states = b_engine->getOptionsUserStatus();
+    if (states.contains(state)) {
+        const QStringList & allowed = states.value(state).toMap()
+            .value("allowed").toStringList();
+        foreach (const QString & presence, m_avact.keys()) {
+            bool enabled = allowed.contains(presence);
+            m_avact[presence]->setCheckable(enabled);
+            m_avact[presence]->setEnabled(enabled);
         }
     }
 }
@@ -614,31 +633,19 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
  */
 void MainWidget::updatePresence()
 {
-    const UserInfo * u = b_engine->getXivoClientUser();
-    if (! u) return;
-    const QString & presence = u->availstate();
     const QVariantMap & presencemap = b_engine->getOptionsUserStatus();
-    if (! presencemap.size()) return;
-    if (presence.isEmpty() || ! presencemap.size()) return;
-    if (presencemap.contains(presence)) {
-        QVariantMap details = presencemap.value(presence).toMap();
-        QStringList allowedlist = details.value("allowed").toStringList();
-        foreach (QString presencestate, presencemap.keys()) {
-            QVariantMap pdetails = presencemap.value(presencestate).toMap();
-            QString longname = pdetails.value("longname").toString();
-            if (! m_avact.contains(presencestate)) {
-                m_avact[presencestate] = new QAction(longname, this);
-                m_avact[presencestate]->setProperty("availstate", presencestate);
-                bool isenabled = allowedlist.contains(presencestate);
-                m_avact[presencestate]->setCheckable(isenabled);
-                m_avact[presencestate]->setEnabled(isenabled);
-                connect(m_avact[presencestate], SIGNAL(triggered()),
-                        b_engine, SLOT(setAvailability()));
-                m_availgrp->addAction(m_avact[presencestate]);
-            }
+    foreach (const QString & presencestate, presencemap.keys()) {
+        const QVariantMap & pdetails = presencemap.value(presencestate).toMap();
+        const QString & longname = pdetails.value("longname").toString();
+        if (! m_avact.contains(presencestate)) {
+            m_avact[presencestate] = new QAction(longname, this);
+            m_avact[presencestate]->setProperty("availstate", presencestate);
+            connect(m_avact[presencestate], SIGNAL(triggered()),
+                    b_engine, SLOT(setAvailability()));
+            m_availgrp->addAction(m_avact[presencestate]);
         }
-        m_avail->addActions(m_availgrp->actions());
     }
+    m_avail->addActions(m_availgrp->actions());
     syncPresence();
 }
 
