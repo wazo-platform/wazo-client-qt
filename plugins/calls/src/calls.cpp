@@ -231,7 +231,8 @@ void XletCalls::updateDisplay()
 {
     if (m_monitored_ui == NULL)
         return;
-    updatePhoneStatus(m_monitored_ui->phonelist()[0]);
+    foreach (const QString phoneid, m_monitored_ui->phonelist())
+        updatePhoneStatus(phoneid);
 }
 
 /*! \brief filter events based on the mimetype
